@@ -3,7 +3,7 @@ package lycanite.lycanitesmobs.infernomobs.dispenser;
 import java.util.Random;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.entity.EntityRapidFire;
+import lycanite.lycanitesmobs.api.entity.EntityRapidFire;
 import lycanite.lycanitesmobs.infernomobs.entity.EntityEmber;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.BehaviorProjectileDispense;

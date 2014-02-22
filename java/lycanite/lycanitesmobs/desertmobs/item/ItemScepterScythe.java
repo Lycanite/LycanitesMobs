@@ -1,10 +1,10 @@
 package lycanite.lycanitesmobs.desertmobs.item;
 
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.entity.EntityRapidFire;
+import lycanite.lycanitesmobs.api.item.ItemScepter;
 import lycanite.lycanitesmobs.desertmobs.DesertMobs;
 import lycanite.lycanitesmobs.desertmobs.entity.EntityThrowingScythe;
-import lycanite.lycanitesmobs.entity.EntityRapidFire;
-import lycanite.lycanitesmobs.item.ItemScepter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;

@@ -1,8 +1,8 @@
 package lycanite.lycanitesmobs.swampmobs.item;
 
 import lycanite.lycanitesmobs.api.ICustomProjectile;
-import lycanite.lycanitesmobs.entity.EntityLaser;
-import lycanite.lycanitesmobs.item.ItemScepter;
+import lycanite.lycanitesmobs.api.entity.EntityLaser;
+import lycanite.lycanitesmobs.api.item.ItemScepter;
 import lycanite.lycanitesmobs.swampmobs.SwampMobs;
 import lycanite.lycanitesmobs.swampmobs.entity.EntityPoisonRay;
 import net.minecraft.entity.player.EntityPlayer;

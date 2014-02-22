@@ -1,7 +1,7 @@
 package lycanite.lycanitesmobs.arcticmobs.item;
 
+import lycanite.lycanitesmobs.api.item.ItemCustomSpawnEgg;
 import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
-import lycanite.lycanitesmobs.item.ItemCustomSpawnEgg;
 
 public class ItemArcticEgg extends ItemCustomSpawnEgg {
 	

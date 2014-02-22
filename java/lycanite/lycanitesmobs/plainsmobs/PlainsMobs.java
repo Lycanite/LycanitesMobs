@@ -5,7 +5,7 @@ import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.PacketHandler;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
-import lycanite.lycanitesmobs.dispenser.DispenserBehaviorMobEggCustom;
+import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.plainsmobs.entity.EntityKobold;
 import lycanite.lycanitesmobs.plainsmobs.entity.EntityMaka;
 import lycanite.lycanitesmobs.plainsmobs.entity.EntityMakaAlpha;

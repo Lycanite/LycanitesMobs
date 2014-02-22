@@ -4,7 +4,7 @@ import java.util.Random;
 
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.block.BlockBase;
+import lycanite.lycanitesmobs.api.block.BlockBase;
 import lycanite.lycanitesmobs.swampmobs.SwampMobs;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

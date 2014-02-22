@@ -8,13 +8,13 @@ import org.lwjgl.opengl.GL11;
 
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
+import lycanite.lycanitesmobs.api.model.ModelBipedCustom;
+import lycanite.lycanitesmobs.api.model.ModelCustom;
+import lycanite.lycanitesmobs.api.model.ModelCustomObj;
 import lycanite.lycanitesmobs.demonmobs.DemonMobs;
-import lycanite.lycanitesmobs.entity.EntityCreatureAgeable;
-import lycanite.lycanitesmobs.entity.EntityCreatureBase;
-import lycanite.lycanitesmobs.entity.EntityCreatureTameable;
-import lycanite.lycanitesmobs.model.ModelBipedCustom;
-import lycanite.lycanitesmobs.model.ModelCustom;
-import lycanite.lycanitesmobs.model.ModelCustomObj;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

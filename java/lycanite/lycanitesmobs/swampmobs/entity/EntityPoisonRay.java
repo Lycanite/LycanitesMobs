@@ -3,7 +3,7 @@ package lycanite.lycanitesmobs.swampmobs.entity;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.api.ICustomProjectile;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
-import lycanite.lycanitesmobs.entity.EntityLaser;
+import lycanite.lycanitesmobs.api.entity.EntityLaser;
 import lycanite.lycanitesmobs.swampmobs.SwampMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

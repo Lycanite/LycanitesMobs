@@ -2,9 +2,9 @@ package lycanite.lycanitesmobs.arcticmobs.item;
 
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.ICustomProjectile;
+import lycanite.lycanitesmobs.api.item.ItemScepter;
 import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
 import lycanite.lycanitesmobs.arcticmobs.entity.EntityFrostbolt;
-import lycanite.lycanitesmobs.item.ItemScepter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;

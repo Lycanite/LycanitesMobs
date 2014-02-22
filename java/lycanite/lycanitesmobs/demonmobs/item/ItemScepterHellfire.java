@@ -2,9 +2,9 @@ package lycanite.lycanitesmobs.demonmobs.item;
 
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.ICustomProjectile;
+import lycanite.lycanitesmobs.api.item.ItemScepter;
 import lycanite.lycanitesmobs.demonmobs.DemonMobs;
 import lycanite.lycanitesmobs.demonmobs.entity.EntityHellfireball;
-import lycanite.lycanitesmobs.item.ItemScepter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;

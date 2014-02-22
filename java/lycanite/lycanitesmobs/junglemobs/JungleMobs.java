@@ -5,7 +5,7 @@ import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.PacketHandler;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
-import lycanite.lycanitesmobs.dispenser.DispenserBehaviorMobEggCustom;
+import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.junglemobs.entity.EntityGeken;
 import lycanite.lycanitesmobs.junglemobs.entity.EntityUvaraptor;
 import lycanite.lycanitesmobs.junglemobs.item.ItemJungleEgg;

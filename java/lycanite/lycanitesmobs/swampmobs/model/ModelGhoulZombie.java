@@ -1,7 +1,7 @@
 package lycanite.lycanitesmobs.swampmobs.model;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.model.ModelCustomObj;
+import lycanite.lycanitesmobs.api.model.ModelCustomObj;
 import lycanite.lycanitesmobs.swampmobs.SwampMobs;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.MathHelper;

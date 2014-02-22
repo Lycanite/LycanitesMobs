@@ -3,8 +3,8 @@ package lycanite.lycanitesmobs.desertmobs.dispenser;
 import java.util.Random;
 
 import lycanite.lycanitesmobs.AssetManager;
+import lycanite.lycanitesmobs.api.entity.EntityRapidFire;
 import lycanite.lycanitesmobs.desertmobs.entity.EntityThrowingScythe;
-import lycanite.lycanitesmobs.entity.EntityRapidFire;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.client.audio.SoundManager;
 import net.minecraft.dispenser.BehaviorProjectileDispense;

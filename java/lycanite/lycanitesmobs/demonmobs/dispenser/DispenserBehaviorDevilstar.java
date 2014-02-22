@@ -1,7 +1,7 @@
 package lycanite.lycanitesmobs.demonmobs.dispenser;
 
+import lycanite.lycanitesmobs.api.entity.EntityRapidFire;
 import lycanite.lycanitesmobs.demonmobs.entity.EntityDevilstar;
-import lycanite.lycanitesmobs.entity.EntityRapidFire;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.BehaviorProjectileDispense;
 import net.minecraft.dispenser.IBlockSource;

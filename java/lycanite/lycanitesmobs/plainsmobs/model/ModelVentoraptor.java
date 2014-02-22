@@ -1,8 +1,8 @@
 package lycanite.lycanitesmobs.plainsmobs.model;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.entity.EntityCreatureBase;
-import lycanite.lycanitesmobs.model.ModelCustomObj;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.api.model.ModelCustomObj;
 import lycanite.lycanitesmobs.plainsmobs.PlainsMobs;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.MathHelper;

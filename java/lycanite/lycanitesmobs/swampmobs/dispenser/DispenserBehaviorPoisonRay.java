@@ -3,7 +3,7 @@ package lycanite.lycanitesmobs.swampmobs.dispenser;
 import java.util.Random;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.entity.EntityLaser;
+import lycanite.lycanitesmobs.api.entity.EntityLaser;
 import lycanite.lycanitesmobs.swampmobs.entity.EntityPoisonRay;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.BehaviorProjectileDispense;

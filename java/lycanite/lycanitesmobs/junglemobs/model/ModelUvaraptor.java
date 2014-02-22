@@ -1,9 +1,9 @@
 package lycanite.lycanitesmobs.junglemobs.model;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.api.model.ModelCustomObj;
 import lycanite.lycanitesmobs.junglemobs.JungleMobs;
-import lycanite.lycanitesmobs.model.ModelCustomObj;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.model.obj.WavefrontObject;

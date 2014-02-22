@@ -2,11 +2,11 @@ package lycanite.lycanitesmobs;
 
 import java.util.Map.Entry;
 
-import lycanite.lycanitesmobs.entity.EntityParticle;
-import lycanite.lycanitesmobs.gui.GuiMountOverlay;
-import lycanite.lycanitesmobs.render.RenderCreature;
-import lycanite.lycanitesmobs.render.RenderParticle;
-import lycanite.lycanitesmobs.render.RenderProjectile;
+import lycanite.lycanitesmobs.api.entity.EntityParticle;
+import lycanite.lycanitesmobs.api.gui.GuiMountOverlay;
+import lycanite.lycanitesmobs.api.render.RenderCreature;
+import lycanite.lycanitesmobs.api.render.RenderParticle;
+import lycanite.lycanitesmobs.api.render.RenderProjectile;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.common.MinecraftForge;

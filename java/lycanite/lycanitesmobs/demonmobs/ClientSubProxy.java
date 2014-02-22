@@ -2,6 +2,8 @@ package lycanite.lycanitesmobs.demonmobs;
 
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
+import lycanite.lycanitesmobs.api.render.RenderCreature;
+import lycanite.lycanitesmobs.api.render.RenderProjectile;
 import lycanite.lycanitesmobs.demonmobs.entity.EntityBehemoth;
 import lycanite.lycanitesmobs.demonmobs.entity.EntityHellfireball;
 import lycanite.lycanitesmobs.demonmobs.model.ModelAsmodi;
@@ -11,8 +13,6 @@ import lycanite.lycanitesmobs.demonmobs.model.ModelCacodemon;
 import lycanite.lycanitesmobs.demonmobs.model.ModelNetherSoul;
 import lycanite.lycanitesmobs.demonmobs.model.ModelPinky;
 import lycanite.lycanitesmobs.demonmobs.model.ModelTrite;
-import lycanite.lycanitesmobs.render.RenderCreature;
-import lycanite.lycanitesmobs.render.RenderProjectile;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;

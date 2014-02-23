@@ -48,8 +48,8 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
         this.despawnNaturally = DesertMobs.config.getFeatureBool("DespawnMakasNaturally");
         this.eggName = "PlainsEgg";
         
-        this.setWidth = 2.9F;
-        this.setHeight = 2.5F;
+        this.setWidth = 3.9F;
+        this.setHeight = 3.5F;
         this.attackTime = 10;
         this.setupMob();
         
@@ -163,7 +163,7 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
     public void setAttackTarget(EntityLivingBase entity) {
     	if(entity == null && this.getAttackTarget() instanceof EntityMakaAlpha && this.getHealth() < this.getMaxHealth()) {
     		this.heal((this.getMaxHealth() - this.getHealth()) / 2);
-    		this.addPotionEffect(new PotionEffect(Potion.regeneration.id, 10 * 20, 2, true));
+    		this.addPotionEffect(new PotionEffect(Potion.regeneration.id, 20 * 20, 2, true));
     	}
     	super.setAttackTarget(entity);
     }

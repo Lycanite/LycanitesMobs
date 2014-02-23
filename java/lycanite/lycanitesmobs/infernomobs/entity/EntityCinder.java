@@ -53,7 +53,7 @@ public class EntityCinder extends EntityCreatureBase implements IMob {
         
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(5, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(20).setRange(12.0F).setMinChaseDistance(3.0F).setChaseTime(-1));
+        this.tasks.addTask(5, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(20).setStaminaTime(100).setRange(12.0F).setMinChaseDistance(3.0F).setChaseTime(-1));
         this.tasks.addTask(8, new EntityAIWander(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
@@ -178,4 +178,7 @@ public class EntityCinder extends EntityCreatureBase implements IMob {
     
     @Override
     public boolean canBurn() { return false; }
+    
+    @Override
+    public boolean waterDamage() { return true; }
 }

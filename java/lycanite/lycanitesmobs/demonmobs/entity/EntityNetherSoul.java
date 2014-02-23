@@ -126,6 +126,9 @@ public class EntityNetherSoul extends EntityCreatureBase implements IMob {
     @Override
     public boolean canBurn() { return false; }
     
+    @Override
+    public boolean waterDamage() { return true; }
+    
     
     // ==================================================
     //                   Brightness

@@ -165,7 +165,7 @@ public class SwampMobs implements ILycaniteMod {
 				Character.valueOf('P'), ObjectManager.getItem("PoisonGland"),
 				Character.valueOf('R'), Item.blazeRod
 			}));
-
+		
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
 				new ItemStack(ObjectManager.getItem("MossPie"), 1, 0),
 				new Object[] {

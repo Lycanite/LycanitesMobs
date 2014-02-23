@@ -3,6 +3,8 @@ package lycanite.lycanitesmobs.desertmobs.entity;
 import java.util.HashMap;
 
 import lycanite.lycanitesmobs.DropRate;
+import lycanite.lycanitesmobs.api.IGroupHunter;
+import lycanite.lycanitesmobs.api.IGroupPrey;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
@@ -24,7 +26,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
-public class EntityManticore extends EntityCreatureBase implements IMob {
+public class EntityManticore extends EntityCreatureBase implements IMob, IGroupHunter {
     
     // ==================================================
  	//                    Constructor
@@ -57,7 +59,7 @@ public class EntityManticore extends EntityCreatureBase implements IMob {
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
-        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityGorgomite.class));
+        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
         
         // Drops:
         this.drops.add(new DropRate(Block.sandStone.blockID, 1).setMinAmount(1).setMaxAmount(3));

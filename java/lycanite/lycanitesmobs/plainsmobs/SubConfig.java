@@ -31,5 +31,8 @@ public class SubConfig extends Config {
 		
 		// ========== Item IDs ==========
 		loadSetting(itemIDs, "Item IDs", "PlainsEgg", "Plains Spawn Egg ID", 24010);
+		loadSetting(itemIDs, "Item IDs", "MakaMeatRaw", "Raw Maka Meat ID", 24011);
+		loadSetting(itemIDs, "Item IDs", "MakaMeatCooked", "Cooked Maka Meat ID", 24012);
+		loadSetting(itemIDs, "Item IDs", "BulwarkBurger", "Bulwark Burger ID", 24013);
 	}
 }

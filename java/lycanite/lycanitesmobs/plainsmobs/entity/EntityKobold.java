@@ -3,7 +3,10 @@ package lycanite.lycanitesmobs.plainsmobs.entity;
 import java.util.HashMap;
 
 import lycanite.lycanitesmobs.DropRate;
-import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.IGroupAlpha;
+import lycanite.lycanitesmobs.api.IGroupHunter;
+import lycanite.lycanitesmobs.api.IGroupPredator;
+import lycanite.lycanitesmobs.api.IGroupPrey;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAvoid;
@@ -26,7 +29,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
-public class EntityKobold extends EntityCreatureAgeable implements IMob {
+public class EntityKobold extends EntityCreatureAgeable implements IMob, IGroupPrey {
     
     // ==================================================
  	//                    Constructor
@@ -64,11 +67,10 @@ public class EntityKobold extends EntityCreatureAgeable implements IMob {
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class).setSightCheck(false));
         this.targetTasks.addTask(3, new EntityAITargetAvoid(this).setTargetClass(EntityPlayer.class));
+        this.targetTasks.addTask(3, new EntityAITargetAvoid(this).setTargetClass(IGroupHunter.class));
+        this.targetTasks.addTask(3, new EntityAITargetAvoid(this).setTargetClass(IGroupPredator.class));
+        this.targetTasks.addTask(3, new EntityAITargetAvoid(this).setTargetClass(IGroupAlpha.class));
         this.targetTasks.addTask(4, new EntityAITargetAvoid(this).setTargetClass(EntityVillager.class));
-        if(ObjectManager.getMob("Ventoraptor") != null)
-        	this.targetTasks.addTask(4, new EntityAITargetAvoid(this).setTargetClass(ObjectManager.getMob("Ventoraptor")));
-        if(ObjectManager.getMob("Uvaraptor") != null)
-        	this.targetTasks.addTask(4, new EntityAITargetAvoid(this).setTargetClass(ObjectManager.getMob("Uvaraptor")));
         
         // Drops:
         this.drops.add(new DropRate(Item.coal.itemID, 0.25F).setMaxAmount(2));

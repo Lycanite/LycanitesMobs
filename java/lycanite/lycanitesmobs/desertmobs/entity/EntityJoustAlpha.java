@@ -4,6 +4,9 @@ import java.util.HashMap;
 
 import lycanite.lycanitesmobs.DropRate;
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.IGroupAlpha;
+import lycanite.lycanitesmobs.api.IGroupPredator;
+import lycanite.lycanitesmobs.api.IGroupPrey;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowParent;
@@ -14,12 +17,10 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetParent;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
-import lycanite.lycanitesmobs.demonmobs.entity.EntityPinky;
 import lycanite.lycanitesmobs.desertmobs.DesertMobs;
-import lycanite.lycanitesmobs.swampmobs.entity.EntityLurker;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
@@ -29,7 +30,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class EntityJoustAlpha extends EntityCreatureAgeable implements IMob {
+public class EntityJoustAlpha extends EntityCreatureAgeable implements IMob, IGroupAlpha {
 	
 	// ==================================================
  	//                    Constructor
@@ -65,12 +66,9 @@ public class EntityJoustAlpha extends EntityCreatureAgeable implements IMob {
         this.targetTasks.addTask(1, new EntityAITargetAttack(this).setTargetClass(EntityJoustAlpha.class));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
-        this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityCrusk.class));
-        if(ObjectManager.getMob("Pinky") != null)
-        	this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityPinky.class));
-        if(ObjectManager.getMob("Lurker") != null)
-        	this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityLurker.class));
-        this.targetTasks.addTask(2, new EntityAITargetParent(this).setSightCheck(false).setDistance(32.0D));
+        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
+        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupPredator.class));
+        this.targetTasks.addTask(4, new EntityAITargetParent(this).setSightCheck(false).setDistance(32.0D));
         
         // Drops:
         this.drops.add(new DropRate(ObjectManager.getItem("JoustMeatRaw").itemID, 1).setBurningItem(ObjectManager.getItem("JoustMeatCooked").itemID, -1).setMinAmount(3).setMaxAmount(7));
@@ -126,15 +124,14 @@ public class EntityJoustAlpha extends EntityCreatureAgeable implements IMob {
 	// ==================================================
    	//                      Attacks
    	// ==================================================
-    // ========== Melee Attack ==========
+    // ========== Set Attack Target ==========
     @Override
-    public boolean attackEntityAsMob(Entity par1Entity) {
-        if(super.attackEntityAsMob(par1Entity)) {
-        	return true;
-        }
-        else {
-            return false;
-        }
+    public void setAttackTarget(EntityLivingBase entity) {
+    	if(entity == null && this.getAttackTarget() instanceof EntityJoustAlpha && this.getHealth() < this.getMaxHealth()) {
+    		this.heal((this.getMaxHealth() - this.getHealth()) / 2);
+    		this.addPotionEffect(new PotionEffect(Potion.regeneration.id, 10 * 20, 2, true));
+    	}
+    	super.setAttackTarget(entity);
     }
     
     

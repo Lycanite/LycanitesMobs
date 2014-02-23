@@ -4,8 +4,10 @@ import java.util.HashMap;
 
 import lycanite.lycanitesmobs.DropRate;
 import lycanite.lycanitesmobs.ObjectLists;
-import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.IGroupAlpha;
 import lycanite.lycanitesmobs.api.IGroupAnimal;
+import lycanite.lycanitesmobs.api.IGroupPredator;
+import lycanite.lycanitesmobs.api.IGroupPrey;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
@@ -33,7 +35,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
-public class EntityVentoraptor extends EntityCreatureRideable {
+public class EntityVentoraptor extends EntityCreatureRideable implements IGroupPredator {
     
     // ==================================================
  	//                    Constructor
@@ -76,10 +78,8 @@ public class EntityVentoraptor extends EntityCreatureRideable {
         this.targetTasks.addTask(0, new EntityAITargetRevenge(this).setHelpCall(true));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class).setSightCheck(false));
-        if(ObjectManager.getMob("Kobold") != null)
-        	this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(ObjectManager.getMob("Kobold")));
-        if(ObjectManager.getMob("JoustAlpha") != null)
-        	this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(ObjectManager.getMob("JoustAlpha")));
+        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
+        this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(IGroupAlpha.class));
         this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupAnimal.class));
         this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(EntityAnimal.class));
         

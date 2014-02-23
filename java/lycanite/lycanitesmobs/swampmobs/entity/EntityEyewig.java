@@ -32,9 +32,9 @@ import net.minecraft.world.World;
 
 public class EntityEyewig extends EntityCreatureRideable {
 	// Ranged Attack With Cooldown: TODO Build cooldowns into attack AIs.
-	public int laserTime = 0;
-	public int laserTimeMax = 200;
-	public boolean laserCooldown = false;
+	//public int laserTime = 0;
+	//public int laserTimeMax = 200;
+	//public boolean laserCooldown = false;
 	EntityAIAttackRanged rangedAttackAI;
     
     // ==================================================
@@ -66,7 +66,7 @@ public class EntityEyewig extends EntityCreatureRideable {
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIPlayerControl(this));
         this.tasks.addTask(4, new EntityAITempt(this).setItemID(ObjectManager.getItem("PoisonGland").itemID).setTemptDistanceMin(4.0D));
-        this.rangedAttackAI = new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(10).setRange(14.0F).setMinChaseDistance(4.0F).setChaseTime(-1);
+        this.rangedAttackAI = new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(10).setStaminaTime(100).setRange(14.0F).setMinChaseDistance(4.0F).setChaseTime(-1);
         this.tasks.addTask(5, rangedAttackAI);
         this.tasks.addTask(6, new EntityAIAttackMelee(this).setLongMemory(false).setMaxChaseDistance(14.0F));
         this.tasks.addTask(8, new EntityAIWander(this));
@@ -104,7 +104,7 @@ public class EntityEyewig extends EntityCreatureRideable {
     public void onLivingUpdate() {
         super.onLivingUpdate();
         
-        // Laser Cooldown:
+        /*/ Laser Cooldown:
         if(!this.worldObj.isRemote && this.laserCooldown) {
     		this.laserTime--;
     		if(this.laserTime <= 0) {
@@ -118,7 +118,7 @@ public class EntityEyewig extends EntityCreatureRideable {
         		this.laserCooldown = true;
         		this.rangedAttackAI.setEnabled(false);
         	}
-        }
+        }*/
     }
     
     public void riderEffects(EntityLivingBase rider) {

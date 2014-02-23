@@ -61,6 +61,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	public int[] rangedDamage = new int[] {0, 0, 0};
 	public byte attackPhase = 0;
 	public byte attackPhaseMax = 0;
+	public int fleeTime = 200;
+	public int currentFleeTime = 0;
+	public float fleeHealthPercent = 0;
 	
 	// Abilities:
 	public boolean spreadFire = false;
@@ -396,6 +399,12 @@ public abstract class EntityCreatureBase extends EntityLiving {
         super.onLivingUpdate();
         this.updateArmSwingProgress();
         
+        // Fleeing:
+        if(this.hasAvoidTarget()) {
+        	if(this.currentFleeTime-- <= 0)
+        		this.setAvoidTarget(null);
+        }
+        
         // Gliding:
         if(this.getFallingMod() != 0.0D && !this.onGround && this.motionY < 0.0D) {
             this.motionY *= this.getFallingMod();
@@ -678,6 +687,15 @@ public abstract class EntityCreatureBase extends EntityLiving {
     		return ((net.minecraft.entity.EntityCreature)this.parentTarget).getAttackTarget();
     	return null;
     }
+
+    // ========== Revenge Target ==========
+    @Override
+    public void setRevengeTarget(EntityLivingBase entityLivingBase) {
+    	if(this.fleeHealthPercent > 0 && this.getHealth() / this.getMaxHealth() <= this.fleeHealthPercent)
+    		this.setAvoidTarget(entityLivingBase);
+    	else
+    		super.setRevengeTarget(entityLivingBase);
+    }
     
     // ========== Melee ==========
     public boolean meleeAttack(Entity target, double damageScale) {
@@ -820,7 +838,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
     }
     
     public EntityLivingBase getAvoidTarget() { return this.avoidTarget; }
-    public void setAvoidTarget(EntityLivingBase setTarget) { this.avoidTarget = setTarget; }
+    public void setAvoidTarget(EntityLivingBase setTarget) {
+    	this.currentFleeTime = this.fleeTime;
+    	this.avoidTarget = setTarget;
+    }
     public boolean hasAvoidTarget() {
     	if(!this.worldObj.isRemote)
     		return this.getAvoidTarget() != null;

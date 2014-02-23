@@ -3,6 +3,10 @@ package lycanite.lycanitesmobs.desertmobs.entity;
 import java.util.HashMap;
 
 import lycanite.lycanitesmobs.DropRate;
+import lycanite.lycanitesmobs.api.IGroupAlpha;
+import lycanite.lycanitesmobs.api.IGroupHunter;
+import lycanite.lycanitesmobs.api.IGroupPredator;
+import lycanite.lycanitesmobs.api.IGroupPrey;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackRanged;
@@ -27,7 +31,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
-public class EntityGorgomite extends EntityCreatureBase implements IMob {
+public class EntityGorgomite extends EntityCreatureBase implements IMob, IGroupPrey {
 	
 	private EntityAIAttackRanged rangedAttackAI;
     
@@ -62,7 +66,9 @@ public class EntityGorgomite extends EntityCreatureBase implements IMob {
         this.targetTasks.addTask(0, new EntityAITargetRevenge(this).setHelpCall(true));
         this.targetTasks.addTask(1, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
-        this.targetTasks.addTask(3, new EntityAITargetAvoid(this).setTargetClass(EntityManticore.class));
+        this.targetTasks.addTask(3, new EntityAITargetAvoid(this).setTargetClass(IGroupHunter.class));
+        this.targetTasks.addTask(3, new EntityAITargetAvoid(this).setTargetClass(IGroupPredator.class));
+        this.targetTasks.addTask(3, new EntityAITargetAvoid(this).setTargetClass(IGroupAlpha.class));
         
         // Drops:
         this.drops.add(new DropRate(Block.sandStone.blockID, 1).setMinAmount(1).setMaxAmount(3));

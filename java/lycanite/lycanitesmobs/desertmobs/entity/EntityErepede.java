@@ -5,6 +5,8 @@ import java.util.HashMap;
 import lycanite.lycanitesmobs.DropRate;
 import lycanite.lycanitesmobs.ObjectLists;
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.IGroupPredator;
+import lycanite.lycanitesmobs.api.IGroupPrey;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackRanged;
@@ -33,7 +35,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class EntityErepede extends EntityCreatureRideable {
+public class EntityErepede extends EntityCreatureRideable implements IGroupPredator {
 	
 	int difficultyUpdate = -1;
 	
@@ -75,9 +77,11 @@ public class EntityErepede extends EntityCreatureRideable {
         this.tasks.addTask(11, new EntityAILookIdle(this));
         
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
-        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityJoust.class));
-        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityJoustAlpha.class));
-        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityCrusk.class));
+        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
+        if(ObjectManager.getMob("Joust") != null)
+        	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityJoust.class));
+        if(ObjectManager.getMob("JoustAlpha") != null)
+        	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityJoustAlpha.class));
         
         this.targetTasks.addTask(0, new EntityAITargetParent(this).setSightCheck(false).setDistance(32.0D));
         

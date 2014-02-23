@@ -18,6 +18,7 @@ public class EntityAIMate extends EntityAIBase {
     private Class targetClass;
     private int mateTime;
     private int mateTimeMax = 60;
+    private double mateDistance = 9.0D;
 	
 	// ==================================================
  	//                    Constructor
@@ -34,6 +35,10 @@ public class EntityAIMate extends EntityAIBase {
   	// ==================================================
     public EntityAIMate setSpeed(double setSpeed) {
     	this.speed = setSpeed;
+    	return this;
+    }
+    public EntityAIMate setMateDistance(double setDouble) {
+    	this.mateDistance = setDouble * setDouble;
     	return this;
     }
     public EntityAIMate setTargetClass(Class setTargetClass) {
@@ -83,7 +88,7 @@ public class EntityAIMate extends EntityAIBase {
         	this.host.getNavigator().tryMoveToEntityLiving(this.partner, this.speed);
         else
         	this.host.flightNavigator.setTargetPosition(new ChunkCoordinates((int)this.partner.posX, (int)this.partner.posY, (int)this.partner.posZ), speed);
-        if(this.host.getDistanceSqToEntity(this.partner) < 9.0D)
+        if(this.host.getDistanceSqToEntity(this.partner) < this.mateDistance)
 	        ++this.mateTime;
 	        if(this.mateTime >= mateTimeMax)
 	            this.host.procreate(this.partner);

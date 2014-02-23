@@ -2,27 +2,23 @@ package lycanite.lycanitesmobs.plainsmobs.entity;
 
 import java.util.HashMap;
 
-import lycanite.lycanitesmobs.ObjectLists;
+import lycanite.lycanitesmobs.DropRate;
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.IGroupAnimal;
+import lycanite.lycanitesmobs.api.IGroupAlpha;
+import lycanite.lycanitesmobs.api.IGroupPredator;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowMaster;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowParent;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIMate;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITempt;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
-import lycanite.lycanitesmobs.demonmobs.entity.EntityPinky;
 import lycanite.lycanitesmobs.desertmobs.DesertMobs;
-import lycanite.lycanitesmobs.junglemobs.entity.EntityUvaraptor;
 import lycanite.lycanitesmobs.plainsmobs.PlainsMobs;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.IAnimals;
@@ -33,7 +29,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, IGroupAnimal {
+public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, IGroupAlpha {
 	
 	// ==================================================
  	//                    Constructor
@@ -52,45 +48,38 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
         this.despawnNaturally = DesertMobs.config.getFeatureBool("DespawnMakasNaturally");
         this.eggName = "PlainsEgg";
         
-        this.setWidth = 0.9F;
-        this.setHeight = 2.2F;
+        this.setWidth = 2.9F;
+        this.setHeight = 2.5F;
         this.attackTime = 10;
         this.setupMob();
         
         // AI Tasks:
         this.getNavigator().setAvoidsWater(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIMate(this));
-        this.tasks.addTask(3, new EntityAIAttackMelee(this).setRate(10).setLongMemory(false));
-        this.tasks.addTask(3, new EntityAITempt(this).setItemList("Vegetables"));
-        this.tasks.addTask(4, new EntityAIFollowParent(this).setSpeed(1.0D));
-        this.tasks.addTask(5, new EntityAIFollowMaster(this).setSpeed(1.0D).setStrayDistance(8.0F));
-        this.tasks.addTask(6, new EntityAIWander(this));
+        this.tasks.addTask(5, new EntityAIAttackMelee(this).setTargetClass(EntityPlayer.class).setLongMemory(false));
+        this.tasks.addTask(6, new EntityAIAttackMelee(this));
+        this.tasks.addTask(9, new EntityAIWander(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
-        this.targetTasks.addTask(0, new EntityAITargetRevenge(this));
-        this.targetTasks.addTask(1, new EntityAITargetAttack(this).setTargetClass(EntityMakaAlpha.class));
-        this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
-        this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
-        this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityVentoraptor.class));
-        if(ObjectManager.getMob("Uvaraptor") != null)
-        	this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityUvaraptor.class));
-        if(ObjectManager.getMob("Pinky") != null)
-        	this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityPinky.class));
+        this.targetTasks.addTask(0, new EntityAITargetRevenge(this).setHelpClasses(EntityMaka.class));
+        this.targetTasks.addTask(1, new EntityAITargetAttack(this).setTargetClass(IGroupPredator.class));
+        this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityMakaAlpha.class).setChance(100));
+        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class).setOnlyNearby(true).setChance(100));
+        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class).setOnlyNearby(true).setChance(100));
         
         // Drops:
-        //XXX this.drops.add(new DropRate(ObjectManager.getItem("MakaMeatRaw").itemID, 1).setBurningItem(ObjectManager.getItem("MakaMeatCooked").itemID, -1).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(ObjectManager.getItem("MakaMeatRaw").itemID, 1).setBurningItem(ObjectManager.getItem("MakaMeatCooked").itemID, -1).setMinAmount(3).setMaxAmount(7));
     }
     
     // ========== Stats ==========
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 25D);
+		baseAttributes.put("maxHealth", 100D);
 		baseAttributes.put("movementSpeed", 0.28D);
 		baseAttributes.put("knockbackResistance", 1D);
 		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 2D);
+		baseAttributes.put("attackDamage", 4D);
         super.applyEntityAttributes(baseAttributes);
     }
 	
@@ -108,6 +97,23 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
 			return super.getCanSpawnHere();
 		return false;
     }
+	
+	
+	// ==================================================
+  	//                      Update
+  	// ==================================================
+	// ========== Spawn Check ==========
+	@Override
+	public void onLivingUpdate() {
+		super.onLivingUpdate();
+		
+		// Alpha Sparring Cooldown:
+		if(this.hasAttackTarget() && this.getAttackTarget() instanceof EntityMakaAlpha) {
+			if(this.getHealth() / this.getMaxHealth() <= 0.25F || this.getAttackTarget().getHealth() / this.getAttackTarget().getMaxHealth() <= 0.25F) {
+				this.setAttackTarget(null);
+			}
+		}
+	}
 	
 	
 	// ==================================================
@@ -139,7 +145,27 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
     // ========== Attack Class ==========
     @Override
     public boolean canAttackClass(Class targetClass) {
-    	return false;
+    	if(targetClass == EntityMaka.class)
+    		return false;
+    	else return super.canAttackClass(targetClass);
+    }
+    
+    // ========== Attack Entity ==========
+    @Override
+    public boolean canAttackEntity(EntityLivingBase entity) {
+    	if(entity instanceof EntityMakaAlpha && (this.getHealth() / this.getMaxHealth() <= 0.25F || entity.getHealth() / entity.getMaxHealth() <= 0.25F))
+    		return false;
+    	else return super.canAttackEntity(entity);
+    }
+    
+    // ========== Set Attack Target ==========
+    @Override
+    public void setAttackTarget(EntityLivingBase entity) {
+    	if(entity == null && this.getAttackTarget() instanceof EntityMakaAlpha && this.getHealth() < this.getMaxHealth()) {
+    		this.heal((this.getMaxHealth() - this.getHealth()) / 2);
+    		this.addPotionEffect(new PotionEffect(Potion.regeneration.id, 10 * 20, 2, true));
+    	}
+    	super.setAttackTarget(entity);
     }
     
     
@@ -161,13 +187,13 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
     // ========== Create Child ==========
 	@Override
 	public EntityCreatureAgeable createChild(EntityCreatureAgeable baby) {
-		return new EntityMakaAlpha(this.worldObj);
+		return new EntityMaka(this.worldObj);
 	}
 	
 	// ========== Breeding Item ==========
 	@Override
 	public boolean isBreedingItem(ItemStack testStack) {
-		return ObjectLists.inItemList("Vegetables", testStack);
+		return false;
     }
     
     

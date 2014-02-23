@@ -169,12 +169,7 @@ public class EntityAIAttackMelee extends EntityAIBase {
 	        
 	        // Walk to Target:
         	if(!this.host.canFly()) {
-        		// Force Chase:
-        		//if(this.attackRange != (this.host.width * 2.0F * this.host.width * 2.0F))
-        			//this.host.getNavigator().tryMoveToXYZ(attackTarget.posX, attackTarget.boundingBox.minY, attackTarget.posZ, this.speed);
-        		// Soft Chase:
-        		//else
-        			this.host.getNavigator().tryMoveToEntityLiving(attackTarget, this.speed);
+        		this.host.getNavigator().tryMoveToEntityLiving(attackTarget, this.speed);
 	            if(this.host.getNavigator().getPath() != null) {
 	                PathPoint finalPathPoint = this.host.getNavigator().getPath().getFinalPathPoint();
 	                if(finalPathPoint != null && attackTarget.getDistanceSq(finalPathPoint.xCoord, finalPathPoint.yCoord, finalPathPoint.zCoord) < 1)
@@ -190,7 +185,8 @@ public class EntityAIAttackMelee extends EntityAIBase {
         	else
         		this.host.flightNavigator.setTargetPosition(new ChunkCoordinates((int)attackTarget.posX, (int)(attackTarget.posY + 1.0), (int)attackTarget.posZ), speed);
         }
-
+        
+        // Damage Target:
         this.attackTime = Math.max(this.attackTime - 1, 0);
         if(this.host.getDistanceSq(attackTarget.posX, attackTarget.boundingBox.minY, attackTarget.posZ) <= this.attackRange + attackTarget.width) {
             if(this.attackTime <= 0) {

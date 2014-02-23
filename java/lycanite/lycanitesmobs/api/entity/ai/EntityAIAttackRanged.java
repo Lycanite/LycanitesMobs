@@ -15,6 +15,11 @@ public class EntityAIAttackRanged extends EntityAIBase {
     private int attackTime;
     private int attackTimeClose = 20;
     private int attackTimeFar = 20;
+    
+    private int attackStamina = 0;
+    private int attackStaminaMax = 0;
+    private boolean attackOnCooldown = false;
+    
     private double speed = 1.0D;
     private int chaseTime;
     private int chaseTimeMax = -1; // Average of 20
@@ -56,6 +61,13 @@ public class EntityAIAttackRanged extends EntityAIBase {
     public EntityAIAttackRanged setRate(int rate) {
     	return this.setRateClose(rate).setRateFar(rate);
     }
+    
+    public EntityAIAttackRanged setStaminaTime(int setInt) {
+    	this.attackStaminaMax = setInt;
+    	this.attackStamina = this.attackStaminaMax;
+    	return this;
+    }
+    
     public EntityAIAttackRanged setRange(float setRange) {
     	this.range = setRange;
     	this.attackDistance = setRange * setRange;
@@ -83,6 +95,15 @@ public class EntityAIAttackRanged extends EntityAIBase {
   	//                  Should Execute
   	// ==================================================
     public boolean shouldExecute() {
+    	// Attack Stamina/Cooldown Recovery:
+        if(this.attackStaminaMax > 0) {
+        	if(this.attackOnCooldown) {
+        		if(this.attackStamina++ >= this.attackStaminaMax)
+        			this.attackOnCooldown = false;
+        	}
+        }
+        
+        // Should Execute:
     	if(!this.enabled)
     		return false;
         EntityLivingBase possibleAttackTarget = this.host.getAttackTarget();
@@ -145,24 +166,41 @@ public class EntityAIAttackRanged extends EntityAIBase {
 
         this.host.getLookHelper().setLookPositionWithEntity(this.attackTarget, 30.0F, 30.0F);
         float rangeFactor;
-
-        if(--this.attackTime == 0) {
-            if(distance > (double)this.attackDistance || !hasSight)
-                return;
-
-            rangeFactor = MathHelper.sqrt_double(distance) / this.range;
-            float outerRangeFactor = rangeFactor; // Passed to the attack, clamps targets within 10% closeness.
-            if(rangeFactor < 0.1F)
-            	outerRangeFactor = 0.1F;
-            if(outerRangeFactor > 1.0F)
-            	outerRangeFactor = 1.0F;
-
-            this.host.rangedAttack(this.attackTarget, outerRangeFactor);
-            this.attackTime = MathHelper.floor_float(rangeFactor * (float)(this.attackTimeFar - this.attackTimeClose) + (float)this.attackTimeClose);
+        
+        // Attack Stamina/Cooldown:
+        if(this.attackStaminaMax > 0) {
+        	if(!this.attackOnCooldown) {
+        		if(this.attackStamina-- <= 0)
+        			this.attackOnCooldown = true;
+        	}
+        	else {
+        		if(this.attackStamina++ >= this.attackStaminaMax)
+        			this.attackOnCooldown = false;
+        	}
         }
-        else if(this.attackTime < 0) {
-        	rangeFactor = MathHelper.sqrt_double(distance) / this.range;
-            this.attackTime = MathHelper.floor_float(rangeFactor * (float)(this.attackTimeFar - this.attackTimeClose) + (float)this.attackTimeClose);
+        else if(this.attackOnCooldown)
+        	this.attackOnCooldown = false;
+        
+        // Fire Projectile:
+        if(!this.attackOnCooldown) {
+	        if(--this.attackTime == 0) {
+	            if(distance > (double)this.attackDistance || !hasSight)
+	                return;
+	
+	            rangeFactor = MathHelper.sqrt_double(distance) / this.range;
+	            float outerRangeFactor = rangeFactor; // Passed to the attack, clamps targets within 10% closeness.
+	            if(rangeFactor < 0.1F)
+	            	outerRangeFactor = 0.1F;
+	            if(outerRangeFactor > 1.0F)
+	            	outerRangeFactor = 1.0F;
+	
+	            this.host.rangedAttack(this.attackTarget, outerRangeFactor);
+	            this.attackTime = MathHelper.floor_float(rangeFactor * (float)(this.attackTimeFar - this.attackTimeClose) + (float)this.attackTimeClose);
+	        }
+	        else if(this.attackTime < 0) {
+	        	rangeFactor = MathHelper.sqrt_double(distance) / this.range;
+	            this.attackTime = MathHelper.floor_float(rangeFactor * (float)(this.attackTimeFar - this.attackTimeClose) + (float)this.attackTimeClose);
+	        }
         }
     }
 }

@@ -64,9 +64,9 @@ public class ModelMakaAlpha extends ModelCustomObj {
     	// Walking:
     	float walkSwing = 0.3F;
     	if(partName.equals("frontrightleg") || partName.equals("backleftleg"))
-    		rotation += Math.toDegrees(MathHelper.cos(time * 0.6662F + (float)Math.PI) * walkSwing * distance);
+    		rotX += Math.toDegrees(MathHelper.cos(time * 0.6662F + (float)Math.PI) * walkSwing * distance);
     	if(partName.equals("frontleftleg") || partName.equals("backrightleg"))
-    		rotation += Math.toDegrees(MathHelper.cos(time * 0.6662F) * walkSwing * distance);
+    		rotX += Math.toDegrees(MathHelper.cos(time * 0.6662F) * walkSwing * distance);
 		
     	// Apply Animations:
     	rotate(rotation, angleX, angleY, angleZ);

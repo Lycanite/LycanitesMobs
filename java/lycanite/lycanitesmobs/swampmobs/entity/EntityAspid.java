@@ -29,7 +29,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGroupAnimal {
@@ -45,6 +44,7 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
         this.mod = SwampMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.experience = 5;
+        this.spawnsOnlyInLight = true;
         this.hasAttackSound = true;
         
         this.despawnOnPeaceful = SwampMobs.config.getFeatureBool("DespawnAspidsOnPeaceful");
@@ -88,21 +88,6 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
     }
 	
 	
-	// ==================================================
-  	//                      Spawning
-  	// ==================================================
-	// ========== Spawn Check ==========
-	@Override
-	public boolean getCanSpawnHere() {
-		int i = MathHelper.floor_double(this.posX);
-        int j = MathHelper.floor_double(this.boundingBox.minY);
-        int k = MathHelper.floor_double(this.posZ);
-		if(this.worldObj.getFullBlockLightValue(i, j, k) > 8)
-			return super.getCanSpawnHere();
-		return false;
-    }
-	
-	
     // ==================================================
     //                      Updates
     // ==================================================
@@ -138,7 +123,7 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
 			if(block.blockMaterial == Material.ground)
 				return 7F;
 		}
-        return this.worldObj.getLightBrightness(par1, par2, par3) - 0.5F;
+        return super.getBlockPathWeight(par1, par2, par3);
     }
     
 	// ========== Can leash ==========

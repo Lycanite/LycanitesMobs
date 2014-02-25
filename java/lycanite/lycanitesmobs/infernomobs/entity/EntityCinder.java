@@ -102,6 +102,7 @@ public class EntityCinder extends EntityCreatureBase implements IMob {
     	return false;
     }
     
+    
     // ==================================================
     //                      Updates
     // ==================================================

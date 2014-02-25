@@ -219,10 +219,12 @@ public class Config {
 			
 			if(selectedBiomes != null) {
 				for(BiomeGenBase biome : selectedBiomes)
-					if(additive && !customBiomes.contains(biome))
+					if(additive && !customBiomes.contains(biome)) {
 						customBiomes.add(biome);
-					else if(!additive && customBiomes.contains(biome))
+					}
+					else if(!additive && customBiomes.contains(biome)) {
 						customBiomes.remove(biome);
+					}
 			}
 		}
 		if(customBiomes.size() > 0)

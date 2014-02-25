@@ -50,6 +50,7 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
         this.mod = DesertMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.experience = 5;
+        this.spawnsInDarkness = true;
         this.hasAttackSound = false;
         
         this.eggName = "DesertEgg";
@@ -156,21 +157,6 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
     
     public float getStaminaRecoveryMax() {
     	return 1.0F;
-    }
-    
-	
-	// ==================================================
-  	//                      Spawning
-  	// ==================================================
-	// ========== Spawn Check ==========
-	@Override
-	public boolean getCanSpawnHere() {
-		int i = MathHelper.floor_double(this.posX);
-        int j = MathHelper.floor_double(this.boundingBox.minY);
-        int k = MathHelper.floor_double(this.posZ);
-		if(this.worldObj.getFullBlockLightValue(i, j, k) > 8)
-			return super.getCanSpawnHere();
-		return false;
     }
 	
 	

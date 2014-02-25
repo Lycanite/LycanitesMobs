@@ -77,6 +77,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public boolean despawnOnPeaceful = true;
     public boolean despawnNaturally = true;
     public boolean spawnsInDarkness = false;
+    public boolean spawnsOnlyInLight = false;
     public boolean spawnsInBlock = false;
     public boolean spawnsUnderground = true;
     public boolean spawnsInWater = false;
@@ -258,20 +259,47 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	// Peaceful Check:
         if(this.despawnOnPeaceful && this.worldObj.difficultySetting <= 0) return false;
         
-        // Fixed Spawning Checks:
     	int i = MathHelper.floor_double(this.posX);
         int j = MathHelper.floor_double(this.boundingBox.minY);
         int k = MathHelper.floor_double(this.posZ);
-        if(this.spawnsInDarkness && this.testLightLevel() > 1) return false;
-        if(!this.worldObj.checkNoEntityCollision(this.boundingBox)) return false;
-        if(!this.spawnsInBlock && !this.spawnsInWater && !this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).isEmpty()) return false;
+        
+        // Fixed Spawning Checks:
+        if(!this.fixedSpawnCheck(i, j, k))
+        	return false;
         
     	// Spawner Check:
         if(this.isSpawnerNearby(i, j, k))
         	return true;
         
         // Natural Spawning Checks:
-        if(ObjectManager.getMobDimensions(this.entityName).length <= 0) return false;
+        if(!this.naturalSpawnCheck(i, j, k))
+        	return false;
+        
+        // Forced Spawn Chance:
+        if(this.mod.getConfig().spawnChances.containsKey(this.entityName))
+	        if(this.mod.getConfig().spawnChances.get(this.entityName) < 100)
+	        	if(this.mod.getConfig().spawnChances.get(this.entityName) <= 0 || this.rand.nextInt(99) < this.mod.getConfig().spawnChances.get(this.entityName))
+	        		return false;
+        return true;
+    }
+
+    // ========== Fixed Spawn Check ==========
+    public boolean fixedSpawnCheck(int i, int j, int k) {
+    	if(this.spawnsInDarkness && this.testLightLevel() > 1)
+    		return false;
+    	if(this.spawnsOnlyInLight && this.testLightLevel() < 2)
+    		return false;
+        if(!this.worldObj.checkNoEntityCollision(this.boundingBox))
+        	return false;
+        if(!this.spawnsInBlock && !this.spawnsInWater && !this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).isEmpty())
+        	return false;
+    	return true;
+    }
+    
+    // ========== Natural Spawn Check ==========
+    public boolean naturalSpawnCheck(int i, int j, int k) {
+    	if(ObjectManager.getMobDimensions(this.entityName).length <= 0)
+    		return false;
         else {
         	boolean validDimension = false;
         	for(int spawnDimension : ObjectManager.getMobDimensions(this.entityName)) {
@@ -280,23 +308,22 @@ public abstract class EntityCreatureBase extends EntityLiving {
         			break;
         		}
         	}
-        	if(!validDimension) return false;
+        	if(!validDimension)
+        		return false;
         }
-        if(this.getBlockPathWeight(i, j, k) < 0.0F) return false;
-        if(!this.spawnsInWater && this.worldObj.isAnyLiquid(this.boundingBox)) return false;
-        if(!this.spawnsUnderground && this.isBlockUnderground(i, j + 1, k)) return false;
-        if(!spawnBlockCheck(i, j, k)) return false;
-        
-        // Forced Spawn Chance:
-        if(this.mod.getConfig().spawnChances.containsKey(this.entityName))
-	        if(this.mod.getConfig().spawnChances.get(this.entityName) < 100)
-	        	if(this.mod.getConfig().spawnChances.get(this.entityName) <= 0 || this.rand.nextInt(99) < this.mod.getConfig().spawnChances.get(this.entityName))
-	        		return false;
-        
+        if(this.getBlockPathWeight(i, j, k) < 0.0F)
+        	return false;
+        if(!this.spawnsInWater && this.worldObj.isAnyLiquid(this.boundingBox))
+        	return false;
+        if(!this.spawnsUnderground && this.isBlockUnderground(i, j + 1, k))
+        	return false;
+        if(!spawnBlockCheck(i, j, k))
+        	return false;
         return true;
     }
-
-    public boolean spawnBlockCheck(int x, int y, int z) {
+    
+    // ========== Spawn Block Check ==========
+    public boolean spawnBlockCheck(int i, int j, int k) {
         return true;
     }
     
@@ -520,6 +547,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public float getBlockPathWeight(int par1, int par2, int par3) {
         if(this.spawnsInDarkness)
         	return 0.5F - this.worldObj.getLightBrightness(par1, par2, par3);
+        if(this.spawnsOnlyInLight)
+        	return this.worldObj.getLightBrightness(par1, par2, par3) - 0.5F;
     	return 0.0F;
     }
     

@@ -26,7 +26,7 @@ public class SubConfig extends Config {
 		loadMobSettings("Ettin", 3, 1, 1, 1, "MONSTER");
 		loadMobSettings("Lurker", 6, 1, 1, 3, "MONSTER");
 		loadMobSettings("Eyewig", 3, 2, 1, 1, "MONSTER");
-		loadMobSettings("Aspid", 6, 3, 1, 3, "CREATURE");
+		loadMobSettings("Aspid", 12, 3, 1, 3, "CREATURE");
 		loadMobSettings("Remobra", 4, 3, 1, 3, "MONSTER");
 		
 		// ========== Block IDs ==========

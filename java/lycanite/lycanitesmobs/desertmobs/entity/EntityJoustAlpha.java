@@ -27,7 +27,6 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 public class EntityJoustAlpha extends EntityCreatureAgeable implements IMob, IGroupAlpha {
@@ -43,6 +42,7 @@ public class EntityJoustAlpha extends EntityCreatureAgeable implements IMob, IGr
         this.mod = DesertMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.experience = 5;
+        this.spawnsOnlyInLight = true;
         this.hasAttackSound = true;
         
         this.despawnOnPeaceful = DesertMobs.config.getFeatureBool("DespawnJoustsOnPeaceful");
@@ -88,21 +88,6 @@ public class EntityJoustAlpha extends EntityCreatureAgeable implements IMob, IGr
 	
 	
 	// ==================================================
-  	//                      Spawning
-  	// ==================================================
-	// ========== Spawn Check ==========
-	@Override
-	public boolean getCanSpawnHere() {
-		int i = MathHelper.floor_double(this.posX);
-        int j = MathHelper.floor_double(this.boundingBox.minY);
-        int k = MathHelper.floor_double(this.posZ);
-		if(this.worldObj.getFullBlockLightValue(i, j, k) > 8)
-			return super.getCanSpawnHere();
-		return false;
-    }
-	
-	
-	// ==================================================
    	//                      Movement
    	// ==================================================
 	// Pathing Weight:
@@ -117,7 +102,7 @@ public class EntityJoustAlpha extends EntityCreatureAgeable implements IMob, IGr
 			if(block.blockMaterial == Material.rock)
 				return 5F;
 		}
-        return this.worldObj.getLightBrightness(par1, par2, par3) - 0.5F;
+        return super.getBlockPathWeight(par1, par2, par3);
     }
 	
 	

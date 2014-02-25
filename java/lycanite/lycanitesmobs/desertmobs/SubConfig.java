@@ -24,9 +24,9 @@ public class SubConfig extends Config {
 		loadMobSettings("CryptZombie", 8, 4, 1, 3, "MONSTER");
 		loadMobSettings("Crusk", 2, 1, 1, 1, "MONSTER");
 		loadMobSettings("Clink", 6, 4, 1, 3, "MONSTER");
-		loadMobSettings("Joust", 4, 3, 1, 3, "CREATURE");
+		loadMobSettings("Joust", 6, 4, 3, 4, "CREATURE");
 		loadMobSettings("JoustAlpha", 2, 2, 1, 2, "CREATURE");
-		loadMobSettings("Erepede", 3, 1, 1, 1, "CREATURE");
+		loadMobSettings("Erepede", 4, 2, 1, 2, "MONSTER");
 		loadMobSettings("Gorgomite", 6, 4, 1, 3, "MONSTER");
 		loadMobSettings("Manticore", 4, 4, 1, 5, "MONSTER");
 		

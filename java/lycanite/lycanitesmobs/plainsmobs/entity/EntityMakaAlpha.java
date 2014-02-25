@@ -26,7 +26,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, IGroupAlpha {
@@ -42,13 +41,14 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
         this.mod = PlainsMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.experience = 5;
+        this.spawnsOnlyInLight = true;
         this.hasAttackSound = true;
         
         this.despawnOnPeaceful = DesertMobs.config.getFeatureBool("DespawnMakasOnPeaceful");
         this.despawnNaturally = DesertMobs.config.getFeatureBool("DespawnMakasNaturally");
         this.eggName = "PlainsEgg";
         
-        this.setWidth = 3.9F;
+        this.setWidth = 2.9F;
         this.setHeight = 3.5F;
         this.attackTime = 10;
         this.setupMob();
@@ -85,24 +85,8 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
 	
 	
 	// ==================================================
-  	//                      Spawning
-  	// ==================================================
-	// ========== Spawn Check ==========
-	@Override
-	public boolean getCanSpawnHere() {
-		int i = MathHelper.floor_double(this.posX);
-        int j = MathHelper.floor_double(this.boundingBox.minY);
-        int k = MathHelper.floor_double(this.posZ);
-		if(this.worldObj.getFullBlockLightValue(i, j, k) > 8)
-			return super.getCanSpawnHere();
-		return false;
-    }
-	
-	
-	// ==================================================
   	//                      Update
   	// ==================================================
-	// ========== Spawn Check ==========
 	@Override
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
@@ -129,7 +113,7 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
 			if(block.blockMaterial == Material.ground)
 				return 7F;
 		}
-        return this.worldObj.getLightBrightness(par1, par2, par3) - 0.5F;
+        return super.getBlockPathWeight(par1, par2, par3);
     }
     
 	// ========== Can leash ==========

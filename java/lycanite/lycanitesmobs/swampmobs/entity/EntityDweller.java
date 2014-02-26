@@ -21,7 +21,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
 public class EntityDweller extends EntityCreatureAgeable implements IMob {
@@ -100,7 +99,7 @@ public class EntityDweller extends EntityCreatureAgeable implements IMob {
         
         if(this.getAttackTarget() != null)
         	return super.getBlockPathWeight(par1, par2, par3);
-        if(isInWater() || rainContact())
+        if(this.waterContact())
 			return -999999.0F;
 		
 		return super.getBlockPathWeight(par1, par2, par3);
@@ -121,25 +120,12 @@ public class EntityDweller extends EntityCreatureAgeable implements IMob {
     public void onLivingUpdate() {
         super.onLivingUpdate();
         
-        // Out of Water Suffocation:
+        // Don't Attack When Starting to Suffocate:
         if(!this.worldObj.isRemote) {
-	        int i = this.getAir();
-	        if(this.isEntityAlive() && !this.isInWater() && !this.rainContact()) {
-	            i--;
-	            this.setAir(i);
-	            
-	            if(this.getAir() > -100)
-	            	setAttackTasks(true);
-	            else
-	            	setAttackTasks(false);
-	
-	            if(this.getAir() <= -200) {
-	                this.setAir(-180);
-	                this.attackEntityFrom(DamageSource.drown, 2.0F);
-	            }
-	        }
+	        if(this.getAir() > -100)
+	        	setAttackTasks(true);
 	        else
-	            this.setAir(299);
+	        	setAttackTasks(false);
         }
         
         // Wander Pause Rates:
@@ -148,12 +134,6 @@ public class EntityDweller extends EntityCreatureAgeable implements IMob {
 		else
 			this.wanderAI.setPauseRate(0);
     }
-	
-	@Override
-	public void setAir(int par1) {
-		if(par1 == 300) return;
-    	this.dataWatcher.updateObject(1, Short.valueOf((short)par1));
-    }
 
 	
     // ==================================================
@@ -161,9 +141,9 @@ public class EntityDweller extends EntityCreatureAgeable implements IMob {
     // ==================================================
     // ========== Movement Speed Modifier ==========
     public float getSpeedMod() {
-    	if(this.isInWater())
+    	if(this.isInWater()) // Checks specifically just for water.
     		return 8.0F;
-    	else if(this.rainContact())
+    	else if(this.waterContact()) // Checks for water, rain, etc.
     		return 1.5F;
     	return 1.0F;
     }
@@ -210,7 +190,8 @@ public class EntityDweller extends EntityCreatureAgeable implements IMob {
         return true;
     }
     
-    public boolean rainContact() {
-    	return this.worldObj.isRaining() & this.worldObj.canBlockSeeTheSky((int)this.posX, (int)this.posY, (int)this.posZ);
+    @Override
+    public boolean canBreatheAboveWater() {
+        return false;
     }
 }

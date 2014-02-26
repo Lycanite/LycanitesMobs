@@ -9,8 +9,6 @@ import net.minecraft.block.BlockColored;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EntityOwnable;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.Item;
@@ -90,13 +88,6 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
     	if(this.isTamed())
     		return false;
         return super.despawnCheck();
-    }
-    
-    @Override
-	public boolean isCreatureType(EnumCreatureType type, boolean forSpawnCount) {
-		if(this.isMobWhenNotTamed && type.getCreatureClass() == IMob.class)
-			return !this.isTamed();
-        return type.getCreatureClass().isAssignableFrom(this.getClass());
     }
     
     
@@ -519,6 +510,14 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
     // ==================================================
     //                     Abilities
     // ==================================================
+    /** Returns whether or not this mob is hostile towards players, changes if a mob is tamed, etc too. **/
+    @Override
+    public boolean isHostile() {
+    	if(this.isMobWhenNotTamed)
+			return !this.isTamed();
+    	return super.isHostile();
+    }
+    
     // =========== Movement ==========
     public boolean canBeTempted() { return !this.isTamed(); }
     public boolean canSit() { return true; }

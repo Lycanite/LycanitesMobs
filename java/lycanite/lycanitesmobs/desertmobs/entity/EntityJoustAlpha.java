@@ -22,14 +22,14 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
-import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
-public class EntityJoustAlpha extends EntityCreatureAgeable implements IMob, IGroupAlpha {
+public class EntityJoustAlpha extends EntityCreatureAgeable implements IAnimals, IGroupAlpha {
 	
 	// ==================================================
  	//                    Constructor

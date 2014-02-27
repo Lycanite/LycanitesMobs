@@ -6,14 +6,12 @@ import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.block.BlockBase;
 import lycanite.lycanitesmobs.swampmobs.SwampMobs;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
@@ -26,16 +24,20 @@ public class BlockPoisonCloud extends BlockBase {
 	// ==================================================
 	public BlockPoisonCloud(int blockID) {
 		super(blockID, Material.fire);
+		
+		// Properties:
 		this.mod = SwampMobs.instance;
 		this.blockName = "PoisonCloud";
-	}
-	
-
-	// ==================================================
-	//                     Place
-	// ==================================================
-	public void onBlockAdded(World par1World, int par2, int par3, int par4) {
-		par1World.scheduleBlockUpdate(par2, par3, par4, this.blockID, this.tickRate(par1World));
+		
+		// Stats:
+		this.tickRate = this.mod.getConfig().getFeatureBool("PoisonCloud") ? 200 : 1;
+		this.removeOnTick = true;
+		this.loopTicks = false;
+		this.canBeCrushed = true;
+		
+		this.noEntityCollision = true;
+		this.noBreakCollision = true;
+		this.isOpaque = false;
 	}
 
 
@@ -56,55 +58,6 @@ public class BlockPoisonCloud extends BlockBase {
 	public int quantityDropped(Random par1Random) {
         return 0;
     }
-	
-
-	// ==================================================
-	//                   Block Updates
-	// ==================================================
-	public void onNeighborBlockChange(World world, int x, int y, int z, int blockID) {
-        if(blockID == Block.sand.blockID || blockID == Block.gravel.blockID) // XXX Add red sand 1.7.x!
-        	world.setBlockToAir(x, y, z);
-    }
-    
-    
-	// ==================================================
-	//                     Ticking
-	// ==================================================
-    // ========== Tick Rate ==========
-    @Override
-    public int tickRate(World par1World) {
-    	if(!mod.getConfig().getFeatureBool("PoisonCloud"))
-    		return 1;
-        return 10 * 20;
-    }
-
-    // ========== Tick Update ==========
-    @Override
-    public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random) {
-		if(par1World.isRemote)
-			return;
-        par1World.setBlockToAir(par2, par3, par4);
-    }
-    
-    
-	// ==================================================
-	//                    Collision
-	// ==================================================
-    @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
-        return null;
-    }
-    
-    // ========== Punch Collision ==========
-    @Override
-    public boolean isCollidable() {
-        return false;
-    }
-    
-    // ========== Is Opaque ==========
-    public boolean isOpaqueCube() {
-        return false;
-    }
     
     
 	// ==================================================
@@ -112,6 +65,7 @@ public class BlockPoisonCloud extends BlockBase {
 	// ==================================================
     @Override
     public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
+		super.onEntityCollidedWithBlock(world, x, y, z, entity);
 		if(entity instanceof EntityLivingBase) {
 			((EntityLivingBase)entity).addPotionEffect(new PotionEffect(Potion.poison.id, 5 * 20, 0));
 		}

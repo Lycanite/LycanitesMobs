@@ -540,7 +540,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
         if(!this.worldObj.isRemote && this.waterDamage() && this.isWet())
             this.attackEntityFrom(DamageSource.drown, 1.0F);
         
-        //TODO Test the shared out of water suffocation.
         // Out of Water Suffocation:
         if(!this.worldObj.isRemote && !this.canBreatheAboveWater()) {
 	        int currentAir = this.getAir();
@@ -1442,8 +1441,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     
     // Breathing:
     public boolean canBreatheUnderwater() { return false; }
-    /** If true, this mob will lose air when above water. NOT YET IMPLEMENTED! **/
-    public boolean canBreatheAboveWater() { return false; }
+    /** If true, this mob will lose air when above water. **/
+    public boolean canBreatheAboveWater() { return true; }
     /** Sets the current amount of air this mob has. **/
 	@Override
 	public void setAir(int air) {

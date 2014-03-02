@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 import lycanite.lycanitesmobs.DropRate;
+import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupAnimal;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
@@ -62,7 +63,8 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
         this.targetTasks.addTask(0, new EntityAITargetRevenge(this).setHelpClasses(EntityConcapedeHead.class));
         
         // Drops:
-        this.drops.add(new DropRate(Item.silk.itemID, 1).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new DropRate(ObjectManager.getItem("ConcapedeMeatRaw").itemID, 1).setMinAmount(1).setMaxAmount(2).setBurningItem(ObjectManager.getItem("ConcapedeMeatCooked").itemID, 0));
+        this.drops.add(new DropRate(Item.silk.itemID, 0.25F).setMinAmount(1).setMaxAmount(2));
     }
     
     // ========== Stats ==========

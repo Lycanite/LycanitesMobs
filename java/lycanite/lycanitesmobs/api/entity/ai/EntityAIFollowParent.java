@@ -1,16 +1,11 @@
 package lycanite.lycanitesmobs.api.entity.ai;
 
-import java.util.Iterator;
-import java.util.List;
-
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
-import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
-
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.util.ChunkCoordinates;
 
 public class EntityAIFollowParent extends EntityAIFollow {
+	public boolean followAsAdult = false;
+	
 	// Targets:
 	EntityCreatureAgeable host;
 	
@@ -43,6 +38,14 @@ public class EntityAIFollowParent extends EntityAIFollow {
     	this.lostDistance = setDist * setDist;
     	return this;
     }
+    public EntityAIFollowParent setAdultFollowing(boolean setBool) {
+    	this.followAsAdult = setBool;
+    	return this;
+    }
+    public EntityAIFollowParent setFollowBehind(double setDist) {
+    	this.behindDistance = setDist;
+    	return this;
+    }
     
 	
 	// ==================================================
@@ -59,7 +62,7 @@ public class EntityAIFollowParent extends EntityAIFollow {
   	// ==================================================
     @Override
     public boolean shouldExecute() {
-    	if(this.host.getGrowingAge() >= 0)
+    	if(!this.followAsAdult && this.host.getGrowingAge() >= 0)
     		return false;
     	return super.shouldExecute();
     }
@@ -70,7 +73,7 @@ public class EntityAIFollowParent extends EntityAIFollow {
   	// ==================================================
     @Override
     public boolean continueExecuting() {
-    	if(this.host.getGrowingAge() >= 0)
+    	if(!this.followAsAdult && this.host.getGrowingAge() >= 0)
     		return false;
     	return super.continueExecuting();
     }

@@ -241,8 +241,10 @@ public class Config {
 		
 		int[] dimensions = new int[0];
 		ArrayList<Integer> customDimensions = new ArrayList<Integer>();
-		for(String dimensionID : spawnDimensionsString.split(","))
-			customDimensions.add(Integer.parseInt(dimensionID.replace("+", "")));
+		for(String dimensionID : spawnDimensionsString.split(",")) {
+			if(!"NONE".equalsIgnoreCase(dimensionID))
+				customDimensions.add(Integer.parseInt(dimensionID.replace("+", "")));
+		}
 		if(customDimensions.size() > 0)
 			dimensions = ArrayUtils.toPrimitive(customDimensions.toArray(new Integer[customDimensions.size()]));
 		else

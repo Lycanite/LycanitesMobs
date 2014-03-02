@@ -31,10 +31,6 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
 public class EntityEyewig extends EntityCreatureRideable {
-	// Ranged Attack With Cooldown: TODO Build cooldowns into attack AIs.
-	//public int laserTime = 0;
-	//public int laserTimeMax = 200;
-	//public boolean laserCooldown = false;
 	EntityAIAttackRanged rangedAttackAI;
     
     // ==================================================
@@ -99,29 +95,8 @@ public class EntityEyewig extends EntityCreatureRideable {
     // ==================================================
     //                      Updates
     // ==================================================
-	// ========== Living Update ==========
-	@Override
-    public void onLivingUpdate() {
-        super.onLivingUpdate();
-        
-        /*/ Laser Cooldown:
-        if(!this.worldObj.isRemote && this.laserCooldown) {
-    		this.laserTime--;
-    		if(this.laserTime <= 0) {
-        		this.laserCooldown = false;
-        		this.rangedAttackAI.setEnabled(true);
-    		}
-    	}
-        else if(!this.worldObj.isRemote && this.hasAttackTarget() && !this.laserCooldown) {
-        	this.laserTime += 2;
-        	if(this.laserTime >= this.laserTimeMax) {
-        		this.laserCooldown = true;
-        		this.rangedAttackAI.setEnabled(false);
-        	}
-        }*/
-    }
-    
-    public void riderEffects(EntityLivingBase rider) {
+	// ========== Rider Effects ==========
+	public void riderEffects(EntityLivingBase rider) {
     	if(rider.isPotionActive(Potion.poison))
     		rider.removePotionEffect(Potion.poison.id);
     	if(rider.isPotionActive(Potion.blindness))

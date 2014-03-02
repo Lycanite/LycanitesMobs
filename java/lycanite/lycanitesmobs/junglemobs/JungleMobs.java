@@ -6,6 +6,8 @@ import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.PacketHandler;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
+import lycanite.lycanitesmobs.junglemobs.entity.EntityConcapedeHead;
+import lycanite.lycanitesmobs.junglemobs.entity.EntityConcapedeSegment;
 import lycanite.lycanitesmobs.junglemobs.entity.EntityGeken;
 import lycanite.lycanitesmobs.junglemobs.entity.EntityUvaraptor;
 import lycanite.lycanitesmobs.junglemobs.item.ItemJungleEgg;
@@ -13,6 +15,9 @@ import net.minecraft.block.BlockDispenser;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.passive.EntityCow;
+import net.minecraft.entity.passive.EntityPig;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.world.biome.BiomeGenBase;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -72,6 +77,8 @@ public class JungleMobs implements ILycaniteMod {
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("JungleEgg"), new DispenserBehaviorMobEggCustom());
 		ObjectManager.addMob("Geken", EntityGeken.class, 0x00AA00, 0xFFFF00);
 		ObjectManager.addMob("Uvaraptor", EntityUvaraptor.class, 0x00FF33, 0xFF00FF);
+		ObjectManager.addMob("Concapede", EntityConcapedeHead.class, 0x111144, 0xDD0000);
+		ObjectManager.addMob("ConcapedeSegment", "Concapede Segment", EntityConcapedeSegment.class, 0x000022, 0x990000);
 		
 		// ========== Create Projectiles ==========
 		//ObjectManager.addProjectile("Template", EntityTemplate.class, Item.templateCharge, new DispenserBehaviorPoisonRay());
@@ -94,6 +101,9 @@ public class JungleMobs implements ILycaniteMod {
 		if(config.getFeatureBool("ControlVanilla")) {
 			EntityRegistry.removeSpawn(EntityZombie.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntitySkeleton.class, EnumCreatureType.monster, biomes);
+			EntityRegistry.removeSpawn(EntityCow.class, EnumCreatureType.creature, biomes);
+			EntityRegistry.removeSpawn(EntityPig.class, EnumCreatureType.creature, biomes);
+			EntityRegistry.removeSpawn(EntitySheep.class, EnumCreatureType.creature, biomes);
 		}
 		
 		// ========== Crafting ==========

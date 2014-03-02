@@ -161,6 +161,7 @@ public class EntityCrusk extends EntityCreatureTameable implements IGroupPredato
     @Override
     public boolean isDamageTypeApplicable(String type) {
     	if(type.equals("cactus")) return false;
+    	if(type.equals("inWall")) return false;
     	return super.isDamageTypeApplicable(type);
     }
     

@@ -15,6 +15,7 @@ public class EntityAIFollow extends EntityAIBase {
     private int updateRate;
     double strayDistance = 1.0D * 1.0D;
     double lostDistance = 64.0D * 64.0D;
+    double behindDistance = 0;
     
 	
 	// ==================================================
@@ -53,6 +54,10 @@ public class EntityAIFollow extends EntityAIBase {
     	this.lostDistance = setDist * setDist;
     	return this;
     }
+    public EntityAIFollow setFollowBehind(double setDist) {
+    	this.behindDistance = setDist;
+    	return this;
+    }
     
     
     // ==================================================
@@ -66,7 +71,7 @@ public class EntityAIFollow extends EntityAIBase {
         	return false;
 	    
 	    double distance = this.host.getDistanceSqToEntity(target);
-	    if(distance > this.lostDistance)
+	    if(distance > this.lostDistance && this.lostDistance != 0)
 	        return false;
 	    if(distance <= this.strayDistance)
 	        return false;
@@ -86,7 +91,7 @@ public class EntityAIFollow extends EntityAIBase {
         	return false;
         
         double distance = this.host.getDistanceSqToEntity(target);
-        if(distance > this.lostDistance)
+        if(distance > this.lostDistance && this.lostDistance != 0)
         	this.host.setMasterTarget(null);
         if(distance <= this.strayDistance)
         	return false;
@@ -110,10 +115,22 @@ public class EntityAIFollow extends EntityAIBase {
         if(this.updateRate-- <= 0) {
             this.updateRate = 10;
             EntityLivingBase target = this.getTarget();
-        	if(!this.host.canFly())
-        		this.host.getNavigator().tryMoveToEntityLiving(target, this.speed);
-        	else
-        		this.host.flightNavigator.setTargetPosition(new ChunkCoordinates((int)target.posX, (int)target.posY, (int)target.posZ), this.speed);
+        	if(!this.host.canFly()) {
+        		if(this.behindDistance == 0 || !(target instanceof EntityCreatureBase))
+        			this.host.getNavigator().tryMoveToEntityLiving(target, this.speed);
+        		else {
+        			double[] coords = ((EntityCreatureBase)target).getCoordBehind(this.behindDistance);
+        			this.host.getNavigator().tryMoveToXYZ(coords[0], coords[1], coords[2], this.speed);
+        		}
+        	}
+        	else {
+        		if(this.behindDistance == 0 || !(target instanceof EntityCreatureBase))
+        			this.host.flightNavigator.setTargetPosition(new ChunkCoordinates((int)target.posX, (int)target.posY, (int)target.posZ), this.speed);
+        		else {
+        			double[] coords = ((EntityCreatureBase)target).getCoordBehind(this.behindDistance);
+        			this.host.flightNavigator.setTargetPosition(new ChunkCoordinates((int)coords[0], (int)coords[1], (int)coords[2]), this.speed);
+        		}
+        	}
         }
     }
 	

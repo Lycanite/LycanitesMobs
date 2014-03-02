@@ -1,6 +1,8 @@
 package lycanite.lycanitesmobs.junglemobs;
 
 import lycanite.lycanitesmobs.AssetManager;
+import lycanite.lycanitesmobs.junglemobs.model.ModelConcapedeHead;
+import lycanite.lycanitesmobs.junglemobs.model.ModelConcapedeSegment;
 import lycanite.lycanitesmobs.junglemobs.model.ModelGeken;
 import lycanite.lycanitesmobs.junglemobs.model.ModelUvaraptor;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -16,5 +18,7 @@ public class ClientSubProxy extends CommonSubProxy {
     public void registerModels() {
 		AssetManager.addModel("Geken", new ModelGeken());
 		AssetManager.addModel("Uvaraptor", new ModelUvaraptor());
+		AssetManager.addModel("Concapede", new ModelConcapedeHead());
+		AssetManager.addModel("ConcapedeSegment", new ModelConcapedeSegment());
 	}
 }

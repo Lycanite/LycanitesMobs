@@ -97,6 +97,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     private float homeDistanceMax = -1.0F;
     
     // Spawning:
+    /** Use the onSpawn() method and not this variable. True if this creature has spawned for the first time (naturally or via spawn egg, etc, not reloaded from a saved chunk). **/
+    public boolean firstSpawn = true;
     /** Should this mob spawn and be removed on peaceful. **/
     public boolean despawnOnPeaceful = true;
     /** Should this mob despawn over time. **/
@@ -139,6 +141,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	public short justAttackedTime = 5;
     /** True if this mob should play a sound when attacking. Ranged mobs usually don't use this as their projectiles makes an attack sound instead. **/
 	public boolean hasAttackSound = false;
+    /** True if this mob should play a sound when walking. Usually footsteps. **/
+	public boolean hasStepSound = true;
     /** True if this mob should play a sound when jumping, used mostly for mounts. **/
 	public boolean hasJumpSound = false;
     /** The delay in ticks between flying sounds such as wing flapping, set to 0 for no flight sounds. **/
@@ -404,9 +408,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Egg Spawn ==========
     /** Called once this mob is spawned with a Spawn Egg. **/
     @Override
-    public EntityLivingData onSpawnWithEgg(EntityLivingData lvingData) {
-    	lvingData = super.onSpawnWithEgg(lvingData);
-        return lvingData;
+    public EntityLivingData onSpawnWithEgg(EntityLivingData livingData) {
+    	livingData = super.onSpawnWithEgg(livingData);
+        return livingData;
     }
     
     // ========== Despawning ==========
@@ -467,6 +471,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Returns whether or not with mob is a minion. **/
     public boolean isMinion() { return this.isMinion; }
     
+    // ========== On Spawn ==========
+    /** This is called when the mob is first spawned to the world either through natural spawning or from a Spawn Egg. **/
+    public void onSpawn() {}
     
     
     // ==================================================
@@ -504,6 +511,12 @@ public abstract class EntityCreatureBase extends EntityLiving {
         super.onLivingUpdate();
         this.updateArmSwingProgress();
         
+        // First Spawn:
+        if(!this.worldObj.isRemote && this.firstSpawn) {
+        	this.onSpawn();
+        	this.firstSpawn = false;
+        }
+        
         // Fleeing:
         if(this.hasAvoidTarget()) {
         	if(this.currentFleeTime-- <= 0)
@@ -511,7 +524,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         }
         
         // Gliding:
-        if(this.getFallingMod() != 0.0D && !this.onGround && this.motionY < 0.0D) {
+        if(!this.onGround && this.motionY < 0.0D) {
             this.motionY *= this.getFallingMod();
         }
         
@@ -749,9 +762,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
     }
     
     // ========== Falling Speed Modifier ==========
-    /** Used to change the falling speed of this entity, 0.0D does nothing. **/
+    /** Used to change the falling speed of this entity, 1.0D does nothing. **/
     public double getFallingMod() {
-    	return 0.0D;
+    	return 1.0D;
     }
     
     // ========== Leap ==========
@@ -993,6 +1006,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
   	// ==================================================
     /** Returns true if this mob should attack it's attack targets. Used mostly by attack AIs and update methods. **/
     public boolean isAggressive() { return true; }
+    
+    /** Returns true if this mob should defend other entities that cry for help. Used mainly by the revenge AI. **/
+    public boolean isProtective(Entity entity) { return true; }
 
     /** Returns true if this mob has an Attack Target. **/
     public boolean hasAttackTarget() {
@@ -1061,6 +1077,19 @@ public abstract class EntityCreatureBase extends EntityLiving {
     		return this.getRiderTarget() != null;
     	else
     		return (this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TARGET.id) & TARGET_ID.RIDER.id) > 0;
+    }
+    
+    // ========== Get Coord Behind ==========
+    /** Returns the XYZ coordinate behind this entity with the given distance. **/
+    public double[] getCoordBehind(double distance) {
+    	double angle = Math.toRadians(this.rotationYaw);
+    	double xAmount = -Math.sin(angle);
+    	double zAmount = Math.cos(angle);
+    	double[] coords = new double[3];
+        coords[0] = this.posX - (distance * xAmount);
+        coords[1] = this.posY;
+        coords[2] = this.posZ - (distance * zAmount);
+        return coords;
     }
     
     
@@ -1532,6 +1561,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Used when loading this mob from a saved chunk. **/
     @Override
     public void readEntityFromNBT(NBTTagCompound nbtTagCompound) {
+    	if(nbtTagCompound.hasKey("FirstSpawn"))
+            this.firstSpawn = nbtTagCompound.getBoolean("FirstSpawn");
+    	else
+    		this.firstSpawn = false;
     	if(nbtTagCompound.hasKey("Stealth"))
     		this.setStealth(nbtTagCompound.getFloat("Stealth"));
     	if(nbtTagCompound.hasKey("Minion"))
@@ -1544,6 +1577,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Used when saving this mob to a chunk. **/
     @Override
     public void writeEntityToNBT(NBTTagCompound nbtTagCompound) {
+    	nbtTagCompound.setBoolean("FirstSpawn", false);
     	nbtTagCompound.setFloat("Stealth", this.getStealth());
     	nbtTagCompound.setBoolean("Minion", this.isMinion());
         super.writeEntityToNBT(nbtTagCompound);
@@ -1608,7 +1642,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Plays the footstep sound that this creature makes when moving on the ground. **/
     @Override
     protected void playStepSound(int par1, int par2, int par3, int par4) {
-    	 if(this.canFly()) return;
+    	 if(this.canFly() || !this.hasStepSound) return;
     	 this.playSound(AssetManager.getSound(entityName + "Step"), 0.25F, 1.0F);
     }
      

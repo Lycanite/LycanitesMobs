@@ -79,10 +79,10 @@ public class EntityAITargetRevenge extends EntityAITargetAttack {
 	            		allies.addAll(this.host.worldObj.getEntitiesWithinAABB(helpClass, AxisAlignedBB.getAABBPool().getAABB(this.host.posX, this.host.posY, this.host.posZ, this.host.posX + 1.0D, this.host.posY + 1.0D, this.host.posZ + 1.0D).expand(d0, 10.0D, d0)));
 	            }
             Iterator possibleAllies = allies.iterator();
-
-            while (possibleAllies.hasNext()) {
+            
+            while(possibleAllies.hasNext()) {
                 EntityCreatureBase possibleAlly = (EntityCreatureBase)possibleAllies.next();
-                if(possibleAlly != this.host && possibleAlly.getAttackTarget() == null && !possibleAlly.isOnSameTeam(this.target))
+                if(possibleAlly != this.host && possibleAlly.getAttackTarget() == null && !possibleAlly.isOnSameTeam(this.target) && possibleAlly.isProtective(this.host))
                 	if(!(possibleAlly instanceof EntityCreatureTameable) || (possibleAlly instanceof EntityCreatureTameable && !((EntityCreatureTameable)possibleAlly).isTamed()))
                 	possibleAlly.setAttackTarget(this.target);
             }

@@ -85,7 +85,7 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
         }
         
         // Breeding:
-        if(this.getGrowingAge() != 0)
+        if(!this.canBreed())
             this.loveTime = 0;
 
         if(!this.worldObj.isRemote)
@@ -111,7 +111,7 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
     
     // ========== AI Update ==========
     protected void updateAITick() {
-        if(this.getGrowingAge() != 0)
+        if(!this.canBreed())
             this.loveTime = 0;
         super.updateAITick();
     }
@@ -134,7 +134,7 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
     			commands.put(CMD_PRIOR.ITEM_USE.id, "Spawn Baby");
     		
     		// Breeding Item:
-    		if(this.isBreedingItem(itemStack) && this.getGrowingAge() == 0 && !this.isInLove())
+    		if(this.isBreedingItem(itemStack) && this.canBreed() && !this.isInLove())
     			commands.put(CMD_PRIOR.ITEM_USE.id, "Breed");
     	}
     	
@@ -163,8 +163,8 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
     	
     	// Breed:
     	if(command.equals("Breed")) {
-    		this.breed();
-    		this.consumePlayersItem(player, itemStack);
+    		if(this.breed())
+    			this.consumePlayersItem(player, itemStack);
     	}
     	
     	super.performCommand(command, player, itemStack);
@@ -225,7 +225,7 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
 	public void setBreedingTarget(EntityCreatureAgeable target) { this.breedingTarget = target; }
 	
     // ========== Create Child ==========
-	public EntityCreatureAgeable createChild(EntityCreatureAgeable baby) {
+	public EntityCreatureAgeable createChild(EntityCreatureAgeable partener) {
 		return null;
 	}
 	
@@ -249,13 +249,19 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
 	}
 	
 	// ========== Breed ==========
-	public void breed() {
-		if(this.getGrowingAge() != 0)
-			return;
-        this.loveTime = loveTimeMax;
+	public boolean breed() {
+		if(!this.canBreed())
+			return false;
+        this.loveTime = this.loveTimeMax;
         this.setAttackTarget(null);
+        return true;
 	}
 	
+	public boolean canBreed() {
+        return this.getGrowingAge() == 0;
+    }
+	
+	// ========== Procreate ==========
 	public void procreate(EntityCreatureAgeable partner) {
 		EntityCreatureAgeable baby = this.createChild(partner);
 

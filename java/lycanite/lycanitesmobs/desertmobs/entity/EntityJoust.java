@@ -151,7 +151,7 @@ public class EntityJoust extends EntityCreatureAgeable implements IAnimals, IGro
     // ==================================================
     // ========== Create Child ==========
 	@Override
-	public EntityCreatureAgeable createChild(EntityCreatureAgeable baby) {
+	public EntityCreatureAgeable createChild(EntityCreatureAgeable partener) {
 		return new EntityJoust(this.worldObj);
 	}
 	

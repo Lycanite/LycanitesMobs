@@ -15,9 +15,12 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.junglemobs.JungleMobs;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.IAnimals;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
@@ -121,7 +124,7 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
         	if(this.hasParent()) {
         		this.faceEntity(this.getParentTarget(), 360, 360);
         		
-        		double segmentDistance = 0.5D;
+        		double segmentDistance = 0.25D;
         		double[] coords;
         		if(this.getParentTarget() instanceof EntityCreatureBase)
         			coords = ((EntityCreatureBase)this.getParentTarget()).getCoordBehind(0.25D);
@@ -175,12 +178,33 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
 
 	
     // ==================================================
-    //                      Movement
-    // ==================================================
+   	//                      Movement
+   	// ==================================================
+	// ========== Pathing Weight ==========
+	@Override
+	public float getBlockPathWeight(int par1, int par2, int par3) {
+		if(this.worldObj.getBlockId(par1, par2 - 1, par3) != 0) {
+			Block block = Block.blocksList[this.worldObj.getBlockId(par1, par2 - 1, par3)];
+			if(block.blockMaterial == Material.grass)
+				return 10F;
+			if(block.blockMaterial == Material.ground)
+				return 7F;
+		}
+        return super.getBlockPathWeight(par1, par2, par3);
+    }
+    
+	// ========== Can leash ==========
+    @Override
+    public boolean canLeash(EntityPlayer player) {
+	    return !this.hasParent();
+    }
+    
     // ========== Falling Speed Modifier ==========
     @Override
     public double getFallingMod() {
-    	if(this.hasParent())
+    	if(this.worldObj.isRemote)
+    		return 0.0D;
+    	if(this.hasParent() && this.getParentTarget().posY > this.posY)
     		return 0.0D;
     	return super.getFallingMod();
     }

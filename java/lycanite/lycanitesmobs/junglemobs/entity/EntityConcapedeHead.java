@@ -19,6 +19,8 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAITempt;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.junglemobs.JungleMobs;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -149,6 +151,29 @@ public class EntityConcapedeHead extends EntityCreatureAgeable implements IAnima
 			segmentEntity.setParentTarget(parentSegment);
 		}
         super.setGrowingAge(age);
+    }
+	
+	
+	// ==================================================
+   	//                      Movement
+   	// ==================================================
+	// ========== Pathing Weight ==========
+	@Override
+	public float getBlockPathWeight(int par1, int par2, int par3) {
+		if(this.worldObj.getBlockId(par1, par2 - 1, par3) != 0) {
+			Block block = Block.blocksList[this.worldObj.getBlockId(par1, par2 - 1, par3)];
+			if(block.blockMaterial == Material.grass)
+				return 10F;
+			if(block.blockMaterial == Material.ground)
+				return 7F;
+		}
+        return super.getBlockPathWeight(par1, par2, par3);
+    }
+    
+	// ========== Can leash ==========
+    @Override
+    public boolean canLeash(EntityPlayer player) {
+	    return !this.hasAttackTarget();
     }
 	
 	

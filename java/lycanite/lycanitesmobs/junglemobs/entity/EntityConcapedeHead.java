@@ -49,6 +49,8 @@ public class EntityConcapedeHead extends EntityCreatureAgeable implements IAnima
         this.spawnsInDarkness = false;
         this.hasAttackSound = true;
         
+        this.despawnOnPeaceful = this.mod.getConfig().getFeatureBool("DespawnConcapedesOnPeaceful");
+        this.despawnNaturally = this.mod.getConfig().getFeatureBool("DespawnConcapedesNaturally");
         this.eggName = "JungleEgg";
         this.canGrow = true;
         this.babySpawnChance = 0D;

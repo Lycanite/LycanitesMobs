@@ -70,7 +70,7 @@ public class JungleMobs implements ILycaniteMod {
 		// ========== Create Items ==========
 		ObjectManager.addItem("JungleEgg", "Spawn", new ItemJungleEgg(config.itemIDs.get("JungleEgg")));
 		
-		ObjectManager.addItem("ConcapedeMeatRaw", "Raw Concapede Meat", new ItemCustomFood(config.itemIDs.get("ConcapedeMeatRaw"), "ConcapedeMeatRaw", domain, 2, 0.5F).setPotionEffect(Potion.poison.id, 45, 2, 0.8F));
+		ObjectManager.addItem("ConcapedeMeatRaw", "Raw Concapede Meat", new ItemCustomFood(config.itemIDs.get("ConcapedeMeatRaw"), "ConcapedeMeatRaw", domain, 2, 0.5F).setPotionEffect(Potion.moveSlowdown.id, 45, 2, 0.8F));
 		ObjectLists.addItem("RawMeat", ObjectManager.getItem("ConcapedeMeatRaw"));
 		ObjectManager.addItem("ConcapedeMeatCooked", "Cooked Concapede Meat", new ItemCustomFood(config.itemIDs.get("ConcapedeMeatCooked"), "ConcapedeMeatCooked", domain, 6, 0.7F));
 		ObjectLists.addItem("CookedMeat", ObjectManager.getItem("ConcapedeMeatCooked"));

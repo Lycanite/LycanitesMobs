@@ -48,6 +48,8 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
         this.hasAttackSound = true;
         this.hasStepSound = false;
         
+        this.despawnOnPeaceful = this.mod.getConfig().getFeatureBool("DespawnConcapedesOnPeaceful");
+        this.despawnNaturally = this.mod.getConfig().getFeatureBool("DespawnConcapedesNaturally");
         this.eggName = "JungleEgg";
         this.canGrow = true;
         this.babySpawnChance = 0D;

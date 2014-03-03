@@ -61,7 +61,7 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
         // AI Tasks:
         this.getNavigator().setAvoidsWater(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(5, new EntityAIFollowParent(this).setSpeed(1.1D).setStrayDistance(0.0F).setLostDistance(0).setAdultFollowing(true).setFollowBehind(0.5D));
+        this.tasks.addTask(5, new EntityAIFollowParent(this).setSpeed(1.1D).setStrayDistance(0).setLostDistance(0).setAdultFollowing(true).setFollowBehind(0.25D));
         this.tasks.addTask(6, new EntityAIWander(this).setPauseRate(30));
         //this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         //this.tasks.addTask(11, new EntityAILookIdle(this));
@@ -126,7 +126,7 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
         	if(this.hasParent()) {
         		this.faceEntity(this.getParentTarget(), 360, 360);
         		
-        		double segmentDistance = 0.25D;
+        		double segmentDistance = 1.0D;
         		double[] coords;
         		if(this.getParentTarget() instanceof EntityCreatureBase)
         			coords = ((EntityCreatureBase)this.getParentTarget()).getCoordBehind(0.25D);

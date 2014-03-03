@@ -815,7 +815,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     }
     /** Sets the home position for this entity to stay around. **/
     public void setHomePosition(int x, int y, int z) {
-    	this.setHome(x, y, z, this.getHomeDistanceMax());
+    	this.homePosition = new ChunkCoordinates(x, y, z);
     }
     /** Sets the distance this mob is allowed to stray from it's home. -1 will turn off the home restriction. **/
     public void setHomeDistanceMax(float newDist) { this.homeDistanceMax = newDist; }

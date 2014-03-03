@@ -73,7 +73,7 @@ public class EntityAIFollow extends EntityAIBase {
 	    double distance = this.host.getDistanceSqToEntity(target);
 	    if(distance > this.lostDistance && this.lostDistance != 0)
 	        return false;
-	    if(distance <= this.strayDistance)
+	    if(distance <= this.strayDistance && this.strayDistance != 0)
 	        return false;
 	    
         return true;
@@ -93,7 +93,7 @@ public class EntityAIFollow extends EntityAIBase {
         double distance = this.host.getDistanceSqToEntity(target);
         if(distance > this.lostDistance && this.lostDistance != 0)
         	this.host.setMasterTarget(null);
-        if(distance <= this.strayDistance)
+        if(distance <= this.strayDistance && this.strayDistance != 0)
         	return false;
         
         return this.getTarget() != null;

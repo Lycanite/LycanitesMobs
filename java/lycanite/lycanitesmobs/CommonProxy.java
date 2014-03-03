@@ -2,9 +2,6 @@ package lycanite.lycanitesmobs;
 
 import java.io.File;
 
-import net.minecraft.client.Minecraft;
-import net.minecraftforge.common.MinecraftForge;
-
 public class CommonProxy {
 	
 	// ========== Register Key Bindings ==========
@@ -13,7 +10,7 @@ public class CommonProxy {
 		//TickRegistry.registerTickHandler(new PlayerTickHandler(), Side.SERVER);
     	
 		// Event Listeners:
-    	MinecraftForge.EVENT_BUS.register(new EventListener(Minecraft.getMinecraft()));
+    	//MinecraftForge.EVENT_BUS.register(new EventListener(Minecraft.getMinecraft()));
 	}
 	
 	

@@ -143,8 +143,8 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
         		
         		if(this.posY - coords[1] > segmentDistance)
         			this.posY = coords[1] + segmentDistance;
-        		else if(this.posY - coords[1] < -segmentDistance)
-        			this.posY = coords[1] - segmentDistance;
+        		else if(this.posY - coords[1] < -(segmentDistance / 2))
+        			this.posY = coords[1];
         		
         		if(this.posZ - coords[2] > segmentDistance)
         			this.posZ = coords[2] + segmentDistance;

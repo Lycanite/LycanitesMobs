@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.BehaviorProjectileDispense;
 import net.minecraft.item.Item;
+import net.minecraftforge.common.DungeonHooks;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -94,6 +95,7 @@ public class ObjectManager {
 		mobDimensions.put(name, config.getSpawnDimensions(name));
 		EntityRegistry.addSpawn(entityClass, config.spawnWeights.get(name), config.spawnMins.get(name), config.spawnMaxs.get(name), config.spawnTypes.get(name), config.getSpawnBiomesTypes(name));
 		LanguageRegistry.instance().addStringLocalization("entity." + modid + "." + name + ".name", "en_US", name);
+		DungeonHooks.addDungeonMob(filename, config.spawnWeights.get(name) * 25); //TODO Test this!
 		
 		mobs.put(name, entityClass);
 	}

@@ -1226,7 +1226,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     @Override
     protected void dropFewItems(boolean playerKill, int lootLevel) {
     	if(this.isMinion()) return;
-    	for(DropRate dropRate : drops) {
+    	for(DropRate dropRate : this.drops) {
     		int quantity = dropRate.getQuantity(this.rand, lootLevel);
     		ItemStack dropStack = null;
     		if(quantity > 0)

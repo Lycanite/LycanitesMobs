@@ -11,6 +11,8 @@ public class SubConfig extends Config {
 		// ========== Feature Control ==========
 		loadSetting(featureBools, "Feature Control", "OwnerTags", "Show Pet Owner Tags", true);
 		loadSetting(featureBools, "Feature Control", "NightmareDifficulty", "Enable Nightmare Difficulty", false);
+		loadSetting(featureBools, "Feature Control", "MobTaming", "Allow Mob Taming", true);
+		loadSetting(featureBools, "Feature Control", "MobMounting", "Allow Mob Mounting", true);
 		
 		// ========== Mob Control ==========
 		// No global mobs.

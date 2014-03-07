@@ -214,12 +214,19 @@ public abstract class EntityCreatureBase extends EntityLiving {
         this.experienceValue = experience;
         this.isImmuneToFire = !this.canBurn();
         this.inventory = new InventoryCreature(entityName, this);
+        if(this.mod.getConfig().defaultDrops.get(this.entityName))
+        	this.loadItemDrops();
         this.loadCustomDrops();
     }
+    
+    // ========== Load Item Drops ==========
+    /** Loads all default item drops, will be ignored if the Enable Default Drops config setting for this mob is set to false, should be overridden to add drops. **/
+    public void loadItemDrops() {}
     
     // ========== Load Custom Drops ==========
     /** Loads custom item drops from the config. **/
     public void loadCustomDrops() {
+    	// Custom Drops:
     	if(this.mod.getConfig().customDrops.containsKey(this.entityName)) {
     		String customDropsString = this.mod.getConfig().customDrops.get(this.entityName);
     		if(customDropsString != null && customDropsString.length() > 0)

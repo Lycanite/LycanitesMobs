@@ -153,7 +153,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
     	if(itemStack != null && !this.worldObj.isRemote) {
     		
     		// Taming:
-    		if(!this.isTamed() && isTamingItem(itemStack))
+    		if(!this.isTamed() && isTamingItem(itemStack) && LycanitesMobs.config.getFeatureBool("MobTaming"))
     			commands.put(CMD_PRIOR.IMPORTANT.id, "Tame");
     		
     		// Feeding:

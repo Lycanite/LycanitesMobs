@@ -98,7 +98,7 @@ public class ObjectManager {
 		LanguageRegistry.instance().addStringLocalization("entity." + modid + "." + name + ".name", "en_US", name);
 		int dungeonWeight = config.spawnWeights.get(name) * 25;
 		if(dungeonWeight > 0)
-			DungeonHooks.addDungeonMob(filename, dungeonWeight);
+			DungeonHooks.addDungeonMob(modid + "." + name, dungeonWeight);
 		
 		mobs.put(name, entityClass);
 	}

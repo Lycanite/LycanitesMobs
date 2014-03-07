@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs.api.entity;
 import java.util.HashMap;
 
 import lycanite.lycanitesmobs.AssetManager;
+import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.PlayerControlHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -242,7 +243,7 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
     	commands.putAll(super.getInteractCommands(player, itemStack));
     	
     	// Mount:
-    	if(this.canBeMounted(player) && !player.isSneaking() && !this.worldObj.isRemote)
+    	if(this.canBeMounted(player) && !player.isSneaking() && !this.worldObj.isRemote && LycanitesMobs.config.getFeatureBool("MobMounting"))
     		commands.put(CMD_PRIOR.MAIN.id, "Mount");
     	
     	return commands;

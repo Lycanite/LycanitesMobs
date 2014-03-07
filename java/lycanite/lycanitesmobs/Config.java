@@ -37,6 +37,7 @@ public class Config {
 	public Map<String, String> spawnBiomes = new HashMap<String, String>();
 	public Map<String, String> spawnDimensions = new HashMap<String, String>();
 	public Map<String, String> customDrops = new HashMap<String, String>();
+	public Map<String, Boolean> defaultDrops = new HashMap<String, Boolean>();
 	
 	// Block IDs:
 	public Map<String, Integer> blockIDs = new HashMap<String, Integer>();
@@ -142,6 +143,7 @@ public class Config {
 		loadSetting(this.spawnBiomes, "Mob Control", mobName, mobName + " Spawn Biome Types", spawnBiome);
 		loadSetting(this.spawnDimensions, "Mob Control", mobName, mobName + " Spawn Dimensions", spawnDimension);
 		loadSetting(this.customDrops, "Mob Control", mobName, mobName + " Custom Drops", "");
+		loadSetting(this.defaultDrops, "Mob Control", mobName, mobName + " Enable Default Drops", true);
 	}
 	public void loadMobSettings(String mobName, int spawnWeight, int spawnLimit, int spawnMin, int spawnMax, String spawnTypeName) {
 		this.loadMobSettings(mobName, spawnWeight, spawnLimit, spawnMin, spawnMax, spawnTypeName, "GROUP", "GROUP");

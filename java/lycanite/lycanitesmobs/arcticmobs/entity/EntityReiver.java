@@ -61,11 +61,6 @@ public class EntityReiver extends EntityCreatureBase implements IMob {
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         if(ObjectManager.getMob("Cinder") != null)
         	this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(ObjectManager.getMob("Cinder")));
-        
-        // Drops:
-        this.drops.add(new DropRate(Item.snowball.itemID, 0.5F));
-        this.drops.add(new DropRate(Block.ice.blockID, 0.1F));
-        this.drops.add(new DropRate(ObjectManager.getItem("FrostboltCharge").itemID, 0.25F));
     }
     
     // ========== Stats ==========
@@ -79,6 +74,14 @@ public class EntityReiver extends EntityCreatureBase implements IMob {
 		baseAttributes.put("attackDamage", 1D);
         super.applyEntityAttributes(baseAttributes);
     }
+	
+	// ========== Default Drops ========== TODO Copy this new method across every mob! :O
+	@Override
+	public void loadItemDrops() {
+        this.drops.add(new DropRate(Item.snowball.itemID, 0.5F));
+        this.drops.add(new DropRate(Block.ice.blockID, 0.1F));
+        this.drops.add(new DropRate(ObjectManager.getItem("FrostboltCharge").itemID, 0.25F));
+	}
 	
 	
     // ==================================================

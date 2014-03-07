@@ -29,6 +29,6 @@ public class SubConfig extends Config {
 		loadSetting(effectIDs, "Effect IDs", "Recklessness", "Recklessness Effect ID", effectStartID++);
 		loadSetting(effectIDs, "Effect IDs", "Rage", "Rage Effect ID", effectStartID++);
 		loadSetting(effectIDs, "Effect IDs", "Weight", "Weight Effect ID", effectStartID++);
-		loadSetting(effectIDs, "Effect IDs", "Swiftswimming", "Weight Effect ID", effectStartID++);
+		loadSetting(effectIDs, "Effect IDs", "Swiftswimming", "Swiftswimming Effect ID", effectStartID++);
 	}
 }

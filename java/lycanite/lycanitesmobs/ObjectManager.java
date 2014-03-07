@@ -93,9 +93,12 @@ public class ObjectManager {
 		
 		// Add Spawn:
 		mobDimensions.put(name, config.getSpawnDimensions(name));
-		EntityRegistry.addSpawn(entityClass, config.spawnWeights.get(name), config.spawnMins.get(name), config.spawnMaxs.get(name), config.spawnTypes.get(name), config.getSpawnBiomesTypes(name));
+		if(config.spawnWeights.get(name) > 0 && config.spawnMaxs.get(name) > 0)
+			EntityRegistry.addSpawn(entityClass, config.spawnWeights.get(name), config.spawnMins.get(name), config.spawnMaxs.get(name), config.spawnTypes.get(name), config.getSpawnBiomesTypes(name));
 		LanguageRegistry.instance().addStringLocalization("entity." + modid + "." + name + ".name", "en_US", name);
-		DungeonHooks.addDungeonMob(filename, config.spawnWeights.get(name) * 25); //TODO Test this!
+		int dungeonWeight = config.spawnWeights.get(name) * 25;
+		if(dungeonWeight > 0)
+			DungeonHooks.addDungeonMob(filename, dungeonWeight);
 		
 		mobs.put(name, entityClass);
 	}

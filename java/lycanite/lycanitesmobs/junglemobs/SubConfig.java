@@ -22,8 +22,8 @@ public class SubConfig extends Config {
 		
 		// ========== Mob Control ==========
 		loadMobSettings("Geken", 8, 3, 1, 3, "MONSTER");
-		loadMobSettings("Uvaraptor", 4, 3, 1, 3, "MONSTER");
-		loadMobSettings("Concapede", 12, 3, 1, 3, "CREATURE");
+		loadMobSettings("Uvaraptor", 5, 3, 1, 3, "MONSTER");
+		loadMobSettings("Concapede", 18, 3, 1, 3, "CREATURE");
 		loadMobSettings("ConcapedeSegment", 0, 0, 0, 0, "CREATURE", "NONE", "NONE");
 		
 		// ========== Block IDs ==========

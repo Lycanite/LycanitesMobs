@@ -30,6 +30,11 @@ public class PotionEffects {
 			entity.motionZ = 0;
 			entity.onGround = false;
 		}
+		
+		// ========== Weight ==========
+		if(!invulnerable && entity.isPotionActive(ObjectManager.getPotionEffect("Weight").getId())) {
+			entity.motionY = -0.2D;
+		}
 	}
 	
 	
@@ -47,8 +52,11 @@ public class PotionEffects {
 			invulnerable = player.capabilities.isCreativeMode;
 		}
 		
-		// ========== Paralysis ==========
-		if(!invulnerable && entity.isPotionActive(ObjectManager.getPotionEffect("Paralysis").getId())) {
+		// ========== Anti-Jumping ==========
+		if(!invulnerable && (
+				entity.isPotionActive(ObjectManager.getPotionEffect("Paralysis").getId()) ||
+				entity.isPotionActive(ObjectManager.getPotionEffect("Weight").getId())
+			)) {
 			if(event.isCancelable())
 				event.setCanceled(true);
 		}

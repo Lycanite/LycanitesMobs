@@ -402,7 +402,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Returns how many of this mob can spawn in a chunk, links to the config. **/
     @Override
     public int getMaxSpawnedInChunk() {
-        return this.mod.getConfig().spawnLimits.get(this.entityName);
+        //return this.mod.getConfig().spawnLimits.get(this.entityName); XXX Removed for now, could be causing problems!
+    	return super.getMaxSpawnedInChunk();
     }
     
     // ========== Egg Spawn ==========

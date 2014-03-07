@@ -17,6 +17,7 @@ import net.minecraft.block.BlockDispenser;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySpider;
+import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -77,7 +78,7 @@ public class PlainsMobs implements ILycaniteMod {
 	
 	
 	// ==================================================
-	//                Initialization
+	//                   Initialization
 	// ==================================================
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
@@ -111,9 +112,16 @@ public class PlainsMobs implements ILycaniteMod {
 		// ========== Remove Vanilla Spawns ==========
 		BiomeGenBase[] biomes = this.config.getSpawnBiomesTypes();
 		if(config.getFeatureBool("ControlVanilla")) {
+			for(BiomeGenBase biome : biomes) {
+				System.out.println("============== " + biome + " =============");
+				for(Object object : biome.getSpawnableList(EnumCreatureType.creature)) {
+					System.out.println(object);
+				}
+			}
 			EntityRegistry.removeSpawn(EntitySkeleton.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntitySpider.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntityPig.class, EnumCreatureType.creature, biomes);
+			EntityRegistry.removeSpawn(EntityChicken.class, EnumCreatureType.creature, biomes);
 		}
 		
 		// ========== Crafting ==========

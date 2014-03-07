@@ -126,7 +126,7 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
         	if(this.hasParent()) {
         		this.faceEntity(this.getParentTarget(), 360, 360);
         		
-        		double segmentDistance = 1.0D;
+        		double segmentDistance = 0.75D;
         		double[] coords;
         		if(this.getParentTarget() instanceof EntityCreatureBase)
         			coords = ((EntityCreatureBase)this.getParentTarget()).getCoordBehind(0.25D);

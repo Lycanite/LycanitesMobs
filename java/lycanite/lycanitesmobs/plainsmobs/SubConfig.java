@@ -12,7 +12,7 @@ public class SubConfig extends Config {
 		super.loadSettings();
 		
 		// ========== Feature Control ==========
-		loadSetting(this.featureStrings, "Feature Control", "BiomeTypes", "Group Biome Types", "PLAINS");
+		loadSetting(this.featureStrings, "Feature Control", "BiomeTypes", "Group Biome Types", "PLAINS,HILLS");
 		loadSetting(this.featureStrings, "Feature Control", "Dimensions", "Group Dimensions", "0");
 
 		// ========== Special Feature Control ==========
@@ -23,8 +23,8 @@ public class SubConfig extends Config {
 		// ========== Mob Control ==========
 		loadMobSettings("Kobold", 8, 4, 1, 3, "MONSTER");
 		loadMobSettings("Ventoraptor", 4, 3, 1, 3, "MONSTER");
-		loadMobSettings("Maka", 12, 6, 3, 6, "CREATURE");
-		loadMobSettings("MakaAlpha", 6, 2, 1, 2, "CREATURE");
+		loadMobSettings("Maka", 14, 6, 3, 4, "CREATURE");
+		loadMobSettings("MakaAlpha", 6, 4, 1, 2, "CREATURE");
 		
 		// ========== Block IDs ==========
 		//loadSetting(blockIDs, "Block IDs", "PoisonCloud", "Poison Cloud Block ID", 3853);

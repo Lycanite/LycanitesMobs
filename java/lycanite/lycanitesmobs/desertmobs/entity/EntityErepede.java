@@ -80,16 +80,11 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
         if(ObjectManager.getMob("Joust") != null)
-        	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityJoust.class));
+        	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityJoust.class).setPackHuntingScale(1, 3));
         if(ObjectManager.getMob("JoustAlpha") != null)
-        	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityJoustAlpha.class));
+        	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityJoustAlpha.class).setPackHuntingScale(1, 1));
         
         this.targetTasks.addTask(0, new EntityAITargetParent(this).setSightCheck(false).setDistance(32.0D));
-        
-        // Drops:
-        this.drops.add(new DropRate(Item.flint.itemID, 1).setMinAmount(1).setMaxAmount(2));
-        this.drops.add(new DropRate(Block.oreIron.blockID, 0.5F).setMinAmount(1).setMaxAmount(2));
-        this.drops.add(new DropRate(ObjectManager.getItem("MudshotCharge").itemID, 0.25F));
     }
     
     // ========== Stats ==========
@@ -106,6 +101,14 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
 		baseAttributes.put("attackDamage", 0D);
         super.applyEntityAttributes(baseAttributes);
     }
+	
+	// ========== Default Drops ==========
+	@Override
+	public void loadItemDrops() {
+        this.drops.add(new DropRate(Item.flint.itemID, 1).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new DropRate(Block.oreIron.blockID, 0.5F).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new DropRate(ObjectManager.getItem("MudshotCharge").itemID, 0.25F));
+	}
 	
 	
     // ==================================================

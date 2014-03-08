@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import lycanite.lycanitesmobs.DropRate;
 import lycanite.lycanitesmobs.ObjectLists;
+import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupAlpha;
 import lycanite.lycanitesmobs.api.IGroupAnimal;
 import lycanite.lycanitesmobs.api.IGroupPredator;
@@ -67,7 +68,7 @@ public class EntityUvaraptor extends EntityCreatureRideable implements IGroupPre
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIPlayerControl(this));
-        this.tasks.addTask(4, new EntityAITempt(this).setItemList("CookedMeat").setTemptDistanceMin(4.0D));
+        this.tasks.addTask(4, new EntityAITempt(this).setItemID(ObjectManager.getItem("ConcapedeMeatCooked").itemID).setTemptDistanceMin(4.0D));
         this.tasks.addTask(5, new EntityAIAttackMelee(this).setTargetClass(EntityPlayer.class).setLongMemory(false));
         this.tasks.addTask(6, new EntityAIAttackMelee(this));
         this.tasks.addTask(7, new EntityAIFollowParent(this).setSpeed(1.0D));
@@ -79,13 +80,9 @@ public class EntityUvaraptor extends EntityCreatureRideable implements IGroupPre
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class).setSightCheck(false));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
-        this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(IGroupAlpha.class));
-        this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupAnimal.class));
-        this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(EntityAnimal.class));
-        
-        // Drops:
-        this.drops.add(new DropRate(Item.feather.itemID, 1F).setMaxAmount(5));
-        this.drops.add(new DropRate(Item.bone.itemID, 0.5F).setMaxAmount(3));
+        this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(IGroupAlpha.class).setPackHuntingScale(1, 1));
+        this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupAnimal.class).setPackHuntingScale(1, 3));
+        this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(EntityAnimal.class).setPackHuntingScale(1, 3));
     }
     
     // ========== Stats ==========
@@ -102,6 +99,13 @@ public class EntityUvaraptor extends EntityCreatureRideable implements IGroupPre
 		baseAttributes.put("attackDamage", 4D);
         super.applyEntityAttributes(baseAttributes);
     }
+	
+	// ========== Default Drops ==========
+	@Override
+	public void loadItemDrops() {
+        this.drops.add(new DropRate(Item.feather.itemID, 1F).setMaxAmount(5));
+        this.drops.add(new DropRate(Item.bone.itemID, 0.5F).setMaxAmount(3));
+	}
 	
 	
     // ==================================================
@@ -227,8 +231,12 @@ public class EntityUvaraptor extends EntityCreatureRideable implements IGroupPre
     //                       Taming
     // ==================================================
     @Override
-    public boolean isTamingItem(ItemStack itemstack) {
-    	return ObjectLists.inItemList("CookedMeat", itemstack);
+    public boolean isTamingItem(ItemStack itemStack) {
+    	if(itemStack == null)
+    		return false;
+    	if(itemStack.itemID != ObjectManager.getItem("ConcapedeMeatCooked").itemID)
+    		return false;
+    	return true;
     }
     
     @Override

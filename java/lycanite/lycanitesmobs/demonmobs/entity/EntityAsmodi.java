@@ -60,11 +60,6 @@ public class EntityAsmodi extends EntityCreatureBase implements IMob {
         this.targetTasks.addTask(0, new EntityAITargetRevenge(this).setHelpClasses(EntityTrite.class));
         this.targetTasks.addTask(1, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
-                
-        // Drops:
-        this.drops.add(new DropRate(Item.ingotIron.itemID, 1).setMaxAmount(3));
-        this.drops.add(new DropRate(Item.redstone.itemID, 1).setMinAmount(3).setMaxAmount(8));
-        this.drops.add(new DropRate(ObjectManager.getItem("DevilstarCharge").itemID, 0.5F));
     }
     
     // ========== Stats ==========
@@ -78,6 +73,14 @@ public class EntityAsmodi extends EntityCreatureBase implements IMob {
 		baseAttributes.put("attackDamage", 0D);
         super.applyEntityAttributes(baseAttributes);
     }
+	
+	// ========== Default Drops ==========
+	@Override
+	public void loadItemDrops() {
+        this.drops.add(new DropRate(Item.ingotIron.itemID, 1).setMaxAmount(3));
+        this.drops.add(new DropRate(Item.redstone.itemID, 1).setMinAmount(3).setMaxAmount(8));
+        this.drops.add(new DropRate(ObjectManager.getItem("DevilstarCharge").itemID, 0.5F));
+	}
     
     
 	// ==================================================

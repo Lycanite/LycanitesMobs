@@ -67,13 +67,6 @@ public class EntityEnt extends EntityCreatureAgeable implements IMob {
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class).setSightCheck(false));
         if(ObjectManager.getMob("Cinder") != null)
         	this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(ObjectManager.getMob("Cinder")));
-        
-        // Drops:
-        this.drops.add(new DropRate(Block.wood.blockID, 0, 1).setMaxAmount(6));
-        this.drops.add(new DropRate(Item.stick.itemID, 0.5F).setMaxAmount(6).setBurningItem(Item.coal.itemID, 1));
-        this.drops.add(new DropRate(Item.seeds.itemID, 0.1F).setMaxAmount(3));
-        this.drops.add(new DropRate(Item.pumpkinSeeds.itemID, 0.05F).setMaxAmount(1));
-        this.drops.add(new DropRate(Item.melonSeeds.itemID, 0.05F).setMaxAmount(1));
     }
     
     // ========== Stats ==========
@@ -87,6 +80,16 @@ public class EntityEnt extends EntityCreatureAgeable implements IMob {
 		baseAttributes.put("attackDamage", 4D);
         super.applyEntityAttributes(baseAttributes);
     }
+	
+	// ========== Default Drops ==========
+	@Override
+	public void loadItemDrops() {
+        this.drops.add(new DropRate(Block.wood.blockID, 0, 1).setMaxAmount(6));
+        this.drops.add(new DropRate(Item.stick.itemID, 0.5F).setMaxAmount(6).setBurningItem(Item.coal.itemID, 1));
+        this.drops.add(new DropRate(Item.seeds.itemID, 0.1F).setMaxAmount(3));
+        this.drops.add(new DropRate(Item.pumpkinSeeds.itemID, 0.05F).setMaxAmount(1));
+        this.drops.add(new DropRate(Item.melonSeeds.itemID, 0.05F).setMaxAmount(1));
+	}
 	
 	
     // ==================================================

@@ -63,13 +63,6 @@ public class EntityEttin extends EntityCreatureAgeable implements IMob {
         this.targetTasks.addTask(0, new EntityAITargetRevenge(this).setHelpCall(true));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
-        
-        // Drops:
-        this.drops.add(new DropRate(Block.wood.blockID, 1).setMinAmount(2).setMaxAmount(6));
-        this.drops.add(new DropRate(Block.mushroomBrown.blockID, 1).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(Block.mushroomRed.blockID, 1).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(Item.leather.itemID, 1).setMinAmount(2).setMaxAmount(6));
-        this.drops.add(new DropRate(Item.coal.itemID, 1).setMinAmount(2).setMaxAmount(8));
     }
     
     // ========== Stats ==========
@@ -83,6 +76,16 @@ public class EntityEttin extends EntityCreatureAgeable implements IMob {
 		baseAttributes.put("attackDamage", 6D);
         super.applyEntityAttributes(baseAttributes);
     }
+	
+	// ========== Default Drops ==========
+	@Override
+	public void loadItemDrops() {
+        this.drops.add(new DropRate(Block.wood.blockID, 1).setMinAmount(2).setMaxAmount(6));
+        this.drops.add(new DropRate(Block.mushroomBrown.blockID, 1).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(Block.mushroomRed.blockID, 1).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(Item.leather.itemID, 1).setMinAmount(2).setMaxAmount(6));
+        this.drops.add(new DropRate(Item.coal.itemID, 1).setMinAmount(2).setMaxAmount(8));
+	}
 	
 	
     // ==================================================

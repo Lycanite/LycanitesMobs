@@ -100,9 +100,6 @@ public class EntityPinky extends EntityCreatureRideable implements IAnimals, IGr
         this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupAnimal.class));
         this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(EntityAnimal.class));
         this.targetTasks.addTask(6, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
-
-        // Drops:
-        this.drops.add(new DropRate(ObjectManager.getItem("PinkyMeatRaw").itemID, 1).setBurningItem(ObjectManager.getItem("PinkyMeatCooked").itemID, -1).setMinAmount(1).setMaxAmount(3));
     }
     
     // ========== Stats ==========
@@ -119,6 +116,12 @@ public class EntityPinky extends EntityCreatureRideable implements IAnimals, IGr
 		baseAttributes.put("attackDamage", 6D);
         super.applyEntityAttributes(baseAttributes);
     }
+	
+	// ========== Default Drops ==========
+	@Override
+	public void loadItemDrops() {
+        this.drops.add(new DropRate(ObjectManager.getItem("PinkyMeatRaw").itemID, 1).setBurningItem(ObjectManager.getItem("PinkyMeatCooked").itemID, -1).setMinAmount(1).setMaxAmount(3));
+	}
 	
 	
     // ==================================================

@@ -82,12 +82,6 @@ public class EntityCrusk extends EntityCreatureTameable implements IGroupPredato
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupAlpha.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupAnimal.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityAnimal.class));
-        
-        // Drops:
-        this.drops.add(new DropRate(Item.clay.itemID, 1).setMinAmount(6).setMaxAmount(12));
-        this.drops.add(new DropRate(Item.flint.itemID, 0.5F).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(Block.oreIron.blockID, 0.5F).setMinAmount(2).setMaxAmount(3));
-        this.drops.add(new DropRate(Block.oreGold.blockID, 0.25F).setMinAmount(1).setMaxAmount(2));
     }
     
     // ========== Stats ==========
@@ -104,6 +98,15 @@ public class EntityCrusk extends EntityCreatureTameable implements IGroupPredato
 		baseAttributes.put("attackDamage", 4D);
         super.applyEntityAttributes(baseAttributes);
     }
+	
+	// ========== Default Drops ==========
+	@Override
+	public void loadItemDrops() {
+        this.drops.add(new DropRate(Item.clay.itemID, 1).setMinAmount(6).setMaxAmount(12));
+        this.drops.add(new DropRate(Item.flint.itemID, 0.5F).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(Block.oreIron.blockID, 0.5F).setMinAmount(2).setMaxAmount(3));
+        this.drops.add(new DropRate(Block.oreGold.blockID, 0.25F).setMinAmount(1).setMaxAmount(2));
+	}
     
     // ========== Name ==========
     @Override

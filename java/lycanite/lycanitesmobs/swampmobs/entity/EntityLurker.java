@@ -89,10 +89,6 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
         if(ObjectManager.getMob("JoustAlpha") != null)
         	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityJoustAlpha.class));
         this.targetTasks.addTask(0, new EntityAITargetParent(this).setSightCheck(false).setDistance(32.0D));
-        
-        // Drops:
-        this.drops.add(new DropRate(Item.silk.itemID, 0.5F).setMinAmount(2).setMaxAmount(5));
-        this.drops.add(new DropRate(Item.leather.itemID, 0.5F).setMaxAmount(2));
     }
     
     // ========== Stats ==========
@@ -109,6 +105,13 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
 		baseAttributes.put("attackDamage", 2D);
         super.applyEntityAttributes(baseAttributes);
     }
+	
+	// ========== Default Drops ==========
+	@Override
+	public void loadItemDrops() {
+        this.drops.add(new DropRate(Item.silk.itemID, 0.5F).setMinAmount(2).setMaxAmount(5));
+        this.drops.add(new DropRate(Item.leather.itemID, 0.5F).setMaxAmount(2));
+	}
 	
 	
     // ==================================================

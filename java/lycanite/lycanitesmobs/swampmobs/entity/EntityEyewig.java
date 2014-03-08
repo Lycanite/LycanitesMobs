@@ -72,11 +72,6 @@ public class EntityEyewig extends EntityCreatureRideable {
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityChicken.class));
-        
-        // Drops:
-        this.drops.add(new DropRate(Item.spiderEye.itemID, 0.9F).setMaxAmount(2));
-        this.drops.add(new DropRate(Item.fermentedSpiderEye.itemID, 0.2F));
-        this.drops.add(new DropRate(Item.silk.itemID, 1).setMinAmount(2).setMaxAmount(5));
     }
     
     // ========== Stats ==========
@@ -90,6 +85,14 @@ public class EntityEyewig extends EntityCreatureRideable {
 		baseAttributes.put("attackDamage", 1D);
         super.applyEntityAttributes(baseAttributes);
     }
+	
+	// ========== Default Drops ==========
+	@Override
+	public void loadItemDrops() {
+        this.drops.add(new DropRate(Item.spiderEye.itemID, 0.9F).setMaxAmount(2));
+        this.drops.add(new DropRate(Item.fermentedSpiderEye.itemID, 0.2F));
+        this.drops.add(new DropRate(Item.silk.itemID, 1).setMinAmount(2).setMaxAmount(5));
+	}
 	
 	
     // ==================================================

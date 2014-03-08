@@ -20,6 +20,8 @@ public class EntityAITargetAttack extends EntityAITarget {
     private int targetChance = 0;
     private EntityAITargetSorterNearest targetSorter;
     protected boolean tameTargeting = false;
+    private int allySize = 0;
+    private int enemySize = 0;
     
     // ==================================================
   	//                    Constructor
@@ -39,32 +41,51 @@ public class EntityAITargetAttack extends EntityAITarget {
     	this.targetChance = setChance;
     	return this;
     }
+    
     public EntityAITargetAttack setTargetClass(Class setTargetClass) {
     	this.targetClass = setTargetClass;
     	return this;
     }
+    
     public EntityAITargetAttack setTargetClasses(List<Class> classList) {
     	this.targetClasses = classList;
     	return this;
     }
+    
     public EntityAITargetAttack setSightCheck(boolean setSightCheck) {
     	this.checkSight = setSightCheck;
     	return this;
     }
+    
     public EntityAITargetAttack setOnlyNearby(boolean setNearby) {
     	this.nearbyOnly = setNearby;
     	return this;
     }
+    
     public EntityAITargetAttack setCantSeeTimeMax(int setCantSeeTimeMax) {
     	this.cantSeeTimeMax = setCantSeeTimeMax;
     	return this;
     }
+    
     public EntityAITargetAttack setSelector(IEntitySelector selector) {
     	this.targetSelector = new EntityAITargetSelector(this, selector);
     	return this;
     }
+    
     public EntityAITargetAttack setTameTargetting(boolean setTargetting) {
     	this.tameTargeting = setTargetting;
+    	return this;
+    }
+    
+    /** If both values are above 0 then this mob will consider the size of the enemy pack and it's pack before attacking.
+     * setAllySize How many of this mob vs the enemy pack.
+     * setEnemySize How many of the enemy vs this mobs size.
+     * For example allySize of this mob will attack up to enemySize of the enemy at once.
+     * Setting either value at or below 0 will disable this functionality.
+    **/
+    public EntityAITargetAttack setPackHuntingScale(int setAllySize, int setEnemySize) {
+    	this.allySize = setAllySize;
+    	this.enemySize = setEnemySize;
     	return this;
     }
     
@@ -106,6 +127,20 @@ public class EntityAITargetAttack extends EntityAITarget {
         // Tamed Checks:
         if(!this.tameTargeting && this.host instanceof EntityCreatureTameable && ((EntityCreatureTameable)this.host).isTamed())
         	return false;
+        
+        // Pack Size Check:
+        if(this.allySize > 0 && this.enemySize > 0) {
+        	double hostPackRange = 32D;
+        	double hostPackSize = this.host.worldObj.getEntitiesWithinAABB(this.host.getClass(), this.host.boundingBox.expand(hostPackRange, hostPackRange, hostPackRange)).size();
+        	double hostPackScale = hostPackSize / this.allySize;
+
+        	double targetPackRange = 64D;
+        	double targetPackSize = target.worldObj.getEntitiesWithinAABB(this.targetClass, target.boundingBox.expand(targetPackRange, targetPackRange, targetPackRange)).size();
+        	double targetPackScale = targetPackSize / this.enemySize;
+        	
+        	if(hostPackScale < targetPackScale)
+        		return false;
+        }
         
     	return true;
     }

@@ -64,10 +64,6 @@ public class EntityClink extends EntityCreatureBase implements IMob {
         this.targetTasks.addTask(0, new EntityAITargetRevenge(this).setHelpCall(true));
         this.targetTasks.addTask(1, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
-        
-        // Drops:
-        this.drops.add(new DropRate(ObjectManager.getItem("ThrowingScythe").itemID, 1).setMinAmount(2).setMaxAmount(7));
-        this.drops.add(new DropRate(Item.ingotIron.itemID, 0.1F).setMinAmount(1).setMaxAmount(3));
     }
     
     // ========== Stats ==========
@@ -81,6 +77,13 @@ public class EntityClink extends EntityCreatureBase implements IMob {
 		baseAttributes.put("attackDamage", 0D);
         super.applyEntityAttributes(baseAttributes);
     }
+	
+	// ========== Default Drops ==========
+	@Override
+	public void loadItemDrops() {
+        this.drops.add(new DropRate(ObjectManager.getItem("ThrowingScythe").itemID, 1).setMinAmount(2).setMaxAmount(7));
+        this.drops.add(new DropRate(Item.ingotIron.itemID, 0.1F).setMinAmount(1).setMaxAmount(3));
+	}
     
     
     // ==================================================

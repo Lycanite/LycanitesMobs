@@ -75,7 +75,7 @@ public class EntityReiver extends EntityCreatureBase implements IMob {
         super.applyEntityAttributes(baseAttributes);
     }
 	
-	// ========== Default Drops ========== TODO Copy this new method across every mob! :O
+	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
         this.drops.add(new DropRate(Item.snowball.itemID, 0.5F));

@@ -66,9 +66,6 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityMakaAlpha.class).setChance(100));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class).setOnlyNearby(true).setChance(100));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class).setOnlyNearby(true).setChance(100));
-        
-        // Drops:
-        this.drops.add(new DropRate(ObjectManager.getItem("MakaMeatRaw").itemID, 1).setBurningItem(ObjectManager.getItem("MakaMeatCooked").itemID, -1).setMinAmount(3).setMaxAmount(7));
     }
     
     // ========== Stats ==========
@@ -82,6 +79,12 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
 		baseAttributes.put("attackDamage", 4D);
         super.applyEntityAttributes(baseAttributes);
     }
+	
+	// ========== Default Drops ==========
+	@Override
+	public void loadItemDrops() {
+        this.drops.add(new DropRate(ObjectManager.getItem("MakaMeatRaw").itemID, 1).setBurningItem(ObjectManager.getItem("MakaMeatCooked").itemID, -1).setMinAmount(3).setMaxAmount(7));
+	}
 	
 	
 	// ==================================================

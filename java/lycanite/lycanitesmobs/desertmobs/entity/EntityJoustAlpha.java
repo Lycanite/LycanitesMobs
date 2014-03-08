@@ -69,9 +69,6 @@ public class EntityJoustAlpha extends EntityCreatureAgeable implements IAnimals,
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupPredator.class));
         this.targetTasks.addTask(4, new EntityAITargetParent(this).setSightCheck(false).setDistance(32.0D));
-        
-        // Drops:
-        this.drops.add(new DropRate(ObjectManager.getItem("JoustMeatRaw").itemID, 1).setBurningItem(ObjectManager.getItem("JoustMeatCooked").itemID, -1).setMinAmount(3).setMaxAmount(7));
     }
     
     // ========== Stats ==========
@@ -85,6 +82,12 @@ public class EntityJoustAlpha extends EntityCreatureAgeable implements IAnimals,
 		baseAttributes.put("attackDamage", 6D);
         super.applyEntityAttributes(baseAttributes);
     }
+	
+	// ========== Default Drops ==========
+	@Override
+	public void loadItemDrops() {
+        this.drops.add(new DropRate(ObjectManager.getItem("JoustMeatRaw").itemID, 1).setBurningItem(ObjectManager.getItem("JoustMeatCooked").itemID, -1).setMinAmount(3).setMaxAmount(7));
+	}
 	
 	
 	// ==================================================

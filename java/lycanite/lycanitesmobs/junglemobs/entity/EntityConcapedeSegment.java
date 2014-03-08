@@ -66,10 +66,6 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
         //this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         //this.tasks.addTask(11, new EntityAILookIdle(this));
         this.targetTasks.addTask(0, new EntityAITargetRevenge(this).setHelpClasses(EntityConcapedeHead.class));
-        
-        // Drops:
-        this.drops.add(new DropRate(ObjectManager.getItem("ConcapedeMeatRaw").itemID, 1).setMinAmount(1).setMaxAmount(2).setBurningItem(ObjectManager.getItem("ConcapedeMeatCooked").itemID, 0));
-        this.drops.add(new DropRate(Item.silk.itemID, 0.25F).setMinAmount(1).setMaxAmount(2));
     }
     
     // ========== Stats ==========
@@ -83,6 +79,13 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
 		baseAttributes.put("attackDamage", 2D);
         super.applyEntityAttributes(baseAttributes);
     }
+	
+	// ========== Default Drops ==========
+	@Override
+	public void loadItemDrops() {
+        this.drops.add(new DropRate(ObjectManager.getItem("ConcapedeMeatRaw").itemID, 1).setMinAmount(1).setMaxAmount(2).setBurningItem(ObjectManager.getItem("ConcapedeMeatCooked").itemID, 0));
+        this.drops.add(new DropRate(Item.silk.itemID, 0.25F).setMinAmount(1).setMaxAmount(2));
+	}
 	
 	
     // ==================================================

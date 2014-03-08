@@ -66,9 +66,6 @@ public class EntityCinder extends EntityCreatureBase implements IMob {
         	this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(ObjectManager.getMob("Ent")));
         if(ObjectManager.getMob("Trent") != null)
         	this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(ObjectManager.getMob("Trent")));
-        this.drops.add(new DropRate(Item.coal.itemID, 0.5F));
-        this.drops.add(new DropRate(Item.blazeRod.itemID, 0.1F));
-        this.drops.add(new DropRate(ObjectManager.getItem("EmberCharge").itemID, 0.25F));
     }
     
     // ========== Stats ==========
@@ -82,6 +79,14 @@ public class EntityCinder extends EntityCreatureBase implements IMob {
 		baseAttributes.put("attackDamage", 1D);
         super.applyEntityAttributes(baseAttributes);
     }
+	
+	// ========== Default Drops ==========
+	@Override
+	public void loadItemDrops() {
+        this.drops.add(new DropRate(Item.coal.itemID, 0.5F));
+        this.drops.add(new DropRate(Item.blazeRod.itemID, 0.1F));
+        this.drops.add(new DropRate(ObjectManager.getItem("EmberCharge").itemID, 0.25F));
+	}
 	
 	
     // ==================================================

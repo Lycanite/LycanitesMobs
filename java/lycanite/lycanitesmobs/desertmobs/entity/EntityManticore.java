@@ -60,12 +60,6 @@ public class EntityManticore extends EntityCreatureBase implements IMob, IGroupH
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
-        
-        // Drops:
-        this.drops.add(new DropRate(Block.sandStone.blockID, 1).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(Block.stone.blockID, 1).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(Item.flint.itemID, 0.5F));
-        this.drops.add(new DropRate(Block.oreIron.blockID, 0.25F));
     }
     
     // ========== Stats ==========
@@ -79,6 +73,15 @@ public class EntityManticore extends EntityCreatureBase implements IMob, IGroupH
 		baseAttributes.put("attackDamage", 3D);
         super.applyEntityAttributes(baseAttributes);
     }
+	
+	// ========== Default Drops ==========
+	@Override
+	public void loadItemDrops() {
+        this.drops.add(new DropRate(Block.sandStone.blockID, 1).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(Block.stone.blockID, 1).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(Item.flint.itemID, 0.5F));
+        this.drops.add(new DropRate(Block.oreIron.blockID, 0.25F));
+	}
 	
 	
     // ==================================================

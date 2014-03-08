@@ -53,11 +53,6 @@ public class EntityNetherSoul extends EntityCreatureBase implements IMob {
         this.targetTasks.addTask(0, new EntityAITargetRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
-        
-        // Drops:
-        this.drops.add(new DropRate(Item.bone.itemID, 1).setMinAmount(2).setMaxAmount(2));
-        this.drops.add(new DropRate(Item.gunpowder.itemID, 0.5F).setMinAmount(1).setMaxAmount(2));
-        this.drops.add(new DropRate(Item.blazePowder.itemID, 0.25F).setMinAmount(1).setMaxAmount(2));
     }
     
     // ========== Stats ==========
@@ -71,6 +66,14 @@ public class EntityNetherSoul extends EntityCreatureBase implements IMob {
 		baseAttributes.put("attackDamage", 4.0D);
         super.applyEntityAttributes(baseAttributes);
     }
+	
+	// ========== Default Drops ==========
+	@Override
+	public void loadItemDrops() {
+        this.drops.add(new DropRate(Item.bone.itemID, 1).setMinAmount(2).setMaxAmount(2));
+        this.drops.add(new DropRate(Item.gunpowder.itemID, 0.5F).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new DropRate(Item.blazePowder.itemID, 0.25F).setMinAmount(1).setMaxAmount(2));
+	}
     
     
     // ==================================================

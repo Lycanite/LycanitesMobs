@@ -69,12 +69,6 @@ public class EntityGorgomite extends EntityCreatureBase implements IMob, IGroupP
         this.targetTasks.addTask(3, new EntityAITargetAvoid(this).setTargetClass(IGroupHunter.class));
         this.targetTasks.addTask(3, new EntityAITargetAvoid(this).setTargetClass(IGroupPredator.class));
         this.targetTasks.addTask(3, new EntityAITargetAvoid(this).setTargetClass(IGroupAlpha.class));
-        
-        // Drops:
-        this.drops.add(new DropRate(Block.sandStone.blockID, 1).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(Block.stone.blockID, 1).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(Item.flint.itemID, 0.5F));
-        this.drops.add(new DropRate(Block.oreIron.blockID, 0.1F));
     }
     
     // ========== Stats ==========
@@ -88,6 +82,15 @@ public class EntityGorgomite extends EntityCreatureBase implements IMob, IGroupP
 		baseAttributes.put("attackDamage", 1D);
         super.applyEntityAttributes(baseAttributes);
     }
+	
+	// ========== Default Drops ==========
+	@Override
+	public void loadItemDrops() {
+        this.drops.add(new DropRate(Block.sandStone.blockID, 1).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(Block.stone.blockID, 1).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(Item.flint.itemID, 0.5F));
+        this.drops.add(new DropRate(Block.oreIron.blockID, 0.1F));
+	}
 	
 	
     // ==================================================
@@ -109,8 +112,8 @@ public class EntityGorgomite extends EntityCreatureBase implements IMob, IGroupP
 			return;
 		
 		// Spawn Minions:
-		if(this.nearbyCreatureCount(this.getClass(), 64D) < DesertMobs.config.getFeatureInt("GorgomiteSwarmLimit")
-				&& DesertMobs.config.getFeatureInt("GorgomiteSwarmLimit") > 0) {
+		if(DesertMobs.config.getFeatureInt("GorgomiteSwarmLimit") > 0
+				&& this.nearbyCreatureCount(this.getClass(), 64D) < DesertMobs.config.getFeatureInt("GorgomiteSwarmLimit")) {
 			float random = this.rand.nextFloat();
 			if(random <= 0.1F)
 				this.spawnAlly(this.posX - 2 + (random * 4), this.posY, this.posZ - 2 + (random * 4));

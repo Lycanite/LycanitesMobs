@@ -71,10 +71,6 @@ public class EntityConcapedeHead extends EntityCreatureAgeable implements IAnima
         this.targetTasks.addTask(1, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
-        
-        // Drops:
-        this.drops.add(new DropRate(ObjectManager.getItem("ConcapedeMeatRaw").itemID, 1).setMinAmount(3).setMaxAmount(6).setBurningItem(ObjectManager.getItem("ConcapedeMeatCooked").itemID, 0));
-        this.drops.add(new DropRate(Item.silk.itemID, 0.5F).setMinAmount(1).setMaxAmount(2));
     }
     
     // ========== Stats ==========
@@ -88,6 +84,13 @@ public class EntityConcapedeHead extends EntityCreatureAgeable implements IAnima
 		baseAttributes.put("attackDamage", 2D);
         super.applyEntityAttributes(baseAttributes);
     }
+	
+	// ========== Default Drops ==========
+	@Override
+	public void loadItemDrops() {
+        this.drops.add(new DropRate(ObjectManager.getItem("ConcapedeMeatRaw").itemID, 1).setMinAmount(3).setMaxAmount(6).setBurningItem(ObjectManager.getItem("ConcapedeMeatCooked").itemID, 0));
+        this.drops.add(new DropRate(Item.silk.itemID, 0.5F).setMinAmount(1).setMaxAmount(2));
+	}
 	
 	
     // ==================================================

@@ -71,12 +71,6 @@ public class EntityKobold extends EntityCreatureAgeable implements IMob, IGroupP
         this.targetTasks.addTask(3, new EntityAITargetAvoid(this).setTargetClass(IGroupPredator.class));
         this.targetTasks.addTask(3, new EntityAITargetAvoid(this).setTargetClass(IGroupAlpha.class));
         this.targetTasks.addTask(4, new EntityAITargetAvoid(this).setTargetClass(EntityVillager.class));
-        
-        // Drops:
-        this.drops.add(new DropRate(Item.coal.itemID, 0.25F).setMaxAmount(2));
-        this.drops.add(new DropRate(Item.ingotIron.itemID, 0.05F).setMaxAmount(1));
-        this.drops.add(new DropRate(Item.goldNugget.itemID, 0.025F).setMaxAmount(1));
-        this.drops.add(new DropRate(Item.emerald.itemID, 0.01F).setMaxAmount(1));
     }
     
     // ========== Stats ==========
@@ -90,6 +84,15 @@ public class EntityKobold extends EntityCreatureAgeable implements IMob, IGroupP
 		baseAttributes.put("attackDamage", 2D);
         super.applyEntityAttributes(baseAttributes);
     }
+	
+	// ========== Default Drops ==========
+	@Override
+	public void loadItemDrops() {
+        this.drops.add(new DropRate(Item.coal.itemID, 0.25F).setMaxAmount(2));
+        this.drops.add(new DropRate(Item.ingotIron.itemID, 0.05F).setMaxAmount(1));
+        this.drops.add(new DropRate(Item.goldNugget.itemID, 0.025F).setMaxAmount(1));
+        this.drops.add(new DropRate(Item.emerald.itemID, 0.01F).setMaxAmount(1));
+	}
     
 	
     // ==================================================

@@ -65,10 +65,6 @@ public class EntityCryptZombie extends EntityCreatureAgeable implements IMob {
         this.targetTasks.addTask(0, new EntityAITargetRevenge(this).setHelpCall(true));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class).setSightCheck(false));
-                
-        // Drops:
-        this.drops.add(new DropRate(Item.rottenFlesh.itemID, 1).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(Item.goldNugget.itemID, 0.25F).setMaxAmount(2));
     }
     
     // ========== Stats ==========
@@ -82,6 +78,13 @@ public class EntityCryptZombie extends EntityCreatureAgeable implements IMob {
 		baseAttributes.put("attackDamage", 2D);
         super.applyEntityAttributes(baseAttributes);
     }
+	
+	// ========== Default Drops ==========
+	@Override
+	public void loadItemDrops() {
+        this.drops.add(new DropRate(Item.rottenFlesh.itemID, 1).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(Item.goldNugget.itemID, 0.25F).setMaxAmount(2));
+	}
     
     
     // ==================================================

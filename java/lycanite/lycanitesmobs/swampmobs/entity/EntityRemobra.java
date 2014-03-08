@@ -62,10 +62,6 @@ public class EntityRemobra extends EntityCreatureBase implements IMob, IGroupHun
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
-        
-        // Drops:
-        this.drops.add(new DropRate(Item.slimeBall.itemID, 0.5F));
-        this.drops.add(new DropRate(ObjectManager.getItem("PoisonGland").itemID, 0.25F));
     }
     
     // ========== Stats ==========
@@ -79,6 +75,13 @@ public class EntityRemobra extends EntityCreatureBase implements IMob, IGroupHun
 		baseAttributes.put("attackDamage", 1D);
         super.applyEntityAttributes(baseAttributes);
     }
+	
+	// ========== Default Drops ==========
+	@Override
+	public void loadItemDrops() {
+        this.drops.add(new DropRate(Item.slimeBall.itemID, 0.5F));
+        this.drops.add(new DropRate(ObjectManager.getItem("PoisonGland").itemID, 0.25F));
+	}
 	
 	
     // ==================================================

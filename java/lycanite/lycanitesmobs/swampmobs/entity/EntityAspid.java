@@ -68,11 +68,6 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
         this.tasks.addTask(11, new EntityAILookIdle(this));
         this.targetTasks.addTask(0, new EntityAITargetRevenge(this));
         this.targetTasks.addTask(2, new EntityAITargetParent(this).setSightCheck(false).setDistance(32.0D));
-        
-        // Drops:
-        this.drops.add(new DropRate(ObjectManager.getItem("AspidMeatRaw").itemID, 1).setBurningItem(ObjectManager.getItem("AspidMeatCooked").itemID, 0).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(Item.slimeBall.itemID, 0.25F));
-        this.drops.add(new DropRate(ObjectManager.getItem("PoisonGland").itemID, 0.25F));
     }
     
     // ========== Stats ==========
@@ -86,6 +81,14 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
 		baseAttributes.put("attackDamage", 4D);
         super.applyEntityAttributes(baseAttributes);
     }
+	
+	// ========== Default Drops ==========
+	@Override
+	public void loadItemDrops() {
+        this.drops.add(new DropRate(ObjectManager.getItem("AspidMeatRaw").itemID, 1).setBurningItem(ObjectManager.getItem("AspidMeatCooked").itemID, 0).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(Item.slimeBall.itemID, 0.25F));
+        this.drops.add(new DropRate(ObjectManager.getItem("PoisonGland").itemID, 0.25F));
+	}
 	
 	
     // ==================================================

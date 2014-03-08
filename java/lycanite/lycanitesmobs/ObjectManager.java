@@ -6,6 +6,7 @@ import lycanite.lycanitesmobs.api.ILycaniteMod;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.BehaviorProjectileDispense;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.DungeonHooks;
 import cpw.mods.fml.common.registry.EntityRegistry;
@@ -97,7 +98,7 @@ public class ObjectManager {
 			EntityRegistry.addSpawn(entityClass, config.spawnWeights.get(name), config.spawnMins.get(name), config.spawnMaxs.get(name), config.spawnTypes.get(name), config.getSpawnBiomesTypes(name));
 		LanguageRegistry.instance().addStringLocalization("entity." + modid + "." + name + ".name", "en_US", name);
 		int dungeonWeight = config.spawnWeights.get(name) * 25;
-		if(dungeonWeight > 0)
+		if(dungeonWeight > 0 && config.spawnTypes.get(name) == EnumCreatureType.monster)
 			DungeonHooks.addDungeonMob(modid + "." + name, dungeonWeight);
 		
 		mobs.put(name, entityClass);

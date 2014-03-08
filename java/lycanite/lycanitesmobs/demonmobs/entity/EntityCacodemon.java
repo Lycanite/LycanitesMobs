@@ -77,12 +77,6 @@ public class EntityCacodemon extends EntityCreatureTameable {
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
-                
-        // Drops:
-        this.drops.add(new DropRate(Item.ghastTear.itemID, 0.25F).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(Item.gunpowder.itemID, 0.5F).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(Item.blazePowder.itemID, 0.5F).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(ObjectManager.getItem("DemonicLightningCharge").itemID, 0.25F));
     }
     
     // ========== Stats ==========
@@ -99,6 +93,15 @@ public class EntityCacodemon extends EntityCreatureTameable {
 		baseAttributes.put("attackDamage", 0D);
         super.applyEntityAttributes(baseAttributes);
     }
+	
+	// ========== Default Drops ==========
+	@Override
+	public void loadItemDrops() {
+        this.drops.add(new DropRate(Item.ghastTear.itemID, 0.25F).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(Item.gunpowder.itemID, 0.5F).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(Item.blazePowder.itemID, 0.5F).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(ObjectManager.getItem("DemonicLightningCharge").itemID, 0.25F));
+	}
 	
 	
 	// ==================================================

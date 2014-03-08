@@ -58,10 +58,6 @@ public class EntityJabberwock extends EntityCreatureAgeable implements IMob {
         this.targetTasks.addTask(0, new EntityAITargetRevenge(this).setHelpCall(true));
         this.targetTasks.addTask(1, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
-        
-        // Drops:
-        this.drops.add(new DropRate(Item.bone.itemID, 1).setMinAmount(1).setMaxAmount(2));
-        this.drops.add(new DropRate(Item.leather.itemID, 1).setMinAmount(1).setMaxAmount(2));
     }
     
     // ========== Stats ==========
@@ -75,6 +71,13 @@ public class EntityJabberwock extends EntityCreatureAgeable implements IMob {
 		baseAttributes.put("attackDamage", 4D);
         super.applyEntityAttributes(baseAttributes);
     }
+	
+	// ========== Default Drops ==========
+	@Override
+	public void loadItemDrops() {
+        this.drops.add(new DropRate(Item.bone.itemID, 1).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new DropRate(Item.leather.itemID, 1).setMinAmount(1).setMaxAmount(2));
+	}
 	
 	
     // ==================================================

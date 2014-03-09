@@ -565,8 +565,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
         if(!this.worldObj.isRemote && !this.canBreatheAboveWater()) {
 	        int currentAir = this.getAir();
 	        if(this.isEntityAlive()) {
-	        	if((!this.isLavaCreature && !this.waterContact())
-	        	|| (this.isLavaCreature && !this.lavaContact())) {
+	        	if(
+	        			(!this.isLavaCreature && !this.waterContact())
+	        			|| (this.isLavaCreature && !this.lavaContact())
+	        	) {
 		        	currentAir--;
 		            this.setAir(currentAir);
 		            if(this.getAir() <= -200) {
@@ -574,8 +576,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
 		                this.attackEntityFrom(DamageSource.drown, 2.0F);
 		            }
 		        }
-		        else
+		        else {
 		            this.setAir(299);
+		        }
 	        }
         }
         
@@ -1489,7 +1492,11 @@ public abstract class EntityCreatureBase extends EntityLiving {
     
     /** Returns true if this mob is in water the rain. Uses the vanilla isWet() but takes dripping leaves, etc into account. **/
     public boolean waterContact() {
-    	return this.isWet() && !this.isBlockUnderground((int)this.posX, (int)this.posY, (int)this.posZ);
+    	if(this.isWet())
+    		return true;
+    	if(this.worldObj.isRaining() && !this.isBlockUnderground((int)this.posX, (int)this.posY, (int)this.posZ))
+    		return true;
+    	return false;
     }
     
     /** Returns true if this mob is in lava. **/

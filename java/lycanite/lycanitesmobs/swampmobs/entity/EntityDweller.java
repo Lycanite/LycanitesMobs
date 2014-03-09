@@ -49,6 +49,7 @@ public class EntityDweller extends EntityCreatureAgeable implements IMob {
         
         this.eggName = "SwampEgg";
         this.babySpawnChance = 0.1D;
+        this.canGrow = false;
         
         this.setWidth = 0.8F;
         this.setHeight = 1.6F;
@@ -180,12 +181,6 @@ public class EntityDweller extends EntityCreatureAgeable implements IMob {
         if(par1PotionEffect.getPotionID() == Potion.blindness.id) return false;
         super.isPotionApplicable(par1PotionEffect);
         return true;
-    }
-    
-    @Override
-    public boolean isInWater() {
-        return super.isInWater();
-    	//return this.worldObj.handleMaterialAcceleration(this.boundingBox.expand(0.0D, -0.6000000238418579D, 0.0D), Material.water, this);
     }
     
     @Override

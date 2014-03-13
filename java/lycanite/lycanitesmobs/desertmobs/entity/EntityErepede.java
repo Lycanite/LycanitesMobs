@@ -23,10 +23,12 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.desertmobs.DesertMobs;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -55,15 +57,15 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
         
         this.eggName = "DesertEgg";
         
-        this.setWidth = 0.9F;
-        this.setHeight = 1.7F;
+        this.setWidth = 0.8F;
+        this.setHeight = 1.5F;
         this.attackTime = 10;
         this.setupMob();
         
         // Stats:
         this.stepHeight = 1.0F;
         this.rangedDamage = new int[] {4, 5, 6};
-        this.isMobWhenNotTamed = false;
+        this.isMobWhenNotTamed = true;
         
         // AI Tasks:
         this.getNavigator().setAvoidsWater(true);
@@ -78,6 +80,8 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
         this.tasks.addTask(11, new EntityAILookIdle(this));
         
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
+        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
+        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
         if(ObjectManager.getMob("Joust") != null)
         	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityJoust.class).setPackHuntingScale(1, 3));
@@ -127,6 +131,24 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
     		rider.removePotionEffect(Potion.hunger.id);
     }
 
+	
+    // ==================================================
+    //                      Movement
+    // ==================================================
+    // ========== Movement Speed Modifier ==========
+    public float getSpeedMod() {
+    	if(this.worldObj.getBlockMaterial((int)this.posX, (int)this.boundingBox.minY - 1, (int)this.posZ) == Material.sand
+    		|| (this.worldObj.getBlockMaterial((int)this.posX, (int)this.boundingBox.minY - 1, (int)this.posZ) == Material.air
+    		&& this.worldObj.getBlockMaterial((int)this.posX, (int)this.boundingBox.minY - 2, (int)this.posZ) == Material.sand))
+    		return 1.8F;
+    	return 1.0F;
+    }
+    
+    @Override
+    public double getMountedYOffset() {
+        return (double)this.height * 0.9D;
+    }
+
     
     // ==================================================
     //                   Mount Ability
@@ -145,6 +167,7 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
 	    	EntityMudshot projectile = new EntityMudshot(this.worldObj, player);
 	    	this.worldObj.spawnEntityInWorld(projectile);
 	    	this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+	    	this.setJustAttacked();
     	}
     	
     	this.applyStaminaCost();

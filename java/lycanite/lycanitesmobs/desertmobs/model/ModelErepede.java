@@ -1,31 +1,14 @@
 package lycanite.lycanitesmobs.desertmobs.model;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import org.lwjgl.opengl.GL11;
-
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
-import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
-import lycanite.lycanitesmobs.api.model.ModelBipedCustom;
-import lycanite.lycanitesmobs.api.model.ModelCustom;
 import lycanite.lycanitesmobs.api.model.ModelCustomObj;
 import lycanite.lycanitesmobs.desertmobs.DesertMobs;
-
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.util.MathHelper;
+import net.minecraftforge.client.model.obj.WavefrontObject;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.MathHelper;
-import net.minecraftforge.client.model.IModelCustom;
-import net.minecraftforge.client.model.obj.GroupObject;
-import net.minecraftforge.client.model.obj.WavefrontObject;
 
 @SideOnly(Side.CLIENT)
 public class ModelErepede extends ModelCustomObj {
@@ -45,18 +28,24 @@ public class ModelErepede extends ModelCustomObj {
     	parts = model.groupObjects;
     	
     	// Set Rotation Centers:
-    	setPartCenter("head", 0F, 1.1F, 0.4F);
-    	setPartCenter("mouth", 0F, 1.0F, 0.7F);
-    	setPartCenter("body", 0F, 1.1F, 0.4F);
-    	setPartCenter("frontleftleg", 0.4F, 1.0F, 0.4F);
-    	setPartCenter("middleleftleg", 0.5F, 1.2F, 0.0F);
-    	setPartCenter("backleftleg", 0.4F, 0.9F, -0.3F);
-    	setPartCenter("frontrightleg", -0.4F, 1.0F, 0.4F);
-    	setPartCenter("middlerightleg", -0.5F, 1.2F, 0.0F);
-    	setPartCenter("backrightleg", -0.4F, 0.9F, -0.3F);
+    	setPartCenter("head", 0F, 1.2F, 0.6F);
     	
-    	lockHeadX = true;
-    	lockHeadY = true;
+    	setPartCenter("topmouth", 0F, 1.75F, 1.25F);
+    	setPartCenter("leftmouth", 0.14F, 1.6F, 1.25F);
+    	setPartCenter("rightmouth", -0.14F, 1.6F, 1.25F);
+    	setPartCenter("bottommouth", 0F, 1.4F, 1.25F);
+    	
+    	setPartCenter("body", 0F, 1.2F, 0.6F);
+    	
+    	setPartCenter("frontleftleg", 0.4F, 1.1F, 0.25F);
+    	setPartCenter("middleleftleg", 0.4F, 1.1F, -0.15F);
+    	setPartCenter("backleftleg", 0.4F, 1.1F, -0.5F);
+    	
+    	setPartCenter("frontrightleg", -0.4F, 1.1F, 0.25F);
+    	setPartCenter("middlerightleg", -0.4F, 1.1F, -0.15F);
+    	setPartCenter("backrightleg", -0.4F, 1.1F, -0.5F);
+    	
+    	this.lockHeadY = false;
     }
     
     
@@ -79,46 +68,49 @@ public class ModelErepede extends ModelCustomObj {
     	float rotY = 0F;
     	float rotZ = 0F;
     	
-    	// Looking:
-    	if(partName.equals("mouth")) {
-    		centerPartToPart("mouth", "head");
-    		if(!lockHeadX)
-    			rotX += Math.toDegrees(lookX / (180F / (float)Math.PI));
-    		if(!lockHeadY)
-    			rotY += Math.toDegrees(lookY / (180F / (float)Math.PI));
-    		uncenterPartToPart("mouth", "head");
-    	}
-    	
-    	// Mouth:
-    	if(partName.equals("mouth"))
-			rotX += 20F;
-    	
     	// Idle:
-    	if(partName.equals("mouth")) {
-    		rotate((float)-Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F - 0.05F), 0.0F, 0.0F);
-    		rotate((float)-Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F - 0.05F), 0.0F, 0.0F);
+    	if(partName.equals("topmouth") || partName.equals("leftmouth") || partName.equals("rightmouth") || partName.equals("bottommouth")) {
+    		this.centerPartToPart(partName, "head");
+    		if(!lockHeadX)
+    			this.rotate((float)Math.toDegrees(lookX / (180F / (float)Math.PI)), 0, 0);
+    		if(!lockHeadY)
+    			this.rotate(0, (float)Math.toDegrees(lookY / (180F / (float)Math.PI)), 0);
+    		this.uncenterPartToPart(partName, "head");
+    	}
+    	if(partName.equals("topmouth")) {
+    		rotX += (float)Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F - 0.05F);
+    	}
+    	if(partName.equals("leftmouth")) {
+    		rotY -= (float)Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F - 0.05F);
+    	}
+    	if(partName.equals("rightmouth")) {
+    		rotY += (float)Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F - 0.05F);
+    	}
+    	if(partName.equals("bottommouth")) {
+    		rotX -= (float)Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F - 0.05F);
     	}
     	
     	// Walking:
-    	float walkSwing = 0.6F;
+    	float walkSwing = 0.3F;
     	if(partName.equals("frontrightleg") || partName.equals("middleleftleg") || partName.equals("backrightleg")) {
-    		rotX += Math.toDegrees(MathHelper.cos(time * 0.6662F + (float)Math.PI) * walkSwing * distance);
+    		rotZ += Math.toDegrees(MathHelper.cos(time * 0.6662F + (float)Math.PI) * walkSwing * distance);
+    		rotY += Math.toDegrees(MathHelper.cos(time * 0.6662F + (float)Math.PI) * walkSwing * distance);
     	}
     	if(partName.equals("frontleftleg") || partName.equals("middlerightleg") || partName.equals("backleftleg")) {
-    		rotX += Math.toDegrees(MathHelper.cos(time * 0.6662F) * walkSwing * distance);
+    		rotZ += Math.toDegrees(MathHelper.cos(time * 0.6662F) * walkSwing * distance);
+    		rotY += Math.toDegrees(MathHelper.cos(time * 0.6662F) * walkSwing * distance);
     	}
 		
 		// Attack:
 		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
-	    	if(partName.equals("mouth")) {
-	    		rotX += 20.0F;
-	    	}
-		}
-    	
-    	// Sit:
-		if(entity instanceof EntityCreatureTameable && ((EntityCreatureTameable)entity).isSitting()) {
-			if(partName.equals("mouth"))
-				rotX -= 30F;
+	    	if(partName.equals("topmouth"))
+				rotX -= 20F;
+	    	if(partName.equals("leftmouth"))
+				rotY += 20F;
+	    	if(partName.equals("rightmouth"))
+				rotY -= 20F;
+	    	if(partName.equals("bottommouth"))
+				rotX += 20F;
 		}
 		
     	// Apply Animations:
@@ -134,7 +126,7 @@ public class ModelErepede extends ModelCustomObj {
     @Override
     public void childScale(String partName) {
     	super.childScale(partName);
-    	if(partName.equals("head") || partName.equals("mouth")) {
+    	if(partName.equals("head") || partName.equals("topmouth") || partName.equals("leftmouth") || partName.equals("rightmouth") || partName.equals("bottommouth")) {
     		scale(2F, 2F, 2F);
     		translate(0F, -(getPartCenter(partName)[1] / 2), 0F);
     	}

@@ -28,9 +28,20 @@ public class ModelFrostweaver extends ModelCustomObj {
     	parts = model.groupObjects;
     	
     	// Set Rotation Centers:
-    	setPartCenter("head", 0F, 1.5F, 0.3F);
-    	setPartCenter("body", 0F, 1.5F, 0.3F);
-    	//TODO Center the parts!
+    	setPartCenter("head", 0F, 0.4F, 0.55F);
+    	setPartCenter("leftmouth", 0.1F, 0.3F, 0.9F);
+    	setPartCenter("rightmouth", -0.1F, 0.3F, 0.9F);
+    	setPartCenter("body", 0F, 0.4F, 0.55F);
+    	
+    	setPartCenter("frontleftleg", 0.4F, 0.5F, 0.2F);
+    	setPartCenter("middlefrontleftleg", 0.4F, 0.5F, 0F);
+    	setPartCenter("middlebackleftleg", 0.4F, 0.5F, -0.2F);
+    	setPartCenter("backleftleg", 0.4F, 0.5F, -0.4F);
+    	
+    	setPartCenter("frontrightleg", -0.4F, 0.5F, 0.2F);
+    	setPartCenter("middlefrontrightleg", -0.4F, 0.5F, 0F);
+    	setPartCenter("middlebackrightleg", -0.4F, 0.5F, -0.2F);
+    	setPartCenter("backrightleg", -0.4F, 0.5F, -0.4F);
     	
     	this.lockHeadX = true;
     	this.lockHeadY = true;
@@ -64,10 +75,10 @@ public class ModelFrostweaver extends ModelCustomObj {
     	
     	// Walking:
     	float walkSwing = 0.6F;
-    	if(partName.equals("frontrightleg") || partName.equals("backmiddlerightleg") || partName.equals("frontmiddleleftleg") || partName.equals("backleftleg")) {
+    	if(partName.equals("frontrightleg") || partName.equals("middlebackrightleg") || partName.equals("middlefrontleftleg") || partName.equals("backleftleg")) {
     		rotX += Math.toDegrees(MathHelper.cos(time * 0.6662F + (float)Math.PI) * walkSwing * distance);
     	}
-    	if(partName.equals("frontleftleg") || partName.equals("backmiddleleftleg") || partName.equals("frontmiddlerightleg") || partName.equals("backrightleg")) {
+    	if(partName.equals("frontleftleg") || partName.equals("middlebackleftleg") || partName.equals("middlefrontrightleg") || partName.equals("backrightleg")) {
     		rotX += Math.toDegrees(MathHelper.cos(time * 0.6662F) * walkSwing * distance);
     	}
     	

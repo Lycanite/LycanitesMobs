@@ -14,7 +14,7 @@ public class SubConfig extends Config {
 		// ========== Feature Control ==========
 		loadSetting(this.featureStrings, "Feature Control", "BiomeTypes", "Group Biome Types", "JUNGLE");
 		loadSetting(this.featureStrings, "Feature Control", "Dimensions", "Group Dimensions", "0");
-		loadSetting(this.featureInts, "Feature Control", "ConcapedeSizeLimit", "Concapede Size Limit", 20);
+		loadSetting(this.featureInts, "Feature Control", "ConcapedeSizeLimit", "Concapede Size Limit", 10);
 		
 		// ========== Special Feature Control ==========
 		loadSetting(this.featureBools, "Feature Control", "DespawnConcapedesOnPeaceful", "Concapede Peaceful Spawning", true);

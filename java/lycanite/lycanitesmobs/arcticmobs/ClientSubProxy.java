@@ -1,6 +1,7 @@
 package lycanite.lycanitesmobs.arcticmobs;
 
 import lycanite.lycanitesmobs.AssetManager;
+import lycanite.lycanitesmobs.arcticmobs.model.ModelFrostweaver;
 import lycanite.lycanitesmobs.arcticmobs.model.ModelReiver;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
@@ -14,5 +15,6 @@ public class ClientSubProxy extends CommonSubProxy {
 	@Override
     public void registerModels() {
 		AssetManager.addModel("Reiver", new ModelReiver());
+		AssetManager.addModel("Frostweaver", new ModelFrostweaver());
 	}
 }

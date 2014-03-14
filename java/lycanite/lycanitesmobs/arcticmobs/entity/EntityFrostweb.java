@@ -1,10 +1,10 @@
-package lycanite.lycanitesmobs.swampmobs.entity;
+package lycanite.lycanitesmobs.arcticmobs.entity;
 
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.ICustomProjectile;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
-import lycanite.lycanitesmobs.swampmobs.SwampMobs;
+import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,32 +17,30 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class EntityVenomShot extends EntityThrowable implements ICustomProjectile {
-	public String entityName = "VenomShot";
-	public ILycaniteMod mod = SwampMobs.instance;
+public class EntityFrostweb extends EntityThrowable implements ICustomProjectile {
+	public String entityName = "Frostweb";
+	public ILycaniteMod mod = ArcticMobs.instance;
 	
 	// Properties:
 	public Entity shootingEntity;
-	byte damage = 5;
-	private float projectileScale = 2.5f;
+	byte damage = 2;
+	private float projectileScale = 1.0f;
 	
     // ==================================================
  	//                   Constructors
  	// ==================================================
-    public EntityVenomShot(World par1World) {
+    public EntityFrostweb(World par1World) {
         super(par1World);
         this.setSize(0.3125F, 0.3125F);
     }
 
-    public EntityVenomShot(World par1World, EntityLivingBase par2EntityLivingBase) {
+    public EntityFrostweb(World par1World, EntityLivingBase par2EntityLivingBase) {
         super(par1World, par2EntityLivingBase);
         this.setSize(0.3125F, 0.3125F);
     }
 
-    public EntityVenomShot(World par1World, double par2, double par4, double par6) {
+    public EntityFrostweb(World par1World, double par2, double par4, double par6) {
         super(par1World, par2, par4, par6);
         this.setSize(0.3125F, 0.3125F);
     }
@@ -65,10 +63,10 @@ public class EntityVenomShot extends EntityThrowable implements ICustomProjectil
 			    }
 			}
 			if(doDamage) {
-	            par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), (float)damage);
+				par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), (float)damage);
 	            if(par1MovingObjectPosition.entityHit instanceof EntityLivingBase)
-	    			((EntityLivingBase)par1MovingObjectPosition.entityHit).addPotionEffect(new PotionEffect(Potion.poison.id, 3 * 20, 0));
-	    	}
+	    			((EntityLivingBase)par1MovingObjectPosition.entityHit).addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 3 * 20, 0));
+			}
     	}
     	
     	// Block Hit:
@@ -98,13 +96,13 @@ public class EntityVenomShot extends EntityThrowable implements ICustomProjectil
             }
             
 	        if(!this.worldObj.isRemote && this.worldObj.isAirBlock(i, j, k)) {
-	        	this.worldObj.setBlock(i, j, k, ObjectManager.getBlock("PoisonCloud").blockID);
+	        	this.worldObj.setBlock(i, j, k, ObjectManager.getBlock("Frostweb").blockID);
 	        }
     	}
     	
     	// Impact Particles:
         for(int i = 0; i < 8; ++i) {
-            this.worldObj.spawnParticle("portal", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
+            this.worldObj.spawnParticle("snowshovel", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
         }
         
         // Remove Projectile:
@@ -174,19 +172,6 @@ public class EntityVenomShot extends EntityThrowable implements ICustomProjectil
  	// ==================================================
     @Override
     public String getLaunchSound() {
-    	return AssetManager.getSound("VenomShot");
-    }
-    
-    
-    // ==================================================
-    //                   Brightness
-    // ==================================================
-    public float getBrightness(float par1) {
-        return 1.0F;
-    }
-    
-    @SideOnly(Side.CLIENT)
-    public int getBrightnessForRender(float par1) {
-        return 15728880;
+    	return AssetManager.getSound("Frostweb");
     }
 }

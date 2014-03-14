@@ -78,7 +78,7 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
 		baseAttributes.put("movementSpeed", 0.32D);
 		baseAttributes.put("knockbackResistance", 0.25D);
 		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 4D);
+		baseAttributes.put("attackDamage", 1D);
         super.applyEntityAttributes(baseAttributes);
     }
 	

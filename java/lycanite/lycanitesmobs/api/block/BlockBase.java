@@ -37,12 +37,25 @@ public class BlockBase extends Block {
 	/** Whether or not light can pass through this block, useful for blocks such as glass. Setting this to false will also stop blocks behind it from rendering. **/
 	public boolean isOpaque = true;
 	
+	// Rendering:
+	public static enum RENDER_TYPE {
+		NONE(-1), NORMAL(0), WEB(0), FIRE(3);
+		public final int id;
+	    private RENDER_TYPE(int value) { this.id = value; }
+	    public int getValue() { return id; }
+	}
+	
 	// ==================================================
 	//                   Constructor
 	// ==================================================
 	public BlockBase(int blockID, Material material) {
 		super(blockID, material);
-        this.textureName = this.blockName.toLowerCase();
+	}
+	
+	/** Should be called by a child class once the blockName and other important variables are set, kind of a late construct. **/
+	public void setup() {
+		this.setUnlocalizedName(this.blockName);
+        this.setTextureName(this.blockName.toLowerCase());
 	}
 	
 	
@@ -69,6 +82,11 @@ public class BlockBase extends Block {
 	public int damageDropped(int breakMetadata) {
 		return 0;
 	}
+    
+	@Override
+	public int quantityDropped(Random par1Random) {
+        return 1;
+    }
 	
 
 	// ==================================================
@@ -146,8 +164,7 @@ public class BlockBase extends Block {
     @SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IconRegister iconRegister) {
-    	String textureName = this.blockName.toLowerCase();
-    	AssetManager.addIcon(this.blockName, this.mod.getDomain(), textureName, iconRegister);
+    	AssetManager.addIcon(this.blockName, this.mod.getDomain(), this.getTextureName(), iconRegister);
     }
     
     // ========== Get Icon from Side and Metadata ==========
@@ -156,10 +173,16 @@ public class BlockBase extends Block {
     public Icon getIcon(int side, int metadata) {
         return AssetManager.getIcon(blockName);
     }
+
+    // ========== Get Render Type ==========
+    @Override
+    public int getRenderType() {
+        return super.getRenderType();//TODO Get common shapes as an int enum! Also test Poison Clouds!
+    }
     
-    // ========== Render Type ==========
+    // ========== Render As Normal ==========
  	@Override
  	public boolean renderAsNormalBlock() {
- 		return true;//TODO Get common shapes as an int enum! Also test Poison Clouds!
+ 		return true;
  	}
 }

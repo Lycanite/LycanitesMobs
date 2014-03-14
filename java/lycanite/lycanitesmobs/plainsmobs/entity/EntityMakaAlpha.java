@@ -76,7 +76,7 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
 		baseAttributes.put("movementSpeed", 0.28D);
 		baseAttributes.put("knockbackResistance", 1D);
 		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 4D);
+		baseAttributes.put("attackDamage", 3D);
         super.applyEntityAttributes(baseAttributes);
     }
 	

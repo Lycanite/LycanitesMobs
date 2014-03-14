@@ -76,7 +76,7 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
 		baseAttributes.put("movementSpeed", 0.28D);
 		baseAttributes.put("knockbackResistance", 0.0D);
 		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 2D);
+		baseAttributes.put("attackDamage", 1D);
         super.applyEntityAttributes(baseAttributes);
     }
 	

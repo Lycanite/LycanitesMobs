@@ -79,7 +79,7 @@ public class EntityJoustAlpha extends EntityCreatureAgeable implements IAnimals,
 		baseAttributes.put("movementSpeed", 0.32D);
 		baseAttributes.put("knockbackResistance", 0.25D);
 		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 6D);
+		baseAttributes.put("attackDamage", 3D);
         super.applyEntityAttributes(baseAttributes);
     }
 	

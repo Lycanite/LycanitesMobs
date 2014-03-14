@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import lycanite.lycanitesmobs.DropRate;
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.IGroupPrey;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackRanged;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
@@ -13,7 +14,6 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
@@ -25,18 +25,18 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class EntityReiver extends EntityCreatureBase implements IMob {
+public class EntityFrostweaver extends EntityCreatureBase implements IMob {
     
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityReiver(World par1World) {
+    public EntityFrostweaver(World par1World) {
         super(par1World);
         
         // Setup:
-        this.entityName = "Reiver";
+        this.entityName = "Frostweaver";
         this.mod = ArcticMobs.instance;
-        this.attribute = EnumCreatureAttribute.UNDEFINED;
+        this.attribute = EnumCreatureAttribute.ARTHROPOD;
         this.experience = 5;
         this.spawnsInDarkness = true;
         this.hasAttackSound = false;
@@ -44,7 +44,7 @@ public class EntityReiver extends EntityCreatureBase implements IMob {
         this.eggName = "ArcticEgg";
         
         // Stats:
-        this.rangedDamage = new int[] {2, 3, 4};
+        this.rangedDamage = new int[] {1, 2, 3};
         
         this.setWidth = 0.8F;
         this.setHeight = 1.2F;
@@ -59,15 +59,14 @@ public class EntityReiver extends EntityCreatureBase implements IMob {
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
-        if(ObjectManager.getMob("Cinder") != null)
-        	this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(ObjectManager.getMob("Cinder")));
+        this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
     }
     
     // ========== Stats ==========
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 20D);
+		baseAttributes.put("maxHealth", 15D);
 		baseAttributes.put("movementSpeed", 0.24D);
 		baseAttributes.put("knockbackResistance", 0.0D);
 		baseAttributes.put("followRange", 16D);
@@ -78,9 +77,9 @@ public class EntityReiver extends EntityCreatureBase implements IMob {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(Item.snowball.itemID, 0.5F).setMaxAmount(8));
-        this.drops.add(new DropRate(Block.ice.blockID, 0.25F).setMaxAmount(8));
-        this.drops.add(new DropRate(ObjectManager.getItem("FrostboltCharge").itemID, 0.25F).setMaxAmount(3));
+        this.drops.add(new DropRate(Item.silk.itemID, 1.0F).setMaxAmount(6));
+        this.drops.add(new DropRate(Item.spiderEye.itemID, 0.5F).setMaxAmount(2));
+        this.drops.add(new DropRate(ObjectManager.getItem("FrostwebCharge").itemID, 0.25F).setMaxAmount(3));
 	}
 	
 	
@@ -107,7 +106,7 @@ public class EntityReiver extends EntityCreatureBase implements IMob {
     @Override
     public void rangedAttack(Entity target, float range) {
     	// Type:
-    	EntityFrostbolt projectile = new EntityFrostbolt(this.worldObj, this);
+    	EntityFrostweb projectile = new EntityFrostweb(this.worldObj, this);
         projectile.setProjectileScale(0.5f);
     	
     	// Y Offset:

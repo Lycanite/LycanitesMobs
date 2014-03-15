@@ -139,7 +139,7 @@ public class EntityFrostweaver extends EntityCreatureBase implements IMob {
   	//                     Abilities
   	// ==================================================
     @Override
-    public boolean canFly() { return true; }
+    public boolean canClimb() { return true; }
     
     
     // ==================================================
@@ -152,4 +152,7 @@ public class EntityFrostweaver extends EntityCreatureBase implements IMob {
         super.isPotionApplicable(par1PotionEffect);
         return true;
     }
+    
+    @Override
+    public boolean webproof() { return true; }
 }

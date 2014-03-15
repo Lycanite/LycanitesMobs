@@ -94,7 +94,7 @@ public class BlockFrostweb extends BlockBase {
     // ========== Get Render Type ==========
     @Override
     public int getRenderType() {
-        return BlockBase.RENDER_TYPE.WEB.id;
+        return BlockBase.RENDER_TYPE.CROSS.id;
     }
     
     // ========== Render As Normal ==========

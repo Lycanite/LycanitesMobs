@@ -39,7 +39,7 @@ public class BlockBase extends Block {
 	
 	// Rendering:
 	public static enum RENDER_TYPE {
-		NONE(-1), NORMAL(0), WEB(0), FIRE(3);
+		NONE(-1), NORMAL(0), CROSS(1), TORCH(2), FIRE(3), FLUID(4); // More found on RenderBlock.
 		public final int id;
 	    private RENDER_TYPE(int value) { this.id = value; }
 	    public int getValue() { return id; }
@@ -177,7 +177,7 @@ public class BlockBase extends Block {
     // ========== Get Render Type ==========
     @Override
     public int getRenderType() {
-        return super.getRenderType();//TODO Get common shapes as an int enum! Also test Poison Clouds!
+        return super.getRenderType();
     }
     
     // ========== Render As Normal ==========

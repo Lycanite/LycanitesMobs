@@ -409,7 +409,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Returns how many of this mob can spawn in a chunk, links to the config. **/
     @Override
     public int getMaxSpawnedInChunk() {
-        //return this.mod.getConfig().spawnLimits.get(this.entityName); XXX Removed for now, could be causing problems!
+        //return this.mod.getConfig().spawnLimits.get(this.entityName); XXX Removed for now, was causing problems!
     	return super.getMaxSpawnedInChunk();
     }
     
@@ -1582,8 +1582,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     		this.firstSpawn = false;
     	if(nbtTagCompound.hasKey("Stealth"))
     		this.setStealth(nbtTagCompound.getFloat("Stealth"));
-    	if(nbtTagCompound.hasKey("Minion"))
-    		this.setMinion(nbtTagCompound.getBoolean("Minion"));
+    	if(nbtTagCompound.hasKey("IsMinion"))
+    		this.setMinion(nbtTagCompound.getBoolean("IsMinion"));
         super.readEntityFromNBT(nbtTagCompound);
         this.inventory.readFromNBT(nbtTagCompound);
     }
@@ -1594,7 +1594,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public void writeEntityToNBT(NBTTagCompound nbtTagCompound) {
     	nbtTagCompound.setBoolean("FirstSpawn", false);
     	nbtTagCompound.setFloat("Stealth", this.getStealth());
-    	nbtTagCompound.setBoolean("Minion", this.isMinion());
+    	nbtTagCompound.setBoolean("IsMinion", this.isMinion());
         super.writeEntityToNBT(nbtTagCompound);
         this.inventory.writeToNBT(nbtTagCompound);
     }

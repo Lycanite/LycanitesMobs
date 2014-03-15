@@ -5,6 +5,7 @@ import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.ICustomProjectile;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
 import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -95,7 +96,11 @@ public class EntityFrostweb extends EntityThrowable implements ICustomProjectile
 	                ++i;
             }
             
-	        if(!this.worldObj.isRemote && this.worldObj.isAirBlock(i, j, k)) {
+	        if(!this.worldObj.isRemote && (
+	        		this.worldObj.isAirBlock(i, j, k)
+	        		|| this.worldObj.getBlockId(i, j, k) == Block.snow.blockID
+	        		|| this.worldObj.getBlockId(i, j, k) == Block.fire.blockID
+	        	)) {
 	        	this.worldObj.setBlock(i, j, k, ObjectManager.getBlock("Frostweb").blockID);
 	        }
     	}

@@ -114,7 +114,7 @@ public class DesertMobs implements ILycaniteMod {
 		ObjectManager.addMob("Clink", EntityClink.class, 0xFFAAAA, 0x999999);
 		ObjectManager.addMob("Joust", EntityJoust.class, 0xFF9900, 0xFFFF00);
 		ObjectManager.addMob("JoustAlpha", "Joust Alpha", EntityJoustAlpha.class, 0xFF0000, 0xFFFF00);
-		ObjectManager.addMob("Erepede", EntityErepede.class, 0xCCCCCC, 0x333333);
+		ObjectManager.addMob("Erepede", EntityErepede.class, 0xDD9922, 0xFFDDFF);
 		ObjectManager.addMob("Gorgomite", EntityGorgomite.class, 0xCC9900, 0x884400);
 		ObjectManager.addMob("Manticore", EntityManticore.class, 0x442200, 0x990000);
 		

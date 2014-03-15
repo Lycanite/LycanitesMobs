@@ -227,6 +227,13 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
     
     
     // ==================================================
+  	//                     Abilities
+  	// ==================================================
+    @Override
+    public boolean canClimb() { return true; }
+    
+    
+    // ==================================================
    	//                     Immunities
    	// ==================================================
 	@Override

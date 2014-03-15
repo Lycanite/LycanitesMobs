@@ -16,7 +16,7 @@ public class SubConfig extends Config {
 		loadSetting(this.featureStrings, "Feature Control", "Dimensions", "Group Dimensions", "0");
 
 		// ========== Special Feature Control ==========
-		loadSetting(this.featureBools, "Feature Control", "Dimensions", "Enable Frostwebbing", true);
+		loadSetting(this.featureBools, "Feature Control", "Frostweb", "Enable Frostwebs", true);
 		
 		// ========== Mob Control ==========
 		loadMobSettings("Reiver", 8, 4, 1, 3, "Monster");

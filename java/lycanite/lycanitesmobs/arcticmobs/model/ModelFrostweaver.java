@@ -76,10 +76,12 @@ public class ModelFrostweaver extends ModelCustomObj {
     	// Walking:
     	float walkSwing = 0.6F;
     	if(partName.equals("frontrightleg") || partName.equals("middlebackrightleg") || partName.equals("middlefrontleftleg") || partName.equals("backleftleg")) {
-    		rotX += Math.toDegrees(MathHelper.cos(time * 0.6662F + (float)Math.PI) * walkSwing * distance);
+    		rotX += Math.toDegrees(MathHelper.cos(time * 0.3331F + (float)Math.PI) * walkSwing * distance);
+    		rotZ += Math.toDegrees(MathHelper.cos(time * 0.6662F + (float)Math.PI) * walkSwing * distance);
     	}
     	if(partName.equals("frontleftleg") || partName.equals("middlebackleftleg") || partName.equals("middlefrontrightleg") || partName.equals("backrightleg")) {
-    		rotX += Math.toDegrees(MathHelper.cos(time * 0.6662F) * walkSwing * distance);
+    		rotX += Math.toDegrees(MathHelper.cos(time * 0.3331F) * walkSwing * distance);
+    		rotZ += Math.toDegrees(MathHelper.cos(time * 0.6662F) * walkSwing * distance);
     	}
     	
 		// Attack:

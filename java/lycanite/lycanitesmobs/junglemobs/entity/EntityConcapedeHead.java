@@ -251,6 +251,13 @@ public class EntityConcapedeHead extends EntityCreatureAgeable implements IAnima
     
     
     // ==================================================
+  	//                     Abilities
+  	// ==================================================
+    @Override
+    public boolean canClimb() { return true; }
+    
+    
+    // ==================================================
     //                     Breeding
     // ==================================================
     // ========== Create Child ==========

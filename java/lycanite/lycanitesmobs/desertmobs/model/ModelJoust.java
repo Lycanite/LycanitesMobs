@@ -38,7 +38,6 @@ public class ModelJoust extends ModelCustomObj {
     	setPartCenter("frontrightleg", -0.15F, 0.7F, -0.15F);
     	setPartCenter("backrightleg", -0.15F, 0.7F, 0.15F);
     	
-    	// TODO: Fix rotations for head
     	lockHeadX = true;
     	lockHeadY = true;
     }

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import lycanite.lycanitesmobs.DropRate;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
-import lycanite.lycanitesmobs.api.entity.EntityRapidFire;
+import lycanite.lycanitesmobs.api.entity.EntityProjectileRapidFire;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackRanged;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
@@ -136,7 +136,7 @@ public class EntityCinder extends EntityCreatureBase implements IMob {
     @Override
     public void rangedAttack(Entity target, float range) {
     	// Type:
-    	EntityRapidFire projectile = new EntityRapidFire(EntityEmber.class, this.worldObj, this, 15, 3);
+    	EntityProjectileRapidFire projectile = new EntityProjectileRapidFire(EntityEmber.class, this.worldObj, this, 15, 3);
         projectile.setProjectileScale(1f);
     	
     	// Y Offset:

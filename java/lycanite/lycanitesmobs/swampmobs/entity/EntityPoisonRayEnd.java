@@ -1,17 +1,14 @@
 package lycanite.lycanitesmobs.swampmobs.entity;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.api.ILycaniteMod;
-import lycanite.lycanitesmobs.api.entity.EntityLaser;
-import lycanite.lycanitesmobs.api.entity.EntityLaserEnd;
+import lycanite.lycanitesmobs.api.entity.EntityProjectileLaser;
+import lycanite.lycanitesmobs.api.entity.EntityProjectileLaserEnd;
 import lycanite.lycanitesmobs.swampmobs.SwampMobs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-public class EntityPoisonRayEnd extends EntityLaserEnd {
-	public String entityName = "PoisonRay"; // Should be the same as the start entity.
-	public ILycaniteMod mod = SwampMobs.instance;
+public class EntityPoisonRayEnd extends EntityProjectileLaserEnd {
     
     // ==================================================
  	//                   Constructors
@@ -20,12 +17,18 @@ public class EntityPoisonRayEnd extends EntityLaserEnd {
         super(world);
     }
 
-    public EntityPoisonRayEnd(World world, double par2, double par4, double par6, EntityLaser laser) {
+    public EntityPoisonRayEnd(World world, double par2, double par4, double par6, EntityProjectileLaser laser) {
         super(world, par2, par4, par6, laser);
     }
     
-    public EntityPoisonRayEnd(World world, EntityLivingBase shooter, EntityLaser laser) {
+    public EntityPoisonRayEnd(World world, EntityLivingBase shooter, EntityProjectileLaser laser) {
         super(world, shooter, laser);
+    }
+    
+    // ========== Setup Projectile ==========
+    public void setup() {
+    	this.entityName = "PoisonRay";
+    	this.mod = SwampMobs.instance;
     }
     
     // ========== Stats ==========

@@ -3,7 +3,7 @@ package lycanite.lycanitesmobs.infernomobs.dispenser;
 import java.util.Random;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.api.entity.EntityRapidFire;
+import lycanite.lycanitesmobs.api.entity.EntityProjectileRapidFire;
 import lycanite.lycanitesmobs.infernomobs.entity.EntityEmber;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.BehaviorProjectileDispense;
@@ -34,7 +34,7 @@ public class DispenserBehaviorEmber extends BehaviorProjectileDispense {
     
 	@Override
     protected IProjectile getProjectileEntity(World par1World, IPosition par2IPosition) {
-		return new EntityRapidFire(EntityEmber.class, par1World, par2IPosition.getX(), par2IPosition.getY(), par2IPosition.getZ(), 100, 5);
+		return new EntityProjectileRapidFire(EntityEmber.class, par1World, par2IPosition.getX(), par2IPosition.getY(), par2IPosition.getZ(), 100, 5);
     }
     
     

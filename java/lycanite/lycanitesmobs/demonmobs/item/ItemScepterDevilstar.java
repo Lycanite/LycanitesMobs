@@ -1,7 +1,7 @@
 package lycanite.lycanitesmobs.demonmobs.item;
 
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.ICustomProjectile;
+import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.api.item.ItemScepter;
 import lycanite.lycanitesmobs.demonmobs.DemonMobs;
 import lycanite.lycanitesmobs.demonmobs.entity.EntityDevilstar;
@@ -45,7 +45,7 @@ public class ItemScepterDevilstar extends ItemScepter {
     	if(!world.isRemote) {
     		EntityDevilstar projectile = new EntityDevilstar(world, player);
         	world.spawnEntityInWorld(projectile);
-            world.playSoundAtEntity(player, ((ICustomProjectile) projectile).getLaunchSound(), 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+            world.playSoundAtEntity(player, ((EntityProjectileBase)projectile).getLaunchSound(), 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
         }
     	return true;
     }

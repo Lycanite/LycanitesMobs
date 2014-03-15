@@ -4,7 +4,7 @@ import java.util.List;
 
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
-import lycanite.lycanitesmobs.api.ICustomProjectile;
+import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
 import lycanite.lycanitesmobs.arcticmobs.entity.EntityFrostbolt;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -55,7 +55,7 @@ public class ItemFrostboltCharge extends Item {
          if(!par2World.isRemote) {
          	EntityThrowable projectile = new EntityFrostbolt(par2World, par3EntityPlayer);
              par2World.spawnEntityInWorld(projectile);
-             par2World.playSoundAtEntity(par3EntityPlayer, ((ICustomProjectile) projectile).getLaunchSound(), 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+             par2World.playSoundAtEntity(par3EntityPlayer, ((EntityProjectileBase)projectile).getLaunchSound(), 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
          }
 
          return par1ItemStack;

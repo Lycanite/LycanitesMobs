@@ -96,7 +96,7 @@ public class ArcticMobs implements ILycaniteMod {
 		
 		// ========== Create Projectiles ==========
 		ObjectManager.addProjectile("Frostbolt", EntityFrostbolt.class, ObjectManager.getItem("FrostboltCharge"), new DispenserBehaviorFrostbolt());
-		ObjectManager.addProjectile("Frostweb", EntityFrostweb.class, ObjectManager.getItem("FrostboltCharge"), new DispenserBehaviorFrostweb());
+		ObjectManager.addProjectile("Frostweb", EntityFrostweb.class, ObjectManager.getItem("FrostwebCharge"), new DispenserBehaviorFrostweb());
 		
 		// ========== Register Models ==========
 		proxy.registerModels();

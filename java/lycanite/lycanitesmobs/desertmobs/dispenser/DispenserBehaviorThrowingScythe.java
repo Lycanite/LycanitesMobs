@@ -3,7 +3,7 @@ package lycanite.lycanitesmobs.desertmobs.dispenser;
 import java.util.Random;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.api.entity.EntityRapidFire;
+import lycanite.lycanitesmobs.api.entity.EntityProjectileRapidFire;
 import lycanite.lycanitesmobs.desertmobs.entity.EntityThrowingScythe;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.client.audio.SoundManager;
@@ -35,7 +35,7 @@ public class DispenserBehaviorThrowingScythe extends BehaviorProjectileDispense 
     
 	@Override
     protected IProjectile getProjectileEntity(World par1World, IPosition par2IPosition) {
-        return new EntityRapidFire(EntityThrowingScythe.class, par1World, par2IPosition.getX(), par2IPosition.getY(), par2IPosition.getZ(), 15, 5);
+        return new EntityProjectileRapidFire(EntityThrowingScythe.class, par1World, par2IPosition.getX(), par2IPosition.getY(), par2IPosition.getZ(), 15, 5);
     }
     
     

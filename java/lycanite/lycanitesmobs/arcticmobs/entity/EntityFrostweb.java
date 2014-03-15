@@ -2,31 +2,18 @@ package lycanite.lycanitesmobs.arcticmobs.entity;
 
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.ICustomProjectile;
-import lycanite.lycanitesmobs.api.ILycaniteMod;
+import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.AttackEntityEvent;
 
-public class EntityFrostweb extends EntityThrowable implements ICustomProjectile {
-	public String entityName = "Frostweb";
-	public ILycaniteMod mod = ArcticMobs.instance;
-	
+public class EntityFrostweb extends EntityProjectileBase {
 	// Properties:
 	public Entity shootingEntity;
-	byte damage = 2;
-	private float projectileScale = 1.0f;
 	
     // ==================================================
  	//                   Constructors
@@ -46,129 +33,49 @@ public class EntityFrostweb extends EntityThrowable implements ICustomProjectile
         this.setSize(0.3125F, 0.3125F);
     }
     
+    // ========== Setup Projectile ==========
+    public void setup() {
+    	this.entityName = "Frostweb";
+    	this.mod = ArcticMobs.instance;
+    	this.setDamage(2);
+    }
+    
     
     // ==================================================
  	//                     Impact
  	// ==================================================
+    //========== Entity Living Collision ==========
     @Override
-    protected void onImpact(MovingObjectPosition par1MovingObjectPosition) {
-    	// Entity Hit:
-    	if(par1MovingObjectPosition.entityHit != null) {
-    		boolean doDamage = true;
-			if(par1MovingObjectPosition.entityHit instanceof EntityLivingBase) {
-				EntityLivingBase owner = this.getThrower();
-			    if(this.getThrower() != null && owner instanceof EntityPlayer) {
-			    	if(MinecraftForge.EVENT_BUS.post(new AttackEntityEvent((EntityPlayer)owner, par1MovingObjectPosition.entityHit))) {
-			    		doDamage = false;
-			    	}
-			    }
-			}
-			if(doDamage) {
-				par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), (float)damage);
-	            if(par1MovingObjectPosition.entityHit instanceof EntityLivingBase)
-	    			((EntityLivingBase)par1MovingObjectPosition.entityHit).addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 3 * 20, 0));
-			}
-    	}
-    	
-    	// Block Hit:
-    	else {
-    		int i = par1MovingObjectPosition.blockX;
-    		int j = par1MovingObjectPosition.blockY;
-            int k = par1MovingObjectPosition.blockZ;
-            
-            switch (par1MovingObjectPosition.sideHit) {
-	            case 0:
-	                --j;
-	                break;
-	            case 1:
-	                ++j;
-	                break;
-	            case 2:
-	                --k;
-	                break;
-	            case 3:
-	                ++k;
-	                break;
-	            case 4:
-	                --i;
-	                break;
-	            case 5:
-	                ++i;
-            }
-            
-	        if(!this.worldObj.isRemote && (
-	        		this.worldObj.isAirBlock(i, j, k)
-	        		|| this.worldObj.getBlockId(i, j, k) == Block.snow.blockID
-	        		|| this.worldObj.getBlockId(i, j, k) == Block.fire.blockID
-	        	)) {
-	        	this.worldObj.setBlock(i, j, k, ObjectManager.getBlock("Frostweb").blockID);
-	        }
-    	}
-    	
-    	// Impact Particles:
-        for(int i = 0; i < 8; ++i) {
-            this.worldObj.spawnParticle("snowshovel", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
-        }
-        
-        // Remove Projectile:
-        if(!this.worldObj.isRemote) {
-            this.setDead();
-        }
+    public boolean entityLivingCollision(EntityLivingBase entityLiving) {
+    	entityLiving.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 2 * 20, 0));
+    	return true;
     }
     
-    
-    // ==================================================
- 	//                    Collision
- 	// ==================================================
-    public boolean canBeCollidedWith() {
-        return false;
-    }
-    
-    
-    // ==================================================
- 	//                     Attacked
- 	// ==================================================
-    public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
-        return false;
-    }
-    
-    
-    // ==================================================
- 	//                      Scale
- 	// ==================================================
+    //========== Can Destroy Block ==========
     @Override
-    public void setProjectileScale(float newScale) {
-    	projectileScale = newScale;
+    public boolean canDestroyBlock(int x, int y, int z) {
+    	if(this.worldObj.getBlockId(x, y, z) == Block.snow.blockID)
+    		return true;
+    	if(this.worldObj.getBlockId(x, y, z) == Block.fire.blockID)
+    		return true;
+    	if(this.worldObj.getBlockId(x, y, z) == Block.tallGrass.blockID)
+    		return true;
+    	if(ObjectManager.getBlock("PoisonCloud") != null && this.worldObj.getBlockId(x, y, z) == ObjectManager.getBlock("PoisonCloud").blockID)
+    		return true;
+   	 	return super.canDestroyBlock(x, y, z);
     }
     
+    //========== Place Block ==========
     @Override
-    public float getProjectileScale() {
-        return projectileScale;
+    public void placeBlock(World world, int x, int y, int z) {
+	   	 world.setBlock(x, y, z, ObjectManager.getBlock("Frostweb").blockID);
     }
     
-    
-    // ==================================================
- 	//                      Damage
- 	// ==================================================
+    //========== On Impact Particles/Sounds ==========
     @Override
-    public void setDamage(int newDamage) {
-    	damage = (byte)newDamage;
-    }
-    
-    @Override
-    public float getDamage() {
-        return (float)damage;
-    }
-    
-    
-    // ==================================================
- 	//                      Visuals
- 	// ==================================================
-    @Override
-    public ResourceLocation getTexture() {
-    	if(AssetManager.getTexture(this.entityName) == null)
-    		AssetManager.addTexture(this.entityName, this.mod.getDomain(), "textures/items/" + this.entityName.toLowerCase() + ".png");
-    	return AssetManager.getTexture(this.entityName);
+    public void onImpactVisuals() {
+    	for(int i = 0; i < 8; ++i)
+    		this.worldObj.spawnParticle("snowshovel", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
     }
     
     

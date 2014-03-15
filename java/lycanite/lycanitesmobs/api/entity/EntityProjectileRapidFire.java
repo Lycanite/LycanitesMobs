@@ -2,21 +2,16 @@ package lycanite.lycanitesmobs.api.entity;
 
 import java.lang.reflect.Constructor;
 
-import lycanite.lycanitesmobs.api.ICustomProjectile;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IProjectile;
-import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-public class EntityRapidFire extends EntityThrowable implements ICustomProjectile {
+public class EntityProjectileRapidFire extends EntityProjectileBase {
 	// Properties:
 	public EntityLivingBase shootingEntity;
-	byte damage = 1;
-	private float projectileScale = 1f;
 	private float projectileWidth = 0.2f;
 	private float projectileHeight = 0.2f;
 	
@@ -33,7 +28,7 @@ public class EntityRapidFire extends EntityThrowable implements ICustomProjectil
     // ==================================================
  	//                   Constructors
  	// ==================================================
-    public EntityRapidFire(Class entityClass, World par1World, int setTime, int setDelay) {
+    public EntityProjectileRapidFire(Class entityClass, World par1World, int setTime, int setDelay) {
         super(par1World);
         this.setSize(projectileWidth, projectileHeight);
         projectileClass = entityClass;
@@ -41,7 +36,7 @@ public class EntityRapidFire extends EntityThrowable implements ICustomProjectil
         this.rapidDelay = setDelay;
     }
 
-    public EntityRapidFire(Class entityClass, World par1World, double par2, double par4, double par6, int setTime, int setDelay) {
+    public EntityProjectileRapidFire(Class entityClass, World par1World, double par2, double par4, double par6, int setTime, int setDelay) {
         super(par1World, par2, par4, par6);
         this.setSize(projectileWidth, projectileHeight);
         projectileClass = entityClass;
@@ -49,7 +44,7 @@ public class EntityRapidFire extends EntityThrowable implements ICustomProjectil
         this.rapidDelay = setDelay;
     }
 
-    public EntityRapidFire(Class entityClass, World par1World, EntityLivingBase par2EntityLivingBase, int setTime, int setDelay) {
+    public EntityProjectileRapidFire(Class entityClass, World par1World, EntityLivingBase par2EntityLivingBase, int setTime, int setDelay) {
         super(par1World, par2EntityLivingBase);
         this.setSize(projectileWidth, projectileHeight);
         this.projectileClass = entityClass;
@@ -120,8 +115,8 @@ public class EntityRapidFire extends EntityThrowable implements ICustomProjectil
 	        	projectile = (IProjectile)constructor.newInstance(new Object[] { world, this.shootingEntity });
 	        }
 	        
-	        if(projectile instanceof ICustomProjectile)
-	        	this.playSound(((ICustomProjectile) projectile).getLaunchSound(), 1.0F, 1.0F / (this.rand.nextFloat() * 0.4F + 0.8F));
+	        if(projectile instanceof EntityProjectileBase)
+	        	this.playSound(((EntityProjectileBase) projectile).getLaunchSound(), 1.0F, 1.0F / (this.rand.nextFloat() * 0.4F + 0.8F));
 	        
 	        world.spawnEntityInWorld((Entity)projectile);
 		}
@@ -152,63 +147,10 @@ public class EntityRapidFire extends EntityThrowable implements ICustomProjectil
     
     
     // ==================================================
- 	//                    Collision
- 	// ==================================================
-    public boolean canBeCollidedWith() {
-        return false;
-    }
-    
-    
-    // ==================================================
- 	//                     Attacked
- 	// ==================================================
-    public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
-        return false;
-    }
-    
-    
-    // ==================================================
- 	//                      Scale
- 	// ==================================================
-    @Override
-    public void setProjectileScale(float newScale) {
-    	projectileScale = newScale;
-    }
-    
-    @Override
-    public float getProjectileScale() {
-        return projectileScale;
-    }
-    
-    
-    // ==================================================
- 	//                      Damage
- 	// ==================================================
-    @Override
-    public void setDamage(int newDamage) {
-    	damage = (byte)newDamage;
-    }
-    
-    @Override
-    public float getDamage() {
-        return (float)damage;
-    }
-    
-    
-    // ==================================================
  	//                      Visuals
  	// ==================================================
     @Override
     public ResourceLocation getTexture() {
     	return null;
     }
-    
-    
-    // ==================================================
- 	//                      Sounds
- 	// ==================================================
-	@Override
-	public String getLaunchSound() {
-		return null;
-	}
 }

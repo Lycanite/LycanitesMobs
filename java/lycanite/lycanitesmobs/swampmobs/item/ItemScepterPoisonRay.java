@@ -1,7 +1,7 @@
 package lycanite.lycanitesmobs.swampmobs.item;
 
-import lycanite.lycanitesmobs.api.ICustomProjectile;
-import lycanite.lycanitesmobs.api.entity.EntityLaser;
+import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
+import lycanite.lycanitesmobs.api.entity.EntityProjectileLaser;
 import lycanite.lycanitesmobs.api.item.ItemScepter;
 import lycanite.lycanitesmobs.swampmobs.SwampMobs;
 import lycanite.lycanitesmobs.swampmobs.entity.EntityPoisonRay;
@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class ItemScepterPoisonRay extends ItemScepter {
-	private EntityLaser projectileTarget;
+	private EntityProjectileLaser projectileTarget;
 	
 	// ==================================================
 	//                   Constructor
@@ -58,7 +58,7 @@ public class ItemScepterPoisonRay extends ItemScepter {
     		else {
     			this.projectileTarget = new EntityPoisonRay(world, player, 20, 10);
     			world.spawnEntityInWorld(this.projectileTarget);
-            	world.playSoundAtEntity(player, ((ICustomProjectile)this.projectileTarget).getLaunchSound(), 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+            	world.playSoundAtEntity(player, ((EntityProjectileBase)this.projectileTarget).getLaunchSound(), 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
     		}
     	}
     	return true;

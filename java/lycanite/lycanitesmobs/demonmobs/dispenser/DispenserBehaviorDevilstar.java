@@ -1,6 +1,6 @@
 package lycanite.lycanitesmobs.demonmobs.dispenser;
 
-import lycanite.lycanitesmobs.api.entity.EntityRapidFire;
+import lycanite.lycanitesmobs.api.entity.EntityProjectileRapidFire;
 import lycanite.lycanitesmobs.demonmobs.entity.EntityDevilstar;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.BehaviorProjectileDispense;
@@ -31,7 +31,7 @@ public class DispenserBehaviorDevilstar extends BehaviorProjectileDispense {
     
 	@Override
     protected IProjectile getProjectileEntity(World par1World, IPosition par2IPosition) {
-        return new EntityRapidFire(EntityDevilstar.class, par1World, par2IPosition.getX(), par2IPosition.getY(), par2IPosition.getZ(), 100, 5);
+        return new EntityProjectileRapidFire(EntityDevilstar.class, par1World, par2IPosition.getX(), par2IPosition.getY(), par2IPosition.getZ(), 100, 5);
     }
     
     

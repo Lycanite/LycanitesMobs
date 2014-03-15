@@ -112,12 +112,6 @@ public class PlainsMobs implements ILycaniteMod {
 		// ========== Remove Vanilla Spawns ==========
 		BiomeGenBase[] biomes = this.config.getSpawnBiomesTypes();
 		if(config.getFeatureBool("ControlVanilla")) {
-			for(BiomeGenBase biome : biomes) {
-				System.out.println("============== " + biome + " =============");
-				for(Object object : biome.getSpawnableList(EnumCreatureType.creature)) {
-					System.out.println(object);
-				}
-			}
 			EntityRegistry.removeSpawn(EntitySkeleton.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntitySpider.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntityPig.class, EnumCreatureType.creature, biomes);

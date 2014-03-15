@@ -1,7 +1,7 @@
 package lycanite.lycanitesmobs.desertmobs.item;
 
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.entity.EntityRapidFire;
+import lycanite.lycanitesmobs.api.entity.EntityProjectileRapidFire;
 import lycanite.lycanitesmobs.api.item.ItemScepter;
 import lycanite.lycanitesmobs.desertmobs.DesertMobs;
 import lycanite.lycanitesmobs.desertmobs.entity.EntityThrowingScythe;
@@ -43,7 +43,7 @@ public class ItemScepterScythe extends ItemScepter {
     @Override
     public boolean rapidAttack(ItemStack itemStack, World world, EntityPlayer player) {
     	if(!world.isRemote) {
-        	EntityRapidFire projectile = new EntityRapidFire(EntityThrowingScythe.class, world, player, 15, 5);
+        	EntityProjectileRapidFire projectile = new EntityProjectileRapidFire(EntityThrowingScythe.class, world, player, 15, 5);
         	world.spawnEntityInWorld(projectile);
         }
     	return true;

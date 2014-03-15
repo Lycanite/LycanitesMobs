@@ -1,8 +1,8 @@
 package lycanite.lycanitesmobs.api.render;
 
-import lycanite.lycanitesmobs.api.ICustomProjectile;
-import lycanite.lycanitesmobs.api.entity.EntityLaser;
 import lycanite.lycanitesmobs.api.entity.EntityParticle;
+import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
+import lycanite.lycanitesmobs.api.entity.EntityProjectileLaser;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.Tessellator;
@@ -41,8 +41,8 @@ public class RenderProjectile extends Render {
     @Override
     public void doRender(Entity entity, double par2, double par4, double par6, float par8, float par9) {
     	if(this.renderTime++ > Integer.MAX_VALUE - 1) this.renderTime = 0;this.renderProjectile(entity, par2, par4, par6, par8, par9);
-    	if(entity instanceof EntityLaser)
-    		this.renderLaser((EntityLaser)entity, par2, par4, par6, par8, par9);
+    	if(entity instanceof EntityProjectileLaser)
+    		this.renderLaser((EntityProjectileLaser)entity, par2, par4, par6, par8, par9);
     }
     
     
@@ -51,7 +51,7 @@ public class RenderProjectile extends Render {
     // ==================================================
     public void renderProjectile(Entity entity, double par2, double par4, double par6, float par8, float par9) {
     	float scale = 1f;
-    	try { scale = ((ICustomProjectile)entity).getProjectileScale(); }
+    	try { scale = ((EntityProjectileBase)entity).getProjectileScale(); }
     	catch(Exception e) {}
     	
     	this.bindEntityTexture(entity);
@@ -72,7 +72,7 @@ public class RenderProjectile extends Render {
     // ==================================================
     //                 Render Laser
     // ==================================================
-    public void renderLaser(EntityLaser entity, double par2, double par4, double par6, float par8, float par9) {
+    public void renderLaser(EntityProjectileLaser entity, double par2, double par4, double par6, float par8, float par9) {
     	float scale = entity.getLaserWidth();
     	
     	// Create Laser Model If Null:
@@ -123,15 +123,15 @@ public class RenderProjectile extends Render {
     // ========== Get Texture ==========
     @Override
     protected ResourceLocation getEntityTexture(Entity entity) {
-    	if(entity instanceof ICustomProjectile)
-    		return ((ICustomProjectile)entity).getTexture();
+    	if(entity instanceof EntityProjectileBase)
+    		return ((EntityProjectileBase)entity).getTexture();
     	else if(entity instanceof EntityParticle)
     		return ((EntityParticle)entity).getTexture();
     	return null;
     }
 
     // ========== Get Laser Texture ==========
-    protected ResourceLocation getLaserTexture(EntityLaser entity) {
+    protected ResourceLocation getLaserTexture(EntityProjectileLaser entity) {
     	return entity.getBeamTexture();
     }
     

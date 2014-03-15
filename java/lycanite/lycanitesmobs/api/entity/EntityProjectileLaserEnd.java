@@ -1,14 +1,11 @@
 package lycanite.lycanitesmobs.api.entity;
 
-import lycanite.lycanitesmobs.api.ICustomProjectile;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-public class EntityLaserEnd extends EntityThrowable implements ICustomProjectile {
+public class EntityProjectileLaserEnd extends EntityProjectileBase {
 	// Laser End:
 	private double targetX;
 	private double targetY;
@@ -17,8 +14,7 @@ public class EntityLaserEnd extends EntityThrowable implements ICustomProjectile
 	
 	// Properties:
 	public EntityLivingBase shootingEntity;
-	public EntityLaser laserEntity;
-	private float projectileScale = 1f;
+	public EntityProjectileLaser laserEntity;
 	private float projectileWidth = 0.2f;
 	private float projectileHeight = 0.2f;
 	private double projectileSpeed;
@@ -26,18 +22,18 @@ public class EntityLaserEnd extends EntityThrowable implements ICustomProjectile
     // ==================================================
  	//                   Constructors
  	// ==================================================
-    public EntityLaserEnd(World world) {
+    public EntityProjectileLaserEnd(World world) {
         super(world);
         this.setStats();
     }
 
-    public EntityLaserEnd(World world, double par2, double par4, double par6, EntityLaser laser) {
+    public EntityProjectileLaserEnd(World world, double par2, double par4, double par6, EntityProjectileLaser laser) {
         super(world, par2, par4, par6);
         this.laserEntity = laser;
         this.setStats();
     }
     
-    public EntityLaserEnd(World world, EntityLivingBase shooter, EntityLaser laser) {
+    public EntityProjectileLaserEnd(World world, EntityLivingBase shooter, EntityProjectileLaser laser) {
         super(world, shooter);
         this.shootingEntity = shooter;
         this.laserEntity = laser;
@@ -147,52 +143,10 @@ public class EntityLaserEnd extends EntityThrowable implements ICustomProjectile
     
     
     // ==================================================
- 	//                    Collision
- 	// ==================================================
-    public boolean canBeCollidedWith() {
-        return false;
-    }
-    
-    
-    // ==================================================
- 	//                     Attacked
- 	// ==================================================
-    public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
-        return false;
-    }
-    
-    
-    // ==================================================
  	//                      Speed
  	// ==================================================
     public void setSpeed(double speed) {
     	this.projectileSpeed = speed;
-    }
-    
-    
-    // ==================================================
- 	//                      Scale
- 	// ==================================================
-    @Override
-    public void setProjectileScale(float newScale) {
-    	projectileScale = newScale;
-    }
-    
-    @Override
-    public float getProjectileScale() {
-        return projectileScale;
-    }
-    
-    
-    // ==================================================
- 	//                      Damage
- 	// ==================================================
-    @Override
-    public void setDamage(int newDamage) {}
-    
-    @Override
-    public float getDamage() {
-        return 0;
     }
     
     
@@ -203,13 +157,4 @@ public class EntityLaserEnd extends EntityThrowable implements ICustomProjectile
     public ResourceLocation getTexture() {
     	return null;
     }
-    
-    
-    // ==================================================
- 	//                      Sounds
- 	// ==================================================
-	@Override
-	public String getLaunchSound() {
-		return null;
-	}
 }

@@ -11,6 +11,7 @@ import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
 import lycanite.lycanitesmobs.swampmobs.block.BlockPoisonCloud;
 import lycanite.lycanitesmobs.swampmobs.dispenser.DispenserBehaviorPoisonRay;
+import lycanite.lycanitesmobs.swampmobs.dispenser.DispenserBehaviorVenomShot;
 import lycanite.lycanitesmobs.swampmobs.entity.EntityAspid;
 import lycanite.lycanitesmobs.swampmobs.entity.EntityDweller;
 import lycanite.lycanitesmobs.swampmobs.entity.EntityEttin;
@@ -123,7 +124,7 @@ public class SwampMobs implements ILycaniteMod {
 		// ========== Create Projectiles ==========
 		ObjectManager.addProjectile("PoisonRay", EntityPoisonRay.class, Item.fermentedSpiderEye, new DispenserBehaviorPoisonRay());
 		ObjectManager.addProjectile("PoisonRayEnd", EntityPoisonRayEnd.class);
-		ObjectManager.addProjectile("VenomShot", EntityVenomShot.class);
+		ObjectManager.addProjectile("VenomShot", EntityVenomShot.class, ObjectManager.getItem("PoisonGland"), new DispenserBehaviorVenomShot());
 		
 		// ========== Register Models ==========
 		proxy.registerModels();

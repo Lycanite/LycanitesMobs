@@ -3,7 +3,7 @@ package lycanite.lycanitesmobs.swampmobs.dispenser;
 import java.util.Random;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.api.entity.EntityLaser;
+import lycanite.lycanitesmobs.api.entity.EntityProjectileLaser;
 import lycanite.lycanitesmobs.swampmobs.entity.EntityPoisonRay;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.BehaviorProjectileDispense;
@@ -44,7 +44,7 @@ public class DispenserBehaviorPoisonRay extends BehaviorProjectileDispense {
 			targetX -= 1;*/
 		
 		IProjectile projectile = new EntityPoisonRay(world, targetX, targetY, targetZ, 5 * 20, 10);
-		EntityLaser laser = (EntityLaser)projectile;
+		EntityProjectileLaser laser = (EntityProjectileLaser)projectile;
 		
 		if(facing.equals(EnumFacing.DOWN))
 			targetY -= laser.laserRange;

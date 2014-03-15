@@ -1,7 +1,7 @@
 package lycanite.lycanitesmobs.arcticmobs.item;
 
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.ICustomProjectile;
+import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.api.item.ItemScepter;
 import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
 import lycanite.lycanitesmobs.arcticmobs.entity.EntityFrostweb;
@@ -45,7 +45,7 @@ public class ItemScepterFrostweb extends ItemScepter {
     	if(!world.isRemote) {
         	EntityFrostweb projectile = new EntityFrostweb(world, player);
         	world.spawnEntityInWorld(projectile);
-            world.playSoundAtEntity(player, ((ICustomProjectile) projectile).getLaunchSound(), 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+            world.playSoundAtEntity(player, ((EntityProjectileBase)projectile).getLaunchSound(), 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
         }
     	return true;
     }

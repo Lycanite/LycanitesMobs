@@ -1,7 +1,7 @@
 package lycanite.lycanitesmobs.api.render;
 
-import lycanite.lycanitesmobs.api.ICustomProjectile;
 import lycanite.lycanitesmobs.api.entity.EntityParticle;
+import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
@@ -45,7 +45,7 @@ public class RenderParticle extends Render {
     // ==================================================
     public void renderParticle(Entity entity, double par2, double par4, double par6, float par8, float par9) {
     	float scale = 1f;
-    	try { scale = ((ICustomProjectile)entity).getProjectileScale(); }
+    	try { scale = ((EntityProjectileBase)entity).getProjectileScale(); }
     	catch(Exception e) {}
     	
     	this.bindEntityTexture(entity);
@@ -69,9 +69,7 @@ public class RenderParticle extends Render {
     // ========== Get Texture ==========
     @Override
     protected ResourceLocation getEntityTexture(Entity entity) {
-    	if(entity instanceof ICustomProjectile)
-    		this.texture = ((ICustomProjectile)entity).getTexture();
-    	else if(entity instanceof EntityParticle)
+    	if(entity instanceof EntityParticle)
     		this.texture = ((EntityParticle)entity).getTexture();
     	return texture;
     }

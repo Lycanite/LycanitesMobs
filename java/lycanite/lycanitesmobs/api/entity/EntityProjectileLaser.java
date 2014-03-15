@@ -4,11 +4,9 @@ import java.lang.reflect.Constructor;
 import java.util.HashSet;
 
 import lycanite.lycanitesmobs.Utilities;
-import lycanite.lycanitesmobs.api.ICustomProjectile;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
@@ -18,20 +16,18 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 
-public class EntityLaser extends EntityThrowable implements ICustomProjectile {
+public class EntityProjectileLaser extends EntityProjectileBase {
 	// Properties:
 	public EntityLivingBase shootingEntity;
 	public EntityLivingBase followEntity; // Used for Eyewig Mount Ability.
 	public int shootingEntityRef = -1;
 	public int shootingEntityID = 10;
 	
-	public byte damage = 1;
-	public float projectileScale = 1f;
 	public float projectileWidth = 0.2f;
 	public float projectileHeight = 0.2f;
 	
 	// Laser:
-	public EntityLaserEnd laserEnd;
+	public EntityProjectileLaserEnd laserEnd;
 	public int laserEndRef = -1;
 	public int laserEndID = 11;
 	
@@ -56,24 +52,24 @@ public class EntityLaser extends EntityThrowable implements ICustomProjectile {
     // ==================================================
  	//                   Constructors
  	// ==================================================
-    public EntityLaser(World par1World) {
+    public EntityProjectileLaser(World par1World) {
         super(par1World);
         this.setStats();
         this.setTime(0);
     }
 
-    public EntityLaser(World par1World, double par2, double par4, double par6, int setTime, int setDelay) {
+    public EntityProjectileLaser(World par1World, double par2, double par4, double par6, int setTime, int setDelay) {
         super(par1World, par2, par4, par6);
         this.laserTime = setTime;
         this.laserDelay = setDelay;
         this.setStats();
     }
 
-    public EntityLaser(World par1World, EntityLivingBase par2EntityLivingBase, int setTime, int setDelay) {
+    public EntityProjectileLaser(World par1World, EntityLivingBase par2EntityLivingBase, int setTime, int setDelay) {
         this(par1World, par2EntityLivingBase, setTime, setDelay, null);
     }
 
-    public EntityLaser(World par1World, EntityLivingBase par2EntityLivingBase, int setTime, int setDelay, EntityLivingBase followEntity) {
+    public EntityProjectileLaser(World par1World, EntityLivingBase par2EntityLivingBase, int setTime, int setDelay, EntityLivingBase followEntity) {
         super(par1World, par2EntityLivingBase);
         this.shootingEntity = par2EntityLivingBase;
         this.laserTime = setTime;
@@ -194,8 +190,8 @@ public class EntityLaser extends EntityThrowable implements ICustomProjectile {
 			Entity possibleLaserEnd = null;
 			if(this.laserEndRef != -1)
 				possibleLaserEnd = this.worldObj.getEntityByID(this.laserEndRef);
-			if(possibleLaserEnd != null && possibleLaserEnd instanceof EntityLaserEnd)
-				this.laserEnd = (EntityLaserEnd)possibleLaserEnd;
+			if(possibleLaserEnd != null && possibleLaserEnd instanceof EntityProjectileLaserEnd)
+				this.laserEnd = (EntityProjectileLaserEnd)possibleLaserEnd;
 			else
 				this.laserEnd = null;
 			return;
@@ -290,14 +286,14 @@ public class EntityLaser extends EntityThrowable implements ICustomProjectile {
     	
 		try {
 			if(this.shootingEntity == null) {
-		    	Constructor constructor = getLaserEndClass().getDeclaredConstructor(new Class[] { World.class, double.class, double.class, double.class, EntityLaser.class });
+		    	Constructor constructor = getLaserEndClass().getDeclaredConstructor(new Class[] { World.class, double.class, double.class, double.class, EntityProjectileLaser.class });
 		    	constructor.setAccessible(true);
-		    	laserEnd = (EntityLaserEnd)constructor.newInstance(new Object[] { world, this.posX, this.posY, this.posZ, this });
+		    	laserEnd = (EntityProjectileLaserEnd)constructor.newInstance(new Object[] { world, this.posX, this.posY, this.posZ, this });
 		    }
 	        else {
-		    	Constructor constructor = getLaserEndClass().getDeclaredConstructor(new Class[] { World.class, EntityLivingBase.class, EntityLaser.class });
+		    	Constructor constructor = getLaserEndClass().getDeclaredConstructor(new Class[] { World.class, EntityLivingBase.class, EntityProjectileLaser.class });
 		    	constructor.setAccessible(true);
-		    	laserEnd = (EntityLaserEnd)constructor.newInstance(new Object[] { world, this.shootingEntity, this });
+		    	laserEnd = (EntityProjectileLaserEnd)constructor.newInstance(new Object[] { world, this.shootingEntity, this });
 	        }
 	        
 	        this.playSound(this.getLaunchSound(), 1.0F, 1.0F / (this.rand.nextFloat() * 0.4F + 0.8F));
@@ -350,12 +346,12 @@ public class EntityLaser extends EntityThrowable implements ICustomProjectile {
     // ==================================================
  	//                   Get laser End
  	// ==================================================
-    public EntityLaserEnd getLaserEnd() {
+    public EntityProjectileLaserEnd getLaserEnd() {
         return this.laserEnd;
     }
 
     public Class getLaserEndClass() {
-        return EntityLaserEnd.class;
+        return EntityProjectileLaserEnd.class;
     }
 	
     
@@ -389,54 +385,10 @@ public class EntityLaser extends EntityThrowable implements ICustomProjectile {
     
     
     // ==================================================
- 	//                    Collision
- 	// ==================================================
-    public boolean canBeCollidedWith() {
-        return false;
-    }
-    
-    
-    // ==================================================
  	//                      Damage
  	// ==================================================
     public void updateDamage(Entity targetEntity) {
     	targetEntity.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), (float)damage);
-    }
-    
-    
-    // ==================================================
- 	//                     Attacked
- 	// ==================================================
-    public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
-        return false;
-    }
-    
-    
-    // ==================================================
- 	//                      Scale
- 	// ==================================================
-    @Override
-    public void setProjectileScale(float newScale) {
-    	projectileScale = newScale;
-    }
-    
-    @Override
-    public float getProjectileScale() {
-        return projectileScale;
-    }
-    
-    
-    // ==================================================
- 	//                      Damage
- 	// ==================================================
-    @Override
-    public void setDamage(int newDamage) {
-    	damage = (byte)newDamage;
-    }
-    
-    @Override
-    public float getDamage() {
-        return (float)damage;
     }
     
     
@@ -459,11 +411,6 @@ public class EntityLaser extends EntityThrowable implements ICustomProjectile {
     // ==================================================
  	//                      Visuals
  	// ==================================================
-    @Override
-    public ResourceLocation getTexture() {
-    	return null;
-    }
-    
     public ResourceLocation getBeamTexture() {
     	return null;
     }

@@ -1,9 +1,7 @@
 package lycanite.lycanitesmobs.swampmobs.entity;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.api.ICustomProjectile;
-import lycanite.lycanitesmobs.api.ILycaniteMod;
-import lycanite.lycanitesmobs.api.entity.EntityLaser;
+import lycanite.lycanitesmobs.api.entity.EntityProjectileLaser;
 import lycanite.lycanitesmobs.swampmobs.SwampMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -13,9 +11,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-public class EntityPoisonRay extends EntityLaser implements ICustomProjectile {
-	public String entityName = "PoisonRay";
-	public ILycaniteMod mod = SwampMobs.instance;
+public class EntityPoisonRay extends EntityProjectileLaser {
     
     // ==================================================
  	//                   Constructors
@@ -36,12 +32,18 @@ public class EntityPoisonRay extends EntityLaser implements ICustomProjectile {
 		super(par1World, par2EntityLivingBase, setTime, setDelay, followEntity);
 	}
     
+    // ========== Setup Projectile ==========
+    public void setup() {
+    	this.entityName = "PoisonRay";
+    	this.mod = SwampMobs.instance;
+    	this.setDamage(3);
+    }
+    
     // ========== Stats ==========
     @Override
     public void setStats() {
 		super.setStats();
         this.setRange(16.0F);
-        this.setDamage(3);
         this.setLaserWidth(2.0F);
     }
 	
@@ -69,13 +71,6 @@ public class EntityPoisonRay extends EntityLaser implements ICustomProjectile {
     // ==================================================
  	//                      Visuals
  	// ==================================================
-    @Override
-    public ResourceLocation getTexture() {
-    	if(AssetManager.getTexture(this.entityName) == null)
-    		AssetManager.addTexture(this.entityName, this.mod.getDomain(), "textures/items/" + this.entityName.toLowerCase() + ".png");
-    	return AssetManager.getTexture(this.entityName);
-    }
-
     @Override
     public ResourceLocation getBeamTexture() {
     	if(AssetManager.getTexture(this.entityName + "Beam") == null)

@@ -1,6 +1,6 @@
 package lycanite.lycanitesmobs.swampmobs.item;
 
-import lycanite.lycanitesmobs.api.ICustomProjectile;
+import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.api.item.ItemScepter;
 import lycanite.lycanitesmobs.swampmobs.SwampMobs;
 import lycanite.lycanitesmobs.swampmobs.entity.EntityVenomShot;
@@ -45,7 +45,7 @@ public class ItemScepterVenomShot extends ItemScepter {
     	if(!world.isRemote) {
         	EntityVenomShot projectile = new EntityVenomShot(world, player);
         	world.spawnEntityInWorld(projectile);
-            world.playSoundAtEntity(player, ((ICustomProjectile) projectile).getLaunchSound(), 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+            world.playSoundAtEntity(player, ((EntityProjectileBase)projectile).getLaunchSound(), 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
         }
     	return true;
     }

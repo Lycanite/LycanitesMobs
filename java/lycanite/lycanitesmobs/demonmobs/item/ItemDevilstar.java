@@ -2,24 +2,20 @@ package lycanite.lycanitesmobs.demonmobs.item;
 
 import java.util.List;
 
-import cpw.mods.fml.common.registry.LanguageRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
-import lycanite.lycanitesmobs.api.ICustomProjectile;
-import lycanite.lycanitesmobs.demonmobs.SubConfig;
+import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.demonmobs.DemonMobs;
 import lycanite.lycanitesmobs.demonmobs.entity.EntityDevilstar;
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemDevilstar extends Item {
 	public static String itemName = "DevilstarCharge";
@@ -59,7 +55,7 @@ public class ItemDevilstar extends Item {
         if(!par2World.isRemote) {
         	EntityThrowable projectile = new EntityDevilstar(par2World, par3EntityPlayer);
             par2World.spawnEntityInWorld(projectile);
-            par2World.playSoundAtEntity(par3EntityPlayer, ((ICustomProjectile) projectile).getLaunchSound(), 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+            par2World.playSoundAtEntity(par3EntityPlayer, ((EntityProjectileBase)projectile).getLaunchSound(), 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
         }
 
         return par1ItemStack;

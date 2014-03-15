@@ -1,7 +1,7 @@
 package lycanite.lycanitesmobs.demonmobs.item;
 
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.ICustomProjectile;
+import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.api.item.ItemScepter;
 import lycanite.lycanitesmobs.demonmobs.DemonMobs;
 import lycanite.lycanitesmobs.demonmobs.entity.EntityDemonicBlast;
@@ -44,9 +44,9 @@ public class ItemScepterDemonicLightning extends ItemScepter {
     public boolean chargedAttack(ItemStack itemStack, World world, EntityPlayer player, float power) {
     	if(!world.isRemote) {
     		EntityDemonicBlast projectile = new EntityDemonicBlast(world, player);
-    		projectile.setDamage((int)(projectile.getDamage() * power * 2));
+    		projectile.setDamage((int)(projectile.getDamage(null) * power * 2));
         	world.spawnEntityInWorld(projectile);
-            world.playSoundAtEntity(player, ((ICustomProjectile) projectile).getLaunchSound(), 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+            world.playSoundAtEntity(player, ((EntityProjectileBase)projectile).getLaunchSound(), 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
         }
     	return true;
     }

@@ -1,28 +1,17 @@
 package lycanite.lycanitesmobs.desertmobs.entity;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.api.ICustomProjectile;
-import lycanite.lycanitesmobs.api.ILycaniteMod;
+import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.desertmobs.DesertMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.AttackEntityEvent;
 
-public class EntityThrowingScythe extends EntityThrowable implements ICustomProjectile {
-	public String entityName = "ThrowingScythe";
-	public ILycaniteMod mod = DesertMobs.instance;
+public class EntityThrowingScythe extends EntityProjectileBase {
 	
 	// Properties:
 	public Entity shootingEntity;
-	byte damage = 3;
-	private float projectileScale = 1f;
 	private float projectileWidth = 0.2f;
 	private float projectileHeight = 0.2f;
 	
@@ -42,6 +31,16 @@ public class EntityThrowingScythe extends EntityThrowable implements ICustomProj
     public EntityThrowingScythe(World par1World, double par2, double par4, double par6) {
         super(par1World, par2, par4, par6);
         this.setSize(projectileWidth, projectileHeight);
+    }
+    
+    // ========== Setup Projectile ==========
+    public void setup() {
+    	this.entityName = "ThrowingScythe";
+    	this.mod = DesertMobs.instance;
+    	this.setDamage(3);
+    	this.setProjectileScale(1F);
+    	
+    	this.waterProof = true;
     }
 	
     
@@ -69,77 +68,11 @@ public class EntityThrowingScythe extends EntityThrowable implements ICustomProj
     // ==================================================
  	//                     Impact
  	// ==================================================
+    //========== On Impact Particles/Sounds ==========
     @Override
-    protected void onImpact(MovingObjectPosition movingObjectPos) {
-    	// Entity Hit:
-    	if(movingObjectPos.entityHit != null) {
-    		boolean doDamage = true;
-			if(movingObjectPos.entityHit instanceof EntityLivingBase) {
-				EntityLivingBase owner = this.getThrower();
-			    if(this.getThrower() != null && owner instanceof EntityPlayer) {
-			    	if(MinecraftForge.EVENT_BUS.post(new AttackEntityEvent((EntityPlayer)owner, movingObjectPos.entityHit))) {
-			    		doDamage = false;
-			    	}
-			    }
-			}
-			if(doDamage) {
-				movingObjectPos.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), (float)damage);
-			}
-    	}
-    	
-    	// Impact Particles:
-        for(int i = 0; i < 8; ++i) {
-            this.worldObj.spawnParticle("smoke", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
-        }
-        
-        // Remove Projectile:
-        if(!this.worldObj.isRemote) {
-            this.setDead();
-        }
-    }
-    
-    
-    // ==================================================
- 	//                    Collision
- 	// ==================================================
-    public boolean canBeCollidedWith() {
-        return false;
-    }
-    
-    
-    // ==================================================
- 	//                     Attacked
- 	// ==================================================
-    public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
-        return false;
-    }
-    
-    
-    // ==================================================
- 	//                      Scale
- 	// ==================================================
-    @Override
-    public void setProjectileScale(float newScale) {
-    	projectileScale = newScale;
-    }
-    
-    @Override
-    public float getProjectileScale() {
-        return projectileScale;
-    }
-    
-    
-    // ==================================================
- 	//                      Damage
- 	// ==================================================
-    @Override
-    public void setDamage(int newDamage) {
-    	damage = (byte)newDamage;
-    }
-    
-    @Override
-    public float getDamage() {
-        return (float)damage;
+    public void onImpactVisuals() {
+    	for(int i = 0; i < 8; ++i)
+    		this.worldObj.spawnParticle("smoke", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
     }
     
     

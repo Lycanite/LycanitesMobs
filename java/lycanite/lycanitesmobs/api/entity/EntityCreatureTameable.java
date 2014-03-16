@@ -237,10 +237,10 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
     	// Sit:
     	if(command.equals("Sit")) {
     		this.playTameSound();
+            this.setAttackTarget((EntityLivingBase)null);
+            this.clearMovement();
         	this.aiSit.setSitting(!this.isSitting());
             this.isJumping = false;
-            this.clearMovement();
-            this.setAttackTarget((EntityLivingBase)null);
     	}
     	
     	super.performCommand(command, player, itemStack);

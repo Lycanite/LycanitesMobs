@@ -17,7 +17,7 @@ public class SubConfig extends Config {
 		loadSetting(this.featureInts, "Feature Control", "ConcapedeSizeLimit", "Concapede Size Limit", 10);
 		
 		// ========== Special Feature Control ==========
-		loadSetting(this.featureBools, "Feature Control", "DespawnConcapedesOnPeaceful", "Concapede Peaceful Spawning", true);
+		loadSetting(this.featureBools, "Feature Control", "ConcapedesOnPeaceful", "Concapede Peaceful Spawning", true);
 		loadSetting(this.featureBools, "Feature Control", "DespawnConcapedesNaturally", "Concapede Natural Despawning", false);
 		
 		// ========== Mob Control ==========

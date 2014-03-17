@@ -47,7 +47,7 @@ public class EntityJoust extends EntityCreatureAgeable implements IAnimals, IGro
         this.spawnsOnlyInLight = true;
         this.hasAttackSound = true;
         
-        this.despawnOnPeaceful = DesertMobs.config.getFeatureBool("DespawnJoustsOnPeaceful");
+        this.spawnsOnPeaceful = DesertMobs.config.getFeatureBool("JoustsOnPeaceful");
         this.despawnNaturally = DesertMobs.config.getFeatureBool("DespawnJoustsNaturally");
         this.eggName = "DesertEgg";
         

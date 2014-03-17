@@ -13,6 +13,10 @@ public class SubConfig extends Config {
 		loadSetting(featureBools, "Feature Control", "NightmareDifficulty", "Enable Nightmare Difficulty", false);
 		loadSetting(featureBools, "Feature Control", "MobTaming", "Allow Mob Taming", true);
 		loadSetting(featureBools, "Feature Control", "MobMounting", "Allow Mob Mounting", true);
+
+		// ========== Debugging ==========
+		loadSetting(debugBools, "Debugging", "MobSetup", "Print Mob Setup", false);
+		loadSetting(debugBools, "Debugging", "MobSpawns", "Print Mob Spawns", false);
 		
 		// ========== Mob Control ==========
 		// No global mobs.

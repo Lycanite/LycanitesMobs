@@ -17,7 +17,7 @@ public class SubConfig extends Config {
 
 		// ========== Special Feature Control ==========
 		loadSetting(this.featureBools, "Feature Control", "PoisonCloud", "Enable Poison Clouds", true);
-		loadSetting(this.featureBools, "Feature Control", "DespawnAspidsOnPeaceful", "Aspid Peaceful Spawning", true);
+		loadSetting(this.featureBools, "Feature Control", "AspidsOnPeaceful", "Aspid Peaceful Spawning", true);
 		loadSetting(this.featureBools, "Feature Control", "DespawnAspidsNaturally", "Aspid Natural Despawning", false);
 		
 		// ========== Mob Control ==========

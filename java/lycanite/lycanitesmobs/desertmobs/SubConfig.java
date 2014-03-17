@@ -16,7 +16,7 @@ public class SubConfig extends Config {
 		loadSetting(this.featureStrings, "Feature Control", "Dimensions", "Group Dimensions", "0");
 
 		// ========== Special Feature Control ==========
-		loadSetting(this.featureBools, "Feature Control", "DespawnJoustsOnPeaceful", "Joust Peaceful Spawning", true);
+		loadSetting(this.featureBools, "Feature Control", "JoustsOnPeaceful", "Joust Peaceful Spawning", true);
 		loadSetting(this.featureBools, "Feature Control", "DespawnJoustsNaturally", "Joust Natural Despawning", false);
 		loadSetting(this.featureInts, "Feature Control", "GorgomiteSwarmLimit", "Gorgomite Swarm Limit", 20);
 		

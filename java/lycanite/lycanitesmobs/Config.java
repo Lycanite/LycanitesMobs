@@ -26,6 +26,9 @@ public class Config {
 	public Map<String, Integer> featureInts = new HashMap<String, Integer>();
 	public Map<String, String> featureStrings = new HashMap<String, String>();
 	
+	// Debugging:
+	public Map<String, Boolean> debugBools = new HashMap<String, Boolean>();
+	
 	// Mob Control:
 	public Map<String, Boolean> mobsEnabled = new HashMap<String, Boolean>();
 	public Map<String, Integer> spawnChances = new HashMap<String, Integer>();
@@ -172,6 +175,13 @@ public class Config {
 			return this.featureStrings.get(key) != null ? this.featureStrings.get(key) : "";
 		else
 			return "";
+	}
+	
+	public boolean getDebug(String key) {
+		if(this.debugBools.containsKey(key))
+			return this.debugBools.get(key) != null ? this.debugBools.get(key) : false;
+		else
+			return false;
 	}
 	
 	// ========== Biome Types ==========

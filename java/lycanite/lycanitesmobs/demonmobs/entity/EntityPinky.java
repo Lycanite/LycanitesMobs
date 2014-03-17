@@ -63,7 +63,7 @@ public class EntityPinky extends EntityCreatureRideable implements IAnimals, IGr
         this.hasAttackSound = true;
         this.spreadFire = true;
         
-        this.despawnOnPeaceful = DemonMobs.config.getFeatureBool("DespawnPinkiesOnPeaceful");
+        this.spawnsOnPeaceful = DemonMobs.config.getFeatureBool("PinkiesOnPeaceful");
         this.despawnNaturally = DemonMobs.config.getFeatureBool("DespawnPinkiesNaturally");
         this.eggName = "DemonEgg";
         
@@ -122,6 +122,14 @@ public class EntityPinky extends EntityCreatureRideable implements IAnimals, IGr
 	public void loadItemDrops() {
         this.drops.add(new DropRate(ObjectManager.getItem("PinkyMeatRaw").itemID, 1).setBurningItem(ObjectManager.getItem("PinkyMeatCooked").itemID, -1).setMinAmount(1).setMaxAmount(3));
 	}
+	
+	// ==================================================
+  	//                       Spawning
+  	// ==================================================
+    @Override
+    public boolean isPersistant() {
+    	return this.worldObj.provider.dimensionId != -1 || super.isPersistant();
+    }
 	
 	
     // ==================================================

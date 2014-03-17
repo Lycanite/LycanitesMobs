@@ -8,6 +8,7 @@ import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.BehaviorProjectileDispense;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.Item;
+import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.DungeonHooks;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -91,15 +92,35 @@ public class ObjectManager {
 			entityLists.put(domain, new EntityList());
 		entityLists.get(domain).addMapping(entityClass, modid + "." + name, mobID, eggBackColor, eggForeColor);
 		EntityRegistry.registerModEntity(entityClass, name, mobID, mod.getInstance(), 128, 3, true);
+		LanguageRegistry.instance().addStringLocalization("entity." + modid + "." + name + ".name", "en_US", name);
+		
+		// Debug Message - Added:
+		LycanitesMobs.printDebug("MobSetup", "Mob Added: " + name + " - " + entityClass + " (" + modid + ")");
 		
 		// Add Spawn:
 		mobDimensions.put(name, config.getSpawnDimensions(name));
-		if(config.spawnWeights.get(name) > 0 && config.spawnMaxs.get(name) > 0)
-			EntityRegistry.addSpawn(entityClass, config.spawnWeights.get(name), config.spawnMins.get(name), config.spawnMaxs.get(name), config.spawnTypes.get(name), config.getSpawnBiomesTypes(name));
-		LanguageRegistry.instance().addStringLocalization("entity." + modid + "." + name + ".name", "en_US", name);
+		BiomeGenBase[] spawnBiomes = new BiomeGenBase[0];
+		if(config.spawnWeights.get(name) > 0 && config.spawnMaxs.get(name) > 0) {
+			spawnBiomes = config.getSpawnBiomesTypes(name);
+			EntityRegistry.addSpawn(entityClass, config.spawnWeights.get(name), config.spawnMins.get(name), config.spawnMaxs.get(name), config.spawnTypes.get(name), spawnBiomes);
+		}
+		
+		// Dungeon Spawn:
 		int dungeonWeight = config.spawnWeights.get(name) * 25;
 		if(dungeonWeight > 0 && config.spawnTypes.get(name) == EnumCreatureType.monster)
 			DungeonHooks.addDungeonMob(modid + "." + name, dungeonWeight);
+		
+		// Debug Message - Spawn Added:
+		LycanitesMobs.printDebug("MobSetup", "Mob Spawn Added - Weight: " + config.spawnWeights.get(name) + " Min: " + config.spawnMins.get(name) + " Max: " + config.spawnMaxs.get(name));
+		String biomesList = "";
+		if(LycanitesMobs.config.getDebug("MobSetup")) {
+			for(BiomeGenBase biome : spawnBiomes) {
+				if(!"".equals(biomesList))
+					biomesList += ", ";
+				biomesList += biome.biomeName;
+			}
+		}
+		LycanitesMobs.printDebug("MobSetup", "Biomes: " + biomesList);
 		
 		mobs.put(name, entityClass);
 	}

@@ -48,7 +48,7 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
         this.hasAttackSound = true;
         this.hasStepSound = false;
         
-        this.despawnOnPeaceful = this.mod.getConfig().getFeatureBool("DespawnConcapedesOnPeaceful");
+        this.spawnsOnPeaceful = this.mod.getConfig().getFeatureBool("ConcapedesOnPeaceful");
         this.despawnNaturally = this.mod.getConfig().getFeatureBool("DespawnConcapedesNaturally");
         this.eggName = "JungleEgg";
         this.canGrow = true;
@@ -86,6 +86,14 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
         this.drops.add(new DropRate(ObjectManager.getItem("ConcapedeMeatRaw").itemID, 1).setMinAmount(1).setMaxAmount(2).setBurningItem(ObjectManager.getItem("ConcapedeMeatCooked").itemID, 0));
         this.drops.add(new DropRate(Item.silk.itemID, 0.25F).setMinAmount(1).setMaxAmount(2));
 	}
+    
+    
+    // ==================================================
+    //                       Name
+    // ==================================================
+    public String getConfigName() {
+    	return this.entityName + "Segment";
+    }
 	
 	
     // ==================================================

@@ -29,6 +29,8 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
     private int breedingTime;
     public int breedingCooldown = 6000;
     
+    public boolean hasBeenFarmed = false;
+    
 	// ==================================================
   	//                    Constructor
   	// ==================================================
@@ -60,6 +62,18 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
     		return "";
     }
 	
+	// ==================================================
+  	//                       Spawning
+  	// ==================================================
+    @Override
+    public boolean isPersistant() {
+    	return this.hasBeenFarmed;
+    }
+    
+    public void setFarmed() {
+    	this.hasBeenFarmed = true;
+    }
+	
 	
 	// ==================================================
   	//                       Update
@@ -83,6 +97,8 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
                 this.setGrowingAge(age);
             }
         }
+        if(this.getGrowingAge() != 0)
+        	this.setFarmed();
         
         // Breeding:
         if(!this.canBreed())
@@ -94,6 +110,7 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
         	this.loveTime = this.dataWatcher.getWatchableObjectInt(WATCHER_ID.LOVE.id);
         
         if(this.isInLove()) {
+        	this.setFarmed();
             --this.loveTime;
             if(this.worldObj.isRemote) {
 	            String particle = "heart";
@@ -297,8 +314,23 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
     @Override
 	public void readEntityFromNBT(NBTTagCompound nbtTagCompound) {
         super.readEntityFromNBT(nbtTagCompound);
-        this.setGrowingAge(nbtTagCompound.getInteger("Age"));
-        this.loveTime = nbtTagCompound.getInteger("InLove");
+        if(nbtTagCompound.hasKey("Age")) {
+        	this.setGrowingAge(nbtTagCompound.getInteger("Age"));
+        }
+        else {
+        	this.setGrowingAge(0);
+        }
+        
+        if(nbtTagCompound.hasKey("InLove")) {
+        	this.loveTime = nbtTagCompound.getInteger("InLove");
+        }
+        else {
+        	this.loveTime = 0;
+        }
+        
+        if(nbtTagCompound.hasKey("HasBeenFarmed")) {
+        	nbtTagCompound.setBoolean("HasBeenFarmed", this.hasBeenFarmed);
+        }
     }
 	
 	// ========== Write ==========
@@ -307,5 +339,6 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
         super.writeEntityToNBT(nbtTagCompound);
         nbtTagCompound.setInteger("Age", this.getGrowingAge());
         nbtTagCompound.setInteger("InLove", this.loveTime);
+        nbtTagCompound.setBoolean("HasBeenFarmed", this.hasBeenFarmed);
     }
 }

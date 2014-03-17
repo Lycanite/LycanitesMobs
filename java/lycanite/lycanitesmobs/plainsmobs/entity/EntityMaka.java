@@ -50,7 +50,7 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
         this.spawnsOnlyInLight = true;
         this.hasAttackSound = true;
         
-        this.despawnOnPeaceful = DesertMobs.config.getFeatureBool("DespawnMakasOnPeaceful");
+        this.spawnsOnPeaceful = DesertMobs.config.getFeatureBool("MakasOnPeaceful");
         this.despawnNaturally = DesertMobs.config.getFeatureBool("DespawnMakasNaturally");
         this.eggName = "PlainsEgg";
         

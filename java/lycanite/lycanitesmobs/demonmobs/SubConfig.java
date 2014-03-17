@@ -17,7 +17,7 @@ public class SubConfig extends Config {
 		
 		// ========== Special Feature Control ==========
 		loadSetting(this.featureBools, "Feature Control", "Hellfire", "Enable Hellfire", true);
-		loadSetting(this.featureBools, "Feature Control", "DespawnPinkiesOnPeaceful", "Pinkies Peaceful Spawning", true);
+		loadSetting(this.featureBools, "Feature Control", "PinkiesOnPeaceful", "Pinkies Peaceful Spawning", true);
 		loadSetting(this.featureBools, "Feature Control", "DespawnPinkiesNaturally", "Pinkies Natural Despawning", false);
 		
 		// ========== Mob Control ==========

@@ -49,7 +49,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	//public static final UUID field_110179_h = UUID.fromString("E199AD21-BA8A-4C53-8D13-6182D5C69D3A");
     
 	// Info:
-    /** The code name of this entity, not the title display to players, that is registered elsewhere. **/
+    /** The code name of this entity, not the title displayed to players, that is set elsewhere, see getEntityName(). **/
 	public String entityName = "Name";
     /** A link to the mod instance of this mob, used to get file paths, the mod config, etc. **/
 	public ILycaniteMod mod;
@@ -100,7 +100,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Use the onSpawn() method and not this variable. True if this creature has spawned for the first time (naturally or via spawn egg, etc, not reloaded from a saved chunk). **/
     public boolean firstSpawn = true;
     /** Should this mob spawn and be removed on peaceful. **/
-    public boolean despawnOnPeaceful = true;
+    public boolean spawnsOnPeaceful = true;
     /** Should this mob despawn over time. **/
     public boolean despawnNaturally = true;
     /** Should this mob only spawn in darkness. **/
@@ -213,8 +213,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
         this.stepHeight = 0.5F;
         this.experienceValue = experience;
         this.isImmuneToFire = !this.canBurn();
-        this.inventory = new InventoryCreature(entityName, this);
-        if(this.mod.getConfig().defaultDrops.get(this.entityName))
+        this.inventory = new InventoryCreature(this.getEntityName(), this);
+        if(this.mod.getConfig().defaultDrops.get(this.getConfigName()))
         	this.loadItemDrops();
         this.loadCustomDrops();
     }
@@ -227,8 +227,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Loads custom item drops from the config. **/
     public void loadCustomDrops() {
     	// Custom Drops:
-    	if(this.mod.getConfig().customDrops.containsKey(this.entityName)) {
-    		String customDropsString = this.mod.getConfig().customDrops.get(this.entityName);
+    	if(this.mod.getConfig().customDrops.containsKey(this.getConfigName())) {
+    		String customDropsString = this.mod.getConfig().customDrops.get(this.getConfigName());
     		if(customDropsString != null && customDropsString.length() > 0)
 	    		for(String customDropEntryString : customDropsString.split(",")) {
 	    			String[] customDropValues = customDropEntryString.split(":");
@@ -285,7 +285,12 @@ public abstract class EntityCreatureBase extends EntityLiving {
     }
     
     // ========== Name ==========
-    /** Returns the display name of this entity. **/
+    /** Returns the name that this entity uses when checking the config class. Also it's spawner name, etc. **/
+    public String getConfigName() {
+    	return this.entityName;
+    }
+    
+    /** Returns the display name of this entity. Use this when displaying it's name. **/
     @Override
     public String getEntityName() {
     	if(this.hasCustomNameTag())
@@ -330,31 +335,52 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Checks if the creature is able to spawn a it's initial position. **/
     @Override
     public boolean getCanSpawnHere() {
+    	LycanitesMobs.printDebug("MobSpawns", "Attempting to Spawn: " + this.getConfigName());
     	
     	// Peaceful Check:
-        if(this.despawnOnPeaceful && this.worldObj.difficultySetting <= 0) return false;
-        
+    	LycanitesMobs.printDebug("MobSpawns", "Checking for peaceful difficulty...");
+        if(!this.spawnsOnPeaceful && this.worldObj.difficultySetting <= 0) return false;
+
     	int i = MathHelper.floor_double(this.posX);
         int j = MathHelper.floor_double(this.boundingBox.minY);
         int k = MathHelper.floor_double(this.posZ);
+    	LycanitesMobs.printDebug("MobSpawns", "Target Spawn Location: x" + i + " y" + j + " z" + k);
         
         // Fixed Spawning Checks:
+    	LycanitesMobs.printDebug("MobSpawns", "Fixed spawn check (light level, obstacles, etc)...");
         if(!this.fixedSpawnCheck(i, j, k))
         	return false;
         
     	// Spawner Check:
-        if(this.isSpawnerNearby(i, j, k))
+    	LycanitesMobs.printDebug("MobSpawns", "Checking for nearby spawner...");
+        if(this.isSpawnerNearby(i, j, k)) {
+        	LycanitesMobs.printDebug("MobSpawns", "Spawner found, skpping other checks.");
+        	LycanitesMobs.printDebug("MobSpawns", "Spawn Check Passed!");
         	return true;
+        }
+    	LycanitesMobs.printDebug("MobSpawns", "No spawner found.");
         
         // Natural Spawning Checks:
+    	LycanitesMobs.printDebug("MobSpawns", "Natural spawn check (dimension, ground type, water, lava, underground)...");
         if(!this.naturalSpawnCheck(i, j, k))
         	return false;
         
         // Forced Spawn Chance:
-        if(this.mod.getConfig().spawnChances.containsKey(this.entityName))
-	        if(this.mod.getConfig().spawnChances.get(this.entityName) < 100)
-	        	if(this.mod.getConfig().spawnChances.get(this.entityName) <= 0 || this.rand.nextInt(99) < this.mod.getConfig().spawnChances.get(this.entityName))
+    	LycanitesMobs.printDebug("MobSpawns", "All enviroment checks passed.");
+        if(this.mod.getConfig().spawnChances.containsKey(this.getConfigName()))
+	        if(this.mod.getConfig().spawnChances.get(this.getConfigName()) < 100) {
+	        	if(this.mod.getConfig().spawnChances.get(this.getConfigName()) <= 0) {
+	        		LycanitesMobs.printDebug("MobSpawns", "Applying Forced Spawn Chance - Chance is 0 = No Spawning");
 	        		return false;
+	        	}
+	        	int spawnRoll = this.rand.nextInt(99);
+	        	int spawnChance = this.mod.getConfig().spawnChances.get(this.getConfigName());
+	        	if(this.mod.getConfig().spawnChances.get(this.getConfigName()) <= 0 || spawnRoll < spawnChance) {
+		        	LycanitesMobs.printDebug("MobSpawns", "Applying Forced Spawn Chance - Rolled: " + spawnRoll + " Must be less than: " + spawnChance);
+	        		return false;
+    			}
+    		}
+        LycanitesMobs.printDebug("MobSpawns", "Spawn Check Passed!");
         return true;
     }
 
@@ -375,12 +401,12 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Natural Spawn Check ==========
     /** Second stage checks for spawning, this check is ignored if there is a valid monster spawner nearby. **/
     public boolean naturalSpawnCheck(int i, int j, int k) {
-    	if(ObjectManager.getMobDimensions(this.entityName).length <= 0)
+    	if(ObjectManager.getMobDimensions(this.getConfigName()).length <= 0)
     		return false;
         else {
         	boolean validDimension = false;
-        	for(int spawnDimension : ObjectManager.getMobDimensions(this.entityName)) {
-        		if(this.dimension == spawnDimension) {
+        	for(int spawnDimension : ObjectManager.getMobDimensions(this.getConfigName())) {
+        		if(this.worldObj.provider.dimensionId == spawnDimension) {
         			validDimension = true;
         			break;
         		}
@@ -409,7 +435,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Returns how many of this mob can spawn in a chunk, links to the config. **/
     @Override
     public int getMaxSpawnedInChunk() {
-        //return this.mod.getConfig().spawnLimits.get(this.entityName); XXX Removed for now, was causing problems!
+        //return this.mod.getConfig().spawnLimits.get(this.getConfigName()); XXX Removed for now, was causing problems!
     	return super.getMaxSpawnedInChunk();
     }
     
@@ -425,8 +451,19 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Returns whether this mob should despawn overtime or not. **/
     @Override
     protected boolean canDespawn() {
-    	if(this.despawnNaturally)
-    		return !this.getLeashed();
+    	if(!this.despawnNaturally)
+    		return false;
+    	return this.isPersistant() || this.getLeashed();
+    }
+    
+    /** Returns true if this mob should not despawn in unloaded chunks.
+     * Most farmable mobs never despawn, but can be set to despawn in the config where this will kick in.
+     * Here mobs can check if they have ever been fed or bred or moved from their home dimension.
+     * Farmable mobs can then be set to despawn unless they have been farmed by a player.
+     * Useful for the Pinky Nether invasion issues! Also good for water animals that can't spawn as CREATURE.
+     * Leashed mobs don't ever despawn naturally and don't check this.
+    **/
+    public boolean isPersistant() {
     	return false;
     }
     
@@ -434,7 +471,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public boolean despawnCheck() {
         if(this.worldObj.isRemote)
         	return false;
-        if(this.despawnOnPeaceful && this.worldObj.difficultySetting <= 0 && !this.getLeashed())
+        if(!this.spawnsOnPeaceful && this.worldObj.difficultySetting <= 0 && !(this.getLeashed() || this.isPersistant()))
         	return true;
         return false;
     }
@@ -475,7 +512,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     
     // ========== Minion ==========
     /** Set whether this mob is a minion or not, this should be used if this mob is summoned. **/
-    public void setMinion(boolean minion) { this.isMinion = true; }
+    public void setMinion(boolean minion) { this.isMinion = minion; }
     /** Returns whether or not with mob is a minion. **/
     public boolean isMinion() { return this.isMinion; }
     
@@ -1149,7 +1186,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public void setStealth(float setStealth) {
     	setStealth = Math.min(setStealth, 1);
     	setStealth = Math.max(setStealth, 0);
-    	if(!this.worldObj.isRemote)
+    	if(this.worldObj != null && !this.worldObj.isRemote)
     		this.dataWatcher.updateObject(WATCHER_ID.STEALTH.id, setStealth);
     }
 
@@ -1576,14 +1613,18 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Used when loading this mob from a saved chunk. **/
     @Override
     public void readEntityFromNBT(NBTTagCompound nbtTagCompound) {
-    	if(nbtTagCompound.hasKey("FirstSpawn"))
+    	if(nbtTagCompound.hasKey("FirstSpawn")) {
             this.firstSpawn = nbtTagCompound.getBoolean("FirstSpawn");
-    	else
+    	}
+    	else {
     		this.firstSpawn = false;
-    	if(nbtTagCompound.hasKey("Stealth"))
+    	}
+    	if(nbtTagCompound.hasKey("Stealth")) {
     		this.setStealth(nbtTagCompound.getFloat("Stealth"));
-    	if(nbtTagCompound.hasKey("IsMinion"))
+    	}
+    	if(nbtTagCompound.hasKey("IsMinion")) {
     		this.setMinion(nbtTagCompound.getBoolean("IsMinion"));
+    	}
         super.readEntityFromNBT(nbtTagCompound);
         this.inventory.readFromNBT(nbtTagCompound);
     }
@@ -1641,44 +1682,44 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Idle ==========
     /** Returns the sound to play when this creature is making a random ambient roar, grunt, etc. **/
     @Override
-    protected String getLivingSound() { return AssetManager.getSound(entityName + "Say"); }
+    protected String getLivingSound() { return AssetManager.getSound(this.entityName + "Say"); }
 
     // ========== Hurt ==========
     /** Returns the sound to play when this creature is damaged. **/
     @Override
-    protected String getHurtSound() { return AssetManager.getSound(entityName + "Hurt"); }
+    protected String getHurtSound() { return AssetManager.getSound(this.entityName + "Hurt"); }
 
     // ========== Death ==========
     /** Returns the sound to play when this creature dies. **/
     @Override
-    protected String getDeathSound() { return AssetManager.getSound(entityName + "Death"); }
+    protected String getDeathSound() { return AssetManager.getSound(this.entityName + "Death"); }
      
     // ========== Step ==========
     /** Plays the footstep sound that this creature makes when moving on the ground. **/
     @Override
     protected void playStepSound(int par1, int par2, int par3, int par4) {
     	 if(this.canFly() || !this.hasStepSound) return;
-    	 this.playSound(AssetManager.getSound(entityName + "Step"), 0.25F, 1.0F);
+    	 this.playSound(AssetManager.getSound(this.entityName + "Step"), 0.25F, 1.0F);
     }
      
     // ========== Jump ==========
     /** Plays the jump sound when this creature jumps. **/
     public void playJumpSound() {
     	if(!this.hasJumpSound) return;
-     	this.playSound(AssetManager.getSound(entityName + "Jump"), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+     	this.playSound(AssetManager.getSound(this.entityName + "Jump"), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
     }
      
     // ========== Fly ==========
     /** Plays a flying sound, usually a wing flap, called randomly when flying. **/
     protected void playFlySound() {
     	if(!this.canFly()) return;
-      	this.playSound(AssetManager.getSound(entityName + "Fly"), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+      	this.playSound(AssetManager.getSound(this.entityName + "Fly"), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
     }
 
     // ========== Attack ==========
     /** Plays an attack sound, called once this creature has attacked. note that ranged attacks normally rely on the projectiles playing their launched sound instead. **/
     protected void playAttackSound() {
      	if(!this.hasAttackSound) return;
-     	this.playSound(AssetManager.getSound(entityName + "Attack"), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+     	this.playSound(AssetManager.getSound(this.entityName + "Attack"), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
     }
 }

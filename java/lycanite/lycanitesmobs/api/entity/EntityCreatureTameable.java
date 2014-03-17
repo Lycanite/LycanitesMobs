@@ -24,7 +24,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class EntityCreatureTameable extends EntityCreatureAgeable implements EntityOwnable {
 	
 	// Stats:
-	public float hunger = this.getHungerMax();
+	public float hunger = this.getCreatureHungerMax();
 	public float stamina = this.getStaminaMax();
 	public float staminaRecovery = 0.5F;
 	public boolean hasCollarColor = false;
@@ -48,7 +48,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
         this.dataWatcher.addObject(WATCHER_ID.TAMED.id, (byte)0);
         this.dataWatcher.addObject(WATCHER_ID.OWNER.id, "");
         this.dataWatcher.addObject(WATCHER_ID.HEALTH.id, new Float(this.getHealth()));
-        this.dataWatcher.addObject(WATCHER_ID.HUNGER.id, new Float(this.getHungerMax()));
+        this.dataWatcher.addObject(WATCHER_ID.HUNGER.id, new Float(this.getCreatureHungerMax()));
         this.dataWatcher.addObject(WATCHER_ID.STAMINA.id, new Float(this.getStaminaMax()));
     }
     
@@ -411,18 +411,20 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
     // ==================================================
     //                       Hunger
     // ==================================================
-    public float getHunger() {
+    public float getCreatureHunger() {
+    	if(this.worldObj == null)
+    		return this.getCreatureHungerMax();
     	if(!this.worldObj.isRemote)
     		return this.hunger;
     	else
     		return this.dataWatcher.getWatchableObjectFloat(WATCHER_ID.HUNGER.id);
     }
     
-    public void setHunger(float setHunger) {
+    public void setCreatureHunger(float setHunger) {
     	this.hunger = setHunger;
     }
     
-    public float getHungerMax() {
+    public float getCreatureHungerMax() {
     	return 20;
     }
     
@@ -431,14 +433,14 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
     //                       Stamina
     // ==================================================
     public float getStamina() {
-    	if(this.worldObj.isRemote)
+    	if(this.worldObj != null && this.worldObj.isRemote)
     		this.stamina = this.dataWatcher.getWatchableObjectFloat(WATCHER_ID.STAMINA.id);
     	return this.stamina;
     }
     
     public void setStamina(float setStamina) {
     	this.stamina = setStamina;
-    	if(!this.worldObj.isRemote) {
+    	if(this.worldObj != null && !this.worldObj.isRemote) {
     		this.dataWatcher.updateObject(WATCHER_ID.STAMINA.id, setStamina);
     	}
     }
@@ -547,27 +549,47 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
     @Override
     public void readEntityFromNBT(NBTTagCompound nbtTagCompound) {
         super.readEntityFromNBT(nbtTagCompound);
-        String owner = nbtTagCompound.getString("Owner");
-        if(owner.length() > 0) {
-            this.setOwner(owner);
-            this.setTamed(true);
+        if(nbtTagCompound.hasKey("Owner")) {
+	        String owner = nbtTagCompound.getString("Owner");
+	        if(owner.length() > 0) {
+	            this.setOwner(owner);
+	            this.setTamed(true);
+	        }
         }
-        this.aiSit.setSitting(nbtTagCompound.getBoolean("Sitting"));
-        this.setSitting(nbtTagCompound.getBoolean("Sitting"));
-        this.setHunger(nbtTagCompound.getFloat("Hunger"));
-        this.setStamina(nbtTagCompound.getFloat("Stamina"));
+        else {
+        	this.setOwner("");
+            this.setTamed(false);
+        }
+        
+        if(nbtTagCompound.hasKey("Sitting")) {
+	        this.aiSit.setSitting(nbtTagCompound.getBoolean("Sitting"));
+	        this.setSitting(nbtTagCompound.getBoolean("Sitting"));
+        }
+        
+        if(nbtTagCompound.hasKey("Hunger")) {
+        	this.setCreatureHunger(nbtTagCompound.getFloat("Hunger"));
+        }
+        else {
+        	this.setCreatureHunger(this.getCreatureHungerMax());
+        }
+        
+        if(nbtTagCompound.hasKey("Stamina")) {
+        	this.setStamina(nbtTagCompound.getFloat("Stamina"));
+        }
     }
     
     // ========== Write ==========
     @Override
     public void writeEntityToNBT(NBTTagCompound nbtTagCompound) {
         super.writeEntityToNBT(nbtTagCompound);
-        if(this.getOwnerName() == null)
+        if(this.getOwnerName() == null) {
         	nbtTagCompound.setString("Owner", "");
-        else
+        }
+        else {
         	nbtTagCompound.setString("Owner", this.getOwnerName());
+        }
         nbtTagCompound.setBoolean("Sitting", this.isSitting());
-        nbtTagCompound.setFloat("Hunger", this.getHunger());
+        nbtTagCompound.setFloat("Hunger", this.getCreatureHunger());
         nbtTagCompound.setFloat("Stamina", this.getStamina());
     }
     

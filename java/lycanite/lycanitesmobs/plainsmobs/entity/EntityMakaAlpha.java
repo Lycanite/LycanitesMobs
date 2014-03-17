@@ -44,7 +44,7 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
         this.spawnsOnlyInLight = true;
         this.hasAttackSound = true;
         
-        this.despawnOnPeaceful = DesertMobs.config.getFeatureBool("DespawnMakasOnPeaceful");
+        this.spawnsOnPeaceful = DesertMobs.config.getFeatureBool("MakasOnPeaceful");
         this.despawnNaturally = DesertMobs.config.getFeatureBool("DespawnMakasNaturally");
         this.eggName = "PlainsEgg";
         
@@ -85,6 +85,18 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
 	public void loadItemDrops() {
         this.drops.add(new DropRate(ObjectManager.getItem("MakaMeatRaw").itemID, 1).setBurningItem(ObjectManager.getItem("MakaMeatCooked").itemID, -1).setMinAmount(3).setMaxAmount(7));
 	}
+    
+    
+    // ==================================================
+    //                       Name
+    // ==================================================
+    public String getConfigName() {
+    	return this.entityName + "Alpha";
+    }
+    
+    public String getTextureName() {
+    	return this.entityName + "Alpha";
+    }
 	
 	
 	// ==================================================
@@ -181,13 +193,5 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
 	@Override
 	public boolean isBreedingItem(ItemStack testStack) {
 		return false;
-    }
-    
-    
-    // ==================================================
-    //                       Visuals
-    // ==================================================
-    public String getTextureName() {
-    	return this.entityName + "Alpha";
     }
 }

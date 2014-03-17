@@ -119,4 +119,14 @@ public class LycanitesMobs {
 		LanguageRegistry.addName(Item.horseArmorGold, "Gold Pet Armor");
 		LanguageRegistry.addName(Item.horseArmorDiamond, "Diamond Pet Armor");
     }
+	
+	
+	// ==================================================
+	//                     Debugging
+	// ==================================================
+	public static void printDebug(String key, String message) {
+		if(config.getDebug(key)) {
+			System.out.println("[LycanitesMobs] [Debug] " + message);
+		}
+	}
 }

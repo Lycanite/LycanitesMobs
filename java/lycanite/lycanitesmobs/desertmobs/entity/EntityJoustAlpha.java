@@ -45,7 +45,7 @@ public class EntityJoustAlpha extends EntityCreatureAgeable implements IAnimals,
         this.spawnsOnlyInLight = true;
         this.hasAttackSound = true;
         
-        this.despawnOnPeaceful = DesertMobs.config.getFeatureBool("DespawnJoustsOnPeaceful");
+        this.spawnsOnPeaceful = DesertMobs.config.getFeatureBool("JoustsOnPeaceful");
         this.despawnNaturally = DesertMobs.config.getFeatureBool("DespawnJoustsNaturally");
         this.eggName = "DesertEgg";
         
@@ -88,6 +88,18 @@ public class EntityJoustAlpha extends EntityCreatureAgeable implements IAnimals,
 	public void loadItemDrops() {
         this.drops.add(new DropRate(ObjectManager.getItem("JoustMeatRaw").itemID, 1).setBurningItem(ObjectManager.getItem("JoustMeatCooked").itemID, -1).setMinAmount(3).setMaxAmount(7));
 	}
+    
+    
+    // ==================================================
+    //                       Name
+    // ==================================================
+    public String getConfigName() {
+    	return this.entityName + "Alpha";
+    }
+    
+    public String getTextureName() {
+    	return this.entityName + "Alpha";
+    }
 	
 	
 	// ==================================================
@@ -149,12 +161,4 @@ public class EntityJoustAlpha extends EntityCreatureAgeable implements IAnimals,
 	public EntityCreatureAgeable createChild(EntityCreatureAgeable partener) {
 		return new EntityJoust(this.worldObj);
 	}
-    
-    
-    // ==================================================
-    //                       Visuals
-    // ==================================================
-    public String getTextureName() {
-    	return this.entityName + "Alpha";
-    }
 }

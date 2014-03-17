@@ -17,7 +17,7 @@ public class SubConfig extends Config {
 
 		// ========== Special Feature Control ==========
 		loadSetting(this.featureBools, "Feature Control", "KoboldThievery", "Kobold Thievery", true);
-		loadSetting(this.featureBools, "Feature Control", "DespawnMakasOnPeaceful", "Maka Peaceful Spawning", true);
+		loadSetting(this.featureBools, "Feature Control", "MakasOnPeaceful", "Maka Peaceful Spawning", true);
 		loadSetting(this.featureBools, "Feature Control", "DespawnMakasNaturally", "Maka Natural Despawning", false);
 		
 		// ========== Mob Control ==========

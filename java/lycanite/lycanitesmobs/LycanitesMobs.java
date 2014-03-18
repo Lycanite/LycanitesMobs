@@ -24,7 +24,7 @@ public class LycanitesMobs {
 	
 	public static final String modid = "LycanitesMobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String version = "1.4.9 - MC 1.6.4";
+	public static final String version = "1.4.9b - MC 1.6.4";
 	public static final String domain = modid.toLowerCase();
 	public static Config config = new SubConfig();
 	
@@ -125,7 +125,7 @@ public class LycanitesMobs {
 	//                     Debugging
 	// ==================================================
 	public static void printDebug(String key, String message) {
-		if(config.getDebug(key)) {
+		if("".equals(key) || config.getDebug(key)) {
 			System.out.println("[LycanitesMobs] [Debug] " + message);
 		}
 	}

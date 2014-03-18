@@ -535,7 +535,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
         
         if(!this.worldObj.isRemote) {
         	this.setBesideClimbableBlock(this.isCollidedHorizontally);
-        	
         	if(this.flySoundSpeed > 0 && this.ticksExisted % 20 == 0)
         		this.playFlySound();
         }
@@ -1163,7 +1162,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Can this entity move across land currently? **/
     public boolean canWalk() { return true; }
     /** Can this entity free swim currently? (This doesn't stop the entity from moving in water but is used for smooth flight-like swimming). **/
-    public boolean canSwim() { return true; }
+    public boolean canSwim() { return false; }
     /** Can this entity jump currently? **/
     public boolean canJump() { return true; }
     /** Can this entity climb currently? **/

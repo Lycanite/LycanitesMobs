@@ -97,8 +97,6 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
                 this.setGrowingAge(age);
             }
         }
-        if(this.getGrowingAge() != 0)
-        	this.setFarmed();
         
         // Breeding:
         if(!this.canBreed())
@@ -170,6 +168,7 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
 				 if(baby != null) {
 					baby.setGrowingAge(baby.growthTime);
 					baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
+					baby.setFarmed();
 					this.worldObj.spawnEntityInWorld(baby);
 					if(itemStack.hasDisplayName())
 						baby.setCustomNameTag(itemStack.getDisplayName());
@@ -329,7 +328,9 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
         }
         
         if(nbtTagCompound.hasKey("HasBeenFarmed")) {
-        	nbtTagCompound.setBoolean("HasBeenFarmed", this.hasBeenFarmed);
+        	if(nbtTagCompound.getBoolean("HasBeenFarmed")) {
+        		this.setFarmed();
+        	}
         }
     }
 	

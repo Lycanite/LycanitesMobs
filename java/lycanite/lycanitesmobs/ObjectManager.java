@@ -98,29 +98,42 @@ public class ObjectManager {
 		LycanitesMobs.printDebug("MobSetup", "Mob Added: " + name + " - " + entityClass + " (" + modid + ")");
 		
 		// Add Spawn:
-		mobDimensions.put(name, config.getSpawnDimensions(name));
 		BiomeGenBase[] spawnBiomes = new BiomeGenBase[0];
-		if(config.spawnWeights.get(name) > 0 && config.spawnMaxs.get(name) > 0) {
-			spawnBiomes = config.getSpawnBiomesTypes(name);
-			EntityRegistry.addSpawn(entityClass, config.spawnWeights.get(name), config.spawnMins.get(name), config.spawnMaxs.get(name), config.spawnTypes.get(name), spawnBiomes);
+		if(!LycanitesMobs.config.getFeatureBool("DisableAllSpawning")) {
+			mobDimensions.put(name, config.getSpawnDimensions(name));
+			if(config.spawnWeights.get(name) > 0 && config.spawnMaxs.get(name) > 0) {
+				spawnBiomes = config.getSpawnBiomesTypes(name);
+				EntityRegistry.addSpawn(entityClass, config.spawnWeights.get(name), config.spawnMins.get(name), config.spawnMaxs.get(name), config.spawnTypes.get(name), spawnBiomes);
+			}
 		}
 		
 		// Dungeon Spawn:
-		int dungeonWeight = config.spawnWeights.get(name) * 25;
-		if(dungeonWeight > 0 && config.spawnTypes.get(name) == EnumCreatureType.monster)
-			DungeonHooks.addDungeonMob(modid + "." + name, dungeonWeight);
+		if(!LycanitesMobs.config.getFeatureBool("DisableDungeonSpawners")) {
+			int dungeonWeight = config.spawnWeights.get(name) * 25;
+			if(dungeonWeight > 0 && config.spawnTypes.get(name) == EnumCreatureType.monster)
+				DungeonHooks.addDungeonMob(modid + "." + name, dungeonWeight);
+		}
 		
 		// Debug Message - Spawn Added:
-		LycanitesMobs.printDebug("MobSetup", "Mob Spawn Added - Weight: " + config.spawnWeights.get(name) + " Min: " + config.spawnMins.get(name) + " Max: " + config.spawnMaxs.get(name));
-		String biomesList = "";
-		if(LycanitesMobs.config.getDebug("MobSetup")) {
-			for(BiomeGenBase biome : spawnBiomes) {
-				if(!"".equals(biomesList))
-					biomesList += ", ";
-				biomesList += biome.biomeName;
+		if(!LycanitesMobs.config.getFeatureBool("DisableAllSpawning")) {
+			LycanitesMobs.printDebug("MobSetup", "Mob Spawn Added - Weight: " + config.spawnWeights.get(name) + " Min: " + config.spawnMins.get(name) + " Max: " + config.spawnMaxs.get(name));
+			String biomesList = "";
+			if(LycanitesMobs.config.getDebug("MobSetup")) {
+				for(BiomeGenBase biome : spawnBiomes) {
+					if(!"".equals(biomesList))
+						biomesList += ", ";
+					biomesList += biome.biomeName;
+				}
 			}
+			LycanitesMobs.printDebug("MobSetup", "Biomes: " + biomesList);
+			String dimensionsList = "";
+			for(int dimensionID : config.getSpawnDimensions(name)) {
+				if(!"".equals(dimensionsList))
+					dimensionsList += ", ";
+				dimensionsList += Integer.toString(dimensionID);
+			}
+			LycanitesMobs.printDebug("MobSetup", "Dimensions: " + dimensionsList);
 		}
-		LycanitesMobs.printDebug("MobSetup", "Biomes: " + biomesList);
 		
 		mobs.put(name, entityClass);
 	}

@@ -18,16 +18,16 @@ public class SubConfig extends Config {
 		// ========== Special Feature Control ==========
 		loadSetting(this.featureBools, "Feature Control", "Hellfire", "Enable Hellfire", true);
 		loadSetting(this.featureBools, "Feature Control", "PinkiesOnPeaceful", "Pinkies Peaceful Spawning", true);
-		loadSetting(this.featureBools, "Feature Control", "DespawnPinkiesNaturally", "Pinkies Natural Despawning", false);
+		loadSetting(this.featureBools, "Feature Control", "DespawnPinkiesNaturally", "Pinkies Natural Despawning", true);
 		
 		// ========== Mob Control ==========
-		loadMobSettings("Belph", 8, 12, 3, 4, "MONSTER");
-		loadMobSettings("Behemoth", 2, 2, 1, 1, "MONSTER");
-		loadMobSettings("Pinky", 6, 1, 1, 1, "CREATURE");
-		loadMobSettings("Trite", 12, 40, 5, 10, "MONSTER");
-		loadMobSettings("Asmodi", 2, 1, 1, 1, "MONSTER");
-		loadMobSettings("NetherSoul", 6, 12, 4, 8, "MONSTER");
-		loadMobSettings("Cacodemon", 4, 1, 1, 1, "MONSTER");
+		loadMobSettings("Belph", 100, 12, 3, 4, "MONSTER");
+		loadMobSettings("Behemoth", 20, 2, 1, 1, "MONSTER");
+		loadMobSettings("Pinky", 60, 1, 1, 3, "MONSTER");
+		loadMobSettings("Trite", 120, 40, 5, 10, "MONSTER");
+		loadMobSettings("Asmodi", 20, 1, 1, 1, "MONSTER");
+		loadMobSettings("NetherSoul", 60, 12, 4, 8, "MONSTER");
+		loadMobSettings("Cacodemon", 40, 1, 1, 1, "MONSTER");
 		
 		// ========== Block IDs ==========
 		loadSetting(blockIDs, "Block IDs", "Hellfire", "Hellfire Block ID", 3856);

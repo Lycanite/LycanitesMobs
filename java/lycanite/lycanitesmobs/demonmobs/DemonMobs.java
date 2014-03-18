@@ -150,12 +150,12 @@ public class DemonMobs implements ILycaniteMod {
 		
 		// ========== Alter Vanilla Spawns ==========
 		BiomeGenBase[] biomes = this.config.getSpawnBiomesTypes();
-		// For some insane reason Zombie Pigmen have a spawn rate of 100 by default!
+		// For some insane reason Zombie Pigmen have a spawn rate of 100 by default! I'm now matching this with my mobs to see if it affects things.
 		if(config.getFeatureBool("ControlVanilla")) {
 			EntityRegistry.removeSpawn(EntityPigZombie.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntityGhast.class, EnumCreatureType.monster, biomes);
-			EntityRegistry.addSpawn(EntityPigZombie.class, 12, 1, 4, EnumCreatureType.monster, biomes);
-			EntityRegistry.addSpawn(EntityGhast.class, 8, 1, 2, EnumCreatureType.monster, biomes);
+			EntityRegistry.addSpawn(EntityPigZombie.class, 100, 1, 4, EnumCreatureType.monster, biomes);
+			EntityRegistry.addSpawn(EntityGhast.class, 50, 1, 2, EnumCreatureType.monster, biomes);
 		}
 		
 		// ========== Crafting ==========

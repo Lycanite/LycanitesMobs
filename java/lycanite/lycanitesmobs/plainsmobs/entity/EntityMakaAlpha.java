@@ -48,7 +48,7 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
         this.despawnNaturally = DesertMobs.config.getFeatureBool("DespawnMakasNaturally");
         this.eggName = "PlainsEgg";
         
-        this.setWidth = 2.9F;
+        this.setWidth = 3.5F;
         this.setHeight = 3.5F;
         this.attackTime = 10;
         this.setupMob();
@@ -76,7 +76,7 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
 		baseAttributes.put("movementSpeed", 0.28D);
 		baseAttributes.put("knockbackResistance", 1D);
 		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 3D);
+		baseAttributes.put("attackDamage", 2D);
         super.applyEntityAttributes(baseAttributes);
     }
 	

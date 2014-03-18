@@ -34,7 +34,7 @@ public class EntityAIAttackMelee extends EntityAIBase {
  	// ==================================================
     public EntityAIAttackMelee(EntityCreatureBase setHost) {
         this.host = setHost;
-        this.attackRange = (double)(this.host.width * 2.0F * this.host.width * 2.0F);
+        this.attackRange = (double)((this.host.width * this.host.width) * 2.0F);
         this.setMutexBits(3);
     }
     
@@ -63,7 +63,7 @@ public class EntityAIAttackMelee extends EntityAIBase {
     	return this;
     }
     public EntityAIAttackMelee setRange(double range) {
-    	this.attackRange = range * range;
+    	this.attackRange = (range * range) + this.host.width;
     	return this;
     }
     public EntityAIAttackMelee scaleRange(double scale) {
@@ -188,7 +188,7 @@ public class EntityAIAttackMelee extends EntityAIBase {
         
         // Damage Target:
         this.attackTime = Math.max(this.attackTime - 1, 0);
-        if(this.host.getDistanceSq(attackTarget.posX, attackTarget.boundingBox.minY, attackTarget.posZ) <= this.attackRange + attackTarget.width) {
+        if(this.host.getDistanceSq(attackTarget.posX, attackTarget.boundingBox.minY, attackTarget.posZ) <= this.attackRange + (attackTarget.width * attackTarget.width)) {
             if(this.attackTime <= 0) {
                 this.attackTime = this.attackTimeMax;
                 if(this.host.getHeldItem() != null)

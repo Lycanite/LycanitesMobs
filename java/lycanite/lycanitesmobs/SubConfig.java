@@ -13,6 +13,8 @@ public class SubConfig extends Config {
 		loadSetting(featureBools, "Feature Control", "NightmareDifficulty", "Enable Nightmare Difficulty", false);
 		loadSetting(featureBools, "Feature Control", "MobTaming", "Allow Mob Taming", true);
 		loadSetting(featureBools, "Feature Control", "MobMounting", "Allow Mob Mounting", true);
+		loadSetting(featureBools, "Feature Control", "DisableAllSpawning", "Disable All Spawning", false);
+		loadSetting(featureBools, "Feature Control", "DisableDungeonSpawners", "Disable Dungeon Spawners", false);
 
 		// ========== Debugging ==========
 		loadSetting(debugBools, "Debugging", "MobSetup", "Print Mob Setup", false);

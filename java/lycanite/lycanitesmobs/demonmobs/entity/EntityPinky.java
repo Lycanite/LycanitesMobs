@@ -123,14 +123,6 @@ public class EntityPinky extends EntityCreatureRideable implements IAnimals, IGr
         this.drops.add(new DropRate(ObjectManager.getItem("PinkyMeatRaw").itemID, 1).setBurningItem(ObjectManager.getItem("PinkyMeatCooked").itemID, -1).setMinAmount(1).setMaxAmount(3));
 	}
 	
-	// ==================================================
-  	//                       Spawning
-  	// ==================================================
-    @Override
-    public boolean isPersistant() {
-    	return this.worldObj.provider.dimensionId != -1 || super.isPersistant();
-    }
-	
 	
     // ==================================================
     //                      Updates
@@ -139,6 +131,10 @@ public class EntityPinky extends EntityCreatureRideable implements IAnimals, IGr
 	@Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
+        
+        // Become a farmed animal if removed from the Nether to another dimension, prevents natural despawning.
+        if(this.worldObj.provider.dimensionId != -1)
+        	this.setFarmed();
     }
     
     public void riderEffects(EntityLivingBase rider) {

@@ -90,6 +90,11 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
         return super.despawnCheck();
     }
     
+    @Override
+    public boolean isPersistant() {
+    	return this.isTamed() || super.isPersistant();
+    }
+    
     
     // ==================================================
   	//                      Movement

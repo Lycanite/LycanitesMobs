@@ -99,8 +99,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // Spawning:
     /** Use the onSpawn() method and not this variable. True if this creature has spawned for the first time (naturally or via spawn egg, etc, not reloaded from a saved chunk). **/
     public boolean firstSpawn = true;
-    /** Should this mob spawn and be removed on peaceful. **/
-    public boolean spawnsOnPeaceful = true;
+    /** Should this mob spawn and NOT be removed on peaceful. **/
+    public boolean spawnsOnPeaceful = false;
     /** Should this mob despawn over time. **/
     public boolean despawnNaturally = true;
     /** Should this mob only spawn in darkness. **/

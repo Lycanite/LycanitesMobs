@@ -54,7 +54,7 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
         this.despawnNaturally = DesertMobs.config.getFeatureBool("DespawnMakasNaturally");
         this.eggName = "PlainsEgg";
         
-        this.setWidth = 2.5F;
+        this.setWidth = 2.9F;
         this.setHeight = 3.2F;
         this.attackTime = 10;
         this.fleeHealthPercent = 0.9F;

@@ -46,6 +46,7 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
         this.entityName = "Maka";
         this.mod = PlainsMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
+        this.defense = 1;
         this.experience = 5;
         this.spawnsOnlyInLight = true;
         this.hasAttackSound = true;
@@ -82,7 +83,7 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 25D);
+		baseAttributes.put("maxHealth", 20D);
 		baseAttributes.put("movementSpeed", 0.28D);
 		baseAttributes.put("knockbackResistance", 1D);
 		baseAttributes.put("followRange", 20D);

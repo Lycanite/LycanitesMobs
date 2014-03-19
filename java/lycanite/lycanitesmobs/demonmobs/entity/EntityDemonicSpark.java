@@ -38,7 +38,7 @@ public class EntityDemonicSpark extends EntityProjectileBase {
     public void setup() {
     	this.entityName = "DemonicSpark";
     	this.mod = DemonMobs.instance;
-    	this.setDamage(5);
+    	this.setBaseDamage(5);
     	this.setProjectileScale(1F);
     }
 	

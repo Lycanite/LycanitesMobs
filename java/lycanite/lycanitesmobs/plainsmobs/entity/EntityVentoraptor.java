@@ -48,6 +48,7 @@ public class EntityVentoraptor extends EntityCreatureRideable implements IGroupP
         this.entityName = "Ventoraptor";
         this.mod = PlainsMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
+        this.defense = 0;
         this.experience = 5;
         this.spawnsInDarkness = true;
         this.spawnsUnderground = false;

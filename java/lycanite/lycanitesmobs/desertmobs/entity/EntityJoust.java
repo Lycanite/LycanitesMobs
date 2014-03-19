@@ -43,6 +43,7 @@ public class EntityJoust extends EntityCreatureAgeable implements IAnimals, IGro
         this.entityName = "Joust";
         this.mod = DesertMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
+        this.defense = 0;
         this.experience = 5;
         this.spawnsOnlyInLight = true;
         this.hasAttackSound = true;

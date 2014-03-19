@@ -33,7 +33,8 @@ public class PotionEffects {
 		
 		// ========== Weight ==========
 		if(!invulnerable && entity.isPotionActive(ObjectManager.getPotionEffect("Weight").getId())) {
-			entity.motionY = -0.2D;
+			if(entity.motionY > -0.2D)
+				entity.motionY = -0.2D;
 		}
 	}
 	

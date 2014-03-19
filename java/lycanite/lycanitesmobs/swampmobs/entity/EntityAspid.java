@@ -6,14 +6,16 @@ import lycanite.lycanitesmobs.DropRate;
 import lycanite.lycanitesmobs.ObjectLists;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupAnimal;
+import lycanite.lycanitesmobs.api.IGroupPredator;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIAvoid;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowParent;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIMate;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAvoid;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetParent;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITempt;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
@@ -43,6 +45,7 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
         this.entityName = "Aspid";
         this.mod = SwampMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
+        this.defense = 0;
         this.experience = 5;
         this.spawnsOnlyInLight = true;
         this.hasAttackSound = true;
@@ -54,20 +57,23 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
         this.setWidth = 0.9F;
         this.setHeight = 2.2F;
         this.attackTime = 10;
+        this.fleeHealthPercent = 1.0F;
         this.setupMob();
         
         // AI Tasks:
         this.getNavigator().setAvoidsWater(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIMate(this));
-        this.tasks.addTask(2, new EntityAITempt(this).setItemList("Mushrooms"));
+        this.tasks.addTask(1, new EntityAIAvoid(this).setNearSpeed(1.3D).setFarSpeed(1.2D).setNearDistance(5.0D).setFarDistance(20.0D));
+        this.tasks.addTask(2, new EntityAIMate(this));
         this.tasks.addTask(3, new EntityAIAttackMelee(this).setRate(10).setLongMemory(false));
-        this.tasks.addTask(4, new EntityAIFollowParent(this).setSpeed(1.0D));
+        this.tasks.addTask(4, new EntityAITempt(this).setItemList("Mushrooms"));
+        this.tasks.addTask(5, new EntityAIFollowParent(this).setSpeed(1.0D));
         this.tasks.addTask(6, new EntityAIWander(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
-        this.targetTasks.addTask(0, new EntityAITargetRevenge(this));
+        //this.targetTasks.addTask(0, new EntityAITargetRevenge(this));
         this.targetTasks.addTask(2, new EntityAITargetParent(this).setSightCheck(false).setDistance(32.0D));
+        this.targetTasks.addTask(3, new EntityAITargetAvoid(this).setTargetClass(IGroupPredator.class));
     }
     
     // ========== Stats ==========

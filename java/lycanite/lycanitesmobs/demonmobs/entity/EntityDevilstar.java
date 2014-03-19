@@ -38,7 +38,7 @@ public class EntityDevilstar extends EntityProjectileBase {
     public void setup() {
     	this.entityName = "Devilstar";
     	this.mod = DemonMobs.instance;
-    	this.setDamage(2);
+    	this.setBaseDamage(2);
     	this.setProjectileScale(0.75F);
     	
     	this.waterProof = true;

@@ -37,6 +37,7 @@ public class EntityEttin extends EntityCreatureAgeable implements IMob {
         this.entityName = "Ettin";
         this.mod = SwampMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
+        this.defense = 2;
         this.experience = 10;
         this.spawnsInDarkness = true;
         this.hasAttackSound = true;

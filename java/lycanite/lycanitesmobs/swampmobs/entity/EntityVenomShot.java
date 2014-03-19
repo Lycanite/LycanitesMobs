@@ -40,7 +40,7 @@ public class EntityVenomShot extends EntityProjectileBase {
     public void setup() {
     	this.entityName = "VenomShot";
     	this.mod = SwampMobs.instance;
-    	this.setDamage(3);
+    	this.setBaseDamage(3);
     	this.setProjectileScale(2.5F);
     }
     
@@ -51,7 +51,7 @@ public class EntityVenomShot extends EntityProjectileBase {
     //========== Entity Living Collision ==========
     @Override
     public boolean entityLivingCollision(EntityLivingBase entityLiving) {
-    	entityLiving.addPotionEffect(new PotionEffect(Potion.poison.id, 5 * 20, 0));
+    	entityLiving.addPotionEffect(new PotionEffect(Potion.poison.id, this.getEffectDuration(5), 0));
     	return true;
     }
     

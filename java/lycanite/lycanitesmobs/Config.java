@@ -26,6 +26,15 @@ public class Config {
 	public Map<String, Integer> featureInts = new HashMap<String, Integer>();
 	public Map<String, String> featureStrings = new HashMap<String, String>();
 	
+	// Stat Multipliers and Boosts:
+	public Map<String, Double> difficultyMultipliers = new HashMap<String, Double>(); // Affects all stats, for each difficulty.
+	public Map<String, Double> defenseMultipliers = new HashMap<String, Double>(); // Scale of defense.
+	public Map<String, Integer> defenseBoosts = new HashMap<String, Integer>(); // Additional defense.
+	public Map<String, Double> speedMultipliers = new HashMap<String, Double>(); // Speed of movement.
+	public Map<String, Double> damageMultipliers = new HashMap<String, Double>(); // Scale of damage.
+	public Map<String, Double> hasteMultipliers = new HashMap<String, Double>(); // Speed of attacks.
+	public Map<String, Double> effectMultipliers = new HashMap<String, Double>(); // Duration of effects.
+	
 	// Debugging:
 	public Map<String, Boolean> debugBools = new HashMap<String, Boolean>();
 	
@@ -86,6 +95,14 @@ public class Config {
 	public void loadSettings() {
 		// ========== Feature Control ==========
 		loadSetting(this.featureBools, "Feature Control", "ControlVanilla", "Control Vanilla Mobs", true);
+		
+		// ========== Mob Stat Multipliers and Boosts ==========
+		loadStatMultiplier(this.defenseMultipliers, "Mob Control", "GROUP", "Group Stat Defense Multiplier", "1.0");
+		loadStatBoost(this.defenseBoosts, "Mob Control", "GROUP", "Group Stat Defense Boost", "0");
+		loadStatMultiplier(this.speedMultipliers, "Mob Control", "GROUP", "Group Stat Speed Multiplier", "1.0");
+		loadStatMultiplier(this.damageMultipliers, "Mob Control", "GROUP", "Group Stat Damage Multiplier", "1.0");
+		loadStatMultiplier(this.hasteMultipliers, "Mob Control", "GROUP", "Group Stat Haste Multiplier", "1.0");
+		loadStatMultiplier(this.effectMultipliers, "Mob Control", "GROUP", "Group Stat Effect Multiplier", "1.0");
 	}
 	
 	
@@ -147,9 +164,69 @@ public class Config {
 		loadSetting(this.spawnDimensions, "Mob Control", mobName, mobName + " Spawn Dimensions", spawnDimension);
 		loadSetting(this.customDrops, "Mob Control", mobName, mobName + " Custom Drops", "");
 		loadSetting(this.defaultDrops, "Mob Control", mobName, mobName + " Enable Default Drops", true);
+
+		loadStatMultiplier(this.defenseMultipliers, "Mob Control", mobName, mobName + " Stat Defense Multiplier", "GROUP");
+		loadStatBoost(this.defenseBoosts, "Mob Control", mobName, mobName + " Stat Defense Boost", "GROUP");
+		loadStatMultiplier(this.speedMultipliers, "Mob Control", mobName, mobName + " Stat Speed Multiplier", "GROUP");
+		loadStatMultiplier(this.damageMultipliers, "Mob Control", mobName, mobName + " Stat Damage Multiplier", "GROUP");
+		loadStatMultiplier(this.hasteMultipliers, "Mob Control", mobName, mobName + " Stat Haste Multiplier", "GROUP");
+		loadStatMultiplier(this.effectMultipliers, "Mob Control", mobName, mobName + " Stat Effect Multiplier", "GROUP");
 	}
 	public void loadMobSettings(String mobName, int spawnWeight, int spawnLimit, int spawnMin, int spawnMax, String spawnTypeName) {
 		this.loadMobSettings(mobName, spawnWeight, spawnLimit, spawnMin, spawnMax, spawnTypeName, "GROUP", "GROUP");
+	}
+	
+	// ========== Stat Multipliers and Boosts ==========
+	public void loadStatMultiplier(Map<String, Double> statMap, String settingCategory, String settingID, String settingName, String settingDefault) {
+		String statString = config.get(settingCategory, settingName, settingDefault).getString().toUpperCase();
+		double statValue = 1.0D;
+		if("DEFAULT".equalsIgnoreCase(statString) && statMap != this.difficultyMultipliers) {
+			config.get(settingCategory, settingName, settingDefault).set(settingDefault);
+			statString = settingDefault;
+			config.save();
+		}
+		
+		if("GROUP".equalsIgnoreCase(statString) && statMap != this.difficultyMultipliers) {
+			if(statMap.containsKey("GROUP"))
+				statValue = statMap.get("GROUP");
+		}
+		else {
+			try {
+				statValue = Double.parseDouble(statString);
+			}
+			catch(Exception e) {
+				System.out.println("[WARNING] [LycanitesMobs] Invalid stat multiplier: " + statString + ". The value must be either DEFAULT, GROUP or a decimal value such as 1.0 or 1.5 or 0.2. Using 1.0.");
+				statValue = 1.0D;
+			}
+		}
+		
+		statMap.put(settingID, statValue);
+	}
+	
+	public void loadStatBoost(Map<String, Integer> statMap, String settingCategory, String settingID, String settingName, String settingDefault) {
+		String statString = config.get(settingCategory, settingName, settingDefault).getString().toUpperCase();
+		int statValue = 0;
+		if("DEFAULT".equalsIgnoreCase(statString)) {
+			config.get(settingCategory, settingName, settingDefault).set(settingDefault);
+			statString = settingDefault;
+			config.save();
+		}
+		
+		if("GROUP".equalsIgnoreCase(statString)) {
+			if(statMap.containsKey("GROUP"))
+				statValue = statMap.get("GROUP");
+		}
+		else {
+			try {
+				statValue = Integer.parseInt(statString);
+			}
+			catch(Exception e) {
+				System.out.println("[WARNING] [LycanitesMobs] Invalid stat boost: " + statString + ". The value must be either DEFAULT, GROUP or a whole value such as 1 or 3 or 10. Using 0.");
+				statValue = 0;
+			}
+		}
+		
+		statMap.put(settingID, statValue);
 	}
 	
 	

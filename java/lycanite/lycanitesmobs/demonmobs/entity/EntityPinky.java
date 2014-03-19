@@ -59,6 +59,7 @@ public class EntityPinky extends EntityCreatureRideable implements IAnimals, IGr
         this.entityName = "Pinky";
         this.mod = DemonMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEAD;
+        this.defense = 0;
         this.experience = 5;
         this.hasAttackSound = true;
         this.spreadFire = true;

@@ -44,7 +44,7 @@ public class ItemScepterHellfire extends ItemScepter {
     public boolean chargedAttack(ItemStack itemStack, World world, EntityPlayer player, float power) {
     	if(!world.isRemote) {
     		EntityHellfireball projectile = new EntityHellfireball(world, player);
-    		projectile.setDamage((int)(projectile.getDamage(null) * power * 2));
+    		projectile.setBaseDamage((int)(projectile.getDamage(null) * power * 2));
         	world.spawnEntityInWorld(projectile);
             world.playSoundAtEntity(player, ((EntityProjectileBase)projectile).getLaunchSound(), 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
         }

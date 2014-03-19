@@ -45,6 +45,7 @@ public class EntityGorgomite extends EntityCreatureBase implements IMob, IGroupP
         this.entityName = "Gorgomite";
         this.mod = DesertMobs.instance;
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
+        this.defense = 0;
         this.experience = 3;
         this.spawnsInDarkness = true;
         hasAttackSound = true;

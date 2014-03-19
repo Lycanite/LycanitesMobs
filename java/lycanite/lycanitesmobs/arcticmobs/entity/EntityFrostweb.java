@@ -37,7 +37,7 @@ public class EntityFrostweb extends EntityProjectileBase {
     public void setup() {
     	this.entityName = "Frostweb";
     	this.mod = ArcticMobs.instance;
-    	this.setDamage(2);
+    	this.setBaseDamage(2);
     }
     
     
@@ -47,7 +47,7 @@ public class EntityFrostweb extends EntityProjectileBase {
     //========== Entity Living Collision ==========
     @Override
     public boolean entityLivingCollision(EntityLivingBase entityLiving) {
-    	entityLiving.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 2 * 20, 0));
+    	entityLiving.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, this.getEffectDuration(2), 0));
     	return true;
     }
     

@@ -38,7 +38,7 @@ public class EntityDoomfireball extends EntityProjectileBase {
     public void setup() {
     	this.entityName = "Doomfireball";
     	this.mod = DemonMobs.instance;
-    	this.setDamage(2);
+    	this.setBaseDamage(2);
     	this.setProjectileScale(1F);
     }
     
@@ -50,7 +50,7 @@ public class EntityDoomfireball extends EntityProjectileBase {
     @Override
     public boolean entityLivingCollision(EntityLivingBase entityLiving) {
     	if(!entityLiving.isImmuneToFire())
-    		entityLiving.setFire(5);
+    		entityLiving.setFire(this.getEffectDuration(5));
     	return true;
     }
     

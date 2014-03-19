@@ -36,6 +36,7 @@ public class EntityTrite extends EntityCreatureBase implements IMob {
         this.entityName = "Trite";
         this.mod = DemonMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEAD;
+        this.defense = 0;
         this.experience = 2;
         this.hasAttackSound = true;
         

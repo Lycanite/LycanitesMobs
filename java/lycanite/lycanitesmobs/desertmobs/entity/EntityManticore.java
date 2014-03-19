@@ -38,6 +38,7 @@ public class EntityManticore extends EntityCreatureBase implements IMob, IGroupH
         this.entityName = "Manticore";
         this.mod = DesertMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
+        this.defense = 0;
         this.experience = 5;
         this.spawnsInDarkness = true;
         this.hasAttackSound = true;

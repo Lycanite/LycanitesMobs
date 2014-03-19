@@ -45,6 +45,7 @@ public class EntityConcapedeHead extends EntityCreatureAgeable implements IAnima
         this.entityName = "Concapede";
         this.mod = JungleMobs.instance;
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
+        this.defense = 0;
         this.experience = 5;
         this.spawnsInDarkness = false;
         this.hasAttackSound = true;

@@ -39,6 +39,7 @@ public class EntityCryptZombie extends EntityCreatureAgeable implements IMob {
         this.entityName = "CryptZombie";
         this.mod = DesertMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEAD;
+        this.defense = 0;
         this.experience = 5;
         this.spawnsInDarkness = true;
         this.hasAttackSound = false;

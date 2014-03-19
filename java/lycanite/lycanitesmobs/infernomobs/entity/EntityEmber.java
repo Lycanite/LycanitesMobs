@@ -36,7 +36,7 @@ public class EntityEmber extends EntityProjectileBase {
     public void setup() {
     	this.entityName = "Ember";
     	this.mod = InfernoMobs.instance;
-    	this.setDamage(2);
+    	this.setBaseDamage(2);
     	this.setProjectileScale(2F);
     }
     
@@ -48,7 +48,7 @@ public class EntityEmber extends EntityProjectileBase {
     @Override
     public boolean entityLivingCollision(EntityLivingBase entityLiving) {
     	if(!entityLiving.isImmuneToFire())
-    		entityLiving.setFire(5);
+    		entityLiving.setFire(this.getEffectDuration(5));
     	return true;
     }
     

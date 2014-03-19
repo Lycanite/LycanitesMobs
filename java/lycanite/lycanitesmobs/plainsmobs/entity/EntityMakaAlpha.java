@@ -40,6 +40,7 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
         this.entityName = "Maka";
         this.mod = PlainsMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
+        this.defense = 2;
         this.experience = 5;
         this.spawnsOnlyInLight = true;
         this.hasAttackSound = true;
@@ -72,7 +73,7 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 100D);
+		baseAttributes.put("maxHealth", 80D);
 		baseAttributes.put("movementSpeed", 0.28D);
 		baseAttributes.put("knockbackResistance", 1D);
 		baseAttributes.put("followRange", 16D);

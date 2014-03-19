@@ -41,6 +41,7 @@ public class EntityTrent extends EntityCreatureBase implements IMob {
         this.entityName = "Trent";
         this.mod = ForestMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
+        this.defense = 2;
         this.experience = 10;
         this.spawnsInDarkness = true;
         this.spawnsUnderground = false;
@@ -74,7 +75,7 @@ public class EntityTrent extends EntityCreatureBase implements IMob {
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 160D);
+		baseAttributes.put("maxHealth", 140D);
 		baseAttributes.put("movementSpeed", 0.18D);
 		baseAttributes.put("knockbackResistance", 1.0D);
 		baseAttributes.put("followRange", 16D);

@@ -37,6 +37,7 @@ public class EntityGeken extends EntityCreatureAgeable implements IMob {
         this.entityName = "Geken";
         this.mod = JungleMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
+        this.defense = 0;
         this.experience = 5;
         this.spawnsInDarkness = true;
         this.hasAttackSound = true;

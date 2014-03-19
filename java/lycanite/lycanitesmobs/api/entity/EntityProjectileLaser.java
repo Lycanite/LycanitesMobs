@@ -388,7 +388,7 @@ public class EntityProjectileLaser extends EntityProjectileBase {
  	//                      Damage
  	// ==================================================
     public void updateDamage(Entity targetEntity) {
-    	targetEntity.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), (float)damage);
+    	targetEntity.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), this.getDamage(targetEntity));
     }
     
     

@@ -53,6 +53,7 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
         this.entityName = "Lurker";
         this.mod = SwampMobs.instance;
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
+        this.defense = 0;
         this.experience = 5;
         this.spawnsInDarkness = true;
         this.hasAttackSound = true;

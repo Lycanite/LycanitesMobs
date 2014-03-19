@@ -36,7 +36,7 @@ public class EntityFrostbolt extends EntityProjectileBase {
     public void setup() {
     	this.entityName = "Frostbolt";
     	this.mod = ArcticMobs.instance;
-    	this.setDamage(5);
+    	this.setBaseDamage(5);
     	
     	this.waterProof = true;
     }
@@ -48,7 +48,7 @@ public class EntityFrostbolt extends EntityProjectileBase {
     //========== Entity Living Collision ==========
     @Override
     public boolean entityLivingCollision(EntityLivingBase entityLiving) {
-    	entityLiving.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 5 * 20, 0));
+    	entityLiving.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, this.getEffectDuration(5), 0));
     	return true;
     }
     

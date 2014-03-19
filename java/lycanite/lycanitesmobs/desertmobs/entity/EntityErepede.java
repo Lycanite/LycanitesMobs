@@ -51,6 +51,7 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
         this.entityName = "Erepede";
         this.mod = DesertMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
+        this.defense = 2;
         this.experience = 5;
         this.spawnsInDarkness = true;
         this.hasAttackSound = false;
@@ -64,7 +65,6 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
         
         // Stats:
         this.stepHeight = 1.0F;
-        this.rangedDamage = new int[] {4, 5, 6};
         this.isMobWhenNotTamed = true;
         
         // AI Tasks:
@@ -210,11 +210,6 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
         float f1 = MathHelper.sqrt_double(d0 * d0 + d2 * d2) * 0.2F;
         float velocity = 1.2F;
         projectile.setThrowableHeading(d0, d1 + (double)f1, d2, velocity, 6.0F);
-        
-        // Damage:
-        projectile.setDamage(rangedDamage[0]);
-        if(worldObj.difficultySetting == 2) projectile.setDamage(rangedDamage[1]);
-        else if(worldObj.difficultySetting > 2) projectile.setDamage(rangedDamage[2]);
         
         // Launch:
         this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));

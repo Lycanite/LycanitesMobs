@@ -20,7 +20,7 @@ public class EntityProjectileBase extends EntityThrowable {
 	public ILycaniteMod mod;
 	
 	// Properties:
-	public byte damage = 1;
+	public byte baseDamage = 1;
 	public float projectileScale = 1.0f;
 	
 	public boolean waterProof = false;
@@ -217,12 +217,24 @@ public class EntityProjectileBase extends EntityThrowable {
      // ==================================================
      //                      Damage
      // ==================================================
-     public void setDamage(int newDamage) {
-     	damage = (byte)newDamage;
+     public void setBaseDamage(int newDamage) {
+     	this.baseDamage = (byte)newDamage;
      }
      
-     public float getDamage(EntityLivingBase entityLiving) {
-         return (float)damage;
+     public float getDamage(Entity entity) {
+    	 float damage = (float)this.baseDamage;
+    	 if(this.getThrower() != null && this.getThrower() instanceof EntityCreatureBase)
+    		 damage *= ((EntityCreatureBase)this.getThrower()).getAttackDamageScale();
+         return damage;
+     }
+     
+     /** When given a base time (in seconds) this will return the scaled time with difficulty and other modifiers taken into account
+      * seconds - The base duration in seconds that this effect should last for.
+     **/
+     public int getEffectDuration(int seconds) {
+    	 if(this.getThrower() != null && this.getThrower() instanceof EntityCreatureBase)
+    		 return Math.round((float)seconds * (float)((EntityCreatureBase)this.getThrower()).getEffectMultiplier());
+    	 return seconds;
      }
      
      

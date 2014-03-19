@@ -38,7 +38,7 @@ public class EntityMudshot extends EntityProjectileBase {
     public void setup() {
     	this.entityName = "Mudshot";
     	this.mod = DesertMobs.instance;
-    	this.setDamage(4);
+    	this.setBaseDamage(4);
     	this.setProjectileScale(1F);
     }
 	
@@ -70,7 +70,7 @@ public class EntityMudshot extends EntityProjectileBase {
     //========== Entity Living Collision ==========
     @Override
     public boolean entityLivingCollision(EntityLivingBase entityLiving) {
-    	entityLiving.addPotionEffect(new PotionEffect(Potion.weakness.id, 10 * 20, 0));
+    	entityLiving.addPotionEffect(new PotionEffect(Potion.weakness.id, this.getEffectDuration(10), 0));
     	return true;
     }
     

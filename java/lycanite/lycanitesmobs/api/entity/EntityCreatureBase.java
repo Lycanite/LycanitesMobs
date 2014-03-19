@@ -67,10 +67,13 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	public float setHeight = 1.8F;
 	
 	// Stats:
+	/** The defense rating of this mob. This is how much damage it can withstand.
+	 * For example, a damage of 4 with a defense of 1 will result in a new damage of 3.
+	 * Defense stat multipliers are applied to this value too, nor whole results are rounded.
+	**/
+	public int defense = 0;
     /** How much experience this mob drops (overriden to 0 if it is a minion). **/
 	public int experience = 5;
-    /** An array of how much ranged damage this mob does for each difficulty: [0] = Easy to [2] = Hard. **/
-	public int[] rangedDamage = new int[] {0, 0, 0};
     /** Which attack phase this mob is on. This will be replaced with a better system for boss mobs. **/
 	public byte attackPhase = 0;
     /** How many attack phases this mob has. This will be replaced with a better system for boss mobs. **/
@@ -519,6 +522,77 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== On Spawn ==========
     /** This is called when the mob is first spawned to the world either through natural spawning or from a Spawn Egg. **/
     public void onSpawn() {}
+	
+	
+	// ==================================================
+	//             Stat Multipliers and Boosts
+	// ==================================================
+    /** Returns the requested stat multiplier. **/
+	public double getStatMultiplier(String stat) {
+		double multiplier = 1.0D;
+		if("defense".equalsIgnoreCase(stat))
+			multiplier = this.mod.getConfig().defenseMultipliers.get(this);
+		
+		else if("speed".equalsIgnoreCase(stat))
+			multiplier = this.mod.getConfig().speedMultipliers.get(this);
+		
+		else if("damage".equalsIgnoreCase(stat))
+			multiplier = this.mod.getConfig().damageMultipliers.get(this);
+		
+		else if("haste".equalsIgnoreCase(stat))
+			multiplier = this.mod.getConfig().hasteMultipliers.get(this);
+		
+		else if("effect".equalsIgnoreCase(stat))
+			multiplier = this.mod.getConfig().effectMultipliers.get(this);
+		
+		return multiplier * this.getDifficultyMultiplier();
+	}
+	
+	/** Returns the shared multiplier for all stats based on difficulty. **/
+	public double getDifficultyMultiplier() {
+		int difficulty = this.worldObj.difficultySetting;
+		if(difficulty >= 3)
+			return LycanitesMobs.config.difficultyMultipliers.get("Hard");
+		else if(difficulty == 2)
+			return LycanitesMobs.config.difficultyMultipliers.get("Normal");
+		else
+			return LycanitesMobs.config.difficultyMultipliers.get("Easy");
+	}
+	
+	/** Returns an additional boost stat, useful for mainly defense as many mobs have 0 defense which thus can't be altered by modifiers. **/
+	public int getStatBoost(String stat) {
+		int boost = 0;
+		
+		if("defense".equalsIgnoreCase(stat))
+			boost = this.mod.getConfig().defenseBoosts.get(this);
+		
+		return boost;
+	}
+    
+    // ========= Defense Multiplier ==========
+    /** Used to scale the defense of this mob, see getDamageAfterDefense() for the logic. **/
+    public double getDefenseMultiplier() {
+    	return this.getStatMultiplier("defense");
+    }
+    
+    // ========= Effect Multiplier ==========
+    /** Used to scale the duration of any effects that this mob uses, can inlcude both buffs and debuffs on the enemy. **/
+    public double getEffectMultiplier() {
+    	return this.getStatMultiplier("effect");
+    }
+
+    /** When given a base time (in seconds) this will return the scaled time with difficulty and other modifiers taken into account
+     * seconds - The base duration in seconds that this effect should last for.
+    **/
+    public int getEffectDuration(int seconds) {
+		return Math.round((float)seconds * (float)(this.getEffectMultiplier()));
+    }
+    
+    // ========= Haste Multiplier ==========
+    /** Used to scale the rate of abilities such as attack speed. Note: Abilities are normally capped at around 10 ticks minimum due to performance issues and the entity update rate. **/
+    public double getHasteMultiplier() {
+    	return this.getStatMultiplier("haste");
+    }
     
     
     // ==================================================
@@ -799,7 +873,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Used when setting the movement speed of this mob, called by AI classes before movement and is given a speed modifier, a local speed modifier is also applied here. **/
     @Override
     public void setAIMoveSpeed(float speed) {
-        super.setAIMoveSpeed(speed * this.getSpeedMod());
+        super.setAIMoveSpeed((speed * this.getSpeedMod()) * (float)this.getStatMultiplier("speed"));
     }
     
     // ========== Movement Speed Modifier ==========
@@ -931,12 +1005,11 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Used to make this entity perform a melee attack on the target entity with the given damage scale. **/
     public boolean meleeAttack(Entity target, double damageScale) {
     	boolean success = true;
-    	int difficulty = Math.max(this.worldObj.difficultySetting, 1) - 1;
     	if(this.attackEntityAsMob(target, damageScale)) {
     		
     		// Spread Fire:
-        	if(this.spreadFire && this.isBurning() && this.rand.nextFloat() < (float)difficulty * 0.3F)
-        		target.setFire(difficulty * 2);
+        	if(this.spreadFire && this.isBurning() && this.rand.nextFloat() < this.getStatMultiplier("effect"))
+        		target.setFire(Math.round((float)(4 * this.getStatMultiplier("effect"))));
         	
     	}
     	this.setJustAttacked();
@@ -998,12 +1071,21 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Returns how much attack damage this mob does. **/
     public float getAttackDamage(double damageScale) {
     	float damage = (float)this.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue();
-        int difficulty = Math.max(this.worldObj.difficultySetting, 1);
-        damage += difficulty;
+        damage *= this.getStatMultiplier("damage");
         damage *= damageScale;
         return damage;
     }
     
+    // ========= Get Attack Damage Scale ==========
+    /** Used to scale how much damage this mob does, this is used by getAttackDamage() for melee and should be passed to projectiles for ranged attacks. **/
+    public double getAttackDamageScale() {
+    	return this.getStatMultiplier("damage");
+    }
+    
+    
+    // ==================================================
+   	//                    Taking Damage
+   	// ==================================================
     // ========== Attacked From ==========
     /** Called when this entity has been attacked, uses a DamageSource and damage value. **/
     @Override
@@ -1012,7 +1094,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
         if(this.isEntityInvulnerable()) return false;
         if(!this.isDamageTypeApplicable(damageSrc.getDamageType())) return false;
         if(!this.isDamageEntityApplicable(damageSrc.getEntity())) return false;
-        damage = damage * this.getDamageModifier(damageSrc);
+        damage = this.getDamageAfterDefense(damage);
+        damage *= this.getDamageModifier(damageSrc);
         
         if(super.attackEntityFrom(damageSrc, damage)) {
             Entity entity = damageSrc.getEntity();
@@ -1028,8 +1111,19 @@ public abstract class EntityCreatureBase extends EntityLiving {
         return false;
     }
     
+    // ========== Defense ==========
+    /** This is provided with how much damage this mob will take and returns the reduced (or sometimes increased) damage with defense applied. Note: Damage Modifiers are applied after this. **/
+    public float getDamageAfterDefense(float damage) {
+    	float baseDefense = (float)(this.defense + this.getStatBoost("defense"));
+    	float scaledDefense = baseDefense * (float)this.getDefenseMultiplier();
+    	float minDamage = 0F;
+    	if(this.worldObj.difficultySetting <= 1)
+    		minDamage = 1F;
+    	return Math.max(damage - scaledDefense, minDamage);
+    }
+    
     // ========== Damage Modifier ==========
-    /** A multiplier that alters how much damage this mob receives from the given DamageSource, use for resistances and weaknesses. **/
+    /** A multiplier that alters how much damage this mob receives from the given DamageSource, use for resistances and weaknesses. Note: The defense multiplier is handled before this. **/
     public float getDamageModifier(DamageSource damageSrc) {
     	return 1.0F;
     }

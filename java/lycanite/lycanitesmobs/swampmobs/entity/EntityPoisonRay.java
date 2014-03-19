@@ -36,7 +36,7 @@ public class EntityPoisonRay extends EntityProjectileLaser {
     public void setup() {
     	this.entityName = "PoisonRay";
     	this.mod = SwampMobs.instance;
-    	this.setDamage(3);
+    	this.setBaseDamage(3);
     }
     
     // ========== Stats ==========
@@ -62,9 +62,9 @@ public class EntityPoisonRay extends EntityProjectileLaser {
  	// ==================================================
     @Override
     public void updateDamage(Entity targetEntity) {
-    	targetEntity.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), (float)damage);
+    	targetEntity.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), this.getDamage(targetEntity));
 		if(targetEntity instanceof EntityLivingBase)
-			((EntityLivingBase)targetEntity).addPotionEffect(new PotionEffect(Potion.poison.id, 5 * 20, 0));
+			((EntityLivingBase)targetEntity).addPotionEffect(new PotionEffect(Potion.poison.id, this.getEffectDuration(5), 0));
     }
     
 	

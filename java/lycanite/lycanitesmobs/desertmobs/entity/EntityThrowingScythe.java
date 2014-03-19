@@ -37,7 +37,7 @@ public class EntityThrowingScythe extends EntityProjectileBase {
     public void setup() {
     	this.entityName = "ThrowingScythe";
     	this.mod = DesertMobs.instance;
-    	this.setDamage(3);
+    	this.setBaseDamage(3);
     	this.setProjectileScale(1F);
     	
     	this.waterProof = true;

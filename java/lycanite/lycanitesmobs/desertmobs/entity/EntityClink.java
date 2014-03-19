@@ -38,6 +38,7 @@ public class EntityClink extends EntityCreatureBase implements IMob {
         this.entityName = "Clink";
         this.mod = DesertMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
+        this.defense = 0;
         this.experience = 5;
         this.spawnsInDarkness = true;
         this.hasAttackSound = false;
@@ -49,7 +50,6 @@ public class EntityClink extends EntityCreatureBase implements IMob {
         this.setupMob();
         
         // Stats:
-        this.rangedDamage = new int[] {2, 3, 4};
         this.attackPhaseMax = 3;
         this.justAttackedTime = (short)(10);
     	
@@ -109,11 +109,6 @@ public class EntityClink extends EntityCreatureBase implements IMob {
         float f1 = MathHelper.sqrt_double(d0 * d0 + d2 * d2) * 0.2F;
         float velocity = 1.2F;
         projectile.setThrowableHeading(d0, d1 + (double)f1, d2, velocity, 6.0F);
-        
-        // Damage:
-        projectile.setDamage(rangedDamage[0]);
-        if(worldObj.difficultySetting == 2) projectile.setDamage(rangedDamage[1]);
-        else if(worldObj.difficultySetting > 2) projectile.setDamage(rangedDamage[2]);
         
         // Launch:
         this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));

@@ -9,16 +9,20 @@ public class SubConfig extends Config {
 	@Override
 	public void loadSettings() {
 		// ========== Feature Control ==========
-		loadSetting(featureBools, "Feature Control", "OwnerTags", "Show Pet Owner Tags", true);
-		loadSetting(featureBools, "Feature Control", "NightmareDifficulty", "Enable Nightmare Difficulty", false);
-		loadSetting(featureBools, "Feature Control", "MobTaming", "Allow Mob Taming", true);
-		loadSetting(featureBools, "Feature Control", "MobMounting", "Allow Mob Mounting", true);
-		loadSetting(featureBools, "Feature Control", "DisableAllSpawning", "Disable All Spawning", false);
-		loadSetting(featureBools, "Feature Control", "DisableDungeonSpawners", "Disable Dungeon Spawners", false);
-
+		this.loadSetting(this.featureBools, "Feature Control", "OwnerTags", "Show Pet Owner Tags", true);
+		this.loadSetting(this.featureBools, "Feature Control", "MobTaming", "Allow Mob Taming", true);
+		this.loadSetting(this.featureBools, "Feature Control", "MobMounting", "Allow Mob Mounting", true);
+		this.loadSetting(this.featureBools, "Feature Control", "DisableAllSpawning", "Disable All Spawning", false);
+		this.loadSetting(this.featureBools, "Feature Control", "DisableDungeonSpawners", "Disable Dungeon Spawners", false);
+		
+		// ========== Stat Multipliers ==========
+		this.loadStatMultiplier(this.difficultyMultipliers, "Stat Multipliers", "Easy", "Easy Difficulty Multiplier", "0.5");
+		this.loadStatMultiplier(this.difficultyMultipliers, "Stat Multipliers", "Normal", "Normal Difficulty Multiplier", "1.0");
+		this.loadStatMultiplier(this.difficultyMultipliers, "Stat Multipliers", "Hard", "Hard Difficulty Multiplier", "1.5");
+		
 		// ========== Debugging ==========
-		loadSetting(debugBools, "Debugging", "MobSetup", "Print Mob Setup", false);
-		loadSetting(debugBools, "Debugging", "MobSpawns", "Print Mob Spawns", false);
+		this.loadSetting(this.debugBools, "Debugging", "MobSetup", "Print Mob Setup", false);
+		this.loadSetting(this.debugBools, "Debugging", "MobSpawns", "Print Mob Spawns", false);
 		
 		// ========== Mob Control ==========
 		// No global mobs.
@@ -31,12 +35,12 @@ public class SubConfig extends Config {
 		
 		// ========== Effect IDs ==========
 		int effectStartID = 64;
-		loadSetting(effectIDs, "Effect IDs", "Paralysis", "Paralysis Effect ID", effectStartID++);
-		loadSetting(effectIDs, "Effect IDs", "Leech", "Leech Effect ID", effectStartID++);
-		loadSetting(effectIDs, "Effect IDs", "Penetration", "Penetration Effect ID", effectStartID++);
-		loadSetting(effectIDs, "Effect IDs", "Recklessness", "Recklessness Effect ID", effectStartID++);
-		loadSetting(effectIDs, "Effect IDs", "Rage", "Rage Effect ID", effectStartID++);
-		loadSetting(effectIDs, "Effect IDs", "Weight", "Weight Effect ID", effectStartID++);
-		loadSetting(effectIDs, "Effect IDs", "Swiftswimming", "Swiftswimming Effect ID", effectStartID++);
+		this.loadSetting(this.effectIDs, "Effect IDs", "Paralysis", "Paralysis Effect ID", effectStartID++);
+		this.loadSetting(this.effectIDs, "Effect IDs", "Leech", "Leech Effect ID", effectStartID++);
+		this.loadSetting(this.effectIDs, "Effect IDs", "Penetration", "Penetration Effect ID", effectStartID++);
+		this.loadSetting(this.effectIDs, "Effect IDs", "Recklessness", "Recklessness Effect ID", effectStartID++);
+		this.loadSetting(this.effectIDs, "Effect IDs", "Rage", "Rage Effect ID", effectStartID++);
+		this.loadSetting(this.effectIDs, "Effect IDs", "Weight", "Weight Effect ID", effectStartID++);
+		this.loadSetting(this.effectIDs, "Effect IDs", "Swiftswimming", "Swiftswimming Effect ID", effectStartID++);
 	}
 }

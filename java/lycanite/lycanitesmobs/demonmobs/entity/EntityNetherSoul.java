@@ -35,6 +35,7 @@ public class EntityNetherSoul extends EntityCreatureBase implements IMob {
         this.entityName = "NetherSoul";
         this.mod = DemonMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEAD;
+        this.defense = 0;
         this.experience = 5;
         this.hasAttackSound = true;
         

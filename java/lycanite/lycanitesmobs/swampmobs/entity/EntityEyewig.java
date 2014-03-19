@@ -43,26 +43,23 @@ public class EntityEyewig extends EntityCreatureRideable {
         this.entityName = "Eyewig";
         this.mod = SwampMobs.instance;
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
+        this.defense = 0;
         this.experience = 10;
         this.spawnsInDarkness = true;
         this.hasAttackSound = true;
         
         this.eggName = "SwampEgg";
-
-        this.rangedDamage = new int[] {2, 3, 4};
         
         this.setWidth = 0.8F;
         this.setHeight = 1.2F;
         this.setupMob();
-        
-        // Stats:
         this.stepHeight = 1.0F;
         
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIPlayerControl(this));
         this.tasks.addTask(4, new EntityAITempt(this).setItemID(ObjectManager.getItem("PoisonGland").itemID).setTemptDistanceMin(4.0D));
-        this.rangedAttackAI = new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(10).setStaminaTime(100).setRange(14.0F).setMinChaseDistance(4.0F).setChaseTime(-1);
+        this.rangedAttackAI = new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(10).setStaminaTime(60).setRange(14.0F).setMinChaseDistance(4.0F).setChaseTime(-1);
         this.tasks.addTask(5, rangedAttackAI);
         this.tasks.addTask(6, new EntityAIAttackMelee(this).setLongMemory(false).setMaxChaseDistance(14.0F));
         this.tasks.addTask(8, new EntityAIWander(this));
@@ -146,12 +143,7 @@ public class EntityEyewig extends EntityCreatureRideable {
     		this.abilityProjectile = new EntityPoisonRay(this.worldObj, (EntityLivingBase)this.getRiderTarget(), 20, 10, this);
     		this.abilityProjectile.setOffset(0, 0.5, 0);
 	    	
-	    	// Damage:
-	    	abilityProjectile.setDamage(rangedDamage[0]);
-	        if(worldObj.difficultySetting == 2) abilityProjectile.setDamage(rangedDamage[1]);
-	        else if(worldObj.difficultySetting > 2) abilityProjectile.setDamage(rangedDamage[2]);
-	        
-	        // Launch:
+	    	// Launch:
 	        this.playSound(abilityProjectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
 	        this.worldObj.spawnEntityInWorld(abilityProjectile);
     	}
@@ -204,12 +196,7 @@ public class EntityEyewig extends EntityCreatureRideable {
 	    	// Type:
 	    	this.projectile = new EntityPoisonRay(this.worldObj, this, 20, 10);
 	    	
-	    	// Damage:
-	        projectile.setDamage(rangedDamage[0]);
-	        if(worldObj.difficultySetting == 2) projectile.setDamage(rangedDamage[1]);
-	        else if(worldObj.difficultySetting > 2) projectile.setDamage(rangedDamage[2]);
-	        
-	        // Launch:
+	    	// Launch:
 	        this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
 	        this.worldObj.spawnEntityInWorld(projectile);
     	}

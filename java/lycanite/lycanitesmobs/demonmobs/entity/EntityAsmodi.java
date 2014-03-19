@@ -39,6 +39,7 @@ public class EntityAsmodi extends EntityCreatureBase implements IMob {
         this.entityName = "Asmodi";
         this.mod = DemonMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEAD;
+        this.defense = 2;
         this.experience = 15;
         this.hasAttackSound = false;
 
@@ -47,9 +48,6 @@ public class EntityAsmodi extends EntityCreatureBase implements IMob {
         this.setWidth = 3.5F;
         this.setHeight = 2.0F;
         this.setupMob();
-        
-        // Stats:
-        this.rangedDamage = new int[] {1, 2, 3};
         
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this));
@@ -111,11 +109,6 @@ public class EntityAsmodi extends EntityCreatureBase implements IMob {
         float f1 = MathHelper.sqrt_double(d0 * d0 + d2 * d2) * 0.1F;
         float velocity = 1.2F;
         projectile.setThrowableHeading(d0, d1 + (double)f1, d2, velocity, 0.0F);
-        
-        // Damage:
-        projectile.setDamage(rangedDamage[0]);
-        if(worldObj.difficultySetting == 2) projectile.setDamage(rangedDamage[1]);
-        else if(worldObj.difficultySetting > 2) projectile.setDamage(rangedDamage[2]);
         
         // Launch:
         this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));

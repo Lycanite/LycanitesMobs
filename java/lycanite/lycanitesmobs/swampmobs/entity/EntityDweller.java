@@ -42,6 +42,7 @@ public class EntityDweller extends EntityCreatureAgeable implements IMob {
         this.entityName = "Dweller";
         this.mod = SwampMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
+        this.defense = 0;
         this.experience = 7;
         this.spawnsInDarkness = true;
         this.spawnsInWater = true;

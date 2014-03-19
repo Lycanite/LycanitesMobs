@@ -46,7 +46,7 @@ public class EntityDemonicBlast extends EntityProjectileBase {
     public void setup() {
     	this.entityName = "DemonicBlast";
     	this.mod = DemonMobs.instance;
-    	this.setDamage(8);
+    	this.setBaseDamage(8);
     	this.setProjectileScale(2.5F);
     }
 	
@@ -122,7 +122,7 @@ public class EntityDemonicBlast extends EntityProjectileBase {
     //========== Entity Living Collision ==========
     @Override
     public boolean entityLivingCollision(EntityLivingBase entityLiving) {
-    	entityLiving.addPotionEffect(new PotionEffect(Potion.wither.id, 10 * 20, 0));
+    	entityLiving.addPotionEffect(new PotionEffect(Potion.wither.id, this.getEffectDuration(10), 0));
     	return true;
     }
     

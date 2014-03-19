@@ -46,6 +46,7 @@ public class EntityCacodemon extends EntityCreatureTameable {
         this.entityName = "Cacodemon";
         this.mod = DemonMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEAD;
+        this.defense = 0;
         this.experience = 5;
         this.hasAttackSound = false;
         
@@ -56,9 +57,6 @@ public class EntityCacodemon extends EntityCreatureTameable {
         
         this.justAttackedTime = 20;
         this.setupMob();
-        
-        // Stats:
-        this.rangedDamage = new int[] {8, 10, 14};
         
         // AI Tasks:
         this.getNavigator().setAvoidsWater(true);
@@ -138,11 +136,6 @@ public class EntityCacodemon extends EntityCreatureTameable {
         float f1 = MathHelper.sqrt_double(d0 * d0 + d2 * d2) * 0.1F;
         float velocity = 0.5F;
         projectile.setThrowableHeading(d0, d1 + (double)f1, d2, velocity, 0.0F);
-        
-        // Damage:
-        projectile.setDamage(rangedDamage[0]);
-        if(worldObj.difficultySetting == 2) projectile.setDamage(rangedDamage[1]);
-        else if(worldObj.difficultySetting > 2) projectile.setDamage(rangedDamage[2]);
         
         // Launch:
         this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));

@@ -40,6 +40,7 @@ public class EntityEnt extends EntityCreatureAgeable implements IMob {
         this.entityName = "Ent";
         this.mod = ForestMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
+        this.defense = 2;
         this.experience = 5;
         this.spawnsInDarkness = true;
         this.spawnsUnderground = false;
@@ -73,7 +74,7 @@ public class EntityEnt extends EntityCreatureAgeable implements IMob {
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 25D);
+		baseAttributes.put("maxHealth", 20D);
 		baseAttributes.put("movementSpeed", 0.18D);
 		baseAttributes.put("knockbackResistance", 0.5D);
 		baseAttributes.put("followRange", 16D);

@@ -43,6 +43,7 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
         this.entityName = "Concapede";
         this.mod = JungleMobs.instance;
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
+        this.defense = 0;
         this.experience = 3;
         this.spawnsInDarkness = false;
         this.hasAttackSound = true;

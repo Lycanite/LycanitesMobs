@@ -21,13 +21,13 @@ public class SubConfig extends Config {
 		loadSetting(this.featureBools, "Feature Control", "DespawnAspidsNaturally", "Aspid Natural Despawning", false);
 		
 		// ========== Mob Control ==========
-		loadMobSettings("GhoulZombie", 8, 4, 1, 3, "MONSTER");
-		loadMobSettings("Dweller", 8, 4, 1, 3, "WATERCREATURE", "GROUP, RIVER", "GROUP");
-		loadMobSettings("Ettin", 3, 1, 1, 1, "MONSTER");
-		loadMobSettings("Lurker", 6, 1, 1, 3, "MONSTER");
-		loadMobSettings("Eyewig", 3, 2, 1, 1, "MONSTER");
-		loadMobSettings("Aspid", 12, 3, 1, 3, "CREATURE");
-		loadMobSettings("Remobra", 4, 3, 1, 3, "MONSTER");
+		loadMobSettings("GhoulZombie", 8, 10, 1, 3, "MONSTER");
+		loadMobSettings("Dweller", 8, 10, 1, 3, "WATERCREATURE", "GROUP, RIVER", "GROUP");
+		loadMobSettings("Ettin", 3, 2, 1, 1, "MONSTER");
+		loadMobSettings("Lurker", 6, 5, 1, 3, "MONSTER");
+		loadMobSettings("Eyewig", 3, 5, 1, 1, "MONSTER");
+		loadMobSettings("Aspid", 12, 10, 1, 3, "CREATURE");
+		loadMobSettings("Remobra", 4, 10, 1, 3, "MONSTER");
 		
 		// ========== Block IDs ==========
 		loadSetting(blockIDs, "Block IDs", "PoisonCloud", "Poison Cloud Block ID", 3853);

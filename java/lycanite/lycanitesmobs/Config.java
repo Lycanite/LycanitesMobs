@@ -40,6 +40,7 @@ public class Config {
 	
 	// Mob Control:
 	public Map<String, Boolean> mobsEnabled = new HashMap<String, Boolean>();
+	public Map<String, Boolean> spawnEnabled = new HashMap<String, Boolean>();
 	public Map<String, Integer> spawnChances = new HashMap<String, Integer>();
 	public Map<String, Integer> spawnWeights = new HashMap<String, Integer>();
 	public Map<String, Integer> spawnLimits = new HashMap<String, Integer>();
@@ -154,11 +155,12 @@ public class Config {
 	// ========== Mob Settings ==========
 	public void loadMobSettings(String mobName, int spawnWeight, int spawnLimit, int spawnMin, int spawnMax, String spawnTypeName, String spawnBiome, String spawnDimension) {
 		loadSetting(this.mobsEnabled, "Mob Control", mobName, mobName + " Enabled", true);
+		loadSetting(this.spawnEnabled, "Mob Control", mobName, mobName + " Spawn Enabled", spawnWeight > 0);
 		loadSetting(this.spawnChances, "Mob Control", mobName, mobName + " Spawn Chance", 100);
 		loadSetting(this.spawnWeights, "Mob Control", mobName, mobName + " Spawn Weight", spawnWeight);
-		//loadSetting(this.spawnLimits, "Mob Control", mobName, mobName + " Spawn Chunk Limit", spawnLimit);
-		loadSetting(this.spawnMins, "Mob Control", mobName, mobName + " Chunk Spawn Min", spawnMin);
-		loadSetting(this.spawnMaxs, "Mob Control", mobName, mobName + " Chunk Spawn Max", spawnMax);
+		loadSetting(this.spawnLimits, "Mob Control", mobName, mobName + " Spawn Area Limit", spawnLimit);
+		loadSetting(this.spawnMins, "Mob Control", mobName, mobName + " Spawn Group Size Min", spawnMin);
+		loadSetting(this.spawnMaxs, "Mob Control", mobName, mobName + " Spawn Group Size Max", spawnMax);
 		loadSettingSpawnType(this.spawnTypes, "Mob Control", mobName, mobName + " Spawn Type", spawnTypeName);
 		loadSetting(this.spawnBiomes, "Mob Control", mobName, mobName + " Spawn Biome Types", spawnBiome);
 		loadSetting(this.spawnDimensions, "Mob Control", mobName, mobName + " Spawn Dimensions", spawnDimension);

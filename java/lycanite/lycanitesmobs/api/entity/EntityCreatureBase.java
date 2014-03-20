@@ -36,6 +36,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityMobSpawner;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
@@ -425,6 +426,17 @@ public abstract class EntityCreatureBase extends EntityLiving {
         	return false;
         if(!spawnBlockCheck(i, j, k))
         	return false;
+        
+        // Spawn limit: TODO Test!
+        int spawnLimit = this.mod.getConfig().spawnLimits.get(this.getConfigName());
+        double range = (double)LycanitesMobs.config.getFeatureInt("SpawnLimitSearchRadius");
+        if(spawnLimit > 0 && range > 0) {
+        	AxisAlignedBB searchAABB = AxisAlignedBB.getBoundingBox(i, j, k, i, j, k);
+        	List targets = this.worldObj.getEntitiesWithinAABB(ObjectManager.getMob(this.getConfigName()), searchAABB.expand(range, range, range));
+        	if(targets.size() > spawnLimit)
+        		return false;
+        }
+        	
         return true;
     }
     
@@ -432,14 +444,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Checks for nearby blocks from the ijk (xyz) block location, Cinders use this when spawning by Fire Blocks. **/
     public boolean spawnBlockCheck(int i, int j, int k) {
         return true;
-    }
-    
-    // ========== Max Spawned In Chunk ==========
-    /** Returns how many of this mob can spawn in a chunk, links to the config. **/
-    @Override
-    public int getMaxSpawnedInChunk() {
-        //return this.mod.getConfig().spawnLimits.get(this.getConfigName()); XXX Removed for now, was causing problems!
-    	return super.getMaxSpawnedInChunk();
     }
     
     // ========== Egg Spawn ==========

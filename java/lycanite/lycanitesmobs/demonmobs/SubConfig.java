@@ -21,13 +21,13 @@ public class SubConfig extends Config {
 		loadSetting(this.featureBools, "Feature Control", "DespawnPinkiesNaturally", "Pinkies Natural Despawning", true);
 		
 		// ========== Mob Control ==========
-		loadMobSettings("Belph", 100, 12, 3, 4, "MONSTER");
-		loadMobSettings("Behemoth", 20, 2, 1, 1, "MONSTER");
-		loadMobSettings("Pinky", 60, 1, 1, 3, "MONSTER");
+		loadMobSettings("Belph", 100, 10, 3, 4, "MONSTER");
+		loadMobSettings("Behemoth", 20, 5, 1, 1, "MONSTER");
+		loadMobSettings("Pinky", 60, 5, 1, 3, "MONSTER");
 		loadMobSettings("Trite", 120, 40, 5, 10, "MONSTER");
 		loadMobSettings("Asmodi", 20, 1, 1, 1, "MONSTER");
-		loadMobSettings("NetherSoul", 60, 12, 4, 8, "MONSTER");
-		loadMobSettings("Cacodemon", 40, 1, 1, 1, "MONSTER");
+		loadMobSettings("NetherSoul", 60, 10, 4, 8, "MONSTER");
+		loadMobSettings("Cacodemon", 40, 2, 1, 1, "MONSTER");
 		
 		// ========== Block IDs ==========
 		loadSetting(blockIDs, "Block IDs", "Hellfire", "Hellfire Block ID", 3856);

@@ -91,9 +91,9 @@ public class EntityCinder extends EntityCreatureBase implements IMob {
     //                     Spawning
     // ==================================================
     public boolean spawnBlockCheck(int x, int y, int z) {
-    	int checkRange = 8;
+    	int checkRange = 16;
     	int blocksFound = 0;
-    	int targetAmount = 4;
+    	int targetAmount = 8;
     	for(int i = x - checkRange; i <= x + checkRange; i++)
         	for(int j = y - checkRange; j <= y + checkRange; j++)
             	for(int k = z - checkRange; k <= z + checkRange; k++) {

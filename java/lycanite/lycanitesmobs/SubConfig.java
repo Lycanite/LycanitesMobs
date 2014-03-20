@@ -12,6 +12,7 @@ public class SubConfig extends Config {
 		this.loadSetting(this.featureBools, "Feature Control", "OwnerTags", "Show Pet Owner Tags", true);
 		this.loadSetting(this.featureBools, "Feature Control", "MobTaming", "Allow Mob Taming", true);
 		this.loadSetting(this.featureBools, "Feature Control", "MobMounting", "Allow Mob Mounting", true);
+		this.loadSetting(this.featureInts, "Feature Control", "SpawnLimitSearchRadius", "Spawn Limit Search Radius", 64);
 		this.loadSetting(this.featureBools, "Feature Control", "DisableAllSpawning", "Disable All Spawning", false);
 		this.loadSetting(this.featureBools, "Feature Control", "DisableDungeonSpawners", "Disable Dungeon Spawners", false);
 		

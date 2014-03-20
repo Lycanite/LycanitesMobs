@@ -20,7 +20,7 @@ public class SubConfig extends Config {
 		loadSetting(this.featureBools, "Feature Control", "DespawnYalesNaturally", "Yale Natural Despawning", false);
 		
 		// ========== Mob Control ==========
-		loadMobSettings("Jabberwock", 8, 3, 1, 3, "MONSTER");
+		loadMobSettings("Jabberwock", 8, 10, 1, 3, "MONSTER");
 		
 		// ========== Block IDs ==========
 		//loadSetting(blockIDs, "Block IDs", "PoisonCloud", "Poison Cloud Block ID", 3853);

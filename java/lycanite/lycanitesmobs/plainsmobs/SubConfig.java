@@ -21,10 +21,10 @@ public class SubConfig extends Config {
 		loadSetting(this.featureBools, "Feature Control", "DespawnMakasNaturally", "Maka Natural Despawning", false);
 		
 		// ========== Mob Control ==========
-		loadMobSettings("Kobold", 8, 4, 1, 3, "MONSTER");
-		loadMobSettings("Ventoraptor", 4, 3, 1, 3, "MONSTER");
-		loadMobSettings("Maka", 14, 6, 3, 4, "CREATURE");
-		loadMobSettings("MakaAlpha", 6, 4, 1, 2, "CREATURE");
+		loadMobSettings("Kobold", 8, 10, 1, 3, "MONSTER");
+		loadMobSettings("Ventoraptor", 4, 5, 1, 3, "MONSTER");
+		loadMobSettings("Maka", 14, 10, 3, 4, "CREATURE");
+		loadMobSettings("MakaAlpha", 2, 4, 1, 2, "CREATURE");
 		
 		// ========== Block IDs ==========
 		//loadSetting(blockIDs, "Block IDs", "PoisonCloud", "Poison Cloud Block ID", 3853);

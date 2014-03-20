@@ -21,9 +21,9 @@ public class SubConfig extends Config {
 		loadSetting(this.featureBools, "Feature Control", "DespawnConcapedesNaturally", "Concapede Natural Despawning", false);
 		
 		// ========== Mob Control ==========
-		loadMobSettings("Geken", 8, 3, 1, 3, "MONSTER");
-		loadMobSettings("Uvaraptor", 5, 3, 1, 3, "MONSTER");
-		loadMobSettings("Concapede", 18, 3, 1, 3, "CREATURE");
+		loadMobSettings("Geken", 8, 10, 1, 3, "MONSTER");
+		loadMobSettings("Uvaraptor", 5, 10, 1, 3, "MONSTER");
+		loadMobSettings("Concapede", 18, 10, 1, 3, "CREATURE");
 		loadMobSettings("ConcapedeSegment", 0, 0, 0, 0, "CREATURE", "NONE", "NONE");
 		
 		// ========== Block IDs ==========

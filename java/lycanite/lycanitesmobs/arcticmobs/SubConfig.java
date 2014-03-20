@@ -19,8 +19,8 @@ public class SubConfig extends Config {
 		loadSetting(this.featureBools, "Feature Control", "Frostweb", "Enable Frostwebs", true);
 		
 		// ========== Mob Control ==========
-		loadMobSettings("Reiver", 8, 4, 1, 3, "Monster");
-		loadMobSettings("Frostweaver", 6, 4, 1, 2, "Monster");
+		loadMobSettings("Reiver", 8, 10, 1, 3, "Monster");
+		loadMobSettings("Frostweaver", 10, 4, 1, 2, "Monster");
 		
 		// ========== Block IDs ==========
 		loadSetting(blockIDs, "Block IDs", "Frostweb", "Frostweb Block ID", 3890);

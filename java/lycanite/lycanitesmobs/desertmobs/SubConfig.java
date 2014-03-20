@@ -21,14 +21,14 @@ public class SubConfig extends Config {
 		loadSetting(this.featureInts, "Feature Control", "GorgomiteSwarmLimit", "Gorgomite Swarm Limit", 20);
 		
 		// ========== Mob Control ==========
-		loadMobSettings("CryptZombie", 8, 4, 1, 3, "MONSTER");
-		loadMobSettings("Crusk", 2, 1, 1, 1, "MONSTER");
-		loadMobSettings("Clink", 6, 4, 1, 3, "MONSTER");
-		loadMobSettings("Joust", 6, 4, 3, 4, "CREATURE");
+		loadMobSettings("CryptZombie", 8, 10, 1, 3, "MONSTER");
+		loadMobSettings("Crusk", 2, 3, 1, 1, "MONSTER");
+		loadMobSettings("Clink", 6, 10, 1, 3, "MONSTER");
+		loadMobSettings("Joust", 6, 10, 3, 4, "CREATURE");
 		loadMobSettings("JoustAlpha", 2, 2, 1, 2, "CREATURE");
-		loadMobSettings("Erepede", 4, 2, 1, 2, "MONSTER");
-		loadMobSettings("Gorgomite", 6, 4, 1, 3, "MONSTER");
-		loadMobSettings("Manticore", 4, 4, 1, 5, "MONSTER");
+		loadMobSettings("Erepede", 4, 5, 1, 2, "MONSTER");
+		loadMobSettings("Gorgomite", 6, 40, 1, 3, "MONSTER");
+		loadMobSettings("Manticore", 4, 10, 1, 5, "MONSTER");
 		
 		// ========== Block IDs ==========
 		

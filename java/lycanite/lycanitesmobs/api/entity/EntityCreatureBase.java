@@ -339,20 +339,25 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Checks if the creature is able to spawn a it's initial position. **/
     @Override
     public boolean getCanSpawnHere() {
+		int i = MathHelper.floor_double(this.posX);
+	    int j = MathHelper.floor_double(this.boundingBox.minY);
+	    int k = MathHelper.floor_double(this.posZ);
+	    return this.spawnCheck(this.worldObj, i, j, k);
+    }
+    
+    public boolean spawnCheck(World world, int i, int j, int k) {
+    	LycanitesMobs.printDebug("MobSpawns", " ~O===================================================O~");
     	LycanitesMobs.printDebug("MobSpawns", "Attempting to Spawn: " + this.getConfigName());
     	
     	// Peaceful Check:
     	LycanitesMobs.printDebug("MobSpawns", "Checking for peaceful difficulty...");
         if(!this.spawnsOnPeaceful && this.worldObj.difficultySetting <= 0) return false;
-
-    	int i = MathHelper.floor_double(this.posX);
-        int j = MathHelper.floor_double(this.boundingBox.minY);
-        int k = MathHelper.floor_double(this.posZ);
+        
     	LycanitesMobs.printDebug("MobSpawns", "Target Spawn Location: x" + i + " y" + j + " z" + k);
         
         // Fixed Spawning Checks:
     	LycanitesMobs.printDebug("MobSpawns", "Fixed spawn check (light level, obstacles, etc)...");
-        if(!this.fixedSpawnCheck(i, j, k))
+        if(!this.fixedSpawnCheck(world, i, j, k))
         	return false;
         
     	// Spawner Check:
@@ -365,8 +370,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	LycanitesMobs.printDebug("MobSpawns", "No spawner found.");
         
         // Natural Spawning Checks:
-    	LycanitesMobs.printDebug("MobSpawns", "Natural spawn check (dimension, ground type, water, lava, underground)...");
-        if(!this.naturalSpawnCheck(i, j, k))
+    	LycanitesMobs.printDebug("MobSpawns", "Natural spawn check (dimension, area limit, ground type, water, lava, underground)...");
+        if(!this.naturalSpawnCheck(world, i, j, k))
         	return false;
         
         // Forced Spawn Chance:
@@ -390,13 +395,17 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
     // ========== Fixed Spawn Check ==========
     /** First stage checks for spawning, if this check fails the creature will not spawn. **/
-    public boolean fixedSpawnCheck(int i, int j, int k) {
+    public boolean fixedSpawnCheck(World world, int i, int j, int k) {
+    	LycanitesMobs.printDebug("MobSpawns", "Checking light level: Darkness");
     	if(this.spawnsInDarkness && this.testLightLevel() > 1)
     		return false;
+    	LycanitesMobs.printDebug("MobSpawns", "Checking light level: Lightness");
     	if(this.spawnsOnlyInLight && this.testLightLevel() < 2)
     		return false;
+    	LycanitesMobs.printDebug("MobSpawns", "Checking entity collision.");
         if(!this.worldObj.checkNoEntityCollision(this.boundingBox))
         	return false;
+    	LycanitesMobs.printDebug("MobSpawns", "Checking block collision.");
         if(!this.spawnsInBlock && !this.spawnsInWater && !this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).isEmpty())
         	return false;
     	return true;
@@ -404,7 +413,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     
     // ========== Natural Spawn Check ==========
     /** Second stage checks for spawning, this check is ignored if there is a valid monster spawner nearby. **/
-    public boolean naturalSpawnCheck(int i, int j, int k) {
+    public boolean naturalSpawnCheck(World world, int i, int j, int k) {
+    	LycanitesMobs.printDebug("MobSpawns", "Checking dimension.");
     	if(ObjectManager.getMobDimensions(this.getConfigName()).length <= 0)
     		return false;
         else {
@@ -418,21 +428,27 @@ public abstract class EntityCreatureBase extends EntityLiving {
         	if(!validDimension)
         		return false;
         }
+    	LycanitesMobs.printDebug("MobSpawns", "Block preference.");
         if(this.getBlockPathWeight(i, j, k) < 0.0F)
         	return false;
+    	LycanitesMobs.printDebug("MobSpawns", "Checking for water.");
         if(!this.spawnsInWater && this.worldObj.isAnyLiquid(this.boundingBox))
         	return false;
+    	LycanitesMobs.printDebug("MobSpawns", "Checking for underground.");
         if(!this.spawnsUnderground && this.isBlockUnderground(i, j + 1, k))
         	return false;
-        if(!spawnBlockCheck(i, j, k))
+    	LycanitesMobs.printDebug("MobSpawns", "Checking required blocks.");
+        if(!spawnBlockCheck(world, i, j, k))
         	return false;
         
-        // Spawn limit: TODO Test!
+        // Spawn limit:
         int spawnLimit = this.mod.getConfig().spawnLimits.get(this.getConfigName());
         double range = (double)LycanitesMobs.config.getFeatureInt("SpawnLimitSearchRadius");
+    	LycanitesMobs.printDebug("MobSpawns", "Checking spawn area limit. Limit of: " + spawnLimit + " Range of: " + range);
         if(spawnLimit > 0 && range > 0) {
         	AxisAlignedBB searchAABB = AxisAlignedBB.getBoundingBox(i, j, k, i, j, k);
         	List targets = this.worldObj.getEntitiesWithinAABB(ObjectManager.getMob(this.getConfigName()), searchAABB.expand(range, range, range));
+        	LycanitesMobs.printDebug("MobSpawns", "Found " + targets.size() + " of this mob within the radius (class is " + ObjectManager.getMob(this.getConfigName()) + ").");
         	if(targets.size() > spawnLimit)
         		return false;
         }
@@ -442,7 +458,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     
     // ========== Spawn Block Check ==========
     /** Checks for nearby blocks from the ijk (xyz) block location, Cinders use this when spawning by Fire Blocks. **/
-    public boolean spawnBlockCheck(int i, int j, int k) {
+    public boolean spawnBlockCheck(World world, int i, int j, int k) {
         return true;
     }
     
@@ -535,19 +551,19 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	public double getStatMultiplier(String stat) {
 		double multiplier = 1.0D;
 		if("defense".equalsIgnoreCase(stat))
-			multiplier = this.mod.getConfig().defenseMultipliers.get(this);
+			multiplier = this.mod.getConfig().defenseMultipliers.get(this.getConfigName());
 		
 		else if("speed".equalsIgnoreCase(stat))
-			multiplier = this.mod.getConfig().speedMultipliers.get(this);
+			multiplier = this.mod.getConfig().speedMultipliers.get(this.getConfigName());
 		
 		else if("damage".equalsIgnoreCase(stat))
-			multiplier = this.mod.getConfig().damageMultipliers.get(this);
+			multiplier = this.mod.getConfig().damageMultipliers.get(this.getConfigName());
 		
 		else if("haste".equalsIgnoreCase(stat))
-			multiplier = this.mod.getConfig().hasteMultipliers.get(this);
+			multiplier = this.mod.getConfig().hasteMultipliers.get(this.getConfigName());
 		
 		else if("effect".equalsIgnoreCase(stat))
-			multiplier = this.mod.getConfig().effectMultipliers.get(this);
+			multiplier = this.mod.getConfig().effectMultipliers.get(this.getConfigName());
 		
 		return multiplier * this.getDifficultyMultiplier();
 	}
@@ -568,7 +584,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 		int boost = 0;
 		
 		if("defense".equalsIgnoreCase(stat))
-			boost = this.mod.getConfig().defenseBoosts.get(this);
+			boost = this.mod.getConfig().defenseBoosts.get(this.getConfigName());
 		
 		return boost;
 	}
@@ -577,6 +593,12 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Used to scale the defense of this mob, see getDamageAfterDefense() for the logic. **/
     public double getDefenseMultiplier() {
     	return this.getStatMultiplier("defense");
+    }
+    
+    // ========= Speed Multiplier ==========
+    /** Used to scale the speed of this mob. **/
+    public double getSpeedMultiplier() {
+    	return this.getStatMultiplier("speed");
     }
     
     // ========= Effect Multiplier ==========
@@ -877,7 +899,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Used when setting the movement speed of this mob, called by AI classes before movement and is given a speed modifier, a local speed modifier is also applied here. **/
     @Override
     public void setAIMoveSpeed(float speed) {
-        super.setAIMoveSpeed((speed * this.getSpeedMod()) * (float)this.getStatMultiplier("speed"));
+        super.setAIMoveSpeed((speed * this.getSpeedMod()) * (float)this.getSpeedMultiplier());
     }
     
     // ========== Movement Speed Modifier ==========

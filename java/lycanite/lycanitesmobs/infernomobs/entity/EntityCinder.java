@@ -90,14 +90,15 @@ public class EntityCinder extends EntityCreatureBase implements IMob {
     // ==================================================
     //                     Spawning
     // ==================================================
-    public boolean spawnBlockCheck(int x, int y, int z) {
+	@Override
+    public boolean spawnBlockCheck(World world, int x, int y, int z) {
     	int checkRange = 16;
     	int blocksFound = 0;
     	int targetAmount = 8;
     	for(int i = x - checkRange; i <= x + checkRange; i++)
         	for(int j = y - checkRange; j <= y + checkRange; j++)
             	for(int k = z - checkRange; k <= z + checkRange; k++) {
-            		int blockID = this.worldObj.getBlockId(i, j, k);
+            		int blockID = world.getBlockId(i, j, k);
             		if(blockID == Block.fire.blockID || (ObjectManager.getBlock("Hellire") != null && blockID == ObjectManager.getBlock("Hellire").blockID))
             			if(++blocksFound >= targetAmount)
             				return true;

@@ -3,7 +3,6 @@ package lycanite.lycanitesmobs;
 import java.util.EnumSet;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.packet.Packet;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
@@ -23,7 +22,7 @@ public class TickHandler implements ITickHandler {
 	// ==================================================
 	@Override
 	public String getLabel() {
-		return "PlayerTickHandler";
+		return "LycanitesMobsTickHandler";
 	}
 	
 	
@@ -41,16 +40,24 @@ public class TickHandler implements ITickHandler {
 	// ==================================================
 	@Override
 	public void tickStart(EnumSet<TickType> type, Object... tickData) {
+		if(type.contains(TickType.PLAYER)) {
+			playerTick(tickData);
+		}
 		if(type.contains(TickType.CLIENT)) {
 			clientTick();
-		}
-		if(type.contains(TickType.PLAYER) && tickData[0] != null && tickData[0] instanceof EntityPlayer) {
-			playerTick((EntityPlayer)tickData[0]);
 		}
 	}
 
 	@Override
 	public void tickEnd(EnumSet<TickType> type, Object... tickData) {}
+	
+
+	// ==================================================
+	//                 Player Ticks
+	// ==================================================
+	public static void playerTick(Object... tickData) {
+		System.out.println(tickData[0]);
+	}
 	
 
 	// ==================================================
@@ -78,14 +85,5 @@ public class TickHandler implements ITickHandler {
 			lastStateSent = controlStates;
 			firstStateSent = true;
 		}
-	}
-	
-
-	// ==================================================
-	//                 Player Ticks
-	// ==================================================
-	// Broken :(
-	public static void playerTick(EntityPlayer player) {
-		// Broken in multiplayer throwing an MCPlayerOther!
 	}
 }

@@ -1,8 +1,9 @@
 package lycanite.lycanitesmobs;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.potion.Potion;
 import net.minecraftforge.event.ForgeSubscribe;
-import net.minecraftforge.event.entity.living.LivingSpawnEvent.SpecialSpawn;
+import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 
 public class EventListener {
 	public Minecraft mc;
@@ -16,15 +17,22 @@ public class EventListener {
 	
 	
     // ==================================================
-    //                 Entity Spawn Event
+    //                 Attack Target Event
     // ==================================================
 	@ForgeSubscribe
-	public void onEntitySpawned(SpecialSpawn event) {
+	public void onAttackTarget(LivingSetAttackTargetEvent event) {
 		if(event.isCancelable() && event.isCanceled())
 	      return;
 		
-		//if(event.entityLiving != null && event.entityLiving instanceof EntityCreatureBase)
-			//((EntityCreatureBase)event.entityLiving).onSpawn();
-		// This doesn't seem to work. :/
+		// Better Invisibility:
+		if(event.entityLiving != null) {
+			if(event.entityLiving.isPotionActive(Potion.nightVision))
+				return;
+			if(event.target != null) {
+				if(event.target.isInvisible())
+					if(event.isCancelable())
+						event.setCanceled(true);
+			}
+		}
 	}
 }

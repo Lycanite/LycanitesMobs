@@ -195,11 +195,13 @@ public class EntityAIAttackRanged extends EntityAIBase {
 	            	outerRangeFactor = 1.0F;
 	
 	            this.host.rangedAttack(this.attackTarget, outerRangeFactor);
-	            this.attackTime = MathHelper.floor_float(rangeFactor * (float)((this.attackTimeFar - this.attackTimeClose) + (float)this.attackTimeClose) * (float)this.host.getHasteMultiplier());
+	            float scaledTime = rangeFactor * (float)((this.attackTimeFar - this.attackTimeClose) + (float)this.attackTimeClose);
+	            this.attackTime = Math.round((float)scaledTime + ((float)scaledTime - ((float)scaledTime * (float)this.host.getHasteMultiplier())));
 	        }
 	        else if(this.attackTime < 0) {
 	        	rangeFactor = MathHelper.sqrt_double(distance) / this.range;
-	            this.attackTime = MathHelper.floor_float(rangeFactor * (float)((this.attackTimeFar - this.attackTimeClose) + (float)this.attackTimeClose) * (float)this.host.getHasteMultiplier());
+	            float scaledTime = rangeFactor * (float)((this.attackTimeFar - this.attackTimeClose) + (float)this.attackTimeClose);
+	            this.attackTime = Math.round((float)scaledTime + ((float)scaledTime - ((float)scaledTime * (float)this.host.getHasteMultiplier())));
 	        }
         }
     }

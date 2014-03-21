@@ -2,15 +2,20 @@ package lycanite.lycanitesmobs;
 
 import java.io.File;
 
+import net.minecraft.client.Minecraft;
+import net.minecraftforge.common.MinecraftForge;
+import cpw.mods.fml.common.registry.TickRegistry;
+import cpw.mods.fml.relauncher.Side;
+
 public class CommonProxy {
 	
 	// ========== Register Key Bindings ==========
     public void registerEvents() {
 		// Tick Handler:
-		//TickRegistry.registerTickHandler(new PlayerTickHandler(), Side.SERVER);
+		TickRegistry.registerTickHandler(new TickHandler(), Side.SERVER);
     	
 		// Event Listeners:
-    	//MinecraftForge.EVENT_BUS.register(new EventListener(Minecraft.getMinecraft()));
+    	MinecraftForge.EVENT_BUS.register(new EventListener(Minecraft.getMinecraft()));
 	}
 	
 	

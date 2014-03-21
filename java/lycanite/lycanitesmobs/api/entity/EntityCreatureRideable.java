@@ -38,6 +38,14 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
         super.entityInit();
     }
     
+    // ========= Speed Multiplier ==========
+    // Skip the difficulty scale when a mounted mob.
+    public double getSpeedMultiplier() {
+    	if(this.hasRiderTarget())
+    		return this.mod.getConfig().speedMultipliers.get(this.getConfigName());
+    	return super.getSpeedMultiplier();
+    }
+    
     
     // ==================================================
     //                       Update
@@ -49,7 +57,7 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
     		this.riderEffects((EntityLivingBase)this.getRiderTarget());
     	
     	if(this.hasRiderTarget()) {
-    		// player Rider Controls:
+    		// Player Rider Controls:
 	    	if(this.getRiderTarget() instanceof EntityPlayer) {
 	    		EntityPlayer player = (EntityPlayer)this.getRiderTarget();
 	    		

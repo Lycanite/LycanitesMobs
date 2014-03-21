@@ -190,7 +190,7 @@ public class EntityAIAttackMelee extends EntityAIBase {
         this.attackTime = Math.max(this.attackTime - 1, 0);
         if(this.host.getDistanceSq(attackTarget.posX, attackTarget.boundingBox.minY, attackTarget.posZ) <= this.attackRange + (attackTarget.width * attackTarget.width)) {
             if(this.attackTime <= 0) {
-                this.attackTime = Math.round((float)this.attackTimeMax * (float)this.host.getHasteMultiplier());
+                this.attackTime = Math.round((float)this.attackTimeMax + ((float)this.attackTimeMax - ((float)this.attackTimeMax * (float)this.host.getHasteMultiplier())));
                 if(this.host.getHeldItem() != null)
                     this.host.swingItem();
                 this.host.meleeAttack(attackTarget, damage);

@@ -440,20 +440,29 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	LycanitesMobs.printDebug("MobSpawns", "Checking required blocks.");
         if(!spawnBlockCheck(world, i, j, k))
         	return false;
-        
-        // Spawn limit:
-        int spawnLimit = this.mod.getConfig().spawnLimits.get(this.getConfigName());
-        double range = (double)LycanitesMobs.config.getFeatureInt("SpawnLimitSearchRadius");
-    	LycanitesMobs.printDebug("MobSpawns", "Checking spawn area limit. Limit of: " + spawnLimit + " Range of: " + range);
-        if(spawnLimit > 0 && range > 0) {
-        	AxisAlignedBB searchAABB = AxisAlignedBB.getBoundingBox(i, j, k, i, j, k);
-        	List targets = this.worldObj.getEntitiesWithinAABB(ObjectManager.getMob(this.getConfigName()), searchAABB.expand(range, range, range));
-        	LycanitesMobs.printDebug("MobSpawns", "Found " + targets.size() + " of this mob within the radius (class is " + ObjectManager.getMob(this.getConfigName()) + ").");
-        	if(targets.size() > spawnLimit)
-        		return false;
-        }
+    	LycanitesMobs.printDebug("MobSpawns", "Checking required blocks.");
+        if(!spawnBlockCheck(world, i, j, k))
+        	return false;
+        if(!spawnLimitCheck(world, i, j, k))
+        	return false;
         	
         return true;
+    }
+    
+    // ========== Spawn Limit Check ==========
+    /** Checks for nearby blocks from the ijk (xyz) block location, Cinders use this when spawning by Fire Blocks. **/
+    public boolean spawnLimitCheck(World world, int i, int j, int k) {
+    	 int spawnLimit = this.mod.getConfig().spawnLimits.get(this.getConfigName());
+    	 double range = (double)LycanitesMobs.config.getFeatureInt("SpawnLimitSearchRadius");
+    	 LycanitesMobs.printDebug("MobSpawns", "Checking spawn area limit. Limit of: " + spawnLimit + " Range of: " + range);
+         if(spawnLimit > 0 && range > 0) {
+         	AxisAlignedBB searchAABB = AxisAlignedBB.getBoundingBox(i, j, k, i, j, k);
+         	List targets = this.worldObj.getEntitiesWithinAABB(ObjectManager.getMob(this.getConfigName()), searchAABB.expand(range, range, range));
+         	LycanitesMobs.printDebug("MobSpawns", "Found " + targets.size() + " of this mob within the radius (class is " + ObjectManager.getMob(this.getConfigName()) + ").");
+         	if(targets.size() > spawnLimit)
+         		return false;
+         }
+         return true;
     }
     
     // ========== Spawn Block Check ==========

@@ -24,6 +24,7 @@ public class ObjectManager {
 	public static Map<String, EntityList> entityLists = new HashMap<String, EntityList>();
 	public static Map<String, Class> mobs = new HashMap<String, Class>();
 	public static Map<String, int[]> mobDimensions = new HashMap<String, int[]>();
+	public static Map<String, Integer> fireSpawns = new HashMap<String, Integer>();
 	
 	public static Map<String, Class> projectiles = new HashMap<String, Class>();
 	
@@ -103,7 +104,10 @@ public class ObjectManager {
 			mobDimensions.put(name, config.getSpawnDimensions(name));
 			if(config.spawnEnabled.get(name) && config.spawnWeights.get(name) > 0 && config.spawnMaxs.get(name) > 0) {
 				spawnBiomes = config.getSpawnBiomesTypes(name);
-				EntityRegistry.addSpawn(entityClass, config.spawnWeights.get(name), config.spawnMins.get(name), config.spawnMaxs.get(name), config.spawnTypes.get(name), spawnBiomes);
+				if(config.spawnTypes.get(name) != null)
+					EntityRegistry.addSpawn(entityClass, config.spawnWeights.get(name), config.spawnMins.get(name), config.spawnMaxs.get(name), config.spawnTypes.get(name), spawnBiomes);
+				else if(config.customSpawns.containsKey(name))
+					fireSpawns.put(name, config.spawnWeights.get(name));
 			}
 		}
 		

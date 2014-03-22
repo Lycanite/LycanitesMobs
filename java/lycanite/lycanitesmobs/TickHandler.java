@@ -56,7 +56,6 @@ public class TickHandler implements ITickHandler {
 	//                 Player Ticks
 	// ==================================================
 	public static void playerTick(Object... tickData) {
-		System.out.println(tickData[0]);
 	}
 	
 

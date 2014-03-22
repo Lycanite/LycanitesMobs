@@ -12,9 +12,17 @@ public class SubConfig extends Config {
 		this.loadSetting(this.featureBools, "Feature Control", "OwnerTags", "Show Pet Owner Tags", true);
 		this.loadSetting(this.featureBools, "Feature Control", "MobTaming", "Allow Mob Taming", true);
 		this.loadSetting(this.featureBools, "Feature Control", "MobMounting", "Allow Mob Mounting", true);
-		this.loadSetting(this.featureInts, "Feature Control", "SpawnLimitSearchRadius", "Spawn Limit Search Radius", 64);
-		this.loadSetting(this.featureBools, "Feature Control", "DisableAllSpawning", "Disable All Spawning", false);
-		this.loadSetting(this.featureBools, "Feature Control", "DisableDungeonSpawners", "Disable Dungeon Spawners", false);
+		
+		// ========== Global Spawn Control ==========
+		this.loadSetting(this.featureInts, "Spawn Control", "SpawnLimitSearchRadius", "Spawn Limit Search Radius", 32);
+		this.loadSetting(this.featureBools, "Spawn Control", "DisableAllSpawning", "Disable All Spawning", false);
+		this.loadSetting(this.featureBools, "Spawn Control", "DisableDungeonSpawners", "Disable Dungeon Spawners", false);
+		this.loadSetting(this.featureBools, "Spawn Control", "FireSpawnEnabled", "Fire Spawning Enabled", true);
+		this.loadSetting(this.featureInts, "Spawn Control", "FireSpawnTick", "Fire Spawning Tick Rate", 400);
+		this.loadSetting(this.featureDoubles, "Spawn Control", "FireSpawnChance", "Fire Spawning Chance", 0.25D);
+		this.loadSetting(this.featureInts, "Spawn Control", "FireSpawnRange", "Fire Spawning Search Range", 32);
+		this.loadSetting(this.featureInts, "Spawn Control", "FireSpawnBlockLimit", "Fire Spawning Block Limit", 32);
+		this.loadSetting(this.featureInts, "Spawn Control", "FireSpawnMobLimit", "Fire Spawning Mob Limit", 32);
 		
 		// ========== Stat Multipliers ==========
 		this.loadStatMultiplier(this.difficultyMultipliers, "Stat Multipliers", "Easy", "Easy Difficulty Multiplier", "0.5");

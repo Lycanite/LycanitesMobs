@@ -24,6 +24,7 @@ public class Config {
 	// Feature Control:
 	public Map<String, Boolean> featureBools = new HashMap<String, Boolean>();
 	public Map<String, Integer> featureInts = new HashMap<String, Integer>();
+	public Map<String, Double> featureDoubles = new HashMap<String, Double>();
 	public Map<String, String> featureStrings = new HashMap<String, String>();
 	
 	// Stat Multipliers and Boosts:
@@ -51,6 +52,7 @@ public class Config {
 	public Map<String, String> spawnDimensions = new HashMap<String, String>();
 	public Map<String, String> customDrops = new HashMap<String, String>();
 	public Map<String, Boolean> defaultDrops = new HashMap<String, Boolean>();
+	public Map<String, String> customSpawns = new HashMap<String, String>();
 	
 	// Block IDs:
 	public Map<String, Integer> blockIDs = new HashMap<String, Integer>();
@@ -121,6 +123,11 @@ public class Config {
 		settingMap.put(settingID, setting);
 	}
 	
+	public void loadSetting(Map<String, Double> settingMap, String settingCategory, String settingID, String settingName, double settingDefault) {
+		double setting = config.get(settingCategory, settingName, settingDefault).getDouble(settingDefault);
+		settingMap.put(settingID, setting);
+	}
+	
 	public void loadSetting(Map<String, String> settingMap, String settingCategory, String settingID, String settingName, String settingDefault) {
 		String setting = config.get(settingCategory, settingName, settingDefault).getString();
 		if("DEFAULT".equalsIgnoreCase(setting)) {
@@ -146,6 +153,10 @@ public class Config {
 			spawnType = EnumCreatureType.waterCreature;
 		else if("AMBIENT".equalsIgnoreCase(typeString))
 			spawnType = EnumCreatureType.ambient;
+		else if("FIRE".equalsIgnoreCase(typeString)) {
+			spawnType = null;
+			customSpawns.put(settingID, "FIRE");
+		}
 		else if(!"MONSTER".equalsIgnoreCase(typeString))
 			System.out.println("[WARNING] [LycanitesMobs] Invalid spawn type " + typeString + " given for " + settingID + " using MONSTER instead.");
 		
@@ -154,25 +165,26 @@ public class Config {
 	
 	// ========== Mob Settings ==========
 	public void loadMobSettings(String mobName, int spawnWeight, int spawnLimit, int spawnMin, int spawnMax, String spawnTypeName, String spawnBiome, String spawnDimension) {
-		loadSetting(this.mobsEnabled, "Mob Control", mobName, mobName + " Enabled", true);
-		loadSetting(this.spawnEnabled, "Mob Control", mobName, mobName + " Spawn Enabled", spawnWeight > 0);
-		loadSetting(this.spawnChances, "Mob Control", mobName, mobName + " Spawn Chance", 100);
-		loadSetting(this.spawnWeights, "Mob Control", mobName, mobName + " Spawn Weight", spawnWeight);
-		loadSetting(this.spawnLimits, "Mob Control", mobName, mobName + " Spawn Area Limit", spawnLimit);
-		loadSetting(this.spawnMins, "Mob Control", mobName, mobName + " Spawn Group Size Min", spawnMin);
-		loadSetting(this.spawnMaxs, "Mob Control", mobName, mobName + " Spawn Group Size Max", spawnMax);
-		loadSettingSpawnType(this.spawnTypes, "Mob Control", mobName, mobName + " Spawn Type", spawnTypeName);
-		loadSetting(this.spawnBiomes, "Mob Control", mobName, mobName + " Spawn Biome Types", spawnBiome);
-		loadSetting(this.spawnDimensions, "Mob Control", mobName, mobName + " Spawn Dimensions", spawnDimension);
-		loadSetting(this.customDrops, "Mob Control", mobName, mobName + " Custom Drops", "");
-		loadSetting(this.defaultDrops, "Mob Control", mobName, mobName + " Enable Default Drops", true);
+		loadSetting(this.mobsEnabled, "Mob Control - General", mobName, mobName + " Enabled", true);
+		loadSetting(this.customDrops, "Mob Control - General", mobName, mobName + " Custom Drops", "");
+		loadSetting(this.defaultDrops, "Mob Control - General", mobName, mobName + " Enable Default Drops", true);
+		
+		loadSetting(this.spawnEnabled, "Mob Control - Spawning", mobName, mobName + " Spawn Enabled", spawnWeight > 0);
+		loadSetting(this.spawnChances, "Mob Control - Spawning", mobName, mobName + " Spawn Chance", 100);
+		loadSetting(this.spawnWeights, "Mob Control - Spawning", mobName, mobName + " Spawn Weight", spawnWeight);
+		loadSetting(this.spawnLimits, "Mob Control - Spawning", mobName, mobName + " Spawn Area Limit", spawnLimit);
+		loadSetting(this.spawnMins, "Mob Control - Spawning", mobName, mobName + " Spawn Group Size Min", spawnMin);
+		loadSetting(this.spawnMaxs, "Mob Control - Spawning", mobName, mobName + " Spawn Group Size Max", spawnMax);
+		loadSettingSpawnType(this.spawnTypes, "Mob Control - Spawning", mobName, mobName + " Spawn Type", spawnTypeName);
+		loadSetting(this.spawnBiomes, "Mob Control - Spawning", mobName, mobName + " Spawn Biome Types", spawnBiome);
+		loadSetting(this.spawnDimensions, "Mob Control - Spawning", mobName, mobName + " Spawn Dimensions", spawnDimension);
 
-		loadStatMultiplier(this.defenseMultipliers, "Mob Control", mobName, mobName + " Stat Defense Multiplier", "GROUP");
+		loadStatMultiplier(this.defenseMultipliers, "Mob Control - Stats", mobName, mobName + " Stat Defense Multiplier", "GROUP");
 		loadStatBoost(this.defenseBoosts, "Mob Control", mobName, mobName + " Stat Defense Boost", "GROUP");
-		loadStatMultiplier(this.speedMultipliers, "Mob Control", mobName, mobName + " Stat Speed Multiplier", "GROUP");
-		loadStatMultiplier(this.damageMultipliers, "Mob Control", mobName, mobName + " Stat Damage Multiplier", "GROUP");
-		loadStatMultiplier(this.hasteMultipliers, "Mob Control", mobName, mobName + " Stat Haste Multiplier", "GROUP");
-		loadStatMultiplier(this.effectMultipliers, "Mob Control", mobName, mobName + " Stat Effect Multiplier", "GROUP");
+		loadStatMultiplier(this.speedMultipliers, "Mob Control - Stats", mobName, mobName + " Stat Speed Multiplier", "GROUP");
+		loadStatMultiplier(this.damageMultipliers, "Mob Control - Stats", mobName, mobName + " Stat Damage Multiplier", "GROUP");
+		loadStatMultiplier(this.hasteMultipliers, "Mob Control - Stats", mobName, mobName + " Stat Haste Multiplier", "GROUP");
+		loadStatMultiplier(this.effectMultipliers, "Mob Control - Stats", mobName, mobName + " Stat Effect Multiplier", "GROUP");
 	}
 	public void loadMobSettings(String mobName, int spawnWeight, int spawnLimit, int spawnMin, int spawnMax, String spawnTypeName) {
 		this.loadMobSettings(mobName, spawnWeight, spawnLimit, spawnMin, spawnMax, spawnTypeName, "GROUP", "GROUP");
@@ -245,6 +257,13 @@ public class Config {
 	public int getFeatureInt(String key) {
 		if(this.featureInts.containsKey(key))
 			return this.featureInts.get(key) != null ? this.featureInts.get(key) : 0;
+		else
+			return 0;
+	}
+	
+	public double getFeatureDouble(String key) {
+		if(this.featureDoubles.containsKey(key))
+			return this.featureDoubles.get(key) != null ? this.featureDoubles.get(key) : 0;
 		else
 			return 0;
 	}

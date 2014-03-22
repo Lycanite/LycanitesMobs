@@ -22,7 +22,7 @@ public class SubConfig extends Config {
 		
 		// ========== Mob Control ==========
 		loadMobSettings("GhoulZombie", 8, 10, 1, 3, "MONSTER");
-		loadMobSettings("Dweller", 8, 10, 1, 3, "WATERCREATURE", "GROUP, RIVER", "GROUP");
+		loadMobSettings("Dweller", 8, 5, 1, 3, "WATERCREATURE");
 		loadMobSettings("Ettin", 3, 2, 1, 1, "MONSTER");
 		loadMobSettings("Lurker", 6, 5, 1, 3, "MONSTER");
 		loadMobSettings("Eyewig", 3, 5, 1, 1, "MONSTER");

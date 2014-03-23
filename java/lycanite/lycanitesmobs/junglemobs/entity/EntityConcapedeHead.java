@@ -141,7 +141,7 @@ public class EntityConcapedeHead extends EntityCreatureAgeable implements IAnima
 	@Override
 	public void setGrowingAge(int age) {
 		// Spawn Additional Segments:
-		if(age == 0) {
+		if(age == 0 && ObjectManager.getMob("ConcapedeSegment") != null) {
 			age = -this.growthTime / 4;
 			EntityCreatureBase parentSegment = this;
 			boolean lastSegment = false;

@@ -397,10 +397,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** First stage checks for spawning, if this check fails the creature will not spawn. **/
     public boolean fixedSpawnCheck(World world, int i, int j, int k) {
     	LycanitesMobs.printDebug("MobSpawns", "Checking light level: Darkness");
-    	if(this.spawnsInDarkness && this.testLightLevel() > 1)
+    	if(this.spawnsInDarkness && this.testLightLevel(i, j, k) > 1)
     		return false;
     	LycanitesMobs.printDebug("MobSpawns", "Checking light level: Lightness");
-    	if(this.spawnsOnlyInLight && this.testLightLevel() < 2)
+    	if(this.spawnsOnlyInLight && this.testLightLevel(i, j, k) < 2)
     		return false;
     	LycanitesMobs.printDebug("MobSpawns", "Checking entity collision.");
         if(!this.worldObj.checkNoEntityCollision(this.boundingBox))

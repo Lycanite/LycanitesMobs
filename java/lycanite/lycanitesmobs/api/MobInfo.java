@@ -1,29 +1,38 @@
 package lycanite.lycanitesmobs.api;
 
 import net.minecraft.client.model.ModelBase;
-import net.minecraft.entity.EnumCreatureType;
 
 public class MobInfo {
+	/** The name of this mob used by the ObjectManager and Config maps. **/
 	public String name = "MobName";
-	public String title = "Mob Name";
-	public Class entityClass;
-	//public SpawnInfo[] spawnInfo;
-	public EnumCreatureType spawnType;
-	public int eggBackColor;
-	public int eggForeColor;
-	//public Item egg;
 	
+	/** The title used by this mob for displaying in game.. **/
+	public String title = "Mob Name";
+	
+	/** The class that this mob instantiates with. **/
+	public Class entityClass;
+
+	/** A lsit of SpawnInfo used by this mob, multiple SpawnInfos can be added for multiple spawn methods. **/
+	public SpawnInfo[] spawnInfo;
+	
+	/** The background color of this mob's egg. **/
+	public int eggBackColor;	
+	
+	/** The foreground color of this mob's egg. **/
+	public int eggForeColor;
+	
+	/** The model used by this mob. **/
 	public ModelBase model;
 	
     // ==================================================
     //                     Constructor
     // ==================================================
-	public MobInfo(String setName, Class setClass, EnumCreatureType setType, int setEggBack, int setEggFore) {
-		name = setName;
-		entityClass = setClass;
-		spawnType = setType;
-		eggBackColor = setEggBack;
-		eggForeColor = setEggFore;
+	public MobInfo(String setName, String setTitle, Class setClass, int setEggBack, int setEggFore) {
+		this.name = setName;
+		this.title = setTitle;
+		this.entityClass = setClass;
+		this.eggBackColor = setEggBack;
+		this.eggForeColor = setEggFore;
 	}
 	
 	

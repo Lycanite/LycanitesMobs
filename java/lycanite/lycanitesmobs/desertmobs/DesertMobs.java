@@ -6,6 +6,7 @@ import lycanite.lycanitesmobs.ObjectLists;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.PacketHandler;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
+import lycanite.lycanitesmobs.api.MobInfo;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
 import lycanite.lycanitesmobs.desertmobs.dispenser.DispenserBehaviorMudshot;
@@ -109,14 +110,14 @@ public class DesertMobs implements ILycaniteMod {
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("DesertEgg"), new DispenserBehaviorMobEggCustom());
-		ObjectManager.addMob("CryptZombie", "Crypt Zombie", EntityCryptZombie.class, 0xCC9966, 0xAA8800);
-		ObjectManager.addMob("Crusk", EntityCrusk.class, 0xFFDDAA, 0x000000);
-		ObjectManager.addMob("Clink", EntityClink.class, 0xFFAAAA, 0x999999);
-		ObjectManager.addMob("Joust", EntityJoust.class, 0xFF9900, 0xFFFF00);
-		ObjectManager.addMob("JoustAlpha", "Joust Alpha", EntityJoustAlpha.class, 0xFF0000, 0xFFFF00);
-		ObjectManager.addMob("Erepede", EntityErepede.class, 0xDD9922, 0xFFDDFF);
-		ObjectManager.addMob("Gorgomite", EntityGorgomite.class, 0xCC9900, 0x884400);
-		ObjectManager.addMob("Manticore", EntityManticore.class, 0x442200, 0x990000);
+		ObjectManager.addMob(new MobInfo(this, "CryptZombie", "Crypt Zombie", EntityCryptZombie.class, 0xCC9966, 0xAA8800));
+		ObjectManager.addMob(new MobInfo(this, "Crusk", EntityCrusk.class, 0xFFDDAA, 0x000000));
+		ObjectManager.addMob(new MobInfo(this, "Clink", EntityClink.class, 0xFFAAAA, 0x999999));
+		ObjectManager.addMob(new MobInfo(this, "Joust", EntityJoust.class, 0xFF9900, 0xFFFF00));
+		ObjectManager.addMob(new MobInfo(this, "JoustAlpha", "Joust Alpha", EntityJoustAlpha.class, 0xFF0000, 0xFFFF00));
+		ObjectManager.addMob(new MobInfo(this, "Erepede", EntityErepede.class, 0xDD9922, 0xFFDDFF));
+		ObjectManager.addMob(new MobInfo(this, "Gorgomite", EntityGorgomite.class, 0xCC9900, 0x884400));
+		ObjectManager.addMob(new MobInfo(this, "Manticore", EntityManticore.class, 0x442200, 0x990000));
 		
 		// ========== Create Projectiles ==========
 		ObjectManager.addProjectile("ThrowingScythe", EntityThrowingScythe.class, ObjectManager.getItem("ThrowingScythe"), new DispenserBehaviorThrowingScythe());

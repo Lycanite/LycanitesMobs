@@ -6,6 +6,7 @@ import lycanite.lycanitesmobs.ObjectLists;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.PacketHandler;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
+import lycanite.lycanitesmobs.api.MobInfo;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
 import lycanite.lycanitesmobs.demonmobs.block.BlockHellfire;
@@ -120,13 +121,13 @@ public class DemonMobs implements ILycaniteMod {
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("DemonEgg"), new DispenserBehaviorMobEggCustom());
-		ObjectManager.addMob("Belph", EntityBelph.class, 0x992222, 0x000000);
-		ObjectManager.addMob("Behemoth", EntityBehemoth.class, 0xFF2222, 0xFF9900);
-		ObjectManager.addMob("Pinky", EntityPinky.class, 0xFF0099, 0x990000);
-		ObjectManager.addMob("Trite", EntityTrite.class, 0xFFFF88, 0x000000);
-		ObjectManager.addMob("Asmodi", EntityAsmodi.class, 0x999944, 0x0000FF);
-		ObjectManager.addMob("NetherSoul", "Nether Soul", EntityNetherSoul.class, 0xFF9900, 0xFF0000);
-		ObjectManager.addMob("Cacodemon", EntityCacodemon.class, 0xFF0000, 0x000099);
+		ObjectManager.addMob(new MobInfo(this, "Belph", EntityBelph.class, 0x992222, 0x000000));
+		ObjectManager.addMob(new MobInfo(this, "Behemoth", EntityBehemoth.class, 0xFF2222, 0xFF9900));
+		ObjectManager.addMob(new MobInfo(this, "Pinky", EntityPinky.class, 0xFF0099, 0x990000));
+		ObjectManager.addMob(new MobInfo(this, "Trite", EntityTrite.class, 0xFFFF88, 0x000000));
+		ObjectManager.addMob(new MobInfo(this, "Asmodi", EntityAsmodi.class, 0x999944, 0x0000FF));
+		ObjectManager.addMob(new MobInfo(this, "NetherSoul", "Nether Soul", EntityNetherSoul.class, 0xFF9900, 0xFF0000));
+		ObjectManager.addMob(new MobInfo(this, "Cacodemon", EntityCacodemon.class, 0xFF0000, 0x000099));
 		
 		// ========== Create Projectiles ==========
 		ObjectManager.addProjectile("Hellfireball", EntityHellfireball.class, ObjectManager.getItem("HellfireCharge"), new DispenserBehaviorHellfireball());

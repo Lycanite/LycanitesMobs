@@ -41,9 +41,20 @@ public class EntityAISwimming extends EntityAIBase {
    	//                      Update
    	// ==================================================
     public void updateTask() {
-    	if(host.canSwim() && host.getAttackTarget() != null && host.posY < host.getAttackTarget().posY)
-    		this.host.getJumpHelper().setJumping();
-    	else if(!sink && this.host.getRNG().nextFloat() < 0.8F)
+    	if(this.sink) {
+	    	double targetY = this.host.posY;
+	    	if(!this.host.canFly()) {
+	    		if(!this.host.getNavigator().noPath())
+	    			targetY = this.host.getNavigator().getPath().getPosition(this.host).yCoord;
+	    	}
+	    	else {
+	    		if(!this.host.flightNavigator.atTargetPosition())
+	    		targetY = this.host.flightNavigator.targetPosition.posY;
+	    	}
+	    	if(this.sink && this.host.posY < targetY)//host.getAttackTarget() != null && host.posY < host.getAttackTarget().posY)
+	    		this.host.getJumpHelper().setJumping(); //TODO Test!
+    	}
+    	else if(this.host.getRNG().nextFloat() < 0.8F)
             this.host.getJumpHelper().setJumping();
     }
 }

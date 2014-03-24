@@ -6,6 +6,7 @@ import lycanite.lycanitesmobs.ObjectLists;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.PacketHandler;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
+import lycanite.lycanitesmobs.api.MobInfo;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
 import lycanite.lycanitesmobs.plainsmobs.entity.EntityKobold;
@@ -88,10 +89,10 @@ public class PlainsMobs implements ILycaniteMod {
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("PlainsEgg"), new DispenserBehaviorMobEggCustom());
-		ObjectManager.addMob("Kobold", EntityKobold.class, 0x996633, 0xFF7777);
-		ObjectManager.addMob("Ventoraptor", EntityVentoraptor.class, 0x99BBFF, 0x0033FF);
-		ObjectManager.addMob("Maka", EntityMaka.class, 0xAA8855, 0x221100);
-		ObjectManager.addMob("MakaAlpha", "Maka Alpha", EntityMakaAlpha.class, 0x663300, 0x000000);
+		ObjectManager.addMob(new MobInfo(this, "Kobold", EntityKobold.class, 0x996633, 0xFF7777));
+		ObjectManager.addMob(new MobInfo(this, "Ventoraptor", EntityVentoraptor.class, 0x99BBFF, 0x0033FF));
+		ObjectManager.addMob(new MobInfo(this, "Maka", EntityMaka.class, 0xAA8855, 0x221100));
+		ObjectManager.addMob(new MobInfo(this, "MakaAlpha", "Maka Alpha", EntityMakaAlpha.class, 0x663300, 0x000000));
 		
 		// ========== Create Projectiles ==========
 		//ObjectManager.addProjectile("Template", EntityTemplate.class, Item.templateCharge, new DispenserBehaviorPoisonRay());

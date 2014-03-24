@@ -2,28 +2,19 @@ package lycanite.lycanitesmobs.mountainmobs;
 
 import lycanite.lycanitesmobs.Config;
 import lycanite.lycanitesmobs.LycanitesMobs;
-import lycanite.lycanitesmobs.ObjectLists;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.PacketHandler;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
+import lycanite.lycanitesmobs.api.MobInfo;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
-import lycanite.lycanitesmobs.api.item.ItemCustomFood;
 import lycanite.lycanitesmobs.mountainmobs.entity.EntityJabberwock;
 import lycanite.lycanitesmobs.mountainmobs.item.ItemMountainEgg;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityChicken;
-import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.passive.EntityPig;
-import net.minecraft.entity.passive.EntitySheep;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -33,7 +24,6 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = MountainMobs.modid, name = MountainMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid)
 @NetworkMod(clientSideRequired=true, serverSideRequired=false, channels = {MountainMobs.modid}, packetHandler = PacketHandler.class)
@@ -88,7 +78,7 @@ public class MountainMobs implements ILycaniteMod {
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("MountainEgg"), new DispenserBehaviorMobEggCustom());
-		ObjectManager.addMob("Jabberwock", EntityJabberwock.class, 0x662222, 0xFFFFAA);
+		ObjectManager.addMob(new MobInfo(this, "Jabberwock", EntityJabberwock.class, 0x662222, 0xFFFFAA));
 		
 		// ========== Create Projectiles ==========
 		//ObjectManager.addProjectile("Template", EntityTemplate.class, Item.templateCharge, new DispenserBehaviorPoisonRay());

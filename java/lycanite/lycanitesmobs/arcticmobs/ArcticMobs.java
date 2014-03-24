@@ -5,6 +5,7 @@ import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.PacketHandler;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
+import lycanite.lycanitesmobs.api.MobInfo;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.arcticmobs.block.BlockFrostweb;
 import lycanite.lycanitesmobs.arcticmobs.dispenser.DispenserBehaviorFrostbolt;
@@ -91,8 +92,8 @@ public class ArcticMobs implements ILycaniteMod {
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("ArcticEgg"), new DispenserBehaviorMobEggCustom());
-		ObjectManager.addMob("Reiver", EntityReiver.class, 0xDDEEFF, 0x99DDEE);
-		ObjectManager.addMob("Frostweaver", EntityFrostweaver.class, 0xAADDFF, 0x226699);
+		ObjectManager.addMob(new MobInfo(this, "Reiver", EntityReiver.class, 0xDDEEFF, 0x99DDEE));
+		ObjectManager.addMob(new MobInfo(this, "Frostweaver", EntityFrostweaver.class, 0xAADDFF, 0x226699));
 		
 		// ========== Create Projectiles ==========
 		ObjectManager.addProjectile("Frostbolt", EntityFrostbolt.class, ObjectManager.getItem("FrostboltCharge"), new DispenserBehaviorFrostbolt());

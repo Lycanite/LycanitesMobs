@@ -1,8 +1,10 @@
 package lycanite.lycanitesmobs.api;
 
-import net.minecraft.client.model.ModelBase;
 
 public class MobInfo {
+	/** Mod Class **/
+	public ILycaniteMod mod;
+	
 	/** The name of this mob used by the ObjectManager and Config maps. **/
 	public String name = "MobName";
 	
@@ -21,13 +23,13 @@ public class MobInfo {
 	/** The foreground color of this mob's egg. **/
 	public int eggForeColor;
 	
-	/** The model used by this mob. **/
-	public ModelBase model;
+	///** The model used by this mob. NOTE: This is currently unused, see AssetManager.getModel() **/
+	//public ModelBase model;
 	
     // ==================================================
     //                     Constructor
     // ==================================================
-	public MobInfo(String setName, String setTitle, Class setClass, int setEggBack, int setEggFore) {
+	public MobInfo(ILycaniteMod mod, String setName, String setTitle, Class setClass, int setEggBack, int setEggFore) {
 		this.name = setName;
 		this.title = setTitle;
 		this.entityClass = setClass;
@@ -35,12 +37,25 @@ public class MobInfo {
 		this.eggForeColor = setEggFore;
 	}
 	
+	// For most mobs where the code name and title are the same (no spaces, etc).
+	public MobInfo(ILycaniteMod mod, String setName, Class setClass, int setEggBack, int setEggFore) {
+		this(mod, setName, setName, setClass, setEggBack, setEggFore);
+	}
+	
+	
+	// ==================================================
+    //                 Names and Titles
+    // ==================================================
+	public String getRegistryName() {
+		return this.mod.getModID() + "." + this.name;
+	}
+	
 	
     // ==================================================
     //                        Set
     // ==================================================
-	// ========== Model ==========
+	/*/ ========== Model ==========
 	public void setModel(ModelBase setModel) {
 		model = setModel;
-	}
+	}*/
 }

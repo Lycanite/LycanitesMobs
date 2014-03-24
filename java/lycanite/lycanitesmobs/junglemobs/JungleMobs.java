@@ -6,6 +6,7 @@ import lycanite.lycanitesmobs.ObjectLists;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.PacketHandler;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
+import lycanite.lycanitesmobs.api.MobInfo;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
 import lycanite.lycanitesmobs.junglemobs.entity.EntityConcapedeHead;
@@ -90,10 +91,10 @@ public class JungleMobs implements ILycaniteMod {
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("JungleEgg"), new DispenserBehaviorMobEggCustom());
-		ObjectManager.addMob("Geken", EntityGeken.class, 0x00AA00, 0xFFFF00);
-		ObjectManager.addMob("Uvaraptor", EntityUvaraptor.class, 0x00FF33, 0xFF00FF);
-		ObjectManager.addMob("Concapede", EntityConcapedeHead.class, 0x111144, 0xDD0000);
-		ObjectManager.addMob("ConcapedeSegment", "Concapede Segment", EntityConcapedeSegment.class, 0x000022, 0x990000);
+		ObjectManager.addMob(new MobInfo(this, "Geken", EntityGeken.class, 0x00AA00, 0xFFFF00));
+		ObjectManager.addMob(new MobInfo(this, "Uvaraptor", EntityUvaraptor.class, 0x00FF33, 0xFF00FF));
+		ObjectManager.addMob(new MobInfo(this, "Concapede", EntityConcapedeHead.class, 0x111144, 0xDD0000));
+		ObjectManager.addMob(new MobInfo(this, "ConcapedeSegment", "Concapede Segment", EntityConcapedeSegment.class, 0x000022, 0x990000));
 		
 		// ========== Create Projectiles ==========
 		//ObjectManager.addProjectile("Template", EntityTemplate.class, Item.templateCharge, new DispenserBehaviorPoisonRay());

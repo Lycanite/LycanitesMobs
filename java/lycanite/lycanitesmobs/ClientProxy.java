@@ -2,6 +2,7 @@ package lycanite.lycanitesmobs;
 
 import java.util.Map.Entry;
 
+import lycanite.lycanitesmobs.api.MobInfo;
 import lycanite.lycanitesmobs.api.entity.EntityParticle;
 import lycanite.lycanitesmobs.api.gui.GuiMountOverlay;
 import lycanite.lycanitesmobs.api.render.RenderCreature;
@@ -71,8 +72,8 @@ public class ClientProxy extends CommonProxy {
 	@Override
     public void registerRenders() {
 		// Creatures:
-		for(Entry<String, Class> mobEntry : ObjectManager.mobs.entrySet())
-			RenderingRegistry.registerEntityRenderingHandler(mobEntry.getValue(), new RenderCreature(mobEntry.getKey()));
+		for(Entry<String, MobInfo> mobEntry : ObjectManager.mobs.entrySet())
+			RenderingRegistry.registerEntityRenderingHandler(mobEntry.getValue().entityClass, new RenderCreature(mobEntry.getKey()));
 		
 		// Projectiles:
 		for(Entry<String, Class> projectileEntry : ObjectManager.projectiles.entrySet())

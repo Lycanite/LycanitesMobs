@@ -3,6 +3,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import lycanite.lycanitesmobs.api.ILycaniteMod;
+import lycanite.lycanitesmobs.api.MobInfo;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.BehaviorProjectileDispense;
@@ -22,7 +23,7 @@ public class ObjectManager {
 	public static Map<String, PotionBase> potionEffects = new HashMap<String, PotionBase>();
 	
 	public static Map<String, EntityList> entityLists = new HashMap<String, EntityList>();
-	public static Map<String, Class> mobs = new HashMap<String, Class>();
+	public static Map<String, MobInfo> mobs = new HashMap<String, MobInfo>();
 	public static Map<String, int[]> mobDimensions = new HashMap<String, int[]>();
 	public static Map<String, Integer> fireSpawns = new HashMap<String, Integer>();
 	
@@ -66,11 +67,15 @@ public class ObjectManager {
 	}
 	
 	// ========== Creature ==========
-	public static void addMob(String name, Class entityClass, int eggBackColor, int eggForeColor) {
-		ILycaniteMod mod = currentMod;
+	//TODO Test!
+	public static void addMob(MobInfo mobInfo) {
+		ILycaniteMod mod = mobInfo.mod;
 		String modid = mod.getModID();
 		String domain = mod.getDomain();
 		Config config = mod.getConfig();
+		
+		String name = mobInfo.name;
+		Class entityClass = mobInfo.entityClass;
 		
 		// Sounds:
 		String filename = name.toLowerCase();
@@ -91,9 +96,9 @@ public class ObjectManager {
 			return;
 		if(!entityLists.containsKey(domain))
 			entityLists.put(domain, new EntityList());
-		entityLists.get(domain).addMapping(entityClass, modid + "." + name, mobID, eggBackColor, eggForeColor);
+		entityLists.get(domain).addMapping(entityClass, mobInfo.getRegistryName(), mobID, mobInfo.eggBackColor, mobInfo.eggForeColor);
 		EntityRegistry.registerModEntity(entityClass, name, mobID, mod.getInstance(), 128, 3, true);
-		LanguageRegistry.instance().addStringLocalization("entity." + modid + "." + name + ".name", "en_US", name);
+		LanguageRegistry.instance().addStringLocalization("entity." + mobInfo.getRegistryName() + ".name", "en_US", mobInfo.title);
 		
 		// Debug Message - Added:
 		LycanitesMobs.printDebug("MobSetup", "Mob Added: " + name + " - " + entityClass + " (" + modid + ")");
@@ -114,8 +119,8 @@ public class ObjectManager {
 		// Dungeon Spawn:
 		if(!LycanitesMobs.config.getFeatureBool("DisableDungeonSpawners")) {
 			int dungeonWeight = config.spawnWeights.get(name) * 25;
-			if(dungeonWeight > 0 && config.spawnTypes.get(name) == EnumCreatureType.monster)
-				DungeonHooks.addDungeonMob(modid + "." + name, dungeonWeight);
+			if(dungeonWeight > 0 && (config.spawnTypes.get(name) == EnumCreatureType.monster || config.spawnTypes.get(name) == null))
+				DungeonHooks.addDungeonMob(mobInfo.getRegistryName(), dungeonWeight);
 		}
 		
 		// Debug Message - Spawn Added:
@@ -139,15 +144,9 @@ public class ObjectManager {
 			LycanitesMobs.printDebug("MobSetup", "Dimensions: " + dimensionsList);
 		}
 		
-		mobs.put(name, entityClass);
+		mobs.put(name, mobInfo);
 	}
 	
-	public static void addMob(String name, String title, Class entityClass, int eggBackColor, int eggForeColor) {
-		ILycaniteMod mod = currentMod;
-		addMob(name, entityClass, eggBackColor, eggForeColor);
-		if(!mod.getConfig().mobsEnabled.get(name)) return;
-		LanguageRegistry.instance().addStringLocalization("entity." + mod.getModID() + "." + name + ".name", "en_US", title);
-	}
 
 	// ========== Projectile ==========
 	public static void addProjectile(String name, Class entityClass) {
@@ -191,6 +190,11 @@ public class ObjectManager {
 	
 	// ========== Mob ==========
 	public static Class getMob(String mobName) {
+		if(!mobs.containsKey(mobName)) return null;
+		return mobs.get(mobName).entityClass;
+	}
+	
+	public static MobInfo getMobInfo(String mobName) {
 		if(!mobs.containsKey(mobName)) return null;
 		return mobs.get(mobName);
 	}

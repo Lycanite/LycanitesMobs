@@ -39,20 +39,28 @@ public class Config {
 	// Debugging:
 	public Map<String, Boolean> debugBools = new HashMap<String, Boolean>();
 	
-	// Mob Control:
+	// Mob Control - General:
 	public Map<String, Boolean> mobsEnabled = new HashMap<String, Boolean>();
+	public Map<String, String> customDrops = new HashMap<String, String>();
+	public Map<String, Boolean> defaultDrops = new HashMap<String, Boolean>();
+	
+	// Mob Control - Spawning
 	public Map<String, Boolean> spawnEnabled = new HashMap<String, Boolean>();
-	public Map<String, Integer> spawnChances = new HashMap<String, Integer>();
+	public Map<String, String> spawnTypes = new HashMap<String, String>();
+	public Map<String, EnumCreatureType> creatureTypes = new HashMap<String, EnumCreatureType>();
+	
+	public Map<String, String> spawnDimensions = new HashMap<String, String>();
+	public Map<String, String> spawnBiomes = new HashMap<String, String>();
+	public Map<String, String> customSpawns = new HashMap<String, String>();
+	
 	public Map<String, Integer> spawnWeights = new HashMap<String, Integer>();
+	public Map<String, Integer> spawnChances = new HashMap<String, Integer>();
+	public Map<String, Integer> dungeonWeights = new HashMap<String, Integer>();
+	
 	public Map<String, Integer> spawnLimits = new HashMap<String, Integer>();
 	public Map<String, Integer> spawnMins = new HashMap<String, Integer>();
 	public Map<String, Integer> spawnMaxs = new HashMap<String, Integer>();
-	public Map<String, EnumCreatureType> spawnTypes = new HashMap<String, EnumCreatureType>();
-	public Map<String, String> spawnBiomes = new HashMap<String, String>();
-	public Map<String, String> spawnDimensions = new HashMap<String, String>();
-	public Map<String, String> customDrops = new HashMap<String, String>();
-	public Map<String, Boolean> defaultDrops = new HashMap<String, Boolean>();
-	public Map<String, String> customSpawns = new HashMap<String, String>();
+	public Map<String, Integer> spawnBlockCosts = new HashMap<String, Integer>();
 	
 	// Block IDs:
 	public Map<String, Integer> blockIDs = new HashMap<String, Integer>();
@@ -138,7 +146,7 @@ public class Config {
 		settingMap.put(settingID, setting);
 	}
 	
-	public void loadSettingSpawnType(Map<String, EnumCreatureType> settingMap, String settingCategory, String settingID, String settingName, String settingDefault) {
+	public void loadSettingSpawnType(String settingCategory, String settingID, String settingName, String settingDefault) {
 		String typeString = config.get(settingCategory, settingName, settingDefault).getString().toUpperCase();
 		if("DEFAULT".equalsIgnoreCase(typeString)) {
 			config.get(settingCategory, settingName, settingDefault).set(settingDefault);
@@ -155,30 +163,42 @@ public class Config {
 			spawnType = EnumCreatureType.ambient;
 		else if("FIRE".equalsIgnoreCase(typeString)) {
 			spawnType = null;
-			customSpawns.put(settingID, "FIRE");
 		}
 		else if(!"MONSTER".equalsIgnoreCase(typeString))
 			System.out.println("[WARNING] [LycanitesMobs] Invalid spawn type " + typeString + " given for " + settingID + " using MONSTER instead.");
 		
-		settingMap.put(settingID, spawnType);
+		this.spawnTypes.put(settingID, typeString);
+		this.creatureTypes.put(settingID, spawnType);
 	}
 	
 	// ========== Mob Settings ==========
 	public void loadMobSettings(String mobName, int spawnWeight, int spawnLimit, int spawnMin, int spawnMax, String spawnTypeName, String spawnBiome, String spawnDimension) {
+		// General:
 		loadSetting(this.mobsEnabled, "Mob Control - General", mobName, mobName + " Enabled", true);
 		loadSetting(this.customDrops, "Mob Control - General", mobName, mobName + " Custom Drops", "");
 		loadSetting(this.defaultDrops, "Mob Control - General", mobName, mobName + " Enable Default Drops", true);
 		
+		// Spawning - Type:
 		loadSetting(this.spawnEnabled, "Mob Control - Spawning", mobName, mobName + " Spawn Enabled", spawnWeight > 0);
-		loadSetting(this.spawnChances, "Mob Control - Spawning", mobName, mobName + " Spawn Chance", 100);
+		loadSettingSpawnType("Mob Control - Spawning", mobName, mobName + " Spawn Type", spawnTypeName);
+		
+		// Spawning - Location:
+		loadSetting(this.spawnDimensions, "Mob Control - Spawning", mobName, mobName + " Spawn Dimensions", spawnDimension);
+		loadSetting(this.spawnBiomes, "Mob Control - Spawning", mobName, mobName + " Spawn Biome Types", spawnBiome);
+		
+		// Spawning - Chance:
 		loadSetting(this.spawnWeights, "Mob Control - Spawning", mobName, mobName + " Spawn Weight", spawnWeight);
+		loadSetting(this.spawnChances, "Mob Control - Spawning", mobName, mobName + " Spawn Chance", 100);
+		int dungeonSpawnDefault = spawnTypeName.equalsIgnoreCase("CREATURE") || spawnTypeName.equalsIgnoreCase("AMBIENT") ? 0 : spawnWeight * 25;
+		loadSetting(this.dungeonWeights, "Mob Control - Spawning", mobName, mobName + " Spawn Dungeon Weight", dungeonSpawnDefault);
+		
+		// Spawning - Limits:
 		loadSetting(this.spawnLimits, "Mob Control - Spawning", mobName, mobName + " Spawn Area Limit", spawnLimit);
 		loadSetting(this.spawnMins, "Mob Control - Spawning", mobName, mobName + " Spawn Group Size Min", spawnMin);
 		loadSetting(this.spawnMaxs, "Mob Control - Spawning", mobName, mobName + " Spawn Group Size Max", spawnMax);
-		loadSettingSpawnType(this.spawnTypes, "Mob Control - Spawning", mobName, mobName + " Spawn Type", spawnTypeName);
-		loadSetting(this.spawnBiomes, "Mob Control - Spawning", mobName, mobName + " Spawn Biome Types", spawnBiome);
-		loadSetting(this.spawnDimensions, "Mob Control - Spawning", mobName, mobName + " Spawn Dimensions", spawnDimension);
-
+		loadSetting(this.spawnBlockCosts, "Mob Control - Spawning", mobName, mobName + " Spawn Block Cost", 8);
+		
+		// Stat Modifiers and Boosts:
 		loadStatMultiplier(this.defenseMultipliers, "Mob Control - Stats", mobName, mobName + " Stat Defense Multiplier", "GROUP");
 		loadStatBoost(this.defenseBoosts, "Mob Control", mobName, mobName + " Stat Defense Boost", "GROUP");
 		loadStatMultiplier(this.speedMultipliers, "Mob Control - Stats", mobName, mobName + " Stat Speed Multiplier", "GROUP");

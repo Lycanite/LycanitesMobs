@@ -85,6 +85,7 @@ public class LycanitesMobs {
 		ObjectManager.addPotionEffect("Swiftswimming", config, true, 0x0000FF, 0, 2);
 		
 		MinecraftForge.EVENT_BUS.register(new EventListener());
+		MinecraftForge.EVENT_BUS.register(new CustomSpawner());
 		MinecraftForge.EVENT_BUS.register(new PotionEffects());
 	}
 	

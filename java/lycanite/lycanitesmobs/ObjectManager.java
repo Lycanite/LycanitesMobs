@@ -4,10 +4,10 @@ import java.util.Map;
 
 import lycanite.lycanitesmobs.api.ILycaniteMod;
 import lycanite.lycanitesmobs.api.MobInfo;
+import lycanite.lycanitesmobs.api.SpawnInfo;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.BehaviorProjectileDispense;
-import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.Item;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.DungeonHooks;
@@ -24,8 +24,6 @@ public class ObjectManager {
 	
 	public static Map<String, EntityList> entityLists = new HashMap<String, EntityList>();
 	public static Map<String, MobInfo> mobs = new HashMap<String, MobInfo>();
-	public static Map<String, int[]> mobDimensions = new HashMap<String, int[]>();
-	public static Map<String, Integer> fireSpawns = new HashMap<String, Integer>();
 	
 	public static Map<String, Class> projectiles = new HashMap<String, Class>();
 	
@@ -67,15 +65,14 @@ public class ObjectManager {
 	}
 	
 	// ========== Creature ==========
-	//TODO Test!
 	public static void addMob(MobInfo mobInfo) {
 		ILycaniteMod mod = mobInfo.mod;
 		String modid = mod.getModID();
 		String domain = mod.getDomain();
-		Config config = mod.getConfig();
 		
 		String name = mobInfo.name;
-		Class entityClass = mobInfo.entityClass;
+		SpawnInfo spawnInfo = mobInfo.spawnInfo;
+		mobs.put(name, mobInfo);
 		
 		// Sounds:
 		String filename = name.toLowerCase();
@@ -90,45 +87,41 @@ public class ObjectManager {
 		AssetManager.addSound(name + "Eat", domain, "entity/" + filename + "/eat.wav");
 		AssetManager.addSound(name + "Mount", domain, "entity/" + filename + "/mount.wav");
 		
-		// ID and Mapping:
+		// ID and Enabled Check:
 		int mobID = mod.getNextMobID();
-		if(!config.mobsEnabled.get(name))
+		if(!mobInfo.mobEnabled) {
+			LycanitesMobs.printDebug("MobSetup", "Mob Disabled: " + name + " - " + mobInfo.entityClass + " (" + modid + ")");
 			return;
+		}
+		
+		// Mapping and Registration:
 		if(!entityLists.containsKey(domain))
 			entityLists.put(domain, new EntityList());
-		entityLists.get(domain).addMapping(entityClass, mobInfo.getRegistryName(), mobID, mobInfo.eggBackColor, mobInfo.eggForeColor);
-		EntityRegistry.registerModEntity(entityClass, name, mobID, mod.getInstance(), 128, 3, true);
+		entityLists.get(domain).addMapping(mobInfo.entityClass, mobInfo.getRegistryName(), mobID, mobInfo.eggBackColor, mobInfo.eggForeColor);
+		EntityRegistry.registerModEntity(mobInfo.entityClass, name, mobID, mod.getInstance(), 128, 3, true);
 		LanguageRegistry.instance().addStringLocalization("entity." + mobInfo.getRegistryName() + ".name", "en_US", mobInfo.title);
 		
 		// Debug Message - Added:
-		LycanitesMobs.printDebug("MobSetup", "Mob Added: " + name + " - " + entityClass + " (" + modid + ")");
+		LycanitesMobs.printDebug("MobSetup", "Mob Added: " + name + " - " + mobInfo.entityClass + " (" + modid + ")");
 		
 		// Add Spawn:
-		BiomeGenBase[] spawnBiomes = new BiomeGenBase[0];
+		boolean spawnAdded = false;
 		if(!LycanitesMobs.config.getFeatureBool("DisableAllSpawning")) {
-			mobDimensions.put(name, config.getSpawnDimensions(name));
-			if(config.spawnEnabled.get(name) && config.spawnWeights.get(name) > 0 && config.spawnMaxs.get(name) > 0) {
-				spawnBiomes = config.getSpawnBiomesTypes(name);
-				if(config.spawnTypes.get(name) != null)
-					EntityRegistry.addSpawn(entityClass, config.spawnWeights.get(name), config.spawnMins.get(name), config.spawnMaxs.get(name), config.spawnTypes.get(name), spawnBiomes);
-				else if(config.customSpawns.containsKey(name))
-					fireSpawns.put(name, config.spawnWeights.get(name));
+			if(spawnInfo.enabled && spawnInfo.spawnWeight > 0 && spawnInfo.spawnGroupMax > 0) {
+				if(spawnInfo.creatureType != null)
+					EntityRegistry.addSpawn(mobInfo.entityClass, spawnInfo.spawnWeight, spawnInfo.spawnGroupMin, spawnInfo.spawnGroupMax, spawnInfo.creatureType, spawnInfo.biomes);
+				else
+					CustomSpawner.addSpawn(spawnInfo);
+				spawnAdded = true;
 			}
 		}
 		
-		// Dungeon Spawn:
-		if(!LycanitesMobs.config.getFeatureBool("DisableDungeonSpawners")) {
-			int dungeonWeight = config.spawnWeights.get(name) * 25;
-			if(dungeonWeight > 0 && (config.spawnTypes.get(name) == EnumCreatureType.monster || config.spawnTypes.get(name) == null))
-				DungeonHooks.addDungeonMob(mobInfo.getRegistryName(), dungeonWeight);
-		}
-		
 		// Debug Message - Spawn Added:
-		if(!LycanitesMobs.config.getFeatureBool("DisableAllSpawning")) {
-			LycanitesMobs.printDebug("MobSetup", "Mob Spawn Added - Weight: " + config.spawnWeights.get(name) + " Min: " + config.spawnMins.get(name) + " Max: " + config.spawnMaxs.get(name));
+		if(spawnAdded) {
+			LycanitesMobs.printDebug("MobSetup", "Mob Spawn Added - Type: " + spawnInfo.spawnType + " Weight: " + spawnInfo.spawnWeight + " Min: " + spawnInfo.spawnGroupMin + " Max: " + spawnInfo.spawnGroupMax);
 			String biomesList = "";
 			if(LycanitesMobs.config.getDebug("MobSetup")) {
-				for(BiomeGenBase biome : spawnBiomes) {
+				for(BiomeGenBase biome : spawnInfo.biomes) {
 					if(!"".equals(biomesList))
 						biomesList += ", ";
 					biomesList += biome.biomeName;
@@ -136,15 +129,23 @@ public class ObjectManager {
 			}
 			LycanitesMobs.printDebug("MobSetup", "Biomes: " + biomesList);
 			String dimensionsList = "";
-			for(int dimensionID : config.getSpawnDimensions(name)) {
+			for(int dimensionID : spawnInfo.dimensionIDs) {
 				if(!"".equals(dimensionsList))
 					dimensionsList += ", ";
 				dimensionsList += Integer.toString(dimensionID);
 			}
 			LycanitesMobs.printDebug("MobSetup", "Dimensions: " + dimensionsList);
 		}
+		else
+			LycanitesMobs.printDebug("MobSetup", "Mob Spawn Not Added: The spawning of this mob (or all mobs) must be disabled or this mobs spawn weight or max group size is 0.");
 		
-		mobs.put(name, mobInfo);
+		// Dungeon Spawn:
+		if(!LycanitesMobs.config.getFeatureBool("DisableDungeonSpawners")) {
+			if(spawnInfo.dungeonWeight > 0) {
+				DungeonHooks.addDungeonMob(mobInfo.getRegistryName(), spawnInfo.dungeonWeight);
+				LycanitesMobs.printDebug("MobSetup", "Dungeon Spawn Added - Weight: " + spawnInfo.dungeonWeight);
+			}
+		}
 	}
 	
 
@@ -200,7 +201,7 @@ public class ObjectManager {
 	}
 
 	public static int[] getMobDimensions(String mobName) {
-		if(!mobDimensions.containsKey(mobName)) return new int[0];
-		return mobDimensions.get(mobName);
+		if(!mobs.containsKey(mobName)) return new int[0];
+		return mobs.get(mobName).spawnInfo.dimensionIDs;
 	}
 }

@@ -11,6 +11,7 @@ import lycanite.lycanitesmobs.GuiHandler;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
+import lycanite.lycanitesmobs.api.MobInfo;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIMoveRestriction;
 import lycanite.lycanitesmobs.api.entity.ai.FlightNavigator;
 import lycanite.lycanitesmobs.api.inventory.InventoryCreature;
@@ -50,6 +51,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	//public static final UUID field_110179_h = UUID.fromString("E199AD21-BA8A-4C53-8D13-6182D5C69D3A");
     
 	// Info:
+	/** A class that contains information about this mob, this class also links to the SpawnInfo class relevant to this mob. **/
+	public MobInfo mobInfo;
     /** The code name of this entity, not the title displayed to players, that is set elsewhere, see getEntityName(). **/
 	public String entityName = "Name";
     /** A link to the mod instance of this mob, used to get file paths, the mod config, etc. **/
@@ -202,6 +205,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
   	// ==================================================
     public EntityCreatureBase(World world) {
         super(world);
+        this.mobInfo = MobInfo.mobClassToInfo.get(this.getClass());
         this.flightNavigator = new FlightNavigator(this);
     }
     
@@ -218,7 +222,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         this.experienceValue = experience;
         this.isImmuneToFire = !this.canBurn();
         this.inventory = new InventoryCreature(this.getEntityName(), this);
-        if(this.mod.getConfig().defaultDrops.get(this.getConfigName()))
+        if(this.mod.getConfig().defaultDrops.get(this.getConfigName())) //TODO Convert to MobInfo.
         	this.loadItemDrops();
         this.loadCustomDrops();
     }
@@ -231,7 +235,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Loads custom item drops from the config. **/
     public void loadCustomDrops() {
     	// Custom Drops:
-    	if(this.mod.getConfig().customDrops.containsKey(this.getConfigName())) {
+    	if(this.mod.getConfig().customDrops.containsKey(this.getConfigName())) { //TODO Convert to MobInfo.
     		String customDropsString = this.mod.getConfig().customDrops.get(this.getConfigName());
     		if(customDropsString != null && customDropsString.length() > 0)
 	    		for(String customDropEntryString : customDropsString.split(",")) {
@@ -376,19 +380,18 @@ public abstract class EntityCreatureBase extends EntityLiving {
         
         // Forced Spawn Chance:
     	LycanitesMobs.printDebug("MobSpawns", "All enviroment checks passed.");
-        if(this.mod.getConfig().spawnChances.containsKey(this.getConfigName()))
-	        if(this.mod.getConfig().spawnChances.get(this.getConfigName()) < 100) {
-	        	if(this.mod.getConfig().spawnChances.get(this.getConfigName()) <= 0) {
-	        		LycanitesMobs.printDebug("MobSpawns", "Applying Forced Spawn Chance - Chance is 0 = No Spawning");
+        if(this.mobInfo.spawnInfo.spawnChance < 100) {
+        	if(this.mobInfo.spawnInfo.spawnChance <= 0) {
+        		LycanitesMobs.printDebug("MobSpawns", "Applying Forced Spawn Chance - Chance is 0 = No Spawning");
+        		return false;
+        	}
+        	else {
+	        	double spawnRoll = this.rand.nextDouble();
+		        LycanitesMobs.printDebug("MobSpawns", "Applying Forced Spawn Chance - Rolled: " + spawnRoll + " Must be less than: " + this.mobInfo.spawnInfo.spawnChance);
+	        	if(spawnRoll < this.mobInfo.spawnInfo.spawnChance)
 	        		return false;
-	        	}
-	        	int spawnRoll = this.rand.nextInt(99);
-	        	int spawnChance = this.mod.getConfig().spawnChances.get(this.getConfigName());
-	        	if(this.mod.getConfig().spawnChances.get(this.getConfigName()) <= 0 || spawnRoll < spawnChance) {
-		        	LycanitesMobs.printDebug("MobSpawns", "Applying Forced Spawn Chance - Rolled: " + spawnRoll + " Must be less than: " + spawnChance);
-	        		return false;
-    			}
-    		}
+        	}
+		}
         LycanitesMobs.printDebug("MobSpawns", "Spawn Check Passed!");
         return true;
     }
@@ -415,11 +418,11 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Second stage checks for spawning, this check is ignored if there is a valid monster spawner nearby. **/
     public boolean naturalSpawnCheck(World world, int i, int j, int k) {
     	LycanitesMobs.printDebug("MobSpawns", "Checking dimension.");
-    	if(ObjectManager.getMobDimensions(this.getConfigName()).length <= 0)
+    	if(this.mobInfo.spawnInfo.dimensionIDs.length <= 0)
     		return false;
         else {
         	boolean validDimension = false;
-        	for(int spawnDimension : ObjectManager.getMobDimensions(this.getConfigName())) {
+        	for(int spawnDimension : this.mobInfo.spawnInfo.dimensionIDs) {
         		if(this.worldObj.provider.dimensionId == spawnDimension) {
         			validDimension = true;
         			break;
@@ -452,13 +455,13 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Spawn Limit Check ==========
     /** Checks for nearby blocks from the ijk (xyz) block location, Cinders use this when spawning by Fire Blocks. **/
     public boolean spawnLimitCheck(World world, int i, int j, int k) {
-    	 int spawnLimit = this.mod.getConfig().spawnLimits.get(this.getConfigName());
+    	 int spawnLimit = this.mobInfo.spawnInfo.spawnAreaLimit;
     	 double range = (double)LycanitesMobs.config.getFeatureInt("SpawnLimitSearchRadius");
     	 LycanitesMobs.printDebug("MobSpawns", "Checking spawn area limit. Limit of: " + spawnLimit + " Range of: " + range);
          if(spawnLimit > 0 && range > 0) {
          	AxisAlignedBB searchAABB = AxisAlignedBB.getBoundingBox(i, j, k, i, j, k);
-         	List targets = this.worldObj.getEntitiesWithinAABB(ObjectManager.getMob(this.getConfigName()), searchAABB.expand(range, range, range));
-         	LycanitesMobs.printDebug("MobSpawns", "Found " + targets.size() + " of this mob within the radius (class is " + ObjectManager.getMob(this.getConfigName()) + ").");
+         	List targets = this.worldObj.getEntitiesWithinAABB(this.mobInfo.entityClass, searchAABB.expand(range, range, range));
+         	LycanitesMobs.printDebug("MobSpawns", "Found " + targets.size() + " of this mob within the radius (class is " + this.mobInfo.entityClass + ").");
          	if(targets.size() > spawnLimit)
          		return false;
          }
@@ -560,7 +563,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	public double getStatMultiplier(String stat) {
 		double multiplier = 1.0D;
 		if("defense".equalsIgnoreCase(stat))
-			multiplier = this.mod.getConfig().defenseMultipliers.get(this.getConfigName());
+			multiplier = this.mod.getConfig().defenseMultipliers.get(this.getConfigName()); //TODO Convert to MobInfo.
 		
 		else if("speed".equalsIgnoreCase(stat))
 			multiplier = this.mod.getConfig().speedMultipliers.get(this.getConfigName());
@@ -1280,6 +1283,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Overrides the vanilla method when check for EnumCreatureType.monster, it will return true if this mob is hostile and false if it is not regardless of this creature's actual EnumCreatureType. Takes tameable mobs into account too. **/
     @Override
 	public boolean isCreatureType(EnumCreatureType type, boolean forSpawnCount) {
+    	if(forSpawnCount)
+    		return type == this.mobInfo.spawnInfo.creatureType;
+    	
 		if(type.getCreatureClass() == IMob.class) // If checking for EnumCretureType.monster (IMob) return whether or not this creature is hostile instead.
 			return this.isHostile();
         return type.getCreatureClass().isAssignableFrom(this.getClass());

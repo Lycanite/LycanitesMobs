@@ -1,7 +1,12 @@
 package lycanite.lycanitesmobs.api;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class MobInfo {
+	public static Map<Class, MobInfo> mobClassToInfo = new HashMap<Class, MobInfo>();
+	
 	/** Mod Class **/
 	public ILycaniteMod mod;
 	
@@ -11,11 +16,14 @@ public class MobInfo {
 	/** The title used by this mob for displaying in game.. **/
 	public String title = "Mob Name";
 	
+	/** Is this mob enabled? If disabled, it will still be registered, etc but wont randomly spawn or have a spawn egg. **/
+	public boolean mobEnabled;
+	
 	/** The class that this mob instantiates with. **/
 	public Class entityClass;
 
-	/** A lsit of SpawnInfo used by this mob, multiple SpawnInfos can be added for multiple spawn methods. **/
-	public SpawnInfo[] spawnInfo;
+	/** The SpawnInfo used by this mob. **/
+	public SpawnInfo spawnInfo;
 	
 	/** The background color of this mob's egg. **/
 	public int eggBackColor;	
@@ -29,12 +37,20 @@ public class MobInfo {
     // ==================================================
     //                     Constructor
     // ==================================================
-	public MobInfo(ILycaniteMod mod, String setName, String setTitle, Class setClass, int setEggBack, int setEggFore) {
-		this.name = setName;
-		this.title = setTitle;
-		this.entityClass = setClass;
-		this.eggBackColor = setEggBack;
-		this.eggForeColor = setEggFore;
+	public MobInfo(ILycaniteMod mod, String name, String title, Class entityClass, int eggBack, int eggFore) {
+		this.mod = mod;
+		
+		this.name = name;
+		this.title = title;
+		
+		this.mobEnabled = mod.getConfig().mobsEnabled.containsKey(name) ? mod.getConfig().mobsEnabled.get(name) : false;
+		this.spawnInfo = new SpawnInfo(this);
+		this.entityClass = entityClass;
+		
+		this.eggBackColor = eggBack;
+		this.eggForeColor = eggFore;
+		
+		mobClassToInfo.put(entityClass, this);
 	}
 	
 	// For most mobs where the code name and title are the same (no spaces, etc).

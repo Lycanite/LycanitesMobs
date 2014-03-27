@@ -14,7 +14,6 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.infernomobs.InfernoMobs;
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
@@ -92,7 +91,8 @@ public class EntityCinder extends EntityCreatureBase implements IMob {
     // ==================================================
 	@Override
     public boolean spawnBlockCheck(World world, int x, int y, int z) {
-    	int checkRange = 16;
+		return true;
+    	/*int checkRange = 16;
     	int blocksFound = 0;
     	int targetAmount = 8;
     	for(int i = x - checkRange; i <= x + checkRange; i++)
@@ -103,7 +103,7 @@ public class EntityCinder extends EntityCreatureBase implements IMob {
             			if(++blocksFound >= targetAmount)
             				return true;
             	}
-    	return false;
+    	return false;*/
     }
     
     

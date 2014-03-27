@@ -49,9 +49,6 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
         this.experience = 5;
         this.spawnsOnlyInLight = true;
         this.hasAttackSound = true;
-        
-        this.spawnsOnPeaceful = SwampMobs.config.getFeatureBool("AspidsOnPeaceful");
-        this.despawnNaturally = SwampMobs.config.getFeatureBool("DespawnAspidsNaturally");
         this.eggName = "SwampEgg";
         
         this.setWidth = 0.9F;

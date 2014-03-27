@@ -14,9 +14,10 @@ public class SubConfig extends Config {
 		this.loadSetting(this.featureBools, "Feature Control", "MobMounting", "Allow Mob Mounting", true);
 		
 		// ========== Global Spawn Control ==========
-		this.loadSetting(this.featureInts, "Spawn Control", "SpawnLimitSearchRadius", "Spawn Limit Search Radius", 32);
+		this.loadSetting(this.featureInts, "Spawn Control", "SpawnLimitRange", "Spawn Limit Search Range", 32);
 		this.loadSetting(this.featureBools, "Spawn Control", "DisableAllSpawning", "Disable All Spawning", false);
 		this.loadSetting(this.featureBools, "Spawn Control", "DisableDungeonSpawners", "Disable Dungeon Spawners", false);
+		
 		this.loadSetting(this.featureBools, "Spawn Control", "FireSpawnEnabled", "Fire Spawning Enabled", true);
 		this.loadSetting(this.featureInts, "Spawn Control", "FireSpawnTick", "Fire Spawning Tick Rate", 400);
 		this.loadSetting(this.featureDoubles, "Spawn Control", "FireSpawnChance", "Fire Spawning Chance", 0.25D);
@@ -25,9 +26,9 @@ public class SubConfig extends Config {
 		this.loadSetting(this.featureInts, "Spawn Control", "FireSpawnMobLimit", "Fire Spawning Mob Limit", 32);
 		
 		// ========== Stat Multipliers ==========
-		this.loadStatMultiplier(this.difficultyMultipliers, "Stat Multipliers", "Easy", "Easy Difficulty Multiplier", "0.5");
-		this.loadStatMultiplier(this.difficultyMultipliers, "Stat Multipliers", "Normal", "Normal Difficulty Multiplier", "1.0");
-		this.loadStatMultiplier(this.difficultyMultipliers, "Stat Multipliers", "Hard", "Hard Difficulty Multiplier", "1.5");
+		this.loadDifficultyMultiplier(this.difficultyMultipliers, "Stat Multipliers", "Easy", "0.5");
+		this.loadDifficultyMultiplier(this.difficultyMultipliers, "Stat Multipliers", "Normal", "1.0");
+		this.loadDifficultyMultiplier(this.difficultyMultipliers, "Stat Multipliers", "Hard", "1.5");
 		
 		// ========== Debugging ==========
 		this.loadSetting(this.debugBools, "Debugging", "MobSetup", "Print Mob Setup", false);

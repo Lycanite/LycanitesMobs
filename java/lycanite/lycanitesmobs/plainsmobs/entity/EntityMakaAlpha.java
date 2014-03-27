@@ -14,7 +14,6 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
-import lycanite.lycanitesmobs.desertmobs.DesertMobs;
 import lycanite.lycanitesmobs.plainsmobs.PlainsMobs;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -44,9 +43,6 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
         this.experience = 5;
         this.spawnsOnlyInLight = true;
         this.hasAttackSound = true;
-        
-        this.spawnsOnPeaceful = DesertMobs.config.getFeatureBool("MakasOnPeaceful");
-        this.despawnNaturally = DesertMobs.config.getFeatureBool("DespawnMakasNaturally");
         this.eggName = "PlainsEgg";
         
         this.setWidth = 3.5F;

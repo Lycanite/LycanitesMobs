@@ -106,7 +106,7 @@ public class ObjectManager {
 		
 		// Add Spawn:
 		boolean spawnAdded = false;
-		if(!LycanitesMobs.config.getFeatureBool("DisableAllSpawning")) {
+		if(!SpawnInfo.disableAllSpawning) {
 			if(spawnInfo.enabled && spawnInfo.spawnWeight > 0 && spawnInfo.spawnGroupMax > 0) {
 				if(spawnInfo.creatureType != null)
 					EntityRegistry.addSpawn(mobInfo.entityClass, spawnInfo.spawnWeight, spawnInfo.spawnGroupMin, spawnInfo.spawnGroupMax, spawnInfo.creatureType, spawnInfo.biomes);
@@ -140,7 +140,7 @@ public class ObjectManager {
 			LycanitesMobs.printDebug("MobSetup", "Mob Spawn Not Added: The spawning of this mob (or all mobs) must be disabled or this mobs spawn weight or max group size is 0.");
 		
 		// Dungeon Spawn:
-		if(!LycanitesMobs.config.getFeatureBool("DisableDungeonSpawners")) {
+		if(!SpawnInfo.disableDungeonSpawners) {
 			if(spawnInfo.dungeonWeight > 0) {
 				DungeonHooks.addDungeonMob(mobInfo.getRegistryName(), spawnInfo.dungeonWeight);
 				LycanitesMobs.printDebug("MobSetup", "Dungeon Spawn Added - Weight: " + spawnInfo.dungeonWeight);

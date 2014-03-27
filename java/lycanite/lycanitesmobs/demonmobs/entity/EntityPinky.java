@@ -63,9 +63,6 @@ public class EntityPinky extends EntityCreatureRideable implements IAnimals, IGr
         this.experience = 5;
         this.hasAttackSound = true;
         this.spreadFire = true;
-        
-        this.spawnsOnPeaceful = DemonMobs.config.getFeatureBool("PinkiesOnPeaceful");
-        this.despawnNaturally = DemonMobs.config.getFeatureBool("DespawnPinkiesNaturally");
         this.eggName = "DemonEgg";
         
         this.setWidth = 0.9F;

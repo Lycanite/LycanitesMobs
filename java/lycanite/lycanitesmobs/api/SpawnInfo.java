@@ -1,11 +1,17 @@
 package lycanite.lycanitesmobs.api;
 
 import lycanite.lycanitesmobs.Config;
+import lycanite.lycanitesmobs.LycanitesMobs;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.world.biome.BiomeGenBase;
 
 public class SpawnInfo {
-	// Mob Info:
+	// ========== Global Spawn Settings ==========
+	public static double spawnLimitRange = 32D;
+	public static boolean disableAllSpawning = false;
+	public static boolean disableDungeonSpawners = false;
+
+	// ========== Spawn General ==========
 	/** The Mob Info of the mob this Spawn Info belongs to. **/
 	public MobInfo mobInfo;
 	
@@ -60,9 +66,23 @@ public class SpawnInfo {
 	
 	// ========== Despawning ==========
 	/** Whether this mob should despawn or not by default (some mobs can override persistence, such as once farmed). **/
-	public boolean persistent = false;
+	public boolean despawnNatural = false;
+	
+	/** Whether this mob should always despawn no matter what. **/
+	public boolean despawnForced = false;
 	
 	// ==================================================
+    //        Load Global Settings From Config
+    // ==================================================
+	public static void loadGlobalSettings() {
+		Config config = LycanitesMobs.config;
+		spawnLimitRange = (double)LycanitesMobs.config.getFeatureInt("SpawnLimitSearchRadius");
+		disableAllSpawning = LycanitesMobs.config.getFeatureBool("DisableAllSpawning");
+		disableDungeonSpawners = LycanitesMobs.config.getFeatureBool("DisableDungeonSpawners");
+	}
+	
+	
+    // ==================================================
     //                     Constructor
     // ==================================================
 	public SpawnInfo(MobInfo setMobInfo) {
@@ -101,5 +121,9 @@ public class SpawnInfo {
 		this.spawnGroupMin = config.spawnMins.get(name);
 		this.spawnGroupMax = config.spawnMaxs.get(name);
 		this.spawnBlockCost = config.spawnBlockCosts.get(name);
+		
+		// Despawning:
+		this.despawnNatural = config.despawnNaturals.get(name);
+		this.despawnForced = config.despawnForced.get(name);
 	}
 }

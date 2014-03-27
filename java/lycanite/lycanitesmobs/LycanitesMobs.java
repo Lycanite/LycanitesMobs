@@ -3,6 +3,8 @@ package lycanite.lycanitesmobs;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
+import lycanite.lycanitesmobs.api.MobInfo;
+import lycanite.lycanitesmobs.api.SpawnInfo;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.potion.Potion;
@@ -24,7 +26,7 @@ public class LycanitesMobs {
 	
 	public static final String modid = "LycanitesMobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String version = "1.4.9c - MC 1.6.4";
+	public static final String version = "1.4.9e - MC 1.6.4";
 	public static final String domain = modid.toLowerCase();
 	public static Config config = new SubConfig();
 	
@@ -53,6 +55,12 @@ public class LycanitesMobs {
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
 		config.init(modid);
+		
+		// ========== Mob Info ==========
+		MobInfo.loadGlobalSettings();
+		
+		// ========== Spawn Info ==========
+		SpawnInfo.loadGlobalSettings();
 		
 		// ========== Add Custom Potion Effects ==========
 		Potion[] potionTypes;

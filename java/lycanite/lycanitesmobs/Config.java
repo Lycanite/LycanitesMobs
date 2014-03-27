@@ -32,9 +32,13 @@ public class Config {
 	public Map<String, Double> defenseMultipliers = new HashMap<String, Double>(); // Scale of defense.
 	public Map<String, Integer> defenseBoosts = new HashMap<String, Integer>(); // Additional defense.
 	public Map<String, Double> speedMultipliers = new HashMap<String, Double>(); // Speed of movement.
+	public Map<String, Integer> speedBoosts = new HashMap<String, Integer>(); // Additional speed.
 	public Map<String, Double> damageMultipliers = new HashMap<String, Double>(); // Scale of damage.
-	public Map<String, Double> hasteMultipliers = new HashMap<String, Double>(); // Speed of attacks.
+	public Map<String, Integer> damageBoosts = new HashMap<String, Integer>(); // Additional damage.
+	public Map<String, Double> hasteMultipliers = new HashMap<String, Double>(); // Speed of abilities.
+	public Map<String, Integer> hasteBoosts = new HashMap<String, Integer>(); // Additional ability speed.
 	public Map<String, Double> effectMultipliers = new HashMap<String, Double>(); // Duration of effects.
+	public Map<String, Integer> effectBoosts = new HashMap<String, Integer>(); // Additional effect duration.
 	
 	// Debugging:
 	public Map<String, Boolean> debugBools = new HashMap<String, Boolean>();
@@ -48,6 +52,7 @@ public class Config {
 	public Map<String, Boolean> spawnEnabled = new HashMap<String, Boolean>();
 	public Map<String, String> spawnTypes = new HashMap<String, String>();
 	public Map<String, EnumCreatureType> creatureTypes = new HashMap<String, EnumCreatureType>();
+	public Map<String, Boolean> mobsPeaceful = new HashMap<String, Boolean>();
 	
 	public Map<String, String> spawnDimensions = new HashMap<String, String>();
 	public Map<String, String> spawnBiomes = new HashMap<String, String>();
@@ -61,6 +66,9 @@ public class Config {
 	public Map<String, Integer> spawnMins = new HashMap<String, Integer>();
 	public Map<String, Integer> spawnMaxs = new HashMap<String, Integer>();
 	public Map<String, Integer> spawnBlockCosts = new HashMap<String, Integer>();
+	
+	public Map<String, Boolean> despawnNaturals = new HashMap<String, Boolean>();
+	public Map<String, Boolean> despawnForced = new HashMap<String, Boolean>();
 	
 	// Block IDs:
 	public Map<String, Integer> blockIDs = new HashMap<String, Integer>();
@@ -111,9 +119,13 @@ public class Config {
 		loadStatMultiplier(this.defenseMultipliers, "Mob Control", "GROUP", "Group Stat Defense Multiplier", "1.0");
 		loadStatBoost(this.defenseBoosts, "Mob Control", "GROUP", "Group Stat Defense Boost", "0");
 		loadStatMultiplier(this.speedMultipliers, "Mob Control", "GROUP", "Group Stat Speed Multiplier", "1.0");
+		loadStatBoost(this.speedBoosts, "Mob Control", "GROUP", "Group Stat Speed Boost", "0");
 		loadStatMultiplier(this.damageMultipliers, "Mob Control", "GROUP", "Group Stat Damage Multiplier", "1.0");
+		loadStatBoost(this.damageBoosts, "Mob Control", "GROUP", "Group Stat Damage Boost", "0");
 		loadStatMultiplier(this.hasteMultipliers, "Mob Control", "GROUP", "Group Stat Haste Multiplier", "1.0");
+		loadStatBoost(this.hasteBoosts, "Mob Control", "GROUP", "Group Stat Haste Boost", "0");
 		loadStatMultiplier(this.effectMultipliers, "Mob Control", "GROUP", "Group Stat Effect Multiplier", "1.0");
+		loadStatBoost(this.effectBoosts, "Mob Control", "GROUP", "Group Stat Effect Boost", "0");
 	}
 	
 	
@@ -177,40 +189,79 @@ public class Config {
 		loadSetting(this.mobsEnabled, "Mob Control - General", mobName, mobName + " Enabled", true);
 		loadSetting(this.customDrops, "Mob Control - General", mobName, mobName + " Custom Drops", "");
 		loadSetting(this.defaultDrops, "Mob Control - General", mobName, mobName + " Enable Default Drops", true);
+		loadSetting(this.mobsPeaceful, "Mob Control - General", mobName, mobName + " Allowed On Peaceful Difficulty", spawnTypeName.equalsIgnoreCase("CREATURE") || mobName.equalsIgnoreCase("Pinky"));
 		
 		// Spawning - Type:
-		loadSetting(this.spawnEnabled, "Mob Control - Spawning", mobName, mobName + " Spawn Enabled", spawnWeight > 0);
-		loadSettingSpawnType("Mob Control - Spawning", mobName, mobName + " Spawn Type", spawnTypeName);
+		loadSetting(this.spawnEnabled, "Mob Spawning - Type", mobName, mobName + " Spawn Enabled", spawnWeight > 0);
+		loadSettingSpawnType("Mob Spawning - Type", mobName, mobName + " Spawn Type", spawnTypeName);
 		
 		// Spawning - Location:
-		loadSetting(this.spawnDimensions, "Mob Control - Spawning", mobName, mobName + " Spawn Dimensions", spawnDimension);
-		loadSetting(this.spawnBiomes, "Mob Control - Spawning", mobName, mobName + " Spawn Biome Types", spawnBiome);
+		loadSetting(this.spawnDimensions, "Mob Spawning - Location", mobName, mobName + " Spawn Dimensions", spawnDimension);
+		loadSetting(this.spawnBiomes, "Mob Spawning - Location", mobName, mobName + " Spawn Biome Types", spawnBiome);
 		
 		// Spawning - Chance:
-		loadSetting(this.spawnWeights, "Mob Control - Spawning", mobName, mobName + " Spawn Weight", spawnWeight);
-		loadSetting(this.spawnChances, "Mob Control - Spawning", mobName, mobName + " Spawn Chance", 100);
+		loadSetting(this.spawnWeights, "Mob Spawning - Chance", mobName, mobName + " Spawn Weight", spawnWeight);
+		loadSetting(this.spawnChances, "Mob Spawning - Chance", mobName, mobName + " Spawn Chance", 100);
 		int dungeonSpawnDefault = spawnTypeName.equalsIgnoreCase("CREATURE") || spawnTypeName.equalsIgnoreCase("AMBIENT") ? 0 : spawnWeight * 25;
-		loadSetting(this.dungeonWeights, "Mob Control - Spawning", mobName, mobName + " Spawn Dungeon Weight", dungeonSpawnDefault);
+		loadSetting(this.dungeonWeights, "Mob Spawning - Chance", mobName, mobName + " Spawn Dungeon Weight", dungeonSpawnDefault);
 		
 		// Spawning - Limits:
-		loadSetting(this.spawnLimits, "Mob Control - Spawning", mobName, mobName + " Spawn Area Limit", spawnLimit);
-		loadSetting(this.spawnMins, "Mob Control - Spawning", mobName, mobName + " Spawn Group Size Min", spawnMin);
-		loadSetting(this.spawnMaxs, "Mob Control - Spawning", mobName, mobName + " Spawn Group Size Max", spawnMax);
-		loadSetting(this.spawnBlockCosts, "Mob Control - Spawning", mobName, mobName + " Spawn Block Cost", 8);
+		loadSetting(this.spawnLimits, "Mob Spawning - Limits", mobName, mobName + " Spawn Area Limit", spawnLimit);
+		loadSetting(this.spawnMins, "Mob Spawning - Limits", mobName, mobName + " Spawn Group Size Min", spawnMin);
+		loadSetting(this.spawnMaxs, "Mob Spawning - Limits", mobName, mobName + " Spawn Group Size Max", spawnMax);
+		loadSetting(this.spawnBlockCosts, "Mob Spawning - Limits", mobName, mobName + " Spawn Block Cost", 8);
+		
+		// Spawning - Despawning:
+		loadSetting(this.despawnNaturals, "Mob Spawning - Despawning", mobName, mobName + " Natural Despawning", !spawnTypeName.equalsIgnoreCase("CREATURE"));
+		loadSetting(this.despawnForced, "Mob Spawning - Despawning", mobName, mobName + " Forced Despawning", false);
 		
 		// Stat Modifiers and Boosts:
 		loadStatMultiplier(this.defenseMultipliers, "Mob Control - Stats", mobName, mobName + " Stat Defense Multiplier", "GROUP");
-		loadStatBoost(this.defenseBoosts, "Mob Control", mobName, mobName + " Stat Defense Boost", "GROUP");
+		loadStatBoost(this.defenseBoosts, "Mob Control - Stats", mobName, mobName + " Stat Defense Boost", "GROUP");
 		loadStatMultiplier(this.speedMultipliers, "Mob Control - Stats", mobName, mobName + " Stat Speed Multiplier", "GROUP");
+		loadStatBoost(this.speedBoosts, "Mob Control - Stats", mobName, mobName + " Stat Speed Boost", "GROUP");
 		loadStatMultiplier(this.damageMultipliers, "Mob Control - Stats", mobName, mobName + " Stat Damage Multiplier", "GROUP");
+		loadStatBoost(this.damageBoosts, "Mob Control - Stats", mobName, mobName + " Stat Damage Boost", "GROUP");
 		loadStatMultiplier(this.hasteMultipliers, "Mob Control - Stats", mobName, mobName + " Stat Haste Multiplier", "GROUP");
+		loadStatBoost(this.hasteBoosts, "Mob Control - Stats", mobName, mobName + " Stat Haste Boost", "GROUP");
 		loadStatMultiplier(this.effectMultipliers, "Mob Control - Stats", mobName, mobName + " Stat Effect Multiplier", "GROUP");
+		loadStatBoost(this.effectBoosts, "Mob Control - Stats", mobName, mobName + " Stat Effect Boost", "GROUP");
 	}
 	public void loadMobSettings(String mobName, int spawnWeight, int spawnLimit, int spawnMin, int spawnMax, String spawnTypeName) {
 		this.loadMobSettings(mobName, spawnWeight, spawnLimit, spawnMin, spawnMax, spawnTypeName, "GROUP", "GROUP");
 	}
 	
 	// ========== Stat Multipliers and Boosts ==========
+	public void loadDifficultyMultiplier(Map<String, Double> statMap, String settingCategory, String settingID, String settingDefault) {
+		String[] statIDs = {"Defense", "Speed", "Damage", "Haste", "Effect"};
+		for(String statID : statIDs) {
+			String settingName = settingID + " Difficulty " + statID + " Multiplier";
+			String statString = config.get(settingCategory,  settingName, settingDefault).getString().toUpperCase();
+			double statValue = 1.0D;
+			if("DEFAULT".equalsIgnoreCase(statString) && statMap != this.difficultyMultipliers) {
+				config.get(settingCategory, settingName, settingDefault).set(settingDefault);
+				statString = settingDefault;
+				config.save();
+			}
+			
+			if("GROUP".equalsIgnoreCase(statString) && statMap != this.difficultyMultipliers) {
+				if(statMap.containsKey("GROUP"))
+					statValue = statMap.get("GROUP");
+			}
+			else {
+				try {
+					statValue = Double.parseDouble(statString);
+				}
+				catch(Exception e) {
+					System.out.println("[WARNING] [LycanitesMobs] Invalid stat multiplier: " + statString + ". The value must be either DEFAULT, GROUP or a decimal value such as 1.0 or 1.5 or 0.2. Using 1.0.");
+					statValue = 1.0D;
+				}
+			}
+			
+			statMap.put(settingID.toUpperCase() + "-" + statID.toUpperCase(), statValue);
+		}
+	}
+	
 	public void loadStatMultiplier(Map<String, Double> statMap, String settingCategory, String settingID, String settingName, String settingDefault) {
 		String statString = config.get(settingCategory, settingName, settingDefault).getString().toUpperCase();
 		double statValue = 1.0D;

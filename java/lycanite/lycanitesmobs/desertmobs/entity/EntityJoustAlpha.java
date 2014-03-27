@@ -45,9 +45,6 @@ public class EntityJoustAlpha extends EntityCreatureAgeable implements IAnimals,
         this.experience = 5;
         this.spawnsOnlyInLight = true;
         this.hasAttackSound = true;
-        
-        this.spawnsOnPeaceful = DesertMobs.config.getFeatureBool("JoustsOnPeaceful");
-        this.despawnNaturally = DesertMobs.config.getFeatureBool("DespawnJoustsNaturally");
         this.eggName = "DesertEgg";
         
         this.setWidth = 0.9F;

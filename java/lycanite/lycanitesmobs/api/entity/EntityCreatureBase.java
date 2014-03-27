@@ -12,6 +12,7 @@ import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
 import lycanite.lycanitesmobs.api.MobInfo;
+import lycanite.lycanitesmobs.api.SpawnInfo;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIMoveRestriction;
 import lycanite.lycanitesmobs.api.entity.ai.FlightNavigator;
 import lycanite.lycanitesmobs.api.inventory.InventoryCreature;
@@ -106,10 +107,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // Spawning:
     /** Use the onSpawn() method and not this variable. True if this creature has spawned for the first time (naturally or via spawn egg, etc, not reloaded from a saved chunk). **/
     public boolean firstSpawn = true;
-    /** Should this mob spawn and NOT be removed on peaceful. **/
-    public boolean spawnsOnPeaceful = false;
-    /** Should this mob despawn over time. **/
-    public boolean despawnNaturally = true;
     /** Should this mob only spawn in darkness. **/
     public boolean spawnsInDarkness = false;
     /** Should this mob only spawn in light. **/
@@ -222,7 +219,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         this.experienceValue = experience;
         this.isImmuneToFire = !this.canBurn();
         this.inventory = new InventoryCreature(this.getEntityName(), this);
-        if(this.mod.getConfig().defaultDrops.get(this.getConfigName())) //TODO Convert to MobInfo.
+        if(this.mobInfo.defaultDrops)
         	this.loadItemDrops();
         this.loadCustomDrops();
     }
@@ -234,22 +231,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Load Custom Drops ==========
     /** Loads custom item drops from the config. **/
     public void loadCustomDrops() {
-    	// Custom Drops:
-    	if(this.mod.getConfig().customDrops.containsKey(this.getConfigName())) { //TODO Convert to MobInfo.
-    		String customDropsString = this.mod.getConfig().customDrops.get(this.getConfigName());
-    		if(customDropsString != null && customDropsString.length() > 0)
-	    		for(String customDropEntryString : customDropsString.split(",")) {
-	    			String[] customDropValues = customDropEntryString.split(":");
-	    			if(customDropValues.length == 5) {
-						int dropID = Integer.parseInt(customDropValues[0]); // Easily change to String for 1.7.2
-						int dropMeta = Integer.parseInt(customDropValues[1]);
-						float dropChance = Float.parseFloat(customDropValues[2]);
-						int dropMin = Integer.parseInt(customDropValues[3]);
-						int dropMax = Integer.parseInt(customDropValues[4]);
-						this.drops.add(new DropRate(dropID, dropMeta, dropChance).setMinAmount(dropMin).setMaxAmount(dropMax));
-	    			}
-	    		}
-    	}
+    	this.drops.addAll(this.mobInfo.customDrops);
     }
     
     // ========== Attributes ==========
@@ -355,7 +337,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	
     	// Peaceful Check:
     	LycanitesMobs.printDebug("MobSpawns", "Checking for peaceful difficulty...");
-        if(!this.spawnsOnPeaceful && this.worldObj.difficultySetting <= 0) return false;
+        if(!this.mobInfo.peacefulDifficulty && this.worldObj.difficultySetting <= 0) return false;
         
     	LycanitesMobs.printDebug("MobSpawns", "Target Spawn Location: x" + i + " y" + j + " z" + k);
         
@@ -456,7 +438,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Checks for nearby blocks from the ijk (xyz) block location, Cinders use this when spawning by Fire Blocks. **/
     public boolean spawnLimitCheck(World world, int i, int j, int k) {
     	 int spawnLimit = this.mobInfo.spawnInfo.spawnAreaLimit;
-    	 double range = (double)LycanitesMobs.config.getFeatureInt("SpawnLimitSearchRadius");
+    	 double range = SpawnInfo.spawnLimitRange;
     	 LycanitesMobs.printDebug("MobSpawns", "Checking spawn area limit. Limit of: " + spawnLimit + " Range of: " + range);
          if(spawnLimit > 0 && range > 0) {
          	AxisAlignedBB searchAABB = AxisAlignedBB.getBoundingBox(i, j, k, i, j, k);
@@ -483,10 +465,12 @@ public abstract class EntityCreatureBase extends EntityLiving {
     }
     
     // ========== Despawning ==========
-    /** Returns whether this mob should despawn overtime or not. **/
+    /** Returns whether this mob should despawn overtime or not. Config defined forced despawns override everything except tamed creatures. **/
     @Override
     protected boolean canDespawn() {
-    	if(!this.despawnNaturally)
+    	if(this.mobInfo.spawnInfo.despawnForced)
+    		return true;
+    	if(!this.mobInfo.spawnInfo.despawnNatural)
     		return false;
     	return this.isPersistant() || this.getLeashed();
     }
@@ -506,7 +490,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public boolean despawnCheck() {
         if(this.worldObj.isRemote)
         	return false;
-        if(!this.spawnsOnPeaceful && this.worldObj.difficultySetting <= 0 && !(this.getLeashed() || this.isPersistant()))
+        if((!this.mobInfo.peacefulDifficulty && this.worldObj.difficultySetting <= 0) && !(this.getLeashed() || this.isPersistant()))
         	return true;
         return false;
     }
@@ -563,32 +547,32 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	public double getStatMultiplier(String stat) {
 		double multiplier = 1.0D;
 		if("defense".equalsIgnoreCase(stat))
-			multiplier = this.mod.getConfig().defenseMultipliers.get(this.getConfigName()); //TODO Convert to MobInfo.
+			multiplier = this.mobInfo.multiplierDefense;
 		
 		else if("speed".equalsIgnoreCase(stat))
-			multiplier = this.mod.getConfig().speedMultipliers.get(this.getConfigName());
+			multiplier = this.mobInfo.multiplierSpeed;
 		
 		else if("damage".equalsIgnoreCase(stat))
-			multiplier = this.mod.getConfig().damageMultipliers.get(this.getConfigName());
+			multiplier = this.mobInfo.multiplierDamage;
 		
 		else if("haste".equalsIgnoreCase(stat))
-			multiplier = this.mod.getConfig().hasteMultipliers.get(this.getConfigName());
+			multiplier = this.mobInfo.multiplierHaste;
 		
 		else if("effect".equalsIgnoreCase(stat))
-			multiplier = this.mod.getConfig().effectMultipliers.get(this.getConfigName());
+			multiplier = this.mobInfo.multiplierEffect;
 		
-		return multiplier * this.getDifficultyMultiplier();
+		return multiplier * this.getDifficultyMultiplier(stat);
 	}
 	
 	/** Returns the shared multiplier for all stats based on difficulty. **/
-	public double getDifficultyMultiplier() {
+	public double getDifficultyMultiplier(String stat) {
 		int difficulty = this.worldObj.difficultySetting;
+		String difficultyName = "Easy";
 		if(difficulty >= 3)
-			return LycanitesMobs.config.difficultyMultipliers.get("Hard");
+			difficultyName = "Hard";
 		else if(difficulty == 2)
-			return LycanitesMobs.config.difficultyMultipliers.get("Normal");
-		else
-			return LycanitesMobs.config.difficultyMultipliers.get("Easy");
+			difficultyName = "Normal";
+		return MobInfo.difficultyMutlipliers.get(difficultyName.toUpperCase() + "-" + stat.toUpperCase());
 	}
 	
 	/** Returns an additional boost stat, useful for mainly defense as many mobs have 0 defense which thus can't be altered by modifiers. **/
@@ -1332,8 +1316,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Called when this mob is just started stealthing (reach 1.0F or above). **/
     public void startStealth() {}
 
-    /** Called while this mob is stealthed on the update, can be used to clear enemies targets that are targeting this mob. **/
-    // TODO Check for any nearby entities that can see this mob and clear their attack targets instead of using just the attack target on it's own.
+    /** Called while this mob is stealthed on the update, can be used to clear enemies targets that are targeting this mob. The main EventListener also helps handling anti-targeting. **/
     public void onStealth() {
     	if(!this.worldObj.isRemote) {
     		if(this.getAttackTarget() != null && this.getAttackTarget() instanceof EntityLiving)

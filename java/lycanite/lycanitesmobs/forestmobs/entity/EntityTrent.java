@@ -146,6 +146,10 @@ public class EntityTrent extends EntityCreatureBase implements IMob {
         return true;
     }
     
+    
+    // ==================================================
+   	//                    Taking Damage
+   	// ==================================================
     // ========== Damage Modifier ==========
     public float getDamageModifier(DamageSource damageSrc) {
     	if(damageSrc.isFireDamage())

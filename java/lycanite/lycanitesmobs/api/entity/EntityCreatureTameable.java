@@ -9,6 +9,7 @@ import net.minecraft.block.BlockColored;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EntityOwnable;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.Item;
@@ -523,6 +524,14 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
     	if(this.isMobWhenNotTamed)
 			return !this.isTamed();
     	return super.isHostile();
+    }
+    
+    /** Overrides the vanilla method when check for EnumCreatureType.monster, it will return true if this mob is hostile and false if it is not regardless of this creature's actual EnumCreatureType. Takes tameable mobs into account too. **/
+    @Override
+	public boolean isCreatureType(EnumCreatureType type, boolean forSpawnCount) {
+    	if(forSpawnCount && this.isTamed()) // Tamed creatures should no longer take up the mob spawn count.
+    		return false;
+        return super.isCreatureType(type, forSpawnCount);
     }
     
     // =========== Movement ==========

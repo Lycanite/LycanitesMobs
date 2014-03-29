@@ -21,6 +21,7 @@ public class SubConfig extends Config {
 		
 		// ========== Mob Control ==========
 		loadMobSettings("Jabberwock", 8, 10, 1, 3, "MONSTER");
+		loadMobSettings("Troll", 2, 5, 1, 2, "MONSTER");
 		
 		// ========== Block IDs ==========
 		//loadSetting(blockIDs, "Block IDs", "PoisonCloud", "Poison Cloud Block ID", 3853);

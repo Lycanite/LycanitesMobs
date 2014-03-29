@@ -1,8 +1,5 @@
 package lycanite.lycanitesmobs.api.entity.ai;
 
-import java.util.Collections;
-import java.util.List;
-
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -41,6 +38,8 @@ public class EntityAITargetParentAttack extends EntityAIBase {
     		if(!this.host.getAttackTarget().isEntityAlive())
     			return false;
     	}
+    	if(this.host.getParentAttackTarget() == null)
+    		return false;
     	return true;
     }
 

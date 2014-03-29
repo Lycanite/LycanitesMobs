@@ -8,6 +8,7 @@ import lycanite.lycanitesmobs.api.ILycaniteMod;
 import lycanite.lycanitesmobs.api.MobInfo;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.mountainmobs.entity.EntityJabberwock;
+import lycanite.lycanitesmobs.mountainmobs.entity.EntityTroll;
 import lycanite.lycanitesmobs.mountainmobs.item.ItemMountainEgg;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.entity.EnumCreatureType;
@@ -79,6 +80,7 @@ public class MountainMobs implements ILycaniteMod {
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("MountainEgg"), new DispenserBehaviorMobEggCustom());
 		ObjectManager.addMob(new MobInfo(this, "Jabberwock", EntityJabberwock.class, 0x662222, 0xFFFFAA));
+		ObjectManager.addMob(new MobInfo(this, "Troll", EntityTroll.class, 0x007711, 0xEEEEEE));
 		
 		// ========== Create Projectiles ==========
 		//ObjectManager.addProjectile("Template", EntityTemplate.class, Item.templateCharge, new DispenserBehaviorPoisonRay());

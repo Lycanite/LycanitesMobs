@@ -217,7 +217,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
         // Stats:
         this.stepHeight = 0.5F;
         this.experienceValue = experience;
-        this.isImmuneToFire = !this.canBurn();
         this.inventory = new InventoryCreature(this.getEntityName(), this);
         if(this.mobInfo.defaultDrops)
         	this.loadItemDrops();
@@ -628,6 +627,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
         
         if(this.despawnCheck())
         	this.setDead();
+        
+        // Fire Immunity:
+        this.isImmuneToFire = !this.canBurn();
         
         if(!this.worldObj.isRemote) {
         	this.setBesideClimbableBlock(this.isCollidedHorizontally);
@@ -1138,9 +1140,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public float getDamageAfterDefense(float damage) {
     	float baseDefense = (float)(this.defense + this.getStatBoost("defense"));
     	float scaledDefense = baseDefense * (float)this.getDefenseMultiplier();
-    	float minDamage = 0F;
-    	if(this.worldObj.difficultySetting <= 1)
-    		minDamage = 1F;
+    	float minDamage = 1F;
     	return Math.max(damage - scaledDefense, minDamage);
     }
     
@@ -1267,8 +1267,12 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Overrides the vanilla method when check for EnumCreatureType.monster, it will return true if this mob is hostile and false if it is not regardless of this creature's actual EnumCreatureType. Takes tameable mobs into account too. **/
     @Override
 	public boolean isCreatureType(EnumCreatureType type, boolean forSpawnCount) {
-    	if(forSpawnCount)
+    	// If the mob spawner is checking then we should return if it should take a place in the mob spawn count or not.
+    	if(forSpawnCount) {
+    		if(this.isMinion()) // Minions shouldn't take up the spawn count.
+    			return false;
     		return type == this.mobInfo.spawnInfo.creatureType;
+    	}
     	
 		if(type.getCreatureClass() == IMob.class) // If checking for EnumCretureType.monster (IMob) return whether or not this creature is hostile instead.
 			return this.isHostile();
@@ -1698,6 +1702,18 @@ public abstract class EntityCreatureBase extends EntityLiving {
         if(light <= 8) return 1;
         if(light <= 14) return 2;
         return 3;
+    }
+    
+    /** A client and server friendly solution to check if it is daytime or not. **/
+    public boolean isDaytime() {
+    	if(!this.worldObj.isRemote)
+    		return this.worldObj.isDaytime();
+    	long time = this.worldObj.getWorldTime();
+    	if(time < 12500)
+    		return true;
+    	if(time >= 12542 && time < 23460)
+    		return false;
+    	return true;
     }
     
     // Nearby Creature Count:

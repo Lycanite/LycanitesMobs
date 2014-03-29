@@ -2,6 +2,7 @@ package lycanite.lycanitesmobs.mountainmobs;
 
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.mountainmobs.model.ModelJabberwock;
+import lycanite.lycanitesmobs.mountainmobs.model.ModelTroll;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class ClientSubProxy extends CommonSubProxy {
@@ -14,5 +15,6 @@ public class ClientSubProxy extends CommonSubProxy {
 	@Override
     public void registerModels() {
 		AssetManager.addModel("Jabberwock", new ModelJabberwock());
+		AssetManager.addModel("Troll", new ModelTroll());
 	}
 }

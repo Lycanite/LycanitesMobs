@@ -7,8 +7,11 @@ import lycanite.lycanitesmobs.PacketHandler;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
 import lycanite.lycanitesmobs.api.MobInfo;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
+import lycanite.lycanitesmobs.mountainmobs.dispenser.DispenserBehaviorBoulderBlast;
+import lycanite.lycanitesmobs.mountainmobs.entity.EntityBoulderBlast;
 import lycanite.lycanitesmobs.mountainmobs.entity.EntityJabberwock;
 import lycanite.lycanitesmobs.mountainmobs.entity.EntityTroll;
+import lycanite.lycanitesmobs.mountainmobs.item.ItemBoulderBlastCharge;
 import lycanite.lycanitesmobs.mountainmobs.item.ItemMountainEgg;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.entity.EnumCreatureType;
@@ -59,6 +62,9 @@ public class MountainMobs implements ILycaniteMod {
 		// ========== Create Items ==========
 		ObjectManager.addItem("MountainEgg", "Spawn", new ItemMountainEgg(config.itemIDs.get("MountainEgg")));
 		
+		ObjectManager.addItem("BoulderBlastCharge", "Boulder Blast Charge", new ItemBoulderBlastCharge(config.itemIDs.get("BoulderBlastCharge")));
+		ObjectManager.addItem("BoulderBlastScepter", "Boulder Blast Scepter", new ItemBoulderBlastCharge(config.itemIDs.get("BoulderBlastScepter")));
+		
 		//ObjectManager.addItem("YaleMeatRaw", "Raw Yale Meat", new ItemCustomFood(config.itemIDs.get("YaleMeatRaw"), "YaleMeatRaw", domain, 2, 0.5F).setPotionEffect(Potion.digSlowdown.id, 45, 2, 0.8F));
 		//ObjectLists.addItem("RawMeat", ObjectManager.getItem("YaleMeatRaw"));
 		//ObjectManager.addItem("YaleMeatCooked", "Cooked Yale Meat", new ItemCustomFood(config.itemIDs.get("YaleMeatCooked"), "YaleMeatCooked", domain, 6, 0.7F));
@@ -83,7 +89,7 @@ public class MountainMobs implements ILycaniteMod {
 		ObjectManager.addMob(new MobInfo(this, "Troll", EntityTroll.class, 0x007711, 0xEEEEEE));
 		
 		// ========== Create Projectiles ==========
-		//ObjectManager.addProjectile("Template", EntityTemplate.class, Item.templateCharge, new DispenserBehaviorPoisonRay());
+		ObjectManager.addProjectile("BoulderBlast", EntityBoulderBlast.class, ObjectManager.getItem("BoulderBlastCharge"), new DispenserBehaviorBoulderBlast());
 		
 		// ========== Register Models ==========
 		proxy.registerModels();

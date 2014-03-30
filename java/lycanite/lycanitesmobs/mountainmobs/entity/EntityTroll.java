@@ -14,7 +14,6 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.mountainmobs.MountainMobs;
-import lycanite.lycanitesmobs.swampmobs.entity.EntityVenomShot;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -119,9 +118,9 @@ public class EntityTroll extends EntityCreatureAgeable implements IMob {
         }
         else {
         	if(!this.isDaytime() || !this.worldObj.canBlockSeeTheSky((int)this.posX, (int)this.boundingBox.maxY, (int)this.posZ)) {
-        		if(this.worldObj.isRemote) {
-        			// PARTICLES!
-        		}
+        		//if(this.worldObj.isRemote) {
+        	        //TODO Better particles!
+        	    //}
         		this.stoneForm = false;
         	}
         }
@@ -172,7 +171,7 @@ public class EntityTroll extends EntityCreatureAgeable implements IMob {
     @Override
     public void rangedAttack(Entity target, float range) {
     	// Type:
-    	EntityVenomShot projectile = new EntityVenomShot(this.worldObj, this);
+    	EntityBoulderBlast projectile = new EntityBoulderBlast(this.worldObj, this);
         projectile.setProjectileScale(2f);
     	
     	// Y Offset:

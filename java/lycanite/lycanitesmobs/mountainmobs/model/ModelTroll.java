@@ -88,10 +88,12 @@ public class ModelTroll extends ModelCustomObj {
 		
 		// Attack:
 		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
-	    	if(partName.equals("leftarm"))
-	    		rotX += 65.0F;
-	    	else if(partName.equals("rightarm"))
+	    	if(partName.equals("leftarm") || partName.equals("rightarm"))
 	    		rotX -= 65.0F;
+	    	if(partName.equals("leftarm"))
+	    		rotY -= 20.0F;
+	    	if(partName.equals("rightarm"))
+	    		rotY += 20.0F;
 		}
     	
     	// Apply Animations:

@@ -89,6 +89,7 @@ public class EntityTroll extends EntityCreatureAgeable implements IMob {
         this.drops.add(new DropRate(Item.bone.itemID, 1).setMinAmount(2).setMaxAmount(6));
         this.drops.add(new DropRate(Item.leather.itemID, 1).setMinAmount(2).setMaxAmount(6));
         this.drops.add(new DropRate(Item.coal.itemID, 1).setMinAmount(2).setMaxAmount(8));
+        this.drops.add(new DropRate(ObjectManager.getItem("BoulderBlastCharge").itemID, 0.5F).setMinAmount(1).setMaxAmount(1));
 	}
     
     
@@ -172,7 +173,7 @@ public class EntityTroll extends EntityCreatureAgeable implements IMob {
     public void rangedAttack(Entity target, float range) {
     	// Type:
     	EntityBoulderBlast projectile = new EntityBoulderBlast(this.worldObj, this);
-        projectile.setProjectileScale(2f);
+        projectile.setProjectileScale(4f);
     	
     	// Y Offset:
     	projectile.posY -= this.height / 4;

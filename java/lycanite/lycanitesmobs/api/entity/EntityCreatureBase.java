@@ -471,7 +471,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
     		return true;
     	if(!this.mobInfo.spawnInfo.despawnNatural)
     		return false;
-    	return this.isPersistant() || this.getLeashed();
+    	if(this.isPersistant() || this.getLeashed())
+    		return false;
+    	return super.canDespawn();
     }
     
     /** Returns true if this mob should not despawn in unloaded chunks.
@@ -479,7 +481,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
      * Here mobs can check if they have ever been fed or bred or moved from their home dimension.
      * Farmable mobs can then be set to despawn unless they have been farmed by a player.
      * Useful for the Pinky Nether invasion issues! Also good for water animals that can't spawn as CREATURE.
-     * Leashed mobs don't ever despawn naturally and don't check this.
+     * Leashed mobs don't ever despawn naturally and don't rely on this.
+     * There is also the vanilla variable persistenceRequired which is handled in vanilla code too.
     **/
     public boolean isPersistant() {
     	return false;

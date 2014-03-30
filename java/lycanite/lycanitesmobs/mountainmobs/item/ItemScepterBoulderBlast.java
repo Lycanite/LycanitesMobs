@@ -31,9 +31,9 @@ public class ItemScepterBoulderBlast extends ItemScepter {
     	return 250;
     }
 
-    @Override
-    public int getRapidTime(ItemStack itemStack) {
-        return 10;
+    // ========== Charge Time ==========
+    public int getChargeTime(ItemStack itemStack) {
+        return 30;
     }
 	
     
@@ -41,9 +41,10 @@ public class ItemScepterBoulderBlast extends ItemScepter {
 	//                      Attack
 	// ==================================================
     @Override
-    public boolean rapidAttack(ItemStack itemStack, World world, EntityPlayer player) {
+    public boolean chargedAttack(ItemStack itemStack, World world, EntityPlayer player, float power) {
     	if(!world.isRemote) {
-        	EntityProjectileBase projectile = new EntityBoulderBlast(world, player);
+    		EntityProjectileBase projectile = new EntityBoulderBlast(world, player);
+    		projectile.setBaseDamage((int)(projectile.getDamage(null) * power * 2));
         	world.spawnEntityInWorld(projectile);
             world.playSoundAtEntity(player, projectile.getLaunchSound(), 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
         }

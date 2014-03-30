@@ -66,7 +66,7 @@ public class SpawnInfo {
 	
 	// ========== Despawning ==========
 	/** Whether this mob should despawn or not by default (some mobs can override persistence, such as once farmed). **/
-	public boolean despawnNatural = false;
+	public boolean despawnNatural = true;
 	
 	/** Whether this mob should always despawn no matter what. **/
 	public boolean despawnForced = false;

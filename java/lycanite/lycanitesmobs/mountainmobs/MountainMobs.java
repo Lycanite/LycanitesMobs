@@ -13,6 +13,7 @@ import lycanite.lycanitesmobs.mountainmobs.entity.EntityJabberwock;
 import lycanite.lycanitesmobs.mountainmobs.entity.EntityTroll;
 import lycanite.lycanitesmobs.mountainmobs.item.ItemBoulderBlastCharge;
 import lycanite.lycanitesmobs.mountainmobs.item.ItemMountainEgg;
+import lycanite.lycanitesmobs.mountainmobs.item.ItemScepterBoulderBlast;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityZombie;
@@ -63,7 +64,7 @@ public class MountainMobs implements ILycaniteMod {
 		ObjectManager.addItem("MountainEgg", "Spawn", new ItemMountainEgg(config.itemIDs.get("MountainEgg")));
 		
 		ObjectManager.addItem("BoulderBlastCharge", "Boulder Blast Charge", new ItemBoulderBlastCharge(config.itemIDs.get("BoulderBlastCharge")));
-		ObjectManager.addItem("BoulderBlastScepter", "Boulder Blast Scepter", new ItemBoulderBlastCharge(config.itemIDs.get("BoulderBlastScepter")));
+		ObjectManager.addItem("BoulderBlastScepter", "Boulder Blast Scepter", new ItemScepterBoulderBlast(config.itemIDs.get("BoulderBlastScepter")));
 		
 		//ObjectManager.addItem("YaleMeatRaw", "Raw Yale Meat", new ItemCustomFood(config.itemIDs.get("YaleMeatRaw"), "YaleMeatRaw", domain, 2, 0.5F).setPotionEffect(Potion.digSlowdown.id, 45, 2, 0.8F));
 		//ObjectLists.addItem("RawMeat", ObjectManager.getItem("YaleMeatRaw"));

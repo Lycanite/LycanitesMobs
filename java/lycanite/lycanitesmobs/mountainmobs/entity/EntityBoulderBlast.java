@@ -19,17 +19,14 @@ public class EntityBoulderBlast extends EntityProjectileBase {
  	// ==================================================
     public EntityBoulderBlast(World par1World) {
         super(par1World);
-        this.setSize(0.3125F, 0.3125F);
     }
 
     public EntityBoulderBlast(World par1World, EntityLivingBase par2EntityLivingBase) {
         super(par1World, par2EntityLivingBase);
-        this.setSize(0.3125F, 0.3125F);
     }
 
     public EntityBoulderBlast(World par1World, double par2, double par4, double par6) {
         super(par1World, par2, par4, par6);
-        this.setSize(0.3125F, 0.3125F);
     }
     
     // ========== Setup Projectile ==========
@@ -37,6 +34,7 @@ public class EntityBoulderBlast extends EntityProjectileBase {
     	this.entityName = "BoulderBlast";
     	this.mod = MountainMobs.instance;
     	this.setBaseDamage(8);
+        this.setSize(1, 1);
     	
     	this.waterProof = true;
     }
@@ -65,6 +63,6 @@ public class EntityBoulderBlast extends EntityProjectileBase {
  	// ==================================================
     @Override
     public String getLaunchSound() {
-    	return AssetManager.getSound("Frostbolt");
+    	return AssetManager.getSound("BoulderBlast");
     }
 }

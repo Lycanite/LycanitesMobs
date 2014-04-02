@@ -378,7 +378,7 @@ public class Config {
 			}
 			
 			if("RIVER".equals(biomeTypeName))
-				selectedBiomes = new BiomeGenBase[] {BiomeGenBase.river};
+				selectedBiomes = new BiomeGenBase[] {BiomeGenBase.river, BiomeGenBase.frozenRiver};
 			else if("ALL".equals(biomeTypeName)) {
 				for(BiomeDictionary.Type biomeType : BiomeDictionary.Type.values()) {
 					if(selectedBiomes == null)

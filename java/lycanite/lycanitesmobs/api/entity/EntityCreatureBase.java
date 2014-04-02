@@ -115,6 +115,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public boolean spawnsInBlock = false;
     /** Can this mob spawn where it can't see the sky above? **/
     public boolean spawnsUnderground = true;
+    /** Can this mob spawn on land (not in liquids)? Note that setting a mob to WATERCREATURE means that they will only spawn in water anyway. **/
+    public boolean spawnsOnLand = true;
     /** Does this mob spawn inside liquids? **/
     public boolean spawnsInWater = false;
     /** Is this mob a minion? (Minions don't drop items and other things). **/
@@ -389,7 +391,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	LycanitesMobs.printDebug("MobSpawns", "Checking entity collision.");
         if(!this.worldObj.checkNoEntityCollision(this.boundingBox))
         	return false;
-    	LycanitesMobs.printDebug("MobSpawns", "Checking block collision.");
+    	LycanitesMobs.printDebug("MobSpawns", "Checking solid block collision.");
         if(!this.spawnsInBlock && !this.spawnsInWater && !this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).isEmpty())
         	return false;
     	return true;
@@ -415,8 +417,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	LycanitesMobs.printDebug("MobSpawns", "Block preference.");
         if(this.getBlockPathWeight(i, j, k) < 0.0F)
         	return false;
-    	LycanitesMobs.printDebug("MobSpawns", "Checking for water.");
+    	LycanitesMobs.printDebug("MobSpawns", "Checking for liquid (water, lava, etc).");
         if(!this.spawnsInWater && this.worldObj.isAnyLiquid(this.boundingBox))
+        	return false;
+        else if(!this.spawnsOnLand && !this.worldObj.isAnyLiquid(this.boundingBox))
         	return false;
     	LycanitesMobs.printDebug("MobSpawns", "Checking for underground.");
         if(!this.spawnsUnderground && this.isBlockUnderground(i, j + 1, k))

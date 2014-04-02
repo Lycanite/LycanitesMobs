@@ -45,6 +45,7 @@ public class EntityDweller extends EntityCreatureAgeable implements IMob {
         this.defense = 0;
         this.experience = 7;
         this.spawnsInDarkness = true;
+        this.spawnsOnLand = true;
         this.spawnsInWater = true;
         this.hasAttackSound = true;
         
@@ -85,36 +86,6 @@ public class EntityDweller extends EntityCreatureAgeable implements IMob {
         this.drops.add(new DropRate(Item.fishRaw.itemID, 1).setBurningItem(Item.fishCooked.itemID, 0));
         this.drops.add(new DropRate(Item.fishRaw.itemID, 0.25F).setBurningItem(Item.fishCooked.itemID, 0).setMinAmount(2).setMaxAmount(4));
 	}
-
-	
-    // ==================================================
-    //                      Movement
-    // ==================================================
-	// Pathing Weight:
-	@Override
-	public float getBlockPathWeight(int par1, int par2, int par3) {
-		int waterWeight = 10;
-		
-        if(this.worldObj.getBlockId(par1, par2, par3) == Block.waterStill.blockID)
-        	return super.getBlockPathWeight(par1, par2, par3) * (waterWeight + 1);
-		if(this.worldObj.getBlockId(par1, par2, par3) == Block.waterMoving.blockID)
-			return super.getBlockPathWeight(par1, par2, par3) * waterWeight;
-        if(this.worldObj.isRaining() && this.worldObj.canBlockSeeTheSky(par1, par2, par3))
-        	return super.getBlockPathWeight(par1, par2, par3) * (waterWeight + 1);
-        
-        if(this.getAttackTarget() != null)
-        	return super.getBlockPathWeight(par1, par2, par3);
-        if(this.waterContact())
-			return -999999.0F;
-		
-		return super.getBlockPathWeight(par1, par2, par3);
-    }
-	
-	// Pushed By Water:
-	@Override
-	public boolean isPushedByWater() {
-        return false;
-    }
 	
 	
     // ==================================================
@@ -153,6 +124,32 @@ public class EntityDweller extends EntityCreatureAgeable implements IMob {
     	return 1.0F;
     }
     
+	// Pathing Weight:
+	@Override
+	public float getBlockPathWeight(int par1, int par2, int par3) {
+		int waterWeight = 10;
+		
+        if(this.worldObj.getBlockId(par1, par2, par3) == Block.waterStill.blockID)
+        	return super.getBlockPathWeight(par1, par2, par3) * (waterWeight + 1);
+		if(this.worldObj.getBlockId(par1, par2, par3) == Block.waterMoving.blockID)
+			return super.getBlockPathWeight(par1, par2, par3) * waterWeight;
+        if(this.worldObj.isRaining() && this.worldObj.canBlockSeeTheSky(par1, par2, par3))
+        	return super.getBlockPathWeight(par1, par2, par3) * (waterWeight + 1);
+        
+        if(this.getAttackTarget() != null)
+        	return super.getBlockPathWeight(par1, par2, par3);
+        if(this.waterContact())
+			return -999999.0F;
+		
+		return super.getBlockPathWeight(par1, par2, par3);
+    }
+	
+	// Pushed By Water:
+	@Override
+	public boolean isPushedByWater() {
+        return false;
+    }
+    
     
     // ==================================================
     //                      Attacks
@@ -177,10 +174,10 @@ public class EntityDweller extends EntityCreatureAgeable implements IMob {
    	//                     Immunities
    	// ==================================================
     @Override
-    public boolean isPotionApplicable(PotionEffect par1PotionEffect) {
-        if(par1PotionEffect.getPotionID() == Potion.poison.id) return false;
-        if(par1PotionEffect.getPotionID() == Potion.blindness.id) return false;
-        super.isPotionApplicable(par1PotionEffect);
+    public boolean isPotionApplicable(PotionEffect potionEffect) {
+        if(potionEffect.getPotionID() == Potion.poison.id) return false;
+        if(potionEffect.getPotionID() == Potion.blindness.id) return false;
+        super.isPotionApplicable(potionEffect);
         return true;
     }
     

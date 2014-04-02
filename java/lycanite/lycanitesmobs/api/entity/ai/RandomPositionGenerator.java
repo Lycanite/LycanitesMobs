@@ -68,11 +68,12 @@ public class RandomPositionGenerator {
         for(int j1 = 0; j1 < 10; ++j1) {
             int possibleX = random.nextInt(2 * range) - range;
             int possibleY = random.nextInt(2 * height) - height;
-            if(entity.canFly())
+            if(entity.canFly() || (entity.canSwim() && (entity.isInWater() || entity.handleLavaMovement()))) {
 	            if(entity.posY > entity.worldObj.getPrecipitationHeight((int)entity.posX, (int)entity.posZ) + heightLevel * 1.25)
 	        		possibleY = random.nextInt(2 * height) - height * 3 / 2;
 	            else if(entity.posY < entity.worldObj.getPrecipitationHeight( (int)entity.posX, (int)entity.posZ) + heightLevel)
 	            	possibleY = random.nextInt(2 * height) - height / 2;
+            }
             int possibleZ = random.nextInt(2 * range) - range;
 
             if(par3Vec3 == null|| (double)possibleX * par3Vec3.xCoord + (double)possibleZ * par3Vec3.zCoord >= 0.0D) {

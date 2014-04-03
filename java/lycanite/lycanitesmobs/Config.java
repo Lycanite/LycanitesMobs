@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.Configuration;
@@ -51,7 +50,6 @@ public class Config {
 	// Mob Control - Spawning
 	public Map<String, Boolean> spawnEnabled = new HashMap<String, Boolean>();
 	public Map<String, String> spawnTypes = new HashMap<String, String>();
-	public Map<String, EnumCreatureType> creatureTypes = new HashMap<String, EnumCreatureType>();
 	public Map<String, Boolean> mobsPeaceful = new HashMap<String, Boolean>();
 	
 	public Map<String, String> spawnDimensions = new HashMap<String, String>();
@@ -166,21 +164,7 @@ public class Config {
 			config.save();
 		}
 		
-		EnumCreatureType spawnType = EnumCreatureType.monster;
-		if("CREATURE".equalsIgnoreCase(typeString) || "ANIMAL".equalsIgnoreCase(typeString))
-			spawnType = EnumCreatureType.creature;
-		else if("WATERCREATURE".equalsIgnoreCase(typeString))
-			spawnType = EnumCreatureType.waterCreature;
-		else if("AMBIENT".equalsIgnoreCase(typeString))
-			spawnType = EnumCreatureType.ambient;
-		else if("FIRE".equalsIgnoreCase(typeString)) {
-			spawnType = null;
-		}
-		else if(!"MONSTER".equalsIgnoreCase(typeString))
-			System.out.println("[WARNING] [LycanitesMobs] Invalid spawn type " + typeString + " given for " + settingID + " using MONSTER instead.");
-		
 		this.spawnTypes.put(settingID, typeString);
-		this.creatureTypes.put(settingID, spawnType);
 	}
 	
 	// ========== Mob Settings ==========

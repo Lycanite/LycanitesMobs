@@ -8,7 +8,6 @@ import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupAnimal;
 import lycanite.lycanitesmobs.api.IGroupPredator;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAvoid;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowMaster;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowParent;
@@ -54,7 +53,7 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
         this.setWidth = 2.9F;
         this.setHeight = 3.2F;
         this.attackTime = 10;
-        this.fleeHealthPercent = 0.9F;
+        this.fleeHealthPercent = 1.0F;
         this.setupMob();
         
         // AI Tasks:
@@ -62,7 +61,7 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIAvoid(this).setNearSpeed(1.3D).setFarSpeed(1.2D).setNearDistance(5.0D).setFarDistance(20.0D));
         this.tasks.addTask(2, new EntityAIMate(this).setMateDistance(5.0D));
-        this.tasks.addTask(3, new EntityAIAttackMelee(this).setLongMemory(false));
+        //this.tasks.addTask(3, new EntityAIAttackMelee(this).setLongMemory(false));
         this.tasks.addTask(4, new EntityAITempt(this).setItemList("Vegetables"));
         this.tasks.addTask(5, new EntityAIFollowParent(this).setSpeed(1.0D).setStrayDistance(3.0D));
         this.tasks.addTask(6, new EntityAIFollowMaster(this).setSpeed(1.0D).setStrayDistance(18.0F));

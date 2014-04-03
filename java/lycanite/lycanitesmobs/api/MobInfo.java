@@ -24,6 +24,9 @@ public class MobInfo {
 	/** Whether mob mounting is allowed. **/
 	public static boolean mountingEnabled = true;
 	
+	/** If true, predators such as Ventoraptors will attack farm animals such as Sheep or Makas. **/
+	public static boolean predatorsAttackAnimals = true;
+	
 	/** A static map containing all the global multipliers for each stat for each difficulty. They defaults are Easy: 0.5, Normal: 1.0 and Hard: 1.5. **/
 	public static Map<String, Double> difficultyMutlipliers = new HashMap<String, Double>();
 	
@@ -85,6 +88,7 @@ public class MobInfo {
 		ownerTags = config.getFeatureBool("OwnerTags");
 		tamingEnabled = config.getFeatureBool("MobTaming");
 		mountingEnabled = config.getFeatureBool("MobMounting");
+		predatorsAttackAnimals = config.getFeatureBool("PredatorsAttackAnimals");
 		
 		difficultyMutlipliers = new HashMap<String, Double>(config.difficultyMultipliers);
 	}

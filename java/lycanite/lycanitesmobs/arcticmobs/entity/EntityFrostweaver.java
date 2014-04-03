@@ -5,6 +5,7 @@ import java.util.HashMap;
 import lycanite.lycanitesmobs.DropRate;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupPrey;
+import lycanite.lycanitesmobs.api.MobInfo;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackRanged;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
@@ -17,6 +18,7 @@ import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
+import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -57,7 +59,10 @@ public class EntityFrostweaver extends EntityCreatureBase implements IMob {
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
-        this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
+        if(MobInfo.predatorsAttackAnimals) {
+        	this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
+        	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityChicken.class));
+        }
     }
     
     // ========== Stats ==========

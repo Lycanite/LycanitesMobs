@@ -5,6 +5,7 @@ import java.lang.reflect.Modifier;
 
 import lycanite.lycanitesmobs.api.MobInfo;
 import lycanite.lycanitesmobs.api.SpawnInfo;
+import lycanite.lycanitesmobs.api.SpawnType;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.potion.Potion;
@@ -26,7 +27,7 @@ public class LycanitesMobs {
 	
 	public static final String modid = "LycanitesMobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String version = "1.4.9e - MC 1.6.4";
+	public static final String version = "1.4.11 - MC 1.6.4";
 	public static final String domain = modid.toLowerCase();
 	public static Config config = new SubConfig();
 	
@@ -58,6 +59,9 @@ public class LycanitesMobs {
 		
 		// ========== Mob Info ==========
 		MobInfo.loadGlobalSettings();
+		
+		// ========== Spawn Type ==========
+		SpawnType.loadSpawnTypes();
 		
 		// ========== Spawn Info ==========
 		SpawnInfo.loadGlobalSettings();

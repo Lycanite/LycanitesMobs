@@ -9,6 +9,7 @@ import lycanite.lycanitesmobs.api.IGroupAlpha;
 import lycanite.lycanitesmobs.api.IGroupAnimal;
 import lycanite.lycanitesmobs.api.IGroupPredator;
 import lycanite.lycanitesmobs.api.IGroupPrey;
+import lycanite.lycanitesmobs.api.MobInfo;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
@@ -82,8 +83,10 @@ public class EntityUvaraptor extends EntityCreatureRideable implements IGroupPre
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class).setSightCheck(false));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(IGroupAlpha.class).setPackHuntingScale(1, 1));
-        this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupAnimal.class).setPackHuntingScale(1, 3));
-        this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(EntityAnimal.class).setPackHuntingScale(1, 3));
+        if(MobInfo.predatorsAttackAnimals) {
+        	this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupAnimal.class).setPackHuntingScale(1, 3));
+        	this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(EntityAnimal.class).setPackHuntingScale(1, 3));
+        }
     }
     
     // ========== Stats ==========

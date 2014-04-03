@@ -19,10 +19,13 @@ public class SpawnInfo {
 	public boolean enabled;
 	
 	// ========== Spawn Type ==========
-	/** The method that this mob should with. Can be MONSTER, CREATURE, WATERCREATURE, AMBIENT or BLOCK. **/
-	public String spawnType;
+	/** The method that this mob should with. Can be MONSTER, CREATURE, WATERCREATURE, AMBIENT, PORTAL, NETHER, FIRE or LAVA. **/
+	public String spawnTypeName;
 	
-	/** The CreatureType this mob should spawn as, null when using custom spawn types such as BLOCK. **/
+	/** The custom spawn type instance that this mob should use, null when using vanilla spawn types such as MONSTER. **/
+	public SpawnType spawnType = null;
+	
+	/** The CreatureType this mob should spawn as, null when using custom spawn types such as FIRE. **/
 	public EnumCreatureType creatureType = null;
 	
 	// ========== Spawn Location ==========
@@ -105,8 +108,16 @@ public class SpawnInfo {
 			return;
 		
 		// Spawn Type:
-		this.spawnType = config.spawnTypes.get(name);
-		this.creatureType = config.creatureTypes.get(name);
+		this.spawnTypeName = config.spawnTypes.get(name);
+		this.spawnType = SpawnType.getSpawnType(this.spawnTypeName);
+		if("MONSTER".equalsIgnoreCase(this.spawnTypeName) || "NETHER".equalsIgnoreCase(this.spawnTypeName))
+			this.creatureType = EnumCreatureType.monster;
+		else if("CREATURE".equalsIgnoreCase(this.spawnTypeName) || "ANIMAL".equalsIgnoreCase(this.spawnTypeName))
+			this.creatureType = EnumCreatureType.creature;
+		else if("WATERCREATURE".equalsIgnoreCase(this.spawnTypeName))
+			this.creatureType = EnumCreatureType.waterCreature;
+		else if("AMBIENT".equalsIgnoreCase(this.spawnTypeName))
+			this.creatureType = EnumCreatureType.ambient;
 		
 		// Spawn Location:
 		this.dimensionIDs = config.getSpawnDimensions(name);

@@ -7,6 +7,7 @@ import lycanite.lycanitesmobs.ObjectLists;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupHunter;
 import lycanite.lycanitesmobs.api.IGroupPrey;
+import lycanite.lycanitesmobs.api.MobInfo;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAvoid;
@@ -83,12 +84,14 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
-        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityChicken.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
-        if(ObjectManager.getMob("Joust") != null)
-        	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityJoust.class));
-        if(ObjectManager.getMob("JoustAlpha") != null)
-        	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityJoustAlpha.class));
+        if(MobInfo.predatorsAttackAnimals) {
+        	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityChicken.class));
+	        if(ObjectManager.getMob("Joust") != null)
+	        	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityJoust.class));
+	        if(ObjectManager.getMob("JoustAlpha") != null)
+	        	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityJoustAlpha.class));
+        }
         this.targetTasks.addTask(0, new EntityAITargetParent(this).setSightCheck(false).setDistance(32.0D));
     }
     

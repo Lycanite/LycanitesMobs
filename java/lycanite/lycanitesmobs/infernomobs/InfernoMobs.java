@@ -10,6 +10,7 @@ import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.infernomobs.dispenser.DispenserBehaviorEmber;
 import lycanite.lycanitesmobs.infernomobs.entity.EntityCinder;
 import lycanite.lycanitesmobs.infernomobs.entity.EntityEmber;
+import lycanite.lycanitesmobs.infernomobs.entity.EntityLobber;
 import lycanite.lycanitesmobs.infernomobs.item.ItemEmberCharge;
 import lycanite.lycanitesmobs.infernomobs.item.ItemInfernoEgg;
 import lycanite.lycanitesmobs.infernomobs.item.ItemScepterEmber;
@@ -77,6 +78,7 @@ public class InfernoMobs implements ILycaniteMod {
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("InfernoEgg"), new DispenserBehaviorMobEggCustom());
 		ObjectManager.addMob(new MobInfo(this, "Cinder", EntityCinder.class, 0xFF9900, 0xFFFF00));
+		ObjectManager.addMob(new MobInfo(this, "Lobber", EntityLobber.class, 0x330011, 0xFF5500));
 		
 		// ========== Create Projectiles ==========
 		ObjectManager.addProjectile("Ember", EntityEmber.class, ObjectManager.getItem("EmberCharge"), new DispenserBehaviorEmber());

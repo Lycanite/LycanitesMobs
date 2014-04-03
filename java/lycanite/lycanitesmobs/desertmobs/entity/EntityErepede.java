@@ -7,6 +7,7 @@ import lycanite.lycanitesmobs.ObjectLists;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupPredator;
 import lycanite.lycanitesmobs.api.IGroupPrey;
+import lycanite.lycanitesmobs.api.MobInfo;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackRanged;
@@ -83,10 +84,12 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
-        if(ObjectManager.getMob("Joust") != null)
-        	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityJoust.class).setPackHuntingScale(1, 3));
-        if(ObjectManager.getMob("JoustAlpha") != null)
-        	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityJoustAlpha.class).setPackHuntingScale(1, 1));
+        if(MobInfo.predatorsAttackAnimals) {
+	        if(ObjectManager.getMob("Joust") != null)
+	        	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityJoust.class).setPackHuntingScale(1, 3));
+	        if(ObjectManager.getMob("JoustAlpha") != null)
+	        	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityJoustAlpha.class).setPackHuntingScale(1, 1));
+        }
         
         this.targetTasks.addTask(0, new EntityAITargetParent(this).setSightCheck(false).setDistance(32.0D));
     }

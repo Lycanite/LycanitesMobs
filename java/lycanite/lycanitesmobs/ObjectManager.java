@@ -88,6 +88,7 @@ public class ObjectManager {
 		AssetManager.addSound(name + "Mount", domain, "entity/" + filename + "/mount.wav");
 		
 		// ID and Enabled Check:
+		LycanitesMobs.printDebug("MobSetup", "~0========================================0~");
 		int mobID = mod.getNextMobID();
 		if(!mobInfo.mobEnabled) {
 			LycanitesMobs.printDebug("MobSetup", "Mob Disabled: " + name + " - " + mobInfo.entityClass + " (" + modid + ")");
@@ -108,17 +109,21 @@ public class ObjectManager {
 		boolean spawnAdded = false;
 		if(!SpawnInfo.disableAllSpawning) {
 			if(spawnInfo.enabled && spawnInfo.spawnWeight > 0 && spawnInfo.spawnGroupMax > 0) {
-				if(spawnInfo.creatureType != null)
+				if(spawnInfo.creatureType != null) {
 					EntityRegistry.addSpawn(mobInfo.entityClass, spawnInfo.spawnWeight, spawnInfo.spawnGroupMin, spawnInfo.spawnGroupMax, spawnInfo.creatureType, spawnInfo.biomes);
-				else
-					CustomSpawner.addSpawn(spawnInfo);
+				}
+				if(spawnInfo.spawnType != null) {
+					spawnInfo.spawnType.addSpawn(spawnInfo);
+				}
 				spawnAdded = true;
 			}
 		}
 		
 		// Debug Message - Spawn Added:
 		if(spawnAdded) {
-			LycanitesMobs.printDebug("MobSetup", "Mob Spawn Added - Type: " + spawnInfo.spawnType + " Weight: " + spawnInfo.spawnWeight + " Min: " + spawnInfo.spawnGroupMin + " Max: " + spawnInfo.spawnGroupMax);
+			LycanitesMobs.printDebug("MobSetup", "Mob Spawn Added - Type: " + spawnInfo.spawnTypeName + " Weight: " + spawnInfo.spawnWeight + " Min: " + spawnInfo.spawnGroupMin + " Max: " + spawnInfo.spawnGroupMax);
+			LycanitesMobs.printDebug("MobSetup", "Vanilla Spawn Type: " + spawnInfo.creatureType);
+			LycanitesMobs.printDebug("MobSetup", "Custom Spawn Type: " + (spawnInfo.spawnType != null ? spawnInfo.spawnType.typeName : "null"));
 			String biomesList = "";
 			if(LycanitesMobs.config.getDebug("MobSetup")) {
 				for(BiomeGenBase biome : spawnInfo.biomes) {

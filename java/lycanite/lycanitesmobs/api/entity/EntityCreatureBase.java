@@ -1641,12 +1641,12 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** If webproof() is false, this mob will be affected by webbing on the update that this is called. **/
     @Override
     public void setInWeb() { if(!webproof()) super.setInWeb(); }
-    /** If true, this mob wont lose air when underwater. **/
-    @Override
     
     // Breathing:
+    /** If true, this mob wont lose air when underwater. **/
+    @Override
     public boolean canBreatheUnderwater() { return false; }
-    /** If true, this mob will lose air when above water. **/
+    /** If false, this mob will lose air when above water or lava if isLavaCreature is true. **/
     public boolean canBreatheAboveWater() { return true; }
     /** Sets the current amount of air this mob has. **/
 	@Override

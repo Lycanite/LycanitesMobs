@@ -12,18 +12,16 @@ public class SubConfig extends Config {
 		this.loadSetting(this.featureBools, "Feature Control", "OwnerTags", "Show Pet Owner Tags", true);
 		this.loadSetting(this.featureBools, "Feature Control", "MobTaming", "Allow Mob Taming", true);
 		this.loadSetting(this.featureBools, "Feature Control", "MobMounting", "Allow Mob Mounting", true);
+		this.loadSetting(this.featureBools, "Feature Control", "PredatorsAttackAnimals", "Predators Attack Animals", true);
 		
 		// ========== Global Spawn Control ==========
 		this.loadSetting(this.featureInts, "Spawn Control", "SpawnLimitRange", "Spawn Limit Search Range", 32);
 		this.loadSetting(this.featureBools, "Spawn Control", "DisableAllSpawning", "Disable All Spawning", false);
 		this.loadSetting(this.featureBools, "Spawn Control", "DisableDungeonSpawners", "Disable Dungeon Spawners", false);
 		
-		this.loadSetting(this.featureBools, "Spawn Control", "FireSpawnEnabled", "Fire Spawning Enabled", true);
-		this.loadSetting(this.featureInts, "Spawn Control", "FireSpawnTick", "Fire Spawning Tick Rate", 400);
-		this.loadSetting(this.featureDoubles, "Spawn Control", "FireSpawnChance", "Fire Spawning Chance", 0.25D);
-		this.loadSetting(this.featureInts, "Spawn Control", "FireSpawnRange", "Fire Spawning Search Range", 32);
-		this.loadSetting(this.featureInts, "Spawn Control", "FireSpawnBlockLimit", "Fire Spawning Block Limit", 32);
-		this.loadSetting(this.featureInts, "Spawn Control", "FireSpawnMobLimit", "Fire Spawning Mob Limit", 32);
+		this.loadCustomSpawnerType("Fire", 400, 0.25D, 32, 32, 32);
+		this.loadCustomSpawnerType("Lava", 400, 0.25D, 64, 64, 32);
+		this.loadCustomSpawnerType("Portal", 400, 0.125D, 32, 32, 1);
 		
 		// ========== Stat Multipliers ==========
 		this.loadDifficultyMultiplier(this.difficultyMultipliers, "Stat Multipliers", "Easy", "0.5");
@@ -52,5 +50,17 @@ public class SubConfig extends Config {
 		this.loadSetting(this.effectIDs, "Effect IDs", "Rage", "Rage Effect ID", effectStartID++);
 		this.loadSetting(this.effectIDs, "Effect IDs", "Weight", "Weight Effect ID", effectStartID++);
 		this.loadSetting(this.effectIDs, "Effect IDs", "Swiftswimming", "Swiftswimming Effect ID", effectStartID++);
+	}
+	
+	// ==================================================
+	//               Custom Spawner Settings
+	// ==================================================
+	public void loadCustomSpawnerType(String typeName, int rate, double chance, int range, int blockLimit, int mobLimit) {
+		this.loadSetting(this.featureBools, "Spawn Control", typeName + "SpawnEnabled", typeName + " Spawning Enabled", true);
+		this.loadSetting(this.featureInts, "Spawn Control", typeName + "SpawnTick", typeName + " Spawning Tick Rate", rate);
+		this.loadSetting(this.featureDoubles, "Spawn Control", typeName + "SpawnChance", typeName + " Spawning Chance", chance);
+		this.loadSetting(this.featureInts, "Spawn Control", typeName + "SpawnRange", typeName + " Spawning Search Range", range);
+		this.loadSetting(this.featureInts, "Spawn Control", typeName + "SpawnBlockLimit", typeName + " Spawning Block Limit", blockLimit);
+		this.loadSetting(this.featureInts, "Spawn Control", typeName + "SpawnMobLimit", typeName + " Spawning Mob Limit", mobLimit);
 	}
 }

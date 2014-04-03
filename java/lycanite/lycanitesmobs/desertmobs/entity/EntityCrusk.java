@@ -8,6 +8,7 @@ import lycanite.lycanitesmobs.api.IGroupAlpha;
 import lycanite.lycanitesmobs.api.IGroupAnimal;
 import lycanite.lycanitesmobs.api.IGroupPredator;
 import lycanite.lycanitesmobs.api.IGroupPrey;
+import lycanite.lycanitesmobs.api.MobInfo;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
@@ -81,8 +82,10 @@ public class EntityCrusk extends EntityCreatureTameable implements IGroupPredato
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupAlpha.class));
-        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupAnimal.class));
-        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityAnimal.class));
+        if(MobInfo.predatorsAttackAnimals) {
+	        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupAnimal.class));
+	        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityAnimal.class));
+        }
     }
     
     // ========== Stats ==========

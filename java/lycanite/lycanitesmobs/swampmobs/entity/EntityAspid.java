@@ -8,7 +8,6 @@ import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupAnimal;
 import lycanite.lycanitesmobs.api.IGroupPredator;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAvoid;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowParent;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
@@ -62,7 +61,7 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIAvoid(this).setNearSpeed(1.3D).setFarSpeed(1.2D).setNearDistance(5.0D).setFarDistance(20.0D));
         this.tasks.addTask(2, new EntityAIMate(this));
-        this.tasks.addTask(3, new EntityAIAttackMelee(this).setRate(10).setLongMemory(false));
+        //this.tasks.addTask(3, new EntityAIAttackMelee(this).setRate(10).setLongMemory(false));
         this.tasks.addTask(4, new EntityAITempt(this).setItemList("Mushrooms"));
         this.tasks.addTask(5, new EntityAIFollowParent(this).setSpeed(1.0D));
         this.tasks.addTask(6, new EntityAIWander(this));

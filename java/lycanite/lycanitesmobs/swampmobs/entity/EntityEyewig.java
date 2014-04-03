@@ -5,6 +5,8 @@ import java.util.HashMap;
 import lycanite.lycanitesmobs.DropRate;
 import lycanite.lycanitesmobs.ObjectLists;
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.IGroupPrey;
+import lycanite.lycanitesmobs.api.MobInfo;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackRanged;
@@ -68,7 +70,10 @@ public class EntityEyewig extends EntityCreatureRideable {
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
-        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityChicken.class));
+        this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
+        if(MobInfo.predatorsAttackAnimals) {
+        	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityChicken.class));
+        }
     }
     
     // ========== Stats ==========

@@ -16,8 +16,7 @@ public class SubConfig extends Config {
 		loadSetting(this.featureStrings, "Feature Control", "Dimensions", "Group Dimensions", "0");
 		
 		// ========== Special Feature Control ==========
-		loadSetting(this.featureBools, "Feature Control", "DespawnYalesOnPeaceful", "Yale Peaceful Spawning", true);
-		loadSetting(this.featureBools, "Feature Control", "DespawnYalesNaturally", "Yale Natural Despawning", false);
+		loadSetting(this.featureBools, "Feature Control", "TrollGriefing", "Troll Griefing", true);
 		
 		// ========== Mob Control ==========
 		loadMobSettings("Jabberwock", 8, 10, 1, 2, "MONSTER");

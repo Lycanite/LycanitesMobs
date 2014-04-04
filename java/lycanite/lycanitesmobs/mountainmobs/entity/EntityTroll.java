@@ -128,7 +128,8 @@ public class EntityTroll extends EntityCreatureAgeable implements IMob {
         
         // Destroy Blocks:
  		if(!this.worldObj.isRemote)
- 	        if(this.getAttackTarget() != null && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing")) {
+ 	        if(this.getAttackTarget() != null && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing")
+ 	        && this.mod.getConfig().getFeatureBool("TrollGriefing")) {
  		    	float distance = this.getAttackTarget().getDistanceToEntity(this);
  		    		if(distance <= this.width + 4.0F)
  		    			destroyArea((int)this.posX, (int)this.posY, (int)this.posZ, 4, true);

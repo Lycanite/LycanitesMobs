@@ -143,4 +143,10 @@ public class LycanitesMobs {
 			System.out.println("[LycanitesMobs] [Debug] " + message);
 		}
 	}
+	
+	public static void printWarning(String key, String message) {
+		if("".equals(key) || config.getDebug(key)) {
+			System.out.println("[LycanitesMobs] [WARNING] " + message);
+		}
+	}
 }

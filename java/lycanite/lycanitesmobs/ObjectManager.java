@@ -88,7 +88,7 @@ public class ObjectManager {
 		AssetManager.addSound(name + "Mount", domain, "entity/" + filename + "/mount.wav");
 		
 		// ID and Enabled Check:
-		LycanitesMobs.printDebug("MobSetup", "~0========================================0~");
+		LycanitesMobs.printDebug("MobSetup", "~0==================== Mob Setup: "+ mobInfo.name +" ====================0~");
 		int mobID = mod.getNextMobID();
 		if(!mobInfo.mobEnabled) {
 			LycanitesMobs.printDebug("MobSetup", "Mob Disabled: " + name + " - " + mobInfo.entityClass + " (" + modid + ")");

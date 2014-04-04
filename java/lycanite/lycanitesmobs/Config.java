@@ -99,10 +99,10 @@ public class Config {
 		}
 	    
 	    // ========== Run Config File ==========
-		config = new Configuration(configFile);
-		config.load();
-		loadSettings();
-		config.save();
+		this.config = new Configuration(configFile);
+		this.config.load();
+		this.loadSettings();
+		this.config.save();
 	}
 		
 	
@@ -168,7 +168,7 @@ public class Config {
 	}
 	
 	// ========== Mob Settings ==========
-	public void loadMobSettings(String mobName, int spawnWeight, int spawnLimit, int spawnMin, int spawnMax, String spawnTypeName, String spawnBiome, String spawnDimension) {
+	public void loadMobSettings(String mobName, int spawnWeight, int spawnLimit, int spawnMin, int spawnMax, String spawnTypeName, int spawnBlockCost, String spawnBiome, String spawnDimension) {
 		// General:
 		loadSetting(this.mobsEnabled, "Mob Control - General", mobName, mobName + " Enabled", true);
 		loadSetting(this.customDrops, "Mob Control - General", mobName, mobName + " Custom Drops", "");
@@ -193,7 +193,7 @@ public class Config {
 		loadSetting(this.spawnLimits, "Mob Spawning - Limits", mobName, mobName + " Spawn Area Limit", spawnLimit);
 		loadSetting(this.spawnMins, "Mob Spawning - Limits", mobName, mobName + " Spawn Group Size Min", spawnMin);
 		loadSetting(this.spawnMaxs, "Mob Spawning - Limits", mobName, mobName + " Spawn Group Size Max", spawnMax);
-		loadSetting(this.spawnBlockCosts, "Mob Spawning - Limits", mobName, mobName + " Spawn Block Cost", 8);
+		loadSetting(this.spawnBlockCosts, "Mob Spawning - Limits", mobName, mobName + " Spawn Required Block Amount", spawnBlockCost);
 		
 		// Spawning - Despawning:
 		loadSetting(this.despawnNaturals, "Mob Spawning - Despawning", mobName, mobName + " Natural Despawning", !spawnTypeName.equalsIgnoreCase("CREATURE"));
@@ -211,8 +211,17 @@ public class Config {
 		loadStatMultiplier(this.effectMultipliers, "Mob Control - Stats", mobName, mobName + " Stat Effect Multiplier", "GROUP");
 		loadStatBoost(this.effectBoosts, "Mob Control - Stats", mobName, mobName + " Stat Effect Boost", "GROUP");
 	}
+	// Load Mob Settings - Auto Spawn Block Cost:
+	public void loadMobSettings(String mobName, int spawnWeight, int spawnLimit, int spawnMin, int spawnMax, String spawnTypeName, String spawnBiome, String spawnDimension) {
+		this.loadMobSettings(mobName, spawnWeight, spawnLimit, spawnMin, spawnMax, spawnTypeName, 1, spawnBiome, spawnDimension);
+	}
+	// Load Mob Settings - Auto Biomes and Dimensions:
+	public void loadMobSettings(String mobName, int spawnWeight, int spawnLimit, int spawnMin, int spawnMax, String spawnTypeName, int spawnBlockCost) {
+		this.loadMobSettings(mobName, spawnWeight, spawnLimit, spawnMin, spawnMax, spawnTypeName, spawnBlockCost, "GROUP", "GROUP");
+	}
+	// Load Mob Settings - Auto Spawn Block Cost, Biomes and Dimensions:
 	public void loadMobSettings(String mobName, int spawnWeight, int spawnLimit, int spawnMin, int spawnMax, String spawnTypeName) {
-		this.loadMobSettings(mobName, spawnWeight, spawnLimit, spawnMin, spawnMax, spawnTypeName, "GROUP", "GROUP");
+		this.loadMobSettings(mobName, spawnWeight, spawnLimit, spawnMin, spawnMax, spawnTypeName, 1, "GROUP", "GROUP");
 	}
 	
 	// ========== Stat Multipliers and Boosts ==========

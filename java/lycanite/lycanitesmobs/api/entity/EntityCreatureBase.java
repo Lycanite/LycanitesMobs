@@ -107,6 +107,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // Spawning:
     /** Use the onSpawn() method and not this variable. True if this creature has spawned for the first time (naturally or via spawn egg, etc, not reloaded from a saved chunk). **/
     public boolean firstSpawn = true;
+    /** If true, this mob will ignore dimensions when trying to spawn. This can be changed by mob spawners in real time. **/
+    public boolean ignoreDimensionCheck = false;
     /** Should this mob only spawn in darkness. **/
     public boolean spawnsInDarkness = false;
     /** Should this mob only spawn in light. **/
@@ -333,7 +335,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     }
     
     public boolean spawnCheck(World world, int i, int j, int k) {
-    	LycanitesMobs.printDebug("MobSpawns", " ~O===================================================O~");
+    	LycanitesMobs.printDebug("MobSpawns", " ~O==================== Spawn Check: " + this.getConfigName() + " ====================O~");
     	LycanitesMobs.printDebug("MobSpawns", "Attempting to Spawn: " + this.getConfigName());
     	
     	// Peaceful Check:
@@ -401,19 +403,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Second stage checks for spawning, this check is ignored if there is a valid monster spawner nearby. **/
     public boolean naturalSpawnCheck(World world, int i, int j, int k) {
     	LycanitesMobs.printDebug("MobSpawns", "Checking dimension.");
-    	if(this.mobInfo.spawnInfo.dimensionIDs.length <= 0)
+    	if(!this.isNativeDimension(this.worldObj))
     		return false;
-        else {
-        	boolean validDimension = false;
-        	for(int spawnDimension : this.mobInfo.spawnInfo.dimensionIDs) {
-        		if(this.worldObj.provider.dimensionId == spawnDimension) {
-        			validDimension = true;
-        			break;
-        		}
-        	}
-        	if(!validDimension)
-        		return false;
-        }
     	LycanitesMobs.printDebug("MobSpawns", "Block preference.");
         if(this.getBlockPathWeight(i, j, k) < 0.0F)
         	return false;
@@ -435,6 +426,20 @@ public abstract class EntityCreatureBase extends EntityLiving {
         	return false;
         	
         return true;
+    }
+    
+    // ========== Spawn Dimension Check ==========
+    public boolean isNativeDimension(World world) {
+    	if(this.ignoreDimensionCheck)
+    		return true;
+    	if(this.mobInfo.spawnInfo.dimensionIDs.length > 0) {
+        	for(int spawnDimension : this.mobInfo.spawnInfo.dimensionIDs) {
+        		if(this.worldObj.provider.dimensionId == spawnDimension) {
+        			return true;
+        		}
+        	}
+        }
+        return false;
     }
     
     // ========== Spawn Limit Check ==========

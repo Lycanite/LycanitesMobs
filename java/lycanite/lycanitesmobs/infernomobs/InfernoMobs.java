@@ -8,12 +8,16 @@ import lycanite.lycanitesmobs.api.ILycaniteMod;
 import lycanite.lycanitesmobs.api.MobInfo;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.infernomobs.dispenser.DispenserBehaviorEmber;
+import lycanite.lycanitesmobs.infernomobs.dispenser.DispenserBehaviorMagma;
 import lycanite.lycanitesmobs.infernomobs.entity.EntityCinder;
 import lycanite.lycanitesmobs.infernomobs.entity.EntityEmber;
 import lycanite.lycanitesmobs.infernomobs.entity.EntityLobber;
+import lycanite.lycanitesmobs.infernomobs.entity.EntityMagma;
 import lycanite.lycanitesmobs.infernomobs.item.ItemEmberCharge;
 import lycanite.lycanitesmobs.infernomobs.item.ItemInfernoEgg;
+import lycanite.lycanitesmobs.infernomobs.item.ItemMagmaCharge;
 import lycanite.lycanitesmobs.infernomobs.item.ItemScepterEmber;
+import lycanite.lycanitesmobs.infernomobs.item.ItemScepterMagma;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -61,8 +65,9 @@ public class InfernoMobs implements ILycaniteMod {
 		// ========== Create Items ==========
 		ObjectManager.addItem("InfernoEgg", "Spawn", new ItemInfernoEgg(config.itemIDs.get("InfernoEgg")));
 		ObjectManager.addItem("EmberCharge", "Ember Charge", new ItemEmberCharge(config.itemIDs.get("EmberCharge")));
-
 		ObjectManager.addItem("EmberScepter", "Ember Scepter", new ItemScepterEmber(config.itemIDs.get("EmberScepter")));
+		ObjectManager.addItem("MagmaCharge", "Magma Charge", new ItemMagmaCharge(config.itemIDs.get("MagmaCharge")));
+		ObjectManager.addItem("MagmaScepter", "Magma Scepter", new ItemScepterMagma(config.itemIDs.get("MagmaScepter")));
 	}
 	
 	
@@ -82,6 +87,7 @@ public class InfernoMobs implements ILycaniteMod {
 		
 		// ========== Create Projectiles ==========
 		ObjectManager.addProjectile("Ember", EntityEmber.class, ObjectManager.getItem("EmberCharge"), new DispenserBehaviorEmber());
+		ObjectManager.addProjectile("Magma", EntityMagma.class, ObjectManager.getItem("MagmaCharge"), new DispenserBehaviorMagma());
 		
 		// ========== Register Models ==========
 		proxy.registerModels();
@@ -104,6 +110,13 @@ public class InfernoMobs implements ILycaniteMod {
 				new ItemStack(ObjectManager.getItem("EmberScepter"), 1, 0),
 				new Object[] { "CCC", "CRC", "CRC",
 				Character.valueOf('C'), ObjectManager.getItem("EmberCharge"),
+				Character.valueOf('R'), Item.blazeRod
+			}));
+
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("MagmaScepter"), 1, 0),
+				new Object[] { "CCC", "CRC", "CRC",
+				Character.valueOf('C'), ObjectManager.getItem("MagmaCharge"),
 				Character.valueOf('R'), Item.blazeRod
 			}));
 		

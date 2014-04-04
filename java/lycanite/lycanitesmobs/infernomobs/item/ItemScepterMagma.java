@@ -1,24 +1,24 @@
-package lycanite.lycanitesmobs.demonmobs.item;
+package lycanite.lycanitesmobs.infernomobs.item;
 
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.api.item.ItemScepter;
-import lycanite.lycanitesmobs.demonmobs.DemonMobs;
-import lycanite.lycanitesmobs.demonmobs.entity.EntityHellfireball;
+import lycanite.lycanitesmobs.infernomobs.InfernoMobs;
+import lycanite.lycanitesmobs.infernomobs.entity.EntityMagma;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class ItemScepterHellfire extends ItemScepter {
+public class ItemScepterMagma extends ItemScepter {
 	
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemScepterHellfire(int itemID) {
+    public ItemScepterMagma(int itemID) {
         super(itemID);
-    	this.domain = DemonMobs.domain;
-    	this.itemName = "HellfireScepter";
-    	this.textureName = "scepterhellfire";
+    	this.domain = InfernoMobs.domain;
+    	this.itemName = "MagmaScepter";
+    	this.textureName = "sceptermagma";
         this.setUnlocalizedName(this.itemName);
     }
 	
@@ -43,7 +43,7 @@ public class ItemScepterHellfire extends ItemScepter {
     @Override
     public boolean chargedAttack(ItemStack itemStack, World world, EntityPlayer player, float power) {
     	if(!world.isRemote) {
-    		EntityProjectileBase projectile = new EntityHellfireball(world, player);
+    		EntityProjectileBase projectile = new EntityMagma(world, player);
     		projectile.setBaseDamage((int)(projectile.getDamage(null) * power * 2));
         	world.spawnEntityInWorld(projectile);
             world.playSoundAtEntity(player, projectile.getLaunchSound(), 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
@@ -57,7 +57,7 @@ public class ItemScepterHellfire extends ItemScepter {
 	// ==================================================
     @Override
     public boolean getIsRepairable(ItemStack itemStack, ItemStack repairStack) {
-        if(repairStack.itemID == ObjectManager.getItem("HellfireCharge").itemID) return true;
+        if(repairStack.itemID == ObjectManager.getItem("MagmaCharge").itemID) return true;
         return super.getIsRepairable(itemStack, repairStack);
     }
 }

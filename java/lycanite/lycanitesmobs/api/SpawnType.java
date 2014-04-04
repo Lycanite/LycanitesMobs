@@ -9,10 +9,12 @@ import java.util.Map;
 
 import lycanite.lycanitesmobs.Config;
 import lycanite.lycanitesmobs.LycanitesMobs;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.ForgeEventFactory;
 
@@ -135,60 +137,68 @@ public class SpawnType {
 		if(world.rand.nextDouble() < this.chance)
 			return;
 		
-		// Search for Fire Blocks:
-		List<int[]> coords = this.searchForBlocks(world, x, y, z);
-		if(coords.size() > blockLimit)
-			coords = coords.subList(0, blockLimit);
+		LycanitesMobs.printDebug("CustomSpawner", "~0==================== " + this.typeName + " Spawner ====================0~");
+		LycanitesMobs.printDebug("CustomSpawner", "Attempting to spawn mobs.");
+		
+		// Search for Coords:
+		List<int[]> coords = this.searchForCoords(world, x, y, z);
+		LycanitesMobs.printDebug("CustomSpawner", "Found " + coords.size() + "/" + this.blockLimit + " coordinates for mob spawning.");
+		if(coords.size() <= 0) {
+			LycanitesMobs.printDebug("CustomSpawner", "No valid coordinates were found, spawning cancelled.");
+			return;
+		}
+		if(coords.size() > this.blockLimit)
+			coords = coords.subList(0, this.blockLimit);
+		List<BiomeGenBase> targetBiomes = null;
+		for(int[] coord : coords) {
+			BiomeGenBase coordBiome = world.getBiomeGenForCoords(coord[0], coord[2]);
+			if(!targetBiomes.contains(coordBiome))
+				targetBiomes.add(coordBiome);
+		}
 		
 		// Choose Mobs:
-		SpawnInfo spawnInfo = null;
-		if(coords.size() > 0) {
-			
-			// Use spawn weights and decide randomly between valid spawns:
-			List<SpawnInfo> possibleSpawns = new ArrayList<SpawnInfo>();
-			int totalWeights = 0;
-			for(SpawnInfo possibleSpawn : this.spawnList) {
-				if(coords.size() >= possibleSpawn.spawnBlockCost) {
-					possibleSpawns.add(possibleSpawn);
-					totalWeights += possibleSpawn.spawnWeight;
-				}
-			}
-			if(totalWeights > 0) {
-				int randomWeight = world.rand.nextInt(totalWeights);
-				for(SpawnInfo possibleSpawn : possibleSpawns) {
-					if(possibleSpawn.spawnWeight > randomWeight)
-						break;
-					spawnInfo = possibleSpawn;
-				}
-			}
-			
-			// Spawn Chosen Mobs:
-			int mobsSpawned = 0;
-			if(spawnInfo != null) {
-				for(int[] coord : coords) {
-					EntityLiving entityLiving = null;
-					try {
-						entityLiving = (EntityLiving)spawnInfo.mobInfo.entityClass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {world});
-					} catch (Exception e) { e.printStackTrace(); }
-					if(entityLiving != null) {
-						entityLiving.setLocationAndAngles((double)coord[0], (double)coord[1], (double)coord[2], world.rand.nextFloat() * 360.0F, 0.0F);
-						Result canSpawn = ForgeEventFactory.canEntitySpawn(entityLiving, world, (float)coord[0], (float)coord[1], (float)coord[2]);
-						if(canSpawn == Result.ALLOW || (canSpawn == Result.DEFAULT && entityLiving.getCanSpawnHere())) {
-							entityLiving.timeUntilPortal = entityLiving.getPortalCooldown();
-							world.spawnEntityInWorld(entityLiving);
-                            if(!ForgeEventFactory.doSpecialSpawn(entityLiving, world, (float)coord[0], (float)coord[1], (float)coord[2]))
-                            	entityLiving.onSpawnWithEgg(null);
-                            mobsSpawned++;
-						}
-					}
-					if(mobsSpawned >= this.mobLimit)
-						break;
-				}
-			}
+		LycanitesMobs.printDebug("CustomSpawner", "Choosing mob type to spawn via spawn weights... " + this.spawnList.size() + " possible mob(s) to spawn.");
+		SpawnInfo spawnInfo = this.getRandomMobType(world, coords.size(), targetBiomes);
+		if(spawnInfo == null) {
+			LycanitesMobs.printDebug("CustomSpawner", "No mobs are able to spawn, either not enough blocks, empty biome/dimension or all weights are 0. Spawning cancelled.");
+			return;
 		}
+		LycanitesMobs.printDebug("CustomSpawner", "Mob type chosen: " + spawnInfo.mobInfo.name);
+		
+		// Spawn Chosen Mobs:
+		LycanitesMobs.printDebug("CustomSpawner", "Cycling through each possible spawn coordinate and attempting to spawn a mob there. Mob limit is " + this.mobLimit + ".");
+		int mobsSpawned = 0;
+		for(int[] coord : coords) {
+			EntityLiving entityLiving = null;
+			try {
+				entityLiving = (EntityLiving)spawnInfo.mobInfo.entityClass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {world});
+			} catch (Exception e) { e.printStackTrace(); }
+			if(entityLiving != null) {
+				entityLiving.setLocationAndAngles((double)coord[0], (double)coord[1], (double)coord[2], world.rand.nextFloat() * 360.0F, 0.0F);
+				LycanitesMobs.printDebug("CustomSpawner", "Attempting to spawn " + entityLiving + "...");
+				LycanitesMobs.printDebug("CustomSpawner", "Coordinates: X" + coord[0] + " Y" + coord[1] + " Z" + coord[2]);
+				if(entityLiving instanceof EntityCreatureBase) {
+					((EntityCreatureBase)entityLiving).ignoreDimensionCheck = true;
+				}
+				Result canSpawn = ForgeEventFactory.canEntitySpawn(entityLiving, world, (float)coord[0], (float)coord[1], (float)coord[2]);
+				if(canSpawn == Result.ALLOW || (canSpawn == Result.DEFAULT && entityLiving.getCanSpawnHere())) {
+					entityLiving.timeUntilPortal = entityLiving.getPortalCooldown();
+					world.spawnEntityInWorld(entityLiving);
+                    if(!ForgeEventFactory.doSpecialSpawn(entityLiving, world, (float)coord[0], (float)coord[1], (float)coord[2]))
+                    	entityLiving.onSpawnWithEgg(null);
+                    mobsSpawned++;
+                    LycanitesMobs.printDebug("CustomSpawner", "Spawn Check Passed! Mob spawned.");
+				}
+				else
+					LycanitesMobs.printDebug("CustomSpawner", "Spawn Check Failed! Unable to spawn.");
+			}
+			if(mobsSpawned >= this.mobLimit)
+				break;
+		}
+		LycanitesMobs.printDebug("CustomSpawner", "Spawning finished. Spawned " + mobsSpawned + " mobs.");
 	}
 	
-	// ========== Search for Blocks ==========
+	// ========== Search for Coords ==========
 	/** Searches for block coords within the defined range of the given x, y, z coordinates.
 	 * This will search from the closest blocks to the farthest blocks last.
 	 * world - World object to search.
@@ -196,7 +206,7 @@ public class SpawnType {
 	 * range - How far to search from the given coordinates.
 	 * blockID - The ID of the blocks to search for. An array can be taken for multiple block types.
 	**/
-	public List<int[]> searchForBlocks(World world, int x, int y, int z) {
+	public List<int[]> searchForCoords(World world, int x, int y, int z) {
 		List<int[]> blockCoords = new ArrayList<int[]>();
 		for(int i = x - this.range; i <= x + this.range; i++) {
 			for(int j = y - this.range; j <= y + this.range; j++) {
@@ -230,5 +240,53 @@ public class SpawnType {
 			}
 		});
 		return blockCoords;
+	}
+	
+	// ========== Get Random Mob Type ==========
+	/** Gets a random valid mob type to spawn using spawn weights to influence the odds. **/
+	public SpawnInfo getRandomMobType(World world, int blocksFound, List<BiomeGenBase> biomes) {
+		SpawnInfo spawnInfo = null;
+		List<SpawnInfo> possibleSpawns = new ArrayList<SpawnInfo>();
+		int totalWeights = 0;
+		for(SpawnInfo possibleSpawn : this.spawnList) {
+			
+			boolean enoughBlocks = true;
+			if(blocksFound < possibleSpawn.spawnBlockCost) {
+				LycanitesMobs.printDebug("CustomSpawner", possibleSpawn.mobInfo.name + ": Not enough of the required blocks available for spawning.");
+				enoughBlocks = false;
+			}
+			
+			boolean isValidBiome = false;
+			if(enoughBlocks) {
+				for(BiomeGenBase validBiome : possibleSpawn.biomes) {
+					for(BiomeGenBase targetBiome : biomes) {
+						if(targetBiome == validBiome) {
+							isValidBiome = true;
+							break;
+						}
+					}
+					if(isValidBiome)
+						break;
+				}
+			}
+			if(!isValidBiome)
+				LycanitesMobs.printDebug("CustomSpawner", possibleSpawn.mobInfo.name + ": No valid spawning biomes could be found within the coordinates.");
+			
+			if(enoughBlocks && isValidBiome) {
+				possibleSpawns.add(possibleSpawn);
+				totalWeights += possibleSpawn.spawnWeight;
+			}
+		}
+		if(totalWeights <= 0)
+			return null;
+		
+		int randomWeight = world.rand.nextInt(totalWeights);
+		LycanitesMobs.printDebug("CustomSpawner", "Generated a random weight of " + randomWeight + "/" + totalWeights);
+		for(SpawnInfo possibleSpawn : possibleSpawns) {
+			if(possibleSpawn.spawnWeight > randomWeight)
+				break;
+			spawnInfo = possibleSpawn;
+		}
+		return spawnInfo;
 	}
 }

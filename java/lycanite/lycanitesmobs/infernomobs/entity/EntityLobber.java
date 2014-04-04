@@ -5,7 +5,7 @@ import java.util.HashMap;
 import lycanite.lycanitesmobs.DropRate;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
-import lycanite.lycanitesmobs.api.entity.EntityProjectileRapidFire;
+import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackRanged;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
@@ -90,7 +90,7 @@ public class EntityLobber extends EntityCreatureBase implements IMob {
         this.drops.add(new DropRate(Item.coal.itemID, 1.0F).setMaxAmount(16));
         this.drops.add(new DropRate(Item.magmaCream.itemID, 0.75F).setMaxAmount(3));
         this.drops.add(new DropRate(Item.blazePowder.itemID, 0.5F).setMaxAmount(6));
-        this.drops.add(new DropRate(ObjectManager.getItem("EmberCharge").itemID, 0.25F));
+        this.drops.add(new DropRate(ObjectManager.getItem("MagmaCharge").itemID, 0.25F));
 	}
     
     
@@ -167,8 +167,8 @@ public class EntityLobber extends EntityCreatureBase implements IMob {
     @Override
     public void rangedAttack(Entity target, float range) {
     	// Type:
-    	EntityProjectileRapidFire projectile = new EntityProjectileRapidFire(EntityEmber.class, this.worldObj, this, 15, 3);
-        projectile.setProjectileScale(1f);
+    	EntityProjectileBase projectile = new EntityMagma(this.worldObj, this);
+        projectile.setProjectileScale(2f);
     	
     	// Y Offset:
     	projectile.posY -= this.height / 4;

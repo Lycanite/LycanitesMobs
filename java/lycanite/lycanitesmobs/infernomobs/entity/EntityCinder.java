@@ -84,27 +84,6 @@ public class EntityCinder extends EntityCreatureBase implements IMob {
         this.drops.add(new DropRate(Item.blazeRod.itemID, 0.1F));
         this.drops.add(new DropRate(ObjectManager.getItem("EmberCharge").itemID, 0.25F));
 	}
-	
-	
-    // ==================================================
-    //                     Spawning
-    // ==================================================
-	@Override
-    public boolean spawnBlockCheck(World world, int x, int y, int z) {
-		return true;
-    	/*int checkRange = 16;
-    	int blocksFound = 0;
-    	int targetAmount = 8;
-    	for(int i = x - checkRange; i <= x + checkRange; i++)
-        	for(int j = y - checkRange; j <= y + checkRange; j++)
-            	for(int k = z - checkRange; k <= z + checkRange; k++) {
-            		int blockID = world.getBlockId(i, j, k);
-            		if(blockID == Block.fire.blockID || (ObjectManager.getBlock("Hellire") != null && blockID == ObjectManager.getBlock("Hellire").blockID))
-            			if(++blocksFound >= targetAmount)
-            				return true;
-            	}
-    	return false;*/
-    }
     
     
     // ==================================================

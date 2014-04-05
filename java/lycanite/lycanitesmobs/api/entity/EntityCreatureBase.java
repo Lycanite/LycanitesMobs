@@ -13,9 +13,11 @@ import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
 import lycanite.lycanitesmobs.api.MobInfo;
 import lycanite.lycanitesmobs.api.SpawnInfo;
+import lycanite.lycanitesmobs.api.SpawnType;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIMoveRestriction;
 import lycanite.lycanitesmobs.api.entity.ai.FlightNavigator;
 import lycanite.lycanitesmobs.api.inventory.InventoryCreature;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnchantmentThorns;
@@ -107,8 +109,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // Spawning:
     /** Use the onSpawn() method and not this variable. True if this creature has spawned for the first time (naturally or via spawn egg, etc, not reloaded from a saved chunk). **/
     public boolean firstSpawn = true;
-    /** If true, this mob will ignore dimensions when trying to spawn. This can be changed by mob spawners in real time. **/
-    public boolean ignoreDimensionCheck = false;
+    /** This will contain the Spawn Type used to spawn this entity (this should only be used for spawn checks really as it isn't persistent). Null if spawned from egg, spawner, vanilla, etc. **/
+    public SpawnType spawnedFromType = null;
     /** Should this mob only spawn in darkness. **/
     public boolean spawnsInDarkness = false;
     /** Should this mob only spawn in light. **/
@@ -225,6 +227,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
         if(this.mobInfo.defaultDrops)
         	this.loadItemDrops();
         this.loadCustomDrops();
+        
+        // Fire Immunity:
+        this.isImmuneToFire = !this.canBurn();
     }
     
     // ========== Load Item Drops ==========
@@ -394,8 +399,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
         if(!this.worldObj.checkNoEntityCollision(this.boundingBox))
         	return false;
     	LycanitesMobs.printDebug("MobSpawns", "Checking solid block collision.");
-        if(!this.spawnsInBlock && !this.spawnsInWater && !this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).isEmpty())
+        if(!this.spawnsInBlock && !this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).isEmpty()) {
         	return false;
+        }
     	return true;
     }
     
@@ -419,9 +425,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	LycanitesMobs.printDebug("MobSpawns", "Checking required blocks.");
         if(!spawnBlockCheck(world, i, j, k))
         	return false;
-    	LycanitesMobs.printDebug("MobSpawns", "Checking required blocks.");
-        if(!spawnBlockCheck(world, i, j, k))
-        	return false;
+    	LycanitesMobs.printDebug("MobSpawns", "Counting mobs of the same kind, max allowed is: " + this.mobInfo.spawnInfo.spawnAreaLimit);
         if(!spawnLimitCheck(world, i, j, k))
         	return false;
         	
@@ -430,8 +434,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
     
     // ========== Spawn Dimension Check ==========
     public boolean isNativeDimension(World world) {
-    	if(this.ignoreDimensionCheck)
-    		return true;
+    	if(this.spawnedFromType != null) {
+    		if("NETHER".equalsIgnoreCase(this.spawnedFromType.typeName) || "PORTAL".equalsIgnoreCase(this.spawnedFromType.typeName))
+    			return true;
+    	}
     	if(this.mobInfo.spawnInfo.dimensionIDs.length > 0) {
         	for(int spawnDimension : this.mobInfo.spawnInfo.dimensionIDs) {
         		if(this.worldObj.provider.dimensionId == spawnDimension) {
@@ -449,8 +455,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	 double range = SpawnInfo.spawnLimitRange;
     	 LycanitesMobs.printDebug("MobSpawns", "Checking spawn area limit. Limit of: " + spawnLimit + " Range of: " + range);
          if(spawnLimit > 0 && range > 0) {
-         	AxisAlignedBB searchAABB = AxisAlignedBB.getBoundingBox(i, j, k, i, j, k);
-         	List targets = this.worldObj.getEntitiesWithinAABB(this.mobInfo.entityClass, searchAABB.expand(range, range, range));
+         	List targets = this.getNearbyEntities(this.mobInfo.entityClass, range);
          	LycanitesMobs.printDebug("MobSpawns", "Found " + targets.size() + " of this mob within the radius (class is " + this.mobInfo.entityClass + ").");
          	if(targets.size() > spawnLimit)
          		return false;
@@ -459,9 +464,39 @@ public abstract class EntityCreatureBase extends EntityLiving {
     }
     
     // ========== Spawn Block Check ==========
-    /** Checks for nearby blocks from the ijk (xyz) block location, Cinders use this when spawning by Fire Blocks. **/
-    public boolean spawnBlockCheck(World world, int i, int j, int k) {
-        return true;
+    /** Checks for nearby blocks from the xyz block location, Cinders use this when spawning by Fire Blocks. **/
+    public boolean spawnBlockCheck(World world, int x, int y, int z) {
+        if(this.spawnedFromType != null && this.mobInfo.spawnInfo.enforceBlockCost) {
+        	int blocksFound = 0;
+        	if(this.spawnedFromType.materials != null) {
+        		for(int i = x - this.spawnedFromType.range; i <= x + this.spawnedFromType.range; i++)
+                	for(int j = y - this.spawnedFromType.range; j <= y + this.spawnedFromType.range; j++)
+                    	for(int k = z - this.spawnedFromType.range; k <= z + this.spawnedFromType.range; k++) {
+                    		Material blockMaterial = world.getBlockMaterial(i, j, k);
+                    		for(Material validMaterial : this.spawnedFromType.materials) {
+    							if(blockMaterial == validMaterial) {
+    								if(++blocksFound >= this.mobInfo.spawnInfo.spawnBlockCost)
+                        				return true;
+    							}
+    						}
+                    	}
+        	}
+        	if(this.spawnedFromType.blocks != null) {
+        		for(int i = x - this.spawnedFromType.range; i <= x + this.spawnedFromType.range; i++)
+                	for(int j = y - this.spawnedFromType.range; j <= y + this.spawnedFromType.range; j++)
+                    	for(int k = z - this.spawnedFromType.range; k <= z + this.spawnedFromType.range; k++) {
+                    		int blockID = world.getBlockId(i, j, k);
+                    		for(Block validBlock : this.spawnedFromType.blocks) {
+    							if(blockID == validBlock.blockID) {
+    								if(++blocksFound >= this.mobInfo.spawnInfo.spawnBlockCost)
+                        				return true;
+    							}
+    						}
+                    	}
+        	}
+        	return false;
+        }
+    	return true;
     }
     
     // ========== Egg Spawn ==========
@@ -473,14 +508,14 @@ public abstract class EntityCreatureBase extends EntityLiving {
     }
     
     // ========== Despawning ==========
-    /** Returns whether this mob should despawn overtime or not. Config defined forced despawns override everything except tamed creatures. **/
+    /** Returns whether this mob should despawn overtime or not. Config defined forced despawns override everything except tamed creatures and tagged creatures. **/
     @Override
     protected boolean canDespawn() {
     	if(this.mobInfo.spawnInfo.despawnForced)
     		return true;
     	if(!this.mobInfo.spawnInfo.despawnNatural)
     		return false;
-    	if(this.isPersistant() || this.getLeashed())
+    	if(this.isPersistant() || this.getLeashed() || this.hasCustomNameTag())
     		return false;
     	return super.canDespawn();
     }
@@ -501,7 +536,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public boolean despawnCheck() {
         if(this.worldObj.isRemote)
         	return false;
-        if((!this.mobInfo.peacefulDifficulty && this.worldObj.difficultySetting <= 0) && !(this.getLeashed() || this.isPersistant()))
+        if((!this.mobInfo.peacefulDifficulty && this.worldObj.difficultySetting <= 0) && !(this.getLeashed() || this.isPersistant() || this.hasCustomNameTag()))
         	return true;
         return false;
     }
@@ -1748,6 +1783,12 @@ public abstract class EntityCreatureBase extends EntityLiving {
    	@Override
     public double getYOffset() { return super.getYOffset() - 0.5D; }
     
+   	// ========== Get Nearby Entities ==========
+   	/** Get entities that are near this entity. **/
+   	public List getNearbyEntities(Class entityClass, double range) {
+   		AxisAlignedBB searchAABB = AxisAlignedBB.getBoundingBox((double)this.posX, (double)this.posY, (double)this.posZ, (double)this.posX, (double)this.posY, (double)this.posZ);
+   		return this.worldObj.getEntitiesWithinAABB(this.mobInfo.entityClass, searchAABB.expand(range, range, range));
+   	}
     
     // ==================================================
     //                        NBT

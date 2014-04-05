@@ -54,7 +54,7 @@ public class EntityLacedon extends EntityCreatureAgeable implements IMob {
         
         this.eggName = "SaltwaterEgg";
         this.babySpawnChance = 0.1D;
-        this.canGrow = false;
+        this.canGrow = true;
         
         this.setWidth = 0.8F;
         this.setHeight = 1.6F;

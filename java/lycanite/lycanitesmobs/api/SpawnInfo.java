@@ -10,6 +10,7 @@ public class SpawnInfo {
 	public static double spawnLimitRange = 32D;
 	public static boolean disableAllSpawning = false;
 	public static boolean disableDungeonSpawners = false;
+	public static boolean enforceBlockCost = true;
 
 	// ========== Spawn General ==========
 	/** The Mob Info of the mob this Spawn Info belongs to. **/
@@ -82,6 +83,7 @@ public class SpawnInfo {
 		spawnLimitRange = (double)LycanitesMobs.config.getFeatureInt("SpawnLimitRange");
 		disableAllSpawning = LycanitesMobs.config.getFeatureBool("DisableAllSpawning");
 		disableDungeonSpawners = LycanitesMobs.config.getFeatureBool("DisableDungeonSpawners");
+		enforceBlockCost = LycanitesMobs.config.getFeatureBool("EnforceBlockCost");
 	}
 	
 	

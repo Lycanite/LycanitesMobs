@@ -8,6 +8,7 @@ import java.util.UUID;
 import lycanite.lycanitesmobs.DropRate;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupAnimal;
+import lycanite.lycanitesmobs.api.SpawnInfo;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowParent;
@@ -91,6 +92,18 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
     // ==================================================
     public String getConfigName() {
     	return this.entityName + "Segment";
+    }
+
+    // ==================================================
+    //                      Spawning
+    // ==================================================
+    // ========== Natural Spawn Check ==========
+    /** Second stage checks for spawning, this check is ignored if there is a valid monster spawner nearby. **/
+    @Override
+    public boolean naturalSpawnCheck(World world, int i, int j, int k) {
+    	if(this.getNearbyEntities(EntityConcapedeHead.class, SpawnInfo.spawnLimitRange).size() <= 0)
+    		return false;
+    	return super.naturalSpawnCheck(world, i, j, k);
     }
 	
 	

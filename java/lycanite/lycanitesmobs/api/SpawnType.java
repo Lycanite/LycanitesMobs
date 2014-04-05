@@ -177,8 +177,8 @@ public class SpawnType {
 				entityLiving.setLocationAndAngles((double)coord[0] + 0.5D, (double)coord[1], (double)coord[2] + 0.5D, world.rand.nextFloat() * 360.0F, 0.0F);
 				LycanitesMobs.printDebug("CustomSpawner", "Attempting to spawn " + entityLiving + "...");
 				LycanitesMobs.printDebug("CustomSpawner", "Coordinates: X" + coord[0] + " Y" + coord[1] + " Z" + coord[2]);
-				if(("NETHER".equalsIgnoreCase(spawnInfo.spawnTypeName) || "PORTAL".equalsIgnoreCase(spawnInfo.spawnTypeName)) && entityLiving instanceof EntityCreatureBase) {
-					((EntityCreatureBase)entityLiving).ignoreDimensionCheck = true;
+				if(entityLiving instanceof EntityCreatureBase) {
+					((EntityCreatureBase)entityLiving).spawnedFromType = spawnInfo.spawnType;
 				}
 				Result canSpawn = ForgeEventFactory.canEntitySpawn(entityLiving, world, (float)coord[0], (float)coord[1], (float)coord[2]);
 				if(canSpawn == Result.ALLOW || (canSpawn == Result.DEFAULT && entityLiving.getCanSpawnHere())) {

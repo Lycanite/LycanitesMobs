@@ -158,7 +158,7 @@ public class EntityTroll extends EntityCreatureAgeable implements IMob {
     // ========== Movement Speed Modifier ==========
     public float getSpeedMod() {
     	if(this.stoneForm) // Slower in stone form.
-    		return 0.25F;
+    		return 0.125F;
     	return 1.0F;
     }
     

@@ -443,7 +443,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     }
     
     // ========== Spawn Limit Check ==========
-    /** Checks for nearby blocks from the ijk (xyz) block location, Cinders use this when spawning by Fire Blocks. **/
+    /** Checks for nearby entities of this type from the ijk (xyz) location, mobs use this so that too many don't spawn in the same area. **/
     public boolean spawnLimitCheck(World world, int i, int j, int k) {
     	 int spawnLimit = this.mobInfo.spawnInfo.spawnAreaLimit;
     	 double range = SpawnInfo.spawnLimitRange;
@@ -711,10 +711,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
         if(!this.worldObj.isRemote && !this.canBreatheAboveWater()) {
 	        int currentAir = this.getAir();
 	        if(this.isEntityAlive()) {
-	        	if(
-	        			(!this.isLavaCreature && !this.waterContact())
-	        			|| (this.isLavaCreature && !this.lavaContact())
-	        	) {
+	        	if((!this.isLavaCreature && !this.waterContact())
+	        		|| (this.isLavaCreature && !this.lavaContact())) {
 		        	currentAir--;
 		            this.setAir(currentAir);
 		            if(this.getAir() <= -200) {

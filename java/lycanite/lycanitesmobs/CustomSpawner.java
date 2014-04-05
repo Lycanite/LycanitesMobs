@@ -34,8 +34,10 @@ public class CustomSpawner {
 			int z = (int)player.posZ;
 			
 			// Custom Mob Spawning:
+			int tickOffset = 0;
 			for(SpawnType spawnType : SpawnType.spawnTypes) {
-				spawnType.spawnMobs(entityUpdateTick, world, x, y, z);
+				spawnType.spawnMobs(entityUpdateTick - tickOffset, world, x, y, z);
+				tickOffset += 100;
 			}
 		}
 		

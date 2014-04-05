@@ -2,7 +2,6 @@ package lycanite.lycanitesmobs.api;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,6 +83,7 @@ public class SpawnType {
 			
 			spawnTypes.add(newSpawnType);
 			spawnTypeMap.put(spawnTypeName.toUpperCase(), newSpawnType);
+			LycanitesMobs.printDebug("CustomSpawner", "Added custom spawn type: " + spawnTypeName.toUpperCase());
 		}
 	}
 	
@@ -149,7 +149,7 @@ public class SpawnType {
 		}
 		if(coords.size() > this.blockLimit)
 			coords = coords.subList(0, this.blockLimit);
-		List<BiomeGenBase> targetBiomes = null;
+		List<BiomeGenBase> targetBiomes = new ArrayList<BiomeGenBase>();
 		for(int[] coord : coords) {
 			BiomeGenBase coordBiome = world.getBiomeGenForCoords(coord[0], coord[2]);
 			if(!targetBiomes.contains(coordBiome))
@@ -166,7 +166,7 @@ public class SpawnType {
 		LycanitesMobs.printDebug("CustomSpawner", "Mob type chosen: " + spawnInfo.mobInfo.name);
 		
 		// Spawn Chosen Mobs:
-		LycanitesMobs.printDebug("CustomSpawner", "Cycling through each possible spawn coordinate and attempting to spawn a mob there. Mob limit is " + this.mobLimit + ".");
+		LycanitesMobs.printDebug("CustomSpawner", "Cycling through each possible spawn coordinate and attempting to spawn a mob there. Mob limit is " + this.mobLimit + " overall.");
 		int mobsSpawned = 0;
 		for(int[] coord : coords) {
 			EntityLiving entityLiving = null;
@@ -174,10 +174,10 @@ public class SpawnType {
 				entityLiving = (EntityLiving)spawnInfo.mobInfo.entityClass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {world});
 			} catch (Exception e) { e.printStackTrace(); }
 			if(entityLiving != null) {
-				entityLiving.setLocationAndAngles((double)coord[0], (double)coord[1], (double)coord[2], world.rand.nextFloat() * 360.0F, 0.0F);
+				entityLiving.setLocationAndAngles((double)coord[0] + 0.5D, (double)coord[1], (double)coord[2] + 0.5D, world.rand.nextFloat() * 360.0F, 0.0F);
 				LycanitesMobs.printDebug("CustomSpawner", "Attempting to spawn " + entityLiving + "...");
 				LycanitesMobs.printDebug("CustomSpawner", "Coordinates: X" + coord[0] + " Y" + coord[1] + " Z" + coord[2]);
-				if(entityLiving instanceof EntityCreatureBase) {
+				if(("NETHER".equalsIgnoreCase(spawnInfo.spawnTypeName) || "PORTAL".equalsIgnoreCase(spawnInfo.spawnTypeName)) && entityLiving instanceof EntityCreatureBase) {
 					((EntityCreatureBase)entityLiving).ignoreDimensionCheck = true;
 				}
 				Result canSpawn = ForgeEventFactory.canEntitySpawn(entityLiving, world, (float)coord[0], (float)coord[1], (float)coord[2]);
@@ -230,15 +230,16 @@ public class SpawnType {
 				}
 			}
 		}
-		Collections.sort(blockCoords, new Comparator<int[]>() {
+		/*Collections.sort(blockCoords, new Comparator<int[]>() {
 			@Override
 			public int compare(int[] currentCoord, int[] previousCoord) {
-				int deltaX = previousCoord[0] - currentCoord[0];
-				int deltaY = previousCoord[1] - currentCoord[1];
-				int deltaZ = previousCoord[2] - currentCoord[2];
+				int deltaX = currentCoord[0] - previousCoord[0];
+				int deltaY = currentCoord[1] - previousCoord[1];
+				int deltaZ = currentCoord[2] - previousCoord[2];
 				return Math.round((float)Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ));
 			}
-		});
+		});*/
+		Collections.shuffle(blockCoords);
 		return blockCoords;
 	}
 	
@@ -256,8 +257,8 @@ public class SpawnType {
 				enoughBlocks = false;
 			}
 			
-			boolean isValidBiome = false;
-			if(enoughBlocks) {
+			boolean isValidBiome = "PORTAL".equalsIgnoreCase(possibleSpawn.spawnTypeName) || "NETHER".equalsIgnoreCase(possibleSpawn.spawnTypeName);
+			if(enoughBlocks && !isValidBiome) {
 				for(BiomeGenBase validBiome : possibleSpawn.biomes) {
 					for(BiomeGenBase targetBiome : biomes) {
 						if(targetBiome == validBiome) {
@@ -283,9 +284,9 @@ public class SpawnType {
 		int randomWeight = world.rand.nextInt(totalWeights);
 		LycanitesMobs.printDebug("CustomSpawner", "Generated a random weight of " + randomWeight + "/" + totalWeights);
 		for(SpawnInfo possibleSpawn : possibleSpawns) {
+			spawnInfo = possibleSpawn;
 			if(possibleSpawn.spawnWeight > randomWeight)
 				break;
-			spawnInfo = possibleSpawn;
 		}
 		return spawnInfo;
 	}

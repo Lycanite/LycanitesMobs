@@ -77,7 +77,15 @@ public class EntityMagma extends EntityProjectileBase {
     //========== Place Block ==========
     @Override
     public void placeBlock(World world, int x, int y, int z) {
-	   	 world.setBlock(x, y, z, Block.lavaMoving.blockID);
+	   	 world.setBlock(x, y, z, Block.lavaMoving.blockID, 12, 3);
+	   	 if(this.canDestroyBlock(x + 1, y, z))
+	   		 world.setBlock(x + 1, y, z, Block.lavaMoving.blockID, 11, 3);
+	   	 if(this.canDestroyBlock(x - 1, y, z))
+		   	 world.setBlock(x - 1, y, z, Block.lavaMoving.blockID, 11, 3);
+	   	 if(this.canDestroyBlock(x, y, z + 1))
+		   	 world.setBlock(x, y, z + 1, Block.lavaMoving.blockID, 11, 3);
+	   	 if(this.canDestroyBlock(x, y, z - 1))
+		   	 world.setBlock(x, y, z - 1, Block.lavaMoving.blockID, 11, 3);
     }
     
     //========== On Impact Particles/Sounds ==========

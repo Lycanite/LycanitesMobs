@@ -19,9 +19,9 @@ public class SubConfig extends Config {
 		this.loadSetting(this.featureBools, "Spawn Control", "DisableAllSpawning", "Disable All Spawning", false);
 		this.loadSetting(this.featureBools, "Spawn Control", "DisableDungeonSpawners", "Disable Dungeon Spawners", false);
 		
-		this.loadCustomSpawnerType("Fire", 400, 0.25D, 32, 32, 32);
+		this.loadCustomSpawnerType("Fire", 400, 0.5D, 32, 32, 32);
 		this.loadCustomSpawnerType("Lava", 400, 0.25D, 64, 64, 32);
-		this.loadCustomSpawnerType("Portal", 400, 0.125D, 32, 32, 1);
+		this.loadCustomSpawnerType("Portal", 1200, 0.125D, 32, 32, 1);
 		
 		// ========== Stat Multipliers ==========
 		this.loadDifficultyMultiplier(this.difficultyMultipliers, "Stat Multipliers", "Easy", "0.5");

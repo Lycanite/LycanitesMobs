@@ -84,6 +84,7 @@ public class ItemCustomSpawnEgg extends Item {
         	if(tileEntity != null && tileEntity instanceof TileEntityMobSpawner) {
         		TileEntityMobSpawner spawner = (TileEntityMobSpawner)tileEntity;
         		spawner.getSpawnerLogic().setMobID(ObjectManager.entityLists.get(this.mod.getDomain()).getStringFromID(itemStack.getItemDamage()));
+        		world.markBlockForUpdate(x, y, z);
         	}
         }
         

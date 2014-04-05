@@ -28,7 +28,7 @@ public class ItemScepterMagma extends ItemScepter {
 	// ==================================================
     @Override
     public int getDurability() {
-    	return 250;
+    	return 80;
     }
     
     // ========== Charge Time ==========

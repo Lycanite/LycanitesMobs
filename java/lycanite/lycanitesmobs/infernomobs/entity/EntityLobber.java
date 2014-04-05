@@ -61,9 +61,9 @@ public class EntityLobber extends EntityCreatureBase implements IMob {
         this.setupMob();
         
         // AI Tasks:
-        this.getNavigator().setCanSwim(true);
+        this.getNavigator().setAvoidsWater(true);
         this.tasks.addTask(0, new EntityAISwimming(this).setSink(true));
-        this.tasks.addTask(5, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(20).setStaminaTime(100).setRange(12.0F).setMinChaseDistance(3.0F).setChaseTime(-1));
+        this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(100).setRange(16.0F).setMinChaseDistance(8.0F).setChaseTime(-1));
         this.tasks.addTask(6, wanderAI);
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
@@ -79,7 +79,7 @@ public class EntityLobber extends EntityCreatureBase implements IMob {
 		baseAttributes.put("maxHealth", 80D);
 		baseAttributes.put("movementSpeed", 0.16D);
 		baseAttributes.put("knockbackResistance", 1.0D);
-		baseAttributes.put("followRange", 16D);
+		baseAttributes.put("followRange", 32D);
 		baseAttributes.put("attackDamage", 1D);
         super.applyEntityAttributes(baseAttributes);
     }
@@ -110,18 +110,33 @@ public class EntityLobber extends EntityCreatureBase implements IMob {
 	        	setAttackTasks(false);
         }
         
-        // Wander Pause Rates:
+        // Lava Pause Rates:
 		if(this.lavaContact())
 			this.wanderAI.setPauseRate(120);
 		else
 			this.wanderAI.setPauseRate(0);
         
+        // Hellfire Trail:
+        if(!this.worldObj.isRemote && (this.ticksExisted % 10 == 0 || this.isMoving() && this.ticksExisted % 5 == 0)) {
+        	int trailHeight = 1;
+        	for(int y = 0; y < trailHeight; y++) {
+        		int blockID = this.worldObj.getBlockId((int)this.posX, (int)this.posY + y, (int)this.posZ);
+        		if(blockID == 0 || blockID == Block.snow.blockID || blockID == Block.fire.blockID)
+        			this.worldObj.setBlock((int)this.posX, (int)this.posY + y, (int)this.posZ, Block.fire.blockID);
+        	}
+		}
+        
         // Particles:
-        if(this.worldObj.isRemote)
+        if(this.worldObj.isRemote) {
 	        for(int i = 0; i < 2; ++i) {
-	            this.worldObj.spawnParticle("largesmoke", this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
 	            this.worldObj.spawnParticle("flame", this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
+	            this.worldObj.spawnParticle("dripLava", this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
 	        }
+	        if(this.ticksExisted % 10 == 0)
+		        for(int i = 0; i < 2; ++i) {
+		            this.worldObj.spawnParticle("lava", this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
+		        }
+        }
     }
 
 	
@@ -130,8 +145,8 @@ public class EntityLobber extends EntityCreatureBase implements IMob {
     // ==================================================
     // ========== Movement Speed Modifier ==========
     public float getSpeedMod() {
-    	if(this.lavaContact()) // Checks specifically just for water.
-    		return 2.0F;
+    	if(this.lavaContact())
+    		return 16.0F;
     	return 1.0F;
     }
     
@@ -163,6 +178,14 @@ public class EntityLobber extends EntityCreatureBase implements IMob {
     // ==================================================
     //                      Attacks
     // ==================================================
+    // ========== Set Attack Target ==========
+    @Override
+    public boolean canAttackClass(Class targetClass) {
+    	if(targetClass.isAssignableFrom(EntityCinder.class))
+    		return false;
+        return super.canAttackClass(targetClass);
+    }
+    
     // ========== Ranged Attack ==========
     @Override
     public void rangedAttack(Entity target, float range) {

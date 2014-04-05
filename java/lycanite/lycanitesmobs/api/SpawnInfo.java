@@ -79,7 +79,7 @@ public class SpawnInfo {
     // ==================================================
 	public static void loadGlobalSettings() {
 		Config config = LycanitesMobs.config;
-		spawnLimitRange = (double)LycanitesMobs.config.getFeatureInt("SpawnLimitSearchRadius");
+		spawnLimitRange = (double)LycanitesMobs.config.getFeatureInt("SpawnLimitRange");
 		disableAllSpawning = LycanitesMobs.config.getFeatureBool("DisableAllSpawning");
 		disableDungeonSpawners = LycanitesMobs.config.getFeatureBool("DisableDungeonSpawners");
 	}

@@ -131,6 +131,14 @@ public class EntityCinder extends EntityCreatureBase implements IMob {
     // ==================================================
     //                      Attacks
     // ==================================================
+    // ========== Set Attack Target ==========
+    @Override
+    public boolean canAttackClass(Class targetClass) {
+    	if(targetClass.isAssignableFrom(EntityLobber.class))
+    		return false;
+        return super.canAttackClass(targetClass);
+    }
+    
     // ========== Ranged Attack ==========
     @Override
     public void rangedAttack(Entity target, float range) {

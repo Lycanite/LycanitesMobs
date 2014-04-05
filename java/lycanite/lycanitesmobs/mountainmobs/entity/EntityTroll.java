@@ -119,10 +119,7 @@ public class EntityTroll extends EntityCreatureAgeable implements IMob {
         }
         else {
         	if(!this.isDaytime() || !this.worldObj.canBlockSeeTheSky((int)this.posX, (int)this.boundingBox.maxY, (int)this.posZ)) {
-        		//if(this.worldObj.isRemote) {
-        	        //TODO Better particles!
-        	    //}
-        		this.stoneForm = false;
+	        	this.stoneForm = false;
         	}
         }
         

@@ -23,7 +23,7 @@ public class BlockPoisonCloud extends BlockBase {
 	//                   Constructor
 	// ==================================================
 	public BlockPoisonCloud(int blockID) {
-		super(blockID, Material.fire);
+		super(blockID, Material.air);
 		
 		// Properties:
 		this.mod = SwampMobs.instance;

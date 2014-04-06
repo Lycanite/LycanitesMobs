@@ -11,6 +11,7 @@ public class SpawnInfo {
 	public static boolean disableAllSpawning = false;
 	public static boolean disableDungeonSpawners = false;
 	public static boolean enforceBlockCost = true;
+	public static double spawnWeightScale = 1.0D;
 
 	// ========== Spawn General ==========
 	/** The Mob Info of the mob this Spawn Info belongs to. **/
@@ -84,6 +85,7 @@ public class SpawnInfo {
 		disableAllSpawning = LycanitesMobs.config.getFeatureBool("DisableAllSpawning");
 		disableDungeonSpawners = LycanitesMobs.config.getFeatureBool("DisableDungeonSpawners");
 		enforceBlockCost = LycanitesMobs.config.getFeatureBool("EnforceBlockCost");
+		spawnWeightScale = LycanitesMobs.config.getFeatureDouble("SpawnWeightScale");
 	}
 	
 	
@@ -126,7 +128,7 @@ public class SpawnInfo {
 		this.biomes = config.getSpawnBiomesTypes(name);
 		
 		// Spawn Chance:
-		this.spawnWeight = config.spawnWeights.get(name);
+		this.spawnWeight = Math.round((float)config.spawnWeights.get(name) * (float)spawnWeightScale);
 		this.spawnChance = config.spawnChances.get(name);
 		
 		// Spawn limits:

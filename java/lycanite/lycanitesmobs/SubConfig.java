@@ -19,6 +19,7 @@ public class SubConfig extends Config {
 		this.loadSetting(this.featureBools, "Spawn Control", "DisableAllSpawning", "Disable All Spawning", false);
 		this.loadSetting(this.featureBools, "Spawn Control", "DisableDungeonSpawners", "Disable Dungeon Spawners", false);
 		this.loadSetting(this.featureBools, "Spawn Control", "EnforceBlockCost", "Enforce Block Cost", true);
+		this.loadSetting(this.featureDoubles, "Spawn Control", "SpawnWeightScale", "Spawn Weight Scale", 1.0D);
 		
 		this.loadCustomSpawnerType("Fire", 400, 0.5D, 32, 32, 32);
 		this.loadCustomSpawnerType("Lava", 400, 0.25D, 64, 64, 32);

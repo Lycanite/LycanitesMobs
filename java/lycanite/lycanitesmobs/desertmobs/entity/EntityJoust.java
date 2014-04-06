@@ -168,13 +168,13 @@ public class EntityJoust extends EntityCreatureAgeable implements IAnimals, IGro
     // ==================================================
 	@Override
 	public void setGrowingAge(int age) {
-        super.setGrowingAge(age);
-		if(age == 0)
+		if(age == 0 && this.getAge() < 0)
 			if(this.getRNG().nextFloat() >= 0.9F) {
 				EntityJoustAlpha alphaJoust = new EntityJoustAlpha(this.worldObj);
 				alphaJoust.copyLocationAndAnglesFrom(this);
 				this.worldObj.spawnEntityInWorld(alphaJoust);
 				this.worldObj.removeEntity(this);
 			}
+        super.setGrowingAge(age);
     }
 }

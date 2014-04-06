@@ -161,13 +161,13 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
     // ==================================================
 	@Override
 	public void setGrowingAge(int age) {
-        super.setGrowingAge(age);
-		if(age == 0)
+		if(age == 0 && this.getAge() < 0)
 			if(this.getRNG().nextFloat() >= 0.9F) {
 				EntityMakaAlpha alpha = new EntityMakaAlpha(this.worldObj);
 				alpha.copyLocationAndAnglesFrom(this);
 				this.worldObj.spawnEntityInWorld(alpha);
 				this.worldObj.removeEntity(this);
 			}
+        super.setGrowingAge(age);
     }
 }

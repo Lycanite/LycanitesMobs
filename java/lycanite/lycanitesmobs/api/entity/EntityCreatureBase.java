@@ -1692,6 +1692,17 @@ public abstract class EntityCreatureBase extends EntityLiving {
 		if(air == 300 && !this.canBreatheAboveWater()) return;
     	super.setAir(air);
     }
+	
+	/** Returns true if this mob is in water. If this mob is a lava creature, this will return true if it is in lava too.
+	 * Use waterContact() or lavaContact() to check for damage, speed boosts, etc.
+	**/
+	@Override
+	public boolean isInWater() {
+		if(this.isLavaCreature)
+			return this.handleLavaMovement();
+		else
+			return super.isInWater();
+	}
     
     /** Returns true if this mob is in water the rain. Uses the vanilla isWet() but takes dripping leaves, etc into account. **/
     public boolean waterContact() {

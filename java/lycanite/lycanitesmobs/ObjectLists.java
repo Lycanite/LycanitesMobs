@@ -12,6 +12,9 @@ import net.minecraft.item.ItemStack;
 
 public class ObjectLists {
 	
+	// Item List Names:
+	public static String[] itemListNames = new String[] {"RawMeat", "CookedMeat", "Vegetables", "RawFish", "CookedFish", "CactusFood", "Mushrooms", "Sweets"};
+	
 	// Maps:
 	public static Map<String, List<ItemStack>> itemLists = new HashMap<String, List<ItemStack>>();
 	public static Map<String, List<Class>> entityLists = new HashMap<String, List<Class>>();
@@ -100,7 +103,7 @@ public class ObjectLists {
 	
 	
     // ==================================================
-    //                      Compare
+    //                   Create Lists
     // ==================================================
 	public static void createLists() {
 		// Raw Meat: (A bit cold...)
@@ -143,5 +146,28 @@ public class ObjectLists {
 		ObjectLists.addItem("Sweets", Item.cookie);
 		ObjectLists.addItem("Sweets", Block.cake);
 		ObjectLists.addItem("Sweets", Item.pumpkinPie);
+		
+		// Custom Entries:
+		for(String itemListName : itemListNames) {
+			addFromConfig(itemListName);
+		}
+	}
+	
+	// ========== Add From Config Value ==========
+	public static void addFromConfig(String listName) {
+		Map<String, String> itemListConfig = LycanitesMobs.config.itemLists;
+		if(!itemListConfig.containsKey(listName))
+			return;
+		
+		String customDropsString = itemListConfig.get(listName);
+		if(customDropsString != null && customDropsString.length() > 0)
+    		for(String customDropEntryString : customDropsString.split(",")) {
+    			String[] customDropValues = customDropEntryString.split(":");
+    			if(customDropValues.length >= 2) {
+					int dropID = Integer.parseInt(customDropValues[0]);
+					int dropMeta = Integer.parseInt(customDropValues[1]);
+					ObjectLists.addItem(listName, new ItemStack(dropID, 1, dropMeta));
+    			}
+    		}
 	}
 }

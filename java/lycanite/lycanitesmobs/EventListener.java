@@ -1,7 +1,9 @@
 package lycanite.lycanitesmobs;
 
+import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
 import net.minecraft.potion.Potion;
 import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 
 public class EventListener {
@@ -28,6 +30,37 @@ public class EventListener {
 				if(event.target.isInvisible())
 					if(event.isCancelable())
 						event.setCanceled(true);
+			}
+		}
+	}
+	
+	
+    // ==================================================
+    //                 Living Hurt Event
+    // ==================================================
+	@ForgeSubscribe
+	public void onLivingHurt(LivingHurtEvent event) {
+		if(event.isCancelable() && event.isCanceled())
+	      return;
+		
+		if(event.entityLiving == null || event.source == null)
+			return;
+		
+		// ========== Mounted Protection ==========
+		if(event.entityLiving.ridingEntity != null) {
+			if(event.entityLiving.ridingEntity instanceof EntityCreatureRideable) {
+				// Prevent Mounted Entities from Suffocating:
+				if("inWall".equals(event.source.damageType)) {
+					event.setCanceled(true);
+					return;
+				}
+				
+				// Copy Mount Immunities to Rider:
+				EntityCreatureRideable creatureRideable = (EntityCreatureRideable)event.entityLiving.ridingEntity;
+				if(!creatureRideable.isDamageTypeApplicable(event.source.damageType)) {
+					event.setCanceled(true);
+					return;
+				}
 			}
 		}
 	}

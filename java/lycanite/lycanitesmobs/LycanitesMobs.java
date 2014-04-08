@@ -27,7 +27,7 @@ public class LycanitesMobs {
 	
 	public static final String modid = "LycanitesMobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String version = "1.4.11 - MC 1.6.4";
+	public static final String version = "1.4.12 - MC 1.6.4";
 	public static final String domain = modid.toLowerCase();
 	public static Config config = new SubConfig();
 	

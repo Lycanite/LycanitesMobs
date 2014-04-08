@@ -11,6 +11,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
@@ -53,8 +54,21 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
     @Override
     public void onLivingUpdate() {
     	super.onLivingUpdate();
-    	if(this.hasRiderTarget() && this.getRiderTarget() instanceof EntityLivingBase)
-    		this.riderEffects((EntityLivingBase)this.getRiderTarget());
+    	if(this.hasRiderTarget() && this.getRiderTarget() instanceof EntityLivingBase) {
+    		EntityLivingBase riderLiving = (EntityLivingBase)this.getRiderTarget();
+    		
+    		// Run Mount Rider Effects:
+    		this.riderEffects(riderLiving);
+    		
+    		// Protect Rider from Potion Effects:
+    		for(Object possibleEffect : riderLiving.getActivePotionEffects()) {
+    			if(possibleEffect instanceof PotionEffect) {
+    				PotionEffect potionEffect = (PotionEffect)possibleEffect;
+    				if(!this.isPotionApplicable(potionEffect))
+    					riderLiving.removePotionEffect(potionEffect.getPotionID());
+    			}
+    		}
+    	}
     	
     	if(this.hasRiderTarget()) {
     		// Player Rider Controls:

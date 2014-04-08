@@ -73,6 +73,7 @@ public class Config {
 	
 	// Item IDs:
 	public Map<String, Integer> itemIDs = new HashMap<String, Integer>();
+	public Map<String, String> itemLists = new HashMap<String, String>();
 	
 	// Effect IDs:
 	public Map<String, Integer> effectIDs = new HashMap<String, Integer>();

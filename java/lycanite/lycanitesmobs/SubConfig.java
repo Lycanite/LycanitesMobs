@@ -38,11 +38,10 @@ public class SubConfig extends Config {
 		// ========== Mob Control ==========
 		// No global mobs.
 		
-		// ========== Block IDs ==========
-		// No global blocks.
-		
-		// ========== Item IDs ==========
-		// No global items.
+		// ========== Items ==========
+		for(String itemListName : ObjectLists.itemListNames) {
+			this.loadSetting(this.itemLists, "Item Lists", itemListName, itemListName, "");
+		}
 		
 		// ========== Effect IDs ==========
 		int effectStartID = 64;

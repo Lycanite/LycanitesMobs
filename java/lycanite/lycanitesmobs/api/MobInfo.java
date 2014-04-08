@@ -112,7 +112,7 @@ public class MobInfo {
 		this.eggBackColor = eggBack;
 		this.eggForeColor = eggFore;
 		
-		// Load Items Drops:
+		// Load Item Drops:
 		this.defaultDrops = config.defaultDrops.get(name);
 		String customDropsString = config.customDrops.get(name);
 		if(customDropsString != null && customDropsString.length() > 0)

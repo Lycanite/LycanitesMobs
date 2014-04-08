@@ -51,8 +51,8 @@ public class EntityAISwimming extends EntityAIBase {
 	    		if(!this.host.flightNavigator.atTargetPosition())
 	    		targetY = this.host.flightNavigator.targetPosition.posY;
 	    	}
-	    	if(this.sink && this.host.posY < targetY)//host.getAttackTarget() != null && host.posY < host.getAttackTarget().posY)
-	    		this.host.getJumpHelper().setJumping(); //TODO Test!
+	    	if(this.sink && this.host.posY < targetY)
+	    		this.host.getJumpHelper().setJumping();
     	}
     	else if(this.host.getRNG().nextFloat() < 0.8F)
             this.host.getJumpHelper().setJumping();

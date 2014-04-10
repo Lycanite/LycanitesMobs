@@ -44,7 +44,7 @@ public class SubConfig extends Config {
 		}
 		
 		// ========== Effect IDs ==========
-		int effectStartID = 64;
+		int effectStartID = 256;
 		this.loadSetting(this.effectIDs, "Effect IDs", "Paralysis", "Paralysis Effect ID", effectStartID++);
 		this.loadSetting(this.effectIDs, "Effect IDs", "Leech", "Leech Effect ID", effectStartID++);
 		this.loadSetting(this.effectIDs, "Effect IDs", "Penetration", "Penetration Effect ID", effectStartID++);

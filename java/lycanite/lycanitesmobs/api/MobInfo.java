@@ -114,7 +114,7 @@ public class MobInfo {
 		
 		// Load Item Drops:
 		this.defaultDrops = config.defaultDrops.get(name);
-		String customDropsString = config.customDrops.get(name);
+		String customDropsString = config.customDrops.get(name).replace(" ", "");
 		if(customDropsString != null && customDropsString.length() > 0)
     		for(String customDropEntryString : customDropsString.split(",")) {
     			String[] customDropValues = customDropEntryString.split(":");

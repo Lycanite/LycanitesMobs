@@ -173,7 +173,7 @@ public class EntityLacedon extends EntityCreatureAgeable implements IMob {
                 	effectSeconds = 8;
             if(target instanceof EntityPlayer)
             	effectSeconds /= 2;
-            if(effectSeconds > 0) {
+            if(effectSeconds > 0 && Potion.potionTypes.length > ObjectManager.getPotionEffect("Weight").id) {
                 ((EntityLivingBase)target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("Weight").id, effectSeconds * 20, 1));
             }
         }

@@ -115,7 +115,7 @@ public class EntityJabberwock extends EntityCreatureAgeable implements IMob {
                 	effectSeconds = 7;
                 else if (this.worldObj.difficultySetting == 3)
                 	effectSeconds = 10;
-            if(effectSeconds > 0)
+            if(effectSeconds > 0 && Potion.potionTypes.length > ObjectManager.getPotionEffect("Weight").id)
                 ((EntityLivingBase)target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("Weight").id, effectSeconds * 20, 0));
         }
         return true;

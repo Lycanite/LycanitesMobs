@@ -139,7 +139,7 @@ public class EntityTrent extends EntityCreatureBase implements IMob {
                  	effectSeconds = 6;
                  else if(this.worldObj.difficultySetting == 3)
                  	effectSeconds = 12;
-             if(effectSeconds > 0)
+             if(effectSeconds > 0 && Potion.potionTypes.length > ObjectManager.getPotionEffect("Weight").id)
                  ((EntityLivingBase)target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("Paralysis").id, effectSeconds * 20, 0));
          }
         

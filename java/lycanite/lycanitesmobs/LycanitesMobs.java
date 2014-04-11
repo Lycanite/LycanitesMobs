@@ -66,39 +66,8 @@ public class LycanitesMobs {
 		// ========== Spawn Info ==========
 		SpawnInfo.loadGlobalSettings();
 		
-		// ========== Add Custom Potion Effects ==========
-		Potion[] potionTypes;
-		for(Field f : Potion.class.getDeclaredFields()) {
-			f.setAccessible(true);
-			try {
-				if(f.getName().equals("potionTypes") || f.getName().equals("field_76425_a")) {
-					Field modfield = Field.class.getDeclaredField("modifiers");
-					modfield.setAccessible(true);
-					modfield.setInt(f, f.getModifiers() & ~Modifier.FINAL);
-					
-					potionTypes = (Potion[])f.get(null);
-					final Potion[] newPotionTypes = new Potion[256];
-					System.arraycopy(potionTypes, 0, newPotionTypes, 0, potionTypes.length);
-					f.set(null, newPotionTypes);
-				}
-			}
-			catch (Exception e) {
-				System.err.println("[Lycanites Mobs] An error occured when adding custom potion effects:");
-				System.err.println(e);
-			}
-		}
-		
-		ObjectManager.addPotionEffect("Paralysis", config, true, 0xFFFF00, 1, 0);
-		ObjectManager.addPotionEffect("Leech", config, true, 0x00FF99, 7, 0);
-		ObjectManager.addPotionEffect("Penetration", config, true, 0x222222, 6, 1);
-		ObjectManager.addPotionEffect("Recklessness", config, true, 0xFF0044, 4, 0);
-		ObjectManager.addPotionEffect("Rage", config, true, 0xFF4400, 4, 0);
-		ObjectManager.addPotionEffect("Weight", config, true, 0x000022, 1, 0);
-		ObjectManager.addPotionEffect("Swiftswimming", config, true, 0x0000FF, 0, 2);
-		
 		MinecraftForge.EVENT_BUS.register(new EventListener());
 		MinecraftForge.EVENT_BUS.register(new CustomSpawner());
-		MinecraftForge.EVENT_BUS.register(new PotionEffects());
 	}
 	
 	
@@ -132,6 +101,41 @@ public class LycanitesMobs {
 		LanguageRegistry.addName(Item.horseArmorIron, "Iron Pet Armor");
 		LanguageRegistry.addName(Item.horseArmorGold, "Gold Pet Armor");
 		LanguageRegistry.addName(Item.horseArmorDiamond, "Diamond Pet Armor");
+		
+		// ========== Add Custom Potion Effects ==========
+		Potion[] potionTypes;
+		for(Field f : Potion.class.getDeclaredFields()) {
+			f.setAccessible(true);
+			try {
+				if(f.getName().equals("potionTypes") || f.getName().equals("field_76425_a")) {
+					Field modfield = Field.class.getDeclaredField("modifiers");
+					modfield.setAccessible(true);
+					modfield.setInt(f, f.getModifiers() & ~Modifier.FINAL);
+					
+					potionTypes = (Potion[])f.get(null);
+					int newLength = 384;
+					if(Potion.potionTypes.length > 384)
+						newLength = Potion.potionTypes.length;
+					final Potion[] newPotionTypes = new Potion[512];
+					System.arraycopy(potionTypes, 0, newPotionTypes, 0, potionTypes.length);
+					f.set(null, newPotionTypes);
+				}
+			}
+			catch (Exception e) {
+				System.err.println("[Lycanites Mobs] An error occured when adding custom potion effects:");
+				System.err.println(e);
+			}
+		}
+		
+		ObjectManager.addPotionEffect("Paralysis", config, true, 0xFFFF00, 1, 0);
+		ObjectManager.addPotionEffect("Leech", config, true, 0x00FF99, 7, 0);
+		ObjectManager.addPotionEffect("Penetration", config, true, 0x222222, 6, 1);
+		ObjectManager.addPotionEffect("Recklessness", config, true, 0xFF0044, 4, 0);
+		ObjectManager.addPotionEffect("Rage", config, true, 0xFF4400, 4, 0);
+		ObjectManager.addPotionEffect("Weight", config, true, 0x000022, 1, 0);
+		ObjectManager.addPotionEffect("Swiftswimming", config, true, 0x0000FF, 0, 2);
+		
+		MinecraftForge.EVENT_BUS.register(new PotionEffects());
     }
 	
 	

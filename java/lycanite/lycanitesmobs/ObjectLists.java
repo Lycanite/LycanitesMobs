@@ -159,7 +159,7 @@ public class ObjectLists {
 		if(!itemListConfig.containsKey(listName))
 			return;
 		
-		String customDropsString = itemListConfig.get(listName);
+		String customDropsString = itemListConfig.get(listName).replace(" ", "");
 		if(customDropsString != null && customDropsString.length() > 0)
     		for(String customDropEntryString : customDropsString.split(",")) {
     			String[] customDropValues = customDropEntryString.split(":");

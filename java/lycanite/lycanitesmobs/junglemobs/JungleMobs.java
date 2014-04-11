@@ -9,9 +9,11 @@ import lycanite.lycanitesmobs.api.ILycaniteMod;
 import lycanite.lycanitesmobs.api.MobInfo;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
+import lycanite.lycanitesmobs.junglemobs.block.BlockQuickWeb;
 import lycanite.lycanitesmobs.junglemobs.entity.EntityConcapedeHead;
 import lycanite.lycanitesmobs.junglemobs.entity.EntityConcapedeSegment;
 import lycanite.lycanitesmobs.junglemobs.entity.EntityGeken;
+import lycanite.lycanitesmobs.junglemobs.entity.EntityTarantula;
 import lycanite.lycanitesmobs.junglemobs.entity.EntityUvaraptor;
 import lycanite.lycanitesmobs.junglemobs.item.ItemJungleEgg;
 import net.minecraft.block.Block;
@@ -77,6 +79,9 @@ public class JungleMobs implements ILycaniteMod {
 		ObjectLists.addItem("CookedMeat", ObjectManager.getItem("ConcapedeMeatCooked"));
 		ObjectManager.addItem("TropicalCurry", "Tropical Curry", new ItemCustomFood(config.itemIDs.get("TropicalCurry"), "TropicalCurry", domain, 6, 0.7F).setPotionEffect(Potion.jump.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
 		ObjectLists.addItem("CookedMeat", ObjectManager.getItem("TropicalCurry"));
+
+		// ========== Create Blocks ==========
+		ObjectManager.addBlock("QuickWeb", "QuickWeb", new BlockQuickWeb(config.blockIDs.get("QuickWeb")));
 	}
 	
 	
@@ -95,6 +100,7 @@ public class JungleMobs implements ILycaniteMod {
 		ObjectManager.addMob(new MobInfo(this, "Uvaraptor", EntityUvaraptor.class, 0x00FF33, 0xFF00FF));
 		ObjectManager.addMob(new MobInfo(this, "Concapede", EntityConcapedeHead.class, 0x111144, 0xDD0000));
 		ObjectManager.addMob(new MobInfo(this, "ConcapedeSegment", "Concapede Segment", EntityConcapedeSegment.class, 0x000022, 0x990000));
+		ObjectManager.addMob(new MobInfo(this, "Tarantula", EntityTarantula.class, 0x008800, 0xDD0000));
 		
 		// ========== Create Projectiles ==========
 		//ObjectManager.addProjectile("Template", EntityTemplate.class, Item.templateCharge, new DispenserBehaviorPoisonRay());

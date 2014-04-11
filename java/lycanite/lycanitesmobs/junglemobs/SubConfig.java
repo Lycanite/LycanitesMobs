@@ -19,15 +19,17 @@ public class SubConfig extends Config {
 		// ========== Special Feature Control ==========
 		loadSetting(this.featureBools, "Feature Control", "ConcapedesOnPeaceful", "Concapede Peaceful Spawning", true);
 		loadSetting(this.featureBools, "Feature Control", "DespawnConcapedesNaturally", "Concapede Natural Despawning", false);
+		loadSetting(this.featureBools, "Feature Control", "QuickWeb", "Enable Quick Webs", true);
 		
 		// ========== Mob Control ==========
 		loadMobSettings("Geken", 8, 10, 1, 3, "MONSTER");
 		loadMobSettings("Uvaraptor", 5, 10, 1, 3, "MONSTER");
 		loadMobSettings("Concapede", 18, 10, 1, 3, "CREATURE");
 		loadMobSettings("ConcapedeSegment", 0, 0, 0, 0, "CREATURE", "NONE", "NONE");
+		loadMobSettings("Tarantula", 6, 10, 1, 2, "MONSTER");
 		
 		// ========== Block IDs ==========
-		//loadSetting(blockIDs, "Block IDs", "PoisonCloud", "Poison Cloud Block ID", 3853);
+		loadSetting(blockIDs, "Block IDs", "QuickWeb", "Quick Web Block ID", 3855);
 		
 		// ========== Item IDs ==========
 		loadSetting(itemIDs, "Item IDs", "JungleEgg", "Jungle Spawn Egg ID", 24040);

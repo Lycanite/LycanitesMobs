@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class PlayerControlHandler {
@@ -66,6 +67,8 @@ public class PlayerControlHandler {
     	summonFocus.put(player, focus);
     }
     public static void setPlayerSummonAmount(EntityPlayer player, int amount) {
+    	if(player instanceof EntityClientPlayerMP)
+    		return;
     	summonAmount.put(player, amount);
     }
 	
@@ -79,6 +82,8 @@ public class PlayerControlHandler {
     	return summonFocus.get(player);
     }
     public static int getPlayerSummonAmount(EntityPlayer player) {
+    	if(player instanceof EntityClientPlayerMP)
+    		return 0;
     	if(!summonAmount.containsKey(player)) {
     		setPlayerSummonAmount(player, 0);
     	}

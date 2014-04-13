@@ -47,7 +47,7 @@ public class EventListener {
 			}
 			
 			// Item Using:
-			// This is used to replace Item.onPlayerStoppedUsing() as it acted weird. Intended to be used the same.
+			// This is used to replace Item.onUsingItemTick() as it acted weird. Intended to be used the same.
 			if(player.getItemInUse() != null) {
 				if(player.getItemInUse().getItem() instanceof ItemScepter) {
 					ItemScepter scepter = (ItemScepter)player.getItemInUse().getItem();

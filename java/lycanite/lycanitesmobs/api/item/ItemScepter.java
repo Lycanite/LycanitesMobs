@@ -56,7 +56,8 @@ public class ItemScepter extends Item {
     }
 
     // ========== Using ==========
-    // Was onPlayerStoppedUsing() but acted weird, using the EventListener to replicate.
+    // Was onUsingItemTick() but acted weird, using the EventListener to replicate.
+    //@Override
     public void onPlayerUsing(ItemStack itemStack, EntityPlayer player, int useRemaining) {
     	if(itemStack == null || player == null || player.worldObj == null)
     		return;

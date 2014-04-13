@@ -56,19 +56,16 @@ public class ItemSummoningStaff extends ItemScepter {
     public boolean rapidAttack(ItemStack itemStack, World world, EntityPlayer player) {
     	int summonAmount = PlayerControlHandler.getPlayerSummonAmount(player);
     	if(player.capabilities.isCreativeMode) {
-    		if(!world.isRemote)
-    			PlayerControlHandler.setPlayerSummonAmount(player, ++summonAmount);
+    		PlayerControlHandler.setPlayerSummonAmount(player, ++summonAmount);
         	return true;
     	}
     	int summonFocus = PlayerControlHandler.getPlayerSummonFocus(player);
     	int summonCost = PlayerControlHandler.summonFocusCharge * this.getSummonCost(itemStack);
     	if(summonFocus < summonCost)
     		return false;
-    	PlayerControlHandler.setPlayerSummonFocus(player, summonFocus - summonCost);
-    	if(!world.isRemote) {
-    		PlayerControlHandler.setPlayerSummonAmount(player, ++summonAmount);
-    		LycanitesMobs.printDebug("", "Summon CHARGED! Will summon: " + PlayerControlHandler.getPlayerSummonAmount(player) + " " + player);
-    	}
+		PlayerControlHandler.setPlayerSummonFocus(player, summonFocus - summonCost);
+		PlayerControlHandler.setPlayerSummonAmount(player, ++summonAmount);
+		LycanitesMobs.printDebug("", "Summon CHARGED! Will summon: " + PlayerControlHandler.getPlayerSummonAmount(player) + " " + player);
     	return true;
     }
     
@@ -76,13 +73,10 @@ public class ItemSummoningStaff extends ItemScepter {
     public boolean chargedAttack(ItemStack itemStack, World world, EntityPlayer player, float power) {
 		int summonAmount = PlayerControlHandler.getPlayerSummonAmount(player);
     	if(summonAmount <= 0) {
-			LycanitesMobs.printDebug("", "Summon FIZZLED!" + " " + player);
 			return false;
 		}
-    	if(!world.isRemote) {
-	    	PlayerControlHandler.setPlayerSummonAmount(player, 0);
-	    	this.summonCreatures(world, player, summonAmount);
-    	}
+    	PlayerControlHandler.setPlayerSummonAmount(player, 0);
+    	this.summonCreatures(world, player, summonAmount);
     	return true;
     }
     

@@ -35,6 +35,7 @@ import lycanite.lycanitesmobs.demonmobs.item.ItemScepterDemonicLightning;
 import lycanite.lycanitesmobs.demonmobs.item.ItemScepterDevilstar;
 import lycanite.lycanitesmobs.demonmobs.item.ItemScepterDoomfire;
 import lycanite.lycanitesmobs.demonmobs.item.ItemScepterHellfire;
+import lycanite.lycanitesmobs.demonmobs.item.ItemStaffBelph;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityGhast;
@@ -104,6 +105,8 @@ public class DemonMobs implements ILycaniteMod {
 		ObjectManager.addItem("HellfireScepter", "Hellfire Scepter", new ItemScepterHellfire(config.itemIDs.get("HellfireScepter")));
 		ObjectManager.addItem("DevilstarScepter", "Devilstar Scepter", new ItemScepterDevilstar(config.itemIDs.get("DevilstarScepter")));
 		ObjectManager.addItem("DemonicLightningScepter", "Demonic Lightning Scepter", new ItemScepterDemonicLightning(config.itemIDs.get("DemonicLightningScepter")));
+
+		ObjectManager.addItem("BelphStaff", "Belph Summoning Staff", new ItemStaffBelph(config.itemIDs.get("BelphStaff")));
 		
 		// ========== Create Blocks ==========
 		ObjectManager.addBlock("Hellfire", "Hellfire", new BlockHellfire(config.blockIDs.get("Hellfire")));

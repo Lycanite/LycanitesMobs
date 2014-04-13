@@ -23,7 +23,7 @@ public class ItemScepter extends Item {
 	public String textureName = "scepter";
 	public String domain = LycanitesMobs.domain;
     private float damageScale = 1.0F;
-    private boolean weaponFlash = false;
+    private int weaponFlash = 0;
 	
 	// ==================================================
 	//                   Constructor
@@ -52,22 +52,27 @@ public class ItemScepter extends Item {
     @Override
     public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
     	player.setItemInUse(itemStack, this.getMaxItemUseDuration(itemStack));
-        this.weaponFlash = true;
         return itemStack;
     }
 
     // ========== Using ==========
-    @Override
-    public void onUsingItemTick(ItemStack itemStack, EntityPlayer player, int count) {
-    	if(player == null)
+    // Was onPlayerStoppedUsing() but acted weird, using the EventListener to replicate.
+    public void onPlayerUsing(ItemStack itemStack, EntityPlayer player, int useRemaining) {
+    	if(itemStack == null || player == null || player.worldObj == null)
     		return;
-    	if(count < getMaxItemUseDuration(itemStack)
-    			&& count % this.getRapidTime(itemStack) == 0
-    			&& player.worldObj != null
-    			&& this.rapidAttack(itemStack, player.worldObj, player)) {
-            itemStack.damageItem(1, player);
+    	int useTime = this.getMaxItemUseDuration(itemStack) - useRemaining;
+    	if(useTime > this.getRapidTime(itemStack)) {
+    		int rapidRemainder = useTime % this.getRapidTime(itemStack);
+    		if(rapidRemainder == 0 && player.worldObj != null) {
+    			if(this.rapidAttack(itemStack, player.worldObj, player)) {
+		    		this.damageItemRapid(itemStack, player);
+		    		this.weaponFlash = Math.max(20, this.getRapidTime(itemStack));
+		    	}
+    		}
     	}
-    	super.onUsingItemTick(itemStack, player, count);
+    	if(useTime >= this.getChargeTime(itemStack))
+    		this.weaponFlash = Math.max(20, this.getChargeTime(itemStack));
+    	super.onUsingItemTick(itemStack, player, useRemaining);
     }
     
     // ========== Stop ==========
@@ -76,7 +81,7 @@ public class ItemScepter extends Item {
     	int useTime = this.getMaxItemUseDuration(itemStack) - useRemaining;
     	float power = (float)useTime / (float)this.getChargeTime(itemStack);
     	
-    	this.weaponFlash = false;
+    	this.weaponFlash = 0;
     	
     	if((double)power < 0.1D)
             return;
@@ -84,7 +89,8 @@ public class ItemScepter extends Item {
     		power = 1.0F;
     	
     	if(this.chargedAttack(itemStack, world, player, power)) {
-    		itemStack.damageItem((int)(10 * power), player);
+    		this.damageItemCharged(itemStack, player, power);
+    		this.weaponFlash = Math.min(20, this.getChargeTime(itemStack));
     	}
     }
 
@@ -95,6 +101,14 @@ public class ItemScepter extends Item {
     }
 
     // ========== Durability ==========
+    public void damageItemRapid(ItemStack itemStack, EntityPlayer player) {
+        itemStack.damageItem(1, player);
+    }
+    
+    public void damageItemCharged(ItemStack itemStack, EntityPlayer player, float power) {
+    	itemStack.damageItem((int)(10 * power), player);
+    }
+    
     public int getDurability() {
     	return 250;
     }
@@ -176,8 +190,9 @@ public class ItemScepter extends Item {
     @SideOnly(Side.CLIENT)
     @Override
     public Icon getIconFromDamage(int damage) {
-    	if(this.weaponFlash)
+    	if(this.weaponFlash-- > 0) {
             return AssetManager.getIconGroup(this.itemName)[1];
+    	}
         return AssetManager.getIconGroup(this.itemName)[0];
     }
     

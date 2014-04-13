@@ -4,7 +4,7 @@ import java.util.Map.Entry;
 
 import lycanite.lycanitesmobs.api.MobInfo;
 import lycanite.lycanitesmobs.api.entity.EntityParticle;
-import lycanite.lycanitesmobs.api.gui.GuiMountOverlay;
+import lycanite.lycanitesmobs.api.gui.GuiCreatureOverlay;
 import lycanite.lycanitesmobs.api.render.RenderCreature;
 import lycanite.lycanitesmobs.api.render.RenderParticle;
 import lycanite.lycanitesmobs.api.render.RenderProjectile;
@@ -31,7 +31,7 @@ public class ClientProxy extends CommonProxy {
 		TickRegistry.registerTickHandler(new TickHandler(), Side.CLIENT);
 		
 		// Event Listeners:
-		MinecraftForge.EVENT_BUS.register(new GuiMountOverlay(Minecraft.getMinecraft()));
+		MinecraftForge.EVENT_BUS.register(new GuiCreatureOverlay(Minecraft.getMinecraft()));
 		
 		// Mount Jump:
 		// I'm using the tick handler and player jump key instead to prevent overriding.

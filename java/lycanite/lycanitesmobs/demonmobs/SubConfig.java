@@ -38,12 +38,17 @@ public class SubConfig extends Config {
 		loadSetting(itemIDs, "Item IDs", "HellfireCharge", "Hellfire Charge ID", 24062);
 		loadSetting(itemIDs, "Item IDs", "DevilstarCharge", "Devilstar Charge ID", 24063);
 		loadSetting(itemIDs, "Item IDs", "DemonicLightningCharge", "Demonic Lightning Charge ID", 24064);
+		
 		loadSetting(itemIDs, "Item IDs", "PinkyMeatRaw", "Raw Pinky Meat ID", 24065);
 		loadSetting(itemIDs, "Item IDs", "PinkyMeatCooked", "Cooked Pinky Meat ID", 24066);
+		
 		loadSetting(itemIDs, "Item IDs", "DoomfireScepter", "Doomfire Scepter ID", 24067);
 		loadSetting(itemIDs, "Item IDs", "HellfireScepter", "Hellfire Scepter ID", 24068);
 		loadSetting(itemIDs, "Item IDs", "DevilstarScepter", "Devilstar Scepter ID", 24069);
 		loadSetting(itemIDs, "Item IDs", "DemonicLightningScepter", "Demonic Lightning Scepter ID", 24070);
+		
 		loadSetting(itemIDs, "Item IDs", "DevilLasagna", "Devil Lasagna ID", 24071);
+		
+		loadSetting(itemIDs, "Item IDs", "BelphStaff", "Belph Summoning Staff ID", 24072);
 	}
 }

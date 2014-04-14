@@ -44,14 +44,14 @@ public class SubConfig extends Config {
 		}
 		
 		// ========== Effect IDs ==========
-		int effectStartID = 256;
-		this.loadSetting(this.effectIDs, "Effect IDs", "Paralysis", "Paralysis Effect ID", effectStartID++);
-		this.loadSetting(this.effectIDs, "Effect IDs", "Leech", "Leech Effect ID", effectStartID++);
-		this.loadSetting(this.effectIDs, "Effect IDs", "Penetration", "Penetration Effect ID", effectStartID++);
-		this.loadSetting(this.effectIDs, "Effect IDs", "Recklessness", "Recklessness Effect ID", effectStartID++);
-		this.loadSetting(this.effectIDs, "Effect IDs", "Rage", "Rage Effect ID", effectStartID++);
-		this.loadSetting(this.effectIDs, "Effect IDs", "Weight", "Weight Effect ID", effectStartID++);
-		this.loadSetting(this.effectIDs, "Effect IDs", "Swiftswimming", "Swiftswimming Effect ID", effectStartID++);
+		int effectStartID = 0;
+		this.loadSetting(this.effectIDs, "Effect ID Offsets", "Paralysis", "Paralysis Effect ID Offset", effectStartID++);
+		this.loadSetting(this.effectIDs, "Effect IDs", "Leech", "Leech Effect ID Offset", effectStartID++);
+		this.loadSetting(this.effectIDs, "Effect IDs", "Penetration", "Penetration Effect ID Offset", effectStartID++);
+		this.loadSetting(this.effectIDs, "Effect IDs", "Recklessness", "Recklessness Effect ID Offset", effectStartID++);
+		this.loadSetting(this.effectIDs, "Effect IDs", "Rage", "Rage Effect ID Offset", effectStartID++);
+		this.loadSetting(this.effectIDs, "Effect IDs", "Weight", "Weight Effect ID Offset", effectStartID++);
+		this.loadSetting(this.effectIDs, "Effect IDs", "Swiftswimming", "Swiftswimming Effect ID Offset", effectStartID++);
 	}
 	
 	// ==================================================

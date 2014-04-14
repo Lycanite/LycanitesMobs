@@ -4,13 +4,16 @@ import java.util.HashMap;
 
 import lycanite.lycanitesmobs.DropRate;
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackRanged;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIBreakDoor;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowOwner;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIMoveRestriction;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerAttack;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
@@ -26,7 +29,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class EntityBelph extends EntityCreatureBase implements IMob {
+public class EntityBelph extends EntityCreatureTameable implements IMob {
     
     // ==================================================
  	//                    Constructor
@@ -53,13 +56,16 @@ public class EntityBelph extends EntityCreatureBase implements IMob {
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIBreakDoor(this));
         this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(30).setRange(16.0F).setMinChaseDistance(8.0F).setChaseTime(-1));
-        this.tasks.addTask(4, new EntityAIMoveRestriction(this));
+        this.tasks.addTask(3, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
+        this.tasks.addTask(5, new EntityAIMoveRestriction(this));
         this.tasks.addTask(6, new EntityAIWander(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
-        this.targetTasks.addTask(0, new EntityAITargetRevenge(this).setHelpClasses(EntityBehemoth.class));
-        this.targetTasks.addTask(1, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
-        this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
+        this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
+        this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
+        this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(EntityBehemoth.class));
+        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
+        this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
     }
     
     // ========== Stats ==========
@@ -88,6 +94,8 @@ public class EntityBelph extends EntityCreatureBase implements IMob {
     // ========== Set Attack Target ==========
     @Override
     public boolean canAttackClass(Class targetClass) {
+    	if(this.isTamed())
+    		return super.canAttackClass(targetClass);
     	if(targetClass.isAssignableFrom(EntityBehemoth.class))
     		return false;
         return super.canAttackClass(targetClass);

@@ -79,7 +79,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	 * Defense stat multipliers are applied to this value too, nor whole results are rounded.
 	**/
 	public int defense = 0;
-    /** How much experience this mob drops (overriden to 0 if it is a minion). **/
+    /** How much experience this mob drops (overridden to 0 if it is a minion). **/
 	public int experience = 5;
     /** Which attack phase this mob is on. This will be replaced with a better system for boss mobs. **/
 	public byte attackPhase = 0;
@@ -123,10 +123,14 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public boolean spawnsOnLand = true;
     /** Does this mob spawn inside liquids? **/
     public boolean spawnsInWater = false;
-    /** Is this mob a minion? (Minions don't drop items and other things). **/
-    public boolean isMinion = false;
     /** If true, this creature will swim in and if set, will suffocate without lava instead of without water. **/
     public boolean isLavaCreature = false;
+    /** Is this mob a minion? (Minions don't drop items and other things). **/
+    public boolean isMinion = false;
+    /** If true, this mob is temporary and will eventually despawn once the temporaryDuration is at or below 0. **/
+	public boolean isTemporary = false;
+    /** If this mob is temporary, this will count down to 0, once per tick. Once it hits 0, this creature will despawn. **/
+	public int temporaryDuration = 0;
     
     // Movement:
     /** Whether the mob should use it's leash AI or not. **/
@@ -536,6 +540,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public boolean despawnCheck() {
         if(this.worldObj.isRemote)
         	return false;
+        if(this.isTemporary && this.temporaryDuration-- <= 0)
+        	return true;
         if((!this.mobInfo.peacefulDifficulty && this.worldObj.difficultySetting <= 0) && !(this.getLeashed() || this.isPersistant() || this.hasCustomNameTag()))
         	return true;
         return false;
@@ -578,8 +584,20 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Minion ==========
     /** Set whether this mob is a minion or not, this should be used if this mob is summoned. **/
     public void setMinion(boolean minion) { this.isMinion = minion; }
-    /** Returns whether or not with mob is a minion. **/
+    /** Returns whether or not this mob is a minion. **/
     public boolean isMinion() { return this.isMinion; }
+    
+    // ========== Temporary Mob ==========
+    /** Make this mob temporary where it will desapwn once the specified duration (in ticks) reaches 0. **/
+    public void setTemporary(int duration) {
+    	this.temporaryDuration = duration;
+    	this.isTemporary = true;
+    }
+    /** Remove the temporary life duration of this mob, note that this mob will still despawn naturally unless it is set as persistent through other means. **/
+    public void unsetTemporary() {
+    	this.isTemporary = false;
+    	this.temporaryDuration = 0;
+    }
     
     // ========== On Spawn ==========
     /** This is called when the mob is first spawned to the world either through natural spawning or from a Spawn Egg. **/
@@ -1820,6 +1838,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	if(nbtTagCompound.hasKey("IsMinion")) {
     		this.setMinion(nbtTagCompound.getBoolean("IsMinion"));
     	}
+    	if(nbtTagCompound.hasKey("IsTemporary") && nbtTagCompound.getBoolean("IsTemporary") && nbtTagCompound.hasKey("TemporaryDuration")) {
+    		this.setTemporary(nbtTagCompound.getInteger("TemporaryDuration"));
+    	}
+    	else this.unsetTemporary();
         super.readEntityFromNBT(nbtTagCompound);
         this.inventory.readFromNBT(nbtTagCompound);
     }
@@ -1831,6 +1853,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	nbtTagCompound.setBoolean("FirstSpawn", false);
     	nbtTagCompound.setFloat("Stealth", this.getStealth());
     	nbtTagCompound.setBoolean("IsMinion", this.isMinion());
+    	nbtTagCompound.setBoolean("IsTemporary", this.isTemporary);
+    	nbtTagCompound.setInteger("TemporaryDuration", this.temporaryDuration);
         super.writeEntityToNBT(nbtTagCompound);
         this.inventory.writeToNBT(nbtTagCompound);
     }

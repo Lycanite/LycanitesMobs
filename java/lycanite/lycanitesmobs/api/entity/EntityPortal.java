@@ -9,6 +9,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 public class EntityPortal extends EntityProjectileBase {
@@ -18,6 +19,7 @@ public class EntityPortal extends EntityProjectileBase {
 	private double targetZ;
 	public int summonAmount = 0;
 	public int summonTick = 0;
+	public double portalRange = 32.0D;
 	
 	// Properties:
 	public EntityPlayer shootingEntity;
@@ -122,12 +124,19 @@ public class EntityPortal extends EntityProjectileBase {
     // ========== Move to Target ==========
     public void moveToTarget() {
     	if(this.shootingEntity != null) {
-    		double[] facingPos = this.getFacingPosition(this.shootingEntity, 2.0D);
-	        this.targetX = facingPos[0];
-	        this.targetY = facingPos[1] + 2.0F;
-	        this.targetZ = facingPos[2];
-	        MovingObjectPosition target = Utilities.raytrace(this.worldObj, this.posX, this.posY, this.posZ, this.targetX, this.targetY, this.targetZ, 1.0F, null);
-
+    		// Get Look Target
+	        Vec3 lookDirection = this.shootingEntity.getLookVec();
+			this.targetX = this.shootingEntity.posX + (lookDirection.xCoord * this.portalRange);
+			this.targetY = this.shootingEntity.posY + (lookDirection.yCoord * this.portalRange);
+			this.targetZ = this.shootingEntity.posZ + (lookDirection.zCoord * this.portalRange);
+	        
+			// Apply Raytrace to Look Target:
+			MovingObjectPosition target = Utilities.raytrace(this.worldObj, this.shootingEntity.posX, this.shootingEntity.posY, this.shootingEntity.posZ, this.targetX, this.targetY, this.targetZ, 1.0F, null);
+	        this.targetX = target.hitVec.xCoord;
+			this.targetY = target.hitVec.yCoord + 1.0D;
+			this.targetZ = target.hitVec.zCoord;
+			
+			// Update Position to Target:
 	    	this.posX = this.targetX;
 	    	this.posY = this.targetY;
 	    	this.posZ = this.targetZ;

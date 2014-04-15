@@ -119,7 +119,7 @@ public class EntityAIFollow extends EntityAIBase {
         		if(this.behindDistance == 0 || !(target instanceof EntityCreatureBase))
         			this.host.getNavigator().tryMoveToEntityLiving(target, this.speed);
         		else {
-        			double[] coords = ((EntityCreatureBase)target).getCoordBehind(this.behindDistance);
+        			double[] coords = ((EntityCreatureBase)target).getFacingPosition(-this.behindDistance);
         			this.host.getNavigator().tryMoveToXYZ(coords[0], coords[1], coords[2], this.speed);
         		}
         	}
@@ -127,7 +127,7 @@ public class EntityAIFollow extends EntityAIBase {
         		if(this.behindDistance == 0 || !(target instanceof EntityCreatureBase))
         			this.host.flightNavigator.setTargetPosition(new ChunkCoordinates((int)target.posX, (int)target.posY, (int)target.posZ), this.speed);
         		else {
-        			double[] coords = ((EntityCreatureBase)target).getCoordBehind(this.behindDistance);
+        			double[] coords = ((EntityCreatureBase)target).getFacingPosition(-this.behindDistance);
         			this.host.flightNavigator.setTargetPosition(new ChunkCoordinates((int)coords[0], (int)coords[1], (int)coords[2]), this.speed);
         		}
         	}

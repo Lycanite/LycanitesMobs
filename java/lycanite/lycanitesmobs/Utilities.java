@@ -42,30 +42,33 @@ public class Utilities {
 			maxDistance = (float)collision.hitVec.distanceTo(startVec);
 
 		// Get Entity Collision:
-		Entity closestHitEntity = null;
-		float closestHit = Float.POSITIVE_INFINITY;
-		float currentHit = 0.0f;
-		AxisAlignedBB entityBb;
-		MovingObjectPosition intercept;
-		for(Entity ent : allEntities) {
-			if(ent.canBeCollidedWith() && !excluded.contains(ent)) {
-				float entBorder = ent.getCollisionBorderSize();
-				entityBb = ent.boundingBox;
-				if(entityBb != null) {
-					entityBb = entityBb.expand(entBorder, entBorder, entBorder);
-					intercept = entityBb.calculateIntercept(startVec, endVec);
-					if(intercept != null) {
-						currentHit = (float) intercept.hitVec.distanceTo(startVec);
-						if(currentHit < closestHit || currentHit == 0) {
-							closestHit = currentHit;
-							closestHitEntity = ent;
+			if(excluded != null) {
+			Entity closestHitEntity = null;
+			float closestHit = Float.POSITIVE_INFINITY;
+			float currentHit = 0.0f;
+			AxisAlignedBB entityBb;
+			MovingObjectPosition intercept;
+			for(Entity ent : allEntities) {
+				if(ent.canBeCollidedWith() && !excluded.contains(ent)) {
+					float entBorder = ent.getCollisionBorderSize();
+					entityBb = ent.boundingBox;
+					if(entityBb != null) {
+						entityBb = entityBb.expand(entBorder, entBorder, entBorder);
+						intercept = entityBb.calculateIntercept(startVec, endVec);
+						if(intercept != null) {
+							currentHit = (float) intercept.hitVec.distanceTo(startVec);
+							if(currentHit < closestHit || currentHit == 0) {
+								closestHit = currentHit;
+								closestHitEntity = ent;
+							}
 						}
 					}
 				}
 			}
+			if(closestHitEntity != null)
+				collision = new MovingObjectPosition(closestHitEntity);
 		}
-		if(closestHitEntity != null)
-			collision = new MovingObjectPosition(closestHitEntity);
+		
 		return collision;
     }
 

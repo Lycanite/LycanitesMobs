@@ -1306,15 +1306,15 @@ public abstract class EntityCreatureBase extends EntityLiving {
     }
     
     // ========== Get Coord Behind ==========
-    /** Returns the XYZ coordinate behind this entity with the given distance. **/
-    public double[] getCoordBehind(double distance) {
+    /** Returns the XYZ coordinate in front or behind this entity (using rotation angle) this entity with the given distance, use a negative distance for behind. **/
+    public double[] getFacingPosition(double distance) {
     	double angle = Math.toRadians(this.rotationYaw);
     	double xAmount = -Math.sin(angle);
     	double zAmount = Math.cos(angle);
     	double[] coords = new double[3];
-        coords[0] = this.posX - (distance * xAmount);
+        coords[0] = this.posX + (distance * xAmount);
         coords[1] = this.posY;
-        coords[2] = this.posZ - (distance * zAmount);
+        coords[2] = this.posZ + (distance * zAmount);
         return coords;
     }
     

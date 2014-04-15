@@ -151,7 +151,7 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
         		double segmentDistance = 0.75D;
         		double[] coords;
         		if(this.getParentTarget() instanceof EntityCreatureBase)
-        			coords = ((EntityCreatureBase)this.getParentTarget()).getCoordBehind(0.25D);
+        			coords = ((EntityCreatureBase)this.getParentTarget()).getFacingPosition(-0.25D);
         		else {
         			coords = new double[3];
         			coords[0] = this.getParentTarget().posX;

@@ -3,7 +3,9 @@ package lycanite.lycanitesmobs.api.entity;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.PlayerControlHandler;
+import lycanite.lycanitesmobs.Utilities;
 import lycanite.lycanitesmobs.api.item.ItemSummoningStaff;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
@@ -39,11 +41,7 @@ public class EntityPortal extends EntityProjectileBase {
     public void setStats() {
     	this.entityName = "SummoningPortal";
         this.setProjectileScale(4F);
-        if(this.shootingEntity != null) {
-	        this.targetX = this.shootingEntity.posX;
-	        this.targetY = this.shootingEntity.posY + 2.0F;
-	        this.targetZ = this.shootingEntity.posZ;
-        }
+        this.moveToTarget();
     }
     
     
@@ -124,14 +122,29 @@ public class EntityPortal extends EntityProjectileBase {
     // ========== Move to Target ==========
     public void moveToTarget() {
     	if(this.shootingEntity != null) {
-	        this.targetX = this.shootingEntity.posX;
-	        this.targetY = this.shootingEntity.posY + 2.0F;
-	        this.targetZ = this.shootingEntity.posZ;
+    		double[] facingPos = this.getFacingPosition(this.shootingEntity, 2.0D);
+	        this.targetX = facingPos[0];
+	        this.targetY = facingPos[1] + 2.0F;
+	        this.targetZ = facingPos[2];
+	        MovingObjectPosition target = Utilities.raytrace(this.worldObj, this.posX, this.posY, this.posZ, this.targetX, this.targetY, this.targetZ, 1.0F, null);
 
 	    	this.posX = this.targetX;
 	    	this.posY = this.targetY;
 	    	this.posZ = this.targetZ;
         }
+    }
+    
+    // ========== Get Coord Behind ==========
+    /** Returns the XYZ coordinate in front or behind this entity (using rotation angle) this entity with the given distance, use a negative distance for behind. **/
+    public double[] getFacingPosition(Entity entity, double distance) {
+    	double angle = Math.toRadians(this.rotationYaw);
+    	double xAmount = -Math.sin(angle);
+    	double zAmount = Math.cos(angle);
+    	double[] coords = new double[3];
+        coords[0] = entity.posX + (distance * xAmount);
+        coords[1] = entity.posY;
+        coords[2] = entity.posZ + (distance * zAmount);
+        return coords;
     }
     
     

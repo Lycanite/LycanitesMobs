@@ -57,8 +57,8 @@ public class ItemScepter extends Item {
 
     // ========== Using ==========
     // Was onUsingItemTick() but acted weird, using the EventListener to replicate.
-    //@Override
-    public void onPlayerUsing(ItemStack itemStack, EntityPlayer player, int useRemaining) {
+    @Override
+    public void onUsingItemTick(ItemStack itemStack, EntityPlayer player, int useRemaining) {
     	if(itemStack == null || player == null || player.worldObj == null)
     		return;
     	int useTime = this.getMaxItemUseDuration(itemStack) - useRemaining;

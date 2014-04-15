@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs;
 import lycanite.lycanitesmobs.api.MobInfo;
 import lycanite.lycanitesmobs.api.SpawnInfo;
 import lycanite.lycanitesmobs.api.SpawnType;
+import lycanite.lycanitesmobs.api.entity.EntityPortal;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
@@ -15,6 +16,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 @Mod(modid = LycanitesMobs.modid, name = LycanitesMobs.name, version = LycanitesMobs.version)
@@ -89,6 +91,11 @@ public class LycanitesMobs {
 		
 		// ========== Handlers ==========
 		NetworkRegistry.instance().registerGuiHandler(this, new GuiHandler());
+		
+		// ========== Set Current Mod ==========
+		int specialEntityID = 0;
+		EntityRegistry.registerModEntity(EntityPortal.class, "SummoningPortal", specialEntityID++, instance, 64, 1, true);
+		LanguageRegistry.instance().addStringLocalization("entity." + "SummoningPortal" + ".name", "en_US", "Summoning Portal");
 	}
 	
 	

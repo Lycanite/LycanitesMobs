@@ -1,7 +1,6 @@
 package lycanite.lycanitesmobs;
 
 import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
-import lycanite.lycanitesmobs.api.item.ItemScepter;
 import lycanite.lycanitesmobs.api.item.ItemSummoningStaff;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -48,12 +47,12 @@ public class EventListener {
 			
 			// Item Using:
 			// This is used to replace Item.onUsingItemTick() as it acted weird. Intended to be used the same.
-			if(player.getItemInUse() != null) {
+			/*if(player.getItemInUse() != null) {
 				if(player.getItemInUse().getItem() instanceof ItemScepter) {
 					ItemScepter scepter = (ItemScepter)player.getItemInUse().getItem();
 					scepter.onPlayerUsing(player.getItemInUse(), player, player.getItemInUseCount());
 				}
-			}
+			}*/
 		}
 	}
 	

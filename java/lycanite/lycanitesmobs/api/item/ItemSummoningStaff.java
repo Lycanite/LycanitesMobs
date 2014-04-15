@@ -1,13 +1,16 @@
 package lycanite.lycanitesmobs.api.item;
 
-import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.PlayerControlHandler;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
+import lycanite.lycanitesmobs.api.entity.EntityPortal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class ItemSummoningStaff extends ItemScepter {
+	public static final boolean USE_PORTAL_ENTITY_TO_SUMMON = true;
+	public EntityPortal portalEntity;
 	
 	// ==================================================
 	//                   Constructor
@@ -22,13 +25,19 @@ public class ItemSummoningStaff extends ItemScepter {
 	// ==================================================
     // ========== Durability ==========
     @Override
+    public int getDurability() {
+    	return 250;
+    }
+    
+    @Override
     public void damageItemRapid(ItemStack itemStack, EntityPlayer player) {
         return;
     }
     
-    @Override
-    public int getDurability() {
-    	return 250;
+    public void damageItemCharged(ItemStack itemStack, EntityPlayer player, float power) {
+    	if(this.portalEntity != null) {
+    		itemStack.damageItem((int)(5 * this.portalEntity.summonAmount), player);
+    	}
     }
     
     // ========== Charge Time ==========
@@ -44,44 +53,73 @@ public class ItemSummoningStaff extends ItemScepter {
     }
     
     // ========== Summon Cost ==========
-    public int getSummonCost(ItemStack itemStack) {
+    public int getSummonCost() {
     	return 1;
+    }
+    
+    // ========== Summon Duration ==========
+    public int getSummonDuration() {
+    	return 60 * 20;
     }
 	
     
 	// ==================================================
 	//                      Attack
 	// ==================================================
+    // ========== Start ==========
+    @Override
+    public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
+    	if(USE_PORTAL_ENTITY_TO_SUMMON && !world.isRemote) {
+	    	this.portalEntity = new EntityPortal(world, player, this);
+	    	this.portalEntity.setLocationAndAngles(player.posX, player.posY, player.posZ, world.rand.nextFloat() * 360.0F, 0.0F);
+	    	world.spawnEntityInWorld(this.portalEntity);
+    	}
+        return super.onItemRightClick(itemStack, world, player);
+    }
+    
+    // ========== Rapid ==========
     @Override
     public boolean rapidAttack(ItemStack itemStack, World world, EntityPlayer player) {
+    	if(USE_PORTAL_ENTITY_TO_SUMMON)
+    		return false;
+    	
+    	// Old Way:
     	int summonAmount = PlayerControlHandler.getPlayerSummonAmount(player);
     	if(player.capabilities.isCreativeMode) {
     		PlayerControlHandler.setPlayerSummonAmount(player, ++summonAmount);
         	return true;
     	}
     	int summonFocus = PlayerControlHandler.getPlayerSummonFocus(player);
-    	int summonCost = PlayerControlHandler.summonFocusCharge * this.getSummonCost(itemStack);
+    	int summonCost = PlayerControlHandler.summonFocusCharge * this.getSummonCost();
     	if(summonFocus < summonCost)
     		return false;
 		PlayerControlHandler.setPlayerSummonFocus(player, summonFocus - summonCost);
 		PlayerControlHandler.setPlayerSummonAmount(player, ++summonAmount);
-		LycanitesMobs.printDebug("", "Summon CHARGED! Will summon: " + PlayerControlHandler.getPlayerSummonAmount(player) + " " + player);
     	return true;
     }
     
+    // ========== Charged ==========
     @Override
     public boolean chargedAttack(ItemStack itemStack, World world, EntityPlayer player, float power) {
+    	if(USE_PORTAL_ENTITY_TO_SUMMON) {
+    		if(this.portalEntity != null) {
+    			return this.portalEntity.summonCreatures();
+    		}
+    		return false;
+    	}
+
+    	// Old Way:
 		int summonAmount = PlayerControlHandler.getPlayerSummonAmount(player);
     	if(summonAmount <= 0) {
 			return false;
 		}
     	PlayerControlHandler.setPlayerSummonAmount(player, 0);
-    	this.summonCreatures(world, player, summonAmount);
     	return true;
     }
-    
-    public void summonCreatures(World world, EntityPlayer player, int summonAmount) {
-    	LycanitesMobs.printDebug("", "Summon ACTIVATED! Summoning " + summonAmount + " mobs.");
+
+    // ========== Get Summon Entity ==========
+    public EntityCreatureTameable getSummonEntity(World world) {
+    	return null;
     }
 
 	

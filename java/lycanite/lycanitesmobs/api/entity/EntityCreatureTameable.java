@@ -344,16 +344,20 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
     public boolean tame(EntityPlayer player) {
     	if(!this.worldObj.isRemote)
             if(this.rand.nextInt(3) == 0) {
-                this.setTamed(true);
-                this.clearMovement();
-                this.setAttackTarget((EntityLivingBase)null);
-                this.aiSit.setSitting(true);
-                this.setOwner(player.getCommandSenderName());
-                this.playTameSound();
+                this.setPlayerOwner(player);
             }
     	else
     		this.playTameEffect(this.isTamed());
     	return this.isTamed();
+    }
+    
+    public void setPlayerOwner(EntityPlayer player) {
+    	this.setTamed(true);
+        this.clearMovement();
+        this.setAttackTarget((EntityLivingBase)null);
+        this.aiSit.setSitting(true);
+        this.setOwner(player.getCommandSenderName());
+        this.playTameSound();
     }
     
     

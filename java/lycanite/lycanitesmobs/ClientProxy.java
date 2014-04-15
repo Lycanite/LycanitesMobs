@@ -4,6 +4,7 @@ import java.util.Map.Entry;
 
 import lycanite.lycanitesmobs.api.MobInfo;
 import lycanite.lycanitesmobs.api.entity.EntityParticle;
+import lycanite.lycanitesmobs.api.entity.EntityPortal;
 import lycanite.lycanitesmobs.api.gui.GuiCreatureOverlay;
 import lycanite.lycanitesmobs.api.render.RenderCreature;
 import lycanite.lycanitesmobs.api.render.RenderParticle;
@@ -81,5 +82,8 @@ public class ClientProxy extends CommonProxy {
 		
 		// Particles:
 		RenderingRegistry.registerEntityRenderingHandler(EntityParticle.class, new RenderParticle());
+		
+		// Special Entites:
+		RenderingRegistry.registerEntityRenderingHandler(EntityPortal.class, new RenderProjectile());
     }
 }

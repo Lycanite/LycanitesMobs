@@ -206,11 +206,11 @@ public class EntityProjectileBase extends EntityThrowable {
      //                      Scale
      // ==================================================
      public void setProjectileScale(float newScale) {
-     	projectileScale = newScale;
+     	this.projectileScale = newScale;
      }
      
      public float getProjectileScale() {
-         return projectileScale;
+         return this.projectileScale;
      }
      
      

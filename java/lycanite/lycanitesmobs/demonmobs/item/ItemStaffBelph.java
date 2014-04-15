@@ -1,9 +1,10 @@
 package lycanite.lycanitesmobs.demonmobs.item;
 
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.item.ItemSummoningStaff;
 import lycanite.lycanitesmobs.demonmobs.DemonMobs;
-import net.minecraft.entity.player.EntityPlayer;
+import lycanite.lycanitesmobs.demonmobs.entity.EntityBelph;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -25,13 +26,14 @@ public class ItemStaffBelph extends ItemSummoningStaff {
 	//                       Use
 	// ==================================================
     @Override
-    public int getSummonCost(ItemStack itemStack) {
+    public int getSummonCost() {
         return 2;
     }
-    
+
+    // ========== Get Summon Entity ==========
     @Override
-    public void summonCreatures(World world, EntityPlayer player, int summonAmount) {
-    	super.summonCreatures(world, player, summonAmount);
+    public EntityCreatureTameable getSummonEntity(World world) {
+    	return new EntityBelph(world);
     }
 
 	

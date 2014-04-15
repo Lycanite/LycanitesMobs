@@ -34,6 +34,15 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
 	// AI:
 	public EntityAISit aiSit = new EntityAISit(this);
 	
+    /** Used for the TAMED WATCHER_ID, this holds a series of booleans that describe the tamed status as well as instructed behaviour. **/
+	public static enum TAMED_ID {
+		IS_TAMED((byte)1), MOVE_SIT((byte)2), MOVE_FOLLOW((byte)4),
+		STANCE_PASSIVE((byte)8), STANCE_AGGRESSIVE((byte)16), PVP((byte)32);
+		public final byte id;
+	    private TAMED_ID(byte value) { this.id = value; }
+	    public byte getValue() { return id; }
+	}
+	
 	// ==================================================
   	//                    Constructor
   	// ==================================================
@@ -399,22 +408,82 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
     
     
     // ==================================================
-    //                       Sitting
+    //                     Pet Control
     // ==================================================
     public EntityAISit getSitAI() {
         return this.aiSit;
     }
     
+    // ========== Sitting ==========
+    public boolean sittingEnabled() { return false; }
+    
     public boolean isSitting() {
-        return (this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id) & 1) != 0;
+        return (this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id) & TAMED_ID.MOVE_SIT.id) != 0;
     }
 
-    public void setSitting(boolean setSitting) {
-        byte sitting = this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id);
-        if(setSitting)
-            this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(sitting | 1)));
+    public void setSitting(boolean set) {
+        byte tamedStatus = this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id);
+        if(set)
+            this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamedStatus | TAMED_ID.MOVE_SIT.id)));
         else
-            this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(sitting & -2)));
+            this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamedStatus & TAMED_ID.MOVE_SIT.id)));
+    }
+    
+    // ========== Following ==========
+    public boolean followingEnabled() { return false; }
+    
+    public boolean isFollowing() {
+        return (this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id) & TAMED_ID.MOVE_FOLLOW.id) != 0;
+    }
+
+    public void setFollowing(boolean set) {
+        byte tamedStatus = this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id);
+        if(set)
+            this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamedStatus | TAMED_ID.MOVE_FOLLOW.id)));
+        else
+            this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamedStatus & TAMED_ID.MOVE_FOLLOW.id)));
+    }
+    
+    // ========== Passiveness ==========
+    public boolean stanceEnabled() { return false; }
+    
+    public boolean isPassive() {
+        return (this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id) & TAMED_ID.STANCE_PASSIVE.id) != 0;
+    }
+
+    public void setPassive(boolean set) {
+        byte tamedStatus = this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id);
+        if(set)
+            this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamedStatus | TAMED_ID.STANCE_PASSIVE.id)));
+        else
+            this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamedStatus & TAMED_ID.STANCE_PASSIVE.id)));
+    }
+    
+    public boolean isAggressive() {
+        return (this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id) & TAMED_ID.STANCE_AGGRESSIVE.id) != 0;
+    }
+
+    public void setAggressive(boolean set) {
+        byte tamedStatus = this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id);
+        if(set)
+            this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamedStatus | TAMED_ID.STANCE_AGGRESSIVE.id)));
+        else
+            this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamedStatus & TAMED_ID.STANCE_AGGRESSIVE.id)));
+    }
+    
+    // ========== PvP ==========
+    public boolean pvpEnabled() { return this.stanceEnabled(); }
+    
+    public boolean isPVP() {
+        return (this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id) & TAMED_ID.PVP.id) != 0;
+    }
+
+    public void setPVP(boolean set) {
+        byte tamedStatus = this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id);
+        if(set)
+            this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamedStatus | TAMED_ID.PVP.id)));
+        else
+            this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamedStatus & TAMED_ID.PVP.id)));
     }
     
     

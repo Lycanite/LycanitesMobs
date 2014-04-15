@@ -4,9 +4,11 @@ import java.util.List;
 
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.inventory.ContainerBase;
 import lycanite.lycanitesmobs.api.inventory.ContainerCreature;
 import lycanite.lycanitesmobs.api.inventory.InventoryCreature;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.resources.I18n;
@@ -19,6 +21,11 @@ public class GUICreature extends GuiContainer {
 	public EntityCreatureBase creature;
 	public InventoryCreature creatureInventory;
 	public InventoryPlayer playerInventory;
+	public static enum ButtonType {
+		NULL((byte)-1), SITTING((byte)0), FOLLOWING((byte)1), STANCE((byte)2), PVP((byte)3);
+		public byte id;
+		private ButtonType(byte i) { id = i; }
+	}
 	
 	// ==================================================
   	//                    Constructor
@@ -28,6 +35,20 @@ public class GUICreature extends GuiContainer {
 		this.creature = creature;
 		this.creatureInventory = creature.inventory;
 		this.playerInventory = playerInventory;
+	}
+	
+	
+	// ==================================================
+  	//                       Init
+  	// ==================================================
+	@Override
+	public void initGui() {
+		super.initGui();
+		this.xSize = 176;
+        this.ySize = 166;
+        int backX = (this.width - this.xSize) / 2;
+        int backY = (this.height - this.ySize) / 2;
+		this.drawControls(backX, backY);
 	}
 	
 	
@@ -57,6 +78,7 @@ public class GUICreature extends GuiContainer {
 		this.drawFrames(backX, backY);
 		this.drawHealth(backX, backY);
 		this.drawSlots(backX, backY);
+		this.drawControls(backX, backY);
 	}
 	
 	// ========== Draw Creature Frame ===========
@@ -123,4 +145,31 @@ public class GUICreature extends GuiContainer {
 			this.drawTexturedModalRect(slotX, slotY, slotU, slotV, slotWidth, slotHeight);
 		}
 	}
+	
+	// ========== Draw Controls ===========
+	protected void drawControls(int backX, int backY) {
+		if(!(this.creature instanceof EntityCreatureTameable))
+			return;
+		EntityCreatureTameable pet = (EntityCreatureTameable)this.creature;
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        int buttonSpacing = 2;
+        int buttonWidth = 320;
+        int buttonHeight = 20;
+        
+        String buttonText = "Sitting: " + (pet.isSitting() ? "Yes" : "No");
+        backY += buttonSpacing;
+        this.buttonList.add(new GuiButton(ButtonType.SITTING.id, backX + buttonSpacing, backY, buttonWidth, buttonHeight, buttonText));
+        
+        buttonText = "Movement: " + (pet.isFollowing() ? "Follow" : "Wander");
+        backY += buttonSpacing;
+        this.buttonList.add(new GuiButton(ButtonType.SITTING.id, backX + buttonSpacing, backY, buttonWidth, buttonHeight, buttonText));
+        
+        buttonText = "Stance: " + (pet.isPassive() ? "Passive" : "Defensive");
+        backY += buttonSpacing;
+        this.buttonList.add(new GuiButton(ButtonType.STANCE.id, backX + buttonSpacing, backY, buttonWidth, buttonHeight, buttonText));
+        
+        buttonText = "PvP: " + (pet.isPVP() ? "On" : "Off");
+        backY += buttonSpacing;
+        this.buttonList.add(new GuiButton(ButtonType.PVP.id, backX + buttonSpacing, backY, buttonWidth, buttonHeight, buttonText));
+    }
 }

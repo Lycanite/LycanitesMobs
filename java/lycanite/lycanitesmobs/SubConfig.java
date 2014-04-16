@@ -1,5 +1,7 @@
 package lycanite.lycanitesmobs;
 
+import lycanite.lycanitesmobs.api.info.ObjectLists;
+
 
 public class SubConfig extends Config {
 	

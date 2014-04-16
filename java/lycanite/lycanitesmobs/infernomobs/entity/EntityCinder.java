@@ -2,7 +2,6 @@ package lycanite.lycanitesmobs.infernomobs.entity;
 
 import java.util.HashMap;
 
-import lycanite.lycanitesmobs.DropRate;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileRapidFire;
@@ -13,6 +12,7 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
+import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.infernomobs.InfernoMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;

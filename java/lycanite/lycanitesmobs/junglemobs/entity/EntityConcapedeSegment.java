@@ -5,16 +5,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-import lycanite.lycanitesmobs.DropRate;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupAnimal;
-import lycanite.lycanitesmobs.api.SpawnInfo;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowParent;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
+import lycanite.lycanitesmobs.api.info.DropRate;
+import lycanite.lycanitesmobs.api.info.SpawnInfo;
 import lycanite.lycanitesmobs.junglemobs.JungleMobs;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

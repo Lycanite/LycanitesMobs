@@ -2,12 +2,12 @@ package lycanite.lycanitesmobs.plainsmobs;
 
 import lycanite.lycanitesmobs.Config;
 import lycanite.lycanitesmobs.LycanitesMobs;
-import lycanite.lycanitesmobs.ObjectLists;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.PacketHandler;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
-import lycanite.lycanitesmobs.api.MobInfo;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
+import lycanite.lycanitesmobs.api.info.MobInfo;
+import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
 import lycanite.lycanitesmobs.plainsmobs.entity.EntityKobold;
 import lycanite.lycanitesmobs.plainsmobs.entity.EntityMaka;

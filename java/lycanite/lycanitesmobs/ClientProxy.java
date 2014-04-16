@@ -2,10 +2,10 @@ package lycanite.lycanitesmobs;
 
 import java.util.Map.Entry;
 
-import lycanite.lycanitesmobs.api.MobInfo;
 import lycanite.lycanitesmobs.api.entity.EntityParticle;
 import lycanite.lycanitesmobs.api.entity.EntityPortal;
 import lycanite.lycanitesmobs.api.gui.GuiCreatureOverlay;
+import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.render.RenderCreature;
 import lycanite.lycanitesmobs.api.render.RenderParticle;
 import lycanite.lycanitesmobs.api.render.RenderProjectile;

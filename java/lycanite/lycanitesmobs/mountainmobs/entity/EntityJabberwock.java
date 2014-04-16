@@ -2,7 +2,6 @@ package lycanite.lycanitesmobs.mountainmobs.entity;
 
 import java.util.HashMap;
 
-import lycanite.lycanitesmobs.DropRate;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
@@ -12,6 +11,7 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
+import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.mountainmobs.MountainMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

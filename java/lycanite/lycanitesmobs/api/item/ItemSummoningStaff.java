@@ -1,7 +1,6 @@
 package lycanite.lycanitesmobs.api.item;
 
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.PlayerControlHandler;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.EntityPortal;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,7 +8,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class ItemSummoningStaff extends ItemScepter {
-	public static final boolean USE_PORTAL_ENTITY_TO_SUMMON = true;
 	public EntityPortal portalEntity;
 	
 	// ==================================================
@@ -69,7 +67,7 @@ public class ItemSummoningStaff extends ItemScepter {
     // ========== Start ==========
     @Override
     public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
-    	if(USE_PORTAL_ENTITY_TO_SUMMON && !world.isRemote) {
+    	if(!world.isRemote) {
 	    	this.portalEntity = new EntityPortal(world, player, this);
 	    	this.portalEntity.setLocationAndAngles(player.posX, player.posY, player.posZ, world.rand.nextFloat() * 360.0F, 0.0F);
 	    	world.spawnEntityInWorld(this.portalEntity);
@@ -80,41 +78,16 @@ public class ItemSummoningStaff extends ItemScepter {
     // ========== Rapid ==========
     @Override
     public boolean rapidAttack(ItemStack itemStack, World world, EntityPlayer player) {
-    	if(USE_PORTAL_ENTITY_TO_SUMMON)
-    		return false;
-    	
-    	// Old Way:
-    	int summonAmount = PlayerControlHandler.getPlayerSummonAmount(player);
-    	if(player.capabilities.isCreativeMode) {
-    		PlayerControlHandler.setPlayerSummonAmount(player, ++summonAmount);
-        	return true;
-    	}
-    	int summonFocus = PlayerControlHandler.getPlayerSummonFocus(player);
-    	int summonCost = PlayerControlHandler.summonFocusCharge * this.getSummonCost();
-    	if(summonFocus < summonCost)
-    		return false;
-		PlayerControlHandler.setPlayerSummonFocus(player, summonFocus - summonCost);
-		PlayerControlHandler.setPlayerSummonAmount(player, ++summonAmount);
-    	return true;
+    	return false;
     }
     
     // ========== Charged ==========
     @Override
     public boolean chargedAttack(ItemStack itemStack, World world, EntityPlayer player, float power) {
-    	if(USE_PORTAL_ENTITY_TO_SUMMON) {
-    		if(this.portalEntity != null) {
-    			return this.portalEntity.summonCreatures();
-    		}
-    		return false;
-    	}
-
-    	// Old Way:
-		int summonAmount = PlayerControlHandler.getPlayerSummonAmount(player);
-    	if(summonAmount <= 0) {
-			return false;
+    	if(this.portalEntity != null) {
+			return this.portalEntity.summonCreatures();
 		}
-    	PlayerControlHandler.setPlayerSummonAmount(player, 0);
-    	return true;
+		return false;
     }
 
     // ========== Get Summon Entity ==========

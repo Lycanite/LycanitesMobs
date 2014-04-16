@@ -1,8 +1,8 @@
 package lycanite.lycanitesmobs.api.entity.ai;
 
-import lycanite.lycanitesmobs.ObjectLists;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
+import lycanite.lycanitesmobs.api.info.ObjectLists;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

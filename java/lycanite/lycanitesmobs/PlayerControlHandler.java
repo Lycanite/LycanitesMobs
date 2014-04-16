@@ -3,7 +3,6 @@ package lycanite.lycanitesmobs;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class PlayerControlHandler {
@@ -17,12 +16,6 @@ public class PlayerControlHandler {
     
     // Control States:
     public static Map<EntityPlayer, Byte> controls = new HashMap<EntityPlayer, Byte>();
-    
-    // Custom Stats:
-    public static Map<EntityPlayer, Integer> summonFocus = new HashMap<EntityPlayer, Integer>();
-    public static Map<EntityPlayer, Integer> summonAmount = new HashMap<EntityPlayer, Integer>();
-    public static int summonFocusCharge = 6000;
-    public static int summonFocusMax = summonFocusCharge * 10;
 	
 	
     // ==================================================
@@ -57,36 +50,5 @@ public class PlayerControlHandler {
 
     public static boolean playerInputInventory(EntityPlayer player) {
     	return controlActive(player, PlayerControlHandler.CONTROL_ID.PET_INVENTORY);
-    }
-	
-	
-    // ==================================================
-    //                   Set Stats
-    // ==================================================
-    public static void setPlayerSummonFocus(EntityPlayer player, int focus) {
-    	summonFocus.put(player, focus);
-    }
-    public static void setPlayerSummonAmount(EntityPlayer player, int amount) {
-    	if(player instanceof EntityClientPlayerMP)
-    		return;
-    	summonAmount.put(player, amount);
-    }
-	
-	
-    // ==================================================
-    //                   Get Stats
-    // ==================================================
-    public static int getPlayerSummonFocus(EntityPlayer player) {
-    	if(!summonFocus.containsKey(player))
-    		setPlayerSummonFocus(player, summonFocusMax);
-    	return summonFocus.get(player);
-    }
-    public static int getPlayerSummonAmount(EntityPlayer player) {
-    	if(player instanceof EntityClientPlayerMP)
-    		return 0;
-    	if(!summonAmount.containsKey(player)) {
-    		setPlayerSummonAmount(player, 0);
-    	}
-    	return summonAmount.get(player);
     }
 }

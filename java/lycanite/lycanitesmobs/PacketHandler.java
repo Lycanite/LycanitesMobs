@@ -87,7 +87,8 @@ public class PacketHandler implements IPacketHandler {
 						}
 						if(playerType == PlayerType.SUMMONFOCUS.id) {
 							int focus = data.readInt();
-							PlayerControlHandler.setPlayerSummonFocus((EntityPlayer)player, focus);
+							if(ExtendedPlayer.extendedPlayers.containsKey((EntityPlayer)player))
+								ExtendedPlayer.extendedPlayers.get((EntityPlayer)player).summonFocus = focus;
 						}
 					}
 				}

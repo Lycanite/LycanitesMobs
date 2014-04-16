@@ -3,8 +3,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import lycanite.lycanitesmobs.api.ILycaniteMod;
-import lycanite.lycanitesmobs.api.MobInfo;
-import lycanite.lycanitesmobs.api.SpawnInfo;
+import lycanite.lycanitesmobs.api.info.EntityList;
+import lycanite.lycanitesmobs.api.info.MobInfo;
+import lycanite.lycanitesmobs.api.info.SpawnInfo;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.BehaviorProjectileDispense;

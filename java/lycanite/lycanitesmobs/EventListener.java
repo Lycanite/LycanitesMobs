@@ -30,18 +30,18 @@ public class EventListener {
 		
 		if(entity instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer)entity;
+			ExtendedPlayer extPlayer = ExtendedPlayer.extendedPlayers.get(player);
 			boolean creative = player.capabilities.isCreativeMode;
 			
 			// Summoning Focus Stat Update:
-			int playerFocus = PlayerControlHandler.getPlayerSummonFocus(player);
-			int focusMax = PlayerControlHandler.summonFocusMax;
-			if(playerFocus < focusMax) {
-				playerFocus++;
-				PlayerControlHandler.setPlayerSummonFocus(player, playerFocus);
-				if(!creative && !player.worldObj.isRemote && player.worldObj.getWorldTime() % 20 == 0 &&
-						(player.getHeldItem() != null && player.getHeldItem().getItem() instanceof ItemSummoningStaff)) {
-					Packet packet = PacketHandler.createPacket(PacketHandler.PacketType.PLAYER, PacketHandler.PlayerType.SUMMONFOCUS.id, playerFocus);
-					PacketHandler.sendPacketToServer(packet);
+			if(extPlayer != null) {
+				if(extPlayer.summonFocus < extPlayer.summonFocusMax) {
+					extPlayer.summonFocus++;
+					if(!creative && !player.worldObj.isRemote && player.worldObj.getWorldTime() % 20 == 0 &&
+							(player.getHeldItem() != null && player.getHeldItem().getItem() instanceof ItemSummoningStaff)) {
+						Packet packet = PacketHandler.createPacket(PacketHandler.PacketType.PLAYER, PacketHandler.PlayerType.SUMMONFOCUS.id, extPlayer.summonFocus);
+						PacketHandler.sendPacketToServer(packet);
+					}
 				}
 			}
 			

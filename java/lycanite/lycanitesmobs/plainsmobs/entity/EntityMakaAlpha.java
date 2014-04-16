@@ -2,7 +2,6 @@ package lycanite.lycanitesmobs.plainsmobs.entity;
 
 import java.util.HashMap;
 
-import lycanite.lycanitesmobs.DropRate;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupAlpha;
 import lycanite.lycanitesmobs.api.IGroupPredator;
@@ -14,6 +13,7 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
+import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.plainsmobs.PlainsMobs;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -39,7 +39,7 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
         this.entityName = "Maka";
         this.mod = PlainsMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 2;
+        this.defense = 3;
         this.experience = 5;
         this.spawnsOnlyInLight = true;
         this.hasAttackSound = true;
@@ -73,7 +73,7 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
 		baseAttributes.put("movementSpeed", 0.28D);
 		baseAttributes.put("knockbackResistance", 1D);
 		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 2D);
+		baseAttributes.put("attackDamage", 4D);
         super.applyEntityAttributes(baseAttributes);
     }
 	

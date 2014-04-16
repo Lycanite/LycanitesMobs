@@ -1,8 +1,8 @@
 package lycanite.lycanitesmobs.api.entity;
 
 import lycanite.lycanitesmobs.AssetManager;
+import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.LycanitesMobs;
-import lycanite.lycanitesmobs.PlayerControlHandler;
 import lycanite.lycanitesmobs.Utilities;
 import lycanite.lycanitesmobs.api.item.ItemSummoningStaff;
 import net.minecraft.entity.Entity;
@@ -64,11 +64,13 @@ public class EntityPortal extends EntityProjectileBase {
     	
     	this.moveToTarget();
     	
+		ExtendedPlayer playerExt = ExtendedPlayer.extendedPlayers.get(this.shootingEntity);
+		if(playerExt == null)
+			return;
+    	
     	// Client:
     	if(this.worldObj.isRemote) {
-    		int summonFocus = PlayerControlHandler.getPlayerSummonFocus(this.shootingEntity);
-    		int summonCost = PlayerControlHandler.summonFocusCharge;
-    		if(summonFocus >= summonCost || this.shootingEntity.capabilities.isCreativeMode) {
+    		if(playerExt.summonFocus >= playerExt.summonFocusCharge || this.shootingEntity.capabilities.isCreativeMode) {
 	    		for(int i = 0; i < 32; ++i) {
 	        		this.worldObj.spawnParticle("portal",
 	        				this.posX + (4.0F * this.rand.nextFloat()) - 2.0F,
@@ -82,10 +84,8 @@ public class EntityPortal extends EntityProjectileBase {
     	
     	// Summon:
     	if(this.summonTick % this.portalItem.getRapidTime(null) == 0) {
-    		int summonFocus = PlayerControlHandler.getPlayerSummonFocus(this.shootingEntity);
-    		int summonCost = PlayerControlHandler.summonFocusCharge * this.portalItem.getSummonCost();
-    		if(summonFocus >= summonCost || this.shootingEntity.capabilities.isCreativeMode) {
-    			PlayerControlHandler.setPlayerSummonFocus(this.shootingEntity, summonFocus - summonCost);
+    		if(playerExt.summonFocus >= playerExt.summonFocusCharge || this.shootingEntity.capabilities.isCreativeMode) {
+    			playerExt.summonFocus -= playerExt.summonFocusCharge;
     			this.summonAmount++;
     		}
     	}

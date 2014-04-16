@@ -1,13 +1,14 @@
 package lycanite.lycanitesmobs.api.gui;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.PlayerControlHandler;
+import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
 import lycanite.lycanitesmobs.api.item.ItemSummoningStaff;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.event.ForgeSubscribe;
@@ -37,16 +38,14 @@ public class GuiCreatureOverlay extends Gui {
 		int sWidth = scaledresolution.getScaledWidth();
         int sHeight = scaledresolution.getScaledHeight();
 		
-		// ========== Mount Stamina Bar ==========
-		int summonFocus = PlayerControlHandler.getPlayerSummonFocus(this.mc.thePlayer);
-		int summonFocusMax = PlayerControlHandler.summonFocusMax;
+		// ========== Summoning Focus Bar ==========
+        ExtendedPlayer playerExt = ExtendedPlayer.extendedPlayers.get((EntityPlayer)this.mc.thePlayer);
 		if(!this.mc.thePlayer.capabilities.isCreativeMode && (
-				summonFocus < summonFocusMax ||
+				playerExt.summonFocus < playerExt.summonFocusMax ||
 				this.mc.thePlayer.getHeldItem() != null && this.mc.thePlayer.getHeldItem().getItem() instanceof ItemSummoningStaff
 			)) {
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIInventoryCreature"));
-			int summonFocusChargeAmount = PlayerControlHandler.summonFocusCharge;
 			
 			int barYSpace = 10;
 			int barXSpace = -1;
@@ -64,11 +63,11 @@ public class GuiCreatureOverlay extends Gui {
             
             for(int summonBarEnergyN = 0; summonBarEnergyN < 10; summonBarEnergyN++) {
             	this.drawTexturedModalRect(summonBarX + ((summonBarWidth + barXSpace) * summonBarEnergyN), summonBarY, summonBarU, summonBarV, summonBarWidth, summonBarHeight);
-            	if(summonFocus >= summonFocusMax - (summonBarEnergyN * summonFocusChargeAmount)) {
+            	if(playerExt.summonFocus >= playerExt.summonFocusMax - (summonBarEnergyN * playerExt.summonFocusCharge)) {
                 	this.drawTexturedModalRect(summonBarX + ((summonBarWidth + barXSpace) * summonBarEnergyN), summonBarY, summonBarU - summonBarWidth, summonBarV, summonBarWidth, summonBarHeight);
             	}
-                else if(summonFocus + summonFocusChargeAmount > summonFocusMax - (summonBarEnergyN * summonFocusChargeAmount)) {
-            		float summonChargeScale = (float)(summonFocus % summonFocusChargeAmount) / (float)summonFocusChargeAmount;
+                else if(playerExt.summonFocus + playerExt.summonFocusCharge > playerExt.summonFocusMax - (summonBarEnergyN * playerExt.summonFocusCharge)) {
+            		float summonChargeScale = (float)(playerExt.summonFocus % playerExt.summonFocusCharge) / (float)playerExt.summonFocusCharge;
             		this.drawTexturedModalRect((summonBarX + ((summonBarWidth + barXSpace) * summonBarEnergyN)) + (summonBarWidth - Math.round((float)summonBarWidth * summonChargeScale)), summonBarY, summonBarU - Math.round((float)summonBarWidth * summonChargeScale), summonBarV, Math.round((float)summonBarWidth * summonChargeScale), summonBarHeight);
             	}
             }

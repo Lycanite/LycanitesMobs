@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import lycanite.lycanitesmobs.api.IPacketReceiver;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,7 +28,7 @@ public class PacketHandler implements IPacketHandler {
 	
 	// Packet Types:
     public static enum PacketType {
-		NULL((byte)-1), TILEENTITY((byte)0), ENTITY((byte)1), PLAYER((byte)2);
+		NULL((byte)-1), TILEENTITY((byte)0), ENTITY((byte)1), PLAYER((byte)2), GUI((byte)3);
 		public byte id;
 		private PacketType(byte i) { id = i; }
 	}
@@ -87,6 +88,18 @@ public class PacketHandler implements IPacketHandler {
 						if(playerType == PlayerType.SUMMONFOCUS.id) {
 							int focus = data.readInt();
 							PlayerControlHandler.setPlayerSummonFocus((EntityPlayer)player, focus);
+						}
+					}
+				}
+				
+				// ========== GUI Packet ==========
+				else if(packetType == PacketType.GUI.id) {
+					if(!world.isRemote) {
+						Entity entity = world.getEntityByID(data.readInt());
+						if(entity instanceof EntityCreatureTameable) {
+							EntityCreatureTameable pet = (EntityCreatureTameable)entity;
+							byte guiCommandID = data.readByte();
+							pet.performGUICommand((EntityPlayer)player, guiCommandID);
 						}
 					}
 				}

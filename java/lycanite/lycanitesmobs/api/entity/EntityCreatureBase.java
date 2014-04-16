@@ -16,6 +16,7 @@ import lycanite.lycanitesmobs.api.SpawnInfo;
 import lycanite.lycanitesmobs.api.SpawnType;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIMoveRestriction;
 import lycanite.lycanitesmobs.api.entity.ai.FlightNavigator;
+import lycanite.lycanitesmobs.api.inventory.ContainerCreature;
 import lycanite.lycanitesmobs.api.inventory.InventoryCreature;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -149,6 +150,12 @@ public abstract class EntityCreatureBase extends EntityLiving {
     private EntityLivingBase avoidTarget;
 	
 	// Client:
+	/** A list of player entities that need to have their GUI of this mob reopened on refresh. **/
+	public List<EntityPlayer> guiViewers = new ArrayList<EntityPlayer>();
+	/** Counts from the guiRefreshTime down to 0 when a GUI refresh has been scheduled. **/
+	public int guiRefreshTick = 0;
+	/** The amount of ticks to wait before a GUI refresh. **/
+	public int guiRefreshTime = 2;
     /** Used for attack animations, the server uses this more as a boolean, the client uses it as a timer. **/
 	public short justAttacked = 0;
     /** The duration of attack animations, used by the server as a boolean true, the client uses it as the animation time. **/
@@ -199,6 +206,14 @@ public abstract class EntityCreatureBase extends EntityLiving {
 		public final int id;
 	    private CMD_PRIOR(int value) { this.id = value; }
 	    public int getValue() { return id; }
+	}
+	
+	// GUI Commands:
+	/** A list of GUI command IDs to be used by GUICreature via a network packet. **/
+	public static enum GUI_COMMAND_ID {
+		CLOSE((byte)0), SITTING((byte)1), FOLLOWING((byte)2), PASSIVE((byte)3), STANCE((byte)4), PVP((byte)5);
+		public byte id;
+		private GUI_COMMAND_ID(byte i) { id = i; }
 	}
 	
 	// Items:
@@ -696,10 +711,21 @@ public abstract class EntityCreatureBase extends EntityLiving {
         // Fire Immunity:
         this.isImmuneToFire = !this.canBurn();
         
+        // Climbing:
         if(!this.worldObj.isRemote) {
         	this.setBesideClimbableBlock(this.isCollidedHorizontally);
         	if(this.flySoundSpeed > 0 && this.ticksExisted % 20 == 0)
         		this.playFlySound();
+        }
+        
+        // GUI Refresh Tick:
+        if(!this.worldObj.isRemote && this.guiViewers.size() <= 0)
+        	this.guiRefreshTick = 0;
+        if(!this.worldObj.isRemote && this.guiRefreshTick > 0) {
+        	if(--this.guiRefreshTick <= 0) {
+        		this.refreshGUIViewers();
+        		this.guiRefreshTick = 0;
+        	}
         }
     }
     
@@ -1377,7 +1403,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
     /** Returns true if this mob is fully stealthed (1.0F or above). **/
     public boolean isStealthed() {
-    	return this.dataWatcher.getWatchableObjectFloat(WATCHER_ID.STEALTH.id) >= 1;
+    	return this.dataWatcher.getWatchableObjectFloat(WATCHER_ID.STEALTH.id) > 0;
     }
 
     /** Called when this mob is just started stealthing (reach 1.0F or above). **/
@@ -1487,11 +1513,52 @@ public abstract class EntityCreatureBase extends EntityLiving {
     //                     Interact
     // ==================================================
     // ========== GUI ==========
-    /** Opens this entity's GUI to the provided player. Must be called server side and usually called by an interact command. **/
+    /** This adds the provided PlayerEntity to the guiViewers array list, where on the next GUI refresh it will open the GUI. **/
     public void openGUI(EntityPlayer player) {
     	if(this.worldObj.isRemote)
     		return;
-    	player.openGui(LycanitesMobs.instance, GuiHandler.GuiType.ENTITY.id, this.worldObj, this.entityId, 0, 0);
+    	this.addGUIViewer(player);
+    	this.refreshGUIViewers();
+    	this.openGUIToPlayer(player);
+    }
+    
+    /** This adds the provided PlayerEntity to the guiViewers array list, where on the next GUI refresh it will open the GUI. **/
+    public void addGUIViewer(EntityPlayer player) {
+    	if(!this.worldObj.isRemote)
+    		this.guiViewers.add(player);
+    }
+    
+    /** This removes the provided PlayerEntity from the guiViewers array list. **/
+    public void removeGUIViewer(EntityPlayer player) {
+    	if(!this.worldObj.isRemote)
+    		this.guiViewers.remove(player);
+    }
+    
+    /** Called when all players viewing their entity's gui need to be refreshed. Usually after a GUI command on inventory change. Should be called using scheduleGUIRefresh(). **/
+    public void refreshGUIViewers() {
+    	if(this.worldObj.isRemote)
+    		return;
+    	if(this.guiViewers.size() > 0) {
+        	for(EntityPlayer player : this.guiViewers.toArray(new EntityPlayer[this.guiViewers.size()])) {
+        		if(player.openContainer != null && player.openContainer instanceof ContainerCreature) {
+        			if(((ContainerCreature)player.openContainer).creature == this)
+        				this.openGUIToPlayer(player);
+        			else
+        				this.removeGUIViewer(player);
+        		}
+        	}
+    	}
+    }
+    
+    /** Actually opens the GUI to the player, should be used by openGUI() for an initial opening and then by refreshGUIViewers() for constant updates. **/
+    public void openGUIToPlayer(EntityPlayer player) {
+    	if(player != null)
+    		player.openGui(LycanitesMobs.instance, GuiHandler.GuiType.ENTITY.id, this.worldObj, this.entityId, 0, 0);
+    }
+    
+    /** Schedules a GUI refresh, normally takes 2 ticks for everything to update for display. **/
+    public void scheduleGUIRefresh() {
+    	this.guiRefreshTick = this.guiRefreshTime + 1;
     }
 
     /** The main interact method that is called when a player right clicks this entity. **/
@@ -1571,6 +1638,11 @@ public abstract class EntityCreatureBase extends EntityLiving {
             itemStack.stackSize -= amount;
         if(itemStack.stackSize <= 0)
         	player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack)null);
+    }
+    
+    // ========== Perform GUI Command ==========
+    public void performGUICommand(EntityPlayer player, byte guiCommandID) {
+    	scheduleGUIRefresh();
     }
     
     

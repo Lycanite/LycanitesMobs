@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs.api.gui;
 import java.util.List;
 
 import lycanite.lycanitesmobs.AssetManager;
+import lycanite.lycanitesmobs.PacketHandler;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.inventory.ContainerBase;
@@ -14,6 +15,7 @@ import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
+import net.minecraft.network.packet.Packet;
 
 import org.lwjgl.opengl.GL11;
 
@@ -21,11 +23,6 @@ public class GUICreature extends GuiContainer {
 	public EntityCreatureBase creature;
 	public InventoryCreature creatureInventory;
 	public InventoryPlayer playerInventory;
-	public static enum ButtonType {
-		NULL((byte)-1), SITTING((byte)0), FOLLOWING((byte)1), STANCE((byte)2), PVP((byte)3);
-		public byte id;
-		private ButtonType(byte i) { id = i; }
-	}
 	
 	// ==================================================
   	//                    Constructor
@@ -59,7 +56,7 @@ public class GUICreature extends GuiContainer {
 	protected void drawGuiContainerForegroundLayer(int i, int j) {
 		this.fontRenderer.drawString(this.creatureInventory.getInvName(), 8, 6, 4210752);
         this.fontRenderer.drawString(this.playerInventory.isInvNameLocalized() ? this.playerInventory.getInvName() : I18n.getString(this.playerInventory.getInvName()), 8, this.ySize - 96 + 2, 4210752);
-	}
+    }
 	
 	
 	// ==================================================
@@ -78,7 +75,6 @@ public class GUICreature extends GuiContainer {
 		this.drawFrames(backX, backY);
 		this.drawHealth(backX, backY);
 		this.drawSlots(backX, backY);
-		this.drawControls(backX, backY);
 	}
 	
 	// ========== Draw Creature Frame ===========
@@ -151,25 +147,46 @@ public class GUICreature extends GuiContainer {
 		if(!(this.creature instanceof EntityCreatureTameable))
 			return;
 		EntityCreatureTameable pet = (EntityCreatureTameable)this.creature;
+		if(!pet.petControlsEnabled())
+			return;
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         int buttonSpacing = 2;
-        int buttonWidth = 320;
+        int buttonWidth = 128;
         int buttonHeight = 20;
+        int buttonX = backX + this.xSize;
+        int buttonY = backY;
         
         String buttonText = "Sitting: " + (pet.isSitting() ? "Yes" : "No");
-        backY += buttonSpacing;
-        this.buttonList.add(new GuiButton(ButtonType.SITTING.id, backX + buttonSpacing, backY, buttonWidth, buttonHeight, buttonText));
+        buttonY += buttonSpacing;
+        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.SITTING.id, buttonX + buttonSpacing, buttonY, buttonWidth, buttonHeight, buttonText));
         
         buttonText = "Movement: " + (pet.isFollowing() ? "Follow" : "Wander");
-        backY += buttonSpacing;
-        this.buttonList.add(new GuiButton(ButtonType.SITTING.id, backX + buttonSpacing, backY, buttonWidth, buttonHeight, buttonText));
+        buttonY += buttonHeight + (buttonSpacing * 2);
+        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.FOLLOWING.id, buttonX + buttonSpacing, buttonY, buttonWidth, buttonHeight, buttonText));
         
-        buttonText = "Stance: " + (pet.isPassive() ? "Passive" : "Defensive");
-        backY += buttonSpacing;
-        this.buttonList.add(new GuiButton(ButtonType.STANCE.id, backX + buttonSpacing, backY, buttonWidth, buttonHeight, buttonText));
+        buttonText = "Passive: " + (pet.isPassive() ? "Yes" : "No");
+        buttonY += buttonHeight + (buttonSpacing * 2);
+        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.PASSIVE.id, buttonX + buttonSpacing, buttonY, buttonWidth, buttonHeight, buttonText));
         
-        buttonText = "PvP: " + (pet.isPVP() ? "On" : "Off");
-        backY += buttonSpacing;
-        this.buttonList.add(new GuiButton(ButtonType.PVP.id, backX + buttonSpacing, backY, buttonWidth, buttonHeight, buttonText));
+        buttonText = "Stance: " + (pet.isAggressive() ? "Aggressive" : "Defensive");
+        buttonY += buttonHeight + (buttonSpacing * 2);
+        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.STANCE.id, buttonX + buttonSpacing, buttonY, buttonWidth, buttonHeight, buttonText));
+        
+        buttonText = "PvP: " + (pet.isPVP() ? "Yes" : "No");
+        buttonY += buttonHeight + (buttonSpacing * 2);
+        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.PVP.id, buttonX + buttonSpacing, buttonY, buttonWidth, buttonHeight, buttonText));
     }
+	
+	
+	// ==================================================
+  	//                     Actions
+  	// ==================================================
+	@Override
+	protected void actionPerformed(GuiButton guiButton) {
+		if(guiButton != null) {
+	        Packet packet = PacketHandler.createPacket(PacketHandler.PacketType.GUI, this.creature.entityId, Byte.valueOf((byte)guiButton.id));
+	        PacketHandler.sendPacketToServer(packet);
+		}
+		super.actionPerformed(guiButton);
+	}
 }

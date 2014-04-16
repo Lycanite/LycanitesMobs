@@ -161,8 +161,8 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
     	commands.putAll(super.getInteractCommands(player, itemStack));
 		
 		// Open GUI:
-		if(this.isTamed() && player.isSneaking() && player.getCommandSenderName().equalsIgnoreCase(this.getOwnerName()) && !this.worldObj.isRemote)
-			commands.put(CMD_PRIOR.IMPORTANT.id, "GUI");
+		if(this.isTamed() && player.getCommandSenderName().equalsIgnoreCase(this.getOwnerName()) && !this.worldObj.isRemote)
+			commands.put(CMD_PRIOR.MAIN.id, "GUI");
     	
     	// Server Item Commands:
     	if(itemStack != null && !this.worldObj.isRemote) {
@@ -180,7 +180,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
     			commands.put(CMD_PRIOR.ITEM_USE.id, "Color");
     		
     		// Equipment:
-    		if(this.isTamed() && !this.isChild() && player.getCommandSenderName().equalsIgnoreCase(this.getOwnerName())) {
+    		if(this.isTamed() && !this.isChild() && !this.isMinion() && player.getCommandSenderName().equalsIgnoreCase(this.getOwnerName())) {
 	    		String equipSlot = this.inventory.getSlotForEquipment(itemStack);
 	    		if(equipSlot != null && (this.inventory.getEquipmentStack(equipSlot) == null || this.inventory.getEquipmentStack(equipSlot).itemID != itemStack.itemID))
 	    			commands.put(CMD_PRIOR.EQUIPPING.id, "Equip Item");
@@ -188,8 +188,8 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
     	}
 		
 		// Sit:
-		if(this.isTamed() && this.canSit() && player.getCommandSenderName().equalsIgnoreCase(this.getOwnerName()) && !this.worldObj.isRemote)
-			commands.put(CMD_PRIOR.MAIN.id, "Sit");
+		//if(this.isTamed() && this.canSit() && player.getCommandSenderName().equalsIgnoreCase(this.getOwnerName()) && !this.worldObj.isRemote)
+			//commands.put(CMD_PRIOR.MAIN.id, "Sit");
     	
     	return commands;
     }
@@ -200,6 +200,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
     	
     	// Open GUI:
     	if(command.equals("GUI")) {
+    		this.playTameSound();
     		this.openGUI(player);
     	}
     	
@@ -254,7 +255,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
     		this.playTameSound();
             this.setAttackTarget((EntityLivingBase)null);
             this.clearMovement();
-        	this.aiSit.setSitting(!this.isSitting());
+        	this.setSitting(!this.isSitting());
             this.isJumping = false;
     	}
     	
@@ -269,6 +270,42 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
     	else if(this.isTamed() && player.getCommandSenderName().equalsIgnoreCase(this.getOwnerName()))
     		return super.canNameTag(player);
     	return false;
+    }
+    
+    // ========== Perform GUI Command ==========
+    @Override
+    public void performGUICommand(EntityPlayer player, byte guiCommandID) {
+    	if(!this.petControlsEnabled())
+    		return;
+    	if(player != this.getOwner())
+    		return;
+    	
+    	if(guiCommandID == GUI_COMMAND_ID.SITTING.id) {
+    		this.setSitting(!this.isSitting());
+    		this.playTameSound();
+    	}
+    	
+    	if(guiCommandID == GUI_COMMAND_ID.FOLLOWING.id) {
+    		this.setFollowing(!this.isFollowing());
+    		this.playTameSound();
+    	}
+    	
+    	if(guiCommandID == GUI_COMMAND_ID.PASSIVE.id) {
+    		this.setPassive(!this.isPassive());
+    		this.playTameSound();
+    	}
+    	
+    	if(guiCommandID == GUI_COMMAND_ID.STANCE.id) {
+    		this.setAggressive(!this.isAggressive());
+    		this.playTameSound();
+    	}
+    	
+    	if(guiCommandID == GUI_COMMAND_ID.PVP.id) {
+    		this.setPVP(!this.isPVP());
+    		this.playTameSound();
+    	}
+    	
+    	super.performGUICommand(player, guiCommandID);
     }
     
     
@@ -309,7 +346,25 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
     // ========== Can Attack ==========
 	@Override
 	public boolean canAttackClass(Class targetClass) {
+		if(this.isPassive())
+			return false;
 		return super.canAttackClass(targetClass);
+	}
+	
+	@Override
+	public boolean canAttackEntity(EntityLivingBase targetEntity) {
+		if(this.isPassive())
+			return false;
+		if(targetEntity instanceof EntityPlayer && !this.isPVP())
+			return false;
+		if(targetEntity instanceof EntityCreatureTameable) {
+			EntityCreatureTameable targetPet = (EntityCreatureTameable)targetEntity;
+			if(!this.isPVP())
+				return false;
+			if(targetPet.getOwner() == this.getOwner())
+				return false;
+		}
+		return super.canAttackEntity(targetEntity);
 	}
 	
     // ========== Attacked From ==========
@@ -319,7 +374,8 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
             return false;
         else {
             Entity entity = damageSrc.getEntity();
-            this.aiSit.setSitting(false);
+            if(!this.isPassive())
+            	this.setSitting(false);
 
             if(entity != null && !(entity instanceof EntityPlayer) && !(entity instanceof EntityArrow))
             	damage = (damage + 1.0F) / 2.0F;
@@ -333,15 +389,15 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
     //                       Taming
     // ==================================================
     public boolean isTamed() {
-        return (this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id) & 4) != 0;
+        return (this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id) & TAMED_ID.IS_TAMED.id) != 0;
     }
     
     public void setTamed(boolean setTamed) {
         byte tamed = this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id);
         if(setTamed)
-            this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamed | 4)));
+            this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamed | TAMED_ID.IS_TAMED.id)));
         else
-            this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamed & -5)));
+            this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamed - (tamed & TAMED_ID.IS_TAMED.id))));
         this.setAlwaysRenderNameTag(setTamed);
     }
     
@@ -364,8 +420,11 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
     	this.setTamed(true);
         this.clearMovement();
         this.setAttackTarget((EntityLivingBase)null);
-        this.aiSit.setSitting(true);
         this.setOwner(player.getCommandSenderName());
+        this.setSitting(false);
+        this.setFollowing(true);
+        this.setPassive(false);
+        this.setAggressive(false);
         this.playTameSound();
     }
     
@@ -410,53 +469,54 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
     // ==================================================
     //                     Pet Control
     // ==================================================
-    public EntityAISit getSitAI() {
-        return this.aiSit;
-    }
+    public boolean petControlsEnabled() { return false; }
     
     // ========== Sitting ==========
-    public boolean sittingEnabled() { return false; }
-    
     public boolean isSitting() {
         return (this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id) & TAMED_ID.MOVE_SIT.id) != 0;
     }
 
     public void setSitting(boolean set) {
+    	if(!this.petControlsEnabled())
+    		set = false;
         byte tamedStatus = this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id);
         if(set)
             this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamedStatus | TAMED_ID.MOVE_SIT.id)));
         else
-            this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamedStatus & TAMED_ID.MOVE_SIT.id)));
+            this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamedStatus - (tamedStatus & TAMED_ID.MOVE_SIT.id))));
     }
     
     // ========== Following ==========
-    public boolean followingEnabled() { return false; }
-    
     public boolean isFollowing() {
         return (this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id) & TAMED_ID.MOVE_FOLLOW.id) != 0;
     }
 
     public void setFollowing(boolean set) {
+    	if(!this.petControlsEnabled())
+    		set = false;
         byte tamedStatus = this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id);
         if(set)
             this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamedStatus | TAMED_ID.MOVE_FOLLOW.id)));
         else
-            this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamedStatus & TAMED_ID.MOVE_FOLLOW.id)));
+            this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamedStatus - (tamedStatus & TAMED_ID.MOVE_FOLLOW.id))));
     }
     
     // ========== Passiveness ==========
-    public boolean stanceEnabled() { return false; }
-    
     public boolean isPassive() {
         return (this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id) & TAMED_ID.STANCE_PASSIVE.id) != 0;
     }
 
     public void setPassive(boolean set) {
+    	if(!this.petControlsEnabled())
+    		set = false;
         byte tamedStatus = this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id);
-        if(set)
+        if(set) {
             this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamedStatus | TAMED_ID.STANCE_PASSIVE.id)));
+            this.setAttackTarget(null);
+            this.setStealth(0);
+        }
         else
-            this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamedStatus & TAMED_ID.STANCE_PASSIVE.id)));
+            this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamedStatus - (tamedStatus & TAMED_ID.STANCE_PASSIVE.id))));
     }
     
     public boolean isAggressive() {
@@ -464,26 +524,28 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
     }
 
     public void setAggressive(boolean set) {
+    	if(!this.petControlsEnabled())
+    		set = false;
         byte tamedStatus = this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id);
         if(set)
             this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamedStatus | TAMED_ID.STANCE_AGGRESSIVE.id)));
         else
-            this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamedStatus & TAMED_ID.STANCE_AGGRESSIVE.id)));
+            this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamedStatus - (tamedStatus & TAMED_ID.STANCE_AGGRESSIVE.id))));
     }
     
     // ========== PvP ==========
-    public boolean pvpEnabled() { return this.stanceEnabled(); }
-    
     public boolean isPVP() {
         return (this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id) & TAMED_ID.PVP.id) != 0;
     }
 
     public void setPVP(boolean set) {
+    	if(!this.petControlsEnabled())
+    		set = false;
         byte tamedStatus = this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id);
         if(set)
             this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamedStatus | TAMED_ID.PVP.id)));
         else
-            this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamedStatus & TAMED_ID.PVP.id)));
+            this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamedStatus - (tamedStatus & TAMED_ID.PVP.id))));
     }
     
     
@@ -649,8 +711,38 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
         }
         
         if(nbtTagCompound.hasKey("Sitting")) {
-	        this.aiSit.setSitting(nbtTagCompound.getBoolean("Sitting"));
 	        this.setSitting(nbtTagCompound.getBoolean("Sitting"));
+        }
+        else {
+        	this.setSitting(false);
+        }
+        
+        if(nbtTagCompound.hasKey("Following")) {
+	        this.setFollowing(nbtTagCompound.getBoolean("Following"));
+        }
+        else {
+        	this.setFollowing(true);
+        }
+        
+        if(nbtTagCompound.hasKey("Passive")) {
+	        this.setPassive(nbtTagCompound.getBoolean("Passive"));
+        }
+        else {
+        	this.setPassive(false);
+        }
+        
+        if(nbtTagCompound.hasKey("Aggressive")) {
+	        this.setAggressive(nbtTagCompound.getBoolean("Aggressive"));
+        }
+        else {
+        	this.setAggressive(false);
+        }
+        
+        if(nbtTagCompound.hasKey("PVP")) {
+	        this.setPVP(nbtTagCompound.getBoolean("PVP"));
+        }
+        else {
+        	this.setPVP(true);
         }
         
         if(nbtTagCompound.hasKey("Hunger")) {
@@ -676,6 +768,10 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
         	nbtTagCompound.setString("Owner", this.getOwnerName());
         }
         nbtTagCompound.setBoolean("Sitting", this.isSitting());
+        nbtTagCompound.setBoolean("Following", this.isFollowing());
+        nbtTagCompound.setBoolean("Passive", this.isPassive());
+        nbtTagCompound.setBoolean("Aggressive", this.isAggressive());
+        nbtTagCompound.setBoolean("PVP", this.isPVP());
         nbtTagCompound.setFloat("Hunger", this.getCreatureHunger());
         nbtTagCompound.setFloat("Stamina", this.getStamina());
     }

@@ -104,6 +104,7 @@ public class EntityPortal extends EntityProjectileBase {
 	    	if(entity == null)
 	    		return false;
 	    	entity.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rand.nextFloat() * 360.0F, 0.0F);
+	    	entity.setMinion(true);
 	    	entity.setTemporary(this.portalItem.getSummonDuration());
 	    	entity.setPlayerOwner(this.shootingEntity);
 	    	this.worldObj.spawnEntityInWorld(entity);
@@ -132,9 +133,13 @@ public class EntityPortal extends EntityProjectileBase {
 	        
 			// Apply Raytrace to Look Target:
 			MovingObjectPosition target = Utilities.raytrace(this.worldObj, this.shootingEntity.posX, this.shootingEntity.posY, this.shootingEntity.posZ, this.targetX, this.targetY, this.targetZ, 1.0F, null);
-	        this.targetX = target.hitVec.xCoord;
-			this.targetY = target.hitVec.yCoord + 1.0D;
-			this.targetZ = target.hitVec.zCoord;
+	        if(target != null && target.hitVec != null) {
+				this.targetX = target.hitVec.xCoord;
+				this.targetY = target.hitVec.yCoord;
+				this.targetZ = target.hitVec.zCoord;
+	        }
+	        
+	        this.posY += 1.0D;
 			
 			// Update Position to Target:
 	    	this.posX = this.targetX;

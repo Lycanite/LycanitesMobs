@@ -156,6 +156,12 @@ public class EntityCrusk extends EntityCreatureTameable implements IGroupPredato
     
     
     // ==================================================
+    //                     Pet Control
+    // ==================================================
+    public boolean petControlsEnabled() { return true; }
+    
+    
+    // ==================================================
     //                     Equipment
     // ==================================================
     public int getNoBagSize() { return 0; }

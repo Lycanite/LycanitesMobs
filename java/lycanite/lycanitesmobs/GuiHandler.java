@@ -38,7 +38,7 @@ public class GuiHandler implements IGuiHandler {
 		
 		// ========== Item ==========
 		else if(id == GuiType.ITEM.id) {
-			// Ready for the Soul Cube!
+			// No item GUIs just yet.
 		}
 		
 		return null;

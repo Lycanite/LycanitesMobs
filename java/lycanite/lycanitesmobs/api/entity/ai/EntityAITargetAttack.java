@@ -14,7 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 public class EntityAITargetAttack extends EntityAITarget {
 	// Targets:
     private Class targetClass = EntityLivingBase.class;
-    private List<Class> targetClasses = null; //TODO Class lists for better target grouping.
+    private List<Class> targetClasses = null;
     
     // Properties:
     private int targetChance = 0;

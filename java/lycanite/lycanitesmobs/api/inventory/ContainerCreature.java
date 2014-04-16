@@ -2,9 +2,11 @@ package lycanite.lycanitesmobs.api.inventory;
 
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 
 public class ContainerCreature extends ContainerBase {
+	public EntityCreatureBase creature;
 	
 	// ==================================================
   	//                    Constructor
@@ -12,6 +14,7 @@ public class ContainerCreature extends ContainerBase {
 	public ContainerCreature(EntityCreatureBase creature, InventoryPlayer playerInventory) {
 		super();
 		this.drawPlayerSlots(playerInventory, 0, 0);
+		this.creature = creature;
 		
 		// Creature Equipment:
 		this.specialStart = this.inventorySlots.size();
@@ -56,5 +59,14 @@ public class ContainerCreature extends ContainerBase {
 			this.drawSlot(creature.inventory, creature.inventory.getSlotFromType("feet"), equipX, equipY);
 			equipY += 18;
 		}
+	}
+	
+	
+	// ==================================================
+  	//                  Container Closed
+  	// ==================================================
+	@Override
+	public void onContainerClosed(EntityPlayer player) {
+		super.onContainerClosed(player);
 	}
 }

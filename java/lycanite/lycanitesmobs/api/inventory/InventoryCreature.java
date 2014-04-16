@@ -103,7 +103,6 @@ public class InventoryCreature implements IInventory {
 	// ==================================================
   	//                      Actions
   	// ==================================================
-
 	@Override
 	public void onInventoryChanged() {
 		if(this.creature.worldObj.isRemote)
@@ -127,6 +126,8 @@ public class InventoryCreature implements IInventory {
 				itemStack = new ItemStack(1, 1, 0);
 			this.creature.getDataWatcher().updateObject(EntityCreatureBase.WATCHER_ID.EQUIPMENT.id + this.equipmentIDs.get(type), itemStack);
 		}
+		
+		this.creature.scheduleGUIRefresh();
 	}
 	
 	@Override

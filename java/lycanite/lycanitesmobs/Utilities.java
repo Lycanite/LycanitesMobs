@@ -26,15 +26,8 @@ public class Utilities {
 		float maxY = (float)(y > ty ? y : ty);
 		float maxZ = (float)(z > tz ? z : tz);
 
-		// Get Entities and Raytrace Blocks:
-		AxisAlignedBB bb = AxisAlignedBB.getAABBPool()
-				.getAABB(minX, minY, minZ, maxX, maxY, maxZ)
-				.expand(borderSize, borderSize, borderSize);
-		List<Entity> allEntities = world.getEntitiesWithinAABBExcludingEntity(
-				null, bb);
-		MovingObjectPosition collision = world.clip(startVec, endVec, false);
-
 		// Get Block Collision:
+		MovingObjectPosition collision = world.clip(startVec, endVec, false);
 		startVec = Vec3.fakePool.getVecFromPool(x, y, z);
 		endVec = Vec3.fakePool.getVecFromPool(tx, ty, tz);
 		float maxDistance = (float)endVec.distanceTo(startVec);
@@ -42,7 +35,11 @@ public class Utilities {
 			maxDistance = (float)collision.hitVec.distanceTo(startVec);
 
 		// Get Entity Collision:
-			if(excluded != null) {
+		if(excluded != null) {
+			AxisAlignedBB bb = AxisAlignedBB.getAABBPool()
+					.getAABB(minX, minY, minZ, maxX, maxY, maxZ)
+					.expand(borderSize, borderSize, borderSize);
+			List<Entity> allEntities = world.getEntitiesWithinAABBExcludingEntity(null, bb);
 			Entity closestHitEntity = null;
 			float closestHit = Float.POSITIVE_INFINITY;
 			float currentHit = 0.0f;

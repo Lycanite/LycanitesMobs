@@ -1,12 +1,7 @@
 package lycanite.lycanitesmobs.api.entity.ai;
 
-import java.util.Collections;
-import java.util.List;
-
-import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAIBase;
 
 public class EntityAITargetOwnerAttack extends EntityAITarget {
 	// Targets:
@@ -53,7 +48,7 @@ public class EntityAITargetOwnerAttack extends EntityAITarget {
   	// ==================================================
     @Override
     public void startExecuting() {
-    	if(isTargetValid(target)) {
+    	if(this.isTargetValid(target)) {
 			lastAttackTime = this.host.getOwner().getLastAttackerTime();
 			super.startExecuting();
 		}
@@ -79,6 +74,7 @@ public class EntityAITargetOwnerAttack extends EntityAITarget {
     	if(!target.isEntityAlive()) return false;
 		if(target == this.host) return false;
 		if(!this.host.canAttackClass(target.getClass())) return false;
+		if(!this.host.canAttackEntity(target)) return false;
     	return true;
     }
     

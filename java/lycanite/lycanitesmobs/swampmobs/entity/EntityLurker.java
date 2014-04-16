@@ -67,18 +67,18 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
         
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, this.aiSit);
         this.tasks.addTask(1, new EntityAIStealth(this).setStealthTime(20).setStealthAttack(true).setStealthMove(true));
         this.tasks.addTask(2, new EntityAIAvoid(this).setNearSpeed(2.0D).setFarSpeed(1.5D).setNearDistance(5.0D).setFarDistance(10.0D));
-        this.tasks.addTask(3, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
-        this.tasks.addTask(4, new EntityAITempt(this).setItemID(Item.fermentedSpiderEye.itemID).setTemptDistanceMin(2.0D));
-        this.tasks.addTask(5, new EntityAIAttackMelee(this).setLongMemory(false));
-        this.tasks.addTask(6, new EntityAIMate(this));
-        this.tasks.addTask(7, new EntityAIFollowParent(this));
-        this.tasks.addTask(8, new EntityAIWander(this));
-        this.tasks.addTask(9, new EntityAIBeg(this));
-        this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
-        this.tasks.addTask(11, new EntityAILookIdle(this));
+        this.tasks.addTask(3, new EntityAIAttackMelee(this).setLongMemory(false));
+        this.tasks.addTask(4, this.aiSit);
+        this.tasks.addTask(5, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
+        this.tasks.addTask(6, new EntityAITempt(this).setItemID(Item.fermentedSpiderEye.itemID).setTemptDistanceMin(2.0D));
+        this.tasks.addTask(7, new EntityAIMate(this));
+        this.tasks.addTask(8, new EntityAIFollowParent(this));
+        this.tasks.addTask(9, new EntityAIWander(this));
+        this.tasks.addTask(10, new EntityAIBeg(this));
+        this.tasks.addTask(11, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
+        this.tasks.addTask(12, new EntityAILookIdle(this));
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
@@ -225,6 +225,12 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
   	// ==================================================
     @Override
     public boolean canClimb() { return true; }
+    
+    
+    // ==================================================
+    //                     Pet Control
+    // ==================================================
+    public boolean petControlsEnabled() { return true; }
     
     
     // ==================================================

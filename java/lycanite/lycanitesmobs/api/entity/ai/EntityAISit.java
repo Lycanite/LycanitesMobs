@@ -9,7 +9,6 @@ public class EntityAISit extends EntityAIBase {
     private EntityCreatureTameable host;
     
     // Properties:
-    private boolean isSitting;
     private boolean enabled = true;
 	
 	// ==================================================
@@ -17,17 +16,13 @@ public class EntityAISit extends EntityAIBase {
  	// ==================================================
     public EntityAISit(EntityCreatureTameable setHost) {
         this.host = setHost;
-        this.setMutexBits(5);
+        this.setMutexBits(1);
     }
     
     
 	// ==================================================
  	//                  Set Properties
  	// ==================================================
-    public EntityAISit setSitting(boolean setSitting) {
-        this.isSitting = setSitting;
-        return this;
-    }
     public EntityAISit setEnabled(boolean flag) {
         this.enabled = flag;
         return this;
@@ -42,13 +37,16 @@ public class EntityAISit extends EntityAIBase {
     		return false;
         if(!this.host.isTamed())
             return false;
-        if(this.host.isInWater())
+        if(this.host.isInWater() && !this.host.canBreatheUnderwater())
             return false;
-        if(!this.host.canFly() && !this.host.onGround)
+        if(!this.host.onGround && !this.host.canFly())
             return false;
-        
+
         EntityLivingBase owner = this.host.getOwner();
-        return owner == null ? true : (this.host.getDistanceSqToEntity(owner) < 144.0D && owner.getAITarget() != null ? false : this.isSitting);
+        if(owner != null && this.host.getDistanceSqToEntity(owner) < 144.0D && owner.getAITarget() != null && !this.host.isPassive())
+        	return false;
+        
+        return this.host.isSitting();
     }
     
     
@@ -57,14 +55,5 @@ public class EntityAISit extends EntityAIBase {
  	// ==================================================
     public void startExecuting() {
         this.host.clearMovement();
-        this.host.setSitting(true);
-    }
-    
-    
-	// ==================================================
- 	//                       Reset
- 	// ==================================================
-    public void resetTask() {
-        this.host.setSitting(false);
     }
 }

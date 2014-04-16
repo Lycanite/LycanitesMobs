@@ -44,6 +44,8 @@ public class EntityAIFollowOwner extends EntityAIFollow {
  	// ==================================================
     @Override
     public EntityLivingBase getTarget() {
+    	if(!this.host.isFollowing())
+    		return null;
     	return this.host.getOwner();
     }
     

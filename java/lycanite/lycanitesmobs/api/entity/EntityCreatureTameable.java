@@ -30,6 +30,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
 	public float staminaRecovery = 0.5F;
 	public boolean hasCollarColor = false;
 	public boolean isMobWhenNotTamed = true;
+	public float sittingGuardRange = 16F;
 	
 	// AI:
 	public EntityAISit aiSit = new EntityAISit(this);
@@ -480,10 +481,14 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
     	if(!this.petControlsEnabled())
     		set = false;
         byte tamedStatus = this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id);
-        if(set)
+        if(set) {
             this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamedStatus | TAMED_ID.MOVE_SIT.id)));
-        else
+            this.setHome((int)this.posX, (int)this.posY, (int)this.posZ, this.sittingGuardRange);
+        }
+        else {
             this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamedStatus - (tamedStatus & TAMED_ID.MOVE_SIT.id))));
+            this.detachHome();
+        }
     }
     
     // ========== Following ==========

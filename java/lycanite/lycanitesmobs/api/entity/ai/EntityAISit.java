@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs.api.entity.ai;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.util.ChunkCoordinates;
 
 public class EntityAISit extends EntityAIBase {
 	// Targets:
@@ -10,6 +11,8 @@ public class EntityAISit extends EntityAIBase {
     
     // Properties:
     private boolean enabled = true;
+    private double speed = 1.0D;
+    private double farSpeed = 1.5D;
 	
 	// ==================================================
  	//                    Constructor
@@ -26,6 +29,16 @@ public class EntityAISit extends EntityAIBase {
     public EntityAISit setEnabled(boolean flag) {
         this.enabled = flag;
         return this;
+    }
+    
+    public EntityAISit setSpeed(double setSpeed) {
+    	this.speed = setSpeed;
+    	return this;
+    }
+    
+    public EntityAISit setFarSpeed(double setSpeed) {
+    	this.farSpeed = setSpeed;
+    	return this;
     }
     
     
@@ -55,5 +68,15 @@ public class EntityAISit extends EntityAIBase {
  	// ==================================================
     public void startExecuting() {
         this.host.clearMovement();
+        if(this.host.hasHome() && this.host.getDistanceFromHome() > 1.0F) {
+        	ChunkCoordinates homePos = this.host.getHomePosition();
+        	double speed = this.speed;
+        	if(this.host.getDistanceFromHome() > this.host.getHomeDistanceMax())
+        		speed = this.farSpeed;
+	    	if(!host.canFly())
+	    		this.host.getNavigator().tryMoveToXYZ(homePos.posX, homePos.posY, homePos.posZ, this.speed);
+	    	else
+	    		host.flightNavigator.setTargetPosition(new ChunkCoordinates((int)homePos.posX, (int)homePos.posY, (int)homePos.posZ), speed);
+        }
     }
 }

@@ -1057,7 +1057,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public ChunkCoordinates getHomePosition() { return this.homePosition; }
     /** Gets the distance this mob is allowed to stray from it's home. -1 is used to unlimited distance. **/
     public float getHomeDistanceMax() { return this.homeDistanceMax; }
+    /** Clears the current home position. **/
     public void detachHome() {
+    	this.homePosition = null;
     	this.setHomeDistanceMax(-1);
     }
     /** Returns whether or not this mob has a home set. **/
@@ -1065,9 +1067,18 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	return this.getHomePosition() != null && this.getHomeDistanceMax() >= 0;
     }
     /** Returns whether or not the given XYZ position is near this entity's home position, returns true if no home is set. **/
-    public boolean positionNearHome(int par1, int par2, int par3) {
+    public boolean positionNearHome(int x, int y, int z) {
         if(!hasHome()) return true;
-        return this.homePosition.getDistanceSquared(par1, par2, par3) < this.getHomeDistanceMax() * this.getHomeDistanceMax();
+        return this.getDistanceFromHome(x, y, z) < this.getHomeDistanceMax() * this.getHomeDistanceMax();
+    }
+    /** Returns the distance that the specified XYZ position is from the home position. **/
+    public float getDistanceFromHome(int x, int y, int z) {
+    	if(!hasHome()) return 0;
+    	return this.homePosition.getDistanceSquared(x, y, z);
+    }
+    /** Returns the distance that the entity's position is from the home position. **/
+    public float getDistanceFromHome() {
+    	return this.homePosition.getDistanceSquared((int)this.posX, (int)this.posY, (int)this.posZ);
     }
     
     

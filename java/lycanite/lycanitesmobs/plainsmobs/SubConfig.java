@@ -12,7 +12,7 @@ public class SubConfig extends Config {
 		super.loadSettings();
 		
 		// ========== Feature Control ==========
-		loadSetting(this.featureStrings, "Feature Control", "BiomeTypes", "Group Biome Types", "PLAINS,HILLS");
+		loadSetting(this.featureStrings, "Feature Control", "BiomeTypes", "Group Biome Types", "PLAINS,HILLS,-FROZEN");
 		loadSetting(this.featureStrings, "Feature Control", "Dimensions", "Group Dimensions", "0");
 
 		// ========== Special Feature Control ==========

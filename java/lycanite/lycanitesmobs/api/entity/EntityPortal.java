@@ -83,13 +83,13 @@ public class EntityPortal extends EntityProjectileBase {
     	}
     	
     	// Summon:
-    	if(this.summonTick % this.portalItem.getRapidTime(null) == 0) {
+    	if(++this.summonTick >= this.portalItem.getRapidTime(null)) {
     		if(playerExt.summonFocus >= playerExt.summonFocusCharge || this.shootingEntity.capabilities.isCreativeMode) {
     			playerExt.summonFocus -= playerExt.summonFocusCharge;
     			this.summonAmount++;
     		}
+    		this.summonTick = 0;
     	}
-    	this.summonTick++;
     }
     
     
@@ -109,7 +109,9 @@ public class EntityPortal extends EntityProjectileBase {
 	    	entity.setPlayerOwner(this.shootingEntity);
 	    	this.worldObj.spawnEntityInWorld(entity);
     	}
-    	return this.summonAmount > 0;
+    	boolean summonedCreatures = this.summonAmount > 0;
+    	this.summonAmount = 0;
+    	return summonedCreatures;
     }
 	
     

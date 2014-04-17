@@ -1059,7 +1059,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public float getHomeDistanceMax() { return this.homeDistanceMax; }
     /** Clears the current home position. **/
     public void detachHome() {
-    	this.homePosition = null;
     	this.setHomeDistanceMax(-1);
     }
     /** Returns whether or not this mob has a home set. **/

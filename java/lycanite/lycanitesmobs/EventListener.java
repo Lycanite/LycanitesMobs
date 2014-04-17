@@ -4,9 +4,13 @@ import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
 import lycanite.lycanitesmobs.api.item.ItemSummoningStaff;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.potion.Potion;
 import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
@@ -17,6 +21,44 @@ public class EventListener {
     //                     Constructor
     // ==================================================
 	public EventListener() {}
+	
+	
+	// ==================================================
+    //                Entity Constructing
+    // ==================================================
+	@ForgeSubscribe
+	public void onEntityConstructing(EntityConstructing event) {
+		// ========== Extended Player ==========
+		if(event.entity instanceof EntityPlayer && !ExtendedPlayer.extendedPlayers.containsKey((EntityPlayer)event.entity)) {
+			EntityPlayer player = (EntityPlayer)event.entity;
+			player.registerExtendedProperties(ExtendedPlayer.EXT_PROP_NAME, new ExtendedPlayer(player));
+		}
+	}
+	
+	
+	// ==================================================
+    //                Entity Join World
+    // ==================================================
+	@ForgeSubscribe
+	public void onEntityJoinWorld(EntityJoinWorldEvent event) {
+		// This or constructing?
+	}
+	
+	
+	// ==================================================
+    //                Living Death Event
+    // ==================================================
+	@ForgeSubscribe
+	public void onLivingDeathEvent(LivingDeathEvent event) {
+		// ========== Extended Player Data Backup ==========
+		if(event.entity instanceof EntityPlayer && ExtendedPlayer.extendedPlayers.containsKey((EntityPlayer)event.entity)) {
+			EntityPlayer player = (EntityPlayer)event.entity;
+			NBTTagCompound nbtTagCompound = new NBTTagCompound();
+			ExtendedPlayer.extendedPlayers.get(player).saveNBTData(nbtTagCompound);
+			ExtendedPlayer.backupNBTTags.put(player.username, nbtTagCompound);
+			ExtendedPlayer.extendedPlayers.remove(player);
+		}
+	}
 	
 	
 	// ==================================================

@@ -11,26 +11,40 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
 
 public class ExtendedPlayer implements IExtendedEntityProperties {
+	public static String EXT_PROP_NAME = "LycanitesMobsPlayer";
 	public static Map<EntityPlayer, ExtendedPlayer> extendedPlayers = new HashMap<EntityPlayer, ExtendedPlayer>();
+	public static Map<String, NBTTagCompound> backupNBTTags = new HashMap<String, NBTTagCompound>();
+	
+	// Player Info and Containers:
 	public EntityPlayer player;
 	public Beastiary beastiary;
 	
 	// Summoning Focus:
-	public int summonFocusCharge = 6000;
-	public int summonFocusMax = this.summonFocusCharge * 10;
+	public int summonFocusCharge = 600;
+	public int summonFocusMax = (this.summonFocusCharge * 10);
 	public int summonFocus = this.summonFocusMax;
+	
+	// ==================================================
+    //                    Constructor
+    // ==================================================
+	public ExtendedPlayer(EntityPlayer player) {
+		if(backupNBTTags.containsKey(player)) {
+			this.loadNBTData(ExtendedPlayer.backupNBTTags.get(player.username));
+			backupNBTTags.remove(player);
+		}
+		
+		this.player = player;
+		this.beastiary = new Beastiary(player);
+		
+		extendedPlayers.put(player, this);
+	}
 	
 	// ==================================================
     //                       Init
     // ==================================================
 	@Override
 	public void init(Entity entity, World world) {
-		if(!(entity instanceof EntityPlayer))
-			return;
-		this.player = (EntityPlayer)entity;
-		this.beastiary = new Beastiary(player);
 		
-		extendedPlayers.put(player, this);
 	}
 	
 	
@@ -41,7 +55,7 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
     /** Reads a list of Creature Knowledge from a player's NBTTag. **/
 	@Override
     public void loadNBTData(NBTTagCompound nbtTagCompound) {
-		NBTTagCompound extTagCompound = nbtTagCompound.getCompoundTag("LycanitesMobs");
+		NBTTagCompound extTagCompound = nbtTagCompound.getCompoundTag(EXT_PROP_NAME);
 		
 		if(extTagCompound.hasKey("SummonFocus"))
 			this.summonFocus = extTagCompound.getInteger("SummonFocus");
@@ -57,6 +71,6 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 		extTagCompound.setInteger("SummonFocus", this.summonFocus);
     	this.beastiary.writeToNBT(extTagCompound);
     	
-    	nbtTagCompound.setCompoundTag("LycanitesMobs", extTagCompound);
+    	nbtTagCompound.setCompoundTag(EXT_PROP_NAME, extTagCompound);
     }
 }

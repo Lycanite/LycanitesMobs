@@ -92,8 +92,8 @@ public class ArcticMobs implements ILycaniteMod {
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("ArcticEgg"), new DispenserBehaviorMobEggCustom());
-		ObjectManager.addMob(new MobInfo(this, "Reiver", EntityReiver.class, 0xDDEEFF, 0x99DDEE));
-		ObjectManager.addMob(new MobInfo(this, "Frostweaver", EntityFrostweaver.class, 0xAADDFF, 0x226699));
+		ObjectManager.addMob(new MobInfo(this, "Reiver", EntityReiver.class, 0xDDEEFF, 0x99DDEE, 2));
+		ObjectManager.addMob(new MobInfo(this, "Frostweaver", EntityFrostweaver.class, 0xAADDFF, 0x226699, 2));
 		
 		// ========== Create Projectiles ==========
 		ObjectManager.addProjectile("Frostbolt", EntityFrostbolt.class, ObjectManager.getItem("FrostboltCharge"), new DispenserBehaviorFrostbolt());

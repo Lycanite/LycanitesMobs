@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import lycanite.lycanitesmobs.api.info.Beastiary;
+import lycanite.lycanitesmobs.api.info.MobInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,10 +20,11 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 	public EntityPlayer player;
 	public Beastiary beastiary;
 	
-	// Summoning Focus:
+	// Summoning:
 	public int summonFocusCharge = 600;
 	public int summonFocusMax = (this.summonFocusCharge * 10);
 	public int summonFocus = this.summonFocusMax;
+	public MobInfo summonMobInfo;
 	
 	// ==================================================
     //                    Constructor

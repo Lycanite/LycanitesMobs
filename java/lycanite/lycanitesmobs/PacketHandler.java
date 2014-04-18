@@ -35,7 +35,7 @@ public class PacketHandler implements IPacketHandler {
 	
 	// Player packet Types:
     public static enum PlayerType {
-		CONTROL((byte)0), SUMMONFOCUS((byte)1);
+		CONTROL((byte)0), SUMMONFOCUS((byte)1), GUI_BUTTON((byte)2);
 		public byte id;
 		private PlayerType(byte i) { id = i; }
 	}
@@ -89,6 +89,9 @@ public class PacketHandler implements IPacketHandler {
 							int focus = data.readInt();
 							if(ExtendedPlayer.extendedPlayers.containsKey((EntityPlayer)player))
 								ExtendedPlayer.extendedPlayers.get((EntityPlayer)player).summonFocus = focus;
+						}
+						if(playerType == PlayerType.GUI_BUTTON.id) {
+							// TODO Cool player button stuff!
 						}
 					}
 				}

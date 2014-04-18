@@ -85,7 +85,9 @@ public class EntityPortal extends EntityProjectileBase {
     	// Summon:
     	if(++this.summonTick >= this.portalItem.getRapidTime(null)) {
     		if(playerExt.summonFocus >= playerExt.summonFocusCharge || this.shootingEntity.capabilities.isCreativeMode) {
-    			playerExt.summonFocus -= playerExt.summonFocusCharge;
+    			float summonMultiplier = (float)(playerExt.summonMobInfo.summonCost + this.portalItem.getSummonCostBoost()) * this.portalItem.getSummonCostMod();
+    			int summonCost = Math.round((float)playerExt.summonFocusCharge * summonMultiplier);
+    			playerExt.summonFocus -= summonCost;
     			this.summonAmount++;
     		}
     		this.summonTick = 0;

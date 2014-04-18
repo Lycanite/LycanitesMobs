@@ -64,6 +64,9 @@ public class MobInfo {
 	/** A list of all the custom item drops this mob should drop, readily parsed from the config. To be safe, this list should be copied into the entity instance. **/
 	public List<DropRate> customDrops = new ArrayList<DropRate>();
 	
+	/** How many charges this creature normally costs to summon. **/
+	public int summonCost = 1;
+	
 	// ========== Per Mob Stats ==========
 	public double multiplierDefense = 1.0D;
 	public double multiplierSpeed = 1.0D;
@@ -97,7 +100,7 @@ public class MobInfo {
     // ==================================================
     //                     Constructor
     // ==================================================
-	public MobInfo(ILycaniteMod mod, String name, String title, Class entityClass, int eggBack, int eggFore) {
+	public MobInfo(ILycaniteMod mod, String name, String title, Class entityClass, int eggBack, int eggFore, int summonCost) {
 		this.mod = mod;
 		
 		this.name = name;
@@ -111,6 +114,8 @@ public class MobInfo {
 		
 		this.eggBackColor = eggBack;
 		this.eggForeColor = eggFore;
+		
+		this.summonCost = summonCost;
 		
 		// Load Item Drops:
 		this.defaultDrops = config.defaultDrops.get(name);
@@ -145,8 +150,8 @@ public class MobInfo {
 	}
 	
 	// For most mobs where the code name and title are the same (no spaces, etc).
-	public MobInfo(ILycaniteMod mod, String setName, Class setClass, int setEggBack, int setEggFore) {
-		this(mod, setName, setName, setClass, setEggBack, setEggFore);
+	public MobInfo(ILycaniteMod mod, String setName, Class setClass, int setEggBack, int setEggFore, int summonCost) {
+		this(mod, setName, setName, setClass, setEggBack, setEggFore, summonCost);
 	}
 	
 	

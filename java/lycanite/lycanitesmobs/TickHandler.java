@@ -77,6 +77,10 @@ public class TickHandler implements ITickHandler {
 		if(KeyBase.keyPressed("PetInventory"))
 			controlStates += PlayerControlHandler.CONTROL_ID.PET_INVENTORY.id;
 		
+		// Minion GUI:
+		if(KeyBase.keyPressed("MinionControls"))
+			controlStates += PlayerControlHandler.CONTROL_ID.MINION_CONTROLS.id;
+		
 		// Send Control State To Server If Changed:
 		if(controlStates != lastStateSent || !firstStateSent) {
 			Packet packet = PacketHandler.createPacket(PacketHandler.PacketType.PLAYER, PacketHandler.PlayerType.CONTROL.id, controlStates);

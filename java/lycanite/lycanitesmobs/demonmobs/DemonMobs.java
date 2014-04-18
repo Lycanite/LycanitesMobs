@@ -35,7 +35,6 @@ import lycanite.lycanitesmobs.demonmobs.item.ItemScepterDemonicLightning;
 import lycanite.lycanitesmobs.demonmobs.item.ItemScepterDevilstar;
 import lycanite.lycanitesmobs.demonmobs.item.ItemScepterDoomfire;
 import lycanite.lycanitesmobs.demonmobs.item.ItemScepterHellfire;
-import lycanite.lycanitesmobs.demonmobs.item.ItemStaffBelph;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityGhast;
@@ -105,8 +104,6 @@ public class DemonMobs implements ILycaniteMod {
 		ObjectManager.addItem("HellfireScepter", "Hellfire Scepter", new ItemScepterHellfire(config.itemIDs.get("HellfireScepter")));
 		ObjectManager.addItem("DevilstarScepter", "Devilstar Scepter", new ItemScepterDevilstar(config.itemIDs.get("DevilstarScepter")));
 		ObjectManager.addItem("DemonicLightningScepter", "Demonic Lightning Scepter", new ItemScepterDemonicLightning(config.itemIDs.get("DemonicLightningScepter")));
-
-		ObjectManager.addItem("BelphStaff", "Belph Summoning Staff", new ItemStaffBelph(config.itemIDs.get("BelphStaff")));
 		
 		// ========== Create Blocks ==========
 		ObjectManager.addBlock("Hellfire", "Hellfire", new BlockHellfire(config.blockIDs.get("Hellfire")));
@@ -124,13 +121,13 @@ public class DemonMobs implements ILycaniteMod {
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("DemonEgg"), new DispenserBehaviorMobEggCustom());
-		ObjectManager.addMob(new MobInfo(this, "Belph", EntityBelph.class, 0x992222, 0x000000));
-		ObjectManager.addMob(new MobInfo(this, "Behemoth", EntityBehemoth.class, 0xFF2222, 0xFF9900));
-		ObjectManager.addMob(new MobInfo(this, "Pinky", EntityPinky.class, 0xFF0099, 0x990000));
-		ObjectManager.addMob(new MobInfo(this, "Trite", EntityTrite.class, 0xFFFF88, 0x000000));
-		ObjectManager.addMob(new MobInfo(this, "Asmodi", EntityAsmodi.class, 0x999944, 0x0000FF));
-		ObjectManager.addMob(new MobInfo(this, "NetherSoul", "Nether Soul", EntityNetherSoul.class, 0xFF9900, 0xFF0000));
-		ObjectManager.addMob(new MobInfo(this, "Cacodemon", EntityCacodemon.class, 0xFF0000, 0x000099));
+		ObjectManager.addMob(new MobInfo(this, "Belph", EntityBelph.class, 0x992222, 0x000000, 2));
+		ObjectManager.addMob(new MobInfo(this, "Behemoth", EntityBehemoth.class, 0xFF2222, 0xFF9900, 6));
+		ObjectManager.addMob(new MobInfo(this, "Pinky", EntityPinky.class, 0xFF0099, 0x990000, 4));
+		ObjectManager.addMob(new MobInfo(this, "Trite", EntityTrite.class, 0xFFFF88, 0x000000, 1));
+		ObjectManager.addMob(new MobInfo(this, "Asmodi", EntityAsmodi.class, 0x999944, 0x0000FF, 8));
+		ObjectManager.addMob(new MobInfo(this, "NetherSoul", "Nether Soul", EntityNetherSoul.class, 0xFF9900, 0xFF0000, 1));
+		ObjectManager.addMob(new MobInfo(this, "Cacodemon", EntityCacodemon.class, 0xFF0000, 0x000099, 6));
 		
 		// ========== Create Projectiles ==========
 		ObjectManager.addProjectile("Hellfireball", EntityHellfireball.class, ObjectManager.getItem("HellfireCharge"), new DispenserBehaviorHellfireball());

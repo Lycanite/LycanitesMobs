@@ -9,7 +9,7 @@ public class PlayerControlHandler {
 	
 	// Player packet Types:
     public static enum CONTROL_ID {
-		JUMP((byte)1), MOUNT_ABILITY((byte)2), PET_INVENTORY((byte)4);
+		JUMP((byte)1), MOUNT_ABILITY((byte)2), PET_INVENTORY((byte)4), MINION_CONTROLS((byte)8);
 		public byte id;
 		private CONTROL_ID(byte i) { id = i; }
 	}
@@ -32,8 +32,14 @@ public class PlayerControlHandler {
     // ==================================================
     //                   Update States
     // ==================================================
+    /** Called by player tick handlers when the control states change. **/
     public static void updateStates(EntityPlayer player, byte states) {
     	controls.put(player, states);
+    	
+    	// Open Minion Controls:
+    	if(playerInputMinionControls(player)) {
+    		player.openGui(LycanitesMobs.instance, GuiHandler.GuiType.PLAYER.id, player.worldObj, GuiHandler.PlayerGuiType.MINION_CONTROLS.id, 0, 0);
+    	}
     }
 	
 	
@@ -50,5 +56,9 @@ public class PlayerControlHandler {
 
     public static boolean playerInputInventory(EntityPlayer player) {
     	return controlActive(player, PlayerControlHandler.CONTROL_ID.PET_INVENTORY);
+    }
+
+    public static boolean playerInputMinionControls(EntityPlayer player) {
+    	return controlActive(player, PlayerControlHandler.CONTROL_ID.MINION_CONTROLS);
     }
 }

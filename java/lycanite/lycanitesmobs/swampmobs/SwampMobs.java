@@ -114,13 +114,13 @@ public class SwampMobs implements ILycaniteMod {
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("SwampEgg"), new DispenserBehaviorMobEggCustom());
-		ObjectManager.addMob(new MobInfo(this, "GhoulZombie", "Ghoul Zombie", EntityGhoulZombie.class, 0x009966, 0xAAFFDD));
-		ObjectManager.addMob(new MobInfo(this, "Dweller", EntityDweller.class, 0x009922, 0x994499));
-		ObjectManager.addMob(new MobInfo(this, "Ettin", EntityEttin.class, 0x669900, 0xFF6600));
-		ObjectManager.addMob(new MobInfo(this, "Lurker", EntityLurker.class, 0x009900, 0x99FF00));
-		ObjectManager.addMob(new MobInfo(this, "Eyewig", EntityEyewig.class, 0x000000, 0x009900));
-		ObjectManager.addMob(new MobInfo(this, "Aspid", EntityAspid.class, 0x009944, 0x446600));
-		ObjectManager.addMob(new MobInfo(this, "Remobra", EntityRemobra.class, 0x440066, 0xDD00FF));
+		ObjectManager.addMob(new MobInfo(this, "GhoulZombie", "Ghoul Zombie", EntityGhoulZombie.class, 0x009966, 0xAAFFDD, 2));
+		ObjectManager.addMob(new MobInfo(this, "Dweller", EntityDweller.class, 0x009922, 0x994499, 2));
+		ObjectManager.addMob(new MobInfo(this, "Ettin", EntityEttin.class, 0x669900, 0xFF6600, 6));
+		ObjectManager.addMob(new MobInfo(this, "Lurker", EntityLurker.class, 0x009900, 0x99FF00, 4));
+		ObjectManager.addMob(new MobInfo(this, "Eyewig", EntityEyewig.class, 0x000000, 0x009900, 4));
+		ObjectManager.addMob(new MobInfo(this, "Aspid", EntityAspid.class, 0x009944, 0x446600, 2));
+		ObjectManager.addMob(new MobInfo(this, "Remobra", EntityRemobra.class, 0x440066, 0xDD00FF, 1));
 		
 		// ========== Create Projectiles ==========
 		ObjectManager.addProjectile("PoisonRay", EntityPoisonRay.class, Item.fermentedSpiderEye, new DispenserBehaviorPoisonRay());

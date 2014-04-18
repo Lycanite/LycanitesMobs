@@ -96,11 +96,11 @@ public class JungleMobs implements ILycaniteMod {
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("JungleEgg"), new DispenserBehaviorMobEggCustom());
-		ObjectManager.addMob(new MobInfo(this, "Geken", EntityGeken.class, 0x00AA00, 0xFFFF00));
-		ObjectManager.addMob(new MobInfo(this, "Uvaraptor", EntityUvaraptor.class, 0x00FF33, 0xFF00FF));
-		ObjectManager.addMob(new MobInfo(this, "Concapede", EntityConcapedeHead.class, 0x111144, 0xDD0000));
-		ObjectManager.addMob(new MobInfo(this, "ConcapedeSegment", "Concapede Segment", EntityConcapedeSegment.class, 0x000022, 0x990000));
-		ObjectManager.addMob(new MobInfo(this, "Tarantula", EntityTarantula.class, 0x008800, 0xDD0000));
+		ObjectManager.addMob(new MobInfo(this, "Geken", EntityGeken.class, 0x00AA00, 0xFFFF00, 2));
+		ObjectManager.addMob(new MobInfo(this, "Uvaraptor", EntityUvaraptor.class, 0x00FF33, 0xFF00FF, 4));
+		ObjectManager.addMob(new MobInfo(this, "Concapede", EntityConcapedeHead.class, 0x111144, 0xDD0000, 2));
+		ObjectManager.addMob(new MobInfo(this, "ConcapedeSegment", "Concapede Segment", EntityConcapedeSegment.class, 0x000022, 0x990000, 1));
+		ObjectManager.addMob(new MobInfo(this, "Tarantula", EntityTarantula.class, 0x008800, 0xDD0000, 2));
 		
 		// ========== Create Projectiles ==========
 		//ObjectManager.addProjectile("Template", EntityTemplate.class, Item.templateCharge, new DispenserBehaviorPoisonRay());

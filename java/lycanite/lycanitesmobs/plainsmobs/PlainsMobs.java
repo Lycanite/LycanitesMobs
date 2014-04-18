@@ -89,10 +89,10 @@ public class PlainsMobs implements ILycaniteMod {
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("PlainsEgg"), new DispenserBehaviorMobEggCustom());
-		ObjectManager.addMob(new MobInfo(this, "Kobold", EntityKobold.class, 0x996633, 0xFF7777));
-		ObjectManager.addMob(new MobInfo(this, "Ventoraptor", EntityVentoraptor.class, 0x99BBFF, 0x0033FF));
-		ObjectManager.addMob(new MobInfo(this, "Maka", EntityMaka.class, 0xAA8855, 0x221100));
-		ObjectManager.addMob(new MobInfo(this, "MakaAlpha", "Maka Alpha", EntityMakaAlpha.class, 0x663300, 0x000000));
+		ObjectManager.addMob(new MobInfo(this, "Kobold", EntityKobold.class, 0x996633, 0xFF7777, 1));
+		ObjectManager.addMob(new MobInfo(this, "Ventoraptor", EntityVentoraptor.class, 0x99BBFF, 0x0033FF, 4));
+		ObjectManager.addMob(new MobInfo(this, "Maka", EntityMaka.class, 0xAA8855, 0x221100, 2));
+		ObjectManager.addMob(new MobInfo(this, "MakaAlpha", "Maka Alpha", EntityMakaAlpha.class, 0x663300, 0x000000, 4));
 		
 		// ========== Create Projectiles ==========
 		//ObjectManager.addProjectile("Template", EntityTemplate.class, Item.templateCharge, new DispenserBehaviorPoisonRay());

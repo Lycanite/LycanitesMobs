@@ -49,6 +49,11 @@ public class ClientProxy extends CommonProxy {
 		KeyBinding[] petInventoryKey = {new KeyBinding("Mount Inventory", Keyboard.KEY_G)};
 		boolean[] petInventoryRepeat = {true};
 		KeyBindingRegistry.registerKeyBinding(new KeyBase(petInventoryKey, petInventoryRepeat, "Mount Inventory", "PetInventory"));
+		
+		// Minion GUI:
+		KeyBinding[] minionKey = {new KeyBinding("Minion Controls", Keyboard.KEY_H)};
+		boolean[] minionRepeat = {true};
+		KeyBindingRegistry.registerKeyBinding(new KeyBase(minionKey, minionRepeat, "Minion Controls", "MinionControls"));
     }
 	
 	// ========== Register Assets ==========
@@ -59,6 +64,8 @@ public class ClientProxy extends CommonProxy {
 		// ========== Add GUI Textures ==========
 		String domain = LycanitesMobs.domain;
 		AssetManager.addTexture("GUIInventoryCreature", domain, "textures/guis/inventory_creature.png");
+		AssetManager.addTexture("GUIMinion", domain, "textures/guis/minion.png");
+		AssetManager.addTexture("GUIBeastiary", domain, "textures/guis/beastiary.png");
     }
 	
 	

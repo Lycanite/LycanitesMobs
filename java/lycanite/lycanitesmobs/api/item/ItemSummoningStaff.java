@@ -1,5 +1,6 @@
 package lycanite.lycanitesmobs.api.item;
 
+import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.EntityPortal;
@@ -51,8 +52,11 @@ public class ItemSummoningStaff extends ItemScepter {
     }
     
     // ========== Summon Cost ==========
-    public int getSummonCost() {
-    	return 1;
+    public int getSummonCostBoost() {
+    	return 0;
+    }
+    public float getSummonCostMod() {
+    	return 1.0F;
     }
     
     // ========== Summon Duration ==========
@@ -68,9 +72,17 @@ public class ItemSummoningStaff extends ItemScepter {
     @Override
     public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
     	if(!world.isRemote) {
-	    	this.portalEntity = new EntityPortal(world, player, this);
-	    	this.portalEntity.setLocationAndAngles(player.posX, player.posY, player.posZ, world.rand.nextFloat() * 360.0F, 0.0F);
-	    	world.spawnEntityInWorld(this.portalEntity);
+    		ExtendedPlayer playerExt = ExtendedPlayer.extendedPlayers.get(player);
+    		if(playerExt != null) {
+    			// Summon Selected Mob
+    			if(playerExt.summonMobInfo != null) {
+			    	this.portalEntity = new EntityPortal(world, player, this);
+			    	this.portalEntity.setLocationAndAngles(player.posX, player.posY, player.posZ, world.rand.nextFloat() * 360.0F, 0.0F);
+			    	world.spawnEntityInWorld(this.portalEntity);
+    			}
+    			// Open Minion GUI If None Selected:
+    			//TODO Minion GUI Staff Open
+    		}
     	}
         return super.onItemRightClick(itemStack, world, player);
     }
@@ -85,7 +97,9 @@ public class ItemSummoningStaff extends ItemScepter {
     @Override
     public boolean chargedAttack(ItemStack itemStack, World world, EntityPlayer player, float power) {
     	if(this.portalEntity != null) {
-			return this.portalEntity.summonCreatures();
+			boolean success = this.portalEntity.summonCreatures();
+			this.portalEntity = null;
+			return success;
 		}
 		return false;
     }

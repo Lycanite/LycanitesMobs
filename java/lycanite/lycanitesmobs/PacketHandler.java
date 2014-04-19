@@ -35,9 +35,16 @@ public class PacketHandler implements IPacketHandler {
 	
 	// Player packet Types:
     public static enum PlayerType {
-		CONTROL((byte)0), SUMMONFOCUS((byte)1), GUI_BUTTON((byte)2);
+		CONTROL((byte)0), SUMMONFOCUS((byte)1), MINION((byte)2), BEASTIARY((byte)3);
 		public byte id;
 		private PlayerType(byte i) { id = i; }
+	}
+	
+	// Player packet Types:
+    public static enum ButtonType {
+		MINION((byte)0);
+		public byte id;
+		private ButtonType(byte i) { id = i; }
 	}
 	
 	
@@ -79,8 +86,8 @@ public class PacketHandler implements IPacketHandler {
 				
 				// ========== Player Packet ==========
 				else if(packetType == PacketType.PLAYER.id) {
+					byte playerType = data.readByte();
 					if(!world.isRemote) {
-						byte playerType = data.readByte();
 						if(playerType == PlayerType.CONTROL.id) {
 							byte states = data.readByte();
 							PlayerControlHandler.updateStates((EntityPlayer)player, states);
@@ -90,8 +97,14 @@ public class PacketHandler implements IPacketHandler {
 							if(ExtendedPlayer.extendedPlayers.containsKey((EntityPlayer)player))
 								ExtendedPlayer.extendedPlayers.get((EntityPlayer)player).summonFocus = focus;
 						}
-						if(playerType == PlayerType.GUI_BUTTON.id) {
-							// TODO Cool player button stuff!
+					}
+					if(playerType == PlayerType.MINION.id) {
+						if(ExtendedPlayer.extendedPlayers.containsKey((EntityPlayer)player)) {
+							ExtendedPlayer playerExt = ExtendedPlayer.extendedPlayers.get((EntityPlayer)player);
+							byte setID = data.readByte();
+							String summonType = data.readUTF();
+							byte behaviour = data.readByte();
+							playerExt.getSummonSet(setID).readFromPacket(summonType, behaviour);
 						}
 					}
 				}
@@ -110,7 +123,7 @@ public class PacketHandler implements IPacketHandler {
 			}
 		}
 		catch(Exception e) {
-			System.err.println("[WARNING] [LycanitesMobs] Invalid Packet Type was passed.");
+			LycanitesMobs.printWarning("", "Invalid Packet Type was passed.");
 			e.printStackTrace();
 		}
 	}
@@ -200,7 +213,17 @@ public class PacketHandler implements IPacketHandler {
     		PacketDispatcher.sendPacketToAllInDimension(packet, worldObj.provider.dimensionId);
     	}
     	catch(Exception e) {
-    		System.out.println("[WARNING] [LycanitesMobs] Sending packet to client failed.");
+    		System.out.println("[WARNING] [LycanitesMobs] Sending packet to all clients failed.");
+    		e.printStackTrace();
+    	}
+    }
+
+    public static void sendPacketToPlayer(Packet packet, EntityPlayer player) {
+    	try {
+    		PacketDispatcher.sendPacketToPlayer(packet, (Player)player);
+    	}
+    	catch(Exception e) {
+    		System.out.println("[WARNING] [LycanitesMobs] Sending packet to player failed.");
     		e.printStackTrace();
     	}
     }

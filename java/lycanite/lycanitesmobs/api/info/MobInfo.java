@@ -30,6 +30,9 @@ public class MobInfo {
 	/** A static map containing all the global multipliers for each stat for each difficulty. They defaults are Easy: 0.5, Normal: 1.0 and Hard: 1.5. **/
 	public static Map<String, Double> difficultyMutlipliers = new HashMap<String, Double>();
 	
+	/** A static ArrayList of all summonable creature names. **/
+	public static List<String> summonableCreatures = new ArrayList<String>();
+	
 	// ========== Per Mob Settings ==========
 	/** Mod Class **/
 	public ILycaniteMod mod;
@@ -166,6 +169,14 @@ public class MobInfo {
     // ==================================================
     //                        Set
     // ==================================================
+	// ========== Summonable ==========
+	public void setSummonable(boolean summonable) {
+		if(summonable && !summonableCreatures.contains(this.name))
+			summonableCreatures.add(this.name);
+		if(!summonable)
+			summonableCreatures.remove(this.name);
+	}
+	
 	/*/ ========== Model ==========
 	public void setModel(ModelBase setModel) {
 		model = setModel;

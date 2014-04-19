@@ -95,7 +95,7 @@ public class GUIBeastiary extends GuiScreen {
 	@Override
 	protected void actionPerformed(GuiButton guiButton) {
 		if(guiButton != null) {
-	        Packet packet = PacketHandler.createPacket(PacketHandler.PacketType.PLAYER, PacketHandler.PlayerType.GUI_BUTTON, Byte.valueOf((byte)guiButton.id));
+	        Packet packet = PacketHandler.createPacket(PacketHandler.PacketType.PLAYER, PacketHandler.PlayerType.BEASTIARY, Byte.valueOf((byte)guiButton.id));
 	        PacketHandler.sendPacketToServer(packet);
 		}
 		super.actionPerformed(guiButton);

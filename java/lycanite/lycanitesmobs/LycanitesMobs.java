@@ -132,7 +132,7 @@ public class LycanitesMobs {
 	
 	public static void printWarning(String key, String message) {
 		if("".equals(key) || config.getDebug(key)) {
-			System.out.println("[LycanitesMobs] [WARNING] " + message);
+			System.err.println("[LycanitesMobs] [WARNING] " + message);
 		}
 	}
 }

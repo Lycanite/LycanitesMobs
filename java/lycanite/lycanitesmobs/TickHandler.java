@@ -83,12 +83,13 @@ public class TickHandler implements ITickHandler {
 		
 		// If Changed, Send Control State To Player Control Handler:
 		if(controlStates != lastStateSent || !firstStateSent) {
-			// Client Side:
-			PlayerControlHandler.updateStates(Minecraft.getMinecraft().thePlayer, controlStates);
-			
 			// Server Side:
 			Packet packet = PacketHandler.createPacket(PacketHandler.PacketType.PLAYER, PacketHandler.PlayerType.CONTROL.id, controlStates);
 			PacketHandler.sendPacketToServer(packet);
+			
+			// Client Side:
+			PlayerControlHandler.updateStates(Minecraft.getMinecraft().thePlayer, controlStates);
+			
 			lastStateSent = controlStates;
 			firstStateSent = true;
 		}

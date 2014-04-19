@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs;
 import java.util.HashMap;
 import java.util.Map;
 
+import lycanite.lycanitesmobs.api.gui.GUIMinion;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class PlayerControlHandler {
@@ -37,9 +38,14 @@ public class PlayerControlHandler {
     	controls.put(player, states);
     	
     	// Open Minion Controls:
-    	if(player != null && player.worldObj != null && player.worldObj.isRemote) {
+    	if(player != null && player.worldObj != null) {
 	    	if(playerInputMinionControls(player)) {
-	    		player.openGui(LycanitesMobs.instance, GuiHandler.GuiType.PLAYER.id, player.worldObj, GuiHandler.PlayerGuiType.MINION_CONTROLS.id, 0, 0);
+	    		if(!player.worldObj.isRemote) {
+	    			ExtendedPlayer playerExt = ExtendedPlayer.extendedPlayers.get(player);
+	    			playerExt.sendAllSummonSetsToPlayer();
+	    		}
+	    		if(player.worldObj.isRemote)
+	    			GUIMinion.openToPlayer(player, 1);
 	    	}
     	}
     }

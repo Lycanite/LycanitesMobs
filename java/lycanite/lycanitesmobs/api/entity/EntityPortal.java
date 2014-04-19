@@ -4,6 +4,7 @@ import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.Utilities;
+import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.item.ItemSummoningStaff;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,6 +24,7 @@ public class EntityPortal extends EntityProjectileBase {
 	
 	// Properties:
 	public EntityPlayer shootingEntity;
+	public Class summonClass;
 	public ItemSummoningStaff portalItem;
 	
     // ==================================================
@@ -33,9 +35,10 @@ public class EntityPortal extends EntityProjectileBase {
         this.setStats();
     }
 
-    public EntityPortal(World world, EntityPlayer shooter, ItemSummoningStaff portalItem) {
+    public EntityPortal(World world, EntityPlayer shooter, Class summonClass, ItemSummoningStaff portalItem) {
         super(world, shooter);
         this.shootingEntity = shooter;
+        this.summonClass = summonClass;
         this.portalItem = portalItem;
         this.setStats();
     }
@@ -85,7 +88,7 @@ public class EntityPortal extends EntityProjectileBase {
     	// Summon:
     	if(++this.summonTick >= this.portalItem.getRapidTime(null)) {
     		if(playerExt.summonFocus >= playerExt.summonFocusCharge || this.shootingEntity.capabilities.isCreativeMode) {
-    			float summonMultiplier = (float)(playerExt.summonMobInfo.summonCost + this.portalItem.getSummonCostBoost()) * this.portalItem.getSummonCostMod();
+    			float summonMultiplier = (float)(MobInfo.mobClassToInfo.get(this.summonClass).summonCost + this.portalItem.getSummonCostBoost()) * this.portalItem.getSummonCostMod();
     			int summonCost = Math.round((float)playerExt.summonFocusCharge * summonMultiplier);
     			playerExt.summonFocus -= summonCost;
     			this.summonAmount++;
@@ -102,13 +105,23 @@ public class EntityPortal extends EntityProjectileBase {
     	if(this.worldObj.isRemote)
     		return true;
     	for(int i = 0; i < this.summonAmount; i++) {
-	    	EntityCreatureTameable entity = this.portalItem.getSummonEntity(this.worldObj);
+	    	Entity entity = null;
+			try {
+				entity = (Entity)this.summonClass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {this.worldObj});
+			} catch (Exception e) {
+				LycanitesMobs.printWarning("", "A none entity class type was passed to an EntityPortal, only entities can be summoned from portals!");
+				e.printStackTrace();
+			}
 	    	if(entity == null)
 	    		return false;
 	    	entity.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rand.nextFloat() * 360.0F, 0.0F);
-	    	entity.setMinion(true);
-	    	entity.setTemporary(this.portalItem.getSummonDuration());
-	    	entity.setPlayerOwner(this.shootingEntity);
+	    	if(entity instanceof EntityCreatureBase) {
+	    		EntityCreatureBase entityCreature = (EntityCreatureBase)entity;
+	    		entityCreature.setMinion(true);
+	    		entityCreature.setTemporary(this.portalItem.getSummonDuration());
+		    	if(entityCreature instanceof EntityCreatureTameable)
+		    		((EntityCreatureTameable)entityCreature).setPlayerOwner(this.shootingEntity);
+	    	}
 	    	this.worldObj.spawnEntityInWorld(entity);
     	}
     	boolean summonedCreatures = this.summonAmount > 0;

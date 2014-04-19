@@ -75,8 +75,9 @@ public class ItemSummoningStaff extends ItemScepter {
     		ExtendedPlayer playerExt = ExtendedPlayer.extendedPlayers.get(player);
     		if(playerExt != null) {
     			// Summon Selected Mob
-    			if(playerExt.summonMobInfo != null) {
-			    	this.portalEntity = new EntityPortal(world, player, this);
+    			String summonType = playerExt.getSelectedSummonSet().summonType;
+    			if(ObjectManager.getMob(summonType) != null) {
+			    	this.portalEntity = new EntityPortal(world, player, ObjectManager.getMob(summonType), this);
 			    	this.portalEntity.setLocationAndAngles(player.posX, player.posY, player.posZ, world.rand.nextFloat() * 360.0F, 0.0F);
 			    	world.spawnEntityInWorld(this.portalEntity);
     			}

@@ -1,15 +1,17 @@
 package lycanite.lycanitesmobs.api.info;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
+import lycanite.lycanitesmobs.ObjectManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
 public class Beastiary {
 	public EntityPlayer player;
-	public List<CreatureKnowledge> creatureKnowledgeList = new ArrayList<CreatureKnowledge>();
+	public Map<String, CreatureKnowledge> creatureKnowledgeList = new HashMap<String, CreatureKnowledge>();
 	
     // ==================================================
     //                     Constructor
@@ -20,16 +22,24 @@ public class Beastiary {
 	
 	
     // ==================================================
-    //                   Knowledge List
+    //                     Knowledge
     // ==================================================
-	public void newKnowledgeList(List<CreatureKnowledge> newKnowledgeList) {
+	public void newKnowledgeList(Map<String, CreatureKnowledge> newKnowledgeList) {
 		this.creatureKnowledgeList = newKnowledgeList;
-		// TODO Send all to client.
 	}
 
 	public void addToKnowledgeList(CreatureKnowledge newKnowledge) {
-		this.creatureKnowledgeList.add(newKnowledge);
-		// TODO Send to client.
+		if(ObjectManager.getMob(newKnowledge.creatureName) == null)
+			return;
+		this.creatureKnowledgeList.put(newKnowledge.creatureName, newKnowledge);
+	}
+	
+	public boolean hasFullKnowledge(String creatureName) {
+		if(!this.creatureKnowledgeList.containsKey(creatureName))
+			return false;
+		if(this.creatureKnowledgeList.get(creatureName).completion < 1)
+			return false;
+		return true;
 	}
 	
 	
@@ -41,31 +51,31 @@ public class Beastiary {
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
     	if(!nbtTagCompound.hasKey("CreatureKnowledge"))
     		return;
-    	List<CreatureKnowledge> newKnowledgeList = new ArrayList<CreatureKnowledge>();
+    	this.newKnowledgeList(new HashMap<String, CreatureKnowledge>());
     	NBTTagList knowledgeList = nbtTagCompound.getTagList("CreatureKnowledge");
     	for(int i = 0; i < knowledgeList.tagCount(); ++i) {
-	    	NBTTagCompound knowledgeEntry = (NBTTagCompound)knowledgeList.tagAt(i);
-    		if(knowledgeEntry.hasKey("CreatureName") && knowledgeEntry.hasKey("Completion")) {
+	    	NBTTagCompound nbtKnowledge = (NBTTagCompound)knowledgeList.tagAt(i);
+    		if(nbtKnowledge.hasKey("CreatureName") && nbtKnowledge.hasKey("Completion")) {
 	    		CreatureKnowledge creatureKnowledge = new CreatureKnowledge(
 	    				player,
-	    				knowledgeEntry.getString("CreatureName"),
-	    				knowledgeEntry.getDouble("Completion")
+	    				nbtKnowledge.getString("CreatureName"),
+	    				nbtKnowledge.getDouble("Completion")
 	    			);
-	    		newKnowledgeList.add(creatureKnowledge);
+	    		this.addToKnowledgeList(creatureKnowledge);
     		}
     	}
-    	
     }
     
     // ========== Write ==========
     /** Writes a list of Creature Knowledge to a player's NBTTag. **/
     public void writeToNBT(NBTTagCompound nbtTagCompound) {
     	NBTTagList knowledgeList = new NBTTagList();
-		for(CreatureKnowledge creatureKnowledge : creatureKnowledgeList) {
-			NBTTagCompound knowledgeEntry = new NBTTagCompound();
-			knowledgeEntry.setString("CreatureName", creatureKnowledge.creatureName);
-			knowledgeEntry.setDouble("Completion", creatureKnowledge.completion);
-			knowledgeList.appendTag(knowledgeEntry);
+		for(Entry<String, CreatureKnowledge> creatureKnowledgeEntry : creatureKnowledgeList.entrySet()) {
+			CreatureKnowledge creatureKnowledge = creatureKnowledgeEntry.getValue();
+			NBTTagCompound nbtKnowledge = new NBTTagCompound();
+			nbtKnowledge.setString("CreatureName", creatureKnowledge.creatureName);
+			nbtKnowledge.setDouble("Completion", creatureKnowledge.completion);
+			knowledgeList.appendTag(nbtKnowledge);
 		}
 		nbtTagCompound.setTag("CreatureKnowledge", knowledgeList);
     }

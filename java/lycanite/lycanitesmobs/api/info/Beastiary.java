@@ -19,6 +19,20 @@ public class Beastiary {
 	}
 	
 	
+    // ==================================================
+    //                   Knowledge List
+    // ==================================================
+	public void newKnowledgeList(List<CreatureKnowledge> newKnowledgeList) {
+		this.creatureKnowledgeList = newKnowledgeList;
+		// TODO Send all to client.
+	}
+
+	public void addToKnowledgeList(CreatureKnowledge newKnowledge) {
+		this.creatureKnowledgeList.add(newKnowledge);
+		// TODO Send to client.
+	}
+	
+	
 	// ==================================================
     //                        NBT
     // ==================================================
@@ -27,6 +41,7 @@ public class Beastiary {
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
     	if(!nbtTagCompound.hasKey("CreatureKnowledge"))
     		return;
+    	List<CreatureKnowledge> newKnowledgeList = new ArrayList<CreatureKnowledge>();
     	NBTTagList knowledgeList = nbtTagCompound.getTagList("CreatureKnowledge");
     	for(int i = 0; i < knowledgeList.tagCount(); ++i) {
 	    	NBTTagCompound knowledgeEntry = (NBTTagCompound)knowledgeList.tagAt(i);
@@ -36,9 +51,10 @@ public class Beastiary {
 	    				knowledgeEntry.getString("CreatureName"),
 	    				knowledgeEntry.getDouble("Completion")
 	    			);
-	    		creatureKnowledgeList.add(creatureKnowledge);
+	    		newKnowledgeList.add(creatureKnowledge);
     		}
     	}
+    	
     }
     
     // ========== Write ==========

@@ -37,8 +37,10 @@ public class PlayerControlHandler {
     	controls.put(player, states);
     	
     	// Open Minion Controls:
-    	if(playerInputMinionControls(player)) {
-    		player.openGui(LycanitesMobs.instance, GuiHandler.GuiType.PLAYER.id, player.worldObj, GuiHandler.PlayerGuiType.MINION_CONTROLS.id, 0, 0);
+    	if(player != null && player.worldObj != null && player.worldObj.isRemote) {
+	    	if(playerInputMinionControls(player)) {
+	    		player.openGui(LycanitesMobs.instance, GuiHandler.GuiType.PLAYER.id, player.worldObj, GuiHandler.PlayerGuiType.MINION_CONTROLS.id, 0, 0);
+	    	}
     	}
     }
 	

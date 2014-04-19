@@ -81,8 +81,12 @@ public class TickHandler implements ITickHandler {
 		if(KeyBase.keyPressed("MinionControls"))
 			controlStates += PlayerControlHandler.CONTROL_ID.MINION_CONTROLS.id;
 		
-		// Send Control State To Server If Changed:
+		// If Changed, Send Control State To Player Control Handler:
 		if(controlStates != lastStateSent || !firstStateSent) {
+			// Client Side:
+			PlayerControlHandler.updateStates(Minecraft.getMinecraft().thePlayer, controlStates);
+			
+			// Server Side:
 			Packet packet = PacketHandler.createPacket(PacketHandler.PacketType.PLAYER, PacketHandler.PlayerType.CONTROL.id, controlStates);
 			PacketHandler.sendPacketToServer(packet);
 			lastStateSent = controlStates;

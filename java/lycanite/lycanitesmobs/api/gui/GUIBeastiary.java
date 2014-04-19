@@ -9,7 +9,7 @@ import net.minecraft.network.packet.Packet;
 
 import org.lwjgl.opengl.GL11;
 
-public class GUIMinion extends GuiScreen {
+public class GUIBeastiary extends GuiScreen {
 	public EntityPlayer player;
 	int centerX;
 	int centerY;
@@ -21,7 +21,7 @@ public class GUIMinion extends GuiScreen {
 	// ==================================================
   	//                    Constructor
   	// ==================================================
-	public GUIMinion(EntityPlayer player) {
+	public GUIBeastiary(EntityPlayer player) {
 		super();
 	}
 	
@@ -32,6 +32,7 @@ public class GUIMinion extends GuiScreen {
 	@Override
 	public void initGui() {
 		super.initGui();
+        this.buttonList.clear();
         this.centerX = this.width / 2;
         this.centerY = this.height / 2;
 		this.windowWidth = 176;
@@ -49,7 +50,6 @@ public class GUIMinion extends GuiScreen {
 	public void drawScreen(int x, int y, float f) {
         this.drawGuiContainerBackgroundLayer();
         this.drawGuiContainerForegroundLayer();
-        super.drawScreen(x, y, f);
 	}
 	
 	

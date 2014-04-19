@@ -174,7 +174,7 @@ public class EntityUvaraptor extends EntityCreatureRideable implements IGroupPre
     		return;
     	
     	this.playJumpSound();
-    	this.leap(1.0D, 1.0D);
+    	this.leap(1.0D, 1.5D);
     	
     	this.applyStaminaCost();
     }

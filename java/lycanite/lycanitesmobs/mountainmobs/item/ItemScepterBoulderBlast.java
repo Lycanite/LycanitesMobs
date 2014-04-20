@@ -18,8 +18,8 @@ public class ItemScepterBoulderBlast extends ItemScepter {
         super(itemID);
     	this.domain = MountainMobs.domain;
     	this.itemName = "BoulderBlastScepter";
-    	this.textureName = "scepterboulderblast";
         this.setUnlocalizedName(this.itemName);
+        this.textureName = "scepterboulderblast";
     }
 	
     

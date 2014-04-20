@@ -18,8 +18,8 @@ public class ItemScepterVenomShot extends ItemScepter {
         super(itemID);
     	this.domain = SwampMobs.domain;
     	this.itemName = "VenomShotScepter";
-    	this.textureName = "sceptervenomshot";
         this.setUnlocalizedName(this.itemName);
+        this.textureName = "sceptervenomshot";
     }
 	
     

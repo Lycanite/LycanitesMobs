@@ -1,10 +1,12 @@
 package lycanite.lycanitesmobs;
 
 import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
-import lycanite.lycanitesmobs.api.item.ItemSummoningStaff;
+import lycanite.lycanitesmobs.api.item.ItemBase;
+import lycanite.lycanitesmobs.api.item.ItemStaffSummoning;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.item.Item;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.potion.Potion;
 import net.minecraftforge.event.ForgeSubscribe;
@@ -14,6 +16,7 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
+import net.minecraftforge.event.entity.player.EntityInteractEvent;
 
 public class EventListener {
 	
@@ -29,35 +32,30 @@ public class EventListener {
 	@ForgeSubscribe
 	public void onEntityConstructing(EntityConstructing event) {
 		// ========== Extended Player ==========
-		if(event.entity instanceof EntityPlayer && !ExtendedPlayer.extendedPlayers.containsKey((EntityPlayer)event.entity)) {
-			EntityPlayer player = (EntityPlayer)event.entity;
-			player.registerExtendedProperties(ExtendedPlayer.EXT_PROP_NAME, new ExtendedPlayer(player));
-		}
+		if(event.entity instanceof EntityPlayer)
+			ExtendedPlayer.getForPlayer((EntityPlayer)event.entity);
 	}
 	
 	
 	// ==================================================
-    //                Entity Join World
+    //                  Entity Join World
     // ==================================================
 	@ForgeSubscribe
 	public void onEntityJoinWorld(EntityJoinWorldEvent event) {
-		// This or constructing?
+		// ========== Extended Player ==========
+		if(event.entity instanceof EntityPlayer)
+			ExtendedPlayer.getForPlayer((EntityPlayer)event.entity);
 	}
 	
 	
 	// ==================================================
-    //                Living Death Event
+    //                 Living Death Event
     // ==================================================
 	@ForgeSubscribe
 	public void onLivingDeathEvent(LivingDeathEvent event) {
 		// ========== Extended Player Data Backup ==========
-		if(event.entity instanceof EntityPlayer && ExtendedPlayer.extendedPlayers.containsKey((EntityPlayer)event.entity)) {
-			EntityPlayer player = (EntityPlayer)event.entity;
-			NBTTagCompound nbtTagCompound = new NBTTagCompound();
-			ExtendedPlayer.extendedPlayers.get(player).saveNBTData(nbtTagCompound);
-			ExtendedPlayer.backupNBTTags.put(player.username, nbtTagCompound);
-			ExtendedPlayer.extendedPlayers.remove(player);
-		}
+		if(event.entity instanceof EntityPlayer)
+			ExtendedPlayer.getForPlayer((EntityPlayer)event.entity).onDeath();
 	}
 	
 	
@@ -72,7 +70,7 @@ public class EventListener {
 		
 		if(entity instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer)entity;
-			ExtendedPlayer extPlayer = ExtendedPlayer.extendedPlayers.get(player);
+			ExtendedPlayer extPlayer = ExtendedPlayer.getForPlayer(player);
 			boolean creative = player.capabilities.isCreativeMode;
 			
 			// Summoning Focus Stat Update:
@@ -80,7 +78,7 @@ public class EventListener {
 				if(extPlayer.summonFocus < extPlayer.summonFocusMax) {
 					extPlayer.summonFocus++;
 					if(!creative && !player.worldObj.isRemote && player.worldObj.getWorldTime() % 20 == 0 &&
-							(player.getHeldItem() != null && player.getHeldItem().getItem() instanceof ItemSummoningStaff)) {
+							(player.getHeldItem() != null && player.getHeldItem().getItem() instanceof ItemStaffSummoning)) {
 						Packet packet = PacketHandler.createPacket(PacketHandler.PacketType.PLAYER, PacketHandler.PlayerType.SUMMONFOCUS.id, extPlayer.summonFocus);
 						PacketHandler.sendPacketToServer(packet);
 					}
@@ -95,6 +93,27 @@ public class EventListener {
 					scepter.onPlayerUsing(player.getItemInUse(), player, player.getItemInUseCount());
 				}
 			}*/
+		}
+	}
+	
+	
+    // ==================================================
+    //                Entity Interact Event
+    // ==================================================
+	@ForgeSubscribe
+	public void onEntityInteract(EntityInteractEvent event) {
+		EntityPlayer player = event.entityPlayer;
+		Entity entity = event.target;
+		if(player == null || entity == null)
+			return;
+		
+		if(player.getHeldItem() != null) {
+			Item item = player.getHeldItem().getItem();
+			if(item instanceof ItemBase)
+				if(((ItemBase)item).onItemRightClickOnEntity(player, entity)) {
+					if(event.isCancelable())
+						event.setCanceled(true);
+				}
 		}
 	}
 	

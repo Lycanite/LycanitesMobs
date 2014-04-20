@@ -8,7 +8,6 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
@@ -18,10 +17,7 @@ import com.google.common.collect.Multimap;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemScepter extends Item {
-	public String itemName = "Scepter";
-	public String textureName = "scepter";
-	public String domain = LycanitesMobs.domain;
+public class ItemScepter extends ItemBase {
     private float damageScale = 1.0F;
     private int weaponFlash = 0;
 	

@@ -67,7 +67,7 @@ public class SaltwaterMobs implements ILycaniteMod {
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("SaltwaterEgg"), new DispenserBehaviorMobEggCustom());
-		ObjectManager.addMob(new MobInfo(this, "Lacedon", EntityLacedon.class, 0x000099, 0x2244FF, 2));
+		ObjectManager.addMob(new MobInfo(this, "Lacedon", EntityLacedon.class, 0x000099, 0x2244FF, 2).setSummonable(true));
 		
 		// ========== Create Projectiles ==========
 		//ObjectManager.addProjectile("Ember", EntityEmber.class, ObjectManager.getItem("EmberCharge"), new DispenserBehaviorEmber());

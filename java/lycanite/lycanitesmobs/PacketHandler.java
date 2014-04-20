@@ -94,13 +94,14 @@ public class PacketHandler implements IPacketHandler {
 						}
 						if(playerType == PlayerType.SUMMONFOCUS.id) {
 							int focus = data.readInt();
-							if(ExtendedPlayer.extendedPlayers.containsKey((EntityPlayer)player))
-								ExtendedPlayer.extendedPlayers.get((EntityPlayer)player).summonFocus = focus;
+							ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer((EntityPlayer)player);
+							if(playerExt != null)
+								playerExt.summonFocus = focus;
 						}
 					}
 					if(playerType == PlayerType.MINION.id) {
-						if(ExtendedPlayer.extendedPlayers.containsKey((EntityPlayer)player)) {
-							ExtendedPlayer playerExt = ExtendedPlayer.extendedPlayers.get((EntityPlayer)player);
+						ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer((EntityPlayer)player);
+						if(playerExt != null) {
 							byte setID = data.readByte();
 							String summonType = data.readUTF();
 							byte behaviour = data.readByte();

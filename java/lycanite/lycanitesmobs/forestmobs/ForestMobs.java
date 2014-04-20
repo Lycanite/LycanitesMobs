@@ -72,8 +72,8 @@ public class ForestMobs implements ILycaniteMod {
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("ForestEgg"), new DispenserBehaviorMobEggCustom());
-		ObjectManager.addMob(new MobInfo(this, "Ent", EntityEnt.class, 0x997700, 0x00FF22, 2));
-		ObjectManager.addMob(new MobInfo(this, "Trent", EntityTrent.class, 0x663300, 0x00AA11, 6));
+		ObjectManager.addMob(new MobInfo(this, "Ent", EntityEnt.class, 0x997700, 0x00FF22, 2).setSummonable(true));
+		ObjectManager.addMob(new MobInfo(this, "Trent", EntityTrent.class, 0x663300, 0x00AA11, 6).setSummonable(true));
 		
 		// ========== Create Projectiles ==========
 		//ObjectManager.addProjectile("Template", EntityTemplate.class, Item.templateCharge, new DispenserBehaviorPoisonRay());

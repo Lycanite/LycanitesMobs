@@ -121,8 +121,8 @@ public class DemonMobs implements ILycaniteMod {
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("DemonEgg"), new DispenserBehaviorMobEggCustom());
-		ObjectManager.addMob(new MobInfo(this, "Belph", EntityBelph.class, 0x992222, 0x000000, 2));
-		ObjectManager.addMob(new MobInfo(this, "Behemoth", EntityBehemoth.class, 0xFF2222, 0xFF9900, 6));
+		ObjectManager.addMob(new MobInfo(this, "Belph", EntityBelph.class, 0x992222, 0x000000, 2).setSummonable(true));
+		ObjectManager.addMob(new MobInfo(this, "Behemoth", EntityBehemoth.class, 0xFF2222, 0xFF9900, 6).setSummonable(true));
 		ObjectManager.addMob(new MobInfo(this, "Pinky", EntityPinky.class, 0xFF0099, 0x990000, 4));
 		ObjectManager.addMob(new MobInfo(this, "Trite", EntityTrite.class, 0xFFFF88, 0x000000, 1));
 		ObjectManager.addMob(new MobInfo(this, "Asmodi", EntityAsmodi.class, 0x999944, 0x0000FF, 8));

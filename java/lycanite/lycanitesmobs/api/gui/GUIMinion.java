@@ -6,6 +6,7 @@ import lycanite.lycanitesmobs.GuiHandler;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.info.SummonSet;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -39,6 +40,14 @@ public class GUIMinion extends GuiScreen {
 			player.openGui(LycanitesMobs.instance, GuiHandler.GuiType.PLAYER.id, player.worldObj, GuiHandler.PlayerGuiType.MINION_CONTROLS.id, editSet, 0);
 	}
 	
+	public FontRenderer getFontRenderer() {
+		return this.fontRenderer;
+	}
+	
+	public boolean doesGuiPauseGame() {
+        return false;
+    }
+	
 	
 	// ==================================================
   	//                    Constructor
@@ -46,7 +55,7 @@ public class GUIMinion extends GuiScreen {
 	public GUIMinion(EntityPlayer player, int editSet) {
 		super();
 		this.player = player;
-		this.playerExt = ExtendedPlayer.extendedPlayers.get(player);
+		this.playerExt = ExtendedPlayer.getForPlayer(player);
 		this.editSet = editSet;
 		this.summonSet = this.playerExt.getSummonSet(editSet);
 	}
@@ -65,6 +74,18 @@ public class GUIMinion extends GuiScreen {
         this.windowX = this.centerX - (this.windowWidth / 2);
         this.windowY = this.centerY - (this.windowHeight / 2);
 		this.drawControls();
+		
+		// Creature List:
+        int buttonSpacing = 2;
+		this.list = new GUIMinionList(this, this.playerExt,
+				(this.windowWidth / 2) - (buttonSpacing * 2),
+				this.windowHeight - 16 - (buttonSpacing * 2),
+				this.windowY + 40,
+				this.windowY + 16 + this.windowHeight - 16 - (buttonSpacing * 2),
+				this.windowX + (buttonSpacing * 2),
+				20
+			);
+		this.list.registerScrollButtons(this.buttonList, 51, 52);
 	}
 	
 	
@@ -74,8 +95,12 @@ public class GUIMinion extends GuiScreen {
 	@Override
 	public void drawScreen(int x, int y, float f) {
         this.drawGuiContainerBackgroundLayer();
-        super.drawScreen(x, y, f);
+        this.updateControls();
         this.drawGuiContainerForegroundLayer();
+        
+        // Creature List:
+		this.list.drawScreen(x, y, f);
+        super.drawScreen(x, y, f);
 	}
 	
 	
@@ -122,42 +147,59 @@ public class GUIMinion extends GuiScreen {
 	        tabSpacing = buttonWidth + buttonSpacing;
         }
         
-        // Creature List:
-		this.list = new GuiScrollingList(this.mc,
-				(this.windowWidth / 2) - (buttonSpacing * 2),
-				this.windowHeight - 16 - (buttonSpacing * 2),
-				this.windowY + 16,
-				this.windowY + 16 + this.windowHeight - 16 - (buttonSpacing * 2),
-				this.windowX + buttonSpacing,
-				20
-			);
-		//TODO Make my own subclass of this then use that for the scrolling goodness!
+        // Creature List Scroll Buttons:
+        buttonWidth = 8;
+        buttonX = (this.windowWidth / 2) - buttonSpacing;
+        buttonY = this.windowY + 16;
+        // Scroll buttons?
         
         // Behaviour:
         buttonWidth = (this.windowWidth / 2) - (buttonSpacing * 4);
-        buttonX = this.centerX + 6;
+        buttonX = this.centerX + buttonSpacing;
         buttonY = this.windowY + 16;
         
-        String buttonText = "Sitting: " + (summonSet.getSitting() ? "Yes" : "No");
         buttonY += buttonHeight + (buttonSpacing * 2);
-        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.SITTING.id, buttonX, buttonY, buttonWidth, buttonHeight, buttonText));
+        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.SITTING.id, buttonX, buttonY, buttonWidth, buttonHeight, "Loading"));
         
-        buttonText = "Movement: " + (summonSet.getFollowing() ? "Follow" : "Wander");
         buttonY += buttonHeight + (buttonSpacing * 2);
-        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.FOLLOWING.id, buttonX, buttonY, buttonWidth, buttonHeight, buttonText));
+        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.FOLLOWING.id, buttonX, buttonY, buttonWidth, buttonHeight, "Loading"));
         
-        buttonText = "Passive: " + (summonSet.getPassive() ? "Yes" : "No");
         buttonY += buttonHeight + (buttonSpacing * 2);
-        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.PASSIVE.id, buttonX, buttonY, buttonWidth, buttonHeight, buttonText));
+        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.PASSIVE.id, buttonX, buttonY, buttonWidth, buttonHeight, "Loading"));
         
-        buttonText = "Stance: " + (summonSet.getAggressive() ? "Aggressive" : "Defensive");
         buttonY += buttonHeight + (buttonSpacing * 2);
-        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.STANCE.id, buttonX, buttonY, buttonWidth, buttonHeight, buttonText));
+        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.STANCE.id, buttonX, buttonY, buttonWidth, buttonHeight, "Loading"));
         
-        buttonText = "PvP: " + (summonSet.getPVP() ? "Yes" : "No");
         buttonY += buttonHeight + (buttonSpacing * 2);
-        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.PVP.id, buttonX, buttonY, buttonWidth, buttonHeight, buttonText));
+        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.PVP.id, buttonX, buttonY, buttonWidth, buttonHeight, "Loading"));
     }
+	
+	public void updateControls() {
+        for(Object buttonObj : this.buttonList) {
+        	if(buttonObj instanceof GuiButton) {
+        		GuiButton button = (GuiButton)buttonObj;
+        		
+        		// Behaviour Buttons:
+        		if(button.id < this.tabButtonID) {
+	        		if(button.id == EntityCreatureBase.GUI_COMMAND_ID.SITTING.id)
+	        			button.displayString = "Sitting: " + (this.summonSet.getSitting() ? "Yes" : "No");
+	        		if(button.id == EntityCreatureBase.GUI_COMMAND_ID.FOLLOWING.id)
+	        			button.displayString = (this.summonSet.getFollowing() ? "Follow" : "Wander");
+	        		if(button.id == EntityCreatureBase.GUI_COMMAND_ID.PASSIVE.id)
+	        			button.displayString = "Passive: " + (this.summonSet.getPassive() ? "Yes" : "No");
+	        		if(button.id == EntityCreatureBase.GUI_COMMAND_ID.STANCE.id)
+	        			button.displayString = (this.summonSet.getAggressive() ? "Aggressive" : "Defensive");
+	        		if(button.id == EntityCreatureBase.GUI_COMMAND_ID.PVP.id)
+	        			button.displayString = "PvP: " + (this.summonSet.getPVP() ? "Yes" : "No");
+        		}
+        		
+        		// Tabs:
+        		if(button.id >= this.tabButtonID) {
+        			button.enabled = button.id - this.tabButtonID != this.editSet;
+        		}
+        	}
+        }
+	}
 	
 	
 	// ==================================================
@@ -188,7 +230,16 @@ public class GUIMinion extends GuiScreen {
 			}
 		}
 		super.actionPerformed(guiButton);
-		openToPlayer(this.player, this.editSet);
+		//openToPlayer(this.player, this.editSet);
+	}
+	
+	public void selectMinion(String minionName) {
+		this.summonSet.setSummonType(minionName);
+		this.playerExt.sendSummonSetToServer((byte)this.editSet);
+	}
+	
+	public String getSelectedMinion() {
+		return this.summonSet.summonType;
 	}
 	
 	

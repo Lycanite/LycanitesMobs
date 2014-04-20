@@ -41,8 +41,9 @@ public class PlayerControlHandler {
     	if(player != null && player.worldObj != null) {
 	    	if(playerInputMinionControls(player)) {
 	    		if(!player.worldObj.isRemote) {
-	    			ExtendedPlayer playerExt = ExtendedPlayer.extendedPlayers.get(player);
-	    			playerExt.sendAllSummonSetsToPlayer();
+	    			ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer((EntityPlayer)player);
+	    			if(playerExt != null)
+	    				playerExt.sendAllSummonSetsToPlayer();
 	    		}
 	    		if(player.worldObj.isRemote)
 	    			GUIMinion.openToPlayer(player, 1);

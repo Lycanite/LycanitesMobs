@@ -15,6 +15,9 @@ public class MobInfo {
 	/** A map containing a Class to MobInfo connection where a shared MobInfo for each mob can be obtained using the mob's class as a key. **/
 	public static Map<Class, MobInfo> mobClassToInfo = new HashMap<Class, MobInfo>();
 	
+	/** A map containing a (Code) Name to MobInfo connection where a shared MobInfo for each mob can be obtained using the mob's codename as a key. **/
+	public static Map<String, MobInfo> mobNameToInfo = new HashMap<String, MobInfo>();
+	
 	/** If true, the name of a pet's owner will be shown in it's name tag. **/
 	public static boolean ownerTags = true;
 	
@@ -150,6 +153,7 @@ public class MobInfo {
 		this.boostEffect = config.effectBoosts.get(name);
 		
 		mobClassToInfo.put(entityClass, this);
+		mobNameToInfo.put(this.name, this);
 	}
 	
 	// For most mobs where the code name and title are the same (no spaces, etc).
@@ -170,11 +174,12 @@ public class MobInfo {
     //                        Set
     // ==================================================
 	// ========== Summonable ==========
-	public void setSummonable(boolean summonable) {
+	public MobInfo setSummonable(boolean summonable) {
 		if(summonable && !summonableCreatures.contains(this.name))
 			summonableCreatures.add(this.name);
 		if(!summonable)
 			summonableCreatures.remove(this.name);
+		return this;
 	}
 	
 	/*/ ========== Model ==========

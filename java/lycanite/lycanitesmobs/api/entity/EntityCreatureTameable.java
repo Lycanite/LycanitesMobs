@@ -209,6 +209,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
     	if(command.equals("Tame")) {
     		this.tame(player);
     		this.consumePlayersItem(player, itemStack);
+    		player.addChatMessage("The " + this.getSpeciesName() + " seems to love you now!");
     	}
     	
     	// Feed:

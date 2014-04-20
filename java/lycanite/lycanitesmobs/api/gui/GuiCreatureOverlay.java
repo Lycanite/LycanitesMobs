@@ -3,7 +3,7 @@ package lycanite.lycanitesmobs.api.gui;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
-import lycanite.lycanitesmobs.api.item.ItemSummoningStaff;
+import lycanite.lycanitesmobs.api.item.ItemStaffSummoning;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -39,10 +39,10 @@ public class GuiCreatureOverlay extends Gui {
         int sHeight = scaledresolution.getScaledHeight();
 		
 		// ========== Summoning Focus Bar ==========
-        ExtendedPlayer playerExt = ExtendedPlayer.extendedPlayers.get((EntityPlayer)this.mc.thePlayer);
-		if(!this.mc.thePlayer.capabilities.isCreativeMode && (
+        ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer((EntityPlayer)this.mc.thePlayer);
+		if(playerExt != null && !this.mc.thePlayer.capabilities.isCreativeMode && (
 				playerExt.summonFocus < playerExt.summonFocusMax ||
-				this.mc.thePlayer.getHeldItem() != null && this.mc.thePlayer.getHeldItem().getItem() instanceof ItemSummoningStaff
+				this.mc.thePlayer.getHeldItem() != null && this.mc.thePlayer.getHeldItem().getItem() instanceof ItemStaffSummoning
 			)) {
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIInventoryCreature"));

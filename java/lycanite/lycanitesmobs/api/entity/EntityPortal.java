@@ -5,7 +5,7 @@ import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.Utilities;
 import lycanite.lycanitesmobs.api.info.MobInfo;
-import lycanite.lycanitesmobs.api.item.ItemSummoningStaff;
+import lycanite.lycanitesmobs.api.item.ItemStaffSummoning;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MovingObjectPosition;
@@ -25,7 +25,7 @@ public class EntityPortal extends EntityProjectileBase {
 	// Properties:
 	public EntityPlayer shootingEntity;
 	public Class summonClass;
-	public ItemSummoningStaff portalItem;
+	public ItemStaffSummoning portalItem;
 	
     // ==================================================
  	//                   Constructors
@@ -35,7 +35,7 @@ public class EntityPortal extends EntityProjectileBase {
         this.setStats();
     }
 
-    public EntityPortal(World world, EntityPlayer shooter, Class summonClass, ItemSummoningStaff portalItem) {
+    public EntityPortal(World world, EntityPlayer shooter, Class summonClass, ItemStaffSummoning portalItem) {
         super(world, shooter);
         this.shootingEntity = shooter;
         this.summonClass = summonClass;
@@ -67,7 +67,7 @@ public class EntityPortal extends EntityProjectileBase {
     	
     	this.moveToTarget();
     	
-		ExtendedPlayer playerExt = ExtendedPlayer.extendedPlayers.get(this.shootingEntity);
+    	ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(this.shootingEntity);
 		if(playerExt == null)
 			return;
     	

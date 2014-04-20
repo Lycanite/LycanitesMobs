@@ -2,20 +2,23 @@ package lycanite.lycanitesmobs.api.item;
 
 import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.EntityPortal;
+import lycanite.lycanitesmobs.api.gui.GUIMinion;
+import lycanite.lycanitesmobs.api.info.SummonSet;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class ItemSummoningStaff extends ItemScepter {
+public class ItemStaffSummoning extends ItemScepter {
 	public EntityPortal portalEntity;
 	
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemSummoningStaff(int itemID) {
+    public ItemStaffSummoning(int itemID) {
         super(itemID);
+        this.itemName = "SummoningStaff";
+        this.textureName = "staffsummoning";
     }
 	
     
@@ -72,17 +75,20 @@ public class ItemSummoningStaff extends ItemScepter {
     @Override
     public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
     	if(!world.isRemote) {
-    		ExtendedPlayer playerExt = ExtendedPlayer.extendedPlayers.get(player);
+    		ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer((EntityPlayer)player);
     		if(playerExt != null) {
     			// Summon Selected Mob
-    			String summonType = playerExt.getSelectedSummonSet().summonType;
-    			if(ObjectManager.getMob(summonType) != null) {
-			    	this.portalEntity = new EntityPortal(world, player, ObjectManager.getMob(summonType), this);
+    			SummonSet summonSet = playerExt.getSelectedSummonSet();
+    			if(summonSet.isUseable()) {
+			    	this.portalEntity = new EntityPortal(world, player, summonSet.getCreatureClass(), this);
 			    	this.portalEntity.setLocationAndAngles(player.posX, player.posY, player.posZ, world.rand.nextFloat() * 360.0F, 0.0F);
 			    	world.spawnEntityInWorld(this.portalEntity);
     			}
     			// Open Minion GUI If None Selected:
-    			//TODO Minion GUI Staff Open
+    			else {
+    				if(!player.worldObj.isRemote)
+    					GUIMinion.openToPlayer(player, playerExt.selectedSummonSet);
+    			}
     		}
     	}
         return super.onItemRightClick(itemStack, world, player);
@@ -104,12 +110,7 @@ public class ItemSummoningStaff extends ItemScepter {
 		}
 		return false;
     }
-
-    // ========== Get Summon Entity ==========
-    public EntityCreatureTameable getSummonEntity(World world) {
-    	return null;
-    }
-
+    
 	
 	// ==================================================
 	//                     Repairs

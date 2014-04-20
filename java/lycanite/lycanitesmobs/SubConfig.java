@@ -45,6 +45,13 @@ public class SubConfig extends Config {
 			this.loadSetting(this.itemLists, "Item Lists", itemListName, itemListName, "");
 		}
 		
+		// ========== Item IDs ==========
+		loadSetting(itemIDs, "Item IDs", "Soulgazer", "Soulgazer ID", 24000);
+		loadSetting(itemIDs, "Item IDs", "SummoningStaff", "Summoning Staff ID", 24001);
+		loadSetting(itemIDs, "Item IDs", "StableSummoningStaff", "Stable Summoning Staff ID", 24002);
+		loadSetting(itemIDs, "Item IDs", "BloodSummoningStaff", "Blood Summoning Staff ID", 24003);
+		loadSetting(itemIDs, "Item IDs", "SturdySummoningStaff", "Sturdy Summoning Staff ID", 24004);
+		
 		// ========== Effect IDs ==========
 		int effectStartID = 0;
 		this.loadSetting(this.effectIDs, "Effect ID Offsets", "Paralysis", "Paralysis Effect ID Offset", effectStartID++);

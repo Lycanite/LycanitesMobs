@@ -18,8 +18,8 @@ public class ItemScepterDevilstar extends ItemScepter {
         super(itemID);
     	this.domain = DemonMobs.domain;
     	this.itemName = "DevilstarScepter";
-    	this.textureName = "scepterdevilstar";
         this.setUnlocalizedName(this.itemName);
+        this.textureName = "scepterdevilstar";
     }
 	
     

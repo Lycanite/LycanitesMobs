@@ -15,7 +15,6 @@ import net.minecraftforge.common.IExtendedEntityProperties;
 
 public class ExtendedPlayer implements IExtendedEntityProperties {
 	public static String EXT_PROP_NAME = "LycanitesMobsPlayer";
-	public static Map<EntityPlayer, ExtendedPlayer> extendedPlayers = new HashMap<EntityPlayer, ExtendedPlayer>();
 	public static Map<String, NBTTagCompound> backupNBTTags = new HashMap<String, NBTTagCompound>();
 	
 	// Player Info and Containers:
@@ -31,18 +30,33 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 	public int summonSetMax = 5;
 	
 	// ==================================================
-    //                    Constructor
+    //                   Get for Player
     // ==================================================
-	public ExtendedPlayer(EntityPlayer player) {
-		if(backupNBTTags.containsKey(player)) {
-			this.loadNBTData(ExtendedPlayer.backupNBTTags.get(player.username));
+	public static ExtendedPlayer getForPlayer(EntityPlayer player) {
+		IExtendedEntityProperties playerIExt = player.getExtendedProperties(EXT_PROP_NAME);
+		ExtendedPlayer playerExt;
+		if(playerIExt != null)
+			playerExt = (ExtendedPlayer)playerIExt;
+		else
+			playerExt = new ExtendedPlayer(player);
+
+		if(backupNBTTags.containsKey(player.username)) {
+			playerExt.loadNBTData(backupNBTTags.get(player.username));
 			backupNBTTags.remove(player);
 		}
 		
+		return playerExt;
+	}
+	
+	
+	// ==================================================
+    //                    Constructor
+    // ==================================================
+	public ExtendedPlayer(EntityPlayer player) {
 		this.player = player;
 		this.beastiary = new Beastiary(player);
 		
-		extendedPlayers.put(player, this);
+		player.registerExtendedProperties(ExtendedPlayer.EXT_PROP_NAME, this);
 	}
 	
 	
@@ -89,6 +103,18 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 		while(!this.getSummonSet(targetSetID).isUseable() && targetSetID > 1)
 			targetSetID--;
 		return targetSetID;
+	}
+	
+	
+	// ==================================================
+    //                    Death Backup
+    // ==================================================
+	public void onDeath() {
+		if(backupNBTTags.containsKey(this.player.username))
+			return;
+		NBTTagCompound nbtTagCompound = new NBTTagCompound();
+		this.saveNBTData(nbtTagCompound);
+		backupNBTTags.put(this.player.username, nbtTagCompound);
 	}
 	
 	

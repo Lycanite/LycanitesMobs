@@ -1,14 +1,19 @@
 package lycanite.lycanitesmobs;
 
+import lycanite.lycanitesmobs.api.ILycaniteMod;
 import lycanite.lycanitesmobs.api.entity.EntityPortal;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.info.SpawnInfo;
+import lycanite.lycanitesmobs.api.item.ItemSoulgazer;
+import lycanite.lycanitesmobs.api.item.ItemStaffSummoning;
 import lycanite.lycanitesmobs.api.spawning.CustomSpawner;
 import lycanite.lycanitesmobs.api.spawning.SpawnType;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -19,16 +24,19 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 @Mod(modid = LycanitesMobs.modid, name = LycanitesMobs.name, version = LycanitesMobs.version)
 @NetworkMod(clientSideRequired=true, serverSideRequired=false, channels = {LycanitesMobs.modid}, packetHandler = PacketHandler.class)
-public class LycanitesMobs {
+public class LycanitesMobs implements ILycaniteMod {
 	
 	public static final String modid = "LycanitesMobs";
 	public static final String name = "Lycanites Mobs";
 	public static final String version = "1.5.0 - MC 1.6.4";
 	public static final String domain = modid.toLowerCase();
+	public static int mobID = -1;
+	public static int projectileID = 99;
 	public static Config config = new SubConfig();
 	
 	// Instance:
@@ -80,6 +88,13 @@ public class LycanitesMobs {
 		MinecraftForge.EVENT_BUS.register(new PotionEffects());
 		MinecraftForge.EVENT_BUS.register(new EventListener());
 		MinecraftForge.EVENT_BUS.register(new CustomSpawner());
+		
+		// ========== Set Current Mod ==========
+		ObjectManager.setCurrentMod(this);
+		
+		// ========== Create Items ==========
+		ObjectManager.addItem("Soulgazer", "Soulgazer", new ItemSoulgazer(config.itemIDs.get("Soulgazer")));
+		ObjectManager.addItem("SummoningStaff", "Summoning Staff", new ItemStaffSummoning(config.itemIDs.get("SummoningStaff")));
 	}
 	
 	
@@ -118,6 +133,22 @@ public class LycanitesMobs {
 		LanguageRegistry.addName(Item.horseArmorIron, "Iron Pet Armor");
 		LanguageRegistry.addName(Item.horseArmorGold, "Gold Pet Armor");
 		LanguageRegistry.addName(Item.horseArmorDiamond, "Diamond Pet Armor");
+		
+		// ========== Crafting ==========
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("Soulgazer"), 1, 0),
+				new Object[] { "GBG", "BDB", "GBG",
+				Character.valueOf('G'), Item.ingotGold,
+				Character.valueOf('D'), Item.diamond,
+				Character.valueOf('B'), Item.bone
+			}));
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("SummoningStaff"), 1, 0),
+				new Object[] { " E ", " B ", " G ",
+				Character.valueOf('E'), Item.enderPearl,
+				Character.valueOf('B'), Item.bone,
+				Character.valueOf('G'), Item.ingotGold
+			}));
     }
 	
 	
@@ -135,4 +166,26 @@ public class LycanitesMobs {
 			System.err.println("[LycanitesMobs] [WARNING] " + message);
 		}
 	}
+	
+	
+	// ==================================================
+	//                    Mod Info
+	// ==================================================
+	@Override
+	public LycanitesMobs getInstance() { return instance; }
+	
+	@Override
+	public String getModID() { return modid; }
+	
+	@Override
+	public String getDomain() { return domain; }
+	
+	@Override
+	public Config getConfig() { return config; }
+	
+	@Override
+	public int getNextMobID() { return ++this.mobID; }
+	
+	@Override
+	public int getNextProjectileID() { return ++this.projectileID; }
 }

@@ -82,7 +82,7 @@ public class InfernoMobs implements ILycaniteMod {
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("InfernoEgg"), new DispenserBehaviorMobEggCustom());
-		ObjectManager.addMob(new MobInfo(this, "Cinder", EntityCinder.class, 0xFF9900, 0xFFFF00, 2));
+		ObjectManager.addMob(new MobInfo(this, "Cinder", EntityCinder.class, 0xFF9900, 0xFFFF00, 2).setSummonable(true));
 		ObjectManager.addMob(new MobInfo(this, "Lobber", EntityLobber.class, 0x330011, 0xFF5500, 8));
 		
 		// ========== Create Projectiles ==========

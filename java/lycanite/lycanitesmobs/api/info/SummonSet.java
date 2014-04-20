@@ -26,7 +26,7 @@ public class SummonSet {
 	// ==================================================
     //                   Static Methods
     // ==================================================
-	public static boolean canSummonCreature(String creatureName) {
+	public static boolean isSummonableCreature(String creatureName) {
 		return MobInfo.summonableCreatures.contains(creatureName);
 	}
 	
@@ -43,7 +43,7 @@ public class SummonSet {
     //                      Behaviour
     // ==================================================
 	public void setSummonType(String summonType) {
-		if(!this.playerExt.beastiary.hasFullKnowledge(this.summonType) && canSummonCreature(this.summonType))
+		if(!this.playerExt.beastiary.hasFullKnowledge(this.summonType) && isSummonableCreature(this.summonType))
 			this.summonType = "";
 		this.summonType = summonType;
 	}
@@ -77,6 +77,11 @@ public class SummonSet {
 		if(this.summonType == null || "".equals(this.summonType) || ObjectManager.getMob(this.summonType) == null)
 			return false;
 		return true;
+	}
+	
+	/** Returns the class of the creature to summon. **/
+	public Class getCreatureClass() {
+		return ObjectManager.getMob(this.summonType);
 	}
 	
 	

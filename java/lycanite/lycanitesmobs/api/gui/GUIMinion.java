@@ -23,7 +23,7 @@ public class GUIMinion extends GuiScreen {
 	public int editSet;
 	public SummonSet summonSet;
 	
-	GuiScrollingList list;
+	public GuiScrollingList list;
 	
 	int centerX;
 	int centerY;

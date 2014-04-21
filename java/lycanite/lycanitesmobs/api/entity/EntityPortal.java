@@ -87,11 +87,13 @@ public class EntityPortal extends EntityProjectileBase {
     	
     	// Summon:
     	if(++this.summonTick >= this.portalItem.getRapidTime(null)) {
-    		if(playerExt.summonFocus >= playerExt.summonFocusCharge || this.shootingEntity.capabilities.isCreativeMode) {
-    			float summonMultiplier = (float)(MobInfo.mobClassToInfo.get(this.summonClass).summonCost + this.portalItem.getSummonCostBoost()) * this.portalItem.getSummonCostMod();
-    			int summonCost = Math.round((float)playerExt.summonFocusCharge * summonMultiplier);
-    			playerExt.summonFocus -= summonCost;
-    			this.summonAmount++;
+    		float summonMultiplier = (float)(MobInfo.mobClassToInfo.get(this.summonClass).summonCost + this.portalItem.getSummonCostBoost()) * this.portalItem.getSummonCostMod();
+			int summonCost = Math.round((float)playerExt.summonFocusCharge * summonMultiplier);
+    		if(this.shootingEntity.capabilities.isCreativeMode || playerExt.summonFocus >= summonCost) {
+    			if(this.portalItem.getAdditionalCosts(this.shootingEntity)) {
+	    			playerExt.summonFocus -= summonCost;
+	    			this.summonAmount += this.portalItem.getSummonAmount();
+    			}
     		}
     		this.summonTick = 0;
     	}
@@ -121,6 +123,7 @@ public class EntityPortal extends EntityProjectileBase {
 	    		entityCreature.setTemporary(this.portalItem.getSummonDuration());
 		    	if(entityCreature instanceof EntityCreatureTameable)
 		    		((EntityCreatureTameable)entityCreature).setPlayerOwner(this.shootingEntity);
+		    	this.portalItem.applyMinionEffects(entityCreature);
 	    	}
 	    	this.worldObj.spawnEntityInWorld(entity);
     	}

@@ -108,6 +108,15 @@ public class PacketHandler implements IPacketHandler {
 							playerExt.getSummonSet(setID).readFromPacket(summonType, behaviour);
 						}
 					}
+					if(playerType == PlayerType.BEASTIARY.id) {
+						ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer((EntityPlayer)player);
+						if(playerExt != null) {
+							byte setID = data.readByte();
+							String summonType = data.readUTF();
+							byte behaviour = data.readByte();
+							playerExt.getSummonSet(setID).readFromPacket(summonType, behaviour);//TODO Packets, sync beasts lal la la! Select GUI, DONE!
+						}
+					}
 				}
 				
 				// ========== GUI Packet ==========

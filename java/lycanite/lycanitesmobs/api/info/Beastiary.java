@@ -5,9 +5,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.PacketHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.packet.Packet;
 
 public class Beastiary {
 	public EntityPlayer player;
@@ -40,6 +42,23 @@ public class Beastiary {
 		if(this.creatureKnowledgeList.get(creatureName).completion < 1)
 			return false;
 		return true;
+	}
+	
+	
+	// ==================================================
+    //                    Network Sync
+    // ==================================================
+	public void sendNewToClient() {
+		Packet packet = PacketHandler.createPacket(
+        		PacketHandler.PacketType.PLAYER,
+        		PacketHandler.PlayerType.BEASTIARY.id,
+        		Byte.valueOf(setID), this.getSummonSet(setID).summonType, this.getSummonSet(setID).getBehaviourBytes()
+        	);
+		PacketHandler.sendPacketToPlayer(packet, this.player);
+	}
+	
+	public void sendAllToClient() {
+		
 	}
 	
 	

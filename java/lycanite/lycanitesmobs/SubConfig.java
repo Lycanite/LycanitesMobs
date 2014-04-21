@@ -46,11 +46,12 @@ public class SubConfig extends Config {
 		}
 		
 		// ========== Item IDs ==========
-		loadSetting(itemIDs, "Item IDs", "Soulgazer", "Soulgazer ID", 24000);
-		loadSetting(itemIDs, "Item IDs", "SummoningStaff", "Summoning Staff ID", 24001);
-		loadSetting(itemIDs, "Item IDs", "StableSummoningStaff", "Stable Summoning Staff ID", 24002);
-		loadSetting(itemIDs, "Item IDs", "BloodSummoningStaff", "Blood Summoning Staff ID", 24003);
-		loadSetting(itemIDs, "Item IDs", "SturdySummoningStaff", "Sturdy Summoning Staff ID", 24004);
+		loadSetting(this.itemIDs, "Item IDs", "Soulgazer", "Soulgazer ID", 24000);
+		loadSetting(this.itemIDs, "Item IDs", "SummoningStaff", "Summoning Staff ID", 24001);
+		loadSetting(this.itemIDs, "Item IDs", "StableSummoningStaff", "Stable Summoning Staff ID", 24002);
+		loadSetting(this.itemIDs, "Item IDs", "BloodSummoningStaff", "Blood Summoning Staff ID", 24003);
+		loadSetting(this.itemIDs, "Item IDs", "SturdySummoningStaff", "Sturdy Summoning Staff ID", 24004);
+		loadSetting(this.itemIDs, "Item IDs", "SavageSummoningStaff", "Savage Summoning Staff ID", 24005);
 		
 		// ========== Effect IDs ==========
 		int effectStartID = 0;

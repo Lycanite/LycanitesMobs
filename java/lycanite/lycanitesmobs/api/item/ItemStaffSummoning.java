@@ -1,11 +1,14 @@
 package lycanite.lycanitesmobs.api.item;
 
+import java.util.List;
+
 import lycanite.lycanitesmobs.ExtendedPlayer;
-import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityPortal;
 import lycanite.lycanitesmobs.api.gui.GUIMinion;
 import lycanite.lycanitesmobs.api.info.SummonSet;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -19,6 +22,19 @@ public class ItemStaffSummoning extends ItemScepter {
         super(itemID);
         this.itemName = "SummoningStaff";
         this.textureName = "staffsummoning";
+        setUnlocalizedName(this.itemName);
+    }
+    
+    
+	// ==================================================
+	//                      Info
+	// ==================================================
+    @Override
+    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+    	par3List.add("\u00a7a" + "Summon minions to do");
+    	par3List.add("\u00a7a" + "your bidding! Consumes");
+    	par3List.add("\u00a7a" + "Summoning Focus.");
+    	super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
     }
 	
     
@@ -66,6 +82,19 @@ public class ItemStaffSummoning extends ItemScepter {
     public int getSummonDuration() {
     	return 60 * 20;
     }
+    
+    // ========== Summon Amount ==========
+    public int getSummonAmount() {
+    	return 1;
+    }
+    
+    // ========== Additional Costs ==========
+    public boolean getAdditionalCosts(EntityPlayer player) {
+    	return true;
+    }
+    
+    // ========== Minion Effects ==========
+    public void applyMinionEffects(EntityCreatureBase minion) {}
 	
     
 	// ==================================================
@@ -87,6 +116,8 @@ public class ItemStaffSummoning extends ItemScepter {
     			// Open Minion GUI If None Selected:
     			else {
     				if(!player.worldObj.isRemote)
+		    			playerExt.sendAllSummonSetsToPlayer();
+    				if(player.worldObj.isRemote)
     					GUIMinion.openToPlayer(player, playerExt.selectedSummonSet);
     			}
     		}
@@ -117,7 +148,7 @@ public class ItemStaffSummoning extends ItemScepter {
 	// ==================================================
     @Override
     public boolean getIsRepairable(ItemStack itemStack, ItemStack repairStack) {
-        if(repairStack.itemID == ObjectManager.getItem("HellfireCharge").itemID) return true;
+        if(repairStack.itemID == Item.ingotGold.itemID) return true;
         return super.getIsRepairable(itemStack, repairStack);
     }
 }

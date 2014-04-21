@@ -42,9 +42,7 @@ public class GUIMinionList extends GuiScrollingList {
 	}
 
 	@Override
-	protected void drawBackground() {
-		//this.parentGUI.drawDefaultBackground();
-	}
+	protected void drawBackground() {}
 
     @Override
     protected int getContentHeight() {

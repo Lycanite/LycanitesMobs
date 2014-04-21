@@ -25,7 +25,7 @@ public class ItemScepter extends ItemBase {
 	//                   Constructor
 	// ==================================================
     public ItemScepter(int itemID) {
-        super(itemID - 256);
+        super(itemID);
         this.setMaxStackSize(1);
         this.setMaxDamage(this.getDurability());
         this.setCreativeTab(LycanitesMobs.creativeTab);

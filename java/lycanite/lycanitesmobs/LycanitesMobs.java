@@ -6,9 +6,14 @@ import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.info.SpawnInfo;
 import lycanite.lycanitesmobs.api.item.ItemSoulgazer;
+import lycanite.lycanitesmobs.api.item.ItemStaffBlood;
+import lycanite.lycanitesmobs.api.item.ItemStaffSavage;
+import lycanite.lycanitesmobs.api.item.ItemStaffStable;
+import lycanite.lycanitesmobs.api.item.ItemStaffSturdy;
 import lycanite.lycanitesmobs.api.item.ItemStaffSummoning;
 import lycanite.lycanitesmobs.api.spawning.CustomSpawner;
 import lycanite.lycanitesmobs.api.spawning.SpawnType;
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -95,6 +100,10 @@ public class LycanitesMobs implements ILycaniteMod {
 		// ========== Create Items ==========
 		ObjectManager.addItem("Soulgazer", "Soulgazer", new ItemSoulgazer(config.itemIDs.get("Soulgazer")));
 		ObjectManager.addItem("SummoningStaff", "Summoning Staff", new ItemStaffSummoning(config.itemIDs.get("SummoningStaff")));
+		ObjectManager.addItem("StableSummoningStaff", "Stable Summoning Staff", new ItemStaffStable(config.itemIDs.get("StableSummoningStaff")));
+		ObjectManager.addItem("BloodSummoningStaff", "Blood Summoning Staff", new ItemStaffBlood(config.itemIDs.get("BloodSummoningStaff")));
+		ObjectManager.addItem("SturdySummoningStaff", "Sturdy Summoning Staff", new ItemStaffSturdy(config.itemIDs.get("SturdySummoningStaff")));
+		ObjectManager.addItem("SavageSummoningStaff", "Savage Summoning Staff", new ItemStaffSavage(config.itemIDs.get("SavageSummoningStaff")));
 	}
 	
 	
@@ -142,12 +151,48 @@ public class LycanitesMobs implements ILycaniteMod {
 				Character.valueOf('D'), Item.diamond,
 				Character.valueOf('B'), Item.bone
 			}));
+		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("SummoningStaff"), 1, 0),
 				new Object[] { " E ", " B ", " G ",
 				Character.valueOf('E'), Item.enderPearl,
 				Character.valueOf('B'), Item.bone,
 				Character.valueOf('G'), Item.ingotGold
+			}));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("StableSummoningStaff"), 1, 0),
+				new Object[] { " D ", " S ", " G ",
+				Character.valueOf('S'), ObjectManager.getItem("SummoningStaff"),
+				Character.valueOf('G'), Item.ingotGold,
+				Character.valueOf('D'), Item.diamond
+			}));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("BloodSummoningStaff"), 1, 0),
+				new Object[] { "RRR", "BSB", "NDN",
+				Character.valueOf('S'), ObjectManager.getItem("SummoningStaff"),
+				Character.valueOf('R'), Item.redstone,
+				Character.valueOf('B'), Item.bone,
+				Character.valueOf('N'), Item.netherStalkSeeds,
+				Character.valueOf('D'), Item.diamond
+			}));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("SturdySummoningStaff"), 1, 0),
+				new Object[] { "III", "ISI", " O ",
+				Character.valueOf('S'), ObjectManager.getItem("SummoningStaff"),
+				Character.valueOf('I'), Item.ingotIron,
+				Character.valueOf('O'), Block.obsidian
+			}));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("SavageSummoningStaff"), 1, 0),
+				new Object[] { "LLL", "BSB", "GGG",
+				Character.valueOf('S'), ObjectManager.getItem("SummoningStaff"),
+				Character.valueOf('B'), Item.bone,
+				Character.valueOf('G'), Item.ghastTear,
+				Character.valueOf('L'), new ItemStack(Item.dyePowder, 1, 4)
 			}));
     }
 	

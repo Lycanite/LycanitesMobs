@@ -48,17 +48,30 @@ public class Beastiary {
 	// ==================================================
     //                    Network Sync
     // ==================================================
-	public void sendNewToClient() {
+	public void sendNewToClient(CreatureKnowledge creatureKnowledge) {
 		Packet packet = PacketHandler.createPacket(
         		PacketHandler.PacketType.PLAYER,
         		PacketHandler.PlayerType.BEASTIARY.id,
-        		Byte.valueOf(setID), this.getSummonSet(setID).summonType, this.getSummonSet(setID).getBehaviourBytes()
+        		creatureKnowledge.creatureName,
+        		creatureKnowledge.completion
         	);
 		PacketHandler.sendPacketToPlayer(packet, this.player);
 	}
 	
 	public void sendAllToClient() {
-		
+		Object[] creatureKnowledgeData = new Object[this.creatureKnowledgeList.size() * 2];
+		int index = 0;
+		for(CreatureKnowledge creatureKnowledge : this.creatureKnowledgeList.values()) {
+			creatureKnowledgeData[index++] = creatureKnowledge.creatureName;
+			creatureKnowledgeData[index++] = creatureKnowledge.completion;
+		}
+		Packet packet = PacketHandler.createPacket(
+        		PacketHandler.PacketType.PLAYER,
+        		PacketHandler.PlayerType.BEASTIARY_ALL.id,
+        		this.creatureKnowledgeList.size(),
+        		creatureKnowledgeData
+        	);
+		PacketHandler.sendPacketToPlayer(packet, this.player);
 	}
 	
 	

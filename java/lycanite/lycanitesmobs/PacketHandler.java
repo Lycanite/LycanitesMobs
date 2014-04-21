@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import lycanite.lycanitesmobs.api.IPacketReceiver;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
+import lycanite.lycanitesmobs.api.info.CreatureKnowledge;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,7 +36,7 @@ public class PacketHandler implements IPacketHandler {
 	
 	// Player packet Types:
     public static enum PlayerType {
-		CONTROL((byte)0), SUMMONFOCUS((byte)1), MINION((byte)2), BEASTIARY((byte)3);
+		CONTROL((byte)0), SUMMONFOCUS((byte)1), MINION((byte)2), BEASTIARY((byte)3), BEASTIARY_ALL((byte)4);
 		public byte id;
 		private PlayerType(byte i) { id = i; }
 	}
@@ -57,13 +58,15 @@ public class PacketHandler implements IPacketHandler {
 			ByteArrayDataInput data = ByteStreams.newDataInput(packet.data);
 			EntityPlayer playerEntity = (EntityPlayer)player;
 			World world = playerEntity.worldObj;
+			boolean server = !world.isRemote;
+			boolean client = world.isRemote;
 			
 			if(packet.channel.equals(LycanitesMobs.modid)) {
 				byte packetType = data.readByte();
 				
 				// ========== Tile Entity packet ==========
 				if(packetType == PacketType.TILEENTITY.id) {
-					if(world.isRemote) {
+					if(client) {
 						int tileEntityX = data.readInt();
 						int tileEntityY = data.readInt();
 						int tileEntityZ = data.readInt();
@@ -77,7 +80,7 @@ public class PacketHandler implements IPacketHandler {
 				
 				// ========== Entity Packet ==========
 				else if(packetType == PacketType.ENTITY.id) {
-					if(world.isRemote) {
+					if(client) {
 						Entity entity = world.getEntityByID(data.readInt());
 						if(entity instanceof IPacketReceiver)
 							((IPacketReceiver)entity).receivePacketData(data);
@@ -87,18 +90,26 @@ public class PacketHandler implements IPacketHandler {
 				// ========== Player Packet ==========
 				else if(packetType == PacketType.PLAYER.id) {
 					byte playerType = data.readByte();
-					if(!world.isRemote) {
-						if(playerType == PlayerType.CONTROL.id) {
+					
+					// Player Controls: To Server
+					if(playerType == PlayerType.CONTROL.id) {
+						if(server) {
 							byte states = data.readByte();
 							PlayerControlHandler.updateStates((EntityPlayer)player, states);
 						}
-						if(playerType == PlayerType.SUMMONFOCUS.id) {
+					}
+					
+					// Summon Focus: From Server
+					if(playerType == PlayerType.SUMMONFOCUS.id) {
+						if(client) {
 							int focus = data.readInt();
 							ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer((EntityPlayer)player);
 							if(playerExt != null)
 								playerExt.summonFocus = focus;
 						}
 					}
+					
+					// Minion Sets: Two Way
 					if(playerType == PlayerType.MINION.id) {
 						ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer((EntityPlayer)player);
 						if(playerExt != null) {
@@ -108,13 +119,29 @@ public class PacketHandler implements IPacketHandler {
 							playerExt.getSummonSet(setID).readFromPacket(summonType, behaviour);
 						}
 					}
+					
+					// Beastiary: From Server
 					if(playerType == PlayerType.BEASTIARY.id) {
-						ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer((EntityPlayer)player);
-						if(playerExt != null) {
-							byte setID = data.readByte();
-							String summonType = data.readUTF();
-							byte behaviour = data.readByte();
-							playerExt.getSummonSet(setID).readFromPacket(summonType, behaviour);//TODO Packets, sync beasts lal la la! Select GUI, DONE!
+						if(client) {
+							ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer((EntityPlayer)player);
+							if(playerExt != null) {
+								String creatureName = data.readUTF();
+								double completion = data.readDouble();
+								playerExt.beastiary.addToKnowledgeList(new CreatureKnowledge((EntityPlayer)player, creatureName, completion));
+							}
+						}
+					}
+					
+					// Complete Beastiary: From Server
+					if(playerType == PlayerType.BEASTIARY_ALL.id) {
+						if(client) {
+							ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer((EntityPlayer)player);
+							if(playerExt != null) {
+								byte setID = data.readByte();
+								String summonType = data.readUTF();
+								byte behaviour = data.readByte();
+								playerExt.getSummonSet(setID).readFromPacket(summonType, behaviour);//TODO Read ALL!
+							}
 						}
 					}
 				}

@@ -67,23 +67,21 @@ public class EntityPortal extends EntityProjectileBase {
     	
     	this.moveToTarget();
     	
-    	ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(this.shootingEntity);
-		if(playerExt == null)
-			return;
-    	
     	// Client:
     	if(this.worldObj.isRemote) {
-    		if(playerExt.summonFocus >= playerExt.summonFocusCharge || this.shootingEntity.capabilities.isCreativeMode) {
-	    		for(int i = 0; i < 32; ++i) {
-	        		this.worldObj.spawnParticle("portal",
-	        				this.posX + (4.0F * this.rand.nextFloat()) - 2.0F,
-	        				this.posY + (4.0F * this.rand.nextFloat()) - 2.0F,
-	        				this.posZ + (4.0F * this.rand.nextFloat()) - 2.0F,
-	        				0.0D, 0.0D, 0.0D);
-	    		}
+    		for(int i = 0; i < 32; ++i) {
+        		this.worldObj.spawnParticle("portal",
+        				this.posX + (4.0F * this.rand.nextFloat()) - 2.0F,
+        				this.posY + (4.0F * this.rand.nextFloat()) - 2.0F,
+        				this.posZ + (4.0F * this.rand.nextFloat()) - 2.0F,
+        				0.0D, 0.0D, 0.0D);
     		}
     		return;
     	}
+    	
+    	ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(this.shootingEntity);
+		if(playerExt == null)
+			return;
     	
     	// Summon:
     	if(++this.summonTick >= this.portalItem.getRapidTime(null)) {
@@ -121,8 +119,10 @@ public class EntityPortal extends EntityProjectileBase {
 	    		EntityCreatureBase entityCreature = (EntityCreatureBase)entity;
 	    		entityCreature.setMinion(true);
 	    		entityCreature.setTemporary(this.portalItem.getSummonDuration());
-		    	if(entityCreature instanceof EntityCreatureTameable)
+		    	if(entityCreature instanceof EntityCreatureTameable) {
 		    		((EntityCreatureTameable)entityCreature).setPlayerOwner(this.shootingEntity);
+		    		this.portalItem.applyMinionBehaviour((EntityCreatureTameable)entityCreature);
+		    	}
 		    	this.portalItem.applyMinionEffects(entityCreature);
 	    	}
 	    	this.worldObj.spawnEntityInWorld(entity);

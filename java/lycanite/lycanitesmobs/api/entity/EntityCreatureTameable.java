@@ -337,7 +337,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
         return super.isOnSameTeam(target);
     }
     
-    // XXX Unknown
+    // Unknown
     public boolean func_142018_a(EntityLivingBase targetA, EntityLivingBase targetB) {
         return true;
     }

@@ -74,7 +74,7 @@ public class SummonSet {
     // ==================================================
 	/** Returns true if this summon set has a valid mob to summon and can be used by staves, etc. **/
 	public boolean isUseable() {
-		if(this.summonType == null || "".equals(this.summonType) || ObjectManager.getMob(this.summonType) == null)
+		if(this.summonType == null || "".equals(this.summonType) || ObjectManager.getMob(this.summonType) == null || !isSummonableCreature(this.summonType))
 			return false;
 		return true;
 	}

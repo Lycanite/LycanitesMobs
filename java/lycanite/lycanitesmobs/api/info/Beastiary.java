@@ -14,6 +14,7 @@ import net.minecraft.network.packet.Packet;
 public class Beastiary {
 	public EntityPlayer player;
 	public Map<String, CreatureKnowledge> creatureKnowledgeList = new HashMap<String, CreatureKnowledge>();
+	public boolean needsSync = true;
 	
     // ==================================================
     //                     Constructor
@@ -48,29 +49,28 @@ public class Beastiary {
 	// ==================================================
     //                    Network Sync
     // ==================================================
-	public void sendNewToClient(CreatureKnowledge creatureKnowledge) {
+	/** Sends a new Beastiary entry (CreatureKnowledge) to the client. Shouldn't really be needed, just add it client side. **/
+	public void sendNewToClient(CreatureKnowledge newKnowledge) {
 		Packet packet = PacketHandler.createPacket(
         		PacketHandler.PacketType.PLAYER,
         		PacketHandler.PlayerType.BEASTIARY.id,
-        		creatureKnowledge.creatureName,
-        		creatureKnowledge.completion
+        		newKnowledge.creatureName,
+        		newKnowledge.completion
         	);
 		PacketHandler.sendPacketToPlayer(packet, this.player);
 	}
 	
+	/** Sends the whole Beastiary progress to the client, use sparingly! **/
 	public void sendAllToClient() {
-		Object[] creatureKnowledgeData = new Object[this.creatureKnowledgeList.size() * 2];
+		Object[] creatureKnowledgeData = new Object[2 + (this.creatureKnowledgeList.size() * 2)];
 		int index = 0;
+		creatureKnowledgeData[index++] = PacketHandler.PlayerType.BEASTIARY_ALL.id;
+		creatureKnowledgeData[index++] = this.creatureKnowledgeList.size();
 		for(CreatureKnowledge creatureKnowledge : this.creatureKnowledgeList.values()) {
 			creatureKnowledgeData[index++] = creatureKnowledge.creatureName;
 			creatureKnowledgeData[index++] = creatureKnowledge.completion;
 		}
-		Packet packet = PacketHandler.createPacket(
-        		PacketHandler.PacketType.PLAYER,
-        		PacketHandler.PlayerType.BEASTIARY_ALL.id,
-        		this.creatureKnowledgeList.size(),
-        		creatureKnowledgeData
-        	);
+		Packet packet = PacketHandler.createPacket(PacketHandler.PacketType.PLAYER, creatureKnowledgeData);
 		PacketHandler.sendPacketToPlayer(packet, this.player);
 	}
 	

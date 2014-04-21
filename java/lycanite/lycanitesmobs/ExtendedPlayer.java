@@ -5,6 +5,7 @@ import java.util.Map;
 
 import lycanite.lycanitesmobs.api.info.Beastiary;
 import lycanite.lycanitesmobs.api.info.SummonSet;
+import lycanite.lycanitesmobs.api.item.ItemStaffSummoning;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,6 +22,8 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 	public EntityPlayer player;
 	public Beastiary beastiary;
 	
+	public long currentTick = 0;
+	
 	// Summoning:
 	public int summonFocusCharge = 600;
 	public int summonFocusMax = (this.summonFocusCharge * 10);
@@ -33,6 +36,10 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
     //                   Get for Player
     // ==================================================
 	public static ExtendedPlayer getForPlayer(EntityPlayer player) {
+		if(player == null) {
+			LycanitesMobs.printWarning("", "Tried to access an ExtendedPlayer from a null EntityPlayer.");
+			return null;
+		}
 		IExtendedEntityProperties playerIExt = player.getExtendedProperties(EXT_PROP_NAME);
 		ExtendedPlayer playerExt;
 		if(playerIExt != null)
@@ -66,6 +73,32 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 	@Override
 	public void init(Entity entity, World world) {
 		
+	}
+	
+	// ==================================================
+    //                       Update
+    // ==================================================
+	/** Called by the EventListener, runs any logic on the main player entity's main update loop. **/
+	public void onUpdate() {
+		boolean creative = this.player.capabilities.isCreativeMode;
+		
+		// Summoning Focus Stat Update:
+		if(!player.worldObj.isRemote) {
+			if(this.summonFocus < this.summonFocusMax) {
+				this.summonFocus++;
+			}
+			if(!creative && this.currentTick % 20 == 0) {
+				if(this.summonFocus < this.summonFocusMax || (player.getHeldItem() != null && player.getHeldItem().getItem() instanceof ItemStaffSummoning)) {
+					Packet packet = PacketHandler.createPacket(PacketHandler.PacketType.PLAYER, PacketHandler.PlayerType.SUMMONFOCUS.id, this.summonFocus);
+					PacketHandler.sendPacketToPlayer(packet, this.player);
+				}
+			}
+		}
+		
+		// Beastiary Sync:
+		this.getBeastiary();
+		
+		this.currentTick++;
 	}
 	
 	
@@ -103,6 +136,18 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 		while(!this.getSummonSet(targetSetID).isUseable() && targetSetID > 1)
 			targetSetID--;
 		return targetSetID;
+	}
+	
+	
+	// ==================================================
+    //                      Beastiary
+    // ==================================================
+	/** Returns the player's beastiary, will also update the client, access the beastiary variable directly when loading NBT data as the network player is null at first. **/
+	public Beastiary getBeastiary() {
+		if(!this.player.worldObj.isRemote && this.beastiary.needsSync)
+			this.beastiary.sendAllToClient();
+		this.beastiary.needsSync = false;
+		return this.beastiary;
 	}
 	
 	

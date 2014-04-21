@@ -3,6 +3,8 @@ package lycanite.lycanitesmobs;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import lycanite.lycanitesmobs.api.IPacketReceiver;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
@@ -87,7 +89,7 @@ public class PacketHandler implements IPacketHandler {
 					}
 				}
 				
-				// ========== Player Packet ==========
+				// ========== Player Packets ==========
 				else if(packetType == PacketType.PLAYER.id) {
 					byte playerType = data.readByte();
 					
@@ -95,7 +97,7 @@ public class PacketHandler implements IPacketHandler {
 					if(playerType == PlayerType.CONTROL.id) {
 						if(server) {
 							byte states = data.readByte();
-							PlayerControlHandler.updateStates((EntityPlayer)player, states);
+							PlayerControlHandler.updateStates(playerEntity, states);
 						}
 					}
 					
@@ -103,15 +105,15 @@ public class PacketHandler implements IPacketHandler {
 					if(playerType == PlayerType.SUMMONFOCUS.id) {
 						if(client) {
 							int focus = data.readInt();
-							ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer((EntityPlayer)player);
+							ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(playerEntity);
 							if(playerExt != null)
 								playerExt.summonFocus = focus;
 						}
 					}
 					
-					// Minion Sets: Two Way
-					if(playerType == PlayerType.MINION.id) {
-						ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer((EntityPlayer)player);
+					// Minion Summon Sets: Two Way
+					if(playerType == PlayerType.MINION.id) { //TODO Test and fix summon set update packets! Cleint to Server issue!
+						ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(playerEntity);
 						if(playerExt != null) {
 							byte setID = data.readByte();
 							String summonType = data.readUTF();
@@ -123,11 +125,11 @@ public class PacketHandler implements IPacketHandler {
 					// Beastiary: From Server
 					if(playerType == PlayerType.BEASTIARY.id) {
 						if(client) {
-							ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer((EntityPlayer)player);
+							ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(playerEntity);
 							if(playerExt != null) {
 								String creatureName = data.readUTF();
 								double completion = data.readDouble();
-								playerExt.beastiary.addToKnowledgeList(new CreatureKnowledge((EntityPlayer)player, creatureName, completion));
+								playerExt.beastiary.addToKnowledgeList(new CreatureKnowledge(playerEntity, creatureName, completion));
 							}
 						}
 					}
@@ -135,12 +137,19 @@ public class PacketHandler implements IPacketHandler {
 					// Complete Beastiary: From Server
 					if(playerType == PlayerType.BEASTIARY_ALL.id) {
 						if(client) {
-							ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer((EntityPlayer)player);
+							ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(playerEntity);
 							if(playerExt != null) {
-								byte setID = data.readByte();
-								String summonType = data.readUTF();
-								byte behaviour = data.readByte();
-								playerExt.getSummonSet(setID).readFromPacket(summonType, behaviour);//TODO Read ALL!
+								int size = data.readInt();
+								if(size > 0) {
+									Map<String, CreatureKnowledge> newKnowledgeList = new HashMap<String, CreatureKnowledge>();
+									for(int i = 0; i < size; i++) {
+										String creatureName = data.readUTF();
+										double completion = data.readDouble();
+										CreatureKnowledge creatureKnowledge = new CreatureKnowledge(playerEntity, creatureName, completion);
+										newKnowledgeList.put(creatureKnowledge.creatureName, creatureKnowledge);
+									}
+									playerExt.beastiary.newKnowledgeList(newKnowledgeList);
+								}
 							}
 						}
 					}

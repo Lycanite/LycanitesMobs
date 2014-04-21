@@ -182,6 +182,10 @@ public class MobInfo {
 		return this;
 	}
 	
+	public boolean isSummonable() {
+		return summonableCreatures.contains(this.name);
+	}
+	
 	/*/ ========== Model ==========
 	public void setModel(ModelBase setModel) {
 		model = setModel;

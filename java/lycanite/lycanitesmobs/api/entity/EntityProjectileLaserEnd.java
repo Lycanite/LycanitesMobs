@@ -105,7 +105,7 @@ public class EntityProjectileLaserEnd extends EntityProjectileBase {
     	this.posX = moveCoordToTarget(this.posX, this.targetX, this.laserEntity.posX);
     	this.posY = moveCoordToTarget(this.posY, this.targetY, this.laserEntity.posY);
     	this.posZ = moveCoordToTarget(this.posZ, this.targetZ, this.laserEntity.posZ);
-    	// TODO Fix speeds.
+    	// TODO Fix laser end speeds.
     	//this.posX = this.targetX;
     	//this.posY = this.targetY;
     	//this.posZ = this.targetZ;

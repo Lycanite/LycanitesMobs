@@ -86,7 +86,7 @@ public class ItemSoulgazer extends ItemBase {
     		return false;
     	}
     	MobInfo mobInfo = ((EntityCreatureBase)entity).mobInfo;
-    	if(playerExt.beastiary.hasFullKnowledge(mobInfo.name)) {
+    	if(playerExt.getBeastiary().hasFullKnowledge(mobInfo.name)) {
     		if(!player.worldObj.isRemote)
     			player.addChatMessage("You already have full knowledge of this creature!");
     		return false;
@@ -100,11 +100,12 @@ public class ItemSoulgazer extends ItemBase {
     					entity.posZ + (4.0F * player.getRNG().nextFloat()) - 2.0F,
         				0.0D, 0.0D, 0.0D);
     		}
-    		return true;
     	}
     	
-    	player.addChatMessage("You have descovered a new creature!");
-    	playerExt.beastiary.addToKnowledgeList(new CreatureKnowledge(player, mobInfo.name, 1));
+    	if(!player.worldObj.isRemote)
+    		player.addChatMessage("You have descovered a new creature!");
+    	
+    	playerExt.getBeastiary().addToKnowledgeList(new CreatureKnowledge(player, mobInfo.name, 1));
     	return true;
     }
 }

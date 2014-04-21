@@ -5,6 +5,7 @@ import java.util.Map;
 
 import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.api.info.MobInfo;
+import lycanite.lycanitesmobs.api.info.SummonSet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import cpw.mods.fml.client.GuiScrollingList;
@@ -20,15 +21,27 @@ public class GUIMinionList extends GuiScrollingList {
 		super(Minecraft.getMinecraft(), width, height, top, bottom, left, entryHeight);
 		this.parentGUI = parentGUI;
 		int minionIndex = 0;
-		for(String minionName : playerExt.beastiary.creatureKnowledgeList.keySet()) {
-			this.minionList.put(minionIndex, minionName);
-			minionIndex++;
+		for(String minionName : playerExt.getBeastiary().creatureKnowledgeList.keySet()) {
+			if(SummonSet.isSummonableCreature(minionName)) {
+				this.minionList.put(minionIndex, minionName);
+				minionIndex++;
+			}
 		}
 	}
-
+	
+	
+	// ==================================================
+  	//                    Draw Screen
+  	// ==================================================
+	//TODO Fix the graphical glitch!
+	
+	
+	// ==================================================
+  	//                    List Info
+  	// ==================================================
 	@Override
 	protected int getSize() {
-		return this.parentGUI.playerExt.beastiary.creatureKnowledgeList.size();
+		return minionList.size();
 	}
 
 	@Override
@@ -40,7 +53,11 @@ public class GUIMinionList extends GuiScrollingList {
 	protected boolean isSelected(int index) {
 		return this.parentGUI.getSelectedMinion() != null && this.parentGUI.getSelectedMinion().equals(this.minionList.get(index));
 	}
-
+	
+	
+	// ==================================================
+  	//                    Background
+  	// ==================================================
 	@Override
 	protected void drawBackground() {}
 
@@ -51,7 +68,8 @@ public class GUIMinionList extends GuiScrollingList {
 
 	@Override
 	protected void drawSlot(int index, int boxRight, int boxTop, int boxBottom, Tessellator tessellator) {
-		String mobTitle = MobInfo.mobNameToInfo.get(this.minionList.get(index)).title;
+		String mobName = this.minionList.get(index);
+		String mobTitle = MobInfo.mobNameToInfo.get(mobName).title;
 		this.parentGUI.getFontRenderer().drawString(mobTitle, this.left + 3 , boxTop + 2, 0xFFFFFF);
 	}
 }

@@ -2,12 +2,10 @@ package lycanite.lycanitesmobs;
 
 import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
 import lycanite.lycanitesmobs.api.item.ItemBase;
-import lycanite.lycanitesmobs.api.item.ItemStaffSummoning;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.potion.Potion;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
@@ -70,29 +68,9 @@ public class EventListener {
 		
 		if(entity instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer)entity;
-			ExtendedPlayer extPlayer = ExtendedPlayer.getForPlayer(player);
-			boolean creative = player.capabilities.isCreativeMode;
-			
-			// Summoning Focus Stat Update:
-			if(extPlayer != null) {
-				if(extPlayer.summonFocus < extPlayer.summonFocusMax) {
-					extPlayer.summonFocus++;
-					if(!creative && !player.worldObj.isRemote && player.worldObj.getWorldTime() % 20 == 0 &&
-							(player.getHeldItem() != null && player.getHeldItem().getItem() instanceof ItemStaffSummoning)) {
-						Packet packet = PacketHandler.createPacket(PacketHandler.PacketType.PLAYER, PacketHandler.PlayerType.SUMMONFOCUS.id, extPlayer.summonFocus);
-						PacketHandler.sendPacketToServer(packet);
-					}
-				}
-			}
-			
-			// Item Using:
-			// This is used to replace Item.onUsingItemTick() as it acted weird. Intended to be used the same.
-			/*if(player.getItemInUse() != null) {
-				if(player.getItemInUse().getItem() instanceof ItemScepter) {
-					ItemScepter scepter = (ItemScepter)player.getItemInUse().getItem();
-					scepter.onPlayerUsing(player.getItemInUse(), player, player.getItemInUseCount());
-				}
-			}*/
+			ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
+			if(playerExt != null)
+				playerExt.onUpdate();
 		}
 	}
 	

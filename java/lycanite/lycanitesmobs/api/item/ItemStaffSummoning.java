@@ -4,6 +4,7 @@ import java.util.List;
 
 import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.EntityPortal;
 import lycanite.lycanitesmobs.api.gui.GUIMinion;
 import lycanite.lycanitesmobs.api.info.SummonSet;
@@ -91,6 +92,11 @@ public class ItemStaffSummoning extends ItemScepter {
     // ========== Additional Costs ==========
     public boolean getAdditionalCosts(EntityPlayer player) {
     	return true;
+    }
+    
+    // ========== Minion Behaviour ==========
+    public void applyMinionBehaviour(EntityCreatureTameable minion) {
+    	//TODO Apply behaviour!
     }
     
     // ========== Minion Effects ==========

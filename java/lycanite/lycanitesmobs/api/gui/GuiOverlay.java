@@ -8,6 +8,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
@@ -15,28 +16,40 @@ import net.minecraftforge.event.ForgeSubscribe;
 
 import org.lwjgl.opengl.GL11;
 
-public class GuiCreatureOverlay extends Gui {
+public class GuiOverlay extends Gui {
 	public Minecraft mc;
 	
     // ==================================================
     //                     Constructor
     // ==================================================
-	public GuiCreatureOverlay(Minecraft minecraft) {
+	public GuiOverlay(Minecraft minecraft) {
 		this.mc = minecraft;
 	}
 	
 	
     // ==================================================
-    //                     Draw GUI
+    //                  Draw Game Overlay
     // ==================================================
 	@ForgeSubscribe
 	public void onRenderExperienceBar(RenderGameOverlayEvent event) {
-		if(event.isCanceled() || event.type != ElementType.EXPERIENCE)
+		if(event.isCanceled())
 	      return;
 		
 		ScaledResolution scaledresolution = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
 		int sWidth = scaledresolution.getScaledWidth();
         int sHeight = scaledresolution.getScaledHeight();
+		
+		// ========== Extra Tabs ==========
+		// TODO Find a better way to render these!
+        if(this.mc.currentScreen instanceof GuiInventory) {
+        	GuiInventory guiInventory = (GuiInventory)this.mc.currentScreen;
+        	GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIInventoryCreature"));
+			// TODO Inventory tabs!
+        }
+		
+		if(event.type != ElementType.EXPERIENCE)
+	      return;
 		
 		// ========== Summoning Focus Bar ==========
         ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer((EntityPlayer)this.mc.thePlayer);

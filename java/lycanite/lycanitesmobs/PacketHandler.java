@@ -9,7 +9,6 @@ import java.util.Map;
 import lycanite.lycanitesmobs.api.IPacketReceiver;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.info.CreatureKnowledge;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.CompressedStreamTools;
@@ -38,7 +37,7 @@ public class PacketHandler implements IPacketHandler {
 	
 	// Player packet Types:
     public static enum PlayerType {
-		CONTROL((byte)0), SUMMONFOCUS((byte)1), MINION((byte)2), BEASTIARY((byte)3), BEASTIARY_ALL((byte)4);
+		CONTROL((byte)0), SUMMONFOCUS((byte)1), MINION((byte)2), MINION_SELECT((byte)3), BEASTIARY((byte)4), BEASTIARY_ALL((byte)5);
 		public byte id;
 		private PlayerType(byte i) { id = i; }
 	}
@@ -112,13 +111,22 @@ public class PacketHandler implements IPacketHandler {
 					}
 					
 					// Minion Summon Sets: Two Way
-					if(playerType == PlayerType.MINION.id) { //TODO Test and fix summon set update packets! Cleint to Server issue!
+					if(playerType == PlayerType.MINION.id) {
 						ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(playerEntity);
 						if(playerExt != null) {
 							byte setID = data.readByte();
 							String summonType = data.readUTF();
 							byte behaviour = data.readByte();
 							playerExt.getSummonSet(setID).readFromPacket(summonType, behaviour);
+						}
+					}
+					
+					// Selected Summon Set: Two Way
+					if(playerType == PlayerType.MINION_SELECT.id) {
+						ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(playerEntity);
+						if(playerExt != null) {
+							byte setID = data.readByte();
+							playerExt.setSelectedSummonSet(setID);
 						}
 					}
 					
@@ -280,9 +288,10 @@ public class PacketHandler implements IPacketHandler {
     // ==================================================
     public static void sendPacketToServer(Packet packet) {
     	try {
-			if(Minecraft.getMinecraft().thePlayer != null) {
+    		PacketDispatcher.sendPacketToServer(packet);
+			/*if(Minecraft.getMinecraft().thePlayer != null) {
 				Minecraft.getMinecraft().thePlayer.sendQueue.addToSendQueue(packet);
-			}
+			}*/
     	}
     	catch(Exception e) {
     		System.out.println("[WARNING] [LycanitesMobs] Sending packet to server failed.");

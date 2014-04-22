@@ -95,8 +95,13 @@ public class ItemStaffSummoning extends ItemScepter {
     }
     
     // ========== Minion Behaviour ==========
-    public void applyMinionBehaviour(EntityCreatureTameable minion) {
-    	//TODO Apply behaviour!
+    public void applyMinionBehaviour(EntityCreatureTameable minion, EntityPlayer player) {
+    	SummonSet summonSet = ExtendedPlayer.getForPlayer(player).getSelectedSummonSet();
+    	minion.setSitting(summonSet.getSitting());
+    	minion.setFollowing(summonSet.getFollowing());
+    	minion.setPassive(summonSet.getPassive());
+    	minion.setAggressive(summonSet.getAggressive());
+    	minion.setPVP(summonSet.getPVP());
     }
     
     // ========== Minion Effects ==========

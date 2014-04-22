@@ -2,14 +2,11 @@ package lycanite.lycanitesmobs;
 
 import java.util.EnumSet;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.network.packet.Packet;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 
 public class TickHandler implements ITickHandler {
-	public static byte lastStateSent = 0;
-	public static boolean firstStateSent = false;
+	// This will be removed soon if the EventListener can do a better job.
 	
 	// ==================================================
 	//                    Constructor
@@ -44,7 +41,7 @@ public class TickHandler implements ITickHandler {
 			playerTick(tickData);
 		}
 		if(type.contains(TickType.CLIENT)) {
-			clientTick();
+			clientTick(tickData);
 		}
 	}
 
@@ -55,43 +52,11 @@ public class TickHandler implements ITickHandler {
 	// ==================================================
 	//                 Player Ticks
 	// ==================================================
-	public static void playerTick(Object... tickData) {
-	}
+	public static void playerTick(Object... tickData) {}
 	
 
 	// ==================================================
 	//                 Client Ticks
 	// ==================================================
-	public static void clientTick() {
-		byte controlStates = 0;
-		
-		// Jumping:
-		if(Minecraft.getMinecraft().gameSettings.keyBindJump.pressed)
-			controlStates += PlayerControlHandler.CONTROL_ID.JUMP.id;
-		
-		// Mount Ability:
-		if(KeyBase.keyPressed("MountAbility"))
-			controlStates += PlayerControlHandler.CONTROL_ID.MOUNT_ABILITY.id;
-		
-		// Pet Inventory:
-		if(KeyBase.keyPressed("PetInventory"))
-			controlStates += PlayerControlHandler.CONTROL_ID.PET_INVENTORY.id;
-		
-		// Minion GUI:
-		if(KeyBase.keyPressed("MinionControls"))
-			controlStates += PlayerControlHandler.CONTROL_ID.MINION_CONTROLS.id;
-		
-		// If Changed, Send Control State To Player Control Handler:
-		if(controlStates != lastStateSent || !firstStateSent) {
-			// Server Side:
-			Packet packet = PacketHandler.createPacket(PacketHandler.PacketType.PLAYER, PacketHandler.PlayerType.CONTROL.id, controlStates);
-			PacketHandler.sendPacketToServer(packet);
-			
-			// Client Side:
-			PlayerControlHandler.updateStates(Minecraft.getMinecraft().thePlayer, controlStates);
-			
-			lastStateSent = controlStates;
-			firstStateSent = true;
-		}
-	}
+	public static void clientTick(Object... tickData) {}
 }

@@ -14,7 +14,6 @@ import net.minecraft.network.packet.Packet;
 public class Beastiary {
 	public EntityPlayer player;
 	public Map<String, CreatureKnowledge> creatureKnowledgeList = new HashMap<String, CreatureKnowledge>();
-	public boolean needsSync = true;
 	
     // ==================================================
     //                     Constructor

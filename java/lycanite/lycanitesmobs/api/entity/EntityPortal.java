@@ -58,7 +58,7 @@ public class EntityPortal extends EntityProjectileBase {
     public void onUpdate() {
     	// Move:
     	if(!this.worldObj.isRemote && !this.isDead && (
-    			this.shootingEntity == null || this.portalItem == null
+    			this.shootingEntity == null || !this.shootingEntity.isEntityAlive() || this.portalItem == null
     			|| this.shootingEntity.getItemInUse() == null
     			|| this.shootingEntity.getItemInUse().getItem() != this.portalItem)) {
     		this.setDead();
@@ -85,13 +85,17 @@ public class EntityPortal extends EntityProjectileBase {
     	
     	// Summon:
     	if(++this.summonTick >= this.portalItem.getRapidTime(null)) {
-    		float summonMultiplier = (float)(MobInfo.mobClassToInfo.get(this.summonClass).summonCost + this.portalItem.getSummonCostBoost()) * this.portalItem.getSummonCostMod();
-			int summonCost = Math.round((float)playerExt.summonFocusCharge * summonMultiplier);
-    		if(this.shootingEntity.capabilities.isCreativeMode || playerExt.summonFocus >= summonCost) {
-    			if(this.portalItem.getAdditionalCosts(this.shootingEntity)) {
-	    			playerExt.summonFocus -= summonCost;
-	    			this.summonAmount += this.portalItem.getSummonAmount();
-    			}
+    		if(this.shootingEntity.capabilities.isCreativeMode)
+    			this.summonAmount += this.portalItem.getSummonAmount();
+    		else {
+	    		float summonMultiplier = (float)(MobInfo.mobClassToInfo.get(this.summonClass).summonCost + this.portalItem.getSummonCostBoost()) * this.portalItem.getSummonCostMod();
+				int summonCost = Math.round((float)playerExt.summonFocusCharge * summonMultiplier);
+	    		if(playerExt.summonFocus >= summonCost) {
+	    			if(this.portalItem.getAdditionalCosts(this.shootingEntity)) {
+		    			playerExt.summonFocus -= summonCost;
+		    			this.summonAmount += this.portalItem.getSummonAmount();
+	    			}
+	    		}
     		}
     		this.summonTick = 0;
     	}
@@ -121,7 +125,7 @@ public class EntityPortal extends EntityProjectileBase {
 	    		entityCreature.setTemporary(this.portalItem.getSummonDuration());
 		    	if(entityCreature instanceof EntityCreatureTameable) {
 		    		((EntityCreatureTameable)entityCreature).setPlayerOwner(this.shootingEntity);
-		    		this.portalItem.applyMinionBehaviour((EntityCreatureTameable)entityCreature);
+		    		this.portalItem.applyMinionBehaviour((EntityCreatureTameable)entityCreature, this.shootingEntity);
 		    	}
 		    	this.portalItem.applyMinionEffects(entityCreature);
 	    	}
@@ -148,11 +152,11 @@ public class EntityPortal extends EntityProjectileBase {
     		// Get Look Target
 	        Vec3 lookDirection = this.shootingEntity.getLookVec();
 			this.targetX = this.shootingEntity.posX + (lookDirection.xCoord * this.portalRange);
-			this.targetY = this.shootingEntity.posY + (lookDirection.yCoord * this.portalRange);
+			this.targetY = this.shootingEntity.posY + this.shootingEntity.getEyeHeight() + (lookDirection.yCoord * this.portalRange);
 			this.targetZ = this.shootingEntity.posZ + (lookDirection.zCoord * this.portalRange);
 	        
 			// Apply Raytrace to Look Target:
-			MovingObjectPosition target = Utilities.raytrace(this.worldObj, this.shootingEntity.posX, this.shootingEntity.posY, this.shootingEntity.posZ, this.targetX, this.targetY, this.targetZ, 1.0F, null);
+			MovingObjectPosition target = Utilities.raytrace(this.worldObj, this.shootingEntity.posX, this.shootingEntity.posY + this.shootingEntity.getEyeHeight(), this.shootingEntity.posZ, this.targetX, this.targetY, this.targetZ, 1.0F, null);
 	        if(target != null && target.hitVec != null) {
 				this.targetX = target.hitVec.xCoord;
 				this.targetY = target.hitVec.yCoord;

@@ -23,6 +23,7 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 	public Beastiary beastiary;
 	
 	public long currentTick = 0;
+	public boolean needsFirstSync = true;
 	
 	// Summoning:
 	public int summonFocusCharge = 600;
@@ -46,11 +47,6 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 			playerExt = (ExtendedPlayer)playerIExt;
 		else
 			playerExt = new ExtendedPlayer(player);
-
-		if(backupNBTTags.containsKey(player.username)) {
-			playerExt.loadNBTData(backupNBTTags.get(player.username));
-			backupNBTTags.remove(player);
-		}
 		
 		return playerExt;
 	}
@@ -64,6 +60,20 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 		this.beastiary = new Beastiary(player);
 		
 		player.registerExtendedProperties(ExtendedPlayer.EXT_PROP_NAME, this);
+	}
+	
+	
+	// ==================================================
+    //                    Join World
+    // ==================================================
+	public void onJoinWorld() {
+		if(this.player.worldObj.isRemote)
+			return;
+		// Check for Backup:
+		if(backupNBTTags.containsKey(this.player.username)) {
+			this.loadNBTData(backupNBTTags.get(this.player.username));
+			backupNBTTags.remove(this.player.username);
+		}
 	}
 	
 	
@@ -84,6 +94,7 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 		
 		// Summoning Focus Stat Update:
 		if(!player.worldObj.isRemote) {
+			this.summonFocus = Math.min(Math.max(this.summonFocus, 0), this.summonFocusMax);
 			if(this.summonFocus < this.summonFocusMax) {
 				this.summonFocus++;
 			}
@@ -95,8 +106,14 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 			}
 		}
 		
-		// Beastiary Sync:
-		this.getBeastiary();
+		// Initial Network Sync:
+		if(!this.player.worldObj.isRemote && this.needsFirstSync) {
+			this.beastiary.sendAllToClient();
+			this.sendAllSummonSetsToPlayer();
+			Packet packet = PacketHandler.createPacket(PacketHandler.PacketType.PLAYER, PacketHandler.PlayerType.MINION_SELECT.id, (byte)this.selectedSummonSet);
+			PacketHandler.sendPacketToPlayer(packet, this.player);
+		}
+		needsFirstSync = false;
 		
 		this.currentTick++;
 	}
@@ -144,9 +161,6 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
     // ==================================================
 	/** Returns the player's beastiary, will also update the client, access the beastiary variable directly when loading NBT data as the network player is null at first. **/
 	public Beastiary getBeastiary() {
-		if(!this.player.worldObj.isRemote && this.beastiary.needsSync)
-			this.beastiary.sendAllToClient();
-		this.beastiary.needsSync = false;
 		return this.beastiary;
 	}
 	

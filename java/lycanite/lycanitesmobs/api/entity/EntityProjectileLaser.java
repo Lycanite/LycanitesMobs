@@ -216,7 +216,7 @@ public class EntityProjectileLaser extends EntityProjectileBase {
 				else {
 					Vec3 lookDirection = this.shootingEntity.getLookVec();
 					this.targetX = this.shootingEntity.posX + (lookDirection.xCoord * this.laserRange);
-					this.targetY = this.shootingEntity.posY + (lookDirection.yCoord * this.laserRange);
+					this.targetY = this.shootingEntity.posY + this.shootingEntity.getEyeHeight() + (lookDirection.yCoord * this.laserRange);
 					this.targetZ = this.shootingEntity.posZ + (lookDirection.zCoord * this.laserRange);
 				}
 			}

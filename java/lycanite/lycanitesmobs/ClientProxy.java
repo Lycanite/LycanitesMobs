@@ -4,7 +4,7 @@ import java.util.Map.Entry;
 
 import lycanite.lycanitesmobs.api.entity.EntityParticle;
 import lycanite.lycanitesmobs.api.entity.EntityPortal;
-import lycanite.lycanitesmobs.api.gui.GuiCreatureOverlay;
+import lycanite.lycanitesmobs.api.gui.GuiOverlay;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.render.RenderCreature;
 import lycanite.lycanitesmobs.api.render.RenderParticle;
@@ -32,7 +32,7 @@ public class ClientProxy extends CommonProxy {
 		TickRegistry.registerTickHandler(new TickHandler(), Side.CLIENT);
 		
 		// Event Listeners:
-		MinecraftForge.EVENT_BUS.register(new GuiCreatureOverlay(Minecraft.getMinecraft()));
+		MinecraftForge.EVENT_BUS.register(new GuiOverlay(Minecraft.getMinecraft()));
 		
 		// Mount Jump:
 		// I'm using the tick handler and player jump key instead to prevent overriding.
@@ -50,10 +50,15 @@ public class ClientProxy extends CommonProxy {
 		boolean[] petInventoryRepeat = {true};
 		KeyBindingRegistry.registerKeyBinding(new KeyBase(petInventoryKey, petInventoryRepeat, "Mount Inventory", "PetInventory"));
 		
-		// Minion GUI:
+		// Minion Manager GUI:
 		KeyBinding[] minionKey = {new KeyBinding("Minion Controls", Keyboard.KEY_H)};
 		boolean[] minionRepeat = {true};
 		KeyBindingRegistry.registerKeyBinding(new KeyBase(minionKey, minionRepeat, "Minion Controls", "MinionControls"));
+		
+		// Minion Select GUI:
+		KeyBinding[] minionSelectKey = {new KeyBinding("Minion Selection", Keyboard.KEY_R)};
+		boolean[] minionSelectRepeat = {true};
+		KeyBindingRegistry.registerKeyBinding(new KeyBase(minionSelectKey, minionSelectRepeat, "Minion Selection", "MinionSelect"));
     }
 	
 	// ========== Register Assets ==========

@@ -427,6 +427,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
         this.setFollowing(true);
         this.setPassive(false);
         this.setAggressive(false);
+        this.setPVP(true);
         this.playTameSound();
     }
     

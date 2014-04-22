@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.gui.GUICreature;
 import lycanite.lycanitesmobs.api.gui.GUIMinion;
+import lycanite.lycanitesmobs.api.gui.GUIMinionSelection;
 import lycanite.lycanitesmobs.api.inventory.ContainerCreature;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,7 +21,7 @@ public class GuiHandler implements IGuiHandler {
 		private GuiType(byte i) { id = i; }
 	}
     public static enum PlayerGuiType {
-		MINION_CONTROLS((byte)0), BEASTIARY((byte)1), SOULBOUND_PETS((byte)2);
+		MINION_CONTROLS((byte)0), MINION_SELECTION((byte)1), BEASTIARY((byte)2), SOULBOUND_PETS((byte)3);
 		public byte id;
 		private PlayerGuiType(byte i) { id = i; }
 	}
@@ -58,9 +59,7 @@ public class GuiHandler implements IGuiHandler {
 		
 		// ========== Player ==========
 		else if(id == GuiType.PLAYER.id) {
-			if(x == PlayerGuiType.MINION_CONTROLS.id) {
-				return null;
-			}
+			return null;
 		}
 		
 		return null;
@@ -94,6 +93,9 @@ public class GuiHandler implements IGuiHandler {
 		else if(id == GuiType.PLAYER.id) {
 			if(x == PlayerGuiType.MINION_CONTROLS.id) {
 				return new GUIMinion(player, y);
+			}
+			if(x == PlayerGuiType.MINION_SELECTION.id) {
+				return new GUIMinionSelection(player);
 			}
 		}
 		

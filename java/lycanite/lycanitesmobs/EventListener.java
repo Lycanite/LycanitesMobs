@@ -30,8 +30,10 @@ public class EventListener {
 	@ForgeSubscribe
 	public void onEntityConstructing(EntityConstructing event) {
 		// ========== Extended Player ==========
-		if(event.entity instanceof EntityPlayer)
-			ExtendedPlayer.getForPlayer((EntityPlayer)event.entity);
+		if(event.entity instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer)event.entity;
+			ExtendedPlayer.getForPlayer(player);
+		}
 	}
 	
 	
@@ -41,8 +43,10 @@ public class EventListener {
 	@ForgeSubscribe
 	public void onEntityJoinWorld(EntityJoinWorldEvent event) {
 		// ========== Extended Player ==========
-		if(event.entity instanceof EntityPlayer)
-			ExtendedPlayer.getForPlayer((EntityPlayer)event.entity);
+		if(event.entity instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer)event.entity;
+			ExtendedPlayer.getForPlayer(player).onJoinWorld();
+		}
 	}
 	
 	
@@ -52,8 +56,10 @@ public class EventListener {
 	@ForgeSubscribe
 	public void onLivingDeathEvent(LivingDeathEvent event) {
 		// ========== Extended Player Data Backup ==========
-		if(event.entity instanceof EntityPlayer)
-			ExtendedPlayer.getForPlayer((EntityPlayer)event.entity).onDeath();
+		if(event.entity instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer)event.entity;
+			ExtendedPlayer.getForPlayer(player).onDeath();
+		}
 	}
 	
 	
@@ -68,6 +74,10 @@ public class EventListener {
 		
 		if(entity instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer)entity;
+			
+			if(player.worldObj.isRemote)
+				PlayerControlHandler.updateControls(player);
+			
 			ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
 			if(playerExt != null)
 				playerExt.onUpdate();

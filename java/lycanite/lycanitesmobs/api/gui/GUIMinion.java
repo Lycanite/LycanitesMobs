@@ -9,6 +9,7 @@ import lycanite.lycanitesmobs.api.info.SummonSet;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 
 import org.lwjgl.opengl.GL11;
@@ -252,4 +253,19 @@ public class GUIMinion extends GuiScreen {
         	 this.mc.thePlayer.closeScreen();
 		super.keyTyped(par1, par2);
 	}
+	
+	
+	// ==================================================
+  	//                     Draw Image
+  	// ==================================================
+	public void drawImage(int x, int y, int u, int v, int w, int h, float s, float t) {
+		float z = this.zLevel;
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawingQuads();
+        tessellator.addVertexWithUV((double)(x + 0), (double)(y + h), (double)z, (double)((float)(u + 0) * s), (double)((float)(v + h) * t));
+        tessellator.addVertexWithUV((double)(x + w), (double)(y + h), (double)z, (double)((float)(u + w) * s), (double)((float)(v + h) * t));
+        tessellator.addVertexWithUV((double)(x + w), (double)(y + 0), (double)z, (double)((float)(u + w) * s), (double)((float)(v + 0) * t));
+        tessellator.addVertexWithUV((double)(x + 0), (double)(y + 0), (double)z, (double)((float)(u + 0) * s), (double)((float)(v + 0) * t));
+        tessellator.draw();
+    }
 }

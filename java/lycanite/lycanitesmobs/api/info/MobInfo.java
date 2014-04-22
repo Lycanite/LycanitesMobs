@@ -5,9 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.Config;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
+import net.minecraft.util.ResourceLocation;
 
 
 public class MobInfo {
@@ -167,6 +169,19 @@ public class MobInfo {
     // ==================================================
 	public String getRegistryName() {
 		return this.mod.getModID() + "." + this.name;
+	}
+	
+	
+	// ==================================================
+    //                        Icon
+    // ==================================================
+	public ResourceLocation getIcon() {
+		ResourceLocation texture = AssetManager.getTexture(this.name + "Icon");
+		if(texture == null) {
+			AssetManager.addTexture(this.name + "Icon", this.mod.getDomain(), "textures/guis/" + this.name.toLowerCase() + "_icon.png");
+			texture = AssetManager.getTexture(this.name + "Icon");
+		}
+		return texture;
 	}
 	
 	

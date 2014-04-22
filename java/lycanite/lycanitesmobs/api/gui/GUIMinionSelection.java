@@ -54,8 +54,8 @@ public class GUIMinionSelection extends GuiScreen {
 		super.initGui();
         this.centerX = this.width / 2;
         this.centerY = this.height / 2;
-		this.windowWidth = 64;
-        this.windowHeight = 64;
+		this.windowWidth = 256;
+        this.windowHeight = 256;
         this.windowX = this.centerX;
         this.windowY = this.centerY;
 		this.drawControls();
@@ -99,14 +99,35 @@ public class GUIMinionSelection extends GuiScreen {
         int buttonSpacing = 2;
         int buttonWidth = 20;
         int buttonHeight = 20;
-        int buttonX = this.windowX;
-        int buttonY = this.windowY;
+        int buttonX = this.centerX - Math.round(buttonWidth / 2);
+        int buttonY = this.centerY - Math.round(buttonHeight / 2);
+        GuiButton button;
+        int offset = 16;
         
-        for(int setID = 1; setID <= 5; setID++) {
-        	//TODO Use sine and cosine for a circle of buttons!
-        	GuiButton button = new GuiButton(setID, buttonX + (32 * setID), buttonY, buttonWidth, buttonHeight, "" + setID);
+        button = new GuiButton(1, buttonX, buttonY - Math.round(offset * 2), buttonWidth, buttonHeight, "" + 1);
+    	this.buttonList.add(button);
+    	
+        button = new GuiButton(2, buttonX + Math.round(offset * 2), buttonY - Math.round(offset * 0.5F), buttonWidth, buttonHeight, "" + 2);
+    	this.buttonList.add(button);
+    	
+        button = new GuiButton(3, buttonX + Math.round(offset * 1), buttonY +  Math.round(offset * 1.75F), buttonWidth, buttonHeight, "" + 3);
+    	this.buttonList.add(button);
+    	
+        button = new GuiButton(4, buttonX - Math.round(offset * 1), buttonY +  Math.round(offset * 1.75F), buttonWidth, buttonHeight, "" + 4);
+    	this.buttonList.add(button);
+    	
+        button = new GuiButton(5, buttonX - Math.round(offset * 2), buttonY - Math.round(offset * 0.5F), buttonWidth, buttonHeight, "" + 5);
+    	this.buttonList.add(button);
+        
+        /*for(int setID = 1; setID <= 5; setID++) {
+        	float offset = ((float)setID / 6) - 0.5F;
+        	offset = (float)Math.sin(offset);
+        	LycanitesMobs.printDebug("", "" + offset);
+        	int posX = this.centerX + Math.round(this.windowWidth * offset) - Math.round(buttonWidth / 2);
+        	int posY = this.centerY + Math.round(this.windowHeight * offset) - Math.round(buttonHeight / 2);
+        	GuiButton button = new GuiButton(setID, posX, posY, buttonWidth, buttonHeight, "" + setID);
         	this.buttonList.add(button);
-        }
+        }*/
     }
 	
 	public void updateControls() {

@@ -42,10 +42,12 @@ public class GUIButtonCreature extends GuiButton {
             int buttonH = this.height;
             int buttonX = this.xPosition;
             int buttonY = this.yPosition;
-            minecraft.getTextureManager().bindTexture(AssetManager.getTexture("GUIControls"));
-            this.drawImage(buttonX, buttonY, 0, hoverState * 32, this.width, this.height, 0.125F, 0.125F);
-            Minecraft.getMinecraft().getTextureManager().bindTexture(mobInfo.getIcon());
-    		this.drawImage(buttonX + 4, buttonY + 4, 0, 0, 16, 16, 0.0625F, 0.0625F);
+            minecraft.getTextureManager().bindTexture(AssetManager.getTexture("GUIInventoryCreature"));
+            this.drawImage(buttonX, buttonY, 193, 187 - (hoverState * 32), this.width, this.height, 0.00390625F, 0.00390625F);
+            if(mobInfo != null) {
+	            Minecraft.getMinecraft().getTextureManager().bindTexture(mobInfo.getIcon());
+	    		this.drawImage(buttonX + 8, buttonY + 8, 0, 0, 16, 16, 0.0625F, 0.0625F);
+            }
             
             this.mouseDragged(minecraft, mouseX, mouseY);
             int textColor = 14737632;
@@ -57,7 +59,7 @@ public class GUIButtonCreature extends GuiButton {
             	textColor = 16777120;
             }
             
-            this.drawCenteredString(fontrenderer, this.displayString, buttonX + buttonW / 2, buttonY + (buttonH - 8) / 2, textColor);
+            this.drawCenteredString(fontrenderer, this.displayString, buttonX + 5, buttonY + 2, textColor);
         }
     }
 	

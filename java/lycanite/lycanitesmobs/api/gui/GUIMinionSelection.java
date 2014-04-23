@@ -98,13 +98,13 @@ public class GUIMinionSelection extends GuiScreen {
 	protected void drawControls() {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         int buttonSpacing = 2;
-        int buttonWidth = 20;
-        int buttonHeight = 20;
+        int buttonWidth = 32;
+        int buttonHeight = 32;
         int buttonX = this.centerX - Math.round(buttonWidth / 2);
         int buttonY = this.centerY - Math.round(buttonHeight / 2);
         GuiButton button;
         MobInfo mobInfo;
-        int offset = 16;
+        int offset = 32;
         
         mobInfo = this.playerExt.getSummonSet(1).getMobInfo();
         button = new GUIButtonCreature(1, buttonX, buttonY - Math.round(offset * 2), buttonWidth, buttonHeight, "" + 1, mobInfo);

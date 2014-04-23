@@ -23,17 +23,10 @@ public class GUIMinionList extends GuiScrollingList {
 		int minionIndex = 0;
 		for(String minionName : playerExt.getBeastiary().creatureKnowledgeList.keySet()) {
 			if(SummonSet.isSummonableCreature(minionName)) {
-				this.minionList.put(minionIndex, minionName);
-				minionIndex++;
+				this.minionList.put(minionIndex++, minionName);
 			}
 		}
 	}
-	
-	
-	// ==================================================
-  	//                    Draw Screen
-  	// ==================================================
-	//TODO Fix the graphical glitch!
 	
 	
 	// ==================================================
@@ -63,7 +56,7 @@ public class GUIMinionList extends GuiScrollingList {
 
     @Override
     protected int getContentHeight() {
-        return (this.getSize()) * 35 + 1;
+        return this.getSize() * 24;
     }
 
 	@Override

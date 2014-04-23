@@ -3,8 +3,9 @@ package lycanite.lycanitesmobs.desertmobs.entity;
 import java.util.HashMap;
 
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackRanged;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowOwner;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
@@ -24,7 +25,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class EntityClink extends EntityCreatureBase implements IMob {
+public class EntityClink extends EntityCreatureTameable implements IMob {
 	
 	private EntityAIAttackRanged rangedAttackAI;
     
@@ -58,6 +59,8 @@ public class EntityClink extends EntityCreatureBase implements IMob {
         this.tasks.addTask(0, new EntityAISwimming(this));
         rangedAttackAI = new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(10).setRange(14.0F).setMinChaseDistance(4.0F).setChaseTime(-1);
         this.tasks.addTask(2, rangedAttackAI);
+        this.tasks.addTask(3, this.aiSit);
+        this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
         this.tasks.addTask(6, new EntityAIWander(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
@@ -140,4 +143,10 @@ public class EntityClink extends EntityCreatureBase implements IMob {
         super.isPotionApplicable(par1PotionEffect);
         return true;
     }
+    
+    
+    // ==================================================
+    //                     Pet Control
+    // ==================================================
+    public boolean petControlsEnabled() { return true; }
 }

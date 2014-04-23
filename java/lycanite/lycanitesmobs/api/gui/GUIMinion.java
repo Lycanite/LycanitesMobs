@@ -133,7 +133,7 @@ public class GUIMinion extends GuiScreen {
         int buttonSpacing = 2;
         int buttonWidth = 32;
         int buttonHeight = 32;
-        int buttonX = this.windowX + 6;
+        int buttonX = this.windowX + 2;
         int buttonY = this.windowY + 16;
         
         // Tabs:
@@ -150,16 +150,12 @@ public class GUIMinion extends GuiScreen {
 	        tabSpacing = buttonWidth + buttonSpacing;
         }
         
-        // Creature List Scroll Buttons:
-        buttonWidth = 8;
-        buttonX = (this.windowWidth / 2) - buttonSpacing;
-        buttonY = this.windowY + 16;
-        // Scroll buttons?
-        
         // Behaviour:
+        buttonSpacing = 1;
         buttonWidth = (this.windowWidth / 2) - (buttonSpacing * 4);
+        buttonHeight = 20;
         buttonX = this.centerX + buttonSpacing;
-        buttonY = this.windowY + 16;
+        buttonY = this.windowY + 30;
         
         buttonY += buttonHeight + (buttonSpacing * 2);
         this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.SITTING.id, buttonX, buttonY, buttonWidth, buttonHeight, "Loading"));
@@ -239,6 +235,13 @@ public class GUIMinion extends GuiScreen {
 	public void selectMinion(String minionName) {
 		this.summonSet.setSummonType(minionName);
 		this.playerExt.sendSummonSetToServer((byte)this.editSet);
+		for(Object buttonObj : this.buttonList) {
+			GuiButton button = (GuiButton)buttonObj;
+			if(button instanceof GUIButtonCreature && button.id == this.editSet + this.tabButtonID) {
+				MobInfo mobInfo = this.playerExt.getSummonSet(this.editSet).getMobInfo();
+				((GUIButtonCreature)button).mobInfo = mobInfo;
+			}
+		}
 	}
 	
 	public String getSelectedMinion() {

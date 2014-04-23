@@ -357,9 +357,9 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
 	public boolean canAttackEntity(EntityLivingBase targetEntity) {
 		if(this.isPassive())
 			return false;
-		if(targetEntity instanceof EntityPlayer && !this.isPVP())
+		if(this.isTamed() && targetEntity instanceof EntityPlayer && !this.isPVP())
 			return false;
-		if(targetEntity instanceof EntityCreatureTameable) {
+		if(this.isTamed() && targetEntity instanceof EntityCreatureTameable) {
 			EntityCreatureTameable targetPet = (EntityCreatureTameable)targetEntity;
 			if(!this.isPVP())
 				return false;
@@ -476,6 +476,8 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
     
     // ========== Sitting ==========
     public boolean isSitting() {
+    	if(!this.isTamed())
+    		return false;
         return (this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id) & TAMED_ID.MOVE_SIT.id) != 0;
     }
 
@@ -495,6 +497,8 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
     
     // ========== Following ==========
     public boolean isFollowing() {
+    	if(!this.isTamed())
+    		return false;
         return (this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id) & TAMED_ID.MOVE_FOLLOW.id) != 0;
     }
 
@@ -510,6 +514,8 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
     
     // ========== Passiveness ==========
     public boolean isPassive() {
+    	if(!this.isTamed())
+    		return false;
         return (this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id) & TAMED_ID.STANCE_PASSIVE.id) != 0;
     }
 
@@ -526,7 +532,10 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
             this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamedStatus - (tamedStatus & TAMED_ID.STANCE_PASSIVE.id))));
     }
     
+    // ========== Agressiveness ==========
     public boolean isAggressive() {
+    	if(!this.isTamed())
+    		return true;
         return (this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id) & TAMED_ID.STANCE_AGGRESSIVE.id) != 0;
     }
 

@@ -230,6 +230,8 @@ public class Config {
 		String[] statIDs = {"Defense", "Speed", "Damage", "Haste", "Effect"};
 		for(String statID : statIDs) {
 			String settingName = settingID + " Difficulty " + statID + " Multiplier";
+			if("Easy".equalsIgnoreCase(settingID) && "Speed".equalsIgnoreCase(statID))
+				settingDefault = "1.0";
 			String statString = config.get(settingCategory,  settingName, settingDefault).getString().toUpperCase();
 			double statValue = 1.0D;
 			if("DEFAULT".equalsIgnoreCase(statString) && statMap != this.difficultyMultipliers) {

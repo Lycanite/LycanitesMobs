@@ -42,7 +42,7 @@ public class GUIButtonTab extends GuiButton {
             int buttonH = this.height;
             int buttonX = this.xPosition;
             int buttonY = this.yPosition;
-            minecraft.getTextureManager().bindTexture(AssetManager.getTexture("GUIControls"));
+            minecraft.getTextureManager().bindTexture(AssetManager.getTexture("GUIInventoryCreature"));
             this.drawImage(buttonX, buttonY, 32, hoverState * 32, this.width, this.height, 0.125F, 0.125F);
             Minecraft.getMinecraft().getTextureManager().bindTexture(this.texture);
     		this.drawImage(buttonX + 4, buttonY + 4, 0, 0, 16, 16, 0.0625F, 0.0625F);

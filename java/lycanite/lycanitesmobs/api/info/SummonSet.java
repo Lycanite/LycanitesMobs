@@ -68,6 +68,10 @@ public class SummonSet {
 		return this.pvp;
 	}
 	
+	public MobInfo getMobInfo() {
+		return MobInfo.mobNameToInfo.get(this.summonType);
+	}
+	
 	
 	// ==================================================
     //                        Info

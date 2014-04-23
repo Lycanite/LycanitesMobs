@@ -5,6 +5,7 @@ import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.GuiHandler;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.PacketHandler;
+import lycanite.lycanitesmobs.api.info.MobInfo;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -102,21 +103,27 @@ public class GUIMinionSelection extends GuiScreen {
         int buttonX = this.centerX - Math.round(buttonWidth / 2);
         int buttonY = this.centerY - Math.round(buttonHeight / 2);
         GuiButton button;
+        MobInfo mobInfo;
         int offset = 16;
         
-        button = new GuiButton(1, buttonX, buttonY - Math.round(offset * 2), buttonWidth, buttonHeight, "" + 1);
+        mobInfo = this.playerExt.getSummonSet(1).getMobInfo();
+        button = new GUIButtonCreature(1, buttonX, buttonY - Math.round(offset * 2), buttonWidth, buttonHeight, "" + 1, mobInfo);
     	this.buttonList.add(button);
     	
-        button = new GuiButton(2, buttonX + Math.round(offset * 2), buttonY - Math.round(offset * 0.5F), buttonWidth, buttonHeight, "" + 2);
+        mobInfo = this.playerExt.getSummonSet(2).getMobInfo();
+        button = new GUIButtonCreature(2, buttonX + Math.round(offset * 2), buttonY - Math.round(offset * 0.5F), buttonWidth, buttonHeight, "" + 2, mobInfo);
     	this.buttonList.add(button);
     	
-        button = new GuiButton(3, buttonX + Math.round(offset * 1), buttonY +  Math.round(offset * 1.75F), buttonWidth, buttonHeight, "" + 3);
+        mobInfo = this.playerExt.getSummonSet(3).getMobInfo();
+        button = new GUIButtonCreature(3, buttonX + Math.round(offset * 1), buttonY +  Math.round(offset * 1.75F), buttonWidth, buttonHeight, "" + 3, mobInfo);
     	this.buttonList.add(button);
     	
-        button = new GuiButton(4, buttonX - Math.round(offset * 1), buttonY +  Math.round(offset * 1.75F), buttonWidth, buttonHeight, "" + 4);
+        mobInfo = this.playerExt.getSummonSet(4).getMobInfo();
+        button = new GUIButtonCreature(4, buttonX - Math.round(offset * 1), buttonY +  Math.round(offset * 1.75F), buttonWidth, buttonHeight, "" + 4, mobInfo);
     	this.buttonList.add(button);
     	
-        button = new GuiButton(5, buttonX - Math.round(offset * 2), buttonY - Math.round(offset * 0.5F), buttonWidth, buttonHeight, "" + 5);
+        mobInfo = this.playerExt.getSummonSet(5).getMobInfo();
+        button = new GUIButtonCreature(5, buttonX - Math.round(offset * 2), buttonY - Math.round(offset * 0.5F), buttonWidth, buttonHeight, "" + 5, mobInfo);
     	this.buttonList.add(button);
         
         /*for(int setID = 1; setID <= 5; setID++) {

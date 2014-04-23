@@ -71,6 +71,7 @@ public class ClientProxy extends CommonProxy {
 		AssetManager.addTexture("GUIInventoryCreature", domain, "textures/guis/inventory_creature.png");
 		AssetManager.addTexture("GUIMinion", domain, "textures/guis/minion.png");
 		AssetManager.addTexture("GUIBeastiary", domain, "textures/guis/beastiary.png");
+		AssetManager.addTexture("GUIControls", domain, "texture/guis/controls.png");
     }
 	
 	

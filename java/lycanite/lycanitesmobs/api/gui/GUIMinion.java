@@ -5,6 +5,7 @@ import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.GuiHandler;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.SummonSet;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -81,7 +82,7 @@ public class GUIMinion extends GuiScreen {
 		this.list = new GUIMinionList(this, this.playerExt,
 				(this.windowWidth / 2) - (buttonSpacing * 2),
 				this.windowHeight - 16 - (buttonSpacing * 2),
-				this.windowY + 40,
+				this.windowY + 52,
 				this.windowY + 16 + this.windowHeight - 16 - (buttonSpacing * 2),
 				this.windowX + (buttonSpacing * 2),
 				20
@@ -130,8 +131,8 @@ public class GUIMinion extends GuiScreen {
 	protected void drawControls() {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         int buttonSpacing = 2;
-        int buttonWidth = 28;
-        int buttonHeight = 20;
+        int buttonWidth = 32;
+        int buttonHeight = 32;
         int buttonX = this.windowX + 6;
         int buttonY = this.windowY + 16;
         
@@ -140,8 +141,9 @@ public class GUIMinion extends GuiScreen {
         int tabSpacing = buttonSpacing;
         for(int i = 1; i <= tabCount; i++) {
 	        String buttonText = String.valueOf(i);
+	        MobInfo mobInfo = this.playerExt.getSummonSet(i).getMobInfo();
 	        buttonX += tabSpacing;
-	        GuiButton tabButton = new GuiButton(tabButtonID + i, buttonX, buttonY, buttonWidth, buttonHeight, buttonText);
+	        GuiButton tabButton = new GUIButtonCreature(tabButtonID + i, buttonX, buttonY, buttonWidth, buttonHeight, buttonText, mobInfo);
 	        this.buttonList.add(tabButton);
 	        if(i == this.editSet)
 	        	tabButton.enabled = false;

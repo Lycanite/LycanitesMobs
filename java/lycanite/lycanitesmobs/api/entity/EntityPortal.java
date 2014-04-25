@@ -58,9 +58,9 @@ public class EntityPortal extends EntityProjectileBase {
     public void onUpdate() {
     	// Move:
     	if(!this.worldObj.isRemote && !this.isDead && (
-    			this.shootingEntity == null || !this.shootingEntity.isEntityAlive() || this.portalItem == null
-    			|| this.shootingEntity.getItemInUse() == null
-    			|| this.shootingEntity.getItemInUse().getItem() != this.portalItem)) {
+    			this.shootingEntity == null || !this.shootingEntity.isEntityAlive() || this.portalItem == null ||
+    			this.portalItem.portalEntity != this)
+    		) {
     		this.setDead();
     		return;
     	}

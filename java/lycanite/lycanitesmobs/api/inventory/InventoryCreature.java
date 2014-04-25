@@ -99,6 +99,15 @@ public class InventoryCreature implements IInventory {
 		return this.equipmentIDs.size();
 	}
 	
+	/** Returns true if this mob has any items in it's bag slots. **/
+	public boolean hasBagItems() {
+		for(ItemStack itemStack : items) {
+			if(itemStack != null)
+				return true;
+		}
+		return false;
+	}
+	
 	
 	// ==================================================
   	//                      Actions
@@ -435,9 +444,11 @@ public class InventoryCreature implements IInventory {
   	//                   Drop Inventory
   	// ==================================================
 	public void dropInventory() {
-		for(ItemStack item : this.items)
-			if(item != null)
-				this.creature.dropItem(item);
+		for(ItemStack itemStack : this.items)
+			if(itemStack != null) {
+				this.creature.dropItem(itemStack);
+				itemStack = null;
+			}
 	}
     
     

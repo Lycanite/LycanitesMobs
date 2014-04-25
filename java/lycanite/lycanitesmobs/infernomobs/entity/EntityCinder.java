@@ -27,6 +27,8 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class EntityCinder extends EntityCreatureTameable implements IMob {
     
@@ -181,4 +183,17 @@ public class EntityCinder extends EntityCreatureTameable implements IMob {
     
     @Override
     public boolean waterDamage() { return true; }
+    
+    
+    // ==================================================
+    //                   Brightness
+    // ==================================================
+    public float getBrightness(float par1) {
+        return 1.0F;
+    }
+    
+    @SideOnly(Side.CLIENT)
+    public int getBrightnessForRender(float par1) {
+        return 15728880;
+    }
 }

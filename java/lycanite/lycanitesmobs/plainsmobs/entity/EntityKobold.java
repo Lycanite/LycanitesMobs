@@ -101,6 +101,17 @@ public class EntityKobold extends EntityCreatureTameable implements IMob, IGroup
         this.drops.add(new DropRate(Item.goldNugget.itemID, 0.025F).setMaxAmount(1));
         this.drops.add(new DropRate(Item.emerald.itemID, 0.01F).setMaxAmount(1));
 	}
+	
+	
+	// ==================================================
+  	//                     Spawning
+  	// ==================================================
+    // ========== Despawning ==========
+    @Override
+    protected boolean canDespawn() {
+    	if(this.inventory.hasBagItems()) return false;
+        return super.canDespawn();
+    }
     
 	
     // ==================================================

@@ -56,7 +56,7 @@ public class EntityPortal extends EntityProjectileBase {
     // ========== Main Update ==========
     @Override
     public void onUpdate() {
-    	// Move:
+    	// Check for Despawn:
     	if(!this.worldObj.isRemote && !this.isDead && (
     			this.shootingEntity == null || !this.shootingEntity.isEntityAlive() || this.portalItem == null ||
     			this.portalItem.portalEntity != this)
@@ -65,6 +65,7 @@ public class EntityPortal extends EntityProjectileBase {
     		return;
     	}
     	
+    	// Move:
     	this.moveToTarget();
     	
     	// Client:

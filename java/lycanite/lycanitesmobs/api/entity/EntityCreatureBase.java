@@ -705,8 +705,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
         this.onSyncUpdate();
         super.onUpdate();
         
-        if(this.despawnCheck())
+        if(this.despawnCheck()) {
+        	this.inventory.dropInventory();
         	this.setDead();
+        }
         
         // Fire Immunity:
         this.isImmuneToFire = !this.canBurn();

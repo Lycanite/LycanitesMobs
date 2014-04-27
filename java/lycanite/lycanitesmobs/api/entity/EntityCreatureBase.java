@@ -100,6 +100,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	public boolean spreadFire = false;
     /** Used to check if the mob was stealth last update. **/
 	public boolean stealthPrev = false;
+	/** When above 0 this mob will be considered blocking and this will count down to 0. Blocking mobs have additional defense. **/
+	public int currentBlockingTime = 0;
+	/** How long this mob should usually block for in ticks. **/
+	public int blockingTime = 100;
 	
 	// Positions:
     /** A location used for mobs that stick around a certain home spot. **/
@@ -193,7 +197,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	}
     /** Used for the ANIM_ID watcher bitmap, bitmaps save on many packets and make network performance better! **/
 	public static enum ANIM_ID {
-		ATTACKED((byte)1), GROUNDED((byte)2);
+		ATTACKED((byte)1), GROUNDED((byte)2), BLOCKING((byte)4), MINION((byte)8);
 		public final byte id;
 	    private ANIM_ID(byte value) { this.id = value; }
 	    public byte getValue() { return id; }
@@ -600,7 +604,11 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Set whether this mob is a minion or not, this should be used if this mob is summoned. **/
     public void setMinion(boolean minion) { this.isMinion = minion; }
     /** Returns whether or not this mob is a minion. **/
-    public boolean isMinion() { return this.isMinion; }
+    public boolean isMinion() {
+    	if(this.worldObj.isRemote)
+    		return (this.dataWatcher.getWatchableObjectByte(WATCHER_ID.ANIMATION.id) & ANIM_ID.MINION.id) > 0;
+    	return this.isMinion;
+    }
     
     // ========== Temporary Mob ==========
     /** Make this mob temporary where it will desapwn once the specified duration (in ticks) reaches 0. **/
@@ -828,6 +836,13 @@ public abstract class EntityCreatureBase extends EntityLiving {
         	setInvisible(false);
         this.stealthPrev = this.isStealthed();
         
+        // Blocking:
+        if(this.currentBlockingTime > 0) {
+        	this.currentBlockingTime--;
+        }
+        if(this.currentBlockingTime < 0)
+        	this.currentBlockingTime = 0;
+        
         // Pickup Items:
         if(!this.worldObj.isRemote && this.isEntityAlive() && this.canPickupItems())
         	this.pickupItems();
@@ -870,6 +885,14 @@ public abstract class EntityCreatureBase extends EntityLiving {
         	// Airborne Animation:
         	if(this.onGround)
         		animations += ANIM_ID.GROUNDED.id;
+        	
+        	// Blocking Animation:
+        	if(this.isBlocking())
+        		animations += ANIM_ID.BLOCKING.id;
+        	
+        	// Blocking Animation:
+        	if(this.isMinion())
+        		animations += ANIM_ID.MINION.id;
         	
         	this.dataWatcher.updateObject(WATCHER_ID.ANIMATION.id, animations);
         }
@@ -1223,8 +1246,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
         damage *= this.getDamageModifier(damageSrc);
         
         if(super.attackEntityFrom(damageSrc, damage)) {
+        	this.onDamage();
             Entity entity = damageSrc.getEntity();
-            
             if(entity instanceof EntityLivingBase && this.riddenByEntity != entity && this.ridingEntity != entity) {
                 if(entity != this)
                     this.setRevengeTarget((EntityLivingBase)entity);
@@ -1237,13 +1260,22 @@ public abstract class EntityCreatureBase extends EntityLiving {
     }
     
     // ========== Defense ==========
-    /** This is provided with how much damage this mob will take and returns the reduced (or sometimes increased) damage with defense applied. Note: Damage Modifiers are applied after this. **/
+    /** This is provided with how much damage this mob will take and returns the reduced (or sometimes increased) damage with defense applied. Note: Damage Modifiers are applied after this. This also applies the blocking ability. **/
     public float getDamageAfterDefense(float damage) {
     	float baseDefense = (float)(this.defense + this.getStatBoost("defense"));
     	float scaledDefense = baseDefense * (float)this.getDefenseMultiplier();
     	float minDamage = 1F;
+    	if(this.isBlocking()) {
+	    	if(scaledDefense <= 0)
+	    		scaledDefense = 1;
+	    	scaledDefense *= this.getBlockingMultiplier();
+    	}
     	return Math.max(damage - scaledDefense, minDamage);
     }
+    
+    // ========== On Damage ==========
+    /** Called when this mob has received damage. **/
+    public void onDamage() {}
     
     // ========== Damage Modifier ==========
     /** A multiplier that alters how much damage this mob receives from the given DamageSource, use for resistances and weaknesses. Note: The defense multiplier is handled before this. **/
@@ -1475,6 +1507,24 @@ public abstract class EntityCreatureBase extends EntityLiving {
     @Override
     protected void updateFallState(double fallDistance, boolean onGround) {
     	if(!this.canFly()) super.updateFallState(fallDistance, onGround);
+    }
+    
+    // ========== Blocking ==========
+    /** When called, this will set the mob as blocking, can be overriden to randomize the blocking duration. **/
+    public void setBlocking() {
+    	this.currentBlockingTime = this.blockingTime;
+    }
+    
+    /** Returns true if this mob is blocking. **/
+    public boolean isBlocking() {
+    	if(this.worldObj.isRemote)
+    		return (this.dataWatcher.getWatchableObjectByte(WATCHER_ID.ANIMATION.id) & ANIM_ID.BLOCKING.id) > 0;
+    	return this.currentBlockingTime > 0;
+    }
+    
+    /** Returns the blocking defense multiplier, when blocking this mobs defense is multiplied by this, also if this mobs defense is below one it will be moved up to one. **/
+    public int getBlockingMultiplier() {
+    	return 4;
     }
     
     
@@ -1968,6 +2018,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public ResourceLocation getEquipmentTexture(String equipmentName) {
     	String textureName = this.getTextureName();
     	textureName += "_" + equipmentName;
+    	if(this.isMinion())
+    		return this.getTexture();
     	if(AssetManager.getTexture(textureName) == null)
     		AssetManager.addTexture(textureName, this.mod.getDomain(), "textures/entity/" + textureName.toLowerCase() + ".png");
     	return AssetManager.getTexture(textureName);

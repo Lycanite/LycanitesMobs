@@ -5,6 +5,7 @@ import lycanite.lycanitesmobs.plainsmobs.model.ModelKobold;
 import lycanite.lycanitesmobs.plainsmobs.model.ModelMaka;
 import lycanite.lycanitesmobs.plainsmobs.model.ModelMakaAlpha;
 import lycanite.lycanitesmobs.plainsmobs.model.ModelVentoraptor;
+import lycanite.lycanitesmobs.plainsmobs.model.ModelZoataur;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class ClientSubProxy extends CommonSubProxy {
@@ -20,5 +21,6 @@ public class ClientSubProxy extends CommonSubProxy {
 		AssetManager.addModel("Ventoraptor", new ModelVentoraptor());
 		AssetManager.addModel("Maka", new ModelMaka());
 		AssetManager.addModel("MakaAlpha", new ModelMakaAlpha());
+		AssetManager.addModel("Zoataur", new ModelZoataur());
 	}
 }

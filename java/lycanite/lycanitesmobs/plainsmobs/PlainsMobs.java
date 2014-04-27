@@ -13,6 +13,7 @@ import lycanite.lycanitesmobs.plainsmobs.entity.EntityKobold;
 import lycanite.lycanitesmobs.plainsmobs.entity.EntityMaka;
 import lycanite.lycanitesmobs.plainsmobs.entity.EntityMakaAlpha;
 import lycanite.lycanitesmobs.plainsmobs.entity.EntityVentoraptor;
+import lycanite.lycanitesmobs.plainsmobs.entity.EntityZoataur;
 import lycanite.lycanitesmobs.plainsmobs.item.ItemPlainsEgg;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.entity.EnumCreatureType;
@@ -93,6 +94,7 @@ public class PlainsMobs implements ILycaniteMod {
 		ObjectManager.addMob(new MobInfo(this, "Ventoraptor", EntityVentoraptor.class, 0x99BBFF, 0x0033FF, 4));
 		ObjectManager.addMob(new MobInfo(this, "Maka", EntityMaka.class, 0xAA8855, 0x221100, 2));
 		ObjectManager.addMob(new MobInfo(this, "MakaAlpha", "Maka Alpha", EntityMakaAlpha.class, 0x663300, 0x000000, 4));
+		ObjectManager.addMob(new MobInfo(this, "Zoataur", "Zoataur", EntityZoataur.class, 0x442200, 0xFFDDBB, 4).setSummonable(true));
 		
 		// ========== Create Projectiles ==========
 		//ObjectManager.addProjectile("Template", EntityTemplate.class, Item.templateCharge, new DispenserBehaviorPoisonRay());

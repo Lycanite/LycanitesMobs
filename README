@@ -1,4 +1,4 @@
-A poplar mod for the Java based game Minecraft that I am working on which adds many new entities (animated AI creatures) to the game.
+A popular mod for the Java based game Minecraft version 1.7.2 that I am working on which adds many new entities (animated AI creatures) to the game.
 
 This mods makes use of the LWJGL Java library using basic GL11 methods to render and animate basic 3D models created in Blender.
 

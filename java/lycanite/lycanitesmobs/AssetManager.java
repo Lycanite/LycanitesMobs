@@ -2,21 +2,21 @@ package lycanite.lycanitesmobs;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.Icon;
+
 import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.sound.SoundLoadEvent;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
-import net.minecraftforge.event.ForgeSubscribe;
 
 public class AssetManager {
 	
 	// Maps:
 	public static Map<String, ResourceLocation> textures = new HashMap<String, ResourceLocation>();
-	public static Map<String, Icon> icons = new HashMap<String, Icon>();
-	public static Map<String, Icon[]> iconGroups = new HashMap<String, Icon[]>();
+	public static Map<String, IIcon> icons = new HashMap<String, Icon>();
+	public static Map<String, IIcon[]> iconGroups = new HashMap<String, Icon[]>();
 	public static Map<String, String[]> sounds = new HashMap<String, String[]>();
 	public static Map<String, ModelBase> models = new HashMap<String, ModelBase>();
 	public static Map<String, IModelCustom> objModels = new HashMap<String, IModelCustom>();
@@ -30,7 +30,7 @@ public class AssetManager {
 	}
 	
 	// ========== Icon ==========
-	public static void addIcon(String name, Icon icon) {
+	public static void addIcon(String name, IIcon icon) {
 		icons.put(name, icon);
 	}
 	public static void addIcon(String name, String domain, String path, IconRegister iconRegister) {

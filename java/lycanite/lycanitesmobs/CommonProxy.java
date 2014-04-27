@@ -6,11 +6,7 @@ public class CommonProxy {
 	
 	// ========== Register Key Bindings ==========
     public void registerEvents() {
-		// Tick Handler:
-		//TickRegistry.registerTickHandler(new TickHandler(), Side.SERVER);
-    	
-		// Event Listeners:
-    	//MinecraftForge.EVENT_BUS.register(new EventListener());
+		// None Server Only
 	}
 	
 	

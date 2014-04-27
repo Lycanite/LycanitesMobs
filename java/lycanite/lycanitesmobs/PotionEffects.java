@@ -2,16 +2,16 @@ package lycanite.lycanitesmobs;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class PotionEffects {
 	
 	// ==================================================
 	//                    Entity Update
 	// ==================================================
-	@ForgeSubscribe
+	@SubscribeEvent
 	public void onEntityUpdate(LivingUpdateEvent event) {
 		EntityLivingBase entity = event.entityLiving;
 		if(entity == null)
@@ -42,7 +42,7 @@ public class PotionEffects {
 	// ==================================================
 	//                    Entity Jump
 	// ==================================================
-	@ForgeSubscribe
+	@SubscribeEvent
 	public void onEntityJump(LivingJumpEvent event) {
 		EntityLivingBase entity = event.entityLiving;
 		if(entity == null)

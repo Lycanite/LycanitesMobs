@@ -41,7 +41,7 @@ public class GuiHandler implements IGuiHandler {
 	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
 		// ========== Tile Entity ==========
 		if(id == GuiType.TILEENTITY.id) {
-			TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+			TileEntity tileEntity = world.getTileEntity(x, y, z);
 			// Use instanceof to distinguish tile entity actions.
 		}
 		
@@ -73,7 +73,7 @@ public class GuiHandler implements IGuiHandler {
 	public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
 		// ========== Tile Entity ==========
 		if(id == GuiType.TILEENTITY.id) {
-			TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+			TileEntity tileEntity = world.getTileEntity(x, y, z);
 			// Use instanceof to distinguish tile entity actions.
 		}
 		

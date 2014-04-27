@@ -7,7 +7,6 @@ import lycanite.lycanitesmobs.api.gui.GUIMinion;
 import lycanite.lycanitesmobs.api.gui.GUIMinionSelection;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.packet.Packet;
 
 public class PlayerControlHandler {
 	
@@ -45,7 +44,7 @@ public class PlayerControlHandler {
     	byte controlStates = 0;
 		
 		// Jumping:
-		if(Minecraft.getMinecraft().gameSettings.keyBindJump.pressed)
+		if(Minecraft.getMinecraft().gameSettings.keyBindJump.getIsKeyPressed())
 			controlStates += CONTROL_ID.JUMP.id;
 		
 		// Mount Ability:

@@ -1,10 +1,10 @@
 package lycanite.lycanitesmobs;
 
-import cpw.mods.fml.common.registry.LanguageRegistry;
-import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class CreativeTab extends CreativeTabs {
 	
@@ -16,14 +16,15 @@ public class CreativeTab extends CreativeTabs {
 	
 	// ========== Tab Icon ==========
 	@Override
-	public ItemStack getIconItemStack() {
+	@SideOnly(Side.CLIENT)
+	public Item getTabIconItem() {
 		if(ObjectManager.getItem("HellfireCharge") != null)
-			return new ItemStack(ObjectManager.getItem("HellfireCharge"), 1, 0);
+			return ObjectManager.getItem("HellfireCharge");
 		else if(ObjectManager.getItem("JoustMeat") != null)
-			return new ItemStack(ObjectManager.getItem("JoustMeat"), 1, 0);
+			return ObjectManager.getItem("JoustMeat");
 		else if(ObjectManager.getItem("PoisonGland") != null)
-			return new ItemStack(ObjectManager.getItem("PoisonGland"), 1, 0);
+			return ObjectManager.getItem("PoisonGland");
 		else
-			return new ItemStack(Item.bone.itemID, 1, 0);
+			return null; //TODO Get vanilla item!
 	}
 }

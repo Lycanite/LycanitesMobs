@@ -7,7 +7,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.potion.Potion;
-import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -15,6 +14,7 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.EntityInteractEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class EventListener {
 	
@@ -27,7 +27,7 @@ public class EventListener {
 	// ==================================================
     //                Entity Constructing
     // ==================================================
-	@ForgeSubscribe
+	@SubscribeEvent
 	public void onEntityConstructing(EntityConstructing event) {
 		// ========== Extended Player ==========
 		if(event.entity instanceof EntityPlayer) {
@@ -40,7 +40,7 @@ public class EventListener {
 	// ==================================================
     //                  Entity Join World
     // ==================================================
-	@ForgeSubscribe
+	@SubscribeEvent
 	public void onEntityJoinWorld(EntityJoinWorldEvent event) {
 		// ========== Extended Player ==========
 		if(event.entity instanceof EntityPlayer) {
@@ -53,7 +53,7 @@ public class EventListener {
 	// ==================================================
     //                 Living Death Event
     // ==================================================
-	@ForgeSubscribe
+	@SubscribeEvent
 	public void onLivingDeathEvent(LivingDeathEvent event) {
 		// ========== Extended Player Data Backup ==========
 		if(event.entity instanceof EntityPlayer) {
@@ -66,7 +66,7 @@ public class EventListener {
 	// ==================================================
 	//                    Entity Update
 	// ==================================================
-	@ForgeSubscribe
+	@SubscribeEvent
 	public void onEntityUpdate(LivingUpdateEvent event) {
 		EntityLivingBase entity = event.entityLiving;
 		if(entity == null)
@@ -88,7 +88,7 @@ public class EventListener {
     // ==================================================
     //                Entity Interact Event
     // ==================================================
-	@ForgeSubscribe
+	@SubscribeEvent
 	public void onEntityInteract(EntityInteractEvent event) {
 		EntityPlayer player = event.entityPlayer;
 		Entity entity = event.target;
@@ -109,7 +109,7 @@ public class EventListener {
     // ==================================================
     //                 Attack Target Event
     // ==================================================
-	@ForgeSubscribe
+	@SubscribeEvent
 	public void onAttackTarget(LivingSetAttackTargetEvent event) {
 		if(event.isCancelable() && event.isCanceled())
 	      return;
@@ -130,7 +130,7 @@ public class EventListener {
     // ==================================================
     //                 Living Hurt Event
     // ==================================================
-	@ForgeSubscribe
+	@SubscribeEvent
 	public void onLivingHurt(LivingHurtEvent event) {
 		if(event.isCancelable() && event.isCanceled())
 	      return;

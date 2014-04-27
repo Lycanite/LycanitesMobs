@@ -10,7 +10,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
 
@@ -70,9 +69,9 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 		if(this.player.worldObj.isRemote)
 			return;
 		// Check for Backup:
-		if(backupNBTTags.containsKey(this.player.username)) {
-			this.loadNBTData(backupNBTTags.get(this.player.username));
-			backupNBTTags.remove(this.player.username);
+		if(backupNBTTags.containsKey(this.player.getCommandSenderName())) {
+			this.loadNBTData(backupNBTTags.get(this.player.getCommandSenderName()));
+			backupNBTTags.remove(this.player.getCommandSenderName());
 		}
 	}
 	
@@ -169,11 +168,11 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
     //                    Death Backup
     // ==================================================
 	public void onDeath() {
-		if(backupNBTTags.containsKey(this.player.username))
+		if(backupNBTTags.containsKey(this.player.getCommandSenderName()))
 			return;
 		NBTTagCompound nbtTagCompound = new NBTTagCompound();
 		this.saveNBTData(nbtTagCompound);
-		backupNBTTags.put(this.player.username, nbtTagCompound);
+		backupNBTTags.put(this.player.getCommandSenderName(), nbtTagCompound);
 	}
 	
 	
@@ -224,9 +223,9 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 			this.selectedSummonSet = extTagCompound.getInteger("SelectedSummonSet");
 		
 		if(extTagCompound.hasKey("SummonSets")) {
-			NBTTagList nbtSummonSets = extTagCompound.getTagList("SummonSets");
+			NBTTagList nbtSummonSets = extTagCompound.getTagList("SummonSets", 10);
 			for(int setID = 0; setID < this.summonSetMax; setID++) {
-				NBTTagCompound nbtSummonSet = (NBTTagCompound)nbtSummonSets.tagAt(setID);
+				NBTTagCompound nbtSummonSet = (NBTTagCompound)nbtSummonSets.getCompoundTagAt(setID);
 				SummonSet summonSet = new SummonSet(this);
 				summonSet.readFromNBT(nbtSummonSet);
 				this.summonSets.put(setID + 1, summonSet);
@@ -255,6 +254,6 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 		}
 		extTagCompound.setTag("SummonSets", nbtSummonSets);
     	
-    	nbtTagCompound.setCompoundTag(EXT_PROP_NAME, extTagCompound);
+    	nbtTagCompound.setTag(EXT_PROP_NAME, extTagCompound);
     }
 }

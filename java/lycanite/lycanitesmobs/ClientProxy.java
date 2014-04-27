@@ -15,10 +15,7 @@ import net.minecraftforge.common.MinecraftForge;
 
 import org.lwjgl.input.Keyboard;
 
-import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.registry.TickRegistry;
-import cpw.mods.fml.relauncher.Side;
 
 public class ClientProxy extends CommonProxy {
 	
@@ -28,9 +25,6 @@ public class ClientProxy extends CommonProxy {
 	// ========== Register Key Bindings and Events ==========
 	@Override
     public void registerEvents() {
-		// Tick Handler:
-		TickRegistry.registerTickHandler(new TickHandler(), Side.CLIENT);
-		
 		// Event Listeners:
 		MinecraftForge.EVENT_BUS.register(new GuiOverlay(Minecraft.getMinecraft()));
 		

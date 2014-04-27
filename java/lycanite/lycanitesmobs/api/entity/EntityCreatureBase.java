@@ -26,7 +26,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EntityLivingData;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -47,6 +46,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
@@ -368,7 +368,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	
     	// Peaceful Check:
     	LycanitesMobs.printDebug("MobSpawns", "Checking for peaceful difficulty...");
-        if(!this.mobInfo.peacefulDifficulty && this.worldObj.difficultySetting <= 0) return false;
+        if(!this.mobInfo.peacefulDifficulty && this.worldObj.difficultySetting == EnumDifficulty.PEACEFUL) return false;
         
     	LycanitesMobs.printDebug("MobSpawns", "Target Spawn Location: x" + i + " y" + j + " z" + k);
         

@@ -27,7 +27,7 @@ public class Utilities {
 		float maxZ = (float)(z > tz ? z : tz);
 
 		// Get Block Collision:
-		MovingObjectPosition collision = world.clip(startVec, endVec, false);
+		MovingObjectPosition collision = world.rayTraceBlocks(startVec, endVec, false);
 		startVec = Vec3.fakePool.getVecFromPool(x, y, z);
 		endVec = Vec3.fakePool.getVecFromPool(tx, ty, tz);
 		float maxDistance = (float)endVec.distanceTo(startVec);
@@ -86,7 +86,7 @@ public class Utilities {
 				.expand(borderSize, borderSize, borderSize);
 		List<Entity> allEntities = world.getEntitiesWithinAABBExcludingEntity(
 				null, bb);
-		MovingObjectPosition collision = world.clip(startVec, endVec, false);
+		MovingObjectPosition collision = world.rayTraceBlocks(startVec, endVec, false);
 
 		// Get Entity Collision:
 		Entity closestHitEntity = null;

@@ -3,7 +3,6 @@ package lycanite.lycanitesmobs.infernomobs;
 import lycanite.lycanitesmobs.Config;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.PacketHandler;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.api.info.MobInfo;
@@ -29,14 +28,12 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = InfernoMobs.modid, name = InfernoMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid)
-@NetworkMod(clientSideRequired=true, serverSideRequired=false, channels = {InfernoMobs.modid}, packetHandler = PacketHandler.class)
 public class InfernoMobs implements ILycaniteMod {
 	
-	public static final String modid = "InfernoMobs";
+	public static final String modid = "infernomobs";
 	public static final String name = "Lycanites Inferno Mobs";
 	public static final String domain = modid.toLowerCase();
 	public static int mobID = -1;

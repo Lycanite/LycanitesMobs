@@ -26,17 +26,15 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 @Mod(modid = LycanitesMobs.modid, name = LycanitesMobs.name, version = LycanitesMobs.version)
-@NetworkMod(clientSideRequired=true, serverSideRequired=false, channels = {LycanitesMobs.modid}, packetHandler = PacketHandler.class)
 public class LycanitesMobs implements ILycaniteMod {
 	
-	public static final String modid = "LycanitesMobs";
+	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
 	public static final String version = "1.5.0 - MC 1.6.4";
 	public static final String domain = modid.toLowerCase();
@@ -54,9 +52,6 @@ public class LycanitesMobs implements ILycaniteMod {
 	
 	// Creative Tab:
 	public static final CreativeTabs creativeTab = new CreativeTab(CreativeTabs.getNextID(), modid);
-	
-	// Managers and Handlers:
-	public static Hooks hooks = new Hooks();
 	
 	// Texture Path:
 	public static String texturePath = "mods/lycanitesmobs/";

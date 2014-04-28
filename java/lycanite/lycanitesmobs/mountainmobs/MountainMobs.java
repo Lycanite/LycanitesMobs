@@ -3,7 +3,6 @@ package lycanite.lycanitesmobs.mountainmobs;
 import lycanite.lycanitesmobs.Config;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.PacketHandler;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.api.info.MobInfo;
@@ -30,15 +29,13 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = MountainMobs.modid, name = MountainMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid)
-@NetworkMod(clientSideRequired=true, serverSideRequired=false, channels = {MountainMobs.modid}, packetHandler = PacketHandler.class)
 public class MountainMobs implements ILycaniteMod {
 	
-	public static final String modid = "MountainMobs";
+	public static final String modid = "mountainmobs";
 	public static final String name = "Lycanites Mountain Mobs";
 	public static final String domain = modid.toLowerCase();
 	public static int mobID = -1;

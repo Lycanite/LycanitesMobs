@@ -3,7 +3,6 @@ package lycanite.lycanitesmobs.saltwatermobs;
 import lycanite.lycanitesmobs.Config;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.PacketHandler;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.api.info.MobInfo;
@@ -17,13 +16,11 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.NetworkMod;
 
 @Mod(modid = SaltwaterMobs.modid, name = SaltwaterMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid)
-@NetworkMod(clientSideRequired=true, serverSideRequired=false, channels = {SaltwaterMobs.modid}, packetHandler = PacketHandler.class)
 public class SaltwaterMobs implements ILycaniteMod {
 	
-	public static final String modid = "SaltwaterMobs";
+	public static final String modid = "saltwatermobs";
 	public static final String name = "Lycanites Saltwater Mobs";
 	public static final String domain = modid.toLowerCase();
 	public static int mobID = -1;

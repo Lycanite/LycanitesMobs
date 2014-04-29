@@ -18,7 +18,7 @@ import lycanite.lycanitesmobs.infernomobs.item.ItemMagmaCharge;
 import lycanite.lycanitesmobs.infernomobs.item.ItemScepterEmber;
 import lycanite.lycanitesmobs.infernomobs.item.ItemScepterMagma;
 import net.minecraft.block.BlockDispenser;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.Mod;
@@ -107,14 +107,14 @@ public class InfernoMobs implements ILycaniteMod {
 				new ItemStack(ObjectManager.getItem("EmberScepter"), 1, 0),
 				new Object[] { "CCC", "CRC", "CRC",
 				Character.valueOf('C'), ObjectManager.getItem("EmberCharge"),
-				Character.valueOf('R'), Item.blazeRod
+				Character.valueOf('R'), Items.blaze_rod
 			}));
 
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("MagmaScepter"), 1, 0),
 				new Object[] { "CCC", "CRC", "CRC",
 				Character.valueOf('C'), ObjectManager.getItem("MagmaCharge"),
-				Character.valueOf('R'), Item.blazeRod
+				Character.valueOf('R'), Items.blaze_rod
 			}));
 		
 		// ========== Smelting ==========

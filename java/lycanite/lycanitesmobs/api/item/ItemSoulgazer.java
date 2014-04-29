@@ -8,7 +8,6 @@ import lycanite.lycanitesmobs.api.info.CreatureKnowledge;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -17,8 +16,8 @@ public class ItemSoulgazer extends ItemBase {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemSoulgazer(int itemID) {
-        super(itemID);
+    public ItemSoulgazer() {
+        super();
         this.setMaxStackSize(1);
         this.itemName = "Soulgazer";
         this.textureName = this.itemName.toLowerCase();
@@ -51,31 +50,7 @@ public class ItemSoulgazer extends ItemBase {
 	// ==================================================
 	//                       Use
 	// ==================================================
-    // ========== Start ==========
-    @Override
-    public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
-    	return itemStack;
-    }
-
-    // ========== Using ==========
-    @Override
-    public void onUsingItemTick(ItemStack itemStack, EntityPlayer player, int useRemaining) {
-    	super.onUsingItemTick(itemStack, player, useRemaining);
-    }
-    
-    // ========== Stop ==========
-    @Override
-    public void onPlayerStoppedUsing(ItemStack itemStack, World world, EntityPlayer player, int useRemaining) {
-    	super.onPlayerStoppedUsing(itemStack, world, player, useRemaining);
-    }
-
-    // ========== Animation ==========
-    @Override
-    public EnumAction getItemUseAction(ItemStack par1ItemStack) {
-        return EnumAction.none;
-    }
-    
-    // ========== Entity Interaction ==========
+	// ========== Entity Interaction ==========
     public boolean onItemRightClickOnEntity(EntityPlayer player, Entity entity) {
     	ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
     	if(playerExt == null)

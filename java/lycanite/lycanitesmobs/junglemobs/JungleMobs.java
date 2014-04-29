@@ -15,7 +15,6 @@ import lycanite.lycanitesmobs.junglemobs.entity.EntityGeken;
 import lycanite.lycanitesmobs.junglemobs.entity.EntityTarantula;
 import lycanite.lycanitesmobs.junglemobs.entity.EntityUvaraptor;
 import lycanite.lycanitesmobs.junglemobs.item.ItemJungleEgg;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntitySkeleton;
@@ -23,7 +22,8 @@ import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.passive.EntitySheep;
-import net.minecraft.item.Item;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -129,15 +129,15 @@ public class JungleMobs implements ILycaniteMod {
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
 				new ItemStack(ObjectManager.getItem("TropicalCurry"), 1, 0),
 				new Object[] {
-					Item.bowlEmpty,
-					new ItemStack(Item.dyePowder, 1, 3),
-					Block.vine,
+					Items.bowl,
+					new ItemStack(Items.dye, 1, 3),
+					Blocks.vine,
 					ObjectManager.getItem("ConcapedeMeatCooked")
 				}
 			));
 		
 		// ========== Smelting ==========
-		GameRegistry.addSmelting(ObjectManager.getItem("ConcapedeMeatRaw").itemID, new ItemStack(ObjectManager.getItem("ConcapedeMeatCooked"), 1), 0.5f);
+		GameRegistry.addSmelting(ObjectManager.getItem("ConcapedeMeatRaw"), new ItemStack(ObjectManager.getItem("ConcapedeMeatCooked"), 1), 0.5f);
 	}
 	
 	

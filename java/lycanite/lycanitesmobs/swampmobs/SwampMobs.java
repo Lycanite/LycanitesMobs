@@ -26,7 +26,6 @@ import lycanite.lycanitesmobs.swampmobs.item.ItemPoisonGland;
 import lycanite.lycanitesmobs.swampmobs.item.ItemScepterPoisonRay;
 import lycanite.lycanitesmobs.swampmobs.item.ItemScepterVenomShot;
 import lycanite.lycanitesmobs.swampmobs.item.ItemSwampEgg;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityCreeper;
@@ -35,7 +34,8 @@ import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.passive.EntitySheep;
-import net.minecraft.item.Item;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -120,7 +120,7 @@ public class SwampMobs implements ILycaniteMod {
 		ObjectManager.addMob(new MobInfo(this, "Remobra", EntityRemobra.class, 0x440066, 0xDD00FF, 2).setSummonable(true));
 		
 		// ========== Create Projectiles ==========
-		ObjectManager.addProjectile("PoisonRay", EntityPoisonRay.class, Item.fermentedSpiderEye, new DispenserBehaviorPoisonRay());
+		ObjectManager.addProjectile("PoisonRay", EntityPoisonRay.class, Items.fermented_spider_eye, new DispenserBehaviorPoisonRay());
 		ObjectManager.addProjectile("PoisonRayEnd", EntityPoisonRayEnd.class);
 		ObjectManager.addProjectile("VenomShot", EntityVenomShot.class, ObjectManager.getItem("PoisonGland"), new DispenserBehaviorVenomShot());
 		
@@ -152,30 +152,30 @@ public class SwampMobs implements ILycaniteMod {
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("PoisonRayScepter"), 1, 0),
 				new Object[] { "CPC", "CRC", "CRC",
-				Character.valueOf('C'), Item.fermentedSpiderEye,
+				Character.valueOf('C'), Items.fermented_spider_eye,
 				Character.valueOf('P'), ObjectManager.getItem("PoisonGland"),
-				Character.valueOf('R'), Item.blazeRod
+				Character.valueOf('R'), Items.blaze_rod
 			}));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("VenomShotScepter"), 1, 0),
 				new Object[] { "CPC", "CRC", "CRC",
-				Character.valueOf('C'), Item.rottenFlesh,
+				Character.valueOf('C'), Items.rotten_flesh,
 				Character.valueOf('P'), ObjectManager.getItem("PoisonGland"),
-				Character.valueOf('R'), Item.blazeRod
+				Character.valueOf('R'), Items.blaze_rod
 			}));
 		
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
 				new ItemStack(ObjectManager.getItem("MossPie"), 1, 0),
 				new Object[] {
-					Block.vine,
-					Item.fermentedSpiderEye,
+					Blocks.vine,
+					Items.fermented_spider_eye,
 					ObjectManager.getItem("AspidMeatCooked")
 				}
 			));
 		
 		// ========== Smelting ==========
-		GameRegistry.addSmelting(ObjectManager.getItem("AspidMeatRaw").itemID, new ItemStack(ObjectManager.getItem("AspidMeatCooked"), 1), 0.5f);
+		GameRegistry.addSmelting(ObjectManager.getItem("AspidMeatRaw"), new ItemStack(ObjectManager.getItem("AspidMeatCooked"), 1), 0.5f);
 	}
 	
 	

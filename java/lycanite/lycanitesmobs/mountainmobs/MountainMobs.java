@@ -18,7 +18,7 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.passive.EntityPig;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -128,7 +128,7 @@ public class MountainMobs implements ILycaniteMod {
 				new ItemStack(ObjectManager.getItem("BoulderBlastScepter"), 1, 0),
 				new Object[] { "CCC", "CRC", "CRC",
 				Character.valueOf('C'), ObjectManager.getItem("BoulderBlastCharge"),
-				Character.valueOf('R'), Item.blazeRod
+				Character.valueOf('R'), Items.blaze_rod
 			}));
 		
 		// ========== Smelting ==========

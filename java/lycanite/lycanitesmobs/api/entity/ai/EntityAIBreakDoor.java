@@ -1,6 +1,7 @@
 package lycanite.lycanitesmobs.api.entity.ai;
 
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.world.EnumDifficulty;
 
 public class EntityAIBreakDoor extends EntityAIDoorInteract {
 	//Properties:
@@ -52,7 +53,7 @@ public class EntityAIBreakDoor extends EntityAIDoorInteract {
  	// ==================================================
     public void resetTask() {
         super.resetTask();
-        this.host.worldObj.destroyBlockInWorldPartially(this.host.entityId, this.entityPosX, this.entityPosY, this.entityPosZ, -1);
+        this.host.worldObj.destroyBlockInWorldPartially(this.host.getEntityId(), this.entityPosX, this.entityPosY, this.entityPosZ, -1);
     }
 
 	
@@ -73,7 +74,7 @@ public class EntityAIBreakDoor extends EntityAIDoorInteract {
             this.lastBreakTime = breaking;
         }
 
-        if(this.breakingTime == 240 && this.host.worldObj.difficultySetting == 3) {
+        if(this.breakingTime == 240 && this.host.worldObj.difficultySetting == EnumDifficulty.HARD) {
             this.host.worldObj.setBlockToAir(this.entityPosX, this.entityPosY, this.entityPosZ);
             this.host.worldObj.playAuxSFX(1012, this.entityPosX, this.entityPosY, this.entityPosZ, 0);
             this.host.worldObj.playAuxSFX(2001, this.entityPosX, this.entityPosY, this.entityPosZ, this.targetDoor.blockID);

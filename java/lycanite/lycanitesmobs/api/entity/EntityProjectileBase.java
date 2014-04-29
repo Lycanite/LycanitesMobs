@@ -2,7 +2,6 @@ package lycanite.lycanitesmobs.api.entity;
 
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -112,8 +111,8 @@ public class EntityProjectileBase extends EntityThrowable {
      		int i = movingObjectPosition.blockX;
      		int j = movingObjectPosition.blockY;
             int k = movingObjectPosition.blockZ;
-            if(Block.blocksList[this.worldObj.getBlockId(i, j, k)] != null)
-            	collided = Block.blocksList[this.worldObj.getBlockId(i, j, k)].getCollisionBoundingBoxFromPool(this.worldObj, i, j, k) != null;
+            if(this.worldObj.getBlock(i, j, k) != null)
+            	collided = this.worldObj.getBlock(i, j, k).getCollisionBoundingBoxFromPool(this.worldObj, i, j, k) != null;
              
  	        if(collided) {
  	            switch(movingObjectPosition.sideHit) {

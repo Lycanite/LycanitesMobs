@@ -16,8 +16,8 @@ public class BlockFrostweb extends BlockBase {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-	public BlockFrostweb(int blockID) {
-		super(blockID, Material.web);
+	public BlockFrostweb() {
+		super(Material.web);
 		
 		// Properties:
 		this.mod = ArcticMobs.instance;

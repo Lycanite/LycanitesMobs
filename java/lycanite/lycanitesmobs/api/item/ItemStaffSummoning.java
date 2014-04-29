@@ -9,7 +9,7 @@ import lycanite.lycanitesmobs.api.entity.EntityPortal;
 import lycanite.lycanitesmobs.api.gui.GUIMinion;
 import lycanite.lycanitesmobs.api.info.SummonSet;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -19,8 +19,8 @@ public class ItemStaffSummoning extends ItemScepter {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemStaffSummoning(int itemID) {
-        super(itemID);
+    public ItemStaffSummoning() {
+        super();
         this.itemName = "SummoningStaff";
         this.textureName = "staffsummoning";
         setUnlocalizedName(this.itemName);
@@ -159,7 +159,7 @@ public class ItemStaffSummoning extends ItemScepter {
 	// ==================================================
     @Override
     public boolean getIsRepairable(ItemStack itemStack, ItemStack repairStack) {
-        if(repairStack.itemID == Item.ingotGold.itemID) return true;
+    	if(repairStack.getItem() == Items.gold_ingot) return true;
         return super.getIsRepairable(itemStack, repairStack);
     }
 }

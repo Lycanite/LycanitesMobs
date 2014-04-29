@@ -3,12 +3,8 @@ package lycanite.lycanitesmobs.api.entity.ai;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EntityOwnable;
 import net.minecraft.util.AxisAlignedBB;
 
 public class EntityAITargetOwnerRevenge extends EntityAITargetAttack {

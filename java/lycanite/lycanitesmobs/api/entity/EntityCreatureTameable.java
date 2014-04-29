@@ -8,11 +8,10 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAISit;
 import net.minecraft.block.BlockColored;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EntityOwnable;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -177,13 +176,13 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
                 commands.put(CMD_PRIOR.ITEM_USE.id, "Feed");
     		
     		// Coloring:
-    		if(this.isTamed() && this.hasCollarColor && itemStack.itemID == Item.dyePowder.itemID && player.getCommandSenderName().equalsIgnoreCase(this.getOwnerName()))
+    		if(this.isTamed() && this.hasCollarColor && itemStack.getItem() == Items.dye && player.getCommandSenderName().equalsIgnoreCase(this.getOwnerName()))
     			commands.put(CMD_PRIOR.ITEM_USE.id, "Color");
     		
     		// Equipment:
     		if(this.isTamed() && !this.isChild() && !this.isMinion() && player.getCommandSenderName().equalsIgnoreCase(this.getOwnerName())) {
 	    		String equipSlot = this.inventory.getSlotForEquipment(itemStack);
-	    		if(equipSlot != null && (this.inventory.getEquipmentStack(equipSlot) == null || this.inventory.getEquipmentStack(equipSlot).itemID != itemStack.itemID))
+	    		if(equipSlot != null && (this.inventory.getEquipmentStack(equipSlot) == null || this.inventory.getEquipmentStack(equipSlot).getItem() != itemStack.getItem()))
 	    			commands.put(CMD_PRIOR.EQUIPPING.id, "Equip Item");
     		}
     	}
@@ -216,8 +215,8 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
     	if(command.equals("Feed")) {
     		int healAmount = 4;
     		if(itemStack.getItem() instanceof ItemFood) {
-    			ItemFood itemFood = (ItemFood)Item.itemsList[itemStack.itemID];
-    			healAmount = itemFood.getHealAmount();
+    			ItemFood itemFood = (ItemFood)itemStack.getItem();
+    			healAmount = itemFood.func_150905_g(itemStack); // getHealAmount() + itemStack arg.
     		}
     		this.heal((float)healAmount);
             this.playEatSound();
@@ -234,7 +233,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
     	
     	// Color:
     	if(command.equals("Color")) {
-    		int colorID = BlockColored.getBlockFromDye(itemStack.getItemDamage());
+    		int colorID = BlockColored.getBlockFromDye(itemStack.getItemDamage()); //TODO Use wolf code for new collar coloring.
             if(colorID != this.getCollarColor()) {
                 this.setCollarColor(colorID);
         		this.consumePlayersItem(player, itemStack);

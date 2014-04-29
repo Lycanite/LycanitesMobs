@@ -10,13 +10,9 @@ import net.minecraft.potion.PotionEffect;
 
 public class DropRate {
 	// ========== Item ==========
-	public int itemID = 0;
-	public int burningID = 0;
-	public Map<Integer, Integer> effectsID = new HashMap<Integer, Integer>();
-
-	public int itemMeta = 0;
-	public int burningMeta = -1;
-	public Map<Integer, Integer> effectsMeta = new HashMap<Integer, Integer>();
+	public ItemStack item = null;
+	public ItemStack burningItem = null;
+	public Map<Integer, ItemStack> effectsItem = new HashMap<Integer, ItemStack>();
 	
 	public int minAmount = 1;
 	public int maxAmount = 1;
@@ -26,13 +22,8 @@ public class DropRate {
     // ==================================================
    	//                     Constructor
    	// ==================================================
-	public DropRate(int itemID, float chance) {
-		this(itemID, 0, chance);
-	}
-	
-	public DropRate(int itemID, int metadata, float chance) {
-		this.itemID = itemID;
-		this.itemMeta = metadata;
+	public DropRate(ItemStack item, float chance) {
+		this.item = item;
 		this.minAmount = 1;
 		this.maxAmount = 1;
 		this.chance = chance;
@@ -42,21 +33,18 @@ public class DropRate {
     // ==================================================
    	//                     Properties
    	// ==================================================
-	public DropRate setItem(int id, int meta) {
-		this.itemID = id;
-		this.itemMeta = meta;
+	public DropRate setDrop(ItemStack item) {
+		this.item = item;
 		return this;
 	}
 
-	public DropRate setBurningItem(int id, int meta) {
-		this.burningID = id;
-		this.burningMeta = meta;
+	public DropRate setBurningDrop(ItemStack item) {
+		this.burningItem = item;
 		return this;
 	}
 
-	public DropRate setEffectItem(int effectID, int id, int meta) {
-		effectsID.put(effectID, id);
-		effectsMeta.put(effectID, meta);
+	public DropRate setEffectDrop(int effectID, ItemStack item) {
+		effectsItem.put(effectID, item);
 		return this;
 	}
 
@@ -98,26 +86,22 @@ public class DropRate {
 	}
 	
 	public ItemStack getItemStack(EntityLivingBase entity, int quantity) {
-		int dropID = this.itemID;
-		int dropMeta = Math.max(this.itemMeta, 0);
+		ItemStack drop = this.item;
 		if(entity.isBurning()) {
-			if(this.burningID > 0)
-				dropID = this.burningID;
-			if(this.burningMeta > -1)
-				dropMeta = this.burningMeta;
+			if(this.burningItem != null)
+				drop = this.burningItem;
 		}
+		
 		for(Object potionEffect : entity.getActivePotionEffects()) {
 			if(potionEffect instanceof PotionEffect) {
 				int effectID = ((PotionEffect)potionEffect).getPotionID();
-				if(effectsID.containsKey(effectID))
-					dropID = effectsID.get(effectID);
-				if(effectsMeta.containsKey(effectID))
-					dropMeta = effectsMeta.get(effectID);
+				if(effectsItem.containsKey(effectID))
+					drop = effectsItem.get(effectID);
 			}
 		}
-		if(dropID <= 0)
-			return null;
-		else
-			return new ItemStack(dropID, quantity, dropMeta);
+		
+		if(drop != null)
+			drop.stackSize = quantity;
+		return drop;
 	}
 }

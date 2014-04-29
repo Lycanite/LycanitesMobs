@@ -5,7 +5,7 @@ import java.util.List;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityPortal;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 public class ItemStaffSavage extends ItemStaffSummoning {
@@ -14,8 +14,8 @@ public class ItemStaffSavage extends ItemStaffSummoning {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemStaffSavage(int itemID) {
-        super(itemID);
+    public ItemStaffSavage() {
+        super();
         this.itemName = "SavageSummoningStaff";
         this.textureName = "staffsavage";
         setUnlocalizedName(this.itemName);
@@ -77,7 +77,7 @@ public class ItemStaffSavage extends ItemStaffSummoning {
 	// ==================================================
     @Override
     public boolean getIsRepairable(ItemStack itemStack, ItemStack repairStack) {
-        if(repairStack.itemID == Item.ingotGold.itemID) return true;
+    	if(repairStack.getItem() == Items.gold_ingot) return true;
         return super.getIsRepairable(itemStack, repairStack);
     }
 }

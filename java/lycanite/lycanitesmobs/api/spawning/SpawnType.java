@@ -15,7 +15,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.ForgeEventFactory;
 
 public class SpawnType {
@@ -214,7 +213,7 @@ public class SpawnType {
 				for(int k = z - this.range; k <= z + this.range; k++) {
 					if(this.materials != null && this.materials.length > 0) {
 						for(Material validMaterial : this.materials) {
-							if(world.getBlockMaterial(i, j, k) == validMaterial) {
+							if(world.getBlock(i, j, k).getMaterial() == validMaterial) {
 								blockCoords.add(new int[] {i, j, k});
 								break;
 							}
@@ -222,7 +221,7 @@ public class SpawnType {
 					}
 					else {
 						for(Block validBlock : this.blocks) {
-							if(world.getBlockId(i, j, k) == validBlock.blockID) {
+							if(world.getBlock(i, j, k) == validBlock) {
 								blockCoords.add(new int[] {i, j, k});
 								break;
 							}

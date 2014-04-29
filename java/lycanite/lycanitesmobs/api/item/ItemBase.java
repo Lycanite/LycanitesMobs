@@ -2,13 +2,13 @@ package lycanite.lycanitesmobs.api.item;
 
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -21,8 +21,8 @@ public class ItemBase extends Item {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemBase(int itemID) {
-        super(itemID - 256);
+    public ItemBase() {
+        super();
         this.setMaxStackSize(64);
         this.setCreativeTab(LycanitesMobs.creativeTab);
         this.textureName = this.itemName.toLowerCase();
@@ -49,8 +49,8 @@ public class ItemBase extends Item {
 
     // ========== Using ==========
     @Override
-    public void onUsingItemTick(ItemStack itemStack, EntityPlayer player, int useRemaining) {
-    	super.onUsingItemTick(itemStack, player, useRemaining);
+    public void onUsingTick(ItemStack itemStack, EntityPlayer player, int useRemaining) {
+    	super.onUsingTick(itemStack, player, useRemaining);
     }
     
     // ========== Stop ==========
@@ -95,14 +95,14 @@ public class ItemBase extends Item {
     // ========== Get Icon ==========
     @SideOnly(Side.CLIENT)
     @Override
-    public Icon getIconFromDamage(int damage) {
+    public IIcon getIconFromDamage(int damage) {
     	return AssetManager.getIcon(this.itemName);
     }
     
     // ========== Register Icons ==========
     @SideOnly(Side.CLIENT)
     @Override
-    public void registerIcons(IconRegister iconRegister) {
+    public void registerIcons(IIconRegister iconRegister) {
     	AssetManager.addIcon(this.itemName, this.domain, this.textureName, iconRegister);
     }
 

@@ -9,7 +9,6 @@ import lycanite.lycanitesmobs.PacketHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.packet.Packet;
 
 public class Beastiary {
 	public EntityPlayer player;
@@ -83,9 +82,9 @@ public class Beastiary {
     	if(!nbtTagCompound.hasKey("CreatureKnowledge"))
     		return;
     	this.newKnowledgeList(new HashMap<String, CreatureKnowledge>());
-    	NBTTagList knowledgeList = nbtTagCompound.getTagList("CreatureKnowledge");
+    	NBTTagList knowledgeList = nbtTagCompound.getTagList("CreatureKnowledge", 10);
     	for(int i = 0; i < knowledgeList.tagCount(); ++i) {
-	    	NBTTagCompound nbtKnowledge = (NBTTagCompound)knowledgeList.tagAt(i);
+	    	NBTTagCompound nbtKnowledge = (NBTTagCompound)knowledgeList.getCompoundTagAt(i);
     		if(nbtKnowledge.hasKey("CreatureName") && nbtKnowledge.hasKey("Completion")) {
 	    		CreatureKnowledge creatureKnowledge = new CreatureKnowledge(
 	    				player,

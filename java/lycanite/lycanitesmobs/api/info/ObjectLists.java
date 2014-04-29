@@ -9,6 +9,8 @@ import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -88,7 +90,7 @@ public class ObjectLists {
 		if(!itemLists.containsKey(list))
 			return false;
 		for(ItemStack listStack : itemLists.get(list))
-			if(testStack.itemID == listStack.itemID
+			if(testStack.getItem() == listStack.getItem()
 			&& testStack.getItemDamage() == listStack.getItemDamage())
 				return true;
 		return false;
@@ -109,45 +111,47 @@ public class ObjectLists {
     // ==================================================
 	public static void createLists() {
 		// Raw Meat: (A bit cold...)
-		ObjectLists.addItem("RawMeat", Item.beefRaw);
-		ObjectLists.addItem("RawMeat", Item.porkRaw);
-		ObjectLists.addItem("RawMeat", Item.chickenRaw);
+		ObjectLists.addItem("RawMeat", Items.beef);
+		ObjectLists.addItem("RawMeat", Items.porkchop);
+		ObjectLists.addItem("RawMeat", Items.chicken);
 		
 		// Cooked Meat: (Meaty goodness for carnivorous pets!)
-		ObjectLists.addItem("CookedMeat", Item.beefCooked);
-		ObjectLists.addItem("CookedMeat", Item.porkCooked);
-		ObjectLists.addItem("CookedMeat", Item.chickenCooked);
+		ObjectLists.addItem("CookedMeat", Items.cooked_beef);
+		ObjectLists.addItem("CookedMeat", Items.cooked_porkchop);
+		ObjectLists.addItem("CookedMeat", Items.cooked_chicken);
 		
 		// Prepared Vegetables: (For most vegetarian pets.)
-		ObjectLists.addItem("Vegetables", Item.wheat);
-		ObjectLists.addItem("Vegetables", Item.carrot);
-		ObjectLists.addItem("Vegetables", Item.potato);
+		ObjectLists.addItem("Vegetables", Items.wheat);
+		ObjectLists.addItem("Vegetables", Items.carrot);
+		ObjectLists.addItem("Vegetables", Items.potato);
 		
 		// Fruit: (For exotic pets!)
-		ObjectLists.addItem("Fruit", Item.appleRed);
-		ObjectLists.addItem("Fruit", Item.melon);
-		ObjectLists.addItem("Fruit", Block.pumpkin);
-		ObjectLists.addItem("Fruit", Item.pumpkinPie);
+		ObjectLists.addItem("Fruit", Items.apple);
+		ObjectLists.addItem("Fruit", Items.melon);
+		ObjectLists.addItem("Fruit", Blocks.pumpkin);
+		ObjectLists.addItem("Fruit", Items.pumpkin_pie);
 
 		// Raw Fish: (Very smelly!)
-		ObjectLists.addItem("RawFish", Item.fishRaw);
+		ObjectLists.addItem("RawFish", Items.fish);
 
 		// Cooked Fish: (For those fish fiends!)
-		ObjectLists.addItem("CookedFish", Item.fishCooked);
+		ObjectLists.addItem("CookedFish", Items.cooked_fished);
 		
 		// Cactus Food: (Jousts love these!)
-		ObjectLists.addItem("CactusFood", new ItemStack(Item.dyePowder, 1, 2)); // Cactus Green
+		ObjectLists.addItem("CactusFood", new ItemStack(Items.dye, 1, 2)); // Cactus Green
 		
 		// Mushrooms: (Fungi treats!)
-		ObjectLists.addItem("Mushrooms", Block.mushroomBrown);
-		ObjectLists.addItem("Mushrooms", Block.mushroomRed);
+		ObjectLists.addItem("Mushrooms", Blocks.brown_mushroom);
+		ObjectLists.addItem("Mushrooms", Blocks.red_mushroom);
+		ObjectLists.addItem("Mushrooms", Blocks.brown_mushroom_block);
+		ObjectLists.addItem("Mushrooms", Blocks.red_mushroom_block);
 		
 		// Sweets: (Sweet sugary goodness!)
-		ObjectLists.addItem("Sweets", Item.sugar);
-		ObjectLists.addItem("Sweets", new ItemStack(Item.dyePowder, 1, 15)); // Cocoa Beans
-		ObjectLists.addItem("Sweets", Item.cookie);
-		ObjectLists.addItem("Sweets", Block.cake);
-		ObjectLists.addItem("Sweets", Item.pumpkinPie);
+		ObjectLists.addItem("Sweets", Items.sugar);
+		ObjectLists.addItem("Sweets", new ItemStack(Items.dye, 1, 15)); // Cocoa Beans
+		ObjectLists.addItem("Sweets", Items.cookie);
+		ObjectLists.addItem("Sweets", Blocks.cake);
+		ObjectLists.addItem("Sweets", Items.pumpkin_pie);
 		
 		// Custom Entries:
 		for(String itemListName : itemListNames) {
@@ -166,9 +170,12 @@ public class ObjectLists {
     		for(String customDropEntryString : customDropsString.split(",")) {
     			String[] customDropValues = customDropEntryString.split(":");
     			if(customDropValues.length >= 2) {
-					int dropID = Integer.parseInt(customDropValues[0]);
+					String dropName = customDropValues[0];
 					int dropMeta = Integer.parseInt(customDropValues[1]);
-					ObjectLists.addItem(listName, new ItemStack(dropID, 1, dropMeta));
+					if(Item.itemRegistry.getObject(dropName) != null)
+						ObjectLists.addItem(listName, new ItemStack((Item)Item.itemRegistry.getObject(dropName), 1, dropMeta));
+					else if(Block.blockRegistry.getObject(dropName) != null)
+						ObjectLists.addItem(listName, new ItemStack((Block)Block.blockRegistry.getObject(dropName), 1, dropMeta));
     			}
     		}
 	}

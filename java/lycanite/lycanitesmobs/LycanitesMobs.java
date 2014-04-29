@@ -13,9 +13,9 @@ import lycanite.lycanitesmobs.api.item.ItemStaffSturdy;
 import lycanite.lycanitesmobs.api.item.ItemStaffSummoning;
 import lycanite.lycanitesmobs.api.spawning.CustomSpawner;
 import lycanite.lycanitesmobs.api.spawning.SpawnType;
-import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -116,7 +116,7 @@ public class LycanitesMobs implements ILycaniteMod {
 		// ========== Set Current Mod ==========
 		int specialEntityID = 0;
 		EntityRegistry.registerModEntity(EntityPortal.class, "SummoningPortal", specialEntityID++, instance, 64, 1, true);
-		LanguageRegistry.instance().addStringLocalization("entity." + "SummoningPortal" + ".name", "en_US", "Summoning Portal");
+		//XXX LanguageRegistry.instance().addStringLocalization("entity." + "SummoningPortal" + ".name", "en_US", "Summoning Portal");
 	}
 	
 	
@@ -134,60 +134,60 @@ public class LycanitesMobs implements ILycaniteMod {
 		ObjectLists.createLists();
 		
 		// ========== Rename Vanilla Items ==========
-		LanguageRegistry.addName(Item.horseArmorIron, "Iron Pet Armor");
-		LanguageRegistry.addName(Item.horseArmorGold, "Gold Pet Armor");
-		LanguageRegistry.addName(Item.horseArmorDiamond, "Diamond Pet Armor");
+		LanguageRegistry.addName(Items.iron_horse_armor, "Iron Pet Armor");
+		LanguageRegistry.addName(Items.golden_horse_armor, "Golden Pet Armor");
+		LanguageRegistry.addName(Items.diamond_horse_armor, "Diamond Pet Armor");
 		
 		// ========== Crafting ==========
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("Soulgazer"), 1, 0),
 				new Object[] { "GBG", "BDB", "GBG",
-				Character.valueOf('G'), Item.ingotGold,
-				Character.valueOf('D'), Item.diamond,
-				Character.valueOf('B'), Item.bone
+				Character.valueOf('G'), Items.gold_ingot,
+				Character.valueOf('D'), Items.diamond,
+				Character.valueOf('B'), Items.bone
 			}));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("SummoningStaff"), 1, 0),
 				new Object[] { " E ", " B ", " G ",
-				Character.valueOf('E'), Item.enderPearl,
-				Character.valueOf('B'), Item.bone,
-				Character.valueOf('G'), Item.ingotGold
+				Character.valueOf('E'), Items.ender_pearl,
+				Character.valueOf('B'), Items.bone,
+				Character.valueOf('G'), Items.gold_ingot
 			}));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("StableSummoningStaff"), 1, 0),
 				new Object[] { " D ", " S ", " G ",
 				Character.valueOf('S'), ObjectManager.getItem("SummoningStaff"),
-				Character.valueOf('G'), Item.ingotGold,
-				Character.valueOf('D'), Item.diamond
+				Character.valueOf('G'), Items.gold_ingot,
+				Character.valueOf('D'), Items.diamond
 			}));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("BloodSummoningStaff"), 1, 0),
 				new Object[] { "RRR", "BSB", "NDN",
 				Character.valueOf('S'), ObjectManager.getItem("SummoningStaff"),
-				Character.valueOf('R'), Item.redstone,
-				Character.valueOf('B'), Item.bone,
-				Character.valueOf('N'), Item.netherStalkSeeds,
-				Character.valueOf('D'), Item.diamond
+				Character.valueOf('R'), Items.redstone,
+				Character.valueOf('B'), Items.bone,
+				Character.valueOf('N'), Items.nether_wart,
+				Character.valueOf('D'), Items.diamond
 			}));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("SturdySummoningStaff"), 1, 0),
 				new Object[] { "III", "ISI", " O ",
 				Character.valueOf('S'), ObjectManager.getItem("SummoningStaff"),
-				Character.valueOf('I'), Item.ingotIron,
-				Character.valueOf('O'), Block.obsidian
+				Character.valueOf('I'), Items.iron_ingot,
+				Character.valueOf('O'), Blocks.obsidian
 			}));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("SavageSummoningStaff"), 1, 0),
 				new Object[] { "LLL", "BSB", "GGG",
 				Character.valueOf('S'), ObjectManager.getItem("SummoningStaff"),
-				Character.valueOf('B'), Item.bone,
-				Character.valueOf('G'), Item.ghastTear,
-				Character.valueOf('L'), new ItemStack(Item.dyePowder, 1, 4)
+				Character.valueOf('B'), Items.bone,
+				Character.valueOf('G'), Items.ghast_tear,
+				Character.valueOf('L'), new ItemStack(Items.dye, 1, 4)
 			}));
     }
 	

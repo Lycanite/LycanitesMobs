@@ -2,14 +2,14 @@ package lycanite.lycanitesmobs.api.item;
 
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import com.google.common.collect.Multimap;
@@ -24,8 +24,8 @@ public class ItemScepter extends ItemBase {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemScepter(int itemID) {
-        super(itemID);
+    public ItemScepter() {
+        super();
         this.setMaxStackSize(1);
         this.setMaxDamage(this.getDurability());
         this.setCreativeTab(LycanitesMobs.creativeTab);
@@ -54,7 +54,7 @@ public class ItemScepter extends ItemBase {
     // ========== Using ==========
     // Was onUsingItemTick() but acted weird, using the EventListener to replicate.
     @Override
-    public void onUsingItemTick(ItemStack itemStack, EntityPlayer player, int useRemaining) {
+    public void onUsingTick(ItemStack itemStack, EntityPlayer player, int useRemaining) {
     	if(itemStack == null || player == null || player.worldObj == null)
     		return;
     	int useTime = this.getMaxItemUseDuration(itemStack) - useRemaining;
@@ -69,7 +69,7 @@ public class ItemScepter extends ItemBase {
     	}
     	if(useTime >= this.getChargeTime(itemStack))
     		this.weaponFlash = Math.max(20, this.getChargeTime(itemStack));
-    	super.onUsingItemTick(itemStack, player, useRemaining);
+    	super.onUsingTick(itemStack, player, useRemaining);
     }
     
     // ========== Stop ==========
@@ -186,7 +186,7 @@ public class ItemScepter extends ItemBase {
     // ========== Get Icon ==========
     @SideOnly(Side.CLIENT)
     @Override
-    public Icon getIconFromDamage(int damage) {
+    public IIcon getIconFromDamage(int damage) {
     	if(this.weaponFlash-- > 0) {
             return AssetManager.getIconGroup(this.itemName)[1];
     	}
@@ -196,7 +196,7 @@ public class ItemScepter extends ItemBase {
     // ========== Register Icons ==========
     @SideOnly(Side.CLIENT)
     @Override
-    public void registerIcons(IconRegister iconRegister) {
+    public void registerIcons(IIconRegister iconRegister) {
     	AssetManager.addIconGroup(this.itemName, this.domain, new String[] {this.textureName, this.textureName + "_fire"}, iconRegister);
     }
 

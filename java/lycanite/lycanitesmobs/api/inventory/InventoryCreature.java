@@ -5,10 +5,10 @@ import java.util.Map;
 
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemSaddle;
@@ -65,12 +65,12 @@ public class InventoryCreature implements IInventory {
   	//                     Details
   	// ==================================================
 	@Override
-	public String getInvName() {
+	public String getInventoryName() {
 		return this.inventoryName;
 	}
 
 	@Override
-	public boolean isInvNameLocalized() {
+	public boolean hasCustomInventoryName() {
 		return true;
 	}
 
@@ -112,7 +112,6 @@ public class InventoryCreature implements IInventory {
 	// ==================================================
   	//                      Actions
   	// ==================================================
-	@Override
 	public void onInventoryChanged() {
 		if(this.creature.worldObj.isRemote)
 			return;
@@ -132,7 +131,7 @@ public class InventoryCreature implements IInventory {
 		for(String type : this.equipmentIDs.keySet()) {
 			ItemStack itemStack = this.getEquipmentStack(type);
 			if(itemStack == null)
-				itemStack = new ItemStack(1, 1, 0);
+				itemStack = new ItemStack(Blocks.stone, 1, 0);
 			this.creature.getDataWatcher().updateObject(EntityCreatureBase.WATCHER_ID.EQUIPMENT.id + this.equipmentIDs.get(type), itemStack);
 		}
 		
@@ -145,10 +144,10 @@ public class InventoryCreature implements IInventory {
 	}
 	
 	@Override
-	public void openChest() {}
+	public void openInventory() {}
 	
 	@Override
-	public void closeChest() {}
+	public void closeInventory() {}
 	
 	
 	// ==================================================
@@ -229,7 +228,7 @@ public class InventoryCreature implements IInventory {
 	public int getSpaceForStack(ItemStack itemStack) {
 		if(itemStack == null)
 			return 0;
-		if(itemStack.itemID == 0 || itemStack.stackSize < 1)
+		if(itemStack.getItem() == null || itemStack.stackSize < 1)
 			return 0;
 		
 		int space = 0;
@@ -238,7 +237,7 @@ public class InventoryCreature implements IInventory {
 				ItemStack slotStack = items[slotID];
 				if(slotStack != null) {
 					if(slotStack.stackSize < slotStack.getMaxStackSize())
-						if(slotStack.itemID == itemStack.itemID && slotStack.getItemDamage() == itemStack.getItemDamage())
+						if(slotStack.getItem() == itemStack.getItem() && slotStack.getItemDamage() == itemStack.getItemDamage())
 							space += slotStack.getMaxStackSize() - slotStack.stackSize;
 				}
 				else
@@ -255,7 +254,7 @@ public class InventoryCreature implements IInventory {
 	public ItemStack autoInsertStack(ItemStack itemStack) {
 		if(itemStack == null)
 			return itemStack;
-		if(itemStack.itemID == 0 || itemStack.stackSize < 1)
+		if(itemStack.getItem() == null || itemStack.stackSize < 1)
 			return null;
 		
 		for(int slotID = 0; slotID < this.items.length; slotID++) {
@@ -264,7 +263,7 @@ public class InventoryCreature implements IInventory {
 			// If there is a stack in the slot:
 			if(slotStack != null) {
 				if(slotStack.stackSize < slotStack.getMaxStackSize())
-					if(slotStack.itemID == itemStack.itemID && slotStack.getItemDamage() == itemStack.getItemDamage()) {
+					if(slotStack.getItem() == itemStack.getItem() && slotStack.getItemDamage() == itemStack.getItemDamage()) {
 						int space = Math.max(slotStack.getMaxStackSize() - slotStack.stackSize, 0);
 						
 						// If there is more than or just enough room:
@@ -331,7 +330,7 @@ public class InventoryCreature implements IInventory {
 		if(this.creature.worldObj.isRemote) {
 			ItemStack itemStack = this.creature.getDataWatcher().getWatchableObjectItemStack(EntityCreatureBase.WATCHER_ID.EQUIPMENT.id + this.equipmentIDs.get(type));
 			if(itemStack != null)
-				if(itemStack.itemID == 1)
+				if(itemStack.getItem() == Item.getItemFromBlock(Blocks.stone))
 					itemStack = null;
 			return itemStack;
 		}
@@ -357,11 +356,11 @@ public class InventoryCreature implements IInventory {
 		
 		// Basic Armor:
 		if(this.basicArmor) {
-			if(itemStack.getItem() == Item.horseArmorIron)
+			if(itemStack.getItem() == Items.iron_horse_armor)
 				return "chest";
-	    	if(itemStack.getItem() == Item.horseArmorGold)
+	    	if(itemStack.getItem() == Items.golden_horse_armor)
 	    		return "chest";
-	    	if(itemStack.getItem() == Item.horseArmorDiamond)
+	    	if(itemStack.getItem() == Items.diamond_horse_armor)
 	    		return "chest";
 		}
 		
@@ -383,7 +382,7 @@ public class InventoryCreature implements IInventory {
 			return "saddle";
 		
 		// Bag:
-		if(itemStack.itemID == Block.chest.blockID)
+		if(itemStack.getItem() == Item.getItemFromBlock(Blocks.chest))
 			return "bag";
 		
 		return null;
@@ -403,22 +402,22 @@ public class InventoryCreature implements IInventory {
     		return null;
     	if(equipmentStack.getItem() instanceof ItemArmor) {
     		ItemArmor armor = (ItemArmor)equipmentStack.getItem();
-    		if(armor.getArmorMaterial() == EnumArmorMaterial.CLOTH)
+    		if(armor.getArmorMaterial() == ItemArmor.ArmorMaterial.CLOTH)
     			return "Leather";
-    		else if(armor.getArmorMaterial() == EnumArmorMaterial.IRON)
+    		else if(armor.getArmorMaterial() == ItemArmor.ArmorMaterial.IRON)
     			return "Iron";
-    		else if(armor.getArmorMaterial() == EnumArmorMaterial.CHAIN)
+    		else if(armor.getArmorMaterial() == ItemArmor.ArmorMaterial.CHAIN)
     			return "Chain";
-    		else if(armor.getArmorMaterial() == EnumArmorMaterial.GOLD)
+    		else if(armor.getArmorMaterial() == ItemArmor.ArmorMaterial.GOLD)
     			return "Gold";
-    		else if(armor.getArmorMaterial() == EnumArmorMaterial.DIAMOND)
+    		else if(armor.getArmorMaterial() == ItemArmor.ArmorMaterial.DIAMOND)
     			return "Diamond";
     	}
-    	if(equipmentStack.getItem() == Item.horseArmorIron)
+    	if(equipmentStack.getItem() == Items.iron_horse_armor)
     		return "Iron";
-    	if(equipmentStack.getItem() == Item.horseArmorGold)
+    	if(equipmentStack.getItem() == Items.golden_horse_armor)
     		return "Gold";
-    	if(equipmentStack.getItem() == Item.horseArmorDiamond)
+    	if(equipmentStack.getItem() == Items.diamond_horse_armor)
     		return "Diamond";
     	return null;
     }
@@ -458,9 +457,9 @@ public class InventoryCreature implements IInventory {
    	// ========== Read ===========
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
     	// Read Items:
-    	NBTTagList itemList = nbtTagCompound.getTagList("Items");
+    	NBTTagList itemList = nbtTagCompound.getTagList("Items", 10);
     	for(int i = 0; i < itemList.tagCount(); ++i) {
-    		NBTTagCompound itemCompound = (NBTTagCompound)itemList.tagAt(i);
+    		NBTTagCompound itemCompound = (NBTTagCompound)itemList.getCompoundTagAt(i);
     		int slot = itemCompound.getByte("Slot") & 255;
     		if(slot < this.getSizeInventory())
     			this.setInventorySlotContentsNoUpdate(slot, ItemStack.loadItemStackFromNBT(itemCompound));
@@ -484,4 +483,7 @@ public class InventoryCreature implements IInventory {
 		nbtTagCompound.setTag("Items", itemList);
     	
     }
+
+	@Override
+	public void markDirty() {}
 }

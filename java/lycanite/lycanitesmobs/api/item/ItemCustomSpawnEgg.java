@@ -10,21 +10,21 @@ import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityEggInfo;
+import net.minecraft.entity.EntityList.EntityEggInfo;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EntityLivingData;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityMobSpawner;
-import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.Facing;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
@@ -40,8 +40,8 @@ public class ItemCustomSpawnEgg extends Item {
 	// ==================================================
 	//                    Constructor
 	// ==================================================
-    public ItemCustomSpawnEgg(int itemID) {
-        super(itemID - 256);
+    public ItemCustomSpawnEgg() {
+        super();
         this.setHasSubtypes(true);
         setCreativeTab(LycanitesMobs.creativeTab);
         setUnlocalizedName("CustomSpawnEgg");
@@ -51,13 +51,13 @@ public class ItemCustomSpawnEgg extends Item {
 	//                  Get Display Name
 	// ==================================================
     @Override
-    public String getItemDisplayName(ItemStack par1ItemStack) {
+    public String getUnlocalizedName(ItemStack par1ItemStack) {
         String s = ("" + StatCollector.translateToLocal(this.getUnlocalizedName() + ".name")).trim();
         String s1 = ObjectManager.entityLists.get(this.mod.getDomain()).getStringFromID(par1ItemStack.getItemDamage());
-
+        
         if (s1 != null)
             s = s + " " + StatCollector.translateToLocal("entity." + s1 + ".name");
-
+        
         return s;
     }
     
@@ -76,14 +76,14 @@ public class ItemCustomSpawnEgg extends Item {
 	//                     Item Use
 	// ==================================================
     public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
-        int blockID = world.getBlockId(x, y, z);
+        Block block = world.getBlock(x, y, z);
         
         // Edit Spawner:
-        if(blockID == Block.mobSpawner.blockID) {
-        	TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+        if(block == Blocks.mob_spawner) {
+        	TileEntity tileEntity = world.getTileEntity(x, y, z);
         	if(tileEntity != null && tileEntity instanceof TileEntityMobSpawner) {
         		TileEntityMobSpawner spawner = (TileEntityMobSpawner)tileEntity;
-        		spawner.getSpawnerLogic().setMobID(ObjectManager.entityLists.get(this.mod.getDomain()).getStringFromID(itemStack.getItemDamage()));
+        		spawner.func_145881_a().setEntityName(ObjectManager.entityLists.get(this.mod.getDomain()).getStringFromID(itemStack.getItemDamage())); //getSpawnerLogic()
         		world.markBlockForUpdate(x, y, z);
         	}
         }
@@ -95,7 +95,7 @@ public class ItemCustomSpawnEgg extends Item {
 	        z += Facing.offsetsZForSide[side];
 	        double d0 = 0.0D;
 	        
-	        if(side == 1 && Block.blocksList[blockID] != null && Block.blocksList[blockID].getRenderType() == 11)
+	        if(side == 1 && world.getBlock(x, y, z) != null && world.getBlock(x, y, z).getRenderType() == 11)
 	            d0 = 0.5D;
 	        
 	        Entity entity = spawnCreature(world, itemStack.getItemDamage(), (double)x + 0.5D, (double)y + d0, (double)z + 0.5D);
@@ -125,7 +125,7 @@ public class ItemCustomSpawnEgg extends Item {
             if(movingobjectposition == null)
                 return par1ItemStack;
             else
-                if(movingobjectposition.typeOfHit == EnumMovingObjectType.TILE) {
+                if(movingobjectposition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
                     int i = movingobjectposition.blockX;
                     int j = movingobjectposition.blockY;
                     int k = movingobjectposition.blockZ;
@@ -136,7 +136,7 @@ public class ItemCustomSpawnEgg extends Item {
                     if(!par3EntityPlayer.canPlayerEdit(i, j, k, movingobjectposition.sideHit, par1ItemStack))
                         return par1ItemStack;
 
-                    if(par2World.getBlockMaterial(i, j, k) == Material.water) {
+                    if(par2World.getBlock(i, j, k).getMaterial() == Material.water) {
                         Entity entity = spawnCreature(par2World, par1ItemStack.getItemDamage(), (double)i, (double)j, (double)k);
 
                         if(entity != null)
@@ -170,7 +170,7 @@ public class ItemCustomSpawnEgg extends Item {
                     entity.setLocationAndAngles(par2, par4, par6, MathHelper.wrapAngleTo180_float(par0World.rand.nextFloat() * 360.0F), 0.0F);
                     entityliving.rotationYawHead = entityliving.rotationYaw;
                     entityliving.renderYawOffset = entityliving.rotationYaw;
-                    entityliving.onSpawnWithEgg((EntityLivingData)null);
+                    entityliving.onSpawnWithEgg((IEntityLivingData)null);
                     par0World.spawnEntityInWorld(entity);
                     entityliving.playLivingSound();
                 }
@@ -191,13 +191,13 @@ public class ItemCustomSpawnEgg extends Item {
     
     // ========== Get Icon ==========
     @SideOnly(Side.CLIENT)
-    public Icon getIconFromDamageForRenderPass(int par1, int par2) {
+    public IIcon getIconFromDamageForRenderPass(int par1, int par2) {
         return par2 > 0 ? AssetManager.getIcon(this.itemName + "_overlay") : AssetManager.getIcon(this.itemName);
     }
     
     // ========== Register Icon ==========
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister iconRegister) {
+    public void registerIcons(IIconRegister iconRegister) {
     	AssetManager.addIcon(this.itemName, this.mod.getDomain(), texturePath, iconRegister);
     	AssetManager.addIcon(this.itemName + "_overlay", this.mod.getDomain(), texturePath + "_overlay", iconRegister);
     }
@@ -218,7 +218,7 @@ public class ItemCustomSpawnEgg extends Item {
         Iterator iterator = entityEggs.values().iterator();
         while(iterator.hasNext()) {
             EntityEggInfo entityegginfo = (EntityEggInfo)iterator.next();
-            par3List.add(new ItemStack(itemID, 1, entityegginfo.spawnedID));
+            par3List.add(new ItemStack(this, 1, entityegginfo.spawnedID));
         }
     }
 }

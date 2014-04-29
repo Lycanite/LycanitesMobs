@@ -3,8 +3,8 @@ package lycanite.lycanitesmobs.api.spawning;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
-import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class CustomSpawner {
     // ==================================================
@@ -18,7 +18,7 @@ public class CustomSpawner {
 	// ==================================================
 	public long entityUpdateTick = 0;
 	/** This uses the player update event to spawn mobs around each player randomly over time. **/
-	@ForgeSubscribe
+	@SubscribeEvent
 	public void onEntityUpdate(LivingUpdateEvent event) {
 		EntityLivingBase entity = event.entityLiving;
 		if(entity == null)

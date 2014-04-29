@@ -4,7 +4,7 @@ import java.util.List;
 
 import lycanite.lycanitesmobs.api.entity.EntityPortal;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 public class ItemStaffStable extends ItemStaffSummoning {
@@ -13,8 +13,8 @@ public class ItemStaffStable extends ItemStaffSummoning {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemStaffStable(int itemID) {
-        super(itemID);
+    public ItemStaffStable() {
+        super();
         this.itemName = "StableSummoningStaff";
         this.textureName = "staffstable";
         setUnlocalizedName(this.itemName);
@@ -66,7 +66,7 @@ public class ItemStaffStable extends ItemStaffSummoning {
 	// ==================================================
     @Override
     public boolean getIsRepairable(ItemStack itemStack, ItemStack repairStack) {
-        if(repairStack.itemID == Item.ingotGold.itemID) return true;
+    	if(repairStack.getItem() == Items.gold_ingot) return true;
         return super.getIsRepairable(itemStack, repairStack);
     }
 }

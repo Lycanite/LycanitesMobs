@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.init.Blocks;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathPoint;
@@ -102,7 +103,7 @@ public abstract class EntityAIDoorInteract extends EntityAIBase {
  	//                    Find Door
  	// ==================================================
     private BlockDoor findUsableDoor(int par1, int par2, int par3) {
-        int l = this.host.worldObj.getBlockId(par1, par2, par3);
-        return l != Block.doorWood.blockID ? null : (BlockDoor)Block.blocksList[l];
+        Block block = this.host.worldObj.getBlock(par1, par2, par3);
+        return block != Blocks.wooden_door ? null : (BlockDoor)block;
     }
 }

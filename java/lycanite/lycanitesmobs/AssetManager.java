@@ -2,21 +2,21 @@ package lycanite.lycanitesmobs;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.Icon;
-
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.sound.SoundLoadEvent;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class AssetManager {
 	
 	// Maps:
 	public static Map<String, ResourceLocation> textures = new HashMap<String, ResourceLocation>();
-	public static Map<String, IIcon> icons = new HashMap<String, Icon>();
-	public static Map<String, IIcon[]> iconGroups = new HashMap<String, Icon[]>();
+	public static Map<String, IIcon> icons = new HashMap<String, IIcon>();
+	public static Map<String, IIcon[]> iconGroups = new HashMap<String, IIcon[]>();
 	public static Map<String, String[]> sounds = new HashMap<String, String[]>();
 	public static Map<String, ModelBase> models = new HashMap<String, ModelBase>();
 	public static Map<String, IModelCustom> objModels = new HashMap<String, IModelCustom>();
@@ -33,13 +33,13 @@ public class AssetManager {
 	public static void addIcon(String name, IIcon icon) {
 		icons.put(name, icon);
 	}
-	public static void addIcon(String name, String domain, String path, IconRegister iconRegister) {
+	public static void addIcon(String name, String domain, String path, IIconRegister iconRegister) {
 		icons.put(name, iconRegister.registerIcon(domain + ":" + path));
 	}
 	
 	// ========== Icon Group ==========
-	public static void addIconGroup(String name, String domain, String[] paths, IconRegister iconRegister) {
-		Icon[] iconGroup = new Icon[paths.length];
+	public static void addIconGroup(String name, String domain, String[] paths, IIconRegister iconRegister) {
+		IIcon[] iconGroup = new IIcon[paths.length];
 		for(int i = 0; i < paths.length; i++)
 			iconGroup[i] = iconRegister.registerIcon(domain + ":" + paths[i]);
 		iconGroups.put(name, iconGroup);
@@ -57,7 +57,7 @@ public class AssetManager {
 	
 	// ========== Obj Model ==========
 	public static void addObjModel(String name, String domain, String path) {
-		objModels.put(name, AdvancedModelLoader.loadModel("/assets/" + domain + "/models/" + path + ".obj"));
+		objModels.put(name, AdvancedModelLoader.loadModel(new ResourceLocation(domain, "/models/" + path + ".obj")));
 	}
 	
 	
@@ -72,14 +72,14 @@ public class AssetManager {
 	}
 	
 	// ========== Icon ==========
-	public static Icon getIcon(String name) {
+	public static IIcon getIcon(String name) {
 		if(!icons.containsKey(name))
 			return null;
 		return icons.get(name);
 	}
 	
 	// ========== Icon Group ==========
-	public static Icon[] getIconGroup(String name) {
+	public static IIcon[] getIconGroup(String name) {
 		if(!iconGroups.containsKey(name))
 			return null;
 		return iconGroups.get(name);
@@ -116,7 +116,7 @@ public class AssetManager {
     //                       Register
     // ==================================================
 	// ========== Sound ==========
-	@ForgeSubscribe
+	@SubscribeEvent
 	public void onLoadSoundSettings(SoundLoadEvent soundLoadEvent) {
         for(String[] sound : sounds.values())
 			soundLoadEvent.manager.addSound(sound[0]);

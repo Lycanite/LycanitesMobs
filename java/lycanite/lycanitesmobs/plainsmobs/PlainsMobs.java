@@ -20,7 +20,7 @@ import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.passive.EntityPig;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -122,14 +122,14 @@ public class PlainsMobs implements ILycaniteMod {
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
 				new ItemStack(ObjectManager.getItem("BulwarkBurger"), 1, 0),
 				new Object[] {
-					Item.bread,
+					Items.bread,
 					ObjectManager.getItem("MakaMeatCooked"),
-					Item.bread
+					Items.bread
 				}
 			));
 		
 		// ========== Smelting ==========
-		GameRegistry.addSmelting(ObjectManager.getItem("MakaMeatRaw").itemID, new ItemStack(ObjectManager.getItem("MakaMeatCooked"), 1), 0.5f);
+		GameRegistry.addSmelting(ObjectManager.getItem("MakaMeatRaw"), new ItemStack(ObjectManager.getItem("MakaMeatCooked"), 1), 0.5f);
 	}
 	
 	

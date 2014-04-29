@@ -38,7 +38,7 @@ import net.minecraft.block.BlockDispenser;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.monster.EntityPigZombie;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -161,41 +161,41 @@ public class DemonMobs implements ILycaniteMod {
 				new ItemStack(ObjectManager.getItem("DoomfireScepter"), 1, 0),
 				new Object[] { " C ", " R ", " R ",
 				Character.valueOf('C'), ObjectManager.getItem("DoomfireCharge"),
-				Character.valueOf('R'), Item.blazeRod
+				Character.valueOf('R'), Items.blaze_rod
 			}));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("HellfireScepter"), 1, 0),
 				new Object[] { "CCC", "CRC", "CRC",
 				Character.valueOf('C'), ObjectManager.getItem("HellfireCharge"),
-				Character.valueOf('R'), Item.blazeRod
+				Character.valueOf('R'), Items.blaze_rod
 			}));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("DevilstarScepter"), 1, 0),
 				new Object[] { " C ", " R ", " R ",
 				Character.valueOf('C'), ObjectManager.getItem("DevilstarCharge"),
-				Character.valueOf('R'), Item.blazeRod
+				Character.valueOf('R'), Items.blaze_rod
 			}));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("DemonicLightningScepter"), 1, 0),
 				new Object[] { " C ", " R ", " R ",
 				Character.valueOf('C'), ObjectManager.getItem("DemonicLightningCharge"),
-				Character.valueOf('R'), Item.blazeRod
+				Character.valueOf('R'), Items.blaze_rod
 			}));
 
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
 				new ItemStack(ObjectManager.getItem("DevilLasagna"), 1, 0),
 				new Object[] {
-					Item.netherStalkSeeds,
-					Item.wheat,
+					Items.nether_wart,
+					Items.wheat,
 					ObjectManager.getItem("PinkyMeatCooked")
 				}
 			));
 		
 		// ========== Smelting ==========
-		GameRegistry.addSmelting(ObjectManager.getItem("PinkyMeatRaw").itemID, new ItemStack(ObjectManager.getItem("PinkyMeatCooked"), 1), 0.5f);
+		GameRegistry.addSmelting(ObjectManager.getItem("PinkyMeatRaw"), new ItemStack(ObjectManager.getItem("PinkyMeatCooked"), 1), 0.5f);
 	}
 	
 	

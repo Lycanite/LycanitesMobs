@@ -31,7 +31,7 @@ import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -145,34 +145,34 @@ public class DesertMobs implements ILycaniteMod {
 		// ========== Crafting ==========
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
 				new ItemStack(ObjectManager.getItem("ThrowingScythe"), 17, 0),
-				new Object[] { Item.ingotIron, ObjectManager.getItem("ThrowingScythe") }
+				new Object[] { Items.iron_ingot, ObjectManager.getItem("ThrowingScythe") }
 			));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("ScytheScepter"), 1, 0),
 				new Object[] { "CCC", "CRC", "CRC",
 				Character.valueOf('C'), ObjectManager.getItem("ThrowingScythe"),
-				Character.valueOf('R'), Item.blazeRod
+				Character.valueOf('R'), Items.blaze_rod
 			}));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("MudshotScepter"), 1, 0),
 				new Object[] { " C ", " R ", " R ",
 				Character.valueOf('C'), ObjectManager.getItem("MudshotCharge"),
-				Character.valueOf('R'), Item.blazeRod
+				Character.valueOf('R'), Items.blaze_rod
 			}));
 
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
 				new ItemStack(ObjectManager.getItem("AmberCake"), 1, 0),
 				new Object[] {
-					Item.sugar,
-					new ItemStack(Item.dyePowder, 1, 2),
+					Items.sugar,
+					new ItemStack(Items.dye, 1, 2),
 					ObjectManager.getItem("JoustMeatCooked")
 				}
 			));
 		
 		// ========== Smelting ==========
-		GameRegistry.addSmelting(ObjectManager.getItem("JoustMeatRaw").itemID, new ItemStack(ObjectManager.getItem("JoustMeatCooked"), 1), 0.5f);
+		GameRegistry.addSmelting(ObjectManager.getItem("JoustMeatRaw"), new ItemStack(ObjectManager.getItem("JoustMeatCooked"), 1), 0.5f);
 	}
 	
 	

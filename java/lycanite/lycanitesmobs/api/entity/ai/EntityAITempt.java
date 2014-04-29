@@ -15,8 +15,8 @@ public class EntityAITempt extends EntityAIBase {
     
     // Properties:
     private double speed = 1.0D;
-    private int temptID = 0;
-    private int temptMeta = -1;
+    private ItemStack temptItem = null;
+    private boolean ignoreTemptMeta = false;
     private String temptList = null;
     private int retemptTime;
     private int retemptTimeMax = 100;
@@ -49,12 +49,12 @@ public class EntityAITempt extends EntityAIBase {
     	this.speed = setSpeed;
     	return this;
     }
-    public EntityAITempt setItemID(int id) {
-    	this.temptID = id;
+    public EntityAITempt setItem(ItemStack item) {
+    	this.temptItem = item;
     	return this;
     }
-    public EntityAITempt setItemMeta(int meta) {
-    	this.temptMeta = meta;
+    public EntityAITempt setIgnoreMeta(boolean ignore) {
+    	this.ignoreTemptMeta = ignore;
     	return this;
     }
     public EntityAITempt setItemList(String list) {
@@ -110,9 +110,9 @@ public class EntityAITempt extends EntityAIBase {
         		return false;
         }
         else {
-	        if(itemstack.itemID != this.temptID)
+	        if(itemstack.getItem() != this.temptItem.getItem())
 	        	return false;
-	        if(this.temptMeta >= 0 && itemstack.getItemDamage() != this.temptMeta)
+	        if(!this.ignoreTemptMeta && itemstack.getItemDamage() != this.temptItem.getItemDamage())
 	        	return false;
         }
         

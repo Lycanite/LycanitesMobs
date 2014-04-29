@@ -6,10 +6,12 @@ import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -48,14 +50,14 @@ public class BlockBase extends Block {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-	public BlockBase(int blockID, Material material) {
-		super(blockID, material);
+	public BlockBase(Material material) {
+		super(material);
 	}
 	
 	/** Should be called by a child class once the blockName and other important variables are set, kind of a late construct. **/
 	public void setup() {
-		this.setUnlocalizedName(this.blockName);
-        this.setTextureName(this.blockName.toLowerCase());
+		this.setBlockName(this.blockName);
+        this.setBlockTextureName(this.blockName.toLowerCase());
 	}
 	
 	
@@ -65,7 +67,7 @@ public class BlockBase extends Block {
 	public void onBlockAdded(World world, int x, int y, int z) {
 		// Initial Block Ticking:
 		if(this.tickRate > 0)
-			world.scheduleBlockUpdate(x, y, z, this.blockID, this.tickRate(world));
+			world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world));
 	}
 	
 	
@@ -74,8 +76,8 @@ public class BlockBase extends Block {
 	// ==================================================
 	//========== Drops ==========
 	@Override
-	public int idDropped(int breakID, Random random, int zero) {
-        return this.blockID;
+	public Item getItemDropped(int breakID, Random random, int zero) {
+        return super.getItemDropped(breakID, random, zero);
 	}
 	
 	@Override
@@ -94,8 +96,9 @@ public class BlockBase extends Block {
 	// ==================================================
 	public void onNeighborBlockChange(World world, int x, int y, int z, int blockID) {
         // Crushable:
+		Block block = world.getBlock(x, y, z);
 		if(this.canBeCrushed)
-			if(blockID == Block.sand.blockID || blockID == Block.gravel.blockID) // XXX Add red sand 1.7.x!
+			if(block == Blocks.sand || block == Blocks.gravel)
 	        	world.setBlockToAir(x, y, z);
     }
     
@@ -121,7 +124,7 @@ public class BlockBase extends Block {
 		
 		// Looping Tick:
 		else if(this.tickRate > 0 && this.loopTicks)
-			world.scheduleBlockUpdate(x, y, z, this.blockID, this.tickRate(world));
+			world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world));
     }
     
     
@@ -163,14 +166,14 @@ public class BlockBase extends Block {
     // ========== Register Icons ==========
     @SideOnly(Side.CLIENT)
     @Override
-    public void registerIcons(IconRegister iconRegister) {
+    public void registerBlockIcons(IIconRegister iconRegister) {
     	AssetManager.addIcon(this.blockName, this.mod.getDomain(), this.getTextureName(), iconRegister);
     }
     
     // ========== Get Icon from Side and Metadata ==========
     @SideOnly(Side.CLIENT)
     @Override
-    public Icon getIcon(int side, int metadata) {
+    public IIcon getIcon(int side, int metadata) {
         return AssetManager.getIcon(blockName);
     }
 

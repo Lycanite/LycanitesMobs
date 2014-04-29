@@ -69,7 +69,7 @@ public class FlightNavigator {
 		if(targetPosition == null)
 			return true;
 		if(!this.host.worldObj.isAirBlock(targetPosition.posX, targetPosition.posY, targetPosition.posZ))
-			if(this.host.worldObj.getBlockMaterial(targetPosition.posX, targetPosition.posY, targetPosition.posZ).equals(Material.water))
+			if(this.host.worldObj.getBlock(targetPosition.posX, targetPosition.posY, targetPosition.posZ).getMaterial().equals(Material.water))
 				return this.host.canSwim();
 			else
 				return false;
@@ -129,9 +129,9 @@ public class FlightNavigator {
         	float motion = 0.91F;
             if(this.host.onGround) {
             	motion = 0.54600006F;
-                int blockID = this.host.worldObj.getBlockId(MathHelper.floor_double(this.host.posX), MathHelper.floor_double(this.host.boundingBox.minY) - 1, MathHelper.floor_double(this.host.posZ));
-                if(blockID > 0)
-                	motion = Block.blocksList[blockID].slipperiness * 0.91F;
+                Block block = this.host.worldObj.getBlock(MathHelper.floor_double(this.host.posX), MathHelper.floor_double(this.host.boundingBox.minY) - 1, MathHelper.floor_double(this.host.posZ));
+                if(block != null)
+                	motion = block.slipperiness * 0.91F;
             }
             float flyingMotion = 0.16277136F / (motion * motion * motion);
             this.host.moveFlying(moveStrafe, moveForward, this.host.onGround ? 0.1F * flyingMotion : (float)(0.02F * this.speedModifier));
@@ -139,9 +139,9 @@ public class FlightNavigator {
             motion = 0.91F;
             if(this.host.onGround) {
             	motion = 0.54600006F;
-                int blockID = this.host.worldObj.getBlockId(MathHelper.floor_double(this.host.posX), MathHelper.floor_double(this.host.boundingBox.minY) - 1, MathHelper.floor_double(this.host.posZ));
-                if(blockID > 0)
-                	motion = Block.blocksList[blockID].slipperiness * 0.91F;
+                Block block = this.host.worldObj.getBlock(MathHelper.floor_double(this.host.posX), MathHelper.floor_double(this.host.boundingBox.minY) - 1, MathHelper.floor_double(this.host.posZ));
+                if(block != null)
+                	motion = block.slipperiness * 0.91F;
             }
             
             this.host.moveEntity(this.host.motionX, this.host.motionY, this.host.motionZ);

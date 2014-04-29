@@ -23,7 +23,7 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -74,7 +74,7 @@ public class ArcticMobs implements ILycaniteMod {
 		ObjectManager.addItem("FrostwebScepter", "Frostweb Scepter", new ItemScepterFrostweb(config.itemIDs.get("FrostwebScepter")));
 
 		// ========== Create Blocks ==========
-		ObjectManager.addBlock("Frostweb", "Frostweb", new BlockFrostweb(config.blockIDs.get("Frostweb")));
+		ObjectManager.addBlock("Frostweb", "Frostweb", new BlockFrostweb());
 	}
 	
 	
@@ -122,14 +122,14 @@ public class ArcticMobs implements ILycaniteMod {
 				new ItemStack(ObjectManager.getItem("FrostboltScepter"), 1, 0),
 				new Object[] { "CCC", "CRC", "CRC",
 				Character.valueOf('C'), ObjectManager.getItem("FrostboltCharge"),
-				Character.valueOf('R'), Item.blazeRod
+				Character.valueOf('R'), Items.blaze_rod
 			}));
 
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("FrostwebScepter"), 1, 0),
 				new Object[] { "CCC", "CRC", "CRC",
 				Character.valueOf('C'), ObjectManager.getItem("FrostwebCharge"),
-				Character.valueOf('R'), Item.blazeRod
+				Character.valueOf('R'), Items.blaze_rod
 			}));
 		
 		// ========== Smelting ==========

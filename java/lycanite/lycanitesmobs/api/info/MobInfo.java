@@ -9,6 +9,9 @@ import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.Config;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 
@@ -128,18 +131,24 @@ public class MobInfo {
 		// Load Item Drops:
 		this.defaultDrops = config.defaultDrops.get(name);
 		String customDropsString = config.customDrops.get(name).replace(" ", "");
-		if(customDropsString != null && customDropsString.length() > 0)
+		if(customDropsString != null && customDropsString.length() > 0) {
     		for(String customDropEntryString : customDropsString.split(",")) {
-    			String[] customDropValues = customDropEntryString.split(":");
-    			if(customDropValues.length == 5) {
-					int dropID = Integer.parseInt(customDropValues[0]);
+				String[] customDropValues = customDropEntryString.split(":");
+				if(customDropValues.length >= 2) {
+					String dropName = customDropValues[0];
 					int dropMeta = Integer.parseInt(customDropValues[1]);
 					float dropChance = Float.parseFloat(customDropValues[2]);
 					int dropMin = Integer.parseInt(customDropValues[3]);
 					int dropMax = Integer.parseInt(customDropValues[4]);
-					this.customDrops.add(new DropRate(dropID, dropMeta, dropChance).setMinAmount(dropMin).setMaxAmount(dropMax));
-    			}
-    		}
+					ItemStack drop = null;
+					if(Item.itemRegistry.getObject(dropName) != null)
+						drop = new ItemStack((Item)Item.itemRegistry.getObject(dropName), 1, dropMeta);
+					else if(Block.blockRegistry.getObject(dropName) != null)
+						drop = new ItemStack((Block)Block.blockRegistry.getObject(dropName), 1, dropMeta);
+					this.customDrops.add(new DropRate(drop, dropChance).setMinAmount(dropMin).setMaxAmount(dropMax));
+				}
+			}
+		}
 		
 		// Load Stats:
 		this.multiplierDefense = config.defenseMultipliers.get(name);

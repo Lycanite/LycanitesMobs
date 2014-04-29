@@ -203,7 +203,7 @@ public class EntityProjectileLaser extends EntityProjectileBase {
 		if(this.laserEnd == null)
 			this.laserEndRef = -1;
 		else {
-			this.laserEndRef = this.laserEnd.entityId;
+			this.laserEndRef = this.laserEnd.getEntityId();
 			
 			// Entity Aiming:
 			if(this.shootingEntity != null) {
@@ -313,7 +313,7 @@ public class EntityProjectileLaser extends EntityProjectileBase {
     public void syncShootingEntity() {
     	if(!this.worldObj.isRemote) {
     		if(this.shootingEntity == null) this.shootingEntityRef = -1;
-    		else this.shootingEntityRef = this.shootingEntity.entityId;
+    		else this.shootingEntityRef = this.shootingEntity.getEntityId();
     		this.dataWatcher.updateObject(this.shootingEntityID, this.shootingEntityRef);
     	}
     	else {

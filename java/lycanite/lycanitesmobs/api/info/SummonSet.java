@@ -103,7 +103,7 @@ public class SummonSet {
 		this.pvp = (behaviour & BEHAVIOUR_ID.PVP.id) > 0;
 	}
 
-	public byte getBehaviourBytes() {
+	public byte getBehaviourByte() {
 		byte behaviour = 0;
 		if(this.getSitting()) behaviour += BEHAVIOUR_ID.SITTING.id;
 		if(this.getFollowing()) behaviour += BEHAVIOUR_ID.FOLLOWING.id;

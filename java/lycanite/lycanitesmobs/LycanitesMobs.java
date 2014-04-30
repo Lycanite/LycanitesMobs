@@ -11,6 +11,7 @@ import lycanite.lycanitesmobs.api.item.ItemStaffSavage;
 import lycanite.lycanitesmobs.api.item.ItemStaffStable;
 import lycanite.lycanitesmobs.api.item.ItemStaffSturdy;
 import lycanite.lycanitesmobs.api.item.ItemStaffSummoning;
+import lycanite.lycanitesmobs.api.packet.PacketPipeline;
 import lycanite.lycanitesmobs.api.spawning.CustomSpawner;
 import lycanite.lycanitesmobs.api.spawning.SpawnType;
 import net.minecraft.creativetab.CreativeTabs;
@@ -38,8 +39,12 @@ public class LycanitesMobs implements ILycaniteMod {
 	public static final String name = "Lycanites Mobs";
 	public static final String version = "1.5.0 - MC 1.6.4";
 	public static final String domain = modid.toLowerCase();
+	
+	public static final PacketPipeline packetPipeline = new PacketPipeline();
+	
 	public static int mobID = -1;
 	public static int projectileID = 99;
+	
 	public static Config config = new SubConfig();
 	
 	// Instance:
@@ -93,12 +98,12 @@ public class LycanitesMobs implements ILycaniteMod {
 		ObjectManager.setCurrentMod(this);
 		
 		// ========== Create Items ==========
-		ObjectManager.addItem("Soulgazer", "Soulgazer", new ItemSoulgazer(config.itemIDs.get("Soulgazer")));
-		ObjectManager.addItem("SummoningStaff", "Summoning Staff", new ItemStaffSummoning(config.itemIDs.get("SummoningStaff")));
-		ObjectManager.addItem("StableSummoningStaff", "Stable Summoning Staff", new ItemStaffStable(config.itemIDs.get("StableSummoningStaff")));
-		ObjectManager.addItem("BloodSummoningStaff", "Blood Summoning Staff", new ItemStaffBlood(config.itemIDs.get("BloodSummoningStaff")));
-		ObjectManager.addItem("SturdySummoningStaff", "Sturdy Summoning Staff", new ItemStaffSturdy(config.itemIDs.get("SturdySummoningStaff")));
-		ObjectManager.addItem("SavageSummoningStaff", "Savage Summoning Staff", new ItemStaffSavage(config.itemIDs.get("SavageSummoningStaff")));
+		ObjectManager.addItem("Soulgazer", "Soulgazer", new ItemSoulgazer());
+		ObjectManager.addItem("SummoningStaff", "Summoning Staff", new ItemStaffSummoning());
+		ObjectManager.addItem("StableSummoningStaff", "Stable Summoning Staff", new ItemStaffStable());
+		ObjectManager.addItem("BloodSummoningStaff", "Blood Summoning Staff", new ItemStaffBlood());
+		ObjectManager.addItem("SturdySummoningStaff", "Sturdy Summoning Staff", new ItemStaffSturdy());
+		ObjectManager.addItem("SavageSummoningStaff", "Savage Summoning Staff", new ItemStaffSavage());
 	}
 	
 	
@@ -107,16 +112,14 @@ public class LycanitesMobs implements ILycaniteMod {
 	// ==================================================
 	@EventHandler
     public void load(FMLInitializationEvent event) {
-		// ========== Custom Keys and Events ==========
+		// ========== Register and Initialize Handlers ==========
 		proxy.registerEvents();
+		packetPipeline.initialize();
+		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 		
-		// ========== Handlers ==========
-		NetworkRegistry.instance().registerGuiHandler(this, new GuiHandler());
-		
-		// ========== Set Current Mod ==========
+		// ========== Register Entities ==========
 		int specialEntityID = 0;
 		EntityRegistry.registerModEntity(EntityPortal.class, "SummoningPortal", specialEntityID++, instance, 64, 1, true);
-		//XXX LanguageRegistry.instance().addStringLocalization("entity." + "SummoningPortal" + ".name", "en_US", "Summoning Portal");
 	}
 	
 	
@@ -125,7 +128,8 @@ public class LycanitesMobs implements ILycaniteMod {
 	// ==================================================
 	@EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-		// ========== Register ==========
+		// ========== Register and Initialize Handlers/Objects ==========
+		packetPipeline.postInitialize();
 		proxy.registerAssets();
 		proxy.registerTileEntities();
 		proxy.registerRenders();

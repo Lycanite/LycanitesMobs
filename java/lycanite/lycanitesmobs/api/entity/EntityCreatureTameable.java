@@ -16,6 +16,7 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
@@ -208,7 +209,6 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
     	if(command.equals("Tame")) {
     		this.tame(player);
     		this.consumePlayersItem(player, itemStack);
-    		player.addChatMessage("The " + this.getSpeciesName() + " seems to love you now!");
     	}
     	
     	// Feed:
@@ -411,6 +411,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
     	if(!this.worldObj.isRemote)
             if(this.rand.nextInt(3) == 0) {
                 this.setPlayerOwner(player);
+        		player.addChatMessage(new ChatComponentText("The " + this.getSpeciesName() + " seems to love you now!"));
             }
     	else
     		this.playTameEffect(this.isTamed());

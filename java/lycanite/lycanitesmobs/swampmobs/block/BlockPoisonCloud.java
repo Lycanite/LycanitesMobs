@@ -7,12 +7,13 @@ import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.block.BlockBase;
 import lycanite.lycanitesmobs.swampmobs.SwampMobs;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.Item;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -22,8 +23,8 @@ public class BlockPoisonCloud extends BlockBase {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-	public BlockPoisonCloud(int blockID) {
-		super(blockID, Material.air);
+	public BlockPoisonCloud() {
+		super(Material.air);
 		
 		// Properties:
 		this.mod = SwampMobs.instance;
@@ -49,8 +50,8 @@ public class BlockPoisonCloud extends BlockBase {
 	//                     Break
 	// ==================================================
 	@Override
-	public int idDropped(int metadata, Random random, int fortune) {
-		return ObjectManager.getItem("PoisonGland").itemID;
+	public Item getItemDropped(int metadata, Random random, int fortune) {
+		return ObjectManager.getItem("PoisonGland");
 	}
 	
 	@Override
@@ -107,14 +108,14 @@ public class BlockPoisonCloud extends BlockBase {
     // ========== Register Icons ==========
     @SideOnly(Side.CLIENT)
     @Override
-    public void registerIcons(IconRegister iconRegister) {
-    	//AssetManager.addIcon("PoisonCloud", this.mod.getDomain(), "poisoncloud", iconRegister);
+    public void registerBlockIcons(IIconRegister iconRegister) {
+    	AssetManager.addIcon(this.blockName, this.mod.getDomain(), this.getTextureName(), iconRegister);
     }
     
     // ========== Get Icon from Side and Meta ==========
     @SideOnly(Side.CLIENT)
     @Override
-    public Icon getIcon(int par1, int par2) {
+    public IIcon getIcon(int par1, int par2) {
         return null;
     }
 

@@ -3,34 +3,18 @@ package lycanite.lycanitesmobs.infernomobs.dispenser;
 import java.util.Random;
 
 import lycanite.lycanitesmobs.AssetManager;
+import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorBase;
 import lycanite.lycanitesmobs.infernomobs.entity.EntityMagma;
-import net.minecraft.block.BlockDispenser;
-import net.minecraft.dispenser.BehaviorProjectileDispense;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.dispenser.IPosition;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
-public class DispenserBehaviorMagma extends BehaviorProjectileDispense {
+public class DispenserBehaviorMagma extends DispenserBehaviorBase {
 	
 	// ==================================================
 	//                      Dispense
 	// ==================================================
-	@Override
-    public ItemStack dispenseStack(IBlockSource par1IBlockSource, ItemStack par2ItemStack) {
-        World world = par1IBlockSource.getWorld();
-        IPosition iposition = BlockDispenser.getIPositionFromBlockSource(par1IBlockSource);
-        EnumFacing enumfacing = BlockDispenser.getFacing(par1IBlockSource.getBlockMetadata());
-        IProjectile iprojectile = this.getProjectileEntity(world, iposition);
-        iprojectile.setThrowableHeading((double)enumfacing.getFrontOffsetX(), (double)enumfacing.getFrontOffsetY(), (double)enumfacing.getFrontOffsetZ(), this.func_82500_b(), this.func_82498_a());
-        world.spawnEntityInWorld((Entity)iprojectile);
-        par2ItemStack.splitStack(1);
-        return par2ItemStack;
-    }
-    
 	@Override
     protected IProjectile getProjectileEntity(World par1World, IPosition par2IPosition) {
 		return new EntityMagma(par1World, par2IPosition.getX(), par2IPosition.getY(), par2IPosition.getZ());

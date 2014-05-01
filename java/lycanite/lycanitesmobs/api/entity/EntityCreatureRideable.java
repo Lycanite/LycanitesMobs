@@ -3,8 +3,8 @@ package lycanite.lycanitesmobs.api.entity;
 import java.util.HashMap;
 
 import lycanite.lycanitesmobs.AssetManager;
+import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.LycanitesMobs;
-import lycanite.lycanitesmobs.PlayerControlHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -74,9 +74,12 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
     		// Player Rider Controls:
 	    	if(this.getRiderTarget() instanceof EntityPlayer) {
 	    		EntityPlayer player = (EntityPlayer)this.getRiderTarget();
+	    		ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
+	    		if(playerExt == null)
+	    			return;
 	    		
 	    		// Mount Ability:
-	    		if(PlayerControlHandler.playerInputMountAbility(player)) {
+	    		if(playerExt.isControlActive(ExtendedPlayer.CONTROL_ID.MOUNT_ABILITY)) {
 	    			this.mountAbility(player);
 	    			this.abilityToggled = true;
 	    		}
@@ -84,7 +87,7 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
 	    			this.abilityToggled = false;
 	    		
 	    		// Player Inventory:
-	    		if(PlayerControlHandler.playerInputInventory(player)) {
+	    		if(playerExt.isControlActive(ExtendedPlayer.CONTROL_ID.MOUNT_INVENTORY)) {
 	    			if(!this.inventoryToggled)
 	    				this.openGUI(player);
 	    			this.inventoryToggled = true;
@@ -159,7 +162,8 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
     	if(!this.isMountJumping() && this.onGround) {
 	    	if(this.getRiderTarget() instanceof EntityPlayer) {
 	    		EntityPlayer player = (EntityPlayer)this.getRiderTarget();
-	    		if(PlayerControlHandler.playerInputJumping(player))
+	    		ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
+	    		if(playerExt != null && playerExt.isControlActive(ExtendedPlayer.CONTROL_ID.JUMP))
 	    			this.startJumping();
 	    	}
     	}

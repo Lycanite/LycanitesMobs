@@ -43,7 +43,7 @@ public class GUIMinion extends GuiScreen {
 	}
 	
 	public FontRenderer getFontRenderer() {
-		return this.fontRenderer;
+		return this.fontRendererObj;
 	}
 	
 	public boolean doesGuiPauseGame() {
@@ -110,7 +110,7 @@ public class GUIMinion extends GuiScreen {
   	//                    Foreground
   	// ==================================================
 	protected void drawGuiContainerForegroundLayer() {
-		this.fontRenderer.drawString("Minion Manager", this.windowX + 52, this.windowY + 6, 4210752);
+		this.getFontRenderer().drawString("Minion Manager", this.windowX + 52, this.windowY + 6, 4210752);
     }
 	
 	
@@ -254,7 +254,7 @@ public class GUIMinion extends GuiScreen {
   	// ==================================================
 	@Override
 	protected void keyTyped(char par1, int par2) {
-		if(par2 == 1 || par2 == this.mc.gameSettings.keyBindInventory.keyCode)
+		if(par2 == 1 || par2 == this.mc.gameSettings.keyBindInventory.getKeyCode())
         	 this.mc.thePlayer.closeScreen();
 		super.keyTyped(par1, par2);
 	}

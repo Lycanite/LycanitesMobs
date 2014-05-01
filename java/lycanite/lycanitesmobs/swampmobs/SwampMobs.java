@@ -83,11 +83,11 @@ public class SwampMobs implements ILycaniteMod {
 		// ========== Create Items ==========
 		ObjectManager.addItem("SwampEgg", "Spawn", new ItemSwampEgg(config.itemIDs.get("SwampEgg")));
 		
-		ObjectManager.addItem("AspidMeatRaw", "Raw Aspid Meat", new ItemCustomFood(config.itemIDs.get("AspidMeatRaw"), "AspidMeatRaw", domain, 2, 0.5F).setPotionEffect(Potion.poison.id, 45, 2, 0.8F));
+		ObjectManager.addItem("AspidMeatRaw", "Raw Aspid Meat", new ItemCustomFood("AspidMeatRaw", domain, 2, 0.5F).setPotionEffect(Potion.poison.id, 45, 2, 0.8F));
 		ObjectLists.addItem("RawMeat", ObjectManager.getItem("AspidMeatRaw"));
-		ObjectManager.addItem("AspidMeatCooked", "Cooked Aspid Meat", new ItemCustomFood(config.itemIDs.get("AspidMeatCooked"), "AspidMeatCooked", domain, 6, 0.7F));
+		ObjectManager.addItem("AspidMeatCooked", "Cooked Aspid Meat", new ItemCustomFood("AspidMeatCooked", domain, 6, 0.7F));
 		ObjectLists.addItem("CookedMeat", ObjectManager.getItem("AspidMeatCooked"));
-		ObjectManager.addItem("MossPie", "Moss Pie", new ItemCustomFood(config.itemIDs.get("MossPie"), "MossPie", domain, 6, 0.7F).setPotionEffect(Potion.regeneration.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
+		ObjectManager.addItem("MossPie", "Moss Pie", new ItemCustomFood("MossPie", domain, 6, 0.7F).setPotionEffect(Potion.regeneration.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
 		ObjectLists.addItem("CookedMeat", ObjectManager.getItem("MossPie"));
 		
 		ObjectManager.addItem("PoisonGland", "Poison Gland", new ItemPoisonGland(config.itemIDs.get("PoisonGland")));
@@ -96,7 +96,7 @@ public class SwampMobs implements ILycaniteMod {
 		
 		// ========== Create Blocks ==========
 		AssetManager.addSound("PoisonCloud", domain, "block/poisoncloud.wav");
-		ObjectManager.addBlock("PoisonCloud", "Poison Cloud", new BlockPoisonCloud(config.blockIDs.get("PoisonCloud")));
+		ObjectManager.addBlock("PoisonCloud", "Poison Cloud", new BlockPoisonCloud());
 	}
 	
 	

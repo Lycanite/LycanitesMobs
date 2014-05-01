@@ -3,14 +3,14 @@ package lycanite.lycanitesmobs.desertmobs.dispenser;
 import java.util.Random;
 
 import lycanite.lycanitesmobs.AssetManager;
+import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorBase;
 import lycanite.lycanitesmobs.desertmobs.entity.EntityMudshot;
-import net.minecraft.dispenser.BehaviorProjectileDispense;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.dispenser.IPosition;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.world.World;
 
-public class DispenserBehaviorMudshot extends BehaviorProjectileDispense {
+public class DispenserBehaviorMudshot extends DispenserBehaviorBase {
 	
 	// ==================================================
 	//                      Dispense

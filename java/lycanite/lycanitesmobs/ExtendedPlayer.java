@@ -28,6 +28,14 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 	public long currentTick = 0;
 	public boolean needsFirstSync = true;
 	
+	// Action Controls:
+	public byte controlStates = 0;
+	public static enum CONTROL_ID {
+		JUMP((byte)1), MOUNT_ABILITY((byte)2), MOUNT_INVENTORY((byte)4);
+		public byte id;
+		private CONTROL_ID(byte i) { id = i; }
+	}
+	
 	// Summoning:
 	public int summonFocusCharge = 600;
 	public int summonFocusMax = (this.summonFocusCharge * 10);
@@ -201,6 +209,27 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 		PacketSummonSet packet = new PacketSummonSet();
 		packet.readSummonSet(this, setID);
 		LycanitesMobs.packetPipeline.sendToServer(packet);
+	}
+	
+	
+	// ==================================================
+    //                     Controls
+    // ==================================================
+	public void updateControlStates(byte controlStates) {
+		this.controlStates = controlStates;
+	}
+	
+	public boolean isControlActive(CONTROL_ID controlID) {
+		return (this.controlStates & controlID.id) > 0;
+	}
+	
+	
+	// ==================================================
+    //                 Request GUI Data
+    // ==================================================
+	public void requestGUI(byte guiID) {
+		if(guiID == GuiHandler.PlayerGuiType.MINION_CONTROLS.id)
+			this.sendAllSummonSetsToPlayer();
 	}
 	
 	

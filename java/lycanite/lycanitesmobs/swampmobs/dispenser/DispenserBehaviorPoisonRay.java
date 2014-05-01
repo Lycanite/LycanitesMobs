@@ -3,10 +3,10 @@ package lycanite.lycanitesmobs.swampmobs.dispenser;
 import java.util.Random;
 
 import lycanite.lycanitesmobs.AssetManager;
+import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorBase;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileLaser;
 import lycanite.lycanitesmobs.swampmobs.entity.EntityPoisonRay;
 import net.minecraft.block.BlockDispenser;
-import net.minecraft.dispenser.BehaviorProjectileDispense;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.dispenser.IPosition;
 import net.minecraft.entity.Entity;
@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
-public class DispenserBehaviorPoisonRay extends BehaviorProjectileDispense {
+public class DispenserBehaviorPoisonRay extends DispenserBehaviorBase {
 	
 	// ==================================================
 	//                      Dispense
@@ -23,8 +23,8 @@ public class DispenserBehaviorPoisonRay extends BehaviorProjectileDispense {
 	@Override
     public ItemStack dispenseStack(IBlockSource par1IBlockSource, ItemStack par2ItemStack) {
         World world = par1IBlockSource.getWorld();
-        IPosition iposition = BlockDispenser.getIPositionFromBlockSource(par1IBlockSource);
-        EnumFacing facing = BlockDispenser.getFacing(par1IBlockSource.getBlockMetadata());
+        IPosition iposition = BlockDispenser.func_149939_a(par1IBlockSource); // getIPositionFromBlockSource()
+        EnumFacing facing = BlockDispenser.func_149937_b(par1IBlockSource.getBlockMetadata()); // getFacing()
         
         double targetX = iposition.getX();
 		double targetY = iposition.getY();

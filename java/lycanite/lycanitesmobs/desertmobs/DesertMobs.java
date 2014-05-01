@@ -80,11 +80,11 @@ public class DesertMobs implements ILycaniteMod {
 		ObjectManager.addItem("DesertEgg", "Spawn", new ItemDesertEgg(config.itemIDs.get("DesertEgg")));
 		ObjectManager.addItem("ThrowingScythe", "Throwing Scythe", new ItemThrowingScythe(config.itemIDs.get("ThrowingScythe")));
 		
-		ObjectManager.addItem("JoustMeatRaw", "Raw Joust Meat", new ItemCustomFood(config.itemIDs.get("JoustMeatRaw"), "JoustMeatRaw", domain, 2, 0.5F).setPotionEffect(Potion.moveSlowdown.id, 45, 2, 0.8F));
+		ObjectManager.addItem("JoustMeatRaw", "Raw Joust Meat", new ItemCustomFood("JoustMeatRaw", domain, 2, 0.5F).setPotionEffect(Potion.moveSlowdown.id, 45, 2, 0.8F));
 		ObjectLists.addItem("RawMeat", ObjectManager.getItem("JoustMeatRaw"));
-		ObjectManager.addItem("JoustMeatCooked", "Cooked Joust Meat", new ItemCustomFood(config.itemIDs.get("JoustMeatCooked"), "JoustMeatCooked", domain, 6, 0.7F));
+		ObjectManager.addItem("JoustMeatCooked", "Cooked Joust Meat", new ItemCustomFood("JoustMeatCooked", domain, 6, 0.7F));
 		ObjectLists.addItem("CookedMeat", ObjectManager.getItem("JoustMeatCooked"));
-		ObjectManager.addItem("AmberCake", "Amber Cake", new ItemCustomFood(config.itemIDs.get("AmberCake"), "AmberCake", domain, 6, 0.7F).setPotionEffect(Potion.moveSpeed.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
+		ObjectManager.addItem("AmberCake", "Amber Cake", new ItemCustomFood("AmberCake", domain, 6, 0.7F).setPotionEffect(Potion.moveSpeed.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
 		ObjectLists.addItem("CookedMeat", ObjectManager.getItem("AmberCake"));
 		
 		ObjectManager.addItem("MudshotCharge", "Mudshot Charge", new ItemMudshotCharge(config.itemIDs.get("MudshotCharge")));

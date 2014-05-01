@@ -3,19 +3,18 @@ package lycanite.lycanitesmobs.api.gui;
 import java.util.List;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.PacketHandler;
+import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.inventory.ContainerBase;
 import lycanite.lycanitesmobs.api.inventory.ContainerCreature;
 import lycanite.lycanitesmobs.api.inventory.InventoryCreature;
+import lycanite.lycanitesmobs.api.packet.PacketEntityGUICommand;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
-import net.minecraft.network.packet.Packet;
 
 import org.lwjgl.opengl.GL11;
 
@@ -54,8 +53,8 @@ public class GUICreature extends GuiContainer {
   	// ==================================================
 	@Override
 	protected void drawGuiContainerForegroundLayer(int i, int j) {
-		this.fontRenderer.drawString(this.creatureInventory.getInvName(), 8, 6, 4210752);
-        this.fontRenderer.drawString(this.playerInventory.isInvNameLocalized() ? this.playerInventory.getInvName() : I18n.getString(this.playerInventory.getInvName()), 8, this.ySize - 96 + 2, 4210752);
+		this.fontRendererObj.drawString(this.creatureInventory.getInventoryName(), 8, 6, 4210752);
+        this.fontRendererObj.drawString(this.playerInventory.getInventoryName(), 8, this.ySize - 96 + 2, 4210752);
     }
 	
 	
@@ -91,7 +90,7 @@ public class GUICreature extends GuiContainer {
         int creatureWidth = 54;
         int creatureHeight = 54;
         this.drawTexturedModalRect(backX - creatureWidth + 1, backY + 17, statusWidth, 256 - creatureHeight, creatureWidth, creatureHeight);
-        GuiInventory.func_110423_a(backX + 26 - creatureWidth + 1, backY + 60, 17, (float)(backX + 51) - this.xSize, (float)(backY + 75 - 50) - this.ySize, this.creature);
+        GuiInventory.func_147046_a(backX + 26 - creatureWidth + 1, backY + 60, 17, (float)(backX + 51) - this.xSize, (float)(backY + 75 - 50) - this.ySize, this.creature);
 	}
 	
 	// ========== Draw Creature Health ===========
@@ -184,9 +183,10 @@ public class GUICreature extends GuiContainer {
 	@Override
 	protected void actionPerformed(GuiButton guiButton) {
 		if(guiButton != null) {
-	        Packet packet = PacketHandler.createPacket(PacketHandler.PacketType.GUI, this.creature.entityId, Byte.valueOf((byte)guiButton.id));
-	        PacketHandler.sendPacketToServer(packet);
-		}
+			PacketEntityGUICommand packet = new PacketEntityGUICommand();
+			packet.readGUICommand((byte)guiButton.id, this.creature);
+			LycanitesMobs.packetPipeline.sendToServer(packet);			
+	    }
 		super.actionPerformed(guiButton);
 	}
 }

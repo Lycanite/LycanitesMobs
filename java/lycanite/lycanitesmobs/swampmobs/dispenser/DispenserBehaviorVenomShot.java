@@ -3,14 +3,14 @@ package lycanite.lycanitesmobs.swampmobs.dispenser;
 import java.util.Random;
 
 import lycanite.lycanitesmobs.AssetManager;
+import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorBase;
 import lycanite.lycanitesmobs.swampmobs.entity.EntityVenomShot;
-import net.minecraft.dispenser.BehaviorProjectileDispense;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.dispenser.IPosition;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.world.World;
 
-public class DispenserBehaviorVenomShot extends BehaviorProjectileDispense {
+public class DispenserBehaviorVenomShot extends DispenserBehaviorBase {
 	
 	// ==================================================
 	//                      Dispense

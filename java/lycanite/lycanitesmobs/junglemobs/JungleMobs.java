@@ -70,11 +70,11 @@ public class JungleMobs implements ILycaniteMod {
 		// ========== Create Items ==========
 		ObjectManager.addItem("JungleEgg", "Spawn", new ItemJungleEgg(config.itemIDs.get("JungleEgg")));
 		
-		ObjectManager.addItem("ConcapedeMeatRaw", "Raw Concapede Meat", new ItemCustomFood(config.itemIDs.get("ConcapedeMeatRaw"), "ConcapedeMeatRaw", domain, 2, 0.5F).setPotionEffect(Potion.moveSlowdown.id, 45, 2, 0.8F));
+		ObjectManager.addItem("ConcapedeMeatRaw", "Raw Concapede Meat", new ItemCustomFood("ConcapedeMeatRaw", domain, 2, 0.5F).setPotionEffect(Potion.moveSlowdown.id, 45, 2, 0.8F));
 		ObjectLists.addItem("RawMeat", ObjectManager.getItem("ConcapedeMeatRaw"));
-		ObjectManager.addItem("ConcapedeMeatCooked", "Cooked Concapede Meat", new ItemCustomFood(config.itemIDs.get("ConcapedeMeatCooked"), "ConcapedeMeatCooked", domain, 6, 0.7F));
+		ObjectManager.addItem("ConcapedeMeatCooked", "Cooked Concapede Meat", new ItemCustomFood("ConcapedeMeatCooked", domain, 6, 0.7F));
 		ObjectLists.addItem("CookedMeat", ObjectManager.getItem("ConcapedeMeatCooked"));
-		ObjectManager.addItem("TropicalCurry", "Tropical Curry", new ItemCustomFood(config.itemIDs.get("TropicalCurry"), "TropicalCurry", domain, 6, 0.7F).setPotionEffect(Potion.jump.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
+		ObjectManager.addItem("TropicalCurry", "Tropical Curry", new ItemCustomFood("TropicalCurry", domain, 6, 0.7F).setPotionEffect(Potion.jump.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
 		ObjectLists.addItem("CookedMeat", ObjectManager.getItem("TropicalCurry"));
 
 		// ========== Create Blocks ==========

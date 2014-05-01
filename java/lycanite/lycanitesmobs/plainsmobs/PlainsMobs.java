@@ -67,11 +67,11 @@ public class PlainsMobs implements ILycaniteMod {
 		// ========== Create Items ==========
 		ObjectManager.addItem("PlainsEgg", "Spawn", new ItemPlainsEgg(config.itemIDs.get("PlainsEgg")));
 		
-		ObjectManager.addItem("MakaMeatRaw", "Raw Maka Meat", new ItemCustomFood(config.itemIDs.get("MakaMeatRaw"), "MakaMeatRaw", domain, 2, 0.5F).setPotionEffect(Potion.weakness.id, 45, 2, 0.8F));
+		ObjectManager.addItem("MakaMeatRaw", "Raw Maka Meat", new ItemCustomFood("MakaMeatRaw", domain, 2, 0.5F).setPotionEffect(Potion.weakness.id, 45, 2, 0.8F));
 		ObjectLists.addItem("RawMeat", ObjectManager.getItem("MakaMeatRaw"));
-		ObjectManager.addItem("MakaMeatCooked", "Cooked Maka Meat", new ItemCustomFood(config.itemIDs.get("MakaMeatCooked"), "MakaMeatCooked", domain, 6, 0.7F));
+		ObjectManager.addItem("MakaMeatCooked", "Cooked Maka Meat", new ItemCustomFood("MakaMeatCooked", domain, 6, 0.7F));
 		ObjectLists.addItem("CookedMeat", ObjectManager.getItem("MakaMeatCooked"));
-		ObjectManager.addItem("BulwarkBurger", "Bulwark Burger", new ItemCustomFood(config.itemIDs.get("BulwarkBurger"), "BulwarkBurger", domain, 6, 0.7F).setPotionEffect(Potion.field_76444_x.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16)); // Absorbtion
+		ObjectManager.addItem("BulwarkBurger", "Bulwark Burger", new ItemCustomFood("BulwarkBurger", domain, 6, 0.7F).setPotionEffect(Potion.field_76444_x.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16)); // Absorbtion
 		ObjectLists.addItem("CookedMeat", ObjectManager.getItem("BulwarkBurger"));
 	}
 	

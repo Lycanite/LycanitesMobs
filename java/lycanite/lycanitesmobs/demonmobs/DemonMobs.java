@@ -90,11 +90,11 @@ public class DemonMobs implements ILycaniteMod {
 		ObjectManager.addItem("DevilstarCharge", "Devilstar Charge", new ItemDevilstar(config.itemIDs.get("DevilstarCharge")));
 		ObjectManager.addItem("DemonicLightningCharge", "Demonic Lightning Charge", new ItemDemonicLightning(config.itemIDs.get("DemonicLightningCharge")));
 		
-		ObjectManager.addItem("PinkyMeatRaw", "Raw Pinky Meat", new ItemCustomFood(config.itemIDs.get("PinkyMeatRaw"), "PinkyMeatRaw", domain, 4, 0.5F).setPotionEffect(Potion.wither.id, 30, 0, 0.8F));
+		ObjectManager.addItem("PinkyMeatRaw", "Raw Pinky Meat", new ItemCustomFood("PinkyMeatRaw", domain, 4, 0.5F).setPotionEffect(Potion.wither.id, 30, 0, 0.8F));
 		ObjectLists.addItem("RawMeat", ObjectManager.getItem("PinkyMeatRaw"));
-		ObjectManager.addItem("PinkyMeatCooked", "Cooked Pinky Meat", new ItemCustomFood(config.itemIDs.get("PinkyMeatCooked"), "PinkyMeatCooked", domain, 7, 0.7F));
+		ObjectManager.addItem("PinkyMeatCooked", "Cooked Pinky Meat", new ItemCustomFood("PinkyMeatCooked", domain, 7, 0.7F));
 		ObjectLists.addItem("CookedMeat", ObjectManager.getItem("PinkyMeatCooked"));
-		ObjectManager.addItem("DevilLasagna", "Devil Lasagna", new ItemCustomFood(config.itemIDs.get("DevilLasagna"), "DevilLasagna", domain, 7, 0.7F).setPotionEffect(Potion.damageBoost.id, 60, 0, 1.0F).setAlwaysEdible().setMaxStackSize(16));
+		ObjectManager.addItem("DevilLasagna", "Devil Lasagna", new ItemCustomFood("DevilLasagna", domain, 7, 0.7F).setPotionEffect(Potion.damageBoost.id, 60, 0, 1.0F).setAlwaysEdible().setMaxStackSize(16));
 		ObjectLists.addItem("CookedMeat", ObjectManager.getItem("DevilLasagna"));
 		
 		ObjectManager.addItem("DoomfireScepter", "Doomfire Scepter", new ItemScepterDoomfire(config.itemIDs.get("DoomfireScepter")));

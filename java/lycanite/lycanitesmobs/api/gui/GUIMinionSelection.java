@@ -4,12 +4,11 @@ import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.GuiHandler;
 import lycanite.lycanitesmobs.LycanitesMobs;
-import lycanite.lycanitesmobs.PacketHandler;
 import lycanite.lycanitesmobs.api.info.MobInfo;
+import lycanite.lycanitesmobs.api.packet.PacketSummonSetSelection;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.packet.Packet;
 
 import org.lwjgl.opengl.GL11;
 
@@ -141,7 +140,7 @@ public class GUIMinionSelection extends GuiScreen {
         for(Object buttonObj : this.buttonList) {
         	if(buttonObj instanceof GuiButton) {
         		GuiButton button = (GuiButton)buttonObj;
-        		button.drawButton = this.playerExt.getSummonSet(button.id).isUseable();
+        		button.visible = this.playerExt.getSummonSet(button.id).isUseable();
         		button.enabled = button.id != this.playerExt.selectedSummonSet;
         	}
         }
@@ -155,8 +154,9 @@ public class GUIMinionSelection extends GuiScreen {
 	protected void actionPerformed(GuiButton guiButton) {
 		if(guiButton != null) {
 			this.playerExt.setSelectedSummonSet(guiButton.id);
-			Packet packet = PacketHandler.createPacket(PacketHandler.PacketType.PLAYER, PacketHandler.PlayerType.MINION_SELECT.id, (byte)this.playerExt.selectedSummonSet);
-			PacketHandler.sendPacketToServer(packet);
+			PacketSummonSetSelection packet = new PacketSummonSetSelection();
+			packet.readSummonSetSelection(this.playerExt);
+			LycanitesMobs.packetPipeline.sendToServer(packet);
 		}
 		super.actionPerformed(guiButton);
 	}
@@ -167,7 +167,7 @@ public class GUIMinionSelection extends GuiScreen {
   	// ==================================================
 	@Override
 	protected void keyTyped(char par1, int par2) {
-		if(par2 == 1 || par2 == this.mc.gameSettings.keyBindInventory.keyCode)
+		if(par2 == 1 || par2 == this.mc.gameSettings.keyBindInventory.getKeyCode())
         	 this.mc.thePlayer.closeScreen();
 		super.keyTyped(par1, par2);
 	}

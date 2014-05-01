@@ -12,9 +12,10 @@ import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
-import net.minecraftforge.event.ForgeSubscribe;
 
 import org.lwjgl.opengl.GL11;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class GuiOverlay extends Gui {
 	public Minecraft mc;
@@ -30,7 +31,7 @@ public class GuiOverlay extends Gui {
     // ==================================================
     //                  Draw Game Overlay
     // ==================================================
-	@ForgeSubscribe
+	@SubscribeEvent
 	public void onRenderExperienceBar(RenderGameOverlayEvent event) {
 		if(event.isCanceled())
 	      return;
@@ -40,7 +41,7 @@ public class GuiOverlay extends Gui {
         int sHeight = scaledresolution.getScaledHeight();
 		
 		// ========== Extra Tabs ==========
-		// TODO Find a better way to render these!
+		// TODO Find a better place to render these!
         if(this.mc.currentScreen instanceof GuiInventory) {
         	GuiInventory guiInventory = (GuiInventory)this.mc.currentScreen;
         	GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

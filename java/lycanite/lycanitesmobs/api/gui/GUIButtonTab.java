@@ -32,11 +32,11 @@ public class GUIButtonTab extends GuiButton {
 	// field_82253_i = mouseOver
 	@Override
 	public void drawButton(Minecraft minecraft, int mouseX, int mouseY) {
-        if(this.drawButton) {
+        if(this.visible) {
             FontRenderer fontrenderer = minecraft.fontRenderer;
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            this.field_82253_i = mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
-            int hoverState = this.getHoverState(this.field_82253_i);
+            this.field_146123_n = mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
+            int hoverState = this.getHoverState(this.field_146123_n);
             
             int buttonW = this.width;
             int buttonH = this.height;
@@ -53,7 +53,7 @@ public class GUIButtonTab extends GuiButton {
             if(!this.enabled) {
             	textColor = -6250336;
             }
-            else if(this.field_82253_i) {
+            else if(this.field_146123_n) {
             	textColor = 16777120;
             }
             

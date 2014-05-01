@@ -75,9 +75,6 @@ public class EventListener {
 		if(entity instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer)entity;
 			
-			if(player.worldObj.isRemote)
-				PlayerControlHandler.updateControls(player);
-			
 			ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
 			if(playerExt != null)
 				playerExt.onUpdate();

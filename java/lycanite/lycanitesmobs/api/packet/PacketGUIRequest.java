@@ -6,14 +6,14 @@ import lycanite.lycanitesmobs.ExtendedPlayer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 
-public class PacketPlayerControl extends PacketBase {
-	public byte controlStates;
+public class PacketGUIRequest extends PacketBase {
+	public byte guiID;
 	
 	// ==================================================
-	//                 Read Creature Set
+	//                   Read GUI ID
 	// ==================================================
-	public void readControlStates(byte controlStates) {
-		this.controlStates = controlStates;
+	public void readGUI(byte guiID) {
+		this.guiID = guiID;
 	}
 	
 	
@@ -23,7 +23,7 @@ public class PacketPlayerControl extends PacketBase {
 	@Override
 	public void encodeInto(ChannelHandlerContext ctx, ByteBuf buffer) {
 		PacketBuffer packet = new PacketBuffer(buffer);
-		packet.writeByte(this.controlStates);
+		packet.writeByte(this.guiID);
 	}
 	
 	
@@ -33,7 +33,7 @@ public class PacketPlayerControl extends PacketBase {
 	@Override
 	public void decodeInto(ChannelHandlerContext ctx, ByteBuf buffer) {
 		PacketBuffer packet = new PacketBuffer(buffer);
-		this.controlStates = packet.readByte();
+		this.guiID = packet.readByte();
 	}
 	
 	
@@ -43,9 +43,7 @@ public class PacketPlayerControl extends PacketBase {
 	@Override
 	public void handleServerSide(EntityPlayer player) {
 		ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
-		if(playerExt == null)
-			return;
-		playerExt.updateControlStates(this.controlStates);
+		playerExt.requestGUI(this.guiID);
 	}
 	
 	

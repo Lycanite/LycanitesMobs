@@ -10,11 +10,7 @@ import lycanite.lycanitesmobs.api.render.RenderCreature;
 import lycanite.lycanitesmobs.api.render.RenderParticle;
 import lycanite.lycanitesmobs.api.render.RenderProjectile;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.common.MinecraftForge;
-
-import org.lwjgl.input.Keyboard;
-
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class ClientProxy extends CommonProxy {
@@ -26,34 +22,9 @@ public class ClientProxy extends CommonProxy {
 	@Override
     public void registerEvents() {
 		// Event Listeners:
+		MinecraftForge.EVENT_BUS.register(new KeyHandler(Minecraft.getMinecraft()));
 		MinecraftForge.EVENT_BUS.register(new GuiOverlay(Minecraft.getMinecraft()));
-		
-		// Mount Jump:
-		// I'm using the tick handler and player jump key instead to prevent overriding.
-		//KeyBinding[] mountJumpKey = {new KeyBinding("Mount Jump", Keyboard.KEY_SPACE)};
-		//boolean[] mountJumpRepeat = {false};
-		//KeyBindingRegistry.registerKeyBinding(new KeyMountJump(mountJumpKey, mountJumpRepeat, "Mount Jump", "MountJump"));
-		
-		// Mount Ability:
-		KeyBinding[] mountAbilityKey = {new KeyBinding("Mount Ability", Keyboard.KEY_F)};
-		boolean[] mountAbilityRepeat = {true};
-		KeyBindingRegistry.registerKeyBinding(new KeyBase(mountAbilityKey, mountAbilityRepeat, "Mount Ability", "MountAbility"));
-		
-		// Pet Inventory:
-		KeyBinding[] petInventoryKey = {new KeyBinding("Mount Inventory", Keyboard.KEY_G)};
-		boolean[] petInventoryRepeat = {true};
-		KeyBindingRegistry.registerKeyBinding(new KeyBase(petInventoryKey, petInventoryRepeat, "Mount Inventory", "PetInventory"));
-		
-		// Minion Manager GUI:
-		KeyBinding[] minionKey = {new KeyBinding("Minion Controls", Keyboard.KEY_H)};
-		boolean[] minionRepeat = {true};
-		KeyBindingRegistry.registerKeyBinding(new KeyBase(minionKey, minionRepeat, "Minion Controls", "MinionControls"));
-		
-		// Minion Select GUI:
-		KeyBinding[] minionSelectKey = {new KeyBinding("Minion Selection", Keyboard.KEY_R)};
-		boolean[] minionSelectRepeat = {true};
-		KeyBindingRegistry.registerKeyBinding(new KeyBase(minionSelectKey, minionSelectRepeat, "Minion Selection", "MinionSelect"));
-    }
+	}
 	
 	// ========== Register Assets ==========
 	@Override

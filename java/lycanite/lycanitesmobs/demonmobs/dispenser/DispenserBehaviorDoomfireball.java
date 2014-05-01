@@ -3,14 +3,14 @@ package lycanite.lycanitesmobs.demonmobs.dispenser;
 import java.util.Random;
 
 import lycanite.lycanitesmobs.AssetManager;
+import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorBase;
 import lycanite.lycanitesmobs.demonmobs.entity.EntityDoomfireball;
-import net.minecraft.dispenser.BehaviorProjectileDispense;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.dispenser.IPosition;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.world.World;
 
-public class DispenserBehaviorDoomfireball extends BehaviorProjectileDispense {
+public class DispenserBehaviorDoomfireball extends DispenserBehaviorBase {
 	
 	// ==================================================
 	//                      Dispense

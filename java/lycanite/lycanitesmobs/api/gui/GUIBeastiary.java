@@ -1,16 +1,17 @@
 package lycanite.lycanitesmobs.api.gui;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.PacketHandler;
+import lycanite.lycanitesmobs.ExtendedPlayer;
+import lycanite.lycanitesmobs.api.packet.PacketBeastiary;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.packet.Packet;
 
 import org.lwjgl.opengl.GL11;
 
 public class GUIBeastiary extends GuiScreen {
 	public EntityPlayer player;
+	public ExtendedPlayer playerExt;
 	int centerX;
 	int centerY;
 	int windowWidth;
@@ -23,6 +24,8 @@ public class GUIBeastiary extends GuiScreen {
   	// ==================================================
 	public GUIBeastiary(EntityPlayer player) {
 		super();
+		this.player = player;
+		this.playerExt = ExtendedPlayer.getForPlayer(player);
 	}
 	
 	
@@ -57,7 +60,7 @@ public class GUIBeastiary extends GuiScreen {
   	//                    Foreground
   	// ==================================================
 	protected void drawGuiContainerForegroundLayer() {
-		this.fontRenderer.drawString("Minion Manager", this.windowX + 52, this.windowY + 6, 4210752);
+		this.fontRendererObj.drawString("Minion Manager", this.windowX + 52, this.windowY + 6, 4210752);
     }
 	
 	
@@ -95,8 +98,9 @@ public class GUIBeastiary extends GuiScreen {
 	@Override
 	protected void actionPerformed(GuiButton guiButton) {
 		if(guiButton != null) {
-	        Packet packet = PacketHandler.createPacket(PacketHandler.PacketType.PLAYER, PacketHandler.PlayerType.BEASTIARY, Byte.valueOf((byte)guiButton.id));
-	        PacketHandler.sendPacketToServer(packet);
+			PacketBeastiary packet = new PacketBeastiary();
+			packet.readBeastiary(this.playerExt.getBeastiary());
+			// Don't send yet as this GUI is not yet implemented!
 		}
 		super.actionPerformed(guiButton);
 	}

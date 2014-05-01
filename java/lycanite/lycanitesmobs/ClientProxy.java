@@ -58,8 +58,6 @@ public class ClientProxy extends CommonProxy {
 	// ========== Register Assets ==========
 	@Override
     public void registerAssets() {
-		MinecraftForge.EVENT_BUS.register(new AssetManager());
-		
 		// ========== Add GUI Textures ==========
 		String domain = LycanitesMobs.domain;
 		AssetManager.addTexture("GUIInventoryCreature", domain, "textures/guis/inventory_creature.png");

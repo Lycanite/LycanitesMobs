@@ -131,7 +131,13 @@ public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, Packet
 		this.channels = NetworkRegistry.INSTANCE.newChannel("LYCANITESMOBS", this);
 		
 		// Register Common Packets:
-		
+		this.registerPacket(PacketBeastiary.class);
+		this.registerPacket(PacketCreatureKnowledge.class);
+		this.registerPacket(PacketEntityGUICommand.class);
+		this.registerPacket(PacketPlayerControl.class);
+		this.registerPacket(PacketPlayerStats.class);
+		this.registerPacket(PacketSummonSet.class);
+		this.registerPacket(PacketSummonSetSelection.class);
 	}
 	
 	

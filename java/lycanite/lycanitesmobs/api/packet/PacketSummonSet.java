@@ -19,10 +19,10 @@ public class PacketSummonSet extends PacketBase {
 	// ==================================================
 	//                 Read Creature Set
 	// ==================================================
-	public void readSummonSetSelection(ExtendedPlayer playerExt) {
-		this.summonSetID = (byte)playerExt.selectedSummonSet;
-		this.summonType = playerExt.getSelectedSummonSet().summonType;
-		this.behaviour = playerExt.getSelectedSummonSet().getBehaviourByte();
+	public void readSummonSet(ExtendedPlayer playerExt, byte summonSetID) {
+		this.summonSetID = summonSetID;
+		this.summonType = playerExt.getSummonSet(summonSetID).summonType;
+		this.behaviour = playerExt.getSummonSet(summonSetID).getBehaviourByte();
 	}
 	
 	

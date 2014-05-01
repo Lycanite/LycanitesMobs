@@ -8,7 +8,7 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
@@ -19,7 +19,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RenderProjectile extends Render {
-	private Icon icon;
+	private IIcon icon;
     private float scale;
     private int renderTime = 0;
     
@@ -163,7 +163,7 @@ public class RenderProjectile extends Render {
     // ==================================================
     //                    Render Icon
     // ==================================================
-    private void renderIcon(Tessellator par1Tessellator, Icon par2Icon) {
+    private void renderIcon(Tessellator par1Tessellator, IIcon par2Icon) {
         float f = par2Icon.getMinU();
         float f1 = par2Icon.getMaxU();
         float f2 = par2Icon.getMinV();

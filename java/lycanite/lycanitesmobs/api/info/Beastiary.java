@@ -4,9 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.PacketHandler;
+import lycanite.lycanitesmobs.api.packet.PacketBeastiary;
+import lycanite.lycanitesmobs.api.packet.PacketCreatureKnowledge;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
@@ -49,27 +52,16 @@ public class Beastiary {
     // ==================================================
 	/** Sends a new Beastiary entry (CreatureKnowledge) to the client. Shouldn't really be needed, just add it client side. **/
 	public void sendNewToClient(CreatureKnowledge newKnowledge) {
-		Packet packet = PacketHandler.createPacket(
-        		PacketHandler.PacketType.PLAYER,
-        		PacketHandler.PlayerType.BEASTIARY.id,
-        		newKnowledge.creatureName,
-        		newKnowledge.completion
-        	);
-		PacketHandler.sendPacketToPlayer(packet, this.player);
+		PacketCreatureKnowledge packet = new PacketCreatureKnowledge();
+		packet.readCreatureKnowledge(newKnowledge);
+		LycanitesMobs.packetPipeline.sendToPlayer(packet, (EntityPlayerMP)this.player);
 	}
 	
 	/** Sends the whole Beastiary progress to the client, use sparingly! **/
 	public void sendAllToClient() {
-		Object[] creatureKnowledgeData = new Object[2 + (this.creatureKnowledgeList.size() * 2)];
-		int index = 0;
-		creatureKnowledgeData[index++] = PacketHandler.PlayerType.BEASTIARY_ALL.id;
-		creatureKnowledgeData[index++] = this.creatureKnowledgeList.size();
-		for(CreatureKnowledge creatureKnowledge : this.creatureKnowledgeList.values()) {
-			creatureKnowledgeData[index++] = creatureKnowledge.creatureName;
-			creatureKnowledgeData[index++] = creatureKnowledge.completion;
-		}
-		Packet packet = PacketHandler.createPacket(PacketHandler.PacketType.PLAYER, creatureKnowledgeData);
-		PacketHandler.sendPacketToPlayer(packet, this.player);
+		PacketBeastiary packet = new PacketBeastiary();
+		packet.readBeastiary(this);
+		LycanitesMobs.packetPipeline.sendToPlayer(packet, (EntityPlayerMP)this.player);
 	}
 	
 	

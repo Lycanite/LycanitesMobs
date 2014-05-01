@@ -6,8 +6,12 @@ import java.util.Map;
 import lycanite.lycanitesmobs.api.info.Beastiary;
 import lycanite.lycanitesmobs.api.info.SummonSet;
 import lycanite.lycanitesmobs.api.item.ItemStaffSummoning;
+import lycanite.lycanitesmobs.api.packet.PacketPlayerStats;
+import lycanite.lycanitesmobs.api.packet.PacketSummonSet;
+import lycanite.lycanitesmobs.api.packet.PacketSummonSetSelection;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
@@ -99,8 +103,9 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 			}
 			if(!creative && this.currentTick % 20 == 0) {
 				if(this.summonFocus < this.summonFocusMax || (player.getHeldItem() != null && player.getHeldItem().getItem() instanceof ItemStaffSummoning)) {
-					Packet packet = PacketHandler.createPacket(PacketHandler.PacketType.PLAYER, PacketHandler.PlayerType.SUMMONFOCUS.id, this.summonFocus);
-					PacketHandler.sendPacketToPlayer(packet, this.player);
+					PacketPlayerStats packet = new PacketPlayerStats();
+					packet.readPlayerStats(this);
+					LycanitesMobs.packetPipeline.sendToPlayer(packet, (EntityPlayerMP)this.player);
 				}
 			}
 		}
@@ -109,8 +114,9 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 		if(!this.player.worldObj.isRemote && this.needsFirstSync) {
 			this.beastiary.sendAllToClient();
 			this.sendAllSummonSetsToPlayer();
-			Packet packet = PacketHandler.createPacket(PacketHandler.PacketType.PLAYER, PacketHandler.PlayerType.MINION_SELECT.id, (byte)this.selectedSummonSet);
-			PacketHandler.sendPacketToPlayer(packet, this.player);
+			PacketSummonSetSelection packet = new PacketSummonSetSelection();
+			packet.readSummonSetSelection(this);
+			LycanitesMobs.packetPipeline.sendToPlayer(packet, (EntityPlayerMP)this.player);
 		}
 		needsFirstSync = false;
 		
@@ -183,25 +189,18 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 		if(this.player.worldObj.isRemote)
 			return;
 		for(byte setID = 1; setID <= this.summonSetMax; setID++) {
-			Packet packet = PacketHandler.createPacket(
-	        		PacketHandler.PacketType.PLAYER,
-	        		PacketHandler.PlayerType.MINION.id,
-	        		Byte.valueOf(setID), this.getSummonSet(setID).summonType, this.getSummonSet(setID).getBehaviourBytes()
-	        	);
-			PacketHandler.sendPacketToPlayer(packet, this.player);
+			PacketSummonSet packet = new PacketSummonSet();
+			packet.readSummonSet(this, setID);
+			LycanitesMobs.packetPipeline.sendToPlayer(packet, (EntityPlayerMP)this.player);
 		}
 	}
 	
 	public void sendSummonSetToServer(byte setID) {
 		if(!this.player.worldObj.isRemote)
 			return;
-		SummonSet summonSet = this.getSummonSet(setID);
-		Packet packet = PacketHandler.createPacket(
-        		PacketHandler.PacketType.PLAYER,
-        		PacketHandler.PlayerType.MINION.id,
-        		setID, summonSet.summonType, summonSet.getBehaviourBytes()
-        	);
-        PacketHandler.sendPacketToServer(packet);
+		PacketSummonSet packet = new PacketSummonSet();
+		packet.readSummonSet(this, setID);
+		LycanitesMobs.packetPipeline.sendToServer(packet);
 	}
 	
 	

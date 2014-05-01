@@ -5,6 +5,7 @@ import java.util.Map;
 
 import lycanite.lycanitesmobs.api.gui.GUIMinion;
 import lycanite.lycanitesmobs.api.gui.GUIMinionSelection;
+import lycanite.lycanitesmobs.api.packet.PacketPlayerControl;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -65,11 +66,12 @@ public class PlayerControlHandler {
 		
 		// If Changed, Send Control State To Player Control Handler:
 		if(controlStates != lastStateSent || !firstStateSent) {
-			// Server Side:
-			Packet packet = PacketHandler.createPacket(PacketHandler.PacketType.PLAYER, PacketHandler.PlayerType.CONTROL.id, controlStates);
-			PacketHandler.sendPacketToServer(packet);
+			// Send to Server Side:
+			PacketPlayerControl packet = new PacketPlayerControl();
+			packet.readControlStates(controlStates);
+			LycanitesMobs.packetPipeline.sendToServer(packet);
 			
-			// Client Side:
+			// Update Client Side:
 			PlayerControlHandler.updateStates(player, controlStates);
 			
 			lastStateSent = controlStates;

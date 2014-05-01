@@ -13,6 +13,7 @@ import lycanite.lycanitesmobs.api.info.SpawnInfo;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -79,7 +80,7 @@ public class SpawnType {
 			if("LAVA".equalsIgnoreCase(spawnTypeName))
 				newSpawnType.materials = new Material[] {Material.lava};
 			if("PORTAL".equalsIgnoreCase(spawnTypeName))
-				newSpawnType.blocks = new Block[] {Block.portal};
+				newSpawnType.blocks = new Block[] {Blocks.portal};
 			
 			spawnTypes.add(newSpawnType);
 			spawnTypeMap.put(spawnTypeName.toUpperCase(), newSpawnType);

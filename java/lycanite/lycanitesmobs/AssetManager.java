@@ -6,10 +6,8 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.sound.SoundLoadEvent;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class AssetManager {
 	
@@ -110,15 +108,4 @@ public class AssetManager {
 			addObjModel(name, domain, path);
 		return objModels.get(name);
 	}
-	
-	
-    // ==================================================
-    //                       Register
-    // ==================================================
-	// ========== Sound ==========
-	@SubscribeEvent
-	public void onLoadSoundSettings(SoundLoadEvent soundLoadEvent) {
-        for(String[] sound : sounds.values())
-			soundLoadEvent.manager.addSound(sound[0]);
-    }
 }

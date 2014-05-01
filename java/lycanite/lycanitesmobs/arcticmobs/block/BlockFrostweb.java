@@ -7,6 +7,7 @@ import lycanite.lycanitesmobs.api.block.BlockBase;
 import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.Item;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -43,8 +44,8 @@ public class BlockFrostweb extends BlockBase {
 	//                     Break
 	// ==================================================
 	@Override
-	public int idDropped(int metadata, Random random, int fortune) {
-		return ObjectManager.getItem("FrostwebCharge").itemID;
+	public Item getItemDropped(int breakID, Random random, int zero) {
+        return ObjectManager.getItem("FrostwebCharge");
 	}
 	
 	@Override

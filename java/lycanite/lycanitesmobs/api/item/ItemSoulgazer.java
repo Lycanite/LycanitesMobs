@@ -9,6 +9,7 @@ import lycanite.lycanitesmobs.api.info.MobInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 
 public class ItemSoulgazer extends ItemBase {
@@ -57,13 +58,13 @@ public class ItemSoulgazer extends ItemBase {
     		return false;
     	if(!(entity instanceof EntityCreatureBase)) {
     		if(!player.worldObj.isRemote)
-    			player.addChatMessage("The soulgazer finds nothing special about this creature.");
+    			player.addChatMessage(new ChatComponentText("The soulgazer finds nothing special about this creature."));
     		return false;
     	}
     	MobInfo mobInfo = ((EntityCreatureBase)entity).mobInfo;
     	if(playerExt.getBeastiary().hasFullKnowledge(mobInfo.name)) {
     		if(!player.worldObj.isRemote)
-    			player.addChatMessage("You already have full knowledge of this creature!");
+    			player.addChatMessage(new ChatComponentText("You already have full knowledge of this creature!"));
     		return false;
     	}
     	
@@ -78,7 +79,7 @@ public class ItemSoulgazer extends ItemBase {
     	}
     	
     	if(!player.worldObj.isRemote)
-    		player.addChatMessage("You have descovered a new creature!");
+    		player.addChatMessage(new ChatComponentText("You have descovered a new creature!"));
     	
     	playerExt.getBeastiary().addToKnowledgeList(new CreatureKnowledge(player, mobInfo.name, 1));
     	return true;

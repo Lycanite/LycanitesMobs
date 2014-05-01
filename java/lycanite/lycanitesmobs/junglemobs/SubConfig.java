@@ -27,14 +27,5 @@ public class SubConfig extends Config {
 		loadMobSettings("Concapede", 18, 10, 1, 3, "CREATURE");
 		loadMobSettings("ConcapedeSegment", 0, 0, 0, 0, "CREATURE", "NONE", "NONE");
 		loadMobSettings("Tarantula", 6, 10, 1, 2, "MONSTER");
-		
-		// ========== Block IDs ==========
-		loadSetting(blockIDs, "Block IDs", "QuickWeb", "Quick Web Block ID", 3855);
-		
-		// ========== Item IDs ==========
-		loadSetting(itemIDs, "Item IDs", "JungleEgg", "Jungle Spawn Egg ID", 24040);
-		loadSetting(itemIDs, "Item IDs", "ConcapedeMeatRaw", "Concapede Meat Raw ID", 24041);
-		loadSetting(itemIDs, "Item IDs", "ConcapedeMeatCooked", "Concapede Meat Cooked ID", 24042);
-		loadSetting(itemIDs, "Item IDs", "TropicalCurry", "Tropical Curry ID", 24043);
 	}
 }

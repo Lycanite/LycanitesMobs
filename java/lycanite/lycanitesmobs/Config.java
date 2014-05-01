@@ -8,7 +8,6 @@ import java.util.Map;
 
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.common.Configuration;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -68,11 +67,7 @@ public class Config {
 	public Map<String, Boolean> despawnNaturals = new HashMap<String, Boolean>();
 	public Map<String, Boolean> despawnForced = new HashMap<String, Boolean>();
 	
-	// Block IDs:
-	public Map<String, Integer> blockIDs = new HashMap<String, Integer>();
-	
-	// Item IDs:
-	public Map<String, Integer> itemIDs = new HashMap<String, Integer>();
+	// Items:
 	public Map<String, String> itemLists = new HashMap<String, String>();
 	
 	// Effect IDs:

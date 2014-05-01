@@ -21,15 +21,5 @@ public class SubConfig extends Config {
 		// ========== Mob Control ==========
 		loadMobSettings("Cinder", 8, 3, 1, 3, "FIRE", 8);
 		loadMobSettings("Lobber", 2, 2, 1, 2, "LAVA", 16);
-		
-		// ========== Block IDs ==========
-		//loadSetting(blockIDs, "Block IDs", "PoisonCloud", "Poison Cloud Block ID", 3853);
-		
-		// ========== Item IDs ==========
-		loadSetting(itemIDs, "Item IDs", "InfernoEgg", "Inferno Spawn Egg ID", 24100);
-		loadSetting(itemIDs, "Item IDs", "EmberCharge", "Ember Charge ID", 24101);
-		loadSetting(itemIDs, "Item IDs", "EmberScepter", "Ember Scepter ID", 24102);
-		loadSetting(itemIDs, "Item IDs", "MagmaCharge", "Magma Charge ID", 24103);
-		loadSetting(itemIDs, "Item IDs", "MagmaScepter", "Magma Scepter ID", 24104);
 	}
 }

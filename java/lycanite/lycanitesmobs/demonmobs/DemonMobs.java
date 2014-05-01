@@ -84,11 +84,11 @@ public class DemonMobs implements ILycaniteMod {
 		ObjectManager.setCurrentMod(this);
 		
 		// ========== Create Items ==========
-		ObjectManager.addItem("DemonEgg", "Spawn", new ItemDemonEgg(config.itemIDs.get("DemonEgg")));
-		ObjectManager.addItem("DoomfireCharge", "Doomfire Charge", new ItemDoomfireball(config.itemIDs.get("DoomfireCharge")));
-		ObjectManager.addItem("HellfireCharge", "Hellfire Charge", new ItemHellfireball(config.itemIDs.get("HellfireCharge")));
-		ObjectManager.addItem("DevilstarCharge", "Devilstar Charge", new ItemDevilstar(config.itemIDs.get("DevilstarCharge")));
-		ObjectManager.addItem("DemonicLightningCharge", "Demonic Lightning Charge", new ItemDemonicLightning(config.itemIDs.get("DemonicLightningCharge")));
+		ObjectManager.addItem("DemonEgg", "Spawn", new ItemDemonEgg());
+		ObjectManager.addItem("DoomfireCharge", "Doomfire Charge", new ItemDoomfireball());
+		ObjectManager.addItem("HellfireCharge", "Hellfire Charge", new ItemHellfireball());
+		ObjectManager.addItem("DevilstarCharge", "Devilstar Charge", new ItemDevilstar());
+		ObjectManager.addItem("DemonicLightningCharge", "Demonic Lightning Charge", new ItemDemonicLightning());
 		
 		ObjectManager.addItem("PinkyMeatRaw", "Raw Pinky Meat", new ItemCustomFood("PinkyMeatRaw", domain, 4, 0.5F).setPotionEffect(Potion.wither.id, 30, 0, 0.8F));
 		ObjectLists.addItem("RawMeat", ObjectManager.getItem("PinkyMeatRaw"));
@@ -97,13 +97,13 @@ public class DemonMobs implements ILycaniteMod {
 		ObjectManager.addItem("DevilLasagna", "Devil Lasagna", new ItemCustomFood("DevilLasagna", domain, 7, 0.7F).setPotionEffect(Potion.damageBoost.id, 60, 0, 1.0F).setAlwaysEdible().setMaxStackSize(16));
 		ObjectLists.addItem("CookedMeat", ObjectManager.getItem("DevilLasagna"));
 		
-		ObjectManager.addItem("DoomfireScepter", "Doomfire Scepter", new ItemScepterDoomfire(config.itemIDs.get("DoomfireScepter")));
-		ObjectManager.addItem("HellfireScepter", "Hellfire Scepter", new ItemScepterHellfire(config.itemIDs.get("HellfireScepter")));
-		ObjectManager.addItem("DevilstarScepter", "Devilstar Scepter", new ItemScepterDevilstar(config.itemIDs.get("DevilstarScepter")));
-		ObjectManager.addItem("DemonicLightningScepter", "Demonic Lightning Scepter", new ItemScepterDemonicLightning(config.itemIDs.get("DemonicLightningScepter")));
+		ObjectManager.addItem("DoomfireScepter", "Doomfire Scepter", new ItemScepterDoomfire());
+		ObjectManager.addItem("HellfireScepter", "Hellfire Scepter", new ItemScepterHellfire());
+		ObjectManager.addItem("DevilstarScepter", "Devilstar Scepter", new ItemScepterDevilstar());
+		ObjectManager.addItem("DemonicLightningScepter", "Demonic Lightning Scepter", new ItemScepterDemonicLightning());
 		
 		// ========== Create Blocks ==========
-		ObjectManager.addBlock("Hellfire", "Hellfire", new BlockHellfire(config.blockIDs.get("Hellfire")));
+		ObjectManager.addBlock("Hellfire", "Hellfire", new BlockHellfire());
 	}
 	
 	

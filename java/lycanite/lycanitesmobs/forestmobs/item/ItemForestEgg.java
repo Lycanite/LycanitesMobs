@@ -8,8 +8,8 @@ public class ItemForestEgg extends ItemCustomSpawnEgg {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemForestEgg(int itemID) {
-        super(itemID);
+    public ItemForestEgg() {
+        super();
         setUnlocalizedName("ForestSpawnEgg");
         this.mod = ForestMobs.instance;
         this.itemName = "ForestEgg";

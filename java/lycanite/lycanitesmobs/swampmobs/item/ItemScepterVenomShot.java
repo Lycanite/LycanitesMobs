@@ -5,7 +5,7 @@ import lycanite.lycanitesmobs.api.item.ItemScepter;
 import lycanite.lycanitesmobs.swampmobs.SwampMobs;
 import lycanite.lycanitesmobs.swampmobs.entity.EntityVenomShot;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -14,8 +14,8 @@ public class ItemScepterVenomShot extends ItemScepter {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemScepterVenomShot(int itemID) {
-        super(itemID);
+    public ItemScepterVenomShot() {
+        super();
     	this.domain = SwampMobs.domain;
     	this.itemName = "VenomShotScepter";
         this.setUnlocalizedName(this.itemName);
@@ -56,7 +56,7 @@ public class ItemScepterVenomShot extends ItemScepter {
 	// ==================================================
     @Override
     public boolean getIsRepairable(ItemStack itemStack, ItemStack repairStack) {
-        if(repairStack.itemID == Item.rottenFlesh.itemID) return true;
+        if(repairStack.getItem() == Items.rotten_flesh) return true;
         return super.getIsRepairable(itemStack, repairStack);
     }
 }

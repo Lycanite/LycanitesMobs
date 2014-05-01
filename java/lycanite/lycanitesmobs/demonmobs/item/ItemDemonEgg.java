@@ -8,8 +8,8 @@ public class ItemDemonEgg extends ItemCustomSpawnEgg {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemDemonEgg(int itemID) {
-        super(itemID);
+    public ItemDemonEgg() {
+        super();
         setUnlocalizedName("DemonSpawnEgg");
         this.mod = DemonMobs.instance;
         this.itemName = "DemonEgg";

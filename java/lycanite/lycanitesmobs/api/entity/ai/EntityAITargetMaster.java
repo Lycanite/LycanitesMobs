@@ -3,16 +3,13 @@ package lycanite.lycanitesmobs.api.entity.ai;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EntityOwnable;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.AttributeInstance;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.passive.EntityAnimal;
 
 public class EntityAITargetMaster extends EntityAITarget {
@@ -109,7 +106,7 @@ public class EntityAITargetMaster extends EntityAITarget {
     protected double getTargetDistance() {
     	if(targetDistance > -1)
     		return targetDistance;
-        AttributeInstance attributeinstance = this.host.getEntityAttribute(SharedMonsterAttributes.followRange);
+    	IAttributeInstance attributeinstance = this.host.getEntityAttribute(SharedMonsterAttributes.followRange);
         return attributeinstance == null ? 16.0D : attributeinstance.getAttributeValue();
     }
     

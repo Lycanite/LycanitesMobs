@@ -8,8 +8,8 @@ public class ItemSwampEgg extends ItemCustomSpawnEgg {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemSwampEgg(int itemID) {
-        super(itemID);
+    public ItemSwampEgg() {
+        super();
         setUnlocalizedName("SwampSpawnEgg");
         this.mod = SwampMobs.instance;
         this.itemName = "SwampEgg";

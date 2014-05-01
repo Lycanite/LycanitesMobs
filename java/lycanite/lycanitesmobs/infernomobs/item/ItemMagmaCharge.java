@@ -7,12 +7,12 @@ import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.infernomobs.InfernoMobs;
 import lycanite.lycanitesmobs.infernomobs.entity.EntityMagma;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -23,8 +23,8 @@ public class ItemMagmaCharge extends Item {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemMagmaCharge(int itemID) {
-        super(itemID - 256);
+    public ItemMagmaCharge() {
+        super();
         setMaxStackSize(64);
         setCreativeTab(LycanitesMobs.creativeTab);
         setUnlocalizedName(itemName);
@@ -68,14 +68,14 @@ public class ItemMagmaCharge extends Item {
     // ========== Get Icon ==========
     @SideOnly(Side.CLIENT)
     @Override
-    public Icon getIconFromDamage(int par1) {
+    public IIcon getIconFromDamage(int par1) {
         return AssetManager.getIcon(itemName);
     }
     
     // ========== Register Icons ==========
     @SideOnly(Side.CLIENT)
     @Override
-    public void registerIcons(IconRegister iconRegister) {
+    public void registerIcons(IIconRegister iconRegister) {
         AssetManager.addIcon(itemName, InfernoMobs.domain, "magma", iconRegister);
     }
 }

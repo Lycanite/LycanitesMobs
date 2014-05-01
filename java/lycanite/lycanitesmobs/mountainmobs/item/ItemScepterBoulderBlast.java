@@ -14,8 +14,8 @@ public class ItemScepterBoulderBlast extends ItemScepter {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemScepterBoulderBlast(int itemID) {
-        super(itemID);
+    public ItemScepterBoulderBlast() {
+        super();
     	this.domain = MountainMobs.domain;
     	this.itemName = "BoulderBlastScepter";
         this.setUnlocalizedName(this.itemName);
@@ -57,7 +57,7 @@ public class ItemScepterBoulderBlast extends ItemScepter {
 	// ==================================================
     @Override
     public boolean getIsRepairable(ItemStack itemStack, ItemStack repairStack) {
-        if(repairStack.itemID == ObjectManager.getItem("BoulderBlastCharge").itemID) return true;
+        if(repairStack.getItem() == ObjectManager.getItem("BoulderBlastCharge")) return true;
         return super.getIsRepairable(itemStack, repairStack);
     }
 }

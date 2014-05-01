@@ -68,7 +68,7 @@ public class JungleMobs implements ILycaniteMod {
 		ObjectManager.setCurrentMod(this);
 		
 		// ========== Create Items ==========
-		ObjectManager.addItem("JungleEgg", "Spawn", new ItemJungleEgg(config.itemIDs.get("JungleEgg")));
+		ObjectManager.addItem("JungleEgg", "Spawn", new ItemJungleEgg());
 		
 		ObjectManager.addItem("ConcapedeMeatRaw", "Raw Concapede Meat", new ItemCustomFood("ConcapedeMeatRaw", domain, 2, 0.5F).setPotionEffect(Potion.moveSlowdown.id, 45, 2, 0.8F));
 		ObjectLists.addItem("RawMeat", ObjectManager.getItem("ConcapedeMeatRaw"));
@@ -78,7 +78,7 @@ public class JungleMobs implements ILycaniteMod {
 		ObjectLists.addItem("CookedMeat", ObjectManager.getItem("TropicalCurry"));
 
 		// ========== Create Blocks ==========
-		ObjectManager.addBlock("QuickWeb", "QuickWeb", new BlockQuickWeb(config.blockIDs.get("QuickWeb")));
+		ObjectManager.addBlock("QuickWeb", "QuickWeb", new BlockQuickWeb());
 	}
 	
 	

@@ -20,11 +20,5 @@ public class SubConfig extends Config {
 		
 		// ========== Mob Control ==========
 		loadMobSettings("Lacedon", 8, 3, 1, 3, "WATERCREATURE");
-		
-		// ========== Block IDs ==========
-		//loadSetting(blockIDs, "Block IDs", "PoisonCloud", "Poison Cloud Block ID", 3853);
-		
-		// ========== Item IDs ==========
-		loadSetting(itemIDs, "Item IDs", "SaltwaterEgg", "Saltwater Spawn Egg ID", 24120);
 	}
 }

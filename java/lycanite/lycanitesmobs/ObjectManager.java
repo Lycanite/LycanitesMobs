@@ -3,7 +3,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import lycanite.lycanitesmobs.api.ILycaniteMod;
-import lycanite.lycanitesmobs.api.info.EntityList;
+import lycanite.lycanitesmobs.api.info.EntityListCustom;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.SpawnInfo;
 import net.minecraft.block.Block;
@@ -14,7 +14,6 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.DungeonHooks;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class ObjectManager {
 	
@@ -23,7 +22,7 @@ public class ObjectManager {
 	public static Map<String, Item> items = new HashMap<String, Item>();
 	public static Map<String, PotionBase> potionEffects = new HashMap<String, PotionBase>();
 	
-	public static Map<String, EntityList> entityLists = new HashMap<String, EntityList>();
+	public static Map<String, EntityListCustom> entityLists = new HashMap<String, EntityListCustom>();
 	public static Map<String, MobInfo> mobs = new HashMap<String, MobInfo>();
 	
 	public static Map<String, Class> projectiles = new HashMap<String, Class>();
@@ -44,14 +43,12 @@ public class ObjectManager {
 	// ========== Block ==========
 	public static void addBlock(String name, String title, Block block) {
 		blocks.put(name, block);
-		LanguageRegistry.addName(block, title);
 		GameRegistry.registerBlock(block, name);
 	}
 
 	// ========== Item ==========
 	public static void addItem(String name, String title, Item item) {
 		items.put(name, item);
-		LanguageRegistry.addName(item, title);
 		if(currentMod != null)
 			GameRegistry.registerItem(item, name, currentMod.getModID());
 	}
@@ -98,10 +95,9 @@ public class ObjectManager {
 		
 		// Mapping and Registration:
 		if(!entityLists.containsKey(domain))
-			entityLists.put(domain, new EntityList());
+			entityLists.put(domain, new EntityListCustom());
 		entityLists.get(domain).addMapping(mobInfo.entityClass, mobInfo.getRegistryName(), mobID, mobInfo.eggBackColor, mobInfo.eggForeColor);
 		EntityRegistry.registerModEntity(mobInfo.entityClass, name, mobID, mod.getInstance(), 128, 3, true);
-		LanguageRegistry.instance().addStringLocalization("entity." + mobInfo.getRegistryName() + ".name", "en_US", mobInfo.title);
 		
 		// Debug Message - Added:
 		LycanitesMobs.printDebug("MobSetup", "Mob Added: " + name + " - " + mobInfo.entityClass + " (" + modid + ")");
@@ -163,7 +159,6 @@ public class ObjectManager {
 
 		int projectileID = mod.getNextProjectileID();
 		EntityRegistry.registerModEntity(entityClass, name, projectileID, mod.getInstance(), 64, 1, true);
-		LanguageRegistry.instance().addStringLocalization("entity." + name + ".name", "en_US", name);
 		
 		projectiles.put(name, entityClass);
 	}

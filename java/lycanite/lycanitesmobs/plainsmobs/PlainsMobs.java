@@ -65,7 +65,7 @@ public class PlainsMobs implements ILycaniteMod {
 		ObjectManager.setCurrentMod(this);
 		
 		// ========== Create Items ==========
-		ObjectManager.addItem("PlainsEgg", "Spawn", new ItemPlainsEgg(config.itemIDs.get("PlainsEgg")));
+		ObjectManager.addItem("PlainsEgg", "Spawn", new ItemPlainsEgg());
 		
 		ObjectManager.addItem("MakaMeatRaw", "Raw Maka Meat", new ItemCustomFood("MakaMeatRaw", domain, 2, 0.5F).setPotionEffect(Potion.weakness.id, 45, 2, 0.8F));
 		ObjectLists.addItem("RawMeat", ObjectManager.getItem("MakaMeatRaw"));

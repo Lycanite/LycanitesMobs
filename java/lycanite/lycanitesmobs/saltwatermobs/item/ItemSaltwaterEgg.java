@@ -8,8 +8,8 @@ public class ItemSaltwaterEgg extends ItemCustomSpawnEgg {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemSaltwaterEgg(int itemID) {
-        super(itemID);
+    public ItemSaltwaterEgg() {
+        super();
         setUnlocalizedName("SaltwaterSpawnEgg");
         this.mod = SaltwaterMobs.instance;
         this.itemName = "SaltwaterEgg";

@@ -7,11 +7,11 @@ import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.mountainmobs.MountainMobs;
 import lycanite.lycanitesmobs.mountainmobs.entity.EntityBoulderBlast;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -22,8 +22,8 @@ public class ItemBoulderBlastCharge extends Item {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemBoulderBlastCharge(int itemID) {
-        super(itemID - 256);
+    public ItemBoulderBlastCharge() {
+        super();
         setMaxStackSize(64);
         setCreativeTab(LycanitesMobs.creativeTab);
         setUnlocalizedName("BoulderBlastCharge");
@@ -67,14 +67,14 @@ public class ItemBoulderBlastCharge extends Item {
     // ========== Get Icon ==========
     @SideOnly(Side.CLIENT)
     @Override
-    public Icon getIconFromDamage(int par1) {
+    public IIcon getIconFromDamage(int par1) {
         return AssetManager.getIcon(itemName);
     }
     
     // ========== Register Icons ==========
     @SideOnly(Side.CLIENT)
     @Override
-    public void registerIcons(IconRegister iconRegister) {
+    public void registerIcons(IIconRegister iconRegister) {
         AssetManager.addIcon(itemName, MountainMobs.domain, "boulderblast", iconRegister);
     }
 }

@@ -14,8 +14,8 @@ public class ItemScepterFrostbolt extends ItemScepter {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemScepterFrostbolt(int itemID) {
-        super(itemID);
+    public ItemScepterFrostbolt() {
+        super();
     	this.domain = ArcticMobs.domain;
     	this.itemName = "FrostboltScepter";
         this.setUnlocalizedName(this.itemName);
@@ -56,7 +56,7 @@ public class ItemScepterFrostbolt extends ItemScepter {
 	// ==================================================
     @Override
     public boolean getIsRepairable(ItemStack itemStack, ItemStack repairStack) {
-        if(repairStack.itemID == ObjectManager.getItem("FrostboltCharge").itemID) return true;
+        if(repairStack.getItem() == ObjectManager.getItem("FrostboltCharge")) return true;
         return super.getIsRepairable(itemStack, repairStack);
     }
 }

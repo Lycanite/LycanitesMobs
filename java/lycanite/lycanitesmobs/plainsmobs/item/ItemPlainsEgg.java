@@ -8,8 +8,8 @@ public class ItemPlainsEgg extends ItemCustomSpawnEgg {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemPlainsEgg(int itemID) {
-        super(itemID);
+    public ItemPlainsEgg() {
+        super();
         setUnlocalizedName("PlainsSpawnEgg");
         this.mod = PlainsMobs.instance;
         this.itemName = "PlainsEgg";

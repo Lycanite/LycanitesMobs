@@ -14,8 +14,8 @@ public class ItemScepterMudshot extends ItemScepter {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemScepterMudshot(int itemID) {
-        super(itemID);
+    public ItemScepterMudshot() {
+        super();
     	this.domain = DesertMobs.domain;
     	this.itemName = "MudshotScepter";
         this.setUnlocalizedName(this.itemName);
@@ -56,7 +56,7 @@ public class ItemScepterMudshot extends ItemScepter {
 	// ==================================================
     @Override
     public boolean getIsRepairable(ItemStack itemStack, ItemStack repairStack) {
-        if(repairStack.itemID == ObjectManager.getItem("MudshotCharge").itemID) return true;
+        if(repairStack.getItem() == ObjectManager.getItem("MudshotCharge")) return true;
         return super.getIsRepairable(itemStack, repairStack);
     }
 }

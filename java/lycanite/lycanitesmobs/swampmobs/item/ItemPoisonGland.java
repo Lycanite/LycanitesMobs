@@ -4,12 +4,15 @@ import java.util.List;
 
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
+import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.swampmobs.SwampMobs;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -20,8 +23,8 @@ public class ItemPoisonGland extends Item {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemPoisonGland(int itemID) {
-        super(itemID - 256);
+    public ItemPoisonGland() {
+        super();
         setMaxStackSize(64);
         setCreativeTab(LycanitesMobs.creativeTab);
         setUnlocalizedName("PoisonGland");
@@ -77,11 +80,11 @@ public class ItemPoisonGland extends Item {
                 return false;
             }
             else {
-                int i1 = par3World.getBlockId(par4, par5, par6);
+                Block block = par3World.getBlock(par4, par5, par6);
 
-                if (i1 == 0) {
+                if (block == Blocks.air) {
                     par3World.playSoundEffect((double)par4 + 0.5D, (double)par5 + 0.5D, (double)par6 + 0.5D, AssetManager.getSound("PoisonCloud"), 1.0F, itemRand.nextFloat() * 0.4F + 0.8F);
-                    par3World.setBlock(par4, par5, par6, SwampMobs.config.blockIDs.get("PoisonCloud"));
+                    par3World.setBlock(par4, par5, par6, ObjectManager.getBlock("PoisonCloud"));
                 }
 
                 if (!par2EntityPlayer.capabilities.isCreativeMode) {
@@ -100,14 +103,14 @@ public class ItemPoisonGland extends Item {
     // ========== Get Icon ==========
     @SideOnly(Side.CLIENT)
     @Override
-    public Icon getIconFromDamage(int par1) {
+    public IIcon getIconFromDamage(int par1) {
         return AssetManager.getIcon(itemName);
     }
     
     // ========== Register Icons ==========
     @SideOnly(Side.CLIENT)
     @Override
-    public void registerIcons(IconRegister iconRegister) {
+    public void registerIcons(IIconRegister iconRegister) {
         AssetManager.addIcon(itemName, SwampMobs.domain, "poisongland", iconRegister);
     }
 }

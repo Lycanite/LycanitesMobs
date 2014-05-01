@@ -54,7 +54,7 @@ public class ForestMobs implements ILycaniteMod {
 		ObjectManager.setCurrentMod(this);
 		
 		// ========== Create Items ==========
-		ObjectManager.addItem("ForestEgg", "Spawn", new ItemForestEgg(config.itemIDs.get("ForestEgg")));
+		ObjectManager.addItem("ForestEgg", "Spawn", new ItemForestEgg());
 	}
 	
 	

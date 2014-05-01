@@ -29,18 +29,5 @@ public class SubConfig extends Config {
 		loadMobSettings("Erepede", 4, 5, 1, 2, "MONSTER");
 		loadMobSettings("Gorgomite", 6, 40, 1, 3, "MONSTER");
 		loadMobSettings("Manticore", 4, 10, 1, 5, "MONSTER");
-		
-		// ========== Block IDs ==========
-		
-		
-		// ========== Item IDs ==========
-		loadSetting(itemIDs, "Item IDs", "DesertEgg", "Desert Spawn Egg ID", 24050);
-		loadSetting(itemIDs, "Item IDs", "ThrowingScythe", "Throwing Scythe ID", 24051);
-		loadSetting(itemIDs, "Item IDs", "JoustMeatRaw", "Raw Joust Meat ID", 24052);
-		loadSetting(itemIDs, "Item IDs", "JoustMeatCooked", "Cooked Joust Meat ID", 24053);
-		loadSetting(itemIDs, "Item IDs", "MudshotCharge", "Mudshot Charge ID", 24054);
-		loadSetting(itemIDs, "Item IDs", "ScytheScepter", "Scythe Scepter ID", 24055);
-		loadSetting(itemIDs, "Item IDs", "MudshotScepter", "Mudshot Scepter ID", 24056);
-		loadSetting(itemIDs, "Item IDs", "AmberCake", "Amber Cake ID", 24057);
 	}
 }

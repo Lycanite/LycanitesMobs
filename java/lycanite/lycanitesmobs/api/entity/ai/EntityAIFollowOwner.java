@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs.api.entity.ai;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
 
 public class EntityAIFollowOwner extends EntityAIFollow {
 	// Targets:
@@ -66,13 +67,14 @@ public class EntityAIFollowOwner extends EntityAIFollow {
     // ========== Teleport to Owner ==========
     public void teleportToOwner() {
     	if(this.getTarget() != null) {
+    		World world = this.getTarget().worldObj;
 	    	int i = MathHelper.floor_double(this.getTarget().posX) - 2;
 	        int j = MathHelper.floor_double(this.getTarget().boundingBox.minY);
 	        int k = MathHelper.floor_double(this.getTarget().posZ) - 2;
 	
 	        for(int l = 0; l <= 4; ++l) {
 	            for(int i1 = 0; i1 <= 4; ++i1) {
-	                if((l < 1 || i1 < 1 || l > 3 || i1 > 3) && this.host.worldObj.doesBlockHaveSolidTopSurface(i + l, j - 1, k + i1) && !this.host.worldObj.isBlockNormalCube(i + l, j, k + i1) && !this.host.worldObj.isBlockNormalCube(i + l, j + 1, k + i1)) {
+	                if((l < 1 || i1 < 1 || l > 3 || i1 > 3) && this.host.worldObj.doesBlockHaveSolidTopSurface(world, i + l, j - 1, k + i1) && !this.host.worldObj.isBlockNormalCubeDefault(i + l, j, k + i1, true) && !this.host.worldObj.isBlockNormalCubeDefault(i + l, j + 1, k + i1, true)) {
 	                    this.host.setLocationAndAngles((double)((float)(i + l) + 0.5F), (double)j, (double)((float)(k + i1) + 0.5F), this.host.rotationYaw, this.host.rotationPitch);
 	                    this.host.clearMovement();
 	                    return;

@@ -14,8 +14,8 @@ public class ItemScepterDemonicLightning extends ItemScepter {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemScepterDemonicLightning(int itemID) {
-        super(itemID);
+    public ItemScepterDemonicLightning() {
+        super();
     	this.domain = DemonMobs.domain;
     	this.itemName = "DemonicLightningScepter";
         this.setUnlocalizedName(this.itemName);
@@ -57,7 +57,7 @@ public class ItemScepterDemonicLightning extends ItemScepter {
 	// ==================================================
     @Override
     public boolean getIsRepairable(ItemStack itemStack, ItemStack repairStack) {
-        if(repairStack.itemID == ObjectManager.getItem("DemonicLightningCharge").itemID) return true;
+        if(repairStack.getItem() == ObjectManager.getItem("DemonicLightningCharge")) return true;
         return super.getIsRepairable(itemStack, repairStack);
     }
 }

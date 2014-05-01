@@ -77,8 +77,8 @@ public class DesertMobs implements ILycaniteMod {
 		ObjectManager.setCurrentMod(this);
 		
 		// ========== Create Items ==========
-		ObjectManager.addItem("DesertEgg", "Spawn", new ItemDesertEgg(config.itemIDs.get("DesertEgg")));
-		ObjectManager.addItem("ThrowingScythe", "Throwing Scythe", new ItemThrowingScythe(config.itemIDs.get("ThrowingScythe")));
+		ObjectManager.addItem("DesertEgg", "Spawn", new ItemDesertEgg());
+		ObjectManager.addItem("ThrowingScythe", "Throwing Scythe", new ItemThrowingScythe());
 		
 		ObjectManager.addItem("JoustMeatRaw", "Raw Joust Meat", new ItemCustomFood("JoustMeatRaw", domain, 2, 0.5F).setPotionEffect(Potion.moveSlowdown.id, 45, 2, 0.8F));
 		ObjectLists.addItem("RawMeat", ObjectManager.getItem("JoustMeatRaw"));
@@ -87,9 +87,9 @@ public class DesertMobs implements ILycaniteMod {
 		ObjectManager.addItem("AmberCake", "Amber Cake", new ItemCustomFood("AmberCake", domain, 6, 0.7F).setPotionEffect(Potion.moveSpeed.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
 		ObjectLists.addItem("CookedMeat", ObjectManager.getItem("AmberCake"));
 		
-		ObjectManager.addItem("MudshotCharge", "Mudshot Charge", new ItemMudshotCharge(config.itemIDs.get("MudshotCharge")));
-		ObjectManager.addItem("ScytheScepter", "Scythe Scepter", new ItemScepterScythe(config.itemIDs.get("ScytheScepter")));
-		ObjectManager.addItem("MudshotScepter", "Mudshot Scepter", new ItemScepterMudshot(config.itemIDs.get("MudshotScepter")));
+		ObjectManager.addItem("MudshotCharge", "Mudshot Charge", new ItemMudshotCharge());
+		ObjectManager.addItem("ScytheScepter", "Scythe Scepter", new ItemScepterScythe());
+		ObjectManager.addItem("MudshotScepter", "Mudshot Scepter", new ItemScepterMudshot());
 		
 		// ========== Create Blocks ==========
 		

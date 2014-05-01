@@ -127,6 +127,12 @@ public class BlockBase extends Block {
 			world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world));
     }
     
+    // ========== High Update Priority ==========
+    @Override
+    public boolean func_149698_L() {
+    	return super.func_149698_L();
+    }
+    
     
 	// ==================================================
 	//                    Collision

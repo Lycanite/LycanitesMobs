@@ -122,6 +122,6 @@ public class BlockPoisonCloud extends BlockBase {
     // ========== Get Render Type ==========
     @Override
     public int getRenderType() {
-        return -1;
+        return BlockBase.RENDER_TYPE.CROSS.id;
     }
 }

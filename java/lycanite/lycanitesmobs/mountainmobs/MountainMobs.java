@@ -62,16 +62,16 @@ public class MountainMobs implements ILycaniteMod {
 		ObjectManager.setCurrentMod(this);
 		
 		// ========== Create Items ==========
-		ObjectManager.addItem("MountainEgg", "Spawn", new ItemMountainEgg(config.itemIDs.get("MountainEgg")));
+		ObjectManager.addItem("MountainEgg", "Spawn", new ItemMountainEgg());
 		
-		ObjectManager.addItem("BoulderBlastCharge", "Boulder Blast Charge", new ItemBoulderBlastCharge(config.itemIDs.get("BoulderBlastCharge")));
-		ObjectManager.addItem("BoulderBlastScepter", "Boulder Blast Scepter", new ItemScepterBoulderBlast(config.itemIDs.get("BoulderBlastScepter")));
+		ObjectManager.addItem("BoulderBlastCharge", "Boulder Blast Charge", new ItemBoulderBlastCharge());
+		ObjectManager.addItem("BoulderBlastScepter", "Boulder Blast Scepter", new ItemScepterBoulderBlast());
 		
-		//ObjectManager.addItem("YaleMeatRaw", "Raw Yale Meat", new ItemCustomFood(config.itemIDs.get("YaleMeatRaw"), "YaleMeatRaw", domain, 2, 0.5F).setPotionEffect(Potion.digSlowdown.id, 45, 2, 0.8F));
+		//ObjectManager.addItem("YaleMeatRaw", "Raw Yale Meat", new ItemCustomFood("YaleMeatRaw", domain, 2, 0.5F).setPotionEffect(Potion.digSlowdown.id, 45, 2, 0.8F));
 		//ObjectLists.addItem("RawMeat", ObjectManager.getItem("YaleMeatRaw"));
-		//ObjectManager.addItem("YaleMeatCooked", "Cooked Yale Meat", new ItemCustomFood(config.itemIDs.get("YaleMeatCooked"), "YaleMeatCooked", domain, 6, 0.7F));
+		//ObjectManager.addItem("YaleMeatCooked", "Cooked Yale Meat", new ItemCustomFood("YaleMeatCooked", domain, 6, 0.7F));
 		//ObjectLists.addItem("CookedMeat", ObjectManager.getItem("YaleMeatCooked"));
-		//ObjectManager.addItem("PeaksKebab", "Peaks Kebab", new ItemCustomFood(config.itemIDs.get("PeaksKebab"), "PeaksKebab", domain, 6, 0.7F).setPotionEffect(Potion.digSpeed.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
+		//ObjectManager.addItem("PeaksKebab", "Peaks Kebab", new ItemCustomFood("PeaksKebab", domain, 6, 0.7F).setPotionEffect(Potion.digSpeed.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
 		//ObjectLists.addItem("CookedMeat", ObjectManager.getItem("PeaksKebab"));
 	}
 	

@@ -8,8 +8,8 @@ public class ItemInfernoEgg extends ItemCustomSpawnEgg {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemInfernoEgg(int itemID) {
-        super(itemID);
+    public ItemInfernoEgg() {
+        super();
         setUnlocalizedName("InfernoSpawnEgg");
         this.mod = InfernoMobs.instance;
         this.itemName = "InfernoEgg";

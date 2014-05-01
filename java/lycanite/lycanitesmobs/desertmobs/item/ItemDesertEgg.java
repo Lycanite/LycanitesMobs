@@ -8,8 +8,8 @@ public class ItemDesertEgg extends ItemCustomSpawnEgg {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemDesertEgg(int itemID) {
-        super(itemID);
+    public ItemDesertEgg() {
+        super();
         setUnlocalizedName("DesertSpawnEgg");
         this.mod = DesertMobs.instance;
         this.itemName = "DesertEgg";

@@ -9,6 +9,7 @@ import net.minecraft.block.BlockColored;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
@@ -22,7 +23,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class EntityCreatureTameable extends EntityCreatureAgeable implements EntityOwnable {
+public class EntityCreatureTameable extends EntityCreatureAgeable implements IEntityOwnable {
 	
 	// Stats:
 	public float hunger = this.getCreatureHungerMax();
@@ -65,9 +66,9 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
     
     // ========== Name ==========
     @Override
-    public String getEntityName() {
+    public String getCommandSenderName() {
     	if(!this.isTamed() || !LycanitesMobs.config.getFeatureBool("OwnerTags"))
-    		return super.getEntityName();
+    		return super.getCommandSenderName();
     	
     	String ownerName = this.getOwnerName();
     	String ownerSuffix = "'s ";
@@ -76,7 +77,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
     	String ownedName = ownerName + ownerSuffix + this.getFullName();
     	
     	if(this.hasCustomNameTag())
-    		return super.getEntityName() + " (" + ownedName + ")";
+    		return super.getCommandSenderName() + " (" + ownedName + ")";
     	else
     		return ownedName;
     }
@@ -233,7 +234,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements Ent
     	
     	// Color:
     	if(command.equals("Color")) {
-    		int colorID = BlockColored.getBlockFromDye(itemStack.getItemDamage()); //TODO Use wolf code for new collar coloring.
+    		int colorID = BlockColored.func_150032_b(itemStack.getItemDamage()); // getBlockFromDye()
             if(colorID != this.getCollarColor()) {
                 this.setCollarColor(colorID);
         		this.consumePlayersItem(player, itemStack);

@@ -145,7 +145,7 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
     	if(itemStack != null) {
     		
     		// Spawn Egg:
-    		if(itemStack.itemID == ObjectManager.getItem(this.eggName).itemID)
+    		if(itemStack.getItem() == ObjectManager.getItem(this.eggName))
     			commands.put(CMD_PRIOR.ITEM_USE.id, "Spawn Baby");
     		
     		// Breeding Item:
@@ -248,7 +248,7 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
 	// ========== Breeding Item ==========
 	public boolean isBreedingItem(ItemStack itemStack) {
 		return itemStack != null
-				&& itemStack.itemID == -1
+				&& itemStack.getItem() == null
 				&& itemStack.getItemDamage() == -1;
     }
 	

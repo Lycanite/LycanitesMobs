@@ -47,9 +47,7 @@ public class SaltwaterMobs implements ILycaniteMod {
 		ObjectManager.setCurrentMod(this);
 		
 		// ========== Create Items ==========
-		ObjectManager.addItem("SaltwaterEgg", "Spawn", new ItemSaltwaterEgg(config.itemIDs.get("SaltwaterEgg")));
-		//ObjectManager.addItem("EmberCharge", "Ember Charge", new ItemEmberCharge(config.itemIDs.get("EmberCharge")));
-		//ObjectManager.addItem("EmberScepter", "Ember Scepter", new ItemScepterEmber(config.itemIDs.get("EmberScepter")));
+		ObjectManager.addItem("SaltwaterEgg", "Spawn", new ItemSaltwaterEgg());
 	}
 	
 	

@@ -7,6 +7,7 @@ import lycanite.lycanitesmobs.api.block.BlockBase;
 import lycanite.lycanitesmobs.junglemobs.JungleMobs;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.Item;
 import net.minecraft.world.World;
 
 public class BlockQuickWeb extends BlockBase {
@@ -14,8 +15,8 @@ public class BlockQuickWeb extends BlockBase {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-	public BlockQuickWeb(int blockID) {
-		super(blockID, Material.web);
+	public BlockQuickWeb() {
+		super(Material.web);
 		
 		// Properties:
 		this.mod = JungleMobs.instance;
@@ -41,8 +42,8 @@ public class BlockQuickWeb extends BlockBase {
 	//                     Break
 	// ==================================================
 	@Override
-	public int idDropped(int metadata, Random random, int fortune) {
-		return ObjectManager.getItem("QuickWebCharge").itemID;
+	public Item getItemDropped(int metadata, Random random, int fortune) {
+		return ObjectManager.getItem("QuickWebCharge");
 	}
 	
 	@Override

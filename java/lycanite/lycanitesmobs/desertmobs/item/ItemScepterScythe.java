@@ -14,8 +14,8 @@ public class ItemScepterScythe extends ItemScepter {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemScepterScythe(int itemID) {
-        super(itemID);
+    public ItemScepterScythe() {
+        super();
     	this.domain = DesertMobs.domain;
     	this.itemName = "ScytheScepter";
         this.setUnlocalizedName(this.itemName);
@@ -55,7 +55,7 @@ public class ItemScepterScythe extends ItemScepter {
 	// ==================================================
     @Override
     public boolean getIsRepairable(ItemStack itemStack, ItemStack repairStack) {
-        if(repairStack.itemID == ObjectManager.getItem("ThrowingScythe").itemID) return true;
+        if(repairStack.getItem() == ObjectManager.getItem("ThrowingScythe")) return true;
         return super.getIsRepairable(itemStack, repairStack);
     }
 }

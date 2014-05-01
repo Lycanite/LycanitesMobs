@@ -21,18 +21,19 @@ import lycanite.lycanitesmobs.api.spawning.SpawnType;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.EnchantmentThorns;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -246,7 +247,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         // Stats:
         this.stepHeight = 0.5F;
         this.experienceValue = experience;
-        this.inventory = new InventoryCreature(this.getEntityName(), this);
+        this.inventory = new InventoryCreature(this.getCommandSenderName(), this);
         if(this.mobInfo.defaultDrops)
         	this.loadItemDrops();
         this.loadCustomDrops();
@@ -280,17 +281,17 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Creates and sets all the entity attributes using a HashMap of values. **/
     protected void applyEntityAttributes(HashMap<String, Double> baseAttributes) {
         super.applyEntityAttributes();
-        this.getAttributeMap().func_111150_b(SharedMonsterAttributes.attackDamage);
+        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage);
         if(baseAttributes.containsKey("maxHealth"))
-        	this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(baseAttributes.get("maxHealth"));
+        	this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(baseAttributes.get("maxHealth"));
         if(baseAttributes.containsKey("movementSpeed"))
-        	this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(baseAttributes.get("movementSpeed"));
+        	this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(baseAttributes.get("movementSpeed"));
         if(baseAttributes.containsKey("knockbackResistance"))
-        	this.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setAttribute(baseAttributes.get("knockbackResistance"));
+        	this.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(baseAttributes.get("knockbackResistance"));
         if(baseAttributes.containsKey("followRange"))
-        	this.getEntityAttribute(SharedMonsterAttributes.followRange).setAttribute(baseAttributes.get("followRange"));
+        	this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(baseAttributes.get("followRange"));
         if(baseAttributes.containsKey("attackDamage"))
-        	this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setAttribute(baseAttributes.get("attackDamage"));
+        	this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(baseAttributes.get("attackDamage"));
     }
 	
 	// ========== Init ==========
@@ -313,7 +314,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     
     /** Returns the display name of this entity. Use this when displaying it's name. **/
     @Override
-    public String getEntityName() {
+    public String getCommandSenderName() {
     	if(this.hasCustomNameTag())
     		return this.getCustomNameTag();
     	else
@@ -495,7 +496,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         		for(int i = x - this.spawnedFromType.range; i <= x + this.spawnedFromType.range; i++)
                 	for(int j = y - this.spawnedFromType.range; j <= y + this.spawnedFromType.range; j++)
                     	for(int k = z - this.spawnedFromType.range; k <= z + this.spawnedFromType.range; k++) {
-                    		Material blockMaterial = world.getBlockMaterial(i, j, k);
+                    		Material blockMaterial = world.getBlock(i, j, k).getMaterial();
                     		for(Material validMaterial : this.spawnedFromType.materials) {
     							if(blockMaterial == validMaterial) {
     								if(++blocksFound >= this.mobInfo.spawnInfo.spawnBlockCost)
@@ -508,9 +509,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
         		for(int i = x - this.spawnedFromType.range; i <= x + this.spawnedFromType.range; i++)
                 	for(int j = y - this.spawnedFromType.range; j <= y + this.spawnedFromType.range; j++)
                     	for(int k = z - this.spawnedFromType.range; k <= z + this.spawnedFromType.range; k++) {
-                    		int blockID = world.getBlockId(i, j, k);
+                    		Block block = world.getBlock(i, j, k);
                     		for(Block validBlock : this.spawnedFromType.blocks) {
-    							if(blockID == validBlock.blockID) {
+    							if(block == validBlock) {
     								if(++blocksFound >= this.mobInfo.spawnInfo.spawnBlockCost)
                         				return true;
     							}
@@ -525,7 +526,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Egg Spawn ==========
     /** Called once this mob is spawned with a Spawn Egg. **/
     @Override
-    public EntityLivingData onSpawnWithEgg(EntityLivingData livingData) {
+    public IEntityLivingData onSpawnWithEgg(IEntityLivingData livingData) {
     	livingData = super.onSpawnWithEgg(livingData);
         return livingData;
     }
@@ -561,7 +562,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         	return false;
         if(this.isTemporary && this.temporaryDuration-- <= 0)
         	return true;
-        if((!this.mobInfo.peacefulDifficulty && this.worldObj.difficultySetting <= 0) && !(this.getLeashed() || this.isPersistant() || this.hasCustomNameTag()))
+        if((!this.mobInfo.peacefulDifficulty && this.worldObj.difficultySetting == EnumDifficulty.PEACEFUL) && !(this.getLeashed() || this.isPersistant() || this.hasCustomNameTag()))
         	return true;
         return false;
     }
@@ -573,9 +574,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	for(int i = x - checkRange; i <= x + checkRange; i++)
         	for(int j = y - checkRange; j <= y + checkRange; j++)
             	for(int k = z - checkRange; k <= z + checkRange; k++) {
-            		TileEntity tileEntity = this.worldObj.getBlockTileEntity(i, j, k);
+            		TileEntity tileEntity = this.worldObj.getTileEntity(i, j, k);
             		if(tileEntity != null && tileEntity instanceof TileEntityMobSpawner) {
-            			if(((TileEntityMobSpawner)tileEntity).getSpawnerLogic().getEntityNameToSpawn().equals(ObjectManager.entityLists.get(this.mod.getDomain()).getEntityString(this)))
+            			if(((TileEntityMobSpawner)tileEntity).func_145881_a().getEntityNameToSpawn().equals(ObjectManager.entityLists.get(this.mod.getDomain()).getEntityString(this))) //getSpawnerLogic()
             				return true;
             		}
             			
@@ -589,7 +590,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	if(this.worldObj.canBlockSeeTheSky(x, y, z))
     		return false;
     	for(int j = y; j < this.worldObj.getHeight(); j++) {
-    		Material blockMaterial = this.worldObj.getBlockMaterial(x, j, z);
+    		Material blockMaterial = this.worldObj.getBlock(x, j, z).getMaterial();
     		if(blockMaterial != Material.air
     				&& blockMaterial != Material.leaves
     				&& blockMaterial != Material.plants
@@ -653,11 +654,11 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	
 	/** Returns the shared multiplier for all stats based on difficulty. **/
 	public double getDifficultyMultiplier(String stat) {
-		int difficulty = this.worldObj.difficultySetting;
+		EnumDifficulty difficulty = this.worldObj.difficultySetting;
 		String difficultyName = "Easy";
-		if(difficulty >= 3)
+		if(difficulty.getDifficultyId() >= 3)
 			difficultyName = "Hard";
-		else if(difficulty == 2)
+		else if(difficulty == EnumDifficulty.NORMAL)
 			difficultyName = "Normal";
 		return MobInfo.difficultyMutlipliers.get(difficultyName.toUpperCase() + "-" + stat.toUpperCase());
 	}
@@ -776,7 +777,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         	float brightness = this.getBrightness(1.0F);
             if(brightness > 0.5F && this.rand.nextFloat() * 30.0F < (brightness - 0.4F) * 2.0F && this.worldObj.canBlockSeeTheSky(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ))) {
                 boolean shouldBurn = true;
-                ItemStack helmet = this.getCurrentItemOrArmor(4);
+                ItemStack helmet = this.inventory.getEquipmentStack("head");
                 if(helmet != null) {
                     if(helmet.isItemStackDamageable()) {
                     	helmet.setItemDamage(helmet.getItemDamageForDisplay() + this.rand.nextInt(2));
@@ -945,10 +946,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
     }
     
     // ========== Leash ==========
-    /** I think this is the leash update that manages all behaviour to do with their entity being leashed or unleashed. **/
+    /** The leash update that manages all behaviour to do with the entity being leashed or unleashed. **/
     @Override
-    protected void func_110159_bB() {
-        super.func_110159_bB();
+    protected void updateLeashedState() {
+        super.updateLeashedState();
         if(this.getLeashed() && this.getLeashedToEntity() != null && this.getLeashedToEntity().worldObj == this.worldObj) {
             Entity entity = this.getLeashedToEntity();
             this.setHome((int)entity.posX, (int)entity.posY, (int)entity.posZ, 5);
@@ -1208,8 +1209,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
             if(j > 0)
             	target.setFire(j * 4);
             
-            if(target instanceof EntityLivingBase)
-                EnchantmentThorns.func_92096_a(this, (EntityLivingBase)target, this.rand);
+            //if(target instanceof EntityLivingBase)
+                //EnchantmentThorns.func_151367_b(this, (EntityLivingBase)target, this.rand);
         }
         
         return attackSuccess;
@@ -1534,11 +1535,11 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Item ID ==========
     /** Gets the item ID of what this mob mostly drops. This is provided for compatibility but is not used by the DropRate code. **/
     @Override
-    protected int getDropItemId() {
+    protected Item getDropItem() {
         if(drops.get(0) != null && !this.isMinion())
-        	return drops.get(0).itemID;
+        	return drops.get(0).item.getItem();
         else
-        	return 0;
+        	return null;
     }
     
     // ========== Drop Items ==========
@@ -1615,7 +1616,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Actually opens the GUI to the player, should be used by openGUI() for an initial opening and then by refreshGUIViewers() for constant updates. **/
     public void openGUIToPlayer(EntityPlayer player) {
     	if(player != null)
-    		player.openGui(LycanitesMobs.instance, GuiHandler.GuiType.ENTITY.id, this.worldObj, this.entityId, 0, 0);
+    		player.openGui(LycanitesMobs.instance, GuiHandler.GuiType.ENTITY.id, this.worldObj, this.getEntityId(), 0, 0);
     }
     
     /** Schedules a GUI refresh, normally takes 2 ticks for everything to update for display. **/
@@ -1654,10 +1655,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	
     	// Item Commands:
     	if(itemStack != null) {
-    		if(itemStack.itemID == Item.leash.itemID && this.canLeash(player))
+    		if(itemStack.getItem() == Items.lead && this.canLeash(player))
     			commands.put(CMD_PRIOR.ITEM_USE.id, "Leash");
 
-    		if(itemStack.itemID == Item.nameTag.itemID) {
+    		if(itemStack.getItem() == Items.name_tag) {
     			if(this.canNameTag(player))
     				return new HashMap<Integer, String>(); // Cancels all commands so that vanilla can take care of name tagging.
     			else
@@ -2050,9 +2051,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     protected String getDeathSound() { return AssetManager.getSound(this.entityName + "Death"); }
      
     // ========== Step ==========
-    /** Plays the footstep sound that this creature makes when moving on the ground. **/
-    @Override
-    protected void playStepSound(int par1, int par2, int par3, int par4) {
+    /** Plays an additional footstep sound that this creature makes when moving on the ground (all mobs use the block's stepping sounds by default). **/
+    protected void getStepSound(int par1, int par2, int par3, int par4) {
     	 if(this.canFly() || !this.hasStepSound) return;
     	 this.playSound(AssetManager.getSound(this.entityName + "Step"), 0.25F, 1.0F);
     }

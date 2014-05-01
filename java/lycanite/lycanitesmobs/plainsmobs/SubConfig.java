@@ -26,14 +26,5 @@ public class SubConfig extends Config {
 		loadMobSettings("Maka", 14, 10, 3, 4, "CREATURE");
 		loadMobSettings("MakaAlpha", 4, 4, 1, 2, "CREATURE");
 		loadMobSettings("Zoataur", 4, 4, 1, 3, "MONSTER");
-		
-		// ========== Block IDs ==========
-		//loadSetting(blockIDs, "Block IDs", "PoisonCloud", "Poison Cloud Block ID", 3853);
-		
-		// ========== Item IDs ==========
-		loadSetting(itemIDs, "Item IDs", "PlainsEgg", "Plains Spawn Egg ID", 24010);
-		loadSetting(itemIDs, "Item IDs", "MakaMeatRaw", "Raw Maka Meat ID", 24011);
-		loadSetting(itemIDs, "Item IDs", "MakaMeatCooked", "Cooked Maka Meat ID", 24012);
-		loadSetting(itemIDs, "Item IDs", "BulwarkBurger", "Bulwark Burger ID", 24013);
 	}
 }

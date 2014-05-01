@@ -67,11 +67,11 @@ public class ArcticMobs implements ILycaniteMod {
 		ObjectManager.setCurrentMod(this);
 		
 		// ========== Create Items ==========
-		ObjectManager.addItem("ArcticEgg", "Spawn", new ItemArcticEgg(config.itemIDs.get("ArcticEgg")));
-		ObjectManager.addItem("FrostboltCharge", "Frostbolt Charge", new ItemFrostboltCharge(config.itemIDs.get("FrostboltCharge")));
-		ObjectManager.addItem("FrostboltScepter", "Frostbolt Scepter", new ItemScepterFrostbolt(config.itemIDs.get("FrostboltScepter")));
-		ObjectManager.addItem("FrostwebCharge", "Frostweb Charge", new ItemFrostwebCharge(config.itemIDs.get("FrostwebCharge")));
-		ObjectManager.addItem("FrostwebScepter", "Frostweb Scepter", new ItemScepterFrostweb(config.itemIDs.get("FrostwebScepter")));
+		ObjectManager.addItem("ArcticEgg", "Spawn", new ItemArcticEgg());
+		ObjectManager.addItem("FrostboltCharge", "Frostbolt Charge", new ItemFrostboltCharge());
+		ObjectManager.addItem("FrostboltScepter", "Frostbolt Scepter", new ItemScepterFrostbolt());
+		ObjectManager.addItem("FrostwebCharge", "Frostweb Charge", new ItemFrostwebCharge());
+		ObjectManager.addItem("FrostwebScepter", "Frostweb Scepter", new ItemScepterFrostweb());
 
 		// ========== Create Blocks ==========
 		ObjectManager.addBlock("Frostweb", "Frostweb", new BlockFrostweb());

@@ -8,8 +8,8 @@ public class ItemArcticEgg extends ItemCustomSpawnEgg {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemArcticEgg(int itemID) {
-        super(itemID);
+    public ItemArcticEgg() {
+        super();
         setUnlocalizedName("ArcticSpawnEgg");
         this.mod = ArcticMobs.instance;
         this.itemName = "ArcticEgg";

@@ -6,7 +6,7 @@ import lycanite.lycanitesmobs.api.item.ItemScepter;
 import lycanite.lycanitesmobs.swampmobs.SwampMobs;
 import lycanite.lycanitesmobs.swampmobs.entity.EntityPoisonRay;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -16,8 +16,8 @@ public class ItemScepterPoisonRay extends ItemScepter {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemScepterPoisonRay(int itemID) {
-        super(itemID);
+    public ItemScepterPoisonRay() {
+        super();
     	this.domain = SwampMobs.domain;
     	this.itemName = "PoisonRayScepter";
         this.setUnlocalizedName(this.itemName);
@@ -70,7 +70,7 @@ public class ItemScepterPoisonRay extends ItemScepter {
 	// ==================================================
     @Override
     public boolean getIsRepairable(ItemStack itemStack, ItemStack repairStack) {
-        if(repairStack.itemID == Item.fermentedSpiderEye.itemID) return true;
+        if(repairStack.getItem() == Items.fermented_spider_eye) return true;
         return super.getIsRepairable(itemStack, repairStack);
     }
 }

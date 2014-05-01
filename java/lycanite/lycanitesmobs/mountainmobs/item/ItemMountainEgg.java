@@ -8,8 +8,8 @@ public class ItemMountainEgg extends ItemCustomSpawnEgg {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemMountainEgg(int itemID) {
-        super(itemID);
+    public ItemMountainEgg() {
+        super();
         setUnlocalizedName("MountainSpawnEgg");
         this.mod = MountainMobs.instance;
         this.itemName = "MountainEgg";

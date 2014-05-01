@@ -26,7 +26,7 @@ public class EntityAIBreakDoor extends EntityAIDoorInteract {
     	if(!this.host.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"))
     		return false;
     	
-        return !this.targetDoor.isDoorOpen(this.host.worldObj, this.entityPosX, this.entityPosY, this.entityPosZ);
+        return !this.targetDoor.func_150015_f(this.host.worldObj, this.entityPosX, this.entityPosY, this.entityPosZ); // isDoorOpen()
     }
 
 	
@@ -44,7 +44,7 @@ public class EntityAIBreakDoor extends EntityAIDoorInteract {
  	// ==================================================
     public boolean continueExecuting() {
         double distance = this.host.getDistanceSq((double)this.entityPosX, (double)this.entityPosY, (double)this.entityPosZ);
-        return this.breakingTime <= 240 && !this.targetDoor.isDoorOpen(this.host.worldObj, this.entityPosX, this.entityPosY, this.entityPosZ) && distance < 4.0D;
+        return this.breakingTime <= 240 && !this.targetDoor.func_150015_f(this.host.worldObj, this.entityPosX, this.entityPosY, this.entityPosZ) && distance < 4.0D; // isDoorOpen()
     }
 
 	
@@ -70,14 +70,14 @@ public class EntityAIBreakDoor extends EntityAIDoorInteract {
         int breaking = (int)((float)this.breakingTime / 240.0F * 10.0F);
 
         if(breaking != this.lastBreakTime) {
-            this.host.worldObj.destroyBlockInWorldPartially(this.host.entityId, this.entityPosX, this.entityPosY, this.entityPosZ, breaking);
+            this.host.worldObj.destroyBlockInWorldPartially(this.host.getEntityId(), this.entityPosX, this.entityPosY, this.entityPosZ, breaking);
             this.lastBreakTime = breaking;
         }
 
         if(this.breakingTime == 240 && this.host.worldObj.difficultySetting == EnumDifficulty.HARD) {
             this.host.worldObj.setBlockToAir(this.entityPosX, this.entityPosY, this.entityPosZ);
             this.host.worldObj.playAuxSFX(1012, this.entityPosX, this.entityPosY, this.entityPosZ, 0);
-            this.host.worldObj.playAuxSFX(2001, this.entityPosX, this.entityPosY, this.entityPosZ, this.targetDoor.blockID);
+            this.host.worldObj.playAuxSFX(2001, this.entityPosX, this.entityPosY, this.entityPosZ, 0);
         }
     }
 }

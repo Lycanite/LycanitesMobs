@@ -60,11 +60,11 @@ public class InfernoMobs implements ILycaniteMod {
 		ObjectManager.setCurrentMod(this);
 		
 		// ========== Create Items ==========
-		ObjectManager.addItem("InfernoEgg", "Spawn", new ItemInfernoEgg(config.itemIDs.get("InfernoEgg")));
-		ObjectManager.addItem("EmberCharge", "Ember Charge", new ItemEmberCharge(config.itemIDs.get("EmberCharge")));
-		ObjectManager.addItem("EmberScepter", "Ember Scepter", new ItemScepterEmber(config.itemIDs.get("EmberScepter")));
-		ObjectManager.addItem("MagmaCharge", "Magma Charge", new ItemMagmaCharge(config.itemIDs.get("MagmaCharge")));
-		ObjectManager.addItem("MagmaScepter", "Magma Scepter", new ItemScepterMagma(config.itemIDs.get("MagmaScepter")));
+		ObjectManager.addItem("InfernoEgg", "Spawn", new ItemInfernoEgg());
+		ObjectManager.addItem("EmberCharge", "Ember Charge", new ItemEmberCharge());
+		ObjectManager.addItem("EmberScepter", "Ember Scepter", new ItemScepterEmber());
+		ObjectManager.addItem("MagmaCharge", "Magma Charge", new ItemMagmaCharge());
+		ObjectManager.addItem("MagmaScepter", "Magma Scepter", new ItemScepterMagma());
 	}
 	
 	

@@ -14,8 +14,8 @@ public class ItemScepterHellfire extends ItemScepter {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemScepterHellfire(int itemID) {
-        super(itemID);
+    public ItemScepterHellfire() {
+        super();
     	this.domain = DemonMobs.domain;
     	this.itemName = "HellfireScepter";
         this.setUnlocalizedName(this.itemName);
@@ -57,7 +57,7 @@ public class ItemScepterHellfire extends ItemScepter {
 	// ==================================================
     @Override
     public boolean getIsRepairable(ItemStack itemStack, ItemStack repairStack) {
-        if(repairStack.itemID == ObjectManager.getItem("HellfireCharge").itemID) return true;
+        if(repairStack.getItem() == ObjectManager.getItem("HellfireCharge")) return true;
         return super.getIsRepairable(itemStack, repairStack);
     }
 }

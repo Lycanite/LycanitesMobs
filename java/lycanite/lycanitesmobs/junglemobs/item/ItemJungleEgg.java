@@ -8,8 +8,8 @@ public class ItemJungleEgg extends ItemCustomSpawnEgg {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemJungleEgg(int itemID) {
-        super(itemID);
+    public ItemJungleEgg() {
+        super();
         setUnlocalizedName("JungleSpawnEgg");
         this.mod = JungleMobs.instance;
         this.itemName = "JungleEgg";

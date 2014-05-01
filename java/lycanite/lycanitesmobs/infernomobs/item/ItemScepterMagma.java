@@ -14,8 +14,8 @@ public class ItemScepterMagma extends ItemScepter {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemScepterMagma(int itemID) {
-        super(itemID);
+    public ItemScepterMagma() {
+        super();
     	this.domain = InfernoMobs.domain;
     	this.itemName = "MagmaScepter";
         this.setUnlocalizedName(this.itemName);
@@ -57,7 +57,7 @@ public class ItemScepterMagma extends ItemScepter {
 	// ==================================================
     @Override
     public boolean getIsRepairable(ItemStack itemStack, ItemStack repairStack) {
-        if(repairStack.itemID == ObjectManager.getItem("MagmaCharge").itemID) return true;
+        if(repairStack.getItem() == ObjectManager.getItem("MagmaCharge")) return true;
         return super.getIsRepairable(itemStack, repairStack);
     }
 }

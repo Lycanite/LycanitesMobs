@@ -81,7 +81,7 @@ public class SwampMobs implements ILycaniteMod {
 		ObjectManager.setCurrentMod(this);
 		
 		// ========== Create Items ==========
-		ObjectManager.addItem("SwampEgg", "Spawn", new ItemSwampEgg(config.itemIDs.get("SwampEgg")));
+		ObjectManager.addItem("SwampEgg", "Spawn", new ItemSwampEgg());
 		
 		ObjectManager.addItem("AspidMeatRaw", "Raw Aspid Meat", new ItemCustomFood("AspidMeatRaw", domain, 2, 0.5F).setPotionEffect(Potion.poison.id, 45, 2, 0.8F));
 		ObjectLists.addItem("RawMeat", ObjectManager.getItem("AspidMeatRaw"));
@@ -90,9 +90,9 @@ public class SwampMobs implements ILycaniteMod {
 		ObjectManager.addItem("MossPie", "Moss Pie", new ItemCustomFood("MossPie", domain, 6, 0.7F).setPotionEffect(Potion.regeneration.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
 		ObjectLists.addItem("CookedMeat", ObjectManager.getItem("MossPie"));
 		
-		ObjectManager.addItem("PoisonGland", "Poison Gland", new ItemPoisonGland(config.itemIDs.get("PoisonGland")));
-		ObjectManager.addItem("PoisonRayScepter", "Poison Ray Scepter", new ItemScepterPoisonRay(config.itemIDs.get("PoisonRayScepter")));
-		ObjectManager.addItem("VenomShotScepter", "Venom Shot Scepter", new ItemScepterVenomShot(config.itemIDs.get("VenomShotScepter")));
+		ObjectManager.addItem("PoisonGland", "Poison Gland", new ItemPoisonGland());
+		ObjectManager.addItem("PoisonRayScepter", "Poison Ray Scepter", new ItemScepterPoisonRay());
+		ObjectManager.addItem("VenomShotScepter", "Venom Shot Scepter", new ItemScepterVenomShot());
 		
 		// ========== Create Blocks ==========
 		AssetManager.addSound("PoisonCloud", domain, "block/poisoncloud.wav");

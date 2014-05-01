@@ -5,7 +5,7 @@ import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.ai.attributes.AttributeInstance;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.pathfinding.PathPoint;
@@ -91,7 +91,7 @@ public abstract class EntityAITarget extends EntityAIBase {
  	//                 Get Target Distance
  	// ==================================================
     protected double getTargetDistance() {
-        AttributeInstance attributeinstance = this.host.getEntityAttribute(SharedMonsterAttributes.followRange);
+    	IAttributeInstance attributeinstance = this.host.getEntityAttribute(SharedMonsterAttributes.followRange);
         return attributeinstance == null ? 16.0D : attributeinstance.getAttributeValue();
     }
     

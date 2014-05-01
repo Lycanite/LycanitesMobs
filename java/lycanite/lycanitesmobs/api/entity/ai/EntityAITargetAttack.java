@@ -7,7 +7,7 @@ import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EntityOwnable;
+import net.minecraft.entity.IEntityOwnable;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -117,10 +117,10 @@ public class EntityAITargetAttack extends EntityAITarget {
         	return false;
         
         // Ownable Checks:
-        if(this.host instanceof EntityOwnable && StringUtils.isNotEmpty(((EntityOwnable)this.host).getOwnerName())) {
-            if(target instanceof EntityOwnable && ((EntityOwnable)this.host).getOwnerName().equals(((EntityOwnable)target).getOwnerName()))
+        if(this.host instanceof IEntityOwnable && StringUtils.isNotEmpty(((IEntityOwnable)this.host).getOwnerName())) {
+            if(target instanceof IEntityOwnable && ((IEntityOwnable)this.host).getOwnerName().equals(((IEntityOwnable)target).getOwnerName()))
                 return false;
-            if(target == ((EntityOwnable)this.host).getOwner())
+            if(target == ((IEntityOwnable)this.host).getOwner())
                 return false;
         }
         

@@ -14,8 +14,8 @@ public class ItemScepterEmber extends ItemScepter {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemScepterEmber(int itemID) {
-        super(itemID);
+    public ItemScepterEmber() {
+        super();
     	this.domain = InfernoMobs.domain;
     	this.itemName = "EmberScepter";
         this.setUnlocalizedName(this.itemName);
@@ -56,7 +56,7 @@ public class ItemScepterEmber extends ItemScepter {
 	// ==================================================
     @Override
     public boolean getIsRepairable(ItemStack itemStack, ItemStack repairStack) {
-        if(repairStack.itemID == ObjectManager.getItem("EmberCharge").itemID) return true;
+        if(repairStack.getItem() == ObjectManager.getItem("EmberCharge")) return true;
         return super.getIsRepairable(itemStack, repairStack);
     }
 }

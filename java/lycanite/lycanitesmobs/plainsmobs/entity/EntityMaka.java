@@ -27,6 +27,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -89,7 +90,7 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(ObjectManager.getItem("MakaMeatRaw").itemID, 1).setBurningItem(ObjectManager.getItem("MakaMeatCooked").itemID, -1).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("MakaMeatRaw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("MakaMeatCooked"))).setMaxAmount(6));
 	}
 	
 	
@@ -99,11 +100,11 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
 	// ========== Pathing Weight ==========
 	@Override
 	public float getBlockPathWeight(int par1, int par2, int par3) {
-		if(this.worldObj.getBlockId(par1, par2 - 1, par3) != 0) {
-			Block block = Block.blocksList[this.worldObj.getBlockId(par1, par2 - 1, par3)];
-			if(block.blockMaterial == Material.grass)
+		if(this.worldObj.getBlock(par1, par2 - 1, par3) != Blocks.air) {
+			Block block = this.worldObj.getBlock(par1, par2 - 1, par3);
+			if(block.getMaterial() == Material.grass)
 				return 10F;
-			if(block.blockMaterial == Material.ground)
+			if(block.getMaterial() == Material.ground)
 				return 7F;
 		}
         return super.getBlockPathWeight(par1, par2, par3);

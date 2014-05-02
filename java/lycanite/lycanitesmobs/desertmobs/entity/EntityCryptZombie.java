@@ -16,13 +16,14 @@ import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.desertmobs.DesertMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EntityLivingData;
 import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
@@ -83,8 +84,8 @@ public class EntityCryptZombie extends EntityCreatureAgeable implements IMob {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(Item.rottenFlesh.itemID, 1).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(Item.goldNugget.itemID, 0.25F).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.rotten_flesh), 1).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.gold_nugget), 0.25F).setMaxAmount(2));
 	}
     
     
@@ -99,14 +100,7 @@ public class EntityCryptZombie extends EntityCreatureAgeable implements IMob {
     	
     	// Wither:
         if(target instanceof EntityLivingBase) {
-            byte effectSeconds = 7;
-            if(this.worldObj.difficultySetting > 1)
-                if (this.worldObj.difficultySetting == 2)
-                	effectSeconds = 10;
-                else if (this.worldObj.difficultySetting == 3)
-                	effectSeconds = 15;
-            if(effectSeconds > 0)
-                ((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.hunger.id, effectSeconds * 20, 0));
+            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.hunger.id, this.getEffectDuration(7), 0));
         }
         
         return true;
@@ -117,13 +111,13 @@ public class EntityCryptZombie extends EntityCreatureAgeable implements IMob {
     public void onKillEntity(EntityLivingBase par1EntityLivingBase) {
         super.onKillEntity(par1EntityLivingBase);
 
-        if(this.worldObj.difficultySetting >= 2 && par1EntityLivingBase instanceof EntityVillager) {
-            if(this.worldObj.difficultySetting == 2 && this.rand.nextBoolean()) return;
+        if(this.worldObj.difficultySetting.getDifficultyId() >= 2 && par1EntityLivingBase instanceof EntityVillager) {
+            if(this.worldObj.difficultySetting.getDifficultyId() == 2 && this.rand.nextBoolean()) return;
 
             EntityZombie entityzombie = new EntityZombie(this.worldObj);
             entityzombie.copyLocationAndAnglesFrom(par1EntityLivingBase);
             this.worldObj.removeEntity(par1EntityLivingBase);
-            entityzombie.onSpawnWithEgg((EntityLivingData)null);
+            entityzombie.onSpawnWithEgg((IEntityLivingData)null);
             entityzombie.setVillager(true);
 
             if(par1EntityLivingBase.isChild())

@@ -25,7 +25,8 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
@@ -98,8 +99,8 @@ public class EntityZoataur extends EntityCreatureTameable implements IGroupPreda
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(Item.leather.itemID, 1F).setMaxAmount(5));
-        this.drops.add(new DropRate(Item.bone.itemID, 0.5F).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.leather), 1F).setMaxAmount(5));
+        this.drops.add(new DropRate(new ItemStack(Items.bone), 0.5F).setMaxAmount(3));
 	}
 	
 	

@@ -22,6 +22,8 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
@@ -79,8 +81,8 @@ public class EntityBehemoth extends EntityCreatureTameable implements IMob {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(ObjectManager.getItem("HellfireCharge").itemID, 1).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(ObjectManager.getItem("HellfireCharge").itemID, 0.1F).setMinAmount(5).setMaxAmount(7));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("HellfireCharge")), 1).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("HellfireCharge")), 0.1F).setMinAmount(5).setMaxAmount(7));
 	}
 	
 	
@@ -96,9 +98,9 @@ public class EntityBehemoth extends EntityCreatureTameable implements IMob {
         if(!this.worldObj.isRemote && (this.ticksExisted % 10 == 0 || this.isMoving() && this.ticksExisted % 5 == 0)) {
         	int trailHeight = 1;
         	for(int y = 0; y < trailHeight; y++) {
-        		int blockID = this.worldObj.getBlockId((int)this.posX, (int)this.posY + y, (int)this.posZ);
-        		if(blockID == 0 || blockID == Block.fire.blockID || blockID == Block.snow.blockID || blockID == ObjectManager.getBlock("Hellfire").blockID)
-        			this.worldObj.setBlock((int)this.posX, (int)this.posY + y, (int)this.posZ, ObjectManager.getBlock("Hellfire").blockID);
+        		Block block = this.worldObj.getBlock((int)this.posX, (int)this.posY + y, (int)this.posZ);
+        		if(block == Blocks.air || block == Blocks.fire || block == Blocks.snow || block == ObjectManager.getBlock("Hellfire"))
+        			this.worldObj.setBlock((int)this.posX, (int)this.posY + y, (int)this.posZ, ObjectManager.getBlock("Hellfire"));
         	}
 		}
     }

@@ -18,15 +18,16 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.forestmobs.ForestMobs;
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemAxe;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
@@ -93,11 +94,11 @@ public class EntityEnt extends EntityCreatureTameable implements IMob {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(Block.wood.blockID, 0, 1).setMaxAmount(6));
-        this.drops.add(new DropRate(Item.stick.itemID, 0.5F).setMaxAmount(6).setBurningItem(Item.coal.itemID, 1));
-        this.drops.add(new DropRate(Item.seeds.itemID, 0.1F).setMaxAmount(3));
-        this.drops.add(new DropRate(Item.pumpkinSeeds.itemID, 0.05F).setMaxAmount(1));
-        this.drops.add(new DropRate(Item.melonSeeds.itemID, 0.05F).setMaxAmount(1));
+        this.drops.add(new DropRate(new ItemStack(Blocks.log, 1, 0), 1).setMaxAmount(6));
+        this.drops.add(new DropRate(new ItemStack(Items.stick), 0.5F).setMaxAmount(6).setBurningDrop(new ItemStack(Items.coal)));
+        this.drops.add(new DropRate(new ItemStack(Items.wheat_seeds), 0.1F).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.pumpkin_seeds), 0.05F).setMaxAmount(1));
+        this.drops.add(new DropRate(new ItemStack(Items.melon_seeds), 0.05F).setMaxAmount(1));
 	}
 	
 	

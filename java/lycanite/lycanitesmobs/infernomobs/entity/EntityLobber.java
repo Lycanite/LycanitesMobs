@@ -22,7 +22,9 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
@@ -89,10 +91,10 @@ public class EntityLobber extends EntityCreatureBase implements IMob {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(Item.coal.itemID, 1.0F).setMaxAmount(16));
-        this.drops.add(new DropRate(Item.magmaCream.itemID, 0.75F).setMaxAmount(3));
-        this.drops.add(new DropRate(Item.blazePowder.itemID, 0.5F).setMaxAmount(6));
-        this.drops.add(new DropRate(ObjectManager.getItem("MagmaCharge").itemID, 0.25F));
+        this.drops.add(new DropRate(new ItemStack(Items.coal), 1.0F).setMaxAmount(16));
+        this.drops.add(new DropRate(new ItemStack(Items.magma_cream), 0.75F).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.blaze_powder), 0.5F).setMaxAmount(6));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("MagmaCharge")), 0.25F));
 	}
     
     
@@ -122,9 +124,9 @@ public class EntityLobber extends EntityCreatureBase implements IMob {
         if(!this.worldObj.isRemote && (this.ticksExisted % 10 == 0 || this.isMoving() && this.ticksExisted % 5 == 0)) {
         	int trailHeight = 1;
         	for(int y = 0; y < trailHeight; y++) {
-        		int blockID = this.worldObj.getBlockId((int)this.posX, (int)this.posY + y, (int)this.posZ);
-        		if(blockID == 0 || blockID == Block.snow.blockID || blockID == Block.fire.blockID)
-        			this.worldObj.setBlock((int)this.posX, (int)this.posY + y, (int)this.posZ, Block.fire.blockID);
+        		Block block = this.worldObj.getBlock((int)this.posX, (int)this.posY + y, (int)this.posZ);
+        		if(block == Blocks.air || block == Blocks.snow || block == Blocks.fire)
+        			this.worldObj.setBlock((int)this.posX, (int)this.posY + y, (int)this.posZ, Blocks.fire);
         	}
 		}
         
@@ -157,9 +159,9 @@ public class EntityLobber extends EntityCreatureBase implements IMob {
 	public float getBlockPathWeight(int par1, int par2, int par3) {
 		int waterWeight = 10;
 		
-        if(this.worldObj.getBlockId(par1, par2, par3) == Block.lavaStill.blockID)
+        if(this.worldObj.getBlock(par1, par2, par3) == Blocks.lava)
         	return super.getBlockPathWeight(par1, par2, par3) * (waterWeight + 1);
-		if(this.worldObj.getBlockId(par1, par2, par3) == Block.lavaMoving.blockID)
+		if(this.worldObj.getBlock(par1, par2, par3) == Blocks.flowing_lava)
 			return super.getBlockPathWeight(par1, par2, par3) * waterWeight;
         
         if(this.getAttackTarget() != null)

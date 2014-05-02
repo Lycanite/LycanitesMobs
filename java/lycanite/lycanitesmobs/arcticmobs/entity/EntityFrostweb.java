@@ -4,9 +4,9 @@ import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.Blocks;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
@@ -54,13 +54,13 @@ public class EntityFrostweb extends EntityProjectileBase {
     //========== Can Destroy Block ==========
     @Override
     public boolean canDestroyBlock(int x, int y, int z) {
-    	if(this.worldObj.getBlockId(x, y, z) == Block.snow.blockID)
+    	if(this.worldObj.getBlock(x, y, z) == Blocks.snow)
     		return true;
-    	if(this.worldObj.getBlockId(x, y, z) == Block.fire.blockID)
+    	if(this.worldObj.getBlock(x, y, z) == Blocks.fire)
     		return true;
-    	if(this.worldObj.getBlockId(x, y, z) == Block.tallGrass.blockID)
+    	if(this.worldObj.getBlock(x, y, z) == Blocks.tallgrass)
     		return true;
-    	if(ObjectManager.getBlock("PoisonCloud") != null && this.worldObj.getBlockId(x, y, z) == ObjectManager.getBlock("PoisonCloud").blockID)
+    	if(ObjectManager.getBlock("PoisonCloud") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("PoisonCloud"))
     		return true;
    	 	return super.canDestroyBlock(x, y, z);
     }
@@ -68,7 +68,7 @@ public class EntityFrostweb extends EntityProjectileBase {
     //========== Place Block ==========
     @Override
     public void placeBlock(World world, int x, int y, int z) {
-	   	 world.setBlock(x, y, z, ObjectManager.getBlock("Frostweb").blockID);
+	   	 world.setBlock(x, y, z, ObjectManager.getBlock("Frostweb"));
     }
     
     //========== On Impact Particles/Sounds ==========

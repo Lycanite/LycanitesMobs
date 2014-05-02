@@ -19,7 +19,8 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
@@ -73,9 +74,9 @@ public class EntityTrite extends EntityCreatureBase implements IMob {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(Item.silk.itemID, 1).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(Item.spiderEye.itemID, 0.5F).setMaxAmount(2));
-        this.drops.add(new DropRate(Item.fermentedSpiderEye.itemID, 0.25F));
+        this.drops.add(new DropRate(new ItemStack(Items.string), 1).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.spider_eye), 0.5F).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.fermented_spider_eye), 0.25F));
 	}
 	
 	
@@ -112,14 +113,7 @@ public class EntityTrite extends EntityCreatureBase implements IMob {
     	
     	// Wither:
         if(target instanceof EntityLivingBase) {
-            byte effectSeconds = 5;
-            if(this.worldObj.difficultySetting > 1)
-                if (this.worldObj.difficultySetting == 2)
-                	effectSeconds = 7;
-                else if (this.worldObj.difficultySetting == 3)
-                	effectSeconds = 10;
-            if(effectSeconds > 0)
-                ((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.wither.id, effectSeconds * 20, 0));
+        	((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.wither.id, this.getEffectDuration(5), 0));
         }
         
         return true;

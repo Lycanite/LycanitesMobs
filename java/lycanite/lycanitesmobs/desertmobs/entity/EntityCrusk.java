@@ -30,7 +30,8 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -69,7 +70,7 @@ public class EntityCrusk extends EntityCreatureTameable implements IGroupPredato
         this.tasks.addTask(1, new EntityAIStealth(this).setStealthTime(60));
         this.tasks.addTask(2, this.aiSit);
         this.tasks.addTask(3, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
-        this.tasks.addTask(4, new EntityAITempt(this).setItemID(Item.goldNugget.itemID).setTemptDistanceMin(4.0D));
+        this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(Items.gold_nugget)).setTemptDistanceMin(4.0D));
         this.tasks.addTask(5, new EntityAIAttackMelee(this).setTargetClass(EntityPlayer.class).setLongMemory(false).setRate(60).setRange(6D));
         this.tasks.addTask(6, new EntityAIAttackMelee(this).setRate(30).setRange(8D));
         this.tasks.addTask(7, new EntityAIWander(this));
@@ -106,10 +107,10 @@ public class EntityCrusk extends EntityCreatureTameable implements IGroupPredato
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(Item.clay.itemID, 1).setMinAmount(6).setMaxAmount(12));
-        this.drops.add(new DropRate(Item.flint.itemID, 0.5F).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(Block.oreIron.blockID, 0.5F).setMinAmount(2).setMaxAmount(3));
-        this.drops.add(new DropRate(Block.oreGold.blockID, 0.25F).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.clay_ball), 1).setMinAmount(6).setMaxAmount(12));
+        this.drops.add(new DropRate(new ItemStack(Items.flint), 0.5F).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Blocks.iron_ore), 0.5F).setMinAmount(2).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Blocks.gold_ore), 0.25F).setMinAmount(1).setMaxAmount(2));
 	}
     
     // ========== Name ==========
@@ -132,17 +133,17 @@ public class EntityCrusk extends EntityCreatureTameable implements IGroupPredato
         int i = MathHelper.floor_double(this.posX);
         int j = MathHelper.floor_double(this.posY);
         int k = MathHelper.floor_double(this.posZ);
-        if(Block.blocksList[this.worldObj.getBlockId(i, j - 1, k)] instanceof Block) {
-        	Block floorBlock = Block.blocksList[this.worldObj.getBlockId(i, j - 1, k)];
-        	if(floorBlock.blockMaterial == Material.ground) return true;
-        	if(floorBlock.blockMaterial == Material.grass) return true;
-        	if(floorBlock.blockMaterial == Material.leaves) return true;
-        	if(floorBlock.blockMaterial == Material.sand) return true;
-        	if(floorBlock.blockMaterial == Material.clay) return true;
-        	if(floorBlock.blockMaterial == Material.snow) return true;
-        	if(floorBlock.blockMaterial == Material.craftedSnow) return true;
+        if(this.worldObj.getBlock(i, j - 1, k) != Blocks.air) {
+        	Block floorBlock = this.worldObj.getBlock(i, j - 1, k);
+        	if(floorBlock.getMaterial() == Material.ground) return true;
+        	if(floorBlock.getMaterial() == Material.grass) return true;
+        	if(floorBlock.getMaterial() == Material.leaves) return true;
+        	if(floorBlock.getMaterial() == Material.sand) return true;
+        	if(floorBlock.getMaterial() == Material.clay) return true;
+        	if(floorBlock.getMaterial() == Material.snow) return true;
+        	if(floorBlock.getMaterial() == Material.craftedSnow) return true;
         }
-        if(this.worldObj.getBlockId(i, j - 1, k) == Block.netherrack.blockID) return true;
+        if(this.worldObj.getBlock(i, j - 1, k) == Blocks.netherrack) return true;
     	return false;
     }
     
@@ -210,15 +211,15 @@ public class EntityCrusk extends EntityCreatureTameable implements IGroupPredato
     public boolean isTamingItem(ItemStack itemstack) {
     	if(!this.isChild())
     		return false;
-        return itemstack.itemID == Item.goldNugget.itemID;
+        return itemstack.getItem() == Items.gold_nugget;
     }
     
     @Override
     public void setTamed(boolean setTamed) {
     	if(setTamed)
-    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(80.0D);
+    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(80.0D);
     	else
-    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(60.0D);
+    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(60.0D);
     	super.setTamed(setTamed);
     }
     

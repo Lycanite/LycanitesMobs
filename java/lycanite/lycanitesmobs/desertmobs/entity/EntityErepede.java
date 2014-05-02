@@ -23,7 +23,6 @@ import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.desertmobs.DesertMobs;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -31,7 +30,8 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -72,7 +72,7 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
         this.getNavigator().setAvoidsWater(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIPlayerControl(this));
-        this.tasks.addTask(4, new EntityAITempt(this).setItemID(Item.goldNugget.itemID).setTemptDistanceMin(4.0D));
+        this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(Items.gold_nugget)).setTemptDistanceMin(4.0D));
         this.tasks.addTask(5, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(40).setRange(14.0F).setMinChaseDistance(6.0F).setChaseTime(-1));
         this.tasks.addTask(6, new EntityAIFollowParent(this).setSpeed(1.0D));
         this.tasks.addTask(7, new EntityAIWander(this));
@@ -112,9 +112,9 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(Item.flint.itemID, 1).setMinAmount(1).setMaxAmount(2));
-        this.drops.add(new DropRate(Block.oreIron.blockID, 0.5F).setMinAmount(1).setMaxAmount(2));
-        this.drops.add(new DropRate(ObjectManager.getItem("MudshotCharge").itemID, 0.25F));
+        this.drops.add(new DropRate(new ItemStack(Items.flint), 1).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Blocks.iron_ore), 0.5F).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("MudshotCharge")), 0.25F));
 	}
 	
 	
@@ -141,9 +141,9 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
     // ========== Movement Speed Modifier ==========
     public float getSpeedMod() {
     	if(this.hasRiderTarget())
-	    	if(this.worldObj.getBlockMaterial((int)this.posX, (int)this.boundingBox.minY - 1, (int)this.posZ) == Material.sand
-	    		|| (this.worldObj.getBlockMaterial((int)this.posX, (int)this.boundingBox.minY - 1, (int)this.posZ) == Material.air
-	    		&& this.worldObj.getBlockMaterial((int)this.posX, (int)this.boundingBox.minY - 2, (int)this.posZ) == Material.sand))
+	    	if(this.worldObj.getBlock((int)this.posX, (int)this.boundingBox.minY - 1, (int)this.posZ).getMaterial() == Material.sand
+	    		|| (this.worldObj.getBlock((int)this.posX, (int)this.boundingBox.minY - 1, (int)this.posZ).getMaterial() == Material.air
+	    		&& this.worldObj.getBlock((int)this.posX, (int)this.boundingBox.minY - 2, (int)this.posZ).getMaterial() == Material.sand))
 	    		return 1.8F;
     	return 1.0F;
     }
@@ -266,16 +266,16 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
     //                       Taming
     // ==================================================
     @Override
-    public boolean isTamingItem(ItemStack itemstack) {
-        return itemstack.itemID == Item.goldNugget.itemID;
+    public boolean isTamingItem(ItemStack itemStack) {
+        return itemStack.getItem() == Items.gold_nugget;
     }
     
     @Override
     public void setTamed(boolean setTamed) {
     	if(setTamed)
-    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(60.0D);
+    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(60.0D);
     	else
-    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(20.0D);
+    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D);
     	super.setTamed(setTamed);
     }
     

@@ -15,7 +15,8 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
@@ -71,9 +72,9 @@ public class EntityNetherSoul extends EntityCreatureBase implements IMob {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(Item.bone.itemID, 1).setMinAmount(2).setMaxAmount(2));
-        this.drops.add(new DropRate(Item.gunpowder.itemID, 0.5F).setMinAmount(1).setMaxAmount(2));
-        this.drops.add(new DropRate(Item.blazePowder.itemID, 0.25F).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.bone), 1).setMinAmount(2).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.gunpowder), 0.5F).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.blaze_powder), 0.25F).setMinAmount(1).setMaxAmount(2));
 	}
     
     

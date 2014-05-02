@@ -17,7 +17,6 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.forestmobs.ForestMobs;
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -25,8 +24,10 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemAxe;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
@@ -61,7 +62,7 @@ public class EntityTrent extends EntityCreatureTameable implements IMob {
         
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(3, new EntityAIAttackMelee(this).setTargetClass(EntityPlayer.class).setLongMemory(false));
+        this.tasks.addTask(3, new EntityAIAttackMelee(this).setTargetClass(EntityPlayer.class).setLongMemory(false).setRate(60));
         this.tasks.addTask(4, new EntityAIAttackMelee(this));
         this.tasks.addTask(5, this.aiSit);
         this.tasks.addTask(6, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
@@ -93,12 +94,12 @@ public class EntityTrent extends EntityCreatureTameable implements IMob {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(Block.wood.blockID, 0, 1).setMaxAmount(32));
-        this.drops.add(new DropRate(Item.stick.itemID, 0.75F).setMaxAmount(16).setBurningItem(Item.coal.itemID, 1));
-        this.drops.add(new DropRate(Item.seeds.itemID, 0.1F).setMaxAmount(5));
-        this.drops.add(new DropRate(Item.pumpkinSeeds.itemID, 0.05F).setMaxAmount(3));
-        this.drops.add(new DropRate(Item.melonSeeds.itemID, 0.05F).setMaxAmount(3));
-        this.drops.add(new DropRate(Item.emerald.itemID, 0.01F).setMaxAmount(1));
+        this.drops.add(new DropRate(new ItemStack(Blocks.log, 1, 0), 1).setMaxAmount(32));
+        this.drops.add(new DropRate(new ItemStack(Items.stick), 0.75F).setMaxAmount(16).setBurningDrop(new ItemStack(Items.coal)));
+        this.drops.add(new DropRate(new ItemStack(Items.wheat_seeds), 0.1F).setMaxAmount(5));
+        this.drops.add(new DropRate(new ItemStack(Items.pumpkin_seeds), 0.05F).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.melon_seeds), 0.05F).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.emerald), 0.01F).setMaxAmount(1));
 	}
 	
 	
@@ -140,14 +141,7 @@ public class EntityTrent extends EntityCreatureTameable implements IMob {
     	
     	// Paralysis:
     	if(target instanceof EntityLivingBase && this.rand.nextFloat() >= 0.5F) {
-             byte effectSeconds = 3;
-             if(this.worldObj.difficultySetting > 1)
-                 if(this.worldObj.difficultySetting == 2)
-                 	effectSeconds = 6;
-                 else if(this.worldObj.difficultySetting == 3)
-                 	effectSeconds = 12;
-             if(effectSeconds > 0 && Potion.potionTypes.length > ObjectManager.getPotionEffect("Weight").id)
-                 ((EntityLivingBase)target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("Paralysis").id, effectSeconds * 20, 0));
+             ((EntityLivingBase)target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("Paralysis").id, this.getEffectDuration(2), 0));
          }
         
         return true;

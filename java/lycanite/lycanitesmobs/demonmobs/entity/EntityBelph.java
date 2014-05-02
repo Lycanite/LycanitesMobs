@@ -23,7 +23,8 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
@@ -84,8 +85,8 @@ public class EntityBelph extends EntityCreatureTameable implements IMob {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(Item.netherStalkSeeds.itemID, 1).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(ObjectManager.getItem("DoomfireCharge").itemID, 0.25F));
+        this.drops.add(new DropRate(new ItemStack(Items.nether_wart), 1).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("DoomfireCharge")), 0.25F));
 	}
     
     

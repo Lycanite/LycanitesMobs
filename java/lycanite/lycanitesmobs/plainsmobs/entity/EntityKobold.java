@@ -28,7 +28,8 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
@@ -96,10 +97,10 @@ public class EntityKobold extends EntityCreatureTameable implements IMob, IGroup
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(Item.coal.itemID, 0.25F).setMaxAmount(2));
-        this.drops.add(new DropRate(Item.ingotIron.itemID, 0.05F).setMaxAmount(1));
-        this.drops.add(new DropRate(Item.goldNugget.itemID, 0.025F).setMaxAmount(1));
-        this.drops.add(new DropRate(Item.emerald.itemID, 0.01F).setMaxAmount(1));
+        this.drops.add(new DropRate(new ItemStack(Items.coal), 0.25F).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.iron_ingot), 0.05F).setMaxAmount(1));
+        this.drops.add(new DropRate(new ItemStack(Items.gold_nugget), 0.025F).setMaxAmount(1));
+        this.drops.add(new DropRate(new ItemStack(Items.emerald), 0.01F).setMaxAmount(1));
 	}
 	
 	

@@ -25,6 +25,8 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
@@ -84,7 +86,7 @@ public class EntityJoustAlpha extends EntityCreatureAgeable implements IAnimals,
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(ObjectManager.getItem("JoustMeatRaw").itemID, 1).setBurningItem(ObjectManager.getItem("JoustMeatCooked").itemID, -1).setMinAmount(3).setMaxAmount(7));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("JoustMeatRaw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("JoustMeatCooked"))).setMinAmount(3).setMaxAmount(7));
 	}
     
     
@@ -106,13 +108,13 @@ public class EntityJoustAlpha extends EntityCreatureAgeable implements IAnimals,
 	// Pathing Weight:
 	@Override
 	public float getBlockPathWeight(int par1, int par2, int par3) {
-		if(this.worldObj.getBlockId(par1, par2 - 1, par3) != 0) {
-			Block block = Block.blocksList[this.worldObj.getBlockId(par1, par2 - 1, par3)];
-			if(block.blockMaterial == Material.sand)
+		if(this.worldObj.getBlock(par1, par2 - 1, par3) != Blocks.air) {
+			Block block = this.worldObj.getBlock(par1, par2 - 1, par3);
+			if(block.getMaterial() == Material.sand)
 				return 10F;
-			if(block.blockMaterial == Material.clay)
+			if(block.getMaterial() == Material.clay)
 				return 7F;
-			if(block.blockMaterial == Material.rock)
+			if(block.getMaterial() == Material.rock)
 				return 5F;
 		}
         return super.getBlockPathWeight(par1, par2, par3);

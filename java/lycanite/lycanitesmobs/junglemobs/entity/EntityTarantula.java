@@ -26,7 +26,9 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
@@ -88,8 +90,8 @@ public class EntityTarantula extends EntityCreatureTameable implements IMob {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(Item.silk.itemID, 1.0F).setMaxAmount(6));
-        this.drops.add(new DropRate(Item.spiderEye.itemID, 0.5F).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.string), 1.0F).setMaxAmount(6));
+        this.drops.add(new DropRate(new ItemStack(Items.spider_eye), 0.5F).setMaxAmount(2));
 	}
 	
 	
@@ -117,9 +119,9 @@ public class EntityTarantula extends EntityCreatureTameable implements IMob {
         if(!this.worldObj.isRemote && (this.ticksExisted % 10 == 0 || (this.isMoving() || !this.onGround) && this.ticksExisted % 2 == 0)) {
         	int trailHeight = 1;
         	for(int y = 0; y < trailHeight; y++) {
-        		int blockID = this.worldObj.getBlockId((int)this.posX, (int)this.posY + y, (int)this.posZ);
-        		if(blockID == 0 || blockID == Block.snow.blockID || blockID == ObjectManager.getBlock("QuickWeb").blockID) {
-        			this.worldObj.setBlock((int)this.posX, (int)this.posY + y, (int)this.posZ, ObjectManager.getBlock("QuickWeb").blockID);
+        		Block block = this.worldObj.getBlock((int)this.posX, (int)this.posY + y, (int)this.posZ);
+        		if(block == Blocks.air || block == Blocks.snow || block == ObjectManager.getBlock("QuickWeb")) {
+        			this.worldObj.setBlock((int)this.posX, (int)this.posY + y, (int)this.posZ, ObjectManager.getBlock("QuickWeb"));
         		}
         	}
 		}
@@ -138,16 +140,9 @@ public class EntityTarantula extends EntityCreatureTameable implements IMob {
     	// Effect:
         if(target instanceof EntityLivingBase) {
             byte effectSeconds = 8;
-            if(this.worldObj.difficultySetting > 1)
-                if (this.worldObj.difficultySetting == 2)
-                	effectSeconds = 12;
-                else if (this.worldObj.difficultySetting == 3)
-                	effectSeconds = 16;
             if(target instanceof EntityPlayer)
             	effectSeconds /= 2;
-            if(effectSeconds > 0) {
-                ((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.poison.id, (int)(effectSeconds * 20), 0));
-            }
+            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.poison.id, this.getEffectDuration(effectSeconds), 0));
         }
         
         return true;

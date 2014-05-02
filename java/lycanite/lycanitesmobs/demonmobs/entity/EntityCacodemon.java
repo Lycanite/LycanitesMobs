@@ -25,7 +25,7 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -63,7 +63,7 @@ public class EntityCacodemon extends EntityCreatureTameable {
         this.tasks.addTask(1, new EntityAIMate(this));
         this.tasks.addTask(2, this.aiSit);
         this.tasks.addTask(3, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
-        this.tasks.addTask(4, new EntityAITempt(this).setItemID(ObjectManager.getItem("HellfireCharge").itemID).setTemptDistanceMin(4.0D));
+        this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("HellfireCharge"))).setTemptDistanceMin(4.0D));
         this.tasks.addTask(5, new EntityAIAttackRanged(this).setSpeed(0.25D).setRate(80).setRange(40.0F).setMinChaseDistance(10.0F).setLongMemory(false));
         this.tasks.addTask(6, new EntityAIFollowParent(this));
         this.tasks.addTask(6, new EntityAIWander(this).setPauseRate(30));
@@ -95,10 +95,10 @@ public class EntityCacodemon extends EntityCreatureTameable {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(Item.ghastTear.itemID, 0.25F).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(Item.gunpowder.itemID, 0.5F).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(Item.blazePowder.itemID, 0.5F).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(ObjectManager.getItem("DemonicLightningCharge").itemID, 0.25F));
+        this.drops.add(new DropRate(new ItemStack(Items.ghast_tear), 0.25F).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.gunpowder), 0.5F).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.blaze_powder), 0.5F).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("DemonicLightningCharge")), 0.25F));
 	}
 	
 	
@@ -176,15 +176,15 @@ public class EntityCacodemon extends EntityCreatureTameable {
     // ==================================================
     @Override
     public boolean isTamingItem(ItemStack itemstack) {
-        return itemstack.itemID == ObjectManager.getItem("HellfireCharge").itemID;
+        return itemstack.getItem() == ObjectManager.getItem("HellfireCharge");
     }
     
     @Override
     public void setTamed(boolean setTamed) {
     	if(setTamed)
-    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(60.0D);
+    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(60.0D);
     	else
-    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(40.0D);
+    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(40.0D);
     	super.setTamed(setTamed);
     }
     

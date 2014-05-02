@@ -36,7 +36,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -72,7 +72,7 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
         this.tasks.addTask(3, new EntityAIAttackMelee(this).setLongMemory(false));
         this.tasks.addTask(4, this.aiSit);
         this.tasks.addTask(5, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
-        this.tasks.addTask(6, new EntityAITempt(this).setItemID(Item.fermentedSpiderEye.itemID).setTemptDistanceMin(2.0D));
+        this.tasks.addTask(6, new EntityAITempt(this).setItem(new ItemStack(Items.fermented_spider_eye)).setTemptDistanceMin(2.0D));
         this.tasks.addTask(7, new EntityAIMate(this));
         this.tasks.addTask(8, new EntityAIFollowParent(this));
         this.tasks.addTask(9, new EntityAIWander(this));
@@ -113,8 +113,8 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(Item.silk.itemID, 0.5F).setMinAmount(2).setMaxAmount(5));
-        this.drops.add(new DropRate(Item.leather.itemID, 0.5F).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.string), 0.5F).setMinAmount(2).setMaxAmount(5));
+        this.drops.add(new DropRate(new ItemStack(Items.leather), 0.5F).setMaxAmount(2));
 	}
 	
 	
@@ -157,18 +157,8 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
     	
     	// Effect:
         if(target instanceof EntityLivingBase) {
-            byte effectSeconds = 8;
-            if(this.worldObj.difficultySetting > 1)
-                if (this.worldObj.difficultySetting == 2)
-                	effectSeconds = 12;
-                else if (this.worldObj.difficultySetting == 3)
-                	effectSeconds = 16;
-            if(target instanceof EntityPlayer)
-            	effectSeconds /= 2;
-            if(effectSeconds > 0) {
-                ((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.poison.id, effectSeconds * 20, 1));
-                ((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.blindness.id, (int)(effectSeconds * 20), 0));
-            }
+            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.poison.id, this.getEffectDuration(8), 1));
+            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.blindness.id, this.getEffectDuration(8), 0));
         }
         
         return true;
@@ -257,15 +247,15 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
     // ==================================================
     @Override
     public boolean isTamingItem(ItemStack itemstack) {
-        return itemstack.itemID == Item.fermentedSpiderEye.itemID;
+        return itemstack.getItem() == Items.fermented_spider_eye;
     }
     
     @Override
     public void setTamed(boolean setTamed) {
     	if(setTamed)
-    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(40.0D);
+    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(40.0D);
     	else
-    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(20.0D);
+    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D);
     	super.setTamed(setTamed);
     }
     

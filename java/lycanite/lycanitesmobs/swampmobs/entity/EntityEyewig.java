@@ -26,7 +26,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -60,7 +60,7 @@ public class EntityEyewig extends EntityCreatureRideable {
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIPlayerControl(this));
-        this.tasks.addTask(4, new EntityAITempt(this).setItemID(ObjectManager.getItem("PoisonGland").itemID).setTemptDistanceMin(4.0D));
+        this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("PoisonGland"))).setTemptDistanceMin(4.0D));
         this.rangedAttackAI = new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(10).setStaminaTime(60).setRange(14.0F).setMinChaseDistance(4.0F).setChaseTime(-1);
         this.tasks.addTask(5, rangedAttackAI);
         this.tasks.addTask(6, new EntityAIAttackMelee(this).setLongMemory(false).setMaxChaseDistance(14.0F));
@@ -91,9 +91,9 @@ public class EntityEyewig extends EntityCreatureRideable {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(Item.spiderEye.itemID, 0.9F).setMaxAmount(2));
-        this.drops.add(new DropRate(Item.fermentedSpiderEye.itemID, 0.2F));
-        this.drops.add(new DropRate(Item.silk.itemID, 1).setMinAmount(2).setMaxAmount(5));
+        this.drops.add(new DropRate(new ItemStack(Items.spider_eye), 0.9F).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.fermented_spider_eye), 0.2F));
+        this.drops.add(new DropRate(new ItemStack(Items.string), 1).setMinAmount(2).setMaxAmount(5));
 	}
 	
 	
@@ -168,17 +168,7 @@ public class EntityEyewig extends EntityCreatureRideable {
     	
     	// Effect:
         if(target instanceof EntityLivingBase) {
-            byte effectSeconds = 8;
-            if(this.worldObj.difficultySetting > 1)
-                if (this.worldObj.difficultySetting == 2)
-                	effectSeconds = 12;
-                else if (this.worldObj.difficultySetting == 3)
-                	effectSeconds = 16;
-            if(target instanceof EntityPlayer)
-            	effectSeconds /= 2;
-            if(effectSeconds > 0) {
-                ((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.blindness.id, (int)(effectSeconds * 20), 0));
-            }
+            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.blindness.id, this.getEffectDuration(8), 0));
         }
         
         return true;
@@ -255,15 +245,15 @@ public class EntityEyewig extends EntityCreatureRideable {
     // ==================================================
     @Override
     public boolean isTamingItem(ItemStack itemstack) {
-        return itemstack.itemID == ObjectManager.getItem("PoisonGland").itemID;
+        return itemstack.getItem() == ObjectManager.getItem("PoisonGland");
     }
     
     @Override
     public void setTamed(boolean setTamed) {
     	if(setTamed)
-    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(40.0D);
+    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(40.0D);
     	else
-    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(20.0D);
+    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D);
     	super.setTamed(setTamed);
     }
     

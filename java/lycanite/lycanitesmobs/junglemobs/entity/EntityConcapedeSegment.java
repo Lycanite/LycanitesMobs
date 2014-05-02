@@ -22,7 +22,9 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -82,8 +84,8 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(ObjectManager.getItem("ConcapedeMeatRaw").itemID, 1).setMinAmount(1).setMaxAmount(2).setBurningItem(ObjectManager.getItem("ConcapedeMeatCooked").itemID, 0));
-        this.drops.add(new DropRate(Item.silk.itemID, 0.25F).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("ConcapedeMeatRaw")), 1).setMinAmount(1).setMaxAmount(2).setBurningDrop(new ItemStack(ObjectManager.getItem("ConcapedeMeatCooked"))));
+        this.drops.add(new DropRate(new ItemStack(Items.string), 0.25F).setMinAmount(1).setMaxAmount(2));
 	}
     
     
@@ -207,11 +209,11 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
 	// ========== Pathing Weight ==========
 	@Override
 	public float getBlockPathWeight(int par1, int par2, int par3) {
-		if(this.worldObj.getBlockId(par1, par2 - 1, par3) != 0) {
-			Block block = Block.blocksList[this.worldObj.getBlockId(par1, par2 - 1, par3)];
-			if(block.blockMaterial == Material.grass)
+		if(this.worldObj.getBlock(par1, par2 - 1, par3) != Blocks.air) {
+			Block block = this.worldObj.getBlock(par1, par2 - 1, par3);
+			if(block.getMaterial() == Material.grass)
 				return 10F;
-			if(block.blockMaterial == Material.ground)
+			if(block.getMaterial() == Material.ground)
 				return 7F;
 		}
         return super.getBlockPathWeight(par1, par2, par3);

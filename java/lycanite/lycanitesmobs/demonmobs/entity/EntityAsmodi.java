@@ -18,7 +18,8 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
@@ -75,9 +76,9 @@ public class EntityAsmodi extends EntityCreatureBase implements IMob {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(Item.ingotIron.itemID, 1).setMaxAmount(3));
-        this.drops.add(new DropRate(Item.redstone.itemID, 1).setMinAmount(3).setMaxAmount(8));
-        this.drops.add(new DropRate(ObjectManager.getItem("DevilstarCharge").itemID, 0.5F));
+        this.drops.add(new DropRate(new ItemStack(Items.iron_ingot), 1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.redstone), 1).setMinAmount(3).setMaxAmount(8));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("DevilstarCharge")), 0.5F));
 	}
     
     
@@ -124,7 +125,7 @@ public class EntityAsmodi extends EntityCreatureBase implements IMob {
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
         if(!this.worldObj.isRemote && DemonMobs.config.mobsEnabled.get("Trite")) {
-            int j = 2 + this.rand.nextInt(5) + worldObj.difficultySetting - 1;
+            int j = 2 + this.rand.nextInt(5) + worldObj.difficultySetting.getDifficultyId() - 1;
             for(int k = 0; k < j; ++k) {
                 float f = ((float)(k % 2) - 0.5F) * this.width / 4.0F;
                 float f1 = ((float)(k / 2) - 0.5F) * this.width / 4.0F;

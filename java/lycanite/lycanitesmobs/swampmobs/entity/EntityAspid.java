@@ -26,7 +26,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -87,9 +88,9 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(ObjectManager.getItem("AspidMeatRaw").itemID, 1).setBurningItem(ObjectManager.getItem("AspidMeatCooked").itemID, 0).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(Item.slimeBall.itemID, 0.25F));
-        this.drops.add(new DropRate(ObjectManager.getItem("PoisonGland").itemID, 0.25F));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("AspidMeatRaw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("AspidMeatCooked"))).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.slime_ball), 0.25F));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("PoisonGland")), 0.25F));
 	}
 	
 	
@@ -107,9 +108,9 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
         	if(this.isChild())
         		trailHeight = 1;
         	for(int y = 0; y < trailHeight; y++) {
-        		int blockID = this.worldObj.getBlockId((int)this.posX, (int)this.posY + y, (int)this.posZ);
-        		if(blockID == 0 || blockID == Block.snow.blockID || blockID == ObjectManager.getBlock("PoisonCloud").blockID)
-        			this.worldObj.setBlock((int)this.posX, (int)this.posY + y, (int)this.posZ, ObjectManager.getBlock("PoisonCloud").blockID);
+        		Block block = this.worldObj.getBlock((int)this.posX, (int)this.posY + y, (int)this.posZ);
+        		if(block == Blocks.air || block == Blocks.snow || block == ObjectManager.getBlock("PoisonCloud"))
+        			this.worldObj.setBlock((int)this.posX, (int)this.posY + y, (int)this.posZ, ObjectManager.getBlock("PoisonCloud"));
         	}
 		}
     }
@@ -121,11 +122,11 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
 	// ========== Pathing Weight ==========
 	@Override
 	public float getBlockPathWeight(int par1, int par2, int par3) {
-		if(this.worldObj.getBlockId(par1, par2 - 1, par3) != 0) {
-			Block block = Block.blocksList[this.worldObj.getBlockId(par1, par2 - 1, par3)];
-			if(block.blockMaterial == Material.grass)
+		if(this.worldObj.getBlock(par1, par2 - 1, par3) != Blocks.air) {
+			Block block = this.worldObj.getBlock(par1, par2 - 1, par3);
+			if(block.getMaterial() == Material.grass)
 				return 10F;
-			if(block.blockMaterial == Material.ground)
+			if(block.getMaterial() == Material.ground)
 				return 7F;
 		}
         return super.getBlockPathWeight(par1, par2, par3);
@@ -151,17 +152,7 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
     	
     	// Effect:
         if(target instanceof EntityLivingBase) {
-            byte effectSeconds = 8;
-            if(this.worldObj.difficultySetting > 1)
-                if (this.worldObj.difficultySetting == 2)
-                	effectSeconds = 12;
-                else if (this.worldObj.difficultySetting == 3)
-                	effectSeconds = 16;
-            if(target instanceof EntityPlayer)
-            	effectSeconds /= 2;
-            if(effectSeconds > 0) {
-                ((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.poison.id, effectSeconds * 20, 0));
-            }
+            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.poison.id, this.getEffectDuration(8), 0));
         }
         
         return true;

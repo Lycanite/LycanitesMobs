@@ -23,7 +23,8 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
@@ -85,8 +86,8 @@ public class EntityRemobra extends EntityCreatureTameable implements IMob, IGrou
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(Item.slimeBall.itemID, 0.5F));
-        this.drops.add(new DropRate(ObjectManager.getItem("PoisonGland").itemID, 0.25F));
+        this.drops.add(new DropRate(new ItemStack(Items.slime_ball), 0.5F));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("PoisonGland")), 0.25F));
 	}
 	
 	

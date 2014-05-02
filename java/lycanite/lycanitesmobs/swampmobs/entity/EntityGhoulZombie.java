@@ -16,13 +16,14 @@ import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.swampmobs.SwampMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EntityLivingData;
 import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
@@ -83,8 +84,8 @@ public class EntityGhoulZombie extends EntityCreatureAgeable implements IMob {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(Item.rottenFlesh.itemID, 1).setMaxAmount(3));
-        this.drops.add(new DropRate(Item.coal.itemID, 0.25F).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.rotten_flesh), 1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.coal), 0.25F).setMaxAmount(2));
 	}
     
     
@@ -99,14 +100,7 @@ public class EntityGhoulZombie extends EntityCreatureAgeable implements IMob {
     	
     	// Wither:
         if(target instanceof EntityLivingBase) {
-            byte effectSeconds = 5;
-            if(this.worldObj.difficultySetting > 1)
-                if (this.worldObj.difficultySetting == 2)
-                	effectSeconds = 7;
-                else if (this.worldObj.difficultySetting == 3)
-                	effectSeconds = 10;
-            if(effectSeconds > 0)
-                ((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.poison.id, effectSeconds * 20, 0));
+            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.poison.id, this.getEffectDuration(5), 0));
         }
         
         return true;
@@ -117,13 +111,13 @@ public class EntityGhoulZombie extends EntityCreatureAgeable implements IMob {
     public void onKillEntity(EntityLivingBase par1EntityLivingBase) {
         super.onKillEntity(par1EntityLivingBase);
 
-        if(this.worldObj.difficultySetting >= 2 && par1EntityLivingBase instanceof EntityVillager) {
-            if (this.worldObj.difficultySetting == 2 && this.rand.nextBoolean()) return;
+        if(this.worldObj.difficultySetting.getDifficultyId() >= 2 && par1EntityLivingBase instanceof EntityVillager) {
+            if (this.worldObj.difficultySetting.getDifficultyId() == 2 && this.rand.nextBoolean()) return;
 
             EntityZombie entityzombie = new EntityZombie(this.worldObj);
             entityzombie.copyLocationAndAnglesFrom(par1EntityLivingBase);
             this.worldObj.removeEntity(par1EntityLivingBase);
-            entityzombie.onSpawnWithEgg((EntityLivingData)null);
+            entityzombie.onSpawnWithEgg((IEntityLivingData)null);
             entityzombie.setVillager(true);
 
             if(par1EntityLivingBase.isChild())

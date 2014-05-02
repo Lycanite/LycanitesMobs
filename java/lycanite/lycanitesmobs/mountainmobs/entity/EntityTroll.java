@@ -26,8 +26,10 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemPickaxe;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
@@ -93,11 +95,11 @@ public class EntityTroll extends EntityCreatureTameable implements IMob {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(Block.wood.blockID, 1).setMinAmount(2).setMaxAmount(6));
-        this.drops.add(new DropRate(Item.bone.itemID, 1).setMinAmount(2).setMaxAmount(6));
-        this.drops.add(new DropRate(Item.leather.itemID, 1).setMinAmount(2).setMaxAmount(6));
-        this.drops.add(new DropRate(Item.coal.itemID, 1).setMinAmount(2).setMaxAmount(8));
-        this.drops.add(new DropRate(ObjectManager.getItem("BoulderBlastCharge").itemID, 0.5F).setMinAmount(1).setMaxAmount(1));
+        this.drops.add(new DropRate(new ItemStack(Blocks.log), 1).setMinAmount(2).setMaxAmount(6));
+        this.drops.add(new DropRate(new ItemStack(Items.bone), 1).setMinAmount(2).setMaxAmount(6));
+        this.drops.add(new DropRate(new ItemStack(Items.leather), 1).setMinAmount(2).setMaxAmount(6));
+        this.drops.add(new DropRate(new ItemStack(Items.coal), 1).setMinAmount(2).setMaxAmount(8));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("BoulderBlastCharge")), 0.5F).setMinAmount(1).setMaxAmount(1));
 	}
     
     
@@ -149,12 +151,12 @@ public class EntityTroll extends EntityCreatureTameable implements IMob {
     	for(int w = -((int)Math.ceil(this.width) + range); w <= (Math.ceil(this.width) + range); w++)
         	for(int d = -((int)Math.ceil(this.width) + range); d <= (Math.ceil(this.width) + range); d++)
 		    	for(int h = 0; h <= Math.ceil(this.height); h++) {
-		    		Block block = Block.blocksList[this.worldObj.getBlockId(x + w, y + h, z + d)];
+		    		Block block = this.worldObj.getBlock(x + w, y + h, z + d);
 		    		if(block instanceof Block) {
-			    		float hardness = block.blockHardness;
-			    		Material material = block.blockMaterial;
-			    		if(hardness >= 0 && strength >= hardness && (strength * 5) >= block.blockResistance && material != Material.water && material != Material.lava)
-			    			this.worldObj.destroyBlock(x + w, y + h, z + d, drop);
+			    		float hardness = block.getBlockHardness(this.worldObj, x + w, y + h, z + d);
+			    		Material material = block.getMaterial();
+			    		if(hardness >= 0 && strength >= hardness && strength >= block.getExplosionResistance(this) && material != Material.water && material != Material.lava)
+			    			this.worldObj.func_147480_a(x + w, y + h, z + d, drop); // destroyBlock()
 		    		}
 		    	}
     }

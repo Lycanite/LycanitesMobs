@@ -31,7 +31,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -70,7 +70,7 @@ public class EntityVentoraptor extends EntityCreatureRideable implements IGroupP
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIPlayerControl(this));
-        this.tasks.addTask(4, new EntityAITempt(this).setItemID(ObjectManager.getItem("MakaMeatCooked").itemID).setTemptDistanceMin(4.0D));
+        this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("MakaMeatCooked"))).setTemptDistanceMin(4.0D));
         this.tasks.addTask(5, new EntityAIAttackMelee(this).setTargetClass(EntityPlayer.class).setLongMemory(false));
         this.tasks.addTask(6, new EntityAIAttackMelee(this));
         this.tasks.addTask(7, new EntityAIFollowParent(this).setSpeed(1.0D));
@@ -107,8 +107,8 @@ public class EntityVentoraptor extends EntityCreatureRideable implements IGroupP
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(Item.feather.itemID, 1F).setMaxAmount(5));
-        this.drops.add(new DropRate(Item.bone.itemID, 0.5F).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.feather), 1F).setMaxAmount(5));
+        this.drops.add(new DropRate(new ItemStack(Items.bone), 0.5F).setMaxAmount(3));
 	}
 	
 	
@@ -240,7 +240,7 @@ public class EntityVentoraptor extends EntityCreatureRideable implements IGroupP
     public boolean isTamingItem(ItemStack itemStack) {
     	if(itemStack == null)
     		return false;
-    	if(itemStack.itemID != ObjectManager.getItem("MakaMeatCooked").itemID)
+    	if(itemStack.getItem() != ObjectManager.getItem("MakaMeatCooked"))
     		return false;
     	return true;
     }
@@ -248,9 +248,9 @@ public class EntityVentoraptor extends EntityCreatureRideable implements IGroupP
     @Override
     public void setTamed(boolean setTamed) {
     	if(setTamed)
-    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(50.0D);
+    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(50.0D);
     	else
-    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(25.0D);
+    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(25.0D);
     	super.setTamed(setTamed);
     }
     

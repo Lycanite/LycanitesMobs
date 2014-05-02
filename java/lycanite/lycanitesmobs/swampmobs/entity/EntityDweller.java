@@ -15,13 +15,14 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.swampmobs.SwampMobs;
-import net.minecraft.block.Block;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
@@ -90,8 +91,8 @@ public class EntityDweller extends EntityCreatureTameable implements IMob {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(Item.fishRaw.itemID, 1).setBurningItem(Item.fishCooked.itemID, 0));
-        this.drops.add(new DropRate(Item.fishRaw.itemID, 0.25F).setBurningItem(Item.fishCooked.itemID, 0).setMinAmount(2).setMaxAmount(4));
+        this.drops.add(new DropRate(new ItemStack(Items.fish), 0.5F).setBurningDrop(new ItemStack(Items.cooked_fished)).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.fish, 1, 3), 0.5F).setBurningDrop(new ItemStack(Items.cooked_fished, 1, 3)).setMaxAmount(2));
 	}
 	
 	
@@ -136,9 +137,9 @@ public class EntityDweller extends EntityCreatureTameable implements IMob {
 	public float getBlockPathWeight(int par1, int par2, int par3) {
 		int waterWeight = 10;
 		
-        if(this.worldObj.getBlockId(par1, par2, par3) == Block.waterStill.blockID)
+        if(this.worldObj.getBlock(par1, par2, par3) == Blocks.water)
         	return super.getBlockPathWeight(par1, par2, par3) * (waterWeight + 1);
-		if(this.worldObj.getBlockId(par1, par2, par3) == Block.waterMoving.blockID)
+		if(this.worldObj.getBlock(par1, par2, par3) == Blocks.flowing_water)
 			return super.getBlockPathWeight(par1, par2, par3) * waterWeight;
         if(this.worldObj.isRaining() && this.worldObj.canBlockSeeTheSky(par1, par2, par3))
         	return super.getBlockPathWeight(par1, par2, par3) * (waterWeight + 1);

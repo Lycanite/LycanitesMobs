@@ -16,13 +16,14 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
@@ -83,9 +84,9 @@ public class EntityReiver extends EntityCreatureTameable implements IMob {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(Item.snowball.itemID, 0.5F).setMaxAmount(8));
-        this.drops.add(new DropRate(Block.ice.blockID, 0.25F).setMaxAmount(8));
-        this.drops.add(new DropRate(ObjectManager.getItem("FrostboltCharge").itemID, 0.25F).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.snowball), 0.5F).setMaxAmount(8));
+        this.drops.add(new DropRate(new ItemStack(Blocks.ice), 0.25F).setMaxAmount(8));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("FrostboltCharge")), 0.25F).setMaxAmount(3));
 	}
 	
 	

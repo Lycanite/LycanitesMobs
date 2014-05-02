@@ -8,6 +8,7 @@ import java.util.Map;
 
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.config.Configuration;
 
 import org.apache.commons.lang3.ArrayUtils;
 

@@ -76,7 +76,7 @@ public class EntityPinky extends EntityCreatureRideable implements IAnimals, IGr
         this.getNavigator().setAvoidsWater(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIMate(this));
-        this.tasks.addTask(2, new EntityAITempt(this).setItemID(ObjectManager.getItem("HellfireCharge").itemID).setTemptDistanceMin(4.0D));
+        this.tasks.addTask(2, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("HellfireCharge"))).setTemptDistanceMin(4.0D));
         this.tasks.addTask(3, new EntityAIAttackMelee(this).setTargetClass(EntityPigZombie.class).setSpeed(1.5D).setRate(10).setDamage(8.0D).scaleRange(2.0D));
         this.tasks.addTask(4, new EntityAIAttackMelee(this).setSpeed(1.5D).setRate(10));
         this.playerControlAI = new EntityAIPlayerControl(this);
@@ -118,7 +118,7 @@ public class EntityPinky extends EntityCreatureRideable implements IAnimals, IGr
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(ObjectManager.getItem("PinkyMeatRaw").itemID, 1).setBurningItem(ObjectManager.getItem("PinkyMeatCooked").itemID, -1).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("PinkyMeatRaw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("PinkyMeatCooked"))).setMinAmount(1).setMaxAmount(3));
 	}
 	
 	
@@ -266,15 +266,15 @@ public class EntityPinky extends EntityCreatureRideable implements IAnimals, IGr
     // ==================================================
     @Override
     public boolean isTamingItem(ItemStack itemstack) {
-        return itemstack.itemID == ObjectManager.getItem("HellfireCharge").itemID && this.isChild();
+        return itemstack.getItem() == ObjectManager.getItem("HellfireCharge") && this.isChild();
     }
     
     @Override
     public void setTamed(boolean setTamed) {
     	if(setTamed)
-    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(80.0D);
+    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(80.0D);
     	else
-    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(40.0D);
+    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(40.0D);
     	super.setTamed(setTamed);
     }
     

@@ -2061,14 +2061,14 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Plays the jump sound when this creature jumps. **/
     public void playJumpSound() {
     	if(!this.hasJumpSound) return;
-     	this.playSound(AssetManager.getSound(this.entityName + "Jump"), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+    	this.playSound(AssetManager.getSound(this.entityName + "Jump"), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
     }
      
     // ========== Fly ==========
     /** Plays a flying sound, usually a wing flap, called randomly when flying. **/
     protected void playFlySound() {
     	if(!this.canFly()) return;
-      	this.playSound(AssetManager.getSound(this.entityName + "Fly"), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+      	//TODO this.playSound(AssetManager.getSound(this.entityName + "Fly"), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
     }
 
     // ========== Attack ==========

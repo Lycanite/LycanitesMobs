@@ -6,7 +6,6 @@ import java.util.Map;
 
 import lycanite.lycanitesmobs.LycanitesMobs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
@@ -45,11 +44,11 @@ public class EntityListCustom {
     }
 
     /**
-     * Adds a entity mapping with egg info.
+     * Adds an entity mapping with egg info.
      */
     public void addMapping(Class par0Class, String par1Str, int par2, int par3, int par4) {
         addMapping(par0Class, par1Str, par2);
-        entityEggs.put(Integer.valueOf(par2), new EntityList.EntityEggInfo(par2, par3, par4));
+        entityEggs.put(Integer.valueOf(par2), new EntityListCustom.EntityEggInfo(par2, par3, par4));
     }
 
     /**
@@ -175,5 +174,22 @@ public class EntityListCustom {
     public String getStringFromID(int par0) {
         Class oclass = getClassFromID(par0);
         return oclass != null ? (String)classToStringMapping.get(oclass) : null;
+    }
+    
+    public static class EntityEggInfo {
+        /** The entityID of the spawned mob */
+        public final int spawnedID;
+        /** Base color of the egg */
+        public final int primaryColor;
+        /** Color of the egg spots */
+        public final int secondaryColor;
+        private static final String __OBFID = "CL_00001539";
+
+        public EntityEggInfo(int par1, int par2, int par3)
+        {
+            this.spawnedID = par1;
+            this.primaryColor = par2;
+            this.secondaryColor = par3;
+        }
     }
 }

@@ -80,14 +80,14 @@ public class BlockPoisonCloud extends BlockBase {
 	// ==================================================
 	//                      Particles
 	// ==================================================
-    @SideOnly(Side.CLIENT)
     @Override
+    @SideOnly(Side.CLIENT)
     public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
         if(par5Random.nextInt(24) == 0)
             par1World.playSound((double)((float)par2 + 0.5F), (double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F), AssetManager.getSound("PoisonCloud"), 1.0F + par5Random.nextFloat(), par5Random.nextFloat() * 0.7F + 0.3F, false);
 
         int l;
-        float f;
+        float f; 
         float f1;
         float f2;
 

@@ -5,18 +5,17 @@ import lycanite.lycanitesmobs.api.gui.GUIMinionSelection;
 import lycanite.lycanitesmobs.api.packet.PacketGUIRequest;
 import lycanite.lycanitesmobs.api.packet.PacketPlayerControl;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 
 import org.lwjgl.input.Keyboard;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
 
 public class KeyHandler {
 	public Minecraft mc;
-	public EntityClientPlayerMP player;
 	
 	public KeyBinding mountAbility = new KeyBinding("Mount Ability", Keyboard.KEY_F, "Lycanites Mobs");
 	public KeyBinding mountInventory = new KeyBinding("Mount Inventory", Keyboard.KEY_G, "Lycanites Mobs");
@@ -28,7 +27,6 @@ public class KeyHandler {
     // ==================================================
 	public KeyHandler(Minecraft mc) {
 		this.mc = mc;
-		this.player = mc.thePlayer;
 		
 		// Register Keys:
 		ClientRegistry.registerKeyBinding(mountAbility);
@@ -42,36 +40,39 @@ public class KeyHandler {
     //                    Handle Keys
     // ==================================================
 	@SubscribeEvent
-	public void onKeyInput(KeyInputEvent event) {
-		if(this.player == null)
+	public void onEntityUpdate(LivingUpdateEvent event) {
+		if(!(event.entity instanceof EntityPlayer))
 			return;
-		ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(this.player);
+		if(event.entity != this.mc.thePlayer)
+			return;
+		ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(this.mc.thePlayer);
 		if(playerExt == null)
 			return;
 		byte controlStates = 0;
 		
 		// ========== GUI Keys ==========
 		// Mount Inventory: Adds to control states.
-		if(mountInventory.isPressed()) {
+		if(this.mountInventory.isPressed()) {
 			controlStates += ExtendedPlayer.CONTROL_ID.MOUNT_INVENTORY.id;
 		}
 
 		// Minion Manager: Opens GUI and sends data request packet.
-		if(minionManager.isPressed()) {
+		if(this.minionManager.isPressed()) {
 			PacketGUIRequest packetGUIRequest = new PacketGUIRequest();
 			packetGUIRequest.readGUI(GuiHandler.PlayerGuiType.MINION_CONTROLS.id);
-			GUIMinion.openToPlayer(player, playerExt.selectedSummonSet);
+			GUIMinion.openToPlayer(this.mc.thePlayer, playerExt.selectedSummonSet);
 		}
 		
+		/*/ Minion Selection: Closes If Not Holding:
+		if(!this.minionSelection.getIsKeyPressed() && this.mc.currentScreen instanceof GUIMinionSelection) {
+			this.mc.thePlayer.closeScreen();
+		}*/
 		
-		if(mc.currentScreen == null) {
+		if(this.mc.currentScreen == null) {
 			// ========== HUD Controls ==========
-			// Minion Selection: Opens GUI, closes if not pressed.
-			if(minionSelection.getIsKeyPressed()) {
-				GUIMinionSelection.openToPlayer(player);
-			}
-			else if(Minecraft.getMinecraft().currentScreen instanceof GUIMinionSelection) {
-	    		player.closeScreen();
+			// Minion Selection: Opens GUI.
+			if(this.minionSelection.getIsKeyPressed()) {
+				GUIMinionSelection.openToPlayer(this.mc.thePlayer);
 			}
 			
 			
@@ -81,7 +82,7 @@ public class KeyHandler {
 				controlStates += ExtendedPlayer.CONTROL_ID.JUMP.id;
 			
 			// Mount Ability: Adds to control states.
-			if(mountAbility.getIsKeyPressed())
+			if(this.mountAbility.getIsKeyPressed())
 				controlStates += ExtendedPlayer.CONTROL_ID.MOUNT_ABILITY.id;
 		}
 		

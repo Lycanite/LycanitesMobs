@@ -286,7 +286,7 @@ public class BlockHellfire extends BlockBase {
     @Override
     public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
         if(par5Random.nextInt(24) == 0)
-            par1World.playSound((double)((float)par2 + 0.5F), (double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F), AssetManager.getSound("PoisonCloud"), 1.0F + par5Random.nextFloat(), par5Random.nextFloat() * 0.7F + 0.3F, false);
+            par1World.playSound((double)((float)par2 + 0.5F), (double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F), AssetManager.getSound("Hellfire"), 1.0F + par5Random.nextFloat(), par5Random.nextFloat() * 0.7F + 0.3F, false);
 
         int l;
         float f;
@@ -323,6 +323,6 @@ public class BlockHellfire extends BlockBase {
     // ========== Get Render Type ==========
     @Override
     public int getRenderType() {
-        return BlockBase.RENDER_TYPE.FIRE.id;
+        return BlockBase.RENDER_TYPE.CROSS.id;
     }
 }

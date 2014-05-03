@@ -8,12 +8,12 @@ import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
+import lycanite.lycanitesmobs.api.info.EntityListCustom;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList.EntityEggInfo;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
@@ -65,9 +65,10 @@ public class ItemCustomSpawnEgg extends Item {
 	// ==================================================
 	//                   Get Egg Color
 	// ==================================================
+    @Override
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack par1ItemStack, int par2) {
-        EntityEggInfo entityegginfo = (EntityEggInfo)ObjectManager.entityLists.get(this.mod.getDomain()).entityEggs.get(Integer.valueOf(par1ItemStack.getItemDamage()));
+    	EntityListCustom.EntityEggInfo entityegginfo = (EntityListCustom.EntityEggInfo)ObjectManager.entityLists.get(this.mod.getDomain()).entityEggs.get(Integer.valueOf(par1ItemStack.getItemDamage()));
         return entityegginfo != null ? (par2 == 0 ? entityegginfo.primaryColor : entityegginfo.secondaryColor) : 16777215;
     }
     
@@ -75,6 +76,7 @@ public class ItemCustomSpawnEgg extends Item {
 	// ==================================================
 	//                     Item Use
 	// ==================================================
+    @Override
     public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
         Block block = world.getBlock(x, y, z);
         
@@ -116,6 +118,7 @@ public class ItemCustomSpawnEgg extends Item {
 	// ==================================================
 	//                   On Right Click
 	// ==================================================
+    @Override
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
         if(par2World.isRemote)
             return par1ItemStack;
@@ -184,18 +187,21 @@ public class ItemCustomSpawnEgg extends Item {
 	// ==================================================
 	//                      Visuals
 	// ==================================================
+    @Override
     @SideOnly(Side.CLIENT)
     public boolean requiresMultipleRenderPasses() {
         return true;
     }
     
     // ========== Get Icon ==========
+    @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamageForRenderPass(int par1, int par2) {
         return par2 > 0 ? AssetManager.getIcon(this.itemName + "_overlay") : AssetManager.getIcon(this.itemName);
     }
     
     // ========== Register Icon ==========
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
     	AssetManager.addIcon(this.itemName, this.mod.getDomain(), texturePath, iconRegister);
@@ -206,8 +212,9 @@ public class ItemCustomSpawnEgg extends Item {
 	// ==================================================
 	//                   Get Sub Items
 	// ==================================================
+    @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(int itemID, CreativeTabs creativeTabs, List par3List) {
+    public void getSubItems(Item item, CreativeTabs creativeTabs, List subItems) {
     	if(this.mod == null || !ObjectManager.entityLists.containsKey(this.mod.getDomain()))
     		return;
     	
@@ -217,8 +224,8 @@ public class ItemCustomSpawnEgg extends Item {
     	
         Iterator iterator = entityEggs.values().iterator();
         while(iterator.hasNext()) {
-            EntityEggInfo entityegginfo = (EntityEggInfo)iterator.next();
-            par3List.add(new ItemStack(this, 1, entityegginfo.spawnedID));
+        	EntityListCustom.EntityEggInfo entityegginfo = (EntityListCustom.EntityEggInfo)iterator.next();
+            subItems.add(new ItemStack(this, 1, entityegginfo.spawnedID));
         }
     }
 }

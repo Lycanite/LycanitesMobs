@@ -67,14 +67,14 @@ public class ArcticMobs implements ILycaniteMod {
 		ObjectManager.setCurrentMod(this);
 		
 		// ========== Create Items ==========
-		ObjectManager.addItem("ArcticEgg", "Spawn", new ItemArcticEgg());
-		ObjectManager.addItem("FrostboltCharge", "Frostbolt Charge", new ItemFrostboltCharge());
-		ObjectManager.addItem("FrostboltScepter", "Frostbolt Scepter", new ItemScepterFrostbolt());
-		ObjectManager.addItem("FrostwebCharge", "Frostweb Charge", new ItemFrostwebCharge());
-		ObjectManager.addItem("FrostwebScepter", "Frostweb Scepter", new ItemScepterFrostweb());
+		ObjectManager.addItem("arcticegg", new ItemArcticEgg());
+		ObjectManager.addItem("frostboltcharge", new ItemFrostboltCharge());
+		ObjectManager.addItem("frostboltscepter", new ItemScepterFrostbolt());
+		ObjectManager.addItem("frostwebcharge", new ItemFrostwebCharge());
+		ObjectManager.addItem("frostwebscepter", new ItemScepterFrostweb());
 
 		// ========== Create Blocks ==========
-		ObjectManager.addBlock("Frostweb", "Frostweb", new BlockFrostweb());
+		ObjectManager.addBlock("frostweb", new BlockFrostweb());
 	}
 	
 	
@@ -88,13 +88,13 @@ public class ArcticMobs implements ILycaniteMod {
 		ObjectManager.setCurrentMod(this);
 		
 		// ========== Create Mobs ==========
-		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("ArcticEgg"), new DispenserBehaviorMobEggCustom());
-		ObjectManager.addMob(new MobInfo(this, "Reiver", EntityReiver.class, 0xDDEEFF, 0x99DDEE, 2).setSummonable(true));
-		ObjectManager.addMob(new MobInfo(this, "Frostweaver", EntityFrostweaver.class, 0xAADDFF, 0x226699, 2));
+		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("arcticegg"), new DispenserBehaviorMobEggCustom());
+		ObjectManager.addMob(new MobInfo(this, "reiver", EntityReiver.class, 0xDDEEFF, 0x99DDEE, 2).setSummonable(true));
+		ObjectManager.addMob(new MobInfo(this, "frostweaver", EntityFrostweaver.class, 0xAADDFF, 0x226699, 2));
 		
 		// ========== Create Projectiles ==========
-		ObjectManager.addProjectile("Frostbolt", EntityFrostbolt.class, ObjectManager.getItem("FrostboltCharge"), new DispenserBehaviorFrostbolt());
-		ObjectManager.addProjectile("Frostweb", EntityFrostweb.class, ObjectManager.getItem("FrostwebCharge"), new DispenserBehaviorFrostweb());
+		ObjectManager.addProjectile("frostbolt", EntityFrostbolt.class, ObjectManager.getItem("frostboltcharge"), new DispenserBehaviorFrostbolt());
+		ObjectManager.addProjectile("frostweb", EntityFrostweb.class, ObjectManager.getItem("frostwebcharge"), new DispenserBehaviorFrostweb());
 		
 		// ========== Register Models ==========
 		proxy.registerModels();
@@ -119,16 +119,16 @@ public class ArcticMobs implements ILycaniteMod {
 		
 		// ========== Crafting ==========
 		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("FrostboltScepter"), 1, 0),
+				new ItemStack(ObjectManager.getItem("frostboltscepter"), 1, 0),
 				new Object[] { "CCC", "CRC", "CRC",
-				Character.valueOf('C'), ObjectManager.getItem("FrostboltCharge"),
+				Character.valueOf('C'), ObjectManager.getItem("frostboltcharge"),
 				Character.valueOf('R'), Items.blaze_rod
 			}));
 
 		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("FrostwebScepter"), 1, 0),
+				new ItemStack(ObjectManager.getItem("frostwebscepter"), 1, 0),
 				new Object[] { "CCC", "CRC", "CRC",
-				Character.valueOf('C'), ObjectManager.getItem("FrostwebCharge"),
+				Character.valueOf('C'), ObjectManager.getItem("frostwebcharge"),
 				Character.valueOf('R'), Items.blaze_rod
 			}));
 		

@@ -130,17 +130,17 @@ public class Config {
 	// Loads a setting from the config and saves the default if it isn't provided. SettingID should be unique. Will change DEFAULT to the default setting.
 	public void loadSetting(Map<String, Boolean> settingMap, String settingCategory, String settingID, String settingName, boolean settingDefault) {
 		Boolean setting = config.get(settingCategory, settingName, settingDefault).getBoolean(settingDefault);
-		settingMap.put(settingID, setting);
+		settingMap.put(settingID.toLowerCase(), setting);
 	}
 	
 	public void loadSetting(Map<String, Integer> settingMap, String settingCategory, String settingID, String settingName, int settingDefault) {
 		int setting = config.get(settingCategory, settingName, settingDefault).getInt(settingDefault);
-		settingMap.put(settingID, setting);
+		settingMap.put(settingID.toLowerCase(), setting);
 	}
 	
 	public void loadSetting(Map<String, Double> settingMap, String settingCategory, String settingID, String settingName, double settingDefault) {
 		double setting = config.get(settingCategory, settingName, settingDefault).getDouble(settingDefault);
-		settingMap.put(settingID, setting);
+		settingMap.put(settingID.toLowerCase(), setting);
 	}
 	
 	public void loadSetting(Map<String, String> settingMap, String settingCategory, String settingID, String settingName, String settingDefault) {
@@ -150,7 +150,7 @@ public class Config {
 			setting = settingDefault;
 			config.save();
 		}
-		settingMap.put(settingID, setting);
+		settingMap.put(settingID.toLowerCase(), setting);
 	}
 	
 	public void loadSettingSpawnType(String settingCategory, String settingID, String settingName, String settingDefault) {
@@ -161,7 +161,7 @@ public class Config {
 			config.save();
 		}
 		
-		this.spawnTypes.put(settingID, typeString);
+		this.spawnTypes.put(settingID.toLowerCase(), typeString);
 	}
 	
 	// ========== Mob Settings ==========

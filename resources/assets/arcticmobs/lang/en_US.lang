@@ -1,0 +1,13 @@
+# Entites
+entity.arcticmobs.reiver.name=Reiver
+entity.arcticmobs.frostweaver.name=Frostweaver
+#
+# Items
+item.arcticspawnegg.name=Spawn
+item.frostboltcharge.name=Frostbolt Charge
+item.frostwebcharge.name=Frostweb Charge
+item.frostboltscepter.name=Frostbolt Scepter
+item.frostwebscepter.name=Frostweb Scepter
+#
+# Blocks
+block.frostweb.name=Frostweb

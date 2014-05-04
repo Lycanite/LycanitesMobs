@@ -45,11 +45,8 @@ public class MobInfo {
 	/** Mod Class **/
 	public ILycaniteMod mod;
 	
-	/** The name of this mob used by the ObjectManager and Config maps. **/
-	public String name = "MobName";
-	
-	/** The title used by this mob for displaying in game.. **/
-	public String title = "Mob Name";
+	/** The name of this mob used by the ObjectManager and Config maps. Should be all lower case **/
+	public String name = "mobname";
 	
 	/** Is this mob enabled? If disabled, it will still be registered, etc but wont randomly spawn or have a spawn egg. **/
 	public boolean mobEnabled;
@@ -111,11 +108,10 @@ public class MobInfo {
     // ==================================================
     //                     Constructor
     // ==================================================
-	public MobInfo(ILycaniteMod mod, String name, String title, Class entityClass, int eggBack, int eggFore, int summonCost) {
+	public MobInfo(ILycaniteMod mod, String name, Class entityClass, int eggBack, int eggFore, int summonCost) {
 		this.mod = mod;
 		
 		this.name = name;
-		this.title = title;
 		
 		Config config = mod.getConfig();
 		this.mobEnabled = config.mobsEnabled.containsKey(name) ? mod.getConfig().mobsEnabled.get(name) : false;
@@ -165,11 +161,6 @@ public class MobInfo {
 		
 		mobClassToInfo.put(entityClass, this);
 		mobNameToInfo.put(this.name, this);
-	}
-	
-	// For most mobs where the code name and title are the same (no spaces, etc).
-	public MobInfo(ILycaniteMod mod, String setName, Class setClass, int setEggBack, int setEggFore, int summonCost) {
-		this(mod, setName, setName, setClass, setEggBack, setEggFore, summonCost);
 	}
 	
 	

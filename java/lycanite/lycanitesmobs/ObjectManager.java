@@ -41,13 +41,15 @@ public class ObjectManager {
     //                        Add
     // ==================================================
 	// ========== Block ==========
-	public static void addBlock(String name, String title, Block block) {
+	public static void addBlock(String name, Block block) {
+		name = name.toLowerCase();
 		blocks.put(name, block);
 		GameRegistry.registerBlock(block, name);
 	}
 
 	// ========== Item ==========
-	public static void addItem(String name, String title, Item item) {
+	public static void addItem(String name, Item item) {
+		name = name.toLowerCase();
 		items.put(name, item);
 		if(currentMod != null)
 			GameRegistry.registerItem(item, name, currentMod.getModID());
@@ -55,6 +57,7 @@ public class ObjectManager {
 
 	// ========== Potion Effect ==========
 	public static PotionBase addPotionEffect(String name, Config config, boolean isBad, int color, int iconX, int iconY) {
+		name = name.toLowerCase();
 		PotionBase potion = new PotionBase(PotionBase.customPotionStartID + config.effectIDs.get(name), isBad, color);
 		potion.setPotionName(name);
 		potion.setIconIndex(iconX, iconY);
@@ -153,6 +156,7 @@ public class ObjectManager {
 
 	// ========== Projectile ==========
 	public static void addProjectile(String name, Class entityClass) {
+		name = name.toLowerCase();
 		ILycaniteMod mod = currentMod;
 		String filename = name.toLowerCase();
 		AssetManager.addSound(name, mod.getDomain(), "projectile/" + filename + ".wav");
@@ -174,34 +178,40 @@ public class ObjectManager {
     // ==================================================
 	// ========== Block ==========
 	public static Block getBlock(String name) {
+		name = name.toLowerCase();
 		if(!blocks.containsKey(name)) return null;
 		return blocks.get(name);
 	}
 	
 	// ========== Item ==========
 	public static Item getItem(String name) {
+		name = name.toLowerCase();
 		if(!items.containsKey(name)) return null;
 		return items.get(name);
 	}
 	
 	// ========== Potion Effect ==========
 	public static PotionBase getPotionEffect(String name) {
+		name = name.toLowerCase();
 		if(!potionEffects.containsKey(name)) return null;
 		return potionEffects.get(name);
 	}
 	
 	// ========== Mob ==========
 	public static Class getMob(String mobName) {
+		mobName = mobName.toLowerCase();
 		if(!mobs.containsKey(mobName)) return null;
 		return mobs.get(mobName).entityClass;
 	}
 	
 	public static MobInfo getMobInfo(String mobName) {
+		mobName = mobName.toLowerCase();
 		if(!mobs.containsKey(mobName)) return null;
 		return mobs.get(mobName);
 	}
 
 	public static int[] getMobDimensions(String mobName) {
+		mobName = mobName.toLowerCase();
 		if(!mobs.containsKey(mobName)) return new int[0];
 		return mobs.get(mobName).spawnInfo.dimensionIDs;
 	}

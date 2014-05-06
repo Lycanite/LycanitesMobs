@@ -28,11 +28,11 @@ public class BlockPoisonCloud extends BlockBase {
 		
 		// Properties:
 		this.mod = SwampMobs.instance;
-		this.blockName = "PoisonCloud";
+		this.blockName = "poisoncloud";
 		this.setup();
 		
 		// Stats:
-		this.tickRate = this.mod.getConfig().getFeatureBool("PoisonCloud") ? 200 : 1;
+		this.tickRate = this.mod.getConfig().getFeatureBool("poisoncloud") ? 200 : 1;
 		this.removeOnTick = true;
 		this.loopTicks = false;
 		this.canBeCrushed = true;
@@ -51,7 +51,7 @@ public class BlockPoisonCloud extends BlockBase {
 	// ==================================================
 	@Override
 	public Item getItemDropped(int metadata, Random random, int fortune) {
-		return ObjectManager.getItem("PoisonGland");
+		return ObjectManager.getItem("poisongland");
 	}
 	
 	@Override
@@ -84,7 +84,7 @@ public class BlockPoisonCloud extends BlockBase {
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
         if(par5Random.nextInt(24) == 0)
-            par1World.playSound((double)((float)par2 + 0.5F), (double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F), AssetManager.getSound("PoisonCloud"), 1.0F + par5Random.nextFloat(), par5Random.nextFloat() * 0.7F + 0.3F, false);
+            par1World.playSound((double)((float)par2 + 0.5F), (double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F), AssetManager.getSound("poisoncloud"), 1.0F + par5Random.nextFloat(), par5Random.nextFloat() * 0.7F + 0.3F, false);
 
         int l;
         float f; 
@@ -95,7 +95,7 @@ public class BlockPoisonCloud extends BlockBase {
             f = (float)par2 + par5Random.nextFloat();
             f1 = (float)par3 + par5Random.nextFloat() * 0.5F;
             f2 = (float)par4 + par5Random.nextFloat();
-            //TODO EntityParticle particle = new EntityParticle(par1World, f, f1, f2, "PoisonCloud", this.mod);
+            //TODO EntityParticle particle = new EntityParticle(par1World, f, f1, f2, "poisoncloud", this.mod);
             par1World.spawnParticle("portal", (double)f, (double)f1, (double)f2, 0.0D, 0.0D, 0.0D);
             par1World.spawnParticle("smoke", (double)f, (double)f1, (double)f2, 0.0D, 0.0D, 0.0D);
         }

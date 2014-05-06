@@ -13,6 +13,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 
 
 public class MobInfo {
@@ -169,6 +170,10 @@ public class MobInfo {
     // ==================================================
 	public String getRegistryName() {
 		return this.mod.getModID() + "." + this.name;
+	}
+	
+	public String getTitle() {
+		return StatCollector.translateToLocal("entity." + this.getRegistryName());
 	}
 	
 	

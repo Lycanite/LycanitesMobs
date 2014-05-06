@@ -20,13 +20,13 @@ public class ClientSubProxy extends CommonSubProxy {
 	// ========== Register Models ==========
 	@Override
     public void registerModels() {
-		AssetManager.addModel("CryptZombie", new ModelCryptZombie());
-		AssetManager.addModel("Crusk", new ModelCrusk());
-		AssetManager.addModel("Clink", new ModelClink());
-		AssetManager.addModel("Joust", new ModelJoust());
-		AssetManager.addModel("JoustAlpha", new ModelJoustAlpha());
-		AssetManager.addModel("Erepede", new ModelErepede());
-		AssetManager.addModel("Gorgomite", new ModelGorgomite());
-		AssetManager.addModel("Manticore", new ModelManticore());
+		AssetManager.addModel("cryptzombie", new ModelCryptZombie());
+		AssetManager.addModel("crusk", new ModelCrusk());
+		AssetManager.addModel("clink", new ModelClink());
+		AssetManager.addModel("joust", new ModelJoust());
+		AssetManager.addModel("joustalpha", new ModelJoustAlpha());
+		AssetManager.addModel("erepede", new ModelErepede());
+		AssetManager.addModel("gorgomite", new ModelGorgomite());
+		AssetManager.addModel("manticore", new ModelManticore());
 	}
 }

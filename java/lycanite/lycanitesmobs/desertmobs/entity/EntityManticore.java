@@ -39,7 +39,6 @@ public class EntityManticore extends EntityCreatureTameable implements IMob, IGr
         super(par1World);
         
         // Setup:
-        this.entityName = "Manticore";
         this.mod = DesertMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 0;

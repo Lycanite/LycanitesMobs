@@ -10,7 +10,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemCustomFood extends ItemFood {
 	
-	public String itemName = "CustomFood";
+	public String itemName = "customfood";
 	public String domain = LycanitesMobs.domain;
 	public String texturePath = "customfood";
 	

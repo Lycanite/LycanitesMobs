@@ -37,7 +37,6 @@ public class EntityAsmodi extends EntityCreatureBase implements IMob {
         super(par1World);
         
         // Setup:
-        this.entityName = "Asmodi";
         this.mod = DemonMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEAD;
         this.defense = 2;

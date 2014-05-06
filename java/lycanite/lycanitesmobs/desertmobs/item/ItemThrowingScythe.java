@@ -18,7 +18,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemThrowingScythe extends Item {
-	public static String itemName = "ThrowingScythe";
+	public static String itemName = "throwingscythe";
 	
 	// ==================================================
 	//                   Constructor

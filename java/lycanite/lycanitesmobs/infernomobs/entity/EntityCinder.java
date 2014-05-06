@@ -40,7 +40,6 @@ public class EntityCinder extends EntityCreatureTameable implements IMob {
         super(par1World);
         
         // Setup:
-        this.entityName = "Cinder";
         this.mod = InfernoMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 0;

@@ -36,7 +36,7 @@ public class EntityMudshot extends EntityProjectileBase {
     
     // ========== Setup Projectile ==========
     public void setup() {
-    	this.entityName = "Mudshot";
+    	this.entityName = "mudshot";
     	this.mod = DesertMobs.instance;
     	this.setBaseDamage(4);
     	this.setProjectileScale(1F);

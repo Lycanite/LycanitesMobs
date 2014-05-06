@@ -65,14 +65,14 @@ public class PlainsMobs implements ILycaniteMod {
 		ObjectManager.setCurrentMod(this);
 		
 		// ========== Create Items ==========
-		ObjectManager.addItem("PlainsEgg", "Spawn", new ItemPlainsEgg());
+		ObjectManager.addItem("plainsegg", new ItemPlainsEgg());
 		
-		ObjectManager.addItem("MakaMeatRaw", "Raw Maka Meat", new ItemCustomFood("MakaMeatRaw", domain, 2, 0.5F).setPotionEffect(Potion.weakness.id, 45, 2, 0.8F));
-		ObjectLists.addItem("RawMeat", ObjectManager.getItem("MakaMeatRaw"));
-		ObjectManager.addItem("MakaMeatCooked", "Cooked Maka Meat", new ItemCustomFood("MakaMeatCooked", domain, 6, 0.7F));
-		ObjectLists.addItem("CookedMeat", ObjectManager.getItem("MakaMeatCooked"));
-		ObjectManager.addItem("BulwarkBurger", "Bulwark Burger", new ItemCustomFood("BulwarkBurger", domain, 6, 0.7F).setPotionEffect(Potion.field_76444_x.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16)); // Absorbtion
-		ObjectLists.addItem("CookedMeat", ObjectManager.getItem("BulwarkBurger"));
+		ObjectManager.addItem("makameatraw", new ItemCustomFood("makameatraw", domain, 2, 0.5F).setPotionEffect(Potion.weakness.id, 45, 2, 0.8F));
+		ObjectLists.addItem("rawmeat", ObjectManager.getItem("makameatraw"));
+		ObjectManager.addItem("makameatcooked", new ItemCustomFood("makameatcooked", domain, 6, 0.7F));
+		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("makameatcooked"));
+		ObjectManager.addItem("bulwarkburger", new ItemCustomFood("bulwarkburger", domain, 6, 0.7F).setPotionEffect(Potion.field_76444_x.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16)); // Absorbtion
+		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("bulwarkburger"));
 	}
 	
 	
@@ -86,12 +86,12 @@ public class PlainsMobs implements ILycaniteMod {
 		ObjectManager.setCurrentMod(this);
 		
 		// ========== Create Mobs ==========
-		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("PlainsEgg"), new DispenserBehaviorMobEggCustom());
-		ObjectManager.addMob(new MobInfo(this, "Kobold", EntityKobold.class, 0x996633, 0xFF7777, 1).setSummonable(true));
-		ObjectManager.addMob(new MobInfo(this, "Ventoraptor", EntityVentoraptor.class, 0x99BBFF, 0x0033FF, 4));
-		ObjectManager.addMob(new MobInfo(this, "Maka", EntityMaka.class, 0xAA8855, 0x221100, 2));
-		ObjectManager.addMob(new MobInfo(this, "MakaAlpha", "Maka Alpha", EntityMakaAlpha.class, 0x663300, 0x000000, 4));
-		ObjectManager.addMob(new MobInfo(this, "Zoataur", "Zoataur", EntityZoataur.class, 0x442200, 0xFFDDBB, 4).setSummonable(true));
+		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("plainsegg"), new DispenserBehaviorMobEggCustom());
+		ObjectManager.addMob(new MobInfo(this, "kobold", EntityKobold.class, 0x996633, 0xFF7777, 1).setSummonable(true));
+		ObjectManager.addMob(new MobInfo(this, "ventoraptor", EntityVentoraptor.class, 0x99BBFF, 0x0033FF, 4));
+		ObjectManager.addMob(new MobInfo(this, "maka", EntityMaka.class, 0xAA8855, 0x221100, 2));
+		ObjectManager.addMob(new MobInfo(this, "makaalpha", EntityMakaAlpha.class, 0x663300, 0x000000, 4));
+		ObjectManager.addMob(new MobInfo(this, "zoataur", EntityZoataur.class, 0x442200, 0xFFDDBB, 4).setSummonable(true));
 		
 		// ========== Create Projectiles ==========
 		//ObjectManager.addProjectile("Template", EntityTemplate.class, Item.templateCharge, new DispenserBehaviorPoisonRay());
@@ -111,7 +111,7 @@ public class PlainsMobs implements ILycaniteMod {
 		
 		// ========== Remove Vanilla Spawns ==========
 		BiomeGenBase[] biomes = this.config.getSpawnBiomesTypes();
-		if(config.getFeatureBool("ControlVanilla")) {
+		if(config.getFeatureBool("controlvanilla")) {
 			EntityRegistry.removeSpawn(EntitySkeleton.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntitySpider.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntityPig.class, EnumCreatureType.creature, biomes);
@@ -120,16 +120,16 @@ public class PlainsMobs implements ILycaniteMod {
 		
 		// ========== Crafting ==========
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
-				new ItemStack(ObjectManager.getItem("BulwarkBurger"), 1, 0),
+				new ItemStack(ObjectManager.getItem("bulwarkburger"), 1, 0),
 				new Object[] {
 					Items.bread,
-					ObjectManager.getItem("MakaMeatCooked"),
+					ObjectManager.getItem("makameatcooked"),
 					Items.bread
 				}
 			));
 		
 		// ========== Smelting ==========
-		GameRegistry.addSmelting(ObjectManager.getItem("MakaMeatRaw"), new ItemStack(ObjectManager.getItem("MakaMeatCooked"), 1), 0.5f);
+		GameRegistry.addSmelting(ObjectManager.getItem("makameatraw"), new ItemStack(ObjectManager.getItem("makameatcooked"), 1), 0.5f);
 	}
 	
 	

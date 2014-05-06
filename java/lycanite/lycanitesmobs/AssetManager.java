@@ -24,19 +24,23 @@ public class AssetManager {
     // ==================================================
 	// ========== Texture ==========
 	public static void addTexture(String name, String domain, String path) {
+		name = name.toLowerCase();
 		textures.put(name, new ResourceLocation(domain, path));
 	}
 	
 	// ========== Icon ==========
 	public static void addIcon(String name, IIcon icon) {
+		name = name.toLowerCase();
 		icons.put(name, icon);
 	}
 	public static void addIcon(String name, String domain, String path, IIconRegister iconRegister) {
+		name = name.toLowerCase();
 		icons.put(name, iconRegister.registerIcon(domain + ":" + path));
 	}
 	
 	// ========== Icon Group ==========
 	public static void addIconGroup(String name, String domain, String[] paths, IIconRegister iconRegister) {
+		name = name.toLowerCase();
 		IIcon[] iconGroup = new IIcon[paths.length];
 		for(int i = 0; i < paths.length; i++)
 			iconGroup[i] = iconRegister.registerIcon(domain + ":" + paths[i]);
@@ -45,16 +49,19 @@ public class AssetManager {
 	
 	// ========== Sound ==========
 	public static void addSound(String name, String domain, String path) {
-		sounds.put(name, new String[] {domain + ":" + path, domain + ":" + path.replaceAll("/", ".").substring(0, path.length() - 4)});
+		name = name.toLowerCase();
+		sounds.put(name, new String[] {domain + ":" + path, domain + ":" + path.replaceAll("entity/", "").replaceAll("/", ".").substring(0, path.length() - 4)});
 	}
 	
 	// ========== Model ==========
 	public static void addModel(String name, ModelBase model) {
+		name = name.toLowerCase();
 		models.put(name, model);
 	}
 	
 	// ========== Obj Model ==========
 	public static void addObjModel(String name, String domain, String path) {
+		name = name.toLowerCase();
 		objModels.put(name, AdvancedModelLoader.loadModel(new ResourceLocation(domain, "/models/" + path + ".obj")));
 	}
 	
@@ -64,6 +71,7 @@ public class AssetManager {
     // ==================================================
 	// ========== Texture ==========
 	public static ResourceLocation getTexture(String name) {
+		name = name.toLowerCase();
 		if(!textures.containsKey(name))
 			return null;
 		return textures.get(name);
@@ -71,6 +79,7 @@ public class AssetManager {
 	
 	// ========== Icon ==========
 	public static IIcon getIcon(String name) {
+		name = name.toLowerCase();
 		if(!icons.containsKey(name))
 			return null;
 		return icons.get(name);
@@ -78,6 +87,7 @@ public class AssetManager {
 	
 	// ========== Icon Group ==========
 	public static IIcon[] getIconGroup(String name) {
+		name = name.toLowerCase();
 		if(!iconGroups.containsKey(name))
 			return null;
 		return iconGroups.get(name);
@@ -85,6 +95,7 @@ public class AssetManager {
 	
 	// ========== Sound ==========
 	public static String getSound(String name) {
+		name = name.toLowerCase();
 		if(!sounds.containsKey(name))
 			return null;
 		return sounds.get(name)[1];
@@ -92,6 +103,7 @@ public class AssetManager {
 	
 	// ========== Model ==========
 	public static ModelBase getModel(String name) {
+		name = name.toLowerCase();
 		if(!models.containsKey(name))
 			return null;
 		return models.get(name);
@@ -99,11 +111,13 @@ public class AssetManager {
 	
 	// ========== Obj Model ==========
 	public static IModelCustom getObjModel(String name) {
+		name = name.toLowerCase();
 		if(!objModels.containsKey(name))
 			return null;
 		return objModels.get(name);
 	}
 	public static IModelCustom getObjModel(String name, String domain, String path) {
+		name = name.toLowerCase();
 		if(!objModels.containsKey(name))
 			addObjModel(name, domain, path);
 		return objModels.get(name);

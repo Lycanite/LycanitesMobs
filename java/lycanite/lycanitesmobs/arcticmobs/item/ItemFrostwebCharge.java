@@ -18,7 +18,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemFrostwebCharge extends Item {
-	public static String itemName = "FrostwebCharge";
+	public static String itemName = "frostwebcharge";
 	
 	// ==================================================
 	//                   Constructor
@@ -27,7 +27,7 @@ public class ItemFrostwebCharge extends Item {
         super();
         setMaxStackSize(64);
         setCreativeTab(LycanitesMobs.creativeTab);
-        setUnlocalizedName("FrostwebCharge");
+        setUnlocalizedName("frostwebcharge");
     }
     
     

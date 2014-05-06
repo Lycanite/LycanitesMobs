@@ -10,9 +10,9 @@ public class ItemInfernoEgg extends ItemCustomSpawnEgg {
 	// ==================================================
     public ItemInfernoEgg() {
         super();
-        setUnlocalizedName("InfernoSpawnEgg");
+        setUnlocalizedName("infernospawn");
         this.mod = InfernoMobs.instance;
-        this.itemName = "InfernoEgg";
+        this.itemName = "infernospawn";
         this.texturePath = "infernospawn";
     }
 }

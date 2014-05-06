@@ -37,7 +37,6 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
         super(par1World);
         
         // Setup:
-        this.entityName = "Maka";
         this.mod = PlainsMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 3;
@@ -83,18 +82,6 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
 	public void loadItemDrops() {
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("MakaMeatRaw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("MakaMeatCooked"))).setMinAmount(3).setMaxAmount(7));
 	}
-    
-    
-    // ==================================================
-    //                       Name
-    // ==================================================
-    public String getConfigName() {
-    	return this.entityName + "Alpha";
-    }
-    
-    public String getTextureName() {
-    	return this.entityName + "Alpha";
-    }
 	
 	
 	// ==================================================

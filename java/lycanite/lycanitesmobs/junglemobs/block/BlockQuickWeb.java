@@ -20,11 +20,11 @@ public class BlockQuickWeb extends BlockBase {
 		
 		// Properties:
 		this.mod = JungleMobs.instance;
-		this.blockName = "QuickWeb";
+		this.blockName = "quickweb";
 		this.setup();
 		
 		// Stats:
-		this.tickRate = this.mod.getConfig().getFeatureBool("QuickWeb") ? 200 : 1;
+		this.tickRate = this.mod.getConfig().getFeatureBool("quickweb") ? 200 : 1;
 		this.removeOnTick = true;
 		this.loopTicks = false;
 		this.canBeCrushed = false;
@@ -43,7 +43,7 @@ public class BlockQuickWeb extends BlockBase {
 	// ==================================================
 	@Override
 	public Item getItemDropped(int metadata, Random random, int fortune) {
-		return ObjectManager.getItem("QuickWebCharge");
+		return ObjectManager.getItem("quickwebcharge");
 	}
 	
 	@Override

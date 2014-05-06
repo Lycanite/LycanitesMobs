@@ -43,7 +43,6 @@ public class EntityDweller extends EntityCreatureTameable implements IMob {
         super(par1World);
         
         // Setup:
-        this.entityName = "Dweller";
         this.mod = SwampMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 0;

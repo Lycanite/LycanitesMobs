@@ -18,7 +18,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemDemonicLightning extends Item {
-	public static String itemName = "DemonicLightningCharge";
+	public static String itemName = "demoniclightningcharge";
 	
 	// ==================================================
 	//                   Constructor

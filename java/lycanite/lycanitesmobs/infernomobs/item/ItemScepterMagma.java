@@ -17,7 +17,7 @@ public class ItemScepterMagma extends ItemScepter {
     public ItemScepterMagma() {
         super();
     	this.domain = InfernoMobs.domain;
-    	this.itemName = "MagmaScepter";
+    	this.itemName = "magmascepter";
         this.setUnlocalizedName(this.itemName);
         this.textureName = "sceptermagma";
     }

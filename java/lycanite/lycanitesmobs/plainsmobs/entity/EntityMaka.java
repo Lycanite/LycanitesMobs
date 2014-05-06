@@ -42,7 +42,6 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
         super(par1World);
         
         // Setup:
-        this.entityName = "Maka";
         this.mod = PlainsMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 1;

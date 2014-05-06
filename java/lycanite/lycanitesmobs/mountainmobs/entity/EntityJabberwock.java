@@ -38,7 +38,6 @@ public class EntityJabberwock extends EntityCreatureTameable implements IMob {
         super(par1World);
         
         // Setup:
-        this.entityName = "Jabberwock";
         this.mod = MountainMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.experience = 5;

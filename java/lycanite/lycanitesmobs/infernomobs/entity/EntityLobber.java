@@ -48,7 +48,6 @@ public class EntityLobber extends EntityCreatureBase implements IMob {
         super(par1World);
         
         // Setup:
-        this.entityName = "Lobber";
         this.mod = InfernoMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 3;

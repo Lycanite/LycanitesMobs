@@ -18,7 +18,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemHellfireball extends Item {
-	public static String itemName = "HellfireCharge";
+	public static String itemName = "hellfirecharge";
 	
 	// ==================================================
 	//                   Constructor
@@ -27,7 +27,7 @@ public class ItemHellfireball extends Item {
         super();
         setMaxStackSize(64);
         setCreativeTab(LycanitesMobs.creativeTab);
-        setUnlocalizedName("HellfireCharge");
+        setUnlocalizedName("hellfirecharge");
     }
     
     

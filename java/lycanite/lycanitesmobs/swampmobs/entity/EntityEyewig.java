@@ -42,7 +42,6 @@ public class EntityEyewig extends EntityCreatureRideable {
         super(par1World);
         
         // Setup:
-        this.entityName = "Eyewig";
         this.mod = SwampMobs.instance;
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
         this.defense = 0;

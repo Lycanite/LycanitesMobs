@@ -17,7 +17,7 @@ public class ItemScepterHellfire extends ItemScepter {
     public ItemScepterHellfire() {
         super();
     	this.domain = DemonMobs.domain;
-    	this.itemName = "HellfireScepter";
+    	this.itemName = "hellfirescepter";
         this.setUnlocalizedName(this.itemName);
         this.textureName = "scepterhellfire";
     }

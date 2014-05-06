@@ -42,7 +42,6 @@ public class EntityTrent extends EntityCreatureTameable implements IMob {
         super(par1World);
         
         // Setup:
-        this.entityName = "Trent";
         this.mod = ForestMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 2;

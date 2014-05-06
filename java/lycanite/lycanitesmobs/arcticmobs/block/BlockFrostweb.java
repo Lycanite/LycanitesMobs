@@ -22,11 +22,11 @@ public class BlockFrostweb extends BlockBase {
 		
 		// Properties:
 		this.mod = ArcticMobs.instance;
-		this.blockName = "Frostweb";
+		this.blockName = "frostweb";
 		this.setup();
 		
 		// Stats:
-		this.tickRate = this.mod.getConfig().getFeatureBool("Frostweb") ? 200 : 1;
+		this.tickRate = this.mod.getConfig().getFeatureBool("frostweb") ? 200 : 1;
 		this.removeOnTick = true;
 		this.loopTicks = false;
 		this.canBeCrushed = false;
@@ -45,7 +45,7 @@ public class BlockFrostweb extends BlockBase {
 	// ==================================================
 	@Override
 	public Item getItemDropped(int breakID, Random random, int zero) {
-        return ObjectManager.getItem("FrostwebCharge");
+        return ObjectManager.getItem("frostwebcharge");
 	}
 	
 	@Override

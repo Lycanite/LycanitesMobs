@@ -38,7 +38,6 @@ public class EntityReiver extends EntityCreatureTameable implements IMob {
         super(par1World);
         
         // Setup:
-        this.entityName = "Reiver";
         this.mod = ArcticMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 0;

@@ -10,9 +10,9 @@ public class ItemSwampEgg extends ItemCustomSpawnEgg {
 	// ==================================================
     public ItemSwampEgg() {
         super();
-        setUnlocalizedName("SwampSpawnEgg");
+        setUnlocalizedName("swampspawn");
         this.mod = SwampMobs.instance;
-        this.itemName = "SwampEgg";
+        this.itemName = "swampspawn";
         this.texturePath = "swampspawn";
     }
 }

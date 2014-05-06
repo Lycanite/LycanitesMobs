@@ -43,7 +43,6 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
         super(par1World);
         
         // Setup:
-        this.entityName = "Concapede";
         this.mod = JungleMobs.instance;
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
         this.defense = 0;
@@ -87,14 +86,6 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("ConcapedeMeatRaw")), 1).setMinAmount(1).setMaxAmount(2).setBurningDrop(new ItemStack(ObjectManager.getItem("ConcapedeMeatCooked"))));
         this.drops.add(new DropRate(new ItemStack(Items.string), 0.25F).setMinAmount(1).setMaxAmount(2));
 	}
-    
-    
-    // ==================================================
-    //                       Name
-    // ==================================================
-    public String getConfigName() {
-    	return this.entityName + "Segment";
-    }
 
     // ==================================================
     //                      Spawning

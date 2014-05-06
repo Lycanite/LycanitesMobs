@@ -43,7 +43,6 @@ public class EntityGorgomite extends EntityCreatureBase implements IMob, IGroupP
         super(par1World);
         
         // Setup:
-        this.entityName = "Gorgomite";
         this.mod = DesertMobs.instance;
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
         this.defense = 0;

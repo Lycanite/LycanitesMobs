@@ -111,7 +111,7 @@ public class ArcticMobs implements ILycaniteMod {
 		
 		// ========== Remove Vanilla Spawns ==========
 		BiomeGenBase[] biomes = this.config.getSpawnBiomesTypes();
-		if(config.getFeatureBool("ControlVanilla")) {
+		if(config.getFeatureBool("controlvanilla")) {
 			EntityRegistry.removeSpawn(EntityZombie.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntityCreeper.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntitySpider.class, EnumCreatureType.monster, biomes);
@@ -133,7 +133,7 @@ public class ArcticMobs implements ILycaniteMod {
 			}));
 		
 		// ========== Smelting ==========
-		//GameRegistry.addSmelting(ObjectManager.getItem("YetiMeatRaw").itemID, new ItemStack(ObjectManager.getItem("YetiMeatCooked"), 1), 0.5f);
+		//GameRegistry.addSmelting(ObjectManager.getItem("yetimeatraw").itemID, new ItemStack(ObjectManager.getItem("yetimeatcooked"), 1), 0.5f);
 	}
 	
 	

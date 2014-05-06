@@ -47,7 +47,7 @@ public class SaltwaterMobs implements ILycaniteMod {
 		ObjectManager.setCurrentMod(this);
 		
 		// ========== Create Items ==========
-		ObjectManager.addItem("SaltwaterEgg", "Spawn", new ItemSaltwaterEgg());
+		ObjectManager.addItem("saltwateregg", new ItemSaltwaterEgg());
 	}
 	
 	
@@ -61,11 +61,11 @@ public class SaltwaterMobs implements ILycaniteMod {
 		ObjectManager.setCurrentMod(this);
 		
 		// ========== Create Mobs ==========
-		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("SaltwaterEgg"), new DispenserBehaviorMobEggCustom());
-		ObjectManager.addMob(new MobInfo(this, "Lacedon", EntityLacedon.class, 0x000099, 0x2244FF, 2).setSummonable(true));
+		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("saltwateregg"), new DispenserBehaviorMobEggCustom());
+		ObjectManager.addMob(new MobInfo(this, "lacedon", EntityLacedon.class, 0x000099, 0x2244FF, 2).setSummonable(true));
 		
 		// ========== Create Projectiles ==========
-		//ObjectManager.addProjectile("Ember", EntityEmber.class, ObjectManager.getItem("EmberCharge"), new DispenserBehaviorEmber());
+		//ObjectManager.addProjectile("ember", EntityEmber.class, ObjectManager.getItem("embercharge"), new DispenserBehaviorEmber());
 		
 		// ========== Register Models ==========
 		proxy.registerModels();
@@ -85,14 +85,14 @@ public class SaltwaterMobs implements ILycaniteMod {
 		
 		// ========== Crafting ==========
 		/*GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("EmberScepter"), 1, 0),
+				new ItemStack(ObjectManager.getItem("emberscepter"), 1, 0),
 				new Object[] { "CCC", "CRC", "CRC",
-				Character.valueOf('C'), ObjectManager.getItem("EmberCharge"),
+				Character.valueOf('C'), ObjectManager.getItem("embercharge"),
 				Character.valueOf('R'), Item.blazeRod
 			}));*/
 		
 		// ========== Smelting ==========
-		//GameRegistry.addSmelting(ObjectManager.getItem("SauropodMeatRaw").itemID, new ItemStack(ObjectManager.getItem("SauropodMeatCooked"), 1), 0.5f);
+		//GameRegistry.addSmelting(ObjectManager.getItem("sauropodmeatraw").itemID, new ItemStack(ObjectManager.getItem("sauropodmeatcooked"), 1), 0.5f);
 	}
 	
 	

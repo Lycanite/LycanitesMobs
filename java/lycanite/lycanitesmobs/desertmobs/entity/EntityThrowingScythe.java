@@ -35,7 +35,7 @@ public class EntityThrowingScythe extends EntityProjectileBase {
     
     // ========== Setup Projectile ==========
     public void setup() {
-    	this.entityName = "ThrowingScythe";
+    	this.entityName = "throwingscythe";
     	this.mod = DesertMobs.instance;
     	this.setBaseDamage(3);
     	this.setProjectileScale(1F);

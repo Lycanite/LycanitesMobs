@@ -37,7 +37,6 @@ public class EntityFrostweaver extends EntityCreatureBase implements IMob {
         super(par1World);
         
         // Setup:
-        this.entityName = "Frostweaver";
         this.mod = ArcticMobs.instance;
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
         this.defense = 0;

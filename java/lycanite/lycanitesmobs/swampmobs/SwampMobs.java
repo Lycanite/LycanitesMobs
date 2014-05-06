@@ -81,22 +81,22 @@ public class SwampMobs implements ILycaniteMod {
 		ObjectManager.setCurrentMod(this);
 		
 		// ========== Create Items ==========
-		ObjectManager.addItem("SwampEgg", "Spawn", new ItemSwampEgg());
+		ObjectManager.addItem("swampegg", new ItemSwampEgg());
 		
-		ObjectManager.addItem("AspidMeatRaw", "Raw Aspid Meat", new ItemCustomFood("AspidMeatRaw", domain, 2, 0.5F).setPotionEffect(Potion.poison.id, 45, 2, 0.8F));
-		ObjectLists.addItem("RawMeat", ObjectManager.getItem("AspidMeatRaw"));
-		ObjectManager.addItem("AspidMeatCooked", "Cooked Aspid Meat", new ItemCustomFood("AspidMeatCooked", domain, 6, 0.7F));
-		ObjectLists.addItem("CookedMeat", ObjectManager.getItem("AspidMeatCooked"));
-		ObjectManager.addItem("MossPie", "Moss Pie", new ItemCustomFood("MossPie", domain, 6, 0.7F).setPotionEffect(Potion.regeneration.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
-		ObjectLists.addItem("CookedMeat", ObjectManager.getItem("MossPie"));
+		ObjectManager.addItem("aspidmeatraw", new ItemCustomFood("aspidmeatraw", domain, 2, 0.5F).setPotionEffect(Potion.poison.id, 45, 2, 0.8F));
+		ObjectLists.addItem("rawmeat", ObjectManager.getItem("aspidmeatraw"));
+		ObjectManager.addItem("aspidmeatcooked", new ItemCustomFood("aspidmeatcooked", domain, 6, 0.7F));
+		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("aspidmeatcooked"));
+		ObjectManager.addItem("mosspie", new ItemCustomFood("mosspie", domain, 6, 0.7F).setPotionEffect(Potion.regeneration.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
+		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("mosspie"));
 		
-		ObjectManager.addItem("PoisonGland", "Poison Gland", new ItemPoisonGland());
-		ObjectManager.addItem("PoisonRayScepter", "Poison Ray Scepter", new ItemScepterPoisonRay());
-		ObjectManager.addItem("VenomShotScepter", "Venom Shot Scepter", new ItemScepterVenomShot());
+		ObjectManager.addItem("poisongland", new ItemPoisonGland());
+		ObjectManager.addItem("poisonrayscepter", new ItemScepterPoisonRay());
+		ObjectManager.addItem("venomshotscepter", new ItemScepterVenomShot());
 		
 		// ========== Create Blocks ==========
-		AssetManager.addSound("PoisonCloud", domain, "block/poisoncloud.wav");
-		ObjectManager.addBlock("PoisonCloud", "Poison Cloud", new BlockPoisonCloud());
+		AssetManager.addSound("poisoncloud", domain, "block/poisoncloud.wav");
+		ObjectManager.addBlock("poisoncloud", new BlockPoisonCloud());
 	}
 	
 	
@@ -110,19 +110,19 @@ public class SwampMobs implements ILycaniteMod {
 		ObjectManager.setCurrentMod(this);
 		
 		// ========== Create Mobs ==========
-		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("SwampEgg"), new DispenserBehaviorMobEggCustom());
-		ObjectManager.addMob(new MobInfo(this, "GhoulZombie", "Ghoul Zombie", EntityGhoulZombie.class, 0x009966, 0xAAFFDD, 2));
-		ObjectManager.addMob(new MobInfo(this, "Dweller", EntityDweller.class, 0x009922, 0x994499, 2).setSummonable(true));
-		ObjectManager.addMob(new MobInfo(this, "Ettin", EntityEttin.class, 0x669900, 0xFF6600, 6));
-		ObjectManager.addMob(new MobInfo(this, "Lurker", EntityLurker.class, 0x009900, 0x99FF00, 4));
-		ObjectManager.addMob(new MobInfo(this, "Eyewig", EntityEyewig.class, 0x000000, 0x009900, 4));
-		ObjectManager.addMob(new MobInfo(this, "Aspid", EntityAspid.class, 0x009944, 0x446600, 2));
-		ObjectManager.addMob(new MobInfo(this, "Remobra", EntityRemobra.class, 0x440066, 0xDD00FF, 2).setSummonable(true));
+		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("swampegg"), new DispenserBehaviorMobEggCustom());
+		ObjectManager.addMob(new MobInfo(this, "ghoulzombie", EntityGhoulZombie.class, 0x009966, 0xAAFFDD, 2));
+		ObjectManager.addMob(new MobInfo(this, "dweller", EntityDweller.class, 0x009922, 0x994499, 2).setSummonable(true));
+		ObjectManager.addMob(new MobInfo(this, "ettin", EntityEttin.class, 0x669900, 0xFF6600, 6));
+		ObjectManager.addMob(new MobInfo(this, "lurker", EntityLurker.class, 0x009900, 0x99FF00, 4));
+		ObjectManager.addMob(new MobInfo(this, "eyewig", EntityEyewig.class, 0x000000, 0x009900, 4));
+		ObjectManager.addMob(new MobInfo(this, "aspid", EntityAspid.class, 0x009944, 0x446600, 2));
+		ObjectManager.addMob(new MobInfo(this, "remobra", EntityRemobra.class, 0x440066, 0xDD00FF, 2).setSummonable(true));
 		
 		// ========== Create Projectiles ==========
-		ObjectManager.addProjectile("PoisonRay", EntityPoisonRay.class, Items.fermented_spider_eye, new DispenserBehaviorPoisonRay());
-		ObjectManager.addProjectile("PoisonRayEnd", EntityPoisonRayEnd.class);
-		ObjectManager.addProjectile("VenomShot", EntityVenomShot.class, ObjectManager.getItem("PoisonGland"), new DispenserBehaviorVenomShot());
+		ObjectManager.addProjectile("poisonray", EntityPoisonRay.class, Items.fermented_spider_eye, new DispenserBehaviorPoisonRay());
+		ObjectManager.addProjectile("poisonrayend", EntityPoisonRayEnd.class);
+		ObjectManager.addProjectile("venomshot", EntityVenomShot.class, ObjectManager.getItem("poisongland"), new DispenserBehaviorVenomShot());
 		
 		// ========== Register Models ==========
 		proxy.registerModels();
@@ -139,7 +139,7 @@ public class SwampMobs implements ILycaniteMod {
 		
 		// ========== Remove Vanilla Spawns ==========
 		BiomeGenBase[] biomes = this.config.getSpawnBiomesTypes();
-		if(config.getFeatureBool("ControlVanilla")) {
+		if(config.getFeatureBool("controlvanilla")) {
 			EntityRegistry.removeSpawn(EntityZombie.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntitySkeleton.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntityCreeper.class, EnumCreatureType.monster, biomes);
@@ -150,32 +150,32 @@ public class SwampMobs implements ILycaniteMod {
 		
 		// ========== Crafting ==========
 		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("PoisonRayScepter"), 1, 0),
+				new ItemStack(ObjectManager.getItem("poisonrayscepter"), 1, 0),
 				new Object[] { "CPC", "CRC", "CRC",
 				Character.valueOf('C'), Items.fermented_spider_eye,
-				Character.valueOf('P'), ObjectManager.getItem("PoisonGland"),
+				Character.valueOf('P'), ObjectManager.getItem("poisongland"),
 				Character.valueOf('R'), Items.blaze_rod
 			}));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("VenomShotScepter"), 1, 0),
+				new ItemStack(ObjectManager.getItem("venomshotscepter"), 1, 0),
 				new Object[] { "CPC", "CRC", "CRC",
 				Character.valueOf('C'), Items.rotten_flesh,
-				Character.valueOf('P'), ObjectManager.getItem("PoisonGland"),
+				Character.valueOf('P'), ObjectManager.getItem("poisongland"),
 				Character.valueOf('R'), Items.blaze_rod
 			}));
 		
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
-				new ItemStack(ObjectManager.getItem("MossPie"), 1, 0),
+				new ItemStack(ObjectManager.getItem("mosspie"), 1, 0),
 				new Object[] {
 					Blocks.vine,
 					Items.fermented_spider_eye,
-					ObjectManager.getItem("AspidMeatCooked")
+					ObjectManager.getItem("aspidmeatcooked")
 				}
 			));
 		
 		// ========== Smelting ==========
-		GameRegistry.addSmelting(ObjectManager.getItem("AspidMeatRaw"), new ItemStack(ObjectManager.getItem("AspidMeatCooked"), 1), 0.5f);
+		GameRegistry.addSmelting(ObjectManager.getItem("aspidmeatraw"), new ItemStack(ObjectManager.getItem("aspidmeatcooked"), 1), 0.5f);
 	}
 	
 	

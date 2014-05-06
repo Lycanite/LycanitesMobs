@@ -47,7 +47,6 @@ public class EntityCrusk extends EntityCreatureTameable implements IGroupPredato
         super(par1World);
         
         // Setup:
-        this.entityName = "Crusk";
         this.mod = DesertMobs.instance;
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
         this.defense = 3;

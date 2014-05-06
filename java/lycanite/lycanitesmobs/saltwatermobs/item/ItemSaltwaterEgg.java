@@ -10,9 +10,9 @@ public class ItemSaltwaterEgg extends ItemCustomSpawnEgg {
 	// ==================================================
     public ItemSaltwaterEgg() {
         super();
-        setUnlocalizedName("SaltwaterSpawnEgg");
+        setUnlocalizedName("saltwaterspawn");
         this.mod = SaltwaterMobs.instance;
-        this.itemName = "SaltwaterEgg";
+        this.itemName = "saltwaterspawn";
         this.texturePath = "saltwaterspawn";
     }
 }

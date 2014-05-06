@@ -40,14 +40,13 @@ public class EntityJoustAlpha extends EntityCreatureAgeable implements IAnimals,
         super(par1World);
         
         // Setup:
-        this.entityName = "Joust";
         this.mod = DesertMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 1;
         this.experience = 5;
         this.spawnsOnlyInLight = true;
         this.hasAttackSound = true;
-        this.eggName = "DesertEgg";
+        this.eggName = "desertegg";
         
         this.setWidth = 0.9F;
         this.setHeight = 2.2F;
@@ -86,20 +85,8 @@ public class EntityJoustAlpha extends EntityCreatureAgeable implements IAnimals,
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("JoustMeatRaw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("JoustMeatCooked"))).setMinAmount(3).setMaxAmount(7));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("joustmeatraw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("joustmeatcooked"))).setMinAmount(3).setMaxAmount(7));
 	}
-    
-    
-    // ==================================================
-    //                       Name
-    // ==================================================
-    public String getConfigName() {
-    	return this.entityName + "Alpha";
-    }
-    
-    public String getTextureName() {
-    	return this.entityName + "Alpha";
-    }
 	
 	
 	// ==================================================

@@ -36,7 +36,7 @@ public class EntityDoomfireball extends EntityProjectileBase {
     
     // ========== Setup Projectile ==========
     public void setup() {
-    	this.entityName = "Doomfireball";
+    	this.entityName = "doomfireball";
     	this.mod = DemonMobs.instance;
     	this.setBaseDamage(2);
     	this.setProjectileScale(1F);

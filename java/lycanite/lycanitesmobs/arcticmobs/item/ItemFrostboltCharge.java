@@ -18,7 +18,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemFrostboltCharge extends Item {
-	public static String itemName = "FrostboltCharge";
+	public static String itemName = "frostboltcharge";
 	
 	// ==================================================
 	//                   Constructor
@@ -27,7 +27,7 @@ public class ItemFrostboltCharge extends Item {
         super();
         setMaxStackSize(64);
         setCreativeTab(LycanitesMobs.creativeTab);
-        setUnlocalizedName("FrostboltCharge");
+        setUnlocalizedName("frostboltcharge");
     }
     
     

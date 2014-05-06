@@ -40,7 +40,6 @@ public class EntityZoataur extends EntityCreatureTameable implements IGroupPreda
         super(par1World);
         
         // Setup:
-        this.entityName = "Zoataur";
         this.mod = PlainsMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 4;

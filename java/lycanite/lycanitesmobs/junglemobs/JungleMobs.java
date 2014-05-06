@@ -68,17 +68,17 @@ public class JungleMobs implements ILycaniteMod {
 		ObjectManager.setCurrentMod(this);
 		
 		// ========== Create Items ==========
-		ObjectManager.addItem("JungleEgg", "Spawn", new ItemJungleEgg());
+		ObjectManager.addItem("jungleegg", new ItemJungleEgg());
 		
-		ObjectManager.addItem("ConcapedeMeatRaw", "Raw Concapede Meat", new ItemCustomFood("ConcapedeMeatRaw", domain, 2, 0.5F).setPotionEffect(Potion.moveSlowdown.id, 45, 2, 0.8F));
-		ObjectLists.addItem("RawMeat", ObjectManager.getItem("ConcapedeMeatRaw"));
-		ObjectManager.addItem("ConcapedeMeatCooked", "Cooked Concapede Meat", new ItemCustomFood("ConcapedeMeatCooked", domain, 6, 0.7F));
-		ObjectLists.addItem("CookedMeat", ObjectManager.getItem("ConcapedeMeatCooked"));
-		ObjectManager.addItem("TropicalCurry", "Tropical Curry", new ItemCustomFood("TropicalCurry", domain, 6, 0.7F).setPotionEffect(Potion.jump.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
-		ObjectLists.addItem("CookedMeat", ObjectManager.getItem("TropicalCurry"));
+		ObjectManager.addItem("concapedemeatraw", new ItemCustomFood("concapedemeatraw", domain, 2, 0.5F).setPotionEffect(Potion.moveSlowdown.id, 45, 2, 0.8F));
+		ObjectLists.addItem("rawmeat", ObjectManager.getItem("concapedemeatraw"));
+		ObjectManager.addItem("concapedemeatcooked", new ItemCustomFood("concapedemeatcooked", domain, 6, 0.7F));
+		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("concapedemeatcooked"));
+		ObjectManager.addItem("tropicalcurry", new ItemCustomFood("tropicalcurry", domain, 6, 0.7F).setPotionEffect(Potion.jump.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
+		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("tropicalcurry"));
 
 		// ========== Create Blocks ==========
-		ObjectManager.addBlock("QuickWeb", "QuickWeb", new BlockQuickWeb());
+		ObjectManager.addBlock("quickweb", new BlockQuickWeb());
 	}
 	
 	
@@ -92,15 +92,15 @@ public class JungleMobs implements ILycaniteMod {
 		ObjectManager.setCurrentMod(this);
 		
 		// ========== Create Mobs ==========
-		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("JungleEgg"), new DispenserBehaviorMobEggCustom());
-		ObjectManager.addMob(new MobInfo(this, "Geken", EntityGeken.class, 0x00AA00, 0xFFFF00, 2).setSummonable(true));
-		ObjectManager.addMob(new MobInfo(this, "Uvaraptor", EntityUvaraptor.class, 0x00FF33, 0xFF00FF, 4));
-		ObjectManager.addMob(new MobInfo(this, "Concapede", EntityConcapedeHead.class, 0x111144, 0xDD0000, 2));
-		ObjectManager.addMob(new MobInfo(this, "ConcapedeSegment", "Concapede Segment", EntityConcapedeSegment.class, 0x000022, 0x990000, 1));
-		ObjectManager.addMob(new MobInfo(this, "Tarantula", EntityTarantula.class, 0x008800, 0xDD0000, 2).setSummonable(true));
+		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("jungleegg"), new DispenserBehaviorMobEggCustom());
+		ObjectManager.addMob(new MobInfo(this, "geken", EntityGeken.class, 0x00AA00, 0xFFFF00, 2).setSummonable(true));
+		ObjectManager.addMob(new MobInfo(this, "uvaraptor", EntityUvaraptor.class, 0x00FF33, 0xFF00FF, 4));
+		ObjectManager.addMob(new MobInfo(this, "concapede", EntityConcapedeHead.class, 0x111144, 0xDD0000, 2));
+		ObjectManager.addMob(new MobInfo(this, "concapedesegment", EntityConcapedeSegment.class, 0x000022, 0x990000, 1));
+		ObjectManager.addMob(new MobInfo(this, "tarantula", EntityTarantula.class, 0x008800, 0xDD0000, 2).setSummonable(true));
 		
 		// ========== Create Projectiles ==========
-		//ObjectManager.addProjectile("Template", EntityTemplate.class, Item.templateCharge, new DispenserBehaviorPoisonRay());
+		//ObjectManager.addProjectile("template", EntityTemplate.class, Item.templateCharge, new DispenserBehaviorPoisonRay());
 		
 		// ========== Register Models ==========
 		proxy.registerModels();
@@ -117,7 +117,7 @@ public class JungleMobs implements ILycaniteMod {
 		
 		// ========== Remove Vanilla Spawns ==========
 		BiomeGenBase[] biomes = this.config.getSpawnBiomesTypes();
-		if(config.getFeatureBool("ControlVanilla")) {
+		if(config.getFeatureBool("controlvanilla")) {
 			EntityRegistry.removeSpawn(EntityZombie.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntitySkeleton.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntityCow.class, EnumCreatureType.creature, biomes);
@@ -127,17 +127,17 @@ public class JungleMobs implements ILycaniteMod {
 		
 		// ========== Crafting ==========
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
-				new ItemStack(ObjectManager.getItem("TropicalCurry"), 1, 0),
+				new ItemStack(ObjectManager.getItem("tropicalcurry"), 1, 0),
 				new Object[] {
 					Items.bowl,
 					new ItemStack(Items.dye, 1, 3),
 					Blocks.vine,
-					ObjectManager.getItem("ConcapedeMeatCooked")
+					ObjectManager.getItem("concapedemeatcooked")
 				}
 			));
 		
 		// ========== Smelting ==========
-		GameRegistry.addSmelting(ObjectManager.getItem("ConcapedeMeatRaw"), new ItemStack(ObjectManager.getItem("ConcapedeMeatCooked"), 1), 0.5f);
+		GameRegistry.addSmelting(ObjectManager.getItem("concapedemeatraw"), new ItemStack(ObjectManager.getItem("concapedemeatcooked"), 1), 0.5f);
 	}
 	
 	

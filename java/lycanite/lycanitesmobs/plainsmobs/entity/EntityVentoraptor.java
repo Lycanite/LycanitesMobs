@@ -46,7 +46,6 @@ public class EntityVentoraptor extends EntityCreatureRideable implements IGroupP
         super(par1World);
         
         // Setup:
-        this.entityName = "Ventoraptor";
         this.mod = PlainsMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 0;

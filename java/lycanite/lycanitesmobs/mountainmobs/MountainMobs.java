@@ -62,17 +62,17 @@ public class MountainMobs implements ILycaniteMod {
 		ObjectManager.setCurrentMod(this);
 		
 		// ========== Create Items ==========
-		ObjectManager.addItem("MountainEgg", "Spawn", new ItemMountainEgg());
+		ObjectManager.addItem("mountainegg", new ItemMountainEgg());
 		
-		ObjectManager.addItem("BoulderBlastCharge", "Boulder Blast Charge", new ItemBoulderBlastCharge());
-		ObjectManager.addItem("BoulderBlastScepter", "Boulder Blast Scepter", new ItemScepterBoulderBlast());
+		ObjectManager.addItem("boulderblastcharge", new ItemBoulderBlastCharge());
+		ObjectManager.addItem("boulderblastscepter", new ItemScepterBoulderBlast());
 		
-		//ObjectManager.addItem("YaleMeatRaw", "Raw Yale Meat", new ItemCustomFood("YaleMeatRaw", domain, 2, 0.5F).setPotionEffect(Potion.digSlowdown.id, 45, 2, 0.8F));
-		//ObjectLists.addItem("RawMeat", ObjectManager.getItem("YaleMeatRaw"));
-		//ObjectManager.addItem("YaleMeatCooked", "Cooked Yale Meat", new ItemCustomFood("YaleMeatCooked", domain, 6, 0.7F));
-		//ObjectLists.addItem("CookedMeat", ObjectManager.getItem("YaleMeatCooked"));
-		//ObjectManager.addItem("PeaksKebab", "Peaks Kebab", new ItemCustomFood("PeaksKebab", domain, 6, 0.7F).setPotionEffect(Potion.digSpeed.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
-		//ObjectLists.addItem("CookedMeat", ObjectManager.getItem("PeaksKebab"));
+		//ObjectManager.addItem("yalemeatraw", new ItemCustomFood("yalemeatraw", domain, 2, 0.5F).setPotionEffect(Potion.digSlowdown.id, 45, 2, 0.8F));
+		//ObjectLists.addItem("rawmeat", ObjectManager.getItem("yalemeatraw"));
+		//ObjectManager.addItem("yalemeatcooked", new ItemCustomFood("yalemeatcooked", domain, 6, 0.7F));
+		//ObjectLists.addItem("cookedmeat", ObjectManager.getItem("yalemeatcooked"));
+		//ObjectManager.addItem("peakskebab", new ItemCustomFood("peakskebab", domain, 6, 0.7F).setPotionEffect(Potion.digSpeed.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
+		//ObjectLists.addItem("cookedmeat", ObjectManager.getItem("peakskebab"));
 	}
 	
 	
@@ -86,12 +86,12 @@ public class MountainMobs implements ILycaniteMod {
 		ObjectManager.setCurrentMod(this);
 		
 		// ========== Create Mobs ==========
-		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("MountainEgg"), new DispenserBehaviorMobEggCustom());
-		ObjectManager.addMob(new MobInfo(this, "Jabberwock", EntityJabberwock.class, 0x662222, 0xFFFFAA, 2).setSummonable(true));
-		ObjectManager.addMob(new MobInfo(this, "Troll", EntityTroll.class, 0x007711, 0xEEEEEE, 6).setSummonable(true));
+		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("mountainegg"), new DispenserBehaviorMobEggCustom());
+		ObjectManager.addMob(new MobInfo(this, "jabberwock", EntityJabberwock.class, 0x662222, 0xFFFFAA, 2).setSummonable(true));
+		ObjectManager.addMob(new MobInfo(this, "troll", EntityTroll.class, 0x007711, 0xEEEEEE, 6).setSummonable(true));
 		
 		// ========== Create Projectiles ==========
-		ObjectManager.addProjectile("BoulderBlast", EntityBoulderBlast.class, ObjectManager.getItem("BoulderBlastCharge"), new DispenserBehaviorBoulderBlast());
+		ObjectManager.addProjectile("boulderblast", EntityBoulderBlast.class, ObjectManager.getItem("boulderblastcharge"), new DispenserBehaviorBoulderBlast());
 		
 		// ========== Register Models ==========
 		proxy.registerModels();
@@ -108,7 +108,7 @@ public class MountainMobs implements ILycaniteMod {
 		
 		// ========== Remove Vanilla Spawns ==========
 		BiomeGenBase[] biomes = this.config.getSpawnBiomesTypes();
-		if(config.getFeatureBool("ControlVanilla")) {
+		if(config.getFeatureBool("controlvanilla")) {
 			EntityRegistry.removeSpawn(EntityZombie.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntityPig.class, EnumCreatureType.creature, biomes);
 			EntityRegistry.removeSpawn(EntityChicken.class, EnumCreatureType.creature, biomes);
@@ -125,14 +125,14 @@ public class MountainMobs implements ILycaniteMod {
 				}
 			));*/
 		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("BoulderBlastScepter"), 1, 0),
+				new ItemStack(ObjectManager.getItem("boulderblastscepter"), 1, 0),
 				new Object[] { "CCC", "CRC", "CRC",
-				Character.valueOf('C'), ObjectManager.getItem("BoulderBlastCharge"),
+				Character.valueOf('C'), ObjectManager.getItem("boulderblastcharge"),
 				Character.valueOf('R'), Items.blaze_rod
 			}));
 		
 		// ========== Smelting ==========
-		//GameRegistry.addSmelting(ObjectManager.getItem("YaleMeatRaw").itemID, new ItemStack(ObjectManager.getItem("YaleMeatCooked"), 1), 0.5f);
+		//GameRegistry.addSmelting(ObjectManager.getItem("yalemeatraw").itemID, new ItemStack(ObjectManager.getItem("yalemeatcooked"), 1), 0.5f);
 	}
 	
 	

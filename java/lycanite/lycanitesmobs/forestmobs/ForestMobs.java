@@ -54,7 +54,7 @@ public class ForestMobs implements ILycaniteMod {
 		ObjectManager.setCurrentMod(this);
 		
 		// ========== Create Items ==========
-		ObjectManager.addItem("ForestEgg", "Spawn", new ItemForestEgg());
+		ObjectManager.addItem("forestegg", new ItemForestEgg());
 	}
 	
 	
@@ -68,9 +68,9 @@ public class ForestMobs implements ILycaniteMod {
 		ObjectManager.setCurrentMod(this);
 		
 		// ========== Create Mobs ==========
-		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("ForestEgg"), new DispenserBehaviorMobEggCustom());
-		ObjectManager.addMob(new MobInfo(this, "Ent", EntityEnt.class, 0x997700, 0x00FF22, 2).setSummonable(true));
-		ObjectManager.addMob(new MobInfo(this, "Trent", EntityTrent.class, 0x663300, 0x00AA11, 6).setSummonable(true));
+		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("forestegg"), new DispenserBehaviorMobEggCustom());
+		ObjectManager.addMob(new MobInfo(this, "ent", EntityEnt.class, 0x997700, 0x00FF22, 2).setSummonable(true));
+		ObjectManager.addMob(new MobInfo(this, "trent", EntityTrent.class, 0x663300, 0x00AA11, 6).setSummonable(true));
 		
 		// ========== Create Projectiles ==========
 		//ObjectManager.addProjectile("Template", EntityTemplate.class, Item.templateCharge, new DispenserBehaviorPoisonRay());
@@ -90,7 +90,7 @@ public class ForestMobs implements ILycaniteMod {
 		
 		// ========== Remove Vanilla Spawns ==========
 		BiomeGenBase[] biomes = this.config.getSpawnBiomesTypes();
-		if(config.getFeatureBool("ControlVanilla")) {
+		if(config.getFeatureBool("controlvanilla")) {
 			EntityRegistry.removeSpawn(EntityZombie.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntitySpider.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntityCreeper.class, EnumCreatureType.monster, biomes);
@@ -100,7 +100,7 @@ public class ForestMobs implements ILycaniteMod {
 		// No recipes yet.
 		
 		// ========== Smelting ==========
-		//GameRegistry.addSmelting(ObjectManager.getItem("SauropodMeatRaw").itemID, new ItemStack(ObjectManager.getItem("SauropodMeatCooked"), 1), 0.5f);
+		//GameRegistry.addSmelting(ObjectManager.getItem("sauropodmeatraw").itemID, new ItemStack(ObjectManager.getItem("sauropodmeatcooked"), 1), 0.5f);
 	}
 	
 	

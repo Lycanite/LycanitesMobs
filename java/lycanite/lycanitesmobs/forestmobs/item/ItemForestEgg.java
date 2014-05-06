@@ -10,9 +10,9 @@ public class ItemForestEgg extends ItemCustomSpawnEgg {
 	// ==================================================
     public ItemForestEgg() {
         super();
-        setUnlocalizedName("ForestSpawnEgg");
+        setUnlocalizedName("forestspawn");
         this.mod = ForestMobs.instance;
-        this.itemName = "ForestEgg";
+        this.itemName = "forestspawn";
         this.texturePath = "forestspawn";
     }
 }

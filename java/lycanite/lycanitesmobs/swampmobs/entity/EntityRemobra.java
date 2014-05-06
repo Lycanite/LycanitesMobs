@@ -39,7 +39,6 @@ public class EntityRemobra extends EntityCreatureTameable implements IMob, IGrou
         super(par1World);
         
         // Setup:
-        this.entityName = "Remobra";
         this.mod = SwampMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 0;

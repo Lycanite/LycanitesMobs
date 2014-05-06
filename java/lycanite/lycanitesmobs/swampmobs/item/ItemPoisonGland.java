@@ -18,7 +18,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemPoisonGland extends Item {
-	public static String itemName = "PoisonGland";
+	public static String itemName = "poisongland";
 	
 	// ==================================================
 	//                   Constructor
@@ -27,7 +27,7 @@ public class ItemPoisonGland extends Item {
         super();
         setMaxStackSize(64);
         setCreativeTab(LycanitesMobs.creativeTab);
-        setUnlocalizedName("PoisonGland");
+        setUnlocalizedName("poisongland");
     }
     
     

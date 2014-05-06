@@ -30,7 +30,6 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 @Mod(modid = LycanitesMobs.modid, name = LycanitesMobs.name, version = LycanitesMobs.version)
 public class LycanitesMobs implements ILycaniteMod {
@@ -98,12 +97,12 @@ public class LycanitesMobs implements ILycaniteMod {
 		ObjectManager.setCurrentMod(this);
 		
 		// ========== Create Items ==========
-		ObjectManager.addItem("Soulgazer", "Soulgazer", new ItemSoulgazer());
-		ObjectManager.addItem("SummoningStaff", "Summoning Staff", new ItemStaffSummoning());
-		ObjectManager.addItem("StableSummoningStaff", "Stable Summoning Staff", new ItemStaffStable());
-		ObjectManager.addItem("BloodSummoningStaff", "Blood Summoning Staff", new ItemStaffBlood());
-		ObjectManager.addItem("SturdySummoningStaff", "Sturdy Summoning Staff", new ItemStaffSturdy());
-		ObjectManager.addItem("SavageSummoningStaff", "Savage Summoning Staff", new ItemStaffSavage());
+		ObjectManager.addItem("soulgazer", new ItemSoulgazer());
+		ObjectManager.addItem("summoningstaff", new ItemStaffSummoning());
+		ObjectManager.addItem("stablesummoningstaff", new ItemStaffStable());
+		ObjectManager.addItem("bloodsummoningstaff", new ItemStaffBlood());
+		ObjectManager.addItem("sturdysummoningstaff", new ItemStaffSturdy());
+		ObjectManager.addItem("savagesummoningstaff", new ItemStaffSavage());
 	}
 	
 	
@@ -119,7 +118,7 @@ public class LycanitesMobs implements ILycaniteMod {
 		
 		// ========== Register Entities ==========
 		int specialEntityID = 0;
-		EntityRegistry.registerModEntity(EntityPortal.class, "SummoningPortal", specialEntityID++, instance, 64, 1, true);
+		EntityRegistry.registerModEntity(EntityPortal.class, "summoningportal", specialEntityID++, instance, 64, 1, true);
 	}
 	
 	
@@ -137,14 +136,9 @@ public class LycanitesMobs implements ILycaniteMod {
 		// ========== Call Object Lists Setup ==========
 		ObjectLists.createLists();
 		
-		// ========== Rename Vanilla Items ==========
-		LanguageRegistry.addName(Items.iron_horse_armor, "Iron Pet Armor");
-		LanguageRegistry.addName(Items.golden_horse_armor, "Golden Pet Armor");
-		LanguageRegistry.addName(Items.diamond_horse_armor, "Diamond Pet Armor");
-		
 		// ========== Crafting ==========
 		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("Soulgazer"), 1, 0),
+				new ItemStack(ObjectManager.getItem("soulgazer"), 1, 0),
 				new Object[] { "GBG", "BDB", "GBG",
 				Character.valueOf('G'), Items.gold_ingot,
 				Character.valueOf('D'), Items.diamond,
@@ -152,7 +146,7 @@ public class LycanitesMobs implements ILycaniteMod {
 			}));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("SummoningStaff"), 1, 0),
+				new ItemStack(ObjectManager.getItem("summoningstaff"), 1, 0),
 				new Object[] { " E ", " B ", " G ",
 				Character.valueOf('E'), Items.ender_pearl,
 				Character.valueOf('B'), Items.bone,
@@ -160,17 +154,17 @@ public class LycanitesMobs implements ILycaniteMod {
 			}));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("StableSummoningStaff"), 1, 0),
+				new ItemStack(ObjectManager.getItem("stablesummoningstaff"), 1, 0),
 				new Object[] { " D ", " S ", " G ",
-				Character.valueOf('S'), ObjectManager.getItem("SummoningStaff"),
+				Character.valueOf('S'), ObjectManager.getItem("summoningstaff"),
 				Character.valueOf('G'), Items.gold_ingot,
 				Character.valueOf('D'), Items.diamond
 			}));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("BloodSummoningStaff"), 1, 0),
+				new ItemStack(ObjectManager.getItem("bloodsummoningstaff"), 1, 0),
 				new Object[] { "RRR", "BSB", "NDN",
-				Character.valueOf('S'), ObjectManager.getItem("SummoningStaff"),
+				Character.valueOf('S'), ObjectManager.getItem("summoningstaff"),
 				Character.valueOf('R'), Items.redstone,
 				Character.valueOf('B'), Items.bone,
 				Character.valueOf('N'), Items.nether_wart,
@@ -178,17 +172,17 @@ public class LycanitesMobs implements ILycaniteMod {
 			}));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("SturdySummoningStaff"), 1, 0),
+				new ItemStack(ObjectManager.getItem("sturdysummoningstaff"), 1, 0),
 				new Object[] { "III", "ISI", " O ",
-				Character.valueOf('S'), ObjectManager.getItem("SummoningStaff"),
+				Character.valueOf('S'), ObjectManager.getItem("summoningstaff"),
 				Character.valueOf('I'), Items.iron_ingot,
 				Character.valueOf('O'), Blocks.obsidian
 			}));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("SavageSummoningStaff"), 1, 0),
+				new ItemStack(ObjectManager.getItem("savagesummoningstaff"), 1, 0),
 				new Object[] { "LLL", "BSB", "GGG",
-				Character.valueOf('S'), ObjectManager.getItem("SummoningStaff"),
+				Character.valueOf('S'), ObjectManager.getItem("summoningstaff"),
 				Character.valueOf('B'), Items.bone,
 				Character.valueOf('G'), Items.ghast_tear,
 				Character.valueOf('L'), new ItemStack(Items.dye, 1, 4)

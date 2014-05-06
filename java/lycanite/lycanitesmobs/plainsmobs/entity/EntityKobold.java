@@ -43,7 +43,6 @@ public class EntityKobold extends EntityCreatureTameable implements IMob, IGroup
         super(par1World);
         
         // Setup:
-        this.entityName = "Kobold";
         this.mod = PlainsMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.experience = 5;

@@ -84,26 +84,26 @@ public class DemonMobs implements ILycaniteMod {
 		ObjectManager.setCurrentMod(this);
 		
 		// ========== Create Items ==========
-		ObjectManager.addItem("DemonEgg", "Spawn", new ItemDemonEgg());
-		ObjectManager.addItem("DoomfireCharge", "Doomfire Charge", new ItemDoomfireball());
-		ObjectManager.addItem("HellfireCharge", "Hellfire Charge", new ItemHellfireball());
-		ObjectManager.addItem("DevilstarCharge", "Devilstar Charge", new ItemDevilstar());
-		ObjectManager.addItem("DemonicLightningCharge", "Demonic Lightning Charge", new ItemDemonicLightning());
+		ObjectManager.addItem("demonegg", new ItemDemonEgg());
+		ObjectManager.addItem("doomfirecharge", new ItemDoomfireball());
+		ObjectManager.addItem("hellfirecharge", new ItemHellfireball());
+		ObjectManager.addItem("devilstarcharge", new ItemDevilstar());
+		ObjectManager.addItem("demoniclightningcharge", new ItemDemonicLightning());
 		
-		ObjectManager.addItem("PinkyMeatRaw", "Raw Pinky Meat", new ItemCustomFood("PinkyMeatRaw", domain, 4, 0.5F).setPotionEffect(Potion.wither.id, 30, 0, 0.8F));
-		ObjectLists.addItem("RawMeat", ObjectManager.getItem("PinkyMeatRaw"));
-		ObjectManager.addItem("PinkyMeatCooked", "Cooked Pinky Meat", new ItemCustomFood("PinkyMeatCooked", domain, 7, 0.7F));
-		ObjectLists.addItem("CookedMeat", ObjectManager.getItem("PinkyMeatCooked"));
-		ObjectManager.addItem("DevilLasagna", "Devil Lasagna", new ItemCustomFood("DevilLasagna", domain, 7, 0.7F).setPotionEffect(Potion.damageBoost.id, 60, 0, 1.0F).setAlwaysEdible().setMaxStackSize(16));
-		ObjectLists.addItem("CookedMeat", ObjectManager.getItem("DevilLasagna"));
+		ObjectManager.addItem("pinkymeatraw", new ItemCustomFood("pinkymeatraw", domain, 4, 0.5F).setPotionEffect(Potion.wither.id, 30, 0, 0.8F));
+		ObjectLists.addItem("rawmeat", ObjectManager.getItem("pinkymeatraw"));
+		ObjectManager.addItem("pinkymeatcooked", new ItemCustomFood("pinkymeatcooked", domain, 7, 0.7F));
+		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("pinkymeatcooked"));
+		ObjectManager.addItem("devillasagna", new ItemCustomFood("devillasagna", domain, 7, 0.7F).setPotionEffect(Potion.damageBoost.id, 60, 0, 1.0F).setAlwaysEdible().setMaxStackSize(16));
+		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("devillasagna"));
 		
-		ObjectManager.addItem("DoomfireScepter", "Doomfire Scepter", new ItemScepterDoomfire());
-		ObjectManager.addItem("HellfireScepter", "Hellfire Scepter", new ItemScepterHellfire());
-		ObjectManager.addItem("DevilstarScepter", "Devilstar Scepter", new ItemScepterDevilstar());
-		ObjectManager.addItem("DemonicLightningScepter", "Demonic Lightning Scepter", new ItemScepterDemonicLightning());
+		ObjectManager.addItem("doomfirescepter", new ItemScepterDoomfire());
+		ObjectManager.addItem("hellfirescepter", new ItemScepterHellfire());
+		ObjectManager.addItem("devilstarscepter", new ItemScepterDevilstar());
+		ObjectManager.addItem("demoniclightningscepter", new ItemScepterDemonicLightning());
 		
 		// ========== Create Blocks ==========
-		ObjectManager.addBlock("Hellfire", "Hellfire", new BlockHellfire());
+		ObjectManager.addBlock("hellfire", new BlockHellfire());
 	}
 	
 	
@@ -117,21 +117,21 @@ public class DemonMobs implements ILycaniteMod {
 		ObjectManager.setCurrentMod(this);
 		
 		// ========== Create Mobs ==========
-		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("DemonEgg"), new DispenserBehaviorMobEggCustom());
-		ObjectManager.addMob(new MobInfo(this, "Belph", EntityBelph.class, 0x992222, 0x000000, 2).setSummonable(true));
-		ObjectManager.addMob(new MobInfo(this, "Behemoth", EntityBehemoth.class, 0xFF2222, 0xFF9900, 6).setSummonable(true));
-		ObjectManager.addMob(new MobInfo(this, "Pinky", EntityPinky.class, 0xFF0099, 0x990000, 4));
-		ObjectManager.addMob(new MobInfo(this, "Trite", EntityTrite.class, 0xFFFF88, 0x000000, 1));
-		ObjectManager.addMob(new MobInfo(this, "Asmodi", EntityAsmodi.class, 0x999944, 0x0000FF, 8));
-		ObjectManager.addMob(new MobInfo(this, "NetherSoul", "Nether Soul", EntityNetherSoul.class, 0xFF9900, 0xFF0000, 1));
-		ObjectManager.addMob(new MobInfo(this, "Cacodemon", EntityCacodemon.class, 0xFF0000, 0x000099, 6));
+		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("demonegg"), new DispenserBehaviorMobEggCustom());
+		ObjectManager.addMob(new MobInfo(this, "belph", EntityBelph.class, 0x992222, 0x000000, 2).setSummonable(true));
+		ObjectManager.addMob(new MobInfo(this, "behemoth", EntityBehemoth.class, 0xFF2222, 0xFF9900, 6).setSummonable(true));
+		ObjectManager.addMob(new MobInfo(this, "pinky", EntityPinky.class, 0xFF0099, 0x990000, 4));
+		ObjectManager.addMob(new MobInfo(this, "trite", EntityTrite.class, 0xFFFF88, 0x000000, 1));
+		ObjectManager.addMob(new MobInfo(this, "asmodi", EntityAsmodi.class, 0x999944, 0x0000FF, 8));
+		ObjectManager.addMob(new MobInfo(this, "nethersoul", EntityNetherSoul.class, 0xFF9900, 0xFF0000, 1));
+		ObjectManager.addMob(new MobInfo(this, "cacodemon", EntityCacodemon.class, 0xFF0000, 0x000099, 6));
 		
 		// ========== Create Projectiles ==========
-		ObjectManager.addProjectile("Hellfireball", EntityHellfireball.class, ObjectManager.getItem("HellfireCharge"), new DispenserBehaviorHellfireball());
-		ObjectManager.addProjectile("Doomfireball", EntityDoomfireball.class, ObjectManager.getItem("DoomfireCharge"), new DispenserBehaviorDoomfireball());
-		ObjectManager.addProjectile("Devilstar", EntityDevilstar.class, ObjectManager.getItem("DevilstarCharge"), new DispenserBehaviorDevilstar());
-		ObjectManager.addProjectile("DemonicSpark", EntityDemonicSpark.class);
-		ObjectManager.addProjectile("DemonicBlast", EntityDemonicBlast.class, ObjectManager.getItem("DemonicLightningCharge"), new DispenserBehaviorDemonicLightning());
+		ObjectManager.addProjectile("hellfireball", EntityHellfireball.class, ObjectManager.getItem("hellfirecharge"), new DispenserBehaviorHellfireball());
+		ObjectManager.addProjectile("doomfireball", EntityDoomfireball.class, ObjectManager.getItem("doomfirecharge"), new DispenserBehaviorDoomfireball());
+		ObjectManager.addProjectile("devilstar", EntityDevilstar.class, ObjectManager.getItem("devilstarcharge"), new DispenserBehaviorDevilstar());
+		ObjectManager.addProjectile("demonicspark", EntityDemonicSpark.class);
+		ObjectManager.addProjectile("demonicblast", EntityDemonicBlast.class, ObjectManager.getItem("demoniclightningcharge"), new DispenserBehaviorDemonicLightning());
 		
 		// ========== Register Models ==========
 		proxy.registerModels();
@@ -158,44 +158,44 @@ public class DemonMobs implements ILycaniteMod {
 		
 		// ========== Crafting ==========
 		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("DoomfireScepter"), 1, 0),
+				new ItemStack(ObjectManager.getItem("doomfirescepter"), 1, 0),
 				new Object[] { " C ", " R ", " R ",
-				Character.valueOf('C'), ObjectManager.getItem("DoomfireCharge"),
+				Character.valueOf('C'), ObjectManager.getItem("doomfirecharge"),
 				Character.valueOf('R'), Items.blaze_rod
 			}));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("HellfireScepter"), 1, 0),
+				new ItemStack(ObjectManager.getItem("hellfirescepter"), 1, 0),
 				new Object[] { "CCC", "CRC", "CRC",
-				Character.valueOf('C'), ObjectManager.getItem("HellfireCharge"),
+				Character.valueOf('C'), ObjectManager.getItem("hellfirecharge"),
 				Character.valueOf('R'), Items.blaze_rod
 			}));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("DevilstarScepter"), 1, 0),
+				new ItemStack(ObjectManager.getItem("devilstarscepter"), 1, 0),
 				new Object[] { " C ", " R ", " R ",
-				Character.valueOf('C'), ObjectManager.getItem("DevilstarCharge"),
+				Character.valueOf('C'), ObjectManager.getItem("devilstarcharge"),
 				Character.valueOf('R'), Items.blaze_rod
 			}));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("DemonicLightningScepter"), 1, 0),
+				new ItemStack(ObjectManager.getItem("demoniclightningscepter"), 1, 0),
 				new Object[] { " C ", " R ", " R ",
-				Character.valueOf('C'), ObjectManager.getItem("DemonicLightningCharge"),
+				Character.valueOf('C'), ObjectManager.getItem("demoniclightningcharge"),
 				Character.valueOf('R'), Items.blaze_rod
 			}));
 
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
-				new ItemStack(ObjectManager.getItem("DevilLasagna"), 1, 0),
+				new ItemStack(ObjectManager.getItem("devillasagna"), 1, 0),
 				new Object[] {
 					Items.nether_wart,
 					Items.wheat,
-					ObjectManager.getItem("PinkyMeatCooked")
+					ObjectManager.getItem("pinkymeatcooked")
 				}
 			));
 		
 		// ========== Smelting ==========
-		GameRegistry.addSmelting(ObjectManager.getItem("PinkyMeatRaw"), new ItemStack(ObjectManager.getItem("PinkyMeatCooked"), 1), 0.5f);
+		GameRegistry.addSmelting(ObjectManager.getItem("pinkymeatraw"), new ItemStack(ObjectManager.getItem("pinkymeatcooked"), 1), 0.5f);
 	}
 	
 	

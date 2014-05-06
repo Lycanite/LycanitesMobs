@@ -10,9 +10,9 @@ public class ItemJungleEgg extends ItemCustomSpawnEgg {
 	// ==================================================
     public ItemJungleEgg() {
         super();
-        setUnlocalizedName("JungleSpawnEgg");
+        setUnlocalizedName("junglespawn");
         this.mod = JungleMobs.instance;
-        this.itemName = "JungleEgg";
+        this.itemName = "junglespawn";
         this.texturePath = "junglespawn";
     }
 }

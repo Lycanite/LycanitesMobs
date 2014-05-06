@@ -14,7 +14,7 @@ public class ClientSubProxy extends CommonSubProxy {
 	// ========== Register Models ==========
 	@Override
     public void registerModels() {
-		AssetManager.addModel("Ent", new ModelEnt());
-		AssetManager.addModel("Trent", new ModelTrent());
+		AssetManager.addModel("ent", new ModelEnt());
+		AssetManager.addModel("trent", new ModelTrent());
 	}
 }

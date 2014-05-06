@@ -17,7 +17,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemBoulderBlastCharge extends Item {
-	public static String itemName = "BoulderBlastCharge";
+	public static String itemName = "boulderblastcharge";
 	
 	// ==================================================
 	//                   Constructor
@@ -26,7 +26,7 @@ public class ItemBoulderBlastCharge extends Item {
         super();
         setMaxStackSize(64);
         setCreativeTab(LycanitesMobs.creativeTab);
-        setUnlocalizedName("BoulderBlastCharge");
+        setUnlocalizedName("boulderblastcharge");
     }
     
     

@@ -37,7 +37,6 @@ public class EntityCryptZombie extends EntityCreatureAgeable implements IMob {
         super(par1World);
         
         // Setup:
-        this.entityName = "CryptZombie";
         this.mod = DesertMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEAD;
         this.defense = 0;

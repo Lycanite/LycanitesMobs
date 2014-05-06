@@ -170,7 +170,7 @@ public class Config {
 		loadSetting(this.mobsEnabled, "Mob Control - General", mobName, mobName + " Enabled", true);
 		loadSetting(this.customDrops, "Mob Control - General", mobName, mobName + " Custom Drops", "");
 		loadSetting(this.defaultDrops, "Mob Control - General", mobName, mobName + " Enable Default Drops", true);
-		loadSetting(this.mobsPeaceful, "Mob Control - General", mobName, mobName + " Allowed On Peaceful Difficulty", spawnTypeName.equalsIgnoreCase("CREATURE") || mobName.equalsIgnoreCase("Pinky"));
+		loadSetting(this.mobsPeaceful, "Mob Control - General", mobName, mobName + " Allowed On Peaceful Difficulty", spawnTypeName.equalsIgnoreCase("CREATURE") || mobName.equalsIgnoreCase("pinky"));
 		
 		// Spawning - Type:
 		loadSetting(this.spawnEnabled, "Mob Spawning - Type", mobName, mobName + " Spawn Enabled", spawnWeight > 0);
@@ -277,7 +277,7 @@ public class Config {
 			}
 		}
 		
-		statMap.put(settingID, statValue);
+		statMap.put(settingID.toLowerCase(), statValue);
 	}
 	
 	public void loadStatBoost(Map<String, Integer> statMap, String settingCategory, String settingID, String settingName, String settingDefault) {
@@ -303,7 +303,7 @@ public class Config {
 			}
 		}
 		
-		statMap.put(settingID, statValue);
+		statMap.put(settingID.toLowerCase(), statValue);
 	}
 	
 	
@@ -311,6 +311,7 @@ public class Config {
 	//                 Get Setting Values
 	// ==================================================
 	public boolean getFeatureBool(String key) {
+		key = key.toLowerCase();
 		if(this.featureBools.containsKey(key))
 			return this.featureBools.get(key) != null ? this.featureBools.get(key) : false;
 		else
@@ -318,6 +319,7 @@ public class Config {
 	}
 	
 	public int getFeatureInt(String key) {
+		key = key.toLowerCase();
 		if(this.featureInts.containsKey(key))
 			return this.featureInts.get(key) != null ? this.featureInts.get(key) : 0;
 		else
@@ -325,6 +327,7 @@ public class Config {
 	}
 	
 	public double getFeatureDouble(String key) {
+		key = key.toLowerCase();
 		if(this.featureDoubles.containsKey(key))
 			return this.featureDoubles.get(key) != null ? this.featureDoubles.get(key) : 0;
 		else
@@ -332,6 +335,7 @@ public class Config {
 	}
 	
 	public String getFeatureString(String key) {
+		key = key.toLowerCase();
 		if(this.featureStrings.containsKey(key))
 			return this.featureStrings.get(key) != null ? this.featureStrings.get(key) : "";
 		else
@@ -339,6 +343,7 @@ public class Config {
 	}
 	
 	public boolean getDebug(String key) {
+		key = key.toLowerCase();
 		if(this.debugBools.containsKey(key))
 			return this.debugBools.get(key) != null ? this.debugBools.get(key) : false;
 		else
@@ -409,7 +414,7 @@ public class Config {
 	
 	// ========== Dimensions ==========
 	public int[] getSpawnDimensions(String mobName) {
-		String groupDimensions = this.getFeatureString("Dimensions").toUpperCase().replace(" ", "");
+		String groupDimensions = this.getFeatureString("dimensions").toUpperCase().replace(" ", "");
 		String spawnDimensionsString = this.spawnDimensions.get(mobName).toUpperCase().replace(" ", "").replace("GROUP", groupDimensions);
 		
 		int[] dimensions = new int[0];

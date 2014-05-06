@@ -37,7 +37,6 @@ public class EntityGhoulZombie extends EntityCreatureAgeable implements IMob {
         super(par1World);
         
         // Setup:
-        this.entityName = "GhoulZombie";
         this.mod = SwampMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEAD;
         this.defense = 0;

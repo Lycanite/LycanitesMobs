@@ -43,7 +43,6 @@ public class EntityCacodemon extends EntityCreatureTameable {
         super(par1World);
         
         // Setup:
-        this.entityName = "Cacodemon";
         this.mod = DemonMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEAD;
         this.defense = 0;

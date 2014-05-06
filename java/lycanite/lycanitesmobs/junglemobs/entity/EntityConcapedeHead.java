@@ -43,7 +43,6 @@ public class EntityConcapedeHead extends EntityCreatureAgeable implements IAnima
         super(par1World);
         
         // Setup:
-        this.entityName = "Concapede";
         this.mod = JungleMobs.instance;
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
         this.defense = 0;

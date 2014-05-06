@@ -63,7 +63,7 @@ public class GUIMinionList extends GuiScrollingList {
 	protected void drawSlot(int index, int boxRight, int boxTop, int boxBottom, Tessellator tessellator) {
 		String mobName = this.minionList.get(index);
 		MobInfo mobInfo = MobInfo.mobNameToInfo.get(mobName);
-		this.parentGUI.getFontRenderer().drawString(mobInfo.title, this.left + 18 , boxTop + 4, 0xFFFFFF);
+		this.parentGUI.getFontRenderer().drawString(mobInfo.getTitle(), this.left + 18 , boxTop + 4, 0xFFFFFF);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(mobInfo.getIcon());
 		this.parentGUI.drawImage(this.left, boxTop, 0, 0, 16, 16, 0.0625F, 0.0625F);
 	}

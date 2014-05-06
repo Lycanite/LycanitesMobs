@@ -46,7 +46,6 @@ public class EntityLacedon extends EntityCreatureTameable implements IMob {
         super(par1World);
         
         // Setup:
-        this.entityName = "Lacedon";
         this.mod = SaltwaterMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 0;

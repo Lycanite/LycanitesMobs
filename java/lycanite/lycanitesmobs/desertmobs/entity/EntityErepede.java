@@ -49,7 +49,6 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
         super(par1World);
         
         // Setup:
-        this.entityName = "Erepede";
         this.mod = DesertMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 2;

@@ -46,7 +46,6 @@ public class EntityUvaraptor extends EntityCreatureRideable implements IGroupPre
         super(par1World);
         
         // Setup:
-        this.entityName = "Uvaraptor";
         this.mod = JungleMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 0;

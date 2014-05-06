@@ -77,16 +77,16 @@ public class ObjectManager {
 		
 		// Sounds:
 		String filename = name.toLowerCase();
-		AssetManager.addSound(name + "Say", domain, "entity/" + filename + "/say.wav");
-		AssetManager.addSound(name + "Hurt", domain, "entity/" + filename + "/hurt.wav");
-		AssetManager.addSound(name + "Death", domain, "entity/" + filename + "/death.wav");
-		AssetManager.addSound(name + "Step", domain, "entity/" + filename + "/step.wav");
-		AssetManager.addSound(name + "Attack", domain, "entity/" + filename + "/attack.wav");
-		AssetManager.addSound(name + "Jump", domain, "entity/" + filename + "/jump.wav");
-		AssetManager.addSound(name + "Tame", domain, "entity/" + filename + "/tame.wav");
-		AssetManager.addSound(name + "Beg", domain, "entity/" + filename + "/beg.wav");
-		AssetManager.addSound(name + "Eat", domain, "entity/" + filename + "/eat.wav");
-		AssetManager.addSound(name + "Mount", domain, "entity/" + filename + "/mount.wav");
+		AssetManager.addSound(name + "say", domain, "entity/" + filename + "/say");
+		AssetManager.addSound(name + "hurt", domain, "entity/" + filename + "/hurt");
+		AssetManager.addSound(name + "death", domain, "entity/" + filename + "/death");
+		AssetManager.addSound(name + "step", domain, "entity/" + filename + "/step");
+		AssetManager.addSound(name + "attack", domain, "entity/" + filename + "/attack");
+		AssetManager.addSound(name + "jump", domain, "entity/" + filename + "/jump");
+		AssetManager.addSound(name + "tame", domain, "entity/" + filename + "/tame");
+		AssetManager.addSound(name + "beg", domain, "entity/" + filename + "/beg");
+		AssetManager.addSound(name + "eat", domain, "entity/" + filename + "/eat");
+		AssetManager.addSound(name + "mount", domain, "entity/" + filename + "/mount");
 		
 		// ID and Enabled Check:
 		LycanitesMobs.printDebug("MobSetup", "~0==================== Mob Setup: "+ mobInfo.name +" ====================0~");

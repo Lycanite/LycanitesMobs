@@ -34,7 +34,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemCustomSpawnEgg extends Item {
 	public ILycaniteMod mod;
-	public String itemName = "CustomSpawnEgg";
+	public String itemName = "customspawnegg";
 	public String texturePath = "customspawn";
     
 	// ==================================================
@@ -44,7 +44,7 @@ public class ItemCustomSpawnEgg extends Item {
         super();
         this.setHasSubtypes(true);
         setCreativeTab(LycanitesMobs.creativeTab);
-        setUnlocalizedName("CustomSpawnEgg");
+        setUnlocalizedName("customspawnegg");
     }
     
 	// ==================================================

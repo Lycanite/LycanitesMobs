@@ -18,7 +18,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemMagmaCharge extends Item {
-	public static String itemName = "MagmaCharge";
+	public static String itemName = "magmacharge";
 	
 	// ==================================================
 	//                   Constructor

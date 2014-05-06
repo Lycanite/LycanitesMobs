@@ -35,7 +35,7 @@ public class EntityFrostweb extends EntityProjectileBase {
     
     // ========== Setup Projectile ==========
     public void setup() {
-    	this.entityName = "Frostweb";
+    	this.entityName = "frostweb";
     	this.mod = ArcticMobs.instance;
     	this.setBaseDamage(2);
     }

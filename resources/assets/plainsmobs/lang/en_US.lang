@@ -6,7 +6,7 @@ entity.plainsmobs.makaalpha.name=Maka Alpha
 entity.plainsmobs.zoataur.name=Zoataur
 #
 # Items
-item.mountainspawn.name=Spawn
+item.plainsspawn.name=Spawn
 item.makameatraw.name=Raw Maka Meat
 item.makameatcooked.name=Cooked Maka Meat
 item.bulwarkburger.name=Bulwark Burger

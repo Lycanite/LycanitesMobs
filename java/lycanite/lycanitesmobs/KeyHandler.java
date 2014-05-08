@@ -60,15 +60,15 @@ public class KeyHandler {
 			GUIMinion.openToPlayer(this.mc.thePlayer, playerExt.selectedSummonSet);
 		}
 		
-		/*/ Minion Selection: Closes If Not Holding:
+		// Minion Selection: Closes If Not Holding:
 		if(!this.minionSelection.getIsKeyPressed() && this.mc.currentScreen instanceof GUIMinionSelection) {
 			this.mc.thePlayer.closeScreen();
-		}*/
+		}
 		
 		if(this.mc.currentScreen == null) {
 			// ========== HUD Controls ==========
 			// Minion Selection: Opens GUI.
-			if(this.minionSelection.getIsKeyPressed()) {
+			if(this.minionSelection.isPressed()) {
 				GUIMinionSelection.openToPlayer(this.mc.thePlayer);
 			}
 			
@@ -92,4 +92,6 @@ public class KeyHandler {
 		LycanitesMobs.packetPipeline.sendToServer(packet);
 		playerExt.controlStates = controlStates;
 	}
+	
+	// TODO Hold Keys!
 }

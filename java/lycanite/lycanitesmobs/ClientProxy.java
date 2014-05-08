@@ -12,6 +12,7 @@ import lycanite.lycanitesmobs.api.render.RenderProjectile;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
 
 public class ClientProxy extends CommonProxy {
 	
@@ -22,7 +23,7 @@ public class ClientProxy extends CommonProxy {
 	@Override
     public void registerEvents() {
 		// Event Listeners:
-		MinecraftForge.EVENT_BUS.register(new KeyHandler(Minecraft.getMinecraft()));
+		FMLCommonHandler.instance().bus().register(new KeyHandler(Minecraft.getMinecraft()));
 		MinecraftForge.EVENT_BUS.register(new GuiOverlay(Minecraft.getMinecraft()));
 	}
 	

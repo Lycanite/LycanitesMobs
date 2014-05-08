@@ -135,10 +135,6 @@
         "category": "hostile",
         "sounds": [{"name": "entity/nethersoul/death", "stream": false}]
     },
-    "entity.nethersoul.step": {
-        "category": "hostile",
-        "sounds": [{"name": "entity/nethersoul/step", "stream": false}]
-    },
     "entity.nethersoul.attack": {
         "category": "hostile",
         "sounds": [{"name": "entity/nethersoul/attack", "stream": false}]

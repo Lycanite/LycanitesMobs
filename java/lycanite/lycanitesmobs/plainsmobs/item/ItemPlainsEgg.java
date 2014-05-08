@@ -10,9 +10,9 @@ public class ItemPlainsEgg extends ItemCustomSpawnEgg {
 	// ==================================================
     public ItemPlainsEgg() {
         super();
-        setUnlocalizedName("PlainsSpawnEgg");
+        setUnlocalizedName("plainsspawn");
         this.mod = PlainsMobs.instance;
-        this.itemName = "PlainsEgg";
+        this.itemName = "plainsspawn";
         this.texturePath = "plainsspawn";
     }
 }

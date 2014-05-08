@@ -9,6 +9,7 @@ import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
 import lycanite.lycanitesmobs.api.info.EntityListCustom;
+import lycanite.lycanitesmobs.api.info.MobInfo;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -51,14 +52,11 @@ public class ItemCustomSpawnEgg extends Item {
 	//                  Get Display Name
 	// ==================================================
     @Override
-    public String getUnlocalizedName(ItemStack par1ItemStack) {
-        String s = ("" + StatCollector.translateToLocal(this.getUnlocalizedName() + ".name")).trim();
-        String s1 = ObjectManager.entityLists.get(this.mod.getDomain()).getStringFromID(par1ItemStack.getItemDamage());
-        
-        if (s1 != null)
-            s = s + " " + StatCollector.translateToLocal("entity." + s1 + ".name");
-        
-        return s;
+    public String getItemStackDisplayName(ItemStack itemStack) {
+        String title = (StatCollector.translateToLocal(this.getUnlocalizedName() + ".name")).trim();
+        Class entityClass = ObjectManager.entityLists.get(this.mod.getDomain()).getClassFromID(itemStack.getItemDamage());
+        MobInfo mobInfo = MobInfo.mobClassToInfo.get(entityClass);
+        return title  + " " + mobInfo.getTitle();
     }
     
     

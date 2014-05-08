@@ -21,7 +21,7 @@ public class ItemSoulgazer extends ItemBase {
     public ItemSoulgazer() {
         super();
         this.setMaxStackSize(1);
-        this.itemName = "Soulgazer";
+        this.itemName = "soulgazer";
         this.textureName = this.itemName.toLowerCase();
         setUnlocalizedName(this.itemName);
     }

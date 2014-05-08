@@ -173,7 +173,7 @@ public class MobInfo {
 	}
 	
 	public String getTitle() {
-		return StatCollector.translateToLocal("entity." + this.getRegistryName());
+		return StatCollector.translateToLocal("entity." + getRegistryName() + ".name");
 	}
 	
 	
@@ -181,10 +181,10 @@ public class MobInfo {
     //                        Icon
     // ==================================================
 	public ResourceLocation getIcon() {
-		ResourceLocation texture = AssetManager.getTexture(this.name + "Icon");
+		ResourceLocation texture = AssetManager.getTexture(this.name + "_icon");
 		if(texture == null) {
-			AssetManager.addTexture(this.name + "Icon", this.mod.getDomain(), "textures/guis/" + this.name.toLowerCase() + "_icon.png");
-			texture = AssetManager.getTexture(this.name + "Icon");
+			AssetManager.addTexture(this.name + "_icon", this.mod.getDomain(), "textures/guis/" + this.name.toLowerCase() + "_icon.png");
+			texture = AssetManager.getTexture(this.name + "_icon");
 		}
 		return texture;
 	}

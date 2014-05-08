@@ -18,7 +18,7 @@ public class ItemCustomFood extends ItemFood {
   	//                    Constructors
   	// ==================================================
 	public ItemCustomFood(String setItemName, String setDomain, String setTexturePath, int feed, float saturation) {
-		super( feed, saturation, false);
+		super(feed, saturation, false);
 		itemName = setItemName;
 		domain = setDomain;
 		texturePath = setTexturePath;

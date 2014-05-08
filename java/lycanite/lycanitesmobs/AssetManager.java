@@ -50,7 +50,7 @@ public class AssetManager {
 	// ========== Sound ==========
 	public static void addSound(String name, String domain, String path) {
 		name = name.toLowerCase();
-		sounds.put(name, path);
+		sounds.put(name, domain + ":" + path);
 	}
 	
 	// ========== Model ==========

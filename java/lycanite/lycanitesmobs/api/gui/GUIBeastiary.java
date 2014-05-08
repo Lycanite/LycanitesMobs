@@ -6,6 +6,7 @@ import lycanite.lycanitesmobs.api.packet.PacketBeastiary;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
@@ -60,7 +61,7 @@ public class GUIBeastiary extends GuiScreen {
   	//                    Foreground
   	// ==================================================
 	protected void drawGuiContainerForegroundLayer() {
-		this.fontRendererObj.drawString("Minion Manager", this.windowX + 52, this.windowY + 6, 4210752);
+		this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.beastiary.name"), this.windowX + 52, this.windowY + 6, 4210752);
     }
 	
 	
@@ -86,7 +87,7 @@ public class GUIBeastiary extends GuiScreen {
         int buttonX = this.windowX + 6;
         int buttonY = this.windowY;
         
-        String buttonText = "A button. Press it.";
+        String buttonText = "Beastiary Not Yet Implemented";
         buttonY += buttonSpacing;
         this.buttonList.add(new GuiButton(0, buttonX + buttonSpacing, buttonY, buttonWidth, buttonHeight, buttonText));
     }

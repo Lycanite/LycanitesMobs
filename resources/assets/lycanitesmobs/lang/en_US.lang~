@@ -1,0 +1,36 @@
+# Entites
+entity.lycanitesmobs.summoningportal.name=Summoning Portal
+#
+# Items
+item.soulgazer.name=Soulgazer
+item.summoningstaff.name=Summoning Staff
+item.stablesummoningstaff.name=Stable Summoning Staff
+item.bloodsummoningstaff.name=Blood Summoning Staff
+item.savagesummoningstaff.name=Savage Summoning Staff
+item.stablesummoningstaff.name=Stable Summoning Staff
+#
+# GUIS
+gui.beastiary.name=Beastiary
+gui.minion.name=Minion Manager
+gui.soulboundpets.name=Soulbound Pets
+gui.pet.sitting=Sitting
+gui.pet.movement=Movement
+gui.pet.follow=Follow
+gui.pet.wander=Wander
+gui.pet.passive=Passive
+gui.pet.stance=Stance
+gui.pet.aggressive=Aggressive
+gui.pet.defensive=Defensive
+gui.pet.pvp=PVP
+#
+# Messages
+message.soulgazer.new=You have gained knowledge of a new creature! Check your Beastiary!
+message.soulgazer.summonable=You are now able to summon a new creature! You will need a Summon Staff.
+message.soulgazer.known=You already have full knowledge of this creature.
+message.soulgazer.unknown=The Soulgazer finds nother special about this creature.
+message.pet.tamed=The %creature% seems to love you now!
+# %creature% will be replaced with the name of the creature, don't translate this!
+#
+# Common
+common.yes=Yes
+common.no=No

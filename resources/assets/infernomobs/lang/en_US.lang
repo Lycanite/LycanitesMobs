@@ -1,0 +1,10 @@
+# Entites
+entity.infernomobs.cinder.name=Cinder
+entity.infernomobs.lobber.name=Lobber
+#
+# Items
+item.infernospawn.name=Spawn
+item.embercharge.name=Ember Charge
+item.emberscepter.name=Ember Scepter
+item.magmacharge.name=Magma Charge
+item.magmascepter.name=Magma Scepter

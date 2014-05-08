@@ -1,0 +1,30 @@
+{
+    "entity.kobold.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/kobold/say", "stream": false}]
+    },
+    "entity.kobold.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/kobold/hurt", "stream": false}]
+    },
+    "entity.kobold.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/kobold/death", "stream": false}]
+    },
+    "entity.kobold.step": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/kobold/step", "stream": false}]
+    },
+    "entity.kobold.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/kobold/attack", "stream": false}]
+    },
+    "entity.kobold.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/kobold/beg", "stream": false}]
+    },
+    "entity.kobold.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/kobold/tame", "stream": false}]
+    }
+}

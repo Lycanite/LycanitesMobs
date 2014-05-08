@@ -58,7 +58,7 @@ public class ObjectManager {
 	// ========== Potion Effect ==========
 	public static PotionBase addPotionEffect(String name, Config config, boolean isBad, int color, int iconX, int iconY) {
 		name = name.toLowerCase();
-		PotionBase potion = new PotionBase(PotionBase.customPotionStartID + config.effectIDs.get(name), isBad, color);
+		PotionBase potion = new PotionBase(isBad, color);
 		potion.setPotionName(name);
 		potion.setIconIndex(iconX, iconY);
 		potionEffects.put(name, potion);
@@ -71,22 +71,22 @@ public class ObjectManager {
 		String modid = mod.getModID();
 		String domain = mod.getDomain();
 		
-		String name = mobInfo.name;
+		String name = mobInfo.name.toLowerCase();
 		SpawnInfo spawnInfo = mobInfo.spawnInfo;
 		mobs.put(name, mobInfo);
 		
 		// Sounds:
-		String filename = name.toLowerCase();
-		AssetManager.addSound(name + "say", domain, "entity/" + filename + "/say");
-		AssetManager.addSound(name + "hurt", domain, "entity/" + filename + "/hurt");
-		AssetManager.addSound(name + "death", domain, "entity/" + filename + "/death");
-		AssetManager.addSound(name + "step", domain, "entity/" + filename + "/step");
-		AssetManager.addSound(name + "attack", domain, "entity/" + filename + "/attack");
-		AssetManager.addSound(name + "jump", domain, "entity/" + filename + "/jump");
-		AssetManager.addSound(name + "tame", domain, "entity/" + filename + "/tame");
-		AssetManager.addSound(name + "beg", domain, "entity/" + filename + "/beg");
-		AssetManager.addSound(name + "eat", domain, "entity/" + filename + "/eat");
-		AssetManager.addSound(name + "mount", domain, "entity/" + filename + "/mount");
+		AssetManager.addSound(name + "_say", domain, "entity." + name + ".say");
+		AssetManager.addSound(name + "_hurt", domain, "entity." + name + ".hurt");
+		AssetManager.addSound(name + "_death", domain, "entity." + name + ".death");
+		AssetManager.addSound(name + "_step", domain, "entity." + name + ".step");
+		AssetManager.addSound(name + "_attack", domain, "entity." + name + ".attack");
+		AssetManager.addSound(name + "_jump", domain, "entity." + name + ".jump");
+		AssetManager.addSound(name + "_fly", domain, "entity." + name + ".fly");
+		AssetManager.addSound(name + "_tame", domain, "entity." + name + ".tame");
+		AssetManager.addSound(name + "_beg", domain, "entity." + name + ".beg");
+		AssetManager.addSound(name + "_eat", domain, "entity." + name + ".eat");
+		AssetManager.addSound(name + "_mount", domain, "entity." + name + ".mount");
 		
 		// ID and Enabled Check:
 		LycanitesMobs.printDebug("MobSetup", "~0==================== Mob Setup: "+ mobInfo.name +" ====================0~");

@@ -16,7 +16,7 @@ public class ItemStaffSavage extends ItemStaffSummoning {
 	// ==================================================
     public ItemStaffSavage() {
         super();
-        this.itemName = "SavageSummoningStaff";
+        this.itemName = "savagesummoningstaff";
         this.textureName = "staffsavage";
         setUnlocalizedName(this.itemName);
     }
@@ -27,7 +27,7 @@ public class ItemStaffSavage extends ItemStaffSummoning {
 	// ==================================================
     @Override
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-    	par3List.add("\u00a7a" + "Doubles the minions!");
+    	par3List.add("\u00a7a" + "Double the minions!");
     	par3List.add("\u00a7a" + "Half the health!");
     	super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
     }

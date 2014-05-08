@@ -19,6 +19,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -412,7 +413,9 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     	if(!this.worldObj.isRemote)
             if(this.rand.nextInt(3) == 0) {
                 this.setPlayerOwner(player);
-        		player.addChatMessage(new ChatComponentText("The " + this.getSpeciesName() + " seems to love you now!"));
+                String tameMessage = StatCollector.translateToLocal("message.pet.tamed");
+                tameMessage.replace("%creature%", this.getSpeciesName());
+        		player.addChatMessage(new ChatComponentText(tameMessage));
             }
     	else
     		this.playTameEffect(this.isTamed());
@@ -800,19 +803,19 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     // ========== Idle ==========
     @Override
     protected String getLivingSound() {
-    	String sound = "Say";
+    	String sound = "_say";
     	if(this.isTamed() && this.getHealth() < this.getMaxHealth())
-    		sound = "Beg";
+    		sound = "_beg";
     	return AssetManager.getSound(this.mobInfo.name + sound);
     }
     
     // ========== Tame ==========
     public void playTameSound() {
-    	this.playSound(AssetManager.getSound(this.mobInfo.name + "tame"), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+    	this.playSound(AssetManager.getSound(this.mobInfo.name + "_tame"), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
     }
     
     // ========== Eat ==========
     public void playEatSound() {
-    	this.playSound(AssetManager.getSound(this.mobInfo.name + "eat"), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+    	this.playSound(AssetManager.getSound(this.mobInfo.name + "_eat"), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
     }
 }

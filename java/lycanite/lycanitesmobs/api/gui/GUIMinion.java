@@ -12,6 +12,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
@@ -110,7 +111,7 @@ public class GUIMinion extends GuiScreen {
   	//                    Foreground
   	// ==================================================
 	protected void drawGuiContainerForegroundLayer() {
-		this.getFontRenderer().drawString("Minion Manager", this.windowX + 52, this.windowY + 6, 4210752);
+		this.getFontRenderer().drawString(StatCollector.translateToLocal("gui.minion.name"), this.windowX + 52, this.windowY + 6, 4210752);
     }
 	
 	
@@ -181,15 +182,19 @@ public class GUIMinion extends GuiScreen {
         		// Behaviour Buttons:
         		if(button.id < this.tabButtonID) {
 	        		if(button.id == EntityCreatureBase.GUI_COMMAND_ID.SITTING.id)
-	        			button.displayString = "Sitting: " + (this.summonSet.getSitting() ? "Yes" : "No");
+	        			button.displayString = StatCollector.translateToLocal("gui.pet.sitting") + ": " + (this.summonSet.getSitting() ? StatCollector.translateToLocal("common.yes") : StatCollector.translateToLocal("common.no"));
+	        		
 	        		if(button.id == EntityCreatureBase.GUI_COMMAND_ID.FOLLOWING.id)
-	        			button.displayString = (this.summonSet.getFollowing() ? "Follow" : "Wander");
+	        			button.displayString = (this.summonSet.getFollowing() ? StatCollector.translateToLocal("gui.pet.follow") : StatCollector.translateToLocal("gui.pet.wander"));
+	        		
 	        		if(button.id == EntityCreatureBase.GUI_COMMAND_ID.PASSIVE.id)
-	        			button.displayString = "Passive: " + (this.summonSet.getPassive() ? "Yes" : "No");
+	        			button.displayString = StatCollector.translateToLocal("gui.pet.passive") + ": " + (this.summonSet.getPassive() ? StatCollector.translateToLocal("common.yes") : StatCollector.translateToLocal("common.no"));
+	        		
 	        		if(button.id == EntityCreatureBase.GUI_COMMAND_ID.STANCE.id)
-	        			button.displayString = (this.summonSet.getAggressive() ? "Aggressive" : "Defensive");
+	        			button.displayString = (this.summonSet.getAggressive() ? StatCollector.translateToLocal("gui.pet.aggressive") : StatCollector.translateToLocal("gui.pet.defensive"));
+	        		
 	        		if(button.id == EntityCreatureBase.GUI_COMMAND_ID.PVP.id)
-	        			button.displayString = "PvP: " + (this.summonSet.getPVP() ? "Yes" : "No");
+	        			button.displayString = StatCollector.translateToLocal("gui.pet.pvp") + ": " + (this.summonSet.getPVP() ? StatCollector.translateToLocal("common.yes") : StatCollector.translateToLocal("common.no"));
         		}
         		
         		// Tabs:

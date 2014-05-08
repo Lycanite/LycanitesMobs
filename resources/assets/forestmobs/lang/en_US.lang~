@@ -1,0 +1,19 @@
+# Entites
+entity.desertmobs.cryptzombie.name=Crypt Zombie
+entity.desertmobs.clink.name=Clink
+entity.desertmobs.crusk.name=Crusk
+entity.desertmobs.joust.name=Joust
+entity.desertmobs.joustalpha.name=Joust Alpha
+entity.desertmobs.erepede.name=Erepede
+entity.desertmobs.gorgomite.name=Gorgomite
+entity.desertmobs.manticore.name=Manticore
+#
+# Items
+item.desertspawn.name=Spawn
+item.joustmeatraw.name=Raw Joust Meat
+item.joustmeatcooked.name=Cooked Joust Meat
+item.ambercake.name=Amber Cake
+item.throwingscythe.name=Throwing Scythe
+item.scythescepter.name=Scythe Scepter
+item.mudshotcharge.name=Mudshot Charge
+item.mudshotscepter.name=Mudshot Scepter

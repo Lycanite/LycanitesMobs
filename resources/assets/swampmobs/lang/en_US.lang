@@ -1,0 +1,20 @@
+# Entites
+entity.swampmobs.ghoulzombie.name=Ghoul Zombie
+entity.swampmobs.dweller.name=Dweller
+entity.swampmobs.ettin.name=Ettin
+entity.swampmobs.lurker.name=Lurker
+entity.swampmobs.eyewig.name=Eyewig
+entity.swampmobs.aspid.name=Aspid
+entity.swampmobs.remobra.name=Remobra
+#
+# Items
+item.swampspawn.name=Spawn
+item.aspidmeatraw.name=Raw Aspid Meat
+item.aspidmeatcooked.name=Cooked Aspid Meat
+item.mosspie.name=Moss Pie
+item.poisongland.name=Poison Gland
+item.poisonrayscepter.name=Poison Ray Scepter
+item.venomsotscepter.name=Venom Shot Scepter
+#
+# Blocks
+block.poisoncloud.name=Poison Cloud

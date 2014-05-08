@@ -1,0 +1,138 @@
+{
+    "entity.geken.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/geken/say", "stream": false}]
+    },
+    "entity.geken.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/geken/hurt", "stream": false}]
+    },
+    "entity.geken.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/geken/death", "stream": false}]
+    },
+    "entity.geken.step": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/geken/step", "stream": false}]
+    },
+    "entity.geken.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/geken/attack", "stream": false}]
+    },
+    "entity.geken.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/geken/beg", "stream": false}]
+    },
+    "entity.geken.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/geken/tame", "stream": false}]
+    },
+    "entity.uvaraptor.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/uvaraptor/say", "stream": false}]
+    },
+    "entity.uvaraptor.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/uvaraptor/hurt", "stream": false}]
+    },
+    "entity.uvaraptor.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/uvaraptor/death", "stream": false}]
+    },
+    "entity.uvaraptor.step": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/uvaraptor/step", "stream": false}]
+    },
+    "entity.uvaraptor.jump": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/uvaraptor/jump", "stream": false}]
+    },
+    "entity.uvaraptor.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/uvaraptor/attack", "stream": false}]
+    },
+    "entity.uvaraptor.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/uvaraptor/beg", "stream": false}]
+    },
+    "entity.uvaraptor.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/uvaraptor/tame", "stream": false}]
+    },
+    "entity.uvaraptor.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/uvaraptor/eat", "stream": false}]
+    },
+    "entity.uvaraptor.mount": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/uvaraptor/mount", "stream": false}]
+    },
+    "entity.concapede.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/concapede/say", "stream": false}]
+    },
+    "entity.concapede.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/concapede/hurt", "stream": false}]
+    },
+    "entity.concapede.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/concapede/death", "stream": false}]
+    },
+    "entity.concapede.step": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/concapede/step", "stream": false}]
+    },
+    "entity.concapede.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/concapede/attack", "stream": false}]
+    },
+    "entity.concapedesegment.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/concapede/say", "stream": false}]
+    },
+    "entity.concapedesegment.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/concapede/hurt", "stream": false}]
+    },
+    "entity.concapedesegment.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/concapede/death", "stream": false}]
+    },
+    "entity.concapedesegment.step": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/concapede/step", "stream": false}]
+    },
+    "entity.concapedesegment.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/concapede/attack", "stream": false}]
+    },
+    "entity.tarantula.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/tarantula/say", "stream": false}]
+    },
+    "entity.tarantula.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/tarantula/hurt", "stream": false}]
+    },
+    "entity.tarantula.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/tarantula/death", "stream": false}]
+    },
+    "entity.tarantula.step": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/tarantula/step", "stream": false}]
+    },
+    "entity.tarantula.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/tarantula/attack", "stream": false}]
+    },
+    "entity.tarantula.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/tarantula/beg", "stream": false}]
+    },
+    "entity.tarantula.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/tarantula/tame", "stream": false}]
+    }
+}

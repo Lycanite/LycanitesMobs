@@ -1,0 +1,8 @@
+# Entites
+entity.junglemobs.jabberwock.name=Jabberwock
+entity.junglemobs.troll.name=Troll
+#
+# Items
+item.mountainspawn.name=Spawn
+item.boulderblastcharge.name=Boulder Blast Charge
+item.boulderblastscepter.name=Boulder Blast Scepter

@@ -1,0 +1,46 @@
+{
+    "entity.cinder.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/cinder/say", "stream": false}]
+    },
+    "entity.cinder.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/cinder/hurt", "stream": false}]
+    },
+    "entity.cinder.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/cinder/death", "stream": false}]
+    },
+    "entity.cinder.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/cinder/beg", "stream": false}]
+    },
+    "entity.cinder.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/cinder/tame", "stream": false}]
+    },
+    "entity.lobber.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/lobber/say", "stream": false}]
+    },
+    "entity.lobber.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/lobber/hurt", "stream": false}]
+    },
+    "entity.lobber.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/lobber/death", "stream": false}]
+    },
+    "entity.lobber.step": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/lobber/step", "stream": false}]
+    },
+    "projectile.ember": {
+        "category": "ambient",
+        "sounds": [{"name": "projectile/ember", "stream": false}]
+    },
+    "projectile.magma": {
+        "category": "ambient",
+        "sounds": [{"name": "projectile/magma", "stream": false}]
+    }
+}

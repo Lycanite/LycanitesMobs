@@ -7,6 +7,7 @@ import net.minecraft.potion.Potion;
 
 public class PotionBase extends Potion {
 	public static int customPotionStartID = 0;
+	private static int customPotionNextID = 0;
 	public static int customPotionLength = 24;
 	
 	// ==================================================
@@ -14,22 +15,23 @@ public class PotionBase extends Potion {
 	// ==================================================
 	public static void reserveEffectIDSpace() {
 		customPotionStartID = Potion.potionTypes.length;
+		customPotionNextID = customPotionStartID;
 		int newLength = customPotionStartID + customPotionLength;
 		
-		for(Field f : Potion.class.getDeclaredFields()) {
-			f.setAccessible(true);
+		for(Field field : Potion.class.getDeclaredFields()) {
+			field.setAccessible(true);
 			try {
-				if(f.getName().equals("potionTypes") || f.getName().equals("field_76425_a")) {
+				if(field.getName().equals("potionTypes") || field.getName().equals("field_76425_a")) {
 					Field modfield = Field.class.getDeclaredField("modifiers");
 					modfield.setAccessible(true);
-					modfield.setInt(f, f.getModifiers() & ~Modifier.FINAL);
+					modfield.setInt(field, field.getModifiers() & ~Modifier.FINAL);
 					
 					Potion[] potionTypes;
-					potionTypes = (Potion[])f.get(null);
+					potionTypes = (Potion[])field.get(null);
 					
 					final Potion[] newPotionTypes = new Potion[newLength];
 					System.arraycopy(potionTypes, 0, newPotionTypes, 0, potionTypes.length);
-					f.set(null, newPotionTypes);
+					field.set(null, newPotionTypes);
 				}
 			}
 			catch (Exception e) {
@@ -39,12 +41,18 @@ public class PotionBase extends Potion {
 		}
 	}
 	
+	public static int nextPotionID() {
+		int nextID = Math.min(customPotionNextID, customPotionStartID + customPotionLength);
+		customPotionNextID++;
+		return nextID;
+	}
+	
 	
 	// ==================================================
 	//                    Constructor
 	// ==================================================
-	public PotionBase(int id, boolean badEffect, int color) {
-		super(id, badEffect, color);
+	public PotionBase(boolean badEffect, int color) {
+		super(nextPotionID(), badEffect, color);
 	}
 	
 	

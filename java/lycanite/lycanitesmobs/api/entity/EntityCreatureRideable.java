@@ -372,6 +372,6 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
    	// ==================================================
     // ========== Mount ==========
     public void playMountSound() {
-    	this.playSound(AssetManager.getSound(this.mobInfo.name + "mount"), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+    	this.playSound(AssetManager.getSound(this.mobInfo.name + "_mount"), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
     }
 }

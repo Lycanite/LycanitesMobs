@@ -1,46 +1,46 @@
 {
     "entity.reiver.say": {
         "category": "hostile",
-		"sounds": [{"name": "entity/reiver/say", "stream": false}]
-	},
+	"sounds": [{"name": "entity/reiver/say", "stream": false}]
+    },
     "entity.reiver.hurt": {
         "category": "hostile",
-		"sounds": [{"name": "entity/reiver/hurt", "stream": false}]
-	},
+	"sounds": [{"name": "entity/reiver/hurt", "stream": false}]
+    },
     "entity.reiver.death": {
         "category": "hostile",
-		"sounds": [{"name": "entity/reiver/death", "stream": false}]
-	},
+	"sounds": [{"name": "entity/reiver/death", "stream": false}]
+    },
     "entity.reiver.tame": {
         "category": "hostile",
-		"sounds": [{"name": "entity/reiver/tame", "stream": false}]
-	},
+	"sounds": [{"name": "entity/reiver/tame", "stream": false}]
+    },
     "entity.reiver.beg": {
         "category": "hostile",
-		"sounds": [{"name": "entity/reiver/beg", "stream": false}]
-	},
+	"sounds": [{"name": "entity/reiver/beg", "stream": false}]
+    },
     "entity.frostweaver.say": {
         "category": "hostile",
-		"sounds": [{"name": "entity/frostweaver/say", "stream": false}]
-	},
+	"sounds": [{"name": "entity/frostweaver/say", "stream": false}]
+    },
     "entity.frostweaver.hurt": {
         "category": "hostile",
-		"sounds": [{"name": "entity/frostweaver/hurt", "stream": false}]
-	},
+	"sounds": [{"name": "entity/frostweaver/hurt", "stream": false}]
+    },
     "entity.frostweaver.death": {
         "category": "hostile",
-		"sounds": [{"name": "entity/frostweaver/death", "stream": false}]
-	},
+	"sounds": [{"name": "entity/frostweaver/death", "stream": false}]
+    },
     "entity.frostweaver.step": {
         "category": "hostile",
-		"sounds": [{"name": "entity/frostweaver/step", "stream": false}]
-	},
+	"sounds": [{"name": "entity/frostweaver/step", "stream": false}]
+    },
     "projectile.frostbolt": {
-        "category": "hostile",
-		"sounds": [{"name": "projectile/frostbolt", "stream": false}]
-	},
+        "category": "ambient",
+	"sounds": [{"name": "projectile/frostbolt", "stream": false}]
+    },
     "projectile.frostweb": {
-        "category": "hostile",
-		"sounds": [{"name": "projectile/frostweb", "stream": false}]
-	}
+        "category": "ambient",
+	"sounds": [{"name": "projectile/frostweb", "stream": false}]
+    }
 }

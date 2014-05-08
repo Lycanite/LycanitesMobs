@@ -1,0 +1,142 @@
+{
+    "entity.kobold.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/kobold/say", "stream": false}]
+    },
+    "entity.kobold.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/kobold/hurt", "stream": false}]
+    },
+    "entity.kobold.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/kobold/death", "stream": false}]
+    },
+    "entity.kobold.step": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/kobold/step", "stream": false}]
+    },
+    "entity.kobold.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/kobold/attack", "stream": false}]
+    },
+    "entity.kobold.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/kobold/beg", "stream": false}]
+    },
+    "entity.kobold.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/kobold/tame", "stream": false}]
+    },
+    "entity.kobold.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/kobold/eat", "stream": false}]
+    },
+    "entity.ventoraptor.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/ventoraptor/say", "stream": false}]
+    },
+    "entity.ventoraptor.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/ventoraptor/hurt", "stream": false}]
+    },
+    "entity.ventoraptor.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/ventoraptor/death", "stream": false}]
+    },
+    "entity.ventoraptor.step": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/ventoraptor/step", "stream": false}]
+    },
+    "entity.ventoraptor.jump": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/ventoraptor/jump", "stream": false}]
+    },
+    "entity.ventoraptor.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/ventoraptor/attack", "stream": false}]
+    },
+    "entity.ventoraptor.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/ventoraptor/beg", "stream": false}]
+    },
+    "entity.ventoraptor.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/ventoraptor/tame", "stream": false}]
+    },
+    "entity.ventoraptor.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/ventoraptor/eat", "stream": false}]
+    },
+    "entity.ventoraptor.mount": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/ventoraptor/mount", "stream": false}]
+    },
+    "entity.maka.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/maka/say", "stream": false}]
+    },
+    "entity.maka.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/maka/hurt", "stream": false}]
+    },
+    "entity.maka.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/maka/death", "stream": false}]
+    },
+    "entity.maka.step": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/maka/step", "stream": false}]
+    },
+    "entity.maka.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/maka/attack", "stream": false}]
+    },
+    "entity.makaalpha.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/maka/say", "stream": false}]
+    },
+    "entity.makaalpha.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/maka/hurt", "stream": false}]
+    },
+    "entity.makaalpha.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/maka/death", "stream": false}]
+    },
+    "entity.makaalpha.step": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/maka/step", "stream": false}]
+    },
+    "entity.makaalpha.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/maka/attack", "stream": false}]
+    },
+    "entity.zoataur.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/zoataur/say", "stream": false}]
+    },
+    "entity.zoataur.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/zoataur/hurt", "stream": false}]
+    },
+    "entity.zoataur.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/zoataur/death", "stream": false}]
+    },
+    "entity.zoataur.step": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/zoataur/step", "stream": false}]
+    },
+    "entity.zoataur.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/zoataur/attack", "stream": false}]
+    },
+    "entity.zoataur.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/zoataur/beg", "stream": false}]
+    },
+    "entity.zoataur.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/zoataur/tame", "stream": false}]
+    }
+}

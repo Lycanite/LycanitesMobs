@@ -8,7 +8,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
@@ -41,13 +40,12 @@ public class GuiOverlay extends Gui {
         int sHeight = scaledresolution.getScaledHeight();
 		
 		// ========== Extra Tabs ==========
-		// TODO Find a better place to render these!
-        if(this.mc.currentScreen instanceof GuiInventory) {
-        	GuiInventory guiInventory = (GuiInventory)this.mc.currentScreen;
-        	GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIInventoryCreature"));
-			// TODO Inventory tabs!
-        }
+		// TODO Inventory tabs! - Find a place to render these!
+        //if(this.mc.currentScreen instanceof GuiInventory) {
+        	//GuiInventory guiInventory = (GuiInventory)this.mc.currentScreen;
+        	//GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			//this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIInventoryCreature"));
+        //}
 		
 		if(event.type != ElementType.EXPERIENCE)
 	      return;

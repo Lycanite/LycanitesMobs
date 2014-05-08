@@ -30,6 +30,7 @@ public class ObjectLists {
 	public static void addItem(String list, Object object) {
 		if(!(object instanceof Item || object instanceof Block || object instanceof ItemStack || object instanceof String))
 			return;
+		list = list.toLowerCase();
 		if(!itemLists.containsKey(list))
 			itemLists.put(list, new ArrayList<ItemStack>());
 		ItemStack itemStack = null;
@@ -53,6 +54,7 @@ public class ObjectLists {
 	public static void addEntity(String list, Object object) {
 		if(!(object instanceof Entity || object instanceof String))
 			return;
+		list = list.toLowerCase();
 		if(!entityLists.containsKey(list))
 			entityLists.put(list, new ArrayList<Class>());
 		Class entity = null;
@@ -71,12 +73,14 @@ public class ObjectLists {
     //                        Get
     // ==================================================
 	public static ItemStack[] getItems(String list) {
+		list = list.toLowerCase();
 		if(!itemLists.containsKey(list))
 			return (ItemStack[])itemLists.get(list).toArray();
 		return new ItemStack[0];
 	}
 
 	public static Class[] getEntites(String list) {
+		list = list.toLowerCase();
 		if(!entityLists.containsKey(list))
 			return (Class[])entityLists.get(list).toArray();
 		return new Class[0];
@@ -87,6 +91,7 @@ public class ObjectLists {
     //                      Compare
     // ==================================================
 	public static boolean inItemList(String list, ItemStack testStack) {
+		list = list.toLowerCase();
 		if(!itemLists.containsKey(list))
 			return false;
 		for(ItemStack listStack : itemLists.get(list))
@@ -97,6 +102,7 @@ public class ObjectLists {
 	}
 
 	public static boolean inEntityList(String list, Class testClass) {
+		list = list.toLowerCase();
 		if(!entityLists.containsKey(list))
 			return false;
 		for(Class listClass : entityLists.get(list))
@@ -111,47 +117,47 @@ public class ObjectLists {
     // ==================================================
 	public static void createLists() {
 		// Raw Meat: (A bit cold...)
-		ObjectLists.addItem("RawMeat", Items.beef);
-		ObjectLists.addItem("RawMeat", Items.porkchop);
-		ObjectLists.addItem("RawMeat", Items.chicken);
+		ObjectLists.addItem("rawmeat", Items.beef);
+		ObjectLists.addItem("rawmeat", Items.porkchop);
+		ObjectLists.addItem("rawmeat", Items.chicken);
 		
 		// Cooked Meat: (Meaty goodness for carnivorous pets!)
-		ObjectLists.addItem("CookedMeat", Items.cooked_beef);
-		ObjectLists.addItem("CookedMeat", Items.cooked_porkchop);
-		ObjectLists.addItem("CookedMeat", Items.cooked_chicken);
+		ObjectLists.addItem("cookedmeat", Items.cooked_beef);
+		ObjectLists.addItem("cookedmeat", Items.cooked_porkchop);
+		ObjectLists.addItem("cookedmeat", Items.cooked_chicken);
 		
 		// Prepared Vegetables: (For most vegetarian pets.)
-		ObjectLists.addItem("Vegetables", Items.wheat);
-		ObjectLists.addItem("Vegetables", Items.carrot);
-		ObjectLists.addItem("Vegetables", Items.potato);
+		ObjectLists.addItem("vegetables", Items.wheat);
+		ObjectLists.addItem("vegetables", Items.carrot);
+		ObjectLists.addItem("vegetables", Items.potato);
 		
 		// Fruit: (For exotic pets!)
-		ObjectLists.addItem("Fruit", Items.apple);
-		ObjectLists.addItem("Fruit", Items.melon);
-		ObjectLists.addItem("Fruit", Blocks.pumpkin);
-		ObjectLists.addItem("Fruit", Items.pumpkin_pie);
+		ObjectLists.addItem("fruit", Items.apple);
+		ObjectLists.addItem("fruit", Items.melon);
+		ObjectLists.addItem("fruit", Blocks.pumpkin);
+		ObjectLists.addItem("fruit", Items.pumpkin_pie);
 
 		// Raw Fish: (Very smelly!)
-		ObjectLists.addItem("RawFish", Items.fish);
+		ObjectLists.addItem("rawfish", Items.fish);
 
 		// Cooked Fish: (For those fish fiends!)
-		ObjectLists.addItem("CookedFish", Items.cooked_fished);
+		ObjectLists.addItem("cookedfish", Items.cooked_fished);
 		
 		// Cactus Food: (Jousts love these!)
-		ObjectLists.addItem("CactusFood", new ItemStack(Items.dye, 1, 2)); // Cactus Green
+		ObjectLists.addItem("cactusfood", new ItemStack(Items.dye, 1, 2)); // Cactus Green
 		
 		// Mushrooms: (Fungi treats!)
-		ObjectLists.addItem("Mushrooms", Blocks.brown_mushroom);
-		ObjectLists.addItem("Mushrooms", Blocks.red_mushroom);
-		ObjectLists.addItem("Mushrooms", Blocks.brown_mushroom_block);
-		ObjectLists.addItem("Mushrooms", Blocks.red_mushroom_block);
+		ObjectLists.addItem("mushrooms", Blocks.brown_mushroom);
+		ObjectLists.addItem("mushrooms", Blocks.red_mushroom);
+		ObjectLists.addItem("mushrooms", Blocks.brown_mushroom_block);
+		ObjectLists.addItem("mushrooms", Blocks.red_mushroom_block);
 		
 		// Sweets: (Sweet sugary goodness!)
-		ObjectLists.addItem("Sweets", Items.sugar);
-		ObjectLists.addItem("Sweets", new ItemStack(Items.dye, 1, 15)); // Cocoa Beans
-		ObjectLists.addItem("Sweets", Items.cookie);
-		ObjectLists.addItem("Sweets", Blocks.cake);
-		ObjectLists.addItem("Sweets", Items.pumpkin_pie);
+		ObjectLists.addItem("sweets", Items.sugar);
+		ObjectLists.addItem("sweets", new ItemStack(Items.dye, 1, 15)); // Cocoa Beans
+		ObjectLists.addItem("sweets", Items.cookie);
+		ObjectLists.addItem("sweets", Blocks.cake);
+		ObjectLists.addItem("sweets", Items.pumpkin_pie);
 		
 		// Custom Entries:
 		for(String itemListName : itemListNames) {

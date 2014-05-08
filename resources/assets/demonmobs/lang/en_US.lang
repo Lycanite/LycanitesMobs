@@ -1,0 +1,25 @@
+# Entites
+entity.demonmobs.belph.name=Belph
+entity.demonmobs.behemoth.name=Behemoth
+entity.demonmobs.pinky.name=Pinky
+entity.demonmobs.asmodi.name=Asmodi
+entity.demonmobs.trite.name=Trite
+entity.demonmobs.nethersoul.name=Nether Soul
+entity.demonmobs.cacodemon.name=Cacodemon
+#
+# Items
+item.demonspawn.name=Spawn
+item.pinkymeatraw.name=Raw Pinky Meat
+item.pinkymeatcooked.name=Cooked Pinky Meat
+item.devillasagna.name=Devil Lasagna
+item.doomfirecharge.name=Doomfire Charge
+item.doomfirescepter.name=Doomfire Scepter
+item.hellfirecharge.name=Hellfire Charge
+item.hellfirescepter.name=Hellfire Scepter
+item.devilstarcharge.name=Devilstar Charge
+item.devilstarscepter.name=Devilstar Scepter
+item.demoniclightningcharge.name=Demonic Lightning Charge
+item.demoniclightningscepter.name=Demonic Lightning Scepter
+#
+# Blocks
+block.hellfire.name=Hellfire

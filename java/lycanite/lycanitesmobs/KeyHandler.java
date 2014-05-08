@@ -6,13 +6,12 @@ import lycanite.lycanitesmobs.api.packet.PacketGUIRequest;
 import lycanite.lycanitesmobs.api.packet.PacketPlayerControl;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 
 import org.lwjgl.input.Keyboard;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
 
 public class KeyHandler {
 	public Minecraft mc;
@@ -40,10 +39,8 @@ public class KeyHandler {
     //                    Handle Keys
     // ==================================================
 	@SubscribeEvent
-	public void onEntityUpdate(LivingUpdateEvent event) {
-		if(!(event.entity instanceof EntityPlayer))
-			return;
-		if(event.entity != this.mc.thePlayer)
+	public void onKeyInput(KeyInputEvent event) {
+		if(!this.mc.inGameHasFocus)
 			return;
 		ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(this.mc.thePlayer);
 		if(playerExt == null)
@@ -93,5 +90,6 @@ public class KeyHandler {
 		PacketPlayerControl packet = new PacketPlayerControl();
 		packet.readControlStates(controlStates);
 		LycanitesMobs.packetPipeline.sendToServer(packet);
+		playerExt.controlStates = controlStates;
 	}
 }

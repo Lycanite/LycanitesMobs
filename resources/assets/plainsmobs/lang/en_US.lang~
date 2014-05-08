@@ -1,0 +1,8 @@
+# Entites
+entity.plainsmobs.kobold.name=Kobold
+#
+# Items
+item.mountainspawn.name=Spawn
+item.makameatraw.name=Raw Maka Meat
+item.makameatcooked.name=Cooked Maka Meat
+item.bulwarkburger.name=Bulwark Burger

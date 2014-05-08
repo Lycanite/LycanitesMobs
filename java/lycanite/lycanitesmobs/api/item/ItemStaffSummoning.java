@@ -21,7 +21,7 @@ public class ItemStaffSummoning extends ItemScepter {
 	// ==================================================
     public ItemStaffSummoning() {
         super();
-        this.itemName = "SummoningStaff";
+        this.itemName = "summoningstaff";
         this.textureName = "staffsummoning";
         setUnlocalizedName(this.itemName);
     }

@@ -15,7 +15,7 @@ public class ItemStaffStable extends ItemStaffSummoning {
 	// ==================================================
     public ItemStaffStable() {
         super();
-        this.itemName = "StableSummoningStaff";
+        this.itemName = "stablesummoningstaff";
         this.textureName = "staffstable";
         setUnlocalizedName(this.itemName);
     }

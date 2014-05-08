@@ -1,0 +1,30 @@
+{
+    "entity.lacedon.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/lacedon/say", "stream": false}]
+    },
+    "entity.lacedon.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/lacedon/hurt", "stream": false}]
+    },
+    "entity.lacedon.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/lacedon/death", "stream": false}]
+    },
+    "entity.lacedon.step": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/lacedon/step", "stream": false}]
+    },
+    "entity.lacedon.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/lacedon/attack", "stream": false}]
+    },
+    "entity.lacedon.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/lacedon/beg", "stream": false}]
+    },
+    "entity.lacedon.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/lacedon/tame", "stream": false}]
+    }
+}

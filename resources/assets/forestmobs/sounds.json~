@@ -1,0 +1,30 @@
+{
+    "entity.ent.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/ent/say", "stream": false}]
+    },
+    "entity.ent.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/ent/hurt", "stream": false}]
+    },
+    "entity.ent.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/ent/death", "stream": false}]
+    },
+    "entity.ent.step": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/ent/step", "stream": false}]
+    },
+    "entity.ent.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/ent/attack", "stream": false}]
+    },
+    "entity.ent.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/ent/beg", "stream": false}]
+    },
+    "entity.ent.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/ent/tame", "stream": false}]
+    },
+}

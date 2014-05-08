@@ -15,6 +15,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
+import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
@@ -155,23 +156,23 @@ public class GUICreature extends GuiContainer {
         int buttonX = backX + this.xSize;
         int buttonY = backY;
         
-        String buttonText = "Sitting: " + (pet.isSitting() ? "Yes" : "No");
+        String buttonText = StatCollector.translateToLocal("gui.pet.sitting") + ": " + (pet.isSitting() ? StatCollector.translateToLocal("common.yes") : StatCollector.translateToLocal("common.no"));
         buttonY += buttonSpacing;
         this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.SITTING.id, buttonX + buttonSpacing, buttonY, buttonWidth, buttonHeight, buttonText));
         
-        buttonText = "Movement: " + (pet.isFollowing() ? "Follow" : "Wander");
+        buttonText = StatCollector.translateToLocal("gui.pet.movement") + ": " + (pet.isFollowing() ? StatCollector.translateToLocal("gui.pet.follow") : StatCollector.translateToLocal("gui.pet.wander"));
         buttonY += buttonHeight + (buttonSpacing * 2);
         this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.FOLLOWING.id, buttonX + buttonSpacing, buttonY, buttonWidth, buttonHeight, buttonText));
         
-        buttonText = "Passive: " + (pet.isPassive() ? "Yes" : "No");
+        buttonText = StatCollector.translateToLocal("gui.pet.passive") + ": " + (pet.isPassive() ? StatCollector.translateToLocal("common.yes") : StatCollector.translateToLocal("common.no"));
         buttonY += buttonHeight + (buttonSpacing * 2);
         this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.PASSIVE.id, buttonX + buttonSpacing, buttonY, buttonWidth, buttonHeight, buttonText));
         
-        buttonText = "Stance: " + (pet.isAggressive() ? "Aggressive" : "Defensive");
+        buttonText = StatCollector.translateToLocal("gui.pet.stance") + ": " + (pet.isAggressive() ? StatCollector.translateToLocal("gui.pet.aggressive") : StatCollector.translateToLocal("gui.pet.defensive"));
         buttonY += buttonHeight + (buttonSpacing * 2);
         this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.STANCE.id, buttonX + buttonSpacing, buttonY, buttonWidth, buttonHeight, buttonText));
         
-        buttonText = "PvP: " + (pet.isPVP() ? "Yes" : "No");
+        buttonText = StatCollector.translateToLocal("gui.pet.pvp") + ": " + (pet.isPVP() ? StatCollector.translateToLocal("common.yes") : StatCollector.translateToLocal("common.no"));
         buttonY += buttonHeight + (buttonSpacing * 2);
         this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.PVP.id, buttonX + buttonSpacing, buttonY, buttonWidth, buttonHeight, buttonText));
     }

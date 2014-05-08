@@ -1,0 +1,12 @@
+# Entites
+entity.plainsmobs.kobold.name=Kobold
+entity.plainsmobs.ventoraptor.name=Ventoraptor
+entity.plainsmobs.maka.name=Maka
+entity.plainsmobs.makaalpha.name=Maka Alpha
+entity.plainsmobs.zoataur.name=Zoataur
+#
+# Items
+item.mountainspawn.name=Spawn
+item.makameatraw.name=Raw Maka Meat
+item.makameatcooked.name=Cooked Maka Meat
+item.bulwarkburger.name=Bulwark Burger

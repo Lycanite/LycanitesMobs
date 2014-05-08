@@ -15,7 +15,7 @@ public class AssetManager {
 	public static Map<String, ResourceLocation> textures = new HashMap<String, ResourceLocation>();
 	public static Map<String, IIcon> icons = new HashMap<String, IIcon>();
 	public static Map<String, IIcon[]> iconGroups = new HashMap<String, IIcon[]>();
-	public static Map<String, String[]> sounds = new HashMap<String, String[]>();
+	public static Map<String, String> sounds = new HashMap<String, String>();
 	public static Map<String, ModelBase> models = new HashMap<String, ModelBase>();
 	public static Map<String, IModelCustom> objModels = new HashMap<String, IModelCustom>();
 	
@@ -50,7 +50,7 @@ public class AssetManager {
 	// ========== Sound ==========
 	public static void addSound(String name, String domain, String path) {
 		name = name.toLowerCase();
-		sounds.put(name, new String[] {domain + ":" + path, domain + ":" + path.replaceAll("entity/", "").replaceAll("/", ".").substring(0, path.length() - 4)});
+		sounds.put(name, path);
 	}
 	
 	// ========== Model ==========
@@ -98,7 +98,7 @@ public class AssetManager {
 		name = name.toLowerCase();
 		if(!sounds.containsKey(name))
 			return null;
-		return sounds.get(name)[1];
+		return sounds.get(name);
 	}
 	
 	// ========== Model ==========

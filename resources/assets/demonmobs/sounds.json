@@ -1,0 +1,190 @@
+{
+    "entity.belph.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/belph/say", "stream": false}]
+    },
+    "entity.belph.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/belph/hurt", "stream": false}]
+    },
+    "entity.belph.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/belph/death", "stream": false}]
+    },
+    "entity.belph.step": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/belph/step", "stream": false}]
+    },
+    "entity.belph.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/belph/beg", "stream": false}]
+    },
+    "entity.belph.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/belph/tame", "stream": false}]
+    },
+    "entity.behemoth.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/behemoth/say", "stream": false}]
+    },
+    "entity.behemoth.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/behemoth/hurt", "stream": false}]
+    },
+    "entity.behemoth.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/behemoth/death", "stream": false}]
+    },
+    "entity.behemoth.step": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/behemoth/step", "stream": false}]
+    },
+    "entity.behemoth.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/behemoth/beg", "stream": false}]
+    },
+    "entity.behemoth.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/behemoth/tame", "stream": false}]
+    },
+    "entity.pinky.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/pinky/say", "stream": false}]
+    },
+    "entity.pinky.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/pinky/hurt", "stream": false}]
+    },
+    "entity.pinky.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/pinky/death", "stream": false}]
+    },
+    "entity.pinky.step": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/pinky/step", "stream": false}]
+    },
+    "entity.pinky.jump": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/pinky/jump", "stream": false}]
+    },
+    "entity.pinky.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/pinky/attack", "stream": false}]
+    },
+    "entity.pinky.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/pinky/beg", "stream": false}]
+    },
+    "entity.pinky.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/pinky/tame", "stream": false}]
+    },
+    "entity.pinky.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/pinky/eat", "stream": false}]
+    },
+    "entity.pinky.mount": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/pinky/mount", "stream": false}]
+    },
+    "entity.trite.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/trite/say", "stream": false}]
+    },
+    "entity.trite.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/trite/hurt", "stream": false}]
+    },
+    "entity.trite.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/trite/death", "stream": false}]
+    },
+    "entity.trite.step": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/trite/step", "stream": false}]
+    },
+    "entity.trite.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/trite/attack", "stream": false}]
+    },
+    "entity.asmodi.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/asmodi/say", "stream": false}]
+    },
+    "entity.asmodi.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/asmodi/hurt", "stream": false}]
+    },
+    "entity.asmodi.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/asmodi/death", "stream": false}]
+    },
+    "entity.asmodi.step": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/asmodi/step", "stream": false}]
+    },
+    "entity.nethersoul.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/nethersoul/say", "stream": false}]
+    },
+    "entity.nethersoul.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/nethersoul/hurt", "stream": false}]
+    },
+    "entity.nethersoul.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/nethersoul/death", "stream": false}]
+    },
+    "entity.nethersoul.step": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/nethersoul/step", "stream": false}]
+    },
+    "entity.nethersoul.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/nethersoul/attack", "stream": false}]
+    },
+    "entity.cacodemon.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/cacodemon/say", "stream": false}]
+    },
+    "entity.cacodemon.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/cacodemon/hurt", "stream": false}]
+    },
+    "entity.cacodemon.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/cacodemon/death", "stream": false}]
+    },
+    "entity.cacodemon.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/cacodemon/beg", "stream": false}]
+    },
+    "entity.cacodemon.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/cacodemon/tame", "stream": false}]
+    },
+    "entity.cacodemon.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/cacodemon/eat", "stream": false}]
+    },
+    "projectile.doomfireball": {
+        "category": "ambient",
+        "sounds": [{"name": "projectile/doomfireball", "stream": false}]
+    },
+    "projectile.hellfireball": {
+        "category": "ambient",
+        "sounds": [{"name": "projectile/hellfireball", "stream": false}]
+    },
+    "projectile.devilstar": {
+        "category": "ambient",
+        "sounds": [{"name": "projectile/devilstar", "stream": false}]
+    },
+    "projectile.demonicspark": {
+        "category": "ambient",
+        "sounds": [{"name": "projectile/demonicspark", "stream": false}]
+    },
+    "projectile.demonicblast": {
+        "category": "ambient",
+        "sounds": [{"name": "projectile/demonicblast", "stream": false}]
+    }
+}

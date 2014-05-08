@@ -44,7 +44,7 @@ public class EntityPortal extends EntityProjectileBase {
     }
     
     public void setStats() {
-    	this.entityName = "SummoningPortal";
+    	this.entityName = "summoningportal";
         this.setProjectileScale(4F);
         this.moveToTarget();
     }

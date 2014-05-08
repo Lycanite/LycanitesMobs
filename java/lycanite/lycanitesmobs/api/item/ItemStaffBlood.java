@@ -15,7 +15,7 @@ public class ItemStaffBlood extends ItemStaffSummoning {
 	// ==================================================
     public ItemStaffBlood() {
         super();
-        this.itemName = "BloodSummoningStaff";
+        this.itemName = "bloodsummoningstaff";
         this.textureName = "staffblood";
         setUnlocalizedName(this.itemName);
     }

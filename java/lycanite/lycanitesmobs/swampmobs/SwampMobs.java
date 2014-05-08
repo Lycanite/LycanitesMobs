@@ -95,7 +95,7 @@ public class SwampMobs implements ILycaniteMod {
 		ObjectManager.addItem("venomshotscepter", new ItemScepterVenomShot());
 		
 		// ========== Create Blocks ==========
-		AssetManager.addSound("poisoncloud", domain, "block/poisoncloud.wav");
+		AssetManager.addSound("poisoncloud", domain, "block.poisoncloud");
 		ObjectManager.addBlock("poisoncloud", new BlockPoisonCloud());
 	}
 	

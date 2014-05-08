@@ -49,7 +49,7 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
     // ==================================================
 	public static ExtendedPlayer getForPlayer(EntityPlayer player) {
 		if(player == null) {
-			LycanitesMobs.printWarning("", "Tried to access an ExtendedPlayer from a null EntityPlayer.");
+			//LycanitesMobs.printWarning("", "Tried to access an ExtendedPlayer from a null EntityPlayer.");
 			return null;
 		}
 		IExtendedEntityProperties playerIExt = player.getExtendedProperties(EXT_PROP_NAME);

@@ -158,9 +158,8 @@ public class ObjectManager {
 	public static void addProjectile(String name, Class entityClass) {
 		name = name.toLowerCase();
 		ILycaniteMod mod = currentMod;
-		String filename = name.toLowerCase();
-		AssetManager.addSound(name, mod.getDomain(), "projectile/" + filename + ".wav");
-
+		AssetManager.addSound(name, mod.getDomain(), "projectile." + name);
+		
 		int projectileID = mod.getNextProjectileID();
 		EntityRegistry.registerModEntity(entityClass, name, projectileID, mod.getInstance(), 64, 1, true);
 		

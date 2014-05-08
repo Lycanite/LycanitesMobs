@@ -8,10 +8,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
 
 public class KeyHandler {
 	public Minecraft mc;
@@ -39,8 +40,8 @@ public class KeyHandler {
     //                    Handle Keys
     // ==================================================
 	@SubscribeEvent
-	public void onKeyInput(KeyInputEvent event) {
-		if(!this.mc.inGameHasFocus)
+	public void onPlayerTick(TickEvent event) {
+		if(event.type != TickEvent.Type.CLIENT)
 			return;
 		ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(this.mc.thePlayer);
 		if(playerExt == null)
@@ -61,14 +62,15 @@ public class KeyHandler {
 		}
 		
 		// Minion Selection: Closes If Not Holding:
-		if(!this.minionSelection.getIsKeyPressed() && this.mc.currentScreen instanceof GUIMinionSelection) {
+		if((!Keyboard.isKeyDown(this.minionSelection.getKeyCode()) && !Mouse.isButtonDown(this.minionSelection.getKeyCode())) && this.mc.currentScreen instanceof GUIMinionSelection) {
 			this.mc.thePlayer.closeScreen();
 		}
 		
-		if(this.mc.currentScreen == null) {
+		
+		if(this.mc.inGameHasFocus) {
 			// ========== HUD Controls ==========
 			// Minion Selection: Opens GUI.
-			if(this.minionSelection.isPressed()) {
+			if(this.minionSelection.getIsKeyPressed()) {
 				GUIMinionSelection.openToPlayer(this.mc.thePlayer);
 			}
 			
@@ -92,6 +94,4 @@ public class KeyHandler {
 		LycanitesMobs.packetPipeline.sendToServer(packet);
 		playerExt.controlStates = controlStates;
 	}
-	
-	// TODO Hold Keys!
 }

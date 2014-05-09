@@ -21,6 +21,7 @@ public class EntityProjectileBase extends EntityThrowable {
 	// Properties:
 	public byte baseDamage = 1;
 	public float projectileScale = 1.0f;
+	public int projectileLife = 200;
 	
 	public boolean waterProof = false;
 	public boolean lavaProof = false;
@@ -64,6 +65,8 @@ public class EntityProjectileBase extends EntityThrowable {
     		if(!this.waterProof && this.isInWater())
     			this.setDead();
     		else if(!this.lavaProof && this.isInsideOfMaterial(Material.lava))
+    			this.setDead();
+    		if(this.projectileLife-- <= 0)
     			this.setDead();
     	}
     }

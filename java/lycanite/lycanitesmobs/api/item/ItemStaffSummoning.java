@@ -68,7 +68,7 @@ public class ItemStaffSummoning extends ItemScepter {
     // ========== Rapid Time ==========
     @Override
     public int getRapidTime(ItemStack itemStack) {
-        return 40;
+        return 0;
     }
     
     // ========== Summon Cost ==========
@@ -106,6 +106,13 @@ public class ItemStaffSummoning extends ItemScepter {
     
     // ========== Minion Effects ==========
     public void applyMinionEffects(EntityCreatureBase minion) {}
+    
+    // ========== On Stop Using ==========
+    @Override
+    public void onPlayerStoppedUsing(ItemStack itemStack, World world, EntityPlayer player, int useRemaining) {
+    	super.onPlayerStoppedUsing(itemStack, world, player, useRemaining);
+		this.portalEntity = null;
+    }
 	
     
 	// ==================================================
@@ -114,25 +121,26 @@ public class ItemStaffSummoning extends ItemScepter {
     // ========== Start ==========
     @Override
     public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
-    	if(!world.isRemote) {
-    		ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer((EntityPlayer)player);
-    		if(playerExt != null) {
-    			// Summon Selected Mob
-    			SummonSet summonSet = playerExt.getSelectedSummonSet();
-    			if(summonSet.isUseable()) {
+		ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer((EntityPlayer)player);
+		if(playerExt != null) {
+			// Summon Selected Mob:
+			SummonSet summonSet = playerExt.getSelectedSummonSet();
+			if(summonSet.isUseable()) {
+				if(!player.worldObj.isRemote) {
 			    	this.portalEntity = new EntityPortal(world, player, summonSet.getCreatureClass(), this);
 			    	this.portalEntity.setLocationAndAngles(player.posX, player.posY, player.posZ, world.rand.nextFloat() * 360.0F, 0.0F);
 			    	world.spawnEntityInWorld(this.portalEntity);
-    			}
-    			// Open Minion GUI If None Selected:
-    			else {
-    				if(!player.worldObj.isRemote)
-		    			playerExt.sendAllSummonSetsToPlayer();
-    				if(player.worldObj.isRemote)
-    					GUIMinion.openToPlayer(player, playerExt.selectedSummonSet);
-    			}
-    		}
-    	}
+				}
+			}
+			// Open Minion GUI If None Selected:
+			else {
+				this.portalEntity = null;
+				if(!player.worldObj.isRemote)
+	    			playerExt.sendAllSummonSetsToPlayer();
+				if(player.worldObj.isRemote)
+					GUIMinion.openToPlayer(player, playerExt.selectedSummonSet);
+			}
+		}
         return super.onItemRightClick(itemStack, world, player);
     }
     

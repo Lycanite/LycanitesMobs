@@ -36,7 +36,7 @@ public class LycanitesMobs implements ILycaniteMod {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String version = "1.5.1 - MC 1.7.2";
+	public static final String version = "1.5.2 - MC 1.7.2";
 	public static final String domain = modid.toLowerCase();
 	
 	public static final PacketPipeline packetPipeline = new PacketPipeline();

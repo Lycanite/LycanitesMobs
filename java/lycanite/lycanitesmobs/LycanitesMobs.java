@@ -18,6 +18,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.Mod;
@@ -92,6 +94,25 @@ public class LycanitesMobs implements ILycaniteMod {
 		ObjectManager.addItem("bloodsummoningstaff", new ItemStaffBlood());
 		ObjectManager.addItem("sturdysummoningstaff", new ItemStaffSturdy());
 		ObjectManager.addItem("savagesummoningstaff", new ItemStaffSavage());
+		
+		// ========== Register New 1.7.2 Vanilla Biomes Into Groups (Temporary until forge updates this) ==========
+		BiomeDictionary.registerBiomeType(BiomeGenBase.jungleEdge, BiomeDictionary.Type.JUNGLE);
+		BiomeDictionary.registerBiomeType(BiomeGenBase.deepOcean, BiomeDictionary.Type.WATER);
+		BiomeDictionary.registerBiomeType(BiomeGenBase.stoneBeach, BiomeDictionary.Type.BEACH);
+		BiomeDictionary.registerBiomeType(BiomeGenBase.coldBeach, BiomeDictionary.Type.BEACH);
+		BiomeDictionary.registerBiomeType(BiomeGenBase.birchForest, BiomeDictionary.Type.FOREST);
+		BiomeDictionary.registerBiomeType(BiomeGenBase.birchForestHills, BiomeDictionary.Type.FOREST);
+		BiomeDictionary.registerBiomeType(BiomeGenBase.roofedForest, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.MUSHROOM);
+		BiomeDictionary.registerBiomeType(BiomeGenBase.coldTaiga, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.FROZEN);
+		BiomeDictionary.registerBiomeType(BiomeGenBase.coldTaigaHills, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.FROZEN);
+		BiomeDictionary.registerBiomeType(BiomeGenBase.extremeHillsPlus, BiomeDictionary.Type.MOUNTAIN);
+		BiomeDictionary.registerBiomeType(BiomeGenBase.savanna, BiomeDictionary.Type.PLAINS);
+		BiomeDictionary.registerBiomeType(BiomeGenBase.savannaPlateau, BiomeDictionary.Type.PLAINS);
+		BiomeDictionary.registerBiomeType(BiomeGenBase.mesa, BiomeDictionary.Type.DESERT);
+		BiomeDictionary.registerBiomeType(BiomeGenBase.mesaPlateau_F, BiomeDictionary.Type.DESERT);
+		BiomeDictionary.registerBiomeType(BiomeGenBase.mesaPlateau, BiomeDictionary.Type.DESERT);
+		BiomeDictionary.registerBiomeType(BiomeGenBase.jungleEdge, BiomeDictionary.Type.JUNGLE);
+		BiomeDictionary.registerBiomeType(BiomeGenBase.jungleEdge, BiomeDictionary.Type.JUNGLE);
 	}
 	
 	

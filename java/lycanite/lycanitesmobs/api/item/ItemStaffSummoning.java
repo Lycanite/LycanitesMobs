@@ -62,13 +62,13 @@ public class ItemStaffSummoning extends ItemScepter {
     // ========== Charge Time ==========
     @Override
     public int getChargeTime(ItemStack itemStack) {
-        return this.getRapidTime(itemStack);
+        return 1;
     }
     
     // ========== Rapid Time ==========
     @Override
     public int getRapidTime(ItemStack itemStack) {
-        return 0;
+        return 40;
     }
     
     // ========== Summon Cost ==========

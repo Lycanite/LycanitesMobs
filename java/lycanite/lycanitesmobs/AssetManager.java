@@ -62,7 +62,7 @@ public class AssetManager {
 	// ========== Obj Model ==========
 	public static void addObjModel(String name, String domain, String path) {
 		name = name.toLowerCase();
-		objModels.put(name, AdvancedModelLoader.loadModel(new ResourceLocation(domain, "/models/" + path + ".obj")));
+		objModels.put(name, AdvancedModelLoader.loadModel(new ResourceLocation(domain, "models/" + path + ".obj")));
 	}
 	
 	

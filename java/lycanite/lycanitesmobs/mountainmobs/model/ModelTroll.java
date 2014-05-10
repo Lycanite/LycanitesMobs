@@ -22,7 +22,7 @@ public class ModelTroll extends ModelCustomObj {
     
     public ModelTroll(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Troll", MountainMobs.domain, "entity/troll");
+    	model = (WavefrontObject)AssetManager.getObjModel("troll", MountainMobs.domain, "entity/troll");
     	
     	// Get Parts:
     	parts = model.groupObjects;

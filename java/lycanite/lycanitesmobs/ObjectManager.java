@@ -167,6 +167,7 @@ public class ObjectManager {
 	}
 	
 	public static void addProjectile(String name, Class entityClass, Item item, BehaviorProjectileDispense dispenseBehaviour) {
+		name = name.toLowerCase();
 		addProjectile(name, entityClass);
 		BlockDispenser.dispenseBehaviorRegistry.putObject(item, dispenseBehaviour);
 	}

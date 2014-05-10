@@ -7,7 +7,6 @@ import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowOwner;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIMoveVillage;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerAttack;
@@ -65,7 +64,6 @@ public class EntityTrent extends EntityCreatureTameable implements IMob {
         this.tasks.addTask(4, new EntityAIAttackMelee(this));
         this.tasks.addTask(5, this.aiSit);
         this.tasks.addTask(6, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
-        this.tasks.addTask(7, new EntityAIMoveVillage(this));
         this.tasks.addTask(7, new EntityAIWander(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
@@ -75,7 +73,7 @@ public class EntityTrent extends EntityCreatureTameable implements IMob {
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class).setSightCheck(false));
         if(ObjectManager.getMob("Cinder") != null)
-        	this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(ObjectManager.getMob("Cinder")));
+        	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(ObjectManager.getMob("Cinder")));
     }
     
     // ========== Stats ==========

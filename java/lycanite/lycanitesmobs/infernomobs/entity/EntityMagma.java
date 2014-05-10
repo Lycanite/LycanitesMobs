@@ -1,6 +1,5 @@
 package lycanite.lycanitesmobs.infernomobs.entity;
 
-import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.infernomobs.InfernoMobs;
@@ -95,15 +94,6 @@ public class EntityMagma extends EntityProjectileBase {
     		this.worldObj.spawnParticle("fire", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
     		this.worldObj.spawnParticle("smoke", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
     	}
-    }
-    
-    
-    // ==================================================
- 	//                      Sounds
- 	// ==================================================
-    @Override
-    public String getLaunchSound() {
-    	return AssetManager.getSound("Magma");
     }
     
     

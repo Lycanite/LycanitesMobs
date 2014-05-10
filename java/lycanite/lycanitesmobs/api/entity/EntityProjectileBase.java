@@ -15,7 +15,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 
 public class EntityProjectileBase extends EntityThrowable {
-	public String entityName = "Projectile";
+	public String entityName = "projectile";
 	public ILycaniteMod mod;
 	
 	// Properties:
@@ -254,6 +254,6 @@ public class EntityProjectileBase extends EntityThrowable {
      //                      Sounds
      // ==================================================
      public String getLaunchSound() {
-     	return null;
+     	return AssetManager.getSound(this.entityName);
      }
 }

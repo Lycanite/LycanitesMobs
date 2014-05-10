@@ -2075,4 +2075,11 @@ public abstract class EntityCreatureBase extends EntityLiving {
      	if(!this.hasAttackSound) return;
      	this.playSound(AssetManager.getSound(this.mobInfo.name + "_attack"), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
     }
+    
+    // ========== Play Sound ==========
+    public void playSound(String soundName, float par2, float par3) {
+    	if(soundName == null)
+    		return;
+    	super.playSound(soundName, par2, par3);
+    }
 }

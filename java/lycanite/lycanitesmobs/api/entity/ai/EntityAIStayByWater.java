@@ -39,14 +39,27 @@ public class EntityAIStayByWater extends EntityAIBase {
    	//                  Should Execute
    	// ==================================================
     public boolean shouldExecute() {
+    	// Set home when in water or lava (for lava creatures).
     	if(this.host.isInWater()) {
     		this.host.setHome((int)this.host.posX, (int)this.host.posY, (int)this.host.posZ, (float)this.strayDistance);
     		return false;
     	}
+    	
+    	// If we're at home but it is no longer water/lava, clear the home. It is up to the wander AI and path weights for find a new home.
+    	if(!this.host.isInWater() && this.host.getDistanceFromHome() <= 0.5D) {
+    		this.host.detachHome();
+    		return false;
+    	}
+    	
+    	// If it's raining and the host isn't a lava creature, then there's no need to return home, this shouldn't be set as a home though.
     	if(!this.host.isLavaCreature && this.host.waterContact())
     		return false;
+    	
+    	// If the host has an attack target and plenty of air, then it is allowed to stray from home.
         if(this.host.hasAttackTarget() && this.host.getAir() > -100)
         	return false;
+        
+        // At this point the host should return home.
         return true;
     }
     

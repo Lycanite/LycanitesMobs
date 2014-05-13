@@ -33,6 +33,9 @@ public class MobInfo {
 	/** Whether mob mounting is allowed. **/
 	public static boolean mountingEnabled = true;
 	
+	/** If true, all mobs that attack players will also attack villagers. **/
+	public static boolean mobsAttackVillagers = false;
+	
 	/** If true, predators such as Ventoraptors will attack farm animals such as Sheep or Makas. **/
 	public static boolean predatorsAttackAnimals = true;
 	
@@ -101,6 +104,7 @@ public class MobInfo {
 		tamingEnabled = config.getFeatureBool("MobTaming");
 		mountingEnabled = config.getFeatureBool("MobMounting");
 		predatorsAttackAnimals = config.getFeatureBool("PredatorsAttackAnimals");
+		mobsAttackVillagers = config.getFeatureBool("MobsAttackVillagers");
 		
 		difficultyMutlipliers = new HashMap<String, Double>(config.difficultyMultipliers);
 	}

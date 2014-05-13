@@ -64,7 +64,8 @@ public class EntityLobber extends EntityCreatureBase implements IMob {
         this.setupMob();
         
         // AI Tasks:
-        this.getNavigator().setAvoidsWater(true);
+        this.getNavigator().setCanSwim(true);
+        this.getNavigator().setAvoidsWater(false);
         this.tasks.addTask(0, new EntityAISwimming(this).setSink(true));
         this.tasks.addTask(1, new EntityAIStayByWater(this).setSpeed(1.25D));
         this.tasks.addTask(6, wanderAI);

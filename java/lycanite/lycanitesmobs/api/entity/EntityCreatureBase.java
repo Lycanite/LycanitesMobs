@@ -32,6 +32,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.IMob;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -693,7 +694,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
      * seconds - The base duration in seconds that this effect should last for.
     **/
     public int getEffectDuration(int seconds) {
-		return Math.round((float)seconds * (float)(this.getEffectMultiplier()));
+		return Math.round((float)seconds * (float)(this.getEffectMultiplier())) * 20;
     }
     
     // ========= Haste Multiplier ==========
@@ -1111,7 +1112,11 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Can Attack ==========
     /** Returns whether or not this mob is allowed to attack the given target class. **/
 	@Override
-	public boolean canAttackClass(Class targetClass) { return true; }
+	public boolean canAttackClass(Class targetClass) {
+		if(!MobInfo.mobsAttackVillagers && targetClass == EntityVillager.class)
+			return false;
+		return true;
+	}
     /** Returns whether or not this mob is allowed to attack the given target entity. **/
 	public boolean canAttackEntity(EntityLivingBase targetEntity) { return true; }
 	

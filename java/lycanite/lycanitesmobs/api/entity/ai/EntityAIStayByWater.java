@@ -1,6 +1,8 @@
 package lycanite.lycanitesmobs.api.entity.ai;
 
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.util.ChunkCoordinates;
 
@@ -11,6 +13,13 @@ public class EntityAIStayByWater extends EntityAIBase {
     // Properties:
     private double speed = 1.0D;
     private double strayDistance = 64.0D;
+    
+    private double waterX;
+    private double waterY;
+    private double waterZ;
+    private boolean hasWaterPos = false;
+    
+    private int updateRate = 0;
     
     // ==================================================
    	//                     Constructor
@@ -41,26 +50,37 @@ public class EntityAIStayByWater extends EntityAIBase {
     public boolean shouldExecute() {
     	// Set home when in water or lava (for lava creatures).
     	if(this.host.isInWater()) {
-    		this.host.setHome((int)this.host.posX, (int)this.host.posY, (int)this.host.posZ, (float)this.strayDistance);
-    		return false;
+    		Block waterBlock = this.host.worldObj.getBlock((int)this.host.posX, (int)this.host.posY, (int)this.host.posZ - 1);
+    		if((!this.host.isLavaCreature && waterBlock.getMaterial() == Material.water) ||
+    			(this.host.isLavaCreature && waterBlock.getMaterial() == Material.lava)) {
+	    		this.waterX = (int)this.host.posX;
+	    		this.waterY = (int)this.host.posY;
+	    		this.waterZ = (int)this.host.posZ - 1;
+	    		this.hasWaterPos = true;
+	    		return false;
+    		}
     	}
     	
-    	// If we're at home but it is no longer water/lava, clear the home. It is up to the wander AI and path weights for find a new home.
-    	if(!this.host.isInWater() && this.host.getDistanceFromHome() <= 0.5D) {
-    		this.host.detachHome();
-    		return false;
+    	// If we're at the water position but it is no longer water/lava, clear the water position. It is up to the wander AI and path weights for find a new water position.
+    	if(!this.host.isInWater()) {
+    		Block waterBlock = this.host.worldObj.getBlock((int)this.waterX, (int)this.waterY, (int)this.waterZ);
+    		if((!this.host.isLavaCreature && waterBlock.getMaterial() != Material.water) ||
+        			(this.host.isLavaCreature && waterBlock.getMaterial() != Material.lava)) {
+    			this.hasWaterPos = false;
+    			return false;
+    		}
     	}
     	
-    	// If it's raining and the host isn't a lava creature, then there's no need to return home, this shouldn't be set as a home though.
-    	if(!this.host.isLavaCreature && this.host.waterContact())
+    	// If it's raining and the host isn't a lava creature, then there's no need to return to the water position, this shouldn't be set as a new water position though.
+    	if(!this.host.isLavaCreature && this.host.waterContact() && this.getDistanceFromWater() <= this.strayDistance)
     		return false;
     	
-    	// If the host has an attack target and plenty of air, then it is allowed to stray from home.
-        if(this.host.hasAttackTarget() && this.host.getAir() > -100)
+    	// If the host has an attack target and plenty of air, then it is allowed to stray from the water position within the limit.
+        if(this.host.hasAttackTarget() && this.host.getAir() > -100 && this.getDistanceFromWater() <= this.strayDistance)
         	return false;
-        
-        // At this point the host should return home.
-        return true;
+    	
+        // At this point the host should return to the water position, if there is one.
+        return this.hasWaterPos;
     }
     
     
@@ -68,10 +88,42 @@ public class EntityAIStayByWater extends EntityAIBase {
    	//                     Start
    	// ==================================================
     public void startExecuting() {
-    	ChunkCoordinates homePos = this.host.getHomePosition();
-    	if(!host.canFly())
-    		this.host.getNavigator().tryMoveToXYZ(homePos.posX, homePos.posY, homePos.posZ, this.speed);
-    	else
-    		host.flightNavigator.setTargetPosition(homePos, this.speed);
+        this.updateRate = 0;
+    }
+    
+    
+    // ==================================================
+  	//                      Update
+  	// ==================================================
+    public void updateTask() {
+        if(this.updateRate-- <= 0) {
+            this.updateRate = 20;
+            double overshotX = (this.host.posX > this.waterX ? -1D : 1D);
+            double overshotZ = (this.host.posZ > this.waterZ ? -1D : 1D);
+	    	if(!host.canFly()) {
+	    		this.host.getNavigator().tryMoveToXYZ(this.waterX + overshotX, this.waterY, this.waterZ + overshotZ, this.speed);
+	    	}
+	    	else
+	    		host.flightNavigator.setTargetPosition(new ChunkCoordinates((int)this.waterX, (int)this.waterY, (int)this.waterZ), this.speed);
+    	}
+    }
+	
+    
+	// ==================================================
+ 	//                       Reset
+ 	// ==================================================
+    public void resetTask() {
+        this.host.clearMovement();
+    }
+
+	
+	// ==================================================
+ 	//              Get Distance From Water
+ 	// ==================================================
+    public float getDistanceFromWater() {
+    	float f = (float)(this.waterX - this.host.posX);
+        float f1 = (float)(this.waterY - this.host.posY);
+        float f2 = (float)(this.waterZ - this.host.posZ);
+        return f * f + f1 * f1 + f2 * f2;
     }
 }

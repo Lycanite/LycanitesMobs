@@ -66,6 +66,7 @@ public class EntityLacedon extends EntityCreatureTameable implements IMob {
         
         // AI Tasks:
         this.getNavigator().setCanSwim(true);
+        this.getNavigator().setAvoidsWater(false);
         this.tasks.addTask(0, new EntityAISwimming(this).setSink(true));
         this.tasks.addTask(1, new EntityAIStayByWater(this).setSpeed(1.25D));
         this.tasks.addTask(2, this.aiSit);

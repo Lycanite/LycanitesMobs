@@ -6,6 +6,7 @@ import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowOwner;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIStayByWater;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerAttack;
@@ -30,7 +31,7 @@ import net.minecraft.world.World;
 public class EntityDweller extends EntityCreatureTameable implements IMob {
 	
 	EntityAIWander wanderAI = new EntityAIWander(this);
-	int attackTaskStartID = 2;
+	int attackTaskStartID = 3;
 	boolean attacksActive = false;
 	EntityAIBase[] attackTasks = new EntityAIBase[] {
 			(EntityAIBase)(new EntityAIAttackMelee(this).setLongMemory(false))
@@ -63,7 +64,8 @@ public class EntityDweller extends EntityCreatureTameable implements IMob {
         // AI Tasks:
         this.getNavigator().setCanSwim(true);
         this.tasks.addTask(0, new EntityAISwimming(this).setSink(true));
-        this.tasks.addTask(3, this.aiSit);
+        this.tasks.addTask(1, new EntityAIStayByWater(this).setSpeed(1.25D));
+        this.tasks.addTask(2, this.aiSit);
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
         this.tasks.addTask(6, wanderAI);
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
@@ -103,7 +105,7 @@ public class EntityDweller extends EntityCreatureTameable implements IMob {
     public void onLivingUpdate() {
         super.onLivingUpdate();
         
-        // Don't Attack When Starting to Suffocate:
+        // Don't Attack When Starting to Suffocate: TODO Replace with isAggressive() or canAttackClass() checks.
         if(!this.worldObj.isRemote) {
 	        if(this.getAir() > -100)
 	        	setAttackTasks(true);
@@ -137,11 +139,11 @@ public class EntityDweller extends EntityCreatureTameable implements IMob {
 		int waterWeight = 10;
 		
         if(this.worldObj.getBlock(par1, par2, par3) == Blocks.water)
-        	return super.getBlockPathWeight(par1, par2, par3) * (waterWeight + 1);
+        	return (super.getBlockPathWeight(par1, par2, par3) + 1) * (waterWeight + 1);
 		if(this.worldObj.getBlock(par1, par2, par3) == Blocks.flowing_water)
-			return super.getBlockPathWeight(par1, par2, par3) * waterWeight;
+			return (super.getBlockPathWeight(par1, par2, par3) + 1) * waterWeight;
         if(this.worldObj.isRaining() && this.worldObj.canBlockSeeTheSky(par1, par2, par3))
-        	return super.getBlockPathWeight(par1, par2, par3) * (waterWeight + 1);
+        	return (super.getBlockPathWeight(par1, par2, par3) + 1) * (waterWeight + 1);
         
         if(this.getAttackTarget() != null)
         	return super.getBlockPathWeight(par1, par2, par3);

@@ -5,9 +5,9 @@ import java.util.HashMap;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackRanged;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIStayByWater;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
@@ -35,10 +35,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class EntityLobber extends EntityCreatureBase implements IMob {
 
 	EntityAIWander wanderAI = new EntityAIWander(this);
-	int attackTaskStartID = 2;
+	int attackTaskStartID = 3;
 	boolean attacksActive = false;
 	EntityAIBase[] attackTasks = new EntityAIBase[] {
-			(EntityAIBase)(new EntityAIAttackMelee(this).setLongMemory(false))
+			(EntityAIBase)(new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(100).setRange(16.0F).setMinChaseDistance(8.0F).setChaseTime(-1))
 	};
 	
     // ==================================================
@@ -66,7 +66,7 @@ public class EntityLobber extends EntityCreatureBase implements IMob {
         // AI Tasks:
         this.getNavigator().setAvoidsWater(true);
         this.tasks.addTask(0, new EntityAISwimming(this).setSink(true));
-        this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(100).setRange(16.0F).setMinChaseDistance(8.0F).setChaseTime(-1));
+        this.tasks.addTask(1, new EntityAIStayByWater(this).setSpeed(1.25D));
         this.tasks.addTask(6, wanderAI);
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
@@ -105,7 +105,7 @@ public class EntityLobber extends EntityCreatureBase implements IMob {
     public void onLivingUpdate() {
         super.onLivingUpdate();
         
-        // Don't Attack When Starting to Suffocate:
+        // Don't Attack When Starting to Suffocate: TODO Replace with isAggressive() or canAttackClass() checks.
         if(!this.worldObj.isRemote) {
 	        if(this.getAir() > -100)
 	        	setAttackTasks(true);
@@ -159,9 +159,9 @@ public class EntityLobber extends EntityCreatureBase implements IMob {
 		int waterWeight = 10;
 		
         if(this.worldObj.getBlock(par1, par2, par3) == Blocks.lava)
-        	return super.getBlockPathWeight(par1, par2, par3) * (waterWeight + 1);
+        	return (super.getBlockPathWeight(par1, par2, par3) + 1) * (waterWeight + 1);
 		if(this.worldObj.getBlock(par1, par2, par3) == Blocks.flowing_lava)
-			return super.getBlockPathWeight(par1, par2, par3) * waterWeight;
+			return (super.getBlockPathWeight(par1, par2, par3) + 1) * waterWeight;
         
         if(this.getAttackTarget() != null)
         	return super.getBlockPathWeight(par1, par2, par3);

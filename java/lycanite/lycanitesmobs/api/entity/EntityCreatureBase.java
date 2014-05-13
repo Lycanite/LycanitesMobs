@@ -747,7 +747,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     }
     
     // ========== Living ==========
-    /** he main update method, behaviour and custom update logic should go here. **/
+    /** The main update method, behaviour and custom update logic should go here. **/
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();

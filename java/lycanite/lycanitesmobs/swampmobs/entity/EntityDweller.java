@@ -17,7 +17,6 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.swampmobs.SwampMobs;
 import net.minecraft.entity.EnumCreatureAttribute;
-import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,11 +30,6 @@ import net.minecraft.world.World;
 public class EntityDweller extends EntityCreatureTameable implements IMob {
 	
 	EntityAIWander wanderAI = new EntityAIWander(this);
-	int attackTaskStartID = 3;
-	boolean attacksActive = false;
-	EntityAIBase[] attackTasks = new EntityAIBase[] {
-			(EntityAIBase)(new EntityAIAttackMelee(this).setLongMemory(false))
-	};
     
     // ==================================================
  	//                    Constructor
@@ -67,6 +61,7 @@ public class EntityDweller extends EntityCreatureTameable implements IMob {
         this.tasks.addTask(0, new EntityAISwimming(this).setSink(true));
         this.tasks.addTask(1, new EntityAIStayByWater(this).setSpeed(1.25D));
         this.tasks.addTask(2, this.aiSit);
+        this.tasks.addTask(3, new EntityAIAttackMelee(this).setLongMemory(false));
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
         this.tasks.addTask(6, wanderAI);
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
@@ -105,14 +100,6 @@ public class EntityDweller extends EntityCreatureTameable implements IMob {
 	@Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        
-        // Don't Attack When Starting to Suffocate: TODO Replace with isAggressive() or canAttackClass() checks.
-        if(!this.worldObj.isRemote) {
-	        if(this.getAir() > -100)
-	        	setAttackTasks(true);
-	        else
-	        	setAttackTasks(false);
-        }
         
         // Wander Pause Rates:
 		if(this.isInWater())
@@ -164,19 +151,12 @@ public class EntityDweller extends EntityCreatureTameable implements IMob {
     // ==================================================
     //                      Attacks
     // ==================================================
-	// ========== Set Attack Tasks ==========
-    public void setAttackTasks(boolean active) {
-    	if(active != attacksActive) {
-    		int nextTaskID = attackTaskStartID;
-			for(EntityAIBase attackTask : attackTasks) {
-				if(active)
-					this.tasks.addTask(nextTaskID, attackTask);
-				else
-					this.tasks.removeTask(attackTask);
-				nextTaskID++;
-			}
-    		attacksActive = active;
-    	}
+    // ========== Is Aggressive ==========
+    @Override
+    public boolean isAggressive() {
+    	if(this.getAir() <= -100)
+    		return false;
+    	return super.isAggressive();
     }
     
     

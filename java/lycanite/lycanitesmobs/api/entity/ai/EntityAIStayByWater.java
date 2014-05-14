@@ -18,7 +18,8 @@ public class EntityAIStayByWater extends EntityAIBase {
     private double waterY;
     private double waterZ;
     private boolean hasWaterPos = false;
-    
+
+    private int waterSearchRate = 0;
     private int updateRate = 0;
     
     // ==================================================
@@ -61,13 +62,49 @@ public class EntityAIStayByWater extends EntityAIBase {
     		}
     	}
     	
-    	// If we're at the water position but it is no longer water/lava, clear the water position. It is up to the wander AI and path weights for find a new water position.
+    	// If we're not in water:
     	if(!this.host.isInWater()) {
-    		Block waterBlock = this.host.worldObj.getBlock((int)this.waterX, (int)this.waterY, (int)this.waterZ);
-    		if((!this.host.isLavaCreature && waterBlock.getMaterial() != Material.water) ||
-        			(this.host.isLavaCreature && waterBlock.getMaterial() != Material.lava)) {
-    			this.hasWaterPos = false;
-    			return false;
+    		// If we have a water position but it is no longer water/lava, clear the water position. It is up to the water searcher, wander AI and path weights for find a new water position.
+    		if(this.hasWaterPos) {
+    			Block waterBlock = this.host.worldObj.getBlock((int)this.waterX, (int)this.waterY, (int)this.waterZ);
+	    		if((!this.host.isLavaCreature && waterBlock.getMaterial() != Material.water) ||
+	        			(this.host.isLavaCreature && waterBlock.getMaterial() != Material.lava)) {
+	    			this.hasWaterPos = false;
+	    		}
+    		}
+    		
+    		// If we don't have a water position, search for one every 2 seconds, if we do, check if there is a close one every 5 seconds:
+    		if(this.waterSearchRate-- <= 0) {
+	    		if(!this.hasWaterPos)
+	    			this.waterSearchRate = 40;
+	    		else
+	    			this.waterSearchRate = 100;
+	    		
+	    		// Search within a 64x8x64 block area and find the closest water/lava block:
+	    		double closestDistance = 99999;
+	    		if(this.hasWaterPos)
+	    			closestDistance = this.getDistanceFromWater();
+	    		int searchRangeX = 64;
+	    		int searchRangeY = 8;
+	    		int searchRangeZ = 64;
+	    		for(int searchX = (int)this.host.posX - searchRangeX; searchX <= (int)this.host.posX + searchRangeX; ++searchX) {
+	    			for(int searchY = (int)this.host.posY - searchRangeY; searchY <= (int)this.host.posY + searchRangeY; ++searchY) {
+	    				for(int searchZ = (int)this.host.posZ - searchRangeZ; searchZ <= (int)this.host.posZ + searchRangeZ; ++searchZ) {
+	    					double searchDistance = this.host.getDistance(searchX, searchY, searchZ);
+    		    			if(!this.hasWaterPos || searchDistance < closestDistance) {
+		    					Block searchBlock = this.host.worldObj.getBlock(searchX, searchY, searchZ);
+		    	    			if((!this.host.isLavaCreature && searchBlock.getMaterial() == Material.water) ||
+		    		        			(this.host.isLavaCreature && searchBlock.getMaterial() == Material.lava)) {
+	    		    				closestDistance = searchDistance;
+	    		    				this.waterX = searchX;
+	    		    	    		this.waterY = searchY;
+	    		    	    		this.waterZ = searchZ;
+	    		    	    		this.hasWaterPos = true;
+		    		    		}
+		    		    	}
+	    	    		}
+		    		}
+	    		}
     		}
     	}
     	
@@ -120,10 +157,7 @@ public class EntityAIStayByWater extends EntityAIBase {
 	// ==================================================
  	//              Get Distance From Water
  	// ==================================================
-    public float getDistanceFromWater() {
-    	float f = (float)(this.waterX - this.host.posX);
-        float f1 = (float)(this.waterY - this.host.posY);
-        float f2 = (float)(this.waterZ - this.host.posZ);
-        return f * f + f1 * f1 + f2 * f2;
+    public double getDistanceFromWater() {
+    	return this.host.getDistance(this.waterX, this.waterY, this.waterZ);
     }
 }

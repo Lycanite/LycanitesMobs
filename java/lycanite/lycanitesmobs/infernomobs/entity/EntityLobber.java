@@ -18,7 +18,6 @@ import lycanite.lycanitesmobs.infernomobs.InfernoMobs;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
-import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,11 +34,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class EntityLobber extends EntityCreatureBase implements IMob {
 
 	EntityAIWander wanderAI = new EntityAIWander(this);
-	int attackTaskStartID = 3;
-	boolean attacksActive = false;
-	EntityAIBase[] attackTasks = new EntityAIBase[] {
-			(EntityAIBase)(new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(100).setRange(16.0F).setMinChaseDistance(8.0F).setChaseTime(-1))
-	};
 	
     // ==================================================
  	//                    Constructor
@@ -68,6 +62,7 @@ public class EntityLobber extends EntityCreatureBase implements IMob {
         this.getNavigator().setAvoidsWater(false);
         this.tasks.addTask(0, new EntityAISwimming(this).setSink(true));
         this.tasks.addTask(1, new EntityAIStayByWater(this).setSpeed(1.25D));
+        this.tasks.addTask(3, new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(100).setRange(16.0F).setMinChaseDistance(8.0F).setChaseTime(-1));
         this.tasks.addTask(6, wanderAI);
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
@@ -106,15 +101,7 @@ public class EntityLobber extends EntityCreatureBase implements IMob {
     public void onLivingUpdate() {
         super.onLivingUpdate();
         
-        // Don't Attack When Starting to Suffocate: TODO Replace with isAggressive() or canAttackClass() checks.
-        if(!this.worldObj.isRemote) {
-	        if(this.getAir() > -100)
-	        	setAttackTasks(true);
-	        else
-	        	setAttackTasks(false);
-        }
-        
-        // Lava Pause Rates:
+        // Wander Pause Rates:
 		if(this.lavaContact())
 			this.wanderAI.setPauseRate(120);
 		else
@@ -217,19 +204,12 @@ public class EntityLobber extends EntityCreatureBase implements IMob {
         super.rangedAttack(target, range);
     }
     
-	// ========== Set Attack Tasks ==========
-    public void setAttackTasks(boolean active) {
-    	if(active != attacksActive) {
-    		int nextTaskID = attackTaskStartID;
-			for(EntityAIBase attackTask : attackTasks) {
-				if(active)
-					this.tasks.addTask(nextTaskID, attackTask);
-				else
-					this.tasks.removeTask(attackTask);
-				nextTaskID++;
-			}
-    		attacksActive = active;
-    	}
+    // ========== Is Aggressive ==========
+    @Override
+    public boolean isAggressive() {
+    	if(this.getAir() <= -100)
+    		return false;
+    	return super.isAggressive();
     }
     
     

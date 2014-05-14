@@ -141,7 +141,7 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
         	if(this.hasParent()) {
         		this.faceEntity(this.getParentTarget(), 360, 360);
         		
-        		double segmentDistance = 0.75D;
+        		double segmentDistance = 0.5D;
         		double[] coords;
         		if(this.getParentTarget() instanceof EntityCreatureBase)
         			coords = ((EntityCreatureBase)this.getParentTarget()).getFacingPosition(-0.25D);
@@ -186,6 +186,7 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
 			EntityConcapedeHead concapedeHead = new EntityConcapedeHead(this.worldObj);
 			concapedeHead.copyLocationAndAnglesFrom(this);
 			concapedeHead.firstSpawn = false;
+			concapedeHead.setGrowingAge(-this.growthTime / 4);
 			this.worldObj.spawnEntityInWorld(concapedeHead);
 			if(this.hasMaster() && this.getMasterTarget() instanceof EntityConcapedeSegment)
 				((EntityConcapedeSegment)this.getMasterTarget()).setParentTarget(concapedeHead);

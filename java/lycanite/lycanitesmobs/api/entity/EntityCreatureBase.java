@@ -1873,7 +1873,23 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public boolean lavaContact() {
     	return this.handleLavaMovement();
     }
-
+    
+    /** Returns true if the target location has a block that this mob can breathe in (air, water, lava, depending on the creature). **/
+    public boolean canBreatheAtLocation(int x, int y, int z) {
+    	Block block = this.worldObj.getBlock(x, y, z);
+    	if(block == null)
+    		return true;
+    	if(this.canBreatheAboveWater() && block.getMaterial() == Material.air)
+    		return true;
+    	if(this.canBreatheUnderwater()) {
+	    	if(!this.isLavaCreature && block.getMaterial() == Material.water)
+	    		return true;
+	    	if(this.isLavaCreature && block.getMaterial() == Material.lava)
+	    		return true;
+    	}
+    	return false;
+    }
+    
     /** Returns how many extra blocks this mob can fall for, the default is around 3.0F I think, if this is set to or above 100 then this mob wont receive falling damage at all. **/
     public float getFallResistance() {
     	return 0;

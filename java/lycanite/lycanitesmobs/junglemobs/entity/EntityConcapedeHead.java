@@ -142,16 +142,20 @@ public class EntityConcapedeHead extends EntityCreatureAgeable implements IAnima
 			age = -this.growthTime / 4;
 			EntityCreatureBase parentSegment = this;
 			boolean lastSegment = false;
+			int size = 0;
 			while(!lastSegment) {
+				size++;
 				if(parentSegment.hasMaster() && parentSegment.getMasterTarget() instanceof EntityCreatureBase)
 					parentSegment = (EntityCreatureBase)(parentSegment.getMasterTarget());
 				else
 					lastSegment = true;
 			}
-			EntityConcapedeSegment segmentEntity = new EntityConcapedeSegment(this.worldObj);
-    		segmentEntity.setLocationAndAngles(parentSegment.posX, parentSegment.posY, parentSegment.posZ, 0.0F, 0.0F);
-    		parentSegment.worldObj.spawnEntityInWorld(segmentEntity);
-			segmentEntity.setParentTarget(parentSegment);
+			if(size <= this.mod.getConfig().getFeatureInt("ConcapedeSizeLimit")) {
+				EntityConcapedeSegment segmentEntity = new EntityConcapedeSegment(this.worldObj);
+	    		segmentEntity.setLocationAndAngles(parentSegment.posX, parentSegment.posY, parentSegment.posZ, 0.0F, 0.0F);
+	    		parentSegment.worldObj.spawnEntityInWorld(segmentEntity);
+				segmentEntity.setParentTarget(parentSegment);
+			}
 		}
         super.setGrowingAge(age);
     }

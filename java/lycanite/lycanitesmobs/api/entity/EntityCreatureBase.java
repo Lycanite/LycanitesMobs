@@ -1118,7 +1118,11 @@ public abstract class EntityCreatureBase extends EntityLiving {
 		return true;
 	}
     /** Returns whether or not this mob is allowed to attack the given target entity. **/
-	public boolean canAttackEntity(EntityLivingBase targetEntity) { return true; }
+	public boolean canAttackEntity(EntityLivingBase targetEntity) {
+		if(!MobInfo.mobsAttackVillagers && targetEntity instanceof EntityVillager)
+			return false;
+		return true;
+	}
 	
     // ========== Targets ==========
     /** Gets the attack target of this entity's Master Target Entity. **/

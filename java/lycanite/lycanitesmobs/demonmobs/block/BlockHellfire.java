@@ -10,6 +10,7 @@ import static net.minecraftforge.common.util.ForgeDirection.WEST;
 import java.util.Random;
 
 import lycanite.lycanitesmobs.AssetManager;
+import lycanite.lycanitesmobs.ClientProxy;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.block.BlockBase;
 import lycanite.lycanitesmobs.demonmobs.DemonMobs;
@@ -323,6 +324,6 @@ public class BlockHellfire extends BlockBase {
     // ========== Get Render Type ==========
     @Override
     public int getRenderType() {
-        return BlockBase.RENDER_TYPE.CROSS.id;
+        return ClientProxy.RENDER_ID;
     }
 }

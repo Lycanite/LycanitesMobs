@@ -6,6 +6,7 @@ import lycanite.lycanitesmobs.api.entity.EntityParticle;
 import lycanite.lycanitesmobs.api.entity.EntityPortal;
 import lycanite.lycanitesmobs.api.gui.GuiOverlay;
 import lycanite.lycanitesmobs.api.info.MobInfo;
+import lycanite.lycanitesmobs.api.render.RenderBlock;
 import lycanite.lycanitesmobs.api.render.RenderCreature;
 import lycanite.lycanitesmobs.api.render.RenderParticle;
 import lycanite.lycanitesmobs.api.render.RenderProjectile;
@@ -48,6 +49,9 @@ public class ClientProxy extends CommonProxy {
 	// ========== Register Renders ==========
 	@Override
     public void registerRenders() {
+		// Blocks:
+		RenderingRegistry.registerBlockHandler(new RenderBlock());
+		
 		// Creatures:
 		for(Entry<String, MobInfo> mobEntry : ObjectManager.mobs.entrySet())
 			RenderingRegistry.registerEntityRenderingHandler(mobEntry.getValue().entityClass, new RenderCreature(mobEntry.getKey()));

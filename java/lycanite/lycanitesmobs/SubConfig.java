@@ -16,6 +16,7 @@ public class SubConfig extends Config {
 		this.loadSetting(this.featureBools, "Feature Control", "MobMounting", "Allow Mob Mounting", true);
 		this.loadSetting(this.featureBools, "Feature Control", "MobsAttackVillagers", "Mobs Attack Villagers", false);
 		this.loadSetting(this.featureBools, "Feature Control", "PredatorsAttackAnimals", "Predators Attack Animals", true);
+		this.loadSetting(this.featureBools, "Feature Control", "CustomEffects", "Enable Custom Potion Effects", true);
 		
 		// ========== Global Spawn Control ==========
 		this.loadSetting(this.featureInts, "Spawn Control", "SpawnLimitRange", "Spawn Limit Search Range", 32);
@@ -23,10 +24,12 @@ public class SubConfig extends Config {
 		this.loadSetting(this.featureBools, "Spawn Control", "DisableDungeonSpawners", "Disable Dungeon Spawners", false);
 		this.loadSetting(this.featureBools, "Spawn Control", "EnforceBlockCost", "Enforce Block Cost", true);
 		this.loadSetting(this.featureDoubles, "Spawn Control", "SpawnWeightScale", "Spawn Weight Scale", 1.0D);
+		this.loadSetting(this.featureDoubles, "Spawn Control", "DungeonSpawnerWeightScale", "Dungeon Spawner Weight Scale", 1.0D);
 		
 		this.loadCustomSpawnerType("Fire", 400, 0.5D, 32, 32, 32);
 		this.loadCustomSpawnerType("Lava", 400, 0.25D, 64, 64, 32);
 		this.loadCustomSpawnerType("Portal", 1200, 0.125D, 32, 32, 1);
+		this.config.addCustomCategoryComment("Spawn Control", "Global spawn controls, applied to every group.");
 		
 		// ========== Stat Multipliers ==========
 		this.loadDifficultyMultiplier(this.difficultyMultipliers, "Stat Multipliers", "Easy", "0.5");
@@ -47,14 +50,14 @@ public class SubConfig extends Config {
 		}
 		
 		// ========== Effect IDs ==========
-		int effectStartID = 0;
-		this.loadSetting(this.effectIDs, "Effect ID Offsets", "Paralysis", "Paralysis Effect ID Offset", effectStartID++);
-		this.loadSetting(this.effectIDs, "Effect IDs", "Leech", "Leech Effect ID Offset", effectStartID++);
-		this.loadSetting(this.effectIDs, "Effect IDs", "Penetration", "Penetration Effect ID Offset", effectStartID++);
-		this.loadSetting(this.effectIDs, "Effect IDs", "Recklessness", "Recklessness Effect ID Offset", effectStartID++);
-		this.loadSetting(this.effectIDs, "Effect IDs", "Rage", "Rage Effect ID Offset", effectStartID++);
-		this.loadSetting(this.effectIDs, "Effect IDs", "Weight", "Weight Effect ID Offset", effectStartID++);
-		this.loadSetting(this.effectIDs, "Effect IDs", "Swiftswimming", "Swiftswimming Effect ID Offset", effectStartID++);
+		this.loadSetting(this.effectIDs, "Effect IDs", "Paralysis", "Paralysis Effect ID", 0);
+		this.loadSetting(this.effectIDs, "Effect IDs", "Leech", "Leech Effect ID", 0);
+		this.loadSetting(this.effectIDs, "Effect IDs", "Penetration", "Penetration Effect ID", 0);
+		this.loadSetting(this.effectIDs, "Effect IDs", "Recklessness", "Recklessness Effect ID", 0);
+		this.loadSetting(this.effectIDs, "Effect IDs", "Rage", "Rage Effect ID", 0);
+		this.loadSetting(this.effectIDs, "Effect IDs", "Weight", "Weight Effect ID", 0);
+		this.loadSetting(this.effectIDs, "Effect IDs", "Swiftswimming", "Swiftswimming Effect ID", 0);
+		this.config.addCustomCategoryComment("Effect IDs", "If not set or 0, effect IDs will be automatically applied.");
 	}
 	
 	// ==================================================

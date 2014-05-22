@@ -54,6 +54,10 @@ public class PotionBase extends Potion {
 	public PotionBase(boolean badEffect, int color) {
 		super(nextPotionID(), badEffect, color);
 	}
+
+	public PotionBase(int forcedID, boolean badEffect, int color) {
+		super(forcedID, badEffect, color);
+	}
 	
 	
 	// ==================================================

@@ -41,7 +41,7 @@ public class BlockBase extends Block {
 	
 	// Rendering:
 	public static enum RENDER_TYPE {
-		NONE(-1), NORMAL(0), CROSS(1), TORCH(2), FIRE(3), FLUID(4); // More found on RenderBlock.
+		NONE(-1), NORMAL(0), CROSS(1), TORCH(2), FIRE(3), FLUID(4); // More found on RenderBlock, or use Client Proxies for custom renderers.
 		public final int id;
 	    private RENDER_TYPE(int value) { this.id = value; }
 	    public int getValue() { return id; }
@@ -181,6 +181,12 @@ public class BlockBase extends Block {
     @Override
     public IIcon getIcon(int side, int metadata) {
         return AssetManager.getIcon(blockName);
+    }
+    
+    // ========== Get Sub Icon ==========
+    @SideOnly(Side.CLIENT)
+    public IIcon getSubIcon(int subID) {
+        return AssetManager.getIconGroup(blockName)[subID];
     }
 
     // ========== Get Render Type ==========

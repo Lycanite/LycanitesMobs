@@ -58,7 +58,11 @@ public class ObjectManager {
 	// ========== Potion Effect ==========
 	public static PotionBase addPotionEffect(String name, Config config, boolean isBad, int color, int iconX, int iconY) {
 		name = name.toLowerCase();
-		PotionBase potion = new PotionBase(isBad, color);
+		PotionBase potion = null;
+		if(config.effectIDs.get(name.toLowerCase()) != null && config.effectIDs.get(name.toLowerCase()) > 0)
+			potion = new PotionBase(config.effectIDs.get(name.toLowerCase()), isBad, color);
+		else
+			potion = new PotionBase(isBad, color);
 		potion.setPotionName(name);
 		potion.setIconIndex(iconX, iconY);
 		potionEffects.put(name, potion);

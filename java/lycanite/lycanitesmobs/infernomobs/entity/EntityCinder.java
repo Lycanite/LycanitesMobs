@@ -44,7 +44,7 @@ public class EntityCinder extends EntityCreatureTameable implements IMob {
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 0;
         this.experience = 5;
-        this.spawnsInBlock = true;
+        this.spawnsInBlock = false; //TODO Make sure it still spawns in non-solid blocks (fire).
         this.hasAttackSound = false;
         
         this.eggName = "InfernoEgg";

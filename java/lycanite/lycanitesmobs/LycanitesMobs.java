@@ -147,15 +147,17 @@ public class LycanitesMobs implements ILycaniteMod {
 		ObjectLists.createLists();
 		
 		// ========== Add Custom Potion Effects ==========
-		PotionBase.reserveEffectIDSpace();
-		ObjectManager.addPotionEffect("Paralysis", config, true, 0xFFFF00, 1, 0);
-		ObjectManager.addPotionEffect("Leech", config, true, 0x00FF99, 7, 0);
-		ObjectManager.addPotionEffect("Penetration", config, true, 0x222222, 6, 1);
-		ObjectManager.addPotionEffect("Recklessness", config, true, 0xFF0044, 4, 0);
-		ObjectManager.addPotionEffect("Rage", config, true, 0xFF4400, 4, 0);
-		ObjectManager.addPotionEffect("Weight", config, true, 0x000022, 1, 0);
-		ObjectManager.addPotionEffect("Swiftswimming", config, true, 0x0000FF, 0, 2);
-		MinecraftForge.EVENT_BUS.register(new PotionEffects());
+		if(this.config.getFeatureBool("CustomEffects")) {
+			PotionBase.reserveEffectIDSpace();
+			ObjectManager.addPotionEffect("Paralysis", config, true, 0xFFFF00, 1, 0);
+			ObjectManager.addPotionEffect("Leech", config, true, 0x00FF99, 7, 0);
+			ObjectManager.addPotionEffect("Penetration", config, true, 0x222222, 6, 1);
+			ObjectManager.addPotionEffect("Recklessness", config, true, 0xFF0044, 4, 0);
+			ObjectManager.addPotionEffect("Rage", config, true, 0xFF4400, 4, 0);
+			ObjectManager.addPotionEffect("Weight", config, true, 0x000022, 1, 0);
+			ObjectManager.addPotionEffect("Swiftswimming", config, true, 0x0000FF, 0, 2);
+			MinecraftForge.EVENT_BUS.register(new PotionEffects());
+		}
 		
 		// ========== Crafting ==========
 		GameRegistry.addRecipe(new ShapedOreRecipe(

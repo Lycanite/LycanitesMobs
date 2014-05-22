@@ -353,7 +353,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
   	//                     Spawning
   	// ==================================================
     // ========== Can Spawn Here ==========
-    /** Checks if the creature is able to spawn a it's initial position. **/
+    /** Checks if the creature is able to spawn at it's initial position. **/
     @Override
     public boolean getCanSpawnHere() {
 		int i = MathHelper.floor_double(this.posX);

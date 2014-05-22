@@ -13,6 +13,7 @@ public class SpawnInfo {
 	public static boolean disableDungeonSpawners = false;
 	public static boolean enforceBlockCost = true;
 	public static double spawnWeightScale = 1.0D;
+	public static double dungeonSpawnerWeightScale = 1.0D;
 
 	// ========== Spawn General ==========
 	/** The Mob Info of the mob this Spawn Info belongs to. **/
@@ -87,6 +88,7 @@ public class SpawnInfo {
 		disableDungeonSpawners = LycanitesMobs.config.getFeatureBool("DisableDungeonSpawners");
 		enforceBlockCost = LycanitesMobs.config.getFeatureBool("EnforceBlockCost");
 		spawnWeightScale = LycanitesMobs.config.getFeatureDouble("SpawnWeightScale");
+		dungeonSpawnerWeightScale = LycanitesMobs.config.getFeatureDouble("DungeonSpawnerWeightScale");
 	}
 	
 	
@@ -131,6 +133,7 @@ public class SpawnInfo {
 		// Spawn Chance:
 		this.spawnWeight = Math.round((float)config.spawnWeights.get(name) * (float)spawnWeightScale);
 		this.spawnChance = config.spawnChances.get(name);
+		this.dungeonWeight = Math.round((float)config.dungeonWeights.get(name) * (float)dungeonSpawnerWeightScale);
 		
 		// Spawn limits:
 		this.spawnAreaLimit = config.spawnLimits.get(name);

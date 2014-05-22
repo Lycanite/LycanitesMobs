@@ -138,7 +138,8 @@ public class EntityTrent extends EntityCreatureTameable implements IMob {
     	
     	// Paralysis:
     	if(target instanceof EntityLivingBase && this.rand.nextFloat() >= 0.5F) {
-             ((EntityLivingBase)target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("Paralysis").id, this.getEffectDuration(2), 0));
+    		if(ObjectManager.getPotionEffect("Paralysis") != null && ObjectManager.getPotionEffect("Paralysis").id < Potion.potionTypes.length)
+    			((EntityLivingBase)target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("Paralysis").id, this.getEffectDuration(2), 0));
          }
         
         return true;

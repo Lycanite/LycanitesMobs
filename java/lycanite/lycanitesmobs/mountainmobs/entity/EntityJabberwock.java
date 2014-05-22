@@ -117,7 +117,8 @@ public class EntityJabberwock extends EntityCreatureTameable implements IMob {
     	
     	// Damage Effect:
         if(target instanceof EntityLivingBase) {
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("Weight").id, this.getEffectDuration(5), 0));
+    		if(ObjectManager.getPotionEffect("Weight") != null && ObjectManager.getPotionEffect("Weight").id < Potion.potionTypes.length)
+    			((EntityLivingBase)target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("Weight").id, this.getEffectDuration(5), 0));
         }
         return true;
     }

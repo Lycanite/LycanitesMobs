@@ -1,6 +1,7 @@
 # Entites
 entity.forestmobs.ent.name=Ent
 entity.forestmobs.trent.name=Trent
+entity.forestmobs.shambler.name=Shambler
 #
 # Items
 item.forestspawn.name=Spawn

@@ -13,7 +13,7 @@ public class SubConfig extends Config {
 		
 		// ========== Feature Control ==========
 		loadSetting(this.featureStrings, "Feature Control", "BiomeTypes", "Group Biome Types", "FROZEN");
-		loadSetting(this.featureStrings, "Feature Control", "Dimensions", "Group Dimensions", "0");
+		loadSetting(this.featureStrings, "Feature Control", "Dimensions", "Group Dimensions", "0, 7");
 
 		// ========== Special Feature Control ==========
 		loadSetting(this.featureBools, "Feature Control", "Frostweb", "Enable Frostwebs", true);

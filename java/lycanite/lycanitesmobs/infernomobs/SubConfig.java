@@ -13,7 +13,7 @@ public class SubConfig extends Config {
 		
 		// ========== Feature Control ==========
 		loadSetting(this.featureStrings, "Feature Control", "BiomeTypes", "Group Biome Types", "ALL");
-		loadSetting(this.featureStrings, "Feature Control", "Dimensions", "Group Dimensions", "0, -1, 1");
+		loadSetting(this.featureStrings, "Feature Control", "Dimensions", "Group Dimensions", "0, -1, 1, 7");
 
 		// ========== Special Feature Control ==========
 		// None

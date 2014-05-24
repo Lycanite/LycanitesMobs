@@ -18,6 +18,7 @@ import net.minecraft.block.BlockDispenser;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySpider;
+import net.minecraft.entity.monster.EntityWitch;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.init.Items;
@@ -114,6 +115,7 @@ public class PlainsMobs implements ILycaniteMod {
 		if(config.getFeatureBool("controlvanilla")) {
 			EntityRegistry.removeSpawn(EntitySkeleton.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntitySpider.class, EnumCreatureType.monster, biomes);
+			EntityRegistry.removeSpawn(EntityWitch.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntityPig.class, EnumCreatureType.creature, biomes);
 			EntityRegistry.removeSpawn(EntityChicken.class, EnumCreatureType.creature, biomes);
 		}

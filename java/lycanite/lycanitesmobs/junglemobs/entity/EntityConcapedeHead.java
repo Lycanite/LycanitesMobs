@@ -106,7 +106,7 @@ public class EntityConcapedeHead extends EntityCreatureAgeable implements IAnima
 	@Override
 	public void onSpawn() {
 		// Create Starting Segments:
-        if(!this.worldObj.isRemote) {
+        if(!this.worldObj.isRemote && !this.hasMaster()) {
         	this.setGrowingAge(-this.growthTime / 4);
         	int segmentCount = this.getRNG().nextInt(this.mod.getConfig().getFeatureInt("ConcapedeSizeLimit"));
     		EntityCreatureAgeable parentSegment = this;

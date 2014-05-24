@@ -18,6 +18,7 @@ import lycanite.lycanitesmobs.junglemobs.item.ItemJungleEgg;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntityWitch;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.passive.EntityPig;
@@ -120,6 +121,7 @@ public class JungleMobs implements ILycaniteMod {
 		if(config.getFeatureBool("controlvanilla")) {
 			EntityRegistry.removeSpawn(EntityZombie.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntitySkeleton.class, EnumCreatureType.monster, biomes);
+			EntityRegistry.removeSpawn(EntityWitch.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntityCow.class, EnumCreatureType.creature, biomes);
 			EntityRegistry.removeSpawn(EntityPig.class, EnumCreatureType.creature, biomes);
 			EntityRegistry.removeSpawn(EntitySheep.class, EnumCreatureType.creature, biomes);

@@ -130,7 +130,8 @@ public class EntityJabberwock extends EntityCreatureTameable implements IMob {
     @Override
     public boolean isPotionApplicable(PotionEffect par1PotionEffect) {
         if(par1PotionEffect.getPotionID() == Potion.digSlowdown.id) return false;
-        if(par1PotionEffect.getPotionID() == ObjectManager.getPotionEffect("Weight").id) return false;
+        if(ObjectManager.getPotionEffect("Weight") != null)
+        	if(par1PotionEffect.getPotionID() == ObjectManager.getPotionEffect("Weight").id) return false;
         super.isPotionApplicable(par1PotionEffect);
         return true;
     }

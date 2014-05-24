@@ -60,7 +60,7 @@ public class EntityEnt extends EntityCreatureTameable implements IMob {
         
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(3, new EntityAIAttackMelee(this).setTargetClass(EntityPlayer.class).setLongMemory(false));
+        this.tasks.addTask(3, new EntityAIAttackMelee(this).setTargetClass(EntityPlayer.class).setLongMemory(false).setRate(40));
         this.tasks.addTask(4, new EntityAIAttackMelee(this));
         this.tasks.addTask(5, this.aiSit);
         this.tasks.addTask(6, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
@@ -80,11 +80,11 @@ public class EntityEnt extends EntityCreatureTameable implements IMob {
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 20D);
+		baseAttributes.put("maxHealth", 15D);
 		baseAttributes.put("movementSpeed", 0.18D);
 		baseAttributes.put("knockbackResistance", 0.5D);
 		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 4D);
+		baseAttributes.put("attackDamage", 3D);
         super.applyEntityAttributes(baseAttributes);
     }
 	
@@ -145,20 +145,20 @@ public class EntityEnt extends EntityCreatureTameable implements IMob {
     // ========== Damage Modifier ==========
     public float getDamageModifier(DamageSource damageSrc) {
     	if(damageSrc.isFireDamage())
-    		return 2.0F;
+    		return 4.0F;
     	if(damageSrc.getEntity() != null) {
     		if(damageSrc.getEntity() instanceof EntityPlayer) {
     			EntityPlayer entityPlayer = (EntityPlayer)damageSrc.getEntity();
 	    		if(entityPlayer.getHeldItem() != null) {
 	    			if(entityPlayer.getHeldItem().getItem() instanceof ItemAxe)
-	    				return 2.0F;
+	    				return 4.0F;
 	    		}
     		}
     		else if(damageSrc.getEntity() instanceof EntityLiving) {
 	    		EntityLiving entityLiving = (EntityLiving)damageSrc.getEntity();
 	    		if(entityLiving.getHeldItem() != null) {
 	    			if(entityLiving.getHeldItem().getItem() instanceof ItemAxe)
-	    				return 2.0F;
+	    				return 4.0F;
 	    		}
     		}
     	}

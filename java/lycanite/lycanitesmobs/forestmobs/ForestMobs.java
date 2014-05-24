@@ -7,6 +7,7 @@ import lycanite.lycanitesmobs.api.ILycaniteMod;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.forestmobs.entity.EntityEnt;
+import lycanite.lycanitesmobs.forestmobs.entity.EntityShambler;
 import lycanite.lycanitesmobs.forestmobs.entity.EntityTrent;
 import lycanite.lycanitesmobs.forestmobs.item.ItemForestEgg;
 import net.minecraft.block.BlockDispenser;
@@ -71,6 +72,7 @@ public class ForestMobs implements ILycaniteMod {
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("forestegg"), new DispenserBehaviorMobEggCustom());
 		ObjectManager.addMob(new MobInfo(this, "ent", EntityEnt.class, 0x997700, 0x00FF22, 2).setSummonable(true));
 		ObjectManager.addMob(new MobInfo(this, "trent", EntityTrent.class, 0x663300, 0x00AA11, 6).setSummonable(true));
+		ObjectManager.addMob(new MobInfo(this, "shambler", EntityShambler.class, 0xDDFF22, 0x005511, 6).setSummonable(false));
 		
 		// ========== Create Projectiles ==========
 		//ObjectManager.addProjectile("Template", EntityTemplate.class, Item.templateCharge, new DispenserBehaviorPoisonRay());

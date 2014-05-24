@@ -152,20 +152,20 @@ public class EntityTrent extends EntityCreatureTameable implements IMob {
     // ========== Damage Modifier ==========
     public float getDamageModifier(DamageSource damageSrc) {
     	if(damageSrc.isFireDamage())
-    		return 2.0F;
+    		return 4.0F;
     	if(damageSrc.getEntity() != null) {
     		if(damageSrc.getEntity() instanceof EntityPlayer) {
     			EntityPlayer entityPlayer = (EntityPlayer)damageSrc.getEntity();
 	    		if(entityPlayer.getHeldItem() != null) {
 	    			if(entityPlayer.getHeldItem().getItem() instanceof ItemAxe)
-	    				return 2.0F;
+	    				return 4.0F;
 	    		}
     		}
     		else if(damageSrc.getEntity() instanceof EntityLiving) {
 	    		EntityLiving entityLiving = (EntityLiving)damageSrc.getEntity();
 	    		if(entityLiving.getHeldItem() != null) {
 	    			if(entityLiving.getHeldItem().getItem() instanceof ItemAxe)
-	    				return 2.0F;
+	    				return 4.0F;
 	    		}
     		}
     	}
@@ -179,7 +179,8 @@ public class EntityTrent extends EntityCreatureTameable implements IMob {
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
         if(potionEffect.getPotionID() == Potion.moveSlowdown.id) return false;
-        if(potionEffect.getPotionID() == ObjectManager.getPotionEffect("Paralysis").id) return false;
+        if(ObjectManager.getPotionEffect("Paralysis") != null)
+        	if(potionEffect.getPotionID() == ObjectManager.getPotionEffect("Paralysis").id) return false;
         super.isPotionApplicable(potionEffect);
         return true;
     }

@@ -19,8 +19,7 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
     public boolean hasBreedingTarget = false;
     
     // Growth:
-    //public int growthTime = -24000;
-    public int growthTime = -80;
+    public int growthTime = -24000;
     public boolean canGrow = true;
     public double babySpawnChance = 0D;
     

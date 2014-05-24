@@ -54,5 +54,25 @@
     "entity.trent.tame": {
         "category": "hostile",
         "sounds": [{"name": "entity/trent/tame", "stream": false}]
+    },
+    "entity.shambler.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/shambler/say", "stream": false}]
+    },
+    "entity.shambler.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/shambler/hurt", "stream": false}]
+    },
+    "entity.shambler.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/shambler/death", "stream": false}]
+    },
+    "entity.shambler.step": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/shambler/step", "stream": false}]
+    },
+    "entity.shambler.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/shambler/attack", "stream": false}]
     }
 }

@@ -15,6 +15,7 @@ import lycanite.lycanitesmobs.mountainmobs.item.ItemMountainEgg;
 import lycanite.lycanitesmobs.mountainmobs.item.ItemScepterBoulderBlast;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.monster.EntityWitch;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.passive.EntityPig;
@@ -110,6 +111,7 @@ public class MountainMobs implements ILycaniteMod {
 		BiomeGenBase[] biomes = this.config.getSpawnBiomesTypes();
 		if(config.getFeatureBool("controlvanilla")) {
 			EntityRegistry.removeSpawn(EntityZombie.class, EnumCreatureType.monster, biomes);
+			EntityRegistry.removeSpawn(EntityWitch.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntityPig.class, EnumCreatureType.creature, biomes);
 			EntityRegistry.removeSpawn(EntityChicken.class, EnumCreatureType.creature, biomes);
 		}

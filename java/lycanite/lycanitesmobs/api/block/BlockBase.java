@@ -190,6 +190,7 @@ public class BlockBase extends Block {
     }
 
     // ========== Get Render Type ==========
+    @SideOnly(Side.CLIENT)
     @Override
     public int getRenderType() {
         return super.getRenderType();

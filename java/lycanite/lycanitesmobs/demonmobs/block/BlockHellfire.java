@@ -322,6 +322,7 @@ public class BlockHellfire extends BlockBase {
     }
 
     // ========== Get Render Type ==========
+    @SideOnly(Side.CLIENT)
     @Override
     public int getRenderType() {
         return ClientProxy.RENDER_ID;

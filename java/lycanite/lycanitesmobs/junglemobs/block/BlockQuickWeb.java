@@ -9,6 +9,8 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockQuickWeb extends BlockBase {
 	
@@ -71,6 +73,7 @@ public class BlockQuickWeb extends BlockBase {
 	//                      Visuals
 	// ==================================================
     // ========== Get Render Type ==========
+    @SideOnly(Side.CLIENT)
     @Override
     public int getRenderType() {
         return BlockBase.RENDER_TYPE.CROSS.id;

@@ -93,6 +93,7 @@ public class BlockFrostweb extends BlockBase {
 	//                      Visuals
 	// ==================================================
     // ========== Get Render Type ==========
+    @SideOnly(Side.CLIENT)
     @Override
     public int getRenderType() {
         return BlockBase.RENDER_TYPE.CROSS.id;

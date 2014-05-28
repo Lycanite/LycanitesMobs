@@ -12,6 +12,7 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
+import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.demonmobs.DemonMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -123,7 +124,7 @@ public class EntityAsmodi extends EntityCreatureBase implements IMob {
    	// ==================================================
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
-        if(!this.worldObj.isRemote && DemonMobs.config.mobsEnabled.get("Trite")) {
+        if(!this.worldObj.isRemote && MobInfo.getFromName("trite").mobEnabled) {
             int j = 2 + this.rand.nextInt(5) + worldObj.difficultySetting.getDifficultyId() - 1;
             for(int k = 0; k < j; ++k) {
                 float f = ((float)(k % 2) - 0.5F) * this.width / 4.0F;

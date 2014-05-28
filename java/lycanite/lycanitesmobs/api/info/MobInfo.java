@@ -109,6 +109,29 @@ public class MobInfo {
 		difficultyMutlipliers = new HashMap<String, Double>(config.difficultyMultipliers);
 	}
 	
+	/**
+	 * Get MobInfo from mob name.
+	 * @param mobName The name of the mob, such as "trite", should be lower case, no spaces.
+	 * @return
+	 */
+	public static MobInfo getFromName(String mobName) {
+		mobName = mobName.toLowerCase();
+		if(!mobNameToInfo.containsKey(mobName))
+			return null;
+		return mobNameToInfo.get(mobName);
+	}
+	
+	/**
+	 * Get MobInfo from class.
+	 * @param mobClass The class of the mob, such as EntityAspid.class.
+	 * @return
+	 */
+	public static MobInfo getFromClass(Class mobClass) {
+		if(!mobNameToInfo.containsKey(mobClass))
+			return null;
+		return mobNameToInfo.get(mobClass);
+	}
+	
 	
     // ==================================================
     //                     Constructor

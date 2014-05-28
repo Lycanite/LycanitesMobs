@@ -10,4 +10,4 @@ item.frostboltscepter.name=Frostbolt Scepter
 item.frostwebscepter.name=Frostweb Scepter
 #
 # Blocks
-block.frostweb.name=Frostweb
+tile.frostweb.name=Frostweb

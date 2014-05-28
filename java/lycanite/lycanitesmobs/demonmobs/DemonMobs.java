@@ -1,5 +1,6 @@
 package lycanite.lycanitesmobs.demonmobs;
 
+import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.Config;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
@@ -103,6 +104,7 @@ public class DemonMobs implements ILycaniteMod {
 		ObjectManager.addItem("demoniclightningscepter", new ItemScepterDemonicLightning());
 		
 		// ========== Create Blocks ==========
+		AssetManager.addSound("hellfire", domain, "block.hellfire");
 		ObjectManager.addBlock("hellfire", new BlockHellfire());
 	}
 	

@@ -17,4 +17,4 @@ item.poisonrayscepter.name=Poison Ray Scepter
 item.venomshotscepter.name=Venom Shot Scepter
 #
 # Blocks
-block.poisoncloud.name=Poison Cloud
+tile.poisoncloud.name=Poison Cloud

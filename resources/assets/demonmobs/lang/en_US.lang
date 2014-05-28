@@ -22,4 +22,4 @@ item.demoniclightningcharge.name=Demonic Lightning Charge
 item.demoniclightningscepter.name=Demonic Lightning Scepter
 #
 # Blocks
-block.hellfire.name=Hellfire
+tile.hellfire.name=Hellfire

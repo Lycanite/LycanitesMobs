@@ -39,11 +39,11 @@ public class BlockHellfire extends BlockBase {
 		
 		// Properties:
 		this.mod = DemonMobs.instance;
-		this.blockName = "Hellfire";
+		this.blockName = "hellfire";
 		this.setup();
 		
 		// Stats:
-		this.tickRate = this.mod.getConfig().getFeatureBool("Hellfire") ? 200 : 1;
+		this.tickRate = this.mod.getConfig().getFeatureBool("hellfire") ? 200 : 1;
 		this.removeOnTick = false;
 		this.loopTicks = true;
 		this.canBeCrushed = true;
@@ -71,7 +71,7 @@ public class BlockHellfire extends BlockBase {
     public void updateTick(World world, int x, int y, int z, Random random) {
     	// ========== Main Fire Logic ==========
 		// If Hellfire is disabled, use regular fire instead:
-		if(!DemonMobs.config.getFeatureBool("Hellfire"))
+		if(!DemonMobs.config.getFeatureBool("hellfire"))
     		world.setBlock(x, y, z, Blocks.fire);
 		
 		// Remove if the doFireTick rule is false:
@@ -285,21 +285,21 @@ public class BlockHellfire extends BlockBase {
 	// ==================================================
     @SideOnly(Side.CLIENT)
     @Override
-    public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
-        //if(par5Random.nextInt(24) == 0)
-            //par1World.playSound((double)((float)par2 + 0.5F), (double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F), AssetManager.getSound("hellfire"), 1.0F + par5Random.nextFloat(), par5Random.nextFloat() * 0.7F + 0.3F, false);
-
+    public void randomDisplayTick(World world, int x, int y, int z, Random random) {
+    	if(random.nextInt(24) == 0)
+        	world.playSound((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), AssetManager.getSound("hellfire"), 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F, false);
+    	
         int l;
         float f;
         float f1;
         float f2;
 
         for(l = 0; l < 12; ++l) {
-            f = (float)par2 + par5Random.nextFloat();
-            f1 = (float)par3 + par5Random.nextFloat() * 0.5F;
-            f2 = (float)par4 + par5Random.nextFloat();
-            //TODO EntityParticle particle = new EntityParticle(par1World, f, f1, f2, "Hellfire", this.mod);
-            par1World.spawnParticle("reddust", (double)f, (double)f1, (double)f2, 0.0D, 0.0D, 0.0D);
+            f = (float)x + random.nextFloat();
+            f1 = (float)y + random.nextFloat() * 0.5F;
+            f2 = (float)z + random.nextFloat();
+            //TODO EntityParticle particle = new EntityParticle(world, f, f1, f2, "hellfire", this.mod);
+            world.spawnParticle("reddust", (double)f, (double)f1, (double)f2, 0.0D, 0.0D, 0.0D);
         }
     }
     
@@ -327,4 +327,10 @@ public class BlockHellfire extends BlockBase {
     public int getRenderType() {
         return ClientProxy.RENDER_ID;
     }
+    
+    // ========== Render As Normal ==========
+ 	@Override
+ 	public boolean renderAsNormalBlock() {
+ 		return false;
+ 	}
 }

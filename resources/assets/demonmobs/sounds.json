@@ -182,5 +182,9 @@
     "projectile.demonicblast": {
         "category": "ambient",
         "sounds": [{"name": "projectile/demonicblast", "stream": false}]
+    },
+    "block.hellfire": {
+        "category": "ambient",
+        "sounds": [{"name": "block/hellfire", "stream": false}]
     }
 }

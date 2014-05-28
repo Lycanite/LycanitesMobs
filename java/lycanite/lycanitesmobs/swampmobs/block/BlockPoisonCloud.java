@@ -7,13 +7,11 @@ import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.block.BlockBase;
 import lycanite.lycanitesmobs.swampmobs.SwampMobs;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -24,7 +22,7 @@ public class BlockPoisonCloud extends BlockBase {
 	//                   Constructor
 	// ==================================================
 	public BlockPoisonCloud() {
-		super(Material.air);
+		super(Material.plants);
 		
 		// Properties:
 		this.mod = SwampMobs.instance;
@@ -83,7 +81,7 @@ public class BlockPoisonCloud extends BlockBase {
     @Override
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(World world, int x, int y, int z, Random random) {
-        if(random.nextInt(24) == 0)
+    	if(random.nextInt(24) == 0)
         	world.playSound((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), AssetManager.getSound("poisoncloud"), 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F, false);
 
         int l;
@@ -105,24 +103,16 @@ public class BlockPoisonCloud extends BlockBase {
 	// ==================================================
 	//                      Visuals
 	// ==================================================
-    // ========== Register Icons ==========
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerBlockIcons(IIconRegister iconRegister) {
-    	AssetManager.addIcon(this.blockName, this.mod.getDomain(), this.getTextureName(), iconRegister);
-    }
-    
-    // ========== Get Icon from Side and Meta ==========
-    @SideOnly(Side.CLIENT)
-    @Override
-    public IIcon getIcon(int par1, int par2) {
-        return null;
-    }
-
     // ========== Get Render Type ==========
     @SideOnly(Side.CLIENT)
     @Override
     public int getRenderType() {
         return BlockBase.RENDER_TYPE.CROSS.id;
     }
+    
+    // ========== Render As Normal ==========
+ 	@Override
+ 	public boolean renderAsNormalBlock() {
+ 		return false;
+ 	}
 }

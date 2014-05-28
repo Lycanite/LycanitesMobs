@@ -82,7 +82,7 @@ public class BlockFrostweb extends BlockBase {
 
         for(l = 0; l < 12; ++l) {
             f = (float)par2 + par5Random.nextFloat();
-            f1 = (float)par3 + par5Random.nextFloat() * 0.5F;
+            f1 = (float)par3 + par5Random.nextFloat();
             f2 = (float)par4 + par5Random.nextFloat();
             par1World.spawnParticle("snowshovel", (double)f, (double)f1, (double)f2, 0.0D, 0.0D, 0.0D);
         }

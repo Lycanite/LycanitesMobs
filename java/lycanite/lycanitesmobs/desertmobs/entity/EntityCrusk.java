@@ -112,15 +112,6 @@ public class EntityCrusk extends EntityCreatureTameable implements IGroupPredato
         this.drops.add(new DropRate(new ItemStack(Blocks.gold_ore), 0.25F).setMinAmount(1).setMaxAmount(2));
 	}
     
-    // ========== Name ==========
-    @Override
-    public String getAgeName() {
-    	if(this.isChild())
-    		return "";
-    	else
-    		return "Great";
-    }
-    
     
     // ==================================================
    	//                      Stealth

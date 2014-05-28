@@ -1455,13 +1455,13 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
     /** Returns true if this mob is fully stealthed (1.0F or above). **/
     public boolean isStealthed() {
-    	return this.dataWatcher.getWatchableObjectFloat(WATCHER_ID.STEALTH.id) > 0;
+    	return this.getStealth() >= 1.0F;
     }
 
     /** Called when this mob is just started stealthing (reach 1.0F or above). **/
     public void startStealth() {}
 
-    /** Called while this mob is stealthed on the update, can be used to clear enemies targets that are targeting this mob. The main EventListener also helps handling anti-targeting. **/
+    /** Called while this mob is stealthed on the update, can be used to clear enemies targets that are targeting this mob, although a new event listener is in placenow to handle this. The main EventListener also helps handling anti-targeting. **/
     public void onStealth() {
     	if(!this.worldObj.isRemote) {
     		if(this.getAttackTarget() != null && this.getAttackTarget() instanceof EntityLiving)

@@ -105,7 +105,7 @@ public class EntityAIStealth extends EntityAIBase {
  	// ==================================================
 	@Override
 	public void startExecuting() {
-		this.host.setStealth(0F); // Set to getStealth * max
+		this.host.setStealth(0F);
 		this.stealthTime = 0;
 		this.stealthTimeMaxPrev = this.stealthTimeMax;
 	}

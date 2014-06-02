@@ -183,7 +183,7 @@ public class EntityAITempt extends EntityAIBase {
         if(this.host.getDistanceSqToEntity(this.player) < this.temptDistanceMin)
             this.host.clearMovement();
         else {
-        	if(!this.host.canFly())
+        	if(!this.host.useFlightNavigator())
         		this.host.getNavigator().tryMoveToEntityLiving(this.player, this.speed);
         	else
         		this.host.flightNavigator.setTargetPosition(new ChunkCoordinates((int)this.player.posX, (int)this.player.posY, (int)this.player.posZ), speed);

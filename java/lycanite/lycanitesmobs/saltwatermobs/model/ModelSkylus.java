@@ -11,29 +11,28 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ModelLacedon extends ModelCustomObj {
+public class ModelSkylus extends ModelCustomObj {
 	
 	// ==================================================
   	//                    Constructors
   	// ==================================================
-    public ModelLacedon() {
+    public ModelSkylus() {
         this(1.0F);
     }
     
-    public ModelLacedon(float shadowSize) {
+    public ModelSkylus(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("lacedon", SaltwaterMobs.domain, "entity/lacedon");
+    	model = (WavefrontObject)AssetManager.getObjModel("skylus", SaltwaterMobs.domain, "entity/skylus");
     	
     	// Get Parts:
     	parts = model.groupObjects;
     	
     	// Set Rotation Centers:
-    	setPartCenter("head", 0F, 1.6F, 0.05F);
-    	setPartCenter("body", 0F, 1.6F, 0.05F);
-    	setPartCenter("leftarm", 0.25F, 1.4F, 0F);
-    	setPartCenter("rightarm", -0.25F, 1.4F, 0F);
-    	setPartCenter("leftleg", 0.25F, 0.85F, 0F);
-    	setPartCenter("rightleg", -0.25F, 0.85F, 0F);
+    	setPartCenter("head", 0F, 0.5F, 0.5F);
+    	setPartCenter("body", 0F, 0.5F, 0F);
+    	setPartCenter("shell", 0F, 0.5F, 0F);
+    	setPartCenter("tentacle01", 0.25F, 1.4F, 0F);
+    	setPartCenter("tentacle02", 0.25F, 1.4F, 0F);
     }
     
     
@@ -57,11 +56,11 @@ public class ModelLacedon extends ModelCustomObj {
     	float rotZ = 0F;
     	
     	// Idle:
-    	if(partName.equals("leftarm")) {
+    	if(partName.equals("tentacle01")) {
 	        rotZ -= Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F + 0.05F);
 	        rotX -= Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
     	}
-    	if(partName.equals("rightarm")) {
+    	if(partName.equals("tentacle02")) {
 	        rotZ += Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F + 0.05F);
 	        rotX += Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
     	}
@@ -69,31 +68,32 @@ public class ModelLacedon extends ModelCustomObj {
     	// Walking:
     	if(entity.onGround || entity.isInWater()) {
 	    	float walkSwing = 0.6F;
-	    	if(partName.equals("leftarm")) {
+	    	if(partName.equals("tentacle01")) {
 	    		rotX += Math.toDegrees(MathHelper.cos(time * walkSwing) * 1.0F * distance * 0.5F);
 				rotZ -= Math.toDegrees(MathHelper.cos(time * walkSwing) * 0.5F * distance * 0.5F);
 	    	}
-	    	if(partName.equals("rightarm")) {
+	    	if(partName.equals("tentacle02")) {
 	    		rotX += Math.toDegrees(MathHelper.cos(time * walkSwing + (float)Math.PI) * 1.0F * distance * 0.5F);
 				rotZ += Math.toDegrees(MathHelper.cos(time * walkSwing + (float)Math.PI) * 0.5F * distance * 0.5F);
 	    	}
-	    	if(partName.equals("leftleg"))
-	    		rotX += Math.toDegrees(MathHelper.cos(time * walkSwing + (float)Math.PI) * 1.4F * distance);
-	    	if(partName.equals("rightleg"))
-	    		rotX += Math.toDegrees(MathHelper.cos(time * walkSwing) * 1.4F * distance);
     	}
 				
 		// Attack:
 		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
-	    	if(partName.equals("leftarm"))
+	    	if(partName.equals("tentacle01"))
 	    		rotate(0.0F, -25.0F, 0.0F);
-	    	if(partName.equals("rightarm"))
+	    	if(partName.equals("tentacle02"))
 	    		rotate(0.0F, 25.0F, 0.0F);
 		}
 		
+		// Shell:
+		if(entity.getHealth() <= entity.getMaxHealth() / 2) {
+	    	this.scale(0, 0, 0);
+		}
+		
     	// Apply Animations:
-    	rotate(rotation, angleX, angleY, angleZ);
-    	rotate(rotX, rotY, rotZ);
-    	translate(posX, posY, posZ);
+		this.rotate(rotation, angleX, angleY, angleZ);
+    	this.rotate(rotX, rotY, rotZ);
+    	this.translate(posX, posY, posZ);
     }
 }

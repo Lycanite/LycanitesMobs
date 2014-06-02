@@ -1,16 +1,9 @@
 package lycanite.lycanitesmobs.api.entity.ai;
 
-import java.util.List;
-
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
-import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.passive.EntityTameable;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.pathfinding.PathEntity;
-import net.minecraft.pathfinding.PathNavigate;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Vec3;
 
 public class EntityAIAvoid extends EntityAIBase {
@@ -92,9 +85,9 @@ public class EntityAIAvoid extends EntityAIBase {
  	//                 Continue Executing
  	// ==================================================
     public boolean continueExecuting() {
-        if(!this.host.canFly() && this.host.getNavigator().noPath())
+        if(!this.host.useFlightNavigator() && this.host.getNavigator().noPath())
         	return false;
-		if(this.host.canFly() && this.host.flightNavigator.atTargetPosition())
+		if(this.host.useFlightNavigator() && this.host.flightNavigator.atTargetPosition())
 			return false;
         if(this.host.getDistanceSqToEntity(this.avoidTarget) >= this.farDistance)
         	return false;
@@ -106,7 +99,7 @@ public class EntityAIAvoid extends EntityAIBase {
  	//                      Start
  	// ==================================================
     public void startExecuting() {
-    	if(!this.host.canFly())
+    	if(!this.host.useFlightNavigator())
     		this.host.getNavigator().setPath(this.pathEntity, this.farSpeed);
     	else
     		this.host.flightNavigator.setTargetPosition(this.avoidTarget, this.farSpeed);
@@ -126,12 +119,12 @@ public class EntityAIAvoid extends EntityAIBase {
  	// ==================================================
     public void updateTask() {
         if(this.host.getDistanceSqToEntity(this.avoidTarget) < 49.0D)
-        	if(!this.host.canFly())
+        	if(!this.host.useFlightNavigator())
         		this.host.getNavigator().setSpeed(this.nearSpeed);
         	else
         		this.host.flightNavigator.speedModifier = this.nearSpeed;
         else
-        	if(!this.host.canFly())
+        	if(!this.host.useFlightNavigator())
         		this.host.getNavigator().setSpeed(this.farSpeed);
         	else
         		this.host.flightNavigator.speedModifier = this.farSpeed;

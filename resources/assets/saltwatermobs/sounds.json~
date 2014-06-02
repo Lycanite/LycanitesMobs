@@ -26,21 +26,5 @@
     "entity.lacedon.tame": {
         "category": "hostile",
         "sounds": [{"name": "entity/lacedon/tame", "stream": false}]
-    },
-    "entity.skylus.say": {
-        "category": "hostile",
-        "sounds": [{"name": "entity/skylus/say", "stream": false}]
-    },
-    "entity.skylus.hurt": {
-        "category": "hostile",
-        "sounds": [{"name": "entity/skylus/hurt", "stream": false}]
-    },
-    "entity.skylus.death": {
-        "category": "hostile",
-        "sounds": [{"name": "entity/skylus/death", "stream": false}]
-    },
-    "entity.skylus.attack": {
-        "category": "hostile",
-        "sounds": [{"name": "entity/skylus/attack", "stream": false}]
     }
 }

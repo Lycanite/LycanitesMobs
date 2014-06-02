@@ -121,8 +121,8 @@ public class EntityAIAttackRanged extends EntityAIBase {
   	// ==================================================
     public boolean continueExecuting() {
     	if(!this.longMemory)
-	    	if(!this.host.canFly() && !this.host.getNavigator().noPath()) return this.shouldExecute();
-	    	else if(this.host.canFly() && this.host.flightNavigator.targetPosition == null) return this.shouldExecute();
+	    	if(!this.host.useFlightNavigator() && !this.host.getNavigator().noPath()) return this.shouldExecute();
+	    	else if(this.host.useFlightNavigator() && this.host.flightNavigator.targetPosition == null) return this.shouldExecute();
         return this.shouldExecute();
     }
     
@@ -154,12 +154,12 @@ public class EntityAIAttackRanged extends EntityAIBase {
         	flyingHeightOffset = 0;
 
         if(distance <= this.minChaseDistance || (this.chaseTimeMax >= 0 && distance <= (double)this.attackDistance && this.chaseTime >= this.chaseTimeMax))
-        	if(!this.host.canFly())
+        	if(!this.host.useFlightNavigator())
         		this.host.getNavigator().clearPathEntity();
         	else
         		this.host.flightNavigator.clearTargetPosition(1.0D);
         else
-        	if(!this.host.canFly())
+        	if(!this.host.useFlightNavigator())
         		this.host.getNavigator().tryMoveToEntityLiving(this.attackTarget, this.speed);
         	else
         		this.host.flightNavigator.setTargetPosition(new ChunkCoordinates((int)this.attackTarget.posX, (int)(this.attackTarget.posY + flyingHeightOffset), (int)this.attackTarget.posZ), speed);

@@ -52,7 +52,7 @@ public class EntityAISit extends EntityAIBase {
             return false;
         if(this.host.isInWater() && !this.host.canBreatheUnderwater())
             return false;
-        if(!this.host.onGround && !this.host.canFly())
+        if(!this.host.onGround && !this.host.useFlightNavigator())
             return false;
 
         EntityLivingBase owner = this.host.getOwner();
@@ -73,7 +73,7 @@ public class EntityAISit extends EntityAIBase {
         	double speed = this.speed;
         	if(this.host.getDistanceFromHome() > this.host.getHomeDistanceMax())
         		speed = this.farSpeed;
-	    	if(!host.canFly())
+	    	if(!host.useFlightNavigator())
 	    		this.host.getNavigator().tryMoveToXYZ(homePos.posX, homePos.posY, homePos.posZ, this.speed);
 	    	else
 	    		host.flightNavigator.setTargetPosition(new ChunkCoordinates((int)homePos.posX, (int)homePos.posY, (int)homePos.posZ), speed);

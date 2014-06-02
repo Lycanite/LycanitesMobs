@@ -155,7 +155,7 @@ public class EntityAIStayByWater extends EntityAIBase {
             double overshot = 1D;
             double overshotX = (this.host.posX > this.waterX ? -overshot : overshot);
             double overshotZ = (this.host.posZ > this.waterZ ? -overshot : overshot);
-	    	if(!host.canFly()) {
+	    	if(!host.useFlightNavigator()) {
 	    		this.host.getNavigator().tryMoveToXYZ(this.waterX + overshotX, this.waterY, this.waterZ + overshotZ, this.speed);
 	    	}
 	    	else

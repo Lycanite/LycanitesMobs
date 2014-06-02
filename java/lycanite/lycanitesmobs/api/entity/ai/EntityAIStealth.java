@@ -56,9 +56,9 @@ public class EntityAIStealth extends EntityAIBase {
 		if(this.host.getLeashed()) this.unstealth = true;
 		
 		if(!this.stealthMove) {
-			if(!this.host.canFly() && !this.host.getNavigator().noPath())
+			if(!this.host.useFlightNavigator() && !this.host.getNavigator().noPath())
 				this.unstealth = true;
-			if(this.host.canFly() && !this.host.flightNavigator.atTargetPosition())
+			if(this.host.useFlightNavigator() && !this.host.flightNavigator.atTargetPosition())
 				this.unstealth = true;
 		}
 		
@@ -79,9 +79,9 @@ public class EntityAIStealth extends EntityAIBase {
 		if(this.host.getLeashed()) this.unstealth = true;
 		
 		if(!this.stealthMove) {
-			if(!this.host.canFly() && !this.host.getNavigator().noPath())
+			if(!this.host.useFlightNavigator() && !this.host.getNavigator().noPath())
 				this.unstealth = true;
-			if(this.host.canFly() && !this.host.flightNavigator.atTargetPosition())
+			if(this.host.useFlightNavigator() && !this.host.flightNavigator.atTargetPosition())
 				this.unstealth = true;
 		}
 		

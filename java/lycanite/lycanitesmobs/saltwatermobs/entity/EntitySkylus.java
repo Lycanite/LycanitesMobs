@@ -3,15 +3,11 @@ package lycanite.lycanitesmobs.saltwatermobs.entity;
 import java.util.HashMap;
 
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowOwner;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIStayByWater;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerAttack;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
@@ -28,16 +24,17 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
-public class EntityLacedon extends EntityCreatureTameable implements IMob {
+public class EntitySkylus extends EntityCreatureBase implements IMob {
 	
 	EntityAIWander wanderAI = new EntityAIWander(this);
     
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityLacedon(World par1World) {
+    public EntitySkylus(World par1World) {
         super(par1World);
         
         // Setup:
@@ -46,13 +43,11 @@ public class EntityLacedon extends EntityCreatureTameable implements IMob {
         this.defense = 0;
         this.experience = 7;
         this.spawnsInDarkness = true;
-        this.spawnsOnLand = true;
+        this.spawnsOnLand = false;
         this.spawnsInWater = true;
         this.hasAttackSound = true;
         
         this.eggName = "SaltwaterEgg";
-        this.babySpawnChance = 0.1D;
-        this.canGrow = true;
         
         this.setWidth = 0.8F;
         this.setHeight = 1.6F;
@@ -61,16 +56,11 @@ public class EntityLacedon extends EntityCreatureTameable implements IMob {
         // AI Tasks:
         this.getNavigator().setCanSwim(true);
         this.getNavigator().setAvoidsWater(false);
-        this.tasks.addTask(0, new EntityAISwimming(this).setSink(true));
-        this.tasks.addTask(1, new EntityAIStayByWater(this).setSpeed(1.25D));
-        this.tasks.addTask(2, this.aiSit);
+        this.tasks.addTask(1, new EntityAIStayByWater(this));
         this.tasks.addTask(3, new EntityAIAttackMelee(this).setLongMemory(false));
-        this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
         this.tasks.addTask(6, wanderAI);
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
-        this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
-        this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
@@ -81,7 +71,7 @@ public class EntityLacedon extends EntityCreatureTameable implements IMob {
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
 		baseAttributes.put("maxHealth", 20D);
-		baseAttributes.put("movementSpeed", 0.16D);
+		baseAttributes.put("movementSpeed", 0.24D);
 		baseAttributes.put("knockbackResistance", 0.0D);
 		baseAttributes.put("followRange", 32D);
 		baseAttributes.put("attackDamage", 2D);
@@ -91,10 +81,7 @@ public class EntityLacedon extends EntityCreatureTameable implements IMob {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.fish), 1).setBurningDrop(new ItemStack(Items.cooked_fished)).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.fish, 1, 1), 0.5F).setBurningDrop(new ItemStack(Items.cooked_fished, 1, 1)).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.fish, 1, 2), 0.1F).setMinAmount(1).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Items.fish, 1, 3), 0.25F).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.dye, 1, 0), 1).setMinAmount(1).setMaxAmount(5));
     }
     
     
@@ -108,7 +95,7 @@ public class EntityLacedon extends EntityCreatureTameable implements IMob {
         
         // Wander Pause Rates:
 		if(this.isInWater())
-			this.wanderAI.setPauseRate(120);
+			this.wanderAI.setPauseRate(20);
 		else
 			this.wanderAI.setPauseRate(0);
     }
@@ -117,16 +104,15 @@ public class EntityLacedon extends EntityCreatureTameable implements IMob {
     // ==================================================
     //                      Movement
     // ==================================================
-    // ========== Movement Speed Modifier ==========
+	// ========== Movement Speed Modifier ==========
+    @Override
     public float getSpeedMod() {
-    	if(this.isInWater()) // Checks specifically just for water.
-    		return 8.0F;
-    	else if(this.waterContact()) // Checks for water, rain, etc.
-    		return 1.5F;
+    	if(this.getHealth() > (this.getMaxHealth() / 2)) // Slower with shell.
+    		return 0.25F;
     	return 1.0F;
     }
-    
-	// Pathing Weight:
+	
+    // Pathing Weight:
 	@Override
 	public float getBlockPathWeight(int par1, int par2, int par3) {
 		int waterWeight = 10;
@@ -145,12 +131,6 @@ public class EntityLacedon extends EntityCreatureTameable implements IMob {
 		
 		return super.getBlockPathWeight(par1, par2, par3);
     }
-	
-	// Pushed By Water:
-	@Override
-	public boolean isPushedByWater() {
-        return false;
-    }
     
     
     // ==================================================
@@ -164,19 +144,24 @@ public class EntityLacedon extends EntityCreatureTameable implements IMob {
     	
     	// Effect:
         if(target instanceof EntityLivingBase) {
-    		if(ObjectManager.getPotionEffect("Weight") != null && ObjectManager.getPotionEffect("Weight").id < Potion.potionTypes.length)
-    			((EntityLivingBase)target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("Weight").id, this.getEffectDuration(5), 1));
+    		((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.blindness.id, this.getEffectDuration(5), 1));
         }
         
         return true;
     }
     
+	// ========== Attack Haste Modifier ==========
+    @Override
+    public double getHasteMultiplier() {
+    	if(this.getHealth() > (this.getMaxHealth() / 2)) // Slower with shell.
+    		return 0.25F;
+    	return 1.0F;
+    }
+    
     // ========== Is Aggressive ==========
     @Override
     public boolean isAggressive() {
-    	if(this.getAir() <= -100)
-    		return false;
-    	return super.isAggressive();
+    	return this.isInWater();
     }
     
     
@@ -204,7 +189,13 @@ public class EntityLacedon extends EntityCreatureTameable implements IMob {
     
     
     // ==================================================
-    //                     Pet Control
-    // ==================================================
-    public boolean petControlsEnabled() { return true; }
+   	//                    Taking Damage
+   	// ==================================================
+    // ========== Damage Modifier ==========
+    /** A multiplier that alters how much damage this mob receives from the given DamageSource, use for resistances and weaknesses. Note: The defense multiplier is handled before this. **/
+    public float getDamageModifier(DamageSource damageSrc) {
+    	if(this.getHealth() > (this.getMaxHealth() / 2)) // Stronger with shell.
+    		return 0.25F;
+    	return 1.0F;
+    }
 }

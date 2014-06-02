@@ -84,7 +84,7 @@ public class EntityAIMate extends EntityAIBase {
   	// ==================================================
     public void updateTask() {
         this.host.getLookHelper().setLookPositionWithEntity(this.partner, 10.0F, (float)this.host.getVerticalFaceSpeed());
-        if(!this.host.canFly())
+        if(!this.host.useFlightNavigator())
         	this.host.getNavigator().tryMoveToEntityLiving(this.partner, this.speed);
         else
         	this.host.flightNavigator.setTargetPosition(new ChunkCoordinates((int)this.partner.posX, (int)this.partner.posY, (int)this.partner.posZ), speed);

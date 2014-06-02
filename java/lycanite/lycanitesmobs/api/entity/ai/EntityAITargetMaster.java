@@ -122,7 +122,7 @@ public class EntityAITargetMaster extends EntityAITarget {
         
         double distance = this.getTargetDistance();
         double heightDistance = 4.0D;
-        if(this.host.canFly()) heightDistance = distance;
+        if(this.host.useFlightNavigator()) heightDistance = distance;
         List possibleTargets = this.host.worldObj.selectEntitiesWithinAABB(this.targetClass, this.host.boundingBox.expand(distance, heightDistance, distance), this.targetSelector);
         Collections.sort(possibleTargets, this.targetSorter);
         

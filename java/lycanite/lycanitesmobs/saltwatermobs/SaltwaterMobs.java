@@ -7,6 +7,7 @@ import lycanite.lycanitesmobs.api.ILycaniteMod;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.saltwatermobs.entity.EntityLacedon;
+import lycanite.lycanitesmobs.saltwatermobs.entity.EntitySkylus;
 import lycanite.lycanitesmobs.saltwatermobs.item.ItemSaltwaterEgg;
 import net.minecraft.block.BlockDispenser;
 import cpw.mods.fml.common.Mod;
@@ -63,6 +64,7 @@ public class SaltwaterMobs implements ILycaniteMod {
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("saltwateregg"), new DispenserBehaviorMobEggCustom());
 		ObjectManager.addMob(new MobInfo(this, "lacedon", EntityLacedon.class, 0x000099, 0x2244FF, 2).setSummonable(true));
+		ObjectManager.addMob(new MobInfo(this, "skylus", EntitySkylus.class, 0xFFCCDD, 0xBB2299, 2).setSummonable(false));
 		
 		// ========== Create Projectiles ==========
 		//ObjectManager.addProjectile("ember", EntityEmber.class, ObjectManager.getItem("embercharge"), new DispenserBehaviorEmber());

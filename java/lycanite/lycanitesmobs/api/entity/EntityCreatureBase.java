@@ -743,7 +743,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Runs through all the AI tasks this mob has on the update, will update the flight navigator if this mob is using it too. **/
     @Override
     protected void updateAITasks() {
-		if(this.canFly()) flightNavigator.updateFlight();
+		if(this.useFlightNavigator()) flightNavigator.updateFlight();
         super.updateAITasks();
     }
     
@@ -927,18 +927,31 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	return 0.0F;
     }
     
+    /** ========== Use Flight Navigator ==========
+     * Returns true if this entity should use its flight navigator.
+     * Used for flying mobs and free-swimming mobs.
+     */
+    public boolean useFlightNavigator() {
+    	boolean freeSwimming = this.canSwim() && this.isInWater();
+    	if(this.canFly() && (!this.isInWater() || freeSwimming))
+    		return true;
+    	if(freeSwimming)
+    		return true;
+    	return false;
+    }
+    
     // ========== Move with Heading ==========
     /** Moves the entity, redirects to the flight navigator if this mob should use that instead. **/
     @Override
     public void moveEntityWithHeading(float moveStrafe, float moveForward) {
-    	if(!this.canFly()) super.moveEntityWithHeading(moveStrafe, moveForward);
+    	if(!this.useFlightNavigator()) super.moveEntityWithHeading(moveStrafe, moveForward);
     	else this.flightNavigator.flightMovement(moveStrafe, moveForward);
     }
     
     // ========== Clear Movement ==========
     /** Cuts off all movement for this update, will clear any pathfinder paths, works with the flight navigator too. **/
     public void clearMovement() {
-    	if(!canFly())
+    	if(!useFlightNavigator())
         	this.getNavigator().clearPathEntity();
         else
         	this.flightNavigator.clearTargetPosition(1.0D);
@@ -984,10 +997,19 @@ public abstract class EntityCreatureBase extends EntityLiving {
         }
     }
     
+    /** ========== Pushed By Water ==========
+     * Returns true if this mob should be pushed by water currents.
+     * This will usually return false if the mob canSwim()
+     */
+    @Override
+	public boolean isPushedByWater() {
+        return !this.canSwim();
+    }
+    
     // ========== Is Moving ==========
     /** Returns true if this entity is moving towards a destination (doesn't check if this entity is being pushed, etc though). **/
     public boolean isMoving() {
-    	if(!canFly())
+    	if(!this.useFlightNavigator())
         	return this.getNavigator().getPath() != null;
         else
         	return !this.flightNavigator.atTargetPosition();
@@ -1423,7 +1445,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Movement ==========
     /** Can this entity move currently? **/
     public boolean canMove() { return true; }
-    /** Can this entity move across land currently? **/
+    /** Can this entity move across land currently? Usually used for swimming mobs to prevent land movement. **/
     public boolean canWalk() { return true; }
     /** Can this entity free swim currently? (This doesn't stop the entity from moving in water but is used for smooth flight-like swimming). **/
     public boolean canSwim() { return false; }
@@ -1431,7 +1453,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public boolean canJump() { return true; }
     /** Can this entity climb currently? **/
     public boolean canClimb() { return false; }
-    /** Can this entity fly currently? **/
+    /** Can this entity fly currently? If true it will use the flight navigator. **/
     public boolean canFly() { return false; }
     /** Can this entity by tempted (usually lured by an item) currently? **/
     public boolean canBeTempted() { return true; }
@@ -1474,7 +1496,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Returns true if this entity is climbing a ladder or wall, can be used for animation. **/
     @Override
     public boolean isOnLadder() {
-    	if(this.canFly() || this.canSwim()) return false;
+    	if(this.useFlightNavigator() || this.canSwim()) return false;
     	if(this.canClimb())
     		return (this.dataWatcher.getWatchableObjectByte(WATCHER_ID.CLIMBING.id) & 1) != 0;
     	else
@@ -1503,7 +1525,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
      * **/
     @Override
     protected void fall(float fallDistance) {
-    	if(this.canFly())
+    	if(this.useFlightNavigator())
     		return;
     	fallDistance -= this.getFallResistance();
     	if(this.getFallResistance() >= 100)
@@ -1514,7 +1536,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Called when this mob is falling, fallDistance is how far the mob has fell so far and onGround is true when it has hit the ground. **/
     @Override
     protected void updateFallState(double fallDistance, boolean onGround) {
-    	if(!this.canFly()) super.updateFallState(fallDistance, onGround);
+    	if(!this.useFlightNavigator()) super.updateFallState(fallDistance, onGround);
     }
     
     // ========== Blocking ==========
@@ -1893,6 +1915,23 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	}
     	return false;
     }
+	
+	/** Returns true if the specified xyz coordinate is in water swimmable by this mob. (Checks for lava for lava creatures).
+	 * @param x Block x position.
+	 * @param y Block y position.
+	 * @param z Block z position.
+	 * @return True if swimmable.
+	 */
+	public boolean isSwimmable(int x, int y, int z) {
+		Block block = this.worldObj.getBlock(x, y, z);
+		if(block == null)
+			return false;
+		if(this.isLavaCreature && Material.lava.equals(block.getMaterial()))
+			return true;
+		else if(Material.water.equals(block.getMaterial()))
+			return true;
+		return false;
+	}
     
     /** Returns how many extra blocks this mob can fall for, the default is around 3.0F I think, if this is set to or above 100 then this mob wont receive falling damage at all. **/
     public float getFallResistance() {
@@ -2076,7 +2115,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Step ==========
     /** Plays an additional footstep sound that this creature makes when moving on the ground (all mobs use the block's stepping sounds by default). **/
     protected void getStepSound(int par1, int par2, int par3, int par4) {
-    	 if(this.canFly() || !this.hasStepSound) return;
+    	 if(this.useFlightNavigator() || !this.hasStepSound) return;
     	 this.playSound(AssetManager.getSound(this.mobInfo.name + "_step"), 0.25F, 1.0F);
     }
      

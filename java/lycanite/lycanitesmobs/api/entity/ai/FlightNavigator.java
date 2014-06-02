@@ -2,7 +2,6 @@ package lycanite.lycanitesmobs.api.entity.ai;
 
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.util.ChunkCoordinates;
@@ -68,11 +67,12 @@ public class FlightNavigator {
 	public boolean isTargetPositionValid(ChunkCoordinates targetPosition) {
 		if(targetPosition == null)
 			return true;
+		if(this.host.canSwim() && this.host.isSwimmable(targetPosition.posX, targetPosition.posY, targetPosition.posZ))
+			return true;
+		if(!this.host.canFly())
+			return false;
 		if(!this.host.worldObj.isAirBlock(targetPosition.posX, targetPosition.posY, targetPosition.posZ))
-			if(this.host.worldObj.getBlock(targetPosition.posX, targetPosition.posY, targetPosition.posZ).getMaterial().equals(Material.water))
-				return this.host.canSwim();
-			else
-				return false;
+			return false;
 		if(targetPosition.posY < 3)
 			return false;
 		return true;

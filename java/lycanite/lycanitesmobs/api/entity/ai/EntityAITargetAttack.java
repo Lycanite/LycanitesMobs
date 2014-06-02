@@ -161,7 +161,7 @@ public class EntityAITargetAttack extends EntityAITarget {
         
         double distance = this.getTargetDistance() - this.host.width;
         double heightDistance = 4.0D - this.host.height;
-        if(this.host.canFly()) heightDistance = this.getTargetDistance() - this.host.height;
+        if(this.host.useFlightNavigator()) heightDistance = this.getTargetDistance() - this.host.height;
         List possibleTargets = this.host.worldObj.selectEntitiesWithinAABB(this.targetClass, this.host.boundingBox.expand(distance, heightDistance, distance), this.targetSelector);
         Collections.sort(possibleTargets, this.targetSorter);
         

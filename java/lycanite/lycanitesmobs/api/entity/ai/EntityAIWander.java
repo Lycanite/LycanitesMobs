@@ -49,7 +49,7 @@ public class EntityAIWander extends EntityAIBase {
             return false;
         else {
         	int flight = 0;
-        	if(this.host.canFly()) flight = 20;
+        	if(this.host.useFlightNavigator()) flight = 20;
             Vec3 newTarget = RandomPositionGenerator.findRandomTarget(this.host, 10, 7, flight);
             if(newTarget == null)
                 return false;
@@ -67,7 +67,7 @@ public class EntityAIWander extends EntityAIBase {
    	//                Continue Executing
    	// ==================================================
     public boolean continueExecuting() {
-    	if(!host.canFly())
+    	if(!host.useFlightNavigator())
     		return !this.host.getNavigator().noPath();
     	else
         	return this.host.getRNG().nextInt(100) != 0 && !this.host.flightNavigator.atTargetPosition() && this.host.flightNavigator.isTargetPositionValid();
@@ -78,7 +78,7 @@ public class EntityAIWander extends EntityAIBase {
    	//                     Start
    	// ==================================================
     public void startExecuting() {
-    	if(!host.canFly())
+    	if(!host.useFlightNavigator())
     		this.host.getNavigator().tryMoveToXYZ(this.xPosition, this.yPosition, this.zPosition, this.speed);
     	else
     		host.flightNavigator.setTargetPosition(new ChunkCoordinates((int)xPosition, (int)yPosition, (int)zPosition), speed);

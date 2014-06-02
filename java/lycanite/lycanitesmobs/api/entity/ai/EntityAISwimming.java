@@ -43,7 +43,7 @@ public class EntityAISwimming extends EntityAIBase {
     public void updateTask() {
     	if(this.sink) {
 	    	double targetY = this.host.posY;
-	    	if(!this.host.canFly()) {
+	    	if(!this.host.useFlightNavigator()) {
 	    		if(!this.host.getNavigator().noPath())
 	    			targetY = this.host.getNavigator().getPath().getPosition(this.host).yCoord;
 	    	}

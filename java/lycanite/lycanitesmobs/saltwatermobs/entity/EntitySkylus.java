@@ -49,7 +49,7 @@ public class EntitySkylus extends EntityCreatureBase implements IMob {
         
         this.eggName = "SaltwaterEgg";
         
-        this.setWidth = 0.8F;
+        this.setWidth = 1.5F;
         this.setHeight = 1.6F;
         this.setupMob();
         
@@ -131,6 +131,18 @@ public class EntitySkylus extends EntityCreatureBase implements IMob {
 		
 		return super.getBlockPathWeight(par1, par2, par3);
     }
+	
+	// Swimming:
+	@Override
+	public boolean canSwim() {
+		return true;
+	}
+	
+	// Walking:
+	@Override
+	public boolean canWalk() {
+		return false;
+	}
     
     
     // ==================================================

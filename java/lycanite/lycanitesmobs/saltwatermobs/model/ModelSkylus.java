@@ -28,11 +28,14 @@ public class ModelSkylus extends ModelCustomObj {
     	parts = model.groupObjects;
     	
     	// Set Rotation Centers:
-    	setPartCenter("head", 0F, 0.5F, 0.5F);
-    	setPartCenter("body", 0F, 0.5F, 0F);
-    	setPartCenter("shell", 0F, 0.5F, 0F);
-    	setPartCenter("tentacle01", 0.25F, 1.4F, 0F);
-    	setPartCenter("tentacle02", 0.25F, 1.4F, 0F);
+    	setPartCenter("head", 0F, 1.2F, 0.9F);
+    	setPartCenter("body", 0F, 1F, 1F);
+    	setPartCenter("shell", 0F, 1F, 1F);
+    	setPartCenter("tentaclem", 0F, 0.7F, 0.9F);
+    	setPartCenter("tentaclel1", 0.2F, 0.4F, 0.9F);
+    	setPartCenter("tentaclel2", 0.4F, 0.6F, 0.9F);
+    	setPartCenter("tentacler1", -0.2F, 0.4F, 0.9F);
+    	setPartCenter("tentacler2", -0.4F, 0.6F, 0.9F);
     }
     
     
@@ -56,23 +59,25 @@ public class ModelSkylus extends ModelCustomObj {
     	float rotZ = 0F;
     	
     	// Idle:
-    	if(partName.equals("tentacle01")) {
-	        rotZ -= Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F + 0.05F);
-	        rotX -= Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
+    	if(partName.equals("tentaclem") || partName.equals("tentaclel2") || partName.equals("tentacler2")) {
+	        rotZ -= Math.toDegrees(MathHelper.cos(loop * 0.4F) * 0.05F + 0.05F);
+	        rotY -= Math.toDegrees(MathHelper.cos(loop * 0.05F) * 0.2F);
+	        rotX -= Math.toDegrees(MathHelper.sin(loop * 0.3F) * 0.05F);
     	}
-    	if(partName.equals("tentacle02")) {
-	        rotZ += Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F + 0.05F);
-	        rotX += Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
+    	if(partName.equals("tentaclel1") || partName.equals("tentacler1")) {
+	        rotZ += Math.toDegrees(MathHelper.cos(loop * 0.4F) * 0.05F + 0.05F);
+	        rotY += Math.toDegrees(MathHelper.cos(loop * 0.05F) * 0.2F);
+	        rotX += Math.toDegrees(MathHelper.sin(loop * 0.3F) * 0.05F);
     	}
     	
     	// Walking:
     	if(entity.onGround || entity.isInWater()) {
 	    	float walkSwing = 0.6F;
-	    	if(partName.equals("tentacle01")) {
+	    	if(partName.equals("tentaclem") || partName.equals("tentaclel2") || partName.equals("tentacler2")) {
 	    		rotX += Math.toDegrees(MathHelper.cos(time * walkSwing) * 1.0F * distance * 0.5F);
 				rotZ -= Math.toDegrees(MathHelper.cos(time * walkSwing) * 0.5F * distance * 0.5F);
 	    	}
-	    	if(partName.equals("tentacle02")) {
+	    	if(partName.equals("tentaclel1") || partName.equals("tentacler1")) {
 	    		rotX += Math.toDegrees(MathHelper.cos(time * walkSwing + (float)Math.PI) * 1.0F * distance * 0.5F);
 				rotZ += Math.toDegrees(MathHelper.cos(time * walkSwing + (float)Math.PI) * 0.5F * distance * 0.5F);
 	    	}
@@ -80,14 +85,14 @@ public class ModelSkylus extends ModelCustomObj {
 				
 		// Attack:
 		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
-	    	if(partName.equals("tentacle01"))
+	    	if(partName.equals("tentaclem") || partName.equals("tentaclel2") || partName.equals("tentacler2"))
 	    		rotate(0.0F, -25.0F, 0.0F);
-	    	if(partName.equals("tentacle02"))
+	    	if(partName.equals("tentaclel1") || partName.equals("tentacler1"))
 	    		rotate(0.0F, 25.0F, 0.0F);
 		}
 		
 		// Shell:
-		if(entity.getHealth() <= entity.getMaxHealth() / 2) {
+		if(partName.equals("shell") && entity.getHealth() <= entity.getMaxHealth() / 2) {
 	    	this.scale(0, 0, 0);
 		}
 		

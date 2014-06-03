@@ -52,7 +52,7 @@ public class EntityProjectileBase extends EntityThrowable {
 	
     
     // ==================================================
- 	//                   Update
+ 	//                      Update
  	// ==================================================
     @Override
     public void onUpdate() {
@@ -94,10 +94,28 @@ public class EntityProjectileBase extends EntityThrowable {
      		boolean doDamage = true;
  			if(movingObjectPosition.entityHit instanceof EntityLivingBase) {
  				EntityLivingBase owner = this.getThrower();
- 			    if(owner != null && owner instanceof EntityPlayer) {
- 			    	if(MinecraftForge.EVENT_BUS.post(new AttackEntityEvent((EntityPlayer)owner, movingObjectPosition.entityHit))) {
- 			    		doDamage = false;
- 			    	}
+ 			    if(owner != null) {
+ 			    	
+ 			    	// Player Damage Event:
+	 			    if(owner instanceof EntityPlayer) {
+	 			    	if(MinecraftForge.EVENT_BUS.post(new AttackEntityEvent((EntityPlayer)owner, movingObjectPosition.entityHit))) {
+	 			    		doDamage = false;
+	 			    	}
+	 			    }
+	 			    
+	 			    // Pet Attacks:
+	 			    if(owner instanceof EntityCreatureTameable) {
+	 			    	EntityCreatureTameable tamedOwner = (EntityCreatureTameable)owner;
+	 			    	// Friendly Fire:
+	 			    	if(tamedOwner.getOwner() == movingObjectPosition.entityHit)
+	 			    		doDamage = false;
+	 			    	// Pet Damage Event as Player Damage:
+	 			    	else if(tamedOwner.getOwner() instanceof EntityPlayer) {
+		 			    	if(MinecraftForge.EVENT_BUS.post(new AttackEntityEvent((EntityPlayer)tamedOwner.getOwner(), movingObjectPosition.entityHit))) {
+		 			    		doDamage = false;
+		 			    	}
+		 			    }
+	 			    }
  			    }
  			}
  			if(doDamage) {

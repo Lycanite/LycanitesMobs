@@ -12,6 +12,7 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerAttack;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerRevenge;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerThreats;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
@@ -72,6 +73,7 @@ public class EntityCinder extends EntityCreatureTameable implements IMob {
         	this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(ObjectManager.getMob("Ent")));
         if(ObjectManager.getMob("Trent") != null)
         	this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(ObjectManager.getMob("Trent")));
+        this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
     
     // ========== Stats ==========

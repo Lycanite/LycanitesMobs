@@ -18,6 +18,7 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerAttack;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerRevenge;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerThreats;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetParent;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITempt;
@@ -92,6 +93,7 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
 	        	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityJoustAlpha.class));
         }
         this.targetTasks.addTask(0, new EntityAITargetParent(this).setSightCheck(false).setDistance(32.0D));
+        this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
     
     // ========== Stats ==========

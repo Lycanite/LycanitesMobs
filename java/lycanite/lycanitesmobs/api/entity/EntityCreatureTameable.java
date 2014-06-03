@@ -414,7 +414,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
             if(this.rand.nextInt(3) == 0) {
                 this.setPlayerOwner(player);
                 String tameMessage = StatCollector.translateToLocal("message.pet.tamed");
-                tameMessage.replace("%creature%", this.getSpeciesName());
+                tameMessage.replace("%creature%", this.getSpeciesName()); //TODO %creature% in messages not working!
         		player.addChatMessage(new ChatComponentText(tameMessage));
             }
     	else

@@ -13,6 +13,7 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAIMate;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerAttack;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerRevenge;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerThreats;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITempt;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
@@ -74,6 +75,7 @@ public class EntityCacodemon extends EntityCreatureTameable {
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
+        this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
     
     // ========== Stats ==========

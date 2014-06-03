@@ -22,6 +22,7 @@ import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.plainsmobs.PlainsMobs;
 import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,7 +32,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
-public class EntityZoataur extends EntityCreatureTameable implements IGroupPredator {
+public class EntityZoataur extends EntityCreatureTameable implements IGroupPredator, IMob {
     
     // ==================================================
  	//                    Constructor

@@ -10,9 +10,17 @@ item.savagesummoningstaff.name=Savage Summoning Staff
 item.sturdysummoningstaff.name=Sturdy Summoning Staff
 #
 # GUIS
+# Beastiary:
 gui.beastiary.name=Beastiary
+gui.beastiary.empty=No Discovered Creatures
+gui.beastiary.soulgazerinfo=You currently do not have any creatures added to your Beastiary. To discover new creatures you must craft a Soulgazer and then use it on any creatures that you find.
+# Minion Manager:
 gui.minion.name=Minion Manager
+gui.minion.empty=No Summonable Creatures
+gui.minion.soulgazerinfo=You haven't added any creatures that can be summoned to your Beastiary yet. Keep searching, not every creature can be summoned.
+# Soulbound Pets:
 gui.soulboundpets.name=Soulbound Pets
+# Pet/Minion:
 gui.pet.sitting=Sitting
 gui.pet.movement=Movement
 gui.pet.follow=Follow
@@ -24,8 +32,8 @@ gui.pet.defensive=Defensive
 gui.pet.pvp=PVP
 #
 # Messages
-message.soulgazer.new=You have gained knowledge of a new creature! Check your Beastiary!
-message.soulgazer.summonable=You are now able to summon a new creature! You will need a Summon Staff.
+message.soulgazer.new=You have gained knowledge of the %creature%! Check your Beastiary!
+message.soulgazer.summonable=You are now able to summon the %creature%! You will need a Summoning Staff.
 message.soulgazer.known=You already have full knowledge of this creature.
 message.soulgazer.unknown=The Soulgazer finds nother special about this creature.
 message.pet.tamed=The %creature% seems to love you now!

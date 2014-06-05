@@ -1,3 +1,6 @@
+# Group Info
+mountainmobs.name=Mountain Creatures
+mountainmobs.description=High up in the rocky mountains these beasts roam, they have mastered climbing and are not afraid of heights.
 # Entites
 entity.mountainmobs.jabberwock.name=Jabberwock
 entity.mountainmobs.troll.name=Troll

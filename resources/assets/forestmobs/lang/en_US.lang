@@ -1,3 +1,6 @@
+# Group Info
+forestmobs.name=Forest Creatures
+forestmobs.description=Found in standard forests of most varieties, these creatures either thrive in threes and shrubs or are actually trees and shrubs!
 # Entites
 entity.forestmobs.ent.name=Ent
 entity.forestmobs.trent.name=Trent

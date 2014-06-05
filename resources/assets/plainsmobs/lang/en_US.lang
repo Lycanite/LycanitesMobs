@@ -1,3 +1,6 @@
+# Group Info
+plainsmobs.name=Plains Creatures
+plainsmobs.description=These animals thrive in the lush flatlands and traverse fields of green with ease.
 # Entites
 entity.plainsmobs.kobold.name=Kobold
 entity.plainsmobs.ventoraptor.name=Ventoraptor

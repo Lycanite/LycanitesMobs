@@ -36,7 +36,7 @@ public class GUIMinion extends GuiScreen {
 	int windowY;
 	
 	// ==================================================
-  	//                    Constructor
+  	//                      Opener
   	// ==================================================
 	public static void openToPlayer(EntityPlayer player, int editSet) {
 		if(player != null && player.worldObj != null)

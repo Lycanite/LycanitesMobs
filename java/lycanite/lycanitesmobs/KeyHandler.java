@@ -1,5 +1,6 @@
 package lycanite.lycanitesmobs;
 
+import lycanite.lycanitesmobs.api.gui.GUIBeastiary;
 import lycanite.lycanitesmobs.api.gui.GUIMinion;
 import lycanite.lycanitesmobs.api.gui.GUIMinionSelection;
 import lycanite.lycanitesmobs.api.packet.PacketGUIRequest;
@@ -18,8 +19,9 @@ public class KeyHandler {
 	public Minecraft mc;
 	
 	public KeyBinding mountAbility = new KeyBinding("Mount Ability", Keyboard.KEY_F, "Lycanites Mobs");
-	public KeyBinding mountInventory = new KeyBinding("Mount Inventory", Keyboard.KEY_G, "Lycanites Mobs");
-	public KeyBinding minionManager = new KeyBinding("Minion Manager", Keyboard.KEY_H, "Lycanites Mobs");
+	public KeyBinding mountInventory = new KeyBinding("Mount Inventory", Keyboard.KEY_H, "Lycanites Mobs");
+	public KeyBinding beastiary = new KeyBinding("Beastiary", Keyboard.KEY_T, "Lycanites Mobs");
+	public KeyBinding minionManager = new KeyBinding("Minion Manager", Keyboard.KEY_G, "Lycanites Mobs");
 	public KeyBinding minionSelection = new KeyBinding("Minion Selection", Keyboard.KEY_R, "Lycanites Mobs");
 	
 	// ==================================================
@@ -52,6 +54,13 @@ public class KeyHandler {
 		// Mount Inventory: Adds to control states.
 		if(this.mountInventory.isPressed()) {
 			controlStates += ExtendedPlayer.CONTROL_ID.MOUNT_INVENTORY.id;
+		}
+
+		// Beastiary: Opens GUI and sends data request packet.
+		if(this.beastiary.isPressed()) {
+			PacketGUIRequest packetGUIRequest = new PacketGUIRequest();
+			packetGUIRequest.readGUI(GuiHandler.PlayerGuiType.BEASTIARY.id);
+			GUIBeastiary.openToPlayer(this.mc.thePlayer);
 		}
 
 		// Minion Manager: Opens GUI and sends data request packet.

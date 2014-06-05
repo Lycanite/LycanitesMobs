@@ -1,3 +1,6 @@
+# Group Info
+arcticmobs.name=Arctic Creatures
+arcticmobs.description=Creatures of ice and wind, normally found in cold snowy areas such as Taigas or Icy Plains.
 # Entites
 entity.arcticmobs.reiver.name=Reiver
 entity.arcticmobs.frostweaver.name=Frostweaver

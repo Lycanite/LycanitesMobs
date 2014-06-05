@@ -97,6 +97,7 @@ public class LycanitesMobs implements ILycaniteMod {
 		
 		// ========== Register New 1.7.2 Vanilla Biomes Into Groups (Temporary until forge updates this) ==========
 		BiomeDictionary.registerBiomeType(BiomeGenBase.jungleEdge, BiomeDictionary.Type.JUNGLE);
+		BiomeDictionary.registerBiomeType(BiomeGenBase.jungleHills, BiomeDictionary.Type.JUNGLE);
 		BiomeDictionary.registerBiomeType(BiomeGenBase.deepOcean, BiomeDictionary.Type.WATER);
 		BiomeDictionary.registerBiomeType(BiomeGenBase.stoneBeach, BiomeDictionary.Type.BEACH);
 		BiomeDictionary.registerBiomeType(BiomeGenBase.coldBeach, BiomeDictionary.Type.BEACH);
@@ -111,8 +112,6 @@ public class LycanitesMobs implements ILycaniteMod {
 		BiomeDictionary.registerBiomeType(BiomeGenBase.mesa, BiomeDictionary.Type.DESERT);
 		BiomeDictionary.registerBiomeType(BiomeGenBase.mesaPlateau_F, BiomeDictionary.Type.DESERT);
 		BiomeDictionary.registerBiomeType(BiomeGenBase.mesaPlateau, BiomeDictionary.Type.DESERT);
-		BiomeDictionary.registerBiomeType(BiomeGenBase.jungleEdge, BiomeDictionary.Type.JUNGLE);
-		BiomeDictionary.registerBiomeType(BiomeGenBase.jungleEdge, BiomeDictionary.Type.JUNGLE);
 	}
 	
 	

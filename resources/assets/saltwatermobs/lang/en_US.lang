@@ -1,3 +1,6 @@
+# Group Info
+saltwatermobs.name=Saltwater Creatures
+saltwatermobs.description=These creatures are mostly aquatic but some can roam land, they roam the depths of ocean and the salty shores.
 # Entites
 entity.saltwatermobs.lacedon.name=Lacedon
 entity.saltwatermobs.skylus.name=Skylus

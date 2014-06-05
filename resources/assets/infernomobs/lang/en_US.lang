@@ -1,3 +1,6 @@
+# Group Info
+infernomobs.name=Inferno Creatures
+infernomobs.description=Beasts formed of fire lava, they can be found anywhere that is hot enough to melt rock or burn away nature!
 # Entites
 entity.infernomobs.cinder.name=Cinder
 entity.infernomobs.lobber.name=Lobber

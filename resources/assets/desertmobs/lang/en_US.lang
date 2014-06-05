@@ -1,3 +1,6 @@
+# Group Info
+desertmobs.name=Desert Creatures
+desertmobs.description=Roaming the hot, dry and sandy areas, these creatures are usually found in places such as Deserts and Mesa Canyons.
 # Entites
 entity.desertmobs.cryptzombie.name=Crypt Zombie
 entity.desertmobs.clink.name=Clink

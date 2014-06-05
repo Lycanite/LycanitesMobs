@@ -45,6 +45,9 @@ public class MobInfo {
 	/** A static ArrayList of all summonable creature names. **/
 	public static List<String> summonableCreatures = new ArrayList<String>();
 	
+	/** A static Name to Instance map of all mob groups (ILycaniteMod) **/
+	public static Map<String, ILycaniteMod> mobGroups = new HashMap<String, ILycaniteMod>();
+	
 	// ========== Per Mob Settings ==========
 	/** Mod Class **/
 	public ILycaniteMod mod;
@@ -138,6 +141,8 @@ public class MobInfo {
     // ==================================================
 	public MobInfo(ILycaniteMod mod, String name, Class entityClass, int eggBack, int eggFore, int summonCost) {
 		this.mod = mod;
+		if(!mobGroups.containsKey(mod.getModID()))
+			mobGroups.put(mod.getModID(), mod);
 		
 		this.name = name;
 		
@@ -201,6 +206,10 @@ public class MobInfo {
 	
 	public String getTitle() {
 		return StatCollector.translateToLocal("entity." + getRegistryName() + ".name");
+	}
+	
+	public String getDescription() {
+		return StatCollector.translateToLocal("entity." + getRegistryName() + ".description");
 	}
 	
 	

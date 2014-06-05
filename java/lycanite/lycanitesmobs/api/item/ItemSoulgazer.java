@@ -79,8 +79,16 @@ public class ItemSoulgazer extends ItemBase {
     		}
     	}
     	
-    	if(!player.worldObj.isRemote)
-    		player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("message.soulgazer.new")));
+    	if(!player.worldObj.isRemote) {
+    		String message = StatCollector.translateToLocal("message.soulgazer.new");
+    		message = message.replace("%creature%", mobInfo.getTitle());
+    		player.addChatMessage(new ChatComponentText(message));
+    		if(mobInfo.isSummonable()) {
+        		String summonMessage = StatCollector.translateToLocal("message.soulgazer.summonable");
+        		summonMessage = summonMessage.replace("%creature%", mobInfo.getTitle());
+        		player.addChatMessage(new ChatComponentText(summonMessage));
+    		}
+    	}
     	
     	playerExt.getBeastiary().addToKnowledgeList(new CreatureKnowledge(player, mobInfo.name, 1));
     	return true;

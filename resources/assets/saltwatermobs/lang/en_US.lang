@@ -3,7 +3,9 @@ saltwatermobs.name=Saltwater Creatures
 saltwatermobs.description=These creatures are mostly aquatic but some can roam land, they roam the depths of ocean and the salty shores.
 # Entites
 entity.saltwatermobs.lacedon.name=Lacedon
+entity.saltwatermobs.lacedon.description=Deadly aquatic creatures that induce the weight effect which usually drags their victim down to the bottom of the ocean. They are able to come onto land for a small amount of time and indefinitely if it is raining.
 entity.saltwatermobs.skylus.name=Skylus
+entity.saltwatermobs.skylus.description=Tough squid like creatures that form and live in tough shells. If damaged enough, their shells will break, this reduces their defense but allows them to move and strike at a quicker pace. Their attacks also expel ink causing temporary blindness.
 #
 # Items
 item.saltwaterspawn.name=Spawn

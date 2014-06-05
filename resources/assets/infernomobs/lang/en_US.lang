@@ -3,7 +3,9 @@ infernomobs.name=Inferno Creatures
 infernomobs.description=Beasts formed of fire lava, they can be found anywhere that is hot enough to melt rock or burn away nature!
 # Entites
 entity.infernomobs.cinder.name=Cinder
+entity.infernomobs.cinder.description=Violent fire spirits, Cinders like to incinerate everything.
 entity.infernomobs.lobber.name=Lobber
+entity.infernomobs.lobber.description=Large lava golems, Lobbers lurk within large lakes of lava and will throw lava at their target.
 #
 # Items
 item.infernospawn.name=Spawn

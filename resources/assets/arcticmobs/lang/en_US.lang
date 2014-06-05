@@ -3,7 +3,9 @@ arcticmobs.name=Arctic Creatures
 arcticmobs.description=Creatures of ice and wind, normally found in cold snowy areas such as Taigas or Icy Plains.
 # Entites
 entity.arcticmobs.reiver.name=Reiver
+entity.arcticmobs.reiver.description=Icy spirits that hurl forstbolts at anything they deem a threat.
 entity.arcticmobs.frostweaver.name=Frostweaver
+entity.arcticmobs.frostweaver.description=Foul spitting ice spiders, take heed as their spit will produce a temporary sticy frostweb.
 #
 # Items
 item.arcticspawn.name=Spawn

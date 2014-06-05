@@ -23,6 +23,7 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -80,7 +81,8 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("MakaMeatRaw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("MakaMeatCooked"))).setMinAmount(3).setMaxAmount(7));
+	    this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("MakaMeatRaw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("MakaMeatCooked"))).setMinAmount(3).setMaxAmount(7));
+	    this.drops.add(new DropRate(new ItemStack(Items.leather), 0.75F).setMinAmount(2).setMaxAmount(4));
 	}
 	
 	

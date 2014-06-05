@@ -3,10 +3,15 @@ junglemobs.name=Jungle Creatures
 junglemobs.description=Exotic creatures that thrive in the hot, humid and overgrown Jungles and Tropics of the world.
 # Entites
 entity.junglemobs.geken.name=Geken
+entity.junglemobs.geken.name=Venomous reptiles with excellent jumping abilities.
 entity.junglemobs.uvaraptor.name=Uvaraptor
+entity.junglemobs.uvaraptor.name=Colourful raptors with extreme jumping and gliding abilities. Can be tamed as useful high jumping mounts, can almost sustain flight.
 entity.junglemobs.concapede.name=Concapede
+entity.junglemobs.concapede.description=Strange beetles that connect to each other. The heads lead the way and are hostile at night with a poisonous bite. Heads will grow extra segments from behind and if fed vegetables, will become passive and wont defend their segments.
 entity.junglemobs.concapedesegment.name=Concapede Segment
+entity.junglemobs.concapedesegment.description=Strange beetles that connect to each other. Segments are usually attached to heads and can be grown by heads. If a segment is detatched from a head or another segment in front, it will eventually grow into a head. Segments alone are defenseless.
 entity.junglemobs.tarantula.name=Tarantula
+entity.junglemobs.tarantula.description=Poisonous jumping spiders that leave behind a trail of temporary sticky green webbing.
 #
 # Items
 item.junglespawn.name=Spawn

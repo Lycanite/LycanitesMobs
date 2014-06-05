@@ -3,13 +3,21 @@ desertmobs.name=Desert Creatures
 desertmobs.description=Roaming the hot, dry and sandy areas, these creatures are usually found in places such as Deserts and Mesa Canyons.
 # Entites
 entity.desertmobs.cryptzombie.name=Crypt Zombie
+entity.desertmobs.cryptzombie.description=Mummified corpses that lurk the desert. These act much like regular zombies but will inflict the hunger effect and also don't burn in the sun.
 entity.desertmobs.clink.name=Clink
+entity.desertmobs.clink.description=Wicked metallic creatures that rapidly grow metallic blades on their arms, they like fling these at their enemy.
 entity.desertmobs.crusk.name=Crusk
+entity.desertmobs.crusk.description=Large sandy stone snakes, they hide within soft groud and squirm out to strike. Smaller baby Crusks can be tamed, however they take a very long time to grow but make excellent protective pets.
 entity.desertmobs.joust.name=Joust
+entity.desertmobs.joust.description=Fierce desert animals, they can be farmed and love cactus green! They are usually peaceful but will bite back if hit, watch out for alphas!
 entity.desertmobs.joustalpha.name=Joust Alpha
+entity.desertmobs.joustalpha.description=Larger Jousts and leaders, they will attack other alphas on sight and will also command all none alphas, they are very hostile.
 entity.desertmobs.erepede.name=Erepede
+entity.desertmobs.erepede.description=Strange rock creatures, they fire rocky mud shots from their mouths which cause the weakness effect. Can be tamed and make excellent travel mounts, they move extremely fast on sand and can carry a lot of items and also offer their projectile attack.
 entity.desertmobs.gorgomite.name=Gorgomite
+entity.desertmobs.gorgomite.description=Small rock beetles, fairly weak but if given enough time, they will call nearby friends from the ground, before you know it, you eill be swarmed, so kill them quickly. They are scared of Manticores.
 entity.desertmobs.manticore.name=Manticore
+entity.desertmobs.manticore.description=Flying rock bats, they are fast and vicious little creatures and their bites will weaken you and induce hunger. They love to hunt Gorgomites.
 #
 # Items
 item.desertspawn.name=Spawn

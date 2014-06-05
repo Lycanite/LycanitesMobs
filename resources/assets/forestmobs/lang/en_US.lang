@@ -3,8 +3,11 @@ forestmobs.name=Forest Creatures
 forestmobs.description=Found in standard forests of most varieties, these creatures either thrive in threes and shrubs or are actually trees and shrubs!
 # Entites
 entity.forestmobs.ent.name=Ent
+entity.forestmobs.ent.description=Protectors of the forest, they will attack anything they deem a threat to the forest on sight, this means you. They regenerate in water and will drain health when attacking.
 entity.forestmobs.trent.name=Trent
+entity.forestmobs.trent.description=Large guardians of the forest, very much like Ents only much bigger and stronger. They will sometimes causes paralysis, drain health when attacking and regenerate from water.
 entity.forestmobs.shambler.name=Shambler
+entity.forestmobs.shambler.description=Overgrown shrub creatures. Shamblers regenerate from water and can inflict paralysis.
 #
 # Items
 item.forestspawn.name=Spawn

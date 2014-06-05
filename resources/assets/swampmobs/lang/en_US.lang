@@ -3,12 +3,19 @@ swampmobs.name=Swamp Creatures
 swampmobs.description=Found in damp marsh and muddy waters, these beasts can be very dangerous and are known for their many poisons. 
 # Entites
 entity.swampmobs.ghoulzombie.name=Ghoul Zombie
+entity.swampmobs.ghoulzombie.description=Foul poisonous zombies. They behave much like regular zombies, only a bit weaker but poisonous and faster.
 entity.swampmobs.dweller.name=Dweller
+entity.swampmobs.dweller.description=Water bound amphibions that will sliver onto land for a small time to attack, they will retreat when they get too dry and can die if on land for too long. They are incredibly fast and deadly in the water, also be careful during rain.
 entity.swampmobs.ettin.name=Ettin
+entity.swampmobs.ettin.description=Large twin headed monstrosities. Ettins are slow but pack a nasty blow. If you get too close during combat they will panic and destroy nearby soft blocks such as wood or dirt.
 entity.swampmobs.lurker.name=Lurker
+entity.swampmobs.lurker.description=Smart predators with a stealth ability. Lurkers are able to completely blend in with their enviroment. They will reveal themselves when moving fast, this is usually when they come in to attack, their bite will both poison and blind. Once inflicted, they will run away and hide, letting the poison do the work. Can be tamed as excellent pets, also great as Creeper guards!
 entity.swampmobs.eyewig.name=Eyewig
+entity.swampmobs.eyewig.description=Large insects known for their large eyes. In the dark they become hostile and can fire a poisonous laser from their eye! Their bite can also cause blindness! Can be tamed as useful mounts capable of climbing walls and moving quickly across the water surface.
 entity.swampmobs.aspid.name=Aspid
+entity.swampmobs.aspid.description=Peaceful retiles with strange growths on their backs. Aspids love mushrooms and can be farmed with them. Be careful however as they constantly emit a cloud of poison and usually leave a trail of this behind them.
 entity.swampmobs.remobra.name=Remobra
+entity.swampmobs.remobra.description=Flying serpents that spit poison, if there spit hits the ground, it will burst into a cloud of poison.
 #
 # Items
 item.swampspawn.name=Spawn

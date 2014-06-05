@@ -28,6 +28,7 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -90,7 +91,8 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
 	@Override
 	public void loadItemDrops() {
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("MakaMeatRaw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("MakaMeatCooked"))).setMaxAmount(6));
-	}
+        this.drops.add(new DropRate(new ItemStack(Items.leather), 0.5F).setMinAmount(1).setMaxAmount(3));
+    }
 	
 	
 	// ==================================================

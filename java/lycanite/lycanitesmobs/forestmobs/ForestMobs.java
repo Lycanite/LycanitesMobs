@@ -6,6 +6,7 @@ import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.api.info.MobInfo;
+import lycanite.lycanitesmobs.api.item.ItemTreat;
 import lycanite.lycanitesmobs.forestmobs.entity.EntityEnt;
 import lycanite.lycanitesmobs.forestmobs.entity.EntityShambler;
 import lycanite.lycanitesmobs.forestmobs.entity.EntityTrent;
@@ -15,7 +16,11 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -24,6 +29,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = ForestMobs.modid, name = ForestMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid)
 public class ForestMobs implements ILycaniteMod {
@@ -56,6 +62,8 @@ public class ForestMobs implements ILycaniteMod {
 		
 		// ========== Create Items ==========
 		ObjectManager.addItem("forestegg", new ItemForestEgg());
+
+		ObjectManager.addItem("shamblertreat", new ItemTreat("shamblertreat", this.domain));
 	}
 	
 	
@@ -71,7 +79,7 @@ public class ForestMobs implements ILycaniteMod {
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("forestegg"), new DispenserBehaviorMobEggCustom());
 		ObjectManager.addMob(new MobInfo(this, "ent", EntityEnt.class, 0x997700, 0x00FF22, 2).setSummonable(true));
-		ObjectManager.addMob(new MobInfo(this, "trent", EntityTrent.class, 0x663300, 0x00AA11, 6).setSummonable(true));
+		ObjectManager.addMob(new MobInfo(this, "trent", EntityTrent.class, 0x663300, 0x00AA11, 6).setSummonable(false));
 		ObjectManager.addMob(new MobInfo(this, "shambler", EntityShambler.class, 0xDDFF22, 0x005511, 6).setSummonable(false));
 		
 		// ========== Create Projectiles ==========
@@ -99,7 +107,12 @@ public class ForestMobs implements ILycaniteMod {
 		}
 		
 		// ========== Crafting ==========
-		// No recipes yet.
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("shamblertreat"), 1, 0),
+				new Object[] { "TTT", "BBT", "TTT",
+				Character.valueOf('T'), Blocks.vine,
+				Character.valueOf('B'), Items.reeds
+			}));
 		
 		// ========== Smelting ==========
 		//GameRegistry.addSmelting(ObjectManager.getItem("sauropodmeatraw").itemID, new ItemStack(ObjectManager.getItem("sauropodmeatcooked"), 1), 0.5f);

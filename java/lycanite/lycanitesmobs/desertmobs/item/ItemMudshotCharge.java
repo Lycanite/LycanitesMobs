@@ -26,7 +26,7 @@ public class ItemMudshotCharge extends Item {
     public ItemMudshotCharge() {
         super();
         setMaxStackSize(64);
-        setCreativeTab(LycanitesMobs.creativeTab);
+        setCreativeTab(LycanitesMobs.itemsTab);
         setUnlocalizedName(itemName);
     }
     

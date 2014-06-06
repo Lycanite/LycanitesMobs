@@ -1,7 +1,6 @@
 package lycanite.lycanitesmobs.api.item;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.LycanitesMobs;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -28,7 +27,6 @@ public class ItemScepter extends ItemBase {
         super();
         this.setMaxStackSize(1);
         this.setMaxDamage(this.getDurability());
-        this.setCreativeTab(LycanitesMobs.creativeTab);
     }
 	
     

@@ -25,7 +25,7 @@ public class ItemDoomfireball extends Item {
     public ItemDoomfireball() {
         super();
         setMaxStackSize(64);
-        setCreativeTab(LycanitesMobs.creativeTab);
+        setCreativeTab(LycanitesMobs.itemsTab);
         setUnlocalizedName("doomfirecharge");
     }
     

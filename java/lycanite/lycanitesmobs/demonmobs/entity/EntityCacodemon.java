@@ -63,7 +63,7 @@ public class EntityCacodemon extends EntityCreatureTameable {
         this.tasks.addTask(1, new EntityAIMate(this));
         this.tasks.addTask(2, this.aiSit);
         this.tasks.addTask(3, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
-        this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("HellfireCharge"))).setTemptDistanceMin(4.0D));
+        this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("cacodemontreat"))).setTemptDistanceMin(4.0D));
         this.tasks.addTask(5, new EntityAIAttackRanged(this).setSpeed(0.25D).setRate(80).setRange(40.0F).setMinChaseDistance(10.0F).setLongMemory(false));
         this.tasks.addTask(6, new EntityAIFollowParent(this));
         this.tasks.addTask(6, new EntityAIWander(this).setPauseRate(30));
@@ -177,7 +177,7 @@ public class EntityCacodemon extends EntityCreatureTameable {
     // ==================================================
     @Override
     public boolean isTamingItem(ItemStack itemstack) {
-        return itemstack.getItem() == ObjectManager.getItem("HellfireCharge");
+        return itemstack.getItem() == ObjectManager.getItem("cacodemontreat");
     }
     
     @Override

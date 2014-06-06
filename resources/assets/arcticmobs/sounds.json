@@ -35,6 +35,18 @@
         "category": "hostile",
 	"sounds": [{"name": "entity/frostweaver/step", "stream": false}]
     },
+    "entity.frostweaver.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/frostweaver/beg", "stream": false}]
+    },
+    "entity.frostweaver.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/frostweaver/tame", "stream": false}]
+    },
+    "entity.frostweaver.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/frostweaver/eat", "stream": false}]
+    },
     "projectile.frostbolt": {
         "category": "ambient",
 	"sounds": [{"name": "projectile/frostbolt", "stream": false}]

@@ -69,7 +69,7 @@ public class EntityUvaraptor extends EntityCreatureRideable implements IGroupPre
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIPlayerControl(this));
-        this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("ConcapedeMeatCooked"))).setTemptDistanceMin(4.0D));
+        this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("uvaraptortreat"))).setTemptDistanceMin(4.0D));
         this.tasks.addTask(5, new EntityAIAttackMelee(this).setTargetClass(EntityPlayer.class).setLongMemory(false));
         this.tasks.addTask(6, new EntityAIAttackMelee(this));
         this.tasks.addTask(7, new EntityAIFollowParent(this).setSpeed(1.0D));
@@ -237,9 +237,7 @@ public class EntityUvaraptor extends EntityCreatureRideable implements IGroupPre
     public boolean isTamingItem(ItemStack itemStack) {
     	if(itemStack == null)
     		return false;
-    	if(itemStack.getItem() != ObjectManager.getItem("ConcapedeMeatCooked"))
-    		return false;
-    	return true;
+    	return itemStack.getItem() == ObjectManager.getItem("uvaraptortreat");
     }
     
     @Override

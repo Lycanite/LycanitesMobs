@@ -26,7 +26,7 @@ public class ItemFrostboltCharge extends Item {
     public ItemFrostboltCharge() {
         super();
         setMaxStackSize(64);
-        setCreativeTab(LycanitesMobs.creativeTab);
+        setCreativeTab(LycanitesMobs.itemsTab);
         setUnlocalizedName("frostboltcharge");
     }
     

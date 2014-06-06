@@ -42,5 +42,13 @@
     "entity.skylus.attack": {
         "category": "hostile",
         "sounds": [{"name": "entity/skylus/attack", "stream": false}]
+    },
+    "entity.skylus.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/skylus/beg", "stream": false}]
+    },
+    "entity.skylus.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/skylus/tame", "stream": false}]
     }
 }

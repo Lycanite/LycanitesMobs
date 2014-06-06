@@ -26,7 +26,7 @@ public class ItemThrowingScythe extends Item {
     public ItemThrowingScythe() {
         super();
         setMaxStackSize(64);
-        setCreativeTab(LycanitesMobs.creativeTab);
+        setCreativeTab(LycanitesMobs.itemsTab);
         setUnlocalizedName(itemName);
     }
     

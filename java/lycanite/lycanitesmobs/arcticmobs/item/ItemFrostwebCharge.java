@@ -26,7 +26,7 @@ public class ItemFrostwebCharge extends Item {
     public ItemFrostwebCharge() {
         super();
         setMaxStackSize(64);
-        setCreativeTab(LycanitesMobs.creativeTab);
+        setCreativeTab(LycanitesMobs.itemsTab);
         setUnlocalizedName("frostwebcharge");
     }
     

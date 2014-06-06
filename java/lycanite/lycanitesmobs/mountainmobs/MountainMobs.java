@@ -89,7 +89,7 @@ public class MountainMobs implements ILycaniteMod {
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("mountainegg"), new DispenserBehaviorMobEggCustom());
 		ObjectManager.addMob(new MobInfo(this, "jabberwock", EntityJabberwock.class, 0x662222, 0xFFFFAA, 2).setSummonable(true));
-		ObjectManager.addMob(new MobInfo(this, "troll", EntityTroll.class, 0x007711, 0xEEEEEE, 6).setSummonable(true));
+		ObjectManager.addMob(new MobInfo(this, "troll", EntityTroll.class, 0x007711, 0xEEEEEE, 6).setSummonable(false));
 		
 		// ========== Create Projectiles ==========
 		ObjectManager.addProjectile("boulderblast", EntityBoulderBlast.class, ObjectManager.getItem("boulderblastcharge"), new DispenserBehaviorBoulderBlast());

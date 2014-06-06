@@ -26,7 +26,7 @@ public class ItemDevilstar extends Item {
     public ItemDevilstar() {
         super();
         setMaxStackSize(64);
-        setCreativeTab(LycanitesMobs.creativeTab);
+        setCreativeTab(LycanitesMobs.itemsTab);
         setUnlocalizedName(itemName);
     }
     

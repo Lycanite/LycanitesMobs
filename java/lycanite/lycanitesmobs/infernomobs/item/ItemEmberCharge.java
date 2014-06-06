@@ -26,7 +26,7 @@ public class ItemEmberCharge extends Item {
     public ItemEmberCharge() {
         super();
         setMaxStackSize(64);
-        setCreativeTab(LycanitesMobs.creativeTab);
+        setCreativeTab(LycanitesMobs.itemsTab);
         setUnlocalizedName("embercharge");
     }
     

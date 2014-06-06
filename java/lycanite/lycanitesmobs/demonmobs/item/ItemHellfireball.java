@@ -26,7 +26,7 @@ public class ItemHellfireball extends Item {
     public ItemHellfireball() {
         super();
         setMaxStackSize(64);
-        setCreativeTab(LycanitesMobs.creativeTab);
+        setCreativeTab(LycanitesMobs.itemsTab);
         setUnlocalizedName("hellfirecharge");
     }
     

@@ -64,6 +64,7 @@ public class BlockBase extends Block {
 	// ==================================================
 	//                      Place
 	// ==================================================
+	@Override
 	public void onBlockAdded(World world, int x, int y, int z) {
 		// Initial Block Ticking:
 		if(this.tickRate > 0)
@@ -131,6 +132,12 @@ public class BlockBase extends Block {
     @Override
     public boolean func_149698_L() {
     	return super.func_149698_L();
+    }
+    
+    // ========== Should Tick ==========
+    @Override
+    public boolean getTickRandomly() {
+        return this.tickRate > 0;
     }
     
     

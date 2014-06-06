@@ -5,6 +5,8 @@ import lycanite.lycanitesmobs.api.entity.EntityPortal;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.info.SpawnInfo;
+import lycanite.lycanitesmobs.api.item.CreativeTabCreatures;
+import lycanite.lycanitesmobs.api.item.CreativeTabItems;
 import lycanite.lycanitesmobs.api.item.ItemSoulgazer;
 import lycanite.lycanitesmobs.api.item.ItemStaffBlood;
 import lycanite.lycanitesmobs.api.item.ItemStaffSavage;
@@ -57,7 +59,8 @@ public class LycanitesMobs implements ILycaniteMod {
 	public static CommonProxy proxy;
 	
 	// Creative Tab:
-	public static final CreativeTabs creativeTab = new CreativeTab(CreativeTabs.getNextID(), modid);
+	public static final CreativeTabs itemsTab = new CreativeTabItems(CreativeTabs.getNextID(), modid);
+	public static final CreativeTabs creaturesTab = new CreativeTabCreatures(CreativeTabs.getNextID(), modid);
 	
 	// Texture Path:
 	public static String texturePath = "mods/lycanitesmobs/";

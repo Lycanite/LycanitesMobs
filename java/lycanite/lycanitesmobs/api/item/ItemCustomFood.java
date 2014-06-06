@@ -19,12 +19,12 @@ public class ItemCustomFood extends ItemFood {
   	// ==================================================
 	public ItemCustomFood(String setItemName, String setDomain, String setTexturePath, int feed, float saturation) {
 		super(feed, saturation, false);
-		itemName = setItemName;
-		domain = setDomain;
-		texturePath = setTexturePath;
-        setMaxStackSize(64);
-        setCreativeTab(LycanitesMobs.creativeTab);
-        setUnlocalizedName(itemName);
+		this.itemName = setItemName;
+		this.domain = setDomain;
+		this.texturePath = setTexturePath;
+		this.setMaxStackSize(64);
+		this.setCreativeTab(LycanitesMobs.itemsTab);
+		this.setUnlocalizedName(itemName);
 	}
 	public ItemCustomFood(String setItemName, String setDomain, int feed, float saturation) {
 		this(setItemName, setDomain, setItemName.toLowerCase(), feed, saturation);

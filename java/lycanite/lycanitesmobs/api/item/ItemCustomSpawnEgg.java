@@ -44,7 +44,7 @@ public class ItemCustomSpawnEgg extends Item {
     public ItemCustomSpawnEgg() {
         super();
         this.setHasSubtypes(true);
-        setCreativeTab(LycanitesMobs.creativeTab);
+        setCreativeTab(LycanitesMobs.creaturesTab);
         setUnlocalizedName("customspawnegg");
     }
     

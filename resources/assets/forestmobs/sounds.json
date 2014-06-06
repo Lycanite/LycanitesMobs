@@ -74,5 +74,17 @@
     "entity.shambler.attack": {
         "category": "hostile",
         "sounds": [{"name": "entity/shambler/attack", "stream": false}]
+    },
+    "entity.shambler.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/shambler/beg", "stream": false}]
+    },
+    "entity.shambler.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/shambler/tame", "stream": false}]
+    },
+    "entity.shambler.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/shambler/eat", "stream": false}]
     }
 }

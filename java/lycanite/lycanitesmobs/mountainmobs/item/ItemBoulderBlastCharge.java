@@ -25,7 +25,7 @@ public class ItemBoulderBlastCharge extends Item {
     public ItemBoulderBlastCharge() {
         super();
         setMaxStackSize(64);
-        setCreativeTab(LycanitesMobs.creativeTab);
+        setCreativeTab(LycanitesMobs.itemsTab);
         setUnlocalizedName("boulderblastcharge");
     }
     

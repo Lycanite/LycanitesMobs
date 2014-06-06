@@ -26,7 +26,7 @@ public class ItemMagmaCharge extends Item {
     public ItemMagmaCharge() {
         super();
         setMaxStackSize(64);
-        setCreativeTab(LycanitesMobs.creativeTab);
+        setCreativeTab(LycanitesMobs.itemsTab);
         setUnlocalizedName(itemName);
     }
     

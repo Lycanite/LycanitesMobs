@@ -9,6 +9,7 @@ import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
+import lycanite.lycanitesmobs.api.item.ItemTreat;
 import lycanite.lycanitesmobs.demonmobs.block.BlockHellfire;
 import lycanite.lycanitesmobs.demonmobs.dispenser.DispenserBehaviorDemonicLightning;
 import lycanite.lycanitesmobs.demonmobs.dispenser.DispenserBehaviorDevilstar;
@@ -43,6 +44,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import cpw.mods.fml.common.Mod;
@@ -93,10 +95,18 @@ public class DemonMobs implements ILycaniteMod {
 		
 		ObjectManager.addItem("pinkymeatraw", new ItemCustomFood("pinkymeatraw", domain, 4, 0.5F).setPotionEffect(Potion.wither.id, 30, 0, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("pinkymeatraw"));
+		
 		ObjectManager.addItem("pinkymeatcooked", new ItemCustomFood("pinkymeatcooked", domain, 7, 0.7F));
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("pinkymeatcooked"));
+		OreDictionary.registerOre("beef", ObjectManager.getItem("pinkymeatcooked"));
+		
 		ObjectManager.addItem("devillasagna", new ItemCustomFood("devillasagna", domain, 7, 0.7F).setPotionEffect(Potion.damageBoost.id, 60, 0, 1.0F).setAlwaysEdible().setMaxStackSize(16));
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("devillasagna"));
+
+		ObjectManager.addItem("pinkytreat", new ItemTreat("pinkytreat", this.domain));
+		ObjectManager.addItem("cacodemontreat", new ItemTreat("cacodemontreat", this.domain));
+		
+		ObjectManager.addItem("demoniclightningscepter", new ItemScepterDemonicLightning());
 		
 		ObjectManager.addItem("doomfirescepter", new ItemScepterDoomfire());
 		ObjectManager.addItem("hellfirescepter", new ItemScepterHellfire());
@@ -195,6 +205,20 @@ public class DemonMobs implements ILycaniteMod {
 					ObjectManager.getItem("pinkymeatcooked")
 				}
 			));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("pinkytreat"), 1, 0),
+				new Object[] { "TTT", "BBT", "TTT",
+				Character.valueOf('T'), ObjectManager.getItem("hellfirecharge"),
+				Character.valueOf('B'), Items.bone
+			}));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("cacodemontreat"), 1, 0),
+				new Object[] { "TTT", "BBT", "TTT",
+				Character.valueOf('T'), ObjectManager.getItem("cookedpinkymeat"),
+				Character.valueOf('B'), Items.bone
+			}));
 		
 		// ========== Smelting ==========
 		GameRegistry.addSmelting(ObjectManager.getItem("pinkymeatraw"), new ItemStack(ObjectManager.getItem("pinkymeatcooked"), 1), 0.5f);

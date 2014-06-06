@@ -8,6 +8,7 @@ import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
+import lycanite.lycanitesmobs.api.item.ItemTreat;
 import lycanite.lycanitesmobs.plainsmobs.entity.EntityKobold;
 import lycanite.lycanitesmobs.plainsmobs.entity.EntityMaka;
 import lycanite.lycanitesmobs.plainsmobs.entity.EntityMakaAlpha;
@@ -25,6 +26,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -70,10 +73,15 @@ public class PlainsMobs implements ILycaniteMod {
 		
 		ObjectManager.addItem("makameatraw", new ItemCustomFood("makameatraw", domain, 2, 0.5F).setPotionEffect(Potion.weakness.id, 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("makameatraw"));
+		
 		ObjectManager.addItem("makameatcooked", new ItemCustomFood("makameatcooked", domain, 6, 0.7F));
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("makameatcooked"));
+		OreDictionary.registerOre("pork", ObjectManager.getItem("makameatcooked"));
+		
 		ObjectManager.addItem("bulwarkburger", new ItemCustomFood("bulwarkburger", domain, 6, 0.7F).setPotionEffect(Potion.field_76444_x.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16)); // Absorbtion
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("bulwarkburger"));
+
+		ObjectManager.addItem("ventoraptortreat", new ItemTreat("ventoraptortreat", this.domain));
 	}
 	
 	
@@ -129,6 +137,13 @@ public class PlainsMobs implements ILycaniteMod {
 					Items.bread
 				}
 			));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("ventoraptortreat"), 1, 0),
+				new Object[] { "TTT", "BBT", "TTT",
+				Character.valueOf('T'), ObjectManager.getItem("cookedmakameat"),
+				Character.valueOf('B'), Items.bone
+			}));
 		
 		// ========== Smelting ==========
 		GameRegistry.addSmelting(ObjectManager.getItem("makameatraw"), new ItemStack(ObjectManager.getItem("makameatcooked"), 1), 0.5f);

@@ -8,6 +8,7 @@ import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
+import lycanite.lycanitesmobs.api.item.ItemTreat;
 import lycanite.lycanitesmobs.junglemobs.block.BlockQuickWeb;
 import lycanite.lycanitesmobs.junglemobs.entity.EntityConcapedeHead;
 import lycanite.lycanitesmobs.junglemobs.entity.EntityConcapedeSegment;
@@ -28,6 +29,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -73,10 +76,15 @@ public class JungleMobs implements ILycaniteMod {
 		
 		ObjectManager.addItem("concapedemeatraw", new ItemCustomFood("concapedemeatraw", domain, 2, 0.5F).setPotionEffect(Potion.moveSlowdown.id, 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("concapedemeatraw"));
+		
 		ObjectManager.addItem("concapedemeatcooked", new ItemCustomFood("concapedemeatcooked", domain, 6, 0.7F));
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("concapedemeatcooked"));
+		OreDictionary.registerOre("chicken", ObjectManager.getItem("concapedemeatcooked"));
+		
 		ObjectManager.addItem("tropicalcurry", new ItemCustomFood("tropicalcurry", domain, 6, 0.7F).setPotionEffect(Potion.jump.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("tropicalcurry"));
+
+		ObjectManager.addItem("uvaraptortreat", new ItemTreat("uvaraptortreat", this.domain));
 
 		// ========== Create Blocks ==========
 		ObjectManager.addBlock("quickweb", new BlockQuickWeb());
@@ -137,6 +145,13 @@ public class JungleMobs implements ILycaniteMod {
 					ObjectManager.getItem("concapedemeatcooked")
 				}
 			));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("uvaraptortreat"), 1, 0),
+				new Object[] { "TTT", "BBT", "TTT",
+				Character.valueOf('T'), ObjectManager.getItem("cookedconcapedemeat"),
+				Character.valueOf('B'), Items.bone
+			}));
 		
 		// ========== Smelting ==========
 		GameRegistry.addSmelting(ObjectManager.getItem("concapedemeatraw"), new ItemStack(ObjectManager.getItem("concapedemeatcooked"), 1), 0.5f);

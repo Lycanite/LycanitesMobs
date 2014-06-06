@@ -3,20 +3,29 @@ package lycanite.lycanitesmobs.forestmobs.entity;
 import java.util.HashMap;
 
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIBeg;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowOwner;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerAttack;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerRevenge;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerThreats;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAITempt;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
+import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.forestmobs.ForestMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -29,7 +38,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
-public class EntityShambler extends EntityCreatureBase implements IMob {
+public class EntityShambler extends EntityCreatureTameable implements IMob {
     
     // ==================================================
  	//                    Constructor
@@ -48,6 +57,8 @@ public class EntityShambler extends EntityCreatureBase implements IMob {
         this.spreadFire = true;
         
         this.eggName = "ForestEgg";
+        this.canGrow = true;
+        this.babySpawnChance = 0.01D;
         
         this.setWidth = 1.5F;
         this.setHeight = 3.5F;
@@ -57,14 +68,21 @@ public class EntityShambler extends EntityCreatureBase implements IMob {
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(3, new EntityAIAttackMelee(this).setTargetClass(EntityPlayer.class).setLongMemory(false));
         this.tasks.addTask(4, new EntityAIAttackMelee(this));
+        this.tasks.addTask(5, this.aiSit);
+        this.tasks.addTask(6, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
+        this.tasks.addTask(7, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("shamblertreat"))).setTemptDistanceMin(2.0D));
         this.tasks.addTask(8, new EntityAIWander(this));
-        this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
-        this.tasks.addTask(11, new EntityAILookIdle(this));
+        this.tasks.addTask(10, new EntityAIBeg(this));
+        this.tasks.addTask(11, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
+        this.tasks.addTask(12, new EntityAILookIdle(this));
+        this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
+        this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(EntityTrent.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class).setSightCheck(false));
         if(ObjectManager.getMob("Cinder") != null)
         	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(ObjectManager.getMob("Cinder")));
+        this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
     
     // ========== Stats ==========
@@ -166,5 +184,49 @@ public class EntityShambler extends EntityCreatureBase implements IMob {
         	if(potionEffect.getPotionID() == ObjectManager.getPotionEffect("Paralysis").id) return false;
         super.isPotionApplicable(potionEffect);
         return true;
+    }
+	
+	
+	// ==================================================
+  	//                      Breeding
+  	// ==================================================
+    // ========== Create Child ==========
+    @Override
+	public EntityCreatureAgeable createChild(EntityCreatureAgeable baby) {
+		return new EntityShambler(this.worldObj);
+	}
+    
+    
+    // ==================================================
+    //                     Pet Control
+    // ==================================================
+    public boolean petControlsEnabled() { return true; }
+    
+    
+    // ==================================================
+    //                       Taming
+    // ==================================================
+    @Override
+    public boolean isTamingItem(ItemStack itemstack) {
+        return itemstack.getItem() == ObjectManager.getItem("shamblertreat");
+    }
+    
+    @Override
+    public void setTamed(boolean setTamed) {
+    	if(setTamed)
+    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(40.0D);
+    	else
+    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D);
+    	super.setTamed(setTamed);
+    }
+    
+    
+    // ==================================================
+    //                       Healing
+    // ==================================================
+    // ========== Healing Item ==========
+    @Override
+    public boolean isHealingItem(ItemStack testStack) {
+    	return ObjectLists.inItemList("vegetables", testStack) || ObjectLists.inItemList("fruit", testStack);
     }
 }

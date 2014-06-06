@@ -1,17 +1,20 @@
-package lycanite.lycanitesmobs;
+package lycanite.lycanitesmobs.api.item;
 
+import lycanite.lycanitesmobs.LycanitesMobs;
+import lycanite.lycanitesmobs.ObjectManager;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class CreativeTab extends CreativeTabs {
+public class CreativeTabItems extends CreativeTabs {
 	
 	// ========== Constructor ==========
-	public CreativeTab(int tabID, String modID) {
+	public CreativeTabItems(int tabID, String modID) {
 		super(tabID, modID);
-		LanguageRegistry.instance().addStringLocalization("itemGroup." + modID, LycanitesMobs.name);
+		LanguageRegistry.instance().addStringLocalization("itemGroup." + modID, LycanitesMobs.name + ": Items");
 	}
 	
 	// ========== Tab Icon ==========
@@ -25,6 +28,6 @@ public class CreativeTab extends CreativeTabs {
 		else if(ObjectManager.getItem("PoisonGland") != null)
 			return ObjectManager.getItem("PoisonGland");
 		else
-			return null; //TODO Get vanilla item!
+			return Items.bone;
 	}
 }

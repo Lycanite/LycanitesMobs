@@ -87,7 +87,7 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("AspidMeatRaw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("AspidMeatCooked"))).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("AspidMeatRaw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("AspidMeatCooked"))).setMinAmount(2).setMaxAmount(5));
         this.drops.add(new DropRate(new ItemStack(Items.slime_ball), 0.25F));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("PoisonGland")), 0.25F));
 	}

@@ -72,7 +72,7 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
         this.tasks.addTask(3, new EntityAIAttackMelee(this).setLongMemory(false));
         this.tasks.addTask(4, this.aiSit);
         this.tasks.addTask(5, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
-        this.tasks.addTask(6, new EntityAITempt(this).setItem(new ItemStack(Items.fermented_spider_eye)).setTemptDistanceMin(2.0D));
+        this.tasks.addTask(6, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("lurkertreat"))).setTemptDistanceMin(2.0D));
         this.tasks.addTask(7, new EntityAIMate(this));
         this.tasks.addTask(8, new EntityAIFollowParent(this));
         this.tasks.addTask(9, new EntityAIWander(this));
@@ -248,7 +248,7 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
     // ==================================================
     @Override
     public boolean isTamingItem(ItemStack itemstack) {
-        return itemstack.getItem() == Items.fermented_spider_eye;
+        return itemstack.getItem() == ObjectManager.getItem("lurkertreat");
     }
     
     @Override

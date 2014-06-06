@@ -26,7 +26,7 @@ public class ItemDemonicLightning extends Item {
     public ItemDemonicLightning() {
         super();
         setMaxStackSize(64);
-        setCreativeTab(LycanitesMobs.creativeTab);
+        setCreativeTab(LycanitesMobs.itemsTab);
         setUnlocalizedName(itemName);
     }
     

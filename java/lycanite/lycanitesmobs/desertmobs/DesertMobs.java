@@ -8,6 +8,7 @@ import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
+import lycanite.lycanitesmobs.api.item.ItemTreat;
 import lycanite.lycanitesmobs.desertmobs.dispenser.DispenserBehaviorMudshot;
 import lycanite.lycanitesmobs.desertmobs.dispenser.DispenserBehaviorThrowingScythe;
 import lycanite.lycanitesmobs.desertmobs.entity.EntityClink;
@@ -36,6 +37,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import cpw.mods.fml.common.Mod;
@@ -83,10 +85,16 @@ public class DesertMobs implements ILycaniteMod {
 		
 		ObjectManager.addItem("joustmeatraw", new ItemCustomFood("joustmeatraw", domain, 2, 0.5F).setPotionEffect(Potion.moveSlowdown.id, 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("joustmeatraw"));
+		
 		ObjectManager.addItem("joustmeatcooked", new ItemCustomFood("joustmeatcooked", domain, 6, 0.7F));
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("joustmeatcooked"));
+		OreDictionary.registerOre("chicken", ObjectManager.getItem("joustmeatcooked"));
+		
 		ObjectManager.addItem("ambercake", new ItemCustomFood("ambercake", domain, 6, 0.7F).setPotionEffect(Potion.moveSpeed.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("ambercake"));
+
+		ObjectManager.addItem("crusktreat", new ItemTreat("crusktreat", this.domain));
+		ObjectManager.addItem("erepedetreat", new ItemTreat("erepedetreat", this.domain));
 		
 		ObjectManager.addItem("mudshotcharge", new ItemMudshotCharge());
 		ObjectManager.addItem("scythescepter", new ItemScepterScythe());
@@ -172,6 +180,20 @@ public class DesertMobs implements ILycaniteMod {
 					ObjectManager.getItem("joustmeatcooked")
 				}
 			));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("crusktreat"), 1, 0),
+				new Object[] { "TTT", "BBT", "TTT",
+				Character.valueOf('T'), ObjectManager.getItem("cookedjoustmeat"),
+				Character.valueOf('B'), Items.bone
+			}));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("erepedetreat"), 1, 0),
+				new Object[] { "TTT", "BBT", "TTT",
+				Character.valueOf('T'), Items.gold_ingot,
+				Character.valueOf('B'), Items.bone
+			}));
 		
 		// ========== Smelting ==========
 		GameRegistry.addSmelting(ObjectManager.getItem("joustmeatraw"), new ItemStack(ObjectManager.getItem("joustmeatcooked"), 1), 0.5f);

@@ -26,7 +26,7 @@ public class ItemPoisonGland extends Item {
     public ItemPoisonGland() {
         super();
         setMaxStackSize(64);
-        setCreativeTab(LycanitesMobs.creativeTab);
+        setCreativeTab(LycanitesMobs.itemsTab);
         setUnlocalizedName("poisongland");
     }
     

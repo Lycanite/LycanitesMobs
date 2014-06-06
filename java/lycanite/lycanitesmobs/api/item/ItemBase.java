@@ -24,7 +24,7 @@ public class ItemBase extends Item {
     public ItemBase() {
         super();
         this.setMaxStackSize(64);
-        this.setCreativeTab(LycanitesMobs.creativeTab);
+        this.setCreativeTab(LycanitesMobs.itemsTab);
         this.textureName = this.itemName.toLowerCase();
     }
 	

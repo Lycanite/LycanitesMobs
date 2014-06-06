@@ -9,6 +9,7 @@ import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
+import lycanite.lycanitesmobs.api.item.ItemTreat;
 import lycanite.lycanitesmobs.swampmobs.block.BlockPoisonCloud;
 import lycanite.lycanitesmobs.swampmobs.dispenser.DispenserBehaviorPoisonRay;
 import lycanite.lycanitesmobs.swampmobs.dispenser.DispenserBehaviorVenomShot;
@@ -39,6 +40,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import cpw.mods.fml.common.Mod;
@@ -85,10 +87,16 @@ public class SwampMobs implements ILycaniteMod {
 		
 		ObjectManager.addItem("aspidmeatraw", new ItemCustomFood("aspidmeatraw", domain, 2, 0.5F).setPotionEffect(Potion.poison.id, 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("aspidmeatraw"));
+		
 		ObjectManager.addItem("aspidmeatcooked", new ItemCustomFood("aspidmeatcooked", domain, 6, 0.7F));
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("aspidmeatcooked"));
+		OreDictionary.registerOre("beef", ObjectManager.getItem("aspidmeatcooked"));
+		
 		ObjectManager.addItem("mosspie", new ItemCustomFood("mosspie", domain, 6, 0.7F).setPotionEffect(Potion.regeneration.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("mosspie"));
+
+		ObjectManager.addItem("lurkertreat", new ItemTreat("lurkertreat", this.domain));
+		ObjectManager.addItem("eyewigtreat", new ItemTreat("eyewigtreat", this.domain));
 		
 		ObjectManager.addItem("poisongland", new ItemPoisonGland());
 		ObjectManager.addItem("poisonrayscepter", new ItemScepterPoisonRay());
@@ -169,10 +177,33 @@ public class SwampMobs implements ILycaniteMod {
 				new ItemStack(ObjectManager.getItem("mosspie"), 1, 0),
 				new Object[] {
 					Blocks.vine,
-					Items.fermented_spider_eye,
+					Blocks.red_mushroom,
 					ObjectManager.getItem("aspidmeatcooked")
 				}
 			));
+		
+		GameRegistry.addRecipe(new ShapelessOreRecipe(
+				new ItemStack(ObjectManager.getItem("mosspie"), 1, 0),
+				new Object[] {
+					Blocks.vine,
+					Blocks.brown_mushroom,
+					ObjectManager.getItem("aspidmeatcooked")
+				}
+			));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("ventoraptortreat"), 1, 0),
+				new Object[] { "TTT", "BBT", "TTT",
+				Character.valueOf('T'), ObjectManager.getItem("cookedaspidmeat"),
+				Character.valueOf('B'), Items.bone
+			}));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("eyewigtreat"), 1, 0),
+				new Object[] { "TTT", "BBT", "TTT",
+				Character.valueOf('T'), ObjectManager.getItem("poisongland"),
+				Character.valueOf('B'), Items.bone
+			}));
 		
 		// ========== Smelting ==========
 		GameRegistry.addSmelting(ObjectManager.getItem("aspidmeatraw"), new ItemStack(ObjectManager.getItem("aspidmeatcooked"), 1), 0.5f);

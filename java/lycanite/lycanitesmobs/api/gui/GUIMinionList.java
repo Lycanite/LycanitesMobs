@@ -5,7 +5,6 @@ import java.util.Map;
 
 import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.api.info.MobInfo;
-import lycanite.lycanitesmobs.api.info.SummonSet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import cpw.mods.fml.client.GuiScrollingList;
@@ -20,12 +19,7 @@ public class GUIMinionList extends GuiScrollingList {
 	public GUIMinionList(GUIMinion parentGUI, ExtendedPlayer playerExt, int width, int height, int top, int bottom, int left, int entryHeight) {
 		super(Minecraft.getMinecraft(), width, height, top, bottom, left, entryHeight);
 		this.parentGUI = parentGUI;
-		int minionIndex = 0;
-		for(String minionName : playerExt.getBeastiary().creatureKnowledgeList.keySet()) {
-			if(SummonSet.isSummonableCreature(minionName)) {
-				this.minionList.put(minionIndex++, minionName);
-			}
-		}
+		this.minionList = playerExt.getBeastiary().getSummonableList();
 	}
 	
 	

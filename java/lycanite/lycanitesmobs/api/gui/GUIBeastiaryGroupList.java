@@ -33,7 +33,7 @@ public class GUIBeastiaryGroupList extends GuiScrollingList {
 		int groupIndex = 0;
 		for(String groupName : MobInfo.mobGroups.keySet()) {
 			ILycaniteMod group = MobInfo.mobGroups.get(groupName);
-			if(group != null) {
+			if(group != null && parentGUI.playerExt.beastiary.hasCreatureFromGroup(group)) {
 				this.groupList.put(groupIndex++, group);
 			}
 		}

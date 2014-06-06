@@ -85,10 +85,11 @@ public class DesertMobs implements ILycaniteMod {
 		
 		ObjectManager.addItem("joustmeatraw", new ItemCustomFood("joustmeatraw", domain, 2, 0.5F).setPotionEffect(Potion.moveSlowdown.id, 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("joustmeatraw"));
+		OreDictionary.registerOre("listAllchickenraw", ObjectManager.getItem("joustmeatraw"));
 		
 		ObjectManager.addItem("joustmeatcooked", new ItemCustomFood("joustmeatcooked", domain, 6, 0.7F));
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("joustmeatcooked"));
-		OreDictionary.registerOre("chicken", ObjectManager.getItem("joustmeatcooked"));
+		OreDictionary.registerOre("listAllchickencooked", ObjectManager.getItem("joustmeatcooked"));
 		
 		ObjectManager.addItem("ambercake", new ItemCustomFood("ambercake", domain, 6, 0.7F).setPotionEffect(Potion.moveSpeed.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("ambercake"));
@@ -184,7 +185,7 @@ public class DesertMobs implements ILycaniteMod {
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("crusktreat"), 1, 0),
 				new Object[] { "TTT", "BBT", "TTT",
-				Character.valueOf('T'), ObjectManager.getItem("cookedjoustmeat"),
+				Character.valueOf('T'), ObjectManager.getItem("joustmeatcooked"),
 				Character.valueOf('B'), Items.bone
 			}));
 		

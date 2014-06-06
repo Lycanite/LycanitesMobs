@@ -1,10 +1,8 @@
 package lycanite.lycanitesmobs.api.gui;
 
-import java.lang.reflect.Field;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
@@ -49,23 +47,15 @@ public abstract class GUITab extends GuiButton {
             int tabX = this.xPosition;
             int tabY = this.yPosition;
             
-            if(mc.currentScreen != null && mc.currentScreen instanceof GuiContainer) {
-                try {
-	            	Field field = GuiContainer.class.getDeclaredField("guiLeft");
-	                field.setAccessible(true);
-					tabX += (Integer)field.get(mc.currentScreen);
-
-	            	field = GuiContainer.class.getDeclaredField("xSize");
-	                field.setAccessible(true);
-					tabX += (Integer)field.get(mc.currentScreen);
-					tabX -= tabWidth * (this.tabID + 1);
-					tabX -= 4;
-					
-	            	field = GuiContainer.class.getDeclaredField("guiTop");
-	                field.setAccessible(true);
-					tabY += (Integer)field.get(mc.currentScreen);
-					tabY -= ySize;
-				} catch (Exception e) {}
+            if(mc.currentScreen != null && mc.currentScreen instanceof GuiInventory) {
+            	GuiInventory guiInventory = (GuiInventory)mc.currentScreen;
+            	GuiInventorySnooper guiInventorySnooper = new GuiInventorySnooper(mc.thePlayer);
+            	tabX += (guiInventory.width / 2) + (guiInventorySnooper.getGUIXSize() / 2);
+    			tabX -= tabWidth * (this.tabID + 1);
+    			tabX -= 4;
+    			
+    			tabY += (guiInventory.height / 2) - (guiInventorySnooper.getGUIYSize() / 2);
+    			tabY -= ySize; 
             }
 
             mc.renderEngine.bindTexture(this.texture);
@@ -95,24 +85,16 @@ public abstract class GUITab extends GuiButton {
         int ySize = this.enabled ? tabWidth : tabHeight;
         int tabX = this.xPosition;
         int tabY = this.yPosition;
-        
-        if(mc.currentScreen != null && mc.currentScreen instanceof GuiContainer) {
-            try {
-            	Field field = GuiContainer.class.getDeclaredField("guiLeft");
-                field.setAccessible(true);
-				tabX += (Integer)field.get(mc.currentScreen);
-
-            	field = GuiContainer.class.getDeclaredField("xSize");
-                field.setAccessible(true);
-				tabX += (Integer)field.get(mc.currentScreen);
-				tabX -= tabWidth * (this.tabID + 1);
-				tabX -= 4;
-				
-            	field = GuiContainer.class.getDeclaredField("guiTop");
-                field.setAccessible(true);
-				tabY += (Integer)field.get(mc.currentScreen);
-				tabY -= ySize;
-			} catch (Exception e) {}
+        	
+    	if(mc.currentScreen != null && mc.currentScreen instanceof GuiInventory) {
+        	GuiInventory guiInventory = (GuiInventory)mc.currentScreen;
+        	GuiInventorySnooper guiInventorySnooper = new GuiInventorySnooper(mc.thePlayer);
+        	tabX += (guiInventory.width / 2) + (guiInventorySnooper.getGUIXSize() / 2);
+			tabX -= tabWidth * (this.tabID + 1);
+			tabX -= 4;
+			
+			tabY += (guiInventory.height / 2) - (guiInventorySnooper.getGUIYSize() / 2);
+			tabY -= ySize; 
         }
         
         boolean inWindow = this.enabled && this.visible && mouseX >= tabX && mouseY >= tabY && mouseX < tabX + this.width && mouseY < tabY + this.height;

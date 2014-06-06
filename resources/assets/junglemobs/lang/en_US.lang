@@ -18,6 +18,7 @@ item.junglespawn.name=Spawn
 item.concapedemeatraw.name=Raw Concapede Meat
 item.concapedemeatcooked.name=Cooked Concapede Meat
 item.tropicalcurry.name=Tropical Curry
+item.uvaraptortreat.name=Uvaraptor Treat
 #
 # Blocks
 tile.quickweb.name=Quickweb

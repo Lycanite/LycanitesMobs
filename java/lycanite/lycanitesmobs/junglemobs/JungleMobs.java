@@ -76,10 +76,11 @@ public class JungleMobs implements ILycaniteMod {
 		
 		ObjectManager.addItem("concapedemeatraw", new ItemCustomFood("concapedemeatraw", domain, 2, 0.5F).setPotionEffect(Potion.moveSlowdown.id, 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("concapedemeatraw"));
+		OreDictionary.registerOre("listAllchickenraw", ObjectManager.getItem("concapedemeatraw"));
 		
 		ObjectManager.addItem("concapedemeatcooked", new ItemCustomFood("concapedemeatcooked", domain, 6, 0.7F));
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("concapedemeatcooked"));
-		OreDictionary.registerOre("chicken", ObjectManager.getItem("concapedemeatcooked"));
+		OreDictionary.registerOre("listAllchickencooked", ObjectManager.getItem("concapedemeatcooked"));
 		
 		ObjectManager.addItem("tropicalcurry", new ItemCustomFood("tropicalcurry", domain, 6, 0.7F).setPotionEffect(Potion.jump.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("tropicalcurry"));
@@ -149,7 +150,7 @@ public class JungleMobs implements ILycaniteMod {
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("uvaraptortreat"), 1, 0),
 				new Object[] { "TTT", "BBT", "TTT",
-				Character.valueOf('T'), ObjectManager.getItem("cookedconcapedemeat"),
+				Character.valueOf('T'), ObjectManager.getItem("concapedemeatcooked"),
 				Character.valueOf('B'), Items.bone
 			}));
 		

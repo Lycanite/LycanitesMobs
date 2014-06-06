@@ -87,10 +87,11 @@ public class SwampMobs implements ILycaniteMod {
 		
 		ObjectManager.addItem("aspidmeatraw", new ItemCustomFood("aspidmeatraw", domain, 2, 0.5F).setPotionEffect(Potion.poison.id, 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("aspidmeatraw"));
+		OreDictionary.registerOre("listAllbeefraw", ObjectManager.getItem("aspidmeatraw"));
 		
 		ObjectManager.addItem("aspidmeatcooked", new ItemCustomFood("aspidmeatcooked", domain, 6, 0.7F));
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("aspidmeatcooked"));
-		OreDictionary.registerOre("beef", ObjectManager.getItem("aspidmeatcooked"));
+		OreDictionary.registerOre("listAllbeefcooked", ObjectManager.getItem("aspidmeatcooked"));
 		
 		ObjectManager.addItem("mosspie", new ItemCustomFood("mosspie", domain, 6, 0.7F).setPotionEffect(Potion.regeneration.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("mosspie"));
@@ -192,9 +193,9 @@ public class SwampMobs implements ILycaniteMod {
 			));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("ventoraptortreat"), 1, 0),
+				new ItemStack(ObjectManager.getItem("lurkertreat"), 1, 0),
 				new Object[] { "TTT", "BBT", "TTT",
-				Character.valueOf('T'), ObjectManager.getItem("cookedaspidmeat"),
+				Character.valueOf('T'), ObjectManager.getItem("aspidmeatcooked"),
 				Character.valueOf('B'), Items.bone
 			}));
 		

@@ -95,18 +95,17 @@ public class DemonMobs implements ILycaniteMod {
 		
 		ObjectManager.addItem("pinkymeatraw", new ItemCustomFood("pinkymeatraw", domain, 4, 0.5F).setPotionEffect(Potion.wither.id, 30, 0, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("pinkymeatraw"));
+		OreDictionary.registerOre("listAllbeefraw", ObjectManager.getItem("pinkymeatraw"));
 		
 		ObjectManager.addItem("pinkymeatcooked", new ItemCustomFood("pinkymeatcooked", domain, 7, 0.7F));
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("pinkymeatcooked"));
-		OreDictionary.registerOre("beef", ObjectManager.getItem("pinkymeatcooked"));
+		OreDictionary.registerOre("listAllbeefcooked", ObjectManager.getItem("pinkymeatcooked"));
 		
 		ObjectManager.addItem("devillasagna", new ItemCustomFood("devillasagna", domain, 7, 0.7F).setPotionEffect(Potion.damageBoost.id, 60, 0, 1.0F).setAlwaysEdible().setMaxStackSize(16));
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("devillasagna"));
 
 		ObjectManager.addItem("pinkytreat", new ItemTreat("pinkytreat", this.domain));
 		ObjectManager.addItem("cacodemontreat", new ItemTreat("cacodemontreat", this.domain));
-		
-		ObjectManager.addItem("demoniclightningscepter", new ItemScepterDemonicLightning());
 		
 		ObjectManager.addItem("doomfirescepter", new ItemScepterDoomfire());
 		ObjectManager.addItem("hellfirescepter", new ItemScepterHellfire());
@@ -216,7 +215,7 @@ public class DemonMobs implements ILycaniteMod {
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("cacodemontreat"), 1, 0),
 				new Object[] { "TTT", "BBT", "TTT",
-				Character.valueOf('T'), ObjectManager.getItem("cookedpinkymeat"),
+				Character.valueOf('T'), ObjectManager.getItem("pinkymeatcooked"),
 				Character.valueOf('B'), Items.bone
 			}));
 		

@@ -12,5 +12,6 @@ public class ItemTreat extends ItemBase {
 		this.domain = setDomain;
         this.setMaxStackSize(1);
         this.textureName = this.itemName.toLowerCase();
+        this.setUnlocalizedName(this.itemName);
     }
 }

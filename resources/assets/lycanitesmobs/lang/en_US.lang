@@ -10,6 +10,9 @@ item.savagesummoningstaff.name=Savage Summoning Staff
 item.sturdysummoningstaff.name=Sturdy Summoning Staff
 #
 # GUIS
+# Creative Tab names:
+itemGroup.lycanitesmobs.items=Lycanites Mobs: Items
+itemGroup.lycanitesmobs.creatures=Lycanites Mobs: Creatures
 # Beastiary:
 gui.beastiary.name=Beastiary
 gui.beastiary.empty=No Creatures

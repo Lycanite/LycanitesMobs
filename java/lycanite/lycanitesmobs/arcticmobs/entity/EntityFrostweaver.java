@@ -150,6 +150,12 @@ public class EntityFrostweaver extends EntityCreatureTameable implements IMob {
     
     
     // ==================================================
+    //                     Pet Control
+    // ==================================================
+    public boolean petControlsEnabled() { return true; }
+    
+    
+    // ==================================================
    	//                     Immunities
    	// ==================================================
     @Override

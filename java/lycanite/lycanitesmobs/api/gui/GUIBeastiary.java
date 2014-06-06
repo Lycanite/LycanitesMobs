@@ -22,12 +22,12 @@ import org.lwjgl.opengl.GL11;
 public class GUIBeastiary extends GuiScreen {
 	public EntityPlayer player;
 	public ExtendedPlayer playerExt;
-	public int halfX;
-	public int halfY;
 	public int centerX;
 	public int centerY;
 	public int windowWidth;
 	public int windowHeight;
+	public int halfX;
+	public int halfY;
 	public int windowX;
 	public int windowY;
 	
@@ -119,6 +119,7 @@ public class GUIBeastiary extends GuiScreen {
 	protected void drawGuiContainerForegroundLayer(int x, int y, float f) {
 		boolean hasSomeKnowledge = this.playerExt.beastiary.creatureKnowledgeList.size() > 0;
 		this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.beastiary.name"), this.windowX + 24, this.windowY + 8, 0xFFFFFF);
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
 		// Draw Creature Entry:
 		if(this.getSelectedCreature() != null && this.creaturePreviewEntity != null && hasSomeKnowledge) {
@@ -127,7 +128,6 @@ public class GUIBeastiary extends GuiScreen {
 			int creatureX = this.centerX + (this.halfX / 2);
 			int creatureY = this.windowY + 32 + creatureSize;
 			// X, Y, Scale, RotX, RotY, RotHead, EntityLivingBase
-	        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GuiInventory.func_147046_a(creatureX, creatureY, creatureScale, (float)(creatureX) - x, (float)(creatureY) - y, this.creaturePreviewEntity);
 			
 			this.fontRendererObj.drawString(this.getSelectedCreature().getTitle(), this.centerX + 8, this.windowY + 8, 0xFFFFFF);
@@ -193,8 +193,13 @@ public class GUIBeastiary extends GuiScreen {
 	// ==================================================
   	//                 Creature Selection
   	// ==================================================
+	public void selectCategory(String category) {
+		this.playerExt.beastiaryCategory = category; 
+	}
+	
 	public void selectGroup(ILycaniteMod group) {
 		this.playerExt.beastiaryGroup = group;
+		this.playerExt.beastiaryCategory = "group"; 
 		if(this.creatureList != null) {
 			this.creatureList.updateList();
 			this.selectCreature(null);

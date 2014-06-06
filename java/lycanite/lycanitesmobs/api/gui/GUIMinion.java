@@ -26,14 +26,17 @@ public class GUIMinion extends GuiScreen {
 	public int editSet;
 	public SummonSet summonSet;
 	
+	public int minionListSize = 0;
 	public GuiScrollingList list;
 	
-	int centerX;
-	int centerY;
-	int windowWidth;
-	int windowHeight;
-	int windowX;
-	int windowY;
+	public int centerX;
+	public int centerY;
+	public int windowWidth;
+	public int windowHeight;
+	public int halfX;
+	public int halfY;
+	public int windowX;
+	public int windowY;
 	
 	// ==================================================
   	//                      Opener
@@ -61,6 +64,8 @@ public class GUIMinion extends GuiScreen {
 		this.playerExt = ExtendedPlayer.getForPlayer(player);
 		this.editSet = editSet;
 		this.summonSet = this.playerExt.getSummonSet(editSet);
+		
+		this.minionListSize = this.playerExt.getBeastiary().getSummonableList().size();
 	}
 	
 	
@@ -74,21 +79,25 @@ public class GUIMinion extends GuiScreen {
         this.centerY = this.height / 2;
 		this.windowWidth = 176;
         this.windowHeight = 166;
+        this.halfX = this.windowWidth / 2;
+        this.halfY = this.windowHeight / 2;
         this.windowX = this.centerX - (this.windowWidth / 2);
         this.windowY = this.centerY - (this.windowHeight / 2);
 		this.drawControls();
 		
 		// Creature List:
-        int buttonSpacing = 2;
-		this.list = new GUIMinionList(this, this.playerExt,
-				(this.windowWidth / 2) - (buttonSpacing * 2),
-				this.windowHeight - 16 - (buttonSpacing * 2),
-				this.windowY + 52,
-				this.windowY + 16 + this.windowHeight - 16 - (buttonSpacing * 2),
-				this.windowX + (buttonSpacing * 2),
-				20
-			);
-		this.list.registerScrollButtons(this.buttonList, 51, 52);
+		if(this.hasSummonableMinions()) {
+	        int buttonSpacing = 2;
+			this.list = new GUIMinionList(this, this.playerExt,
+					(this.windowWidth / 2) - (buttonSpacing * 2),
+					this.windowHeight - 16 - (buttonSpacing * 2),
+					this.windowY + 52,
+					this.windowY + 16 + this.windowHeight - 16 - (buttonSpacing * 2),
+					this.windowX + (buttonSpacing * 2),
+					20
+				);
+			this.list.registerScrollButtons(this.buttonList, 51, 52);
+		}
 	}
 	
 	
@@ -102,7 +111,8 @@ public class GUIMinion extends GuiScreen {
         this.drawGuiContainerForegroundLayer();
         
         // Creature List:
-		this.list.drawScreen(x, y, f);
+        if(this.list != null)
+        	this.list.drawScreen(x, y, f);
         super.drawScreen(x, y, f);
 	}
 	
@@ -111,7 +121,27 @@ public class GUIMinion extends GuiScreen {
   	//                    Foreground
   	// ==================================================
 	protected void drawGuiContainerForegroundLayer() {
-		this.getFontRenderer().drawString(StatCollector.translateToLocal("gui.minion.name"), this.windowX + 52, this.windowY + 6, 0xFFFFFF);
+		if(this.hasSummonableMinions()) {
+			this.getFontRenderer().drawString(StatCollector.translateToLocal("gui.minion.name"), this.windowX + 52, this.windowY + 6, 0xFFFFFF);
+			return;
+		}
+		
+		boolean hasSomeKnowledge = this.playerExt.beastiary.creatureKnowledgeList.size() > 0;
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		
+		if(hasSomeKnowledge) {
+			this.getFontRenderer().drawString(StatCollector.translateToLocal("gui.minion.empty"), this.windowX + 18, this.windowY + 6, 0xFFFFFF);
+			this.fontRendererObj.drawSplitString(StatCollector.translateToLocal("gui.minion.soulgazerinfo"), this.windowX + 8, this.windowY + 24, this.windowWidth - 16, 0xFFFFFF);
+		}
+		
+		else {
+			this.getFontRenderer().drawString(StatCollector.translateToLocal("gui.beastiary.empty"), this.windowX + 52, this.windowY + 6, 0xFFFFFF);
+			this.fontRendererObj.drawSplitString(StatCollector.translateToLocal("gui.beastiary.soulgazerinfo"), this.windowX + 8, this.windowY + 24, this.windowWidth - 16, 0xFFFFFF);
+			int recipeWidth = 108;
+			int recipeHeight = 54;
+			this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIBeastiary"));
+	        this.drawTexturedModalRect(this.windowX + (this.windowWidth / 2) - (recipeWidth / 2), this.windowY + this.windowHeight - recipeHeight - 4, 0, 256 - recipeHeight, recipeWidth, recipeHeight);
+		}
     }
 	
 	
@@ -130,6 +160,8 @@ public class GUIMinion extends GuiScreen {
   	//                    Controls
   	// ==================================================
 	protected void drawControls() {
+		if(!this.hasSummonableMinions()) return;
+		
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         int buttonSpacing = 2;
         int buttonWidth = 32;
@@ -175,6 +207,8 @@ public class GUIMinion extends GuiScreen {
     }
 	
 	public void updateControls() {
+		if(!this.hasSummonableMinions()) return;
+		
         for(Object buttonObj : this.buttonList) {
         	if(buttonObj instanceof GuiButton) {
         		GuiButton button = (GuiButton)buttonObj;
@@ -251,6 +285,14 @@ public class GUIMinion extends GuiScreen {
 	
 	public String getSelectedMinion() {
 		return this.summonSet.summonType;
+	}
+	
+	
+	// ==================================================
+  	//                     Summoning
+  	// ==================================================
+	public boolean hasSummonableMinions() {
+		return this.minionListSize > 0;
 	}
 	
 	

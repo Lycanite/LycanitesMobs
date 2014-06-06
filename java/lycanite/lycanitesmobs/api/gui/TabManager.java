@@ -23,16 +23,17 @@ public class TabManager {
     
     public static void addTabsToInventory (GuiScreen gui) {
         if(gui.getClass() == GuiInventory.class) {
-            try {
-            	
-            Field field = GuiScreen.class.getDeclaredField("buttonList");
-            field.setAccessible(true);
-            List buttonList = (List)field.get(gui);
-            buttonList.clear();
-            addTabsToList(buttonList);
-            field.set(gui, buttonList);
-            
-			} catch (Exception e) {
+        	
+        	GuiInventorySnooper guiInventorySnooper = new GuiInventorySnooper(mc.thePlayer);
+        	
+        	try {
+            	Field field = GuiScreen.class.getDeclaredField(guiInventorySnooper.getButtonListFieldName());
+	            field.setAccessible(true);
+	            List buttonList = (List)field.get(gui);
+	            buttonList.clear();
+	            addTabsToList(buttonList);
+	            field.set(gui, buttonList);
+			} catch(Exception e) {
 				LycanitesMobs.printWarning("", "A problem occured when adding custom inventory tabs:");
 				e.printStackTrace();
 			}

@@ -59,8 +59,8 @@ public class LycanitesMobs implements ILycaniteMod {
 	public static CommonProxy proxy;
 	
 	// Creative Tab:
-	public static final CreativeTabs itemsTab = new CreativeTabItems(CreativeTabs.getNextID(), modid);
-	public static final CreativeTabs creaturesTab = new CreativeTabCreatures(CreativeTabs.getNextID(), modid);
+	public static final CreativeTabs itemsTab = new CreativeTabItems(CreativeTabs.getNextID(), modid + ".items");
+	public static final CreativeTabs creaturesTab = new CreativeTabCreatures(CreativeTabs.getNextID(), modid + ".creatures");
 	
 	// Texture Path:
 	public static String texturePath = "mods/lycanitesmobs/";

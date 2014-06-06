@@ -28,6 +28,7 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 	public Beastiary beastiary;
 	public ILycaniteMod beastiaryGroup;
 	public MobInfo beastiaryCreature;
+	public String beastiaryCategory;
 	
 	public long currentTick = 0;
 	public boolean needsFirstSync = true;

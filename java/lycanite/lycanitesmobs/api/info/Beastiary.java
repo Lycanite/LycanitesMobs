@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.ILycaniteMod;
 import lycanite.lycanitesmobs.api.packet.PacketBeastiary;
 import lycanite.lycanitesmobs.api.packet.PacketCreatureKnowledge;
 import net.minecraft.entity.player.EntityPlayer;
@@ -44,6 +45,37 @@ public class Beastiary {
 		if(this.creatureKnowledgeList.get(creatureName).completion < 1)
 			return false;
 		return true;
+	}
+	
+	/**
+	 * Used to determine if any creatures from the specific group are in the players beastiary.
+	 * @param group Group to check with.
+	 * @return True if the player has at least one creature form the specific group.
+	 */
+	public boolean hasCreatureFromGroup(ILycaniteMod group) {
+		if(this.creatureKnowledgeList.size() == 0)
+			return false;
+		for(Entry<String, CreatureKnowledge> creatureKnowledgeEntry : this.creatureKnowledgeList.entrySet()) {
+			if(creatureKnowledgeEntry.getValue() != null)
+				if(creatureKnowledgeEntry.getValue().creatureInfo.mod == group)
+					return true;
+		}
+		return false;
+	}
+	
+	
+    // ==================================================
+    //                     Summoning
+    // ==================================================
+	public Map<Integer, String> getSummonableList() {
+		Map<Integer, String> minionList = new HashMap<Integer, String>();
+		int minionIndex = 0;
+		for(String minionName : this.creatureKnowledgeList.keySet()) {
+			if(SummonSet.isSummonableCreature(minionName)) {
+				minionList.put(minionIndex++, minionName);
+			}
+		}
+		return minionList;
 	}
 	
 	

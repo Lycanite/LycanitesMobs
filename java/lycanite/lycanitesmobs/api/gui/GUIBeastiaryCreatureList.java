@@ -71,7 +71,9 @@ public class GUIBeastiaryCreatureList extends GuiScrollingList {
 		MobInfo mobInfo = this.creatureList.get(index);
 		if(mobInfo == null) return;
 		this.parentGUI.getFontRenderer().drawString(mobInfo.getTitle(), this.left + 18 , boxTop + 4, 0xFFFFFF);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(mobInfo.getIcon());
-		this.parentGUI.drawImage(this.left, boxTop, 0, 0, 16, 16, 0.0625F, 0.0625F);
+		if(mobInfo.getIcon() != null) {
+			Minecraft.getMinecraft().getTextureManager().bindTexture(mobInfo.getIcon());
+			this.parentGUI.drawImage(this.left, boxTop, 0, 0, 16, 16, 0.0625F, 0.0625F);
+		}
 	}
 }

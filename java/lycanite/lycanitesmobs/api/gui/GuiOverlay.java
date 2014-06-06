@@ -39,14 +39,6 @@ public class GuiOverlay extends Gui {
 		int sWidth = scaledresolution.getScaledWidth();
         int sHeight = scaledresolution.getScaledHeight();
 		
-		// ========== Extra Tabs ==========
-		// TODO Inventory tabs! - Find a place to render these!
-        //if(this.mc.currentScreen instanceof GuiInventory) {
-        	//GuiInventory guiInventory = (GuiInventory)this.mc.currentScreen;
-        	//GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			//this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIInventoryCreature"));
-        //}
-		
 		if(event.type != ElementType.EXPERIENCE)
 	      return;
 		

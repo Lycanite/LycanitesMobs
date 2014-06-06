@@ -3,9 +3,12 @@ package lycanite.lycanitesmobs;
 import lycanite.lycanitesmobs.api.gui.GUIBeastiary;
 import lycanite.lycanitesmobs.api.gui.GUIMinion;
 import lycanite.lycanitesmobs.api.gui.GUIMinionSelection;
+import lycanite.lycanitesmobs.api.gui.TabManager;
 import lycanite.lycanitesmobs.api.packet.PacketGUIRequest;
 import lycanite.lycanitesmobs.api.packet.PacketPlayerControl;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.settings.KeyBinding;
 
 import org.lwjgl.input.Keyboard;
@@ -16,23 +19,28 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 
 public class KeyHandler {
+	public static KeyHandler instance;
 	public Minecraft mc;
+	
+	public boolean inventoryOpen = false;
 	
 	public KeyBinding mountAbility = new KeyBinding("Mount Ability", Keyboard.KEY_F, "Lycanites Mobs");
 	public KeyBinding mountInventory = new KeyBinding("Mount Inventory", Keyboard.KEY_H, "Lycanites Mobs");
-	public KeyBinding beastiary = new KeyBinding("Beastiary", Keyboard.KEY_T, "Lycanites Mobs");
-	public KeyBinding minionManager = new KeyBinding("Minion Manager", Keyboard.KEY_G, "Lycanites Mobs");
-	public KeyBinding minionSelection = new KeyBinding("Minion Selection", Keyboard.KEY_R, "Lycanites Mobs");
+	public KeyBinding beastiary = new KeyBinding("Beastiary", Keyboard.KEY_G, "Lycanites Mobs");
+	public KeyBinding minionManager = new KeyBinding("Minion Manager", Keyboard.KEY_H, "Lycanites Mobs");
+	public KeyBinding minionSelection = new KeyBinding("Minion Selection", Keyboard.KEY_J, "Lycanites Mobs");
 	
 	// ==================================================
     //                     Constructor
     // ==================================================
 	public KeyHandler(Minecraft mc) {
 		this.mc = mc;
+		instance = this;
 		
 		// Register Keys:
 		ClientRegistry.registerKeyBinding(mountAbility);
 		ClientRegistry.registerKeyBinding(mountInventory);
+		ClientRegistry.registerKeyBinding(beastiary);
 		ClientRegistry.registerKeyBinding(minionManager);
 		ClientRegistry.registerKeyBinding(minionSelection);
 	}
@@ -51,6 +59,15 @@ public class KeyHandler {
 		byte controlStates = 0;
 		
 		// ========== GUI Keys ==========
+		// Player Inventory: Adds extra buttons to the GUI.
+		if(!this.inventoryOpen && mc.currentScreen != null && mc.currentScreen.getClass() == GuiInventory.class) {
+			TabManager.addTabsToInventory((GuiContainer)mc.currentScreen);
+			this.inventoryOpen = true;
+		}
+		if(this.inventoryOpen && (mc.currentScreen == null || mc.currentScreen.getClass() != GuiInventory.class)) {
+			this.inventoryOpen = false;
+		}
+		
 		// Mount Inventory: Adds to control states.
 		if(this.mountInventory.isPressed()) {
 			controlStates += ExtendedPlayer.CONTROL_ID.MOUNT_INVENTORY.id;

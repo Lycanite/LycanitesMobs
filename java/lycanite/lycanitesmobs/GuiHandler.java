@@ -1,6 +1,7 @@
 package lycanite.lycanitesmobs;
 
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.api.gui.GUIBeastiary;
 import lycanite.lycanitesmobs.api.gui.GUICreature;
 import lycanite.lycanitesmobs.api.gui.GUIMinion;
 import lycanite.lycanitesmobs.api.gui.GUIMinionSelection;
@@ -91,6 +92,9 @@ public class GuiHandler implements IGuiHandler {
 		
 		// ========== Player ==========
 		else if(id == GuiType.PLAYER.id) {
+			if(x == PlayerGuiType.BEASTIARY.id) {
+				return new GUIBeastiary(player);
+			}
 			if(x == PlayerGuiType.MINION_CONTROLS.id) {
 				return new GUIMinion(player, y);
 			}

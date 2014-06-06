@@ -4,7 +4,11 @@ import java.util.Map.Entry;
 
 import lycanite.lycanitesmobs.api.entity.EntityParticle;
 import lycanite.lycanitesmobs.api.entity.EntityPortal;
+import lycanite.lycanitesmobs.api.gui.GUITabBeastiary;
+import lycanite.lycanitesmobs.api.gui.GUITabMinion;
+import lycanite.lycanitesmobs.api.gui.GUITabMount;
 import lycanite.lycanitesmobs.api.gui.GuiOverlay;
+import lycanite.lycanitesmobs.api.gui.TabManager;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.render.RenderBlock;
 import lycanite.lycanitesmobs.api.render.RenderCreature;
@@ -34,8 +38,13 @@ public class ClientProxy extends CommonProxy {
 		// ========== Add GUI Textures ==========
 		String domain = LycanitesMobs.domain;
 		AssetManager.addTexture("GUIInventoryCreature", domain, "textures/guis/inventory_creature.png");
-		AssetManager.addTexture("GUIMinion", domain, "textures/guis/minion.png");
 		AssetManager.addTexture("GUIBeastiary", domain, "textures/guis/beastiary.png");
+		AssetManager.addTexture("GUIMinion", domain, "textures/guis/minion.png");
+
+		// ========== Add GUI Tabs ==========
+		TabManager.registerTab(new GUITabBeastiary(0));
+		TabManager.registerTab(new GUITabMinion(1));
+		TabManager.registerTab(new GUITabMount(2));
     }
 	
 	

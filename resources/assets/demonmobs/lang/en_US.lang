@@ -3,7 +3,7 @@ demonmobs.name=Demonic Creatures
 demonmobs.description=Wicked fiends from the depths of the firey hellish Nether!
 # Entites
 entity.demonmobs.belph.name=Belph
-entity.demonmobs.belph.name=Wicked natives to the Nether, Belphs take pleasure in hurling firey projectiles.
+entity.demonmobs.belph.description=Wicked natives to the Nether, Belphs take pleasure in hurling firey projectiles.
 entity.demonmobs.behemoth.name=Behemoth
 entity.demonmobs.behemoth.description=Tall demonic beasts, Behemoth throw balls of Hellfire. Shelter is recommended.
 entity.demonmobs.pinky.name=Pinky

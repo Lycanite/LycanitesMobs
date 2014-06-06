@@ -195,7 +195,7 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
     }
 	
 	public void setGrowingAge(int age) {
-        this.dataWatcher.updateObject(WATCHER_ID.AGE.id, (int)age);
+		this.dataWatcher.updateObject(WATCHER_ID.AGE.id, (int)age);
         this.setScaleForAge(this.isChild());
     }
 	

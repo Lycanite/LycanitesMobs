@@ -12,8 +12,9 @@ item.sturdysummoningstaff.name=Sturdy Summoning Staff
 # GUIS
 # Beastiary:
 gui.beastiary.name=Beastiary
-gui.beastiary.empty=No Discovered Creatures
+gui.beastiary.empty=No Creatures
 gui.beastiary.soulgazerinfo=You currently do not have any creatures added to your Beastiary. To discover new creatures you must craft a Soulgazer and then use it on any creatures that you find.
+gui.beastiary.selectacreature=Select a group and then select a creature.
 # Minion Manager:
 gui.minion.name=Minion Manager
 gui.minion.empty=No Summonable Creatures

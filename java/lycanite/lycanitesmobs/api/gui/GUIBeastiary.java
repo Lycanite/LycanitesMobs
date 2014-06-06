@@ -5,6 +5,7 @@ import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.GuiHandler;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -64,39 +65,35 @@ public class GUIBeastiary extends GuiScreen {
 	@Override
 	public void initGui() {
 		super.initGui();
+		this.updateSelectedCreature();
+		
         this.buttonList.clear();
-        this.halfX = this.width / 2;
-        this.halfY = this.height / 2;
-		this.windowWidth = 176;
-        this.windowHeight = 166;
-        this.windowX = this.halfX - (this.windowWidth / 2);
-        this.windowY = this.halfY - (this.windowHeight / 2);
-        this.centerX = this.windowX + this.halfX;
-        this.centerY = this.windowY + this.halfY;
+		this.windowWidth = 256;
+        this.windowHeight = 172;
+        this.halfX = this.windowWidth / 2;
+        this.halfY = this.windowHeight / 2;
+        this.windowX = (this.width / 2) - (this.windowWidth / 2);
+        this.windowY = (this.height / 2) - (this.windowHeight / 2);
+        this.centerX = this.windowX + (this.windowWidth / 2);
+        this.centerY = this.windowY + (this.windowHeight / 2);
 		//this.drawControls();
 		
         int buttonSpacing = 2;
+        int listWidth = (this.windowWidth / 2) - (buttonSpacing * 4);
+        int listHeight = (this.windowHeight / 2) - 6 - (buttonSpacing * 3);
+        int listTop = this.windowY - (buttonSpacing * 2) + 24;
+        int listBottom = listTop + listHeight;
+        int listX = this.windowX + (buttonSpacing * 2);
         
 		// Group List:
-		this.groupList = new GUIBeastiaryGroupList(this,
-				(this.windowWidth / 2) - (buttonSpacing * 2),
-				this.windowHeight - 16 - (buttonSpacing * 2),
-				this.windowY + 52,
-				this.windowY + 16 + this.windowHeight - 16 - (buttonSpacing * 2),
-				this.windowX + (buttonSpacing * 2),
-				20
-			);
+		this.groupList = new GUIBeastiaryGroupList(this, listWidth, listHeight, listTop, listBottom, listX, 16);
 		this.groupList.registerScrollButtons(this.buttonList, 51, 52);
 		
+		listTop += listHeight + buttonSpacing;
+		listBottom += listHeight + buttonSpacing;
+		
 		// Creature List:
-		this.creatureList = new GUIBeastiaryCreatureList(this,
-				(this.windowWidth / 2) - (buttonSpacing * 2),
-				this.windowHeight - 16 - (buttonSpacing * 2),
-				this.windowY + 52,
-				this.windowY + 16 + this.windowHeight - 16 - (buttonSpacing * 2),
-				this.windowX + (buttonSpacing * 2),
-				20
-			);
+		this.creatureList = new GUIBeastiaryCreatureList(this, listWidth, listHeight, listTop, listBottom, listX, 20);
 		this.creatureList.registerScrollButtons(this.buttonList, 53, 54);
 	}
 	
@@ -106,8 +103,8 @@ public class GUIBeastiary extends GuiScreen {
   	// ==================================================
 	@Override
 	public void drawScreen(int x, int y, float f) {
-        this.drawGuiContainerBackgroundLayer();
-        this.drawGuiContainerForegroundLayer();
+        this.drawGuiContainerBackgroundLayer(x, y, f);
+        this.drawGuiContainerForegroundLayer(x, y, f);
         
         // Creature List:
 		this.groupList.drawScreen(x, y, f);
@@ -119,27 +116,44 @@ public class GUIBeastiary extends GuiScreen {
 	// ==================================================
   	//                    Foreground
   	// ==================================================
-	protected void drawGuiContainerForegroundLayer() {
-		this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.beastiary.name"), this.windowX + 8, this.windowY + 6, 4210752);
+	protected void drawGuiContainerForegroundLayer(int x, int y, float f) {
+		boolean hasSomeKnowledge = this.playerExt.beastiary.creatureKnowledgeList.size() > 0;
+		this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.beastiary.name"), this.windowX + 24, this.windowY + 8, 0xFFFFFF);
 		
 		// Draw Creature Entry:
-		if(this.getSelectedCreature() != null) {
-			this.fontRendererObj.drawString(this.getSelectedCreature().getTitle(), this.centerX + 8, this.windowY + 6, 4210752);
-			this.fontRendererObj.drawSplitString(this.getSelectedCreature().getDescription(), this.centerX + 8, this.windowY + 32 + 24, this.halfX - 16, 4210752);
-			GuiInventory.func_147046_a(this.centerX + 26, this.centerY + 24, 17, (float)(this.halfX + 51) - this.halfX, (float)(this.halfY + 75 - 50) - this.halfY, this.creaturePreviewEntity);
+		if(this.getSelectedCreature() != null && this.creaturePreviewEntity != null && hasSomeKnowledge) {
+			int creatureSize = 17;
+			int creatureScale = Math.round((1.8F / this.creaturePreviewEntity.height) * creatureSize);
+			int creatureX = this.centerX + (this.halfX / 2);
+			int creatureY = this.windowY + 32 + creatureSize;
+			// X, Y, Scale, RotX, RotY, RotHead, EntityLivingBase
+	        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			GuiInventory.func_147046_a(creatureX, creatureY, creatureScale, (float)(creatureX) - x, (float)(creatureY) - y, this.creaturePreviewEntity);
+			
+			this.fontRendererObj.drawString(this.getSelectedCreature().getTitle(), this.centerX + 8, this.windowY + 8, 0xFFFFFF);
+			this.fontRendererObj.drawSplitString(this.getSelectedCreature().getDescription(), this.centerX + 8, creatureY + creatureSize + 2, this.halfX - 16, 0xFFFFFF);
 		}
 		
 		// Draw Group Entry:
-		else if(this.getSelectedGroup() != null) {
-			this.fontRendererObj.drawString(StatCollector.translateToLocal(this.getSelectedGroup().getModID() + ".name"), this.centerX + 8, this.windowY + 6, 4210752);
-			this.fontRendererObj.drawSplitString(StatCollector.translateToLocal(this.getSelectedGroup().getModID() + ".description"), this.centerX + 8, this.windowY + 24, this.halfX - 16, 4210752);
+		else if(this.getSelectedGroup() != null && hasSomeKnowledge) {
+			this.fontRendererObj.drawString(StatCollector.translateToLocal(this.getSelectedGroup().getModID() + ".name"), this.centerX + 8, this.windowY + 8, 0xFFFFFF);
+			this.fontRendererObj.drawSplitString(StatCollector.translateToLocal(this.getSelectedGroup().getModID() + ".description"), this.centerX + 8, this.windowY + 24, this.halfX - 16, 0xFFFFFF);
+		}
+		
+		// Draw Soulgazer Instructions:
+		else if(hasSomeKnowledge) {
+			this.fontRendererObj.drawString("", this.centerX + 8, this.windowY + 8, 0xFFFFFF);
+			this.fontRendererObj.drawSplitString(StatCollector.translateToLocal("gui.beastiary.selectacreature"), this.centerX + 8, this.windowY + 24, this.halfX - 16, 0xFFFFFF);
 		}
 		
 		// Draw Soulgazer Instructions:
 		else {
-			this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.beastiary.empty"), this.centerX + 8, this.windowY + 6, 4210752);
-			this.fontRendererObj.drawSplitString(StatCollector.translateToLocal("gui.beastiary.soulgazerinfo"), this.centerX + 8, this.windowY + 24, this.halfX - 16, 4210752);
-			//TODO Draw Soulgazer crafting recipe.
+			this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.beastiary.empty"), this.centerX + 8, this.windowY + 8, 0xFFFFFF);
+			this.fontRendererObj.drawSplitString(StatCollector.translateToLocal("gui.beastiary.soulgazerinfo"), this.centerX + 8, this.windowY + 24, this.halfX - 16, 0xFFFFFF);
+			int recipeWidth = 108;
+			int recipeHeight = 54;
+			this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIBeastiary"));
+	        this.drawTexturedModalRect(this.centerX + (this.halfX / 2) - (recipeWidth / 2), this.windowY + this.windowHeight - recipeHeight - 4, 0, 256 - recipeHeight, recipeWidth, recipeHeight);
 		}
 	}
 	
@@ -147,11 +161,10 @@ public class GUIBeastiary extends GuiScreen {
 	// ==================================================
   	//                    Background
   	// ==================================================
-	protected void drawGuiContainerBackgroundLayer() {
+	protected void drawGuiContainerBackgroundLayer(int x, int y, float f) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIMinion"));
+        this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIBeastiary"));
         this.drawTexturedModalRect(this.windowX, this.windowY, 0, 0, this.windowWidth, this.windowHeight);
-        
 	}
 	
 	
@@ -208,6 +221,10 @@ public class GUIBeastiary extends GuiScreen {
 		else
 			try {
 				this.creaturePreviewEntity = (EntityLivingBase)this.getSelectedCreature().entityClass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {this.player.worldObj});
+				this.creaturePreviewEntity.onGround = true;
+				if(this.creaturePreviewEntity instanceof EntityCreatureAgeable) {
+					((EntityCreatureAgeable)this.creaturePreviewEntity).setGrowingAge(0);
+				}
 			} catch (Exception e) {
 				LycanitesMobs.printWarning("", "Tried to preview an invalid creature in the Beastiary.");
 				e.printStackTrace();

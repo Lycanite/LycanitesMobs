@@ -111,7 +111,7 @@ public class GUIMinion extends GuiScreen {
   	//                    Foreground
   	// ==================================================
 	protected void drawGuiContainerForegroundLayer() {
-		this.getFontRenderer().drawString(StatCollector.translateToLocal("gui.minion.name"), this.windowX + 52, this.windowY + 6, 4210752);
+		this.getFontRenderer().drawString(StatCollector.translateToLocal("gui.minion.name"), this.windowX + 52, this.windowY + 6, 0xFFFFFF);
     }
 	
 	

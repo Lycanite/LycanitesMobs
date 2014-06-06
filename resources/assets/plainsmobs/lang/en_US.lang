@@ -3,7 +3,7 @@ plainsmobs.name=Plains Creatures
 plainsmobs.description=These animals thrive in the lush flatlands and traverse fields of green with ease.
 # Entites
 entity.plainsmobs.kobold.name=Kobold
-entity.plainsmobs.kobold.description=Small rodents that are known to steal items, they can't resist taking anything. Killing them will cause them to drop their items. They usually flee from other creatures but are known to attack people who are low on health.
+entity.plainsmobs.kobold.description=Small rodents that cant resist stealing items! Killing them will cause them to drop their items. They usually flee from other creatures but are known to attack people who are low on health.
 entity.plainsmobs.ventoraptor.name=Ventoraptor
 entity.plainsmobs.ventoraptor.description=Swift raptors that glide at incredible speeds. Can be tamed as one of the fastest mounts.
 entity.plainsmobs.maka.name=Maka

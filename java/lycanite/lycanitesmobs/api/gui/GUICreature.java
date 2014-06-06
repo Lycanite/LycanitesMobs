@@ -72,13 +72,13 @@ public class GUICreature extends GuiContainer {
         int backY = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(backX, backY, 0, 0, this.xSize, this.ySize);
 
-		this.drawFrames(backX, backY);
+		this.drawFrames(backX, backY, i, j);
 		this.drawHealth(backX, backY);
 		this.drawSlots(backX, backY);
 	}
 	
 	// ========== Draw Creature Frame ===========
-	protected void drawFrames(int backX, int backY) {
+	protected void drawFrames(int backX, int backY, int mouseX, int mouseY) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIInventoryCreature"));
         
@@ -91,7 +91,7 @@ public class GUICreature extends GuiContainer {
         int creatureWidth = 54;
         int creatureHeight = 54;
         this.drawTexturedModalRect(backX - creatureWidth + 1, backY + 17, statusWidth, 256 - creatureHeight, creatureWidth, creatureHeight);
-        GuiInventory.func_147046_a(backX + 26 - creatureWidth + 1, backY + 60, 17, (float)(backX + 51) - this.xSize, (float)(backY + 75 - 50) - this.ySize, this.creature);
+        GuiInventory.func_147046_a(backX + 26 - creatureWidth + 1, backY + 60, 17, (float)backX - mouseX, (float)backY - mouseY, this.creature);
 	}
 	
 	// ========== Draw Creature Health ===========

@@ -5,7 +5,7 @@ mountainmobs.description=High up in the rocky mountains these beasts roam, they 
 entity.mountainmobs.jabberwock.name=Jabberwock
 entity.mountainmobs.jabberwock.description=Vicious deer like creatures, their hooked claws will cause a weight effect pulling their victim down, this prevents any jumping and increases falling damage, making Jabberwocks deadly in the mountains.
 entity.mountainmobs.troll.name=Troll
-entity.mountainmobs.troll.description=Large beasts that react to sunlight. In the sun their bodies become hard as stone making them very resistant to most damage but slow and weak to pickaxes. Out of the sun their bodies soften where they can move and attack at a quicker pace but take more damage and are weak to fire. If you get too close during combat they will panic and destroy nearby soft blocks such as wood or dirt.
+entity.mountainmobs.troll.description=In the sun a Trolls skin is as hard as stone giving them good defense. Out of the sun their they soften increasing their speed but lowering their defense. They will destroy soft blocks if you get close.
 #
 # Items
 item.mountainspawn.name=Spawn

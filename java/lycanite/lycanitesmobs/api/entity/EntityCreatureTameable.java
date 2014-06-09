@@ -5,14 +5,12 @@ import java.util.HashMap;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAISit;
-import net.minecraft.block.BlockColored;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -30,7 +28,6 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
 	public float hunger = this.getCreatureHungerMax();
 	public float stamina = this.getStaminaMax();
 	public float staminaRecovery = 0.5F;
-	public boolean hasCollarColor = false;
 	public boolean isMobWhenNotTamed = true;
 	public float sittingGuardRange = 16F;
 	
@@ -178,10 +175,6 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     		if(this.isTamed() && this.isHealingItem(itemStack) && this.dataWatcher.getWatchableObjectFloat(WATCHER_ID.HEALTH.id) < this.getMaxHealth())
                 commands.put(CMD_PRIOR.ITEM_USE.id, "Feed");
     		
-    		// Coloring:
-    		if(this.isTamed() && this.hasCollarColor && itemStack.getItem() == Items.dye && player.getCommandSenderName().equalsIgnoreCase(this.getOwnerName()))
-    			commands.put(CMD_PRIOR.ITEM_USE.id, "Color");
-    		
     		// Equipment:
     		if(this.isTamed() && !this.isChild() && !this.isMinion() && player.getCommandSenderName().equalsIgnoreCase(this.getOwnerName())) {
 	    		String equipSlot = this.inventory.getSlotForEquipment(itemStack);
@@ -231,15 +224,6 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
                 	this.worldObj.spawnParticle(particle, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + 0.5D + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d0, d1, d2);
             }
     		this.consumePlayersItem(player, itemStack);
-    	}
-    	
-    	// Color:
-    	if(command.equals("Color")) {
-    		int colorID = BlockColored.func_150032_b(itemStack.getItemDamage()); // getBlockFromDye()
-            if(colorID != this.getCollarColor()) {
-                this.setCollarColor(colorID);
-        		this.consumePlayersItem(player, itemStack);
-            }
     	}
     	
     	// Equip Armor:
@@ -642,18 +626,6 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     
     
     // ==================================================
-    //                    Collar Color
-    // ==================================================
-    public int getCollarColor() {
-        return this.dataWatcher.getWatchableObjectByte(WATCHER_ID.COLOR.id) & 15;
-    }
-    
-    public void setCollarColor(int color) {
-        this.dataWatcher.updateObject(WATCHER_ID.COLOR.id, Byte.valueOf((byte)(color & 15)));
-    }
-    
-    
-    // ==================================================
     //                      Breeding
     // ==================================================
     // ========== Create Child ==========
@@ -708,6 +680,21 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
             double d2 = this.rand.nextGaussian() * 0.02D;
             this.worldObj.spawnParticle(particle, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + 0.5D + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d0, d1, d2);
         }
+    }
+    
+    
+    // ==================================================
+    //                       Visuals
+    // ==================================================
+    // ========== Coloring ==========
+    /**
+     * Returns true if this mob can be dyed different colors. Usually for wool and collars.
+     */
+    @Override
+    public boolean canBeColored(EntityPlayer player) {
+    	if(player == null)
+    		return true;
+    	return this.isTamed() && player.getCommandSenderName().equalsIgnoreCase(this.getOwnerName());
     }
     
     

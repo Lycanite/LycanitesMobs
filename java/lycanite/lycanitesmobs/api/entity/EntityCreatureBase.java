@@ -19,6 +19,7 @@ import lycanite.lycanitesmobs.api.inventory.ContainerCreature;
 import lycanite.lycanitesmobs.api.inventory.InventoryCreature;
 import lycanite.lycanitesmobs.api.spawning.SpawnType;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockColored;
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -303,6 +304,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         this.dataWatcher.addObject(WATCHER_ID.ANIMATION.id, (byte)0);
         this.dataWatcher.addObject(WATCHER_ID.CLIMBING.id, (byte)0);
         this.dataWatcher.addObject(WATCHER_ID.STEALTH.id, (float)0.0F);
+        this.dataWatcher.addObject(WATCHER_ID.COLOR.id, (int)0);
     }
     
     // ========== Name ==========
@@ -1684,15 +1686,21 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	
     	// Item Commands:
     	if(itemStack != null) {
+    		// Leash:
     		if(itemStack.getItem() == Items.lead && this.canLeash(player))
     			commands.put(CMD_PRIOR.ITEM_USE.id, "Leash");
-
+    		
+    		// Name Tag:
     		if(itemStack.getItem() == Items.name_tag) {
     			if(this.canNameTag(player))
     				return new HashMap<Integer, String>(); // Cancels all commands so that vanilla can take care of name tagging.
     			else
     				commands.put(CMD_PRIOR.ITEM_USE.id, "Name Tag"); // Calls nothing and therefore cancels name tagging.
     		}
+    		
+    		// Coloring:
+    		if(this.canBeColored(player) && itemStack.getItem() == Items.dye)
+    			commands.put(CMD_PRIOR.ITEM_USE.id, "Color");
     				
     	}
     	
@@ -1711,6 +1719,15 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	
     	// Name Tag:
     	// Vanilla takes care of this, it is in getInteractCommands so that other commands don't override it.
+    	
+    	// Color:
+    	if(command.equals("Color")) {
+    		int colorID = BlockColored.func_150032_b(itemStack.getItemDamage()); // getBlockFromDye()
+            if(colorID != this.getColor()) {
+                this.setColor(colorID);
+        		this.consumePlayersItem(player, itemStack);
+            }
+    	}
     }
     
     // ========== Can Name Tag ==========
@@ -2091,6 +2108,23 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Gets the name of this creature's texture, normally links to it's code name but can be overriden by subtypes and alpha creatures. **/
     public String getTextureName() {
     	return this.mobInfo.name;
+    }
+    
+    
+    // ========== Coloring ==========
+    /**
+     * Returns true if this mob can be dyed different colors. Usually for wool and collars.
+     */
+    public boolean canBeColored(EntityPlayer player) {
+    	return false;
+    }
+    
+    public int getColor() {
+        return this.dataWatcher.getWatchableObjectByte(WATCHER_ID.COLOR.id) & 15;
+    }
+    
+    public void setColor(int color) {
+        this.dataWatcher.updateObject(WATCHER_ID.COLOR.id, Byte.valueOf((byte)(color & 15)));
     }
     
     

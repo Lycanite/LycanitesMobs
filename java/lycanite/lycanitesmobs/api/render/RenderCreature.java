@@ -29,27 +29,38 @@ public class RenderCreature extends RenderLiving {
     	if(!(entity instanceof EntityCreatureBase))
     		return -1;
     	EntityCreatureBase creature = (EntityCreatureBase)entity;
+    	
     	// Chest/Body Armor First:
     	if(renderPass == 0 && creature.getEquipmentName("chest") != null) {
 			this.bindEquipmentTexture(entity, creature.getEquipmentName("chest"));
     		return 1;
     	}
+    	
     	// Saddle Second:
     	if(renderPass == 1 && creature instanceof EntityCreatureRideable)
     		if(((EntityCreatureRideable)creature).hasSaddle()) {
     			this.bindEquipmentTexture(entity, "Saddle");
     			return 1;
     		}
-    	// Feet Third:
-    	if(renderPass == 2 && creature.getEquipmentName("feet") != null) {
-			this.bindEquipmentTexture(entity, creature.getEquipmentName("feet"));
-    		return 1;
+    	
+    	// Feet/Collar/Wool Third:
+    	if(renderPass == 2) {
+    		if(creature.getEquipmentName("feet") != null) {
+				this.bindEquipmentTexture(entity, creature.getEquipmentName("feet"));
+	    		return 1;
+    		}
+    		else if(creature.canBeColored(null)) {
+				this.bindColorTexture(entity);
+    			return -1;
+    		}
     	}
+    	
     	// Helm Fourth:
     	if(renderPass == 3 && creature.getEquipmentName("head") != null) {
 			this.bindEquipmentTexture(entity, creature.getEquipmentName("head"));
     		return 1;
     	}
+    	
     	return -1;
     }
     

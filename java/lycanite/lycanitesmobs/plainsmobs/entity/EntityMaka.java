@@ -63,7 +63,7 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
         this.tasks.addTask(1, new EntityAIAvoid(this).setNearSpeed(1.3D).setFarSpeed(1.2D).setNearDistance(5.0D).setFarDistance(20.0D));
         this.tasks.addTask(2, new EntityAIMate(this).setMateDistance(5.0D));
         //this.tasks.addTask(3, new EntityAIAttackMelee(this).setLongMemory(false));
-        this.tasks.addTask(4, new EntityAITempt(this).setItemList("Vegetables"));
+        this.tasks.addTask(4, new EntityAITempt(this).setItemList("vegetables"));
         this.tasks.addTask(5, new EntityAIFollowParent(this).setSpeed(1.0D).setStrayDistance(3.0D));
         this.tasks.addTask(6, new EntityAIFollowMaster(this).setSpeed(1.0D).setStrayDistance(18.0F));
         this.tasks.addTask(7, new EntityAIWander(this));
@@ -137,8 +137,7 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
     public boolean isPotionApplicable(PotionEffect potionEffect) {
         if(potionEffect.getPotionID() == Potion.weakness.id) return false;
         if(potionEffect.getPotionID() == Potion.digSlowdown.id) return false;
-        super.isPotionApplicable(potionEffect);
-        return true;
+        return super.isPotionApplicable(potionEffect);
     }
     
     
@@ -154,7 +153,7 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
 	// ========== Breeding Item ==========
 	@Override
 	public boolean isBreedingItem(ItemStack testStack) {
-		return ObjectLists.inItemList("Vegetables", testStack);
+		return ObjectLists.inItemList("vegetables", testStack);
     }
     
     

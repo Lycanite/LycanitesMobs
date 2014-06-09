@@ -61,13 +61,11 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIAvoid(this).setNearSpeed(1.3D).setFarSpeed(1.2D).setNearDistance(5.0D).setFarDistance(20.0D));
         this.tasks.addTask(2, new EntityAIMate(this));
-        //this.tasks.addTask(3, new EntityAIAttackMelee(this).setRate(10).setLongMemory(false));
         this.tasks.addTask(4, new EntityAITempt(this).setItemList("Mushrooms"));
         this.tasks.addTask(5, new EntityAIFollowParent(this).setSpeed(1.0D));
         this.tasks.addTask(6, new EntityAIWander(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
-        //this.targetTasks.addTask(0, new EntityAITargetRevenge(this));
         this.targetTasks.addTask(2, new EntityAITargetParent(this).setSightCheck(false).setDistance(32.0D));
         this.targetTasks.addTask(3, new EntityAITargetAvoid(this).setTargetClass(IGroupPredator.class));
     }
@@ -162,11 +160,10 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
    	//                     Immunities
    	// ==================================================
     @Override
-    public boolean isPotionApplicable(PotionEffect par1PotionEffect) {
-        if(par1PotionEffect.getPotionID() == Potion.poison.id) return false;
-        if(par1PotionEffect.getPotionID() == Potion.blindness.id) return false;
-        super.isPotionApplicable(par1PotionEffect);
-        return true;
+    public boolean isPotionApplicable(PotionEffect potionEffect) {
+        if(potionEffect.getPotionID() == Potion.poison.id) return false;
+        if(potionEffect.getPotionID() == Potion.blindness.id) return false;
+        return super.isPotionApplicable(potionEffect);
     }
     
     

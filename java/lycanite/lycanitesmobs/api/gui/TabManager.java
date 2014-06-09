@@ -28,7 +28,6 @@ public class TabManager {
             	Field field = GuiScreen.class.getDeclaredField(guiInventorySnooper.getButtonListFieldName());
 	            field.setAccessible(true);
 	            List buttonList = (List)field.get(gui);
-	            //buttonList.clear();
 	            addTabsToList(buttonList);
 	            field.set(gui, buttonList);
 			}

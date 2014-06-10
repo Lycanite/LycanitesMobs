@@ -1,11 +1,14 @@
 package lycanite.lycanitesmobs.mountainmobs.entity;
 
 import java.util.HashMap;
+import java.util.Random;
 
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupPredator;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAvoid;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIEatBlock;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowParent;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIMate;
@@ -25,12 +28,17 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
 public class EntityYale extends EntityCreatureAgeable implements IMob {
+	
+	public DropRate woolDrop;
     
     // ==================================================
  	//                    Constructor
@@ -61,11 +69,19 @@ public class EntityYale extends EntityCreatureAgeable implements IMob {
         this.tasks.addTask(2, new EntityAIMate(this));
         this.tasks.addTask(4, new EntityAITempt(this).setItemList("Vegetables"));
         this.tasks.addTask(5, new EntityAIFollowParent(this).setSpeed(1.0D));
-        this.tasks.addTask(6, new EntityAIWander(this).setPauseRate(30));
+        this.tasks.addTask(6, new EntityAIEatBlock(this).setBlocks(Blocks.grass).setReplaceBlock(Blocks.dirt));
+        this.tasks.addTask(7, new EntityAIWander(this).setPauseRate(30));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
         this.targetTasks.addTask(2, new EntityAITargetParent(this).setSightCheck(false).setDistance(32.0D));
         this.targetTasks.addTask(3, new EntityAITargetAvoid(this).setTargetClass(IGroupPredator.class));
+    }
+	
+	// ========== Init ==========
+    @Override
+    protected void entityInit() {
+        super.entityInit();
+        this.dataWatcher.addObject(WATCHER_ID.LAST.id, (byte)0);
     }
     
     // ========== Stats ==========
@@ -83,28 +99,79 @@ public class EntityYale extends EntityCreatureAgeable implements IMob {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.bone), 1).setMinAmount(1).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Items.leather), 1).setMinAmount(1).setMaxAmount(2));
+		this.woolDrop = new DropRate(new ItemStack(Blocks.wool), 1).setMinAmount(1).setMaxAmount(3);
+        this.drops.add(this.woolDrop);
 	}
 	
 	
     // ==================================================
-    //                      Updates
+    //                      Spawn
     // ==================================================
-	// ========== Living Update ==========
+	// ========== On Spawn ==========
 	@Override
-    public void onLivingUpdate() {
-        super.onLivingUpdate();
-        
-        // Fur Growth:
-        
-    }
+	public void onSpawn() {
+		this.setColor(this.getRandomFurColor(this.getRNG()));
+	}
 	
 	
+    // ==================================================
+    //                      Abilities
+    // ==================================================
 	// ========== Fur ==========
 	public boolean hasFur() {
-		return false;
+		return this.dataWatcher.getWatchableObjectByte(WATCHER_ID.LAST.id) == 1;
 	}
+
+	public void setFur(boolean fur) {
+		if(this.worldObj.isRemote)
+			this.dataWatcher.updateObject(WATCHER_ID.LAST.id, (byte)(fur ? 1 : 0));
+	}
+	
+	@Override
+	public void onEat() {
+		this.setFur(true);
+	}
+	
+	public void onSheared() {
+		this.setFur(false);
+		int quantity = this.woolDrop.getQuantity(this.getRNG(), 0);
+		ItemStack dropStack = this.woolDrop.getItemStack(this, quantity);
+		this.dropItem(dropStack);
+		this.playSound("mob.sheep.shear", 1.0F, 1.0F);
+	}
+	
+	@Override
+	public void setColor(int color) {
+		this.woolDrop.setDrop(new ItemStack(Blocks.wool, 1, color));
+		super.setColor(color);
+	}
+	
+	public int getRandomFurColor(Random random) {
+        int i = random.nextInt(100);
+        return i < 5 ? 15 : (i < 10 ? 7 : (i < 15 ? 8 : (i < 18 ? 12 : (random.nextInt(500) == 0 ? 6 : 0))));
+    }
+	
+	public int getMixedFurColor(EntityCreatureBase entityA, EntityCreatureBase entityB) {
+		int i = entityA.getColor();
+        int j = entityB.getColor();
+        this.colorMixer.getStackInSlot(0).setItemDamage(i);
+        this.colorMixer.getStackInSlot(1).setItemDamage(j);
+        ItemStack itemstack = CraftingManager.getInstance().findMatchingRecipe(this.colorMixer, this.worldObj);
+        int k;
+        if(itemstack != null && itemstack.getItem() == Items.dye)
+            k = itemstack.getItemDamage();
+        else
+            k = this.worldObj.rand.nextBoolean() ? i : j;
+        return k;
+    }
+	
+	private final InventoryCrafting colorMixer = new InventoryCrafting(new Container() {
+        private static final String __OBFID = "CL_00001649";
+        public boolean canInteractWith(EntityPlayer par1EntityPlayer)
+        {
+            return false;
+        }
+    }, 2, 1);
 	
 	
 	// ==================================================
@@ -148,12 +215,48 @@ public class EntityYale extends EntityCreatureAgeable implements IMob {
     
     
     // ==================================================
+    //                     Interact
+    // ==================================================
+    // ========== Get Interact Commands ==========
+    /** Gets a map of all possible interact events with the key being the priority, lower is better. **/
+    public HashMap<Integer, String> getInteractCommands(EntityPlayer player, ItemStack itemStack) {
+    	HashMap<Integer, String> commands = new HashMap<Integer, String>();
+    	commands.putAll(super.getInteractCommands(player, itemStack));
+    	
+    	// Item Commands:
+    	if(itemStack != null) {
+    		
+    		// Shears:
+    		if(itemStack.getItem() == Items.shears && this.hasFur())
+    			commands.put(CMD_PRIOR.ITEM_USE.id, "Shear");
+    	}
+    	
+    	return commands;
+    }
+    
+    // ========== Perform Command ==========
+    /** Performs the given interact command. Could be used outside of the interact method if needed. **/
+    public void performCommand(String command, EntityPlayer player, ItemStack itemStack) {
+    	
+    	// Shear:
+    	if(command == "Shear") {
+    		this.onSheared();
+    	}
+    	
+    	super.performCommand(command, player, itemStack);
+    }
+    
+    
+    // ==================================================
     //                     Breeding
     // ==================================================
     // ========== Create Child ==========
 	@Override
-	public EntityCreatureAgeable createChild(EntityCreatureAgeable baby) {
-		return new EntityYale(this.worldObj);
+	public EntityCreatureAgeable createChild(EntityCreatureAgeable partner) {
+		EntityCreatureAgeable baby = new EntityYale(this.worldObj);
+		int color = this.getMixedFurColor(this, partner);
+		baby.setColor(15 - color);
+		return baby;
 	}
 	
 	// ========== Breeding Item ==========

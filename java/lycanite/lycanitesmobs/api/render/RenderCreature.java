@@ -6,13 +6,20 @@ import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.util.ResourceLocation;
+
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RenderCreature extends RenderLiving {
-
+	
+	/** A color table for mobs that can be dyed or pet collars. Follows the same pattern as the vanilla sheep. */
+	public static final float[][] colorTable = new float[][] {{1.0F, 1.0F, 1.0F}, {0.85F, 0.5F, 0.2F}, {0.7F, 0.3F, 0.85F}, {0.4F, 0.6F, 0.85F}, {0.9F, 0.9F, 0.2F}, {0.5F, 0.8F, 0.1F}, {0.95F, 0.5F, 0.65F}, {0.3F, 0.3F, 0.3F}, {0.6F, 0.6F, 0.6F}, {0.3F, 0.5F, 0.6F}, {0.5F, 0.25F, 0.7F}, {0.2F, 0.3F, 0.7F}, {0.4F, 0.3F, 0.2F}, {0.4F, 0.5F, 0.2F}, {0.6F, 0.2F, 0.2F}, {0.1F, 0.1F, 0.1F}};
+    
     // ==================================================
   	//                    Constructor
   	// ==================================================
@@ -39,19 +46,24 @@ public class RenderCreature extends RenderLiving {
     	// Saddle Second:
     	if(renderPass == 1 && creature instanceof EntityCreatureRideable)
     		if(((EntityCreatureRideable)creature).hasSaddle()) {
-    			this.bindEquipmentTexture(entity, "Saddle");
+    			this.bindEquipmentTexture(entity, "saddle");
     			return 1;
     		}
     	
-    	// Feet/Collar/Wool Third:
+    	// Feet/Collar/Color Third:
     	if(renderPass == 2) {
-    		if(creature.getEquipmentName("feet") != null) {
+    		if(creature.canBeColored(null)) {
+    			this.bindEntityTexture(entity);
+    			int colorID = 0;
+    			if(entity instanceof EntityCreatureBase)
+    				colorID = ((EntityCreatureBase)entity).getColor();
+    			GL11.glColor3f(EntitySheep.fleeceColorTable[colorID][0], EntitySheep.fleeceColorTable[colorID][1], EntitySheep.fleeceColorTable[colorID][2]);
+    			// Future collar texture overlays can be added here and should be colored.
+    			return 1;
+    		}
+    		else if(creature.getEquipmentName("feet") != null) {
 				this.bindEquipmentTexture(entity, creature.getEquipmentName("feet"));
 	    		return 1;
-    		}
-    		else if(creature.canBeColored(null)) {
-				this.bindColorTexture(entity);
-    			return -1;
     		}
     	}
     	
@@ -95,7 +107,8 @@ public class RenderCreature extends RenderLiving {
     // ========== Bind ==========
     @Override
     protected void bindTexture(ResourceLocation texture) {
-        this.renderManager.renderEngine.bindTexture(texture);
+    	if(texture != null)
+    		this.renderManager.renderEngine.bindTexture(texture);
     }
     
     

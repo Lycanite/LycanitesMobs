@@ -689,11 +689,11 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     // ========== Coloring ==========
     /**
      * Returns true if this mob can be dyed different colors. Usually for wool and collars.
+     * @param EntityPlayer player The player to check for when coloring, this is to stop players from dying other players pets. If provided with null it should return if this creature can be dyed in general.
      */
     @Override
     public boolean canBeColored(EntityPlayer player) {
-    	if(player == null)
-    		return true;
+    	if(player == null) return true;
     	return this.isTamed() && player.getCommandSenderName().equalsIgnoreCase(this.getOwnerName());
     }
     

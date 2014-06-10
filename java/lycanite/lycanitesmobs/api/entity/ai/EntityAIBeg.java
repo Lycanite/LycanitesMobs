@@ -3,9 +3,7 @@ package lycanite.lycanitesmobs.api.entity.ai;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 
 public class EntityAIBeg extends EntityAIBase {
 	// Targets:
@@ -37,8 +35,7 @@ public class EntityAIBeg extends EntityAIBase {
 	// ==================================================
  	//                   Should Execute
  	// ==================================================
-    public boolean shouldExecute()
-    {
+    public boolean shouldExecute() {
         this.player = this.host.worldObj.getClosestPlayerToEntity(this.host, (double)this.range);
         return this.player == null ? false : this.gotBegItem(this.player);
     }

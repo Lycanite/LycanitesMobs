@@ -183,7 +183,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 		CLIMBING(watcherID++), STEALTH(watcherID++), HUNGER(watcherID++), STAMINA(watcherID++),
 		AGE(watcherID++), LOVE(watcherID++),
 		TAMED(watcherID++), OWNER(watcherID++), COLOR(watcherID++),
-		EQUIPMENT(watcherID++);
+		EQUIPMENT(watcherID++), LAST(watcherID++);
 		
 		public final byte id;
 	    private WATCHER_ID(byte value) { this.id = value; }
@@ -1460,6 +1460,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Can this entity by tempted (usually lured by an item) currently? **/
     public boolean canBeTempted() { return true; }
     
+    /** Called when the creature has eaten. Some special AIs use this such as EntityAIEatBLock. **/
+    public void onEat() {}
+    
     // ========== Stealth ==========
     /** Can this entity stealth currently? **/
     public boolean canStealth() { return false; }
@@ -2096,6 +2099,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
     /** Returns this creature's equipment texture. **/
     public ResourceLocation getEquipmentTexture(String equipmentName) {
+    	equipmentName = equipmentName.toLowerCase();
     	String textureName = this.getTextureName();
     	textureName += "_" + equipmentName;
     	if(this.isMinion())
@@ -2114,15 +2118,25 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Coloring ==========
     /**
      * Returns true if this mob can be dyed different colors. Usually for wool and collars.
+     * @param EntityPlayer player The player to check for when coloring, this is to stop players from dying other players pets. If provided with null it should return if this creature can be dyed in general.
+     * @return True if tis entity can be dyed by the player or if the player is null, if it can be dyed at all (null is passed by the renderer).
      */
     public boolean canBeColored(EntityPlayer player) {
     	return false;
     }
     
+    /**
+     * Gets the color ID of this mob.
+     * @return A color ID that is used by the static RenderCreature.colorTable array.
+     */
     public int getColor() {
         return this.dataWatcher.getWatchableObjectByte(WATCHER_ID.COLOR.id) & 15;
     }
     
+    /**
+     * Sets the color ID of this mob.
+     * @param color The color ID to use (see the static RenderCreature.colorTable array).
+     */
     public void setColor(int color) {
         this.dataWatcher.updateObject(WATCHER_ID.COLOR.id, Byte.valueOf((byte)(color & 15)));
     }

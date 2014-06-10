@@ -182,8 +182,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
 		HEALTH(watcherID++), TARGET(watcherID++), ANIMATION(watcherID++), ATTACK_PHASE(watcherID++),
 		CLIMBING(watcherID++), STEALTH(watcherID++), HUNGER(watcherID++), STAMINA(watcherID++),
 		AGE(watcherID++), LOVE(watcherID++),
-		TAMED(watcherID++), OWNER(watcherID++), COLOR(watcherID++),
-		EQUIPMENT(watcherID++), LAST(watcherID++);
+		TAMED(watcherID++), OWNER(watcherID++), COLOR(watcherID++), LAST(watcherID++),
+		EQUIPMENT(watcherID++);
 		
 		public final byte id;
 	    private WATCHER_ID(byte value) { this.id = value; }
@@ -203,6 +203,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	    private ANIM_ID(byte value) { this.id = value; }
 	    public byte getValue() { return id; }
 	}
+	/** If true, this object has initiated and it is safe to use the datawatcher. **/
+	public boolean initiated = false;
 	
 	// Interact:
 	/** Used for the tidier interact code, these are commonly used right click item command priorities. **/
@@ -304,7 +306,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
         this.dataWatcher.addObject(WATCHER_ID.ANIMATION.id, (byte)0);
         this.dataWatcher.addObject(WATCHER_ID.CLIMBING.id, (byte)0);
         this.dataWatcher.addObject(WATCHER_ID.STEALTH.id, (float)0.0F);
-        this.dataWatcher.addObject(WATCHER_ID.COLOR.id, (int)0);
+        this.dataWatcher.addObject(WATCHER_ID.COLOR.id, (byte)0);
+        this.initiated = true;
     }
     
     // ========== Name ==========
@@ -2058,6 +2061,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	if(nbtTagCompound.hasKey("IsTemporary") && nbtTagCompound.getBoolean("IsTemporary") && nbtTagCompound.hasKey("TemporaryDuration")) {
     		this.setTemporary(nbtTagCompound.getInteger("TemporaryDuration"));
     	}
+    	if(nbtTagCompound.hasKey("Color")) {
+    		this.setColor(nbtTagCompound.getByte("Color"));
+    	}
     	else this.unsetTemporary();
         super.readEntityFromNBT(nbtTagCompound);
         this.inventory.readFromNBT(nbtTagCompound);
@@ -2072,6 +2078,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	nbtTagCompound.setBoolean("IsMinion", this.isMinion());
     	nbtTagCompound.setBoolean("IsTemporary", this.isTemporary);
     	nbtTagCompound.setInteger("TemporaryDuration", this.temporaryDuration);
+    	nbtTagCompound.setByte("Color", (byte)this.getColor());
         super.writeEntityToNBT(nbtTagCompound);
         this.inventory.writeToNBT(nbtTagCompound);
     }
@@ -2130,6 +2137,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
      * @return A color ID that is used by the static RenderCreature.colorTable array.
      */
     public int getColor() {
+		if(this.dataWatcher == null) return 0;
         return this.dataWatcher.getWatchableObjectByte(WATCHER_ID.COLOR.id) & 15;
     }
     
@@ -2138,7 +2146,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
      * @param color The color ID to use (see the static RenderCreature.colorTable array).
      */
     public void setColor(int color) {
-        this.dataWatcher.updateObject(WATCHER_ID.COLOR.id, Byte.valueOf((byte)(color & 15)));
+    	if(!this.worldObj.isRemote)
+    		this.dataWatcher.updateObject(WATCHER_ID.COLOR.id, Byte.valueOf((byte)(color & 15)));
     }
     
     

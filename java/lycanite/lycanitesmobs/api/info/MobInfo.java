@@ -161,9 +161,9 @@ public class MobInfo {
 		this.defaultDrops = config.defaultDrops.get(name);
 		String customDropsString = config.customDrops.get(name).replace(" ", "");
 		if(customDropsString != null && customDropsString.length() > 0) {
-    		for(String customDropEntryString : customDropsString.split(",")) {
-				String[] customDropValues = customDropEntryString.split(":");
-				if(customDropValues.length >= 2) {
+    		for(String customDropEntryString : customDropsString.split(";")) {
+				String[] customDropValues = customDropEntryString.split(",");
+				if(customDropValues.length >= 5) {
 					String dropName = customDropValues[0];
 					int dropMeta = Integer.parseInt(customDropValues[1]);
 					float dropChance = Float.parseFloat(customDropValues[2]);

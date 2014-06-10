@@ -161,28 +161,38 @@ public class ObjectLists {
 		
 		// Custom Entries:
 		for(String itemListName : itemListNames) {
-			addFromConfig(itemListName);
+			addFromConfig(itemListName.toLowerCase());
 		}
 	}
 	
 	// ========== Add From Config Value ==========
 	public static void addFromConfig(String listName) {
 		Map<String, String> itemListConfig = LycanitesMobs.config.itemLists;
-		if(!itemListConfig.containsKey(listName))
+		if(!itemListConfig.containsKey(listName)) {
+			LycanitesMobs.printWarning("ItemSetup", "Config is missing: " + listName);
 			return;
+		}
 		
 		String customDropsString = itemListConfig.get(listName).replace(" ", "");
+		LycanitesMobs.printDebug("ItemSetup", "~O========== Custom " + listName + " ==========O~");
 		if(customDropsString != null && customDropsString.length() > 0)
-    		for(String customDropEntryString : customDropsString.split(",")) {
-    			String[] customDropValues = customDropEntryString.split(":");
-    			if(customDropValues.length >= 2) {
-					String dropName = customDropValues[0];
-					int dropMeta = Integer.parseInt(customDropValues[1]);
-					if(Item.itemRegistry.getObject(dropName) != null)
-						ObjectLists.addItem(listName, new ItemStack((Item)Item.itemRegistry.getObject(dropName), 1, dropMeta));
-					else if(Block.blockRegistry.getObject(dropName) != null)
-						ObjectLists.addItem(listName, new ItemStack((Block)Block.blockRegistry.getObject(dropName), 1, dropMeta));
-    			}
+    		for(String customDropEntryString : customDropsString.split(";")) {
+    			LycanitesMobs.printDebug("ItemSetup", "Adding: " + customDropEntryString);
+    			String[] customDropValues = customDropEntryString.split(",");
+				String dropName = customDropValues[0];
+				int dropMeta = 0;
+				if(customDropValues.length > 1)
+					dropMeta = Integer.parseInt(customDropValues[1]);
+				if(Item.itemRegistry.getObject(dropName) != null) {
+					Item customItem = (Item)Item.itemRegistry.getObject(dropName);
+					ObjectLists.addItem(listName, new ItemStack(customItem, 1, dropMeta));
+	    			LycanitesMobs.printDebug("ItemSetup", "As Item: " + customItem);
+				}
+				else if(Block.blockRegistry.getObject(dropName) != null) {
+					Block customBlock = (Block)Block.blockRegistry.getObject(dropName);
+					ObjectLists.addItem(listName, new ItemStack(customBlock, 1, dropMeta));
+	    			LycanitesMobs.printDebug("ItemSetup", "As Block: " + customBlock);
+				}
     		}
 	}
 }

@@ -1,9 +1,11 @@
 package lycanite.lycanitesmobs.mountainmobs.entity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.IGroupAnimal;
 import lycanite.lycanitesmobs.api.IGroupPredator;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
@@ -24,7 +26,7 @@ import lycanite.lycanitesmobs.mountainmobs.MountainMobs;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureAttribute;
-import net.minecraft.entity.monster.IMob;
+import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -32,13 +34,27 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.IShearable;
 
-public class EntityYale extends EntityCreatureAgeable implements IMob {
+public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGroupAnimal, IShearable {
 	
 	public DropRate woolDrop;
+	
+	/**
+	 * Simulates a crafting instance between two dyes and uses the result dye as a mixed color, used for babies with different colored parents.
+	 */
+	private final InventoryCrafting colorMixer = new InventoryCrafting(new Container() {
+        private static final String __OBFID = "CL_00001649";
+        public boolean canInteractWith(EntityPlayer par1EntityPlayer)
+        {
+            return false;
+        }
+    }, 2, 1);
     
     // ==================================================
  	//                    Constructor
@@ -67,7 +83,7 @@ public class EntityYale extends EntityCreatureAgeable implements IMob {
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIAvoid(this).setNearSpeed(1.3D).setFarSpeed(1.2D).setNearDistance(5.0D).setFarDistance(20.0D));
         this.tasks.addTask(2, new EntityAIMate(this));
-        this.tasks.addTask(4, new EntityAITempt(this).setItemList("Vegetables"));
+        this.tasks.addTask(4, new EntityAITempt(this).setItemList("vegetables"));
         this.tasks.addTask(5, new EntityAIFollowParent(this).setSpeed(1.0D));
         this.tasks.addTask(6, new EntityAIEatBlock(this).setBlocks(Blocks.grass).setReplaceBlock(Blocks.dirt));
         this.tasks.addTask(7, new EntityAIWander(this).setPauseRate(30));
@@ -75,13 +91,17 @@ public class EntityYale extends EntityCreatureAgeable implements IMob {
         this.tasks.addTask(11, new EntityAILookIdle(this));
         this.targetTasks.addTask(2, new EntityAITargetParent(this).setSightCheck(false).setDistance(32.0D));
         this.targetTasks.addTask(3, new EntityAITargetAvoid(this).setTargetClass(IGroupPredator.class));
+        
+        // Add Dyes to the Color Mixer:
+        this.colorMixer.setInventorySlotContents(0, new ItemStack(Items.dye, 1, 0));
+        this.colorMixer.setInventorySlotContents(1, new ItemStack(Items.dye, 1, 0));
     }
 	
 	// ========== Init ==========
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataWatcher.addObject(WATCHER_ID.LAST.id, (byte)0);
+        this.dataWatcher.addObject(WATCHER_ID.LAST.id, (byte)1);
     }
     
     // ========== Stats ==========
@@ -99,6 +119,7 @@ public class EntityYale extends EntityCreatureAgeable implements IMob {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("YaleMeatRaw")), 1).setMinAmount(1).setMaxAmount(3));
 		this.woolDrop = new DropRate(new ItemStack(Blocks.wool), 1).setMinAmount(1).setMaxAmount(3);
         this.drops.add(this.woolDrop);
 	}
@@ -110,34 +131,54 @@ public class EntityYale extends EntityCreatureAgeable implements IMob {
 	// ========== On Spawn ==========
 	@Override
 	public void onSpawn() {
-		this.setColor(this.getRandomFurColor(this.getRNG()));
+		if(!this.isChild())
+			this.setColor(this.getRandomFurColor(this.getRNG()));
 	}
 	
 	
     // ==================================================
     //                      Abilities
     // ==================================================
+	// ========== IShearable ==========
+	@Override
+	public boolean isShearable(ItemStack item, IBlockAccess world, int x, int y, int z) {
+		return this.hasFur();
+	}
+	
+	@Override
+	public ArrayList<ItemStack> onSheared(ItemStack item, IBlockAccess world, int x, int y, int z, int fortune) {
+		this.setFur(false);
+		this.playSound("mob.sheep.shear", 1.0F, 1.0F);
+		ArrayList<ItemStack> dropStacks = new ArrayList<ItemStack>();
+		
+		int quantity = this.woolDrop.getQuantity(this.getRNG(), fortune);
+		ItemStack dropStack = this.woolDrop.getItemStack(this, quantity);
+		this.dropItem(dropStack);
+		dropStacks.add(dropStack);
+		
+		return dropStacks;
+	}
+	
 	// ========== Fur ==========
 	public boolean hasFur() {
-		return this.dataWatcher.getWatchableObjectByte(WATCHER_ID.LAST.id) == 1;
+		if(this.dataWatcher == null) return true;
+		return this.dataWatcher.getWatchableObjectByte(WATCHER_ID.LAST.id) > 0;
 	}
 
 	public void setFur(boolean fur) {
-		if(this.worldObj.isRemote)
+		if(!this.worldObj.isRemote)
 			this.dataWatcher.updateObject(WATCHER_ID.LAST.id, (byte)(fur ? 1 : 0));
 	}
 	
 	@Override
 	public void onEat() {
-		this.setFur(true);
+		if(!this.worldObj.isRemote)
+			this.setFur(true);
 	}
 	
-	public void onSheared() {
-		this.setFur(false);
-		int quantity = this.woolDrop.getQuantity(this.getRNG(), 0);
-		ItemStack dropStack = this.woolDrop.getItemStack(this, quantity);
-		this.dropItem(dropStack);
-		this.playSound("mob.sheep.shear", 1.0F, 1.0F);
+	@Override
+	public boolean canBeColored(EntityPlayer player) {
+		return true;
 	}
 	
 	@Override
@@ -164,14 +205,6 @@ public class EntityYale extends EntityCreatureAgeable implements IMob {
             k = this.worldObj.rand.nextBoolean() ? i : j;
         return k;
     }
-	
-	private final InventoryCrafting colorMixer = new InventoryCrafting(new Container() {
-        private static final String __OBFID = "CL_00001649";
-        public boolean canInteractWith(EntityPlayer par1EntityPlayer)
-        {
-            return false;
-        }
-    }, 2, 1);
 	
 	
 	// ==================================================
@@ -215,35 +248,15 @@ public class EntityYale extends EntityCreatureAgeable implements IMob {
     
     
     // ==================================================
-    //                     Interact
-    // ==================================================
-    // ========== Get Interact Commands ==========
-    /** Gets a map of all possible interact events with the key being the priority, lower is better. **/
-    public HashMap<Integer, String> getInteractCommands(EntityPlayer player, ItemStack itemStack) {
-    	HashMap<Integer, String> commands = new HashMap<Integer, String>();
-    	commands.putAll(super.getInteractCommands(player, itemStack));
-    	
-    	// Item Commands:
-    	if(itemStack != null) {
-    		
-    		// Shears:
-    		if(itemStack.getItem() == Items.shears && this.hasFur())
-    			commands.put(CMD_PRIOR.ITEM_USE.id, "Shear");
-    	}
-    	
-    	return commands;
-    }
-    
-    // ========== Perform Command ==========
-    /** Performs the given interact command. Could be used outside of the interact method if needed. **/
-    public void performCommand(String command, EntityPlayer player, ItemStack itemStack) {
-    	
-    	// Shear:
-    	if(command == "Shear") {
-    		this.onSheared();
-    	}
-    	
-    	super.performCommand(command, player, itemStack);
+   	//                      Drops
+   	// ==================================================
+    // ========== Drop Items ==========
+    /** Cycles through all of this entity's DropRates and drops random loot, usually called on death. If this mob is a minion, this method is cancelled. **/
+    @Override
+    protected void dropFewItems(boolean playerKill, int lootLevel) {
+    	if(!this.hasFur())
+    		this.woolDrop.setMinAmount(0).setMaxAmount(0);
+    	super.dropFewItems(playerKill, lootLevel);
     }
     
     
@@ -263,5 +276,27 @@ public class EntityYale extends EntityCreatureAgeable implements IMob {
 	@Override
 	public boolean isBreedingItem(ItemStack testStack) {
 		return ObjectLists.inItemList("vegetables", testStack);
+    }
+    
+	
+    // ==================================================
+    //                        NBT
+    // ==================================================
+   	// ========== Read ===========
+    /** Used when loading this mob from a saved chunk. **/
+    @Override
+    public void readEntityFromNBT(NBTTagCompound nbtTagCompound) {
+    	super.readEntityFromNBT(nbtTagCompound);
+    	if(nbtTagCompound.hasKey("HasFur")) {
+    		this.setFur(nbtTagCompound.getBoolean("HasFur"));
+    	}
+    }
+    
+    // ========== Write ==========
+    /** Used when saving this mob to a chunk. **/
+    @Override
+    public void writeEntityToNBT(NBTTagCompound nbtTagCompound) {
+    	super.writeEntityToNBT(nbtTagCompound);
+    	nbtTagCompound.setBoolean("HasFur", this.hasFur());
     }
 }

@@ -6,8 +6,13 @@ entity.mountainmobs.jabberwock.name=Jabberwock
 entity.mountainmobs.jabberwock.description=Vicious deer like creatures, their hooked claws will cause a weight effect pulling their victim down, this prevents any jumping and increases falling damage, making Jabberwocks deadly in the mountains.
 entity.mountainmobs.troll.name=Troll
 entity.mountainmobs.troll.description=In the sun a Trolls skin is as hard as stone giving them good defense. Out of the sun their they soften increasing their speed but lowering their defense. They will destroy soft blocks if you get close.
+entity.mountainmobs.yale.name=Yale
+entity.mountainmobs.yale.description=Strange fluffy ram-like creatures. Yales provide wool which can be obtained using shears, they can also be farmed with vegetables. They use their horns as front legs and eat with tiny arms.
 #
 # Items
 item.mountainspawn.name=Spawn
+item.yalemeatraw.name=Raw Yale Meat
+item.yalemeatcooked.name=Cooked Yale Meat
+item.peakskebab.name=Peaks Kebab
 item.boulderblastcharge.name=Boulder Blast Charge
 item.boulderblastscepter.name=Boulder Blast Scepter

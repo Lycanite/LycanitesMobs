@@ -3,11 +3,15 @@ package lycanite.lycanitesmobs.mountainmobs.model;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.model.ModelCustomObj;
+import lycanite.lycanitesmobs.api.render.RenderCreature;
 import lycanite.lycanitesmobs.mountainmobs.MountainMobs;
 import lycanite.lycanitesmobs.mountainmobs.entity.EntityYale;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.model.obj.WavefrontObject;
+
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -63,11 +67,11 @@ public class ModelYale extends ModelCustomObj {
     	// Idle:
     	if(partName.equals("armleft")) {
 	        rotZ -= Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F + 0.05F);
-	        rotX -= Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
+	        rotX -= Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.2F);
     	}
     	if(partName.equals("armright")) {
 	        rotZ += Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F + 0.05F);
-	        rotX += Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
+	        rotX += Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.2F);
     	}
     	
     	// Walking:
@@ -81,9 +85,9 @@ public class ModelYale extends ModelCustomObj {
 	    		rotX += Math.toDegrees(MathHelper.cos(time * walkSwing + (float)Math.PI) * 1.0F * distance * 0.5F);
 				rotZ += Math.toDegrees(MathHelper.cos(time * walkSwing + (float)Math.PI) * 0.5F * distance * 0.5F);
 	    	}
-	    	if(partName.equals("legfrontleft") || partName.equals("legbackright"))
+	    	if(partName.equals("legleftfront") || partName.equals("legrightback"))
 	    		rotX += Math.toDegrees(MathHelper.cos(time * walkSwing + (float)Math.PI) * 1.4F * distance);
-	    	if(partName.equals("legfrontright") || partName.equals("legbackleft"))
+	    	if(partName.equals("legrightfront") || partName.equals("legleftback"))
 	    		rotX += Math.toDegrees(MathHelper.cos(time * walkSwing) * 1.4F * distance);
     	}
 		
@@ -103,16 +107,22 @@ public class ModelYale extends ModelCustomObj {
 		        rotZ += 10;
 		        rotX -= 50;
 	    	}
-	    	if(partName.equals("legfrontleft") || partName.equals("legfrontright"))
+	    	if(partName.equals("legleftfront") || partName.equals("legrightfront"))
 	    		rotX += 50;
-	    	if(partName.equals("legbackleft") || partName.equals("legbackright"))
+	    	if(partName.equals("legleftback") || partName.equals("legrightback"))
 	    		rotX -= 50;
 		}
 		
 		// Fur:
+		GL11.glColor3f(1.0F, 1.0F, 1.0F);
 		if(partName.equals("fur") && entity instanceof EntityYale) {
-			if(!((EntityYale)entity).hasFur())
+			if(!((EntityYale)entity).hasFur()) {
 				this.scale(0, 0, 0);
+			}
+			else {
+				int colorID = colorID = ((EntityCreatureBase)entity).getColor();
+				GL11.glColor3f(RenderCreature.colorTable[colorID][0], RenderCreature.colorTable[colorID][1], RenderCreature.colorTable[colorID][2]);
+			}
 		}
     	
     	// Apply Animations:

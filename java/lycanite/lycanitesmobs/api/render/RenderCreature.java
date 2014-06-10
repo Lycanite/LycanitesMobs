@@ -6,7 +6,6 @@ import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
@@ -32,7 +31,8 @@ public class RenderCreature extends RenderLiving {
     // ==================================================
  	//                  Render Equipment
  	// ==================================================
-    protected int shouldRenderPass(EntityLivingBase entity, int renderPass, float partialTick) {
+    @SuppressWarnings("unused") //TODO Collar textures.
+	protected int shouldRenderPass(EntityLivingBase entity, int renderPass, float partialTick) {
     	if(!(entity instanceof EntityCreatureBase))
     		return -1;
     	EntityCreatureBase creature = (EntityCreatureBase)entity;
@@ -52,12 +52,12 @@ public class RenderCreature extends RenderLiving {
     	
     	// Feet/Collar/Color Third:
     	if(renderPass == 2) {
-    		if(creature.canBeColored(null)) {
+    		if(creature.canBeColored(null) && false) {
     			this.bindEntityTexture(entity);
     			int colorID = 0;
     			if(entity instanceof EntityCreatureBase)
     				colorID = ((EntityCreatureBase)entity).getColor();
-    			GL11.glColor3f(EntitySheep.fleeceColorTable[colorID][0], EntitySheep.fleeceColorTable[colorID][1], EntitySheep.fleeceColorTable[colorID][2]);
+    			GL11.glColor3f(colorTable[colorID][0], colorTable[colorID][1], colorTable[colorID][2]);
     			// Future collar texture overlays can be added here and should be colored.
     			return 1;
     		}

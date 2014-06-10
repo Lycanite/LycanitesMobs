@@ -21,5 +21,6 @@ public class SubConfig extends Config {
 		// ========== Mob Control ==========
 		loadMobSettings("Jabberwock", 8, 10, 1, 2, "MONSTER");
 		loadMobSettings("Troll", 4, 5, 1, 2, "MONSTER");
+		loadMobSettings("Yale", 14, 5, 2, 3, "CREATURE");
 	}
 }

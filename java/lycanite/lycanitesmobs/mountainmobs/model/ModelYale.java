@@ -114,12 +114,12 @@ public class ModelYale extends ModelCustomObj {
 		}
 		
 		// Fur:
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		if(!this.dontColor) GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		if(partName.equals("fur") && entity instanceof EntityYale) {
 			if(!((EntityYale)entity).hasFur()) {
 				this.scale(0, 0, 0);
 			}
-			else {
+			else if(!this.dontColor) {
 				int colorID = colorID = ((EntityCreatureBase)entity).getColor();
 				GL11.glColor4f(RenderCreature.colorTable[colorID][0], RenderCreature.colorTable[colorID][1], RenderCreature.colorTable[colorID][2], 1.0F);
 			}

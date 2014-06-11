@@ -17,9 +17,6 @@ public class ModelCustom extends ModelBase {
 	// Initial Rotations:
 	public Map<ModelRenderer, float[]> initRotations = new HashMap<ModelRenderer, float[]>();
     
-    // Animator:
-    //public Animator animator;
-    
 	// ==================================================
   	//                    Constructors
   	// ==================================================

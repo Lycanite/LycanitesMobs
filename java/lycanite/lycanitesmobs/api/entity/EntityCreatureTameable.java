@@ -385,7 +385,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
             this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamed | TAMED_ID.IS_TAMED.id)));
         else
             this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamed - (tamed & TAMED_ID.IS_TAMED.id))));
-        //this.setAlwaysRenderNameTag(setTamed);
+        this.setAlwaysRenderNameTag(setTamed);
     }
     
     public boolean isTamingItem(ItemStack itemstack) {

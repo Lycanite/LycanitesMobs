@@ -29,6 +29,10 @@ public class ModelCustomObj extends ModelBase {
 	public boolean lockHeadX = false;
 	public boolean lockHeadY = false;
     
+    // Coloring:
+	/** If true, no color effects will be applied, this is usually used for red damage overlays, etc. **/
+    public boolean dontColor = false;
+    
 	// ==================================================
   	//                    Constructors
   	// ==================================================

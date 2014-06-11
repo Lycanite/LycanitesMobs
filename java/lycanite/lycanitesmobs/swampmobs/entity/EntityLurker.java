@@ -42,6 +42,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class EntityLurker extends EntityCreatureTameable implements IGroupHunter {
     
@@ -186,12 +188,8 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
 	    			return false;
 	    	}
 	    	else {
-	    		if(this.isTamed())
+	    		if(this.isMoving())
 	    			return false;
-	    		if(!this.canFly() && !this.getNavigator().noPath())
-	    			return false;
-				if(this.canFly() && !this.flightNavigator.atTargetPosition())
-					return false;
 	    	}
 	        return true;
         }
@@ -268,5 +266,17 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
     @Override
     public boolean isHealingItem(ItemStack testStack) {
     	return ObjectLists.inItemList("CookedMeat", testStack);
+    }
+    
+    
+    // ==================================================
+    //                       Visuals
+    // ==================================================
+    @SideOnly(Side.CLIENT)
+    @Override
+    public boolean isInvisibleToPlayer(EntityPlayer player) {
+    	if(this.isTamed() && this.getOwner() == player)
+    		return false;
+        return this.isInvisible();
     }
 }

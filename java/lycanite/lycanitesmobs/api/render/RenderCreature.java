@@ -374,7 +374,7 @@ public class RenderCreature extends RenderLiving {
     	if(!Minecraft.isGuiEnabled()) return false;
     	if(renderEntity == this.renderManager.livingPlayer) return false;
     	if(renderEntity.isInvisibleToPlayer(Minecraft.getMinecraft().thePlayer)) return false;
-    	if(renderEntity.riddenByEntity == null) return false;
+    	if(renderEntity.riddenByEntity != null) return false;
     	
     	if(renderEntity.getAlwaysRenderNameTagForRender()) {
     		if(renderEntity instanceof EntityCreatureTameable)

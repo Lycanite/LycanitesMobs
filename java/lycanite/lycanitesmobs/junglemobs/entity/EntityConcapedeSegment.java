@@ -56,6 +56,7 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
         
         this.setWidth = 0.5F;
         this.setHeight = 0.9F;
+        this.isHostileByDefault = false;
         this.setupMob();
     	
         // AI Tasks:

@@ -37,10 +37,10 @@ public class MessageEntityGUICommand implements IMessage, IMessageHandler<Messag
 		if(ctx.side != Side.SERVER) return null;
 		EntityPlayer player = ctx.getServerHandler().playerEntity;
 		World world = player.worldObj;
-		Entity entity = world.getEntityByID(this.entityID);
+		Entity entity = world.getEntityByID(message.entityID);
 		if(entity instanceof EntityCreatureTameable) {
 			EntityCreatureTameable pet = (EntityCreatureTameable)entity;
-			pet.performGUICommand((EntityPlayer)player, this.guiCommandID);
+			pet.performGUICommand((EntityPlayer)player, message.guiCommandID);
 		}
 		return null;
 	}

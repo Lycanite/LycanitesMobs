@@ -55,6 +55,7 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
         this.setHeight = 3.2F;
         this.attackTime = 10;
         this.fleeHealthPercent = 1.0F;
+        this.isHostileByDefault = false;
         this.setupMob();
         
         // AI Tasks:

@@ -7,7 +7,6 @@ import java.io.IOException;
 import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.info.SummonSet;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
@@ -42,15 +41,15 @@ public class MessageSummonSet implements IMessage, IMessageHandler<MessageSummon
 	public IMessage onMessage(MessageSummonSet message, MessageContext ctx) {
 		EntityPlayer player = null;
 		if(ctx.side == Side.CLIENT)
-			player = Minecraft.getMinecraft().thePlayer;
+			player = LycanitesMobs.proxy.getClientPlayer();
 		else if(ctx.side == Side.SERVER)
 			player = ctx.getServerHandler().playerEntity;
 		if(player == null) return null;
 		ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
 		if(playerExt == null) return null;
 		
-		SummonSet summonSet = playerExt.getSummonSet(this.summonSetID);
-		summonSet.readFromPacket(this.summonType, this.behaviour);
+		SummonSet summonSet = playerExt.getSummonSet(message.summonSetID);
+		summonSet.readFromPacket(message.summonType, message.behaviour);
 		return null;
 	}
 	
@@ -67,7 +66,7 @@ public class MessageSummonSet implements IMessage, IMessageHandler<MessageSummon
 		try {
 			this.summonSetID = packet.readByte();
 			this.summonType = packet.readStringFromBuffer(256);
-			this.behaviour= packet.readByte();
+			this.behaviour = packet.readByte();
 		} catch (IOException e) {
 			LycanitesMobs.printWarning("", "There was a problem decoding the packet: " + packet + ".");
 			e.printStackTrace();

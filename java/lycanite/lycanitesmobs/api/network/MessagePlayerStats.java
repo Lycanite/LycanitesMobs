@@ -2,7 +2,7 @@ package lycanite.lycanitesmobs.api.network;
 
 import io.netty.buffer.ByteBuf;
 import lycanite.lycanitesmobs.ExtendedPlayer;
-import net.minecraft.client.Minecraft;
+import lycanite.lycanitesmobs.LycanitesMobs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
@@ -32,11 +32,11 @@ public class MessagePlayerStats implements IMessage, IMessageHandler<MessagePlay
 	@Override
 	public IMessage onMessage(MessagePlayerStats message, MessageContext ctx) {
 		if(ctx.side != Side.CLIENT) return null;
-		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+		EntityPlayer player = LycanitesMobs.proxy.getClientPlayer();
 		ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
 		if(playerExt == null) return null;
 		
-		playerExt.summonFocus = this.summonFocus;
+		playerExt.summonFocus = message.summonFocus;
 		return null;
 	}
 	

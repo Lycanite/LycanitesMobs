@@ -7,7 +7,6 @@ import java.io.IOException;
 import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.info.CreatureKnowledge;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
@@ -39,12 +38,12 @@ public class MessageCreatureKnowledge implements IMessage, IMessageHandler<Messa
 	@Override
 	public IMessage onMessage(MessageCreatureKnowledge message, MessageContext ctx) {
 		if(ctx.side != Side.CLIENT) return null;
-		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+		EntityPlayer player = LycanitesMobs.proxy.getClientPlayer();
 		ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
 		if(playerExt == null)
 			return null;
 		
-		playerExt.beastiary.addToKnowledgeList(new CreatureKnowledge(player, this.creatureName, this.completion));
+		playerExt.beastiary.addToKnowledgeList(new CreatureKnowledge(player, message.creatureName, message.completion));
 		return null;
 	}
 	

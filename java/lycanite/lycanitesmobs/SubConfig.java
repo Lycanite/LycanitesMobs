@@ -18,6 +18,7 @@ public class SubConfig extends Config {
 		this.loadSetting(this.featureBools, "Feature Control", "PredatorsAttackAnimals", "Predators Attack Animals", true);
 		this.loadSetting(this.featureBools, "Feature Control", "CustomEffects", "Enable Custom Potion Effects", true);
 		this.loadSetting(this.featureBools, "Feature Control", "InventoryTabs", "Show Inventory Tabs", true);
+		this.loadSetting(this.featureBools, "Feature Control", "FriendlyFire", "Friendly Fire", true);
 		
 		// ========== Global Spawn Control ==========
 		this.loadSetting(this.featureInts, "Spawn Control", "SpawnLimitRange", "Spawn Limit Search Range", 32);

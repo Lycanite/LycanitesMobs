@@ -15,6 +15,7 @@ import lycanite.lycanitesmobs.api.render.RenderCreature;
 import lycanite.lycanitesmobs.api.render.RenderParticle;
 import lycanite.lycanitesmobs.api.render.RenderProjectile;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -75,4 +76,10 @@ public class ClientProxy extends CommonProxy {
 		// Special Entites:
 		RenderingRegistry.registerEntityRenderingHandler(EntityPortal.class, new RenderProjectile());
     }
+	
+	// ========== Get Client Player Entity ==========
+	@Override
+    public EntityPlayer getClientPlayer() {
+		return Minecraft.getMinecraft().thePlayer;
+	}
 }

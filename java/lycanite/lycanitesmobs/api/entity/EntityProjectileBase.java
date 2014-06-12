@@ -1,12 +1,14 @@
 package lycanite.lycanitesmobs.api.entity;
 
 import lycanite.lycanitesmobs.AssetManager;
+import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
@@ -93,30 +95,7 @@ public class EntityProjectileBase extends EntityThrowable {
      	if(movingObjectPosition.entityHit != null) {
      		boolean doDamage = true;
  			if(movingObjectPosition.entityHit instanceof EntityLivingBase) {
- 				EntityLivingBase owner = this.getThrower();
- 			    if(owner != null) {
- 			    	
- 			    	// Player Damage Event:
-	 			    if(owner instanceof EntityPlayer) {
-	 			    	if(MinecraftForge.EVENT_BUS.post(new AttackEntityEvent((EntityPlayer)owner, movingObjectPosition.entityHit))) {
-	 			    		doDamage = false;
-	 			    	}
-	 			    }
-	 			    
-	 			    // Pet Attacks:
-	 			    if(owner instanceof EntityCreatureTameable) {
-	 			    	EntityCreatureTameable tamedOwner = (EntityCreatureTameable)owner;
-	 			    	// Friendly Fire:
-	 			    	if(tamedOwner.getOwner() == movingObjectPosition.entityHit)
-	 			    		doDamage = false;
-	 			    	// Pet Damage Event as Player Damage:
-	 			    	else if(tamedOwner.getOwner() instanceof EntityPlayer) {
-		 			    	if(MinecraftForge.EVENT_BUS.post(new AttackEntityEvent((EntityPlayer)tamedOwner.getOwner(), movingObjectPosition.entityHit))) {
-		 			    		doDamage = false;
-		 			    	}
-		 			    }
-	 			    }
- 			    }
+ 				doDamage = this.canDamage((EntityLivingBase)movingObjectPosition.entityHit);
  			}
  			if(doDamage) {
  				this.entityCollision(movingObjectPosition.entityHit);
@@ -173,6 +152,37 @@ public class EntityProjectileBase extends EntityThrowable {
  	            this.setDead();
  	        }
      	}
+     }
+     
+     //========== Do Damage Check ==========
+     public boolean canDamage(EntityLivingBase targetEntity) {
+    	 EntityLivingBase owner = this.getThrower();
+		    if(owner != null) {
+		    	
+		    	// Player Damage Event:
+			    if(owner instanceof EntityPlayer) {
+			    	if(MinecraftForge.EVENT_BUS.post(new AttackEntityEvent((EntityPlayer)owner, targetEntity))) {
+			    		return false;
+			    	}
+			    }
+			    
+			    // No PVP
+			    if(!MinecraftServer.getServer().isPVPEnabled()) {
+			    	if(targetEntity instanceof EntityPlayer)
+			    		return false;
+			    	if(targetEntity instanceof EntityCreatureTameable) {
+			    		EntityCreatureTameable tamedTarget = (EntityCreatureTameable)targetEntity;
+			    		if(tamedTarget.isTamed()) {
+			    			return false;
+			    		}
+			    	}
+			    }
+			    
+			    // Friendly Fire:
+			    if(owner.isOnSameTeam(targetEntity) && LycanitesMobs.config.getFeatureBool("FriendlyFire"))
+			    	return false;
+		    }
+		    return true;
      }
      
      //========== Entity Collision ==========

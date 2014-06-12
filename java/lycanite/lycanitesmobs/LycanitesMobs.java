@@ -73,6 +73,7 @@ public class LycanitesMobs implements ILycaniteMod {
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
 		config.init(modid);
+		this.packetHandler.init();
 		
 		// ========== Mob Info ==========
 		MobInfo.loadGlobalSettings();
@@ -125,7 +126,6 @@ public class LycanitesMobs implements ILycaniteMod {
     public void load(FMLInitializationEvent event) {
 		// ========== Register and Initialize Handlers ==========
 		proxy.registerEvents();
-		this.packetHandler.init();
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 		
 		// ========== Register Entities ==========

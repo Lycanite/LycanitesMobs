@@ -54,6 +54,7 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
         this.setHeight = 2.2F;
         this.attackTime = 10;
         this.fleeHealthPercent = 1.0F;
+        this.isHostileByDefault = false;
         this.setupMob();
         
         // AI Tasks:

@@ -33,7 +33,7 @@ public class MessageGUIRequest implements IMessage, IMessageHandler<MessageGUIRe
 		if(ctx.side != Side.SERVER) return null;
 		EntityPlayer player = ctx.getServerHandler().playerEntity;
 		ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
-		playerExt.requestGUI(this.guiID);
+		playerExt.requestGUI(message.guiID);
 		return null;
 	}
 	

@@ -76,6 +76,7 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
         this.setWidth = 0.8F;
         this.setHeight = 1.6F;
         this.fleeHealthPercent = 1.0F;
+        this.isHostileByDefault = false;
         this.setupMob();
     	
         // AI Tasks:

@@ -6,15 +6,12 @@ import java.util.HashSet;
 import lycanite.lycanitesmobs.Utilities;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.AttackEntityEvent;
 
 public class EntityProjectileLaser extends EntityProjectileBase {
 	// Properties:
@@ -247,12 +244,7 @@ public class EntityProjectileLaser extends EntityProjectileBase {
 					if(this.laserEnd.getDistanceToEntity(target.entityHit) <= (this.laserWidth * 10)) {
 						boolean doDamage = true;
 						if(target.entityHit instanceof EntityLivingBase) {
-							EntityLivingBase owner = this.getThrower();
-						    if(this.getThrower() != null && owner instanceof EntityPlayer) {
-						    	if(MinecraftForge.EVENT_BUS.post(new AttackEntityEvent((EntityPlayer)owner, target.entityHit))) {
-						    		doDamage = false;
-						    	}
-						    }
+							doDamage = this.canDamage((EntityLivingBase)target.entityHit);
 						}
 						if(doDamage)
 							this.updateDamage(target.entityHit);

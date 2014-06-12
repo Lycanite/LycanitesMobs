@@ -34,7 +34,7 @@ public class MessagePlayerControl implements IMessage, IMessageHandler<MessagePl
 		EntityPlayer player = ctx.getServerHandler().playerEntity;
 		ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
 		if(playerExt == null) return null;
-		playerExt.updateControlStates(this.controlStates);
+		playerExt.updateControlStates(message.controlStates);
 		return null;
 	}
 	

@@ -138,6 +138,7 @@ public class EventListener {
 		// ========== Mounted Protection ==========
 		if(event.entityLiving.ridingEntity != null) {
 			if(event.entityLiving.ridingEntity instanceof EntityCreatureRideable) {
+				
 				// Prevent Mounted Entities from Suffocating:
 				if("inWall".equals(event.source.damageType)) {
 					event.setCanceled(true);

@@ -2,6 +2,8 @@ package lycanite.lycanitesmobs;
 
 import java.io.File;
 
+import net.minecraft.entity.player.EntityPlayer;
+
 public class CommonProxy {
 	
 	// ========== Register Key Bindings ==========
@@ -25,4 +27,5 @@ public class CommonProxy {
 	// ========== Client Only ==========
     public void registerAssets() {}
     public void registerRenders() {}
+    public EntityPlayer getClientPlayer() { return null; }
 }

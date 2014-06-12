@@ -2,7 +2,7 @@ package lycanite.lycanitesmobs.api.network;
 
 import io.netty.buffer.ByteBuf;
 import lycanite.lycanitesmobs.ExtendedPlayer;
-import net.minecraft.client.Minecraft;
+import lycanite.lycanitesmobs.LycanitesMobs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
@@ -33,13 +33,13 @@ public class MessageSummonSetSelection implements IMessage, IMessageHandler<Mess
 	public IMessage onMessage(MessageSummonSetSelection message, MessageContext ctx) {
 		EntityPlayer player = null;
 		if(ctx.side == Side.CLIENT)
-			player = Minecraft.getMinecraft().thePlayer;
+			player = LycanitesMobs.proxy.getClientPlayer();
 		else if(ctx.side == Side.SERVER)
 			player = ctx.getServerHandler().playerEntity;
 		if(player == null) return null;
 		ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
 		if(playerExt == null) return null;
-		playerExt.setSelectedSummonSet(this.summonSetID);
+		playerExt.setSelectedSummonSet(message.summonSetID);
 		return null;
 	}
 	

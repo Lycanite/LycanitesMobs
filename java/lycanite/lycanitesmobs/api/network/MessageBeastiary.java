@@ -10,7 +10,6 @@ import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.info.Beastiary;
 import lycanite.lycanitesmobs.api.info.CreatureKnowledge;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
@@ -52,15 +51,15 @@ public class MessageBeastiary implements IMessage, IMessageHandler<MessageBeasti
 	@Override
 	public IMessage onMessage(MessageBeastiary message, MessageContext ctx) {
 		if(ctx.side != Side.CLIENT) return null;
-		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+		EntityPlayer player = LycanitesMobs.proxy.getClientPlayer();
 		ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
 		if(playerExt == null) return null;
-		if(this.entryAmount < 0) return null;
+		if(message.entryAmount < 0) return null;
 		
 		Map<String, CreatureKnowledge> newKnowledgeList = new HashMap<String, CreatureKnowledge>();
-		for(int i = 0; i < this.entryAmount; i++) {
-			String creatureName = this.creatureNames[i];
-			double completion = this.completions[i];
+		for(int i = 0; i < message.entryAmount; i++) {
+			String creatureName = message.creatureNames[i];
+			double completion = message.completions[i];
 			CreatureKnowledge creatureKnowledge = new CreatureKnowledge(player, creatureName, completion);
 			newKnowledgeList.put(creatureKnowledge.creatureName, creatureKnowledge);
 		}

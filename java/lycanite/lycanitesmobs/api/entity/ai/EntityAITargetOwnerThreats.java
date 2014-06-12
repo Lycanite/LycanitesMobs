@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs.api.entity.ai;
 import java.util.Collections;
 import java.util.List;
 
+import lycanite.lycanitesmobs.api.IGroupAnimal;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import net.minecraft.command.IEntitySelector;
@@ -124,14 +125,18 @@ public class EntityAITargetOwnerThreats extends EntityAITarget {
         	for(Object possibleTargetObj : possibleTargets) {
         		if(possibleTargetObj instanceof EntityLivingBase) {
 	        		EntityLivingBase possibleTarget = (EntityLivingBase)possibleTargetObj;
-	        		if(possibleTarget instanceof IMob && !(possibleTarget instanceof IEntityOwnable) && !(possibleTarget instanceof EntityCreatureBase))
+	        		if(possibleTarget instanceof IMob && !(possibleTarget instanceof IEntityOwnable) && !(possibleTarget instanceof EntityCreatureBase)) {
 	        			this.target = possibleTarget;
-	        		else if(possibleTarget instanceof EntityCreatureBase && ((EntityCreatureBase)possibleTarget).isHostile())
+	        		}
+	        		else if(possibleTarget instanceof EntityCreatureBase && ((EntityCreatureBase)possibleTarget).isHostile() && !(possibleTarget instanceof IGroupAnimal)) {
 	        			this.target = possibleTarget;
-	        		else if(possibleTarget instanceof EntityLiving && ((EntityLiving)possibleTarget).getAttackTarget() == this.getOwner())
+	        		}
+	        		else if(possibleTarget instanceof EntityLiving && ((EntityLiving)possibleTarget).getAttackTarget() == this.getOwner()) {
 	        			this.target = possibleTarget;
-	        		else if(possibleTarget.getAITarget() == this.getOwner())
+	        		}
+	        		else if(possibleTarget.getAITarget() == this.getOwner()) {
 	        			this.target = possibleTarget;
+	        		}
 	        		if(this.target != null)
 	        			break;
         		}

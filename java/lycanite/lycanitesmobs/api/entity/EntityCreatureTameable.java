@@ -15,6 +15,7 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.StatCollector;
@@ -313,11 +314,15 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     @Override
     public boolean isOnSameTeam(EntityLivingBase target) {
         if(this.isTamed()) {
-            EntityLivingBase owner = this.getOwner();
-            if(target == owner)
+            if(target == this.getOwner())
                 return true;
-            if(owner != null)
-                return owner.isOnSameTeam(target);
+            if(target instanceof EntityCreatureTameable) {
+            	EntityCreatureTameable tamedTarget = (EntityCreatureTameable)target;
+            	if(tamedTarget.isTamed() && (!MinecraftServer.getServer().isPVPEnabled()) || tamedTarget.getOwner() == this.getOwner())
+            		return true;
+            }
+            if(this.getOwner() != null)
+                return this.getOwner().isOnSameTeam(target);
         }
         return super.isOnSameTeam(target);
     }
@@ -342,7 +347,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
 	public boolean canAttackEntity(EntityLivingBase targetEntity) {
 		if(this.isPassive())
 			return false;
-		if(this.isTamed() && targetEntity instanceof EntityPlayer && !this.isPVP())
+		if(this.isTamed() && targetEntity instanceof EntityPlayer && (!MinecraftServer.getServer().isPVPEnabled() || !this.isPVP()))
 			return false;
 		if(this.isTamed() && targetEntity instanceof EntityCreatureTameable) {
 			EntityCreatureTameable targetPet = (EntityCreatureTameable)targetEntity;

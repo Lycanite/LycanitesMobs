@@ -7,8 +7,8 @@ import java.util.Map.Entry;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
-import lycanite.lycanitesmobs.api.packet.PacketBeastiary;
-import lycanite.lycanitesmobs.api.packet.PacketCreatureKnowledge;
+import lycanite.lycanitesmobs.api.network.MessageBeastiary;
+import lycanite.lycanitesmobs.api.network.MessageCreatureKnowledge;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -84,16 +84,14 @@ public class Beastiary {
     // ==================================================
 	/** Sends a new Beastiary entry (CreatureKnowledge) to the client. Shouldn't really be needed, just add it client side. **/
 	public void sendNewToClient(CreatureKnowledge newKnowledge) {
-		PacketCreatureKnowledge packet = new PacketCreatureKnowledge();
-		packet.readCreatureKnowledge(newKnowledge);
-		LycanitesMobs.packetPipeline.sendToPlayer(packet, (EntityPlayerMP)this.player);
+		MessageCreatureKnowledge message = new MessageCreatureKnowledge(newKnowledge);
+		LycanitesMobs.packetHandler.sendToPlayer(message, (EntityPlayerMP)this.player);
 	}
 	
 	/** Sends the whole Beastiary progress to the client, use sparingly! **/
 	public void sendAllToClient() {
-		PacketBeastiary packet = new PacketBeastiary();
-		packet.readBeastiary(this);
-		LycanitesMobs.packetPipeline.sendToPlayer(packet, (EntityPlayerMP)this.player);
+		MessageBeastiary message = new MessageBeastiary(this);
+		LycanitesMobs.packetHandler.sendToPlayer(message, (EntityPlayerMP)this.player);
 	}
 	
 	

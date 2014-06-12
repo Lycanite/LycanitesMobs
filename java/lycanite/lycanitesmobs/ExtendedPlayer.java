@@ -8,9 +8,9 @@ import lycanite.lycanitesmobs.api.info.Beastiary;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.SummonSet;
 import lycanite.lycanitesmobs.api.item.ItemStaffSummoning;
-import lycanite.lycanitesmobs.api.packet.PacketPlayerStats;
-import lycanite.lycanitesmobs.api.packet.PacketSummonSet;
-import lycanite.lycanitesmobs.api.packet.PacketSummonSetSelection;
+import lycanite.lycanitesmobs.api.network.MessagePlayerStats;
+import lycanite.lycanitesmobs.api.network.MessageSummonSet;
+import lycanite.lycanitesmobs.api.network.MessageSummonSetSelection;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -116,9 +116,8 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 			}
 			if(!creative && this.currentTick % 20 == 0) {
 				if(this.summonFocus < this.summonFocusMax || (player.getHeldItem() != null && player.getHeldItem().getItem() instanceof ItemStaffSummoning)) {
-					PacketPlayerStats packet = new PacketPlayerStats();
-					packet.readPlayerStats(this);
-					LycanitesMobs.packetPipeline.sendToPlayer(packet, (EntityPlayerMP)this.player);
+					MessagePlayerStats message = new MessagePlayerStats(this);
+					LycanitesMobs.packetHandler.sendToPlayer(message, (EntityPlayerMP)this.player);
 				}
 			}
 		}
@@ -127,9 +126,8 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 		if(!this.player.worldObj.isRemote && this.needsFirstSync) {
 			this.beastiary.sendAllToClient();
 			this.sendAllSummonSetsToPlayer();
-			PacketSummonSetSelection packet = new PacketSummonSetSelection();
-			packet.readSummonSetSelection(this);
-			LycanitesMobs.packetPipeline.sendToPlayer(packet, (EntityPlayerMP)this.player);
+			MessageSummonSetSelection message = new MessageSummonSetSelection(this);
+			LycanitesMobs.packetHandler.sendToPlayer(message, (EntityPlayerMP)this.player);
 		}
 		needsFirstSync = false;
 		
@@ -199,21 +197,17 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
     //                    Network Sync
     // ==================================================
 	public void sendAllSummonSetsToPlayer() {
-		if(this.player.worldObj.isRemote)
-			return;
+		if(this.player.worldObj.isRemote) return;
 		for(byte setID = 1; setID <= this.summonSetMax; setID++) {
-			PacketSummonSet packet = new PacketSummonSet();
-			packet.readSummonSet(this, setID);
-			LycanitesMobs.packetPipeline.sendToPlayer(packet, (EntityPlayerMP)this.player);
+			MessageSummonSet message = new MessageSummonSet(this, setID);
+			LycanitesMobs.packetHandler.sendToPlayer(message, (EntityPlayerMP)this.player);
 		}
 	}
 	
 	public void sendSummonSetToServer(byte setID) {
-		if(!this.player.worldObj.isRemote)
-			return;
-		PacketSummonSet packet = new PacketSummonSet();
-		packet.readSummonSet(this, setID);
-		LycanitesMobs.packetPipeline.sendToServer(packet);
+		if(!this.player.worldObj.isRemote) return;
+		MessageSummonSet message = new MessageSummonSet(this, setID);
+		LycanitesMobs.packetHandler.sendToServer(message);
 	}
 	
 	

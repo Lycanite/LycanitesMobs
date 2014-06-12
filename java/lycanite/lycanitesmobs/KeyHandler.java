@@ -4,8 +4,7 @@ import lycanite.lycanitesmobs.api.gui.GUIBeastiary;
 import lycanite.lycanitesmobs.api.gui.GUIMinion;
 import lycanite.lycanitesmobs.api.gui.GUIMinionSelection;
 import lycanite.lycanitesmobs.api.gui.TabManager;
-import lycanite.lycanitesmobs.api.packet.PacketGUIRequest;
-import lycanite.lycanitesmobs.api.packet.PacketPlayerControl;
+import lycanite.lycanitesmobs.api.network.MessagePlayerControl;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
@@ -75,15 +74,13 @@ public class KeyHandler {
 
 		// Beastiary: Opens GUI and sends data request packet.
 		if(this.beastiary.isPressed()) {
-			PacketGUIRequest packetGUIRequest = new PacketGUIRequest();
-			packetGUIRequest.readGUI(GuiHandler.PlayerGuiType.BEASTIARY.id);
+			//MessageGUIRequest packetGUIRequest = new MessageGUIRequest(GuiHandler.PlayerGuiType.BEASTIARY.id);
 			GUIBeastiary.openToPlayer(this.mc.thePlayer);
 		}
 
 		// Minion Manager: Opens GUI and sends data request packet.
 		if(this.minionManager.isPressed()) {
-			PacketGUIRequest packetGUIRequest = new PacketGUIRequest();
-			packetGUIRequest.readGUI(GuiHandler.PlayerGuiType.MINION_CONTROLS.id);
+			//MessageGUIRequest packetGUIRequest = new MessageGUIRequest(GuiHandler.PlayerGuiType.MINION_CONTROLS.id);
 			GUIMinion.openToPlayer(this.mc.thePlayer, playerExt.selectedSummonSet);
 		}
 		
@@ -115,9 +112,8 @@ public class KeyHandler {
 		// ========== Sync Controls To Server ==========
 		if(controlStates == playerExt.controlStates)
 			return;
-		PacketPlayerControl packet = new PacketPlayerControl();
-		packet.readControlStates(controlStates);
-		LycanitesMobs.packetPipeline.sendToServer(packet);
+		MessagePlayerControl message = new MessagePlayerControl(controlStates);
+		LycanitesMobs.packetHandler.sendToServer(message);
 		playerExt.controlStates = controlStates;
 	}
 }

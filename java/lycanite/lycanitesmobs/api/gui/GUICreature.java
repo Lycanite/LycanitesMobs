@@ -9,7 +9,7 @@ import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.inventory.ContainerBase;
 import lycanite.lycanitesmobs.api.inventory.ContainerCreature;
 import lycanite.lycanitesmobs.api.inventory.InventoryCreature;
-import lycanite.lycanitesmobs.api.packet.PacketEntityGUICommand;
+import lycanite.lycanitesmobs.api.network.MessageEntityGUICommand;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
@@ -184,9 +184,8 @@ public class GUICreature extends GuiContainer {
 	@Override
 	protected void actionPerformed(GuiButton guiButton) {
 		if(guiButton != null) {
-			PacketEntityGUICommand packet = new PacketEntityGUICommand();
-			packet.readGUICommand((byte)guiButton.id, this.creature);
-			LycanitesMobs.packetPipeline.sendToServer(packet);			
+			MessageEntityGUICommand message = new MessageEntityGUICommand((byte)guiButton.id, this.creature);
+			LycanitesMobs.packetHandler.sendToServer(message);			
 	    }
 		super.actionPerformed(guiButton);
 	}

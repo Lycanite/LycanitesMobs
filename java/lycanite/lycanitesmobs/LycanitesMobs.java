@@ -13,7 +13,7 @@ import lycanite.lycanitesmobs.api.item.ItemStaffSavage;
 import lycanite.lycanitesmobs.api.item.ItemStaffStable;
 import lycanite.lycanitesmobs.api.item.ItemStaffSturdy;
 import lycanite.lycanitesmobs.api.item.ItemStaffSummoning;
-import lycanite.lycanitesmobs.api.packet.PacketPipeline;
+import lycanite.lycanitesmobs.api.network.PacketHandler;
 import lycanite.lycanitesmobs.api.spawning.CustomSpawner;
 import lycanite.lycanitesmobs.api.spawning.SpawnType;
 import net.minecraft.creativetab.CreativeTabs;
@@ -40,10 +40,10 @@ public class LycanitesMobs implements ILycaniteMod {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String version = "1.6.1b - MC 1.7.2";
+	public static final String version = "1.6.1c - MC 1.7.2";
 	public static final String domain = modid.toLowerCase();
 	
-	public static final PacketPipeline packetPipeline = new PacketPipeline();
+	public static final PacketHandler packetHandler = new PacketHandler();
 	
 	public static int mobID = -1;
 	public static int projectileID = 99;
@@ -125,7 +125,7 @@ public class LycanitesMobs implements ILycaniteMod {
     public void load(FMLInitializationEvent event) {
 		// ========== Register and Initialize Handlers ==========
 		proxy.registerEvents();
-		packetPipeline.initialize();
+		this.packetHandler.init();
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 		
 		// ========== Register Entities ==========
@@ -140,7 +140,6 @@ public class LycanitesMobs implements ILycaniteMod {
 	@EventHandler
     public void postInit(FMLPostInitializationEvent event) {
 		// ========== Register and Initialize Handlers/Objects ==========
-		packetPipeline.postInitialize();
 		proxy.registerAssets();
 		proxy.registerTileEntities();
 		proxy.registerRenders();

@@ -5,7 +5,7 @@ import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.GuiHandler;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.info.MobInfo;
-import lycanite.lycanitesmobs.api.packet.PacketSummonSetSelection;
+import lycanite.lycanitesmobs.api.network.MessageSummonSetSelection;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -154,9 +154,8 @@ public class GUIMinionSelection extends GuiScreen {
 	protected void actionPerformed(GuiButton guiButton) {
 		if(guiButton != null) {
 			this.playerExt.setSelectedSummonSet(guiButton.id);
-			PacketSummonSetSelection packet = new PacketSummonSetSelection();
-			packet.readSummonSetSelection(this.playerExt);
-			LycanitesMobs.packetPipeline.sendToServer(packet);
+			MessageSummonSetSelection message = new MessageSummonSetSelection(this.playerExt);
+			LycanitesMobs.packetHandler.sendToServer(message);
 		}
 		super.actionPerformed(guiButton);
 	}

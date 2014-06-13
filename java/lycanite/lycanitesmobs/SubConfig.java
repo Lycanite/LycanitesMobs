@@ -54,14 +54,14 @@ public class SubConfig extends Config {
 		}
 		
 		// ========== Effect IDs ==========
-		this.loadSetting(this.effectIDs, "Effect IDs", "Paralysis", "Paralysis Effect ID", 0);
-		this.loadSetting(this.effectIDs, "Effect IDs", "Leech", "Leech Effect ID", 0);
-		this.loadSetting(this.effectIDs, "Effect IDs", "Penetration", "Penetration Effect ID", 0);
-		this.loadSetting(this.effectIDs, "Effect IDs", "Recklessness", "Recklessness Effect ID", 0);
-		this.loadSetting(this.effectIDs, "Effect IDs", "Rage", "Rage Effect ID", 0);
-		this.loadSetting(this.effectIDs, "Effect IDs", "Weight", "Weight Effect ID", 0);
-		this.loadSetting(this.effectIDs, "Effect IDs", "Swiftswimming", "Swiftswimming Effect ID", 0);
-		this.config.addCustomCategoryComment("Effect IDs", "If not set or 0, effect IDs will be automatically applied.");
+		this.loadSetting(this.effectIDs, "Effect IDs", "Paralysis", "Paralysis Effect ID Override", 0);
+		this.loadSetting(this.effectIDs, "Effect IDs", "Leech", "Leech Effect ID Override", 0);
+		this.loadSetting(this.effectIDs, "Effect IDs", "Penetration", "Penetration Effect ID Override", 0);
+		this.loadSetting(this.effectIDs, "Effect IDs", "Recklessness", "Recklessness Effect ID Override", 0);
+		this.loadSetting(this.effectIDs, "Effect IDs", "Rage", "Rage Effect ID Override", 0);
+		this.loadSetting(this.effectIDs, "Effect IDs", "Weight", "Weight Effect ID Override", 0);
+		this.loadSetting(this.effectIDs, "Effect IDs", "Swiftswimming", "Swiftswimming Effect ID Override", 0);
+		this.config.addCustomCategoryComment("Effect IDs", "If not set or 0, effect IDs will be automatically applied. Use the Overrides, other efect ID entries are from older configs and should be removed.");
 	}
 	
 	// ==================================================

@@ -29,6 +29,12 @@ public class EventListener {
     // ==================================================
 	@SubscribeEvent
 	public void onEntityConstructing(EntityConstructing event) {
+		if(event.entity == null)
+			return;
+		
+		// ========== Extended Entity ==========
+		ExtendedEntity.getForEntity(event.entity);
+		
 		// ========== Extended Player ==========
 		if(event.entity instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer)event.entity;

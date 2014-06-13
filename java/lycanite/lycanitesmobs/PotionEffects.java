@@ -14,8 +14,15 @@ public class PotionEffects {
 	@SubscribeEvent
 	public void onEntityUpdate(LivingUpdateEvent event) {
 		EntityLivingBase entity = event.entityLiving;
-		if(entity == null)
-			return;
+		if(entity == null) return;
+		
+		for(Object potionEffectObj : entity.getActivePotionEffects()) {
+			if(potionEffectObj == null) {
+				entity.clearActivePotions();
+				LycanitesMobs.printWarning("EffectsSetup", "Found a null potion effect on entity: " + entity + " all effects have been removed from this entity.");
+			}
+		}
+		
 		boolean invulnerable = false;
 		if(entity instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer)entity;
@@ -23,18 +30,22 @@ public class PotionEffects {
 		}
 		
 		// ========== Paralysis ==========
-		if(!invulnerable && entity.isPotionActive(ObjectManager.getPotionEffect("Paralysis").getId())) {
-			entity.motionX = 0;
-			if(entity.motionY > 0)
-				entity.motionY = 0;
-			entity.motionZ = 0;
-			entity.onGround = false;
+		if(ObjectManager.getPotionEffect("Paralysis") != null) {
+			if(!invulnerable && entity.isPotionActive(ObjectManager.getPotionEffect("Paralysis").getId())) {
+				entity.motionX = 0;
+				if(entity.motionY > 0)
+					entity.motionY = 0;
+				entity.motionZ = 0;
+				entity.onGround = false;
+			}
 		}
 		
 		// ========== Weight ==========
-		if(!invulnerable && entity.isPotionActive(ObjectManager.getPotionEffect("Weight").getId())) {
-			if(entity.motionY > -0.2D)
-				entity.motionY = -0.2D;
+		if(ObjectManager.getPotionEffect("Weight") != null) {
+			if(!invulnerable && entity.isPotionActive(ObjectManager.getPotionEffect("Weight").getId())) {
+				if(entity.motionY > -0.2D)
+					entity.motionY = -0.2D;
+			}
 		}
 	}
 	
@@ -52,14 +63,18 @@ public class PotionEffects {
 			EntityPlayer player = (EntityPlayer)entity;
 			invulnerable = player.capabilities.isCreativeMode;
 		}
-		
+		if(invulnerable) return;
+			
 		// ========== Anti-Jumping ==========
-		if(!invulnerable && (
-				entity.isPotionActive(ObjectManager.getPotionEffect("Paralysis").getId()) ||
-				entity.isPotionActive(ObjectManager.getPotionEffect("Weight").getId())
-			)) {
-			if(event.isCancelable())
-				event.setCanceled(true);
+		if(ObjectManager.getPotionEffect("Paralysis") != null) {
+			if(entity.isPotionActive(ObjectManager.getPotionEffect("Paralysis").getId())) {
+				if(event.isCancelable()) event.setCanceled(true);
+			}
+		}
+		if(ObjectManager.getPotionEffect("Weight") != null) {
+			if(entity.isPotionActive(ObjectManager.getPotionEffect("Weight").getId())) {
+				if(event.isCancelable()) event.setCanceled(true);
+			}
 		}
 	}
 }

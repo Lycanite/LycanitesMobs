@@ -19,11 +19,11 @@ public class PotionBase extends Potion {
 		int newLength = customPotionStartID + customPotionLength;
 		LycanitesMobs.printDebug("EffectsSetup", "~O========== Custom Potion Effects Setup ==========O~");
 		LycanitesMobs.printDebug("EffectsSetup", "Initial size is: " + Potion.potionTypes.length + " (vanilla size is: 32)");
-		LycanitesMobs.printDebug("EffectsSetup", "Size will be increased by: " + customPotionLength);
+		LycanitesMobs.printDebug("EffectsSetup", "Size will be increased by: " + customPotionLength + " (these slots are reserved for this mod)");
 		LycanitesMobs.printDebug("EffectsSetup", "New Size will be: " + newLength);
 		LycanitesMobs.printDebug("EffectsSetup", "New Effects from this mod should automatically start with ID: " + customPotionStartID + " They shouldn't exceed: " + (newLength - 1));
 		LycanitesMobs.printDebug("EffectsSetup", "If the initial size is larger than the vanilla then another mod has increased its size, here it should then be increased further.");
-		LycanitesMobs.printDebug("EffectsSetup", "Any mods that add effects after this mod should then extend the list further where ID " + (newLength - 1) + " may then be exceed, but not by this mod.");
+		LycanitesMobs.printDebug("EffectsSetup", "Any mods that add effects after this mod should then extend the list further where ID " + (newLength - 1) + " may then be exceeded, but not by this mod.");
 		
 		for(Field field : Potion.class.getDeclaredFields()) {
 			field.setAccessible(true);
@@ -64,13 +64,15 @@ public class PotionBase extends Potion {
 	// ==================================================
 	//                    Constructor
 	// ==================================================
-	public PotionBase(boolean badEffect, int color) {
+	public PotionBase(String name, boolean badEffect, int color) {
 		super(nextPotionID(), badEffect, color);
+		this.setPotionName(name);
 		this.effectAdded(false);
 	}
 
-	public PotionBase(int forcedID, boolean badEffect, int color) {
+	public PotionBase(int forcedID, String name, boolean badEffect, int color) {
 		super(forcedID, badEffect, color);
+		this.setPotionName(name);
 		this.effectAdded(true);
 	}
 	

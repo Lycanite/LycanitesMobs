@@ -60,10 +60,9 @@ public class ObjectManager {
 		name = name.toLowerCase();
 		PotionBase potion = null;
 		if(config.effectIDs.get(name.toLowerCase()) != null && config.effectIDs.get(name.toLowerCase()) > 0)
-			potion = new PotionBase(config.effectIDs.get(name.toLowerCase()), isBad, color);
+			potion = new PotionBase(config.effectIDs.get(name.toLowerCase()), name, isBad, color);
 		else
-			potion = new PotionBase(isBad, color);
-		potion.setPotionName(name);
+			potion = new PotionBase(name, isBad, color);
 		potion.setIconIndex(iconX, iconY);
 		potionEffects.put(name, potion);
 		return potion;

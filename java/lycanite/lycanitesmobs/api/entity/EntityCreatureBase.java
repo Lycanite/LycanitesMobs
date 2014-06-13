@@ -610,8 +610,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public void setMinion(boolean minion) { this.isMinion = minion; }
     /** Returns whether or not this mob is a minion. **/
     public boolean isMinion() {
-    	if(this.worldObj.isRemote)
-    		return (this.dataWatcher.getWatchableObjectByte(WATCHER_ID.ANIMATION.id) & ANIM_ID.MINION.id) > 0;
     	return this.isMinion;
     }
     
@@ -910,6 +908,11 @@ public abstract class EntityCreatureBase extends EntityLiving {
         	else if((animations & ANIM_ID.ATTACKED.id) > 0)
         		this.setJustAttacked();
         	this.onGround = (animations & ANIM_ID.GROUNDED.id) > 0;
+        }
+        
+        // Is Minon:
+        if(this.worldObj.isRemote) {
+    		this.isMinion = (this.dataWatcher.getWatchableObjectByte(WATCHER_ID.ANIMATION.id) & ANIM_ID.MINION.id) > 0;
         }
     }
     

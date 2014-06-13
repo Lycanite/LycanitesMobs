@@ -43,6 +43,7 @@ public class SubConfig extends Config {
 		this.loadSetting(this.debugBools, "Debugging", "MobSpawns", "Print Mob Spawns", false);
 		this.loadSetting(this.debugBools, "Debugging", "CustomSpawner", "Print Custom Spawner Operations", false);
 		this.loadSetting(this.debugBools, "Debugging", "ItemSetup", "Print Custom Item Lists Setup", false);
+		this.loadSetting(this.debugBools, "Debugging", "EffectsSetup", "Print Custom Effects Setup", false);
 		
 		// ========== Mob Control ==========
 		// No global mobs.

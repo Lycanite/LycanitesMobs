@@ -1,63 +1,37 @@
 package lycanite.lycanitesmobs;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-
+import lycanite.lycanitesmobs.api.helpers.LMReflectionHelper;
 import net.minecraft.potion.Potion;
 
 public class PotionBase extends Potion {
-	public static int customPotionStartID = 0;
-	private static int customPotionNextID = 0;
+	public static int customPotionOffset = 0;
 	public static int customPotionLength = 24;
 	
 	// ==================================================
 	//                    Constructor
 	// ==================================================
 	public static void reserveEffectIDSpace() {
-		customPotionStartID = Potion.potionTypes.length;
-		customPotionNextID = customPotionStartID;
-		int newLength = customPotionStartID + customPotionLength;
+		customPotionOffset = Potion.potionTypes.length;
+		int newLength = customPotionOffset + customPotionLength;
 		LycanitesMobs.printDebug("EffectsSetup", "~O========== Custom Potion Effects Setup ==========O~");
 		LycanitesMobs.printDebug("EffectsSetup", "Initial size is: " + Potion.potionTypes.length + " (vanilla size is: 32)");
 		LycanitesMobs.printDebug("EffectsSetup", "Size will be increased by: " + customPotionLength + " (these slots are reserved for this mod)");
 		LycanitesMobs.printDebug("EffectsSetup", "New Size will be: " + newLength);
-		LycanitesMobs.printDebug("EffectsSetup", "New Effects from this mod should automatically start with ID: " + customPotionStartID + " They shouldn't exceed: " + (newLength - 1));
+		LycanitesMobs.printDebug("EffectsSetup", "New Effects from this mod should automatically start with ID: " + customPotionOffset + " They shouldn't exceed: " + (newLength - 1));
 		LycanitesMobs.printDebug("EffectsSetup", "If the initial size is larger than the vanilla then another mod has increased its size, here it should then be increased further.");
 		LycanitesMobs.printDebug("EffectsSetup", "Any mods that add effects after this mod should then extend the list further where ID " + (newLength - 1) + " may then be exceeded, but not by this mod.");
 		
-		for(Field field : Potion.class.getDeclaredFields()) {
-			field.setAccessible(true);
-			try {
-				if(field.getName().equals("potionTypes") || field.getName().equals("field_76425_a")) {
-					LycanitesMobs.printDebug("EffectsSetup", "Resizing the potion list, the field name is: " + field.getName());
-					Field modfield = Field.class.getDeclaredField("modifiers");
-					modfield.setAccessible(true);
-					modfield.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-					
-					Potion[] potionTypes;
-					potionTypes = (Potion[])field.get(null);
-					LycanitesMobs.printDebug("EffectsSetup", "Got the initial list: " + potionTypes);
-					
-					final Potion[] newPotionTypes = new Potion[newLength];
-					LycanitesMobs.printDebug("EffectsSetup", "Created the new extended list: " + newPotionTypes);
-					System.arraycopy(potionTypes, 0, newPotionTypes, 0, potionTypes.length);
-					LycanitesMobs.printDebug("EffectsSetup", "Copied the effects into the new list: " + newPotionTypes);
-					field.set(null, newPotionTypes);
-					LycanitesMobs.printDebug("EffectsSetup", "Replaced the old list with the new list: " + Potion.potionTypes);
-					LycanitesMobs.printDebug("EffectsSetup", "New list length is: " + Potion.potionTypes.length + " this should be " + newLength);
-				}
-			}
-			catch (Exception e) {
-				System.err.println("[Lycanites Mobs] An error occured when adding custom potion effects:");
-				System.err.println(e);
-			}
-		}
+		Potion[] potionTypes = new Potion[newLength];
+		LycanitesMobs.printDebug("EffectsSetup", "Created the new extended list: " + potionTypes);
+		System.arraycopy(Potion.potionTypes, 0, potionTypes, 0, customPotionOffset);
+		
+		LMReflectionHelper.setPrivateFinalValue(Potion.class, null, potionTypes, "potionTypes", "field_76425_a");
+		LycanitesMobs.printDebug("EffectsSetup", "Replaced the old list with the new list: " + Potion.potionTypes);
+		LycanitesMobs.printDebug("EffectsSetup", "New list length is: " + Potion.potionTypes.length + " this should be " + newLength);
 	}
 	
-	public static int nextPotionID() {
-		int nextID = Math.min(customPotionNextID, customPotionStartID + customPotionLength);
-		customPotionNextID++;
-		return nextID;
+	public static int getNextPotionID() {
+		return customPotionOffset++;
 	}
 	
 	
@@ -65,7 +39,7 @@ public class PotionBase extends Potion {
 	//                    Constructor
 	// ==================================================
 	public PotionBase(String name, boolean badEffect, int color) {
-		super(nextPotionID(), badEffect, color);
+		super(getNextPotionID(), badEffect, color);
 		this.setPotionName(name);
 		this.effectAdded(false);
 	}

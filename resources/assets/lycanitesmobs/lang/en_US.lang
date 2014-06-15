@@ -46,3 +46,12 @@ message.pet.tamed=The %creature% seems to love you now!
 # Common
 common.yes=Yes
 common.no=No
+#
+# Potion
+potion.paralysis=Paralysis
+potion.leech=Leech
+potion.penetration=Penetration
+potion.recklessness=Recklessness
+potion.rage=Rage
+potion.weight=Weight
+potion.swiftswimming=Swiftswimming

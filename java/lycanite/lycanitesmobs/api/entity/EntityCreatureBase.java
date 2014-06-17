@@ -1440,6 +1440,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	public boolean isCreatureType(EnumCreatureType type, boolean forSpawnCount) {
     	// If the mob spawner is checking then we should return if it should take a place in the mob spawn count or not.
     	if(forSpawnCount) {
+    		if(this.mobInfo.spawnInfo.creatureType == null)
+    			return false;
     		if(this.isMinion()) // Minions shouldn't take up the spawn count.
     			return false;
     		return type == this.mobInfo.spawnInfo.creatureType;

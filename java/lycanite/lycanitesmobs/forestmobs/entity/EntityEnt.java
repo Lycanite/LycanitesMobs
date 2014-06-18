@@ -174,7 +174,8 @@ public class EntityEnt extends EntityCreatureTameable implements IMob {
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
         if(potionEffect.getPotionID() == Potion.moveSlowdown.id) return false;
-        if(potionEffect.getPotionID() == ObjectManager.getPotionEffect("Paralysis").id) return false;
+        if(ObjectManager.getPotionEffect("Paralysis") != null)
+        	if(potionEffect.getPotionID() == ObjectManager.getPotionEffect("Paralysis").id) return false;
         super.isPotionApplicable(potionEffect);
         return true;
     }

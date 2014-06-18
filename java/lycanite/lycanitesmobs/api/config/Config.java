@@ -16,6 +16,12 @@ public class Config {
 	// Configurations:
 	public static Map<String, Config> configs = new HashMap<String, Config>();
 	
+	// Register Config:
+	public static void registerConfig(String configName, Config config) {
+		if(config != null)
+			configs.put(configName, config);
+	}
+	
 	// Get Config:
 	public static Config getConfig(String configName) {
 		if(!configs.containsKey(configName))

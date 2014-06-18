@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import lycanite.lycanitesmobs.OldConfig;
 import lycanite.lycanitesmobs.LycanitesMobs;
+import lycanite.lycanitesmobs.OldConfig;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.info.SpawnInfo;
 import net.minecraft.block.Block;
@@ -151,7 +151,7 @@ public class SpawnType {
 
 		// Search for Coords:
 		List<int[]> coords = null;
-		if((this.materials != null && this.materials.length > 0) || (this.blocks != null || this.blocks.length > 0))
+		if((this.materials != null && this.materials.length > 0) || (this.blocks != null && this.blocks.length > 0))
 			coords = this.searchForBlockCoords(world, x, y, z);
 		// Else check for rain or stormy weather.
 		

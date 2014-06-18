@@ -5,10 +5,15 @@ arcticmobs.description=Creatures of ice and wind, normally found in cold snowy a
 entity.arcticmobs.reiver.name=Reiver
 entity.arcticmobs.reiver.description=Icy spirits that hurl forstbolts at anything they deem a threat.
 entity.arcticmobs.frostweaver.name=Frostweaver
-entity.arcticmobs.frostweaver.description=Foul spitting ice spiders, take heed as their spit will produce a temporary sticy frostweb.
+entity.arcticmobs.frostweaver.description=Foul spitting ice spiders, take heed as their spit will produce a temporary sticky frostweb.
+entity.arcticmobs.yeti.name=Yeti
+entity.arcticmobs.yeti.description=Large frosty mammals that like to eat the frozen vegetation of the arctic. They can be farmed using vegetables, but watch out for their frostclouds.
 #
 # Items
 item.arcticspawn.name=Spawn
+item.yetimeatraw.name=Raw Yeti Meat
+item.yetimeatcooked.name=Cooked Yeti Meat
+item.palesoup.name=Pale Soup
 item.frostboltcharge.name=Frostbolt Charge
 item.frostwebcharge.name=Frostweb Charge
 item.frostboltscepter.name=Frostbolt Scepter
@@ -16,3 +21,5 @@ item.frostwebscepter.name=Frostweb Scepter
 #
 # Blocks
 tile.frostweb.name=Frostweb
+tile.frostcloud.name=Frostcloud
+tile.frostfire.name=Frostfire

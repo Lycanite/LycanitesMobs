@@ -47,6 +47,22 @@
         "category": "hostile",
         "sounds": [{"name": "entity/frostweaver/eat", "stream": false}]
     },
+    "entity.yeti.say": {
+        "category": "hostile",
+	"sounds": [{"name": "entity/yeti/say", "stream": false}]
+    },
+    "entity.yeti.hurt": {
+        "category": "hostile",
+	"sounds": [{"name": "entity/yeti/hurt", "stream": false}]
+    },
+    "entity.yeti.death": {
+        "category": "hostile",
+	"sounds": [{"name": "entity/yeti/death", "stream": false}]
+    },
+    "entity.yeti.step": {
+        "category": "hostile",
+	"sounds": [{"name": "entity/yeti/step", "stream": false}]
+    },
     "projectile.frostbolt": {
         "category": "ambient",
 	"sounds": [{"name": "projectile/frostbolt", "stream": false}]
@@ -54,5 +70,9 @@
     "projectile.frostweb": {
         "category": "ambient",
 	"sounds": [{"name": "projectile/frostweb", "stream": false}]
+    },
+    "block.frostcloud": {
+        "category": "block",
+        "sounds": [{"name": "block/frostcloud", "stream": false}]
     }
 }

@@ -1,5 +1,8 @@
 package lycanite.lycanitesmobs.api.spawning;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
@@ -16,8 +19,9 @@ public class CustomSpawner {
 	// ==================================================
 	//                 Entity Update Event
 	// ==================================================
-	public long entityUpdateTick = 0;
-	/** This uses the player update event to spawn mobs around each player randomly over time. **/
+	public Map<EntityPlayer,Long> entityUpdateTicks = new HashMap<EntityPlayer, Long>();
+	
+	/** This uses the player update events to spawn mobs around each player randomly over time. **/
 	@SubscribeEvent
 	public void onEntityUpdate(LivingUpdateEvent event) {
 		EntityLivingBase entity = event.entityLiving;
@@ -32,14 +36,18 @@ public class CustomSpawner {
 			int y = (int)player.posY;
 			int z = (int)player.posZ;
 			
+			if(!entityUpdateTicks.containsKey(player))
+				entityUpdateTicks.put(player, (long)0);
+			long entityUpdateTick = entityUpdateTicks.get(player);
+			
 			// Custom Mob Spawning:
 			int tickOffset = 0;
 			for(SpawnType spawnType : SpawnType.spawnTypes) {
-				spawnType.spawnMobs(entityUpdateTick - tickOffset, world, x, y, z);
+				spawnType.onUpdate(entityUpdateTick - tickOffset, world, x, y, z);
 				tickOffset += 100;
 			}
+			
+			entityUpdateTicks.put(player, entityUpdateTick + 1);
 		}
-		
-		this.entityUpdateTick++;
 	}
 }

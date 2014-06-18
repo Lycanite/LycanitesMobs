@@ -1,12 +1,12 @@
 package lycanite.lycanitesmobs.api;
 
-import lycanite.lycanitesmobs.Config;
+import lycanite.lycanitesmobs.OldConfig;
 
 public interface ILycaniteMod {
 	public ILycaniteMod getInstance();
 	public String getModID();
 	public String getDomain();
-	public Config getConfig();
+	public OldConfig getConfig();
 	public int getNextMobID();
 	public int getNextProjectileID();
 }

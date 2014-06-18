@@ -1,6 +1,6 @@
 package lycanite.lycanitesmobs.forestmobs;
 
-import lycanite.lycanitesmobs.Config;
+import lycanite.lycanitesmobs.OldConfig;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
@@ -39,7 +39,7 @@ public class ForestMobs implements ILycaniteMod {
 	public static final String domain = modid.toLowerCase();
 	public static int mobID = -1;
 	public static int projectileID = 99;
-	public static Config config = new SubConfig();
+	public static OldConfig config = new SubConfig();
 	
 	// Instance:
 	@Instance(modid)
@@ -132,7 +132,7 @@ public class ForestMobs implements ILycaniteMod {
 	public String getDomain() { return domain; }
 	
 	@Override
-	public Config getConfig() { return config; }
+	public OldConfig getConfig() { return config; }
 	
 	@Override
 	public int getNextMobID() { return ++this.mobID; }

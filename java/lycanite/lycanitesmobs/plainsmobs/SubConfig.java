@@ -1,8 +1,8 @@
 package lycanite.lycanitesmobs.plainsmobs;
 
-import lycanite.lycanitesmobs.Config;
+import lycanite.lycanitesmobs.OldConfig;
 
-public class SubConfig extends Config {
+public class SubConfig extends OldConfig {
 	
 	// ==================================================
 	//               Load Config Settings

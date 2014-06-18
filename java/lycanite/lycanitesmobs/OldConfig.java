@@ -12,7 +12,7 @@ import net.minecraftforge.common.config.Configuration;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-public class Config {
+public class OldConfig {
 	// To read from this config use the maps.
 	// Example of getting a block ID: Config.blockIDs.get("blockName");
 	// A lot of settings can be added outside of this class too use the loadSetting functions and config.save();

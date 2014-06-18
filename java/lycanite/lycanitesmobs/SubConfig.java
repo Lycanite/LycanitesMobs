@@ -3,7 +3,7 @@ package lycanite.lycanitesmobs;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 
 
-public class SubConfig extends Config {
+public class SubConfig extends OldConfig {
 	
 	// ==================================================
 	//               Load Config Settings
@@ -29,14 +29,18 @@ public class SubConfig extends Config {
 		this.loadSetting(this.featureDoubles, "Spawn Control", "DungeonSpawnerWeightScale", "Dungeon Spawner Weight Scale", 1.0D);
 		
 		this.loadCustomSpawnerType("Fire", 400, 0.5D, 32, 32, 32);
+		this.loadCustomSpawnerType("Frostfire", 400, 0.5D, 32, 32, 32);
 		this.loadCustomSpawnerType("Lava", 400, 0.25D, 64, 64, 32);
+		this.loadCustomSpawnerType("Storm", 400, 0.25D, 64, 32, 32);
 		this.loadCustomSpawnerType("Portal", 1200, 0.125D, 32, 32, 1);
-		this.config.addCustomCategoryComment("Spawn Control", "Global spawn controls, applied to every group.");
+		this.loadCustomSpawnerType("Rock", 1200, 0.125D, 32, 32, 1);
+		this.config.addCustomCategoryComment("Spawn Control", "Global spawn controls, applied to every group. Custom spawners such as Fire Spawning can be configured here too.");
 		
 		// ========== Stat Multipliers ==========
 		this.loadDifficultyMultiplier(this.difficultyMultipliers, "Stat Multipliers", "Easy", "0.5");
 		this.loadDifficultyMultiplier(this.difficultyMultipliers, "Stat Multipliers", "Normal", "1.0");
 		this.loadDifficultyMultiplier(this.difficultyMultipliers, "Stat Multipliers", "Hard", "1.5");
+		this.config.addCustomCategoryComment("Stat Multipliers", "Use these to scale the stats of mobs in different difficulties. 1.0 = 100%, 0.5 = 50%, 1.5 = 150%, etc.");
 		
 		// ========== Debugging ==========
 		this.loadSetting(this.debugBools, "Debugging", "MobSetup", "Print Mob Setup", false);
@@ -44,6 +48,7 @@ public class SubConfig extends Config {
 		this.loadSetting(this.debugBools, "Debugging", "CustomSpawner", "Print Custom Spawner Operations", false);
 		this.loadSetting(this.debugBools, "Debugging", "ItemSetup", "Print Custom Item Lists Setup", false);
 		this.loadSetting(this.debugBools, "Debugging", "EffectsSetup", "Print Custom Effects Setup", false);
+		this.config.addCustomCategoryComment("Debugging", "Any debugging options set to true will print out extra info to the console, very useful for bug reporting or testing custom configurations.");
 		
 		// ========== Mob Control ==========
 		// No global mobs.

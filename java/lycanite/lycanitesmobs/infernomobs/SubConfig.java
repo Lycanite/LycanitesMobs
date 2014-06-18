@@ -1,8 +1,8 @@
 package lycanite.lycanitesmobs.infernomobs;
 
-import lycanite.lycanitesmobs.Config;
+import lycanite.lycanitesmobs.OldConfig;
 
-public class SubConfig extends Config {
+public class SubConfig extends OldConfig {
 	
 	// ==================================================
 	//               Load Config Settings
@@ -19,7 +19,7 @@ public class SubConfig extends Config {
 		// None
 		
 		// ========== Mob Control ==========
-		loadMobSettings("Cinder", 8, 3, 1, 3, "FIRE", 8);
+		loadMobSettings("Cinder", 8, 3, 1, 3, "FIRE", 16);
 		loadMobSettings("Lobber", 2, 2, 1, 2, "LAVA", 16);
 	}
 }

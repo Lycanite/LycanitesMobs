@@ -1,6 +1,6 @@
 package lycanite.lycanitesmobs.api.info;
 
-import lycanite.lycanitesmobs.Config;
+import lycanite.lycanitesmobs.OldConfig;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.spawning.SpawnType;
 import net.minecraft.entity.EnumCreatureType;
@@ -82,7 +82,7 @@ public class SpawnInfo {
     //        Load Global Settings From Config
     // ==================================================
 	public static void loadGlobalSettings() {
-		Config config = LycanitesMobs.config;
+		OldConfig config = LycanitesMobs.config;
 		spawnLimitRange = (double)LycanitesMobs.config.getFeatureInt("SpawnLimitRange");
 		disableAllSpawning = LycanitesMobs.config.getFeatureBool("DisableAllSpawning");
 		disableDungeonSpawners = LycanitesMobs.config.getFeatureBool("DisableDungeonSpawners");
@@ -107,7 +107,7 @@ public class SpawnInfo {
     // ==================================================
 	public void loadFromConfig() {
 		String name = this.mobInfo.name;
-		Config config = this.mobInfo.mod.getConfig();
+		OldConfig config = this.mobInfo.mod.getConfig();
 		
 		// Is mob spawning for this mob enabled?
 		this.enabled = config.spawnEnabled.containsKey(name) ? config.spawnEnabled.get(name) : false;

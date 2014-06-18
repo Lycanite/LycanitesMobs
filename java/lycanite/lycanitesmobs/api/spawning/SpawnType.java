@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import lycanite.lycanitesmobs.Config;
+import lycanite.lycanitesmobs.OldConfig;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.info.SpawnInfo;
@@ -59,12 +59,16 @@ public class SpawnType {
 	/** An array of materials to spawn from. If null blocks will be used instead. **/
 	public Material[] materials = null;
 	
+	/** If true, this type will not check if a mob is allowed to sapwn in the target biome. **/
+	public boolean ignoreBiome = false;
+	
+	
     // ==================================================
     //                  Load Spawn Types
     // ==================================================
 	public static void loadSpawnTypes() {
-		String[] spawnTypeNames = {"Fire", "Lava", "Portal"};
-		Config config = LycanitesMobs.config;
+		String[] spawnTypeNames = {"Fire", "Frostfire", "Lava", "Storm", "Portal", "Rock"};
+		OldConfig config = LycanitesMobs.config;
 		for(String spawnTypeName : spawnTypeNames) {
 			SpawnType newSpawnType = new SpawnType(
 					spawnTypeName.toUpperCase(),
@@ -77,7 +81,7 @@ public class SpawnType {
 			newSpawnType.enabled = config.getFeatureBool(spawnTypeName + "SpawnEnabled");
 			
 			if("FIRE".equalsIgnoreCase(spawnTypeName))
-				newSpawnType.materials = new Material[] {Material.fire};
+				newSpawnType.blocks = new Block[] {Blocks.fire};
 			if("LAVA".equalsIgnoreCase(spawnTypeName))
 				newSpawnType.materials = new Material[] {Material.lava};
 			if("PORTAL".equalsIgnoreCase(spawnTypeName))
@@ -88,6 +92,7 @@ public class SpawnType {
 			LycanitesMobs.printDebug("CustomSpawner", "Added custom spawn type: " + spawnTypeName.toUpperCase());
 		}
 	}
+	
 	
     // ==================================================
     //                   Get Spawn Type
@@ -111,6 +116,11 @@ public class SpawnType {
 		this.range = range;
 		this.blockLimit = blockLimit;
 		this.mobLimit = mobLimit;
+		
+		if("PORTAL".equalsIgnoreCase(this.typeName))
+			this.ignoreBiome = true;
+		else if("NETHER".equalsIgnoreCase(this.typeName))
+			this.ignoreBiome = true;
 	}
 	
 	
@@ -126,14 +136,11 @@ public class SpawnType {
 	// ==================================================
 	//                    Spawn Mobs
 	// ==================================================
-	public void spawnMobs(long tick, World world, int x, int y, int z) {
+	public void onUpdate(long tick, World world, int x, int y, int z) {
 		if(this.spawnList == null || !this.enabled)
 			return;
 		
 		if(tick % this.rate != 0)
-			return;
-		
-		if((this.materials == null || this.materials.length <= 0) && (this.blocks == null || this.blocks.length <= 0))
 			return;
 		
 		if(world.rand.nextDouble() < this.chance)
@@ -141,16 +148,30 @@ public class SpawnType {
 		
 		LycanitesMobs.printDebug("CustomSpawner", "~0==================== " + this.typeName + " Spawner ====================0~");
 		LycanitesMobs.printDebug("CustomSpawner", "Attempting to spawn mobs.");
-		
+
 		// Search for Coords:
-		List<int[]> coords = this.searchForCoords(world, x, y, z);
+		List<int[]> coords = null;
+		if((this.materials != null && this.materials.length > 0) || (this.blocks != null || this.blocks.length > 0))
+			coords = this.searchForBlockCoords(world, x, y, z);
+		// Else check for rain or stormy weather.
+		
+		if(coords == null) {
+			LycanitesMobs.printWarning("CustomSpawner", "This spawn type is unable to find coordinates.");
+			return;
+		}
+		
+		// Count Coords:
 		LycanitesMobs.printDebug("CustomSpawner", "Found " + coords.size() + "/" + this.blockLimit + " coordinates for mob spawning.");
 		if(coords.size() <= 0) {
 			LycanitesMobs.printDebug("CustomSpawner", "No valid coordinates were found, spawning cancelled.");
 			return;
 		}
+		
+		// Apply Spawn Block Limit:
 		if(coords.size() > this.blockLimit)
 			coords = coords.subList(0, this.blockLimit);
+		
+		// Get Biomes from Coords:
 		List<BiomeGenBase> targetBiomes = new ArrayList<BiomeGenBase>();
 		for(int[] coord : coords) {
 			BiomeGenBase coordBiome = world.getBiomeGenForCoords(coord[0], coord[2]);
@@ -208,7 +229,7 @@ public class SpawnType {
 	 * range - How far to search from the given coordinates.
 	 * blockID - The ID of the blocks to search for. An array can be taken for multiple block types.
 	**/
-	public List<int[]> searchForCoords(World world, int x, int y, int z) {
+	public List<int[]> searchForBlockCoords(World world, int x, int y, int z) {
 		List<int[]> blockCoords = new ArrayList<int[]>();
 		for(int i = x - this.range; i <= x + this.range; i++) {
 			for(int j = y - this.range; j <= y + this.range; j++) {
@@ -259,7 +280,7 @@ public class SpawnType {
 				enoughBlocks = false;
 			}
 			
-			boolean isValidBiome = "PORTAL".equalsIgnoreCase(possibleSpawn.spawnTypeName) || "NETHER".equalsIgnoreCase(possibleSpawn.spawnTypeName);
+			boolean isValidBiome = this.ignoreBiome;
 			if(enoughBlocks && !isValidBiome) {
 				for(BiomeGenBase validBiome : possibleSpawn.biomes) {
 					for(BiomeGenBase targetBiome : biomes) {

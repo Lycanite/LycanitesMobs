@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.Config;
+import lycanite.lycanitesmobs.OldConfig;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
 import net.minecraft.block.Block;
@@ -102,7 +102,7 @@ public class MobInfo {
     //        Load Global Settings From Config
     // ==================================================
 	public static void loadGlobalSettings() {
-		Config config = LycanitesMobs.config;
+		OldConfig config = LycanitesMobs.config;
 		ownerTags = config.getFeatureBool("OwnerTags");
 		tamingEnabled = config.getFeatureBool("MobTaming");
 		mountingEnabled = config.getFeatureBool("MobMounting");
@@ -146,7 +146,7 @@ public class MobInfo {
 		
 		this.name = name;
 		
-		Config config = mod.getConfig();
+		OldConfig config = mod.getConfig();
 		this.mobEnabled = config.mobsEnabled.containsKey(name) ? mod.getConfig().mobsEnabled.get(name) : false;
 		this.peacefulDifficulty = config.mobsPeaceful.get(name);
 		this.spawnInfo = new SpawnInfo(this);

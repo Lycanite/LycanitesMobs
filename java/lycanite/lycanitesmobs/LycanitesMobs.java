@@ -48,7 +48,7 @@ public class LycanitesMobs implements ILycaniteMod {
 	public static int mobID = -1;
 	public static int projectileID = 99;
 	
-	public static Config config = new SubConfig();
+	public static OldConfig config = new SubConfig();
 	
 	// Instance:
 	@Instance(modid)
@@ -243,7 +243,7 @@ public class LycanitesMobs implements ILycaniteMod {
 	public String getDomain() { return domain; }
 	
 	@Override
-	public Config getConfig() { return config; }
+	public OldConfig getConfig() { return config; }
 	
 	@Override
 	public int getNextMobID() { return ++this.mobID; }

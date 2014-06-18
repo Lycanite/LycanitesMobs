@@ -56,7 +56,7 @@ public class ObjectManager {
 	}
 
 	// ========== Potion Effect ==========
-	public static PotionBase addPotionEffect(String name, Config config, boolean isBad, int color, int iconX, int iconY) {
+	public static PotionBase addPotionEffect(String name, OldConfig config, boolean isBad, int color, int iconX, int iconY) {
 		name = name.toLowerCase();
 		PotionBase potion = null;
 		if(config.effectIDs.get(name.toLowerCase()) != null && config.effectIDs.get(name.toLowerCase()) > 0)

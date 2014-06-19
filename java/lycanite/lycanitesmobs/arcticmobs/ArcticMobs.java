@@ -79,13 +79,13 @@ public class ArcticMobs implements ILycaniteMod {
 		// ========== Create Items ==========
 		ObjectManager.addItem("arcticegg", new ItemArcticEgg());
 		
-		ObjectManager.addItem("yetimeatraw", new ItemCustomFood("yetimeatraw", domain, 2, 0.5F).setPotionEffect(Potion.poison.id, 45, 2, 0.8F));
+		ObjectManager.addItem("yetimeatraw", new ItemCustomFood("yetimeatraw", domain, 2, 0.5F).setPotionEffect(Potion.moveSlowdown.id, 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("yetimeatraw"));
-		OreDictionary.registerOre("listAllbeefraw", ObjectManager.getItem("yetimeatraw"));
+		OreDictionary.registerOre("listAllporkraw", ObjectManager.getItem("yetimeatraw"));
 		
 		ObjectManager.addItem("yetimeatcooked", new ItemCustomFood("yetimeatcooked", domain, 6, 0.7F));
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("yetimeatcooked"));
-		OreDictionary.registerOre("listAllbeefcooked", ObjectManager.getItem("yetimeatcooked"));
+		OreDictionary.registerOre("listAllporkcooked", ObjectManager.getItem("yetimeatcooked"));
 		
 		ObjectManager.addItem("palesoup", new ItemCustomFood("palesoup", domain, 6, 0.7F).setPotionEffect(Potion.resistance.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("palesoup"));

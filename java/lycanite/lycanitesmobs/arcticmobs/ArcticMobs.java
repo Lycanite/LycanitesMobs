@@ -1,11 +1,15 @@
 package lycanite.lycanitesmobs.arcticmobs;
 
-import lycanite.lycanitesmobs.OldConfig;
+import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.OldConfig;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.api.info.MobInfo;
+import lycanite.lycanitesmobs.api.info.ObjectLists;
+import lycanite.lycanitesmobs.api.item.ItemCustomFood;
+import lycanite.lycanitesmobs.arcticmobs.block.BlockFrostCloud;
 import lycanite.lycanitesmobs.arcticmobs.block.BlockFrostweb;
 import lycanite.lycanitesmobs.arcticmobs.dispenser.DispenserBehaviorFrostbolt;
 import lycanite.lycanitesmobs.arcticmobs.dispenser.DispenserBehaviorFrostweb;
@@ -13,9 +17,11 @@ import lycanite.lycanitesmobs.arcticmobs.entity.EntityFrostbolt;
 import lycanite.lycanitesmobs.arcticmobs.entity.EntityFrostweaver;
 import lycanite.lycanitesmobs.arcticmobs.entity.EntityFrostweb;
 import lycanite.lycanitesmobs.arcticmobs.entity.EntityReiver;
+import lycanite.lycanitesmobs.arcticmobs.entity.EntityYeti;
 import lycanite.lycanitesmobs.arcticmobs.item.ItemArcticEgg;
 import lycanite.lycanitesmobs.arcticmobs.item.ItemFrostboltCharge;
 import lycanite.lycanitesmobs.arcticmobs.item.ItemFrostwebCharge;
+import lycanite.lycanitesmobs.arcticmobs.item.ItemFrostyFur;
 import lycanite.lycanitesmobs.arcticmobs.item.ItemScepterFrostbolt;
 import lycanite.lycanitesmobs.arcticmobs.item.ItemScepterFrostweb;
 import net.minecraft.block.BlockDispenser;
@@ -26,8 +32,11 @@ import net.minecraft.entity.monster.EntityWitch;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -69,6 +78,20 @@ public class ArcticMobs implements ILycaniteMod {
 		
 		// ========== Create Items ==========
 		ObjectManager.addItem("arcticegg", new ItemArcticEgg());
+		
+		ObjectManager.addItem("yetimeatraw", new ItemCustomFood("yetimeatraw", domain, 2, 0.5F).setPotionEffect(Potion.poison.id, 45, 2, 0.8F));
+		ObjectLists.addItem("rawmeat", ObjectManager.getItem("yetimeatraw"));
+		OreDictionary.registerOre("listAllbeefraw", ObjectManager.getItem("yetimeatraw"));
+		
+		ObjectManager.addItem("yetimeatcooked", new ItemCustomFood("yetimeatcooked", domain, 6, 0.7F));
+		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("yetimeatcooked"));
+		OreDictionary.registerOre("listAllbeefcooked", ObjectManager.getItem("yetimeatcooked"));
+		
+		ObjectManager.addItem("palesoup", new ItemCustomFood("palesoup", domain, 6, 0.7F).setPotionEffect(Potion.resistance.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
+		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("palesoup"));
+
+		ObjectManager.addItem("frostyfur", new ItemFrostyFur());
+		
 		ObjectManager.addItem("frostboltcharge", new ItemFrostboltCharge());
 		ObjectManager.addItem("frostboltscepter", new ItemScepterFrostbolt());
 		ObjectManager.addItem("frostwebcharge", new ItemFrostwebCharge());
@@ -76,6 +99,9 @@ public class ArcticMobs implements ILycaniteMod {
 
 		// ========== Create Blocks ==========
 		ObjectManager.addBlock("frostweb", new BlockFrostweb());
+		
+		AssetManager.addSound("frostcloud", domain, "block.frostcloud");
+		ObjectManager.addBlock("frostcloud", new BlockFrostCloud());
 	}
 	
 	
@@ -92,6 +118,7 @@ public class ArcticMobs implements ILycaniteMod {
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("arcticegg"), new DispenserBehaviorMobEggCustom());
 		ObjectManager.addMob(new MobInfo(this, "reiver", EntityReiver.class, 0xDDEEFF, 0x99DDEE, 2).setSummonable(true));
 		ObjectManager.addMob(new MobInfo(this, "frostweaver", EntityFrostweaver.class, 0xAADDFF, 0x226699, 2).setSummonable(true));
+		ObjectManager.addMob(new MobInfo(this, "yeti", EntityYeti.class, 0xEEEEFF, 0x000099, 2).setSummonable(false));
 		
 		// ========== Create Projectiles ==========
 		ObjectManager.addProjectile("frostbolt", EntityFrostbolt.class, ObjectManager.getItem("frostboltcharge"), new DispenserBehaviorFrostbolt());
@@ -120,6 +147,15 @@ public class ArcticMobs implements ILycaniteMod {
 		}
 		
 		// ========== Crafting ==========
+		GameRegistry.addRecipe(new ShapelessOreRecipe(
+				new ItemStack(ObjectManager.getItem("palesoup"), 1, 0),
+				new Object[] {
+					Items.milk_bucket.setContainerItem(Items.bucket),
+					Items.bowl,
+					ObjectManager.getItem("yetimeatcooked")
+				}
+			));
+		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("frostboltscepter"), 1, 0),
 				new Object[] { "CCC", "CRC", "CRC",
@@ -135,7 +171,7 @@ public class ArcticMobs implements ILycaniteMod {
 			}));
 		
 		// ========== Smelting ==========
-		//GameRegistry.addSmelting(ObjectManager.getItem("yetimeatraw").itemID, new ItemStack(ObjectManager.getItem("yetimeatcooked"), 1), 0.5f);
+		GameRegistry.addSmelting(ObjectManager.getItem("yetimeatraw"), new ItemStack(ObjectManager.getItem("yetimeatcooked"), 1), 0.5f);
 	}
 	
 	

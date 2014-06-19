@@ -86,6 +86,7 @@ public class EntityYeti extends EntityCreatureAgeable implements IAnimals, IGrou
 	@Override
 	public void loadItemDrops() {
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("YetiMeatRaw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("YetiMeatCooked"))).setMinAmount(2).setMaxAmount(5));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("FrostyFur")), 0.25F).setMaxAmount(2));
         this.drops.add(new DropRate(new ItemStack(Items.snowball), 0.25F).setMaxAmount(3));
         this.drops.add(new DropRate(new ItemStack(Blocks.packed_ice), 0.25F).setMaxAmount(3));
 	}
@@ -110,6 +111,12 @@ public class EntityYeti extends EntityCreatureAgeable implements IAnimals, IGrou
         			this.worldObj.setBlock((int)this.posX, (int)this.posY + y, (int)this.posZ, ObjectManager.getBlock("FrostCloud"));
         	}
 		}
+        
+        // Particles:
+        if(this.worldObj.isRemote)
+	        for(int i = 0; i < 2; ++i) {
+	            this.worldObj.spawnParticle("snowshovel", this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
+	        }
     }
 	
 	
@@ -192,7 +199,7 @@ public class EntityYeti extends EntityCreatureAgeable implements IAnimals, IGrou
     	HashMap<Integer, String> commands = new HashMap<Integer, String>();
     	commands.putAll(super.getInteractCommands(player, itemStack));
     	
-    	if(itemStack != null && !this.worldObj.isRemote) {
+    	if(itemStack != null) {
     		// Milk:
     		if(itemStack.getItem() == Items.bucket)
     			commands.put(CMD_PRIOR.ITEM_USE.id, "Milk");

@@ -49,7 +49,7 @@ public class BlockFrostCloud extends BlockBase {
 	// ==================================================
 	@Override
 	public Item getItemDropped(int metadata, Random random, int fortune) {
-		return ObjectManager.getItem("poisongland");
+		return ObjectManager.getItem("frostyfur");
 	}
 	
 	@Override
@@ -70,7 +70,8 @@ public class BlockFrostCloud extends BlockBase {
     public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
 		super.onEntityCollidedWithBlock(world, x, y, z, entity);
 		if(entity instanceof EntityLivingBase) {
-			((EntityLivingBase)entity).addPotionEffect(new PotionEffect(Potion.poison.id, 5 * 20, 0));
+			((EntityLivingBase)entity).addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 5 * 20, 0));
+			((EntityLivingBase)entity).addPotionEffect(new PotionEffect(Potion.hunger.id, 1 * 20, 0));
 		}
 	}
     
@@ -82,19 +83,19 @@ public class BlockFrostCloud extends BlockBase {
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(World world, int x, int y, int z, Random random) {
     	if(random.nextInt(24) == 0)
-        	world.playSound((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), AssetManager.getSound("poisoncloud"), 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F, false);
-
-        int l;
+        	world.playSound((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), AssetManager.getSound("frostcloud"), 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F, false);
+    	
         float f; 
         float f1;
         float f2;
 
-        for(l = 0; l < 24; ++l) {
+        for(int l = 0; l < 12; ++l) {
             f = (float)x + random.nextFloat();
             f1 = (float)y + random.nextFloat() * 0.5F;
             f2 = (float)z + random.nextFloat();
             //TODO EntityParticle particle = new EntityParticle(par1World, f, f1, f2, "frostcloud", this.mod);
             world.spawnParticle("snowshovel", (double)f, (double)f1, (double)f2, 0.0D, 0.0D, 0.0D);
+            world.spawnParticle("cloud", (double)f, (double)f1, (double)f2, 0.0D, 0.0D, 0.0D);
         }
     }
     

@@ -7,7 +7,7 @@ entity.arcticmobs.reiver.description=Icy spirits that hurl forstbolts at anythin
 entity.arcticmobs.frostweaver.name=Frostweaver
 entity.arcticmobs.frostweaver.description=Foul spitting ice spiders, take heed as their spit will produce a temporary sticky frostweb.
 entity.arcticmobs.yeti.name=Yeti
-entity.arcticmobs.yeti.description=Large frosty mammals that like to eat the frozen vegetation of the arctic. They can be farmed using vegetables, but watch out for their frostclouds.
+entity.arcticmobs.yeti.description=Large frosty mammals that like to eat the frozen vegetation of the arctic. They can be farmed using vegetables, but watch out for their frost clouds. Yeti milk is a delicacy!
 #
 # Items
 item.arcticspawn.name=Spawn

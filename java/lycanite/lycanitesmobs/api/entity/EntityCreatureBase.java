@@ -1759,6 +1759,24 @@ public abstract class EntityCreatureBase extends EntityLiving {
         if(itemStack.stackSize <= 0)
         	player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack)null);
     }
+
+    // ========== Replace Player's Item ==========
+    /** Replaces 1 of the specified itemstack with a new itemstack. **/
+    public void replacePlayersItem(EntityPlayer player, ItemStack itemStack, ItemStack newStack) {
+    	replacePlayersItem(player, itemStack, 1, newStack);
+    }
+    /** Replaces the specified itemstack and amount with a new itemstack. **/
+    public void replacePlayersItem(EntityPlayer player, ItemStack itemStack, int amount, ItemStack newStack) {
+    	if(!player.capabilities.isCreativeMode)
+            itemStack.stackSize -= amount;
+    	
+        if(itemStack.stackSize <= 0)
+    		 player.inventory.setInventorySlotContents(player.inventory.currentItem, newStack);
+         
+    	 else if(!player.inventory.addItemStackToInventory(newStack))
+        	 player.dropPlayerItemWithRandomChoice(newStack, false);
+    	
+    }
     
     // ========== Perform GUI Command ==========
     public void performGUICommand(EntityPlayer player, byte guiCommandID) {

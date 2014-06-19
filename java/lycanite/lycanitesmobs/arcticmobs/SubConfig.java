@@ -17,9 +17,11 @@ public class SubConfig extends OldConfig {
 
 		// ========== Special Feature Control ==========
 		loadSetting(this.featureBools, "Feature Control", "Frostweb", "Enable Frostwebs", true);
+		loadSetting(this.featureBools, "Feature Control", "Frostcloud", "Enable Frostclouds", true);
 		
 		// ========== Mob Control ==========
 		loadMobSettings("Reiver", 8, 5, 1, 3, "Monster");
 		loadMobSettings("Frostweaver", 10, 5, 1, 2, "Monster");
+		loadMobSettings("Yeti", 10, 5, 2, 4, "Creature");
 	}
 }

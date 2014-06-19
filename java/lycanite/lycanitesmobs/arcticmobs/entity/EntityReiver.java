@@ -158,7 +158,6 @@ public class EntityReiver extends EntityCreatureTameable implements IMob {
     public boolean isPotionApplicable(PotionEffect par1PotionEffect) {
         if(par1PotionEffect.getPotionID() == Potion.moveSlowdown.id) return false;
         if(par1PotionEffect.getPotionID() == Potion.hunger.id) return false;
-        super.isPotionApplicable(par1PotionEffect);
-        return true;
+        return super.isPotionApplicable(par1PotionEffect);
     }
 }

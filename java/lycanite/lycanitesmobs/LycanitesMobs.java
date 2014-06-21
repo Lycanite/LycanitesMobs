@@ -40,7 +40,7 @@ public class LycanitesMobs implements ILycaniteMod {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String version = "1.6.2 - MC 1.7.2";
+	public static final String version = "1.6.2b - MC 1.7.2";
 	public static final String domain = modid.toLowerCase();
 	
 	public static final PacketHandler packetHandler = new PacketHandler();
@@ -75,6 +75,19 @@ public class LycanitesMobs implements ILycaniteMod {
 		config.init(modid);
 		this.packetHandler.init();
 		
+		// ========== Custom Potion Effects ==========
+		if(this.config.getFeatureBool("CustomEffects")) {
+			PotionBase.reserveEffectIDSpace();
+			ObjectManager.addPotionEffect("Paralysis", config, true, 0xFFFF00, 1, 0);
+			ObjectManager.addPotionEffect("Leech", config, true, 0x00FF99, 7, 0);
+			ObjectManager.addPotionEffect("Penetration", config, true, 0x222222, 6, 1);
+			ObjectManager.addPotionEffect("Recklessness", config, true, 0xFF0044, 4, 0);
+			ObjectManager.addPotionEffect("Rage", config, true, 0xFF4400, 4, 0);
+			ObjectManager.addPotionEffect("Weight", config, true, 0x000022, 1, 0);
+			ObjectManager.addPotionEffect("Swiftswimming", config, true, 0x0000FF, 0, 2);
+			MinecraftForge.EVENT_BUS.register(new PotionEffects());
+		}
+		
 		// ========== Mob Info ==========
 		MobInfo.loadGlobalSettings();
 		
@@ -98,6 +111,9 @@ public class LycanitesMobs implements ILycaniteMod {
 		ObjectManager.addItem("bloodsummoningstaff", new ItemStaffBlood());
 		ObjectManager.addItem("sturdysummoningstaff", new ItemStaffSturdy());
 		ObjectManager.addItem("savagesummoningstaff", new ItemStaffSavage());
+		
+		// ========== Call Object Lists Setup ==========
+		ObjectLists.createLists();
 		
 		// ========== Register New 1.7.2 Vanilla Biomes Into Groups (Temporary until forge updates this) ==========
 		BiomeDictionary.registerBiomeType(BiomeGenBase.jungleEdge, BiomeDictionary.Type.JUNGLE);
@@ -143,22 +159,6 @@ public class LycanitesMobs implements ILycaniteMod {
 		proxy.registerAssets();
 		proxy.registerTileEntities();
 		proxy.registerRenders();
-		
-		// ========== Call Object Lists Setup ==========
-		ObjectLists.createLists();
-		
-		// ========== Add Custom Potion Effects ==========
-		if(this.config.getFeatureBool("CustomEffects")) {
-			PotionBase.reserveEffectIDSpace();
-			ObjectManager.addPotionEffect("Paralysis", config, true, 0xFFFF00, 1, 0);
-			ObjectManager.addPotionEffect("Leech", config, true, 0x00FF99, 7, 0);
-			ObjectManager.addPotionEffect("Penetration", config, true, 0x222222, 6, 1);
-			ObjectManager.addPotionEffect("Recklessness", config, true, 0xFF0044, 4, 0);
-			ObjectManager.addPotionEffect("Rage", config, true, 0xFF4400, 4, 0);
-			ObjectManager.addPotionEffect("Weight", config, true, 0x000022, 1, 0);
-			ObjectManager.addPotionEffect("Swiftswimming", config, true, 0x0000FF, 0, 2);
-			MinecraftForge.EVENT_BUS.register(new PotionEffects());
-		}
 		
 		// ========== Crafting ==========
 		GameRegistry.addRecipe(new ShapedOreRecipe(

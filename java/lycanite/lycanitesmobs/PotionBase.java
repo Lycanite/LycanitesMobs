@@ -11,21 +11,30 @@ public class PotionBase extends Potion {
 	//                    Constructor
 	// ==================================================
 	public static void reserveEffectIDSpace() {
-		customPotionOffset = Potion.potionTypes.length;
-		int newLength = customPotionOffset + customPotionLength;
+		int vanillaLength = 32;
+		int safeLength = 128;
+		int originalLength = Potion.potionTypes.length;
+		int newLength = originalLength;
+		if(originalLength < safeLength)
+			newLength = originalLength + customPotionLength;
+		customPotionOffset = Math.min(originalLength, (safeLength - 1) - customPotionLength);
+		
 		LycanitesMobs.printDebug("EffectsSetup", "~O========== Custom Potion Effects Setup ==========O~");
-		LycanitesMobs.printDebug("EffectsSetup", "Initial size is: " + Potion.potionTypes.length + " (vanilla size is: 32)");
-		LycanitesMobs.printDebug("EffectsSetup", "Size will be increased by: " + customPotionLength + " (these slots are reserved for this mod)");
+		LycanitesMobs.printDebug("EffectsSetup", "Initial size is: " + originalLength + " (vanilla size is: " + vanillaLength + ")");
+		if(originalLength < safeLength)
+			LycanitesMobs.printDebug("EffectsSetup", "Size will be increased by: " + customPotionLength + " as it is smaller than the safe limit of " + safeLength + ".");
 		LycanitesMobs.printDebug("EffectsSetup", "New Size will be: " + newLength);
-		LycanitesMobs.printDebug("EffectsSetup", "New Effects from this mod should automatically start with ID: " + customPotionOffset + " They shouldn't exceed: " + (newLength - 1));
-		LycanitesMobs.printDebug("EffectsSetup", "If the initial size is larger than the vanilla then another mod has increased its size, here it should then be increased further.");
-		LycanitesMobs.printDebug("EffectsSetup", "Any mods that add effects after this mod should then extend the list further where ID " + (newLength - 1) + " may then be exceeded, but not by this mod.");
+		LycanitesMobs.printDebug("EffectsSetup", "New Effects from this mod should automatically start with ID: " + customPotionOffset + " up to " + (customPotionOffset + customPotionLength) + " (Reserving 24 slots for current and future effects.) Note: IDs beyond 127 can cause crashes! This mod is forced to this cap.");
+		if(originalLength > vanillaLength) {
+			LycanitesMobs.printDebug("EffectsSetup", "The initial size is larger than the vanilla which means another mod has increased its size, here it should then be increased further, unless it is at the safe limit.");
+			LycanitesMobs.printDebug("EffectsSetup", "Any mods that add effects after this mod can then extend the list further.");
+		}
 		
-		Potion[] potionTypes = new Potion[newLength];
-		LycanitesMobs.printDebug("EffectsSetup", "Created the new extended list: " + potionTypes);
-		System.arraycopy(Potion.potionTypes, 0, potionTypes, 0, customPotionOffset);
+		Potion[] newPotionTypes = new Potion[newLength];
+		LycanitesMobs.printDebug("EffectsSetup", "Created the new extended list: " + newPotionTypes);
+		System.arraycopy(Potion.potionTypes, 0, newPotionTypes, 0, originalLength);
 		
-		LMReflectionHelper.setPrivateFinalValue(Potion.class, null, potionTypes, "potionTypes", "field_76425_a");
+		LMReflectionHelper.setPrivateFinalValue(Potion.class, null, newPotionTypes, "potionTypes", "field_76425_a");
 		LycanitesMobs.printDebug("EffectsSetup", "Replaced the old list with the new list: " + Potion.potionTypes);
 		LycanitesMobs.printDebug("EffectsSetup", "New list length is: " + Potion.potionTypes.length + " this should be " + newLength);
 	}

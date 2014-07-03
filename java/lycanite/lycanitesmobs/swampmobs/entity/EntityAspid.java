@@ -1,21 +1,10 @@
 package lycanite.lycanitesmobs.swampmobs.entity;
 
-import java.util.HashMap;
-
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupAnimal;
 import lycanite.lycanitesmobs.api.IGroupPredator;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIAvoid;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowParent;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIMate;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAvoid;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetParent;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITempt;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
+import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.swampmobs.SwampMobs;
@@ -33,6 +22,8 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
+import java.util.HashMap;
+
 public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGroupAnimal {
 	
 	// ==================================================
@@ -49,6 +40,7 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
         this.spawnsOnlyInLight = true;
         this.hasAttackSound = true;
         this.eggName = "SwampEgg";
+        this.babySpawnChance = 0.1D;
         
         this.setWidth = 0.9F;
         this.setHeight = 2.2F;

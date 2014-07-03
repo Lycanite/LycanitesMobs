@@ -50,6 +50,7 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
         this.spawnsOnlyInLight = true;
         this.hasAttackSound = true;
         this.eggName = "PlainsEgg";
+        this.babySpawnChance = 0.1D;
         
         this.setWidth = 2.9F;
         this.setHeight = 3.2F;

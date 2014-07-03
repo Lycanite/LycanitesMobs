@@ -1,43 +1,41 @@
-package lycanite.lycanitesmobs.infernomobs.model;
+package lycanite.lycanitesmobs.saltwatermobs.model;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.model.ModelCustomObj;
-import lycanite.lycanitesmobs.infernomobs.InfernoMobs;
+import lycanite.lycanitesmobs.saltwatermobs.SaltwaterMobs;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.model.obj.WavefrontObject;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ModelLobber extends ModelCustomObj {
-	
+public class ModelIka extends ModelCustomObj {
+
 	// ==================================================
   	//                    Constructors
   	// ==================================================
-    public ModelLobber() {
+    public ModelIka() {
         this(1.0F);
     }
-    
-    public ModelLobber(float shadowSize) {
+
+    public ModelIka(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Lobber", InfernoMobs.domain, "entity/lobber");
+    	model = (WavefrontObject)AssetManager.getObjModel("ika", SaltwaterMobs.domain, "entity/ika");
     	
     	// Get Parts:
     	parts = model.groupObjects;
     	
     	// Set Rotation Centers:
-    	setPartCenter("head", 0F, 3.0F, 0.3F);
-    	setPartCenter("body", 0F, 3.0F, 0.3F);
-    	setPartCenter("leftarm", 1.1F, 2.5F, 0F);
-    	setPartCenter("rightarm", -1.1F, 2.5F, 0F);
-    	setPartCenter("leftleg", 0.8F, 0.9F, 0F);
-    	setPartCenter("rightleg", -0.8F, 0.9F, 0F);
+    	setPartCenter("head", 0F, 1.2F, 0.9F);
+    	setPartCenter("body", 0F, 1F, 1F);
+    	setPartCenter("shell", 0F, 1F, 1F);
+    	// TODO Centers, limbs and animations.
     }
     
     
- // ==================================================
+    // ==================================================
    	//                 Animate Part
    	// ==================================================
     float maxLeg = 0F;
@@ -57,42 +55,43 @@ public class ModelLobber extends ModelCustomObj {
     	float rotZ = 0F;
     	
     	// Idle:
-    	if(partName.equals("leftarm")) {
-	        rotZ -= Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F + 0.05F);
-	        rotX -= Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
+    	if(partName.equals("tentaclem") || partName.equals("tentaclel2") || partName.equals("tentacler2")) {
+	        rotZ -= Math.toDegrees(MathHelper.cos(loop * 0.4F) * 0.05F + 0.05F);
+	        rotY -= Math.toDegrees(MathHelper.cos(loop * 0.05F) * 0.2F);
+	        rotX -= Math.toDegrees(MathHelper.sin(loop * 0.3F) * 0.05F);
     	}
-    	if(partName.equals("rightarm")) {
-	        rotZ += Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F + 0.05F);
-	        rotX += Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
+    	if(partName.equals("tentaclel1") || partName.equals("tentacler1")) {
+	        rotZ += Math.toDegrees(MathHelper.cos(loop * 0.4F) * 0.05F + 0.05F);
+	        rotY += Math.toDegrees(MathHelper.cos(loop * 0.05F) * 0.2F);
+	        rotX += Math.toDegrees(MathHelper.sin(loop * 0.3F) * 0.05F);
     	}
     	
     	// Walking:
     	if(entity.onGround || entity.isInWater()) {
 	    	float walkSwing = 0.6F;
-	    	if(partName.equals("leftarm")) {
+	    	if(partName.equals("tentaclem") || partName.equals("tentaclel2") || partName.equals("tentacler2")) {
 	    		rotX += Math.toDegrees(MathHelper.cos(time * walkSwing) * 1.0F * distance * 0.5F);
 				rotZ -= Math.toDegrees(MathHelper.cos(time * walkSwing) * 0.5F * distance * 0.5F);
 	    	}
-	    	if(partName.equals("rightarm")) {
+	    	if(partName.equals("tentaclel1") || partName.equals("tentacler1")) {
 	    		rotX += Math.toDegrees(MathHelper.cos(time * walkSwing + (float)Math.PI) * 1.0F * distance * 0.5F);
 				rotZ += Math.toDegrees(MathHelper.cos(time * walkSwing + (float)Math.PI) * 0.5F * distance * 0.5F);
 	    	}
-	    	if(partName.equals("leftleg"))
-	    		rotX += Math.toDegrees(MathHelper.cos(time * walkSwing + (float)Math.PI) * 1.4F * distance);
-	    	if(partName.equals("rightleg"))
-	    		rotX += Math.toDegrees(MathHelper.cos(time * walkSwing) * 1.4F * distance);
     	}
-		
+				
 		// Attack:
 		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
-	    	if(partName.equals("leftarm") || partName.equals("rightarm"))
-	    		rotX -= 65.0F;
-	    	if(partName.equals("leftarm"))
-	    		rotY -= 20.0F;
-	    	if(partName.equals("rightarm"))
-	    		rotY += 20.0F;
+	    	if(partName.equals("tentaclem") || partName.equals("tentaclel2") || partName.equals("tentacler2"))
+	    		rotate(0.0F, -25.0F, 0.0F);
+	    	if(partName.equals("tentaclel1") || partName.equals("tentacler1"))
+	    		rotate(0.0F, 25.0F, 0.0F);
 		}
-    	
+		
+		// Shell:
+		if(partName.equals("shell") && entity.getHealth() <= entity.getMaxHealth() / 2) {
+	    	this.scale(0, 0, 0);
+		}
+		
     	// Apply Animations:
 		this.rotate(rotation, angleX, angleY, angleZ);
     	this.rotate(rotX, rotY, rotZ);

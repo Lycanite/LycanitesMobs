@@ -72,19 +72,19 @@
         "sounds": [{"name": "entity/crusk/eat", "stream": false}]
     },
     "entity.joust.say": {
-        "category": "neutral",
+        "category": "hostile",
         "sounds": [{"name": "entity/joust/say", "stream": false}]
     },
     "entity.joust.hurt": {
-        "category": "neutral",
+        "category": "hostile",
         "sounds": [{"name": "entity/joust/hurt", "stream": false}]
     },
     "entity.joust.death": {
-        "category": "neutral",
+        "category": "hostile",
         "sounds": [{"name": "entity/joust/death", "stream": false}]
     },
     "entity.joust.step": {
-        "category": "neutral",
+        "category": "hostile",
         "sounds": [{"name": "entity/joust/step", "stream": false}]
     },
     "entity.joust.attack": {

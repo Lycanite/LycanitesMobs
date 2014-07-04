@@ -52,19 +52,19 @@
         "sounds": [{"name": "entity/troll/tame", "stream": false}]
     },
     "entity.yale.say": {
-        "category": "neutral",
+        "category": "hostile",
         "sounds": [{"name": "entity/yale/say", "stream": false}]
     },
     "entity.yale.hurt": {
-        "category": "neutral",
+        "category": "hostile",
         "sounds": [{"name": "entity/yale/hurt", "stream": false}]
     },
     "entity.yale.death": {
-        "category": "neutral",
+        "category": "hostile",
         "sounds": [{"name": "entity/yale/death", "stream": false}]
     },
     "entity.yale.step": {
-        "category": "neutral",
+        "category": "hostile",
         "sounds": [{"name": "entity/yale/step", "stream": false}]
     },
     "projectile.boulderblast": {

@@ -136,23 +136,23 @@
         "sounds": [{"name": "entity/eyewig/mount", "stream": false}]
     },
     "entity.aspid.say": {
-        "category": "neutral",
+        "category": "hostile",
         "sounds": [{"name": "entity/aspid/say", "stream": false}]
     },
     "entity.aspid.hurt": {
-        "category": "neutral",
+        "category": "hostile",
         "sounds": [{"name": "entity/aspid/hurt", "stream": false}]
     },
     "entity.aspid.death": {
-        "category": "neutral",
+        "category": "hostile",
         "sounds": [{"name": "entity/aspid/death", "stream": false}]
     },
     "entity.aspid.step": {
-        "category": "neutral",
+        "category": "hostile",
         "sounds": [{"name": "entity/aspid/step", "stream": false}]
     },
     "entity.aspid.attack": {
-        "category": "neutral",
+        "category": "hostile",
         "sounds": [{"name": "entity/aspid/attack", "stream": false}]
     },
     "entity.remobra.say": {

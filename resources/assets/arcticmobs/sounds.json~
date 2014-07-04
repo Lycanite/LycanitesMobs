@@ -48,19 +48,19 @@
         "sounds": [{"name": "entity/frostweaver/eat", "stream": false}]
     },
     "entity.yeti.say": {
-        "category": "neutral",
+        "category": "hostile",
 	"sounds": [{"name": "entity/yeti/say", "stream": false}]
     },
     "entity.yeti.hurt": {
-        "category": "neutral",
+        "category": "hostile",
 	"sounds": [{"name": "entity/yeti/hurt", "stream": false}]
     },
     "entity.yeti.death": {
-        "category": "neutral",
+        "category": "hostile",
 	"sounds": [{"name": "entity/yeti/death", "stream": false}]
     },
     "entity.yeti.step": {
-        "category": "neutral",
+        "category": "hostile",
 	"sounds": [{"name": "entity/yeti/step", "stream": false}]
     },
     "projectile.frostbolt": {

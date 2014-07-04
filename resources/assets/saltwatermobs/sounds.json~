@@ -63,8 +63,4 @@
         "category": "neutral",
         "sounds": [{"name": "entity/ika/death", "stream": false}]
     },
-    "entity.ika.step": {
-        "category": "neutral",
-        "sounds": [{"name": "entity/ika/step", "stream": false}]
-    }
 }

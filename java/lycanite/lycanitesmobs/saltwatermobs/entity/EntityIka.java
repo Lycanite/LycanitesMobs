@@ -36,27 +36,28 @@ public class EntityIka extends EntityCreatureAgeable implements IAnimals, IGroup
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 0;
         this.experience = 7;
-        this.spawnsInDarkness = true;
+        this.spawnsInDarkness = false;
         this.spawnsOnLand = false;
         this.spawnsInWater = true;
-        this.hasAttackSound = true;
+        this.hasAttackSound = false;
         
         this.eggName = "SaltwaterEgg";
-        this.babySpawnChance = 0.1D;
+        this.babySpawnChance = 0.01D;
         this.canGrow = true;
         
-        this.setWidth = 1.5F;
-        this.setHeight = 1.6F;
+        this.setWidth = 0.9F;
+        this.setHeight = 0.9F;
+        this.fleeHealthPercent = 1.0F;
         this.setupMob();
         
         // AI Tasks:
         this.getNavigator().setCanSwim(true);
         this.getNavigator().setAvoidsWater(false);
         this.tasks.addTask(0, new EntityAISwimming(this).setSink(true));
-        this.tasks.addTask(1, new EntityAIStayByWater(this));
-        this.tasks.addTask(2, new EntityAIAvoid(this).setNearSpeed(1.3D).setFarSpeed(1.2D).setNearDistance(5.0D).setFarDistance(20.0D));
-        this.tasks.addTask(3, new EntityAIMate(this));
-        this.tasks.addTask(4, new EntityAITempt(this).setItemList("Vegetables"));
+        this.tasks.addTask(1, new EntityAITempt(this).setItemList("Vegetables"));
+        this.tasks.addTask(2, new EntityAIStayByWater(this));
+        this.tasks.addTask(3, new EntityAIAvoid(this).setNearSpeed(1.3D).setFarSpeed(1.2D).setNearDistance(5.0D).setFarDistance(20.0D));
+        this.tasks.addTask(4, new EntityAIMate(this));
         this.tasks.addTask(5, new EntityAIFollowParent(this).setSpeed(1.0D));
         this.tasks.addTask(6, new EntityAIWander(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
@@ -70,7 +71,7 @@ public class EntityIka extends EntityCreatureAgeable implements IAnimals, IGroup
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
 		baseAttributes.put("maxHealth", 10D);
-		baseAttributes.put("movementSpeed", 0.24D);
+		baseAttributes.put("movementSpeed", 0.26D);
 		baseAttributes.put("knockbackResistance", 0.0D);
 		baseAttributes.put("followRange", 32D);
 		baseAttributes.put("attackDamage", 2D);
@@ -81,7 +82,7 @@ public class EntityIka extends EntityCreatureAgeable implements IAnimals, IGroup
 	@Override
 	public void loadItemDrops() {
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("IkaMeatRaw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("IkaMeatCooked"))).setMinAmount(2).setMaxAmount(5));
-        this.drops.add(new DropRate(new ItemStack(Items.dye, 1, 0), 0.25F).setMinAmount(1).setMaxAmount(1));
+        this.drops.add(new DropRate(new ItemStack(Items.dye, 1, 0), 0.25F).setMinAmount(1).setMaxAmount(2));
     }
     
     
@@ -109,12 +110,12 @@ public class EntityIka extends EntityCreatureAgeable implements IAnimals, IGroup
     public float getSpeedMod() {
         float waterSpeed = 1.0F;
         if(this.isInWater()) // Checks specifically just for water.
-            waterSpeed = 8.0F;
+            waterSpeed = 2.0F;
         else if(this.waterContact()) // Checks for water, rain, etc.
             waterSpeed = 1.5F;
 
     	if(this.getHealth() > (this.getMaxHealth() / 2)) // Slower with shell.
-    		return waterSpeed * 0.25F;
+    		return waterSpeed * 0.75F;
     	return waterSpeed;
     }
 	
@@ -147,6 +148,14 @@ public class EntityIka extends EntityCreatureAgeable implements IAnimals, IGroup
     // ========== Can leash ==========
     @Override
     public boolean canLeash(EntityPlayer player) { return true; }
+
+    // ========== Can Be Tempted ==========
+    @Override
+    public boolean canBeTempted() {
+        if(this.getAir() <= -100)
+            return false;
+        else return super.canBeTempted();
+    }
     
     
     // ==================================================
@@ -157,8 +166,7 @@ public class EntityIka extends EntityCreatureAgeable implements IAnimals, IGroup
     	if(ObjectManager.getPotionEffect("Weight") != null)
         	if(potionEffect.getPotionID() == ObjectManager.getPotionEffect("Weight").id) return false;
         if(potionEffect.getPotionID() == Potion.blindness.id) return false;
-        super.isPotionApplicable(potionEffect);
-        return true;
+        return super.isPotionApplicable(potionEffect);
     }
     
     @Override
@@ -196,6 +204,8 @@ public class EntityIka extends EntityCreatureAgeable implements IAnimals, IGroup
     // ========== Breeding Item ==========
     @Override
     public boolean isBreedingItem(ItemStack testStack) {
+        if(this.getAir() <= -100)
+            return false;
         return ObjectLists.inItemList("Vegetables", testStack);
     }
 }

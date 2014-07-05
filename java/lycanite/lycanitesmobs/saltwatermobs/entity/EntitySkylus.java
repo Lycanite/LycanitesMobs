@@ -1,26 +1,18 @@
 package lycanite.lycanitesmobs.saltwatermobs.entity;
 
-import java.util.HashMap;
-
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.IGroupAnimal;
+import lycanite.lycanitesmobs.api.IGroupPredator;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowOwner;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIStayByWater;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerAttack;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerRevenge;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerThreats;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
+import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
+import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.saltwatermobs.SaltwaterMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
+import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -31,7 +23,9 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
-public class EntitySkylus extends EntityCreatureTameable implements IMob {
+import java.util.HashMap;
+
+public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroupPredator {
 	
 	EntityAIWander wanderAI = new EntityAIWander(this);
     
@@ -74,6 +68,10 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob {
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
+        if(MobInfo.predatorsAttackAnimals) {
+            this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupAnimal.class).setPackHuntingScale(1, 3));
+            this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(EntityAnimal.class).setPackHuntingScale(1, 3));
+        }
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
     
@@ -196,8 +194,7 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob {
     	if(ObjectManager.getPotionEffect("Weight") != null)
         	if(potionEffect.getPotionID() == ObjectManager.getPotionEffect("Weight").id) return false;
         if(potionEffect.getPotionID() == Potion.blindness.id) return false;
-        super.isPotionApplicable(potionEffect);
-        return true;
+        return super.isPotionApplicable(potionEffect);
     }
     
     @Override

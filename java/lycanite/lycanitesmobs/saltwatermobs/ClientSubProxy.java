@@ -1,6 +1,7 @@
 package lycanite.lycanitesmobs.saltwatermobs;
 
 import lycanite.lycanitesmobs.AssetManager;
+import lycanite.lycanitesmobs.saltwatermobs.model.ModelIka;
 import lycanite.lycanitesmobs.saltwatermobs.model.ModelLacedon;
 import lycanite.lycanitesmobs.saltwatermobs.model.ModelSkylus;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -16,5 +17,6 @@ public class ClientSubProxy extends CommonSubProxy {
     public void registerModels() {
 		AssetManager.addModel("lacedon", new ModelLacedon());
 		AssetManager.addModel("skylus", new ModelSkylus());
+        AssetManager.addModel("ika", new ModelIka());
 	}
 }

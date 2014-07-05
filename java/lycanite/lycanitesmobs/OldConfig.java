@@ -1,16 +1,15 @@
 package lycanite.lycanitesmobs;
 
+import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.config.Configuration;
+import org.apache.commons.lang3.ArrayUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.common.config.Configuration;
-
-import org.apache.commons.lang3.ArrayUtils;
 
 public class OldConfig {
 	// To read from this config use the maps.
@@ -170,7 +169,7 @@ public class OldConfig {
 		loadSetting(this.mobsEnabled, "Mob Control - General", mobName, mobName + " Enabled", true);
 		loadSetting(this.customDrops, "Mob Control - General", mobName, mobName + " Custom Drops", "");
 		loadSetting(this.defaultDrops, "Mob Control - General", mobName, mobName + " Enable Default Drops", true);
-		loadSetting(this.mobsPeaceful, "Mob Control - General", mobName, mobName + " Allowed On Peaceful Difficulty", spawnTypeName.equalsIgnoreCase("CREATURE") || mobName.equalsIgnoreCase("pinky"));
+		loadSetting(this.mobsPeaceful, "Mob Control - General", mobName, mobName + " Allowed On Peaceful Difficulty", spawnTypeName.equalsIgnoreCase("CREATURE") || mobName.equalsIgnoreCase("pinky") || mobName.equalsIgnoreCase("ika"));
 		
 		// Spawning - Type:
 		loadSetting(this.spawnEnabled, "Mob Spawning - Type", mobName, mobName + " Spawn Enabled", spawnWeight > 0);

@@ -21,5 +21,6 @@ public class SubConfig extends OldConfig {
 		// ========== Mob Control ==========
 		loadMobSettings("Lacedon", 8, 3, 1, 3, "WATERCREATURE");
 		loadMobSettings("Skylus", 6, 3, 1, 3, "WATERCREATURE");
+        loadMobSettings("ika", 6, 3, 1, 3, "WATERCREATURE");
 	}
 }

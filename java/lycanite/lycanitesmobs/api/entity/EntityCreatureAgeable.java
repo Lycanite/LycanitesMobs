@@ -1,12 +1,12 @@
 package lycanite.lycanitesmobs.api.entity;
 
-import java.util.HashMap;
-
 import lycanite.lycanitesmobs.ObjectManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+
+import java.util.HashMap;
 
 public abstract class EntityCreatureAgeable extends EntityCreatureBase {
 	
@@ -236,6 +236,9 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
 	// ==================================================
   	//                      Breeding
   	// ==================================================
+    /** Can this entity by tempted (usually lured by an item) currently? **/
+    public boolean canBeTempted() { return !this.isInLove(); }
+
 	// ========== Targets ==========
 	public EntityCreatureAgeable getBreedingTarget() { return this.breedingTarget; }
 	public void setBreedingTarget(EntityCreatureAgeable target) { this.breedingTarget = target; }

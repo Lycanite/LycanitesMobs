@@ -1,7 +1,6 @@
 package lycanite.lycanitesmobs;
-import java.util.HashMap;
-import java.util.Map;
-
+import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
 import lycanite.lycanitesmobs.api.info.EntityListCustom;
 import lycanite.lycanitesmobs.api.info.MobInfo;
@@ -12,8 +11,9 @@ import net.minecraft.dispenser.BehaviorProjectileDispense;
 import net.minecraft.item.Item;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.DungeonHooks;
-import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ObjectManager {
 	
@@ -41,18 +41,20 @@ public class ObjectManager {
     //                        Add
     // ==================================================
 	// ========== Block ==========
-	public static void addBlock(String name, Block block) {
+	public static Block addBlock(String name, Block block) {
 		name = name.toLowerCase();
 		blocks.put(name, block);
 		GameRegistry.registerBlock(block, name);
+        return block;
 	}
 
 	// ========== Item ==========
-	public static void addItem(String name, Item item) {
+	public static Item addItem(String name, Item item) {
 		name = name.toLowerCase();
 		items.put(name, item);
 		if(currentMod != null)
 			GameRegistry.registerItem(item, name, currentMod.getModID());
+        return item;
 	}
 
 	// ========== Potion Effect ==========
@@ -69,7 +71,7 @@ public class ObjectManager {
 	}
 	
 	// ========== Creature ==========
-	public static void addMob(MobInfo mobInfo) {
+	public static MobInfo addMob(MobInfo mobInfo) {
 		ILycaniteMod mod = mobInfo.mod;
 		String modid = mod.getModID();
 		String domain = mod.getDomain();
@@ -96,7 +98,7 @@ public class ObjectManager {
 		int mobID = mod.getNextMobID();
 		if(!mobInfo.mobEnabled) {
 			LycanitesMobs.printDebug("MobSetup", "Mob Disabled: " + name + " - " + mobInfo.entityClass + " (" + modid + ")");
-			return;
+			return mobInfo;
 		}
 		
 		// Mapping and Registration:
@@ -154,6 +156,8 @@ public class ObjectManager {
 				LycanitesMobs.printDebug("MobSetup", "Dungeon Spawn Added - Weight: " + spawnInfo.dungeonWeight);
 			}
 		}
+
+        return mobInfo;
 	}
 	
 

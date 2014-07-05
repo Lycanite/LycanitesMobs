@@ -1,7 +1,5 @@
 package lycanite.lycanitesmobs.plainsmobs.entity;
 
-import java.util.HashMap;
-
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupAlpha;
 import lycanite.lycanitesmobs.api.IGroupAnimal;
@@ -9,17 +7,7 @@ import lycanite.lycanitesmobs.api.IGroupPredator;
 import lycanite.lycanitesmobs.api.IGroupPrey;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIBeg;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowParent;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIPlayerControl;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITempt;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
+import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
@@ -36,6 +24,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
+
+import java.util.HashMap;
 
 public class EntityVentoraptor extends EntityCreatureRideable implements IGroupPredator {
     
@@ -57,7 +47,7 @@ public class EntityVentoraptor extends EntityCreatureRideable implements IGroupP
         
         this.eggName = "PlainsEgg";
         this.canGrow = true;
-        this.babySpawnChance = 0.1D;
+        this.babySpawnChance = 0.01D;
         
         this.setWidth = 0.8F;
         this.setHeight = 1.5F;

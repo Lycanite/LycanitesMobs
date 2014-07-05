@@ -1,15 +1,5 @@
 package lycanite.lycanitesmobs.saltwatermobs;
 
-import lycanite.lycanitesmobs.OldConfig;
-import lycanite.lycanitesmobs.LycanitesMobs;
-import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.ILycaniteMod;
-import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
-import lycanite.lycanitesmobs.api.info.MobInfo;
-import lycanite.lycanitesmobs.saltwatermobs.entity.EntityLacedon;
-import lycanite.lycanitesmobs.saltwatermobs.entity.EntitySkylus;
-import lycanite.lycanitesmobs.saltwatermobs.item.ItemSaltwaterEgg;
-import net.minecraft.block.BlockDispenser;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -17,6 +7,26 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
+import lycanite.lycanitesmobs.LycanitesMobs;
+import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.OldConfig;
+import lycanite.lycanitesmobs.api.ILycaniteMod;
+import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
+import lycanite.lycanitesmobs.api.info.MobInfo;
+import lycanite.lycanitesmobs.api.info.ObjectLists;
+import lycanite.lycanitesmobs.api.item.ItemCustomFood;
+import lycanite.lycanitesmobs.saltwatermobs.entity.EntityIka;
+import lycanite.lycanitesmobs.saltwatermobs.entity.EntityLacedon;
+import lycanite.lycanitesmobs.saltwatermobs.entity.EntitySkylus;
+import lycanite.lycanitesmobs.saltwatermobs.item.ItemSaltwaterEgg;
+import net.minecraft.block.BlockDispenser;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 @Mod(modid = SaltwaterMobs.modid, name = SaltwaterMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid)
 public class SaltwaterMobs implements ILycaniteMod {
@@ -49,6 +59,20 @@ public class SaltwaterMobs implements ILycaniteMod {
 		
 		// ========== Create Items ==========
 		ObjectManager.addItem("saltwateregg", new ItemSaltwaterEgg());
+
+        int rawFoodEffectID = Potion.blindness.id;
+        if(ObjectManager.getPotionEffect("weight") != null)
+            rawFoodEffectID = ObjectManager.getPotionEffect("weight").getId();
+        ObjectManager.addItem("ikameatraw", new ItemCustomFood("ikameatraw", domain, 2, 0.5F).setPotionEffect(rawFoodEffectID, 45, 2, 0.8F));
+        ObjectLists.addItem("rawfish", ObjectManager.getItem("ikameatraw"));
+        OreDictionary.registerOre("listAllfishraw", ObjectManager.getItem("ikameatraw"));
+
+        ObjectManager.addItem("ikameatcooked", new ItemCustomFood("ikameatcooked", domain, 6, 0.7F));
+        ObjectLists.addItem("cookedfish", ObjectManager.getItem("ikameatcooked"));
+        OreDictionary.registerOre("listAllfishcooked", ObjectManager.getItem("ikameatcooked"));
+
+        ObjectManager.addItem("seashellmaki", new ItemCustomFood("seashellmaki", domain, 6, 0.7F).setPotionEffect(Potion.waterBreathing.id, 120, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
+        ObjectLists.addItem("cookedfish", ObjectManager.getItem("seashellmaki"));
 	}
 	
 	
@@ -64,7 +88,8 @@ public class SaltwaterMobs implements ILycaniteMod {
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("saltwateregg"), new DispenserBehaviorMobEggCustom());
 		ObjectManager.addMob(new MobInfo(this, "lacedon", EntityLacedon.class, 0x000099, 0x2244FF, 2).setSummonable(true));
-		ObjectManager.addMob(new MobInfo(this, "skylus", EntitySkylus.class, 0xFFCCDD, 0xBB2299, 2).setSummonable(true));
+		ObjectManager.addMob(new MobInfo(this, "skylus", EntitySkylus.class, 0xFFCCDD, 0xBB2299, 3).setSummonable(true));
+        ObjectManager.addMob(new MobInfo(this, "ika", EntityIka.class, 0x99FFBB, 0x229944, 2).setSummonable(false));
 		
 		// ========== Create Projectiles ==========
 		//ObjectManager.addProjectile("ember", EntityEmber.class, ObjectManager.getItem("embercharge"), new DispenserBehaviorEmber());
@@ -86,6 +111,15 @@ public class SaltwaterMobs implements ILycaniteMod {
 		// N/A
 		
 		// ========== Crafting ==========
+        GameRegistry.addRecipe(new ShapelessOreRecipe(
+                new ItemStack(ObjectManager.getItem("seashellmaki"), 1, 0),
+                new Object[]{
+                        Blocks.vine,
+                        Items.wheat,
+                        ObjectManager.getItem("ikameatcooked"),
+                }
+        ));
+
 		/*GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("emberscepter"), 1, 0),
 				new Object[] { "CCC", "CRC", "CRC",
@@ -94,7 +128,7 @@ public class SaltwaterMobs implements ILycaniteMod {
 			}));*/
 		
 		// ========== Smelting ==========
-		//GameRegistry.addSmelting(ObjectManager.getItem("sauropodmeatraw").itemID, new ItemStack(ObjectManager.getItem("sauropodmeatcooked"), 1), 0.5f);
+		GameRegistry.addSmelting(ObjectManager.getItem("ikameatraw"), new ItemStack(ObjectManager.getItem("ikameatcooked"), 1), 0.5f);
 	}
 	
 	

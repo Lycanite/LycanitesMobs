@@ -35,6 +35,18 @@
         "category": "hostile",
         "sounds": [{"name": "entity/lobber/step", "stream": false}]
     },
+    "entity.cephignis.say": {
+        "category": "neutral",
+        "sounds": [{"name": "entity/cephignis/say", "stream": false}]
+    },
+    "entity.cephignis.hurt": {
+        "category": "neutral",
+        "sounds": [{"name": "entity/cephignis/hurt", "stream": false}]
+    },
+    "entity.cephignis.death": {
+        "category": "neutral",
+        "sounds": [{"name": "entity/cephignis/death", "stream": false}]
+    },
     "projectile.ember": {
         "category": "ambient",
         "sounds": [{"name": "projectile/ember", "stream": false}]

@@ -6,10 +6,18 @@ entity.infernomobs.cinder.name=Cinder
 entity.infernomobs.cinder.description=Violent fire spirits, Cinders like to incinerate everything.
 entity.infernomobs.lobber.name=Lobber
 entity.infernomobs.lobber.description=Large lava golems, Lobbers lurk within large lakes of lava and will throw lava at their target.
+entity.infernomobs.cephignis.name=Cephignis
+entity.infernomobs.cephignis.description=Large fish that live in lava! Cephignis can be farmed using coal or charcoal!
 #
 # Items
 item.infernospawn.name=Spawn
+item.cephignismeatcooked.name=Cooked Cephignis Meat
+item.searingtaco.name=Searing Taco
 item.embercharge.name=Ember Charge
 item.emberscepter.name=Ember Scepter
 item.magmacharge.name=Magma Charge
 item.magmascepter.name=Magma Scepter
+item.bucketpurelava.name=Pure Lava Bucket
+#
+# Items
+tile.purelava.name=Pure Lava

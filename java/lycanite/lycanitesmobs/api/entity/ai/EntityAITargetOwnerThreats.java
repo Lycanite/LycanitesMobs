@@ -83,8 +83,8 @@ public class EntityAITargetOwnerThreats extends EntityAITarget {
             return false;
     	
     	// Ownable Checks:
-        if(this.host instanceof IEntityOwnable && StringUtils.isNotEmpty(((IEntityOwnable)this.host).getOwnerName())) {
-            if(target instanceof IEntityOwnable && ((IEntityOwnable)this.host).getOwnerName().equals(((IEntityOwnable)target).getOwnerName()))
+        if(this.host instanceof IEntityOwnable && StringUtils.isNotEmpty(((IEntityOwnable)this.host).func_152113_b())) { //getOwnerName()
+            if(target instanceof IEntityOwnable && ((IEntityOwnable)this.host).func_152113_b().equals(((IEntityOwnable)target).func_152113_b())) // getOwnerName()
                 return false;
             if(target == ((IEntityOwnable)this.host).getOwner())
                 return false;

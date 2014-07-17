@@ -17,7 +17,7 @@ import net.minecraft.item.ItemStack;
 public class ObjectLists {
 	
 	// Item List Names:
-	public static String[] itemListNames = new String[] {"RawMeat", "CookedMeat", "Vegetables", "RawFish", "CookedFish", "CactusFood", "Mushrooms", "Sweets"};
+	public static String[] itemListNames = new String[] {"RawMeat", "CookedMeat", "Vegetables", "RawFish", "CookedFish", "CactusFood", "Mushrooms", "Sweets", "Fuel"};
 	
 	// Maps:
 	public static Map<String, List<ItemStack>> itemLists = new HashMap<String, List<ItemStack>>();
@@ -158,6 +158,9 @@ public class ObjectLists {
 		ObjectLists.addItem("sweets", Items.cookie);
 		ObjectLists.addItem("sweets", Blocks.cake);
 		ObjectLists.addItem("sweets", Items.pumpkin_pie);
+		
+		// Fuel: (Fiery awesomeness!)
+		ObjectLists.addItem("fuel", Items.coal);
 		
 		// Custom Entries:
 		for(String itemListName : itemListNames) {

@@ -40,7 +40,7 @@ public class EntityAIMoveRestriction extends EntityAIBase {
         if(this.host.hasHome())
             return false;
         ChunkCoordinates chunkcoordinates = this.host.getHomePosition();
-        Vec3 vec3 = RandomPositionGenerator.findRandomTargetTowards(this.host, 16, 7, this.host.worldObj.getWorldVec3Pool().getVecFromPool((double)chunkcoordinates.posX, (double)chunkcoordinates.posY, (double)chunkcoordinates.posZ));
+        Vec3 vec3 = RandomPositionGenerator.findRandomTargetTowards(this.host, 16, 7, Vec3.createVectorHelper((double)chunkcoordinates.posX, (double)chunkcoordinates.posY, (double)chunkcoordinates.posZ));
         if(vec3 == null)
             return false;
         

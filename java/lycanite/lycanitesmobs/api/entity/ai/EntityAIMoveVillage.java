@@ -70,7 +70,7 @@ public class EntityAIMoveVillage extends EntityAIBase {
         if(this.entityPathNavigate != null)
             return true;
         
-        Vec3 vec3 = RandomPositionGenerator.findRandomTargetTowards(this.host, 10, 7, this.host.worldObj.getWorldVec3Pool().getVecFromPool((double)this.doorInfo.posX, (double)this.doorInfo.posY, (double)this.doorInfo.posZ));
+        Vec3 vec3 = RandomPositionGenerator.findRandomTargetTowards(this.host, 10, 7, Vec3.createVectorHelper((double)this.doorInfo.posX, (double)this.doorInfo.posY, (double)this.doorInfo.posZ));
         if(vec3 == null)
             return false;
         this.host.getNavigator().setBreakDoors(false);

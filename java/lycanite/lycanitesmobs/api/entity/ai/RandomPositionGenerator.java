@@ -96,7 +96,7 @@ public class RandomPositionGenerator {
         }
 
         if(validTarget)
-            return entity.worldObj.getWorldVec3Pool().getVecFromPool((double)targetX, (double)targetY, (double)targetZ);
+            return Vec3.createVectorHelper((double)targetX, (double)targetY, (double)targetZ);
         else
         	return null;
     }

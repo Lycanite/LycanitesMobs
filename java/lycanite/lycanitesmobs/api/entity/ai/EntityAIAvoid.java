@@ -66,7 +66,7 @@ public class EntityAIAvoid extends EntityAIBase {
         if(this.targetClass != null && !this.targetClass.isAssignableFrom(this.avoidTarget.getClass()))
             return false;
         
-        Vec3 vec3 = RandomPositionGenerator.findRandomTargetAwayFrom(this.host, 16, 7, this.host.worldObj.getWorldVec3Pool().getVecFromPool(this.avoidTarget.posX, this.avoidTarget.posY, this.avoidTarget.posZ));
+        Vec3 vec3 = RandomPositionGenerator.findRandomTargetAwayFrom(this.host, 16, 7, Vec3.createVectorHelper(this.avoidTarget.posX, this.avoidTarget.posY, this.avoidTarget.posZ));
         if(vec3 == null)
             return false;
         

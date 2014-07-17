@@ -83,8 +83,11 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
     //                    Join World
     // ==================================================
 	public void onJoinWorld() {
+		this.needsFirstSync = true;
+		
 		if(this.player.worldObj.isRemote)
 			return;
+		
 		// Check for Backup:
 		if(backupNBTTags.containsKey(this.player.getCommandSenderName())) {
 			this.loadNBTData(backupNBTTags.get(this.player.getCommandSenderName()));

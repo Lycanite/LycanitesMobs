@@ -35,7 +35,7 @@ public class GuiOverlay extends Gui {
 		if(event.isCanceled())
 	      return;
 		
-		ScaledResolution scaledresolution = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
+		ScaledResolution scaledresolution = new ScaledResolution(this.mc, this.mc.displayWidth, this.mc.displayHeight);
 		int sWidth = scaledresolution.getScaledWidth();
         int sHeight = scaledresolution.getScaledHeight();
 		

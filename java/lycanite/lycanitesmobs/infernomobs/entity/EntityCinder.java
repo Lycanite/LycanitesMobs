@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
+import lycanite.lycanitesmobs.api.entity.EntityItemCustom;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileRapidFire;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackRanged;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowOwner;
@@ -45,7 +46,7 @@ public class EntityCinder extends EntityCreatureTameable implements IMob {
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 0;
         this.experience = 5;
-        this.spawnsInBlock = false; //TODO Make sure it still spawns in non-solid blocks (fire).
+        this.spawnsInBlock = false;
         this.hasAttackSound = false;
         
         this.eggName = "InfernoEgg";
@@ -185,6 +186,17 @@ public class EntityCinder extends EntityCreatureTameable implements IMob {
     
     @Override
     public boolean waterDamage() { return true; }
+    
+    
+    // ==================================================
+   	//                       Drops
+   	// ==================================================
+    // ========== Apply Drop Effects ==========
+    /** Used to add effects or alter the dropped entity item. **/
+    @Override
+    public void applyDropEffects(EntityItemCustom entityitem) {
+    	entityitem.setCanBurn(false);
+    }
     
     
     // ==================================================

@@ -66,6 +66,8 @@ public class ModelCinder extends ModelCustomObj {
 	        rotZ += Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F + 0.05F);
 	        rotX += Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
     	}
+		float bob = -MathHelper.sin(loop * 0.1F) * 0.3F;
+		posY += bob;
     	
     	// Effects:
     	if(partName.equals("outereffect"))

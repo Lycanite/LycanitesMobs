@@ -1,6 +1,7 @@
 package lycanite.lycanitesmobs.forestmobs;
 
 import lycanite.lycanitesmobs.AssetManager;
+import lycanite.lycanitesmobs.forestmobs.model.ModelArisaur;
 import lycanite.lycanitesmobs.forestmobs.model.ModelEnt;
 import lycanite.lycanitesmobs.forestmobs.model.ModelShambler;
 import lycanite.lycanitesmobs.forestmobs.model.ModelTrent;
@@ -18,5 +19,6 @@ public class ClientSubProxy extends CommonSubProxy {
 		AssetManager.addModel("ent", new ModelEnt());
 		AssetManager.addModel("trent", new ModelTrent());
 		AssetManager.addModel("shambler", new ModelShambler());
+		AssetManager.addModel("arisaur", new ModelArisaur());
 	}
 }

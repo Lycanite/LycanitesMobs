@@ -86,5 +86,21 @@
     "entity.shambler.eat": {
         "category": "hostile",
         "sounds": [{"name": "entity/shambler/eat", "stream": false}]
+    },
+    "entity.arisaur.say": {
+        "category": "neutral",
+        "sounds": [{"name": "entity/arisaur/say", "stream": false}]
+    },
+    "entity.arisaur.hurt": {
+        "category": "neutral",
+        "sounds": [{"name": "entity/arisaur/hurt", "stream": false}]
+    },
+    "entity.arisaur.death": {
+        "category": "neutral",
+        "sounds": [{"name": "entity/arisaur/death", "stream": false}]
+    },
+    "entity.arisaur.step": {
+        "category": "neutral",
+        "sounds": [{"name": "entity/arisaur/step", "stream": false}]
     }
 }

@@ -724,6 +724,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
         // Fire Immunity:
         this.isImmuneToFire = !this.canBurn();
         
+        // Not Walking on Land:
+        if(!this.canWalk() && !this.canFly() && !this.isInWater() && this.isMoving())
+        	this.clearMovement();
+        
         // Climbing:
         if(!this.worldObj.isRemote) {
         	this.setBesideClimbableBlock(this.isCollidedHorizontally);
@@ -796,8 +800,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
         }
         
         // Water Damage:
-        if(!this.worldObj.isRemote && this.waterDamage() && this.isWet())
+        if(!this.worldObj.isRemote && this.waterDamage() && this.isWet()) {
             this.attackEntityFrom(DamageSource.drown, 1.0F);
+            LycanitesMobs.printDebug("", "Water Damage!"); //XXX
+        }
         
         // Out of Water Suffocation:
         if(!this.worldObj.isRemote && !this.canBreatheAboveWater()) {
@@ -941,9 +947,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
      */
     public boolean useFlightNavigator() {
     	boolean freeSwimming = this.canSwim() && this.isInWater();
-    	if(this.canFly() && (!this.isInWater() || freeSwimming))
-    		return true;
-    	if(freeSwimming)
+    	if(this.canFly() || freeSwimming)
     		return true;
     	return false;
     }
@@ -1327,9 +1331,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
    	// ==================================================
     /** Called when this entity dies, drops items from the inventory. **/
     @Override
-    public void onDeath(DamageSource par1DamageSource) {
-    	if(ForgeHooks.onLivingDeath(this, par1DamageSource)) return;
-        super.onDeath(par1DamageSource);
+    public void onDeath(DamageSource damageSource) {
+    	if(ForgeHooks.onLivingDeath(this, damageSource)) return;
+        super.onDeath(damageSource);
         if(!this.worldObj.isRemote)
             this.inventory.dropInventory();
     }
@@ -1610,8 +1614,34 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Drop Item ==========
     /** Tells this entity to drop the specified itemStack, used by DropRate and InventoryCreature, can be used by anything though. **/
     public void dropItem(ItemStack itemStack) {
-    	this.entityDropItem(itemStack, 0.0F);
+    	EntityItem itemEntity = this.entityDropItem(itemStack, 0.0F);
     }
+
+    // ========== Entity Drop Item ==========
+    /** The vanilla item drop method, overriden to make use of the EntityItemCustom class. I recommend using dropItem() instead. **/
+    @Override
+    public EntityItem entityDropItem(ItemStack itemStack, float heightOffset) {
+        if(itemStack.stackSize != 0 && itemStack.getItem() != null) {
+            EntityItemCustom entityitem = new EntityItemCustom(this.worldObj, this.posX, this.posY + (double)heightOffset, this.posZ, itemStack);
+            entityitem.delayBeforeCanPickup = 10;
+            this.applyDropEffects(entityitem);
+            
+            if(captureDrops) {
+                capturedDrops.add(entityitem);
+            }
+            else {
+                this.worldObj.spawnEntityInWorld(entityitem);
+            }
+            return entityitem;
+        }
+        else {
+            return null;
+        }
+    }
+    
+    // ========== Apply Drop Effects ==========
+    /** Used to add effects or alter the dropped entity item. **/
+    public void applyDropEffects(EntityItemCustom entityitem) {}
     
     
     // ==================================================

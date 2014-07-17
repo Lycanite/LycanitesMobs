@@ -7,6 +7,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class CustomSpawner {
@@ -43,11 +44,49 @@ public class CustomSpawner {
 			// Custom Mob Spawning:
 			int tickOffset = 0;
 			for(SpawnType spawnType : SpawnType.spawnTypes) {
-				spawnType.onUpdate(entityUpdateTick - tickOffset, world, x, y, z);
+				spawnType.onUpdate(entityUpdateTick - tickOffset, "area", world, x, y, z);
 				tickOffset += 100;
 			}
 			
 			entityUpdateTicks.put(player, entityUpdateTick + 1);
+		}
+	}
+
+	
+	// ==================================================
+	//                 Block Break Event
+	// ==================================================
+	/** This uses the block break events to spawn mobs around blocks when they are destroyed. **/
+	@SubscribeEvent
+	public void onBlockBreak(BreakEvent event) {
+		EntityPlayer player = event.getPlayer(); // Only fire when broken by a player.
+		if(player == null || event.block == null || event.world == null || event.isCanceled())
+			return;
+		if(player.capabilities.isCreativeMode) // No Spawning for Creative Players
+			return;
+		
+		// Only Ore Blocks:
+		String blockName = event.block.getUnlocalizedName();
+		String[] blockNameParts = blockName.split("\\.");
+		boolean isOre = false;
+		for(String blockNamePart : blockNameParts) {
+			if(blockNamePart.substring(0, 3).equalsIgnoreCase("ore")) {
+				isOre = true;
+				break;
+			}
+		}
+		if(!isOre) {
+			return;
+		}
+		
+		if(event.world != null && !event.world.isRemote) {
+			World world = event.world;
+			int x = (int)event.x;
+			int y = (int)event.y;
+			int z = (int)event.z;
+			
+			// Custom Mob Spawning:
+			SpawnType.getSpawnType("ROCK").onUpdate(0, "blockbreak", world, x, y, z);
 		}
 	}
 }

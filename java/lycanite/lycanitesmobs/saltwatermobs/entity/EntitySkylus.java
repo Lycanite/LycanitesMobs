@@ -1,10 +1,22 @@
 package lycanite.lycanitesmobs.saltwatermobs.entity;
 
+import java.util.HashMap;
+
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupAnimal;
 import lycanite.lycanitesmobs.api.IGroupPredator;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
-import lycanite.lycanitesmobs.api.entity.ai.*;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowOwner;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIStayByWater;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerAttack;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerRevenge;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerThreats;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.saltwatermobs.SaltwaterMobs;
@@ -22,8 +34,6 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroupPredator {
 	
@@ -46,7 +56,7 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroup
         this.hasAttackSound = true;
         
         this.eggName = "SaltwaterEgg";
-        this.babySpawnChance = 0.1D;
+        this.babySpawnChance = 0.01D;
         this.canGrow = true;
         
         this.setWidth = 1.5F;

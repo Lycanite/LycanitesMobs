@@ -51,7 +51,7 @@ public class EntityAIChase extends EntityAIBase {
         else if(this.host.getDistanceSqToEntity(this.target) > (double)(this.maxTargetDistance * this.maxTargetDistance))
             return false;
         
-        Vec3 vec3 = RandomPositionGenerator.findRandomTargetTowards(this.host, 16, 7, this.host.worldObj.getWorldVec3Pool().getVecFromPool(this.target.posX, this.target.posY, this.target.posZ));
+        Vec3 vec3 = RandomPositionGenerator.findRandomTargetTowards(this.host, 16, 7, Vec3.createVectorHelper(this.target.posX, this.target.posY, this.target.posZ));
         if(vec3 == null)
             return false;
         

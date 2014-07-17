@@ -1,12 +1,15 @@
 package lycanite.lycanitesmobs.forestmobs;
 
-import lycanite.lycanitesmobs.OldConfig;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.OldConfig;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.api.info.MobInfo;
+import lycanite.lycanitesmobs.api.info.ObjectLists;
+import lycanite.lycanitesmobs.api.item.ItemCustomFood;
 import lycanite.lycanitesmobs.api.item.ItemTreat;
+import lycanite.lycanitesmobs.forestmobs.entity.EntityArisaur;
 import lycanite.lycanitesmobs.forestmobs.entity.EntityEnt;
 import lycanite.lycanitesmobs.forestmobs.entity.EntityShambler;
 import lycanite.lycanitesmobs.forestmobs.entity.EntityTrent;
@@ -19,8 +22,10 @@ import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -62,6 +67,18 @@ public class ForestMobs implements ILycaniteMod {
 		
 		// ========== Create Items ==========
 		ObjectManager.addItem("forestegg", new ItemForestEgg());
+		
+		ItemCustomFood rawMeat =  new ItemCustomFood("arisaurmeatraw", domain, 2, 0.5F);
+		if(ObjectManager.getPotionEffect("paralysis") != null)
+			rawMeat.setPotionEffect(ObjectManager.getPotionEffect("paralysis").id, 10, 2, 0.8F);
+		ObjectManager.addItem("arisaurmeatraw", rawMeat);
+		ObjectLists.addItem("vegetables", ObjectManager.getItem("arisaurmeatraw"));
+		
+		ObjectManager.addItem("arisaurmeatcooked", new ItemCustomFood("arisaurmeatcooked", domain, 6, 0.7F));
+		ObjectLists.addItem("vegetables", ObjectManager.getItem("arisaurmeatcooked"));
+		
+		ObjectManager.addItem("paleosalad", new ItemCustomFood("paleosalad", domain, 6, 0.7F).setPotionEffect(Potion.field_76434_w.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16)); // Health Boost
+		ObjectLists.addItem("vegetables", ObjectManager.getItem("paleosalad"));
 
 		ObjectManager.addItem("shamblertreat", new ItemTreat("shamblertreat", this.domain));
 	}
@@ -81,6 +98,7 @@ public class ForestMobs implements ILycaniteMod {
 		ObjectManager.addMob(new MobInfo(this, "ent", EntityEnt.class, 0x997700, 0x00FF22, 2).setSummonable(true));
 		ObjectManager.addMob(new MobInfo(this, "trent", EntityTrent.class, 0x663300, 0x00AA11, 6).setSummonable(false));
 		ObjectManager.addMob(new MobInfo(this, "shambler", EntityShambler.class, 0xDDFF22, 0x005511, 6).setSummonable(false));
+		ObjectManager.addMob(new MobInfo(this, "arisaur", EntityArisaur.class, 0x008800, 0x00FF00, 6).setSummonable(false));
 		
 		// ========== Create Projectiles ==========
 		//ObjectManager.addProjectile("Template", EntityTemplate.class, Item.templateCharge, new DispenserBehaviorPoisonRay());
@@ -107,15 +125,31 @@ public class ForestMobs implements ILycaniteMod {
 		}
 		
 		// ========== Crafting ==========
+		GameRegistry.addRecipe(new ShapelessOreRecipe(
+				new ItemStack(ObjectManager.getItem("paleosalad"), 1, 0),
+				new Object[] {
+					Blocks.leaves,
+					Items.carrot,
+					ObjectManager.getItem("YaleMeatCooked")
+				}
+			));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(
+				new ItemStack(ObjectManager.getItem("paleosalad"), 1, 0),
+				new Object[] {
+					Blocks.leaves2,
+					Items.carrot,
+					ObjectManager.getItem("YaleMeatCooked")
+				}
+			));
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("shamblertreat"), 1, 0),
 				new Object[] { "TTT", "BBT", "TTT",
-				Character.valueOf('T'), Blocks.vine,
+				Character.valueOf('T'), ObjectManager.getItem("arisaurmeatcooked"),
 				Character.valueOf('B'), Items.reeds
 			}));
 		
 		// ========== Smelting ==========
-		//GameRegistry.addSmelting(ObjectManager.getItem("sauropodmeatraw").itemID, new ItemStack(ObjectManager.getItem("sauropodmeatcooked"), 1), 0.5f);
+		GameRegistry.addSmelting(ObjectManager.getItem("arisaurmeatraw"), new ItemStack(ObjectManager.getItem("arisaurmeatcooked"), 1), 0.5f);
 	}
 	
 	

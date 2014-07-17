@@ -428,9 +428,12 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     // ==================================================
     //                       Owner
     // ==================================================
-    @Override
     public String getOwnerName() {
-        return this.dataWatcher.getWatchableObjectString(WATCHER_ID.OWNER.id);
+    	return this.dataWatcher.getWatchableObjectString(WATCHER_ID.OWNER.id);
+    }
+    @Override
+    public String func_152113_b() { //getOwnerName
+    	return this.getOwnerName();
     }
     
     public void setOwner(String playername) {

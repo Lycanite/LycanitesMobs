@@ -1,6 +1,7 @@
 package lycanite.lycanitesmobs;
-import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
+import java.util.HashMap;
+import java.util.Map;
+
 import lycanite.lycanitesmobs.api.ILycaniteMod;
 import lycanite.lycanitesmobs.api.info.EntityListCustom;
 import lycanite.lycanitesmobs.api.info.MobInfo;
@@ -11,14 +12,17 @@ import net.minecraft.dispenser.BehaviorProjectileDispense;
 import net.minecraft.item.Item;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.DungeonHooks;
-
-import java.util.HashMap;
-import java.util.Map;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ObjectManager {
 	
 	// Maps:
 	public static Map<String, Block> blocks = new HashMap<String, Block>();
+	public static Map<String, Fluid> fluids = new HashMap<String, Fluid>();
+    public static Map<Block, Item> buckets = new HashMap<Block, Item>();
 	public static Map<String, Item> items = new HashMap<String, Item>();
 	public static Map<String, PotionBase> potionEffects = new HashMap<String, PotionBase>();
 	
@@ -46,6 +50,20 @@ public class ObjectManager {
 		blocks.put(name, block);
 		GameRegistry.registerBlock(block, name);
         return block;
+	}
+
+	// ========== Fluid ==========
+	public static Fluid addFluid(Fluid fluid) {
+		String name = fluid.getUnlocalizedName().toLowerCase();
+		fluids.put(name, fluid);
+		FluidRegistry.registerFluid(fluid);
+        return fluid;
+	}
+
+	// ========== Bucket ==========
+	public static Item addBucket(Item bucket, Block block) {
+		buckets.put(block, bucket);
+        return bucket;
 	}
 
 	// ========== Item ==========

@@ -12,7 +12,7 @@ public class SubConfig extends OldConfig {
 		super.loadSettings();
 		
 		// ========== Feature Control ==========
-		loadSetting(this.featureStrings, "Feature Control", "BiomeTypes", "Group Biome Types", "FROZEN");
+		loadSetting(this.featureStrings, "Feature Control", "BiomeTypes", "Group Biome Types", "COLD, SNOWY, CONIFEROUS, -END");
 		loadSetting(this.featureStrings, "Feature Control", "Dimensions", "Group Dimensions", "0, 7");
 
 		// ========== Special Feature Control ==========

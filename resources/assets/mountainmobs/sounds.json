@@ -67,6 +67,30 @@
         "category": "neutral",
         "sounds": [{"name": "entity/yale/step", "stream": false}]
     },
+    "entity.geonach.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/geonach/say", "stream": false}]
+    },
+    "entity.geonach.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/geonach/hurt", "stream": false}]
+    },
+    "entity.geonach.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/geonach/death", "stream": false}]
+    },
+    "entity.geonach.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/geonach/attack", "stream": false}]
+    },
+    "entity.geonach.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/geonach/beg", "stream": false}]
+    },
+    "entity.geonach.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/geonach/tame", "stream": false}]
+    },
     "projectile.boulderblast": {
         "category": "ambient",
         "sounds": [{"name": "projectile/boulderblast", "stream": false}]

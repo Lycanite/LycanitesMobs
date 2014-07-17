@@ -1,8 +1,8 @@
 package lycanite.lycanitesmobs.mountainmobs;
 
-import lycanite.lycanitesmobs.OldConfig;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.OldConfig;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.api.info.MobInfo;
@@ -10,6 +10,7 @@ import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
 import lycanite.lycanitesmobs.mountainmobs.dispenser.DispenserBehaviorBoulderBlast;
 import lycanite.lycanitesmobs.mountainmobs.entity.EntityBoulderBlast;
+import lycanite.lycanitesmobs.mountainmobs.entity.EntityGeonach;
 import lycanite.lycanitesmobs.mountainmobs.entity.EntityJabberwock;
 import lycanite.lycanitesmobs.mountainmobs.entity.EntityTroll;
 import lycanite.lycanitesmobs.mountainmobs.entity.EntityYale;
@@ -100,7 +101,8 @@ public class MountainMobs implements ILycaniteMod {
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("mountainegg"), new DispenserBehaviorMobEggCustom());
 		ObjectManager.addMob(new MobInfo(this, "jabberwock", EntityJabberwock.class, 0x662222, 0xFFFFAA, 2).setSummonable(true));
 		ObjectManager.addMob(new MobInfo(this, "troll", EntityTroll.class, 0x007711, 0xEEEEEE, 6).setSummonable(false));
-		ObjectManager.addMob(new MobInfo(this, "yale", EntityYale.class, 0xFFEEAA, 0xFFDD77, 6).setSummonable(false));
+		ObjectManager.addMob(new MobInfo(this, "yale", EntityYale.class, 0xFFEEAA, 0xFFDD77, 1).setSummonable(false));
+		ObjectManager.addMob(new MobInfo(this, "geonach", EntityGeonach.class, 0x443333, 0xBBBBCC, 2).setSummonable(true));
 		
 		// ========== Create Projectiles ==========
 		ObjectManager.addProjectile("boulderblast", EntityBoulderBlast.class, ObjectManager.getItem("boulderblastcharge"), new DispenserBehaviorBoulderBlast());
@@ -129,12 +131,12 @@ public class MountainMobs implements ILycaniteMod {
 		
 		// ========== Crafting ==========
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
-				new ItemStack(ObjectManager.getItem("PeaksKebab"), 1, 0),
+				new ItemStack(ObjectManager.getItem("peakskebab"), 1, 0),
 				new Object[] {
 					Items.stick,
 					Items.carrot,
 					Items.melon,
-					ObjectManager.getItem("YaleMeatCooked")
+					ObjectManager.getItem("yalemeatcooked")
 				}
 			));
 		GameRegistry.addRecipe(new ShapedOreRecipe(

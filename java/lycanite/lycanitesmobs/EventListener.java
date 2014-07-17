@@ -2,11 +2,15 @@ package lycanite.lycanitesmobs;
 
 import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
 import lycanite.lycanitesmobs.api.item.ItemBase;
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -14,6 +18,8 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.EntityInteractEvent;
+import net.minecraftforge.event.entity.player.FillBucketEvent;
+import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class EventListener {
@@ -51,7 +57,8 @@ public class EventListener {
 		// ========== Extended Player ==========
 		if(event.entity instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer)event.entity;
-			ExtendedPlayer.getForPlayer(player).onJoinWorld();
+			ExtendedPlayer playerExtended = ExtendedPlayer.getForPlayer(player);
+			playerExtended.onJoinWorld();
 		}
 	}
 	
@@ -98,6 +105,7 @@ public class EventListener {
 		if(player == null || entity == null)
 			return;
 		
+		// Item onItemRightClickOnEntity():
 		if(player.getHeldItem() != null) {
 			Item item = player.getHeldItem().getItem();
 			if(item instanceof ItemBase)
@@ -160,4 +168,27 @@ public class EventListener {
 			}
 		}
 	}
+	
+	
+    // ==================================================
+    //                 Bucket Fill Event
+    // ==================================================
+	@SubscribeEvent
+    public void onBucketFill(FillBucketEvent event) {
+        World world = event.world;
+        MovingObjectPosition pos = event.target;
+        Block block = world.getBlock(pos.blockX, pos.blockY, pos.blockZ);
+        Item bucket = ObjectManager.buckets.get(block);
+        ItemStack result = null;
+        if(bucket != null && world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0) {
+            world.setBlockToAir(pos.blockX, pos.blockY, pos.blockZ);
+            result = new ItemStack(bucket);
+        }
+        
+        if(result == null)
+        	return;
+
+        event.result = result;
+        event.setResult(Result.ALLOW);
+    }
 }

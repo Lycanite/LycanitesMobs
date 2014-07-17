@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.api.entity.EntityItemCustom;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackRanged;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
@@ -237,6 +238,17 @@ public class EntityLobber extends EntityCreatureBase implements IMob {
     @Override
     public boolean canBreatheAboveWater() {
         return false;
+    }
+    
+    
+    // ==================================================
+   	//                       Drops
+   	// ==================================================
+    // ========== Apply Drop Effects ==========
+    /** Used to add effects or alter the dropped entity item. **/
+    @Override
+    public void applyDropEffects(EntityItemCustom entityitem) {
+    	entityitem.setCanBurn(false);
     }
     
     

@@ -271,7 +271,7 @@ public class BlockHellfire extends BlockBase {
     public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
 		super.onEntityCollidedWithBlock(world, x, y, z, entity);
 		if(entity instanceof EntityItem && ((EntityItem)entity).getEntityItem() != null)
-    		if(((EntityItem)entity).getEntityItem().getItem() == ObjectManager.getItem("HellfireCharge"))
+    		if(((EntityItem)entity).getEntityItem().getItem() == ObjectManager.getItem("hellfirecharge"))
     			return;
 		if(entity.isImmuneToFire())
 			return;

@@ -87,7 +87,11 @@ public class SpawnType {
 				//newSpawnType.blocks = new Block[] {ObjectManager.getBlock("frostfire")};
 			//}
 			if("LAVA".equalsIgnoreCase(spawnTypeName)) {
+<<<<<<< HEAD
 				newSpawnType.blocks = new Block[] {Blocks.lava};
+=======
+				newSpawnType.materials = new Material[] {Material.lava};
+>>>>>>> origin/master
 			}
 			if("PORTAL".equalsIgnoreCase(spawnTypeName)) {
 				newSpawnType.blocks = new Block[] {Blocks.portal};

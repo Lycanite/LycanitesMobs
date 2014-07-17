@@ -40,7 +40,11 @@ public class LycanitesMobs implements ILycaniteMod {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
+<<<<<<< HEAD
 	public static final String version = "1.7.1 - MC 1.7.10";
+=======
+	public static final String version = "1.6.4 - MC 1.7.2";
+>>>>>>> origin/master
 	public static final String domain = modid.toLowerCase();
 	
 	public static final PacketHandler packetHandler = new PacketHandler();

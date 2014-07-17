@@ -60,7 +60,7 @@ public class EntityClink extends EntityCreatureTameable implements IMob {
         // AI Tasks:
         this.getNavigator().setAvoidsWater(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
-        rangedAttackAI = new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(10).setRange(14.0F).setMinChaseDistance(4.0F).setChaseTime(-1);
+        this.rangedAttackAI = new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(10).setRange(14.0F).setMinChaseDistance(4.0F).setChaseTime(-1);
         this.tasks.addTask(2, rangedAttackAI);
         this.tasks.addTask(3, this.aiSit);
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
@@ -124,11 +124,11 @@ public class EntityClink extends EntityCreatureTameable implements IMob {
         this.worldObj.spawnEntityInWorld(projectile);
         
         // Update Phase:
-        if(this.getAttackPhase() == 2)
-        	rangedAttackAI.setRate(60);
-        else
-        	rangedAttackAI.setRate(10);
         this.nextAttackPhase();
+        if(this.getAttackPhase() == 2)
+        	this.rangedAttackAI.setRate(60);
+        else
+        	this.rangedAttackAI.setRate(10);
         super.rangedAttack(target, range);
     }
     

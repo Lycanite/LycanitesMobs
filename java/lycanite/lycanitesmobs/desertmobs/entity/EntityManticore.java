@@ -113,7 +113,7 @@ public class EntityManticore extends EntityCreatureTameable implements IMob, IGr
     	if(!super.meleeAttack(target, damageScale))
     		return false;
     	
-    	// Wither:
+    	// Effects:
         if(target instanceof EntityLivingBase) {
         	((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.hunger.id, this.getEffectDuration(7), 0));
         	((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.weakness.id, this.getEffectDuration(7), 0));

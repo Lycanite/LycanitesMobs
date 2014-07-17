@@ -19,7 +19,7 @@ public class SubConfig extends OldConfig {
 		// None
 		
 		// ========== Mob Control ==========
-		loadMobSettings("Cinder", 8, 3, 1, 3, "FIRE", 16);
+		loadMobSettings("Cinder", 8, 3, 1, 3, "FIRE", 8);
 		loadMobSettings("Lobber", 2, 2, 1, 2, "LAVA", 16);
 	}
 }

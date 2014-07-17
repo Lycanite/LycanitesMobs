@@ -25,7 +25,7 @@ public class SubConfig extends OldConfig {
 		loadMobSettings("Ettin", 3, 2, 1, 1, "MONSTER");
 		loadMobSettings("Lurker", 6, 5, 1, 3, "MONSTER");
 		loadMobSettings("Eyewig", 3, 5, 1, 1, "MONSTER");
-		loadMobSettings("Aspid", 12, 10, 1, 3, "CREATURE");
+		loadMobSettings("Aspid", 12, 10, 1, 5, "CREATURE");
 		loadMobSettings("Remobra", 4, 10, 1, 3, "MONSTER");
 	}
 }

@@ -1,7 +1,7 @@
 package lycanite.lycanitesmobs.api.info;
 
-import lycanite.lycanitesmobs.OldConfig;
 import lycanite.lycanitesmobs.LycanitesMobs;
+import lycanite.lycanitesmobs.OldConfig;
 import lycanite.lycanitesmobs.api.spawning.SpawnType;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.world.biome.BiomeGenBase;

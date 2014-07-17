@@ -8,7 +8,12 @@ entity.forestmobs.trent.name=Trent
 entity.forestmobs.trent.description=Large guardians of the forest, very much like Ents only much bigger and stronger. They will sometimes causes paralysis, drain health when attacking and regenerate from water.
 entity.forestmobs.shambler.name=Shambler
 entity.forestmobs.shambler.description=Overgrown shrub creatures. Shamblers regenerate from water and can inflict paralysis. Can be tamed and are an excellent way to liven up the your garden!
+entity.forestmobs.arisaur.name=Arisaur
+entity.forestmobs.arisaur.description=Large plant like sauropods. Arisaurs are peaceful and normally graze from trees. They can be lured and farmed using vegetables. Do they count as meat though?
 #
 # Items
 item.forestspawn.name=Spawn
+item.arisaurmeatraw.name=Raw Arisaur Meat
+item.arisaurmeatcooked.name=Cooked Arisaur Meat
+item.paleosalad.name=Paleo Salad
 item.shamblertreat.name=Shambler Treat

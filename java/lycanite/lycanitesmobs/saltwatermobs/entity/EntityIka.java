@@ -1,10 +1,22 @@
 package lycanite.lycanitesmobs.saltwatermobs.entity;
 
+import java.util.HashMap;
+
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupAnimal;
 import lycanite.lycanitesmobs.api.IGroupPredator;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
-import lycanite.lycanitesmobs.api.entity.ai.*;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIAvoid;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowParent;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIMate;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIStayByWater;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAvoid;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetParent;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAITempt;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.saltwatermobs.SaltwaterMobs;
@@ -18,8 +30,6 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public class EntityIka extends EntityCreatureAgeable implements IAnimals, IGroupAnimal {
 
@@ -48,6 +58,7 @@ public class EntityIka extends EntityCreatureAgeable implements IAnimals, IGroup
         this.setWidth = 0.9F;
         this.setHeight = 0.9F;
         this.fleeHealthPercent = 1.0F;
+        this.isHostileByDefault = false;
         this.setupMob();
         
         // AI Tasks:

@@ -70,7 +70,7 @@ public class CustomSpawner {
 		String[] blockNameParts = blockName.split("\\.");
 		boolean isOre = false;
 		for(String blockNamePart : blockNameParts) {
-			if(blockNamePart.substring(0, 3).equalsIgnoreCase("ore")) {
+			if(blockNamePart.length() >= 3 && blockNamePart.substring(0, 3).equalsIgnoreCase("ore")) {
 				isOre = true;
 				break;
 			}

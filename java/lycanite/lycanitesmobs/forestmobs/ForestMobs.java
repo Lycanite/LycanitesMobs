@@ -130,7 +130,7 @@ public class ForestMobs implements ILycaniteMod {
 				new Object[] {
 					Blocks.leaves,
 					Items.carrot,
-					ObjectManager.getItem("YaleMeatCooked")
+					ObjectManager.getItem("arisaurmeatcooked")
 				}
 			));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
@@ -138,7 +138,7 @@ public class ForestMobs implements ILycaniteMod {
 				new Object[] {
 					Blocks.leaves2,
 					Items.carrot,
-					ObjectManager.getItem("YaleMeatCooked")
+					ObjectManager.getItem("arisaurmeatcooked")
 				}
 			));
 		GameRegistry.addRecipe(new ShapedOreRecipe(

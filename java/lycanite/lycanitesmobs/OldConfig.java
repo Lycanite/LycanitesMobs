@@ -1,15 +1,17 @@
 package lycanite.lycanitesmobs;
 
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.common.config.Configuration;
-import org.apache.commons.lang3.ArrayUtils;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.config.Configuration;
+
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class OldConfig {
 	// To read from this config use the maps.
@@ -419,14 +421,28 @@ public class OldConfig {
 		int[] dimensions = new int[0];
 		ArrayList<Integer> customDimensions = new ArrayList<Integer>();
 		for(String dimensionID : spawnDimensionsString.split(",")) {
-			if(!"NONE".equalsIgnoreCase(dimensionID))
+			if(StringUtils.isNumeric(dimensionID))
 				customDimensions.add(Integer.parseInt(dimensionID.replace("+", "")));
 		}
 		if(customDimensions.size() > 0)
 			dimensions = ArrayUtils.toPrimitive(customDimensions.toArray(new Integer[customDimensions.size()]));
-		else
-			dimensions = new int[0];
 		
 		return dimensions;
+	}
+	
+	public String[] getSpawnDimensionTypes(String mobName) {
+		String groupDimensions = this.getFeatureString("dimensions").toUpperCase().replace(" ", "");
+		String spawnDimensionsString = this.spawnDimensions.get(mobName).toUpperCase().replace(" ", "").replace("GROUP", groupDimensions);
+		
+		String[] dimensionTypes = new String[0];
+		ArrayList<String> customDimensions = new ArrayList<String>();
+		for(String dimensionType : spawnDimensionsString.split(",")) {
+			if(!StringUtils.isNumeric(dimensionType))
+				customDimensions.add(dimensionType);
+		}
+		if(customDimensions.size() > 0)
+			dimensionTypes = customDimensions.toArray(new String[customDimensions.size()]);
+		
+		return dimensionTypes;
 	}
 }

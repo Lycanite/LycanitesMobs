@@ -24,7 +24,9 @@ public class CreativeTabCreatures extends CreativeTabs {
 			return ObjectManager.getItem("DesertEgg");
 		else if(ObjectManager.getItem("PlainsEgg") != null)
 			return ObjectManager.getItem("PlainsEgg");
+		else if(ObjectManager.getItem("SwampEgg") != null)
+			return ObjectManager.getItem("SwampEgg");
 		else
-			return Items.spawn_egg; //TODO Get vanilla item!
+			return Items.spawn_egg;
 	}
 }

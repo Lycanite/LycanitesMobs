@@ -37,7 +37,7 @@ public class SpawnInfo {
 	public int[] dimensionIDs;
 	
 	/** Extra dimension types info, can contain values such as ALL or VANILLA. **/
-	public String dimensionTypes; // NYI
+	public String[] dimensionTypes;
 	
 	/** The list of biomes that this mob spawns in. Use this to get the biomes not biomeTypes. **/
 	public BiomeGenBase[] biomes;
@@ -128,6 +128,7 @@ public class SpawnInfo {
 		
 		// Spawn Location:
 		this.dimensionIDs = config.getSpawnDimensions(name);
+		this.dimensionTypes = config.getSpawnDimensionTypes(name);
 		this.biomes = config.getSpawnBiomesTypes(name);
 		
 		// Spawn Chance:

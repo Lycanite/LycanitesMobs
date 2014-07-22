@@ -466,13 +466,19 @@ public abstract class EntityCreatureBase extends EntityLiving {
     		if("NETHER".equalsIgnoreCase(this.spawnedFromType.typeName) || "PORTAL".equalsIgnoreCase(this.spawnedFromType.typeName))
     			return true;
     	}
-    	if(this.mobInfo.spawnInfo.dimensionIDs.length > 0) {
-        	for(int spawnDimension : this.mobInfo.spawnInfo.dimensionIDs) {
-        		if(this.worldObj.provider.dimensionId == spawnDimension) {
-        			return true;
-        		}
-        	}
-        }
+    	for(int spawnDimension : this.mobInfo.spawnInfo.dimensionIDs) {
+    		if(this.worldObj.provider.dimensionId == spawnDimension) {
+    			return true;
+    		}
+    	}
+		for(String spawnDimensionType : this.mobInfo.spawnInfo.dimensionTypes) {
+    		if("ALL".equalsIgnoreCase(spawnDimensionType)) {
+    			return true;
+    		}
+    		if("VANILLA".equalsIgnoreCase(spawnDimensionType)) {
+    			return this.worldObj.provider.dimensionId > -2 && this.worldObj.provider.dimensionId < 2;
+    		}
+    	}
         return false;
     }
     
@@ -802,7 +808,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
         // Water Damage:
         if(!this.worldObj.isRemote && this.waterDamage() && this.isWet()) {
             this.attackEntityFrom(DamageSource.drown, 1.0F);
-            LycanitesMobs.printDebug("", "Water Damage!"); //XXX
         }
         
         // Out of Water Suffocation:

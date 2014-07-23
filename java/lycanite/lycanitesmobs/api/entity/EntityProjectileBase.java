@@ -104,6 +104,12 @@ public class EntityProjectileBase extends EntityThrowable {
  						movingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), this.getDamage((EntityLivingBase)movingObjectPosition.entityHit));
  			}
  			collided = true;
+
+     		int i = (int)Math.floor(movingObjectPosition.entityHit.posX);
+     		int j = (int)Math.floor(movingObjectPosition.entityHit.posY);
+            int k = (int)Math.floor(movingObjectPosition.entityHit.posZ);
+            if(!this.worldObj.isRemote && this.canDestroyBlock(i, j, k))
+            	this.placeBlock(this.worldObj, i, j, k);
      	}
      	
      	// Block Hit:

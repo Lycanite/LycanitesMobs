@@ -184,7 +184,7 @@
         "sounds": [{"name": "projectile/demonicblast", "stream": false}]
     },
     "block.hellfire": {
-        "category": "ambient",
+        "category": "block",
         "sounds": [{"name": "block/hellfire", "stream": false}]
     }
 }

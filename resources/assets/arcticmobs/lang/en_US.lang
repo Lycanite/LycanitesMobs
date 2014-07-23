@@ -8,6 +8,8 @@ entity.arcticmobs.frostweaver.name=Frostweaver
 entity.arcticmobs.frostweaver.description=Foul spitting ice spiders, take heed as their spit will produce a temporary sticky frostweb.
 entity.arcticmobs.yeti.name=Yeti
 entity.arcticmobs.yeti.description=Large frosty mammals that like to eat the frozen vegetation of the arctic. They can be farmed using vegetables, but watch out for their frost clouds. Yeti milk is a delicacy!
+entity.arcticmobs.wendigo.name=Wendigo
+entity.arcticmobs.wendigo.description=Large icy beasts known for leaving a trail of Frostfire in their wake! They will also hurl Tundra Blasts which create Frostfire and Frost Clouds on impact.
 #
 # Items
 item.arcticspawn.name=Spawn
@@ -17,8 +19,10 @@ item.palesoup.name=Pale Soup
 item.frostyfur.name=Frosty Fur
 item.frostboltcharge.name=Frostbolt Charge
 item.frostwebcharge.name=Frostweb Charge
+item.tundracharge.name=Tundra Charge
 item.frostboltscepter.name=Frostbolt Scepter
 item.frostwebscepter.name=Frostweb Scepter
+item.tundrascepter.name=Tundra Scepter
 #
 # Blocks
 tile.frostweb.name=Frostweb

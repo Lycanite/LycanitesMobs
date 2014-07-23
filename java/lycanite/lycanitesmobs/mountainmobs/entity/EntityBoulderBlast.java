@@ -34,7 +34,7 @@ public class EntityBoulderBlast extends EntityProjectileBase {
     	this.entityName = "boulderblast";
     	this.mod = MountainMobs.instance;
     	this.setBaseDamage(8);
-        this.setSize(1, 1);
+    	this.setProjectileScale(4F);
     	
     	this.waterProof = true;
     }

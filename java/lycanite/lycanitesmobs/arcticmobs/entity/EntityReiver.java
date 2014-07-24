@@ -62,7 +62,7 @@ public class EntityReiver extends EntityCreatureTameable implements IMob {
         this.tasks.addTask(11, new EntityAILookIdle(this));
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
-        this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
+        this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(EntityWendigo.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         if(ObjectManager.getMob("Cinder") != null)
@@ -110,6 +110,14 @@ public class EntityReiver extends EntityCreatureTameable implements IMob {
     // ==================================================
     //                      Attacks
     // ==================================================
+    // ========== Set Attack Target ==========
+    @Override
+    public boolean canAttackClass(Class targetClass) {
+    	if(targetClass.isAssignableFrom(EntityWendigo.class))
+    		return false;
+        return super.canAttackClass(targetClass);
+    }
+    
     // ========== Ranged Attack ==========
     @Override
     public void rangedAttack(Entity target, float range) {
@@ -155,9 +163,9 @@ public class EntityReiver extends EntityCreatureTameable implements IMob {
    	//                     Immunities
    	// ==================================================
     @Override
-    public boolean isPotionApplicable(PotionEffect par1PotionEffect) {
-        if(par1PotionEffect.getPotionID() == Potion.moveSlowdown.id) return false;
-        if(par1PotionEffect.getPotionID() == Potion.hunger.id) return false;
-        return super.isPotionApplicable(par1PotionEffect);
+    public boolean isPotionApplicable(PotionEffect potionEffect) {
+        if(potionEffect.getPotionID() == Potion.moveSlowdown.id) return false;
+        if(potionEffect.getPotionID() == Potion.hunger.id) return false;
+        return super.isPotionApplicable(potionEffect);
     }
 }

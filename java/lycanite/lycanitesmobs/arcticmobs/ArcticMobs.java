@@ -10,13 +10,17 @@ import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
 import lycanite.lycanitesmobs.arcticmobs.block.BlockFrostCloud;
+import lycanite.lycanitesmobs.arcticmobs.block.BlockFrostfire;
 import lycanite.lycanitesmobs.arcticmobs.block.BlockFrostweb;
 import lycanite.lycanitesmobs.arcticmobs.dispenser.DispenserBehaviorFrostbolt;
 import lycanite.lycanitesmobs.arcticmobs.dispenser.DispenserBehaviorFrostweb;
+import lycanite.lycanitesmobs.arcticmobs.dispenser.DispenserBehaviorTundra;
 import lycanite.lycanitesmobs.arcticmobs.entity.EntityFrostbolt;
 import lycanite.lycanitesmobs.arcticmobs.entity.EntityFrostweaver;
 import lycanite.lycanitesmobs.arcticmobs.entity.EntityFrostweb;
 import lycanite.lycanitesmobs.arcticmobs.entity.EntityReiver;
+import lycanite.lycanitesmobs.arcticmobs.entity.EntityTundra;
+import lycanite.lycanitesmobs.arcticmobs.entity.EntityWendigo;
 import lycanite.lycanitesmobs.arcticmobs.entity.EntityYeti;
 import lycanite.lycanitesmobs.arcticmobs.item.ItemArcticEgg;
 import lycanite.lycanitesmobs.arcticmobs.item.ItemFrostboltCharge;
@@ -24,6 +28,8 @@ import lycanite.lycanitesmobs.arcticmobs.item.ItemFrostwebCharge;
 import lycanite.lycanitesmobs.arcticmobs.item.ItemFrostyFur;
 import lycanite.lycanitesmobs.arcticmobs.item.ItemScepterFrostbolt;
 import lycanite.lycanitesmobs.arcticmobs.item.ItemScepterFrostweb;
+import lycanite.lycanitesmobs.arcticmobs.item.ItemScepterTundra;
+import lycanite.lycanitesmobs.arcticmobs.item.ItemTundraCharge;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityCreeper;
@@ -96,12 +102,17 @@ public class ArcticMobs implements ILycaniteMod {
 		ObjectManager.addItem("frostboltscepter", new ItemScepterFrostbolt());
 		ObjectManager.addItem("frostwebcharge", new ItemFrostwebCharge());
 		ObjectManager.addItem("frostwebscepter", new ItemScepterFrostweb());
+		ObjectManager.addItem("tundracharge", new ItemTundraCharge());
+		ObjectManager.addItem("tundrascepter", new ItemScepterTundra());
 
 		// ========== Create Blocks ==========
 		ObjectManager.addBlock("frostweb", new BlockFrostweb());
 		
 		AssetManager.addSound("frostcloud", domain, "block.frostcloud");
 		ObjectManager.addBlock("frostcloud", new BlockFrostCloud());
+		
+		AssetManager.addSound("frostfire", domain, "block.frostfire");
+		ObjectManager.addBlock("frostfire", new BlockFrostfire());
 	}
 	
 	
@@ -119,10 +130,13 @@ public class ArcticMobs implements ILycaniteMod {
 		ObjectManager.addMob(new MobInfo(this, "reiver", EntityReiver.class, 0xDDEEFF, 0x99DDEE, 2).setSummonable(true));
 		ObjectManager.addMob(new MobInfo(this, "frostweaver", EntityFrostweaver.class, 0xAADDFF, 0x226699, 2).setSummonable(true));
 		ObjectManager.addMob(new MobInfo(this, "yeti", EntityYeti.class, 0xEEEEFF, 0x000099, 2).setSummonable(false));
+		ObjectManager.addMob(new MobInfo(this, "wendigo", EntityWendigo.class, 0xCCCCFF, 0x0055FF, 8).setSummonable(false));
 		
 		// ========== Create Projectiles ==========
 		ObjectManager.addProjectile("frostbolt", EntityFrostbolt.class, ObjectManager.getItem("frostboltcharge"), new DispenserBehaviorFrostbolt());
 		ObjectManager.addProjectile("frostweb", EntityFrostweb.class, ObjectManager.getItem("frostwebcharge"), new DispenserBehaviorFrostweb());
+		ObjectManager.addProjectile("tundra", EntityTundra.class, ObjectManager.getItem("tundracharge"), new DispenserBehaviorTundra());
+		
 		
 		// ========== Register Models ==========
 		proxy.registerModels();

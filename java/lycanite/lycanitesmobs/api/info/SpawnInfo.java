@@ -117,7 +117,7 @@ public class SpawnInfo {
 		// Spawn Type:
 		this.spawnTypeName = config.spawnTypes.get(name);
 		this.spawnType = SpawnType.getSpawnType(this.spawnTypeName);
-		if("MONSTER".equalsIgnoreCase(this.spawnTypeName) || "NETHER".equalsIgnoreCase(this.spawnTypeName))
+		if("MONSTER".equalsIgnoreCase(this.spawnTypeName) || "NETHER".equalsIgnoreCase(this.spawnTypeName) || "FROSTFIRE".equalsIgnoreCase(this.spawnTypeName))
 			this.creatureType = EnumCreatureType.monster;
 		else if("CREATURE".equalsIgnoreCase(this.spawnTypeName) || "ANIMAL".equalsIgnoreCase(this.spawnTypeName))
 			this.creatureType = EnumCreatureType.creature;

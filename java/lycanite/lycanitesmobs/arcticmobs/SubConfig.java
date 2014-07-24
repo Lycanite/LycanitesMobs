@@ -21,9 +21,9 @@ public class SubConfig extends OldConfig {
 		loadSetting(this.featureBools, "Feature Control", "Frostfire", "Enable Frostfire", true);
 		
 		// ========== Mob Control ==========
-		loadMobSettings("Reiver", 8, 5, 1, 3, "Monster");
-		loadMobSettings("Frostweaver", 10, 5, 1, 2, "Monster");
-		loadMobSettings("Yeti", 10, 5, 2, 4, "Creature");
-		loadMobSettings("Wendigo", 4, 1, 1, 1, "Monster");
+		loadMobSettings("Reiver", 8, 3, 1, 3, "FROSTFIRE", 8);
+		loadMobSettings("Frostweaver", 10, 5, 1, 2, "MONSTER");
+		loadMobSettings("Yeti", 10, 5, 2, 4, "CREATURE");
+		loadMobSettings("Wendigo", 4, 1, 1, 1, "MONSTER");
 	}
 }

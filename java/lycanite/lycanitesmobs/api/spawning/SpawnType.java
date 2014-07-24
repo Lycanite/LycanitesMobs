@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import lycanite.lycanitesmobs.LycanitesMobs;
+import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.OldConfig;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.info.SpawnInfo;
@@ -56,11 +57,20 @@ public class SpawnType {
 	/** An array of blocks to spawn from. Only used if materials is null. **/
 	public Block[] blocks = null;
 	
+	/** An array of blocks to spawn from. Only used if materials is null. Uses Strings to map from the ObjectManager to get the block. **/
+	public String[] blockStrings = null;
+	
 	/** An array of materials to spawn from. If null blocks will be used instead. **/
 	public Material[] materials = null;
 	
 	/** If true, this type will not check if a mob is allowed to spawn in the target biome. **/
 	public boolean ignoreBiome = false;
+	
+	/** If true, this type will not check if a mob is allowed to spawn in the target dimension. **/
+	public boolean ignoreDimension = false;
+	
+	/** If true, this type will not check if a mob is allowed to spawn in the target light level. **/
+	public boolean ignoreLight = false;
 	
 	
     // ==================================================
@@ -82,15 +92,22 @@ public class SpawnType {
 			
 			if("FIRE".equalsIgnoreCase(spawnTypeName)) {
 				newSpawnType.blocks = new Block[] {Blocks.fire};
+				newSpawnType.ignoreBiome = true;
+				newSpawnType.ignoreLight = true;
 			}
-			//if("FROSTFIRE".equalsIgnoreCase(spawnTypeName)) {
-				//newSpawnType.blocks = new Block[] {ObjectManager.getBlock("frostfire")};
-			//}
+			if("FROSTFIRE".equalsIgnoreCase(spawnTypeName)) {
+				newSpawnType.blockStrings = new String[] {"frostfire"};
+				newSpawnType.ignoreBiome = true;
+				newSpawnType.ignoreLight = true;
+			}
 			if("LAVA".equalsIgnoreCase(spawnTypeName)) {
 				newSpawnType.blocks = new Block[] {Blocks.lava};
+				newSpawnType.ignoreBiome = true;
 			}
 			if("PORTAL".equalsIgnoreCase(spawnTypeName)) {
 				newSpawnType.blocks = new Block[] {Blocks.portal};
+				newSpawnType.ignoreBiome = true;
+				newSpawnType.ignoreDimension = true;
 			}
 			if("ROCK".equalsIgnoreCase(spawnTypeName) || "STORM".equalsIgnoreCase(spawnTypeName)) {
 				newSpawnType.materials = new Material[] {Material.air};
@@ -156,21 +173,23 @@ public class SpawnType {
 			return;
 		
 		// Spawner Type Checks:
-		if("area".equalsIgnoreCase(type) && "ROCK".equalsIgnoreCase(this.typeName))
-			return;
-		if("area".equalsIgnoreCase(type) && "STORM".equalsIgnoreCase(this.typeName) && !world.isRaining())
-			return;
+		if("area".equalsIgnoreCase(type)) {
+			if("ROCK".equalsIgnoreCase(this.typeName))
+				return;
+			if("STORM".equalsIgnoreCase(this.typeName) && !world.isRaining())
+				return;
+		}
 		
 		LycanitesMobs.printDebug("CustomSpawner", "~0==================== " + this.typeName + " Spawner ====================0~");
 		LycanitesMobs.printDebug("CustomSpawner", "Attempting to spawn mobs.");
 
 		// Search for Coords:
 		List<int[]> coords = null;
-		if((this.materials != null && this.materials.length > 0) || (this.blocks != null && this.blocks.length > 0))
+		if((this.materials != null && this.materials.length > 0) || (this.blocks != null && this.blocks.length > 0) || (this.blockStrings != null && this.blockStrings.length > 0))
 			coords = this.searchForBlockCoords(world, x, y, z);
 		
 		if(coords == null) {
-			LycanitesMobs.printWarning("CustomSpawner", "This spawn type is unable to find coordinates.");
+			LycanitesMobs.printWarning("CustomSpawner", "This spawn type will never be able to find coordinates as it has no materials or blocks set, not even air.");
 			return;
 		}
 		
@@ -258,9 +277,17 @@ public class SpawnType {
 							}
 						}
 					}
-					else {
+					else if(this.blocks != null && this.blocks.length > 0) {
 						for(Block validBlock : this.blocks) {
 							if(world.getBlock(i, j, k) == validBlock) {
+								blockCoords.add(new int[] {i, j, k});
+								break;
+							}
+						}
+					}
+					else if(this.blockStrings != null && this.blockStrings.length > 0) {
+						for(String validBlockString : this.blockStrings) {
+							if(world.getBlock(i, j, k) == ObjectManager.getBlock(validBlockString)) {
 								blockCoords.add(new int[] {i, j, k});
 								break;
 							}
@@ -269,15 +296,6 @@ public class SpawnType {
 				}
 			}
 		}
-		/*Collections.sort(blockCoords, new Comparator<int[]>() {
-			@Override
-			public int compare(int[] currentCoord, int[] previousCoord) {
-				int deltaX = currentCoord[0] - previousCoord[0];
-				int deltaY = currentCoord[1] - previousCoord[1];
-				int deltaZ = currentCoord[2] - previousCoord[2];
-				return Math.round((float)Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ));
-			}
-		});*/
 		Collections.shuffle(blockCoords);
 		return blockCoords;
 	}

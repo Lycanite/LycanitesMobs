@@ -39,7 +39,8 @@ public class ItemBase extends Item {
 	// ==================================================
     @Override
     public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List textList, boolean par4) {
-    	if(!"".equalsIgnoreCase(this.getDescription())) {
+    	String description = this.getDescription();
+    	if(!"".equalsIgnoreCase(description) && !("item." + this.itemName + ".description").equals(description)) {
     		FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
     		List formattedDescriptionList = fontRenderer.listFormattedStringToWidth(this.getDescription(), 64);
     		for(Object formattedDescription : formattedDescriptionList) {

@@ -68,6 +68,10 @@ public class EntityLobber extends EntityCreatureBase implements IMob {
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(EntityCinder.class));
+        if(ObjectManager.getMob("Reiver") != null)
+        	this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(ObjectManager.getMob("Reiver")));
+        if(ObjectManager.getMob("Wendigo") != null)
+        	this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(ObjectManager.getMob("Wendigo")));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
     }
@@ -113,7 +117,7 @@ public class EntityLobber extends EntityCreatureBase implements IMob {
         	int trailHeight = 1;
         	for(int y = 0; y < trailHeight; y++) {
         		Block block = this.worldObj.getBlock((int)this.posX, (int)this.posY + y, (int)this.posZ);
-        		if(block == Blocks.air || block == Blocks.snow || block == Blocks.fire)
+        		if(block == Blocks.air || block == Blocks.fire || block == Blocks.snow_layer || block == Blocks.tallgrass || block == ObjectManager.getBlock("frostfire"))
         			this.worldObj.setBlock((int)this.posX, (int)this.posY + y, (int)this.posZ, Blocks.fire);
         	}
 		}

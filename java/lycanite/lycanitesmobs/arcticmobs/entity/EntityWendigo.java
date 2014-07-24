@@ -45,6 +45,7 @@ public class EntityWendigo extends EntityCreatureBase implements IMob {
         this.hasAttackSound = false;
         
         this.eggName = "ArcticEgg";
+        this.spawnsInDarkness = true;
         
         this.setWidth = 1.9F;
         this.setHeight = 3.5F;
@@ -61,6 +62,10 @@ public class EntityWendigo extends EntityCreatureBase implements IMob {
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(EntityReiver.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
+        if(ObjectManager.getMob("Cinder") != null)
+        	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(ObjectManager.getMob("Cinder")));
+        if(ObjectManager.getMob("Lobber") != null)
+        	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(ObjectManager.getMob("Lobber")));
     }
     
     // ========== Stats ==========
@@ -95,19 +100,14 @@ public class EntityWendigo extends EntityCreatureBase implements IMob {
         
         // Frosty Trail:
         if(!this.worldObj.isRemote && (this.ticksExisted % 10 == 0 || this.isMoving() && this.ticksExisted % 5 == 0)) {
-        	int trailHeight = 1;
-        	for(int y = 0; y < trailHeight; y++) {
-        		Block block = this.worldObj.getBlock((int)this.posX, (int)this.posY + y, (int)this.posZ);
-        		if(block == Blocks.air || block == Blocks.snow || block == Blocks.fire)
-        			this.worldObj.setBlock((int)this.posX, (int)this.posY + y, (int)this.posZ, ObjectManager.getBlock("frostfire"));
-        	}
+        	Block blockGround = this.worldObj.getBlock((int)this.posX, (int)this.posY - 1, (int)this.posZ);
+        	Block blockFeet = this.worldObj.getBlock((int)this.posX, (int)this.posY, (int)this.posZ);
         	
-        	trailHeight = 2;
-        	for(int y = 1; y < trailHeight + 1; y++) {
-        		Block block = this.worldObj.getBlock((int)this.posX, (int)this.posY + y, (int)this.posZ);
-        		if(block == Blocks.air || block == Blocks.snow || block == Blocks.fire)
-        			this.worldObj.setBlock((int)this.posX, (int)this.posY + y, (int)this.posZ, ObjectManager.getBlock("frostcloud"));
-        	}
+        	if(blockGround == Blocks.water)
+        		this.worldObj.setBlock((int)this.posX, (int)this.posY - 1, (int)this.posZ, Blocks.ice);
+        	
+    		if(blockFeet == Blocks.air || blockFeet == Blocks.fire || blockFeet == Blocks.snow_layer || blockFeet == Blocks.tallgrass || blockFeet == ObjectManager.getBlock("poisoncloud") || blockFeet == ObjectManager.getBlock("frostcloud") || blockFeet == ObjectManager.getBlock("frostfire"))
+    			this.worldObj.setBlock((int)this.posX, (int)this.posY, (int)this.posZ, ObjectManager.getBlock("frostfire"));
 		}
         
         // Particles:

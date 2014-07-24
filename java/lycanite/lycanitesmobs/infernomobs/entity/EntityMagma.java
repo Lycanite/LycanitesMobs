@@ -56,7 +56,7 @@ public class EntityMagma extends EntityProjectileBase {
     //========== Can Destroy Block ==========
     @Override
     public boolean canDestroyBlock(int x, int y, int z) {
-    	if(this.worldObj.getBlock(x, y, z) == Blocks.snow)
+    	if(this.worldObj.getBlock(x, y, z) == Blocks.snow_layer)
     		return true;
     	if(this.worldObj.getBlock(x, y, z) == Blocks.tallgrass)
     		return true;

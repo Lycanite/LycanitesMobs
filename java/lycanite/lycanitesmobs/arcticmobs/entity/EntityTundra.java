@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs.arcticmobs.entity;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
@@ -39,6 +40,7 @@ public class EntityTundra extends EntityProjectileBase {
     	this.mod = ArcticMobs.instance;
     	this.setBaseDamage(6);
     	this.setProjectileScale(4F);
+    	this.waterProof = true;
     }
     
     
@@ -55,7 +57,7 @@ public class EntityTundra extends EntityProjectileBase {
     //========== Can Destroy Block ==========
     @Override
     public boolean canDestroyBlock(int x, int y, int z) {
-    	if(this.worldObj.getBlock(x, y, z) == Blocks.snow)
+    	if(this.worldObj.getBlock(x, y, z) == Blocks.snow_layer)
     		return true;
     	if(this.worldObj.getBlock(x, y, z) == Blocks.tallgrass)
     		return true;
@@ -104,7 +106,11 @@ public class EntityTundra extends EntityProjectileBase {
 			   	 world.setBlock(x, y, z + 1, ObjectManager.getBlock("FrostCloud"), 11, 3);
 		   	 if(this.canDestroyBlock(x, y, z - 1))
 			   	 world.setBlock(x, y, z - 1, ObjectManager.getBlock("FrostCloud"), 11, 3);
-   	}
+    	}
+    	
+    	Block blockBase = world.getBlock(x, y, z);
+    	if(blockBase == Blocks.dirt || blockBase == Blocks.grass)
+    		world.setBlock(x, y - 1, z, Blocks.snow, 0, 3);
     }
     
     //========== On Impact Particles/Sounds ==========

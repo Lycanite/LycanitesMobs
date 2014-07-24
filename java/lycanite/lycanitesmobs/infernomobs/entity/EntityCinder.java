@@ -70,6 +70,8 @@ public class EntityCinder extends EntityCreatureTameable implements IMob {
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         if(ObjectManager.getMob("Reiver") != null)
         	this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(ObjectManager.getMob("Reiver")));
+        if(ObjectManager.getMob("Wendigo") != null)
+        	this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(ObjectManager.getMob("Wendigo")));
         if(ObjectManager.getMob("Ent") != null)
         	this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(ObjectManager.getMob("Ent")));
         if(ObjectManager.getMob("Trent") != null)

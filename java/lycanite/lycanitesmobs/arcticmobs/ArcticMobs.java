@@ -183,6 +183,14 @@ public class ArcticMobs implements ILycaniteMod {
 				Character.valueOf('C'), ObjectManager.getItem("frostwebcharge"),
 				Character.valueOf('R'), Items.blaze_rod
 			}));
+
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("tundrascepter"), 1, 0),
+				new Object[] { "SCS", "SRS", "SRS",
+				Character.valueOf('C'), ObjectManager.getItem("tundracharge"),
+				Character.valueOf('S'), ObjectManager.getItem("frostyfur"),
+				Character.valueOf('R'), Items.blaze_rod
+			}));
 		
 		// ========== Smelting ==========
 		GameRegistry.addSmelting(ObjectManager.getItem("yetimeatraw"), new ItemStack(ObjectManager.getItem("yetimeatcooked"), 1), 0.5f);

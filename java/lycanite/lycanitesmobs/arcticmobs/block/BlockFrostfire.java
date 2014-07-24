@@ -58,7 +58,6 @@ public class BlockFrostfire extends BlockBase {
 		this.isOpaque = false;
 		
 		this.setLightOpacity(1);
-        this.setLightLevel(0.8F);
 	}
     
     
@@ -80,8 +79,8 @@ public class BlockFrostfire extends BlockBase {
 		
 		Block base = world.getBlock(x, y - 1, z);
 		// Freeze Water:
-		if(base == Blocks.water) {
-			 world.setBlock(x, y, z, this, 0, 3);
+		if(base == Blocks.ice) {
+			 world.setBlock(x, y - 1, z, Blocks.packed_ice);
 		}
         boolean onFireFuel = (base == Blocks.snow);
 
@@ -176,9 +175,7 @@ public class BlockFrostfire extends BlockBase {
         Block block = world.getBlock(x, y, z);
     	if(block == Blocks.snow)
         	return true;
-        if(block == Blocks.snow_layer)
-        	return true;
-        if(block == Blocks.water)
+        if(block == Blocks.snow_layer && face != ForgeDirection.UP && face != ForgeDirection.DOWN)
         	return true;
         if(block instanceof BlockIce)
         	return true;
@@ -290,7 +287,7 @@ public class BlockFrostfire extends BlockBase {
     @Override
     public void randomDisplayTick(World world, int x, int y, int z, Random random) {
     	if(random.nextInt(24) == 0)
-        	world.playSound((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), AssetManager.getSound("hellfire"), 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F, false);
+        	world.playSound((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), AssetManager.getSound("frostfire"), 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F, false);
     	
         int l;
         float f;

@@ -22,7 +22,7 @@ public class ModelWendigo extends ModelCustomObj {
     
     public ModelWendigo(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Lobber", ArcticMobs.domain, "entity/wendigo");
+    	model = (WavefrontObject)AssetManager.getObjModel("Wendigo", ArcticMobs.domain, "entity/wendigo");
     	
     	// Get Parts:
     	parts = model.groupObjects;
@@ -30,10 +30,10 @@ public class ModelWendigo extends ModelCustomObj {
     	// Set Rotation Centers:
     	setPartCenter("head", 0F, 3.0F, 0.3F);
     	setPartCenter("body", 0F, 3.0F, 0.3F);
-    	setPartCenter("armleft", 1.1F, 2.5F, 0F);
-    	setPartCenter("armright", -1.1F, 2.5F, 0F);
-    	setPartCenter("legleft", 0.8F, 0.9F, 0F);
-    	setPartCenter("legright", -0.8F, 0.9F, 0F);
+    	setPartCenter("armleft", 1F, 2.5F, 0F);
+    	setPartCenter("armright", -1F, 2.5F, 0F);
+    	setPartCenter("legleft", 0.5F, 1.4F, 0F);
+    	setPartCenter("legright", -0.5F, 1.4F, 0F);
     }
     
     

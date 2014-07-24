@@ -417,12 +417,14 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Fixed Spawn Check ==========
     /** First stage checks for spawning, if this check fails the creature will not spawn. **/
     public boolean fixedSpawnCheck(World world, int i, int j, int k) {
-    	LycanitesMobs.printDebug("MobSpawns", "Checking light level: Darkness");
-    	if(this.spawnsInDarkness && this.testLightLevel(i, j, k) > 1)
-    		return false;
-    	LycanitesMobs.printDebug("MobSpawns", "Checking light level: Lightness");
-    	if(this.spawnsOnlyInLight && this.testLightLevel(i, j, k) < 2)
-    		return false;
+    	if(this.spawnedFromType == null || (this.spawnedFromType != null && !this.spawnedFromType.ignoreLight)) {
+	    	LycanitesMobs.printDebug("MobSpawns", "Checking light level: Darkness");
+	    	if(this.spawnsInDarkness && this.testLightLevel(i, j, k) > 1)
+	    		return false;
+	    	LycanitesMobs.printDebug("MobSpawns", "Checking light level: Lightness");
+	    	if(this.spawnsOnlyInLight && this.testLightLevel(i, j, k) < 2)
+	    		return false;
+    	}
     	LycanitesMobs.printDebug("MobSpawns", "Checking entity collision.");
         if(!this.worldObj.checkNoEntityCollision(this.boundingBox))
         	return false;
@@ -440,7 +442,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	if(!this.isNativeDimension(this.worldObj))
     		return false;
     	LycanitesMobs.printDebug("MobSpawns", "Block preference.");
-        if(this.getBlockPathWeight(i, j, k) < 0.0F)
+        if(this.getBlockPathWeight(i, j, k) < 0.0F && this.spawnedFromType == null)
         	return false;
     	LycanitesMobs.printDebug("MobSpawns", "Checking for liquid (water, lava, etc).");
         if(!this.spawnsInWater && this.worldObj.isAnyLiquid(this.boundingBox))
@@ -463,7 +465,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Spawn Dimension Check ==========
     public boolean isNativeDimension(World world) {
     	if(this.spawnedFromType != null) {
-    		if("NETHER".equalsIgnoreCase(this.spawnedFromType.typeName) || "PORTAL".equalsIgnoreCase(this.spawnedFromType.typeName))
+    		if(this.spawnedFromType.ignoreDimension)
     			return true;
     	}
     	for(int spawnDimension : this.mobInfo.spawnInfo.dimensionIDs) {
@@ -522,6 +524,19 @@ public abstract class EntityCreatureBase extends EntityLiving {
                     		Block block = world.getBlock(i, j, k);
                     		for(Block validBlock : this.spawnedFromType.blocks) {
     							if(block == validBlock) {
+    								if(++blocksFound >= this.mobInfo.spawnInfo.spawnBlockCost)
+                        				return true;
+    							}
+    						}
+                    	}
+        	}
+        	if(this.spawnedFromType.blockStrings != null) {
+        		for(int i = x - this.spawnedFromType.range; i <= x + this.spawnedFromType.range; i++)
+                	for(int j = y - this.spawnedFromType.range; j <= y + this.spawnedFromType.range; j++)
+                    	for(int k = z - this.spawnedFromType.range; k <= z + this.spawnedFromType.range; k++) {
+                    		Block block = world.getBlock(i, j, k);
+                    		for(String validBlockString : this.spawnedFromType.blockStrings) {
+    							if(block == ObjectManager.getBlock(validBlockString)) {
     								if(++blocksFound >= this.mobInfo.spawnInfo.spawnBlockCost)
                         				return true;
     							}

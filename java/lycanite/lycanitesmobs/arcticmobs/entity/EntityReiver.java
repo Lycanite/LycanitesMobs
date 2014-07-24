@@ -67,6 +67,8 @@ public class EntityReiver extends EntityCreatureTameable implements IMob {
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         if(ObjectManager.getMob("Cinder") != null)
         	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(ObjectManager.getMob("Cinder")));
+        if(ObjectManager.getMob("Lobber") != null)
+        	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(ObjectManager.getMob("Lobber")));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
     

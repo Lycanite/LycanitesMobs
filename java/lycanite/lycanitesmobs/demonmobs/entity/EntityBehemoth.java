@@ -100,7 +100,7 @@ public class EntityBehemoth extends EntityCreatureTameable implements IMob {
         	int trailHeight = 1;
         	for(int y = 0; y < trailHeight; y++) {
         		Block block = this.worldObj.getBlock((int)this.posX, (int)this.posY + y, (int)this.posZ);
-        		if(block == Blocks.air || block == Blocks.fire || block == Blocks.snow || block == ObjectManager.getBlock("Hellfire"))
+        		if(block == Blocks.air || block == Blocks.fire || block == Blocks.snow_layer || block == Blocks.tallgrass || block == ObjectManager.getBlock("frostfire") || block == ObjectManager.getBlock("hellfire"))
         			this.worldObj.setBlock((int)this.posX, (int)this.posY + y, (int)this.posZ, ObjectManager.getBlock("Hellfire"));
         	}
 		}

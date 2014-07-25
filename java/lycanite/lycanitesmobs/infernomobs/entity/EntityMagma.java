@@ -56,6 +56,10 @@ public class EntityMagma extends EntityProjectileBase {
     //========== Can Destroy Block ==========
     @Override
     public boolean canDestroyBlock(int x, int y, int z) {
+    	return true;
+    }
+    
+    public boolean canDestroyBlockSub(int x, int y, int z) {
     	if(this.worldObj.getBlock(x, y, z) == Blocks.snow_layer)
     		return true;
     	if(this.worldObj.getBlock(x, y, z) == Blocks.tallgrass)
@@ -74,20 +78,23 @@ public class EntityMagma extends EntityProjectileBase {
     		return true;
     	if(ObjectManager.getBlock("Hellfire") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("Hellfire"))
     		return true;
+    	if(ObjectManager.getBlock("Frostfire") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("Hellfire"))
+    		return true;
    	 	return super.canDestroyBlock(x, y, z);
     }
     
     //========== Place Block ==========
     @Override
     public void placeBlock(World world, int x, int y, int z) {
-	   	 world.setBlock(x, y, z, Blocks.flowing_lava, 12, 3);
-	   	 if(this.canDestroyBlock(x + 1, y, z))
+    	if(this.canDestroyBlockSub(x, y, z))
+	   		 world.setBlock(x, y, z, Blocks.flowing_lava, 12, 3);
+	   	if(this.canDestroyBlockSub(x + 1, y, z))
 	   		 world.setBlock(x + 1, y, z, Blocks.flowing_lava, 11, 3);
-	   	 if(this.canDestroyBlock(x - 1, y, z))
+	   	if(this.canDestroyBlockSub(x - 1, y, z))
 		   	 world.setBlock(x - 1, y, z, Blocks.flowing_lava, 11, 3);
-	   	 if(this.canDestroyBlock(x, y, z + 1))
+	   	if(this.canDestroyBlockSub(x, y, z + 1))
 		   	 world.setBlock(x, y, z + 1, Blocks.flowing_lava, 11, 3);
-	   	 if(this.canDestroyBlock(x, y, z - 1))
+	   	if(this.canDestroyBlockSub(x, y, z - 1))
 		   	 world.setBlock(x, y, z - 1, Blocks.flowing_lava, 11, 3);
     }
     

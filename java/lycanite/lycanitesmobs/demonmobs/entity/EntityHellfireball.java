@@ -57,15 +57,29 @@ public class EntityHellfireball extends EntityProjectileBase {
     //========== Can Destroy Block ==========
     @Override
     public boolean canDestroyBlock(int x, int y, int z) {
-    	if(this.worldObj.getBlock(x, y, z) == Blocks.snow)
-    		return true;
-    	if(this.worldObj.getBlock(x, y, z) == Blocks.fire)
+    	return true;
+    }
+    
+    public boolean canDestroyBlockSub(int x, int y, int z) {
+    	if(this.worldObj.getBlock(x, y, z) == Blocks.snow_layer)
     		return true;
     	if(this.worldObj.getBlock(x, y, z) == Blocks.tallgrass)
     		return true;
+    	if(this.worldObj.getBlock(x, y, z) == Blocks.fire)
+    		return true;
+    	if(this.worldObj.getBlock(x, y, z) == Blocks.web)
+    		return true;
     	if(ObjectManager.getBlock("PoisonCloud") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("PoisonCloud"))
     		return true;
+    	if(ObjectManager.getBlock("FrostCloud") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("FrostCloud"))
+    		return true;
     	if(ObjectManager.getBlock("Frostweb") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("Frostweb"))
+    		return true;
+    	if(ObjectManager.getBlock("QuickWeb") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("QuickWeb"))
+    		return true;
+    	if(ObjectManager.getBlock("Hellfire") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("Hellfire"))
+    		return true;
+    	if(ObjectManager.getBlock("Frostfire") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("Hellfire"))
     		return true;
    	 	return super.canDestroyBlock(x, y, z);
     }
@@ -73,7 +87,16 @@ public class EntityHellfireball extends EntityProjectileBase {
     //========== Place Block ==========
     @Override
     public void placeBlock(World world, int x, int y, int z) {
-	   	 world.setBlock(x, y, z, ObjectManager.getBlock("Hellfire"));
+    	if(this.canDestroyBlockSub(x, y, z))
+	   		 world.setBlock(x, y, z, ObjectManager.getBlock("Hellfire"), 12, 3);
+	   	if(this.canDestroyBlockSub(x + 1, y, z))
+	   		 world.setBlock(x + 1, y, z, ObjectManager.getBlock("Hellfire"), 11, 3);
+	   	if(this.canDestroyBlockSub(x - 1, y, z))
+		   	 world.setBlock(x - 1, y, z, ObjectManager.getBlock("Hellfire"), 11, 3);
+	   	if(this.canDestroyBlockSub(x, y, z + 1))
+		   	 world.setBlock(x, y, z + 1, ObjectManager.getBlock("Hellfire"), 11, 3);
+	   	if(this.canDestroyBlockSub(x, y, z - 1))
+		   	 world.setBlock(x, y, z - 1, ObjectManager.getBlock("Hellfire"), 11, 3);
     }
     
     //========== On Impact Particles/Sounds ==========

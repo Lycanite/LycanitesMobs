@@ -57,6 +57,10 @@ public class EntityTundra extends EntityProjectileBase {
     //========== Can Destroy Block ==========
     @Override
     public boolean canDestroyBlock(int x, int y, int z) {
+    	return true;
+    }
+    
+    public boolean canDestroyBlockSub(int x, int y, int z) {
     	if(this.worldObj.getBlock(x, y, z) == Blocks.snow_layer)
     		return true;
     	if(this.worldObj.getBlock(x, y, z) == Blocks.tallgrass)
@@ -64,6 +68,8 @@ public class EntityTundra extends EntityProjectileBase {
     	if(this.worldObj.getBlock(x, y, z) == Blocks.fire)
     		return true;
     	if(this.worldObj.getBlock(x, y, z) == Blocks.web)
+    		return true;
+    	if(this.worldObj.getBlock(x, y, z) == Blocks.lava)
     		return true;
     	if(this.worldObj.getBlock(x, y, z) == Blocks.flowing_lava)
     		return true;
@@ -77,6 +83,8 @@ public class EntityTundra extends EntityProjectileBase {
     		return true;
     	if(ObjectManager.getBlock("Hellfire") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("Hellfire"))
     		return true;
+    	if(ObjectManager.getBlock("Frostfire") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("Hellfire"))
+    		return true;
    	 	return super.canDestroyBlock(x, y, z);
     }
     
@@ -84,27 +92,29 @@ public class EntityTundra extends EntityProjectileBase {
     @Override
     public void placeBlock(World world, int x, int y, int z) {
     	if(ObjectManager.getBlock("Frostfire") != null) {
-		   	 world.setBlock(x, y, z, ObjectManager.getBlock("Frostfire"), 12, 3);
-		   	 if(this.canDestroyBlock(x + 1, y, z))
+    		if(this.canDestroyBlockSub(x, y, z))
+		   		 world.setBlock(x, y, z, ObjectManager.getBlock("Frostfire"), 12, 3);
+		   	 if(this.canDestroyBlockSub(x + 1, y, z))
 		   		 world.setBlock(x + 1, y, z, ObjectManager.getBlock("Frostfire"), 11, 3);
-		   	 if(this.canDestroyBlock(x - 1, y, z))
+		   	 if(this.canDestroyBlockSub(x - 1, y, z))
 			   	 world.setBlock(x - 1, y, z, ObjectManager.getBlock("Frostfire"), 11, 3);
-		   	 if(this.canDestroyBlock(x, y, z + 1))
+		   	 if(this.canDestroyBlockSub(x, y, z + 1))
 			   	 world.setBlock(x, y, z + 1, ObjectManager.getBlock("Frostfire"), 11, 3);
-		   	 if(this.canDestroyBlock(x, y, z - 1))
+		   	 if(this.canDestroyBlockSub(x, y, z - 1))
 			   	 world.setBlock(x, y, z - 1, ObjectManager.getBlock("Frostfire"), 11, 3);
     	}
     	
     	y++;
     	if(ObjectManager.getBlock("FrostCloud") != null) {
-		   	 world.setBlock(x, y, z, ObjectManager.getBlock("FrostCloud"), 12, 3);
-		   	 if(this.canDestroyBlock(x + 1, y, z))
+		   	 if(this.canDestroyBlockSub(x, y, z))
+		   		 world.setBlock(x, y, z, ObjectManager.getBlock("FrostCloud"), 12, 3);
+		   	 if(this.canDestroyBlockSub(x + 1, y, z))
 		   		 world.setBlock(x + 1, y, z, ObjectManager.getBlock("FrostCloud"), 11, 3);
-		   	 if(this.canDestroyBlock(x - 1, y, z))
+		   	 if(this.canDestroyBlockSub(x - 1, y, z))
 			   	 world.setBlock(x - 1, y, z, ObjectManager.getBlock("FrostCloud"), 11, 3);
-		   	 if(this.canDestroyBlock(x, y, z + 1))
+		   	 if(this.canDestroyBlockSub(x, y, z + 1))
 			   	 world.setBlock(x, y, z + 1, ObjectManager.getBlock("FrostCloud"), 11, 3);
-		   	 if(this.canDestroyBlock(x, y, z - 1))
+		   	 if(this.canDestroyBlockSub(x, y, z - 1))
 			   	 world.setBlock(x, y, z - 1, ObjectManager.getBlock("FrostCloud"), 11, 3);
     	}
     	

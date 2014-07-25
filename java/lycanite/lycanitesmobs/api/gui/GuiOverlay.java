@@ -2,12 +2,14 @@ package lycanite.lycanitesmobs.api.gui;
 
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ExtendedPlayer;
+import lycanite.lycanitesmobs.KeyHandler;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
 import lycanite.lycanitesmobs.api.item.ItemStaffSummoning;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -20,7 +22,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 public class GuiOverlay extends Gui {
 	public Minecraft mc;
 	
-	private int mountMessageTimeMax = 5 * 20;
+	private int mountMessageTimeMax = 10 * 20;
 	private int mountMessageTime = 0;
 	
     // ==================================================
@@ -89,10 +91,12 @@ public class GuiOverlay extends Gui {
             // Mount Controls Message
             if(this.mountMessageTime > 0) {
             	GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            	if(this.mountMessageTime < 20)
-            		GL11.glColor4f(1.0F, 1.0F, 1.0F, (float)this.mountMessageTime / (float)20);
+            	if(this.mountMessageTime < 60)
+            		GL11.glColor4f(1.0F, 1.0F, 1.0F, (float)this.mountMessageTime / (float)60);
             	String mountMessage = StatCollector.translateToLocal("gui.mount.controls");
-            	this.mc.fontRenderer.drawString(mountMessage, sWidth / 2, sHeight - 16, 0xFFFFFF);
+            	mountMessage = mountMessage.replace("%control%", GameSettings.getKeyDisplayString(KeyHandler.instance.mountAbility.getKeyCode()));
+            	int stringWidth = this.mc.fontRenderer.getStringWidth(mountMessage);
+            	this.mc.fontRenderer.drawString(mountMessage, (sWidth / 2) - (stringWidth / 2), sHeight - 64, 0xFFFFFF);
             }
             
             // Mount Ability Stamina Bar:

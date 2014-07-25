@@ -78,10 +78,17 @@ public class BlockFrostfire extends BlockBase {
     		world.setBlockToAir(x, y, z);
 		
 		Block base = world.getBlock(x, y - 1, z);
+		
 		// Pack Ice:
 		if(base == Blocks.ice) {
 			 world.setBlock(x, y - 1, z, Blocks.packed_ice);
 		}
+		
+		// Take Over Replaceable Blocks:
+		if(base == Blocks.snow_layer || base == Blocks.tallgrass) {
+			 world.setBlock(x, y - 1, z, this);
+		}
+		
         boolean onFireFuel = (base == Blocks.snow);
 
         if(!this.canPlaceBlockAt(world, x, y, z)) {

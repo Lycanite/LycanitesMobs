@@ -41,7 +41,7 @@ gui.pet.aggressive=Aggressive
 gui.pet.defensive=Defensive
 gui.pet.pvp=PVP
 # Mounts:
-gui.mount.controls=Press %control% to use the mount ability.
+gui.mount.controls=Press %control% to use mount ability
 #%control% will be replaced with the Mount Ability key, don't translate this!
 #
 # Messages

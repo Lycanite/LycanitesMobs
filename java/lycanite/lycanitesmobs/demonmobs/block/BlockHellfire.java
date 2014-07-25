@@ -81,6 +81,12 @@ public class BlockHellfire extends BlockBase {
 		}
 		
 		Block base = world.getBlock(x, y - 1, z);
+		
+		// Take Over Replaceable Blocks:
+		if(base == Blocks.snow_layer || base == Blocks.tallgrass) {
+			 world.setBlock(x, y - 1, z, this);
+		}
+		
         boolean onFireFuel = (base != null && base.isFireSource(world, x, y - 1, z, ForgeDirection.UP));
 
         if(!this.canPlaceBlockAt(world, x, y, z)) {

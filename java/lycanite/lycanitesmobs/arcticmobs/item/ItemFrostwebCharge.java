@@ -1,46 +1,24 @@
 package lycanite.lycanitesmobs.arcticmobs.item;
 
-import java.util.List;
-
-import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
+import lycanite.lycanitesmobs.api.item.ItemBase;
 import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
 import lycanite.lycanitesmobs.arcticmobs.entity.EntityFrostweb;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemFrostwebCharge extends Item {
-	public static String itemName = "frostwebcharge";
+public class ItemFrostwebCharge extends ItemBase {
 	
 	// ==================================================
 	//                   Constructor
 	// ==================================================
     public ItemFrostwebCharge() {
         super();
-        setMaxStackSize(64);
-        setCreativeTab(LycanitesMobs.itemsTab);
-        setUnlocalizedName("frostwebcharge");
-    }
-    
-    
-	// ==================================================
-	//                      Info
-	// ==================================================
-    @Override
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-    	par3List.add("\u00a7a" + "Can be used to throw a");
-    	par3List.add("\u00a7a" + "single frostweb shot or");
-    	par3List.add("\u00a7a" + "fired from a dispenser");
-    	par3List.add("\u00a7a" + "for a frostweb blast!");
-    	super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
+        this.domain = ArcticMobs.domain;
+        this.itemName = "frostwebcharge";
+        this.setup();
     }
     
     
@@ -60,22 +38,4 @@ public class ItemFrostwebCharge extends Item {
 
          return par1ItemStack;
      }
-    
-    
-	// ==================================================
-	//                      Visuals
-	// ==================================================
-    // ========== Get Icon ==========
-    @SideOnly(Side.CLIENT)
-    @Override
-    public IIcon getIconFromDamage(int par1) {
-        return AssetManager.getIcon(itemName);
-    }
-    
-    // ========== Register Icons ==========
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IIconRegister iconRegister) {
-        AssetManager.addIcon(itemName, ArcticMobs.domain, "frostweb", iconRegister);
-    }
 }

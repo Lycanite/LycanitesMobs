@@ -1,7 +1,5 @@
 package lycanite.lycanitesmobs.arcticmobs.item;
 
-import java.util.List;
-
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
@@ -28,19 +26,6 @@ public class ItemTundraCharge extends Item {
         setMaxStackSize(64);
         setCreativeTab(LycanitesMobs.itemsTab);
         setUnlocalizedName(itemName);
-    }
-    
-    
-	// ==================================================
-	//                      Info
-	// ==================================================
-    @Override
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-    	par3List.add("\u00a7a" + "Can be used to throw a");
-    	par3List.add("\u00a7a" + "ball of frostfire ice!");
-    	par3List.add("\u00a7a" + "Can be fired from a");
-    	par3List.add("\u00a7a" + "dispenser!");
-    	super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
     }
     
     

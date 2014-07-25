@@ -16,6 +16,10 @@ entity.plainsmobs.zoataur.description=Fierce beasts with hardened bone shields, 
 # Items
 item.plainsspawn.name=Spawn
 item.makameatraw.name=Raw Maka Meat
+item.makameatraw.description=Very chewy and pork like. Eating this raw will cause weakness.
 item.makameatcooked.name=Cooked Maka Meat
+item.makameatcooked.description=Has a subtle bacon like taste.
 item.bulwarkburger.name=Bulwark Burger
+item.bulwarkburger.description=Take on the tough defense of the mighty Maka! Applies absorption.
 item.ventoraptortreat.name=Ventoraptor Treat
+item.ventoraptortreat.description=Perhaps you can tame one, it would be a fantastic mount!

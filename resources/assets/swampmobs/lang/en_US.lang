@@ -20,13 +20,22 @@ entity.swampmobs.remobra.description=Flying serpents that spit poison, if there 
 # Items
 item.swampspawn.name=Spawn
 item.aspidmeatraw.name=Raw Aspid Meat
+item.aspidmeatraw.description=Smells like beef seasoned with cumin. Looks poisonous.
 item.aspidmeatcooked.name=Cooked Aspid Meat
+item.aspidmeatcooked.description=Crumbles apart in the mouth, delicious, a bit like slow cooked beef!
 item.mosspie.name=Moss Pie
+item.mosspie.description=A healthy, rich meaty pie! Applies regeneration.
 item.lurkertreat.name=Lurker Treat
+item.lurkertreat.description=If you can find one, this might tame it!
 item.eyewigtreat.name=Eyewig Treat
+item.eyewigtreat.description=It's best to try taming them when it's light.
 item.poisongland.name=Poison Gland
+item.poisongland.description=Squeeze to place a poison cloud!
 item.poisonrayscepter.name=Poison Ray Scepter
+item.poisonrayscepter.description=Mid Damage, Laser, Applies Poison
 item.venomshotscepter.name=Venom Shot Scepter
+item.venomshotscepter.description=Low Damage, Rapid Fire, Applies Poison, Places Poison Clouds
 #
 # Blocks
 tile.poisoncloud.name=Poison Cloud
+tile.poisoncloud.description=A toxic cloud that poisons things that come into contact.

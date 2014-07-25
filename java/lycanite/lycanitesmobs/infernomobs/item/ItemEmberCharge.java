@@ -1,23 +1,15 @@
 package lycanite.lycanitesmobs.infernomobs.item;
 
-import java.util.List;
-
-import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
+import lycanite.lycanitesmobs.api.item.ItemBase;
 import lycanite.lycanitesmobs.infernomobs.InfernoMobs;
 import lycanite.lycanitesmobs.infernomobs.entity.EntityEmber;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemEmberCharge extends Item {
+public class ItemEmberCharge extends ItemBase {
 	public static String itemName = "embercharge";
 	
 	// ==================================================
@@ -25,22 +17,9 @@ public class ItemEmberCharge extends Item {
 	// ==================================================
     public ItemEmberCharge() {
         super();
-        setMaxStackSize(64);
-        setCreativeTab(LycanitesMobs.itemsTab);
-        setUnlocalizedName("embercharge");
-    }
-    
-    
-	// ==================================================
-	//                      Info
-	// ==================================================
-    @Override
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-    	par3List.add("\u00a7a" + "Can be used to throw a");
-    	par3List.add("\u00a7a" + "single ember or");
-    	par3List.add("\u00a7a" + "fired from a dispenser");
-    	par3List.add("\u00a7a" + "for a flamethrower!");
-    	super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
+        this.domain = InfernoMobs.domain;
+        this.itemName = "embercharge";
+        this.setup();
     }
     
     
@@ -60,22 +39,4 @@ public class ItemEmberCharge extends Item {
 
          return par1ItemStack;
      }
-    
-    
-	// ==================================================
-	//                      Visuals
-	// ==================================================
-    // ========== Get Icon ==========
-    @SideOnly(Side.CLIENT)
-    @Override
-    public IIcon getIconFromDamage(int par1) {
-        return AssetManager.getIcon(itemName);
-    }
-    
-    // ========== Register Icons ==========
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IIconRegister iconRegister) {
-        AssetManager.addIcon(itemName, InfernoMobs.domain, "ember", iconRegister);
-    }
 }

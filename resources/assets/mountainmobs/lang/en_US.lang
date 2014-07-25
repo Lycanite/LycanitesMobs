@@ -14,7 +14,12 @@ entity.mountainmobs.geonach.description=Geonachs are brutal earth elementals com
 # Items
 item.mountainspawn.name=Spawn
 item.yalemeatraw.name=Raw Yale Meat
+item.yalemeatraw.description=Tastes a bit like mutton. Very chewy when raw, causes dig speed slowdown.
 item.yalemeatcooked.name=Cooked Yale Meat
+item.yalemeatcooked.description=Tastes like minty roast lamb.
 item.peakskebab.name=Peaks Kebab
+item.peakskebab.description=The food of the mounts, increases arm strength, the best a miner could eat!
 item.boulderblastcharge.name=Boulder Blast Charge
+item.boulderblastcharge.description=Use to throw a giant boulder! Can be fired from a dispenser, causes dig speed slowdown.
 item.boulderblastscepter.name=Boulder Blast Scepter
+item.boulderblastscepter.description=High Damage, Charge Up, Applies Dig Speed Slowdown

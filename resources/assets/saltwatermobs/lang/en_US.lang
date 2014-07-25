@@ -12,5 +12,8 @@ entity.saltwatermobs.ika.description=Slow snail-turtle-shellfish! Ika can be lur
 # Items
 item.saltwaterspawn.name=Spawn
 item.ikameatraw.name=Raw Ika Meat
+item.ikameatraw.description=Fishy seafood! It feels very heavy.
 item.ikameatcooked.name=Cooked Ika Meat
+item.ikameatcooked.description=Crispy seafood! Cooking it has made it much lighter!
 item.seashellmaki.name=Seashell Maki
+item.seashellmaki.description=A taste infusion from the deep blue sea! Applies water breathing!

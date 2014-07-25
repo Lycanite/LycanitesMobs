@@ -3,11 +3,17 @@ entity.lycanitesmobs.summoningportal.name=Summoning Portal
 #
 # Items
 item.soulgazer.name=Soulgazer
+item.soulgazer.description=Use on a creature to add it to the Beastiary.
 item.summoningstaff.name=Summoning Staff
+item.summoningstaff.description=Summon minions to do your bidding! Start using to create a portal, over time the portal will drain your Summoning Focus (above your hunger bar).
 item.stablesummoningstaff.name=Stable Summoning Staff
+item.stablesummoningstaff.description=Summoned minions last longer but costs more focus.
 item.bloodsummoningstaff.name=Blood Summoning Staff
+item.bloodsummoningstaff.description=Half the focus cost by sacrificing your health in its place.
 item.savagesummoningstaff.name=Savage Summoning Staff
+item.savagesummoningstaff.description=Summon double minions, but at half health each.
 item.sturdysummoningstaff.name=Sturdy Summoning Staff
+item.sturdysummoningstaff.description=This staff lasts much longer but costs more focus.
 #
 # GUIS
 # Creative Tab names:
@@ -34,6 +40,9 @@ gui.pet.stance=Stance
 gui.pet.aggressive=Aggressive
 gui.pet.defensive=Defensive
 gui.pet.pvp=PVP
+# Mounts:
+gui.mount.controls=Press %control% to use the mount ability.
+#%control% will be replaced with the Mount Ability key, don't translate this!
 #
 # Messages
 message.soulgazer.new=You have gained knowledge of the %creature%! Check your Beastiary!
@@ -41,6 +50,7 @@ message.soulgazer.summonable=You are now able to summon the %creature%! You will
 message.soulgazer.known=You already have full knowledge of this creature.
 message.soulgazer.unknown=The Soulgazer finds nother special about this creature.
 message.pet.tamed=The %creature% seems to love you now!
+message.pet.tamefail=The %creature% wants more!
 # %creature% will be replaced with the name of the tamed creature, don't translate this!
 #
 # Common

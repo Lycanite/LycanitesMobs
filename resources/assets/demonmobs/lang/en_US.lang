@@ -20,18 +20,32 @@ entity.demonmobs.cacodemon.description=Large floating abominations of life. Caco
 # Items
 item.demonspawn.name=Spawn
 item.pinkymeatraw.name=Raw Pinky Meat
+item.pinkymeatraw.description=Withering demonic energy pulses through this meat, it must be cleaned by fire.
 item.pinkymeatcooked.name=Cooked Pinky Meat
+item.pinkymeatcooked.description=Tastes like very rich, salty beef.
 item.devillasagna.name=Devil Lasagna
+item.devillasagna.description=Delicous meaty pasta that surges with demonic strength.
 item.pinkytreat.name=Pinky Treat
+item.pinkytreat.description=Baby Pinkies seem to like this, a lot.
 item.cacodemontreat.name=Cacodemon Treat
+item.cacodemontreat.description=Cacodemons go mad for these things.
 item.doomfirecharge.name=Doomfire Charge
+item.doomfirecharge.description=Use to place fire or shoot from a dispenser.
 item.doomfirescepter.name=Doomfire Scepter
+item.doomfirescepter.description=Mid Damage, Rapid Fire, Applies Fire, Places Fire
 item.hellfirecharge.name=Hellfire Charge
+item.hellfirecharge.description=Use to place Hellfire or shoot from a dispenser.
 item.hellfirescepter.name=Hellfire Scepter
+item.hellfirescepter.description=High Damage, Charge Up, Applies Fire, Places Hellfire
 item.devilstarcharge.name=Devilstar Charge
+item.devilstarcharge.description=Use to throw a small devilstar or rapid fire from a dispenser.
 item.devilstarscepter.name=Devilstar Scepter
+item.devilstarscepter.description=Low Damage, Fast Rapid Fire
 item.demoniclightningcharge.name=Demonic Lightning Charge
+item.demoniclightningcharge.description=Use to throw a small demonic spark or fire a demonic blast from a dispenser.
 item.demoniclightningscepter.name=Demonic Lightning Scepter
+item.demoniclightningscepter.description=High Damage, Charge Up, Applies Wither, Sparks Fly Off
 #
 # Blocks
 tile.hellfire.name=Hellfire
+tile.hellfire.description=A wicked flame tainted by twisted demonic energy. Burns longer, spreads slower, deals more damage than fire.

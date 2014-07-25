@@ -14,6 +14,10 @@ entity.forestmobs.arisaur.description=Large plant like sauropods. Arisaurs are p
 # Items
 item.forestspawn.name=Spawn
 item.arisaurmeatraw.name=Raw Arisaur Meat
+item.arisaurmeatraw.description=Is it really meat though? Stunningly good to eat raw!
 item.arisaurmeatcooked.name=Cooked Arisaur Meat
+item.arisaurmeatcooked.description=Incredibly good for you!
 item.paleosalad.name=Paleo Salad
+item.paleosalad.description=The healthiest food you can eat!
 item.shamblertreat.name=Shambler Treat
+item.shamblertreat.description=Get your very own leafy friend!

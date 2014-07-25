@@ -29,7 +29,11 @@ public class ItemBase extends Item {
     public ItemBase() {
         super();
         this.setMaxStackSize(64);
+    }
+    
+    public void setup() {
         this.setCreativeTab(LycanitesMobs.itemsTab);
+    	this.setUnlocalizedName(this.itemName);
         this.textureName = this.itemName.toLowerCase();
     }
     
@@ -39,10 +43,10 @@ public class ItemBase extends Item {
 	// ==================================================
     @Override
     public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List textList, boolean par4) {
-    	String description = this.getDescription();
+    	String description = this.getDescription(itemStack, entityPlayer, textList, par4);
     	if(!"".equalsIgnoreCase(description) && !("item." + this.itemName + ".description").equals(description)) {
     		FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-    		List formattedDescriptionList = fontRenderer.listFormattedStringToWidth(this.getDescription(), 64);
+    		List formattedDescriptionList = fontRenderer.listFormattedStringToWidth(description, 64);
     		for(Object formattedDescription : formattedDescriptionList) {
     			if(formattedDescription instanceof String)
     				textList.add("\u00a7a" + (String)formattedDescription);
@@ -51,7 +55,7 @@ public class ItemBase extends Item {
     	super.addInformation(itemStack, entityPlayer, textList, par4);
     }
     
-    public String getDescription() {
+    public String getDescription(ItemStack itemStack, EntityPlayer entityPlayer, List textList, boolean par4) {
     	return StatCollector.translateToLocal("item." + this.itemName + ".description");
     }
 	

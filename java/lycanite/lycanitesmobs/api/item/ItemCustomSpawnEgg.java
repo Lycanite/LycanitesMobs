@@ -33,7 +33,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemCustomSpawnEgg extends Item {
+public class ItemCustomSpawnEgg extends ItemBase {
 	public ILycaniteMod mod;
 	public String itemName = "customspawnegg";
 	public String texturePath = "customspawn";
@@ -57,6 +57,17 @@ public class ItemCustomSpawnEgg extends Item {
         Class entityClass = ObjectManager.entityLists.get(this.mod.getDomain()).getClassFromID(itemStack.getItemDamage());
         MobInfo mobInfo = MobInfo.mobClassToInfo.get(entityClass);
         return title  + " " + mobInfo.getTitle();
+    }
+    
+    
+    // ==================================================
+	//                      Info
+	// ==================================================
+    @Override
+    public String getDescription(ItemStack itemStack, EntityPlayer entityPlayer, List textList, boolean par4) {
+    	Class entityClass = ObjectManager.entityLists.get(this.mod.getDomain()).getClassFromID(itemStack.getItemDamage());
+        MobInfo mobInfo = MobInfo.mobClassToInfo.get(entityClass);
+    	return mobInfo.getDescription();
     }
     
     

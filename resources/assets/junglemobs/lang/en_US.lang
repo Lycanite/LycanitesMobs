@@ -16,9 +16,14 @@ entity.junglemobs.tarantula.description=Poisonous jumping spiders that leave beh
 # Items
 item.junglespawn.name=Spawn
 item.concapedemeatraw.name=Raw Concapede Meat
+item.concapedemeatraw.description=Close your eyes and pretend that it is chicken!
 item.concapedemeatcooked.name=Cooked Concapede Meat
+item.concapedemeatcooked.description=Tastes like BBQ chicken! Does not look like it though!
 item.tropicalcurry.name=Tropical Curry
+item.tropicalcurry.description=Bursting full of exotic flavours! Bouncy!
 item.uvaraptortreat.name=Uvaraptor Treat
+item.uvaraptortreat.description=Perhaps you can tame would, it would almost be like a flying mount!
 #
 # Blocks
 tile.quickweb.name=Quickweb
+tile.quickweb.description=A green web that will fall apart after a short time.

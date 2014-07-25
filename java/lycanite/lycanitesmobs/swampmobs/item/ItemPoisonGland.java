@@ -1,46 +1,25 @@
 package lycanite.lycanitesmobs.swampmobs.item;
 
-import java.util.List;
-
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.item.ItemBase;
 import lycanite.lycanitesmobs.swampmobs.SwampMobs;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemPoisonGland extends Item {
-	public static String itemName = "poisongland";
+public class ItemPoisonGland extends ItemBase {
 	
 	// ==================================================
 	//                   Constructor
 	// ==================================================
     public ItemPoisonGland() {
         super();
-        setMaxStackSize(64);
-        setCreativeTab(LycanitesMobs.itemsTab);
-        setUnlocalizedName("poisongland");
-    }
-    
-    
-	// ==================================================
-	//                      Info
-	// ==================================================
-    @Override
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-    	par3List.add("\u00a7a" + "Emits a poisonous");
-    	par3List.add("\u00a7a" + "gas cloud when squeezed!");
-    	par3List.add("\u00a7a" + "Will fire a Venom Shot");
-    	par3List.add("\u00a7a" + "when used in a dispenser.");
-    	super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
+        this.domain = SwampMobs.domain;
+        this.itemName = "poisongland";
+        this.setup();
     }
     
     
@@ -94,23 +73,5 @@ public class ItemPoisonGland extends Item {
                 return true;
             }
         }
-    }
-    
-    
-	// ==================================================
-	//                      Visuals
-	// ==================================================
-    // ========== Get Icon ==========
-    @SideOnly(Side.CLIENT)
-    @Override
-    public IIcon getIconFromDamage(int par1) {
-        return AssetManager.getIcon(itemName);
-    }
-    
-    // ========== Register Icons ==========
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IIconRegister iconRegister) {
-        AssetManager.addIcon(itemName, SwampMobs.domain, "poisongland", iconRegister);
     }
 }

@@ -1,46 +1,25 @@
 package lycanite.lycanitesmobs.demonmobs.item;
 
-import java.util.List;
-
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.item.ItemBase;
 import lycanite.lycanitesmobs.demonmobs.DemonMobs;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemHellfireball extends Item {
-	public static String itemName = "hellfirecharge";
+public class ItemHellfireball extends ItemBase {
 	
 	// ==================================================
 	//                   Constructor
 	// ==================================================
     public ItemHellfireball() {
         super();
-        setMaxStackSize(64);
-        setCreativeTab(LycanitesMobs.itemsTab);
-        setUnlocalizedName("hellfirecharge");
-    }
-    
-    
-	// ==================================================
-	//                      Info
-	// ==================================================
-    @Override
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-    	par3List.add("\u00a7a" + "Can be used to create");
-    	par3List.add("\u00a7a" + "hellfires or fired from a");
-    	par3List.add("\u00a7a" + "dispenser as a hellfire");
-    	par3List.add("\u00a7a" + "blast!");
-    	super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
+        this.domain = DemonMobs.domain;
+        this.itemName = "hellfirecharge";
+        this.setup();
     }
     
     
@@ -94,23 +73,5 @@ public class ItemHellfireball extends Item {
                 return true;
             }
         }
-    }
-    
-    
-	// ==================================================
-	//                      Visuals
-	// ==================================================
-    // ========== Get Icon ==========
-    @SideOnly(Side.CLIENT)
-    @Override
-    public IIcon getIconFromDamage(int par1) {
-        return AssetManager.getIcon(itemName);
-    }
-    
-    // ========== Register Icons ==========
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IIconRegister iconRegister) {
-        AssetManager.addIcon(itemName, DemonMobs.domain, "hellfireball", iconRegister);
     }
 }

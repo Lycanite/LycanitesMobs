@@ -9,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 
@@ -18,6 +19,9 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class GuiOverlay extends Gui {
 	public Minecraft mc;
+	
+	private int mountMessageTimeMax = 5 * 20;
+	private int mountMessageTime = 0;
 	
     // ==================================================
     //                     Constructor
@@ -82,6 +86,16 @@ public class GuiOverlay extends Gui {
 			EntityCreatureRideable mount = (EntityCreatureRideable)this.mc.thePlayer.ridingEntity;
             float mountStamina = mount.getStaminaPercent();
             
+            // Mount Controls Message
+            if(this.mountMessageTime > 0) {
+            	GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            	if(this.mountMessageTime < 20)
+            		GL11.glColor4f(1.0F, 1.0F, 1.0F, (float)this.mountMessageTime / (float)20);
+            	String mountMessage = StatCollector.translateToLocal("gui.mount.controls");
+            	this.mc.fontRenderer.drawString(mountMessage, sWidth / 2, sHeight - 16, 0xFFFFFF);
+            }
+            
+            // Mount Ability Stamina Bar:
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			this.mc.getTextureManager().bindTexture(Gui.icons);
             int staminaBarWidth = 182;
@@ -97,7 +111,12 @@ public class GuiOverlay extends Gui {
             this.drawTexturedModalRect(staminaBarX, staminaBarY, 0, staminaTextureY, staminaBarWidth, staminaBarHeight);
             if(staminaEnergyWidth > 0)
                 this.drawTexturedModalRect(staminaBarX, staminaBarY, 0, staminaEnergyY, staminaEnergyWidth, staminaBarHeight);
+            
+            if(this.mountMessageTime > 0)
+            	this.mountMessageTime--;
 		}
+		else
+			this.mountMessageTime = this.mountMessageTimeMax;
 		
 		this.mc.getTextureManager().bindTexture(Gui.icons);
 	}

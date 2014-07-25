@@ -19,6 +19,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemBase extends Item {
+	public static int descriptionWidth = 128;
+	
 	public String itemName = "Item";
 	public String domain = LycanitesMobs.domain;
 	public String textureName = "item";
@@ -35,6 +37,10 @@ public class ItemBase extends Item {
         this.setCreativeTab(LycanitesMobs.itemsTab);
     	this.setUnlocalizedName(this.itemName);
         this.textureName = this.itemName.toLowerCase();
+        int nameLength = this.textureName.length();
+        if(nameLength > 6 && this.textureName.substring(nameLength - 6, nameLength).equalsIgnoreCase("charge")) {
+        	this.textureName = this.textureName.substring(0, nameLength - 6);
+        }
     }
     
     
@@ -46,7 +52,7 @@ public class ItemBase extends Item {
     	String description = this.getDescription(itemStack, entityPlayer, textList, par4);
     	if(!"".equalsIgnoreCase(description) && !("item." + this.itemName + ".description").equals(description)) {
     		FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-    		List formattedDescriptionList = fontRenderer.listFormattedStringToWidth(description, 64);
+    		List formattedDescriptionList = fontRenderer.listFormattedStringToWidth(description, descriptionWidth);
     		for(Object formattedDescription : formattedDescriptionList) {
     			if(formattedDescription instanceof String)
     				textList.add("\u00a7a" + (String)formattedDescription);

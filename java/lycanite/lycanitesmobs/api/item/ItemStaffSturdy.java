@@ -16,8 +16,8 @@ public class ItemStaffSturdy extends ItemStaffSummoning {
     public ItemStaffSturdy() {
         super();
         this.itemName = "sturdysummoningstaff";
+        this.setup();
         this.textureName = "staffsturdy";
-        setUnlocalizedName(this.itemName);
     }
     
     

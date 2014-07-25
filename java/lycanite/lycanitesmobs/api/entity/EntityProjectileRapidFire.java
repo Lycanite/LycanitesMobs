@@ -44,14 +44,14 @@ public class EntityProjectileRapidFire extends EntityProjectileBase {
         this.rapidDelay = setDelay;
     }
 
-    public EntityProjectileRapidFire(Class entityClass, World par1World, EntityLivingBase par2EntityLivingBase, int setTime, int setDelay) {
-        super(par1World, par2EntityLivingBase);
+    public EntityProjectileRapidFire(Class entityClass, World par1World, EntityLivingBase entityLivingBase, int setTime, int setDelay) {
+        super(par1World, entityLivingBase);
         this.setSize(projectileWidth, projectileHeight);
         this.projectileClass = entityClass;
-        this.shootingEntity = par2EntityLivingBase;
-        this.offsetX = this.posX - par2EntityLivingBase.posX;
-        this.offsetY = this.posY - par2EntityLivingBase.posY;
-        this.offsetZ = this.posZ - par2EntityLivingBase.posZ;
+        this.shootingEntity = entityLivingBase;
+        this.offsetX = this.posX - entityLivingBase.posX;
+        this.offsetY = this.posY - entityLivingBase.posY;
+        this.offsetZ = this.posZ - entityLivingBase.posZ;
         this.rapidTime = setTime;
         this.rapidDelay = setDelay;
     }

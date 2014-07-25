@@ -18,7 +18,7 @@ public class ItemScepterTundra extends ItemScepter {
         super();
     	this.domain = ArcticMobs.domain;
     	this.itemName = "tundrascepter";
-        this.setUnlocalizedName(this.itemName);
+        this.setup();
         this.textureName = "sceptertundra";
     }
 	

@@ -6,6 +6,7 @@ import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
+import lycanite.lycanitesmobs.api.item.ItemBase;
 import lycanite.lycanitesmobs.infernomobs.InfernoMobs;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -43,7 +44,7 @@ public class ItemBucketPureLava extends ItemBucket {
     	String description = this.getDescription();
     	if(!"".equalsIgnoreCase(description) && !("item." + this.itemName + ".description").equals(description)) {
     		FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-    		List formattedDescriptionList = fontRenderer.listFormattedStringToWidth(this.getDescription(), 64);
+    		List formattedDescriptionList = fontRenderer.listFormattedStringToWidth(this.getDescription(), ItemBase.descriptionWidth);
     		for(Object formattedDescription : formattedDescriptionList) {
     			if(formattedDescription instanceof String)
     				textList.add("\u00a7a" + (String)formattedDescription);

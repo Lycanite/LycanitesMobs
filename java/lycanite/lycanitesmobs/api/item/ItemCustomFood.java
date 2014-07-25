@@ -46,7 +46,7 @@ public class ItemCustomFood extends ItemFood {
     	String description = this.getDescription(itemStack, entityPlayer, textList, par4);
     	if(!"".equalsIgnoreCase(description) && !("item." + this.itemName + ".description").equals(description)) {
     		FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-    		List formattedDescriptionList = fontRenderer.listFormattedStringToWidth(description, 64);
+    		List formattedDescriptionList = fontRenderer.listFormattedStringToWidth(description, ItemBase.descriptionWidth);
     		for(Object formattedDescription : formattedDescriptionList) {
     			if(formattedDescription instanceof String)
     				textList.add("\u00a7a" + (String)formattedDescription);

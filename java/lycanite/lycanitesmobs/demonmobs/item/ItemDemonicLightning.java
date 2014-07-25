@@ -2,7 +2,7 @@ package lycanite.lycanitesmobs.demonmobs.item;
 
 import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.api.item.ItemBase;
-import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
+import lycanite.lycanitesmobs.demonmobs.DemonMobs;
 import lycanite.lycanitesmobs.demonmobs.entity.EntityDemonicSpark;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
@@ -16,7 +16,7 @@ public class ItemDemonicLightning extends ItemBase {
 	// ==================================================
     public ItemDemonicLightning() {
         super();
-        this.domain = ArcticMobs.domain;
+        this.domain = DemonMobs.domain;
         this.itemName = "demoniclightningcharge";
         this.setup();
     }

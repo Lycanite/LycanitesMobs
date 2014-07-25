@@ -10,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class ItemThrowingScythe extends ItemBase {
-	public static String itemName = "throwingscythe";
 	
 	// ==================================================
 	//                   Constructor

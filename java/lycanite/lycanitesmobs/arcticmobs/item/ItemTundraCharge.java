@@ -1,31 +1,24 @@
 package lycanite.lycanitesmobs.arcticmobs.item;
 
-import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
+import lycanite.lycanitesmobs.api.item.ItemBase;
 import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
 import lycanite.lycanitesmobs.arcticmobs.entity.EntityTundra;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemTundraCharge extends Item {
-	public static String itemName = "tundracharge";
+public class ItemTundraCharge extends ItemBase {
 	
 	// ==================================================
 	//                   Constructor
 	// ==================================================
     public ItemTundraCharge() {
         super();
-        setMaxStackSize(64);
-        setCreativeTab(LycanitesMobs.itemsTab);
-        setUnlocalizedName(itemName);
+        this.domain = ArcticMobs.domain;
+        this.itemName = "tundracharge";
+        this.setup();
     }
     
     
@@ -45,22 +38,4 @@ public class ItemTundraCharge extends Item {
 
          return par1ItemStack;
      }
-    
-    
-	// ==================================================
-	//                      Visuals
-	// ==================================================
-    // ========== Get Icon ==========
-    @SideOnly(Side.CLIENT)
-    @Override
-    public IIcon getIconFromDamage(int par1) {
-        return AssetManager.getIcon(itemName);
-    }
-    
-    // ========== Register Icons ==========
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IIconRegister iconRegister) {
-        AssetManager.addIcon(itemName, ArcticMobs.domain, "tundra", iconRegister);
-    }
 }

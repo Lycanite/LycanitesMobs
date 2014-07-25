@@ -17,8 +17,8 @@ public class ItemStaffSavage extends ItemStaffSummoning {
     public ItemStaffSavage() {
         super();
         this.itemName = "savagesummoningstaff";
+        this.setup();
         this.textureName = "staffsavage";
-        setUnlocalizedName(this.itemName);
     }
     
     

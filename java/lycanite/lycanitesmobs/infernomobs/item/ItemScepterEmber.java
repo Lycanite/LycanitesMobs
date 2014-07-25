@@ -18,7 +18,7 @@ public class ItemScepterEmber extends ItemScepter {
         super();
     	this.domain = InfernoMobs.domain;
     	this.itemName = "emberscepter";
-        this.setUnlocalizedName(this.itemName);
+        this.setup();
         this.textureName = "scepterember";
     }
 	
@@ -45,6 +45,31 @@ public class ItemScepterEmber extends ItemScepter {
     	if(!world.isRemote) {
         	EntityEmber projectile = new EntityEmber(world, player);
         	world.spawnEntityInWorld(projectile);
+        	
+        	projectile = new EntityEmber(world, player);
+        	projectile.setPosition(projectile.posX + 1.0D, projectile.posY, projectile.posZ);
+        	world.spawnEntityInWorld(projectile);
+        	
+        	projectile = new EntityEmber(world, player);
+        	projectile.setPosition(projectile.posX - 1.0D, projectile.posY, projectile.posZ);
+        	world.spawnEntityInWorld(projectile);
+        	
+        	projectile = new EntityEmber(world, player);
+        	projectile.setPosition(projectile.posX, projectile.posY, projectile.posZ + 1.0D);
+        	world.spawnEntityInWorld(projectile);
+        	
+        	projectile = new EntityEmber(world, player);
+        	projectile.setPosition(projectile.posX, projectile.posY, projectile.posZ - 1.0D);
+        	world.spawnEntityInWorld(projectile);
+        	
+        	projectile = new EntityEmber(world, player);
+        	projectile.setPosition(projectile.posX, projectile.posY + 1.0D, projectile.posZ);
+        	world.spawnEntityInWorld(projectile);
+        	
+        	projectile = new EntityEmber(world, player);
+        	projectile.setPosition(projectile.posX, projectile.posY - 1.0D, projectile.posZ);
+        	world.spawnEntityInWorld(projectile);
+        	
             world.playSoundAtEntity(player, ((EntityProjectileBase)projectile).getLaunchSound(), 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
         }
     	return true;

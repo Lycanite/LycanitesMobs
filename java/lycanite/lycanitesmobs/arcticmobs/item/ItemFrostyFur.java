@@ -11,7 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class ItemFrostyFur extends ItemBase {
-	public static String itemName = "frostyfur";
 	
 	// ==================================================
 	//                   Constructor

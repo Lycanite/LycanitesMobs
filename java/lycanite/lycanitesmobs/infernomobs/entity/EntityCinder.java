@@ -1,6 +1,8 @@
 package lycanite.lycanitesmobs.infernomobs.entity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
@@ -136,26 +138,57 @@ public class EntityCinder extends EntityCreatureTameable implements IMob {
     @Override
     public void rangedAttack(Entity target, float range) {
     	// Type:
-    	EntityProjectileRapidFire projectile = new EntityProjectileRapidFire(EntityEmber.class, this.worldObj, this, 15, 3);
-        projectile.setProjectileScale(1f);
+    	List<EntityProjectileRapidFire> projectiles = new ArrayList<EntityProjectileRapidFire>();
     	
-    	// Y Offset:
-    	projectile.posY -= this.height / 4;
+    	EntityProjectileRapidFire projectileEntry = new EntityProjectileRapidFire(EntityEmber.class, this.worldObj, this, 15, 3);
+    	projectiles.add(projectileEntry);
     	
-    	// Accuracy:
-    	float accuracy = 1.0F * (this.getRNG().nextFloat() - 0.5F);
+    	EntityProjectileRapidFire projectileEntry2 = new EntityProjectileRapidFire(EntityEmber.class, this.worldObj, this, 15, 3);
+    	projectileEntry2.offsetX += 1.0D;
+    	projectiles.add(projectileEntry2);
     	
-    	// Set Velocities:
-        double d0 = target.posX - this.posX + accuracy;
-        double d1 = target.posY + (double)target.getEyeHeight() - 1.100000023841858D - projectile.posY + accuracy;
-        double d2 = target.posZ - this.posZ + accuracy;
-        float f1 = MathHelper.sqrt_double(d0 * d0 + d2 * d2) * 0.2F;
-        float velocity = 1.2F;
-        projectile.setThrowableHeading(d0, d1 + (double)f1, d2, velocity, 6.0F);
-        
-        // Launch:
-        this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.worldObj.spawnEntityInWorld(projectile);
+    	EntityProjectileRapidFire projectileEntry3 = new EntityProjectileRapidFire(EntityEmber.class, this.worldObj, this, 15, 3);
+    	projectileEntry3.offsetX -= 1.0D;
+    	projectiles.add(projectileEntry3);
+    	
+    	EntityProjectileRapidFire projectileEntry4 = new EntityProjectileRapidFire(EntityEmber.class, this.worldObj, this, 15, 3);
+    	projectileEntry4.offsetZ += 1.0D;
+    	projectiles.add(projectileEntry4);
+    	
+    	EntityProjectileRapidFire projectileEntry5 = new EntityProjectileRapidFire(EntityEmber.class, this.worldObj, this, 15, 3);
+    	projectileEntry5.offsetZ -= 1.0D;
+    	projectiles.add(projectileEntry5);
+    	
+    	EntityProjectileRapidFire projectileEntry6 = new EntityProjectileRapidFire(EntityEmber.class, this.worldObj, this, 15, 3);
+    	projectileEntry6.offsetY += 1.0D;
+    	projectiles.add(projectileEntry6);
+    	
+    	EntityProjectileRapidFire projectileEntry7 = new EntityProjectileRapidFire(EntityEmber.class, this.worldObj, this, 15, 3);
+    	projectileEntry7.offsetY -= 10D;
+    	projectiles.add(projectileEntry7);
+    	
+    	for(EntityProjectileRapidFire projectile : projectiles) {
+	        projectile.setProjectileScale(1f);
+	    	
+	    	// Y Offset:
+	    	projectile.posY -= this.height / 4;
+	    	
+	    	// Accuracy:
+	    	float accuracy = 1.0F * (this.getRNG().nextFloat() - 0.5F);
+	    	
+	    	// Set Velocities:
+	        double d0 = target.posX - this.posX + accuracy;
+	        double d1 = target.posY + (double)target.getEyeHeight() - 1.100000023841858D - projectile.posY + accuracy;
+	        double d2 = target.posZ - this.posZ + accuracy;
+	        float f1 = MathHelper.sqrt_double(d0 * d0 + d2 * d2) * 0.2F;
+	        float velocity = 1.2F;
+	        projectile.setThrowableHeading(d0, d1 + (double)f1, d2, velocity, 6.0F);
+	        
+	        // Launch:
+	        this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+	        this.worldObj.spawnEntityInWorld(projectile);
+    	}
+    	
         super.rangedAttack(target, range);
     }
     

@@ -18,7 +18,7 @@ public class ItemScepterScythe extends ItemScepter {
         super();
     	this.domain = DesertMobs.domain;
     	this.itemName = "scythescepter";
-        this.setUnlocalizedName(this.itemName);
+        this.setup();
         this.textureName = "scepterscythe";
     }
 	

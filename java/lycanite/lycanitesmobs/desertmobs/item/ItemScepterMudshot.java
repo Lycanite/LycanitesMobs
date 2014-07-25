@@ -18,7 +18,7 @@ public class ItemScepterMudshot extends ItemScepter {
         super();
     	this.domain = DesertMobs.domain;
     	this.itemName = "mudshotscepter";
-        this.setUnlocalizedName(this.itemName);
+        this.setup();
         this.textureName = "sceptermudshot";
     }
 	

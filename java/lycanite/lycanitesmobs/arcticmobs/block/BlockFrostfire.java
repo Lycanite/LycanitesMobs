@@ -78,7 +78,7 @@ public class BlockFrostfire extends BlockBase {
     		world.setBlockToAir(x, y, z);
 		
 		Block base = world.getBlock(x, y - 1, z);
-		// Freeze Water:
+		// Pack Ice:
 		if(base == Blocks.ice) {
 			 world.setBlock(x, y - 1, z, Blocks.packed_ice);
 		}
@@ -108,7 +108,7 @@ public class BlockFrostfire extends BlockBase {
         }
         
         // Random Chance of Fizzling Out (Uses metadata):
-        if(!onFireFuel && !this.canBlockBurn(world, x, y - 1, z, ForgeDirection.UP) && metadata == 15 && random.nextInt(4) == 0) {
+        if(!onFireFuel && metadata == 15 && random.nextInt(4) == 0) {
             world.setBlockToAir(x, y, z);
             return;
         }
@@ -236,7 +236,11 @@ public class BlockFrostfire extends BlockBase {
 
     // ========== Get Chance To Encoure Fire ==========
     public int getChanceToEncourageFire(IBlockAccess world, int x, int y, int z, int oldChance, ForgeDirection face) {
-        int newChance = this.canBlockBurn(world, x, y, z, face) ? 50 : 5;
+    	int newChance = 0;
+    	if(world.getBlock(x, y, z) == Blocks.snow)
+    		newChance = 50;
+    	if(this.canBlockBurn(world, x, y, z, face))
+    		newChance = 10;
         return (newChance > oldChance ? newChance : oldChance);
     }
     

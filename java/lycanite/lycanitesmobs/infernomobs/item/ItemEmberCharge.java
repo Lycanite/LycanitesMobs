@@ -10,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class ItemEmberCharge extends ItemBase {
-	public static String itemName = "embercharge";
 	
 	// ==================================================
 	//                   Constructor

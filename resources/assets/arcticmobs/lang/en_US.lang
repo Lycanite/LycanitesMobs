@@ -16,7 +16,7 @@ item.arcticspawn.name=Spawn
 item.yetimeatraw.name=Raw Yeti Meat
 item.yetimeatraw.description=It feels very cold...
 item.yetimeatcooked.name=Cooked Yeti Meat
-item.yetimeatraw.description=Tastes a bit like pork.
+item.yetimeatcooked.description=Tastes a bit like pork.
 item.palesoup.name=Pale Soup
 item.palesoup.description=A milky soup that bolsters resistance.
 item.frostyfur.name=Frosty Fur
@@ -32,7 +32,7 @@ item.frostboltscepter.description=Mid Damage, Rapid Fire, Applies Move Slowdown
 item.frostwebscepter.name=Frostweb Scepter
 item.frostwebscepter.description=Low Damage, Rapid Fire, Applies Move Slowdown, Places Frostwebs
 item.tundrascepter.name=Tundra Scepter
-item.frostwebscepter.description=High Damage, Charge Up, Places Frostfire and Frostclouds
+item.tundrascepter.description=High Damage, Charge Up, Places Frostfire and Frostclouds
 #
 # Blocks
 tile.frostweb.name=Frostweb

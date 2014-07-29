@@ -25,7 +25,7 @@ public class ClientProxy extends CommonProxy {
 	// Render ID:
 	public static int RENDER_ID = RenderingRegistry.getNextAvailableRenderId();
 	
-	// ========== Register Key Bindings and Events ==========
+	// ========== Register Event Handlers ==========
 	@Override
     public void registerEvents() {
 		// Event Listeners:

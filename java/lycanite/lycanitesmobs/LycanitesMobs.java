@@ -38,7 +38,7 @@ public class LycanitesMobs implements ILycaniteMod {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String version = "1.7.2 - MC 1.7.10";
+	public static final String version = "1.7.3 - MC 1.7.10";
 	public static final String domain = modid.toLowerCase();
 	
 	public static final PacketHandler packetHandler = new PacketHandler();
@@ -97,7 +97,7 @@ public class LycanitesMobs implements ILycaniteMod {
 		
 		// ========== Register Event Listeners ==========
 		MinecraftForge.EVENT_BUS.register(new EventListener());
-		MinecraftForge.EVENT_BUS.register(new CustomSpawner());
+        proxy.registerEvents();
 		
 		// ========== Set Current Mod ==========
 		ObjectManager.setCurrentMod(this);
@@ -121,7 +121,6 @@ public class LycanitesMobs implements ILycaniteMod {
 	@EventHandler
     public void load(FMLInitializationEvent event) {
 		// ========== Register and Initialize Handlers ==========
-		proxy.registerEvents();
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 		
 		// ========== Register Entities ==========

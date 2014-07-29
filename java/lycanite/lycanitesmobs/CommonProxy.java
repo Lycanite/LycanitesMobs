@@ -2,13 +2,15 @@ package lycanite.lycanitesmobs;
 
 import java.io.File;
 
+import lycanite.lycanitesmobs.api.spawning.CustomSpawner;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.common.MinecraftForge;
 
 public class CommonProxy {
 	
-	// ========== Register Key Bindings ==========
+	// ========== Register Event Handlers ==========
     public void registerEvents() {
-		// None Server Only
+        MinecraftForge.EVENT_BUS.register(new CustomSpawner());
 	}
 	
 	

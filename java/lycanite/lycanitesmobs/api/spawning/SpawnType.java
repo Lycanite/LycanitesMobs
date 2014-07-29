@@ -9,6 +9,7 @@ import java.util.Map;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.OldConfig;
+import lycanite.lycanitesmobs.api.config.Config;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.info.SpawnInfo;
 import net.minecraft.block.Block;
@@ -22,9 +23,6 @@ import cpw.mods.fml.common.eventhandler.Event.Result;
 
 public class SpawnType {
 	// ========== Spawn Type List ==========
-	/** A static list that contains all spawn types. **/
-	public static List<SpawnType> spawnTypes = new ArrayList<SpawnType>();
-	
 	/** A static list that contains a string mapping of all spawn types. These should always be all upper case. **/
 	public static Map<String, SpawnType> spawnTypeMap = new HashMap<String, SpawnType>();
 	
@@ -77,17 +75,13 @@ public class SpawnType {
     //                  Load Spawn Types
     // ==================================================
 	public static void loadSpawnTypes() {
-		String[] spawnTypeNames = {"Fire", "Frostfire", "Lava", "Portal", "Rock", "Storm"};
 		OldConfig config = LycanitesMobs.config;
+        spawnTypes.add(); //TODO Continue from here! Add the 4 block spawners back. Manually add to map.
+
+
+        String[] spawnTypeNames = {"Fire", "Frostfire", "Lava", "Portal", "Rock", "Storm"};
 		for(String spawnTypeName : spawnTypeNames) {
-			SpawnType newSpawnType = new SpawnType(
-					spawnTypeName.toUpperCase(),
-					config.getFeatureInt(spawnTypeName + "SpawnTick"),
-					config.getFeatureDouble(spawnTypeName + "SpawnChance"),
-					config.getFeatureInt(spawnTypeName + "SpawnRange"),
-					config.getFeatureInt(spawnTypeName + "SpawnBlockLimit"),
-					config.getFeatureInt(spawnTypeName + "SpawnMobLimit")
-					);
+			SpawnType newSpawnType = new SpawnType(spawnTypeName);
 			newSpawnType.enabled = config.getFeatureBool(spawnTypeName + "SpawnEnabled");
 			
 			if("FIRE".equalsIgnoreCase(spawnTypeName)) {
@@ -136,13 +130,14 @@ public class SpawnType {
     // ==================================================
     //                     Constructor
     // ==================================================
-	public SpawnType(String typeName, int rate, double chance, int range, int blockLimit, int mobLimit) {
-		this.typeName = typeName;
-		this.rate = rate;
-		this.chance = chance;
-		this.range = range;
-		this.blockLimit = blockLimit;
-		this.mobLimit = mobLimit;
+	public SpawnType(String typeName, Config config) {
+		this.typeName = typeName.toUpperCase();
+
+		this.rate = config.getFeatureInt(spawnTypeName + "SpawnTick");
+		this.chance = config.getFeatureDouble(spawnTypeName + "SpawnChance");
+		this.range = config.getFeatureInt(spawnTypeName + "SpawnRange");
+		this.blockLimit = config.getFeatureInt(spawnTypeName + "SpawnBlockLimit");
+		this.mobLimit = config.getFeatureInt(spawnTypeName + "SpawnMobLimit");
 		
 		if("PORTAL".equalsIgnoreCase(this.typeName))
 			this.ignoreBiome = true;
@@ -154,6 +149,10 @@ public class SpawnType {
 	// ==================================================
 	//                     Add Spawn
 	// ==================================================
+    /**
+     * Adds a mob to this spawn type. Takes a Spawn Info.
+     * @param spawnInfo
+     */
 	public void addSpawn(SpawnInfo spawnInfo) {
 		if(spawnInfo != null)
 			this.spawnList.add(spawnInfo);
@@ -163,183 +162,221 @@ public class SpawnType {
 	// ==================================================
 	//                    Spawn Mobs
 	// ==================================================
-	public void onUpdate(long tick, String type, World world, int x, int y, int z) {
-		// Check If Able to Spawn:
-		if(this.spawnList == null || !this.enabled)
-			return;
-		if("area".equalsIgnoreCase(type) && (this.rate == 0 || tick % this.rate != 0))
-			return;
-		if(world.rand.nextDouble() >= this.chance && !"lightning".equalsIgnoreCase(type))
-			return;
-		
-		// Spawner Type Checks:
-		if("area".equalsIgnoreCase(type)) {
-			if("ROCK".equalsIgnoreCase(this.typeName))
-				return;
-			if("STORM".equalsIgnoreCase(this.typeName) && !world.isRaining())
-				return;
-		}
-		
-		LycanitesMobs.printDebug("CustomSpawner", "~0==================== " + this.typeName + " Spawner ====================0~");
-		LycanitesMobs.printDebug("CustomSpawner", "Attempting to spawn mobs.");
+    /**
+     * Tells this spawn type to try and spawn mobs at or near the provided coordinates.
+     * Usually custom spawn types shouldn't need to override this method and should instead override methods called by this method.
+     * This method is usually called by the Custom Spawner class where this spawn type is added to its Spawn Type lists.
+     * @param tick Used by spawn types that attempt spawn on a regular basis. Use 0 for event based spawning.
+     * @param world The world to spawn in.
+     * @param x X position.
+     * @param y Y position.
+     * @param z Z position
+     */
+    public void spawnMobs(long tick, World world, int x, int y, int z) {
+        // Check If Able to Spawn:
+        if(this.spawnList == null || !this.enabled)
+            return;
+        if(!this.canSpawn(tick, world, x, y, z))
+            return;
 
-		// Search for Coords:
-		List<int[]> coords = null;
-		if((this.materials != null && this.materials.length > 0) || (this.blocks != null && this.blocks.length > 0) || (this.blockStrings != null && this.blockStrings.length > 0))
-			coords = this.searchForBlockCoords(world, x, y, z);
-		
-		if(coords == null) {
-			LycanitesMobs.printWarning("CustomSpawner", "This spawn type will never be able to find coordinates as it has no materials or blocks set, not even air.");
-			return;
-		}
-		
-		// Count Coords:
-		LycanitesMobs.printDebug("CustomSpawner", "Found " + coords.size() + "/" + this.blockLimit + " coordinates for mob spawning.");
-		if(coords.size() <= 0) {
-			LycanitesMobs.printDebug("CustomSpawner", "No valid coordinates were found, spawning cancelled.");
-			return;
-		}
-		
-		// Apply Spawn Block Limit:
-		if(coords.size() > this.blockLimit)
-			coords = coords.subList(0, this.blockLimit);
-		
-		// Get Biomes from Coords:
-		List<BiomeGenBase> targetBiomes = new ArrayList<BiomeGenBase>();
-		if(!this.ignoreBiome) {
-			for(int[] coord : coords) {
-				BiomeGenBase coordBiome = world.getBiomeGenForCoords(coord[0], coord[2]);
-				if(!targetBiomes.contains(coordBiome))
-					targetBiomes.add(coordBiome);
-			}
-		}
-		
-		// Choose Mobs:
-		LycanitesMobs.printDebug("CustomSpawner", "Choosing mob type to spawn via spawn weights... " + this.spawnList.size() + " possible mob(s) to spawn.");
-		SpawnInfo spawnInfo = this.getRandomMobType(world, coords.size(), targetBiomes);
-		if(spawnInfo == null) {
-			LycanitesMobs.printDebug("CustomSpawner", "No mobs are able to spawn, either not enough blocks, empty biome/dimension or all weights are 0. Spawning cancelled.");
-			return;
-		}
-		LycanitesMobs.printDebug("CustomSpawner", "Mob type chosen: " + spawnInfo.mobInfo.name);
-		
-		// Spawn Chosen Mobs:
-		LycanitesMobs.printDebug("CustomSpawner", "Cycling through each possible spawn coordinate and attempting to spawn a mob there. Mob limit is " + this.mobLimit + " overall.");
-		int mobsSpawned = 0;
-		for(int[] coord : coords) {
-			EntityLiving entityLiving = null;
-			try {
-				entityLiving = (EntityLiving)spawnInfo.mobInfo.entityClass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {world});
-			} catch (Exception e) { e.printStackTrace(); }
-			if(entityLiving != null) {
-				entityLiving.setLocationAndAngles((double)coord[0] + 0.5D, (double)coord[1], (double)coord[2] + 0.5D, world.rand.nextFloat() * 360.0F, 0.0F);
-				LycanitesMobs.printDebug("CustomSpawner", "Attempting to spawn " + entityLiving + "...");
-				LycanitesMobs.printDebug("CustomSpawner", "Coordinates: X" + coord[0] + " Y" + coord[1] + " Z" + coord[2]);
-				if(entityLiving instanceof EntityCreatureBase) {
-					((EntityCreatureBase)entityLiving).spawnedFromType = spawnInfo.spawnType;
-				}
-				Result canSpawn = ForgeEventFactory.canEntitySpawn(entityLiving, world, (float)coord[0], (float)coord[1], (float)coord[2]);
-				if(canSpawn == Result.ALLOW || (canSpawn == Result.DEFAULT && entityLiving.getCanSpawnHere())) {
-					entityLiving.timeUntilPortal = entityLiving.getPortalCooldown();
-					world.spawnEntityInWorld(entityLiving);
-                    if(!ForgeEventFactory.doSpecialSpawn(entityLiving, world, (float)coord[0], (float)coord[1], (float)coord[2]))
-                    	entityLiving.onSpawnWithEgg(null);
-                    mobsSpawned++;
-                    LycanitesMobs.printDebug("CustomSpawner", "Spawn Check Passed! Mob spawned.");
-				}
-				else
-					LycanitesMobs.printDebug("CustomSpawner", "Spawn Check Failed! Unable to spawn.");
-			}
-			if(mobsSpawned >= this.mobLimit)
-				break;
-		}
-		LycanitesMobs.printDebug("CustomSpawner", "Spawning finished. Spawned " + mobsSpawned + " mobs.");
-	}
-	
-	// ========== Search for Coords ==========
-	/** Searches for block coords within the defined range of the given x, y, z coordinates.
-	 * This will search from the closest blocks to the farthest blocks last.
-	 * world - World object to search.
-	 * x, y, z - Coordinates to search from.
-	 * range - How far to search from the given coordinates.
-	 * blockID - The ID of the blocks to search for. An array can be taken for multiple block types.
-	**/
-	public List<int[]> searchForBlockCoords(World world, int x, int y, int z) {
-		List<int[]> blockCoords = new ArrayList<int[]>();
-		for(int i = x - this.range; i <= x + this.range; i++) {
-			for(int j = y - this.range; j <= y + this.range; j++) {
-				for(int k = z - this.range; k <= z + this.range; k++) {
-					if(this.materials != null && this.materials.length > 0) {
-						for(Material validMaterial : this.materials) {
-							if(world.getBlock(i, j, k).getMaterial() == validMaterial) {
-								blockCoords.add(new int[] {i, j, k});
-								break;
-							}
-						}
-					}
-					else if(this.blocks != null && this.blocks.length > 0) {
-						for(Block validBlock : this.blocks) {
-							if(world.getBlock(i, j, k) == validBlock) {
-								blockCoords.add(new int[] {i, j, k});
-								break;
-							}
-						}
-					}
-					else if(this.blockStrings != null && this.blockStrings.length > 0) {
-						for(String validBlockString : this.blockStrings) {
-							if(world.getBlock(i, j, k) == ObjectManager.getBlock(validBlockString)) {
-								blockCoords.add(new int[] {i, j, k});
-								break;
-							}
-						}
-					}
-				}
-			}
-		}
-		Collections.shuffle(blockCoords);
-		return blockCoords;
-	}
-	
-	// ========== Get Random Mob Type ==========
-	/** Gets a random valid mob type to spawn using spawn weights to influence the odds. **/
-	public SpawnInfo getRandomMobType(World world, int blocksFound, List<BiomeGenBase> biomes) {
+        LycanitesMobs.printDebug("CustomSpawner", "~0==================== " + this.typeName + " Spawner ====================0~");
+        LycanitesMobs.printDebug("CustomSpawner", "Attempting to spawn mobs.");
+
+        // Search for Coords:
+        List<int[]> coords = this.getSpawnCoordinates(world, x, y, z);
+        if(coords == null) {
+            LycanitesMobs.printWarning("CustomSpawner", "This spawn type will never be able to find coordinates as it has no materials or blocks set, not even air.");
+            return;
+        }
+
+        // Count Coords:
+        LycanitesMobs.printDebug("CustomSpawner", "Found " + coords.size() + "/" + this.blockLimit + " coordinates for mob spawning.");
+        if(coords.size() <= 0) {
+            LycanitesMobs.printDebug("CustomSpawner", "No valid coordinates were found, spawning cancelled.");
+            return;
+        }
+
+        // Apply Spawn Block Limit:
+        coords = this.applyCoordLimits(coords);
+        LycanitesMobs.printDebug("CustomSpawner", "Applied coordinate limits. New size is " + coords.size());
+
+        // Get Biomes from Coords:
+        List<BiomeGenBase> targetBiomes = new ArrayList<BiomeGenBase>();
+        if(!this.ignoreBiome) {
+            for(int[] coord : coords) {
+                BiomeGenBase coordBiome = world.getBiomeGenForCoords(coord[0], coord[2]);
+                if(!targetBiomes.contains(coordBiome))
+                    targetBiomes.add(coordBiome);
+            }
+        }
+
+        // Choose Mobs:
+        LycanitesMobs.printDebug("CustomSpawner", "Getting a list of all mobs that can spawn within the found coordinates.");
+        List<SpawnInfo> possibleSpawns = this.getPossibleSpawns(coords.size(), targetBiomes);
+        if(possibleSpawns == null || possibleSpawns.size() <= 0) {
+            LycanitesMobs.printDebug("CustomSpawner", "No mobs are able to spawn, either not enough blocks, empty biome/dimension or all weights are 0. Spawning cancelled.");
+            return;
+        }
+
+        // Spawn Chosen Mobs:
+        LycanitesMobs.printDebug("CustomSpawner", "Cycling through each possible spawn coordinate and attempting to spawn a mob there. Mob limit is " + this.mobLimit + " overall.");
+        int mobsSpawned = 0;
+        for(int[] coord : coords) {
+            // Get EntityLiving to Spawn:
+            SpawnInfo spawnInfo = this.getRandomMob(possibleSpawns, world);
+            EntityLiving entityLiving = null;
+            try {
+                entityLiving = (EntityLiving)spawnInfo.mobInfo.entityClass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {world});
+            } catch (Exception e) { e.printStackTrace(); }
+            if(entityLiving == null) {
+                LycanitesMobs.printWarning("CustomSpawner", "Unable to instantiate an entity from SpawnInfo: " + spawnInfo);
+                continue;
+            }
+
+            // Attempt to Spawn EntityLiving:
+            LycanitesMobs.printDebug("CustomSpawner", "Attempting to spawn " + entityLiving + "...");
+            LycanitesMobs.printDebug("CustomSpawner", "Coordinates: X" + coord[0] + " Y" + coord[1] + " Z" + coord[2]);
+            entityLiving.setLocationAndAngles((double)coord[0] + 0.5D, (double)coord[1], (double)coord[2] + 0.5D, world.rand.nextFloat() * 360.0F, 0.0F);
+
+            if(entityLiving instanceof EntityCreatureBase)
+                ((EntityCreatureBase)entityLiving).spawnedFromType = spawnInfo.spawnType;
+            Result canSpawn = ForgeEventFactory.canEntitySpawn(entityLiving, world, (float)coord[0], (float)coord[1], (float)coord[2]);
+            if(canSpawn == Result.DENY)
+                LycanitesMobs.printDebug("CustomSpawner", "Spawn Check Failed! Spawning blocked by Forge Event, this is caused another mod.");
+            if(canSpawn == Result.DEFAULT && !entityLiving.getCanSpawnHere())
+                LycanitesMobs.printDebug("CustomSpawner", "Spawn Check Failed! The entity may not fit, or requires specific lighting, etc.");
+
+            entityLiving.timeUntilPortal = entityLiving.getPortalCooldown();
+            this.spawnEntity(world, entityLiving);
+            if(!ForgeEventFactory.doSpecialSpawn(entityLiving, world, (float)coord[0], (float)coord[1], (float)coord[2]))
+                entityLiving.onSpawnWithEgg(null);
+            LycanitesMobs.printDebug("CustomSpawner", "Spawn Check Passed! Mob spawned.");
+            mobsSpawned++;
+
+            // Check Spawn Limit
+            if(mobsSpawned >= this.mobLimit)
+                break;
+        }
+        LycanitesMobs.printDebug("CustomSpawner", "Spawning finished. Spawned " + mobsSpawned + " mobs.");
+    }
+
+
+    // ==================================================
+    //                 Check Spawn Chance
+    // ==================================================
+    /**
+     * Returns true if this spawn type should attempt to spawn mobs on the current call.
+     * The random chance of spawning and ticks are usually checked here.
+     * Event based spawn types will always need to override this due to the tick check.
+     * @param tick Used by spawn types that attempt spawn on a regular basis. Use 0 for event based spawning.
+     * @param world The world to spawn in.
+     * @param x X position.
+     * @param y Y position.
+     * @param z Z position
+     * @return True if this spawn type should spawn mobs and false if it shouldn't this call.
+     */
+    public boolean canSpawn(long tick, World world, int x, int y, int z) {
+        if(this.rate == 0 || tick % this.rate != 0)
+            return false;
+        if(world.rand.nextDouble() >= this.chance)
+            return false;
+        return true;
+    }
+
+
+    // ==================================================
+    //               Get Spawn Coordinates
+    // ==================================================
+    /**
+     * Searches for coordinates to spawn mobs exactly at. By default this uses te block lists.
+     * @param world The world to spawn in.
+     * @param x X position.
+     * @param y Y position.
+     * @param z Z position
+     * @return A list of int arrays, each array should contain 3 integers of x, y and z. Should return an empty list instead of null else a waning will show.
+     */
+    public List<int[]> getSpawnCoordinates(World world, int x, int y, int z) {
+        return this.searchForBlockCoords(world, x, y, z);
+    }
+
+
+    // ==================================================
+    //              Apply Coordinate Limits
+    // ==================================================
+    /**
+     * Takes a list of coordinates and usually shortens it to match the limit. This can be used to do anything to the coordinate list.
+     * @param coords The list of coordinates to alter.
+     * @return An altered list of coordinates to start spawning from.
+     */
+    public List<int[]> applyCoordLimits(List<int[]> coords) {
+        if(coords.size() > this.blockLimit)
+            coords = coords.subList(0, this.blockLimit);
+        return coords;
+    }
+
+
+    // ==================================================
+    //                Get Possible Spawns
+    // ==================================================
+    /**
+     * Returns a list of all mobs that are able to spawn within the provided biomes and number coordinates.
+     * @param coordsFound The number of coordinates found, some mobs require a certain amount of blocks for example to be able to spawn.
+     * @param biomes A list of all biomes found from the coordinates.
+     * @return Array list of Spawn Info.
+     */
+    public List<SpawnInfo> getPossibleSpawns(int coordsFound, List<BiomeGenBase> biomes) {
+        List<SpawnInfo> possibleSpawns = new ArrayList<SpawnInfo>();
+        for(SpawnInfo possibleSpawn : this.spawnList) {
+            boolean enoughCoords = true;
+            if(coordsFound < possibleSpawn.spawnBlockCost) {
+                LycanitesMobs.printDebug("CustomSpawner", possibleSpawn.mobInfo.name + ": Not enough of the required blocks available for spawning.");
+                enoughCoords = false;
+            }
+
+            boolean isValidBiome = this.ignoreBiome;
+            if(enoughCoords && !isValidBiome) {
+                for(BiomeGenBase validBiome : possibleSpawn.biomes) {
+                    for(BiomeGenBase targetBiome : biomes) {
+                        if(targetBiome == validBiome) {
+                            isValidBiome = true;
+                            break;
+                        }
+                    }
+                    if(isValidBiome)
+                        break;
+                }
+            }
+            if(!isValidBiome)
+                LycanitesMobs.printDebug("CustomSpawner", possibleSpawn.mobInfo.name + ": No valid spawning biomes could be found within the coordinates.");
+
+            if(enoughCoords && isValidBiome) {
+                LycanitesMobs.printDebug("CustomSpawner", possibleSpawn.mobInfo.name + ": Able to spawn.");
+                possibleSpawns.add(possibleSpawn);
+            }
+        }
+        return possibleSpawns;
+    }
+
+
+    // ==================================================
+    //             Get Random Mob to Spawn
+    // ==================================================
+    /**
+     * Get a random mob to spawn.
+     * @param possibleSpawns A list of all mobs that can be spawned.
+     * @param world The world object to spawn in, used mainly to RNG.
+     * @return The Spawn Info of the mob to spawn.
+     */
+	public SpawnInfo getRandomMob(List<SpawnInfo> possibleSpawns, World world) {
 		SpawnInfo spawnInfo = null;
-		List<SpawnInfo> possibleSpawns = new ArrayList<SpawnInfo>();
 		int totalWeights = 0;
-		for(SpawnInfo possibleSpawn : this.spawnList) {
-			
-			boolean enoughBlocks = true;
-			if(blocksFound < possibleSpawn.spawnBlockCost) {
-				LycanitesMobs.printDebug("CustomSpawner", possibleSpawn.mobInfo.name + ": Not enough of the required blocks available for spawning.");
-				enoughBlocks = false;
-			}
-			
-			boolean isValidBiome = this.ignoreBiome;
-			if(enoughBlocks && !isValidBiome) {
-				for(BiomeGenBase validBiome : possibleSpawn.biomes) {
-					for(BiomeGenBase targetBiome : biomes) {
-						if(targetBiome == validBiome) {
-							isValidBiome = true;
-							break;
-						}
-					}
-					if(isValidBiome)
-						break;
-				}
-			}
-			if(!isValidBiome)
-				LycanitesMobs.printDebug("CustomSpawner", possibleSpawn.mobInfo.name + ": No valid spawning biomes could be found within the coordinates.");
-			
-			if(enoughBlocks && isValidBiome) {
-				possibleSpawns.add(possibleSpawn);
-				totalWeights += possibleSpawn.spawnWeight;
-			}
+		for(SpawnInfo possibleSpawn : possibleSpawns) {
+			totalWeights += possibleSpawn.spawnWeight;
 		}
 		if(totalWeights <= 0)
 			return null;
-		
+
 		int randomWeight = world.rand.nextInt(totalWeights);
-		LycanitesMobs.printDebug("CustomSpawner", "Generated a random weight of " + randomWeight + "/" + totalWeights);
 		for(SpawnInfo possibleSpawn : possibleSpawns) {
 			spawnInfo = possibleSpawn;
 			if(possibleSpawn.spawnWeight > randomWeight)
@@ -347,4 +384,68 @@ public class SpawnType {
 		}
 		return spawnInfo;
 	}
+
+
+    // ==================================================
+    //                  Spawn Entity
+    // ==================================================
+    /**
+     * Spawn an entity in the provided world. The mob should have already been positioned.
+     * @param world The world to spawn in.
+     * @param entityLiving The entity to spawn.
+     */
+    public void spawnEntity(World world, EntityLiving entityLiving) {
+        world.spawnEntityInWorld(entityLiving);
+    }
+
+
+    // ==================================================
+    //               Coordinate Searching
+    // ==================================================
+    /** ========== Search for Block Coordinates ==========
+     * Returns all blocks around the xyz position in the given world as coordinates. Uses this Spawn Typs range.
+     * @param world The world to search for coordinates in.
+     * @param x X position to search near.
+     * @param y Y position to search near.
+     * @param z Z position to search near.
+     * @return Returns a list for coordinates for spawning from.
+     */
+    public List<int[]> searchForBlockCoords(World world, int x, int y, int z) {
+        List<int[]> blockCoords = null;
+        for(int i = x - this.range; i <= x + this.range; i++) {
+            for(int j = y - this.range; j <= y + this.range; j++) {
+                for(int k = z - this.range; k <= z + this.range; k++) {
+                    if(this.materials != null && this.materials.length > 0) {
+                        if(blockCoords == null) blockCoords = new ArrayList<int[]>();
+                        for(Material validMaterial : this.materials) {
+                            if(world.getBlock(i, j, k).getMaterial() == validMaterial) {
+                                blockCoords.add(new int[] {i, j, k});
+                                break;
+                            }
+                        }
+                    }
+                    if(this.blocks != null && this.blocks.length > 0) {
+                        if(blockCoords == null) blockCoords = new ArrayList<int[]>();
+                        for(Block validBlock : this.blocks) {
+                            if(world.getBlock(i, j, k) == validBlock) {
+                                blockCoords.add(new int[] {i, j, k});
+                                break;
+                            }
+                        }
+                    }
+                    if(this.blockStrings != null && this.blockStrings.length > 0) {
+                        if(blockCoords == null) blockCoords = new ArrayList<int[]>();
+                        for(String validBlockString : this.blockStrings) {
+                            if(world.getBlock(i, j, k) == ObjectManager.getBlock(validBlockString)) {
+                                blockCoords.add(new int[] {i, j, k});
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        Collections.shuffle(blockCoords);
+        return blockCoords;
+    }
 }

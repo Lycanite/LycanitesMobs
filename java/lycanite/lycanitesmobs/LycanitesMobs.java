@@ -86,18 +86,19 @@ public class LycanitesMobs implements ILycaniteMod {
 			MinecraftForge.EVENT_BUS.register(new PotionEffects());
 		}
 		
+		// ========== Register Event Listeners ==========
+		MinecraftForge.EVENT_BUS.register(new EventListener());
+        proxy.registerEvents();
+		
 		// ========== Mob Info ==========
 		MobInfo.loadGlobalSettings();
 		
-		// ========== Spawn Type ==========
+		// ========== Custom Mob Spawning ==========
+		MinecraftForge.EVENT_BUS.register(new CustomSpawner());
 		SpawnType.loadSpawnTypes();
 		
 		// ========== Spawn Info ==========
 		SpawnInfo.loadGlobalSettings();
-		
-		// ========== Register Event Listeners ==========
-		MinecraftForge.EVENT_BUS.register(new EventListener());
-        proxy.registerEvents();
 		
 		// ========== Set Current Mod ==========
 		ObjectManager.setCurrentMod(this);

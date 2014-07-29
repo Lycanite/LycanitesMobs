@@ -9,7 +9,6 @@ import java.util.Map;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.OldConfig;
-import lycanite.lycanitesmobs.api.config.Config;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.info.SpawnInfo;
 import net.minecraft.block.Block;
@@ -31,7 +30,7 @@ public class SpawnType {
 	public String typeName;
 	
 	/** How many ticks per player update this spawn type should attempt to spawn anything. **/
-	public boolean enabled;
+	public boolean enabled = true;
 	
 	/** A list of all mobs (as SpawnInfo) that use this spawn type. **/
 	public List<SpawnInfo> spawnList = new ArrayList<SpawnInfo>();
@@ -75,42 +74,52 @@ public class SpawnType {
     //                  Load Spawn Types
     // ==================================================
 	public static void loadSpawnTypes() {
+		List<SpawnType> spawnTypes = new ArrayList<SpawnType>();
 		OldConfig config = LycanitesMobs.config;
-        spawnTypes.add(); //TODO Continue from here! Add the 4 block spawners back. Manually add to map.
-
-
-        String[] spawnTypeNames = {"Fire", "Frostfire", "Lava", "Portal", "Rock", "Storm"};
-		for(String spawnTypeName : spawnTypeNames) {
-			SpawnType newSpawnType = new SpawnType(spawnTypeName);
-			newSpawnType.enabled = config.getFeatureBool(spawnTypeName + "SpawnEnabled");
-			
-			if("FIRE".equalsIgnoreCase(spawnTypeName)) {
-				newSpawnType.blocks = new Block[] {Blocks.fire};
-				newSpawnType.ignoreBiome = true;
-				newSpawnType.ignoreLight = true;
-			}
-			if("FROSTFIRE".equalsIgnoreCase(spawnTypeName)) {
-				newSpawnType.blockStrings = new String[] {"frostfire"};
-				newSpawnType.ignoreBiome = true;
-				newSpawnType.ignoreLight = true;
-			}
-			if("LAVA".equalsIgnoreCase(spawnTypeName)) {
-				newSpawnType.blocks = new Block[] {Blocks.lava};
-				newSpawnType.ignoreBiome = true;
-			}
-			if("PORTAL".equalsIgnoreCase(spawnTypeName)) {
-				newSpawnType.blocks = new Block[] {Blocks.portal};
-				newSpawnType.ignoreBiome = true;
-				newSpawnType.ignoreDimension = true;
-			}
-			if("ROCK".equalsIgnoreCase(spawnTypeName) || "STORM".equalsIgnoreCase(spawnTypeName)) {
-				newSpawnType.materials = new Material[] {Material.air};
-				newSpawnType.ignoreBiome = true;
-			}
-			
-			spawnTypes.add(newSpawnType);
-			spawnTypeMap.put(spawnTypeName.toUpperCase(), newSpawnType);
-			LycanitesMobs.printDebug("CustomSpawner", "Added custom spawn type: " + spawnTypeName.toUpperCase());
+		
+		// Fire Spawner:
+		SpawnType fireBlockSpawner = new BlockSpawner("Fire", config);
+		fireBlockSpawner.blocks = new Block[] {Blocks.fire};
+		fireBlockSpawner.ignoreBiome = true;
+		fireBlockSpawner.ignoreLight = true;
+        spawnTypes.add(fireBlockSpawner);
+		
+		// Frostfire Spawner:
+		SpawnType frostfireBlockSpawner = new BlockSpawner("Frostfire", config);
+		frostfireBlockSpawner.blockStrings = new String[] {"frostfire"};
+		frostfireBlockSpawner.ignoreBiome = true;
+		frostfireBlockSpawner.ignoreLight = true;
+        spawnTypes.add(frostfireBlockSpawner);
+		
+		// Lava Spawner:
+		SpawnType lavaBlockSpawner = new BlockSpawner("Lava", config);
+		lavaBlockSpawner.blocks = new Block[] {Blocks.lava};
+		lavaBlockSpawner.ignoreBiome = true;
+        spawnTypes.add(lavaBlockSpawner);
+		
+		// Portal Spawner:
+		SpawnType portalBlockSpawner = new BlockSpawner("Portal", config);
+		portalBlockSpawner.blocks = new Block[] {Blocks.portal};
+		portalBlockSpawner.ignoreBiome = true;
+		portalBlockSpawner.ignoreDimension = true;
+        spawnTypes.add(portalBlockSpawner);
+		
+		// Rock Spawner:
+		SpawnType rockSpawner = new RockSpawner("Rock", config);
+		rockSpawner.materials = new Material[] {Material.air};
+		rockSpawner.ignoreBiome = true;
+        spawnTypes.add(rockSpawner);
+		
+		// Storm Spawner:
+		SpawnType stormSpawner = new StormSpawner("Storm", config);
+		stormSpawner.materials = new Material[] {Material.air};
+		stormSpawner.ignoreBiome = true;
+        spawnTypes.add(stormSpawner);
+        
+        // Add Spawners to Map:
+        for(SpawnType spawnType : spawnTypes) {
+			spawnTypeMap.put(spawnType.typeName.toUpperCase(), spawnType);
+			LycanitesMobs.printDebug("CustomSpawner", "Added custom spawn type: " + spawnType.typeName);
 		}
 	}
 	
@@ -130,14 +139,14 @@ public class SpawnType {
     // ==================================================
     //                     Constructor
     // ==================================================
-	public SpawnType(String typeName, Config config) {
+	public SpawnType(String typeName, OldConfig config) {
 		this.typeName = typeName.toUpperCase();
 
-		this.rate = config.getFeatureInt(spawnTypeName + "SpawnTick");
-		this.chance = config.getFeatureDouble(spawnTypeName + "SpawnChance");
-		this.range = config.getFeatureInt(spawnTypeName + "SpawnRange");
-		this.blockLimit = config.getFeatureInt(spawnTypeName + "SpawnBlockLimit");
-		this.mobLimit = config.getFeatureInt(spawnTypeName + "SpawnMobLimit");
+		this.rate = config.getFeatureInt(typeName + "SpawnTick");
+		this.chance = config.getFeatureDouble(typeName + "SpawnChance");
+		this.range = config.getFeatureInt(typeName + "SpawnRange");
+		this.blockLimit = config.getFeatureInt(typeName + "SpawnBlockLimit");
+		this.mobLimit = config.getFeatureInt(typeName + "SpawnMobLimit");
 		
 		if("PORTAL".equalsIgnoreCase(this.typeName))
 			this.ignoreBiome = true;
@@ -178,10 +187,10 @@ public class SpawnType {
             return;
         if(!this.canSpawn(tick, world, x, y, z))
             return;
-
+        
         LycanitesMobs.printDebug("CustomSpawner", "~0==================== " + this.typeName + " Spawner ====================0~");
         LycanitesMobs.printDebug("CustomSpawner", "Attempting to spawn mobs.");
-
+        
         // Search for Coords:
         List<int[]> coords = this.getSpawnCoordinates(world, x, y, z);
         if(coords == null) {
@@ -196,7 +205,10 @@ public class SpawnType {
             return;
         }
 
-        // Apply Spawn Block Limit:
+        // Order Coordinates:
+        coords = this.orderCoords(coords, x, y, z);
+
+        // Apply Coordinate Limits:
         coords = this.applyCoordLimits(coords);
         LycanitesMobs.printDebug("CustomSpawner", "Applied coordinate limits. New size is " + coords.size());
 
@@ -241,10 +253,16 @@ public class SpawnType {
             if(entityLiving instanceof EntityCreatureBase)
                 ((EntityCreatureBase)entityLiving).spawnedFromType = spawnInfo.spawnType;
             Result canSpawn = ForgeEventFactory.canEntitySpawn(entityLiving, world, (float)coord[0], (float)coord[1], (float)coord[2]);
-            if(canSpawn == Result.DENY)
+            
+            if(canSpawn == Result.DENY) {
                 LycanitesMobs.printDebug("CustomSpawner", "Spawn Check Failed! Spawning blocked by Forge Event, this is caused another mod.");
-            if(canSpawn == Result.DEFAULT && !entityLiving.getCanSpawnHere())
-                LycanitesMobs.printDebug("CustomSpawner", "Spawn Check Failed! The entity may not fit, or requires specific lighting, etc.");
+                continue;
+            }
+            
+            if(canSpawn == Result.DEFAULT && !entityLiving.getCanSpawnHere()) {
+                LycanitesMobs.printDebug("CustomSpawner", "Spawn Check Failed! The entity may not fit, there may be to many of it in the area, it may require specific lighting, etc.");
+                continue;
+            }
 
             entityLiving.timeUntilPortal = entityLiving.getPortalCooldown();
             this.spawnEntity(world, entityLiving);
@@ -300,6 +318,20 @@ public class SpawnType {
     }
 
 
+    // ==================================================
+    //                 Order Coordinates
+    // ==================================================
+    /**
+     * Organizes the list of coordinates found, this is called before the limits are applied. Usually they are shuffled.
+     * @param coords
+     * @return
+     */
+    public List<int[]> orderCoords(List<int[]> coords, int x, int y, int z) {
+        Collections.shuffle(coords);
+        return coords;
+    }
+    
+    
     // ==================================================
     //              Apply Coordinate Limits
     // ==================================================
@@ -403,7 +435,7 @@ public class SpawnType {
     //               Coordinate Searching
     // ==================================================
     /** ========== Search for Block Coordinates ==========
-     * Returns all blocks around the xyz position in the given world as coordinates. Uses this Spawn Typs range.
+     * Returns all blocks around the xyz position in the given world as coordinates. Uses this Spawn Type's range.
      * @param world The world to search for coordinates in.
      * @param x X position to search near.
      * @param y Y position to search near.
@@ -445,7 +477,20 @@ public class SpawnType {
                 }
             }
         }
-        Collections.shuffle(blockCoords);
         return blockCoords;
+    }
+
+
+    // ==================================================
+    //               Coordinate Ordering
+    // ==================================================
+    /**
+     * Orders the coordinates from closest to the origin to farthest.
+     * @param coords
+     * @return
+     */
+    public List<int[]> orderCoordsCloseToFar(List<int[]> coords, int x, int y, int z) {
+    	Collections.sort(coords, new CoordSorterNearest(new int[] {x, y, z}));
+        return coords;
     }
 }

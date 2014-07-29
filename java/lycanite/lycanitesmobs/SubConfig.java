@@ -30,7 +30,7 @@ public class SubConfig extends OldConfig {
 		
 		this.loadCustomSpawnerType("Fire", 400, 0.5D, 32, 32, 32);
 		this.loadCustomSpawnerType("Frostfire", 400, 0.5D, 32, 32, 32);
-		this.loadCustomSpawnerType("Lava", 400, 0.25D, 64, 64, 32);
+		this.loadCustomSpawnerType("Lava", 400, 0.25D, 32, 64, 32);
 		this.loadCustomSpawnerType("Portal", 1200, 0.25D, 32, 32, 1);
 		this.loadCustomSpawnerType("Rock", 0, 0.03D, 2, 128, 1);
 		this.loadCustomSpawnerType("Storm", 800, 0.125D, 64, 32, 32);

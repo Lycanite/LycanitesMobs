@@ -456,7 +456,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         if(!spawnBlockCheck(world, i, j, k))
         	return false;
     	LycanitesMobs.printDebug("MobSpawns", "Counting mobs of the same kind, max allowed is: " + this.mobInfo.spawnInfo.spawnAreaLimit);
-        if(!spawnLimitCheck(world, i, j, k))
+        if(!this.spawnLimitCheck(world, i, j, k))
         	return false;
         	
         return true;
@@ -493,7 +493,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
          if(spawnLimit > 0 && range > 0) {
          	List targets = this.getNearbyEntities(this.mobInfo.entityClass, range);
          	LycanitesMobs.printDebug("MobSpawns", "Found " + targets.size() + " of this mob within the radius (class is " + this.mobInfo.entityClass + ").");
-         	if(targets.size() > spawnLimit)
+         	if(targets.size() >= spawnLimit)
          		return false;
          }
          return true;

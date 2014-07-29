@@ -1,13 +1,5 @@
 package lycanite.lycanitesmobs.saltwatermobs;
 
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.OldConfig;
@@ -16,6 +8,7 @@ import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
+import lycanite.lycanitesmobs.saltwatermobs.entity.EntityAbtu;
 import lycanite.lycanitesmobs.saltwatermobs.entity.EntityIka;
 import lycanite.lycanitesmobs.saltwatermobs.entity.EntityLacedon;
 import lycanite.lycanitesmobs.saltwatermobs.entity.EntitySkylus;
@@ -27,6 +20,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = SaltwaterMobs.modid, name = SaltwaterMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid)
 public class SaltwaterMobs implements ILycaniteMod {
@@ -90,6 +91,7 @@ public class SaltwaterMobs implements ILycaniteMod {
 		ObjectManager.addMob(new MobInfo(this, "lacedon", EntityLacedon.class, 0x000099, 0x2244FF, 2).setSummonable(true));
 		ObjectManager.addMob(new MobInfo(this, "skylus", EntitySkylus.class, 0xFFCCDD, 0xBB2299, 3).setSummonable(true));
         ObjectManager.addMob(new MobInfo(this, "ika", EntityIka.class, 0x99FFBB, 0x229944, 2).setSummonable(false));
+        ObjectManager.addMob(new MobInfo(this, "abtu", EntityAbtu.class, 0xFFBB00, 0x44AAFF, 2).setSummonable(false));
 		
 		// ========== Create Projectiles ==========
 		//ObjectManager.addProjectile("ember", EntityEmber.class, ObjectManager.getItem("embercharge"), new DispenserBehaviorEmber());

@@ -66,5 +66,21 @@
     "entity.ika.step": {
         "category": "neutral",
         "sounds": [{"name": "entity/ika/step", "stream": false}]
+    },
+    "entity.abtu.say": {
+        "category": "neutral",
+        "sounds": [{"name": "entity/abtu/say", "stream": false}]
+    },
+    "entity.abtu.hurt": {
+        "category": "neutral",
+        "sounds": [{"name": "entity/abtu/hurt", "stream": false}]
+    },
+    "entity.abtu.death": {
+        "category": "neutral",
+        "sounds": [{"name": "entity/abtu/death", "stream": false}]
+    },
+    "entity.abtu.attack": {
+        "category": "neutral",
+        "sounds": [{"name": "entity/abtu/attack", "stream": false}]
     }
 }

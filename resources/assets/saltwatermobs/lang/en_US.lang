@@ -8,6 +8,8 @@ entity.saltwatermobs.skylus.name=Skylus
 entity.saltwatermobs.skylus.description=Squid like creatures that form and live in tough shells. If damaged enough, their shells will break, this reduces their defense but increases their attack and movement speeds. Their attacks blind with ink.
 entity.saltwatermobs.ika.name=Ika
 entity.saltwatermobs.ika.description=Slow snail-turtle-shellfish! Ika can be lured and bred with vegetables, however they can only survive on land for a small amount of time. Farm with care! 
+entity.saltwatermobs.abtu.name=Abtu
+entity.saltwatermobs.abtu.description=Vicious fish with big teeth! It is rare to find adults, but if you do, you best swim away as they will swarm you with their children!
 #
 # Items
 item.saltwaterspawn.name=Spawn

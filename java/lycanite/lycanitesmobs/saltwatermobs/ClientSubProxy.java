@@ -1,6 +1,7 @@
 package lycanite.lycanitesmobs.saltwatermobs;
 
 import lycanite.lycanitesmobs.AssetManager;
+import lycanite.lycanitesmobs.saltwatermobs.model.ModelAbtu;
 import lycanite.lycanitesmobs.saltwatermobs.model.ModelIka;
 import lycanite.lycanitesmobs.saltwatermobs.model.ModelLacedon;
 import lycanite.lycanitesmobs.saltwatermobs.model.ModelSkylus;
@@ -18,5 +19,6 @@ public class ClientSubProxy extends CommonSubProxy {
 		AssetManager.addModel("lacedon", new ModelLacedon());
 		AssetManager.addModel("skylus", new ModelSkylus());
         AssetManager.addModel("ika", new ModelIka());
+        AssetManager.addModel("abtu", new ModelAbtu());
 	}
 }

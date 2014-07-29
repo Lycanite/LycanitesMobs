@@ -1,8 +1,9 @@
-package lycanite.lycanitesmobs.infernomobs.model;
+package lycanite.lycanitesmobs.saltwatermobs.model;
 
 import lycanite.lycanitesmobs.AssetManager;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.model.ModelCustomObj;
-import lycanite.lycanitesmobs.infernomobs.InfernoMobs;
+import lycanite.lycanitesmobs.saltwatermobs.SaltwaterMobs;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.model.obj.WavefrontObject;
@@ -10,27 +11,30 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ModelCephignis extends ModelCustomObj {
+public class ModelAbtu extends ModelCustomObj {
 	
 	// ==================================================
   	//                    Constructors
   	// ==================================================
-    public ModelCephignis() {
+    public ModelAbtu() {
         this(1.0F);
     }
     
-    public ModelCephignis(float shadowSize) {
+    public ModelAbtu(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("cephignis", InfernoMobs.domain, "entity/cephignis");
+    	model = (WavefrontObject)AssetManager.getObjModel("abtu", SaltwaterMobs.domain, "entity/abtu");
     	
     	// Get Parts:
     	parts = model.groupObjects;
     	
     	// Set Rotation Centers:
-    	setPartCenter("head", 0F, 0.5F, 0.4F);
-    	setPartCenter("body", 0F, 0.5F, 0.4F);
-    	setPartCenter("armleft", 0.15F, 0.4F, 0.3F);
-    	setPartCenter("armright", -0.15F, 0.4F, 0.3F);
+    	setPartCenter("head", 0F, 0.4F, 0.8F);
+    	setPartCenter("mouth", 0F, 0.25F, 1.0F);
+    	setPartCenter("body", 0F, 0.4F, 0.8F);
+    	
+    	// Lock Head:
+    	this.lockHeadX = true;
+    	this.lockHeadY = true;
     }
     
     
@@ -53,17 +57,22 @@ public class ModelCephignis extends ModelCustomObj {
     	float rotY = 0F;
     	float rotZ = 0F;
     	
+    	// Looking:
+    	if(partName.equals("mouth")) {
+    		if(!lockHeadX)
+    			rotX += Math.toDegrees(lookX / (180F / (float)Math.PI));
+    		if(!lockHeadY)
+    			rotY += Math.toDegrees(lookY / (180F / (float)Math.PI));
+    	}
+    	
     	// Idle:
     	if(partName.equals("body")) {
 			rotY = (float)-Math.toDegrees(MathHelper.cos(loop * 0.2F) * 0.05F - 0.05F);
 		}
-    	if(partName.equals("armleft")) {
-	        rotZ -= Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F + 0.05F);
-	        rotX -= Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
-    	}
-    	if(partName.equals("armright")) {
-	        rotZ += Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F + 0.05F);
-	        rotX += Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
+    	if(partName.equals("mouth")) {
+    		this.subCenterPart("mouth");
+    		this.rotate(15F - (float)-Math.toDegrees(MathHelper.cos(loop * -0.1F) * 0.05F - 0.05F), 0.0F, 0.0F);
+    		this.unsubCenterPart("mouth");
     	}
     	
     	// Walking:
@@ -71,21 +80,19 @@ public class ModelCephignis extends ModelCustomObj {
 	    	if(partName.equals("body")) {
 				rotY += (float)-Math.toDegrees(MathHelper.cos(time * 0.1F) * 0.2F);
 			}
-	    	float walkSwing = 0.6F;
-	    	if(partName.equals("armleft")) {
-	    		rotX += Math.toDegrees(MathHelper.cos(time * walkSwing) * 1.0F * distance * 0.5F);
-				rotZ -= Math.toDegrees(MathHelper.cos(time * walkSwing) * 0.5F * distance * 0.5F);
-	    	}
-	    	if(partName.equals("armright")) {
-	    		rotX += Math.toDegrees(MathHelper.cos(time * walkSwing + (float)Math.PI) * 1.0F * distance * 0.5F);
-				rotZ += Math.toDegrees(MathHelper.cos(time * walkSwing + (float)Math.PI) * 0.5F * distance * 0.5F);
-	    	}
     	}
 		
+		// Attack:
+		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
+	    	if(partName.equals("mouth")) {
+	    		this.rotate(30.0F, 0.0F, 0.0F);
+	    	}
+		}
+		
     	// Apply Animations:
-    	rotate(rotation, angleX, angleY, angleZ);
-    	rotate(rotX, rotY, rotZ);
-    	translate(posX, posY, posZ);
+		this.rotate(rotation, angleX, angleY, angleZ);
+    	this.rotate(rotX, rotY, rotZ);
+    	this.translate(posX, posY, posZ);
     }
     
     
@@ -94,7 +101,7 @@ public class ModelCephignis extends ModelCustomObj {
    	// ==================================================
     @Override
     public void childScale(String partName) {
-    	if(partName.equals("head"))
+    	if(partName.equals("head") || partName.equals("mouth"))
     		translate(-(getPartCenter(partName)[0] / 2), -(getPartCenter(partName)[1] / 2), -(getPartCenter(partName)[2] / 2));
     	else
         	super.childScale(partName);

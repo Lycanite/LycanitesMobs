@@ -197,13 +197,19 @@ public class LycanitesMobs implements ILycaniteMod {
 	// ==================================================
 	//                     Debugging
 	// ==================================================
-	public static void printDebug(String key, String message) {
-		if("".equals(key) || config.getDebug(key)) {
-			System.out.println("[LycanitesMobs] [Debug] " + message);
-		}
-	}
-	
-	public static void printWarning(String key, String message) {
+    public static void printInfo(String key, String message) {
+        if("".equals(key) || config.getDebug(key)) {
+            System.out.println("[LycanitesMobs] [Info] " + message);
+        }
+    }
+
+    public static void printDebug(String key, String message) {
+        if("".equals(key) || config.getDebug(key)) {
+            System.out.println("[LycanitesMobs] [Debug] " + message);
+        }
+    }
+
+    public static void printWarning(String key, String message) {
 		if("".equals(key) || config.getDebug(key)) {
 			System.err.println("[LycanitesMobs] [WARNING] " + message);
 		}

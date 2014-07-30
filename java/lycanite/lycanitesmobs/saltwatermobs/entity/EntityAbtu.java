@@ -103,9 +103,18 @@ public class EntityAbtu extends EntityCreatureTameable implements IMob, IGroupPr
 	// ========== Living Update ==========
 	@Override
     public void onLivingUpdate() {
-		if(this.hasAttackTarget() && this.ticksExisted % 20 == 0) {
+		// Summon Allies:
+        if(this.hasAttackTarget() && this.ticksExisted % 20 == 0) {
 			this.allyUpdate();
 		}
+
+        // Random Leaping:
+        if(!this.worldObj.isRemote) {
+            if(this.hasAttackTarget() && this.isChild()) {
+                if(this.rand.nextInt(10) == 0)
+                    this.leap(4.0F, 0.6D, this.getAttackTarget());
+            }
+        }
 		
         super.onLivingUpdate();
     }

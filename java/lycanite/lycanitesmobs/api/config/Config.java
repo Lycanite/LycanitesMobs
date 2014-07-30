@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import lycanite.lycanitesmobs.LycanitesMobs;
+import lycanite.lycanitesmobs.api.ILycaniteMod;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 
@@ -17,16 +18,17 @@ public class Config {
 	public static Map<String, Config> configs = new HashMap<String, Config>();
 	
 	// Register Config:
-	public static void registerConfig(String configName, Config config) {
+	public static void registerConfig(Config config) {
 		if(config != null)
-			configs.put(configName, config);
+			configs.put(config.fileName, config);
 	}
 	
 	// Get Config:
-	public static Config getConfig(String configName) {
-		if(!configs.containsKey(configName))
-			configs.put(configName, new Config(configName));
-		return configs.get(configName);
+	public static Config getConfig(ILycaniteMod mod, String configName) {
+        String configFileName = mod.getDomain().toLowerCase() + "-" + configName.toLowerCase();
+		if(!configs.containsKey(configFileName))
+			registerConfig(new Config(mod, configName));
+		return configs.get(configFileName);
 	}
 	
 	
@@ -34,19 +36,17 @@ public class Config {
 	// Configuration:
 	public Configuration config;
 	
-	public String configName;
+	public ILycaniteMod mod;
+    public String configName;
+    public String fileName;
 	public List<IConfigListener> updateListeners = new ArrayList<IConfigListener>();
-	
-	public Map<String, Boolean> bools = new HashMap<String, Boolean>();
-	public Map<String, Integer> ints = new HashMap<String, Integer>();
-	public Map<String, Double> doubles = new HashMap<String, Double>();
-	public Map<String, String> strings = new HashMap<String, String>();
-	public Map<String, String[]> lists = new HashMap<String, String[]>();
 	
 	
 	// ========== Constructor ==========
-	public Config(String name) {
+	public Config(ILycaniteMod mod, String name) {
+        this.mod = mod;
 		this.configName = name;
+        this.fileName = mod.getDomain().toLowerCase() + "-" + name.toLowerCase();
 		this.init();
 	}
 	
@@ -54,28 +54,28 @@ public class Config {
 	// ========== Pre-Init ==========
 	public void init() {
 		
-		// ========== Create/Load Config File ==========
+		// Create/Load Config File:
 		String configDirPath = LycanitesMobs.proxy.getMinecraftDir() + "/config/" + LycanitesMobs.modid;
 		File configDir = new File(configDirPath);
 		configDir.mkdir();
-		File configFile = new File(configDirPath + "/" + this.configName + ".cfg");
+		File configFile = new File(configDirPath + "/" + this.fileName + ".cfg");
 	    try {
 	    	configFile.createNewFile();
-	    	System.out.println("[INFO] [LycanitesMobs-" + this.configName + "] Successfully created/read configuration file.");
+	    	LycanitesMobs.printInfo("", "Config " + this.fileName + " created successfully.");
 	    }
 		catch (IOException e) {
-	    	System.out.println("[SEVERE] [LycanitesMobs-" + this.configName + "] Could not create configuration file:");
+            LycanitesMobs.printWarning("", "Config " + this.fileName + " could not be created:");
 	    	System.out.println(e);
-	    	System.out.println("Make sure the config folder has write permissions or (if using Windows) isn't read only and that Minecraft is not in Program Files on a non-administrator account.");
+            LycanitesMobs.printWarning("", "Make sure the config folder has write permissions or (if using Windows) isn't read only and that Minecraft is not in Program Files on a non-administrator account.");
 		}
 	    
-	    // ========== Run Config File ==========
+	    // Read Config File:
 		this.config = new Configuration(configFile);
 		this.config.load();
 	}
 	
 	
-	// ========== Save ==========
+	// ========== Update ==========
 	public void update() {
 		this.config.save();
 		for(IConfigListener updateListener : this.updateListeners) {
@@ -83,6 +83,13 @@ public class Config {
 				updateListener.onConfigUpdate(this);
 		}
 	}
+
+
+    // ========== Add Listener ==========
+    public void addListener(IConfigListener listener) {
+        if(!this.updateListeners.contains(listener))
+            this.updateListeners.add(listener);
+    }
 	
 	
 	// ========================================
@@ -271,11 +278,15 @@ public class Config {
 	//			   Set Value Lists
 	// ========================================
 	
-	// ========== Set String ==========
-	public void setStringList(String category, String key, String[] values) {
-		this.setStringList(category, key, values, null);
+	// ========== Set List ==========
+	public void setList(String category, String key, Object[] objValues) {
+		this.setList(category, key, objValues, null);
 	}
-	public void setStringList(String category, String key, String[] values, String comment) {
+	public void setList(String category, String key, Object[] objValues, String comment) {
+        List<String> valuesList = new ArrayList<String>();
+        for(Object objValue : objValues)
+            valuesList.add(objValue.toString());
+        String[] values = valuesList.toArray(new String[valuesList.size()]);
 		Property property = config.get(category, key, values);
 		if(comment != null) property.comment = comment;
 		property.set(values);

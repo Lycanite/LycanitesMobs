@@ -6,6 +6,9 @@ import lycanite.lycanitesmobs.api.spawning.SpawnType;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.world.biome.BiomeGenBase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SpawnInfo {
 	// ========== Global Spawn Settings ==========
 	public static double spawnLimitRange = 32D;
@@ -23,6 +26,9 @@ public class SpawnInfo {
 	public boolean enabled;
 	
 	// ========== Spawn Type ==========
+    /** A list of Spawn Types to use. Can be: MONSTER, CREATURE, WATERCREATURE, AMBIENT, PORTAL, NETHER, FIRE, LAVA, etc. **/
+    public List<String> spawnTypes = new ArrayList<String>();
+
 	/** The method that this mob should with. Can be MONSTER, CREATURE, WATERCREATURE, AMBIENT, PORTAL, NETHER, FIRE or LAVA. **/
 	public String spawnTypeName;
 	

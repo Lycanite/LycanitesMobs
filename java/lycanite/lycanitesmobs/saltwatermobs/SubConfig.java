@@ -16,7 +16,7 @@ public class SubConfig extends OldConfig {
 		loadSetting(this.featureStrings, "Feature Control", "Dimensions", "Group Dimensions", "0");
 
 		// ========== Special Feature Control ==========
-		loadSetting(this.featureInts, "Feature Control", "AbtuSwarmLimit", "Abtu Swarm Limit", 20);
+		loadSetting(this.featureInts, "Feature Control", "AbtuSwarmLimit", "Abtu Swarm Limit", 40);
 
 		// ========== Special Feature Control ==========
 		// None

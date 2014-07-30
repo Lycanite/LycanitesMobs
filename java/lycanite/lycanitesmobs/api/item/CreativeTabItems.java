@@ -18,7 +18,9 @@ public class CreativeTabItems extends CreativeTabs {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Item getTabIconItem() {
-		if(ObjectManager.getItem("HellfireCharge") != null)
+		if(ObjectManager.getItem("soulgazer") != null)
+			return ObjectManager.getItem("soulgazer");
+		else if(ObjectManager.getItem("HellfireCharge") != null)
 			return ObjectManager.getItem("HellfireCharge");
 		else if(ObjectManager.getItem("JoustMeat") != null)
 			return ObjectManager.getItem("JoustMeat");

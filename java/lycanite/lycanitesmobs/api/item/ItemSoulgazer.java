@@ -1,7 +1,5 @@
 package lycanite.lycanitesmobs.api.item;
 
-import java.util.List;
-
 import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.info.CreatureKnowledge;
@@ -22,21 +20,7 @@ public class ItemSoulgazer extends ItemBase {
         super();
         this.setMaxStackSize(1);
         this.itemName = "soulgazer";
-        this.textureName = this.itemName.toLowerCase();
-        setUnlocalizedName(this.itemName);
-    }
-    
-    
-	// ==================================================
-	//                      Info
-	// ==================================================
-    @Override
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-    	par3List.add("\u00a7a" + "Right click on a mob");
-    	par3List.add("\u00a7a" + "to look into it's soul.");
-    	par3List.add("\u00a7a" + "A creatures soul can");
-    	par3List.add("\u00a7a" + "teach many things!");
-    	super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
+        this.setup();
     }
 	
     

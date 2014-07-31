@@ -375,9 +375,7 @@ public class OldConfig {
 				biomeTypeName = biomeTypeName.substring(1);
 			}
 			
-			if("RIVER".equals(biomeTypeName))
-				selectedBiomes = new BiomeGenBase[] {BiomeGenBase.river, BiomeGenBase.frozenRiver};
-			else if("ALL".equals(biomeTypeName)) {
+			if("ALL".equals(biomeTypeName)) {
 				for(BiomeDictionary.Type biomeType : BiomeDictionary.Type.values()) {
 					if(selectedBiomes == null)
 						selectedBiomes = BiomeDictionary.getBiomesForType(biomeType);

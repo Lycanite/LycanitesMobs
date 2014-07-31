@@ -5,6 +5,7 @@ import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.OldConfig;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
+import lycanite.lycanitesmobs.api.config.ModConfig;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
@@ -127,7 +128,12 @@ public class ArcticMobs implements ILycaniteMod {
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("arcticegg"), new DispenserBehaviorMobEggCustom());
-		ObjectManager.addMob(new MobInfo(this, "reiver", EntityReiver.class, 0xDDEEFF, 0x99DDEE, 2).setSummonable(true));
+		ModConfig spawningConfig = ModConfig.getConfig(this, "spawning");
+        String groupDimensionEntries = spawningConfig.getString("Group Spawning Defaults", "Spawn Dimension");
+        MobInfo newMob;
+        newMob = new MobInfo(this, "reiver", EntityReiver.class, 0xDDEEFF, 0x99DDEE)
+                .setPeaceful(false).setSummonable(true).setSummonCost(2);
+        newMob.spawnInfo.setSpawnTypes("MONSTER, FROSTFIRE");
 		ObjectManager.addMob(new MobInfo(this, "frostweaver", EntityFrostweaver.class, 0xAADDFF, 0x226699, 2).setSummonable(true));
 		ObjectManager.addMob(new MobInfo(this, "yeti", EntityYeti.class, 0xEEEEFF, 0x000099, 2).setSummonable(false));
 		ObjectManager.addMob(new MobInfo(this, "wendigo", EntityWendigo.class, 0xCCCCFF, 0x0055FF, 8).setSummonable(false));

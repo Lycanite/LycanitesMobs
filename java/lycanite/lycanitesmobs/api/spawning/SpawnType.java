@@ -125,15 +125,23 @@ public class SpawnType {
 	
 	
     // ==================================================
-    //                   Get Spawn Type
+    //                  Get Spawn Types
     // ==================================================
 	public static SpawnType getSpawnType(String spawnTypeName) {
-		if("NETHER".equalsIgnoreCase(spawnTypeName))
-			spawnTypeName = "PORTAL";
 		if(spawnTypeMap.containsKey(spawnTypeName))
 			return spawnTypeMap.get(spawnTypeName);
 		return null;
 	}
+
+    public static SpawnType[] getSpawnTypes(String spawnTypeNames) {
+        List<SpawnType> spawnTypeList = new ArrayList<SpawnType>();
+        for(String spawnTypeName : spawnTypeNames.split(",")) {
+            SpawnType spawnType = getSpawnType(spawnTypeName);
+            if(spawnType != null)
+                spawnTypeList.add(spawnType);
+        }
+        return spawnTypeList.toArray(new SpawnType[spawnTypeList.size()]);
+    }
 	
 	
     // ==================================================

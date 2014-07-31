@@ -2,6 +2,7 @@ package lycanite.lycanitesmobs;
 
 import lycanite.lycanitesmobs.api.ILycaniteMod;
 import lycanite.lycanitesmobs.api.entity.EntityPortal;
+import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.info.SpawnInfo;
@@ -45,7 +46,8 @@ public class LycanitesMobs implements ILycaniteMod {
 	
 	public static int mobID = -1;
 	public static int projectileID = 99;
-	
+
+    public static GroupInfo baseGroup = new GroupInfo(name);
 	public static OldConfig config = new SubConfig();
 	
 	// Instance:

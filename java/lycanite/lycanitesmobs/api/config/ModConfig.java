@@ -9,46 +9,47 @@ import java.util.Map;
 
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
+import lycanite.lycanitesmobs.api.info.GroupInfo;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 
-public class Config {
+public class ModConfig {
 	// ========== Config Collections ==========
 	// Configurations:
-	public static Map<String, Config> configs = new HashMap<String, Config>();
+	public static Map<String, ModConfig> configs = new HashMap<String, ModConfig>();
 	
 	// Register Config:
-	public static void registerConfig(Config config) {
+	public static void registerConfig(ModConfig config) {
 		if(config != null)
 			configs.put(config.fileName, config);
 	}
-	
-	// Get Config:
-	public static Config getConfig(ILycaniteMod mod, String configName) {
-        String configFileName = mod.getDomain().toLowerCase() + "-" + configName.toLowerCase();
-		if(!configs.containsKey(configFileName))
-			registerConfig(new Config(mod, configName));
-		return configs.get(configFileName);
-	}
+
+    // Get Config:
+    public static ModConfig getConfig(GroupInfo group, String configName) {
+        String configFileName = group.filename + "-" + configName.toLowerCase();
+        if(!configs.containsKey(configFileName))
+            registerConfig(new ModConfig(group, configName));
+        return configs.get(configFileName);
+    }
 	
 	
 	// ========== Config ==========
 	// Configuration:
 	public Configuration config;
-	
-	public ILycaniteMod mod;
+
+    public GroupInfo group;
     public String configName;
     public String fileName;
 	public List<IConfigListener> updateListeners = new ArrayList<IConfigListener>();
 	
 	
 	// ========== Constructor ==========
-	public Config(ILycaniteMod mod, String name) {
-        this.mod = mod;
-		this.configName = name;
-        this.fileName = mod.getDomain().toLowerCase() + "-" + name.toLowerCase();
-		this.init();
-	}
+    public ModConfig(GroupInfo group, String name) {
+        this.group = group;
+        this.configName = name;
+        this.fileName = group.filename + "-" + name.toLowerCase();
+        this.init();
+    }
 	
 	
 	// ========== Pre-Init ==========
@@ -90,6 +91,14 @@ public class Config {
         if(!this.updateListeners.contains(listener))
             this.updateListeners.add(listener);
     }
+
+
+    // ========================================
+    //		      Category Comments
+    // ========================================
+    public void setCategoryComment(String category, String comment) {
+        this.config.addCustomCategoryComment(category, comment);
+    }
 	
 	
 	// ========================================
@@ -106,7 +115,7 @@ public class Config {
 	}
 	
 	public boolean getBool(String category, String key, boolean defaultValue, String comment) {
-		Property property = config.get(category, key, defaultValue);
+		Property property = this.config.get(category, key, defaultValue);
 		if(comment != null) property.comment = comment;
 		return property.getBoolean(defaultValue);
 	}
@@ -121,7 +130,7 @@ public class Config {
 	}
 	
 	public int getInt(String category, String key, int defaultValue, String comment) {
-		Property property = config.get(category, key, defaultValue);
+		Property property = this.config.get(category, key, defaultValue);
 		if(comment != null) property.comment = comment;
 		return property.getInt(defaultValue);
 	}
@@ -136,7 +145,7 @@ public class Config {
 	}
 	
 	public double getDouble(String category, String key, double defaultValue, String comment) {
-		Property property = config.get(category, key, defaultValue);
+		Property property = this.config.get(category, key, defaultValue);
 		if(comment != null) property.comment = comment;
 		return property.getDouble(defaultValue);
 	}
@@ -151,7 +160,7 @@ public class Config {
 	}
 	
 	public String getString(String category, String key, String defaultValue, String comment) {
-		Property property = config.get(category, key, defaultValue);
+		Property property = this.config.get(category, key, defaultValue);
 		if(comment != null) property.comment = comment;
 		return property.getString();
 	}
@@ -171,7 +180,7 @@ public class Config {
 	}
 	
 	public boolean[] getBoolList(String category, String key, boolean[] defaultValue, String comment) {
-		Property property = config.get(category, key, defaultValue);
+		Property property = this.config.get(category, key, defaultValue);
 		if(comment != null) property.comment = comment;
 		return property.getBooleanList();
 	}
@@ -186,7 +195,7 @@ public class Config {
 	}
 	
 	public int[] getIntList(String category, String key, int[] defaultValue, String comment) {
-		Property property = config.get(category, key, defaultValue);
+		Property property = this.config.get(category, key, defaultValue);
 		if(comment != null) property.comment = comment;
 		return property.getIntList();
 	}
@@ -201,7 +210,7 @@ public class Config {
 	}
 	
 	public double[] getDoubleList(String category, String key, double[] defaultValue, String comment) {
-		Property property = config.get(category, key, defaultValue);
+		Property property = this.config.get(category, key, defaultValue);
 		if(comment != null) property.comment = comment;
 		return property.getDoubleList();
 	}
@@ -216,7 +225,7 @@ public class Config {
 	}
 	
 	public String[] getStringList(String category, String key, String[] defaultValue, String comment) {
-		Property property = config.get(category, key, defaultValue);
+		Property property = this.config.get(category, key, defaultValue);
 		if(comment != null) property.comment = comment;
 		return property.getStringList();
 	}
@@ -234,7 +243,7 @@ public class Config {
 		this.setBool(category, key, value, null);
 	}
 	public void setBool(String category, String key, boolean value, String comment) {
-		Property property = config.get(category, key, value);
+		Property property = this.config.get(category, key, value);
 		if(comment != null) property.comment = comment;
 		property.set(value);
 		this.update();
@@ -245,7 +254,7 @@ public class Config {
 		this.setInt(category, key, value, null);
 	}
 	public void setInt(String category, String key, int value, String comment) {
-		Property property = config.get(category, key, value);
+		Property property = this.config.get(category, key, value);
 		if(comment != null) property.comment = comment;
 		property.set(value);
 		this.update();
@@ -256,7 +265,7 @@ public class Config {
 		this.setDouble(category, key, value, null);
 	}
 	public void setDouble(String category, String key, double value, String comment) {
-		Property property = config.get(category, key, value);
+		Property property = this.config.get(category, key, value);
 		if(comment != null) property.comment = comment;
 		property.set(value);
 		this.update();
@@ -267,7 +276,7 @@ public class Config {
 		this.setString(category, key, value, null);
 	}
 	public void setString(String category, String key, String value, String comment) {
-		Property property = config.get(category, key, value);
+		Property property = this.config.get(category, key, value);
 		if(comment != null) property.comment = comment;
 		property.set(value);
 		this.update();
@@ -287,7 +296,7 @@ public class Config {
         for(Object objValue : objValues)
             valuesList.add(objValue.toString());
         String[] values = valuesList.toArray(new String[valuesList.size()]);
-		Property property = config.get(category, key, values);
+		Property property = this.config.get(category, key, values);
 		if(comment != null) property.comment = comment;
 		property.set(values);
 		this.update();

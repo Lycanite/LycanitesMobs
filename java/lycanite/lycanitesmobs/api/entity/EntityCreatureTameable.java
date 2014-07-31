@@ -3,8 +3,8 @@ package lycanite.lycanitesmobs.api.entity;
 import java.util.HashMap;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAISit;
+import lycanite.lycanitesmobs.api.info.MobInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
@@ -66,7 +66,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     // ========== Name ==========
     @Override
     public String getCommandSenderName() {
-    	if(!this.isTamed() || !LycanitesMobs.config.getFeatureBool("OwnerTags"))
+    	if(!this.isTamed() || !MobInfo.ownerTags)
     		return super.getCommandSenderName();
     	
     	String ownerName = this.getOwnerName();
@@ -169,7 +169,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     	if(itemStack != null && !this.worldObj.isRemote) {
     		
     		// Taming:
-    		if(!this.isTamed() && isTamingItem(itemStack) && LycanitesMobs.config.getFeatureBool("MobTaming"))
+    		if(!this.isTamed() && isTamingItem(itemStack) && MobInfo.tamingEnabled)
     			commands.put(CMD_PRIOR.IMPORTANT.id, "Tame");
     		
     		// Feeding:

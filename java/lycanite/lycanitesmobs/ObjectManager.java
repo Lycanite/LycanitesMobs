@@ -2,13 +2,16 @@ package lycanite.lycanitesmobs;
 import java.util.HashMap;
 import java.util.Map;
 
-import lycanite.lycanitesmobs.api.ILycaniteMod;
+import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.info.EntityListCustom;
+import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.SpawnInfo;
+import lycanite.lycanitesmobs.api.spawning.SpawnType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.BehaviorProjectileDispense;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.Item;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.DungeonHooks;
@@ -31,13 +34,13 @@ public class ObjectManager {
 	
 	public static Map<String, Class> projectiles = new HashMap<String, Class>();
 	
-	public static ILycaniteMod currentMod;
+	public static GroupInfo currentGroup;
 	
     // ==================================================
     //                        Setup
     // ==================================================
-	public static void setCurrentMod(ILycaniteMod mod) {
-		currentMod = mod;
+	public static void setCurrentGroup(GroupInfo group) {
+		currentGroup = group;
 	}
 	
 	
@@ -70,17 +73,18 @@ public class ObjectManager {
 	public static Item addItem(String name, Item item) {
 		name = name.toLowerCase();
 		items.put(name, item);
-		if(currentMod != null)
-			GameRegistry.registerItem(item, name, currentMod.getModID());
+		if(currentGroup != null)
+			GameRegistry.registerItem(item, name, currentGroup.name);
         return item;
 	}
 
 	// ========== Potion Effect ==========
-	public static PotionBase addPotionEffect(String name, OldConfig config, boolean isBad, int color, int iconX, int iconY) {
+	public static PotionBase addPotionEffect(String name, ConfigBase config, boolean isBad, int color, int iconX, int iconY) {
+		int effectIDOverride = config.getInt("Potion Effects", name + " Effect Override ID", 0);
 		name = name.toLowerCase();
 		PotionBase potion = null;
-		if(config.effectIDs.get(name.toLowerCase()) != null && config.effectIDs.get(name.toLowerCase()) > 0)
-			potion = new PotionBase(config.effectIDs.get(name), "potion." + name, isBad, color);
+		if(effectIDOverride > 0)
+			potion = new PotionBase(effectIDOverride, "potion." + name, isBad, color);
 		else
 			potion = new PotionBase("potion." + name, isBad, color);
 		potion.setIconIndex(iconX, iconY);
@@ -90,53 +94,52 @@ public class ObjectManager {
 	
 	// ========== Creature ==========
 	public static MobInfo addMob(MobInfo mobInfo) {
-		ILycaniteMod mod = mobInfo.mod;
-		String modid = mod.getModID();
-		String domain = mod.getDomain();
+		GroupInfo group = mobInfo.group;
+		String filename = group.filename;
 		
 		String name = mobInfo.name.toLowerCase();
 		SpawnInfo spawnInfo = mobInfo.spawnInfo;
 		mobs.put(name, mobInfo);
 		
 		// Sounds:
-		AssetManager.addSound(name + "_say", domain, "entity." + name + ".say");
-		AssetManager.addSound(name + "_hurt", domain, "entity." + name + ".hurt");
-		AssetManager.addSound(name + "_death", domain, "entity." + name + ".death");
-		AssetManager.addSound(name + "_step", domain, "entity." + name + ".step");
-		AssetManager.addSound(name + "_attack", domain, "entity." + name + ".attack");
-		AssetManager.addSound(name + "_jump", domain, "entity." + name + ".jump");
-		AssetManager.addSound(name + "_fly", domain, "entity." + name + ".fly");
-		AssetManager.addSound(name + "_tame", domain, "entity." + name + ".tame");
-		AssetManager.addSound(name + "_beg", domain, "entity." + name + ".beg");
-		AssetManager.addSound(name + "_eat", domain, "entity." + name + ".eat");
-		AssetManager.addSound(name + "_mount", domain, "entity." + name + ".mount");
+		AssetManager.addSound(name + "_say", filename, "entity." + name + ".say");
+		AssetManager.addSound(name + "_hurt", filename, "entity." + name + ".hurt");
+		AssetManager.addSound(name + "_death", filename, "entity." + name + ".death");
+		AssetManager.addSound(name + "_step", filename, "entity." + name + ".step");
+		AssetManager.addSound(name + "_attack", filename, "entity." + name + ".attack");
+		AssetManager.addSound(name + "_jump", filename, "entity." + name + ".jump");
+		AssetManager.addSound(name + "_fly", filename, "entity." + name + ".fly");
+		AssetManager.addSound(name + "_tame", filename, "entity." + name + ".tame");
+		AssetManager.addSound(name + "_beg", filename, "entity." + name + ".beg");
+		AssetManager.addSound(name + "_eat", filename, "entity." + name + ".eat");
+		AssetManager.addSound(name + "_mount", filename, "entity." + name + ".mount");
 		
 		// ID and Enabled Check:
 		LycanitesMobs.printDebug("MobSetup", "~0==================== Mob Setup: "+ mobInfo.name +" ====================0~");
-		int mobID = mod.getNextMobID();
+		int mobID = group.getNextMobID();
 		if(!mobInfo.mobEnabled) {
-			LycanitesMobs.printDebug("MobSetup", "Mob Disabled: " + name + " - " + mobInfo.entityClass + " (" + modid + ")");
+			LycanitesMobs.printDebug("MobSetup", "Mob Disabled: " + name + " - " + mobInfo.entityClass + " (" + group.name + ")");
 			return mobInfo;
 		}
 		
 		// Mapping and Registration:
-		if(!entityLists.containsKey(domain))
-			entityLists.put(domain, new EntityListCustom());
-		entityLists.get(domain).addMapping(mobInfo.entityClass, mobInfo.getRegistryName(), mobID, mobInfo.eggBackColor, mobInfo.eggForeColor);
-		EntityRegistry.registerModEntity(mobInfo.entityClass, name, mobID, mod.getInstance(), 128, 3, true);
+		if(!entityLists.containsKey(filename))
+			entityLists.put(filename, new EntityListCustom());
+		entityLists.get(filename).addMapping(mobInfo.entityClass, mobInfo.getRegistryName(), mobID, mobInfo.eggBackColor, mobInfo.eggForeColor);
+		EntityRegistry.registerModEntity(mobInfo.entityClass, name, mobID, group.mod, 128, 3, true);
 		
 		// Debug Message - Added:
-		LycanitesMobs.printDebug("MobSetup", "Mob Added: " + name + " - " + mobInfo.entityClass + " (" + modid + ")");
+		LycanitesMobs.printDebug("MobSetup", "Mob Added: " + name + " - " + mobInfo.entityClass + " (" + group.name + ")");
 		
 		// Add Spawn:
 		boolean spawnAdded = false;
 		if(!SpawnInfo.disableAllSpawning) {
 			if(spawnInfo.enabled && spawnInfo.spawnWeight > 0 && spawnInfo.spawnGroupMax > 0) {
-				if(spawnInfo.creatureType != null) {
-					EntityRegistry.addSpawn(mobInfo.entityClass, spawnInfo.spawnWeight, spawnInfo.spawnGroupMin, spawnInfo.spawnGroupMax, spawnInfo.creatureType, spawnInfo.biomes);
+				for(EnumCreatureType creatureType : spawnInfo.creatureTypes) {
+					EntityRegistry.addSpawn(mobInfo.entityClass, spawnInfo.spawnWeight, spawnInfo.spawnGroupMin, spawnInfo.spawnGroupMax, creatureType, spawnInfo.biomes);
 				}
-				if(spawnInfo.spawnType != null) {
-					spawnInfo.spawnType.addSpawn(spawnInfo);
+				for(SpawnType spawnType : spawnInfo.spawnTypes) {
+					spawnType.addSpawn(spawnInfo);
 				}
 				spawnAdded = true;
 			}
@@ -144,11 +147,13 @@ public class ObjectManager {
 		
 		// Debug Message - Spawn Added:
 		if(spawnAdded) {
-			LycanitesMobs.printDebug("MobSetup", "Mob Spawn Added - Type: " + spawnInfo.spawnTypeName + " Weight: " + spawnInfo.spawnWeight + " Min: " + spawnInfo.spawnGroupMin + " Max: " + spawnInfo.spawnGroupMax);
-			LycanitesMobs.printDebug("MobSetup", "Vanilla Spawn Type: " + spawnInfo.creatureType);
-			LycanitesMobs.printDebug("MobSetup", "Custom Spawn Type: " + (spawnInfo.spawnType != null ? spawnInfo.spawnType.typeName : "null"));
+			LycanitesMobs.printDebug("MobSetup", "Mob Spawn Added - Weight: " + spawnInfo.spawnWeight + " Min: " + spawnInfo.spawnGroupMin + " Max: " + spawnInfo.spawnGroupMax);
+			for(EnumCreatureType creatureType : spawnInfo.creatureTypes)
+				LycanitesMobs.printDebug("MobSetup", "Vanilla Spawn Type: " + creatureType);
+			for(SpawnType spawnType : spawnInfo.spawnTypes)
+				LycanitesMobs.printDebug("MobSetup", "Custom Spawn Type: " + spawnType);
 			String biomesList = "";
-			if(LycanitesMobs.config.getDebug("MobSetup")) {
+			if(LycanitesMobs.config.getBool("Debug", "MobSetup")) {
 				for(BiomeGenBase biome : spawnInfo.biomes) {
 					if(!"".equals(biomesList))
 						biomesList += ", ";
@@ -182,11 +187,11 @@ public class ObjectManager {
 	// ========== Projectile ==========
 	public static void addProjectile(String name, Class entityClass) {
 		name = name.toLowerCase();
-		ILycaniteMod mod = currentMod;
-		AssetManager.addSound(name, mod.getDomain(), "projectile." + name);
+		GroupInfo group = currentGroup;
+		AssetManager.addSound(name, group.name, "projectile." + name);
 		
-		int projectileID = mod.getNextProjectileID();
-		EntityRegistry.registerModEntity(entityClass, name, projectileID, mod.getInstance(), 64, 1, true);
+		int projectileID = group.getNextProjectileID();
+		EntityRegistry.registerModEntity(entityClass, name, projectileID, group.mod, 64, 1, true);
 		
 		projectiles.put(name, entityClass);
 	}

@@ -1,6 +1,6 @@
 package lycanite.lycanitesmobs;
 
-import lycanite.lycanitesmobs.api.ILycaniteMod;
+import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.entity.EntityPortal;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
@@ -35,7 +35,7 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = LycanitesMobs.modid, name = LycanitesMobs.name, version = LycanitesMobs.version)
-public class LycanitesMobs implements ILycaniteMod {
+public class LycanitesMobs {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
@@ -47,8 +47,8 @@ public class LycanitesMobs implements ILycaniteMod {
 	public static int mobID = -1;
 	public static int projectileID = 99;
 
-    public static GroupInfo baseGroup = new GroupInfo(name);
-	public static OldConfig config = new SubConfig();
+    public static GroupInfo group;
+    public static ConfigBase config;
 	
 	// Instance:
 	@Instance(modid)
@@ -72,11 +72,15 @@ public class LycanitesMobs implements ILycaniteMod {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
-		config.init(modid);
+		config = ConfigBase.getConfig(group, "general");
+		config.setCategoryComment("Debug", "Set debug options to true to show extra debugging information in the console.");
+		group = new GroupInfo(this, name);
+		group.loadFromConfig();
 		this.packetHandler.init();
 		
 		// ========== Custom Potion Effects ==========
-		if(this.config.getFeatureBool("CustomEffects")) {
+		config.setCategoryComment("Potion Effects", "Here you can override each potion effect ID from the automatic ID, use 0 if you want it to stay automatic. Overrides should only be needed if you are running a lot of mods that add custom effects.");
+		if(config.getBool("Potion Effects", "Enable Custom Effects", true, "Set to false to disable the custom potion effects.")) {
 			PotionBase.reserveEffectIDSpace();
 			ObjectManager.addPotionEffect("Paralysis", config, true, 0xFFFF00, 1, 0);
 			ObjectManager.addPotionEffect("Leech", config, true, 0x00FF99, 7, 0);
@@ -103,7 +107,7 @@ public class LycanitesMobs implements ILycaniteMod {
 		SpawnInfo.loadGlobalSettings();
 		
 		// ========== Set Current Mod ==========
-		ObjectManager.setCurrentMod(this);
+		ObjectManager.setCurrentGroup(group);
 		
 		// ========== Create Items ==========
 		ObjectManager.addItem("soulgazer", new ItemSoulgazer());
@@ -200,42 +204,20 @@ public class LycanitesMobs implements ILycaniteMod {
 	//                     Debugging
 	// ==================================================
     public static void printInfo(String key, String message) {
-        if("".equals(key) || config.getDebug(key)) {
+        if("".equals(key) || config.getBool("Debug", key)) {
             System.out.println("[LycanitesMobs] [Info] " + message);
         }
     }
 
     public static void printDebug(String key, String message) {
-        if("".equals(key) || config.getDebug(key)) {
+        if("".equals(key) || config.getBool("Debug", key)) {
             System.out.println("[LycanitesMobs] [Debug] " + message);
         }
     }
 
     public static void printWarning(String key, String message) {
-		if("".equals(key) || config.getDebug(key)) {
+		if("".equals(key) || config.getBool("Debug", key)) {
 			System.err.println("[LycanitesMobs] [WARNING] " + message);
 		}
 	}
-	
-	
-	// ==================================================
-	//                    Mod Info
-	// ==================================================
-	@Override
-	public LycanitesMobs getInstance() { return instance; }
-	
-	@Override
-	public String getModID() { return modid; }
-	
-	@Override
-	public String getDomain() { return domain; }
-	
-	@Override
-	public OldConfig getConfig() { return config; }
-	
-	@Override
-	public int getNextMobID() { return ++this.mobID; }
-	
-	@Override
-	public int getNextProjectileID() { return ++this.projectileID; }
 }

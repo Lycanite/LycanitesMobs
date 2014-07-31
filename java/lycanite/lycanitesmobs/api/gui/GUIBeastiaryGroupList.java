@@ -3,7 +3,7 @@ package lycanite.lycanitesmobs.api.gui;
 import java.util.HashMap;
 import java.util.Map;
 
-import lycanite.lycanitesmobs.api.ILycaniteMod;
+import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
@@ -12,7 +12,7 @@ import cpw.mods.fml.client.GuiScrollingList;
 
 public class GUIBeastiaryGroupList extends GuiScrollingList {
 	GUIBeastiary parentGUI;
-	Map<Integer, ILycaniteMod> groupList = new HashMap<Integer, ILycaniteMod>();
+	Map<Integer, GroupInfo> groupList = new HashMap<Integer, GroupInfo>();
 	
 	// ==================================================
   	//                    Constructor
@@ -28,11 +28,11 @@ public class GUIBeastiaryGroupList extends GuiScrollingList {
   	//                    List Info
   	// ==================================================
 	public void updateList() {
-		this.groupList = new HashMap<Integer, ILycaniteMod>();
+		this.groupList = new HashMap<Integer, GroupInfo>();
 		
 		int groupIndex = 0;
 		for(String groupName : MobInfo.mobGroups.keySet()) {
-			ILycaniteMod group = MobInfo.mobGroups.get(groupName);
+			GroupInfo group = MobInfo.mobGroups.get(groupName);
 			if(group != null && parentGUI.playerExt.beastiary.hasCreatureFromGroup(group)) {
 				this.groupList.put(groupIndex++, group);
 			}
@@ -68,8 +68,8 @@ public class GUIBeastiaryGroupList extends GuiScrollingList {
 
 	@Override
 	protected void drawSlot(int index, int boxRight, int boxTop, int boxBottom, Tessellator tessellator) {
-		ILycaniteMod group = this.groupList.get(index);
+		GroupInfo group = this.groupList.get(index);
 		if(group == null) return;
-		this.parentGUI.getFontRenderer().drawString(StatCollector.translateToLocal(group.getModID() + ".name"), this.left + 2 , boxTop + 4, 0xFFFFFF);
+		this.parentGUI.getFontRenderer().drawString(StatCollector.translateToLocal(group.filename + ".name"), this.left + 2 , boxTop + 4, 0xFFFFFF);
 	}
 }

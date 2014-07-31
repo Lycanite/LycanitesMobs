@@ -1,7 +1,7 @@
 package lycanite.lycanitesmobs.api.entity;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.api.ILycaniteMod;
+import lycanite.lycanitesmobs.api.info.GroupInfo;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MovingObjectPosition;
@@ -14,12 +14,12 @@ public class EntityParticle extends EntityThrowable {
 	public int particleAgeMax = 20;
 	public double particleGravity = 0D;
 	public String texture;
-	public ILycaniteMod mod;
+	public GroupInfo group;
 	
     // ==================================================
     //                      Constructor
     // ==================================================
-	public EntityParticle(World world, double x, double y, double z, String texture, ILycaniteMod mod) {
+	public EntityParticle(World world, double x, double y, double z, String texture, GroupInfo group) {
 		super(world);
 		this.posX = x;
 		this.posY = y;
@@ -28,7 +28,7 @@ public class EntityParticle extends EntityThrowable {
         this.lastTickPosY = y;
         this.lastTickPosZ = z;
 		this.texture = texture;
-		this.mod = mod;
+		this.group = group;
 	}
 	
 	
@@ -94,7 +94,7 @@ public class EntityParticle extends EntityThrowable {
     // ==================================================
     public ResourceLocation getTexture() {
     	if(AssetManager.getTexture(this.texture) == null)
-    		AssetManager.addTexture(this.texture, this.mod.getDomain(), "textures/particles/" + this.texture.toLowerCase() + ".png");
+    		AssetManager.addTexture(this.texture, this.group.filename, "textures/particles/" + this.texture.toLowerCase() + ".png");
     	return AssetManager.getTexture(this.texture);
     }
 }

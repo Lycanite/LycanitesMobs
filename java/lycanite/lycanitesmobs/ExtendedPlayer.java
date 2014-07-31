@@ -3,8 +3,8 @@ package lycanite.lycanitesmobs;
 import java.util.HashMap;
 import java.util.Map;
 
-import lycanite.lycanitesmobs.api.ILycaniteMod;
 import lycanite.lycanitesmobs.api.info.Beastiary;
+import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.SummonSet;
 import lycanite.lycanitesmobs.api.item.ItemStaffSummoning;
@@ -26,7 +26,7 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 	// Player Info and Containers:
 	public EntityPlayer player;
 	public Beastiary beastiary;
-	public ILycaniteMod beastiaryGroup;
+	public GroupInfo beastiaryGroup;
 	public MobInfo beastiaryCreature;
 	public String beastiaryCategory;
 	

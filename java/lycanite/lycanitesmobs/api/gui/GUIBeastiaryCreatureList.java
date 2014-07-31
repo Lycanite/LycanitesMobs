@@ -33,7 +33,7 @@ public class GUIBeastiaryCreatureList extends GuiScrollingList {
 		int creatureIndex = 0;
 		for(String minionName : this.parentGUI.playerExt.getBeastiary().creatureKnowledgeList.keySet()) {
 			MobInfo mobInfo = MobInfo.getFromName(minionName.toLowerCase());
-			if(mobInfo != null && mobInfo.mod == this.parentGUI.getSelectedGroup()) {
+			if(mobInfo != null && mobInfo.group == this.parentGUI.getSelectedGroup()) {
 				this.creatureList.put(creatureIndex++, mobInfo);
 			}
 		}

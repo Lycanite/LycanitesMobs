@@ -1,18 +1,13 @@
 package lycanite.lycanitesmobs.api.info;
 
 import lycanite.lycanitesmobs.LycanitesMobs;
-import lycanite.lycanitesmobs.OldConfig;
-import lycanite.lycanitesmobs.api.config.ModConfig;
+import lycanite.lycanitesmobs.api.config.ConfigBase;
+import lycanite.lycanitesmobs.api.config.ConfigSpawning;
+import lycanite.lycanitesmobs.api.config.ConfigSpawning.SpawnDimensionSet;
+import lycanite.lycanitesmobs.api.config.ConfigSpawning.SpawnTypeSet;
 import lycanite.lycanitesmobs.api.spawning.SpawnType;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraftforge.common.BiomeDictionary;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
-import scala.util.parsing.combinator.testing.Str;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class SpawnInfo {
 	// ========== Global Spawn Settings ==========
@@ -91,7 +86,7 @@ public class SpawnInfo {
     //        Load Global Settings From Config
     // ==================================================
 	public static void loadGlobalSettings() {
-		ModConfig config = ModConfig.getConfig(LycanitesMobs.baseGroup, "spawning");
+		ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "spawning");
 
         spawnLimitRange = config.getDouble("Global Spawning", "Mob Limit Search Range", spawnLimitRange, "How far a mob should search from in blocks when checking how many of its kind have already spawned.");
         disableAllSpawning = config.getBool("Global Spawning", "Disable Spawning", disableAllSpawning, "If true, all mobs from this mod will not spawn at all.");
@@ -116,7 +111,7 @@ public class SpawnInfo {
     // ==================================================
 	public void loadFromConfig() {
 		String name = this.mobInfo.name;
-		ModConfig config = ModConfig.getConfig(this.mobInfo.group, "spawning");
+		ConfigSpawning config = ConfigSpawning.getConfig(this.mobInfo.group, "spawning");
 		
 		// Enabled:
         config.setCategoryComment("Enabled Spawns", "Set to false to prevent mobs from spawning naturally at all.");
@@ -126,84 +121,17 @@ public class SpawnInfo {
 		
 		// Spawn Type:
         config.setCategoryComment("Spawn Types", "Specifies how this mob spawns, multiple entries should be comma separated. Valid types are: MONSTER, CREATURE, WATERCREATURE, FIRE, FROSTFIRE, LAVA, ROCK, STORM. More will likely be added too.");
-		this.spawnTypeEntries = config.getString("Spawn Types", this.getCfgName("Spawn Types"), this.spawnTypeEntries);
-        this.spawnTypeEntries = this.spawnTypeEntries.replace(" ", "");
-		this.spawnTypes = SpawnType.getSpawnTypes(this.spawnTypeEntries);
-
-        List<EnumCreatureType> creatureTypeList = new ArrayList<EnumCreatureType>();
-        for(String spawnTypeEntry : spawnTypeEntries.split(",")) {
-            if ("MONSTER".equalsIgnoreCase(spawnTypeEntry))
-                creatureTypeList.add(EnumCreatureType.monster);
-            else if ("CREATURE".equalsIgnoreCase(spawnTypeEntry) || "ANIMAL".equalsIgnoreCase(spawnTypeEntry))
-                creatureTypeList.add(EnumCreatureType.creature);
-            else if ("WATERCREATURE".equalsIgnoreCase(spawnTypeEntry))
-                creatureTypeList.add(EnumCreatureType.waterCreature);
-            else if ("AMBIENT".equalsIgnoreCase(spawnTypeEntry))
-                creatureTypeList.add(EnumCreatureType.ambient);
-        }
-        this.creatureTypes = creatureTypeList.toArray(new EnumCreatureType[creatureTypeList.size()]);
-		
+        SpawnTypeSet spawnTypeSet = config.getTypes("Spawn Types", this.getCfgName("Spawn Types"), this.spawnTypeEntries);
+		this.spawnTypes = spawnTypeSet.spawnTypes;
+		this.creatureTypes = spawnTypeSet.creatureTypes;
+        
 		// Spawn Dimensions:
         config.setCategoryComment("Spawn Dimensions", "Sets which dimensions mobs spawn in. You may enter dimension IDs or tags such as: ALL, VANILLA or GROUP. Multiple entries should be comma separated.");
-        this.dimensionEntries = config.getString("Spawn Dimensions", this.getCfgName("Spawn Dimensions"), this.dimensionEntries);
-        this.dimensionEntries = this.dimensionEntries.replace(" ", "");
-
-        List<Integer> dimensionIDList = new ArrayList<Integer>();
-        List<String> dimensionTypeList = new ArrayList<String>();
-        for(String dimensionEntry : this.dimensionEntries.split(",")) {
-            if(StringUtils.isNumeric(dimensionEntry))
-                dimensionIDList.add(Integer.parseInt(dimensionEntry.replace("+", "")));
-            else
-                dimensionTypeList.add(dimensionEntry.replace("+", ""));
-        }
-		this.dimensionIDs = ArrayUtils.toPrimitive(dimensionIDList.toArray(new Integer[dimensionIDList.size()]));
-		this.dimensionTypes = dimensionTypeList.toArray(new String[dimensionTypeList.size()]);
+        SpawnDimensionSet spawnDimensions = config.getDimensions("Spawn Dimensions", this.getCfgName("Spawn Dimensions"), this.dimensionEntries);
 
         // Spawn Biomes:
 		config.setCategoryComment("Spawn Biomes", "Sets which biomes this mob spawns in using Biome Tags. Multiple entries should be comma separated and can be subtractive if provided with a - in front.");
-        this.biomeEntries = config.getString("Spawn Biomes", this.getCfgName("Spawn Biomes"), this.biomeEntries);
-        this.biomeEntries = this.biomeEntries.replace(" ", "");
-
-        List<BiomeGenBase> biomeList = new ArrayList<BiomeGenBase>();
-        for(String biomeEntry : this.biomeEntries.split(",")) {
-            boolean additive = true;
-            if(biomeEntry.charAt(0) == '-' || biomeEntry.charAt(0) == '+') {
-                if(biomeEntry.charAt(0) == '-')
-                    additive = false;
-                biomeEntry = biomeEntry.substring(1);
-            }
-
-            BiomeGenBase[] selectedBiomes = null;
-            if("ALL".equals(biomeEntry)) {
-                for(BiomeDictionary.Type biomeType : BiomeDictionary.Type.values()) {
-                    if(selectedBiomes == null)
-                        selectedBiomes = BiomeDictionary.getBiomesForType(biomeType);
-                    else
-                        selectedBiomes = ArrayUtils.addAll(selectedBiomes, BiomeDictionary.getBiomesForType(biomeType));
-                }
-            }
-            else if(!"NONE".equals(biomeEntry)) {
-                BiomeDictionary.Type biomeType;
-                try { biomeType = BiomeDictionary.Type.valueOf(biomeEntry); }
-                catch(Exception e) {
-                    biomeType = null;
-                    LycanitesMobs.printWarning("", "[Config] Unknown biome type " + biomeEntry + " specified for " + this.getCfgName("") + "this will be ignored and treated as NONE.");
-                }
-                if(biomeType != null)
-                    selectedBiomes = BiomeDictionary.getBiomesForType(biomeType);
-            }
-
-            if(selectedBiomes != null) {
-                for(BiomeGenBase biome : selectedBiomes)
-                    if(additive && !biomeList.contains(biome)) {
-                        biomeList.add(biome);
-                    }
-                    else if(!additive && biomeList.contains(biome)) {
-                        biomeList.remove(biome);
-                    }
-            }
-        }
-        this.biomes = biomeList.toArray(new BiomeGenBase[biomeList.size()]);
+		this.biomes = config.getBiomes("Spawn Biomes", this.getCfgName("Spawn Biomes"), this.biomeEntries);
 		
 		// Spawn Weight:
 		config.setCategoryComment("Spawn Weights", "The higher the weight, the more likely the mob will spawn randomly instead of others. Vanilla Zombies have a weight of 8.");
@@ -217,21 +145,24 @@ public class SpawnInfo {
         config.setCategoryComment("Dungeon Weights", "The higher the weight, the more likely this mob will appear in random dungeon spawners. Vanilla Zombie have a dungeon weight of 200.");
         this.dungeonWeight = Math.round((float)config.getDouble("Dungeon Weights", this.getCfgName("Dungeon Weight"), this.dungeonWeight) * (float)dungeonSpawnerWeightScale);
 		
-		// Spawn limits:
+		// Spawn Area Limits:
         config.setCategoryComment("Area limits", "Sets how many of each mob is allowed to naturally spawn near each other.");
 		this.spawnAreaLimit = config.getInt("Area limits", this.getCfgName("Area Limit"), this.spawnAreaLimit);
-
+		
+		// Spawn Group Sizes:
         config.setCategoryComment("Group Sizes", "Sets the minimum and maximum random size of a group spawned. Note with the vanilla spawn, large groups can reduce the spawning odds in biomes with lots trees, etc.");
         this.spawnGroupMin = config.getInt("Group Sizes", this.getCfgName("Group Min"), this.spawnGroupMin);
 		this.spawnGroupMax = config.getInt("Group Sizes", this.getCfgName("Group Max"), this.spawnGroupMax);
-
+		
+		// Spawn Block Cost:
         config.setCategoryComment("Block Costs", "Only used by certain spawners. Sets how many blocks are required for spawning, such as how many blocks of Fire a Cinder requires.");
         this.spawnBlockCost = config.getInt("Block Costs", this.getCfgName("Block Cost"), this.spawnBlockCost);
 		
-		// Despawning:
+		// Natural Despawning:
         config.setCategoryComment("Despawning", "Sets whether or not each mob will despawn over time. Most farmable mobs don't despawn naturally.");
         this.despawnNatural = config.getBool("Despawning", this.getCfgName("Natural Despawning"), this.despawnNatural);
-
+        
+        // Forced Despawning:
         config.setCategoryComment("Despawning", "Forces a mob to despawn naturally (unless tamed). Some farmable mobs such as Pinkies ignore their Natural Despawning setting once they've been fed or moved out of their home dimension.");
         this.despawnForced = config.getBool("Despawning", this.getCfgName("Forced Despawning"), this.despawnForced);
 	}

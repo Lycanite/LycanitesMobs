@@ -6,10 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.OldConfig;
 import lycanite.lycanitesmobs.LycanitesMobs;
-import lycanite.lycanitesmobs.api.ILycaniteMod;
-import lycanite.lycanitesmobs.api.config.ModConfig;
+import lycanite.lycanitesmobs.api.config.ConfigBase;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -46,8 +44,8 @@ public class MobInfo {
 	/** A static ArrayList of all summonable creature names. **/
 	public static List<String> summonableCreatures = new ArrayList<String>();
 	
-	/** A static Name to Instance map of all mob groups (ILycaniteMod) **/
-	public static Map<String, ILycaniteMod> mobGroups = new HashMap<String, ILycaniteMod>();
+	/** A static Name to Instance map of all mob groups. **/
+	public static Map<String, GroupInfo> mobGroups = new HashMap<String, GroupInfo>();
 	
 	// ========== Per Mob Settings ==========
 	/** Mod Group **/
@@ -107,7 +105,7 @@ public class MobInfo {
     //        Load Global Settings From Config
     // ==================================================
 	public static void loadGlobalSettings() {
-		ModConfig config = ModConfig.getConfig(LycanitesMobs.baseGroup, "general");
+		ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "general");
 		ownerTags = config.getBool("Pets", "Owner Tags", ownerTags, "If true, tamed mobs will display their owner's name in their name tag.");
 		tamingEnabled = config.getBool("Pets", "Taming", tamingEnabled, "Set to false to disable pet/mount taming.");
 		mountingEnabled = config.getBool("Pets", "Mounting", mountingEnabled, "Set to false to disable mounts.");
@@ -162,7 +160,7 @@ public class MobInfo {
 	public MobInfo(GroupInfo group, String name, Class entityClass, int eggBack, int eggFore) {
 		this.group = group;
 		if(!mobGroups.containsKey(group.filename))
-			mobGroups.put(group.filename, mod);
+			mobGroups.put(group.filename, group);
 
 		this.name = name;
         this.entityClass = entityClass;
@@ -180,7 +178,7 @@ public class MobInfo {
     // ==================================================
     public void loadFromConfig() {
         // General Info:
-        ModConfig config = ModConfig.getConfig(this.mod, "general");
+        ConfigBase config = ConfigBase.getConfig(this.group, "general");
         this.mobEnabled = config.getBool("Enabled Mobs", this.getCfgName("Enabled"), this.mobEnabled, "Set to false to disable.");
         this.peacefulDifficulty = config.getBool("Peaceful Mobs", this.getCfgName("On Peaceful"), this.peacefulDifficulty, "Set to true to allow in peaceful.");
         this.summonCost = config.getInt("Summoning Costs", this.getCfgName("Summoning Cost"), this.summonCost, "How much focus to summon.");
@@ -211,7 +209,7 @@ public class MobInfo {
         }
 
         // Load Stats:
-        config = ModConfig.getConfig(this.mod, "stats");
+        config = ConfigBase.getConfig(this.group, "stats");
         config.setCategoryComment("Multipliers", "Here you can scale each mob stat,for instance setting 2 will double the stat, setting 0.5 will half it.");
         this.multiplierDefense = config.getDouble("Multipliers", this.getCfgName("Defense"), this.multiplierDefense, "How much damage is blocked, minimum damage dealt is 1.");
         this.multiplierSpeed = config.getDouble("Multipliers", this.getCfgName("Speed"), this.multiplierSpeed, "Movement speed.");
@@ -235,7 +233,7 @@ public class MobInfo {
     //                 Names and Titles
     // ==================================================
 	public String getRegistryName() {
-		return this.mod.getModID() + "." + this.name;
+		return this.group.filename + "." + this.name;
 	}
 
     public String getCfgName(String configKey) {
@@ -257,7 +255,7 @@ public class MobInfo {
 	public ResourceLocation getIcon() {
 		ResourceLocation texture = AssetManager.getTexture(this.name + "_icon");
 		if(texture == null) {
-			AssetManager.addTexture(this.name + "_icon", this.mod.getDomain(), "textures/guis/" + this.name.toLowerCase() + "_icon.png");
+			AssetManager.addTexture(this.name + "_icon", this.group.filename, "textures/guis/" + this.name.toLowerCase() + "_icon.png");
 			texture = AssetManager.getTexture(this.name + "_icon");
 		}
 		return texture;

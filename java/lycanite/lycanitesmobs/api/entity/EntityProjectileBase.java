@@ -2,7 +2,7 @@ package lycanite.lycanitesmobs.api.entity;
 
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
-import lycanite.lycanitesmobs.api.ILycaniteMod;
+import lycanite.lycanitesmobs.api.info.GroupInfo;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -18,7 +18,7 @@ import net.minecraftforge.event.entity.player.AttackEntityEvent;
 
 public class EntityProjectileBase extends EntityThrowable {
 	public String entityName = "projectile";
-	public ILycaniteMod mod;
+	public GroupInfo group;
 	
 	// Properties:
 	public byte baseDamage = 1;
@@ -185,7 +185,7 @@ public class EntityProjectileBase extends EntityThrowable {
 			    }
 			    
 			    // Friendly Fire:
-			    if(owner.isOnSameTeam(targetEntity) && LycanitesMobs.config.getFeatureBool("FriendlyFire"))
+			    if(owner.isOnSameTeam(targetEntity) && LycanitesMobs.config.getBool("Mob Interaction", "Friendly Fire"))
 			    	return false;
 		    }
 		    return true;
@@ -279,7 +279,7 @@ public class EntityProjectileBase extends EntityThrowable {
      // ==================================================
      public ResourceLocation getTexture() {
      	if(AssetManager.getTexture(this.entityName) == null)
-     		AssetManager.addTexture(this.entityName, this.mod.getDomain(), "textures/items/" + this.entityName.toLowerCase() + ".png");
+     		AssetManager.addTexture(this.entityName, this.group.filename, "textures/items/" + this.entityName.toLowerCase() + ".png");
      	return AssetManager.getTexture(this.entityName);
      }
      

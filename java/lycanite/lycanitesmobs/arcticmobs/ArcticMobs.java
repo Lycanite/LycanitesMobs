@@ -5,7 +5,7 @@ import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.OldConfig;
 import lycanite.lycanitesmobs.api.ILycaniteMod;
-import lycanite.lycanitesmobs.api.config.ModConfig;
+import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
@@ -128,7 +128,7 @@ public class ArcticMobs implements ILycaniteMod {
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("arcticegg"), new DispenserBehaviorMobEggCustom());
-		ModConfig spawningConfig = ModConfig.getConfig(this, "spawning");
+		ConfigBase spawningConfig = ConfigBase.getConfig(this, "spawning");
         String groupDimensionEntries = spawningConfig.getString("Group Spawning Defaults", "Spawn Dimension");
         MobInfo newMob;
         newMob = new MobInfo(this, "reiver", EntityReiver.class, 0xDDEEFF, 0x99DDEE)

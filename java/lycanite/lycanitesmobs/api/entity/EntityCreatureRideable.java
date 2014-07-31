@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ExtendedPlayer;
-import lycanite.lycanitesmobs.LycanitesMobs;
+import lycanite.lycanitesmobs.api.info.MobInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -43,7 +43,7 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
     // Skip the difficulty scale when a mounted mob.
     public double getSpeedMultiplier() {
     	if(this.hasRiderTarget())
-    		return this.mod.getConfig().speedMultipliers.get(this.getConfigName());
+    		return this.mobInfo.multiplierSpeed;
     	return super.getSpeedMultiplier();
     }
     
@@ -269,7 +269,7 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
     	commands.putAll(super.getInteractCommands(player, itemStack));
     	
     	// Mount:
-    	if(this.canBeMounted(player) && !player.isSneaking() && !this.worldObj.isRemote && LycanitesMobs.config.getFeatureBool("MobMounting"))
+    	if(this.canBeMounted(player) && !player.isSneaking() && !this.worldObj.isRemote && MobInfo.mountingEnabled)
     		commands.put(CMD_PRIOR.MAIN.id, "Mount");
     	
     	return commands;

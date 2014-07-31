@@ -22,7 +22,7 @@ public class TabManager {
     }
     
     public static void addTabsToInventory (GuiScreen gui) {
-    	if(LycanitesMobs.config.getFeatureBool("InventoryTabs") && gui.getClass() == GuiInventory.class) {
+    	if(LycanitesMobs.config.getBool("GUI", "Show Inventory Tabs", true, "Set to false to disable the GUI tabs.") && gui.getClass() == GuiInventory.class) {
         	GuiInventorySnooper guiInventorySnooper = new GuiInventorySnooper(mc.thePlayer);
         	try {
             	Field field = GuiScreen.class.getDeclaredField(guiInventorySnooper.getButtonListFieldName());

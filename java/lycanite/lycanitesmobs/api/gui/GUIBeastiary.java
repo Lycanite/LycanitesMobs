@@ -4,8 +4,8 @@ import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.GuiHandler;
 import lycanite.lycanitesmobs.LycanitesMobs;
-import lycanite.lycanitesmobs.api.ILycaniteMod;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
+import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -136,8 +136,8 @@ public class GUIBeastiary extends GuiScreen {
 		
 		// Draw Group Entry:
 		else if(this.getSelectedGroup() != null && hasSomeKnowledge) {
-			this.fontRendererObj.drawString(StatCollector.translateToLocal(this.getSelectedGroup().getModID() + ".name"), this.centerX + 8, this.windowY + 8, 0xFFFFFF);
-			this.fontRendererObj.drawSplitString(StatCollector.translateToLocal(this.getSelectedGroup().getModID() + ".description"), this.centerX + 8, this.windowY + 24, this.halfX - 16, 0xFFFFFF);
+			this.fontRendererObj.drawString(StatCollector.translateToLocal(this.getSelectedGroup().filename + ".name"), this.centerX + 8, this.windowY + 8, 0xFFFFFF);
+			this.fontRendererObj.drawSplitString(StatCollector.translateToLocal(this.getSelectedGroup().filename + ".description"), this.centerX + 8, this.windowY + 24, this.halfX - 16, 0xFFFFFF);
 		}
 		
 		// Draw Soulgazer Instructions:
@@ -197,7 +197,7 @@ public class GUIBeastiary extends GuiScreen {
 		this.playerExt.beastiaryCategory = category; 
 	}
 	
-	public void selectGroup(ILycaniteMod group) {
+	public void selectGroup(GroupInfo group) {
 		this.playerExt.beastiaryGroup = group;
 		this.playerExt.beastiaryCategory = "group"; 
 		if(this.creatureList != null) {
@@ -207,7 +207,7 @@ public class GUIBeastiary extends GuiScreen {
 		this.updateSelectedCreature();
 	}
 	
-	public ILycaniteMod getSelectedGroup() {
+	public GroupInfo getSelectedGroup() {
 		return this.playerExt.beastiaryGroup;
 	}
 	

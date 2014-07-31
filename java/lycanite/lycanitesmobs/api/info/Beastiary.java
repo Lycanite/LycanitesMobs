@@ -6,7 +6,6 @@ import java.util.Map.Entry;
 
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.ILycaniteMod;
 import lycanite.lycanitesmobs.api.network.MessageBeastiary;
 import lycanite.lycanitesmobs.api.network.MessageCreatureKnowledge;
 import net.minecraft.entity.player.EntityPlayer;
@@ -52,12 +51,12 @@ public class Beastiary {
 	 * @param group Group to check with.
 	 * @return True if the player has at least one creature form the specific group.
 	 */
-	public boolean hasCreatureFromGroup(ILycaniteMod group) {
+	public boolean hasCreatureFromGroup(GroupInfo group) {
 		if(this.creatureKnowledgeList.size() == 0)
 			return false;
 		for(Entry<String, CreatureKnowledge> creatureKnowledgeEntry : this.creatureKnowledgeList.entrySet()) {
 			if(creatureKnowledgeEntry.getValue() != null)
-				if(creatureKnowledgeEntry.getValue().creatureInfo.mod == group)
+				if(creatureKnowledgeEntry.getValue().creatureInfo.group == group)
 					return true;
 		}
 		return false;

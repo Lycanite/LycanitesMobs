@@ -3,5 +3,5 @@ package lycanite.lycanitesmobs.api.config;
 
 public interface IConfigListener {
 	
-	public void onConfigUpdate(ModConfig config);
+	public void onConfigUpdate(ConfigBase config);
 }

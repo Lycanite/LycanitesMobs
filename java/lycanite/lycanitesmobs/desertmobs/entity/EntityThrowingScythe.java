@@ -1,11 +1,9 @@
 package lycanite.lycanitesmobs.desertmobs.entity;
 
-import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.desertmobs.DesertMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public class EntityThrowingScythe extends EntityProjectileBase {
@@ -36,7 +34,7 @@ public class EntityThrowingScythe extends EntityProjectileBase {
     // ========== Setup Projectile ==========
     public void setup() {
     	this.entityName = "throwingscythe";
-    	this.mod = DesertMobs.instance;
+    	this.group = DesertMobs.group;
     	this.setBaseDamage(3);
     	this.setProjectileScale(1F);
     	
@@ -73,25 +71,5 @@ public class EntityThrowingScythe extends EntityProjectileBase {
     public void onImpactVisuals() {
     	for(int i = 0; i < 8; ++i)
     		this.worldObj.spawnParticle("smoke", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
-    }
-    
-    
-    // ==================================================
- 	//                      Visuals
- 	// ==================================================
-    @Override
-    public ResourceLocation getTexture() {
-    	if(AssetManager.getTexture(this.entityName) == null)
-    		AssetManager.addTexture(this.entityName, this.mod.getDomain(), "textures/items/" + this.entityName.toLowerCase() + ".png");
-    	return AssetManager.getTexture(this.entityName);
-    }
-    
-    
-    // ==================================================
- 	//                      Sounds
- 	// ==================================================
-    @Override
-    public String getLaunchSound() {
-    	return AssetManager.getSound("ThrowingScythe");
     }
 }

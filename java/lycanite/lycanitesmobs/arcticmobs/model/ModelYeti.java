@@ -22,7 +22,7 @@ public class ModelYeti extends ModelCustomObj {
     
     public ModelYeti(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Yeti", ArcticMobs.domain, "entity/yeti");
+    	model = (WavefrontObject)AssetManager.getObjModel("Yeti", ArcticMobs.group, "entity/yeti");
     	
     	// Get Parts:
     	parts = model.groupObjects;

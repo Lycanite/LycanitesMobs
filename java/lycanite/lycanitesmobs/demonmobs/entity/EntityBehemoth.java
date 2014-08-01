@@ -16,7 +16,6 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
-import lycanite.lycanitesmobs.demonmobs.DemonMobs;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -39,7 +38,6 @@ public class EntityBehemoth extends EntityCreatureTameable implements IMob {
         super(par1World);
         
         // Setup:
-        this.mod = DemonMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEAD;
         this.defense = 2;
         this.experience = 10;

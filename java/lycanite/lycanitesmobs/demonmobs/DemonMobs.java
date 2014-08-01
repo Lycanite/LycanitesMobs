@@ -1,11 +1,11 @@
 package lycanite.lycanitesmobs.demonmobs;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.OldConfig;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.ILycaniteMod;
+import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
+import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
@@ -58,14 +58,11 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = DemonMobs.modid, name = DemonMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid)
-public class DemonMobs implements ILycaniteMod {
+public class DemonMobs {
 	
 	public static final String modid = "demonmobs";
 	public static final String name = "Lycanites Demon Mobs";
-	public static final String domain = modid.toLowerCase();
-	public static int mobID = -1;
-	public static int projectileID = 99;
-	public static OldConfig config = new SubConfig();
+	public static GroupInfo group;
 	
 	// Instance:
 	@Instance(modid)
@@ -81,10 +78,11 @@ public class DemonMobs implements ILycaniteMod {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
-		config.init(modid);
-		
-		// ========== Set Current Mod ==========
-		ObjectManager.setCurrentMod(this);
+		group = new GroupInfo(this, "Demon Mobs");
+		group.loadFromConfig();
+
+		// ========== Set Current Group ==========
+		ObjectManager.setCurrentGroup(group);
 		
 		// ========== Create Items ==========
 		ObjectManager.addItem("demonegg", new ItemDemonEgg());
@@ -93,19 +91,19 @@ public class DemonMobs implements ILycaniteMod {
 		ObjectManager.addItem("devilstarcharge", new ItemDevilstar());
 		ObjectManager.addItem("demoniclightningcharge", new ItemDemonicLightning());
 		
-		ObjectManager.addItem("pinkymeatraw", new ItemCustomFood("pinkymeatraw", domain, 4, 0.5F).setPotionEffect(Potion.wither.id, 30, 0, 0.8F));
+		ObjectManager.addItem("pinkymeatraw", new ItemCustomFood("pinkymeatraw", group, 4, 0.5F).setPotionEffect(Potion.wither.id, 30, 0, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("pinkymeatraw"));
 		OreDictionary.registerOre("listAllbeefraw", ObjectManager.getItem("pinkymeatraw"));
 		
-		ObjectManager.addItem("pinkymeatcooked", new ItemCustomFood("pinkymeatcooked", domain, 7, 0.7F));
+		ObjectManager.addItem("pinkymeatcooked", new ItemCustomFood("pinkymeatcooked", group, 7, 0.7F));
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("pinkymeatcooked"));
 		OreDictionary.registerOre("listAllbeefcooked", ObjectManager.getItem("pinkymeatcooked"));
 		
-		ObjectManager.addItem("devillasagna", new ItemCustomFood("devillasagna", domain, 7, 0.7F).setPotionEffect(Potion.damageBoost.id, 60, 0, 1.0F).setAlwaysEdible().setMaxStackSize(16));
+		ObjectManager.addItem("devillasagna", new ItemCustomFood("devillasagna", group, 7, 0.7F).setPotionEffect(Potion.damageBoost.id, 60, 0, 1.0F).setAlwaysEdible().setMaxStackSize(16));
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("devillasagna"));
 
-		ObjectManager.addItem("pinkytreat", new ItemTreat("pinkytreat", this.domain));
-		ObjectManager.addItem("cacodemontreat", new ItemTreat("cacodemontreat", this.domain));
+		ObjectManager.addItem("pinkytreat", new ItemTreat("pinkytreat", group));
+		ObjectManager.addItem("cacodemontreat", new ItemTreat("cacodemontreat", group));
 		
 		ObjectManager.addItem("doomfirescepter", new ItemScepterDoomfire());
 		ObjectManager.addItem("hellfirescepter", new ItemScepterHellfire());
@@ -113,7 +111,7 @@ public class DemonMobs implements ILycaniteMod {
 		ObjectManager.addItem("demoniclightningscepter", new ItemScepterDemonicLightning());
 		
 		// ========== Create Blocks ==========
-		AssetManager.addSound("hellfire", domain, "block.hellfire");
+		AssetManager.addSound("hellfire", group, "block.hellfire");
 		ObjectManager.addBlock("hellfire", new BlockHellfire());
 	}
 	
@@ -123,19 +121,56 @@ public class DemonMobs implements ILycaniteMod {
 	// ==================================================
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
-		
-		// ========== Set Current Mod ==========
-		ObjectManager.setCurrentMod(this);
+
+		// ========== Set Current Group ==========
+		ObjectManager.setCurrentGroup(group);
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("demonegg"), new DispenserBehaviorMobEggCustom());
-		ObjectManager.addMob(new MobInfo(this, "belph", EntityBelph.class, 0x992222, 0x000000, 2).setSummonable(true));
-		ObjectManager.addMob(new MobInfo(this, "behemoth", EntityBehemoth.class, 0xFF2222, 0xFF9900, 6).setSummonable(true));
-		ObjectManager.addMob(new MobInfo(this, "pinky", EntityPinky.class, 0xFF0099, 0x990000, 4));
-		ObjectManager.addMob(new MobInfo(this, "trite", EntityTrite.class, 0xFFFF88, 0x000000, 1));
-		ObjectManager.addMob(new MobInfo(this, "asmodi", EntityAsmodi.class, 0x999944, 0x0000FF, 8));
-		ObjectManager.addMob(new MobInfo(this, "nethersoul", EntityNetherSoul.class, 0xFF9900, 0xFF0000, 1));
-		ObjectManager.addMob(new MobInfo(this, "cacodemon", EntityCacodemon.class, 0xFF0000, 0x000099, 6));
+		MobInfo newMob;
+        
+        newMob = new MobInfo(group, "belph", EntityBelph.class, 0x992222, 0x000000)
+		        .setPeaceful(false).setSummonable(true).setSummonCost(2);
+		newMob.spawnInfo.setSpawnTypes("MONSTER, PORTAL")
+				.setSpawnWeight(100).setAreaLimit(10).setGroupLimits(1, 4).setDungeonWeight(200);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "behemoth", EntityBehemoth.class, 0xFF2222, 0xFF9900)
+		        .setPeaceful(false).setSummonable(true).setSummonCost(6);
+		newMob.spawnInfo.setSpawnTypes("MONSTER, PORTAL")
+				.setSpawnWeight(20).setAreaLimit(5).setGroupLimits(1, 1).setDungeonWeight(40);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "pinky", EntityPinky.class, 0xFF0099, 0x990000)
+		        .setPeaceful(true).setSummonable(false).setSummonCost(4);
+		newMob.spawnInfo.setSpawnTypes("MONSTER, PORTAL")
+				.setSpawnWeight(60).setAreaLimit(5).setGroupLimits(1, 3).setDungeonWeight(120);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "trite", EntityTrite.class, 0xFFFF88, 0x000000)
+		        .setPeaceful(false).setSummonable(false).setSummonCost(1);
+		newMob.spawnInfo.setSpawnTypes("MONSTER, PORTAL")
+				.setSpawnWeight(120).setAreaLimit(40).setGroupLimits(1, 10).setDungeonWeight(200);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "asmodi", EntityAsmodi.class, 0x999944, 0x0000FF)
+		        .setPeaceful(false).setSummonable(false).setSummonCost(8);
+		newMob.spawnInfo.setSpawnTypes("MONSTER, PORTAL")
+				.setSpawnWeight(20).setAreaLimit(1).setGroupLimits(1, 1).setDungeonWeight(40);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "nethersoul", EntityNetherSoul.class, 0xFF9900, 0xFF0000)
+		        .setPeaceful(false).setSummonable(false).setSummonCost(1);
+		newMob.spawnInfo.setSpawnTypes("MONSTER, PORTAL")
+				.setSpawnWeight(60).setAreaLimit(10).setGroupLimits(1, 4).setDungeonWeight(120);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "cacodemon", EntityCacodemon.class, 0xFF0000, 0x000099)
+		        .setPeaceful(false).setSummonable(false).setSummonCost(6);
+		newMob.spawnInfo.setSpawnTypes("MONSTER, PORTAL")
+				.setSpawnWeight(40).setAreaLimit(5).setGroupLimits(1, 1).setDungeonWeight(80);
+		ObjectManager.addMob(newMob);
+
 		
 		// ========== Create Projectiles ==========
 		ObjectManager.addProjectile("hellfireball", EntityHellfireball.class, ObjectManager.getItem("hellfirecharge"), new DispenserBehaviorHellfireball());
@@ -154,13 +189,13 @@ public class DemonMobs implements ILycaniteMod {
 	// ==================================================
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
-		// ========== Set Current Mod ==========
-		ObjectManager.setCurrentMod(this);
+		// ========== Set Current Group ==========
+		ObjectManager.setCurrentGroup(group);
+		ConfigBase config = ConfigBase.getConfig(group, "spawning");
 		
-		// ========== Alter Vanilla Spawns ==========
-		BiomeGenBase[] biomes = this.config.getSpawnBiomesTypes();
-		// For some insane reason Zombie Pigmen have a spawn rate of 100 by default! I'm now matching this with my mobs to see if it affects things.
-		if(config.getFeatureBool("ControlVanilla")) {
+		// ========== Remove Vanilla Spawns ==========
+		BiomeGenBase[] biomes = group.biomes;
+		if(config.getBool("Vanilla Spawning", "Edit Vanilla Spawning", true, "If true, some vanilla spawns in this biome will be removed, note that vanilla mobs should still be easy to find, only they will be more biome specific.")) {
 			EntityRegistry.removeSpawn(EntityPigZombie.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntityGhast.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.addSpawn(EntityPigZombie.class, 100, 1, 4, EnumCreatureType.monster, biomes);
@@ -222,26 +257,4 @@ public class DemonMobs implements ILycaniteMod {
 		// ========== Smelting ==========
 		GameRegistry.addSmelting(ObjectManager.getItem("pinkymeatraw"), new ItemStack(ObjectManager.getItem("pinkymeatcooked"), 1), 0.5f);
 	}
-	
-	
-	// ==================================================
-	//                    Mod Info
-	// ==================================================
-	@Override
-	public DemonMobs getInstance() { return instance; }
-	
-	@Override
-	public String getModID() { return modid; }
-	
-	@Override
-	public String getDomain() { return domain; }
-	
-	@Override
-	public OldConfig getConfig() { return config; }
-	
-	@Override
-	public int getNextMobID() { return ++this.mobID; }
-	
-	@Override
-	public int getNextProjectileID() { return ++this.projectileID; }
 }

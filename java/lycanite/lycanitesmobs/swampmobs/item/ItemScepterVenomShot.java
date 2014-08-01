@@ -16,7 +16,7 @@ public class ItemScepterVenomShot extends ItemScepter {
 	// ==================================================
     public ItemScepterVenomShot() {
         super();
-    	this.domain = SwampMobs.domain;
+    	this.group = SwampMobs.group;
     	this.itemName = "venomshotscepter";
         this.setup();
         this.textureName = "sceptervenomshot";

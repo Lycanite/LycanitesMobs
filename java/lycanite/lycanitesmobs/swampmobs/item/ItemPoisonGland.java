@@ -17,7 +17,7 @@ public class ItemPoisonGland extends ItemBase {
 	// ==================================================
     public ItemPoisonGland() {
         super();
-        this.domain = SwampMobs.domain;
+        this.group = SwampMobs.group;
         this.itemName = "poisongland";
         this.setup();
     }

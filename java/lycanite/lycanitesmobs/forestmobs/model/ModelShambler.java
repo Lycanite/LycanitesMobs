@@ -22,7 +22,7 @@ public class ModelShambler extends ModelCustomObj {
     
     public ModelShambler(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("shambler", ForestMobs.domain, "entity/shambler");
+    	model = (WavefrontObject)AssetManager.getObjModel("shambler", ForestMobs.group, "entity/shambler");
     	
     	// Get Parts:
     	parts = model.groupObjects;

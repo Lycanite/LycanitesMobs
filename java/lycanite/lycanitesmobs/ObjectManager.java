@@ -7,7 +7,7 @@ import lycanite.lycanitesmobs.api.info.EntityListCustom;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.SpawnInfo;
-import lycanite.lycanitesmobs.api.spawning.SpawnType;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.BehaviorProjectileDispense;
@@ -102,17 +102,17 @@ public class ObjectManager {
 		mobs.put(name, mobInfo);
 		
 		// Sounds:
-		AssetManager.addSound(name + "_say", filename, "entity." + name + ".say");
-		AssetManager.addSound(name + "_hurt", filename, "entity." + name + ".hurt");
-		AssetManager.addSound(name + "_death", filename, "entity." + name + ".death");
-		AssetManager.addSound(name + "_step", filename, "entity." + name + ".step");
-		AssetManager.addSound(name + "_attack", filename, "entity." + name + ".attack");
-		AssetManager.addSound(name + "_jump", filename, "entity." + name + ".jump");
-		AssetManager.addSound(name + "_fly", filename, "entity." + name + ".fly");
-		AssetManager.addSound(name + "_tame", filename, "entity." + name + ".tame");
-		AssetManager.addSound(name + "_beg", filename, "entity." + name + ".beg");
-		AssetManager.addSound(name + "_eat", filename, "entity." + name + ".eat");
-		AssetManager.addSound(name + "_mount", filename, "entity." + name + ".mount");
+		AssetManager.addSound(name + "_say", group, "entity." + name + ".say");
+		AssetManager.addSound(name + "_hurt", group, "entity." + name + ".hurt");
+		AssetManager.addSound(name + "_death", group, "entity." + name + ".death");
+		AssetManager.addSound(name + "_step", group, "entity." + name + ".step");
+		AssetManager.addSound(name + "_attack", group, "entity." + name + ".attack");
+		AssetManager.addSound(name + "_jump", group, "entity." + name + ".jump");
+		AssetManager.addSound(name + "_fly", group, "entity." + name + ".fly");
+		AssetManager.addSound(name + "_tame", group, "entity." + name + ".tame");
+		AssetManager.addSound(name + "_beg", group, "entity." + name + ".beg");
+		AssetManager.addSound(name + "_eat", group, "entity." + name + ".eat");
+		AssetManager.addSound(name + "_mount", group, "entity." + name + ".mount");
 		
 		// ID and Enabled Check:
 		LycanitesMobs.printDebug("MobSetup", "~0==================== Mob Setup: "+ mobInfo.name +" ====================0~");
@@ -138,7 +138,7 @@ public class ObjectManager {
 				for(EnumCreatureType creatureType : spawnInfo.creatureTypes) {
 					EntityRegistry.addSpawn(mobInfo.entityClass, spawnInfo.spawnWeight, spawnInfo.spawnGroupMin, spawnInfo.spawnGroupMax, creatureType, spawnInfo.biomes);
 				}
-				for(SpawnType spawnType : spawnInfo.spawnTypes) {
+				for(SpawnTypeBase spawnType : spawnInfo.spawnTypes) {
 					spawnType.addSpawn(spawnInfo);
 				}
 				spawnAdded = true;
@@ -150,7 +150,7 @@ public class ObjectManager {
 			LycanitesMobs.printDebug("MobSetup", "Mob Spawn Added - Weight: " + spawnInfo.spawnWeight + " Min: " + spawnInfo.spawnGroupMin + " Max: " + spawnInfo.spawnGroupMax);
 			for(EnumCreatureType creatureType : spawnInfo.creatureTypes)
 				LycanitesMobs.printDebug("MobSetup", "Vanilla Spawn Type: " + creatureType);
-			for(SpawnType spawnType : spawnInfo.spawnTypes)
+			for(SpawnTypeBase spawnType : spawnInfo.spawnTypes)
 				LycanitesMobs.printDebug("MobSetup", "Custom Spawn Type: " + spawnType);
 			String biomesList = "";
 			if(LycanitesMobs.config.getBool("Debug", "MobSetup")) {
@@ -188,7 +188,7 @@ public class ObjectManager {
 	public static void addProjectile(String name, Class entityClass) {
 		name = name.toLowerCase();
 		GroupInfo group = currentGroup;
-		AssetManager.addSound(name, group.name, "projectile." + name);
+		AssetManager.addSound(name, group, "projectile." + name);
 		
 		int projectileID = group.getNextProjectileID();
 		EntityRegistry.registerModEntity(entityClass, name, projectileID, group.mod, 64, 1, true);

@@ -3,7 +3,7 @@ package lycanite.lycanitesmobs.api.block;
 import java.util.Random;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.api.ILycaniteMod;
+import lycanite.lycanitesmobs.api.info.GroupInfo;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -19,7 +19,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockBase extends Block {
 	
 	// Properties:
-	public ILycaniteMod mod;
+	public GroupInfo group;
 	public String blockName = "BlockBase";
 	
 	// Stats:
@@ -180,7 +180,7 @@ public class BlockBase extends Block {
     @SideOnly(Side.CLIENT)
     @Override
     public void registerBlockIcons(IIconRegister iconRegister) {
-    	AssetManager.addIcon(this.blockName, this.mod.getDomain(), this.getTextureName(), iconRegister);
+    	AssetManager.addIcon(this.blockName, this.group, this.getTextureName(), iconRegister);
     }
     
     // ========== Get Icon from Side and Metadata ==========

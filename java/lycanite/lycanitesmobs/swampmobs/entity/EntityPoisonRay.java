@@ -35,7 +35,7 @@ public class EntityPoisonRay extends EntityProjectileLaser {
     // ========== Setup Projectile ==========
     public void setup() {
     	this.entityName = "poisonray";
-    	this.mod = SwampMobs.instance;
+    	this.group = SwampMobs.group;
     	this.setBaseDamage(3);
     }
     
@@ -74,7 +74,7 @@ public class EntityPoisonRay extends EntityProjectileLaser {
     @Override
     public ResourceLocation getBeamTexture() {
     	if(AssetManager.getTexture(this.entityName + "Beam") == null)
-    		AssetManager.addTexture(this.entityName + "Beam", this.mod.getDomain(), "textures/items/" + this.entityName.toLowerCase() + "_beam.png");
+    		AssetManager.addTexture(this.entityName + "Beam", this.group, "textures/items/" + this.entityName.toLowerCase() + "_beam.png");
     	return AssetManager.getTexture(this.entityName + "Beam");
     }
     

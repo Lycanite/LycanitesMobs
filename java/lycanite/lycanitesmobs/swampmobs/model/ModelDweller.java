@@ -1,30 +1,14 @@
 package lycanite.lycanitesmobs.swampmobs.model;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import org.lwjgl.opengl.GL11;
-
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
-import lycanite.lycanitesmobs.api.model.ModelBipedCustom;
-import lycanite.lycanitesmobs.api.model.ModelCustom;
 import lycanite.lycanitesmobs.api.model.ModelCustomObj;
 import lycanite.lycanitesmobs.swampmobs.SwampMobs;
-
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.util.MathHelper;
+import net.minecraftforge.client.model.obj.WavefrontObject;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.MathHelper;
-import net.minecraftforge.client.model.IModelCustom;
-import net.minecraftforge.client.model.obj.GroupObject;
-import net.minecraftforge.client.model.obj.WavefrontObject;
 
 @SideOnly(Side.CLIENT)
 public class ModelDweller extends ModelCustomObj {
@@ -42,7 +26,7 @@ public class ModelDweller extends ModelCustomObj {
     
     public ModelDweller(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Dweller", SwampMobs.domain, "entity/dweller");
+    	model = (WavefrontObject)AssetManager.getObjModel("Dweller", SwampMobs.group, "entity/dweller");
     	
     	// Get Parts:
     	parts = model.groupObjects;

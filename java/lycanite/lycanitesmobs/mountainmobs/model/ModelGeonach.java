@@ -22,7 +22,7 @@ public class ModelGeonach extends ModelCustomObj {
     
     public ModelGeonach(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Geonach", MountainMobs.domain, "entity/geonach");
+    	model = (WavefrontObject)AssetManager.getObjModel("Geonach", MountainMobs.group, "entity/geonach");
     	
     	// Get Parts:
     	parts = model.groupObjects;

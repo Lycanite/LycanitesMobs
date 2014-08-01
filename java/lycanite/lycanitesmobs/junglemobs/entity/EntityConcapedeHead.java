@@ -6,6 +6,7 @@ import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupAlpha;
 import lycanite.lycanitesmobs.api.IGroupAnimal;
 import lycanite.lycanitesmobs.api.IGroupPrey;
+import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
@@ -18,7 +19,6 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
-import lycanite.lycanitesmobs.junglemobs.JungleMobs;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -43,7 +43,6 @@ public class EntityConcapedeHead extends EntityCreatureAgeable implements IAnima
         super(par1World);
         
         // Setup:
-        this.mod = JungleMobs.instance;
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
         this.defense = 0;
         this.experience = 5;
@@ -108,7 +107,7 @@ public class EntityConcapedeHead extends EntityCreatureAgeable implements IAnima
 		// Create Starting Segments:
         if(!this.worldObj.isRemote && !this.hasMaster()) {
         	this.setGrowingAge(-this.growthTime / 4);
-        	int segmentCount = this.getRNG().nextInt(this.mod.getConfig().getFeatureInt("ConcapedeSizeLimit"));
+        	int segmentCount = this.getRNG().nextInt(ConfigBase.getConfig(this.group, "general").getInt("Features", "Concapede Size Limit", 10, "The maximum amount of segments long a Concapede can be, including the head."));
     		EntityCreatureAgeable parentSegment = this;
         	for(int segment = 0; segment < segmentCount; segment++) {
         		EntityConcapedeSegment segmentEntity = new EntityConcapedeSegment(parentSegment.worldObj);
@@ -150,7 +149,7 @@ public class EntityConcapedeHead extends EntityCreatureAgeable implements IAnima
 				else
 					lastSegment = true;
 			}
-			if(size <= this.mod.getConfig().getFeatureInt("ConcapedeSizeLimit")) {
+			if(size <= ConfigBase.getConfig(this.group, "general").getInt("Features", "Concapede Size Limit", 10, "The maximum amount of segments long a Concapede can be, including the head.")) {
 				EntityConcapedeSegment segmentEntity = new EntityConcapedeSegment(this.worldObj);
 	    		segmentEntity.setLocationAndAngles(parentSegment.posX, parentSegment.posY, parentSegment.posZ, 0.0F, 0.0F);
 	    		parentSegment.worldObj.spawnEntityInWorld(segmentEntity);

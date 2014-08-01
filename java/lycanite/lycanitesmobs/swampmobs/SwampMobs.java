@@ -1,11 +1,11 @@
 package lycanite.lycanitesmobs.swampmobs;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.OldConfig;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.ILycaniteMod;
+import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
+import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
@@ -54,14 +54,11 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = SwampMobs.modid, name = SwampMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid)
-public class SwampMobs implements ILycaniteMod {
+public class SwampMobs {
 	
 	public static final String modid = "swampmobs";
 	public static final String name = "Lycanites Swamp Mobs";
-	public static final String domain = modid.toLowerCase();
-	public static int mobID = -1;
-	public static int projectileID = 99;
-	public static OldConfig config = new SubConfig();
+	public static GroupInfo group;
 	
 	// Instance:
 	@Instance(modid)
@@ -77,34 +74,35 @@ public class SwampMobs implements ILycaniteMod {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
-		config.init(modid);
-		
-		// ========== Set Current Mod ==========
-		ObjectManager.setCurrentMod(this);
+		group = new GroupInfo(this, "Swamp Mobs");
+		group.loadFromConfig();
+
+		// ========== Set Current Group ==========
+		ObjectManager.setCurrentGroup(group);
 		
 		// ========== Create Items ==========
 		ObjectManager.addItem("swampegg", new ItemSwampEgg());
 		
-		ObjectManager.addItem("aspidmeatraw", new ItemCustomFood("aspidmeatraw", domain, 2, 0.5F).setPotionEffect(Potion.poison.id, 45, 2, 0.8F));
+		ObjectManager.addItem("aspidmeatraw", new ItemCustomFood("aspidmeatraw", group, 2, 0.5F).setPotionEffect(Potion.poison.id, 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("aspidmeatraw"));
 		OreDictionary.registerOre("listAllbeefraw", ObjectManager.getItem("aspidmeatraw"));
 		
-		ObjectManager.addItem("aspidmeatcooked", new ItemCustomFood("aspidmeatcooked", domain, 6, 0.7F));
+		ObjectManager.addItem("aspidmeatcooked", new ItemCustomFood("aspidmeatcooked", group, 6, 0.7F));
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("aspidmeatcooked"));
 		OreDictionary.registerOre("listAllbeefcooked", ObjectManager.getItem("aspidmeatcooked"));
 		
-		ObjectManager.addItem("mosspie", new ItemCustomFood("mosspie", domain, 6, 0.7F).setPotionEffect(Potion.regeneration.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
+		ObjectManager.addItem("mosspie", new ItemCustomFood("mosspie", group, 6, 0.7F).setPotionEffect(Potion.regeneration.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("mosspie"));
 
-		ObjectManager.addItem("lurkertreat", new ItemTreat("lurkertreat", this.domain));
-		ObjectManager.addItem("eyewigtreat", new ItemTreat("eyewigtreat", this.domain));
+		ObjectManager.addItem("lurkertreat", new ItemTreat("lurkertreat", group));
+		ObjectManager.addItem("eyewigtreat", new ItemTreat("eyewigtreat", group));
 		
 		ObjectManager.addItem("poisongland", new ItemPoisonGland());
 		ObjectManager.addItem("poisonrayscepter", new ItemScepterPoisonRay());
 		ObjectManager.addItem("venomshotscepter", new ItemScepterVenomShot());
 		
 		// ========== Create Blocks ==========
-		AssetManager.addSound("poisoncloud", domain, "block.poisoncloud");
+		AssetManager.addSound("poisoncloud", group, "block.poisoncloud");
 		ObjectManager.addBlock("poisoncloud", new BlockPoisonCloud());
 	}
 	
@@ -114,19 +112,56 @@ public class SwampMobs implements ILycaniteMod {
 	// ==================================================
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
-		
-		// ========== Set Current Mod ==========
-		ObjectManager.setCurrentMod(this);
+
+		// ========== Set Current Group ==========
+		ObjectManager.setCurrentGroup(group);
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("swampegg"), new DispenserBehaviorMobEggCustom());
-		ObjectManager.addMob(new MobInfo(this, "ghoulzombie", EntityGhoulZombie.class, 0x009966, 0xAAFFDD, 2));
-		ObjectManager.addMob(new MobInfo(this, "dweller", EntityDweller.class, 0x009922, 0x994499, 2).setSummonable(true));
-		ObjectManager.addMob(new MobInfo(this, "ettin", EntityEttin.class, 0x669900, 0xFF6600, 6));
-		ObjectManager.addMob(new MobInfo(this, "lurker", EntityLurker.class, 0x009900, 0x99FF00, 4));
-		ObjectManager.addMob(new MobInfo(this, "eyewig", EntityEyewig.class, 0x000000, 0x009900, 4));
-		ObjectManager.addMob(new MobInfo(this, "aspid", EntityAspid.class, 0x009944, 0x446600, 2));
-		ObjectManager.addMob(new MobInfo(this, "remobra", EntityRemobra.class, 0x440066, 0xDD00FF, 2).setSummonable(true));
+		MobInfo newMob;
+        
+        newMob = new MobInfo(group, "ghoulzombie", EntityGhoulZombie.class, 0x009966, 0xAAFFDD)
+		        .setPeaceful(false).setSummonable(false).setSummonCost(2);
+		newMob.spawnInfo.setSpawnTypes("MONSTER")
+				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "dweller", EntityDweller.class, 0x009922, 0x994499)
+		        .setPeaceful(false).setSummonable(true).setSummonCost(1);
+		newMob.spawnInfo.setSpawnTypes("WATERCREATURE")
+				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "ettin", EntityEttin.class, 0x669900, 0xFF6600)
+		        .setPeaceful(false).setSummonable(false).setSummonCost(6);
+		newMob.spawnInfo.setSpawnTypes("MONSTER")
+				.setSpawnWeight(3).setAreaLimit(3).setGroupLimits(1, 2);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "lurker", EntityLurker.class, 0x009900, 0x99FF00)
+		        .setPeaceful(false).setSummonable(false).setSummonCost(4);
+		newMob.spawnInfo.setSpawnTypes("MONSTER")
+				.setSpawnWeight(6).setAreaLimit(5).setGroupLimits(1, 3);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "eyewig", EntityEyewig.class, 0x000000, 0x009900)
+		        .setPeaceful(false).setSummonable(false).setSummonCost(4);
+		newMob.spawnInfo.setSpawnTypes("MONSTER")
+				.setSpawnWeight(3).setAreaLimit(5).setGroupLimits(1, 1);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "aspid", EntityAspid.class, 0x009944, 0x446600)
+		        .setPeaceful(true).setSummonable(false).setSummonCost(2);
+		newMob.spawnInfo.setSpawnTypes("CREATURE").setDespawn(false)
+				.setSpawnWeight(12).setAreaLimit(10).setGroupLimits(1, 5);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "remobra", EntityRemobra.class, 0x440066, 0xDD00FF)
+		        .setPeaceful(false).setSummonable(true).setSummonCost(2);
+		newMob.spawnInfo.setSpawnTypes("MONSTER")
+				.setSpawnWeight(4).setAreaLimit(10).setGroupLimits(1, 3);
+		ObjectManager.addMob(newMob);
+
 		
 		// ========== Create Projectiles ==========
 		ObjectManager.addProjectile("poisonray", EntityPoisonRay.class, Items.fermented_spider_eye, new DispenserBehaviorPoisonRay());
@@ -143,12 +178,13 @@ public class SwampMobs implements ILycaniteMod {
 	// ==================================================
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
-		// ========== Set Current Mod ==========
-		ObjectManager.setCurrentMod(this);
+		// ========== Set Current Group ==========
+		ObjectManager.setCurrentGroup(group);
+		ConfigBase config = ConfigBase.getConfig(group, "spawning");
 		
 		// ========== Remove Vanilla Spawns ==========
-		BiomeGenBase[] biomes = this.config.getSpawnBiomesTypes();
-		if(config.getFeatureBool("controlvanilla")) {
+		BiomeGenBase[] biomes = group.biomes;
+		if(config.getBool("Vanilla Spawning", "Edit Vanilla Spawning", true, "If true, some vanilla spawns in this biome will be removed, note that vanilla mobs should still be easy to find, only they will be more biome specific.")) {
 			EntityRegistry.removeSpawn(EntityZombie.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntitySkeleton.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntityCreeper.class, EnumCreatureType.monster, biomes);
@@ -209,26 +245,4 @@ public class SwampMobs implements ILycaniteMod {
 		// ========== Smelting ==========
 		GameRegistry.addSmelting(ObjectManager.getItem("aspidmeatraw"), new ItemStack(ObjectManager.getItem("aspidmeatcooked"), 1), 0.5f);
 	}
-	
-	
-	// ==================================================
-	//                    Mod Info
-	// ==================================================
-	@Override
-	public SwampMobs getInstance() { return instance; }
-	
-	@Override
-	public String getModID() { return modid; }
-	
-	@Override
-	public String getDomain() { return domain; }
-	
-	@Override
-	public OldConfig getConfig() { return config; }
-	
-	@Override
-	public int getNextMobID() { return ++this.mobID; }
-	
-	@Override
-	public int getNextProjectileID() { return ++this.projectileID; }
 }

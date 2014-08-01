@@ -17,7 +17,6 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
-import lycanite.lycanitesmobs.desertmobs.DesertMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -40,7 +39,6 @@ public class EntityManticore extends EntityCreatureTameable implements IMob, IGr
         super(par1World);
         
         // Setup:
-        this.mod = DesertMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 0;
         this.experience = 5;

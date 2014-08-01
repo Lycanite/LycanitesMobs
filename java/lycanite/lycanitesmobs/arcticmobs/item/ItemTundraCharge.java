@@ -16,7 +16,7 @@ public class ItemTundraCharge extends ItemBase {
 	// ==================================================
     public ItemTundraCharge() {
         super();
-        this.domain = ArcticMobs.domain;
+        this.group = ArcticMobs.group;
         this.itemName = "tundracharge";
         this.setup();
     }

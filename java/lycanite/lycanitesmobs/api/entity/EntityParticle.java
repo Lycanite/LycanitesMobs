@@ -94,7 +94,7 @@ public class EntityParticle extends EntityThrowable {
     // ==================================================
     public ResourceLocation getTexture() {
     	if(AssetManager.getTexture(this.texture) == null)
-    		AssetManager.addTexture(this.texture, this.group.filename, "textures/particles/" + this.texture.toLowerCase() + ".png");
+    		AssetManager.addTexture(this.texture, this.group, "textures/particles/" + this.texture.toLowerCase() + ".png");
     	return AssetManager.getTexture(this.texture);
     }
 }

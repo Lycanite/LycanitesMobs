@@ -3,10 +3,9 @@ package lycanite.lycanitesmobs.arcticmobs;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.OldConfig;
-import lycanite.lycanitesmobs.api.ILycaniteMod;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
+import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
@@ -55,14 +54,11 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = ArcticMobs.modid, name = ArcticMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid)
-public class ArcticMobs implements ILycaniteMod {
+public class ArcticMobs {
 	
 	public static final String modid = "arcticmobs";
 	public static final String name = "Lycanites Arctic Mobs";
-	public static final String domain = modid.toLowerCase();
-	public static int mobID = -1;
-	public static int projectileID = 99;
-	public static OldConfig config = new SubConfig();
+	public static GroupInfo group;
 	
 	// Instance:
 	@Instance(modid)
@@ -78,23 +74,24 @@ public class ArcticMobs implements ILycaniteMod {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
-		config.init(modid);
-		
-		// ========== Set Current Mod ==========
-		ObjectManager.setCurrentMod(this);
+		group = new GroupInfo(this, "Arctic Mobs");
+		group.loadFromConfig();
+
+		// ========== Set Current Group ==========
+		ObjectManager.setCurrentGroup(group);
 		
 		// ========== Create Items ==========
 		ObjectManager.addItem("arcticegg", new ItemArcticEgg());
 		
-		ObjectManager.addItem("yetimeatraw", new ItemCustomFood("yetimeatraw", domain, 2, 0.5F).setPotionEffect(Potion.moveSlowdown.id, 45, 2, 0.8F));
+		ObjectManager.addItem("yetimeatraw", new ItemCustomFood("yetimeatraw", group, 2, 0.5F).setPotionEffect(Potion.moveSlowdown.id, 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("yetimeatraw"));
 		OreDictionary.registerOre("listAllporkraw", ObjectManager.getItem("yetimeatraw"));
 		
-		ObjectManager.addItem("yetimeatcooked", new ItemCustomFood("yetimeatcooked", domain, 6, 0.7F));
+		ObjectManager.addItem("yetimeatcooked", new ItemCustomFood("yetimeatcooked", group, 6, 0.7F));
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("yetimeatcooked"));
 		OreDictionary.registerOre("listAllporkcooked", ObjectManager.getItem("yetimeatcooked"));
 		
-		ObjectManager.addItem("palesoup", new ItemCustomFood("palesoup", domain, 6, 0.7F).setPotionEffect(Potion.resistance.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
+		ObjectManager.addItem("palesoup", new ItemCustomFood("palesoup", group, 6, 0.7F).setPotionEffect(Potion.resistance.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("palesoup"));
 
 		ObjectManager.addItem("frostyfur", new ItemFrostyFur());
@@ -109,10 +106,10 @@ public class ArcticMobs implements ILycaniteMod {
 		// ========== Create Blocks ==========
 		ObjectManager.addBlock("frostweb", new BlockFrostweb());
 		
-		AssetManager.addSound("frostcloud", domain, "block.frostcloud");
+		AssetManager.addSound("frostcloud", group, "block.frostcloud");
 		ObjectManager.addBlock("frostcloud", new BlockFrostCloud());
 		
-		AssetManager.addSound("frostfire", domain, "block.frostfire");
+		AssetManager.addSound("frostfire", group, "block.frostfire");
 		ObjectManager.addBlock("frostfire", new BlockFrostfire());
 	}
 	
@@ -122,21 +119,37 @@ public class ArcticMobs implements ILycaniteMod {
 	// ==================================================
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
-		
-		// ========== Set Current Mod ==========
-		ObjectManager.setCurrentMod(this);
+
+		// ========== Set Current Group ==========
+		ObjectManager.setCurrentGroup(group);
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("arcticegg"), new DispenserBehaviorMobEggCustom());
-		ConfigBase spawningConfig = ConfigBase.getConfig(this, "spawning");
-        String groupDimensionEntries = spawningConfig.getString("Group Spawning Defaults", "Spawn Dimension");
         MobInfo newMob;
-        newMob = new MobInfo(this, "reiver", EntityReiver.class, 0xDDEEFF, 0x99DDEE)
+        
+        newMob = new MobInfo(group, "reiver", EntityReiver.class, 0xDDEEFF, 0x99DDEE)
                 .setPeaceful(false).setSummonable(true).setSummonCost(2);
-        newMob.spawnInfo.setSpawnTypes("MONSTER, FROSTFIRE");
-		ObjectManager.addMob(new MobInfo(this, "frostweaver", EntityFrostweaver.class, 0xAADDFF, 0x226699, 2).setSummonable(true));
-		ObjectManager.addMob(new MobInfo(this, "yeti", EntityYeti.class, 0xEEEEFF, 0x000099, 2).setSummonable(false));
-		ObjectManager.addMob(new MobInfo(this, "wendigo", EntityWendigo.class, 0xCCCCFF, 0x0055FF, 8).setSummonable(false));
+        newMob.spawnInfo.setSpawnTypes("MONSTER, FROSTFIRE").setBlockCost(8)
+        		.setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3);
+        ObjectManager.addMob(newMob);
+        
+        newMob = new MobInfo(group, "frostweaver", EntityFrostweaver.class, 0xAADDFF, 0x226699)
+		        .setPeaceful(false).setSummonable(true).setSummonCost(2);
+		newMob.spawnInfo.setSpawnTypes("MONSTER")
+				.setSpawnWeight(10).setAreaLimit(5).setGroupLimits(1, 2);
+		ObjectManager.addMob(newMob);
+		
+        newMob = new MobInfo(group, "yeti", EntityYeti.class, 0xEEEEFF, 0x000099)
+		        .setPeaceful(true).setSummonable(false).setSummonCost(2);
+		newMob.spawnInfo.setSpawnTypes("CREATURE").setDespawn(false)
+				.setSpawnWeight(10).setAreaLimit(5).setGroupLimits(1, 4);
+		ObjectManager.addMob(newMob);
+		
+        newMob = new MobInfo(group, "wendigo", EntityWendigo.class, 0xCCCCFF, 0x0055FF)
+		        .setPeaceful(false).setSummonable(false).setSummonCost(8);
+		newMob.spawnInfo.setSpawnTypes("MONSTER")
+				.setSpawnWeight(4).setAreaLimit(1).setGroupLimits(1, 1);
+		ObjectManager.addMob(newMob);
 		
 		// ========== Create Projectiles ==========
 		ObjectManager.addProjectile("frostbolt", EntityFrostbolt.class, ObjectManager.getItem("frostboltcharge"), new DispenserBehaviorFrostbolt());
@@ -154,12 +167,13 @@ public class ArcticMobs implements ILycaniteMod {
 	// ==================================================
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
-		// ========== Set Current Mod ==========
-		ObjectManager.setCurrentMod(this);
+		// ========== Set Current Group ==========
+		ObjectManager.setCurrentGroup(group);
+		ConfigBase config = ConfigBase.getConfig(group, "spawning");
 		
 		// ========== Remove Vanilla Spawns ==========
-		BiomeGenBase[] biomes = this.config.getSpawnBiomesTypes();
-		if(config.getFeatureBool("controlvanilla")) {
+		BiomeGenBase[] biomes = group.biomes;
+		if(config.getBool("Vanilla Spawning", "Edit Vanilla Spawning", true, "If true, some vanilla spawns in this biome will be removed, note that vanilla mobs should still be easy to find, only they will be more biome specific.")) {
 			EntityRegistry.removeSpawn(EntityZombie.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntityCreeper.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntitySpider.class, EnumCreatureType.monster, biomes);
@@ -201,26 +215,4 @@ public class ArcticMobs implements ILycaniteMod {
 		// ========== Smelting ==========
 		GameRegistry.addSmelting(ObjectManager.getItem("yetimeatraw"), new ItemStack(ObjectManager.getItem("yetimeatcooked"), 1), 0.5f);
 	}
-	
-	
-	// ==================================================
-	//                    Mod Info
-	// ==================================================
-	@Override
-	public ArcticMobs getInstance() { return instance; }
-	
-	@Override
-	public String getModID() { return modid; }
-	
-	@Override
-	public String getDomain() { return domain; }
-	
-	@Override
-	public OldConfig getConfig() { return config; }
-	
-	@Override
-	public int getNextMobID() { return ++this.mobID; }
-	
-	@Override
-	public int getNextProjectileID() { return ++this.projectileID; }
 }

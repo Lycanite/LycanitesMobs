@@ -22,7 +22,7 @@ public class ModelSkylus extends ModelCustomObj {
     
     public ModelSkylus(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("skylus", SaltwaterMobs.domain, "entity/skylus");
+    	model = (WavefrontObject)AssetManager.getObjModel("skylus", SaltwaterMobs.group, "entity/skylus");
     	
     	// Get Parts:
     	parts = model.groupObjects;

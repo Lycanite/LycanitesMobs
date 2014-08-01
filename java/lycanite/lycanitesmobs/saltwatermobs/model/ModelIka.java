@@ -1,13 +1,13 @@
 package lycanite.lycanitesmobs.saltwatermobs.model;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.api.model.ModelCustomObj;
 import lycanite.lycanitesmobs.saltwatermobs.SaltwaterMobs;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.model.obj.WavefrontObject;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ModelIka extends ModelCustomObj {
@@ -21,7 +21,7 @@ public class ModelIka extends ModelCustomObj {
 
     public ModelIka(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("ika", SaltwaterMobs.domain, "entity/ika");
+    	model = (WavefrontObject)AssetManager.getObjModel("ika", SaltwaterMobs.group, "entity/ika");
     	
     	// Get Parts:
     	parts = model.groupObjects;

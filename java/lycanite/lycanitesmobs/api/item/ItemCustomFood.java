@@ -4,6 +4,7 @@ import java.util.List;
 
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
+import lycanite.lycanitesmobs.api.info.GroupInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -18,23 +19,23 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemCustomFood extends ItemFood {
 	
 	public String itemName = "customfood";
-	public String domain = LycanitesMobs.domain;
+	public GroupInfo group = LycanitesMobs.group;
 	public String texturePath = "customfood";
 	
     // ==================================================
   	//                    Constructors
   	// ==================================================
-	public ItemCustomFood(String setItemName, String setDomain, String setTexturePath, int feed, float saturation) {
+	public ItemCustomFood(String setItemName, GroupInfo group, String setTexturePath, int feed, float saturation) {
 		super(feed, saturation, false);
 		this.itemName = setItemName;
-		this.domain = setDomain;
+		this.group = group;
 		this.texturePath = setTexturePath;
 		this.setMaxStackSize(64);
 		this.setCreativeTab(LycanitesMobs.itemsTab);
 		this.setUnlocalizedName(itemName);
 	}
-	public ItemCustomFood(String setItemName, String setDomain, int feed, float saturation) {
-		this(setItemName, setDomain, setItemName.toLowerCase(), feed, saturation);
+	public ItemCustomFood(String setItemName, GroupInfo group, int feed, float saturation) {
+		this(setItemName, group, setItemName.toLowerCase(), feed, saturation);
 	}
     
     
@@ -74,6 +75,6 @@ public class ItemCustomFood extends ItemFood {
     @SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IIconRegister iconRegister) {
-        AssetManager.addIcon(itemName, domain, texturePath, iconRegister);
+        AssetManager.addIcon(itemName, group, texturePath, iconRegister);
     }
 }

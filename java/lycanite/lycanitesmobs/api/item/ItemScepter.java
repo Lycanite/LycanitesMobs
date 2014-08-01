@@ -195,7 +195,7 @@ public class ItemScepter extends ItemBase {
     @SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IIconRegister iconRegister) {
-    	AssetManager.addIconGroup(this.itemName, this.domain, new String[] {this.textureName, this.textureName + "_fire"}, iconRegister);
+    	AssetManager.addIconGroup(this.itemName, this.group, new String[] {this.textureName, this.textureName + "_fire"}, iconRegister);
     }
 
     // ========== Holding Angle ==========

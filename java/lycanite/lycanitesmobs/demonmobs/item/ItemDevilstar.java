@@ -16,7 +16,7 @@ public class ItemDevilstar extends ItemBase {
 	// ==================================================
     public ItemDevilstar() {
         super();
-        this.domain = DemonMobs.domain;
+        this.group = DemonMobs.group;
         this.itemName = "devilstarcharge";
         this.setup();
     }

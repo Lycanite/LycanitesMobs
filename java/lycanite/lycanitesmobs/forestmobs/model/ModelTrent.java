@@ -22,7 +22,7 @@ public class ModelTrent extends ModelCustomObj {
     
     public ModelTrent(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Trent", ForestMobs.domain, "entity/trent");
+    	model = (WavefrontObject)AssetManager.getObjModel("Trent", ForestMobs.group, "entity/trent");
     	
     	// Get Parts:
     	parts = model.groupObjects;

@@ -2,6 +2,7 @@ package lycanite.lycanitesmobs;
 import java.util.HashMap;
 import java.util.Map;
 
+import lycanite.lycanitesmobs.api.info.GroupInfo;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
@@ -23,9 +24,9 @@ public class AssetManager {
     //                        Add
     // ==================================================
 	// ========== Texture ==========
-	public static void addTexture(String name, String domain, String path) {
+	public static void addTexture(String name, GroupInfo group, String path) {
 		name = name.toLowerCase();
-		textures.put(name, new ResourceLocation(domain, path));
+		textures.put(name, new ResourceLocation(group.filename, path));
 	}
 	
 	// ========== Icon ==========
@@ -33,24 +34,24 @@ public class AssetManager {
 		name = name.toLowerCase();
 		icons.put(name, icon);
 	}
-	public static void addIcon(String name, String domain, String path, IIconRegister iconRegister) {
+	public static void addIcon(String name, GroupInfo group, String path, IIconRegister iconRegister) {
 		name = name.toLowerCase();
-		icons.put(name, iconRegister.registerIcon(domain + ":" + path));
+		icons.put(name, iconRegister.registerIcon(group.filename + ":" + path));
 	}
 	
 	// ========== Icon Group ==========
-	public static void addIconGroup(String name, String domain, String[] paths, IIconRegister iconRegister) {
+	public static void addIconGroup(String name, GroupInfo group, String[] paths, IIconRegister iconRegister) {
 		name = name.toLowerCase();
 		IIcon[] iconGroup = new IIcon[paths.length];
 		for(int i = 0; i < paths.length; i++)
-			iconGroup[i] = iconRegister.registerIcon(domain + ":" + paths[i]);
+			iconGroup[i] = iconRegister.registerIcon(group.filename + ":" + paths[i]);
 		iconGroups.put(name, iconGroup);
 	}
 	
 	// ========== Sound ==========
-	public static void addSound(String name, String domain, String path) {
+	public static void addSound(String name, GroupInfo group, String path) {
 		name = name.toLowerCase();
-		sounds.put(name, domain + ":" + path);
+		sounds.put(name, group.filename + ":" + path);
 	}
 	
 	// ========== Model ==========
@@ -60,9 +61,9 @@ public class AssetManager {
 	}
 	
 	// ========== Obj Model ==========
-	public static void addObjModel(String name, String domain, String path) {
+	public static void addObjModel(String name, GroupInfo group, String path) {
 		name = name.toLowerCase();
-		objModels.put(name, AdvancedModelLoader.loadModel(new ResourceLocation(domain, "models/" + path + ".obj")));
+		objModels.put(name, AdvancedModelLoader.loadModel(new ResourceLocation(group.filename, "models/" + path + ".obj")));
 	}
 	
 	
@@ -116,10 +117,10 @@ public class AssetManager {
 			return null;
 		return objModels.get(name);
 	}
-	public static IModelCustom getObjModel(String name, String domain, String path) {
+	public static IModelCustom getObjModel(String name, GroupInfo group, String path) {
 		name = name.toLowerCase();
 		if(!objModels.containsKey(name))
-			addObjModel(name, domain, path);
+			addObjModel(name, group, path);
 		return objModels.get(name);
 	}
 }

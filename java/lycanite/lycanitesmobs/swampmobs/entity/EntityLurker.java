@@ -29,7 +29,6 @@ import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.desertmobs.entity.EntityJoust;
 import lycanite.lycanitesmobs.desertmobs.entity.EntityJoustAlpha;
-import lycanite.lycanitesmobs.swampmobs.SwampMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -54,7 +53,6 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
         super(par1World);
         
         // Setup:
-        this.mod = SwampMobs.instance;
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
         this.defense = 0;
         this.experience = 5;

@@ -12,7 +12,6 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
-import lycanite.lycanitesmobs.forestmobs.ForestMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -38,7 +37,6 @@ public class EntityTrent extends EntityCreatureBase implements IMob {
         super(par1World);
         
         // Setup:
-        this.mod = ForestMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 2;
         this.experience = 10;

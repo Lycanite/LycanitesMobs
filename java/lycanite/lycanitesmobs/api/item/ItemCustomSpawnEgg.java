@@ -7,8 +7,8 @@ import java.util.List;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.ILycaniteMod;
 import lycanite.lycanitesmobs.api.info.EntityListCustom;
+import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -34,7 +34,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemCustomSpawnEgg extends ItemBase {
-	public ILycaniteMod mod;
+	public GroupInfo group = LycanitesMobs.group;
 	public String itemName = "customspawnegg";
 	public String texturePath = "customspawn";
     
@@ -54,7 +54,7 @@ public class ItemCustomSpawnEgg extends ItemBase {
     @Override
     public String getItemStackDisplayName(ItemStack itemStack) {
         String title = (StatCollector.translateToLocal(this.getUnlocalizedName() + ".name")).trim();
-        Class entityClass = ObjectManager.entityLists.get(this.mod.getDomain()).getClassFromID(itemStack.getItemDamage());
+        Class entityClass = ObjectManager.entityLists.get(this.group.filename).getClassFromID(itemStack.getItemDamage());
         MobInfo mobInfo = MobInfo.mobClassToInfo.get(entityClass);
         return title  + " " + mobInfo.getTitle();
     }
@@ -65,7 +65,7 @@ public class ItemCustomSpawnEgg extends ItemBase {
 	// ==================================================
     @Override
     public String getDescription(ItemStack itemStack, EntityPlayer entityPlayer, List textList, boolean par4) {
-    	Class entityClass = ObjectManager.entityLists.get(this.mod.getDomain()).getClassFromID(itemStack.getItemDamage());
+    	Class entityClass = ObjectManager.entityLists.get(this.group.filename).getClassFromID(itemStack.getItemDamage());
         MobInfo mobInfo = MobInfo.mobClassToInfo.get(entityClass);
     	return mobInfo.getDescription();
     }
@@ -77,7 +77,7 @@ public class ItemCustomSpawnEgg extends ItemBase {
     @Override
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack par1ItemStack, int par2) {
-    	EntityListCustom.EntityEggInfo entityegginfo = (EntityListCustom.EntityEggInfo)ObjectManager.entityLists.get(this.mod.getDomain()).entityEggs.get(Integer.valueOf(par1ItemStack.getItemDamage()));
+    	EntityListCustom.EntityEggInfo entityegginfo = (EntityListCustom.EntityEggInfo)ObjectManager.entityLists.get(this.group.filename).entityEggs.get(Integer.valueOf(par1ItemStack.getItemDamage()));
         return entityegginfo != null ? (par2 == 0 ? entityegginfo.primaryColor : entityegginfo.secondaryColor) : 16777215;
     }
     
@@ -94,7 +94,7 @@ public class ItemCustomSpawnEgg extends ItemBase {
         	TileEntity tileEntity = world.getTileEntity(x, y, z);
         	if(tileEntity != null && tileEntity instanceof TileEntityMobSpawner) {
         		TileEntityMobSpawner spawner = (TileEntityMobSpawner)tileEntity;
-        		spawner.func_145881_a().setEntityName(ObjectManager.entityLists.get(this.mod.getDomain()).getStringFromID(itemStack.getItemDamage())); //getSpawnerLogic()
+        		spawner.func_145881_a().setEntityName(ObjectManager.entityLists.get(this.group.filename).getStringFromID(itemStack.getItemDamage())); //getSpawnerLogic()
         		world.markBlockForUpdate(x, y, z);
         	}
         }
@@ -169,13 +169,13 @@ public class ItemCustomSpawnEgg extends ItemBase {
 	//                   Spawn Creature
 	// ==================================================
     public Entity spawnCreature(World par0World, int par1, double par2, double par4, double par6) {
-        if(!ObjectManager.entityLists.get(this.mod.getDomain()).entityEggs.containsKey(Integer.valueOf(par1)))
+        if(!ObjectManager.entityLists.get(this.group.filename).entityEggs.containsKey(Integer.valueOf(par1)))
             return null;
         else {
             Entity entity = null;
 
             for(int j = 0; j < 1; ++j) {
-                entity = ObjectManager.entityLists.get(this.mod.getDomain()).createEntityByID(par1, par0World);
+                entity = ObjectManager.entityLists.get(this.group.filename).createEntityByID(par1, par0World);
 
                 if(entity != null && entity instanceof EntityLivingBase) {
                     EntityLiving entityliving = (EntityLiving)entity;
@@ -213,8 +213,8 @@ public class ItemCustomSpawnEgg extends ItemBase {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
-    	AssetManager.addIcon(this.itemName, this.mod.getDomain(), texturePath, iconRegister);
-    	AssetManager.addIcon(this.itemName + "_overlay", this.mod.getDomain(), texturePath + "_overlay", iconRegister);
+    	AssetManager.addIcon(this.itemName, this.group, texturePath, iconRegister);
+    	AssetManager.addIcon(this.itemName + "_overlay", this.group, texturePath + "_overlay", iconRegister);
     }
     
     
@@ -224,10 +224,10 @@ public class ItemCustomSpawnEgg extends ItemBase {
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item item, CreativeTabs creativeTabs, List subItems) {
-    	if(this.mod == null || !ObjectManager.entityLists.containsKey(this.mod.getDomain()))
+    	if(this.group == null || !ObjectManager.entityLists.containsKey(this.group.filename))
     		return;
     	
-    	HashMap entityEggs = ObjectManager.entityLists.get(this.mod.getDomain()).entityEggs;
+    	HashMap entityEggs = ObjectManager.entityLists.get(this.group.filename).entityEggs;
     	if(entityEggs.size() <= 0)
     		return;
     	

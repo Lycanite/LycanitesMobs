@@ -11,7 +11,7 @@ public class ItemMountainEgg extends ItemCustomSpawnEgg {
     public ItemMountainEgg() {
         super();
         setUnlocalizedName("mountainspawn");
-        this.mod = MountainMobs.instance;
+        this.group = MountainMobs.group;
         this.itemName = "mountainspawn";
         this.texturePath = "mountainspawn";
     }

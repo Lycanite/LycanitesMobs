@@ -1,14 +1,27 @@
 package lycanite.lycanitesmobs.mountainmobs.entity;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
+
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupAnimal;
 import lycanite.lycanitesmobs.api.IGroupPredator;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
-import lycanite.lycanitesmobs.api.entity.ai.*;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIAvoid;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIEatBlock;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowParent;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIMate;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAvoid;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetParent;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAITempt;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
-import lycanite.lycanitesmobs.mountainmobs.MountainMobs;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -26,10 +39,6 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
 
 public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGroupAnimal, IShearable {
 	
@@ -53,7 +62,6 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
         super(par1World);
         
         // Setup:
-        this.mod = MountainMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.experience = 3;
         this.spawnsOnlyInLight = true;

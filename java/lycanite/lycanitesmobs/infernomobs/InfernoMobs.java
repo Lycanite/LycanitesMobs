@@ -2,9 +2,8 @@ package lycanite.lycanitesmobs.infernomobs;
 
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.OldConfig;
-import lycanite.lycanitesmobs.api.ILycaniteMod;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
+import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
@@ -40,14 +39,11 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = InfernoMobs.modid, name = InfernoMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid)
-public class InfernoMobs implements ILycaniteMod {
+public class InfernoMobs {
 	
 	public static final String modid = "infernomobs";
 	public static final String name = "Lycanites Inferno Mobs";
-	public static final String domain = modid.toLowerCase();
-	public static int mobID = -1;
-	public static int projectileID = 99;
-	public static OldConfig config = new SubConfig();
+	public static GroupInfo group;
 	
 	// Instance:
 	@Instance(modid)
@@ -63,10 +59,11 @@ public class InfernoMobs implements ILycaniteMod {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
-		config.init(modid);
-		
-		// ========== Set Current Mod ==========
-		ObjectManager.setCurrentMod(this);
+		group = new GroupInfo(this, "Inferno Mobs");
+		group.loadFromConfig();
+
+		// ========== Set Current Group ==========
+		ObjectManager.setCurrentGroup(group);
 		
 		// ========== Create Blocks/Fluids ==========
 		Fluid fluid = ObjectManager.addFluid(new Fluid("purelava"));
@@ -76,11 +73,11 @@ public class InfernoMobs implements ILycaniteMod {
 		// ========== Create Items ==========
 		ObjectManager.addItem("infernoegg", new ItemInfernoEgg());
 		
-		ObjectManager.addItem("cephignismeatcooked", new ItemCustomFood("cephignismeatcooked", domain, 6, 0.7F));
+		ObjectManager.addItem("cephignismeatcooked", new ItemCustomFood("cephignismeatcooked", group, 6, 0.7F));
 		ObjectLists.addItem("cookedfish", ObjectManager.getItem("cephignismeatcooked"));
 		OreDictionary.registerOre("listAllfishcooked", ObjectManager.getItem("cephignismeatcooked"));
 		
-		ObjectManager.addItem("searingtaco", new ItemCustomFood("searingtaco", domain, 6, 0.7F).setPotionEffect(Potion.fireResistance.id, 120, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16)); // Fire Resistance
+		ObjectManager.addItem("searingtaco", new ItemCustomFood("searingtaco", group, 6, 0.7F).setPotionEffect(Potion.fireResistance.id, 120, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16)); // Fire Resistance
 		ObjectLists.addItem("cookedfish", ObjectManager.getItem("searingtaco"));
 		
 		ObjectManager.addItem("embercharge", new ItemEmberCharge());
@@ -96,15 +93,32 @@ public class InfernoMobs implements ILycaniteMod {
 	// ==================================================
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
-		
-		// ========== Set Current Mod ==========
-		ObjectManager.setCurrentMod(this);
+
+		// ========== Set Current Group ==========
+		ObjectManager.setCurrentGroup(group);
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("infernoegg"), new DispenserBehaviorMobEggCustom());
-		ObjectManager.addMob(new MobInfo(this, "cinder", EntityCinder.class, 0xFF9900, 0xFFFF00, 2).setSummonable(true));
-		ObjectManager.addMob(new MobInfo(this, "lobber", EntityLobber.class, 0x330011, 0xFF5500, 8).setSummonable(false));
-		ObjectManager.addMob(new MobInfo(this, "cephignis", EntityCephignis.class, 0xFFBB00, 0xDD00FF, 1).setSummonable(false));
+		MobInfo newMob;
+        
+        newMob = new MobInfo(group, "cinder", EntityCinder.class, 0xFF9900, 0xFFFF00)
+		        .setPeaceful(false).setSummonable(true).setSummonCost(2);
+		newMob.spawnInfo.setSpawnTypes("FIRE").setBlockCost(8)
+				.setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "lobber", EntityLobber.class, 0x330011, 0xFF5500)
+		        .setPeaceful(false).setSummonable(false).setSummonCost(8);
+		newMob.spawnInfo.setSpawnTypes("LAVA").setBlockCost(16)
+				.setSpawnWeight(2).setAreaLimit(2).setGroupLimits(1, 3);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "cephignis", EntityCephignis.class, 0xFFBB00, 0xDD00FF)
+		        .setPeaceful(true).setSummonable(false).setSummonCost(1);
+		newMob.spawnInfo.setSpawnTypes("LAVA").setBlockCost(32).setDespawn(false)
+				.setSpawnWeight(4).setAreaLimit(6).setGroupLimits(1, 3);
+		ObjectManager.addMob(newMob);
+
 		
 		// ========== Create Projectiles ==========
 		ObjectManager.addProjectile("ember", EntityEmber.class, ObjectManager.getItem("embercharge"), new DispenserBehaviorEmber());
@@ -120,8 +134,8 @@ public class InfernoMobs implements ILycaniteMod {
 	// ==================================================
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
-		// ========== Set Current Mod ==========
-		ObjectManager.setCurrentMod(this);
+		// ========== Set Current Group ==========
+		ObjectManager.setCurrentGroup(group);
 		
 		// ========== Remove Vanilla Spawns ==========
 		// N/A
@@ -161,26 +175,4 @@ public class InfernoMobs implements ILycaniteMod {
 		// ========== Smelting ==========
 		//GameRegistry.addSmelting(ObjectManager.getItem("sauropodmeatraw").itemID, new ItemStack(ObjectManager.getItem("sauropodmeatcooked"), 1), 0.5f);
 	}
-	
-	
-	// ==================================================
-	//                    Mod Info
-	// ==================================================
-	@Override
-	public InfernoMobs getInstance() { return instance; }
-	
-	@Override
-	public String getModID() { return modid; }
-	
-	@Override
-	public String getDomain() { return domain; }
-	
-	@Override
-	public OldConfig getConfig() { return config; }
-	
-	@Override
-	public int getNextMobID() { return ++this.mobID; }
-	
-	@Override
-	public int getNextProjectileID() { return ++this.projectileID; }
 }

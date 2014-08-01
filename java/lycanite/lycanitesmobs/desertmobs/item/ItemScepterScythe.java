@@ -16,7 +16,7 @@ public class ItemScepterScythe extends ItemScepter {
 	// ==================================================
     public ItemScepterScythe() {
         super();
-    	this.domain = DesertMobs.domain;
+    	this.group = DesertMobs.group;
     	this.itemName = "scythescepter";
         this.setup();
         this.textureName = "scepterscythe";

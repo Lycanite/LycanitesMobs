@@ -23,7 +23,7 @@ public class ModelCrusk extends ModelCustomObj {
     
     public ModelCrusk(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Crusk", DesertMobs.domain, "entity/crusk");
+    	model = (WavefrontObject)AssetManager.getObjModel("Crusk", DesertMobs.group, "entity/crusk");
     	
     	// Get Parts:
     	parts = model.groupObjects;

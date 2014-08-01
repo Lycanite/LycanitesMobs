@@ -26,7 +26,7 @@ public class CustomSpawner {
 	// ==================================================
 	//                 Entity Update Event
 	// ==================================================
-    public List<SpawnType> updateSpawnTypes = new ArrayList<SpawnType>();
+    public List<SpawnTypeBase> updateSpawnTypes = new ArrayList<SpawnTypeBase>();
 	public Map<EntityPlayer, Long> entityUpdateTicks = new HashMap<EntityPlayer, Long>();
 	/** This uses the player update events to spawn mobs around each player randomly over time. **/
 	@SubscribeEvent
@@ -48,7 +48,7 @@ public class CustomSpawner {
 		
 		// Custom Mob Spawning:
 		int tickOffset = 0;
-		for(SpawnType spawnType : this.updateSpawnTypes) {
+		for(SpawnTypeBase spawnType : this.updateSpawnTypes) {
 			spawnType.spawnMobs(entityUpdateTick - tickOffset, world, x, y, z);
 			tickOffset += 100;
 		}
@@ -60,7 +60,7 @@ public class CustomSpawner {
 	// ==================================================
 	//                 Block Break Event
 	// ==================================================
-    public List<SpawnType> oreBreakSpawnTypes = new ArrayList<SpawnType>();
+    public List<SpawnTypeBase> oreBreakSpawnTypes = new ArrayList<SpawnTypeBase>();
 	/** This uses the block break events to spawn mobs around blocks when they are destroyed. **/
 	@SubscribeEvent
 	public void onBlockBreak(BreakEvent event) {
@@ -91,7 +91,7 @@ public class CustomSpawner {
 		int z = (int)event.z + 1;
 		
 		// Custom Mob Spawning:
-		for(SpawnType spawnType : this.oreBreakSpawnTypes) {
+		for(SpawnTypeBase spawnType : this.oreBreakSpawnTypes) {
 			spawnType.spawnMobs(0, world, x, y, z);
 		}
 	}

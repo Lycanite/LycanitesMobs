@@ -200,7 +200,7 @@ public class EntityPortal extends EntityProjectileBase {
     @Override
     public ResourceLocation getTexture() {
     	if(AssetManager.getTexture(this.entityName) == null)
-     		AssetManager.addTexture(this.entityName, LycanitesMobs.domain, "textures/particles/" + this.entityName.toLowerCase() + ".png");
+     		AssetManager.addTexture(this.entityName, LycanitesMobs.group, "textures/particles/" + this.entityName.toLowerCase() + ".png");
      	return AssetManager.getTexture(this.entityName);
     }
 }

@@ -17,7 +17,7 @@ public class ItemHellfireball extends ItemBase {
 	// ==================================================
     public ItemHellfireball() {
         super();
-        this.domain = DemonMobs.domain;
+        this.group = DemonMobs.group;
         this.itemName = "hellfirecharge";
         this.setup();
     }

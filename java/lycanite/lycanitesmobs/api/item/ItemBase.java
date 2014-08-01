@@ -4,6 +4,7 @@ import java.util.List;
 
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
+import lycanite.lycanitesmobs.api.info.GroupInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -22,7 +23,7 @@ public class ItemBase extends Item {
 	public static int descriptionWidth = 128;
 	
 	public String itemName = "Item";
-	public String domain = LycanitesMobs.domain;
+	public GroupInfo group = LycanitesMobs.group;
 	public String textureName = "item";
 	
 	// ==================================================
@@ -140,7 +141,7 @@ public class ItemBase extends Item {
     @SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IIconRegister iconRegister) {
-    	AssetManager.addIcon(this.itemName, this.domain, this.textureName, iconRegister);
+    	AssetManager.addIcon(this.itemName, this.group, this.textureName, iconRegister);
     }
 
     // ========== Holding Angle ==========

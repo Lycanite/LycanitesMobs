@@ -32,7 +32,7 @@ public class EntityBoulderBlast extends EntityProjectileBase {
     // ========== Setup Projectile ==========
     public void setup() {
     	this.entityName = "boulderblast";
-    	this.mod = MountainMobs.instance;
+    	this.group = MountainMobs.group;
     	this.setBaseDamage(8);
     	this.setProjectileScale(4F);
     	

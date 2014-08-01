@@ -11,7 +11,7 @@ public class ItemArcticEgg extends ItemCustomSpawnEgg {
     public ItemArcticEgg() {
         super();
         setUnlocalizedName("arcticspawn");
-        this.mod = ArcticMobs.instance;
+        this.group = ArcticMobs.group;
         this.itemName = "arcticspawn";
         this.texturePath = "arcticspawn";
     }

@@ -36,7 +36,7 @@ public class EntityMagma extends EntityProjectileBase {
     // ========== Setup Projectile ==========
     public void setup() {
     	this.entityName = "magma";
-    	this.mod = InfernoMobs.instance;
+    	this.group = InfernoMobs.group;
     	this.setBaseDamage(6);
     	this.setProjectileScale(4F);
     }

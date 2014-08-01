@@ -16,7 +16,7 @@ public class ItemScepterEmber extends ItemScepter {
 	// ==================================================
     public ItemScepterEmber() {
         super();
-    	this.domain = InfernoMobs.domain;
+    	this.group = InfernoMobs.group;
     	this.itemName = "emberscepter";
         this.setup();
         this.textureName = "scepterember";

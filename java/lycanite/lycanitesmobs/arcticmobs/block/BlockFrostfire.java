@@ -13,6 +13,7 @@ import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ClientProxy;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.block.BlockBase;
+import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockIce;
@@ -43,12 +44,12 @@ public class BlockFrostfire extends BlockBase {
 		super(Material.fire);
 		
 		// Properties:
-		this.mod = ArcticMobs.instance;
+		this.group = ArcticMobs.group;
 		this.blockName = "frostfire";
 		this.setup();
 		
 		// Stats:
-		this.tickRate = this.mod.getConfig().getFeatureBool(this.blockName) ? 200 : 1;
+		this.tickRate = ConfigBase.getConfig(this.group, "general").getBool("Features", "Enable Frostfire") ? 200 : 1;
 		this.removeOnTick = false;
 		this.loopTicks = true;
 		this.canBeCrushed = true;
@@ -74,7 +75,7 @@ public class BlockFrostfire extends BlockBase {
     @Override
     public void updateTick(World world, int x, int y, int z, Random random) {
     	// ========== Main Fire Logic ==========
-		if(!ArcticMobs.config.getFeatureBool(this.blockName))
+		if(!ConfigBase.getConfig(this.group, "general").getBool("Features", "Enable Frostfire"))
     		world.setBlockToAir(x, y, z);
 		
 		Block base = world.getBlock(x, y - 1, z);
@@ -322,7 +323,7 @@ public class BlockFrostfire extends BlockBase {
     @SideOnly(Side.CLIENT)
     @Override
     public void registerBlockIcons(IIconRegister iconRegister) {
-    	AssetManager.addIconGroup(blockName, ArcticMobs.domain, new String[] {"frostfire_layer_0", "frostfire_layer_1"}, iconRegister);
+    	AssetManager.addIconGroup(blockName, this.group, new String[] {"frostfire_layer_0", "frostfire_layer_1"}, iconRegister);
     }
     
     // ========== Get Icon from Side and Meta ==========

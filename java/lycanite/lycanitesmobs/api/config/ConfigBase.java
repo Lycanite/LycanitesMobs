@@ -19,8 +19,10 @@ public class ConfigBase {
 	
 	// Register Config:
 	public static void registerConfig(ConfigBase config) {
-		if(config != null)
-			configs.put(config.fileName, config);
+		if(config == null)
+			return;
+		String configFileName = config.group.filename + "-" + config.fileName.toLowerCase();
+		configs.put(configFileName, config);
 	}
 
     // Get Config:
@@ -39,6 +41,7 @@ public class ConfigBase {
     public GroupInfo group;
     public String configName;
     public String fileName;
+    public String configFileName;
 	public List<IConfigListener> updateListeners = new ArrayList<IConfigListener>();
 	
 	
@@ -46,7 +49,8 @@ public class ConfigBase {
     public ConfigBase(GroupInfo group, String name) {
         this.group = group;
         this.configName = name;
-        this.fileName = group.filename + "-" + name.toLowerCase();
+        this.fileName = this.configName.toLowerCase();
+        this.configFileName = group.filename + "-" + this.fileName;
         this.init();
     }
 	
@@ -58,13 +62,13 @@ public class ConfigBase {
 		String configDirPath = LycanitesMobs.proxy.getMinecraftDir() + "/config/" + LycanitesMobs.modid;
 		File configDir = new File(configDirPath);
 		configDir.mkdir();
-		File configFile = new File(configDirPath + "/" + this.fileName + ".cfg");
+		File configFile = new File(configDirPath + "/" + this.configFileName + ".cfg");
 	    try {
 	    	configFile.createNewFile();
-	    	LycanitesMobs.printInfo("", "Config " + this.fileName + " created successfully.");
+	    	LycanitesMobs.printInfo("", "Config " + this.configFileName + " created successfully.");
 	    }
 		catch (IOException e) {
-            LycanitesMobs.printWarning("", "Config " + this.fileName + " could not be created:");
+            LycanitesMobs.printWarning("", "Config " + this.configFileName + " could not be created:");
 	    	System.out.println(e);
             LycanitesMobs.printWarning("", "Make sure the config folder has write permissions or (if using Windows) isn't read only and that Minecraft is not in Program Files on a non-administrator account.");
 		}

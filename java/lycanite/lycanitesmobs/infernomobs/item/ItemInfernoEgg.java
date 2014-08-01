@@ -11,7 +11,7 @@ public class ItemInfernoEgg extends ItemCustomSpawnEgg {
     public ItemInfernoEgg() {
         super();
         setUnlocalizedName("infernospawn");
-        this.mod = InfernoMobs.instance;
+        this.group = InfernoMobs.group;
         this.itemName = "infernospawn";
         this.texturePath = "infernospawn";
     }

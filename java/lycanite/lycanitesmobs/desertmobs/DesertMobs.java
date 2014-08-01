@@ -1,10 +1,10 @@
 package lycanite.lycanitesmobs.desertmobs;
 
-import lycanite.lycanitesmobs.OldConfig;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.ILycaniteMod;
+import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
+import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
@@ -51,14 +51,11 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = DesertMobs.modid, name = DesertMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid)
-public class DesertMobs implements ILycaniteMod {
+public class DesertMobs {
 	
 	public static final String modid = "desertmobs";
 	public static final String name = "Lycanites Desert Mobs";
-	public static final String domain = modid.toLowerCase();
-	public static int mobID = -1;
-	public static int projectileID = 99;
-	public static OldConfig config = new SubConfig();
+	public static GroupInfo group;
 	
 	// Instance:
 	@Instance(modid)
@@ -74,28 +71,29 @@ public class DesertMobs implements ILycaniteMod {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
-		config.init(modid);
-		
-		// ========== Set Current Mod ==========
-		ObjectManager.setCurrentMod(this);
+		group = new GroupInfo(this, "Desert Mobs");
+		group.loadFromConfig();
+
+		// ========== Set Current Group ==========
+		ObjectManager.setCurrentGroup(group);
 		
 		// ========== Create Items ==========
 		ObjectManager.addItem("desertegg", new ItemDesertEgg());
 		ObjectManager.addItem("throwingscythe", new ItemThrowingScythe());
 		
-		ObjectManager.addItem("joustmeatraw", new ItemCustomFood("joustmeatraw", domain, 2, 0.5F).setPotionEffect(Potion.moveSlowdown.id, 45, 2, 0.8F));
+		ObjectManager.addItem("joustmeatraw", new ItemCustomFood("joustmeatraw", group, 2, 0.5F).setPotionEffect(Potion.moveSlowdown.id, 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("joustmeatraw"));
 		OreDictionary.registerOre("listAllchickenraw", ObjectManager.getItem("joustmeatraw"));
 		
-		ObjectManager.addItem("joustmeatcooked", new ItemCustomFood("joustmeatcooked", domain, 6, 0.7F));
+		ObjectManager.addItem("joustmeatcooked", new ItemCustomFood("joustmeatcooked", group, 6, 0.7F));
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("joustmeatcooked"));
 		OreDictionary.registerOre("listAllchickencooked", ObjectManager.getItem("joustmeatcooked"));
 		
-		ObjectManager.addItem("ambercake", new ItemCustomFood("ambercake", domain, 6, 0.7F).setPotionEffect(Potion.moveSpeed.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
+		ObjectManager.addItem("ambercake", new ItemCustomFood("ambercake", group, 6, 0.7F).setPotionEffect(Potion.moveSpeed.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("ambercake"));
 
-		ObjectManager.addItem("crusktreat", new ItemTreat("crusktreat", this.domain));
-		ObjectManager.addItem("erepedetreat", new ItemTreat("erepedetreat", this.domain));
+		ObjectManager.addItem("crusktreat", new ItemTreat("crusktreat", group));
+		ObjectManager.addItem("erepedetreat", new ItemTreat("erepedetreat", group));
 		
 		ObjectManager.addItem("mudshotcharge", new ItemMudshotCharge());
 		ObjectManager.addItem("scythescepter", new ItemScepterScythe());
@@ -111,20 +109,62 @@ public class DesertMobs implements ILycaniteMod {
 	// ==================================================
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
-		
-		// ========== Set Current Mod ==========
-		ObjectManager.setCurrentMod(this);
+
+		// ========== Set Current Group ==========
+		ObjectManager.setCurrentGroup(group);
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("desertegg"), new DispenserBehaviorMobEggCustom());
-		ObjectManager.addMob(new MobInfo(this, "cryptzombie", EntityCryptZombie.class, 0xCC9966, 0xAA8800, 2));
-		ObjectManager.addMob(new MobInfo(this, "crusk", EntityCrusk.class, 0xFFDDAA, 0x000000, 8));
-		ObjectManager.addMob(new MobInfo(this, "clink", EntityClink.class, 0xFFAAAA, 0x999999, 2).setSummonable(true));
-		ObjectManager.addMob(new MobInfo(this, "joust", EntityJoust.class, 0xFF9900, 0xFFFF00, 2));
-		ObjectManager.addMob(new MobInfo(this, "joustalpha", EntityJoustAlpha.class, 0xFF0000, 0xFFFF00, 4));
-		ObjectManager.addMob(new MobInfo(this, "erepede", EntityErepede.class, 0xDD9922, 0xFFDDFF, 6));
-		ObjectManager.addMob(new MobInfo(this, "gorgomite", EntityGorgomite.class, 0xCC9900, 0x884400, 1));
-		ObjectManager.addMob(new MobInfo(this, "manticore", EntityManticore.class, 0x442200, 0x990000, 2).setSummonable(true));
+		MobInfo newMob;
+        
+        newMob = new MobInfo(group, "cryptzombie", EntityCryptZombie.class, 0xCC9966, 0xAA8800)
+		        .setPeaceful(false).setSummonable(false).setSummonCost(2);
+		newMob.spawnInfo.setSpawnTypes("MONSTER")
+				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "crusk", EntityCrusk.class, 0xFFDDAA, 0x000000)
+		        .setPeaceful(false).setSummonable(false).setSummonCost(2);
+		newMob.spawnInfo.setSpawnTypes("MONSTER")
+				.setSpawnWeight(2).setAreaLimit(3).setGroupLimits(1, 1);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "clink", EntityClink.class, 0xFFAAAA, 0x999999)
+		        .setPeaceful(false).setSummonable(true).setSummonCost(2);
+		newMob.spawnInfo.setSpawnTypes("MONSTER")
+				.setSpawnWeight(6).setAreaLimit(10).setGroupLimits(1, 3);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "joust", EntityJoust.class, 0xFF9900, 0xFFFF00)
+		        .setPeaceful(true).setSummonable(false).setSummonCost(2);
+		newMob.spawnInfo.setSpawnTypes("CREATURE").setDespawn(false)
+				.setSpawnWeight(6).setAreaLimit(10).setGroupLimits(1, 5);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "joustalpha", EntityJoustAlpha.class, 0xFF0000, 0xFFFF00)
+		        .setPeaceful(false).setSummonable(false).setSummonCost(4);
+		newMob.spawnInfo.setSpawnTypes("CREATURE").setDespawn(false)
+				.setSpawnWeight(2).setAreaLimit(2).setGroupLimits(1, 2);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "erepede", EntityErepede.class, 0xDD9922, 0xFFDDFF)
+		        .setPeaceful(false).setSummonable(false).setSummonCost(6);
+		newMob.spawnInfo.setSpawnTypes("MONSTER")
+				.setSpawnWeight(4).setAreaLimit(5).setGroupLimits(1, 2);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "gorgomite", EntityGorgomite.class, 0xCC9900, 0x884400)
+		        .setPeaceful(false).setSummonable(false).setSummonCost(1);
+		newMob.spawnInfo.setSpawnTypes("MONSTER")
+				.setSpawnWeight(6).setAreaLimit(40).setGroupLimits(1, 3);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "manticore", EntityManticore.class, 0x442200, 0x990000)
+		        .setPeaceful(false).setSummonable(true).setSummonCost(2);
+		newMob.spawnInfo.setSpawnTypes("MONSTER")
+				.setSpawnWeight(4).setAreaLimit(10).setGroupLimits(1, 5);
+		ObjectManager.addMob(newMob);
+
 		
 		// ========== Create Projectiles ==========
 		ObjectManager.addProjectile("throwingscythe", EntityThrowingScythe.class, ObjectManager.getItem("throwingscythe"), new DispenserBehaviorThrowingScythe());
@@ -140,12 +180,13 @@ public class DesertMobs implements ILycaniteMod {
 	// ==================================================
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
-		// ========== Set Current Mod ==========
-		ObjectManager.setCurrentMod(this);
+		// ========== Set Current Group ==========
+		ObjectManager.setCurrentGroup(group);
+		ConfigBase config = ConfigBase.getConfig(group, "spawning");
 		
 		// ========== Remove Vanilla Spawns ==========
-		BiomeGenBase[] biomes = this.config.getSpawnBiomesTypes();
-		if(config.getFeatureBool("controlvanilla")) {
+		BiomeGenBase[] biomes = group.biomes;
+		if(config.getBool("Vanilla Spawning", "Edit Vanilla Spawning", true, "If true, some vanilla spawns in this biome will be removed, note that vanilla mobs should still be easy to find, only they will be more biome specific.")) {
 			EntityRegistry.removeSpawn(EntityZombie.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntitySkeleton.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntityCreeper.class, EnumCreatureType.monster, biomes);
@@ -199,26 +240,4 @@ public class DesertMobs implements ILycaniteMod {
 		// ========== Smelting ==========
 		GameRegistry.addSmelting(ObjectManager.getItem("joustmeatraw"), new ItemStack(ObjectManager.getItem("joustmeatcooked"), 1), 0.5f);
 	}
-	
-	
-	// ==================================================
-	//                    Mod Info
-	// ==================================================
-	@Override
-	public DesertMobs getInstance() { return instance; }
-	
-	@Override
-	public String getModID() { return modid; }
-	
-	@Override
-	public String getDomain() { return domain; }
-	
-	@Override
-	public OldConfig getConfig() { return config; }
-	
-	@Override
-	public int getNextMobID() { return ++this.mobID; }
-	
-	@Override
-	public int getNextProjectileID() { return ++this.projectileID; }
 }

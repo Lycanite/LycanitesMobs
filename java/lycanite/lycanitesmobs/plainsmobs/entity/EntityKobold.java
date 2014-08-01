@@ -6,6 +6,7 @@ import lycanite.lycanitesmobs.api.IGroupAlpha;
 import lycanite.lycanitesmobs.api.IGroupHunter;
 import lycanite.lycanitesmobs.api.IGroupPredator;
 import lycanite.lycanitesmobs.api.IGroupPrey;
+import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
@@ -23,7 +24,6 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
-import lycanite.lycanitesmobs.plainsmobs.PlainsMobs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
@@ -44,7 +44,6 @@ public class EntityKobold extends EntityCreatureTameable implements IMob, IGroup
         super(par1World);
         
         // Setup:
-        this.mod = PlainsMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.experience = 5;
         this.spawnsInDarkness = true;
@@ -132,7 +131,7 @@ public class EntityKobold extends EntityCreatureTameable implements IMob, IGroup
     
     @Override
     public boolean canPickupItems() {
-    	return this.mod.getConfig().getFeatureBool("KoboldThievery");
+    	return ConfigBase.getConfig(this.group, "general").getBool("Features", "Kobold Thievery", true, "Set to false to prevent Kobold from collecting items.");
     }
     
     

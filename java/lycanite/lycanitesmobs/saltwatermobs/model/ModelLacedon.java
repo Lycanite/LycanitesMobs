@@ -22,7 +22,7 @@ public class ModelLacedon extends ModelCustomObj {
     
     public ModelLacedon(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("lacedon", SaltwaterMobs.domain, "entity/lacedon");
+    	model = (WavefrontObject)AssetManager.getObjModel("lacedon", SaltwaterMobs.group, "entity/lacedon");
     	
     	// Get Parts:
     	parts = model.groupObjects;

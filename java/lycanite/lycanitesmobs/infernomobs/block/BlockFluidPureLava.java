@@ -3,7 +3,7 @@ package lycanite.lycanitesmobs.infernomobs.block;
 import java.util.ArrayList;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.api.ILycaniteMod;
+import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.infernomobs.InfernoMobs;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -18,7 +18,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockFluidPureLava extends BlockFluidClassic {
 	public String blockName;
-	public ILycaniteMod mod;
+	public GroupInfo group;
 	
 	// ==================================================
 	//                   Constructor
@@ -27,7 +27,7 @@ public class BlockFluidPureLava extends BlockFluidClassic {
 		super(fluid, Material.lava);
 		this.blockName = "purelava";
         this.setBlockName(this.blockName);
-		this.mod = InfernoMobs.instance;
+		this.group = InfernoMobs.group;
 		this.setRenderPass(1);
 	}
     
@@ -86,8 +86,8 @@ public class BlockFluidPureLava extends BlockFluidClassic {
     @SideOnly(Side.CLIENT)
     @Override
     public void registerBlockIcons(IIconRegister iconRegister) {
-    	AssetManager.addIcon(this.blockName + "_still", this.mod.getDomain(), this.blockName + "_still", iconRegister);
-    	AssetManager.addIcon(this.blockName + "_flow", this.mod.getDomain(), this.blockName + "_flow", iconRegister);
+    	AssetManager.addIcon(this.blockName + "_still", this.group, this.blockName + "_still", iconRegister);
+    	AssetManager.addIcon(this.blockName + "_flow", this.group, this.blockName + "_flow", iconRegister);
     }
     
     // ========== Get Icon ==========

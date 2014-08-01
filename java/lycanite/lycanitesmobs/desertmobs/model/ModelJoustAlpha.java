@@ -22,7 +22,7 @@ public class ModelJoustAlpha extends ModelCustomObj {
     
     public ModelJoustAlpha(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("JoustAlpha", DesertMobs.domain, "entity/joustalpha");
+    	model = (WavefrontObject)AssetManager.getObjModel("JoustAlpha", DesertMobs.group, "entity/joustalpha");
     	
     	// Get Parts:
     	parts = model.groupObjects;

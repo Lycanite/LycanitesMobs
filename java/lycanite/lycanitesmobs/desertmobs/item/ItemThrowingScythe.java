@@ -16,7 +16,7 @@ public class ItemThrowingScythe extends ItemBase {
 	// ==================================================
     public ItemThrowingScythe() {
         super();
-        this.domain = DesertMobs.domain;
+        this.group = DesertMobs.group;
         this.itemName = "throwingscythe";
         this.setup();
     }

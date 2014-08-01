@@ -22,7 +22,7 @@ public class ModelJabberwock extends ModelCustomObj {
     
     public ModelJabberwock(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("jabberwock", MountainMobs.domain, "entity/jabberwock");
+    	model = (WavefrontObject)AssetManager.getObjModel("jabberwock", MountainMobs.group, "entity/jabberwock");
     	
     	// Get Parts:
     	parts = model.groupObjects;

@@ -22,7 +22,7 @@ public class ModelReiver extends ModelCustomObj {
     
     public ModelReiver(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Reiver", ArcticMobs.domain, "entity/reiver");
+    	model = (WavefrontObject)AssetManager.getObjModel("Reiver", ArcticMobs.group, "entity/reiver");
     	
     	// Get Parts:
     	parts = model.groupObjects;

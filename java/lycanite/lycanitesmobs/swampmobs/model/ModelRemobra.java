@@ -21,7 +21,7 @@ public class ModelRemobra extends ModelCustomObj {
     
     public ModelRemobra(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Remobra", SwampMobs.domain, "entity/remobra");
+    	model = (WavefrontObject)AssetManager.getObjModel("Remobra", SwampMobs.group, "entity/remobra");
     	
     	// Get Parts:
     	parts = model.groupObjects;

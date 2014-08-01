@@ -18,7 +18,6 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
-import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -42,7 +41,6 @@ public class EntityYeti extends EntityCreatureAgeable implements IAnimals, IGrou
         super(par1World);
         
         // Setup:
-        this.mod = ArcticMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 2;
         this.experience = 5;

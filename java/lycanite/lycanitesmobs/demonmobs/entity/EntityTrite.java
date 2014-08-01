@@ -11,7 +11,6 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
-import lycanite.lycanitesmobs.demonmobs.DemonMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -34,7 +33,6 @@ public class EntityTrite extends EntityCreatureBase implements IMob {
         super(par1World);
         
         // Setup:
-        this.mod = DemonMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEAD;
         this.defense = 0;
         this.experience = 2;

@@ -11,7 +11,7 @@ public class ItemDesertEgg extends ItemCustomSpawnEgg {
     public ItemDesertEgg() {
         super();
         setUnlocalizedName("desertspawn");
-        this.mod = DesertMobs.instance;
+        this.group = DesertMobs.group;
         this.itemName = "desertspawn";
         this.texturePath = "desertspawn";
     }

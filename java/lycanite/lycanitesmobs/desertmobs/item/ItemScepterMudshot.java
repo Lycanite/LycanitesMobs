@@ -16,7 +16,7 @@ public class ItemScepterMudshot extends ItemScepter {
 	// ==================================================
     public ItemScepterMudshot() {
         super();
-    	this.domain = DesertMobs.domain;
+    	this.group = DesertMobs.group;
     	this.itemName = "mudshotscepter";
         this.setup();
         this.textureName = "sceptermudshot";

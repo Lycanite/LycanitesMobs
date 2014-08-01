@@ -16,7 +16,7 @@ public class ItemScepterFrostweb extends ItemScepter {
 	// ==================================================
     public ItemScepterFrostweb() {
         super();
-    	this.domain = ArcticMobs.domain;
+    	this.group = ArcticMobs.group;
     	this.itemName = "frostwebscepter";
         this.setup();
         this.textureName = "scepterfrostweb";

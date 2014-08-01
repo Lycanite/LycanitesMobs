@@ -22,7 +22,7 @@ public class ModelWendigo extends ModelCustomObj {
     
     public ModelWendigo(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Wendigo", ArcticMobs.domain, "entity/wendigo");
+    	model = (WavefrontObject)AssetManager.getObjModel("Wendigo", ArcticMobs.group, "entity/wendigo");
     	
     	// Get Parts:
     	parts = model.groupObjects;

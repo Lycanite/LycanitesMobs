@@ -21,7 +21,7 @@ public class ModelCryptZombie extends ModelCustomObj {
     
     public ModelCryptZombie(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("CryptZombie", DesertMobs.domain, "entity/cryptzombie");
+    	model = (WavefrontObject)AssetManager.getObjModel("CryptZombie", DesertMobs.group, "entity/cryptzombie");
     	
     	// Get Parts:
     	parts = model.groupObjects;

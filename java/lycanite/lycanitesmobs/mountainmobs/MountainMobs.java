@@ -2,9 +2,9 @@ package lycanite.lycanitesmobs.mountainmobs;
 
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.OldConfig;
-import lycanite.lycanitesmobs.api.ILycaniteMod;
+import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
+import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
@@ -41,14 +41,11 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = MountainMobs.modid, name = MountainMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid)
-public class MountainMobs implements ILycaniteMod {
+public class MountainMobs {
 	
 	public static final String modid = "mountainmobs";
 	public static final String name = "Lycanites Mountain Mobs";
-	public static final String domain = modid.toLowerCase();
-	public static int mobID = -1;
-	public static int projectileID = 99;
-	public static OldConfig config = new SubConfig();
+	public static GroupInfo group;
 	
 	// Instance:
 	@Instance(modid)
@@ -64,10 +61,11 @@ public class MountainMobs implements ILycaniteMod {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
-		config.init(modid);
-		
-		// ========== Set Current Mod ==========
-		ObjectManager.setCurrentMod(this);
+		group = new GroupInfo(this, "Mountain Mobs");
+		group.loadFromConfig();
+
+		// ========== Set Current Group ==========
+		ObjectManager.setCurrentGroup(group);
 		
 		// ========== Create Items ==========
 		ObjectManager.addItem("mountainegg", new ItemMountainEgg());
@@ -75,15 +73,15 @@ public class MountainMobs implements ILycaniteMod {
 		ObjectManager.addItem("boulderblastcharge", new ItemBoulderBlastCharge());
 		ObjectManager.addItem("boulderblastscepter", new ItemScepterBoulderBlast());
 		
-		ObjectManager.addItem("yalemeatraw", new ItemCustomFood("yalemeatraw", domain, 2, 0.5F).setPotionEffect(Potion.digSlowdown.id, 45, 2, 0.8F));
+		ObjectManager.addItem("yalemeatraw", new ItemCustomFood("yalemeatraw", group, 2, 0.5F).setPotionEffect(Potion.digSlowdown.id, 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("yalemeatraw"));
 		OreDictionary.registerOre("listAllmuttonraw", ObjectManager.getItem("yalemeatraw"));
 		
-		ObjectManager.addItem("yalemeatcooked", new ItemCustomFood("yalemeatcooked", domain, 6, 0.7F));
+		ObjectManager.addItem("yalemeatcooked", new ItemCustomFood("yalemeatcooked", group, 6, 0.7F));
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("yalemeatcooked"));
 		OreDictionary.registerOre("listAllmuttoncooked", ObjectManager.getItem("yalemeatcooked"));
 		
-		ObjectManager.addItem("peakskebab", new ItemCustomFood("peakskebab", domain, 6, 0.7F).setPotionEffect(Potion.digSpeed.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
+		ObjectManager.addItem("peakskebab", new ItemCustomFood("peakskebab", group, 6, 0.7F).setPotionEffect(Potion.digSpeed.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("peakskebab"));
 	}
 	
@@ -93,16 +91,38 @@ public class MountainMobs implements ILycaniteMod {
 	// ==================================================
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
-		
-		// ========== Set Current Mod ==========
-		ObjectManager.setCurrentMod(this);
+
+		// ========== Set Current Group ==========
+		ObjectManager.setCurrentGroup(group);
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("mountainegg"), new DispenserBehaviorMobEggCustom());
-		ObjectManager.addMob(new MobInfo(this, "jabberwock", EntityJabberwock.class, 0x662222, 0xFFFFAA, 2).setSummonable(true));
-		ObjectManager.addMob(new MobInfo(this, "troll", EntityTroll.class, 0x007711, 0xEEEEEE, 6).setSummonable(false));
-		ObjectManager.addMob(new MobInfo(this, "yale", EntityYale.class, 0xFFEEAA, 0xFFDD77, 1).setSummonable(false));
-		ObjectManager.addMob(new MobInfo(this, "geonach", EntityGeonach.class, 0x443333, 0xBBBBCC, 2).setSummonable(true));
+		MobInfo newMob;
+        
+        newMob = new MobInfo(group, "jabberwock", EntityJabberwock.class, 0x662222, 0xFFFFAA)
+		        .setPeaceful(false).setSummonable(true).setSummonCost(2);
+		newMob.spawnInfo.setSpawnTypes("MONSTER")
+				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "troll", EntityTroll.class, 0x007711, 0xEEEEEE)
+		        .setPeaceful(false).setSummonable(false).setSummonCost(6);
+		newMob.spawnInfo.setSpawnTypes("MONSTER")
+				.setSpawnWeight(4).setAreaLimit(5).setGroupLimits(1, 2);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "yale", EntityYale.class, 0xFFEEAA, 0xFFDD77)
+		        .setPeaceful(true).setSummonable(false).setSummonCost(1);
+		newMob.spawnInfo.setSpawnTypes("CREATURE").setDespawn(false)
+				.setSpawnWeight(14).setAreaLimit(5).setGroupLimits(1, 4);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "geonach", EntityGeonach.class, 0x443333, 0xBBBBCC)
+		        .setPeaceful(false).setSummonable(true).setSummonCost(2);
+		newMob.spawnInfo.setSpawnTypes("ROCK")
+				.setSpawnWeight(4).setAreaLimit(5).setGroupLimits(1, 2);
+		ObjectManager.addMob(newMob);
+
 		
 		// ========== Create Projectiles ==========
 		ObjectManager.addProjectile("boulderblast", EntityBoulderBlast.class, ObjectManager.getItem("boulderblastcharge"), new DispenserBehaviorBoulderBlast());
@@ -117,12 +137,13 @@ public class MountainMobs implements ILycaniteMod {
 	// ==================================================
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
-		// ========== Set Current Mod ==========
-		ObjectManager.setCurrentMod(this);
+		// ========== Set Current Group ==========
+		ObjectManager.setCurrentGroup(group);
+		ConfigBase config = ConfigBase.getConfig(group, "spawning");
 		
 		// ========== Remove Vanilla Spawns ==========
-		BiomeGenBase[] biomes = this.config.getSpawnBiomesTypes();
-		if(config.getFeatureBool("controlvanilla")) {
+		BiomeGenBase[] biomes = group.biomes;
+		if(config.getBool("Vanilla Spawning", "Edit Vanilla Spawning", true, "If true, some vanilla spawns in this biome will be removed, note that vanilla mobs should still be easy to find, only they will be more biome specific.")) {
 			EntityRegistry.removeSpawn(EntityZombie.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntityWitch.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntityPig.class, EnumCreatureType.creature, biomes);
@@ -149,26 +170,4 @@ public class MountainMobs implements ILycaniteMod {
 		// ========== Smelting ==========
 		GameRegistry.addSmelting(ObjectManager.getItem("yalemeatraw"), new ItemStack(ObjectManager.getItem("yalemeatcooked"), 1), 0.5f);
 	}
-	
-	
-	// ==================================================
-	//                    Mod Info
-	// ==================================================
-	@Override
-	public MountainMobs getInstance() { return instance; }
-	
-	@Override
-	public String getModID() { return modid; }
-	
-	@Override
-	public String getDomain() { return domain; }
-	
-	@Override
-	public OldConfig getConfig() { return config; }
-	
-	@Override
-	public int getNextMobID() { return ++this.mobID; }
-	
-	@Override
-	public int getNextProjectileID() { return ++this.projectileID; }
 }

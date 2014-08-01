@@ -279,7 +279,7 @@ public class EntityProjectileBase extends EntityThrowable {
      // ==================================================
      public ResourceLocation getTexture() {
      	if(AssetManager.getTexture(this.entityName) == null)
-     		AssetManager.addTexture(this.entityName, this.group.filename, "textures/items/" + this.entityName.toLowerCase() + ".png");
+     		AssetManager.addTexture(this.entityName, this.group, "textures/items/" + this.entityName.toLowerCase() + ".png");
      	return AssetManager.getTexture(this.entityName);
      }
      

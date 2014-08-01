@@ -21,7 +21,7 @@ public class ModelCephignis extends ModelCustomObj {
     
     public ModelCephignis(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("cephignis", InfernoMobs.domain, "entity/cephignis");
+    	model = (WavefrontObject)AssetManager.getObjModel("cephignis", InfernoMobs.group, "entity/cephignis");
     	
     	// Get Parts:
     	parts = model.groupObjects;

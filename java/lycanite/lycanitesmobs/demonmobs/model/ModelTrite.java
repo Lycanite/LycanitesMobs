@@ -21,7 +21,7 @@ public class ModelTrite extends ModelCustomObj {
     
     public ModelTrite(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("trite", DemonMobs.domain, "entity/trite");
+    	model = (WavefrontObject)AssetManager.getObjModel("trite", DemonMobs.group, "entity/trite");
     	
     	// Get Parts:
     	parts = model.groupObjects;

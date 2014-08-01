@@ -1,12 +1,12 @@
 package lycanite.lycanitesmobs.api.entity;
 
+import java.util.HashMap;
+
 import lycanite.lycanitesmobs.ObjectManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public abstract class EntityCreatureAgeable extends EntityCreatureBase {
 	
@@ -161,8 +161,8 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
     public void performCommand(String command, EntityPlayer player, ItemStack itemStack) {
     	
     	// Spawn Baby:
-    	if(command.equals("Spawn Baby") && !this.worldObj.isRemote && ObjectManager.entityLists.containsKey(this.mod.getDomain())) {
-			 Class eggClass = ObjectManager.entityLists.get(this.mod.getDomain()).getClassFromID(itemStack.getItemDamage());
+    	if(command.equals("Spawn Baby") && !this.worldObj.isRemote && ObjectManager.entityLists.containsKey(this.group.filename)) {
+			 Class eggClass = ObjectManager.entityLists.get(this.group.filename).getClassFromID(itemStack.getItemDamage());
 			 if(eggClass != null && eggClass.isAssignableFrom(this.getClass())) {
 				 EntityCreatureAgeable baby = this.createChild(this);
 				 if(baby != null) {

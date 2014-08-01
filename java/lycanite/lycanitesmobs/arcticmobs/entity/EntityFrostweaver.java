@@ -18,7 +18,6 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.MobInfo;
-import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
@@ -41,7 +40,6 @@ public class EntityFrostweaver extends EntityCreatureTameable implements IMob {
         super(par1World);
         
         // Setup:
-        this.mod = ArcticMobs.instance;
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
         this.defense = 0;
         this.experience = 5;

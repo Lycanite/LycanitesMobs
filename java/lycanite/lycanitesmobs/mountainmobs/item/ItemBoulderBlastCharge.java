@@ -15,7 +15,7 @@ public class ItemBoulderBlastCharge extends ItemBase {
 	// ==================================================
     public ItemBoulderBlastCharge() {
         super();
-        this.domain = MountainMobs.domain;
+        this.group = MountainMobs.group;
         this.itemName = "boulderblastcharge";
         this.setup();
     }

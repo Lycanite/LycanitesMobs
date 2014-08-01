@@ -15,7 +15,6 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.SpawnInfo;
-import lycanite.lycanitesmobs.junglemobs.JungleMobs;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
@@ -43,7 +42,6 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
         super(par1World);
         
         // Setup:
-        this.mod = JungleMobs.instance;
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
         this.defense = 0;
         this.experience = 3;

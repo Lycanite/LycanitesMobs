@@ -22,7 +22,7 @@ public class ModelConcapedeHead extends ModelCustomObj {
     
     public ModelConcapedeHead(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Concapede", JungleMobs.domain, "entity/concapedehead");
+    	model = (WavefrontObject)AssetManager.getObjModel("Concapede", JungleMobs.group, "entity/concapedehead");
     	
     	// Get Parts:
     	parts = model.groupObjects;

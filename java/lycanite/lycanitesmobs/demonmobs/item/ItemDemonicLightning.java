@@ -16,7 +16,7 @@ public class ItemDemonicLightning extends ItemBase {
 	// ==================================================
     public ItemDemonicLightning() {
         super();
-        this.domain = DemonMobs.domain;
+        this.group = DemonMobs.group;
         this.itemName = "demoniclightningcharge";
         this.setup();
     }

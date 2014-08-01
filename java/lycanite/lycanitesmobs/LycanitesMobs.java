@@ -16,7 +16,7 @@ import lycanite.lycanitesmobs.api.item.ItemStaffSturdy;
 import lycanite.lycanitesmobs.api.item.ItemStaffSummoning;
 import lycanite.lycanitesmobs.api.network.PacketHandler;
 import lycanite.lycanitesmobs.api.spawning.CustomSpawner;
-import lycanite.lycanitesmobs.api.spawning.SpawnType;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -39,13 +39,9 @@ public class LycanitesMobs {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String version = "1.7.3 - MC 1.7.10";
-	public static final String domain = modid.toLowerCase();
+	public static final String version = "1.8.0 - MC 1.7.10";
 	
 	public static final PacketHandler packetHandler = new PacketHandler();
-	
-	public static int mobID = -1;
-	public static int projectileID = 99;
 
     public static GroupInfo group;
     public static ConfigBase config;
@@ -72,10 +68,10 @@ public class LycanitesMobs {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
-		config = ConfigBase.getConfig(group, "general");
-		config.setCategoryComment("Debug", "Set debug options to true to show extra debugging information in the console.");
 		group = new GroupInfo(this, name);
 		group.loadFromConfig();
+		config = ConfigBase.getConfig(group, "general");
+		config.setCategoryComment("Debug", "Set debug options to true to show extra debugging information in the console.");
 		this.packetHandler.init();
 		
 		// ========== Custom Potion Effects ==========
@@ -101,7 +97,7 @@ public class LycanitesMobs {
 		
 		// ========== Custom Mob Spawning ==========
 		MinecraftForge.EVENT_BUS.register(new CustomSpawner());
-		SpawnType.loadSpawnTypes();
+		SpawnTypeBase.loadSpawnTypes();
 		
 		// ========== Spawn Info ==========
 		SpawnInfo.loadGlobalSettings();
@@ -204,19 +200,19 @@ public class LycanitesMobs {
 	//                     Debugging
 	// ==================================================
     public static void printInfo(String key, String message) {
-        if("".equals(key) || config.getBool("Debug", key)) {
+        if("".equals(key) || config.getBool("Debug", key, false)) {
             System.out.println("[LycanitesMobs] [Info] " + message);
         }
     }
 
     public static void printDebug(String key, String message) {
-        if("".equals(key) || config.getBool("Debug", key)) {
+        if("".equals(key) || config.getBool("Debug", key, false)) {
             System.out.println("[LycanitesMobs] [Debug] " + message);
         }
     }
 
     public static void printWarning(String key, String message) {
-		if("".equals(key) || config.getBool("Debug", key)) {
+		if("".equals(key) || config.getBool("Debug", key, false)) {
 			System.err.println("[LycanitesMobs] [WARNING] " + message);
 		}
 	}

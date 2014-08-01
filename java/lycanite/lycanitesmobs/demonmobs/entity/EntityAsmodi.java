@@ -13,7 +13,6 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.MobInfo;
-import lycanite.lycanitesmobs.demonmobs.DemonMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
@@ -38,7 +37,6 @@ public class EntityAsmodi extends EntityCreatureBase implements IMob {
         super(par1World);
         
         // Setup:
-        this.mod = DemonMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEAD;
         this.defense = 2;
         this.experience = 15;

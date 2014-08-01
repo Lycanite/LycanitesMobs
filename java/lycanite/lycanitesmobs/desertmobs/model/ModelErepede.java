@@ -22,7 +22,7 @@ public class ModelErepede extends ModelCustomObj {
     
     public ModelErepede(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Erepede", DesertMobs.domain, "entity/erepede");
+    	model = (WavefrontObject)AssetManager.getObjModel("Erepede", DesertMobs.group, "entity/erepede");
     	
     	// Get Parts:
     	parts = model.groupObjects;

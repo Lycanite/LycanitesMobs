@@ -1,10 +1,10 @@
 package lycanite.lycanitesmobs.junglemobs;
 
-import lycanite.lycanitesmobs.OldConfig;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.ILycaniteMod;
+import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
+import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
@@ -43,14 +43,11 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = JungleMobs.modid, name = JungleMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid)
-public class JungleMobs implements ILycaniteMod {
+public class JungleMobs {
 	
 	public static final String modid = "junglemobs";
 	public static final String name = "Lycanites Jungle Mobs";
-	public static final String domain = modid.toLowerCase();
-	public static int mobID = -1;
-	public static int projectileID = 99;
-	public static OldConfig config = new SubConfig();
+	public static GroupInfo group;
 	
 	// Instance:
 	@Instance(modid)
@@ -66,26 +63,27 @@ public class JungleMobs implements ILycaniteMod {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
-		config.init(modid);
+		group = new GroupInfo(this, "Jungle Mobs");
+		group.loadFromConfig();
 		
-		// ========== Set Current Mod ==========
-		ObjectManager.setCurrentMod(this);
+		// ========== Set Current Group ==========
+		ObjectManager.setCurrentGroup(group);
 		
 		// ========== Create Items ==========
 		ObjectManager.addItem("jungleegg", new ItemJungleEgg());
 		
-		ObjectManager.addItem("concapedemeatraw", new ItemCustomFood("concapedemeatraw", domain, 2, 0.5F).setPotionEffect(Potion.moveSlowdown.id, 45, 2, 0.8F));
+		ObjectManager.addItem("concapedemeatraw", new ItemCustomFood("concapedemeatraw", group, 2, 0.5F).setPotionEffect(Potion.moveSlowdown.id, 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("concapedemeatraw"));
 		OreDictionary.registerOre("listAllchickenraw", ObjectManager.getItem("concapedemeatraw"));
 		
-		ObjectManager.addItem("concapedemeatcooked", new ItemCustomFood("concapedemeatcooked", domain, 6, 0.7F));
+		ObjectManager.addItem("concapedemeatcooked", new ItemCustomFood("concapedemeatcooked", group, 6, 0.7F));
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("concapedemeatcooked"));
 		OreDictionary.registerOre("listAllchickencooked", ObjectManager.getItem("concapedemeatcooked"));
 		
-		ObjectManager.addItem("tropicalcurry", new ItemCustomFood("tropicalcurry", domain, 6, 0.7F).setPotionEffect(Potion.jump.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
+		ObjectManager.addItem("tropicalcurry", new ItemCustomFood("tropicalcurry", group, 6, 0.7F).setPotionEffect(Potion.jump.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("tropicalcurry"));
 
-		ObjectManager.addItem("uvaraptortreat", new ItemTreat("uvaraptortreat", this.domain));
+		ObjectManager.addItem("uvaraptortreat", new ItemTreat("uvaraptortreat", group));
 
 		// ========== Create Blocks ==========
 		ObjectManager.addBlock("quickweb", new BlockQuickWeb());
@@ -97,17 +95,44 @@ public class JungleMobs implements ILycaniteMod {
 	// ==================================================
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
-		
-		// ========== Set Current Mod ==========
-		ObjectManager.setCurrentMod(this);
+
+		// ========== Set Current Group ==========
+		ObjectManager.setCurrentGroup(group);
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("jungleegg"), new DispenserBehaviorMobEggCustom());
-		ObjectManager.addMob(new MobInfo(this, "geken", EntityGeken.class, 0x00AA00, 0xFFFF00, 2).setSummonable(true));
-		ObjectManager.addMob(new MobInfo(this, "uvaraptor", EntityUvaraptor.class, 0x00FF33, 0xFF00FF, 4));
-		ObjectManager.addMob(new MobInfo(this, "concapede", EntityConcapedeHead.class, 0x111144, 0xDD0000, 2));
-		ObjectManager.addMob(new MobInfo(this, "concapedesegment", EntityConcapedeSegment.class, 0x000022, 0x990000, 1));
-		ObjectManager.addMob(new MobInfo(this, "tarantula", EntityTarantula.class, 0x008800, 0xDD0000, 2).setSummonable(true));
+		MobInfo newMob;
+        
+        newMob = new MobInfo(group, "geken", EntityGeken.class, 0x00AA00, 0xFFFF00)
+		        .setPeaceful(false).setSummonable(true).setSummonCost(2);
+		newMob.spawnInfo.setSpawnTypes("MONSTER")
+				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "uvaraptor", EntityUvaraptor.class, 0x00FF33, 0xFF00FF)
+		        .setPeaceful(false).setSummonable(false).setSummonCost(4);
+		newMob.spawnInfo.setSpawnTypes("MONSTER")
+				.setSpawnWeight(5).setAreaLimit(10).setGroupLimits(1, 3);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "concapede", EntityConcapedeHead.class, 0x111144, 0xDD0000)
+		        .setPeaceful(true).setSummonable(false).setSummonCost(2);
+		newMob.spawnInfo.setSpawnTypes("CREATURE").setDespawn(false)
+				.setSpawnWeight(18).setAreaLimit(10).setGroupLimits(1, 1);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "concapedesegment", EntityConcapedeSegment.class, 0x000022, 0x990000)
+		        .setPeaceful(true).setSummonable(false).setSummonCost(1);
+		newMob.spawnInfo.setSpawnTypes("CREATURE").setDespawn(false)
+				.setSpawnWeight(0).setAreaLimit(0).setGroupLimits(0, 0).setEnabled(false);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "tarantula", EntityTarantula.class, 0x008800, 0xDD0000)
+		        .setPeaceful(false).setSummonable(true).setSummonCost(2);
+		newMob.spawnInfo.setSpawnTypes("MONSTER")
+				.setSpawnWeight(6).setAreaLimit(10).setGroupLimits(1, 2);
+		ObjectManager.addMob(newMob);
+
 		
 		// ========== Create Projectiles ==========
 		//ObjectManager.addProjectile("template", EntityTemplate.class, Item.templateCharge, new DispenserBehaviorPoisonRay());
@@ -122,12 +147,13 @@ public class JungleMobs implements ILycaniteMod {
 	// ==================================================
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
-		// ========== Set Current Mod ==========
-		ObjectManager.setCurrentMod(this);
+		// ========== Set Current Group ==========
+		ObjectManager.setCurrentGroup(group);
+		ConfigBase config = ConfigBase.getConfig(group, "spawning");
 		
 		// ========== Remove Vanilla Spawns ==========
-		BiomeGenBase[] biomes = this.config.getSpawnBiomesTypes();
-		if(config.getFeatureBool("controlvanilla")) {
+		BiomeGenBase[] biomes = group.biomes;
+		if(config.getBool("Vanilla Spawning", "Edit Vanilla Spawning", true, "If true, some vanilla spawns in this biome will be removed, note that vanilla mobs should still be easy to find, only they will be more biome specific.")) {
 			EntityRegistry.removeSpawn(EntityZombie.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntitySkeleton.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntityWitch.class, EnumCreatureType.monster, biomes);
@@ -157,26 +183,4 @@ public class JungleMobs implements ILycaniteMod {
 		// ========== Smelting ==========
 		GameRegistry.addSmelting(ObjectManager.getItem("concapedemeatraw"), new ItemStack(ObjectManager.getItem("concapedemeatcooked"), 1), 0.5f);
 	}
-	
-	
-	// ==================================================
-	//                    Mod Info
-	// ==================================================
-	@Override
-	public JungleMobs getInstance() { return instance; }
-	
-	@Override
-	public String getModID() { return modid; }
-	
-	@Override
-	public String getDomain() { return domain; }
-	
-	@Override
-	public OldConfig getConfig() { return config; }
-	
-	@Override
-	public int getNextMobID() { return ++this.mobID; }
-	
-	@Override
-	public int getNextProjectileID() { return ++this.projectileID; }
 }

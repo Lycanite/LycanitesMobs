@@ -1,10 +1,22 @@
 package lycanite.lycanitesmobs.saltwatermobs.entity;
 
+import java.util.HashMap;
+
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
-import lycanite.lycanitesmobs.api.entity.ai.*;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowOwner;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIStayByWater;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerAttack;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerRevenge;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerThreats;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
-import lycanite.lycanitesmobs.saltwatermobs.SaltwaterMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -18,8 +30,6 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
-import java.util.HashMap;
-
 public class EntityLacedon extends EntityCreatureTameable implements IMob {
 	
 	EntityAIWander wanderAI = new EntityAIWander(this);
@@ -31,7 +41,6 @@ public class EntityLacedon extends EntityCreatureTameable implements IMob {
         super(par1World);
         
         // Setup:
-        this.mod = SaltwaterMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 0;
         this.experience = 7;

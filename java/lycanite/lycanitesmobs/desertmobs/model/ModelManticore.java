@@ -22,7 +22,7 @@ public class ModelManticore extends ModelCustomObj {
     
     public ModelManticore(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Manticore", DesertMobs.domain, "entity/manticore");
+    	model = (WavefrontObject)AssetManager.getObjModel("Manticore", DesertMobs.group, "entity/manticore");
     	
     	// Get Parts:
     	parts = model.groupObjects;

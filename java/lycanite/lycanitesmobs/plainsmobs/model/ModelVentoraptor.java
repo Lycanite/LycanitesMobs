@@ -22,7 +22,7 @@ public class ModelVentoraptor extends ModelCustomObj {
     
     public ModelVentoraptor(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Ventoraptor", PlainsMobs.domain, "entity/ventoraptor");
+    	model = (WavefrontObject)AssetManager.getObjModel("Ventoraptor", PlainsMobs.group, "entity/ventoraptor");
     	
     	// Get Parts:
     	parts = model.groupObjects;

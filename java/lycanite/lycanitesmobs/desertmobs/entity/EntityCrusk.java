@@ -24,7 +24,6 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
-import lycanite.lycanitesmobs.desertmobs.DesertMobs;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -49,7 +48,6 @@ public class EntityCrusk extends EntityCreatureTameable implements IGroupPredato
         super(par1World);
         
         // Setup:
-        this.mod = DesertMobs.instance;
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
         this.defense = 3;
         this.experience = 10;

@@ -22,7 +22,7 @@ public class ModelGeken extends ModelCustomObj {
     
     public ModelGeken(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Geken", JungleMobs.domain, "entity/geken");
+    	model = (WavefrontObject)AssetManager.getObjModel("Geken", JungleMobs.group, "entity/geken");
     	
     	// Get Parts:
     	parts = model.groupObjects;

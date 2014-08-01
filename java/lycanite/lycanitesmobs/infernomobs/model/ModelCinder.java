@@ -22,7 +22,7 @@ public class ModelCinder extends ModelCustomObj {
     
     public ModelCinder(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Cinder", InfernoMobs.domain, "entity/cinder");
+    	model = (WavefrontObject)AssetManager.getObjModel("Cinder", InfernoMobs.group, "entity/cinder");
     	
     	// Get Parts:
     	parts = model.groupObjects;

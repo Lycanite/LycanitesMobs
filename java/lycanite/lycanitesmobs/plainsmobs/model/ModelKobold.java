@@ -21,7 +21,7 @@ public class ModelKobold extends ModelCustomObj {
     
     public ModelKobold(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Kobold", PlainsMobs.domain, "entity/kobold");
+    	model = (WavefrontObject)AssetManager.getObjModel("Kobold", PlainsMobs.group, "entity/kobold");
     	
     	// Get Parts:
     	parts = model.groupObjects;

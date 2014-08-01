@@ -19,7 +19,6 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
-import lycanite.lycanitesmobs.infernomobs.InfernoMobs;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -45,7 +44,6 @@ public class EntityCephignis extends EntityCreatureAgeable implements IAnimals, 
         super(world);
         
         // Setup:
-        this.mod = InfernoMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 0;
         this.experience = 5;

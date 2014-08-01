@@ -5,6 +5,7 @@ import java.util.HashMap;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupAnimal;
 import lycanite.lycanitesmobs.api.IGroupPredator;
+import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
@@ -17,7 +18,6 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.MobInfo;
-import lycanite.lycanitesmobs.saltwatermobs.SaltwaterMobs;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -42,7 +42,6 @@ public class EntityAbtu extends EntityCreatureTameable implements IMob, IGroupPr
         super(par1World);
         
         // Setup:
-        this.mod = SaltwaterMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 0;
         this.experience = 4;
@@ -125,8 +124,8 @@ public class EntityAbtu extends EntityCreatureTameable implements IMob, IGroupPr
 			return;
 		
 		// Spawn Minions:
-		if(SaltwaterMobs.config.getFeatureInt("AbtuSwarmLimit") > 0
-				&& this.nearbyCreatureCount(this.getClass(), 64D) < SaltwaterMobs.config.getFeatureInt("AbtuSwarmLimit")) {
+		int swarmLimit = ConfigBase.getConfig(this.group, "general").getInt("Features", "Abtu Swarm Limit", 20, "Limits how many Abtu there can be when swarming.");
+		if(swarmLimit > 0 && this.nearbyCreatureCount(this.getClass(), 64D) < swarmLimit) {
 			float random = this.rand.nextFloat();
 			float spawnChance = 0.1F;
 			if(!this.isChild())

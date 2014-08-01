@@ -1,14 +1,13 @@
 package lycanite.lycanitesmobs.api.spawning;
 
-import lycanite.lycanitesmobs.OldConfig;
 
-public class BlockSpawner extends SpawnType {
+public class SpawnTypeBlock extends SpawnTypeBase {
 
     // ==================================================
     //                     Constructor
     // ==================================================
-    public BlockSpawner(String typeName, OldConfig config) {
-        super(typeName, config);
+    public SpawnTypeBlock(String typeName) {
+        super(typeName);
         CustomSpawner.instance.updateSpawnTypes.add(this);
     }
 }

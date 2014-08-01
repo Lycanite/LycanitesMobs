@@ -22,7 +22,7 @@ public class ModelAbtu extends ModelCustomObj {
     
     public ModelAbtu(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("abtu", SaltwaterMobs.domain, "entity/abtu");
+    	model = (WavefrontObject)AssetManager.getObjModel("abtu", SaltwaterMobs.group, "entity/abtu");
     	
     	// Get Parts:
     	parts = model.groupObjects;

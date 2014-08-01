@@ -5,7 +5,7 @@ import java.util.List;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.ILycaniteMod;
+import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.item.ItemBase;
 import lycanite.lycanitesmobs.infernomobs.InfernoMobs;
 import net.minecraft.client.Minecraft;
@@ -21,7 +21,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemBucketPureLava extends ItemBucket {
 	public String itemName;
-	public ILycaniteMod mod;
+	public GroupInfo group;
 	
 	// ==================================================
 	//                   Constructor
@@ -29,7 +29,7 @@ public class ItemBucketPureLava extends ItemBucket {
     public ItemBucketPureLava() {
         super(ObjectManager.getBlock("purelava"));
 		this.setCreativeTab(LycanitesMobs.itemsTab);
-        this.mod = InfernoMobs.instance;
+        this.group = InfernoMobs.group;
         this.itemName = "bucketpurelava";
         this.setUnlocalizedName(this.itemName);
         ObjectManager.addBucket(this, ObjectManager.getBlock("purelava"));
@@ -72,7 +72,7 @@ public class ItemBucketPureLava extends ItemBucket {
     @SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IIconRegister iconRegister) {
-    	AssetManager.addIcon(this.itemName, this.mod.getDomain(), this.itemName, iconRegister);
+    	AssetManager.addIcon(this.itemName, this.group, this.itemName, iconRegister);
     }
 
     // ========== Holding Angle ==========

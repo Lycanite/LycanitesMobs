@@ -16,7 +16,7 @@ public class ItemMudshotCharge extends ItemBase {
 	// ==================================================
     public ItemMudshotCharge() {
         super();
-        this.domain = DesertMobs.domain;
+        this.group = DesertMobs.group;
         this.itemName = "mudshotcharge";
         this.setup();
     }

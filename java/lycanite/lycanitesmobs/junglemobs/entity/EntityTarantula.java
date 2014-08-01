@@ -18,7 +18,6 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.MobInfo;
-import lycanite.lycanitesmobs.junglemobs.JungleMobs;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -43,7 +42,6 @@ public class EntityTarantula extends EntityCreatureTameable implements IMob {
         super(par1World);
         
         // Setup:
-        this.mod = JungleMobs.instance;
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
         this.defense = 0;
         this.experience = 5;

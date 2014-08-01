@@ -9,15 +9,15 @@ import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.GuiHandler;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.ILycaniteMod;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIMoveRestriction;
 import lycanite.lycanitesmobs.api.entity.ai.FlightNavigator;
 import lycanite.lycanitesmobs.api.info.DropRate;
+import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.SpawnInfo;
 import lycanite.lycanitesmobs.api.inventory.ContainerCreature;
 import lycanite.lycanitesmobs.api.inventory.InventoryCreature;
-import lycanite.lycanitesmobs.api.spawning.SpawnType;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;
 import net.minecraft.block.material.Material;
@@ -60,8 +60,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	// Info:
 	/** A class that contains information about this mob, this class also links to the SpawnInfo class relevant to this mob. **/
 	public MobInfo mobInfo;
-    /** A link to the mod instance of this mob, used to get file paths, the mod config, etc. **/
-	public ILycaniteMod mod;
+    /** The group that this mob belongs to, this provides config settings, asset locations and more. **/
+	public GroupInfo group;
     /** The name of the egg item this mob uses. **/
 	public String eggName = "spawnegg";
     /** What attribute is this creature, used for effects such as Bane of Arthropods. **/
@@ -116,7 +116,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Use the onSpawn() method and not this variable. True if this creature has spawned for the first time (naturally or via spawn egg, etc, not reloaded from a saved chunk). **/
     public boolean firstSpawn = true;
     /** This will contain the Spawn Type used to spawn this entity (this should only be used for spawn checks really as it isn't persistent). Null if spawned from egg, spawner, vanilla, etc. **/
-    public SpawnType spawnedFromType = null;
+    public SpawnTypeBase spawnedFromType = null;
     /** Should this mob only spawn in darkness. **/
     public boolean spawnsInDarkness = false;
     /** Should this mob only spawn in light. **/
@@ -235,6 +235,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public EntityCreatureBase(World world) {
         super(world);
         this.mobInfo = MobInfo.mobClassToInfo.get(this.getClass());
+        this.group = mobInfo.group;
         this.flightNavigator = new FlightNavigator(this);
     }
     
@@ -601,7 +602,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
             	for(int k = z - checkRange; k <= z + checkRange; k++) {
             		TileEntity tileEntity = this.worldObj.getTileEntity(i, j, k);
             		if(tileEntity != null && tileEntity instanceof TileEntityMobSpawner) {
-            			if(((TileEntityMobSpawner)tileEntity).func_145881_a().getEntityNameToSpawn().equals(ObjectManager.entityLists.get(this.mod.getDomain()).getEntityString(this))) //getSpawnerLogic()
+            			if(((TileEntityMobSpawner)tileEntity).func_145881_a().getEntityNameToSpawn().equals(ObjectManager.entityLists.get(this.group.filename).getEntityString(this))) //getSpawnerLogic()
             				return true;
             		}
             			
@@ -691,7 +692,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 		int boost = 0;
 		
 		if("defense".equalsIgnoreCase(stat))
-			boost = this.mod.getConfig().defenseBoosts.get(this.getConfigName());
+			boost = this.mobInfo.boostDefense;
 		
 		return boost;
 	}
@@ -1464,11 +1465,13 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	public boolean isCreatureType(EnumCreatureType type, boolean forSpawnCount) {
     	// If the mob spawner is checking then we should return if it should take a place in the mob spawn count or not.
     	if(forSpawnCount) {
-    		if(this.mobInfo.spawnInfo.creatureType == null)
-    			return false;
     		if(this.isMinion()) // Minions shouldn't take up the spawn count.
     			return false;
-    		return type == this.mobInfo.spawnInfo.creatureType;
+    		for(EnumCreatureType creatureType : this.mobInfo.spawnInfo.creatureTypes) {
+    			if(creatureType == type)
+    				return true;
+    		}
+    		return false;
     	}
     	
 		if(type.getCreatureClass() == IMob.class) // If checking for EnumCretureType.monster (IMob) return whether or not this creature is hostile instead.
@@ -2173,7 +2176,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Returns this creature's main texture. **/
     public ResourceLocation getTexture() {
     	if(AssetManager.getTexture(this.getTextureName()) == null)
-    		AssetManager.addTexture(this.getTextureName(), this.mod.getDomain(), "textures/entity/" + this.getTextureName().toLowerCase() + ".png");
+    		AssetManager.addTexture(this.getTextureName(), this.group, "textures/entity/" + this.getTextureName().toLowerCase() + ".png");
     	return AssetManager.getTexture(this.getTextureName());
     }
 
@@ -2185,7 +2188,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	if(this.isMinion())
     		return this.getTexture();
     	if(AssetManager.getTexture(textureName) == null)
-    		AssetManager.addTexture(textureName, this.mod.getDomain(), "textures/entity/" + textureName.toLowerCase() + ".png");
+    		AssetManager.addTexture(textureName, this.group, "textures/entity/" + textureName.toLowerCase() + ".png");
     	return AssetManager.getTexture(textureName);
     }
 

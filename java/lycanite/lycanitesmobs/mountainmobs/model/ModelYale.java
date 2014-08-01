@@ -27,7 +27,7 @@ public class ModelYale extends ModelCustomObj {
     
     public ModelYale(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("yale", MountainMobs.domain, "entity/yale");
+    	model = (WavefrontObject)AssetManager.getObjModel("yale", MountainMobs.group, "entity/yale");
     	
     	// Get Parts:
     	parts = model.groupObjects;

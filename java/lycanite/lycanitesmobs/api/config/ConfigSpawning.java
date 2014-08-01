@@ -5,7 +5,7 @@ import java.util.List;
 
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
-import lycanite.lycanitesmobs.api.spawning.SpawnType;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.BiomeDictionary;
@@ -17,15 +17,16 @@ public class ConfigSpawning extends ConfigBase {
 	
 	// ========== Config Collections ==========
 	// Get Config:
-    public static ConfigSpawning getConfig(GroupInfo group, String configName) {
-        ConfigBase configBase = ConfigBase.getConfig(group, configName);
-        if(configBase instanceof ConfigSpawning)
-        	return (ConfigSpawning)configBase;
-        else {
-        	LycanitesMobs.printWarning("", "[Config] Tried to access a Base Config as a Spawning Config!");
-        	return null;
-        }
-    }
+     public static ConfigSpawning getConfig(GroupInfo group, String configName) {
+         String configFileName = group.filename + "-" + configName.toLowerCase();
+         if(!configs.containsKey(configFileName))
+             registerConfig(new ConfigSpawning(group, configName));
+         ConfigBase config = ConfigBase.configs.get(configFileName);
+         if(config instanceof ConfigSpawning)
+         	return (ConfigSpawning)config;
+     	LycanitesMobs.printWarning("", "[Config] Tried to access a Base Config as a Spawning Config!");
+     	return null;
+     }
     
     
 	// ========================================
@@ -34,10 +35,10 @@ public class ConfigSpawning extends ConfigBase {
 	
 	// ========== Spawn Types ==========
 	public class SpawnTypeSet {
-		public SpawnType[] spawnTypes;
+		public SpawnTypeBase[] spawnTypes;
 		public EnumCreatureType[] creatureTypes;
 		
-		public SpawnTypeSet(SpawnType[] spawnTypes, EnumCreatureType[] creatureTypes) {
+		public SpawnTypeSet(SpawnTypeBase[] spawnTypes, EnumCreatureType[] creatureTypes) {
 			this.spawnTypes = spawnTypes;
 			this.creatureTypes = creatureTypes;
 		}
@@ -80,7 +81,7 @@ public class ConfigSpawning extends ConfigBase {
 		String spawnTypeEntries = this.getString(category, key, defaultValue);
 		spawnTypeEntries = spawnTypeEntries.replace(" ", "");
 		
-		SpawnType[] spawnTypes = SpawnType.getSpawnTypes(spawnTypeEntries);
+		SpawnTypeBase[] spawnTypes = SpawnTypeBase.getSpawnTypes(spawnTypeEntries);
 		
         List<EnumCreatureType> creatureTypeList = new ArrayList<EnumCreatureType>();
         for(String spawnTypeEntry : spawnTypeEntries.split(",")) {
@@ -142,6 +143,8 @@ public class ConfigSpawning extends ConfigBase {
         
         List<BiomeGenBase> biomeList = new ArrayList<BiomeGenBase>();
         for(String biomeEntry : biomeEntries.split(",")) {
+        	if("".equals(biomeEntry))
+        		break;
             boolean additive = true;
             if(biomeEntry.charAt(0) == '-' || biomeEntry.charAt(0) == '+') {
                 if(biomeEntry.charAt(0) == '-')

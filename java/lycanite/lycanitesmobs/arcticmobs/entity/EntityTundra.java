@@ -37,7 +37,7 @@ public class EntityTundra extends EntityProjectileBase {
     // ========== Setup Projectile ==========
     public void setup() {
     	this.entityName = "tundra";
-    	this.mod = ArcticMobs.instance;
+    	this.group = ArcticMobs.group;
     	this.setBaseDamage(6);
     	this.setProjectileScale(4F);
     	this.waterProof = true;

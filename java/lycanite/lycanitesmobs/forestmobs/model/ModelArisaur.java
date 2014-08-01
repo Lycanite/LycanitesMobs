@@ -21,7 +21,7 @@ public class ModelArisaur extends ModelCustomObj {
     
     public ModelArisaur(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Arisaur", ForestMobs.domain, "entity/arisaur");
+    	model = (WavefrontObject)AssetManager.getObjModel("Arisaur", ForestMobs.group, "entity/arisaur");
     	
     	// Get Parts:
     	parts = model.groupObjects;

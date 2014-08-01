@@ -16,7 +16,7 @@ public class ItemFrostwebCharge extends ItemBase {
 	// ==================================================
     public ItemFrostwebCharge() {
         super();
-        this.domain = ArcticMobs.domain;
+        this.group = ArcticMobs.group;
         this.itemName = "frostwebcharge";
         this.setup();
     }

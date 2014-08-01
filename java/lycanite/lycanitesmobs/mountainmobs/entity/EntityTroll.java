@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs.mountainmobs.entity;
 import java.util.HashMap;
 
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackRanged;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIBreakDoor;
@@ -13,7 +14,6 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
-import lycanite.lycanitesmobs.mountainmobs.MountainMobs;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -43,7 +43,6 @@ public class EntityTroll extends EntityCreatureBase implements IMob {
         super(par1World);
         
         // Setup:
-        this.mod = MountainMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 2;
         this.experience = 5;
@@ -132,7 +131,7 @@ public class EntityTroll extends EntityCreatureBase implements IMob {
         // Destroy Blocks:
  		if(!this.worldObj.isRemote)
  	        if(this.getAttackTarget() != null && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing")
- 	        && this.mod.getConfig().getFeatureBool("TrollGriefing")) {
+ 	        && ConfigBase.getConfig(this.group, "general").getBool("Features", "Troll Griefing", true, "Set to false to disable Troll block destruction.")) {
  		    	float distance = this.getAttackTarget().getDistanceToEntity(this);
  		    		if(distance <= this.width + 4.0F)
  		    			destroyArea((int)this.posX, (int)this.posY, (int)this.posZ, 4, true);

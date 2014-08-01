@@ -22,7 +22,7 @@ public class ModelGorgomite extends ModelCustomObj {
     
     public ModelGorgomite(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Gorgomite", DesertMobs.domain, "entity/gorgomite");
+    	model = (WavefrontObject)AssetManager.getObjModel("Gorgomite", DesertMobs.group, "entity/gorgomite");
     	
     	// Get Parts:
     	parts = model.groupObjects;

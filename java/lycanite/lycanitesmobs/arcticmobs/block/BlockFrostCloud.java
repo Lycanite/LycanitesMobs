@@ -5,6 +5,7 @@ import java.util.Random;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.block.BlockBase;
+import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -25,12 +26,12 @@ public class BlockFrostCloud extends BlockBase {
 		super(Material.plants);
 		
 		// Properties:
-		this.mod = ArcticMobs.instance;
+		this.group = ArcticMobs.group;
 		this.blockName = "frostcloud";
 		this.setup();
 		
 		// Stats:
-		this.tickRate = this.mod.getConfig().getFeatureBool("frostcloud") ? 200 : 1;
+		this.tickRate = ConfigBase.getConfig(this.group, "general").getBool("Features", "Enable Frostclouds") ? 200 : 1;
 		this.removeOnTick = true;
 		this.loopTicks = false;
 		this.canBeCrushed = true;

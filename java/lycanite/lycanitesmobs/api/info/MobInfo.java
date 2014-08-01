@@ -255,7 +255,7 @@ public class MobInfo {
 	public ResourceLocation getIcon() {
 		ResourceLocation texture = AssetManager.getTexture(this.name + "_icon");
 		if(texture == null) {
-			AssetManager.addTexture(this.name + "_icon", this.group.filename, "textures/guis/" + this.name.toLowerCase() + "_icon.png");
+			AssetManager.addTexture(this.name + "_icon", this.group, "textures/guis/" + this.name.toLowerCase() + "_icon.png");
 			texture = AssetManager.getTexture(this.name + "_icon");
 		}
 		return texture;

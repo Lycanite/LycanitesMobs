@@ -17,7 +17,6 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
-import lycanite.lycanitesmobs.mountainmobs.MountainMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -39,7 +38,6 @@ public class EntityJabberwock extends EntityCreatureTameable implements IMob {
         super(par1World);
         
         // Setup:
-        this.mod = MountainMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.experience = 5;
         this.spawnsInDarkness = true;

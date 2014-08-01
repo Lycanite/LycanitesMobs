@@ -17,7 +17,7 @@ public class ItemFrostyFur extends ItemBase {
 	// ==================================================
     public ItemFrostyFur() {
         super();
-        this.domain = ArcticMobs.domain;
+        this.group = ArcticMobs.group;
         this.itemName = "frostyfur";
         this.setup();
     }

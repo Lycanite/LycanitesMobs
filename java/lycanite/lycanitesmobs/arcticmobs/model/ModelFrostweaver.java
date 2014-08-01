@@ -22,7 +22,7 @@ public class ModelFrostweaver extends ModelCustomObj {
     
     public ModelFrostweaver(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Frostweaver", ArcticMobs.domain, "entity/frostweaver");
+    	model = (WavefrontObject)AssetManager.getObjModel("Frostweaver", ArcticMobs.group, "entity/frostweaver");
     	
     	// Get Parts:
     	parts = model.groupObjects;

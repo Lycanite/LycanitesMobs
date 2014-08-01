@@ -21,7 +21,7 @@ public class ModelMakaAlpha extends ModelCustomObj {
     
     public ModelMakaAlpha(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("MakaAlpha", PlainsMobs.domain, "entity/makaalpha");
+    	model = (WavefrontObject)AssetManager.getObjModel("MakaAlpha", PlainsMobs.group, "entity/makaalpha");
     	
     	// Get Parts:
     	parts = model.groupObjects;

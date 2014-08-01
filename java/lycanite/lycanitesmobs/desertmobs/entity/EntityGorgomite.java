@@ -6,6 +6,7 @@ import lycanite.lycanitesmobs.api.IGroupAlpha;
 import lycanite.lycanitesmobs.api.IGroupHunter;
 import lycanite.lycanitesmobs.api.IGroupPredator;
 import lycanite.lycanitesmobs.api.IGroupPrey;
+import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackRanged;
@@ -18,7 +19,6 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
-import lycanite.lycanitesmobs.desertmobs.DesertMobs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
@@ -43,7 +43,6 @@ public class EntityGorgomite extends EntityCreatureBase implements IMob, IGroupP
         super(par1World);
         
         // Setup:
-        this.mod = DesertMobs.instance;
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
         this.defense = 0;
         this.experience = 3;
@@ -113,8 +112,8 @@ public class EntityGorgomite extends EntityCreatureBase implements IMob, IGroupP
 			return;
 		
 		// Spawn Minions:
-		if(DesertMobs.config.getFeatureInt("GorgomiteSwarmLimit") > 0
-				&& this.nearbyCreatureCount(this.getClass(), 64D) < DesertMobs.config.getFeatureInt("GorgomiteSwarmLimit")) {
+		int swarmLimit = ConfigBase.getConfig(this.group, "general").getInt("Features", "Gorgomite Swarm Limit", 20, "Limits how many Gorgomites there can be when swarming.");
+		if(swarmLimit > 0 && this.nearbyCreatureCount(this.getClass(), 64D) < swarmLimit) {
 			float random = this.rand.nextFloat();
 			if(random <= 0.1F)
 				this.spawnAlly(this.posX - 2 + (random * 4), this.posY, this.posZ - 2 + (random * 4));

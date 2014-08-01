@@ -7,6 +7,7 @@ import java.util.Map;
 
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.config.ConfigBase;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
@@ -170,13 +171,9 @@ public class ObjectLists {
 	
 	// ========== Add From Config Value ==========
 	public static void addFromConfig(String listName) {
-		Map<String, String> itemListConfig = LycanitesMobs.config.itemLists;
-		if(!itemListConfig.containsKey(listName)) {
-			LycanitesMobs.printWarning("ItemSetup", "Config is missing: " + listName);
-			return;
-		}
+		ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "itemlists");
 		
-		String customDropsString = itemListConfig.get(listName).replace(" ", "");
+		String customDropsString = config.getString("Item Lists", listName).replace(" ", "");
 		LycanitesMobs.printDebug("ItemSetup", "~O========== Custom " + listName + " ==========O~");
 		if(customDropsString != null && customDropsString.length() > 0)
     		for(String customDropEntryString : customDropsString.split(";")) {

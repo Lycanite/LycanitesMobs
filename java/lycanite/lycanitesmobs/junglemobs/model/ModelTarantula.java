@@ -22,7 +22,7 @@ public class ModelTarantula extends ModelCustomObj {
     
     public ModelTarantula(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Tarantula", JungleMobs.domain, "entity/tarantula");
+    	model = (WavefrontObject)AssetManager.getObjModel("Tarantula", JungleMobs.group, "entity/tarantula");
     	
     	// Get Parts:
     	parts = model.groupObjects;

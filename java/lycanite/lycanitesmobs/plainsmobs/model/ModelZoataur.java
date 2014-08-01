@@ -22,7 +22,7 @@ public class ModelZoataur extends ModelCustomObj {
     
     public ModelZoataur(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Zoataur", PlainsMobs.domain, "entity/zoataur");
+    	model = (WavefrontObject)AssetManager.getObjModel("Zoataur", PlainsMobs.group, "entity/zoataur");
     	
     	// Get Parts:
     	parts = model.groupObjects;

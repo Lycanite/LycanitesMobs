@@ -16,7 +16,7 @@ public class ItemScepterBoulderBlast extends ItemScepter {
 	// ==================================================
     public ItemScepterBoulderBlast() {
         super();
-    	this.domain = MountainMobs.domain;
+    	this.group = MountainMobs.group;
     	this.itemName = "boulderblastscepter";
         this.setup();
         this.textureName = "scepterboulderblast";

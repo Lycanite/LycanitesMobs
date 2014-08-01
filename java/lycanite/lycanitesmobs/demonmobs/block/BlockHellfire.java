@@ -13,6 +13,7 @@ import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ClientProxy;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.block.BlockBase;
+import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.demonmobs.DemonMobs;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -38,12 +39,12 @@ public class BlockHellfire extends BlockBase {
 		super(Material.fire);
 		
 		// Properties:
-		this.mod = DemonMobs.instance;
+		this.group = DemonMobs.group;
 		this.blockName = "hellfire";
 		this.setup();
 		
 		// Stats:
-		this.tickRate = this.mod.getConfig().getFeatureBool("hellfire") ? 200 : 1;
+		this.tickRate = ConfigBase.getConfig(this.group, "general").getBool("Features", "Enable Hellfire") ? 200 : 1;
 		this.removeOnTick = false;
 		this.loopTicks = true;
 		this.canBeCrushed = true;
@@ -71,7 +72,7 @@ public class BlockHellfire extends BlockBase {
     public void updateTick(World world, int x, int y, int z, Random random) {
     	// ========== Main Fire Logic ==========
 		// If Hellfire is disabled, use regular fire instead:
-		if(!DemonMobs.config.getFeatureBool("hellfire"))
+		if(!ConfigBase.getConfig(this.group, "general").getBool("Features", "Enable Hellfire"))
     		world.setBlock(x, y, z, Blocks.fire);
 		
 		// Remove if the doFireTick rule is false:
@@ -317,7 +318,7 @@ public class BlockHellfire extends BlockBase {
     @SideOnly(Side.CLIENT)
     @Override
     public void registerBlockIcons(IIconRegister iconRegister) {
-    	AssetManager.addIconGroup(blockName, DemonMobs.domain, new String[] {"hellfire_layer_0", "hellfire_layer_1"}, iconRegister);
+    	AssetManager.addIconGroup(blockName, this.group, new String[] {"hellfire_layer_0", "hellfire_layer_1"}, iconRegister);
     }
     
     // ========== Get Icon from Side and Meta ==========

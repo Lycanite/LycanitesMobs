@@ -22,7 +22,7 @@ public class ModelAspid extends ModelCustomObj {
     
     public ModelAspid(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Aspid", SwampMobs.domain, "entity/aspid");
+    	model = (WavefrontObject)AssetManager.getObjModel("Aspid", SwampMobs.group, "entity/aspid");
     	
     	// Get Parts:
     	parts = model.groupObjects;

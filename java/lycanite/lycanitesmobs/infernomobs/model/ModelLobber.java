@@ -22,7 +22,7 @@ public class ModelLobber extends ModelCustomObj {
     
     public ModelLobber(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Lobber", InfernoMobs.domain, "entity/lobber");
+    	model = (WavefrontObject)AssetManager.getObjModel("Lobber", InfernoMobs.group, "entity/lobber");
     	
     	// Get Parts:
     	parts = model.groupObjects;

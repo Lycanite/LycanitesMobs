@@ -13,7 +13,6 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
-import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -38,7 +37,6 @@ public class EntityWendigo extends EntityCreatureBase implements IMob {
         super(par1World);
         
         // Setup:
-        this.mod = ArcticMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 3;
         this.experience = 10;

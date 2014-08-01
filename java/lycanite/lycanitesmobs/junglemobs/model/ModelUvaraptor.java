@@ -22,7 +22,7 @@ public class ModelUvaraptor extends ModelCustomObj {
     
     public ModelUvaraptor(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Uvaraptor", JungleMobs.domain, "entity/uvaraptor");
+    	model = (WavefrontObject)AssetManager.getObjModel("Uvaraptor", JungleMobs.group, "entity/uvaraptor");
     	
     	// Get Parts:
     	parts = model.groupObjects;

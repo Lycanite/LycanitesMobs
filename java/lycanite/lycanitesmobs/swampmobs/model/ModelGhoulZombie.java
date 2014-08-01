@@ -21,7 +21,7 @@ public class ModelGhoulZombie extends ModelCustomObj {
     
     public ModelGhoulZombie(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("GhoulZombie", SwampMobs.domain, "entity/ghoulzombie");
+    	model = (WavefrontObject)AssetManager.getObjModel("GhoulZombie", SwampMobs.group, "entity/ghoulzombie");
     	
     	// Get Parts:
     	parts = model.groupObjects;

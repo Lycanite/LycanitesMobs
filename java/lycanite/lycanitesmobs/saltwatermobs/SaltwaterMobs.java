@@ -2,9 +2,8 @@ package lycanite.lycanitesmobs.saltwatermobs;
 
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.OldConfig;
-import lycanite.lycanitesmobs.api.ILycaniteMod;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
+import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
@@ -30,14 +29,11 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = SaltwaterMobs.modid, name = SaltwaterMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid)
-public class SaltwaterMobs implements ILycaniteMod {
+public class SaltwaterMobs {
 	
 	public static final String modid = "saltwatermobs";
 	public static final String name = "Lycanites Saltwater Mobs";
-	public static final String domain = modid.toLowerCase();
-	public static int mobID = -1;
-	public static int projectileID = 99;
-	public static OldConfig config = new SubConfig();
+	public static GroupInfo group;
 	
 	// Instance:
 	@Instance(modid)
@@ -53,10 +49,11 @@ public class SaltwaterMobs implements ILycaniteMod {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
-		config.init(modid);
-		
-		// ========== Set Current Mod ==========
-		ObjectManager.setCurrentMod(this);
+		group = new GroupInfo(this, "Saltwater Mobs");
+		group.loadFromConfig();
+
+		// ========== Set Current Group ==========
+		ObjectManager.setCurrentGroup(group);
 		
 		// ========== Create Items ==========
 		ObjectManager.addItem("saltwateregg", new ItemSaltwaterEgg());
@@ -64,15 +61,15 @@ public class SaltwaterMobs implements ILycaniteMod {
         int rawFoodEffectID = Potion.blindness.id;
         if(ObjectManager.getPotionEffect("weight") != null)
             rawFoodEffectID = ObjectManager.getPotionEffect("weight").getId();
-        ObjectManager.addItem("ikameatraw", new ItemCustomFood("ikameatraw", domain, 2, 0.5F).setPotionEffect(rawFoodEffectID, 45, 2, 0.8F));
+        ObjectManager.addItem("ikameatraw", new ItemCustomFood("ikameatraw", group, 2, 0.5F).setPotionEffect(rawFoodEffectID, 45, 2, 0.8F));
         ObjectLists.addItem("rawfish", ObjectManager.getItem("ikameatraw"));
         OreDictionary.registerOre("listAllfishraw", ObjectManager.getItem("ikameatraw"));
 
-        ObjectManager.addItem("ikameatcooked", new ItemCustomFood("ikameatcooked", domain, 6, 0.7F));
+        ObjectManager.addItem("ikameatcooked", new ItemCustomFood("ikameatcooked", group, 6, 0.7F));
         ObjectLists.addItem("cookedfish", ObjectManager.getItem("ikameatcooked"));
         OreDictionary.registerOre("listAllfishcooked", ObjectManager.getItem("ikameatcooked"));
 
-        ObjectManager.addItem("seashellmaki", new ItemCustomFood("seashellmaki", domain, 6, 0.7F).setPotionEffect(Potion.waterBreathing.id, 120, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
+        ObjectManager.addItem("seashellmaki", new ItemCustomFood("seashellmaki", group, 6, 0.7F).setPotionEffect(Potion.waterBreathing.id, 120, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
         ObjectLists.addItem("cookedfish", ObjectManager.getItem("seashellmaki"));
 	}
 	
@@ -82,16 +79,38 @@ public class SaltwaterMobs implements ILycaniteMod {
 	// ==================================================
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
-		
-		// ========== Set Current Mod ==========
-		ObjectManager.setCurrentMod(this);
+
+		// ========== Set Current Group ==========
+		ObjectManager.setCurrentGroup(group);
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("saltwateregg"), new DispenserBehaviorMobEggCustom());
-		ObjectManager.addMob(new MobInfo(this, "lacedon", EntityLacedon.class, 0x000099, 0x2244FF, 2).setSummonable(true));
-		ObjectManager.addMob(new MobInfo(this, "skylus", EntitySkylus.class, 0xFFCCDD, 0xBB2299, 3).setSummonable(true));
-        ObjectManager.addMob(new MobInfo(this, "ika", EntityIka.class, 0x99FFBB, 0x229944, 2).setSummonable(false));
-        ObjectManager.addMob(new MobInfo(this, "abtu", EntityAbtu.class, 0xFFBB00, 0x44AAFF, 2).setSummonable(false));
+		MobInfo newMob;
+        
+        newMob = new MobInfo(group, "lacedon", EntityLacedon.class, 0x000099, 0x2244FF)
+		        .setPeaceful(false).setSummonable(true).setSummonCost(2);
+		newMob.spawnInfo.setSpawnTypes("WATERCREATURE")
+				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "skylus", EntitySkylus.class, 0xFFCCDD, 0xBB2299)
+		        .setPeaceful(false).setSummonable(true).setSummonCost(3);
+		newMob.spawnInfo.setSpawnTypes("WATERCREATURE")
+				.setSpawnWeight(6).setAreaLimit(5).setGroupLimits(1, 3);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "ika", EntityIka.class, 0x99FFBB, 0x229944)
+		        .setPeaceful(true).setSummonable(false).setSummonCost(2);
+		newMob.spawnInfo.setSpawnTypes("WATERCREATURE").setDespawn(false)
+				.setSpawnWeight(6).setAreaLimit(10).setGroupLimits(1, 3);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "abtu", EntityAbtu.class, 0xFFBB00, 0x44AAFF)
+		        .setPeaceful(false).setSummonable(false).setSummonCost(2);
+		newMob.spawnInfo.setSpawnTypes("WATERCREATURE")
+				.setSpawnWeight(8).setAreaLimit(32).setGroupLimits(1, 5);
+		ObjectManager.addMob(newMob);
+
 		
 		// ========== Create Projectiles ==========
 		//ObjectManager.addProjectile("ember", EntityEmber.class, ObjectManager.getItem("embercharge"), new DispenserBehaviorEmber());
@@ -106,8 +125,8 @@ public class SaltwaterMobs implements ILycaniteMod {
 	// ==================================================
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
-		// ========== Set Current Mod ==========
-		ObjectManager.setCurrentMod(this);
+		// ========== Set Current Group ==========
+		ObjectManager.setCurrentGroup(group);
 		
 		// ========== Remove Vanilla Spawns ==========
 		// N/A
@@ -132,26 +151,4 @@ public class SaltwaterMobs implements ILycaniteMod {
 		// ========== Smelting ==========
 		GameRegistry.addSmelting(ObjectManager.getItem("ikameatraw"), new ItemStack(ObjectManager.getItem("ikameatcooked"), 1), 0.5f);
 	}
-	
-	
-	// ==================================================
-	//                    Mod Info
-	// ==================================================
-	@Override
-	public SaltwaterMobs getInstance() { return instance; }
-	
-	@Override
-	public String getModID() { return modid; }
-	
-	@Override
-	public String getDomain() { return domain; }
-	
-	@Override
-	public OldConfig getConfig() { return config; }
-	
-	@Override
-	public int getNextMobID() { return ++this.mobID; }
-	
-	@Override
-	public int getNextProjectileID() { return ++this.projectileID; }
 }

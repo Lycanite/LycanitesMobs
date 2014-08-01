@@ -22,7 +22,6 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
-import lycanite.lycanitesmobs.desertmobs.DesertMobs;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -49,7 +48,6 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
         super(par1World);
         
         // Setup:
-        this.mod = DesertMobs.instance;
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 2;
         this.experience = 5;

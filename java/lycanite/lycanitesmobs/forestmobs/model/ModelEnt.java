@@ -22,7 +22,7 @@ public class ModelEnt extends ModelCustomObj {
     
     public ModelEnt(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Ent", ForestMobs.domain, "entity/ent");
+    	model = (WavefrontObject)AssetManager.getObjModel("Ent", ForestMobs.group, "entity/ent");
     	
     	// Get Parts:
     	parts = model.groupObjects;

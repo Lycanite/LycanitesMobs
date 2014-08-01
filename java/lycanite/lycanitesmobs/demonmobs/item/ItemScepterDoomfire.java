@@ -16,7 +16,7 @@ public class ItemScepterDoomfire extends ItemScepter {
 	// ==================================================
     public ItemScepterDoomfire() {
         super();
-    	this.domain = DemonMobs.domain;
+    	this.group = DemonMobs.group;
     	this.itemName = "doomfirescepter";
         this.setup();
         this.textureName = "scepterdoomfire";

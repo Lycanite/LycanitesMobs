@@ -21,7 +21,7 @@ public class ModelConcapedeSegment extends ModelCustomObj {
     
     public ModelConcapedeSegment(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("ConcapedeSegment", JungleMobs.domain, "entity/concapede");
+    	model = (WavefrontObject)AssetManager.getObjModel("ConcapedeSegment", JungleMobs.group, "entity/concapede");
     	
     	// Get Parts:
     	parts = model.groupObjects;

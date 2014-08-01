@@ -4,6 +4,7 @@ import java.util.Random;
 
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.block.BlockBase;
+import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.junglemobs.JungleMobs;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -21,12 +22,12 @@ public class BlockQuickWeb extends BlockBase {
 		super(Material.web);
 		
 		// Properties:
-		this.mod = JungleMobs.instance;
+		this.group = JungleMobs.group;
 		this.blockName = "quickweb";
 		this.setup();
 		
 		// Stats:
-		this.tickRate = this.mod.getConfig().getFeatureBool("quickweb") ? 200 : 1;
+		this.tickRate = ConfigBase.getConfig(this.group, "general").getBool("Features", "Enable Quickweb") ? 200 : 1;
 		this.removeOnTick = true;
 		this.loopTicks = false;
 		this.canBeCrushed = false;

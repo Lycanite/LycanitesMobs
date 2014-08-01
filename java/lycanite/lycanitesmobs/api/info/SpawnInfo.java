@@ -5,7 +5,7 @@ import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.config.ConfigSpawning;
 import lycanite.lycanitesmobs.api.config.ConfigSpawning.SpawnDimensionSet;
 import lycanite.lycanitesmobs.api.config.ConfigSpawning.SpawnTypeSet;
-import lycanite.lycanitesmobs.api.spawning.SpawnType;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.world.biome.BiomeGenBase;
 
@@ -30,7 +30,7 @@ public class SpawnInfo {
     public String spawnTypeEntries = "";
 
     /** A list of Spawn Types to use. **/
-    public SpawnType[] spawnTypes = new SpawnType[0];
+    public SpawnTypeBase[] spawnTypes = new SpawnTypeBase[0];
 
     /** A list of Spawn Types to use. **/
     public EnumCreatureType[] creatureTypes = new EnumCreatureType[0];
@@ -73,7 +73,7 @@ public class SpawnInfo {
 	public int spawnGroupMax = 3;
 	
 	/** Used for the BLOCK spawn type. How many blocks that must be within the Spawn Block Search Range. **/
-	public int spawnBlockCost = 0;
+	public int spawnBlockCost = 1;
 	
 	// ========== Despawning ==========
 	/** Whether this mob should despawn or not by default (some mobs can override persistence, such as once farmed). **/
@@ -192,7 +192,7 @@ public class SpawnInfo {
         return this;
     }
 
-    // ========== Spawn Chances ==========
+    // ========== Spawn Odds ==========
     public SpawnInfo setSpawnWeight(int integer) {
         this.spawnWeight = integer;
         this.dungeonWeight = integer * 25;
@@ -201,6 +201,11 @@ public class SpawnInfo {
 
     public SpawnInfo setSpawnChance(int integer) {
         this.spawnChance = integer;
+        return this;
+    }
+    
+    public SpawnInfo setDungeonWeight(int integer) {
+        this.dungeonWeight = integer;
         return this;
     }
 

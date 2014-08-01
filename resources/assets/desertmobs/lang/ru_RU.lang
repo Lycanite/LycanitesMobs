@@ -1,0 +1,41 @@
+# Group Info
+desertmobs.name=Пустынные твари
+desertmobs.description=Рождённые сухими и горячими песками, эти существа обитают в биомах Пустыня и Столовые горы.
+# Entites
+entity.desertmobs.cryptzombie.name=Мумия
+entity.desertmobs.cryptzombie.description=Мумифицированные трупы, возрождённые песками. Они наносят такой же урон, как обычные зомби, но, в отличие от них, могут заразить голодом и не горят на солнце.
+entity.desertmobs.clink.name=Клинг
+entity.desertmobs.clink.description=Дикие металлические создания. Быстро передвигаются и не менее быстро обращаются со своими клинками, которые также могут метать во своих врагов.
+entity.desertmobs.crusk.name=Круск
+entity.desertmobs.crusk.description=Гигантские песчаные змеи с каменной кожей, которые могут прятаться под землёй и выпрыгивать оттуда для атаки. Детёныши Красков могут быть приручены и, несмотря на длительный рост, потом могут быть использованы как отличные защитные питомцы.
+entity.desertmobs.joust.name=Джаст
+entity.desertmobs.joust.description=Свирепые создания пустыни. Из них можно добывать ресурсы и они любят кактусы. Как правило, мирные, но не стоит случайно попадать по ним. Берегитесь Альфа-Джастов!
+entity.desertmobs.joustalpha.name=Альфа-Джаст
+entity.desertmobs.joustalpha.description=Лидеры Джастов, нападают на других альфа-самцов, управляют джастами в своей стае. Агрессивны.
+entity.desertmobs.erepede.name=Эрепод
+entity.desertmobs.erepede.description=Странные порождения скал, которые могут стрелять грязью, ослабляющей противника. Могут быть приручены как ездовые питомцы, умеющие также перевозить грузы и стрелять в противников.
+entity.desertmobs.gorgomite.name=Горгомит
+entity.desertmobs.gorgomite.description=Небольшие скальные жуки, слабые сами по себе, но, если дать им время, умеющие призвать могущественных друзей из-под земли. Старайтесь убить их побыстрее. Боятся Мантикор.
+entity.desertmobs.manticore.name=Мантикора
+entity.desertmobs.manticore.description=Скальные летучие мыши, быстрые, их укусы ослабляют и вызывают голод. Охотятся на Горгомитов.
+#
+# Items
+item.desertspawn.name=Призвать существо - 
+item.joustmeatraw.name=Сырое мясо джаста
+item.joustmeatraw.description=Похоже на резину и пахнет грязными носками, замедляет, лучше его приготовить.
+item.joustmeatcooked.name=Приготовленное мясо джаста
+item.joustmeatcooked.description=Вкус чудесной острой курицы!
+item.ambercake.name=Янтарный пирог
+item.ambercake.description=Сладкий пирог со специями! Ускоряет!
+item.crusktreat.name=Пища для Краска
+item.crusktreat.description=Детёныши Красков любят это есть.
+item.erepedetreat.name=Пища для Эрепода
+item.erepedetreat.description=Эреподы нежны и любвеобильны из-за этой еды.
+item.throwingscythe.name=Метательная коса
+item.throwingscythe.description=Изогнутое металлическое лезвие, которое можно метать или стрелять тройными зарядами из раздатчика.
+item.scythescepter.name=Посох "Коса"
+item.scythescepter.description=Урон: Средний, Пульсирующий строенный заряд
+item.mudshotcharge.name=Заряд Грязевого выстрела
+item.mudshotcharge.description=Шар вибрирующей грязи. Можно метать или стрелять из раздатчика. Накладывает слабость.
+item.mudshotscepter.name=Посох "Грязевой выстрел"
+item.mudshotscepter.description=Урон: Средний, Скорость атаки: Быстрая, Накладывает слабость

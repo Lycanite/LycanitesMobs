@@ -74,7 +74,8 @@ public class ArcticMobs {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
-		group = new GroupInfo(this, "Arctic Mobs");
+		group = new GroupInfo(this, "Arctic Mobs")
+                .setDimensions("0, 7").setBiomes("COLD, SNOWY, CONIFEROUS, -END");
 		group.loadFromConfig();
 
 		// ========== Set Current Group ==========

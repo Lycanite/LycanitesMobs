@@ -11,8 +11,54 @@ import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 public class ConfigBase {
+    // ========== Version Check ==========
+    public static void versionCheck(String minVersion, String currentVersion) {
+        // Get Config Version:
+        ConfigBase versionConfig = getConfig(LycanitesMobs.group, "version");
+        String configVersion = versionConfig.getString("Version", "Config Version", "0.0.0", "The version that this config was last read from, manually update this if you do not want your config to be cleared, although it is recommended not to unless you are aware of the changes.");
+
+        // Test Config Version:
+        String[] minVersions = minVersion.split("\\.");
+        String[] configVersions = configVersion.split("\\.");
+        if(configVersions.length != 3)
+            configVersions = "0.0.0".split("\\.");
+        boolean oldVersion = false;
+        for(int i = 0; i < 3; i++) {
+            int minVerNum = NumberUtils.isNumber(minVersions[i]) ? Integer.parseInt(minVersions[i]) : 0;
+            int currentVerNum = NumberUtils.isNumber(configVersions[i]) ? Integer.parseInt(configVersions[i]) : 0;
+            if(currentVerNum < minVerNum) {
+                oldVersion = true;
+                break;
+            }
+            if(currentVerNum > minVerNum)
+                break;
+        }
+
+        // Clear Old Configs:
+        if(oldVersion) {
+            String configDirPath = LycanitesMobs.proxy.getMinecraftDir() + "/config/" + LycanitesMobs.modid;
+            File configDir = new File(configDirPath);
+            configDir.mkdir();
+            try {
+                FileUtils.cleanDirectory(configDir);
+            } catch (IOException e) {
+                LycanitesMobs.printWarning("", "[Config] Unable to clear the config directory! This could be a permissions/read-only issue!");
+                e.printStackTrace();
+            }
+        }
+
+        // Update Config Version:
+        currentVersion = currentVersion.replace(" ", "");
+        currentVersion = currentVersion.split("-")[0];
+        if(!configVersion.equals(currentVersion))
+            versionConfig.setString("Version", "Config Version", currentVersion);
+    }
+
+
 	// ========== Config Collections ==========
 	// Configurations:
 	public static Map<String, ConfigBase> configs = new HashMap<String, ConfigBase>();
@@ -57,7 +103,6 @@ public class ConfigBase {
 	
 	// ========== Pre-Init ==========
 	public void init() {
-		
 		// Create/Load Config File:
 		String configDirPath = LycanitesMobs.proxy.getMinecraftDir() + "/config/" + LycanitesMobs.modid;
 		File configDir = new File(configDirPath);
@@ -100,6 +145,7 @@ public class ConfigBase {
     //		      Category Comments
     // ========================================
     public void setCategoryComment(String category, String comment) {
+        category = category.toLowerCase();
         this.config.addCustomCategoryComment(category, comment);
     }
 	
@@ -118,6 +164,7 @@ public class ConfigBase {
 	}
 	
 	public boolean getBool(String category, String key, boolean defaultValue, String comment) {
+        category = category.toLowerCase();
         boolean newEntry = !this.config.getCategory(category).containsKey(key);
 		Property property = this.config.get(category, key, defaultValue);
 		if(comment != null) property.comment = comment;
@@ -135,6 +182,7 @@ public class ConfigBase {
 	}
 	
 	public int getInt(String category, String key, int defaultValue, String comment) {
+        category = category.toLowerCase();
         boolean newEntry = !this.config.getCategory(category).containsKey(key);
 		Property property = this.config.get(category, key, defaultValue);
 		if(comment != null) property.comment = comment;
@@ -152,6 +200,7 @@ public class ConfigBase {
 	}
 	
 	public double getDouble(String category, String key, double defaultValue, String comment) {
+        category = category.toLowerCase();
         boolean newEntry = !this.config.getCategory(category).containsKey(key);
 		Property property = this.config.get(category, key, defaultValue);
 		if(comment != null) property.comment = comment;
@@ -169,6 +218,7 @@ public class ConfigBase {
 	}
 	
 	public String getString(String category, String key, String defaultValue, String comment) {
+        category = category.toLowerCase();
         boolean newEntry = !this.config.getCategory(category).containsKey(key);
 		Property property = this.config.get(category, key, defaultValue);
 		if(comment != null) property.comment = comment;
@@ -191,6 +241,7 @@ public class ConfigBase {
 	}
 	
 	public boolean[] getBoolList(String category, String key, boolean[] defaultValue, String comment) {
+        category = category.toLowerCase();
         boolean newEntry = !this.config.getCategory(category).containsKey(key);
 		Property property = this.config.get(category, key, defaultValue);
 		if(comment != null) property.comment = comment;
@@ -208,6 +259,7 @@ public class ConfigBase {
 	}
 	
 	public int[] getIntList(String category, String key, int[] defaultValue, String comment) {
+        category = category.toLowerCase();
         boolean newEntry = !this.config.getCategory(category).containsKey(key);
 		Property property = this.config.get(category, key, defaultValue);
 		if(comment != null) property.comment = comment;
@@ -225,6 +277,7 @@ public class ConfigBase {
 	}
 	
 	public double[] getDoubleList(String category, String key, double[] defaultValue, String comment) {
+        category = category.toLowerCase();
         boolean newEntry = !this.config.getCategory(category).containsKey(key);
 		Property property = this.config.get(category, key, defaultValue);
 		if(comment != null) property.comment = comment;
@@ -242,6 +295,7 @@ public class ConfigBase {
 	}
 	
 	public String[] getStringList(String category, String key, String[] defaultValue, String comment) {
+        category = category.toLowerCase();
         boolean newEntry = !this.config.getCategory(category).containsKey(key);
 		Property property = this.config.get(category, key, defaultValue);
 		if(comment != null) property.comment = comment;
@@ -262,6 +316,7 @@ public class ConfigBase {
 		this.setBool(category, key, value, null);
 	}
 	public void setBool(String category, String key, boolean value, String comment) {
+        category = category.toLowerCase();
 		Property property = this.config.get(category, key, value);
 		if(comment != null) property.comment = comment;
 		property.set(value);
@@ -273,6 +328,7 @@ public class ConfigBase {
 		this.setInt(category, key, value, null);
 	}
 	public void setInt(String category, String key, int value, String comment) {
+        category = category.toLowerCase();
 		Property property = this.config.get(category, key, value);
 		if(comment != null) property.comment = comment;
 		property.set(value);
@@ -284,6 +340,7 @@ public class ConfigBase {
 		this.setDouble(category, key, value, null);
 	}
 	public void setDouble(String category, String key, double value, String comment) {
+        category = category.toLowerCase();
 		Property property = this.config.get(category, key, value);
 		if(comment != null) property.comment = comment;
 		property.set(value);
@@ -295,6 +352,7 @@ public class ConfigBase {
 		this.setString(category, key, value, null);
 	}
 	public void setString(String category, String key, String value, String comment) {
+        category = category.toLowerCase();
 		Property property = this.config.get(category, key, value);
 		if(comment != null) property.comment = comment;
 		property.set(value);
@@ -311,6 +369,7 @@ public class ConfigBase {
 		this.setList(category, key, objValues, null);
 	}
 	public void setList(String category, String key, Object[] objValues, String comment) {
+        category = category.toLowerCase();
         List<String> valuesList = new ArrayList<String>();
         for(Object objValue : objValues)
             valuesList.add(objValue.toString());

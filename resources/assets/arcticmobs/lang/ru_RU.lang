@@ -1,0 +1,43 @@
+# Group Info
+arcticmobs.name=Снежные твари
+arcticmobs.description=Создания льда и ветра, обычно живущие в холодных снежных биомах, таких, как Тайга или Тундра.
+# Entites
+entity.arcticmobs.reiver.name=Рейвер
+entity.arcticmobs.reiver.description=Замёрзшие духи, метающие ледяные стрелы во всех, кого они считают угрозой.
+entity.arcticmobs.frostweaver.name=Ледяной паук
+entity.arcticmobs.frostweaver.description=Плюющиеся ледяные пауки могут заковать вас в липкую паутину.
+entity.arcticmobs.yeti.name=Йети
+entity.arcticmobs.yeti.description=Огромные арктические травоядные млекопитающие. На них можно охотиться с помощью растений, но берегитесь их ледяного дыхания. Молоко йети - деликатес!
+entity.arcticmobs.wendigo.name=Вендиго
+entity.arcticmobs.wendigo.description=Огромные ледяные твари, оставляющие ловушки из Ледогня за собой. Также они метают Взрыв Тундры, создающий Ледогонь и Облако льда при соприкосновении с чем-либо.
+#
+# Items
+item.arcticspawn.name=Призвать существо - 
+item.yetimeatraw.name=Сырое мясо йети
+item.yetimeatraw.description=Это выглядит весьма холодным...
+item.yetimeatcooked.name=Приготовленное мясо йети
+item.yetimeatcooked.description=Чем-то похоже на свинину.
+item.palesoup.name=Бледный суп
+item.palesoup.description=Молочный суп, поддерживающий сопротивляемость.
+item.frostyfur.name=Ледяной мех
+item.frostyfur.description=Холоден как снег, нужен для создания Ледяного облака.
+item.frostboltcharge.name=Заряд Ледяного шара
+item.frostboltcharge.description=Заряд Ледяного шара. Может выстреливаться из раздатчика.
+item.frostwebcharge.name=Заряд Ледяной паутины
+item.frostwebcharge.description=Заряд Ледяной паутины. Может выстреливаться из раздатчика.
+item.tundracharge.name=Заряд Взрыва тундры
+item.tundracharge.description=Запускает шар Ледогня. Может выстреливаться из раздатчика.
+item.frostboltscepter.name=Посох "Ледяной шар"
+item.frostboltscepter.description=Урон: Средний, Скорость атаки: Быстрая, Замедляет
+item.frostwebscepter.name=Посох "Ледяная паутина"
+item.frostwebscepter.description=Урон: Низкий, Скорость атаки: Быстрая, Замедляет, Размещает Ледяную паутину
+item.tundrascepter.name=Tundra Scepter
+item.tundrascepter.description=Урон: Высокий, Зарядка, Размещает Ледогонь и Облако льда
+#
+# Blocks
+tile.frostweb.name=Ледяная паутина
+tile.frostweb.description=Паутина, созданная из холодных, как лёд, нитей. Со временем исчезает.
+tile.frostcloud.name=Ледяное облако
+tile.frostcloud.description=Небольшое снежное облако, замедляющее и накладывающее эффект голода.
+tile.frostfire.name=Ледогонь
+tile.frostfire.description=Магический огонь, может нанести урон, очень сильно замедляет.

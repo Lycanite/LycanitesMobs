@@ -49,7 +49,8 @@ public class SaltwaterMobs {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
-		group = new GroupInfo(this, "Saltwater Mobs");
+		group = new GroupInfo(this, "Saltwater Mobs")
+                .setDimensions("0").setBiomes("OCEAN, BEACH");
 		group.loadFromConfig();
 
 		// ========== Set Current Group ==========

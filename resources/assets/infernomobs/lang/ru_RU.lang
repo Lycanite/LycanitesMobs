@@ -1,0 +1,31 @@
+# Group Info
+infernomobs.name=Твари Инферно
+infernomobs.description=Существа, рождённые лавой, могут быть найдены везде, где достаточно жарко для того, чтобы расплавились скалы!
+# Entites
+entity.infernomobs.cinder.name=Цандер
+entity.infernomobs.cinder.description=Злобные огненные духи, Цандеры, любят испепелять всё вокруг.
+entity.infernomobs.lobber.name=Лоббер
+entity.infernomobs.lobber.description=Огромные лавовые големы, Лобберы, обитают в лавовых озёрах и могут бросать лавой в своих противников.
+entity.infernomobs.cephignis.name=Цефинис
+entity.infernomobs.cephignis.description=Гигантская рыба, живущая в лаве! Из цефиниса добывается уголь.
+#
+# Items
+item.infernospawn.name=Призвать существо - 
+item.cephignismeatcooked.name=Приготовленное мясо цефиниса
+item.cephignismeatcooked.description=Рыба со специями!
+item.searingtaco.name=Жгучий Тако
+item.searingtaco.description=Такое острое, что даёт иммунитет к огню!
+item.embercharge.name=Тлеющий заряд
+item.embercharge.description=Можно метать огненные шарики или стрелять ими из раздатчика.
+item.emberscepter.name=Тлеющий посох
+item.emberscepter.description=Урон: Средний, Поджигает
+item.magmacharge.name=Заряд магмы
+item.magmacharge.description=Стреляйте лавовым шаром! Можно использовать с раздатчиком.
+item.magmascepter.name=Магмовый посох
+item.magmascepter.description=Урон: Высокий, Зарядка, Поджигает, Размещает лаву
+item.bucketpurelava.name=Ведро чистой лавы
+item.bucketpurelava.description=Ведро очищенной лавы, течёт немного быстрее обычной и в ней не появляются твари Инферно. Может бесконечно обновляться, как и вода.
+#
+# Items
+tile.purelava.name=Чистая лава
+tile.purelava.description=Очищенная лава, течёт немного быстрее обычной и в ней не появляются твари Инферно. Может бесконечно обновляться, как и вода.

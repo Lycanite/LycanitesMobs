@@ -74,7 +74,8 @@ public class SwampMobs {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
-		group = new GroupInfo(this, "Swamp Mobs");
+		group = new GroupInfo(this, "Swamp Mobs")
+                .setDimensions("0, 7").setBiomes("SWAMP, SPOOKY");
 		group.loadFromConfig();
 
 		// ========== Set Current Group ==========

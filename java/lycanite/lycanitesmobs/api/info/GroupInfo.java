@@ -26,20 +26,20 @@ public class GroupInfo {
     public int nextProjectileID = 100;
 	
 	// ========== Spawn Dimensions ==========
-    /** A comma separated list of dimensions that this mob spawns in. As read from the config **/
+    /** A comma separated list of dimensions that mobs in this group spawn in. As read from the config **/
     public String dimensionEntries = "";
 
-	/** The list of dimension IDs that this mob spawns in. **/
+	/** The list of dimension IDs that mobs in this group spawn. **/
 	public int[] dimensionIDs = new int[0];
 	
 	/** Extra dimension type info, can contain values such as ALL or VANILLA. **/
 	public String[] dimensionTypes = new String[0];
 
     // ========== Spawn Biomes ==========
-    /** The list of biomes that this mob spawns in. As read from the config. **/
+    /** The list of biomes that mobs in this group spawn. As read from the config. Store biome tags and special tags. **/
     public String biomeEntries = "";
 	
-	/** The list of biomes that this mob spawns in. Use this to get the biomes not biomeTypes. **/
+	/** The list of biomes that mobs in this group spawn. Use this stores the actual biomes not biome tags. **/
 	public BiomeGenBase[] biomes = new BiomeGenBase[0];
 
 
@@ -61,14 +61,15 @@ public class GroupInfo {
     		return;
     	
     	ConfigSpawning config = ConfigSpawning.getConfig(this, "spawning");
-    	
-    	// Spawn Dimensions:
-        config.setCategoryComment("Spawn Dimensions", "Sets which dimensions mobs spawn in. You may enter dimension IDs or tags such as: ALL, VANILLA or GROUP. Multiple entries should be comma separated.");
-        SpawnDimensionSet spawnDimensions = config.getDimensions("Spawn Dimensions", this.getCfgName("Spawn Dimensions"), this.dimensionEntries);
+        config.setCategoryComment("Group Settings", "Here you can set the spawning settings for all mobs in this group that use the GROUP tag.");
+
+        // Spawn Dimensions:
+        SpawnDimensionSet spawnDimensions = config.getDimensions("Group Settings", this.getCfgName("Spawn Dimensions"), this.dimensionEntries, "Sets which dimensions mobs spawn in. You may enter dimension IDs or tags such as: ALL, VANILLA or GROUP. Multiple entries should be comma separated.");
+        this.dimensionIDs = spawnDimensions.dimensionIDs;
+        this.dimensionTypes = spawnDimensions.dimensionTypes;
 
         // Spawn Biomes:
-		config.setCategoryComment("Spawn Biomes", "Sets which biomes this mob spawns in using Biome Tags. Multiple entries should be comma separated and can be subtractive if provided with a - in front.");
-		this.biomes = config.getBiomes("Spawn Biomes", this.getCfgName("Spawn Biomes"), this.biomeEntries);
+		this.biomes = config.getBiomes("Group Settings", this.getCfgName("Spawn Biomes"), this.biomeEntries, "Sets which biomes this mob spawns in using Biome Tags. Multiple entries should be comma separated and can be subtractive if provided with a - in front.");
     }
 
 
@@ -93,5 +94,20 @@ public class GroupInfo {
         int id = this.nextProjectileID;
         this.nextProjectileID++;
         return id;
+    }
+
+
+    // ==================================================
+    //                    Set Defaults
+    // ==================================================
+    // ========== Spawn Location ==========
+    public GroupInfo setDimensions(String string) {
+        this.dimensionEntries = string;
+        return this;
+    }
+
+    public GroupInfo setBiomes(String string) {
+        this.biomeEntries = string;
+        return this;
     }
 }

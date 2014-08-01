@@ -1,0 +1,25 @@
+# Group Info
+mountainmobs.name=Горные твари
+mountainmobs.description=Высоко в горах живут эти существа, они мастерски лазают и не боятся высоты.
+# Entites
+entity.mountainmobs.jabberwock.name=Бармаглот
+entity.mountainmobs.jabberwock.description=Похожее на оленя существо, чьи заточенные когти накладывают эффект тяжести, притягивающий жертву к земле, при этом делая невозможными прыжки и увеличивая урон от падения. Всё это превращает Бармаглотов в смертельно опасных тварей.
+entity.mountainmobs.troll.name=Тролль
+entity.mountainmobs.troll.description=На солнце кожа троллей становится каменной и даёт им прекрасную защиту. Когда солнца нет, тролли немного увеличивают скорость передвижения, но более уязвимы. Могут уничтожать нетвёрдые блоки, если противник рядом.
+entity.mountainmobs.yale.name=Йель
+entity.mountainmobs.yale.description=Странные пушистые твари, похожие на баранов. Если постричь йеля ножницами, можно получить шерсть. Питается овощами. Передние, большие рога, используются в качестве ног. Маленькие руки помогают им питаться.
+entity.mountainmobs.geonach.name=Гвонх
+entity.mountainmobs.geonach.description=Гвонх - жестокий земной элементаль, который нападает на шахтёров, бездумно беспокоящих землю. При атаке дважды метают замедляющее копьё и затем ударяют кулаками, накладывая эффект тяжести.
+#
+# Items
+item.mountainspawn.name=Призвать существо - 
+item.yalemeatraw.name=Сырое мясо йеля
+item.yalemeatraw.description=Вкус чем-то напоминает баранину. Долго жуётся, замедляет скорость добычи.
+item.yalemeatcooked.name=Приготовленное мясо йеля
+item.yalemeatcooked.description=Вкус как у жареной баранины под мятным соусом.
+item.peakskebab.name=Люля-кебаб
+item.peakskebab.description=Еда горцев, даёт силу рукам, лучшее, что может есть шахтёр!
+item.boulderblastcharge.name=Заряд Проклятого камня
+item.boulderblastcharge.description=Метает гигантский валун! Может использоваться с раздатчиком, замедляет скорость добычи.
+item.boulderblastscepter.name=Посох "Проклятый камень"
+item.boulderblastscepter.description=Урон: Высокий, Зарядка, Накладывает замедление скорости добычи

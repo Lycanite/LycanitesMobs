@@ -60,7 +60,8 @@ public class PlainsMobs {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
-		group = new GroupInfo(this, "Plains Mobs");
+		group = new GroupInfo(this, "Plains Mobs")
+                .setDimensions("0").setBiomes("PLAINS, SAVANNA, -SNOWY");
 		group.loadFromConfig();
 
 		// ========== Set Current Group ==========

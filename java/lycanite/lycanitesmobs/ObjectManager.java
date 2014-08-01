@@ -94,6 +94,7 @@ public class ObjectManager {
 	
 	// ========== Creature ==========
 	public static MobInfo addMob(MobInfo mobInfo) {
+        mobInfo.loadFromConfig();
 		GroupInfo group = mobInfo.group;
 		String filename = group.filename;
 		

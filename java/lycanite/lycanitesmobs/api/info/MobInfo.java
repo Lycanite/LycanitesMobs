@@ -55,7 +55,7 @@ public class MobInfo {
 	public String name = "mobname";
 	
 	/** Is this mob enabled? If disabled, it will still be registered, etc but wont randomly spawn or have a spawn egg. **/
-	public boolean mobEnabled;
+	public boolean mobEnabled = true;
 	
 	/** The class that this mob instantiates with. **/
 	public Class entityClass;

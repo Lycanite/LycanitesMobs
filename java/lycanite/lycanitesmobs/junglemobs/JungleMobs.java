@@ -63,7 +63,8 @@ public class JungleMobs {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
-		group = new GroupInfo(this, "Jungle Mobs");
+		group = new GroupInfo(this, "Jungle Mobs")
+                .setDimensions("0").setBiomes("JUNGLE");
 		group.loadFromConfig();
 		
 		// ========== Set Current Group ==========

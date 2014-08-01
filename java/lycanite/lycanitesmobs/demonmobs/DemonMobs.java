@@ -78,7 +78,8 @@ public class DemonMobs {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
-		group = new GroupInfo(this, "Demon Mobs");
+		group = new GroupInfo(this, "Demon Mobs")
+                .setDimensions("-1").setBiomes("NETHER");
 		group.loadFromConfig();
 
 		// ========== Set Current Group ==========

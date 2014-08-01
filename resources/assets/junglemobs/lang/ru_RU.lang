@@ -1,0 +1,29 @@
+# Group Info
+junglemobs.name=Твари Тропиков
+junglemobs.description=Экзотические создания, обитающие в горячих и влажных биомах, таких, как Джунгли.
+# Entites
+entity.junglemobs.geken.name=Геккон
+entity.junglemobs.geken.description=Ядовитая рептилия, превосходно умеющая прыгать.
+entity.junglemobs.uvaraptor.name=Ящеропавлин
+entity.junglemobs.uvaraptor.description=Цветастая рептилия, превосходно плавающая и прыгающая. Может быть приручена как ездовой питомец, прыжки которого будут больше похожи на полёт.
+entity.junglemobs.concapede.name=Конкапод
+entity.junglemobs.concapede.description=Странные жуки, умеющие соединяться друг с другом. При этом всеми управляет только один, главный конкапод. Агрессивны ночью. Отравляют. Если накормить главного конкапода, он становится мирным и не защищает своих миньонов.
+entity.junglemobs.concapedesegment.name=Конкапод-миньон
+entity.junglemobs.concapedesegment.description=Странные жуки, умеющие соединяться друг с другом. Миньоны присоединяются к главным конкаподам сзади. Если убить главного конкапода, но при этом к нему прикреплены другие миньоны, первый из них станет главным конкаподом. Миньоны сами по себе беззащитны.
+entity.junglemobs.tarantula.name=Тарантула
+entity.junglemobs.tarantula.description=Прыгающие пауки. Отравляют. Оставляют за собой след из зелёной липкой паутины.
+#
+# Items
+item.junglespawn.name=Призвать существо - 
+item.concapedemeatraw.name=Сырое мясо конкапода
+item.concapedemeatraw.description=Закройте глаза и представьте, что это курица!
+item.concapedemeatcooked.name=Приготовленное мясо конкапода
+item.concapedemeatcooked.description=По вкусу как цыплёнок под соусом барбекю! Хотя и не похож на него.
+item.tropicalcurry.name=Тропический карри
+item.tropicalcurry.description=Взрыв экзотического вкуса! Прекрасно!
+item.uvaraptortreat.name=Пища для ящеропавлина
+item.uvaraptortreat.description=Поможет, если вы захотите приручить собственного ящеропавлина!
+#
+# Blocks
+tile.quickweb.name=Зелёная паутина
+tile.quickweb.description=Зелёная паутина, пропадающая через некоторое время.

@@ -61,7 +61,8 @@ public class MountainMobs {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
-		group = new GroupInfo(this, "Mountain Mobs");
+		group = new GroupInfo(this, "Mountain Mobs")
+                .setDimensions("0").setBiomes("MOUNTAIN");
 		group.loadFromConfig();
 
 		// ========== Set Current Group ==========

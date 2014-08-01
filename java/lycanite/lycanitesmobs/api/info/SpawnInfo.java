@@ -128,6 +128,8 @@ public class SpawnInfo {
 		// Spawn Dimensions:
         config.setCategoryComment("Spawn Dimensions", "Sets which dimensions mobs spawn in. You may enter dimension IDs or tags such as: ALL, VANILLA or GROUP. Multiple entries should be comma separated.");
         SpawnDimensionSet spawnDimensions = config.getDimensions("Spawn Dimensions", this.getCfgName("Spawn Dimensions"), this.dimensionEntries);
+        this.dimensionIDs = spawnDimensions.dimensionIDs;
+        this.dimensionTypes = spawnDimensions.dimensionTypes;
 
         // Spawn Biomes:
 		config.setCategoryComment("Spawn Biomes", "Sets which biomes this mob spawns in using Biome Tags. Multiple entries should be comma separated and can be subtractive if provided with a - in front.");
@@ -182,6 +184,7 @@ public class SpawnInfo {
         return this;
     }
 
+    // ========== Spawn Location ==========
     public SpawnInfo setDimensions(String string) {
         this.dimensionEntries = string;
         return this;

@@ -71,7 +71,8 @@ public class DesertMobs {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
-		group = new GroupInfo(this, "Desert Mobs");
+		group = new GroupInfo(this, "Desert Mobs")
+                .setDimensions("0").setBiomes("SANDY, WASTELAND, MESA, -COLD");
 		group.loadFromConfig();
 
 		// ========== Set Current Group ==========

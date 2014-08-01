@@ -470,7 +470,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     			return true;
     	}
     	for(int spawnDimension : this.mobInfo.spawnInfo.dimensionIDs) {
-    		if(this.worldObj.provider.dimensionId == spawnDimension) {
+    		if(world.provider.dimensionId == spawnDimension) {
     			return true;
     		}
     	}
@@ -479,8 +479,15 @@ public abstract class EntityCreatureBase extends EntityLiving {
     			return true;
     		}
     		if("VANILLA".equalsIgnoreCase(spawnDimensionType)) {
-    			return this.worldObj.provider.dimensionId > -2 && this.worldObj.provider.dimensionId < 2;
+    			return world.provider.dimensionId > -2 && world.provider.dimensionId < 2;
     		}
+            if("GROUP".equalsIgnoreCase(spawnDimensionType)) {
+                for(int spawnDimension : this.mobInfo.group.dimensionIDs) {
+                    if(world.provider.dimensionId == spawnDimension) {
+                        return true;
+                    }
+                }
+            }
     	}
         return false;
     }

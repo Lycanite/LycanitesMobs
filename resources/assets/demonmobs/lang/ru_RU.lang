@@ -1,0 +1,51 @@
+# Group Info
+demonmobs.name=Твари Ада
+demonmobs.description=Ваши друзья прямо из огненных глубин Ада!
+# Entites
+entity.demonmobs.belph.name=Бельф
+entity.demonmobs.belph.description=Дикие аборигены Ада, Бельфы любят бросать огненные снаряды во врагов.
+entity.demonmobs.behemoth.name=Бегемот
+entity.demonmobs.behemoth.description=Царь демонических тварей, Бегемот, метает шары адского пламени. Старайтесь укрываться от них.
+entity.demonmobs.pinky.name=Пинки
+entity.demonmobs.pinky.description=Прожорливые звери, любящие питаться коровами, свиньями и овцами. Могут быть приручены и размножены с помощью живых домашних животных. Маленькие Пинки также могут быть приручены и в дальнейшем использованы как боевые ездовые питомцы.
+entity.demonmobs.asmodi.name=Асмодей
+entity.demonmobs.asmodi.description=Асмодеи вооружены не только скорострельным огненным оружием, но и Трайтами - спутниками, созданными вдохновением развитого мозга и технологией красного камня. Если вы сможете уничтожить Асмодея, его Трайты проснутся и нападут на вас!
+entity.demonmobs.trite.name=Трайт
+entity.demonmobs.trite.description=Небольшие и быстрые пауки, укус которых отравляет и иссушает.
+entity.demonmobs.nethersoul.name=Душа Ада
+entity.demonmobs.nethersoul.description=Черепа демонов, наполненные адским огнём. Они способны заряжаться от своей цели и взрываться при смерти.
+entity.demonmobs.cacodemon.name=Злой дух
+entity.demonmobs.cacodemon.description=Летающие порождения тьмы. Злые духи стреляют смертельными шарами и любят травить Гастов из-за их вкусных слёз. Могут быть приручены как летающие ездовые питомцы.
+#
+# Items
+item.demonspawn.name=Призвать существо - 
+item.pinkymeatraw.name=Сырое мясо Пинки
+item.pinkymeatraw.description=Злобная демоническая энергия пульсирует в этом мясе, необходимо очистить её огнём.
+item.pinkymeatcooked.name=Приготовленное мясо Пинки
+item.pinkymeatcooked.description=Сочный, солёный бифштекс.
+item.devillasagna.name=Дьявольская лазанья
+item.devillasagna.description=Мясное кушанье, заряжающее демонической силой.
+item.pinkytreat.name=Пища для Пинки
+item.pinkytreat.description=Детёныши Пинки любят это.
+item.cacodemontreat.name=Пища для Злого духа
+item.cacodemontreat.description=Злые духи сойдут с ума за эту еду.
+item.doomfirecharge.name=Заряд Гибельного огня
+item.doomfirecharge.description=Подожгите что-нибудь Гибельным огнём или стреляйте им из раздатчика.
+item.doomfirescepter.name=Посох "Гибельный огонь"
+item.doomfirescepter.description=Урон: Средний, Скорость атаки: Быстрая, Поджигает, Размещает Гибельный огонь
+item.hellfirecharge.name=Заряд Адского огня
+item.hellfirecharge.description=Подожгите что-нибудь Адским огнём или стреляйте им из раздатчика.
+item.hellfirescepter.name=Посох "Адский огонь"
+item.hellfirescepter.description=Урон: Высокий, Зарядка, Поджигает, Размещает Адский огонь
+item.devilstarcharge.name=Заряд Звезды Дьявола
+item.devilstarcharge.description=Метайте эти звёзды вручную или стреляйте ими из раздатчика.
+item.devilstarscepter.name=Посох "Звезда Дьявола"
+item.devilstarscepter.description=Урон: Низкий, Скорость атаки: Очень быстрая
+item.demoniclightningcharge.name=Заряд Демонической молнии
+item.demoniclightningcharge.description=Метайте демонические разряды или стреляйте ими из раздатчика.
+item.demoniclightningscepter.name=Посох "Демоническая молния"
+item.demoniclightningscepter.description=Урон: Высокий, Зарядка, Накладывает Иссушение, Разбрасывает искры
+#
+# Blocks
+tile.hellfire.name=Адский огонь
+tile.hellfire.description=Дикий огонь, порождённый демонической энергией. Горит дольше, разгорается медленнее, наносит больше урона, чем простой огонь.

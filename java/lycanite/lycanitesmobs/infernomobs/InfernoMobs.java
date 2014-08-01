@@ -59,7 +59,8 @@ public class InfernoMobs {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
-		group = new GroupInfo(this, "Inferno Mobs");
+		group = new GroupInfo(this, "Inferno Mobs")
+                .setDimensions("ALL").setBiomes("ALL");
 		group.loadFromConfig();
 
 		// ========== Set Current Group ==========

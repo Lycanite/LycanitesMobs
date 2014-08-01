@@ -125,6 +125,7 @@ public class DemonMobs {
 
 		// ========== Set Current Group ==========
 		ObjectManager.setCurrentGroup(group);
+		group.loadSpawningFromConfig();
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("demonegg"), new DispenserBehaviorMobEggCustom());
@@ -196,7 +197,7 @@ public class DemonMobs {
 		
 		// ========== Remove Vanilla Spawns ==========
 		BiomeGenBase[] biomes = group.biomes;
-		if(config.getBool("Vanilla Spawning", "Edit Vanilla Spawning", true, "If true, some vanilla spawns in this biome will be removed, note that vanilla mobs should still be easy to find, only they will be more biome specific.")) {
+		if(group.controlVanillaSpawns) {
 			EntityRegistry.removeSpawn(EntityPigZombie.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntityGhast.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.addSpawn(EntityPigZombie.class, 100, 1, 4, EnumCreatureType.monster, biomes);

@@ -41,6 +41,10 @@ public class GroupInfo {
 	
 	/** The list of biomes that mobs in this group spawn. Use this stores the actual biomes not biome tags. **/
 	public BiomeGenBase[] biomes = new BiomeGenBase[0];
+	
+	// ========== Vanilla Controls ==========
+	/** If true, this group will edit the vanilla mob spawns a little bit. **/
+	public boolean controlVanillaSpawns = true;
 
 
     // ==================================================
@@ -56,7 +60,22 @@ public class GroupInfo {
     // ==================================================
     //                 Load from Config
     // ==================================================
+    /** Can be used to load all pre-init config settings. **/
     public void loadFromConfig() {
+    	if("lycanitesmobs".equalsIgnoreCase(this.filename))
+    		return;
+    	
+    	ConfigSpawning config = ConfigSpawning.getConfig(this, "spawning");
+        config.setCategoryComment("Group Settings", "Here you can set the spawning settings for all mobs in this group that use the GROUP tag.");
+        
+        // Vanilla Controls:
+		config = ConfigSpawning.getConfig(this, "general");
+		config.setCategoryComment("Vanilla Spawning", "Here you may control settings that affect vanilla Minecraft.");
+		this.controlVanillaSpawns = config.getBool("Vanilla Spawning", "Edit Vanilla Spawning", true, "If true, some vanilla spawns in this biome will be removed, note that vanilla mobs should still be easy to find, only they will be more biome specific.");
+    }
+    
+    /** Loads all spawning settings, should be called in the init and not pre-init so that the biomes can all be registered in time. **/
+    public void loadSpawningFromConfig() {
     	if("lycanitesmobs".equalsIgnoreCase(this.filename))
     		return;
     	
@@ -70,7 +89,7 @@ public class GroupInfo {
 
         // Spawn Biomes:
 		this.biomes = config.getBiomes("Group Settings", this.getCfgName("Spawn Biomes"), this.biomeEntries, "Sets which biomes this mob spawns in using Biome Tags. Multiple entries should be comma separated and can be subtractive if provided with a - in front.");
-    }
+	}
 
 
     // ==================================================

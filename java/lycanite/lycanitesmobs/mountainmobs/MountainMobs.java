@@ -95,6 +95,7 @@ public class MountainMobs {
 
 		// ========== Set Current Group ==========
 		ObjectManager.setCurrentGroup(group);
+		group.loadSpawningFromConfig();
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("mountainegg"), new DispenserBehaviorMobEggCustom());
@@ -115,7 +116,7 @@ public class MountainMobs {
 		newMob = new MobInfo(group, "yale", EntityYale.class, 0xFFEEAA, 0xFFDD77)
 		        .setPeaceful(true).setSummonable(false).setSummonCost(1);
 		newMob.spawnInfo.setSpawnTypes("CREATURE").setDespawn(false)
-				.setSpawnWeight(14).setAreaLimit(5).setGroupLimits(1, 4);
+				.setSpawnWeight(14).setAreaLimit(5).setGroupLimits(1, 4).setDungeonWeight(0);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "geonach", EntityGeonach.class, 0x443333, 0xBBBBCC)
@@ -144,7 +145,7 @@ public class MountainMobs {
 		
 		// ========== Remove Vanilla Spawns ==========
 		BiomeGenBase[] biomes = group.biomes;
-		if(config.getBool("Vanilla Spawning", "Edit Vanilla Spawning", true, "If true, some vanilla spawns in this biome will be removed, note that vanilla mobs should still be easy to find, only they will be more biome specific.")) {
+		if(group.controlVanillaSpawns) {
 			EntityRegistry.removeSpawn(EntityZombie.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntityWitch.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntityPig.class, EnumCreatureType.creature, biomes);

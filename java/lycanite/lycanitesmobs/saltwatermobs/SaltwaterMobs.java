@@ -83,6 +83,7 @@ public class SaltwaterMobs {
 
 		// ========== Set Current Group ==========
 		ObjectManager.setCurrentGroup(group);
+		group.loadSpawningFromConfig();
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("saltwateregg"), new DispenserBehaviorMobEggCustom());
@@ -103,7 +104,7 @@ public class SaltwaterMobs {
 		newMob = new MobInfo(group, "ika", EntityIka.class, 0x99FFBB, 0x229944)
 		        .setPeaceful(true).setSummonable(false).setSummonCost(2);
 		newMob.spawnInfo.setSpawnTypes("WATERCREATURE").setDespawn(false)
-				.setSpawnWeight(6).setAreaLimit(10).setGroupLimits(1, 3);
+				.setSpawnWeight(6).setAreaLimit(10).setGroupLimits(1, 3).setDungeonWeight(0);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "abtu", EntityAbtu.class, 0xFFBB00, 0x44AAFF)

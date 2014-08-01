@@ -168,6 +168,11 @@ public class ObjectManager {
 					dimensionsList += ", ";
 				dimensionsList += Integer.toString(dimensionID);
 			}
+			for(String dimensionType : spawnInfo.dimensionTypes) {
+				if(!"".equals(dimensionsList))
+					dimensionsList += ", ";
+				dimensionsList += dimensionType;
+			}
 			LycanitesMobs.printDebug("MobSetup", "Dimensions: " + dimensionsList);
 		}
 		else

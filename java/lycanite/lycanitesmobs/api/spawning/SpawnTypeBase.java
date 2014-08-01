@@ -29,7 +29,7 @@ public class SpawnTypeBase {
 	/** The name of this spawn type. This should be the same as the name used in the spawnTypes mapping. Should be all upper case. **/
 	public String typeName;
 	
-	/** How many ticks per player update this spawn type should attempt to spawn anything. **/
+	/** Whether this spawner is enabled at all or not. **/
 	public boolean enabled = true;
 	
 	/** A list of all mobs (as SpawnInfo) that use this spawn type. **/
@@ -67,7 +67,7 @@ public class SpawnTypeBase {
 	public boolean ignoreDimension = false;
 	
 	/** If true, this type will not check if a mob is allowed to spawn in the target light level. **/
-	public boolean ignoreLight = false;
+	public boolean ignoreLight = true;
 	
 	
     // ==================================================
@@ -82,6 +82,7 @@ public class SpawnTypeBase {
 		fireBlockSpawner.blocks = new Block[] {Blocks.fire};
 		fireBlockSpawner.ignoreBiome = true;
 		fireBlockSpawner.ignoreLight = true;
+		fireBlockSpawner.loadFromConfig();
         spawnTypes.add(fireBlockSpawner);
 		
 		// Frostfire Spawner:
@@ -90,6 +91,7 @@ public class SpawnTypeBase {
 		frostfireBlockSpawner.blockStrings = new String[] {"frostfire"};
 		frostfireBlockSpawner.ignoreBiome = true;
 		frostfireBlockSpawner.ignoreLight = true;
+		frostfireBlockSpawner.loadFromConfig();
         spawnTypes.add(frostfireBlockSpawner);
 		
 		// Lava Spawner:
@@ -97,6 +99,8 @@ public class SpawnTypeBase {
 				.setRate(400).setChance(0.25D).setRange(32).setBlockLimit(64).setMobLimit(32);
 		lavaBlockSpawner.blocks = new Block[] {Blocks.lava};
 		lavaBlockSpawner.ignoreBiome = true;
+		lavaBlockSpawner.ignoreLight = true;
+		lavaBlockSpawner.loadFromConfig();
         spawnTypes.add(lavaBlockSpawner);
 		
 		// Portal Spawner:
@@ -105,6 +109,8 @@ public class SpawnTypeBase {
 		portalBlockSpawner.blocks = new Block[] {Blocks.portal};
 		portalBlockSpawner.ignoreBiome = true;
 		portalBlockSpawner.ignoreDimension = true;
+		portalBlockSpawner.ignoreLight = true;
+		portalBlockSpawner.loadFromConfig();
         spawnTypes.add(portalBlockSpawner);
 		
 		// Rock Spawner:
@@ -112,6 +118,8 @@ public class SpawnTypeBase {
 				.setRate(0).setChance(0.03D).setRange(2).setBlockLimit(32).setMobLimit(1);
 		rockSpawner.materials = new Material[] {Material.air};
 		rockSpawner.ignoreBiome = true;
+		rockSpawner.ignoreLight = true;
+		fireBlockSpawner.loadFromConfig();
         spawnTypes.add(rockSpawner);
 		
 		// Storm Spawner:
@@ -119,6 +127,8 @@ public class SpawnTypeBase {
 				.setRate(800).setChance(0.125D).setRange(64).setBlockLimit(32).setMobLimit(32);
 		stormSpawner.materials = new Material[] {Material.air};
 		stormSpawner.ignoreBiome = true;
+		stormSpawner.ignoreLight = true;
+		stormSpawner.loadFromConfig();
         spawnTypes.add(stormSpawner);
         
         // Add Spawners to Map:
@@ -162,6 +172,9 @@ public class SpawnTypeBase {
     // ==================================================
     public void loadFromConfig() {
 		ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "spawning");
+		
+		config.setCategoryComment("Spawners Enabled", "Here you can turn each special spawner on or off.");
+		this.enabled = config.getBool("Spawners Enabled", this.getCfgName("Spawn Enabled"), this.enabled);
 		
 		config.setCategoryComment("Spawner Ticks", "Here you can set the interval that a spawner will try and spawn in ticks. (20 ticks = 1 second). Increase this and lower and the chance if you are having lag issues, this will make the spawner less frequent but more predicatable.");
 		this.rate = config.getInt("Spawner Ticks", this.getCfgName("Spawn Tick"), this.rate);

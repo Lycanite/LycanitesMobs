@@ -97,6 +97,7 @@ public class InfernoMobs {
 
 		// ========== Set Current Group ==========
 		ObjectManager.setCurrentGroup(group);
+		group.loadSpawningFromConfig();
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("infernoegg"), new DispenserBehaviorMobEggCustom());
@@ -117,7 +118,7 @@ public class InfernoMobs {
 		newMob = new MobInfo(group, "cephignis", EntityCephignis.class, 0xFFBB00, 0xDD00FF)
 		        .setPeaceful(true).setSummonable(false).setSummonCost(1);
 		newMob.spawnInfo.setSpawnTypes("LAVA").setBlockCost(32).setDespawn(false)
-				.setSpawnWeight(4).setAreaLimit(6).setGroupLimits(1, 3);
+				.setSpawnWeight(4).setAreaLimit(6).setGroupLimits(1, 3).setDungeonWeight(0);
 		ObjectManager.addMob(newMob);
 
 		

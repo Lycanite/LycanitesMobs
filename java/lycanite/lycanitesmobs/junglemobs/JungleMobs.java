@@ -99,6 +99,7 @@ public class JungleMobs {
 
 		// ========== Set Current Group ==========
 		ObjectManager.setCurrentGroup(group);
+		group.loadSpawningFromConfig();
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("jungleegg"), new DispenserBehaviorMobEggCustom());
@@ -154,7 +155,7 @@ public class JungleMobs {
 		
 		// ========== Remove Vanilla Spawns ==========
 		BiomeGenBase[] biomes = group.biomes;
-		if(config.getBool("Vanilla Spawning", "Edit Vanilla Spawning", true, "If true, some vanilla spawns in this biome will be removed, note that vanilla mobs should still be easy to find, only they will be more biome specific.")) {
+		if(group.controlVanillaSpawns) {
 			EntityRegistry.removeSpawn(EntityZombie.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntitySkeleton.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntityWitch.class, EnumCreatureType.monster, biomes);

@@ -113,6 +113,7 @@ public class DesertMobs {
 
 		// ========== Set Current Group ==========
 		ObjectManager.setCurrentGroup(group);
+		group.loadSpawningFromConfig();
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("desertegg"), new DispenserBehaviorMobEggCustom());
@@ -139,13 +140,13 @@ public class DesertMobs {
 		newMob = new MobInfo(group, "joust", EntityJoust.class, 0xFF9900, 0xFFFF00)
 		        .setPeaceful(true).setSummonable(false).setSummonCost(2);
 		newMob.spawnInfo.setSpawnTypes("CREATURE").setDespawn(false)
-				.setSpawnWeight(6).setAreaLimit(10).setGroupLimits(1, 5);
+				.setSpawnWeight(6).setAreaLimit(10).setGroupLimits(1, 5).setDungeonWeight(0);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "joustalpha", EntityJoustAlpha.class, 0xFF0000, 0xFFFF00)
 		        .setPeaceful(false).setSummonable(false).setSummonCost(4);
 		newMob.spawnInfo.setSpawnTypes("CREATURE").setDespawn(false)
-				.setSpawnWeight(2).setAreaLimit(2).setGroupLimits(1, 2);
+				.setSpawnWeight(2).setAreaLimit(2).setGroupLimits(1, 2).setDungeonWeight(0);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "erepede", EntityErepede.class, 0xDD9922, 0xFFDDFF)
@@ -187,7 +188,7 @@ public class DesertMobs {
 		
 		// ========== Remove Vanilla Spawns ==========
 		BiomeGenBase[] biomes = group.biomes;
-		if(config.getBool("Vanilla Spawning", "Edit Vanilla Spawning", true, "If true, some vanilla spawns in this biome will be removed, note that vanilla mobs should still be easy to find, only they will be more biome specific.")) {
+		if(group.controlVanillaSpawns) {
 			EntityRegistry.removeSpawn(EntityZombie.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntitySkeleton.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntityCreeper.class, EnumCreatureType.monster, biomes);

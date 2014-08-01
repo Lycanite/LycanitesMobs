@@ -123,6 +123,7 @@ public class ArcticMobs {
 
 		// ========== Set Current Group ==========
 		ObjectManager.setCurrentGroup(group);
+		group.loadSpawningFromConfig();
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("arcticegg"), new DispenserBehaviorMobEggCustom());
@@ -143,7 +144,7 @@ public class ArcticMobs {
         newMob = new MobInfo(group, "yeti", EntityYeti.class, 0xEEEEFF, 0x000099)
 		        .setPeaceful(true).setSummonable(false).setSummonCost(2);
 		newMob.spawnInfo.setSpawnTypes("CREATURE").setDespawn(false)
-				.setSpawnWeight(10).setAreaLimit(5).setGroupLimits(1, 4);
+				.setSpawnWeight(10).setAreaLimit(5).setGroupLimits(1, 4).setDungeonWeight(0);
 		ObjectManager.addMob(newMob);
 		
         newMob = new MobInfo(group, "wendigo", EntityWendigo.class, 0xCCCCFF, 0x0055FF)
@@ -174,7 +175,7 @@ public class ArcticMobs {
 		
 		// ========== Remove Vanilla Spawns ==========
 		BiomeGenBase[] biomes = group.biomes;
-		if(config.getBool("Vanilla Spawning", "Edit Vanilla Spawning", true, "If true, some vanilla spawns in this biome will be removed, note that vanilla mobs should still be easy to find, only they will be more biome specific.")) {
+		if(group.controlVanillaSpawns) {
 			EntityRegistry.removeSpawn(EntityZombie.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntityCreeper.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntitySpider.class, EnumCreatureType.monster, biomes);

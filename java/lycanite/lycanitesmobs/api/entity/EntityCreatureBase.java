@@ -399,7 +399,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         
         // Forced Spawn Chance:
     	LycanitesMobs.printDebug("MobSpawns", "All enviroment checks passed.");
-        if(this.mobInfo.spawnInfo.spawnChance < 100) {
+        if(this.mobInfo.spawnInfo.spawnChance < 1.0D) {
         	if(this.mobInfo.spawnInfo.spawnChance <= 0) {
         		LycanitesMobs.printDebug("MobSpawns", "Applying Forced Spawn Chance - Chance is 0 = No Spawning");
         		return false;
@@ -407,7 +407,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         	else {
 	        	double spawnRoll = this.rand.nextDouble();
 		        LycanitesMobs.printDebug("MobSpawns", "Applying Forced Spawn Chance - Rolled: " + spawnRoll + " Must be less than: " + this.mobInfo.spawnInfo.spawnChance);
-	        	if(spawnRoll < this.mobInfo.spawnInfo.spawnChance)
+	        	if(spawnRoll > this.mobInfo.spawnInfo.spawnChance)
 	        		return false;
         	}
 		}
@@ -469,11 +469,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
     		if(this.spawnedFromType.ignoreDimension)
     			return true;
     	}
-    	for(int spawnDimension : this.mobInfo.spawnInfo.dimensionIDs) {
-    		if(world.provider.dimensionId == spawnDimension) {
-    			return true;
-    		}
-    	}
 		for(String spawnDimensionType : this.mobInfo.spawnInfo.dimensionTypes) {
     		if("ALL".equalsIgnoreCase(spawnDimensionType)) {
     			return true;
@@ -482,12 +477,25 @@ public abstract class EntityCreatureBase extends EntityLiving {
     			return world.provider.dimensionId > -2 && world.provider.dimensionId < 2;
     		}
             if("GROUP".equalsIgnoreCase(spawnDimensionType)) {
+            	for(String groupSpawnDimensionType : this.mobInfo.group.dimensionTypes) {
+	            	if("ALL".equalsIgnoreCase(groupSpawnDimensionType)) {
+	        			return true;
+	        		}
+	        		if("VANILLA".equalsIgnoreCase(groupSpawnDimensionType)) {
+	        			return world.provider.dimensionId > -2 && world.provider.dimensionId < 2;
+	        		}
+            	}
                 for(int spawnDimension : this.mobInfo.group.dimensionIDs) {
                     if(world.provider.dimensionId == spawnDimension) {
                         return true;
                     }
                 }
             }
+    	}
+    	for(int spawnDimension : this.mobInfo.spawnInfo.dimensionIDs) {
+    		if(world.provider.dimensionId == spawnDimension) {
+    			return true;
+    		}
     	}
         return false;
     }

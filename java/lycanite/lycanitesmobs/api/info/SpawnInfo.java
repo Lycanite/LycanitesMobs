@@ -87,12 +87,14 @@ public class SpawnInfo {
     // ==================================================
 	public static void loadGlobalSettings() {
 		ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "spawning");
-
+		
+		config.setCategoryComment("Global Spawning", "These settings are used by everything. It is recommended to leave them as they are however low end machines might benefit from a few tweaks here.");
         spawnLimitRange = config.getDouble("Global Spawning", "Mob Limit Search Range", spawnLimitRange, "How far a mob should search from in blocks when checking how many of its kind have already spawned.");
         disableAllSpawning = config.getBool("Global Spawning", "Disable Spawning", disableAllSpawning, "If true, all mobs from this mod will not spawn at all.");
         enforceBlockCost = config.getBool("Global Spawning", "Enforce Block Costs", enforceBlockCost, "If true, mobs will double check if their required blocks are nearby, such as Cinders needing so many blocks of fire.");
         spawnWeightScale = config.getDouble("Global Spawning", "Weight Scale", spawnWeightScale, "Scales the spawn weights of all mobs from this mod. For example, you can use this to quickly half the spawn rates of mobs from this mod compared to vanilla/other mod mobs by setting it to 0.5.");
-
+        
+        config.setCategoryComment("Dungeon Features", "Here you can set special features used in dungeon generation.");
         disableDungeonSpawners = config.getBool("Dungeon Features", "Disable Dungeon Spawners", disableDungeonSpawners, "If true, newly generated dungeons wont create spawners with mobs from this mod.");
 		dungeonSpawnerWeightScale = config.getDouble("Dungeon Features", "Dungeon Spawner Weight Scale", dungeonSpawnerWeightScale, "Scales the weight of dungeons using spawners from this mod. For example, you can half the chances all dungeons having spawners with mobs from this mod in them by setting this to 0.5.");
 	}

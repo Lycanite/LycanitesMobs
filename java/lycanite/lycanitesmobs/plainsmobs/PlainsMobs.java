@@ -93,6 +93,7 @@ public class PlainsMobs {
 
 		// ========== Set Current Group ==========
 		ObjectManager.setCurrentGroup(group);
+		group.loadSpawningFromConfig();
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("plainsegg"), new DispenserBehaviorMobEggCustom());
@@ -113,13 +114,13 @@ public class PlainsMobs {
 		newMob = new MobInfo(group, "maka", EntityMaka.class, 0xAA8855, 0x221100)
 		        .setPeaceful(true).setSummonable(false).setSummonCost(2);
 		newMob.spawnInfo.setSpawnTypes("CREATURE").setDespawn(false)
-				.setSpawnWeight(12).setAreaLimit(10).setGroupLimits(2, 5);
+				.setSpawnWeight(12).setAreaLimit(10).setGroupLimits(2, 5).setDungeonWeight(0);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "makaalpha", EntityMakaAlpha.class, 0x663300, 0x000000)
 		        .setPeaceful(false).setSummonable(false).setSummonCost(4);
 		newMob.spawnInfo.setSpawnTypes("CREATURE").setDespawn(false)
-				.setSpawnWeight(6).setAreaLimit(4).setGroupLimits(1, 2);
+				.setSpawnWeight(6).setAreaLimit(4).setGroupLimits(1, 2).setDungeonWeight(0);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "zoataur", EntityZoataur.class, 0x442200, 0xFFDDBB)
@@ -148,7 +149,7 @@ public class PlainsMobs {
 		
 		// ========== Remove Vanilla Spawns ==========
 		BiomeGenBase[] biomes = group.biomes;
-		if(config.getBool("Vanilla Spawning", "Edit Vanilla Spawning", true, "If true, some vanilla spawns in this biome will be removed, note that vanilla mobs should still be easy to find, only they will be more biome specific.")) {
+		if(group.controlVanillaSpawns) {
 			EntityRegistry.removeSpawn(EntitySkeleton.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntitySpider.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntityWitch.class, EnumCreatureType.monster, biomes);

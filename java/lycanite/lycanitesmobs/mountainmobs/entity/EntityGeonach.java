@@ -17,6 +17,7 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
@@ -24,9 +25,11 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
 public class EntityGeonach extends EntityCreatureTameable implements IMob {
@@ -41,7 +44,7 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob {
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 0;
+        this.defense = 2;
         this.experience = 5;
         this.spawnsInDarkness = false;
         this.hasAttackSound = true;
@@ -77,8 +80,8 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob {
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
 		baseAttributes.put("maxHealth", 20D);
-		baseAttributes.put("movementSpeed", 0.24D);
-		baseAttributes.put("knockbackResistance", 0.0D);
+		baseAttributes.put("movementSpeed", 0.26D);
+		baseAttributes.put("knockbackResistance", 1.0D);
 		baseAttributes.put("followRange", 16D);
 		baseAttributes.put("attackDamage", 2D);
         super.applyEntityAttributes(baseAttributes);
@@ -149,6 +152,33 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob {
     //                     Pet Control
     // ==================================================
     public boolean petControlsEnabled() { return true; }
+    
+    
+    // ==================================================
+   	//                    Taking Damage
+   	// ==================================================
+    // ========== Damage Modifier ==========
+    public float getDamageModifier(DamageSource damageSrc) {
+    	if(damageSrc.isFireDamage())
+    		return 4.0F;
+    	if(damageSrc.getEntity() != null) {
+    		if(damageSrc.getEntity() instanceof EntityPlayer) {
+    			EntityPlayer entityPlayer = (EntityPlayer)damageSrc.getEntity();
+	    		if(entityPlayer.getHeldItem() != null) {
+	    			if(entityPlayer.getHeldItem().getItem() instanceof ItemPickaxe)
+	    				return 4.0F;
+	    		}
+    		}
+    		else if(damageSrc.getEntity() instanceof EntityLiving) {
+	    		EntityLiving entityLiving = (EntityLiving)damageSrc.getEntity();
+	    		if(entityLiving.getHeldItem() != null) {
+	    			if(entityLiving.getHeldItem().getItem() instanceof ItemPickaxe)
+	    				return 4.0F;
+	    		}
+    		}
+    	}
+    	return 1.0F;
+    }
     
     
     // ==================================================

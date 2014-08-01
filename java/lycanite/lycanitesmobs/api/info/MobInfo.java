@@ -106,10 +106,13 @@ public class MobInfo {
     // ==================================================
 	public static void loadGlobalSettings() {
 		ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "general");
+		
+		config.setCategoryComment("Pets", "Here you can control all settings related to taming and mounting.");
 		ownerTags = config.getBool("Pets", "Owner Tags", ownerTags, "If true, tamed mobs will display their owner's name in their name tag.");
 		tamingEnabled = config.getBool("Pets", "Taming", tamingEnabled, "Set to false to disable pet/mount taming.");
 		mountingEnabled = config.getBool("Pets", "Mounting", mountingEnabled, "Set to false to disable mounts.");
-
+		
+		config.setCategoryComment("Mob Interaction", "Here you can control how mobs interact with other mobs.");
         predatorsAttackAnimals = config.getBool("Mob Interaction", "Predators Attack Animals", predatorsAttackAnimals, "Set to false to prevent predator mobs from attacking animals/farmable mobs.");
 		mobsAttackVillagers = config.getBool("Mob Interaction", "Mobs Attack Villagers", mobsAttackVillagers, "Set to false to prevent mobs that attack players from also attacking villagers.");
 
@@ -117,7 +120,7 @@ public class MobInfo {
         double[] difficultyDefaults = new double[] {0.5D, 1.0D, 1.5D};
         String[] statNames = new String[] {"Defense", "Speed", "Damage", "Haste", "Effect"};
 		difficultyMutlipliers = new HashMap<String, Double>();
-        config.setCategoryComment("Difficulty Multipliers", "Here you can scale te stats of every mob on a per difficulty basis. Note that on easy, speed is kept at 100% as 0.5 makes them stupidly slow.");
+        config.setCategoryComment("Difficulty Multipliers", "Here you can scale the stats of every mob on a per difficulty basis. Note that on easy, speed is kept at 100% as 0.5 makes them stupidly slow.");
         int difficultyIndex = 0;
         for(String difficultyName : difficultyNames) {
             for(String statName : statNames) {
@@ -179,10 +182,17 @@ public class MobInfo {
     public void loadFromConfig() {
         // General Info:
         ConfigBase config = ConfigBase.getConfig(this.group, "general");
-        this.mobEnabled = config.getBool("Enabled Mobs", this.getCfgName("Enabled"), this.mobEnabled, "Set to false to disable.");
-        this.peacefulDifficulty = config.getBool("Peaceful Mobs", this.getCfgName("On Peaceful"), this.peacefulDifficulty, "Set to true to allow in peaceful.");
+        config.setCategoryComment("Enabled Mobs", "Here you can completely disable any mob.");
+        this.mobEnabled = config.getBool("Enabled Mobs", this.getCfgName("Enabled"), this.mobEnabled);
+        
+        config.setCategoryComment("Peaceful Mob", "Here you may control whether or not each mob is allowed in Peaceful Difficulty.");
+        this.peacefulDifficulty = config.getBool("Peaceful Mobs", this.getCfgName("On Peaceful"), this.peacefulDifficulty);
+        
+        config.setCategoryComment("Summoning Costs", "How much summoning focus each mob costs. This includes mobs that can't be summoned by the summoning staff as there might be other methods of summoning them in the future.");
         this.summonCost = config.getInt("Summoning Costs", this.getCfgName("Summoning Cost"), this.summonCost, "How much focus to summon.");
-        this.dungeonThemes = config.getString("Dungeon Themes", this.getCfgName("Themes"), this.dungeonThemes, "Sets the themes, currently only used by Doomlike Dungeons.");
+        
+        config.setCategoryComment("Dungeon Themes", "Here you can set the Dungeon Theme of each mob. These are used by Doomlike Dungeons and might be used by other things later.");
+        this.dungeonThemes = config.getString("Dungeon Themes", this.getCfgName("Themes"), this.dungeonThemes);
 
         // Load Item Drops:
         config.setCategoryComment("Default Item Drops", "If false, only custom item drops are dropped.");

@@ -118,8 +118,10 @@ public class ConfigBase {
 	}
 	
 	public boolean getBool(String category, String key, boolean defaultValue, String comment) {
+        boolean newEntry = !this.config.getCategory(category).containsKey(key);
 		Property property = this.config.get(category, key, defaultValue);
 		if(comment != null) property.comment = comment;
+        if(newEntry) this.config.save();
 		return property.getBoolean(defaultValue);
 	}
 	
@@ -133,8 +135,10 @@ public class ConfigBase {
 	}
 	
 	public int getInt(String category, String key, int defaultValue, String comment) {
+        boolean newEntry = !this.config.getCategory(category).containsKey(key);
 		Property property = this.config.get(category, key, defaultValue);
 		if(comment != null) property.comment = comment;
+        if(newEntry) this.config.save();
 		return property.getInt(defaultValue);
 	}
 	
@@ -148,8 +152,10 @@ public class ConfigBase {
 	}
 	
 	public double getDouble(String category, String key, double defaultValue, String comment) {
+        boolean newEntry = !this.config.getCategory(category).containsKey(key);
 		Property property = this.config.get(category, key, defaultValue);
 		if(comment != null) property.comment = comment;
+        if(newEntry) this.config.save();
 		return property.getDouble(defaultValue);
 	}
 	
@@ -163,8 +169,10 @@ public class ConfigBase {
 	}
 	
 	public String getString(String category, String key, String defaultValue, String comment) {
+        boolean newEntry = !this.config.getCategory(category).containsKey(key);
 		Property property = this.config.get(category, key, defaultValue);
 		if(comment != null) property.comment = comment;
+        if(newEntry) this.config.save();
 		return property.getString();
 	}
 	
@@ -183,8 +191,10 @@ public class ConfigBase {
 	}
 	
 	public boolean[] getBoolList(String category, String key, boolean[] defaultValue, String comment) {
+        boolean newEntry = !this.config.getCategory(category).containsKey(key);
 		Property property = this.config.get(category, key, defaultValue);
 		if(comment != null) property.comment = comment;
+        if(newEntry) this.config.save();
 		return property.getBooleanList();
 	}
 	
@@ -198,8 +208,10 @@ public class ConfigBase {
 	}
 	
 	public int[] getIntList(String category, String key, int[] defaultValue, String comment) {
+        boolean newEntry = !this.config.getCategory(category).containsKey(key);
 		Property property = this.config.get(category, key, defaultValue);
 		if(comment != null) property.comment = comment;
+        if(newEntry) this.config.save();
 		return property.getIntList();
 	}
 	
@@ -213,8 +225,10 @@ public class ConfigBase {
 	}
 	
 	public double[] getDoubleList(String category, String key, double[] defaultValue, String comment) {
+        boolean newEntry = !this.config.getCategory(category).containsKey(key);
 		Property property = this.config.get(category, key, defaultValue);
 		if(comment != null) property.comment = comment;
+        if(newEntry) this.config.save();
 		return property.getDoubleList();
 	}
 	
@@ -228,8 +242,10 @@ public class ConfigBase {
 	}
 	
 	public String[] getStringList(String category, String key, String[] defaultValue, String comment) {
+        boolean newEntry = !this.config.getCategory(category).containsKey(key);
 		Property property = this.config.get(category, key, defaultValue);
 		if(comment != null) property.comment = comment;
+        if(newEntry) this.config.save();
 		return property.getStringList();
 	}
 	

@@ -1,7 +1,5 @@
 package lycanite.lycanitesmobs.api.item;
 
-import java.util.List;
-
 import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
@@ -24,18 +22,6 @@ public class ItemStaffSummoning extends ItemScepter {
         this.itemName = "summoningstaff";
         this.setup();
         this.textureName = "staffsummoning";
-    }
-    
-    
-	// ==================================================
-	//                      Info
-	// ==================================================
-    @Override
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-    	par3List.add("\u00a7a" + "Summon minions to do");
-    	par3List.add("\u00a7a" + "your bidding! Consumes");
-    	par3List.add("\u00a7a" + "Summoning Focus.");
-    	super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
     }
 	
     

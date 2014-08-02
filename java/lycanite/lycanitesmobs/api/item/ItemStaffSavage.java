@@ -1,10 +1,7 @@
 package lycanite.lycanitesmobs.api.item;
 
-import java.util.List;
-
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityPortal;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -19,17 +16,6 @@ public class ItemStaffSavage extends ItemStaffSummoning {
         this.itemName = "savagesummoningstaff";
         this.setup();
         this.textureName = "staffsavage";
-    }
-    
-    
-	// ==================================================
-	//                      Info
-	// ==================================================
-    @Override
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-    	par3List.add("\u00a7a" + "Double the minions!");
-    	par3List.add("\u00a7a" + "Half the health!");
-    	super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
     }
 	
     

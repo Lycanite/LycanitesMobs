@@ -1,9 +1,6 @@
 package lycanite.lycanitesmobs.api.item;
 
-import java.util.List;
-
 import lycanite.lycanitesmobs.api.entity.EntityPortal;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -18,17 +15,6 @@ public class ItemStaffStable extends ItemStaffSummoning {
         this.itemName = "stablesummoningstaff";
         this.setup();
         this.textureName = "staffstable";
-    }
-    
-    
-	// ==================================================
-	//                      Info
-	// ==================================================
-    @Override
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-    	par3List.add("\u00a7a" + "Consumes more Focus but");
-    	par3List.add("\u00a7a" + "minions last longer.");
-    	super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
     }
 	
     

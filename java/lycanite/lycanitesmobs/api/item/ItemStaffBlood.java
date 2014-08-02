@@ -1,7 +1,5 @@
 package lycanite.lycanitesmobs.api.item;
 
-import java.util.List;
-
 import lycanite.lycanitesmobs.api.entity.EntityPortal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -18,18 +16,6 @@ public class ItemStaffBlood extends ItemStaffSummoning {
         this.itemName = "bloodsummoningstaff";
         this.setup();
         this.textureName = "staffblood";
-    }
-    
-    
-	// ==================================================
-	//                      Info
-	// ==================================================
-    @Override
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-    	par3List.add("\u00a7a" + "Cost is halved but");
-    	par3List.add("\u00a7a" + "Health and Hunger is");
-    	par3List.add("\u00a7a" + "drained.");
-    	super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
     }
 	
     

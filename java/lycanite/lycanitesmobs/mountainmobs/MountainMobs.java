@@ -62,7 +62,7 @@ public class MountainMobs {
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
 		group = new GroupInfo(this, "Mountain Mobs")
-                .setDimensions("0").setBiomes("MOUNTAIN");
+                .setDimensions("0").setBiomes("MOUNTAIN").setDungeonThemes("MOUNTAIN, WASTELAND, DUNGEON");
 		group.loadFromConfig();
 
 		// ========== Set Current Group ==========
@@ -102,25 +102,25 @@ public class MountainMobs {
 		MobInfo newMob;
         
         newMob = new MobInfo(group, "jabberwock", EntityJabberwock.class, 0x662222, 0xFFFFAA)
-		        .setPeaceful(false).setSummonable(true).setSummonCost(2);
+		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0);
 		newMob.spawnInfo.setSpawnTypes("MONSTER")
 				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "troll", EntityTroll.class, 0x007711, 0xEEEEEE)
-		        .setPeaceful(false).setSummonable(false).setSummonCost(6);
+		        .setPeaceful(false).setSummonable(false).setSummonCost(6).setDungeonLevel(2);
 		newMob.spawnInfo.setSpawnTypes("MONSTER")
 				.setSpawnWeight(4).setAreaLimit(5).setGroupLimits(1, 2);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "yale", EntityYale.class, 0xFFEEAA, 0xFFDD77)
-		        .setPeaceful(true).setSummonable(false).setSummonCost(1);
+		        .setPeaceful(true).setSummonable(false).setSummonCost(1).setDungeonLevel(-1);
 		newMob.spawnInfo.setSpawnTypes("CREATURE").setDespawn(false)
 				.setSpawnWeight(14).setAreaLimit(5).setGroupLimits(1, 4).setDungeonWeight(0);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "geonach", EntityGeonach.class, 0x443333, 0xBBBBCC)
-		        .setPeaceful(false).setSummonable(true).setSummonCost(2);
+		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1);
 		newMob.spawnInfo.setSpawnTypes("ROCK")
 				.setSpawnWeight(4).setAreaLimit(5).setGroupLimits(1, 2);
 		ObjectManager.addMob(newMob);

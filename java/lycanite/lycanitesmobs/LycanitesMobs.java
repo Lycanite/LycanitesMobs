@@ -14,6 +14,7 @@ import lycanite.lycanitesmobs.api.item.ItemStaffSavage;
 import lycanite.lycanitesmobs.api.item.ItemStaffStable;
 import lycanite.lycanitesmobs.api.item.ItemStaffSturdy;
 import lycanite.lycanitesmobs.api.item.ItemStaffSummoning;
+import lycanite.lycanitesmobs.api.mods.DLDungeons;
 import lycanite.lycanitesmobs.api.network.PacketHandler;
 import lycanite.lycanitesmobs.api.spawning.CustomSpawner;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
@@ -116,6 +117,9 @@ public class LycanitesMobs {
 		
 		// ========== Call Object Lists Setup ==========
 		ObjectLists.createLists();
+		
+		// ========== Mod Support ==========
+		DLDungeons.init();
 	}
 	
 	

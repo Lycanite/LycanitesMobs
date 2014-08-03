@@ -64,7 +64,7 @@ public class JungleMobs {
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
 		group = new GroupInfo(this, "Jungle Mobs")
-                .setDimensions("0").setBiomes("JUNGLE");
+                .setDimensions("0").setBiomes("JUNGLE").setDungeonThemes("JUNGLE, DUNGEON, URBAN");
 		group.loadFromConfig();
 		
 		// ========== Set Current Group ==========
@@ -106,31 +106,31 @@ public class JungleMobs {
 		MobInfo newMob;
         
         newMob = new MobInfo(group, "geken", EntityGeken.class, 0x00AA00, 0xFFFF00)
-		        .setPeaceful(false).setSummonable(true).setSummonCost(2);
+		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1);
 		newMob.spawnInfo.setSpawnTypes("MONSTER")
 				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "uvaraptor", EntityUvaraptor.class, 0x00FF33, 0xFF00FF)
-		        .setPeaceful(false).setSummonable(false).setSummonCost(4);
+		        .setPeaceful(false).setSummonable(false).setSummonCost(4).setDungeonLevel(0);
 		newMob.spawnInfo.setSpawnTypes("MONSTER")
 				.setSpawnWeight(5).setAreaLimit(10).setGroupLimits(1, 3);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "concapede", EntityConcapedeHead.class, 0x111144, 0xDD0000)
-		        .setPeaceful(true).setSummonable(false).setSummonCost(2);
+		        .setPeaceful(true).setSummonable(false).setSummonCost(2).setDungeonLevel(2);
 		newMob.spawnInfo.setSpawnTypes("CREATURE").setDespawn(false)
 				.setSpawnWeight(18).setAreaLimit(10).setGroupLimits(1, 1);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "concapedesegment", EntityConcapedeSegment.class, 0x000022, 0x990000)
-		        .setPeaceful(true).setSummonable(false).setSummonCost(1);
+		        .setPeaceful(true).setSummonable(false).setSummonCost(1).setDungeonLevel(-1);
 		newMob.spawnInfo.setSpawnTypes("CREATURE").setDespawn(false)
 				.setSpawnWeight(0).setAreaLimit(0).setGroupLimits(0, 0).setEnabled(false);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "tarantula", EntityTarantula.class, 0x008800, 0xDD0000)
-		        .setPeaceful(false).setSummonable(true).setSummonCost(2);
+		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(2);
 		newMob.spawnInfo.setSpawnTypes("MONSTER")
 				.setSpawnWeight(6).setAreaLimit(10).setGroupLimits(1, 2);
 		ObjectManager.addMob(newMob);

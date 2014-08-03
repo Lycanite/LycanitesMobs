@@ -1,0 +1,37 @@
+# Group Info
+demonmobs.name=Créatures démoniaques
+demonmobs.description=Démons malfaisants des profondeurs du Nether infernal !
+# Entites
+entity.demonmobs.belph.name=Belph
+entity.demonmobs.belph.description=Natifs maléfiques du Nether, les belphs prennent plaisir à lancer des projectiles brûlants.
+entity.demonmobs.behemoth.name=Béhémoth
+entity.demonmobs.behemoth.description=Les béhémoths sont de grands animaux démoniaques capables de lancer des boules de feu de l'enfer. Il est chaudement recommandé de s'en abriter.
+entity.demonmobs.pinky.name=Pinky
+entity.demonmobs.pinky.description=Bêtes insatiables adorant dévorer les animaux. Ils peuvent être exploités avec du bétail vivant, mais bonne chance pour les attirer. Les bébés peuvent être apprivoisés et utilisés comme montures de bataille à l'âge adulte.
+entity.demonmobs.asmodi.name=Asmodi
+entity.demonmobs.asmodi.description=Leaders démoniaques assemblés par une technique infernale à base de redstone et de cerveaux tenus par des attritions. Si vous passez outre leurs tirs et les détruisez, leurs attritions en sortiront pour vous attaquer !
+entity.demonmobs.trite.name=Attrition
+entity.demonmobs.trite.description=Petit arachnide rapide dont la morsure provoque la flétrissure.
+entity.demonmobs.nethersoul.name=Âme du Nether
+entity.demonmobs.nethersoul.description=Ces crânes démoniaques flottant à l'aide de flammes qui ne le sont pas moins chargent leur cible et explosent à leur mort.
+entity.demonmobs.cacodemon.name=Cacodémon
+entity.demonmobs.cacodemon.description=Les cacodémons sont de grandes abominations volantes qui tirent une charge électrique démoniaque et aiment tyranniser les ghasts afin de leur soutirer de délicieuses larmes. Ils peuvent être apprivoisés.
+#
+# Items
+item.demonspawn.name=Œuf de 
+item.pinkymeatraw.name=Viande de pinky crue
+item.pinkymeatcooked.name=Viande de pinky cuite
+item.devillasagna.name=Lasagne diabolique
+item.pinkytreat.name=Biscuit pour pinky
+item.cacodemontreat.name=Biscuit pour cacodémon
+item.doomfirecharge.name=Charge de feu éternel
+item.doomfirescepter.name=Sceptre de feu éternel
+item.hellfirecharge.name=Charge de feu de l'enfer
+item.hellfirescepter.name=Sceptre de feu de l'enfer
+item.devilstarcharge.name=Charge d'étoile infernale
+item.devilstarscepter.name=Sceptre d'étoile infernale
+item.demoniclightningcharge.name=Charge statique démoniaque
+item.demoniclightningscepter.name=Sceptre statique démoniaque
+#
+# Blocks
+tile.hellfire.name=Feu de l'enfer

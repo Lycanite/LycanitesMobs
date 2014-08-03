@@ -8,6 +8,7 @@ import java.util.Map;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
+import lycanite.lycanitesmobs.api.mods.DLDungeons;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -47,6 +48,9 @@ public class MobInfo {
 	/** A static Name to Instance map of all mob groups. **/
 	public static Map<String, GroupInfo> mobGroups = new HashMap<String, GroupInfo>();
 	
+	/** Set to true if Doomlike Dungeons is loaded allowing mobs to register their Dungeon themes. **/
+	public static boolean dlDungeonsLoaded = false;
+	
 	// ========== Per Mob Settings ==========
 	/** Mod Group **/
 	public GroupInfo group;
@@ -83,7 +87,10 @@ public class MobInfo {
 	public int summonCost = 1;
 
     /** Dungeon themes for this mob, used by Doomlike Dungeons. **/
-    public String dungeonThemes = "";
+    public String dungeonThemes = "GROUP";
+	
+	/** A level used to rank this mob for dungeons. This is currently only used by Doomlike Dungeons. -1 = Not for Dungeons, 0 = Common, 1 = Tough, 2 = Brute, 3 = Elite **/
+	public int dungeonLevel = -1;
 	
 	// ========== Per Mob Stats ==========
 	public double multiplierDefense = 1.0D;
@@ -189,11 +196,16 @@ public class MobInfo {
         this.peacefulDifficulty = config.getBool("Peaceful Mobs", this.getCfgName("On Peaceful"), this.peacefulDifficulty);
         
         config.setCategoryComment("Summoning Costs", "How much summoning focus each mob costs. This includes mobs that can't be summoned by the summoning staff as there might be other methods of summoning them in the future.");
-        this.summonCost = config.getInt("Summoning Costs", this.getCfgName("Summoning Cost"), this.summonCost, "How much focus to summon.");
+        this.summonCost = config.getInt("Summoning Costs", this.getCfgName("Summoning Cost"), this.summonCost);
         
         config.setCategoryComment("Dungeon Themes", "Here you can set the Dungeon Theme of each mob. These are used by Doomlike Dungeons and might be used by other things later.");
         this.dungeonThemes = config.getString("Dungeon Themes", this.getCfgName("Themes"), this.dungeonThemes);
 
+        config.setCategoryComment("Dungeon Levels", "The dungeon level of this mob, used by Doomlike Dungeons. -1 = Not for Dungeons, 0 = Common, 1 = Tough, 2 = Brute, 3 = Elite");
+        this.dungeonLevel = config.getInt("Dungeon Level", this.getCfgName("Dungeon Level"), this.dungeonLevel);
+        this.dungeonLevel = Math.min(3, Math.max(-1, this.dungeonLevel));
+        if(dlDungeonsLoaded) DLDungeons.addMob(this);
+        
         // Load Item Drops:
         config.setCategoryComment("Default Item Drops", "If false, only custom item drops are dropped.");
         this.defaultDrops = config.getBool("Default Item Drops", this.getCfgName("Default Drops"), this.defaultDrops);
@@ -282,8 +294,24 @@ public class MobInfo {
     }
 
     // ========== Dungeon Themes ==========
+    /**
+     * Sets the default dungeon themes.
+     * @param An array of Strings for each theme. Themes are: FOREST, PLAINS, MOUNTAIN, SWAMP, WATER , DESERT, WASTELAND, JUNGLE, FROZEN, NETHER, END, MUSHROOM, MAGICAL, DUNGEON, NECRO, URBAN, FIERY, SHADOW, PARADISE
+	 * @return MobInfo instance for chaining.
+     */
     public MobInfo setDungeonThemes(String string) {
         this.dungeonThemes = string;
+        return this;
+    }
+
+    // ========== Mob Level ==========
+    /**
+     * Sets the mob's level, used by DLDungeons.
+     * @param The dungeon level: -1 = Not for Dungeons, 0 = Common, 1 = Tough, 2 = Brute, 3 = Elite
+     * @return
+     */
+    public MobInfo setDungeonLevel(int integer) {
+        this.dungeonLevel = integer;
         return this;
     }
 

@@ -75,7 +75,7 @@ public class ArcticMobs {
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
 		group = new GroupInfo(this, "Arctic Mobs")
-                .setDimensions("0, 7").setBiomes("COLD, SNOWY, CONIFEROUS, -END");
+                .setDimensions("0, 7").setBiomes("COLD, SNOWY, CONIFEROUS, -END").setDungeonThemes("FROZEN, MAGICAL, PARADISE");
 		group.loadFromConfig();
 
 		// ========== Set Current Group ==========
@@ -130,25 +130,25 @@ public class ArcticMobs {
         MobInfo newMob;
         
         newMob = new MobInfo(group, "reiver", EntityReiver.class, 0xDDEEFF, 0x99DDEE)
-                .setPeaceful(false).setSummonable(true).setSummonCost(2);
+                .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0);
         newMob.spawnInfo.setSpawnTypes("MONSTER, FROSTFIRE").setBlockCost(8)
         		.setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3);
         ObjectManager.addMob(newMob);
         
         newMob = new MobInfo(group, "frostweaver", EntityFrostweaver.class, 0xAADDFF, 0x226699)
-		        .setPeaceful(false).setSummonable(true).setSummonCost(2);
+		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1);
 		newMob.spawnInfo.setSpawnTypes("MONSTER")
 				.setSpawnWeight(10).setAreaLimit(5).setGroupLimits(1, 2);
 		ObjectManager.addMob(newMob);
 		
         newMob = new MobInfo(group, "yeti", EntityYeti.class, 0xEEEEFF, 0x000099)
-		        .setPeaceful(true).setSummonable(false).setSummonCost(2);
+		        .setPeaceful(true).setSummonable(false).setSummonCost(2).setDungeonLevel(-1);
 		newMob.spawnInfo.setSpawnTypes("CREATURE").setDespawn(false)
 				.setSpawnWeight(10).setAreaLimit(5).setGroupLimits(1, 4).setDungeonWeight(0);
 		ObjectManager.addMob(newMob);
 		
         newMob = new MobInfo(group, "wendigo", EntityWendigo.class, 0xCCCCFF, 0x0055FF)
-		        .setPeaceful(false).setSummonable(false).setSummonCost(8);
+		        .setPeaceful(false).setSummonable(false).setSummonCost(8).setDungeonLevel(2);
 		newMob.spawnInfo.setSpawnTypes("MONSTER")
 				.setSpawnWeight(4).setAreaLimit(1).setGroupLimits(1, 1);
 		ObjectManager.addMob(newMob);

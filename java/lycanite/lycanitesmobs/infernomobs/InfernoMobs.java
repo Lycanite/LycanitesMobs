@@ -60,7 +60,7 @@ public class InfernoMobs {
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
 		group = new GroupInfo(this, "Inferno Mobs")
-                .setDimensions("ALL").setBiomes("ALL");
+                .setDimensions("ALL").setBiomes("ALL").setDungeonThemes("FIERY, NETHER, DUNGEON");
 		group.loadFromConfig();
 
 		// ========== Set Current Group ==========
@@ -104,19 +104,19 @@ public class InfernoMobs {
 		MobInfo newMob;
         
         newMob = new MobInfo(group, "cinder", EntityCinder.class, 0xFF9900, 0xFFFF00)
-		        .setPeaceful(false).setSummonable(true).setSummonCost(2);
+		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1);
 		newMob.spawnInfo.setSpawnTypes("FIRE").setBlockCost(8)
 				.setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "lobber", EntityLobber.class, 0x330011, 0xFF5500)
-		        .setPeaceful(false).setSummonable(false).setSummonCost(8);
+		        .setPeaceful(false).setSummonable(false).setSummonCost(8).setDungeonLevel(2);
 		newMob.spawnInfo.setSpawnTypes("LAVA").setBlockCost(16)
 				.setSpawnWeight(2).setAreaLimit(2).setGroupLimits(1, 3);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "cephignis", EntityCephignis.class, 0xFFBB00, 0xDD00FF)
-		        .setPeaceful(true).setSummonable(false).setSummonCost(1);
+		        .setPeaceful(true).setSummonable(false).setSummonCost(1).setDungeonLevel(-1);
 		newMob.spawnInfo.setSpawnTypes("LAVA").setBlockCost(32).setDespawn(false)
 				.setSpawnWeight(4).setAreaLimit(6).setGroupLimits(1, 3).setDungeonWeight(0);
 		ObjectManager.addMob(newMob);

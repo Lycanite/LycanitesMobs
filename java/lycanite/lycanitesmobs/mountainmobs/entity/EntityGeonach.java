@@ -44,7 +44,7 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob {
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 2;
+        this.defense = 4;
         this.experience = 5;
         this.spawnsInDarkness = false;
         this.hasAttackSound = true;
@@ -79,7 +79,7 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob {
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 20D);
+		baseAttributes.put("maxHealth", 30D);
 		baseAttributes.put("movementSpeed", 0.26D);
 		baseAttributes.put("knockbackResistance", 1.0D);
 		baseAttributes.put("followRange", 16D);
@@ -159,8 +159,6 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob {
    	// ==================================================
     // ========== Damage Modifier ==========
     public float getDamageModifier(DamageSource damageSrc) {
-    	if(damageSrc.isFireDamage())
-    		return 4.0F;
     	if(damageSrc.getEntity() != null) {
     		if(damageSrc.getEntity() instanceof EntityPlayer) {
     			EntityPlayer entityPlayer = (EntityPlayer)damageSrc.getEntity();
@@ -191,11 +189,14 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob {
     }
 
     @Override
-    public boolean isPotionApplicable(PotionEffect par1PotionEffect) {
-        if(par1PotionEffect.getPotionID() == Potion.digSlowdown.id) return false;
+    public boolean isPotionApplicable(PotionEffect potionEffect) {
+        if(potionEffect.getPotionID() == Potion.digSlowdown.id) return false;
         if(ObjectManager.getPotionEffect("Weight") != null)
-        	if(par1PotionEffect.getPotionID() == ObjectManager.getPotionEffect("Weight").id) return false;
-        super.isPotionApplicable(par1PotionEffect);
+        	if(potionEffect.getPotionID() == ObjectManager.getPotionEffect("Weight").id) return false;
+        super.isPotionApplicable(potionEffect);
         return true;
     }
+    
+    @Override
+    public boolean canBurn() { return false; }
 }

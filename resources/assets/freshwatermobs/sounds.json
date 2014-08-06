@@ -1,58 +1,50 @@
 {
-    "entity.cinder.say": {
+    "entity.jengu.say": {
         "category": "hostile",
-        "sounds": [{"name": "entity/cinder/say", "stream": false}]
+        "sounds": [{"name": "entity/jengu/say", "stream": false}]
     },
-    "entity.cinder.hurt": {
+    "entity.jengu.hurt": {
         "category": "hostile",
-        "sounds": [{"name": "entity/cinder/hurt", "stream": false}]
+        "sounds": [{"name": "entity/jengu/hurt", "stream": false}]
     },
-    "entity.cinder.death": {
+    "entity.jengu.death": {
         "category": "hostile",
-        "sounds": [{"name": "entity/cinder/death", "stream": false}]
+        "sounds": [{"name": "entity/jengu/death", "stream": false}]
     },
-    "entity.cinder.beg": {
+    "entity.jengu.beg": {
         "category": "hostile",
-        "sounds": [{"name": "entity/cinder/beg", "stream": false}]
+        "sounds": [{"name": "entity/jengu/beg", "stream": false}]
     },
-    "entity.cinder.tame": {
+    "entity.jengu.tame": {
         "category": "hostile",
-        "sounds": [{"name": "entity/cinder/tame", "stream": false}]
+        "sounds": [{"name": "entity/jengu/tame", "stream": false}]
     },
-    "entity.lobber.say": {
+	"entity.zephyr.say": {
         "category": "hostile",
-        "sounds": [{"name": "entity/lobber/say", "stream": false}]
+        "sounds": [{"name": "entity/zephyr/say", "stream": false}]
     },
-    "entity.lobber.hurt": {
+    "entity.zephyr.hurt": {
         "category": "hostile",
-        "sounds": [{"name": "entity/lobber/hurt", "stream": false}]
+        "sounds": [{"name": "entity/zephyr/hurt", "stream": false}]
     },
-    "entity.lobber.death": {
+    "entity.zephyr.death": {
         "category": "hostile",
-        "sounds": [{"name": "entity/lobber/death", "stream": false}]
+        "sounds": [{"name": "entity/zephyr/death", "stream": false}]
     },
-    "entity.lobber.step": {
+    "entity.zephyr.beg": {
         "category": "hostile",
-        "sounds": [{"name": "entity/lobber/step", "stream": false}]
+        "sounds": [{"name": "entity/zephyr/beg", "stream": false}]
     },
-    "entity.cephignis.say": {
-        "category": "neutral",
-        "sounds": [{"name": "entity/cephignis/say", "stream": false}]
+    "entity.zephyr.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/zephyr/tame", "stream": false}]
     },
-    "entity.cephignis.hurt": {
-        "category": "neutral",
-        "sounds": [{"name": "entity/cephignis/hurt", "stream": false}]
+    "entity.zephyr.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/zephyr/attack", "stream": false}]
     },
-    "entity.cephignis.death": {
-        "category": "neutral",
-        "sounds": [{"name": "entity/cephignis/death", "stream": false}]
-    },
-    "projectile.ember": {
+    "projectile.aquapulse": {
         "category": "ambient",
-        "sounds": [{"name": "projectile/ember", "stream": false}]
-    },
-    "projectile.magma": {
-        "category": "ambient",
-        "sounds": [{"name": "projectile/magma", "stream": false}]
+        "sounds": [{"name": "projectile/aquapulse", "stream": false}]
     }
 }

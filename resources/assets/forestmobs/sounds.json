@@ -102,5 +102,29 @@
     "entity.arisaur.step": {
         "category": "neutral",
         "sounds": [{"name": "entity/arisaur/step", "stream": false}]
+    },
+	"entity.spriggan.say": {
+        "category": "hostile",
+        "sounds": [{"name": "sprigganity/spriggan/say", "stream": false}]
+    },
+    "sprigganity.spriggan.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "sprigganity/spriggan/hurt", "stream": false}]
+    },
+    "sprigganity.spriggan.death": {
+        "category": "hostile",
+        "sounds": [{"name": "sprigganity/spriggan/death", "stream": false}]
+    },
+    "sprigganity.spriggan.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "sprigganity/spriggan/beg", "stream": false}]
+    },
+    "sprigganity.spriggan.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "sprigganity/spriggan/tame", "stream": false}]
+    },
+    "projectile.lifedrain": {
+        "category": "ambient",
+        "sounds": [{"name": "projectile/lifedrain", "stream": false}]
     }
 }

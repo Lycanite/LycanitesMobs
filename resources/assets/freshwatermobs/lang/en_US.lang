@@ -1,31 +1,13 @@
 # Group Info
-infernomobs.name=Inferno Creatures
-infernomobs.description=Beasts formed of fire lava, they can be found anywhere that is hot enough to melt rock or burn away nature!
+freshwatermobs.name=Freshwater Creatures
+freshwatermobs.description=Creatures of pure water, found all over, in lakes, rivers and even the rain and clouds! 
 # Entites
-entity.infernomobs.cinder.name=Cinder
-entity.infernomobs.cinder.description=Violent fire spirits, Cinders like to incinerate everything.
-entity.infernomobs.lobber.name=Lobber
-entity.infernomobs.lobber.description=Large lava golems, Lobbers lurk within large lakes of lava and will throw lava at their target.
-entity.infernomobs.cephignis.name=Cephignis
-entity.infernomobs.cephignis.description=Large fish that live in lava! Cephignis can be farmed using coal or charcoal!
+entity.freshwatermobs.jengu.name=Jengu
+entity.freshwatermobs.jengu.description=Water elementals known as the protectors of pure water, they will attack anyone they see as unpure (usually you)!
+entity.freshwatermobs.zephyr.name=Zephyr
+entity.freshwatermobs.zephyr.description=Fierce storm elementals usually found during heavy rain and especially during thunder storms. Beware as they will shock any foe close to them.
 #
 # Items
-item.infernospawn.name=Spawn
-item.cephignismeatcooked.name=Cooked Cephignis Meat
-item.cephignismeatcooked.description=Very spicy fish!
-item.searingtaco.name=Searing Taco
-item.searingtaco.description=So spicy that it makes you immune to fire!
-item.embercharge.name=Ember Charge
-item.embercharge.description=Use to throw a small flame or spray from a dispenser.
-item.emberscepter.name=Ember Scepter
-item.emberscepter.description=Mid Damage, Spray Fire, Applies Fire
-item.magmacharge.name=Magma Charge
-item.magmacharge.description=Use to throw a ball of lava! Can also be fired from a dispenser.
-item.magmascepter.name=Magma Scepter
-item.magmascepter.description=High Damage, Charge Up, Applies Fire, Places Lava
-item.bucketpurelava.name=Pure Lava Bucket
-item.bucketpurelava.description=Clearer that regular lava, flows slightly faster and no inferno mobs spawn in this. Can be renewed like water.
-#
-# Blocks
-tile.purelava.name=Pure Lava
-tile.purelava.description=Clearer that regular lava, flows slightly faster and no inferno mobs spawn in this. Can be renewed like water.
+item.freshwaterspawn.name=Spawn
+item.aquapulsescepter.name=Aqua Pulse Scepter
+item.aquapulsescepter.description=Low Damage, Charge Up, Applies Penetration, Places Water

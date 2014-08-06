@@ -10,6 +10,8 @@ entity.forestmobs.shambler.name=Shambler
 entity.forestmobs.shambler.description=Overgrown shrub creatures. Shamblers regenerate from water and can inflict paralysis. Can be tamed and are an excellent way to liven up the your garden!
 entity.forestmobs.arisaur.name=Arisaur
 entity.forestmobs.arisaur.description=Large plant like sauropods. Arisaurs are peaceful and normally graze from trees. They can be lured and farmed using vegetables. Do they count as meat though?
+entity.forestmobs.spriggan.name=Spriggan
+entity.forestmobs.spriggan.description=Mystical plant elementals, Spriggans are often found deep in the forest and are known for their deadly life draining lasers.
 #
 # Items
 item.forestspawn.name=Spawn
@@ -21,3 +23,5 @@ item.paleosalad.name=Paleo Salad
 item.paleosalad.description=The healthiest food you can eat!
 item.shamblertreat.name=Shambler Treat
 item.shamblertreat.description=Get your very own leafy friend!
+item.lifedrainscepter.name=Life Drain Scepter
+item.lifedrainscepter.description=Mid Damage, Laser, Drains Health

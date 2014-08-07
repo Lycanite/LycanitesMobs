@@ -1,8 +1,21 @@
 package lycanite.lycanitesmobs.freshwatermobs.entity;
 
+import java.util.HashMap;
+import java.util.List;
+
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
-import lycanite.lycanitesmobs.api.entity.ai.*;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackRanged;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowOwner;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerAttack;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerRevenge;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerThreats;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -15,9 +28,6 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
-import java.util.List;
 
 public class EntityZephyr extends EntityCreatureTameable implements IMob {
 
@@ -76,6 +86,18 @@ public class EntityZephyr extends EntityCreatureTameable implements IMob {
 	}
 	
 	
+	// ==================================================
+    //                       Attacks
+    // ==================================================
+    // ========== Can Attack ==========
+	@Override
+	public boolean canAttackClass(Class targetClass) {
+		if(targetClass == this.getClass())
+			return false;
+		return super.canAttackClass(targetClass);
+	}
+	
+	
     // ==================================================
     //                      Updates
     // ==================================================
@@ -88,11 +110,11 @@ public class EntityZephyr extends EntityCreatureTameable implements IMob {
         // Static Attack:
         if(!this.worldObj.isRemote && ++aoeAttackTick == 20) {
             aoeAttackTick = 0;
-            boolean applyEffect = this.getRNG().nextFloat() >= 0.75F;
+            boolean applyEffect = this.getRNG().nextFloat() >= 0.95F;
             List aoeTargets = this.getNearbyEntities(EntityLivingBase.class, 4);
             for(Object entityObj : aoeTargets) {
                 EntityLivingBase target = (EntityLivingBase)entityObj;
-                if(this.canAttackClass(entityObj.getClass()) && this.canAttackEntity(target)) {
+                if(target != this && this.canAttackClass(entityObj.getClass()) && this.canAttackEntity(target)) {
                     target.attackEntityFrom(DamageSource.causeMobDamage(this), this.getAttackDamage(1));
                     if(ObjectManager.getPotionEffect("Paralysis") != null && ObjectManager.getPotionEffect("Paralysis").id < Potion.potionTypes.length)
                         target.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("Paralysis").id, this.getEffectDuration(2), 0));
@@ -102,9 +124,8 @@ public class EntityZephyr extends EntityCreatureTameable implements IMob {
         
         // Particles:
         if(this.worldObj.isRemote) {
-            for (int i = 0; i < 2; ++i) {
-                this.worldObj.spawnParticle("cloud", this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width, this.posY + this.rand.nextDouble() * (double) this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width, 0.0D, 0.0D, 0.0D);
-            }
+            this.worldObj.spawnParticle("cloud", this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width, this.posY + this.rand.nextDouble() * (double) this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width, 0.0D, 0.0D, 0.0D);
+            
             List aoeTargets = this.getNearbyEntities(EntityLivingBase.class, 4);
             for(Object entityObj : aoeTargets) {
                 EntityLivingBase target = (EntityLivingBase) entityObj;
@@ -146,5 +167,18 @@ public class EntityZephyr extends EntityCreatureTameable implements IMob {
         if(ObjectManager.getPotionEffect("Paralysis") != null)
             if(potionEffect.getPotionID() == ObjectManager.getPotionEffect("Paralysis").id) return false;
         return super.isPotionApplicable(potionEffect);
+    }
+    
+    // ========== Damage ==========
+    /** Returns whether or not the given damage type is applicable, if not no damage will be taken. **/
+    public boolean isDamageTypeApplicable(String type) {
+    	if("lightning".equalsIgnoreCase(type))
+    		return false;
+    	return super.isDamageTypeApplicable(type);
+    }
+    
+    @Override
+    public boolean canBreatheUnderwater() {
+        return true;
     }
 }

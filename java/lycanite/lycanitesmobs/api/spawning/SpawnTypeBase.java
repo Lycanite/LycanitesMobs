@@ -124,7 +124,7 @@ public class SpawnTypeBase {
 		
 		// Storm Spawner:
 		SpawnTypeBase stormSpawner = new SpawnTypeStorm("Storm")
-				.setRate(800).setChance(0.125D).setRange(64).setBlockLimit(32).setMobLimit(32);
+				.setRate(800).setChance(0.25D).setRange(64).setBlockLimit(32).setMobLimit(32);
 		stormSpawner.materials = new Material[] {Material.air};
 		stormSpawner.ignoreBiome = true;
 		stormSpawner.ignoreLight = true;
@@ -496,7 +496,7 @@ public class SpawnTypeBase {
                     if(this.materials != null && this.materials.length > 0) {
                         if(blockCoords == null) blockCoords = new ArrayList<int[]>();
                         for(Material validMaterial : this.materials) {
-                            if(world.getBlock(i, j, k).getMaterial() == validMaterial) {
+                            if(world.getBlock(i, j, k).getMaterial() == validMaterial && this.isValidCoord(world, i, j, k)) {
                                 blockCoords.add(new int[] {i, j, k});
                                 break;
                             }
@@ -524,6 +524,21 @@ public class SpawnTypeBase {
             }
         }
         return blockCoords;
+    }
+    
+    
+    // ==================================================
+    //               Coordinate Checking
+    // ==================================================
+    /** Checks if th eprovided world coordinate is valid for this spawner to use. This should not include block type/material checks as they are done elsewhere.
+     * @param world The world to search for coordinates in.
+     * @param x X position to check.
+     * @param y Y position to check.
+     * @param z Z position to check.
+     * @return Returns true if it is a valid coordinate so that it can be added to th elist.
+     */
+    public boolean isValidCoord(World world, int x, int y, int z) {
+    	return true;
     }
 
 

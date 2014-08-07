@@ -105,23 +105,23 @@
     },
 	"entity.spriggan.say": {
         "category": "hostile",
-        "sounds": [{"name": "sprigganity/spriggan/say", "stream": false}]
+        "sounds": [{"name": "entity/spriggan/say", "stream": false}]
     },
-    "sprigganity.spriggan.hurt": {
+    "entity.spriggan.hurt": {
         "category": "hostile",
-        "sounds": [{"name": "sprigganity/spriggan/hurt", "stream": false}]
+        "sounds": [{"name": "entity/spriggan/hurt", "stream": false}]
     },
-    "sprigganity.spriggan.death": {
+    "entity.spriggan.death": {
         "category": "hostile",
-        "sounds": [{"name": "sprigganity/spriggan/death", "stream": false}]
+        "sounds": [{"name": "entity/spriggan/death", "stream": false}]
     },
-    "sprigganity.spriggan.beg": {
+    "entity.spriggan.beg": {
         "category": "hostile",
-        "sounds": [{"name": "sprigganity/spriggan/beg", "stream": false}]
+        "sounds": [{"name": "entity/spriggan/beg", "stream": false}]
     },
-    "sprigganity.spriggan.tame": {
+    "entity.spriggan.tame": {
         "category": "hostile",
-        "sounds": [{"name": "sprigganity/spriggan/tame", "stream": false}]
+        "sounds": [{"name": "entity/spriggan/tame", "stream": false}]
     },
     "projectile.lifedrain": {
         "category": "ambient",

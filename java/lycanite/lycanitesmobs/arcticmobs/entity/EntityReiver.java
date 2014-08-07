@@ -168,4 +168,9 @@ public class EntityReiver extends EntityCreatureTameable implements IMob {
         if(potionEffect.getPotionID() == Potion.hunger.id) return false;
         return super.isPotionApplicable(potionEffect);
     }
+    
+    @Override
+    public boolean canBreatheUnderwater() {
+        return true;
+    }
 }

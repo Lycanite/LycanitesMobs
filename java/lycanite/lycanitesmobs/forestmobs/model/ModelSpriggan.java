@@ -1,7 +1,5 @@
 package lycanite.lycanitesmobs.forestmobs.model;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.model.ModelCustomObj;
@@ -9,6 +7,8 @@ import lycanite.lycanitesmobs.forestmobs.ForestMobs;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.model.obj.WavefrontObject;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ModelSpriggan extends ModelCustomObj {
@@ -28,13 +28,13 @@ public class ModelSpriggan extends ModelCustomObj {
     	parts = model.groupObjects;
     	
     	// Set Rotation Centers:
-    	setPartCenter("head", 0F, 1.5F, 0.3F);
-    	setPartCenter("body", 0F, 1.5F, 0.3F);
-    	setPartCenter("armleft", 0.4F, 1.3F, 0.2F);
-    	setPartCenter("armright", -0.4F, 1.3F, 0.2F);
+    	setPartCenter("head", 0F, 1.44F, 0F);
+    	setPartCenter("body", 0F, 1.3F, 0F);
+    	setPartCenter("armleft", 0.32F, 1.35F, 0F);
+    	setPartCenter("armright", -0.32F, 1.35F, 0F);
     	
-    	setPartCenter("effect01", 0F, 0.8F, -0.1F);
-    	setPartCenter("effect02", 0F, 0.8F, -0.1F);
+    	setPartCenter("effect01", 0F, 1F, 0F);
+    	setPartCenter("effect02", 0F, 1F, 0F);
     }
     
     
@@ -70,9 +70,9 @@ public class ModelSpriggan extends ModelCustomObj {
     	
     	// Effects:
     	if(partName.equals("effect01"))
-    		rotX = -45F;
+    		rotX = 45F;
         if(partName.equals("effect02"))
-            rotX = 45F;
+            rotX = -45F;
     	if(partName.equals("effect01"))
     		rotY += loop * 4;
     	if(partName.equals("effect02"))

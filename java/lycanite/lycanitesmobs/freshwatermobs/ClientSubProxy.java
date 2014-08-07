@@ -1,10 +1,9 @@
 package lycanite.lycanitesmobs.freshwatermobs;
 
-import cpw.mods.fml.client.registry.RenderingRegistry;
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.forestmobs.CommonSubProxy;
 import lycanite.lycanitesmobs.freshwatermobs.model.ModelJengu;
 import lycanite.lycanitesmobs.freshwatermobs.model.ModelZephyr;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class ClientSubProxy extends CommonSubProxy {
 	

@@ -9,7 +9,13 @@ import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
 import lycanite.lycanitesmobs.api.item.ItemTreat;
-import lycanite.lycanitesmobs.forestmobs.entity.*;
+import lycanite.lycanitesmobs.forestmobs.entity.EntityArisaur;
+import lycanite.lycanitesmobs.forestmobs.entity.EntityEnt;
+import lycanite.lycanitesmobs.forestmobs.entity.EntityLifeDrain;
+import lycanite.lycanitesmobs.forestmobs.entity.EntityLifeDrainEnd;
+import lycanite.lycanitesmobs.forestmobs.entity.EntityShambler;
+import lycanite.lycanitesmobs.forestmobs.entity.EntitySpriggan;
+import lycanite.lycanitesmobs.forestmobs.entity.EntityTrent;
 import lycanite.lycanitesmobs.forestmobs.item.ItemForestEgg;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.entity.EnumCreatureType;
@@ -77,6 +83,11 @@ public class ForestMobs {
 		ObjectLists.addItem("vegetables", ObjectManager.getItem("paleosalad"));
 
 		ObjectManager.addItem("shamblertreat", new ItemTreat("shamblertreat", group));
+
+		
+		// ========== Create Projectiles ==========
+		ObjectManager.addProjectile("lifedrain", EntityLifeDrain.class);
+		ObjectManager.addProjectile("lifedrainend", EntityLifeDrainEnd.class);
 	}
 	
 	

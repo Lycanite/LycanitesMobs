@@ -1,6 +1,7 @@
 package lycanite.lycanitesmobs.infernomobs.block;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
@@ -77,6 +78,25 @@ public class BlockFluidPureLava extends BlockFluidClassic {
 		if(world.getBlock(x, y, z).getMaterial().isLiquid()) return this.canDisplace(world, x, y, z);
 		return super.displaceIfPossible(world, x, y, z);
 	}
+    
+    
+	// ==================================================
+	//                      Particles
+	// ==================================================
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void randomDisplayTick(World world, int x, int y, int z, Random random) {
+    	int l;
+        float f; 
+        float f1;
+        float f2;
+        
+        f = (float)x + random.nextFloat();
+        f1 = (float)y + random.nextFloat() * 0.5F;
+        f2 = (float)z + random.nextFloat();
+        world.spawnParticle("lava", (double)f, (double)f1, (double)f2, 0.0D, 0.0D, 0.0D);
+        super.randomDisplayTick(world, x, y, z, random);
+    }
     
     
 	// ==================================================

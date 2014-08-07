@@ -5,8 +5,6 @@ import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.api.item.ItemScepter;
 import lycanite.lycanitesmobs.freshwatermobs.FreshwaterMobs;
 import lycanite.lycanitesmobs.freshwatermobs.entity.EntityAquaPulse;
-import lycanite.lycanitesmobs.infernomobs.InfernoMobs;
-import lycanite.lycanitesmobs.infernomobs.entity.EntityMagma;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -19,7 +17,7 @@ public class ItemScepterAquaPulse extends ItemScepter {
     public ItemScepterAquaPulse() {
         super();
     	this.group = FreshwaterMobs.group;
-    	this.itemName = "aquapulepter";
+    	this.itemName = "aquapulsescepter";
         this.setup();
         this.textureName = "scepteraquapulse";
     }

@@ -239,7 +239,7 @@ public class EntityLobber extends EntityCreatureBase implements IMob {
     
     @Override
     public boolean canBreatheAboveWater() {
-        return false;
+        return true;
     }
     
     

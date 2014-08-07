@@ -94,7 +94,7 @@ public class FreshwaterMobs {
 
 		
 		// ========== Create Projectiles ==========
-		ObjectManager.addProjectile("ember", EntityAquaPulse.class, ObjectManager.getItem("aquapulsecharge"), new DispenserBehaviorAquaPulse());
+		ObjectManager.addProjectile("aquapulse", EntityAquaPulse.class, ObjectManager.getItem("aquapulsecharge"), new DispenserBehaviorAquaPulse());
 		
 		// ========== Register Models ==========
 		proxy.registerModels();

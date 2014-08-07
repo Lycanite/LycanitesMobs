@@ -3,7 +3,6 @@ package lycanite.lycanitesmobs.freshwatermobs.entity;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.freshwatermobs.FreshwaterMobs;
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
@@ -51,7 +50,7 @@ public class EntityAquaPulse extends EntityProjectileBase {
     @Override
     public boolean entityLivingCollision(EntityLivingBase entityLiving) {
     	if(ObjectManager.getPotionEffect("Penetration") != null && ObjectManager.getPotionEffect("Penetration").id < Potion.potionTypes.length)
-            entityLiving.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("Penetration").id, this.getEffectDuration(2), 2));
+            entityLiving.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("Penetration").id, this.getEffectDuration(8), 2));
         return true;
     }
     

@@ -9,5 +9,7 @@ entity.freshwatermobs.zephyr.description=Fierce storm elementals usually found d
 #
 # Items
 item.freshwaterspawn.name=Spawn
+item.aquapulsecharge.name=Aqua Pulse Charge
+item.aquapulsecharge.description=Use to throw a ball of mystic water or fire from a dispenser.
 item.aquapulsescepter.name=Aqua Pulse Scepter
 item.aquapulsescepter.description=Low Damage, Charge Up, Applies Penetration, Places Water

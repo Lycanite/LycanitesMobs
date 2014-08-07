@@ -1,10 +1,7 @@
 package lycanite.lycanitesmobs.forestmobs;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.forestmobs.model.ModelArisaur;
-import lycanite.lycanitesmobs.forestmobs.model.ModelEnt;
-import lycanite.lycanitesmobs.forestmobs.model.ModelShambler;
-import lycanite.lycanitesmobs.forestmobs.model.ModelTrent;
+import lycanite.lycanitesmobs.forestmobs.model.*;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class ClientSubProxy extends CommonSubProxy {
@@ -20,5 +17,6 @@ public class ClientSubProxy extends CommonSubProxy {
 		AssetManager.addModel("trent", new ModelTrent());
 		AssetManager.addModel("shambler", new ModelShambler());
 		AssetManager.addModel("arisaur", new ModelArisaur());
+        AssetManager.addModel("spriggan", new ModelSpriggan());
 	}
 }

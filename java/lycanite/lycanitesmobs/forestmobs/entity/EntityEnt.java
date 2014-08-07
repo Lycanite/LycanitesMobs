@@ -132,7 +132,7 @@ public class EntityEnt extends EntityCreatureTameable implements IMob {
     		return false;
     	
     	// Leech:
-    	float leeching = this.getAttackDamage(damageScale) / 2;
+    	float leeching = this.getAttackDamage(damageScale);
     	this.heal(leeching);
         
         return true;

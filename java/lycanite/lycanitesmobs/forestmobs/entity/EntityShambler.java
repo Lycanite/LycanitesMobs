@@ -121,6 +121,7 @@ public class EntityShambler extends EntityCreatureTameable implements IMob {
         else if(this.worldObj.isRaining() && this.worldObj.canBlockSeeTheSky((int)this.posX, (int)this.posY, (int)this.posZ))
         	this.addPotionEffect(new PotionEffect(Potion.regeneration.id, 3 * 20, 1));
     }
+
     
     // ==================================================
     //                      Attacks
@@ -136,7 +137,7 @@ public class EntityShambler extends EntityCreatureTameable implements IMob {
     	this.heal(leeching);
     	
     	// Paralysis:
-    	if(target instanceof EntityLivingBase && this.rand.nextFloat() >= 0.75F) {
+    	if(target instanceof EntityLivingBase && this.getRNG().nextFloat() >= 0.75F) {
     		if(ObjectManager.getPotionEffect("Paralysis") != null && ObjectManager.getPotionEffect("Paralysis").id < Potion.potionTypes.length)
     			((EntityLivingBase)target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("Paralysis").id, this.getEffectDuration(2), 0));
          }

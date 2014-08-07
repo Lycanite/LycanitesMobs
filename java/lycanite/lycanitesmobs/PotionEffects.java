@@ -1,10 +1,12 @@
 package lycanite.lycanitesmobs;
 
+import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
 public class PotionEffects {
 	
@@ -77,4 +79,26 @@ public class PotionEffects {
 			}
 		}
 	}
+
+
+    // ==================================================
+    //                 Living Hurt Event
+    // ==================================================
+    @SubscribeEvent
+    public void onLivingHurt(LivingHurtEvent event) {
+        if(event.isCancelable() && event.isCanceled())
+            return;
+
+        if(event.entityLiving == null)
+            return;
+
+        // ========== Penetration ==========
+        if(ObjectManager.getPotionEffect("Penetration") != null) {
+            if(event.entityLiving.isPotionActive(ObjectManager.getPotionEffect("Penetration").getId())) {
+                float damage = event.ammount;
+                float multiplier = event.entityLiving.getActivePotionEffect(ObjectManager.getPotionEffect("Penetration")).getAmplifier();
+                event.ammount = damage + ((damage * multiplier) / 2);
+            }
+        }
+    }
 }

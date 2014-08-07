@@ -9,10 +9,7 @@ import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
 import lycanite.lycanitesmobs.api.item.ItemTreat;
-import lycanite.lycanitesmobs.forestmobs.entity.EntityArisaur;
-import lycanite.lycanitesmobs.forestmobs.entity.EntityEnt;
-import lycanite.lycanitesmobs.forestmobs.entity.EntityShambler;
-import lycanite.lycanitesmobs.forestmobs.entity.EntityTrent;
+import lycanite.lycanitesmobs.forestmobs.entity.*;
 import lycanite.lycanitesmobs.forestmobs.item.ItemForestEgg;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.entity.EnumCreatureType;
@@ -120,6 +117,12 @@ public class ForestMobs {
 		newMob.spawnInfo.setSpawnTypes("CREATURE").setDespawn(false)
 				.setSpawnWeight(10).setAreaLimit(12).setGroupLimits(1, 3).setDungeonWeight(0);
 		ObjectManager.addMob(newMob);
+
+        newMob = new MobInfo(group, "spriggan", EntitySpriggan.class, 0x997722, 0x008844)
+                .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0);
+        newMob.spawnInfo.setSpawnTypes("MONSTER")
+                .setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3);
+        ObjectManager.addMob(newMob);
 
 		
 		// ========== Create Projectiles ==========

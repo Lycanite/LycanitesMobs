@@ -202,6 +202,13 @@ public class EntityCinder extends EntityCreatureTameable implements IMob {
     //                     Pet Control
     // ==================================================
     public boolean petControlsEnabled() { return true; }
+
+
+    // ==================================================
+    //                     Equipment
+    // ==================================================
+    public int getNoBagSize() { return 0; }
+    public int getBagSize() { return 5; }
     
     
     // ==================================================

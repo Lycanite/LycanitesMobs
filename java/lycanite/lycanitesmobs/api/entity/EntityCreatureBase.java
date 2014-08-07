@@ -2104,8 +2104,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // Nearby Creature Count:
     /** Returns how many entities of the specified class around within the specified ranged, used mostly for mobs that summon other mobs and other group behaviours. **/
     public int nearbyCreatureCount(Class targetClass, double range) {
-    	List targets = this.worldObj.getEntitiesWithinAABB(targetClass, this.boundingBox.expand(range, range, range));
-    	return targets.size();
+    	return this.getNearbyEntities(targetClass, range).size();
     }
     
     // ========== Advanced AI ==========
@@ -2125,9 +2124,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     
    	// ========== Get Nearby Entities ==========
    	/** Get entities that are near this entity. **/
-   	public List getNearbyEntities(Class entityClass, double range) {
-   		AxisAlignedBB searchAABB = AxisAlignedBB.getBoundingBox((double)this.posX, (double)this.posY, (double)this.posZ, (double)this.posX, (double)this.posY, (double)this.posZ);
-   		return this.worldObj.getEntitiesWithinAABB(this.mobInfo.entityClass, searchAABB.expand(range, range, range));
+   	public List getNearbyEntities(Class targetClass, double range) {
+   		return this.worldObj.getEntitiesWithinAABB(targetClass, this.boundingBox.expand(range, range, range));
    	}
     
     // ==================================================

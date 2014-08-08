@@ -5,6 +5,7 @@ import lycanite.lycanitesmobs.api.entity.EntityProjectileLaser;
 import lycanite.lycanitesmobs.swampmobs.SwampMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
@@ -36,7 +37,7 @@ public class EntityPoisonRay extends EntityProjectileLaser {
     public void setup() {
     	this.entityName = "poisonray";
     	this.group = SwampMobs.group;
-    	this.setBaseDamage(3);
+    	this.setBaseDamage(1);
     }
     
     // ========== Stats ==========
@@ -62,7 +63,18 @@ public class EntityPoisonRay extends EntityProjectileLaser {
  	// ==================================================
     @Override
     public void updateDamage(Entity targetEntity) {
-    	targetEntity.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), this.getDamage(targetEntity));
+    	double targetKnockbackResistance = 0;
+        if(targetEntity instanceof EntityLivingBase) {
+        	targetKnockbackResistance = ((EntityLivingBase)targetEntity).getEntityAttribute(SharedMonsterAttributes.knockbackResistance).getAttributeValue();
+        	((EntityLivingBase)targetEntity).getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(1);
+        }
+    	
+    	DamageSource damageSource = DamageSource.causeThrownDamage(this, this.getThrower());
+    	targetEntity.attackEntityFrom(damageSource, this.getDamage(targetEntity));
+    	
+    	if(targetEntity instanceof EntityLivingBase)
+        	((EntityLivingBase)targetEntity).getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(targetKnockbackResistance);
+    	
 		if(targetEntity instanceof EntityLivingBase)
 			((EntityLivingBase)targetEntity).addPotionEffect(new PotionEffect(Potion.poison.id, this.getEffectDuration(5), 0));
     }

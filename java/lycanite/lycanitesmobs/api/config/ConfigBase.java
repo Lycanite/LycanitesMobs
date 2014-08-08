@@ -11,6 +11,7 @@ import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -28,8 +29,8 @@ public class ConfigBase {
             configVersions = "0.0.0".split("\\.");
         boolean oldVersion = false;
         for(int i = 0; i < 3; i++) {
-            int minVerNum = NumberUtils.isNumber(minVersions[i]) ? Integer.parseInt(minVersions[i]) : 0;
-            int currentVerNum = NumberUtils.isNumber(configVersions[i]) ? Integer.parseInt(configVersions[i]) : 0;
+            int minVerNum = NumberUtils.isNumber(minVersions[i].replaceAll("[^\\d.]", "")) ? Integer.parseInt(minVersions[i].replaceAll("[^\\d.]", "")) : 0;
+            int currentVerNum = NumberUtils.isNumber(configVersions[i].replaceAll("[^\\d.]", "")) ? Integer.parseInt(configVersions[i].replaceAll("[^\\d.]", "")) : 0;
             if(currentVerNum < minVerNum) {
                 oldVersion = true;
                 break;

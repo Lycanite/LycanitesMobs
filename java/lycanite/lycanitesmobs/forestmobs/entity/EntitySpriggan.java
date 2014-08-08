@@ -53,7 +53,7 @@ public class EntitySpriggan extends EntityCreatureTameable {
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(3, this.aiSit);
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
-        this.rangedAttackAI = new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(10).setStaminaTime(60).setRange(14.0F).setMinChaseDistance(4.0F).setChaseTime(-1);
+        this.rangedAttackAI = new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(10).setStaminaTime(100).setRange(14.0F).setMinChaseDistance(4.0F).setChaseTime(-1);
         this.tasks.addTask(5, rangedAttackAI);
         this.tasks.addTask(8, new EntityAIWander(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
@@ -129,7 +129,7 @@ public class EntitySpriggan extends EntityCreatureTameable {
     	// Create New Laser:
     	if(this.projectile == null) {
 	    	// Type:
-	    	this.projectile = new EntityLifeDrain(this.worldObj, this, 20, 10);
+	    	this.projectile = new EntityLifeDrain(this.worldObj, this, 25, 20);
 	    	
 	    	// Launch:
 	        this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));

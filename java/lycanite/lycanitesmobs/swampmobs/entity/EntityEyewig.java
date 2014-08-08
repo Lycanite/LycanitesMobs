@@ -58,7 +58,7 @@ public class EntityEyewig extends EntityCreatureRideable {
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIPlayerControl(this));
         this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("eyewigtreat"))).setTemptDistanceMin(4.0D));
-        this.rangedAttackAI = new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(10).setStaminaTime(60).setRange(14.0F).setMinChaseDistance(4.0F).setChaseTime(-1);
+        this.rangedAttackAI = new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(10).setStaminaTime(100).setRange(14.0F).setMinChaseDistance(4.0F).setChaseTime(-1);
         this.tasks.addTask(5, rangedAttackAI);
         this.tasks.addTask(6, new EntityAIAttackMelee(this).setLongMemory(false).setMaxChaseDistance(14.0F));
         this.tasks.addTask(8, new EntityAIWander(this));
@@ -142,7 +142,7 @@ public class EntityEyewig extends EntityCreatureRideable {
     		if(this.getRiderTarget() == null || !(this.getRiderTarget() instanceof EntityLivingBase))
     			return;
     		
-    		this.abilityProjectile = new EntityPoisonRay(this.worldObj, (EntityLivingBase)this.getRiderTarget(), 20, 10, this);
+    		this.abilityProjectile = new EntityPoisonRay(this.worldObj, (EntityLivingBase)this.getRiderTarget(), 25, 20, this);
     		this.abilityProjectile.setOffset(0, 0.5, 0);
 	    	
 	    	// Launch:

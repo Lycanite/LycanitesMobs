@@ -347,6 +347,8 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
 	public boolean canAttackEntity(EntityLivingBase targetEntity) {
 		if(this.isPassive())
 			return false;
+		if(this.isTamed() && this.getOwner() == targetEntity)
+			return false;
 		if(this.isTamed() && targetEntity instanceof EntityPlayer && (!MinecraftServer.getServer().isPVPEnabled() || !this.isPVP()))
 			return false;
 		if(this.isTamed() && targetEntity instanceof EntityCreatureTameable) {

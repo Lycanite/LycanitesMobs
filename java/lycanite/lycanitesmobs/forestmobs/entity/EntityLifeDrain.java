@@ -5,6 +5,7 @@ import lycanite.lycanitesmobs.api.entity.EntityProjectileLaser;
 import lycanite.lycanitesmobs.forestmobs.ForestMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -34,7 +35,7 @@ public class EntityLifeDrain extends EntityProjectileLaser {
     public void setup() {
     	this.entityName = "lifedrain";
     	this.group = ForestMobs.group;
-    	this.setBaseDamage(3);
+    	this.setBaseDamage(1);
     }
     
     // ========== Stats ==========
@@ -61,7 +62,19 @@ public class EntityLifeDrain extends EntityProjectileLaser {
     @Override
     public void updateDamage(Entity targetEntity) {
         float damage = this.getDamage(targetEntity);
-    	targetEntity.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), damage);
+        
+        double targetKnockbackResistance = 0;
+        if(targetEntity instanceof EntityLivingBase) {
+        	targetKnockbackResistance = ((EntityLivingBase)targetEntity).getEntityAttribute(SharedMonsterAttributes.knockbackResistance).getAttributeValue();
+        	((EntityLivingBase)targetEntity).getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(1);
+        }
+        
+        DamageSource damageSource = DamageSource.causeThrownDamage(this, this.getThrower());
+    	targetEntity.attackEntityFrom(damageSource, damage);
+    	
+    	if(targetEntity instanceof EntityLivingBase)
+        	((EntityLivingBase)targetEntity).getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(targetKnockbackResistance);
+    	
         if(this.getThrower() != null)
             this.getThrower().heal(damage);
     }

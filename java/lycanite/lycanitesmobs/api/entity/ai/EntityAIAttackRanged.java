@@ -19,6 +19,8 @@ public class EntityAIAttackRanged extends EntityAIBase {
     private int attackStamina = 0;
     private int attackStaminaMax = 0;
     private boolean attackOnCooldown = false;
+    private int staminaRecoverRate = 1;
+    private int staminaDrainRate = 1;
     
     private double speed = 1.0D;
     private int chaseTime;
@@ -62,9 +64,18 @@ public class EntityAIAttackRanged extends EntityAIBase {
     	return this.setRateClose(rate).setRateFar(rate);
     }
     
+    // ========== Stamina ==========
     public EntityAIAttackRanged setStaminaTime(int setInt) {
     	this.attackStaminaMax = setInt;
     	this.attackStamina = this.attackStaminaMax;
+    	return this;
+    }
+    public EntityAIAttackRanged setStaminaRecoverRate(int rate) {
+    	this.staminaRecoverRate = rate;
+    	return this;
+    }
+    public EntityAIAttackRanged setStaminaDrainRate(int rate) {
+    	this.staminaDrainRate = rate;
     	return this;
     }
     
@@ -98,7 +109,8 @@ public class EntityAIAttackRanged extends EntityAIBase {
     	// Attack Stamina/Cooldown Recovery:
         if(this.attackStaminaMax > 0) {
         	if(this.attackOnCooldown) {
-        		if(this.attackStamina++ >= this.attackStaminaMax)
+        		this.attackStamina += this.staminaRecoverRate;
+        		if(this.attackStamina >= this.attackStaminaMax)
         			this.attackOnCooldown = false;
         	}
         }
@@ -123,7 +135,17 @@ public class EntityAIAttackRanged extends EntityAIBase {
     	if(!this.longMemory)
 	    	if(!this.host.useFlightNavigator() && !this.host.getNavigator().noPath()) return this.shouldExecute();
 	    	else if(this.host.useFlightNavigator() && this.host.flightNavigator.targetPosition == null) return this.shouldExecute();
-        return this.shouldExecute();
+
+    	// Should Execute:
+    	if(!this.enabled)
+    		return false;
+        EntityLivingBase possibleAttackTarget = this.host.getAttackTarget();
+        if(possibleAttackTarget == null)
+            return false;
+        if(!possibleAttackTarget.isEntityAlive())
+            return false;
+        this.attackTarget = possibleAttackTarget;
+        return true;
     }
     
     
@@ -170,11 +192,13 @@ public class EntityAIAttackRanged extends EntityAIBase {
         // Attack Stamina/Cooldown:
         if(this.attackStaminaMax > 0) {
         	if(!this.attackOnCooldown) {
-        		if(this.attackStamina-- <= 0)
+        		this.attackStamina -= this.staminaDrainRate;
+        		if(this.attackStamina <= 0)
         			this.attackOnCooldown = true;
         	}
         	else {
-        		if(this.attackStamina++ >= this.attackStaminaMax)
+        		this.attackStamina += this.staminaRecoverRate;
+        		if(this.attackStamina >= this.attackStaminaMax)
         			this.attackOnCooldown = false;
         	}
         }

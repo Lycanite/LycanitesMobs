@@ -29,7 +29,7 @@ public class EntityProjectileLaser extends EntityProjectileBase {
 	public int laserEndID = 11;
 	
 	public int laserTime = 100;
-	public int laserDelay = 5;
+	public int laserDelay = 20;
 	public float laserRange;
 	public float laserWidth;
 	public float laserLength = 0;

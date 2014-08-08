@@ -7,7 +7,6 @@ import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackRanged;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowOwner;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerAttack;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerRevenge;
@@ -38,6 +37,7 @@ public class EntityJengu extends EntityCreatureTameable implements IMob {
         this.defense = 0;
         this.experience = 5;
         this.spawnsInDarkness = true;
+        this.spawnsInWater = true;
         this.hasAttackSound = false;
         
         this.eggName = "FreshwaterEgg";
@@ -47,7 +47,8 @@ public class EntityJengu extends EntityCreatureTameable implements IMob {
         this.setupMob();
         
         // AI Tasks:
-        this.tasks.addTask(0, new EntityAISwimming(this));
+        this.getNavigator().setCanSwim(true);
+        this.getNavigator().setAvoidsWater(false);
         this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(60).setRange(14.0F).setMinChaseDistance(5.0F).setChaseTime(-1));
         this.tasks.addTask(3, this.aiSit);
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));

@@ -147,6 +147,9 @@ public class LycanitesMobs {
 		proxy.registerTileEntities();
 		proxy.registerRenders();
 		
+		// ========== Load All Mob Info and Spawn Infos from Configs ==========
+		MobInfo.loadAllFromConfigs();
+		
 		// ========== Crafting ==========
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("soulgazer"), 1, 0),

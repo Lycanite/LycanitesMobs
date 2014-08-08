@@ -7,6 +7,7 @@ import java.util.Map;
 
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
+import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.mods.DLDungeons;
 import net.minecraft.block.Block;
@@ -14,6 +15,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+import cpw.mods.fml.common.registry.EntityRegistry;
 
 
 public class MobInfo {
@@ -163,6 +165,17 @@ public class MobInfo {
 		return mobNameToInfo.get(mobClass);
 	}
 	
+	/**
+	 * Tells every registered MobInfo to load from the configs. This should be called in post init so that Biome Tags and other things are defnitely set.
+	 * @return
+	 */
+	public static void loadAllFromConfigs() {
+		for(MobInfo mobInfo : mobNameToInfo.values()) {
+			if(mobInfo != null)
+				mobInfo.loadFromConfigs();
+		}
+	}
+	
 	
     // ==================================================
     //                     Constructor
@@ -186,7 +199,7 @@ public class MobInfo {
     // ==================================================
     //                 Load from Config
     // ==================================================
-    public void loadFromConfig() {
+    public void loadFromConfigs() {
         // General Info:
         ConfigBase config = ConfigBase.getConfig(this.group, "general");
         config.setCategoryComment("Enabled Mobs", "Here you can completely disable any mob.");
@@ -245,9 +258,36 @@ public class MobInfo {
         this.boostDamage = config.getInt("Boosts", this.getCfgName("Damage"), this.boostDamage, "Damage dealt, both melee and ranged. 1 = half a heart.");
         this.boostHaste = config.getInt("Boosts", this.getCfgName("Haste"), this.boostHaste, "Attack and ability speeds in ticks. Average attack rate is 20 (1 second).");
         this.boostEffect = config.getInt("Boosts", this.getCfgName("Effect"), this.boostEffect, "Effect strengths and durations in ticks (20 ticks = 1 second).");
+        
+        // Register Mob:
+        this.registerMob();
 
         // Spawn Info:
         this.spawnInfo.loadFromConfig();
+    }
+
+
+    // ==================================================
+    //                    Register Mob
+    // ==================================================
+    /** Registers this mob to vanilla and custom entity lists. **/
+    public void registerMob() {
+    	// ID and Enabled Check:
+		LycanitesMobs.printDebug("MobSetup", "~0==================== Mob Setup: "+ this.name +" ====================0~");
+		int mobID = this.group.getNextMobID();
+		if(!this.mobEnabled) {
+			LycanitesMobs.printDebug("MobSetup", "Mob Disabled: " + name + " - " + this.entityClass + " (" + group.name + ")");
+			return;
+		}
+		
+		// Mapping and Registration:
+		if(!ObjectManager.entityLists.containsKey(this.group.filename))
+			ObjectManager.entityLists.put(this.group.filename, new EntityListCustom());
+		ObjectManager.entityLists.get(this.group.filename).addMapping(this.entityClass, this.getRegistryName(), mobID, this.eggBackColor, this.eggForeColor);
+		EntityRegistry.registerModEntity(this.entityClass, name, mobID, group.mod, 128, 3, true);
+		
+		// Debug Message - Added:
+		LycanitesMobs.printDebug("MobSetup", "Mob Added: " + name + " - " + this.entityClass + " (" + group.name + ")");
     }
 	
 	

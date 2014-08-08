@@ -8,6 +8,8 @@ import lycanite.lycanitesmobs.api.config.ConfigSpawning.SpawnTypeSet;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.DungeonHooks;
+import cpw.mods.fml.common.registry.EntityRegistry;
 
 public class SpawnInfo {
 	// ========== Global Spawn Settings ==========
@@ -169,7 +171,71 @@ public class SpawnInfo {
         // Forced Despawning:
         config.setCategoryComment("Despawning", "Forces a mob to despawn naturally (unless tamed). Some farmable mobs such as Pinkies ignore their Natural Despawning setting once they've been fed or moved out of their home dimension.");
         this.despawnForced = config.getBool("Despawning", this.getCfgName("Forced Despawning"), this.despawnForced);
+        
+        // Register Spawn:
+        this.registerSpawn();
 	}
+
+
+    // ==================================================
+    //                    Register Spawn
+    // ==================================================
+    /** Registers this mob to vanilla and custom spawners as well as dungeons. **/
+    public void registerSpawn() {
+    	// Add Spawn:
+		boolean spawnAdded = false;
+		if(!disableAllSpawning) {
+			if(this.enabled && this.spawnWeight > 0 && this.spawnGroupMax > 0) {
+				for(EnumCreatureType creatureType : this.creatureTypes) {
+					EntityRegistry.addSpawn(mobInfo.entityClass, this.spawnWeight, this.spawnGroupMin, this.spawnGroupMax, creatureType, this.biomes);
+				}
+				for(SpawnTypeBase spawnType : this.spawnTypes) {
+					spawnType.addSpawn(this);
+				}
+				spawnAdded = true;
+			}
+		}
+		
+		// Debug Message - Spawn Added:
+		if(spawnAdded) {
+			LycanitesMobs.printDebug("MobSetup", "Mob Spawn Added - Weight: " + this.spawnWeight + " Min: " + this.spawnGroupMin + " Max: " + this.spawnGroupMax);
+			for(EnumCreatureType creatureType : this.creatureTypes)
+				LycanitesMobs.printDebug("MobSetup", "Vanilla Spawn Type: " + creatureType);
+			for(SpawnTypeBase spawnType : this.spawnTypes)
+				LycanitesMobs.printDebug("MobSetup", "Custom Spawn Type: " + spawnType != null ? spawnType.typeName : "NULL");
+			String biomesList = "";
+			if(LycanitesMobs.config.getBool("Debug", "MobSetup")) {
+				for(BiomeGenBase biome : this.biomes) {
+					if(!"".equals(biomesList))
+						biomesList += ", ";
+					biomesList += biome.biomeName;
+				}
+			}
+			LycanitesMobs.printDebug("MobSetup", "Biomes: " + biomesList);
+			String dimensionsList = "";
+			for(int dimensionID : this.dimensionIDs) {
+				if(!"".equals(dimensionsList))
+					dimensionsList += ", ";
+				dimensionsList += Integer.toString(dimensionID);
+			}
+			for(String dimensionType : this.dimensionTypes) {
+				if(!"".equals(dimensionsList))
+					dimensionsList += ", ";
+				dimensionsList += dimensionType;
+			}
+			LycanitesMobs.printDebug("MobSetup", "Dimensions: " + dimensionsList);
+		}
+		else
+			LycanitesMobs.printDebug("MobSetup", "Mob Spawn Not Added: The spawning of this mob (or all mobs) must be disabled or this mobs spawn weight or max group size is 0.");
+		
+		// Dungeon Spawn:
+		if(!disableDungeonSpawners) {
+			if(this.dungeonWeight > 0) {
+				DungeonHooks.addDungeonMob(this.mobInfo.getRegistryName(), this.dungeonWeight);
+				LycanitesMobs.printDebug("MobSetup", "Dungeon Spawn Added - Weight: " + this.dungeonWeight);
+			}
+		}
+    }
 
 
     // ==================================================

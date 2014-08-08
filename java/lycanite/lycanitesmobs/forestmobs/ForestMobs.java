@@ -9,6 +9,7 @@ import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
 import lycanite.lycanitesmobs.api.item.ItemTreat;
+import lycanite.lycanitesmobs.forestmobs.dispenser.DispenserBehaviorLifeDrain;
 import lycanite.lycanitesmobs.forestmobs.entity.EntityArisaur;
 import lycanite.lycanitesmobs.forestmobs.entity.EntityEnt;
 import lycanite.lycanitesmobs.forestmobs.entity.EntityLifeDrain;
@@ -17,6 +18,8 @@ import lycanite.lycanitesmobs.forestmobs.entity.EntityShambler;
 import lycanite.lycanitesmobs.forestmobs.entity.EntitySpriggan;
 import lycanite.lycanitesmobs.forestmobs.entity.EntityTrent;
 import lycanite.lycanitesmobs.forestmobs.item.ItemForestEgg;
+import lycanite.lycanitesmobs.forestmobs.item.ItemLifeDrainCharge;
+import lycanite.lycanitesmobs.forestmobs.item.ItemScepterLifeDrain;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityCreeper;
@@ -84,10 +87,8 @@ public class ForestMobs {
 
 		ObjectManager.addItem("shamblertreat", new ItemTreat("shamblertreat", group));
 
-		
-		// ========== Create Projectiles ==========
-		ObjectManager.addProjectile("lifedrain", EntityLifeDrain.class);
-		ObjectManager.addProjectile("lifedrainend", EntityLifeDrainEnd.class);
+        ObjectManager.addItem("lifedraincharge", new ItemLifeDrainCharge());
+        ObjectManager.addItem("lifedrainscepter", new ItemScepterLifeDrain());
 	}
 	
 	
@@ -137,7 +138,8 @@ public class ForestMobs {
 
 		
 		// ========== Create Projectiles ==========
-		//ObjectManager.addProjectile("Template", EntityTemplate.class, Item.templateCharge, new DispenserBehaviorPoisonRay());
+		ObjectManager.addProjectile("lifedrain", EntityLifeDrain.class, ObjectManager.getItem("lifedraincharge"), new DispenserBehaviorLifeDrain());
+		ObjectManager.addProjectile("lifedrainend", EntityLifeDrainEnd.class);
 		
 		// ========== Register Models ==========
 		proxy.registerModels();
@@ -184,6 +186,13 @@ public class ForestMobs {
 				Character.valueOf('T'), ObjectManager.getItem("arisaurmeatcooked"),
 				Character.valueOf('B'), Items.reeds
 			}));
+
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+                new ItemStack(ObjectManager.getItem("lifedrainscepter"), 1, 0),
+                new Object[] { "CCC", "CRC", "CRC",
+                Character.valueOf('C'), ObjectManager.getItem("lifedraincharge"),
+                Character.valueOf('R'), Items.blaze_rod
+        }));
 		
 		// ========== Smelting ==========
 		GameRegistry.addSmelting(ObjectManager.getItem("arisaurmeatraw"), new ItemStack(ObjectManager.getItem("arisaurmeatcooked"), 1), 0.5f);

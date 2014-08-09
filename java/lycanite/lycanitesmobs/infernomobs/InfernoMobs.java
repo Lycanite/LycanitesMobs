@@ -86,18 +86,6 @@ public class InfernoMobs {
 		ObjectManager.addItem("magmacharge", new ItemMagmaCharge());
 		ObjectManager.addItem("magmascepter", new ItemScepterMagma());
 		ObjectManager.addItem("bucketpurelava", new ItemBucketPureLava());
-	}
-	
-	
-	// ==================================================
-	//                Initialization
-	// ==================================================
-	@EventHandler
-	public void load(FMLInitializationEvent event) {
-
-		// ========== Set Current Group ==========
-		ObjectManager.setCurrentGroup(group);
-		group.loadSpawningFromConfig();
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("infernoegg"), new DispenserBehaviorMobEggCustom());
@@ -128,6 +116,15 @@ public class InfernoMobs {
 		
 		// ========== Register Models ==========
 		proxy.registerModels();
+	}
+	
+	
+	// ==================================================
+	//                Initialization
+	// ==================================================
+	@EventHandler
+	public void load(FMLInitializationEvent event) {
+		
 	}
 	
 	

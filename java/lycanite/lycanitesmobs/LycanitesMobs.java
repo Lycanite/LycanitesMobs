@@ -134,6 +134,10 @@ public class LycanitesMobs {
 		// ========== Register Entities ==========
 		int specialEntityID = 0;
 		EntityRegistry.registerModEntity(EntityPortal.class, "summoningportal", specialEntityID++, instance, 64, 1, true);
+		
+		// ========== Load All Mob Info and Spawn Infos from Configs ==========
+		GroupInfo.loadAllSpawningFromConfigs();
+		MobInfo.loadAllFromConfigs();
 	}
 	
 	
@@ -146,9 +150,6 @@ public class LycanitesMobs {
 		proxy.registerAssets();
 		proxy.registerTileEntities();
 		proxy.registerRenders();
-		
-		// ========== Load All Mob Info and Spawn Infos from Configs ==========
-		MobInfo.loadAllFromConfigs();
 		
 		// ========== Crafting ==========
 		GameRegistry.addRecipe(new ShapedOreRecipe(

@@ -101,19 +101,7 @@ public class DesertMobs {
 		ObjectManager.addItem("mudshotscepter", new ItemScepterMudshot());
 		
 		// ========== Create Blocks ==========
-		
-	}
-	
-	
-	// ==================================================
-	//                Initialization
-	// ==================================================
-	@EventHandler
-	public void load(FMLInitializationEvent event) {
 
-		// ========== Set Current Group ==========
-		ObjectManager.setCurrentGroup(group);
-		group.loadSpawningFromConfig();
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("desertegg"), new DispenserBehaviorMobEggCustom());
@@ -174,6 +162,15 @@ public class DesertMobs {
 		
 		// ========== Register Models ==========
 		proxy.registerModels();
+	}
+	
+	
+	// ==================================================
+	//                Initialization
+	// ==================================================
+	@EventHandler
+	public void load(FMLInitializationEvent event) {
+		
 	}
 	
 	

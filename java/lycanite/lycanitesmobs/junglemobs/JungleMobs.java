@@ -88,18 +88,6 @@ public class JungleMobs {
 
 		// ========== Create Blocks ==========
 		ObjectManager.addBlock("quickweb", new BlockQuickWeb());
-	}
-	
-	
-	// ==================================================
-	//                Initialization
-	// ==================================================
-	@EventHandler
-	public void load(FMLInitializationEvent event) {
-
-		// ========== Set Current Group ==========
-		ObjectManager.setCurrentGroup(group);
-		group.loadSpawningFromConfig();
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("jungleegg"), new DispenserBehaviorMobEggCustom());
@@ -141,6 +129,15 @@ public class JungleMobs {
 		
 		// ========== Register Models ==========
 		proxy.registerModels();
+	}
+	
+	
+	// ==================================================
+	//                Initialization
+	// ==================================================
+	@EventHandler
+	public void load(FMLInitializationEvent event) {
+		
 	}
 	
 	

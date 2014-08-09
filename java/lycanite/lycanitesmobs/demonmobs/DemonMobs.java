@@ -114,18 +114,6 @@ public class DemonMobs {
 		// ========== Create Blocks ==========
 		AssetManager.addSound("hellfire", group, "block.hellfire");
 		ObjectManager.addBlock("hellfire", new BlockHellfire());
-	}
-	
-	
-	// ==================================================
-	//                Initialization
-	// ==================================================
-	@EventHandler
-	public void load(FMLInitializationEvent event) {
-
-		// ========== Set Current Group ==========
-		ObjectManager.setCurrentGroup(group);
-		group.loadSpawningFromConfig();
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("demonegg"), new DispenserBehaviorMobEggCustom());
@@ -183,6 +171,15 @@ public class DemonMobs {
 		
 		// ========== Register Models ==========
 		proxy.registerModels();
+	}
+	
+	
+	// ==================================================
+	//                Initialization
+	// ==================================================
+	@EventHandler
+	public void load(FMLInitializationEvent event) {
+		
 	}
 	
 	

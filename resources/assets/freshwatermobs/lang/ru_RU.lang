@@ -1,0 +1,15 @@
+# Group Info
+freshwatermobs.name=Речные твари
+freshwatermobs.description=Существа, созданные чистой водой, живут всюду, где она есть - в озёрах, реках и даже в тучах и дожде! 
+# Entites
+entity.freshwatermobs.jengu.name=Дженг
+entity.freshwatermobs.jengu.description=Водный дух, защитник чистоты воды. Атакует любого, кто покажется недостаточно чистым как физически, так и духовно.
+entity.freshwatermobs.zephyr.name=Зефир
+entity.freshwatermobs.zephyr.description=Яростный штормовой элементаль, любящий ливни и особенно штормы и грозы. Опасайтесь шокового удара, которым он поражает любого врага, подобравшегося слишком близко.
+#
+# Items
+item.freshwaterspawn.name=Призвать существо - 
+item.aquapulsecharge.name=Заряд Биения воды
+item.aquapulsecharge.description=Можно метать заряды колдовской воды или же использовать в раздатчике.
+item.aquapulsescepter.name=Посох "Биение воды"
+item.aquapulsescepter.description=Урон: Низкий, Зарядка, Ослабляет, Размещает воду

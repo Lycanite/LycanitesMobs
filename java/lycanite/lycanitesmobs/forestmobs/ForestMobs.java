@@ -89,18 +89,6 @@ public class ForestMobs {
 
         ObjectManager.addItem("lifedraincharge", new ItemLifeDrainCharge());
         ObjectManager.addItem("lifedrainscepter", new ItemScepterLifeDrain());
-	}
-	
-	
-	// ==================================================
-	//                Initialization
-	// ==================================================
-	@EventHandler
-	public void load(FMLInitializationEvent event) {
-
-		// ========== Set Current Group ==========
-		ObjectManager.setCurrentGroup(group);
-		group.loadSpawningFromConfig();
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("forestegg"), new DispenserBehaviorMobEggCustom());
@@ -143,6 +131,15 @@ public class ForestMobs {
 		
 		// ========== Register Models ==========
 		proxy.registerModels();
+	}
+	
+	
+	// ==================================================
+	//                Initialization
+	// ==================================================
+	@EventHandler
+	public void load(FMLInitializationEvent event) {
+		
 	}
 	
 	

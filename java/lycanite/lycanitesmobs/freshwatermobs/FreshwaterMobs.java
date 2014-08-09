@@ -63,18 +63,6 @@ public class FreshwaterMobs {
 
         ObjectManager.addItem("aquapulsecharge", new ItemAquaPulseCharge());
         ObjectManager.addItem("aquapulsescepter", new ItemScepterAquaPulse());
-	}
-	
-	
-	// ==================================================
-	//                Initialization
-	// ==================================================
-	@EventHandler
-	public void load(FMLInitializationEvent event) {
-
-		// ========== Set Current Group ==========
-		ObjectManager.setCurrentGroup(group);
-		group.loadSpawningFromConfig();
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("freshwateregg"), new DispenserBehaviorMobEggCustom());
@@ -98,6 +86,15 @@ public class FreshwaterMobs {
 		
 		// ========== Register Models ==========
 		proxy.registerModels();
+	}
+	
+	
+	// ==================================================
+	//                Initialization
+	// ==================================================
+	@EventHandler
+	public void load(FMLInitializationEvent event) {
+		
 	}
 	
 	

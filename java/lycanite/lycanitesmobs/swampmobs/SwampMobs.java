@@ -105,18 +105,6 @@ public class SwampMobs {
 		// ========== Create Blocks ==========
 		AssetManager.addSound("poisoncloud", group, "block.poisoncloud");
 		ObjectManager.addBlock("poisoncloud", new BlockPoisonCloud());
-	}
-	
-	
-	// ==================================================
-	//                Initialization
-	// ==================================================
-	@EventHandler
-	public void load(FMLInitializationEvent event) {
-
-		// ========== Set Current Group ==========
-		ObjectManager.setCurrentGroup(group);
-		group.loadSpawningFromConfig();
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("swampegg"), new DispenserBehaviorMobEggCustom());
@@ -172,6 +160,15 @@ public class SwampMobs {
 		
 		// ========== Register Models ==========
 		proxy.registerModels();
+	}
+	
+	
+	// ==================================================
+	//                Initialization
+	// ==================================================
+	@EventHandler
+	public void load(FMLInitializationEvent event) {
+		
 	}
 	
 	

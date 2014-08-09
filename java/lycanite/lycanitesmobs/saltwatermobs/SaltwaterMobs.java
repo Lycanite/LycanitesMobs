@@ -72,18 +72,6 @@ public class SaltwaterMobs {
 
         ObjectManager.addItem("seashellmaki", new ItemCustomFood("seashellmaki", group, 6, 0.7F).setPotionEffect(Potion.waterBreathing.id, 120, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
         ObjectLists.addItem("cookedfish", ObjectManager.getItem("seashellmaki"));
-	}
-	
-	
-	// ==================================================
-	//                Initialization
-	// ==================================================
-	@EventHandler
-	public void load(FMLInitializationEvent event) {
-
-		// ========== Set Current Group ==========
-		ObjectManager.setCurrentGroup(group);
-		group.loadSpawningFromConfig();
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("saltwateregg"), new DispenserBehaviorMobEggCustom());
@@ -116,9 +104,15 @@ public class SaltwaterMobs {
 		
 		// ========== Create Projectiles ==========
 		//ObjectManager.addProjectile("ember", EntityEmber.class, ObjectManager.getItem("embercharge"), new DispenserBehaviorEmber());
+	}
+	
+	
+	// ==================================================
+	//                Initialization
+	// ==================================================
+	@EventHandler
+	public void load(FMLInitializationEvent event) {
 		
-		// ========== Register Models ==========
-		proxy.registerModels();
 	}
 	
 	

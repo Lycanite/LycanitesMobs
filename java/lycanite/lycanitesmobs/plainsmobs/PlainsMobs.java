@@ -82,18 +82,6 @@ public class PlainsMobs {
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("bulwarkburger"));
 
 		ObjectManager.addItem("ventoraptortreat", new ItemTreat("ventoraptortreat", group));
-	}
-	
-	
-	// ==================================================
-	//                   Initialization
-	// ==================================================
-	@EventHandler
-	public void load(FMLInitializationEvent event) {
-
-		// ========== Set Current Group ==========
-		ObjectManager.setCurrentGroup(group);
-		group.loadSpawningFromConfig();
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("plainsegg"), new DispenserBehaviorMobEggCustom());
@@ -135,6 +123,15 @@ public class PlainsMobs {
 		
 		// ========== Register Models ==========
 		proxy.registerModels();
+	}
+	
+	
+	// ==================================================
+	//                   Initialization
+	// ==================================================
+	@EventHandler
+	public void load(FMLInitializationEvent event) {
+		
 	}
 	
 	

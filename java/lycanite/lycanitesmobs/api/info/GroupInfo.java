@@ -1,5 +1,8 @@
 package lycanite.lycanitesmobs.api.info;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import lycanite.lycanitesmobs.api.config.ConfigSpawning;
 import lycanite.lycanitesmobs.api.config.ConfigSpawning.SpawnDimensionSet;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -7,6 +10,8 @@ import net.minecraft.world.biome.BiomeGenBase;
 
 
 public class GroupInfo {
+	/** A map containing all groups by their name. **/
+	public static Map<String, GroupInfo> groups = new HashMap<String, GroupInfo>();
 
     // ========== Group General ==========
 	/** The mod this group belongs to. **/
@@ -52,12 +57,24 @@ public class GroupInfo {
 
 
     // ==================================================
+    //                     Static Init
+    // ==================================================
+    /** Should be called in the init before MobInfos have their spawning loaded. GroupInfos registered to the groups map should be automatically called.**/
+    public static void loadAllSpawningFromConfigs() {
+    	for(GroupInfo group : groups.values())
+    		group.loadSpawningFromConfig();
+    }
+
+
+    // ==================================================
     //                     Constructor
     // ==================================================
     public GroupInfo(Object mod, String name) {
     	this.mod = mod;
         this.name = name;
         this.filename = name.toLowerCase().replace(" ", "");
+        
+        groups.put(this.name, this);
     }
 
 

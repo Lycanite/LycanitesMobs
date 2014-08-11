@@ -6,7 +6,6 @@ import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.info.EntityListCustom;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
-import lycanite.lycanitesmobs.api.info.SpawnInfo;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.BehaviorProjectileDispense;
@@ -91,10 +90,7 @@ public class ObjectManager {
 	// ========== Creature ==========
 	public static MobInfo addMob(MobInfo mobInfo) {
 		GroupInfo group = mobInfo.group;
-		String filename = group.filename;
-		
 		String name = mobInfo.name.toLowerCase();
-		SpawnInfo spawnInfo = mobInfo.spawnInfo;
 		mobs.put(name, mobInfo);
 		
 		// Sounds:

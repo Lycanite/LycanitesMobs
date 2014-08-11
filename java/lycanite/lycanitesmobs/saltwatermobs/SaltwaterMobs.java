@@ -104,6 +104,10 @@ public class SaltwaterMobs {
 		
 		// ========== Create Projectiles ==========
 		//ObjectManager.addProjectile("ember", EntityEmber.class, ObjectManager.getItem("embercharge"), new DispenserBehaviorEmber());
+		
+		
+		// ========== Register Models ==========
+		proxy.registerModels();
 	}
 	
 	

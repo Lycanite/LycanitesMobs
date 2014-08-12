@@ -157,8 +157,11 @@ public class ConfigSpawning extends ConfigBase {
                 for(BiomeDictionary.Type biomeType : BiomeDictionary.Type.values()) {
                     if(selectedBiomes == null)
                         selectedBiomes = BiomeDictionary.getBiomesForType(biomeType);
-                    else
-                    	selectedBiomes = ArrayUtils.addAll(selectedBiomes, BiomeDictionary.getBiomesForType(biomeType));
+                    else {
+                    	BiomeGenBase[] typeBiomes = BiomeDictionary.getBiomesForType(biomeType);
+                    	if(typeBiomes != null)
+                    		selectedBiomes = ArrayUtils.addAll(selectedBiomes, typeBiomes);
+                    }
                 }
             }
             else if("GROUP".equals(biomeEntry)) {

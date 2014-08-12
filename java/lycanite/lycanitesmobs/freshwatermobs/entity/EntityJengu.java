@@ -49,7 +49,7 @@ public class EntityJengu extends EntityCreatureTameable implements IMob {
         // AI Tasks:
         this.getNavigator().setCanSwim(true);
         this.getNavigator().setAvoidsWater(false);
-        this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(60).setRange(14.0F).setMinChaseDistance(5.0F).setChaseTime(-1));
+        this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(100).setRange(14.0F).setMinChaseDistance(5.0F).setChaseTime(-1));
         this.tasks.addTask(3, this.aiSit);
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
         this.tasks.addTask(8, new EntityAIWander(this));
@@ -66,8 +66,8 @@ public class EntityJengu extends EntityCreatureTameable implements IMob {
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 30D);
-		baseAttributes.put("movementSpeed", 0.24D);
+		baseAttributes.put("maxHealth", 15D);
+		baseAttributes.put("movementSpeed", 0.22D);
 		baseAttributes.put("knockbackResistance", 0.0D);
 		baseAttributes.put("followRange", 16D);
 		baseAttributes.put("attackDamage", 1D);

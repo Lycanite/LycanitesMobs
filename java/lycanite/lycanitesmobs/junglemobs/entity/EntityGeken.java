@@ -155,6 +155,15 @@ public class EntityGeken extends EntityCreatureTameable implements IMob {
     public float getFallResistance() {
     	return 100;
     }
+
+
+    // ==================================================
+    //                     Equipment
+    // ==================================================
+    @Override
+    public int getNoBagSize() { return 0; }
+    @Override
+    public int getBagSize() { return 5; }
 	
 	
 	// ==================================================

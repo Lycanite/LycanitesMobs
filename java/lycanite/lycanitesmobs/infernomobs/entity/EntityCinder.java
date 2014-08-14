@@ -215,9 +215,10 @@ public class EntityCinder extends EntityCreatureTameable implements IMob {
    	//                     Immunities
    	// ==================================================
     @Override
-    public boolean isPotionApplicable(PotionEffect par1PotionEffect) {
-        if(par1PotionEffect.getPotionID() == Potion.resistance.id && par1PotionEffect.getAmplifier() < 0) return false;
-        super.isPotionApplicable(par1PotionEffect);
+    public boolean isPotionApplicable(PotionEffect potionEffect) {
+        if(ObjectManager.getPotionEffect("Penetration") != null)
+            if(potionEffect.getPotionID() == ObjectManager.getPotionEffect("Penetration").id) return false;
+        super.isPotionApplicable(potionEffect);
         return true;
     }
     

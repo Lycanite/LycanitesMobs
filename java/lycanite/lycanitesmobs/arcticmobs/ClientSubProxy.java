@@ -1,10 +1,7 @@
 package lycanite.lycanitesmobs.arcticmobs;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.arcticmobs.model.ModelFrostweaver;
-import lycanite.lycanitesmobs.arcticmobs.model.ModelReiver;
-import lycanite.lycanitesmobs.arcticmobs.model.ModelWendigo;
-import lycanite.lycanitesmobs.arcticmobs.model.ModelYeti;
+import lycanite.lycanitesmobs.arcticmobs.model.*;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class ClientSubProxy extends CommonSubProxy {
@@ -20,5 +17,6 @@ public class ClientSubProxy extends CommonSubProxy {
 		AssetManager.addModel("frostweaver", new ModelFrostweaver());
 		AssetManager.addModel("yeti", new ModelYeti());
 		AssetManager.addModel("wendigo", new ModelWendigo());
+        AssetManager.addModel("arix", new ModelArix());
 	}
 }

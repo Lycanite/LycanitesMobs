@@ -1,23 +1,14 @@
-package lycanite.lycanitesmobs.arcticmobs.block;
+package lycanite.lycanitesmobs.infernomobs.block;
 
-import static net.minecraftforge.common.util.ForgeDirection.DOWN;
-import static net.minecraftforge.common.util.ForgeDirection.EAST;
-import static net.minecraftforge.common.util.ForgeDirection.NORTH;
-import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
-import static net.minecraftforge.common.util.ForgeDirection.UP;
-import static net.minecraftforge.common.util.ForgeDirection.WEST;
-
-import java.util.Random;
-
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ClientProxy;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.block.BlockBase;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
-import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
+import lycanite.lycanitesmobs.demonmobs.DemonMobs;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockIce;
-import net.minecraft.block.BlockPackedIce;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -32,24 +23,26 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockFrostfire extends BlockBase {
+import java.util.Random;
+
+import static net.minecraftforge.common.util.ForgeDirection.*;
+
+public class BlockScorchfire extends BlockBase {
 	
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-	public BlockFrostfire() {
+	public BlockScorchfire() {
 		super(Material.fire);
 		
 		// Properties:
-		this.group = ArcticMobs.group;
-		this.blockName = "frostfire";
+		this.group = DemonMobs.group;
+		this.blockName = "scorchfire";
 		this.setup();
 		
 		// Stats:
-		this.tickRate = ConfigBase.getConfig(this.group, "general").getBool("Features", "Enable Frostfire", true) ? 200 : 1;
+		this.tickRate = ConfigBase.getConfig(this.group, "general").getBool("Features", "Enable Scorchfire", true) ? 200 : 1;
 		this.removeOnTick = false;
 		this.loopTicks = true;
 		this.canBeCrushed = true;
@@ -59,6 +52,7 @@ public class BlockFrostfire extends BlockBase {
 		this.isOpaque = false;
 		
 		this.setLightOpacity(1);
+        this.setLightLevel(0.8F);
 	}
     
     
@@ -75,25 +69,33 @@ public class BlockFrostfire extends BlockBase {
     @Override
     public void updateTick(World world, int x, int y, int z, Random random) {
     	// ========== Main Fire Logic ==========
-		if(!ConfigBase.getConfig(this.group, "general").getBool("Features", "Enable Frostfire"))
-    		world.setBlockToAir(x, y, z);
+		// If Scorchfire is disabled, use regular fire instead:
+		if(!ConfigBase.getConfig(this.group, "general").getBool("Features", "Enable Scorchfire"))
+    		world.setBlock(x, y, z, Blocks.fire);
+		
+		// Remove if the doFireTick rule is false:
+		if(!world.getGameRules().getGameRuleBooleanValue("doFireTick")) {
+			world.setBlockToAir(x, y, z);
+			return;
+		}
 		
 		Block base = world.getBlock(x, y - 1, z);
-		
-		// Pack Ice:
-		if(base == Blocks.ice) {
-			 world.setBlock(x, y - 1, z, Blocks.packed_ice);
-		}
 		
 		// Take Over Replaceable Blocks:
 		if(base == Blocks.snow_layer || base == Blocks.tallgrass) {
 			 world.setBlock(x, y - 1, z, this);
 		}
 		
-        boolean onFireFuel = (base == Blocks.snow);
+        boolean onFireFuel = (base != null && base.isFireSource(world, x, y - 1, z, ForgeDirection.UP));
 
         if(!this.canPlaceBlockAt(world, x, y, z)) {
             world.setBlockToAir(x, y, z);
+        }
+        
+        // Distinguish In Rain:
+        if(!onFireFuel && world.isRaining() && (world.canLightningStrikeAt(x, y, z) || world.canLightningStrikeAt(x - 1, y, z) || world.canLightningStrikeAt(x + 1, y, z) || world.canLightningStrikeAt(x, y, z - 1) || world.canLightningStrikeAt(x, y, z + 1))) {
+            world.setBlockToAir(x, y, z);
+            return;
         }
         
         
@@ -107,16 +109,16 @@ public class BlockFrostfire extends BlockBase {
             world.setBlockMetadataWithNotify(x, y, z, metadata + random.nextInt(3) / 2, 4);
         }
         
-		// Turn to air if no neighbor blocks can burn and this block is not on a solid block/water.
+		// Turn to air if no neighbor blocks can burn and this block is not on a solid block.
         if(!onFireFuel && !this.canNeighborBurn(world, x, y, z)) {
-            if((!world.doesBlockHaveSolidTopSurface(world, x, y - 1, z) && base != Blocks.water) || metadata > 3) {
+            if(!world.doesBlockHaveSolidTopSurface(world, x, y - 1, z) || metadata > 3) {
                 world.setBlockToAir(x, y, z);
                 return;
             }
         }
         
         // Random Chance of Fizzling Out (Uses metadata):
-        if(!onFireFuel && metadata == 15 && random.nextInt(4) == 0) {
+        if(!onFireFuel && !this.canBlockBurn(world, x, y - 1, z, ForgeDirection.UP) && metadata == 15 && random.nextInt(4) == 0) {
             world.setBlockToAir(x, y, z);
             return;
         }
@@ -124,6 +126,8 @@ public class BlockFrostfire extends BlockBase {
         // Attempt To Spread:
         boolean humid = world.isBlockHighHumidity(x, y, z);
         byte humdity = 0;
+        if(humid)
+        	humdity = -50;
         int burnChance = 150;
         int burnChanceSide = burnChance + 50;
         this.tryCatchFire(world, x + 1, y, z, burnChanceSide + humdity, random, metadata, ForgeDirection.WEST );
@@ -149,9 +153,9 @@ public class BlockFrostfire extends BlockBase {
                             int j2 = (i2 + 40 + world.difficultySetting.getDifficultyId() * 7) / (metadata + 30);
 
                             if(humid)
-                                j2 *= 2;
+                                j2 /= 2;
 
-                            if(j2 > 0 && random.nextInt(l1) <= j2) {
+                            if(j2 > 0 && random.nextInt(l1) <= j2 && (!world.isRaining() || !world.canLightningStrikeAt(i1, k1, j1)) && !world.canLightningStrikeAt(i1 - 1, k1, z) && !world.canLightningStrikeAt(i1 + 1, k1, j1) && !world.canLightningStrikeAt(i1, k1, j1 - 1) && !world.canLightningStrikeAt(i1, k1, j1 + 1)) {
                                 int k2 = metadata + random.nextInt(5) / 4;
 
                                 if(k2 > 15) {
@@ -180,16 +184,7 @@ public class BlockFrostfire extends BlockBase {
 	// ==================================================
     // ========== Can Block Burn ==========
     public boolean canBlockBurn(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
-        Block block = world.getBlock(x, y, z);
-    	if(block == Blocks.snow)
-        	return true;
-        if(block == Blocks.snow_layer && face != ForgeDirection.UP && face != ForgeDirection.DOWN)
-        	return true;
-        if(block instanceof BlockIce)
-        	return true;
-        if(block instanceof BlockPackedIce)
-        	return true;
-    	return false;
+        return world.getBlock(x, y, z).isFlammable(world, x, y, z, face);
     }
     
     // ========== Can Neighbor Burn ==========
@@ -207,14 +202,16 @@ public class BlockFrostfire extends BlockBase {
         int j1 = 0;
         Block block = world.getBlock(x, y, z);
         if(block != null) {
-            j1 = 0;
+            j1 = block.getFlammability(world, x, y, z, face);
         }
 
         if(random.nextInt(chance) < j1 / 8) {
-            if(random.nextInt(metadata + 10) < 5) {
+            boolean flag = world.getBlock(x, y, z) == Blocks.tnt;
+
+            if (random.nextInt(metadata + 10) < 5 && !world.canLightningStrikeAt(x, y, z)) {
                 int k1 = metadata + random.nextInt(5) / 4;
 
-                if(k1 > 15) {
+                if (k1 > 15) {
                     k1 = 15;
                 }
 
@@ -222,6 +219,10 @@ public class BlockFrostfire extends BlockBase {
             }
             else {
             	world.setBlockToAir(x, y, z);
+            }
+
+            if(flag) {
+                Blocks.tnt.onBlockDestroyedByPlayer(world, x, y, z, 1);
             }
         }
     }
@@ -244,11 +245,7 @@ public class BlockFrostfire extends BlockBase {
 
     // ========== Get Chance To Encoure Fire ==========
     public int getChanceToEncourageFire(IBlockAccess world, int x, int y, int z, int oldChance, ForgeDirection face) {
-    	int newChance = 0;
-    	if(world.getBlock(x, y, z) == Blocks.snow)
-    		newChance = 50;
-    	if(this.canBlockBurn(world, x, y, z, face))
-    		newChance = 10;
+        int newChance = world.getBlock(x, y, z).getFireSpreadSpeed(world, x, y, z, face);
         return (newChance > oldChance ? newChance : oldChance);
     }
     
@@ -258,7 +255,7 @@ public class BlockFrostfire extends BlockBase {
 	// ==================================================
 	@Override
 	public Item getItemDropped(int metadata, Random random, int fortune) {
-		return ObjectManager.getItem("tundracharge");
+		return ObjectManager.getItem("ScorchfireCharge");
 	}
 	
 	@Override
@@ -278,17 +275,22 @@ public class BlockFrostfire extends BlockBase {
     @Override
     public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
 		super.onEntityCollidedWithBlock(world, x, y, z, entity);
-		if(entity instanceof EntityItem) // Frostfire shouldn't destroy items.
-    		return;
-		PotionEffect effectSlowness = new PotionEffect(Potion.moveSlowdown.id, 5 * 20, 0);
-		PotionEffect effectHunger = new PotionEffect(Potion.hunger.id, 5 * 20, 0); // Not applied, used to check for immunity only.
-		if(entity instanceof EntityLivingBase) {
-			EntityLivingBase entityLiving = (EntityLivingBase)entity;
-			if(!entityLiving.isPotionApplicable(effectSlowness) && !entityLiving.isPotionApplicable(effectHunger))
-				return; // Entities immune to both are normally arctic mobs.
-			entityLiving.addPotionEffect(effectSlowness);
-		}
-    	entity.attackEntityFrom(DamageSource.magic, 2);
+		if(entity instanceof EntityItem && ((EntityItem)entity).getEntityItem() != null)
+    		if(((EntityItem)entity).getEntityItem().getItem() == ObjectManager.getItem("scorchfirecharge"))
+    			return;
+
+        PotionEffect effectPenetration = new PotionEffect(ObjectManager.getPotionEffect("penetration").id, 5 * 20, 0);
+        if(entity instanceof EntityLivingBase) {
+            EntityLivingBase entityLiving = (EntityLivingBase)entity;
+            if(!entityLiving.isPotionApplicable(effectPenetration))
+                return;
+            entityLiving.addPotionEffect(effectPenetration);
+        }
+
+		if(entity.isImmuneToFire())
+			return;
+    	entity.attackEntityFrom(DamageSource.lava, 1);
+		entity.setFire(3);
 	}
     
     
@@ -299,7 +301,7 @@ public class BlockFrostfire extends BlockBase {
     @Override
     public void randomDisplayTick(World world, int x, int y, int z, Random random) {
     	if(random.nextInt(24) == 0)
-        	world.playSound((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), AssetManager.getSound("frostfire"), 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F, false);
+        	world.playSound((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), AssetManager.getSound("scorchfire"), 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F, false);
     	
         int l;
         float f;
@@ -310,8 +312,9 @@ public class BlockFrostfire extends BlockBase {
             f = (float)x + random.nextFloat();
             f1 = (float)y + random.nextFloat() * 0.5F;
             f2 = (float)z + random.nextFloat();
-            //TODO EntityParticle particle = new EntityParticle(world, f, f1, f2, "frostfire", this.mod);
-            world.spawnParticle("snowshovel", (double)f, (double)f1, (double)f2, 0.0D, 0.0D, 0.0D);
+            //TODO EntityParticle particle = new EntityParticle(world, f, f1, f2, "scorchfire", this.mod);
+            world.spawnParticle("flame", (double)f, (double)f1, (double)f2, 0.0D, 0.0D, 0.0D);
+            world.spawnParticle("largesmoke", (double)f, (double)f1, (double)f2, 0.0D, 0.0D, 0.0D);
         }
     }
     
@@ -323,7 +326,7 @@ public class BlockFrostfire extends BlockBase {
     @SideOnly(Side.CLIENT)
     @Override
     public void registerBlockIcons(IIconRegister iconRegister) {
-    	AssetManager.addIconGroup(blockName, this.group, new String[] {"frostfire_layer_0", "frostfire_layer_1"}, iconRegister);
+    	AssetManager.addIconGroup(blockName, this.group, new String[] {"scorchfire_layer_0", "scorchfire_layer_1"}, iconRegister);
     }
     
     // ========== Get Icon from Side and Meta ==========

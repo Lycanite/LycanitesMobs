@@ -1,34 +1,5 @@
 package lycanite.lycanitesmobs.infernomobs;
 
-import lycanite.lycanitesmobs.LycanitesMobs;
-import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
-import lycanite.lycanitesmobs.api.info.GroupInfo;
-import lycanite.lycanitesmobs.api.info.MobInfo;
-import lycanite.lycanitesmobs.api.info.ObjectLists;
-import lycanite.lycanitesmobs.api.item.ItemCustomFood;
-import lycanite.lycanitesmobs.infernomobs.block.BlockFluidPureLava;
-import lycanite.lycanitesmobs.infernomobs.dispenser.DispenserBehaviorEmber;
-import lycanite.lycanitesmobs.infernomobs.dispenser.DispenserBehaviorMagma;
-import lycanite.lycanitesmobs.infernomobs.entity.EntityCephignis;
-import lycanite.lycanitesmobs.infernomobs.entity.EntityCinder;
-import lycanite.lycanitesmobs.infernomobs.entity.EntityEmber;
-import lycanite.lycanitesmobs.infernomobs.entity.EntityLobber;
-import lycanite.lycanitesmobs.infernomobs.entity.EntityMagma;
-import lycanite.lycanitesmobs.infernomobs.item.ItemBucketPureLava;
-import lycanite.lycanitesmobs.infernomobs.item.ItemEmberCharge;
-import lycanite.lycanitesmobs.infernomobs.item.ItemInfernoEgg;
-import lycanite.lycanitesmobs.infernomobs.item.ItemMagmaCharge;
-import lycanite.lycanitesmobs.infernomobs.item.ItemScepterEmber;
-import lycanite.lycanitesmobs.infernomobs.item.ItemScepterMagma;
-import net.minecraft.block.BlockDispenser;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -37,6 +8,29 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
+import lycanite.lycanitesmobs.AssetManager;
+import lycanite.lycanitesmobs.LycanitesMobs;
+import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
+import lycanite.lycanitesmobs.api.info.GroupInfo;
+import lycanite.lycanitesmobs.api.info.MobInfo;
+import lycanite.lycanitesmobs.api.info.ObjectLists;
+import lycanite.lycanitesmobs.api.item.ItemCustomFood;
+import lycanite.lycanitesmobs.infernomobs.block.BlockFluidPureLava;
+import lycanite.lycanitesmobs.infernomobs.block.BlockScorchfire;
+import lycanite.lycanitesmobs.infernomobs.dispenser.DispenserBehaviorEmber;
+import lycanite.lycanitesmobs.infernomobs.dispenser.DispenserBehaviorMagma;
+import lycanite.lycanitesmobs.infernomobs.dispenser.DispenserBehaviorScorchfire;
+import lycanite.lycanitesmobs.infernomobs.entity.*;
+import lycanite.lycanitesmobs.infernomobs.item.*;
+import net.minecraft.block.BlockDispenser;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 @Mod(modid = InfernoMobs.modid, name = InfernoMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid)
 public class InfernoMobs {
@@ -85,7 +79,14 @@ public class InfernoMobs {
 		ObjectManager.addItem("emberscepter", new ItemScepterEmber());
 		ObjectManager.addItem("magmacharge", new ItemMagmaCharge());
 		ObjectManager.addItem("magmascepter", new ItemScepterMagma());
+        ObjectManager.addItem("scorchfirecharge", new ItemScorchfireCharge());
+        ObjectManager.addItem("scorchfirescepter", new ItemScepterScorchfire());
+
 		ObjectManager.addItem("bucketpurelava", new ItemBucketPureLava());
+
+        // ========== Create Blocks ==========
+        AssetManager.addSound("scorchfire", group, "block.scorchfire");
+        ObjectManager.addBlock("scorchfire", new BlockScorchfire());
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("infernoegg"), new DispenserBehaviorMobEggCustom());
@@ -109,12 +110,19 @@ public class InfernoMobs {
 				.setSpawnWeight(4).setAreaLimit(6).setGroupLimits(1, 3).setDungeonWeight(0);
 		ObjectManager.addMob(newMob);
 
+        newMob = new MobInfo(group, "afrit", EntityAfrit.class, 0x110000, 0x773300)
+                .setPeaceful(false).setSummonable(false).setSummonCost(2).setDungeonLevel(1);
+        newMob.spawnInfo.setSpawnTypes("LAVA").setBlockCost(16)
+                .setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3);
+        ObjectManager.addMob(newMob);
+
 		
 		// ========== Create Projectiles ==========
 		ObjectManager.addProjectile("ember", EntityEmber.class, ObjectManager.getItem("embercharge"), new DispenserBehaviorEmber());
-		ObjectManager.addProjectile("magma", EntityMagma.class, ObjectManager.getItem("magmacharge"), new DispenserBehaviorMagma());
-		
-		// ========== Register Models ==========
+        ObjectManager.addProjectile("magma", EntityMagma.class, ObjectManager.getItem("magmacharge"), new DispenserBehaviorMagma());
+        ObjectManager.addProjectile("scorchfire", EntityScorchfireball.class, ObjectManager.getItem("scorchfirecharge"), new DispenserBehaviorScorchfire());
+
+        // ========== Register Models ==========
 		proxy.registerModels();
 	}
 	
@@ -162,6 +170,13 @@ public class InfernoMobs {
 				Character.valueOf('C'), ObjectManager.getItem("magmacharge"),
 				Character.valueOf('R'), Items.blaze_rod
 			}));
+
+        GameRegistry.addRecipe(new ShapedOreRecipe(
+                new ItemStack(ObjectManager.getItem("scorchfirescepter"), 1, 0),
+                new Object[] { "CCC", "CRC", "CRC",
+                        Character.valueOf('C'), ObjectManager.getItem("scorchfirecharge"),
+                        Character.valueOf('R'), Items.blaze_rod
+                }));
 
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
 				new ItemStack(ObjectManager.getItem("bucketpurelava"), 1, 0),

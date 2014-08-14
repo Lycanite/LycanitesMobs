@@ -187,12 +187,14 @@ public class EntityUvaraptor extends EntityCreatureRideable implements IGroupPre
     public float getStaminaRecoveryMax() {
     	return 1.0F;
     }
-    
-    
+
+
     // ==================================================
     //                     Equipment
     // ==================================================
+    @Override
     public int getNoBagSize() { return 0; }
+    @Override
     public int getBagSize() { return 10; }
     
     

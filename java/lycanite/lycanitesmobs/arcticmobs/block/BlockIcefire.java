@@ -1,14 +1,7 @@
 package lycanite.lycanitesmobs.arcticmobs.block;
 
-import static net.minecraftforge.common.util.ForgeDirection.DOWN;
-import static net.minecraftforge.common.util.ForgeDirection.EAST;
-import static net.minecraftforge.common.util.ForgeDirection.NORTH;
-import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
-import static net.minecraftforge.common.util.ForgeDirection.UP;
-import static net.minecraftforge.common.util.ForgeDirection.WEST;
-
-import java.util.Random;
-
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ClientProxy;
 import lycanite.lycanitesmobs.ObjectManager;
@@ -32,24 +25,26 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockFrostfire extends BlockBase {
-	
+import java.util.Random;
+
+import static net.minecraftforge.common.util.ForgeDirection.*;
+
+public class BlockIcefire extends BlockBase {
+
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-	public BlockFrostfire() {
+	public BlockIcefire() {
 		super(Material.fire);
 		
 		// Properties:
 		this.group = ArcticMobs.group;
-		this.blockName = "frostfire";
+		this.blockName = "icefire";
 		this.setup();
 		
 		// Stats:
-		this.tickRate = ConfigBase.getConfig(this.group, "general").getBool("Features", "Enable Frostfire", true) ? 200 : 1;
+		this.tickRate = ConfigBase.getConfig(this.group, "general").getBool("Features", "Enable Icefire", true) ? 200 : 1;
 		this.removeOnTick = false;
 		this.loopTicks = true;
 		this.canBeCrushed = true;
@@ -75,7 +70,7 @@ public class BlockFrostfire extends BlockBase {
     @Override
     public void updateTick(World world, int x, int y, int z, Random random) {
     	// ========== Main Fire Logic ==========
-		if(!ConfigBase.getConfig(this.group, "general").getBool("Features", "Enable Frostfire"))
+		if(!ConfigBase.getConfig(this.group, "general").getBool("Features", "Enable Icefire"))
     		world.setBlockToAir(x, y, z);
 		
 		Block base = world.getBlock(x, y - 1, z);
@@ -258,7 +253,7 @@ public class BlockFrostfire extends BlockBase {
 	// ==================================================
 	@Override
 	public Item getItemDropped(int metadata, Random random, int fortune) {
-		return ObjectManager.getItem("tundracharge");
+		return ObjectManager.getItem("icefirecharge");
 	}
 	
 	@Override
@@ -278,10 +273,10 @@ public class BlockFrostfire extends BlockBase {
     @Override
     public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
 		super.onEntityCollidedWithBlock(world, x, y, z, entity);
-		if(entity instanceof EntityItem) // Frostfire shouldn't destroy items.
+		if(entity instanceof EntityItem) // Icefire shouldn't destroy items.
     		return;
 		PotionEffect effectSlowness = new PotionEffect(Potion.moveSlowdown.id, 5 * 20, 0);
-		PotionEffect effectHunger = new PotionEffect(Potion.hunger.id, 5 * 20, 0); // Not applied, used to check for immunity only.
+		PotionEffect effectHunger = new PotionEffect(Potion.hunger.id, 5 * 20, 0); // No applied, used to check for immunity only.
 		if(entity instanceof EntityLivingBase) {
 			EntityLivingBase entityLiving = (EntityLivingBase)entity;
 			if(!entityLiving.isPotionApplicable(effectSlowness) && !entityLiving.isPotionApplicable(effectHunger))
@@ -299,7 +294,7 @@ public class BlockFrostfire extends BlockBase {
     @Override
     public void randomDisplayTick(World world, int x, int y, int z, Random random) {
     	if(random.nextInt(24) == 0)
-        	world.playSound((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), AssetManager.getSound("frostfire"), 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F, false);
+        	world.playSound((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), AssetManager.getSound("icefire"), 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F, false);
     	
         int l;
         float f;
@@ -310,7 +305,7 @@ public class BlockFrostfire extends BlockBase {
             f = (float)x + random.nextFloat();
             f1 = (float)y + random.nextFloat() * 0.5F;
             f2 = (float)z + random.nextFloat();
-            //TODO EntityParticle particle = new EntityParticle(world, f, f1, f2, "frostfire", this.mod);
+            //TODO EntityParticle particle = new EntityParticle(world, f, f1, f2, "icefire", this.mod);
             world.spawnParticle("snowshovel", (double)f, (double)f1, (double)f2, 0.0D, 0.0D, 0.0D);
         }
     }
@@ -323,7 +318,7 @@ public class BlockFrostfire extends BlockBase {
     @SideOnly(Side.CLIENT)
     @Override
     public void registerBlockIcons(IIconRegister iconRegister) {
-    	AssetManager.addIconGroup(blockName, this.group, new String[] {"frostfire_layer_0", "frostfire_layer_1"}, iconRegister);
+    	AssetManager.addIconGroup(blockName, this.group, new String[] {"icefire_layer_0", "icefire_layer_1"}, iconRegister);
     }
     
     // ========== Get Icon from Side and Meta ==========

@@ -1,5 +1,14 @@
 package lycanite.lycanitesmobs.arcticmobs;
 
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
@@ -12,24 +21,13 @@ import lycanite.lycanitesmobs.api.item.ItemCustomFood;
 import lycanite.lycanitesmobs.arcticmobs.block.BlockFrostCloud;
 import lycanite.lycanitesmobs.arcticmobs.block.BlockFrostfire;
 import lycanite.lycanitesmobs.arcticmobs.block.BlockFrostweb;
+import lycanite.lycanitesmobs.arcticmobs.block.BlockIcefire;
 import lycanite.lycanitesmobs.arcticmobs.dispenser.DispenserBehaviorFrostbolt;
 import lycanite.lycanitesmobs.arcticmobs.dispenser.DispenserBehaviorFrostweb;
+import lycanite.lycanitesmobs.arcticmobs.dispenser.DispenserBehaviorIcefire;
 import lycanite.lycanitesmobs.arcticmobs.dispenser.DispenserBehaviorTundra;
-import lycanite.lycanitesmobs.arcticmobs.entity.EntityFrostbolt;
-import lycanite.lycanitesmobs.arcticmobs.entity.EntityFrostweaver;
-import lycanite.lycanitesmobs.arcticmobs.entity.EntityFrostweb;
-import lycanite.lycanitesmobs.arcticmobs.entity.EntityReiver;
-import lycanite.lycanitesmobs.arcticmobs.entity.EntityTundra;
-import lycanite.lycanitesmobs.arcticmobs.entity.EntityWendigo;
-import lycanite.lycanitesmobs.arcticmobs.entity.EntityYeti;
-import lycanite.lycanitesmobs.arcticmobs.item.ItemArcticEgg;
-import lycanite.lycanitesmobs.arcticmobs.item.ItemFrostboltCharge;
-import lycanite.lycanitesmobs.arcticmobs.item.ItemFrostwebCharge;
-import lycanite.lycanitesmobs.arcticmobs.item.ItemFrostyFur;
-import lycanite.lycanitesmobs.arcticmobs.item.ItemScepterFrostbolt;
-import lycanite.lycanitesmobs.arcticmobs.item.ItemScepterFrostweb;
-import lycanite.lycanitesmobs.arcticmobs.item.ItemScepterTundra;
-import lycanite.lycanitesmobs.arcticmobs.item.ItemTundraCharge;
+import lycanite.lycanitesmobs.arcticmobs.entity.*;
+import lycanite.lycanitesmobs.arcticmobs.item.*;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityCreeper;
@@ -43,15 +41,6 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = ArcticMobs.modid, name = ArcticMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid)
 public class ArcticMobs {
@@ -103,6 +92,8 @@ public class ArcticMobs {
 		ObjectManager.addItem("frostwebscepter", new ItemScepterFrostweb());
 		ObjectManager.addItem("tundracharge", new ItemTundraCharge());
 		ObjectManager.addItem("tundrascepter", new ItemScepterTundra());
+        ObjectManager.addItem("icefirecharge", new ItemIcefireCharge());
+        ObjectManager.addItem("icefirescepter", new ItemScepterIcefire());
 
 		// ========== Create Blocks ==========
 		ObjectManager.addBlock("frostweb", new BlockFrostweb());
@@ -112,6 +103,9 @@ public class ArcticMobs {
 		
 		AssetManager.addSound("frostfire", group, "block.frostfire");
 		ObjectManager.addBlock("frostfire", new BlockFrostfire());
+
+        AssetManager.addSound("icefire", group, "block.icefire");
+        ObjectManager.addBlock("icefire", new BlockIcefire());
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("arcticegg"), new DispenserBehaviorMobEggCustom());
@@ -140,14 +134,21 @@ public class ArcticMobs {
 		newMob.spawnInfo.setSpawnTypes("MONSTER")
 				.setSpawnWeight(4).setAreaLimit(1).setGroupLimits(1, 1);
 		ObjectManager.addMob(newMob);
+
+        newMob = new MobInfo(group, "arix", EntityArix.class, 0xDDDDFF, 0x9999FF)
+                .setPeaceful(false).setSummonable(false).setSummonCost(2).setDungeonLevel(1);
+        newMob.spawnInfo.setSpawnTypes("MONSTER")
+                .setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3);
+        ObjectManager.addMob(newMob);
 		
 		// ========== Create Projectiles ==========
 		ObjectManager.addProjectile("frostbolt", EntityFrostbolt.class, ObjectManager.getItem("frostboltcharge"), new DispenserBehaviorFrostbolt());
 		ObjectManager.addProjectile("frostweb", EntityFrostweb.class, ObjectManager.getItem("frostwebcharge"), new DispenserBehaviorFrostweb());
-		ObjectManager.addProjectile("tundra", EntityTundra.class, ObjectManager.getItem("tundracharge"), new DispenserBehaviorTundra());
-		
-		
-		// ========== Register Models ==========
+        ObjectManager.addProjectile("tundra", EntityTundra.class, ObjectManager.getItem("tundracharge"), new DispenserBehaviorTundra());
+        ObjectManager.addProjectile("icefireball", EntityIcefireball.class, ObjectManager.getItem("icefirecharge"), new DispenserBehaviorIcefire());
+
+
+        // ========== Register Models ==========
 		proxy.registerModels();
 	}
 	
@@ -210,6 +211,13 @@ public class ArcticMobs {
 				Character.valueOf('S'), ObjectManager.getItem("frostyfur"),
 				Character.valueOf('R'), Items.blaze_rod
 			}));
+
+        GameRegistry.addRecipe(new ShapedOreRecipe(
+                new ItemStack(ObjectManager.getItem("icefirescepter"), 1, 0),
+                new Object[] { "CCC", "CRC", "CRC",
+                        Character.valueOf('C'), ObjectManager.getItem("icefirecharge"),
+                        Character.valueOf('R'), Items.blaze_rod
+                }));
 		
 		// ========== Smelting ==========
 		GameRegistry.addSmelting(ObjectManager.getItem("yetimeatraw"), new ItemStack(ObjectManager.getItem("yetimeatcooked"), 1), 0.5f);

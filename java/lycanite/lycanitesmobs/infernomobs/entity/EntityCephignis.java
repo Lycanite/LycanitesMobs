@@ -170,7 +170,8 @@ public class EntityCephignis extends EntityCreatureAgeable implements IAnimals, 
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotionID() == Potion.resistance.id && potionEffect.getAmplifier() < 0) return false;
+        if(ObjectManager.getPotionEffect("Penetration") != null)
+            if(potionEffect.getPotionID() == ObjectManager.getPotionEffect("Penetration").id) return false;
         super.isPotionApplicable(potionEffect);
         return true;
     }

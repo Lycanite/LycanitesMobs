@@ -1,6 +1,7 @@
 package lycanite.lycanitesmobs.infernomobs;
 
 import lycanite.lycanitesmobs.AssetManager;
+import lycanite.lycanitesmobs.infernomobs.model.ModelAfrit;
 import lycanite.lycanitesmobs.infernomobs.model.ModelCephignis;
 import lycanite.lycanitesmobs.infernomobs.model.ModelCinder;
 import lycanite.lycanitesmobs.infernomobs.model.ModelLobber;
@@ -18,5 +19,6 @@ public class ClientSubProxy extends CommonSubProxy {
 		AssetManager.addModel("cinder", new ModelCinder());
 		AssetManager.addModel("lobber", new ModelLobber());
 		AssetManager.addModel("cephignis", new ModelCephignis());
+        AssetManager.addModel("afrit", new ModelAfrit());
 	}
 }

@@ -47,6 +47,30 @@
         "category": "neutral",
         "sounds": [{"name": "entity/cephignis/death", "stream": false}]
     },
+    "entity.afrit.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/afrit/say", "stream": false}]
+    },
+    "entity.afrit.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/afrit/hurt", "stream": false}]
+    },
+    "entity.afrit.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/afrit/death", "stream": false}]
+    },
+    "entity.afrit.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/afrit/beg", "stream": false}]
+    },
+    "entity.afrit.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/afrit/tame", "stream": false}]
+    },
+    "entity.afrit.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/afrit/eat", "stream": false}]
+    },
     "projectile.ember": {
         "category": "ambient",
         "sounds": [{"name": "projectile/ember", "stream": false}]
@@ -54,5 +78,13 @@
     "projectile.magma": {
         "category": "ambient",
         "sounds": [{"name": "projectile/magma", "stream": false}]
+    },
+    "projectile.scorchfireball": {
+        "category": "ambient",
+        "sounds": [{"name": "projectile/scorchfireball", "stream": false}]
+    },
+    "block.scorchfire": {
+        "category": "block",
+        "sounds": [{"name": "block/scorchfire", "stream": false}]
     }
 }

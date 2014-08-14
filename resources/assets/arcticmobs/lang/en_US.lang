@@ -10,6 +10,8 @@ entity.arcticmobs.yeti.name=Yeti
 entity.arcticmobs.yeti.description=Large frosty mammals that like to eat the frozen vegetation of the arctic. They can be farmed using vegetables, but watch out for their frost clouds. Yeti milk is a delicacy!
 entity.arcticmobs.wendigo.name=Wendigo
 entity.arcticmobs.wendigo.description=Large icy beasts known for leaving a trail of Frostfire in their wake! They will also hurl Tundra Blasts which create Frostfire and Frost Clouds on impact.
+entity.arcticmobs.arix.name=Arix
+entity.arcticmobs.arix.description=Wicked frost imps normally found in very cold places. They throw balls of icefire which damage and slow enemies. Can be tamed making great pets!
 #
 # Items
 item.arcticspawn.name=Spawn
@@ -27,12 +29,16 @@ item.frostwebcharge.name=Frostweb Charge
 item.frostwebcharge.description=Use to throw a frosty web. Can also be fired from a dispenser.
 item.tundracharge.name=Tundra Charge
 item.tundracharge.description=Use to launch a ball of frostfire. Can also be fired from a dispenser.
+item.icefirecharge.name=Icefire Charge
+item.icefirecharge.description=Use to launch a ball of icefire. Can also be fired from a dispenser.
 item.frostboltscepter.name=Frostbolt Scepter
 item.frostboltscepter.description=Mid Damage, Rapid Fire, Applies Move Slowdown
 item.frostwebscepter.name=Frostweb Scepter
 item.frostwebscepter.description=Low Damage, Rapid Fire, Applies Move Slowdown, Places Frostwebs
 item.tundrascepter.name=Tundra Scepter
 item.tundrascepter.description=High Damage, Charge Up, Places Frostfire and Frostclouds
+item.icefirescepter.name=Icefire Scepter
+item.icefirescepter.description=Low Damage, Rapid Fire, Places Icefire
 #
 # Blocks
 tile.frostweb.name=Frostweb
@@ -40,4 +46,6 @@ tile.frostweb.description=A web made of icy cold silk, temporary.
 tile.frostcloud.name=Frostcloud
 tile.frostcloud.description=A small snow cloud that applies movement slowdown and hunger.
 tile.frostfire.name=Frostfire
-tile.frostfire.description=A magical flame that superfreezes, will cause damage and apply movement slowdown.
+tile.frostfire.description=A magical flame that superfreezes, will cause damage and apply movement slowdown. Can spawn Reivers.
+tile.icefire.name=Icefire
+tile.icefire.description=A magical flame that freezes, will cause damage and apply movement slowdown.

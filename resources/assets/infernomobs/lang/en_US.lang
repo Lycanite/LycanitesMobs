@@ -8,6 +8,8 @@ entity.infernomobs.lobber.name=Lobber
 entity.infernomobs.lobber.description=Large lava golems, Lobbers lurk within large lakes of lava and will throw lava at their target.
 entity.infernomobs.cephignis.name=Cephignis
 entity.infernomobs.cephignis.description=Large fish that live in lava! Cephignis can be farmed using coal or charcoal!
+entity.infernomobs.afrit.name=Afrit
+entity.infernomobs.afrit.description=Wicked fire imps normally found bathing in lava. They throw balls of scorchfire which ignites and applies penetration. Can be tamed making great pets!
 #
 # Items
 item.infernospawn.name=Spawn
@@ -23,9 +25,15 @@ item.magmacharge.name=Magma Charge
 item.magmacharge.description=Use to throw a ball of lava! Can also be fired from a dispenser.
 item.magmascepter.name=Magma Scepter
 item.magmascepter.description=High Damage, Charge Up, Applies Fire, Places Lava
+item.scorchfirecharge.name=Scorchfire Charge
+item.scorchfirecharge.description=Use to throw a ball of scorchfire. Can also be fired from a dispenser.
+item.scorchfirescepter.name=Scorchfire Scepter
+item.scorchfirescepter.description=Low Damage, Rapid Fire, Applies Fire, Places Scorchfire
 item.bucketpurelava.name=Pure Lava Bucket
 item.bucketpurelava.description=Clearer that regular lava, flows slightly faster and no inferno mobs spawn in this. Can be renewed like water.
 #
 # Blocks
 tile.purelava.name=Pure Lava
 tile.purelava.description=Clearer that regular lava, flows slightly faster and no inferno mobs spawn in this. Can be renewed like water.
+tile.scorchfire.name=Scorchfire
+tile.scorchfire.description=An enchanted fire, not as hot as normal fire but it applies penetration, increasing the damage taken.

@@ -79,6 +79,30 @@
         "category": "hostile",
         "sounds": [{"name": "entity/wendigo/step", "stream": false}]
     },
+    "entity.arix.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/arix/say", "stream": false}]
+    },
+    "entity.arix.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/arix/hurt", "stream": false}]
+    },
+    "entity.arix.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/arix/death", "stream": false}]
+    },
+    "entity.arix.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/arix/beg", "stream": false}]
+    },
+    "entity.arix.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/arix/tame", "stream": false}]
+    },
+    "entity.arix.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/arix/eat", "stream": false}]
+    },
     "projectile.frostbolt": {
         "category": "ambient",
 	"sounds": [{"name": "projectile/frostbolt", "stream": false}]
@@ -91,6 +115,10 @@
         "category": "ambient",
         "sounds": [{"name": "projectile/tundra", "stream": false}]
     },
+    "projectile.scorchfireball": {
+        "category": "ambient",
+        "sounds": [{"name": "projectile/scorchfireball", "stream": false}]
+    },
     "block.frostcloud": {
         "category": "block",
         "sounds": [{"name": "block/frostcloud", "stream": false}]
@@ -98,5 +126,9 @@
     "block.frostfire": {
         "category": "block",
         "sounds": [{"name": "block/frostfire", "stream": false}]
+    },
+    "block.icefire": {
+        "category": "block",
+        "sounds": [{"name": "block/icefire", "stream": false}]
     }
 }

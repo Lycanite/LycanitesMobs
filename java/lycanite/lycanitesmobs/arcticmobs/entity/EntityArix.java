@@ -1,10 +1,23 @@
 package lycanite.lycanitesmobs.arcticmobs.entity;
 
+import java.util.HashMap;
+
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
-import lycanite.lycanitesmobs.api.entity.ai.*;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackRanged;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowOwner;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerAttack;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerRevenge;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerThreats;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAITempt;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -19,13 +32,11 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-import java.util.HashMap;
-
 public class EntityArix extends EntityCreatureTameable implements IMob {
 
     public boolean flightMode = true;
     public int flightToggleTime = 0;
-    public int flightToggleTimeMax = 100;
+    public int flightToggleTimeMax = 200;
 
     // ==================================================
  	//                    Constructor
@@ -39,6 +50,7 @@ public class EntityArix extends EntityCreatureTameable implements IMob {
         this.experience = 5;
         this.spawnsInDarkness = true;
         this.hasAttackSound = false;
+        this.flySoundSpeed = 20; 
         
         this.eggName = "ArcticEgg";
         
@@ -48,7 +60,7 @@ public class EntityArix extends EntityCreatureTameable implements IMob {
         
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(80).setRange(14.0F).setMinChaseDistance(5.0F).setChaseTime(-1));
+        this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(80).setRange(14.0F).setMinChaseDistance(5.0F).setChaseTime(-1).setCheckSight(false));
         this.tasks.addTask(3, this.aiSit);
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
         this.tasks.addTask(5, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("arixtreat"))).setTemptDistanceMin(4.0D));
@@ -104,8 +116,21 @@ public class EntityArix extends EntityCreatureTameable implements IMob {
                 this.flightToggleTime = 0;
             if(this.flightToggleTime++ >= this.flightToggleTimeMax) {
                 this.flightToggleTime = 0;
-                if(this.getRNG().nextDouble() >= 0.8D)
+                if(this.getRNG().nextBoolean()) {
+                	boolean solidBeneath = false;
+                	int searchX = (int)Math.floor(this.posX);
+                	int searchY = (int)Math.floor(this.posY) + 1;
+                	int searchZ = (int)Math.floor(this.posZ);
+                	while(searchY > 0) {
+                		Block searchBlock = this.worldObj.getBlock(searchX, searchY, searchZ);
+                		if(searchBlock != null) {
+                			solidBeneath = this.worldObj.doesBlockHaveSolidTopSurface(this.worldObj, searchX, searchY, searchZ);
+                			break;
+                		}
+                		searchY--;
+                	}
                     this.flightMode = !this.flightMode;
+                }
             }
         }
         

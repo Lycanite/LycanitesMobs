@@ -120,7 +120,7 @@ public class ForestMobs {
 
         newMob = new MobInfo(group, "spriggan", EntitySpriggan.class, 0x997722, 0x008844)
                 .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0);
-        newMob.spawnInfo.setSpawnTypes("MONSTER")
+        newMob.spawnInfo.setSpawnTypes("MONSTER, CROP")
                 .setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3);
         ObjectManager.addMob(newMob);
 

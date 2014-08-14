@@ -30,6 +30,7 @@ public class EntityAIAttackRanged extends EntityAIBase {
     private float minChaseDistance = 2.0F;
     private float flyingHeight = 2.0F;
     private boolean longMemory = true;
+    private boolean checkSight = true;
     public boolean enabled = true;
     
     // ==================================================
@@ -50,6 +51,10 @@ public class EntityAIAttackRanged extends EntityAIBase {
     }
     public EntityAIAttackRanged setLongMemory(boolean setLongMemory) {
     	this.longMemory = setLongMemory;
+    	return this;
+    }
+    public EntityAIAttackRanged setCheckSight(boolean setCheckSight) {
+    	this.checkSight = setCheckSight;
     	return this;
     }
     public EntityAIAttackRanged setRateClose(int rate) {
@@ -208,7 +213,7 @@ public class EntityAIAttackRanged extends EntityAIBase {
         // Fire Projectile:
         if(!this.attackOnCooldown) {
 	        if(--this.attackTime == 0) {
-	            if(distance > (double)this.attackDistance || !hasSight)
+	            if(distance > (double)this.attackDistance || (this.checkSight && !hasSight))
 	                return;
 	
 	            rangeFactor = MathHelper.sqrt_double(distance) / this.range;

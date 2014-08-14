@@ -1,13 +1,20 @@
 package lycanite.lycanitesmobs.infernomobs.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import static net.minecraftforge.common.util.ForgeDirection.DOWN;
+import static net.minecraftforge.common.util.ForgeDirection.EAST;
+import static net.minecraftforge.common.util.ForgeDirection.NORTH;
+import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
+import static net.minecraftforge.common.util.ForgeDirection.UP;
+import static net.minecraftforge.common.util.ForgeDirection.WEST;
+
+import java.util.Random;
+
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ClientProxy;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.block.BlockBase;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
-import lycanite.lycanitesmobs.demonmobs.DemonMobs;
+import lycanite.lycanitesmobs.infernomobs.InfernoMobs;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -16,17 +23,14 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import java.util.Random;
-
-import static net.minecraftforge.common.util.ForgeDirection.*;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockScorchfire extends BlockBase {
 	
@@ -37,7 +41,7 @@ public class BlockScorchfire extends BlockBase {
 		super(Material.fire);
 		
 		// Properties:
-		this.group = DemonMobs.group;
+		this.group = InfernoMobs.group;
 		this.blockName = "scorchfire";
 		this.setup();
 		

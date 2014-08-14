@@ -71,6 +71,10 @@
         "category": "hostile",
         "sounds": [{"name": "entity/afrit/eat", "stream": false}]
     },
+    "entity.afrit.fly": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/afrit/fly", "stream": false}]
+    },
     "projectile.ember": {
         "category": "ambient",
         "sounds": [{"name": "projectile/ember", "stream": false}]

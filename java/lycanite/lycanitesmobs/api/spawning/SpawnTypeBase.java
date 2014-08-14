@@ -119,8 +119,17 @@ public class SpawnTypeBase {
 		rockSpawner.materials = new Material[] {Material.air};
 		rockSpawner.ignoreBiome = true;
 		rockSpawner.ignoreLight = true;
-		fireBlockSpawner.loadFromConfig();
+		rockSpawner.loadFromConfig();
         spawnTypes.add(rockSpawner);
+		
+		// Crop Spawner:
+		SpawnTypeBase cropSpawner = new SpawnTypeCrop("Crop")
+				.setRate(0).setChance(0.01D).setRange(2).setBlockLimit(32).setMobLimit(1);
+		cropSpawner.materials = new Material[] {Material.air};
+		cropSpawner.ignoreBiome = true;
+		cropSpawner.ignoreLight = true;
+		cropSpawner.loadFromConfig();
+        spawnTypes.add(cropSpawner);
 		
 		// Storm Spawner:
 		SpawnTypeBase stormSpawner = new SpawnTypeStorm("Storm")

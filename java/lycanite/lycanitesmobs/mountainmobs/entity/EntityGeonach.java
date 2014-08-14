@@ -46,7 +46,7 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob {
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 4;
         this.experience = 5;
-        this.spawnsInDarkness = false;
+        this.spawnsInDarkness = true;
         this.hasAttackSound = true;
         
         this.eggName = "MountainEgg";

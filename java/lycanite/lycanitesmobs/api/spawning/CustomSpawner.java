@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.block.BlockCrops;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
@@ -61,6 +62,7 @@ public class CustomSpawner {
 	//                 Block Break Event
 	// ==================================================
     public List<SpawnTypeBase> oreBreakSpawnTypes = new ArrayList<SpawnTypeBase>();
+    public List<SpawnTypeBase> cropBreakSpawnTypes = new ArrayList<SpawnTypeBase>();
 	/** This uses the block break events to spawn mobs around blocks when they are destroyed. **/
 	@SubscribeEvent
 	public void onBlockBreak(BreakEvent event) {
@@ -70,7 +72,13 @@ public class CustomSpawner {
 		if(player.capabilities.isCreativeMode) // No Spawning for Creative Players
 			return;
 		
-		// Only Ore Blocks:
+		// Spawn On Block Break:
+		World world = event.world;
+		int x = (int)event.x;
+		int y = (int)event.y;
+		int z = (int)event.z + 1;
+
+		// Ore Blocks:
 		String blockName = event.block.getUnlocalizedName();
 		String[] blockNameParts = blockName.split("\\.");
 		boolean isOre = false;
@@ -80,19 +88,17 @@ public class CustomSpawner {
 				break;
 			}
 		}
-		if(!isOre) {
-			return;
+		if(isOre) {
+			for(SpawnTypeBase spawnType : this.oreBreakSpawnTypes) {
+				spawnType.spawnMobs(0, world, x, y, z);
+			}
 		}
 		
-		// Spawn On Ore Block Break:
-		World world = event.world;
-		int x = (int)event.x;
-		int y = (int)event.y;
-		int z = (int)event.z + 1;
-		
-		// Custom Mob Spawning:
-		for(SpawnTypeBase spawnType : this.oreBreakSpawnTypes) {
-			spawnType.spawnMobs(0, world, x, y, z);
+		// Crop Blocks:
+		if(event.block instanceof BlockCrops) {
+			for(SpawnTypeBase spawnType : this.cropBreakSpawnTypes) {
+				spawnType.spawnMobs(0, world, x, y, z);
+			}
 		}
 	}
 

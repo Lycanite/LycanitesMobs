@@ -1,13 +1,5 @@
 package lycanite.lycanitesmobs.infernomobs;
 
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
@@ -21,8 +13,21 @@ import lycanite.lycanitesmobs.infernomobs.block.BlockScorchfire;
 import lycanite.lycanitesmobs.infernomobs.dispenser.DispenserBehaviorEmber;
 import lycanite.lycanitesmobs.infernomobs.dispenser.DispenserBehaviorMagma;
 import lycanite.lycanitesmobs.infernomobs.dispenser.DispenserBehaviorScorchfire;
-import lycanite.lycanitesmobs.infernomobs.entity.*;
-import lycanite.lycanitesmobs.infernomobs.item.*;
+import lycanite.lycanitesmobs.infernomobs.entity.EntityAfrit;
+import lycanite.lycanitesmobs.infernomobs.entity.EntityCephignis;
+import lycanite.lycanitesmobs.infernomobs.entity.EntityCinder;
+import lycanite.lycanitesmobs.infernomobs.entity.EntityEmber;
+import lycanite.lycanitesmobs.infernomobs.entity.EntityLobber;
+import lycanite.lycanitesmobs.infernomobs.entity.EntityMagma;
+import lycanite.lycanitesmobs.infernomobs.entity.EntityScorchfireball;
+import lycanite.lycanitesmobs.infernomobs.item.ItemBucketPureLava;
+import lycanite.lycanitesmobs.infernomobs.item.ItemEmberCharge;
+import lycanite.lycanitesmobs.infernomobs.item.ItemInfernoEgg;
+import lycanite.lycanitesmobs.infernomobs.item.ItemMagmaCharge;
+import lycanite.lycanitesmobs.infernomobs.item.ItemScepterEmber;
+import lycanite.lycanitesmobs.infernomobs.item.ItemScepterMagma;
+import lycanite.lycanitesmobs.infernomobs.item.ItemScepterScorchfire;
+import lycanite.lycanitesmobs.infernomobs.item.ItemScorchfireCharge;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -31,6 +36,14 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = InfernoMobs.modid, name = InfernoMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid)
 public class InfernoMobs {
@@ -120,7 +133,7 @@ public class InfernoMobs {
 		// ========== Create Projectiles ==========
 		ObjectManager.addProjectile("ember", EntityEmber.class, ObjectManager.getItem("embercharge"), new DispenserBehaviorEmber());
         ObjectManager.addProjectile("magma", EntityMagma.class, ObjectManager.getItem("magmacharge"), new DispenserBehaviorMagma());
-        ObjectManager.addProjectile("scorchfire", EntityScorchfireball.class, ObjectManager.getItem("scorchfirecharge"), new DispenserBehaviorScorchfire());
+        ObjectManager.addProjectile("scorchfireball", EntityScorchfireball.class, ObjectManager.getItem("scorchfirecharge"), new DispenserBehaviorScorchfire());
 
         // ========== Register Models ==========
 		proxy.registerModels();

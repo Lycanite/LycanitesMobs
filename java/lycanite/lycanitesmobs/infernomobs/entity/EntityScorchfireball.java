@@ -1,7 +1,5 @@
 package lycanite.lycanitesmobs.infernomobs.entity;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
@@ -10,6 +8,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class EntityScorchfireball extends EntityProjectileBase {
 
@@ -118,7 +118,7 @@ public class EntityScorchfireball extends EntityProjectileBase {
  	// ==================================================
     @Override
     public String getLaunchSound() {
-    	return AssetManager.getSound("Scorchfireball");
+    	return AssetManager.getSound("scorchfireball");
     }
     
     

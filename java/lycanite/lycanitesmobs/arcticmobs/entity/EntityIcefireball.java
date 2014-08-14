@@ -1,7 +1,5 @@
 package lycanite.lycanitesmobs.arcticmobs.entity;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
@@ -112,6 +110,6 @@ public class EntityIcefireball extends EntityProjectileBase {
  	// ==================================================
     @Override
     public String getLaunchSound() {
-    	return AssetManager.getSound("Icefireball");
+    	return AssetManager.getSound("icefireball");
     }
 }

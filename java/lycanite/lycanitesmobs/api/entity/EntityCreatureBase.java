@@ -43,7 +43,6 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityMobSpawner;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
@@ -615,12 +614,14 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	for(int i = x - checkRange; i <= x + checkRange; i++)
         	for(int j = y - checkRange; j <= y + checkRange; j++)
             	for(int k = z - checkRange; k <= z + checkRange; k++) {
-            		TileEntity tileEntity = this.worldObj.getTileEntity(i, j, k);
-            		if(tileEntity != null && tileEntity instanceof TileEntityMobSpawner) {
-            			if(((TileEntityMobSpawner)tileEntity).func_145881_a().getEntityNameToSpawn().equals(ObjectManager.entityLists.get(this.group.filename).getEntityString(this))) //getSpawnerLogic()
-            				return true;
-            		}
-            			
+            		Block spawnerBlock = this.worldObj.getBlock(i, j, k);
+            		if(spawnerBlock != null) {
+	            		TileEntity tileEntity = this.worldObj.getTileEntity(i, j, k);
+	            		if(tileEntity != null && tileEntity instanceof TileEntityMobSpawner) {
+	            			if(((TileEntityMobSpawner)tileEntity).func_145881_a().getEntityNameToSpawn().equals(ObjectManager.entityLists.get(this.group.filename).getEntityString(this))) //getSpawnerLogic()
+	            				return true;
+	            		}
+	            	}	
             	}
     	return false;
     }

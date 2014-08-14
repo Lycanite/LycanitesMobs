@@ -103,6 +103,10 @@
         "category": "hostile",
         "sounds": [{"name": "entity/arix/eat", "stream": false}]
     },
+    "entity.arix.fly": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/arix/fly", "stream": false}]
+    },
     "projectile.frostbolt": {
         "category": "ambient",
 	"sounds": [{"name": "projectile/frostbolt", "stream": false}]
@@ -115,9 +119,9 @@
         "category": "ambient",
         "sounds": [{"name": "projectile/tundra", "stream": false}]
     },
-    "projectile.scorchfireball": {
+    "projectile.icefireball": {
         "category": "ambient",
-        "sounds": [{"name": "projectile/scorchfireball", "stream": false}]
+        "sounds": [{"name": "projectile/icefireball", "stream": false}]
     },
     "block.frostcloud": {
         "category": "block",

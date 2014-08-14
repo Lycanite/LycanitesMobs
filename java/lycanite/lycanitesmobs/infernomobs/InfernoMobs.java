@@ -8,6 +8,7 @@ import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
+import lycanite.lycanitesmobs.api.item.ItemTreat;
 import lycanite.lycanitesmobs.infernomobs.block.BlockFluidPureLava;
 import lycanite.lycanitesmobs.infernomobs.block.BlockScorchfire;
 import lycanite.lycanitesmobs.infernomobs.dispenser.DispenserBehaviorEmber;
@@ -94,6 +95,8 @@ public class InfernoMobs {
 		ObjectManager.addItem("magmascepter", new ItemScepterMagma());
         ObjectManager.addItem("scorchfirecharge", new ItemScorchfireCharge());
         ObjectManager.addItem("scorchfirescepter", new ItemScepterScorchfire());
+
+		ObjectManager.addItem("afrittreat", new ItemTreat("afrittreat", group));
 
 		ObjectManager.addItem("bucketpurelava", new ItemBucketPureLava());
 
@@ -190,6 +193,13 @@ public class InfernoMobs {
                         Character.valueOf('C'), ObjectManager.getItem("scorchfirecharge"),
                         Character.valueOf('R'), Items.blaze_rod
                 }));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("afrittreat"), 1, 0),
+				new Object[] { "TTT", "BBT", "TTT",
+				Character.valueOf('T'), Items.gunpowder,
+				Character.valueOf('B'), Items.bone
+			}));
 
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
 				new ItemStack(ObjectManager.getItem("bucketpurelava"), 1, 0),

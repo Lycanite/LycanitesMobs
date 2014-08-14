@@ -234,8 +234,6 @@ public class EntityAfrit extends EntityCreatureTameable implements IMob {
     // ==================================================
     @Override
     public boolean isTamingItem(ItemStack itemstack) {
-        if(!this.isChild())
-            return false;
         return itemstack.getItem() == ObjectManager.getItem("afrittreat");
     }
 
@@ -255,6 +253,6 @@ public class EntityAfrit extends EntityCreatureTameable implements IMob {
     // ========== Healing Item ==========
     @Override
     public boolean isHealingItem(ItemStack testStack) {
-        return ObjectLists.inItemList("afrittreat", testStack);
+        return ObjectLists.inItemList("CookedMeat", testStack);
     }
 }

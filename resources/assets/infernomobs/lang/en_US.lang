@@ -31,6 +31,8 @@ item.scorchfirescepter.name=Scorchfire Scepter
 item.scorchfirescepter.description=Low Damage, Rapid Fire, Applies Fire, Places Scorchfire
 item.bucketpurelava.name=Pure Lava Bucket
 item.bucketpurelava.description=Clearer that regular lava, flows slightly faster and no inferno mobs spawn in this. Can be renewed like water.
+item.afrittreat.name=Afrit Treat
+item.afrittreat.description=A fiery treat for fiery imps!
 #
 # Blocks
 tile.purelava.name=Pure Lava

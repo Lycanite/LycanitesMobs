@@ -39,6 +39,8 @@ item.tundrascepter.name=Tundra Scepter
 item.tundrascepter.description=High Damage, Charge Up, Places Frostfire and Frostclouds
 item.icefirescepter.name=Icefire Scepter
 item.icefirescepter.description=Low Damage, Rapid Fire, Places Icefire
+item.arixtreat.name=Arix Treat
+item.arixtreat.description=An icy treat for icy imps!
 #
 # Blocks
 tile.frostweb.name=Frostweb

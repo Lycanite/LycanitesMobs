@@ -3,6 +3,8 @@ package lycanite.lycanitesmobs.arcticmobs.entity;
 import java.util.HashMap;
 
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.IGroupFire;
+import lycanite.lycanitesmobs.api.IGroupIce;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackRanged;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowOwner;
@@ -29,7 +31,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class EntityReiver extends EntityCreatureTameable implements IMob {
+public class EntityReiver extends EntityCreatureTameable implements IMob, IGroupIce {
     
     // ==================================================
  	//                    Constructor
@@ -61,12 +63,9 @@ public class EntityReiver extends EntityCreatureTameable implements IMob {
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(EntityWendigo.class));
+    	this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(IGroupFire.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
-        if(ObjectManager.getMob("Cinder") != null)
-        	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(ObjectManager.getMob("Cinder")));
-        if(ObjectManager.getMob("Lobber") != null)
-        	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(ObjectManager.getMob("Lobber")));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
     

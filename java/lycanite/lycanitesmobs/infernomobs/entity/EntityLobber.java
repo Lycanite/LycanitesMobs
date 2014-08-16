@@ -3,6 +3,10 @@ package lycanite.lycanitesmobs.infernomobs.entity;
 import java.util.HashMap;
 
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.IGroupFire;
+import lycanite.lycanitesmobs.api.IGroupIce;
+import lycanite.lycanitesmobs.api.IGroupPlant;
+import lycanite.lycanitesmobs.api.IGroupWater;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityItemCustom;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
@@ -24,14 +28,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class EntityLobber extends EntityCreatureBase implements IMob {
+public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire {
 
 	EntityAIWander wanderAI = new EntityAIWander(this);
 	
@@ -66,12 +69,11 @@ public class EntityLobber extends EntityCreatureBase implements IMob {
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(EntityCinder.class));
-        if(ObjectManager.getMob("Reiver") != null)
-        	this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(ObjectManager.getMob("Reiver")));
-        if(ObjectManager.getMob("Wendigo") != null)
-        	this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(ObjectManager.getMob("Wendigo")));
+    	this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(IGroupIce.class));
+    	this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(IGroupWater.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
+    	this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(IGroupPlant.class));
     }
     
     // ========== Stats ==========

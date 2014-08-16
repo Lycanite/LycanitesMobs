@@ -3,6 +3,8 @@ package lycanite.lycanitesmobs.forestmobs.entity;
 import java.util.HashMap;
 
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.IGroupFire;
+import lycanite.lycanitesmobs.api.IGroupPlant;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
@@ -28,7 +30,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
-public class EntityTrent extends EntityCreatureBase implements IMob {
+public class EntityTrent extends EntityCreatureBase implements IMob, IGroupPlant {
     
     // ==================================================
  	//                    Constructor
@@ -65,10 +67,9 @@ public class EntityTrent extends EntityCreatureBase implements IMob {
         //this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         //this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(EntityEnt.class));
+    	this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(IGroupFire.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class).setSightCheck(false));
-        if(ObjectManager.getMob("Cinder") != null)
-        	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(ObjectManager.getMob("Cinder")));
         //this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
     

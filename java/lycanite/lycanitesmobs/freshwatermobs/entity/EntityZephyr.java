@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.IGroupWater;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackRanged;
@@ -29,7 +30,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
-public class EntityZephyr extends EntityCreatureTameable implements IMob {
+public class EntityZephyr extends EntityCreatureTameable implements IMob, IGroupWater {
 
     // ==================================================
  	//                    Constructor
@@ -114,7 +115,7 @@ public class EntityZephyr extends EntityCreatureTameable implements IMob {
             List aoeTargets = this.getNearbyEntities(EntityLivingBase.class, 4);
             for(Object entityObj : aoeTargets) {
                 EntityLivingBase target = (EntityLivingBase)entityObj;
-                if(target != this && this.canAttackClass(entityObj.getClass()) && this.canAttackEntity(target)) {
+                if(target != this && this.canAttackClass(entityObj.getClass()) && this.canAttackEntity(target) && this.getEntitySenses().canSee(target)) {
                     target.attackEntityFrom(DamageSource.causeMobDamage(this), this.getAttackDamage(1));
                     if(ObjectManager.getPotionEffect("Paralysis") != null && ObjectManager.getPotionEffect("Paralysis").id < Potion.potionTypes.length)
                         target.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("Paralysis").id, this.getEffectDuration(2), 0));
@@ -129,7 +130,7 @@ public class EntityZephyr extends EntityCreatureTameable implements IMob {
             List aoeTargets = this.getNearbyEntities(EntityLivingBase.class, 4);
             for(Object entityObj : aoeTargets) {
                 EntityLivingBase target = (EntityLivingBase) entityObj;
-                if(this.canAttackClass(entityObj.getClass()) && this.canAttackEntity(target)) {
+                if(this.canAttackClass(entityObj.getClass()) && this.canAttackEntity(target) && this.getEntitySenses().canSee(target)) {
                     this.worldObj.spawnParticle("magicCrit", target.posX + (this.rand.nextDouble() - 0.5D) * (double) target.width, target.posY + this.rand.nextDouble() * (double) target.height, target.posZ + (this.rand.nextDouble() - 0.5D) * (double) target.width, 0.0D, 0.0D, 0.0D);
                 }
             }

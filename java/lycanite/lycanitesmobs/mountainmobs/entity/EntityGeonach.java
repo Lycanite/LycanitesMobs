@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs.mountainmobs.entity;
 import java.util.HashMap;
 
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.IGroupRock;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowOwner;
@@ -32,7 +33,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
-public class EntityGeonach extends EntityCreatureTameable implements IMob {
+public class EntityGeonach extends EntityCreatureTameable implements IMob, IGroupRock {
 	
 	private EntityAIAttackMelee meleeAttackAI;
     

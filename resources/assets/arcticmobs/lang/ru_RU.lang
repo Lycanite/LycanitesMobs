@@ -10,6 +10,8 @@ entity.arcticmobs.yeti.name=Йети
 entity.arcticmobs.yeti.description=Огромные арктические травоядные млекопитающие. На них можно охотиться с помощью растений, но берегитесь их ледяного дыхания. Молоко йети - деликатес!
 entity.arcticmobs.wendigo.name=Вендиго
 entity.arcticmobs.wendigo.description=Огромные ледяные твари, оставляющие ловушки из Ледогня за собой. Также они метают Взрыв Тундры, создающий Ледогонь и Облако льда при соприкосновении с чем-либо.
+entity.arcticmobs.arix.name=Арикс
+entity.arcticmobs.arix.description=Злобные морозные бесы, которых можно найти в снежных биомах. Метают шары Морозного огня, наносящего урон и замедляющего врагов. Могут быть приручены как великолепные питомцы!
 #
 # Items
 item.arcticspawn.name=Призвать существо - 
@@ -27,12 +29,18 @@ item.frostwebcharge.name=Заряд Ледяной паутины
 item.frostwebcharge.description=Заряд Ледяной паутины. Может выстреливаться из раздатчика.
 item.tundracharge.name=Заряд Взрыва тундры
 item.tundracharge.description=Запускает шар Ледогня. Может выстреливаться из раздатчика.
+item.icefirecharge.name=Заряд Ледогня
+item.icefirecharge.description=Заряд ледяного огня. Может выстреливаться из раздатчика.
 item.frostboltscepter.name=Посох "Ледяной шар"
 item.frostboltscepter.description=Урон: Средний, Скорость атаки: Быстрая, Замедляет
 item.frostwebscepter.name=Посох "Ледяная паутина"
 item.frostwebscepter.description=Урон: Низкий, Скорость атаки: Быстрая, Замедляет, Размещает Ледяную паутину
-item.tundrascepter.name=Tundra Scepter
+item.tundrascepter.name=Посох "Тундра"
 item.tundrascepter.description=Урон: Высокий, Зарядка, Размещает Ледогонь и Облако льда
+item.icefirescepter.name=Посох "Морозный огонь"
+item.icefirescepter.description=Урон: Низкий, Скорость атаки: Быстрая, Размещает Морозный огонь
+item.arixtreat.name=Пища для Арикса
+item.arixtreat.description=Ледяная еда для ледяных бесов!
 #
 # Blocks
 tile.frostweb.name=Ледяная паутина
@@ -41,3 +49,5 @@ tile.frostcloud.name=Ледяное облако
 tile.frostcloud.description=Небольшое снежное облако, замедляющее и накладывающее эффект голода.
 tile.frostfire.name=Ледогонь
 tile.frostfire.description=Магический огонь, может нанести урон, очень сильно замедляет.
+tile.icefire.name=Морозный огонь
+tile.icefire.description=Магический огонь. Замораживает, наносит урон и замедляет.

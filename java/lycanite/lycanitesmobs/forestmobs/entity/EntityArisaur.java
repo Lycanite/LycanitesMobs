@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupAnimal;
+import lycanite.lycanitesmobs.api.IGroupPlant;
 import lycanite.lycanitesmobs.api.IGroupPredator;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAvoid;
@@ -34,7 +35,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
-public class EntityArisaur extends EntityCreatureAgeable implements IAnimals, IGroupAnimal {
+public class EntityArisaur extends EntityCreatureAgeable implements IAnimals, IGroupAnimal, IGroupPlant {
 	
 	// ==================================================
  	//                    Constructor

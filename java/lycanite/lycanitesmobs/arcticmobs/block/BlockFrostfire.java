@@ -278,8 +278,13 @@ public class BlockFrostfire extends BlockBase {
     @Override
     public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
 		super.onEntityCollidedWithBlock(world, x, y, z, entity);
+		
 		if(entity instanceof EntityItem) // Frostfire shouldn't destroy items.
     		return;
+		
+    	if(entity.isBurning())
+    		entity.extinguish();
+		
 		PotionEffect effectSlowness = new PotionEffect(Potion.moveSlowdown.id, 5 * 20, 0);
 		PotionEffect effectHunger = new PotionEffect(Potion.hunger.id, 5 * 20, 0); // Not applied, used to check for immunity only.
 		if(entity instanceof EntityLivingBase) {
@@ -288,6 +293,7 @@ public class BlockFrostfire extends BlockBase {
 				return; // Entities immune to both are normally arctic mobs.
 			entityLiving.addPotionEffect(effectSlowness);
 		}
+		
     	entity.attackEntityFrom(DamageSource.magic, 2);
 	}
     

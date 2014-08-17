@@ -1,7 +1,14 @@
 package lycanite.lycanitesmobs.arcticmobs.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import static net.minecraftforge.common.util.ForgeDirection.DOWN;
+import static net.minecraftforge.common.util.ForgeDirection.EAST;
+import static net.minecraftforge.common.util.ForgeDirection.NORTH;
+import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
+import static net.minecraftforge.common.util.ForgeDirection.UP;
+import static net.minecraftforge.common.util.ForgeDirection.WEST;
+
+import java.util.Random;
+
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ClientProxy;
 import lycanite.lycanitesmobs.ObjectManager;
@@ -25,10 +32,8 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import java.util.Random;
-
-import static net.minecraftforge.common.util.ForgeDirection.*;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockIcefire extends BlockBase {
 
@@ -273,8 +278,13 @@ public class BlockIcefire extends BlockBase {
     @Override
     public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
 		super.onEntityCollidedWithBlock(world, x, y, z, entity);
+		
 		if(entity instanceof EntityItem) // Icefire shouldn't destroy items.
     		return;
+		
+    	if(entity.isBurning())
+    		entity.extinguish();
+		
 		PotionEffect effectSlowness = new PotionEffect(Potion.moveSlowdown.id, 5 * 20, 0);
 		PotionEffect effectHunger = new PotionEffect(Potion.hunger.id, 5 * 20, 0); // No applied, used to check for immunity only.
 		if(entity instanceof EntityLivingBase) {
@@ -283,6 +293,7 @@ public class BlockIcefire extends BlockBase {
 				return; // Entities immune to both are normally arctic mobs.
 			entityLiving.addPotionEffect(effectSlowness);
 		}
+		
     	entity.attackEntityFrom(DamageSource.magic, 2);
 	}
     

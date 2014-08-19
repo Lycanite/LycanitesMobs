@@ -890,7 +890,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         	this.currentBlockingTime = 0;
         
         // Pickup Items:
-        if(!this.worldObj.isRemote && this.isEntityAlive() && this.canPickupItems())
+        if(this.ticksExisted % 10 == 0 && !this.worldObj.isRemote && this.isEntityAlive() && this.canPickupItems())
         	this.pickupItems();
     }
     

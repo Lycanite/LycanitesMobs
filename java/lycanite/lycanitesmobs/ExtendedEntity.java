@@ -2,6 +2,7 @@ package lycanite.lycanitesmobs;
 
 import lycanite.lycanitesmobs.api.network.MessageEntityPickedUp;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.Potion;
@@ -15,6 +16,9 @@ public class ExtendedEntity implements IExtendedEntityProperties {
 	
 	// States:
 	public Entity pickedUpByEntity;
+	private int pickedUpByEntityID;
+	
+	private boolean playerFlyingSnapshot;
 	
 	// ==================================================
     //                   Get for Entity
@@ -59,11 +63,23 @@ public class ExtendedEntity implements IExtendedEntityProperties {
 		// Picked Up By Entity:
 		if(this.pickedUpByEntity != null) {
 			this.entity.setPosition(this.pickedUpByEntity.posX, this.pickedUpByEntity.posY, this.pickedUpByEntity.posZ);
-			this.entity.setVelocity(this.pickedUpByEntity.motionX, this.pickedUpByEntity.motionY, this.pickedUpByEntity.motionZ);
+			//this.entity.setVelocity(this.pickedUpByEntity.motionX, this.pickedUpByEntity.motionY, this.pickedUpByEntity.motionZ);
+			this.entity.motionX = this.pickedUpByEntity.motionX;
+			this.entity.motionY = this.pickedUpByEntity.motionY;
+			this.entity.motionZ = this.pickedUpByEntity.motionZ;
 			this.entity.fallDistance = 0;
+			if(!this.entity.worldObj.isRemote && this.entity instanceof EntityPlayer) {
+				((EntityPlayer)this.entity).capabilities.allowFlying = true;
+			}
 			if(!this.pickedUpByEntity.isEntityAlive())
 				this.setPickedUpByEntity(null);
     	}
+		else if(this.pickedUpByEntityID != (this.pickedUpByEntity != null ? this.pickedUpByEntity.getEntityId() : 0)) {
+			if(!this.entity.worldObj.isRemote && this.entity instanceof EntityPlayer) {
+				((EntityPlayer)this.entity).capabilities.allowFlying = this.playerFlyingSnapshot;
+			}
+		}
+		this.pickedUpByEntityID = (this.pickedUpByEntity != null ? this.pickedUpByEntity.getEntityId() : 0);
 	}
 	
 	
@@ -73,6 +89,10 @@ public class ExtendedEntity implements IExtendedEntityProperties {
 	public void setPickedUpByEntity(Entity pickedUpByEntity) {
 		this.pickedUpByEntity = pickedUpByEntity;
 		if(!this.entity.worldObj.isRemote) {
+			if(this.entity instanceof EntityPlayer) {
+				this.playerFlyingSnapshot = ((EntityPlayer)this.entity).capabilities.allowFlying;
+			}
+			
 			MessageEntityPickedUp message = new MessageEntityPickedUp(this.entity, pickedUpByEntity);
 			LycanitesMobs.packetHandler.sendToDimension(message, this.entity.dimension);
 		}

@@ -84,6 +84,7 @@ public class InfernoMobs {
 		
 		ObjectManager.addItem("cephignismeatcooked", new ItemCustomFood("cephignismeatcooked", group, 6, 0.7F));
 		ObjectLists.addItem("cookedfish", ObjectManager.getItem("cephignismeatcooked"));
+		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("cephignismeatcooked"));
 		OreDictionary.registerOre("listAllfishcooked", ObjectManager.getItem("cephignismeatcooked"));
 		
 		ObjectManager.addItem("searingtaco", new ItemCustomFood("searingtaco", group, 6, 0.7F).setPotionEffect(Potion.fireResistance.id, 120, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16)); // Fire Resistance

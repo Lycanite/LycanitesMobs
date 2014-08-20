@@ -118,8 +118,11 @@ public class EntityKobold extends EntityCreatureTameable implements IMob, IGroup
     // ==================================================
     //                     Attacks
     // ==================================================
+    @Override
 	public boolean canAttackEntity(EntityLivingBase targetEntity) {
-		return (targetEntity.getHealth() / targetEntity.getMaxHealth()) <= 0.5F;
+    	if((targetEntity.getHealth() / targetEntity.getMaxHealth()) > 0.5F)
+			return false;
+		return super.canAttackEntity(targetEntity);
 	}
     
     

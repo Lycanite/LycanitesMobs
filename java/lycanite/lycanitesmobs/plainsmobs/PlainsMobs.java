@@ -12,6 +12,7 @@ import lycanite.lycanitesmobs.api.item.ItemTreat;
 import lycanite.lycanitesmobs.plainsmobs.entity.EntityKobold;
 import lycanite.lycanitesmobs.plainsmobs.entity.EntityMaka;
 import lycanite.lycanitesmobs.plainsmobs.entity.EntityMakaAlpha;
+import lycanite.lycanitesmobs.plainsmobs.entity.EntityRoc;
 import lycanite.lycanitesmobs.plainsmobs.entity.EntityVentoraptor;
 import lycanite.lycanitesmobs.plainsmobs.entity.EntityZoataur;
 import lycanite.lycanitesmobs.plainsmobs.item.ItemPlainsEgg;
@@ -115,6 +116,12 @@ public class PlainsMobs {
 		        .setPeaceful(false).setSummonable(true).setSummonCost(4).setDungeonLevel(2);
 		newMob.spawnInfo.setSpawnTypes("MONSTER")
 				.setSpawnWeight(4).setAreaLimit(4).setGroupLimits(1, 3);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "roc", EntityRoc.class, 0xAA0000, 0x00DD44)
+		        .setPeaceful(false).setSummonable(false).setSummonCost(4).setDungeonLevel(2);
+		newMob.spawnInfo.setSpawnTypes("MONSTER")
+				.setSpawnWeight(4).setAreaLimit(3).setGroupLimits(1, 3);
 		ObjectManager.addMob(newMob);
 
 		

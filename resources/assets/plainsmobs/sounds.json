@@ -138,5 +138,25 @@
     "entity.zoataur.tame": {
         "category": "hostile",
         "sounds": [{"name": "entity/zoataur/tame", "stream": false}]
+    },
+    "entity.roc.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/roc/say", "stream": false}]
+    },
+    "entity.roc.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/roc/hurt", "stream": false}]
+    },
+    "entity.roc.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/roc/death", "stream": false}]
+    },
+    "entity.roc.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/roc/attack", "stream": false}]
+    },
+    "entity.roc.fly": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/roc/fly", "stream": false}]
     }
 }

@@ -91,10 +91,12 @@ public class BlockFluidPureLava extends BlockFluidClassic {
         float f1;
         float f2;
         
-        f = (float)x + random.nextFloat();
-        f1 = (float)y + random.nextFloat() * 0.5F;
-        f2 = (float)z + random.nextFloat();
-        world.spawnParticle("lava", (double)f, (double)f1, (double)f2, 0.0D, 0.0D, 0.0D);
+        if (random.nextInt(100) == 0) {
+	        f = (float)x + random.nextFloat();
+	        f1 = (float)y + random.nextFloat() * 0.5F;
+	        f2 = (float)z + random.nextFloat();
+	        world.spawnParticle("lava", (double)f, (double)f1, (double)f2, 0.0D, 0.0D, 0.0D);
+        }
         super.randomDisplayTick(world, x, y, z, random);
     }
     

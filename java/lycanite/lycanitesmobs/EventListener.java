@@ -1,5 +1,9 @@
 package lycanite.lycanitesmobs;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import lycanite.lycanitesmobs.api.ILycanEventListener;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
 import lycanite.lycanitesmobs.api.item.ItemBase;
@@ -82,6 +86,10 @@ public class EventListener {
 	// ==================================================
 	@SubscribeEvent
 	public void onEntityUpdate(LivingUpdateEvent event) {
+		ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(event.entityLiving);
+		if(extendedEntity != null)
+			extendedEntity.update();
+		
 		EntityLivingBase entity = event.entityLiving;
 		if(entity == null)
 			return;
@@ -142,6 +150,7 @@ public class EventListener {
     // ==================================================
     //                 Living Hurt Event
     // ==================================================
+	public static List<ILycanEventListener> onLivingHurtListeners = new ArrayList<ILycanEventListener>();
 	@SubscribeEvent
 	public void onLivingHurt(LivingHurtEvent event) {
 		if(event.isCancelable() && event.isCanceled())

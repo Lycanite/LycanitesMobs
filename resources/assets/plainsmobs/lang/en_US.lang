@@ -12,6 +12,8 @@ entity.plainsmobs.makaalpha.name=Maka Alpha
 entity.plainsmobs.makaalpha.description=Larger Makas, alphas are usually peaceful but can sometimes attack, they also spar with each other a lot. Alphas Makas will protect the rest of the herd, therefor they making farming Makas tricky at times.
 entity.plainsmobs.zoataur.name=Zoataur
 entity.plainsmobs.zoataur.description=Fierce beasts with hardened bone shields, they are known to take a defensive stance during combat and block a lot of damage, it is best to back off until they stop blocking before striking again.
+entity.plainsmobs.roc.name=Roc
+entity.plainsmobs.roc.description=Rocs fly high above the plains, they hunt small prey and will attack players if they are low on health or if it is night time. Rocs will pick up their target with their tail claws up into the sky!
 #
 # Items
 item.plainsspawn.name=Spawn

@@ -140,10 +140,10 @@ public class EntityZoataur extends EntityCreatureTameable implements IGroupPreda
    	//                     Immunities
    	// ==================================================
     @Override
-    public boolean isPotionApplicable(PotionEffect par1PotionEffect) {
-        if(par1PotionEffect.getPotionID() == Potion.weakness.id) return false;
-        if(par1PotionEffect.getPotionID() == Potion.digSlowdown.id) return false;
-        return super.isPotionApplicable(par1PotionEffect);
+    public boolean isPotionApplicable(PotionEffect potionEffect) {
+        if(potionEffect.getPotionID() == Potion.weakness.id) return false;
+        if(potionEffect.getPotionID() == Potion.digSlowdown.id) return false;
+        return super.isPotionApplicable(potionEffect);
     }
     
     @Override

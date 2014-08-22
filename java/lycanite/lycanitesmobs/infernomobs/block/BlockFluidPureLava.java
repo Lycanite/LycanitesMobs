@@ -30,6 +30,9 @@ public class BlockFluidPureLava extends BlockFluidClassic {
         this.setBlockName(this.blockName);
 		this.group = InfernoMobs.group;
 		this.setRenderPass(1);
+
+        this.setLightOpacity(1);
+        this.setLightLevel(1.0F);
 	}
     
     

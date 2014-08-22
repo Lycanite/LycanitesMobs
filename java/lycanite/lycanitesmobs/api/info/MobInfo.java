@@ -11,6 +11,7 @@ import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.mods.DLDungeons;
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -68,6 +69,12 @@ public class MobInfo {
 
 	/** The SpawnInfo used by this mob. **/
 	public SpawnInfo spawnInfo;
+
+    /** Subspecies **/
+    public Map<Integer, Subspecies> subspecies = new HashMap<Integer, Subspecies>();
+
+    /** Subspecies Amount, used when automatically adding subspecies as well as when cycling through subspecies. **/
+    public int subspeciesAmount = 0;
 	
 	/** The background color of this mob's egg. **/
 	public int eggBackColor;	
@@ -144,7 +151,7 @@ public class MobInfo {
 	
 	/**
 	 * Get MobInfo from mob name.
-	 * @param mobName The name of the mob, such as "trite", should be lower case, no spaces.
+	 * @param mobName The name of the mob, such as "cryptzombie", should be lower case, no spaces.
 	 * @return
 	 */
 	public static MobInfo getFromName(String mobName) {
@@ -303,11 +310,11 @@ public class MobInfo {
     }
 	
 	public String getTitle() {
-		return StatCollector.translateToLocal("entity." + getRegistryName() + ".name");
+		return StatCollector.translateToLocal("entity." + this.getRegistryName() + ".name");
 	}
 	
 	public String getDescription() {
-		return StatCollector.translateToLocal("entity." + getRegistryName() + ".description");
+		return StatCollector.translateToLocal("entity." + this.getRegistryName() + ".description");
 	}
 	
 	
@@ -336,22 +343,22 @@ public class MobInfo {
     // ========== Dungeon Themes ==========
     /**
      * Sets the default dungeon themes.
-     * @param An array of Strings for each theme. Themes are: FOREST, PLAINS, MOUNTAIN, SWAMP, WATER , DESERT, WASTELAND, JUNGLE, FROZEN, NETHER, END, MUSHROOM, MAGICAL, DUNGEON, NECRO, URBAN, FIERY, SHADOW, PARADISE
+     * @param themes An array of Strings for each theme. Themes are: FOREST, PLAINS, MOUNTAIN, SWAMP, WATER , DESERT, WASTELAND, JUNGLE, FROZEN, NETHER, END, MUSHROOM, MAGICAL, DUNGEON, NECRO, URBAN, FIERY, SHADOW, PARADISE
 	 * @return MobInfo instance for chaining.
      */
-    public MobInfo setDungeonThemes(String string) {
-        this.dungeonThemes = string;
+    public MobInfo setDungeonThemes(String themes) {
+        this.dungeonThemes = themes;
         return this;
     }
 
     // ========== Mob Level ==========
     /**
      * Sets the mob's level, used by DLDungeons.
-     * @param The dungeon level: -1 = Not for Dungeons, 0 = Common, 1 = Tough, 2 = Brute, 3 = Elite
+     * @param level The dungeon level: -1 = Not for Dungeons, 0 = Common, 1 = Tough, 2 = Brute, 3 = Elite
      * @return
      */
-    public MobInfo setDungeonLevel(int integer) {
-        this.dungeonLevel = integer;
+    public MobInfo setDungeonLevel(int level) {
+        this.dungeonLevel = level;
         return this;
     }
 
@@ -379,4 +386,75 @@ public class MobInfo {
 		model = setModel;
 		return this;
 	}*/
+
+
+    // ==================================================
+    //                     Subspecies
+    // ==================================================
+    // ========== Add Subspecies ==========
+    public MobInfo addSubspecies(Subspecies newSubspecies) {
+        this.subspeciesAmount++;
+        if(newSubspecies != null) {
+            newSubspecies.mobInfo = this;
+            newSubspecies.index = this.subspeciesAmount;
+        }
+        this.subspecies.put(this.subspeciesAmount, newSubspecies);
+        return this;
+    }
+
+    // ========== Get Subspecies ==========
+    public Subspecies getSubspecies(int index) {
+        return this.subspecies.get(index);
+    }
+
+    // ========== Get Random Subspecies ==========
+    /**
+     * Gets a random subspecies, normally used by a new mob when spawned.
+     * @return A Subspecies or null if using the default species.
+     */
+    public Subspecies getRandomSubspecies(EntityLivingBase entity) {
+        // Get Weights:
+        int totalWeight = Subspecies.baseSpeciesWeight;
+        for(Subspecies subspeciesEntry : this.subspecies.values()) {
+            totalWeight += subspeciesEntry.weight;
+        }
+
+        // Roll and Check Default:
+        int roll = entity.getRNG().nextInt(totalWeight);
+        if(roll <= Subspecies.baseSpeciesWeight)
+            return null;
+
+        // Get Random Subspecies:
+        int checkWeight = Subspecies.baseSpeciesWeight;
+        for(Subspecies subspeciesEntry : this.subspecies.values()) {
+            checkWeight += subspeciesEntry.weight;
+            if(roll <= checkWeight) {
+                return subspeciesEntry;
+            }
+        }
+        return null;
+    }
+
+
+    // ========== Get Child Subspecies ==========
+    /**
+     * Used for when two mobs breed to randomly determine the subspecies of the child.
+     * @param entity The entity that has this subspecies, currently only used to get RNG.
+     * @param hostSubspeciesIndex The index of the subspecies of the host entity.
+     * @param partnerSubspecies The subspecies of the partner. Null if the partner is default.
+     * @return
+     */
+    public Subspecies getChildSubspecies(EntityLivingBase entity, int hostSubspeciesIndex, Subspecies partnerSubspecies) {
+        Subspecies hostSubspecies = this.getSubspecies(hostSubspeciesIndex);
+        int partnerSubspeciesIndex = (partnerSubspecies != null ? partnerSubspecies.index : 0);
+        if(hostSubspeciesIndex == partnerSubspeciesIndex)
+            return hostSubspecies;
+
+        int hostWeight = (hostSubspecies != null ? hostSubspecies.weight : Subspecies.baseSpeciesWeight);
+        int partnerWeight = (partnerSubspecies != null ? partnerSubspecies.weight : Subspecies.baseSpeciesWeight);
+        int roll = entity.getRNG().nextInt(hostWeight + partnerWeight);
+        if(roll > hostWeight)
+            return partnerSubspecies;
+        return hostSubspecies;
+    }
 }

@@ -32,7 +32,6 @@ import lycanite.lycanitesmobs.desertmobs.entity.EntityJoustAlpha;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -100,10 +99,7 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		if(this.isTamed())
-			baseAttributes.put("maxHealth", 40D);
-		else
-			baseAttributes.put("maxHealth", 20D);
+		baseAttributes.put("maxHealth", 20D);
 		baseAttributes.put("movementSpeed", 0.32D);
 		baseAttributes.put("knockbackResistance", 0.0D);
 		baseAttributes.put("followRange", 16D);
@@ -245,15 +241,6 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
     @Override
     public boolean isTamingItem(ItemStack itemstack) {
         return itemstack.getItem() == ObjectManager.getItem("lurkertreat");
-    }
-    
-    @Override
-    public void setTamed(boolean setTamed) {
-    	if(setTamed)
-    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(40.0D);
-    	else
-    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D);
-    	super.setTamed(setTamed);
     }
     
     

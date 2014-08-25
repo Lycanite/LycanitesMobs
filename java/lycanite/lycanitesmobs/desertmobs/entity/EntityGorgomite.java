@@ -123,8 +123,10 @@ public class EntityGorgomite extends EntityCreatureBase implements IMob, IGroupP
     public void spawnAlly(double x, double y, double z) {
     	EntityLivingBase minion = new EntityGorgomite(this.worldObj);
     	minion.setLocationAndAngles(x, y, z, this.rand.nextFloat() * 360.0F, 0.0F);
-    	if(minion instanceof EntityCreatureBase)
+    	if(minion instanceof EntityCreatureBase) {
     		((EntityCreatureBase)minion).setMinion(true);
+    		((EntityCreatureBase)minion).setSubspecies(this.getSubspeciesIndex(), true);
+    	}
     	this.worldObj.spawnEntityInWorld(minion);
         if(this.getAttackTarget() != null)
         	minion.setRevengeTarget(this.getAttackTarget());

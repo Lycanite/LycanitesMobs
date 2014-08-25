@@ -139,7 +139,8 @@ public class EntityAbtu extends EntityCreatureTameable implements IMob, IGroupPr
     	EntityCreatureAgeable minion = new EntityAbtu(this.worldObj);
     	minion.setGrowingAge(minion.growthTime);
     	minion.setLocationAndAngles(x, y, z, this.rand.nextFloat() * 360.0F, 0.0F);
-    	minion.setMinion(true);
+		minion.setMinion(true);
+		minion.setSubspecies(this.getSubspeciesIndex(), true);
     	this.worldObj.spawnEntityInWorld(minion);
         if(this.getAttackTarget() != null)
         	minion.setRevengeTarget(this.getAttackTarget());

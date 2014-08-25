@@ -22,7 +22,6 @@ import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -80,10 +79,7 @@ public class EntityCacodemon extends EntityCreatureTameable {
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		if(this.isTamed())
-			baseAttributes.put("maxHealth", 60D);
-		else
-			baseAttributes.put("maxHealth", 40D);
+		baseAttributes.put("maxHealth", 40D);
 		baseAttributes.put("movementSpeed", 0.24D);
 		baseAttributes.put("knockbackResistance", 0.0D);
 		baseAttributes.put("followRange", 40D);
@@ -176,15 +172,6 @@ public class EntityCacodemon extends EntityCreatureTameable {
     @Override
     public boolean isTamingItem(ItemStack itemstack) {
         return itemstack.getItem() == ObjectManager.getItem("cacodemontreat");
-    }
-    
-    @Override
-    public void setTamed(boolean setTamed) {
-    	if(setTamed)
-    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(60.0D);
-    	else
-    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(40.0D);
-    	super.setTamed(setTamed);
     }
     
     

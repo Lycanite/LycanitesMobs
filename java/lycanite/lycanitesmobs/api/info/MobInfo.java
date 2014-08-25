@@ -27,6 +27,9 @@ public class MobInfo {
 	/** A map containing a (Code) Name to MobInfo connection where a shared MobInfo for each mob can be obtained using the mob's codename as a key. **/
 	public static Map<String, MobInfo> mobNameToInfo = new HashMap<String, MobInfo>();
 	
+	/** If true, all mobs that are a subspecies will always show their nametag. **/
+	public static boolean subspeciesTags = true;
+	
 	/** If true, the name of a pet's owner will be shown in it's name tag. **/
 	public static boolean ownerTags = true;
 	
@@ -57,6 +60,9 @@ public class MobInfo {
 	// ========== Per Mob Settings ==========
 	/** Mod Group **/
 	public GroupInfo group;
+	
+	/** A unique per group ID number for this mob, projectiles and other entities also require IDs. **/
+	public int mobID;
 	
 	/** The name of this mob used by the ObjectManager and Config maps. Should be all lower case **/
 	public String name = "mobname";
@@ -122,7 +128,8 @@ public class MobInfo {
     // ==================================================
 	public static void loadGlobalSettings() {
 		ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "general");
-		
+		subspeciesTags = config.getBool("Disaply", "Subspecies Tags", subspeciesTags, "If true, all mobs that are a subspecies will always show their nametag.");
+				
 		config.setCategoryComment("Pets", "Here you can control all settings related to taming and mounting.");
 		ownerTags = config.getBool("Pets", "Owner Tags", ownerTags, "If true, tamed mobs will display their owner's name in their name tag.");
 		tamingEnabled = config.getBool("Pets", "Taming", tamingEnabled, "Set to false to disable pet/mount taming.");
@@ -191,7 +198,7 @@ public class MobInfo {
 		this.group = group;
 		if(!mobGroups.containsKey(group.filename))
 			mobGroups.put(group.filename, group);
-
+		this.mobID = this.group.getNextMobID();
 		this.name = name;
         this.entityClass = entityClass;
         this.eggBackColor = eggBack;
@@ -280,8 +287,7 @@ public class MobInfo {
     /** Registers this mob to vanilla and custom entity lists. **/
     public void registerMob() {
     	// ID and Enabled Check:
-		LycanitesMobs.printDebug("MobSetup", "~0==================== Mob Setup: "+ this.name +" ====================0~");
-		int mobID = this.group.getNextMobID();
+		LycanitesMobs.printDebug("MobSetup", "~0==================== Mob Setup: "+ this.name + " [" + this.mobID +"] ====================0~");
 		if(!this.mobEnabled) {
 			LycanitesMobs.printDebug("MobSetup", "Mob Disabled: " + name + " - " + this.entityClass + " (" + group.name + ")");
 			return;
@@ -290,8 +296,8 @@ public class MobInfo {
 		// Mapping and Registration:
 		if(!ObjectManager.entityLists.containsKey(this.group.filename))
 			ObjectManager.entityLists.put(this.group.filename, new EntityListCustom());
-		ObjectManager.entityLists.get(this.group.filename).addMapping(this.entityClass, this.getRegistryName(), mobID, this.eggBackColor, this.eggForeColor);
-		EntityRegistry.registerModEntity(this.entityClass, name, mobID, group.mod, 128, 3, true);
+		ObjectManager.entityLists.get(this.group.filename).addMapping(this.entityClass, this.getRegistryName(), this.mobID, this.eggBackColor, this.eggForeColor);
+		EntityRegistry.registerModEntity(this.entityClass, name, this.mobID, group.mod, 128, 3, true);
 		
 		// Debug Message - Added:
 		LycanitesMobs.printDebug("MobSetup", "Mob Added: " + name + " - " + this.entityClass + " (" + group.name + ")");
@@ -410,28 +416,43 @@ public class MobInfo {
     // ========== Get Random Subspecies ==========
     /**
      * Gets a random subspecies, normally used by a new mob when spawned.
-     * @return A Subspecies or null if using the default species.
+     * @return A Subspecies or null if using the base species.
      */
     public Subspecies getRandomSubspecies(EntityLivingBase entity) {
+    	LycanitesMobs.printDebug("Subspecies", "~0===== Subspecies =====0~");
+    	LycanitesMobs.printDebug("Subspecies", "Selecting random subspecies for: " + entity);
+    	if(this.subspeciesAmount < 1) {
+        	LycanitesMobs.printDebug("Subspecies", "No species available, will be base species.");
+    		return null;
+    	}
+    	LycanitesMobs.printDebug("Subspecies", "Subspecies Available: " + this.subspeciesAmount);
+    	
         // Get Weights:
         int totalWeight = Subspecies.baseSpeciesWeight;
         for(Subspecies subspeciesEntry : this.subspecies.values()) {
             totalWeight += subspeciesEntry.weight;
         }
+    	LycanitesMobs.printDebug("Subspecies", "Total Weight: " + totalWeight);
 
         // Roll and Check Default:
         int roll = entity.getRNG().nextInt(totalWeight);
-        if(roll <= Subspecies.baseSpeciesWeight)
+    	LycanitesMobs.printDebug("Subspecies", "Rolled: " + roll);
+        if(roll <= Subspecies.baseSpeciesWeight) {
+        	LycanitesMobs.printDebug("Subspecies", "Base species selected: " + Subspecies.baseSpeciesWeight);
             return null;
+        }
 
         // Get Random Subspecies:
         int checkWeight = Subspecies.baseSpeciesWeight;
         for(Subspecies subspeciesEntry : this.subspecies.values()) {
             checkWeight += subspeciesEntry.weight;
             if(roll <= checkWeight) {
+            	LycanitesMobs.printDebug("Subspecies", "Subspecies selected: " + subspeciesEntry.name + " - " + subspeciesEntry.weight);
                 return subspeciesEntry;
             }
         }
+        
+        LycanitesMobs.printWarning("Subspecies", "The roll was higher than the Total Weight, this shouldn't happen.");
         return null;
     }
 

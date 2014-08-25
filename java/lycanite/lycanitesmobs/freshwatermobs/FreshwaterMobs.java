@@ -5,6 +5,7 @@ import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
+import lycanite.lycanitesmobs.api.info.Subspecies;
 import lycanite.lycanitesmobs.freshwatermobs.dispenser.DispenserBehaviorAquaPulse;
 import lycanite.lycanitesmobs.freshwatermobs.entity.EntityAquaPulse;
 import lycanite.lycanitesmobs.freshwatermobs.entity.EntityJengu;
@@ -69,13 +70,15 @@ public class FreshwaterMobs {
 		MobInfo newMob;
         
         newMob = new MobInfo(group, "jengu", EntityJengu.class, 0x000099, 0x4444FF)
-		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0);
+		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
+		        .addSubspecies(new Subspecies("light", "uncommon")).addSubspecies(new Subspecies("keppel", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("WATERCREATURE")
 				.setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3);
 		ObjectManager.addMob(newMob);
 
         newMob = new MobInfo(group, "zephyr", EntityZephyr.class, 0xFFFFDD, 0xAABBFF)
-                .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0);
+                .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
+		        .addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("keppel", "uncommon"));
         newMob.spawnInfo.setSpawnTypes("STORM")
                 .setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3);
         ObjectManager.addMob(newMob);

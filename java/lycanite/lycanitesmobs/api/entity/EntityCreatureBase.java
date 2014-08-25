@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.GuiHandler;
@@ -15,6 +16,7 @@ import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.SpawnInfo;
+import lycanite.lycanitesmobs.api.info.Subspecies;
 import lycanite.lycanitesmobs.api.inventory.ContainerCreature;
 import lycanite.lycanitesmobs.api.inventory.InventoryCreature;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
@@ -53,6 +55,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
 public abstract class EntityCreatureBase extends EntityLiving {
+	/** A snapshot of the base health for each mob. This is used when calculating subspecies or tamed health. **/
+	public static Map<Class, Double> baseHealthMap = new HashMap<Class, Double>();
+	
     // UUID:
 	//public static final UUID field_110179_h = UUID.fromString("E199AD21-BA8A-4C53-8D13-6182D5C69D3A");
     
@@ -61,6 +66,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	public MobInfo mobInfo;
     /** The group that this mob belongs to, this provides config settings, asset locations and more. **/
 	public GroupInfo group;
+	/** The Subspecies of this creature, if null this creature is the default common species. **/
+	public Subspecies subspecies = null;
     /** The name of the egg item this mob uses. **/
 	public String eggName = "spawnegg";
     /** What attribute is this creature, used for effects such as Bane of Arthropods. **/
@@ -181,7 +188,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 		HEALTH(watcherID++), TARGET(watcherID++), ANIMATION(watcherID++), ATTACK_PHASE(watcherID++),
 		CLIMBING(watcherID++), STEALTH(watcherID++), HUNGER(watcherID++), STAMINA(watcherID++),
 		AGE(watcherID++), LOVE(watcherID++),
-		TAMED(watcherID++), OWNER(watcherID++), COLOR(watcherID++), LAST(watcherID++),
+		TAMED(watcherID++), OWNER(watcherID++), COLOR(watcherID++), SUBSPECIES(watcherID++), LAST(watcherID++),
 		EQUIPMENT(watcherID++);
 		
 		public final byte id;
@@ -284,8 +291,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
     protected void applyEntityAttributes(HashMap<String, Double> baseAttributes) {
         super.applyEntityAttributes();
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage);
-        if(baseAttributes.containsKey("maxHealth"))
+        if(baseAttributes.containsKey("maxHealth")) {
         	this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(baseAttributes.get("maxHealth"));
+        	baseHealthMap.put(this.getClass(), baseAttributes.get("maxHealth"));
+        }
         if(baseAttributes.containsKey("movementSpeed"))
         	this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(baseAttributes.get("movementSpeed"));
         if(baseAttributes.containsKey("knockbackResistance"))
@@ -307,6 +316,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         this.dataWatcher.addObject(WATCHER_ID.CLIMBING.id, (byte)0);
         this.dataWatcher.addObject(WATCHER_ID.STEALTH.id, (float)0.0F);
         this.dataWatcher.addObject(WATCHER_ID.COLOR.id, (byte)0);
+        this.dataWatcher.addObject(WATCHER_ID.SUBSPECIES.id, (byte)0);
         this.initiated = true;
     }
     
@@ -330,8 +340,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	String name = "";
     	if(getAgeName() != "")
     		name += getAgeName() + " ";
-    	if(getSubspeciesName() != "")
-    		name += getSubspeciesName() + " ";
+    	if(getSubspeciesTitle() != "")
+    		name += getSubspeciesTitle() + " ";
     	return name + getSpeciesName();
     }
     
@@ -343,8 +353,11 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	return StatCollector.translateToLocal("entity." + entityName + ".name");
     }
 
-    /** Returns the subpsecies name of this entity, used for entity subtypes. **/
-    public String getSubspeciesName() {
+    /** Returns the subpsecies title (translated name) of this entity, returns a blank string if this is a base species mob. **/
+    public String getSubspeciesTitle() {
+    	if(this.getSubspecies() != null) {
+    		return this.getSubspecies().getTitle();
+    	}
     	return "";
     }
 
@@ -665,12 +678,50 @@ public abstract class EntityCreatureBase extends EntityLiving {
     
     // ========== On Spawn ==========
     /** This is called when the mob is first spawned to the world either through natural spawning or from a Spawn Egg. **/
-    public void onSpawn() {}
+    public void onFirstSpawn() {
+    	this.getRandomSubspecies();
+    }
+    
+    // ========== Get Random Subspecies ==========
+    public void getRandomSubspecies() {
+    	if(this.subspecies == null && !this.isMinion()) {
+    		this.subspecies = this.mobInfo.getRandomSubspecies(this);
+    		this.applySubspeciesHealthMultiplier();
+    		if(this.subspecies != null)
+    			LycanitesMobs.printDebug("Subspecies", "Setting " + this.getSpeciesName() + " to " + this.subspecies.getTitle());
+    		else
+    			LycanitesMobs.printDebug("Subspecies", "Setting " + this.getSpeciesName() + " to base species.");
+    	}
+    }
 	
 	
 	// ==================================================
 	//             Stat Multipliers and Boosts
 	// ==================================================
+    /** Returns the base health for this mob. This is not the current max health. **/
+    public double getBaseHealth() {
+    	if(baseHealthMap.containsKey(this.getClass()))
+    		return baseHealthMap.get(this.getClass());
+    	return 10D;
+    }
+
+    /** Applies the subspecies health multipler for this mob. **/
+    public void applySubspeciesHealthMultiplier() {
+    	double currentBaseHealth = this.getEntityAttribute(SharedMonsterAttributes.maxHealth).getBaseValue();
+    	if(this.getSubspeciesIndex() < 1) {
+    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(this.getBaseHealth());
+    		this.setHealth((float)(this.getBaseHealth()));
+    	}
+    	else if(this.getSubspeciesIndex() < 3) {
+    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(this.getBaseHealth() * 4);
+    		this.setHealth((float)(this.getBaseHealth() * 4));
+    	}
+    	else {
+    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(this.getBaseHealth() * 10);
+    		this.setHealth((float)(this.getBaseHealth() * 10));
+    	}
+    }
+    
     /** Returns the requested stat multiplier. **/
 	public double getStatMultiplier(String stat) {
 		double multiplier = 1.0D;
@@ -746,12 +797,34 @@ public abstract class EntityCreatureBase extends EntityLiving {
     
     
     // ==================================================
+  	//                    Subspecies
+  	// ==================================================
+    /** Sets the subspecies of this mob by index. If not a valid ID or 0 it will be set to null which is for base species. **/
+    public void setSubspecies(int subspeciesIndex, boolean resetHealth) {
+    	this.subspecies = this.mobInfo.getSubspecies(subspeciesIndex);
+    	if(resetHealth)
+    		this.applySubspeciesHealthMultiplier();
+    }
+
+    /** Gets the subspecies of this mob, will return null if this is a base species mob. **/
+    public Subspecies getSubspecies() {
+    	return this.subspecies;
+    }
+
+    /** Gets the subspecies index of this mob, will return 0 if this is a base species (subspecies is null). **/
+    public int getSubspeciesIndex() {
+    	return this.getSubspecies() != null ? this.getSubspecies().index : 0;
+    }
+    
+    
+    // ==================================================
   	//                     Updates
   	// ==================================================
     // ========== Main ==========
     /** The main update method, all the important updates go here. **/
     public void onUpdate() {
-        this.onSyncUpdate();
+    	if(this.dataWatcher != null)
+    		this.onSyncUpdate();
         super.onUpdate();
         
         if(this.despawnCheck()) {
@@ -801,7 +874,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         
         // First Spawn:
         if(!this.worldObj.isRemote && this.firstSpawn) {
-        	this.onSpawn();
+        	this.onFirstSpawn();
         	this.firstSpawn = false;
         }
         
@@ -956,6 +1029,15 @@ public abstract class EntityCreatureBase extends EntityLiving {
         // Is Minon:
         if(this.worldObj.isRemote) {
     		this.isMinion = (this.dataWatcher.getWatchableObjectByte(WATCHER_ID.ANIMATION.id) & ANIM_ID.MINION.id) > 0;
+        }
+        
+        // Subspecies:
+        if(!this.worldObj.isRemote) {
+    		this.dataWatcher.updateObject(WATCHER_ID.SUBSPECIES.id, Byte.valueOf((byte)this.getSubspeciesIndex()));
+        }
+        else {
+        	if(this.getSubspeciesIndex() != this.dataWatcher.getWatchableObjectByte(WATCHER_ID.SUBSPECIES.id))
+        		this.setSubspecies(this.dataWatcher.getWatchableObjectByte(WATCHER_ID.SUBSPECIES.id), false);
         }
     }
     
@@ -1632,8 +1714,13 @@ public abstract class EntityCreatureBase extends EntityLiving {
     @Override
     protected void dropFewItems(boolean playerKill, int lootLevel) {
     	if(this.isMinion()) return;
+    	int subspeciesScale = 1;
+    	if(this.getSubspeciesIndex() > 2)
+    		subspeciesScale = 8;
+    	else if(this.getSubspeciesIndex() > 0)
+    		subspeciesScale = 4;
     	for(DropRate dropRate : this.drops) {
-    		int quantity = dropRate.getQuantity(this.rand, lootLevel);
+    		int quantity = dropRate.getQuantity(this.rand, lootLevel) * subspeciesScale;
     		ItemStack dropStack = null;
     		if(quantity > 0)
     			dropStack = dropRate.getItemStack(this, quantity);
@@ -1813,6 +1900,20 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Can Name Tag ==========
     /** Returns true if this mob can be given a new name with a name tag by the provided player entity. **/
     public boolean canNameTag(EntityPlayer player) {
+    	return true;
+    }
+    
+    // ========== Get Render Name Tag ==========
+    /** Gets whether this mob should always display its nametag. **/
+    public boolean getAlwaysRenderNameTag() {
+    	if(this.renderSubspeciesNameTag() && this.getSubspecies() != null)
+    		return MobInfo.subspeciesTags;
+        return super.getAlwaysRenderNameTag();
+    }
+    
+    // ========== Render Subspecies Name Tag ==========
+    /** Gets whether this mob should always display its nametag if it's a subspecies. **/
+    public boolean renderSubspeciesNameTag() {
     	return true;
     }
     
@@ -2154,6 +2255,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	if(nbtTagCompound.hasKey("Color")) {
     		this.setColor(nbtTagCompound.getByte("Color"));
     	}
+    	if(nbtTagCompound.hasKey("Subspecies")) {
+    		this.setSubspecies(nbtTagCompound.getInteger("Subspecies"), false);
+    	}
     	else this.unsetTemporary();
         super.readEntityFromNBT(nbtTagCompound);
         this.inventory.readFromNBT(nbtTagCompound);
@@ -2169,6 +2273,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	nbtTagCompound.setBoolean("IsTemporary", this.isTemporary);
     	nbtTagCompound.setInteger("TemporaryDuration", this.temporaryDuration);
     	nbtTagCompound.setByte("Color", (byte)this.getColor());
+    	nbtTagCompound.setInteger("Subspecies", this.getSubspeciesIndex());
         super.writeEntityToNBT(nbtTagCompound);
         this.inventory.writeToNBT(nbtTagCompound);
     }
@@ -2206,8 +2311,11 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	return AssetManager.getTexture(textureName);
     }
 
-    /** Gets the name of this creature's texture, normally links to it's code name but can be overriden by subtypes and alpha creatures. **/
+    /** Gets the name of this creature's texture, normally links to it's code name but can be overriden by subspecies and alpha creatures. **/
     public String getTextureName() {
+    	if(this.getSubspecies() != null) {
+    		return this.mobInfo.name + "_" + this.getSubspecies().name;
+    	}
     	return this.mobInfo.name;
     }
     

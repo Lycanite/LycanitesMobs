@@ -129,6 +129,8 @@ public class EntityAsmodi extends EntityCreatureBase implements IMob {
                 float f1 = ((float)(k / 2) - 0.5F) * this.width / 4.0F;
                 EntityTrite trite = new EntityTrite(this.worldObj);
                 trite.setLocationAndAngles(this.posX + (double)f, this.posY + 0.5D, this.posZ + (double)f1, this.rand.nextFloat() * 360.0F, 0.0F);
+                trite.setMinion(true);
+                trite.setSubspecies(this.getSubspeciesIndex(), true);
                 this.worldObj.spawnEntityInWorld(trite);
                 if(this.getAttackTarget() != null)
                 	trite.setRevengeTarget(this.getAttackTarget());

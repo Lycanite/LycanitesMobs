@@ -144,7 +144,8 @@ public class FlightNavigator {
                 	motion = block.slipperiness * 0.91F;
             }
             
-            this.host.moveEntity(this.host.motionX, this.host.motionY, this.host.motionZ);
+            if(this.host != null && this.host.boundingBox != null)
+            	this.host.moveEntity(this.host.motionX, this.host.motionY, this.host.motionZ);
             this.host.motionX *= (double)motion;
             this.host.motionY *= (double)motion;
             this.host.motionZ *= (double)motion;

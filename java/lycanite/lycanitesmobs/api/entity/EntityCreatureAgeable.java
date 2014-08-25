@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs.api.entity;
 import java.util.HashMap;
 
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.info.Subspecies;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -72,6 +73,14 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
     
     public void setFarmed() {
     	this.hasBeenFarmed = true;
+    }
+    
+    // ========== Get Random Subspecies ==========
+    @Override
+    public void getRandomSubspecies() {
+    	if(this.isChild())
+    		return;
+    	super.getRandomSubspecies();
     }
 	
 	
@@ -288,6 +297,8 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
             this.finishBreeding();
             partner.finishBreeding();
             baby.setGrowingAge(baby.growthTime);
+            Subspecies babySubspecies = this.mobInfo.getChildSubspecies(this, this.getSubspeciesIndex(), partner.getSubspecies());
+            baby.setSubspecies(babySubspecies != null ? babySubspecies.index : 0, true);
             baby.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
 
             for(int i = 0; i < 7; ++i) {

@@ -95,10 +95,7 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		if(this.isTamed())
-			baseAttributes.put("maxHealth", 60D);
-		else
-			baseAttributes.put("maxHealth", 20D);
+		baseAttributes.put("maxHealth", 20D);
 		baseAttributes.put("movementSpeed", 0.26D);
 		baseAttributes.put("knockbackResistance", 0.25D);
 		baseAttributes.put("followRange", 16D);
@@ -269,10 +266,7 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
     
     @Override
     public void setTamed(boolean setTamed) {
-    	if(setTamed)
-    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(60.0D);
-    	else
-    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D);
+    	this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D);
     	super.setTamed(setTamed);
     }
     

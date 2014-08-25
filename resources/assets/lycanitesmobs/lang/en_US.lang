@@ -1,7 +1,36 @@
-# Entites
+# ========== Entites ==========
 entity.lycanitesmobs.summoningportal.name=Summoning Portal
 #
-# Items
+#
+#
+# ========== Subspecies ==========
+# Uncommon:
+subspecies.ashen.name=Ashen
+subspecies.dark.name=Dark
+subspecies.light.name=Light
+subspecies.verdant.name=Verdant
+subspecies.scarlet.name=Scarlet
+subspecies.azure.name=Azure
+subspecies.golden.name=Golden
+subspecies.violet.name=Violet
+subspecies.keppel.name=Keppel
+subspecies.russet.name=Russet
+#
+# Rare:
+subspecies.lunar.name=Lunar
+subspecies.eerie.name=Eerie
+subspecies.sacred.name=Sacred
+subspecies.phosphorescent.name=Phosphorescent
+subspecies.crimson.name=Crimson
+subspecies.royal.name=Royal
+subspecies.solar.name=Solar
+subspecies.mottled.name=Mottled
+subspecies.celestial.name=Celestial
+subspecies.umber.name=Umber
+#
+#
+#
+# ========== Items ==========
 item.soulgazer.name=Soulgazer
 item.soulgazer.description=Use on a creature to add it to the Beastiary.
 item.summoningstaff.name=Summoning Staff
@@ -15,21 +44,27 @@ item.savagesummoningstaff.description=Summon double minions, but at half health 
 item.sturdysummoningstaff.name=Sturdy Summoning Staff
 item.sturdysummoningstaff.description=This staff lasts much longer but costs more focus.
 #
-# GUIS
+#
+#
+# ========== GUIS ==========
 # Creative Tab names:
 itemGroup.lycanitesmobs.items=Lycanites Mobs: Items
 itemGroup.lycanitesmobs.creatures=Lycanites Mobs: Creatures
+#
 # Beastiary:
 gui.beastiary.name=Beastiary
 gui.beastiary.empty=No Creatures
 gui.beastiary.soulgazerinfo=You currently do not have any creatures added to your Beastiary. To discover new creatures you must craft a Soulgazer and then use it on any creatures that you find.
 gui.beastiary.selectacreature=Select a group and then select a creature.
+#
 # Minion Manager:
 gui.minion.name=Minion Manager
 gui.minion.empty=No Summonable Creatures
 gui.minion.soulgazerinfo=You haven't added any creatures that can be summoned to your Beastiary yet. Keep searching, not every creature can be summoned.
+#
 # Soulbound Pets:
 gui.soulboundpets.name=Soulbound Pets
+#
 # Pet/Minion:
 gui.pet.sitting=Sitting
 gui.pet.movement=Movement
@@ -40,11 +75,14 @@ gui.pet.stance=Stance
 gui.pet.aggressive=Aggressive
 gui.pet.defensive=Defensive
 gui.pet.pvp=PVP
+#
 # Mounts:
 gui.mount.controls=Press %control% to use mount ability
 #%control% will be replaced with the Mount Ability key, don't translate this!
 #
-# Messages
+#
+#
+# ========== Messages ==========
 message.soulgazer.new=You have gained knowledge of the %creature%! Check your Beastiary!
 message.soulgazer.summonable=You are now able to summon the %creature%! You will need a Summoning Staff.
 message.soulgazer.known=You already have full knowledge of this creature.
@@ -53,11 +91,15 @@ message.pet.tamed=The %creature% seems to love you now!
 message.pet.tamefail=The %creature% wants more!
 # %creature% will be replaced with the name of the tamed creature, don't translate this!
 #
-# Common
+#
+#
+# ========== Common ==========
 common.yes=Yes
 common.no=No
 #
-# Potion
+#
+#
+# ========== Potion Effects ==========
 potion.paralysis=Paralysis
 potion.leech=Leech
 potion.penetration=Penetration

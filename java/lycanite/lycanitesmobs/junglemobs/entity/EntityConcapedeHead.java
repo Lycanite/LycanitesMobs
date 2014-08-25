@@ -103,7 +103,7 @@ public class EntityConcapedeHead extends EntityCreatureAgeable implements IAnima
     // ==================================================
 	// ========== On Spawn ==========
 	@Override
-	public void onSpawn() {
+	public void onFirstSpawn() {
 		// Create Starting Segments:
         if(!this.worldObj.isRemote && !this.hasMaster()) {
         	this.setGrowingAge(-this.growthTime / 4);
@@ -112,12 +112,12 @@ public class EntityConcapedeHead extends EntityCreatureAgeable implements IAnima
         	for(int segment = 0; segment < segmentCount; segment++) {
         		EntityConcapedeSegment segmentEntity = new EntityConcapedeSegment(parentSegment.worldObj);
         		segmentEntity.setLocationAndAngles(parentSegment.posX, parentSegment.posY, parentSegment.posZ, 0.0F, 0.0F);
-        		parentSegment.worldObj.spawnEntityInWorld(segmentEntity);
 				segmentEntity.setParentTarget(parentSegment);
+        		parentSegment.worldObj.spawnEntityInWorld(segmentEntity);
 				parentSegment = segmentEntity;
         	}
         }
-        super.onSpawn();
+        super.onFirstSpawn();
 	}
 	
 	

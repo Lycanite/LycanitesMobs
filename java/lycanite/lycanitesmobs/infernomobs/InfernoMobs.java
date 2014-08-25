@@ -7,6 +7,7 @@ import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
+import lycanite.lycanitesmobs.api.info.Subspecies;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
 import lycanite.lycanitesmobs.api.item.ItemTreat;
 import lycanite.lycanitesmobs.infernomobs.block.BlockFluidPureLava;
@@ -110,25 +111,29 @@ public class InfernoMobs {
 		MobInfo newMob;
         
         newMob = new MobInfo(group, "cinder", EntityCinder.class, 0xFF9900, 0xFFFF00)
-		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1);
+		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1)
+		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("FIRE").setBlockCost(8)
 				.setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "lobber", EntityLobber.class, 0x330011, 0xFF5500)
-		        .setPeaceful(false).setSummonable(false).setSummonCost(8).setDungeonLevel(2);
+		        .setPeaceful(false).setSummonable(false).setSummonCost(8).setDungeonLevel(2)
+		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("LAVA").setBlockCost(16)
 				.setSpawnWeight(2).setAreaLimit(2).setGroupLimits(1, 3);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "cephignis", EntityCephignis.class, 0xFFBB00, 0xDD00FF)
-		        .setPeaceful(true).setSummonable(false).setSummonCost(1).setDungeonLevel(-1);
+		        .setPeaceful(true).setSummonable(false).setSummonCost(1).setDungeonLevel(-1)
+		        .addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("LAVA").setBlockCost(32).setDespawn(false)
 				.setSpawnWeight(4).setAreaLimit(6).setGroupLimits(1, 3).setDungeonWeight(0);
 		ObjectManager.addMob(newMob);
 
         newMob = new MobInfo(group, "afrit", EntityAfrit.class, 0x110000, 0x773300)
-                .setPeaceful(false).setSummonable(false).setSummonCost(2).setDungeonLevel(1);
+                .setPeaceful(false).setSummonable(false).setSummonCost(2).setDungeonLevel(1)
+		        .addSubspecies(new Subspecies("violet", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
         newMob.spawnInfo.setSpawnTypes("LAVA").setBlockCost(16)
                 .setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3);
         ObjectManager.addMob(newMob);

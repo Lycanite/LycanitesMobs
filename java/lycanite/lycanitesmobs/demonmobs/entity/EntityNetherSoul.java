@@ -109,8 +109,12 @@ public class EntityNetherSoul extends EntityCreatureBase implements IMob {
    	// ==================================================
     @Override
     public void onDeath(DamageSource par1DamageSource) {
-		if(!this.worldObj.isRemote && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"))
-			this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 1, true);
+		if(!this.worldObj.isRemote && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing")) {
+			int explosionRadius = 1;
+			if(this.subspecies != null)
+				explosionRadius = 3;
+			this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, explosionRadius, true);
+		}
         super.onDeath(par1DamageSource);
     }
     

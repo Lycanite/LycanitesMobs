@@ -26,7 +26,6 @@ import lycanite.lycanitesmobs.api.info.ObjectLists;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -90,10 +89,7 @@ public class EntityVentoraptor extends EntityCreatureRideable implements IGroupP
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		if(this.isTamed())
-			baseAttributes.put("maxHealth", 50D);
-		else
-			baseAttributes.put("maxHealth", 25D);
+		baseAttributes.put("maxHealth", 25D);
 		baseAttributes.put("movementSpeed", 0.28D);
 		baseAttributes.put("knockbackResistance", 0.0D);
 		baseAttributes.put("followRange", 16D);
@@ -238,15 +234,6 @@ public class EntityVentoraptor extends EntityCreatureRideable implements IGroupP
     	if(itemStack == null)
     		return false;
     	return itemStack.getItem() == ObjectManager.getItem("ventoraptortreat");
-    }
-    
-    @Override
-    public void setTamed(boolean setTamed) {
-    	if(setTamed)
-    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(50.0D);
-    	else
-    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(25.0D);
-    	super.setTamed(setTamed);
     }
     
     

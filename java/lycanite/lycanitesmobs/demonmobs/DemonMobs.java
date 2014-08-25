@@ -8,6 +8,7 @@ import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
+import lycanite.lycanitesmobs.api.info.Subspecies;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
 import lycanite.lycanitesmobs.api.item.ItemTreat;
 import lycanite.lycanitesmobs.demonmobs.block.BlockHellfire;
@@ -120,43 +121,50 @@ public class DemonMobs {
 		MobInfo newMob;
         
         newMob = new MobInfo(group, "belph", EntityBelph.class, 0x992222, 0x000000)
-		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0);
+		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
+		        .addSubspecies(new Subspecies("scarlet", "uncommon")).addSubspecies(new Subspecies("dark", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER, PORTAL")
 				.setSpawnWeight(100).setAreaLimit(10).setGroupLimits(1, 4).setDungeonWeight(200);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "behemoth", EntityBehemoth.class, 0xFF2222, 0xFF9900)
-		        .setPeaceful(false).setSummonable(true).setSummonCost(6).setDungeonLevel(2);
+		        .setPeaceful(false).setSummonable(true).setSummonCost(6).setDungeonLevel(2)
+		        .addSubspecies(new Subspecies("russet", "uncommon")).addSubspecies(new Subspecies("dark", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER, PORTAL")
 				.setSpawnWeight(20).setAreaLimit(5).setGroupLimits(1, 1).setDungeonWeight(40);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "pinky", EntityPinky.class, 0xFF0099, 0x990000)
-		        .setPeaceful(true).setSummonable(false).setSummonCost(4).setDungeonLevel(1);
+		        .setPeaceful(true).setSummonable(false).setSummonCost(4).setDungeonLevel(1)
+		        .addSubspecies(new Subspecies("ashen", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER, PORTAL")
 				.setSpawnWeight(60).setAreaLimit(5).setGroupLimits(1, 3).setDungeonWeight(120);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "trite", EntityTrite.class, 0xFFFF88, 0x000000)
-		        .setPeaceful(false).setSummonable(false).setSummonCost(1).setDungeonLevel(0);
+		        .setPeaceful(false).setSummonable(false).setSummonCost(1).setDungeonLevel(0)
+		        .addSubspecies(new Subspecies("verdant", "uncommon")).addSubspecies(new Subspecies("light", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER, PORTAL")
 				.setSpawnWeight(120).setAreaLimit(40).setGroupLimits(1, 10).setDungeonWeight(200);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "asmodi", EntityAsmodi.class, 0x999944, 0x0000FF)
-		        .setPeaceful(false).setSummonable(false).setSummonCost(8).setDungeonLevel(2);
+		        .setPeaceful(false).setSummonable(false).setSummonCost(8).setDungeonLevel(2)
+		        .addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER, PORTAL")
 				.setSpawnWeight(20).setAreaLimit(1).setGroupLimits(1, 1).setDungeonWeight(40);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "nethersoul", EntityNetherSoul.class, 0xFF9900, 0xFF0000)
-		        .setPeaceful(false).setSummonable(false).setSummonCost(1).setDungeonLevel(0);
+		        .setPeaceful(false).setSummonable(false).setSummonCost(1).setDungeonLevel(0)
+		        .addSubspecies(new Subspecies("verdant", "uncommon")).addSubspecies(new Subspecies("azure", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER, PORTAL")
 				.setSpawnWeight(60).setAreaLimit(10).setGroupLimits(1, 4).setDungeonWeight(120);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "cacodemon", EntityCacodemon.class, 0xFF0000, 0x000099)
-		        .setPeaceful(false).setSummonable(false).setSummonCost(6).setDungeonLevel(2);
+		        .setPeaceful(false).setSummonable(false).setSummonCost(6).setDungeonLevel(2)
+		        .addSubspecies(new Subspecies("russet", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER, PORTAL")
 				.setSpawnWeight(40).setAreaLimit(5).setGroupLimits(1, 1).setDungeonWeight(80);
 		ObjectManager.addMob(newMob);

@@ -13,6 +13,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemAxe;
+import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 
 public class ObjectLists {
@@ -194,5 +196,31 @@ public class ObjectLists {
 	    			LycanitesMobs.printDebug("ItemSetup", "As Block: " + customBlock);
 				}
     		}
+	}
+	
+	
+    // ==================================================
+    //                   Check Tools
+    // ==================================================
+	public static boolean isPickaxe(Item item) {
+		if(item == null)
+				return false;
+		if(item instanceof ItemPickaxe)
+			return true;
+		String itemName = item.getUnlocalizedName().toLowerCase();
+		if(itemName.contains("pickaxe") && !itemName.contains("upgrade"))
+			return true;
+		return false;
+	}
+
+	public static boolean isAxe(Item item) {
+		if(item == null)
+			return false;
+		if(item instanceof ItemAxe)
+			return true;
+		String itemName = item.getUnlocalizedName().toLowerCase();
+		if(itemName.contains("axe") && !itemName.contains("pickaxe") && !itemName.contains("upgrade"))
+			return true;
+		return false;
 	}
 }

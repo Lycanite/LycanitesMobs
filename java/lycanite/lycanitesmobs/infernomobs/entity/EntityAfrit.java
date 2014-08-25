@@ -23,7 +23,6 @@ import lycanite.lycanitesmobs.api.info.ObjectLists;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -86,10 +85,7 @@ public class EntityAfrit extends EntityCreatureTameable implements IMob, IGroupF
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-        if(this.isTamed())
-            baseAttributes.put("maxHealth", 30D);
-        else
-            baseAttributes.put("maxHealth", 15D);
+        baseAttributes.put("maxHealth", 15D);
 		baseAttributes.put("movementSpeed", 0.24D);
 		baseAttributes.put("knockbackResistance", 0.0D);
 		baseAttributes.put("followRange", 16D);
@@ -242,15 +238,6 @@ public class EntityAfrit extends EntityCreatureTameable implements IMob, IGroupF
     @Override
     public boolean isTamingItem(ItemStack itemstack) {
         return itemstack.getItem() == ObjectManager.getItem("afrittreat");
-    }
-
-    @Override
-    public void setTamed(boolean setTamed) {
-        if(setTamed)
-            this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D);
-        else
-            this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(15.0D);
-        super.setTamed(setTamed);
     }
 
 

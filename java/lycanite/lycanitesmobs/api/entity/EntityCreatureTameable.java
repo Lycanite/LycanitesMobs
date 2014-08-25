@@ -9,6 +9,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.IEntityOwnable;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemFood;
@@ -104,6 +105,32 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     @Override
     public boolean isPersistant() {
     	return this.isTamed() || super.isPersistant();
+    }
+    
+    
+	// ==================================================
+    //                      Stats
+    // ==================================================
+    /** Applies the subspecies health multipler for this mob. **/
+    @Override
+    public void applySubspeciesHealthMultiplier() {
+    	if(this.isTamed())
+    		return;
+    	super.applySubspeciesHealthMultiplier();
+    }
+    
+    /** Applies the tamed health multipler for this mob. This should override subspecies. **/
+    public void applyTamedHealthMultiplier() {
+    	double tamedHealth = this.getBaseHealth();
+    	if(this.isTamed()) {
+    		tamedHealth *= 3;
+    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(tamedHealth);
+	    	if(this.getHealth() > tamedHealth)
+	    		this.setHealth((float)tamedHealth);
+    	}
+    	else {
+    		this.applySubspeciesHealthMultiplier();
+    	}
     }
     
     
@@ -393,6 +420,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
         else
             this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamed - (tamed & TAMED_ID.IS_TAMED.id))));
         this.setAlwaysRenderNameTag(setTamed);
+        this.applyTamedHealthMultiplier();
     }
     
     public boolean isTamingItem(ItemStack itemstack) {

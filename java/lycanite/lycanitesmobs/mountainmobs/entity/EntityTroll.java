@@ -14,6 +14,7 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
+import lycanite.lycanitesmobs.api.info.ObjectLists;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -24,7 +25,7 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemPickaxe;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -207,20 +208,22 @@ public class EntityTroll extends EntityCreatureBase implements IMob {
     public float getDamageModifier(DamageSource damageSrc) {
     	if(this.stoneForm) {
     		if(damageSrc.getEntity() != null) {
+    			Item heldItem = null;
         		if(damageSrc.getEntity() instanceof EntityPlayer) {
         			EntityPlayer entityPlayer = (EntityPlayer)damageSrc.getEntity();
     	    		if(entityPlayer.getHeldItem() != null) {
-    	    			if(entityPlayer.getHeldItem().getItem() instanceof ItemPickaxe)
-    	    				return 2.0F;
+    	    			heldItem = entityPlayer.getHeldItem().getItem();
     	    		}
         		}
         		else if(damageSrc.getEntity() instanceof EntityLiving) {
     	    		EntityLiving entityLiving = (EntityLiving)damageSrc.getEntity();
     	    		if(entityLiving.getHeldItem() != null) {
-    	    			if(entityLiving.getHeldItem().getItem() instanceof ItemPickaxe)
-    	    				return 2.0F;
+    	    			heldItem = entityLiving.getHeldItem().getItem();
     	    		}
         		}
+        		
+        		if(ObjectLists.isPickaxe(heldItem))
+    				return 2.0F;
         	}
     		return 0.25F;
     	}

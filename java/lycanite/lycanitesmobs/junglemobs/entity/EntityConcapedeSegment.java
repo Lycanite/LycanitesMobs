@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
+import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupAnimal;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
@@ -96,6 +97,22 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
     	if(this.getNearbyEntities(EntityConcapedeHead.class, SpawnInfo.spawnLimitRange).size() <= 0)
     		return false;
     	return super.naturalSpawnCheck(world, i, j, k);
+    }
+    
+    // ========== Get Random Subspecies ==========
+    @Override
+    public void getRandomSubspecies() {
+    	if(this.subspecies == null && !this.hasParent()) {
+    		this.subspecies = this.mobInfo.getRandomSubspecies(this);
+    		if(this.subspecies != null)
+    			LycanitesMobs.printDebug("Subspecies", "Setting " + this.getSpeciesName() + " to " + this.subspecies.getTitle());
+    		else
+    			LycanitesMobs.printDebug("Subspecies", "Setting " + this.getSpeciesName() + " to base species.");
+    	}
+    	
+    	if(this.hasParent() && this.getParentTarget() instanceof EntityCreatureBase) {
+    		this.setSubspecies(((EntityCreatureBase)this.getParentTarget()).getSubspeciesIndex(), true);
+    	}
     }
 	
 	
@@ -236,6 +253,17 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
 			((EntityCreatureBase)setTarget).setMasterTarget(this);
 		super.setParentTarget(setTarget);
 	}
+    
+	
+	// ==================================================
+   	//                     Interact
+   	// ==================================================
+    // ========== Render Subspecies Name Tag ==========
+    /** Gets whether this mob should always display its nametag if it's a subspecies. **/
+	@Override
+    public boolean renderSubspeciesNameTag() {
+    	return !this.hasParent();
+    }
     
     
     // ==================================================

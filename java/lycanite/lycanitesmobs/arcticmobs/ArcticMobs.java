@@ -8,6 +8,7 @@ import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
+import lycanite.lycanitesmobs.api.info.Subspecies;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
 import lycanite.lycanitesmobs.api.item.ItemTreat;
 import lycanite.lycanitesmobs.arcticmobs.block.BlockFrostCloud;
@@ -133,31 +134,36 @@ public class ArcticMobs {
         MobInfo newMob;
         
         newMob = new MobInfo(group, "reiver", EntityReiver.class, 0xDDEEFF, 0x99DDEE)
-                .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0);
+                .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
+		        .addSubspecies(new Subspecies("ashen", "uncommon")).addSubspecies(new Subspecies("golden", "uncommon"));
         newMob.spawnInfo.setSpawnTypes("MONSTER, FROSTFIRE").setBlockCost(8)
         		.setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3);
         ObjectManager.addMob(newMob);
         
         newMob = new MobInfo(group, "frostweaver", EntityFrostweaver.class, 0xAADDFF, 0x226699)
-		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1);
+		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1)
+		        .addSubspecies(new Subspecies("light", "uncommon")).addSubspecies(new Subspecies("azure", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER")
 				.setSpawnWeight(10).setAreaLimit(5).setGroupLimits(1, 2);
 		ObjectManager.addMob(newMob);
 		
         newMob = new MobInfo(group, "yeti", EntityYeti.class, 0xEEEEFF, 0x000099)
-		        .setPeaceful(true).setSummonable(false).setSummonCost(2).setDungeonLevel(-1);
+		        .setPeaceful(true).setSummonable(false).setSummonCost(2).setDungeonLevel(-1)
+		        .addSubspecies(new Subspecies("russet", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("CREATURE").setDespawn(false)
 				.setSpawnWeight(10).setAreaLimit(5).setGroupLimits(1, 4).setDungeonWeight(0);
 		ObjectManager.addMob(newMob);
 		
         newMob = new MobInfo(group, "wendigo", EntityWendigo.class, 0xCCCCFF, 0x0055FF)
-		        .setPeaceful(false).setSummonable(false).setSummonCost(8).setDungeonLevel(2);
+		        .setPeaceful(false).setSummonable(false).setSummonCost(8).setDungeonLevel(2)
+		        .addSubspecies(new Subspecies("keppel", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER")
 				.setSpawnWeight(4).setAreaLimit(1).setGroupLimits(1, 1);
 		ObjectManager.addMob(newMob);
 
         newMob = new MobInfo(group, "arix", EntityArix.class, 0xDDDDFF, 0x9999FF)
-                .setPeaceful(false).setSummonable(false).setSummonCost(2).setDungeonLevel(1);
+                .setPeaceful(false).setSummonable(false).setSummonCost(2).setDungeonLevel(1)
+		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"));
         newMob.spawnInfo.setSpawnTypes("MONSTER")
                 .setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3);
         ObjectManager.addMob(newMob);

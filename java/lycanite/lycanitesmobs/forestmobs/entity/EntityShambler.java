@@ -26,13 +26,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemAxe;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -155,20 +154,21 @@ public class EntityShambler extends EntityCreatureTameable implements IMob, IGro
     	if(damageSrc.isFireDamage())
     		return 4.0F;
     	if(damageSrc.getEntity() != null) {
+    		Item heldItem = null;
     		if(damageSrc.getEntity() instanceof EntityPlayer) {
     			EntityPlayer entityPlayer = (EntityPlayer)damageSrc.getEntity();
 	    		if(entityPlayer.getHeldItem() != null) {
-	    			if(entityPlayer.getHeldItem().getItem() instanceof ItemAxe)
-	    				return 4.0F;
+	    			heldItem = entityPlayer.getHeldItem().getItem();
 	    		}
     		}
     		else if(damageSrc.getEntity() instanceof EntityLiving) {
 	    		EntityLiving entityLiving = (EntityLiving)damageSrc.getEntity();
 	    		if(entityLiving.getHeldItem() != null) {
-	    			if(entityLiving.getHeldItem().getItem() instanceof ItemAxe)
-	    				return 4.0F;
+	    			heldItem = entityLiving.getHeldItem().getItem();
 	    		}
     		}
+    		if(ObjectLists.isAxe(heldItem))
+				return 4.0F;
     	}
     	return 1.0F;
     }
@@ -209,15 +209,6 @@ public class EntityShambler extends EntityCreatureTameable implements IMob, IGro
     @Override
     public boolean isTamingItem(ItemStack itemstack) {
         return itemstack.getItem() == ObjectManager.getItem("shamblertreat");
-    }
-    
-    @Override
-    public void setTamed(boolean setTamed) {
-    	if(setTamed)
-    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(40.0D);
-    	else
-    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D);
-    	super.setTamed(setTamed);
     }
     
     

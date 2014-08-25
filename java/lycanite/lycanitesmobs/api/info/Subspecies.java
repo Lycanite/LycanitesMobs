@@ -1,13 +1,22 @@
 package lycanite.lycanitesmobs.api.info;
 
 
-import net.minecraft.entity.EntityLivingBase;
+import java.util.HashMap;
+import java.util.Map;
+
 import net.minecraft.util.StatCollector;
 
 public class Subspecies {
     // ========== Subspecies Global ==========
     /** The weight used by the default subspecies. **/
-    public static int baseSpeciesWeight = 20;
+    public static int baseSpeciesWeight = 200;
+    /** Common weights used by most subspecies. **/
+    public static Map<String, Integer> commonWeights = new HashMap<String, Integer>() {{
+    	put("common", 50);
+    	put("uncommon", 10);
+    	put("rare", 5);
+    	put("legendary", 1);
+    }};
 
     // ========== Subspecies General ==========
     /** The Mob Info of the mob this Subspecies belongs to. Set by MobInfo when this is added to it. **/
@@ -29,6 +38,11 @@ public class Subspecies {
     public Subspecies(String setName, int setWeight) {
         this.name = setName.toLowerCase();
         this.weight = setWeight;
+    }
+    
+    public Subspecies(String setName, String commonWeight) {
+        this.name = setName.toLowerCase();
+        this.weight = commonWeights.get(commonWeight);
     }
 
 

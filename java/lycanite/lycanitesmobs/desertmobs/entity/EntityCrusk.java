@@ -27,7 +27,6 @@ import lycanite.lycanitesmobs.api.info.ObjectLists;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureAttribute;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -93,10 +92,7 @@ public class EntityCrusk extends EntityCreatureTameable implements IGroupPredato
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		if(this.isTamed())
-			baseAttributes.put("maxHealth", 80D);
-		else
-			baseAttributes.put("maxHealth", 60D);
+		baseAttributes.put("maxHealth", 60D);
 		baseAttributes.put("movementSpeed", 0.24D);
 		baseAttributes.put("knockbackResistance", 0.5D);
 		baseAttributes.put("followRange", 16D);
@@ -203,15 +199,6 @@ public class EntityCrusk extends EntityCreatureTameable implements IGroupPredato
     	if(!this.isChild())
     		return false;
         return itemstack.getItem() == ObjectManager.getItem("crusktreat");
-    }
-    
-    @Override
-    public void setTamed(boolean setTamed) {
-    	if(setTamed)
-    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(80.0D);
-    	else
-    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(60.0D);
-    	super.setTamed(setTamed);
     }
     
     

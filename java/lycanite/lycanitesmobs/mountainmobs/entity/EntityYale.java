@@ -129,9 +129,10 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
     // ==================================================
 	// ========== On Spawn ==========
 	@Override
-	public void onSpawn() {
+	public void onFirstSpawn() {
 		if(!this.isChild())
 			this.setColor(this.getRandomFurColor(this.getRNG()));
+		super.onFirstSpawn();
 	}
 	
 	

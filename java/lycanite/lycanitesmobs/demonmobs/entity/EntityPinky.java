@@ -28,7 +28,6 @@ import lycanite.lycanitesmobs.api.info.ObjectLists;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityCow;
@@ -101,10 +100,7 @@ public class EntityPinky extends EntityCreatureRideable implements IAnimals, IGr
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		if(this.isTamed())
-			baseAttributes.put("maxHealth", 80D);
-		else
-			baseAttributes.put("maxHealth", 40D);
+		baseAttributes.put("maxHealth", 40D);
 		baseAttributes.put("movementSpeed", 0.24D);
 		baseAttributes.put("knockbackResistance", 0.25D);
 		baseAttributes.put("followRange", 16D);
@@ -264,15 +260,6 @@ public class EntityPinky extends EntityCreatureRideable implements IAnimals, IGr
     @Override
     public boolean isTamingItem(ItemStack itemstack) {
         return itemstack.getItem() == ObjectManager.getItem("pinkytreat") && this.isChild();
-    }
-    
-    @Override
-    public void setTamed(boolean setTamed) {
-    	if(setTamed)
-    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(80.0D);
-    	else
-    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(40.0D);
-    	super.setTamed(setTamed);
     }
     
     

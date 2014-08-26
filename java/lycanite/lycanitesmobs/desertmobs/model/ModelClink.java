@@ -97,7 +97,7 @@ public class ModelClink extends ModelCustomObj {
     		rotX += Math.toDegrees(MathHelper.cos(time * walkSwing) * 1.4F * distance);
     	
     	// Attacks:
-    	if(((EntityCreatureBase)entity).justAttacked()) {
+    	if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
 	    	if(partName.equals("mouth")) {
 	    		subCenterPart("mouth");
 	    		rotate(30.0F, 0.0F, 0.0F);

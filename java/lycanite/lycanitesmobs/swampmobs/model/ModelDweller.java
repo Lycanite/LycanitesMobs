@@ -82,7 +82,7 @@ public class ModelDweller extends ModelCustomObj {
     	}
     	if(partName.equals("mouth")) {
     		rotation += Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F - 0.05F);
-    		if(((EntityCreatureBase)entity).justAttacked())
+    		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked())
     			rotation = 20;
         	rotate(rotation, angleX, angleY, angleZ);
         	rotation = 0F;
@@ -94,7 +94,7 @@ public class ModelDweller extends ModelCustomObj {
     	if(partName.equals("leftarm")) {
 	        rotZ -= Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F + 0.05F);
 	        rotX -= Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
-    		if(((EntityCreatureBase)entity).justAttacked()) {
+    		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
     			if(attackAlt)
     				rotY = 40;
     			else
@@ -104,18 +104,18 @@ public class ModelDweller extends ModelCustomObj {
     	if(partName.equals("rightarm")) {
 	        rotZ += Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F + 0.05F);
 	        rotX += Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
-    		if(((EntityCreatureBase)entity).justAttacked()) {
+    		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
     			if(attackAlt)
     				rotY = 40;
     			else
     				rotY = -25;
     		}
     	}
-		if(((EntityCreatureBase)entity).justAttacked() && !attacking) {
+		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked() && !attacking) {
 			attackAlt = !attackAlt;
 			attacking = true;
 		}
-		if(!((EntityCreatureBase)entity).justAttacked())
+		if(entity instanceof EntityCreatureBase && !((EntityCreatureBase)entity).justAttacked())
 			attacking = false;
     	
     	// Arms (Match Body):

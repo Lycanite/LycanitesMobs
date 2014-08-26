@@ -28,6 +28,9 @@ public class ModelCustomObj extends ModelBase {
 	public Map<String, float[]> offsets = new HashMap<String, float[]>();
 	public boolean lockHeadX = false;
 	public boolean lockHeadY = false;
+	
+	// Used for displaying heads, set to false if a head/mouth part is added.
+	public boolean bodyIsHead = true;
     
     // Coloring:
 	/** If true, no color effects will be applied, this is usually used for red damage overlays, etc. **/
@@ -51,19 +54,25 @@ public class ModelCustomObj extends ModelBase {
     @Override
     public void render(Entity entity, float time, float distance, float loop, float lookY, float lookX, float scale) {
     	super.render(entity, time, distance, loop, lookY, lookX, scale);
+		boolean headModel = false;
+		if(scale < 0) {
+			headModel = true;
+			scale = -scale;
+		}
+		
     	for(GroupObject part : parts) {
-    		boolean headModel = false;
-    		if(scale < 0) {
-    			headModel = true;
-				scale = -scale;
-    		}
-    		
-    		if(!headModel || "head".equalsIgnoreCase(part.name) || "mouth".equalsIgnoreCase(part.name)) {
+    		if(part.name == null)
+    			continue;
+    		boolean isHeadPart = this.isHeadPart(part);
+    		if(this.bodyIsHead && part.name.toLowerCase().contains("body"))
+    			isHeadPart = true;
+    		if(!headModel || isHeadPart) {
 		    	GL11.glPushMatrix();
 		    	this.rotate(modelRotationOffset, 1F, 0F, 0F);
 		    	this.translate(0F, modelYOffset, 0F);
 		    	if(this.isChild && !headModel)
 		    		this.childScale(part.name.toLowerCase());
+		    	this.scale(scale, scale, scale);
 		    	this.centerPart(part.name.toLowerCase());
 		    	this.animatePart(part.name.toLowerCase(), (EntityLiving)entity, time, distance, loop, -lookY, lookX, scale);
 		    	if(headModel) {
@@ -72,11 +81,28 @@ public class ModelCustomObj extends ModelBase {
 		    		this.uncenterPart(part.name.toLowerCase());
 		    	}
 		    	this.uncenterPart(part.name.toLowerCase());
-		    	
 	    		part.render();
 	    		GL11.glPopMatrix();
     		}
     	}
+    }
+    
+    
+    // ==================================================
+   	//                      Checks
+   	// ==================================================
+    public boolean isHeadPart(String partName) {
+    	if(partName == null)
+    		return false;
+    	if(partName.toLowerCase().contains("head") || partName.toLowerCase().contains("mouth"))
+			return true;
+    	return false;
+    }
+    
+    public boolean isHeadPart(GroupObject part) {
+    	if(part == null)
+    		return false;
+    	return this.isHeadPart(part.name);
     }
     
     
@@ -143,6 +169,8 @@ public class ModelCustomObj extends ModelBase {
    	// ==================================================
     // ========== Set and Get ==========
     public void setPartCenter(String partName, float centerX, float centerY, float centerZ) {
+    	if(this.isHeadPart(partName))
+    		this.bodyIsHead = false;
     	partCenters.put(partName, new float[] {centerX, centerY, centerZ});
     }
     public void setPartCenters(float centerX, float centerY, float centerZ, String... partNames) {

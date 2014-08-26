@@ -94,9 +94,9 @@ public class ModelCrusk extends ModelCustomObj {
     	}
     	if(partName.equals("topleftmouth") || partName.equals("toprightmouth") || partName.equals("bottomleftmouth") || partName.equals("bottomrightmouth")) {
     		rotation += -Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F - 0.05F);
-    		if(((EntityCreatureBase)entity).justAttacked())
+    		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked())
     			rotation = -20;
-    		if(((EntityCreatureTameable)entity).isSitting())
+    		if(entity instanceof EntityCreatureTameable && ((EntityCreatureTameable)entity).isSitting())
     			rotation += 20;
         	rotate(rotation, angleX, angleY, angleZ);
         	rotation = 0F;
@@ -112,7 +112,7 @@ public class ModelCrusk extends ModelCustomObj {
     	
     	// Walking:
     	float walkSwing = 0.8F;
-    	if(((EntityCreatureBase)entity).getStealth() > 0 && ((EntityCreatureBase)entity).getStealth() < 1)
+    	if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).getStealth() > 0 && ((EntityCreatureBase)entity).getStealth() < 1)
     		time = loop;
     	time /= 2;
     	if(partName.equals("head") || partName.equals("topleftmouth") || partName.equals("toprightmouth") || partName.equals("bottomleftmouth") || partName.equals("bottomrightmouth")) {
@@ -170,7 +170,8 @@ public class ModelCrusk extends ModelCustomObj {
     	}
     	
     	// Stealth:
-    	posY -= (2 * ((EntityCreatureBase)entity).getStealth());
+    	if(entity instanceof EntityCreatureBase)
+    		posY -= (2 * ((EntityCreatureBase)entity).getStealth());
     	
     	// Apply Animations:
     	translate(posX, posY, posZ);

@@ -52,16 +52,30 @@ public class ModelCustomObj extends ModelBase {
     public void render(Entity entity, float time, float distance, float loop, float lookY, float lookX, float scale) {
     	super.render(entity, time, distance, loop, lookY, lookX, scale);
     	for(GroupObject part : parts) {
-	    	GL11.glPushMatrix();
-	    	rotate(modelRotationOffset, 1F, 0F, 0F);
-	    	translate(0F, modelYOffset, 0F);
-	    	if(this.isChild)
-	    		childScale(part.name.toLowerCase());
-	    	centerPart(part.name.toLowerCase());
-	    	animatePart(part.name.toLowerCase(), (EntityLiving)entity, time, distance, loop, -lookY, lookX, scale);
-	    	uncenterPart(part.name.toLowerCase());
-    		part.render();
-    		GL11.glPopMatrix();
+    		boolean headModel = false;
+    		if(scale < 0) {
+    			headModel = true;
+				scale = -scale;
+    		}
+    		
+    		if(!headModel || "head".equalsIgnoreCase(part.name) || "mouth".equalsIgnoreCase(part.name)) {
+		    	GL11.glPushMatrix();
+		    	this.rotate(modelRotationOffset, 1F, 0F, 0F);
+		    	this.translate(0F, modelYOffset, 0F);
+		    	if(this.isChild && !headModel)
+		    		this.childScale(part.name.toLowerCase());
+		    	this.centerPart(part.name.toLowerCase());
+		    	this.animatePart(part.name.toLowerCase(), (EntityLiving)entity, time, distance, loop, -lookY, lookX, scale);
+		    	if(headModel) {
+		    		if("mouth".equalsIgnoreCase(part.name))
+			    		this.centerPartToPart("mouth", "head");
+		    		this.uncenterPart(part.name.toLowerCase());
+		    	}
+		    	this.uncenterPart(part.name.toLowerCase());
+		    	
+	    		part.render();
+	    		GL11.glPopMatrix();
+    		}
     	}
     }
     

@@ -2256,7 +2256,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     		this.setColor(nbtTagCompound.getByte("Color"));
     	}
     	if(nbtTagCompound.hasKey("Subspecies")) {
-    		this.setSubspecies(nbtTagCompound.getInteger("Subspecies"), false);
+    		this.setSubspecies(nbtTagCompound.getByte("Subspecies"), false);
     	}
     	else this.unsetTemporary();
         super.readEntityFromNBT(nbtTagCompound);
@@ -2273,7 +2273,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	nbtTagCompound.setBoolean("IsTemporary", this.isTemporary);
     	nbtTagCompound.setInteger("TemporaryDuration", this.temporaryDuration);
     	nbtTagCompound.setByte("Color", (byte)this.getColor());
-    	nbtTagCompound.setInteger("Subspecies", this.getSubspeciesIndex());
+    	nbtTagCompound.setByte("Subspecies", (byte)this.getSubspeciesIndex());
         super.writeEntityToNBT(nbtTagCompound);
         this.inventory.writeToNBT(nbtTagCompound);
     }

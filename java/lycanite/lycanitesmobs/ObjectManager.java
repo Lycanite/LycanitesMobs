@@ -118,7 +118,7 @@ public class ObjectManager {
 		
 		int projectileID = group.getNextProjectileID();
 		EntityRegistry.registerModEntity(entityClass, name, projectileID, group.mod, 64, 1, true);
-		
+
 		projectiles.put(name, entityClass);
 	}
 	

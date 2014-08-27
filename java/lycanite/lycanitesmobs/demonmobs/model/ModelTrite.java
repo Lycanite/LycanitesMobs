@@ -21,21 +21,23 @@ public class ModelTrite extends ModelCustomObj {
     
     public ModelTrite(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("trite", DemonMobs.group, "entity/trite");
+        this.model = (WavefrontObject)AssetManager.getObjModel("trite", DemonMobs.group, "entity/trite");
     	
     	// Get Parts:
-    	parts = model.groupObjects;
+        this.parts = model.groupObjects;
     	
     	// Set Rotation Centers:
-    	setPartCenter("head", 0F, 0.35F, 0F);
-    	setPartCenter("frontleftleg", 0.1F, 0.3F, -0.1F);
-    	setPartCenter("middleleftleg", 0.1F, 0.3F, 0F);
-    	setPartCenter("backleftleg", 0.1F, 0.3F, 0.1F);
-    	setPartCenter("frontrightleg", -0.1F, 0.3F, -0.1F);
-    	setPartCenter("middlerightleg", -0.1F, 0.3F, 0F);
-    	setPartCenter("backrightleg", -0.1F, 0.3F, 0.1F);
-    	
-    	lockHeadX = true;
+        this.setPartCenter("head", 0F, 0.35F, 0F);
+        this.setPartCenter("frontleftleg", 0.1F, 0.3F, -0.1F);
+        this.setPartCenter("middleleftleg", 0.1F, 0.3F, 0F);
+        this.setPartCenter("backleftleg", 0.1F, 0.3F, 0.1F);
+        this.setPartCenter("frontrightleg", -0.1F, 0.3F, -0.1F);
+        this.setPartCenter("middlerightleg", -0.1F, 0.3F, 0F);
+        this.setPartCenter("backrightleg", -0.1F, 0.3F, 0.1F);
+
+        // Head:
+    	this.lockHeadX = true;
+        this.trophyScale = 1.0F;
     }
     
     

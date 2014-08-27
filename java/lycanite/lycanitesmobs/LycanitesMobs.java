@@ -40,7 +40,7 @@ public class LycanitesMobs {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String version = "1.9.0b - MC 1.7.10";
+	public static final String version = "1.9.0c - MC 1.7.10";
 	
 	public static final PacketHandler packetHandler = new PacketHandler();
 
@@ -87,6 +87,7 @@ public class LycanitesMobs {
 			ObjectManager.addPotionEffect("Rage", config, true, 0xFF4400, 4, 0);
 			ObjectManager.addPotionEffect("Weight", config, true, 0x000022, 1, 0);
 			ObjectManager.addPotionEffect("Swiftswimming", config, false, 0x0000FF, 0, 2);
+            ObjectManager.addPotionEffect("Fear", config, false, 0x220022, 7, 0);
 			MinecraftForge.EVENT_BUS.register(new PotionEffects());
 		}
 		

@@ -22,30 +22,32 @@ public class ModelErepede extends ModelCustomObj {
     
     public ModelErepede(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Erepede", DesertMobs.group, "entity/erepede");
+        this.model = (WavefrontObject)AssetManager.getObjModel("Erepede", DesertMobs.group, "entity/erepede");
     	
     	// Get Parts:
-    	parts = model.groupObjects;
+        this.parts = model.groupObjects;
     	
     	// Set Rotation Centers:
-    	setPartCenter("head", 0F, 1.2F, 0.6F);
-    	
-    	setPartCenter("topmouth", 0F, 1.75F, 1.25F);
-    	setPartCenter("leftmouth", 0.14F, 1.6F, 1.25F);
-    	setPartCenter("rightmouth", -0.14F, 1.6F, 1.25F);
-    	setPartCenter("bottommouth", 0F, 1.4F, 1.25F);
-    	
-    	setPartCenter("body", 0F, 1.2F, 0.6F);
-    	
-    	setPartCenter("frontleftleg", 0.4F, 1.1F, 0.25F);
-    	setPartCenter("middleleftleg", 0.4F, 1.1F, -0.15F);
-    	setPartCenter("backleftleg", 0.4F, 1.1F, -0.5F);
-    	
-    	setPartCenter("frontrightleg", -0.4F, 1.1F, 0.25F);
-    	setPartCenter("middlerightleg", -0.4F, 1.1F, -0.15F);
-    	setPartCenter("backrightleg", -0.4F, 1.1F, -0.5F);
-    	
+        this.setPartCenter("head", 0F, 1.2F, 0.6F);
+
+        this.setPartCenter("topmouth", 0F, 1.75F, 1.25F);
+        this.setPartCenter("leftmouth", 0.14F, 1.6F, 1.25F);
+        this.setPartCenter("rightmouth", -0.14F, 1.6F, 1.25F);
+        this.setPartCenter("bottommouth", 0F, 1.4F, 1.25F);
+
+        this.setPartCenter("body", 0F, 1.2F, 0.6F);
+
+        this.setPartCenter("frontleftleg", 0.4F, 1.1F, 0.25F);
+        this.setPartCenter("middleleftleg", 0.4F, 1.1F, -0.15F);
+        this.setPartCenter("backleftleg", 0.4F, 1.1F, -0.5F);
+
+        this.setPartCenter("frontrightleg", -0.4F, 1.1F, 0.25F);
+        this.setPartCenter("middlerightleg", -0.4F, 1.1F, -0.15F);
+        this.setPartCenter("backrightleg", -0.4F, 1.1F, -0.5F);
+
+        // Head:
     	this.lockHeadY = false;
+        this.trophyScale = 0.5F;
     }
     
     

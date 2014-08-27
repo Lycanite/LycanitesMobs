@@ -59,13 +59,19 @@ public class ModelCustomObj extends ModelBase {
 			headModel = true;
 			scale = -scale;
 		}
+		else {
+			scale *= 16;
+		}
 		
     	for(GroupObject part : parts) {
     		if(part.name == null)
     			continue;
+    		
     		boolean isHeadPart = this.isHeadPart(part);
-    		if(this.bodyIsHead && part.name.toLowerCase().contains("body"))
+    		if(this.bodyIsHead && part.name.toLowerCase().contains("body")) {
     			isHeadPart = true;
+    		}
+    		
     		if(!headModel || isHeadPart) {
 		    	GL11.glPushMatrix();
 		    	this.rotate(modelRotationOffset, 1F, 0F, 0F);
@@ -94,7 +100,8 @@ public class ModelCustomObj extends ModelBase {
     public boolean isHeadPart(String partName) {
     	if(partName == null)
     		return false;
-    	if(partName.toLowerCase().contains("head") || partName.toLowerCase().contains("mouth"))
+    	partName = partName.toLowerCase();
+    	if(partName.contains("head") || partName.contains("mouth"))
 			return true;
     	return false;
     }
@@ -102,7 +109,7 @@ public class ModelCustomObj extends ModelBase {
     public boolean isHeadPart(GroupObject part) {
     	if(part == null)
     		return false;
-    	return this.isHeadPart(part.name);
+    	return this.isHeadPart(part.name.toLowerCase());
     }
     
     
@@ -123,7 +130,7 @@ public class ModelCustomObj extends ModelBase {
     	float rotZ = 0F;
     	
     	// Head:
-    	if(partName.equals("head") || partName.equals("lefthead") || partName.equals("righthead")) {
+    	if(partName.toLowerCase().contains("head")) {
     		if(!lockHeadX)
     			rotX += Math.toDegrees(lookX / (180F / (float)Math.PI));
     		if(!lockHeadY)

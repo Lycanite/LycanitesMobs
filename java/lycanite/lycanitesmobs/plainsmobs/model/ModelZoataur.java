@@ -45,6 +45,10 @@ public class ModelZoataur extends ModelCustomObj {
     	
     	this.lockHeadX = true;
     	this.lockHeadY = true;
+    	
+    	// Trophy:
+        this.trophyScale = 0.8F;
+        this.trophyOffset = new float[] {0.0F, 0.0F, -0.2F};
     }
     
     

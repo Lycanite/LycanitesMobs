@@ -36,7 +36,8 @@ public class ModelYeti extends ModelCustomObj {
     	setPartCenter("legrightback", -0.7F, 0.9F, -1.5F);
 
         // Tropy:
-        this.trophyScale = 0.3F;
+        this.trophyScale = 0.6F;
+        this.trophyOffset = new float[] {0.0F, 0.0F, -0.4F};
     }
     
     

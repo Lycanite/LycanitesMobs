@@ -37,6 +37,10 @@ public class ModelTrent extends ModelCustomObj {
     	
     	lockHeadX = true;
     	lockHeadY = true;
+    	
+    	// Trophy:
+        this.trophyScale = 0.8F;
+        this.trophyOffset = new float[] {0.0F, 0.0F, -0.4F};
     }
     
     

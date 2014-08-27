@@ -35,6 +35,10 @@ public class ModelConcapedeSegment extends ModelCustomObj {
     	
     	this.lockHeadX = true;
     	this.lockHeadY = true;
+    	
+    	// Trophy:
+        this.trophyScale = 0.7F;
+        this.trophyOffset = new float[] {0.0F, -0.2F, 0.6F};
     }
     
     

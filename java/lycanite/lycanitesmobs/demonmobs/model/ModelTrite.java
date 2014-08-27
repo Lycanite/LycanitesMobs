@@ -37,6 +37,8 @@ public class ModelTrite extends ModelCustomObj {
 
         // Head:
     	this.lockHeadX = true;
+    	
+    	// Trophy:
         this.trophyScale = 1.0F;
     }
     

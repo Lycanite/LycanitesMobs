@@ -40,6 +40,10 @@ public class ModelClink extends ModelCustomObj {
     	setPartSubCenter("tail03", 0.0F, 1.55F, -0.9F);
     	setPartSubCenter("tail04", 0.0F, 0.8F, -0.65F);
     	setPartSubCenter("tail05", 0.0F, 2.0F, -0.8F);
+    	
+    	// Trophy:
+        this.trophyScale = 1.2F;
+        this.trophyOffset = new float[] {0.0F, 0.0F, -0.4F};
     }
     
     

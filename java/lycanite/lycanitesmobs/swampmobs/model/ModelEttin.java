@@ -35,6 +35,10 @@ public class ModelEttin extends ModelCustomObj {
     	setPartCenter("rightarm", -0.8F, 2.75F, 0.0F);
     	setPartCenter("leftleg", 0.35F, 1.25F, 0.0F);
     	setPartCenter("rightleg", -0.35F, 1.25F, 0.0F);
+    	
+    	// Trophy:
+        this.trophyScale = 1.0F;
+        this.trophyOffset = new float[] {0.0F, -0.2F, -0.2F};
     }
     
     

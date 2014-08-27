@@ -27,6 +27,9 @@ public class ModelNetherSoul extends ModelCustomObj {
     	
     	// Set Rotation Centers:
     	setPartCenter("head", 0F, 0.5F, 0F);
+
+        // Trophy:
+        this.trophyScale = 0.8F;
     }
     
     

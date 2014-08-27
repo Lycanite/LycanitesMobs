@@ -35,6 +35,9 @@ public class ModelCacodemon extends ModelCustomObj {
     	
     	this.lockHeadX = true;
     	this.lockHeadY = true;
+
+        // Trophy:
+        this.trophyScale = 0.5F;
     }
     
     

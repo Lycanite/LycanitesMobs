@@ -35,6 +35,10 @@ public class ModelJengu extends ModelCustomObj {
     	
     	setPartCenter("effect01", 0F, 0.89F, -0.08F);
     	setPartCenter("effect02", 0F, 0.565F, -0.24F);
+    	
+    	// Trophy:
+        this.trophyScale = 1.2F;
+        this.trophyOffset = new float[] {0.0F, 0.0F, -0.2F};
     }
     
     

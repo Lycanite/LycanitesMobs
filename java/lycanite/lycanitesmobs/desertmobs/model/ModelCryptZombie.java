@@ -33,6 +33,10 @@ public class ModelCryptZombie extends ModelCustomObj {
     	setPartCenter("rightarm", -0.4F, 1.6F, 0.0F);
     	setPartCenter("leftleg", 0.1F, 0.85F, 0.0F);
     	setPartCenter("rightleg", -0.1F, 0.85F, 0.0F);
+    	
+    	// Trophy:
+        this.trophyScale = 1.0F;
+        this.trophyOffset = new float[] {0.0F, -0.3F, -0.1F};
     }
     
     

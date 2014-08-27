@@ -33,6 +33,9 @@ public class ModelGhoulZombie extends ModelCustomObj {
     	setPartCenter("rightarm", -0.3F, 1.2F, 0.15F);
     	setPartCenter("leftleg", 0.1F, 0.6F, 0.0F);
     	setPartCenter("rightleg", -0.1F, 0.6F, 0.0F);
+    	
+    	// Trophy:
+        this.trophyScale = 1.2F;
     }
     
     

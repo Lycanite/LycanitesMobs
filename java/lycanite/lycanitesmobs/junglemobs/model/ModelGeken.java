@@ -35,6 +35,10 @@ public class ModelGeken extends ModelCustomObj {
     	setPartCenter("leftleg", 0.2F, 0.9F, -0.05F);
     	setPartCenter("rightleg", -0.2F, 0.9F, -0.05F);
     	setPartCenter("tail", 0F, 0.8F, -0.3F);
+    	
+    	// Trophy:
+        this.trophyScale = 0.8F;
+        this.trophyOffset = new float[] {0.0F, -0.3F, -0.4F};
     }
     
     

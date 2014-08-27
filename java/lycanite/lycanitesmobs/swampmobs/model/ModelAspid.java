@@ -34,6 +34,10 @@ public class ModelAspid extends ModelCustomObj {
     	setPartCenter("rightarm", -0.5F, 1.5F, 0.6F);
     	setPartCenter("leftleg", 0.6F, 1.15F, -0.3F);
     	setPartCenter("rightleg", -0.6F, 1.15F, -0.3F);
+    	
+    	// Trophy:
+        this.trophyScale = 1.0F;
+        this.trophyOffset = new float[] {0.0F, 0.0F, -0.2F};
     }
     
     

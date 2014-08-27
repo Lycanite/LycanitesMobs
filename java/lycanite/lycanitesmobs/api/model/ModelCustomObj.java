@@ -48,6 +48,8 @@ public class ModelCustomObj extends ModelBase {
     public float trophyScale = 1;
     /** Used for positioning this model when displaying as a trophy. If an empty array, no offset is applied, otherwise it must have at least 3 entries (x, y, z). **/
     public float[] trophyOffset = new float[0];
+    /** Used for positioning this model's mouth parts when displaying as a trophy. If an empty array, no offset is applied, otherwise it must have at least 3 entries (x, y, z). **/
+    public float[] trophyMouthOffset = new float[0];
     
     // Coloring:
 	/** If true, no color effects will be applied, this is usually used for when the model is rendered as a red damage overlay, etc. **/
@@ -127,8 +129,22 @@ public class ModelCustomObj extends ModelBase {
 
             // Trophy - Positioning:
             if(trophyModel) {
-                if("mouth".equalsIgnoreCase(part.name))
-                    this.centerPartToPart("mouth", "head");
+                if(!part.name.toLowerCase().contains("head") && !part.name.toLowerCase().contains("body")) {
+                	float[] mouthOffset = this.comparePartCenters(this.bodyIsTrophy ? "body" : "head", part.name.toLowerCase());
+                    this.translate(mouthOffset[0], mouthOffset[1], mouthOffset[2]);
+                    if(this.trophyMouthOffset.length >= 3)
+                    	this.translate(this.trophyMouthOffset[0], this.trophyMouthOffset[1], this.trophyMouthOffset[2]);
+                }
+                if(part.name.toLowerCase().contains("head")) {
+                	if(!part.name.toLowerCase().contains("left")) {
+                			this.translate(-0.3F, 0, 0);
+                			this.rotate(5F, 0, 1, 0);
+                	}
+                	if(!part.name.toLowerCase().contains("right")) {
+                			this.translate(0.3F, 0, 0);
+                			this.rotate(-5F, 0, 1, 0);
+                	}
+                }
                 this.uncenterPart(part.name.toLowerCase());
                 if(this.trophyOffset.length >= 3)
                     this.translate(this.trophyOffset[0], this.trophyOffset[1], this.trophyOffset[2]);
@@ -239,39 +255,41 @@ public class ModelCustomObj extends ModelBase {
     public void setPartCenter(String partName, float centerX, float centerY, float centerZ) {
     	if(this.isTrophyPart(partName))
     		this.bodyIsTrophy = false;
-    	partCenters.put(partName, new float[] {centerX, centerY, centerZ});
+    	this.partCenters.put(partName, new float[] {centerX, centerY, centerZ});
     }
     public void setPartCenters(float centerX, float centerY, float centerZ, String... partNames) {
     	for(String partName : partNames)
-    		setPartCenter(partName, centerX, centerY, centerZ);
+    		this.setPartCenter(partName, centerX, centerY, centerZ);
     }
     public float[] getPartCenter(String partName) {
-    	if(!partCenters.containsKey(partName)) return new float[] {0.0F, 0.0F, 0.0F};
-    	return partCenters.get(partName);
+    	if(!this.partCenters.containsKey(partName)) return new float[] {0.0F, 0.0F, 0.0F};
+    	return this.partCenters.get(partName);
     }
     
     // ========== Apply Centers ==========
     public void centerPart(String partName) {
-    	if(!partCenters.containsKey(partName)) return;
-    	float[] partCenter = partCenters.get(partName);
-    	translate(partCenter[0], partCenter[1], partCenter[2]);
+    	if(!this.partCenters.containsKey(partName)) return;
+    	float[] partCenter = this.partCenters.get(partName);
+    	this.translate(partCenter[0], partCenter[1], partCenter[2]);
     }
     public void uncenterPart(String partName) {
-    	if(!partCenters.containsKey(partName)) return;
-    	float[] partCenter = partCenters.get(partName);
-    	translate(-partCenter[0], -partCenter[1], -partCenter[2]);
+    	if(!this.partCenters.containsKey(partName)) return;
+    	float[] partCenter = this.partCenters.get(partName);
+    	this.translate(-partCenter[0], -partCenter[1], -partCenter[2]);
     }
     
     // ========== Copy Centers to Other Parts ==========
     public void centerPartToPart(String part, String targetPart) {
-    	uncenterPart(part);
-    	float[] partCenter = partCenters.get(targetPart);
-    	translate(partCenter[0], partCenter[1], partCenter[2]);
+    	this.uncenterPart(part);
+    	float[] partCenter = this.partCenters.get(targetPart);
+    	if(partCenter != null)
+    		this.translate(partCenter[0], partCenter[1], partCenter[2]);
     }
     public void uncenterPartToPart(String part, String targetPart) {
-    	float[] partCenter = partCenters.get(targetPart);
-    	translate(-partCenter[0], -partCenter[1], -partCenter[2]);
-    	centerPart(part);
+    	float[] partCenter = this.partCenters.get(targetPart);
+    	if(partCenter != null)
+    		this.translate(-partCenter[0], -partCenter[1], -partCenter[2]);
+    	this.centerPart(part);
     }
     
     // ========== Compare Centers ==========
@@ -279,6 +297,8 @@ public class ModelCustomObj extends ModelBase {
     	float[] centerPart = getPartCenter(centerPartName);
     	float[] targetPart = getPartCenter(targetPartName);
     	float[] partDifference = new float[3];
+    	if(targetPart == null)
+    		return partDifference;
     	for(int i = 0; i < 3; i++)
     		partDifference[i] = targetPart[i] - centerPart[i];
     	return partDifference;

@@ -43,6 +43,10 @@ public class ModelDweller extends ModelCustomObj {
     	setPartCenter("tail04", 0F, 0.1F, -0.85F);
     	setPartCenter("tail05", 0F, 0.09F, -1.3F);
     	setPartCenter("tail06", 0F, 0.08F, -1.65F);
+    	
+    	// Trophy:
+        this.trophyScale = 1.0F;
+        this.trophyOffset = new float[] {0.0F, 0.0F, -0.4F};
     }
     
     

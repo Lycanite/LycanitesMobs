@@ -40,6 +40,11 @@ public class ModelLurker extends ModelCustomObj {
     	setPartCenter("frontrightleg", -0.3F, 0.85F, 0.35F);
     	setPartCenter("backleftleg", 0.25F, 0.5F, -0.45F);
     	setPartCenter("backrightleg", -0.25F, 0.5F, -0.45F);
+    	
+    	// Trophy:
+        this.trophyScale = 0.8F;
+        this.trophyOffset = new float[] {0.0F, 0.0F, -1.0F};;
+        this.trophyMouthOffset = new float[] {0.0F, -0.8F, 0.0F};
     }
     
     

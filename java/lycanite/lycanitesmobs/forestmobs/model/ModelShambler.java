@@ -35,6 +35,10 @@ public class ModelShambler extends ModelCustomObj {
     	
     	lockHeadX = true;
     	lockHeadY = false;
+    	
+    	// Trophy:
+        this.trophyScale = 0.6F;
+        this.trophyOffset = new float[] {0.0F, -0.4F, 0.0F};
     }
     
     

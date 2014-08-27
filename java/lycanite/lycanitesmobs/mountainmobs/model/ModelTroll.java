@@ -34,6 +34,10 @@ public class ModelTroll extends ModelCustomObj {
     	setPartCenter("rightarm", -0.5F, 2.7F, 0F);
     	setPartCenter("leftleg", 0.4F, 1.2F, -0.2F);
     	setPartCenter("rightleg", -0.4F, 1.2F, -0.2F);
+    	
+    	// Trophy:
+        this.trophyScale = 0.8F;
+        this.trophyOffset = new float[] {0.0F, -0.3F, 0.0F};
     }
     
     

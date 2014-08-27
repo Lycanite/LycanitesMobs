@@ -38,6 +38,10 @@ public class ModelArisaur extends ModelCustomObj {
     	
     	lockHeadX = true;
     	lockHeadY = true;
+    	
+    	// Trophy:
+        this.trophyScale = 0.5F;
+        this.trophyOffset = new float[] {0.0F, 0.0F, -0.6F};
     }
     
     

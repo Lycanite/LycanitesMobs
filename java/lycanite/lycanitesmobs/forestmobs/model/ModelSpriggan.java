@@ -35,6 +35,9 @@ public class ModelSpriggan extends ModelCustomObj {
     	
     	setPartCenter("effect01", 0F, 1F, 0F);
     	setPartCenter("effect02", 0F, 1F, 0F);
+    	
+    	// Trophy:
+        this.trophyScale = 1.2F;
     }
     
     

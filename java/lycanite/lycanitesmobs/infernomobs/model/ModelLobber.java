@@ -35,8 +35,9 @@ public class ModelLobber extends ModelCustomObj {
     	setPartCenter("leftleg", 0.8F, 0.9F, 0F);
     	setPartCenter("rightleg", -0.8F, 0.9F, 0F);
 
-        // Tropy:
-        this.trophyScale = 0.5F;
+        // Trophy:
+        this.trophyScale = 0.8F;
+        this.trophyOffset = new float[] {0.0F, -0.2F, 0.0F};
     }
     
     

@@ -34,6 +34,9 @@ public class ModelLacedon extends ModelCustomObj {
     	setPartCenter("rightarm", -0.25F, 1.4F, 0F);
     	setPartCenter("leftleg", 0.25F, 0.85F, 0F);
     	setPartCenter("rightleg", -0.25F, 0.85F, 0F);
+    	
+    	// Trophy:
+        this.trophyScale = 1.0F;
     }
     
     

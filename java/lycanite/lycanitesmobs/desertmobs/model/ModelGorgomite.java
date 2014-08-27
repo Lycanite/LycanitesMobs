@@ -39,6 +39,10 @@ public class ModelGorgomite extends ModelCustomObj {
     	
     	this.lockHeadX = true;
     	this.lockHeadY = true;
+    	
+    	// Trophy:
+        this.trophyScale = 1.2F;
+        this.trophyOffset = new float[] {0.0F, 0.0F, -0.2F};
     }
     
     

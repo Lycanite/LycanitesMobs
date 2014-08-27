@@ -35,6 +35,10 @@ public class ModelZephyr extends ModelCustomObj {
     	
     	setPartCenter("effect01", 0F, 0.8F, 0F);
     	setPartCenter("effect02", 0F, 0.8F, 0F);
+    	
+    	// Trophy:
+        this.trophyScale = 1.2F;
+        this.trophyOffset = new float[] {0.0F, -0.2F, 0.2F};
     }
     
     

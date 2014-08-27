@@ -47,7 +47,8 @@ public class ModelFrostweaver extends ModelCustomObj {
     	this.lockHeadY = true;
 
         // Tropy:
-        this.trophyScale = 1.0F;
+        this.trophyScale = 1.5F;
+        this.trophyOffset = new float[] {0.0F, 0.0F, -0.2F};
     }
     
     

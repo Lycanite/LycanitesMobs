@@ -34,6 +34,10 @@ public class ModelKobold extends ModelCustomObj {
     	setPartCenter("leftleg", 0.15F, 0.3F, -0.05F);
     	setPartCenter("rightleg", -0.15F, 0.3F, -0.05F);
     	setPartCenter("tail", 0F, 0.35F, -0.15F);
+    	
+    	// Trophy:
+        this.trophyScale = 1.2F;
+        this.trophyOffset = new float[] {0.0F, 0.0F, -0.2F};
     }
     
     

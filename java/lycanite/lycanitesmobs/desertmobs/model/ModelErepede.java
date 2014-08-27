@@ -47,7 +47,10 @@ public class ModelErepede extends ModelCustomObj {
 
         // Head:
     	this.lockHeadY = false;
-        this.trophyScale = 0.5F;
+    	
+    	// Trophy:
+        this.trophyScale = 0.8F;
+        this.trophyOffset = new float[] {0.0F, -0.2F, -0.3F};
     }
     
     

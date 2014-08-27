@@ -34,6 +34,9 @@ public class ModelManticore extends ModelCustomObj {
     	setPartCenter("rightwing", -0.2F, 0.7F, -0.1F);
     	setPartCenter("leftleg", 0.1F, 0.3F, -0.0F);
     	setPartCenter("rightleg", -0.1F, 0.3F, -0.0F);
+    	
+    	// Trophy:
+        this.trophyScale = 1.2F;
     }
     
     

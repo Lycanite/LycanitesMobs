@@ -36,6 +36,10 @@ public class ModelSkylus extends ModelCustomObj {
     	setPartCenter("tentaclel2", 0.4F, 0.6F, 0.9F);
     	setPartCenter("tentacler1", -0.2F, 0.4F, 0.9F);
     	setPartCenter("tentacler2", -0.4F, 0.6F, 0.9F);
+    	
+    	// Trophy:
+        this.trophyScale = 0.8F;
+        this.trophyOffset = new float[] {0.0F, 0.0F, -0.2F};
     }
     
     

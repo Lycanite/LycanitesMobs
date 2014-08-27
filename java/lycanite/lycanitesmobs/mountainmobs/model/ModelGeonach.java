@@ -39,6 +39,10 @@ public class ModelGeonach extends ModelCustomObj {
     	setPartCenter("effectinner", 0F, 0.3F, -0.1F);
     	
     	this.lockHeadX = true;
+    	
+    	// Trophy:
+        this.trophyScale = 1.2F;
+        this.trophyOffset = new float[] {0.0F, 0.0F, -0.4F};
     }
     
     

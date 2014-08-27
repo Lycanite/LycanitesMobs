@@ -42,6 +42,10 @@ public class ModelYale extends ModelCustomObj {
     	setPartCenter("legrightfront", -0.2F, 1.2F, 0.85F);
     	setPartCenter("legleftback", 0.3F, 0.4F, -0.7F);
     	setPartCenter("legrightback", -0.3F, 0.4F, -0.7F);
+    	
+    	// Trophy:
+        this.trophyScale = 1.0F;
+        this.trophyOffset = new float[] {0.0F, -0.15F, -0.4F};
     }
     
     

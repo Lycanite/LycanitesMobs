@@ -35,6 +35,10 @@ public class ModelJabberwock extends ModelCustomObj {
     	setPartCenter("rightarm", -0.35F, 1.95F, 0F);
     	setPartCenter("leftleg", 0.3F, 1.0F, -0.15F);
     	setPartCenter("rightleg", -0.3F, 1.0F, -0.15F);
+    	
+    	// Trophy:
+        this.trophyScale = 0.8F;
+        this.trophyOffset = new float[] {0.0F, 0.0F, -0.4F};
     }
     
     

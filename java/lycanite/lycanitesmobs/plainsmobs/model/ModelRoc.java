@@ -37,6 +37,10 @@ public class ModelRoc extends ModelCustomObj {
     	
     	setPartCenter("wingleft", 0.15F, 1.5F, 0.75F);
     	setPartCenter("wingright", -0.15F, 1.5F, 0.75F);
+    	
+    	// Trophy:
+        this.trophyScale = 1.0F;
+        this.trophyOffset = new float[] {0.0F, 0.0F, -0.4F};
     }
     
     

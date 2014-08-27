@@ -31,6 +31,10 @@ public class ModelRemobra extends ModelCustomObj {
     	setPartCenter("tail", 0F, 0.6F, -0.1F);
     	setPartCenter("leftwing", 0.1F, 0.8F, -0.1F);
     	setPartCenter("rightwing", -0.1F, 0.8F, -0.1F);
+    	
+    	// Trophy:
+        this.trophyScale = 1.0F;
+        this.trophyOffset = new float[] {0.0F, 0.0F, -0.1F};
     }
     
     

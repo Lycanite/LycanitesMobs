@@ -34,6 +34,10 @@ public class ModelMaka extends ModelCustomObj {
     	setPartCenter("frontrightleg", -0.9F, 1.2F, 0.9F);
     	setPartCenter("backrightleg", -0.9F, 1.2F, -0.8F);
     	setPartCenter("tail", 0F, 1.6F, -1.5F);
+    	
+    	// Trophy:
+        this.trophyScale = 0.6F;
+        this.trophyOffset = new float[] {0.0F, 0.0F, -0.4F};
     }
     
     

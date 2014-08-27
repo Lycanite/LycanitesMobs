@@ -1,7 +1,5 @@
 package lycanite.lycanitesmobs.arcticmobs.model;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.model.ModelCustomObj;
@@ -9,6 +7,8 @@ import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.model.obj.WavefrontObject;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ModelArix extends ModelCustomObj {
@@ -43,7 +43,8 @@ public class ModelArix extends ModelCustomObj {
     	setPartCenter("tail", 0F, 0.47F, -0.2F);
 
         // Tropy:
-        this.trophyScale = 1.5F;
+        this.trophyScale = 1.8F;
+        this.trophyOffset = new float[] {0.0F, -0.05F, -0.1F};
     }
     
     

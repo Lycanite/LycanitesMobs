@@ -38,6 +38,9 @@ public class ModelEyewig extends ModelCustomObj {
     	setPartCenter("frontrightleg", -0.35F, 0.55F, 0.3F);
     	setPartCenter("middlerightleg", -0.35F, 0.55F, 0F);
     	setPartCenter("backrightleg", -0.35F, 0.55F, -0.3F);
+    	
+    	// Trophy:
+        this.trophyScale = 0.8F;
     }
     
     

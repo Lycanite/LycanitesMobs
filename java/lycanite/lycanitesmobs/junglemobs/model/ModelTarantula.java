@@ -47,6 +47,10 @@ public class ModelTarantula extends ModelCustomObj {
     	
     	this.lockHeadX = true;
     	this.lockHeadY = true;
+    	
+    	// Trophy:
+        this.trophyScale = 1.0F;
+        this.trophyOffset = new float[] {0.0F, 0.0F, -0.35F};
     }
     
     

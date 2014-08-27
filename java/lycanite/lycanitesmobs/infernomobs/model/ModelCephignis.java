@@ -31,6 +31,10 @@ public class ModelCephignis extends ModelCustomObj {
     	setPartCenter("body", 0F, 0.5F, 0.4F);
     	setPartCenter("armleft", 0.15F, 0.4F, 0.3F);
     	setPartCenter("armright", -0.15F, 0.4F, 0.3F);
+    	
+    	// Trophy:
+        this.trophyScale = 0.8F;
+        this.trophyOffset = new float[] {0.0F, 0.0F, -0.4F};
     }
     
     

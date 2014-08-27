@@ -47,6 +47,10 @@ public class ModelCrusk extends ModelCustomObj {
     	
     	this.lockHeadX = true;
     	this.lockHeadY = true;
+    	
+    	// Trophy:
+        this.trophyScale = 0.6F;
+        this.trophyOffset = new float[] {0.0F, 0.0F, -0.4F};
     }
     
     
@@ -70,6 +74,10 @@ public class ModelCrusk extends ModelCustomObj {
     	float scaleX = 1F;
     	float scaleY = 1F;
     	float scaleZ = 1F;
+    	
+    	// No Crusk trophy animation due to head offset.
+    	if(scale < 0)
+    		return;
     	
     	// Mouth (Idle, Attack, Sitting):
     	if(partName.equals("topleftmouth")) {

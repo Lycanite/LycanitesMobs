@@ -33,6 +33,10 @@ public class ModelIka extends ModelCustomObj {
         setPartCenter("legleft", 0.4F, 0.2F, 0.8F);
         setPartCenter("legright", -0.4F, 0.2F, 0.8F);
         setPartCenter("tail", 0F, 0.3F, -1.0F);
+    	
+    	// Trophy:
+        this.trophyScale = 1.0F;
+        this.trophyOffset = new float[] {0.0F, 0.0F, -0.4F};
     }
     
     

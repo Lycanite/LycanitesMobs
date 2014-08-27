@@ -34,6 +34,9 @@ public class ModelLobber extends ModelCustomObj {
     	setPartCenter("rightarm", -1.1F, 2.5F, 0F);
     	setPartCenter("leftleg", 0.8F, 0.9F, 0F);
     	setPartCenter("rightleg", -0.8F, 0.9F, 0F);
+
+        // Tropy:
+        this.trophyScale = 0.5F;
     }
     
     

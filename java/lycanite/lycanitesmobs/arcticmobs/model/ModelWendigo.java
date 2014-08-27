@@ -34,6 +34,9 @@ public class ModelWendigo extends ModelCustomObj {
     	setPartCenter("armright", -1F, 2.5F, 0F);
     	setPartCenter("legleft", 0.5F, 1.4F, 0F);
     	setPartCenter("legright", -0.5F, 1.4F, 0F);
+
+        // Tropy:
+        this.trophyScale = 0.5F;
     }
     
     

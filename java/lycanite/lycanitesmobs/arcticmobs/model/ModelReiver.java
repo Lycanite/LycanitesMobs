@@ -35,6 +35,9 @@ public class ModelReiver extends ModelCustomObj {
     	
     	setPartCenter("outereffect", 0F, 0.8F, -0.1F);
     	setPartCenter("innereffect", 0F, 0.8F, -0.1F);
+
+        // Tropy:
+        this.trophyScale = 0.6F;
     }
     
     

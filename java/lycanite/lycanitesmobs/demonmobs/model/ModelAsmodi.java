@@ -40,6 +40,9 @@ public class ModelAsmodi extends ModelCustomObj {
     	
     	lockHeadX = true;
     	lockHeadY = true;
+
+        // Tropy:
+        this.trophyScale = 0.4F;
     }
     
     

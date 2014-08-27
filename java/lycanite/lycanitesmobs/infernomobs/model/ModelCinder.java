@@ -35,6 +35,9 @@ public class ModelCinder extends ModelCustomObj {
     	
     	setPartCenter("outereffect", 0F, 0.6F, 0F);
     	setPartCenter("innereffect", 0F, 0.6F, 0F);
+
+        // Tropy:
+        this.trophyScale = 0.6F;
     }
     
     

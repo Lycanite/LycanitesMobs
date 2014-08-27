@@ -45,6 +45,9 @@ public class ModelFrostweaver extends ModelCustomObj {
     	
     	this.lockHeadX = true;
     	this.lockHeadY = true;
+
+        // Tropy:
+        this.trophyScale = 1.0F;
     }
     
     

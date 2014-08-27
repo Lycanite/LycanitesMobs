@@ -41,6 +41,9 @@ public class ModelArix extends ModelCustomObj {
         setPartCenter("wingright", -0.06F, 1.1F, -0.13F);
 
     	setPartCenter("tail", 0F, 0.47F, -0.2F);
+
+        // Tropy:
+        this.trophyScale = 1.5F;
     }
     
     

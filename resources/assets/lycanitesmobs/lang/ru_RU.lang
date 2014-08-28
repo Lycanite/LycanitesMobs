@@ -1,7 +1,36 @@
-# Entites
+# ========== Entites ==========
 entity.lycanitesmobs.summoningportal.name=Портал призыва
 #
-# Items
+#
+#
+# ========== Subspecies ==========
+# Uncommon:
+subspecies.ashen.name=Пепельный
+subspecies.dark.name=Тёмный
+subspecies.light.name=Светлый
+subspecies.verdant.name=Зелёный
+subspecies.scarlet.name=Багряный
+subspecies.azure.name=Азуритовый
+subspecies.golden.name=Золотой
+subspecies.violet.name=Фиолетовый
+subspecies.keppel.name=Сапфировый
+subspecies.russet.name=Земляной
+#
+# Rare:
+subspecies.lunar.name=Лунный
+subspecies.eerie.name=Мрачный
+subspecies.sacred.name=Священный
+subspecies.phosphorescent.name=Фосфоресцирующий
+subspecies.crimson.name=Малиновый
+subspecies.royal.name=Королевский
+subspecies.solar.name=Солнечный
+subspecies.mottled.name=Пёстрый
+subspecies.celestial.name=Небесный
+subspecies.umber.name=Янтарный
+#
+#
+#
+# ========== Items ==========
 item.soulgazer.name=Ловец душ
 item.soulgazer.description=Возьмите в руки и кликните правой кнопкой мыши на существо, чтобы добавить его в Бестиарий.
 item.summoningstaff.name=Призывающий посох
@@ -15,21 +44,27 @@ item.savagesummoningstaff.description=Вызывает в два раза мин
 item.sturdysummoningstaff.name=Двужильный призывающий посох
 item.sturdysummoningstaff.description=Больше прочности, но призыв стоит больше фокус-силы.
 #
-# GUIS
+#
+#
+# ========== GUIS ==========
 # Creative Tab names:
 itemGroup.lycanitesmobs.items=Lycanites Mobs: Предметы
 itemGroup.lycanitesmobs.creatures=Lycanites Mobs: Существа
+#
 # Beastiary:
 gui.beastiary.name=Бестиарий
 gui.beastiary.empty=Нет сведений о тварях
 gui.beastiary.soulgazerinfo=В ваш Бестиарий не добавлено сведений ни об одной твари. Для того, чтобы сделать это, скрафтите Ловец душ и используйте его (правой кнопкой мыши) на любом существе, которое найдёте.
 gui.beastiary.selectacreature=Выберите раздел и затем существо.
+#
 # Minion Manager:
 gui.minion.name=Управление миньонами
 gui.minion.empty=Нет призываемых тварей
 gui.minion.soulgazerinfo=Вы не добавили ни одного существа, которое можно было бы призвать, в ваш Бестиарий. Продолжайте искать, не все твари призываемы.
+#
 # Soulbound Pets:
 gui.soulboundpets.name=Приручённые души
+#
 # Pet/Minion:
 gui.pet.sitting=Сидеть
 gui.pet.movement=Движение
@@ -40,11 +75,14 @@ gui.pet.stance=Позиция
 gui.pet.aggressive=Агрессивный
 gui.pet.defensive=Защитный
 gui.pet.pvp=PVP
+#
 # Mounts:
 gui.mount.controls=Нажмите %control% чтобы сесть на ездового питомца
 #%control% will be replaced with the Mount Ability key, don't translate this!
 #
-# Messages
+#
+#
+# ========== Messages ==========
 message.soulgazer.new=Вы узнали больше о %creature%! Загляните в Бестиарий!
 message.soulgazer.summonable=Теперь вы можете призвать %creature%! Вам нужен Призывающий посох.
 message.soulgazer.known=Вы уже знаете всё об этой твари.
@@ -53,11 +91,15 @@ message.pet.tamed=%creature% теперь приручен вами!
 message.pet.tamefail=%creature% хочет больше!
 # %creature% will be replaced with the name of the tamed creature, don't translate this!
 #
-# Common
+#
+#
+# ========== Common ==========
 common.yes=Да
 common.no=Нет
 #
-# Potion
+#
+#
+# ========== Potion Effects ==========
 potion.paralysis=Паралич
 potion.leech=Кровопийца
 potion.penetration=Острота

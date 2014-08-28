@@ -2292,11 +2292,15 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ==================================================
     //                       Visuals
     // ==================================================
-    /** Returns this creature's main texture. **/
+    /** Returns this creature's main texture. Also checks for for subspecies. **/
     public ResourceLocation getTexture() {
-    	if(AssetManager.getTexture(this.getTextureName()) == null)
-    		AssetManager.addTexture(this.getTextureName(), this.group, "textures/entity/" + this.getTextureName().toLowerCase() + ".png");
-    	return AssetManager.getTexture(this.getTextureName());
+        String textureName = this.getTextureName();
+        if(this.getSubspecies() != null) {
+            textureName += "_" + this.getSubspecies().name;
+        }
+    	if(AssetManager.getTexture(textureName) == null)
+    		AssetManager.addTexture(textureName, this.group, "textures/entity/" + textureName.toLowerCase() + ".png");
+    	return AssetManager.getTexture(textureName);
     }
 
     /** Returns this creature's equipment texture. **/
@@ -2313,9 +2317,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
     /** Gets the name of this creature's texture, normally links to it's code name but can be overriden by subspecies and alpha creatures. **/
     public String getTextureName() {
-    	if(this.getSubspecies() != null) {
-    		return this.mobInfo.name + "_" + this.getSubspecies().name;
-    	}
     	return this.mobInfo.name;
     }
     

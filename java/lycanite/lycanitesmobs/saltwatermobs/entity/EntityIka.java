@@ -116,7 +116,7 @@ public class EntityIka extends EntityCreatureAgeable implements IAnimals, IGroup
     // ==================================================
 	// ========== Movement Speed Modifier ==========
     @Override
-    public float getSpeedMod() {
+    public float getAISpeedModifier() {
         float waterSpeed = 1.0F;
         if(this.isInWater()) // Checks specifically just for water.
             waterSpeed = 2.0F;

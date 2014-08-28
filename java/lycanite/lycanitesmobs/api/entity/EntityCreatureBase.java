@@ -13,6 +13,7 @@ import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIMoveRestriction;
 import lycanite.lycanitesmobs.api.entity.ai.FlightNavigator;
 import lycanite.lycanitesmobs.api.info.DropRate;
+import lycanite.lycanitesmobs.api.info.ExtraMobBehaviour;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.SpawnInfo;
@@ -72,6 +73,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	public String eggName = "spawnegg";
     /** What attribute is this creature, used for effects such as Bane of Arthropods. **/
 	public EnumCreatureAttribute attribute = EnumCreatureAttribute.UNDEAD;
+	/** A class that opens up extra stats and behaviours for NBT based customization.**/
+	public ExtraMobBehaviour extraMobBehaviour;
 	
 	// Size:
     /** The width of this mob. XZ axis. **/
@@ -242,6 +245,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         super(world);
         this.mobInfo = MobInfo.mobClassToInfo.get(this.getClass());
         this.group = mobInfo.group;
+        this.extraMobBehaviour = new ExtraMobBehaviour(this);
         this.flightNavigator = new FlightNavigator(this);
     }
     
@@ -722,28 +726,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	}
     }
     
-    /** Returns the requested stat multiplier. **/
-	public double getStatMultiplier(String stat) {
-		double multiplier = 1.0D;
-		if("defense".equalsIgnoreCase(stat))
-			multiplier = this.mobInfo.multiplierDefense;
-		
-		else if("speed".equalsIgnoreCase(stat))
-			multiplier = this.mobInfo.multiplierSpeed;
-		
-		else if("damage".equalsIgnoreCase(stat))
-			multiplier = this.mobInfo.multiplierDamage;
-		
-		else if("haste".equalsIgnoreCase(stat))
-			multiplier = this.mobInfo.multiplierHaste;
-		
-		else if("effect".equalsIgnoreCase(stat))
-			multiplier = this.mobInfo.multiplierEffect;
-		
-		return multiplier * this.getDifficultyMultiplier(stat);
-	}
-	
-	/** Returns the shared multiplier for all stats based on difficulty. **/
+    /** Returns the shared multiplier for all stats based on difficulty. **/
 	public double getDifficultyMultiplier(String stat) {
 		EnumDifficulty difficulty = this.worldObj.difficultySetting;
 		String difficultyName = "Easy";
@@ -753,46 +736,100 @@ public abstract class EntityCreatureBase extends EntityLiving {
 			difficultyName = "Normal";
 		return MobInfo.difficultyMutlipliers.get(difficultyName.toUpperCase() + "-" + stat.toUpperCase());
 	}
-	
-	/** Returns an additional boost stat, useful for mainly defense as many mobs have 0 defense which thus can't be altered by modifiers. **/
-	public int getStatBoost(String stat) {
-		int boost = 0;
-		
-		if("defense".equalsIgnoreCase(stat))
-			boost = this.mobInfo.boostDefense;
-		
-		return boost;
-	}
     
-    // ========= Defense Multiplier ==========
-    /** Used to scale the defense of this mob, see getDamageAfterDefense() for the logic. **/
+    // ========= Defense ==========
+    /** Returns the defense scale of this mob, see getDamageAfterDefense() for the logic. **/
     public double getDefenseMultiplier() {
-    	return this.getStatMultiplier("defense");
+    	double multiplier = this.mobInfo.multiplierDefense * this.getDifficultyMultiplier("defense");
+    	if(this.extraMobBehaviour != null)
+    		multiplier *= this.extraMobBehaviour.multiplierDefense;
+    	return multiplier;
+    }
+    /** Returns the defense boost of this mob. **/
+    public int getDefenseBoost() {
+    	int boost = this.mobInfo.boostDefense;
+    	if(this.extraMobBehaviour != null)
+    		boost += this.extraMobBehaviour.boostDefense;
+    	return boost;
     }
     
-    // ========= Speed Multiplier ==========
-    /** Used to scale the speed of this mob. **/
+    // ========= Speed ==========
+    /** Returns the speed scale of this mob. **/
     public double getSpeedMultiplier() {
-    	return this.getStatMultiplier("speed");
+    	double multiplier = this.mobInfo.multiplierSpeed * this.getDifficultyMultiplier("speed");
+    	if(this.extraMobBehaviour != null)
+    		multiplier *= this.extraMobBehaviour.multiplierSpeed;
+    	return multiplier;
+    }
+    /** Returns the speed boost of this mob. **/
+    public float getSpeedBoost() {
+    	int boost = this.mobInfo.boostSpeed / 100;
+    	if(this.extraMobBehaviour != null)
+    		boost += this.extraMobBehaviour.boostSpeed;
+    	return boost;
     }
     
-    // ========= Effect Multiplier ==========
-    /** Used to scale the duration of any effects that this mob uses, can inlcude both buffs and debuffs on the enemy. **/
-    public double getEffectMultiplier() {
-    	return this.getStatMultiplier("effect");
+    // ========= Damage ==========
+    /**Returns the damage scale of this mob. **/
+    public double getDamageMultiplier() {
+    	double multiplier = this.mobInfo.multiplierDamage * this.getDifficultyMultiplier("damage");
+    	if(this.extraMobBehaviour != null)
+    		multiplier *= this.extraMobBehaviour.multiplierDamage;
+    	return multiplier;
     }
-
+    /**Returns the damage boost of this mob. **/
+    public int getDamageBoost() {
+    	int boost = this.mobInfo.boostDamage;
+    	if(this.extraMobBehaviour != null)
+    		boost += this.extraMobBehaviour.boostDamage;
+    	return boost;
+    }
+    
+    // ========= Haste ==========
+    /** Used to scale the rate of abilities such as attack speed. Note: Abilities are normally capped at around 10 ticks minimum due to performance issues and the entity update rate. **/
+    public double getHasteMultiplier() {
+    	double multiplier = this.mobInfo.multiplierHaste * this.getDifficultyMultiplier("haste");
+    	if(this.extraMobBehaviour != null)
+    		multiplier *= this.extraMobBehaviour.multiplierHaste;
+    	return multiplier;
+    }
+    /** Used to boost the rate of abilities such as attack speed. Note: Abilities are normally capped at around 10 ticks minimum due to performance issues and the entity update rate. **/
+    public int getHasteBoost() {
+    	int boost = this.mobInfo.boostHaste;
+    	if(this.extraMobBehaviour != null)
+    		boost += this.extraMobBehaviour.boostHaste;
+    	return boost;
+    }
+    /** When given a base delay (in ticks) this will return the scaled delay with difficulty and other modifiers taken into account
+     * ticks - The base duration in ticks between actions (such as between ranged attacks).
+    **/
+    public int getHaste(int ticks) {
+    	ticks -= this.getHasteBoost();
+    	double ticksScale = 1 / this.getHasteMultiplier();
+    	ticks = Math.round((float)ticks * (float)ticksScale);
+		return ticks;
+    }
+    
+    // ========= Effect ==========
+    /** Returns the duration scale of any effects that this mob uses, can include both buffs and debuffs on the enemy. **/
+    public double getEffectMultiplier() {
+    	double multiplier = this.mobInfo.multiplierEffect * this.getDifficultyMultiplier("effect");
+    	if(this.extraMobBehaviour != null)
+    		multiplier *= this.extraMobBehaviour.multiplierEffect;
+    	return multiplier;
+    }
+    /** Returns the duration boost of any effects that this mob uses, can include both buffs and debuffs on the enemy. **/
+    public int getEffectBoost() {
+    	int boost = this.mobInfo.boostEffect;
+    	if(this.extraMobBehaviour != null)
+    		boost += this.extraMobBehaviour.boostEffect;
+    	return boost;
+    }
     /** When given a base time (in seconds) this will return the scaled time with difficulty and other modifiers taken into account
      * seconds - The base duration in seconds that this effect should last for.
     **/
     public int getEffectDuration(int seconds) {
-		return Math.round((float)seconds * (float)(this.getEffectMultiplier())) * 20;
-    }
-    
-    // ========= Haste Multiplier ==========
-    /** Used to scale the rate of abilities such as attack speed. Note: Abilities are normally capped at around 10 ticks minimum due to performance issues and the entity update rate. **/
-    public double getHasteMultiplier() {
-    	return this.getStatMultiplier("haste");
+		return Math.round(((float)seconds * (float)(this.getEffectMultiplier())) * 20) + (int)this.getEffectBoost();
     }
     
     
@@ -1164,12 +1201,12 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Used when setting the movement speed of this mob, called by AI classes before movement and is given a speed modifier, a local speed modifier is also applied here. **/
     @Override
     public void setAIMoveSpeed(float speed) {
-        super.setAIMoveSpeed((speed * this.getSpeedMod()) * (float)this.getSpeedMultiplier());
+        super.setAIMoveSpeed(((speed + this.getSpeedBoost()) * this.getAISpeedModifier()) * (float)this.getSpeedMultiplier());
     }
     
     // ========== Movement Speed Modifier ==========
-    /** The local speed modifier of this mob, AI classes will also provide their own modifiers that will be multiplied by this modifier. **/
-    public float getSpeedMod() {
+    /** The local speed modifier of this mob, AI classes will also provide their own modifiers that will be multiplied by this modifier. To be used dynamically by various mob behaviours. Not to be confused with getSpeedMultiplier(). **/
+    public float getAISpeedModifier() {
     	return 1.0F;
     }
     
@@ -1317,8 +1354,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	if(this.attackEntityAsMob(target, damageScale)) {
     		
     		// Spread Fire:
-        	if(this.spreadFire && this.isBurning() && this.rand.nextFloat() < this.getStatMultiplier("effect"))
-        		target.setFire(Math.round((float)(4 * this.getStatMultiplier("effect"))));
+        	if(this.spreadFire && this.isBurning() && this.rand.nextFloat() < this.getEffectMultiplier())
+        		target.setFire(Math.round((float)((this.getEffectBoost() + 4) * this.getEffectMultiplier())));
         	
     	}
     	this.setJustAttacked();
@@ -1364,10 +1401,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
                 this.motionZ *= 0.6D;
             }
             
-            int j = EnchantmentHelper.getFireAspectModifier(this);
-            
-            if(j > 0)
-            	target.setFire(j * 4);
+            int fireEnchantDuration = EnchantmentHelper.getFireAspectModifier(this);
+            if(fireEnchantDuration > 0)
+            	target.setFire(fireEnchantDuration * 4);
             
             //if(target instanceof EntityLivingBase)
                 //EnchantmentThorns.func_151367_b(this, (EntityLivingBase)target, this.rand);
@@ -1380,7 +1416,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Returns how much attack damage this mob does. **/
     public float getAttackDamage(double damageScale) {
     	float damage = (float)this.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue();
-        damage *= this.getStatMultiplier("damage");
+    	damage += this.getDamageBoost();
+        damage *= this.getAttackDamageScale();
         damage *= damageScale;
         return damage;
     }
@@ -1388,7 +1425,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========= Get Attack Damage Scale ==========
     /** Used to scale how much damage this mob does, this is used by getAttackDamage() for melee and should be passed to projectiles for ranged attacks. **/
     public double getAttackDamageScale() {
-    	return this.getStatMultiplier("damage");
+    	return this.getDamageMultiplier();
     }
     
     
@@ -1423,7 +1460,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Defense ==========
     /** This is provided with how much damage this mob will take and returns the reduced (or sometimes increased) damage with defense applied. Note: Damage Modifiers are applied after this. This also applies the blocking ability. **/
     public float getDamageAfterDefense(float damage) {
-    	float baseDefense = (float)(this.defense + this.getStatBoost("defense"));
+    	float baseDefense = (float)(this.defense + this.getDefenseBoost());
     	float scaledDefense = baseDefense * (float)this.getDefenseMultiplier();
     	float minDamage = 1F;
     	if(this.isBlocking()) {
@@ -1583,13 +1620,23 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Can this entity move across land currently? Usually used for swimming mobs to prevent land movement. **/
     public boolean canWalk() { return true; }
     /** Can this entity free swim currently? (This doesn't stop the entity from moving in water but is used for smooth flight-like swimming). **/
-    public boolean canSwim() { return false; }
+    public boolean canSwim() {
+    	if(this.extraMobBehaviour != null)
+    		if(this.extraMobBehaviour.swimmingOverride)
+    			return true;
+    	return false;
+    }
     /** Can this entity jump currently? **/
     public boolean canJump() { return true; }
     /** Can this entity climb currently? **/
     public boolean canClimb() { return false; }
     /** Can this entity fly currently? If true it will use the flight navigator. **/
-    public boolean canFly() { return false; }
+    public boolean canFly() {
+    	if(this.extraMobBehaviour != null)
+    		if(this.extraMobBehaviour.flightOverride)
+    			return true;
+    	return false;
+    }
     /** Can this entity by tempted (usually lured by an item) currently? **/
     public boolean canBeTempted() { return true; }
     
@@ -1598,7 +1645,12 @@ public abstract class EntityCreatureBase extends EntityLiving {
     
     // ========== Stealth ==========
     /** Can this entity stealth currently? **/
-    public boolean canStealth() { return false; }
+    public boolean canStealth() {
+    	if(this.extraMobBehaviour != null)
+    		if(this.extraMobBehaviour.stealthOverride)
+    			return true;
+    	return false;
+    }
 
     /** Get the current stealth percentage, 0.0F = not stealthed, 1.0F = completely stealthed, used for animation such as burrowing crusks. **/
     public float getStealth() {
@@ -1690,7 +1742,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	return this.currentBlockingTime > 0;
     }
     
-    /** Returns the blocking defense multiplier, when blocking this mobs defense is multiplied by this, also if this mobs defense is below one it will be moved up to one. **/
+    /** Returns the blocking defense multiplier, when blocking this mobs defense is multiplied by this, also if this mobs defense is below 1 it will be moved up to one. **/
     public int getBlockingMultiplier() {
     	return 4;
     }
@@ -1968,12 +2020,22 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	return this.inventory.getEquipmentStack("bag") != null;
     }
     /** Returns the size of this mob's inventory when it doesn't have a bag item equipped. **/
-    public int getNoBagSize() { return 0; }
+    public int getNoBagSize() {
+    	if(this.extraMobBehaviour != null)
+    		if(this.extraMobBehaviour.inventorySizeOverride > 0)
+    			return this.extraMobBehaviour.inventorySizeOverride;
+    	return 0;
+    }
     /** Returns the size that this mob's inventory increases by when it is provided with a bag item. (Look at this as the size of the bag item, not the new total creature inventory size.) **/
     public int getBagSize() { return 5; }
     
     /** Returns true if this mob is able to pick items up off the ground. **/
-    public boolean canPickupItems() { return false; }
+    public boolean canPickupItems() {
+    	if(this.extraMobBehaviour != null)
+    		if(this.extraMobBehaviour.itemPickupOverride)
+    			return true;
+    	return false;
+    }
     /** Returns how much of the specified item stack this creature's inventory can hold. (Stack size, not empty slots, this allows the creature to merge stacks when picking up.) **/
     public int getSpaceForStack(ItemStack pickupStack) {
     	return this.inventory.getSpaceForStack(pickupStack);
@@ -2065,7 +2127,12 @@ public abstract class EntityCreatureBase extends EntityLiving {
         return super.isPotionApplicable(potionEffect);
     }
     /** Returns whether or not this entity can be set on fire, this will block both the damage and the fire effect, use isDamageTypeApplicable() to block fire but keep the effect. **/
-    public boolean canBurn() { return true; }
+    public boolean canBurn() {
+    	if(this.extraMobBehaviour != null)
+    		if(this.extraMobBehaviour.fireImmunityOverride)
+    			return false;
+    	return true;
+    }
     /** Returns true if this mob should be damaged by the sun. **/
     public boolean daylightBurns() { return false; }
     /** Returns true if this mob should be damaged by water. **/
@@ -2081,7 +2148,12 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // Breathing:
     /** If true, this mob wont lose air when underwater. **/
     @Override
-    public boolean canBreatheUnderwater() { return false; }
+    public boolean canBreatheUnderwater() {
+    	if(this.extraMobBehaviour != null)
+    		if(this.extraMobBehaviour.waterBreathingOverride)
+    			return true;
+    	return false;
+    }
     /** If false, this mob will lose air when above water or lava if isLavaCreature is true. **/
     public boolean canBreatheAboveWater() { return true; }
     /** Sets the current amount of air this mob has. **/
@@ -2243,24 +2315,36 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	else {
     		this.firstSpawn = false;
     	}
+    	
     	if(nbtTagCompound.hasKey("Stealth")) {
     		this.setStealth(nbtTagCompound.getFloat("Stealth"));
     	}
+    	
     	if(nbtTagCompound.hasKey("IsMinion")) {
     		this.setMinion(nbtTagCompound.getBoolean("IsMinion"));
     	}
+    	
     	if(nbtTagCompound.hasKey("IsTemporary") && nbtTagCompound.getBoolean("IsTemporary") && nbtTagCompound.hasKey("TemporaryDuration")) {
     		this.setTemporary(nbtTagCompound.getInteger("TemporaryDuration"));
     	}
+    	else {
+    		this.unsetTemporary();
+    	}
+    	
     	if(nbtTagCompound.hasKey("Color")) {
     		this.setColor(nbtTagCompound.getByte("Color"));
     	}
+    	
     	if(nbtTagCompound.hasKey("Subspecies")) {
     		this.setSubspecies(nbtTagCompound.getByte("Subspecies"), false);
     	}
-    	else this.unsetTemporary();
+    	
         super.readEntityFromNBT(nbtTagCompound);
         this.inventory.readFromNBT(nbtTagCompound);
+        
+        if(nbtTagCompound.hasKey("ExtraBehaviour")) {
+        	this.extraMobBehaviour.readFromNBT(nbtTagCompound.getCompoundTag("ExtraBehaviour"));
+        }
     }
     
     // ========== Write ==========
@@ -2274,8 +2358,13 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	nbtTagCompound.setInteger("TemporaryDuration", this.temporaryDuration);
     	nbtTagCompound.setByte("Color", (byte)this.getColor());
     	nbtTagCompound.setByte("Subspecies", (byte)this.getSubspeciesIndex());
+    	
         super.writeEntityToNBT(nbtTagCompound);
         this.inventory.writeToNBT(nbtTagCompound);
+        
+        NBTTagCompound extTagCompound = new NBTTagCompound();
+        this.extraMobBehaviour.writeToNBT(extTagCompound);
+        nbtTagCompound.setTag("ExtraBehaviour", extTagCompound);
     }
     
     

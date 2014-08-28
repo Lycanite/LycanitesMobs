@@ -123,7 +123,7 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroup
     // ==================================================
 	// ========== Movement Speed Modifier ==========
     @Override
-    public float getSpeedMod() {
+    public float getAISpeedModifier() {
     	if(this.getHealth() > (this.getMaxHealth() / 2)) // Slower with shell.
     		return 0.25F;
     	return 1.0F;

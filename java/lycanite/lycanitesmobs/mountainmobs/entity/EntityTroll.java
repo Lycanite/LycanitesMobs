@@ -162,7 +162,8 @@ public class EntityTroll extends EntityCreatureBase implements IMob {
     //                      Movement
     // ==================================================
     // ========== Movement Speed Modifier ==========
-    public float getSpeedMod() {
+    @Override
+    public float getAISpeedModifier() {
     	if(this.stoneForm) // Slower in stone form.
     		return 0.125F;
     	return 1.0F;

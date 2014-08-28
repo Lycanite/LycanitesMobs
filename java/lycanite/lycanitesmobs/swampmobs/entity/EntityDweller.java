@@ -113,7 +113,8 @@ public class EntityDweller extends EntityCreatureTameable implements IMob {
     //                      Movement
     // ==================================================
     // ========== Movement Speed Modifier ==========
-    public float getSpeedMod() {
+	@Override
+    public float getAISpeedModifier() {
     	if(this.isInWater()) // Checks specifically just for water.
     		return 8.0F;
     	else if(this.waterContact()) // Checks for water, rain, etc.

@@ -116,17 +116,6 @@ public class EntityZoataur extends EntityCreatureTameable implements IGroupPreda
     public void setBlocking() {
     	this.currentBlockingTime = this.blockingTime + this.getRNG().nextInt(this.blockingTime / 2);
     }
-
-	
-    // ==================================================
-    //                      Movement
-    // ==================================================
-    // ========== Movement Speed Modifier ==========
-    public float getSpeedMod() {
-    	if(!this.onGround)
-    		return 5.0F;
-    	return 1.0F;
-    }
     
     
     // ==================================================

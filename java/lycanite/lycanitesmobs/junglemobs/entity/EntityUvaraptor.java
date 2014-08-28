@@ -138,7 +138,8 @@ public class EntityUvaraptor extends EntityCreatureRideable implements IGroupPre
     //                      Movement
     // ==================================================
     // ========== Movement Speed Modifier ==========
-    public float getSpeedMod() {
+    @Override
+    public float getAISpeedModifier() {
     	return 1.0F;
     }
 

@@ -133,7 +133,8 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
     //                      Movement
     // ==================================================
     // ========== Movement Speed Modifier ==========
-    public float getSpeedMod() {
+    @Override
+    public float getAISpeedModifier() {
     	if(this.hasRiderTarget())
 	    	if(this.worldObj.getBlock((int)this.posX, (int)this.boundingBox.minY - 1, (int)this.posZ).getMaterial() == Material.sand
 	    		|| (this.worldObj.getBlock((int)this.posX, (int)this.boundingBox.minY - 1, (int)this.posZ).getMaterial() == Material.air

@@ -138,7 +138,8 @@ public class EntityVentoraptor extends EntityCreatureRideable implements IGroupP
     //                      Movement
     // ==================================================
     // ========== Movement Speed Modifier ==========
-    public float getSpeedMod() {
+    @Override
+    public float getAISpeedModifier() {
     	if(!this.onGround)
     		return 5.0F;
     	return 1.0F;

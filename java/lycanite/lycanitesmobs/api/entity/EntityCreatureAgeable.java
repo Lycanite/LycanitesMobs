@@ -226,19 +226,26 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
   	//                        Size
   	// ==================================================
 	public void setScaleForAge(boolean age) {
-        this.setScale(age ? 0.5F : 1.0F);
+        this.setAgeScale(age ? 0.5F : 1.0F);
     }
 	
-	protected final void setScale(float age) {
+	protected final void setAgeScale(float age) {
         super.setSize(this.scaledWidth * age, this.scaledHeight * age);
     }
 	
-	protected final void setSize(float width, float height) {
+	@Override
+	protected void setSize(float width, float height) {
         boolean validWidth = this.scaledWidth > 0.0F;
         this.scaledWidth = width;
         this.scaledHeight = height;
         if(!validWidth)
-            this.setScale(1.0F);
+            this.setAgeScale(1.0F);
+    }
+
+    /** When called, this reapplies the initial width and height this mob and then applies sizeScale. **/
+	public void updateSize() {
+        this.setSize(this.setWidth, this.setHeight);
+        this.setScaleForAge(this.isChild());
     }
 	
 	

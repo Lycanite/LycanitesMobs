@@ -4,10 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -51,7 +55,12 @@ public class ModelCustom extends ModelBase {
    	// ==================================================
     @Override
     public void render(Entity entity, float time, float distance, float loop, float lookY, float lookX, float scale) {
-    	//animator.update((IAnimatedEntity)entity);
+        float sizeScale = 1F;
+		if(entity instanceof EntityCreatureBase)
+			sizeScale *= ((EntityCreatureBase)entity).sizeScale;
+    	GL11.glScalef(sizeScale, sizeScale, sizeScale);
+    	GL11.glTranslatef(0, -(sizeScale - 1) * 2, 0);
+    	
     	setAngles((EntityLiving)entity, time, distance, loop, lookY, lookX, scale);
     	animate((EntityLiving)entity, time, distance, loop, lookY, lookX, scale);
     }

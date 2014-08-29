@@ -83,6 +83,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	public float setDepth = 0.6F;
     /** The height of this mob. Y axis. **/
 	public float setHeight = 1.8F;
+    /** The size scale of this mob. Randomly varies normally by 10%. **/
+	public double sizeScale = 1.0D;
 	
 	// Stats:
 	/** The defense rating of this mob. This is how much damage it can withstand.
@@ -191,7 +193,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 		HEALTH(watcherID++), TARGET(watcherID++), ANIMATION(watcherID++), ATTACK_PHASE(watcherID++),
 		CLIMBING(watcherID++), STEALTH(watcherID++), HUNGER(watcherID++), STAMINA(watcherID++),
 		AGE(watcherID++), LOVE(watcherID++),
-		TAMED(watcherID++), OWNER(watcherID++), COLOR(watcherID++), SUBSPECIES(watcherID++), LAST(watcherID++),
+		TAMED(watcherID++), OWNER(watcherID++), COLOR(watcherID++), SIZE(watcherID++), SUBSPECIES(watcherID++), LAST(watcherID++),
 		EQUIPMENT(watcherID++);
 		
 		public final byte id;
@@ -320,6 +322,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         this.dataWatcher.addObject(WATCHER_ID.CLIMBING.id, (byte)0);
         this.dataWatcher.addObject(WATCHER_ID.STEALTH.id, (float)0.0F);
         this.dataWatcher.addObject(WATCHER_ID.COLOR.id, (byte)0);
+        this.dataWatcher.addObject(WATCHER_ID.SIZE.id, (float)1D);
         this.dataWatcher.addObject(WATCHER_ID.SUBSPECIES.id, (byte)0);
         this.initiated = true;
     }
@@ -684,6 +687,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** This is called when the mob is first spawned to the world either through natural spawning or from a Spawn Egg. **/
     public void onFirstSpawn() {
     	this.getRandomSubspecies();
+    	this.getRandomSize();
     }
     
     // ========== Get Random Subspecies ==========
@@ -696,6 +700,12 @@ public abstract class EntityCreatureBase extends EntityLiving {
     		else
     			LycanitesMobs.printDebug("Subspecies", "Setting " + this.getSpeciesName() + " to base species.");
     	}
+    }
+    
+    // ========== Get Random Size ==========
+    public void getRandomSize() {
+    	this.sizeScale = 1.0D + (0.35D * (0.5D - this.getRNG().nextDouble()));
+    	this.updateSize();
     }
 	
 	
@@ -1076,6 +1086,17 @@ public abstract class EntityCreatureBase extends EntityLiving {
         	if(this.getSubspeciesIndex() != this.dataWatcher.getWatchableObjectByte(WATCHER_ID.SUBSPECIES.id))
         		this.setSubspecies(this.dataWatcher.getWatchableObjectByte(WATCHER_ID.SUBSPECIES.id), false);
         }
+        
+        // Size:
+        if(!this.worldObj.isRemote) {
+    		this.dataWatcher.updateObject(WATCHER_ID.SIZE.id, Float.valueOf((float)this.sizeScale));
+        }
+        else {
+        	if(this.sizeScale != this.dataWatcher.getWatchableObjectFloat(WATCHER_ID.SIZE.id)) {
+        		this.sizeScale = this.dataWatcher.getWatchableObjectFloat(WATCHER_ID.SIZE.id);
+        		this.updateSize();
+        	}
+        }
     }
     
     
@@ -1293,6 +1314,21 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Returns the distance that the entity's position is from the home position. **/
     public float getDistanceFromHome() {
     	return this.homePosition.getDistanceSquared((int)this.posX, (int)this.posY, (int)this.posZ);
+    }
+
+	
+	// ==================================================
+  	//                        Size
+  	// ==================================================
+    /** Sets the width and height of this mob. This applies sizeScale to the provided arguments. **/
+	@Override
+	protected void setSize(float width, float height) {
+        super.setSize(width * (float)this.sizeScale, height * (float)this.sizeScale);
+    }
+
+    /** When called, this reapplies the initial width and height this mob and then applies sizeScale. **/
+	public void updateSize() {
+        this.setSize(this.setWidth, this.setHeight);
     }
     
     
@@ -2335,6 +2371,11 @@ public abstract class EntityCreatureBase extends EntityLiving {
     		this.setColor(nbtTagCompound.getByte("Color"));
     	}
     	
+    	if(nbtTagCompound.hasKey("Size")) {
+    		this.sizeScale = nbtTagCompound.getDouble("Size");
+    		this.updateSize();
+    	}
+    	
     	if(nbtTagCompound.hasKey("Subspecies")) {
     		this.setSubspecies(nbtTagCompound.getByte("Subspecies"), false);
     	}
@@ -2357,6 +2398,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	nbtTagCompound.setBoolean("IsTemporary", this.isTemporary);
     	nbtTagCompound.setInteger("TemporaryDuration", this.temporaryDuration);
     	nbtTagCompound.setByte("Color", (byte)this.getColor());
+    	nbtTagCompound.setDouble("Size", this.sizeScale);
     	nbtTagCompound.setByte("Subspecies", (byte)this.getSubspeciesIndex());
     	
         super.writeEntityToNBT(nbtTagCompound);

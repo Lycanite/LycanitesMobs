@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -92,6 +93,8 @@ public class ModelCustomObj extends ModelBase {
 		}
 		else {
 			scale *= 16;
+			if(entity instanceof EntityCreatureBase)
+				scale *= ((EntityCreatureBase)entity).sizeScale;
 		}
 
         // Render and Animate Each Part:

@@ -566,7 +566,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     // ========== Agressiveness ==========
     public boolean isAggressive() {
     	if(!this.isTamed())
-    		return true;
+    		return super.isAggressive();
         return (this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id) & TAMED_ID.STANCE_AGGRESSIVE.id) != 0;
     }
 

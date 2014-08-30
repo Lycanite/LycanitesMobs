@@ -9,6 +9,7 @@ import lycanite.lycanitesmobs.api.IGroupAnimal;
 import lycanite.lycanitesmobs.api.IGroupPredator;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAvoid;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIEatBlock;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowParent;
@@ -17,6 +18,7 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAIMate;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAvoid;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetParent;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITempt;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
@@ -80,14 +82,16 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
         // AI Tasks:
         this.getNavigator().setAvoidsWater(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIAvoid(this).setNearSpeed(1.3D).setFarSpeed(1.2D).setNearDistance(5.0D).setFarDistance(20.0D));
-        this.tasks.addTask(2, new EntityAIMate(this));
+        this.tasks.addTask(1, new EntityAIAttackMelee(this).setLongMemory(false));
+        this.tasks.addTask(2, new EntityAIAvoid(this).setNearSpeed(1.3D).setFarSpeed(1.2D).setNearDistance(5.0D).setFarDistance(20.0D));
+        this.tasks.addTask(3, new EntityAIMate(this));
         this.tasks.addTask(4, new EntityAITempt(this).setItemList("vegetables"));
         this.tasks.addTask(5, new EntityAIFollowParent(this).setSpeed(1.0D));
         this.tasks.addTask(6, new EntityAIEatBlock(this).setBlocks(Blocks.grass).setReplaceBlock(Blocks.dirt));
         this.tasks.addTask(7, new EntityAIWander(this).setPauseRate(30));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
+        this.targetTasks.addTask(1, new EntityAITargetRevenge(this).setHelpCall(true));
         this.targetTasks.addTask(2, new EntityAITargetParent(this).setSightCheck(false).setDistance(32.0D));
         this.targetTasks.addTask(3, new EntityAITargetAvoid(this).setTargetClass(IGroupPredator.class));
         

@@ -61,22 +61,23 @@ public class EntityAIAvoid extends EntityAIBase {
         this.avoidTarget = this.host.getAvoidTarget();
         if(this.avoidTarget == null)
         	return false;
+    	
         if(!this.avoidTarget.isEntityAlive())
             return false;
+    	
         if(this.targetClass != null && !this.targetClass.isAssignableFrom(this.avoidTarget.getClass()))
             return false;
         
-        Vec3 vec3 = RandomPositionGenerator.findRandomTargetAwayFrom(this.host, 16, 7, Vec3.createVectorHelper(this.avoidTarget.posX, this.avoidTarget.posY, this.avoidTarget.posZ));
+        Vec3 vec3 = RandomPositionGenerator.findRandomTargetAwayFrom(this.host, 24, 10, Vec3.createVectorHelper(this.avoidTarget.posX, this.avoidTarget.posY, this.avoidTarget.posZ));
         if(vec3 == null)
             return false;
         
-        if(avoidTarget.getDistanceSq(vec3.xCoord, vec3.yCoord, vec3.zCoord) < this.avoidTarget.getDistanceSqToEntity(this.host))
+        if(this.avoidTarget.getDistanceSq(vec3.xCoord, vec3.yCoord, vec3.zCoord) < this.avoidTarget.getDistanceSqToEntity(this.host))
             return false;
         
         if(this.host.getDistanceSqToEntity(this.avoidTarget) >= this.farDistance)
         	return false;
         
-        this.pathEntity = this.host.getNavigator().getPathToXYZ(vec3.xCoord, vec3.yCoord, vec3.zCoord);
         return this.pathEntity == null ? false : this.pathEntity.isDestinationSame(vec3);
     }
 	

@@ -219,7 +219,7 @@ public class EntityConcapedeHead extends EntityCreatureAgeable implements IAnima
     	if(this.worldObj.isDaytime())
     		return this.testLightLevel() < 2;
     	else
-    		return true;
+    		return super.isAggressive();
     }
     
     @Override

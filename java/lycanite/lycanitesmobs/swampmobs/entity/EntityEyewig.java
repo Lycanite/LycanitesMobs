@@ -202,7 +202,7 @@ public class EntityEyewig extends EntityCreatureRideable {
     	if(this.worldObj.isDaytime())
     		return this.testLightLevel() < 2;
     	else
-    		return true;
+    		return super.isAggressive();
     }
     
     

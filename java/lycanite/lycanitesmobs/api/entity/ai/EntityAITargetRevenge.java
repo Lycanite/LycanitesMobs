@@ -58,6 +58,10 @@ public class EntityAITargetRevenge extends EntityAITargetAttack {
  	// ==================================================
     public boolean shouldExecute() {
         int i = this.host.func_142015_aE(); // Get Revenge Timer
+        if(!this.host.isAggressive() && !(this.host instanceof EntityCreatureTameable))
+        	return false;
+        if(!this.host.isAggressive() && this.host instanceof EntityCreatureTameable && !((EntityCreatureTameable)this.host).isTamed())
+        	return false;
         return i != this.revengeTime && this.isSuitableTarget(this.host.getAITarget(), false);
     }
 	

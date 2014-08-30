@@ -1377,7 +1377,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
     **/
     @Override
     public void setRevengeTarget(EntityLivingBase entityLivingBase) {
-    	if(this.fleeHealthPercent > 0 && this.getHealth() / this.getMaxHealth() <= this.fleeHealthPercent)
+    	boolean aggressiveOverride = false;
+    	if(this.extraMobBehaviour != null)
+    		aggressiveOverride = this.extraMobBehaviour.aggressiveOverride;
+    	if(!aggressiveOverride && this.fleeHealthPercent > 0 && this.getHealth() / this.getMaxHealth() <= this.fleeHealthPercent)
     		this.setAvoidTarget(entityLivingBase);
     	else
     		super.setRevengeTarget(entityLivingBase);
@@ -1535,7 +1538,12 @@ public abstract class EntityCreatureBase extends EntityLiving {
   	//                      Targets
   	// ==================================================
     /** Returns true if this mob should attack it's attack targets. Used mostly by attack AIs and update methods. **/
-    public boolean isAggressive() { return true; }
+    public boolean isAggressive() {
+    	if(this.extraMobBehaviour != null)
+    		if(this.extraMobBehaviour.aggressiveOverride)
+    			return true;
+    	return true;
+    }
     
     /** Returns true if this mob should defend other entities that cry for help. Used mainly by the revenge AI. **/
     public boolean isProtective(Entity entity) { return true; }

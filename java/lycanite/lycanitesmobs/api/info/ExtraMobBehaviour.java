@@ -22,6 +22,7 @@ public class ExtraMobBehaviour {
 	public int boostEffect = 0;
 	
 	// ========== Overrides ==========
+	public boolean aggressiveOverride = false;
 	public boolean flightOverride = false;
 	public boolean swimmingOverride = false;
 	public boolean waterBreathingOverride = false;
@@ -63,6 +64,9 @@ public class ExtraMobBehaviour {
     	}
 
     	// Overrides:
+    	if(nbtTagCompound.hasKey("AggressiveOverride")) {
+    		this.aggressiveOverride = nbtTagCompound.getBoolean("AggressiveOverride");
+    	}
     	if(nbtTagCompound.hasKey("FlightOverride")) {
     		this.flightOverride = nbtTagCompound.getBoolean("FlightOverride");
     	}
@@ -97,6 +101,7 @@ public class ExtraMobBehaviour {
     	nbtTagCompound.setDouble("MultiplierEffect", this.multiplierEffect);
 
     	// Overrides:
+    	nbtTagCompound.setBoolean("AggressiveOverride", this.aggressiveOverride);
     	nbtTagCompound.setBoolean("FlightOverride", this.flightOverride);
     	nbtTagCompound.setBoolean("SwimmingOverride", this.swimmingOverride);
     	nbtTagCompound.setBoolean("WaterBreathingOverride", this.waterBreathingOverride);

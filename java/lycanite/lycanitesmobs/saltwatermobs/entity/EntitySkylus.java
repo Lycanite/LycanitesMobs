@@ -190,7 +190,9 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroup
     // ========== Is Aggressive ==========
     @Override
     public boolean isAggressive() {
-    	return this.isInWater();
+    	if(this.isInWater())
+    		return false;
+    	else return super.isAggressive();
     }
     
     

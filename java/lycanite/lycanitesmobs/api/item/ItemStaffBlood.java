@@ -35,26 +35,28 @@ public class ItemStaffBlood extends ItemStaffSummoning {
     }
     
     // ========== Summon Cost ==========
+    @Override
     public int getSummonCostBoost() {
     	return 0;
     }
+    
+    @Override
     public float getSummonCostMod() {
     	return 0.5F;
     }
     
     // ========== Summon Duration ==========
+    @Override
     public int getSummonDuration() {
     	return 60 * 20;
     }
     
     // ========== Additional Costs ==========
+    @Override
     public boolean getAdditionalCosts(EntityPlayer player) {
-    	if(player.getHealth() < 7)
-    		return false;
-    	if(player.getFoodStats().getFoodLevel() < 6)
+    	if(player.getHealth() <= 7)
     		return false;
     	player.setHealth(player.getHealth() - 6);
-    	player.getFoodStats().setFoodLevel(player.getFoodStats().getFoodLevel() - 6);
     	return true;
     }
     

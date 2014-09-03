@@ -10,6 +10,8 @@ entity.saltwatermobs.ika.name=Ika
 entity.saltwatermobs.ika.description=Slow snail-turtle-shellfish! Ika can be lured and bred with vegetables, however they can only survive on land for a small amount of time. Farm with care! 
 entity.saltwatermobs.abtu.name=Abtu
 entity.saltwatermobs.abtu.description=Vicious fish with big teeth! It is rare to find adults, but if you do, you best swim away as they will swarm you with their children!
+entity.saltwatermobs.raiko.name=Raiko
+entity.saltwatermobs.raiko.description=Large sea birds known to dive into the ocean and snatch their prey to fly up high and drop their their prey back into the ocean with the weight effect, eventually drowning their prey.
 #
 # Items
 item.saltwaterspawn.name=Spawn

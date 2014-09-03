@@ -1,13 +1,13 @@
 package lycanite.lycanitesmobs.saltwatermobs.model;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.api.model.ModelCustomObj;
 import lycanite.lycanitesmobs.saltwatermobs.SaltwaterMobs;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.model.obj.WavefrontObject;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ModelRaiko extends ModelCustomObj {
@@ -21,7 +21,7 @@ public class ModelRaiko extends ModelCustomObj {
 
     public ModelRaiko(float shadowSize) {
     	// Load Model:
-    	this.model = (WavefrontObject)AssetManager.getObjModel("roc", SaltwaterMobs.group, "entity/raiko");
+    	this.model = (WavefrontObject)AssetManager.getObjModel("raiko", SaltwaterMobs.group, "entity/raiko");
     	
     	// Get Parts:
         this.parts = model.groupObjects;
@@ -32,11 +32,11 @@ public class ModelRaiko extends ModelCustomObj {
 
         this.setPartCenter("body", 0F, 1.5F, 0.0F);
 
-        this.setPartCenter("legleft", 0.2F, 0.6F, -0.52F);
-        this.setPartCenter("legright", -0.2F, 0.6F, -0.52F);
+        this.setPartCenter("legleft", 0.15F, 1.0F, -0.5F);
+        this.setPartCenter("legright", -0.15F, 1.0F, -0.5F);
 
-        this.setPartCenter("wingleft", 0.15F, 1.5F, 0.75F);
-        this.setPartCenter("wingright", -0.15F, 1.5F, 0.75F);
+        this.setPartCenter("wingleft", 0.2F, 1.5F, 0.75F);
+        this.setPartCenter("wingright", -0.2F, 1.5F, 0.75F);
     	
     	// Trophy:
         this.trophyScale = 1.0F;

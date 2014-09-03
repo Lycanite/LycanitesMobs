@@ -11,6 +11,7 @@ import lycanite.lycanitesmobs.api.item.ItemCustomFood;
 import lycanite.lycanitesmobs.saltwatermobs.entity.EntityAbtu;
 import lycanite.lycanitesmobs.saltwatermobs.entity.EntityIka;
 import lycanite.lycanitesmobs.saltwatermobs.entity.EntityLacedon;
+import lycanite.lycanitesmobs.saltwatermobs.entity.EntityRaiko;
 import lycanite.lycanitesmobs.saltwatermobs.entity.EntitySkylus;
 import lycanite.lycanitesmobs.saltwatermobs.item.ItemSaltwaterEgg;
 import net.minecraft.block.BlockDispenser;
@@ -105,6 +106,13 @@ public class SaltwaterMobs {
 		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("WATERCREATURE")
 				.setSpawnWeight(8).setAreaLimit(32).setGroupLimits(1, 5);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "raiko", EntityRaiko.class, 0xCCCCDD, 0xFF6633)
+		        .setPeaceful(false).setSummonable(false).setSummonCost(4).setDungeonLevel(2)
+		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("golden", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("MONSTER")
+				.setSpawnWeight(4).setAreaLimit(3).setGroupLimits(1, 3);
 		ObjectManager.addMob(newMob);
 
 		

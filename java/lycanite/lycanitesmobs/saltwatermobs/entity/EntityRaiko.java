@@ -1,27 +1,31 @@
 package lycanite.lycanitesmobs.saltwatermobs.entity;
 
+import java.util.HashMap;
+
 import lycanite.lycanitesmobs.ExtendedEntity;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupHunter;
 import lycanite.lycanitesmobs.api.IGroupPrey;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
-import lycanite.lycanitesmobs.api.entity.ai.*;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public class EntityRaiko extends EntityCreatureBase implements IMob, IGroupHunter {
     public Entity pickupEntity;
@@ -111,14 +115,22 @@ public class EntityRaiko extends EntityCreatureBase implements IMob, IGroupHunte
             // Burst Out of Water:
             else {
                 this.waterTime++;
-                if(this.hasPickupEntity() && this.waterTime >= (2 * 20)) {
-                    this.waterTime = 0;
-                    this.leap(0.2F, 0.5D);
+                if(this.hasPickupEntity() || this.getAir() <= 40) {
+	                if(this.waterTime >= (2 * 20)) {
+	                    this.waterTime = 0;
+	                    this.leap(0.2F, 0.5D);
+	                }
+                }
+                else if(this.hasAttackTarget()) {
+                	if(this.waterTime >= (16 * 20)) {
+	                    this.waterTime = 4 * 20;
+	                    this.leap(0.2F, 0.5D);
+                	}
                 }
                 else if(this.waterTime >= (8 * 20)) {
                     this.waterTime = 4 * 20;
                     this.leap(0.2F, 0.5D);
-                }
+            	}
             }
         }
     }
@@ -147,6 +159,9 @@ public class EntityRaiko extends EntityCreatureBase implements IMob, IGroupHunte
   	// ==================================================
     @Override
     public boolean canFly() { return true; }
+
+    @Override
+    public boolean canSwim() { return true; }
     
     public boolean canPickupEntity(Entity entity) {
     	ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(entity);
@@ -196,8 +211,9 @@ public class EntityRaiko extends EntityCreatureBase implements IMob, IGroupHunte
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotionID() == Potion.weakness.id) return false;
-        if(potionEffect.getPotionID() == Potion.digSlowdown.id) return false;
+    	if(ObjectManager.getPotionEffect("Weight") != null)
+        	if(potionEffect.getPotionID() == ObjectManager.getPotionEffect("Weight").id) return false;
+        if(potionEffect.getPotionID() == Potion.blindness.id) return false;
         return super.isPotionApplicable(potionEffect);
     }
 }

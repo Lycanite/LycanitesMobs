@@ -133,7 +133,7 @@ public class SpawnTypeBase {
 		
 		// Storm Spawner:
 		SpawnTypeBase stormSpawner = new SpawnTypeStorm("Storm")
-				.setRate(800).setChance(0.25D).setRange(64).setBlockLimit(32).setMobLimit(32);
+				.setRate(800).setChance(0.125D).setRange(64).setBlockLimit(32).setMobLimit(32);
 		stormSpawner.materials = new Material[] {Material.air};
 		stormSpawner.ignoreBiome = true;
 		stormSpawner.ignoreLight = true;

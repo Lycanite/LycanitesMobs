@@ -82,5 +82,25 @@
     "entity.abtu.attack": {
         "category": "neutral",
         "sounds": [{"name": "entity/abtu/attack", "stream": false}]
+    },
+    "entity.raiko.say": {
+        "category": "neutral",
+        "sounds": [{"name": "entity/raiko/say", "stream": false}]
+    },
+    "entity.raiko.hurt": {
+        "category": "neutral",
+        "sounds": [{"name": "entity/raiko/hurt", "stream": false}]
+    },
+    "entity.raiko.death": {
+        "category": "neutral",
+        "sounds": [{"name": "entity/raiko/death", "stream": false}]
+    },
+    "entity.raiko.attack": {
+        "category": "neutral",
+        "sounds": [{"name": "entity/raiko/attack", "stream": false}]
+    },
+    "entity.raiko.fly": {
+        "category": "neutral",
+        "sounds": [{"name": "entity/raiko/fly", "stream": false}]
     }
 }

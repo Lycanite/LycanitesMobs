@@ -58,8 +58,6 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
         this.spawnsInDarkness = true;
         this.hasAttackSound = true;
         
-        this.eggName = "SwampEgg";
-        
         this.setWidth = 0.8F;
         this.setHeight = 1.5F;
         this.setupMob();

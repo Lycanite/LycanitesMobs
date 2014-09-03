@@ -51,8 +51,6 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
         this.spawnsInDarkness = true;
         this.hasAttackSound = true;
         
-        this.eggName = "MountainEgg";
-        
         this.setWidth = 0.8F;
         this.setHeight = 1.2F;
         this.setupMob();

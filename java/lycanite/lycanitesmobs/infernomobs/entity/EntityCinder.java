@@ -52,8 +52,6 @@ public class EntityCinder extends EntityCreatureTameable implements IMob, IGroup
         this.spawnsInBlock = false;
         this.hasAttackSound = false;
         
-        this.eggName = "InfernoEgg";
-        
         this.setWidth = 0.8F;
         this.setHeight = 1.2F;
         this.setupMob();

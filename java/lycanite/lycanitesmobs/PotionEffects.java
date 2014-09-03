@@ -1,6 +1,5 @@
 package lycanite.lycanitesmobs;
 
-import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;

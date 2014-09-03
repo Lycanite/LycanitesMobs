@@ -42,8 +42,7 @@ public class EntityJabberwock extends EntityCreatureTameable implements IMob {
         this.experience = 5;
         this.spawnsInDarkness = true;
         this.hasAttackSound = true;
-        
-        this.eggName = "MountainEgg";
+
         this.canGrow = false;
         this.babySpawnChance = 0.1D;
         

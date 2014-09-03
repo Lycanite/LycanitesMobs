@@ -41,8 +41,7 @@ public class EntityEttin extends EntityCreatureAgeable implements IMob {
         this.experience = 10;
         this.spawnsInDarkness = true;
         this.hasAttackSound = true;
-        
-        this.eggName = "SwampEgg";
+
         this.canGrow = true;
         this.babySpawnChance = 0.1D;
         

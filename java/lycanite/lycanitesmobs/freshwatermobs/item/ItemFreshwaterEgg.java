@@ -1,7 +1,6 @@
 package lycanite.lycanitesmobs.freshwatermobs.item;
 
 import lycanite.lycanitesmobs.api.item.ItemCustomSpawnEgg;
-import lycanite.lycanitesmobs.forestmobs.ForestMobs;
 import lycanite.lycanitesmobs.freshwatermobs.FreshwaterMobs;
 
 public class ItemFreshwaterEgg extends ItemCustomSpawnEgg {

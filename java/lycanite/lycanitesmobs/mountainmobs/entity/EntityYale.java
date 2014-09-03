@@ -51,8 +51,7 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
 	 */
 	private final InventoryCrafting colorMixer = new InventoryCrafting(new Container() {
         private static final String __OBFID = "CL_00001649";
-        public boolean canInteractWith(EntityPlayer par1EntityPlayer)
-        {
+        public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
             return false;
         }
     }, 2, 1);
@@ -68,8 +67,7 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
         this.experience = 3;
         this.spawnsOnlyInLight = true;
         this.hasAttackSound = false;
-        
-        this.eggName = "MountainEgg";
+
         this.canGrow = true;
         this.babySpawnChance = 0.1D;
         

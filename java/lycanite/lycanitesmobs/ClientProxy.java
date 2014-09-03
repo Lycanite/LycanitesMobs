@@ -16,6 +16,7 @@ import lycanite.lycanitesmobs.api.render.RenderCreature;
 import lycanite.lycanitesmobs.api.render.RenderParticle;
 import lycanite.lycanitesmobs.api.render.RenderProjectile;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -65,11 +66,13 @@ public class ClientProxy extends CommonProxy {
 		
 		// Creatures:
 		for(Entry<String, MobInfo> mobEntry : ObjectManager.mobs.entrySet())
-			RenderingRegistry.registerEntityRenderingHandler(mobEntry.getValue().entityClass, new RenderCreature(mobEntry.getKey()));
+            if(mobEntry instanceof Entity)
+			    RenderingRegistry.registerEntityRenderingHandler(mobEntry.getValue().entityClass, new RenderCreature(mobEntry.getKey()));
 		
 		// Projectiles:
 		for(Entry<String, Class> projectileEntry : ObjectManager.projectiles.entrySet())
-			RenderingRegistry.registerEntityRenderingHandler(projectileEntry.getValue(), new RenderProjectile());
+            if(projectileEntry instanceof Entity)
+                RenderingRegistry.registerEntityRenderingHandler(projectileEntry.getValue(), new RenderProjectile());
 		
 		// Particles:
 		RenderingRegistry.registerEntityRenderingHandler(EntityParticle.class, new RenderParticle());

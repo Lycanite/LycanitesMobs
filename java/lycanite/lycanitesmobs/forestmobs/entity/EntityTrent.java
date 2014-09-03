@@ -48,8 +48,6 @@ public class EntityTrent extends EntityCreatureBase implements IMob, IGroupPlant
         this.hasAttackSound = true;
         this.spreadFire = true;
         
-        this.eggName = "ForestEgg";
-        
         this.setWidth = 2.9F;
         this.setHeight = 7.9F;
         this.setupMob();

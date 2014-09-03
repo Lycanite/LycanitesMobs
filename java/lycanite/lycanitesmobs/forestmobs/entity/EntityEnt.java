@@ -51,8 +51,7 @@ public class EntityEnt extends EntityCreatureTameable implements IMob, IGroupPla
         this.spawnsUnderground = false;
         this.hasAttackSound = true;
         this.spreadFire = true;
-        
-        this.eggName = "ForestEgg";
+
         this.canGrow = true;
         this.babySpawnChance = 0.1D;
         

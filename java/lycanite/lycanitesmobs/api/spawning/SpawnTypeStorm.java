@@ -30,7 +30,7 @@ public class SpawnTypeStorm extends SpawnTypeBase {
     	double chance = this.chance;
     	if(world.isThundering())
     		chance = Math.min(chance * 2, 1.0D);
-        if(world.rand.nextDouble() >= this.chance)
+        if(world.rand.nextDouble() >= chance)
             return false;
         return true;
     }

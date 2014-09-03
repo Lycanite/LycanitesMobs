@@ -76,7 +76,8 @@ public class SwampMobs {
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
 		group = new GroupInfo(this, "Swamp Mobs")
-                .setDimensions("0, 7").setBiomes("SWAMP, SPOOKY").setDungeonThemes("SWAMP, DUNGEON, SHADOW");
+                .setDimensions("0, 7").setBiomes("SWAMP, SPOOKY").setDungeonThemes("SWAMP, DUNGEON, SHADOW")
+                .setEggName("swampegg");
 		group.loadFromConfig();
 
 		// ========== Set Current Group ==========

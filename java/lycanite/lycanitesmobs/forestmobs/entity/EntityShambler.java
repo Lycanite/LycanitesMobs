@@ -54,8 +54,7 @@ public class EntityShambler extends EntityCreatureTameable implements IMob, IGro
         this.spawnsUnderground = true;
         this.hasAttackSound = true;
         this.spreadFire = true;
-        
-        this.eggName = "ForestEgg";
+
         this.canGrow = true;
         this.babySpawnChance = 0.01D;
         

@@ -42,8 +42,6 @@ public class EntityJengu extends EntityCreatureTameable implements IMob, IGroupW
         this.spawnsInWater = true;
         this.hasAttackSound = false;
         
-        this.eggName = "FreshwaterEgg";
-        
         this.setWidth = 0.8F;
         this.setHeight = 1.2F;
         this.setupMob();

@@ -108,7 +108,7 @@ public class GuiOverlay extends Gui {
             int staminaBarX = (sWidth / 2) - (staminaBarWidth / 2);
             int staminaBarY = sHeight - 32 + 3;
             int staminaTextureY = 84;
-            if(mount.getStaminaType() == "toggle")
+            if("toggle".equals(mount.getStaminaType()))
             	staminaTextureY -= staminaBarHeight * 2;
             int staminaEnergyY = staminaTextureY + staminaBarHeight;
             

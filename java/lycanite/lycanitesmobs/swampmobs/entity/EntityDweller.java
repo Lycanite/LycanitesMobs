@@ -45,8 +45,7 @@ public class EntityDweller extends EntityCreatureTameable implements IMob {
         this.spawnsOnLand = true;
         this.spawnsInWater = true;
         this.hasAttackSound = true;
-        
-        this.eggName = "SwampEgg";
+
         this.babySpawnChance = 0.1D;
         this.canGrow = false;
         

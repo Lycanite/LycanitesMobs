@@ -392,7 +392,7 @@ public class InventoryCreature implements IInventory {
 	public boolean isEquipmentValidForSlot(String type, ItemStack itemStack) {
 		if(itemStack == null)
 			return true;
-		return type == getSlotForEquipment(itemStack);
+		return type.equals(getSlotForEquipment(itemStack));
 	}
 	
 	// ========== Get Equipment Grade ==========

@@ -50,8 +50,7 @@ public class EntityIka extends EntityCreatureAgeable implements IAnimals, IGroup
         this.spawnsOnLand = false;
         this.spawnsInWater = true;
         this.hasAttackSound = false;
-        
-        this.eggName = "SaltwaterEgg";
+
         this.babySpawnChance = 0.01D;
         this.canGrow = true;
         

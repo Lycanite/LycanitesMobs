@@ -80,7 +80,8 @@ public class DemonMobs {
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
 		group = new GroupInfo(this, "Demon Mobs")
-                .setDimensions("-1").setBiomes("NETHER").setDungeonThemes("NETHER, FIERY, DUNGEON, SHADOW");
+                .setDimensions("-1").setBiomes("NETHER").setDungeonThemes("NETHER, FIERY, DUNGEON, SHADOW")
+                .setEggName("demonegg");
 		group.loadFromConfig();
 
 		// ========== Set Current Group ==========

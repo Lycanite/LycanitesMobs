@@ -51,8 +51,7 @@ public class EntityVentoraptor extends EntityCreatureRideable implements IGroupP
         this.spawnsUnderground = false;
         this.hasAttackSound = true;
         this.spreadFire = false;
-        
-        this.eggName = "PlainsEgg";
+
         this.canGrow = true;
         this.babySpawnChance = 0.01D;
         

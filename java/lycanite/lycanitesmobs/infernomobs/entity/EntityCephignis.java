@@ -53,8 +53,7 @@ public class EntityCephignis extends EntityCreatureAgeable implements IAnimals, 
         this.spawnsInWater = true;
         this.isLavaCreature = true;
         this.hasAttackSound = false;
-        
-        this.eggName = "InfernoEgg";
+
         this.babySpawnChance = 0.01D;
         this.canGrow = true;
 

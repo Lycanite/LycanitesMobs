@@ -49,8 +49,6 @@ public class EntityGorgomite extends EntityCreatureBase implements IMob, IGroupP
         this.spawnsInDarkness = true;
         hasAttackSound = true;
         
-        this.eggName = "DesertEgg";
-        
         this.setWidth = 0.6F;
         this.setHeight = 0.5F;
         this.setupMob();

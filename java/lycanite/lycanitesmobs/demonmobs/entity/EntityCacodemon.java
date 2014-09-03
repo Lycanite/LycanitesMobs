@@ -47,8 +47,6 @@ public class EntityCacodemon extends EntityCreatureTameable {
         this.experience = 5;
         this.hasAttackSound = false;
         
-        this.eggName = "DemonEgg";
-        
         this.setWidth = 1.9F;
         this.setHeight = 1.9F;
         

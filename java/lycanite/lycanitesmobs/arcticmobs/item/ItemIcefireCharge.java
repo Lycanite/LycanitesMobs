@@ -3,7 +3,6 @@ package lycanite.lycanitesmobs.arcticmobs.item;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.api.item.ItemBase;
 import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
-import lycanite.lycanitesmobs.arcticmobs.entity.EntityFrostbolt;
 import lycanite.lycanitesmobs.arcticmobs.entity.EntityIcefireball;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;

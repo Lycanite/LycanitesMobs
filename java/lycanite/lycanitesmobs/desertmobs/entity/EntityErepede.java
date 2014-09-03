@@ -54,8 +54,6 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
         this.spawnsInDarkness = true;
         this.hasAttackSound = false;
         
-        this.eggName = "DesertEgg";
-        
         this.setWidth = 0.8F;
         this.setHeight = 1.5F;
         this.attackTime = 10;

@@ -46,8 +46,6 @@ public class EntityReiver extends EntityCreatureTameable implements IMob, IGroup
         this.spawnsInDarkness = true;
         this.hasAttackSound = false;
         
-        this.eggName = "ArcticEgg";
-        
         this.setWidth = 0.8F;
         this.setHeight = 1.2F;
         this.setupMob();

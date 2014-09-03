@@ -47,8 +47,7 @@ public class EntityZoataur extends EntityCreatureTameable implements IGroupPreda
         this.spawnsUnderground = true;
         this.hasAttackSound = true;
         this.spreadFire = true;
-        
-        this.eggName = "PlainsEgg";
+
         this.canGrow = true;
         this.babySpawnChance = 0.1D;
         

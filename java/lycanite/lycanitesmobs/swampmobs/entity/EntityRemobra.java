@@ -44,9 +44,7 @@ public class EntityRemobra extends EntityCreatureTameable implements IMob, IGrou
         this.experience = 5;
         this.spawnsInDarkness = true;
         this.hasAttackSound = false;
-        this.flySoundSpeed = 20; 
-        
-        this.eggName = "SwampEgg";
+        this.flySoundSpeed = 20;
         
         // Stats:
         this.setWidth = 0.8F;

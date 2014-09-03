@@ -84,7 +84,8 @@ public class ArcticMobs {
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
 		group = new GroupInfo(this, "Arctic Mobs")
-                .setDimensions("0, 7").setBiomes("COLD, SNOWY, CONIFEROUS, -END").setDungeonThemes("FROZEN, MAGICAL, PARADISE");
+                .setDimensions("0, 7").setBiomes("COLD, SNOWY, CONIFEROUS, -END").setDungeonThemes("FROZEN, MAGICAL, PARADISE")
+                .setEggName("arcticegg");
 		group.loadFromConfig();
 
 		// ========== Set Current Group ==========

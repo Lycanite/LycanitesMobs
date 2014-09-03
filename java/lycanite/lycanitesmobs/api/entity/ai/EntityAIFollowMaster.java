@@ -1,13 +1,8 @@
 package lycanite.lycanitesmobs.api.entity.ai;
 
-import java.util.Iterator;
-import java.util.List;
-
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.util.ChunkCoordinates;
 
 public class EntityAIFollowMaster extends EntityAIFollow {
 	// Targets:

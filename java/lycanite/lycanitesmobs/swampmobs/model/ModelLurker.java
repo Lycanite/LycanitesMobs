@@ -43,7 +43,7 @@ public class ModelLurker extends ModelCustomObj {
     	
     	// Trophy:
         this.trophyScale = 0.8F;
-        this.trophyOffset = new float[] {0.0F, 0.0F, -1.0F};;
+        this.trophyOffset = new float[] {0.0F, 0.0F, -1.0F};
         this.trophyMouthOffset = new float[] {0.0F, -0.8F, 0.0F};
     }
     

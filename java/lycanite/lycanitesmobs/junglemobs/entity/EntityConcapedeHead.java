@@ -48,7 +48,7 @@ public class EntityConcapedeHead extends EntityCreatureAgeable implements IAnima
         this.experience = 5;
         this.spawnsInDarkness = false;
         this.hasAttackSound = true;
-        this.eggName = "JungleEgg";
+
         this.canGrow = true;
         this.babySpawnChance = 0D;
         
@@ -228,7 +228,6 @@ public class EntityConcapedeHead extends EntityCreatureAgeable implements IAnima
     		return false;
     	if(entity instanceof EntityConcapedeSegment) {
     		EntityCreatureBase checkSegment = this;
-    		boolean finished = false;
     		while(checkSegment != null) {
     			if(checkSegment == entity)
     				return true;

@@ -53,9 +53,7 @@ public class EntityAfrit extends EntityCreatureTameable implements IMob, IGroupF
         this.spawnsInWater = true;
         this.isLavaCreature = true;
         this.hasAttackSound = false;
-        this.flySoundSpeed = 20; 
-        
-        this.eggName = "InfernoEgg";
+        this.flySoundSpeed = 20;
         
         this.setWidth = 0.8F;
         this.setHeight = 0.8F;

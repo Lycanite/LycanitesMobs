@@ -8,7 +8,6 @@ import lycanite.lycanitesmobs.api.config.ConfigSpawning.SpawnDimensionSet;
 import net.minecraft.world.biome.BiomeGenBase;
 
 
-
 public class GroupInfo {
 	/** A map containing all groups by their name. **/
 	public static Map<String, GroupInfo> groups = new HashMap<String, GroupInfo>();
@@ -22,6 +21,9 @@ public class GroupInfo {
 
     /** The filename of this group, used for assets, config, etc. This should usually match the sub-mod ID. **/
     public String filename;
+
+    /** The name of the egg item this group uses. **/
+    public String eggName = "spawnegg";
     
     // ========== Mob IDs ==========
     /** The next available ID for registering a mob. **/
@@ -139,6 +141,10 @@ public class GroupInfo {
         return id;
     }
 
+    public String getEggName() {
+        return this.eggName;
+    }
+
 
     // ==================================================
     //                    Set Defaults
@@ -156,11 +162,16 @@ public class GroupInfo {
     
     /**
      * Sets the default dungeon themes.
-     * @param An array of Strings for each theme. Themes are: FOREST, PLAINS, MOUNTAIN, SWAMP, WATER , DESERT, WASTELAND, JUNGLE, FROZEN, NETHER, END, MUSHROOM, MAGICAL, DUNGEON, NECRO, URBAN, FIERY, SHADOW, PARADISE
+     * @param string An array of Strings for each theme. Themes are: FOREST, PLAINS, MOUNTAIN, SWAMP, WATER , DESERT, WASTELAND, JUNGLE, FROZEN, NETHER, END, MUSHROOM, MAGICAL, DUNGEON, NECRO, URBAN, FIERY, SHADOW, PARADISE
 	 * @return MobInfo instance for chaining.
      */
     public GroupInfo setDungeonThemes(String string) {
         this.dungeonThemes = string;
+        return this;
+    }
+
+    public GroupInfo setEggName(String eggName) {
+        this.eggName = eggName;
         return this;
     }
 }

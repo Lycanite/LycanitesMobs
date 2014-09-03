@@ -41,8 +41,6 @@ public class EntityAsmodi extends EntityCreatureBase implements IMob {
         this.defense = 2;
         this.experience = 15;
         this.hasAttackSound = false;
-
-        this.eggName = "DemonEgg";
         
         this.setWidth = 3.5F;
         this.setHeight = 2.0F;

@@ -45,8 +45,6 @@ public class EntityZephyr extends EntityCreatureTameable implements IMob, IGroup
         this.spawnsInDarkness = true;
         this.hasAttackSound = false;
         
-        this.eggName = "FreshwaterEgg";
-        
         this.setWidth = 0.8F;
         this.setHeight = 1.2F;
         this.setupMob();
@@ -111,13 +109,13 @@ public class EntityZephyr extends EntityCreatureTameable implements IMob, IGroup
         // Static Attack:
         if(!this.worldObj.isRemote && ++aoeAttackTick == 20) {
             aoeAttackTick = 0;
-            boolean applyEffect = this.getRNG().nextFloat() >= 0.95F;
+            boolean applyEffect = this.getRNG().nextFloat() >= 0.5F;
             List aoeTargets = this.getNearbyEntities(EntityLivingBase.class, 4);
             for(Object entityObj : aoeTargets) {
                 EntityLivingBase target = (EntityLivingBase)entityObj;
                 if(target != this && this.canAttackClass(entityObj.getClass()) && this.canAttackEntity(target) && this.getEntitySenses().canSee(target)) {
                     target.attackEntityFrom(DamageSource.causeMobDamage(this), this.getAttackDamage(1));
-                    if(ObjectManager.getPotionEffect("Paralysis") != null && ObjectManager.getPotionEffect("Paralysis").id < Potion.potionTypes.length)
+                    if(applyEffect && ObjectManager.getPotionEffect("Paralysis") != null && ObjectManager.getPotionEffect("Paralysis").id < Potion.potionTypes.length)
                         target.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("Paralysis").id, this.getEffectDuration(2), 0));
                 }
             }

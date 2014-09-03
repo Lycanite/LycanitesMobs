@@ -114,7 +114,6 @@ public class SpawnInfo {
     //                 Load from Config
     // ==================================================
 	public void loadFromConfig() {
-		String name = this.mobInfo.name;
 		ConfigSpawning config = ConfigSpawning.getConfig(this.mobInfo.group, "spawning");
 		
 		// Enabled:

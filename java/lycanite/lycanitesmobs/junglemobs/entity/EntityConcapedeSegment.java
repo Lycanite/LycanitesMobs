@@ -49,7 +49,7 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
         this.spawnsInDarkness = false;
         this.hasAttackSound = true;
         this.hasStepSound = false;
-        this.eggName = "JungleEgg";
+
         this.canGrow = true;
         this.babySpawnChance = 0D;
         

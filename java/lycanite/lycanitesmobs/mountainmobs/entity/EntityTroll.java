@@ -49,8 +49,7 @@ public class EntityTroll extends EntityCreatureBase implements IMob {
         this.experience = 5;
         this.spawnsInDarkness = true;
         this.hasAttackSound = false;
-        
-        this.eggName = "MountainEgg";
+
         //this.canGrow = false;
         //this.babySpawnChance = 0.1D;
 

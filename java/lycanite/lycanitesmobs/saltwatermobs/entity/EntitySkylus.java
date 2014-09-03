@@ -52,8 +52,7 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroup
         this.spawnsOnLand = false;
         this.spawnsInWater = true;
         this.hasAttackSound = true;
-        
-        this.eggName = "SaltwaterEgg";
+
         this.babySpawnChance = 0.01D;
         this.canGrow = true;
         

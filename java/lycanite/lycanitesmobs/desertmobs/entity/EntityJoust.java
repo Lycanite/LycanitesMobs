@@ -45,8 +45,9 @@ public class EntityJoust extends EntityCreatureAgeable implements IAnimals, IGro
         this.experience = 5;
         this.spawnsOnlyInLight = true;
         this.hasAttackSound = true;
-        this.eggName = "DesertEgg";
+
         this.babySpawnChance = 0.1D;
+        this.canGrow = true;
         
         this.setWidth = 0.9F;
         this.setHeight = 2.2F;

@@ -101,7 +101,7 @@ public class EntityProjectileRapidFire extends EntityProjectileBase {
     		return;
     	
 		try {
-	        IProjectile projectile = null;
+	        IProjectile projectile;
 	        
 	        if(this.shootingEntity == null) {
 		    	Constructor constructor = projectileClass.getDeclaredConstructor(new Class[] { World.class, double.class, double.class, double.class });

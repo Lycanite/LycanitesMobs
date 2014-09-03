@@ -77,7 +77,7 @@ public class ObjectManager {
 	public static PotionBase addPotionEffect(String name, ConfigBase config, boolean isBad, int color, int iconX, int iconY) {
 		int effectIDOverride = config.getInt("Potion Effects", name + " Effect Override ID", 0);
 		name = name.toLowerCase();
-		PotionBase potion = null;
+		PotionBase potion;
 		if(effectIDOverride > 0)
 			potion = new PotionBase(effectIDOverride, "potion." + name, isBad, color);
 		else

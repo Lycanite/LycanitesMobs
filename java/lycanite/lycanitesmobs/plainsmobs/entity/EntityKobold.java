@@ -49,8 +49,7 @@ public class EntityKobold extends EntityCreatureTameable implements IMob, IGroup
         this.spawnsInDarkness = true;
         this.hasAttackSound = true;
         this.spreadFire = false;
-        
-        this.eggName = "PlainsEgg";
+
         this.canGrow = false;
         this.babySpawnChance = 0.1D;
         

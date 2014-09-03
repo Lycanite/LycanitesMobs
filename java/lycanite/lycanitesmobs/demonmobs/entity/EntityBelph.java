@@ -43,8 +43,6 @@ public class EntityBelph extends EntityCreatureTameable implements IMob {
         this.defense = 0;
         this.experience = 5;
         this.hasAttackSound = false;
-
-        this.eggName = "DemonEgg";
         
         this.setWidth = 0.6F;
         this.setHeight = 1.8F;

@@ -49,8 +49,6 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
         this.spawnsInDarkness = true;
         this.hasAttackSound = false;
         
-        this.eggName = "ForestEgg";
-        
         this.setWidth = 0.8F;
         this.setHeight = 1.2F;
         this.setupMob();

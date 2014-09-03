@@ -48,7 +48,6 @@ public class EntityYeti extends EntityCreatureAgeable implements IAnimals, IGrou
         this.experience = 5;
         this.spawnsOnlyInLight = true;
         this.hasAttackSound = false;
-        this.eggName = "ArcticEgg";
         
         this.setWidth = 1.8F;
         this.setHeight = 2.8F;

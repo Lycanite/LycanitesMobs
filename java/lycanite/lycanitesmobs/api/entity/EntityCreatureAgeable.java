@@ -154,7 +154,7 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
     	if(itemStack != null) {
     		
     		// Spawn Egg:
-    		if(itemStack.getItem() == ObjectManager.getItem(this.eggName))
+    		if(itemStack.getItem() == ObjectManager.getItem(this.group.getEggName()))
     			commands.put(CMD_PRIOR.ITEM_USE.id, "Spawn Baby");
     		
     		// Breeding Item:

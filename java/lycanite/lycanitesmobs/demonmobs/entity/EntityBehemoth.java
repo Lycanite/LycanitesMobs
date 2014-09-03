@@ -42,8 +42,6 @@ public class EntityBehemoth extends EntityCreatureTameable implements IMob {
         this.defense = 2;
         this.experience = 10;
         this.hasAttackSound = false;
-
-        this.eggName = "DemonEgg";
         
         this.setWidth = 1.0F;
         this.setHeight = 3.2F;

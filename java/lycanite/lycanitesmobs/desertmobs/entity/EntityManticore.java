@@ -44,9 +44,7 @@ public class EntityManticore extends EntityCreatureTameable implements IMob, IGr
         this.experience = 5;
         this.spawnsInDarkness = true;
         this.hasAttackSound = true;
-        this.flySoundSpeed = 20; 
-        
-        this.eggName = "DesertEgg";
+        this.flySoundSpeed = 20;
         
         this.setWidth = 0.8F;
         this.setHeight = 1.2F;

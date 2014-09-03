@@ -42,7 +42,6 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
         this.experience = 5;
         this.spawnsOnlyInLight = true;
         this.hasAttackSound = true;
-        this.eggName = "PlainsEgg";
         
         this.setWidth = 3.5F;
         this.setHeight = 3.5F;

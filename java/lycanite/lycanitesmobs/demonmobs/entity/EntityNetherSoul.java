@@ -37,8 +37,6 @@ public class EntityNetherSoul extends EntityCreatureBase implements IMob {
         this.experience = 5;
         this.hasAttackSound = true;
         
-        this.eggName = "DemonEgg";
-        
         this.setWidth = 0.6F;
         this.setHeight = 0.8F;
         this.setupMob();

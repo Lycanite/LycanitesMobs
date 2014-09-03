@@ -46,8 +46,6 @@ public class EntityEyewig extends EntityCreatureRideable {
         this.spawnsInDarkness = true;
         this.hasAttackSound = true;
         
-        this.eggName = "SwampEgg";
-        
         this.setWidth = 0.8F;
         this.setHeight = 1.2F;
         this.setupMob();

@@ -38,8 +38,6 @@ public class EntityTrite extends EntityCreatureBase implements IMob {
         this.experience = 2;
         this.hasAttackSound = true;
         
-        this.eggName = "DemonEgg";
-        
         this.setWidth = 0.9F;
         this.setHeight = 0.6F;
         this.setupMob();

@@ -52,8 +52,7 @@ public class EntityCrusk extends EntityCreatureTameable implements IGroupPredato
         this.experience = 10;
         this.spawnsInDarkness = true;
         this.hasAttackSound = true;
-        
-        this.eggName = "DesertEgg";
+
         this.babySpawnChance = 0.1D;
         this.growthTime = -120000;
         

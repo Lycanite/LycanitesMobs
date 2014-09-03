@@ -51,7 +51,8 @@ public class EntityArisaur extends EntityCreatureAgeable implements IAnimals, IG
         this.experience = 5;
         this.spawnsOnlyInLight = true;
         this.hasAttackSound = false;
-        this.eggName = "ForestEgg";
+
+        this.canGrow = true;
         this.babySpawnChance = 0.1D;
         
         this.setWidth = 2.9F;

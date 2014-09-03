@@ -59,7 +59,6 @@ public class EntityPinky extends EntityCreatureRideable implements IAnimals, IGr
         this.experience = 5;
         this.hasAttackSound = true;
         this.spreadFire = true;
-        this.eggName = "DemonEgg";
         
         this.setWidth = 0.9F;
         this.setHeight = 1.95F;

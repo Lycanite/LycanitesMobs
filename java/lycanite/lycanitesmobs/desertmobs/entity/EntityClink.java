@@ -45,8 +45,6 @@ public class EntityClink extends EntityCreatureTameable implements IMob {
         this.spawnsInDarkness = true;
         this.hasAttackSound = false;
         
-        this.eggName = "DesertEgg";
-        
         this.setWidth = 0.6F;
         this.setHeight = 1.8F;
         this.setupMob();

@@ -69,8 +69,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	public GroupInfo group;
 	/** The Subspecies of this creature, if null this creature is the default common species. **/
 	public Subspecies subspecies = null;
-    /** The name of the egg item this mob uses. **/
-	public String eggName = "spawnegg";
     /** What attribute is this creature, used for effects such as Bane of Arthropods. **/
 	public EnumCreatureAttribute attribute = EnumCreatureAttribute.UNDEAD;
 	/** A class that opens up extra stats and behaviours for NBT based customization.**/
@@ -345,9 +343,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Returns the full name of this entity. **/
     public String getFullName() {
     	String name = "";
-    	if(getAgeName() != "")
+    	if(!"".equals(getAgeName()))
     		name += getAgeName() + " ";
-    	if(getSubspeciesTitle() != "")
+    	if(!"".equals(getSubspeciesTitle()))
     		name += getSubspeciesTitle() + " ";
     	return name + getSpeciesName();
     }
@@ -721,7 +719,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
     /** Applies the subspecies health multipler for this mob. **/
     public void applySubspeciesHealthMultiplier() {
-    	double currentBaseHealth = this.getEntityAttribute(SharedMonsterAttributes.maxHealth).getBaseValue();
     	if(this.getSubspeciesIndex() < 1) {
     		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(this.getBaseHealth());
     		this.setHealth((float)(this.getBaseHealth()));
@@ -1836,7 +1833,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Drop Item ==========
     /** Tells this entity to drop the specified itemStack, used by DropRate and InventoryCreature, can be used by anything though. **/
     public void dropItem(ItemStack itemStack) {
-    	EntityItem itemEntity = this.entityDropItem(itemStack, 0.0F);
+    	this.entityDropItem(itemStack, 0.0F);
     }
 
     // ========== Entity Drop Item ==========
@@ -1975,7 +1972,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public void performCommand(String command, EntityPlayer player, ItemStack itemStack) {
     	
     	// Leash:
-    	if(command == "Leash") {
+    	if("Leash".equals(command)) {
     		this.setLeashedToEntity(player, true);
     		this.consumePlayersItem(player, itemStack);
     	}
@@ -1984,7 +1981,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	// Vanilla takes care of this, it is in getInteractCommands so that other commands don't override it.
     	
     	// Color:
-    	if(command.equals("Color")) {
+    	if("Color".equals(command)) {
     		int colorID = BlockColored.func_150032_b(itemStack.getItemDamage()); // getBlockFromDye()
             if(colorID != this.getColor()) {
                 this.setColor(colorID);

@@ -49,8 +49,7 @@ public class EntityAbtu extends EntityCreatureTameable implements IMob, IGroupPr
         this.spawnsOnLand = false;
         this.spawnsInWater = true;
         this.hasAttackSound = true;
-        
-        this.eggName = "SaltwaterEgg";
+
         this.babySpawnChance = 0.9D;
         this.canGrow = true;
         

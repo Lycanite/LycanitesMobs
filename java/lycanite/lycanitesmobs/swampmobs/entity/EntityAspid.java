@@ -48,7 +48,8 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
         this.experience = 5;
         this.spawnsOnlyInLight = true;
         this.hasAttackSound = true;
-        this.eggName = "SwampEgg";
+
+        this.canGrow = true;
         this.babySpawnChance = 0.1D;
         
         this.setWidth = 0.9F;

@@ -53,8 +53,6 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
         this.isLavaCreature = true;
         this.hasAttackSound = false;
         
-        this.eggName = "InfernoEgg";
-        
         this.setWidth = 1.9F;
         this.setHeight = 3.5F;
         this.setupMob();

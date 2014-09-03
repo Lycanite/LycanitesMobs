@@ -51,9 +51,7 @@ public class EntityArix extends EntityCreatureTameable implements IMob, IGroupIc
         this.experience = 5;
         this.spawnsInDarkness = true;
         this.hasAttackSound = false;
-        this.flySoundSpeed = 20; 
-        
-        this.eggName = "ArcticEgg";
+        this.flySoundSpeed = 20;
         
         this.setWidth = 0.8F;
         this.setHeight = 0.8F;

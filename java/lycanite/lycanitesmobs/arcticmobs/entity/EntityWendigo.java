@@ -43,8 +43,7 @@ public class EntityWendigo extends EntityCreatureBase implements IMob, IGroupIce
         this.defense = 3;
         this.experience = 10;
         this.hasAttackSound = false;
-        
-        this.eggName = "ArcticEgg";
+
         this.spawnsInDarkness = true;
         
         this.setWidth = 1.9F;

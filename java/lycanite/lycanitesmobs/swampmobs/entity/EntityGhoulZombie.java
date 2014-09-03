@@ -42,8 +42,7 @@ public class EntityGhoulZombie extends EntityCreatureAgeable implements IMob {
         this.spawnsInDarkness = true;
         this.hasAttackSound = false;
         this.spreadFire = true;
-        
-        this.eggName = "SwampEgg";
+
         this.canGrow = false;
         this.babySpawnChance = 0.1D;
         

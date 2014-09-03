@@ -49,7 +49,8 @@ public class FreshwaterMobs {
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
 		group = new GroupInfo(this, "Freshwater Mobs")
-                .setDimensions("0").setBiomes("ALL, -OCEAN, -BEACH").setDungeonThemes("WATER");
+                .setDimensions("0").setBiomes("ALL, -OCEAN, -BEACH").setDungeonThemes("WATER")
+                .setEggName("freshwateregg");
 		group.loadFromConfig();
 
 		// ========== Set Current Group ==========

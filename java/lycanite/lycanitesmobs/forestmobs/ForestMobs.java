@@ -65,7 +65,8 @@ public class ForestMobs {
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
 		group = new GroupInfo(this, "Forest Mobs")
-                .setDimensions("0, 7").setBiomes("FOREST, -MOUNTAIN").setDungeonThemes("FOREST, MAGICAL, PARADISE");
+                .setDimensions("0, 7").setBiomes("FOREST, -MOUNTAIN").setDungeonThemes("FOREST, MAGICAL, PARADISE")
+                .setEggName("forestegg");
 		group.loadFromConfig();
 
 		// ========== Set Current Group ==========

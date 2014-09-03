@@ -1,18 +1,11 @@
-package lycanite.lycanitesmobs.plainsmobs.entity;
-
-import java.util.HashMap;
+package lycanite.lycanitesmobs.saltwatermobs.entity;
 
 import lycanite.lycanitesmobs.ExtendedEntity;
+import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupHunter;
 import lycanite.lycanitesmobs.api.IGroupPrey;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
+import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -28,14 +21,17 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
-public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter {
+import java.util.HashMap;
+
+public class EntityRaiko extends EntityCreatureBase implements IMob, IGroupHunter {
     public Entity pickupEntity;
     public EntityAIAttackMelee attackAI = new EntityAIAttackMelee(this).setLongMemory(false);
-	
+    public int waterTime = 0;
+
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityRoc(World par1World) {
+    public EntityRaiko(World par1World) {
         super(par1World);
         
         // Setup:
@@ -66,8 +62,8 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 15D);
-		baseAttributes.put("movementSpeed", 0.34D);
+		baseAttributes.put("maxHealth", 20D);
+		baseAttributes.put("movementSpeed", 0.30D);
 		baseAttributes.put("knockbackResistance", 0.0D);
 		baseAttributes.put("followRange", 48D);
 		baseAttributes.put("attackDamage", 2D);
@@ -93,29 +89,37 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
         // Entity Pickup Update:
         if(!this.worldObj.isRemote) {
 	    	this.attackAI.setEnabled(!this.hasPickupEntity());
-	    	if(this.hasPickupEntity()) {
-	    		ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(this.getPickupEntity());
-	    		if(extendedEntity != null)
-	    			extendedEntity.setPickedUpByEntity(this);
-	    		if(this.ticksExisted % 100 == 0 && this.getRNG().nextBoolean()) {
-	    			if(this.getPickupEntity() instanceof EntityPlayer) {
-		    			for(int distToGround = 0; distToGround < 8; distToGround++) {
-		    				Block searchBlock = this.worldObj.getBlock((int)this.posX, (int)this.posY + 1 + distToGround, (int)this.posZ);
-		    				if(searchBlock != null && searchBlock != Blocks.air) {
-		    					this.dropPickupEntity();
-		    					break;
-		    				}
-		    			}
-	    			}
-	    			else
-	    				this.dropPickupEntity();
-	            }
-	    	}
-	    	
-	    	// Random Swooping:
-	    	else if(this.hasAttackTarget() && this.getRNG().nextInt(20) == 0) {
-		    	this.leap(1.0F, -0.2D, this.getAttackTarget());
-	    	}
+            if(!this.isInWater()) {
+                this.waterTime = 0;
+
+                // Random Dropping:
+                if(this.hasPickupEntity()) {
+                    ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(this.getPickupEntity());
+                    if(extendedEntity != null)
+                        extendedEntity.setPickedUpByEntity(this);
+                    if(this.ticksExisted % 100 == 0 && this.getRNG().nextBoolean()) {
+                        this.dropPickupEntity();
+                    }
+                }
+
+                // Random Swooping:
+                else if(this.hasAttackTarget() && this.getRNG().nextInt(20) == 0) {
+                    this.leap(1.0F, -0.2D, this.getAttackTarget());
+                }
+            }
+
+            // Burst Out of Water:
+            else {
+                this.waterTime++;
+                if(this.hasPickupEntity() && this.waterTime >= (2 * 20)) {
+                    this.waterTime = 0;
+                    this.leap(0.2F, 0.5D);
+                }
+                else if(this.waterTime >= (8 * 20)) {
+                    this.waterTime = 4 * 20;
+                    this.leap(0.2F, 0.5D);
+                }
+            }
         }
     }
     
@@ -130,21 +134,12 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
     		return false;
     	
     	// Pickup:
-        if(this.canPickupEntity(target)) {// && this.getRNG().nextFloat() >= 0.6F) {
+        if(this.canPickupEntity(target)) {
         	this.pickupEntity(target);
         }
         
         return true;
     }
-    
-    @Override
-	public boolean canAttackEntity(EntityLivingBase targetEntity) {
-    	/*if(!this.worldObj.isDaytime())
-    		return super.canAttackEntity(targetEntity);
-		if((targetEntity instanceof EntityPlayer || targetEntity instanceof EntityVillager) && (targetEntity.getHealth() / targetEntity.getMaxHealth()) > 0.5F)
-			return false;*/
-		return super.canAttackEntity(targetEntity);
-	}
     
     
     // ==================================================
@@ -179,6 +174,13 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
     	ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(this.getPickupEntity());
 		if(extendedEntity != null)
 			extendedEntity.setPickedUpByEntity(null);
+
+        // Effect:
+        if(this.pickupEntity instanceof EntityLivingBase) {
+            if(ObjectManager.getPotionEffect("Weight") != null && ObjectManager.getPotionEffect("Weight").id < Potion.potionTypes.length)
+                ((EntityLivingBase)this.pickupEntity).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("Weight").id, this.getEffectDuration(5), 1));
+        }
+
     	this.pickupEntity = null;
     }
     

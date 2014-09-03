@@ -48,8 +48,7 @@ public class EntityLacedon extends EntityCreatureTameable implements IMob {
         this.spawnsOnLand = true;
         this.spawnsInWater = true;
         this.hasAttackSound = true;
-        
-        this.eggName = "SaltwaterEgg";
+
         this.babySpawnChance = 0.1D;
         this.canGrow = true;
         

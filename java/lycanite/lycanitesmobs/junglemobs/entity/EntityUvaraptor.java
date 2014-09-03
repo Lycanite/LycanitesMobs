@@ -51,8 +51,7 @@ public class EntityUvaraptor extends EntityCreatureRideable implements IGroupPre
         this.spawnsUnderground = false;
         this.hasAttackSound = true;
         this.spreadFire = false;
-        
-        this.eggName = "JungleEgg";
+
         this.canGrow = true;
         this.babySpawnChance = 0.01D;
         

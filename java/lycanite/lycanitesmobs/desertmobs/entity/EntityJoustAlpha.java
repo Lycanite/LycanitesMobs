@@ -44,7 +44,6 @@ public class EntityJoustAlpha extends EntityCreatureAgeable implements IAnimals,
         this.experience = 5;
         this.spawnsOnlyInLight = true;
         this.hasAttackSound = true;
-        this.eggName = "desertegg";
         
         this.setWidth = 0.9F;
         this.setHeight = 2.2F;

@@ -2,7 +2,6 @@ package lycanite.lycanitesmobs.freshwatermobs.dispenser;
 
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorBase;
-import lycanite.lycanitesmobs.arcticmobs.entity.EntityTundra;
 import lycanite.lycanitesmobs.freshwatermobs.entity.EntityAquaPulse;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.dispenser.IPosition;

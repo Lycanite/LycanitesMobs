@@ -11,7 +11,7 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.BiomeDictionary;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 public class ConfigSpawning extends ConfigBase {
 	
@@ -116,7 +116,7 @@ public class ConfigSpawning extends ConfigBase {
         List<Integer> dimensionIDList = new ArrayList<Integer>();
         List<String> dimensionTypeList = new ArrayList<String>();
         for(String dimensionEntry : dimensionEntries.split(",")) {
-            if(StringUtils.isNumeric(dimensionEntry))
+            if(NumberUtils.isNumber(dimensionEntry))
                 dimensionIDList.add(Integer.parseInt(dimensionEntry.replace("+", "")));
             else
                 dimensionTypeList.add(dimensionEntry.replace("+", ""));

@@ -9,6 +9,9 @@ import lycanite.lycanitesmobs.infernomobs.InfernoMobs;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -80,6 +83,17 @@ public class BlockFluidPureLava extends BlockFluidClassic {
 	public boolean displaceIfPossible(World world, int x, int y, int z) {
 		if(world.getBlock(x, y, z).getMaterial().isLiquid()) return this.canDisplace(world, x, y, z);
 		return super.displaceIfPossible(world, x, y, z);
+	}
+    
+    
+	// ==================================================
+	//                      Collision
+	// ==================================================
+	@Override
+	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
+		if(entity instanceof EntityItem)
+			entity.attackEntityFrom(DamageSource.lava, 10F);
+		super.onEntityCollidedWithBlock(world, x, y, z, entity);
 	}
     
     

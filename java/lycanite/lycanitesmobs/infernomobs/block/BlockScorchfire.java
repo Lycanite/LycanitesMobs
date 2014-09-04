@@ -129,11 +129,11 @@ public class BlockScorchfire extends BlockBase {
         
         // Attempt To Spread:
         boolean humid = world.isBlockHighHumidity(x, y, z);
-        byte humdity = 50;
+        byte humdity = 0;
         if(humid)
         	humdity = -50;
         humdity = (byte)Math.max(0, humdity);
-        int burnChance = 50;
+        int burnChance = 250;
         int burnChanceSide = burnChance + 50;
         this.tryCatchFire(world, x + 1, y, z, burnChanceSide + humdity, random, metadata, ForgeDirection.WEST );
         this.tryCatchFire(world, x - 1, y, z, burnChanceSide + humdity, random, metadata, ForgeDirection.EAST );

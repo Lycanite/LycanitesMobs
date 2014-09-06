@@ -14,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
@@ -161,16 +162,16 @@ public class EventListener {
 		
 		// ========== Minimum Armor Damage ==========
 		float damage = event.ammount;
-		if(damage > 0 && !event.source.isUnblockable() && event.source.getEntity() != null && event.source.getEntity() instanceof EntityCreatureBase) {
+		if(damage > 0 && !event.source.isUnblockable() && !event.source.isDamageAbsolute() && event.source.getEntity() != null && event.source.getEntity() instanceof EntityCreatureBase) {
 			float minDamage = 1 + (float)Math.floor(damage / 5.0D);
 			if(damage <= minDamage) {
 				event.source.setDamageBypassesArmor().setDamageIsAbsolute();
 			}
 			else {
 				event.ammount = damage - minDamage;
-				//DamageSource unblockableDamage = DamageSource.causeMobDamage((EntityLivingBase)event.source.getEntity()).setDamageBypassesArmor().setDamageIsAbsolute();
-				//event.entityLiving.attackEntityFrom(unblockableDamage, 1.0F);
-				event.entityLiving.setHealth(event.entityLiving.getHealth() - minDamage);
+				DamageSource unblockableDamage = DamageSource.causeMobDamage((EntityLivingBase)event.source.getEntity()).setDamageBypassesArmor().setDamageIsAbsolute();
+				event.entityLiving.attackEntityFrom(unblockableDamage, minDamage);
+				//event.entityLiving.setHealth(event.entityLiving.getHealth() - minDamage);
 			}
 		}
 		

@@ -1816,6 +1816,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     		subspeciesScale = 4;
     	for(DropRate dropRate : this.drops) {
     		int quantity = dropRate.getQuantity(this.rand, lootLevel) * subspeciesScale;
+    		if(this.extraMobBehaviour != null && this.extraMobBehaviour.itemDropMultiplierOverride != 1)
+    			quantity = Math.round((float)quantity * (float)this.extraMobBehaviour.itemDropMultiplierOverride);
     		ItemStack dropStack = null;
     		if(quantity > 0)
     			dropStack = dropRate.getItemStack(this, quantity);

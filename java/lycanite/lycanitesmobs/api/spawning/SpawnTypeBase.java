@@ -69,6 +69,9 @@ public class SpawnTypeBase {
 	/** If true, this type will not check if a mob is allowed to spawn in the target light level. **/
 	public boolean ignoreLight = true;
 	
+	/** If true, this type will ignore the mob spawn event being cancelled. **/
+	public boolean forceSpawning = true;
+	
 	
     // ==================================================
     //                  Load Spawn Types
@@ -110,6 +113,7 @@ public class SpawnTypeBase {
 		portalBlockSpawner.ignoreBiome = true;
 		portalBlockSpawner.ignoreDimension = true;
 		portalBlockSpawner.ignoreLight = true;
+		portalBlockSpawner.forceSpawning = true;
 		portalBlockSpawner.loadFromConfig();
         spawnTypes.add(portalBlockSpawner);
 		
@@ -119,6 +123,7 @@ public class SpawnTypeBase {
 		rockSpawner.materials = new Material[] {Material.air};
 		rockSpawner.ignoreBiome = true;
 		rockSpawner.ignoreLight = true;
+		rockSpawner.forceSpawning = true;
 		rockSpawner.loadFromConfig();
         spawnTypes.add(rockSpawner);
 		
@@ -128,6 +133,7 @@ public class SpawnTypeBase {
 		cropSpawner.materials = new Material[] {Material.air};
 		cropSpawner.ignoreBiome = true;
 		cropSpawner.ignoreLight = true;
+		cropSpawner.forceSpawning = true;
 		cropSpawner.loadFromConfig();
         spawnTypes.add(cropSpawner);
 		
@@ -137,6 +143,7 @@ public class SpawnTypeBase {
 		stormSpawner.materials = new Material[] {Material.air};
 		stormSpawner.ignoreBiome = true;
 		stormSpawner.ignoreLight = true;
+		stormSpawner.forceSpawning = true;
 		stormSpawner.loadFromConfig();
         spawnTypes.add(stormSpawner);
         
@@ -211,7 +218,7 @@ public class SpawnTypeBase {
 	
 	
 	// ==================================================
-	//                     Add Spawn
+	//                     Spawn List
 	// ==================================================
     /**
      * Adds a mob to this spawn type. Takes a Spawn Info.
@@ -220,6 +227,14 @@ public class SpawnTypeBase {
 	public void addSpawn(SpawnInfo spawnInfo) {
 		if(spawnInfo != null)
 			this.spawnList.add(spawnInfo);
+	}
+	
+    /**
+     * Gets a list of all mobs that this spawner can spawn.
+     * @return A list of SpawnInfos.
+     */
+	public List<SpawnInfo> getSpawnList() {
+		return this.spawnList;
 	}
 	
 	
@@ -238,7 +253,7 @@ public class SpawnTypeBase {
      */
     public void spawnMobs(long tick, World world, int x, int y, int z) {
         // Check If Able to Spawn:
-        if(this.spawnList == null || !this.enabled)
+        if(this.getSpawnList() == null || this.getSpawnList().size() < 1 || !this.enabled)
             return;
         if(!this.canSpawn(tick, world, x, y, z))
             return;
@@ -309,7 +324,7 @@ public class SpawnTypeBase {
                 ((EntityCreatureBase)entityLiving).spawnedFromType = this;
             Result canSpawn = ForgeEventFactory.canEntitySpawn(entityLiving, world, (float)coord[0], (float)coord[1], (float)coord[2]);
             
-            if(canSpawn == Result.DENY) {
+            if(canSpawn == Result.DENY && !this.forceSpawning) {
                 LycanitesMobs.printDebug("CustomSpawner", "Spawn Check Failed! Spawning blocked by Forge Event, this is caused another mod.");
                 continue;
             }
@@ -413,7 +428,7 @@ public class SpawnTypeBase {
      */
     public List<SpawnInfo> getPossibleSpawns(int coordsFound, List<BiomeGenBase> biomes) {
         List<SpawnInfo> possibleSpawns = new ArrayList<SpawnInfo>();
-        for(SpawnInfo possibleSpawn : this.spawnList) {
+        for(SpawnInfo possibleSpawn : this.getSpawnList()) {
             boolean enoughCoords = true;
             if(coordsFound < possibleSpawn.spawnBlockCost) {
                 LycanitesMobs.printDebug("CustomSpawner", possibleSpawn.mobInfo.name + ": Not enough of the required blocks available for spawning.");

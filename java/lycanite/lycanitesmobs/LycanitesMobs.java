@@ -14,6 +14,7 @@ import lycanite.lycanitesmobs.api.item.ItemStaffSavage;
 import lycanite.lycanitesmobs.api.item.ItemStaffStable;
 import lycanite.lycanitesmobs.api.item.ItemStaffSturdy;
 import lycanite.lycanitesmobs.api.item.ItemStaffSummoning;
+import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.mods.DLDungeons;
 import lycanite.lycanitesmobs.api.network.PacketHandler;
 import lycanite.lycanitesmobs.api.spawning.CustomSpawner;
@@ -24,6 +25,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -101,6 +103,10 @@ public class LycanitesMobs {
 		// ========== Custom Mob Spawning ==========
 		MinecraftForge.EVENT_BUS.register(new CustomSpawner());
 		SpawnTypeBase.loadSpawnTypes();
+		
+		// ========== Mob Event Manager ==========
+		FMLCommonHandler.instance().bus().register(new MobEventManager());
+		MobEventManager.instance.loadMobEvents();
 		
 		// ========== Spawn Info ==========
 		SpawnInfo.loadGlobalSettings();

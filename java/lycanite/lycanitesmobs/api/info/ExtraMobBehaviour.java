@@ -30,6 +30,7 @@ public class ExtraMobBehaviour {
 	public boolean stealthOverride = false;
 	public boolean itemPickupOverride = false;
 	public int inventorySizeOverride = 0;
+	public double itemDropMultiplierOverride = 1;
 	
 	
     // ==================================================
@@ -88,6 +89,9 @@ public class ExtraMobBehaviour {
     	if(nbtTagCompound.hasKey("InventorySizeOverride")) {
     		this.inventorySizeOverride = nbtTagCompound.getInteger("InventorySizeOverride");
     	}
+    	if(nbtTagCompound.hasKey("ItemDropMultiplierOverride")) {
+    		this.itemDropMultiplierOverride = nbtTagCompound.getDouble("ItemDropMultiplierOverride");
+    	}
     }
     
     // ========== Write ==========
@@ -109,5 +113,6 @@ public class ExtraMobBehaviour {
     	nbtTagCompound.setBoolean("StealthOverride", this.stealthOverride);
     	nbtTagCompound.setBoolean("ItemPickupOverride", this.itemPickupOverride);
     	nbtTagCompound.setInteger("InventorySizeOverride", this.inventorySizeOverride);
+    	nbtTagCompound.setDouble("ItemDropMultiplierOverride", this.itemDropMultiplierOverride);
     }
 }

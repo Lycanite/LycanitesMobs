@@ -1,6 +1,10 @@
 # Group Info
 infernomobs.name=Inferno Creatures
 infernomobs.description=Beasts formed of fire lava, they can be found anywhere that is hot enough to melt rock or burn away nature!
+#
+# Mob Events
+mobevent.cinderfall.name=Cinderfall
+#
 # Entites
 entity.infernomobs.cinder.name=Cinder
 entity.infernomobs.cinder.description=Violent fire spirits, Cinders like to incinerate everything.

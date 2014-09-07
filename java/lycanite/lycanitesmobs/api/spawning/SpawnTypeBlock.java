@@ -8,6 +8,5 @@ public class SpawnTypeBlock extends SpawnTypeBase {
     // ==================================================
     public SpawnTypeBlock(String typeName) {
         super(typeName);
-        CustomSpawner.instance.updateSpawnTypes.add(this);
     }
 }

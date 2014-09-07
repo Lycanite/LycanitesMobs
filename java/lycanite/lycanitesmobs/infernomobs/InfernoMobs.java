@@ -10,6 +10,8 @@ import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.info.Subspecies;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
 import lycanite.lycanitesmobs.api.item.ItemTreat;
+import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
+import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.infernomobs.block.BlockFluidPureLava;
 import lycanite.lycanitesmobs.infernomobs.block.BlockScorchfire;
 import lycanite.lycanitesmobs.infernomobs.dispenser.DispenserBehaviorEmber;
@@ -167,8 +169,10 @@ public class InfernoMobs {
 		// ========== Set Current Group ==========
 		ObjectManager.setCurrentGroup(group);
 		
-		// ========== Remove Vanilla Spawns ==========
-		// N/A
+		// ========== Mob Events ==========
+		MobEventBase mobEvent = new MobEventBase("cinderfall");
+		// TODO Add spawner to event.
+		MobEventManager.instance.worldMobEvents.add(mobEvent);
 		
 		// ========== Crafting ==========
 		GameRegistry.addRecipe(new ShapelessOreRecipe(

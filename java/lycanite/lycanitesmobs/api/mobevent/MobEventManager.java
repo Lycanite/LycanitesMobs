@@ -45,6 +45,7 @@ public class MobEventManager {
 	public void loadMobEvents() {
 		ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "mobevents");
 		config.getBool("Global", "Mob Events Enabled", mobEventsEnabled, "If false, all mob events will be completely disabled.");
+		config.setCategoryComment("Events Enabled", "Here each event can be turned on or off (true or false).");
 	}
 
 
@@ -82,7 +83,8 @@ public class MobEventManager {
 		// Check Count and Start Event:
 		if(count >= target) {
 			this.activeMobEvent = this.getRandomWorldMobEvent(world);
-			this.activeMobEvent.onStart();
+			if(this.activeMobEvent != null)
+				this.activeMobEvent.onStart();
 			count = 0;
 			this.worldTargets.put(world, this.getRandomEventDelay(world.rand));
 		}
@@ -104,7 +106,8 @@ public class MobEventManager {
 		
 		int totalWeights = 0;
 		for(MobEventBase mobEventEntry : this.worldMobEvents) {
-			totalWeights += mobEventEntry.weight;
+			if(mobEventEntry.isEnabled())
+				totalWeights += mobEventEntry.weight;
 		}
 		if(totalWeights <= 0)
 			return null;
@@ -112,9 +115,11 @@ public class MobEventManager {
 		int randomWeight = world.rand.nextInt(totalWeights);
 		MobEventBase mobEvent = null;
 		for(MobEventBase mobEventEntry : this.worldMobEvents) {
-			mobEvent = mobEventEntry;
-			if(mobEventEntry.weight > randomWeight)
-				break;
+			if(mobEventEntry.isEnabled()) {
+				mobEvent = mobEventEntry;
+				if(mobEventEntry.weight > randomWeight)
+					break;
+			}
 		}
 		
 		return mobEvent;

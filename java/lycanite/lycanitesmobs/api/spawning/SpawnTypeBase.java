@@ -86,6 +86,7 @@ public class SpawnTypeBase {
 		fireBlockSpawner.ignoreBiome = true;
 		fireBlockSpawner.ignoreLight = true;
 		fireBlockSpawner.loadFromConfig();
+        CustomSpawner.instance.updateSpawnTypes.add(fireBlockSpawner);
         spawnTypes.add(fireBlockSpawner);
 		
 		// Frostfire Spawner:
@@ -95,6 +96,7 @@ public class SpawnTypeBase {
 		frostfireBlockSpawner.ignoreBiome = true;
 		frostfireBlockSpawner.ignoreLight = true;
 		frostfireBlockSpawner.loadFromConfig();
+        CustomSpawner.instance.updateSpawnTypes.add(frostfireBlockSpawner);
         spawnTypes.add(frostfireBlockSpawner);
 		
 		// Lava Spawner:
@@ -104,6 +106,7 @@ public class SpawnTypeBase {
 		lavaBlockSpawner.ignoreBiome = true;
 		lavaBlockSpawner.ignoreLight = true;
 		lavaBlockSpawner.loadFromConfig();
+        CustomSpawner.instance.updateSpawnTypes.add(lavaBlockSpawner);
         spawnTypes.add(lavaBlockSpawner);
 		
 		// Portal Spawner:
@@ -115,6 +118,7 @@ public class SpawnTypeBase {
 		portalBlockSpawner.ignoreLight = true;
 		portalBlockSpawner.forceSpawning = true;
 		portalBlockSpawner.loadFromConfig();
+        CustomSpawner.instance.updateSpawnTypes.add(portalBlockSpawner);
         spawnTypes.add(portalBlockSpawner);
 		
 		// Rock Spawner:

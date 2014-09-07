@@ -1,5 +1,9 @@
 {
-    "entity.cinder.say": {
+    "mobevent.cinderfall": {
+        "category": "ambient",
+        "sounds": [{"name": "mobevent/cinderfall", "stream": false}]
+    },
+	"entity.cinder.say": {
         "category": "hostile",
         "sounds": [{"name": "entity/cinder/say", "stream": false}]
     },

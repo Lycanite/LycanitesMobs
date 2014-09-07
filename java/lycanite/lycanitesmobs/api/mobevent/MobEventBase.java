@@ -1,5 +1,7 @@
 package lycanite.lycanitesmobs.api.mobevent;
 
+import lycanite.lycanitesmobs.LycanitesMobs;
+import lycanite.lycanitesmobs.api.config.ConfigBase;
 import net.minecraft.util.StatCollector;
 
 public class MobEventBase {
@@ -26,6 +28,15 @@ public class MobEventBase {
 	
 	
     // ==================================================
+    //                      Enabled
+    // ==================================================
+	public boolean isEnabled() {
+		ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "mobevents");
+		return config.getBool("Events Enabled", "Cinderfall", true);
+	}
+	
+	
+    // ==================================================
     //                       Start
     // ==================================================
 	public void onStart() {
@@ -45,6 +56,14 @@ public class MobEventBase {
     //                      Finish
     // ==================================================
 	public void onFinish() {
+		
+	}
+	
+	
+    // ==================================================
+    //                       GUI
+    // ==================================================
+	public void onGUIUpdate() {
 		
 	}
 }

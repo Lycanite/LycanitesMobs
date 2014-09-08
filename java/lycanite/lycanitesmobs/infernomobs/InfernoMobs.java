@@ -173,15 +173,18 @@ public class InfernoMobs {
 		ObjectManager.setCurrentGroup(this.group);
 		
 		// ========== Mob Events ==========
-		MobEventBase mobEvent = new MobEventBase("cinderfall", this.group);
-		SpawnTypeBase eventSpawner = new SpawnTypeBlock("cinderfall")
-            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-        eventSpawner.materials = new Material[] {Material.air};
-        eventSpawner.ignoreBiome = true;
-        eventSpawner.ignoreLight = true;
-        eventSpawner.forceSpawning = true;
-        mobEvent.addSpawner(eventSpawner);
-		MobEventManager.instance.addWorldEvent(mobEvent);
+        if(MobInfo.getFromName("cinder") != null) {
+			MobEventBase mobEvent = new MobEventBase("cinderfall", this.group);
+			SpawnTypeBase eventSpawner = new SpawnTypeBlock("cinderfall")
+	            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
+	        eventSpawner.materials = new Material[] {Material.air};
+	        eventSpawner.ignoreBiome = true;
+	        eventSpawner.ignoreLight = true;
+	        eventSpawner.forceSpawning = true;
+	        eventSpawner.addSpawn(MobInfo.getFromName("cinder").spawnInfo);
+	        mobEvent.addSpawner(eventSpawner);
+			MobEventManager.instance.addWorldEvent(mobEvent);
+        }
 		
 		// ========== Crafting ==========
 		GameRegistry.addRecipe(new ShapelessOreRecipe(

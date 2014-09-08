@@ -15,7 +15,7 @@ import org.lwjgl.input.Mouse;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 
 public class KeyHandler {
 	public static KeyHandler instance;
@@ -49,9 +49,7 @@ public class KeyHandler {
     //                    Handle Keys
     // ==================================================
 	@SubscribeEvent
-	public void onPlayerTick(TickEvent event) {
-		if(event.type != TickEvent.Type.CLIENT)
-			return;
+	public void onPlayerTick(ClientTickEvent event) {
 		ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(this.mc.thePlayer);
 		if(playerExt == null)
 			return;

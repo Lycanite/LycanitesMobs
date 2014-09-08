@@ -1,26 +1,27 @@
 package lycanite.lycanitesmobs.api.mobevent;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.network.MessageMobEvent;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 
 
 public class MobEventManager {
 	// Global:
     public static MobEventManager instance;
     public static boolean mobEventsEnabled = true;
-    public static int minTicksUntilEvent = 20 * 60 * 20;
-    public static int maxTicksUntilEvent = 40 * 60 * 20;
+    //public static int minTicksUntilEvent = 20 * 60 * 20;
+    //public static int maxTicksUntilEvent = 40 * 60 * 20;
+    public static int minTicksUntilEvent = 5 * 60;
+    public static int maxTicksUntilEvent = 10 * 60;
     
     // Mob Events:
     public Map<String, MobEventBase> worldMobEvents = new HashMap<String, MobEventBase>();
@@ -49,7 +50,12 @@ public class MobEventManager {
 	/** Called during start up, loads all global events and config settings into the manager. **/
 	public void loadMobEvents() {
 		ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "mobevents");
-		config.getBool("Global", "Mob Events Enabled", mobEventsEnabled, "If false, all mob events will be completely disabled.");
+		mobEventsEnabled = config.getBool("Global", "Mob Events Enabled", mobEventsEnabled, "If false, all mob events will be completely disabled.");
+		//minTicksUntilEvent = config.getInt("Global", "Min Ticks Until Event", minTicksUntilEvent, "Minimum time in ticks until a random event can occur. 20 Ticks = 1 Second.");
+		//maxTicksUntilEvent = config.getInt("Global", "Max Ticks Until Event", maxTicksUntilEvent, "Maximum time in ticks until a random event can occur. 20 Ticks = 1 Second.");
+		baseRate = config.getInt("Global", "Base Spawn Rate", baseRate, "Sets the base interval in ticks (20 ticks = 1 second) between each mob spawn, this is multiplied by 1.5 on easy and 0.5 on hard.");
+		baseRange = config.getInt("Global", "Base Spawn Range", baseRange, "Sets the base range in blocks from each player/area that event mobs will spawn.");
+		
 		config.setCategoryComment("Events Enabled", "Here each event can be turned on or off (true or false).");
 	}
 
@@ -81,32 +87,40 @@ public class MobEventManager {
 
 
     // ==================================================
-    //                 World Update Event
+    //                 Server Update Event
+    // ==================================================
+	/** Called every tick server side and runs an update for each active world object. **/
+	@SubscribeEvent
+	public void onServerUpdate(ServerTickEvent event) {
+		for(World world : MinecraftServer.getServer().worldServers) {
+			if(world != null && world.provider != null)
+				this.onWorldUpdate(world);
+		}
+	}
+
+
+    // ==================================================
+    //                 Server Update Event
     // ==================================================
 	/** Called every tick in a world and counts down to the next event then fires it! The countdown is paused during an event. **/
-	@SubscribeEvent
-	public void onWorldUpdate(WorldTickEvent event) {
-		if(event.type != TickEvent.Type.WORLD)
+	public void onWorldUpdate(World world) {
+		// Only Run If Players Are Present:
+		if(world.playerEntities.size() < 1)
 			return;
-		if(event.side.isClient())
-			return;
-
-        // Get World:
-        World world = event.world;
-        if(world == null)
-            return;
 		
 		// Update Active Event and Return:
 		if(this.activeMobEvent != null) {
-			this.activeMobEvent.onUpdate(world);
+			this.activeMobEvent.onServerUpdate();
 			return;
 		}
 		
-		// Get Count and Target:
+		// Get Count:
 		if(!this.worldCounts.containsKey(world))
 			this.worldCounts.put(world, 0);
 		int count = this.worldCounts.get(world) + 1;
+		this.worldCounts.put(world, count);
 		
+		// Get Target:
 		if(!this.worldTargets.containsKey(world))
 			this.worldTargets.put(world, this.getRandomEventDelay(world.rand));
 		int target = this.worldTargets.get(world);
@@ -120,10 +134,25 @@ public class MobEventManager {
 			MobEventBase newEvent = this.getRandomWorldMobEvent(world);
 			if(newEvent != null)
                 this.startMobEvent(newEvent, world);
-			count = 0;
-			this.worldTargets.put(world, this.getRandomEventDelay(world.rand));
 		}
-		this.worldCounts.put(world, count);
+	}
+
+
+    // ==================================================
+    //                 Client Update Event
+    // ==================================================
+	/** Called every tick in a world and counts down to the next event then fires it! The countdown is paused during an event. **/
+	@SubscribeEvent
+	public void onClientUpdate(ClientTickEvent event) {
+		if(LycanitesMobs.proxy.getClientPlayer() == null)
+			return;
+		
+		// Update Active Event and Return:
+		if(this.activeMobEvent != null) {
+			if(this.activeMobEvent.world == LycanitesMobs.proxy.getClientPlayer().worldObj)
+				this.activeMobEvent.onClientUpdate();
+			return;
+		}
 	}
 
 
@@ -168,9 +197,7 @@ public class MobEventManager {
 	public int getRandomEventDelay(Random random) {
 		int max = Math.max(20, maxTicksUntilEvent);
 		int min = Math.max(20, minTicksUntilEvent);
-		if(max < min) max = min;
-		
-		if(max == min)
+		if(max <= min)
 			return min;
 		
 		return min + random.nextInt(max - min);
@@ -178,8 +205,25 @@ public class MobEventManager {
 
 
     // ==================================================
-    //                 Start Mob Event
+    //                 Set Mob Event
     // ==================================================
+    /**
+     * Stops the Mob Event.
+     *  **/
+    public void stopMobEvent() {
+        if(this.activeMobEvent == null)
+        	return;
+        
+    	this.activeMobEvent.onFinish();
+    	
+        if(!this.activeMobEvent.world.isRemote) {
+            this.activeMobEvent = null;
+        	this.updateAllClients();
+        }
+        else
+	        this.activeMobEvent = null;
+    }
+    
     /**
      * Starts the provided Mob Event (provided by instance) on the provided world.
      *  **/
@@ -187,7 +231,12 @@ public class MobEventManager {
         this.activeMobEvent = mobEvent;
         if(this.activeMobEvent != null)
             this.activeMobEvent.onStart(world);
-        this.updateAllClients(world);
+        
+        this.worldCounts.put(world, 0);
+		this.worldTargets.put(world, this.getRandomEventDelay(world.rand));
+		
+        if(!world.isRemote)
+        	this.updateAllClients();
     }
 
     /**
@@ -195,8 +244,13 @@ public class MobEventManager {
      *  **/
     public void startMobEvent(String mobEventName, World world) {
         MobEventBase mobEvent = null;
-        if(!"".equals(mobEventName) && this.worldMobEvents.containsKey(mobEventName))
+        if(this.worldMobEvents.containsKey(mobEventName))
             mobEvent = this.worldMobEvents.get(mobEventName);
+        else {
+        	LycanitesMobs.printWarning("", "Tried to start an event with the invalid name: '" + mobEventName + "'");
+        	return;
+        }
+        
         this.startMobEvent(mobEvent, world);
     }
 
@@ -204,11 +258,10 @@ public class MobEventManager {
     // ==================================================
     //                  Update Clients
     // ==================================================
-    /** Sends a packet to all clients updating their world event. **/
-    public void updateAllClients(World world) {
-        if(world.isRemote || world.provider == null)
-            return;
+    /** Sends a packet to all clients updating their event. **/
+    public void updateAllClients() {
         MessageMobEvent message = new MessageMobEvent(this.activeMobEvent);
-        LycanitesMobs.packetHandler.sendToDimension(message, world.provider.dimensionId);
+        LycanitesMobs.packetHandler.sendToAll(message);
+        
     }
 }

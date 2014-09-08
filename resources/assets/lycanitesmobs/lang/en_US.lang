@@ -1,3 +1,10 @@
+# ========== Events ==========
+event.started=%event% has begun!
+event.finished=%event% is over!
+# %event% will be replaced with the name of the event, don't translate this!
+#
+#
+#
 # ========== Entites ==========
 entity.lycanitesmobs.summoningportal.name=Summoning Portal
 #

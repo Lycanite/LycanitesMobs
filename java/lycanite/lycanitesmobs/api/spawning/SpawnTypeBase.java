@@ -506,6 +506,9 @@ public class SpawnTypeBase {
      */
     public void spawnEntity(World world, EntityLiving entityLiving) {
         world.spawnEntityInWorld(entityLiving);
+        if(this.mobEvent != null) {
+        	this.mobEvent.onSpawn(entityLiving);
+        }
     }
 
 

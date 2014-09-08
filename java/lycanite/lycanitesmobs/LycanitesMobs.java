@@ -105,8 +105,10 @@ public class LycanitesMobs {
 		SpawnTypeBase.loadSpawnTypes();
 		
 		// ========== Mob Event Manager ==========
-		FMLCommonHandler.instance().bus().register(new MobEventManager());
-		MobEventManager.instance.loadMobEvents();
+		MobEventManager mobEventManager = new MobEventManager();
+		MinecraftForge.EVENT_BUS.register(mobEventManager);
+		FMLCommonHandler.instance().bus().register(mobEventManager);
+		mobEventManager.loadMobEvents();
 		
 		// ========== Spawn Info ==========
 		SpawnInfo.loadGlobalSettings();

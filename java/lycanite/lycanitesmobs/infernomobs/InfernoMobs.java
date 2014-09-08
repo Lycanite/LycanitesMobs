@@ -12,6 +12,8 @@ import lycanite.lycanitesmobs.api.item.ItemCustomFood;
 import lycanite.lycanitesmobs.api.item.ItemTreat;
 import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeBlock;
 import lycanite.lycanitesmobs.infernomobs.block.BlockFluidPureLava;
 import lycanite.lycanitesmobs.infernomobs.block.BlockScorchfire;
 import lycanite.lycanitesmobs.infernomobs.dispenser.DispenserBehaviorEmber;
@@ -33,6 +35,7 @@ import lycanite.lycanitesmobs.infernomobs.item.ItemScepterMagma;
 import lycanite.lycanitesmobs.infernomobs.item.ItemScepterScorchfire;
 import lycanite.lycanitesmobs.infernomobs.item.ItemScorchfireCharge;
 import net.minecraft.block.BlockDispenser;
+import net.minecraft.block.material.Material;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
@@ -167,12 +170,18 @@ public class InfernoMobs {
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 		// ========== Set Current Group ==========
-		ObjectManager.setCurrentGroup(group);
+		ObjectManager.setCurrentGroup(this.group);
 		
 		// ========== Mob Events ==========
-		MobEventBase mobEvent = new MobEventBase("cinderfall");
-		// TODO Add spawner to event.
-		MobEventManager.instance.worldMobEvents.add(mobEvent);
+		MobEventBase mobEvent = new MobEventBase("cinderfall", this.group);
+		SpawnTypeBase eventSpawner = new SpawnTypeBlock("cinderfall")
+            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
+        eventSpawner.materials = new Material[] {Material.air};
+        eventSpawner.ignoreBiome = true;
+        eventSpawner.ignoreLight = true;
+        eventSpawner.forceSpawning = true;
+        mobEvent.addSpawner(eventSpawner);
+		MobEventManager.instance.addWorldEvent(mobEvent);
 		
 		// ========== Crafting ==========
 		GameRegistry.addRecipe(new ShapelessOreRecipe(

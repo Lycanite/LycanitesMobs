@@ -8,6 +8,7 @@ import java.util.Random;
 
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
+import lycanite.lycanitesmobs.api.network.MessageMobEvent;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -22,12 +23,16 @@ public class MobEventManager {
     public static int maxTicksUntilEvent = 40 * 60 * 20;
     
     // Mob Events:
-    public List<MobEventBase> worldMobEvents = new ArrayList<MobEventBase>();
+    public Map<String, MobEventBase> worldMobEvents = new HashMap<String, MobEventBase>();
     public MobEventBase activeMobEvent = null;
     
     // World Counts:
     public Map<World, Integer> worldCounts = new HashMap<World, Integer>();
     public Map<World, Integer> worldTargets = new HashMap<World, Integer>();
+
+    // Properties:
+    public int baseRate = 120;
+    public int baseRange = 32;
     
 
     // ==================================================
@@ -41,12 +46,38 @@ public class MobEventManager {
     // ==================================================
     //                  Load Mob Events
     // ==================================================
-	/** Called during start up, loads all events into the manager. **/
+	/** Called during start up, loads all global events and config settings into the manager. **/
 	public void loadMobEvents() {
 		ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "mobevents");
 		config.getBool("Global", "Mob Events Enabled", mobEventsEnabled, "If false, all mob events will be completely disabled.");
 		config.setCategoryComment("Events Enabled", "Here each event can be turned on or off (true or false).");
 	}
+
+
+    // ==================================================
+    //                 Add Mob Event
+    // ==================================================
+    /**
+     * Adds the provided World Mob Event.
+     *  **/
+    public void addWorldEvent(MobEventBase mobEvent) {
+        if(mobEvent != null)
+            this.worldMobEvents.put(mobEvent.name, mobEvent);
+    }
+
+
+    // ==================================================
+    //                    Event Stats
+    // ==================================================
+    /* Returns the rate that event mobs are spawned at in ticks. This changes based on the difficulty of the provided world. */
+    public int getBaseRate() {
+        return this.baseRate;
+    }
+
+    /* Returns the distance from the player that event mobs are spawned from. This changes based on the difficulty of the provided world. */
+    public int getBaseRange() {
+        return this.baseRange;
+    }
 
 
     // ==================================================
@@ -59,17 +90,17 @@ public class MobEventManager {
 			return;
 		if(event.side.isClient())
 			return;
+
+        // Get World:
+        World world = event.world;
+        if(world == null)
+            return;
 		
 		// Update Active Event and Return:
 		if(this.activeMobEvent != null) {
-			this.activeMobEvent.onUpdate();
+			this.activeMobEvent.onUpdate(world);
 			return;
 		}
-		
-		// Get World:
-		World world = event.world;
-		if(world == null)
-			return;
 		
 		// Get Count and Target:
 		if(!this.worldCounts.containsKey(world))
@@ -79,12 +110,16 @@ public class MobEventManager {
 		if(!this.worldTargets.containsKey(world))
 			this.worldTargets.put(world, this.getRandomEventDelay(world.rand));
 		int target = this.worldTargets.get(world);
+        if(target <= 0) {
+            target = this.getRandomEventDelay(world.rand);
+            this.worldTargets.put(world, target);
+        }
 		
 		// Check Count and Start Event:
 		if(count >= target) {
-			this.activeMobEvent = this.getRandomWorldMobEvent(world);
-			if(this.activeMobEvent != null)
-				this.activeMobEvent.onStart();
+			MobEventBase newEvent = this.getRandomWorldMobEvent(world);
+			if(newEvent != null)
+                this.startMobEvent(newEvent, world);
 			count = 0;
 			this.worldTargets.put(world, this.getRandomEventDelay(world.rand));
 		}
@@ -105,7 +140,7 @@ public class MobEventManager {
 			dimensionID = world.provider.dimensionId;
 		
 		int totalWeights = 0;
-		for(MobEventBase mobEventEntry : this.worldMobEvents) {
+		for(MobEventBase mobEventEntry : this.worldMobEvents.values()) {
 			if(mobEventEntry.isEnabled())
 				totalWeights += mobEventEntry.weight;
 		}
@@ -114,7 +149,7 @@ public class MobEventManager {
 		
 		int randomWeight = world.rand.nextInt(totalWeights);
 		MobEventBase mobEvent = null;
-		for(MobEventBase mobEventEntry : this.worldMobEvents) {
+		for(MobEventBase mobEventEntry : this.worldMobEvents.values()) {
 			if(mobEventEntry.isEnabled()) {
 				mobEvent = mobEventEntry;
 				if(mobEventEntry.weight > randomWeight)
@@ -140,4 +175,40 @@ public class MobEventManager {
 		
 		return min + random.nextInt(max - min);
 	}
+
+
+    // ==================================================
+    //                 Start Mob Event
+    // ==================================================
+    /**
+     * Starts the provided Mob Event (provided by instance) on the provided world.
+     *  **/
+    public void startMobEvent(MobEventBase mobEvent, World world) {
+        this.activeMobEvent = mobEvent;
+        if(this.activeMobEvent != null)
+            this.activeMobEvent.onStart(world);
+        this.updateAllClients(world);
+    }
+
+    /**
+     * Starts the provided Mob Event (provided by name) on the provided world.
+     *  **/
+    public void startMobEvent(String mobEventName, World world) {
+        MobEventBase mobEvent = null;
+        if(!"".equals(mobEventName) && this.worldMobEvents.containsKey(mobEventName))
+            mobEvent = this.worldMobEvents.get(mobEventName);
+        this.startMobEvent(mobEvent, world);
+    }
+
+
+    // ==================================================
+    //                  Update Clients
+    // ==================================================
+    /** Sends a packet to all clients updating their world event. **/
+    public void updateAllClients(World world) {
+        if(world.isRemote || world.provider == null)
+            return;
+        MessageMobEvent message = new MessageMobEvent(this.activeMobEvent);
+        LycanitesMobs.packetHandler.sendToDimension(message, world.provider.dimensionId);
+    }
 }

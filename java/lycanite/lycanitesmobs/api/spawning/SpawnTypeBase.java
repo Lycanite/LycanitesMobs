@@ -11,6 +11,7 @@ import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.info.SpawnInfo;
+import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLiving;
@@ -34,6 +35,9 @@ public class SpawnTypeBase {
 	
 	/** A list of all mobs (as SpawnInfo) that use this spawn type. **/
 	public List<SpawnInfo> spawnList = new ArrayList<SpawnInfo>();
+
+    /** This is used by Mob Events to link an event with a Spawn Type. **/
+    public MobEventBase mobEvent = null;
 	
 	// ========== Spawn Type Conditions ==========
 	/** How many ticks per player update this spawn type should attempt to spawn anything. **/
@@ -368,7 +372,7 @@ public class SpawnTypeBase {
      * @return True if this spawn type should spawn mobs and false if it shouldn't this call.
      */
     public boolean canSpawn(long tick, World world, int x, int y, int z) {
-        if(this.rate == 0 || tick % this.rate != 0)
+        if(this.getRate(world) == 0 || tick % this.getRate(world) != 0)
             return false;
         if(world.rand.nextDouble() >= this.chance)
             return false;
@@ -518,9 +522,10 @@ public class SpawnTypeBase {
      */
     public List<int[]> searchForBlockCoords(World world, int x, int y, int z) {
         List<int[]> blockCoords = null;
-        for(int i = x - this.range; i <= x + this.range; i++) {
-            for(int j = y - this.range; j <= y + this.range; j++) {
-                for(int k = z - this.range; k <= z + this.range; k++) {
+        int range = this.getRange(world);
+        for(int i = x - range; i <= x + range; i++) {
+            for(int j = y - range; j <= y + range; j++) {
+                for(int k = z - range; k <= z + range; k++) {
                     if(this.materials != null && this.materials.length > 0) {
                         if(blockCoords == null) blockCoords = new ArrayList<int[]>();
                         for(Material validMaterial : this.materials) {
@@ -558,7 +563,7 @@ public class SpawnTypeBase {
     // ==================================================
     //               Coordinate Checking
     // ==================================================
-    /** Checks if th eprovided world coordinate is valid for this spawner to use. This should not include block type/material checks as they are done elsewhere.
+    /** Checks if the provided world coordinate is valid for this spawner to use. This should not include block type/material checks as they are done elsewhere.
      * @param world The world to search for coordinates in.
      * @param x X position to check.
      * @param y Y position to check.
@@ -610,5 +615,26 @@ public class SpawnTypeBase {
     public SpawnTypeBase setMobLimit(int integer) {
     	this.mobLimit = integer;
     	return this;
+    }
+
+    public SpawnTypeBase setMobEvent(MobEventBase mobEvent) {
+        this.mobEvent = mobEvent;
+        return this;
+    }
+
+
+    // ==================================================
+    //                    Get Values
+    // ==================================================
+    public int getRate(World world) {
+        if(this.mobEvent != null)
+            return this.mobEvent.getRate(world);
+        return this.rate;
+    }
+
+    public int getRange(World world) {
+        if(this.mobEvent != null)
+            return this.mobEvent.getRange(world);
+        return this.range;
     }
 }

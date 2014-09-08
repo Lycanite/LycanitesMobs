@@ -104,7 +104,7 @@ public class CustomSpawner {
 
 	
 	// ==================================================
-	//                 Block Break Event
+	//               Lightning Strike Event
 	// ==================================================
     public List<SpawnTypeStorm> lightningStrikeTypes = new ArrayList<SpawnTypeStorm>();
 	/** This uses the lightning strike event to spawn mobs. **/

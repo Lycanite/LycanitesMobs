@@ -11,6 +11,7 @@ import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.spawning.CustomSpawner;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -110,27 +111,19 @@ public class MobEventBase {
     //                       Start
     // ==================================================
 	public void onStart(World world) {
-		LycanitesMobs.printDebug("", "Event Started - Remote: " + world.isRemote); //XXX
+		LycanitesMobs.printInfo("", "Mob Event Started: " + this.getTitle());
 		this.activeTicks = 0;
 		this.world = world;
 		
-		// Server Side:
-		if(!world.isRemote) {
-	        for(SpawnTypeBase spawner : this.spawners) {
-	            if(spawner != null && !CustomSpawner.instance.updateSpawnTypes.contains(spawner))
-	                CustomSpawner.instance.updateSpawnTypes.add(spawner);
-	        }
-		}
-		
 		// Client Side:
-        else {
+        if(this.world.isRemote) {
     		String eventMessage = StatCollector.translateToLocal("event.started");
 			eventMessage = eventMessage.replace("%event%", this.getTitle());
 			LycanitesMobs.proxy.getClientPlayer().addChatMessage(new ChatComponentText(eventMessage));
 			
         	if(AssetManager.getSound("mobevent_" + this.name.toLowerCase()) == null)
         			AssetManager.addSound("mobevent_" + this.name.toLowerCase(), this.group, "mobevent." + this.name.toLowerCase());
-        	world.playSoundAtEntity(LycanitesMobs.proxy.getClientPlayer(), AssetManager.getSound("mobevent_" + this.name.toLowerCase()), 1.5F, 1.0F);
+            LycanitesMobs.proxy.getClientPlayer().playSound(AssetManager.getSound("mobevent_" + this.name.toLowerCase()), 1.5F, 1.0F);
         }
 	}
 	
@@ -144,8 +137,7 @@ public class MobEventBase {
 			eventMessage = eventMessage.replace("%event%", this.getTitle());
 			LycanitesMobs.proxy.getClientPlayer().addChatMessage(new ChatComponentText(eventMessage));
 		}
-		
-		LycanitesMobs.printDebug("", "Event Finished - Remote: " + world.isRemote); //XXX
+		LycanitesMobs.printInfo("", "Mob Event Finished: " + this.getTitle());
 	}
 	
 	
@@ -157,17 +149,30 @@ public class MobEventBase {
 			LycanitesMobs.printWarning("", "Mob Event is trying to update without a world object!");
 			return;
 		}
-		if(this.world.isRemote)
-			return;
-		
+		if(this.world.isRemote) return;
+
+        // Spawn Near Players:
+        for(Object playerObj : world.playerEntities) {
+            if(playerObj instanceof EntityPlayer) {
+                EntityPlayer player = (EntityPlayer)playerObj;
+                int x = (int)player.posX;
+                int y = (int)player.posY;
+                int z = (int)player.posZ;
+
+                // Event Mob Spawning:
+                int tickOffset = 0;
+                for(SpawnTypeBase spawnType : this.spawners) {
+                    spawnType.spawnMobs(this.activeTicks - tickOffset, world, x, y, z);
+                    tickOffset += 7;
+                }
+            }
+        }
+
         this.activeTicks++;
 
+        // Stop Event When Time Runs Out:
         if(this.activeTicks > this.duration) {
-        	for(SpawnTypeBase spawner : this.spawners) {
-                if(spawner != null && CustomSpawner.instance.updateSpawnTypes.contains(spawner))
-                    CustomSpawner.instance.updateSpawnTypes.remove(spawner);
-            }
-            MobEventManager.instance.stopMobEvent();
+        	MobEventManager.instance.stopMobEvent();
         }
 	}
 	
@@ -183,9 +188,7 @@ public class MobEventBase {
     // ==================================================
     //                   Spawn Effects
     // ==================================================
-	public void onSpawn(EntityLiving entity) {
-		// TODO Override this class and add lots of FIRE! Yeahhh!
-	}
+	public void onSpawn(EntityLiving entity) {}
 	
 	
     // ==================================================
@@ -214,6 +217,7 @@ public class MobEventBase {
         int u = width;
         int v = height;
 
+        LycanitesMobs.printDebug("", "Animation Test: " + animation); //XXX
         GL11.glColor4f(1.0F, 1.0F, 1.0F, animation);
         gui.mc.getTextureManager().bindTexture(this.getTexture());
         gui.drawTexturedModalRect(x, y, u, v, width, height);

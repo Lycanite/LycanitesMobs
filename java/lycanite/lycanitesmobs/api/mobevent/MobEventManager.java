@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
+import net.minecraftforge.event.world.WorldEvent;
 
 
 public class MobEventManager {
@@ -205,7 +206,7 @@ public class MobEventManager {
 
 
     // ==================================================
-    //                 Set Mob Event
+    //                 Stop Mob Event
     // ==================================================
     /**
      * Stops the Mob Event.
@@ -223,7 +224,11 @@ public class MobEventManager {
         else
 	        this.activeMobEvent = null;
     }
-    
+
+
+    // ==================================================
+    //                 Start Mob Event
+    // ==================================================
     /**
      * Starts the provided Mob Event (provided by instance) on the provided world.
      *  **/
@@ -263,5 +268,21 @@ public class MobEventManager {
         MessageMobEvent message = new MessageMobEvent(this.activeMobEvent);
         LycanitesMobs.packetHandler.sendToAll(message);
         
+    }
+
+
+    // ==================================================
+    //                       NBT
+    // ==================================================
+    /** Called when a world loads from its NBT data. **/
+    @SubscribeEvent
+    public void loadFromNBT() {
+
+    }
+
+    /** Called when a world saves to its NBT data. **/
+    @SubscribeEvent
+    public void saveToNBT() {
+
     }
 }

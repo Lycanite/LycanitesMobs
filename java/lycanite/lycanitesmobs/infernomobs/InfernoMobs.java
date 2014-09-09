@@ -11,6 +11,7 @@ import lycanite.lycanitesmobs.api.info.Subspecies;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
 import lycanite.lycanitesmobs.api.item.ItemTreat;
 import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
+import lycanite.lycanitesmobs.api.mobevent.MobEventCinderfall;
 import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBlock;
@@ -174,7 +175,7 @@ public class InfernoMobs {
 		
 		// ========== Mob Events ==========
         if(MobInfo.getFromName("cinder") != null) {
-			MobEventBase mobEvent = new MobEventBase("cinderfall", this.group);
+			MobEventBase mobEvent = new MobEventCinderfall("cinderfall", this.group);
 			SpawnTypeBase eventSpawner = new SpawnTypeBlock("cinderfall")
 	            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
 	        eventSpawner.materials = new Material[] {Material.air};

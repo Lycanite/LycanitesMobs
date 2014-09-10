@@ -4,36 +4,30 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import lycanite.lycanitesmobs.ExtendedWorld;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.network.MessageMobEvent;
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
-import net.minecraftforge.event.world.WorldEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
 
 
 public class MobEventManager {
 	// Global:
     public static MobEventManager instance;
     public static boolean mobEventsEnabled = true;
-    //public static int minTicksUntilEvent = 20 * 60 * 20;
-    //public static int maxTicksUntilEvent = 40 * 60 * 20;
-    public static int minTicksUntilEvent = 5 * 60;
-    public static int maxTicksUntilEvent = 10 * 60;
+    public static int minTicksUntilEvent = 20 * 60 * 20;
+    public static int maxTicksUntilEvent = 40 * 60 * 20;
     
     // Mob Events:
     public Map<String, MobEventBase> worldMobEvents = new HashMap<String, MobEventBase>();
     public MobEventBase activeMobEvent = null;
-    
-    // World Counts:
-    public Map<World, Integer> worldCounts = new HashMap<World, Integer>();
-    public Map<World, Integer> worldTargets = new HashMap<World, Integer>();
 
     // Properties:
-    public int baseRate = 120;
+    public int baseRate = 10 * 20;
     public int baseRange = 32;
     
 
@@ -52,8 +46,8 @@ public class MobEventManager {
 	public void loadMobEvents() {
 		ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "mobevents");
 		mobEventsEnabled = config.getBool("Global", "Mob Events Enabled", mobEventsEnabled, "If false, all mob events will be completely disabled.");
-		//minTicksUntilEvent = config.getInt("Global", "Min Ticks Until Event", minTicksUntilEvent, "Minimum time in ticks until a random event can occur. 20 Ticks = 1 Second.");
-		//maxTicksUntilEvent = config.getInt("Global", "Max Ticks Until Event", maxTicksUntilEvent, "Maximum time in ticks until a random event can occur. 20 Ticks = 1 Second.");
+		minTicksUntilEvent = config.getInt("Global", "Min Ticks Until Event", minTicksUntilEvent, "Minimum time in ticks until a random event can occur. 20 Ticks = 1 Second.");
+		maxTicksUntilEvent = config.getInt("Global", "Max Ticks Until Event", maxTicksUntilEvent, "Maximum time in ticks until a random event can occur. 20 Ticks = 1 Second.");
 		baseRate = config.getInt("Global", "Base Spawn Rate", baseRate, "Sets the base interval in ticks (20 ticks = 1 second) between each mob spawn, this is multiplied by 1.5 on easy and 0.5 on hard.");
 		baseRange = config.getInt("Global", "Base Spawn Range", baseRange, "Sets the base range in blocks from each player/area that event mobs will spawn.");
 		
@@ -88,53 +82,46 @@ public class MobEventManager {
 
 
     // ==================================================
-    //                 Server Update Event
-    // ==================================================
-	/** Called every tick server side and runs an update for each active world object. **/
-	@SubscribeEvent
-	public void onServerUpdate(ServerTickEvent event) {
-		for(World world : MinecraftServer.getServer().worldServers) {
-			if(world != null && world.provider != null)
-				this.onWorldUpdate(world);
-		}
-	}
-
-
-    // ==================================================
-    //                 Server Update Event
+    //                 World Update Event
     // ==================================================
 	/** Called every tick in a world and counts down to the next event then fires it! The countdown is paused during an event. **/
-	public void onWorldUpdate(World world) {
+	@SubscribeEvent
+	public void onWorldUpdate(WorldTickEvent event) {
+		World world = event.world;
+		ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
+		if(world.isRemote || worldExt == null) return;
+		if(world.difficultySetting == EnumDifficulty.PEACEFUL) {
+			if(this.activeMobEvent != null)
+				this.stopMobEvent();
+        	return;
+        }
+		
 		// Only Run If Players Are Present:
-		if(world.playerEntities.size() < 1)
+		if(world.playerEntities.size() < 1) {
 			return;
+		}
 		
 		// Update Active Event and Return:
 		if(this.activeMobEvent != null) {
-			this.activeMobEvent.onServerUpdate();
+			worldExt.setMobEventActiveTime(this.activeMobEvent.serverTicks + 1);
+			this.activeMobEvent.onServerUpdate(world);
 			return;
 		}
+		worldExt.setMobEventActiveTime(0);
 		
-		// Get Count:
-		if(!this.worldCounts.containsKey(world))
-			this.worldCounts.put(world, 0);
-		int count = this.worldCounts.get(world) + 1;
-		this.worldCounts.put(world, count);
+		// Get Event Time:
+		worldExt.setMobEventTime(worldExt.getMobEventTime() + 1);
 		
-		// Get Target:
-		if(!this.worldTargets.containsKey(world))
-			this.worldTargets.put(world, this.getRandomEventDelay(world.rand));
-		int target = this.worldTargets.get(world);
-        if(target <= 0) {
-            target = this.getRandomEventDelay(world.rand);
-            this.worldTargets.put(world, target);
+		// Get Target Time:
+        if(worldExt.getMobEventTarget() <= 0) {
+        	worldExt.setMobEventTarget(this.getRandomEventDelay(world.rand));
         }
 		
 		// Check Count and Start Event:
-		if(count >= target) {
+		if(worldExt.getMobEventTime() >= worldExt.getMobEventTarget()) {
 			MobEventBase newEvent = this.getRandomWorldMobEvent(world);
 			if(newEvent != null)
-                this.startMobEvent(newEvent, world);
+                this.startMobEvent(newEvent, world, worldExt);
 		}
 	}
 
@@ -232,13 +219,17 @@ public class MobEventManager {
     /**
      * Starts the provided Mob Event (provided by instance) on the provided world.
      *  **/
-    public void startMobEvent(MobEventBase mobEvent, World world) {
+    public void startMobEvent(MobEventBase mobEvent, World world, ExtendedWorld worldExt) {
         this.activeMobEvent = mobEvent;
-        if(this.activeMobEvent != null)
+        if(this.activeMobEvent != null) {
             this.activeMobEvent.onStart(world);
+            worldExt.setMobEventType(this.activeMobEvent.name);
+        }
+        else
+        	 worldExt.setMobEventType("");
         
-        this.worldCounts.put(world, 0);
-		this.worldTargets.put(world, this.getRandomEventDelay(world.rand));
+        worldExt.setMobEventTime(0);
+        worldExt.setMobEventTarget(0);
 		
         if(!world.isRemote)
         	this.updateAllClients();
@@ -247,16 +238,16 @@ public class MobEventManager {
     /**
      * Starts the provided Mob Event (provided by name) on the provided world.
      *  **/
-    public void startMobEvent(String mobEventName, World world) {
+    public void startMobEvent(String mobEventName, World world, ExtendedWorld worldExt) {
         MobEventBase mobEvent = null;
         if(this.worldMobEvents.containsKey(mobEventName))
             mobEvent = this.worldMobEvents.get(mobEventName);
         else {
-        	LycanitesMobs.printWarning("", "Tried to start an event with the invalid name: '" + mobEventName + "'");
+        	LycanitesMobs.printWarning("", "Tried to start an event with the invalid name: '" + mobEventName + "' on " + (world.isRemote ? "Client" : "Server"));
         	return;
         }
         
-        this.startMobEvent(mobEvent, world);
+        this.startMobEvent(mobEvent, world, worldExt);
     }
 
 
@@ -268,21 +259,5 @@ public class MobEventManager {
         MessageMobEvent message = new MessageMobEvent(this.activeMobEvent);
         LycanitesMobs.packetHandler.sendToAll(message);
         
-    }
-
-
-    // ==================================================
-    //                       NBT
-    // ==================================================
-    /** Called when a world loads from its NBT data. **/
-    @SubscribeEvent
-    public void loadFromNBT() {
-
-    }
-
-    /** Called when a world saves to its NBT data. **/
-    @SubscribeEvent
-    public void saveToNBT() {
-
     }
 }

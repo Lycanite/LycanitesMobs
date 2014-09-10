@@ -73,7 +73,10 @@ public class SpawnTypeBase {
 	/** If true, this type will not check if a mob is allowed to spawn in the target light level. **/
 	public boolean ignoreLight = true;
 	
-	/** If true, this type will ignore the mob spawn event being cancelled. **/
+	/** If true, mobs spawned by this mob wont check any conditions at all. **/
+	public boolean ignoreMobConditions = false;
+	
+	/** If true, this type will ignore the mob spawn event being cancelled. This only overrides the forge event. **/
 	public boolean forceSpawning = true;
 	
 	
@@ -337,7 +340,7 @@ public class SpawnTypeBase {
                 continue;
             }
             
-            if(canSpawn == Result.DEFAULT && !entityLiving.getCanSpawnHere()) {
+            if(canSpawn == Result.DEFAULT && !entityLiving.getCanSpawnHere() && !this.ignoreMobConditions) {
                 LycanitesMobs.printDebug("CustomSpawner", "Spawn Check Failed! The entity may not fit, there may be to many of it in the area, it may require specific lighting, etc.");
                 continue;
             }

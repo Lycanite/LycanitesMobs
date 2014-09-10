@@ -1,6 +1,6 @@
 {
     "mobevent.cinderfall": {
-        "category": "ambient",
+        "category": "record",
         "sounds": [{"name": "mobevent/cinderfall", "stream": false}]
     },
 	"entity.cinder.say": {

@@ -25,6 +25,7 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.EntityInteractEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
@@ -34,6 +35,19 @@ public class EventListener {
     //                     Constructor
     // ==================================================
 	public EventListener() {}
+	
+	
+    // ==================================================
+    //                    World Load
+    // ==================================================
+	@SubscribeEvent
+	public void onWorldLoading(WorldEvent.Load event) {
+		if(event.world == null)
+			return;
+		
+		// ========== Extended World ==========
+		ExtendedWorld.getForWorld(event.world);
+	}
 	
 	
 	// ==================================================

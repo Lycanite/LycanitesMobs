@@ -113,10 +113,11 @@ public class EntityProjectileRapidFire extends EntityProjectileBase {
 		    	Constructor constructor = projectileClass.getDeclaredConstructor(new Class[] { World.class, EntityLivingBase.class });
 		    	constructor.setAccessible(true);
 	        	projectile = (IProjectile)constructor.newInstance(new Object[] { world, this.shootingEntity });
+				projectile.setThrowableHeading(this.motionX, this.motionY, this.motionZ, 1, 1);
 	        }
 	        
-	        if(projectile instanceof EntityProjectileBase)
-	        	this.playSound(((EntityProjectileBase) projectile).getLaunchSound(), 1.0F, 1.0F / (this.rand.nextFloat() * 0.4F + 0.8F));
+	        //if(projectile instanceof EntityProjectileBase)
+	        	//this.playSound(((EntityProjectileBase) projectile).getLaunchSound(), 1.0F, 1.0F / (this.rand.nextFloat() * 0.4F + 0.8F));
 	        
 	        world.spawnEntityInWorld((Entity)projectile);
 		}

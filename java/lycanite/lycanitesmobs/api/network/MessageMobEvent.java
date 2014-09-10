@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 
 import java.io.IOException;
 
+import lycanite.lycanitesmobs.ExtendedWorld;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
@@ -43,10 +44,12 @@ public class MessageMobEvent implements IMessage, IMessageHandler<MessageMobEven
 		EntityPlayer player = LycanitesMobs.proxy.getClientPlayer();
 		World world = player.worldObj;
 		
-		if("".equals(this.mobEventName))
+		if("".equals(message.mobEventName))
 			MobEventManager.instance.stopMobEvent();
-		else
-			MobEventManager.instance.startMobEvent(message.mobEventName, world);
+		else {
+			ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
+			MobEventManager.instance.startMobEvent(message.mobEventName, world, worldExt);
+		}
 		return null;
 	}
 	

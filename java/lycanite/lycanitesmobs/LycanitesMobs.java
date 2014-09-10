@@ -57,6 +57,10 @@ public class LycanitesMobs {
 	@SidedProxy(clientSide="lycanite.lycanitesmobs.ClientProxy", serverSide="lycanite.lycanitesmobs.CommonProxy")
 	public static CommonProxy proxy;
 	
+	// Spawning:
+	public static CustomSpawner customSpawner;
+	public static MobEventManager mobEventManager;
+	
 	// Creative Tab:
 	public static final CreativeTabs itemsTab = new CreativeTabItems(CreativeTabs.getNextID(), modid + ".items");
 	public static final CreativeTabs creaturesTab = new CreativeTabCreatures(CreativeTabs.getNextID(), modid + ".creatures");
@@ -93,25 +97,24 @@ public class LycanitesMobs {
 			MinecraftForge.EVENT_BUS.register(new PotionEffects());
 		}
 		
-		// ========== Register Event Listeners ==========
-		MinecraftForge.EVENT_BUS.register(new EventListener());
-        proxy.registerEvents();
-		
 		// ========== Mob Info ==========
 		MobInfo.loadGlobalSettings();
 		
-		// ========== Custom Mob Spawning ==========
-		MinecraftForge.EVENT_BUS.register(new CustomSpawner());
+		// ========== CSpawning ==========
+		customSpawner = new CustomSpawner();
 		SpawnTypeBase.loadSpawnTypes();
+		MinecraftForge.EVENT_BUS.register(customSpawner);
 		
-		// ========== Mob Event Manager ==========
-		MobEventManager mobEventManager = new MobEventManager();
-		MinecraftForge.EVENT_BUS.register(mobEventManager);
-		FMLCommonHandler.instance().bus().register(mobEventManager);
-		mobEventManager.loadMobEvents();
-		
-		// ========== Spawn Info ==========
 		SpawnInfo.loadGlobalSettings();
+		
+		mobEventManager = new MobEventManager();
+		mobEventManager.loadMobEvents();
+		//MinecraftForge.EVENT_BUS.register(mobEventManager);
+		FMLCommonHandler.instance().bus().register(mobEventManager);
+		
+		// ========== Register Event Listeners ==========
+		MinecraftForge.EVENT_BUS.register(new EventListener());
+        proxy.registerEvents();
 		
 		// ========== Set Current Mod ==========
 		ObjectManager.setCurrentGroup(group);

@@ -8,8 +8,9 @@ import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.gui.GuiOverlay;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
-import lycanite.lycanitesmobs.api.spawning.CustomSpawner;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
@@ -31,9 +32,13 @@ public class MobEventBase {
     public GroupInfo group;
 
     // Properties:
-    public int duration = 30 * 20;
-    public int activeTicks = 0;
+    public int duration = 60 * 20;
+    public int serverTicks = 0;
+    public int clientTicks = 0;
     public World world;
+    
+    // Client:
+    public PositionedSoundRecord sound;
     
 	
     // ==================================================
@@ -112,7 +117,8 @@ public class MobEventBase {
     // ==================================================
 	public void onStart(World world) {
 		LycanitesMobs.printInfo("", "Mob Event Started: " + this.getTitle());
-		this.activeTicks = 0;
+		this.serverTicks = 0;
+		this.clientTicks = 0;
 		this.world = world;
 		
 		// Client Side:
@@ -121,9 +127,12 @@ public class MobEventBase {
 			eventMessage = eventMessage.replace("%event%", this.getTitle());
 			LycanitesMobs.proxy.getClientPlayer().addChatMessage(new ChatComponentText(eventMessage));
 			
-        	if(AssetManager.getSound("mobevent_" + this.name.toLowerCase()) == null)
-        			AssetManager.addSound("mobevent_" + this.name.toLowerCase(), this.group, "mobevent." + this.name.toLowerCase());
-            LycanitesMobs.proxy.getClientPlayer().playSound(AssetManager.getSound("mobevent_" + this.name.toLowerCase()), 1.5F, 1.0F);
+			if(!LycanitesMobs.proxy.getClientPlayer().capabilities.isCreativeMode) {
+	        	if(AssetManager.getSound("mobevent_" + this.name.toLowerCase()) == null)
+	        			AssetManager.addSound("mobevent_" + this.name.toLowerCase(), this.group, "mobevent." + this.name.toLowerCase());
+	            this.sound = PositionedSoundRecord.func_147673_a(new ResourceLocation(AssetManager.getSound("mobevent_" + this.name.toLowerCase())));
+	            Minecraft.getMinecraft().getSoundHandler().playSound(this.sound);
+			}
         }
 	}
 	
@@ -144,34 +153,35 @@ public class MobEventBase {
     // ==================================================
     //                      Update
     // ==================================================
-	public void onServerUpdate() {
-		if(this.world == null) {
+	public void onServerUpdate(World serverWorld) {
+		if(serverWorld == null) {
 			LycanitesMobs.printWarning("", "Mob Event is trying to update without a world object!");
 			return;
 		}
-		if(this.world.isRemote) return;
 
         // Spawn Near Players:
-        for(Object playerObj : world.playerEntities) {
+        for(Object playerObj : serverWorld.playerEntities) {
             if(playerObj instanceof EntityPlayer) {
                 EntityPlayer player = (EntityPlayer)playerObj;
-                int x = (int)player.posX;
-                int y = (int)player.posY;
-                int z = (int)player.posZ;
-
-                // Event Mob Spawning:
-                int tickOffset = 0;
-                for(SpawnTypeBase spawnType : this.spawners) {
-                    spawnType.spawnMobs(this.activeTicks - tickOffset, world, x, y, z);
-                    tickOffset += 7;
+                if(!player.capabilities.isCreativeMode) {
+	                int x = (int)player.posX;
+	                int y = (int)player.posY;
+	                int z = (int)player.posZ;
+	
+	                // Event Mob Spawning:
+	                int tickOffset = 0;
+	                for(SpawnTypeBase spawnType : this.spawners) {
+	                    spawnType.spawnMobs(this.serverTicks - tickOffset, serverWorld, x, y, z);
+	                    tickOffset += 7;
+	                }
                 }
             }
         }
 
-        this.activeTicks++;
+        this.serverTicks++;
 
         // Stop Event When Time Runs Out:
-        if(this.activeTicks > this.duration) {
+        if(this.serverTicks > this.duration) {
         	MobEventManager.instance.stopMobEvent();
         }
 	}
@@ -181,7 +191,7 @@ public class MobEventBase {
     //                  Client Update
     // ==================================================
 	public void onClientUpdate() {
-        this.activeTicks++;
+        this.clientTicks++;
 	}
 	
 	
@@ -196,19 +206,20 @@ public class MobEventBase {
     // ==================================================
     @SideOnly(Side.CLIENT)
 	public void onGUIUpdate(GuiOverlay gui, int sWidth, int sHeight) {
+    	if(LycanitesMobs.proxy.getClientPlayer().capabilities.isCreativeMode) return;
     	if(this.world == null) return;
     	if(!this.world.isRemote) return;
     	
-		int introTime = 7 * 20;
-        if(this.activeTicks > introTime) return;
+		int introTime = 12 * 20;
+        if(this.clientTicks > introTime) return;
         int startTime = 2 * 20;
-        int stopTime = 1 * 20;
+        int stopTime = 4 * 20;
         float animation = 1.0F;
 
-        if(this.activeTicks < startTime)
-            animation = (float)this.activeTicks / (float)startTime;
-        else if(this.activeTicks > introTime - stopTime)
-            animation = 1.0F - ((float)(introTime - this.activeTicks) / (float)stopTime);
+        if(this.clientTicks < startTime)
+            animation = (float)this.clientTicks / (float)startTime;
+        else if(this.clientTicks > introTime - stopTime)
+            animation = ((float)(introTime - this.clientTicks) / (float)stopTime);
 
         int width = 256;
         int height = 256;
@@ -216,11 +227,16 @@ public class MobEventBase {
         int y = (sHeight / 2) - (height / 2);
         int u = width;
         int v = height;
-
-        LycanitesMobs.printDebug("", "Animation Test: " + animation); //XXX
+        x += 3 - (this.clientTicks % 6); 
+        y += 2 - (this.clientTicks % 4); 
+        
+        GL11.glPushMatrix();
+        GL11.glEnable(GL11.GL_COLOR_MATERIAL);
+		GL11.glEnable(GL11.GL_BLEND);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, animation);
         gui.mc.getTextureManager().bindTexture(this.getTexture());
         gui.drawTexturedModalRect(x, y, u, v, width, height);
+        GL11.glPopMatrix();
 	}
 
     @SideOnly(Side.CLIENT)

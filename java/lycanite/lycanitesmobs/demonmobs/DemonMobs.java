@@ -11,6 +11,10 @@ import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.info.Subspecies;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
 import lycanite.lycanitesmobs.api.item.ItemTreat;
+import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
+import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeBlock;
 import lycanite.lycanitesmobs.demonmobs.block.BlockHellfire;
 import lycanite.lycanitesmobs.demonmobs.dispenser.DispenserBehaviorDemonicLightning;
 import lycanite.lycanitesmobs.demonmobs.dispenser.DispenserBehaviorDevilstar;
@@ -37,7 +41,9 @@ import lycanite.lycanitesmobs.demonmobs.item.ItemScepterDemonicLightning;
 import lycanite.lycanitesmobs.demonmobs.item.ItemScepterDevilstar;
 import lycanite.lycanitesmobs.demonmobs.item.ItemScepterDoomfire;
 import lycanite.lycanitesmobs.demonmobs.item.ItemScepterHellfire;
+import lycanite.lycanitesmobs.demonmobs.mobevent.MobEventHellsFury;
 import net.minecraft.block.BlockDispenser;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.monster.EntityPigZombie;
@@ -200,6 +206,21 @@ public class DemonMobs {
 		// ========== Set Current Group ==========
 		ObjectManager.setCurrentGroup(group);
 		ConfigBase config = ConfigBase.getConfig(group, "spawning");
+		
+		// ========== Mob Events ==========
+        if(MobInfo.getFromName("nethersoul") != null) {
+			MobEventBase mobEvent = new MobEventHellsFury("hellsfury", this.group);
+			SpawnTypeBase eventSpawner = new SpawnTypeBlock("hellsfury")
+	            .setChance(1.0D).setBlockLimit(32).setMobLimit(5);
+	        eventSpawner.materials = new Material[] {Material.air};
+	        eventSpawner.ignoreBiome = true;
+	        eventSpawner.ignoreLight = true;
+	        eventSpawner.forceSpawning = true;
+	        eventSpawner.ignoreMobConditions = true;
+	        eventSpawner.addSpawn(MobInfo.getFromName("nethersoul").spawnInfo);
+	        mobEvent.addSpawner(eventSpawner);
+			MobEventManager.instance.addWorldEvent(mobEvent);
+        }
 		
 		// ========== Remove Vanilla Spawns ==========
 		BiomeGenBase[] biomes = group.biomes;

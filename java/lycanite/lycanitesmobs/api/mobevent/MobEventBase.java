@@ -9,8 +9,6 @@ import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.gui.GuiOverlay;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
@@ -24,6 +22,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class MobEventBase {
+	public static boolean testOnCreative = false;
 	
 	// Properties:
 	public String name = "mobevent";
@@ -38,7 +37,7 @@ public class MobEventBase {
     public World world;
     
     // Client:
-    public PositionedSoundRecord sound;
+    public MobEventClient clientEvent;
     
 	
     // ==================================================
@@ -85,7 +84,7 @@ public class MobEventBase {
         else if(world.difficultySetting.getDifficultyId() == 2)
             return base;
         else
-            return Math.round(base * 0.5F);
+            return Math.round(base * 0.75F);
     }
 
     /* Returns the distance from the player that event mobs are spawned from. This changes based on the difficulty of the provided world. */
@@ -96,7 +95,7 @@ public class MobEventBase {
         else if(world.difficultySetting.getDifficultyId() == 2)
             return base;
         else
-            return Math.round(base * 0.5F);
+            return Math.round(base * 0.75F);
     }
 
 
@@ -121,18 +120,15 @@ public class MobEventBase {
 		this.clientTicks = 0;
 		this.world = world;
 		
+		String eventMessage = StatCollector.translateToLocal("event.started");
+		eventMessage = eventMessage.replace("%event%", this.getTitle());
+		LycanitesMobs.proxy.getClientPlayer().addChatMessage(new ChatComponentText(eventMessage));
+		
 		// Client Side:
         if(this.world.isRemote) {
-    		String eventMessage = StatCollector.translateToLocal("event.started");
-			eventMessage = eventMessage.replace("%event%", this.getTitle());
-			LycanitesMobs.proxy.getClientPlayer().addChatMessage(new ChatComponentText(eventMessage));
-			
-			if(!LycanitesMobs.proxy.getClientPlayer().capabilities.isCreativeMode) {
-	        	if(AssetManager.getSound("mobevent_" + this.name.toLowerCase()) == null)
-	        			AssetManager.addSound("mobevent_" + this.name.toLowerCase(), this.group, "mobevent." + this.name.toLowerCase());
-	            this.sound = PositionedSoundRecord.func_147673_a(new ResourceLocation(AssetManager.getSound("mobevent_" + this.name.toLowerCase())));
-	            Minecraft.getMinecraft().getSoundHandler().playSound(this.sound);
-			}
+        	if(this.clientEvent == null)
+        		this.clientEvent = new MobEventClient(this);
+        	this.clientEvent.onStart(world);
         }
 	}
 	
@@ -141,11 +137,17 @@ public class MobEventBase {
     //                      Finish
     // ==================================================
 	public void onFinish() {
-		if(this.world.isRemote) {
-	        String eventMessage = StatCollector.translateToLocal("event.finished");
-			eventMessage = eventMessage.replace("%event%", this.getTitle());
-			LycanitesMobs.proxy.getClientPlayer().addChatMessage(new ChatComponentText(eventMessage));
-		}
+		String eventMessage = StatCollector.translateToLocal("event.finished");
+		eventMessage = eventMessage.replace("%event%", this.getTitle());
+		LycanitesMobs.proxy.getClientPlayer().addChatMessage(new ChatComponentText(eventMessage));
+		
+		// Client Side:
+        if(this.world.isRemote) {
+        	if(this.clientEvent == null)
+        		this.clientEvent = new MobEventClient(this);
+        	this.clientEvent.onFinish();
+        }
+        
 		LycanitesMobs.printInfo("", "Mob Event Finished: " + this.getTitle());
 	}
 	
@@ -163,7 +165,7 @@ public class MobEventBase {
         for(Object playerObj : serverWorld.playerEntities) {
             if(playerObj instanceof EntityPlayer) {
                 EntityPlayer player = (EntityPlayer)playerObj;
-                if(!player.capabilities.isCreativeMode) {
+                if(!player.capabilities.isCreativeMode || testOnCreative) {
 	                int x = (int)player.posX;
 	                int y = (int)player.posY;
 	                int z = (int)player.posZ;
@@ -206,7 +208,7 @@ public class MobEventBase {
     // ==================================================
     @SideOnly(Side.CLIENT)
 	public void onGUIUpdate(GuiOverlay gui, int sWidth, int sHeight) {
-    	if(LycanitesMobs.proxy.getClientPlayer().capabilities.isCreativeMode) return;
+    	if(LycanitesMobs.proxy.getClientPlayer().capabilities.isCreativeMode && !testOnCreative) return;
     	if(this.world == null) return;
     	if(!this.world.isRemote) return;
     	

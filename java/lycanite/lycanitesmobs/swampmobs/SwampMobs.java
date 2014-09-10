@@ -11,6 +11,11 @@ import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.info.Subspecies;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
 import lycanite.lycanitesmobs.api.item.ItemTreat;
+import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
+import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeBlock;
+import lycanite.lycanitesmobs.plainsmobs.mobevent.MobEventWindStorm;
 import lycanite.lycanitesmobs.swampmobs.block.BlockPoisonCloud;
 import lycanite.lycanitesmobs.swampmobs.dispenser.DispenserBehaviorPoisonRay;
 import lycanite.lycanitesmobs.swampmobs.dispenser.DispenserBehaviorVenomShot;
@@ -29,6 +34,7 @@ import lycanite.lycanitesmobs.swampmobs.item.ItemScepterPoisonRay;
 import lycanite.lycanitesmobs.swampmobs.item.ItemScepterVenomShot;
 import lycanite.lycanitesmobs.swampmobs.item.ItemSwampEgg;
 import net.minecraft.block.BlockDispenser;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySkeleton;
@@ -189,6 +195,21 @@ public class SwampMobs {
 		// ========== Set Current Group ==========
 		ObjectManager.setCurrentGroup(group);
 		ConfigBase config = ConfigBase.getConfig(group, "spawning");
+		
+		// ========== Mob Events ==========
+        if(MobInfo.getFromName("remobra") != null) {
+			MobEventBase mobEvent = new MobEventWindStorm("wingedvenom", this.group);
+			SpawnTypeBase eventSpawner = new SpawnTypeBlock("wingedvenom")
+	            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
+	        eventSpawner.materials = new Material[] {Material.air};
+	        eventSpawner.ignoreBiome = true;
+	        eventSpawner.ignoreLight = true;
+	        eventSpawner.forceSpawning = true;
+	        eventSpawner.ignoreMobConditions = true;
+	        eventSpawner.addSpawn(MobInfo.getFromName("remobra").spawnInfo);
+	        mobEvent.addSpawner(eventSpawner);
+			MobEventManager.instance.addWorldEvent(mobEvent);
+        }
 		
 		// ========== Remove Vanilla Spawns ==========
 		BiomeGenBase[] biomes = group.biomes;

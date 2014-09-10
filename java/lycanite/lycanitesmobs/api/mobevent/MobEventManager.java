@@ -120,12 +120,13 @@ public class MobEventManager {
 		// Check Count and Start Event:
 		if(worldExt.getMobEventTime() >= worldExt.getMobEventTarget()) {
 			MobEventBase newEvent = this.getRandomWorldMobEvent(world);
-			if(newEvent != null)
+			if(newEvent != null) {
                 this.startMobEvent(newEvent, world, worldExt);
+			}
 		}
 	}
-
-
+	
+	
     // ==================================================
     //                 Client Update Event
     // ==================================================
@@ -165,12 +166,14 @@ public class MobEventManager {
 			return null;
 		
 		int randomWeight = world.rand.nextInt(totalWeights);
+		int searchWeight = 0;
 		MobEventBase mobEvent = null;
 		for(MobEventBase mobEventEntry : this.worldMobEvents.values()) {
 			if(mobEventEntry.isEnabled()) {
 				mobEvent = mobEventEntry;
-				if(mobEventEntry.weight > randomWeight)
+				if(mobEventEntry.weight + searchWeight > randomWeight)
 					break;
+				searchWeight += mobEventEntry.weight;
 			}
 		}
 		

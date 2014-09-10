@@ -8,13 +8,19 @@ import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.info.Subspecies;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
+import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
+import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeBlock;
 import lycanite.lycanitesmobs.saltwatermobs.entity.EntityAbtu;
 import lycanite.lycanitesmobs.saltwatermobs.entity.EntityIka;
 import lycanite.lycanitesmobs.saltwatermobs.entity.EntityLacedon;
 import lycanite.lycanitesmobs.saltwatermobs.entity.EntityRaiko;
 import lycanite.lycanitesmobs.saltwatermobs.entity.EntitySkylus;
 import lycanite.lycanitesmobs.saltwatermobs.item.ItemSaltwaterEgg;
+import lycanite.lycanitesmobs.saltwatermobs.mobevent.MobEventSeaStorm;
 import net.minecraft.block.BlockDispenser;
+import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -142,8 +148,20 @@ public class SaltwaterMobs {
 		// ========== Set Current Group ==========
 		ObjectManager.setCurrentGroup(group);
 		
-		// ========== Remove Vanilla Spawns ==========
-		// N/A
+		// ========== Mob Events ==========
+        if(MobInfo.getFromName("raiko") != null) {
+			MobEventBase mobEvent = new MobEventSeaStorm("seastorm", this.group);
+			SpawnTypeBase eventSpawner = new SpawnTypeBlock("seastorm")
+	            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
+	        eventSpawner.materials = new Material[] {Material.air};
+	        eventSpawner.ignoreBiome = true;
+	        eventSpawner.ignoreLight = true;
+	        eventSpawner.forceSpawning = true;
+	        eventSpawner.ignoreMobConditions = true;
+	        eventSpawner.addSpawn(MobInfo.getFromName("raiko").spawnInfo);
+	        mobEvent.addSpawner(eventSpawner);
+			MobEventManager.instance.addWorldEvent(mobEvent);
+        }
 		
 		// ========== Crafting ==========
         GameRegistry.addRecipe(new ShapelessOreRecipe(

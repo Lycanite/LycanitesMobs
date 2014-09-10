@@ -10,6 +10,10 @@ import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.info.Subspecies;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
 import lycanite.lycanitesmobs.api.item.ItemTreat;
+import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
+import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeBlock;
 import lycanite.lycanitesmobs.junglemobs.block.BlockQuickWeb;
 import lycanite.lycanitesmobs.junglemobs.entity.EntityConcapedeHead;
 import lycanite.lycanitesmobs.junglemobs.entity.EntityConcapedeSegment;
@@ -17,7 +21,9 @@ import lycanite.lycanitesmobs.junglemobs.entity.EntityGeken;
 import lycanite.lycanitesmobs.junglemobs.entity.EntityTarantula;
 import lycanite.lycanitesmobs.junglemobs.entity.EntityUvaraptor;
 import lycanite.lycanitesmobs.junglemobs.item.ItemJungleEgg;
+import lycanite.lycanitesmobs.junglemobs.mobevent.MobEventTheSwarm;
 import net.minecraft.block.BlockDispenser;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityWitch;
@@ -156,6 +162,21 @@ public class JungleMobs {
 		// ========== Set Current Group ==========
 		ObjectManager.setCurrentGroup(group);
 		ConfigBase config = ConfigBase.getConfig(group, "spawning");
+		
+		// ========== Mob Events ==========
+        if(MobInfo.getFromName("vespid") != null) {
+			MobEventBase mobEvent = new MobEventTheSwarm("theswarm", this.group);
+			SpawnTypeBase eventSpawner = new SpawnTypeBlock("theswarm")
+	            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
+	        eventSpawner.materials = new Material[] {Material.air};
+	        eventSpawner.ignoreBiome = true;
+	        eventSpawner.ignoreLight = true;
+	        eventSpawner.forceSpawning = true;
+	        eventSpawner.ignoreMobConditions = true;
+	        eventSpawner.addSpawn(MobInfo.getFromName("vespid").spawnInfo);
+	        mobEvent.addSpawner(eventSpawner);
+			MobEventManager.instance.addWorldEvent(mobEvent);
+        }
 		
 		// ========== Remove Vanilla Spawns ==========
 		BiomeGenBase[] biomes = group.biomes;

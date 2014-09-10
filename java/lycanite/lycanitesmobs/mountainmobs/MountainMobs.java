@@ -9,6 +9,10 @@ import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.info.Subspecies;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
+import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
+import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeBlock;
 import lycanite.lycanitesmobs.mountainmobs.dispenser.DispenserBehaviorBoulderBlast;
 import lycanite.lycanitesmobs.mountainmobs.entity.EntityBoulderBlast;
 import lycanite.lycanitesmobs.mountainmobs.entity.EntityGeonach;
@@ -18,7 +22,9 @@ import lycanite.lycanitesmobs.mountainmobs.entity.EntityYale;
 import lycanite.lycanitesmobs.mountainmobs.item.ItemBoulderBlastCharge;
 import lycanite.lycanitesmobs.mountainmobs.item.ItemMountainEgg;
 import lycanite.lycanitesmobs.mountainmobs.item.ItemScepterBoulderBlast;
+import lycanite.lycanitesmobs.mountainmobs.mobevent.MobEventBoulderDash;
 import net.minecraft.block.BlockDispenser;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityWitch;
 import net.minecraft.entity.monster.EntityZombie;
@@ -145,6 +151,21 @@ public class MountainMobs {
 		// ========== Set Current Group ==========
 		ObjectManager.setCurrentGroup(group);
 		ConfigBase config = ConfigBase.getConfig(group, "spawning");
+		
+		// ========== Mob Events ==========
+        if(MobInfo.getFromName("geonach") != null) {
+			MobEventBase mobEvent = new MobEventBoulderDash("boulderdash", this.group);
+			SpawnTypeBase eventSpawner = new SpawnTypeBlock("boulderdash")
+	            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
+	        eventSpawner.materials = new Material[] {Material.air};
+	        eventSpawner.ignoreBiome = true;
+	        eventSpawner.ignoreLight = true;
+	        eventSpawner.forceSpawning = true;
+	        eventSpawner.ignoreMobConditions = true;
+	        eventSpawner.addSpawn(MobInfo.getFromName("geonach").spawnInfo);
+	        mobEvent.addSpawner(eventSpawner);
+			MobEventManager.instance.addWorldEvent(mobEvent);
+        }
 		
 		// ========== Remove Vanilla Spawns ==========
 		BiomeGenBase[] biomes = group.biomes;

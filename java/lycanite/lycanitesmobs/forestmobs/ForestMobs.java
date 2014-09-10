@@ -10,6 +10,10 @@ import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.info.Subspecies;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
 import lycanite.lycanitesmobs.api.item.ItemTreat;
+import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
+import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeBlock;
 import lycanite.lycanitesmobs.forestmobs.dispenser.DispenserBehaviorLifeDrain;
 import lycanite.lycanitesmobs.forestmobs.entity.EntityArisaur;
 import lycanite.lycanitesmobs.forestmobs.entity.EntityEnt;
@@ -21,7 +25,9 @@ import lycanite.lycanitesmobs.forestmobs.entity.EntityTrent;
 import lycanite.lycanitesmobs.forestmobs.item.ItemForestEgg;
 import lycanite.lycanitesmobs.forestmobs.item.ItemLifeDrainCharge;
 import lycanite.lycanitesmobs.forestmobs.item.ItemScepterLifeDrain;
+import lycanite.lycanitesmobs.forestmobs.mobevent.MobEventRootRiot;
 import net.minecraft.block.BlockDispenser;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySpider;
@@ -158,6 +164,21 @@ public class ForestMobs {
 		// ========== Set Current Group ==========
 		ObjectManager.setCurrentGroup(group);
 		ConfigBase config = ConfigBase.getConfig(group, "spawning");
+		
+		// ========== Mob Events ==========
+        if(MobInfo.getFromName("spriggan") != null) {
+			MobEventBase mobEvent = new MobEventRootRiot("rootriot", this.group);
+			SpawnTypeBase eventSpawner = new SpawnTypeBlock("rootriot")
+	            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
+	        eventSpawner.materials = new Material[] {Material.air};
+	        eventSpawner.ignoreBiome = true;
+	        eventSpawner.ignoreLight = true;
+	        eventSpawner.forceSpawning = true;
+	        eventSpawner.ignoreMobConditions = true;
+	        eventSpawner.addSpawn(MobInfo.getFromName("spriggan").spawnInfo);
+	        mobEvent.addSpawner(eventSpawner);
+			MobEventManager.instance.addWorldEvent(mobEvent);
+        }
 		
 		// ========== Remove Vanilla Spawns ==========
 		BiomeGenBase[] biomes = group.biomes;

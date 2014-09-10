@@ -16,8 +16,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Blocks;
+import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.event.ForgeEventFactory;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 
@@ -529,6 +531,7 @@ public class SpawnTypeBase {
     public List<int[]> searchForBlockCoords(World world, int x, int y, int z) {
         List<int[]> blockCoords = null;
         int range = this.getRange(world);
+        
         for(int i = x - range; i <= x + range; i++) {
             for(int j = y - range; j <= y + range; j++) {
                 for(int k = z - range; k <= z + range; k++) {
@@ -562,7 +565,26 @@ public class SpawnTypeBase {
                 }
             }
         }
+        
         return blockCoords;
+    }
+    
+    
+    // ==================================================
+    //           Get Random Spawn Pos from Chunk
+    // ==================================================
+    /** Gets a random spawn position from a the provided chunk.
+     * @param world The world to search for coordinates in.
+     * @return Returns a ChunkPosition.
+     */
+    public ChunkPosition getRandomLandCoord(World world, Chunk chunk, int range) {
+    	range = Math.min(range, 16);
+        int x = chunk.xPosition + world.rand.nextInt(range);
+        int z = chunk.zPosition + world.rand.nextInt(range);
+        x += 16 - range;
+        z += 16 - range;
+        int y = world.rand.nextInt(chunk == null ? world.getActualHeight() : chunk.getTopFilledSegment() + 16 - 1);
+        return new ChunkPosition(x, y, z);
     }
     
     
@@ -574,7 +596,7 @@ public class SpawnTypeBase {
      * @param x X position to check.
      * @param y Y position to check.
      * @param z Z position to check.
-     * @return Returns true if it is a valid coordinate so that it can be added to th elist.
+     * @return Returns true if it is a valid coordinate so that it can be added to the list.
      */
     public boolean isValidCoord(World world, int x, int y, int z) {
     	return true;

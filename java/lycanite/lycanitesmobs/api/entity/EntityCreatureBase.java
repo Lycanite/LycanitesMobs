@@ -1329,6 +1329,12 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	public void updateSize() {
         this.setSize(this.setWidth, this.setHeight);
     }
+
+    /** Sets the size scale and updates the mobs size. **/
+	public void setSizeScale(double scale) {
+		this.sizeScale = scale;
+        this.updateSize();
+    }
     
     
     // ==================================================

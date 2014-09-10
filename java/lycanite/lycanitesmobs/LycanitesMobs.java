@@ -42,7 +42,7 @@ public class LycanitesMobs {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String version = "1.9.1b - MC 1.7.10";
+	public static final String version = "1.10.0 - MC 1.7.10";
 	
 	public static final PacketHandler packetHandler = new PacketHandler();
 

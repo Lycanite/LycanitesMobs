@@ -6,6 +6,10 @@ import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.Subspecies;
+import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
+import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeBlock;
 import lycanite.lycanitesmobs.freshwatermobs.dispenser.DispenserBehaviorAquaPulse;
 import lycanite.lycanitesmobs.freshwatermobs.entity.EntityAquaPulse;
 import lycanite.lycanitesmobs.freshwatermobs.entity.EntityJengu;
@@ -13,7 +17,9 @@ import lycanite.lycanitesmobs.freshwatermobs.entity.EntityZephyr;
 import lycanite.lycanitesmobs.freshwatermobs.item.ItemAquaPulseCharge;
 import lycanite.lycanitesmobs.freshwatermobs.item.ItemFreshwaterEgg;
 import lycanite.lycanitesmobs.freshwatermobs.item.ItemScepterAquaPulse;
+import lycanite.lycanitesmobs.freshwatermobs.mobevent.MobEventTsunami;
 import net.minecraft.block.BlockDispenser;
+import net.minecraft.block.material.Material;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
@@ -110,8 +116,23 @@ public class FreshwaterMobs {
 		// ========== Set Current Group ==========
 		ObjectManager.setCurrentGroup(group);
 		
-		// ========== Remove Vanilla Spawns ==========
-		// N/A
+		// ========== Mob Events ==========
+        if(MobInfo.getFromName("jengu") != null || MobInfo.getFromName("zephyr") != null) {
+			MobEventBase mobEvent = new MobEventTsunami("tsunami", this.group);
+			SpawnTypeBase eventSpawner = new SpawnTypeBlock("tsunami")
+	            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
+	        eventSpawner.materials = new Material[] {Material.air};
+	        eventSpawner.ignoreBiome = true;
+	        eventSpawner.ignoreLight = true;
+	        eventSpawner.forceSpawning = true;
+	        eventSpawner.ignoreMobConditions = true;
+	        if(MobInfo.getFromName("jengu") != null)
+	        	eventSpawner.addSpawn(MobInfo.getFromName("jengu").spawnInfo);
+	        if(MobInfo.getFromName("zephyr") != null)
+	        	eventSpawner.addSpawn(MobInfo.getFromName("zephyr").spawnInfo);
+	        mobEvent.addSpawner(eventSpawner);
+			MobEventManager.instance.addWorldEvent(mobEvent);
+        }
 		
 		// ========== Crafting ==========
         /*GameRegistry.addRecipe(new ShapelessOreRecipe(

@@ -1,6 +1,10 @@
 # Group Info
 junglemobs.name=Jungle Creatures
 junglemobs.description=Exotic creatures that thrive in the hot, humid and overgrown Jungles and Tropics of the world.
+#
+# Mob Events
+mobevent.theswarm.name=The Swarm
+#
 # Entites
 entity.junglemobs.geken.name=Geken
 entity.junglemobs.geken.description=Venomous reptiles with excellent jumping abilities.

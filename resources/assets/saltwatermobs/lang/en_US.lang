@@ -1,6 +1,10 @@
 # Group Info
 saltwatermobs.name=Saltwater Creatures
 saltwatermobs.description=These creatures are mostly aquatic but some can roam land, they roam the depths of ocean and the salty shores.
+#
+# Mob Events
+mobevent.seastorm.name=Sea Storm
+#
 # Entites
 entity.saltwatermobs.lacedon.name=Lacedon
 entity.saltwatermobs.lacedon.description=Deadly aquatic creatures that induce the weight effect which usually drags their victim down to the bottom of the ocean. They are able to come onto land for a small amount of time and indefinitely if it is raining.

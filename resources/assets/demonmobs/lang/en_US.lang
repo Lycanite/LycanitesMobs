@@ -1,6 +1,10 @@
 # Group Info
 demonmobs.name=Demonic Creatures
 demonmobs.description=Wicked fiends from the depths of the firey hellish Nether!
+#
+# Mob Events
+mobevent.hellsfury.name=Hells Fury
+#
 # Entites
 entity.demonmobs.belph.name=Belph
 entity.demonmobs.belph.description=Wicked natives to the Nether, Belphs take pleasure in hurling firey projectiles.

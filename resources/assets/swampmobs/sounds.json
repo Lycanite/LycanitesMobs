@@ -1,4 +1,8 @@
 {
+    "mobevent.wingedvenom": {
+        "category": "record",
+        "sounds": [{"name": "mobevent/wingedvenom", "stream": false}]
+    },
     "entity.ghoulzombie.say": {
         "category": "hostile",
         "sounds": [{"name": "entity/ghoulzombie/say", "stream": false}]

@@ -1,4 +1,8 @@
 {
+    "mobevent.marchofthegorgomites": {
+        "category": "record",
+        "sounds": [{"name": "mobevent/marchofthegorgomites", "stream": false}]
+    },
     "entity.cryptzombie.say": {
         "category": "hostile",
         "sounds": [{"name": "entity/cryptzombie/say", "stream": false}]

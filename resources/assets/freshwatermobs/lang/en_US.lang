@@ -1,6 +1,10 @@
 # Group Info
 freshwatermobs.name=Freshwater Creatures
 freshwatermobs.description=Creatures of pure water, found all over, in lakes, rivers and even the rain and clouds! 
+#
+# Mob Events
+mobevent.tsunami.name=Tsunami
+#
 # Entites
 entity.freshwatermobs.jengu.name=Jengu
 entity.freshwatermobs.jengu.description=Water elementals known as the protectors of pure water, they will attack anyone they see as unpure (usually you)!

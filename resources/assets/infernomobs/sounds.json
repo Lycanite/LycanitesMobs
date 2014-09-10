@@ -3,7 +3,7 @@
         "category": "record",
         "sounds": [{"name": "mobevent/cinderfall", "stream": false}]
     },
-	"entity.cinder.say": {
+    "entity.cinder.say": {
         "category": "hostile",
         "sounds": [{"name": "entity/cinder/say", "stream": false}]
     },

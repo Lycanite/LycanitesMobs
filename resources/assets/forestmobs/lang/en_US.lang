@@ -1,6 +1,10 @@
 # Group Info
 forestmobs.name=Forest Creatures
 forestmobs.description=Found in standard forests of most varieties, these creatures either thrive in threes and shrubs or are actually trees and shrubs!
+#
+# Mob Events
+mobevent.rootriot.name=Root Riot
+#
 # Entites
 entity.forestmobs.ent.name=Ent
 entity.forestmobs.ent.description=Protectors of the forest, they will attack anything they deem a threat to the forest on sight, this means you. They regenerate in water and will drain health when attacking.

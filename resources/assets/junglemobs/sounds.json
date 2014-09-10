@@ -1,4 +1,8 @@
 {
+    "mobevent.theswarm": {
+        "category": "record",
+        "sounds": [{"name": "mobevent/theswarm", "stream": false}]
+    },
     "entity.geken.say": {
         "category": "hostile",
         "sounds": [{"name": "entity/geken/say", "stream": false}]

@@ -583,7 +583,7 @@ public class SpawnTypeBase {
         int z = chunk.zPosition + world.rand.nextInt(range);
         x += 16 - range;
         z += 16 - range;
-        int y = world.rand.nextInt(chunk == null ? world.getActualHeight() : chunk.getTopFilledSegment() + 16 - 1);
+        int y = world.rand.nextInt(chunk == null ? world.getActualHeight() : chunk.getTopFilledSegment() + 1);
         return new ChunkPosition(x, y, z);
     }
     

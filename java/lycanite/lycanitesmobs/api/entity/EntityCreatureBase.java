@@ -486,7 +486,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     		if(this.spawnedFromType.ignoreDimension)
     			return true;
     	}
-    	if(world == null || world.provider == null)
+    	if(world == null || world.provider == null || this.mobInfo == null || this.mobInfo.spawnInfo == null || this.mobInfo.spawnInfo.dimensionTypes == null)
     		return true;
 		for(String spawnDimensionType : this.mobInfo.spawnInfo.dimensionTypes) {
     		if("ALL".equalsIgnoreCase(spawnDimensionType)) {

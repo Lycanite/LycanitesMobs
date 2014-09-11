@@ -24,7 +24,8 @@ public class MobEventManager {
     
     // Mob Events:
     public Map<String, MobEventBase> worldMobEvents = new HashMap<String, MobEventBase>();
-    public MobEventBase activeMobEvent = null;
+    public MobEventBase serverMobEvent = null;
+    public MobEventBase clientMobEvent = null;
 
     // Properties:
     public int baseRate = 10 * 20;
@@ -90,8 +91,8 @@ public class MobEventManager {
 		World world = event.world;
 		ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
 		if(world.isRemote || worldExt == null) return;
-		if(world.difficultySetting == EnumDifficulty.PEACEFUL) {
-			if(this.activeMobEvent != null)
+		if(!this.mobEventsEnabled || world.difficultySetting == EnumDifficulty.PEACEFUL) {
+			if(this.serverMobEvent != null)
 				this.stopMobEvent();
         	return;
         }
@@ -102,9 +103,9 @@ public class MobEventManager {
 		}
 		
 		// Update Active Event and Return:
-		if(this.activeMobEvent != null) {
-			worldExt.setMobEventActiveTime(this.activeMobEvent.serverTicks + 1);
-			this.activeMobEvent.onServerUpdate(world);
+		if(this.serverMobEvent != null) {
+			worldExt.setMobEventActiveTime(this.serverMobEvent.serverTicks + 1);
+			this.serverMobEvent.onServerUpdate();
 			return;
 		}
 		worldExt.setMobEventActiveTime(0);
@@ -137,9 +138,9 @@ public class MobEventManager {
 			return;
 		
 		// Update Active Event and Return:
-		if(this.activeMobEvent != null) {
-			if(this.activeMobEvent.world == LycanitesMobs.proxy.getClientPlayer().worldObj)
-				this.activeMobEvent.onClientUpdate();
+		if(this.clientMobEvent != null) {
+			if(this.clientMobEvent.clientWorld == LycanitesMobs.proxy.getClientPlayer().worldObj)
+				this.clientMobEvent.onClientUpdate();
 			return;
 		}
 	}
@@ -207,12 +208,18 @@ public class MobEventManager {
         
     	this.activeMobEvent.onFinish();
     	
-        if(!this.activeMobEvent.world.isRemote) {
+        if(this.activeMobEvent.serverWorld != null && !this.activeMobEvent.serverWorld.isRemote) {
+    		ExtendedWorld worldExt = ExtendedWorld.getForWorld(this.activeMobEvent.serverWorld);
+            worldExt.setMobEventType("");
             this.activeMobEvent = null;
         	this.updateAllClients();
         }
-        else
+        
+        if(this.activeMobEvent != null && this.activeMobEvent.clientWorld != null && this.activeMobEvent.clientWorld.isRemote) {
+    		ExtendedWorld worldExt = ExtendedWorld.getForWorld(this.activeMobEvent.clientWorld);
+            worldExt.setMobEventType("");
 	        this.activeMobEvent = null;
+        }
     }
 
 
@@ -225,11 +232,12 @@ public class MobEventManager {
     public void startMobEvent(MobEventBase mobEvent, World world, ExtendedWorld worldExt) {
         this.activeMobEvent = mobEvent;
         if(this.activeMobEvent != null) {
-            this.activeMobEvent.onStart(world);
             worldExt.setMobEventType(this.activeMobEvent.name);
+            this.activeMobEvent.onStart(world);
         }
-        else
+        else {
         	 worldExt.setMobEventType("");
+        }
         
         worldExt.setMobEventTime(0);
         worldExt.setMobEventTarget(0);
@@ -243,8 +251,11 @@ public class MobEventManager {
      *  **/
     public void startMobEvent(String mobEventName, World world, ExtendedWorld worldExt) {
         MobEventBase mobEvent = null;
-        if(this.worldMobEvents.containsKey(mobEventName))
+        if(this.worldMobEvents.containsKey(mobEventName)) {
             mobEvent = this.worldMobEvents.get(mobEventName);
+            if(!mobEvent.isEnabled())
+            	mobEvent = null;
+    	}
         else {
         	LycanitesMobs.printWarning("", "Tried to start an event with the invalid name: '" + mobEventName + "' on " + (world.isRemote ? "Client" : "Server"));
         	return;

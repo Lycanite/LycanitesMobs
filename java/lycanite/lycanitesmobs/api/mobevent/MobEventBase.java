@@ -11,7 +11,6 @@ import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -34,7 +33,8 @@ public class MobEventBase {
     public int duration = 60 * 20;
     public int serverTicks = 0;
     public int clientTicks = 0;
-    public World world;
+    public World serverWorld;
+    public World clientWorld;
     
     // Client:
     public MobEventClient clientEvent;
@@ -116,19 +116,23 @@ public class MobEventBase {
     // ==================================================
 	public void onStart(World world) {
 		LycanitesMobs.printInfo("", "Mob Event Started: " + this.getTitle());
-		this.serverTicks = 0;
-		this.clientTicks = 0;
-		this.world = world;
 		
-		String eventMessage = StatCollector.translateToLocal("event.started");
-		eventMessage = eventMessage.replace("%event%", this.getTitle());
-		LycanitesMobs.proxy.getClientPlayer().addChatMessage(new ChatComponentText(eventMessage));
+		if(!world.isRemote) {
+			this.serverTicks = 0;
+			this.serverWorld = world;
+		}
+		else {
+			this.clientTicks = 0;
+			this.clientWorld = world;
+		}
 		
 		// Client Side:
-        if(this.world.isRemote) {
+        if(this.clientWorld != null && this.clientWorld.isRemote) {
         	if(this.clientEvent == null)
         		this.clientEvent = new MobEventClient(this);
-        	this.clientEvent.onStart(world);
+        	EntityPlayer player = LycanitesMobs.proxy.getClientPlayer();
+        	if(player != null)
+        		this.clientEvent.onStart(this.clientWorld, player);
         }
 	}
 	
@@ -137,32 +141,34 @@ public class MobEventBase {
     //                      Finish
     // ==================================================
 	public void onFinish() {
-		String eventMessage = StatCollector.translateToLocal("event.finished");
-		eventMessage = eventMessage.replace("%event%", this.getTitle());
-		LycanitesMobs.proxy.getClientPlayer().addChatMessage(new ChatComponentText(eventMessage));
-		
+		LycanitesMobs.printInfo("", "Mob Event Finished: " + this.getTitle());
+			
 		// Client Side:
-        if(this.world.isRemote) {
+        if(this.clientWorld != null && this.clientWorld.isRemote) {
         	if(this.clientEvent == null)
         		this.clientEvent = new MobEventClient(this);
-        	this.clientEvent.onFinish();
+        	EntityPlayer player = LycanitesMobs.proxy.getClientPlayer();
+        	if(player != null)
+        		this.clientEvent.onFinish(player);
         }
-        
-		LycanitesMobs.printInfo("", "Mob Event Finished: " + this.getTitle());
 	}
 	
 	
     // ==================================================
     //                      Update
     // ==================================================
-	public void onServerUpdate(World serverWorld) {
-		if(serverWorld == null) {
+	public void onServerUpdate() {
+		if(this.serverWorld == null) {
 			LycanitesMobs.printWarning("", "Mob Event is trying to update without a world object!");
+			return;
+		}
+		else if(this.serverWorld.isRemote) {
+			LycanitesMobs.printWarning("", "Mob Event is trying to update with a client side world!");
 			return;
 		}
 
         // Spawn Near Players:
-        for(Object playerObj : serverWorld.playerEntities) {
+        for(Object playerObj : this.serverWorld.playerEntities) {
             if(playerObj instanceof EntityPlayer) {
                 EntityPlayer player = (EntityPlayer)playerObj;
                 if(!player.capabilities.isCreativeMode || testOnCreative) {
@@ -173,13 +179,13 @@ public class MobEventBase {
 	                // Event Mob Spawning:
 	                int tickOffset = 0;
 	                for(SpawnTypeBase spawnType : this.spawners) {
-	                    spawnType.spawnMobs(this.serverTicks - tickOffset, serverWorld, x, y, z);
+	                    spawnType.spawnMobs(this.serverTicks - tickOffset, this.serverWorld, x, y, z);
 	                    tickOffset += 7;
 	                }
                 }
             }
         }
-
+        
         this.serverTicks++;
 
         // Stop Event When Time Runs Out:
@@ -209,8 +215,8 @@ public class MobEventBase {
     @SideOnly(Side.CLIENT)
 	public void onGUIUpdate(GuiOverlay gui, int sWidth, int sHeight) {
     	if(LycanitesMobs.proxy.getClientPlayer().capabilities.isCreativeMode && !testOnCreative) return;
-    	if(this.world == null) return;
-    	if(!this.world.isRemote) return;
+    	if(this.clientWorld == null) return;
+    	if(!this.clientWorld.isRemote) return;
     	
 		int introTime = 12 * 20;
         if(this.clientTicks > introTime) return;

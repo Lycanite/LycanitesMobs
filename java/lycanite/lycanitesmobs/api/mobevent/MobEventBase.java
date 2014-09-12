@@ -13,7 +13,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 public class MobEventBase {
-	public static boolean testOnCreative = true;
+	public static boolean testOnCreative = false;
 	
 	// Properties:
 	public String name = "mobevent";

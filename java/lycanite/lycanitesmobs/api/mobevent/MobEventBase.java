@@ -3,25 +3,17 @@ package lycanite.lycanitesmobs.api.mobevent;
 import java.util.ArrayList;
 import java.util.List;
 
-import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
-import lycanite.lycanitesmobs.api.gui.GuiOverlay;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 public class MobEventBase {
-	public static boolean testOnCreative = false;
+	public static boolean testOnCreative = true;
 	
 	// Properties:
 	public String name = "mobevent";

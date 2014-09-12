@@ -217,7 +217,7 @@ public class MobEventManager {
         // Client Side:
         if(this.clientMobEvent != null) {
             if(LycanitesMobs.proxy.getClientPlayer() != null)
-    	    this.clientMobEvent.onFinish(LycanitesMobs.proxy.getClientPlayer());
+            	this.clientMobEvent.onFinish(LycanitesMobs.proxy.getClientPlayer());
             this.clientMobEvent = null;
         }
     }
@@ -249,6 +249,8 @@ public class MobEventManager {
         // Client Side:
         if(world.isRemote) {
             this.clientMobEvent = mobEvent.getClientEvent(world);
+            if(LycanitesMobs.proxy.getClientPlayer() != null)
+            	this.clientMobEvent.onStart(world, LycanitesMobs.proxy.getClientPlayer());
         }
     }
 

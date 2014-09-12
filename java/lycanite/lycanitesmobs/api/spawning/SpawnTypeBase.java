@@ -29,6 +29,9 @@ public class SpawnTypeBase {
 	/** A static list that contains a string mapping of all spawn types. These should always be all upper case. **/
 	public static Map<String, SpawnTypeBase> spawnTypeMap = new HashMap<String, SpawnTypeBase>();
 	
+	/** A minimum distance from the player that some spawners should enforce. **/
+	public static int rangeMin = 10;
+	
 	// ========== Spawn Type Properties ==========
 	/** The name of this spawn type. This should be the same as the name used in the spawnTypes mapping. Should be all upper case. **/
 	public String typeName;
@@ -75,6 +78,9 @@ public class SpawnTypeBase {
 	
 	/** If true, this type will not check if a mob is allowed to spawn in the target light level. **/
 	public boolean ignoreLight = true;
+	
+	/** If true, mobs spawned by this mob wont check any conditions at all. **/
+	public boolean ignoreRangeMin = false;
 	
 	/** If true, mobs spawned by this mob wont check any conditions at all. **/
 	public boolean ignoreMobConditions = false;
@@ -580,43 +586,11 @@ public class SpawnTypeBase {
      */
     public ChunkPosition getRandomLandCoord(World world, ChunkPosition originPos, int range) {
         int radius = Math.round(range * 0.5F);
-        int x = originPos.chunkPosX - radius;
-        int minY = originPos.chunkPosY - radius;
-        int maxY = originPos.chunkPosY + radius;
-        int z = originPos.chunkPosZ - radius;
-
-        x += world.rand.nextInt(range);
-        z += world.rand.nextInt(range);
-
-        List<Integer> yCoordsLow = new ArrayList<Integer>();
-        List<Integer> yCoordsHigh = new ArrayList<Integer>();
-        for(int nextY = minY; nextY <= maxY; nextY++) {
-            Block block = world.getBlock(x, nextY, z);
-            if(block != null && world.isSideSolid(x, nextY, z, ForgeDirection.UP)) {
-                if(world.canBlockSeeTheSky(x, nextY, z)) {
-                    if(nextY + 1 <= 64)
-                        yCoordsLow.add(nextY + 1);
-                    else
-                        yCoordsHigh.add(nextY + 1);
-                    break;
-                }
-
-                if(this.doesCoordHaveSpace(world, x, nextY + 1, z)) {
-                    if(nextY + 1 <= 64)
-                        yCoordsLow.add(nextY + 1);
-                    else
-                        yCoordsHigh.add(nextY + 1);
-                    nextY += 2;
-                }
-            }
-        }
-        int y = -1;
-        if(yCoordsHigh.size() > 0 && world.rand.nextFloat() > 0.25F)
-            y = yCoordsHigh.get(world.rand.nextInt(yCoordsHigh.size() - 1));
-        else if(yCoordsLow.size() > 0)
-            y = yCoordsLow.get(world.rand.nextInt(yCoordsHigh.size() - 1));
-
-        return y > 0 ? new ChunkPosition(x, y, z) : null;
+        int[] xz = this.getRandomXZCoord(world, originPos.chunkPosX, originPos.chunkPosZ, rangeMin, range);
+        int x = xz[0];
+        int z = xz[1];
+        int y = this.getRandomYCoord(world, x, originPos.chunkPosY, z, rangeMin, range, true);
+        return y > -1 ? new ChunkPosition(x, y, z) : null;
     }
 
 
@@ -630,25 +604,96 @@ public class SpawnTypeBase {
      */
     public ChunkPosition getRandomSkyCoord(World world, ChunkPosition originPos, int range) {
         int radius = Math.round(range * 0.5F);
-        int x = originPos.chunkPosX - radius;
-        int minY = originPos.chunkPosY - radius;
-        int maxY = originPos.chunkPosY + radius;
-        int z = originPos.chunkPosZ - radius;
+        int[] xz = this.getRandomXZCoord(world, originPos.chunkPosX, originPos.chunkPosZ, rangeMin, range);
+        int x = xz[0];
+        int z = xz[1];
+        int y = this.getRandomYCoord(world, x, originPos.chunkPosY, z, rangeMin, range, false);
+        return y > -1 ? new ChunkPosition(x, y, z) : null;
+    }
 
-        x += world.rand.nextInt(range);
-        z += world.rand.nextInt(range);
 
+    // ==================================================
+    //               Get Random XZ Coord
+    // ==================================================
+    /**
+     * Gets a random XZ position from the provided XZ position using the provided range and range max radiuses.
+     * @param world The world that the coordinates are being selected in, mainly for getting Random.
+     * @param originX The origin x position.
+     * @param originZ The origin z position.
+     * @param rangeMax The maximum range from the origin allowed.
+     * @param rangeMin The minimum range from the origin allowed.
+     * @return An integer array containing two ints the X and Z position.
+     */
+    public int[] getRandomXZCoord(World world, int originX, int originZ, int rangeMin, int rangeMax) {
+    	float xScale = world.rand.nextFloat();
+    	float zScale = world.rand.nextFloat();
+    	float minScale = (float)(rangeMin) / (float)(rangeMin);
+    	
+    	if(xScale + zScale < minScale * 2) {
+    		float xShare = world.rand.nextFloat();
+    		float zShare = 1.0F - xShare;
+    		xScale += minScale * xShare;
+    		zScale += minScale * zShare;
+    	}
+    	
+    	int x = Math.round(rangeMax * xScale);
+    	int z = Math.round(rangeMax * zScale);
+    	
+    	if(world.rand.nextBoolean())
+    		x = originX + x;
+    	else
+    		x = originX - x;
+    	
+    	if(world.rand.nextBoolean())
+    		z = originZ + z;
+    	else
+    		z = originZ - z;
+    	
+    	return new int[] {x, z};
+    }
+
+
+    // ==================================================
+    //               Get Random Y Coord
+    // ==================================================
+    /**
+     * Gets a random Y position from the provided XYZ position using the provided range and range max radiuses.
+     * @param world The world that the coordinates are being selected in, mainly for getting Random.
+     * @param originX The origin x position.
+     * @param originY The origin y position.
+     * @param originZ The origin z position.
+     * @param rangeMax The maximum range from the origin allowed.
+     * @param rangeMin The minimum range from the origin allowed.
+     * @param solid If true, this will search for a block with a solid top (land), else it will search for air (sky).
+     * @return The y position, -1 if a valid position could not be found.
+     */
+    public int getRandomYCoord(World world, int originX, int originY, int originZ, int rangeMin, int rangeMax, boolean solid) {
+    	int minY = originY - rangeMax;
+        int maxY = originY + rangeMax;
         List<Integer> yCoordsLow = new ArrayList<Integer>();
         List<Integer> yCoordsHigh = new ArrayList<Integer>();
-        int skyCoord = -1;
         for(int nextY = minY; nextY <= maxY; nextY++) {
-            Block block = world.getBlock(x, nextY, z);
-            if(block != null && block.isAir(world, x, nextY, z)) {
-                if(world.canBlockSeeTheSky(x, nextY, z)) {
-                    skyCoord = nextY + 1;
+        	
+            Block block = world.getBlock(originX, nextY, originZ);
+            if(block != null && (
+            		(!solid && block.isAir(world, originX, nextY, originZ)) ||
+            		(solid && world.isSideSolid(originX, nextY, originZ, ForgeDirection.UP))
+            )) {
+            	
+                if(world.canBlockSeeTheSky(originX, nextY, originZ)) {
+                	if(solid) {
+	                    int skyCoord = nextY;
+	                    int skyMax = world.getHeight() - 1 - skyCoord;
+	                    nextY += world.rand.nextInt(skyMax);
+                	}
+                    if(nextY + 1 <= 64)
+                        yCoordsLow.add(nextY + 1);
+                    else
+                        yCoordsHigh.add(nextY + 1);
                     break;
                 }
-                if(this.doesCoordHaveSpace(world, x, nextY + 1, z)) {
+                
+                if(this.doesCoordHaveSpace(world, originX, nextY + 1, originZ)) {
                     if(nextY + 1 <= 64)
                         yCoordsLow.add(nextY + 1);
                     else
@@ -657,13 +702,22 @@ public class SpawnTypeBase {
                 }
             }
         }
+        
         int y = -1;
-        if(yCoordsHigh.size() > 0 && world.rand.nextFloat() > 0.25F)
-            y = yCoordsHigh.get(world.rand.nextInt(yCoordsHigh.size() - 1));
-        else if(yCoordsLow.size() > 0)
-            y = yCoordsLow.get(world.rand.nextInt(yCoordsHigh.size() - 1));
-
-        return y > 0 ? new ChunkPosition(x, y, z) : null;
+        if(yCoordsHigh.size() > 0 && (yCoordsLow.size() <= 0 || world.rand.nextFloat() > 0.25F)) {
+        	if(yCoordsHigh.size() == 1)
+        		y = yCoordsHigh.get(0);
+        	else
+        		y = yCoordsHigh.get(world.rand.nextInt(yCoordsHigh.size() - 1));
+        }
+        else if(yCoordsLow.size() > 0) {
+        	if(yCoordsLow.size() == 1)
+        		y = yCoordsLow.get(0);
+        	else
+            	y = yCoordsLow.get(world.rand.nextInt(yCoordsLow.size() - 1));
+        }
+        
+        return y;
     }
 
 

@@ -13,6 +13,7 @@ import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBlock;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
 import lycanite.lycanitesmobs.mountainmobs.dispenser.DispenserBehaviorBoulderBlast;
 import lycanite.lycanitesmobs.mountainmobs.entity.EntityBoulderBlast;
 import lycanite.lycanitesmobs.mountainmobs.entity.EntityGeonach;
@@ -155,7 +156,7 @@ public class MountainMobs {
 		// ========== Mob Events ==========
         if(MobInfo.getFromName("geonach") != null) {
 			MobEventBase mobEvent = new MobEventBoulderDash("boulderdash", this.group);
-			SpawnTypeBase eventSpawner = new SpawnTypeBlock("boulderdash")
+			SpawnTypeBase eventSpawner = new SpawnTypeSky("boulderdash")
 	            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
 	        eventSpawner.materials = new Material[] {Material.air};
 	        eventSpawner.ignoreBiome = true;

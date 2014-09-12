@@ -1,18 +1,19 @@
 package lycanite.lycanitesmobs.api.spawning;
 
+import net.minecraft.world.ChunkPosition;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.world.ChunkPosition;
-import net.minecraft.world.World;
 
-
-public class SpawnTypeLand extends SpawnTypeBase {
+public class SpawnTypeSky extends SpawnTypeBase {
 
     // ==================================================
     //                     Constructor
     // ==================================================
-    public SpawnTypeLand(String typeName) {
+    public SpawnTypeSky(String typeName) {
         super(typeName);
     }
 
@@ -33,9 +34,9 @@ public class SpawnTypeLand extends SpawnTypeBase {
     	List<int[]> blockCoords = null;
         int range = this.getRange(world);
         ChunkPosition originPos = new ChunkPosition(x, y, z);
-
+        
         for(int i = 0; i < this.blockLimit; i++) {
-        	ChunkPosition chunkCoords = this.getRandomLandCoord(world, originPos, range);
+        	ChunkPosition chunkCoords = this.getRandomSkyCoord(world, originPos, range);
         	if(chunkCoords != null) {
         		if(blockCoords == null)
         			blockCoords = new ArrayList<int[]>();

@@ -15,6 +15,7 @@ import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBlock;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
 import lycanite.lycanitesmobs.demonmobs.block.BlockHellfire;
 import lycanite.lycanitesmobs.demonmobs.dispenser.DispenserBehaviorDemonicLightning;
 import lycanite.lycanitesmobs.demonmobs.dispenser.DispenserBehaviorDevilstar;
@@ -210,7 +211,7 @@ public class DemonMobs {
 		// ========== Mob Events ==========
         if(MobInfo.getFromName("nethersoul") != null) {
 			MobEventBase mobEvent = new MobEventHellsFury("hellsfury", this.group);
-			SpawnTypeBase eventSpawner = new SpawnTypeBlock("hellsfury")
+			SpawnTypeBase eventSpawner = new SpawnTypeSky("hellsfury")
 	            .setChance(1.0D).setBlockLimit(32).setMobLimit(5);
 	        eventSpawner.materials = new Material[] {Material.air};
 	        eventSpawner.ignoreBiome = true;

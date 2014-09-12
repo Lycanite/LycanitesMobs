@@ -15,6 +15,7 @@ import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBlock;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
 import lycanite.lycanitesmobs.arcticmobs.block.BlockFrostCloud;
 import lycanite.lycanitesmobs.arcticmobs.block.BlockFrostfire;
 import lycanite.lycanitesmobs.arcticmobs.block.BlockFrostweb;
@@ -208,7 +209,7 @@ public class ArcticMobs {
 		// ========== Mob Events ==========
         if(MobInfo.getFromName("reiver") != null) {
 			MobEventBase mobEvent = new MobEventSubZero("subzero", this.group);
-			SpawnTypeBase eventSpawner = new SpawnTypeBlock("subzero")
+			SpawnTypeBase eventSpawner = new SpawnTypeSky("subzero")
 	            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
 	        eventSpawner.materials = new Material[] {Material.air};
 	        eventSpawner.ignoreBiome = true;

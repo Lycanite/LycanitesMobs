@@ -6,7 +6,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.world.World;
 
-public class SpawnTypeStorm extends SpawnTypeBase {
+public class SpawnTypeStorm extends SpawnTypeSky {
 
     // ==================================================
     //                     Constructor
@@ -34,15 +34,6 @@ public class SpawnTypeStorm extends SpawnTypeBase {
             return false;
         return true;
     }
-
-
-    // ==================================================
-    //               Get Spawn Coordinates
-    // ==================================================
-    @Override
-    public List<int[]> getSpawnCoordinates(World world, int x, int y, int z) {
-        return this.searchForBlockCoords(world, x, y, z);
-    }
     
     
     // ==================================================
@@ -53,7 +44,7 @@ public class SpawnTypeStorm extends SpawnTypeBase {
      * @param x X position to check.
      * @param y Y position to check.
      * @param z Z position to check.
-     * @return Returns true if it is a valid coordinate so that it can be added to th elist.
+     * @return Returns true if it is a valid coordinate so that it can be added to the list.
      */
     public boolean isValidCoord(World world, int x, int y, int z) {
     	if(!world.canLightningStrikeAt(x, y, z))
@@ -72,7 +63,7 @@ public class SpawnTypeStorm extends SpawnTypeBase {
      */
     @Override
     public void spawnEntity(World world, EntityLiving entityLiving) {
-    	if(entityLiving.getRNG().nextFloat() >= 0.9F) {
+    	if(entityLiving.getRNG().nextFloat() >= 0.5F) {
 	    	EntityLightningBolt lightning = new EntityLightningBolt(world, entityLiving.posX, entityLiving.posY, entityLiving.posZ);
 	    	world.spawnEntityInWorld(lightning);
     	}

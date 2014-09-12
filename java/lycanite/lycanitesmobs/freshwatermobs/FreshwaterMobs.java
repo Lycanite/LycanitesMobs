@@ -10,6 +10,7 @@ import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBlock;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
 import lycanite.lycanitesmobs.freshwatermobs.dispenser.DispenserBehaviorAquaPulse;
 import lycanite.lycanitesmobs.freshwatermobs.entity.EntityAquaPulse;
 import lycanite.lycanitesmobs.freshwatermobs.entity.EntityJengu;
@@ -119,7 +120,7 @@ public class FreshwaterMobs {
 		// ========== Mob Events ==========
         if(MobInfo.getFromName("jengu") != null || MobInfo.getFromName("zephyr") != null) {
 			MobEventBase mobEvent = new MobEventTsunami("tsunami", this.group);
-			SpawnTypeBase eventSpawner = new SpawnTypeBlock("tsunami")
+			SpawnTypeBase eventSpawner = new SpawnTypeSky("tsunami")
 	            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
 	        eventSpawner.materials = new Material[] {Material.air};
 	        eventSpawner.ignoreBiome = true;

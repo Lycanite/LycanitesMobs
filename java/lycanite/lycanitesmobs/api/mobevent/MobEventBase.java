@@ -31,13 +31,8 @@ public class MobEventBase {
 
     // Properties:
     public int duration = 60 * 20;
-    public int serverTicks = 0;
-    public int clientTicks = 0;
-    public World serverWorld;
-    public World clientWorld;
-    
-    // Client:
-    public MobEventClient clientEvent;
+    public int ticks = 0;
+    public World world;
     
 	
     // ==================================================
@@ -117,23 +112,11 @@ public class MobEventBase {
 	public void onStart(World world) {
 		LycanitesMobs.printInfo("", "Mob Event Started: " + this.getTitle());
 		
-		if(!world.isRemote) {
-			this.serverTicks = 0;
-			this.serverWorld = world;
-		}
-		else {
-			this.clientTicks = 0;
-			this.clientWorld = world;
-		}
-		
-		// Client Side:
-        if(this.clientWorld != null && this.clientWorld.isRemote) {
-        	if(this.clientEvent == null)
-        		this.clientEvent = new MobEventClient(this);
-        	EntityPlayer player = LycanitesMobs.proxy.getClientPlayer();
-        	if(player != null)
-        		this.clientEvent.onStart(this.clientWorld, player);
-        }
+		this.world = world;
+        this.ticks = 0;
+
+        if(world.isRemote)
+            LycanitesMobs.printWarning("", "Created a MobEventBase with a client side world, things are going to get strange!");
 	}
 	
 	
@@ -142,33 +125,24 @@ public class MobEventBase {
     // ==================================================
 	public void onFinish() {
 		LycanitesMobs.printInfo("", "Mob Event Finished: " + this.getTitle());
-			
-		// Client Side:
-        if(this.clientWorld != null && this.clientWorld.isRemote) {
-        	if(this.clientEvent == null)
-        		this.clientEvent = new MobEventClient(this);
-        	EntityPlayer player = LycanitesMobs.proxy.getClientPlayer();
-        	if(player != null)
-        		this.clientEvent.onFinish(player);
-        }
 	}
 	
 	
     // ==================================================
     //                      Update
     // ==================================================
-	public void onServerUpdate() {
-		if(this.serverWorld == null) {
-			LycanitesMobs.printWarning("", "Mob Event is trying to update without a world object!");
+	public void onUpdate() {
+		if(this.world == null) {
+			LycanitesMobs.printWarning("", "MobEventBase was trying to update without a world object, stopped!");
 			return;
 		}
-		else if(this.serverWorld.isRemote) {
-			LycanitesMobs.printWarning("", "Mob Event is trying to update with a client side world!");
+		else if(this.world.isRemote) {
+			LycanitesMobs.printWarning("", "MobEventBase was trying to update with a client side world, stopped!");
 			return;
 		}
 
         // Spawn Near Players:
-        for(Object playerObj : this.serverWorld.playerEntities) {
+        for(Object playerObj : this.world.playerEntities) {
             if(playerObj instanceof EntityPlayer) {
                 EntityPlayer player = (EntityPlayer)playerObj;
                 if(!player.capabilities.isCreativeMode || testOnCreative) {
@@ -179,78 +153,32 @@ public class MobEventBase {
 	                // Event Mob Spawning:
 	                int tickOffset = 0;
 	                for(SpawnTypeBase spawnType : this.spawners) {
-	                    spawnType.spawnMobs(this.serverTicks - tickOffset, this.serverWorld, x, y, z);
+	                    spawnType.spawnMobs(this.ticks - tickOffset, this.world, x, y, z);
 	                    tickOffset += 7;
 	                }
                 }
             }
         }
         
-        this.serverTicks++;
+        this.ticks++;
 
         // Stop Event When Time Runs Out:
-        if(this.serverTicks > this.duration) {
+        if(this.ticks > this.duration) {
         	MobEventManager.instance.stopMobEvent();
         }
 	}
-	
-	
+
+
     // ==================================================
-    //                  Client Update
+    //                   Spawn Effects
     // ==================================================
-	public void onClientUpdate() {
-        this.clientTicks++;
-	}
+    public MobEventClient getClientEvent(World world) {
+        return new MobEventClient(this, world);
+    }
 	
 	
     // ==================================================
     //                   Spawn Effects
     // ==================================================
 	public void onSpawn(EntityLiving entity) {}
-	
-	
-    // ==================================================
-    //                       GUI
-    // ==================================================
-    @SideOnly(Side.CLIENT)
-	public void onGUIUpdate(GuiOverlay gui, int sWidth, int sHeight) {
-    	if(LycanitesMobs.proxy.getClientPlayer().capabilities.isCreativeMode && !testOnCreative) return;
-    	if(this.clientWorld == null) return;
-    	if(!this.clientWorld.isRemote) return;
-    	
-		int introTime = 12 * 20;
-        if(this.clientTicks > introTime) return;
-        int startTime = 2 * 20;
-        int stopTime = 4 * 20;
-        float animation = 1.0F;
-
-        if(this.clientTicks < startTime)
-            animation = (float)this.clientTicks / (float)startTime;
-        else if(this.clientTicks > introTime - stopTime)
-            animation = ((float)(introTime - this.clientTicks) / (float)stopTime);
-
-        int width = 256;
-        int height = 256;
-        int x = (sWidth / 2) - (width / 2);
-        int y = (sHeight / 2) - (height / 2);
-        int u = width;
-        int v = height;
-        x += 3 - (this.clientTicks % 6); 
-        y += 2 - (this.clientTicks % 4); 
-        
-        GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_COLOR_MATERIAL);
-		GL11.glEnable(GL11.GL_BLEND);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, animation);
-        gui.mc.getTextureManager().bindTexture(this.getTexture());
-        gui.drawTexturedModalRect(x, y, u, v, width, height);
-        GL11.glPopMatrix();
-	}
-
-    @SideOnly(Side.CLIENT)
-    public ResourceLocation getTexture() {
-        if(AssetManager.getTexture("guimobevent" + this.name) == null)
-            AssetManager.addTexture("guimobevent" + this.name, this.group, "textures/mobevents/" + this.name.toLowerCase() + ".png");
-        return AssetManager.getTexture("guimobevent" + this.name);
-    }
 }

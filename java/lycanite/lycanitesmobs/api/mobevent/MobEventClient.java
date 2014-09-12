@@ -1,6 +1,12 @@
 package lycanite.lycanitesmobs.api.mobevent;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import lycanite.lycanitesmobs.AssetManager;
+import lycanite.lycanitesmobs.LycanitesMobs;
+import lycanite.lycanitesmobs.api.gui.GuiOverlay;
+import lycanite.lycanitesmobs.api.info.GroupInfo;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.entity.player.EntityPlayer;
@@ -8,18 +14,30 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import org.lwjgl.opengl.GL11;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MobEventClient {
 
+    // Properties:
 	public MobEventBase mobEvent;
+
+    // Properties:
+    public int ticks = 0;
+    public World world;
     public PositionedSoundRecord sound;
     
     
 	// ==================================================
     //                     Constructor
     // ==================================================
-	public MobEventClient(MobEventBase mobEvent) {
+	public MobEventClient(MobEventBase mobEvent, World world) {
 		this.mobEvent = mobEvent;
+        this.world = world;
+        if(!world.isRemote)
+            LycanitesMobs.printWarning("", "Created a MobEventClient with a server side world, things are going to get weird!");
 	}
 	
 	
@@ -48,4 +66,58 @@ public class MobEventClient {
 		eventMessage = eventMessage.replace("%event%", this.mobEvent.getTitle());
 		player.addChatMessage(new ChatComponentText(eventMessage));
 	}
+
+
+    // ==================================================
+    //                      Update
+    // ==================================================
+    public void onUpdate() {
+        this.ticks++;
+    }
+
+
+    // ==================================================
+    //                       GUI
+    // ==================================================
+    @SideOnly(Side.CLIENT)
+    public void onGUIUpdate(GuiOverlay gui, int sWidth, int sHeight) {
+        if(LycanitesMobs.proxy.getClientPlayer().capabilities.isCreativeMode && !MobEventBase.testOnCreative) return;
+        if(this.world == null) return;
+        if(!this.world.isRemote) return;
+
+        int introTime = 12 * 20;
+        if(this.ticks > introTime) return;
+        int startTime = 2 * 20;
+        int stopTime = 4 * 20;
+        float animation = 1.0F;
+
+        if(this.ticks < startTime)
+            animation = (float)this.ticks / (float)startTime;
+        else if(this.ticks > introTime - stopTime)
+            animation = ((float)(introTime - this.ticks) / (float)stopTime);
+
+        int width = 256;
+        int height = 256;
+        int x = (sWidth / 2) - (width / 2);
+        int y = (sHeight / 2) - (height / 2);
+        int u = width;
+        int v = height;
+        x += 3 - (this.ticks % 6);
+        y += 2 - (this.ticks % 4);
+
+        GL11.glPushMatrix();
+        GL11.glEnable(GL11.GL_COLOR_MATERIAL);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, animation);
+        gui.mc.getTextureManager().bindTexture(this.getTexture());
+        gui.drawTexturedModalRect(x, y, u, v, width, height);
+        GL11.glPopMatrix();
+    }
+
+    @SideOnly(Side.CLIENT)
+    public ResourceLocation getTexture() {
+        if(AssetManager.getTexture("guimobevent" + this.mobEvent.name) == null)
+            AssetManager.addTexture("guimobevent" + this.mobEvent.name, this.mobEvent.group, "textures/mobevents/" + this.mobEvent.name.toLowerCase() + ".png");
+        return AssetManager.getTexture("guimobevent" + this.mobEvent.name);
+    }
 }

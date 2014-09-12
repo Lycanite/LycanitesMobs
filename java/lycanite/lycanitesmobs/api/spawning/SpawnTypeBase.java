@@ -20,6 +20,7 @@ import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.ForgeEventFactory;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 
@@ -568,6 +569,123 @@ public class SpawnTypeBase {
         
         return blockCoords;
     }
+
+
+    // ==================================================
+    //            Get Random Land Spawn Coord
+    // ==================================================
+    /** Gets a random spawn position from a the provided origin chunk position.
+     * @param world The world to search for coordinates in.
+     * @return Returns a ChunkPosition or null if no coord was found.
+     */
+    public ChunkPosition getRandomLandCoord(World world, ChunkPosition originPos, int range) {
+        int radius = Math.round(range * 0.5F);
+        int x = originPos.chunkPosX - radius;
+        int minY = originPos.chunkPosY - radius;
+        int maxY = originPos.chunkPosY + radius;
+        int z = originPos.chunkPosZ - radius;
+
+        x += world.rand.nextInt(range);
+        z += world.rand.nextInt(range);
+
+        List<Integer> yCoordsLow = new ArrayList<Integer>();
+        List<Integer> yCoordsHigh = new ArrayList<Integer>();
+        for(int nextY = minY; nextY <= maxY; nextY++) {
+            Block block = world.getBlock(x, nextY, z);
+            if(block != null && world.isSideSolid(x, nextY, z, ForgeDirection.UP)) {
+                if(world.canBlockSeeTheSky(x, nextY, z)) {
+                    if(nextY + 1 <= 64)
+                        yCoordsLow.add(nextY + 1);
+                    else
+                        yCoordsHigh.add(nextY + 1);
+                    break;
+                }
+
+                if(this.doesCoordHaveSpace(world, x, nextY + 1, z)) {
+                    if(nextY + 1 <= 64)
+                        yCoordsLow.add(nextY + 1);
+                    else
+                        yCoordsHigh.add(nextY + 1);
+                    nextY += 2;
+                }
+            }
+        }
+        int y = -1;
+        if(yCoordsHigh.size() > 0 && world.rand.nextFloat() > 0.25F)
+            y = yCoordsHigh.get(world.rand.nextInt(yCoordsHigh.size() - 1));
+        else if(yCoordsLow.size() > 0)
+            y = yCoordsLow.get(world.rand.nextInt(yCoordsHigh.size() - 1));
+
+        return y > 0 ? new ChunkPosition(x, y, z) : null;
+    }
+
+
+    // ==================================================
+    //            Get Random Sky Spawn Coord
+    // ==================================================
+    /** Gets a random sky spawn position from a the provided origin chunk position.
+     * This checks for open air spaces.
+     * @param world The world to search for coordinates in.
+     * @return Returns a ChunkPosition or null if no coord was found.
+     */
+    public ChunkPosition getRandomSkyCoord(World world, ChunkPosition originPos, int range) {
+        int radius = Math.round(range * 0.5F);
+        int x = originPos.chunkPosX - radius;
+        int minY = originPos.chunkPosY - radius;
+        int maxY = originPos.chunkPosY + radius;
+        int z = originPos.chunkPosZ - radius;
+
+        x += world.rand.nextInt(range);
+        z += world.rand.nextInt(range);
+
+        List<Integer> yCoordsLow = new ArrayList<Integer>();
+        List<Integer> yCoordsHigh = new ArrayList<Integer>();
+        int skyCoord = -1;
+        for(int nextY = minY; nextY <= maxY; nextY++) {
+            Block block = world.getBlock(x, nextY, z);
+            if(block != null && block.isAir(world, x, nextY, z)) {
+                if(world.canBlockSeeTheSky(x, nextY, z)) {
+                    skyCoord = nextY + 1;
+                    break;
+                }
+                if(this.doesCoordHaveSpace(world, x, nextY + 1, z)) {
+                    if(nextY + 1 <= 64)
+                        yCoordsLow.add(nextY + 1);
+                    else
+                        yCoordsHigh.add(nextY + 1);
+                    nextY += 2;
+                }
+            }
+        }
+        int y = -1;
+        if(yCoordsHigh.size() > 0 && world.rand.nextFloat() > 0.25F)
+            y = yCoordsHigh.get(world.rand.nextInt(yCoordsHigh.size() - 1));
+        else if(yCoordsLow.size() > 0)
+            y = yCoordsLow.get(world.rand.nextInt(yCoordsHigh.size() - 1));
+
+        return y > 0 ? new ChunkPosition(x, y, z) : null;
+    }
+
+
+    // ==================================================
+    //                Does Coord Have Space
+    // ==================================================
+    /**
+     * Returns true if the provided coordinate has space to spawn an entity at it.
+     * This works by checking if it is an air block and if the block above is also an air block.
+     * @return True if there is space else false.
+     */
+    public boolean doesCoordHaveSpace(World world, int x, int y, int z) {
+        Block feet = world.getBlock(x, y, z);
+        if(feet == null) return false;
+        if(!feet.isAir(world, x, y, z)) return false;
+
+        Block head = world.getBlock(x, y + 1, z);
+        if(head == null) return false;
+        if(!head.isAir(world, x, y, z)) return false;
+
+        return true;
+    }
     
     
     // ==================================================
@@ -577,7 +695,7 @@ public class SpawnTypeBase {
      * @param world The world to search for coordinates in.
      * @return Returns a ChunkPosition.
      */
-    public ChunkPosition getRandomLandCoord(World world, Chunk chunk, int range) {
+    public ChunkPosition getRandomChunkCoord(World world, Chunk chunk, int range) {
     	range = Math.min(range, 16);
         int x = chunk.xPosition + world.rand.nextInt(range);
         int z = chunk.zPosition + world.rand.nextInt(range);

@@ -14,6 +14,7 @@ import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBlock;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
 import lycanite.lycanitesmobs.infernomobs.block.BlockFluidPureLava;
 import lycanite.lycanitesmobs.infernomobs.block.BlockScorchfire;
 import lycanite.lycanitesmobs.infernomobs.dispenser.DispenserBehaviorEmber;
@@ -176,7 +177,7 @@ public class InfernoMobs {
 		// ========== Mob Events ==========
         if(MobInfo.getFromName("cinder") != null) {
 			MobEventBase mobEvent = new MobEventCinderfall("cinderfall", this.group);
-			SpawnTypeBase eventSpawner = new SpawnTypeBlock("cinderfall")
+			SpawnTypeBase eventSpawner = new SpawnTypeSky("cinderfall")
 	            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
 	        eventSpawner.materials = new Material[] {Material.air};
 	        eventSpawner.ignoreBiome = true;

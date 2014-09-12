@@ -14,6 +14,7 @@ import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBlock;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
 import lycanite.lycanitesmobs.forestmobs.dispenser.DispenserBehaviorLifeDrain;
 import lycanite.lycanitesmobs.forestmobs.entity.EntityArisaur;
 import lycanite.lycanitesmobs.forestmobs.entity.EntityEnt;
@@ -168,7 +169,7 @@ public class ForestMobs {
 		// ========== Mob Events ==========
         if(MobInfo.getFromName("spriggan") != null) {
 			MobEventBase mobEvent = new MobEventRootRiot("rootriot", this.group);
-			SpawnTypeBase eventSpawner = new SpawnTypeBlock("rootriot")
+			SpawnTypeBase eventSpawner = new SpawnTypeSky("rootriot")
 	            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
 	        eventSpawner.materials = new Material[] {Material.air};
 	        eventSpawner.ignoreBiome = true;

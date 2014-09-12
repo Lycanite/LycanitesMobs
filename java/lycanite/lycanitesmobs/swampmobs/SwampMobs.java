@@ -15,6 +15,7 @@ import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBlock;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
 import lycanite.lycanitesmobs.plainsmobs.mobevent.MobEventWindStorm;
 import lycanite.lycanitesmobs.swampmobs.block.BlockPoisonCloud;
 import lycanite.lycanitesmobs.swampmobs.dispenser.DispenserBehaviorPoisonRay;
@@ -199,7 +200,7 @@ public class SwampMobs {
 		// ========== Mob Events ==========
         if(MobInfo.getFromName("remobra") != null) {
 			MobEventBase mobEvent = new MobEventWindStorm("wingedvenom", this.group);
-			SpawnTypeBase eventSpawner = new SpawnTypeBlock("wingedvenom")
+			SpawnTypeBase eventSpawner = new SpawnTypeSky("wingedvenom")
 	            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
 	        eventSpawner.materials = new Material[] {Material.air};
 	        eventSpawner.ignoreBiome = true;

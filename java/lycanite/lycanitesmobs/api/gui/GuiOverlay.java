@@ -50,8 +50,8 @@ public class GuiOverlay extends Gui {
 	      return;
 
         // ========== Mob Events Title ==========
-        if(MobEventManager.instance.activeMobEvent != null)
-            MobEventManager.instance.activeMobEvent.onGUIUpdate(this, sWidth, sHeight);
+        if(MobEventManager.instance.clientMobEvent != null)
+            MobEventManager.instance.clientMobEvent.onGUIUpdate(this, sWidth, sHeight);
 		
 		// ========== Summoning Focus Bar ==========
         ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer((EntityPlayer)this.mc.thePlayer);

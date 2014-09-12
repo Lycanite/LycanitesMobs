@@ -14,6 +14,7 @@ import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBlock;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
 import lycanite.lycanitesmobs.plainsmobs.entity.EntityKobold;
 import lycanite.lycanitesmobs.plainsmobs.entity.EntityMaka;
 import lycanite.lycanitesmobs.plainsmobs.entity.EntityMakaAlpha;
@@ -168,7 +169,7 @@ public class PlainsMobs {
 		// ========== Mob Events ==========
         if(MobInfo.getFromName("roc") != null) {
 			MobEventBase mobEvent = new MobEventWindStorm("windstorm", this.group);
-			SpawnTypeBase eventSpawner = new SpawnTypeBlock("windstorm")
+			SpawnTypeBase eventSpawner = new SpawnTypeSky("windstorm")
 	            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
 	        eventSpawner.materials = new Material[] {Material.air};
 	        eventSpawner.ignoreBiome = true;

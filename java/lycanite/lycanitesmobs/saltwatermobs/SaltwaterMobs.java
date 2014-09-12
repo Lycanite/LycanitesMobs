@@ -12,6 +12,7 @@ import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBlock;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
 import lycanite.lycanitesmobs.saltwatermobs.entity.EntityAbtu;
 import lycanite.lycanitesmobs.saltwatermobs.entity.EntityIka;
 import lycanite.lycanitesmobs.saltwatermobs.entity.EntityLacedon;
@@ -151,7 +152,7 @@ public class SaltwaterMobs {
 		// ========== Mob Events ==========
         if(MobInfo.getFromName("raiko") != null) {
 			MobEventBase mobEvent = new MobEventSeaStorm("seastorm", this.group);
-			SpawnTypeBase eventSpawner = new SpawnTypeBlock("seastorm")
+			SpawnTypeBase eventSpawner = new SpawnTypeSky("seastorm")
 	            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
 	        eventSpawner.materials = new Material[] {Material.air};
 	        eventSpawner.ignoreBiome = true;

@@ -67,10 +67,10 @@ public class ExtendedWorld extends WorldSavedData {
     // ==================================================
 	public void init() {
 		// Start Saved Event:
-		if(!this.world.isRemote && !"".equals(this.mobEventType) && MobEventManager.instance.activeMobEvent == null) {
-			MobEventManager.instance.startMobEvent(this.mobEventType, this.world, this);
-			if(MobEventManager.instance.activeMobEvent != null)
-				MobEventManager.instance.activeMobEvent.serverTicks = this.mobEventActiveTime;
+		if(!this.world.isRemote && !"".equals(this.mobEventType) && MobEventManager.instance.serverMobEvent == null) {
+			MobEventManager.instance.startMobEvent(this.mobEventType, this.world);
+			if(MobEventManager.instance.serverMobEvent != null)
+				MobEventManager.instance.serverMobEvent.ticks = this.mobEventActiveTime;
 		}
 	}
 	

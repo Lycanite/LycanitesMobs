@@ -30,10 +30,10 @@ public class ModelAspid extends ModelCustomObj {
     	// Set Rotation Centers:
     	setPartCenter("head", 0F, 1.7F, 0.8F);
     	setPartCenter("body", 0F, 1.7F, 0.8F);
-    	setPartCenter("leftarm", 0.5F, 1.5F, 0.6F);
-    	setPartCenter("rightarm", -0.5F, 1.5F, 0.6F);
-    	setPartCenter("leftleg", 0.6F, 1.15F, -0.3F);
-    	setPartCenter("rightleg", -0.6F, 1.15F, -0.3F);
+    	setPartCenter("armleft", 0.5F, 1.5F, 0.6F);
+    	setPartCenter("armright", -0.5F, 1.5F, 0.6F);
+    	setPartCenter("legleft", 0.6F, 1.15F, -0.3F);
+    	setPartCenter("legright", -0.6F, 1.15F, -0.3F);
     	
     	// Trophy:
         this.trophyScale = 1.0F;
@@ -61,27 +61,27 @@ public class ModelAspid extends ModelCustomObj {
     	float rotZ = 0F;
     	
     	// Idle:
-    	if(partName.equals("leftarm")) {
+    	if(partName.equals("armleft")) {
 	        rotZ -= Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F + 0.05F);
 	        rotX -= Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
     	}
-    	if(partName.equals("rightarm")) {
+    	if(partName.equals("armright")) {
 	        rotZ += Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F + 0.05F);
 	        rotX += Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
     	}
     	
     	// Walking:
     	float walkSwing = 0.6F;
-    	if(partName.equals("rightarm") || partName.equals("leftleg")) {
+    	if(partName.equals("armright") || partName.equals("legleft")) {
     		rotX += Math.toDegrees(MathHelper.cos(time * 0.6662F + (float)Math.PI) * walkSwing * distance);
     	}
-    	if(partName.equals("leftarm") || partName.equals("rightleg")) {
+    	if(partName.equals("armleft") || partName.equals("legright")) {
     		rotX += Math.toDegrees(MathHelper.cos(time * 0.6662F) * walkSwing * distance);
     	}
 		
 		// Attack:
 		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
-	    	if(partName.equals("leftarm") || partName.equals("rightarm"))
+	    	if(partName.equals("armleft") || partName.equals("armright"))
 	    		rotY -= 15F;
 		}
 		

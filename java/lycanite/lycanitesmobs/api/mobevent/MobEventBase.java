@@ -22,7 +22,7 @@ public class MobEventBase {
     public GroupInfo group;
 
     // Properties:
-    public int duration = 60 * 20;
+    public int duration = 120 * 20;
     public int ticks = 0;
     public World world;
     
@@ -33,6 +33,8 @@ public class MobEventBase {
 	public MobEventBase(String name, GroupInfo group) {
 		this.name = name;
 		this.group = group;
+		ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "mobevents");
+		this.duration = config.getInt("Event Durations", this.name, 120 * 60);
 	}
     
 	

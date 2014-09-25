@@ -79,10 +79,10 @@ public class SpawnTypeBase {
 	/** If true, this type will not check if a mob is allowed to spawn in the target light level. **/
 	public boolean ignoreLight = true;
 	
-	/** If true, mobs spawned by this mob wont check any conditions at all. **/
+	/** If true, mobs spawned by this spawner wont check for other nearby mobs of its kind. **/
 	public boolean ignoreRangeMin = false;
 	
-	/** If true, mobs spawned by this mob wont check any conditions at all. **/
+	/** If true, mobs spawned by this spawner wont check any conditions at all except for space to fit in. **/
 	public boolean ignoreMobConditions = false;
 	
 	/** If true, this type will ignore the mob spawn event being cancelled. This only overrides the forge event. **/
@@ -343,13 +343,26 @@ public class SpawnTypeBase {
             if(entityLiving instanceof EntityCreatureBase)
                 ((EntityCreatureBase)entityLiving).spawnedFromType = this;
             Result canSpawn = ForgeEventFactory.canEntitySpawn(entityLiving, world, (float)coord[0], (float)coord[1], (float)coord[2]);
-            
+
+            // Event Overriding:
             if(canSpawn == Result.DENY && !this.forceSpawning) {
                 LycanitesMobs.printDebug("CustomSpawner", "Spawn Check Failed! Spawning blocked by Forge Event, this is caused another mod.");
                 continue;
             }
-            
-            if(canSpawn == Result.DEFAULT && !entityLiving.getCanSpawnHere() && !this.ignoreMobConditions) {
+
+            // Check if Valid Location
+            boolean validLocation = true;
+            if(!this.ignoreMobConditions)
+                validLocation = entityLiving.getCanSpawnHere();
+            else if(entityLiving instanceof EntityCreatureBase) {
+                LycanitesMobs.printDebug("CustomSpawner", "Ignoring all mob spawn checks except for collision...");
+                boolean ignoreLightTemp = this.ignoreLight;
+                this.ignoreLight = true;
+                validLocation = ((EntityCreatureBase)entityLiving).fixedSpawnCheck(world, coord[0], coord[1], coord[2]);
+                this.ignoreLight = ignoreLightTemp;
+            }
+
+            if(canSpawn == Result.DEFAULT && !validLocation) {
                 LycanitesMobs.printDebug("CustomSpawner", "Spawn Check Failed! The entity may not fit, there may be to many of it in the area, it may require specific lighting, etc.");
                 continue;
             }
@@ -819,6 +832,7 @@ public class SpawnTypeBase {
 
     public SpawnTypeBase setMobEvent(MobEventBase mobEvent) {
         this.mobEvent = mobEvent;
+        this.forceSpawning = mobEvent.forceSpawning;
         return this;
     }
 

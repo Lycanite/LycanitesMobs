@@ -1,0 +1,27 @@
+# Group Info
+saltwatermobs.name=海水クリーチャー
+saltwatermobs.description=主に水生のクリーチャー、彼らは深い海と海岸を歩き回る。 
+#
+# Mob Events
+mobevent.seastorm.name=海の嵐
+#
+# Entites
+entity.saltwatermobs.lacedon.name=水生グール
+entity.saltwatermobs.lacedon.description=海底まで人を引き込む危険な生き物。 雨が降っている場合地上に出ることができる
+entity.saltwatermobs.skylus.name=甲殻イカ
+entity.saltwatermobs.skylus.description=タフな殻に住むイカのような生き物。 殻を破ると、防御が減少する、攻撃力や移動速度が増加する。インクで目潰しをしてくる
+entity.saltwatermobs.ika.name=カメツムリ
+entity.saltwatermobs.ika.description=奇妙な海亀カタツムリのような生き物！ 少しの間しか地上で生き残ることができない、野菜で繁殖できる
+entity.saltwatermobs.abtu.name=アブトー
+entity.saltwatermobs.abtu.description=大きな歯を持つ魚！
+entity.saltwatermobs.raiko.name=ライコ
+entity.saltwatermobs.raiko.description==海に飛び込み獲物を捕まえることが知られている大きな海の鳥。 獲物を溺死させるため、体重効果を与える 
+#
+# Items
+item.saltwaterspawn.name=スポーン
+item.ikameatraw.name=カメツムリの生肉
+item.ikameatraw.description=魚臭いシーフード！ とても重い
+item.ikameatcooked.name=カメツムリのステーキ
+item.ikameatcooked.description=カリカリシーフード！ 調理前よりはるかに軽い
+item.seashellmaki.name=貝殻巻き
+item.seashellmaki.description=深い青色の海の味を注入！ 水中呼吸できるように

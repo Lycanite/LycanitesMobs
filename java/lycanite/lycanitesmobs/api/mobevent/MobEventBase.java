@@ -20,8 +20,9 @@ public class MobEventBase {
 	public int weight = 8;
     public List<SpawnTypeBase> spawners = new ArrayList<SpawnTypeBase>();
     public GroupInfo group;
+    public boolean forceSpawning = true;
 
-    // Properties:
+    // Active:
     public int duration = 120 * 20;
     public int ticks = 0;
     public World world;
@@ -35,6 +36,7 @@ public class MobEventBase {
 		this.group = group;
 		ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "mobevents");
 		this.duration = config.getInt("Event Durations", this.name, 120 * 60);
+        this.forceSpawning = config.getBool("Event Forced Spawning", this.name, this.forceSpawning);
 	}
     
 	

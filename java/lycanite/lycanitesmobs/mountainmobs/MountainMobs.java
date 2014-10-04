@@ -12,7 +12,6 @@ import lycanite.lycanitesmobs.api.item.ItemCustomFood;
 import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
-import lycanite.lycanitesmobs.api.spawning.SpawnTypeBlock;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
 import lycanite.lycanitesmobs.mountainmobs.dispenser.DispenserBehaviorBoulderBlast;
 import lycanite.lycanitesmobs.mountainmobs.entity.EntityBoulderBlast;
@@ -74,8 +73,10 @@ public class MountainMobs {
                 .setEggName("mountainegg");
 		group.loadFromConfig();
 
+		
 		// ========== Set Current Group ==========
 		ObjectManager.setCurrentGroup(group);
+		
 		
 		// ========== Create Items ==========
 		ObjectManager.addItem("mountainegg", new ItemMountainEgg());
@@ -93,6 +94,7 @@ public class MountainMobs {
 		
 		ObjectManager.addItem("peakskebab", new ItemCustomFood("peakskebab", group, 6, 0.7F).setPotionEffect(Potion.digSpeed.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("peakskebab"));
+		
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("mountainegg"), new DispenserBehaviorMobEggCustom());
@@ -130,6 +132,7 @@ public class MountainMobs {
 		// ========== Create Projectiles ==========
 		ObjectManager.addProjectile("boulderblast", EntityBoulderBlast.class, ObjectManager.getItem("boulderblastcharge"), new DispenserBehaviorBoulderBlast());
 		
+		
 		// ========== Register Models ==========
 		proxy.registerModels();
 	}
@@ -153,6 +156,7 @@ public class MountainMobs {
 		ObjectManager.setCurrentGroup(group);
 		ConfigBase config = ConfigBase.getConfig(group, "spawning");
 		
+		
 		// ========== Mob Events ==========
         if(MobInfo.getFromName("geonach") != null) {
 			MobEventBase mobEvent = new MobEventBoulderDash("boulderdash", this.group);
@@ -168,6 +172,7 @@ public class MountainMobs {
 			MobEventManager.instance.addWorldEvent(mobEvent);
         }
 		
+        
 		// ========== Remove Vanilla Spawns ==========
 		BiomeGenBase[] biomes = group.biomes;
 		if(group.controlVanillaSpawns) {
@@ -176,6 +181,7 @@ public class MountainMobs {
 			EntityRegistry.removeSpawn(EntityPig.class, EnumCreatureType.creature, biomes);
 			EntityRegistry.removeSpawn(EntitySheep.class, EnumCreatureType.creature, biomes);
 		}
+		
 		
 		// ========== Crafting ==========
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
@@ -193,6 +199,7 @@ public class MountainMobs {
 				Character.valueOf('C'), ObjectManager.getItem("boulderblastcharge"),
 				Character.valueOf('R'), Items.blaze_rod
 			}));
+		
 		
 		// ========== Smelting ==========
 		GameRegistry.addSmelting(ObjectManager.getItem("yalemeatraw"), new ItemStack(ObjectManager.getItem("yalemeatcooked"), 1), 0.5f);

@@ -10,8 +10,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class EntityVenomShot extends EntityProjectileBase {
 	
@@ -64,6 +62,8 @@ public class EntityVenomShot extends EntityProjectileBase {
     		return true;
     	if(ObjectManager.getBlock("PoisonCloud") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("PoisonCloud"))
     		return true;
+    	if(ObjectManager.getBlock("PoopCloud") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("PoopCloud"))
+    		return true;
     	if(ObjectManager.getBlock("FrostCloud") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("FrostCloud"))
     		return true;
     	if(ObjectManager.getBlock("Frostweb") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("Frostweb"))
@@ -101,18 +101,5 @@ public class EntityVenomShot extends EntityProjectileBase {
     @Override
     public String getLaunchSound() {
     	return AssetManager.getSound("VenomShot");
-    }
-    
-    
-    // ==================================================
-    //                   Brightness
-    // ==================================================
-    public float getBrightness(float par1) {
-        return 1.0F;
-    }
-    
-    @SideOnly(Side.CLIENT)
-    public int getBrightnessForRender(float par1) {
-        return 15728880;
     }
 }

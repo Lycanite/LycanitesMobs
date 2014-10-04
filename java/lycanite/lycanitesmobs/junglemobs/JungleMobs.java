@@ -14,13 +14,19 @@ import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBlock;
+import lycanite.lycanitesmobs.junglemobs.block.BlockPoopCloud;
 import lycanite.lycanitesmobs.junglemobs.block.BlockQuickWeb;
+import lycanite.lycanitesmobs.junglemobs.dispenser.DispenserBehaviorPoop;
+import lycanite.lycanitesmobs.junglemobs.entity.EntityConba;
 import lycanite.lycanitesmobs.junglemobs.entity.EntityConcapedeHead;
 import lycanite.lycanitesmobs.junglemobs.entity.EntityConcapedeSegment;
 import lycanite.lycanitesmobs.junglemobs.entity.EntityGeken;
+import lycanite.lycanitesmobs.junglemobs.entity.EntityPoop;
 import lycanite.lycanitesmobs.junglemobs.entity.EntityTarantula;
 import lycanite.lycanitesmobs.junglemobs.entity.EntityUvaraptor;
 import lycanite.lycanitesmobs.junglemobs.item.ItemJungleEgg;
+import lycanite.lycanitesmobs.junglemobs.item.ItemPoopCharge;
+import lycanite.lycanitesmobs.junglemobs.item.ItemScepterPoop;
 import lycanite.lycanitesmobs.junglemobs.mobevent.MobEventTheSwarm;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
@@ -75,8 +81,10 @@ public class JungleMobs {
                 .setEggName("jungleegg");
 		group.loadFromConfig();
 		
+		
 		// ========== Set Current Group ==========
 		ObjectManager.setCurrentGroup(group);
+		
 		
 		// ========== Create Items ==========
 		ObjectManager.addItem("jungleegg", new ItemJungleEgg());
@@ -91,25 +99,31 @@ public class JungleMobs {
 		
 		ObjectManager.addItem("tropicalcurry", new ItemCustomFood("tropicalcurry", group, 6, 0.7F).setPotionEffect(Potion.jump.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("tropicalcurry"));
+		
+		ObjectManager.addItem("poopcharge", new ItemPoopCharge());
+		ObjectManager.addItem("poopscepter", new ItemScepterPoop());
 
 		ObjectManager.addItem("uvaraptortreat", new ItemTreat("uvaraptortreat", group));
 
+		
 		// ========== Create Blocks ==========
 		ObjectManager.addBlock("quickweb", new BlockQuickWeb());
+		ObjectManager.addBlock("poopcloud", new BlockPoopCloud());
+		
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("jungleegg"), new DispenserBehaviorMobEggCustom());
 		MobInfo newMob;
         
         newMob = new MobInfo(group, "geken", EntityGeken.class, 0x00AA00, 0xFFFF00)
-		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1)
+		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
 		        .addSubspecies(new Subspecies("scarlet", "uncommon")).addSubspecies(new Subspecies("keppel", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER")
 				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "uvaraptor", EntityUvaraptor.class, 0x00FF33, 0xFF00FF)
-		        .setPeaceful(false).setSummonable(false).setSummonCost(4).setDungeonLevel(0)
+		        .setPeaceful(false).setSummonable(false).setSummonCost(4).setDungeonLevel(1)
 		        .addSubspecies(new Subspecies("scarlet", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER")
 				.setSpawnWeight(5).setAreaLimit(10).setGroupLimits(1, 3);
@@ -135,10 +149,18 @@ public class JungleMobs {
 		newMob.spawnInfo.setSpawnTypes("MONSTER")
 				.setSpawnWeight(6).setAreaLimit(10).setGroupLimits(1, 2);
 		ObjectManager.addMob(newMob);
-
+        
+        newMob = new MobInfo(group, "conba", EntityConba.class, 0x665500, 0xCC99BB)
+		        .setPeaceful(false).setSummonable(false).setSummonCost(2).setDungeonLevel(0)
+		        .addSubspecies(new Subspecies("violet", "uncommon")).addSubspecies(new Subspecies("dark", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("MONSTER")
+				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3);
+		ObjectManager.addMob(newMob);
+		
 		
 		// ========== Create Projectiles ==========
-		//ObjectManager.addProjectile("template", EntityTemplate.class, Item.templateCharge, new DispenserBehaviorPoisonRay());
+		ObjectManager.addProjectile("poop", EntityPoop.class, ObjectManager.getItem("poopcharge"), new DispenserBehaviorPoop());
+		
 		
 		// ========== Register Models ==========
 		proxy.registerModels();
@@ -163,7 +185,22 @@ public class JungleMobs {
 		ObjectManager.setCurrentGroup(group);
 		ConfigBase config = ConfigBase.getConfig(group, "spawning");
 		
+		
 		// ========== Mob Events ==========
+        if(MobInfo.getFromName("conba") != null) {
+			MobEventBase mobEvent = new MobEventTheSwarm("theswarm", this.group);
+			SpawnTypeBase eventSpawner = new SpawnTypeBlock("theswarm")
+	            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
+	        eventSpawner.materials = new Material[] {Material.air};
+	        eventSpawner.ignoreBiome = true;
+	        eventSpawner.ignoreLight = true;
+	        eventSpawner.forceSpawning = true;
+	        eventSpawner.ignoreMobConditions = true;
+	        eventSpawner.addSpawn(MobInfo.getFromName("vespid").spawnInfo);
+	        mobEvent.addSpawner(eventSpawner);
+			MobEventManager.instance.addWorldEvent(mobEvent);
+        }
+		
         if(MobInfo.getFromName("vespid") != null) {
 			MobEventBase mobEvent = new MobEventTheSwarm("theswarm", this.group);
 			SpawnTypeBase eventSpawner = new SpawnTypeBlock("theswarm")
@@ -178,6 +215,7 @@ public class JungleMobs {
 			MobEventManager.instance.addWorldEvent(mobEvent);
         }
 		
+        
 		// ========== Remove Vanilla Spawns ==========
 		BiomeGenBase[] biomes = group.biomes;
 		if(group.controlVanillaSpawns) {
@@ -188,6 +226,7 @@ public class JungleMobs {
 			EntityRegistry.removeSpawn(EntityPig.class, EnumCreatureType.creature, biomes);
 			EntityRegistry.removeSpawn(EntitySheep.class, EnumCreatureType.creature, biomes);
 		}
+		
 		
 		// ========== Crafting ==========
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
@@ -201,11 +240,19 @@ public class JungleMobs {
 			));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("poopscepter"), 1, 0),
+				new Object[] { "CCC", "CRC", "CRC",
+				Character.valueOf('C'), ObjectManager.getItem("poopcharge"),
+				Character.valueOf('R'), Items.blaze_rod
+			}));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("uvaraptortreat"), 1, 0),
 				new Object[] { "TTT", "BBT", "TTT",
 				Character.valueOf('T'), ObjectManager.getItem("concapedemeatcooked"),
 				Character.valueOf('B'), Items.bone
 			}));
+		
 		
 		// ========== Smelting ==========
 		GameRegistry.addSmelting(ObjectManager.getItem("concapedemeatraw"), new ItemStack(ObjectManager.getItem("concapedemeatcooked"), 1), 0.5f);

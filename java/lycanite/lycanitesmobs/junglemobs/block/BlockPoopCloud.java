@@ -96,7 +96,7 @@ public class BlockPoopCloud extends BlockBase {
             f1 = (float)y + random.nextFloat() * 0.5F;
             f2 = (float)z + random.nextFloat();
             //TODO EntityParticle particle = new EntityParticle(par1World, f, f1, f2, "poopcloud", this.mod);
-            world.spawnParticle("blockcrack_2_2", (double)f, (double)f1, (double)f2, 0.0D, 0.0D, 0.0D);
+            world.spawnParticle("blockcrack_3_2", (double)f, (double)f1, (double)f2, 0.0D, 0.0D, 0.0D);
         }
     }
     

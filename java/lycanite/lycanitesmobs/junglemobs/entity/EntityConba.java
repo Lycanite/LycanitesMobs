@@ -91,6 +91,10 @@ public class EntityConba extends EntityCreatureTameable implements IMob {
     public void onLivingUpdate() {
         super.onLivingUpdate();
         
+        // Avoid Attack Target:
+        if(this.getAttackTarget() != this.getAvoidTarget())
+        	this.setAvoidTarget(this.getAttackTarget());
+        
         // Random Leaping:
         if(this.onGround && !this.worldObj.isRemote) {
         	if(this.hasAvoidTarget()) {
@@ -157,6 +161,7 @@ public class EntityConba extends EntityCreatureTameable implements IMob {
     public boolean isPotionApplicable(PotionEffect par1PotionEffect) {
         if(par1PotionEffect.getPotionID() == Potion.poison.id) return false;
         if(par1PotionEffect.getPotionID() == Potion.moveSlowdown.id) return false;
+        if(par1PotionEffect.getPotionID() == Potion.confusion.id) return false;
         super.isPotionApplicable(par1PotionEffect);
         return true;
     }

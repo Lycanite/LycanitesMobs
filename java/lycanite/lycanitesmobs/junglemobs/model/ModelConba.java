@@ -29,6 +29,7 @@ public class ModelConba extends ModelCustomObj {
     	
     	// Set Rotation Centers:
     	setPartCenter("head", 0F, 0.6F, 0.3F);
+    	setPartCenter("mouth", 0F, 0.5F, 0.5F);
     	setPartCenter("body", 0F, 0.7F, 0F);
     	setPartCenter("armleft", 0.3F, 0.7F, 0F);
     	setPartCenter("armright", -0.3F, 0.7F, 0F);
@@ -59,6 +60,16 @@ public class ModelConba extends ModelCustomObj {
     	float rotX = 0F;
     	float rotY = 0F;
     	float rotZ = 0F;
+    	
+    	// Looking (Mouth):
+    	if(partName.equals("mouth")) {
+    		this.centerPartToPart("mouth", "head");
+    		if(!lockHeadX)
+    			this.rotate((float)Math.toDegrees(lookX / (180F / (float)Math.PI)), 0, 0);
+    		if(!lockHeadY)
+    			this.rotate(0, (float)Math.toDegrees(lookY / (180F / (float)Math.PI)), 0);
+    		this.uncenterPartToPart("mouth", "head");
+    	}
     	
     	// Walking:
     	float walkSwing = 0.3F;

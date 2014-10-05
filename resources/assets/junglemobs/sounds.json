@@ -1,4 +1,8 @@
 {
+    "mobevent.poopparty": {
+        "category": "record",
+        "sounds": [{"name": "mobevent/poopparty", "stream": false}]
+    },
     "entity.geken.say": {
         "category": "hostile",
         "sounds": [{"name": "entity/geken/say", "stream": false}]
@@ -134,5 +138,29 @@
     "entity.tarantula.tame": {
         "category": "hostile",
         "sounds": [{"name": "entity/tarantula/tame", "stream": false}]
+    },
+	"entity.conba.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/conba/say", "stream": false}]
+    },
+    "entity.conba.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/conba/hurt", "stream": false}]
+    },
+    "entity.conba.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/conba/death", "stream": false}]
+    },
+    "entity.conba.step": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/conba/step", "stream": false}]
+    },
+    "projectile.poop": {
+        "category": "ambient",
+        "sounds": [{"name": "projectile/poop", "stream": false}]
+    },
+    "block.poopcloud": {
+        "category": "block",
+        "sounds": [{"name": "block/poopcloud", "stream": false}]
     }
 }

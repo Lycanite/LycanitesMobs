@@ -1,6 +1,7 @@
 package lycanite.lycanitesmobs.junglemobs;
 
 import lycanite.lycanitesmobs.AssetManager;
+import lycanite.lycanitesmobs.junglemobs.model.ModelConba;
 import lycanite.lycanitesmobs.junglemobs.model.ModelConcapedeHead;
 import lycanite.lycanitesmobs.junglemobs.model.ModelConcapedeSegment;
 import lycanite.lycanitesmobs.junglemobs.model.ModelGeken;
@@ -22,5 +23,6 @@ public class ClientSubProxy extends CommonSubProxy {
 		AssetManager.addModel("concapede", new ModelConcapedeHead());
 		AssetManager.addModel("concapedesegment", new ModelConcapedeSegment());
 		AssetManager.addModel("tarantula", new ModelTarantula());
+		AssetManager.addModel("conba", new ModelConba());
 	}
 }

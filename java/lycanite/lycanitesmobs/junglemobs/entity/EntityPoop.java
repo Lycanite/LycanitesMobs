@@ -39,7 +39,7 @@ public class EntityPoop extends EntityProjectileBase {
     	this.entityName = "poop";
     	this.group = JungleMobs.group;
     	this.setBaseDamage(2);
-    	this.setProjectileScale(2.0F);
+    	this.setProjectileScale(1.0F);
     }
     
     
@@ -92,7 +92,7 @@ public class EntityPoop extends EntityProjectileBase {
     @Override
     public void onImpactVisuals() {
     	for(int i = 0; i < 8; ++i)
-    		this.worldObj.spawnParticle("portal", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
+    		this.worldObj.spawnParticle("blockcrack_3_2", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
     }
     
     

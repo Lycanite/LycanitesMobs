@@ -3,6 +3,7 @@ junglemobs.name=Jungle Creatures
 junglemobs.description=Exotic creatures that thrive in the hot, humid and overgrown Jungles and Tropics of the world.
 #
 # Mob Events
+mobevent.poopparty.name=Poop Party
 mobevent.theswarm.name=The Swarm
 #
 # Entites
@@ -16,6 +17,8 @@ entity.junglemobs.concapedesegment.name=Concapede Segment
 entity.junglemobs.concapedesegment.description=Strange beetles that connect to each other. Segments are usually attached to and are grown by heads. If detached from a head or another segment in front, it will grow into a head. Segments alone are defenseless.
 entity.junglemobs.tarantula.name=Tarantula
 entity.junglemobs.tarantula.description=Poisonous jumping spiders that leave behind a trail of temporary sticky green webbing.
+entity.junglemobs.conba.name=Conba
+entity.junglemobs.conba.description=Mischievous apes with a passion for poop! They like to throw their sticky poop at people causing slowness and nausea as well as creating a poop cloud which extends these effects. Conba keep their distance at all times.
 #
 # Items
 item.junglespawn.name=Spawn
@@ -25,9 +28,15 @@ item.concapedemeatcooked.name=Cooked Concapede Meat
 item.concapedemeatcooked.description=Tastes like BBQ chicken! Does not look like it though!
 item.tropicalcurry.name=Tropical Curry
 item.tropicalcurry.description=Bursting full of exotic flavours! Bouncy!
+item.poopcharge.name=Poop
+item.poopcharge.description=Very smelly! Throw it!
+item.poopscepter.name=Poop Scepter
+item.poopscepter.description=Low Damage, Rapid Fire, Applies Slowness and Nausea, Places Poop Clouds
 item.uvaraptortreat.name=Uvaraptor Treat
 item.uvaraptortreat.description=Perhaps you can tame would, it would almost be like a flying mount!
 #
 # Blocks
 tile.quickweb.name=Quickweb
 tile.quickweb.description=A green web that will fall apart after a short time.
+tile.poopcloud.name=Poop Cloud
+tile.poopcloud.description=A very smelly cloud that applies slowness and nausea!

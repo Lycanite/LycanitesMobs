@@ -1,5 +1,6 @@
 package lycanite.lycanitesmobs.junglemobs;
 
+import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
@@ -27,6 +28,7 @@ import lycanite.lycanitesmobs.junglemobs.entity.EntityUvaraptor;
 import lycanite.lycanitesmobs.junglemobs.item.ItemJungleEgg;
 import lycanite.lycanitesmobs.junglemobs.item.ItemPoopCharge;
 import lycanite.lycanitesmobs.junglemobs.item.ItemScepterPoop;
+import lycanite.lycanitesmobs.junglemobs.mobevent.MobEventPoopParty;
 import lycanite.lycanitesmobs.junglemobs.mobevent.MobEventTheSwarm;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
@@ -108,6 +110,7 @@ public class JungleMobs {
 		
 		// ========== Create Blocks ==========
 		ObjectManager.addBlock("quickweb", new BlockQuickWeb());
+		AssetManager.addSound("poopcloud", group, "block.poopcloud");
 		ObjectManager.addBlock("poopcloud", new BlockPoopCloud());
 		
 		
@@ -188,15 +191,15 @@ public class JungleMobs {
 		
 		// ========== Mob Events ==========
         if(MobInfo.getFromName("conba") != null) {
-			MobEventBase mobEvent = new MobEventTheSwarm("theswarm", this.group);
-			SpawnTypeBase eventSpawner = new SpawnTypeBlock("theswarm")
+			MobEventBase mobEvent = new MobEventPoopParty("poopparty", this.group);
+			SpawnTypeBase eventSpawner = new SpawnTypeBlock("poopparty")
 	            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
 	        eventSpawner.materials = new Material[] {Material.air};
 	        eventSpawner.ignoreBiome = true;
 	        eventSpawner.ignoreLight = true;
 	        eventSpawner.forceSpawning = true;
 	        eventSpawner.ignoreMobConditions = true;
-	        eventSpawner.addSpawn(MobInfo.getFromName("vespid").spawnInfo);
+	        eventSpawner.addSpawn(MobInfo.getFromName("conba").spawnInfo);
 	        mobEvent.addSpawner(eventSpawner);
 			MobEventManager.instance.addWorldEvent(mobEvent);
         }

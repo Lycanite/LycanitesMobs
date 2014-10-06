@@ -34,7 +34,7 @@ public class SpawnInfo {
     /** A list of Spawn Types to use. **/
     public SpawnTypeBase[] spawnTypes = new SpawnTypeBase[0];
 
-    /** A list of Spawn Types to use. **/
+    /** A list of Vanilla Creature Types to use. **/
     public EnumCreatureType[] creatureTypes = new EnumCreatureType[0];
 	
 	// ========== Spawn Dimensions ==========

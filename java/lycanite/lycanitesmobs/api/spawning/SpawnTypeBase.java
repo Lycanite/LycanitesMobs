@@ -115,6 +115,16 @@ public class SpawnTypeBase {
         CustomSpawner.instance.updateSpawnTypes.add(frostfireBlockSpawner);
         spawnTypes.add(frostfireBlockSpawner);
 		
+		// Water Spawner:
+		SpawnTypeBase waterSpawner = new SpawnTypeWater("Water")
+				.setRate(200).setChance(0.75D).setRange(32).setBlockLimit(64).setMobLimit(32);
+		waterSpawner.blocks = new Block[] {Blocks.water};
+		waterSpawner.ignoreBiome = false;
+		waterSpawner.ignoreLight = false;
+		waterSpawner.loadFromConfig();
+        CustomSpawner.instance.updateSpawnTypes.add(waterSpawner);
+        spawnTypes.add(waterSpawner);
+		
 		// Lava Spawner:
 		SpawnTypeBase lavaBlockSpawner = new SpawnTypeBlock("Lava")
 				.setRate(400).setChance(0.25D).setRange(32).setBlockLimit(64).setMobLimit(32);
@@ -255,6 +265,14 @@ public class SpawnTypeBase {
      */
 	public List<SpawnInfo> getSpawnList() {
 		return this.spawnList;
+	}
+	
+    /**
+     * Returns true if this spawn type has at least one mob to spawn.
+     * @return True if the spawn list's size is > 0;
+     */
+	public boolean hasSpawns() {
+		return this.spawnList.size() > 0;
 	}
 	
 	
@@ -602,7 +620,24 @@ public class SpawnTypeBase {
         int[] xz = this.getRandomXZCoord(world, originPos.chunkPosX, originPos.chunkPosZ, rangeMin, range);
         int x = xz[0];
         int z = xz[1];
-        int y = this.getRandomYCoord(world, x, originPos.chunkPosY, z, rangeMin, range, true);
+        int y = this.getRandomYCoord(world, x, originPos.chunkPosY, z, rangeMin, range, true, Blocks.air);
+        return y > -1 ? new ChunkPosition(x, y, z) : null;
+    }
+
+
+    // ==================================================
+    //            Get Random Water Spawn Coord
+    // ==================================================
+    /** Gets a random spawn position from a the provided origin chunk position.
+     * @param world The world to search for coordinates in.
+     * @return Returns a ChunkPosition or null if no coord was found.
+     */
+    public ChunkPosition getRandomWaterCoord(World world, ChunkPosition originPos, int range) {
+        int radius = Math.round(range * 0.5F);
+        int[] xz = this.getRandomXZCoord(world, originPos.chunkPosX, originPos.chunkPosZ, rangeMin, range);
+        int x = xz[0];
+        int z = xz[1];
+        int y = this.getRandomYCoord(world, x, originPos.chunkPosY, z, rangeMin, range, false, Blocks.water);
         return y > -1 ? new ChunkPosition(x, y, z) : null;
     }
 
@@ -620,7 +655,7 @@ public class SpawnTypeBase {
         int[] xz = this.getRandomXZCoord(world, originPos.chunkPosX, originPos.chunkPosZ, rangeMin, range);
         int x = xz[0];
         int z = xz[1];
-        int y = this.getRandomYCoord(world, x, originPos.chunkPosY, z, rangeMin, range, false);
+        int y = this.getRandomYCoord(world, x, originPos.chunkPosY, z, rangeMin, range, false, Blocks.air);
         return y > -1 ? new ChunkPosition(x, y, z) : null;
     }
 
@@ -678,9 +713,10 @@ public class SpawnTypeBase {
      * @param rangeMax The maximum range from the origin allowed.
      * @param rangeMin The minimum range from the origin allowed.
      * @param solid If true, this will search for a block with a solid top (land), else it will search for air (sky).
+     * @param insideBlock The block type to spawn in, usually air can also be water or other liquids, etc.
      * @return The y position, -1 if a valid position could not be found.
      */
-    public int getRandomYCoord(World world, int originX, int originY, int originZ, int rangeMin, int rangeMax, boolean solid) {
+    public int getRandomYCoord(World world, int originX, int originY, int originZ, int rangeMin, int rangeMax, boolean solid, Block insideBlock) {
     	int minY = originY - rangeMax;
         int maxY = originY + rangeMax;
         List<Integer> yCoordsLow = new ArrayList<Integer>();
@@ -689,7 +725,7 @@ public class SpawnTypeBase {
         	
             Block block = world.getBlock(originX, nextY, originZ);
             if(block != null && (
-            		(!solid && block.isAir(world, originX, nextY, originZ)) ||
+            		(!solid && block == insideBlock) ||
             		(solid && world.isSideSolid(originX, nextY, originZ, ForgeDirection.UP))
             )) {
             	
@@ -706,7 +742,7 @@ public class SpawnTypeBase {
                     break;
                 }
                 
-                if(this.doesCoordHaveSpace(world, originX, nextY + 1, originZ)) {
+                if(this.doesCoordHaveSpace(world, originX, nextY + 1, originZ, insideBlock)) {
                     if(nextY + 1 <= 64)
                         yCoordsLow.add(nextY + 1);
                     else
@@ -742,14 +778,14 @@ public class SpawnTypeBase {
      * This works by checking if it is an air block and if the block above is also an air block.
      * @return True if there is space else false.
      */
-    public boolean doesCoordHaveSpace(World world, int x, int y, int z) {
+    public boolean doesCoordHaveSpace(World world, int x, int y, int z, Block insideBlock) {
         Block feet = world.getBlock(x, y, z);
         if(feet == null) return false;
-        if(!feet.isAir(world, x, y, z)) return false;
+        if(feet != insideBlock) return false;
 
         Block head = world.getBlock(x, y + 1, z);
         if(head == null) return false;
-        if(!head.isAir(world, x, y, z)) return false;
+        if(head != insideBlock) return false;
 
         return true;
     }

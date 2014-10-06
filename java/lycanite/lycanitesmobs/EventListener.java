@@ -59,7 +59,8 @@ public class EventListener {
 			return;
 		
 		// ========== Extended Entity ==========
-		ExtendedEntity.getForEntity(event.entity);
+		if(event.entity != null)
+			ExtendedEntity.getForEntity(event.entity);
 		
 		// ========== Extended Player ==========
 		if(event.entity instanceof EntityPlayer) {
@@ -88,9 +89,17 @@ public class EventListener {
     // ==================================================
 	@SubscribeEvent
 	public void onLivingDeathEvent(LivingDeathEvent event) {
-		// ========== Extended Player Data Backup ==========
-		if(event.entity instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer)event.entity;
+		EntityLivingBase entity = event.entityLiving;
+		if(entity == null) return;
+		
+		// ========== Extended Entity ==========
+		ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(entity);
+		if(extendedEntity != null)
+			extendedEntity.onDeath();
+		
+		// ========== Extended Player ==========
+		if(entity instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer)entity;
 			ExtendedPlayer.getForPlayer(player).onDeath();
 		}
 	}
@@ -101,14 +110,15 @@ public class EventListener {
 	// ==================================================
 	@SubscribeEvent
 	public void onEntityUpdate(LivingUpdateEvent event) {
-		ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(event.entityLiving);
+		EntityLivingBase entity = event.entityLiving;
+		if(entity == null) return;
+
+		// ========== Extended Entity ==========
+		ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(entity);
 		if(extendedEntity != null)
 			extendedEntity.update();
-		
-		EntityLivingBase entity = event.entityLiving;
-		if(entity == null)
-			return;
-		
+
+		// ========== Extended Player ==========
 		if(entity instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer)entity;
 			

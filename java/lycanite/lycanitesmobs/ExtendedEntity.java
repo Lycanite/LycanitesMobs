@@ -84,13 +84,24 @@ public class ExtendedEntity implements IExtendedEntityProperties {
 	
 	
 	// ==================================================
+    //                 Death
+    // ==================================================
+	public void onDeath() {
+		this.setPickedUpByEntity(null);
+	}
+	
+	
+	// ==================================================
     //                 Picked Up By Entity
     // ==================================================
 	public void setPickedUpByEntity(Entity pickedUpByEntity) {
 		this.pickedUpByEntity = pickedUpByEntity;
 		if(!this.entity.worldObj.isRemote) {
 			if(this.entity instanceof EntityPlayer) {
-				this.playerFlyingSnapshot = ((EntityPlayer)this.entity).capabilities.allowFlying;
+				if(pickedUpByEntity != null)
+					this.playerFlyingSnapshot = ((EntityPlayer)this.entity).capabilities.allowFlying;
+				else
+					((EntityPlayer)this.entity).capabilities.allowFlying = this.playerFlyingSnapshot;
 			}
 			
 			MessageEntityPickedUp message = new MessageEntityPickedUp(this.entity, pickedUpByEntity);

@@ -3,6 +3,9 @@ event.started=%event% has begun!
 event.finished=%event% is over!
 # %event% will be replaced with the name of the event, don't translate this!
 #
+# Mob Events
+mobevent.bamstorm.name=Bamstorm
+#
 #
 #
 # ========== Entites ==========
@@ -98,6 +101,19 @@ message.pet.tamed=The %creature% seems to love you now!
 message.pet.tamefail=The %creature% wants more!
 # %creature% will be replaced with the name of the tamed creature, don't translate this!
 #
+#
+#
+# ========== Commands ==========
+lyc.command.invalid=Invalid arguments.
+lyc.command.mobevent.invalid=Invalid arguments, usage: /lycanitesmobs mobevent [start <event name>, stop, list, enable, disable]> for example /lycanitesmobs mobevent start hellsfury
+lyc.command.mobevent.start.invalid=Invalid arguments, usage: mobevent start <event name> for example mobevent start hellsfury
+lyc.command.mobevent.start.unknown=Unknown mob event. Use /lycanitesmobs mobevent list for a list of event names.
+lyc.command.mobevent.start.noworld=Command Sender dimension ID object not found, please enter a valid dimension ID.
+lyc.command.mobevent.start=Starting mob event...
+lyc.command.mobevent.stop=Stopping all mob events...
+lyc.command.mobevent.list=Mob Events:
+lyc.command.mobevent.enable=Random mob events enabled.
+lyc.command.mobevent.disable=Random mob events disabled.
 #
 #
 # ========== Common ==========

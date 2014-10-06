@@ -1,0 +1,6 @@
+{
+    "mobevent.bamstorm": {
+        "category": "record",
+        "sounds": [{"name": "mobevent/bamstorm", "stream": false}]
+    }
+}

@@ -14,7 +14,6 @@ import lycanite.lycanitesmobs.api.item.ItemTreat;
 import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
-import lycanite.lycanitesmobs.api.spawning.SpawnTypeBlock;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
 import lycanite.lycanitesmobs.plainsmobs.mobevent.MobEventWindStorm;
 import lycanite.lycanitesmobs.swampmobs.block.BlockPoisonCloud;
@@ -129,7 +128,7 @@ public class SwampMobs {
 		newMob = new MobInfo(group, "dweller", EntityDweller.class, 0x009922, 0x994499)
 		        .setPeaceful(false).setSummonable(true).setSummonCost(1).setDungeonLevel(1).setDungeonThemes("GROUP, WATER")
 		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("russet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("WATERCREATURE")
+		newMob.spawnInfo.setSpawnTypes("WATER")
 				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3);
 		ObjectManager.addMob(newMob);
 

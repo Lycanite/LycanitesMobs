@@ -11,7 +11,6 @@ import lycanite.lycanitesmobs.api.item.ItemCustomFood;
 import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
-import lycanite.lycanitesmobs.api.spawning.SpawnTypeBlock;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
 import lycanite.lycanitesmobs.saltwatermobs.entity.EntityAbtu;
 import lycanite.lycanitesmobs.saltwatermobs.entity.EntityIka;
@@ -90,28 +89,28 @@ public class SaltwaterMobs {
         newMob = new MobInfo(group, "lacedon", EntityLacedon.class, 0x000099, 0x2244FF)
 		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
 		        .addSubspecies(new Subspecies("verdant", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("WATERCREATURE")
+		newMob.spawnInfo.setSpawnTypes("WATER")
 				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "skylus", EntitySkylus.class, 0xFFCCDD, 0xBB2299)
 		        .setPeaceful(false).setSummonable(true).setSummonCost(3).setDungeonLevel(1)
 		        .addSubspecies(new Subspecies("ashen", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("WATERCREATURE")
+		newMob.spawnInfo.setSpawnTypes("WATER")
 				.setSpawnWeight(6).setAreaLimit(5).setGroupLimits(1, 3);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "ika", EntityIka.class, 0x99FFBB, 0x229944)
 		        .setPeaceful(true).setSummonable(false).setSummonCost(2).setDungeonLevel(-1)
 		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("golden", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("WATERCREATURE").setDespawn(false)
+		newMob.spawnInfo.setSpawnTypes("WATER").setDespawn(false)
 				.setSpawnWeight(6).setAreaLimit(10).setGroupLimits(1, 3).setDungeonWeight(0);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "abtu", EntityAbtu.class, 0xFFBB00, 0x44AAFF)
 		        .setPeaceful(false).setSummonable(false).setSummonCost(2).setDungeonLevel(2)
 		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("WATERCREATURE")
+		newMob.spawnInfo.setSpawnTypes("WATER")
 				.setSpawnWeight(8).setAreaLimit(32).setGroupLimits(1, 5);
 		ObjectManager.addMob(newMob);
 

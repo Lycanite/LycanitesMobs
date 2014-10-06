@@ -1,5 +1,6 @@
 package lycanite.lycanitesmobs;
 
+import lycanite.lycanitesmobs.api.command.CommandMain;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.entity.EntityPortal;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
@@ -14,11 +15,15 @@ import lycanite.lycanitesmobs.api.item.ItemStaffSavage;
 import lycanite.lycanitesmobs.api.item.ItemStaffStable;
 import lycanite.lycanitesmobs.api.item.ItemStaffSturdy;
 import lycanite.lycanitesmobs.api.item.ItemStaffSummoning;
+import lycanite.lycanitesmobs.api.mobevent.MobEventBamstorm;
+import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.mods.DLDungeons;
 import lycanite.lycanitesmobs.api.network.PacketHandler;
 import lycanite.lycanitesmobs.api.spawning.CustomSpawner;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeLand;
+import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -33,6 +38,7 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -76,11 +82,12 @@ public class LycanitesMobs {
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
 		group = new GroupInfo(this, name);
-        ConfigBase.versionCheck("1.9.1", version);
+        ConfigBase.versionCheck("1.10.1", version);
 		group.loadFromConfig();
 		config = ConfigBase.getConfig(group, "general");
 		config.setCategoryComment("Debug", "Set debug options to true to show extra debugging information in the console.");
 		this.packetHandler.init();
+		
 		
 		// ========== Custom Potion Effects ==========
 		config.setCategoryComment("Potion Effects", "Here you can override each potion effect ID from the automatic ID, use 0 if you want it to stay automatic. Overrides should only be needed if you are running a lot of mods that add custom effects.");
@@ -97,13 +104,16 @@ public class LycanitesMobs {
 			MinecraftForge.EVENT_BUS.register(new PotionEffects());
 		}
 		
+		
 		// ========== Mob Info ==========
 		MobInfo.loadGlobalSettings();
 		
-		// ========== CSpawning ==========
+		
+		// ========== Spawning ==========
 		customSpawner = new CustomSpawner();
 		SpawnTypeBase.loadSpawnTypes();
 		MinecraftForge.EVENT_BUS.register(customSpawner);
+		FMLCommonHandler.instance().bus().register(customSpawner);
 		
 		SpawnInfo.loadGlobalSettings();
 		
@@ -112,12 +122,15 @@ public class LycanitesMobs {
 		//MinecraftForge.EVENT_BUS.register(mobEventManager);
 		FMLCommonHandler.instance().bus().register(mobEventManager);
 		
+		
 		// ========== Register Event Listeners ==========
 		MinecraftForge.EVENT_BUS.register(new EventListener());
         proxy.registerEvents();
 		
+        
 		// ========== Set Current Mod ==========
 		ObjectManager.setCurrentGroup(group);
+		
 		
 		// ========== Create Items ==========
 		ObjectManager.addItem("soulgazer", new ItemSoulgazer());
@@ -127,8 +140,10 @@ public class LycanitesMobs {
 		ObjectManager.addItem("sturdysummoningstaff", new ItemStaffSturdy());
 		ObjectManager.addItem("savagesummoningstaff", new ItemStaffSavage());
 		
+		
 		// ========== Call Object Lists Setup ==========
 		ObjectLists.createLists();
+		
 		
 		// ========== Mod Support ==========
 		DLDungeons.init();
@@ -143,9 +158,11 @@ public class LycanitesMobs {
 		// ========== Register and Initialize Handlers ==========
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 		
+		
 		// ========== Register Entities ==========
 		int specialEntityID = 0;
 		EntityRegistry.registerModEntity(EntityPortal.class, "summoningportal", specialEntityID++, instance, 64, 1, true);
+		
 		
 		// ========== Load All Mob Info and Spawn Infos from Configs ==========
 		GroupInfo.loadAllSpawningFromConfigs();
@@ -163,6 +180,45 @@ public class LycanitesMobs {
 		proxy.registerTileEntities();
 		proxy.registerRenders();
 		
+		
+		// ========== Mob Events ==========
+		// Bamstorm:
+		MobEventBase mobEvent = new MobEventBamstorm("bamstorm", this.group);
+        
+		SpawnTypeBase landSpawner = new SpawnTypeLand("bamstorm_land")
+            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
+		landSpawner.materials = new Material[] {Material.air};
+		landSpawner.ignoreBiome = true;
+		landSpawner.ignoreLight = true;
+		landSpawner.forceSpawning = true;
+		landSpawner.ignoreMobConditions = true;
+        if(MobInfo.getFromName("kobold") != null)
+        	landSpawner.addSpawn(MobInfo.getFromName("kobold").spawnInfo);
+        if(MobInfo.getFromName("conba") != null)
+        	landSpawner.addSpawn(MobInfo.getFromName("conba").spawnInfo);
+        if(MobInfo.getFromName("belph") != null)
+        	landSpawner.addSpawn(MobInfo.getFromName("belph").spawnInfo);
+        if(MobInfo.getFromName("geken") != null)
+        	landSpawner.addSpawn(MobInfo.getFromName("geken").spawnInfo);
+        if(landSpawner.hasSpawns())
+        	mobEvent.addSpawner(landSpawner);
+        
+		SpawnTypeBase skySpawner = new SpawnTypeLand("bamstorm_sky")
+            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
+		skySpawner.materials = new Material[] {Material.air};
+		skySpawner.ignoreBiome = true;
+		skySpawner.ignoreLight = true;
+		skySpawner.forceSpawning = true;
+		skySpawner.ignoreMobConditions = true;
+        if(MobInfo.getFromName("zephyr") != null)
+        	skySpawner.addSpawn(MobInfo.getFromName("zephyr").spawnInfo);
+        if(MobInfo.getFromName("manticore") != null)
+        	skySpawner.addSpawn(MobInfo.getFromName("manticore").spawnInfo);
+        
+        if(mobEvent.hasSpawners())
+        	MobEventManager.instance.addWorldEvent(mobEvent);
+		
+        
 		// ========== Crafting ==========
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("soulgazer"), 1, 0),
@@ -215,6 +271,16 @@ public class LycanitesMobs {
 				Character.valueOf('L'), new ItemStack(Items.dye, 1, 4)
 			}));
     }
+	
+	
+    // ==================================================
+    //                    Server Load
+    // ==================================================
+	@EventHandler
+	public void serverLoad(FMLServerStartingEvent event) {
+		// ========== Commands ==========
+		event.registerServerCommand(new CommandMain());
+	}
 	
 	
 	// ==================================================

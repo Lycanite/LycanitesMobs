@@ -9,7 +9,6 @@ import lycanite.lycanitesmobs.api.info.Subspecies;
 import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
-import lycanite.lycanitesmobs.api.spawning.SpawnTypeBlock;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
 import lycanite.lycanitesmobs.freshwatermobs.dispenser.DispenserBehaviorAquaPulse;
 import lycanite.lycanitesmobs.freshwatermobs.entity.EntityAquaPulse;
@@ -80,7 +79,7 @@ public class FreshwaterMobs {
         newMob = new MobInfo(group, "jengu", EntityJengu.class, 0x000099, 0x4444FF)
 		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
 		        .addSubspecies(new Subspecies("light", "uncommon")).addSubspecies(new Subspecies("keppel", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("WATERCREATURE")
+		newMob.spawnInfo.setSpawnTypes("WATER")
 				.setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3);
 		ObjectManager.addMob(newMob);
 

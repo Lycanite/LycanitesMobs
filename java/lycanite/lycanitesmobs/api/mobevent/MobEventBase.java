@@ -100,6 +100,10 @@ public class MobEventBase {
         }
         return this;
     }
+    
+    public boolean hasSpawners() {
+    	return this.spawners.size() > 0;
+    }
 	
 	
     // ==================================================

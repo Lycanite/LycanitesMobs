@@ -67,7 +67,7 @@ public class EntityRaiko extends EntityCreatureBase implements IMob, IGroupHunte
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
 		baseAttributes.put("maxHealth", 20D);
-		baseAttributes.put("movementSpeed", 0.30D);
+		baseAttributes.put("movementSpeed", 0.36D);
 		baseAttributes.put("knockbackResistance", 0.0D);
 		baseAttributes.put("followRange", 48D);
 		baseAttributes.put("attackDamage", 2D);

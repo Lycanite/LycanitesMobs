@@ -1,6 +1,8 @@
 package lycanite.lycanitesmobs.plainsmobs.entity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import lycanite.lycanitesmobs.api.IGroupAlpha;
 import lycanite.lycanitesmobs.api.IGroupHunter;
@@ -12,6 +14,7 @@ import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAvoid;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowOwner;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIGetBlock;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIGetItem;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
@@ -24,24 +27,30 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
+import lycanite.lycanitesmobs.api.info.ObjectLists;
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
 public class EntityKobold extends EntityCreatureTameable implements IMob, IGroupPrey {
-    
+    public boolean torchGreifing = true;
+	
     // ==================================================
  	//                    Constructor
  	// ==================================================
     public EntityKobold(World par1World) {
         super(par1World);
+        this.torchGreifing = ConfigBase.getConfig(this.group, "general").getBool("Features", "Kobold Torch Griefing", this.torchGreifing, "Set to false to stop Kobolds from stealing torches.");
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
@@ -65,7 +74,9 @@ public class EntityKobold extends EntityCreatureTameable implements IMob, IGroup
         this.tasks.addTask(4, this.aiSit);
         this.tasks.addTask(5, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
         this.tasks.addTask(6, new EntityAIAvoid(this).setNearSpeed(1.3D).setFarSpeed(1.2D).setNearDistance(5.0D).setFarDistance(16.0D));
-        this.tasks.addTask(7, new EntityAIWander(this).setPauseRate(30));
+        if(this.torchGreifing)
+        	this.tasks.addTask(7, new EntityAIGetBlock(this).setDistanceMax(8).setSpeed(1.2D).setBlockName("torch").setTamedLooting(false));
+        this.tasks.addTask(8, new EntityAIWander(this).setPauseRate(30));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
@@ -111,6 +122,41 @@ public class EntityKobold extends EntityCreatureTameable implements IMob, IGroup
     protected boolean canDespawn() {
     	if(this.inventory.hasBagItems()) return false;
         return super.canDespawn();
+    }
+	
+	
+    // ==================================================
+    //                      Updates
+    // ==================================================
+    private int torchLootingTime = 20;
+	// ========== Living Update ==========
+	@Override
+    public void onLivingUpdate() {
+        super.onLivingUpdate();
+        
+        // Torch Looting:
+        if(!this.isTamed() && this.torchGreifing) {
+	        if(this.torchLootingTime-- <= 0) {
+	        	this.torchLootingTime = 60;
+	        	int distance = 2;
+	        	String targetName = "torch";
+	        	List possibleTargets = new ArrayList<ChunkCoordinates>();
+	            for(int x = (int)this.posX - distance; x < (int)this.posX + distance; x++) {
+	            	for(int y = (int)this.posY - distance; y < (int)this.posY + distance; y++) {
+	            		for(int z = (int)this.posZ - distance; z < (int)this.posZ + distance; z++) {
+	            			Block searchBlock = this.worldObj.getBlock(x, y, z);
+	                    	if(searchBlock != null && searchBlock != Blocks.air) {
+	                    		ChunkCoordinates possibleTarget = null;
+	                			if(ObjectLists.isName(searchBlock, targetName)) {
+	                				this.worldObj.func_147480_a(x, y, z, true); //destroyBlock()
+	                				break;
+	                			}
+	                    	}
+	                    }
+	                }
+	            }
+	        }
+        }
     }
     
 	

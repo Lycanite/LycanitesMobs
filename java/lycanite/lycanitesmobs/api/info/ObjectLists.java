@@ -223,4 +223,29 @@ public class ObjectLists {
 			return true;
 		return false;
 	}
+
+	
+    // ==================================================
+    //                   Check Names
+    // ==================================================
+	public static boolean isName(Item item, String name) {
+		if(item == null)
+			return false;
+		String itemName = item.getUnlocalizedName().toLowerCase();
+		if(itemName.contains(name))
+			return true;
+		return false;
+	}
+
+	public static boolean isName(Block block, String name) {
+		if(block == null)
+			return false;
+		name = name.toLowerCase();
+		String blockName = block.getUnlocalizedName().toLowerCase();
+		if(block == Blocks.redstone_torch)
+		if(blockName.contains(name)) {
+			return true;
+		}
+		return false;
+	}
 }

@@ -23,7 +23,7 @@ public class MobEventBase {
     public boolean forceSpawning = true;
 
     // Active:
-    public int duration = 120 * 20;
+    public int duration = 60 * 20;
     public int ticks = 0;
     public World world;
     
@@ -35,7 +35,7 @@ public class MobEventBase {
 		this.name = name;
 		this.group = group;
 		ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "mobevents");
-		this.duration = config.getInt("Event Durations", this.name, 120 * 60);
+		this.duration = config.getInt("Event Durations", this.name, this.duration);
         this.forceSpawning = config.getBool("Event Forced Spawning", this.name, this.forceSpawning);
 	}
     

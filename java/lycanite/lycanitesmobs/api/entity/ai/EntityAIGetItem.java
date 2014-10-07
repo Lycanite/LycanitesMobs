@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.item.EntityItem;
@@ -23,6 +24,7 @@ public class EntityAIGetItem extends EntityAIBase {
     private int cantSeeTime = 0;
     protected int cantSeeTimeMax = 60;
     private int updateRate = 0;
+    public boolean tamedLooting = true;
     
     // ==================================================
   	//                    Constructor
@@ -54,6 +56,11 @@ public class EntityAIGetItem extends EntityAIBase {
     	return this;
     }
     
+    public EntityAIGetItem setTamedLooting(boolean bool) {
+    	this.tamedLooting = bool;
+    	return this;
+    }
+    
     
     // ==================================================
   	//                  Should Execute
@@ -61,16 +68,21 @@ public class EntityAIGetItem extends EntityAIBase {
     public boolean shouldExecute() {
     	if(!this.host.canPickupItems())
     		return false;
+
+    	if(!this.tamedLooting) {
+    		if(this.host instanceof EntityCreatureTameable)
+    			if(((EntityCreatureTameable)this.host).isTamed())
+    				return false;
+    	}
     	
         double heightDistance = 4.0D;
         if(this.host.useFlightNavigator()) heightDistance = this.distanceMax;
         List possibleTargets = this.host.worldObj.selectEntitiesWithinAABB(EntityItem.class, this.host.boundingBox.expand(this.distanceMax, heightDistance, this.distanceMax), this.targetSelector);
-        Collections.sort(possibleTargets, this.targetSorter);
         
         if(possibleTargets.isEmpty())
             return false;
-        else
-            this.target = (EntityItem)possibleTargets.get(0);
+        Collections.sort(possibleTargets, this.targetSorter);
+        this.target = (EntityItem)possibleTargets.get(0);
         
         return this.continueExecuting();
     }

@@ -25,10 +25,10 @@ public class ConfigBase {
         // Test Config Version:
         String[] minVersions = minVersion.split("\\.");
         String[] configVersions = configVersion.split("\\.");
-        if(configVersions.length != 3)
-            configVersions = "0.0.0".split("\\.");
+        if(configVersions.length != 4)
+            configVersions = "0.0.0.0".split("\\.");
         boolean oldVersion = false;
-        for(int i = 0; i < 3; i++) {
+        for(int i = 0; i < 4; i++) {
             int minVerNum = NumberUtils.isNumber(minVersions[i].replaceAll("[^\\d.]", "")) ? Integer.parseInt(minVersions[i].replaceAll("[^\\d.]", "")) : 0;
             int currentVerNum = NumberUtils.isNumber(configVersions[i].replaceAll("[^\\d.]", "")) ? Integer.parseInt(configVersions[i].replaceAll("[^\\d.]", "")) : 0;
             if(currentVerNum < minVerNum) {

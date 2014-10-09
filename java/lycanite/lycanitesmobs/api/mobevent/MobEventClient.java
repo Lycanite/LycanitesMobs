@@ -1,12 +1,8 @@
 package lycanite.lycanitesmobs.api.mobevent;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.gui.GuiOverlay;
-import lycanite.lycanitesmobs.api.info.GroupInfo;
-import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,10 +10,11 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+
 import org.lwjgl.opengl.GL11;
 
-import java.util.ArrayList;
-import java.util.List;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class MobEventClient {
 
@@ -81,8 +78,9 @@ public class MobEventClient {
     // ==================================================
     @SideOnly(Side.CLIENT)
     public void onGUIUpdate(GuiOverlay gui, int sWidth, int sHeight) {
-        if(LycanitesMobs.proxy.getClientPlayer().capabilities.isCreativeMode && !MobEventBase.testOnCreative) return;
-        if(this.world == null) return;
+    	EntityPlayer player = LycanitesMobs.proxy.getClientPlayer();
+        if(player.capabilities.isCreativeMode && !MobEventBase.testOnCreative) return;
+        if(this.world == null || this.world != player.worldObj) return;
         if(!this.world.isRemote) return;
 
         int introTime = 12 * 20;

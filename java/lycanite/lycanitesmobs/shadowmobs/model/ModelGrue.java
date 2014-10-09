@@ -11,37 +11,33 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ModelGeonach extends ModelCustomObj {
+public class ModelGrue extends ModelCustomObj {
 	
 	// ==================================================
   	//                    Constructors
   	// ==================================================
-    public ModelGeonach() {
+    public ModelGrue() {
         this(1.0F);
     }
     
-    public ModelGeonach(float shadowSize) {
+    public ModelGrue(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Geonach", ShadowMobs.group, "entity/geonach");
+    	model = (WavefrontObject)AssetManager.getObjModel("Grue", ShadowMobs.group, "entity/grue");
     	
     	// Get Parts:
     	parts = model.groupObjects;
     	
     	// Set Rotation Centers:
-    	setPartCenter("head", 0F, 1.65F, 0.2F);
-    	setPartCenter("body", 0F, 1.2F, 0F);
-    	setPartCenter("body02", 0.25F, 0.5F, -0.2F);
-    	setPartCenter("body03", 0.3F, 0.85F, -0.2F);
-    	setPartCenter("armleft", 0.6F, 1.5F, 0F);
-    	setPartCenter("armright", -0.6F, 1.5F, 0F);
+    	setPartCenter("head", 0F, 1.5F, 0.4F);
+    	setPartCenter("mouth", 0F, 1.3F, 0.5F);
+    	setPartCenter("body", 0F, 1.0F, 0F);
+    	setPartCenter("armleft", 0.2F, 1.1F, 0F);
+    	setPartCenter("armright", -0.2F, 1.1F, 0.2F);
     	
-    	setPartCenter("effectouter", 0F, 0.3F, -0.1F);
-    	setPartCenter("effectinner", 0F, 0.3F, -0.1F);
-    	
-    	this.lockHeadX = true;
+    	setPartCenter("effect01", 0F, 0.8F, 0F);
     	
     	// Trophy:
-        this.trophyScale = 1.2F;
+        this.trophyScale = 1.0F;
         this.trophyOffset = new float[] {0.0F, 0.0F, -0.4F};
     }
     
@@ -65,7 +61,20 @@ public class ModelGeonach extends ModelCustomObj {
     	float rotY = 0F;
     	float rotZ = 0F;
     	
+    	// Looking (Mouth):
+    	if(partName.equals("mouth")) {
+    		this.centerPartToPart("mouth", "head");
+    		if(!lockHeadX)
+    			this.rotate((float)Math.toDegrees(lookX / (180F / (float)Math.PI)), 0, 0);
+    		if(!lockHeadY)
+    			this.rotate(0, (float)Math.toDegrees(lookY / (180F / (float)Math.PI)), 0);
+    		this.uncenterPartToPart("mouth", "head");
+    	}
+    	
     	// Idle:
+    	if(partName.equals("mouth")) {
+    		this.rotate((float)-Math.toDegrees(MathHelper.cos(loop * 0.1F) * 0.1F - 0.1F), 0.0F, 0.0F);
+    	}
     	if(partName.equals("armleft")) {
 	        rotZ -= Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.1F);
 	        rotX -= Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
@@ -74,23 +83,13 @@ public class ModelGeonach extends ModelCustomObj {
 	        rotZ += Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.1F);
 	        rotX += Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
     	}
-    	if(partName.equals("body02")) {
-	        posX -= MathHelper.cos(loop * 0.09F) * 0.1F;
-	        posY += MathHelper.sin(loop * 0.067F) * 0.05F;
-    	}
-    	if(partName.equals("body03")) {
-	        posX += MathHelper.cos(loop * 0.09F) * 0.1F;
-	        posY -= MathHelper.sin(loop * 0.067F) * 0.05F;
-    	}
 		float bob = -MathHelper.sin(loop * 0.1F) * 0.3F;
 		posY += bob;
 		
     	// Effects:
-    	if(partName.equals("effectouter")) {
+    	if(partName.equals("effect01")) {
     		rotY += loop * 8;
     	}
-    	if(partName.equals("effectinner"))
-    		rotY -= loop * 8;
 				
 		// Attack:
 		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {

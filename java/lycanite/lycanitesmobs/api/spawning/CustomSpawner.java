@@ -8,7 +8,9 @@ import java.util.Map;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -29,6 +31,11 @@ public class CustomSpawner {
 	// ==================================================
     public List<SpawnTypeBase> updateSpawnTypes = new ArrayList<SpawnTypeBase>();
 	public Map<EntityPlayer, Long> entityUpdateTicks = new HashMap<EntityPlayer, Long>();
+	
+    public List<SpawnTypeBase> shadowSpawnTypes = new ArrayList<SpawnTypeBase>();
+	public Map<EntityPlayer, ChunkCoordinates> entityLightCoords = new HashMap<EntityPlayer, ChunkCoordinates>();
+	public Map<EntityPlayer, int[][]> entityLightLevel = new HashMap<EntityPlayer, int[][]>();
+	
 	/** This uses the player update events to spawn mobs around each player randomly over time. **/
 	@SubscribeEvent
 	public void onEntityUpdate(LivingUpdateEvent event) {
@@ -52,6 +59,45 @@ public class CustomSpawner {
 		for(SpawnTypeBase spawnType : this.updateSpawnTypes) {
 			spawnType.spawnMobs(entityUpdateTick - tickOffset, world, x, y, z);
 			tickOffset += 100;
+		}
+		
+		// ========== Spawn On Sudden Light to Dark ==========
+		if(/*!player.capabilities.isCreativeMode &&*/ entityUpdateTick % 4 == 0) {
+			ChunkCoordinates coordsPrev = null;
+			int checkRange = 6;
+			if(this.entityLightCoords.containsKey(player))
+				coordsPrev = this.entityLightCoords.get(player);
+			if(!this.entityLightLevel.containsKey(player))
+				this.entityLightLevel.put(player, new int[3][3]);
+			
+			boolean mobSpawned = false;
+			for(int xSection = -1; xSection <= 1; xSection++) {
+				for(int zSection = -1; zSection <= 1; zSection++) {
+					
+					// Check Light Level Change:
+					if(!mobSpawned && coordsPrev != null) {
+						int xOffset = coordsPrev.posX + (checkRange * xSection);
+						int zOffset = coordsPrev.posZ + (checkRange * zSection);
+						
+						int lightLevelPrev = entityLightLevel.get(player)[xSection + 1][zSection + 1];
+						boolean solidBlock = lightLevelPrev < 0;
+						if(!solidBlock && lightLevelPrev >= 10 && world.getBlockLightValue(xOffset, coordsPrev.posY, zOffset) <= 5) {
+							for(SpawnTypeBase spawnType : this.shadowSpawnTypes) {
+								spawnType.spawnMobs(entityUpdateTick, world, xOffset, coordsPrev.posY, zOffset);
+							}
+						}
+					}
+					
+					// Set Next Coord and Light Level:
+					ChunkCoordinates coordsCurrent = player.getPlayerCoordinates();
+					int lightLevelCurrent = world.getBlockLightValue(coordsCurrent.posX + (checkRange * xSection), coordsCurrent.posY, coordsCurrent.posZ + (checkRange * zSection));
+					if(world.isSideSolid(coordsCurrent.posX + (checkRange * xSection), coordsCurrent.posY, coordsCurrent.posZ + (checkRange * zSection), ForgeDirection.DOWN, true))
+						lightLevelCurrent = -10;
+					this.entityLightLevel.get(player)[xSection + 1][zSection + 1] = lightLevelCurrent;
+				}
+			}
+			
+			this.entityLightCoords.put(player, player.getPlayerCoordinates());
 		}
 		
 		entityUpdateTicks.put(player, entityUpdateTick + 1);

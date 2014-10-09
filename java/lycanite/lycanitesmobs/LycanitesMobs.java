@@ -48,7 +48,7 @@ public class LycanitesMobs {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String version = "1.10.1 - MC 1.7.10";
+	public static final String version = "1.10.2.0 - MC 1.7.10";
 	
 	public static final PacketHandler packetHandler = new PacketHandler();
 
@@ -192,14 +192,10 @@ public class LycanitesMobs {
 		landSpawner.ignoreLight = true;
 		landSpawner.forceSpawning = true;
 		landSpawner.ignoreMobConditions = true;
-        if(MobInfo.getFromName("kobold") != null)
-        	landSpawner.addSpawn(MobInfo.getFromName("kobold").spawnInfo);
-        if(MobInfo.getFromName("conba") != null)
-        	landSpawner.addSpawn(MobInfo.getFromName("conba").spawnInfo);
-        if(MobInfo.getFromName("belph") != null)
-        	landSpawner.addSpawn(MobInfo.getFromName("belph").spawnInfo);
-        if(MobInfo.getFromName("geken") != null)
-        	landSpawner.addSpawn(MobInfo.getFromName("geken").spawnInfo);
+        landSpawner.addSpawn(MobInfo.getFromName("kobold").spawnInfo);
+        landSpawner.addSpawn(MobInfo.getFromName("conba").spawnInfo);
+        landSpawner.addSpawn(MobInfo.getFromName("belph").spawnInfo);
+        landSpawner.addSpawn(MobInfo.getFromName("geken").spawnInfo);
         if(landSpawner.hasSpawns())
         	mobEvent.addSpawner(landSpawner);
         
@@ -210,10 +206,10 @@ public class LycanitesMobs {
 		skySpawner.ignoreLight = true;
 		skySpawner.forceSpawning = true;
 		skySpawner.ignoreMobConditions = true;
-        if(MobInfo.getFromName("zephyr") != null)
-        	skySpawner.addSpawn(MobInfo.getFromName("zephyr").spawnInfo);
-        if(MobInfo.getFromName("manticore") != null)
-        	skySpawner.addSpawn(MobInfo.getFromName("manticore").spawnInfo);
+        skySpawner.addSpawn(MobInfo.getFromName("zephyr").spawnInfo);
+        skySpawner.addSpawn(MobInfo.getFromName("manticore").spawnInfo);
+        if(skySpawner.hasSpawns())
+        	mobEvent.addSpawner(skySpawner);
         
         if(mobEvent.hasSpawners())
         	MobEventManager.instance.addWorldEvent(mobEvent);

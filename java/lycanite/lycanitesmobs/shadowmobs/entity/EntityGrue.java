@@ -3,11 +3,12 @@ package lycanite.lycanitesmobs.shadowmobs.entity;
 import java.util.HashMap;
 
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.IGroupRock;
+import lycanite.lycanitesmobs.api.IGroupShadow;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowOwner;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIStealth;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerAttack;
@@ -17,9 +18,7 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
-import lycanite.lycanitesmobs.api.info.ObjectLists;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
@@ -27,26 +26,24 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
-public class EntityGeonach extends EntityCreatureTameable implements IMob, IGroupRock {
-	
-	private EntityAIAttackMelee meleeAttackAI;
+public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupShadow {
     
+	private int teleportTime = 60;
+	
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityGeonach(World par1World) {
+    public EntityGrue(World par1World) {
         super(par1World);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 4;
+        this.defense = 1;
         this.experience = 5;
         this.spawnsInDarkness = true;
         this.hasAttackSound = true;
@@ -55,13 +52,10 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
         this.setHeight = 1.2F;
         this.setupMob();
         
-        this.attackPhaseMax = 3;
-        this.justAttackedTime = (short)(10);
-        
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.meleeAttackAI = new EntityAIAttackMelee(this).setRate(20).setLongMemory(true);
-        this.tasks.addTask(2, meleeAttackAI);
+        this.tasks.addTask(1, new EntityAIStealth(this).setStealthTime(20).setStealthAttack(true).setStealthMove(true));
+        this.tasks.addTask(2, new EntityAIAttackMelee(this).setRate(20).setLongMemory(true));
         this.tasks.addTask(3, this.aiSit);
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
         this.tasks.addTask(8, new EntityAIWander(this));
@@ -80,8 +74,8 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
 		baseAttributes.put("maxHealth", 30D);
-		baseAttributes.put("movementSpeed", 0.26D);
-		baseAttributes.put("knockbackResistance", 1.0D);
+		baseAttributes.put("movementSpeed", 0.28D);
+		baseAttributes.put("knockbackResistance", 0D);
 		baseAttributes.put("followRange", 16D);
 		baseAttributes.put("attackDamage", 2D);
         super.applyEntityAttributes(baseAttributes);
@@ -90,10 +84,8 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Blocks.stone), 1F).setMaxAmount(8));
-        this.drops.add(new DropRate(new ItemStack(Blocks.iron_ore), 0.75F).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Items.quartz), 0.75F).setMaxAmount(5));
-        this.drops.add(new DropRate(new ItemStack(Blocks.gold_ore), 0.1F).setMaxAmount(1));
+        this.drops.add(new DropRate(new ItemStack(Items.ender_pearl), 0.5F).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Blocks.obsidian), 0.5F).setMaxAmount(2));
 	}
 	
 	
@@ -105,11 +97,50 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
     public void onLivingUpdate() {
         super.onLivingUpdate();
         
+        // Random Target Teleporting:
+        if(!this.worldObj.isRemote && this.hasAttackTarget()) {
+	        if(this.teleportTime-- <= 0) {
+	        	this.teleportTime = 60 + this.getRNG().nextInt(40);
+        		this.playJumpSound();
+        		double[] teleportPosition = this.getFacingPosition(this.getAttackTarget(), -this.getAttackTarget().width - 1D, 0);
+        		this.setPosition(teleportPosition[0], teleportPosition[1], teleportPosition[2]);
+	        }
+        }
+        
+        // Shadow Stealth:
+        if(this.testLightLevel() <= 0) {
+        	
+        }
+        
         // Particles:
         if(this.worldObj.isRemote)
 	        for(int i = 0; i < 2; ++i) {
-	            this.worldObj.spawnParticle("blockcrack_1_0", this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
+	            this.worldObj.spawnParticle("witchMagic", this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
 	        }
+    }
+    
+    
+    // ==================================================
+   	//                     Stealth
+   	// ==================================================
+    @Override
+    public boolean canStealth() {
+    	if(this.worldObj.isRemote) return false;
+		if(this.isMoving()) return false;
+    	return this.testLightLevel() <= 0;
+    }
+    
+    @Override
+    public void startStealth() {
+    	if(this.worldObj.isRemote) {
+            String particle = "witchMagic";
+            double d0 = this.rand.nextGaussian() * 0.02D;
+            double d1 = this.rand.nextGaussian() * 0.02D;
+            double d2 = this.rand.nextGaussian() * 0.02D;
+            for(int i = 0; i < 100; i++)
+            	this.worldObj.spawnParticle(particle, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + 0.5D + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d0, d1, d2);
+        }
+    	super.startStealth();
     }
     
     
@@ -122,20 +153,14 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
     	if(!super.meleeAttack(target, damageScale))
     		return false;
     	
+    	// Leech:
+    	float leeching = this.getAttackDamage(damageScale);
+    	this.heal(leeching);
+    	
     	// Effects:
         if(target instanceof EntityLivingBase) {
-        	if(this.getAttackPhase() == 2 && ObjectManager.getPotionEffect("weight") != null && ObjectManager.getPotionEffect("Weight").id < Potion.potionTypes.length)
-        		((EntityLivingBase)target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("weight").id, this.getEffectDuration(7), 0));
-        	else
-        		((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.digSlowdown.id, this.getEffectDuration(7), 0));
+        	((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.blindness.id, this.getEffectDuration(7), 0));
         }
-        
-        // Update Phase:
-        this.nextAttackPhase();
-        if(this.getAttackPhase() == 2)
-        	this.meleeAttackAI.setRate(60);
-        else
-        	this.meleeAttackAI.setRate(10);
         
         return true;
     }
@@ -155,49 +180,14 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
     
     
     // ==================================================
-   	//                    Taking Damage
-   	// ==================================================
-    // ========== Damage Modifier ==========
-    public float getDamageModifier(DamageSource damageSrc) {
-    	if(damageSrc.getEntity() != null) {
-    		Item heldItem = null;
-    		if(damageSrc.getEntity() instanceof EntityPlayer) {
-    			EntityPlayer entityPlayer = (EntityPlayer)damageSrc.getEntity();
-	    		if(entityPlayer.getHeldItem() != null) {
-	    			heldItem = entityPlayer.getHeldItem().getItem();
-	    		}
-    		}
-    		else if(damageSrc.getEntity() instanceof EntityLiving) {
-	    		EntityLiving entityLiving = (EntityLiving)damageSrc.getEntity();
-	    		if(entityLiving.getHeldItem() != null) {
-	    			heldItem = entityLiving.getHeldItem().getItem();
-	    		}
-    		}
-    		if(ObjectLists.isPickaxe(heldItem))
-				return 4.0F;
-    	}
-    	return 1.0F;
-    }
-    
-    
-    // ==================================================
    	//                     Immunities
    	// ==================================================
     @Override
-    public boolean isDamageTypeApplicable(String type) {
-    	if(type.equals("cactus")) return false;
-    	return super.isDamageTypeApplicable(type);
-    }
-
-    @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotionID() == Potion.digSlowdown.id) return false;
-        if(ObjectManager.getPotionEffect("Weight") != null)
-        	if(potionEffect.getPotionID() == ObjectManager.getPotionEffect("Weight").id) return false;
+        if(potionEffect.getPotionID() == Potion.blindness.id) return false;
+        if(ObjectManager.getPotionEffect("Fear") != null)
+        	if(potionEffect.getPotionID() == ObjectManager.getPotionEffect("Fear").id) return false;
         super.isPotionApplicable(potionEffect);
         return true;
     }
-    
-    @Override
-    public boolean canBurn() { return false; }
 }

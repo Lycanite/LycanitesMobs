@@ -1,0 +1,19 @@
+# Group Info
+shadowmobs.name=Shadow Creatures
+shadowmobs.description=From the darkest corners of the world come the stealthiest of beasts.
+#
+# Mob Events
+mobevent.shadowgames.name=Shadow Games
+#
+# Entites
+entity.shadowmobs.grue.name=Grue
+entity.shadowmobs.grue.description=When it is pitch black, you are likely to be eaten by a Grue so be careful when putting out that torch or drowning that lava! Grue will teleport behind their target and drain its health!
+#
+# Items
+item.shadowspawn.name=Spawn
+#
+# Blocks
+tile.shadowfire.name=Shadow Fire
+tile.shadowfire.description=A dark flame that damages and applies wither.
+tile.shadowcloud.name=Shadow Cloud
+tile.shadowcloud.description=A dark cloud that blinds things that come into contact with a chance to cause fear.

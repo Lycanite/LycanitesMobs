@@ -176,8 +176,18 @@ public class SpawnTypeBase {
 		stormSpawner.forceSpawning = true;
 		stormSpawner.loadFromConfig();
         spawnTypes.add(stormSpawner);
+		
+		// Shadow Spawner:
+		SpawnTypeBase shadowSpawner = new SpawnTypeShadow("Shadow")
+				.setRate(0).setChance(0.5D).setRange(2).setBlockLimit(32).setMobLimit(1);
+		shadowSpawner.materials = new Material[] {Material.air};
+		shadowSpawner.ignoreBiome = true;
+		shadowSpawner.ignoreLight = true;
+		shadowSpawner.forceSpawning = true;
+		shadowSpawner.loadFromConfig();
+        spawnTypes.add(shadowSpawner);
         
-        // Add Spawners to Map:
+        // Add Spawners to Custom Spawner Map:
         for(SpawnTypeBase spawnType : spawnTypes) {
 			spawnTypeMap.put(spawnType.typeName.toUpperCase(), spawnType);
 			LycanitesMobs.printDebug("CustomSpawner", "Added custom spawn type: " + spawnType.typeName);

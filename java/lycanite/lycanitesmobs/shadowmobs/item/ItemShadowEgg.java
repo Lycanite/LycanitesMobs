@@ -10,9 +10,9 @@ public class ItemShadowEgg extends ItemCustomSpawnEgg {
 	// ==================================================
     public ItemShadowEgg() {
         super();
-        setUnlocalizedName("mountainspawn");
+        setUnlocalizedName("shadowspawn");
         this.group = ShadowMobs.group;
-        this.itemName = "mountainspawn";
-        this.texturePath = "mountainspawn";
+        this.itemName = "shadowspawn";
+        this.texturePath = "shadowspawn";
     }
 }

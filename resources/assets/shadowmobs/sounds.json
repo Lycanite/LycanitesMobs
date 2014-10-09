@@ -1,0 +1,34 @@
+{
+    "mobevent.shadowgames": {
+        "category": "record",
+        "sounds": [{"name": "mobevent/shadowgames", "stream": false}]
+    },
+    "entity.grue.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/grue/say", "stream": false}]
+    },
+    "entity.grue.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/grue/hurt", "stream": false}]
+    },
+    "entity.grue.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/grue/death", "stream": false}]
+    },
+    "entity.grue.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/grue/attack", "stream": false}]
+    },
+    "entity.grue.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/grue/beg", "stream": false}]
+    },
+    "entity.grue.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/grue/tame", "stream": false}]
+    },
+    "entity.grue.jump": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/grue/jump", "stream": false}]
+    }
+}

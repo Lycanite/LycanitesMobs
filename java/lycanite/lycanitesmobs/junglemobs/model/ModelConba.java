@@ -71,6 +71,11 @@ public class ModelConba extends ModelCustomObj {
     		this.uncenterPartToPart("mouth", "head");
     	}
     	
+    	// Idle:
+    	if(partName.equals("mouth")) {
+    		this.rotate((float)-Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F - 0.05F), 0.0F, 0.0F);
+    	}
+    	
     	// Walking:
     	float walkSwing = 0.3F;
     	if(partName.equals("armright") || partName.equals("legleft"))

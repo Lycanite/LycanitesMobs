@@ -86,7 +86,7 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.stick), 0.5F).setMaxAmount(6).setBurningDrop(new ItemStack(Items.coal)));
+        this.drops.add(new DropRate(new ItemStack(Items.stick), 0.5F).setMaxAmount(6).setBurningDrop(new ItemStack(Items.coal, 1, 1)));
         this.drops.add(new DropRate(new ItemStack(Blocks.vine), 0.1F).setMaxAmount(3));
         this.drops.add(new DropRate(new ItemStack(Items.wheat_seeds), 0.1F).setMaxAmount(3));
         this.drops.add(new DropRate(new ItemStack(Items.pumpkin_seeds), 0.05F).setMaxAmount(1));

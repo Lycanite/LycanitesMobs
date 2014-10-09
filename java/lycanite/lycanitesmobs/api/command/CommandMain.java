@@ -110,7 +110,7 @@ public class CommandMain implements ICommand {
 					
 					// No World:
 					if(world == null) {
-						reply = StatCollector.translateToLocal("lyc.command.mobevent.noworld");
+						reply = StatCollector.translateToLocal("lyc.command.mobevent.start.noworld");
 						commandSender.addChatMessage(new ChatComponentText(reply));
 						return;
 					}
@@ -130,7 +130,7 @@ public class CommandMain implements ICommand {
 					return;
 				}
 				
-				reply = StatCollector.translateToLocal("lyc.command.mobevent.unknown");
+				reply = StatCollector.translateToLocal("lyc.command.mobevent.start.unknown");
 				commandSender.addChatMessage(new ChatComponentText(reply));
 				return;
 			}

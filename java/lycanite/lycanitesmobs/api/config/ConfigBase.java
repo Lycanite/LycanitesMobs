@@ -20,7 +20,7 @@ public class ConfigBase {
     public static void versionCheck(String minVersion, String currentVersion) {
         // Get Config Version:
         ConfigBase versionConfig = getConfig(LycanitesMobs.group, "version");
-        String configVersion = versionConfig.getString("Version", "Config Version", "0.0.0", "The version that this config was last read from, manually update this if you do not want your config to be cleared, although it is recommended not to unless you are aware of the changes.");
+        String configVersion = versionConfig.getString("Version", "Config Version", "0.0.0.0", "The version that this config was last read from, manually update this if you do not want your config to be cleared, although it is recommended not to unless you are aware of the changes.");
 
         // Test Config Version:
         String[] minVersions = minVersion.split("\\.");

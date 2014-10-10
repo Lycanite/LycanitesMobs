@@ -1436,7 +1436,15 @@ public abstract class EntityCreatureBase extends EntityLiving {
             i += EnchantmentHelper.getKnockbackModifier(this, (EntityLivingBase)target);
         }
         
-        boolean attackSuccess = target.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
+        boolean attackSuccess = false;
+        float absoluteDamage = 1 + (float)Math.floor(damage / 5.0D);
+        if(damage <= absoluteDamage)
+        	attackSuccess = target.attackEntityFrom(DamageSource.causeMobDamage(this).setDamageBypassesArmor().setDamageIsAbsolute(), damage);
+        else {
+        	target.attackEntityFrom(DamageSource.causeMobDamage(this).setDamageBypassesArmor().setDamageIsAbsolute(), absoluteDamage);
+    		damage -= absoluteDamage;
+        	attackSuccess = target.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
+        }
         
         if(attackSuccess) {
             if(i > 0) {

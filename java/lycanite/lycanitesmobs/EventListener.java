@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lycanite.lycanitesmobs.api.ILycanEventListener;
-import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
 import lycanite.lycanitesmobs.api.item.ItemBase;
 import net.minecraft.block.Block;
@@ -14,7 +13,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
@@ -184,7 +182,7 @@ public class EventListener {
 		if(event.entityLiving == null || event.source == null)
 			return;
 		
-		// ========== Minimum Armor Damage ==========
+		/*/ ========== Minimum Armor Damage ========== Moved to EntityCreatureBase as it doesn't work here. :/
 		float damage = event.ammount;
 		if(damage > 0 && !event.source.isUnblockable() && !event.source.isDamageAbsolute() && event.source.getEntity() != null && event.source.getEntity() instanceof EntityCreatureBase) {
 			float minDamage = 1 + (float)Math.floor(damage / 5.0D);
@@ -197,7 +195,7 @@ public class EventListener {
 				event.entityLiving.attackEntityFrom(unblockableDamage, minDamage);
 				//event.entityLiving.setHealth(event.entityLiving.getHealth() - minDamage);
 			}
-		}
+		}*/
 		
 		// ========== Mounted Protection ==========
 		if(event.entityLiving.ridingEntity != null) {

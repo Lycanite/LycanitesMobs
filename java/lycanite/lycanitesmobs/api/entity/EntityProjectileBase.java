@@ -99,9 +99,22 @@ public class EntityProjectileBase extends EntityThrowable {
  			}
  			if(doDamage) {
  				this.entityCollision(movingObjectPosition.entityHit);
- 				if(movingObjectPosition.entityHit instanceof EntityLivingBase)
- 					if(this.entityLivingCollision((EntityLivingBase)movingObjectPosition.entityHit))
- 						movingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), this.getDamage((EntityLivingBase)movingObjectPosition.entityHit));
+ 				if(movingObjectPosition.entityHit instanceof EntityLivingBase) {
+ 					EntityLivingBase target = (EntityLivingBase)movingObjectPosition.entityHit;
+ 					if(this.entityLivingCollision(target)) {
+ 						//movingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), this.getDamage((EntityLivingBase)movingObjectPosition.entityHit));
+ 						boolean attackSuccess = false;
+ 						float damage = this.getDamage(target);
+ 				        float absoluteDamage = 1 + (float)Math.floor(damage / 5.0D);
+ 				        if(damage <= absoluteDamage)
+ 				        	attackSuccess = target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor().setDamageIsAbsolute(), damage);
+ 				        else {
+ 				        	target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor().setDamageIsAbsolute(), absoluteDamage);
+ 				    		damage -= absoluteDamage;
+ 				        	attackSuccess = target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), damage);
+ 				        }
+ 					}
+ 				}
  			}
  			collided = true;
 

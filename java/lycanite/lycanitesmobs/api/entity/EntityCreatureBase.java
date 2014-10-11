@@ -237,7 +237,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	public InventoryCreature inventory;
     /** A collection of DropRate classes which are used when randomly drop items on death. **/
     public List<DropRate> drops = new ArrayList<DropRate>();
-    
+	
     // ==================================================
   	//                    Constructor
   	// ==================================================

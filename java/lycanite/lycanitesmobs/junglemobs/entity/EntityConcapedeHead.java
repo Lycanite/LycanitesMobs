@@ -36,11 +36,15 @@ import net.minecraft.world.World;
 
 public class EntityConcapedeHead extends EntityCreatureAgeable implements IAnimals, IGroupAnimal, IGroupAlpha {
 	
+	public static int CONCAPEDE_SIZE_MAX = 10;
+	
     // ==================================================
  	//                    Constructor
  	// ==================================================
     public EntityConcapedeHead(World par1World) {
         super(par1World);
+        
+        CONCAPEDE_SIZE_MAX = ConfigBase.getConfig(group, "general").getInt("Features", "Concapede Size Limit", 10, "The maximum amount of segments long a Concapede can be, including the head.");
         
         // Setup:
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
@@ -138,7 +142,7 @@ public class EntityConcapedeHead extends EntityCreatureAgeable implements IAnima
 	public void setGrowingAge(int age) {
 		// Spawn Additional Segments:
 		if(age == 0 && ObjectManager.getMob("ConcapedeSegment") != null) {
-			age = -this.growthTime / 4;
+			age = -(this.growthTime / 4);
 			EntityCreatureBase parentSegment = this;
 			boolean lastSegment = false;
 			int size = 0;
@@ -149,7 +153,7 @@ public class EntityConcapedeHead extends EntityCreatureAgeable implements IAnima
 				else
 					lastSegment = true;
 			}
-			if(size <= ConfigBase.getConfig(this.group, "general").getInt("Features", "Concapede Size Limit", 10, "The maximum amount of segments long a Concapede can be, including the head.")) {
+			if(size < CONCAPEDE_SIZE_MAX) {
 				EntityConcapedeSegment segmentEntity = new EntityConcapedeSegment(this.worldObj);
 	    		segmentEntity.setLocationAndAngles(parentSegment.posX, parentSegment.posY, parentSegment.posZ, 0.0F, 0.0F);
 	    		parentSegment.worldObj.spawnEntityInWorld(segmentEntity);

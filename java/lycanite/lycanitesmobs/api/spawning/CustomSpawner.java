@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.block.BlockCrops;
+import net.minecraft.block.IGrowable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChunkCoordinates;
@@ -141,7 +141,7 @@ public class CustomSpawner {
 		}
 		
 		// Crop Blocks:
-		if(event.block instanceof BlockCrops) {
+		if(event.block instanceof IGrowable) {
 			for(SpawnTypeBase spawnType : this.cropBreakSpawnTypes) {
 				spawnType.spawnMobs(0, world, x, y, z);
 			}

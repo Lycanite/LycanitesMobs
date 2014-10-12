@@ -29,11 +29,11 @@ item.concapedemeatcooked.description=Tastes like BBQ chicken! Does not look like
 item.tropicalcurry.name=Tropical Curry
 item.tropicalcurry.description=Bursting full of exotic flavours! Bouncy!
 item.poopcharge.name=Poop
-item.poopcharge.description=Very smelly! Throw it!
+item.poopcharge.description=Very smelly! Throw it! Can also be used on plants as a fertilizer like bonemeal.
 item.poopscepter.name=Poop Scepter
 item.poopscepter.description=Low Damage, Rapid Fire, Applies Slowness and Nausea, Places Poop Clouds
 item.uvaraptortreat.name=Uvaraptor Treat
-item.uvaraptortreat.description=Perhaps you can tame would, it would almost be like a flying mount!
+item.uvaraptortreat.description=Perhaps you can tame one, it would almost be like a flying mount!
 #
 # Blocks
 tile.quickweb.name=Quickweb

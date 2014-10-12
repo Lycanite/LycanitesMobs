@@ -179,7 +179,7 @@ public class SpawnTypeBase {
 		
 		// Shadow Spawner:
 		SpawnTypeBase shadowSpawner = new SpawnTypeShadow("Shadow")
-				.setRate(0).setChance(0.5D).setRange(2).setBlockLimit(32).setMobLimit(1);
+				.setRate(0).setChance(0.1D).setRange(2).setBlockLimit(32).setMobLimit(1);
 		shadowSpawner.materials = new Material[] {Material.air};
 		shadowSpawner.ignoreBiome = true;
 		shadowSpawner.ignoreLight = true;

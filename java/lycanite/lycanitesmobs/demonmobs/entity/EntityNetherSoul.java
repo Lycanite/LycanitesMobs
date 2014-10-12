@@ -111,6 +111,7 @@ public class EntityNetherSoul extends EntityCreatureBase implements IMob {
 			int explosionRadius = 1;
 			if(this.subspecies != null)
 				explosionRadius = 3;
+			explosionRadius = Math.max(1, Math.round((float)explosionRadius * (float)this.sizeScale));
 			this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, explosionRadius, true);
 		}
         super.onDeath(par1DamageSource);

@@ -242,7 +242,6 @@ public class ObjectLists {
 			return false;
 		name = name.toLowerCase();
 		String blockName = block.getUnlocalizedName().toLowerCase();
-		if(block == Blocks.redstone_torch)
 		if(blockName.contains(name)) {
 			return true;
 		}

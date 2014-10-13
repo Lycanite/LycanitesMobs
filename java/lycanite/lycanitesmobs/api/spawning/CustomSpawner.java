@@ -81,7 +81,7 @@ public class CustomSpawner {
 						
 						int lightLevelPrev = entityLightLevel.get(player)[xSection + 1][zSection + 1];
 						//boolean solidBlocks = lightLevelPrev < 0 || !world.isAirBlock(xOffset, coordsPrev.posY, zOffset);
-						boolean solidBlocks = lightLevelPrev < 0 || !world.isSideSolid(xOffset, coordsPrev.posY, zOffset, ForgeDirection.DOWN, true);
+						boolean solidBlocks = lightLevelPrev < 0 || world.isSideSolid(xOffset, coordsPrev.posY, zOffset, ForgeDirection.DOWN, true);
 						if(!solidBlocks && lightLevelPrev >= 10 && world.getBlockLightValue(xOffset, coordsPrev.posY, zOffset) <= 5) {
 							for(SpawnTypeBase spawnType : this.shadowSpawnTypes) {
 								spawnType.spawnMobs(entityUpdateTick, world, xOffset, coordsPrev.posY, zOffset);

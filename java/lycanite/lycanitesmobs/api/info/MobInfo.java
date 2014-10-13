@@ -40,7 +40,7 @@ public class MobInfo {
 	public static boolean mountingEnabled = true;
 	
 	/** If true, all mobs that attack players will also attack villagers. **/
-	public static boolean mobsAttackVillagers = false;
+	public static boolean mobsAttackVillagers = true;
 	
 	/** If true, predators such as Ventoraptors will attack farm animals such as Sheep or Makas. **/
 	public static boolean predatorsAttackAnimals = true;

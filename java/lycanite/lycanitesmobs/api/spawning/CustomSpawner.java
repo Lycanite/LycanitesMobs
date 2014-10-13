@@ -80,8 +80,9 @@ public class CustomSpawner {
 						int zOffset = coordsPrev.posZ + (checkRange * zSection);
 						
 						int lightLevelPrev = entityLightLevel.get(player)[xSection + 1][zSection + 1];
-						boolean solidBlock = lightLevelPrev < 0;
-						if(!solidBlock && lightLevelPrev >= 10 && world.getBlockLightValue(xOffset, coordsPrev.posY, zOffset) <= 5) {
+						//boolean solidBlocks = lightLevelPrev < 0 || !world.isAirBlock(xOffset, coordsPrev.posY, zOffset);
+						boolean solidBlocks = lightLevelPrev < 0 || !world.isSideSolid(xOffset, coordsPrev.posY, zOffset, ForgeDirection.DOWN, true);
+						if(!solidBlocks && lightLevelPrev >= 10 && world.getBlockLightValue(xOffset, coordsPrev.posY, zOffset) <= 5) {
 							for(SpawnTypeBase spawnType : this.shadowSpawnTypes) {
 								spawnType.spawnMobs(entityUpdateTick, world, xOffset, coordsPrev.posY, zOffset);
 							}
@@ -92,7 +93,8 @@ public class CustomSpawner {
 					ChunkCoordinates coordsCurrent = player.getPlayerCoordinates();
 					int lightLevelCurrent = world.getBlockLightValue(coordsCurrent.posX + (checkRange * xSection), coordsCurrent.posY, coordsCurrent.posZ + (checkRange * zSection));
 					if(world.isSideSolid(coordsCurrent.posX + (checkRange * xSection), coordsCurrent.posY, coordsCurrent.posZ + (checkRange * zSection), ForgeDirection.DOWN, true))
-						lightLevelCurrent = -10;
+					//if(!world.isAirBlock(coordsCurrent.posX + (checkRange * xSection), coordsCurrent.posY, coordsCurrent.posZ + (checkRange * zSection)))
+							lightLevelCurrent = -10;
 					this.entityLightLevel.get(player)[xSection + 1][zSection + 1] = lightLevelCurrent;
 				}
 			}

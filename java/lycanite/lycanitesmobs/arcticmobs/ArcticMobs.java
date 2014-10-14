@@ -14,7 +14,6 @@ import lycanite.lycanitesmobs.api.item.ItemTreat;
 import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
-import lycanite.lycanitesmobs.api.spawning.SpawnTypeBlock;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
 import lycanite.lycanitesmobs.arcticmobs.block.BlockFrostCloud;
 import lycanite.lycanitesmobs.arcticmobs.block.BlockFrostfire;
@@ -105,7 +104,7 @@ public class ArcticMobs {
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("yetimeatraw"));
 		OreDictionary.registerOre("listAllporkraw", ObjectManager.getItem("yetimeatraw"));
 		
-		ObjectManager.addItem("yetimeatcooked", new ItemCustomFood("yetimeatcooked", group, 6, 0.7F));
+		ObjectManager.addItem("yetimeatcooked", new ItemCustomFood("yetimeatcooked", group, 6, 0.7F).setPotionEffect(Potion.resistance.id, 10, 2, 1.0F).setAlwaysEdible());
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("yetimeatcooked"));
 		OreDictionary.registerOre("listAllporkcooked", ObjectManager.getItem("yetimeatcooked"));
 		

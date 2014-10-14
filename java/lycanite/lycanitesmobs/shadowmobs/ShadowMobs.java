@@ -46,7 +46,7 @@ public class ShadowMobs {
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
 		group = new GroupInfo(this, "Shadow Mobs")
-                .setDimensions("0").setBiomes("SPOOKY, DEAD, END").setDungeonThemes("NECRO, SHADOW, DUNGEON")
+                .setDimensions("0").setBiomes("END").setDungeonThemes("NECRO, SHADOW, DUNGEON")
                 .setEggName("shadowegg");
 		group.loadFromConfig();
 

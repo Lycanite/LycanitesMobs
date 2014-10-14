@@ -14,7 +14,6 @@ import lycanite.lycanitesmobs.api.item.ItemTreat;
 import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
-import lycanite.lycanitesmobs.api.spawning.SpawnTypeBlock;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
 import lycanite.lycanitesmobs.demonmobs.block.BlockHellfire;
 import lycanite.lycanitesmobs.demonmobs.dispenser.DispenserBehaviorDemonicLightning;
@@ -105,7 +104,7 @@ public class DemonMobs {
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("pinkymeatraw"));
 		OreDictionary.registerOre("listAllbeefraw", ObjectManager.getItem("pinkymeatraw"));
 		
-		ObjectManager.addItem("pinkymeatcooked", new ItemCustomFood("pinkymeatcooked", group, 7, 0.7F));
+		ObjectManager.addItem("pinkymeatcooked", new ItemCustomFood("pinkymeatcooked", group, 7, 0.7F).setPotionEffect(Potion.damageBoost.id, 10, 0, 1.0F).setAlwaysEdible());
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("pinkymeatcooked"));
 		OreDictionary.registerOre("listAllbeefcooked", ObjectManager.getItem("pinkymeatcooked"));
 		

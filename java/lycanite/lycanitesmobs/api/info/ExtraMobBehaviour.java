@@ -1,5 +1,6 @@
 package lycanite.lycanitesmobs.api.info;
 
+import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -31,6 +32,10 @@ public class ExtraMobBehaviour {
 	public boolean itemPickupOverride = false;
 	public int inventorySizeOverride = 0;
 	public double itemDropMultiplierOverride = 1;
+	
+	// ========== AI ==========
+	public boolean aiAttackPlayers = false;
+	public boolean aiDefendAnimals = false;
 	
 	
     // ==================================================
@@ -92,6 +97,23 @@ public class ExtraMobBehaviour {
     	if(nbtTagCompound.hasKey("ItemDropMultiplierOverride")) {
     		this.itemDropMultiplierOverride = nbtTagCompound.getDouble("ItemDropMultiplierOverride");
     	}
+    	
+    	// AI:
+    	if(nbtTagCompound.hasKey("AIAttackPlayers")) {
+    		this.aiAttackPlayers = nbtTagCompound.getBoolean("AIAttackPlayers");
+    		this.host.targetTasks.removeTask(this.host.aiTargetPlayer);
+    		if(this.aiAttackPlayers) {
+    			this.host.targetTasks.addTask(9, this.host.aiTargetPlayer);
+    		}
+    	}
+    	if(nbtTagCompound.hasKey("AIDefendAnimals")) {
+    		this.aiDefendAnimals = nbtTagCompound.getBoolean("AIDefendAnimals");
+    		this.host.targetTasks.removeTask(this.host.aiDefendAnimals);
+    		if(this.aiDefendAnimals) {
+    			this.host.targetTasks.addTask(10, this.host.aiDefendAnimals);
+    			LycanitesMobs.printDebug("", "Task Added!");
+    		}
+    	}
     }
     
     // ========== Write ==========
@@ -114,5 +136,9 @@ public class ExtraMobBehaviour {
     	nbtTagCompound.setBoolean("ItemPickupOverride", this.itemPickupOverride);
     	nbtTagCompound.setInteger("InventorySizeOverride", this.inventorySizeOverride);
     	nbtTagCompound.setDouble("ItemDropMultiplierOverride", this.itemDropMultiplierOverride);
+    	
+    	// AI:
+    	nbtTagCompound.setBoolean("AIAttackPlayers", this.aiAttackPlayers);
+    	nbtTagCompound.setBoolean("AIDefendAnimals", this.aiDefendAnimals);
     }
 }

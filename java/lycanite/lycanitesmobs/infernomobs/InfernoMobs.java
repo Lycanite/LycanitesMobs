@@ -13,7 +13,6 @@ import lycanite.lycanitesmobs.api.item.ItemTreat;
 import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
-import lycanite.lycanitesmobs.api.spawning.SpawnTypeBlock;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
 import lycanite.lycanitesmobs.infernomobs.block.BlockFluidPureLava;
 import lycanite.lycanitesmobs.infernomobs.block.BlockScorchfire;
@@ -91,7 +90,7 @@ public class InfernoMobs {
 		// ========== Create Items ==========
 		ObjectManager.addItem("infernoegg", new ItemInfernoEgg());
 		
-		ObjectManager.addItem("cephignismeatcooked", new ItemCustomFood("cephignismeatcooked", group, 6, 0.7F));
+		ObjectManager.addItem("cephignismeatcooked", new ItemCustomFood("cephignismeatcooked", group, 6, 0.7F).setPotionEffect(Potion.fireResistance.id, 20, 2, 1.0F).setAlwaysEdible());
 		ObjectLists.addItem("cookedfish", ObjectManager.getItem("cephignismeatcooked"));
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("cephignismeatcooked"));
 		OreDictionary.registerOre("listAllfishcooked", ObjectManager.getItem("cephignismeatcooked"));

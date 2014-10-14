@@ -190,4 +190,7 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
         super.isPotionApplicable(potionEffect);
         return true;
     }
+    
+    /** Returns true if this mob should be damaged by the sun. **/
+    public boolean daylightBurns() { return true; }
 }

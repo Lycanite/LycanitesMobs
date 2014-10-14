@@ -352,6 +352,7 @@ public class SpawnTypeBase {
         LycanitesMobs.printDebug("CustomSpawner", "Cycling through each possible spawn coordinate and attempting to spawn a mob there. Mob limit is " + this.mobLimit + " overall.");
         int mobsSpawned = 0;
         for(int[] coord : coords) {
+        	
             // Get EntityLiving to Spawn:
             SpawnInfo spawnInfo = this.getRandomMob(possibleSpawns, world);
             EntityLiving entityLiving = null;
@@ -738,6 +739,9 @@ public class SpawnTypeBase {
             		(!solid && block == insideBlock) ||
             		(solid && world.isSideSolid(originX, nextY, originZ, ForgeDirection.UP))
             )) {
+            	
+            	if(nextY + 1 > originY - minY && nextY + 1 < originY - maxY)
+            		continue;
             	
                 if(world.canBlockSeeTheSky(originX, nextY, originZ)) {
                 	if(solid) {

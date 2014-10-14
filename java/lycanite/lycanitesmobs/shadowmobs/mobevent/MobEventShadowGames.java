@@ -21,7 +21,18 @@ public class MobEventShadowGames extends MobEventBase {
     // ==================================================
     public void onStart(World world) {
         super.onStart(world);
-        world.setWorldTime(20000);
+    	long currentTime = world.provider.getWorldTime();
+    	
+    	int dayTime = 24000;
+    	int targetTime = 20000;
+    	
+    	long excessTime = currentTime % dayTime;
+    	int addedTime = dayTime;
+    	if(excessTime > targetTime) {
+    		targetTime += dayTime;
+    	}
+    	
+    	world.provider.setWorldTime(currentTime - excessTime + targetTime);
     }
 
 

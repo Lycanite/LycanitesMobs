@@ -96,7 +96,7 @@ public class JungleMobs {
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("concapedemeatraw"));
 		OreDictionary.registerOre("listAllchickenraw", ObjectManager.getItem("concapedemeatraw"));
 		
-		ObjectManager.addItem("concapedemeatcooked", new ItemCustomFood("concapedemeatcooked", group, 6, 0.7F));
+		ObjectManager.addItem("concapedemeatcooked", new ItemCustomFood("concapedemeatcooked", group, 6, 0.7F).setPotionEffect(Potion.jump.id, 10, 2, 1.0F).setAlwaysEdible());
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("concapedemeatcooked"));
 		OreDictionary.registerOre("listAllchickencooked", ObjectManager.getItem("concapedemeatcooked"));
 		

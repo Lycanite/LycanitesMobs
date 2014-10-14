@@ -13,7 +13,6 @@ import lycanite.lycanitesmobs.api.item.ItemTreat;
 import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
-import lycanite.lycanitesmobs.api.spawning.SpawnTypeBlock;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
 import lycanite.lycanitesmobs.plainsmobs.entity.EntityKobold;
 import lycanite.lycanitesmobs.plainsmobs.entity.EntityMaka;
@@ -84,7 +83,7 @@ public class PlainsMobs {
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("makameatraw"));
 		OreDictionary.registerOre("listAllporkraw", ObjectManager.getItem("makameatraw"));
 		
-		ObjectManager.addItem("makameatcooked", new ItemCustomFood("makameatcooked", group, 6, 0.7F));
+		ObjectManager.addItem("makameatcooked", new ItemCustomFood("makameatcooked", group, 6, 0.7F).setPotionEffect(Potion.field_76444_x.id, 10, 2, 1.0F).setAlwaysEdible());
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("makameatcooked"));
 		OreDictionary.registerOre("listAllporkcooked", ObjectManager.getItem("makameatcooked"));
 		

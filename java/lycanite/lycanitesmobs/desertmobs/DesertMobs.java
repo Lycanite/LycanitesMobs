@@ -94,7 +94,7 @@ public class DesertMobs {
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("joustmeatraw"));
 		OreDictionary.registerOre("listAllchickenraw", ObjectManager.getItem("joustmeatraw"));
 		
-		ObjectManager.addItem("joustmeatcooked", new ItemCustomFood("joustmeatcooked", group, 6, 0.7F));
+		ObjectManager.addItem("joustmeatcooked", new ItemCustomFood("joustmeatcooked", group, 6, 0.7F).setPotionEffect(Potion.moveSpeed.id, 10, 2, 1.0F).setAlwaysEdible());
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("joustmeatcooked"));
 		OreDictionary.registerOre("listAllchickencooked", ObjectManager.getItem("joustmeatcooked"));
 		

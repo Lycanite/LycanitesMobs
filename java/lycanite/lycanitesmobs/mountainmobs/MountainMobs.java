@@ -88,7 +88,7 @@ public class MountainMobs {
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("yalemeatraw"));
 		OreDictionary.registerOre("listAllmuttonraw", ObjectManager.getItem("yalemeatraw"));
 		
-		ObjectManager.addItem("yalemeatcooked", new ItemCustomFood("yalemeatcooked", group, 6, 0.7F));
+		ObjectManager.addItem("yalemeatcooked", new ItemCustomFood("yalemeatcooked", group, 6, 0.7F).setPotionEffect(Potion.digSpeed.id, 10, 2, 1.0F).setAlwaysEdible());
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("yalemeatcooked"));
 		OreDictionary.registerOre("listAllmuttoncooked", ObjectManager.getItem("yalemeatcooked"));
 		

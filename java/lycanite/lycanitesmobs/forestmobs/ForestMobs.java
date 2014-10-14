@@ -13,7 +13,6 @@ import lycanite.lycanitesmobs.api.item.ItemTreat;
 import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
-import lycanite.lycanitesmobs.api.spawning.SpawnTypeBlock;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
 import lycanite.lycanitesmobs.forestmobs.dispenser.DispenserBehaviorLifeDrain;
 import lycanite.lycanitesmobs.forestmobs.entity.EntityArisaur;
@@ -88,7 +87,7 @@ public class ForestMobs {
 		ObjectManager.addItem("arisaurmeatraw", rawMeat);
 		ObjectLists.addItem("vegetables", ObjectManager.getItem("arisaurmeatraw"));
 		
-		ObjectManager.addItem("arisaurmeatcooked", new ItemCustomFood("arisaurmeatcooked", group, 6, 0.7F));
+		ObjectManager.addItem("arisaurmeatcooked", new ItemCustomFood("arisaurmeatcooked", group, 6, 0.7F).setPotionEffect(Potion.field_76434_w.id, 10, 2, 1.0F).setAlwaysEdible()); // Health Boost
 		ObjectLists.addItem("vegetables", ObjectManager.getItem("arisaurmeatcooked"));
 		
 		ObjectManager.addItem("paleosalad", new ItemCustomFood("paleosalad", group, 6, 0.7F).setPotionEffect(Potion.field_76434_w.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16)); // Health Boost

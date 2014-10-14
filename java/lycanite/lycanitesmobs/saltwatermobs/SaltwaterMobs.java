@@ -75,7 +75,7 @@ public class SaltwaterMobs {
         ObjectLists.addItem("rawfish", ObjectManager.getItem("ikameatraw"));
         OreDictionary.registerOre("listAllfishraw", ObjectManager.getItem("ikameatraw"));
 
-        ObjectManager.addItem("ikameatcooked", new ItemCustomFood("ikameatcooked", group, 6, 0.7F));
+        ObjectManager.addItem("ikameatcooked", new ItemCustomFood("ikameatcooked", group, 6, 0.7F).setPotionEffect(Potion.waterBreathing.id, 20, 2, 1.0F).setAlwaysEdible());
         ObjectLists.addItem("cookedfish", ObjectManager.getItem("ikameatcooked"));
         OreDictionary.registerOre("listAllfishcooked", ObjectManager.getItem("ikameatcooked"));
 

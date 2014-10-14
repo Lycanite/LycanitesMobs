@@ -96,7 +96,7 @@ public class SwampMobs {
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("aspidmeatraw"));
 		OreDictionary.registerOre("listAllbeefraw", ObjectManager.getItem("aspidmeatraw"));
 		
-		ObjectManager.addItem("aspidmeatcooked", new ItemCustomFood("aspidmeatcooked", group, 6, 0.7F));
+		ObjectManager.addItem("aspidmeatcooked", new ItemCustomFood("aspidmeatcooked", group, 6, 0.7F).setPotionEffect(Potion.regeneration.id, 10, 2, 1.0F).setAlwaysEdible());
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("aspidmeatcooked"));
 		OreDictionary.registerOre("listAllbeefcooked", ObjectManager.getItem("aspidmeatcooked"));
 		

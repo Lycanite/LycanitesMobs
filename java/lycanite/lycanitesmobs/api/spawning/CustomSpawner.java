@@ -8,6 +8,7 @@ import java.util.Map;
 import net.minecraft.block.IGrowable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -143,7 +144,7 @@ public class CustomSpawner {
 		}
 		
 		// Crop Blocks:
-		if(event.block instanceof IGrowable) {
+		if(event.block instanceof IGrowable && event.block != Blocks.tallgrass) {
 			for(SpawnTypeBase spawnType : this.cropBreakSpawnTypes) {
 				spawnType.spawnMobs(0, world, x, y, z);
 			}

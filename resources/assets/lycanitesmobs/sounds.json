@@ -2,5 +2,9 @@
     "mobevent.bamstorm": {
         "category": "record",
         "sounds": [{"name": "mobevent/bamstorm", "stream": false}]
+    },
+    "effect.fear": {
+        "category": "ambient",
+        "sounds": [{"name": "effect/fear", "stream": false}]
     }
 }

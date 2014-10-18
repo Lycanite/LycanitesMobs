@@ -2,6 +2,7 @@ package lycanite.lycanitesmobs;
 
 import java.util.Map.Entry;
 
+import lycanite.lycanitesmobs.api.entity.EntityFear;
 import lycanite.lycanitesmobs.api.entity.EntityParticle;
 import lycanite.lycanitesmobs.api.entity.EntityPortal;
 import lycanite.lycanitesmobs.api.gui.GUITabBeastiary;
@@ -13,6 +14,7 @@ import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.render.RenderBlock;
 import lycanite.lycanitesmobs.api.render.RenderCreature;
+import lycanite.lycanitesmobs.api.render.RenderNone;
 import lycanite.lycanitesmobs.api.render.RenderParticle;
 import lycanite.lycanitesmobs.api.render.RenderProjectile;
 import net.minecraft.client.Minecraft;
@@ -76,6 +78,7 @@ public class ClientProxy extends CommonProxy {
 		
 		// Special Entites:
 		RenderingRegistry.registerEntityRenderingHandler(EntityPortal.class, new RenderProjectile());
+		RenderingRegistry.registerEntityRenderingHandler(EntityFear.class, new RenderNone());
     }
 	
 	// ========== Get Client Player Entity ==========

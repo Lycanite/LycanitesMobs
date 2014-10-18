@@ -93,6 +93,9 @@ public class MobInfo {
 	
 	/** A list of all the custom item drops this mob should drop, readily parsed from the config. To be safe, this list should be copied into the entity instance. **/
 	public List<DropRate> customDrops = new ArrayList<DropRate>();
+	
+	/** If true, this is not a true mob, for example the fear entity. It will also not be automatically registered. **/
+	public boolean dummy = false;
 
     // ========== Per Mob Settings With Varied Defaults ==========
     /** If true, this mob is allowed in Peaceful Difficulty. **/
@@ -214,6 +217,8 @@ public class MobInfo {
     //                 Load from Config
     // ==================================================
     public void loadFromConfigs() {
+    	if(this.dummy) return;
+    	
         // General Info:
         ConfigBase config = ConfigBase.getConfig(this.group, "general");
         config.setCategoryComment("Enabled Mobs", "Here you can completely disable any mob.");
@@ -385,6 +390,12 @@ public class MobInfo {
 	
 	public boolean isSummonable() {
 		return summonableCreatures.contains(this.name);
+	}
+
+	// ========== Dummy ==========
+	public MobInfo setDummy(boolean bool) {
+		this.dummy = bool;
+		return this;
 	}
 	
 	/*/ ========== Model ==========

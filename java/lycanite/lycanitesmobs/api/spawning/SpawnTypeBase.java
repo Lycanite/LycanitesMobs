@@ -199,6 +199,16 @@ public class SpawnTypeBase {
 		deathSpawner.forceSpawning = true;
 		deathSpawner.loadFromConfig();
         spawnTypes.add(deathSpawner);
+		
+		// Sleep Spawner:
+		SpawnTypeBase sleepSpawner = new SpawnTypeSleep("Sleep")
+				.setRate(0).setChance(0.1D).setRange(2).setBlockLimit(32).setMobLimit(1);
+		sleepSpawner.materials = new Material[] {Material.air};
+		sleepSpawner.ignoreBiome = true;
+		sleepSpawner.ignoreLight = true;
+		sleepSpawner.forceSpawning = true;
+		sleepSpawner.loadFromConfig();
+        spawnTypes.add(sleepSpawner);
         
         // Add Spawners to Custom Spawner Map:
         for(SpawnTypeBase spawnType : spawnTypes) {
@@ -312,12 +322,12 @@ public class SpawnTypeBase {
      * @param y Y position.
      * @param z Z position
      */
-    public void spawnMobs(long tick, World world, int x, int y, int z) {
+    public boolean spawnMobs(long tick, World world, int x, int y, int z) {
         // Check If Able to Spawn:
         if(this.getSpawnList() == null || this.getSpawnList().size() < 1 || !this.enabled)
-            return;
+            return false;
         if(!this.canSpawn(tick, world, x, y, z))
-            return;
+            return false;
         
         LycanitesMobs.printDebug("CustomSpawner", "~0==================== " + this.typeName + " Spawner ====================0~");
         LycanitesMobs.printDebug("CustomSpawner", "Attempting to spawn mobs.");
@@ -326,14 +336,14 @@ public class SpawnTypeBase {
         List<int[]> coords = this.getSpawnCoordinates(world, x, y, z);
         if(coords == null) {
             LycanitesMobs.printWarning("CustomSpawner", "This spawn type will never be able to find coordinates as it has no materials or blocks set, not even air.");
-            return;
+            return false;
         }
 
         // Count Coords:
         LycanitesMobs.printDebug("CustomSpawner", "Found " + coords.size() + "/" + this.blockLimit + " coordinates for mob spawning.");
         if(coords.size() <= 0) {
             LycanitesMobs.printDebug("CustomSpawner", "No valid coordinates were found, spawning cancelled.");
-            return;
+            return false;
         }
 
         // Order Coordinates:
@@ -358,7 +368,7 @@ public class SpawnTypeBase {
         List<SpawnInfo> possibleSpawns = this.getPossibleSpawns(coords.size(), targetBiomes);
         if(possibleSpawns == null || possibleSpawns.size() <= 0) {
             LycanitesMobs.printDebug("CustomSpawner", "No mobs are able to spawn, either not enough blocks, empty biome/dimension or all weights are 0. Spawning cancelled.");
-            return;
+            return false;
         }
 
         // Spawn Chosen Mobs:
@@ -391,7 +401,7 @@ public class SpawnTypeBase {
                 LycanitesMobs.printDebug("CustomSpawner", "Spawn Check Failed! Spawning blocked by Forge Event, this is caused another mod.");
                 continue;
             }
-
+            
             // Check if Valid Location
             boolean validLocation = true;
             if(!this.ignoreMobConditions)
@@ -408,7 +418,8 @@ public class SpawnTypeBase {
                 LycanitesMobs.printDebug("CustomSpawner", "Spawn Check Failed! The entity may not fit, there may be to many of it in the area, it may require specific lighting, etc.");
                 continue;
             }
-
+            
+            // Spawn The Mob:
             entityLiving.timeUntilPortal = entityLiving.getPortalCooldown();
             if(entityLiving instanceof EntityCreatureBase)
             	((EntityCreatureBase)entityLiving).forceNoDespawn = true;
@@ -423,6 +434,8 @@ public class SpawnTypeBase {
                 break;
         }
         LycanitesMobs.printDebug("CustomSpawner", "Spawning finished. Spawned " + mobsSpawned + " mobs.");
+        
+        return mobsSpawned > 0;
     }
 
 
@@ -453,7 +466,7 @@ public class SpawnTypeBase {
     //               Get Spawn Coordinates
     // ==================================================
     /**
-     * Searches for coordinates to spawn mobs exactly at. By default this uses te block lists.
+     * Searches for coordinates to spawn mobs exactly at. By default this uses the block lists.
      * @param world The world to spawn in.
      * @param x X position.
      * @param y Y position.

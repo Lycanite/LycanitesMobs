@@ -1,5 +1,6 @@
 package lycanite.lycanitesmobs;
 
+import lycanite.lycanitesmobs.api.entity.EntityFear;
 import lycanite.lycanitesmobs.api.network.MessageEntityPickedUp;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,6 +20,8 @@ public class ExtendedEntity implements IExtendedEntityProperties {
 	private int pickedUpByEntityID;
 	
 	private boolean playerFlyingSnapshot;
+	
+	public EntityFear fearEntity;
 	
 	// ==================================================
     //                   Get for Entity
@@ -62,7 +65,10 @@ public class ExtendedEntity implements IExtendedEntityProperties {
 	public void update() {
 		// Picked Up By Entity:
 		if(this.pickedUpByEntity != null) {
-			this.entity.setPosition(this.pickedUpByEntity.posX, this.pickedUpByEntity.posY, this.pickedUpByEntity.posZ);
+			double yPos = this.pickedUpByEntity.posY;
+			if(this.entity.worldObj.isRemote && entity instanceof EntityPlayer)
+				yPos = this.pickedUpByEntity.boundingBox.minY + entity.height;
+			this.entity.setPosition(this.pickedUpByEntity.posX, yPos, this.pickedUpByEntity.posZ);
 			//this.entity.setVelocity(this.pickedUpByEntity.motionX, this.pickedUpByEntity.motionY, this.pickedUpByEntity.motionZ);
 			this.entity.motionX = this.pickedUpByEntity.motionX;
 			this.entity.motionY = this.pickedUpByEntity.motionY;
@@ -80,6 +86,10 @@ public class ExtendedEntity implements IExtendedEntityProperties {
 			}
 		}
 		this.pickedUpByEntityID = (this.pickedUpByEntity != null ? this.pickedUpByEntity.getEntityId() : 0);
+		
+		// Fear Entity:
+		if(this.fearEntity != null && !this.fearEntity.isEntityAlive())
+			this.fearEntity = null;
 	}
 	
 	

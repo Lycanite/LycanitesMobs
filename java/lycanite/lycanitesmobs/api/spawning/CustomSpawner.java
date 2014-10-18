@@ -8,13 +8,15 @@ import java.util.Map;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayer.EnumStatus;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
-import net.minecraftforge.event.world.BlockEvent.BreakEvent;
+import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
+import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class CustomSpawner {
@@ -143,25 +145,25 @@ public class CustomSpawner {
 
 	
 	// ==================================================
-	//                 Block Break Event
+	//                 Harvest Drops Event
 	// ==================================================
     public List<SpawnTypeBase> oreBreakSpawnTypes = new ArrayList<SpawnTypeBase>();
     public List<SpawnTypeBase> cropBreakSpawnTypes = new ArrayList<SpawnTypeBase>();
 	/** This uses the block break events to spawn mobs around blocks when they are destroyed. **/
 	@SubscribeEvent
-	public void onBlockBreak(BreakEvent event) {
-		EntityPlayer player = event.getPlayer(); // Only fire when broken by a player.
-		if(player == null || event.block == null || event.world == null || event.world.isRemote || event.isCanceled())
+	public void onHarvestDrops(HarvestDropsEvent event) {
+		EntityPlayer player = event.harvester;
+		if(event.block == null || event.world == null || event.world.isRemote || event.isCanceled())
 			return;
-		if(player.capabilities.isCreativeMode) // No Spawning for Creative Players
+		if(player != null && player.capabilities.isCreativeMode) // No Spawning for Creative Players
 			return;
 		
-		// Spawn On Block Break:
+		// Spawn On Block Harvest:
 		World world = event.world;
 		int x = (int)event.x;
 		int y = (int)event.y;
 		int z = (int)event.z + 1;
-
+		
 		// Ore Blocks:
 		String blockName = event.block.getUnlocalizedName();
 		String[] blockNameParts = blockName.split("\\.");
@@ -188,7 +190,40 @@ public class CustomSpawner {
 
 	
 	// ==================================================
-	//               Lightning Strike Event
+	//                Player Use Bed Event
+	// ==================================================
+    public List<SpawnTypeSleep> sleepSpawnTypes = new ArrayList<SpawnTypeSleep>();
+	/** This uses the player sleep in bed event to spawn mobs. **/
+	@SubscribeEvent
+	public void onSleep(PlayerSleepInBedEvent event) {
+		EntityPlayer player = event.entityPlayer; // Only fire when used by a player.
+		if(player == null || event.isCanceled())
+			return;
+		
+		// Get Coords:
+		World world = player.worldObj;
+		int x = (int)event.x;
+		int y = (int)event.y;
+		int z = (int)event.z + 1;
+		
+		if(world == null || world.isRemote || world.provider.isDaytime())
+			return;
+		
+		// Run Spawners:
+		boolean interrupted = false;
+		for(SpawnTypeBase spawnType : this.sleepSpawnTypes) {
+			if(spawnType.spawnMobs(0, world, x, y, z))
+				interrupted = true;
+		}
+		
+		// Possible Interrupt:
+		if(interrupted)
+			event.result = EnumStatus.NOT_SAFE;
+	}
+
+	
+	// ==================================================
+	//              Lightning Strike Event
 	// ==================================================
     public List<SpawnTypeStorm> lightningStrikeTypes = new ArrayList<SpawnTypeStorm>();
 	/** This uses the lightning strike event to spawn mobs. **/

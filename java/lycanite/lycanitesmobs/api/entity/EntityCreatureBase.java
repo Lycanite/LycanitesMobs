@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import lycanite.lycanitesmobs.AssetManager;
+import lycanite.lycanitesmobs.ExtendedEntity;
 import lycanite.lycanitesmobs.GuiHandler;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
@@ -117,6 +118,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	public int currentBlockingTime = 0;
 	/** How long this mob should usually block for in ticks. **/
 	public int blockingTime = 100;
+	/** The entity picked up by this entity (if any). **/
+    public Entity pickupEntity;
 	
 	// Positions:
     /** A location used for mobs that stick around a certain home spot. **/
@@ -1818,6 +1821,36 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Returns the blocking defense multiplier, when blocking this mobs defense is multiplied by this, also if this mobs defense is below 1 it will be moved up to one. **/
     public int getBlockingMultiplier() {
     	return 4;
+    }
+    
+    // ========== Pickup ==========
+    public boolean canPickupEntity(Entity entity) {
+    	ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(entity);
+		if(extendedEntity == null)
+			return false;
+		return extendedEntity.pickedUpByEntity == null || extendedEntity.pickedUpByEntity instanceof EntityFear;
+    }
+    
+    public void pickupEntity(Entity entity) {
+    	ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(entity);
+		if(extendedEntity != null)
+			extendedEntity.setPickedUpByEntity(this);
+    	this.pickupEntity = entity;
+    }
+    
+    public Entity getPickupEntity() {
+    	return this.pickupEntity;
+    }
+    
+    public boolean hasPickupEntity() {
+    	return this.getPickupEntity() != null;
+    }
+    
+    public void dropPickupEntity() {
+    	ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(this.getPickupEntity());
+		if(extendedEntity != null)
+			extendedEntity.setPickedUpByEntity(null);
+    	this.pickupEntity = null;
     }
     
     

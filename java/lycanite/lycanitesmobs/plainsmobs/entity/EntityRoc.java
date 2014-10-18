@@ -29,7 +29,6 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
 public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter {
-    public Entity pickupEntity;
     public EntityAIAttackMelee attackAI = new EntityAIAttackMelee(this).setLongMemory(false);
 	
     // ==================================================
@@ -130,7 +129,7 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
     		return false;
     	
     	// Pickup:
-        if(this.canPickupEntity(target)) {// && this.getRNG().nextFloat() >= 0.6F) {
+        if(this.canPickupEntity(target)) {
         	this.pickupEntity(target);
         }
         
@@ -152,35 +151,6 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
   	// ==================================================
     @Override
     public boolean canFly() { return true; }
-    
-    public boolean canPickupEntity(Entity entity) {
-    	ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(entity);
-		if(extendedEntity == null)
-			return false;
-		return extendedEntity.pickedUpByEntity == null;
-    }
-    
-    public void pickupEntity(Entity entity) {
-    	ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(entity);
-		if(extendedEntity != null)
-			extendedEntity.setPickedUpByEntity(this);
-    	this.pickupEntity = entity;
-    }
-    
-    public Entity getPickupEntity() {
-    	return this.pickupEntity;
-    }
-    
-    public boolean hasPickupEntity() {
-    	return this.getPickupEntity() != null;
-    }
-    
-    public void dropPickupEntity() {
-    	ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(this.getPickupEntity());
-		if(extendedEntity != null)
-			extendedEntity.setPickedUpByEntity(null);
-    	this.pickupEntity = null;
-    }
     
     
     // ==================================================

@@ -2,6 +2,7 @@ package lycanite.lycanitesmobs;
 
 import lycanite.lycanitesmobs.api.command.CommandMain;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
+import lycanite.lycanitesmobs.api.entity.EntityFear;
 import lycanite.lycanitesmobs.api.entity.EntityPortal;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
@@ -162,6 +163,10 @@ public class LycanitesMobs {
 		// ========== Register Entities ==========
 		int specialEntityID = 0;
 		EntityRegistry.registerModEntity(EntityPortal.class, "summoningportal", specialEntityID++, instance, 64, 1, true);
+		MobInfo newMob = new MobInfo(group, "fear", EntityFear.class, 0x000000, 0x000000)
+			.setPeaceful(true).setSummonable(false).setSummonCost(0).setDungeonLevel(0).setDummy(true);
+		EntityRegistry.registerModEntity(EntityFear.class, "fear", specialEntityID++, instance, 64, 1, true);
+		AssetManager.addSound("effect_fear", group, "effect.fear");
 		
 		
 		// ========== Load All Mob Info and Spawn Infos from Configs ==========

@@ -30,15 +30,13 @@ public class SpawnTypeWater extends SpawnTypeBase {
      */
     @Override
     public List<int[]> getSpawnCoordinates(World world, int x, int y, int z) {
-    	List<int[]> blockCoords = null;
+    	List<int[]> blockCoords = new ArrayList<int[]>();
         int range = this.getRange(world);
         ChunkPosition originPos = new ChunkPosition(x, y, z);
 
         for(int i = 0; i < this.blockLimit; i++) {
         	ChunkPosition chunkCoords = this.getRandomWaterCoord(world, originPos, range);
         	if(chunkCoords != null) {
-        		if(blockCoords == null)
-        			blockCoords = new ArrayList<int[]>();
         		blockCoords.add(new int[] {chunkCoords.chunkPosX, chunkCoords.chunkPosY, chunkCoords.chunkPosZ});
         	}
         }

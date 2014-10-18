@@ -1,11 +1,13 @@
 package lycanite.lycanitesmobs;
 
+import lycanite.lycanitesmobs.api.entity.EntityFear;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.potion.Potion;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class PotionEffects {
 	
@@ -23,6 +25,10 @@ public class PotionEffects {
 				LycanitesMobs.printWarning("EffectsSetup", "Found a null potion effect on entity: " + entity + " all effects have been removed from this entity.");
 			}
 		}
+		
+		// Night Vision Stops Blindness:
+		if(entity.isPotionActive(Potion.blindness.id) && entity.isPotionActive(Potion.nightVision.id))
+			entity.removePotionEffect(Potion.blindness.id);
 		
 		boolean invulnerable = false;
 		if(entity instanceof EntityPlayer) {
@@ -46,6 +52,21 @@ public class PotionEffects {
 			if(!invulnerable && entity.isPotionActive(ObjectManager.getPotionEffect("Weight").getId())) {
 				if(entity.motionY > -0.2D)
 					entity.motionY = -0.2D;
+			}
+		}
+		
+		// ========== Fear ==========
+		if(ObjectManager.getPotionEffect("Fear") != null) {
+			if(!entity.worldObj.isRemote && !invulnerable && entity.isPotionActive(ObjectManager.getPotionEffect("Fear").getId())) {
+				ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(entity);
+				if(extendedEntity != null) {
+					if(extendedEntity.fearEntity == null) {
+						EntityFear fearEntity = new EntityFear(entity.worldObj);
+						fearEntity.setFearedEntity(entity);
+						entity.worldObj.spawnEntityInWorld(fearEntity);
+						extendedEntity.fearEntity = fearEntity;
+					}
+				}
 			}
 		}
 	}

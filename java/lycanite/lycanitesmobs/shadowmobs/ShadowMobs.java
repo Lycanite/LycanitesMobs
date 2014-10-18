@@ -103,7 +103,7 @@ public class ShadowMobs {
         newMob = new MobInfo(group, "phantom", EntityPhantom.class, 0x101519, 0xDD2233)
 		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1)
 		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("DEATH, MONSTER")
+		newMob.spawnInfo.setSpawnTypes("DEATH, SLEEP, MONSTER")
 				.setSpawnWeight(8).setAreaLimit(5).setGroupLimits(1, 2);
 		ObjectManager.addMob(newMob);
 		AssetManager.addSound("phantom_say_jon", group, "entity.phantom.say.jon");

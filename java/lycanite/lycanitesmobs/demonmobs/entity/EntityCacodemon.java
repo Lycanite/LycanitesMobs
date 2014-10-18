@@ -153,6 +153,7 @@ public class EntityCacodemon extends EntityCreatureTameable {
     		return false;
     	return super.isDamageEntityApplicable(entity);
     }
+    
     @Override
     public boolean isPotionApplicable(PotionEffect par1PotionEffect) {
         if(par1PotionEffect.getPotionID() == Potion.wither.id) return false;

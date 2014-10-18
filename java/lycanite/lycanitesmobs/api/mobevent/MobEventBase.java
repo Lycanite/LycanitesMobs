@@ -21,6 +21,7 @@ public class MobEventBase {
     public List<SpawnTypeBase> spawners = new ArrayList<SpawnTypeBase>();
     public GroupInfo group;
     public boolean forceSpawning = true;
+    public boolean forceNoDespawn = true;
 
     // Active:
     public int duration = 60 * 20;
@@ -37,6 +38,7 @@ public class MobEventBase {
 		ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "mobevents");
 		this.duration = config.getInt("Event Durations", this.name, this.duration);
         this.forceSpawning = config.getBool("Event Forced Spawning", this.name, this.forceSpawning);
+        this.forceNoDespawn = config.getBool("Event Forced Np Despawning", this.name, this.forceSpawning);
 	}
     
 	

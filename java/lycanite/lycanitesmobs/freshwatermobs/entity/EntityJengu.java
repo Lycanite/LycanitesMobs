@@ -175,4 +175,7 @@ public class EntityJengu extends EntityCreatureTameable implements IMob, IGroupW
     public boolean canBreatheUnderwater() {
         return true;
     }
+    
+    @Override
+    public boolean canBurn() { return false; }
 }

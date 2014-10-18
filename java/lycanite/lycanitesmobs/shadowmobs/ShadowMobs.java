@@ -1,5 +1,6 @@
 package lycanite.lycanitesmobs.shadowmobs;
 
+import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
@@ -11,11 +12,20 @@ import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
+import lycanite.lycanitesmobs.shadowmobs.block.BlockShadowfire;
+import lycanite.lycanitesmobs.shadowmobs.dispenser.DispenserBehaviorSpectralbolt;
 import lycanite.lycanitesmobs.shadowmobs.entity.EntityGrue;
+import lycanite.lycanitesmobs.shadowmobs.entity.EntityPhantom;
+import lycanite.lycanitesmobs.shadowmobs.entity.EntitySpectralbolt;
+import lycanite.lycanitesmobs.shadowmobs.item.ItemScepterSpectralbolt;
 import lycanite.lycanitesmobs.shadowmobs.item.ItemShadowEgg;
+import lycanite.lycanitesmobs.shadowmobs.item.ItemSpectralboltCharge;
 import lycanite.lycanitesmobs.shadowmobs.mobevent.MobEventShadowGames;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -23,12 +33,13 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = ShadowMobs.modid, name = ShadowMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid)
 public class ShadowMobs {
 	
 	public static final String modid = "shadowmobs";
-	public static final String name = "Lycanites Mountain Mobs";
+	public static final String name = "Lycanites Shadow Mobs";
 	public static GroupInfo group;
 	
 	// Instance:
@@ -58,8 +69,8 @@ public class ShadowMobs {
 		// ========== Create Items ==========
 		ObjectManager.addItem("shadowegg", new ItemShadowEgg());
 		
-		//ObjectManager.addItem("boulderblastcharge", new ItemBoulderBlastCharge());
-		//ObjectManager.addItem("boulderblastscepter", new ItemScepterBoulderBlast());
+		ObjectManager.addItem("spectralboltcharge", new ItemSpectralboltCharge());
+		ObjectManager.addItem("spectralboltscepter", new ItemScepterSpectralbolt());
 		
 		/*ObjectManager.addItem("yalemeatraw", new ItemCustomFood("yalemeatraw", group, 2, 0.5F).setPotionEffect(Potion.digSlowdown.id, 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("yalemeatraw"));
@@ -73,6 +84,11 @@ public class ShadowMobs {
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("peakskebab"));*/
 		
 		
+		// ========== Create Blocks ==========
+		AssetManager.addSound("shadowfire", group, "block.shadowfire");
+		ObjectManager.addBlock("shadowfire", new BlockShadowfire());
+		
+		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("shadowegg"), new DispenserBehaviorMobEggCustom());
 		MobInfo newMob;
@@ -83,10 +99,18 @@ public class ShadowMobs {
 		newMob.spawnInfo.setSpawnTypes("SHADOW, MONSTER")
 				.setSpawnWeight(8).setAreaLimit(5).setGroupLimits(1, 2);
 		ObjectManager.addMob(newMob);
+        
+        newMob = new MobInfo(group, "phantom", EntityPhantom.class, 0x101519, 0xDD2233)
+		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1)
+		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("DEATH, MONSTER")
+				.setSpawnWeight(8).setAreaLimit(5).setGroupLimits(1, 2);
+		ObjectManager.addMob(newMob);
+		AssetManager.addSound("phantom_say_jon", group, "entity.phantom.say.jon");
 
 		
 		// ========== Create Projectiles ==========
-		//ObjectManager.addProjectile("boulderblast", EntityBoulderBlast.class, ObjectManager.getItem("boulderblastcharge"), new DispenserBehaviorBoulderBlast());
+		ObjectManager.addProjectile("spectralbolt", EntitySpectralbolt.class, ObjectManager.getItem("spectralboltcharge"), new DispenserBehaviorSpectralbolt());
 		
 		
 		// ========== Register Models ==========
@@ -114,19 +138,22 @@ public class ShadowMobs {
 		
 		
 		// ========== Mob Events ==========
-        if(MobInfo.getFromName("grue") != null) {
-			MobEventBase mobEvent = new MobEventShadowGames("shadowgames", this.group);
-			SpawnTypeBase eventSpawner = new SpawnTypeSky("shadowgames")
-	            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-	        eventSpawner.materials = new Material[] {Material.air};
-	        eventSpawner.ignoreBiome = true;
-	        eventSpawner.ignoreLight = true;
-	        eventSpawner.forceSpawning = true;
-	        eventSpawner.ignoreMobConditions = true;
-	        eventSpawner.addSpawn(MobInfo.getFromName("grue").spawnInfo);
-	        mobEvent.addSpawner(eventSpawner);
-			MobEventManager.instance.addWorldEvent(mobEvent);
-        }
+		MobEventBase mobEvent = new MobEventShadowGames("shadowgames", this.group);
+		SpawnTypeBase eventSpawner = new SpawnTypeSky("shadowgames")
+            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
+        eventSpawner.materials = new Material[] {Material.air};
+        eventSpawner.ignoreBiome = true;
+        eventSpawner.ignoreLight = true;
+        eventSpawner.forceSpawning = true;
+        eventSpawner.ignoreMobConditions = true;
+        if(MobInfo.getFromName("grue") != null)
+        	eventSpawner.addSpawn(MobInfo.getFromName("grue").spawnInfo);
+        if(MobInfo.getFromName("phantom") != null)
+        	eventSpawner.addSpawn(MobInfo.getFromName("phantom").spawnInfo);
+        if(eventSpawner.hasSpawns())
+        	mobEvent.addSpawner(eventSpawner);
+        if(mobEvent.hasSpawners())
+        	MobEventManager.instance.addWorldEvent(mobEvent);
 		
 		
 		// ========== Crafting ==========
@@ -139,12 +166,13 @@ public class ShadowMobs {
 					ObjectManager.getItem("yalemeatcooked")
 				}
 			));*/
-		/*GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("boulderblastscepter"), 1, 0),
+        
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("spectralboltscepter"), 1, 0),
 				new Object[] { "CCC", "CRC", "CRC",
-				Character.valueOf('C'), ObjectManager.getItem("boulderblastcharge"),
+				Character.valueOf('C'), ObjectManager.getItem("spectralboltcharge"),
 				Character.valueOf('R'), Items.blaze_rod
-			}));*/
+			}));
 		
 		
 		// ========== Smelting ==========

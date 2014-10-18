@@ -5,12 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -103,6 +105,40 @@ public class CustomSpawner {
 		}
 		
 		entityUpdateTicks.put(player, entityUpdateTick + 1);
+	}
+	
+	
+	// ==================================================
+	//                 Entity Death Event
+	// ==================================================
+    public List<SpawnTypeDeath> deathSpawnTypes = new ArrayList<SpawnTypeDeath>();
+	
+	/** This uses the entity death events to spawn mobs when other mobs/players die. **/
+	@SubscribeEvent
+	public void onEntityDeath(LivingDeathEvent event) {
+		EntityLivingBase entity = event.entityLiving;
+		if(entity == null || entity.worldObj == null || entity.worldObj.isRemote || event.isCanceled())
+			return;
+		
+		// ========== Get Killer ==========
+		Entity killerEntity = event.source.getSourceOfDamage();
+		if(!(killerEntity instanceof EntityLivingBase))
+			return;
+		EntityLivingBase killer = (EntityLivingBase)killerEntity;
+		if(!(killer instanceof EntityPlayer) && !(entity instanceof EntityPlayer))
+			return;
+		
+		// ========== Get Coords ==========
+		World world = entity.worldObj;
+		int x = (int)entity.posX;
+		int y = (int)entity.posY;
+		int z = (int)entity.posZ;
+		
+		// ========== Pass To Spawners ==========
+		for(SpawnTypeDeath spawnType : this.deathSpawnTypes) {
+			if(spawnType.isValidKill(entity, killer))
+				spawnType.spawnMobs(0, world, x, y, z);
+		}
 	}
 
 	

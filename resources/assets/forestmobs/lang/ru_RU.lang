@@ -1,6 +1,10 @@
 # Group Info
 forestmobs.name=Лесные твари
 forestmobs.description=Обитают в самых разных лесах всех биомов. Живут в деревьях или растениях или сами являются таковыми.
+#
+# Mob Events
+mobevent.rootriot.name=Восстание корней
+#
 # Entites
 entity.forestmobs.ent.name=Энт
 entity.forestmobs.ent.description=Защитники лесов. Нападут на любого, кого посчитают угрозой, например, на вас. Лечатся в воде, вытягивают жизнь из противника во время боя.
@@ -26,4 +30,4 @@ item.shamblertreat.description=Покормите Шаркуна и получи
 item.lifedraincharge.name=Заряд Вампиризма
 item.lifedraincharge.description=Применяется для стрельбы высасывающими жизнь шарами. Можно использовать с раздатчиком.
 item.lifedrainscepter.name=Посох "Вампир"
-item.lifedrainscepter.description=Урон: Средний, Лазер, Вампиризм
+item.lifedrainscepter.description=Урон: Средний | Лазер | Вампиризм

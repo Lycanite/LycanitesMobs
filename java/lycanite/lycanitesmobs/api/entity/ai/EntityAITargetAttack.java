@@ -42,6 +42,11 @@ public class EntityAITargetAttack extends EntityAITarget {
     	return this;
     }
     
+    public EntityAITargetAttack setCheckSight(boolean bool) {
+    	this.checkSight = bool;
+    	return this;
+    }
+    
     public EntityAITargetAttack setTargetClass(Class setTargetClass) {
     	this.targetClass = setTargetClass;
     	return this;

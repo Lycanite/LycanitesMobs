@@ -2,13 +2,13 @@ package lycanite.lycanitesmobs.shadowmobs.entity;
 
 import java.util.HashMap;
 
+import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupShadow;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackRanged;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowOwner;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIStealth;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerAttack;
@@ -18,8 +18,8 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
+import lycanite.lycanitesmobs.arcticmobs.entity.EntityWendigo;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
@@ -29,33 +29,34 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupShadow {
+public class EntityPhantom extends EntityCreatureTameable implements IMob, IGroupShadow {
     
-	private int teleportTime = 60;
-	
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityGrue(World par1World) {
+    public EntityPhantom(World par1World) {
         super(par1World);
         
         // Setup:
-        this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 1;
+        this.attribute = EnumCreatureAttribute.UNDEAD;
+        this.defense = 0;
         this.experience = 5;
         this.spawnsInDarkness = true;
-        this.hasAttackSound = true;
+        this.hasAttackSound = false;
         
         this.setWidth = 0.8F;
         this.setHeight = 1.2F;
         this.setupMob();
         
+        // No Block Collision
+        this.noClip = true;
+        
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIStealth(this).setStealthTime(20).setStealthAttack(true).setStealthMove(true));
-        this.tasks.addTask(2, new EntityAIAttackMelee(this).setRate(20).setLongMemory(true));
+        this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(40).setRange(14.0F).setMinChaseDistance(0.75F).setChaseTime(-1));
         this.tasks.addTask(3, this.aiSit);
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
         this.tasks.addTask(8, new EntityAIWander(this));
@@ -63,9 +64,9 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
         this.tasks.addTask(11, new EntityAILookIdle(this));
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
-        this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
-        this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
-        this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
+        this.targetTasks.addTask(2, new EntityAITargetRevenge(this));
+        this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class).setCheckSight(false));
+        this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class).setCheckSight(false));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
     
@@ -73,19 +74,20 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 30D);
-		baseAttributes.put("movementSpeed", 0.28D);
-		baseAttributes.put("knockbackResistance", 0D);
+		baseAttributes.put("maxHealth", 15D);
+		baseAttributes.put("movementSpeed", 0.24D);
+		baseAttributes.put("knockbackResistance", 0.0D);
 		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 2D);
+		baseAttributes.put("attackDamage", 1D);
         super.applyEntityAttributes(baseAttributes);
     }
 	
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.ender_pearl), 0.5F).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.bone), 1.0F).setMaxAmount(5));
         this.drops.add(new DropRate(new ItemStack(Blocks.obsidian), 0.5F).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("SpectralboltCharge")), 0.25F).setMaxAmount(3));
 	}
 	
 	
@@ -97,16 +99,6 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
     public void onLivingUpdate() {
         super.onLivingUpdate();
         
-        // Random Target Teleporting:
-        if(!this.worldObj.isRemote && this.hasAttackTarget()) {
-	        if(this.teleportTime-- <= 0) {
-	        	this.teleportTime = 60 + this.getRNG().nextInt(40);
-        		this.playJumpSound();
-        		double[] teleportPosition = this.getFacingPosition(this.getAttackTarget(), -this.getAttackTarget().width - 1D, 0);
-        		this.setPosition(teleportPosition[0], teleportPosition[1], teleportPosition[2]);
-	        }
-        }
-        
         // Particles:
         if(this.worldObj.isRemote)
 	        for(int i = 0; i < 2; ++i) {
@@ -116,48 +108,41 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
     
     
     // ==================================================
-   	//                     Stealth
-   	// ==================================================
-    @Override
-    public boolean canStealth() {
-    	if(this.worldObj.isRemote) return false;
-		if(this.isMoving()) return false;
-    	return this.testLightLevel() <= 0;
-    }
-    
-    @Override
-    public void startStealth() {
-    	if(this.worldObj.isRemote) {
-            String particle = "witchMagic";
-            double d0 = this.rand.nextGaussian() * 0.02D;
-            double d1 = this.rand.nextGaussian() * 0.02D;
-            double d2 = this.rand.nextGaussian() * 0.02D;
-            for(int i = 0; i < 100; i++)
-            	this.worldObj.spawnParticle(particle, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + 0.5D + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d0, d1, d2);
-        }
-    	super.startStealth();
-    }
-    
-    
-    // ==================================================
     //                      Attacks
     // ==================================================
-    // ========== Melee Attack ==========
+    // ========== Set Attack Target ==========
     @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-    	if(!super.meleeAttack(target, damageScale))
+    public boolean canAttackClass(Class targetClass) {
+    	if(targetClass.isAssignableFrom(EntityWendigo.class))
     		return false;
+        return super.canAttackClass(targetClass);
+    }
+    
+    // ========== Ranged Attack ==========
+    @Override
+    public void rangedAttack(Entity target, float range) {
+    	// Type:
+    	EntitySpectralbolt projectile = new EntitySpectralbolt(this.worldObj, this);
+        projectile.setProjectileScale(0.5f);
     	
-    	// Leech:
-    	float leeching = this.getAttackDamage(damageScale);
-    	this.heal(leeching);
+    	// Y Offset:
+    	projectile.posY -= this.height / 4;
     	
-    	// Effects:
-        if(target instanceof EntityLivingBase) {
-        	((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.blindness.id, this.getEffectDuration(7), 0));
-        }
+    	// Accuracy:
+    	float accuracy = 1.0F * (this.getRNG().nextFloat() - 0.5F);
+    	
+    	// Set Velocities:
+        double d0 = target.posX - this.posX + accuracy;
+        double d1 = target.posY + (double)target.getEyeHeight() - 1.100000023841858D - projectile.posY + accuracy;
+        double d2 = target.posZ - this.posZ + accuracy;
+        float f1 = MathHelper.sqrt_double(d0 * d0 + d2 * d2) * 0.2F;
+        float velocity = 1.2F;
+        projectile.setThrowableHeading(d0, d1 + (double)f1, d2, velocity, 6.0F);
         
-        return true;
+        // Launch:
+        this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+        this.worldObj.spawnEntityInWorld(projectile);
+        super.rangedAttack(target, range);
     }
     
     
@@ -178,6 +163,12 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
    	//                     Immunities
    	// ==================================================
     @Override
+    public boolean isDamageTypeApplicable(String type) {
+    	if(type.equals("inWall")) return false;
+    	return super.isDamageTypeApplicable(type);
+    }
+    
+    @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
         if(potionEffect.getPotionID() == Potion.blindness.id) return false;
         if(ObjectManager.getPotionEffect("Fear") != null)
@@ -187,5 +178,22 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
     }
     
     /** Returns true if this mob should be damaged by the sun. **/
+    @Override
     public boolean daylightBurns() { return true; }
+    
+    
+    // ==================================================
+   	//                       Sounds
+   	// ==================================================
+    // ========== Idle ==========
+    /** Returns the sound to play when this creature is making a random ambient roar, grunt, etc. **/
+    @Override
+    protected String getLivingSound() {
+    	if(this.hasAttackTarget()) {
+    		if(this.getAttackTarget() instanceof EntityPlayer)
+    			if("Jbams".equals(((EntityPlayer)this.getAttackTarget()).getCommandSenderName())) // JonBams special sound!
+    				return AssetManager.getSound(this.mobInfo.name + "_say_jon");
+    	}
+    	return super.getLivingSound();
+    }
 }

@@ -1,3 +1,13 @@
+# ========== Events ==========
+event.started=%event% началось!
+event.finished=%event% закончилось!
+# %event% will be replaced with the name of the event, don't translate this!
+#
+# Mob Events
+mobevent.bamstorm.name=Бушующий шторм
+#
+#
+#
 # ========== Entites ==========
 entity.lycanitesmobs.summoningportal.name=Портал призыва
 #
@@ -91,6 +101,19 @@ message.pet.tamed=%creature% теперь приручен вами!
 message.pet.tamefail=%creature% хочет больше!
 # %creature% will be replaced with the name of the tamed creature, don't translate this!
 #
+#
+#
+# ========== Commands ==========
+lyc.command.invalid=Неверный параметр.
+lyc.command.mobevent.invalid=Неверный параметр, используйте: /lycanitesmobs mobevent [start <event name>, stop, list, enable, disable]> например /lycanitesmobs mobevent start hellsfury
+lyc.command.mobevent.start.invalid=Неверный параметр, используйте: mobevent start <event name> например mobevent start hellsfury
+lyc.command.mobevent.start.unknown=Неизвестное событие. Наберите /lycanitesmobs mobevent list для списка названий всех событий.
+lyc.command.mobevent.start.noworld=Объект с данным ID не найден в указанном измерении, укажите верный ID измерения.
+lyc.command.mobevent.start=Событие началось...
+lyc.command.mobevent.stop=Все события остановлены...
+lyc.command.mobevent.list=События:
+lyc.command.mobevent.enable=Случайные события включены.
+lyc.command.mobevent.disable=Случайные события отключены.
 #
 #
 # ========== Common ==========

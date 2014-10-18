@@ -1,9 +1,13 @@
 # Group Info
 plainsmobs.name=Твари равнин
 plainsmobs.description=Эти существа любят равнины, покрытые пышной зелёной травой.
+#
+# Mob Events
+mobevent.windstorm.name=Воздушная Буря
+#
 # Entites
 entity.plainsmobs.kobold.name=Кобольд
-entity.plainsmobs.kobold.description=Мелкие грызуны, не могущие устоять перед кражей! Убейте вора, чтобы получить обратно подобранные им предметы. Как правило, убегают от другие существ, но могут атаковать людей с маленьким запасом здоровья.
+entity.plainsmobs.kobold.description=Мелкие грызуны, не могущие устоять перед кражей! Убейте вора, чтобы получить обратно подобранные им предметы. Как правило, убегают от других существ, но могут атаковать людей с маленьким запасом здоровья.
 entity.plainsmobs.ventoraptor.name=Вентоящер
 entity.plainsmobs.ventoraptor.description=Ящеры, умеющие передвигаться с немыслимой скоростью. Приручаемые. Одни из самых быстрых ездовых питомцев.
 entity.plainsmobs.maka.name=Мака

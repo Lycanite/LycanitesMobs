@@ -8,12 +8,18 @@ mobevent.shadowgames.name=Shadow Games
 # Entites
 entity.shadowmobs.grue.name=Grue
 entity.shadowmobs.grue.description=When it is pitch black, you are likely to be eaten by a Grue so be careful when putting out that torch or drowning that lava! Grue will teleport behind their target and drain its health!
+entity.shadowmobs.phantom.name=Phantom
+entity.shadowmobs.phantom.description=Wrathful spirit elementals with a thirst for souls! Phantoms are attracted to death and sometimes mistake people who are asleep as dead! Their ranged attacks cause fear and spawn shadowfire!
 #
 # Items
 item.shadowspawn.name=Spawn
+item.spectralboltcharge.name=Spectral Bolt Charge
+item.spectralboltcharge.description=Use to throw a Spectral Bolt. Can also be fired from a dispenser.
+item.spectralboltscepter.name=Spectral Bolt Scepter
+item.spectralboltscepter.description=Medium Damage, Rapid Fire, Can Cause Fear, Places Shadowfire
 #
 # Blocks
-tile.shadowfire.name=Shadow Fire
-tile.shadowfire.description=A dark flame that damages and applies wither.
+tile.shadowfire.name=Shadowfire
+tile.shadowfire.description=A dark flame that damages and applies blindness.
 tile.shadowcloud.name=Shadow Cloud
 tile.shadowcloud.description=A dark cloud that blinds things that come into contact with a chance to cause fear.

@@ -149,6 +149,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	public boolean isTemporary = false;
     /** If this mob is temporary, this will count down to 0, once per tick. Once it hits 0, this creature will despawn. **/
 	public int temporaryDuration = 0;
+    /** If true, this mob will not despawn naturally regardless of other rules. **/
+	public boolean forceNoDespawn = false;
     
     // Movement:
     /** Whether the mob should use it's leash AI or not. **/
@@ -605,6 +607,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	if(this.mobInfo.spawnInfo.despawnForced)
     		return true;
     	if(!this.mobInfo.spawnInfo.despawnNatural)
+    		return false;
+    	if(this.forceNoDespawn)
     		return false;
     	if(this.isPersistant() || this.getLeashed() || this.hasCustomNameTag())
     		return false;

@@ -1,6 +1,10 @@
 # Group Info
 infernomobs.name=Твари Инферно
 infernomobs.description=Существа, рождённые лавой, могут быть найдены везде, где достаточно жарко для того, чтобы расплавились скалы!
+#
+# Mob Events
+mobevent.cinderfall.name=Цандерфолл
+#
 # Entites
 entity.infernomobs.cinder.name=Цандер
 entity.infernomobs.cinder.description=Злобные огненные духи, Цандеры, любят испепелять всё вокруг.
@@ -20,15 +24,15 @@ item.searingtaco.description=Такое острое, что даёт иммун
 item.embercharge.name=Тлеющий заряд
 item.embercharge.description=Можно метать огненные шарики или стрелять ими из раздатчика.
 item.emberscepter.name=Тлеющий посох
-item.emberscepter.description=Урон: Средний, Поджигает
+item.emberscepter.description=Урон: Средний | Поджигает
 item.magmacharge.name=Заряд магмы
 item.magmacharge.description=Стреляйте лавовым шаром! Можно использовать с раздатчиком.
 item.magmascepter.name=Магмовый посох
-item.magmascepter.description=Урон: Высокий, Зарядка, Поджигает, Размещает лаву
+item.magmascepter.description=Урон: Высокий | Требуется зарядка | Поджигает | Размещает лаву
 item.scorchfirecharge.name=Заряд Колючего огня
 item.scorchfirecharge.description=Можно стрелять шарами Колючего огня и использовать в раздатчике.
 item.scorchfirescepter.name=Посох "Колючий огонь"
-item.scorchfirescepter.description=Урон: Низкий, Скорость атаки: Высокая, Поджигает, Размещает Колючий огонь
+item.scorchfirescepter.description=Урон: Низкий | Скорость атаки: Высокая | Поджигает | Размещает Колючий огонь
 item.bucketpurelava.name=Ведро чистой лавы
 item.bucketpurelava.description=Ведро очищенной лавы, течёт немного быстрее обычной и в ней не появляются твари Инферно. Может бесконечно обновляться, как и вода.
 item.afrittreat.name=Пища для афритов

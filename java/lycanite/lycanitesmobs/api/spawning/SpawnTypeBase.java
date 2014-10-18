@@ -88,6 +88,9 @@ public class SpawnTypeBase {
 	/** If true, this type will ignore the mob spawn event being cancelled. This only overrides the forge event. **/
 	public boolean forceSpawning = true;
 	
+	/** If true, this type will force spawned mobs to not despawn naturally. **/
+	public boolean forceNoDespawn = true;
+	
 	
     // ==================================================
     //                  Load Spawn Types
@@ -186,6 +189,16 @@ public class SpawnTypeBase {
 		shadowSpawner.forceSpawning = true;
 		shadowSpawner.loadFromConfig();
         spawnTypes.add(shadowSpawner);
+		
+		// Death Spawner:
+		SpawnTypeBase deathSpawner = new SpawnTypeDeath("Death")
+				.setRate(0).setChance(0.03D).setRange(2).setBlockLimit(32).setMobLimit(1);
+		deathSpawner.materials = new Material[] {Material.air};
+		deathSpawner.ignoreBiome = true;
+		deathSpawner.ignoreLight = true;
+		deathSpawner.forceSpawning = true;
+		deathSpawner.loadFromConfig();
+        spawnTypes.add(deathSpawner);
         
         // Add Spawners to Custom Spawner Map:
         for(SpawnTypeBase spawnType : spawnTypes) {
@@ -397,6 +410,8 @@ public class SpawnTypeBase {
             }
 
             entityLiving.timeUntilPortal = entityLiving.getPortalCooldown();
+            if(entityLiving instanceof EntityCreatureBase)
+            	((EntityCreatureBase)entityLiving).forceNoDespawn = true;
             this.spawnEntity(world, entityLiving);
             if(!ForgeEventFactory.doSpecialSpawn(entityLiving, world, (float)coord[0], (float)coord[1], (float)coord[2]))
                 entityLiving.onSpawnWithEgg(null);
@@ -883,6 +898,7 @@ public class SpawnTypeBase {
     public SpawnTypeBase setMobEvent(MobEventBase mobEvent) {
         this.mobEvent = mobEvent;
         this.forceSpawning = mobEvent.forceSpawning;
+        this.forceNoDespawn = mobEvent.forceNoDespawn;
         return this;
     }
 

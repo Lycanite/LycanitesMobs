@@ -1,6 +1,10 @@
 # Group Info
 demonmobs.name=Твари Ада
 demonmobs.description=Ваши друзья прямо из огненных глубин Ада!
+#
+# Mob Events
+mobevent.hellsfury.name=Ярость Ада
+#
 # Entites
 entity.demonmobs.belph.name=Бельф
 entity.demonmobs.belph.description=Дикие аборигены Ада, Бельфы любят бросать огненные снаряды во врагов.
@@ -28,23 +32,23 @@ item.devillasagna.description=Мясное кушанье, заряжающее 
 item.pinkytreat.name=Пища для Пинки
 item.pinkytreat.description=Детёныши Пинки любят это.
 item.cacodemontreat.name=Пища для Злого духа
-item.cacodemontreat.description=Злые духи сойдут с ума за эту еду.
+item.cacodemontreat.description=Злые духи сделают всё, что угодно, за эту еду.
 item.doomfirecharge.name=Заряд Гибельного огня
 item.doomfirecharge.description=Подожгите что-нибудь Гибельным огнём или стреляйте им из раздатчика.
 item.doomfirescepter.name=Посох "Гибельный огонь"
-item.doomfirescepter.description=Урон: Средний, Скорость атаки: Быстрая, Поджигает, Размещает Гибельный огонь
+item.doomfirescepter.description=Урон: Средний | Скорость атаки: Быстрая | Поджигает | Размещает Гибельный огонь
 item.hellfirecharge.name=Заряд Адского огня
 item.hellfirecharge.description=Подожгите что-нибудь Адским огнём или стреляйте им из раздатчика.
 item.hellfirescepter.name=Посох "Адский огонь"
-item.hellfirescepter.description=Урон: Высокий, Зарядка, Поджигает, Размещает Адский огонь
+item.hellfirescepter.description=Урон: Высокий | Требуется зарядка | Поджигает | Размещает Адский огонь
 item.devilstarcharge.name=Заряд Звезды Дьявола
 item.devilstarcharge.description=Метайте эти звёзды вручную или стреляйте ими из раздатчика.
 item.devilstarscepter.name=Посох "Звезда Дьявола"
-item.devilstarscepter.description=Урон: Низкий, Скорость атаки: Очень быстрая
+item.devilstarscepter.description=Урон: Низкий | Скорость атаки: Очень быстрая
 item.demoniclightningcharge.name=Заряд Демонической молнии
 item.demoniclightningcharge.description=Метайте демонические разряды или стреляйте ими из раздатчика.
 item.demoniclightningscepter.name=Посох "Демоническая молния"
-item.demoniclightningscepter.description=Урон: Высокий, Зарядка, Накладывает Иссушение, Разбрасывает искры
+item.demoniclightningscepter.description=Урон: Высокий | Требуется зарядка | Накладывает Иссушение | Разбрасывает искры
 #
 # Blocks
 tile.hellfire.name=Адский огонь

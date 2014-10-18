@@ -1,6 +1,5 @@
 package lycanite.lycanitesmobs.api.info;
 
-import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -111,7 +110,6 @@ public class ExtraMobBehaviour {
     		this.host.targetTasks.removeTask(this.host.aiDefendAnimals);
     		if(this.aiDefendAnimals) {
     			this.host.targetTasks.addTask(10, this.host.aiDefendAnimals);
-    			LycanitesMobs.printDebug("", "Task Added!");
     		}
     	}
     }

@@ -1,6 +1,10 @@
 # Group Info
 desertmobs.name=Пустынные твари
 desertmobs.description=Рождённые сухими и горячими песками, эти существа обитают в биомах Пустыня и Столовые горы.
+#
+# Mob Events
+mobevent.marchofthegorgomites.name=Марш Горгомитов
+#
 # Entites
 entity.desertmobs.cryptzombie.name=Мумия
 entity.desertmobs.cryptzombie.description=Мумифицированные трупы, возрождённые песками. Они наносят такой же урон, как обычные зомби, но, в отличие от них, могут заразить голодом и не горят на солнце.
@@ -30,12 +34,12 @@ item.ambercake.description=Сладкий пирог со специями! Ус
 item.crusktreat.name=Пища для Краска
 item.crusktreat.description=Детёныши Красков любят это есть.
 item.erepedetreat.name=Пища для Эрепода
-item.erepedetreat.description=Эреподы нежны и любвеобильны из-за этой еды.
+item.erepedetreat.description=Эреподы нежны и любвеобильны благодаря этой еде.
 item.throwingscythe.name=Метательная коса
 item.throwingscythe.description=Изогнутое металлическое лезвие, которое можно метать или стрелять тройными зарядами из раздатчика.
 item.scythescepter.name=Посох "Коса"
-item.scythescepter.description=Урон: Средний, Пульсирующий строенный заряд
+item.scythescepter.description=Урон: Средний | Пульсирующий строенный заряд
 item.mudshotcharge.name=Заряд Грязевого выстрела
 item.mudshotcharge.description=Шар вибрирующей грязи. Можно метать или стрелять из раздатчика. Накладывает слабость.
 item.mudshotscepter.name=Посох "Грязевой выстрел"
-item.mudshotscepter.description=Урон: Средний, Скорость атаки: Быстрая, Накладывает слабость
+item.mudshotscepter.description=Урон: Средний | Скорость атаки: Быстрая | Накладывает слабость

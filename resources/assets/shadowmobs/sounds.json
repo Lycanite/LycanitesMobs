@@ -30,5 +30,37 @@
     "entity.grue.jump": {
         "category": "hostile",
         "sounds": [{"name": "entity/grue/jump", "stream": false}]
+    },
+    "entity.phantom.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/phantom/say", "stream": false}]
+    },
+    "entity.phantom.say.jon": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/phantom/say_jon", "stream": false}]
+    },
+    "entity.phantom.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/phantom/hurt", "stream": false}]
+    },
+    "entity.phantom.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/phantom/death", "stream": false}]
+    },
+    "entity.phantom.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/phantom/beg", "stream": false}]
+    },
+    "entity.phantom.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/phantom/tame", "stream": false}]
+    },
+    "projectile.spectralbolt": {
+        "category": "ambient",
+        "sounds": [{"name": "projectile/spectralbolt", "stream": false}]
+    },
+    "block.shadowfire": {
+        "category": "block",
+        "sounds": [{"name": "block/shadowfire", "stream": false}]
     }
 }

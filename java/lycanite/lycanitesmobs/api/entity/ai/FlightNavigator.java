@@ -71,7 +71,7 @@ public class FlightNavigator {
 			return true;
 		if(!this.host.canFly())
 			return false;
-		if(!this.host.worldObj.isAirBlock(targetPosition.posX, targetPosition.posY, targetPosition.posZ))
+		if(!this.host.worldObj.isAirBlock(targetPosition.posX, targetPosition.posY, targetPosition.posZ) && !this.host.noClip)
 			return false;
 		if(targetPosition.posY < 3)
 			return false;
@@ -81,7 +81,7 @@ public class FlightNavigator {
 	// ========== Is At Target Position ==========
 	public boolean atTargetPosition(){
 		if(targetPosition != null)
-			return this.host.getDistance(targetPosition.posX, targetPosition.posY, targetPosition.posZ) < 2;
+			return this.host.getDistance(targetPosition.posX, targetPosition.posY, targetPosition.posZ) < 0.75D;
 		return true;
 	}
 	

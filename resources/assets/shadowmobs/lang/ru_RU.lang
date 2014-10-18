@@ -1,0 +1,19 @@
+# Group Info
+shadowmobs.name=Тени
+shadowmobs.description=Из тёмных уголков мира приходят таинственные чудовища.
+#
+# Mob Events
+mobevent.shadowgames.name=Игры Теней
+#
+# Entites
+entity.shadowmobs.grue.name=Грю
+entity.shadowmobs.grue.description=Когда свет сменяется тьмой, вас легко могут съесть Грю, поэтому будьте осторожны, убирая факел или перекрывая лаву! Грю могут телепортироваться к своей цели и пить её жизнь!
+#
+# Items
+item.shadowspawn.name=Призвать существо - 
+#
+# Blocks
+tile.shadowfire.name=Пламя Теней
+tile.shadowfire.description=Тёмный огонь, наносящий урон и иссушающий.
+tile.shadowcloud.name=Облако Тьмы
+tile.shadowcloud.description=Ослепляющее облако, могущее вызвать эффект страха.

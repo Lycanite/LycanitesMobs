@@ -1,6 +1,10 @@
 # Group Info
 freshwatermobs.name=Речные твари
 freshwatermobs.description=Существа, созданные чистой водой, живут всюду, где она есть - в озёрах, реках и даже в тучах и дожде! 
+#
+# Mob Events
+mobevent.tsunami.name=Цунами
+#
 # Entites
 entity.freshwatermobs.jengu.name=Дженг
 entity.freshwatermobs.jengu.description=Водный дух, защитник чистоты воды. Атакует любого, кто покажется недостаточно чистым как физически, так и духовно.
@@ -12,4 +16,4 @@ item.freshwaterspawn.name=Призвать существо -
 item.aquapulsecharge.name=Заряд Биения воды
 item.aquapulsecharge.description=Можно метать заряды колдовской воды или же использовать в раздатчике.
 item.aquapulsescepter.name=Посох "Биение воды"
-item.aquapulsescepter.description=Урон: Низкий, Зарядка, Ослабляет, Размещает воду
+item.aquapulsescepter.description=Урон: Низкий | Требуется зарядка | Ослабляет | Размещает воду

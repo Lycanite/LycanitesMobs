@@ -1,6 +1,11 @@
 # Group Info
 junglemobs.name=Твари Тропиков
 junglemobs.description=Экзотические создания, обитающие в горячих и влажных биомах, таких, как Джунгли.
+#
+# Mob Events
+mobevent.poopparty.name=Вонючая вечеринка
+mobevent.theswarm.name=Рой
+#
 # Entites
 entity.junglemobs.geken.name=Геккон
 entity.junglemobs.geken.description=Ядовитая рептилия, превосходно умеющая прыгать.
@@ -12,6 +17,8 @@ entity.junglemobs.concapedesegment.name=Конкапод-миньон
 entity.junglemobs.concapedesegment.description=Странные жуки, умеющие соединяться друг с другом. Миньоны присоединяются к главным конкаподам сзади. Если убить главного конкапода, но при этом к нему прикреплены другие миньоны, первый из них станет главным конкаподом. Миньоны сами по себе беззащитны.
 entity.junglemobs.tarantula.name=Тарантула
 entity.junglemobs.tarantula.description=Прыгающие пауки. Отравляют. Оставляют за собой след из зелёной липкой паутины.
+entity.junglemobs.conba.name=Конба
+entity.junglemobs.conba.description=Вредные обезьяны, обожающие кидать свои экскременты! Эти экскременты вызывают замедление и головокружение при попадании в игрока, а также создают вонючее облако, вызывающее те же эффекты. Конба всегда держатся на расстоянии.
 #
 # Items
 item.junglespawn.name=Призвать существо - 
@@ -21,9 +28,15 @@ item.concapedemeatcooked.name=Приготовленное мясо конкап
 item.concapedemeatcooked.description=По вкусу как цыплёнок под соусом барбекю! Хотя и не похож на него.
 item.tropicalcurry.name=Тропический карри
 item.tropicalcurry.description=Взрыв экзотического вкуса! Прекрасно!
+item.poopcharge.name=Экскремент
+item.poopcharge.description=Очень воняет! Выбросьте!
+item.poopscepter.name=Посох 
+item.poopscepter.description=Урон: Низкий | Скорость атаки: Быстрая | Замедляет | Вызывает головокружение | Размещает Вонючее облако
 item.uvaraptortreat.name=Пища для ящеропавлина
 item.uvaraptortreat.description=Поможет, если вы захотите приручить собственного ящеропавлина!
 #
 # Blocks
 tile.quickweb.name=Зелёная паутина
 tile.quickweb.description=Зелёная паутина, пропадающая через некоторое время.
+tile.poopcloud.name=Вонючее облако
+tile.poopcloud.description=Дурно пахнущее облако, вызывающее головокружение и замедляющее!

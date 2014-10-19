@@ -57,7 +57,7 @@ public class ShadowMobs {
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
 		group = new GroupInfo(this, "Shadow Mobs")
-                .setDimensions("0").setBiomes("END").setDungeonThemes("NECRO, SHADOW, DUNGEON")
+				.setDimensionBlacklist("1,2,-100").setDimensionWhitelist(true).setBiomes("END").setDungeonThemes("NECRO, SHADOW, DUNGEON")
                 .setEggName("shadowegg");
 		group.loadFromConfig();
 
@@ -70,7 +70,7 @@ public class ShadowMobs {
 		ObjectManager.addItem("shadowegg", new ItemShadowEgg());
 		
 		ObjectManager.addItem("spectralboltcharge", new ItemSpectralboltCharge());
-		ObjectManager.addItem("spectralboltscepter", new ItemScepterSpectralbolt());
+		ObjectManager.addItem("spectralboltscepter", new ItemScepterSpectralbolt(), 200, 1, 1);
 		
 		/*ObjectManager.addItem("yalemeatraw", new ItemCustomFood("yalemeatraw", group, 2, 0.5F).setPotionEffect(Potion.digSlowdown.id, 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("yalemeatraw"));

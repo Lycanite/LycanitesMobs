@@ -44,6 +44,7 @@ public class ConfigBase {
             String configDirPath = LycanitesMobs.proxy.getMinecraftDir() + "/config/" + LycanitesMobs.modid;
             File configDir = new File(configDirPath);
             configDir.mkdir();
+            LycanitesMobs.printWarning("", "[Config] The current config is too old, resetting config now...");
             try {
                 FileUtils.cleanDirectory(configDir);
             } catch (IOException e) {

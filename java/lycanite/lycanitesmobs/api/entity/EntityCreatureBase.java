@@ -500,6 +500,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	}
     	if(world == null || world.provider == null || this.mobInfo == null || this.mobInfo.spawnInfo == null || this.mobInfo.spawnInfo.dimensionTypes == null)
     		return true;
+    	
+    	// Check Types:
 		for(String spawnDimensionType : this.mobInfo.spawnInfo.dimensionTypes) {
     		if("ALL".equalsIgnoreCase(spawnDimensionType)) {
     			return true;
@@ -516,19 +518,21 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	        			return world.provider.dimensionId > -2 && world.provider.dimensionId < 2;
 	        		}
             	}
-                for(int spawnDimension : this.mobInfo.group.dimensionIDs) {
+                for(int spawnDimension : this.mobInfo.group.dimensionBlacklist) {
                     if(world.provider.dimensionId == spawnDimension) {
-                        return true;
+                        return this.mobInfo.group.dimensionWhitelist;
                     }
                 }
             }
     	}
-    	for(int spawnDimension : this.mobInfo.spawnInfo.dimensionIDs) {
+		
+		// Check IDs:
+    	for(int spawnDimension : this.mobInfo.spawnInfo.dimensionBlacklist) {
     		if(world.provider.dimensionId == spawnDimension) {
-    			return true;
+    			return this.mobInfo.spawnInfo.dimensionWhitelist;
     		}
     	}
-        return false;
+        return !this.mobInfo.group.dimensionWhitelist;
     }
     
     // ========== Spawn Limit Check ==========

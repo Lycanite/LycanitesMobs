@@ -75,7 +75,7 @@ public class InfernoMobs {
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
 		group = new GroupInfo(this, "Inferno Mobs")
-                .setDimensions("ALL").setBiomes("ALL").setDungeonThemes("FIERY, NETHER, DUNGEON")
+				.setDimensionBlacklist("").setBiomes("ALL").setDungeonThemes("FIERY, NETHER, DUNGEON")
                 .setEggName("infernoegg");
 		group.loadFromConfig();
 
@@ -99,11 +99,11 @@ public class InfernoMobs {
 		ObjectLists.addItem("cookedfish", ObjectManager.getItem("searingtaco"));
 		
 		ObjectManager.addItem("embercharge", new ItemEmberCharge());
-		ObjectManager.addItem("emberscepter", new ItemScepterEmber());
+		ObjectManager.addItem("emberscepter", new ItemScepterEmber(), 200, 1, 1);
 		ObjectManager.addItem("magmacharge", new ItemMagmaCharge());
-		ObjectManager.addItem("magmascepter", new ItemScepterMagma());
+		ObjectManager.addItem("magmascepter", new ItemScepterMagma(), 200, 1, 1);
         ObjectManager.addItem("scorchfirecharge", new ItemScorchfireCharge());
-        ObjectManager.addItem("scorchfirescepter", new ItemScepterScorchfire());
+        ObjectManager.addItem("scorchfirescepter", new ItemScepterScorchfire(), 200, 1, 1);
 
 		ObjectManager.addItem("afrittreat", new ItemTreat("afrittreat", group));
 

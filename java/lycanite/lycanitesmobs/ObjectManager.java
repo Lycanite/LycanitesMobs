@@ -10,6 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.BehaviorProjectileDispense;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
@@ -71,6 +72,12 @@ public class ObjectManager {
 		if(currentGroup != null)
 			GameRegistry.registerItem(item, name, currentGroup.name);
         return item;
+	}
+
+	public static Item addItem(String name, Item item, int weight, int minChance, int maxChance) {
+		Utilities.addDungeonLoot(new ItemStack(item), minChance, maxChance, weight);
+		Utilities.addStrongholdLoot(new ItemStack(item), minChance, maxChance, Math.max(0, weight - 20));
+		return addItem(name, item);
 	}
 
 	// ========== Potion Effect ==========
@@ -164,11 +171,5 @@ public class ObjectManager {
 		mobName = mobName.toLowerCase();
 		if(!mobs.containsKey(mobName)) return null;
 		return mobs.get(mobName);
-	}
-
-	public static int[] getMobDimensions(String mobName) {
-		mobName = mobName.toLowerCase();
-		if(!mobs.containsKey(mobName)) return new int[0];
-		return mobs.get(mobName).spawnInfo.dimensionIDs;
 	}
 }

@@ -90,7 +90,7 @@ public class ArcticMobs {
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
 		group = new GroupInfo(this, "Arctic Mobs")
-                .setDimensions("0, 7").setBiomes("COLD, SNOWY, CONIFEROUS, -END").setDungeonThemes("FROZEN, MAGICAL, PARADISE")
+				.setDimensionBlacklist("-1,1").setBiomes("COLD, SNOWY, CONIFEROUS, -END").setDungeonThemes("FROZEN, MAGICAL, PARADISE")
                 .setEggName("arcticegg");
 		group.loadFromConfig();
 
@@ -114,13 +114,13 @@ public class ArcticMobs {
 		ObjectManager.addItem("frostyfur", new ItemFrostyFur());
 		
 		ObjectManager.addItem("frostboltcharge", new ItemFrostboltCharge());
-		ObjectManager.addItem("frostboltscepter", new ItemScepterFrostbolt());
+		ObjectManager.addItem("frostboltscepter", new ItemScepterFrostbolt(), 200, 1, 1);
 		ObjectManager.addItem("frostwebcharge", new ItemFrostwebCharge());
-		ObjectManager.addItem("frostwebscepter", new ItemScepterFrostweb());
+		ObjectManager.addItem("frostwebscepter", new ItemScepterFrostweb(), 200, 1, 1);
 		ObjectManager.addItem("tundracharge", new ItemTundraCharge());
-		ObjectManager.addItem("tundrascepter", new ItemScepterTundra());
+		ObjectManager.addItem("tundrascepter", new ItemScepterTundra(), 200, 1, 1);
         ObjectManager.addItem("icefirecharge", new ItemIcefireCharge());
-        ObjectManager.addItem("icefirescepter", new ItemScepterIcefire());
+        ObjectManager.addItem("icefirescepter", new ItemScepterIcefire(), 200, 1, 1);
 
 		ObjectManager.addItem("arixtreat", new ItemTreat("arixtreat", group));
 

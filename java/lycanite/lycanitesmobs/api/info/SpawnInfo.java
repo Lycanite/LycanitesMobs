@@ -41,11 +41,14 @@ public class SpawnInfo {
     /** A comma separated list of dimensions that this mob spawns in. As read from the config **/
     public String dimensionEntries = "GROUP";
 
-	/** The list of dimension IDs that this mob spawns in. **/
-	public int[] dimensionIDs;
+	/** A blacklist of dimension IDs (changes to whitelist if dimensionWhitelist is true) that this mob spawns in. **/
+	public int[] dimensionBlacklist;
 	
 	/** Extra dimension type info, can contain values such as ALL or VANILLA. **/
 	public String[] dimensionTypes;
+	
+	/** Controls the behaviour of how Dimension IDs are read. If true only listed Dimension IDs are allowed instead of denied. **/
+	public boolean dimensionWhitelist = false;
 
     // ========== Spawn Biomes ==========
     /** The list of biomes that this mob spawns in. As read from the config. **/
@@ -129,10 +132,11 @@ public class SpawnInfo {
 		this.creatureTypes = spawnTypeSet.creatureTypes;
         
 		// Spawn Dimensions:
-        config.setCategoryComment("Spawn Dimensions", "Sets which dimensions mobs spawn in. You may enter dimension IDs or tags such as: ALL, VANILLA or GROUP. Multiple entries should be comma separated.");
+        config.setCategoryComment("Spawn Dimensions", "Sets which dimensions mobs WILL NOT spawn in or if exclusive is set to false it will be waht they WILL spawn in. You may enter dimension IDs or tags such as: ALL, VANILLA or GROUP. Multiple entries should be comma separated.");
         SpawnDimensionSet spawnDimensions = config.getDimensions("Spawn Dimensions", this.getCfgName("Spawn Dimensions"), this.dimensionEntries);
-        this.dimensionIDs = spawnDimensions.dimensionIDs;
+        this.dimensionBlacklist = spawnDimensions.dimensionIDs;
         this.dimensionTypes = spawnDimensions.dimensionTypes;
+        this.dimensionWhitelist = config.getBool("Spawn Dimensions", this.getCfgName("Spawn Dimension ID Whitelist"), this.dimensionWhitelist);
 
         // Spawn Biomes:
 		config.setCategoryComment("Spawn Biomes", "Sets which biomes this mob spawns in using Biome Tags. Multiple entries should be comma separated and can be subtractive if provided with a - in front.");
@@ -212,7 +216,7 @@ public class SpawnInfo {
 			}
 			LycanitesMobs.printDebug("MobSetup", "Biomes: " + biomesList);
 			String dimensionsList = "";
-			for(int dimensionID : this.dimensionIDs) {
+			for(int dimensionID : this.dimensionBlacklist) {
 				if(!"".equals(dimensionsList))
 					dimensionsList += ", ";
 				dimensionsList += Integer.toString(dimensionID);
@@ -222,7 +226,7 @@ public class SpawnInfo {
 					dimensionsList += ", ";
 				dimensionsList += dimensionType;
 			}
-			LycanitesMobs.printDebug("MobSetup", "Dimensions: " + dimensionsList);
+			LycanitesMobs.printDebug("MobSetup", "Dimensions (" + (this.dimensionWhitelist ? "Whitelist" : "Blacklist") + "): " + dimensionsList);
 		}
 		else
 			LycanitesMobs.printDebug("MobSetup", "Mob Spawn Not Added: The spawning of this mob (or all mobs) must be disabled or this mobs spawn weight or max group size is 0.");

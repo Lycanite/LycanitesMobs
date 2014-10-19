@@ -49,17 +49,22 @@ public class EntityConba extends EntityCreatureTameable implements IMob {
         
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(30).setRange(16.0F).setMinChaseDistance(10.0F).setChaseTime(-1));
-        this.tasks.addTask(3, this.aiSit);
-        this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
-        this.tasks.addTask(5, new EntityAIAvoid(this).setNearSpeed(1.3D).setFarSpeed(1.0D).setNearDistance(5.0D).setFarDistance(16.0D));
+        this.tasks.addTask(2, new EntityAIAvoid(this).setNearSpeed(1.3D).setFarSpeed(1.0D).setNearDistance(5.0D).setFarDistance(9.0D));
+        this.tasks.addTask(3, new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(30).setRange(16.0F).setMinChaseDistance(10.0F).setChaseTime(-1));
+        this.tasks.addTask(4, this.aiSit);
+        this.tasks.addTask(5, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
         this.tasks.addTask(6, new EntityAIWander(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
-        this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
+        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
+        /*this.targetTasks.addTask(4, new EntityAITargetAvoid(this).setTargetClass(EntityPlayer.class));
+        this.targetTasks.addTask(4, new EntityAITargetAvoid(this).setTargetClass(IGroupHunter.class));
+        this.targetTasks.addTask(4, new EntityAITargetAvoid(this).setTargetClass(IGroupPredator.class));
+        this.targetTasks.addTask(4, new EntityAITargetAvoid(this).setTargetClass(IGroupAlpha.class));
+        this.targetTasks.addTask(5, new EntityAITargetAvoid(this).setTargetClass(EntityVillager.class));*/
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
     
@@ -91,10 +96,6 @@ public class EntityConba extends EntityCreatureTameable implements IMob {
     public void onLivingUpdate() {
         super.onLivingUpdate();
         
-        // Avoid Attack Target:
-        if(this.getAttackTarget() != this.getAvoidTarget())
-        	this.setAvoidTarget(this.getAttackTarget());
-        
         // Random Leaping:
         if(this.onGround && !this.worldObj.isRemote) {
         	if(this.hasAvoidTarget()) {
@@ -107,6 +108,18 @@ public class EntityConba extends EntityCreatureTameable implements IMob {
         	}
         }
     }
+	
+	// ========== AI Update ==========
+	@Override
+    public void updateAITasks() {
+        // Avoid Attack Target:
+        if(!this.worldObj.isRemote) {
+	        if(this.getAttackTarget() != null && this.getAttackTarget() != this.getAvoidTarget())
+	        	this.setAvoidTarget(this.getAttackTarget());
+        }
+		
+        super.updateAITasks();
+	}
     
     
     // ==================================================

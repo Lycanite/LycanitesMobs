@@ -69,7 +69,7 @@ public class MountainMobs {
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
 		group = new GroupInfo(this, "Mountain Mobs")
-                .setDimensions("0").setBiomes("MOUNTAIN").setDungeonThemes("MOUNTAIN, WASTELAND, DUNGEON")
+				.setDimensionBlacklist("-1,1").setBiomes("MOUNTAIN").setDungeonThemes("MOUNTAIN, WASTELAND, DUNGEON")
                 .setEggName("mountainegg");
 		group.loadFromConfig();
 
@@ -82,7 +82,7 @@ public class MountainMobs {
 		ObjectManager.addItem("mountainegg", new ItemMountainEgg());
 		
 		ObjectManager.addItem("boulderblastcharge", new ItemBoulderBlastCharge());
-		ObjectManager.addItem("boulderblastscepter", new ItemScepterBoulderBlast());
+		ObjectManager.addItem("boulderblastscepter", new ItemScepterBoulderBlast(), 200, 1, 1);
 		
 		ObjectManager.addItem("yalemeatraw", new ItemCustomFood("yalemeatraw", group, 2, 0.5F).setPotionEffect(Potion.digSlowdown.id, 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("yalemeatraw"));

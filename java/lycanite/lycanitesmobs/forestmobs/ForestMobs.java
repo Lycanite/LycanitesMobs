@@ -71,7 +71,7 @@ public class ForestMobs {
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
 		group = new GroupInfo(this, "Forest Mobs")
-                .setDimensions("0, 7").setBiomes("FOREST, -MOUNTAIN").setDungeonThemes("FOREST, MAGICAL, PARADISE")
+				.setDimensionBlacklist("-1,1").setBiomes("FOREST, -MOUNTAIN").setDungeonThemes("FOREST, MAGICAL, PARADISE")
                 .setEggName("forestegg");
 		group.loadFromConfig();
 
@@ -96,7 +96,7 @@ public class ForestMobs {
 		ObjectManager.addItem("shamblertreat", new ItemTreat("shamblertreat", group));
 
         ObjectManager.addItem("lifedraincharge", new ItemLifeDrainCharge());
-        ObjectManager.addItem("lifedrainscepter", new ItemScepterLifeDrain());
+        ObjectManager.addItem("lifedrainscepter", new ItemScepterLifeDrain(), 200, 1, 1);
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("forestegg"), new DispenserBehaviorMobEggCustom());

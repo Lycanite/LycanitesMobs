@@ -55,7 +55,7 @@ public class FreshwaterMobs {
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
 		group = new GroupInfo(this, "Freshwater Mobs")
-                .setDimensions("0").setBiomes("ALL, -OCEAN, -BEACH").setDungeonThemes("WATER")
+				.setDimensionBlacklist("-1,1").setBiomes("ALL, -OCEAN, -BEACH").setDungeonThemes("WATER")
                 .setEggName("freshwateregg");
 		group.loadFromConfig();
 
@@ -70,7 +70,7 @@ public class FreshwaterMobs {
             rawFoodEffectID = ObjectManager.getPotionEffect("penetration").getId();
 
         ObjectManager.addItem("aquapulsecharge", new ItemAquaPulseCharge());
-        ObjectManager.addItem("aquapulsescepter", new ItemScepterAquaPulse());
+        ObjectManager.addItem("aquapulsescepter", new ItemScepterAquaPulse(), 200, 1, 1);
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("freshwateregg"), new DispenserBehaviorMobEggCustom());

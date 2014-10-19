@@ -82,7 +82,7 @@ public class SwampMobs {
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
 		group = new GroupInfo(this, "Swamp Mobs")
-                .setDimensions("0, 7").setBiomes("SWAMP, SPOOKY").setDungeonThemes("SWAMP, DUNGEON, SHADOW")
+				.setDimensionBlacklist("").setBiomes("SWAMP, SPOOKY").setDungeonThemes("SWAMP, DUNGEON, SHADOW")
                 .setEggName("swampegg");
 		group.loadFromConfig();
 
@@ -107,8 +107,8 @@ public class SwampMobs {
 		ObjectManager.addItem("eyewigtreat", new ItemTreat("eyewigtreat", group));
 		
 		ObjectManager.addItem("poisongland", new ItemPoisonGland());
-		ObjectManager.addItem("poisonrayscepter", new ItemScepterPoisonRay());
-		ObjectManager.addItem("venomshotscepter", new ItemScepterVenomShot());
+		ObjectManager.addItem("poisonrayscepter", new ItemScepterPoisonRay(), 200, 1, 1);
+		ObjectManager.addItem("venomshotscepter", new ItemScepterVenomShot(), 200, 1, 1);
 		
 		// ========== Create Blocks ==========
 		AssetManager.addSound("poisoncloud", group, "block.poisoncloud");

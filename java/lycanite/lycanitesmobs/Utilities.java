@@ -4,13 +4,32 @@ import java.util.HashSet;
 import java.util.List;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
+import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ChestGenHooks;
 
 public class Utilities {
     
+	// ==================================================
+  	//                    Dungeon Loot
+  	// ==================================================
+	public static void addDungeonLoot(ItemStack itemStack, int minChance, int maxChance, int weight) {
+		ChestGenHooks.addItem(ChestGenHooks.DUNGEON_CHEST, new WeightedRandomChestContent(itemStack, minChance, maxChance, weight));
+		ChestGenHooks.addItem(ChestGenHooks.MINESHAFT_CORRIDOR, new WeightedRandomChestContent(itemStack, minChance, maxChance, weight));
+		ChestGenHooks.addItem(ChestGenHooks.PYRAMID_DESERT_CHEST, new WeightedRandomChestContent(itemStack, minChance, maxChance, weight));
+		ChestGenHooks.addItem(ChestGenHooks.PYRAMID_JUNGLE_CHEST, new WeightedRandomChestContent(itemStack, minChance, maxChance, weight));
+	}
+
+	public static void addStrongholdLoot(ItemStack itemStack, int minChance, int maxChance, int weight) {
+		ChestGenHooks.addItem(ChestGenHooks.STRONGHOLD_CORRIDOR, new WeightedRandomChestContent(itemStack, minChance, maxChance, weight));
+		ChestGenHooks.addItem(ChestGenHooks.STRONGHOLD_LIBRARY, new WeightedRandomChestContent(itemStack, minChance, maxChance, weight));
+		ChestGenHooks.addItem(ChestGenHooks.STRONGHOLD_CROSSING, new WeightedRandomChestContent(itemStack, minChance, maxChance, weight));
+	}
+	
 	
 	// ==================================================
   	//                      Raytrace

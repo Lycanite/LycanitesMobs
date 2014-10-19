@@ -86,7 +86,7 @@ public class DemonMobs {
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
 		group = new GroupInfo(this, "Demon Mobs")
-                .setDimensions("-1").setBiomes("NETHER").setDungeonThemes("NETHER, FIERY, DUNGEON, SHADOW")
+                .setDimensionBlacklist("-1").setDimensionWhitelist(true).setBiomes("NETHER").setDungeonThemes("NETHER, FIERY, DUNGEON, SHADOW")
                 .setEggName("demonegg");
 		group.loadFromConfig();
 
@@ -114,10 +114,10 @@ public class DemonMobs {
 		ObjectManager.addItem("pinkytreat", new ItemTreat("pinkytreat", group));
 		ObjectManager.addItem("cacodemontreat", new ItemTreat("cacodemontreat", group));
 		
-		ObjectManager.addItem("doomfirescepter", new ItemScepterDoomfire());
-		ObjectManager.addItem("hellfirescepter", new ItemScepterHellfire());
-		ObjectManager.addItem("devilstarscepter", new ItemScepterDevilstar());
-		ObjectManager.addItem("demoniclightningscepter", new ItemScepterDemonicLightning());
+		ObjectManager.addItem("doomfirescepter", new ItemScepterDoomfire(), 200, 1, 1);
+		ObjectManager.addItem("hellfirescepter", new ItemScepterHellfire(), 200, 1, 1);
+		ObjectManager.addItem("devilstarscepter", new ItemScepterDevilstar(), 200, 1, 1);
+		ObjectManager.addItem("demoniclightningscepter", new ItemScepterDemonicLightning(), 200, 1, 1);
 		
 		// ========== Create Blocks ==========
 		AssetManager.addSound("hellfire", group, "block.hellfire");

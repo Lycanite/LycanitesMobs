@@ -59,14 +59,19 @@ public class EntityAIAvoid extends EntityAIBase {
  	// ==================================================
     public boolean shouldExecute() {
         this.avoidTarget = this.host.getAvoidTarget();
-        if(this.avoidTarget == null)
+        if(this.avoidTarget == null) {
         	return false;
+        }
     	
         if(!this.avoidTarget.isEntityAlive())
             return false;
     	
         if(this.targetClass != null && !this.targetClass.isAssignableFrom(this.avoidTarget.getClass()))
             return false;
+
+        if(this.host.getDistanceSqToEntity(this.avoidTarget) >= this.farDistance) {
+        	return false;
+        }
         
         Vec3 vec3 = RandomPositionGenerator.findRandomTargetAwayFrom(this.host, 24, 10, Vec3.createVectorHelper(this.avoidTarget.posX, this.avoidTarget.posY, this.avoidTarget.posZ));
         if(vec3 == null)

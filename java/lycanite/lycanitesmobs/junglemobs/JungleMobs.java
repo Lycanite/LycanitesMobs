@@ -80,7 +80,7 @@ public class JungleMobs {
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
 		group = new GroupInfo(this, "Jungle Mobs")
-                .setDimensions("0").setBiomes("JUNGLE").setDungeonThemes("JUNGLE, DUNGEON, URBAN")
+				.setDimensionBlacklist("-1,1").setBiomes("JUNGLE").setDungeonThemes("JUNGLE, DUNGEON, URBAN")
                 .setEggName("jungleegg");
 		group.loadFromConfig();
 		
@@ -104,7 +104,7 @@ public class JungleMobs {
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("tropicalcurry"));
 		
 		ObjectManager.addItem("poopcharge", new ItemPoopCharge());
-		ObjectManager.addItem("poopscepter", new ItemScepterPoop());
+		ObjectManager.addItem("poopscepter", new ItemScepterPoop(), 200, 1, 1);
 
 		ObjectManager.addItem("uvaraptortreat", new ItemTreat("uvaraptortreat", group));
 

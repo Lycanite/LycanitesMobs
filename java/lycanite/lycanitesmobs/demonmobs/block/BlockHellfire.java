@@ -120,7 +120,7 @@ public class BlockHellfire extends BlockBase {
         }
         
         // Random Chance of Fizzling Out (Uses metadata):
-        if(!onFireFuel && !this.canBlockBurn(world, x, y - 1, z, ForgeDirection.UP) && metadata == 15 && random.nextInt(4) == 0) {
+        if(!onFireFuel && !this.canBlockBurn(world, x, y - 1, z, ForgeDirection.UP) && metadata == 15 && random.nextInt(6) == 0) {
             world.setBlockToAir(x, y, z);
             return;
         }
@@ -130,7 +130,7 @@ public class BlockHellfire extends BlockBase {
         byte humdity = 0;
         if(humid)
         	humdity = -50;
-        int burnChance = 150;
+        int burnChance = 50;
         int burnChanceSide = burnChance + 50;
         this.tryCatchFire(world, x + 1, y, z, burnChanceSide + humdity, random, metadata, ForgeDirection.WEST );
         this.tryCatchFire(world, x - 1, y, z, burnChanceSide + humdity, random, metadata, ForgeDirection.EAST );
@@ -138,33 +138,33 @@ public class BlockHellfire extends BlockBase {
         this.tryCatchFire(world, x, y + 1, z, burnChance + humdity, random, metadata, ForgeDirection.DOWN );
         this.tryCatchFire(world, x, y, z - 1, burnChanceSide + humdity, random, metadata, ForgeDirection.SOUTH);
         this.tryCatchFire(world, x, y, z + 1, burnChanceSide + humdity, random, metadata, ForgeDirection.NORTH);
+        
+        for(int targetX = x - 1; targetX <= x + 1; ++targetX) {
+            for(int targetZ = z - 1; targetZ <= z + 1; ++targetZ) {
+                for(int targetY = y - 1; targetY <= y + 4; ++targetY) {
+                    if(targetX != x || targetY != y || targetZ != z) {
+                        int fireResistance = 100;
 
-        for(int i1 = x - 1; i1 <= x + 1; ++i1) {
-            for(int j1 = z - 1; j1 <= z + 1; ++j1) {
-                for(int k1 = y - 1; k1 <= y + 4; ++k1) {
-                    if(i1 != x || k1 != y || j1 != z) {
-                        int l1 = 100;
-
-                        if(k1 > y + 1) {
-                            l1 += (k1 - (y + 1)) * 100;
+                        if(targetY > y + 1) {
+                        	fireResistance += (targetY - (y + 1)) * 100;
                         }
 
-                        int i2 = this.getChanceOfNeighborsEncouragingFire(world, i1, k1, j1);
+                        int fireSpread = this.getChanceOfNeighborsEncouragingFire(world, targetX, targetY, targetZ);
 
-                        if(i2 > 0) {
-                            int j2 = (i2 + 40 + world.difficultySetting.getDifficultyId() * 7) / (metadata + 30);
-
+                        if(fireSpread > 0) {
+                            int fireChance = (fireSpread + 10 + world.difficultySetting.getDifficultyId() * 7) / (metadata + 30);
+                            
                             if(humid)
-                                j2 /= 2;
-
-                            if(j2 > 0 && random.nextInt(l1) <= j2 && (!world.isRaining() || !world.canLightningStrikeAt(i1, k1, j1)) && !world.canLightningStrikeAt(i1 - 1, k1, z) && !world.canLightningStrikeAt(i1 + 1, k1, j1) && !world.canLightningStrikeAt(i1, k1, j1 - 1) && !world.canLightningStrikeAt(i1, k1, j1 + 1)) {
+                            	fireChance /= 2;
+                            
+                            if(fireChance > 0 && random.nextInt(fireResistance) <= fireChance && (!world.isRaining() || !world.canLightningStrikeAt(targetX, targetY, targetZ)) && !world.canLightningStrikeAt(targetX - 1, targetY, z) && !world.canLightningStrikeAt(targetX + 1, targetY, targetZ) && !world.canLightningStrikeAt(targetX, targetY, targetZ - 1) && !world.canLightningStrikeAt(targetX, targetY, targetZ + 1)) {
                                 int k2 = metadata + random.nextInt(5) / 4;
 
                                 if(k2 > 15) {
                                     k2 = 15;
                                 }
-
-                                world.setBlock(i1, k1, j1, this, k2, 3);
+                                
+                                world.setBlock(targetX, targetY, targetZ, this, k2, 3);
                             }
                         }
                     }
@@ -201,13 +201,13 @@ public class BlockHellfire extends BlockBase {
     
     // ========== Try To Catch Block On Fire ===========
     private void tryCatchFire(World world, int x, int y, int z, int chance, Random random, int metadata, ForgeDirection face) {
-        int j1 = 0;
+        int flammability = 0;
         Block block = world.getBlock(x, y, z);
         if(block != null) {
-            j1 = block.getFlammability(world, x, y, z, face);
+        	flammability = block.getFlammability(world, x, y, z, face);
         }
 
-        if(random.nextInt(chance) < j1 / 8) {
+        if(random.nextInt(chance) < flammability / 8) {
             boolean flag = world.getBlock(x, y, z) == Blocks.tnt;
 
             if (random.nextInt(metadata + 10) < 5 && !world.canLightningStrikeAt(x, y, z)) {

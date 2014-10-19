@@ -36,11 +36,14 @@ public class GroupInfo {
     /** A comma separated list of dimensions that mobs in this group spawn in. As read from the config **/
     public String dimensionEntries = "";
 
-	/** The list of dimension IDs that mobs in this group spawn. **/
-	public int[] dimensionIDs = new int[0];
+	/** A blacklist of dimension IDs (changes to whitelist if dimensionWhitelist is true) that this mob spawns in. **/
+	public int[] dimensionBlacklist;
 	
 	/** Extra dimension type info, can contain values such as ALL or VANILLA. **/
-	public String[] dimensionTypes = new String[0];
+	public String[] dimensionTypes;
+	
+	/** Controls the behaviour of how Dimension IDs are read. If true only listed Dimension IDs are allowed instead of denied. **/
+	public boolean dimensionWhitelist = false;
 
     // ========== Spawn Biomes ==========
     /** The list of biomes that mobs in this group spawn. As read from the config. Store biome tags and special tags. **/
@@ -109,9 +112,10 @@ public class GroupInfo {
         config.setCategoryComment("Group Settings", "Here you can set the spawning settings for all mobs in this group that use the GROUP tag.");
 
         // Spawn Dimensions:
-        SpawnDimensionSet spawnDimensions = config.getDimensions("Group Settings", this.getCfgName("Spawn Dimensions"), this.dimensionEntries, "Sets which dimensions mobs spawn in. You may enter dimension IDs or tags such as: ALL, VANILLA or GROUP. Multiple entries should be comma separated.");
-        this.dimensionIDs = spawnDimensions.dimensionIDs;
+        SpawnDimensionSet spawnDimensions = config.getDimensions("Group Settings", this.getCfgName("Spawn Dimensions"), this.dimensionEntries, "Sets which dimensions mobs CAN NOT spawn in (if whitelist is true then it sets what they CAN ONLY spawn in). You may enter dimension IDs or tags such as: ALL, VANILLA or GROUP. Multiple entries should be comma separated.");
+        this.dimensionBlacklist = spawnDimensions.dimensionIDs;
         this.dimensionTypes = spawnDimensions.dimensionTypes;
+        this.dimensionWhitelist = config.getBool("Spawn Dimensions", this.getCfgName("Spawn Dimension ID Whitelist"), this.dimensionWhitelist);
 
         // Spawn Biomes:
 		this.biomes = config.getBiomes("Group Settings", this.getCfgName("Spawn Biomes"), this.biomeEntries, "Sets which biomes this mob spawns in using Biome Tags. Multiple entries should be comma separated and can be subtractive if provided with a - in front.");
@@ -150,8 +154,13 @@ public class GroupInfo {
     //                    Set Defaults
     // ==================================================
     // ========== Spawn Location ==========
-    public GroupInfo setDimensions(String string) {
+    public GroupInfo setDimensionBlacklist(String string) {
         this.dimensionEntries = string;
+        return this;
+    }
+    
+    public GroupInfo setDimensionWhitelist(boolean bool) {
+        this.dimensionWhitelist = bool;
         return this;
     }
 

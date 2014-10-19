@@ -79,7 +79,7 @@ public class DesertMobs {
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
 		group = new GroupInfo(this, "Desert Mobs")
-                .setDimensions("0").setBiomes("SANDY, WASTELAND, MESA, -COLD").setDungeonThemes("DESERT, WASTELAND, URBAN")
+                .setDimensionBlacklist("-1,1").setBiomes("SANDY, WASTELAND, MESA, -COLD").setDungeonThemes("DESERT, WASTELAND, URBAN")
                 .setEggName("desertegg");
 		group.loadFromConfig();
 
@@ -105,8 +105,8 @@ public class DesertMobs {
 		ObjectManager.addItem("erepedetreat", new ItemTreat("erepedetreat", group));
 		
 		ObjectManager.addItem("mudshotcharge", new ItemMudshotCharge());
-		ObjectManager.addItem("scythescepter", new ItemScepterScythe());
-		ObjectManager.addItem("mudshotscepter", new ItemScepterMudshot());
+		ObjectManager.addItem("scythescepter", new ItemScepterScythe(), 200, 1, 1);
+		ObjectManager.addItem("mudshotscepter", new ItemScepterMudshot(), 200, 1, 1);
 		
 		// ========== Create Blocks ==========
 

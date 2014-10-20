@@ -105,8 +105,8 @@ public class DesertMobs {
 		ObjectManager.addItem("erepedetreat", new ItemTreat("erepedetreat", group));
 		
 		ObjectManager.addItem("mudshotcharge", new ItemMudshotCharge());
-		ObjectManager.addItem("scythescepter", new ItemScepterScythe(), 200, 1, 1);
-		ObjectManager.addItem("mudshotscepter", new ItemScepterMudshot(), 200, 1, 1);
+		ObjectManager.addItem("scythescepter", new ItemScepterScythe(), 5, 1, 1);
+		ObjectManager.addItem("mudshotscepter", new ItemScepterMudshot(), 5, 1, 1);
 		
 		// ========== Create Blocks ==========
 

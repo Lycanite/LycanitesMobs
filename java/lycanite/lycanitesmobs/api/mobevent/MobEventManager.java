@@ -63,8 +63,10 @@ public class MobEventManager {
      * Adds the provided World Mob Event.
      *  **/
     public void addWorldEvent(MobEventBase mobEvent) {
-        if(mobEvent != null)
+        if(mobEvent != null) {
+        	mobEvent.loadFromConfig();
             this.worldMobEvents.put(mobEvent.name, mobEvent);
+        }
     }
 
 
@@ -102,6 +104,9 @@ public class MobEventManager {
 			return;
 		}
 		
+		// Update Overall World Event Time:
+		worldExt.setOverallEventTime(worldExt.getOverallEventTime() + 1);
+		
 		// Update Active Event and Return:
 		if(this.serverMobEvent != null) {
 			worldExt.setMobEventActiveTime(this.serverMobEvent.ticks + 1);
@@ -120,7 +125,7 @@ public class MobEventManager {
 		
 		// Check Count and Start Event:
 		if(worldExt.getMobEventTime() >= worldExt.getMobEventTarget()) {
-			MobEventBase newEvent = this.getRandomWorldMobEvent(world);
+			MobEventBase newEvent = this.getRandomWorldMobEvent(world, worldExt);
 			if(newEvent != null) {
                 this.startMobEvent(newEvent, world);
 			}
@@ -153,14 +158,14 @@ public class MobEventManager {
 	 * Returns a random world-based event for the given world.
 	 * @return Returns a an appropriate weighted random Mob Event or null if none are available.
 	 *  **/
-	public MobEventBase getRandomWorldMobEvent(World world) {
+	public MobEventBase getRandomWorldMobEvent(World world, ExtendedWorld worldExt) {
 		int dimensionID = 0;
 		if(world.provider != null)
 			dimensionID = world.provider.dimensionId;
 		
 		int totalWeights = 0;
 		for(MobEventBase mobEventEntry : this.worldMobEvents.values()) {
-			if(mobEventEntry.isEnabled())
+			if(mobEventEntry.isEnabled() && mobEventEntry.canStart(worldExt))
 				totalWeights += mobEventEntry.weight;
 		}
 		if(totalWeights <= 0)

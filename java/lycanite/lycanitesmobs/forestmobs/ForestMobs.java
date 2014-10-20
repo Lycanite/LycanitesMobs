@@ -96,7 +96,7 @@ public class ForestMobs {
 		ObjectManager.addItem("shamblertreat", new ItemTreat("shamblertreat", group));
 
         ObjectManager.addItem("lifedraincharge", new ItemLifeDrainCharge());
-        ObjectManager.addItem("lifedrainscepter", new ItemScepterLifeDrain(), 200, 1, 1);
+        ObjectManager.addItem("lifedrainscepter", new ItemScepterLifeDrain(), 5, 1, 1);
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("forestegg"), new DispenserBehaviorMobEggCustom());

@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs.api.mobevent;
 import java.util.ArrayList;
 import java.util.List;
 
+import lycanite.lycanitesmobs.ExtendedWorld;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
@@ -22,6 +23,7 @@ public class MobEventBase {
     public GroupInfo group;
     public boolean forceSpawning = true;
     public boolean forceNoDespawn = true;
+    public int minDay = 0;
 
     // Active:
     public int duration = 60 * 20;
@@ -35,10 +37,19 @@ public class MobEventBase {
 	public MobEventBase(String name, GroupInfo group) {
 		this.name = name;
 		this.group = group;
+	}
+    
+	
+    // ==================================================
+    //                       Config
+    // ==================================================
+    /** Makes this event read the config. **/
+	public void loadFromConfig() {
 		ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "mobevents");
 		this.duration = config.getInt("Event Durations", this.name, this.duration);
         this.forceSpawning = config.getBool("Event Forced Spawning", this.name, this.forceSpawning);
         this.forceNoDespawn = config.getBool("Event Forced Np Despawning", this.name, this.forceSpawning);
+		this.minDay = config.getInt("Event Day Minimums", this.name, this.minDay);
 	}
     
 	
@@ -63,6 +74,17 @@ public class MobEventBase {
 	public boolean isEnabled() {
 		ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "mobevents");
 		return config.getBool("Events Enabled", this.name, true);
+	}
+	
+	
+    // ==================================================
+    //                    Can Start
+    // ==================================================
+	/*
+	 * Returns true if this event is able to start on the provided extended world.
+	 */
+	public boolean canStart(ExtendedWorld worldExt) {
+		return Math.floor(worldExt.getOverallEventTime() / 24000D) >= this.minDay;
 	}
 
 

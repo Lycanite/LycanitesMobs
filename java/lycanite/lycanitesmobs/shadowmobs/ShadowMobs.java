@@ -70,7 +70,7 @@ public class ShadowMobs {
 		ObjectManager.addItem("shadowegg", new ItemShadowEgg());
 		
 		ObjectManager.addItem("spectralboltcharge", new ItemSpectralboltCharge());
-		ObjectManager.addItem("spectralboltscepter", new ItemScepterSpectralbolt(), 200, 1, 1);
+		ObjectManager.addItem("spectralboltscepter", new ItemScepterSpectralbolt(), 5, 1, 1);
 		
 		/*ObjectManager.addItem("yalemeatraw", new ItemCustomFood("yalemeatraw", group, 2, 0.5F).setPotionEffect(Potion.digSlowdown.id, 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("yalemeatraw"));
@@ -139,6 +139,7 @@ public class ShadowMobs {
 		
 		// ========== Mob Events ==========
 		MobEventBase mobEvent = new MobEventShadowGames("shadowgames", this.group);
+		mobEvent.minDay = 15;
 		SpawnTypeBase eventSpawner = new SpawnTypeSky("shadowgames")
             .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
         eventSpawner.materials = new Material[] {Material.air};

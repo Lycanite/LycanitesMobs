@@ -114,13 +114,13 @@ public class ArcticMobs {
 		ObjectManager.addItem("frostyfur", new ItemFrostyFur());
 		
 		ObjectManager.addItem("frostboltcharge", new ItemFrostboltCharge());
-		ObjectManager.addItem("frostboltscepter", new ItemScepterFrostbolt(), 200, 1, 1);
+		ObjectManager.addItem("frostboltscepter", new ItemScepterFrostbolt(), 5, 1, 1);
 		ObjectManager.addItem("frostwebcharge", new ItemFrostwebCharge());
-		ObjectManager.addItem("frostwebscepter", new ItemScepterFrostweb(), 200, 1, 1);
+		ObjectManager.addItem("frostwebscepter", new ItemScepterFrostweb(), 5, 1, 1);
 		ObjectManager.addItem("tundracharge", new ItemTundraCharge());
-		ObjectManager.addItem("tundrascepter", new ItemScepterTundra(), 200, 1, 1);
+		ObjectManager.addItem("tundrascepter", new ItemScepterTundra(), 5, 1, 1);
         ObjectManager.addItem("icefirecharge", new ItemIcefireCharge());
-        ObjectManager.addItem("icefirescepter", new ItemScepterIcefire(), 200, 1, 1);
+        ObjectManager.addItem("icefirescepter", new ItemScepterIcefire(), 5, 1, 1);
 
 		ObjectManager.addItem("arixtreat", new ItemTreat("arixtreat", group));
 

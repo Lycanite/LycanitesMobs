@@ -15,6 +15,7 @@ public class ExtendedWorld extends WorldSavedData {
 	public World world;
 	
 	// Mob Events:
+	private long overallEventTime = 0;
 	private int mobEventTime = 0;
 	private int mobEventTarget = 0;
 	private int mobEventActiveTime = 0;
@@ -78,6 +79,7 @@ public class ExtendedWorld extends WorldSavedData {
 	// ==================================================
     //                    Get Properties
     // ==================================================
+	public long getOverallEventTime() { return this.overallEventTime; }
 	public int getMobEventTime() { return this.mobEventTime; }
 	public int getMobEventTarget() { return this.mobEventTarget; }
 	public int getMobEventActiveTime() { return this.mobEventActiveTime; }
@@ -87,6 +89,11 @@ public class ExtendedWorld extends WorldSavedData {
 	// ==================================================
     //                    Set Properties
     // ==================================================
+	public void setOverallEventTime(long setLong) {
+		if(this.overallEventTime != setLong)
+			this.markDirty();
+		this.overallEventTime = setLong;
+	}
 	public void setMobEventTime(int setInt) {
 		if(this.mobEventTime != setInt)
 			this.markDirty();
@@ -114,6 +121,9 @@ public class ExtendedWorld extends WorldSavedData {
     // ==================================================
 	@Override
 	public void readFromNBT(NBTTagCompound nbtTagCompound) {
+		if(nbtTagCompound.hasKey("OverallEventTime"))  {
+			this.overallEventTime = nbtTagCompound.getLong("OverallEventTime");
+		}
 		if(nbtTagCompound.hasKey("MobEventTime"))  {
 			this.mobEventTime = nbtTagCompound.getInteger("MobEventTime");
 		}
@@ -134,6 +144,7 @@ public class ExtendedWorld extends WorldSavedData {
     // ==================================================
 	@Override
 	public void writeToNBT(NBTTagCompound nbtTagCompound) {
+		nbtTagCompound.setLong("OverallEventTime", this.overallEventTime);
 		nbtTagCompound.setInteger("MobEventTime", this.mobEventTime);
 		nbtTagCompound.setInteger("MobEventTarget", this.mobEventTarget);
 		nbtTagCompound.setInteger("MobEventActiveTime", this.mobEventActiveTime);

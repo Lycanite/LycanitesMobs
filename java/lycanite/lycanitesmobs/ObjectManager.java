@@ -76,7 +76,7 @@ public class ObjectManager {
 
 	public static Item addItem(String name, Item item, int weight, int minChance, int maxChance) {
 		Utilities.addDungeonLoot(new ItemStack(item), minChance, maxChance, weight);
-		Utilities.addStrongholdLoot(new ItemStack(item), minChance, maxChance, Math.max(0, weight - 20));
+		Utilities.addStrongholdLoot(new ItemStack(item), minChance, maxChance, (weight * 2));
 		return addItem(name, item);
 	}
 

@@ -70,7 +70,7 @@ public class FreshwaterMobs {
             rawFoodEffectID = ObjectManager.getPotionEffect("penetration").getId();
 
         ObjectManager.addItem("aquapulsecharge", new ItemAquaPulseCharge());
-        ObjectManager.addItem("aquapulsescepter", new ItemScepterAquaPulse(), 200, 1, 1);
+        ObjectManager.addItem("aquapulsescepter", new ItemScepterAquaPulse(), 5, 1, 1);
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("freshwateregg"), new DispenserBehaviorMobEggCustom());

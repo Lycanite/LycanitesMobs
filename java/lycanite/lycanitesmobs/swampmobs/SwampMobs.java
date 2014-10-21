@@ -107,8 +107,8 @@ public class SwampMobs {
 		ObjectManager.addItem("eyewigtreat", new ItemTreat("eyewigtreat", group));
 		
 		ObjectManager.addItem("poisongland", new ItemPoisonGland());
-		ObjectManager.addItem("poisonrayscepter", new ItemScepterPoisonRay(), 5, 1, 1);
-		ObjectManager.addItem("venomshotscepter", new ItemScepterVenomShot(), 5, 1, 1);
+		ObjectManager.addItem("poisonrayscepter", new ItemScepterPoisonRay(), 2, 1, 1);
+		ObjectManager.addItem("venomshotscepter", new ItemScepterVenomShot(), 2, 1, 1);
 		
 		// ========== Create Blocks ==========
 		AssetManager.addSound("poisoncloud", group, "block.poisoncloud");

@@ -99,11 +99,11 @@ public class InfernoMobs {
 		ObjectLists.addItem("cookedfish", ObjectManager.getItem("searingtaco"));
 		
 		ObjectManager.addItem("embercharge", new ItemEmberCharge());
-		ObjectManager.addItem("emberscepter", new ItemScepterEmber(), 5, 1, 1);
+		ObjectManager.addItem("emberscepter", new ItemScepterEmber(), 2, 1, 1);
 		ObjectManager.addItem("magmacharge", new ItemMagmaCharge());
-		ObjectManager.addItem("magmascepter", new ItemScepterMagma(), 5, 1, 1);
+		ObjectManager.addItem("magmascepter", new ItemScepterMagma(), 2, 1, 1);
         ObjectManager.addItem("scorchfirecharge", new ItemScorchfireCharge());
-        ObjectManager.addItem("scorchfirescepter", new ItemScepterScorchfire(), 5, 1, 1);
+        ObjectManager.addItem("scorchfirescepter", new ItemScepterScorchfire(), 2, 1, 1);
 
 		ObjectManager.addItem("afrittreat", new ItemTreat("afrittreat", group));
 

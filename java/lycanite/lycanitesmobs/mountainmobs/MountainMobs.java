@@ -82,7 +82,7 @@ public class MountainMobs {
 		ObjectManager.addItem("mountainegg", new ItemMountainEgg());
 		
 		ObjectManager.addItem("boulderblastcharge", new ItemBoulderBlastCharge());
-		ObjectManager.addItem("boulderblastscepter", new ItemScepterBoulderBlast(), 5, 1, 1);
+		ObjectManager.addItem("boulderblastscepter", new ItemScepterBoulderBlast(), 2, 1, 1);
 		
 		ObjectManager.addItem("yalemeatraw", new ItemCustomFood("yalemeatraw", group, 2, 0.5F).setPotionEffect(Potion.digSlowdown.id, 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("yalemeatraw"));

@@ -143,7 +143,7 @@ public class MobInfo {
 		mobsAttackVillagers = config.getBool("Mob Interaction", "Mobs Attack Villagers", mobsAttackVillagers, "Set to false to prevent mobs that attack players from also attacking villagers.");
 
         String[] difficultyNames = new String[] {"Easy", "Normal", "Hard"};
-        double[] difficultyDefaults = new double[] {0.5D, 1.0D, 1.5D};
+        double[] difficultyDefaults = new double[] {0.5D, 1.0D, 1.25D};
         String[] statNames = new String[] {"Defense", "Speed", "Damage", "Haste", "Effect"};
 		difficultyMutlipliers = new HashMap<String, Double>();
         config.setCategoryComment("Difficulty Multipliers", "Here you can scale the stats of every mob on a per difficulty basis. Note that on easy, speed is kept at 100% as 0.5 makes them stupidly slow.");

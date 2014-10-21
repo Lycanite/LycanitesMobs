@@ -114,10 +114,10 @@ public class DemonMobs {
 		ObjectManager.addItem("pinkytreat", new ItemTreat("pinkytreat", group));
 		ObjectManager.addItem("cacodemontreat", new ItemTreat("cacodemontreat", group));
 		
-		ObjectManager.addItem("doomfirescepter", new ItemScepterDoomfire(), 5, 1, 1);
-		ObjectManager.addItem("hellfirescepter", new ItemScepterHellfire(), 5, 1, 1);
-		ObjectManager.addItem("devilstarscepter", new ItemScepterDevilstar(), 5, 1, 1);
-		ObjectManager.addItem("demoniclightningscepter", new ItemScepterDemonicLightning(), 5, 1, 1);
+		ObjectManager.addItem("doomfirescepter", new ItemScepterDoomfire(), 2, 1, 1);
+		ObjectManager.addItem("hellfirescepter", new ItemScepterHellfire(), 2, 1, 1);
+		ObjectManager.addItem("devilstarscepter", new ItemScepterDevilstar(), 2, 1, 1);
+		ObjectManager.addItem("demoniclightningscepter", new ItemScepterDemonicLightning(), 2, 1, 1);
 		
 		// ========== Create Blocks ==========
 		AssetManager.addSound("hellfire", group, "block.hellfire");

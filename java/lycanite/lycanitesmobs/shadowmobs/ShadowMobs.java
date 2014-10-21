@@ -70,7 +70,7 @@ public class ShadowMobs {
 		ObjectManager.addItem("shadowegg", new ItemShadowEgg());
 		
 		ObjectManager.addItem("spectralboltcharge", new ItemSpectralboltCharge());
-		ObjectManager.addItem("spectralboltscepter", new ItemScepterSpectralbolt(), 5, 1, 1);
+		ObjectManager.addItem("spectralboltscepter", new ItemScepterSpectralbolt(), 2, 1, 1);
 		
 		/*ObjectManager.addItem("yalemeatraw", new ItemCustomFood("yalemeatraw", group, 2, 0.5F).setPotionEffect(Potion.digSlowdown.id, 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("yalemeatraw"));

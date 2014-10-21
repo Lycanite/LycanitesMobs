@@ -104,7 +104,7 @@ public class JungleMobs {
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("tropicalcurry"));
 		
 		ObjectManager.addItem("poopcharge", new ItemPoopCharge());
-		ObjectManager.addItem("poopscepter", new ItemScepterPoop(), 5, 1, 1);
+		ObjectManager.addItem("poopscepter", new ItemScepterPoop(), 2, 1, 1);
 
 		ObjectManager.addItem("uvaraptortreat", new ItemTreat("uvaraptortreat", group));
 

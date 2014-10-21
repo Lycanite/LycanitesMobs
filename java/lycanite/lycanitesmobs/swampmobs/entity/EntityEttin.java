@@ -13,8 +13,6 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
@@ -100,28 +98,10 @@ public class EntityEttin extends EntityCreatureAgeable implements IMob {
 	     	        && ConfigBase.getConfig(this.group, "general").getBool("Features", "Ettin Griefing", true, "Set to false to disable Ettin block destruction.")) {
 		    	float distance = this.getAttackTarget().getDistanceToEntity(this);
 		    		if(distance <= this.width + 4.0F)
-		    			destroyArea((int)this.posX, (int)this.posY, (int)this.posZ, 4, true);
+		    			this.destroyArea((int)this.posX, (int)this.posY, (int)this.posZ, 4, true);
 	        }
         
         super.onLivingUpdate();
-    }
-    
-    // ========== Destroy Blocks ==========
-    public void destroyArea(int x, int y, int z, float strength, boolean drop) {
-    	destroyArea(x, y, z, strength, drop, 0);
-    }
-    public void destroyArea(int x, int y, int z, float strength, boolean drop, int range) {
-    	for(int w = -((int)Math.ceil(this.width) + range); w <= (Math.ceil(this.width) + range); w++)
-        	for(int d = -((int)Math.ceil(this.width) + range); d <= (Math.ceil(this.width) + range); d++)
-		    	for(int h = 0; h <= Math.ceil(this.height); h++) {
-		    		Block block = this.worldObj.getBlock(x + w, y + h, z + d);
-		    		if(block instanceof Block) {
-			    		float hardness = block.getBlockHardness(this.worldObj, x + w, y + h, z + d);
-			    		Material material = block.getMaterial();
-			    		if(hardness >= 0 && strength >= hardness && strength >= block.getExplosionResistance(this) && material != Material.water && material != Material.lava)
-			    			this.worldObj.func_147480_a(x + w, y + h, z + d, drop); // destroyBlock()
-		    		}
-		    	}
     }
     
     

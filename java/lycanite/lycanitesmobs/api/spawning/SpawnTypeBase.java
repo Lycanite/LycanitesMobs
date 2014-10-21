@@ -421,9 +421,13 @@ public class SpawnTypeBase {
             
             // Spawn The Mob:
             entityLiving.timeUntilPortal = entityLiving.getPortalCooldown();
-            if(entityLiving instanceof EntityCreatureBase)
-            	((EntityCreatureBase)entityLiving).forceNoDespawn = true;
+            if(entityLiving instanceof EntityCreatureBase) {
+            	((EntityCreatureBase)entityLiving).forceNoDespawn = this.forceNoDespawn;
+            	if(this.mobEvent != null)
+            		((EntityCreatureBase)entityLiving).spawnEventType = this.mobEvent.name;
+            }
             this.spawnEntity(world, entityLiving);
+            
             if(!ForgeEventFactory.doSpecialSpawn(entityLiving, world, (float)coord[0], (float)coord[1], (float)coord[2]))
                 entityLiving.onSpawnWithEgg(null);
             LycanitesMobs.printDebug("CustomSpawner", "Spawn Check Passed! Mob spawned.");

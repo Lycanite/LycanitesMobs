@@ -49,7 +49,7 @@ public class LycanitesMobs {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String version = "1.10.3.3 - MC 1.7.10";
+	public static final String version = "1.10.3.4 - MC 1.7.10";
 	
 	public static final PacketHandler packetHandler = new PacketHandler();
 
@@ -83,7 +83,7 @@ public class LycanitesMobs {
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
 		group = new GroupInfo(this, name);
-        ConfigBase.versionCheck("1.10.3.1", version);
+        ConfigBase.versionCheck("1.10.3.4", version);
 		group.loadFromConfig();
 		config = ConfigBase.getConfig(group, "general");
 		config.setCategoryComment("Debug", "Set debug options to true to show extra debugging information in the console.");
@@ -96,7 +96,7 @@ public class LycanitesMobs {
 			PotionBase.reserveEffectIDSpace();
 			ObjectManager.addPotionEffect("Paralysis", config, true, 0xFFFF00, 1, 0);
 			ObjectManager.addPotionEffect("Leech", config, false, 0x00FF99, 7, 0);
-			ObjectManager.addPotionEffect("Penetration", config, true, 0x222222, 6, 1);
+			ObjectManager.addPotionEffect("Penetration", config, true, 0x222222, 7, 1);
 			ObjectManager.addPotionEffect("Recklessness", config, true, 0xFF0044, 4, 0);
 			ObjectManager.addPotionEffect("Rage", config, true, 0xFF4400, 4, 0);
 			ObjectManager.addPotionEffect("Weight", config, true, 0x000022, 1, 0);

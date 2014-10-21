@@ -2,6 +2,8 @@ package lycanite.lycanitesmobs.api.spawning;
 
 import java.util.List;
 
+import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.world.World;
 
 public class SpawnTypeRock extends SpawnTypeBase {
@@ -32,5 +34,22 @@ public class SpawnTypeRock extends SpawnTypeBase {
     @Override
     public List<int[]> orderCoords(List<int[]> coords, int x, int y, int z) {
         return this.orderCoordsCloseToFar(coords, x, y, z);
+    }
+    
+    
+    // ==================================================
+    //                  Spawn Entity
+    // ==================================================
+    /**
+     * Spawn an entity in the provided world. The mob should have already been positioned.
+     * @param world The world to spawn in.
+     * @param entityLiving The entity to spawn.
+     */
+    @Override
+    public void spawnEntity(World world, EntityLiving entityLiving) {
+        super.spawnEntity(world, entityLiving);
+        if(entityLiving instanceof EntityCreatureBase) {
+        	((EntityCreatureBase)entityLiving).destroyArea((int)entityLiving.posX, (int)entityLiving.posY, (int)entityLiving.posZ, 4, true);
+        }
     }
 }

@@ -8,6 +8,7 @@ import java.util.Map;
 
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ExtendedEntity;
+import lycanite.lycanitesmobs.ExtendedWorld;
 import lycanite.lycanitesmobs.GuiHandler;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
@@ -77,6 +78,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	public EnumCreatureAttribute attribute = EnumCreatureAttribute.UNDEAD;
 	/** A class that opens up extra stats and behaviours for NBT based customization.**/
 	public ExtraMobBehaviour extraMobBehaviour;
+	/** The name of the event that spawned this mob if any, an empty string ("") if none. **/
+	public String spawnEventType = "";
 	
 	// Size:
     /** The width of this mob. XZ axis. **/
@@ -640,8 +643,20 @@ public abstract class EntityCreatureBase extends EntityLiving {
         	return false;
         if(this.isTemporary && this.temporaryDuration-- <= 0)
         	return true;
-        if((!this.mobInfo.peacefulDifficulty && this.worldObj.difficultySetting == EnumDifficulty.PEACEFUL) && !(this.getLeashed() || this.isPersistant() || this.hasCustomNameTag()))
-        	return true;
+        
+        if(this.getLeashed() || this.isPersistant() || this.hasCustomNameTag()) {
+        	this.spawnEventType = "";
+        }
+        else {
+        	if((!this.mobInfo.peacefulDifficulty && this.worldObj.difficultySetting == EnumDifficulty.PEACEFUL))
+            	return true;
+        	
+        	ExtendedWorld worldExt = ExtendedWorld.getForWorld(this.worldObj);
+        	if(worldExt != null) {
+        		if(!"".equals(this.spawnEventType) && !"".equals(worldExt.getMobEventType()) && !this.spawnEventType.equals(worldExt.getMobEventType()))
+        			return true;
+        	}
+        }
         return false;
     }
     
@@ -1857,6 +1872,24 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	this.pickupEntity = null;
     }
     
+    // ========== Destroy Blocks ==========
+    public void destroyArea(int x, int y, int z, float strength, boolean drop) {
+    	destroyArea(x, y, z, strength, drop, 0);
+    }
+    public void destroyArea(int x, int y, int z, float strength, boolean drop, int range) {
+    	for(int w = -((int)Math.ceil(this.width) + range); w <= (Math.ceil(this.width) + range); w++)
+        	for(int d = -((int)Math.ceil(this.width) + range); d <= (Math.ceil(this.width) + range); d++)
+		    	for(int h = 0; h <= Math.ceil(this.height); h++) {
+		    		Block block = this.worldObj.getBlock(x + w, y + h, z + d);
+		    		if(block instanceof Block) {
+			    		float hardness = block.getBlockHardness(this.worldObj, x + w, y + h, z + d);
+			    		Material material = block.getMaterial();
+			    		if(hardness >= 0 && strength >= hardness && strength >= block.getExplosionResistance(this) && material != Material.water && material != Material.lava)
+			    			this.worldObj.func_147480_a(x + w, y + h, z + d, drop); // destroyBlock()
+		    		}
+		    	}
+    }
+    
     
     // ==================================================
    	//                      Drops
@@ -2428,6 +2461,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
     		this.firstSpawn = false;
     	}
     	
+    	if(nbtTagCompound.hasKey("SpawnEventType")) {
+    		this.spawnEventType = nbtTagCompound.getString("SpawnEventType");
+    	}
+    	
     	if(nbtTagCompound.hasKey("Stealth")) {
     		this.setStealth(nbtTagCompound.getFloat("Stealth"));
     	}
@@ -2441,6 +2478,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	}
     	else {
     		this.unsetTemporary();
+    	}
+    	
+    	if(nbtTagCompound.hasKey("ForceNoDespawn")) {
+    		this.forceNoDespawn = nbtTagCompound.getBoolean("ForceNoDespawn");
     	}
     	
     	if(nbtTagCompound.hasKey("Color")) {
@@ -2469,10 +2510,13 @@ public abstract class EntityCreatureBase extends EntityLiving {
     @Override
     public void writeEntityToNBT(NBTTagCompound nbtTagCompound) {
     	nbtTagCompound.setBoolean("FirstSpawn", false);
+    	nbtTagCompound.setString("SpawnEventType", this.spawnEventType);
+    	
     	nbtTagCompound.setFloat("Stealth", this.getStealth());
     	nbtTagCompound.setBoolean("IsMinion", this.isMinion());
     	nbtTagCompound.setBoolean("IsTemporary", this.isTemporary);
     	nbtTagCompound.setInteger("TemporaryDuration", this.temporaryDuration);
+    	nbtTagCompound.setBoolean("ForceNoDespawn", this.forceNoDespawn);
     	nbtTagCompound.setByte("Color", (byte)this.getColor());
     	nbtTagCompound.setDouble("Size", this.sizeScale);
     	nbtTagCompound.setByte("Subspecies", (byte)this.getSubspeciesIndex());

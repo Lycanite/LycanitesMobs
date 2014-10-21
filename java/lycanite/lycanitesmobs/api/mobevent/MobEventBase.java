@@ -48,7 +48,7 @@ public class MobEventBase {
 		ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "mobevents");
 		this.duration = config.getInt("Event Durations", this.name, this.duration);
         this.forceSpawning = config.getBool("Event Forced Spawning", this.name, this.forceSpawning);
-        this.forceNoDespawn = config.getBool("Event Forced Np Despawning", this.name, this.forceSpawning);
+        this.forceNoDespawn = config.getBool("Event Forced No Despawning", this.name, this.forceSpawning);
 		this.minDay = config.getInt("Event Day Minimums", this.name, this.minDay);
 	}
     

@@ -415,10 +415,13 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     
     public void setTamed(boolean setTamed) {
         byte tamed = this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id);
-        if(setTamed)
+        if(setTamed) {
             this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamed | TAMED_ID.IS_TAMED.id)));
-        else
+            this.spawnEventType = "";
+        }
+        else {
             this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamed - (tamed & TAMED_ID.IS_TAMED.id))));
+        }
         this.setAlwaysRenderNameTag(setTamed);
         this.applyTamedHealthMultiplier();
     }

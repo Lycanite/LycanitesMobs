@@ -175,7 +175,7 @@ public class PlainsMobs {
 	        eventSpawner.ignoreLight = true;
 	        eventSpawner.forceSpawning = true;
 	        eventSpawner.ignoreMobConditions = true;
-	        eventSpawner.addSpawn(MobInfo.getFromName("roc").spawnInfo);
+	        eventSpawner.addSpawn(MobInfo.getFromName("roc"));
 	        mobEvent.addSpawner(eventSpawner);
 			MobEventManager.instance.addWorldEvent(mobEvent);
         }

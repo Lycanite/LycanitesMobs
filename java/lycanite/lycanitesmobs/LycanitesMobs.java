@@ -18,12 +18,14 @@ import lycanite.lycanitesmobs.api.item.ItemStaffSturdy;
 import lycanite.lycanitesmobs.api.item.ItemStaffSummoning;
 import lycanite.lycanitesmobs.api.mobevent.MobEventBamstorm;
 import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
+import lycanite.lycanitesmobs.api.mobevent.MobEventHalloween;
 import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.mods.DLDungeons;
 import lycanite.lycanitesmobs.api.network.PacketHandler;
 import lycanite.lycanitesmobs.api.spawning.CustomSpawner;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeLand;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
@@ -49,7 +51,7 @@ public class LycanitesMobs {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String version = "1.10.3.4 - MC 1.7.10";
+	public static final String version = "1.10.3.5 - MC 1.7.10";
 	
 	public static final PacketHandler packetHandler = new PacketHandler();
 
@@ -188,36 +190,74 @@ public class LycanitesMobs {
 		
 		// ========== Mob Events ==========
 		// Bamstorm:
-		MobEventBase mobEvent = new MobEventBamstorm("bamstorm", this.group);
+		MobEventBase bamstormEvent = new MobEventBamstorm("bamstorm", this.group);
         
-		SpawnTypeBase landSpawner = new SpawnTypeLand("bamstorm_land")
+		SpawnTypeBase bamLandSpawner = new SpawnTypeLand("bamstorm_land")
             .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-		landSpawner.materials = new Material[] {Material.air};
-		landSpawner.ignoreBiome = true;
-		landSpawner.ignoreLight = true;
-		landSpawner.forceSpawning = true;
-		landSpawner.ignoreMobConditions = true;
-        landSpawner.addSpawn(MobInfo.getFromName("kobold").spawnInfo);
-        landSpawner.addSpawn(MobInfo.getFromName("conba").spawnInfo);
-        landSpawner.addSpawn(MobInfo.getFromName("belph").spawnInfo);
-        landSpawner.addSpawn(MobInfo.getFromName("geken").spawnInfo);
-        if(landSpawner.hasSpawns())
-        	mobEvent.addSpawner(landSpawner);
+		bamLandSpawner.materials = new Material[] {Material.air};
+		bamLandSpawner.ignoreBiome = true;
+		bamLandSpawner.ignoreLight = true;
+		bamLandSpawner.forceSpawning = true;
+		bamLandSpawner.ignoreMobConditions = true;
+		bamLandSpawner.addSpawn(MobInfo.getFromName("kobold"));
+		bamLandSpawner.addSpawn(MobInfo.getFromName("conba"));
+		bamLandSpawner.addSpawn(MobInfo.getFromName("belph"));
+		bamLandSpawner.addSpawn(MobInfo.getFromName("geken"));
+        if(bamLandSpawner.hasSpawns())
+        	bamstormEvent.addSpawner(bamLandSpawner);
         
-		SpawnTypeBase skySpawner = new SpawnTypeLand("bamstorm_sky")
+		SpawnTypeBase bamSkySpawner = new SpawnTypeSky("bamstorm_sky")
             .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-		skySpawner.materials = new Material[] {Material.air};
-		skySpawner.ignoreBiome = true;
-		skySpawner.ignoreLight = true;
-		skySpawner.forceSpawning = true;
-		skySpawner.ignoreMobConditions = true;
-        skySpawner.addSpawn(MobInfo.getFromName("zephyr").spawnInfo);
-        skySpawner.addSpawn(MobInfo.getFromName("manticore").spawnInfo);
-        if(skySpawner.hasSpawns())
-        	mobEvent.addSpawner(skySpawner);
+		bamSkySpawner.materials = new Material[] {Material.air};
+		bamSkySpawner.ignoreBiome = true;
+		bamSkySpawner.ignoreLight = true;
+		bamSkySpawner.forceSpawning = true;
+		bamSkySpawner.ignoreMobConditions = true;
+		bamSkySpawner.addSpawn(MobInfo.getFromName("zephyr"));
+		bamSkySpawner.addSpawn(MobInfo.getFromName("manticore"));
+        if(bamSkySpawner.hasSpawns())
+        	bamstormEvent.addSpawner(bamSkySpawner);
         
-        if(mobEvent.hasSpawners())
-        	MobEventManager.instance.addWorldEvent(mobEvent);
+        if(bamstormEvent.hasSpawners())
+        	MobEventManager.instance.addWorldEvent(bamstormEvent);
+        
+
+		// Halloween:
+		MobEventBase halloweenEvent = new MobEventHalloween("halloween", this.group);
+        
+		SpawnTypeBase halloweenLandSpawner = new SpawnTypeLand("halloween_land")
+            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
+		halloweenLandSpawner.materials = new Material[] {Material.air};
+		halloweenLandSpawner.ignoreBiome = true;
+		halloweenLandSpawner.ignoreLight = true;
+		halloweenLandSpawner.forceSpawning = true;
+		halloweenLandSpawner.ignoreMobConditions = true;
+		halloweenLandSpawner.addSpawn(MobInfo.getFromName("ghoulzombie"));
+		halloweenLandSpawner.addSpawn(MobInfo.getFromName("cryptzombie"));
+		halloweenLandSpawner.addSpawn(MobInfo.getFromName("belph"));
+		halloweenLandSpawner.addSpawn(MobInfo.getFromName("behemoth"));
+		halloweenLandSpawner.addSpawn(MobInfo.getFromName("ent"));
+		halloweenLandSpawner.addSpawn(MobInfo.getFromName("trent"));
+        if(halloweenLandSpawner.hasSpawns())
+        	halloweenEvent.addSpawner(halloweenLandSpawner);
+        
+		SpawnTypeBase halloweenSkySpawner = new SpawnTypeSky("halloween_sky")
+            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
+		halloweenSkySpawner.materials = new Material[] {Material.air};
+		halloweenSkySpawner.ignoreBiome = true;
+		halloweenSkySpawner.ignoreLight = true;
+		halloweenSkySpawner.forceSpawning = true;
+		halloweenSkySpawner.ignoreMobConditions = true;
+		halloweenSkySpawner.addSpawn(MobInfo.getFromName("nethersoul"));
+		halloweenSkySpawner.addSpawn(MobInfo.getFromName("cacodemon"));
+		halloweenSkySpawner.addSpawn(MobInfo.getFromName("grue"));
+		halloweenSkySpawner.addSpawn(MobInfo.getFromName("phantom"));
+		halloweenSkySpawner.addSpawn(MobInfo.getFromName("epion"));
+        if(halloweenSkySpawner.hasSpawns())
+        	halloweenEvent.addSpawner(halloweenSkySpawner);
+        
+        if(halloweenEvent.hasSpawners())
+        	MobEventManager.instance.addWorldEvent(halloweenEvent);
 		
         
 		// ========== Crafting ==========

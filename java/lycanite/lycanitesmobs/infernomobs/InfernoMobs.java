@@ -183,7 +183,7 @@ public class InfernoMobs {
 	        eventSpawner.ignoreLight = true;
 	        eventSpawner.forceSpawning = true;
 	        eventSpawner.ignoreMobConditions = true;
-	        eventSpawner.addSpawn(MobInfo.getFromName("cinder").spawnInfo);
+	        eventSpawner.addSpawn(MobInfo.getFromName("cinder"));
 	        mobEvent.addSpawner(eventSpawner);
 			MobEventManager.instance.addWorldEvent(mobEvent);
         }

@@ -167,7 +167,7 @@ public class MountainMobs {
 	        eventSpawner.ignoreLight = true;
 	        eventSpawner.forceSpawning = true;
 	        eventSpawner.ignoreMobConditions = true;
-	        eventSpawner.addSpawn(MobInfo.getFromName("geonach").spawnInfo);
+	        eventSpawner.addSpawn(MobInfo.getFromName("geonach"));
 	        mobEvent.addSpawner(eventSpawner);
 			MobEventManager.instance.addWorldEvent(mobEvent);
         }

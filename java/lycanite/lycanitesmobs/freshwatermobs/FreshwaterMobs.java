@@ -127,9 +127,9 @@ public class FreshwaterMobs {
 	        eventSpawner.forceSpawning = true;
 	        eventSpawner.ignoreMobConditions = true;
 	        if(MobInfo.getFromName("jengu") != null)
-	        	eventSpawner.addSpawn(MobInfo.getFromName("jengu").spawnInfo);
+	        	eventSpawner.addSpawn(MobInfo.getFromName("jengu"));
 	        if(MobInfo.getFromName("zephyr") != null)
-	        	eventSpawner.addSpawn(MobInfo.getFromName("zephyr").spawnInfo);
+	        	eventSpawner.addSpawn(MobInfo.getFromName("zephyr"));
 	        mobEvent.addSpawner(eventSpawner);
 			MobEventManager.instance.addWorldEvent(mobEvent);
         }

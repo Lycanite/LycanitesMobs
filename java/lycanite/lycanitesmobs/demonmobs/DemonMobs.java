@@ -217,7 +217,7 @@ public class DemonMobs {
 	        eventSpawner.ignoreLight = true;
 	        eventSpawner.forceSpawning = true;
 	        eventSpawner.ignoreMobConditions = true;
-	        eventSpawner.addSpawn(MobInfo.getFromName("nethersoul").spawnInfo);
+	        eventSpawner.addSpawn(MobInfo.getFromName("nethersoul"));
 	        mobEvent.addSpawner(eventSpawner);
 			MobEventManager.instance.addWorldEvent(mobEvent);
         }

@@ -10,6 +10,7 @@ import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.SpawnInfo;
 import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import net.minecraft.block.Block;
@@ -284,12 +285,12 @@ public class SpawnTypeBase {
 	//                     Spawn List
 	// ==================================================
     /**
-     * Adds a mob to this spawn type. Takes a Spawn Info.
+     * Adds a mob to this spawn type. Takes a Mob Info which will be ignored if null.
      * @param spawnInfo
      */
-	public void addSpawn(SpawnInfo spawnInfo) {
-		if(spawnInfo != null)
-			this.spawnList.add(spawnInfo);
+	public void addSpawn(MobInfo mobInfo) {
+		if(mobInfo != null && mobInfo.spawnInfo != null)
+			this.spawnList.add(mobInfo.spawnInfo);
 	}
 	
     /**

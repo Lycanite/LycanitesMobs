@@ -234,7 +234,7 @@ public class BlockShadowfire extends BlockBase {
 			effectFear = new PotionEffect(ObjectManager.getPotionEffect("fear").id, 5 * 20, 0); // Not applied, used to check for immunity only.
 		if(entity instanceof EntityLivingBase) {
 			EntityLivingBase entityLiving = (EntityLivingBase)entity;
-			if(!entityLiving.isPotionApplicable(effectWither) && (effectFear== null || !entityLiving.isPotionApplicable(effectFear)))
+			if(!entityLiving.isPotionApplicable(effectWither) && (effectFear == null || !entityLiving.isPotionApplicable(effectFear)))
 				return; // Entities immune to both are normally shadow mobs.
 			entityLiving.addPotionEffect(effectWither);
 		}

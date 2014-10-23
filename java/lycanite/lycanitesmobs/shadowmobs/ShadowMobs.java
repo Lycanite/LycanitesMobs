@@ -148,9 +148,9 @@ public class ShadowMobs {
         eventSpawner.forceSpawning = true;
         eventSpawner.ignoreMobConditions = true;
         if(MobInfo.getFromName("grue") != null)
-        	eventSpawner.addSpawn(MobInfo.getFromName("grue").spawnInfo);
+        	eventSpawner.addSpawn(MobInfo.getFromName("grue"));
         if(MobInfo.getFromName("phantom") != null)
-        	eventSpawner.addSpawn(MobInfo.getFromName("phantom").spawnInfo);
+        	eventSpawner.addSpawn(MobInfo.getFromName("phantom"));
         if(eventSpawner.hasSpawns())
         	mobEvent.addSpawner(eventSpawner);
         if(mobEvent.hasSpawners())

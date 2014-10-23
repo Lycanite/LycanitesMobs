@@ -158,7 +158,7 @@ public class SaltwaterMobs {
 	        eventSpawner.ignoreLight = true;
 	        eventSpawner.forceSpawning = true;
 	        eventSpawner.ignoreMobConditions = true;
-	        eventSpawner.addSpawn(MobInfo.getFromName("raiko").spawnInfo);
+	        eventSpawner.addSpawn(MobInfo.getFromName("raiko"));
 	        mobEvent.addSpawner(eventSpawner);
 			MobEventManager.instance.addWorldEvent(mobEvent);
         }

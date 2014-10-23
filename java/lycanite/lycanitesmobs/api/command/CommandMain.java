@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs.api.command;
 import java.util.ArrayList;
 import java.util.List;
 
+import lycanite.lycanitesmobs.ExtendedWorld;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
@@ -132,6 +133,35 @@ public class CommandMain implements ICommand {
 				
 				reply = StatCollector.translateToLocal("lyc.command.mobevent.start.unknown");
 				commandSender.addChatMessage(new ChatComponentText(reply));
+				return;
+			}
+			
+			// Random:
+			if("random".equalsIgnoreCase(args[1])) {
+				// Get World:
+				World world = null;
+				if(commandSender.getEntityWorld() == null) {
+					if(args.length >= 4 && NumberUtils.isNumber(args[2])) {
+						world = DimensionManager.getWorld(Integer.parseInt(args[2]));
+					}
+				}
+				else {
+					world = commandSender.getEntityWorld();
+				}
+				
+				// No World:
+				if(world == null) {
+					reply = StatCollector.translateToLocal("lyc.command.mobevent.start.noworld");
+					commandSender.addChatMessage(new ChatComponentText(reply));
+					return;
+				}
+				
+				reply = StatCollector.translateToLocal("lyc.command.mobevent.random");
+				commandSender.addChatMessage(new ChatComponentText(reply));
+				ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
+				if(worldExt == null) return;
+				MobEventBase mobEvent = MobEventManager.instance.getRandomWorldMobEvent(world, worldExt);
+				MobEventManager.instance.startMobEvent(mobEvent, world);
 				return;
 			}
 			

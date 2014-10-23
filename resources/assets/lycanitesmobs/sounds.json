@@ -3,8 +3,20 @@
         "category": "record",
         "sounds": [{"name": "mobevent/bamstorm", "stream": false}]
     },
+    "mobevent.halloween": {
+        "category": "record",
+        "sounds": [{"name": "mobevent/halloween", "stream": false}]
+    },
     "effect.fear": {
         "category": "ambient",
         "sounds": [{"name": "effect/fear", "stream": false}]
+    },
+    "item.halloweentreat.good": {
+        "category": "ambient",
+        "sounds": [{"name": "item/halloweentreat_good", "stream": false}]
+    },
+    "item.halloweentreat.bad": {
+        "category": "ambient",
+        "sounds": [{"name": "item/halloweentreat_bad", "stream": false}]
     }
 }

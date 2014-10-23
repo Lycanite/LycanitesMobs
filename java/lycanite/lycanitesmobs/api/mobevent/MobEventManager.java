@@ -1,6 +1,9 @@
 package lycanite.lycanitesmobs.api.mobevent;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -163,18 +166,29 @@ public class MobEventManager {
 		if(world.provider != null)
 			dimensionID = world.provider.dimensionId;
 		
+		// Seasonal Events:
+		Calendar calendar = Calendar.getInstance();
+		if(calendar.get(Calendar.DAY_OF_MONTH) == 31 && calendar.get(Calendar.MONTH) == calendar.OCTOBER && this.worldMobEvents.containsKey("halloween"))
+			if(this.worldMobEvents.get("halloween").isEnabled() && this.worldMobEvents.get("halloween").canStart(worldExt))
+				return this.worldMobEvents.get("halloween");
+		
+		// Get Events and Weights:
+		List<MobEventBase> validMobEvents = new ArrayList<MobEventBase>();
 		int totalWeights = 0;
 		for(MobEventBase mobEventEntry : this.worldMobEvents.values()) {
-			if(mobEventEntry.isEnabled() && mobEventEntry.canStart(worldExt))
+			if(mobEventEntry.isEnabled() && mobEventEntry.canStart(worldExt)) {
 				totalWeights += mobEventEntry.weight;
+				validMobEvents.add(mobEventEntry);
+			}
 		}
 		if(totalWeights <= 0)
 			return null;
 		
+		// Pick Random Event Using Weights:
 		int randomWeight = world.rand.nextInt(totalWeights);
 		int searchWeight = 0;
 		MobEventBase mobEvent = null;
-		for(MobEventBase mobEventEntry : this.worldMobEvents.values()) {
+		for(MobEventBase mobEventEntry : validMobEvents) {
 			if(mobEventEntry.isEnabled()) {
 				mobEvent = mobEventEntry;
 				if(mobEventEntry.weight + searchWeight > randomWeight)

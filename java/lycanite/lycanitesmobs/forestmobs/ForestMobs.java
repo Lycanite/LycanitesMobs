@@ -175,7 +175,7 @@ public class ForestMobs {
 	        eventSpawner.ignoreLight = true;
 	        eventSpawner.forceSpawning = true;
 	        eventSpawner.ignoreMobConditions = true;
-	        eventSpawner.addSpawn(MobInfo.getFromName("spriggan").spawnInfo);
+	        eventSpawner.addSpawn(MobInfo.getFromName("spriggan"));
 	        mobEvent.addSpawner(eventSpawner);
 			MobEventManager.instance.addWorldEvent(mobEvent);
         }

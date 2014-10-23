@@ -193,7 +193,7 @@ public class SpawnInfo {
 					EntityRegistry.addSpawn(mobInfo.entityClass, this.spawnWeight, this.spawnGroupMin, this.spawnGroupMax, creatureType, this.biomes);
 				}
 				for(SpawnTypeBase spawnType : this.spawnTypes) {
-					spawnType.addSpawn(this);
+					spawnType.addSpawn(this.mobInfo);
 				}
 				spawnAdded = true;
 			}

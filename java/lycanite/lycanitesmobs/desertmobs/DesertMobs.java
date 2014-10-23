@@ -209,7 +209,7 @@ public class DesertMobs {
 	        eventSpawner.ignoreLight = true;
 	        eventSpawner.forceSpawning = true;
 	        eventSpawner.ignoreMobConditions = true;
-	        eventSpawner.addSpawn(MobInfo.getFromName("gorgomite").spawnInfo);
+	        eventSpawner.addSpawn(MobInfo.getFromName("gorgomite"));
 	        mobEvent.addSpawner(eventSpawner);
 			MobEventManager.instance.addWorldEvent(mobEvent);
         }

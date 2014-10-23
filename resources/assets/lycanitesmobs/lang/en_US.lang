@@ -5,6 +5,7 @@ event.finished=%event% is over!
 #
 # Mob Events
 mobevent.bamstorm.name=Bamstorm
+mobevent.halloween.name=Happy Halloween
 #
 #
 #
@@ -99,6 +100,7 @@ message.soulgazer.known=You already have full knowledge of this creature.
 message.soulgazer.unknown=The Soulgazer finds nother special about this creature.
 message.pet.tamed=The %creature% seems to love you now!
 message.pet.tamefail=The %creature% wants more!
+message.pet.mount.baby=The %creature% is too young to carry you!
 # %creature% will be replaced with the name of the tamed creature, don't translate this!
 #
 #
@@ -110,6 +112,7 @@ lyc.command.mobevent.start.invalid=Invalid arguments, usage: mobevent start <eve
 lyc.command.mobevent.start.unknown=Unknown mob event. Use /lycanitesmobs mobevent list for a list of event names.
 lyc.command.mobevent.start.noworld=Command Sender dimension ID object not found, please enter a valid dimension ID.
 lyc.command.mobevent.start=Starting mob event...
+lyc.command.mobevent.random=Starting random mob event...
 lyc.command.mobevent.stop=Stopping all mob events...
 lyc.command.mobevent.list=Mob Events:
 lyc.command.mobevent.enable=Random mob events enabled.

@@ -215,7 +215,7 @@ public class ArcticMobs {
 	        eventSpawner.ignoreLight = true;
 	        eventSpawner.forceSpawning = true;
 	        eventSpawner.ignoreMobConditions = true;
-	        eventSpawner.addSpawn(MobInfo.getFromName("reiver").spawnInfo);
+	        eventSpawner.addSpawn(MobInfo.getFromName("reiver"));
 	        mobEvent.addSpawner(eventSpawner);
 			MobEventManager.instance.addWorldEvent(mobEvent);
         }

@@ -5,7 +5,16 @@
     },
     "mobevent.halloween": {
         "category": "record",
-        "sounds": [{"name": "mobevent/halloween", "stream": false}]
+        "sounds":
+		[
+			"mobevent/halloween",
+			"mobevent/halloween_lycanite",
+			"mobevent/halloween_toast",
+			"mobevent/halloween_gooderness",
+			"mobevent/halloween_jarno",
+			"mobevent/halloween_kehaan",
+			"mobevent/halloween_jonbams"
+		]
     },
     "effect.fear": {
         "category": "ambient",

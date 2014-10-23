@@ -54,6 +54,10 @@ item.savagesummoningstaff.name=Savage Summoning Staff
 item.savagesummoningstaff.description=Summon double minions, but at half health each.
 item.sturdysummoningstaff.name=Sturdy Summoning Staff
 item.sturdysummoningstaff.description=This staff lasts much longer but costs more focus.
+item.halloweentreat.name=Halloween Treat
+item.halloweentreat.description=Trick or treat?!
+item.halloweentreat.good=It's a treat! Lucky you!
+item.halloweentreat.bad=Trick! Bwahahahahah!
 #
 #
 #

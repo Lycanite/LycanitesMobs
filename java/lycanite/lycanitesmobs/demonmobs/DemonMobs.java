@@ -218,6 +218,7 @@ public class DemonMobs {
 	        eventSpawner.forceSpawning = true;
 	        eventSpawner.ignoreMobConditions = true;
 	        eventSpawner.addSpawn(MobInfo.getFromName("nethersoul"));
+	        eventSpawner.addSpawn(MobInfo.getFromName("cacodemon"));
 	        mobEvent.addSpawner(eventSpawner);
 			MobEventManager.instance.addWorldEvent(mobEvent);
         }

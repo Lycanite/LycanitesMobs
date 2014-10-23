@@ -1,10 +1,13 @@
 package lycanite.lycanitesmobs;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import lycanite.lycanitesmobs.api.ILycanEventListener;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
+import lycanite.lycanitesmobs.api.entity.EntityItemCustom;
 import lycanite.lycanitesmobs.api.item.ItemBase;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -18,6 +21,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
@@ -213,6 +217,34 @@ public class EventListener {
 					event.setCanceled(true);
 					return;
 				}
+			}
+		}
+	}
+	
+	
+	// ==================================================
+    //                 Living Drops Event
+    // ==================================================
+	@SubscribeEvent
+    public void onLivingDrops(LivingDropsEvent event) {
+		World world = event.entityLiving.worldObj;
+		
+		// Halloween Treats:
+		Calendar calendar = Calendar.getInstance();
+		if(calendar.get(Calendar.DAY_OF_MONTH) == 31 && calendar.get(Calendar.MONTH) == calendar.OCTOBER) {
+			boolean noHalloweenTreat = false;
+			boolean alwaysDrop = false;
+			if(event.entityLiving instanceof EntityCreatureBase) {
+				if(((EntityCreatureBase)event.entityLiving).isMinion())
+					noHalloweenTreat = true;
+				if(((EntityCreatureBase)event.entityLiving).getSubspecies() != null)
+					alwaysDrop = true;
+			}
+			if(ObjectManager.getItem("halloweentreat") != null && !noHalloweenTreat && (alwaysDrop || event.entityLiving.getRNG().nextFloat() >= 0.6F)) {
+				ItemStack dropStack = new ItemStack(ObjectManager.getItem("halloweentreat"), 1);
+				EntityItemCustom entityItem = new EntityItemCustom(world, event.entityLiving.posX, event.entityLiving.posY, event.entityLiving.posZ, dropStack);
+				entityItem.delayBeforeCanPickup = 10;
+				world.spawnEntityInWorld(entityItem);
 			}
 		}
 	}

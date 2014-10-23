@@ -228,18 +228,18 @@ public class BlockShadowfire extends BlockBase {
 		if(entity instanceof EntityItem) // Shadowfire shouldn't destroy items.
     		return;
 		
-		PotionEffect effectWither = new PotionEffect(Potion.blindness.id, 5 * 20, 0);
+		PotionEffect effectBlindness = new PotionEffect(Potion.blindness.id, 5 * 20, 0);
 		PotionEffect effectFear = null;
 		if(ObjectManager.getPotionEffect("fear") != null)
 			effectFear = new PotionEffect(ObjectManager.getPotionEffect("fear").id, 5 * 20, 0); // Not applied, used to check for immunity only.
 		if(entity instanceof EntityLivingBase) {
 			EntityLivingBase entityLiving = (EntityLivingBase)entity;
-			if(!entityLiving.isPotionApplicable(effectWither) && (effectFear == null || !entityLiving.isPotionApplicable(effectFear)))
+			if(!entityLiving.isPotionApplicable(effectBlindness) && (effectFear == null || !entityLiving.isPotionApplicable(effectFear)))
 				return; // Entities immune to both are normally shadow mobs.
-			entityLiving.addPotionEffect(effectWither);
+			entityLiving.addPotionEffect(effectBlindness);
 		}
 		
-    	entity.attackEntityFrom(DamageSource.magic, 2);
+    	entity.attackEntityFrom(DamageSource.magic, 1);
 	}
     
     

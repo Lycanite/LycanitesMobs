@@ -13,6 +13,7 @@ import lycanite.lycanitesmobs.api.item.ItemTreat;
 import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeLand;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
 import lycanite.lycanitesmobs.forestmobs.dispenser.DispenserBehaviorLifeDrain;
 import lycanite.lycanitesmobs.forestmobs.entity.EntityArisaur;
@@ -105,7 +106,7 @@ public class ForestMobs {
         newMob = new MobInfo(group, "ent", EntityEnt.class, 0x997700, 0x00FF22)
 		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
 		        .addSubspecies(new Subspecies("russet", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER")
+		newMob.spawnInfo.setSpawnTypes("MONSTER, TREE")
 				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3);
 		ObjectManager.addMob(newMob);
 
@@ -166,19 +167,34 @@ public class ForestMobs {
 		ConfigBase config = ConfigBase.getConfig(group, "spawning");
 		
 		// ========== Mob Events ==========
-        if(MobInfo.getFromName("spriggan") != null) {
-			MobEventBase mobEvent = new MobEventRootRiot("rootriot", this.group);
-			SpawnTypeBase eventSpawner = new SpawnTypeSky("rootriot")
-	            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-	        eventSpawner.materials = new Material[] {Material.air};
-	        eventSpawner.ignoreBiome = true;
-	        eventSpawner.ignoreLight = true;
-	        eventSpawner.forceSpawning = true;
-	        eventSpawner.ignoreMobConditions = true;
-	        eventSpawner.addSpawn(MobInfo.getFromName("spriggan"));
-	        mobEvent.addSpawner(eventSpawner);
-			MobEventManager.instance.addWorldEvent(mobEvent);
-        }
+		// Rot Riot:
+		MobEventBase bamstormEvent = new MobEventRootRiot("rootriot", this.group);
+        
+		SpawnTypeBase bamLandSpawner = new SpawnTypeLand("rootriot_land")
+            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
+		bamLandSpawner.materials = new Material[] {Material.air};
+		bamLandSpawner.ignoreBiome = true;
+		bamLandSpawner.ignoreLight = true;
+		bamLandSpawner.forceSpawning = true;
+		bamLandSpawner.ignoreMobConditions = true;
+		bamLandSpawner.addSpawn(MobInfo.getFromName("shambler"));
+        if(bamLandSpawner.hasSpawns())
+        	bamstormEvent.addSpawner(bamLandSpawner);
+        
+		SpawnTypeBase bamSkySpawner = new SpawnTypeSky("rootriot_sky")
+            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
+		bamSkySpawner.materials = new Material[] {Material.air};
+		bamSkySpawner.ignoreBiome = true;
+		bamSkySpawner.ignoreLight = true;
+		bamSkySpawner.forceSpawning = true;
+		bamSkySpawner.ignoreMobConditions = true;
+		bamSkySpawner.addSpawn(MobInfo.getFromName("spriggan"));
+        if(bamSkySpawner.hasSpawns())
+        	bamstormEvent.addSpawner(bamSkySpawner);
+        
+        if(bamstormEvent.hasSpawners())
+        	MobEventManager.instance.addWorldEvent(bamstormEvent);
+        
 		
 		// ========== Remove Vanilla Spawns ==========
 		BiomeGenBase[] biomes = group.biomes;

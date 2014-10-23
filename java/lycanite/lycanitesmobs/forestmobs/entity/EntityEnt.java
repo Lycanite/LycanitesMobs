@@ -179,6 +179,11 @@ public class EntityEnt extends EntityCreatureTameable implements IMob, IGroupPla
         super.isPotionApplicable(potionEffect);
         return true;
     }
+    
+    @Override
+    public float getFallResistance() {
+    	return 100;
+    }
 	
 	
 	// ==================================================

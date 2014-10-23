@@ -31,7 +31,7 @@ public class ObjectLists {
     //                        Add
     // ==================================================
 	public static void addItem(String list, Object object) {
-		if(!(object instanceof Item || object instanceof Block || object instanceof ItemStack || object instanceof String))
+		if(object == null || !(object instanceof Item || object instanceof Block || object instanceof ItemStack || object instanceof String))
 			return;
 		list = list.toLowerCase();
 		if(!itemLists.containsKey(list))
@@ -78,15 +78,15 @@ public class ObjectLists {
 	public static ItemStack[] getItems(String list) {
 		list = list.toLowerCase();
 		if(!itemLists.containsKey(list))
-			return (ItemStack[])itemLists.get(list).toArray();
-		return new ItemStack[0];
+			return new ItemStack[0];
+		return itemLists.get(list).toArray(new ItemStack[itemLists.get(list).size()]);
 	}
 
 	public static Class[] getEntites(String list) {
 		list = list.toLowerCase();
 		if(!entityLists.containsKey(list))
-			return (Class[])entityLists.get(list).toArray();
-		return new Class[0];
+			return new Class[0];
+		return entityLists.get(list).toArray(new Class[entityLists.get(list).size()]);
 	}
 	
 

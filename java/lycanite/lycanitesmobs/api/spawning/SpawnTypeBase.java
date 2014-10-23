@@ -171,6 +171,16 @@ public class SpawnTypeBase {
 		cropSpawner.loadFromConfig();
         spawnTypes.add(cropSpawner);
 		
+		// Tree Spawner:
+		SpawnTypeBase treeSpawner = new SpawnTypeTree("Tree")
+				.setRate(0).setChance(0.03D).setRange(2).setBlockLimit(32).setMobLimit(1);
+		treeSpawner.materials = new Material[] {Material.air};
+		treeSpawner.ignoreBiome = true;
+		treeSpawner.ignoreLight = true;
+		treeSpawner.forceSpawning = true;
+		treeSpawner.loadFromConfig();
+        spawnTypes.add(treeSpawner);
+		
 		// Storm Spawner:
 		SpawnTypeBase stormSpawner = new SpawnTypeStorm("Storm")
 				.setRate(800).setChance(0.125D).setRange(64).setBlockLimit(32).setMobLimit(32);

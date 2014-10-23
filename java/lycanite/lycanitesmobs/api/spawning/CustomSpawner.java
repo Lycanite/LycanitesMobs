@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -149,6 +151,7 @@ public class CustomSpawner {
 	// ==================================================
     public List<SpawnTypeBase> oreBreakSpawnTypes = new ArrayList<SpawnTypeBase>();
     public List<SpawnTypeBase> cropBreakSpawnTypes = new ArrayList<SpawnTypeBase>();
+    public List<SpawnTypeBase> treeBreakSpawnTypes = new ArrayList<SpawnTypeBase>();
 	/** This uses the block break events to spawn mobs around blocks when they are destroyed. **/
 	@SubscribeEvent
 	public void onHarvestDrops(HarvestDropsEvent event) {
@@ -164,9 +167,10 @@ public class CustomSpawner {
 		int y = (int)event.y;
 		int z = (int)event.z + 1;
 		
-		// Ore Blocks:
 		String blockName = event.block.getUnlocalizedName();
 		String[] blockNameParts = blockName.split("\\.");
+		
+		// Ore Blocks:
 		boolean isOre = false;
 		for(String blockNamePart : blockNameParts) {
 			if(blockNamePart.length() >= 3 && blockNamePart.substring(0, 3).equalsIgnoreCase("ore")) {
@@ -184,6 +188,29 @@ public class CustomSpawner {
 		if(event.block instanceof IPlantable) {
 			for(SpawnTypeBase spawnType : this.cropBreakSpawnTypes) {
 				spawnType.spawnMobs(0, world, x, y, z);
+			}
+		}
+		
+		// Tree Blocks:
+		boolean isLog = false;
+		for(String blockNamePart : blockNameParts) {
+			if(blockNamePart.length() >= 3 && blockNamePart.substring(0, 3).equalsIgnoreCase("log")) {
+				isLog = true;
+				break;
+			}
+		}
+		if(isLog) {
+			for(int searchY = y + 1; searchY <= Math.min(world.getHeight(), y + 32); searchY++) {
+				Block searchBlock = world.getBlock(x, searchY, z);
+				if(searchBlock != event.block) {
+					if(searchBlock instanceof BlockLeaves) {
+						for(SpawnTypeBase spawnType : this.treeBreakSpawnTypes) {
+							spawnType.spawnMobs(0, world, x, y, z);
+						}
+					}
+					if(!world.isAirBlock(x, searchY, z))
+						break;
+				}
 			}
 		}
 	}

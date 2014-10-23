@@ -10,6 +10,7 @@ import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.info.SpawnInfo;
 import lycanite.lycanitesmobs.api.item.CreativeTabCreatures;
 import lycanite.lycanitesmobs.api.item.CreativeTabItems;
+import lycanite.lycanitesmobs.api.item.ItemHalloweenTreat;
 import lycanite.lycanitesmobs.api.item.ItemSoulgazer;
 import lycanite.lycanitesmobs.api.item.ItemStaffBlood;
 import lycanite.lycanitesmobs.api.item.ItemStaffSavage;
@@ -51,7 +52,7 @@ public class LycanitesMobs {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String version = "1.10.3.5 - MC 1.7.10";
+	public static final String version = "1.10.3.6 - MC 1.7.10";
 	
 	public static final PacketHandler packetHandler = new PacketHandler();
 
@@ -85,7 +86,7 @@ public class LycanitesMobs {
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
 		group = new GroupInfo(this, name);
-        ConfigBase.versionCheck("1.10.3.4", version);
+        ConfigBase.versionCheck("1.10.3.6", version);
 		group.loadFromConfig();
 		config = ConfigBase.getConfig(group, "general");
 		config.setCategoryComment("Debug", "Set debug options to true to show extra debugging information in the console.");
@@ -142,6 +143,9 @@ public class LycanitesMobs {
 		ObjectManager.addItem("bloodsummoningstaff", new ItemStaffBlood());
 		ObjectManager.addItem("sturdysummoningstaff", new ItemStaffSturdy());
 		ObjectManager.addItem("savagesummoningstaff", new ItemStaffSavage());
+		
+		// Seasonal Items:
+		ObjectManager.addItem("halloweentreat", new ItemHalloweenTreat());
 		
 		
 		// ========== Call Object Lists Setup ==========
@@ -238,6 +242,7 @@ public class LycanitesMobs {
 		halloweenLandSpawner.addSpawn(MobInfo.getFromName("behemoth"));
 		halloweenLandSpawner.addSpawn(MobInfo.getFromName("ent"));
 		halloweenLandSpawner.addSpawn(MobInfo.getFromName("trent"));
+		halloweenLandSpawner.addSpawn(MobInfo.getFromName("lurker"));
         if(halloweenLandSpawner.hasSpawns())
         	halloweenEvent.addSpawner(halloweenLandSpawner);
         
@@ -250,6 +255,7 @@ public class LycanitesMobs {
 		halloweenSkySpawner.ignoreMobConditions = true;
 		halloweenSkySpawner.addSpawn(MobInfo.getFromName("nethersoul"));
 		halloweenSkySpawner.addSpawn(MobInfo.getFromName("cacodemon"));
+		halloweenSkySpawner.addSpawn(MobInfo.getFromName("afrit"));
 		halloweenSkySpawner.addSpawn(MobInfo.getFromName("grue"));
 		halloweenSkySpawner.addSpawn(MobInfo.getFromName("phantom"));
 		halloweenSkySpawner.addSpawn(MobInfo.getFromName("epion"));
@@ -258,6 +264,34 @@ public class LycanitesMobs {
         
         if(halloweenEvent.hasSpawners())
         	MobEventManager.instance.addWorldEvent(halloweenEvent);
+		
+		// Halloween Treats:
+		ObjectLists.addItem("halloween_treats", Items.diamond);
+		ObjectLists.addItem("halloween_treats", Items.gold_ingot);
+		ObjectLists.addItem("halloween_treats", Items.emerald);
+		ObjectLists.addItem("halloween_treats", Blocks.iron_block);
+		ObjectLists.addItem("halloween_treats", Items.ender_pearl);
+		ObjectLists.addItem("halloween_treats", Items.blaze_rod);
+		ObjectLists.addItem("halloween_treats", Items.glowstone_dust);
+		ObjectLists.addItem("halloween_treats", ObjectManager.getItem("mosspie"));
+		ObjectLists.addItem("halloween_treats", ObjectManager.getItem("bulwarkburger"));
+		ObjectLists.addItem("halloween_treats", ObjectManager.getItem("paleosalad"));
+		ObjectLists.addItem("halloween_treats", ObjectManager.getItem("searingtaco"));
+		ObjectLists.addItem("halloween_treats", ObjectManager.getItem("devillasagna"));
+		ObjectLists.addFromConfig("halloween_treats");
+		
+		// Halloween Mobs:
+		ObjectLists.addEntity("halloween_tricks", "ghoulzombie");
+		ObjectLists.addEntity("halloween_tricks", "cryptzombie");
+		ObjectLists.addEntity("halloween_tricks", "belph");
+		ObjectLists.addEntity("halloween_tricks", "behemoth");
+		ObjectLists.addEntity("halloween_tricks", "ent");
+		ObjectLists.addEntity("halloween_tricks", "trent");
+		ObjectLists.addEntity("halloween_tricks", "nethersoul");
+		ObjectLists.addEntity("halloween_tricks", "cacodemon");
+		ObjectLists.addEntity("halloween_tricks", "grue");
+		ObjectLists.addEntity("halloween_tricks", "phantom");
+		ObjectLists.addEntity("halloween_tricks", "epion");
 		
         
 		// ========== Crafting ==========

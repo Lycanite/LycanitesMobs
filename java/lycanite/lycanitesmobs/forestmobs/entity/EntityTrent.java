@@ -182,6 +182,11 @@ public class EntityTrent extends EntityCreatureBase implements IMob, IGroupPlant
         return true;
     }
     
+    @Override
+    public float getFallResistance() {
+    	return 100;
+    }
+    
     
     // ==================================================
     //                     Pet Control

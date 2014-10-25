@@ -1,6 +1,7 @@
 package lycanite.lycanitesmobs.shadowmobs;
 
 import lycanite.lycanitesmobs.AssetManager;
+import lycanite.lycanitesmobs.shadowmobs.model.ModelEpion;
 import lycanite.lycanitesmobs.shadowmobs.model.ModelGrue;
 import lycanite.lycanitesmobs.shadowmobs.model.ModelPhantom;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -16,5 +17,6 @@ public class ClientSubProxy extends CommonSubProxy {
     public void registerModels() {
 		AssetManager.addModel("grue", new ModelGrue());
 		AssetManager.addModel("phantom", new ModelPhantom());
+		AssetManager.addModel("epion", new ModelEpion());
 	}
 }

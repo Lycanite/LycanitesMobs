@@ -55,9 +55,29 @@
         "category": "hostile",
         "sounds": [{"name": "entity/phantom/tame", "stream": false}]
     },
+    "entity.epion.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/epion/say", "stream": false}]
+    },
+    "entity.epion.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/epion/hurt", "stream": false}]
+    },
+    "entity.epion.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/epion/death", "stream": false}]
+    },
+    "entity.epion.fly": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/epion/fly", "stream": false}]
+    },
     "projectile.spectralbolt": {
         "category": "ambient",
         "sounds": [{"name": "projectile/spectralbolt", "stream": false}]
+    },
+    "projectile.bloodleech": {
+        "category": "ambient",
+        "sounds": [{"name": "projectile/bloodleech", "stream": false}]
     },
     "block.shadowfire": {
         "category": "block",

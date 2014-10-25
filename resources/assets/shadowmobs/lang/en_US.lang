@@ -10,6 +10,8 @@ entity.shadowmobs.grue.name=Grue
 entity.shadowmobs.grue.description=When it is pitch black, you are likely to be eaten by a Grue so be careful when putting out that torch or drowning that lava! Grue will teleport behind their target and drain its health!
 entity.shadowmobs.phantom.name=Phantom
 entity.shadowmobs.phantom.description=Wrathful spirit elementals with a thirst for souls! Phantoms are attracted to death and sometimes mistake people who are asleep as dead! Their ranged attacks cause fear and spawn shadowfire!
+entity.shadowmobs.epion.name=Epion
+entity.shadowmobs.epion.description=Giant death bats composed of shadow and stolen blood! Epions spit blood leech projectiles at their victims, draining health. When in direct contact with the sun, Epions will explode to death!
 #
 # Items
 item.shadowspawn.name=Spawn
@@ -17,6 +19,10 @@ item.spectralboltcharge.name=Spectral Bolt Charge
 item.spectralboltcharge.description=Use to throw a Spectral Bolt. Can also be fired from a dispenser.
 item.spectralboltscepter.name=Spectral Bolt Scepter
 item.spectralboltscepter.description=Medium Damage, Rapid Fire, Can Cause Fear, Places Shadowfire
+item.bloodleechcharge.name=Bloodleech Charge
+item.bloodleechcharge.description=Use to throw a Bloodleech. Can also be fired from a dispenser.
+item.bloodleechscepter.name=Bloodleech Scepter
+item.bloodleechscepter.description=Low Damage, Rapid Fire, Drains Health
 #
 # Blocks
 tile.shadowfire.name=Shadowfire

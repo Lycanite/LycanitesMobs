@@ -11,6 +11,7 @@ import lycanite.lycanitesmobs.api.item.ItemStaffSummoning;
 import lycanite.lycanitesmobs.api.network.MessagePlayerStats;
 import lycanite.lycanitesmobs.api.network.MessageSummonSet;
 import lycanite.lycanitesmobs.api.network.MessageSummonSetSelection;
+import lycanite.lycanitesmobs.api.pets.PetManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -29,6 +30,7 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 	public GroupInfo beastiaryGroup;
 	public MobInfo beastiaryCreature;
 	public String beastiaryCategory;
+	public PetManager petManager;
 	
 	public long currentTick = 0;
 	public boolean needsFirstSync = true;
@@ -74,6 +76,7 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 	public ExtendedPlayer(EntityPlayer player) {
 		this.player = player;
 		this.beastiary = new Beastiary(player);
+		this.petManager = new PetManager(player);
 		
 		player.registerExtendedProperties(ExtendedPlayer.EXT_PROP_NAME, this);
 	}

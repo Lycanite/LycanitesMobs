@@ -379,8 +379,16 @@ public class EntityProjectileLaser extends EntityProjectileBase {
     // ==================================================
  	//                      Damage
  	// ==================================================
-    public void updateDamage(Entity targetEntity) {
-    	targetEntity.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), this.getDamage(targetEntity));
+    public void updateDamage(Entity target) {
+    	float damage = this.getDamage(target);
+        float absoluteDamage = 1 + (float)Math.floor(damage / 5.0D);
+        if(damage <= absoluteDamage)
+        	target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor().setDamageIsAbsolute(), damage);
+        else {
+        	target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor().setDamageIsAbsolute(), absoluteDamage);
+    		damage -= absoluteDamage;
+        	target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), damage);
+        }
     }
     
     

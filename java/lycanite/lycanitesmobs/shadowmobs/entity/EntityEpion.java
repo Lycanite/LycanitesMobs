@@ -2,7 +2,6 @@ package lycanite.lycanitesmobs.shadowmobs.entity;
 
 import java.util.HashMap;
 
-import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupShadow;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
@@ -24,7 +23,6 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
@@ -32,31 +30,29 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class EntityPhantom extends EntityCreatureTameable implements IMob, IGroupShadow {
+public class EntityEpion extends EntityCreatureTameable implements IMob, IGroupShadow {
     
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityPhantom(World par1World) {
+    public EntityEpion(World par1World) {
         super(par1World);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEAD;
         this.defense = 0;
-        this.experience = 5;
+        this.experience = 7;
         this.spawnsInDarkness = true;
         this.hasAttackSound = false;
+        this.flySoundSpeed = 20;
         
         this.setWidth = 0.8F;
-        this.setHeight = 1.2F;
+        this.setHeight = 0.8F;
         this.setupMob();
-        
-        // No Block Collision
-        this.noClip = true;
         
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(40).setRange(14.0F).setMinChaseDistance(0.75F).setChaseTime(-1));
+        this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(40).setRange(14.0F).setMinChaseDistance(6.0F).setChaseTime(-1));
         this.tasks.addTask(3, this.aiSit);
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
         this.tasks.addTask(8, new EntityAIWander(this));
@@ -75,7 +71,7 @@ public class EntityPhantom extends EntityCreatureTameable implements IMob, IGrou
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
 		baseAttributes.put("maxHealth", 15D);
-		baseAttributes.put("movementSpeed", 0.24D);
+		baseAttributes.put("movementSpeed", 0.32D);
 		baseAttributes.put("knockbackResistance", 0.0D);
 		baseAttributes.put("followRange", 16D);
 		baseAttributes.put("attackDamage", 1D);
@@ -85,10 +81,9 @@ public class EntityPhantom extends EntityCreatureTameable implements IMob, IGrou
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.bone), 1.0F).setMaxAmount(5));
-        this.drops.add(new DropRate(new ItemStack(Blocks.obsidian), 0.5F).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Blocks.skull, 1, 1), 0.25F).setMaxAmount(1));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("SpectralboltCharge")), 0.25F).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.leather), 1.0F).setMaxAmount(5));
+        this.drops.add(new DropRate(new ItemStack(Items.gunpowder), 0.5F).setMaxAmount(4));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("BloodleechCharge")), 0.25F).setMaxAmount(3));
 	}
 	
 	
@@ -99,6 +94,18 @@ public class EntityPhantom extends EntityCreatureTameable implements IMob, IGrou
 	@Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
+        
+        // Sunlight Explosions:
+        if(!this.worldObj.isRemote && this.daylightBurns() && this.worldObj.isDaytime()) {
+        	float brightness = this.getBrightness(1.0F);
+            if(brightness > 0.5F && this.rand.nextFloat() * 30.0F < (brightness - 0.4F) * 2.0F && this.worldObj.canBlockSeeTheSky(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ))) {
+            	int explosionRadius = 1;
+    			if(this.subspecies != null)
+    				explosionRadius = 3;
+    			explosionRadius = Math.max(1, Math.round((float)explosionRadius * (float)this.sizeScale));
+            	this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, explosionRadius, true);
+            }
+        }
         
         // Particles:
         if(this.worldObj.isRemote)
@@ -123,8 +130,8 @@ public class EntityPhantom extends EntityCreatureTameable implements IMob, IGrou
     @Override
     public void rangedAttack(Entity target, float range) {
     	// Type:
-    	EntitySpectralbolt projectile = new EntitySpectralbolt(this.worldObj, this);
-        projectile.setProjectileScale(0.5f);
+    	EntityBloodleech projectile = new EntityBloodleech(this.worldObj, this);
+        projectile.setProjectileScale(1.0f);
     	
     	// Y Offset:
     	projectile.posY -= this.height / 4;
@@ -164,12 +171,6 @@ public class EntityPhantom extends EntityCreatureTameable implements IMob, IGrou
    	//                     Immunities
    	// ==================================================
     @Override
-    public boolean isDamageTypeApplicable(String type) {
-    	if(type.equals("inWall")) return false;
-    	return super.isDamageTypeApplicable(type);
-    }
-    
-    @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
         if(potionEffect.getPotionID() == Potion.blindness.id) return false;
         if(ObjectManager.getPotionEffect("Fear") != null)
@@ -181,20 +182,4 @@ public class EntityPhantom extends EntityCreatureTameable implements IMob, IGrou
     /** Returns true if this mob should be damaged by the sun. **/
     @Override
     public boolean daylightBurns() { return true; }
-    
-    
-    // ==================================================
-   	//                       Sounds
-   	// ==================================================
-    // ========== Idle ==========
-    /** Returns the sound to play when this creature is making a random ambient roar, grunt, etc. **/
-    @Override
-    protected String getLivingSound() {
-    	if(this.hasAttackTarget()) {
-    		if(this.getAttackTarget() instanceof EntityPlayer)
-    			if("Jbams".equals(((EntityPlayer)this.getAttackTarget()).getCommandSenderName())) // JonBams special sound!
-    				return AssetManager.getSound(this.mobInfo.name + "_say_jon");
-    	}
-    	return super.getLivingSound();
-    }
 }

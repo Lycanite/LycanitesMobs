@@ -90,7 +90,7 @@ public class SpawnTypeBase {
 	public boolean forceSpawning = true;
 	
 	/** If true, this type will force spawned mobs to not despawn naturally. **/
-	public boolean forceNoDespawn = true;
+	public boolean forceNoDespawn = false;
 	
 	
     // ==================================================

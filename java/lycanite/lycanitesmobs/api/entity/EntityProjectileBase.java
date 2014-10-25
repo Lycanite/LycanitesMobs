@@ -105,6 +105,7 @@ public class EntityProjectileBase extends EntityThrowable {
  						//movingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), this.getDamage((EntityLivingBase)movingObjectPosition.entityHit));
  						boolean attackSuccess = false;
  						float damage = this.getDamage(target);
+ 						float damageInit = damage;
  				        float absoluteDamage = 1 + (float)Math.floor(damage / 5.0D);
  				        if(damage <= absoluteDamage)
  				        	attackSuccess = target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor().setDamageIsAbsolute(), damage);
@@ -113,6 +114,8 @@ public class EntityProjectileBase extends EntityThrowable {
  				    		damage -= absoluteDamage;
  				        	attackSuccess = target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), damage);
  				        }
+ 				        if(attackSuccess)
+ 				        	this.onDamage(target, damageInit);
  					}
  				}
  			}
@@ -203,6 +206,9 @@ public class EntityProjectileBase extends EntityThrowable {
 		    }
 		    return true;
      }
+     
+     //========== On Damage ==========
+     public void onDamage(EntityLivingBase target, float damage) {}
      
      //========== Entity Collision ==========
      public void entityCollision(Entity entity) {}

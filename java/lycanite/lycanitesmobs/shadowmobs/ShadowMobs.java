@@ -13,10 +13,15 @@ import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
 import lycanite.lycanitesmobs.shadowmobs.block.BlockShadowfire;
+import lycanite.lycanitesmobs.shadowmobs.dispenser.DispenserBehaviorBloodleech;
 import lycanite.lycanitesmobs.shadowmobs.dispenser.DispenserBehaviorSpectralbolt;
+import lycanite.lycanitesmobs.shadowmobs.entity.EntityBloodleech;
+import lycanite.lycanitesmobs.shadowmobs.entity.EntityEpion;
 import lycanite.lycanitesmobs.shadowmobs.entity.EntityGrue;
 import lycanite.lycanitesmobs.shadowmobs.entity.EntityPhantom;
 import lycanite.lycanitesmobs.shadowmobs.entity.EntitySpectralbolt;
+import lycanite.lycanitesmobs.shadowmobs.item.ItemBloodleechCharge;
+import lycanite.lycanitesmobs.shadowmobs.item.ItemScepterBloodleech;
 import lycanite.lycanitesmobs.shadowmobs.item.ItemScepterSpectralbolt;
 import lycanite.lycanitesmobs.shadowmobs.item.ItemShadowEgg;
 import lycanite.lycanitesmobs.shadowmobs.item.ItemSpectralboltCharge;
@@ -72,16 +77,19 @@ public class ShadowMobs {
 		ObjectManager.addItem("spectralboltcharge", new ItemSpectralboltCharge());
 		ObjectManager.addItem("spectralboltscepter", new ItemScepterSpectralbolt(), 2, 1, 1);
 		
-		/*ObjectManager.addItem("yalemeatraw", new ItemCustomFood("yalemeatraw", group, 2, 0.5F).setPotionEffect(Potion.digSlowdown.id, 45, 2, 0.8F));
-		ObjectLists.addItem("rawmeat", ObjectManager.getItem("yalemeatraw"));
-		OreDictionary.registerOre("listAllmuttonraw", ObjectManager.getItem("yalemeatraw"));
+		ObjectManager.addItem("bloodleechcharge", new ItemBloodleechCharge());
+		ObjectManager.addItem("bloodleechscepter", new ItemScepterBloodleech(), 2, 1, 1);
 		
-		ObjectManager.addItem("yalemeatcooked", new ItemCustomFood("yalemeatcooked", group, 6, 0.7F));
-		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("yalemeatcooked"));
-		OreDictionary.registerOre("listAllmuttoncooked", ObjectManager.getItem("yalemeatcooked"));
+		/*ObjectManager.addItem("chupacabrameatraw", new ItemCustomFood("chupacabrameatraw", group, 2, 0.5F).setPotionEffect(Potion.digSlowdown.id, 45, 2, 0.8F));
+		ObjectLists.addItem("rawmeat", ObjectManager.getItem("chupacabrameatraw"));
+		OreDictionary.registerOre("listAllmuttonraw", ObjectManager.getItem("chupacabrameatraw"));
 		
-		ObjectManager.addItem("peakskebab", new ItemCustomFood("peakskebab", group, 6, 0.7F).setPotionEffect(Potion.digSpeed.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
-		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("peakskebab"));*/
+		ObjectManager.addItem("chupacabrameatcooked", new ItemCustomFood("chupacabrameatcooked", group, 6, 0.7F));
+		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("chupacabrameatcooked"));
+		OreDictionary.registerOre("listAllmuttoncooked", ObjectManager.getItem("chupacabrameatcooked"));
+		
+		ObjectManager.addItem("bloodchilli", new ItemCustomFood("bloodchilli", group, 6, 0.7F).setPotionEffect(Potion.digSpeed.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
+		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("bloodchilli"));*/
 		
 		
 		// ========== Create Blocks ==========
@@ -107,10 +115,18 @@ public class ShadowMobs {
 				.setSpawnWeight(8).setAreaLimit(5).setGroupLimits(1, 2);
 		ObjectManager.addMob(newMob);
 		AssetManager.addSound("phantom_say_jon", group, "entity.phantom.say.jon");
+        
+        newMob = new MobInfo(group, "epion", EntityEpion.class, 0x221100, 0xDD22BB)
+		        .setPeaceful(false).setSummonable(false).setSummonCost(3).setDungeonLevel(2)
+		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("russet", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("MONSTER")
+				.setSpawnWeight(8).setAreaLimit(5).setGroupLimits(1, 2);
+		ObjectManager.addMob(newMob);
 
 		
 		// ========== Create Projectiles ==========
 		ObjectManager.addProjectile("spectralbolt", EntitySpectralbolt.class, ObjectManager.getItem("spectralboltcharge"), new DispenserBehaviorSpectralbolt());
+		ObjectManager.addProjectile("bloodleech", EntityBloodleech.class, ObjectManager.getItem("bloodleechcharge"), new DispenserBehaviorBloodleech());
 		
 		
 		// ========== Register Models ==========
@@ -149,8 +165,8 @@ public class ShadowMobs {
         eventSpawner.ignoreMobConditions = true;
         if(MobInfo.getFromName("grue") != null)
         	eventSpawner.addSpawn(MobInfo.getFromName("grue"));
-        if(MobInfo.getFromName("phantom") != null)
-        	eventSpawner.addSpawn(MobInfo.getFromName("phantom"));
+        if(MobInfo.getFromName("epion") != null)
+        	eventSpawner.addSpawn(MobInfo.getFromName("epion"));
         if(eventSpawner.hasSpawns())
         	mobEvent.addSpawner(eventSpawner);
         if(mobEvent.hasSpawners())
@@ -172,6 +188,13 @@ public class ShadowMobs {
 				new ItemStack(ObjectManager.getItem("spectralboltscepter"), 1, 0),
 				new Object[] { "CCC", "CRC", "CRC",
 				Character.valueOf('C'), ObjectManager.getItem("spectralboltcharge"),
+				Character.valueOf('R'), Items.blaze_rod
+			}));
+        
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("bloodleechscepter"), 1, 0),
+				new Object[] { "CCC", "CRC", "CRC",
+				Character.valueOf('C'), ObjectManager.getItem("bloodleechcharge"),
 				Character.valueOf('R'), Items.blaze_rod
 			}));
 		

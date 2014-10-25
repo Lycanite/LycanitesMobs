@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupShadow;
+import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackRanged;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowOwner;
@@ -32,6 +33,8 @@ import net.minecraft.world.World;
 
 public class EntityEpion extends EntityCreatureTameable implements IMob, IGroupShadow {
     
+	public boolean epionGreifing = true;
+	
     // ==================================================
  	//                    Constructor
  	// ==================================================
@@ -45,6 +48,8 @@ public class EntityEpion extends EntityCreatureTameable implements IMob, IGroupS
         this.spawnsInDarkness = true;
         this.hasAttackSound = false;
         this.flySoundSpeed = 20;
+        
+        this.epionGreifing = ConfigBase.getConfig(this.group, "general").getBool("Features", "Epion Griefing", true, "Set to false to disable Epions exploding in sunlight.");
         
         this.setWidth = 0.8F;
         this.setHeight = 0.8F;
@@ -96,7 +101,7 @@ public class EntityEpion extends EntityCreatureTameable implements IMob, IGroupS
         super.onLivingUpdate();
         
         // Sunlight Explosions:
-        if(!this.worldObj.isRemote && this.daylightBurns() && this.worldObj.isDaytime()) {
+        if(!this.worldObj.isRemote && this.daylightBurns() && this.worldObj.isDaytime() && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing") && this.epionGreifing) {
         	float brightness = this.getBrightness(1.0F);
             if(brightness > 0.5F && this.rand.nextFloat() * 30.0F < (brightness - 0.4F) * 2.0F && this.worldObj.canBlockSeeTheSky(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ))) {
             	int explosionRadius = 1;

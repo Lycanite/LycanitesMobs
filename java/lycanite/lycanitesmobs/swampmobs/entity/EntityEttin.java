@@ -26,6 +26,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
 public class EntityEttin extends EntityCreatureAgeable implements IMob {
+	public boolean ettinGreifing = true;
     
     // ==================================================
  	//                    Constructor
@@ -42,6 +43,8 @@ public class EntityEttin extends EntityCreatureAgeable implements IMob {
 
         this.canGrow = true;
         this.babySpawnChance = 0.1D;
+        
+        this.ettinGreifing = ConfigBase.getConfig(this.group, "general").getBool("Features", "Ettin Griefing", true, "Set to false to disable Ettin block destruction.");
         
         this.setWidth = 1.5F;
         this.setHeight = 3.2F;
@@ -94,8 +97,7 @@ public class EntityEttin extends EntityCreatureAgeable implements IMob {
     public void onLivingUpdate() {
     	// Destroy Blocks:
 		if(!this.worldObj.isRemote)
-	        if(this.getAttackTarget() != null && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing")
-	     	        && ConfigBase.getConfig(this.group, "general").getBool("Features", "Ettin Griefing", true, "Set to false to disable Ettin block destruction.")) {
+	        if(this.getAttackTarget() != null && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing") && this.ettinGreifing) {
 		    	float distance = this.getAttackTarget().getDistanceToEntity(this);
 		    		if(distance <= this.width + 4.0F)
 		    			this.destroyArea((int)this.posX, (int)this.posY, (int)this.posZ, 4, true);

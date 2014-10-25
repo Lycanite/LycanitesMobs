@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs.api.mobevent;
 import java.util.Calendar;
 
 import lycanite.lycanitesmobs.ExtendedWorld;
+import lycanite.lycanitesmobs.Utilities;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.world.World;
@@ -24,7 +25,7 @@ public class MobEventHalloween extends MobEventBase {
 	@Override
     public boolean canStart(ExtendedWorld worldExt) {
 		Calendar calendar = Calendar.getInstance();
-		if(calendar.get(Calendar.DAY_OF_MONTH) != 31 || calendar.get(Calendar.MONTH) != calendar.OCTOBER)
+		if(!Utilities.isHalloween())
 			return false;
         return super.isEnabled();
     }

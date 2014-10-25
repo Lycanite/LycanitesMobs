@@ -1,7 +1,6 @@
 package lycanite.lycanitesmobs.api.mobevent;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +8,7 @@ import java.util.Random;
 
 import lycanite.lycanitesmobs.ExtendedWorld;
 import lycanite.lycanitesmobs.LycanitesMobs;
+import lycanite.lycanitesmobs.Utilities;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.network.MessageMobEvent;
 import net.minecraft.world.EnumDifficulty;
@@ -167,8 +167,7 @@ public class MobEventManager {
 			dimensionID = world.provider.dimensionId;
 		
 		// Seasonal Events:
-		Calendar calendar = Calendar.getInstance();
-		if(calendar.get(Calendar.DAY_OF_MONTH) == 31 && calendar.get(Calendar.MONTH) == calendar.OCTOBER && this.worldMobEvents.containsKey("halloween"))
+		if(Utilities.isHalloween() && this.worldMobEvents.containsKey("halloween"))
 			if(this.worldMobEvents.get("halloween").isEnabled() && this.worldMobEvents.get("halloween").canStart(worldExt))
 				return this.worldMobEvents.get("halloween");
 		

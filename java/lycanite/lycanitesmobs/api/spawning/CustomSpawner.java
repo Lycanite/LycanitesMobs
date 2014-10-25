@@ -64,7 +64,7 @@ public class CustomSpawner {
 		int tickOffset = 0;
 		for(SpawnTypeBase spawnType : this.updateSpawnTypes) {
 			spawnType.spawnMobs(entityUpdateTick - tickOffset, world, x, y, z);
-			tickOffset += 100;
+			tickOffset += 105;
 		}
 		
 		// ========== Spawn On Sudden Light to Dark ==========

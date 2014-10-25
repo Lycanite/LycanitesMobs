@@ -7,13 +7,27 @@ import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 
 
-public class SpawnTypeSky extends SpawnTypeBase {
+public class SpawnTypeLunar extends SpawnTypeBase {
 
     // ==================================================
     //                     Constructor
     // ==================================================
-    public SpawnTypeSky(String typeName) {
+    public SpawnTypeLunar(String typeName) {
         super(typeName);
+        CustomSpawner.instance.updateSpawnTypes.add(this);
+    }
+
+
+    // ==================================================
+    //                 Check Spawn Chance
+    // ==================================================
+    @Override
+    public boolean canSpawn(long tick, World world, int x, int y, int z) {
+        if(!super.canSpawn(tick, world, x, y, z))
+        	return false;
+    	if(world.getMoonPhase() != 0 || world.provider.isDaytime())
+    		return false;
+        return true;
     }
 
 

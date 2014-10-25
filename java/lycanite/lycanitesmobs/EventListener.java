@@ -231,7 +231,7 @@ public class EventListener {
 		
 		// Halloween Treats:
 		Calendar calendar = Calendar.getInstance();
-		if(calendar.get(Calendar.DAY_OF_MONTH) == 31 && calendar.get(Calendar.MONTH) == calendar.OCTOBER) {
+		if(Utilities.isHalloween()) {
 			boolean noHalloweenTreat = false;
 			boolean alwaysDrop = false;
 			if(event.entityLiving instanceof EntityCreatureBase) {

@@ -116,11 +116,12 @@ public class ShadowMobs {
 		ObjectManager.addMob(newMob);
 		AssetManager.addSound("phantom_say_jon", group, "entity.phantom.say.jon");
         
-        newMob = new MobInfo(group, "epion", EntityEpion.class, 0x221100, 0xDD22BB)
+        newMob = new MobInfo(group, "epion", EntityEpion.class, 0x553300, 0xFF22DD)
 		        .setPeaceful(false).setSummonable(false).setSummonCost(3).setDungeonLevel(2)
 		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("russet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER")
-				.setSpawnWeight(8).setAreaLimit(5).setGroupLimits(1, 2);
+		newMob.spawnInfo.setSpawnTypes("MONSTER, LUNAR")
+				.setBiomes("GROUP, SPOOKY")
+				.setSpawnWeight(6).setAreaLimit(5).setGroupLimits(1, 2);
 		ObjectManager.addMob(newMob);
 
 		

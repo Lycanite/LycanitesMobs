@@ -191,11 +191,23 @@ public class SpawnTypeBase {
 		stormSpawner.loadFromConfig();
         spawnTypes.add(stormSpawner);
 		
+		// Lunar Spawner:
+		SpawnTypeBase lunarSpawner = new SpawnTypeLunar("Lunar")
+				.setRate(800).setChance(0.5D).setRange(64).setBlockLimit(32).setMobLimit(32);
+		lunarSpawner.materials = new Material[] {Material.air};
+		lunarSpawner.ignoreBiome = true;
+		lunarSpawner.ignoreDimension = true;
+		lunarSpawner.ignoreLight = false;
+		lunarSpawner.forceSpawning = true;
+		lunarSpawner.loadFromConfig();
+        spawnTypes.add(lunarSpawner);
+		
 		// Shadow Spawner:
 		SpawnTypeBase shadowSpawner = new SpawnTypeShadow("Shadow")
 				.setRate(0).setChance(0.1D).setRange(2).setBlockLimit(32).setMobLimit(1);
 		shadowSpawner.materials = new Material[] {Material.air};
 		shadowSpawner.ignoreBiome = true;
+		shadowSpawner.ignoreDimension = true;
 		shadowSpawner.ignoreLight = true;
 		shadowSpawner.forceSpawning = true;
 		shadowSpawner.loadFromConfig();
@@ -206,6 +218,7 @@ public class SpawnTypeBase {
 				.setRate(0).setChance(0.03D).setRange(2).setBlockLimit(32).setMobLimit(1);
 		deathSpawner.materials = new Material[] {Material.air};
 		deathSpawner.ignoreBiome = true;
+		deathSpawner.ignoreDimension = true;
 		deathSpawner.ignoreLight = true;
 		deathSpawner.forceSpawning = true;
 		deathSpawner.loadFromConfig();
@@ -216,6 +229,7 @@ public class SpawnTypeBase {
 				.setRate(0).setChance(0.1D).setRange(2).setBlockLimit(32).setMobLimit(1);
 		sleepSpawner.materials = new Material[] {Material.air};
 		sleepSpawner.ignoreBiome = true;
+		sleepSpawner.ignoreDimension = true;
 		sleepSpawner.ignoreLight = true;
 		sleepSpawner.forceSpawning = true;
 		sleepSpawner.loadFromConfig();

@@ -1,5 +1,6 @@
 package lycanite.lycanitesmobs;
 
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 
@@ -130,5 +131,18 @@ public class Utilities {
 		if(closestHitEntity != null)
 			collision = new MovingObjectPosition(closestHitEntity);
 		return collision;
+    }
+	
+	
+	// ==================================================
+  	//                      Seasonal
+  	// ==================================================
+    public static boolean isHalloween() {
+    	Calendar calendar = Calendar.getInstance();
+		if(		(calendar.get(Calendar.DAY_OF_MONTH) == 31 && calendar.get(Calendar.MONTH) == calendar.OCTOBER)
+			||	(calendar.get(Calendar.DAY_OF_MONTH) == 1 && calendar.get(Calendar.MONTH) == calendar.NOVEMBER)
+		)
+			return true;
+		return false;
     }
 }

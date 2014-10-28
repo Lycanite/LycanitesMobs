@@ -44,7 +44,7 @@ public class EntityEttin extends EntityCreatureAgeable implements IMob {
         this.canGrow = true;
         this.babySpawnChance = 0.1D;
         
-        this.ettinGreifing = ConfigBase.getConfig(this.group, "general").getBool("Features", "Ettin Griefing", true, "Set to false to disable Ettin block destruction.");
+        this.ettinGreifing = ConfigBase.getConfig(this.group, "general").getBool("Features", "Ettin Griefing", this.ettinGreifing, "Set to false to disable Ettin block destruction.");
         
         this.setWidth = 1.5F;
         this.setHeight = 3.2F;

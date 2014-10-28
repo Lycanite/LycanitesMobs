@@ -32,6 +32,9 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 public class EntityTroll extends EntityCreatureBase implements IMob {
+	
+	public boolean trollGreifing = true;
+	
 	// ========== Unique Entity Variables ==========
 	public boolean stoneForm = false;
     
@@ -50,7 +53,9 @@ public class EntityTroll extends EntityCreatureBase implements IMob {
 
         //this.canGrow = false;
         //this.babySpawnChance = 0.1D;
-
+        
+        this.trollGreifing = ConfigBase.getConfig(this.group, "general").getBool("Features", "Troll Griefing", this.trollGreifing, "Set to false to disable Troll block destruction.");
+        
         this.setWidth = 1.5F;
         this.setHeight = 3.2F;
         this.setupMob();
@@ -128,8 +133,7 @@ public class EntityTroll extends EntityCreatureBase implements IMob {
         
         // Destroy Blocks:
  		if(!this.worldObj.isRemote)
- 	        if(this.getAttackTarget() != null && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing")
- 	        && ConfigBase.getConfig(this.group, "general").getBool("Features", "Troll Griefing", true, "Set to false to disable Troll block destruction.")) {
+ 	        if(this.getAttackTarget() != null && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing") && this.trollGreifing) {
  		    	float distance = this.getAttackTarget().getDistanceToEntity(this);
  		    		if(distance <= this.width + 4.0F)
  		    			this.destroyArea((int)this.posX, (int)this.posY, (int)this.posZ, 4, true);

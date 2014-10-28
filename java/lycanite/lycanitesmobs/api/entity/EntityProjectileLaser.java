@@ -6,6 +6,7 @@ import java.util.HashSet;
 import lycanite.lycanitesmobs.Utilities;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
@@ -379,16 +380,32 @@ public class EntityProjectileLaser extends EntityProjectileBase {
     // ==================================================
  	//                      Damage
  	// ==================================================
-    public void updateDamage(Entity target) {
+    public boolean updateDamage(Entity target) {
+    	boolean damageDealt = false;
     	float damage = this.getDamage(target);
         float absoluteDamage = 1 + (float)Math.floor(damage / 5.0D);
+        
+        // Prevent Knockback:
+        double targetKnockbackResistance = 0;
+        if(target instanceof EntityLivingBase) {
+        	targetKnockbackResistance = ((EntityLivingBase)target).getEntityAttribute(SharedMonsterAttributes.knockbackResistance).getAttributeValue();
+        	((EntityLivingBase)target).getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(1);
+        }
+        
+        // Deal Damage:
         if(damage <= absoluteDamage)
-        	target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor().setDamageIsAbsolute(), damage);
+        	damageDealt = target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor().setDamageIsAbsolute(), damage);
         else {
         	target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor().setDamageIsAbsolute(), absoluteDamage);
     		damage -= absoluteDamage;
-        	target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), damage);
+    		damageDealt = target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), damage);
         }
+    	
+        // Restore Knockback:
+    	if(target instanceof EntityLivingBase)
+        	((EntityLivingBase)target).getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(targetKnockbackResistance);
+    	
+        return damageDealt;
     }
     
     

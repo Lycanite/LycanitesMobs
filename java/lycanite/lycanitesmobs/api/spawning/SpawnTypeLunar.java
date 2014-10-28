@@ -25,7 +25,7 @@ public class SpawnTypeLunar extends SpawnTypeBase {
     public boolean canSpawn(long tick, World world, int x, int y, int z) {
         if(!super.canSpawn(tick, world, x, y, z))
         	return false;
-    	if(world.getMoonPhase() != 0 || world.provider.isDaytime())
+    	if(world.provider.getMoonPhase(world.getWorldTime()) != 0 || world.provider.isDaytime())
     		return false;
         return true;
     }

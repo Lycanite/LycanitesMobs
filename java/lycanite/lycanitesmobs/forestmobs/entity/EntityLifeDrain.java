@@ -33,7 +33,7 @@ public class EntityLifeDrain extends EntityProjectileLaser {
     public void setup() {
     	this.entityName = "lifedrain";
     	this.group = ForestMobs.group;
-    	this.setBaseDamage(1);
+    	this.setBaseDamage(2);
     }
     
     // ========== Stats ==========
@@ -64,6 +64,15 @@ public class EntityLifeDrain extends EntityProjectileLaser {
             this.getThrower().heal(this.getDamage(target));
         }
         return damageDealt;
+    }
+    
+    //========== On Damage ==========
+    @Override
+    public void onDamage(EntityLivingBase target, float damage, boolean attackSuccess) {
+    	if(this.getThrower() != null) {
+            this.getThrower().heal(damage);
+        }
+    	super.onDamage(target, damage, attackSuccess);
     }
     
 	

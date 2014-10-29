@@ -33,7 +33,7 @@ public class ItemScepterMudshot extends ItemScepter {
 
     @Override
     public int getRapidTime(ItemStack par1ItemStack) {
-        return 10;
+        return 5;
     }
 	
     

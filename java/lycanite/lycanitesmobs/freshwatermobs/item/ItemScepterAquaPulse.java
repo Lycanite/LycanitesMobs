@@ -33,7 +33,7 @@ public class ItemScepterAquaPulse extends ItemScepter {
     
     // ========== Charge Time ==========
     public int getChargeTime(ItemStack itemStack) {
-        return 30;
+        return 15;
     }
 	
     

@@ -33,7 +33,7 @@ public class ItemScepterScythe extends ItemScepter {
 
     @Override
     public int getRapidTime(ItemStack par1ItemStack) {
-        return 20;
+        return 10;
     }
 	
     

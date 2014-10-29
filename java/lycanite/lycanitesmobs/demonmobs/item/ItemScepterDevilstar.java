@@ -33,7 +33,7 @@ public class ItemScepterDevilstar extends ItemScepter {
 
     @Override
     public int getRapidTime(ItemStack itemStack) {
-        return 5;
+        return 2;
     }
 	
     

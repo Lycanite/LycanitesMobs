@@ -381,8 +381,9 @@ public class EntityProjectileLaser extends EntityProjectileBase {
  	//                      Damage
  	// ==================================================
     public boolean updateDamage(Entity target) {
-    	boolean damageDealt = false;
+    	boolean attackSuccess = false;
     	float damage = this.getDamage(target);
+		float damageInit = damage;
         float absoluteDamage = 1 + (float)Math.floor(damage / 5.0D);
         
         // Prevent Knockback:
@@ -394,18 +395,21 @@ public class EntityProjectileLaser extends EntityProjectileBase {
         
         // Deal Damage:
         if(damage <= absoluteDamage)
-        	damageDealt = target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor().setDamageIsAbsolute(), damage);
+        	attackSuccess = target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor().setDamageIsAbsolute(), damage);
         else {
         	target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor().setDamageIsAbsolute(), absoluteDamage);
     		damage -= absoluteDamage;
-    		damageDealt = target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), damage);
+    		attackSuccess = target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), damage);
         }
+        
+        if(target instanceof EntityLivingBase)
+        	this.onDamage((EntityLivingBase)target, damageInit, attackSuccess);
     	
         // Restore Knockback:
     	if(target instanceof EntityLivingBase)
         	((EntityLivingBase)target).getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(targetKnockbackResistance);
     	
-        return damageDealt;
+        return attackSuccess;
     }
     
     

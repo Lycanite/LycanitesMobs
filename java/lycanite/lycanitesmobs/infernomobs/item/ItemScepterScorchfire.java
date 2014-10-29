@@ -33,7 +33,7 @@ public class ItemScepterScorchfire extends ItemScepter {
 
     @Override
     public int getRapidTime(ItemStack itemStack) {
-        return 20;
+        return 10;
     }
 	
     

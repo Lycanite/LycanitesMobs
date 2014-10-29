@@ -33,7 +33,7 @@ public class ItemScepterDemonicLightning extends ItemScepter {
 
     // ========== Charge Time ==========
     public int getChargeTime(ItemStack itemStack) {
-        return 60;
+        return 30;
     }
 	
     

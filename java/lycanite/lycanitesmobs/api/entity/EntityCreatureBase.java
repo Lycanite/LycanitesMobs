@@ -24,6 +24,7 @@ import lycanite.lycanitesmobs.api.info.SpawnInfo;
 import lycanite.lycanitesmobs.api.info.Subspecies;
 import lycanite.lycanitesmobs.api.inventory.ContainerCreature;
 import lycanite.lycanitesmobs.api.inventory.InventoryCreature;
+import lycanite.lycanitesmobs.api.pets.PetEntry;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;
@@ -80,6 +81,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	public ExtraMobBehaviour extraMobBehaviour;
 	/** The name of the event that spawned this mob if any, an empty string ("") if none. **/
 	public String spawnEventType = "";
+    /** The Pet Entry for this mob, this binds this mob to another entity for special interaction, it will also cause this mob to be removed if the entity it is bound to is removed or dead. **/
+    public PetEntry petEntry;
 	
 	// Size:
     /** The width of this mob. XZ axis. **/
@@ -695,13 +698,13 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	}
     	return false;
     }
-    
+
     // ========== Minion ==========
     /** Set whether this mob is a minion or not, this should be used if this mob is summoned. **/
     public void setMinion(boolean minion) { this.isMinion = minion; }
     /** Returns whether or not this mob is a minion. **/
     public boolean isMinion() {
-    	return this.isMinion;
+        return this.isMinion;
     }
     
     // ========== Temporary Mob ==========
@@ -714,6 +717,27 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public void unsetTemporary() {
     	this.isTemporary = false;
     	this.temporaryDuration = 0;
+    }
+
+    // ========== Minion ==========
+    /** Returns true if this mob has a pet entry and is thus bound to another entity. **/
+    public boolean isBoundPet() {
+        return this.hasPetEntry();
+    }
+
+    /** Returns true if this mob has a pet entry. **/
+    public boolean hasPetEntry() {
+        return this.getPetEntry() != null;
+    }
+
+    /** Returns true if this mob has a pet entry. **/
+    public PetEntry getPetEntry() {
+        return this.petEntry;
+    }
+
+    /** Sets the pet entry for this mob. Mobs with Pet Entries will be removed when te world is reloaded as the pet Entry will spawn a new instance of them in on load. **/
+    public void setPetEntry(PetEntry petEntry) {
+        this.petEntry = petEntry;
     }
     
     // ========== On Spawn ==========
@@ -2479,6 +2503,13 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	else {
     		this.unsetTemporary();
     	}
+
+        if(nbtTagCompound.hasKey("IsBoundPet")) {
+            if(nbtTagCompound.getBoolean("IsBoundPet")) {
+                if(!this.hasPetEntry())
+                    this.setDead();
+            }
+        }
     	
     	if(nbtTagCompound.hasKey("ForceNoDespawn")) {
     		this.forceNoDespawn = nbtTagCompound.getBoolean("ForceNoDespawn");
@@ -2516,6 +2547,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	nbtTagCompound.setBoolean("IsMinion", this.isMinion());
     	nbtTagCompound.setBoolean("IsTemporary", this.isTemporary);
     	nbtTagCompound.setInteger("TemporaryDuration", this.temporaryDuration);
+        nbtTagCompound.setBoolean("IsBoundPet", this.isBoundPet());
     	nbtTagCompound.setBoolean("ForceNoDespawn", this.forceNoDespawn);
     	nbtTagCompound.setByte("Color", (byte)this.getColor());
     	nbtTagCompound.setDouble("Size", this.sizeScale);

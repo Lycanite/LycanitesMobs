@@ -128,8 +128,8 @@ public class BlockHellfire extends BlockBase {
         // Attempt To Spread:
         boolean humid = world.isBlockHighHumidity(x, y, z);
         byte humdity = 0;
-        if(humid)
-        	humdity = -50;
+        //if(humid)
+        	//humdity = -50;
         int burnChance = 50;
         int burnChanceSide = burnChance + 50;
         this.tryCatchFire(world, x + 1, y, z, burnChanceSide + humdity, random, metadata, ForgeDirection.WEST );

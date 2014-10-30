@@ -1,5 +1,6 @@
 package lycanite.lycanitesmobs;
 
+import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityFear;
 import lycanite.lycanitesmobs.api.network.MessageEntityPickedUp;
 import net.minecraft.entity.Entity;
@@ -63,13 +64,20 @@ public class ExtendedEntity implements IExtendedEntityProperties {
     //                      Update
     // ==================================================
 	public void update() {
+		if(this.pickedUpByEntity != null && !this.pickedUpByEntity.isEntityAlive())
+			this.pickedUpByEntity = null;
+		
 		// Picked Up By Entity:
 		if(this.pickedUpByEntity != null) {
+			double[] pickupOffset = new double[]{0, 0, 0};
+			if(this.pickedUpByEntity instanceof EntityCreatureBase)
+				pickupOffset = ((EntityCreatureBase)this.pickedUpByEntity).getPickupOffset(this.entity);
 			double yPos = this.pickedUpByEntity.posY;
-			if(this.entity.worldObj.isRemote && entity instanceof EntityPlayer)
+			if(this.entity.worldObj.isRemote && entity instanceof EntityPlayer) {
 				yPos = this.pickedUpByEntity.boundingBox.minY + entity.height;
-			this.entity.setPosition(this.pickedUpByEntity.posX, yPos, this.pickedUpByEntity.posZ);
-			//this.entity.setVelocity(this.pickedUpByEntity.motionX, this.pickedUpByEntity.motionY, this.pickedUpByEntity.motionZ);
+			}
+			this.entity.setPosition(this.pickedUpByEntity.posX + pickupOffset[0], yPos + pickupOffset[1], this.pickedUpByEntity.posZ + pickupOffset[2]);
+			//this.entity.setVelocity(this.pickedUpByEntity.motionX, this.pickedUpByEntity.motionY, this.pickedUpByEntity.motionZ); Not valid server side I think. :/
 			this.entity.motionX = this.pickedUpByEntity.motionX;
 			this.entity.motionY = this.pickedUpByEntity.motionY;
 			this.entity.motionZ = this.pickedUpByEntity.motionZ;

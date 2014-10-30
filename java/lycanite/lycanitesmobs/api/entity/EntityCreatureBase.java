@@ -1896,6 +1896,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	this.pickupEntity = null;
     }
     
+    public double[] getPickupOffset(Entity entity) {
+    	return new double[]{0, 0, 0};
+    }
+    
     // ========== Destroy Blocks ==========
     public void destroyArea(int x, int y, int z, float strength, boolean drop) {
     	destroyArea(x, y, z, strength, drop, 0);

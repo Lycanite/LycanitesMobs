@@ -66,7 +66,7 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
 		baseAttributes.put("maxHealth", 25D);
-		baseAttributes.put("movementSpeed", 0.38D);
+		baseAttributes.put("movementSpeed", 0.42D);
 		baseAttributes.put("knockbackResistance", 0.0D);
 		baseAttributes.put("followRange", 48D);
 		baseAttributes.put("attackDamage", 2D);
@@ -112,8 +112,11 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
 	    	}
 	    	
 	    	// Random Swooping:
-	    	else if(this.hasAttackTarget() && this.getRNG().nextInt(20) == 0) {
-		    	this.leap(1.0F, -0.2D, this.getAttackTarget());
+	    	else if(this.hasAttackTarget() && this.getDistanceSqToEntity(this.getAttackTarget()) > 2 && this.getRNG().nextInt(20) == 0) {
+	    		if(this.posY - 1 > this.getAttackTarget().posY)
+	    			this.leap(1.0F, -1.0D, this.getAttackTarget());
+	    		else if(this.posY + 1 < this.getAttackTarget().posY)
+	    			this.leap(1.0F, 1.0D, this.getAttackTarget());
 	    	}
         }
     }
@@ -151,6 +154,17 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
   	// ==================================================
     @Override
     public boolean canFly() { return true; }
+    
+    @Override
+    public void pickupEntity(Entity entity) {
+    	super.pickupEntity(entity);
+    	this.leap(1.0F, 2.0D);
+    }
+    
+    @Override
+    public double[] getPickupOffset(Entity entity) {
+    	return new double[]{0, -1.0D, 0};
+    }
     
     
     // ==================================================

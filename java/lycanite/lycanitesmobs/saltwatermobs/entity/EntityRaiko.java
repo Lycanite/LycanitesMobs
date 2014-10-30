@@ -67,7 +67,7 @@ public class EntityRaiko extends EntityCreatureBase implements IMob, IGroupHunte
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
 		baseAttributes.put("maxHealth", 20D);
-		baseAttributes.put("movementSpeed", 0.36D);
+		baseAttributes.put("movementSpeed", 0.42D);
 		baseAttributes.put("knockbackResistance", 0.0D);
 		baseAttributes.put("followRange", 48D);
 		baseAttributes.put("attackDamage", 2D);
@@ -105,11 +105,14 @@ public class EntityRaiko extends EntityCreatureBase implements IMob, IGroupHunte
                         this.dropPickupEntity();
                     }
                 }
-
-                // Random Swooping:
-                else if(this.hasAttackTarget() && this.getRNG().nextInt(20) == 0) {
-                    this.leap(1.0F, -0.2D, this.getAttackTarget());
-                }
+    	    	
+    	    	// Random Swooping:
+    	    	else if(this.hasAttackTarget() && this.getDistanceSqToEntity(this.getAttackTarget()) > 2 && this.getRNG().nextInt(20) == 0) {
+    	    		if(this.posY - 1 > this.getAttackTarget().posY)
+    	    			this.leap(1.0F, -1.0D, this.getAttackTarget());
+    	    		else if(this.posY + 1 < this.getAttackTarget().posY)
+    	    			this.leap(1.0F, 1.0D, this.getAttackTarget());
+    	    	}
             }
 
             // Burst Out of Water:
@@ -118,18 +121,18 @@ public class EntityRaiko extends EntityCreatureBase implements IMob, IGroupHunte
                 if(this.hasPickupEntity() || this.getAir() <= 40) {
 	                if(this.waterTime >= (2 * 20)) {
 	                    this.waterTime = 0;
-	                    this.leap(0.2F, 0.5D);
+	                    this.leap(0.5F, 2.0D);
 	                }
                 }
                 else if(this.hasAttackTarget()) {
                 	if(this.waterTime >= (16 * 20)) {
 	                    this.waterTime = 4 * 20;
-	                    this.leap(0.2F, 0.5D);
+	                    this.leap(0.5F, 2.0D);
                 	}
                 }
                 else if(this.waterTime >= (8 * 20)) {
                     this.waterTime = 4 * 20;
-                    this.leap(0.2F, 0.5D);
+                    this.leap(0.5F, 2.0D);
             	}
             }
         }
@@ -163,40 +166,25 @@ public class EntityRaiko extends EntityCreatureBase implements IMob, IGroupHunte
     @Override
     public boolean canSwim() { return true; }
     
-    public boolean canPickupEntity(Entity entity) {
-    	ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(entity);
-		if(extendedEntity == null)
-			return false;
-		return extendedEntity.pickedUpByEntity == null;
-    }
-    
+    @Override
     public void pickupEntity(Entity entity) {
-    	ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(entity);
-		if(extendedEntity != null)
-			extendedEntity.setPickedUpByEntity(this);
-    	this.pickupEntity = entity;
+    	super.pickupEntity(entity);
+    	this.leap(1.0F, 2.0D);
     }
-    
-    public Entity getPickupEntity() {
-    	return this.pickupEntity;
-    }
-    
-    public boolean hasPickupEntity() {
-    	return this.getPickupEntity() != null;
-    }
-    
-    public void dropPickupEntity() {
-    	ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(this.getPickupEntity());
-		if(extendedEntity != null)
-			extendedEntity.setPickedUpByEntity(null);
 
-        // Effect:
-        if(this.pickupEntity instanceof EntityLivingBase) {
+    @Override
+    public void dropPickupEntity() {
+    	// Drop Weight Effect:
+        if(this.pickupEntity != null && this.pickupEntity instanceof EntityLivingBase) {
             if(ObjectManager.getPotionEffect("Weight") != null && ObjectManager.getPotionEffect("Weight").id < Potion.potionTypes.length)
                 ((EntityLivingBase)this.pickupEntity).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("Weight").id, this.getEffectDuration(5), 1));
         }
-
-    	this.pickupEntity = null;
+    	super.dropPickupEntity();
+    }
+    
+    @Override
+    public double[] getPickupOffset(Entity entity) {
+    	return new double[]{0, -1.0D, 0};
     }
     
     

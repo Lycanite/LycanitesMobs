@@ -132,7 +132,6 @@ public class BlockScorchfire extends BlockBase {
         byte humdity = 0;
         if(humid)
         	humdity = -50;
-        humdity = (byte)Math.max(0, humdity);
         int burnChance = 250;
         int burnChanceSide = burnChance + 50;
         this.tryCatchFire(world, x + 1, y, z, burnChanceSide + humdity, random, metadata, ForgeDirection.WEST );

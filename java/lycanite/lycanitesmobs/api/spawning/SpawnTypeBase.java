@@ -313,6 +313,8 @@ public class SpawnTypeBase {
      * @param spawnInfo
      */
 	public void addSpawn(MobInfo mobInfo) {
+		//if(mobInfo == null)
+			//LycanitesMobs.printWarning("", "Tried to add a null mob entry to a spawn type.");
 		if(mobInfo != null && mobInfo.spawnInfo != null)
 			this.spawnList.add(mobInfo.spawnInfo);
 	}

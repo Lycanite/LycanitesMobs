@@ -599,11 +599,15 @@ public class SpawnTypeBase {
 		if(totalWeights <= 0)
 			return null;
 
-		int randomWeight = world.rand.nextInt(totalWeights);
+		int randomWeight = 1;
+		int searchWeight = 0;
+		if(totalWeights > 1)
+			randomWeight = world.rand.nextInt(totalWeights - 1) + 1;
 		for(SpawnInfo possibleSpawn : possibleSpawns) {
-			spawnInfo = possibleSpawn;
-			if(possibleSpawn.spawnWeight > randomWeight)
+			if(possibleSpawn.spawnWeight + searchWeight > randomWeight)
 				break;
+			searchWeight += possibleSpawn.spawnWeight;
+			spawnInfo = possibleSpawn;
 		}
 		return spawnInfo;
 	}

@@ -191,6 +191,12 @@ public class SpawnInfo {
 			if(this.enabled && this.spawnWeight > 0 && this.spawnGroupMax > 0) {
 				for(EnumCreatureType creatureType : this.creatureTypes) {
 					EntityRegistry.addSpawn(mobInfo.entityClass, this.spawnWeight, this.spawnGroupMin, this.spawnGroupMax, creatureType, this.biomes);
+					for(BiomeGenBase biome : this.biomes) {
+						if(biome == BiomeGenBase.hell) {
+							EntityRegistry.addSpawn(mobInfo.entityClass, this.spawnWeight * 10, this.spawnGroupMin, this.spawnGroupMax, creatureType, biome);
+							break;
+						}
+					}
 				}
 				for(SpawnTypeBase spawnType : this.spawnTypes) {
 					spawnType.addSpawn(this.mobInfo);

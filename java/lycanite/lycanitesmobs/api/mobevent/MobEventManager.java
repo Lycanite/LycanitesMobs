@@ -170,6 +170,12 @@ public class MobEventManager {
 		if(Utilities.isHalloween() && this.worldMobEvents.containsKey("halloween"))
 			if(this.worldMobEvents.get("halloween").isEnabled() && this.worldMobEvents.get("halloween").canStart(worldExt))
 				return this.worldMobEvents.get("halloween");
+		if(Utilities.isYuletide() && this.worldMobEvents.containsKey("yuletide"))
+			if(this.worldMobEvents.get("yuletide").isEnabled() && this.worldMobEvents.get("yuletide").canStart(worldExt))
+				return this.worldMobEvents.get("yuletide");
+		if(Utilities.isNewYear() && this.worldMobEvents.containsKey("newyear"))
+			if(this.worldMobEvents.get("newyear").isEnabled() && this.worldMobEvents.get("newyear").canStart(worldExt))
+				return this.worldMobEvents.get("newyear");
 		
 		// Get Events and Weights:
 		List<MobEventBase> validMobEvents = new ArrayList<MobEventBase>();
@@ -184,15 +190,17 @@ public class MobEventManager {
 			return null;
 		
 		// Pick Random Event Using Weights:
-		int randomWeight = world.rand.nextInt(totalWeights);
+		int randomWeight = 1;
+		if(randomWeight > 1)
+			randomWeight = world.rand.nextInt(totalWeights - 1) + 1;
 		int searchWeight = 0;
 		MobEventBase mobEvent = null;
 		for(MobEventBase mobEventEntry : validMobEvents) {
 			if(mobEventEntry.isEnabled()) {
-				mobEvent = mobEventEntry;
 				if(mobEventEntry.weight + searchWeight > randomWeight)
 					break;
 				searchWeight += mobEventEntry.weight;
+				mobEvent = mobEventEntry;
 			}
 		}
 		

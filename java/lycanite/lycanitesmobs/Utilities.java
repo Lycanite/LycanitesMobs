@@ -145,4 +145,14 @@ public class Utilities {
 			return true;
 		return false;
     }
+
+    public static boolean isYuletide() {
+    	Calendar calendar = Calendar.getInstance();
+		return calendar.get(Calendar.MONTH) == calendar.DECEMBER;
+    }
+
+    public static boolean isNewYear() {
+    	Calendar calendar = Calendar.getInstance();
+		return calendar.get(Calendar.MONTH) == calendar.JANUARY && calendar.get(Calendar.DAY_OF_MONTH) == 1;
+    }
 }

@@ -191,16 +191,16 @@ public class MobEventManager {
 		
 		// Pick Random Event Using Weights:
 		int randomWeight = 1;
-		if(randomWeight > 1)
+		if(totalWeights > 1)
 			randomWeight = world.rand.nextInt(totalWeights - 1) + 1;
 		int searchWeight = 0;
 		MobEventBase mobEvent = null;
 		for(MobEventBase mobEventEntry : validMobEvents) {
 			if(mobEventEntry.isEnabled()) {
+				mobEvent = mobEventEntry;
 				if(mobEventEntry.weight + searchWeight > randomWeight)
 					break;
 				searchWeight += mobEventEntry.weight;
-				mobEvent = mobEventEntry;
 			}
 		}
 		

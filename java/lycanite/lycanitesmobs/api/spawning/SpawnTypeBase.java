@@ -604,10 +604,10 @@ public class SpawnTypeBase {
 		if(totalWeights > 1)
 			randomWeight = world.rand.nextInt(totalWeights - 1) + 1;
 		for(SpawnInfo possibleSpawn : possibleSpawns) {
+			spawnInfo = possibleSpawn;
 			if(possibleSpawn.spawnWeight + searchWeight > randomWeight)
 				break;
 			searchWeight += possibleSpawn.spawnWeight;
-			spawnInfo = possibleSpawn;
 		}
 		return spawnInfo;
 	}

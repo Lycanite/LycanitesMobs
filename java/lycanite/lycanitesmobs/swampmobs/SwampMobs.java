@@ -100,7 +100,7 @@ public class SwampMobs {
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("aspidmeatcooked"));
 		OreDictionary.registerOre("listAllbeefcooked", ObjectManager.getItem("aspidmeatcooked"));
 		
-		ObjectManager.addItem("mosspie", new ItemCustomFood("mosspie", group, 6, 0.7F).setPotionEffect(Potion.regeneration.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
+		ObjectManager.addItem("mosspie", new ItemCustomFood("mosspie", group, 6, 0.7F).setPotionEffect(Potion.regeneration.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("mosspie"));
 
 		ObjectManager.addItem("lurkertreat", new ItemTreat("lurkertreat", group));
@@ -163,8 +163,8 @@ public class SwampMobs {
 		newMob = new MobInfo(group, "remobra", EntityRemobra.class, 0x440066, 0xDD00FF)
 		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1)
 		        .addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER")
-				.setSpawnWeight(4).setAreaLimit(10).setGroupLimits(1, 3);
+		newMob.spawnInfo.setSpawnTypes("SKY")
+				.setSpawnWeight(6).setAreaLimit(10).setGroupLimits(1, 3);
 		ObjectManager.addMob(newMob);
 
 		

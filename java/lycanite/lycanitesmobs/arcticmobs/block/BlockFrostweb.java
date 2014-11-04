@@ -2,6 +2,7 @@ package lycanite.lycanitesmobs.arcticmobs.block;
 
 import java.util.Random;
 
+import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.block.BlockBase;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
@@ -20,6 +21,7 @@ public class BlockFrostweb extends BlockBase {
 	// ==================================================
 	public BlockFrostweb() {
 		super(Material.web);
+        this.setCreativeTab(LycanitesMobs.itemsTab);
 		
 		// Properties:
 		this.group = ArcticMobs.group;
@@ -36,7 +38,8 @@ public class BlockFrostweb extends BlockBase {
 		this.noBreakCollision = false;
 		this.isOpaque = false;
 		
-		this.setHardness(4.0F);
+		this.setHardness(0.1F);
+		this.setHarvestLevel("sword", 0);
 		this.setLightOpacity(1);
 	}
 

@@ -295,7 +295,6 @@ public class MobInfo {
 		LycanitesMobs.printDebug("MobSetup", "~0==================== Mob Setup: "+ this.name + " [" + this.mobID +"] ====================0~");
 		if(!this.mobEnabled) {
 			LycanitesMobs.printDebug("MobSetup", "Mob Disabled: " + name + " - " + this.entityClass + " (" + group.name + ")");
-			return;
 		}
 		
 		// Mapping and Registration:

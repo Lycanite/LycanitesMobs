@@ -185,10 +185,10 @@ public class SpawnInfo {
     // ==================================================
     /** Registers this mob to vanilla and custom spawners as well as dungeons. **/
     public void registerSpawn() {
-    	// Add Spawn:
+    	// Add Spawn (Vanilla):
 		boolean spawnAdded = false;
 		if(!disableAllSpawning) {
-			if(this.enabled && this.spawnWeight > 0 && this.spawnGroupMax > 0) {
+			if(this.enabled && this.mobInfo.mobEnabled && this.spawnWeight > 0 && this.spawnGroupMax > 0) {
 				for(EnumCreatureType creatureType : this.creatureTypes) {
 					EntityRegistry.addSpawn(mobInfo.entityClass, this.spawnWeight, this.spawnGroupMin, this.spawnGroupMax, creatureType, this.biomes);
 					for(BiomeGenBase biome : this.biomes) {
@@ -198,11 +198,14 @@ public class SpawnInfo {
 						}
 					}
 				}
-				for(SpawnTypeBase spawnType : this.spawnTypes) {
-					spawnType.addSpawn(this.mobInfo);
-				}
 				spawnAdded = true;
 			}
+		}
+		
+		// Add Spawn (Custom):
+		// Still added if disabled as the Custom Spawner can check the disabled booleans and ignores 0 weight/group max entries.
+		for(SpawnTypeBase spawnType : this.spawnTypes) {
+			spawnType.addSpawn(this.mobInfo);
 		}
 		
 		// Debug Message - Spawn Added:
@@ -235,7 +238,7 @@ public class SpawnInfo {
 			LycanitesMobs.printDebug("MobSetup", "Dimensions (" + (this.dimensionWhitelist ? "Whitelist" : "Blacklist") + "): " + dimensionsList);
 		}
 		else
-			LycanitesMobs.printDebug("MobSetup", "Mob Spawn Not Added: The spawning of this mob (or all mobs) must be disabled or this mobs spawn weight or max group size is 0.");
+			LycanitesMobs.printDebug("MobSetup", "Mob Spawn Not Added: The spawning of this mob (or all mobs) must be disabled or this mobs spawn weight or max group size is 0 or this mob is all together disabled.");
 		
 		// Dungeon Spawn:
 		if(!disableDungeonSpawners) {

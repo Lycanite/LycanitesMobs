@@ -87,7 +87,7 @@ public class PlainsMobs {
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("makameatcooked"));
 		OreDictionary.registerOre("listAllporkcooked", ObjectManager.getItem("makameatcooked"));
 		
-		ObjectManager.addItem("bulwarkburger", new ItemCustomFood("bulwarkburger", group, 6, 0.7F).setPotionEffect(Potion.field_76444_x.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16)); // Absorbtion
+		ObjectManager.addItem("bulwarkburger", new ItemCustomFood("bulwarkburger", group, 6, 0.7F).setPotionEffect(Potion.field_76444_x.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6); // Absorbtion
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("bulwarkburger"));
 
 		ObjectManager.addItem("ventoraptortreat", new ItemTreat("ventoraptortreat", group));
@@ -134,7 +134,7 @@ public class PlainsMobs {
 		newMob = new MobInfo(group, "roc", EntityRoc.class, 0xAA0000, 0x00DD44)
 		        .setPeaceful(false).setSummonable(false).setSummonCost(4).setDungeonLevel(2)
 		        .addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER")
+		newMob.spawnInfo.setSpawnTypes("SKY")
 				.setSpawnWeight(4).setAreaLimit(3).setGroupLimits(1, 3);
 		ObjectManager.addMob(newMob);
 

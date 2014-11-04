@@ -119,6 +119,16 @@ public class SpawnTypeBase {
         CustomSpawner.instance.updateSpawnTypes.add(frostfireBlockSpawner);
         spawnTypes.add(frostfireBlockSpawner);
 		
+		// Sky Spawner:
+		SpawnTypeBase skySpawner = new SpawnTypeSky("Sky")
+				.setRate(400).setChance(0.75D).setRange(48).setBlockLimit(32).setMobLimit(32);
+		skySpawner.materials = new Material[] {Material.air};
+		skySpawner.ignoreBiome = false;
+		skySpawner.ignoreLight = false;
+		skySpawner.loadFromConfig();
+        CustomSpawner.instance.updateSpawnTypes.add(skySpawner);
+        spawnTypes.add(skySpawner);
+		
 		// Water Spawner:
 		SpawnTypeBase waterSpawner = new SpawnTypeWater("Water")
 				.setRate(200).setChance(0.75D).setRange(32).setBlockLimit(64).setMobLimit(32);
@@ -183,7 +193,7 @@ public class SpawnTypeBase {
 		
 		// Storm Spawner:
 		SpawnTypeBase stormSpawner = new SpawnTypeStorm("Storm")
-				.setRate(800).setChance(0.125D).setRange(64).setBlockLimit(32).setMobLimit(32);
+				.setRate(800).setChance(0.125D).setRange(48).setBlockLimit(32).setMobLimit(32);
 		stormSpawner.materials = new Material[] {Material.air};
 		stormSpawner.ignoreBiome = true;
 		stormSpawner.ignoreLight = true;
@@ -193,7 +203,7 @@ public class SpawnTypeBase {
 		
 		// Lunar Spawner:
 		SpawnTypeBase lunarSpawner = new SpawnTypeLunar("Lunar")
-				.setRate(800).setChance(0.5D).setRange(64).setBlockLimit(32).setMobLimit(32);
+				.setRate(800).setChance(0.5D).setRange(48).setBlockLimit(32).setMobLimit(32);
 		lunarSpawner.materials = new Material[] {Material.air};
 		lunarSpawner.ignoreBiome = true;
 		lunarSpawner.ignoreDimension = true;
@@ -550,12 +560,22 @@ public class SpawnTypeBase {
     public List<SpawnInfo> getPossibleSpawns(int coordsFound, List<BiomeGenBase> biomes) {
         List<SpawnInfo> possibleSpawns = new ArrayList<SpawnInfo>();
         for(SpawnInfo possibleSpawn : this.getSpawnList()) {
+        	// Check If Enabled:
+        	boolean isEnabled = true;
+        	if(possibleSpawn == null || !possibleSpawn.mobInfo.mobEnabled || !possibleSpawn.enabled
+					|| possibleSpawn.spawnWeight <= 0 || possibleSpawn.spawnGroupMax <= 0) {
+                LycanitesMobs.printDebug("CustomSpawner", possibleSpawn.mobInfo.name + ": Not enabled, will not spawn.");
+        		isEnabled = false;
+        	}
+        	
+        	// Check Coordinate Count:
             boolean enoughCoords = true;
             if(coordsFound < possibleSpawn.spawnBlockCost) {
                 LycanitesMobs.printDebug("CustomSpawner", possibleSpawn.mobInfo.name + ": Not enough of the required blocks available for spawning.");
                 enoughCoords = false;
             }
-
+            
+            // Check Biomes:
             boolean isValidBiome = this.ignoreBiome;
             if(enoughCoords && !isValidBiome) {
                 for(BiomeGenBase validBiome : possibleSpawn.biomes) {
@@ -571,8 +591,9 @@ public class SpawnTypeBase {
             }
             if(!isValidBiome)
                 LycanitesMobs.printDebug("CustomSpawner", possibleSpawn.mobInfo.name + ": No valid spawning biomes could be found within the coordinates.");
-
-            if(enoughCoords && isValidBiome) {
+            
+            // Add If Valid:
+            if(isEnabled && enoughCoords && isValidBiome) {
                 LycanitesMobs.printDebug("CustomSpawner", possibleSpawn.mobInfo.name + ": Able to spawn.");
                 possibleSpawns.add(possibleSpawn);
             }
@@ -591,23 +612,26 @@ public class SpawnTypeBase {
      * @return The Spawn Info of the mob to spawn.
      */
 	public SpawnInfo getRandomMob(List<SpawnInfo> possibleSpawns, World world) {
-		SpawnInfo spawnInfo = null;
+		
+		// Get Weights:
 		int totalWeights = 0;
-		for(SpawnInfo possibleSpawn : possibleSpawns) {
-			totalWeights += possibleSpawn.spawnWeight;
+		for(SpawnInfo spawnEntry : possibleSpawns) {
+			totalWeights += spawnEntry.spawnWeight;
 		}
 		if(totalWeights <= 0)
 			return null;
-
+		
+		// Pick Random Spawn Using Weights:
 		int randomWeight = 1;
-		int searchWeight = 0;
 		if(totalWeights > 1)
 			randomWeight = world.rand.nextInt(totalWeights - 1) + 1;
-		for(SpawnInfo possibleSpawn : possibleSpawns) {
-			spawnInfo = possibleSpawn;
-			if(possibleSpawn.spawnWeight + searchWeight > randomWeight)
+		int searchWeight = 0;
+		SpawnInfo spawnInfo = null;
+		for(SpawnInfo spawnEntry : possibleSpawns) {
+			spawnInfo = spawnEntry;
+			if(spawnEntry.spawnWeight + searchWeight > randomWeight)
 				break;
-			searchWeight += possibleSpawn.spawnWeight;
+			searchWeight += spawnEntry.spawnWeight;
 		}
 		return spawnInfo;
 	}
@@ -807,9 +831,9 @@ public class SpawnTypeBase {
             		continue;
             	
                 if(world.canBlockSeeTheSky(originX, nextY, originZ)) {
-                	if(solid) {
+                	if(!solid) {
 	                    int skyCoord = nextY;
-	                    int skyMax = world.getHeight() - 1 - skyCoord;
+	                    int skyMax = Math.min(world.getHeight() - 1, maxY) - skyCoord;
 	                    nextY += world.rand.nextInt(skyMax);
                 	}
                     if(nextY + 1 <= 64)

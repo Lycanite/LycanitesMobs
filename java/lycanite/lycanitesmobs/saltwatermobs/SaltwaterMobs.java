@@ -79,7 +79,7 @@ public class SaltwaterMobs {
         ObjectLists.addItem("cookedfish", ObjectManager.getItem("ikameatcooked"));
         OreDictionary.registerOre("listAllfishcooked", ObjectManager.getItem("ikameatcooked"));
 
-        ObjectManager.addItem("seashellmaki", new ItemCustomFood("seashellmaki", group, 6, 0.7F).setPotionEffect(Potion.waterBreathing.id, 120, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
+        ObjectManager.addItem("seashellmaki", new ItemCustomFood("seashellmaki", group, 6, 0.7F).setPotionEffect(Potion.waterBreathing.id, 120, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
         ObjectLists.addItem("cookedfish", ObjectManager.getItem("seashellmaki"));
 		
 		// ========== Create Mobs ==========
@@ -117,7 +117,7 @@ public class SaltwaterMobs {
 		newMob = new MobInfo(group, "raiko", EntityRaiko.class, 0xCCCCDD, 0xFF6633)
 		        .setPeaceful(false).setSummonable(false).setSummonCost(4).setDungeonLevel(2)
 		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("golden", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER")
+		newMob.spawnInfo.setSpawnTypes("SKY")
 				.setSpawnWeight(4).setAreaLimit(3).setGroupLimits(1, 3);
 		ObjectManager.addMob(newMob);
 

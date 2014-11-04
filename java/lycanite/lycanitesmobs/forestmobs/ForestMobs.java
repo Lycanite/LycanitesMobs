@@ -88,10 +88,10 @@ public class ForestMobs {
 		ObjectManager.addItem("arisaurmeatraw", rawMeat);
 		ObjectLists.addItem("vegetables", ObjectManager.getItem("arisaurmeatraw"));
 		
-		ObjectManager.addItem("arisaurmeatcooked", new ItemCustomFood("arisaurmeatcooked", group, 6, 0.7F).setPotionEffect(Potion.field_76434_w.id, 10, 2, 1.0F).setAlwaysEdible()); // Health Boost
+		ObjectManager.addItem("arisaurmeatcooked", new ItemCustomFood("arisaurmeatcooked", group, 6, 0.7F).setPotionEffect(Potion.field_76434_w.id, 10, 2, 2.0F).setAlwaysEdible()); // Health Boost
 		ObjectLists.addItem("vegetables", ObjectManager.getItem("arisaurmeatcooked"));
 		
-		ObjectManager.addItem("paleosalad", new ItemCustomFood("paleosalad", group, 6, 0.7F).setPotionEffect(Potion.field_76434_w.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16)); // Health Boost
+		ObjectManager.addItem("paleosalad", new ItemCustomFood("paleosalad", group, 6, 0.7F).setPotionEffect(Potion.field_76434_w.id, 60, 2, 2.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6); // Health Boost
 		ObjectLists.addItem("vegetables", ObjectManager.getItem("paleosalad"));
 
 		ObjectManager.addItem("shamblertreat", new ItemTreat("shamblertreat", group));
@@ -134,8 +134,8 @@ public class ForestMobs {
         newMob = new MobInfo(group, "spriggan", EntitySpriggan.class, 0x997722, 0x008844)
                 .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
 		        .addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
-        newMob.spawnInfo.setSpawnTypes("MONSTER, CROP")
-                .setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3);
+        newMob.spawnInfo.setSpawnTypes("CROP, SKY")
+                .setSpawnWeight(4).setAreaLimit(3).setGroupLimits(1, 3);
         ObjectManager.addMob(newMob);
 
 		

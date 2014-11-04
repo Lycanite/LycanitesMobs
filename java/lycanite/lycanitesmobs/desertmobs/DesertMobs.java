@@ -98,7 +98,7 @@ public class DesertMobs {
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("joustmeatcooked"));
 		OreDictionary.registerOre("listAllchickencooked", ObjectManager.getItem("joustmeatcooked"));
 		
-		ObjectManager.addItem("ambercake", new ItemCustomFood("ambercake", group, 6, 0.7F).setPotionEffect(Potion.moveSpeed.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
+		ObjectManager.addItem("ambercake", new ItemCustomFood("ambercake", group, 6, 0.7F).setPotionEffect(Potion.moveSpeed.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("ambercake"));
 
 		ObjectManager.addItem("crusktreat", new ItemTreat("crusktreat", group));
@@ -167,8 +167,8 @@ public class DesertMobs {
 		newMob = new MobInfo(group, "manticore", EntityManticore.class, 0x442200, 0x990000)
 		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1)
 		        .addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER")
-				.setSpawnWeight(4).setAreaLimit(10).setGroupLimits(1, 5);
+		newMob.spawnInfo.setSpawnTypes("SKY")
+				.setSpawnWeight(6).setAreaLimit(10).setGroupLimits(1, 5);
 		ObjectManager.addMob(newMob);
 
 		

@@ -2,6 +2,7 @@ package lycanite.lycanitesmobs.junglemobs.block;
 
 import java.util.Random;
 
+import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.block.BlockBase;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
@@ -20,6 +21,7 @@ public class BlockQuickWeb extends BlockBase {
 	// ==================================================
 	public BlockQuickWeb() {
 		super(Material.web);
+        this.setCreativeTab(LycanitesMobs.itemsTab);
 		
 		// Properties:
 		this.group = JungleMobs.group;
@@ -36,11 +38,12 @@ public class BlockQuickWeb extends BlockBase {
 		this.noBreakCollision = false;
 		this.isOpaque = false;
 		
-		this.setHardness(4.0F);
+		this.setHardness(0.1F);
+		this.setHarvestLevel("sword", 0);
 		this.setLightOpacity(1);
 	}
-
-
+	
+	
 	// ==================================================
 	//                     Break
 	// ==================================================

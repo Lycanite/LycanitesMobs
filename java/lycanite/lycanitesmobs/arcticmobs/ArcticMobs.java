@@ -108,7 +108,7 @@ public class ArcticMobs {
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("yetimeatcooked"));
 		OreDictionary.registerOre("listAllporkcooked", ObjectManager.getItem("yetimeatcooked"));
 		
-		ObjectManager.addItem("palesoup", new ItemCustomFood("palesoup", group, 6, 0.7F).setPotionEffect(Potion.resistance.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
+		ObjectManager.addItem("palesoup", new ItemCustomFood("palesoup", group, 6, 0.7F).setPotionEffect(Potion.resistance.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("palesoup"));
 
 		ObjectManager.addItem("frostyfur", new ItemFrostyFur());
@@ -143,7 +143,7 @@ public class ArcticMobs {
         newMob = new MobInfo(group, "reiver", EntityReiver.class, 0xDDEEFF, 0x99DDEE)
                 .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
 		        .addSubspecies(new Subspecies("ashen", "uncommon")).addSubspecies(new Subspecies("golden", "uncommon"));
-        newMob.spawnInfo.setSpawnTypes("MONSTER, FROSTFIRE").setBlockCost(8)
+        newMob.spawnInfo.setSpawnTypes("FROSTFIRE, SKY").setBlockCost(8)
         		.setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3);
         ObjectManager.addMob(newMob);
         
@@ -171,7 +171,7 @@ public class ArcticMobs {
         newMob = new MobInfo(group, "arix", EntityArix.class, 0xDDDDFF, 0x9999FF)
                 .setPeaceful(false).setSummonable(false).setSummonCost(2).setDungeonLevel(1)
 		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"));
-        newMob.spawnInfo.setSpawnTypes("MONSTER")
+        newMob.spawnInfo.setSpawnTypes("SKY")
                 .setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3);
         ObjectManager.addMob(newMob);
 		

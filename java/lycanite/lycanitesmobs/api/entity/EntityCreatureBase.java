@@ -644,9 +644,16 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public boolean despawnCheck() {
         if(this.worldObj.isRemote)
         	return false;
+        
+        // Disabled Mobs:
+        if(!this.mobInfo.mobEnabled)
+        	return true;
+        
+        // Temporary Mobs:
         if(this.isTemporary && this.temporaryDuration-- <= 0)
         	return true;
         
+        // Mob Event Despawning:
         if(this.getLeashed() || this.isPersistant() || this.hasCustomNameTag()) {
         	this.spawnEventType = "";
         }

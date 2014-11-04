@@ -108,7 +108,7 @@ public class DemonMobs {
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("pinkymeatcooked"));
 		OreDictionary.registerOre("listAllbeefcooked", ObjectManager.getItem("pinkymeatcooked"));
 		
-		ObjectManager.addItem("devillasagna", new ItemCustomFood("devillasagna", group, 7, 0.7F).setPotionEffect(Potion.damageBoost.id, 60, 0, 1.0F).setAlwaysEdible().setMaxStackSize(16));
+		ObjectManager.addItem("devillasagna", new ItemCustomFood("devillasagna", group, 7, 0.7F).setPotionEffect(Potion.damageBoost.id, 60, 0, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("devillasagna"));
 
 		ObjectManager.addItem("pinkytreat", new ItemTreat("pinkytreat", group));
@@ -165,14 +165,14 @@ public class DemonMobs {
 		newMob = new MobInfo(group, "nethersoul", EntityNetherSoul.class, 0xFF9900, 0xFF0000)
 		        .setPeaceful(false).setSummonable(false).setSummonCost(1).setDungeonLevel(0)
 		        .addSubspecies(new Subspecies("verdant", "uncommon")).addSubspecies(new Subspecies("azure", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, PORTAL")
+		newMob.spawnInfo.setSpawnTypes("MONSTER, PORTAL, SKY")
 				.setSpawnWeight(6).setAreaLimit(10).setGroupLimits(1, 4).setDungeonWeight(120);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "cacodemon", EntityCacodemon.class, 0xFF0000, 0x000099)
 		        .setPeaceful(false).setSummonable(false).setSummonCost(6).setDungeonLevel(2)
 		        .addSubspecies(new Subspecies("russet", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, PORTAL")
+		newMob.spawnInfo.setSpawnTypes("PORTAL, SKY")
 				.setSpawnWeight(4).setAreaLimit(5).setGroupLimits(1, 1).setDungeonWeight(80);
 		ObjectManager.addMob(newMob);
 

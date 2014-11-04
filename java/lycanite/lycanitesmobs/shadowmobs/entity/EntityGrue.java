@@ -30,6 +30,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupShadow {
     
@@ -103,7 +104,11 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
 	        	this.teleportTime = 60 + this.getRNG().nextInt(40);
         		this.playJumpSound();
         		double[] teleportPosition = this.getFacingPosition(this.getAttackTarget(), -this.getAttackTarget().width - 1D, 0);
-        		this.setPosition(teleportPosition[0], teleportPosition[1], teleportPosition[2]);
+        		if(this.worldObj.isSideSolid((int)teleportPosition[0], (int)teleportPosition[1], (int)teleportPosition[2], ForgeDirection.DOWN)
+        		|| this.worldObj.isSideSolid((int)teleportPosition[0], (int)teleportPosition[1] + 1, (int)teleportPosition[2], ForgeDirection.DOWN))
+        			this.setPosition(this.getAttackTarget().posX, this.getAttackTarget().posY, this.getAttackTarget().posZ);
+        		else
+        			this.setPosition(teleportPosition[0], teleportPosition[1], teleportPosition[2]);
 	        }
         }
         

@@ -155,6 +155,22 @@
         "category": "hostile",
         "sounds": [{"name": "entity/conba/step", "stream": false}]
     },
+    "entity.vespid.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/vespid/say", "stream": false}]
+    },
+    "entity.vespid.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/vespid/hurt", "stream": false}]
+    },
+    "entity.vespid.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/vespid/death", "stream": false}]
+    },
+    "entity.vespid.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/vespid/attack", "stream": false}]
+    },
     "projectile.poop": {
         "category": "ambient",
         "sounds": [{"name": "projectile/poop", "stream": false}]

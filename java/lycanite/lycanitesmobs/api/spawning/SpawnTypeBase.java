@@ -834,7 +834,8 @@ public class SpawnTypeBase {
                 	if(!solid) {
 	                    int skyCoord = nextY;
 	                    int skyMax = Math.min(world.getHeight() - 1, maxY) - skyCoord;
-	                    nextY += world.rand.nextInt(skyMax);
+	                    if(skyMax > 0)
+	                    	nextY += world.rand.nextInt(skyMax);
                 	}
                     if(nextY + 1 <= 64)
                         yCoordsLow.add(nextY + 1);

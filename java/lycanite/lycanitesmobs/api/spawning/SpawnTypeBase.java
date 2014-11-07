@@ -372,7 +372,7 @@ public class SpawnTypeBase {
         // Search for Coords:
         List<int[]> coords = this.getSpawnCoordinates(world, x, y, z);
         if(coords == null) {
-            LycanitesMobs.printWarning("CustomSpawner", "This spawn type will never be able to find coordinates as it has no materials or blocks set, not even air.");
+            LycanitesMobs.printWarning("CustomSpawner", "Null coordinates! This spawn type might never be able to find coordinates as it has no materials or blocks set, not even air.");
             return false;
         }
 
@@ -815,7 +815,7 @@ public class SpawnTypeBase {
      * @return The y position, -1 if a valid position could not be found.
      */
     public int getRandomYCoord(World world, int originX, int originY, int originZ, int rangeMin, int rangeMax, boolean solid, Block insideBlock) {
-    	int minY = originY - rangeMax;
+    	int minY = Math.max(originY - rangeMax, 0);
         int maxY = originY + rangeMax;
         List<Integer> yCoordsLow = new ArrayList<Integer>();
         List<Integer> yCoordsHigh = new ArrayList<Integer>();
@@ -834,8 +834,10 @@ public class SpawnTypeBase {
                 	if(!solid) {
 	                    int skyCoord = nextY;
 	                    int skyMax = Math.min(world.getHeight() - 1, maxY) - skyCoord;
-	                    if(skyMax > 0)
+	                    if(skyMax > 1)
 	                    	nextY += world.rand.nextInt(skyMax);
+	                    if(skyMax == 1)
+	                    	nextY = 1;
                 	}
                     if(nextY + 1 <= 64)
                         yCoordsLow.add(nextY + 1);
@@ -844,7 +846,7 @@ public class SpawnTypeBase {
                     break;
                 }
                 
-                if(this.doesCoordHaveSpace(world, originX, nextY + 1, originZ, insideBlock)) {
+                else if(this.doesCoordHaveSpace(world, originX, nextY + 1, originZ, insideBlock)) {
                     if(nextY + 1 <= 64)
                         yCoordsLow.add(nextY + 1);
                     else

@@ -57,6 +57,7 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
 	private int hiveExposedBlockCacheTime = 0;
 	
 	private int vespidQueenSwarmLimit = 20;
+	private boolean vespidHiveBuilding = true;
 	
     // ==================================================
  	//                    Constructor
@@ -81,6 +82,7 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
         this.justAttackedTime = (short)(10);
         
         this.vespidQueenSwarmLimit = ConfigBase.getConfig(this.group, "general").getInt("Features", "Vespid Queen Swarm Limit", this.vespidQueenSwarmLimit, "Limits how many Vespid drones a Queen can have before she will no longer spawn babies in hives.");
+        this.vespidHiveBuilding = ConfigBase.getConfig(this.group, "general").getBool("Features", "Vespid Hive Building", this.vespidHiveBuilding, "Set to false to stop Vespids from building hives all together.");
     	
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this));
@@ -139,24 +141,26 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
     public void onLivingUpdate() {
         super.onLivingUpdate();
         
-        // Hive Cache Times:
-        this.hiveCheckCacheTime--;
-        if(this.hiveCheckCacheTime < 0)
-        	this.hiveCheckCacheTime = 0;
-        this.hiveExposedBlockCacheTime--;
-        if(this.hiveExposedBlockCacheTime < 0)
-        	this.hiveExposedBlockCacheTime = 0;
-        
-        // Set Home In Hive:
-        if(!this.worldObj.isRemote && !this.hasHome()) {
-        	if(this.hiveFoundationsSet()) { //|| (this.entityAge % 40 == 0 && this.getRNG().nextFloat() <= 0.25F)) {
-        		this.setHome((int)this.posX, (int)this.posY, (int)this.posZ, 16F);
-        	}
-        }
-        
-        // Spawn Babies:
-        if(!this.worldObj.isRemote && this.hiveFoundationsSet() && this.ticksExisted % 20 == 0) {
-			this.allyUpdate();
+        if(this.vespidHiveBuilding) {
+	        // Hive Cache Times:
+	        this.hiveCheckCacheTime--;
+	        if(this.hiveCheckCacheTime < 0)
+	        	this.hiveCheckCacheTime = 0;
+	        this.hiveExposedBlockCacheTime--;
+	        if(this.hiveExposedBlockCacheTime < 0)
+	        	this.hiveExposedBlockCacheTime = 0;
+	        
+	        // Set Home In Hive:
+	        if(!this.worldObj.isRemote && !this.hasHome()) {
+	        	if(this.hiveFoundationsSet()) { //|| (this.entityAge % 40 == 0 && this.getRNG().nextFloat() <= 0.25F)) {
+	        		this.setHome((int)this.posX, (int)this.posY, (int)this.posZ, 16F);
+	        	}
+	        }
+	        
+	        // Spawn Babies:
+	        if(!this.worldObj.isRemote && this.hiveFoundationsSet() && this.ticksExisted % 20 == 0) {
+				this.allyUpdate();
+	        }
         }
         
         // Don't Keep Infected Conbas Targeted:

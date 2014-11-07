@@ -22,6 +22,7 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
@@ -33,6 +34,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 public class EntityConba extends EntityCreatureTameable implements IMob {
@@ -109,6 +111,18 @@ public class EntityConba extends EntityCreatureTameable implements IMob {
     // ==================================================
     //                       Name
     // ==================================================
+    /** Returns the species name of this entity. **/
+	@Override
+    public String getSpeciesName() {
+		String infection = "";
+		if(this.vespidInfection) {
+			String entityName = EntityList.getEntityString(this);
+	    	if(entityName != null)
+	    		infection = StatCollector.translateToLocal("entity." + entityName + ".infected") + " ";
+		}
+    	return infection + super.getSpeciesName();
+    }
+    
     public String getTextureName() {
     	if(this.vespidInfection)
     		return super.getTextureName() + "_infected";

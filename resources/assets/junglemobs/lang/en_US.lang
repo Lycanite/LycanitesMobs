@@ -19,6 +19,7 @@ entity.junglemobs.tarantula.name=Tarantula
 entity.junglemobs.tarantula.description=Poisonous jumping spiders that leave behind a trail of temporary sticky green webbing.
 entity.junglemobs.conba.name=Conba
 entity.junglemobs.conba.description=Mischievous apes with a passion for poop! They like to throw their sticky poop at people causing slowness and nausea as well as creating a poop cloud which extends these effects. Conba keep their distance at all times.
+entity.junglemobs.conba.infected=Infected
 entity.junglemobs.vespid.name=Vespid
 entity.junglemobs.vespid.description=Invasive giant wasp like insects with a poisonous sting. Vespid alone aren't much of a problem but in groups or with a Queen Vespid, they can be deadly. They are known to build hives when near a Queen.
 entity.junglemobs.vespidqueen.name=Vespid Queen

@@ -8,6 +8,7 @@ import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupAnimal;
 import lycanite.lycanitesmobs.api.IGroupPredator;
 import lycanite.lycanitesmobs.api.IGroupPrey;
+import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowMaster;
@@ -40,6 +41,7 @@ import net.minecraft.world.World;
 
 public class EntityVespid extends EntityCreatureAgeable implements IMob, IGroupPredator {
     public EntityAIPlaceBlock aiPlaceBlock;
+	private boolean vespidHiveBuilding = true;
 	
     // ==================================================
  	//                    Constructor
@@ -63,6 +65,8 @@ public class EntityVespid extends EntityCreatureAgeable implements IMob, IGroupP
         
         this.justAttackedTime = (short)(10);
         
+        this.vespidHiveBuilding = ConfigBase.getConfig(this.group, "general").getBool("Features", "Vespid Hive Building", this.vespidHiveBuilding, "Set to false to stop Vespids from building hives all together.");
+    	
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIAttackMelee(this).setRate(10).setLongMemory(true));
@@ -136,7 +140,7 @@ public class EntityVespid extends EntityCreatureAgeable implements IMob, IGroupP
         }
         
         // Building AI:
-        if(!this.worldObj.isRemote && this.hasMaster() && this.getMasterTarget() instanceof EntityVespidQueen && this.aiPlaceBlock.block == null) {
+        if(!this.worldObj.isRemote && this.vespidHiveBuilding && this.hasMaster() && this.getMasterTarget() instanceof EntityVespidQueen && this.aiPlaceBlock.block == null) {
         	EntityVespidQueen queen = (EntityVespidQueen)this.getMasterTarget();
         	
         	// Build Hive Foundations:

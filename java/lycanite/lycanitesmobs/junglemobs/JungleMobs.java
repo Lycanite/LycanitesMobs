@@ -14,8 +14,8 @@ import lycanite.lycanitesmobs.api.item.ItemTreat;
 import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
-import lycanite.lycanitesmobs.api.spawning.SpawnTypeBlock;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeLand;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
 import lycanite.lycanitesmobs.junglemobs.block.BlockPoopCloud;
 import lycanite.lycanitesmobs.junglemobs.block.BlockPropolis;
 import lycanite.lycanitesmobs.junglemobs.block.BlockQuickWeb;
@@ -136,7 +136,7 @@ public class JungleMobs {
 		        .setPeaceful(false).setSummonable(false).setSummonCost(4).setDungeonLevel(1)
 		        .addSubspecies(new Subspecies("scarlet", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER")
-				.setSpawnWeight(5).setAreaLimit(10).setGroupLimits(1, 3);
+				.setSpawnWeight(6).setAreaLimit(10).setGroupLimits(1, 3);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "concapede", EntityConcapedeHead.class, 0x111144, 0xDD0000)
@@ -164,14 +164,14 @@ public class JungleMobs {
 		        .setPeaceful(false).setSummonable(false).setSummonCost(2).setDungeonLevel(0)
 		        .addSubspecies(new Subspecies("violet", "uncommon")).addSubspecies(new Subspecies("dark", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER")
-				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3);
+				.setSpawnWeight(10).setAreaLimit(10).setGroupLimits(1, 3);
 		ObjectManager.addMob(newMob);
         
         newMob = new MobInfo(group, "vespid", EntityVespid.class, 0x112200, 0x998800)
 		        .setPeaceful(false).setSummonable(false).setSummonCost(2).setDungeonLevel(2)
 		        .addSubspecies(new Subspecies("scarlet", "uncommon")).addSubspecies(new Subspecies("ashen", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER")
-				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 6);
+				.setSpawnWeight(10).setAreaLimit(10).setGroupLimits(1, 6);
 		ObjectManager.addMob(newMob);
         
         newMob = new MobInfo(group, "vespidqueen", EntityVespidQueen.class, 0x223300, 0xFFCC00)
@@ -211,6 +211,7 @@ public class JungleMobs {
 		
 		
 		// ========== Mob Events ==========
+		// Poop Party:
         if(MobInfo.getFromName("conba") != null) {
 			MobEventBase mobEvent = new MobEventPoopParty("poopparty", this.group);
 			SpawnTypeBase eventSpawner = new SpawnTypeLand("poopparty")
@@ -225,19 +226,34 @@ public class JungleMobs {
 			MobEventManager.instance.addWorldEvent(mobEvent);
         }
 		
-        if(MobInfo.getFromName("vespid") != null) {
-			MobEventBase mobEvent = new MobEventTheSwarm("theswarm", this.group);
-			SpawnTypeBase eventSpawner = new SpawnTypeBlock("theswarm")
-	            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-	        eventSpawner.materials = new Material[] {Material.air};
-	        eventSpawner.ignoreBiome = true;
-	        eventSpawner.ignoreLight = true;
-	        eventSpawner.forceSpawning = true;
-	        eventSpawner.ignoreMobConditions = true;
-	        eventSpawner.addSpawn(MobInfo.getFromName("vespid"));
-	        mobEvent.addSpawner(eventSpawner);
-			MobEventManager.instance.addWorldEvent(mobEvent);
-        }
+	     // The Swarm:
+		MobEventBase theSwarmEvent = new MobEventTheSwarm("theswarm", this.group);
+	     
+		SpawnTypeBase theSwarmLandSpawner = new SpawnTypeLand("theswarm_land")
+	         .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
+		theSwarmLandSpawner.materials = new Material[] {Material.air};
+		theSwarmLandSpawner.ignoreBiome = true;
+		theSwarmLandSpawner.ignoreLight = true;
+		theSwarmLandSpawner.forceSpawning = true;
+		theSwarmLandSpawner.ignoreMobConditions = true;
+		theSwarmLandSpawner.addSpawn(MobInfo.getFromName("conba"));
+	     if(theSwarmLandSpawner.hasSpawns())
+	    	 theSwarmEvent.addSpawner(theSwarmLandSpawner);
+	     
+		SpawnTypeBase theSwarmSkySpawner = new SpawnTypeSky("theswarm_sky")
+	         .setChance(1.0D).setBlockLimit(32).setMobLimit(8);
+		theSwarmSkySpawner.materials = new Material[] {Material.air};
+		theSwarmSkySpawner.ignoreBiome = true;
+		theSwarmSkySpawner.ignoreLight = true;
+		theSwarmSkySpawner.forceSpawning = true;
+		theSwarmSkySpawner.ignoreMobConditions = true;
+		theSwarmSkySpawner.addSpawn(MobInfo.getFromName("vespid"));
+		theSwarmSkySpawner.addSpawn(MobInfo.getFromName("vespidqueen"));
+	     if(theSwarmSkySpawner.hasSpawns())
+	    	 theSwarmEvent.addSpawner(theSwarmSkySpawner);
+	     
+	     if(theSwarmEvent.hasSpawners())
+	     	MobEventManager.instance.addWorldEvent(theSwarmEvent);
 		
         
 		// ========== Remove Vanilla Spawns ==========

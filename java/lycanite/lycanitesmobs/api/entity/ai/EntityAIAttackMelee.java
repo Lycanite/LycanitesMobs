@@ -183,7 +183,7 @@ public class EntityAIAttackMelee extends EntityAIBase {
         	
         	// Fly to Target:
         	else
-        		this.host.flightNavigator.setTargetPosition(new ChunkCoordinates((int)attackTarget.posX, (int)(attackTarget.posY + 1.0), (int)attackTarget.posZ), speed);
+        		this.host.flightNavigator.setTargetPosition(new ChunkCoordinates((int)attackTarget.posX, (int)(attackTarget.posY + 0.25D), (int)attackTarget.posZ), speed);
         }
         
         // Damage Target:

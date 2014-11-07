@@ -186,7 +186,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	public int guiRefreshTime = 2;
     /** Used for attack animations, the server uses this more as a boolean, the client uses it as a timer. **/
 	public short justAttacked = 0;
-    /** The duration of attack animations, used by the server as a boolean true, the client uses it as the animation time. **/
+    /** The duration of attack animations, used by the server as a boolean (true when greater than 0 then instantly set to 0), the client uses it as the animation time (counts down per tick). **/
 	public short justAttackedTime = 5;
     /** True if this mob should play a sound when attacking. Ranged mobs usually don't use this as their projectiles makes an attack sound instead. **/
 	public boolean hasAttackSound = false;
@@ -196,6 +196,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	public boolean hasJumpSound = false;
     /** The delay in ticks between flying sounds such as wing flapping, set to 0 for no flight sounds. **/
 	public int flySoundSpeed = 0;
+    /** An extra animation boolean. **/
+    public boolean extraAnimation01 = false;
 	
 	// Data Watcher:
     /** The starting point for the datawatcher IDs used by this mod, lower IDs are used by vanilla code. **/
@@ -221,7 +223,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	}
     /** Used for the ANIM_ID watcher bitmap, bitmaps save on many packets and make network performance better! **/
 	public static enum ANIM_ID {
-		ATTACKED((byte)1), GROUNDED((byte)2), BLOCKING((byte)4), MINION((byte)8);
+		ATTACKED((byte)1), GROUNDED((byte)2), BLOCKING((byte)4), MINION((byte)8), EXTRA01((byte)8);
 		public final byte id;
 	    private ANIM_ID(byte value) { this.id = value; }
 	    public byte getValue() { return id; }
@@ -542,7 +544,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     }
     
     // ========== Spawn Limit Check ==========
-    /** Checks for nearby entities of this type from the ijk (xyz) location, mobs use this so that too many don't spawn in the same area. **/
+    /** Checks for nearby entities of this type from the ijk (xyz) location, mobs use this so that too many don't spawn in the same area. Returns true if the mob should spawn. **/
     public boolean spawnLimitCheck(World world, int i, int j, int k) {
     	 int spawnLimit = this.mobInfo.spawnInfo.spawnAreaLimit;
     	 double range = SpawnInfo.spawnLimitRange;
@@ -1108,7 +1110,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         	if(this.justAttacked == this.justAttackedTime) {
         		animations += ANIM_ID.ATTACKED.id;
         		this.justAttacked = 0;
-        		playAttackSound();
+        		this.playAttackSound();
         	}
         	
         	// Airborne Animation:
@@ -1123,6 +1125,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
         	if(this.isMinion())
         		animations += ANIM_ID.MINION.id;
         	
+        	// Extra Animation 01:
+        	if(this.extraAnimation01())
+        		animations += ANIM_ID.EXTRA01.id;
+        	
         	this.dataWatcher.updateObject(WATCHER_ID.ANIMATION.id, animations);
         }
         
@@ -1134,6 +1140,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         	else if((animations & ANIM_ID.ATTACKED.id) > 0)
         		this.setJustAttacked();
         	this.onGround = (animations & ANIM_ID.GROUNDED.id) > 0;
+        	this.extraAnimation01 = (animations & ANIM_ID.EXTRA01.id) > 0;
         }
         
         // Is Minon:
@@ -1925,6 +1932,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
 		    	}
     }
     
+    // ========== Extra Animations ==========
+    /** An additional animation boolean that is passed to all clients through the animation mask. **/
+    public boolean extraAnimation01() { return this.extraAnimation01; }
+    
     
     // ==================================================
    	//                      Drops
@@ -2545,6 +2556,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
         if(nbtTagCompound.hasKey("ExtraBehaviour")) {
         	this.extraMobBehaviour.readFromNBT(nbtTagCompound.getCompoundTag("ExtraBehaviour"));
         }
+        
+        if(nbtTagCompound.hasKey("HomeX") && nbtTagCompound.hasKey("HomeY") && nbtTagCompound.hasKey("HomeZ") && nbtTagCompound.hasKey("HomeDistanceMax")) {
+        	this.setHome(nbtTagCompound.getInteger("HomeX"), nbtTagCompound.getInteger("HomeY"), nbtTagCompound.getInteger("HomeZ"), nbtTagCompound.getFloat("HomeDistanceMax"));
+        }
     }
     
     // ========== Write ==========
@@ -2563,6 +2578,14 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	nbtTagCompound.setByte("Color", (byte)this.getColor());
     	nbtTagCompound.setDouble("Size", this.sizeScale);
     	nbtTagCompound.setByte("Subspecies", (byte)this.getSubspeciesIndex());
+    	
+    	if(this.hasHome()) {
+    		ChunkCoordinates homePos = this.getHomePosition();
+    		nbtTagCompound.setInteger("HomeX", homePos.posX);
+    		nbtTagCompound.setInteger("HomeY", homePos.posY);
+    		nbtTagCompound.setInteger("HomeZ", homePos.posZ);
+    		nbtTagCompound.setFloat("HomeDistanceMax", this.getHomeDistanceMax());
+    	}
     	
         super.writeEntityToNBT(nbtTagCompound);
         this.inventory.writeToNBT(nbtTagCompound);

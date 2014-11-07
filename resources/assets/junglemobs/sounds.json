@@ -151,6 +151,10 @@
         "category": "hostile",
         "sounds": [{"name": "entity/conba/death", "stream": false}]
     },
+    "entity.conba.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/conba/attack", "stream": false}]
+    },
     "entity.conba.step": {
         "category": "hostile",
         "sounds": [{"name": "entity/conba/step", "stream": false}]
@@ -168,6 +172,22 @@
         "sounds": [{"name": "entity/vespid/death", "stream": false}]
     },
     "entity.vespid.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/vespid/attack", "stream": false}]
+    },
+    "entity.vespidqueen.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/vespid/say", "stream": false}]
+    },
+    "entity.vespidqueen.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/vespid/hurt", "stream": false}]
+    },
+    "entity.vespidqueen.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/vespid/death", "stream": false}]
+    },
+    "entity.vespidqueen.attack": {
         "category": "hostile",
         "sounds": [{"name": "entity/vespid/attack", "stream": false}]
     },

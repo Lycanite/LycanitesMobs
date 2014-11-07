@@ -87,7 +87,7 @@ public class SpawnTypeBase {
 	public boolean ignoreMobConditions = false;
 	
 	/** If true, this type will ignore the mob spawn event being cancelled. This only overrides the forge event. **/
-	public boolean forceSpawning = true;
+	public boolean forceSpawning = false;
 	
 	/** If true, this type will force spawned mobs to not despawn naturally. **/
 	public boolean forceNoDespawn = false;

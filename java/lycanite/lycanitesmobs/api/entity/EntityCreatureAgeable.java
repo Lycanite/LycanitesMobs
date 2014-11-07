@@ -68,7 +68,9 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
   	// ==================================================
     @Override
     public boolean isPersistant() {
-    	return this.hasBeenFarmed;
+    	if(this.hasBeenFarmed)
+    		return true;
+    	return super.isPersistant();
     }
     
     public void setFarmed() {

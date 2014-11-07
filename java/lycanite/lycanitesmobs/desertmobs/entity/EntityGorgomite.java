@@ -33,8 +33,8 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
 public class EntityGorgomite extends EntityCreatureBase implements IMob, IGroupPrey {
-	
 	private EntityAIAttackRanged rangedAttackAI;
+	private int gorgomiteSwarmLimit = 20;
     
     // ==================================================
  	//                    Constructor
@@ -52,6 +52,8 @@ public class EntityGorgomite extends EntityCreatureBase implements IMob, IGroupP
         this.setWidth = 0.6F;
         this.setHeight = 0.5F;
         this.setupMob();
+        
+        this.gorgomiteSwarmLimit = ConfigBase.getConfig(this.group, "general").getInt("Features", "Gorgomite Swarm Limit", this.gorgomiteSwarmLimit, "Limits how many Gorgomites there can be when swarming.");
     	
         // AI Tasks:
         this.getNavigator().setAvoidsWater(true);
@@ -97,7 +99,7 @@ public class EntityGorgomite extends EntityCreatureBase implements IMob, IGroupP
 	// ========== Living Update ==========
 	@Override
     public void onLivingUpdate() {
-		if(this.hasAttackTarget() && this.ticksExisted % 20 == 0) {
+		if(!this.worldObj.isRemote && this.hasAttackTarget() && this.ticksExisted % 20 == 0) {
 			this.allyUpdate();
 		}
         
@@ -110,8 +112,7 @@ public class EntityGorgomite extends EntityCreatureBase implements IMob, IGroupP
 			return;
 		
 		// Spawn Minions:
-		int swarmLimit = ConfigBase.getConfig(this.group, "general").getInt("Features", "Gorgomite Swarm Limit", 20, "Limits how many Gorgomites there can be when swarming.");
-		if(swarmLimit > 0 && this.nearbyCreatureCount(this.getClass(), 64D) < swarmLimit) {
+		if(this.gorgomiteSwarmLimit > 0 && this.nearbyCreatureCount(this.getClass(), 64D) < this.gorgomiteSwarmLimit) {
 			float random = this.rand.nextFloat();
 			if(random <= 0.1F)
 				this.spawnAlly(this.posX - 2 + (random * 4), this.posY, this.posZ - 2 + (random * 4));

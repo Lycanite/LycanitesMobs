@@ -45,7 +45,7 @@ public class EntityGeken extends EntityCreatureTameable implements IMob {
         this.spawnsInDarkness = true;
         this.hasAttackSound = true;
 
-        this.canGrow = false;
+        this.canGrow = true;
         this.babySpawnChance = 0.1D;
         
         this.setWidth = 0.6F;

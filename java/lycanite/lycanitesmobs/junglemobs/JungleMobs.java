@@ -17,7 +17,9 @@ import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBlock;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeLand;
 import lycanite.lycanitesmobs.junglemobs.block.BlockPoopCloud;
+import lycanite.lycanitesmobs.junglemobs.block.BlockPropolis;
 import lycanite.lycanitesmobs.junglemobs.block.BlockQuickWeb;
+import lycanite.lycanitesmobs.junglemobs.block.BlockVeswax;
 import lycanite.lycanitesmobs.junglemobs.dispenser.DispenserBehaviorPoop;
 import lycanite.lycanitesmobs.junglemobs.entity.EntityConba;
 import lycanite.lycanitesmobs.junglemobs.entity.EntityConcapedeHead;
@@ -26,6 +28,8 @@ import lycanite.lycanitesmobs.junglemobs.entity.EntityGeken;
 import lycanite.lycanitesmobs.junglemobs.entity.EntityPoop;
 import lycanite.lycanitesmobs.junglemobs.entity.EntityTarantula;
 import lycanite.lycanitesmobs.junglemobs.entity.EntityUvaraptor;
+import lycanite.lycanitesmobs.junglemobs.entity.EntityVespid;
+import lycanite.lycanitesmobs.junglemobs.entity.EntityVespidQueen;
 import lycanite.lycanitesmobs.junglemobs.item.ItemJungleEgg;
 import lycanite.lycanitesmobs.junglemobs.item.ItemPoopCharge;
 import lycanite.lycanitesmobs.junglemobs.item.ItemScepterPoop;
@@ -113,6 +117,8 @@ public class JungleMobs {
 		ObjectManager.addBlock("quickweb", new BlockQuickWeb());
 		AssetManager.addSound("poopcloud", group, "block.poopcloud");
 		ObjectManager.addBlock("poopcloud", new BlockPoopCloud());
+		ObjectManager.addBlock("propolis", new BlockPropolis());
+		ObjectManager.addBlock("veswax", new BlockVeswax());
 		
 		
 		// ========== Create Mobs ==========
@@ -143,7 +149,7 @@ public class JungleMobs {
 		newMob = new MobInfo(group, "concapedesegment", EntityConcapedeSegment.class, 0x000022, 0x990000)
 		        .setPeaceful(true).setSummonable(false).setSummonCost(1).setDungeonLevel(-1)
 		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("CREATURE").setDespawn(false)
+		newMob.spawnInfo.setSpawnTypes("CREATURE")
 				.setSpawnWeight(0).setAreaLimit(0).setGroupLimits(0, 0).setEnabled(false);
 		ObjectManager.addMob(newMob);
 
@@ -159,6 +165,20 @@ public class JungleMobs {
 		        .addSubspecies(new Subspecies("violet", "uncommon")).addSubspecies(new Subspecies("dark", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER")
 				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3);
+		ObjectManager.addMob(newMob);
+        
+        newMob = new MobInfo(group, "vespid", EntityVespid.class, 0x112200, 0x998800)
+		        .setPeaceful(false).setSummonable(false).setSummonCost(2).setDungeonLevel(2)
+		        .addSubspecies(new Subspecies("scarlet", "uncommon")).addSubspecies(new Subspecies("ashen", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("MONSTER")
+				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 6);
+		ObjectManager.addMob(newMob);
+        
+        newMob = new MobInfo(group, "vespidqueen", EntityVespidQueen.class, 0x223300, 0xFFCC00)
+		        .setPeaceful(false).setSummonable(false).setSummonCost(2).setDungeonLevel(3)
+		        .addSubspecies(new Subspecies("scarlet", "uncommon")).addSubspecies(new Subspecies("ashen", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("MONSTER")
+				.setSpawnWeight(1).setAreaLimit(1).setGroupLimits(1, 1);
 		ObjectManager.addMob(newMob);
 		
 		
@@ -257,8 +277,32 @@ public class JungleMobs {
 				Character.valueOf('B'), Items.bone
 			}));
 		
+		GameRegistry.addRecipe(new ShapelessOreRecipe(
+				new ItemStack(Items.clay_ball, 4, 0),
+				new Object[] {
+					ObjectManager.getBlock("propolis")
+				}
+			));
+		
+		GameRegistry.addRecipe(new ShapelessOreRecipe(
+				new ItemStack(Blocks.mycelium, 2, 0),
+				new Object[] {
+					ObjectManager.getBlock("propolis"),
+					Blocks.dirt
+				}
+			));
+		
+		GameRegistry.addRecipe(new ShapelessOreRecipe(
+				new ItemStack(Items.sugar, 4, 0),
+				new Object[] {
+					ObjectManager.getBlock("veswax")
+				}
+			));
+		
 		
 		// ========== Smelting ==========
 		GameRegistry.addSmelting(ObjectManager.getItem("concapedemeatraw"), new ItemStack(ObjectManager.getItem("concapedemeatcooked"), 1), 0.5f);
+		GameRegistry.addSmelting(ObjectManager.getBlock("propolis"), new ItemStack(Blocks.hardened_clay, 1), 0.5f);
+		GameRegistry.addSmelting(ObjectManager.getBlock("veswax"), new ItemStack(Items.sugar, 6), 0.5f);
 	}
 }

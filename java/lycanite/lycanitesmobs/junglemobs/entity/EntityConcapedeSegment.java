@@ -15,6 +15,7 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.info.DropRate;
+import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.info.SpawnInfo;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -114,6 +115,15 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
     		this.setSubspecies(((EntityCreatureBase)this.getParentTarget()).getSubspeciesIndex(), true);
     	}
     }
+    
+    // ========== Despawning ==========
+    /** Returns whether this mob should despawn overtime or not. Config defined forced despawns override everything except tamed creatures and tagged creatures. **/
+    @Override
+    protected boolean canDespawn() {
+    	if(!super.canDespawn())
+    		return false;
+    	return !this.hasParent();
+    }
 	
 	
     // ==================================================
@@ -198,7 +208,7 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
 		if(this.hasParent())
 			age = -this.growthTime;
         super.setGrowingAge(age);
-		if(age == 0) {
+		if(age == 0 && !this.worldObj.isRemote) {
 			EntityConcapedeHead concapedeHead = new EntityConcapedeHead(this.worldObj);
 			concapedeHead.copyLocationAndAnglesFrom(this);
 			concapedeHead.firstSpawn = false;
@@ -304,6 +314,25 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
 	public EntityCreatureAgeable createChild(EntityCreatureAgeable partener) {
 		return null;
 	}
+    
+    // ========== Breeding Item ==========
+	@Override
+	public boolean isBreedingItem(ItemStack testStack) {
+		return ObjectLists.inItemList("Vegetables", testStack);
+    }
+	
+	// ========== Breed ==========
+	public boolean breed() {
+		if(!this.canBreed())
+			return false;
+        this.setGrowingAge(0);
+        return true;
+	}
+	
+	@Override
+	public boolean canBreed() {
+        return !this.hasParent();
+    }
     
     
     // ==================================================

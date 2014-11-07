@@ -87,7 +87,7 @@ public class BlockBase extends Block {
 	}
     
 	@Override
-	public int quantityDropped(Random par1Random) {
+	public int quantityDropped(Random random) {
         return 1;
     }
 	

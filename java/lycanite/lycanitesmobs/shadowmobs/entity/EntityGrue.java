@@ -1,6 +1,8 @@
 package lycanite.lycanitesmobs.shadowmobs.entity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupShadow;
@@ -154,8 +156,28 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
     		return false;
     	
     	// Leech:
-    	float leeching = this.getAttackDamage(damageScale);
-    	this.heal(leeching);
+    	if(target instanceof EntityLivingBase) {
+    		EntityLivingBase targetLiving = (EntityLivingBase)target;
+    		List<Integer> goodEffectIDs = new ArrayList<Integer>();
+    		for(Object potionEffectObj : targetLiving.getActivePotionEffects()) {
+    			if(potionEffectObj instanceof PotionEffect) {
+    				int potionID = ((PotionEffect)potionEffectObj).getPotionID();
+    				if(potionID >= Potion.potionTypes.length)
+    					continue;
+    				Potion potion = Potion.potionTypes[potionID];
+    				if(!potion.isBadEffect())
+    					goodEffectIDs.add(potionID);
+    			}
+    		}
+    		if(goodEffectIDs.size() > 0) {
+    			if(goodEffectIDs.size() > 1)
+    				targetLiving.removePotionEffect(goodEffectIDs.get(this.getRNG().nextInt(goodEffectIDs.size())));
+    			else
+    				targetLiving.removePotionEffect(goodEffectIDs.get(0));
+		    	float leeching = this.getAttackDamage(damageScale);
+		    	this.heal(leeching);
+    		}
+    	}
     	
     	// Effects:
         if(target instanceof EntityLivingBase) {

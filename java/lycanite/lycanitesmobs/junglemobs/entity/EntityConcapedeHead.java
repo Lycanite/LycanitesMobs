@@ -95,14 +95,6 @@ public class EntityConcapedeHead extends EntityCreatureAgeable implements IAnima
 	
 	
     // ==================================================
-    //                      Unique
-    // ==================================================
-	public int getConcapedeSize() {
-		return 0;
-	}
-	
-	
-    // ==================================================
     //                      Spawn
     // ==================================================
 	// ========== On Spawn ==========

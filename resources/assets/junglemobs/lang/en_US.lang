@@ -21,8 +21,8 @@ entity.junglemobs.conba.name=Conba
 entity.junglemobs.conba.description=Mischievous apes with a passion for poop! They like to throw their sticky poop at people causing slowness and nausea as well as creating a poop cloud which extends these effects. Conba keep their distance at all times.
 entity.junglemobs.vespid.name=Vespid
 entity.junglemobs.vespid.description=Invasive giant wasp like insects with a poisonous sting. Vespid alone aren't much of a problem but in groups or with a Queen Vespid, they can be deadly. They are known to build hives when near a Queen.
-entity.junglemobs.vespid.name=Vespid Queen
-entity.junglemobs.vespid.description=Large Vespids that are protected by a swarm of standard Vespids. Queens will have nearby standard Vespids build a hive. Vespid Queens are known to inject eggs into Conba turning them into undead nests waiting to hatch!
+entity.junglemobs.vespidqueen.name=Vespid Queen
+entity.junglemobs.vespidqueen.description=Large Vespids that are protected by a swarm of standard Vespids. Queens will have nearby standard Vespids build a hive. Vespid Queens are known to inject eggs into Conba turning them into undead nests waiting to hatch!
 #
 # Items
 item.junglespawn.name=Spawn

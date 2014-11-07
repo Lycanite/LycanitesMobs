@@ -106,7 +106,7 @@ public class EntityTroll extends EntityCreatureBase implements IMob {
     // ==================================================
     public String getTextureName() {
     	if(this.stoneForm)
-    		return super.getTextureName() + "_Stone";
+    		return super.getTextureName() + "_stone";
     	return super.getTextureName();
     }
 	

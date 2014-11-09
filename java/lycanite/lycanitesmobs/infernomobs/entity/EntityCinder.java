@@ -32,6 +32,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
@@ -223,6 +224,17 @@ public class EntityCinder extends EntityCreatureTameable implements IMob, IGroup
     
     @Override
     public boolean waterDamage() { return true; }
+    
+    
+    // ==================================================
+   	//                    Taking Damage
+   	// ==================================================
+    // ========== Damage Modifier ==========
+    public float getDamageModifier(DamageSource damageSrc) {
+    	if(damageSrc.isFireDamage())
+    		return 0F;
+    	else return super.getDamageModifier(damageSrc);
+    }
     
     
     // ==================================================

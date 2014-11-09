@@ -33,6 +33,7 @@ import lycanite.lycanitesmobs.swampmobs.item.ItemPoisonGland;
 import lycanite.lycanitesmobs.swampmobs.item.ItemScepterPoisonRay;
 import lycanite.lycanitesmobs.swampmobs.item.ItemScepterVenomShot;
 import lycanite.lycanitesmobs.swampmobs.item.ItemSwampEgg;
+import lycanite.lycanitesmobs.swampmobs.item.ItemSwordVenomAxeblade;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
@@ -109,6 +110,7 @@ public class SwampMobs {
 		ObjectManager.addItem("poisongland", new ItemPoisonGland());
 		ObjectManager.addItem("poisonrayscepter", new ItemScepterPoisonRay(), 2, 1, 1);
 		ObjectManager.addItem("venomshotscepter", new ItemScepterVenomShot(), 2, 1, 1);
+		ObjectManager.addItem("venomaxeblade", new ItemSwordVenomAxeblade(), 2, 1, 1);
 		
 		// ========== Create Blocks ==========
 		AssetManager.addSound("poisoncloud", group, "block.poisoncloud");
@@ -237,6 +239,14 @@ public class SwampMobs {
 				Character.valueOf('C'), Items.rotten_flesh,
 				Character.valueOf('P'), ObjectManager.getItem("poisongland"),
 				Character.valueOf('R'), Items.blaze_rod
+			}));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("venomaxeblade"), 1, 0),
+				new Object[] { "CCC", "CSC", "CJC",
+				Character.valueOf('C'), ObjectManager.getItem("poisongland"),
+				Character.valueOf('S'), Items.diamond_sword,
+				Character.valueOf('J'), ObjectManager.getItem("soulgazer")
 			}));
 		
 		GameRegistry.addRecipe(new ShapelessOreRecipe(

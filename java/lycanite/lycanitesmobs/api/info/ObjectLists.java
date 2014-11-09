@@ -15,7 +15,10 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemPickaxe;
+import net.minecraft.item.ItemShears;
+import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 
 public class ObjectLists {
 	
@@ -202,15 +205,22 @@ public class ObjectLists {
     // ==================================================
     //                   Check Tools
     // ==================================================
+	public static boolean isSword(Item item) {
+		if(item == null)
+			return false;
+		if(item instanceof ItemSword)
+			return true;
+		if(item instanceof ItemShears)
+			return false;
+		return item.func_150893_a(new ItemStack(item), Blocks.melon_block) > 1F;
+	}
+	
 	public static boolean isPickaxe(Item item) {
 		if(item == null)
 				return false;
 		if(item instanceof ItemPickaxe)
 			return true;
-		String itemName = item.getUnlocalizedName().toLowerCase();
-		if(itemName.contains("pickaxe") && !itemName.contains("upgrade"))
-			return true;
-		return false;
+		return item.func_150893_a(new ItemStack(item), Blocks.stone) > 1F;
 	}
 
 	public static boolean isAxe(Item item) {
@@ -218,10 +228,15 @@ public class ObjectLists {
 			return false;
 		if(item instanceof ItemAxe)
 			return true;
-		String itemName = item.getUnlocalizedName().toLowerCase();
-		if(itemName.contains("axe") && !itemName.contains("pickaxe") && !itemName.contains("upgrade"))
+		return item.func_150893_a(new ItemStack(item), Blocks.log) > 1F;
+	}
+
+	public static boolean isShovel(Item item) {
+		if(item == null)
+			return false;
+		if(item instanceof ItemSpade)
 			return true;
-		return false;
+		return item.func_150893_a(new ItemStack(item), Blocks.dirt) > 1F;
 	}
 
 	

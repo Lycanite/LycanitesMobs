@@ -34,6 +34,7 @@ import lycanite.lycanitesmobs.infernomobs.item.ItemScepterEmber;
 import lycanite.lycanitesmobs.infernomobs.item.ItemScepterMagma;
 import lycanite.lycanitesmobs.infernomobs.item.ItemScepterScorchfire;
 import lycanite.lycanitesmobs.infernomobs.item.ItemScorchfireCharge;
+import lycanite.lycanitesmobs.infernomobs.item.ItemSwordCinderfall;
 import lycanite.lycanitesmobs.infernomobs.mobevent.MobEventCinderfall;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
@@ -100,6 +101,7 @@ public class InfernoMobs {
 		
 		ObjectManager.addItem("embercharge", new ItemEmberCharge());
 		ObjectManager.addItem("emberscepter", new ItemScepterEmber(), 2, 1, 1);
+		ObjectManager.addItem("cinderfallsword", new ItemSwordCinderfall(), 2, 1, 1);
 		ObjectManager.addItem("magmacharge", new ItemMagmaCharge());
 		ObjectManager.addItem("magmascepter", new ItemScepterMagma(), 2, 1, 1);
         ObjectManager.addItem("scorchfirecharge", new ItemScorchfireCharge());
@@ -203,6 +205,14 @@ public class InfernoMobs {
 				new Object[] { "CCC", "CRC", "CRC",
 				Character.valueOf('C'), ObjectManager.getItem("embercharge"),
 				Character.valueOf('R'), Items.blaze_rod
+			}));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("cinderfallsword"), 1, 0),
+				new Object[] { "CCC", "CSC", "CJC",
+				Character.valueOf('C'), ObjectManager.getItem("embercharge"),
+				Character.valueOf('S'), Items.diamond_sword,
+				Character.valueOf('J'), ObjectManager.getItem("soulgazer")
 			}));
 
 		GameRegistry.addRecipe(new ShapedOreRecipe(

@@ -30,6 +30,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -192,6 +193,17 @@ public class EntityCephignis extends EntityCreatureAgeable implements IAnimals, 
     @Override
     public boolean canBreatheAboveWater() {
         return false;
+    }
+    
+    
+    // ==================================================
+   	//                    Taking Damage
+   	// ==================================================
+    // ========== Damage Modifier ==========
+    public float getDamageModifier(DamageSource damageSrc) {
+    	if(damageSrc.isFireDamage())
+    		return 0F;
+    	else return super.getDamageModifier(damageSrc);
     }
     
     

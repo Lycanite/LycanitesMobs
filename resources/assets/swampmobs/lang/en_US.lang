@@ -39,6 +39,8 @@ item.poisonrayscepter.name=Poison Ray Scepter
 item.poisonrayscepter.description=Mid Damage, Laser, Applies Poison
 item.venomshotscepter.name=Venom Shot Scepter
 item.venomshotscepter.description=Low Damage, Rapid Fire, Applies Poison, Places Poison Clouds
+item.venomaxeblade.name=Venom Axeblade
+item.venomaxeblade.description=Imbued with the souls of Remobra. Effective as both a sword and an axe. On hit: Applies Poison, Chance of summoning Remobra minion.
 #
 # Blocks
 tile.poisoncloud.name=Poison Cloud

@@ -9,6 +9,8 @@ import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
 import lycanite.lycanitesmobs.api.entity.EntityItemCustom;
 import lycanite.lycanitesmobs.api.item.ItemBase;
+import lycanite.lycanitesmobs.api.item.ItemScepter;
+import lycanite.lycanitesmobs.api.item.ItemSwordBase;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -146,6 +148,16 @@ public class EventListener {
 			Item item = player.getHeldItem().getItem();
 			if(item instanceof ItemBase)
 				if(((ItemBase)item).onItemRightClickOnEntity(player, entity)) {
+					if(event.isCancelable())
+						event.setCanceled(true);
+				}
+			if(item instanceof ItemScepter)
+				if(((ItemScepter)item).onItemRightClickOnEntity(player, entity)) {
+					if(event.isCancelable())
+						event.setCanceled(true);
+				}
+			if(item instanceof ItemSwordBase)
+				if(((ItemSwordBase)item).onItemRightClickOnEntity(player, entity)) {
 					if(event.isCancelable())
 						event.setCanceled(true);
 				}

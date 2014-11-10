@@ -37,7 +37,7 @@ public abstract class GUITab extends GuiButton {
 
     @Override
     public void drawButton (Minecraft mc, int mouseX, int mouseY)  {
-        if (this.visible) {
+        if(this.visible) {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
             int yTexPos = this.enabled ? 0 : tabHeight;
@@ -103,7 +103,7 @@ public abstract class GUITab extends GuiButton {
         return inWindow;
     }
 
-    public abstract void onTabClicked ();
+    public abstract void onTabClicked();
 
-    public abstract boolean shouldAddToList ();
+    public abstract boolean shouldAddToList();
 }

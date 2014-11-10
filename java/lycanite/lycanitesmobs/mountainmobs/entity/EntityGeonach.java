@@ -185,7 +185,7 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
    	// ==================================================
     @Override
     public boolean isDamageTypeApplicable(String type) {
-    	if(type.equals("cactus")) return false;
+    	if(type.equals("cactus") || type.equals("inWall")) return false;
     	return super.isDamageTypeApplicable(type);
     }
 

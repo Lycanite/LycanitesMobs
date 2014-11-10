@@ -37,6 +37,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 
 public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IGroupPredator {
@@ -127,7 +128,7 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
   	// ==================================================
     @Override
     public boolean isPersistant() {
-    	if(this.hiveFoundationsSet())
+    	if(this.hiveFoundationsSet() && this.worldObj.difficultySetting != EnumDifficulty.PEACEFUL)
     		return true;
     	return super.isPersistant();
     }
@@ -247,8 +248,10 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
 		ChunkCoordinates hivePos = this.getHivePosition();
 		for(int x = hivePos.posX; x <= hivePos.posX + 28; x++) {
 			Block searchBlock = this.worldObj.getBlock(x, hivePos.posY, hivePos.posZ);
-			if(searchBlock == ObjectManager.getBlock("veswax")) {
-				return true;
+			if(searchBlock != null) {
+				if(searchBlock == ObjectManager.getBlock("veswax") && this.worldObj.getBlockMetadata(x, hivePos.posY, hivePos.posZ) < 8) {
+					return true;
+				}
 			}
 		}
 		return false;
@@ -258,8 +261,10 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
 		ChunkCoordinates hivePos = this.getHivePosition();
 		for(int x = hivePos.posX; x >= hivePos.posX - 28; x--) {
 			Block searchBlock = this.worldObj.getBlock(x, hivePos.posY, hivePos.posZ);
-			if(searchBlock == ObjectManager.getBlock("veswax")) {
-				return true;
+			if(searchBlock != null) {
+				if(searchBlock == ObjectManager.getBlock("veswax") && this.worldObj.getBlockMetadata(x, hivePos.posY, hivePos.posZ) < 8) {
+					return true;
+				}
 			}
 		}
 		return false;
@@ -269,8 +274,10 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
 		ChunkCoordinates hivePos = this.getHivePosition();
 		for(int y = hivePos.posY; y <= hivePos.posY + 28; y++) {
 			Block searchBlock = this.worldObj.getBlock(hivePos.posX, y, hivePos.posZ);
-			if(searchBlock == ObjectManager.getBlock("propolis")) {
-				return true;
+			if(searchBlock != null) {
+				if(searchBlock == ObjectManager.getBlock("propolis") && this.worldObj.getBlockMetadata(hivePos.posX, y, hivePos.posZ) < 8) {
+					return true;
+				}
 			}
 		}
 		return false;
@@ -280,8 +287,10 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
 		ChunkCoordinates hivePos = this.getHivePosition();
 		for(int y = hivePos.posY; y >= hivePos.posY - 28; y--) {
 			Block searchBlock = this.worldObj.getBlock(hivePos.posX, y, hivePos.posZ);
-			if(searchBlock == ObjectManager.getBlock("propolis")) {
-				return true;
+			if(searchBlock != null) {
+				if(searchBlock == ObjectManager.getBlock("propolis") && this.worldObj.getBlockMetadata(hivePos.posX, y, hivePos.posZ) < 8) {
+					return true;
+				}
 			}
 		}
 		return false;
@@ -291,8 +300,10 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
 		ChunkCoordinates hivePos = this.getHivePosition();
 		for(int z = hivePos.posZ; z <= hivePos.posZ + 28; z++) {
 			Block searchBlock = this.worldObj.getBlock(hivePos.posX, hivePos.posY, z);
-			if(searchBlock == ObjectManager.getBlock("veswax")) {
-				return true;
+			if(searchBlock != null) {
+				if(searchBlock == ObjectManager.getBlock("veswax") && this.worldObj.getBlockMetadata(hivePos.posX, hivePos.posY, z) < 8) {
+					return true;
+				}
 			}
 		}
 		return false;
@@ -302,8 +313,10 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
 		ChunkCoordinates hivePos = this.getHivePosition();
 		for(int z = hivePos.posZ; z >= hivePos.posZ - 28; z--) {
 			Block searchBlock = this.worldObj.getBlock(hivePos.posX, hivePos.posY, z);
-			if(searchBlock == ObjectManager.getBlock("veswax")) {
-				return true;
+			if(searchBlock != null) {
+				if(searchBlock == ObjectManager.getBlock("veswax") && this.worldObj.getBlockMetadata(hivePos.posX, hivePos.posY, z) < 8) {
+					return true;
+				}
 			}
 		}
 		return false;
@@ -363,7 +376,11 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
 	
 	public boolean isHiveBlock(int x, int y, int z) {
 		Block possibleHiveBlock = this.worldObj.getBlock(x, y, z);
-		return possibleHiveBlock != null && (possibleHiveBlock == ObjectManager.getBlock("veswax") || possibleHiveBlock == ObjectManager.getBlock("propolis"));
+		if(possibleHiveBlock != null) {
+			if(this.worldObj.getBlockMetadata(x, y, z) < 8)
+				return possibleHiveBlock == ObjectManager.getBlock("veswax") || possibleHiveBlock == ObjectManager.getBlock("propolis");
+		}
+		return false;
 	}
 	
 	public boolean canPlaceBlockAt(int x, int y, int z) {

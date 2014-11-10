@@ -37,6 +37,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 
 public class EntityVespid extends EntityCreatureAgeable implements IMob, IGroupPredator {
@@ -111,7 +112,7 @@ public class EntityVespid extends EntityCreatureAgeable implements IMob, IGroupP
   	// ==================================================
     @Override
     public boolean isPersistant() {
-    	if(this.hasMaster())
+    	if(this.hasMaster() && this.worldObj.difficultySetting != EnumDifficulty.PEACEFUL)
     		return true;
     	return super.isPersistant();
     }
@@ -269,7 +270,11 @@ public class EntityVespid extends EntityCreatureAgeable implements IMob, IGroupP
 	// ========== Hive ==========
 	public boolean isHiveBlock(int x, int y, int z) {
 		Block possibleHiveBlock = this.worldObj.getBlock(x, y, z);
-		return possibleHiveBlock != null && (possibleHiveBlock == ObjectManager.getBlock("veswax") || possibleHiveBlock == ObjectManager.getBlock("propolis"));
+		if(possibleHiveBlock != null) {
+			if(this.worldObj.getBlockMetadata(x, y, z) < 8)
+				return possibleHiveBlock == ObjectManager.getBlock("veswax") || possibleHiveBlock == ObjectManager.getBlock("propolis");
+		}
+		return false;
 	}
     
     

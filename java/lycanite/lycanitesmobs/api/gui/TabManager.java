@@ -48,10 +48,10 @@ public class TabManager {
 
     public static void updateTabValues (int cornerX, int cornerY, Class<?> selectedButton) {
         int count = 2;
-        for (int i = 0; i < tabList.size(); i++) {
+        for(int i = 0; i < tabList.size(); i++) {
         	GUITab t = tabList.get(i);
 
-            if (t.shouldAddToList()) {
+            if(t.shouldAddToList()) {
                 t.id = count;
                 t.xPosition = cornerX + (count - 2) * 28;
                 t.yPosition = cornerY - 28;

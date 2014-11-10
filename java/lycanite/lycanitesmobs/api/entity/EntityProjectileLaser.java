@@ -398,6 +398,7 @@ public class EntityProjectileLaser extends EntityProjectileBase {
         	attackSuccess = target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor().setDamageIsAbsolute(), damage);
         else {
         	target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor().setDamageIsAbsolute(), absoluteDamage);
+        	target.hurtResistantTime = 0;
     		damage -= absoluteDamage;
     		attackSuccess = target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), damage);
         }

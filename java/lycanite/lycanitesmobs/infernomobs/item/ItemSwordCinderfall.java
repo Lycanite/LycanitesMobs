@@ -38,6 +38,7 @@ public class ItemSwordCinderfall extends ItemSwordBase {
      		return false;
      	if(entityUser.worldObj.isRemote)
      		return true;
+     	entityHit.hurtResistantTime = 0;
      	entityHit.attackEntityFrom(DamageSource.causeMobDamage(entityUser).setFireDamage().setDamageBypassesArmor(), 2);
      	entityHit.setFire(4);
      	if(entityUser.getRNG().nextFloat() <= 0.2F) {

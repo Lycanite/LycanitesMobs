@@ -4,6 +4,7 @@ import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityFear;
 import lycanite.lycanitesmobs.api.network.MessageEntityPickedUp;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -64,10 +65,19 @@ public class ExtendedEntity implements IExtendedEntityProperties {
     //                      Update
     // ==================================================
 	public void update() {
-		if(this.pickedUpByEntity != null && !this.pickedUpByEntity.isEntityAlive())
-			this.pickedUpByEntity = null;
-		
 		// Picked Up By Entity:
+		if(this.pickedUpByEntity != null) {
+			if(!this.pickedUpByEntity.isEntityAlive())
+				this.setPickedUpByEntity(null);
+			else if(this.pickedUpByEntity instanceof EntityLivingBase) {
+				if(((EntityLivingBase)this.pickedUpByEntity).getHealth() <= 0)
+					this.setPickedUpByEntity(null);
+			}
+			else if(this.entity.getDistanceSqToEntity(this.pickedUpByEntity) > 32D) {
+				this.setPickedUpByEntity(null);
+			}
+		}
+		
 		if(this.pickedUpByEntity != null) {
 			double[] pickupOffset = new double[]{0, 0, 0};
 			if(this.pickedUpByEntity instanceof EntityCreatureBase)
@@ -85,8 +95,12 @@ public class ExtendedEntity implements IExtendedEntityProperties {
 			if(!this.entity.worldObj.isRemote && this.entity instanceof EntityPlayer) {
 				((EntityPlayer)this.entity).capabilities.allowFlying = true;
 			}
-			if(!this.pickedUpByEntity.isEntityAlive())
+			if(!this.entity.isEntityAlive())
 				this.setPickedUpByEntity(null);
+			if(this.entity instanceof EntityLivingBase) {
+				if(((EntityLivingBase)this.entity).getHealth() <= 0)
+					this.setPickedUpByEntity(null);
+			}
     	}
 		else if(this.pickedUpByEntityID != (this.pickedUpByEntity != null ? this.pickedUpByEntity.getEntityId() : 0)) {
 			if(!this.entity.worldObj.isRemote && this.entity instanceof EntityPlayer) {
@@ -113,6 +127,10 @@ public class ExtendedEntity implements IExtendedEntityProperties {
     //                 Picked Up By Entity
     // ==================================================
 	public void setPickedUpByEntity(Entity pickedUpByEntity) {
+		if(this.entity.ridingEntity != null)
+			this.entity.mountEntity(null);
+		if(this.entity.riddenByEntity != null)
+			this.entity.riddenByEntity.mountEntity(null);
 		this.pickedUpByEntity = pickedUpByEntity;
 		if(!this.entity.worldObj.isRemote) {
 			if(this.entity instanceof EntityPlayer) {

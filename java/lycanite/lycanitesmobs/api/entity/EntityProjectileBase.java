@@ -111,6 +111,7 @@ public class EntityProjectileBase extends EntityThrowable {
  				        	attackSuccess = target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor().setDamageIsAbsolute(), damage);
  				        else {
  				        	attackSuccess = target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor().setDamageIsAbsolute(), absoluteDamage);
+ 				        	target.hurtResistantTime = 0;
  				    		damage -= absoluteDamage;
  				        	target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), damage);
  				        }

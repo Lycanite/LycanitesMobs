@@ -39,7 +39,9 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.IAnimals;
@@ -60,6 +62,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class EntityCreatureBase extends EntityLiving {
 	/** A snapshot of the base health for each mob. This is used when calculating subspecies or tamed health. **/
@@ -1077,6 +1081,19 @@ public abstract class EntityCreatureBase extends EntityLiving {
         // Pickup Items:
         if(this.ticksExisted % 10 == 0 && !this.worldObj.isRemote && this.isEntityAlive() && this.canPickupItems())
         	this.pickupItems();
+        
+        // Entity Pickups:
+        if(this.pickupEntity != null) {
+			if(!this.pickupEntity.isEntityAlive())
+				this.dropPickupEntity();
+			else if(this.pickupEntity instanceof EntityLivingBase) {
+				if(((EntityLivingBase)this.pickupEntity).getHealth() <= 0)
+					this.dropPickupEntity();
+			}
+			else if(this.getDistanceSqToEntity(this.pickupEntity) > 32D) {
+				this.dropPickupEntity();
+			}
+        }
     }
     
     // ========== Sync Update ==========
@@ -1513,6 +1530,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         	attackSuccess = target.attackEntityFrom(DamageSource.causeMobDamage(this).setDamageBypassesArmor().setDamageIsAbsolute(), damage);
         else {
         	target.attackEntityFrom(DamageSource.causeMobDamage(this).setDamageBypassesArmor().setDamageIsAbsolute(), absoluteDamage);
+        	target.hurtResistantTime = 0;
     		damage -= absoluteDamage;
         	attackSuccess = target.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
         }
@@ -1885,6 +1903,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(entity);
 		if(extendedEntity == null)
 			return false;
+		if((entity.ridingEntity != null && !(entity.ridingEntity instanceof EntityBoat) && !(entity.ridingEntity instanceof EntityMinecart)) || entity.riddenByEntity != null)
+			return false;
 		return extendedEntity.pickedUpByEntity == null || extendedEntity.pickedUpByEntity instanceof EntityFear;
     }
     
@@ -2147,11 +2167,12 @@ public abstract class EntityCreatureBase extends EntityLiving {
     }
     
     // ========== Get Render Name Tag ==========
-    /** Gets whether this mob should always display its nametag. **/
-    public boolean getAlwaysRenderNameTag() {
-    	if(this.renderSubspeciesNameTag() && this.getSubspecies() != null)
+    /** Gets whether this mob should always display its nametag client side. **/
+    @SideOnly(Side.CLIENT)
+    public boolean getAlwaysRenderNameTagForRender() {
+        if(this.renderSubspeciesNameTag() && this.getSubspecies() != null)
     		return MobInfo.subspeciesTags;
-        return super.getAlwaysRenderNameTag();
+        return super.getAlwaysRenderNameTagForRender();
     }
     
     // ========== Render Subspecies Name Tag ==========

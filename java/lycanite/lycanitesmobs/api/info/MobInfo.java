@@ -131,7 +131,8 @@ public class MobInfo {
     // ==================================================
 	public static void loadGlobalSettings() {
 		ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "general");
-		subspeciesTags = config.getBool("Disaply", "Subspecies Tags", subspeciesTags, "If true, all mobs that are a subspecies will always show their nametag.");
+		config.setCategoryComment("GUI", "Mostly client side settings that affect visuals such as mob names or inventory tabs, etc.");
+		subspeciesTags = config.getBool("GUI", "Subspecies Tags", subspeciesTags, "If true, all mobs that are a subspecies will always show their nametag.");
 				
 		config.setCategoryComment("Pets", "Here you can control all settings related to taming and mounting.");
 		ownerTags = config.getBool("Pets", "Owner Tags", ownerTags, "If true, tamed mobs will display their owner's name in their name tag.");

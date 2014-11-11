@@ -165,8 +165,12 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
     				if(potionID >= Potion.potionTypes.length)
     					continue;
     				Potion potion = Potion.potionTypes[potionID];
-    				if(!potion.isBadEffect())
-    					goodEffectIDs.add(potionID);
+                    try {
+                        if(potion != null) {
+                            if(!potion.isBadEffect())
+                                goodEffectIDs.add(potionID);
+                        }
+                    } catch (Exception e) {}
     			}
     		}
     		if(goodEffectIDs.size() > 0) {

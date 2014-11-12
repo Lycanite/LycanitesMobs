@@ -135,7 +135,7 @@ public class EntityKobold extends EntityCreatureTameable implements IMob, IGroup
         super.onLivingUpdate();
         
         // Torch Looting:
-        if(!this.isTamed() && this.torchGreifing) {
+        if(!this.isTamed() && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing") && this.torchGreifing) {
 	        if(this.torchLootingTime-- <= 0) {
 	        	this.torchLootingTime = 60;
 	        	int distance = 2;

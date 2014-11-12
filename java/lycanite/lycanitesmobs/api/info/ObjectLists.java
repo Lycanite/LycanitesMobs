@@ -19,6 +19,7 @@ import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
+import net.minecraft.potion.Potion;
 
 public class ObjectLists {
 	
@@ -28,6 +29,7 @@ public class ObjectLists {
 	// Maps:
 	public static Map<String, List<ItemStack>> itemLists = new HashMap<String, List<ItemStack>>();
 	public static Map<String, List<Class>> entityLists = new HashMap<String, List<Class>>();
+	public static Map<String, List<Potion>> effectLists = new HashMap<String, List<Potion>>();
 	
 	
     // ==================================================
@@ -74,6 +76,15 @@ public class ObjectLists {
 			entityLists.get(list).add(entity);
 	}
 	
+	public static void addEffect(String list, Potion potion) {
+		if(potion == null)
+			return;
+		list = list.toLowerCase();
+		if(!effectLists.containsKey(list))
+			effectLists.put(list, new ArrayList<Potion>());
+		effectLists.get(list).add(potion);
+	}
+	
 
     // ==================================================
     //                        Get
@@ -90,6 +101,13 @@ public class ObjectLists {
 		if(!entityLists.containsKey(list))
 			return new Class[0];
 		return entityLists.get(list).toArray(new Class[entityLists.get(list).size()]);
+	}
+
+	public static Potion[] getEffects(String list) {
+		list = list.toLowerCase();
+		if(!effectLists.containsKey(list))
+			return new Potion[0];
+		return effectLists.get(list).toArray(new Potion[effectLists.get(list).size()]);
 	}
 	
 
@@ -111,10 +129,14 @@ public class ObjectLists {
 		list = list.toLowerCase();
 		if(!entityLists.containsKey(list))
 			return false;
-		for(Class listClass : entityLists.get(list))
-			if(testClass == listClass)
-				return true;
 		return false;
+	}
+
+	public static boolean inEffectList(String list, Potion testPotion) {
+		list = list.toLowerCase();
+		if(!effectLists.containsKey(list))
+			return false;
+		return effectLists.get(list).contains(testPotion);
 	}
 	
 	
@@ -122,6 +144,7 @@ public class ObjectLists {
     //                   Create Lists
     // ==================================================
 	public static void createLists() {
+		// ========== Item Lists ==========
 		// Raw Meat: (A bit cold...)
 		ObjectLists.addItem("rawmeat", Items.beef);
 		ObjectLists.addItem("rawmeat", Items.porkchop);
@@ -172,6 +195,34 @@ public class ObjectLists {
 		for(String itemListName : itemListNames) {
 			addFromConfig(itemListName.toLowerCase());
 		}
+		
+		// ========== Effects ==========
+		// Buffs:
+		ObjectLists.addEffect("buffs", Potion.damageBoost);
+		ObjectLists.addEffect("buffs", Potion.digSpeed);
+		ObjectLists.addEffect("buffs", Potion.fireResistance);
+		ObjectLists.addEffect("buffs", Potion.heal);
+		ObjectLists.addEffect("buffs", Potion.invisibility);
+		ObjectLists.addEffect("buffs", Potion.jump);
+		ObjectLists.addEffect("buffs", Potion.moveSpeed);
+		ObjectLists.addEffect("buffs", Potion.nightVision);
+		ObjectLists.addEffect("buffs", Potion.regeneration);
+		ObjectLists.addEffect("buffs", Potion.resistance);
+		ObjectLists.addEffect("buffs", Potion.waterBreathing);
+		ObjectLists.addEffect("buffs", Potion.field_76434_w); // Health Boost
+		ObjectLists.addEffect("buffs", Potion.field_76444_x); // Absorption		
+		ObjectLists.addEffect("buffs", Potion.field_76443_y); // Saturation
+		
+		// Debuffs:
+		ObjectLists.addEffect("debuffs", Potion.blindness);
+		ObjectLists.addEffect("debuffs", Potion.confusion);
+		ObjectLists.addEffect("debuffs", Potion.digSlowdown);
+		ObjectLists.addEffect("debuffs", Potion.harm);
+		ObjectLists.addEffect("debuffs", Potion.hunger);
+		ObjectLists.addEffect("debuffs", Potion.moveSlowdown);
+		ObjectLists.addEffect("debuffs", Potion.poison);
+		ObjectLists.addEffect("debuffs", Potion.weakness);
+		ObjectLists.addEffect("debuffs", Potion.wither);
 	}
 	
 	// ========== Add From Config Value ==========

@@ -20,6 +20,7 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
+import lycanite.lycanitesmobs.api.info.ObjectLists;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -165,12 +166,10 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
     				if(potionID >= Potion.potionTypes.length)
     					continue;
     				Potion potion = Potion.potionTypes[potionID];
-                    try {
-                        if(potion != null) {
-                            if(!potion.isBadEffect())
-                                goodEffectIDs.add(potionID);
-                        }
-                    } catch (Exception e) {}
+                    if(potion != null) {
+                        if(ObjectLists.inEffectList("buffs", potion))
+                            goodEffectIDs.add(potionID);
+                    }
     			}
     		}
     		if(goodEffectIDs.size() > 0) {

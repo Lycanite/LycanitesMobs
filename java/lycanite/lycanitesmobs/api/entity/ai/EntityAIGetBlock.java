@@ -81,6 +81,9 @@ public class EntityAIGetBlock extends EntityAIBase {
     public boolean shouldExecute() {
     	if(!this.host.canPickupItems() || !this.host.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"))
     		return false;
+    	
+    	if(!this.host.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"))
+    		return false;
 
     	if(!this.tamedLooting) {
     		if(this.host instanceof EntityCreatureTameable)
@@ -136,6 +139,9 @@ public class EntityAIGetBlock extends EntityAIBase {
     public boolean continueExecuting() {
     	if(this.target == null)
             return false;
+    	
+    	if(!this.host.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"))
+    		return false;
         
         double distance = this.host.getDistanceSq(this.target.posX, this.target.posY, this.target.posZ);
         if(distance > this.distanceMax)

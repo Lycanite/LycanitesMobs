@@ -16,6 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class ItemSwordVenomAxeblade extends ItemSwordBase {
 	int particleTime = 0;
@@ -60,6 +61,14 @@ public class ItemSwordVenomAxeblade extends ItemSwordBase {
 		    		entityTameable.setAggressive(true);
 		    		entityTameable.setPVP(entityHit instanceof EntityPlayer);
 		    	}
+		    	float randomAngle = 45F + (45F * entityUser.getRNG().nextFloat());
+		    	if(entityUser.getRNG().nextBoolean())
+		    		randomAngle = -randomAngle;
+		    	double[] spawnPos = entityCreature.getFacingPosition(entityUser, -1, randomAngle);
+		    	if(!entity.worldObj.isSideSolid((int)spawnPos[0], (int)spawnPos[1], (int)spawnPos[2], ForgeDirection.UP))
+		    		randomAngle = -randomAngle;
+		    	if(entity.worldObj.isSideSolid((int)spawnPos[0], (int)spawnPos[1], (int)spawnPos[2], ForgeDirection.UP))
+		    		entity.setLocationAndAngles((int)spawnPos[0], (int)spawnPos[1], (int)spawnPos[2], entityUser.rotationYaw, 0.0F);
 	    	}
      		entityUser.worldObj.spawnEntityInWorld(entity);
      	}

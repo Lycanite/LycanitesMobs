@@ -6,6 +6,7 @@ import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.info.EntityListCustom;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
+import lycanite.lycanitesmobs.api.info.ObjectLists;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.BehaviorProjectileDispense;
@@ -82,7 +83,7 @@ public class ObjectManager {
 	}
 
 	// ========== Potion Effect ==========
-	public static PotionBase addPotionEffect(String name, ConfigBase config, boolean isBad, int color, int iconX, int iconY) {
+	public static PotionBase addPotionEffect(String name, ConfigBase config, boolean isBad, int color, int iconX, int iconY, boolean goodEffect) {
 		int effectIDOverride = config.getInt("Potion Effects", name + " Effect Override ID", 0);
 		name = name.toLowerCase();
 		PotionBase potion;
@@ -92,6 +93,7 @@ public class ObjectManager {
 			potion = new PotionBase("potion." + name, isBad, color);
 		potion.setIconIndex(iconX, iconY);
 		potionEffects.put(name, potion);
+		ObjectLists.addEffect(goodEffect ? "buffs" : "debuffs", potion);
 		return potion;
 	}
 	

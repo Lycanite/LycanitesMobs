@@ -127,7 +127,7 @@ public class EntityZephyr extends EntityCreatureTameable implements IMob, IGroup
             
             List aoeTargets = this.getNearbyEntities(EntityLivingBase.class, 4);
             for(Object entityObj : aoeTargets) {
-                EntityLivingBase target = (EntityLivingBase) entityObj;
+                EntityLivingBase target = (EntityLivingBase)entityObj;
                 if(this.canAttackClass(entityObj.getClass()) && this.canAttackEntity(target) && this.getEntitySenses().canSee(target)) {
                     this.worldObj.spawnParticle("magicCrit", target.posX + (this.rand.nextDouble() - 0.5D) * (double) target.width, target.posY + this.rand.nextDouble() * (double) target.height, target.posZ + (this.rand.nextDouble() - 0.5D) * (double) target.width, 0.0D, 0.0D, 0.0D);
                 }

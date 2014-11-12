@@ -45,6 +45,9 @@ public class MobInfo {
 	/** If true, predators such as Ventoraptors will attack farm animals such as Sheep or Makas. **/
 	public static boolean predatorsAttackAnimals = true;
 	
+	/** If true, tamed mobs wont harm their owners. **/
+	public static boolean friendlyFire = true;
+	
 	/** A static map containing all the global multipliers for each stat for each difficulty. They defaults are Easy: 0.5, Normal: 1.0 and Hard: 1.5. **/
 	public static Map<String, Double> difficultyMutlipliers = new HashMap<String, Double>();
 	
@@ -138,6 +141,7 @@ public class MobInfo {
 		ownerTags = config.getBool("Pets", "Owner Tags", ownerTags, "If true, tamed mobs will display their owner's name in their name tag.");
 		tamingEnabled = config.getBool("Pets", "Taming", tamingEnabled, "Set to false to disable pet/mount taming.");
 		mountingEnabled = config.getBool("Pets", "Mounting", mountingEnabled, "Set to false to disable mounts.");
+		friendlyFire = config.getBool("Pets", "Friendly Fire", friendlyFire, "If true, pets, minions, etc can't harm their owners (with ranged attacks, etc).");
 		
 		config.setCategoryComment("Mob Interaction", "Here you can control how mobs interact with other mobs.");
         predatorsAttackAnimals = config.getBool("Mob Interaction", "Predators Attack Animals", predatorsAttackAnimals, "Set to false to prevent predator mobs from attacking animals/farmable mobs.");

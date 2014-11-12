@@ -189,11 +189,11 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     	commands.putAll(super.getInteractCommands(player, itemStack));
 		
 		// Open GUI:
-		if(this.isTamed() && player.getCommandSenderName().equalsIgnoreCase(this.getOwnerName()) && !this.worldObj.isRemote)
+		if(!this.worldObj.isRemote && this.isTamed() && (itemStack == null || player.isSneaking()) && player.getCommandSenderName().equalsIgnoreCase(this.getOwnerName()))
 			commands.put(CMD_PRIOR.MAIN.id, "GUI");
     	
     	// Server Item Commands:
-    	if(itemStack != null && !this.worldObj.isRemote) {
+    	if(!this.worldObj.isRemote && itemStack != null && !player.isSneaking()) {
     		
     		// Taming:
     		if(!this.isTamed() && isTamingItem(itemStack) && MobInfo.tamingEnabled)
@@ -345,7 +345,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
                 return true;
             if(target instanceof EntityCreatureTameable) {
             	EntityCreatureTameable tamedTarget = (EntityCreatureTameable)target;
-            	if(tamedTarget.isTamed() && (!MinecraftServer.getServer().isPVPEnabled()) || tamedTarget.getOwner() == this.getOwner())
+            	if(tamedTarget.isTamed() && (!MinecraftServer.getServer().isPVPEnabled()) || !this.isPVP() || tamedTarget.getOwner() == this.getOwner())
             		return true;
             }
             if(this.getOwner() != null)
@@ -376,8 +376,9 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
 			return false;
 		if(this.isTamed() && this.getOwner() == targetEntity)
 			return false;
-		if(this.isTamed() && targetEntity instanceof EntityPlayer && (!MinecraftServer.getServer().isPVPEnabled() || !this.isPVP()))
-			return false;
+		if(!this.worldObj.isRemote)
+			if(this.isTamed() && targetEntity instanceof EntityPlayer && (!MinecraftServer.getServer().isPVPEnabled() || !this.isPVP()))
+				return false;
 		if(this.isTamed() && targetEntity instanceof EntityCreatureTameable) {
 			EntityCreatureTameable targetPet = (EntityCreatureTameable)targetEntity;
 			if(!this.isPVP())

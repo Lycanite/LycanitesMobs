@@ -1,8 +1,8 @@
 package lycanite.lycanitesmobs.api.entity;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
+import lycanite.lycanitesmobs.api.info.MobInfo;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -179,17 +179,18 @@ public class EntityProjectileBase extends EntityThrowable {
      //========== Do Damage Check ==========
      public boolean canDamage(EntityLivingBase targetEntity) {
     	 EntityLivingBase owner = this.getThrower();
-		    if(owner != null) {
-		    	
-		    	// Player Damage Event:
-			    if(owner instanceof EntityPlayer) {
-			    	if(MinecraftForge.EVENT_BUS.post(new AttackEntityEvent((EntityPlayer)owner, targetEntity))) {
-			    		return false;
-			    	}
-			    }
-			    
-			    // No PVP
-			    if(!MinecraftServer.getServer().isPVPEnabled()) {
+	    if(owner != null) {
+	    	
+	    	// Player Damage Event:
+		    if(owner instanceof EntityPlayer) {
+		    	if(MinecraftForge.EVENT_BUS.post(new AttackEntityEvent((EntityPlayer)owner, targetEntity))) {
+		    		return false;
+		    	}
+		    }
+		    
+		    // Player PVP:
+		    if(!MinecraftServer.getServer().isPVPEnabled()) {
+		    	if(owner instanceof EntityPlayer) {
 			    	if(targetEntity instanceof EntityPlayer)
 			    		return false;
 			    	if(targetEntity instanceof EntityCreatureTameable) {
@@ -198,13 +199,29 @@ public class EntityProjectileBase extends EntityThrowable {
 			    			return false;
 			    		}
 			    	}
-			    }
-			    
-			    // Friendly Fire:
-			    if(owner.isOnSameTeam(targetEntity) && LycanitesMobs.config.getBool("Mob Interaction", "Friendly Fire"))
-			    	return false;
+		    	}
 		    }
-		    return true;
+		    
+		    // Tamed Mob PVP:
+	    	EntityCreatureTameable ownerTameable = null;
+	    	if(owner instanceof EntityCreatureTameable)
+	    		ownerTameable = (EntityCreatureTameable)owner;
+	    	if(ownerTameable != null && (!MinecraftServer.getServer().isPVPEnabled() || !ownerTameable.isPVP())) {
+		    	if(targetEntity instanceof EntityPlayer)
+		    		return false;
+		    	if(targetEntity instanceof EntityCreatureTameable) {
+		    		EntityCreatureTameable tamedTarget = (EntityCreatureTameable)targetEntity;
+		    		if(tamedTarget.isTamed()) {
+		    			return false;
+		    		}
+		    	}
+	    	}
+		    
+		    // Friendly Fire:
+		    if(owner.isOnSameTeam(targetEntity) && MobInfo.friendlyFire)
+		    	return false;
+	    }
+	    return true;
      }
      
      //========== On Damage ==========

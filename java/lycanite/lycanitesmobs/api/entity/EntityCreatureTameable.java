@@ -11,7 +11,7 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -395,12 +395,15 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
         if (this.isEntityInvulnerable())
             return false;
         else {
-            Entity entity = damageSrc.getEntity();
             if(!this.isPassive())
             	this.setSitting(false);
 
-            if(entity != null && !(entity instanceof EntityPlayer) && !(entity instanceof EntityArrow))
-            	damage = (damage + 1.0F) / 2.0F;
+            Entity entity = damageSrc.getSourceOfDamage();
+            if(entity instanceof EntityThrowable)
+            	entity = ((EntityThrowable)entity).getThrower();
+            
+            if(this.isTamed() && this.getOwner() == entity)
+            	return false;
 
             return super.attackEntityFrom(damageSrc, damage);
         }

@@ -46,6 +46,7 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -1586,7 +1587,13 @@ public abstract class EntityCreatureBase extends EntityLiving {
         
         if(super.attackEntityFrom(damageSrc, damage)) {
         	this.onDamage();
-            Entity entity = damageSrc.getEntity();
+            Entity entity = damageSrc.getSourceOfDamage();
+            if(entity instanceof EntityThrowable)
+            	entity = ((EntityThrowable)entity).getThrower();
+            
+            if(entity != null && !(entity instanceof EntityPlayer))
+            	damage = (damage + 1.0F) / 2.0F;
+            
             if(entity instanceof EntityLivingBase && this.riddenByEntity != entity && this.ridingEntity != entity) {
                 if(entity != this)
                     this.setRevengeTarget((EntityLivingBase)entity);

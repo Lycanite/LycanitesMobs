@@ -9,7 +9,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.world.World;
 
 public class SpawnTypeRock extends SpawnTypeBase {
-	public int blockBreakRadius = 2;
+	public int blockBreakRadius = 1;
 
     // ==================================================
     //                     Constructor

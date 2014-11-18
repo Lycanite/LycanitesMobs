@@ -17,7 +17,8 @@ import net.minecraft.world.World;
 public class EntityProjectileLaser extends EntityProjectileBase {
 	// Properties:
 	public EntityLivingBase shootingEntity;
-	public EntityLivingBase followEntity; // Used for Eyewig Mount Ability.
+    /** The entity that this laser should appear from. **/
+	public EntityLivingBase followEntity;
 	public int shootingEntityRef = -1;
 	public int shootingEntityID = 10;
 	
@@ -33,10 +34,12 @@ public class EntityProjectileLaser extends EntityProjectileBase {
 	public int laserDelay = 20;
 	public float laserRange;
 	public float laserWidth;
-	public float laserLength = 0;
+	public float laserLength = 10;
 	public int laserTimeID = 12;
 
 	// Laser End:
+    /** If true, this entity will use the attack target position of the entity that has fired this if possible. **/
+    public boolean useEntityAttackTarget = true;
 	private double targetX;
 	private double targetY;
 	private double targetZ;
@@ -50,26 +53,26 @@ public class EntityProjectileLaser extends EntityProjectileBase {
     // ==================================================
  	//                   Constructors
  	// ==================================================
-    public EntityProjectileLaser(World par1World) {
-        super(par1World);
+    public EntityProjectileLaser(World world) {
+        super(world);
         this.setStats();
         this.setTime(0);
     }
 
-    public EntityProjectileLaser(World par1World, double par2, double par4, double par6, int setTime, int setDelay) {
-        super(par1World, par2, par4, par6);
+    public EntityProjectileLaser(World world, double par2, double par4, double par6, int setTime, int setDelay) {
+        super(world, par2, par4, par6);
         this.laserTime = setTime;
         this.laserDelay = setDelay;
         this.setStats();
     }
 
-    public EntityProjectileLaser(World par1World, EntityLivingBase par2EntityLivingBase, int setTime, int setDelay) {
-        this(par1World, par2EntityLivingBase, setTime, setDelay, null);
+    public EntityProjectileLaser(World world, EntityLivingBase par2EntityLivingBase, int setTime, int setDelay) {
+        this(world, par2EntityLivingBase, setTime, setDelay, null);
     }
 
-    public EntityProjectileLaser(World par1World, EntityLivingBase par2EntityLivingBase, int setTime, int setDelay, EntityLivingBase followEntity) {
-        super(par1World, par2EntityLivingBase);
-        this.shootingEntity = par2EntityLivingBase;
+    public EntityProjectileLaser(World world, EntityLivingBase entityLiving, int setTime, int setDelay, EntityLivingBase followEntity) {
+        super(world, entityLiving);
+        this.shootingEntity = entityLiving;
         this.laserTime = setTime;
         this.laserDelay = setDelay;
         this.setStats();
@@ -120,8 +123,8 @@ public class EntityProjectileLaser extends EntityProjectileBase {
     	//this.syncOffset(); Broken? :(
     	if(!this.worldObj.isRemote && this.shootingEntity != null) {
     		EntityLivingBase entityToFollow = this.shootingEntity;
-    		//if(this.followEntity != null)
-    			//entityToFollow = this.followEntity;
+    		if(this.followEntity != null)
+    			entityToFollow = this.followEntity;
     		this.posX = entityToFollow.posX + this.offsetX;
     		this.posY = entityToFollow.posY + this.offsetY;
     		this.posZ = entityToFollow.posZ + this.offsetZ;
@@ -204,7 +207,7 @@ public class EntityProjectileLaser extends EntityProjectileBase {
 			this.laserEndRef = this.laserEnd.getEntityId();
 			
 			// Entity Aiming:
-			if(this.shootingEntity != null) {
+			if(this.shootingEntity != null && this.useEntityAttackTarget) {
 				if(this.shootingEntity instanceof EntityCreatureBase && ((EntityCreatureBase)this.shootingEntity).hasAttackTarget()) {
 					EntityLivingBase attackTarget = ((EntityCreatureBase)this.shootingEntity).getAttackTarget();
 					this.targetX = attackTarget.posX;

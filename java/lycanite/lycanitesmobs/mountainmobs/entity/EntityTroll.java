@@ -161,7 +161,7 @@ public class EntityTroll extends EntityCreatureBase implements IMob {
     public void rangedAttack(Entity target, float range) {
     	// Type:
     	EntityBoulderBlast projectile = new EntityBoulderBlast(this.worldObj, this);
-        projectile.setProjectileScale(4f);
+        projectile.setProjectileScale(6f);
     	
     	// Y Offset:
     	projectile.posY -= this.height / 4;

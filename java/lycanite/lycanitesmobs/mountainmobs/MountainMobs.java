@@ -13,16 +13,10 @@ import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
+import lycanite.lycanitesmobs.mountainmobs.dispenser.DispenserBehaviorArcaneLaserStorm;
 import lycanite.lycanitesmobs.mountainmobs.dispenser.DispenserBehaviorBoulderBlast;
-import lycanite.lycanitesmobs.mountainmobs.entity.EntityBeholder;
-import lycanite.lycanitesmobs.mountainmobs.entity.EntityBoulderBlast;
-import lycanite.lycanitesmobs.mountainmobs.entity.EntityGeonach;
-import lycanite.lycanitesmobs.mountainmobs.entity.EntityJabberwock;
-import lycanite.lycanitesmobs.mountainmobs.entity.EntityTroll;
-import lycanite.lycanitesmobs.mountainmobs.entity.EntityYale;
-import lycanite.lycanitesmobs.mountainmobs.item.ItemBoulderBlastCharge;
-import lycanite.lycanitesmobs.mountainmobs.item.ItemMountainEgg;
-import lycanite.lycanitesmobs.mountainmobs.item.ItemScepterBoulderBlast;
+import lycanite.lycanitesmobs.mountainmobs.entity.*;
+import lycanite.lycanitesmobs.mountainmobs.item.*;
 import lycanite.lycanitesmobs.mountainmobs.mobevent.MobEventBoulderDash;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
@@ -84,6 +78,8 @@ public class MountainMobs {
 		
 		ObjectManager.addItem("boulderblastcharge", new ItemBoulderBlastCharge());
 		ObjectManager.addItem("boulderblastscepter", new ItemScepterBoulderBlast(), 2, 1, 1);
+        ObjectManager.addItem("arcanelaserstormcharge", new ItemArcaneLaserStormCharge());
+        ObjectManager.addItem("arcanelaserstormscepter", new ItemScepterArcaneLaserStorm(), 2, 1, 1);
 		
 		ObjectManager.addItem("yalemeatraw", new ItemCustomFood("yalemeatraw", group, 2, 0.5F).setPotionEffect(Potion.digSlowdown.id, 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("yalemeatraw"));
@@ -138,10 +134,13 @@ public class MountainMobs {
 
 		
 		// ========== Create Projectiles ==========
-		ObjectManager.addProjectile("boulderblast", EntityBoulderBlast.class, ObjectManager.getItem("boulderblastcharge"), new DispenserBehaviorBoulderBlast());
-		
-		
-		// ========== Register Models ==========
+        ObjectManager.addProjectile("boulderblast", EntityBoulderBlast.class, ObjectManager.getItem("boulderblastcharge"), new DispenserBehaviorBoulderBlast());
+        ObjectManager.addProjectile("arcanelaserstorm", EntityArcaneLaserStorm.class, ObjectManager.getItem("arcanelaserstormcharge"), new DispenserBehaviorArcaneLaserStorm());
+        ObjectManager.addProjectile("arcanelaser", EntityArcaneLaser.class);
+        ObjectManager.addProjectile("arcanelaserend", EntityArcaneLaserEnd.class);
+
+
+        // ========== Register Models ==========
 		proxy.registerModels();
 	}
 	
@@ -201,12 +200,20 @@ public class MountainMobs {
 					ObjectManager.getItem("yalemeatcooked")
 				}
 			));
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("boulderblastscepter"), 1, 0),
-				new Object[] { "CCC", "CRC", "CRC",
-				Character.valueOf('C'), ObjectManager.getItem("boulderblastcharge"),
-				Character.valueOf('R'), Items.blaze_rod
-			}));
+
+        GameRegistry.addRecipe(new ShapedOreRecipe(
+                new ItemStack(ObjectManager.getItem("boulderblastscepter"), 1, 0),
+                new Object[] { "CCC", "CRC", "CRC",
+                        Character.valueOf('C'), ObjectManager.getItem("boulderblastcharge"),
+                        Character.valueOf('R'), Items.blaze_rod
+                }));
+
+        GameRegistry.addRecipe(new ShapedOreRecipe(
+                new ItemStack(ObjectManager.getItem("arcanelaserstormscepter"), 1, 0),
+                new Object[] { " C ", " R ", " R ",
+                        Character.valueOf('C'), ObjectManager.getItem("arcanelaserstormscharge"),
+                        Character.valueOf('R'), Items.blaze_rod
+                }));
 		
 		
 		// ========== Smelting ==========

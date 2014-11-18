@@ -1753,7 +1753,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     		return (this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TARGET.id) & TARGET_ID.RIDER.id) > 0;
     }
     
-    // ========== Get Coord Behind ==========
+    // ========== Get Facing Coords ==========
     /** Returns the XYZ coordinate in front or behind this entity (using its rotation angle) with the given distance, use a negative distance for behind. **/
     public double[] getFacingPosition(double distance) {
         return this.getFacingPosition(this, distance, 0D);

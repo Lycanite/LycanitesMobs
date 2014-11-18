@@ -2,6 +2,7 @@ package lycanite.lycanitesmobs.mountainmobs.entity;
 
 import java.util.HashMap;
 
+import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackRanged;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
@@ -73,7 +74,7 @@ public class EntityBeholder extends EntityCreatureBase {
         this.drops.add(new DropRate(new ItemStack(Items.ghast_tear), 0.25F).setMinAmount(1).setMaxAmount(3));
         this.drops.add(new DropRate(new ItemStack(Items.gunpowder), 0.5F).setMinAmount(1).setMaxAmount(3));
         this.drops.add(new DropRate(new ItemStack(Items.glowstone_dust), 0.5F).setMinAmount(4).setMaxAmount(16));
-        //this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("ArcaneLaserStormCharge")), 0.25F));XXX
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("arcanelaserstormcharge")), 0.25F));
 	}
 	
 	
@@ -104,7 +105,7 @@ public class EntityBeholder extends EntityCreatureBase {
     @Override
     public void rangedAttack(Entity target, float range) {
     	// Type:
-    	EntityDemonicBlast projectile = new EntityDemonicBlast(this.worldObj, this);//XXX Change to ArcaneLaserStorm
+    	EntityArcaneLaserStorm projectile = new EntityArcaneLaserStorm(this.worldObj, this);
         projectile.setProjectileScale(1f);
     	
     	// Y Offset:

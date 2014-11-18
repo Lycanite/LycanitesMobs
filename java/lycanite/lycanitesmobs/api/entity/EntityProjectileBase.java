@@ -31,20 +31,20 @@ public class EntityProjectileBase extends EntityThrowable {
 	// ==================================================
  	//                   Constructors
  	// ==================================================
-    public EntityProjectileBase(World par1World) {
-        super(par1World);
+    public EntityProjectileBase(World world) {
+        super(world);
         this.setSize(0.3125F, 0.3125F);
         this.setup();
     }
 
-    public EntityProjectileBase(World par1World, EntityLivingBase par2EntityLivingBase) {
-        super(par1World, par2EntityLivingBase);
+    public EntityProjectileBase(World world, EntityLivingBase par2EntityLivingBase) {
+        super(world, par2EntityLivingBase);
         this.setSize(0.3125F, 0.3125F);
         this.setup();
     }
 
-    public EntityProjectileBase(World par1World, double par2, double par4, double par6) {
-        super(par1World, par2, par4, par6);
+    public EntityProjectileBase(World world, double par2, double par4, double par6) {
+        super(world, par2, par4, par6);
         this.setSize(0.3125F, 0.3125F);
         this.setup();
     }
@@ -319,6 +319,28 @@ public class EntityProjectileBase extends EntityThrowable {
     		 return ((EntityCreatureBase)this.getThrower()).getEffectDuration(seconds);
     	 return seconds * 20;
      }
+
+
+    // ==================================================
+    //                      Utility
+    // ==================================================
+    // ========== Get Facing Coords ==========
+    /** Returns the XYZ coordinate in front or behind this entity (using its rotation angle) with the given distance, use a negative distance for behind. **/
+    public double[] getFacingPosition(double distance) {
+        return this.getFacingPosition(this, distance, 0D);
+    }
+
+    /** Returns the XYZ coordinate in front or behind the provided entity with the given distance and angle offset (in degrees), use a negative distance for behind. **/
+    public double[] getFacingPosition(Entity entity, double distance, double angleOffset) {
+        double angle = Math.toRadians(entity.rotationYaw) + angleOffset;
+        double xAmount = -Math.sin(angle);
+        double zAmount = Math.cos(angle);
+        double[] coords = new double[3];
+        coords[0] = entity.posX + (distance * xAmount);
+        coords[1] = entity.posY;
+        coords[2] = entity.posZ + (distance * zAmount);
+        return coords;
+    }
      
      
      // ==================================================

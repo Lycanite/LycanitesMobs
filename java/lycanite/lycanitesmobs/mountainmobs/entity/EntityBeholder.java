@@ -11,7 +11,6 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
-import lycanite.lycanitesmobs.demonmobs.entity.EntityDemonicBlast;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.EntityVillager;
@@ -74,6 +73,7 @@ public class EntityBeholder extends EntityCreatureBase {
         this.drops.add(new DropRate(new ItemStack(Items.ghast_tear), 0.25F).setMinAmount(1).setMaxAmount(3));
         this.drops.add(new DropRate(new ItemStack(Items.gunpowder), 0.5F).setMinAmount(1).setMaxAmount(3));
         this.drops.add(new DropRate(new ItemStack(Items.glowstone_dust), 0.5F).setMinAmount(4).setMaxAmount(16));
+        this.drops.add(new DropRate(new ItemStack(Items.ender_eye), 0.25F).setMinAmount(1).setMaxAmount(2));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("arcanelaserstormcharge")), 0.25F));
 	}
 	

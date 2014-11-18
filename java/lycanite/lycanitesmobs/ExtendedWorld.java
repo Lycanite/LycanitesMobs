@@ -20,6 +20,7 @@ public class ExtendedWorld extends WorldSavedData {
 	private int mobEventTarget = 0;
 	private int mobEventActiveTime = 0;
 	private String mobEventType = "";
+	private int mobEventCount = -1;
 	
 	// ==================================================
     //                   Get for World
@@ -84,6 +85,7 @@ public class ExtendedWorld extends WorldSavedData {
 	public int getMobEventTarget() { return this.mobEventTarget; }
 	public int getMobEventActiveTime() { return this.mobEventActiveTime; }
 	public String getMobEventType() { return this.mobEventType; }
+	public int getMobEventCount() { return this.mobEventCount; }
 	
 	
 	// ==================================================
@@ -114,6 +116,9 @@ public class ExtendedWorld extends WorldSavedData {
 			this.markDirty();
 		this.mobEventType = setString;
 	}
+	public void increaseMobEventCount() {
+		this.mobEventCount++;
+	}
 	
 	
 	// ==================================================
@@ -136,6 +141,9 @@ public class ExtendedWorld extends WorldSavedData {
 		if(nbtTagCompound.hasKey("MobEventType"))  {
 			this.mobEventType = nbtTagCompound.getString("MobEventType");
 		}
+		if(nbtTagCompound.hasKey("MobEventCount"))  {
+			this.mobEventCount = nbtTagCompound.getInteger("MobEventCount");
+		}
 	}
 	
 	
@@ -149,6 +157,7 @@ public class ExtendedWorld extends WorldSavedData {
 		nbtTagCompound.setInteger("MobEventTarget", this.mobEventTarget);
 		nbtTagCompound.setInteger("MobEventActiveTime", this.mobEventActiveTime);
     	nbtTagCompound.setString("MobEventType", this.mobEventType);
+    	nbtTagCompound.setInteger("MobEventCount", this.mobEventCount);
 	}
 	
 }

@@ -14,6 +14,8 @@ entity.mountainmobs.yale.name=Yale
 entity.mountainmobs.yale.description=Strange fluffy ram-like creatures. Yales provide wool which can be obtained using shears, they can also be farmed with vegetables. They use their horns as front legs and eat with tiny arms.
 entity.mountainmobs.geonach.name=Geonach
 entity.mountainmobs.geonach.description=Geonachs are brutal earth elementals commonly found by unsuspecting miners when disturbing the earth. They rapidly strike twice with a dig slowdown spear and then slam with their weight debuff fist.
+entity.mountainmobs.beholder.name=Beholder
+entity.mountainmobs.beholder.description=Large hostile masses of eyes and tentacles with an eternal hunger for magic energy! Beholders are known to fire a deadly laser storm of arcane energy to defeat their foes.
 #
 # Items
 item.mountainspawn.name=Spawn
@@ -27,3 +29,7 @@ item.boulderblastcharge.name=Boulder Blast Charge
 item.boulderblastcharge.description=Use to throw a giant boulder! Can be fired from a dispenser, causes dig speed slowdown.
 item.boulderblastscepter.name=Boulder Blast Scepter
 item.boulderblastscepter.description=High Damage, Charge Up, Applies Dig Speed Slowdown
+item.arcanelaserstormcharge.name=Arcane Laser Storm Charge
+item.arcanelaserstormcharge.description=Use to fire a large blast of arcane magic energy with lasers bursting from it. Can be fired from a dispenser.
+item.arcanelaserstormscepter.name=Arcane Laser Storm Scepter
+item.arcanelaserstormscepter.description=High Damage, Charge Up, Lasers Fly Off

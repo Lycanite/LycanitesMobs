@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs.mountainmobs.entity;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileLaser;
 import lycanite.lycanitesmobs.mountainmobs.MountainMobs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -20,11 +21,15 @@ public class EntityArcaneLaser extends EntityProjectileLaser {
 		super(world, par2, par4, par6, setTime, setDelay);
 	}
 
+	public EntityArcaneLaser(World world, double par2, double par4, double par6, int setTime, int setDelay, Entity followEntity) {
+		super(world, par2, par4, par6, setTime, setDelay, followEntity);
+	}
+
 	public EntityArcaneLaser(World world, EntityLivingBase entityLiving, int setTime, int setDelay) {
 		super(world, entityLiving, setTime, setDelay);
 	}
 
-	public EntityArcaneLaser(World world, EntityLivingBase entityLiving, int setTime, int setDelay, EntityLivingBase followEntity) {
+	public EntityArcaneLaser(World world, EntityLivingBase entityLiving, int setTime, int setDelay, Entity followEntity) {
 		super(world, entityLiving, setTime, setDelay, followEntity);
 	}
     
@@ -69,11 +74,11 @@ public class EntityArcaneLaser extends EntityProjectileLaser {
  	// ==================================================
     @Override
     public String getLaunchSound() {
-    	return AssetManager.getSound(entityName);
+    	return AssetManager.getSound(this.entityName);
     }
 	
 	@Override
 	public String getBeamSound() {
-    	return AssetManager.getSound(entityName);
+    	return null;
 	}
 }

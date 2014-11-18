@@ -21,11 +21,15 @@ public class EntityLifeDrain extends EntityProjectileLaser {
 		super(par1World, par2, par4, par6, setTime, setDelay);
 	}
 
+	public EntityLifeDrain(World world, double par2, double par4, double par6, int setTime, int setDelay, Entity followEntity) {
+		super(world, par2, par4, par6, setTime, setDelay, followEntity);
+	}
+
 	public EntityLifeDrain(World par1World, EntityLivingBase par2EntityLivingBase, int setTime, int setDelay) {
 		super(par1World, par2EntityLivingBase, setTime, setDelay);
 	}
 
-	public EntityLifeDrain(World par1World, EntityLivingBase par2EntityLivingBase, int setTime, int setDelay, EntityLivingBase followEntity) {
+	public EntityLifeDrain(World par1World, EntityLivingBase par2EntityLivingBase, int setTime, int setDelay, Entity followEntity) {
 		super(par1World, par2EntityLivingBase, setTime, setDelay, followEntity);
 	}
     

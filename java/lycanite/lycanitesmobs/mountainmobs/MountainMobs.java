@@ -15,8 +15,20 @@ import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
 import lycanite.lycanitesmobs.mountainmobs.dispenser.DispenserBehaviorArcaneLaserStorm;
 import lycanite.lycanitesmobs.mountainmobs.dispenser.DispenserBehaviorBoulderBlast;
-import lycanite.lycanitesmobs.mountainmobs.entity.*;
-import lycanite.lycanitesmobs.mountainmobs.item.*;
+import lycanite.lycanitesmobs.mountainmobs.entity.EntityArcaneLaser;
+import lycanite.lycanitesmobs.mountainmobs.entity.EntityArcaneLaserEnd;
+import lycanite.lycanitesmobs.mountainmobs.entity.EntityArcaneLaserStorm;
+import lycanite.lycanitesmobs.mountainmobs.entity.EntityBeholder;
+import lycanite.lycanitesmobs.mountainmobs.entity.EntityBoulderBlast;
+import lycanite.lycanitesmobs.mountainmobs.entity.EntityGeonach;
+import lycanite.lycanitesmobs.mountainmobs.entity.EntityJabberwock;
+import lycanite.lycanitesmobs.mountainmobs.entity.EntityTroll;
+import lycanite.lycanitesmobs.mountainmobs.entity.EntityYale;
+import lycanite.lycanitesmobs.mountainmobs.item.ItemArcaneLaserStormCharge;
+import lycanite.lycanitesmobs.mountainmobs.item.ItemBoulderBlastCharge;
+import lycanite.lycanitesmobs.mountainmobs.item.ItemMountainEgg;
+import lycanite.lycanitesmobs.mountainmobs.item.ItemScepterArcaneLaserStorm;
+import lycanite.lycanitesmobs.mountainmobs.item.ItemScepterBoulderBlast;
 import lycanite.lycanitesmobs.mountainmobs.mobevent.MobEventBoulderDash;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
@@ -211,7 +223,7 @@ public class MountainMobs {
         GameRegistry.addRecipe(new ShapedOreRecipe(
                 new ItemStack(ObjectManager.getItem("arcanelaserstormscepter"), 1, 0),
                 new Object[] { " C ", " R ", " R ",
-                        Character.valueOf('C'), ObjectManager.getItem("arcanelaserstormscharge"),
+                        Character.valueOf('C'), ObjectManager.getItem("arcanelaserstormcharge"),
                         Character.valueOf('R'), Items.blaze_rod
                 }));
 		

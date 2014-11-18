@@ -6,6 +6,7 @@ import java.util.List;
 import lycanite.lycanitesmobs.ExtendedWorld;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import net.minecraft.entity.EntityLiving;
@@ -24,9 +25,10 @@ public class MobEventBase {
     public boolean forceSpawning = true;
     public boolean forceNoDespawn = true;
     public int minDay = 0;
+    public int duration = 60 * 20;
+    public int mobDuration = 10 * 60 * 20;
 
     // Active:
-    public int duration = 60 * 20;
     public int ticks = 0;
     public World world;
     
@@ -47,6 +49,7 @@ public class MobEventBase {
 	public void loadFromConfig() {
 		ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "mobevents");
 		this.duration = config.getInt("Event Durations", this.name, this.duration);
+		this.mobDuration = config.getInt("Event Mob Durations", this.name, this.mobDuration);
         this.forceSpawning = config.getBool("Event Forced Spawning", this.name, this.forceSpawning);
         this.forceNoDespawn = config.getBool("Event Forced No Despawning", this.name, this.forceSpawning);
 		this.minDay = config.getInt("Event Day Minimums", this.name, this.minDay);
@@ -204,5 +207,10 @@ public class MobEventBase {
     // ==================================================
     //                   Spawn Effects
     // ==================================================
-	public void onSpawn(EntityLiving entity) {}
+	public void onSpawn(EntityLiving entity) {
+		if(entity instanceof EntityCreatureBase) {
+			EntityCreatureBase entityCreature = (EntityCreatureBase)entity;
+			entityCreature.setTemporary(this.mobDuration);
+		}
+	}
 }

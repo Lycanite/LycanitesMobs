@@ -55,6 +55,6 @@ public class EntityArcaneLaserEnd extends EntityProjectileLaserEnd {
  	// ==================================================
 	@Override
 	public String getLaunchSound() {
-    	return AssetManager.getSound(entityName);
+    	return null;
 	}
 }

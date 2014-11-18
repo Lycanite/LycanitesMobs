@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lycanite.lycanitesmobs.ExtendedWorld;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
@@ -127,7 +128,7 @@ public class SpawnTypeBase {
 		
 		// Sky Spawner:
 		SpawnTypeBase skySpawner = new SpawnTypeSky("Sky")
-				.setRate(400).setChance(0.75D).setRange(48).setBlockLimit(32).setMobLimit(32);
+				.setRate(400).setChance(0.5D).setRange(48).setBlockLimit(16).setMobLimit(8);
 		skySpawner.materials = new Material[] {Material.air};
 		skySpawner.ignoreBiome = false;
 		skySpawner.ignoreLight = false;
@@ -477,9 +478,13 @@ public class SpawnTypeBase {
             // Spawn The Mob:
             entityLiving.timeUntilPortal = entityLiving.getPortalCooldown();
             if(entityLiving instanceof EntityCreatureBase) {
-            	((EntityCreatureBase)entityLiving).forceNoDespawn = this.forceNoDespawn;
-            	if(this.mobEvent != null)
-            		((EntityCreatureBase)entityLiving).spawnEventType = this.mobEvent.name;
+            	EntityCreatureBase entityCreature = (EntityCreatureBase)entityLiving;
+            	entityCreature.forceNoDespawn = this.forceNoDespawn;
+            	ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
+            	if(this.mobEvent != null && worldExt != null) {
+            		entityCreature.spawnEventType = this.mobEvent.name;
+            		entityCreature.spawnEventCount = worldExt.getMobEventCount();
+            	}
             }
             this.spawnEntity(world, entityLiving);
             

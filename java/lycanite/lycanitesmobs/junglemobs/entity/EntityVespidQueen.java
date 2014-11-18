@@ -178,7 +178,7 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
 			return;
 		
 		// Spawn Babies:
-		if(this.vespidQueenSwarmLimit > 0 && this.nearbyCreatureCount(this.getClass(), 32D) < this.vespidQueenSwarmLimit) {
+		if(this.vespidQueenSwarmLimit > 0 && this.nearbyCreatureCount(EntityVespid.class, 32D) < this.vespidQueenSwarmLimit) {
 			float random = this.rand.nextFloat();
 			if(random <= 0.1F) {
 				EntityLivingBase minion = this.spawnAlly(this.posX - 2 + (random * 4), this.posY, this.posZ - 2 + (random * 4));

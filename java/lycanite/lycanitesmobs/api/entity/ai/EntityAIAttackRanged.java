@@ -62,7 +62,7 @@ public class EntityAIAttackRanged extends EntityAIBase {
     	return this;
     }
     public EntityAIAttackRanged setRateFar(int rate) {
-    	this.attackTimeClose = rate;
+    	this.attackTimeFar = rate;
     	return this;
     }
     public EntityAIAttackRanged setRate(int rate) {
@@ -228,8 +228,6 @@ public class EntityAIAttackRanged extends EntityAIBase {
 	            	this.attackTime = this.host.getHaste(this.attackTimeFar);
 	            else
 	            	this.attackTime = this.host.getHaste(this.attackTimeClose);
-	            //float scaledTime = MathHelper.floor_float((rangeFactor * (float)(this.attackTimeFar - this.attackTimeClose)) + (float)this.attackTimeClose);
-	            //this.attackTime = this.host.getHaste((int)scaledTime);
 	        }
 	        else if(this.attackTime < 0) {
 	        	rangeFactor = MathHelper.sqrt_double(distance) / this.range;
@@ -237,8 +235,6 @@ public class EntityAIAttackRanged extends EntityAIBase {
 	            	this.attackTime = this.host.getHaste(this.attackTimeFar);
 	            else
 	            	this.attackTime = this.host.getHaste(this.attackTimeClose);
-	            //float scaledTime = MathHelper.floor_float((rangeFactor * (float)(this.attackTimeFar - this.attackTimeClose)) + (float)this.attackTimeClose);
-	            //this.attackTime = this.host.getHaste((int)scaledTime);
 	        }
         }
     }

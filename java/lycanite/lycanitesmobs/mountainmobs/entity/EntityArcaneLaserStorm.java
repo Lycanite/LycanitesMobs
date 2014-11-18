@@ -1,7 +1,8 @@
 package lycanite.lycanitesmobs.mountainmobs.entity;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import java.util.ArrayList;
+import java.util.List;
+
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileLaser;
@@ -12,9 +13,8 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-
-import java.util.ArrayList;
-import java.util.List;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class EntityArcaneLaserStorm extends EntityProjectileBase {
 
@@ -33,8 +33,8 @@ public class EntityArcaneLaserStorm extends EntityProjectileBase {
         this.setSize(projectileWidth, projectileHeight);
     }
 
-    public EntityArcaneLaserStorm(World world, EntityLivingBase par2EntityLivingBase) {
-        super(world, par2EntityLivingBase);
+    public EntityArcaneLaserStorm(World world, EntityLivingBase entityLiving) {
+        super(world, entityLiving);
         this.setSize(projectileWidth, projectileHeight);
     }
 
@@ -81,13 +81,13 @@ public class EntityArcaneLaserStorm extends EntityProjectileBase {
         while(this.lasers.size() < this.laserMax) {
             EntityProjectileLaser laser;
             if(this.getThrower() != null) {
-                laser = new EntityArcaneLaser(world, this.getThrower(), 20, 10);
+                laser = new EntityArcaneLaser(world, this.getThrower(), 20, 10, this);
                 laser.posX = this.posX;
                 laser.posY = this.posY;
                 laser.posZ = this.posZ;
             }
             else
-                laser = new EntityArcaneLaser(world, this.posX, this.posY, this.posZ, 20, 10);
+                laser = new EntityArcaneLaser(world, this.posX, this.posY, this.posZ, 20, 10, this);
             laser.useEntityAttackTarget = false;
             this.lasers.add(laser);
             world.spawnEntityInWorld(laser);
@@ -118,9 +118,9 @@ public class EntityArcaneLaserStorm extends EntityProjectileBase {
             else
                 target[1] += laser.laserLength / 2;
 
-            for(int i = 0; i < target.length; i++) {
-                target[i] += (MathHelper.cos(this.laserTick * 0.25F) * 1.0F) - 0.5F;
-            }
+            target[0] += (MathHelper.cos(this.laserTick * 0.25F) * 1.0F) - 0.5F;
+            target[1] += (MathHelper.cos(this.laserTick * 0.25F) * 1.0F) - 0.5F;
+            target[2] += (MathHelper.cos(this.laserTick * 0.25F) * 1.0F) - 0.5F;
 
             laser.setTarget(target[0], target[1], target[2]);
             laserCount++;

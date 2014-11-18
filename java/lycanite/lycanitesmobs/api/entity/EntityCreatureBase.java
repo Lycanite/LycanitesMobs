@@ -86,6 +86,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	public ExtraMobBehaviour extraMobBehaviour;
 	/** The name of the event that spawned this mob if any, an empty string ("") if none. **/
 	public String spawnEventType = "";
+	/** The number of the event that spawned this mob. Used for despawning this mob when a new event starts. Ignored if the spawnEventType is blank or the count is less than 0. **/
+	public int spawnEventCount = -1;
     /** The Pet Entry for this mob, this binds this mob to another entity for special interaction, it will also cause this mob to be removed if the entity it is bound to is removed or dead. **/
     public PetEntry petEntry;
 	
@@ -663,6 +665,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         // Mob Event Despawning:
         if(this.getLeashed() || this.isPersistant() || this.hasCustomNameTag()) {
         	this.spawnEventType = "";
+        	this.spawnEventCount = -1;
         }
         else {
         	if((!this.mobInfo.peacefulDifficulty && this.worldObj.difficultySetting == EnumDifficulty.PEACEFUL))
@@ -670,7 +673,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         	
         	ExtendedWorld worldExt = ExtendedWorld.getForWorld(this.worldObj);
         	if(worldExt != null) {
-        		if(!"".equals(this.spawnEventType) && !"".equals(worldExt.getMobEventType()) && !this.spawnEventType.equals(worldExt.getMobEventType()))
+        		if(!"".equals(this.spawnEventType) && this.spawnEventCount >= 0 && this.spawnEventCount != worldExt.getMobEventCount())
         			return true;
         	}
         }
@@ -1557,8 +1560,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
         if(damage <= pierceDamage)
         	attackSuccess = target.attackEntityFrom(DamageSource.causeMobDamage(this).setDamageBypassesArmor().setDamageIsAbsolute(), damage);
         else {
+        	int hurtResistantTimeBefore = target.hurtResistantTime;
         	target.attackEntityFrom(DamageSource.causeMobDamage(this).setDamageBypassesArmor().setDamageIsAbsolute(), pierceDamage);
-        	target.hurtResistantTime = 0;
+        	target.hurtResistantTime = hurtResistantTimeBefore;
     		damage -= pierceDamage;
         	attackSuccess = target.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
         }
@@ -2566,6 +2570,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
     		this.spawnEventType = nbtTagCompound.getString("SpawnEventType");
     	}
     	
+    	if(nbtTagCompound.hasKey("SpawnEventCount")) {
+    		this.spawnEventCount = nbtTagCompound.getInteger("SpawnEventCount");
+    	}
+    	
     	if(nbtTagCompound.hasKey("Stealth")) {
     		this.setStealth(nbtTagCompound.getFloat("Stealth"));
     	}
@@ -2623,6 +2631,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public void writeEntityToNBT(NBTTagCompound nbtTagCompound) {
     	nbtTagCompound.setBoolean("FirstSpawn", false);
     	nbtTagCompound.setString("SpawnEventType", this.spawnEventType);
+    	nbtTagCompound.setInteger("SpawnEventCount", this.spawnEventCount);
     	
     	nbtTagCompound.setFloat("Stealth", this.getStealth());
     	nbtTagCompound.setBoolean("IsMinion", this.isMinion());

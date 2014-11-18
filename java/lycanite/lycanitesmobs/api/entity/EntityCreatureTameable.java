@@ -442,14 +442,14 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
                 String tameMessage = StatCollector.translateToLocal("message.pet.tamed");
                 tameMessage = tameMessage.replace("%creature%", this.getSpeciesName());
         		player.addChatMessage(new ChatComponentText(tameMessage));
+        		this.playTameEffect(this.isTamed());
             }
             else {
             	String tameFailedMessage = StatCollector.translateToLocal("message.pet.tamefail");
             	tameFailedMessage = tameFailedMessage.replace("%creature%", this.getSpeciesName());
         		player.addChatMessage(new ChatComponentText(tameFailedMessage));
+        		this.playTameEffect(this.isTamed());
             }
-    	else
-    		this.playTameEffect(this.isTamed());
     	return this.isTamed();
     }
     

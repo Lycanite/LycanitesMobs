@@ -37,8 +37,8 @@ public class EntityProjectileBase extends EntityThrowable {
         this.setup();
     }
 
-    public EntityProjectileBase(World world, EntityLivingBase par2EntityLivingBase) {
-        super(world, par2EntityLivingBase);
+    public EntityProjectileBase(World world, EntityLivingBase entityLiving) {
+        super(world, entityLiving);
         this.setSize(0.3125F, 0.3125F);
         this.setup();
     }
@@ -75,7 +75,7 @@ public class EntityProjectileBase extends EntityThrowable {
 	
     
     // ==================================================
- 	//                   Movement
+ 	//                      Movement
  	// ==================================================
     // ========== Gravity ==========
     @Override
@@ -85,7 +85,7 @@ public class EntityProjectileBase extends EntityThrowable {
     
     
     // ==================================================
-  	//                     Impact
+  	//                       Impact
   	// ==================================================
      @Override
      protected void onImpact(MovingObjectPosition movingObjectPosition) {
@@ -93,6 +93,8 @@ public class EntityProjectileBase extends EntityThrowable {
      	
      	// Entity Hit:
      	if(movingObjectPosition.entityHit != null) {
+     		if(movingObjectPosition.entityHit == this.getThrower())
+     			return;
      		boolean doDamage = true;
  			if(movingObjectPosition.entityHit instanceof EntityLivingBase) {
  				doDamage = this.canDamage((EntityLivingBase)movingObjectPosition.entityHit);
@@ -113,8 +115,9 @@ public class EntityProjectileBase extends EntityThrowable {
  				        if(damage <= pierceDamage)
  				        	attackSuccess = target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor().setDamageIsAbsolute(), damage);
  				        else {
+ 				        	int hurtResistantTimeBefore = target.hurtResistantTime;
  				        	attackSuccess = target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor().setDamageIsAbsolute(), pierceDamage);
- 				        	target.hurtResistantTime = 0;
+ 				        	target.hurtResistantTime = hurtResistantTimeBefore;
  				    		damage -= pierceDamage;
  				        	target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), damage);
  				        }
@@ -204,7 +207,6 @@ public class EntityProjectileBase extends EntityThrowable {
 			    	}
 		    	}
 		    }
-		    
 		    
 		    // Tamed Mob PVP:
 	    	EntityCreatureTameable ownerTameable = null;

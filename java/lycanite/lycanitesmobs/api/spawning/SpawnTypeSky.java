@@ -26,7 +26,7 @@ public class SpawnTypeSky extends SpawnTypeBase {
      * @param x X position.
      * @param y Y position.
      * @param z Z position
-     * @return A list of int arrays, each array should contain 3 integers of x, y and z. Should return an empty list instead of null else a waning will show.
+     * @return A list of integer arrays, each array should contain 3 integers of x, y and z. Should return an empty list instead of null else a waning will show.
      */
     @Override
     public List<int[]> getSpawnCoordinates(World world, int x, int y, int z) {

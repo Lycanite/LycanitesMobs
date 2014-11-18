@@ -266,6 +266,7 @@ public class MobEventManager {
             this.serverMobEvent = mobEvent;
             ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
             worldExt.setMobEventType(this.serverMobEvent.name);
+            worldExt.increaseMobEventCount();
             worldExt.setMobEventTime(0);
             worldExt.setMobEventTarget(0);
             this.serverMobEvent.onStart(world);

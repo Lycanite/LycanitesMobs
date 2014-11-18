@@ -87,7 +87,8 @@ public class EntityProjectileLaserEnd extends EntityProjectileBase {
 		this.targetY = newTargetY;
 		this.targetZ = newTargetZ;
 		
-		this.playSound(this.getLaunchSound(), 1.0F, 1.0F / (this.rand.nextFloat() * 0.4F + 0.8F));
+		if(this.getLaunchSound() != null)
+			this.playSound(this.getLaunchSound(), 1.0F, 1.0F / (this.rand.nextFloat() * 0.4F + 0.8F));
 	}
 	
     

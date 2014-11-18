@@ -18,7 +18,7 @@ public class EntityProjectileLaser extends EntityProjectileBase {
 	// Properties:
 	public EntityLivingBase shootingEntity;
     /** The entity that this laser should appear from. **/
-	public EntityLivingBase followEntity;
+	public Entity followEntity;
 	public int shootingEntityRef = -1;
 	public int shootingEntityID = 10;
 	
@@ -66,11 +66,16 @@ public class EntityProjectileLaser extends EntityProjectileBase {
         this.setStats();
     }
 
+    public EntityProjectileLaser(World world, double par2, double par4, double par6, int setTime, int setDelay, Entity followEntity) {
+        this(world, par2, par4, par6, setTime, setDelay);
+        this.followEntity = followEntity;
+    }
+
     public EntityProjectileLaser(World world, EntityLivingBase par2EntityLivingBase, int setTime, int setDelay) {
         this(world, par2EntityLivingBase, setTime, setDelay, null);
     }
 
-    public EntityProjectileLaser(World world, EntityLivingBase entityLiving, int setTime, int setDelay, EntityLivingBase followEntity) {
+    public EntityProjectileLaser(World world, EntityLivingBase entityLiving, int setTime, int setDelay, Entity followEntity) {
         super(world, entityLiving);
         this.shootingEntity = entityLiving;
         this.laserTime = setTime;
@@ -122,7 +127,7 @@ public class EntityProjectileLaser extends EntityProjectileBase {
     	
     	//this.syncOffset(); Broken? :(
     	if(!this.worldObj.isRemote && this.shootingEntity != null) {
-    		EntityLivingBase entityToFollow = this.shootingEntity;
+    		Entity entityToFollow = this.shootingEntity;
     		if(this.followEntity != null)
     			entityToFollow = this.followEntity;
     		this.posX = entityToFollow.posX + this.offsetX;
@@ -256,7 +261,8 @@ public class EntityProjectileLaser extends EntityProjectileBase {
 		}
 		
 		this.dataWatcher.updateObject(laserEndID, laserEndRef);
-		this.playSound(this.getBeamSound(), 1.0F, 1.0F / (this.rand.nextFloat() * 0.4F + 0.8F));
+		if(this.getBeamSound() != null)
+			this.playSound(this.getBeamSound(), 1.0F, 1.0F / (this.rand.nextFloat() * 0.4F + 0.8F));
 	}
 	
     
@@ -292,7 +298,8 @@ public class EntityProjectileLaser extends EntityProjectileBase {
 		    	laserEnd = (EntityProjectileLaserEnd)constructor.newInstance(new Object[] { world, this.shootingEntity, this });
 	        }
 	        
-	        this.playSound(this.getLaunchSound(), 1.0F, 1.0F / (this.rand.nextFloat() * 0.4F + 0.8F));
+			if(this.getLaunchSound() != null)
+				this.playSound(this.getLaunchSound(), 1.0F, 1.0F / (this.rand.nextFloat() * 0.4F + 0.8F));
 	        
 	        world.spawnEntityInWorld(laserEnd);
 		}
@@ -403,8 +410,9 @@ public class EntityProjectileLaser extends EntityProjectileBase {
         if(damage <= pierceDamage)
         	attackSuccess = target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor().setDamageIsAbsolute(), damage);
         else {
+        	int hurtResistantTimeBefore = target.hurtResistantTime;
         	target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor().setDamageIsAbsolute(), pierceDamage);
-        	target.hurtResistantTime = 0;
+        	target.hurtResistantTime = hurtResistantTimeBefore;
     		damage -= pierceDamage;
     		attackSuccess = target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), damage);
         }

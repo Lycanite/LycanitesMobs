@@ -95,8 +95,28 @@
         "category": "hostile",
         "sounds": [{"name": "entity/geonach/tame", "stream": false}]
     },
+    "entity.beholder.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/beholder/say", "stream": false}]
+    },
+    "entity.beholder.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/beholder/hurt", "stream": false}]
+    },
+    "entity.beholder.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/beholder/death", "stream": false}]
+    },
     "projectile.boulderblast": {
         "category": "ambient",
         "sounds": [{"name": "projectile/boulderblast", "stream": false}]
+    },
+    "projectile.arcanelaserstorm": {
+        "category": "ambient",
+        "sounds": [{"name": "projectile/arcanelaserstorm", "stream": false}]
+    },
+    "projectile.arcanelaser": {
+        "category": "ambient",
+        "sounds": [{"name": "projectile/arcanelaser", "stream": false}]
     }
 }

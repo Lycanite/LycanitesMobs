@@ -36,6 +36,7 @@ public class EntityBeholder extends EntityCreatureBase {
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 2;
         this.experience = 5;
+        this.spawnsInDarkness = true;
         this.hasAttackSound = false;
         
         this.setWidth = 3.9F;

@@ -17,16 +17,16 @@ public class EntityBoulderBlast extends EntityProjectileBase {
     // ==================================================
  	//                   Constructors
  	// ==================================================
-    public EntityBoulderBlast(World par1World) {
-        super(par1World);
+    public EntityBoulderBlast(World world) {
+        super(world);
     }
 
-    public EntityBoulderBlast(World par1World, EntityLivingBase par2EntityLivingBase) {
-        super(par1World, par2EntityLivingBase);
+    public EntityBoulderBlast(World world, EntityLivingBase par2EntityLivingBase) {
+        super(world, par2EntityLivingBase);
     }
 
-    public EntityBoulderBlast(World par1World, double par2, double par4, double par6) {
-        super(par1World, par2, par4, par6);
+    public EntityBoulderBlast(World world, double par2, double par4, double par6) {
+        super(world, par2, par4, par6);
     }
     
     // ========== Setup Projectile ==========

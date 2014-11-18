@@ -887,7 +887,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	ticks -= this.getHasteBoost();
     	double ticksScale = 1 / this.getHasteMultiplier();
     	ticks = Math.round((float)ticks * (float)ticksScale);
-		return ticks;
+		return Math.max(0, ticks);
     }
     
     // ========= Effect ==========
@@ -910,6 +910,33 @@ public abstract class EntityCreatureBase extends EntityLiving {
     **/
     public int getEffectDuration(int seconds) {
 		return Math.round(((float)seconds * (float)(this.getEffectMultiplier())) * 20) + (int)this.getEffectBoost();
+    }
+    
+    // ========= Pierce ==========
+    /** Returns the armor piercing multipler. **/
+    public double getPierceMultiplier() {
+    	double multiplier = this.mobInfo.multiplierPierce * this.getDifficultyMultiplier("pierce");
+    	if(this.extraMobBehaviour != null)
+    		multiplier *= this.extraMobBehaviour.multiplierPierce;
+    	return multiplier;
+    }
+    /** Returns the armor piercing boost. **/
+    public double getPierceBoost() {
+    	int boost = this.mobInfo.boostPierce;
+    	if(this.extraMobBehaviour != null)
+    		boost += this.extraMobBehaviour.boostPierce;
+    	return boost;
+    }
+    /** Returns the base armor piercing value. This should really be left unchanged. **/
+    public double getPierceBase() {
+    	return 5;
+    }
+    /** Returns the calculated armor piercing value. This is with all multipliers and boosts applied. Cannot be less than 1 where all damage will pierce. **/
+    public double getPierceValue() {
+    	double value = 5;
+    	value *= 1 / this.getPierceMultiplier();
+    	value += Math.max(0, this.getPierceBoost());
+    	return Math.max(1.0D, value);
     }
     
     
@@ -1526,13 +1553,13 @@ public abstract class EntityCreatureBase extends EntityLiving {
         }
         
         boolean attackSuccess = false;
-        float absoluteDamage = 1 + (float)Math.floor(damage / 5.0D);
-        if(damage <= absoluteDamage)
+        float pierceDamage = 1 + (float)Math.floor(damage / this.getPierceValue());
+        if(damage <= pierceDamage)
         	attackSuccess = target.attackEntityFrom(DamageSource.causeMobDamage(this).setDamageBypassesArmor().setDamageIsAbsolute(), damage);
         else {
-        	target.attackEntityFrom(DamageSource.causeMobDamage(this).setDamageBypassesArmor().setDamageIsAbsolute(), absoluteDamage);
+        	target.attackEntityFrom(DamageSource.causeMobDamage(this).setDamageBypassesArmor().setDamageIsAbsolute(), pierceDamage);
         	target.hurtResistantTime = 0;
-    		damage -= absoluteDamage;
+    		damage -= pierceDamage;
         	attackSuccess = target.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
         }
         

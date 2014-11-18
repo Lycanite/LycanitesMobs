@@ -59,8 +59,8 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityYale(World par1World) {
-        super(par1World);
+    public EntityYale(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;

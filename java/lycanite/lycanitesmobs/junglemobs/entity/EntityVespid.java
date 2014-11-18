@@ -178,14 +178,16 @@ public class EntityVespid extends EntityCreatureAgeable implements IMob, IGroupP
         			direction = directions.get(this.getRNG().nextInt(directions.size()));
         		
             	if(direction == 0) {
-            		int endX = (int)hivePos.posX + hiveMin;
+            		int endX = (int)hivePos.posX;
             		for(int x = endX; x <= hivePos.posX + hiveMax; x++) {
             			if(!this.aiPlaceBlock.canPlaceBlock(x, hivePos.posY, hivePos.posZ))
             				break;
             			endX = x;
             		}
-            		this.aiPlaceBlock.setMetadata(5); // East Block Facing WEST
-            		this.aiPlaceBlock.setBlockPlacement(ObjectManager.getBlock("veswax"), endX, hivePos.posY, hivePos.posZ);
+            		if(endX >= (int)hivePos.posX + hiveMin) {
+	            		this.aiPlaceBlock.setMetadata(5); // East Block Facing WEST
+	            		this.aiPlaceBlock.setBlockPlacement(ObjectManager.getBlock("veswax"), endX, hivePos.posY, hivePos.posZ);
+            		}
             	}
             	
             	else if(direction == 1) {
@@ -195,8 +197,10 @@ public class EntityVespid extends EntityCreatureAgeable implements IMob, IGroupP
             				break;
             			endX = x;
             		}
-            		this.aiPlaceBlock.setMetadata(4); // West Block Facing EAST
-            		this.aiPlaceBlock.setBlockPlacement(ObjectManager.getBlock("veswax"), endX, hivePos.posY, hivePos.posZ);
+            		if(endX <= (int)hivePos.posX - hiveMin) {
+	            		this.aiPlaceBlock.setMetadata(4); // West Block Facing EAST
+	            		this.aiPlaceBlock.setBlockPlacement(ObjectManager.getBlock("veswax"), endX, hivePos.posY, hivePos.posZ);
+            		}
             	}
         		
             	if(direction == 2) {
@@ -206,8 +210,10 @@ public class EntityVespid extends EntityCreatureAgeable implements IMob, IGroupP
             				break;
             			endY = y;
             		}
-            		this.aiPlaceBlock.setMetadata(0); // Top Block Facing DOWN
-            		this.aiPlaceBlock.setBlockPlacement(ObjectManager.getBlock("propolis"), hivePos.posX, endY, hivePos.posZ);
+            		if(endY >= (int)hivePos.posY + hiveMin) {
+	            		this.aiPlaceBlock.setMetadata(0); // Top Block Facing DOWN
+	            		this.aiPlaceBlock.setBlockPlacement(ObjectManager.getBlock("propolis"), hivePos.posX, endY, hivePos.posZ);
+            		}
             	}
             	
             	else if(direction == 3) {
@@ -217,8 +223,10 @@ public class EntityVespid extends EntityCreatureAgeable implements IMob, IGroupP
             				break;
             			endY = y;
             		}
-            		this.aiPlaceBlock.setMetadata(1); // Bottom Block Facing UP
-            		this.aiPlaceBlock.setBlockPlacement(ObjectManager.getBlock("propolis"), hivePos.posX, endY, hivePos.posZ);
+            		if(endY <= (int)hivePos.posY - hiveMin) {
+	            		this.aiPlaceBlock.setMetadata(1); // Bottom Block Facing UP
+	            		this.aiPlaceBlock.setBlockPlacement(ObjectManager.getBlock("propolis"), hivePos.posX, endY, hivePos.posZ);
+            		}
             	}
         		
             	if(direction == 4) {
@@ -228,8 +236,10 @@ public class EntityVespid extends EntityCreatureAgeable implements IMob, IGroupP
             				break;
             			endZ = z;
             		}
-            		this.aiPlaceBlock.setMetadata(2); // South Block Facing NORTH
-            		this.aiPlaceBlock.setBlockPlacement(ObjectManager.getBlock("veswax"), hivePos.posX, hivePos.posY, endZ);
+            		if(endZ >= (int)hivePos.posZ + hiveMin) {
+	            		this.aiPlaceBlock.setMetadata(2); // South Block Facing NORTH
+	            		this.aiPlaceBlock.setBlockPlacement(ObjectManager.getBlock("veswax"), hivePos.posX, hivePos.posY, endZ);
+            		}
             	}
             	
             	else if(direction == 5) {
@@ -239,8 +249,10 @@ public class EntityVespid extends EntityCreatureAgeable implements IMob, IGroupP
             				break;
             			endZ = z;
             		}
-            		this.aiPlaceBlock.setMetadata(3); // North Block Facing SOUTH
-            		this.aiPlaceBlock.setBlockPlacement(ObjectManager.getBlock("veswax"), hivePos.posX, hivePos.posY, endZ);
+            		if(endZ <= (int)hivePos.posZ - hiveMin) {
+	            		this.aiPlaceBlock.setMetadata(3); // North Block Facing SOUTH
+	            		this.aiPlaceBlock.setBlockPlacement(ObjectManager.getBlock("veswax"), hivePos.posX, hivePos.posY, endZ);
+            		}
             	}
         	}
         	

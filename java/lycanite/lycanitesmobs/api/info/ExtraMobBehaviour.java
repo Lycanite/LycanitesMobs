@@ -14,12 +14,14 @@ public class ExtraMobBehaviour {
 	public double multiplierDamage = 1.0D;
 	public double multiplierHaste = 1.0D;
 	public double multiplierEffect = 1.0D;
+	public double multiplierPierce = 1.0D;
 	
 	public int boostDefense = 0;
 	public int boostSpeed = 0;
 	public int boostDamage = 0;
 	public int boostHaste = 0;
 	public int boostEffect = 0;
+	public int boostPierce = 0;
 	
 	// ========== Overrides ==========
 	public boolean aggressiveOverride = false;
@@ -51,7 +53,7 @@ public class ExtraMobBehaviour {
    	// ========== Read ===========
     /** Called from this host passing a compound storing all the extra behaviour options. **/
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
-    	// Stats:
+    	// Stat Multipliers:
     	if(nbtTagCompound.hasKey("MultiplierDefense")) {
     		this.multiplierDefense = nbtTagCompound.getDouble("MultiplierDefense");
     	}
@@ -66,6 +68,29 @@ public class ExtraMobBehaviour {
     	}
     	if(nbtTagCompound.hasKey("MultiplierEffect")) {
     		this.multiplierEffect = nbtTagCompound.getDouble("MultiplierEffect");
+    	}
+    	if(nbtTagCompound.hasKey("MultiplierPierce")) {
+    		this.multiplierEffect = nbtTagCompound.getDouble("MultiplierPierce");
+    	}
+
+    	// Stat Boosts:
+    	if(nbtTagCompound.hasKey("BoostDefense")) {
+    		this.boostDefense = nbtTagCompound.getInteger("BoostDefense");
+    	}
+    	if(nbtTagCompound.hasKey("BoostSpeed")) {
+    		this.boostSpeed = nbtTagCompound.getInteger("BoostSpeed");
+    	}
+    	if(nbtTagCompound.hasKey("BoostDamage")) {
+    		this.boostDamage = nbtTagCompound.getInteger("BoostDamage");
+    	}
+    	if(nbtTagCompound.hasKey("BoostHaste")) {
+    		this.boostHaste = nbtTagCompound.getInteger("BoostHaste");
+    	}
+    	if(nbtTagCompound.hasKey("BoostEffect")) {
+    		this.boostEffect = nbtTagCompound.getInteger("BoostEffect");
+    	}
+    	if(nbtTagCompound.hasKey("BoostPierce")) {
+    		this.boostEffect = nbtTagCompound.getInteger("BoostPierce");
     	}
 
     	// Overrides:
@@ -117,12 +142,21 @@ public class ExtraMobBehaviour {
     // ========== Write ==========
     /** Called from this host passing a compound writing all the extra behaviour options. **/
     public void writeToNBT(NBTTagCompound nbtTagCompound) {
-    	// Stats:
+    	// Stat Multipliers:
     	nbtTagCompound.setDouble("MultiplierDefense", this.multiplierDefense);
     	nbtTagCompound.setDouble("MultiplierSpeed", this.multiplierSpeed);
     	nbtTagCompound.setDouble("MultiplierDamage", this.multiplierDamage);
     	nbtTagCompound.setDouble("MultiplierHaste", this.multiplierHaste);
     	nbtTagCompound.setDouble("MultiplierEffect", this.multiplierEffect);
+    	nbtTagCompound.setDouble("MultiplierPierce", this.multiplierPierce);
+
+    	// Stat Boosts:
+    	nbtTagCompound.setInteger("BoostDefense", this.boostDefense);
+    	nbtTagCompound.setInteger("BoostSpeed", this.boostSpeed);
+    	nbtTagCompound.setInteger("BoostDamage", this.boostDamage);
+    	nbtTagCompound.setInteger("BoostHaste", this.boostHaste);
+    	nbtTagCompound.setInteger("BoostEffect", this.boostEffect);
+    	nbtTagCompound.setInteger("BoostPierce", this.boostPierce);
 
     	// Overrides:
     	nbtTagCompound.setBoolean("AggressiveOverride", this.aggressiveOverride);

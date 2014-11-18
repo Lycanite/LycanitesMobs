@@ -42,6 +42,12 @@ public class SpawnTypeBase {
 	
 	/** A list of all mobs (as SpawnInfo) that use this spawn type. **/
 	public List<SpawnInfo> spawnList = new ArrayList<SpawnInfo>();
+	
+	/** A map of spawn wave limits linked to each spawn type. **/
+	public Map<SpawnInfo, Integer> spawnWaveLimits = new HashMap<SpawnInfo, Integer>();
+	
+	/** A map of the current mobs spawned linked to each spawn type. **/
+	public Map<SpawnInfo, Integer> currentSpawnWaveCount;
 
     /** This is used by Mob Events to link an event with a Spawn Type. **/
     public MobEventBase mobEvent = null;
@@ -320,13 +326,24 @@ public class SpawnTypeBase {
 	// ==================================================
     /**
      * Adds a mob to this spawn type. Takes a Mob Info which will be ignored if null.
-     * @param spawnInfo
+     * @param spawnInfo The MobInfo of the mob to spawn.
      */
 	public void addSpawn(MobInfo mobInfo) {
+		this.addSpawn(mobInfo, 0);
+	}
+	
+    /**
+     * Adds a mob to this spawn type. Takes a Mob Info which will be ignored if null.
+     * @param spawnInfo The MobInfo of the mob to spawn.
+     * @param spawnWaveLimit A limit of how many times this mob can be spawned per wave. Set to 0 for infinite.
+     */
+	public void addSpawn(MobInfo mobInfo, int spawnWaveLimit) {
 		//if(mobInfo == null)
 			//LycanitesMobs.printWarning("", "Tried to add a null mob entry to a spawn type.");
 		if(mobInfo != null && mobInfo.spawnInfo != null)
 			this.spawnList.add(mobInfo.spawnInfo);
+		if(spawnWaveLimit > 0)
+			this.spawnWaveLimits.put(mobInfo.spawnInfo, spawnWaveLimit);
 	}
 	
     /**
@@ -368,6 +385,7 @@ public class SpawnTypeBase {
         
         LycanitesMobs.printDebug("CustomSpawner", "~0==================== " + this.typeName + " Spawner ====================0~");
         LycanitesMobs.printDebug("CustomSpawner", "Attempting to spawn mobs.");
+        this.currentSpawnWaveCount = new HashMap<SpawnInfo, Integer>();
         
         // Search for Coords:
         List<int[]> coords = this.getSpawnCoordinates(world, x, y, z);
@@ -469,6 +487,10 @@ public class SpawnTypeBase {
                 entityLiving.onSpawnWithEgg(null);
             LycanitesMobs.printDebug("CustomSpawner", "Spawn Check Passed! Mob spawned.");
             mobsSpawned++;
+            if(!this.currentSpawnWaveCount.containsKey(spawnInfo))
+            	this.currentSpawnWaveCount.put(spawnInfo, 1);
+            else
+            	this.currentSpawnWaveCount.put(spawnInfo, this.currentSpawnWaveCount.get(spawnInfo) + 1);
 
             // Check Spawn Limit
             if(mobsSpawned >= this.mobLimit)
@@ -560,9 +582,18 @@ public class SpawnTypeBase {
     public List<SpawnInfo> getPossibleSpawns(int coordsFound, List<BiomeGenBase> biomes) {
         List<SpawnInfo> possibleSpawns = new ArrayList<SpawnInfo>();
         for(SpawnInfo possibleSpawn : this.getSpawnList()) {
+        	// Check Spawn Wave Limit:
+        	boolean withinWaveLimit = true;
+        	if(this.spawnWaveLimits.containsKey(possibleSpawn) && this.currentSpawnWaveCount.containsKey(possibleSpawn)) {
+        		if(this.currentSpawnWaveCount.get(possibleSpawn) >= this.spawnWaveLimits.get(possibleSpawn)) {
+        			withinWaveLimit = false;
+                    LycanitesMobs.printDebug("CustomSpawner", possibleSpawn.mobInfo.name + ": Spawn Wave Limit reached for this mob.");
+        		}
+        	}
+        	
         	// Check If Enabled:
-        	boolean isEnabled = true;
-        	if(possibleSpawn == null || !possibleSpawn.mobInfo.mobEnabled || !possibleSpawn.enabled
+        	boolean isEnabled = withinWaveLimit;
+        	if(!isEnabled || possibleSpawn == null || !possibleSpawn.mobInfo.mobEnabled || !possibleSpawn.enabled
 					|| possibleSpawn.spawnWeight <= 0 || possibleSpawn.spawnGroupMax <= 0) {
                 LycanitesMobs.printDebug("CustomSpawner", possibleSpawn.mobInfo.name + ": Not enabled, will not spawn.");
         		isEnabled = false;

@@ -119,12 +119,14 @@ public class MobInfo {
 	public double multiplierDamage = 1.0D;
 	public double multiplierHaste = 1.0D;
 	public double multiplierEffect = 1.0D;
+	public double multiplierPierce = 1.0D;
 	
 	public int boostDefense = 0;
 	public int boostSpeed = 0;
 	public int boostDamage = 0;
 	public int boostHaste = 0;
 	public int boostEffect = 0;
+	public int boostPierce = 0;
 	
 	///** The model used by this mob. NOTE: This is currently unused, see AssetManager.getModel() **/
 	//public ModelBase model;
@@ -149,7 +151,7 @@ public class MobInfo {
 
         String[] difficultyNames = new String[] {"Easy", "Normal", "Hard"};
         double[] difficultyDefaults = new double[] {0.5D, 1.0D, 1.25D};
-        String[] statNames = new String[] {"Defense", "Speed", "Damage", "Haste", "Effect"};
+        String[] statNames = new String[] {"Defense", "Speed", "Damage", "Haste", "Effect", "Pierce"};
 		difficultyMutlipliers = new HashMap<String, Double>();
         config.setCategoryComment("Difficulty Multipliers", "Here you can scale the stats of every mob on a per difficulty basis. Note that on easy, speed is kept at 100% as 0.5 makes them stupidly slow.");
         int difficultyIndex = 0;
@@ -275,6 +277,7 @@ public class MobInfo {
         this.multiplierDamage = config.getDouble("Multipliers", this.getCfgName("Damage"), this.multiplierDamage, "Damage dealt, both melee and ranged.");
         this.multiplierHaste = config.getDouble("Multipliers", this.getCfgName("Haste"), this.multiplierHaste, "Attack and ability speeds.");
         this.multiplierEffect = config.getDouble("Multipliers", this.getCfgName("Effect"), this.multiplierEffect, "Effect strengths and durations.");
+        this.multiplierPierce = config.getDouble("Multipliers", this.getCfgName("Pierce"), this.multiplierPierce, "Affects how much damage the mob deals that ignores armor. At 1.0 for every 5 damage dealt, 1 damage ignores armor. At 2.0 for every 3 (2.5 rouded) damage dealt 1 damage ignores armor. At 0.5 for every 10 damage dealt, 1 damage ignores armor.");
 
         config.setCategoryComment("Boosts", "Here you can increase or decrease each stat by a specific amount. (Use a negative number to decrease.)");
         this.boostDefense = config.getInt("Boosts", this.getCfgName("Defense"), this.boostDefense, "How much damage is blocked, minimum damage dealt is 1.");
@@ -282,6 +285,7 @@ public class MobInfo {
         this.boostDamage = config.getInt("Boosts", this.getCfgName("Damage"), this.boostDamage, "Damage dealt, both melee and ranged. 1 = half a heart.");
         this.boostHaste = config.getInt("Boosts", this.getCfgName("Haste"), this.boostHaste, "Attack and ability speeds in ticks. Average attack rate is 20 (1 second).");
         this.boostEffect = config.getInt("Boosts", this.getCfgName("Effect"), this.boostEffect, "Effect strengths and durations in ticks (20 ticks = 1 second).");
+        this.boostPierce = config.getInt("Boosts", this.getCfgName("Pierce"), this.boostPierce, "Use to directly derease or increase the piercing value. By default it is 5 so for every 5 damage dealt, 1 damage ignores armor. A positive boost lowers the attack required per armor piercing damage, therefor a boost of 2 will change the piercing stat to 3.");
         
         // Register Mob:
         this.registerMob();

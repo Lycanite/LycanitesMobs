@@ -34,8 +34,8 @@ public class EntityJabberwock extends EntityCreatureTameable implements IMob {
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityJabberwock(World par1World) {
-        super(par1World);
+    public EntityJabberwock(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;

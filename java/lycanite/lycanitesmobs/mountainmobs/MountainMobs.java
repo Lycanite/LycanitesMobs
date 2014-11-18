@@ -14,6 +14,7 @@ import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
 import lycanite.lycanitesmobs.mountainmobs.dispenser.DispenserBehaviorBoulderBlast;
+import lycanite.lycanitesmobs.mountainmobs.entity.EntityBeholder;
 import lycanite.lycanitesmobs.mountainmobs.entity.EntityBoulderBlast;
 import lycanite.lycanitesmobs.mountainmobs.entity.EntityGeonach;
 import lycanite.lycanitesmobs.mountainmobs.entity.EntityJabberwock;
@@ -126,6 +127,13 @@ public class MountainMobs {
 		        .addSubspecies(new Subspecies("keppel", "uncommon")).addSubspecies(new Subspecies("golden", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("ROCK")
 				.setSpawnWeight(4).setAreaLimit(5).setGroupLimits(1, 2);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "beholder", EntityBeholder.class, 0x442211, 0x44AA33)
+		        .setPeaceful(false).setSummonable(true).setSummonCost(6).setDungeonLevel(2)
+		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("SKY")
+				.setSpawnWeight(1).setAreaLimit(1).setGroupLimits(1, 1);
 		ObjectManager.addMob(newMob);
 
 		

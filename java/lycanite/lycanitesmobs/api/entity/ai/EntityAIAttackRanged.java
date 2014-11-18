@@ -224,13 +224,21 @@ public class EntityAIAttackRanged extends EntityAIBase {
 	            	outerRangeFactor = 1.0F;
 	
 	            this.host.rangedAttack(this.attackTarget, outerRangeFactor);
-	            float scaledTime = MathHelper.floor_float(rangeFactor * (float)(this.attackTimeFar - this.attackTimeClose) + (float)this.attackTimeClose);
-	            this.attackTime = this.host.getHaste((int)scaledTime);
+	            if(rangeFactor > 0.5F)
+	            	this.attackTime = this.host.getHaste(this.attackTimeFar);
+	            else
+	            	this.attackTime = this.host.getHaste(this.attackTimeClose);
+	            //float scaledTime = MathHelper.floor_float((rangeFactor * (float)(this.attackTimeFar - this.attackTimeClose)) + (float)this.attackTimeClose);
+	            //this.attackTime = this.host.getHaste((int)scaledTime);
 	        }
 	        else if(this.attackTime < 0) {
 	        	rangeFactor = MathHelper.sqrt_double(distance) / this.range;
-	            float scaledTime = MathHelper.floor_float(rangeFactor * (float)(this.attackTimeFar - this.attackTimeClose) + (float)this.attackTimeClose);
-	            this.attackTime = this.host.getHaste((int)scaledTime);
+	            if(rangeFactor > 0.5F)
+	            	this.attackTime = this.host.getHaste(this.attackTimeFar);
+	            else
+	            	this.attackTime = this.host.getHaste(this.attackTimeClose);
+	            //float scaledTime = MathHelper.floor_float((rangeFactor * (float)(this.attackTimeFar - this.attackTimeClose)) + (float)this.attackTimeClose);
+	            //this.attackTime = this.host.getHaste((int)scaledTime);
 	        }
         }
     }

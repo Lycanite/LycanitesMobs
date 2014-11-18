@@ -8,7 +8,6 @@ import net.minecraft.world.World;
 
 public class MobEventTheSwarm extends MobEventBase {
 
-
     // ==================================================
     //                     Constructor
     // ==================================================

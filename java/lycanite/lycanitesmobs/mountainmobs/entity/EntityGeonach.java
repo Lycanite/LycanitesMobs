@@ -41,8 +41,8 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityGeonach(World par1World) {
-        super(par1World);
+    public EntityGeonach(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;

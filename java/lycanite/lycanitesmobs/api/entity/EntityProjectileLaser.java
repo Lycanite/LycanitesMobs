@@ -384,7 +384,10 @@ public class EntityProjectileLaser extends EntityProjectileBase {
     	boolean attackSuccess = false;
     	float damage = this.getDamage(target);
 		float damageInit = damage;
-        float absoluteDamage = 1 + (float)Math.floor(damage / 5.0D);
+		double pierceValue = 5.0D;
+		if(this.getThrower() instanceof EntityCreatureBase)
+			pierceValue = ((EntityCreatureBase)this.getThrower()).getPierceValue();
+        float pierceDamage = 1 + (float)Math.floor(damage / pierceValue);
         
         // Prevent Knockback:
         double targetKnockbackResistance = 0;
@@ -394,12 +397,12 @@ public class EntityProjectileLaser extends EntityProjectileBase {
         }
         
         // Deal Damage:
-        if(damage <= absoluteDamage)
+        if(damage <= pierceDamage)
         	attackSuccess = target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor().setDamageIsAbsolute(), damage);
         else {
-        	target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor().setDamageIsAbsolute(), absoluteDamage);
+        	target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor().setDamageIsAbsolute(), pierceDamage);
         	target.hurtResistantTime = 0;
-    		damage -= absoluteDamage;
+    		damage -= pierceDamage;
     		attackSuccess = target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), damage);
         }
         

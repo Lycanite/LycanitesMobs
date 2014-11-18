@@ -42,6 +42,7 @@ public class EntityConba extends EntityCreatureTameable implements IMob {
 	EntityAIAttackMelee aiAttackMelee;
 	EntityAIAvoid aiAvoid;
 	public boolean vespidInfection = false;
+	public int vespidInfectionTime = 0;
 	
     // ==================================================
  	//                    Constructor
@@ -154,6 +155,10 @@ public class EntityConba extends EntityCreatureTameable implements IMob {
         if(this.vespidInfection && !this.worldObj.isRemote) {
         	this.aiAttackMelee.setEnabled(true);
         	this.aiAttackRanged.setEnabled(false);
+        	if(this.vespidInfectionTime++ >= 60 * 20) {
+        		this.spawnVespidSwarm();
+        		this.setDead();
+        	}
         }
         else {
         	this.aiAttackMelee.setEnabled(false);
@@ -236,21 +241,24 @@ public class EntityConba extends EntityCreatureTameable implements IMob {
    	// ==================================================
     @Override
     public void onDeath(DamageSource damageSource) {
-		if(!this.worldObj.isRemote && this.vespidInfection) {
-			int j = 2 + this.rand.nextInt(5) + worldObj.difficultySetting.getDifficultyId() - 1;
-            for(int k = 0; k < j; ++k) {
-                float f = ((float)(k % 2) - 0.5F) * this.width / 4.0F;
-                float f1 = ((float)(k / 2) - 0.5F) * this.width / 4.0F;
-                EntityVespid vespid = new EntityVespid(this.worldObj);
-                vespid.setLocationAndAngles(this.posX + (double)f, this.posY + 0.5D, this.posZ + (double)f1, this.rand.nextFloat() * 360.0F, 0.0F);
-                vespid.setSubspecies(this.getSubspeciesIndex(), true);
-                vespid.setGrowingAge(vespid.growthTime);
-                this.worldObj.spawnEntityInWorld(vespid);
-                if(this.getAttackTarget() != null)
-                	vespid.setRevengeTarget(this.getAttackTarget());
-            }
-		}
+		if(!this.worldObj.isRemote && this.vespidInfection)
+			this.spawnVespidSwarm();
         super.onDeath(damageSource);
+    }
+    
+    public void spawnVespidSwarm() {
+    	int j = 2 + this.rand.nextInt(5) + worldObj.difficultySetting.getDifficultyId() - 1;
+        for(int k = 0; k < j; ++k) {
+            float f = ((float)(k % 2) - 0.5F) * this.width / 4.0F;
+            float f1 = ((float)(k / 2) - 0.5F) * this.width / 4.0F;
+            EntityVespid vespid = new EntityVespid(this.worldObj);
+            vespid.setLocationAndAngles(this.posX + (double)f, this.posY + 0.5D, this.posZ + (double)f1, this.rand.nextFloat() * 360.0F, 0.0F);
+            vespid.setSubspecies(this.getSubspeciesIndex(), true);
+            vespid.setGrowingAge(vespid.growthTime);
+            this.worldObj.spawnEntityInWorld(vespid);
+            if(this.getAttackTarget() != null)
+            	vespid.setRevengeTarget(this.getAttackTarget());
+        }
     }
     
     
@@ -303,6 +311,9 @@ public class EntityConba extends EntityCreatureTameable implements IMob {
         if(nbtTagCompound.hasKey("VespidInfection")) {
         	this.vespidInfection = nbtTagCompound.getBoolean("VespidInfection");
         }
+        if(nbtTagCompound.hasKey("VespidInfectionTime")) {
+        	this.vespidInfectionTime = nbtTagCompound.getInteger("VespidInfectionTime");
+        }
     }
     
     // ========== Write ==========
@@ -311,5 +322,7 @@ public class EntityConba extends EntityCreatureTameable implements IMob {
     public void writeEntityToNBT(NBTTagCompound nbtTagCompound) {
         super.writeEntityToNBT(nbtTagCompound);
     	nbtTagCompound.setBoolean("VespidInfection", this.vespidInfection);
+    	if(this.vespidInfection)
+        	nbtTagCompound.setInteger("VespidInfectionTime", this.vespidInfectionTime);
     }
 }

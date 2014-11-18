@@ -6,7 +6,6 @@ import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.shadowmobs.ShadowMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.Blocks;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
@@ -37,7 +36,7 @@ public class EntitySpectralbolt extends EntityProjectileBase {
     public void setup() {
     	this.entityName = "spectralbolt";
     	this.group = ShadowMobs.group;
-    	this.setBaseDamage(1);
+    	this.setBaseDamage(2);
     	
     	this.waterProof = true;
     }
@@ -49,7 +48,7 @@ public class EntitySpectralbolt extends EntityProjectileBase {
     //========== Entity Living Collision ==========
     @Override
     public boolean entityLivingCollision(EntityLivingBase entityLiving) {
-    	if(ObjectManager.getPotionEffect("fear") != null && this.rand.nextDouble() > 0.5D)
+    	//if(ObjectManager.getPotionEffect("fear") != null && this.rand.nextDouble() > 0.5D)
     		entityLiving.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("fear").id, this.getEffectDuration(5), 0));
     	return true;
     }
@@ -60,7 +59,7 @@ public class EntitySpectralbolt extends EntityProjectileBase {
     	return true;
     }
     
-    public boolean canDestroyBlockSub(int x, int y, int z) {
+    /*public boolean canDestroyBlockSub(int x, int y, int z) {
     	if(this.worldObj.getBlock(x, y, z) == Blocks.snow_layer)
     		return true;
     	if(this.worldObj.getBlock(x, y, z) == Blocks.tallgrass)
@@ -90,12 +89,12 @@ public class EntitySpectralbolt extends EntityProjectileBase {
         if(ObjectManager.getBlock("Shadowfire") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("Shadowfire"))
             return true;
    	 	return super.canDestroyBlock(x, y, z);
-    }
+    }*/
     
     //========== Place Block ==========
     @Override
     public void placeBlock(World world, int x, int y, int z) {
-    	if(this.canDestroyBlockSub(x, y, z))
+    	/*if(this.canDestroyBlockSub(x, y, z))
 	   		 world.setBlock(x, y, z, ObjectManager.getBlock("Shadowfire"), 12, 3);
 	   	if(this.canDestroyBlockSub(x + 1, y, z))
 	   		 world.setBlock(x + 1, y, z, ObjectManager.getBlock("Shadowfire"), 11, 3);
@@ -104,7 +103,7 @@ public class EntitySpectralbolt extends EntityProjectileBase {
 	   	if(this.canDestroyBlockSub(x, y, z + 1))
 		   	 world.setBlock(x, y, z + 1, ObjectManager.getBlock("Shadowfire"), 11, 3);
 	   	if(this.canDestroyBlockSub(x, y, z - 1))
-		   	 world.setBlock(x, y, z - 1, ObjectManager.getBlock("Shadowfire"), 11, 3);
+		   	 world.setBlock(x, y, z - 1, ObjectManager.getBlock("Shadowfire"), 11, 3);*/
     }
     
     //========== On Impact Particles/Sounds ==========

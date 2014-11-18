@@ -2,11 +2,14 @@ package lycanite.lycanitesmobs.api.spawning;
 
 import java.util.List;
 
+import lycanite.lycanitesmobs.LycanitesMobs;
+import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.world.World;
 
 public class SpawnTypeRock extends SpawnTypeBase {
+	public int blockBreakRadius = 2;
 
     // ==================================================
     //                     Constructor
@@ -14,6 +17,7 @@ public class SpawnTypeRock extends SpawnTypeBase {
     public SpawnTypeRock(String typeName) {
         super(typeName);
         CustomSpawner.instance.oreBreakSpawnTypes.add(this);
+        this.blockBreakRadius = ConfigBase.getConfig(LycanitesMobs.group, "spawning").getInt("Spawner Features", "Rock Spawn Block Break Radius", this.blockBreakRadius, "The block breaking radius aroud a mob spawned from the Rock Spawner.");
     }
 
 
@@ -49,7 +53,7 @@ public class SpawnTypeRock extends SpawnTypeBase {
     public void spawnEntity(World world, EntityLiving entityLiving) {
         super.spawnEntity(world, entityLiving);
         if(entityLiving instanceof EntityCreatureBase) {
-        	((EntityCreatureBase)entityLiving).destroyArea((int)entityLiving.posX, (int)entityLiving.posY, (int)entityLiving.posZ, 4, true, 2);
+        	((EntityCreatureBase)entityLiving).destroyArea((int)entityLiving.posX, (int)entityLiving.posY, (int)entityLiving.posZ, 4, true, this.blockBreakRadius);
         }
     }
 }

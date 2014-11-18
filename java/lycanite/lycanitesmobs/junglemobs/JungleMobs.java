@@ -228,6 +228,7 @@ public class JungleMobs {
 		
 	     // The Swarm:
 		MobEventBase theSwarmEvent = new MobEventTheSwarm("theswarm", this.group);
+		theSwarmEvent.minDay = 10;
 	     
 		SpawnTypeBase theSwarmLandSpawner = new SpawnTypeLand("theswarm_land")
 	         .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
@@ -248,7 +249,7 @@ public class JungleMobs {
 		theSwarmSkySpawner.forceSpawning = true;
 		theSwarmSkySpawner.ignoreMobConditions = true;
 		theSwarmSkySpawner.addSpawn(MobInfo.getFromName("vespid"));
-		theSwarmSkySpawner.addSpawn(MobInfo.getFromName("vespidqueen"));
+		theSwarmSkySpawner.addSpawn(MobInfo.getFromName("vespidqueen"), 1);
 	     if(theSwarmSkySpawner.hasSpawns())
 	    	 theSwarmEvent.addSpawner(theSwarmSkySpawner);
 	     

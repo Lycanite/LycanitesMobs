@@ -106,13 +106,16 @@ public class EntityProjectileBase extends EntityThrowable {
  						boolean attackSuccess = false;
  						float damage = this.getDamage(target);
  						float damageInit = damage;
- 				        float absoluteDamage = 1 + (float)Math.floor(damage / 5.0D);
- 				        if(damage <= absoluteDamage)
+ 						double pierceValue = 5.0D;
+ 						if(this.getThrower() instanceof EntityCreatureBase)
+ 							pierceValue = ((EntityCreatureBase)this.getThrower()).getPierceValue();
+ 				        float pierceDamage = 1 + (float)Math.floor(damage / pierceValue);
+ 				        if(damage <= pierceDamage)
  				        	attackSuccess = target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor().setDamageIsAbsolute(), damage);
  				        else {
- 				        	attackSuccess = target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor().setDamageIsAbsolute(), absoluteDamage);
+ 				        	attackSuccess = target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor().setDamageIsAbsolute(), pierceDamage);
  				        	target.hurtResistantTime = 0;
- 				    		damage -= absoluteDamage;
+ 				    		damage -= pierceDamage;
  				        	target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), damage);
  				        }
  				        this.onDamage(target, damageInit, attackSuccess);
@@ -313,7 +316,7 @@ public class EntityProjectileBase extends EntityThrowable {
      **/
      public int getEffectDuration(int seconds) {
     	 if(this.getThrower() != null && this.getThrower() instanceof EntityCreatureBase)
-    		 return Math.round((float)seconds * (float)((EntityCreatureBase)this.getThrower()).getEffectMultiplier());
+    		 return ((EntityCreatureBase)this.getThrower()).getEffectDuration(seconds);
     	 return seconds * 20;
      }
      

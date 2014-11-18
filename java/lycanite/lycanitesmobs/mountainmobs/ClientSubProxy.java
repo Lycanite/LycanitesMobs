@@ -1,6 +1,7 @@
 package lycanite.lycanitesmobs.mountainmobs;
 
 import lycanite.lycanitesmobs.AssetManager;
+import lycanite.lycanitesmobs.mountainmobs.model.ModelBeholder;
 import lycanite.lycanitesmobs.mountainmobs.model.ModelGeonach;
 import lycanite.lycanitesmobs.mountainmobs.model.ModelJabberwock;
 import lycanite.lycanitesmobs.mountainmobs.model.ModelTroll;
@@ -20,5 +21,6 @@ public class ClientSubProxy extends CommonSubProxy {
 		AssetManager.addModel("troll", new ModelTroll());
 		AssetManager.addModel("yale", new ModelYale());
 		AssetManager.addModel("geonach", new ModelGeonach());
+		AssetManager.addModel("beholder", new ModelBeholder());
 	}
 }

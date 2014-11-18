@@ -41,8 +41,8 @@ public class EntityTroll extends EntityCreatureBase implements IMob {
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityTroll(World par1World) {
-        super(par1World);
+    public EntityTroll(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;

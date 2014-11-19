@@ -1617,7 +1617,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         damage *= this.getDamageModifier(damageSrc);
         
         if(super.attackEntityFrom(damageSrc, damage)) {
-        	this.onDamage();
+        	this.onDamage(damageSrc, damage);
             Entity entity = damageSrc.getSourceOfDamage();
             if(entity instanceof EntityThrowable)
             	entity = ((EntityThrowable)entity).getThrower();
@@ -1652,7 +1652,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     
     // ========== On Damage ==========
     /** Called when this mob has received damage. **/
-    public void onDamage() {}
+    public void onDamage(DamageSource damageSrc, float damage) {}
     
     // ========== Damage Modifier ==========
     /** A multiplier that alters how much damage this mob receives from the given DamageSource, use for resistances and weaknesses. Note: The defense multiplier is handled before this. **/

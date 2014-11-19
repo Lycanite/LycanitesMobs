@@ -9,8 +9,6 @@ import lycanite.lycanitesmobs.api.entity.EntityProjectileLaser;
 import lycanite.lycanitesmobs.mountainmobs.MountainMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
@@ -143,13 +141,6 @@ public class EntityArcaneLaserStorm extends EntityProjectileBase {
     // ==================================================
  	//                     Impact
  	// ==================================================
-    //========== Entity Living Collision ==========
-    @Override
-    public boolean entityLivingCollision(EntityLivingBase entityLiving) {
-    	entityLiving.addPotionEffect(new PotionEffect(Potion.wither.id, this.getEffectDuration(10), 0));
-    	return true;
-    }
-    
     //========== On Impact Splash/Ricochet ==========
     @Override
     public void onImpact() {

@@ -1,6 +1,8 @@
 package lycanite.lycanitesmobs.mountainmobs.entity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
@@ -11,7 +13,9 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
+import lycanite.lycanitesmobs.api.info.ObjectLists;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,6 +23,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
@@ -77,6 +82,46 @@ public class EntityBeholder extends EntityCreatureBase {
         this.drops.add(new DropRate(new ItemStack(Items.ender_eye), 0.25F).setMinAmount(1).setMaxAmount(2));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("arcanelaserstormcharge")), 0.25F));
 	}
+
+    
+    // ==================================================
+   	//                    Taking Damage
+   	// ==================================================
+    // ========== On Damage ==========
+    /** Called when this mob has received damage. **/
+    public void onDamage(DamageSource damageSrc, float damage) {
+    	super.onDamage(damageSrc, damage);
+    	
+    	Entity damageEntity = damageSrc.getSourceOfDamage();
+    	if(damageEntity != null && ("mob".equals(damageSrc.damageType) || "player".equals(damageSrc.damageType))) {
+    		
+    		// Eat Buffs:
+        	if(damageEntity instanceof EntityLivingBase) {
+        		EntityLivingBase targetLiving = (EntityLivingBase)damageEntity;
+        		List<Integer> goodEffectIDs = new ArrayList<Integer>();
+        		for(Object potionEffectObj : targetLiving.getActivePotionEffects()) {
+        			if(potionEffectObj instanceof PotionEffect) {
+        				int potionID = ((PotionEffect)potionEffectObj).getPotionID();
+        				if(potionID >= Potion.potionTypes.length)
+        					continue;
+        				Potion potion = Potion.potionTypes[potionID];
+                        if(potion != null) {
+                            if(ObjectLists.inEffectList("buffs", potion))
+                                goodEffectIDs.add(potionID);
+                        }
+        			}
+        		}
+        		if(goodEffectIDs.size() > 0) {
+        			if(goodEffectIDs.size() > 1)
+        				targetLiving.removePotionEffect(goodEffectIDs.get(this.getRNG().nextInt(goodEffectIDs.size())));
+        			else
+        				targetLiving.removePotionEffect(goodEffectIDs.get(0));
+    		    	float leeching = damage * 1.5F;
+    		    	this.heal(leeching);
+        		}
+        	}
+    	}
+    }
 	
 	
 	// ==================================================

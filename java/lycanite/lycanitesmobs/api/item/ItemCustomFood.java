@@ -22,6 +22,8 @@ public class ItemCustomFood extends ItemFood {
 	public GroupInfo group = LycanitesMobs.group;
 	public String texturePath = "customfood";
 	
+	protected int effectDuration = 40;
+	
     // ==================================================
   	//                    Constructors
   	// ==================================================
@@ -58,6 +60,15 @@ public class ItemCustomFood extends ItemFood {
     
     public String getDescription(ItemStack itemStack, EntityPlayer entityPlayer, List textList, boolean par4) {
     	return StatCollector.translateToLocal("item." + this.itemName + ".description");
+    }
+    
+    
+	// ==================================================
+	//                      Effects
+	// ==================================================
+    public ItemCustomFood setEffectDuration(int duration) {
+    	this.effectDuration = duration;
+    	return this;
     }
 	
 	

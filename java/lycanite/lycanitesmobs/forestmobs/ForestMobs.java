@@ -23,6 +23,7 @@ import lycanite.lycanitesmobs.forestmobs.entity.EntityLifeDrainEnd;
 import lycanite.lycanitesmobs.forestmobs.entity.EntityShambler;
 import lycanite.lycanitesmobs.forestmobs.entity.EntitySpriggan;
 import lycanite.lycanitesmobs.forestmobs.entity.EntityTrent;
+import lycanite.lycanitesmobs.forestmobs.item.ItemFoodPaleoSalad;
 import lycanite.lycanitesmobs.forestmobs.item.ItemForestEgg;
 import lycanite.lycanitesmobs.forestmobs.item.ItemLifeDrainCharge;
 import lycanite.lycanitesmobs.forestmobs.item.ItemScepterLifeDrain;
@@ -36,7 +37,6 @@ import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -88,10 +88,10 @@ public class ForestMobs {
 		ObjectManager.addItem("arisaurmeatraw", rawMeat);
 		ObjectLists.addItem("vegetables", ObjectManager.getItem("arisaurmeatraw"));
 		
-		ObjectManager.addItem("arisaurmeatcooked", new ItemCustomFood("arisaurmeatcooked", group, 6, 0.7F).setPotionEffect(Potion.field_76434_w.id, 10, 2, 2.0F).setAlwaysEdible()); // Health Boost
+		ObjectManager.addItem("arisaurmeatcooked", new ItemFoodPaleoSalad("arisaurmeatcooked", group, 6, 0.7F).setEffectDuration(2 * 20).setAlwaysEdible()); // Health Boost
 		ObjectLists.addItem("vegetables", ObjectManager.getItem("arisaurmeatcooked"));
 		
-		ObjectManager.addItem("paleosalad", new ItemCustomFood("paleosalad", group, 6, 0.7F).setPotionEffect(Potion.field_76434_w.id, 60, 2, 2.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6); // Health Boost
+		ObjectManager.addItem("paleosalad", new ItemFoodPaleoSalad("paleosalad", group, 6, 0.7F).setEffectDuration(60 * 20).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6); // Health Boost
 		ObjectLists.addItem("vegetables", ObjectManager.getItem("paleosalad"));
 
 		ObjectManager.addItem("shamblertreat", new ItemTreat("shamblertreat", group));
@@ -221,6 +221,11 @@ public class ForestMobs {
 					ObjectManager.getItem("arisaurmeatcooked")
 				}
 			));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(
+				new ItemStack(ObjectManager.getItem("arisaurmeatcooked"), 1, 0),
+				new Object[] { ObjectManager.getItem("paleosalad") }
+			));
+		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("shamblertreat"), 1, 0),
 				new Object[] { "TTT", "BBT", "TTT",

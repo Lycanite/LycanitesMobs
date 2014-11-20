@@ -212,6 +212,10 @@ public class MountainMobs {
 					ObjectManager.getItem("yalemeatcooked")
 				}
 			));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(
+				new ItemStack(ObjectManager.getItem("yalemeatcooked"), 1, 0),
+				new Object[] { ObjectManager.getItem("peakskebab") }
+			));
 
         GameRegistry.addRecipe(new ShapedOreRecipe(
                 new ItemStack(ObjectManager.getItem("boulderblastscepter"), 1, 0),

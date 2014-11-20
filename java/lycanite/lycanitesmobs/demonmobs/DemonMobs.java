@@ -269,6 +269,10 @@ public class DemonMobs {
 					ObjectManager.getItem("pinkymeatcooked")
 				}
 			));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(
+				new ItemStack(ObjectManager.getItem("pinkymeatcooked"), 1, 0),
+				new Object[] { ObjectManager.getItem("devillasagna") }
+			));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("pinkytreat"), 1, 0),

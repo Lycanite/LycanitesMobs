@@ -238,6 +238,10 @@ public class ArcticMobs {
 					ObjectManager.getItem("yetimeatcooked")
 				}
 			));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(
+				new ItemStack(ObjectManager.getItem("yetimeatcooked"), 1, 0),
+				new Object[] { ObjectManager.getItem("palesoup") }
+			));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("frostboltscepter"), 1, 0),

@@ -199,6 +199,10 @@ public class PlainsMobs {
 					Items.bread
 				}
 			));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(
+				new ItemStack(ObjectManager.getItem("makameatcooked"), 1, 0),
+				new Object[] { ObjectManager.getItem("bulwarkburger") }
+			));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("ventoraptortreat"), 1, 0),

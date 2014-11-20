@@ -172,6 +172,10 @@ public class SaltwaterMobs {
                         ObjectManager.getItem("ikameatcooked"),
                 }
         ));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(
+				new ItemStack(ObjectManager.getItem("ikameatcooked"), 1, 0),
+				new Object[] { ObjectManager.getItem("seashellmaki") }
+			));
 
 		/*GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("emberscepter"), 1, 0),

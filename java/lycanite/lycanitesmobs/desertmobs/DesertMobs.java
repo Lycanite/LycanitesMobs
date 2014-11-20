@@ -252,6 +252,10 @@ public class DesertMobs {
 					ObjectManager.getItem("joustmeatcooked")
 				}
 			));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(
+				new ItemStack(ObjectManager.getItem("joustmeatcooked"), 1, 0),
+				new Object[] { ObjectManager.getItem("ambercake") }
+			));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("crusktreat"), 1, 0),

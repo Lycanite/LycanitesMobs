@@ -199,6 +199,10 @@ public class InfernoMobs {
 					Items.wheat
 				}
 			));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(
+				new ItemStack(ObjectManager.getItem("cephignismeatcooked"), 1, 0),
+				new Object[] { ObjectManager.getItem("searingtaco") }
+			));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("emberscepter"), 1, 0),

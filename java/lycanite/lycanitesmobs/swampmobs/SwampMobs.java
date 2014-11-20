@@ -266,6 +266,10 @@ public class SwampMobs {
 					ObjectManager.getItem("aspidmeatcooked")
 				}
 			));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(
+				new ItemStack(ObjectManager.getItem("aspidmeatcooked"), 1, 0),
+				new Object[] { ObjectManager.getItem("mosspie") }
+			));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("lurkertreat"), 1, 0),

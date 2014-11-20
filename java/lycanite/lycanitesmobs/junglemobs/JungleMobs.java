@@ -279,6 +279,10 @@ public class JungleMobs {
 					ObjectManager.getItem("concapedemeatcooked")
 				}
 			));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(
+				new ItemStack(ObjectManager.getItem("concapedemeatcooked"), 1, 0),
+				new Object[] { ObjectManager.getItem("tropicalcurry") }
+			));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("poopscepter"), 1, 0),

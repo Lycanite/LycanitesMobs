@@ -10,6 +10,8 @@ import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.info.SpawnInfo;
 import lycanite.lycanitesmobs.api.item.CreativeTabCreatures;
 import lycanite.lycanitesmobs.api.item.CreativeTabItems;
+import lycanite.lycanitesmobs.api.item.ItemFoodBattleBurrito;
+import lycanite.lycanitesmobs.api.item.ItemFoodExplorersRisotto;
 import lycanite.lycanitesmobs.api.item.ItemHalloweenTreat;
 import lycanite.lycanitesmobs.api.item.ItemSoulgazer;
 import lycanite.lycanitesmobs.api.item.ItemStaffBlood;
@@ -34,6 +36,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -143,6 +146,10 @@ public class LycanitesMobs {
 		ObjectManager.addItem("bloodsummoningstaff", new ItemStaffBlood());
 		ObjectManager.addItem("sturdysummoningstaff", new ItemStaffSturdy());
 		ObjectManager.addItem("savagesummoningstaff", new ItemStaffSavage());
+		
+		// Super Foods:
+		ObjectManager.addItem("battleburrito", new ItemFoodBattleBurrito("battleburrito", group, 6, 0.7F).setAlwaysEdible().setMaxStackSize(16), 1, 1, 6);
+		ObjectManager.addItem("explorersrisotto", new ItemFoodExplorersRisotto("explorersrisotto", group, 6, 0.7F).setAlwaysEdible().setMaxStackSize(16), 1, 1, 6);
 		
 		// Seasonal Items:
 		ObjectManager.addItem("halloweentreat", new ItemHalloweenTreat());
@@ -345,6 +352,35 @@ public class LycanitesMobs {
 				Character.valueOf('G'), Items.ghast_tear,
 				Character.valueOf('L'), new ItemStack(Items.dye, 1, 4)
 			}));
+		
+		// Super Food:
+		if(ObjectManager.getItem("pinkymeatcooked") != null && ObjectManager.getItem("makameatcooked") != null
+				&& ObjectManager.getItem("arisaurmeatcooked") != null && ObjectManager.getItem("yetimeatcooked") != null
+				&& ObjectManager.getItem("aspidmeatcooked") != null) {
+			GameRegistry.addRecipe(new ShapelessOreRecipe(
+					new ItemStack(ObjectManager.getItem("battleburrito"), 1, 0),
+					new Object[] {
+						ObjectManager.getItem("pinkymeatcooked"),
+						ObjectManager.getItem("makameatcooked"),
+						ObjectManager.getItem("arisaurmeatcooked"),
+						ObjectManager.getItem("yetimeatcooked"),
+						ObjectManager.getItem("aspidmeatcooked")
+					}
+				));
+		}
+
+		if(ObjectManager.getItem("joustmeatcooked") != null && ObjectManager.getItem("yalemeatcooked") != null
+				&& ObjectManager.getItem("ikameatcooked") != null && ObjectManager.getItem("concapedemeatcooked") != null) {
+			GameRegistry.addRecipe(new ShapelessOreRecipe(
+					new ItemStack(ObjectManager.getItem("explorersrisotto"), 1, 0),
+					new Object[] {
+						ObjectManager.getItem("joustmeatcooked"),
+						ObjectManager.getItem("yalemeatcooked"),
+						ObjectManager.getItem("ikameatcooked"),
+						ObjectManager.getItem("concapedemeatcooked")
+					}
+				));
+		}
     }
 	
 	

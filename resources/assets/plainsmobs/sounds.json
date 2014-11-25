@@ -1,7 +1,7 @@
 {
     "mobevent.windstorm": {
         "category": "record",
-        "sounds": [{"name": "mobevent/windstorm", "stream": false}]
+        "sounds": [{"name": "mobevent/windstorm", "stream": true}]
     },
     "entity.kobold.say": {
         "category": "hostile",

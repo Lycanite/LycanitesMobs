@@ -1,11 +1,11 @@
 {
     "mobevent.poopparty": {
         "category": "record",
-        "sounds": [{"name": "mobevent/poopparty", "stream": false}]
+        "sounds": [{"name": "mobevent/poopparty", "stream": true}]
     },
     "mobevent.theswarm": {
         "category": "record",
-        "sounds": [{"name": "mobevent/theswarm", "stream": false}]
+        "sounds": [{"name": "mobevent/theswarm", "stream": true}]
     },
     "entity.geken.say": {
         "category": "hostile",

@@ -145,6 +145,10 @@ public class ExtendedEntity implements IExtendedEntityProperties {
 		}
 	}
 	
+	public boolean isFeared() {
+		return this.pickedUpByEntity instanceof EntityFear;
+	}
+	
 	
 	// ==================================================
     //                        NBT

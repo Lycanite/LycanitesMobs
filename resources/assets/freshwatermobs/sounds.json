@@ -1,7 +1,7 @@
 {
     "mobevent.tsunami": {
         "category": "record",
-        "sounds": [{"name": "mobevent/tsunami", "stream": false}]
+        "sounds": [{"name": "mobevent/tsunami", "stream": true}]
     },
     "entity.jengu.say": {
         "category": "hostile",

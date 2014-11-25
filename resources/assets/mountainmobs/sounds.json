@@ -1,7 +1,7 @@
 {
     "mobevent.boulderdash": {
         "category": "record",
-        "sounds": [{"name": "mobevent/boulderdash", "stream": false}]
+        "sounds": [{"name": "mobevent/boulderdash", "stream": true}]
     },
     "entity.jabberwock.say": {
         "category": "hostile",

@@ -1,6 +1,5 @@
 package lycanite.lycanitesmobs.api.gui;
 
-import cpw.mods.fml.common.eventhandler.EventPriority;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.KeyHandler;
@@ -19,6 +18,7 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class GuiOverlay extends Gui {
@@ -60,7 +60,7 @@ public class GuiOverlay extends Gui {
 		// ========== Summoning Focus Bar ==========
         ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer((EntityPlayer)this.mc.thePlayer);
 		if(playerExt != null && !this.mc.thePlayer.capabilities.isCreativeMode
-                && this.mc.thePlayer.getHeldItem().getItem() instanceof ItemStaffSummoning) {
+				&& this.mc.thePlayer.getHeldItem() != null && this.mc.thePlayer.getHeldItem().getItem() instanceof ItemStaffSummoning) {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIInventoryCreature"));
 			

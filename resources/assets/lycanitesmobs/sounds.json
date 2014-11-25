@@ -1,19 +1,19 @@
 {
     "mobevent.bamstorm": {
         "category": "record",
-        "sounds": [{"name": "mobevent/bamstorm", "stream": false}]
+        "sounds": [{"name": "mobevent/bamstorm", "stream": true}]
     },
     "mobevent.halloween": {
         "category": "record",
         "sounds":
 		[
-			"mobevent/halloween",
-			"mobevent/halloween_lycanite",
-			"mobevent/halloween_toast",
-			"mobevent/halloween_gooderness",
-			"mobevent/halloween_jarno",
-			"mobevent/halloween_kehaan",
-			"mobevent/halloween_jonbams"
+			{"name": "mobevent/halloween", "stream": true},
+			{"name": "mobevent/halloween_lycanite", "stream": true},
+			{"name": "mobevent/halloween_toast", "stream": true},
+			{"name": "mobevent/halloween_gooderness", "stream": true},
+			{"name": "mobevent/halloween_jarno", "stream": true},
+			{"name": "mobevent/halloween_kehaan", "stream": true},
+			{"name": "mobevent/halloween_jonbams", "stream": true}
 		]
     },
     "effect.fear": {

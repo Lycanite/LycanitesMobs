@@ -1,7 +1,7 @@
 {
     "mobevent.shadowgames": {
         "category": "record",
-        "sounds": [{"name": "mobevent/shadowgames", "stream": false}]
+        "sounds": [{"name": "mobevent/shadowgames", "stream": true}]
     },
     "entity.grue.say": {
         "category": "hostile",

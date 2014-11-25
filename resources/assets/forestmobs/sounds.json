@@ -1,7 +1,7 @@
 {
     "mobevent.rootriot": {
         "category": "record",
-        "sounds": [{"name": "mobevent/rootriot", "stream": false}]
+        "sounds": [{"name": "mobevent/rootriot", "stream": true}]
     },
     "entity.ent.say": {
         "category": "hostile",

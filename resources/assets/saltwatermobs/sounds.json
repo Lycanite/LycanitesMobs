@@ -1,7 +1,7 @@
 {
     "mobevent.seastorm": {
         "category": "record",
-        "sounds": [{"name": "mobevent/seastorm", "stream": false}]
+        "sounds": [{"name": "mobevent/seastorm", "stream": true}]
     },
     "entity.lacedon.say": {
         "category": "hostile",

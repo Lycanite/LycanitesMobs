@@ -1,7 +1,7 @@
 {
     "mobevent.cinderfall": {
         "category": "record",
-        "sounds": [{"name": "mobevent/cinderfall", "stream": false}]
+        "sounds": [{"name": "mobevent/cinderfall", "stream": true}]
     },
     "entity.cinder.say": {
         "category": "hostile",

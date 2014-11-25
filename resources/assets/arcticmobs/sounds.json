@@ -1,7 +1,7 @@
 {
     "mobevent.subzero": {
         "category": "record",
-        "sounds": [{"name": "mobevent/subzero", "stream": false}]
+        "sounds": [{"name": "mobevent/subzero", "stream": true}]
     },
     "entity.reiver.say": {
         "category": "hostile",

@@ -1,7 +1,7 @@
 {
     "mobevent.hellsfury": {
         "category": "record",
-        "sounds": [{"name": "mobevent/hellsfury", "stream": false}]
+        "sounds": [{"name": "mobevent/hellsfury", "stream": true}]
     },
     "entity.belph.say": {
         "category": "hostile",

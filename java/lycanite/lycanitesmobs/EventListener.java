@@ -1,11 +1,7 @@
 package lycanite.lycanitesmobs;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
-import cpw.mods.fml.common.eventhandler.EventPriority;
-import lycanite.lycanitesmobs.api.ILycanEventListener;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
 import lycanite.lycanitesmobs.api.entity.EntityItemCustom;
@@ -32,6 +28,7 @@ import net.minecraftforge.event.entity.player.EntityInteractEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import cpw.mods.fml.common.eventhandler.Event.Result;
+import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class EventListener {
@@ -198,11 +195,24 @@ public class EventListener {
 		if(event.entityLiving == null || event.source == null)
 			return;
 		
+		ExtendedEntity entityExt = ExtendedEntity.getForEntity(event.entityLiving);
+		
+		// ========== Feared Protection ==========
+		if(entityExt != null) {
+			if(entityExt.isFeared()) {
+				// Prevent Feared Entities from Suffocating:
+				if("inWall".equals(event.source.damageType)) {
+					event.setCanceled(true);
+					return;
+				}
+			}
+		}
+		
 		// ========== Minimum Armor Damage ==========
 		// TODO: Found the cause of why this wasn't working here, should be moved back.
 
         // ========== Minion Damage ==========
-        // TODO: The owner of the damage type should be the minion's master, however death messages should be customized to support this. Custom damage type?
+        // TODO: The owner of the damage type should be the minion's master, however death messages should be customised to support this. Custom damage type?
 		
 		// ========== Mounted Protection ==========
 		if(event.entityLiving.ridingEntity != null) {

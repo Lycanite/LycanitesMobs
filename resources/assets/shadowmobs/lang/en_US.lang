@@ -9,9 +9,9 @@ mobevent.shadowgames.name=Shadow Games
 entity.shadowmobs.grue.name=Grue
 entity.shadowmobs.grue.description=When it is pitch black, you are likely to be eaten by a Grue so be careful when putting out that torch or drowning that lava! Grue will teleport behind their target and drain its health!
 entity.shadowmobs.phantom.name=Phantom
-entity.shadowmobs.phantom.description=Wrathful spirit elementals with a thirst for souls! Phantoms are attracted to death and sometimes mistake people who are asleep as dead! Their ranged attacks cause fear and spawn shadowfire!
+entity.shadowmobs.phantom.description=Wrathful spirit elementals with a thirst for souls! Phantoms are attracted to death and sometimes mistake people who are asleep as dead! Their ranged attacks cause fear!
 entity.shadowmobs.epion.name=Epion
-entity.shadowmobs.epion.description=Giant death bats composed of shadow and stolen blood! Epions spit blood leech projectiles at their victims, draining health. When in direct contact with the sun, Epions will explode to death!
+entity.shadowmobs.epion.description=Giant shadow blood bats! Epions spit Bloodleeches at their victims, draining health on hit. When in contact with the sun, Epions drop to the ground and explode on impact!
 #
 # Items
 item.shadowspawn.name=Spawn

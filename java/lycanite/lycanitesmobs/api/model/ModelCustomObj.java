@@ -169,7 +169,7 @@ public class ModelCustomObj extends ModelBase {
     	if(partName == null)
     		return false;
     	partName = partName.toLowerCase();
-    	if(partName.contains("head") || partName.contains("mouth"))
+    	if(partName.contains("head") || partName.contains("mouth") || partName.contains("eye"))
 			return true;
     	return false;
     }

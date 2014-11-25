@@ -132,11 +132,11 @@ public class SpawnInfo {
 		this.creatureTypes = spawnTypeSet.creatureTypes;
         
 		// Spawn Dimensions:
-        config.setCategoryComment("Spawn Dimensions", "Sets which dimensions mobs WILL NOT spawn in or if exclusive is set to false it will be waht they WILL spawn in. You may enter dimension IDs or tags such as: ALL, VANILLA or GROUP. Multiple entries should be comma separated.");
+        config.setCategoryComment("Spawn Dimensions", "Sets which dimensions (by ID) that mobs WILL NOT spawn in. However if 'Spawn Dimensions Whitelist Mode' is set to true, it will instead set which dimensions they WILL ONLY spawn in. You may enter dimension IDs and/or GROUP to use the group settings. Multiple entries should be comma separated. Note that some Spawn Types ignore this such as the PORTAL type.");
         SpawnDimensionSet spawnDimensions = config.getDimensions("Spawn Dimensions", this.getCfgName("Spawn Dimensions"), this.dimensionEntries);
         this.dimensionBlacklist = spawnDimensions.dimensionIDs;
         this.dimensionTypes = spawnDimensions.dimensionTypes;
-        this.dimensionWhitelist = config.getBool("Spawn Dimensions", this.getCfgName("Spawn Dimension ID Whitelist"), this.dimensionWhitelist);
+        this.dimensionWhitelist = config.getBool("Spawn Dimensions", this.getCfgName("Spawn Dimensions Whitelist Mode"), this.dimensionWhitelist);
 
         // Spawn Biomes:
 		config.setCategoryComment("Spawn Biomes", "Sets which biomes this mob spawns in using Biome Tags. Multiple entries should be comma separated and can be subtractive if provided with a - in front.");

@@ -48,7 +48,7 @@ public class ModelBeholder extends ModelCustomObj {
     	this.lockHeadY = true;
 
         // Trophy:
-        this.trophyScale = 0.125F;
+        this.trophyScale = 0.2F;
     }
     
     

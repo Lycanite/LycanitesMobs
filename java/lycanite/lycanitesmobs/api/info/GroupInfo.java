@@ -97,7 +97,7 @@ public class GroupInfo {
         // Vanilla Controls:
 		config = ConfigSpawning.getConfig(this, "general");
 		config.setCategoryComment("Vanilla Spawning", "Here you may control settings that affect vanilla Minecraft.");
-		this.controlVanillaSpawns = config.getBool("Vanilla Spawning", "Edit Vanilla Spawning", true, "If true, some vanilla spawns in this biome will be removed, note that vanilla mobs should still be easy to find, only they will be more biome specific.");
+		this.controlVanillaSpawns = config.getBool("Vanilla Spawning", "Edit Vanilla Spawning", true, "If true, some vanilla spawns in this group's biomes will be removed, note that vanilla mobs should still be easy to find, only they will be more biome specific.");
 		
 		// Dungeon Themes:
 		this.dungeonThemes = config.getString("Group Settings", this.getCfgName("Themes"), this.dungeonThemes, "Here you can set the Dungeon Theme of this mob group. These are used by Doomlike Dungeons and might be used by other things later. Multiple entries should be comma seperated.");
@@ -112,10 +112,10 @@ public class GroupInfo {
         config.setCategoryComment("Group Settings", "Here you can set the spawning settings for all mobs in this group that use the GROUP tag.");
 
         // Spawn Dimensions:
-        SpawnDimensionSet spawnDimensions = config.getDimensions("Group Settings", this.getCfgName("Spawn Dimensions"), this.dimensionEntries, "Sets which dimensions mobs CAN NOT spawn in (if whitelist is true then it sets what they CAN ONLY spawn in). You may enter dimension IDs or tags such as: ALL, VANILLA or GROUP. Multiple entries should be comma separated.");
+        SpawnDimensionSet spawnDimensions = config.getDimensions("Group Settings", this.getCfgName("Spawn Dimensions"), this.dimensionEntries, "Sets which dimensions (by ID) that mobs WILL NOT spawn in. However if 'Spawn Dimensions Whitelist Mode' is set to true, it will instead set which dimensions they WILL ONLY spawn in. Multiple entries should be comma separated. Note that some Spawn Types ignore this such as the PORTAL type.");
         this.dimensionBlacklist = spawnDimensions.dimensionIDs;
         this.dimensionTypes = spawnDimensions.dimensionTypes;
-        this.dimensionWhitelist = config.getBool("Spawn Dimensions", this.getCfgName("Spawn Dimension ID Whitelist"), this.dimensionWhitelist);
+        this.dimensionWhitelist = config.getBool("Group Settings", this.getCfgName("Spawn Dimensions Whitelist Mode"), this.dimensionWhitelist, "If true, the 'Spawn Dimensions' list will act as a whitelist instead of a blacklist.");
 
         // Spawn Biomes:
 		this.biomes = config.getBiomes("Group Settings", this.getCfgName("Spawn Biomes"), this.biomeEntries, "Sets which biomes this mob spawns in using Biome Tags. Multiple entries should be comma separated and can be subtractive if provided with a - in front.");

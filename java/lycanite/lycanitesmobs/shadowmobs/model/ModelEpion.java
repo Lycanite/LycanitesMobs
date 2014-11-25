@@ -35,7 +35,7 @@ public class ModelEpion extends ModelCustomObj {
     	
     	// Trophy:
         this.trophyScale = 1.0F;
-        this.trophyOffset = new float[] {0.0F, 0.0F, -0.4F};
+        this.trophyOffset = new float[] {0.0F, 0.0F, -0.2F};
     }
     
     

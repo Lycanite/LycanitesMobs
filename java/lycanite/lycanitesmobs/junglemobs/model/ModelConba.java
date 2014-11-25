@@ -37,7 +37,7 @@ public class ModelConba extends ModelCustomObj {
     	setPartCenter("legright", -0.2F, 0.5F, -0.5F);
 
         // Tropy:
-        this.trophyScale = 2.0F;
+        this.trophyScale = 1.0F;
         this.trophyOffset = new float[] {0.0F, 0.0F, -0.1F};
     }
     

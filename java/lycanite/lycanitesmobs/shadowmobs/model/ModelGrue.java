@@ -37,7 +37,7 @@ public class ModelGrue extends ModelCustomObj {
     	setPartCenter("effect01", 0F, 0.8F, 0F);
     	
     	// Trophy:
-        this.trophyScale = 1.0F;
+        this.trophyScale = 0.8F;
         this.trophyOffset = new float[] {0.0F, 0.0F, -0.4F};
     }
     

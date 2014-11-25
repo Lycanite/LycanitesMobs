@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import cpw.mods.fml.common.eventhandler.EventPriority;
 import lycanite.lycanitesmobs.api.ILycanEventListener;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
@@ -134,7 +135,7 @@ public class EventListener {
 	
 	
     // ==================================================
-    //                Entity Interact Event
+    //               Entity Interact Event
     // ==================================================
 	@SubscribeEvent
 	public void onEntityInteract(EntityInteractEvent event) {
@@ -168,7 +169,7 @@ public class EventListener {
     // ==================================================
     //                 Attack Target Event
     // ==================================================
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void onAttackTarget(LivingSetAttackTargetEvent event) {
 		if(event.isCancelable() && event.isCanceled())
 	      return;
@@ -189,29 +190,19 @@ public class EventListener {
     // ==================================================
     //                 Living Hurt Event
     // ==================================================
-	public static List<ILycanEventListener> onLivingHurtListeners = new ArrayList<ILycanEventListener>();
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void onLivingHurt(LivingHurtEvent event) {
-		if(event.isCancelable() && event.isCanceled())
+		if(event.isCancelable())
 	      return;
 		
 		if(event.entityLiving == null || event.source == null)
 			return;
 		
-		/*/ ========== Minimum Armor Damage ========== Moved to EntityCreatureBase as it doesn't work here. :/
-		float damage = event.ammount;
-		if(damage > 0 && !event.source.isUnblockable() && !event.source.isDamageAbsolute() && event.source.getEntity() != null && event.source.getEntity() instanceof EntityCreatureBase) {
-			float minDamage = 1 + (float)Math.floor(damage / 5.0D);
-			if(damage <= minDamage) {
-				event.source.setDamageBypassesArmor().setDamageIsAbsolute();
-			}
-			else {
-				event.ammount = damage - minDamage;
-				DamageSource unblockableDamage = DamageSource.causeMobDamage((EntityLivingBase)event.source.getEntity()).setDamageBypassesArmor().setDamageIsAbsolute();
-				event.entityLiving.attackEntityFrom(unblockableDamage, minDamage);
-				//event.entityLiving.setHealth(event.entityLiving.getHealth() - minDamage);
-			}
-		}*/
+		// ========== Minimum Armor Damage ==========
+		// TODO: Found the cause of why this wasn't working here, should be moved back.
+
+        // ========== Minion Damage ==========
+        // TODO: The owner of the damage type should be the minion's master, however death messages should be customized to support this. Custom damage type?
 		
 		// ========== Mounted Protection ==========
 		if(event.entityLiving.ridingEntity != null) {

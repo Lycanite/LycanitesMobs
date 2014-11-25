@@ -151,12 +151,12 @@ public class ItemScepter extends ItemBase {
 	// ==================================================
 	//                      Stats
 	// ==================================================
-    @Override
+    /*@Override
     public Multimap getItemAttributeModifiers() {
         Multimap multimap = super.getItemAttributeModifiers();
         multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(field_111210_e, "Weapon modifier", (double)this.damageScale, 0));
         return multimap;
-    }
+    }*/
 
 	
 	// ==================================================

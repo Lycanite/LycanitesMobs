@@ -4,10 +4,7 @@ import lycanite.lycanitesmobs.api.command.CommandMain;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.entity.EntityFear;
 import lycanite.lycanitesmobs.api.entity.EntityPortal;
-import lycanite.lycanitesmobs.api.info.GroupInfo;
-import lycanite.lycanitesmobs.api.info.MobInfo;
-import lycanite.lycanitesmobs.api.info.ObjectLists;
-import lycanite.lycanitesmobs.api.info.SpawnInfo;
+import lycanite.lycanitesmobs.api.info.*;
 import lycanite.lycanitesmobs.api.item.CreativeTabCreatures;
 import lycanite.lycanitesmobs.api.item.CreativeTabItems;
 import lycanite.lycanitesmobs.api.item.ItemFoodBattleBurrito;
@@ -55,7 +52,7 @@ public class LycanitesMobs {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String version = "1.10.6.2 - MC 1.7.10";
+	public static final String version = "1.10.6.3 - MC 1.7.10";
 	
 	public static final PacketHandler packetHandler = new PacketHandler();
 
@@ -128,6 +125,10 @@ public class LycanitesMobs {
 		mobEventManager.loadMobEvents();
 		//MinecraftForge.EVENT_BUS.register(mobEventManager);
 		FMLCommonHandler.instance().bus().register(mobEventManager);
+
+
+        // ========== Item Info ==========
+        ItemInfo.loadGlobalSettings();
 		
 		
 		// ========== Register Event Listeners ==========
@@ -153,11 +154,10 @@ public class LycanitesMobs {
 		
 		// Seasonal Items:
 		ObjectManager.addItem("halloweentreat", new ItemHalloweenTreat());
-		
-		
-		// ========== Call Object Lists Setup ==========
+
+        // ========== Call Object Lists Setup ==========
 		ObjectLists.createLists();
-		
+
 		
 		// ========== Mod Support ==========
 		DLDungeons.init();

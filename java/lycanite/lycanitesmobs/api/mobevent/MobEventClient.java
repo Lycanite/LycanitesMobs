@@ -34,7 +34,7 @@ public class MobEventClient {
 		this.mobEvent = mobEvent;
         this.world = world;
         if(!world.isRemote)
-            LycanitesMobs.printWarning("", "Created a MobEventClient with a server side world, things are going to get weird!");
+            LycanitesMobs.printWarning("", "Created a MobEventClient with a server side world, this shouldn't happen, things are going to get weird!");
 	}
 	
 	
@@ -103,13 +103,9 @@ public class MobEventClient {
         x += 3 - (this.ticks % 6);
         y += 2 - (this.ticks % 4);
 
-        GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_COLOR_MATERIAL);
-        GL11.glEnable(GL11.GL_BLEND);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, animation);
         gui.mc.getTextureManager().bindTexture(this.getTexture());
         gui.drawTexturedModalRect(x, y, u, v, width, height);
-        GL11.glPopMatrix();
     }
 
     @SideOnly(Side.CLIENT)

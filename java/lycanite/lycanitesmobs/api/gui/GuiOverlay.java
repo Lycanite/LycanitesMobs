@@ -1,5 +1,6 @@
 package lycanite.lycanitesmobs.api.gui;
 
+import cpw.mods.fml.common.eventhandler.EventPriority;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.KeyHandler;
@@ -37,17 +38,20 @@ public class GuiOverlay extends Gui {
     // ==================================================
     //                  Draw Game Overlay
     // ==================================================
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.HIGH)
 	public void onRenderExperienceBar(RenderGameOverlayEvent event) {
-		if(event.isCanceled())
+		if(event.isCancelable() || event.type != ElementType.EXPERIENCE)
 	      return;
+
+        GL11.glPushMatrix();
+        GL11.glEnable(GL11.GL_COLOR_MATERIAL);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GL11.glDisable(GL11.GL_LIGHTING);
 		
 		ScaledResolution scaledresolution = new ScaledResolution(this.mc, this.mc.displayWidth, this.mc.displayHeight);
 		int sWidth = scaledresolution.getScaledWidth();
         int sHeight = scaledresolution.getScaledHeight();
-		
-		if(event.type != ElementType.EXPERIENCE)
-	      return;
 
         // ========== Mob Events Title ==========
         if(MobEventManager.instance.clientMobEvent != null)
@@ -55,11 +59,9 @@ public class GuiOverlay extends Gui {
 		
 		// ========== Summoning Focus Bar ==========
         ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer((EntityPlayer)this.mc.thePlayer);
-		if(playerExt != null && !this.mc.thePlayer.capabilities.isCreativeMode && (
-				playerExt.summonFocus < playerExt.summonFocusMax ||
-				this.mc.thePlayer.getHeldItem() != null && this.mc.thePlayer.getHeldItem().getItem() instanceof ItemStaffSummoning
-			)) {
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		if(playerExt != null && !this.mc.thePlayer.capabilities.isCreativeMode
+                && this.mc.thePlayer.getHeldItem().getItem() instanceof ItemStaffSummoning) {
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIInventoryCreature"));
 			
 			int barYSpace = 10;
@@ -93,7 +95,7 @@ public class GuiOverlay extends Gui {
 			EntityCreatureRideable mount = (EntityCreatureRideable)this.mc.thePlayer.ridingEntity;
             float mountStamina = mount.getStaminaPercent();
             
-            // Mount Controls Message
+            // Mount Controls Message:
             if(this.mountMessageTime > 0) {
             	GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             	if(this.mountMessageTime < 60)
@@ -126,7 +128,8 @@ public class GuiOverlay extends Gui {
 		}
 		else
 			this.mountMessageTime = this.mountMessageTimeMax;
-		
+
+        GL11.glPopMatrix();
 		this.mc.getTextureManager().bindTexture(Gui.icons);
 	}
 }

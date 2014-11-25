@@ -91,12 +91,12 @@ public class InfernoMobs {
 		// ========== Create Items ==========
 		ObjectManager.addItem("infernoegg", new ItemInfernoEgg());
 		
-		ObjectManager.addItem("cephignismeatcooked", new ItemCustomFood("cephignismeatcooked", group, 6, 0.7F).setPotionEffect(Potion.fireResistance.id, 20, 2, 1.0F).setAlwaysEdible());
+		ObjectManager.addItem("cephignismeatcooked", new ItemCustomFood("cephignismeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(Potion.fireResistance.id, 20, 2, 1.0F).setAlwaysEdible());
 		ObjectLists.addItem("cookedfish", ObjectManager.getItem("cephignismeatcooked"));
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("cephignismeatcooked"));
 		OreDictionary.registerOre("listAllfishcooked", ObjectManager.getItem("cephignismeatcooked"));
 		
-		ObjectManager.addItem("searingtaco", new ItemCustomFood("searingtaco", group, 6, 0.7F).setPotionEffect(Potion.fireResistance.id, 120, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6); // Fire Resistance
+		ObjectManager.addItem("searingtaco", new ItemCustomFood("searingtaco", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(Potion.fireResistance.id, 120, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6); // Fire Resistance
 		ObjectLists.addItem("cookedfish", ObjectManager.getItem("searingtaco"));
 		
 		ObjectManager.addItem("embercharge", new ItemEmberCharge());

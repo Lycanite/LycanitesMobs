@@ -2,6 +2,7 @@ package lycanite.lycanitesmobs.api.spawning;
 
 import java.util.List;
 
+import lycanite.lycanitesmobs.ExtendedWorld;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
@@ -26,7 +27,13 @@ public class SpawnTypeRock extends SpawnTypeBase {
     // ==================================================
     @Override
     public boolean canSpawn(long tick, World world, int x, int y, int z) {
-        if(world.rand.nextDouble() >= this.chance)
+    	double roll = world.rand.nextDouble();
+    	ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
+    	if(worldExt != null) {
+    		if("boulderdash".equalsIgnoreCase(worldExt.getMobEventType()))
+    			roll /= 4;
+    	}
+        if(roll >= this.chance)
             return false;
         return true;
     }

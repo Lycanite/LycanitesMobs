@@ -5,6 +5,7 @@ import java.util.HashMap;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupFire;
 import lycanite.lycanitesmobs.api.IGroupPlant;
+import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackRanged;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowOwner;
@@ -18,6 +19,8 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
+import net.minecraft.block.Block;
+import net.minecraft.block.IGrowable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -32,9 +35,12 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import net.minecraftforge.common.IPlantable;
 
 public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGroupPlant {
+	
 	EntityAIAttackRanged rangedAttackAI;
+	public int farmingRate = 10;
 
     // ==================================================
  	//                    Constructor
@@ -53,6 +59,8 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
         this.setHeight = 1.2F;
         this.setupMob();
         this.stepHeight = 1.0F;
+        
+        this.farmingRate = ConfigBase.getConfig(this.group, "general").getInt("Features", "Spriggan Minion Crop Boosting", this.farmingRate, "Sets the rate in seconds that a Spriggan will boost nearby crops. Each boost is essentially the same as a bonemeal. Set to 0 to disable this feature.");
         
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this));
@@ -98,16 +106,53 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
     // ==================================================
     //                      Updates
     // ==================================================
+	private int farmingTick = 0;
     // ========== Living Update ==========
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
 
         // Water Healing:
-        if(this.isInWater())
-            this.addPotionEffect(new PotionEffect(Potion.regeneration.id, 3 * 20, 2));
-        else if(this.worldObj.isRaining() && this.worldObj.canBlockSeeTheSky((int)this.posX, (int)this.posY, (int)this.posZ))
-            this.addPotionEffect(new PotionEffect(Potion.regeneration.id, 3 * 20, 1));
+        if(!this.worldObj.isRemote) {
+	        if(this.isInWater())
+	            this.addPotionEffect(new PotionEffect(Potion.regeneration.id, 3 * 20, 2));
+	        else if(this.worldObj.isRaining() && this.worldObj.canBlockSeeTheSky((int)this.posX, (int)this.posY, (int)this.posZ))
+	            this.addPotionEffect(new PotionEffect(Potion.regeneration.id, 3 * 20, 1));
+        }
+
+        // Farming:
+        if(this.isTamed() && this.farmingRate > 0) {
+        	this.farmingTick++;
+	        int farmingRange = 16;
+	        int farmingHeight = 4;
+	        for(int x = (int)this.posX - farmingRange; x <= (int)this.posX + farmingRange; x++) {
+	        	for(int y = (int)this.posY - farmingHeight; y <= (int)this.posY + farmingHeight; y++) {
+	        		for(int z = (int)this.posZ - farmingRange; z <= (int)this.posZ + farmingRange; z++) {
+	        			Block farmingBlock = this.worldObj.getBlock(x, y, z);
+	        			if(farmingBlock != null && farmingBlock instanceof IPlantable && farmingBlock instanceof IGrowable && farmingBlock != Blocks.tallgrass && farmingBlock != Blocks.double_plant) {
+	        				
+		        			// Boost Crops Every X Seconds:
+		        			if(!this.worldObj.isRemote && this.farmingTick % (this.farmingRate * 20) == 0) {
+		    	        		IGrowable growableBlock = (IGrowable)farmingBlock;
+		    	        		if(growableBlock.func_149851_a(this.worldObj, x, y, z, this.worldObj.isRemote)) {
+	    	                        if(growableBlock.func_149852_a(this.worldObj, this.getRNG(), x, y, z)) {
+	    	                        	growableBlock.func_149853_b(this.worldObj, this.getRNG(), x, y, z);
+	    	                        }
+		    	                }
+		        			}
+		        			
+		        			// Crop Growth Effect:
+		        			if(this.worldObj.isRemote && this.farmingTick % 20 == 0) {
+		        				double d0 = this.getRNG().nextGaussian() * 0.02D;
+		                        double d1 = this.getRNG().nextGaussian() * 0.02D;
+		                        double d2 = this.getRNG().nextGaussian() * 0.02D;
+		        				this.worldObj.spawnParticle("happyVillager", (double)((float)x + this.getRNG().nextFloat()), (double)y + (double)this.getRNG().nextFloat() * farmingBlock.getBlockBoundsMaxY(), (double)((float)z + this.getRNG().nextFloat()), d0, d1, d2);
+		        			}
+	        			}
+	    	        }
+		        }
+	        }
+        }
 
         // Particles:
         if(this.worldObj.isRemote)

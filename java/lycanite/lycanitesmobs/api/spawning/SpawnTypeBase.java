@@ -219,7 +219,18 @@ public class SpawnTypeBase {
 		lunarSpawner.loadFromConfig();
         spawnTypes.add(lunarSpawner);
 		
-		// Shadow Spawner:
+		// Darkness Spawner:
+		SpawnTypeBase darknessSpawner = new SpawnTypeDarkness("Darkness")
+				.setRate(0).setChance(0.1D).setRange(2).setBlockLimit(32).setMobLimit(1);
+		darknessSpawner.materials = new Material[] {Material.air};
+		darknessSpawner.ignoreBiome = true;
+		darknessSpawner.ignoreDimension = true;
+		darknessSpawner.ignoreLight = true;
+		darknessSpawner.forceSpawning = true;
+		darknessSpawner.loadFromConfig();
+        spawnTypes.add(darknessSpawner);
+		
+		/*/ Shadow Spawner: Replaced by the Darkness Spawner
 		SpawnTypeBase shadowSpawner = new SpawnTypeShadow("Shadow")
 				.setRate(0).setChance(0.1D).setRange(2).setBlockLimit(32).setMobLimit(1);
 		shadowSpawner.materials = new Material[] {Material.air};
@@ -228,7 +239,7 @@ public class SpawnTypeBase {
 		shadowSpawner.ignoreLight = true;
 		shadowSpawner.forceSpawning = true;
 		shadowSpawner.loadFromConfig();
-        spawnTypes.add(shadowSpawner);
+        spawnTypes.add(shadowSpawner);*/
 		
 		// Death Spawner:
 		SpawnTypeBase deathSpawner = new SpawnTypeDeath("Death")

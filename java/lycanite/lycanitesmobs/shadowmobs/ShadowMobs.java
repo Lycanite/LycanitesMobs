@@ -104,7 +104,7 @@ public class ShadowMobs {
         newMob = new MobInfo(group, "grue", EntityGrue.class, 0x191017, 0xBB44AA)
 		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1)
 		        .addSubspecies(new Subspecies("crimson", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("SHADOW, MONSTER")
+		newMob.spawnInfo.setSpawnTypes("DARKNESS, MONSTER")
 				.setSpawnWeight(8).setAreaLimit(5).setGroupLimits(1, 2);
 		ObjectManager.addMob(newMob);
         

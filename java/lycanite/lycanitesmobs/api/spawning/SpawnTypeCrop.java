@@ -2,6 +2,7 @@ package lycanite.lycanitesmobs.api.spawning;
 
 import java.util.List;
 
+import lycanite.lycanitesmobs.ExtendedWorld;
 import net.minecraft.world.World;
 
 public class SpawnTypeCrop extends SpawnTypeBase {
@@ -20,7 +21,13 @@ public class SpawnTypeCrop extends SpawnTypeBase {
     // ==================================================
     @Override
     public boolean canSpawn(long tick, World world, int x, int y, int z) {
-        if(world.rand.nextDouble() >= this.chance)
+    	double roll = world.rand.nextDouble();
+    	ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
+    	if(worldExt != null) {
+    		if("rootriot".equalsIgnoreCase(worldExt.getMobEventType()))
+    			roll /= 4;
+    	}
+        if(roll >= this.chance)
             return false;
         return true;
     }

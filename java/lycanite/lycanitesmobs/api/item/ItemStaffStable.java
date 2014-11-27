@@ -30,7 +30,7 @@ public class ItemStaffStable extends ItemStaffSummoning {
     // ========== Rapid Time ==========
     @Override
     public int getRapidTime(ItemStack itemStack) {
-        return 40;
+        return 20;
     }
     
     // ========== Summon Cost ==========
@@ -43,7 +43,7 @@ public class ItemStaffStable extends ItemStaffSummoning {
     
     // ========== Summon Duration ==========
     public int getSummonDuration() {
-    	return 120 * 20;
+    	return 180 * 20;
     }
     
 	

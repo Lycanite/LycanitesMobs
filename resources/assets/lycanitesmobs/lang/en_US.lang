@@ -14,6 +14,14 @@ entity.lycanitesmobs.summoningportal.name=Summoning Portal
 #
 #
 #
+# ========== Spawners ==========
+spawner.darkness.level1=It is pitch black, you are likely to be eaten by something...
+spawner.darkness.level2=You can hear sounds from the darkness itself... Quick, return to the light!
+spawner.darkness.level3=A shadowy creature has spawned from the darkness!
+spawner.darkness.level1.back=The sounds seem to have stopped... For now at least...
+#
+#
+#
 # ========== Subspecies ==========
 # Uncommon:
 subspecies.ashen.name=Ashen

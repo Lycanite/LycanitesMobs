@@ -52,7 +52,7 @@ public class EntityTroll extends EntityCreatureBase implements IMob {
         this.hasAttackSound = false;
 
         //this.canGrow = false;
-        //this.babySpawnChance = 0.1D;
+        //this.babySpawnChance = 0.01D;
         
         this.trollGreifing = ConfigBase.getConfig(this.group, "general").getBool("Features", "Troll Griefing", this.trollGreifing, "Set to false to disable Troll block destruction.");
         

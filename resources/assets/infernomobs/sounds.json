@@ -79,6 +79,38 @@
         "category": "hostile",
         "sounds": [{"name": "entity/afrit/fly", "stream": false}]
     },
+    "entity.khalk.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/khalk/say", "stream": false}]
+    },
+    "entity.khalk.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/khalk/hurt", "stream": false}]
+    },
+    "entity.khalk.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/khalk/death", "stream": false}]
+    },
+    "entity.khalk.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/khalk/attack", "stream": false}]
+    },
+    "entity.khalk.step": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/khalk/step", "stream": false}]
+    },
+    "entity.khalk.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/khalk/beg", "stream": false}]
+    },
+    "entity.khalk.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/khalk/tame", "stream": false}]
+    },
+    "entity.khalk.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/khalk/eat", "stream": false}]
+    },
     "projectile.ember": {
         "category": "ambient",
         "sounds": [{"name": "projectile/ember", "stream": false}]

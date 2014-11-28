@@ -23,6 +23,7 @@ import lycanite.lycanitesmobs.infernomobs.entity.EntityAfrit;
 import lycanite.lycanitesmobs.infernomobs.entity.EntityCephignis;
 import lycanite.lycanitesmobs.infernomobs.entity.EntityCinder;
 import lycanite.lycanitesmobs.infernomobs.entity.EntityEmber;
+import lycanite.lycanitesmobs.infernomobs.entity.EntityKhalk;
 import lycanite.lycanitesmobs.infernomobs.entity.EntityLobber;
 import lycanite.lycanitesmobs.infernomobs.entity.EntityMagma;
 import lycanite.lycanitesmobs.infernomobs.entity.EntityScorchfireball;
@@ -145,6 +146,13 @@ public class InfernoMobs {
 		        .addSubspecies(new Subspecies("violet", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
         newMob.spawnInfo.setSpawnTypes("LAVA").setBlockCost(16)
                 .setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3);
+        ObjectManager.addMob(newMob);
+
+        newMob = new MobInfo(group, "khalk", EntityKhalk.class, 0x442200, 0xFFAA22)
+                .setPeaceful(false).setSummonable(false).setSummonCost(6).setDungeonLevel(2)
+		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"));
+        newMob.spawnInfo.setSpawnTypes("LAVA").setBlockCost(32)
+                .setSpawnWeight(1).setAreaLimit(2).setGroupLimits(1, 3);
         ObjectManager.addMob(newMob);
 
 		

@@ -44,7 +44,7 @@ public class EntityJabberwock extends EntityCreatureTameable implements IMob {
         this.hasAttackSound = true;
 
         this.canGrow = false;
-        this.babySpawnChance = 0.1D;
+        this.babySpawnChance = 0.01D;
         
         this.setWidth = 0.6F;
         this.setHeight = 1.9F;

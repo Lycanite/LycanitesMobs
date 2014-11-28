@@ -4,6 +4,7 @@ infernomobs.description=Beasts formed of fire lava, they can be found anywhere t
 #
 # Mob Events
 mobevent.cinderfall.name=Cinderfall
+mobevent.eruption.name=Eruption
 #
 # Entites
 entity.infernomobs.cinder.name=Cinder
@@ -14,6 +15,8 @@ entity.infernomobs.cephignis.name=Cephignis
 entity.infernomobs.cephignis.description=Large fish that live in lava! Cephignis can be farmed using coal or charcoal!
 entity.infernomobs.afrit.name=Afrit
 entity.infernomobs.afrit.description=Wicked fire imps normally found bathing in lava. They throw balls of scorchfire which ignites and applies penetration. Can be tamed making great pets!
+entity.infernomobs.khalk.name=Khalk
+entity.infernomobs.khalk.description=Large magma beasts known for their incredible defense and deadly offsense. On death, their bodies break down into lava!
 #
 # Items
 item.infernospawn.name=Spawn

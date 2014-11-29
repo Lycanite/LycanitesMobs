@@ -1981,7 +1981,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         	for(int d = -((int)Math.ceil(this.width) + range); d <= (Math.ceil(this.width) + range); d++)
 		    	for(int h = 0; h <= Math.ceil(this.height); h++) {
 		    		Block block = this.worldObj.getBlock(x + w, y + h, z + d);
-		    		if(block instanceof Block) {
+		    		if(block instanceof Block && block != null) {
 			    		float hardness = block.getBlockHardness(this.worldObj, x + w, y + h, z + d);
 			    		Material material = block.getMaterial();
 			    		if(hardness >= 0 && strength >= hardness && strength >= block.getExplosionResistance(this) && material != Material.water && material != Material.lava)

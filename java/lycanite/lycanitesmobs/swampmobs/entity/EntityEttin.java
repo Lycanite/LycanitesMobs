@@ -100,7 +100,7 @@ public class EntityEttin extends EntityCreatureAgeable implements IMob {
 	        if(this.getAttackTarget() != null && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing") && this.ettinGreifing) {
 		    	float distance = this.getAttackTarget().getDistanceToEntity(this);
 		    		if(distance <= this.width + 4.0F)
-		    			this.destroyArea((int)this.posX, (int)this.posY, (int)this.posZ, 4, true);
+		    			this.destroyArea((int)this.posX, (int)this.posY, (int)this.posZ, 10, true);
 	        }
         
         super.onLivingUpdate();

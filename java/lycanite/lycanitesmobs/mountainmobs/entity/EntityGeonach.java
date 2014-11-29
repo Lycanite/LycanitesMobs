@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupRock;
+import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowOwner;
@@ -37,6 +38,8 @@ import net.minecraft.world.World;
 public class EntityGeonach extends EntityCreatureTameable implements IMob, IGroupRock {
 	
 	private EntityAIAttackMelee meleeAttackAI;
+	
+	public int geonachBlockBreakRadius = 0;
     
     // ==================================================
  	//                    Constructor
@@ -50,6 +53,8 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
         this.experience = 5;
         this.spawnsInDarkness = true;
         this.hasAttackSound = true;
+        
+        this.geonachBlockBreakRadius = ConfigBase.getConfig(this.group, "general").getInt("Features", "Geonach Block Break Radius", this.geonachBlockBreakRadius, "Controls how large the Geonach's block breaking radius is when it is charging towards its target. Set to -1 to disable. For their block breaking radius on spawn, see the ROCK spawn type features instead.");
         
         this.setWidth = 0.8F;
         this.setHeight = 1.2F;
@@ -104,6 +109,21 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
 	@Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
+        
+        if(!this.worldObj.isRemote) {
+	    	// Random Charging:
+	    	if(this.hasAttackTarget() && this.getDistanceSqToEntity(this.getAttackTarget()) > 1 && this.getRNG().nextInt(20) == 0) {
+	    		if(this.posY - 1 > this.getAttackTarget().posY)
+	    			this.leap(6.0F, -1.0D, this.getAttackTarget());
+	    		else if(this.posY + 1 < this.getAttackTarget().posY)
+	    			this.leap(6.0F, 1.0D, this.getAttackTarget());
+	    		else
+	    			this.leap(6.0F, 0D, this.getAttackTarget());
+	    		if(this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing") && this.geonachBlockBreakRadius > -1 && !this.isTamed()) {
+		    		this.destroyArea((int)this.posX, (int)this.posY, (int)this.posZ, 10, true, this.geonachBlockBreakRadius);
+	    		}
+	    	}
+        }
         
         // Particles:
         if(this.worldObj.isRemote)

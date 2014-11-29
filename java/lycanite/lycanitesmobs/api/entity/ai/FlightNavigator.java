@@ -81,7 +81,7 @@ public class FlightNavigator {
 	// ========== Is At Target Position ==========
 	public boolean atTargetPosition(){
 		if(targetPosition != null)
-			return this.host.getDistance(targetPosition.posX, targetPosition.posY, targetPosition.posZ) < 0.5D;
+			return this.host.getDistance(targetPosition.posX, targetPosition.posY, targetPosition.posZ) < 0.25D;
 		return true;
 	}
 	
@@ -102,7 +102,7 @@ public class FlightNavigator {
 		float fullAngle = (float)(Math.atan2(this.host.motionZ, this.host.motionX) * 180.0D / Math.PI) - 90.0F;
 		float angle = MathHelper.wrapAngleTo180_float(fullAngle - this.host.rotationYaw);
 		this.host.moveForward = 0.5F;
-		if(this.faceMovement && this.host.getAttackTarget() != null && (this.host.motionX > 0.05F || this.host.motionZ > 0.05F))
+		if(this.faceMovement && this.host.getAttackTarget() != null && (this.host.motionX > 0.025F || this.host.motionZ > 0.025F))
 			this.host.rotationYaw += angle;
 	}
 	

@@ -2,6 +2,7 @@ package lycanite.lycanitesmobs.api.item;
 
 import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.api.entity.EntityFear;
 import lycanite.lycanitesmobs.api.info.CreatureKnowledge;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import net.minecraft.entity.Entity;
@@ -44,6 +45,9 @@ public class ItemSoulgazer extends ItemBase {
     	if(!(entity instanceof EntityCreatureBase)) {
     		if(!player.worldObj.isRemote)
     			player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("message.soulgazer.unknown")));
+    		return false;
+    	}
+    	if(entity instanceof EntityFear) {
     		return false;
     	}
     	MobInfo mobInfo = ((EntityCreatureBase)entity).mobInfo;

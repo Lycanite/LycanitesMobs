@@ -136,7 +136,7 @@ public class EntityTroll extends EntityCreatureBase implements IMob {
  	        if(this.getAttackTarget() != null && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing") && this.trollGreifing) {
  		    	float distance = this.getAttackTarget().getDistanceToEntity(this);
  		    		if(distance <= this.width + 4.0F)
- 		    			this.destroyArea((int)this.posX, (int)this.posY, (int)this.posZ, 4, true);
+ 		    			this.destroyArea((int)this.posX, (int)this.posY, (int)this.posZ, 10, true);
  	        }
     }
 

@@ -59,7 +59,7 @@ public class SpawnTypeRock extends SpawnTypeBase {
     @Override
     public void spawnEntity(World world, EntityLiving entityLiving) {
         super.spawnEntity(world, entityLiving);
-        if(entityLiving instanceof EntityCreatureBase) {
+        if(entityLiving instanceof EntityCreatureBase && this.blockBreakRadius > -1) {
         	((EntityCreatureBase)entityLiving).destroyArea((int)entityLiving.posX, (int)entityLiving.posY, (int)entityLiving.posZ, 4, true, this.blockBreakRadius);
         }
     }

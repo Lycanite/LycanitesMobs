@@ -17,6 +17,7 @@ import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
@@ -386,11 +387,12 @@ public class SpawnTypeBase {
      * @param world The world to spawn in.
      * @param x X position.
      * @param y Y position.
-     * @param z Z position
+     * @param z Z position.
+     * @param player The player or null if there is no player.
      */
-    public boolean spawnMobs(long tick, World world, int x, int y, int z) {
+    public boolean spawnMobs(long tick, World world, int x, int y, int z, EntityPlayer player) {
         // Check If Able to Spawn:
-        if(this.getSpawnList() == null || this.getSpawnList().size() < 1 || !this.enabled)
+        if(this.getSpawnList() == null || this.getSpawnList().size() < 1 || !this.enabled || !this.hasSpawns())
             return false;
         if(!this.canSpawn(tick, world, x, y, z))
             return false;

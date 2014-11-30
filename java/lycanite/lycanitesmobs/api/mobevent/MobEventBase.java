@@ -6,6 +6,8 @@ import java.util.List;
 import lycanite.lycanitesmobs.ExtendedWorld;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
+import lycanite.lycanitesmobs.api.config.ConfigSpawning;
+import lycanite.lycanitesmobs.api.config.ConfigSpawning.SpawnDimensionSet;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
@@ -27,6 +29,16 @@ public class MobEventBase {
     public int minDay = 0;
     public int duration = 60 * 20;
     public int mobDuration = 10 * 60 * 20;
+	
+	// Dimensions:
+    /** A comma separated list of dimensions that this event can occur in. As read from the config **/
+    public String dimensionEntries = "-1, 1";
+	/** A blacklist of dimension IDs (changes to whitelist if dimensionWhitelist is true) that this event can occur in. **/
+	public int[] dimensionBlacklist;
+	/** Extra dimension type info, can contain values such as ALL or VANILLA. **/
+	public String[] dimensionTypes;
+	/** Controls the behaviour of how Dimension IDs are read. If true only listed Dimension IDs are allowed instead of denied. **/
+	public boolean dimensionWhitelist = false;
 
     // Active:
     public int ticks = 0;
@@ -47,12 +59,19 @@ public class MobEventBase {
     // ==================================================
     /** Makes this event read the config. **/
 	public void loadFromConfig() {
-		ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "mobevents");
+		ConfigSpawning config = ConfigSpawning.getConfig(LycanitesMobs.group, "mobevents");
 		this.duration = config.getInt("Event Durations", this.name, this.duration);
 		this.mobDuration = config.getInt("Event Mob Durations", this.name, this.mobDuration);
         this.forceSpawning = config.getBool("Event Forced Spawning", this.name, this.forceSpawning);
         this.forceNoDespawn = config.getBool("Event Forced No Despawning", this.name, this.forceSpawning);
 		this.minDay = config.getInt("Event Day Minimums", this.name, this.minDay);
+        
+		// Spawn Dimensions:
+        config.setCategoryComment("Spawn Dimensions", "Sets which dimensions (by ID) that this event WILL NOT occur in. However if 'Spawn Dimensions Whitelist Mode' is set to true, it will instead set which dimensions that this event WILL ONLY occur in. Multiple entries should be comma separated.");
+        SpawnDimensionSet spawnDimensions = config.getDimensions("Event Dimensions", this.name, this.dimensionEntries);
+        this.dimensionBlacklist = spawnDimensions.dimensionIDs;
+        this.dimensionTypes = spawnDimensions.dimensionTypes;
+        this.dimensionWhitelist = config.getBool("Event Dimensions", this.name, this.dimensionWhitelist);
 	}
     
 	
@@ -94,6 +113,12 @@ public class MobEventBase {
     // ==================================================
     //                    Event Stats
     // ==================================================
+	/* Sets the default dimensions for this event. */
+    public MobEventBase setDimensions(String string) {
+        this.dimensionEntries = string;
+        return this;
+    }
+    
     /* Returns the rate that event mobs are spawned at in ticks. This changes based on the difficulty of the provided world. */
     public int getRate(World world) {
         int base = MobEventManager.instance.baseRate;
@@ -180,7 +205,7 @@ public class MobEventBase {
 	                // Event Mob Spawning:
 	                int tickOffset = 0;
 	                for(SpawnTypeBase spawnType : this.spawners) {
-	                    spawnType.spawnMobs(this.ticks - tickOffset, this.world, x, y, z);
+	                    spawnType.spawnMobs(this.ticks - tickOffset, this.world, x, y, z, player);
 	                    tickOffset += 7;
 	                }
                 }

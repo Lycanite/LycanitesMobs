@@ -5,16 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import lycanite.lycanitesmobs.ExtendedWorld;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayer.EnumStatus;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -39,9 +35,6 @@ public class CustomSpawner {
 	// ==================================================
     public List<SpawnTypeBase> updateSpawnTypes = new ArrayList<SpawnTypeBase>();
 	public Map<EntityPlayer, Long> entityUpdateTicks = new HashMap<EntityPlayer, Long>();
-
-    public List<SpawnTypeBase> darknessSpawnTypes = new ArrayList<SpawnTypeBase>();
-	public Map<EntityPlayer, Byte> darknessLevels = new HashMap<EntityPlayer, Byte>();
 	
     /*public List<SpawnTypeBase> shadowSpawnTypes = new ArrayList<SpawnTypeBase>();
 	public Map<EntityPlayer, ChunkCoordinates> entityLightCoords = new HashMap<EntityPlayer, ChunkCoordinates>();
@@ -68,65 +61,8 @@ public class CustomSpawner {
 		// Custom Mob Spawning:
 		int tickOffset = 0;
 		for(SpawnTypeBase spawnType : this.updateSpawnTypes) {
-			spawnType.spawnMobs(entityUpdateTick - tickOffset, world, x, y, z);
+			spawnType.spawnMobs(entityUpdateTick - tickOffset, world, x, y, z, player);
 			tickOffset += 105;
-		}
-		
-		// ========== Spawn When In The Dark ==========
-		if(!player.capabilities.isCreativeMode && entityUpdateTick % (5 * 20) == 0) {
-			ChunkCoordinates playerCoords = player.getPlayerCoordinates();
-			int lightLevel = world.getBlockLightValue(playerCoords.posX, playerCoords.posY, playerCoords.posZ);
-			byte darknessLevel = 0;
-			if(this.darknessLevels.containsKey(player))
-				darknessLevel = this.darknessLevels.get(player);
-			
-			// Dark:
-			if(lightLevel <= 5) {
-				float chance = 0.125F;
-				if(lightLevel <= 0)
-					chance = 0.5F;
-				else if(lightLevel == 1)
-					chance = 0.25F;
-				float roll = player.getRNG().nextFloat();
-				ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
-		    	if(worldExt != null) {
-		    		if("shadowgames".equalsIgnoreCase(worldExt.getMobEventType()))
-		    			roll /= 2;
-		    	}
-				
-				if(chance > roll) {
-					darknessLevel++;
-					if(darknessLevel == 1) {
-						String message = StatCollector.translateToLocal("spawner.darkness.level1");
-						player.addChatMessage(new ChatComponentText(message));
-					}
-					else if(darknessLevel == 2) {
-						String message = StatCollector.translateToLocal("spawner.darkness.level2");
-						player.addChatMessage(new ChatComponentText(message));
-					}
-					else if(darknessLevel == 3) {
-						String message = StatCollector.translateToLocal("spawner.darkness.level3");
-						player.addChatMessage(new ChatComponentText(message));
-						for(SpawnTypeBase spawnType : this.darknessSpawnTypes) {
-							spawnType.spawnMobs(entityUpdateTick, world, playerCoords.posX, playerCoords.posY, playerCoords.posZ);
-						}
-						darknessLevel = 0;
-					}
-					else
-						darknessLevel = 0;
-				}
-			}
-			
-			// Light
-			else if(darknessLevel > 0) {
-				if(darknessLevel == 2) {
-					String message = StatCollector.translateToLocal("spawner.darkness.level1.back");
-					player.addChatMessage(new ChatComponentText(message));
-				}
-				darknessLevel--;
-			}
-			
-			this.darknessLevels.put(player, darknessLevel);
 		}
 		
 		/*/ ========== Spawn On Sudden Light to Dark ==========
@@ -203,7 +139,7 @@ public class CustomSpawner {
 		// ========== Pass To Spawners ==========
 		for(SpawnTypeDeath spawnType : this.deathSpawnTypes) {
 			if(spawnType.isValidKill(entity, killer))
-				spawnType.spawnMobs(0, world, x, y, z);
+				spawnType.spawnMobs(0, world, x, y, z, null);
 		}
 	}
 
@@ -242,14 +178,14 @@ public class CustomSpawner {
 		}
 		if(isOre) {
 			for(SpawnTypeBase spawnType : this.oreBreakSpawnTypes) {
-				spawnType.spawnMobs(0, world, x, y, z);
+				spawnType.spawnMobs(0, world, x, y, z, player);
 			}
 		}
 		
 		// Crop Blocks:
 		if(event.block instanceof IPlantable) {
 			for(SpawnTypeBase spawnType : this.cropBreakSpawnTypes) {
-				spawnType.spawnMobs(0, world, x, y, z);
+				spawnType.spawnMobs(0, world, x, y, z, player);
 			}
 		}
 		
@@ -267,7 +203,7 @@ public class CustomSpawner {
 				if(searchBlock != event.block) {
 					if(searchBlock instanceof BlockLeaves) {
 						for(SpawnTypeBase spawnType : this.treeBreakSpawnTypes) {
-							spawnType.spawnMobs(0, world, x, y, z);
+							spawnType.spawnMobs(0, world, x, y, z, player);
 						}
 					}
 					if(!world.isAirBlock(x, searchY, z))
@@ -301,7 +237,7 @@ public class CustomSpawner {
 		// Run Spawners:
 		boolean interrupted = false;
 		for(SpawnTypeBase spawnType : this.sleepSpawnTypes) {
-			if(spawnType.spawnMobs(0, world, x, y, z))
+			if(spawnType.spawnMobs(0, world, x, y, z, player))
 				interrupted = true;
 		}
 		

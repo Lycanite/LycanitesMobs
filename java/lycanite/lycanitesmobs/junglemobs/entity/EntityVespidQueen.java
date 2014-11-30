@@ -57,7 +57,7 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
 	public List<HiveExposedCoordinates> hiveExposedBlocks = new ArrayList<HiveExposedCoordinates>();
 	private int hiveExposedBlockCacheTime = 0;
 	
-	private int vespidQueenSwarmLimit = 20;
+	private int vespidQueenSwarmLimit = 10;
 	private boolean vespidHiveBuilding = true;
 	
     // ==================================================
@@ -153,7 +153,7 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
 	        
 	        // Set Home In Hive:
 	        if(!this.worldObj.isRemote && !this.hasHome()) {
-	        	if(this.hiveFoundationsSet()) { //|| (this.entityAge % 40 == 0 && this.getRNG().nextFloat() <= 0.25F)) {
+	        	if(this.hiveFoundationsSet()) {
 	        		this.setHome((int)this.posX, (int)this.posY, (int)this.posZ, 16F);
 	        	}
 	        }

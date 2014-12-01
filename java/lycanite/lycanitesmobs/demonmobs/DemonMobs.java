@@ -209,7 +209,7 @@ public class DemonMobs {
 		
 		// ========== Mob Events ==========
         if(MobInfo.getFromName("nethersoul") != null) {
-			MobEventBase mobEvent = new MobEventHellsFury("hellsfury", this.group);
+			MobEventBase mobEvent = new MobEventHellsFury("hellsfury", this.group).setDimensions("1");
 			SpawnTypeBase eventSpawner = new SpawnTypeSky("hellsfury")
 	            .setChance(1.0D).setBlockLimit(32).setMobLimit(5);
 	        eventSpawner.materials = new Material[] {Material.air};

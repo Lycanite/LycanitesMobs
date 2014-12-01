@@ -155,7 +155,7 @@ public class ShadowMobs {
 		
 		
 		// ========== Mob Events ==========
-		MobEventBase mobEvent = new MobEventShadowGames("shadowgames", this.group);
+		MobEventBase mobEvent = new MobEventShadowGames("shadowgames", this.group).setDimensions("-1");
 		mobEvent.minDay = 10;
 		SpawnTypeBase eventSpawner = new SpawnTypeSky("shadowgames")
             .setChance(1.0D).setBlockLimit(32).setMobLimit(3);

@@ -5,7 +5,6 @@ import java.util.List;
 
 import lycanite.lycanitesmobs.ExtendedWorld;
 import lycanite.lycanitesmobs.LycanitesMobs;
-import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.config.ConfigSpawning;
 import lycanite.lycanitesmobs.api.config.ConfigSpawning.SpawnDimensionSet;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
@@ -66,12 +65,12 @@ public class MobEventBase {
         this.forceNoDespawn = config.getBool("Event Forced No Despawning", this.name, this.forceSpawning);
 		this.minDay = config.getInt("Event Day Minimums", this.name, this.minDay);
         
-		// Spawn Dimensions:
-        config.setCategoryComment("Spawn Dimensions", "Sets which dimensions (by ID) that this event WILL NOT occur in. However if 'Spawn Dimensions Whitelist Mode' is set to true, it will instead set which dimensions that this event WILL ONLY occur in. Multiple entries should be comma separated.");
-        SpawnDimensionSet spawnDimensions = config.getDimensions("Event Dimensions", this.name, this.dimensionEntries);
-        this.dimensionBlacklist = spawnDimensions.dimensionIDs;
-        this.dimensionTypes = spawnDimensions.dimensionTypes;
-        this.dimensionWhitelist = config.getBool("Event Dimensions", this.name, this.dimensionWhitelist);
+		// Event Dimensions:
+        config.setCategoryComment("Event Dimensions", "Sets which dimensions (by ID) that this event WILL NOT occur in. However if 'Spawn Dimensions Whitelist Mode' is set to true, it will instead set which dimensions that this event WILL ONLY occur in. Multiple entries should be comma separated.");
+        SpawnDimensionSet eventDimensions = config.getDimensions("Event Dimensions", this.name + " Dimensions", this.dimensionEntries);
+        this.dimensionBlacklist = eventDimensions.dimensionIDs;
+        this.dimensionTypes = eventDimensions.dimensionTypes;
+        this.dimensionWhitelist = config.getBool("Event Dimensions", this.name + " Dimensions Whitelist Mode", this.dimensionWhitelist);
 	}
     
 	
@@ -94,7 +93,7 @@ public class MobEventBase {
     //                      Enabled
     // ==================================================
 	public boolean isEnabled() {
-		ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "mobevents");
+		ConfigSpawning config = ConfigSpawning.getConfig(LycanitesMobs.group, "mobevents");
 		return config.getBool("Events Enabled", this.name, true);
 	}
 	
@@ -106,7 +105,32 @@ public class MobEventBase {
 	 * Returns true if this event is able to start on the provided extended world.
 	 */
 	public boolean canStart(ExtendedWorld worldExt) {
-		return Math.floor(worldExt.getOverallEventTime() / 24000D) >= this.minDay;
+		if(worldExt.world.provider == null)
+			return false;
+		
+		boolean validDimension = false;
+		// Check Types:
+		for(String eventDimensionType : this.dimensionTypes) {
+    		if("ALL".equalsIgnoreCase(eventDimensionType)) {
+    			validDimension = true;
+    		}
+    		else if("VANILLA".equalsIgnoreCase(eventDimensionType)) {
+    			validDimension = worldExt.world.provider.dimensionId > -2 && worldExt.world.provider.dimensionId < 2;
+    		}
+    	}
+		
+		// Check IDs:
+		if(!validDimension) {
+			validDimension =  !this.dimensionWhitelist;
+	    	for(int eventDimension : this.dimensionBlacklist) {
+	    		if(worldExt.world.provider.dimensionId == eventDimension) {
+	    			validDimension = this.dimensionWhitelist;
+	    			break;
+	    		}
+	    	}
+		}
+		    
+		return validDimension && Math.floor(worldExt.getOverallEventTime() / 24000D) >= this.minDay;
 	}
 
 

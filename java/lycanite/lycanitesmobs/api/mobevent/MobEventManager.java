@@ -9,7 +9,7 @@ import java.util.Random;
 import lycanite.lycanitesmobs.ExtendedWorld;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.Utilities;
-import lycanite.lycanitesmobs.api.config.ConfigBase;
+import lycanite.lycanitesmobs.api.config.ConfigSpawning;
 import lycanite.lycanitesmobs.api.network.MessageMobEvent;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
@@ -48,7 +48,7 @@ public class MobEventManager {
     // ==================================================
 	/** Called during start up, loads all global events and config settings into the manager. **/
 	public void loadMobEvents() {
-		ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "mobevents");
+		ConfigSpawning config = ConfigSpawning.getConfig(LycanitesMobs.group, "mobevents");
 		mobEventsEnabled = config.getBool("Global", "Mob Events Enabled", mobEventsEnabled, "If false, all mob events will be completely disabled.");
 		minTicksUntilEvent = config.getInt("Global", "Min Ticks Until Event", minTicksUntilEvent, "Minimum time in ticks until a random event can occur. 20 Ticks = 1 Second.");
 		maxTicksUntilEvent = config.getInt("Global", "Max Ticks Until Event", maxTicksUntilEvent, "Maximum time in ticks until a random event can occur. 20 Ticks = 1 Second.");

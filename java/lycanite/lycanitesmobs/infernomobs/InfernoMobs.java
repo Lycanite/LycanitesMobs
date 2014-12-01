@@ -185,7 +185,7 @@ public class InfernoMobs {
 		
 		// ========== Mob Events ==========
         if(MobInfo.getFromName("cinder") != null) {
-			MobEventBase mobEvent = new MobEventCinderfall("cinderfall", this.group);
+			MobEventBase mobEvent = new MobEventCinderfall("cinderfall", this.group).setDimensions("1");
 			SpawnTypeBase eventSpawner = new SpawnTypeSky("cinderfall")
 	            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
 	        eventSpawner.materials = new Material[] {Material.air};

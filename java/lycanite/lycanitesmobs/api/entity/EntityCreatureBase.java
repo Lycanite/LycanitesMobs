@@ -1518,7 +1518,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     		
     		// Spread Fire:
         	if(this.spreadFire && this.isBurning() && this.rand.nextFloat() < this.getEffectMultiplier())
-        		target.setFire(Math.round((float)((this.getEffectBoost() + 4) * this.getEffectMultiplier())));
+        		target.setFire(this.getEffectDuration(4) / 20);
         	
     	}
     	this.setJustAttacked();

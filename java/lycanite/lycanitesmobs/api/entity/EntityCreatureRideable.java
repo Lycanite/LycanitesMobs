@@ -217,7 +217,7 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
     
     // ========== Jumping ==========
     public double getMountJumpHeight() {
-    	return 0.5D;
+    	return 0.75D;
     }
     
     public boolean isMountJumping() {

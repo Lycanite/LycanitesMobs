@@ -18,6 +18,7 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerThreats;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
@@ -95,6 +96,21 @@ public class EntityZephyr extends EntityCreatureTameable implements IMob, IGroup
 			return false;
 		return super.canAttackClass(targetClass);
 	}
+    
+	// ========== Melee Attack ==========
+    @Override
+    public boolean meleeAttack(Entity target, double damageScale) {
+    	if(!super.meleeAttack(target, damageScale))
+    		return false;
+    	
+    	// Paralysis:
+    	if(target instanceof EntityLivingBase && this.getRNG().nextFloat() >= 0.75F) {
+    		if(ObjectManager.getPotionEffect("Paralysis") != null && ObjectManager.getPotionEffect("Paralysis").id < Potion.potionTypes.length)
+    			((EntityLivingBase)target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("Paralysis").id, this.getEffectDuration(2), 0));
+         }
+        
+        return true;
+    }
 	
 	
     // ==================================================
@@ -115,8 +131,8 @@ public class EntityZephyr extends EntityCreatureTameable implements IMob, IGroup
                 EntityLivingBase target = (EntityLivingBase)entityObj;
                 if(target != this && this.canAttackClass(entityObj.getClass()) && this.canAttackEntity(target) && this.getEntitySenses().canSee(target)) {
                     target.attackEntityFrom(DamageSource.causeMobDamage(this), this.getAttackDamage(1));
-                    if(applyEffect && ObjectManager.getPotionEffect("Paralysis") != null && ObjectManager.getPotionEffect("Paralysis").id < Potion.potionTypes.length)
-                        target.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("Paralysis").id, this.getEffectDuration(2), 0));
+                    /*if(applyEffect && ObjectManager.getPotionEffect("Paralysis") != null && ObjectManager.getPotionEffect("Paralysis").id < Potion.potionTypes.length)
+                        target.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("Paralysis").id, this.getEffectDuration(2), 0));*/
                 }
             }
         }

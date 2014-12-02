@@ -236,6 +236,11 @@ public class EntityPinky extends EntityCreatureRideable implements IAnimals, IGr
         return true;
     }
     
+    @Override
+    public float getFallResistance() {
+    	return 10;
+    }
+    
     
     // ==================================================
     //                     Breeding

@@ -230,7 +230,7 @@ public class EntityEyewig extends EntityCreatureRideable {
     
     @Override
     public float getFallResistance() {
-    	return 5;
+    	return 10;
     }
     
     

@@ -238,6 +238,11 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
         return super.isPotionApplicable(par1PotionEffect);
     }
     
+    @Override
+    public float getFallResistance() {
+    	return 10;
+    }
+    
     
     // ==================================================
     //                     Breeding

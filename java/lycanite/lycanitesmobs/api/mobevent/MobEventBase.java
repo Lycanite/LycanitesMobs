@@ -104,8 +104,8 @@ public class MobEventBase {
 	/*
 	 * Returns true if this event is able to start on the provided extended world.
 	 */
-	public boolean canStart(ExtendedWorld worldExt) {
-		if(worldExt.world.provider == null)
+	public boolean canStart(World world, ExtendedWorld worldExt) {
+		if(world.provider == null)
 			return false;
 		
 		boolean validDimension = false;
@@ -115,7 +115,7 @@ public class MobEventBase {
     			validDimension = true;
     		}
     		else if("VANILLA".equalsIgnoreCase(eventDimensionType)) {
-    			validDimension = worldExt.world.provider.dimensionId > -2 && worldExt.world.provider.dimensionId < 2;
+    			validDimension = world.provider.dimensionId > -2 && world.provider.dimensionId < 2;
     		}
     	}
 		
@@ -123,7 +123,7 @@ public class MobEventBase {
 		if(!validDimension) {
 			validDimension =  !this.dimensionWhitelist;
 	    	for(int eventDimension : this.dimensionBlacklist) {
-	    		if(worldExt.world.provider.dimensionId == eventDimension) {
+	    		if(world.provider.dimensionId == eventDimension) {
 	    			validDimension = this.dimensionWhitelist;
 	    			break;
 	    		}
@@ -186,7 +186,7 @@ public class MobEventBase {
     //                       Start
     // ==================================================
 	public void onStart(World world) {
-		LycanitesMobs.printInfo("", "Mob Event Started: " + this.getTitle());
+		LycanitesMobs.printInfo("", "Mob Event Started: " + this.getTitle() + " in Dimension: " + world.provider.dimensionId);
 		
 		this.world = world;
         this.ticks = 0;

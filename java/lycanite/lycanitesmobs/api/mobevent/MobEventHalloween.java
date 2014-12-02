@@ -23,7 +23,7 @@ public class MobEventHalloween extends MobEventBase {
     //                     Can Start
     // ==================================================
 	@Override
-    public boolean canStart(ExtendedWorld worldExt) {
+    public boolean canStart(World world, ExtendedWorld worldExt) {
 		Calendar calendar = Calendar.getInstance();
 		if(!Utilities.isHalloween())
 			return false;

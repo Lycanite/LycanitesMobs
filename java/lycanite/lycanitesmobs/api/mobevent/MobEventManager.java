@@ -168,20 +168,20 @@ public class MobEventManager {
 		
 		// Seasonal Events:
 		if(Utilities.isHalloween() && this.worldMobEvents.containsKey("halloween"))
-			if(this.worldMobEvents.get("halloween").isEnabled() && this.worldMobEvents.get("halloween").canStart(worldExt))
+			if(this.worldMobEvents.get("halloween").isEnabled() && this.worldMobEvents.get("halloween").canStart(world, worldExt))
 				return this.worldMobEvents.get("halloween");
 		if(Utilities.isYuletide() && this.worldMobEvents.containsKey("yuletide"))
-			if(this.worldMobEvents.get("yuletide").isEnabled() && this.worldMobEvents.get("yuletide").canStart(worldExt))
+			if(this.worldMobEvents.get("yuletide").isEnabled() && this.worldMobEvents.get("yuletide").canStart(world, worldExt))
 				return this.worldMobEvents.get("yuletide");
 		if(Utilities.isNewYear() && this.worldMobEvents.containsKey("newyear"))
-			if(this.worldMobEvents.get("newyear").isEnabled() && this.worldMobEvents.get("newyear").canStart(worldExt))
+			if(this.worldMobEvents.get("newyear").isEnabled() && this.worldMobEvents.get("newyear").canStart(world, worldExt))
 				return this.worldMobEvents.get("newyear");
 		
 		// Get Events and Weights:
 		List<MobEventBase> validMobEvents = new ArrayList<MobEventBase>();
 		int totalWeights = 0;
 		for(MobEventBase mobEventEntry : this.worldMobEvents.values()) {
-			if(mobEventEntry.isEnabled() && mobEventEntry.canStart(worldExt)) {
+			if(mobEventEntry.isEnabled() && mobEventEntry.canStart(world, worldExt)) {
 				totalWeights += mobEventEntry.weight;
 				validMobEvents.add(mobEventEntry);
 			}

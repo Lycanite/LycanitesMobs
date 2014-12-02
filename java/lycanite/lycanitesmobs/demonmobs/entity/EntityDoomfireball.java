@@ -50,7 +50,7 @@ public class EntityDoomfireball extends EntityProjectileBase {
     @Override
     public boolean entityLivingCollision(EntityLivingBase entityLiving) {
     	if(!entityLiving.isImmuneToFire())
-    		entityLiving.setFire(this.getEffectDuration(5));
+    		entityLiving.setFire(this.getEffectDuration(5) / 20);
     	return true;
     }
     

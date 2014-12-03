@@ -38,18 +38,18 @@
     },
     "item.halloweentreat.good": {
         "category": "ambient",
-        "sounds": [{"name": "item/halloweentreat_good", "stream": true}]
+        "sounds": [{"name": "item/halloweentreat_good", "stream": false}]
     },
     "item.halloweentreat.bad": {
         "category": "ambient",
-        "sounds": [{"name": "item/halloweentreat_bad", "stream": true}]
+        "sounds": [{"name": "item/halloweentreat_bad", "stream": false}]
     },
     "item.wintergift.good": {
         "category": "ambient",
-        "sounds": [{"name": "item/wintergift_good", "stream": true}]
+        "sounds": [{"name": "item/wintergift_good", "stream": false}]
     },
     "item.wintergift.bad": {
         "category": "ambient",
-        "sounds": [{"name": "item/wintergift_bad", "stream": true}]
+        "sounds": [{"name": "item/wintergift_bad", "stream": false}]
     }
 }

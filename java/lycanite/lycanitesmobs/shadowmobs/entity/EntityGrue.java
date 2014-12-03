@@ -156,7 +156,7 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
     	if(!super.meleeAttack(target, damageScale))
     		return false;
     	
-    	// Leech:
+    	/*/ Leech:
     	if(target instanceof EntityLivingBase) {
     		EntityLivingBase targetLiving = (EntityLivingBase)target;
     		List<Integer> goodEffectIDs = new ArrayList<Integer>();
@@ -180,7 +180,7 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
 		    	float leeching = this.getAttackDamage(damageScale);
 		    	this.heal(leeching);
     		}
-    	}
+    	}*/
     	
     	// Effects:
         if(target instanceof EntityLivingBase) {

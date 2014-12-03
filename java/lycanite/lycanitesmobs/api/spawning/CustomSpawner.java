@@ -11,6 +11,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayer.EnumStatus;
+import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -176,7 +177,7 @@ public class CustomSpawner {
 				break;
 			}
 		}
-		if(isOre) {
+		if(isOre || event.block == Blocks.monster_egg) {
 			for(SpawnTypeBase spawnType : this.oreBreakSpawnTypes) {
 				spawnType.spawnMobs(0, world, x, y, z, player);
 			}

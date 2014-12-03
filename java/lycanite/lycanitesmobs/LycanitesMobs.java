@@ -9,21 +9,8 @@ import lycanite.lycanitesmobs.api.info.ItemInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.info.SpawnInfo;
-import lycanite.lycanitesmobs.api.item.CreativeTabCreatures;
-import lycanite.lycanitesmobs.api.item.CreativeTabItems;
-import lycanite.lycanitesmobs.api.item.ItemFoodBattleBurrito;
-import lycanite.lycanitesmobs.api.item.ItemFoodExplorersRisotto;
-import lycanite.lycanitesmobs.api.item.ItemHalloweenTreat;
-import lycanite.lycanitesmobs.api.item.ItemSoulgazer;
-import lycanite.lycanitesmobs.api.item.ItemStaffBlood;
-import lycanite.lycanitesmobs.api.item.ItemStaffSavage;
-import lycanite.lycanitesmobs.api.item.ItemStaffStable;
-import lycanite.lycanitesmobs.api.item.ItemStaffSturdy;
-import lycanite.lycanitesmobs.api.item.ItemStaffSummoning;
-import lycanite.lycanitesmobs.api.mobevent.MobEventBamstorm;
-import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
-import lycanite.lycanitesmobs.api.mobevent.MobEventHalloween;
-import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
+import lycanite.lycanitesmobs.api.item.*;
+import lycanite.lycanitesmobs.api.mobevent.*;
 import lycanite.lycanitesmobs.api.mods.DLDungeons;
 import lycanite.lycanitesmobs.api.network.PacketHandler;
 import lycanite.lycanitesmobs.api.spawning.CustomSpawner;
@@ -56,7 +43,7 @@ public class LycanitesMobs {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String version = "1.10.7.2 - MC 1.7.10";
+	public static final String version = "1.10.7.3 - MC 1.7.10";
 	
 	public static final PacketHandler packetHandler = new PacketHandler();
 
@@ -153,11 +140,12 @@ public class LycanitesMobs {
 		ObjectManager.addItem("savagesummoningstaff", new ItemStaffSavage());
 		
 		// Super Foods:
-		ObjectManager.addItem("battleburrito", new ItemFoodBattleBurrito("battleburrito", group, 6, 0.7F).setAlwaysEdible().setMaxStackSize(16), 1, 1, 6);
-		ObjectManager.addItem("explorersrisotto", new ItemFoodExplorersRisotto("explorersrisotto", group, 6, 0.7F).setAlwaysEdible().setMaxStackSize(16), 1, 1, 6);
+		ObjectManager.addItem("battleburrito", new ItemFoodBattleBurrito("battleburrito", group, 6, 0.7F).setAlwaysEdible().setMaxStackSize(16));
+		ObjectManager.addItem("explorersrisotto", new ItemFoodExplorersRisotto("explorersrisotto", group, 6, 0.7F).setAlwaysEdible().setMaxStackSize(16));
 		
 		// Seasonal Items:
 		ObjectManager.addItem("halloweentreat", new ItemHalloweenTreat());
+        ObjectManager.addItem("wintergift", new ItemWinterGift());
 
         // ========== Call Object Lists Setup ==========
 		ObjectLists.createLists();
@@ -204,105 +192,11 @@ public class LycanitesMobs {
 		
 		
 		// ========== Mob Events ==========
-		// Bamstorm:
-		MobEventBase bamstormEvent = new MobEventBamstorm("bamstorm", this.group);
-        
-		SpawnTypeBase bamLandSpawner = new SpawnTypeLand("bamstorm_land")
-            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-		bamLandSpawner.materials = new Material[] {Material.air};
-		bamLandSpawner.ignoreBiome = true;
-		bamLandSpawner.ignoreLight = true;
-		bamLandSpawner.forceSpawning = true;
-		bamLandSpawner.ignoreMobConditions = true;
-		bamLandSpawner.addSpawn(MobInfo.getFromName("kobold"));
-		bamLandSpawner.addSpawn(MobInfo.getFromName("conba"));
-		bamLandSpawner.addSpawn(MobInfo.getFromName("belph"));
-		bamLandSpawner.addSpawn(MobInfo.getFromName("geken"));
-        if(bamLandSpawner.hasSpawns())
-        	bamstormEvent.addSpawner(bamLandSpawner);
-        
-		SpawnTypeBase bamSkySpawner = new SpawnTypeSky("bamstorm_sky")
-            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-		bamSkySpawner.materials = new Material[] {Material.air};
-		bamSkySpawner.ignoreBiome = true;
-		bamSkySpawner.ignoreLight = true;
-		bamSkySpawner.forceSpawning = true;
-		bamSkySpawner.ignoreMobConditions = true;
-		bamSkySpawner.addSpawn(MobInfo.getFromName("zephyr"));
-		bamSkySpawner.addSpawn(MobInfo.getFromName("manticore"));
-        if(bamSkySpawner.hasSpawns())
-        	bamstormEvent.addSpawner(bamSkySpawner);
-        
-        if(bamstormEvent.hasSpawners())
-        	MobEventManager.instance.addWorldEvent(bamstormEvent);
-        
+        SharedMobEvents.createSharedEvents(this.group);
 
-		// Halloween:
-		MobEventBase halloweenEvent = new MobEventHalloween("halloween", this.group);
-        
-		SpawnTypeBase halloweenLandSpawner = new SpawnTypeLand("halloween_land")
-            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-		halloweenLandSpawner.materials = new Material[] {Material.air};
-		halloweenLandSpawner.ignoreBiome = true;
-		halloweenLandSpawner.ignoreLight = true;
-		halloweenLandSpawner.forceSpawning = true;
-		halloweenLandSpawner.ignoreMobConditions = true;
-		halloweenLandSpawner.addSpawn(MobInfo.getFromName("ghoulzombie"));
-		halloweenLandSpawner.addSpawn(MobInfo.getFromName("cryptzombie"));
-		halloweenLandSpawner.addSpawn(MobInfo.getFromName("belph"));
-		halloweenLandSpawner.addSpawn(MobInfo.getFromName("behemoth"));
-		halloweenLandSpawner.addSpawn(MobInfo.getFromName("ent"));
-		halloweenLandSpawner.addSpawn(MobInfo.getFromName("trent"));
-		halloweenLandSpawner.addSpawn(MobInfo.getFromName("lurker"));
-        if(halloweenLandSpawner.hasSpawns())
-        	halloweenEvent.addSpawner(halloweenLandSpawner);
-        
-		SpawnTypeBase halloweenSkySpawner = new SpawnTypeSky("halloween_sky")
-            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-		halloweenSkySpawner.materials = new Material[] {Material.air};
-		halloweenSkySpawner.ignoreBiome = true;
-		halloweenSkySpawner.ignoreLight = true;
-		halloweenSkySpawner.forceSpawning = true;
-		halloweenSkySpawner.ignoreMobConditions = true;
-		halloweenSkySpawner.addSpawn(MobInfo.getFromName("nethersoul"));
-		halloweenSkySpawner.addSpawn(MobInfo.getFromName("cacodemon"));
-		halloweenSkySpawner.addSpawn(MobInfo.getFromName("afrit"));
-		halloweenSkySpawner.addSpawn(MobInfo.getFromName("grue"));
-		halloweenSkySpawner.addSpawn(MobInfo.getFromName("phantom"));
-		halloweenSkySpawner.addSpawn(MobInfo.getFromName("epion"));
-        if(halloweenSkySpawner.hasSpawns())
-        	halloweenEvent.addSpawner(halloweenSkySpawner);
-        
-        if(halloweenEvent.hasSpawners())
-        	MobEventManager.instance.addWorldEvent(halloweenEvent);
-		
-		// Halloween Treats:
-		ObjectLists.addItem("halloween_treats", Items.diamond);
-		ObjectLists.addItem("halloween_treats", Items.gold_ingot);
-		ObjectLists.addItem("halloween_treats", Items.emerald);
-		ObjectLists.addItem("halloween_treats", Blocks.iron_block);
-		ObjectLists.addItem("halloween_treats", Items.ender_pearl);
-		ObjectLists.addItem("halloween_treats", Items.blaze_rod);
-		ObjectLists.addItem("halloween_treats", Items.glowstone_dust);
-		ObjectLists.addItem("halloween_treats", ObjectManager.getItem("mosspie"));
-		ObjectLists.addItem("halloween_treats", ObjectManager.getItem("bulwarkburger"));
-		ObjectLists.addItem("halloween_treats", ObjectManager.getItem("paleosalad"));
-		ObjectLists.addItem("halloween_treats", ObjectManager.getItem("searingtaco"));
-		ObjectLists.addItem("halloween_treats", ObjectManager.getItem("devillasagna"));
-		ObjectLists.addFromConfig("halloween_treats");
-		
-		// Halloween Mobs:
-		ObjectLists.addEntity("halloween_tricks", "ghoulzombie");
-		ObjectLists.addEntity("halloween_tricks", "cryptzombie");
-		ObjectLists.addEntity("halloween_tricks", "belph");
-		ObjectLists.addEntity("halloween_tricks", "behemoth");
-		ObjectLists.addEntity("halloween_tricks", "ent");
-		ObjectLists.addEntity("halloween_tricks", "trent");
-		ObjectLists.addEntity("halloween_tricks", "nethersoul");
-		ObjectLists.addEntity("halloween_tricks", "cacodemon");
-		ObjectLists.addEntity("halloween_tricks", "grue");
-		ObjectLists.addEntity("halloween_tricks", "phantom");
-		ObjectLists.addEntity("halloween_tricks", "epion");
+        // ========== Seasonal Item Lists ==========
+        ItemHalloweenTreat.createObjectLists();
+        ItemWinterGift.createObjectLists();
 		
         
 		// ========== Crafting ==========

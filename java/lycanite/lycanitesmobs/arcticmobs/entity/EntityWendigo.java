@@ -2,6 +2,7 @@ package lycanite.lycanitesmobs.arcticmobs.entity;
 
 import java.util.HashMap;
 
+import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupFire;
 import lycanite.lycanitesmobs.api.IGroupIce;
@@ -26,6 +27,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public class EntityWendigo extends EntityCreatureBase implements IMob, IGroupIce {
@@ -167,5 +169,20 @@ public class EntityWendigo extends EntityCreatureBase implements IMob, IGroupIce
         if(potionEffect.getPotionID() == Potion.moveSlowdown.id) return false;
         if(potionEffect.getPotionID() == Potion.hunger.id) return false;
         return super.isPotionApplicable(potionEffect);
+    }
+
+
+    // ==================================================
+    //                       Visuals
+    // ==================================================
+    /** Returns this creature's main texture. Also checks for for subspecies. **/
+    public ResourceLocation getTexture() {
+        if(!"Gooderness".equals(this.getCustomNameTag()))
+            return super.getTexture();
+
+        String textureName = this.getTextureName() + "_gooderness";
+        if(AssetManager.getTexture(textureName) == null)
+            AssetManager.addTexture(textureName, this.group, "textures/entity/" + textureName.toLowerCase() + ".png");
+        return AssetManager.getTexture(textureName);
     }
 }

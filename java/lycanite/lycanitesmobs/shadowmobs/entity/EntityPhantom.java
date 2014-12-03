@@ -30,6 +30,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public class EntityPhantom extends EntityCreatureTameable implements IMob, IGroupShadow {
@@ -196,5 +197,20 @@ public class EntityPhantom extends EntityCreatureTameable implements IMob, IGrou
     				return AssetManager.getSound(this.mobInfo.name + "_say_jon");
     	}
     	return super.getLivingSound();
+    }
+
+
+    // ==================================================
+    //                       Visuals
+    // ==================================================
+    /** Returns this creature's main texture. Also checks for for subspecies. **/
+    public ResourceLocation getTexture() {
+        if(!"Satan Claws".equals(this.getCustomNameTag()))
+            return super.getTexture();
+
+        String textureName = this.getTextureName() + "_satanclaws";
+        if(AssetManager.getTexture(textureName) == null)
+            AssetManager.addTexture(textureName, this.group, "textures/entity/" + textureName.toLowerCase() + ".png");
+        return AssetManager.getTexture(textureName);
     }
 }

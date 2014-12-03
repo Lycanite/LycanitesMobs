@@ -41,6 +41,10 @@ item.venomshotscepter.name=Venom Shot Scepter
 item.venomshotscepter.description=Low Damage, Rapid Fire, Applies Poison, Places Poison Clouds
 item.venomaxeblade.name=Venom Axeblade
 item.venomaxeblade.description=Imbued with the souls of Remobra. Effective as both a sword and an axe. On hit: Applies Poison, Chance of summoning Remobra minion.
+item.goldenvenomaxeblade.name=Golden Venom Axeblade
+item.goldenvenomaxeblade.description=An improved Venom Axeblade that summons Golden Remobra for an increased amount of time and deals more damage.
+item.verdantvenomaxeblade.name=Verdant Venom Axeblade
+item.verdantvenomaxeblade.description=An improved Venom Axeblade that summons Verdant Remobra for an increased amount of time and deals more damage.
 #
 # Blocks
 tile.poisoncloud.name=Poison Cloud

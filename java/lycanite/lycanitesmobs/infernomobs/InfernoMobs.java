@@ -27,15 +27,7 @@ import lycanite.lycanitesmobs.infernomobs.entity.EntityKhalk;
 import lycanite.lycanitesmobs.infernomobs.entity.EntityLobber;
 import lycanite.lycanitesmobs.infernomobs.entity.EntityMagma;
 import lycanite.lycanitesmobs.infernomobs.entity.EntityScorchfireball;
-import lycanite.lycanitesmobs.infernomobs.item.ItemBucketPureLava;
-import lycanite.lycanitesmobs.infernomobs.item.ItemEmberCharge;
-import lycanite.lycanitesmobs.infernomobs.item.ItemInfernoEgg;
-import lycanite.lycanitesmobs.infernomobs.item.ItemMagmaCharge;
-import lycanite.lycanitesmobs.infernomobs.item.ItemScepterEmber;
-import lycanite.lycanitesmobs.infernomobs.item.ItemScepterMagma;
-import lycanite.lycanitesmobs.infernomobs.item.ItemScepterScorchfire;
-import lycanite.lycanitesmobs.infernomobs.item.ItemScorchfireCharge;
-import lycanite.lycanitesmobs.infernomobs.item.ItemSwordCinderfall;
+import lycanite.lycanitesmobs.infernomobs.item.*;
 import lycanite.lycanitesmobs.infernomobs.mobevent.MobEventCinderfall;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
@@ -103,6 +95,8 @@ public class InfernoMobs {
 		ObjectManager.addItem("embercharge", new ItemEmberCharge());
 		ObjectManager.addItem("emberscepter", new ItemScepterEmber(), 2, 1, 1);
 		ObjectManager.addItem("cinderfallsword", new ItemSwordCinderfall(), 2, 1, 1);
+        ObjectManager.addItem("cinderfallswordazure", new ItemSwordCinderfallAzure());
+        ObjectManager.addItem("cinderfallswordverdant", new ItemSwordCinderfallVerdant());
 		ObjectManager.addItem("magmacharge", new ItemMagmaCharge());
 		ObjectManager.addItem("magmascepter", new ItemScepterMagma(), 2, 1, 1);
         ObjectManager.addItem("scorchfirecharge", new ItemScorchfireCharge());
@@ -226,6 +220,20 @@ public class InfernoMobs {
 				Character.valueOf('S'), Items.diamond_sword,
 				Character.valueOf('J'), ObjectManager.getItem("soulgazer")
 			}));
+
+        GameRegistry.addRecipe(new ShapedOreRecipe(
+                new ItemStack(ObjectManager.getItem("cinderfallswordazure"), 1, 0),
+                new Object[] { "DDD", "DSD", "DDD",
+                        Character.valueOf('D'), Items.diamond,
+                        Character.valueOf('S'), ObjectManager.getItem("cinderfallsword")
+                }));
+
+        GameRegistry.addRecipe(new ShapedOreRecipe(
+                new ItemStack(ObjectManager.getItem("cinderfallswordverdant"), 1, 0),
+                new Object[] { "DDD", "DSD", "DDD",
+                        Character.valueOf('D'), Items.emerald,
+                        Character.valueOf('S'), ObjectManager.getItem("cinderfallsword")
+                }));
 
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("magmascepter"), 1, 0),

@@ -2,6 +2,7 @@ package lycanite.lycanitesmobs.mountainmobs.entity;
 
 import java.util.HashMap;
 
+import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
@@ -27,6 +28,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public class EntityJabberwock extends EntityCreatureTameable implements IMob {
@@ -155,4 +157,19 @@ public class EntityJabberwock extends EntityCreatureTameable implements IMob {
     //                     Pet Control
     // ==================================================
     public boolean petControlsEnabled() { return true; }
+
+
+    // ==================================================
+    //                       Visuals
+    // ==================================================
+    /** Returns this creature's main texture. Also checks for for subspecies. **/
+    public ResourceLocation getTexture() {
+        if(!"Rudolph".equals(this.getCustomNameTag()))
+            return super.getTexture();
+
+        String textureName = this.getTextureName() + "_rudolph";
+        if(AssetManager.getTexture(textureName) == null)
+            AssetManager.addTexture(textureName, this.group, "textures/entity/" + textureName.toLowerCase() + ".png");
+        return AssetManager.getTexture(textureName);
+    }
 }

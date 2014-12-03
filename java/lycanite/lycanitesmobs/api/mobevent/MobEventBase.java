@@ -170,7 +170,7 @@ public class MobEventBase {
     //                     Spawners
     // ==================================================
     public MobEventBase addSpawner(SpawnTypeBase spawner) {
-        if(!this.spawners.contains(spawner)) {
+        if(!this.spawners.contains(spawner) && spawner.hasSpawns()) {
             this.spawners.add(spawner);
             spawner.setMobEvent(this);
         }

@@ -6,6 +6,10 @@ event.finished=%event% is over!
 # Mob Events
 mobevent.bamstorm.name=Bamstorm
 mobevent.halloween.name=Happy Halloween
+mobevent.roasting.name=Your Head Roasting On A Cinder Fire
+mobevent.rudolph.name=Rudolph The Bloodstained Jabberwock
+mobevent.saltytree.name=Salty Tree
+mobevent.satanclaws.name=Satan Claws
 #
 #
 #
@@ -70,6 +74,10 @@ item.halloweentreat.name=Halloween Treat
 item.halloweentreat.description=Trick or treat?!
 item.halloweentreat.good=It's a treat! Lucky you!
 item.halloweentreat.bad=Trick! Bwahahahahah!
+item.wintergift.name=Winter Gift
+item.wintergift.description=Good tidings, Happy Yuletide and Merry Christmas! Open it up and do see what's inside!
+item.wintergift.good=Ugh, here's your present...
+item.wintergift.bad=Bwahahahaha! Good tidings I bring, for me!
 #
 #
 #

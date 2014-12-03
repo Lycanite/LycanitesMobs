@@ -3,6 +3,22 @@
         "category": "record",
         "sounds": [{"name": "mobevent/bamstorm", "stream": true}]
     },
+    "mobevent.roasting": {
+        "category": "record",
+        "sounds": [{"name": "mobevent/roasting", "stream": true}]
+    },
+    "mobevent.rudolph": {
+        "category": "record",
+        "sounds": [{"name": "mobevent/rudolph", "stream": true}]
+    },
+    "mobevent.saltytree": {
+        "category": "record",
+        "sounds": [{"name": "mobevent/saltytree", "stream": true}]
+    },
+    "mobevent.satanclaws": {
+        "category": "record",
+        "sounds": [{"name": "mobevent/satanclaws", "stream": true}]
+    },
     "mobevent.halloween": {
         "category": "record",
         "sounds":
@@ -22,10 +38,18 @@
     },
     "item.halloweentreat.good": {
         "category": "ambient",
-        "sounds": [{"name": "item/halloweentreat_good", "stream": false}]
+        "sounds": [{"name": "item/halloweentreat_good", "stream": true}]
     },
     "item.halloweentreat.bad": {
         "category": "ambient",
-        "sounds": [{"name": "item/halloweentreat_bad", "stream": false}]
+        "sounds": [{"name": "item/halloweentreat_bad", "stream": true}]
+    },
+    "item.wintergift.good": {
+        "category": "ambient",
+        "sounds": [{"name": "item/wintergift_good", "stream": true}]
+    },
+    "item.wintergift.bad": {
+        "category": "ambient",
+        "sounds": [{"name": "item/wintergift_bad", "stream": true}]
     }
 }

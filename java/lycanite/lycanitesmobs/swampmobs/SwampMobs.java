@@ -29,11 +29,7 @@ import lycanite.lycanitesmobs.swampmobs.entity.EntityPoisonRay;
 import lycanite.lycanitesmobs.swampmobs.entity.EntityPoisonRayEnd;
 import lycanite.lycanitesmobs.swampmobs.entity.EntityRemobra;
 import lycanite.lycanitesmobs.swampmobs.entity.EntityVenomShot;
-import lycanite.lycanitesmobs.swampmobs.item.ItemPoisonGland;
-import lycanite.lycanitesmobs.swampmobs.item.ItemScepterPoisonRay;
-import lycanite.lycanitesmobs.swampmobs.item.ItemScepterVenomShot;
-import lycanite.lycanitesmobs.swampmobs.item.ItemSwampEgg;
-import lycanite.lycanitesmobs.swampmobs.item.ItemSwordVenomAxeblade;
+import lycanite.lycanitesmobs.swampmobs.item.*;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
@@ -111,6 +107,8 @@ public class SwampMobs {
 		ObjectManager.addItem("poisonrayscepter", new ItemScepterPoisonRay(), 2, 1, 1);
 		ObjectManager.addItem("venomshotscepter", new ItemScepterVenomShot(), 2, 1, 1);
 		ObjectManager.addItem("venomaxeblade", new ItemSwordVenomAxeblade(), 2, 1, 1);
+        ObjectManager.addItem("goldenvenomaxeblade", new ItemSwordVenomAxebladeGolden());
+        ObjectManager.addItem("verdantvenomaxeblade", new ItemSwordVenomAxebladeVerdant());
 		
 		// ========== Create Blocks ==========
 		AssetManager.addSound("poisoncloud", group, "block.poisoncloud");
@@ -248,6 +246,20 @@ public class SwampMobs {
 				Character.valueOf('S'), Items.diamond_sword,
 				Character.valueOf('J'), ObjectManager.getItem("soulgazer")
 			}));
+
+        GameRegistry.addRecipe(new ShapedOreRecipe(
+                new ItemStack(ObjectManager.getItem("goldenvenomaxeblade"), 1, 0),
+                new Object[] { "DDD", "DSD", "DDD",
+                        Character.valueOf('D'), Items.diamond,
+                        Character.valueOf('S'), ObjectManager.getItem("venomaxeblade")
+                }));
+
+        GameRegistry.addRecipe(new ShapedOreRecipe(
+                new ItemStack(ObjectManager.getItem("verdantvenomaxeblade"), 1, 0),
+                new Object[] { "DDD", "DSD", "DDD",
+                        Character.valueOf('D'), Items.emerald,
+                        Character.valueOf('S'), ObjectManager.getItem("venomaxeblade")
+                }));
 		
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
 				new ItemStack(ObjectManager.getItem("mosspie"), 1, 0),

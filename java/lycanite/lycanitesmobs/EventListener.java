@@ -242,24 +242,30 @@ public class EventListener {
     public void onLivingDrops(LivingDropsEvent event) {
 		World world = event.entityLiving.worldObj;
 		
-		// Halloween Treats:
-		Calendar calendar = Calendar.getInstance();
-		if(Utilities.isHalloween()) {
-			boolean noHalloweenTreat = false;
-			boolean alwaysDrop = false;
-			if(event.entityLiving instanceof EntityCreatureBase) {
-				if(((EntityCreatureBase)event.entityLiving).isMinion())
-					noHalloweenTreat = true;
-				if(((EntityCreatureBase)event.entityLiving).getSubspecies() != null)
-					alwaysDrop = true;
-			}
-			if(ObjectManager.getItem("halloweentreat") != null && !noHalloweenTreat && (alwaysDrop || event.entityLiving.getRNG().nextFloat() >= 0.6F)) {
-				ItemStack dropStack = new ItemStack(ObjectManager.getItem("halloweentreat"), 1);
-				EntityItemCustom entityItem = new EntityItemCustom(world, event.entityLiving.posX, event.entityLiving.posY, event.entityLiving.posZ, dropStack);
-				entityItem.delayBeforeCanPickup = 10;
-				world.spawnEntityInWorld(entityItem);
-			}
-		}
+		// Seasonal Items:
+        if(Utilities.isHalloween() || Utilities.isYuletide() || Utilities.isNewYear()) {
+            boolean noSeaonalDrop = false;
+            boolean alwaysDrop = false;
+            if(event.entityLiving instanceof EntityCreatureBase) {
+                if (((EntityCreatureBase) event.entityLiving).isMinion())
+                    noSeaonalDrop = true;
+                if (((EntityCreatureBase) event.entityLiving).getSubspecies() != null)
+                    alwaysDrop = true;
+            }
+
+            Item seasonalItem = null;
+            if(Utilities.isHalloween())
+                seasonalItem = ObjectManager.getItem("halloweentreat");
+            if(Utilities.isYuletide() || Utilities.isNewYear())
+                seasonalItem = ObjectManager.getItem("wintergift");
+
+            if(seasonalItem != null && !noSeaonalDrop && (alwaysDrop || event.entityLiving.getRNG().nextFloat() >= 0.6F)) {
+                ItemStack dropStack = new ItemStack(seasonalItem, 1);
+                EntityItemCustom entityItem = new EntityItemCustom(world, event.entityLiving.posX, event.entityLiving.posY, event.entityLiving.posZ, dropStack);
+                entityItem.delayBeforeCanPickup = 10;
+                world.spawnEntityInWorld(entityItem);
+            }
+        }
 	}
 	
 	

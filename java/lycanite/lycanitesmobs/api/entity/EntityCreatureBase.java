@@ -632,7 +632,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     		return false;
     	if(this.forceNoDespawn)
     		return false;
-    	if(this.isPersistant() || this.getLeashed() || this.hasCustomNameTag())
+    	if(this.isPersistant() || this.getLeashed() || (this.hasCustomNameTag() && "".equals(this.spawnEventType)))
     		return false;
     	return super.canDespawn();
     }
@@ -663,7 +663,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         	return true;
         
         // Mob Event Despawning:
-        if(this.getLeashed() || this.isPersistant() || this.hasCustomNameTag()) {
+        if(this.getLeashed() || this.isPersistant()) {
         	this.spawnEventType = "";
         	this.spawnEventCount = -1;
         }
@@ -2705,7 +2705,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Coloring ==========
     /**
      * Returns true if this mob can be dyed different colors. Usually for wool and collars.
-     * @param EntityPlayer player The player to check for when coloring, this is to stop players from dying other players pets. If provided with null it should return if this creature can be dyed in general.
+     * @param player The player to check for when coloring, this is to stop players from dying other players pets. If provided with null it should return if this creature can be dyed in general.
      * @return True if tis entity can be dyed by the player or if the player is null, if it can be dyed at all (null is passed by the renderer).
      */
     public boolean canBeColored(EntityPlayer player) {

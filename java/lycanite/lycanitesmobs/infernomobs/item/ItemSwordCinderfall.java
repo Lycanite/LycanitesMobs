@@ -67,6 +67,7 @@ public class ItemSwordCinderfall extends ItemSwordBase {
 		    	if(entity.worldObj.isSideSolid((int)spawnPos[0], (int)spawnPos[1], (int)spawnPos[2], ForgeDirection.UP))
 		    		entity.setLocationAndAngles((int)spawnPos[0], (int)spawnPos[1], (int)spawnPos[2], entityUser.rotationYaw, 0.0F);
 	    	}
+            this.onSpawnEntity(entity);
      		entityUser.worldObj.spawnEntityInWorld(entity);
      	}
      	return true;

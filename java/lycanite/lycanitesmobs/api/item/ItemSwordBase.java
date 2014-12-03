@@ -28,12 +28,14 @@ public class ItemSwordBase extends ItemSword {
 	public String itemName = "Item";
 	public GroupInfo group = LycanitesMobs.group;
 	public String textureName = "item";
+    public final Item.ToolMaterial toolMaterial;
 	
 	// ==================================================
 	//                   Constructor
 	// ==================================================
     public ItemSwordBase(Item.ToolMaterial toolMaterial) {
         super(toolMaterial);
+        this.toolMaterial = toolMaterial;
     }
     
     public void setup() {
@@ -81,6 +83,23 @@ public class ItemSwordBase extends ItemSword {
 	// ==================================================
 	//                     Tool/Weapon
 	// ==================================================
+    // ========== Get Sword Damage ==========
+    /**
+     * Returns the additional damage provided by this weapon.
+     * Seems to be added on to a base value of 4.
+     * Most weapons return 0 which would be +4 damage.
+     * Diamond returns 3 which is +7 damage.
+     * @return
+     */
+    public float getDamage() {
+        return this.toolMaterial.getDamageVsEntity();
+    }
+    @Override
+    public float func_150931_i()
+    {
+        return this.getDamage();
+    }
+
 	// ========== Hit Entity ==========
     @Override
     public boolean hitEntity(ItemStack itemStack, EntityLivingBase entityHit, EntityLivingBase entityUser) {
@@ -155,7 +174,15 @@ public class ItemSwordBase extends ItemSword {
     public boolean getIsRepairable(ItemStack itemStack, ItemStack repairStack) {
         return super.getIsRepairable(itemStack, repairStack);
     }
-    
+
+
+    // ==================================================
+    //                  Entity Spawning
+    // ==================================================
+    public void onSpawnEntity(Entity entity) {
+        return;
+    }
+
 	
 	// ==================================================
 	//                     Visuals

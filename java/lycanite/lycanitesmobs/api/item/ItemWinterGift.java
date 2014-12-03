@@ -3,9 +3,16 @@ package lycanite.lycanitesmobs.api.item;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityItemCustom;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
+import lycanite.lycanitesmobs.arcticmobs.entity.EntityWendigo;
+import lycanite.lycanitesmobs.forestmobs.entity.EntityEnt;
+import lycanite.lycanitesmobs.forestmobs.entity.EntityTrent;
+import lycanite.lycanitesmobs.mountainmobs.entity.EntityJabberwock;
+import lycanite.lycanitesmobs.shadowmobs.entity.EntityPhantom;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -14,15 +21,15 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-public class ItemHalloweenTreat extends ItemBase {
-	
+public class ItemWinterGift extends ItemBase {
+
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemHalloweenTreat() {
+    public ItemWinterGift() {
         super();
         this.group = LycanitesMobs.group;
-        this.itemName = "halloweentreat";
+        this.itemName = "wintergift";
         this.setup();
     }
     
@@ -56,9 +63,9 @@ public class ItemHalloweenTreat extends ItemBase {
 			AssetManager.addSound(this.itemName + "_good", this.group, "item." + this.itemName + ".good");
 		world.playSoundAtEntity(player, AssetManager.getSound(this.itemName + "_good"), 5.0F, 1.0F);
 		
-		// Three Random Treats:
+		// Three Random Gifts:
 		for(int i = 0; i < 3; i++) {
-			ItemStack[] dropStacks = ObjectLists.getItems("halloween_treats");
+			ItemStack[] dropStacks = ObjectLists.getItems("winter_gifts");
 			if(dropStacks == null || dropStacks.length <= 0) return;
 			ItemStack dropStack = dropStacks[player.getRNG().nextInt(dropStacks.length)];
 			if(dropStack != null && dropStack.getItem() != null) {
@@ -82,7 +89,7 @@ public class ItemHalloweenTreat extends ItemBase {
 		world.playSoundAtEntity(player, AssetManager.getSound(this.itemName + "_bad"), 5.0F, 1.0F);
 		
 		// One Random Trick:
-		Class[] entityClasses = ObjectLists.getEntites("halloween_tricks");
+		Class[] entityClasses = ObjectLists.getEntites("winter_tricks");
 		if(entityClasses != null && entityClasses.length <= 0) return;
 		Class entityClass = entityClasses[player.getRNG().nextInt(entityClasses.length)];
 		if(entityClass != null) {
@@ -92,6 +99,22 @@ public class ItemHalloweenTreat extends ItemBase {
             } catch (Exception e) { e.printStackTrace(); }
             if(entity != null) {
 	            entity.setLocationAndAngles(player.posX, player.posY, player.posZ, player.rotationYaw, player.rotationPitch);
+
+                // Themed Names:
+                if(entity instanceof EntityLivingBase) {
+                    EntityCreatureBase entityCreature = (EntityCreatureBase)entity;
+                    if(entityCreature instanceof EntityWendigo)
+                        entityCreature.setCustomNameTag("Gooderness");
+                    else if(entityCreature instanceof EntityJabberwock)
+                        entityCreature.setCustomNameTag("Rudolph");
+                    else if(entityCreature instanceof EntityEnt)
+                        entityCreature.setCustomNameTag("Salty Tree");
+                    else if(entityCreature instanceof EntityTrent)
+                        entityCreature.setCustomNameTag("Salty Tree");
+                    else if(entityCreature instanceof EntityPhantom)
+                        entityCreature.setCustomNameTag("Satan Claws");
+                }
+
 	            world.spawnEntityInWorld(entity);
             }
 		}
@@ -103,31 +126,26 @@ public class ItemHalloweenTreat extends ItemBase {
     // ==================================================
     public static void createObjectLists() {
         // Halloween Treats:
-        ObjectLists.addItem("halloween_treats", Items.diamond);
-        ObjectLists.addItem("halloween_treats", Items.gold_ingot);
-        ObjectLists.addItem("halloween_treats", Items.emerald);
-        ObjectLists.addItem("halloween_treats", Blocks.iron_block);
-        ObjectLists.addItem("halloween_treats", Items.ender_pearl);
-        ObjectLists.addItem("halloween_treats", Items.blaze_rod);
-        ObjectLists.addItem("halloween_treats", Items.glowstone_dust);
-        ObjectLists.addItem("halloween_treats", ObjectManager.getItem("mosspie"));
-        ObjectLists.addItem("halloween_treats", ObjectManager.getItem("bulwarkburger"));
-        ObjectLists.addItem("halloween_treats", ObjectManager.getItem("paleosalad"));
-        ObjectLists.addItem("halloween_treats", ObjectManager.getItem("searingtaco"));
-        ObjectLists.addItem("halloween_treats", ObjectManager.getItem("devillasagna"));
-        ObjectLists.addFromConfig("halloween_treats");
+        ObjectLists.addItem("winter_gifts", Items.diamond);
+        ObjectLists.addItem("winter_gifts", Items.gold_ingot);
+        ObjectLists.addItem("winter_gifts", Items.emerald);
+        ObjectLists.addItem("winter_gifts", Blocks.iron_block);
+        ObjectLists.addItem("winter_gifts", Items.ender_pearl);
+        ObjectLists.addItem("winter_gifts", Items.blaze_rod);
+        ObjectLists.addItem("winter_gifts", Items.glowstone_dust);
+        ObjectLists.addItem("winter_gifts", Items.coal);
+        ObjectLists.addItem("winter_gifts", ObjectManager.getItem("mosspie"));
+        ObjectLists.addItem("winter_gifts", ObjectManager.getItem("ambercake"));
+        ObjectLists.addItem("winter_gifts", ObjectManager.getItem("peakskebab"));
+        ObjectLists.addItem("winter_gifts", ObjectManager.getItem("bulwarkburger"));
+        ObjectLists.addItem("winter_gifts", ObjectManager.getItem("palesoup"));
+        ObjectLists.addFromConfig("winter_gifts");
 
         // Halloween Mobs:
-        ObjectLists.addEntity("halloween_tricks", "ghoulzombie");
-        ObjectLists.addEntity("halloween_tricks", "cryptzombie");
-        ObjectLists.addEntity("halloween_tricks", "belph");
-        ObjectLists.addEntity("halloween_tricks", "behemoth");
-        ObjectLists.addEntity("halloween_tricks", "ent");
-        ObjectLists.addEntity("halloween_tricks", "trent");
-        ObjectLists.addEntity("halloween_tricks", "nethersoul");
-        ObjectLists.addEntity("halloween_tricks", "cacodemon");
-        ObjectLists.addEntity("halloween_tricks", "grue");
-        ObjectLists.addEntity("halloween_tricks", "phantom");
-        ObjectLists.addEntity("halloween_tricks", "epion");
+        ObjectLists.addEntity("winter_tricks", "wendigo");
+        ObjectLists.addEntity("winter_tricks", "jabberwock");
+        ObjectLists.addEntity("winter_tricks", "ent");
+        ObjectLists.addEntity("winter_tricks", "trent");
+        ObjectLists.addEntity("winter_tricks", "phantom");
     }
 }

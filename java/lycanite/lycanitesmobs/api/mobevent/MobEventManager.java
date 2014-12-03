@@ -27,6 +27,7 @@ public class MobEventManager {
     
     // Mob Events:
     public Map<String, MobEventBase> worldMobEvents = new HashMap<String, MobEventBase>();
+    public Map<String, Map<String, MobEventBase>> worldMobEventSets = new HashMap<String, Map<String, MobEventBase>>();
     public MobEventBase serverMobEvent = null;
     public MobEventClient clientMobEvent = null;
 
@@ -65,11 +66,18 @@ public class MobEventManager {
     /**
      * Adds the provided World Mob Event.
      *  **/
-    public void addWorldEvent(MobEventBase mobEvent) {
-        if(mobEvent != null) {
+    public void addWorldEvent(MobEventBase mobEvent, String set) {
+        if(mobEvent != null && mobEvent.hasSpawners()) {
         	mobEvent.loadFromConfig();
+            if(!this.worldMobEventSets.containsKey(set))
+                this.worldMobEventSets.put(set, new HashMap<String, MobEventBase>());
+            this.worldMobEventSets.get(set).put(mobEvent.name, mobEvent);
             this.worldMobEvents.put(mobEvent.name, mobEvent);
         }
+    }
+
+    public void addWorldEvent(MobEventBase mobEvent) {
+        this.addWorldEvent(mobEvent, "main");
     }
 
 
@@ -170,17 +178,19 @@ public class MobEventManager {
 		if(Utilities.isHalloween() && this.worldMobEvents.containsKey("halloween"))
 			if(this.worldMobEvents.get("halloween").isEnabled() && this.worldMobEvents.get("halloween").canStart(world, worldExt))
 				return this.worldMobEvents.get("halloween");
-		if(Utilities.isYuletide() && this.worldMobEvents.containsKey("yuletide"))
-			if(this.worldMobEvents.get("yuletide").isEnabled() && this.worldMobEvents.get("yuletide").canStart(world, worldExt))
-				return this.worldMobEvents.get("yuletide");
 		if(Utilities.isNewYear() && this.worldMobEvents.containsKey("newyear"))
 			if(this.worldMobEvents.get("newyear").isEnabled() && this.worldMobEvents.get("newyear").canStart(world, worldExt))
 				return this.worldMobEvents.get("newyear");
 		
-		// Get Events and Weights:
+		// Get Event Set:
+        Map<String, MobEventBase> worldMobEventSet = this.worldMobEventSets.get("main");
+        if(Utilities.isYuletide() && this.worldMobEventSets.containsKey("yule"))
+            worldMobEventSet = this.worldMobEventSets.get("yule");
+
+        // Get Events and Weights:
 		List<MobEventBase> validMobEvents = new ArrayList<MobEventBase>();
 		int totalWeights = 0;
-		for(MobEventBase mobEventEntry : this.worldMobEvents.values()) {
+		for(MobEventBase mobEventEntry : worldMobEventSet.values()) {
 			if(mobEventEntry.isEnabled() && mobEventEntry.canStart(world, worldExt)) {
 				totalWeights += mobEventEntry.weight;
 				validMobEvents.add(mobEventEntry);

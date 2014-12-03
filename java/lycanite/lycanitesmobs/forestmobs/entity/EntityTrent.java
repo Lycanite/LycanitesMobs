@@ -2,6 +2,7 @@ package lycanite.lycanitesmobs.forestmobs.entity;
 
 import java.util.HashMap;
 
+import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupFire;
 import lycanite.lycanitesmobs.api.IGroupPlant;
@@ -29,6 +30,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public class EntityTrent extends EntityCreatureBase implements IMob, IGroupPlant {
@@ -192,4 +194,19 @@ public class EntityTrent extends EntityCreatureBase implements IMob, IGroupPlant
     //                     Pet Control
     // ==================================================
     public boolean petControlsEnabled() { return false; }
+
+
+    // ==================================================
+    //                       Visuals
+    // ==================================================
+    /** Returns this creature's main texture. Also checks for for subspecies. **/
+    public ResourceLocation getTexture() {
+        if(!"Salty Tree".equals(this.getCustomNameTag()))
+            return super.getTexture();
+
+        String textureName = this.getTextureName() + "_saltytree";
+        if(AssetManager.getTexture(textureName) == null)
+            AssetManager.addTexture(textureName, this.group, "textures/entity/" + textureName.toLowerCase() + ".png");
+        return AssetManager.getTexture(textureName);
+    }
 }

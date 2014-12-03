@@ -62,7 +62,7 @@ public class ItemHalloweenTreat extends ItemBase {
 			if(dropStacks == null || dropStacks.length <= 0) return;
 			ItemStack dropStack = dropStacks[player.getRNG().nextInt(dropStacks.length)];
 			if(dropStack != null && dropStack.getItem() != null) {
-				dropStack.stackSize = 4 + player.getRNG().nextInt(12);
+				dropStack.stackSize = 1 + player.getRNG().nextInt(4);
 				EntityItemCustom entityItem = new EntityItemCustom(world, player.posX, player.posY, player.posZ, dropStack);
 				entityItem.delayBeforeCanPickup = 10;
 				world.spawnEntityInWorld(entityItem);

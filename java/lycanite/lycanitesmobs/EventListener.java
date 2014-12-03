@@ -259,7 +259,7 @@ public class EventListener {
             if(Utilities.isYuletide() || Utilities.isNewYear())
                 seasonalItem = ObjectManager.getItem("wintergift");
 
-            if(seasonalItem != null && !noSeaonalDrop && (alwaysDrop || event.entityLiving.getRNG().nextFloat() >= 0.6F)) {
+            if(seasonalItem != null && !noSeaonalDrop && (alwaysDrop || event.entityLiving.getRNG().nextFloat() < 0.1F)) {
                 ItemStack dropStack = new ItemStack(seasonalItem, 1);
                 EntityItemCustom entityItem = new EntityItemCustom(world, event.entityLiving.posX, event.entityLiving.posY, event.entityLiving.posZ, dropStack);
                 entityItem.delayBeforeCanPickup = 10;

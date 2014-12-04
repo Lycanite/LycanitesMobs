@@ -40,7 +40,7 @@ import net.minecraftforge.common.IPlantable;
 public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGroupPlant {
 	
 	EntityAIAttackRanged rangedAttackAI;
-	public int farmingRate = 10;
+	public int farmingRate = 20;
 
     // ==================================================
  	//                    Constructor
@@ -60,7 +60,7 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
         this.setupMob();
         this.stepHeight = 1.0F;
         
-        this.farmingRate = ConfigBase.getConfig(this.group, "general").getInt("Features", "Spriggan Minion Crop Boosting", this.farmingRate, "Sets the rate in seconds that a Spriggan will boost nearby crops. Each boost is essentially the same as a bonemeal. Set to 0 to disable this feature.");
+        this.farmingRate = ConfigBase.getConfig(this.group, "general").getInt("Features", "Spriggan Minion Crop Boosting", this.farmingRate, "Sets the rate in ticks (20 ticks = 1 second) that a Spriggan will boost nearby crops. Each boost will usually cause the crop to grow one stage.");
         
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this));
@@ -121,7 +121,10 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
         }
 
         // Farming:
-        if(this.isTamed() && this.farmingRate > 0) {
+        int currentFarmingRate = this.farmingRate;
+        if(this.isTamed() && currentFarmingRate > 0) {
+            if(this.subspecies != null)
+                currentFarmingRate = Math.max(1, Math.round((float)currentFarmingRate / 3));
         	this.farmingTick++;
 	        int farmingRange = 16;
 	        int farmingHeight = 4;
@@ -132,17 +135,20 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
 	        			if(farmingBlock != null && farmingBlock instanceof IPlantable && farmingBlock instanceof IGrowable && farmingBlock != Blocks.tallgrass && farmingBlock != Blocks.double_plant) {
 	        				
 		        			// Boost Crops Every X Seconds:
-		        			if(!this.worldObj.isRemote && this.farmingTick % (this.farmingRate * 20) == 0) {
-		    	        		IGrowable growableBlock = (IGrowable)farmingBlock;
+		        			if(!this.worldObj.isRemote && this.farmingTick % (currentFarmingRate) == 0) {
+                                if(farmingBlock.getTickRandomly()) {
+                                    this.worldObj.scheduleBlockUpdate(x, y, z, farmingBlock, currentFarmingRate);
+                                }
+		    	        		/*IGrowable growableBlock = (IGrowable)farmingBlock;
 		    	        		if(growableBlock.func_149851_a(this.worldObj, x, y, z, this.worldObj.isRemote)) {
 	    	                        if(growableBlock.func_149852_a(this.worldObj, this.getRNG(), x, y, z)) {
 	    	                        	growableBlock.func_149853_b(this.worldObj, this.getRNG(), x, y, z);
 	    	                        }
-		    	                }
+		    	                }*/
 		        			}
 		        			
 		        			// Crop Growth Effect:
-		        			if(this.worldObj.isRemote && this.farmingTick % 20 == 0) {
+		        			if(this.worldObj.isRemote && this.farmingTick % 40 == 0) {
 		        				double d0 = this.getRNG().nextGaussian() * 0.02D;
 		                        double d1 = this.getRNG().nextGaussian() * 0.02D;
 		                        double d2 = this.getRNG().nextGaussian() * 0.02D;

@@ -186,6 +186,12 @@ public class EntityProjectileBase extends EntityThrowable {
      public boolean canDamage(EntityLivingBase targetEntity) {
     	 EntityLivingBase owner = this.getThrower();
 	    if(owner != null) {
+
+            if(owner instanceof EntityCreatureBase) {
+                EntityCreatureBase ownerCreature = (EntityCreatureBase)owner;
+                if(!ownerCreature.canAttackEntity(targetEntity))
+                    return false;
+            }
 	    	
 	    	// Player Damage Event:
 		    if(owner instanceof EntityPlayer) {
@@ -208,30 +214,9 @@ public class EntityProjectileBase extends EntityThrowable {
 		    	}
 		    }
 		    
-		    // Tamed Mob PVP:
-	    	EntityCreatureTameable ownerTameable = null;
-	    	if(owner instanceof EntityCreatureTameable)
-	    		ownerTameable = (EntityCreatureTameable)owner;
-	    	if(ownerTameable != null && ownerTameable.isTamed() && (!MinecraftServer.getServer().isPVPEnabled() || !ownerTameable.isPVP())) {
-		    	if(targetEntity instanceof EntityPlayer)
-		    		return false;
-		    	if(targetEntity instanceof EntityCreatureTameable) {
-		    		EntityCreatureTameable tamedTarget = (EntityCreatureTameable)targetEntity;
-		    		if(tamedTarget.isTamed()) {
-		    			return false;
-		    		}
-		    	}
-	    	}
-		    
 		    // Friendly Fire:
 		    if(owner.isOnSameTeam(targetEntity) && MobInfo.friendlyFire)
 		    	return false;
-	    	if(targetEntity instanceof EntityCreatureTameable && MobInfo.friendlyFire) {
-	    		EntityCreatureTameable tamedTarget = (EntityCreatureTameable)targetEntity;
-	    		if(tamedTarget.isTamed() && tamedTarget.getOwner() == owner) {
-	    			return false;
-	    		}
-	    	}
 	    }
 	    
 	    return true;

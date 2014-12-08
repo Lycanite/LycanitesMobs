@@ -413,6 +413,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
     }
     
     public boolean spawnCheck(World world, int i, int j, int k) {
+        if(world.isRemote)
+            return false;
+
     	LycanitesMobs.printDebug("MobSpawns", " ~O==================== Spawn Check: " + this.getConfigName() + " ====================O~");
     	LycanitesMobs.printDebug("MobSpawns", "Attempting to Spawn: " + this.getConfigName());
     	
@@ -429,7 +432,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         
     	// Spawner Check:
     	LycanitesMobs.printDebug("MobSpawns", "Checking for nearby spawner...");
-        if(this.isSpawnerNearby(i, j, k)) {
+        if(this.isSpawnerNearby(world, i, j, k)) {
         	LycanitesMobs.printDebug("MobSpawns", "Spawner found, skpping other checks.");
         	LycanitesMobs.printDebug("MobSpawns", "Spawn Check Passed!");
         	return true;
@@ -682,14 +685,16 @@ public abstract class EntityCreatureBase extends EntityLiving {
     
     // ========== Spawner Checking ==========
     /** Checks if a Monster Spawner that spawns this mob is near the XYZ locations, checks within an 8 block radius. **/
-    public boolean isSpawnerNearby(int x, int y, int z) {
+    public boolean isSpawnerNearby(World world, int x, int y, int z) {
     	int checkRange = 8;
+        if(!world.doChunksNearChunkExist(x, y, z, checkRange))
+            return false;
     	for(int i = x - checkRange; i <= x + checkRange; i++)
         	for(int j = y - checkRange; j <= y + checkRange; j++)
             	for(int k = z - checkRange; k <= z + checkRange; k++) {
-            		Block spawnerBlock = this.worldObj.getBlock(i, j, k);
+            		Block spawnerBlock = world.getBlock(i, j, k);
             		if(spawnerBlock != null) {
-	            		TileEntity tileEntity = this.worldObj.getTileEntity(i, j, k);
+	            		TileEntity tileEntity = world.getTileEntity(i, j, k);
 	            		if(tileEntity != null && tileEntity instanceof TileEntityMobSpawner) {
 	            			if(((TileEntityMobSpawner)tileEntity).func_145881_a().getEntityNameToSpawn().equals(ObjectManager.entityLists.get(this.group.filename).getEntityString(this))) //getSpawnerLogic()
 	            				return true;
@@ -958,7 +963,12 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	return this.subspecies;
     }
 
-    /** Gets the subspecies index of this mob, will return 0 if this is a base species (subspecies is null). **/
+    /** Gets the subspecies index of this mob.
+     * 0 = Base Subspecies
+     * 1/2 = Uncommon Species
+     * 3+ = Rare Species
+     * Most mobs have 2 uncommon subspecies, some have rare subspecies.
+     * **/
     public int getSubspeciesIndex() {
     	return this.getSubspecies() != null ? this.getSubspecies().index : 0;
     }

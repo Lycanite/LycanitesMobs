@@ -54,7 +54,7 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
         this.spawnsInDarkness = true;
         this.hasAttackSound = true;
         
-        this.geonachBlockBreakRadius = ConfigBase.getConfig(this.group, "general").getInt("Features", "Geonach Block Break Radius", this.geonachBlockBreakRadius, "Controls how large the Geonach's block breaking radius is when it is charging towards its target. Set to -1 to disable. For their block breaking radius on spawn, see the ROCK spawn type features instead.");
+        this.geonachBlockBreakRadius = ConfigBase.getConfig(this.group, "general").getInt("Features", "Rare Geonach Block Break Radius", this.geonachBlockBreakRadius, "Controls how large the RARE Geonach's block breaking radius is when it is charging towards its target. Set to -1 to disable. For their block breaking radius on spawn, see the ROCK spawn type features instead. Note that this is only for the extremely rare Geonach.");
         
         this.setWidth = 0.8F;
         this.setHeight = 1.2F;
@@ -110,7 +110,7 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
     public void onLivingUpdate() {
         super.onLivingUpdate();
         
-        if(!this.worldObj.isRemote) {
+        if(!this.worldObj.isRemote && this.getSubspeciesIndex() == 3) {
 	    	// Random Charging:
 	    	if(this.hasAttackTarget() && this.getDistanceSqToEntity(this.getAttackTarget()) > 1 && this.getRNG().nextInt(20) == 0) {
 	    		if(this.posY - 1 > this.getAttackTarget().posY)

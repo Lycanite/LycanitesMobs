@@ -374,18 +374,24 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
 	public boolean canAttackEntity(EntityLivingBase targetEntity) {
 		if(this.isPassive())
 			return false;
-		if(this.isTamed() && this.getOwner() == targetEntity)
-			return false;
-		if(!this.worldObj.isRemote)
-			if(this.isTamed() && targetEntity instanceof EntityPlayer && (!MinecraftServer.getServer().isPVPEnabled() || !this.isPVP()))
-				return false;
-		if(this.isTamed() && targetEntity instanceof EntityCreatureTameable) {
-			EntityCreatureTameable targetPet = (EntityCreatureTameable)targetEntity;
-			if(!this.isPVP())
-				return false;
-			if(targetPet.getOwner() == this.getOwner())
-				return false;
-		}
+		if(this.isTamed()) {
+            if(this.getOwner() == targetEntity)
+                return false;
+            if(!this.worldObj.isRemote) {
+                boolean canPVP = MinecraftServer.getServer().isPVPEnabled() && this.isPVP();
+                if(targetEntity instanceof EntityPlayer && !canPVP)
+                    return false;
+                if(targetEntity instanceof EntityCreatureTameable) {
+                    EntityCreatureTameable targetTameable = (EntityCreatureTameable)targetEntity;
+                    if(targetTameable.isTamed()) {
+                        if(!canPVP)
+                            return false;
+                        if(targetTameable.getOwner() == this.getOwner())
+                            return false;
+                    }
+                }
+            }
+        }
 		return super.canAttackEntity(targetEntity);
 	}
 	
@@ -739,7 +745,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     // ========== Coloring ==========
     /**
      * Returns true if this mob can be dyed different colors. Usually for wool and collars.
-     * @param EntityPlayer player The player to check for when coloring, this is to stop players from dying other players pets. If provided with null it should return if this creature can be dyed in general.
+     * @param player The player to check for when coloring, this is to stop players from dying other players pets. If provided with null it should return if this creature can be dyed in general.
      */
     @Override
     public boolean canBeColored(EntityPlayer player) {

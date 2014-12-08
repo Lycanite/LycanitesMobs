@@ -5,6 +5,7 @@ import java.util.Calendar;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
 import lycanite.lycanitesmobs.api.entity.EntityItemCustom;
+import lycanite.lycanitesmobs.api.info.ItemInfo;
 import lycanite.lycanitesmobs.api.item.ItemBase;
 import lycanite.lycanitesmobs.api.item.ItemScepter;
 import lycanite.lycanitesmobs.api.item.ItemSwordBase;
@@ -104,6 +105,9 @@ public class EventListener {
 			EntityPlayer player = (EntityPlayer)entity;
 			ExtendedPlayer.getForPlayer(player).onDeath();
 		}
+
+        // ========== Minion Kills ==========
+        // TODO: If damage is minion/pet damage set the entity to the minion's owner instead so they are credited for the kill?
 	}
 	
 	
@@ -173,9 +177,7 @@ public class EventListener {
 		
 		// Better Invisibility:
 		if(event.entityLiving != null) {
-			if(event.entityLiving.isPotionActive(Potion.nightVision))
-				return;
-			if(event.target != null) {
+			if(!event.entityLiving.isPotionActive(Potion.nightVision) && event.target != null) {
 				if(event.target.isInvisible())
 					if(event.isCancelable())
 						event.setCanceled(true);
@@ -212,7 +214,7 @@ public class EventListener {
 		// TODO: Found the cause of why this wasn't working here, should be moved back.
 
         // ========== Minion Damage ==========
-        // TODO: The owner of the damage type should be the minion's master, however death messages should be customised to support this. Custom damage type?
+        // TODO: The owner of the damage type should be the minion's master, however death messages should be customised to support this. Custom 'container' damage type?
 		
 		// ========== Mounted Protection ==========
 		if(event.entityLiving.ridingEntity != null) {
@@ -243,7 +245,8 @@ public class EventListener {
 		World world = event.entityLiving.worldObj;
 		
 		// Seasonal Items:
-        if(Utilities.isHalloween() || Utilities.isYuletide() || Utilities.isNewYear()) {
+        if(ItemInfo.seasonalItemDropChance > 0
+            && (Utilities.isHalloween() || Utilities.isYuletide() || Utilities.isNewYear())) {
             boolean noSeaonalDrop = false;
             boolean alwaysDrop = false;
             if(event.entityLiving instanceof EntityCreatureBase) {
@@ -259,7 +262,7 @@ public class EventListener {
             if(Utilities.isYuletide() || Utilities.isNewYear())
                 seasonalItem = ObjectManager.getItem("wintergift");
 
-            if(seasonalItem != null && !noSeaonalDrop && (alwaysDrop || event.entityLiving.getRNG().nextFloat() < 0.1F)) {
+            if(seasonalItem != null && !noSeaonalDrop && (alwaysDrop || event.entityLiving.getRNG().nextFloat() < ItemInfo.seasonalItemDropChance)) {
                 ItemStack dropStack = new ItemStack(seasonalItem, 1);
                 EntityItemCustom entityItem = new EntityItemCustom(world, event.entityLiving.posX, event.entityLiving.posY, event.entityLiving.posZ, dropStack);
                 entityItem.delayBeforeCanPickup = 10;

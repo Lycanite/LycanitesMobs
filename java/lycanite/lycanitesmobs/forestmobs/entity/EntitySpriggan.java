@@ -7,16 +7,7 @@ import lycanite.lycanitesmobs.api.IGroupFire;
 import lycanite.lycanitesmobs.api.IGroupPlant;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackRanged;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowOwner;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerAttack;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerRevenge;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
+import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import net.minecraft.block.Block;
@@ -77,6 +68,7 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
     	this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(IGroupFire.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
+        this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
     
     // ========== Stats ==========

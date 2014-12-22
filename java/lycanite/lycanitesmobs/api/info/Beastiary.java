@@ -8,6 +8,7 @@ import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.network.MessageBeastiary;
 import lycanite.lycanitesmobs.api.network.MessageCreatureKnowledge;
+import lycanite.lycanitesmobs.api.pets.SummonSet;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;

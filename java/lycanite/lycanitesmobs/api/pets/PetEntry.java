@@ -1,25 +1,34 @@
 package lycanite.lycanitesmobs.api.pets;
 
 
+import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
+import lycanite.lycanitesmobs.api.info.CreatureKnowledge;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class PetEntry {
     /** The Pet Manager that this entry is added to, this can also be null. **/
     public PetManager petManager;
+    /** The ID given to this entry by the PetManager. **/
+    public int petEntryID;
     /** The type of entry this is. This should really always be set if this entry is to be added to a manager. This should only be set when the entry is instantiated and then kept the same. **/
     private String type;
     /** This is set to false if this entry has been removed. Used by PetManagers to auto-remove finished entries. **/
     public boolean active = true;
 
     /** A timer used to count down to 0 for respawning. **/
-    public int respawnTime;
+    public int respawnTime = 0;
     /** The amount of time until respawn. **/
     public int respawnTimeMax;
     /** Counts how many times this entry has summoned its entity. **/
@@ -31,31 +40,46 @@ public class PetEntry {
 
     /** The entity that this entry belongs to. **/
     public EntityLivingBase host;
-    /** The class of the entity that this entry should spawn. **/
-    public Class entityClass;
+    /** The summon set to use when spawning, etc. **/
+    public SummonSet summonSet;
     /** The current entity instance that this entry is using. **/
     public Entity entity;
 	
     // ==================================================
     //                     Constructor
     // ==================================================
-	public PetEntry(String type, EntityLivingBase host, Class entityClass) {
+	public PetEntry(String type, EntityLivingBase host, String summonType) {
         this.type = type;
         this.host = host;
-        this.entityClass = entityClass;
 
-        this.respawnTimeMax = 5 * 20;
+        ExtendedPlayer playerExt = null;
+        if(host instanceof EntityPlayer)
+            playerExt = ExtendedPlayer.getForPlayer((EntityPlayer)host);
+        this.summonSet = new SummonSet(playerExt);
+        this.summonSet.summonableOnly = false;
+        this.summonSet.setSummonType(summonType);
+
+        this.respawnTimeMax = 5 * 60 * 20;
         if("minion".equalsIgnoreCase(this.type))
             this.temporary = true;
 	}
 
 
     // ==================================================
+    //                       Name
+    // ==================================================
+    public String getDisplayName() {
+        return this.summonSet.getMobInfo().getTitle();
+    }
+
+
+    // ==================================================
     //                       On Add
     // ==================================================
     /** Called when this entry is first added. A Pet Manager is passed if added to one, otherwise null. **/
-    public void onAdd(PetManager petManager) {
+    public void onAdd(PetManager petManager, int petEntryID) {
         this.petManager = petManager;
+        this.petEntryID = petEntryID;
     }
 
 
@@ -72,7 +96,10 @@ public class PetEntry {
     //                       Update
     // ==================================================
 	/** Called by the PetManager, runs any logic for this entry. This is normally called from an entity update. **/
-	public void onUpdate() {
+	public void onUpdate(World world) {
+        if(world.isRemote)
+            return;
+
 		if(!this.active)
             return;
         if(!this.isActive()) {
@@ -81,7 +108,7 @@ public class PetEntry {
         }
 
         // Dead Check:
-        if(!this.entity.isEntityAlive())
+        if(this.entity != null && !this.entity.isEntityAlive())
             this.entity = null;
 
         // No Entity:
@@ -90,7 +117,6 @@ public class PetEntry {
             if(this.respawnTime-- <= 0)
                 this.spawnEntity();
         }
-
 	}
 
 
@@ -113,7 +139,7 @@ public class PetEntry {
         if(this.entity != null || this.host == null)
             return;
         try {
-            this.entity = (Entity)this.entityClass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {this.host.worldObj});
+            this.entity = (Entity)this.summonSet.getCreatureClass().getConstructor(new Class[] {World.class}).newInstance(new Object[] {this.host.worldObj});
         } catch (Exception e) {
             LycanitesMobs.printWarning("", "[Pet Entry] A none Entity class was set in a PetEntry, only classes of Entity are valid!");
             e.printStackTrace();
@@ -122,9 +148,16 @@ public class PetEntry {
             return;
 
         this.entity.setLocationAndAngles(this.host.posX, this.host.posY, this.host.posZ, this.host.rotationYaw, 0.0F);
+
         if(this.entity instanceof EntityCreatureBase) {
             EntityCreatureBase entityCreature = (EntityCreatureBase)this.entity;
             entityCreature.setMinion(true);
+            entityCreature.setPetEntry(this);
+
+            if(entityCreature instanceof EntityCreatureTameable) {
+                EntityCreatureTameable entityTameable = (EntityCreatureTameable)entityCreature;
+                this.summonSet.applyBehaviour(entityTameable);
+            }
 
             float randomAngle = 45F + (45F * this.host.getRNG().nextFloat());
             if(this.host.getRNG().nextBoolean())
@@ -143,6 +176,7 @@ public class PetEntry {
             if(entityCreature instanceof EntityCreatureTameable && this.host instanceof EntityPlayer) {
                 ((EntityCreatureTameable)entityCreature).setPlayerOwner((EntityPlayer) this.host);
             }
+
         }
         this.respawnTime = this.respawnTimeMax;
         this.spawnCount++;
@@ -180,5 +214,23 @@ public class PetEntry {
     /** Returns the type of this entry. This should always be accurate else PetManagers could have inactive entries stuck in their lists! **/
     public String getType() {
         return this.type;
+    }
+
+
+    // ==================================================
+    //                        NBT
+    // ==================================================
+    // ========== Read ===========
+    /** Reads pet entry from NBTTag. **/
+    public void readFromNBT(NBTTagCompound nbtTagCompound) {
+        this.summonSet.readFromNBT(nbtTagCompound);
+    }
+
+    // ========== Write ==========
+    /** Writes pet entry to NBTTag. **/
+    public void writeToNBT(NBTTagCompound nbtTagCompound) {
+        nbtTagCompound.setInteger("ID", this.petEntryID);
+        nbtTagCompound.setString("Type", this.getType());
+        this.summonSet.writeToNBT(nbtTagCompound);
     }
 }

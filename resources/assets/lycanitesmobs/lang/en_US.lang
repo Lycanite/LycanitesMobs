@@ -92,13 +92,25 @@ gui.beastiary.empty=No Creatures
 gui.beastiary.soulgazerinfo=You currently do not have any creatures added to your Beastiary. To discover new creatures you must craft a Soulgazer and then use it on any creatures that you find.
 gui.beastiary.selectacreature=Select a group and then select a creature.
 #
+# Familiar Manager:
+gui.familiarmanager.name=Familiar Manager
+gui.familiarmanager.empty=No Familiars
+gui.familiarmanager.info=You don't have any familiars. Familiars are special minions that will always be by your side. There is currently no way to obtain familiars, however those who have donated to this mod may be able to obtain familiars in the future.
+#
 # Minion Manager:
 gui.minion.name=Minion Manager
 gui.minion.empty=No Summonable Creatures
 gui.minion.soulgazerinfo=You haven't added any creatures that can be summoned to your Beastiary yet. Keep searching, not every creature can be summoned.
 #
-# Soulbound Pets:
-gui.soulboundpets.name=Soulbound Pets
+# Pet Manager:
+gui.petmanager.name=Pet Manager
+gui.petmanager.empty=No Pets
+gui.petmanager.info=Some creatures can be tamed as either Pets or Mounts. You can craft various treats in order to tame these creatures. You can then soulbind tamed pets to yourself where you can summon and dismiss them at will, they will also respawn over time should they die!
+#
+# Mount Manager:
+gui.mountmanager.name=Mount Manager
+gui.mountmanager.empty=No Mounts
+gui.mountmanager.info=Some creatures can be tamed as either Pets or Mounts. You can craft various treats in order to tame these creatures. You can then soulbind tamed mounts to yourself where you can summon and dismiss them at will allowing you to have a small inventory of various mounts!
 #
 # Pet/Minion:
 gui.pet.sitting=Sitting

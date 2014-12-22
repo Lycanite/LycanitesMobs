@@ -217,5 +217,5 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
     }
     
     /** Returns true if this mob should be damaged by the sun. **/
-    public boolean daylightBurns() { return true; }
+    public boolean daylightBurns() { return !this.isTamed(); }
 }

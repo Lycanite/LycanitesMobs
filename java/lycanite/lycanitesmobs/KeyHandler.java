@@ -1,9 +1,7 @@
 package lycanite.lycanitesmobs;
 
-import lycanite.lycanitesmobs.api.gui.GUIBeastiary;
-import lycanite.lycanitesmobs.api.gui.GUIMinion;
-import lycanite.lycanitesmobs.api.gui.GUIMinionSelection;
-import lycanite.lycanitesmobs.api.gui.TabManager;
+import lycanite.lycanitesmobs.api.gui.*;
+import lycanite.lycanitesmobs.api.network.MessageGUIRequest;
 import lycanite.lycanitesmobs.api.network.MessagePlayerControl;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -25,7 +23,8 @@ public class KeyHandler {
 	
 	public KeyBinding mountAbility = new KeyBinding("Mount Ability", Keyboard.KEY_F, "Lycanites Mobs");
 	public KeyBinding mountInventory = new KeyBinding("Mount Inventory", Keyboard.KEY_H, "Lycanites Mobs");
-	public KeyBinding beastiary = new KeyBinding("Beastiary", Keyboard.KEY_G, "Lycanites Mobs");
+	public KeyBinding beastiary = new KeyBinding("Beastiary", Keyboard.KEY_B, "Lycanites Mobs");
+    public KeyBinding familiarManager = new KeyBinding("Familiar Manager", Keyboard.KEY_G, "Lycanites Mobs");
 	public KeyBinding minionManager = new KeyBinding("Minion Manager", Keyboard.KEY_H, "Lycanites Mobs");
 	public KeyBinding minionSelection = new KeyBinding("Minion Selection", Keyboard.KEY_J, "Lycanites Mobs");
 	
@@ -40,6 +39,7 @@ public class KeyHandler {
 		ClientRegistry.registerKeyBinding(mountAbility);
 		ClientRegistry.registerKeyBinding(mountInventory);
 		ClientRegistry.registerKeyBinding(beastiary);
+        ClientRegistry.registerKeyBinding(familiarManager);
 		ClientRegistry.registerKeyBinding(minionManager);
 		ClientRegistry.registerKeyBinding(minionSelection);
 	}
@@ -72,13 +72,20 @@ public class KeyHandler {
 
 		// Beastiary: Opens GUI and sends data request packet.
 		if(this.beastiary.isPressed()) {
-			//MessageGUIRequest packetGUIRequest = new MessageGUIRequest(GuiHandler.PlayerGuiType.BEASTIARY.id);
+			//MessageGUIRequest message = new MessageGUIRequest(GuiHandler.PlayerGuiType.BEASTIARY.id);
 			GUIBeastiary.openToPlayer(this.mc.thePlayer);
 		}
 
+        // Familiar Manager: Opens GUI and sends data request packet.
+        if(this.familiarManager.isPressed()) {
+            MessageGUIRequest message = new MessageGUIRequest(GuiHandler.PlayerGuiType.FAMILIAR_MANAGER.id);
+            LycanitesMobs.packetHandler.sendToServer(message);
+            GUIFamiliar.openToPlayer(this.mc.thePlayer);
+        }
+
 		// Minion Manager: Opens GUI and sends data request packet.
 		if(this.minionManager.isPressed()) {
-			//MessageGUIRequest packetGUIRequest = new MessageGUIRequest(GuiHandler.PlayerGuiType.MINION_CONTROLS.id);
+			//MessageGUIRequest message = new MessageGUIRequest(GuiHandler.PlayerGuiType.MINION_MANAGER.id);
 			GUIMinion.openToPlayer(this.mc.thePlayer, playerExt.selectedSummonSet);
 		}
 		

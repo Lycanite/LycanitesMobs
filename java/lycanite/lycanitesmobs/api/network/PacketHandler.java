@@ -24,6 +24,7 @@ public class PacketHandler {
 		this.network.registerMessage(MessageBeastiary.class, MessageBeastiary.class, messageID++, Side.CLIENT);
 		this.network.registerMessage(MessageCreatureKnowledge.class, MessageCreatureKnowledge.class, messageID++, Side.CLIENT);
 		this.network.registerMessage(MessagePlayerStats.class, MessagePlayerStats.class, messageID++, Side.CLIENT);
+        this.network.registerMessage(MessagePetEntry.class, MessagePetEntry.class, messageID++, Side.CLIENT);
 		this.network.registerMessage(MessageSummonSet.class, MessageSummonSet.class, messageID++, Side.CLIENT);
 		this.network.registerMessage(MessageSummonSetSelection.class, MessageSummonSetSelection.class, messageID++, Side.CLIENT);
 		this.network.registerMessage(MessageEntityPickedUp.class, MessageEntityPickedUp.class, messageID++, Side.CLIENT);
@@ -33,6 +34,7 @@ public class PacketHandler {
 		this.network.registerMessage(MessageEntityGUICommand.class, MessageEntityGUICommand.class, messageID++, Side.SERVER);
 		this.network.registerMessage(MessageGUIRequest.class, MessageGUIRequest.class, messageID++, Side.SERVER);
 		this.network.registerMessage(MessagePlayerControl.class, MessagePlayerControl.class, messageID++, Side.SERVER);
+        this.network.registerMessage(MessagePetEntry.class, MessagePetEntry.class, messageID++, Side.SERVER);
 		this.network.registerMessage(MessageSummonSet.class, MessageSummonSet.class, messageID++, Side.SERVER);
 		this.network.registerMessage(MessageSummonSetSelection.class, MessageSummonSetSelection.class, messageID++, Side.SERVER);
 	}
@@ -43,7 +45,7 @@ public class PacketHandler {
 	// ==================================================
 	/**
 	 * Sends a packet from the server to all players.
-	 * @param packet
+	 * @param message
 	 */
 	public void sendToAll(IMessage message) {
 		this.network.sendToAll(message);
@@ -55,7 +57,7 @@ public class PacketHandler {
 	// ==================================================
 	/**
 	 * Sends a packet from the server to the specified player.
-	 * @param packet
+	 * @param message
 	 * @param player
 	 */
 	public void sendToPlayer(IMessage message, EntityPlayerMP player) {
@@ -68,7 +70,7 @@ public class PacketHandler {
 	// ==================================================
 	/**
 	 * Sends a packet from the server to all players near the specified target point.
-	 * @param packet
+	 * @param message
 	 * @param point
 	 */
 	public void sendToAllAround(IMessage message, NetworkRegistry.TargetPoint point) {
@@ -81,7 +83,7 @@ public class PacketHandler {
 	// ==================================================
 	/**
 	 * Sends a packet to all players within the specified dimension.
-	 * @param packet
+	 * @param message
 	 * @param dimensionID The ID of the dimension to use.
 	 */
 	public void sendToDimension(IMessage message, int dimensionID) {
@@ -94,7 +96,7 @@ public class PacketHandler {
 	// ==================================================
 	/**
 	 * Sends a packet from the client player to the server.
-	 * @param packet
+	 * @param message
 	 */
 	public void sendToServer(IMessage message) {
 		this.network.sendToServer(message);

@@ -6,7 +6,7 @@ import lycanite.lycanitesmobs.GuiHandler;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.info.MobInfo;
-import lycanite.lycanitesmobs.api.info.SummonSet;
+import lycanite.lycanitesmobs.api.pets.SummonSet;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -43,7 +43,7 @@ public class GUIMinion extends GuiScreen {
   	// ==================================================
 	public static void openToPlayer(EntityPlayer player, int editSet) {
 		if(player != null && player.worldObj != null)
-			player.openGui(LycanitesMobs.instance, GuiHandler.GuiType.PLAYER.id, player.worldObj, GuiHandler.PlayerGuiType.MINION_CONTROLS.id, editSet, 0);
+			player.openGui(LycanitesMobs.instance, GuiHandler.GuiType.PLAYER.id, player.worldObj, GuiHandler.PlayerGuiType.MINION_MANAGER.id, editSet, 0);
 	}
 	
 	public FontRenderer getFontRenderer() {
@@ -191,21 +191,21 @@ public class GUIMinion extends GuiScreen {
         buttonY = this.windowY + 30;
         
         buttonY += buttonHeight + (buttonSpacing * 2);
-        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.SITTING.id, buttonX, buttonY, buttonWidth, buttonHeight, "Loading"));
+        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.SITTING.id, buttonX, buttonY, buttonWidth, buttonHeight, "..."));
         
         buttonY += buttonHeight + (buttonSpacing * 2);
-        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.FOLLOWING.id, buttonX, buttonY, buttonWidth, buttonHeight, "Loading"));
+        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.FOLLOWING.id, buttonX, buttonY, buttonWidth, buttonHeight, "..."));
+
+        buttonY += buttonHeight + (buttonSpacing * 2);
+        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.PASSIVE.id, buttonX, buttonY, buttonWidth, buttonHeight, "..."));
         
         buttonY += buttonHeight + (buttonSpacing * 2);
-        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.PASSIVE.id, buttonX, buttonY, buttonWidth, buttonHeight, "Loading"));
+        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.STANCE.id, buttonX, buttonY, buttonWidth, buttonHeight, "..."));
         
         buttonY += buttonHeight + (buttonSpacing * 2);
-        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.STANCE.id, buttonX, buttonY, buttonWidth, buttonHeight, "Loading"));
-        
-        buttonY += buttonHeight + (buttonSpacing * 2);
-        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.PVP.id, buttonX, buttonY, buttonWidth, buttonHeight, "Loading"));
+        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.PVP.id, buttonX, buttonY, buttonWidth, buttonHeight, "..."));
     }
-	
+
 	public void updateControls() {
 		if(!this.hasSummonableMinions()) return;
 		

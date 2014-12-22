@@ -88,7 +88,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	public String spawnEventType = "";
 	/** The number of the event that spawned this mob. Used for despawning this mob when a new event starts. Ignored if the spawnEventType is blank or the count is less than 0. **/
 	public int spawnEventCount = -1;
-    /** The Pet Entry for this mob, this binds this mob to another entity for special interaction, it will also cause this mob to be removed if the entity it is bound to is removed or dead. **/
+    /** The Pet Entry for this mob, this binds this mob to a entity for special interaction, it will also cause this mob to be removed if the entity it is bound to is removed or dead. **/
     public PetEntry petEntry;
 	
 	// Size:

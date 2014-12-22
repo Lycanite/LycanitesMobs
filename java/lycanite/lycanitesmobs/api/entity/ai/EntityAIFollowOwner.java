@@ -71,6 +71,12 @@ public class EntityAIFollowOwner extends EntityAIFollow {
 	    	int i = MathHelper.floor_double(this.getTarget().posX) - 2;
 	        int j = MathHelper.floor_double(this.getTarget().boundingBox.minY);
 	        int k = MathHelper.floor_double(this.getTarget().posZ) - 2;
+
+            if(this.host.canFly() || this.getTarget().isInWater()) {
+                this.host.setLocationAndAngles(i, j, k, this.host.rotationYaw, this.host.rotationPitch);
+                this.host.clearMovement();
+                return;
+            }
 	
 	        for(int l = 0; l <= 4; ++l) {
 	            for(int i1 = 0; i1 <= 4; ++i1) {

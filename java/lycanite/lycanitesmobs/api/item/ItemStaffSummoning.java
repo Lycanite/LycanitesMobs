@@ -5,7 +5,7 @@ import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.EntityPortal;
 import lycanite.lycanitesmobs.api.gui.GUIMinion;
-import lycanite.lycanitesmobs.api.info.SummonSet;
+import lycanite.lycanitesmobs.api.pets.SummonSet;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -83,11 +83,7 @@ public class ItemStaffSummoning extends ItemScepter {
     // ========== Minion Behaviour ==========
     public void applyMinionBehaviour(EntityCreatureTameable minion, EntityPlayer player) {
     	SummonSet summonSet = ExtendedPlayer.getForPlayer(player).getSelectedSummonSet();
-    	minion.setSitting(summonSet.getSitting());
-    	minion.setFollowing(summonSet.getFollowing());
-    	minion.setPassive(summonSet.getPassive());
-    	minion.setAggressive(summonSet.getAggressive());
-    	minion.setPVP(summonSet.getPVP());
+        summonSet.applyBehaviour(minion);
     }
     
     // ========== Minion Effects ==========

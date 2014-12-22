@@ -6,11 +6,14 @@ import java.util.Map;
 import lycanite.lycanitesmobs.api.info.Beastiary;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
-import lycanite.lycanitesmobs.api.info.SummonSet;
+import lycanite.lycanitesmobs.api.network.MessagePetEntry;
+import lycanite.lycanitesmobs.api.pets.SummonSet;
 import lycanite.lycanitesmobs.api.item.ItemStaffSummoning;
 import lycanite.lycanitesmobs.api.network.MessagePlayerStats;
 import lycanite.lycanitesmobs.api.network.MessageSummonSet;
 import lycanite.lycanitesmobs.api.network.MessageSummonSetSelection;
+import lycanite.lycanitesmobs.api.pets.PetEntry;
+import lycanite.lycanitesmobs.api.pets.PetEntryFamiliar;
 import lycanite.lycanitesmobs.api.pets.PetManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -50,6 +53,9 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 	public Map<Integer, SummonSet> summonSets = new HashMap<Integer, SummonSet>();
 	public int selectedSummonSet = 1;
 	public int summonSetMax = 5;
+
+    // Familiars:
+    private PetEntry familiarLycanite;
 	
 	// ==================================================
     //                   Get for Player
@@ -79,6 +85,9 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 		this.petManager = new PetManager(player);
 		
 		player.registerExtendedProperties(ExtendedPlayer.EXT_PROP_NAME, this);
+
+        // Familiars:
+        familiarLycanite = new PetEntryFamiliar(this.player, "grue");
 	}
 	
 	
@@ -136,6 +145,18 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 			LycanitesMobs.packetHandler.sendToPlayer(message, (EntityPlayerMP)this.player);
 		}
 		needsFirstSync = false;
+
+        // Pet Manager:
+        this.petManager.onUpdate(player.worldObj);
+
+        // Familiars:
+        if(!player.worldObj.isRemote) {
+            if ("Lycanite".equals(this.player.getCommandSenderName())) {
+                if (!this.petManager.hasEntry(familiarLycanite) && ObjectManager.getMob("grue") != null) {
+                    this.petManager.addEntry(familiarLycanite);
+                }
+            }
+        }
 		
 		this.currentTick++;
 	}
@@ -202,19 +223,35 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 	// ==================================================
     //                    Network Sync
     // ==================================================
-	public void sendAllSummonSetsToPlayer() {
+	public void sendPetEntriesToPlayer(String entryType) {
 		if(this.player.worldObj.isRemote) return;
-		for(byte setID = 1; setID <= this.summonSetMax; setID++) {
-			MessageSummonSet message = new MessageSummonSet(this, setID);
-			LycanitesMobs.packetHandler.sendToPlayer(message, (EntityPlayerMP)this.player);
+		for(PetEntry petEntry : this.petManager.allEntries.values()) {
+            if(entryType.equals(petEntry.getType())) {
+                MessagePetEntry message = new MessagePetEntry(this, petEntry.petEntryID, entryType);
+                LycanitesMobs.packetHandler.sendToPlayer(message, (EntityPlayerMP) this.player);
+            }
 		}
 	}
 	
-	public void sendSummonSetToServer(byte setID) {
+	public void sendPetEntryToServer(String entryType, int petEntryID) {
 		if(!this.player.worldObj.isRemote) return;
-		MessageSummonSet message = new MessageSummonSet(this, setID);
+        MessagePetEntry message = new MessagePetEntry(this, petEntryID, entryType);
 		LycanitesMobs.packetHandler.sendToServer(message);
 	}
+
+    public void sendAllSummonSetsToPlayer() {
+        if(this.player.worldObj.isRemote) return;
+        for(byte setID = 1; setID <= this.summonSetMax; setID++) {
+            MessageSummonSet message = new MessageSummonSet(this, setID);
+            LycanitesMobs.packetHandler.sendToPlayer(message, (EntityPlayerMP)this.player);
+        }
+    }
+
+    public void sendSummonSetToServer(byte setID) {
+        if(!this.player.worldObj.isRemote) return;
+        MessageSummonSet message = new MessageSummonSet(this, setID);
+        LycanitesMobs.packetHandler.sendToServer(message);
+    }
 	
 	
 	// ==================================================
@@ -233,8 +270,10 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
     //                 Request GUI Data
     // ==================================================
 	public void requestGUI(byte guiID) {
-		if(guiID == GuiHandler.PlayerGuiType.MINION_CONTROLS.id)
-			this.sendAllSummonSetsToPlayer();
+        if(guiID == GuiHandler.PlayerGuiType.FAMILIAR_MANAGER.id)
+            this.sendPetEntriesToPlayer("familiar");
+		//if(guiID == GuiHandler.PlayerGuiType.MINION_MANAGER.id)
+			//this.sendAllSummonSetsToPlayer();
 		//if(guiID == GuiHandler.PlayerGuiType.BEASTIARY.id)
 			//this.beastiary.sendAllToClient();
 	}
@@ -250,6 +289,7 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 		NBTTagCompound extTagCompound = nbtTagCompound.getCompoundTag(EXT_PROP_NAME);
 		
     	this.beastiary.readFromNBT(extTagCompound);
+        this.petManager.readFromNBT(extTagCompound);
 		
 		if(extTagCompound.hasKey("SummonFocus"))
 			this.summonFocus = extTagCompound.getInteger("SummonFocus");
@@ -275,6 +315,7 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 		NBTTagCompound extTagCompound = new NBTTagCompound();
 		
     	this.beastiary.writeToNBT(extTagCompound);
+        this.petManager.writeToNBT(extTagCompound);
     	
 		extTagCompound.setInteger("SummonFocus", this.summonFocus);
 		

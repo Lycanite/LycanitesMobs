@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.LycanitesMobs;
-import lycanite.lycanitesmobs.api.info.SummonSet;
+import lycanite.lycanitesmobs.api.pets.SummonSet;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;

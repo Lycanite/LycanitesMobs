@@ -1,15 +1,23 @@
 package lycanite.lycanitesmobs.api.pets;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import lycanite.lycanitesmobs.LycanitesMobs;
+import lycanite.lycanitesmobs.api.info.CreatureKnowledge;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.world.World;
 
 public class PetManager {
 	public EntityLivingBase host;
+    /** The next ID to use when adding an entry to the main list. **/
+    protected int nextID = 0;
     /** A list of all pet entries, useful for looking up everything summoned by an entity as well as ensuring that no entries are added as multiple types. **/
-    public List<PetEntry> allEntries = new ArrayList<PetEntry>();
+    public Map<Integer, PetEntry> allEntries = new HashMap<Integer, PetEntry>();
     /** Pets are mobs that the player has tamed and then bound. They can be summoned and dismissed at will. Eg: Pet Lurker. **/
     public List<PetEntry> pets = new ArrayList<PetEntry>();
     /** Mounts are mobs that the player has tamed and then bound. One can be summoned for riding at will, they will despawn if unmounted after a short while. Eg: Pet Ventoraptor. **/
@@ -31,16 +39,31 @@ public class PetManager {
 
 
     // ==================================================
+    //                       Check
+    // ==================================================
+    /** Returns true if the provided entry is in this manager. **/
+    public boolean hasEntry(PetEntry petEntry) {
+        return this.allEntries.containsValue(petEntry);
+    }
+
+
+    // ==================================================
     //                        Add
     // ==================================================
     /** Adds a new PetEntry and executes onAdd() methods. The provided entry should have set whether it's a pet, mount, minion, etc. **/
     public void addEntry(PetEntry petEntry) {
-        if(this.allEntries.contains(petEntry)) {
+        this.addEntry(petEntry, -1);
+    }
+    /** Adds a new PetEntry and executes onAdd() methods. The provided entry should have set whether it's a pet, mount, minion, etc. This will also set a specific ID for the entry to use. **/
+    public void addEntry(PetEntry petEntry, int entryID) {
+        if(this.allEntries.containsValue(petEntry)) {
             LycanitesMobs.printWarning("", "[Pet Manager] Tried to add a Pet Entry that is already added!");
             return;
         }
 
-        this.allEntries.add(petEntry);
+        if(entryID < 0)
+            entryID = this.nextID;
+        this.allEntries.put(entryID, petEntry);
 
         if("pet".equalsIgnoreCase(petEntry.getType()))
             this.pets.add(petEntry);
@@ -53,7 +76,7 @@ public class PetManager {
         else if("familiar".equalsIgnoreCase(petEntry.getType()))
             this.familiars.add(petEntry);
 
-        petEntry.onAdd(this);
+        petEntry.onAdd(this, entryID);
     }
 
 
@@ -64,7 +87,7 @@ public class PetManager {
      * This will not cause the entry itself to become inactive if it is still active.
      * If an entry is finished, it is best to call onRemove() on the entry itself, this method will then be called automatically. **/
     public void removeEntry(PetEntry petEntry) {
-        if(!this.allEntries.contains(petEntry)) {
+        if(!this.allEntries.containsValue(petEntry)) {
             LycanitesMobs.printWarning("", "[Pet Manager] Tried to remove a pet entry that isn't added!");
             return;
         }
@@ -88,45 +111,87 @@ public class PetManager {
     //                       Update
     // ==================================================
 	/** Called by the host's entity update, runs any logic to manage pet entries. **/
-	public void onUpdate() {
-		// Update Pets:
-		for(PetEntry petEntry : this.pets) {
+	public void onUpdate(World world) {
+		for(PetEntry petEntry : this.allEntries.values()) {
             if(petEntry.active)
-			    petEntry.onUpdate();
-            else
-                this.removeEntry(petEntry);
-		}
-
-		// Update Mounts:
-		for(PetEntry petEntry : this.mounts) {
-            if(petEntry.active)
-                petEntry.onUpdate();
-            else
-                this.removeEntry(petEntry);
-		}
-
-		// Update Minions:
-		for(PetEntry petEntry : this.minions) {
-            if(petEntry.active)
-                petEntry.onUpdate();
-            else
-                this.removeEntry(petEntry);
-		}
-
-		// Update Guardians:
-		for(PetEntry petEntry : this.guardians) {
-            if(petEntry.active)
-                petEntry.onUpdate();
-            else
-                this.removeEntry(petEntry);
-		}
-
-		// Update Familiars:
-		for(PetEntry petEntry : this.familiars) {
-            if(petEntry.active)
-                petEntry.onUpdate();
+			    petEntry.onUpdate(world);
             else
                 this.removeEntry(petEntry);
 		}
 	}
+
+
+    // ==================================================
+    //                        Get
+    // ==================================================
+    /** Returns the requested pet entry from its specific id. **/
+    public PetEntry getEntry(int id) {
+        return this.allEntries.get(id);
+    }
+
+    /** Returns the requested pet entry from the specified type by id. **/
+    public PetEntry getEntry(String type, int id) {
+        if("pet".equalsIgnoreCase(type))
+            return this.pets.get(id);
+        else if("mount".equalsIgnoreCase(type))
+            return this.mounts.get(id);
+        else if("minion".equalsIgnoreCase(type))
+            return this.minions.get(id);
+        else if("guardian".equalsIgnoreCase(type))
+            return this.guardians.get(id);
+        else if("familiar".equalsIgnoreCase(type))
+            return this.familiars.get(id);
+        return null;
+    }
+
+    /** Returns the requested entry list. **/
+    public List<PetEntry> getEntryList(String type) {
+        if("pet".equalsIgnoreCase(type))
+            return this.pets;
+        else if("mount".equalsIgnoreCase(type))
+            return this.mounts;
+        else if("minion".equalsIgnoreCase(type))
+            return this.minions;
+        else if("guardian".equalsIgnoreCase(type))
+            return this.guardians;
+        else if("familiar".equalsIgnoreCase(type))
+            return this.familiars;
+        return null;
+    }
+
+
+    // ==================================================
+    //                        NBT
+    // ==================================================
+    // ========== Read ===========
+    /** Reads a list of Creature Knowledge from a player's NBTTag. **/
+    public void readFromNBT(NBTTagCompound nbtTagCompound) {
+        if(!nbtTagCompound.hasKey("PetManager"))
+            return;
+
+        NBTTagList entryList = nbtTagCompound.getTagList("PetManager", 10);
+        for(int i = 0; i < entryList.tagCount(); ++i) {
+            NBTTagCompound nbtEntry = (NBTTagCompound)entryList.getCompoundTagAt(i);
+            if(nbtEntry.hasKey("ID") && nbtEntry.hasKey("Type") && nbtEntry.hasKey("SummonType")) {
+                PetEntry petEntry = this.getEntry(nbtEntry.getInteger("ID"));
+                if(petEntry == null) {
+                    petEntry = new PetEntry(nbtEntry.getString("Type"), this.host, nbtEntry.getString("SummonType"));
+                    this.addEntry(petEntry, nbtEntry.getInteger("ID"));
+                }
+                petEntry.readFromNBT(nbtEntry);
+            }
+        }
+    }
+
+    // ========== Write ==========
+    /** Writes a list of Creature Knowledge to a player's NBTTag. **/
+    public void writeToNBT(NBTTagCompound nbtTagCompound) {
+        NBTTagList entryList = new NBTTagList();
+        for(PetEntry petEntry : this.allEntries.values()) {
+            NBTTagCompound nbtEntry = new NBTTagCompound();
+            petEntry.writeToNBT(nbtEntry);
+            entryList.appendTag(nbtEntry);
+        }
+        nbtTagCompound.setTag("PetManager", entryList);
+    }
 }

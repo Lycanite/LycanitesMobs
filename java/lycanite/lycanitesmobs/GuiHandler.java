@@ -1,10 +1,7 @@
 package lycanite.lycanitesmobs;
 
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
-import lycanite.lycanitesmobs.api.gui.GUIBeastiary;
-import lycanite.lycanitesmobs.api.gui.GUICreature;
-import lycanite.lycanitesmobs.api.gui.GUIMinion;
-import lycanite.lycanitesmobs.api.gui.GUIMinionSelection;
+import lycanite.lycanitesmobs.api.gui.*;
 import lycanite.lycanitesmobs.api.inventory.ContainerCreature;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,7 +19,7 @@ public class GuiHandler implements IGuiHandler {
 		private GuiType(byte i) { id = i; }
 	}
     public static enum PlayerGuiType {
-		MINION_CONTROLS((byte)0), MINION_SELECTION((byte)1), BEASTIARY((byte)2), SOULBOUND_PETS((byte)3);
+        BEASTIARY((byte)0), FAMILIAR_MANAGER((byte)1), MINION_MANAGER((byte)2), MINION_SELECTION((byte)3), SOULBOUND_PETS((byte)4);
 		public byte id;
 		private PlayerGuiType(byte i) { id = i; }
 	}
@@ -95,9 +92,12 @@ public class GuiHandler implements IGuiHandler {
 			if(x == PlayerGuiType.BEASTIARY.id) {
 				return new GUIBeastiary(player);
 			}
-			if(x == PlayerGuiType.MINION_CONTROLS.id) {
-				return new GUIMinion(player, y);
-			}
+            if(x == PlayerGuiType.FAMILIAR_MANAGER.id) {
+                return new GUIFamiliar(player);
+            }
+            if(x == PlayerGuiType.MINION_MANAGER.id) {
+                return new GUIMinion(player, y);
+            }
 			if(x == PlayerGuiType.MINION_SELECTION.id) {
 				return new GUIMinionSelection(player);
 			}

@@ -9,11 +9,11 @@ import net.minecraft.util.StatCollector;
 public class Subspecies {
     // ========== Subspecies Global ==========
     /** The weight used by the default subspecies. **/
-    public static int baseSpeciesWeight = 200;
+    public static int baseSpeciesWeight = 400;
     /** Common weights used by most subspecies. **/
     public static Map<String, Integer> commonWeights = new HashMap<String, Integer>() {{
-    	put("common", 50);
-    	put("uncommon", 10);
+    	put("common", 100);
+    	put("uncommon", 20);
     	put("rare", 5);
     	put("legendary", 1);
     }};

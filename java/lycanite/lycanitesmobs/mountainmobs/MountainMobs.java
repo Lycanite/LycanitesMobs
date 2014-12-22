@@ -132,7 +132,8 @@ public class MountainMobs {
 
 		newMob = new MobInfo(group, "geonach", EntityGeonach.class, 0x443333, 0xBBBBCC)
 		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1)
-		        .addSubspecies(new Subspecies("keppel", "uncommon")).addSubspecies(new Subspecies("golden", "uncommon"));
+		        .addSubspecies(new Subspecies("keppel", "uncommon")).addSubspecies(new Subspecies("golden", "uncommon"))
+                .addSubspecies(new Subspecies("celestial", "rare"));
 		newMob.spawnInfo.setSpawnTypes("ROCK")
 				.setSpawnWeight(4).setAreaLimit(5).setGroupLimits(1, 2);
 		ObjectManager.addMob(newMob);

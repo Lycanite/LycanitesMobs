@@ -29,7 +29,6 @@ public class EntityFear extends EntityCreatureBase {
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.experience = 0;
-        this.spawnsInDarkness = false;
         this.hasStepSound = false;
         this.hasAttackSound = false;
         this.spreadFire = false;

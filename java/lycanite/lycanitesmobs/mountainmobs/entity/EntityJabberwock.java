@@ -42,7 +42,6 @@ public class EntityJabberwock extends EntityCreatureTameable implements IMob {
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.experience = 5;
-        this.spawnsInDarkness = true;
         this.hasAttackSound = true;
 
         this.canGrow = false;

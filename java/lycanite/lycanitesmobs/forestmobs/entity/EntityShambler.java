@@ -43,14 +43,13 @@ public class EntityShambler extends EntityCreatureTameable implements IMob, IGro
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityShambler(World par1World) {
-        super(par1World);
+    public EntityShambler(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 3;
         this.experience = 7;
-        this.spawnsInDarkness = true;
         this.spawnsUnderground = true;
         this.hasAttackSound = true;
         this.spreadFire = true;

@@ -31,14 +31,13 @@ public class EntityJengu extends EntityCreatureTameable implements IMob, IGroupW
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityJengu(World par1World) {
-        super(par1World);
+    public EntityJengu(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 0;
         this.experience = 5;
-        this.spawnsInDarkness = true;
         this.spawnsInWater = true;
         this.hasAttackSound = false;
         

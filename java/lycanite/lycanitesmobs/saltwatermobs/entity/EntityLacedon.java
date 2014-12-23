@@ -37,14 +37,13 @@ public class EntityLacedon extends EntityCreatureTameable implements IMob {
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityLacedon(World par1World) {
-        super(par1World);
+    public EntityLacedon(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 0;
         this.experience = 7;
-        this.spawnsInDarkness = true;
         this.spawnsOnLand = true;
         this.spawnsInWater = true;
         this.hasAttackSound = true;

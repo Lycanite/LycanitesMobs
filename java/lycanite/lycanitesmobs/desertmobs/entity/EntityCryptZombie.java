@@ -32,14 +32,13 @@ public class EntityCryptZombie extends EntityCreatureAgeable implements IMob {
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityCryptZombie(World par1World) {
-        super(par1World);
+    public EntityCryptZombie(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEAD;
         this.defense = 0;
         this.experience = 5;
-        this.spawnsInDarkness = true;
         this.hasAttackSound = false;
         this.spreadFire = true;
 

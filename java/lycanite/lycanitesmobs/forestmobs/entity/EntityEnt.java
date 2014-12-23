@@ -42,14 +42,13 @@ public class EntityEnt extends EntityCreatureTameable implements IMob, IGroupPla
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityEnt(World par1World) {
-        super(par1World);
+    public EntityEnt(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 2;
         this.experience = 5;
-        this.spawnsInDarkness = true;
         this.spawnsUnderground = false;
         this.hasAttackSound = true;
         this.spreadFire = true;

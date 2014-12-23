@@ -146,9 +146,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** This will contain the Spawn Type used to spawn this entity (this should only be used for spawn checks really as it isn't persistent). Null if spawned from egg, spawner, vanilla, etc. **/
     public SpawnTypeBase spawnedFromType = null;
     /** Should this mob only spawn in darkness. **/
-    public boolean spawnsInDarkness = false;
+    //public boolean spawnsInDarkness = false;
     /** Should this mob only spawn in light. **/
-    public boolean spawnsOnlyInLight = false;
+    //public boolean spawnsOnlyInLight = false;
     /** Should this mob check for block collisions when spawning? **/
     public boolean spawnsInBlock = false;
     /** Can this mob spawn where it can't see the sky above? **/
@@ -467,11 +467,15 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public boolean fixedSpawnCheck(World world, int i, int j, int k) {
     	if(this.spawnedFromType == null || (this.spawnedFromType != null && !this.spawnedFromType.ignoreLight)) {
 	    	LycanitesMobs.printDebug("MobSpawns", "Checking light level: Darkness");
-	    	if(this.spawnsInDarkness && this.testLightLevel(i, j, k) > 1)
-	    		return false;
+            byte light = this.testLightLevel(i, j, k);
+            boolean validLight = false;
+	    	if(this.mobInfo.spawnInfo.spawnsInDark && light <= 1)
+                validLight = true;
 	    	LycanitesMobs.printDebug("MobSpawns", "Checking light level: Lightness");
-	    	if(this.spawnsOnlyInLight && this.testLightLevel(i, j, k) < 2)
-	    		return false;
+	    	if(this.mobInfo.spawnInfo.spawnsInLight && light >= 2)
+                validLight = true;
+            if(!validLight)
+                return false;
     	}
     	LycanitesMobs.printDebug("MobSpawns", "Checking entity collision.");
         if(!this.worldObj.checkNoEntityCollision(this.boundingBox))
@@ -1093,7 +1097,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         
         // Time Out Quicker In Light:
         float light = this.getBrightness(1.0F);
-        if(this.spawnsInDarkness && light > 0.5F)
+        if(!this.mobInfo.spawnInfo.spawnsInLight && light > 0.5F)
             this.entityAge += 2;
         
 	    // Stealth Invisibility:
@@ -1239,9 +1243,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
     **/
     // ========== Get Block Path Weight ==========
     public float getBlockPathWeight(int par1, int par2, int par3) {
-        if(this.spawnsInDarkness)
+        if(this.mobInfo.spawnInfo.spawnsInDark && !this.mobInfo.spawnInfo.spawnsInLight)
         	return 0.5F - this.worldObj.getLightBrightness(par1, par2, par3);
-        if(this.spawnsOnlyInLight)
+        if(this.mobInfo.spawnInfo.spawnsInLight && !this.mobInfo.spawnInfo.spawnsInDark)
         	return this.worldObj.getLightBrightness(par1, par2, par3) - 0.5F;
     	return 0.0F;
     }

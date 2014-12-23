@@ -41,14 +41,13 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroup
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntitySkylus(World par1World) {
-        super(par1World);
+    public EntitySkylus(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 0;
         this.experience = 7;
-        this.spawnsInDarkness = true;
         this.spawnsOnLand = false;
         this.spawnsInWater = true;
         this.hasAttackSound = true;

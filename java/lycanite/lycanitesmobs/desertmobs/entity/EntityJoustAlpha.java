@@ -35,14 +35,13 @@ public class EntityJoustAlpha extends EntityCreatureAgeable implements IAnimals,
 	// ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityJoustAlpha(World par1World) {
-        super(par1World);
+    public EntityJoustAlpha(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 1;
         this.experience = 5;
-        this.spawnsOnlyInLight = true;
         this.hasAttackSound = true;
         
         this.setWidth = 0.9F;

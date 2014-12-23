@@ -34,14 +34,13 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityRoc(World par1World) {
-        super(par1World);
+    public EntityRoc(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 0;
         this.experience = 7;
-        this.spawnsInDarkness = true;
         this.hasAttackSound = true;
         this.flySoundSpeed = 20;
         

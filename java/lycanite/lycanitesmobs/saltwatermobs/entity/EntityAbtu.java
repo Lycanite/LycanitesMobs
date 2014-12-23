@@ -38,14 +38,13 @@ public class EntityAbtu extends EntityCreatureTameable implements IMob, IGroupPr
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityAbtu(World par1World) {
-        super(par1World);
+    public EntityAbtu(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 0;
         this.experience = 4;
-        this.spawnsInDarkness = true;
         this.spawnsOnLand = false;
         this.spawnsInWater = true;
         this.hasAttackSound = true;

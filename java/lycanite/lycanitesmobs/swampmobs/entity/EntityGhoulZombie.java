@@ -32,14 +32,13 @@ public class EntityGhoulZombie extends EntityCreatureAgeable implements IMob {
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityGhoulZombie(World par1World) {
-        super(par1World);
+    public EntityGhoulZombie(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEAD;
         this.defense = 0;
         this.experience = 5;
-        this.spawnsInDarkness = true;
         this.hasAttackSound = false;
         this.spreadFire = true;
 

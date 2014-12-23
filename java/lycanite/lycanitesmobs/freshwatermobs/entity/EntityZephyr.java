@@ -36,14 +36,13 @@ public class EntityZephyr extends EntityCreatureTameable implements IMob, IGroup
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityZephyr(World par1World) {
-        super(par1World);
+    public EntityZephyr(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 0;
         this.experience = 5;
-        this.spawnsInDarkness = true;
         this.hasAttackSound = false;
         
         this.setWidth = 0.8F;

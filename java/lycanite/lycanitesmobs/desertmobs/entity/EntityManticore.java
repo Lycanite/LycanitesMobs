@@ -35,14 +35,13 @@ public class EntityManticore extends EntityCreatureTameable implements IMob, IGr
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityManticore(World par1World) {
-        super(par1World);
+    public EntityManticore(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 0;
         this.experience = 5;
-        this.spawnsInDarkness = true;
         this.hasAttackSound = true;
         this.flySoundSpeed = 20;
         

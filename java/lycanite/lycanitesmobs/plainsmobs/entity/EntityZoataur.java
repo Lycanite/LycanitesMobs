@@ -36,14 +36,13 @@ public class EntityZoataur extends EntityCreatureTameable implements IGroupPreda
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityZoataur(World par1World) {
-        super(par1World);
+    public EntityZoataur(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 4;
         this.experience = 7;
-        this.spawnsInDarkness = true;
         this.spawnsUnderground = true;
         this.hasAttackSound = true;
         this.spreadFire = true;

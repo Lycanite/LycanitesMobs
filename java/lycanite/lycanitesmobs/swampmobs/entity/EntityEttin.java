@@ -31,14 +31,13 @@ public class EntityEttin extends EntityCreatureAgeable implements IMob {
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityEttin(World par1World) {
-        super(par1World);
+    public EntityEttin(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 2;
         this.experience = 10;
-        this.spawnsInDarkness = true;
         this.hasAttackSound = true;
 
         this.canGrow = true;

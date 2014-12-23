@@ -51,7 +51,6 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 4;
         this.experience = 5;
-        this.spawnsInDarkness = true;
         this.hasAttackSound = true;
         
         this.geonachBlockBreakRadius = ConfigBase.getConfig(this.group, "general").getInt("Features", "Rare Geonach Block Break Radius", this.geonachBlockBreakRadius, "Controls how large the RARE Geonach's block breaking radius is when it is charging towards its target. Set to -1 to disable. For their block breaking radius on spawn, see the ROCK spawn type features instead. Note that this is only for the extremely rare Geonach.");
@@ -220,4 +219,15 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
     
     @Override
     public boolean canBurn() { return false; }
+
+
+    // ==================================================
+    //                     Subspecies
+    // ==================================================
+    @Override
+    public void setSubspecies(int subspeciesIndex, boolean resetHealth) {
+        super.setSubspecies(subspeciesIndex, resetHealth);
+        if(subspeciesIndex== 3)
+            this.setSizeScale(this.sizeScale * 2);
+    }
 }

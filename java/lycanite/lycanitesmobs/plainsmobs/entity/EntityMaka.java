@@ -39,14 +39,13 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
 	// ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityMaka(World par1World) {
-        super(par1World);
+    public EntityMaka(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 1;
         this.experience = 5;
-        this.spawnsOnlyInLight = true;
         this.hasAttackSound = true;
 
         this.babySpawnChance = 0.1D;

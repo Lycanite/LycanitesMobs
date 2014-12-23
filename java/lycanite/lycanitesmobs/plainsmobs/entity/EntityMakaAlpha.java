@@ -33,14 +33,13 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
 	// ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityMakaAlpha(World par1World) {
-        super(par1World);
+    public EntityMakaAlpha(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 3;
         this.experience = 5;
-        this.spawnsOnlyInLight = true;
         this.hasAttackSound = true;
         
         this.setWidth = 3.5F;

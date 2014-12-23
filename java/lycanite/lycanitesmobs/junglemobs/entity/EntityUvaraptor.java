@@ -40,14 +40,13 @@ public class EntityUvaraptor extends EntityCreatureRideable implements IGroupPre
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityUvaraptor(World par1World) {
-        super(par1World);
+    public EntityUvaraptor(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 0;
         this.experience = 5;
-        this.spawnsInDarkness = true;
         this.spawnsUnderground = false;
         this.hasAttackSound = true;
         this.spreadFire = false;

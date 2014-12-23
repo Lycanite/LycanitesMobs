@@ -36,14 +36,13 @@ public class EntityFrostweaver extends EntityCreatureTameable implements IMob {
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityFrostweaver(World par1World) {
-        super(par1World);
+    public EntityFrostweaver(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
         this.defense = 0;
         this.experience = 5;
-        this.spawnsInDarkness = true;
         this.hasAttackSound = false;
         
         this.setWidth = 0.8F;

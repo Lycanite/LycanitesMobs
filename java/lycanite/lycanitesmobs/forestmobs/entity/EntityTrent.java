@@ -38,14 +38,13 @@ public class EntityTrent extends EntityCreatureBase implements IMob, IGroupPlant
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityTrent(World par1World) {
-        super(par1World);
+    public EntityTrent(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 2;
         this.experience = 10;
-        this.spawnsInDarkness = true;
         this.spawnsUnderground = false;
         this.hasAttackSound = true;
         this.spreadFire = true;

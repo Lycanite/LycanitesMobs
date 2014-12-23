@@ -44,14 +44,13 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
 	// ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityErepede(World par1World) {
-        super(par1World);
+    public EntityErepede(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 2;
         this.experience = 5;
-        this.spawnsInDarkness = true;
         this.hasAttackSound = false;
         
         this.setWidth = 0.8F;

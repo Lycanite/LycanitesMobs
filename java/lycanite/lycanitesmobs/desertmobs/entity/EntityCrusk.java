@@ -43,14 +43,13 @@ public class EntityCrusk extends EntityCreatureTameable implements IGroupPredato
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityCrusk(World par1World) {
-        super(par1World);
+    public EntityCrusk(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
         this.defense = 3;
         this.experience = 10;
-        this.spawnsInDarkness = true;
         this.hasAttackSound = true;
 
         this.babySpawnChance = 0.1D;

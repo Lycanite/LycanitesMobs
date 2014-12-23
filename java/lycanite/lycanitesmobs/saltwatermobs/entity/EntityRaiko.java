@@ -35,14 +35,13 @@ public class EntityRaiko extends EntityCreatureBase implements IMob, IGroupHunte
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityRaiko(World par1World) {
-        super(par1World);
+    public EntityRaiko(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 0;
         this.experience = 7;
-        this.spawnsInDarkness = true;
         this.hasAttackSound = true;
         this.flySoundSpeed = 20;
         

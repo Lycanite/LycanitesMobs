@@ -46,7 +46,6 @@ public class EntityYeti extends EntityCreatureAgeable implements IAnimals, IGrou
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 2;
         this.experience = 5;
-        this.spawnsOnlyInLight = true;
         this.hasAttackSound = false;
         
         this.setWidth = 1.8F;

@@ -36,14 +36,13 @@ public class EntityEyewig extends EntityCreatureRideable {
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityEyewig(World par1World) {
-        super(par1World);
+    public EntityEyewig(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
         this.defense = 0;
         this.experience = 10;
-        this.spawnsInDarkness = true;
         this.hasAttackSound = true;
         
         this.setWidth = 0.8F;

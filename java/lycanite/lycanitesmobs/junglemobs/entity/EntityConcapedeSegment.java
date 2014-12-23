@@ -40,14 +40,13 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityConcapedeSegment(World par1World) {
-        super(par1World);
+    public EntityConcapedeSegment(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
         this.defense = 0;
         this.experience = 3;
-        this.spawnsInDarkness = false;
         this.hasAttackSound = true;
         this.hasStepSound = false;
 

@@ -35,14 +35,13 @@ public class EntityClink extends EntityCreatureTameable implements IMob {
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityClink(World par1World) {
-        super(par1World);
+    public EntityClink(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 0;
         this.experience = 5;
-        this.spawnsInDarkness = true;
         this.hasAttackSound = false;
         
         this.setWidth = 0.6F;

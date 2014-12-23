@@ -47,14 +47,13 @@ public class EntityVespid extends EntityCreatureAgeable implements IMob, IGroupP
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityVespid(World par1World) {
-        super(par1World);
+    public EntityVespid(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
         this.defense = 1;
         this.experience = 5;
-        this.spawnsInDarkness = true;
         this.hasAttackSound = true;
         
         this.setWidth = 0.8F;

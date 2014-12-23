@@ -36,14 +36,13 @@ public class EntityJoust extends EntityCreatureAgeable implements IAnimals, IGro
 	// ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityJoust(World par1World) {
-        super(par1World);
+    public EntityJoust(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 0;
         this.experience = 5;
-        this.spawnsOnlyInLight = true;
         this.hasAttackSound = true;
 
         this.babySpawnChance = 0.1D;

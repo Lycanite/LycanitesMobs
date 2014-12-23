@@ -49,7 +49,6 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 1;
         this.experience = 5;
-        this.spawnsInDarkness = true;
         this.hasAttackSound = true;
         
         this.setWidth = 0.8F;

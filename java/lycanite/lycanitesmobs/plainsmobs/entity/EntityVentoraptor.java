@@ -40,14 +40,13 @@ public class EntityVentoraptor extends EntityCreatureRideable implements IGroupP
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityVentoraptor(World par1World) {
-        super(par1World);
+    public EntityVentoraptor(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 0;
         this.experience = 5;
-        this.spawnsInDarkness = true;
         this.spawnsUnderground = false;
         this.hasAttackSound = true;
         this.spreadFire = false;

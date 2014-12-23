@@ -63,14 +63,13 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityVespidQueen(World par1World) {
-        super(par1World);
+    public EntityVespidQueen(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
         this.defense = 1;
         this.experience = 5;
-        this.spawnsInDarkness = true;
         this.hasAttackSound = true;
         
         this.setWidth = 1.2F;

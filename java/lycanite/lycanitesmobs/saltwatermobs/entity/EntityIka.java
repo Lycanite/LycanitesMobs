@@ -46,7 +46,6 @@ public class EntityIka extends EntityCreatureAgeable implements IAnimals, IGroup
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 0;
         this.experience = 7;
-        this.spawnsInDarkness = false;
         this.spawnsOnLand = false;
         this.spawnsInWater = true;
         this.hasAttackSound = false;

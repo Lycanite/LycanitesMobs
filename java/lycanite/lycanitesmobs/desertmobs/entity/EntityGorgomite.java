@@ -39,15 +39,14 @@ public class EntityGorgomite extends EntityCreatureBase implements IMob, IGroupP
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityGorgomite(World par1World) {
-        super(par1World);
+    public EntityGorgomite(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
         this.defense = 0;
         this.experience = 3;
-        this.spawnsInDarkness = true;
-        hasAttackSound = true;
+        this.hasAttackSound = true;
         
         this.setWidth = 0.6F;
         this.setHeight = 0.5F;

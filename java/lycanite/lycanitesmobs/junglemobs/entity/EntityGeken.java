@@ -35,14 +35,13 @@ public class EntityGeken extends EntityCreatureTameable implements IMob {
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityGeken(World par1World) {
-        super(par1World);
+    public EntityGeken(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 0;
         this.experience = 5;
-        this.spawnsInDarkness = true;
         this.hasAttackSound = true;
 
         this.canGrow = true;

@@ -49,7 +49,6 @@ public class EntityCephignis extends EntityCreatureAgeable implements IAnimals, 
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 0;
         this.experience = 5;
-        this.spawnsInDarkness = false;
         this.spawnsOnLand = false;
         this.spawnsInWater = true;
         this.isLavaCreature = true;

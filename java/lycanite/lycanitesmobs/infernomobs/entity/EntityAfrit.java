@@ -42,14 +42,13 @@ public class EntityAfrit extends EntityCreatureTameable implements IMob, IGroupF
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityAfrit(World par1World) {
-        super(par1World);
+    public EntityAfrit(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 0;
         this.experience = 5;
-        this.spawnsInDarkness = true;
         this.spawnsOnLand = true;
         this.spawnsInWater = true;
         this.isLavaCreature = true;

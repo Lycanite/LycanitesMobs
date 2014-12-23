@@ -65,7 +65,6 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.experience = 3;
-        this.spawnsOnlyInLight = true;
         this.hasAttackSound = false;
 
         this.canGrow = true;

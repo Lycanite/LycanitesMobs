@@ -42,14 +42,13 @@ public class EntityArix extends EntityCreatureTameable implements IMob, IGroupIc
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityArix(World par1World) {
-        super(par1World);
+    public EntityArix(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 0;
         this.experience = 5;
-        this.spawnsInDarkness = true;
         this.hasAttackSound = false;
         this.flySoundSpeed = 20;
         

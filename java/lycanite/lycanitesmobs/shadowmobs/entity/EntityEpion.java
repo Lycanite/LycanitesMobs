@@ -38,14 +38,13 @@ public class EntityEpion extends EntityCreatureTameable implements IMob, IGroupS
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityEpion(World par1World) {
-        super(par1World);
+    public EntityEpion(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEAD;
         this.defense = 0;
         this.experience = 7;
-        this.spawnsInDarkness = true;
         this.hasAttackSound = false;
         this.flySoundSpeed = 20;
         

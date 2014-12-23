@@ -42,14 +42,13 @@ public class EntityArisaur extends EntityCreatureAgeable implements IAnimals, IG
 	// ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityArisaur(World par1World) {
-        super(par1World);
+    public EntityArisaur(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 2;
         this.experience = 5;
-        this.spawnsOnlyInLight = true;
         this.hasAttackSound = false;
 
         this.canGrow = true;

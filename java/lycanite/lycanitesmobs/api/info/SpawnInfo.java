@@ -79,8 +79,15 @@ public class SpawnInfo {
 	
 	/** Used for the BLOCK spawn type. How many blocks that must be within the Spawn Block Search Range. **/
 	public int spawnBlockCost = 1;
-	
-	// ========== Despawning ==========
+
+    // ========== Spawn Conditions ==========
+    /** Whether or not this mob can spawn in high light levels. **/
+    public boolean spawnsInLight = false;
+
+    /** Whether or not this mob can spawn in low light levels. **/
+    public boolean spawnsInDark = true;
+
+    // ========== Despawning ==========
 	/** Whether this mob should despawn or not by default (some mobs can override persistence, such as once farmed). **/
 	public boolean despawnNatural = true;
 	
@@ -166,11 +173,16 @@ public class SpawnInfo {
 		// Spawn Block Cost:
         config.setCategoryComment("Block Costs", "Only used by certain spawners. Sets how many blocks are required for spawning, such as how many blocks of Fire a Cinder requires.");
         this.spawnBlockCost = config.getInt("Block Costs", this.getCfgName("Block Cost"), this.spawnBlockCost);
-		
-		// Natural Despawning:
+
+        // Spawning Conditions:
+        config.setCategoryComment("Spawn Conditions", "Various conditions that are checked at a spawn location when spawning mobs, such as light level.");
+        this.spawnsInLight = config.getBool("Spawn Conditions", this.getCfgName("Spawns In Light"), this.spawnsInLight);
+        this.spawnsInDark = config.getBool("Spawn Conditions", this.getCfgName("Spawns In Dark"), this.spawnsInDark);
+
+        // Natural Despawning:
         config.setCategoryComment("Despawning", "Sets whether or not each mob will despawn over time. Most farmable mobs don't despawn naturally.");
         this.despawnNatural = config.getBool("Despawning", this.getCfgName("Natural Despawning"), this.despawnNatural);
-        
+
         // Forced Despawning:
         config.setCategoryComment("Despawning", "Forces a mob to despawn naturally (unless tamed). Some farmable mobs such as Pinkies ignore their Natural Despawning setting once they've been fed or moved out of their home dimension.");
         this.despawnForced = config.getBool("Despawning", this.getCfgName("Forced Despawning"), this.despawnForced);

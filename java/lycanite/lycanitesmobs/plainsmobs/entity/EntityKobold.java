@@ -48,14 +48,13 @@ public class EntityKobold extends EntityCreatureTameable implements IMob, IGroup
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityKobold(World par1World) {
-        super(par1World);
+    public EntityKobold(World world) {
+        super(world);
         this.torchGreifing = ConfigBase.getConfig(this.group, "general").getBool("Features", "Kobold Torch Griefing", this.torchGreifing, "Set to false to stop Kobolds from stealing torches.");
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.experience = 5;
-        this.spawnsInDarkness = true;
         this.hasAttackSound = true;
         this.spreadFire = false;
 

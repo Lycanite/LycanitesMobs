@@ -48,7 +48,6 @@ public class EntityTroll extends EntityCreatureBase implements IMob {
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 2;
         this.experience = 5;
-        this.spawnsInDarkness = true;
         this.hasAttackSound = false;
 
         //this.canGrow = false;

@@ -769,8 +769,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== On Spawn ==========
     /** This is called when the mob is first spawned to the world either through natural spawning or from a Spawn Egg. **/
     public void onFirstSpawn() {
-    	this.getRandomSubspecies();
-    	this.getRandomSize();
+        if(MobInfo.subspeciesSpawn)
+    	    this.getRandomSubspecies();
+        if(MobInfo.randomSizes)
+    	    this.getRandomSize();
     }
     
     // ========== Get Random Subspecies ==========

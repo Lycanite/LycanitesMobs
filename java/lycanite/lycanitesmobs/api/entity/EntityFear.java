@@ -120,9 +120,9 @@ public class EntityFear extends EntityCreatureBase {
   	// ==================================================
     public void setFearedEntity(Entity feared) {
     	this.fearedEntity = feared;
-        this.width = feared.width;
-        this.height = feared.height;
-        this.setSize(feared.width, feared.height);
+        this.width = feared.width * 1.5F;
+        this.height = feared.height * 1.5F;
+        this.setSize(feared.width * 1.5F, feared.height * 1.5F);
         this.noClip = feared.noClip;
 		this.setLocationAndAngles(feared.posX, feared.posY, feared.posZ, feared.rotationYaw, feared.rotationPitch);
 		

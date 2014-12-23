@@ -51,5 +51,9 @@
     "item.wintergift.bad": {
         "category": "ambient",
         "sounds": [{"name": "item/wintergift_bad", "stream": false}]
+    },
+    "item.wintergiftlarge.bad": {
+        "category": "ambient",
+        "sounds": [{"name": "item/wintergiftlarge_bad", "stream": false}]
     }
 }

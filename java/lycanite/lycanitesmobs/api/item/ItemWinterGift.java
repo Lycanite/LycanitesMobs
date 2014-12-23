@@ -7,6 +7,7 @@ import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityItemCustom;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.arcticmobs.entity.EntityWendigo;
+import lycanite.lycanitesmobs.demonmobs.entity.EntityBehemoth;
 import lycanite.lycanitesmobs.forestmobs.entity.EntityEnt;
 import lycanite.lycanitesmobs.forestmobs.entity.EntityTrent;
 import lycanite.lycanitesmobs.mountainmobs.entity.EntityJabberwock;
@@ -90,7 +91,8 @@ public class ItemWinterGift extends ItemBase {
 		
 		// One Random Trick:
 		Class[] entityClasses = ObjectLists.getEntites("winter_tricks");
-		if(entityClasses != null && entityClasses.length <= 0) return;
+        if(entityClasses == null) return;
+        if(entityClasses.length <= 0) return;
 		Class entityClass = entityClasses[player.getRNG().nextInt(entityClasses.length)];
 		if(entityClass != null) {
 			Entity entity = null;
@@ -113,6 +115,8 @@ public class ItemWinterGift extends ItemBase {
                         entityCreature.setCustomNameTag("Salty Tree");
                     else if(entityCreature instanceof EntityPhantom)
                         entityCreature.setCustomNameTag("Satan Claws");
+                    else if(entityCreature instanceof EntityBehemoth)
+                        entityCreature.setCustomNameTag("Krampus");
                 }
 
 	            world.spawnEntityInWorld(entity);
@@ -147,5 +151,6 @@ public class ItemWinterGift extends ItemBase {
         ObjectLists.addEntity("winter_tricks", "ent");
         ObjectLists.addEntity("winter_tricks", "trent");
         ObjectLists.addEntity("winter_tricks", "phantom");
+        ObjectLists.addEntity("winter_tricks", "behemoth");
     }
 }

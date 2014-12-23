@@ -78,6 +78,9 @@ item.wintergift.name=Winter Gift
 item.wintergift.description=Good tidings, Happy Yuletide and Merry Christmas! Open it up and do see what's inside!
 item.wintergift.good=Ugh, here's your present...
 item.wintergift.bad=Bwahahahaha! Good tidings I bring, for me!
+item.wintergiftlarge.name=Large Winter Gift
+item.wintergiftlarge.description=It's December 25th! Time to open your big presents! Ignore the screeching sound the box makes, it's nothing...
+item.wintergiftlarge.bad=Aaaahhhhh Haaa Haaa Haaa Ha Ha Ha! Bwahahahah! Merry Christmas!
 #
 #
 #
@@ -122,6 +125,8 @@ gui.pet.stance=Stance
 gui.pet.aggressive=Aggressive
 gui.pet.defensive=Defensive
 gui.pet.pvp=PVP
+gui.pet.active=Active
+gui.pet.teleport=Teleport
 #
 # Mounts:
 gui.mount.controls=Press %control% to use mount ability

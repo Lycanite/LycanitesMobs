@@ -18,6 +18,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PetEntry {
+    /** The unique name for this entry, used when reading and writing NBT Data. If it is an empty string "" or null then NBT Data will not be stored. **/
+    public String name;
     /** The Pet Manager that this entry is added to, this can also be null. **/
     public PetManager petManager;
     /** The ID given to this entry by the PetManager. **/
@@ -31,12 +33,16 @@ public class PetEntry {
     public int respawnTime = 0;
     /** The amount of time until respawn. **/
     public int respawnTimeMax;
+    /** True if the entity has died and must wait to respawn. **/
+    public boolean isRespawning = false;
     /** Counts how many times this entry has summoned its entity. **/
     public int spawnCount = 0;
     /** If true, this entry and it's entity will be marked as temporary where once the entity is gone, it will not respawn. The minion type sets this to true. **/
     public boolean temporary = false;
     /** For temporary entities, this will set how the long the entity will last before it despawns. **/
     public int temporaryDuration = 5 * 20;
+    /** True if this entry should keep its entity spawned/respawned. False if the entity should be remvoed and not spawned. This can be turned on and off (such as for familiars). **/
+    public boolean spawningActive = true;
 
     /** The entity that this entry belongs to. **/
     public EntityLivingBase host;
@@ -44,11 +50,22 @@ public class PetEntry {
     public SummonSet summonSet;
     /** The current entity instance that this entry is using. **/
     public Entity entity;
+
+    /** The name to use for the entity. Leave empty/null "" for no name. **/
+    public String entityName = "";
+    /** The Subspecies ID to use for the entity. **/
+    public int subspeciesID = 0;
+    /** The size scale to use for the entity. **/
+    public double entitySize = 1.0D;
+
+    /** If true, a teleport has been requested to teleport the entity (if active) to the host entity. **/
+    public boolean teleportEntity = false;
 	
     // ==================================================
     //                     Constructor
     // ==================================================
-	public PetEntry(String type, EntityLivingBase host, String summonType) {
+	public PetEntry(String name, String type, EntityLivingBase host, String summonType) {
+        this.name = name;
         this.type = type;
         this.host = host;
 
@@ -107,17 +124,57 @@ public class PetEntry {
             return;
         }
 
-        // Dead Check:
-        if(this.entity != null && !this.entity.isEntityAlive())
-            this.entity = null;
+        // Active Spawning:
+        if(this.spawningActive) {
+            // Dead Check:
+            if(this.entity != null && !this.entity.isEntityAlive()) {
+                this.entity = null;
+                this.isRespawning = true;
+            }
 
-        // No Entity:
-        if(this.entity == null) {
-            // Respawn:
-            if(this.respawnTime-- <= 0)
-                this.spawnEntity();
+            // No Entity:
+            if(this.entity == null) {
+                // Respawn:
+                if(!this.isRespawning)
+                    this.respawnTime = 0;
+                if(this.respawnTime-- <= 0) {
+                    this.spawnEntity();
+                    this.isRespawning = false;
+                }
+            }
+
+            // Actions:
+            if(this.entity != null) {
+                if(this.teleportEntity)
+                    this.entity.setPosition(this.host.posX, this.host.posY, this.host.posZ);
+            }
         }
+
+        // Inactive Spawning:
+        else {
+            // Remove Entity If Spawned:
+            if(this.entity != null && this.entity.isEntityAlive()) {
+                this.entity.setDead();
+                this.entity = null;
+            }
+
+            // Count Down Respawn Timer If Active:
+            if(this.respawnTime > 0)
+                this.respawnTime--;
+        }
+
+        this.teleportEntity = false;
 	}
+
+
+    // ==================================================
+    //                    Active Check
+    // ==================================================
+    /** Called when this entry's entity behaviour has been changed by the client. **/
+    public void onBehaviourUpdate() {
+        if(this.entity != null && this.entity instanceof EntityCreatureTameable)
+            this.summonSet.applyBehaviour((EntityCreatureTameable)this.entity);
+    }
 
 
     // ==================================================
@@ -173,8 +230,16 @@ public class PetEntry {
 
             if(this.temporary)
                 entityCreature.setTemporary(this.temporaryDuration);
+
+            if(this.entityName != null && !"".equals(this.entityName))
+                entityCreature.setCustomNameTag(this.entityName);
+            entityCreature.setSizeScale(this.entitySize);
+            entityCreature.setSubspecies(this.subspeciesID, false);
+
             if(entityCreature instanceof EntityCreatureTameable && this.host instanceof EntityPlayer) {
-                ((EntityCreatureTameable)entityCreature).setPlayerOwner((EntityPlayer) this.host);
+                EntityCreatureTameable entityTameable = (EntityCreatureTameable)entityCreature;
+                entityTameable.setPlayerOwner((EntityPlayer) this.host);
+                this.summonSet.applyBehaviour(entityTameable);
             }
 
         }
@@ -221,16 +286,29 @@ public class PetEntry {
     //                        NBT
     // ==================================================
     // ========== Read ===========
-    /** Reads pet entry from NBTTag. **/
+    /** Reads pet entry from NBTTag. Should be called by PetManagers or other classes that store PetEntries and NBT Data for them. **/
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
+        if(nbtTagCompound.hasKey("RespawnTime"))
+            this.respawnTime = nbtTagCompound.getInteger("RespawnTime");
+        if(nbtTagCompound.hasKey("Respawning"))
+            this.isRespawning = nbtTagCompound.getBoolean("Respawning");
+        if(nbtTagCompound.hasKey("SpawningActive"))
+            this.spawningActive = nbtTagCompound.getBoolean("SpawningActive");
+
         this.summonSet.readFromNBT(nbtTagCompound);
     }
 
     // ========== Write ==========
     /** Writes pet entry to NBTTag. **/
     public void writeToNBT(NBTTagCompound nbtTagCompound) {
+        if(this.name == null || "".equals(this.name))
+            return;
+        nbtTagCompound.setString("EntryName", this.name);
         nbtTagCompound.setInteger("ID", this.petEntryID);
         nbtTagCompound.setString("Type", this.getType());
+        nbtTagCompound.setInteger("RespawnTime", this.respawnTime);
+        nbtTagCompound.setBoolean("Respawning", this.isRespawning);
+        nbtTagCompound.setBoolean("SpawningActive", this.spawningActive);
         this.summonSet.writeToNBT(nbtTagCompound);
     }
 }

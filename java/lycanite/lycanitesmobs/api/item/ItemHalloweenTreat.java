@@ -83,7 +83,8 @@ public class ItemHalloweenTreat extends ItemBase {
 		
 		// One Random Trick:
 		Class[] entityClasses = ObjectLists.getEntites("halloween_tricks");
-		if(entityClasses != null && entityClasses.length <= 0) return;
+        if(entityClasses == null) return;
+        if(entityClasses.length <= 0) return;
 		Class entityClass = entityClasses[player.getRNG().nextInt(entityClasses.length)];
 		if(entityClass != null) {
 			Entity entity = null;

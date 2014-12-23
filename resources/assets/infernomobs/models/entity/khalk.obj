@@ -1,7 +1,7 @@
 # Blender v2.71 (sub 0) OBJ File: 'khalk.blend'
 # www.blender.org
 mtllib khalk.mtl
-o LegRightFront_LegLRightFront
+o LegRightFront
 v -1.566453 0.877968 1.582157
 v -1.883247 0.877968 0.399864
 v -2.674819 1.202938 0.611965

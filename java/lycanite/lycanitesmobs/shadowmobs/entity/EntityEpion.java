@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs.shadowmobs.entity;
 import java.util.HashMap;
 
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.IGroupPrey;
 import lycanite.lycanitesmobs.api.IGroupShadow;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
@@ -67,6 +68,7 @@ public class EntityEpion extends EntityCreatureTameable implements IMob, IGroupS
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class).setCheckSight(false));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class).setCheckSight(false));
+        this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
     

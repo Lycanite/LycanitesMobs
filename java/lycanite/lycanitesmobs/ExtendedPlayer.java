@@ -87,7 +87,10 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 		player.registerExtendedProperties(ExtendedPlayer.EXT_PROP_NAME, this);
 
         // Familiars:
-        familiarLycanite = new PetEntryFamiliar(this.player, "grue");
+        familiarLycanite = new PetEntryFamiliar("LycaniteGrueJasper", this.player, "grue");
+        familiarLycanite.subspeciesID = 2;
+        familiarLycanite.entityName = "Jasper";
+        familiarLycanite.entitySize = 0.85D;
 	}
 	
 	
@@ -227,15 +230,21 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 		if(this.player.worldObj.isRemote) return;
 		for(PetEntry petEntry : this.petManager.allEntries.values()) {
             if(entryType.equals(petEntry.getType())) {
-                MessagePetEntry message = new MessagePetEntry(this, petEntry.petEntryID, entryType);
-                LycanitesMobs.packetHandler.sendToPlayer(message, (EntityPlayerMP) this.player);
+                MessagePetEntry message = new MessagePetEntry(this, petEntry);
+                LycanitesMobs.packetHandler.sendToPlayer(message, (EntityPlayerMP)this.player);
             }
 		}
 	}
-	
-	public void sendPetEntryToServer(String entryType, int petEntryID) {
+
+    public void sendPetEntryToPlayer(PetEntry petEntry) {
+        if(this.player.worldObj.isRemote) return;
+        MessagePetEntry message = new MessagePetEntry(this, petEntry);
+        LycanitesMobs.packetHandler.sendToPlayer(message, (EntityPlayerMP)this.player);
+    }
+
+	public void sendPetEntryToServer(PetEntry petEntry) {
 		if(!this.player.worldObj.isRemote) return;
-        MessagePetEntry message = new MessagePetEntry(this, petEntryID, entryType);
+        MessagePetEntry message = new MessagePetEntry(this, petEntry);
 		LycanitesMobs.packetHandler.sendToServer(message);
 	}
 

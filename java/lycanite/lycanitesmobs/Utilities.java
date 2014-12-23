@@ -155,6 +155,11 @@ public class Utilities {
 		return calendar.get(Calendar.MONTH) == calendar.DECEMBER;
     }
 
+    public static boolean isYuletideDay() {
+        Calendar calendar = Calendar.getInstance();
+        return calendar.get(Calendar.MONTH) == calendar.DECEMBER && calendar.get(Calendar.DAY_OF_MONTH) == 25;
+    }
+
     public static boolean isNewYear() {
     	Calendar calendar = Calendar.getInstance();
 		return calendar.get(Calendar.MONTH) == calendar.JANUARY && calendar.get(Calendar.DAY_OF_MONTH) == 1;

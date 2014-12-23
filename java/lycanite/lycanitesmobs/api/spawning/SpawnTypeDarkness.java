@@ -15,6 +15,8 @@ import net.minecraft.world.World;
 
 public class SpawnTypeDarkness extends SpawnTypeBase {
 	public boolean displayChatWarnings = true;
+    /** The highest light level this spawner will work in. 5 Is above ground in the overworld at night time. 0 is pitch black. **/
+    public int lightLevel = 5;
 	public Map<EntityPlayer, Byte> darknessLevels = new HashMap<EntityPlayer, Byte>();
 
     // ==================================================
@@ -23,7 +25,9 @@ public class SpawnTypeDarkness extends SpawnTypeBase {
     public SpawnTypeDarkness(String typeName) {
         super(typeName);
         CustomSpawner.instance.updateSpawnTypes.add(this);
-        this.displayChatWarnings = ConfigBase.getConfig(LycanitesMobs.group, "spawning").getBool("Spawner Features", "Darkness Spawn Chat Warnings", this.displayChatWarnings, "Set to false to prevent the darkness warning messages from showing.");
+        ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "spawning");
+        this.displayChatWarnings = config.getBool("Spawner Features", "Darkness Spawn Chat Warnings", this.displayChatWarnings, "Set to false to prevent the darkness warning messages from showing.");
+        this.lightLevel = config.getInt("Spawner Features", "Darkness Spawn Highest Light Level", this.lightLevel, "The highest light level the Darkness spawn type will work in. 5 Is above ground in the overworld at night time. 0 is pitch black.");
     }
 	
 	
@@ -52,7 +56,7 @@ public class SpawnTypeDarkness extends SpawnTypeBase {
 				darknessLevel = this.darknessLevels.get(player);
 			
 			// Dark:
-			if(lightLevel <= 5) {
+			if(lightLevel <= this.lightLevel) {
 				float chance = 0.125F;
 				if(lightLevel <= 0)
 					chance = 0.5F;
@@ -89,7 +93,7 @@ public class SpawnTypeDarkness extends SpawnTypeBase {
 			}
 			
 			// Light
-			else if(darknessLevel > 0) {
+			else {
 				if(darknessLevel == 2 && this.displayChatWarnings) {
 					String message = StatCollector.translateToLocal("spawner.darkness.level1.back");
 					player.addChatMessage(new ChatComponentText(message));

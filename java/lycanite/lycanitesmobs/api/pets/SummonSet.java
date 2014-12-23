@@ -77,12 +77,22 @@ public class SummonSet {
 		return MobInfo.mobNameToInfo.get(this.summonType);
 	}
 
+    /** Applies all behaviour in this set to the provided entity. **/
     public void applyBehaviour(EntityCreatureTameable minion) {
         minion.setSitting(this.getSitting());
         minion.setFollowing(this.getFollowing());
         minion.setPassive(this.getPassive());
         minion.setAggressive(this.getAggressive());
         minion.setPVP(this.getPVP());
+    }
+
+    /** Copies the provided entity's behaviour into this summon set's behaviour. **/
+    public void updateBehaviour(EntityCreatureTameable minion) {
+        this.sitting = minion.isSitting();
+        this.following = minion.isFollowing();
+        this.passive = minion.isPassive();
+        this.aggressive = minion.isAggressive();
+        this.pvp = minion.isPVP();
     }
 	
 	
@@ -109,12 +119,16 @@ public class SummonSet {
 		if(this.playerExt.beastiary == null)
 			return;
 		this.setSummonType(summonType);
-		this.sitting = (behaviour & BEHAVIOUR_ID.SITTING.id) > 0;
-		this.following = (behaviour & BEHAVIOUR_ID.FOLLOWING.id) > 0;
-		this.passive = (behaviour & BEHAVIOUR_ID.PASSIVE.id) > 0;
-		this.aggressive = (behaviour & BEHAVIOUR_ID.STANCE.id) > 0;
-		this.pvp = (behaviour & BEHAVIOUR_ID.PVP.id) > 0;
+		this.setBehaviourByte(behaviour);
 	}
+
+    public void setBehaviourByte(byte behaviour) {
+        this.sitting = (behaviour & BEHAVIOUR_ID.SITTING.id) > 0;
+        this.following = (behaviour & BEHAVIOUR_ID.FOLLOWING.id) > 0;
+        this.passive = (behaviour & BEHAVIOUR_ID.PASSIVE.id) > 0;
+        this.aggressive = (behaviour & BEHAVIOUR_ID.STANCE.id) > 0;
+        this.pvp = (behaviour & BEHAVIOUR_ID.PVP.id) > 0;
+    }
 
 	public byte getBehaviourByte() {
 		byte behaviour = 0;

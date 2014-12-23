@@ -89,8 +89,8 @@ public class GUIFamiliar extends GuiScreen {
 			this.list = new GUIFamiliarList(this, this.playerExt,
 					(this.windowWidth / 2) - (buttonSpacing * 2),
 					this.windowHeight - 16 - (buttonSpacing * 2),
-					this.windowY + 52,
-					this.windowY + 16 + this.windowHeight - 16 - (buttonSpacing * 2),
+					this.windowY + 16,
+					this.windowY + this.windowHeight - 28 - (buttonSpacing * 2),
 					this.windowX + (buttonSpacing * 2),
 					20
 				);
@@ -134,9 +134,8 @@ public class GUIFamiliar extends GuiScreen {
   	// ==================================================
 	protected void drawGuiContainerBackgroundLayer() {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIMinion"));
+        this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIFamiliar"));
         this.drawTexturedModalRect(this.windowX, this.windowY, 0, 0, this.windowWidth, this.windowHeight);
-        
 	}
 	
 	
@@ -145,20 +144,20 @@ public class GUIFamiliar extends GuiScreen {
   	// ==================================================
 	protected void drawControls() {
 		if(!this.hasFamiliars()) return;
-		
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        int buttonSpacing = 2;
-        int buttonWidth = 32;
-        int buttonHeight = 32;
-        int buttonX = this.windowX + 2;
-        int buttonY = this.windowY + 16;
-        
         // Behaviour:
-        buttonSpacing = 1;
-        buttonWidth = (this.windowWidth / 2) - (buttonSpacing * 4);
-        buttonHeight = 20;
+        int buttonSpacing = 1;
+        int buttonWidth = (this.windowWidth / 2) - (buttonSpacing * 4);
+        int buttonHeight = 20;
+        int buttonY = this.windowY + 5;
+        int buttonX = this.windowX + (buttonSpacing * 2);
+
+        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.SPAWNING.id, buttonX, this.windowY + this.windowHeight - buttonHeight - 9, buttonWidth, buttonHeight, "..."));
+
         buttonX = this.centerX + buttonSpacing;
-        buttonY = this.windowY + 30;
+
+        buttonY += buttonHeight + (buttonSpacing * 2);
+        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.TELEPORT.id, buttonX, buttonY, buttonWidth, buttonHeight, "..."));
         
         buttonY += buttonHeight + (buttonSpacing * 2);
         this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.SITTING.id, buttonX, buttonY, buttonWidth, buttonHeight, "..."));
@@ -182,8 +181,15 @@ public class GUIFamiliar extends GuiScreen {
         for(Object buttonObj : this.buttonList) {
         	if(buttonObj instanceof GuiButton) {
         		GuiButton button = (GuiButton)buttonObj;
-        		
-        		// Behaviour Buttons:
+
+                // Action Buttons:
+                if(button.id == EntityCreatureBase.GUI_COMMAND_ID.SPAWNING.id)
+                    button.displayString = StatCollector.translateToLocal("gui.pet.active") + ": " + (this.petEntry.spawningActive ? StatCollector.translateToLocal("common.yes") : StatCollector.translateToLocal("common.no"));
+
+                if(button.id == EntityCreatureBase.GUI_COMMAND_ID.TELEPORT.id)
+                    button.displayString = StatCollector.translateToLocal("gui.pet.teleport");
+
+                // Behaviour Buttons:
                 if(button.id == EntityCreatureBase.GUI_COMMAND_ID.SITTING.id)
                     button.displayString = StatCollector.translateToLocal("gui.pet.sitting") + ": " + (this.summonSet.getSitting() ? StatCollector.translateToLocal("common.yes") : StatCollector.translateToLocal("common.no"));
 
@@ -220,7 +226,14 @@ public class GUIFamiliar extends GuiScreen {
                 this.summonSet.aggressive = !this.summonSet.aggressive;
             if(guiButton.id == EntityCreatureBase.GUI_COMMAND_ID.PVP.id)
                 this.summonSet.pvp = !this.summonSet.pvp;
-            this.playerExt.sendPetEntryToServer("familiar", this.petEntry.petEntryID);
+
+            // Action Button:
+            if(guiButton.id == EntityCreatureBase.GUI_COMMAND_ID.TELEPORT.id)
+                this.petEntry.teleportEntity = true;
+            if(guiButton.id == EntityCreatureBase.GUI_COMMAND_ID.SPAWNING.id)
+                this.petEntry.spawningActive = !this.petEntry.spawningActive;
+
+            this.playerExt.sendPetEntryToServer(this.petEntry);
 		}
 		super.actionPerformed(guiButton);
 	}

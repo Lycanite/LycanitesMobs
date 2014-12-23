@@ -319,7 +319,12 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     		this.setPVP(!this.isPVP());
     		this.playTameSound();
     	}
-    	
+
+        // Update Pet Entry Summon Set:
+        if(this.petEntry != null && this.petEntry.summonSet != null) {
+            this.petEntry.summonSet.updateBehaviour(this);
+        }
+
     	super.performGUICommand(player, guiCommandID);
     }
     
@@ -517,6 +522,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     //                     Pet Control
     // ==================================================
     public boolean petControlsEnabled() { return false; }
+    public byte behaviourBitMask() { return this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id); }
     
     // ========== Sitting ==========
     public boolean isSitting() {

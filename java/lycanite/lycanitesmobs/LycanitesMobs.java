@@ -43,7 +43,7 @@ public class LycanitesMobs {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String version = "1.10.7.8 - MC 1.7.10";
+	public static final String version = "1.10.7.9 - MC 1.7.10";
 	
 	public static final PacketHandler packetHandler = new PacketHandler();
 
@@ -146,6 +146,7 @@ public class LycanitesMobs {
 		// Seasonal Items:
 		ObjectManager.addItem("halloweentreat", new ItemHalloweenTreat());
         ObjectManager.addItem("wintergift", new ItemWinterGift());
+        ObjectManager.addItem("wintergiftlarge", new ItemWinterGiftLarge());
 
         // ========== Call Object Lists Setup ==========
 		ObjectLists.createLists();

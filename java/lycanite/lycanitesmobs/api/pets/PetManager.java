@@ -1,13 +1,12 @@
 package lycanite.lycanitesmobs.api.pets;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.info.CreatureKnowledge;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
@@ -29,6 +28,9 @@ public class PetManager {
     /** Familiars are mobs that are bound to the player, they are similar to guardians but aren't dependant on any equipment/effects, etc. Eg: Donation Familiars. **/
 	public List<PetEntry> familiars = new ArrayList<PetEntry>();
     // I might also add slaves for mobs that are temporarily under the host's control who can break free, etc instead of despawning.
+
+    /** A map containing NBT Tag Compunds mapped to Unique Pet Entry Names. **/
+    public Map<String, NBTTagCompound> entryNBTs = new HashMap<String, NBTTagCompound>();
 	
     // ==================================================
     //                     Constructor
@@ -61,6 +63,10 @@ public class PetManager {
             return;
         }
 
+        // Load From NBT:
+        if(this.entryNBTs.containsKey(petEntry.name))
+            petEntry.readFromNBT(this.entryNBTs.get(petEntry.name));
+
         if(entryID < 0)
             entryID = this.nextID;
         this.allEntries.put(entryID, petEntry);
@@ -77,6 +83,12 @@ public class PetManager {
             this.familiars.add(petEntry);
 
         petEntry.onAdd(this, entryID);
+
+        if(this.host instanceof EntityPlayer) {
+            ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer((EntityPlayer)this.host);
+            if(playerExt != null)
+                playerExt.sendPetEntryToPlayer(petEntry);
+        }
     }
 
 
@@ -169,29 +181,42 @@ public class PetManager {
         if(!nbtTagCompound.hasKey("PetManager"))
             return;
 
+        // Load All NBT Data Into The Map:
         NBTTagList entryList = nbtTagCompound.getTagList("PetManager", 10);
         for(int i = 0; i < entryList.tagCount(); ++i) {
             NBTTagCompound nbtEntry = (NBTTagCompound)entryList.getCompoundTagAt(i);
-            if(nbtEntry.hasKey("ID") && nbtEntry.hasKey("Type") && nbtEntry.hasKey("SummonType")) {
-                PetEntry petEntry = this.getEntry(nbtEntry.getInteger("ID"));
-                if(petEntry == null) {
-                    petEntry = new PetEntry(nbtEntry.getString("Type"), this.host, nbtEntry.getString("SummonType"));
-                    this.addEntry(petEntry, nbtEntry.getInteger("ID"));
-                }
-                petEntry.readFromNBT(nbtEntry);
-            }
+            if(nbtEntry.hasKey("EntryName"))
+                this.entryNBTs.put(nbtEntry.getString("EntryName"), nbtEntry);
+        }
+
+        // Have All Entries In Use Read From The Map:
+        for(PetEntry petEntry : this.allEntries.values()) {
+            if(this.entryNBTs.containsKey(petEntry.name))
+                petEntry.readFromNBT(this.entryNBTs.get(petEntry.name));
         }
     }
 
     // ========== Write ==========
     /** Writes a list of Creature Knowledge to a player's NBTTag. **/
     public void writeToNBT(NBTTagCompound nbtTagCompound) {
+        List<String> writtenEntries = new ArrayList<String>();
         NBTTagList entryList = new NBTTagList();
+
+        // Save Entries In Use:
         for(PetEntry petEntry : this.allEntries.values()) {
             NBTTagCompound nbtEntry = new NBTTagCompound();
             petEntry.writeToNBT(nbtEntry);
             entryList.appendTag(nbtEntry);
+            writtenEntries.add(petEntry.name);
         }
+
+        // Update Saved Entries Not In Use:
+        for(Map.Entry<String, NBTTagCompound> entryNBTSet : this.entryNBTs.entrySet()) {
+            if(!writtenEntries.contains(entryNBTSet.getKey())) {
+                entryList.appendTag(entryNBTSet.getValue());
+            }
+        }
+
         nbtTagCompound.setTag("PetManager", entryList);
     }
 }

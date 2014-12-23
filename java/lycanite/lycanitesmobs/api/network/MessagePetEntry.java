@@ -16,8 +16,11 @@ import net.minecraft.network.PacketBuffer;
 import java.io.IOException;
 
 public class MessagePetEntry implements IMessage, IMessageHandler<MessagePetEntry, IMessage> {
+    public String petEntryName;
+    public int petEntryID;
     public String petEntryType;
-	public int petEntryID;
+    public boolean spawningActive;
+    public boolean teleportEntity;
     public String summonType;
 	public byte behaviour;
 
@@ -26,10 +29,13 @@ public class MessagePetEntry implements IMessage, IMessageHandler<MessagePetEntr
 	//                    Constructors
 	// ==================================================
 	public MessagePetEntry() {}
-	public MessagePetEntry(ExtendedPlayer playerExt, int petEntryID, String petEntryType) {
-        this.petEntryType = petEntryType;
-		this.petEntryID = petEntryID;
-        SummonSet summonSet = playerExt.petManager.getEntry(petEntryID).summonSet;
+	public MessagePetEntry(ExtendedPlayer playerExt, PetEntry petEntry) {
+        this.petEntryName = petEntry.name != null ? petEntry.name : "";
+        this.petEntryID = petEntry.petEntryID;
+        this.petEntryType = petEntry.getType();
+        this.spawningActive = petEntry.spawningActive;
+        this.teleportEntity = petEntry.teleportEntity;
+        SummonSet summonSet = petEntry.summonSet;
         this.summonType = summonSet.summonType;
 		this.behaviour = summonSet.getBehaviourByte();
 	}
@@ -55,13 +61,18 @@ public class MessagePetEntry implements IMessage, IMessageHandler<MessagePetEntr
         PetManager petManager = playerExt.petManager;
         PetEntry petEntry = petManager.getEntry(message.petEntryID);
         if(petEntry == null) {
-            if(ctx.side == Side.SERVER)
+            if(ctx.side == Side.SERVER) {
                 return null; //Client should not be able to tell the server to add a new entry!
-            petEntry = new PetEntry(message.petEntryType, player, this.summonType);
+            }
+            petEntry = new PetEntry(this.petEntryName, message.petEntryType, player, this.summonType);
             petManager.addEntry(petEntry, message.petEntryID);
         }
+        petEntry.spawningActive = message.spawningActive;
+        petEntry.teleportEntity = message.teleportEntity;
 		SummonSet summonSet = petEntry.summonSet;
 		summonSet.readFromPacket(message.summonType, message.behaviour);
+        if(ctx.side == Side.SERVER)
+            petEntry.onBehaviourUpdate();
 		return null;
 	}
 	
@@ -76,8 +87,11 @@ public class MessagePetEntry implements IMessage, IMessageHandler<MessagePetEntr
 	public void fromBytes(ByteBuf buf) {
 		PacketBuffer packet = new PacketBuffer(buf);
 		try {
+            this.petEntryName = packet.readStringFromBuffer(256);
+            this.petEntryID = packet.readInt();
             this.petEntryType = packet.readStringFromBuffer(256);
-			this.petEntryID = packet.readInt();
+            this.spawningActive = packet.readBoolean();
+            this.teleportEntity = packet.readBoolean();
 			this.summonType = packet.readStringFromBuffer(256);
 			this.behaviour = packet.readByte();
 		} catch (IOException e) {
@@ -97,8 +111,11 @@ public class MessagePetEntry implements IMessage, IMessageHandler<MessagePetEntr
 	public void toBytes(ByteBuf buf) {
 		PacketBuffer packet = new PacketBuffer(buf);
 		try {
-            packet.writeStringToBuffer(this.petEntryType);
+            packet.writeStringToBuffer(this.petEntryName);
 			packet.writeInt(this.petEntryID);
+            packet.writeStringToBuffer(this.petEntryType);
+            packet.writeBoolean(this.spawningActive);
+            packet.writeBoolean(this.teleportEntity);
 			packet.writeStringToBuffer(this.summonType);
 			packet.writeByte(this.behaviour);
 		} catch (IOException e) {

@@ -259,8 +259,11 @@ public class EventListener {
             Item seasonalItem = null;
             if(Utilities.isHalloween())
                 seasonalItem = ObjectManager.getItem("halloweentreat");
-            if(Utilities.isYuletide() || Utilities.isNewYear())
+            if(Utilities.isYuletide() || Utilities.isNewYear()) {
                 seasonalItem = ObjectManager.getItem("wintergift");
+                if(Utilities.isYuletideDay() && world.rand.nextBoolean())
+                    seasonalItem = ObjectManager.getItem("wintergiftlarge");
+            }
 
             if(seasonalItem != null && !noSeaonalDrop && (alwaysDrop || event.entityLiving.getRNG().nextFloat() < ItemInfo.seasonalItemDropChance)) {
                 ItemStack dropStack = new ItemStack(seasonalItem, 1);

@@ -107,35 +107,35 @@ public class ForestMobs {
 		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
 		        .addSubspecies(new Subspecies("russet", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER, TREE")
-				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3);
+				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "trent", EntityTrent.class, 0x663300, 0x00AA11)
 		        .setPeaceful(false).setSummonable(false).setSummonCost(6).setDungeonLevel(2)
 		        .addSubspecies(new Subspecies("russet", "uncommon")).addSubspecies(new Subspecies("ashen", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER")
-				.setSpawnWeight(1).setAreaLimit(2).setGroupLimits(1, 1);
+				.setSpawnWeight(1).setAreaLimit(2).setGroupLimits(1, 1).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "shambler", EntityShambler.class, 0xDDFF22, 0x005511)
 		        .setPeaceful(false).setSummonable(false).setSummonCost(4).setDungeonLevel(1)
 		        .addSubspecies(new Subspecies("dark", "uncommon")).addSubspecies(new Subspecies("keppel", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER")
-				.setSpawnWeight(4).setAreaLimit(6).setGroupLimits(1, 2);
+				.setSpawnWeight(4).setAreaLimit(6).setGroupLimits(1, 2).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "arisaur", EntityArisaur.class, 0x008800, 0x00FF00)
 		        .setPeaceful(true).setSummonable(false).setSummonCost(2).setDungeonLevel(-1)
 		        .addSubspecies(new Subspecies("russet", "uncommon")).addSubspecies(new Subspecies("keppel", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("CREATURE").setDespawn(false)
-				.setSpawnWeight(10).setAreaLimit(12).setGroupLimits(1, 3).setDungeonWeight(0);
+				.setSpawnWeight(10).setAreaLimit(12).setGroupLimits(1, 3).setLightDark(true, false).setDungeonWeight(0);
 		ObjectManager.addMob(newMob);
 
         newMob = new MobInfo(group, "spriggan", EntitySpriggan.class, 0x997722, 0x008844)
                 .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
 		        .addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
         newMob.spawnInfo.setSpawnTypes("CROP, SKY")
-                .setSpawnWeight(4).setAreaLimit(3).setGroupLimits(1, 3);
+                .setSpawnWeight(4).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
         ObjectManager.addMob(newMob);
 
 		

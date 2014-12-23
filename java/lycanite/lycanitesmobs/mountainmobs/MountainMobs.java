@@ -113,21 +113,21 @@ public class MountainMobs {
 		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
 		        .addSubspecies(new Subspecies("dark", "uncommon")).addSubspecies(new Subspecies("russet", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER")
-				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3);
+				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "troll", EntityTroll.class, 0x007711, 0xEEEEEE)
 		        .setPeaceful(false).setSummonable(false).setSummonCost(6).setDungeonLevel(2)
 		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("russet", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER")
-				.setSpawnWeight(4).setAreaLimit(5).setGroupLimits(1, 2);
+				.setSpawnWeight(4).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "yale", EntityYale.class, 0xFFEEAA, 0xFFDD77)
 		        .setPeaceful(true).setSummonable(false).setSummonCost(1).setDungeonLevel(-1)
 		        .addSubspecies(new Subspecies("light", "uncommon")).addSubspecies(new Subspecies("golden", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("CREATURE").setDespawn(false)
-				.setSpawnWeight(14).setAreaLimit(5).setGroupLimits(1, 4).setDungeonWeight(0);
+				.setSpawnWeight(14).setAreaLimit(5).setGroupLimits(1, 4).setLightDark(true, false).setDungeonWeight(0);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "geonach", EntityGeonach.class, 0x443333, 0xBBBBCC)
@@ -135,14 +135,14 @@ public class MountainMobs {
 		        .addSubspecies(new Subspecies("keppel", "uncommon")).addSubspecies(new Subspecies("golden", "uncommon"))
                 .addSubspecies(new Subspecies("celestial", "rare"));
 		newMob.spawnInfo.setSpawnTypes("ROCK")
-				.setSpawnWeight(4).setAreaLimit(5).setGroupLimits(1, 2);
+				.setSpawnWeight(4).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "beholder", EntityBeholder.class, 0x442211, 0x44AA33)
 		        .setPeaceful(false).setSummonable(true).setSummonCost(6).setDungeonLevel(2)
 		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("SKY")
-				.setSpawnWeight(1).setAreaLimit(1).setGroupLimits(1, 1);
+				.setSpawnWeight(1).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 		

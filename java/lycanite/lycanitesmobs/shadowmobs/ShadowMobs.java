@@ -105,14 +105,14 @@ public class ShadowMobs {
 		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1)
 		        .addSubspecies(new Subspecies("crimson", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("DARKNESS, MONSTER")
-				.setSpawnWeight(8).setAreaLimit(5).setGroupLimits(1, 2);
+				.setSpawnWeight(8).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
         
         newMob = new MobInfo(group, "phantom", EntityPhantom.class, 0x101519, 0xDD2233)
 		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1)
 		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("DEATH, SLEEP, MONSTER")
-				.setSpawnWeight(8).setAreaLimit(5).setGroupLimits(1, 2);
+				.setSpawnWeight(8).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 		AssetManager.addSound("phantom_say_jon", group, "entity.phantom.say.jon");
         
@@ -121,7 +121,7 @@ public class ShadowMobs {
 		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("russet", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER, LUNAR")
 				.setBiomes("GROUP, SPOOKY")
-				.setSpawnWeight(6).setAreaLimit(5).setGroupLimits(1, 2);
+				.setSpawnWeight(6).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 		

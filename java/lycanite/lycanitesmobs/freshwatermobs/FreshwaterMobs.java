@@ -80,14 +80,14 @@ public class FreshwaterMobs {
 		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
 		        .addSubspecies(new Subspecies("light", "uncommon")).addSubspecies(new Subspecies("keppel", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("WATER")
-				.setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3);
+				.setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
         newMob = new MobInfo(group, "zephyr", EntityZephyr.class, 0xFFFFDD, 0xAABBFF)
                 .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
 		        .addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("keppel", "uncommon"));
         newMob.spawnInfo.setSpawnTypes("STORM")
-                .setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3);
+                .setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
         ObjectManager.addMob(newMob);
 
 		

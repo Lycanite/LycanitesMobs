@@ -74,7 +74,7 @@ public class EntityLifeDrain extends EntityProjectileLaser {
     @Override
     public void onDamage(EntityLivingBase target, float damage, boolean attackSuccess) {
     	if(this.getThrower() != null) {
-            this.getThrower().heal(damage);
+            this.getThrower().heal(damage / 2);
         }
     	super.onDamage(target, damage, attackSuccess);
     }

@@ -321,6 +321,13 @@ public class SpawnInfo {
         return this;
     }
 
+    // ========== Spawn Conditions ==========
+    public SpawnInfo setLightDark(boolean spawnsInLight, boolean spawnsInDark) {
+        this.spawnsInLight = spawnsInLight;
+        this.spawnsInDark = spawnsInDark;
+        return this;
+    }
+
     // ========== Despawning ==========
     public SpawnInfo setDespawn(boolean bool) {
         this.despawnNatural = bool;

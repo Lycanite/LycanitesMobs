@@ -77,7 +77,7 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
 		baseAttributes.put("maxHealth", 30D);
-		baseAttributes.put("movementSpeed", 0.28D);
+		baseAttributes.put("movementSpeed", 0.32D);
 		baseAttributes.put("knockbackResistance", 0D);
 		baseAttributes.put("followRange", 16D);
 		baseAttributes.put("attackDamage", 2D);

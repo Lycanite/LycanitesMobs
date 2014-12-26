@@ -7,6 +7,7 @@ import lycanite.lycanitesmobs.api.IGroupFire;
 import lycanite.lycanitesmobs.api.IGroupIce;
 import lycanite.lycanitesmobs.api.IGroupPlant;
 import lycanite.lycanitesmobs.api.IGroupWater;
+import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityItemCustom;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
@@ -20,6 +21,7 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
@@ -38,6 +40,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire {
 
 	EntityAIWander wanderAI = new EntityAIWander(this);
+    public boolean lobberMelting = true;
 	
     // ==================================================
  	//                    Constructor
@@ -53,6 +56,8 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
         this.spawnsInWater = true;
         this.isLavaCreature = true;
         this.hasAttackSound = false;
+
+        this.lobberMelting = ConfigBase.getConfig(this.group, "general").getBool("Features", "Lobber Melting", this.lobberMelting, "Set to false to disable Lobbers melting certain blocks.");
         
         this.setWidth = 1.9F;
         this.setHeight = 3.5F;
@@ -111,8 +116,8 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
 		else
 			this.wanderAI.setPauseRate(0);
         
-        // Hellfire Trail:
-        if(!this.worldObj.isRemote && (this.ticksExisted % 10 == 0 || this.isMoving() && this.ticksExisted % 5 == 0)) {
+        // Fire Trail:
+        if(!this.worldObj.isRemote && this.isMoving() && this.ticksExisted % 5 == 0) {
         	int trailHeight = 1;
         	for(int y = 0; y < trailHeight; y++) {
         		Block block = this.worldObj.getBlock((int)this.posX, (int)this.posY + y, (int)this.posZ);
@@ -120,6 +125,19 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
         			this.worldObj.setBlock((int)this.posX, (int)this.posY + y, (int)this.posZ, Blocks.fire);
         	}
 		}
+
+        // Melt Blocks:
+        if(!this.worldObj.isRemote && this.ticksExisted % 10 == 0 && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing") && this.lobberMelting) {
+            int range = 2;
+            for(int w = -((int)Math.ceil(this.width) + range); w <= (Math.ceil(this.width) + range); w++)
+                for(int d = -((int)Math.ceil(this.width) + range); d <= (Math.ceil(this.width) + range); d++)
+                    for(int h = 0; h <= Math.ceil(this.height); h++) {
+                        Block block = this.worldObj.getBlock((int)this.posX + w, (int)this.posY + h, (int)this.posZ + d);
+                        if(block == Blocks.obsidian || block == Blocks.cobblestone || block == Blocks.dirt || block == Blocks.planks) {
+                            this.worldObj.setBlock((int)this.posX + w, (int)this.posY + h, (int)this.posZ + d, Blocks.lava);
+                        }
+                    }
+        }
         
         // Particles:
         if(this.worldObj.isRemote) {

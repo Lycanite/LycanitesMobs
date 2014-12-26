@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs.infernomobs.entity;
 import java.util.HashMap;
 
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.EntityItemCustom;
@@ -34,7 +35,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class EntityKhalk extends EntityCreatureTameable implements IMob {
-    
+
+    public boolean khalkLavaDeath = true;
+
     // ==================================================
  	//                    Constructor
  	// ==================================================
@@ -52,7 +55,9 @@ public class EntityKhalk extends EntityCreatureTameable implements IMob {
 
         this.canGrow = true;
         this.babySpawnChance = 0.01D;
-        
+
+        this.khalkLavaDeath = ConfigBase.getConfig(this.group, "general").getBool("Features", "Khalk Lava Death", this.khalkLavaDeath, "Set to false to disable Khalks from turning into a pile of lava on death.");
+
         this.setWidth = 4.5F;
         this.setHeight = 3.5F;
         this.setupMob();
@@ -133,7 +138,7 @@ public class EntityKhalk extends EntityCreatureTameable implements IMob {
    	// ==================================================
     @Override
     public void onDeath(DamageSource damageSource) {
-		if(!this.worldObj.isRemote && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing") && !this.isTamed()) {
+		if(!this.worldObj.isRemote && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing") && this.khalkLavaDeath && !this.isTamed()) {
 			int lavaWidth = (int)Math.floor(this.width) - 1;
 			int lavaHeight = (int)Math.floor(this.height) - 1;
 			for(int x = (int)this.posX - lavaWidth; x <= (int)this.posX + lavaWidth; x++) {

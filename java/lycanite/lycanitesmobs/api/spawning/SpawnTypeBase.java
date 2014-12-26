@@ -323,6 +323,12 @@ public class SpawnTypeBase {
 
 		config.setCategoryComment("Spawner Mob Limits", "Here you can set the limit of how many mobs a spawner can spawn every interval. Be aware that each mob will use it's own Area Spawn Limit which will drastically decrease the number of mobs spawned overall.");
 		this.mobLimit = config.getInt("Spawner Mob Limits", this.getCfgName("Spawn Mob Limit"), this.mobLimit);
+
+        config.setCategoryComment("Spawner Checks", "Here you can set whether or not each spawn ignores certain mob checks such as dimension, biome or light level. If Ignores Event is set to true, the spawn type will ignore the mob spawn event meaning that other mods also cannot prevent mob spawns.");
+        this.ignoreDimension = config.getBool("Spawner Checks", this.getCfgName("Ignores Dimension"), this.ignoreDimension);
+        this.ignoreBiome = config.getBool("Spawner Checks", this.getCfgName("Ignores Biome"), this.ignoreBiome);
+        this.ignoreLight = config.getBool("Spawner Checks", this.getCfgName("Ignores Light Level"), this.ignoreLight);
+        this.forceSpawning = config.getBool("Spawner Checks", this.getCfgName("Ignores Event"), this.forceSpawning);
     }
 
 

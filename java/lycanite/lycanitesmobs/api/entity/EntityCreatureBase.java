@@ -1683,8 +1683,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Called when this entity dies, drops items from the inventory. **/
     @Override
     public void onDeath(DamageSource damageSource) {
-    	if(ForgeHooks.onLivingDeath(this, damageSource)) return;
         super.onDeath(damageSource);
+        if(!this.dead)
+            return;
         if(!this.worldObj.isRemote)
             this.inventory.dropInventory();
     }

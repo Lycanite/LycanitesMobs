@@ -35,7 +35,7 @@ public class EntityAIAttackMelee extends EntityAIBase {
     public EntityAIAttackMelee(EntityCreatureBase setHost) {
         this.host = setHost;
         //this.attackRange = (double)((this.host.width * this.host.width) * 2.0F) + 1.0D;
-        this.attackRange = this.host.width + 1.0D;
+        this.attackRange = this.host.width + 0.5D;
         this.setMutexBits(3);
     }
     

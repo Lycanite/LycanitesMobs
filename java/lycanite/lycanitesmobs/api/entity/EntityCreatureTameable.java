@@ -111,7 +111,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
 	// ==================================================
     //                      Stats
     // ==================================================
-    /** Applies the subspecies health multipler for this mob. **/
+    /** Applies the subspecies health multiplier for this mob. **/
     @Override
     public void applySubspeciesHealthMultiplier() {
     	if(this.isTamed())

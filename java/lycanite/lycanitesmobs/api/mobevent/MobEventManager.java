@@ -178,11 +178,11 @@ public class MobEventManager {
 		if(Utilities.isHalloween() && this.worldMobEvents.containsKey("halloween"))
 			if(this.worldMobEvents.get("halloween").isEnabled() && this.worldMobEvents.get("halloween").canStart(world, worldExt))
 				return this.worldMobEvents.get("halloween");
-		if(Utilities.isNewYear() && this.worldMobEvents.containsKey("newyear"))
+		/*if(Utilities.isNewYear() && this.worldMobEvents.containsKey("newyear"))
 			if(this.worldMobEvents.get("newyear").isEnabled() && this.worldMobEvents.get("newyear").canStart(world, worldExt))
-				return this.worldMobEvents.get("newyear");
+				return this.worldMobEvents.get("newyear");*/
 		
-		// Get Event Set:
+		// Seasonal Event Sets:
         Map<String, MobEventBase> worldMobEventSet = this.worldMobEventSets.get("main");
         if(Utilities.isYuletide() && this.worldMobEventSets.containsKey("yule"))
             worldMobEventSet = this.worldMobEventSets.get("yule");

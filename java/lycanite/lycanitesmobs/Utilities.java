@@ -152,7 +152,7 @@ public class Utilities {
 
     public static boolean isYuletide() {
     	Calendar calendar = Calendar.getInstance();
-		return calendar.get(Calendar.MONTH) == calendar.DECEMBER;
+		return calendar.get(Calendar.MONTH) == calendar.DECEMBER && calendar.get(Calendar.DAY_OF_MONTH) > 9 && calendar.get(Calendar.DAY_OF_MONTH) < 26;
     }
 
     public static boolean isYuletideDay() {

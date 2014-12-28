@@ -61,8 +61,7 @@ public class PotionEffects {
 				ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(entity);
 				if(extendedEntity != null) {
 					if(extendedEntity.fearEntity == null) {
-						EntityFear fearEntity = new EntityFear(entity.worldObj);
-						fearEntity.setFearedEntity(entity);
+						EntityFear fearEntity = new EntityFear(entity.worldObj, entity);
 						entity.worldObj.spawnEntityInWorld(fearEntity);
 						extendedEntity.fearEntity = fearEntity;
 					}
@@ -118,6 +117,16 @@ public class PotionEffects {
                 float damage = event.ammount;
                 float multiplier = event.entityLiving.getActivePotionEffect(ObjectManager.getPotionEffect("Penetration")).getAmplifier();
                 event.ammount = damage + ((damage * multiplier) / 2);
+            }
+        }
+
+        // ========== Fear ==========
+        if(ObjectManager.getPotionEffect("Fear") != null) {
+            if(event.entityLiving.isPotionActive(ObjectManager.getPotionEffect("Fear").getId())) {
+                if("inWall".equals(event.source.damageType)) {
+                    event.ammount = 0;
+                    event.setCanceled(true);
+                }
             }
         }
     }

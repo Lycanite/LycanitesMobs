@@ -20,7 +20,9 @@ public class ExtendedEntity implements IExtendedEntityProperties {
 	// States:
 	public Entity pickedUpByEntity;
 	private int pickedUpByEntityID;
-	
+
+    /** The last coordinates the entity was at where it wasn't inside an opaque block. (Helps prevent suffocation). **/
+    double[] lastSafePos;
 	private boolean playerFlyingSnapshot;
 	
 	public EntityFear fearEntity;
@@ -65,7 +67,17 @@ public class ExtendedEntity implements IExtendedEntityProperties {
     //                      Update
     // ==================================================
 	public void update() {
-		// Picked Up By Entity:
+        // Safe Position:
+        if(this.lastSafePos == null) {
+            this.lastSafePos = new double[]{this.entity.posX, this.entity.posY, this.entity.posZ};
+        }
+        if(this.entity.noClip || !this.entity.isEntityInsideOpaqueBlock()) {
+            this.lastSafePos[0] = this.entity.posX;
+            this.lastSafePos[1] = this.entity.posY;
+            this.lastSafePos[2] = this.entity.posZ;
+        }
+
+		// Picked Up By Entity Check:
 		if(this.pickedUpByEntity != null) {
 			if(!this.pickedUpByEntity.isEntityAlive())
 				this.setPickedUpByEntity(null);
@@ -77,7 +89,8 @@ public class ExtendedEntity implements IExtendedEntityProperties {
 				this.setPickedUpByEntity(null);
 			}
 		}
-		
+
+        // Picked Up By Entity Movement:
 		if(this.pickedUpByEntity != null) {
 			double[] pickupOffset = new double[]{0, 0, 0};
 			if(this.pickedUpByEntity instanceof EntityCreatureBase)
@@ -139,7 +152,14 @@ public class ExtendedEntity implements IExtendedEntityProperties {
 				else
 					((EntityPlayer)this.entity).capabilities.allowFlying = this.playerFlyingSnapshot;
 			}
-			
+
+            if(pickedUpByEntity == null) {
+                this.entity.setPosition(this.lastSafePos[0], this.lastSafePos[1], this.lastSafePos[2]);
+                this.entity.motionX = 0;
+                this.entity.motionY = 0;
+                this.entity.motionZ = 0;
+                this.entity.fallDistance = 0;
+            }
 			MessageEntityPickedUp message = new MessageEntityPickedUp(this.entity, pickedUpByEntity);
 			LycanitesMobs.packetHandler.sendToDimension(message, this.entity.dimension);
 		}

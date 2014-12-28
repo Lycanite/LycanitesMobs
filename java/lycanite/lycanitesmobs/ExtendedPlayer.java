@@ -7,14 +7,11 @@ import lycanite.lycanitesmobs.api.info.Beastiary;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.network.MessagePetEntry;
-import lycanite.lycanitesmobs.api.pets.SummonSet;
+import lycanite.lycanitesmobs.api.pets.*;
 import lycanite.lycanitesmobs.api.item.ItemStaffSummoning;
 import lycanite.lycanitesmobs.api.network.MessagePlayerStats;
 import lycanite.lycanitesmobs.api.network.MessageSummonSet;
 import lycanite.lycanitesmobs.api.network.MessageSummonSetSelection;
-import lycanite.lycanitesmobs.api.pets.PetEntry;
-import lycanite.lycanitesmobs.api.pets.PetEntryFamiliar;
-import lycanite.lycanitesmobs.api.pets.PetManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -55,7 +52,7 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 	public int summonSetMax = 5;
 
     // Familiars:
-    private PetEntry familiarLycanite;
+    private boolean setupPlayerFamiliars = false;
 	
 	// ==================================================
     //                   Get for Player
@@ -85,12 +82,6 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 		this.petManager = new PetManager(player);
 		
 		player.registerExtendedProperties(ExtendedPlayer.EXT_PROP_NAME, this);
-
-        // Familiars:
-        familiarLycanite = new PetEntryFamiliar("LycaniteGrueJasper", this.player, "grue");
-        familiarLycanite.subspeciesID = 2;
-        familiarLycanite.entityName = "Jasper";
-        familiarLycanite.entitySize = 0.85D;
 	}
 	
 	
@@ -153,12 +144,13 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
         this.petManager.onUpdate(player.worldObj);
 
         // Familiars:
-        if(!player.worldObj.isRemote) {
-            if ("Lycanite".equals(this.player.getCommandSenderName())) {
-                if (!this.petManager.hasEntry(familiarLycanite) && ObjectManager.getMob("grue") != null) {
-                    this.petManager.addEntry(familiarLycanite);
+        if(!player.worldObj.isRemote && !this.setupPlayerFamiliars) {
+            for(PetEntry petEntry : DonationFamiliars.instance.getFamilairsForPlayer(this.player)) {
+                if(!this.petManager.hasEntry(petEntry)) {
+                    this.petManager.addEntry(petEntry);
                 }
             }
+            this.setupPlayerFamiliars = true;
         }
 		
 		this.currentTick++;

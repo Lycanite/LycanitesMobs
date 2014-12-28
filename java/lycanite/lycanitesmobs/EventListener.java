@@ -199,17 +199,6 @@ public class EventListener {
 		
 		ExtendedEntity entityExt = ExtendedEntity.getForEntity(event.entityLiving);
 		
-		// ========== Feared Protection ==========
-		if(entityExt != null) {
-			if(entityExt.isFeared()) {
-				// Prevent Feared Entities from Suffocating:
-				if("inWall".equals(event.source.damageType)) {
-					event.setCanceled(true);
-					return;
-				}
-			}
-		}
-		
 		// ========== Minimum Armor Damage ==========
 		// TODO: Found the cause of why this wasn't working here, should be moved back.
 

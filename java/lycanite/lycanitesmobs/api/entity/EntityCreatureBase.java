@@ -280,13 +280,11 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** This should be called by the specific mob entity and set the default starting values. **/
     public void setupMob() {
         // Size:
-        this.width = setWidth;
-        this.height = setHeight;
         this.setSize(setWidth, setHeight);
         
         // Stats:
         this.stepHeight = 0.5F;
-        this.experienceValue = experience;
+        this.experienceValue = this.experience;
         this.inventory = new InventoryCreature(this.getCommandSenderName(), this);
         if(this.mobInfo.defaultDrops)
         	this.loadItemDrops();

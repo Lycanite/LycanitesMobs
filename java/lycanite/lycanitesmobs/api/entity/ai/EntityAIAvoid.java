@@ -1,5 +1,6 @@
 package lycanite.lycanitesmobs.api.entity.ai;
 
+import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -79,9 +80,6 @@ public class EntityAIAvoid extends EntityAIBase {
         
         if(this.avoidTarget.getDistanceSq(vec3.xCoord, vec3.yCoord, vec3.zCoord) < this.avoidTarget.getDistanceSqToEntity(this.host))
             return false;
-        
-        if(this.host.getDistanceSqToEntity(this.avoidTarget) >= this.farDistance)
-        	return false;
         
         return this.pathEntity == null ? false : this.pathEntity.isDestinationSame(vec3);
     }

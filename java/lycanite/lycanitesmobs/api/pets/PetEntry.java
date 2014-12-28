@@ -81,6 +81,24 @@ public class PetEntry {
             this.temporary = true;
 	}
 
+    // ==================================================
+    //                     Set Values
+    // ==================================================
+    public PetEntry setEntityName(String name) {
+        this.entityName = name;
+        return this;
+    }
+
+    public PetEntry setEntitySubspeciesID(int id) {
+        this.subspeciesID = id;
+        return this;
+    }
+
+    public PetEntry setEntitySize(double size) {
+        this.entitySize = size;
+        return this;
+    }
+
 
     // ==================================================
     //                       Name

@@ -3,9 +3,11 @@ package lycanite.lycanitesmobs.api.entity;
 import java.util.HashMap;
 
 import lycanite.lycanitesmobs.AssetManager;
+import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
+import lycanite.lycanitesmobs.api.inventory.InventoryCreature;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityFlying;
 import net.minecraft.entity.EntityLivingBase;
@@ -23,8 +25,8 @@ public class EntityFear extends EntityCreatureBase {
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityFear(World par1World) {
-        super(par1World);
+    public EntityFear(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
@@ -32,14 +34,35 @@ public class EntityFear extends EntityCreatureBase {
         this.hasStepSound = false;
         this.hasAttackSound = false;
         this.spreadFire = false;
-        
-        this.setWidth = 0.5F;
-        this.setHeight = 0.9F;
+
         this.setupMob();
         
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIWander(this).setPauseRate(0));
+    }
+
+    public EntityFear(World world, Entity feared) {
+        this(world);
+        this.setFearedEntity(feared);
+    }
+
+    // ========== Setup ==========
+    /** This should be called by the specific mob entity and set the default starting values. **/
+    @Override
+    public void setupMob() {
+        // Size:
+        //Set by feared entity instead.
+
+        // Stats:
+        this.experienceValue = 0;
+        this.inventory = new InventoryCreature(this.getCommandSenderName(), this);
+        if(this.mobInfo.defaultDrops)
+            this.loadItemDrops();
+        this.loadCustomDrops();
+
+        // Fire Immunity:
+        this.isImmuneToFire = true;
     }
     
     // ========== Stats ==========
@@ -48,7 +71,7 @@ public class EntityFear extends EntityCreatureBase {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
 		baseAttributes.put("maxHealth", 10D);
 		baseAttributes.put("movementSpeed", 0.38D);
-		baseAttributes.put("knockbackResistance", 0.0D);
+		baseAttributes.put("knockbackResistance", 1.0D);
 		baseAttributes.put("followRange", 16D);
 		baseAttributes.put("attackDamage", 2D);
         super.applyEntityAttributes(baseAttributes);
@@ -86,12 +109,8 @@ public class EntityFear extends EntityCreatureBase {
         	this.setDead();
         	return;
         }
-        
+
         EntityLivingBase fearedEntityLiving = (EntityLivingBase)this.fearedEntity;
-        if(ObjectManager.getPotionEffect("fear") == null || !fearedEntityLiving.isPotionActive(ObjectManager.getPotionEffect("fear"))) {
-        	this.setDead();
-	    	return;
-		}
         
         // Pickup Entity For Fear Movement Override:
         if(this.canPickupEntity(fearedEntityLiving)) {
@@ -112,6 +131,12 @@ public class EntityFear extends EntityCreatureBase {
 			this.motionZ = this.fearedEntity.motionZ;
 			this.fallDistance = 0;
         }
+
+        // Remove When Fear is Over:
+        if(ObjectManager.getPotionEffect("fear") == null || !fearedEntityLiving.isPotionActive(ObjectManager.getPotionEffect("fear"))) {
+            this.setDead();
+            return;
+        }
     }
     
     
@@ -120,10 +145,9 @@ public class EntityFear extends EntityCreatureBase {
   	// ==================================================
     public void setFearedEntity(Entity feared) {
     	this.fearedEntity = feared;
-        this.width = feared.width * 1.5F;
-        this.height = feared.height * 1.5F;
-        this.setSize(feared.width * 1.5F, feared.height * 1.5F);
+        this.setSize(feared.width, feared.height);
         this.noClip = feared.noClip;
+        this.stepHeight = feared.stepHeight;
 		this.setLocationAndAngles(feared.posX, feared.posY, feared.posZ, feared.rotationYaw, feared.rotationPitch);
 		
         if(feared instanceof EntityLivingBase && !(feared instanceof EntityPlayer)) {
@@ -172,6 +196,11 @@ public class EntityFear extends EntityCreatureBase {
     @SideOnly(Side.CLIENT)
     public boolean isInvisibleToPlayer(EntityPlayer player) {
         return true;
+    }
+
+    public boolean canBeCollidedWith()
+    {
+        return false;
     }
     
     

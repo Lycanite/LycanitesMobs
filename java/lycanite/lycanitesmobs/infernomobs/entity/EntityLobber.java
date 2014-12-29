@@ -133,7 +133,7 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
                 for(int d = -((int)Math.ceil(this.width) + range); d <= (Math.ceil(this.width) + range); d++)
                     for(int h = 0; h <= Math.ceil(this.height); h++) {
                         Block block = this.worldObj.getBlock((int)this.posX + w, (int)this.posY + h, (int)this.posZ + d);
-                        if(block == Blocks.obsidian || block == Blocks.cobblestone || block == Blocks.dirt || block == Blocks.planks) {
+                        if(block == Blocks.obsidian || block == Blocks.cobblestone || block == Blocks.dirt || block == Blocks.planks || block == Blocks.gravel) {
                             this.worldObj.setBlock((int)this.posX + w, (int)this.posY + h, (int)this.posZ + d, Blocks.lava);
                         }
                     }

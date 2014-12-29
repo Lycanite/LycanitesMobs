@@ -21,6 +21,7 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
@@ -177,4 +178,35 @@ public class EntityJengu extends EntityCreatureTameable implements IMob, IGroupW
     
     @Override
     public boolean canBurn() { return false; }
+
+
+    // ==================================================
+    //                     Interact
+    // ==================================================
+    // ========== Get Interact Commands ==========
+    @Override
+    public HashMap<Integer, String> getInteractCommands(EntityPlayer player, ItemStack itemStack) {
+        HashMap<Integer, String> commands = new HashMap<Integer, String>();
+        commands.putAll(super.getInteractCommands(player, itemStack));
+
+        if(itemStack != null) {
+            // Water:
+            if(itemStack.getItem() == Items.bucket && this.isTamed())
+                commands.put(CMD_PRIOR.ITEM_USE.id, "Water");
+        }
+
+        return commands;
+    }
+
+    // ========== Perform Command ==========
+    @Override
+    public void performCommand(String command, EntityPlayer player, ItemStack itemStack) {
+
+        // Water:
+        if(command.equals("Water")) {
+            this.replacePlayersItem(player, itemStack, new ItemStack(Items.water_bucket));
+        }
+
+        super.performCommand(command, player, itemStack);
+    }
 }

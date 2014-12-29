@@ -6,17 +6,7 @@ import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowOwner;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerAttack;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerRevenge;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerThreats;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
+import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -52,12 +42,14 @@ public class EntityJabberwock extends EntityCreatureTameable implements IMob {
         this.setupMob();
     	
         // AI Tasks:
-        this.getNavigator().setAvoidsWater(true);
+        this.getNavigator().setBreakDoors(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
+        this.tasks.addTask(1, new EntityAIBreakDoor(this));
         this.tasks.addTask(3, new EntityAIAttackMelee(this).setRate(20));
         this.tasks.addTask(4, this.aiSit);
         this.tasks.addTask(5, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
-        this.tasks.addTask(6, new EntityAIWander(this).setPauseRate(30));
+        this.tasks.addTask(6, new EntityAIMoveVillage(this));
+        this.tasks.addTask(7, new EntityAIWander(this).setPauseRate(30));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));

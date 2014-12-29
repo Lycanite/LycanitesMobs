@@ -154,7 +154,8 @@ public class ExtendedEntity implements IExtendedEntityProperties {
 			}
 
             if(pickedUpByEntity == null) {
-                this.entity.setPosition(this.lastSafePos[0], this.lastSafePos[1], this.lastSafePos[2]);
+                if(this.lastSafePos != null && this.lastSafePos.length >= 3)
+                    this.entity.setPosition(this.lastSafePos[0], this.lastSafePos[1], this.lastSafePos[2]);
                 this.entity.motionX = 0;
                 this.entity.motionY = 0;
                 this.entity.motionZ = 0;

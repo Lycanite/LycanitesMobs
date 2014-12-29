@@ -5,6 +5,7 @@ import java.util.HashMap;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackRanged;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIBreakDoor;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
@@ -15,6 +16,7 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
+import lycanite.lycanitesmobs.junglemobs.entity.EntityPoop;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -159,7 +161,14 @@ public class EntityTroll extends EntityCreatureBase implements IMob {
     @Override
     public void rangedAttack(Entity target, float range) {
     	// Type:
-    	EntityBoulderBlast projectile = new EntityBoulderBlast(this.worldObj, this);
+        EntityProjectileBase projectile = new EntityBoulderBlast(this.worldObj, this);
+        if("Jarno".equals(this.getCustomNameTag())) {
+            try {
+                projectile = new EntityPoop(this.worldObj, this);
+                projectile.setBaseDamage(0);
+            }
+            catch(Exception e) {}
+        }
         projectile.setProjectileScale(6f);
     	
     	// Y Offset:
@@ -189,6 +198,9 @@ public class EntityTroll extends EntityCreatureBase implements IMob {
     // ========== Damage Modifier ==========
     /** A multiplier that alters how much damage this mob receives from the given DamageSource, use for resistances and weaknesses. Note: The defense multiplier is handled before this. **/
     public float getDamageModifier(DamageSource damageSrc) {
+        if("Jarno".equals(this.getCustomNameTag()))
+            return 0;
+
     	if(this.stoneForm) {
     		if(damageSrc.getEntity() != null) {
     			Item heldItem = null;

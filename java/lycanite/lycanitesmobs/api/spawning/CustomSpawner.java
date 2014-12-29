@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lycanite.lycanitesmobs.LycanitesMobs;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.entity.Entity;
@@ -172,10 +173,13 @@ public class CustomSpawner {
 		// Ore Blocks:
 		boolean isOre = false;
 		for(String blockNamePart : blockNameParts) {
-			if(blockNamePart.length() >= 3 && blockNamePart.substring(0, 3).equalsIgnoreCase("ore")) {
-				isOre = true;
-				break;
-			}
+            int blockNamePartLength = blockNamePart.length();
+			if(blockNamePartLength >= 3) {
+                if(blockNamePart.substring(0, 3).equalsIgnoreCase("ore") || blockNamePart.substring(blockNamePartLength - 3, blockNamePartLength).equalsIgnoreCase("ore")) {
+                    isOre = true;
+                    break;
+                }
+            }
 		}
 		if(isOre || event.block == Blocks.monster_egg) {
 			for(SpawnTypeBase spawnType : this.oreBreakSpawnTypes) {

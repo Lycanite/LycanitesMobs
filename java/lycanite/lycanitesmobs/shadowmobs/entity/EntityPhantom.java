@@ -177,10 +177,9 @@ public class EntityPhantom extends EntityCreatureTameable implements IMob, IGrou
         super.isPotionApplicable(potionEffect);
         return true;
     }
-    
+
     /** Returns true if this mob should be damaged by the sun. **/
-    @Override
-    public boolean daylightBurns() { return true; }
+    public boolean daylightBurns() { return !this.isTamed(); }
     
     
     // ==================================================

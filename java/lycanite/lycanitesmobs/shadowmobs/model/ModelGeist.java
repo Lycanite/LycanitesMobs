@@ -28,12 +28,12 @@ public class ModelGeist extends ModelCustomObj {
     	parts = model.groupObjects;
     	
     	// Set Rotation Centers:
-    	setPartCenter("head", 0F, 1.2F, 0.4F);
-    	setPartCenter("body", 0F, 1.2F, 0.1F);
-    	setPartCenter("armleft", 0.3F, 1.2F, 0.15F);
-    	setPartCenter("armright", -0.3F, 1.2F, 0.15F);
-    	setPartCenter("legleft", 0.1F, 0.6F, 0.0F);
-    	setPartCenter("legright", -0.1F, 0.6F, 0.0F);
+    	setPartCenter("head", 0F, 1.9F, 0.1F);
+    	setPartCenter("body", 0F, 1.4F, 0F);
+    	setPartCenter("armleft", 0.3F, 1.78F, -0.13F);
+    	setPartCenter("armright", -0.3F, 1.78F, -0.13F);
+    	setPartCenter("legleft", 0.2F, 0.9F, -0.2F);
+    	setPartCenter("legright", -0.2F, 0.9F, -0.2F);
     	
     	// Trophy:
         this.trophyScale = 1.2F;

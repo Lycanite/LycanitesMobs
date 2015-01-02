@@ -37,6 +37,10 @@ public class DonationFamiliars {
             if(ObjectManager.getMob("beholder") != null)
                 familiars.add(new PetEntryFamiliar("kehaanGrueMiniKehaan", player, "beholder").setEntityName("Eye of the Baminati").setEntitySize(0.4D));
         }
+        if("ganymedes01".equals(player.getCommandSenderName())) {
+            if(ObjectManager.getMob("reiver") != null)
+                familiars.add(new PetEntryFamiliar("ganymedes01ReiverBob", player, "reiver").setEntityName("Bob").setEntitySize(0.4D));
+        }
 
         // Patreon:
         if("beckyh2112".equals(player.getCommandSenderName())) {

@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 public class SpawnTypeDarkness extends SpawnTypeBase {
 	public boolean displayChatWarnings = true;
     /** The highest light level this spawner will work in. 5 Is above ground in the overworld at night time. 0 is pitch black. **/
-    public int lightLevel = 5;
+    public int lightLevelMax = 5;
 	public Map<EntityPlayer, Byte> darknessLevels = new HashMap<EntityPlayer, Byte>();
 
     // ==================================================
@@ -27,7 +27,7 @@ public class SpawnTypeDarkness extends SpawnTypeBase {
         CustomSpawner.instance.updateSpawnTypes.add(this);
         ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "spawning");
         this.displayChatWarnings = config.getBool("Spawner Features", "Darkness Spawn Chat Warnings", this.displayChatWarnings, "Set to false to prevent the darkness warning messages from showing.");
-        this.lightLevel = config.getInt("Spawner Features", "Darkness Spawn Highest Light Level", this.lightLevel, "The highest light level the Darkness spawn type will work in. 5 Is above ground in the overworld at night time. 0 is pitch black.");
+        this.lightLevelMax = config.getInt("Spawner Features", "Darkness Spawn Highest Light Level", this.lightLevelMax, "The highest light level the Darkness spawn type will work in. 5 Is above ground in the overworld at night time. 0 is pitch black.");
     }
 	
 	
@@ -48,15 +48,14 @@ public class SpawnTypeDarkness extends SpawnTypeBase {
     @Override
     public boolean spawnMobs(long tick, World world, int x, int y, int z, EntityPlayer player) {
     	boolean spawned = false;
-		if(!player.capabilities.isCreativeMode && tick % (5 * 20) == 0 && this.enabled && this.hasSpawns()) {
+		if(!player.capabilities.isCreativeMode && !player.isInWater() && tick % (5 * 20) == 0 && this.enabled && this.hasSpawns()) {
 			ChunkCoordinates playerCoords = player.getPlayerCoordinates();
 			int lightLevel = world.getBlockLightValue(playerCoords.posX, playerCoords.posY, playerCoords.posZ);
 			byte darknessLevel = 0;
 			if(this.darknessLevels.containsKey(player))
 				darknessLevel = this.darknessLevels.get(player);
-			
-			// Dark:
-			if(lightLevel <= this.lightLevel) {
+
+			if(lightLevel <= this.lightLevelMax) {
 				float chance = 0.125F;
 				if(lightLevel <= 0)
 					chance = 0.5F;

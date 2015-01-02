@@ -651,6 +651,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
      * There is also the vanilla variable persistenceRequired which is handled in vanilla code too.
     **/
     public boolean isPersistant() {
+        // Don't Despawn Rares:
+        if(this.getSubspeciesIndex() >= 3)
+            return true;
     	return false;
     }
     

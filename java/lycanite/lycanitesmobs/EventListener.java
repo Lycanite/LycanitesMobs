@@ -248,7 +248,7 @@ public class EventListener {
             Item seasonalItem = null;
             if(Utilities.isHalloween())
                 seasonalItem = ObjectManager.getItem("halloweentreat");
-            if(Utilities.isYuletide() || Utilities.isNewYear()) {
+            if(Utilities.isYuletide()) {
                 seasonalItem = ObjectManager.getItem("wintergift");
                 if(Utilities.isYuletideDay() && world.rand.nextBoolean())
                     seasonalItem = ObjectManager.getItem("wintergiftlarge");

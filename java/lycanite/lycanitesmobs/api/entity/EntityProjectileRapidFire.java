@@ -136,6 +136,16 @@ public class EntityProjectileRapidFire extends EntityProjectileBase {
     protected float getGravityVelocity() {
         return 0.0F;
     }
+
+    // ========== Set Position ==========
+    public void setPosition(double x, double y, double z) {
+        super.setPosition(x, y, z);
+        if(this.getThrower() != null) {
+            this.offsetX = x - this.getThrower().posX;
+            this.offsetY = y - this.getThrower().posY;
+            this.offsetZ = z - this.getThrower().posZ;
+        }
+    }
     
     
     // ==================================================

@@ -18,11 +18,13 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
+import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.monster.EntitySilverfish;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -74,6 +76,7 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
+        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntitySilverfish.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
@@ -84,7 +87,7 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
 		baseAttributes.put("maxHealth", 30D);
-		baseAttributes.put("movementSpeed", 0.26D);
+		baseAttributes.put("movementSpeed", 0.28D);
 		baseAttributes.put("knockbackResistance", 1.0D);
 		baseAttributes.put("followRange", 16D);
 		baseAttributes.put("attackDamage", 2D);
@@ -99,6 +102,14 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
         this.drops.add(new DropRate(new ItemStack(Items.quartz), 0.75F).setMaxAmount(5));
         this.drops.add(new DropRate(new ItemStack(Blocks.gold_ore), 0.1F).setMaxAmount(1));
 	}
+
+    // ========== On Spawn ==========
+    /** This is called when the mob is first spawned to the world either through natural spawning or from a Spawn Egg. **/
+    public void onFirstSpawn() {
+        super.onFirstSpawn();
+        if(this.getSubspeciesIndex() == 3)
+            this.setSizeScale(this.sizeScale * 2);
+    }
 	
 	
     // ==================================================
@@ -130,6 +141,19 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
 	            this.worldObj.spawnParticle("blockcrack_1_0", this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
 	        }
     }
+
+
+    // ==================================================
+    //                      Movement
+    // ==================================================
+    // ========== Movement Speed Modifier ==========
+    @Override
+    public float getAISpeedModifier() {
+        // Silverfish Extermination:
+        if(this.hasAttackTarget() && this.getAttackTarget() instanceof EntitySilverfish)
+            return 4.0F;
+        return super.getAISpeedModifier();
+    }
     
     
     // ==================================================
@@ -155,6 +179,11 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
         	this.meleeAttackAI.setRate(60);
         else
         	this.meleeAttackAI.setRate(10);
+
+        // Silverfish Extermination:
+        if(target instanceof EntitySilverfish) {
+            target.setDead();
+        }
         
         return true;
     }
@@ -179,6 +208,12 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
     // ========== Damage Modifier ==========
     public float getDamageModifier(DamageSource damageSrc) {
     	if(damageSrc.getEntity() != null) {
+            // Silverfish Extermination:
+            if(damageSrc.getEntity() instanceof EntitySilverfish) {
+                return 0F;
+            }
+
+            // Pickaxe Damage:
     		Item heldItem = null;
     		if(damageSrc.getEntity() instanceof EntityPlayer) {
     			EntityPlayer entityPlayer = (EntityPlayer)damageSrc.getEntity();
@@ -219,15 +254,4 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
     
     @Override
     public boolean canBurn() { return false; }
-
-
-    // ==================================================
-    //                     Subspecies
-    // ==================================================
-    @Override
-    public void setSubspecies(int subspeciesIndex, boolean resetHealth) {
-        super.setSubspecies(subspeciesIndex, resetHealth);
-        if(subspeciesIndex== 3)
-            this.setSizeScale(this.sizeScale * 2);
-    }
 }

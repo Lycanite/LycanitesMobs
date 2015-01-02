@@ -111,6 +111,30 @@
         "category": "hostile",
         "sounds": [{"name": "entity/arix/fly", "stream": false}]
     },
+    "entity.serpix.say": {
+        "category": "hostile",
+	"sounds": [{"name": "entity/serpix/say", "stream": false}]
+    },
+    "entity.serpix.hurt": {
+        "category": "hostile",
+	"sounds": [{"name": "entity/serpix/hurt", "stream": false}]
+    },
+    "entity.serpix.death": {
+        "category": "hostile",
+	"sounds": [{"name": "entity/serpix/death", "stream": false}]
+    },
+    "entity.serpix.tame": {
+        "category": "hostile",
+	"sounds": [{"name": "entity/serpix/tame", "stream": false}]
+    },
+    "entity.serpix.beg": {
+        "category": "hostile",
+	"sounds": [{"name": "entity/serpix/beg", "stream": false}]
+    },
+    "entity.serpix.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/serpix/eat", "stream": false}]
+    },
     "projectile.frostbolt": {
         "category": "ambient",
 	"sounds": [{"name": "projectile/frostbolt", "stream": false}]
@@ -126,6 +150,10 @@
     "projectile.icefireball": {
         "category": "ambient",
         "sounds": [{"name": "projectile/icefireball", "stream": false}]
+    },
+    "projectile.blizzard": {
+        "category": "ambient",
+        "sounds": [{"name": "projectile/blizzard", "stream": false}]
     },
     "block.frostcloud": {
         "category": "block",

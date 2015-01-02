@@ -91,13 +91,4 @@ public class EntityFrostweb extends EntityProjectileBase {
     	for(int i = 0; i < 8; ++i)
     		this.worldObj.spawnParticle("snowshovel", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
     }
-    
-    
-    // ==================================================
- 	//                      Sounds
- 	// ==================================================
-    @Override
-    public String getLaunchSound() {
-    	return AssetManager.getSound("Frostweb");
-    }
 }

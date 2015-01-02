@@ -105,10 +105,6 @@ public class EntityCinder extends EntityCreatureTameable implements IMob, IGroup
     public void onLivingUpdate() {
         super.onLivingUpdate();
         
-        // Fire Sound:
-        //if(this.rand.nextInt(24) == 0)
-            //this.worldObj.playSoundEffect(this.posX + 0.5D, this.posY + 0.5D, this.posZ + 0.5D, "fire.fire", 1.0F + this.rand.nextFloat(), this.rand.nextFloat() * 0.7F + 0.3F);
-        
         // Particles:
         if(this.worldObj.isRemote)
 	        for(int i = 0; i < 2; ++i) {

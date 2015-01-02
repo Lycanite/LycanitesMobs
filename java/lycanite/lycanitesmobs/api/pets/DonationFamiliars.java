@@ -33,6 +33,10 @@ public class DonationFamiliars {
             if(ObjectManager.getMob("grue") != null)
                 familiars.add(new PetEntryFamiliar("kehaanGrueMiniKehaan", player, "grue").setEntityName("Mini Kehaan").setEntitySubspeciesID(1).setEntitySize(0.85D));
         }
+        if("Augustus1979".equals(player.getCommandSenderName())) { // Gooderness
+            if(ObjectManager.getMob("beholder") != null)
+                familiars.add(new PetEntryFamiliar("kehaanGrueMiniKehaan", player, "beholder").setEntityName("Eye of the Baminati").setEntitySize(0.4D));
+        }
 
         // Patreon:
         if("beckyh2112".equals(player.getCommandSenderName())) {

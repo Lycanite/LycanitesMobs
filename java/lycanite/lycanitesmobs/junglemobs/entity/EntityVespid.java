@@ -56,8 +56,8 @@ public class EntityVespid extends EntityCreatureAgeable implements IMob, IGroupP
         this.experience = 5;
         this.hasAttackSound = true;
         
-        this.setWidth = 0.8F;
-        this.setHeight = 1.2F;
+        this.setWidth = 0.9F;
+        this.setHeight = 1.5F;
         this.setupMob();
 
         this.canGrow = true;
@@ -94,7 +94,7 @@ public class EntityVespid extends EntityCreatureAgeable implements IMob, IGroupP
 		baseAttributes.put("movementSpeed", 0.38D);
 		baseAttributes.put("knockbackResistance", 0D);
 		baseAttributes.put("followRange", 24D);
-		baseAttributes.put("attackDamage", 2D);
+		baseAttributes.put("attackDamage", 1D);
         super.applyEntityAttributes(baseAttributes);
     }
 	

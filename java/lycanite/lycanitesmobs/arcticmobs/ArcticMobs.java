@@ -19,29 +19,9 @@ import lycanite.lycanitesmobs.arcticmobs.block.BlockFrostCloud;
 import lycanite.lycanitesmobs.arcticmobs.block.BlockFrostfire;
 import lycanite.lycanitesmobs.arcticmobs.block.BlockFrostweb;
 import lycanite.lycanitesmobs.arcticmobs.block.BlockIcefire;
-import lycanite.lycanitesmobs.arcticmobs.dispenser.DispenserBehaviorFrostbolt;
-import lycanite.lycanitesmobs.arcticmobs.dispenser.DispenserBehaviorFrostweb;
-import lycanite.lycanitesmobs.arcticmobs.dispenser.DispenserBehaviorIcefire;
-import lycanite.lycanitesmobs.arcticmobs.dispenser.DispenserBehaviorTundra;
-import lycanite.lycanitesmobs.arcticmobs.entity.EntityArix;
-import lycanite.lycanitesmobs.arcticmobs.entity.EntityFrostbolt;
-import lycanite.lycanitesmobs.arcticmobs.entity.EntityFrostweaver;
-import lycanite.lycanitesmobs.arcticmobs.entity.EntityFrostweb;
-import lycanite.lycanitesmobs.arcticmobs.entity.EntityIcefireball;
-import lycanite.lycanitesmobs.arcticmobs.entity.EntityReiver;
-import lycanite.lycanitesmobs.arcticmobs.entity.EntityTundra;
-import lycanite.lycanitesmobs.arcticmobs.entity.EntityWendigo;
-import lycanite.lycanitesmobs.arcticmobs.entity.EntityYeti;
-import lycanite.lycanitesmobs.arcticmobs.item.ItemArcticEgg;
-import lycanite.lycanitesmobs.arcticmobs.item.ItemFrostboltCharge;
-import lycanite.lycanitesmobs.arcticmobs.item.ItemFrostwebCharge;
-import lycanite.lycanitesmobs.arcticmobs.item.ItemFrostyFur;
-import lycanite.lycanitesmobs.arcticmobs.item.ItemIcefireCharge;
-import lycanite.lycanitesmobs.arcticmobs.item.ItemScepterFrostbolt;
-import lycanite.lycanitesmobs.arcticmobs.item.ItemScepterFrostweb;
-import lycanite.lycanitesmobs.arcticmobs.item.ItemScepterIcefire;
-import lycanite.lycanitesmobs.arcticmobs.item.ItemScepterTundra;
-import lycanite.lycanitesmobs.arcticmobs.item.ItemTundraCharge;
+import lycanite.lycanitesmobs.arcticmobs.dispenser.*;
+import lycanite.lycanitesmobs.arcticmobs.entity.*;
+import lycanite.lycanitesmobs.arcticmobs.item.*;
 import lycanite.lycanitesmobs.arcticmobs.mobevent.MobEventSubZero;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
@@ -121,6 +101,8 @@ public class ArcticMobs {
 		ObjectManager.addItem("tundrascepter", new ItemScepterTundra(), 2, 1, 1);
         ObjectManager.addItem("icefirecharge", new ItemIcefireCharge());
         ObjectManager.addItem("icefirescepter", new ItemScepterIcefire(), 2, 1, 1);
+        ObjectManager.addItem("blizzardcharge", new ItemBlizzardCharge());
+        ObjectManager.addItem("blizzardscepter", new ItemScepterBlizzard(), 2, 1, 1);
 
 		ObjectManager.addItem("arixtreat", new ItemTreat("arixtreat", group));
 
@@ -174,12 +156,20 @@ public class ArcticMobs {
         newMob.spawnInfo.setSpawnTypes("SKY")
                 .setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
         ObjectManager.addMob(newMob);
+
+        newMob = new MobInfo(group, "serpix", EntitySerpix.class, 0xCCEEFF, 0x0000BB)
+                .setPeaceful(false).setSummonable(false).setSummonCost(8).setDungeonLevel(2)
+                .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
+        newMob.spawnInfo.setSpawnTypes("MONSTER")
+                .setSpawnWeight(4).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);
+        ObjectManager.addMob(newMob);
 		
 		// ========== Create Projectiles ==========
 		ObjectManager.addProjectile("frostbolt", EntityFrostbolt.class, ObjectManager.getItem("frostboltcharge"), new DispenserBehaviorFrostbolt());
 		ObjectManager.addProjectile("frostweb", EntityFrostweb.class, ObjectManager.getItem("frostwebcharge"), new DispenserBehaviorFrostweb());
         ObjectManager.addProjectile("tundra", EntityTundra.class, ObjectManager.getItem("tundracharge"), new DispenserBehaviorTundra());
         ObjectManager.addProjectile("icefireball", EntityIcefireball.class, ObjectManager.getItem("icefirecharge"), new DispenserBehaviorIcefire());
+        ObjectManager.addProjectile("blizzard", EntityBlizzard.class, ObjectManager.getItem("blizzard"), new DispenserBehaviorBlizzard());
 
 
         // ========== Register Models ==========
@@ -269,6 +259,13 @@ public class ArcticMobs {
                 new ItemStack(ObjectManager.getItem("icefirescepter"), 1, 0),
                 new Object[] { "CCC", "CRC", "CRC",
                         Character.valueOf('C'), ObjectManager.getItem("icefirecharge"),
+                        Character.valueOf('R'), Items.blaze_rod
+                }));
+
+        GameRegistry.addRecipe(new ShapedOreRecipe(
+                new ItemStack(ObjectManager.getItem("blizzardscepter"), 1, 0),
+                new Object[] { "CCC", "CRC", "CRC",
+                        Character.valueOf('C'), ObjectManager.getItem("blizzardcharge"),
                         Character.valueOf('R'), Items.blaze_rod
                 }));
 		

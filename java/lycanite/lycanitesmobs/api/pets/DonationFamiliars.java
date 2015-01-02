@@ -45,7 +45,11 @@ public class DonationFamiliars {
         }
         if("Drcoolpig".equals(player.getCommandSenderName())) {
             if(ObjectManager.getMob("jengu") != null)
-                familiars.add(new PetEntryFamiliar("Drcoolpig", player, "jengu").setEntitySubspeciesID(1).setEntitySize(0.85D));
+                familiars.add(new PetEntryFamiliar("DrcoolpigJengu", player, "jengu").setEntitySubspeciesID(1).setEntitySize(0.85D));
+        }
+        if("mindbound".equals(player.getCommandSenderName())) {
+            if(ObjectManager.getMob("cinder") != null)
+                familiars.add(new PetEntryFamiliar("mindboundCinder", player, "cinder").setEntitySize(0.85D));
         }
 
         return familiars;

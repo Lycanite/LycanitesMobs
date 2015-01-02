@@ -15,16 +15,8 @@ import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
 import lycanite.lycanitesmobs.shadowmobs.block.BlockShadowfire;
 import lycanite.lycanitesmobs.shadowmobs.dispenser.DispenserBehaviorBloodleech;
 import lycanite.lycanitesmobs.shadowmobs.dispenser.DispenserBehaviorSpectralbolt;
-import lycanite.lycanitesmobs.shadowmobs.entity.EntityBloodleech;
-import lycanite.lycanitesmobs.shadowmobs.entity.EntityEpion;
-import lycanite.lycanitesmobs.shadowmobs.entity.EntityGrue;
-import lycanite.lycanitesmobs.shadowmobs.entity.EntityPhantom;
-import lycanite.lycanitesmobs.shadowmobs.entity.EntitySpectralbolt;
-import lycanite.lycanitesmobs.shadowmobs.item.ItemBloodleechCharge;
-import lycanite.lycanitesmobs.shadowmobs.item.ItemScepterBloodleech;
-import lycanite.lycanitesmobs.shadowmobs.item.ItemScepterSpectralbolt;
-import lycanite.lycanitesmobs.shadowmobs.item.ItemShadowEgg;
-import lycanite.lycanitesmobs.shadowmobs.item.ItemSpectralboltCharge;
+import lycanite.lycanitesmobs.shadowmobs.entity.*;
+import lycanite.lycanitesmobs.shadowmobs.item.*;
 import lycanite.lycanitesmobs.shadowmobs.mobevent.MobEventShadowGames;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
@@ -90,6 +82,8 @@ public class ShadowMobs {
 		
 		ObjectManager.addItem("bloodchilli", new ItemCustomFood("bloodchilli", group, 6, 0.7F).setPotionEffect(Potion.digSpeed.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("bloodchilli"));*/
+
+        ObjectManager.addItem("geistliver", new ItemGeistLiver());
 		
 		
 		// ========== Create Blocks ==========
@@ -123,6 +117,14 @@ public class ShadowMobs {
 				.setBiomes("GROUP, SPOOKY")
 				.setSpawnWeight(6).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
+
+        newMob = new MobInfo(group, "geist", EntityGeist.class, 0x705449, 0x310e08)
+                .setPeaceful(false).setSummonable(false).setSummonCost(3).setDungeonLevel(2)
+                .addSubspecies(new Subspecies("dark", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
+        newMob.spawnInfo.setSpawnTypes("UNDEATH, MONSTER")
+                .setBiomes("GROUP, SPOOKY")
+                .setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
+        ObjectManager.addMob(newMob);
 
 		
 		// ========== Create Projectiles ==========

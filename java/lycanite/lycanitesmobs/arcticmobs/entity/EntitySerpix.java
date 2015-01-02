@@ -45,8 +45,8 @@ public class EntitySerpix extends EntityCreatureTameable implements IGroupPredat
         this.babySpawnChance = 0.1D;
         this.growthTime = -120000;
         
-        this.setWidth = 5.8F;
-        this.setDepth = 5.8F;
+        this.setWidth = 6.8F;
+        this.setDepth = 6.8F;
         this.setHeight = 1.8F;
         this.setupMob();
         
@@ -56,8 +56,8 @@ public class EntitySerpix extends EntityCreatureTameable implements IGroupPredat
         this.tasks.addTask(1, new EntityAIStealth(this).setStealthTime(60));
         this.tasks.addTask(2, this.aiSit);
         this.tasks.addTask(3, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
-        this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("crusktreat"))).setTemptDistanceMin(4.0D));
-        this.tasks.addTask(5, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(20).setStaminaTime(100).setRange(12.0F).setMinChaseDistance(3.0F).setChaseTime(-1));
+        this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("serpixtreat"))).setTemptDistanceMin(4.0D));
+        this.tasks.addTask(5, new EntityAIAttackRanged(this).setSpeed(0.5D).setRate(20).setStaminaTime(100).setRange(12.0F).setMinChaseDistance(8.0F).setChaseTime(-1));
         this.tasks.addTask(7, new EntityAIWander(this));
         this.tasks.addTask(9, new EntityAIBeg(this));
 
@@ -91,8 +91,8 @@ public class EntitySerpix extends EntityCreatureTameable implements IGroupPredat
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.clay_ball), 1).setMinAmount(6).setMaxAmount(12));
-        this.drops.add(new DropRate(new ItemStack(Items.flint), 0.5F).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.snowball), 1).setMinAmount(6).setMaxAmount(12));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("blizzardcharge")), 0.5F).setMinAmount(1).setMaxAmount(3));
         this.drops.add(new DropRate(new ItemStack(Blocks.iron_ore), 0.5F).setMinAmount(2).setMaxAmount(3));
         this.drops.add(new DropRate(new ItemStack(Blocks.gold_ore), 0.25F).setMinAmount(1).setMaxAmount(2));
 	}
@@ -134,7 +134,7 @@ public class EntitySerpix extends EntityCreatureTameable implements IGroupPredat
         projectileEntry7.offsetY -= 10D;
         projectiles.add(projectileEntry7);
 
-        double[] launchPos = this.getFacingPosition(2D);
+        double[] launchPos = this.getFacingPosition(4D);
         for(EntityProjectileRapidFire projectile : projectiles) {
             projectile.setProjectileScale(1f);
 
@@ -247,10 +247,9 @@ public class EntitySerpix extends EntityCreatureTameable implements IGroupPredat
     // ==================================================
     @Override
     public boolean isTamingItem(ItemStack itemstack) {
-        return false;
-    	/*if(!this.isChild())
+    	if(!this.isChild())
     		return false;
-        return itemstack.getItem() == ObjectManager.getItem("serpixtreat");*/
+        return itemstack.getItem() == ObjectManager.getItem("serpixtreat");
     }
     
     

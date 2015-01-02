@@ -51,6 +51,8 @@ item.blizzardscepter.name=Blizzard Scepter
 item.blizzardscepter.description=Mid Damage, Spray Fire, Places Icefire
 item.arixtreat.name=Arix Treat
 item.arixtreat.description=An icy treat for icy imps!
+item.serpixtreat.name=Serpix Treat
+item.serpixtreat.description=Serpix love to devour frosty flesh and bone!
 #
 # Blocks
 tile.frostweb.name=Frostweb

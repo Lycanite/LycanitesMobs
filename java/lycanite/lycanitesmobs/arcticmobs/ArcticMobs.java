@@ -105,6 +105,7 @@ public class ArcticMobs {
         ObjectManager.addItem("blizzardscepter", new ItemScepterBlizzard(), 2, 1, 1);
 
 		ObjectManager.addItem("arixtreat", new ItemTreat("arixtreat", group));
+        ObjectManager.addItem("serpixtreat", new ItemTreat("serpixtreat", group));
 
 		// ========== Create Blocks ==========
 		ObjectManager.addBlock("frostweb", new BlockFrostweb());
@@ -275,6 +276,13 @@ public class ArcticMobs {
 				Character.valueOf('T'), Blocks.packed_ice,
 				Character.valueOf('B'), Items.bone
 			}));
+
+        GameRegistry.addRecipe(new ShapedOreRecipe(
+                new ItemStack(ObjectManager.getItem("serpixtreat"), 1, 0),
+                new Object[] { "TTT", "BBT", "TTT",
+                        Character.valueOf('T'), ObjectManager.getItem("frostyfur"),
+                        Character.valueOf('B'), Items.bone
+                }));
 		
 		// ========== Smelting ==========
 		GameRegistry.addSmelting(ObjectManager.getItem("yetimeatraw"), new ItemStack(ObjectManager.getItem("yetimeatcooked"), 1), 0.5f);

@@ -71,6 +71,26 @@
         "category": "hostile",
         "sounds": [{"name": "entity/epion/fly", "stream": false}]
     },
+    "entity.geist.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/geist/say", "stream": false}]
+    },
+    "entity.geist.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/geist/hurt", "stream": false}]
+    },
+    "entity.geist.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/geist/death", "stream": false}]
+    },
+    "entity.geist.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/geist/attack", "stream": false}]
+    },
+    "entity.geist.step": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/geist/step", "stream": false}]
+    },
     "projectile.spectralbolt": {
         "category": "ambient",
         "sounds": [{"name": "projectile/spectralbolt", "stream": false}]

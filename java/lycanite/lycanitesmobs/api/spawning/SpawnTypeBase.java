@@ -252,6 +252,17 @@ public class SpawnTypeBase {
 		deathSpawner.forceSpawning = true;
 		deathSpawner.loadFromConfig();
         spawnTypes.add(deathSpawner);
+
+        // Undeath Spawner:
+        SpawnTypeBase undeathSpawner = new SpawnTypeUndeath("Undeath")
+                .setRate(0).setChance(0.03D).setRange(2).setBlockLimit(32).setMobLimit(1);
+        undeathSpawner.materials = new Material[] {Material.air};
+        undeathSpawner.ignoreBiome = true;
+        undeathSpawner.ignoreDimension = true;
+        undeathSpawner.ignoreLight = true;
+        undeathSpawner.forceSpawning = true;
+        undeathSpawner.loadFromConfig();
+        spawnTypes.add(undeathSpawner);
 		
 		// Sleep Spawner:
 		SpawnTypeBase sleepSpawner = new SpawnTypeSleep("Sleep")

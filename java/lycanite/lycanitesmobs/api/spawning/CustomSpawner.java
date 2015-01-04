@@ -18,6 +18,7 @@ import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
@@ -152,7 +153,7 @@ public class CustomSpawner {
     public List<SpawnTypeBase> oreBreakSpawnTypes = new ArrayList<SpawnTypeBase>();
     public List<SpawnTypeBase> cropBreakSpawnTypes = new ArrayList<SpawnTypeBase>();
     public List<SpawnTypeBase> treeBreakSpawnTypes = new ArrayList<SpawnTypeBase>();
-	/** This uses the block break events to spawn mobs around blocks when they are destroyed. **/
+	/** This uses the block harvest drops events to spawn mobs around blocks when they are destroyed. **/
 	@SubscribeEvent
 	public void onHarvestDrops(HarvestDropsEvent event) {
 		EntityPlayer player = event.harvester;
@@ -216,7 +217,79 @@ public class CustomSpawner {
 				}
 			}
 		}
+        if(event.block instanceof BlockLeaves) {
+            for(int searchY = y - 1; searchY <= Math.max(0, y - 32); searchY++) {
+                Block searchBlock = world.getBlock(x, searchY, z);
+                if(searchBlock != event.block && searchBlock != null) {
+                    String searchBlockName = searchBlock.getUnlocalizedName();
+                    String[] searchBlockNameParts = searchBlockName.split("\\.");
+                    isLog = false;
+                    for(String searchBlockNamePart : searchBlockNameParts) {
+                        if(searchBlockNamePart.length() >= 3 && searchBlockNamePart.substring(0, 3).equalsIgnoreCase("log")) {
+                            isLog = true;
+                            break;
+                        }
+                    }
+                    if(isLog) {
+                        for(SpawnTypeBase spawnType : this.treeBreakSpawnTypes) {
+                            spawnType.spawnMobs(0, world, x, y, z, player);
+                        }
+                    }
+                    if(!world.isAirBlock(x, searchY, z))
+                        break;
+                }
+            }
+        }
 	}
+
+
+    // ==================================================
+    //                 Break Block Event
+    // ==================================================
+    /** This uses the block break events to spawn mobs around blocks when they are destroyed. **/
+    @SubscribeEvent
+    public void onBlockBreak(BlockEvent.BreakEvent event) {
+        EntityPlayer player = event.getPlayer();
+        if(event.block == null || event.world == null || event.world.isRemote || event.isCanceled())
+            return;
+        if(player == null || (player != null && player.capabilities.isCreativeMode)) // No Spawning for Creative Players
+            return;
+
+        // Spawn On Block Harvest:
+        World world = event.world;
+        int x = (int)event.x;
+        int y = (int)event.y;
+        int z = (int)event.z;
+
+        // Tree Blocks:
+        if(event.block instanceof BlockLeaves) {
+            for(int searchX = x -1; searchX <= x + 1; searchX++) {
+                for(int searchZ = z -1; searchZ <= z + 1; searchZ++) {
+                    for(int searchY = y; searchY > Math.max(0, y - 32); searchY--) {
+                        Block searchBlock = world.getBlock(searchX, searchY, searchZ);
+                        if(searchBlock != event.block && searchBlock != null) {
+                            String searchBlockName = searchBlock.getUnlocalizedName();
+                            String[] searchBlockNameParts = searchBlockName.split("\\.");
+                            boolean isLog = false;
+                            for(String searchBlockNamePart : searchBlockNameParts) {
+                                if(searchBlockNamePart.length() >= 3 && searchBlockNamePart.substring(0, 3).equalsIgnoreCase("log")) {
+                                    isLog = true;
+                                    break;
+                                }
+                            }
+                            if(isLog) {
+                                for(SpawnTypeBase spawnType : this.treeBreakSpawnTypes) {
+                                    spawnType.spawnMobs(0, world, x, y, z, player);
+                                }
+                            }
+                            if(!world.isAirBlock(searchX, searchY, searchZ))
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+    }
 
 	
 	// ==================================================

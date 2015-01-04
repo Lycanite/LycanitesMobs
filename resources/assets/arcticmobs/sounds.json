@@ -3,6 +3,10 @@
         "category": "record",
         "sounds": [{"name": "mobevent/subzero", "stream": true}]
     },
+    "mobevent.wintersgrasp": {
+        "category": "record",
+        "sounds": [{"name": "mobevent/wintersgrasp", "stream": true}]
+    },
     "entity.reiver.say": {
         "category": "hostile",
 	"sounds": [{"name": "entity/reiver/say", "stream": false}]

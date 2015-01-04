@@ -5,6 +5,7 @@ import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.gui.GuiOverlay;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ResourceLocation;
@@ -103,8 +104,8 @@ public class MobEventClient {
         x += 3 - (this.ticks % 6);
         y += 2 - (this.ticks % 4);
 
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, animation);
         gui.mc.getTextureManager().bindTexture(this.getTexture());
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, animation);
         gui.drawTexturedModalRect(x, y, u, v, width, height);
     }
 

@@ -4,6 +4,7 @@ desertmobs.description=Roaming the hot, dry and sandy areas, these creatures are
 #
 # Mob Events
 mobevent.marchofthegorgomites.name=March of The Gorgomites
+mobevent.bladeflurry.name=Blade Flurry
 #
 # Entites
 entity.desertmobs.cryptzombie.name=Crypt Zombie

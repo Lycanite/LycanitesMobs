@@ -5,11 +5,24 @@ event.finished=%event% закончилось!
 #
 # Mob Events
 mobevent.bamstorm.name=Бушующий шторм
+mobevent.halloween.name=Счастливого Хэллоуина!
+mobevent.roasting.name=Твою голову дотла сожгут Цандеры
+mobevent.rudolph.name=Кровавый бармаглот Рудольф
+mobevent.saltytree.name=Солёное дерево
+mobevent.satanclaws.name=Когти Сатаны
 #
 #
 #
 # ========== Entites ==========
 entity.lycanitesmobs.summoningportal.name=Портал призыва
+#
+#
+#
+# ========== Spawners ==========
+spawner.darkness.level1=Здесь темно и вас вполне может кто-то съесть...
+spawner.darkness.level2=Вы слышите отзвуки из самого сердца тьмы... Скорее, вернитесь на свет!
+spawner.darkness.level3=Порождение теней появилось из тьмы!!
+spawner.darkness.level1.back=Звуки наконец-то не слышны... Пока что...
 #
 #
 #
@@ -53,6 +66,21 @@ item.savagesummoningstaff.name=Дикий призывающий посох
 item.savagesummoningstaff.description=Вызывает в два раза миньонов, но их здоровье меньше также в два раза.
 item.sturdysummoningstaff.name=Двужильный призывающий посох
 item.sturdysummoningstaff.description=Больше прочности, но призыв стоит больше фокус-силы.
+item.battleburrito.name=Боевой буррито
+item.battleburrito.description=Наполненная энергией смесь разных блюд! Эффекты: Сила, Сопротивление, Поглощение, Дополнительное здоровье и Лечение!
+item.explorersrisotto.name=Ризотто Исследователя
+item.explorersrisotto.description=Кушанье, наполненное силой! Эффекты: Увеличение скорости, Скорость добычи, Подводное дыхание и Усиление прыжка!
+item.halloweentreat.name=Halloween Treat
+item.halloweentreat.description=Подарок или обман?!
+item.halloweentreat.good=Это подарок! Вы счастливчик!
+item.halloweentreat.bad=Обман! Муахахахахахахаха!
+item.wintergift.name=Зимний подарок
+item.wintergift.description=Благая весть, добрый Йоль и Счастливое Рождество! Откройте и узнайте, что внутри!
+item.wintergift.good=Упс! Вот ваш подарок...
+item.wintergift.bad=Ахахахахаха! Благая весть, но она только для меня!
+item.wintergiftlarge.name=Большой зимний подарок
+item.wintergiftlarge.description=25 декабря! Время открыть ваш большой подарок! Не обращайте внимания на скребущиеся звуки внутри коробки, это пустяк...
+item.wintergiftlarge.bad=А-ХА-ХА-ХА-ХА! МУААХАХАХАХАХАХАА! Счастливого Рождества!
 #
 #
 #
@@ -67,10 +95,25 @@ gui.beastiary.empty=Нет сведений о тварях
 gui.beastiary.soulgazerinfo=В ваш Бестиарий не добавлено сведений ни об одной твари. Для того, чтобы сделать это, скрафтите Ловец душ и используйте его (правой кнопкой мыши) на любом существе, которое найдёте.
 gui.beastiary.selectacreature=Выберите раздел и затем существо.
 #
+# Familiar Manager:
+gui.familiarmanager.name=Фамильяры
+gui.familiarmanager.empty=Нет фамильяров
+gui.familiarmanager.info=У вас нет ни одного фамильяра. Фамильяры - это специальные миньоны, которые всегда будут сражаться на вашей стороне. Сейчас возможности получить их нет, но те, кто пожертвует на развитие мода, могут стать их обладателями в будущем.
+#
 # Minion Manager:
 gui.minion.name=Управление миньонами
 gui.minion.empty=Нет призываемых тварей
 gui.minion.soulgazerinfo=Вы не добавили ни одного существа, которое можно было бы призвать, в ваш Бестиарий. Продолжайте искать, не все твари призываемы.
+#
+# Pet Manager:
+gui.petmanager.name=Питомцы
+gui.petmanager.empty=Нет питомцев
+gui.petmanager.info=Некоторые существа могут быть приручены в качестве питомцев или ездовых животных. Вы можете создать различную еду, чтобы приручить таких существ. Затем вы можете привязать душу приручённых существ, после чего можно будет призывать и отзывать их, в том числе и через некоторое время после смерти.
+#
+# Mount Manager:
+gui.mountmanager.name=Ездовые питомцы
+gui.mountmanager.empty=Нет ездовых питомцев
+gui.mountmanager.info=Некоторые существа могут быть приручены в качестве питомцев или ездовых животных. Вы можете создать различную еду, чтобы приручить таких существ. Затем вы можете привязать душу приручённых существ, после чего можно будет призывать и отзывать их, а также пользоваться небольшим инвентарём питомца.
 #
 # Soulbound Pets:
 gui.soulboundpets.name=Приручённые души
@@ -85,6 +128,8 @@ gui.pet.stance=Позиция
 gui.pet.aggressive=Агрессивный
 gui.pet.defensive=Защитный
 gui.pet.pvp=PVP
+gui.pet.active=Активен
+gui.pet.teleport=Телепорт
 #
 # Mounts:
 gui.mount.controls=Нажмите %control% чтобы сесть на ездового питомца
@@ -99,6 +144,7 @@ message.soulgazer.known=Вы уже знаете всё об этой твари
 message.soulgazer.unknown=Ловец душ не нашёл ничего интересного в этой твари.
 message.pet.tamed=%creature% теперь приручен вами!
 message.pet.tamefail=%creature% хочет больше!
+message.pet.mount.baby=%creature% может нести вас, только когда вырастет!
 # %creature% will be replaced with the name of the tamed creature, don't translate this!
 #
 #

@@ -356,7 +356,7 @@ public class SpawnTypeBase {
 	// ==================================================
     /**
      * Adds a mob to this spawn type. Takes a Mob Info which will be ignored if null.
-     * @param spawnInfo The MobInfo of the mob to spawn.
+     * @param mobInfo The MobInfo of the mob to spawn.
      */
 	public void addSpawn(MobInfo mobInfo) {
 		this.addSpawn(mobInfo, 0);
@@ -364,14 +364,14 @@ public class SpawnTypeBase {
 	
     /**
      * Adds a mob to this spawn type. Takes a Mob Info which will be ignored if null.
-     * @param spawnInfo The MobInfo of the mob to spawn.
+     * @param mobInfo The MobInfo of the mob to spawn.
      * @param spawnWaveLimit A limit of how many times this mob can be spawned per wave. Set to 0 for infinite.
      */
 	public void addSpawn(MobInfo mobInfo, int spawnWaveLimit) {
-		//if(mobInfo == null)
+		if(mobInfo == null || mobInfo.spawnInfo == null)
+            return;
 			//LycanitesMobs.printWarning("", "Tried to add a null mob entry to a spawn type.");
-		if(mobInfo != null && mobInfo.spawnInfo != null)
-			this.spawnList.add(mobInfo.spawnInfo);
+		this.spawnList.add(mobInfo.spawnInfo);
 		if(spawnWaveLimit > 0)
 			this.spawnWaveLimits.put(mobInfo.spawnInfo, spawnWaveLimit);
 	}

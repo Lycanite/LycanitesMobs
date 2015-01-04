@@ -3,6 +3,10 @@
         "category": "record",
         "sounds": [{"name": "mobevent/shadowgames", "stream": true}]
     },
+    "mobevent.blackplague": {
+        "category": "record",
+        "sounds": [{"name": "mobevent/blackplague", "stream": true}]
+    },
     "entity.grue.say": {
         "category": "hostile",
         "sounds": [{"name": "entity/grue/say", "stream": false}]

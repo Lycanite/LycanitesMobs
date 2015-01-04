@@ -1,22 +1,24 @@
 package lycanite.lycanitesmobs.infernomobs.mobevent;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileRapidFire;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.infernomobs.entity.EntityEmber;
+import lycanite.lycanitesmobs.infernomobs.entity.EntityMagma;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.world.World;
 
-public class MobEventCinderfall extends MobEventBase {
+import java.util.ArrayList;
+import java.util.List;
+
+public class MobEventEruption extends MobEventBase {
 
 
     // ==================================================
     //                     Constructor
     // ==================================================
-	public MobEventCinderfall(String name, GroupInfo group) {
+	public MobEventEruption(String name, GroupInfo group) {
 		super(name, group);
 	}
 
@@ -46,41 +48,45 @@ public class MobEventCinderfall extends MobEventBase {
 	public void onSpawn(EntityLiving entity) {
 		super.onSpawn(entity);
 
-        List<EntityProjectileRapidFire> projectiles = new ArrayList<EntityProjectileRapidFire>();
+        List<EntityProjectileBase> projectiles = new ArrayList<EntityProjectileBase>();
         int rapidTime = 20;
 
-        EntityProjectileRapidFire projectileEntry = new EntityProjectileRapidFire(EntityEmber.class, entity.worldObj, entity, rapidTime, 3);
+        EntityProjectileBase projectileEntry = new EntityMagma(entity.worldObj, entity);
         projectiles.add(projectileEntry);
 
-        projectileEntry = new EntityProjectileRapidFire(EntityEmber.class, entity.worldObj, entity, rapidTime, 3);
-        projectileEntry.setThrowableHeading(entity.posX + 2.0D, 0, entity.posZ + 2.0D, 1.1F, 6.0F);
+        projectileEntry = new EntityMagma(entity.worldObj, entity);
+        projectileEntry.setThrowableHeading(entity.posX + 3.0D, 0, entity.posZ + 3.0D, 1.1F, 6.0F);
         projectiles.add(projectileEntry);
 
-        projectileEntry = new EntityProjectileRapidFire(EntityEmber.class, entity.worldObj, entity, rapidTime, 3);
-        projectileEntry.setThrowableHeading(entity.posX + 4.0D, 0, 0, 1.1F, 6.0F);
+        projectileEntry = new EntityMagma(entity.worldObj, entity);
+        projectileEntry.setThrowableHeading(entity.posX + 3.0D, 0, entity.posZ, 1.1F, 6.0F);
         projectiles.add(projectileEntry);
 
-        projectileEntry = new EntityProjectileRapidFire(EntityEmber.class, entity.worldObj, entity, rapidTime, 3);
-        projectileEntry.setThrowableHeading(entity.posX + 2.0D, 0, entity.posZ - 2.0D, 1.1F, 6.0F);
+        projectileEntry = new EntityMagma(entity.worldObj, entity);
+        projectileEntry.setThrowableHeading(entity.posX, 0, entity.posZ + 3.0D, 1.1F, 6.0F);
         projectiles.add(projectileEntry);
 
-        projectileEntry = new EntityProjectileRapidFire(EntityEmber.class, entity.worldObj, entity, rapidTime, 3);
-        projectileEntry.setThrowableHeading(0, 0, entity.posZ - 4.0D, 1.1F, 6.0F);
+        projectileEntry = new EntityMagma(entity.worldObj, entity);
+        projectileEntry.setThrowableHeading(entity.posX - 3.0D, 0, entity.posZ - 3.0D, 1.1F, 6.0F);
         projectiles.add(projectileEntry);
 
-        projectileEntry = new EntityProjectileRapidFire(EntityEmber.class, entity.worldObj, entity, rapidTime, 3);
-        projectileEntry.setThrowableHeading(entity.posX - 2.0D, 0, entity.posZ - 2.0D, 1.1F, 6.0F);
+        projectileEntry = new EntityMagma(entity.worldObj, entity);
+        projectileEntry.setThrowableHeading(entity.posX - 3.0D, 0, entity.posZ, 1.1F, 6.0F);
         projectiles.add(projectileEntry);
 
-        projectileEntry = new EntityProjectileRapidFire(EntityEmber.class, entity.worldObj, entity, rapidTime, 3);
-        projectileEntry.setThrowableHeading(entity.posX - 4.0D, 0, 0, 1.1F, 6.0F);
+        projectileEntry = new EntityMagma(entity.worldObj, entity);
+        projectileEntry.setThrowableHeading(entity.posX, 0, entity.posZ - 3.0D, 1.1F, 6.0F);
         projectiles.add(projectileEntry);
 
-        projectileEntry = new EntityProjectileRapidFire(EntityEmber.class, entity.worldObj, entity, rapidTime, 3);
-        projectileEntry.setThrowableHeading(entity.posX - 2.0D, 0, entity.posZ + 4.0D, 1.1F, 6.0F);
+        projectileEntry = new EntityMagma(entity.worldObj, entity);
+        projectileEntry.setThrowableHeading(entity.posX + 3.0D, 0, entity.posZ - 3.0D, 1.1F, 6.0F);
         projectiles.add(projectileEntry);
 
-        for(EntityProjectileRapidFire projectile : projectiles) {
+        projectileEntry = new EntityMagma(entity.worldObj, entity);
+        projectileEntry.setThrowableHeading(entity.posX - 3.0D, 0, entity.posZ + 3.0D, 1.1F, 6.0F);
+        projectiles.add(projectileEntry);
+
+        for(EntityProjectileBase projectile : projectiles) {
             projectile.setProjectileScale(1f);
 
             // Y Offset:

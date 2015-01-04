@@ -41,6 +41,10 @@ public class DonationFamiliars {
             if(ObjectManager.getMob("reiver") != null)
                 familiars.add(new PetEntryFamiliar("ganymedes01ReiverBob", player, "reiver").setEntityName("Bob").setEntitySize(0.4D));
         }
+        if("JaredBGreat".equals(player.getCommandSenderName())) { // BlackJar72
+            if(ObjectManager.getMob("zephyr") != null)
+                familiars.add(new PetEntryFamiliar("JaredBGreatZephyrThunnar", player, "zephyr").setEntityName("Thunnar").setEntitySize(0.4D));
+        }
 
         // Patreon:
         if("beckyh2112".equals(player.getCommandSenderName())) {

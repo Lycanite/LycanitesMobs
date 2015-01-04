@@ -1564,6 +1564,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Deal Damage ==========
     /** Called when attacking and makes this entity actually deal damage to the target entity. Not used by projectile based attacks. **/
     public boolean attackEntityAsMob(Entity target, double damageScale) {
+        if(!this.isEntityAlive())
+            return false;
         float damage = this.getAttackDamage(damageScale);
         int i = 0;
         

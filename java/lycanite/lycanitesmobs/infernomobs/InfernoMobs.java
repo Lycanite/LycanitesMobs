@@ -13,6 +13,7 @@ import lycanite.lycanitesmobs.api.item.ItemTreat;
 import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeLand;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
 import lycanite.lycanitesmobs.infernomobs.block.BlockFluidPureLava;
 import lycanite.lycanitesmobs.infernomobs.block.BlockScorchfire;
@@ -29,6 +30,7 @@ import lycanite.lycanitesmobs.infernomobs.entity.EntityMagma;
 import lycanite.lycanitesmobs.infernomobs.entity.EntityScorchfireball;
 import lycanite.lycanitesmobs.infernomobs.item.*;
 import lycanite.lycanitesmobs.infernomobs.mobevent.MobEventCinderfall;
+import lycanite.lycanitesmobs.infernomobs.mobevent.MobEventEruption;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Items;
@@ -178,19 +180,31 @@ public class InfernoMobs {
 		ObjectManager.setCurrentGroup(this.group);
 		
 		// ========== Mob Events ==========
-        if(MobInfo.getFromName("cinder") != null) {
-			MobEventBase mobEvent = new MobEventCinderfall("cinderfall", this.group).setDimensions("1");
-			SpawnTypeBase eventSpawner = new SpawnTypeSky("cinderfall")
-	            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-	        eventSpawner.materials = new Material[] {Material.air};
-	        eventSpawner.ignoreBiome = true;
-	        eventSpawner.ignoreLight = true;
-	        eventSpawner.forceSpawning = true;
-	        eventSpawner.ignoreMobConditions = true;
-	        eventSpawner.addSpawn(MobInfo.getFromName("cinder"));
-	        mobEvent.addSpawner(eventSpawner);
-			MobEventManager.instance.addWorldEvent(mobEvent);
-        }
+        MobEventBase mobEvent = new MobEventCinderfall("cinderfall", this.group).setDimensions("1");
+        SpawnTypeBase eventSpawner = new SpawnTypeSky("cinderfall")
+                .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
+        eventSpawner.materials = new Material[] {Material.air};
+        eventSpawner.ignoreBiome = true;
+        eventSpawner.ignoreLight = true;
+        eventSpawner.forceSpawning = true;
+        eventSpawner.ignoreMobConditions = true;
+        eventSpawner.addSpawn(MobInfo.getFromName("cinder"));
+        mobEvent.addSpawner(eventSpawner);
+        MobEventManager.instance.addWorldEvent(mobEvent);
+
+        mobEvent = new MobEventEruption("eruption", this.group).setDimensions("1");
+        mobEvent.minDay = 10;
+        eventSpawner = new SpawnTypeLand("eruption")
+                .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
+        eventSpawner.materials = new Material[] {Material.air};
+        eventSpawner.ignoreBiome = true;
+        eventSpawner.ignoreLight = true;
+        eventSpawner.forceSpawning = true;
+        eventSpawner.ignoreMobConditions = true;
+        eventSpawner.addSpawn(MobInfo.getFromName("lobber"));
+        eventSpawner.addSpawn(MobInfo.getFromName("khalk"), 2);
+        mobEvent.addSpawner(eventSpawner);
+        MobEventManager.instance.addWorldEvent(mobEvent);
 		
 		// ========== Crafting ==========
 		GameRegistry.addRecipe(new ShapelessOreRecipe(

@@ -119,7 +119,7 @@ public class EntityAIAttackMelee extends EntityAIBase {
         attackTarget = this.host.getAttackTarget();
         if(attackTarget == null)
         	return false;
-        if(!attackTarget.isEntityAlive())
+        if(!this.host.isEntityAlive() || !attackTarget.isEntityAlive())
         	return false;
         if(this.host.getDistance(this.attackTarget.posX, this.attackTarget.boundingBox.minY, this.attackTarget.posZ) > this.maxChaseDistance)
         	return false;

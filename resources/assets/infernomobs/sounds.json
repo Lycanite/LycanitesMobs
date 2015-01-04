@@ -3,6 +3,10 @@
         "category": "record",
         "sounds": [{"name": "mobevent/cinderfall", "stream": true}]
     },
+    "mobevent.eruption": {
+        "category": "record",
+        "sounds": [{"name": "mobevent/eruption", "stream": true}]
+    },
     "entity.cinder.say": {
         "category": "hostile",
         "sounds": [{"name": "entity/cinder/say", "stream": false}]

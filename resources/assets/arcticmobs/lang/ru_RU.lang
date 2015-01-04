@@ -16,6 +16,8 @@ entity.arcticmobs.wendigo.name=Вендиго
 entity.arcticmobs.wendigo.description=Огромные ледяные твари, оставляющие ловушки из Ледогня за собой. Также они метают Взрыв Тундры, создающий Ледогонь и Облако льда при соприкосновении с чем-либо.
 entity.arcticmobs.arix.name=Арикс
 entity.arcticmobs.arix.description=Злобные морозные бесы, которых можно найти в снежных биомах. Метают шары Морозного огня, наносящего урон и замедляющего врагов. Могут быть приручены как великолепные питомцы!
+entity.arcticmobs.serpix.name=Серпикс
+entity.arcticmobs.serpix.description=Огромные ледяные черви, прогрызающие ходы в мёрзлой земле. Серпикс атакует смертельной метелью, накладывая морозный огонь на землю!
 #
 # Items
 item.arcticspawn.name=Призвать существо - 
@@ -35,6 +37,8 @@ item.tundracharge.name=Заряд Взрыва тундры
 item.tundracharge.description=Запускает шар Ледогня. Можно стрелять из раздатчика.
 item.icefirecharge.name=Заряд Ледогня
 item.icefirecharge.description=Заряд ледяного огня. Можно стрелять из раздатчика.
+item.blizzardcharge.name=Заряд Метели
+item.blizzardcharge.description=Запускает небольшую волну морозного огня. Можно стрелять из раздатчика.
 item.frostboltscepter.name=Посох "Ледяной шар"
 item.frostboltscepter.description=Урон: Средний | Скорость атаки: Быстрая | Замедляет
 item.frostwebscepter.name=Посох "Ледяная паутина"
@@ -43,8 +47,12 @@ item.tundrascepter.name=Посох "Тундра"
 item.tundrascepter.description=Урон: Высокий | Нужна зарядка | Размещает Ледогонь и Облако льда
 item.icefirescepter.name=Посох "Морозный огонь"
 item.icefirescepter.description=Урон: Низкий | Скорость атаки: Быстрая | Размещает Морозный огонь
+item.blizzardscepter.name=Посох "Метель"
+item.blizzardscepter.description=Урон: Средний | Распыляет огонь | Размещает Морозный огонь
 item.arixtreat.name=Пища для Арикса
 item.arixtreat.description=Ледяная еда для ледяных бесов!
+item.serpixtreat.name=Пища для Серпикса
+item.serpixtreat.description=Серпиксы любят пожирать замороженную плоть и кости!
 #
 # Blocks
 tile.frostweb.name=Ледяная паутина

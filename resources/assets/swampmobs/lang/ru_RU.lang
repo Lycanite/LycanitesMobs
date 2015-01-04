@@ -39,6 +39,12 @@ item.poisonrayscepter.name=Посох "Ядовитый луч"
 item.poisonrayscepter.description=Урон: Средний | Лазер | Отравляет
 item.venomshotscepter.name=Посох "Удар яда"
 item.venomshotscepter.description=Урон: Низкий | Скорость атаки: Быстрая | Отравляет | Размещает ядовитые облака
+item.venomaxeblade.name=Ядовитый Лезвийный топор
+item.venomaxeblade.description=заряжен душами ремобра. Эффективен в качестве как меча, так и топора. Накладывает яд, может призвать для вас миньона-ремобра.
+item.goldenvenomaxeblade.name=Золотой Ядовитый лезвийный топор
+item.goldenvenomaxeblade.description=Усиленный Ядовитый Лезвийный топор, который может призвать Золотого ремобра на некоторое время и наносит увеличенный урон.
+item.verdantvenomaxeblade.name=Verdant Venom Axeblade
+item.verdantvenomaxeblade.description=Усиленный Ядовитый Лезвийный топор, который может призвать Зеленого ремобра на некоторое время и наносит увеличенный урон.
 #
 # Blocks
 tile.poisoncloud.name=Облако яда

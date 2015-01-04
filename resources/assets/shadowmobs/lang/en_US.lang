@@ -4,6 +4,7 @@ shadowmobs.description=From the darkest corners of the world come the stealthies
 #
 # Mob Events
 mobevent.shadowgames.name=Shadow Games
+mobevent.blackplague.name=Black Plague
 #
 # Entites
 entity.shadowmobs.grue.name=Grue

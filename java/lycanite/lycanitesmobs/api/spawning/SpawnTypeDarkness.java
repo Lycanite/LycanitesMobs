@@ -7,11 +7,14 @@ import java.util.Map;
 import lycanite.lycanitesmobs.ExtendedWorld;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class SpawnTypeDarkness extends SpawnTypeBase {
 	public boolean displayChatWarnings = true;
@@ -48,8 +51,16 @@ public class SpawnTypeDarkness extends SpawnTypeBase {
     @Override
     public boolean spawnMobs(long tick, World world, int x, int y, int z, EntityPlayer player) {
     	boolean spawned = false;
-		if(!player.capabilities.isCreativeMode && !player.isInWater() && tick % (5 * 20) == 0 && this.enabled && this.hasSpawns()) {
-			ChunkCoordinates playerCoords = player.getPlayerCoordinates();
+
+        ChunkCoordinates playerCoords = player.getPlayerCoordinates();
+        Block block = world.getBlock(playerCoords.posX, playerCoords.posY, playerCoords.posZ);
+        boolean isValidBlock = block != null;
+        if(isValidBlock)
+            isValidBlock = !block.isNormalCube();
+        if(isValidBlock)
+            isValidBlock = block.getMaterial() != Material.water;
+
+        if(!player.capabilities.isCreativeMode && isValidBlock && tick % (5 * 20) == 0 && this.enabled && this.hasSpawns()) {
 			int lightLevel = world.getBlockLightValue(playerCoords.posX, playerCoords.posY, playerCoords.posZ);
 			byte darknessLevel = 0;
 			if(this.darknessLevels.containsKey(player))

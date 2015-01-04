@@ -14,6 +14,8 @@ entity.mountainmobs.yale.name=Йель
 entity.mountainmobs.yale.description=Странные пушистые твари, похожие на баранов. Если постричь йеля ножницами, можно получить шерсть. Питается овощами. Передние, большие рога, используются в качестве ног. Маленькие руки помогают им питаться.
 entity.mountainmobs.geonach.name=Гвонх
 entity.mountainmobs.geonach.description=Гвонх - жестокий земной элементаль, который нападает на шахтёров, бездумно беспокоящих землю. При атаке дважды метают замедляющее копьё и затем ударяют кулаками, накладывая эффект тяжести.
+entity.mountainmobs.beholder.name=Злобоглаз
+entity.mountainmobs.beholder.description=Огромные враждебные злобные глаза, окружённые щупальцами, с вечной жаждой к магической силе! Чтобы уничтожить противника, призывают смертельный лазерный шторм из мистической энергии.
 #
 # Items
 item.mountainspawn.name=Призвать существо - 
@@ -27,3 +29,7 @@ item.boulderblastcharge.name=Заряд Проклятого камня
 item.boulderblastcharge.description=Метает гигантский валун! Может использоваться с раздатчиком, замедляет скорость добычи.
 item.boulderblastscepter.name=Посох "Проклятый камень"
 item.boulderblastscepter.description=Урон: Высокий | Требуется зарядка | Накладывает замедление скорости добычи
+item.arcanelaserstormcharge.name=Заряд Мистического лазерного шторма
+item.arcanelaserstormcharge.description=Выстреливает шаром мистической энергии, испускающим лучи лазеров. Может использоваться в раздатчике.
+item.arcanelaserstormscepter.name=Посох "Мистический лазерный шторм"
+item.arcanelaserstormscepter.description=Урон: Высокий | Требуется зарядка | Лазеры не дают летать

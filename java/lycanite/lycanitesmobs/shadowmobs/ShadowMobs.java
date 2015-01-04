@@ -11,12 +11,14 @@ import lycanite.lycanitesmobs.api.info.Subspecies;
 import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeLand;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
 import lycanite.lycanitesmobs.shadowmobs.block.BlockShadowfire;
 import lycanite.lycanitesmobs.shadowmobs.dispenser.DispenserBehaviorBloodleech;
 import lycanite.lycanitesmobs.shadowmobs.dispenser.DispenserBehaviorSpectralbolt;
 import lycanite.lycanitesmobs.shadowmobs.entity.*;
 import lycanite.lycanitesmobs.shadowmobs.item.*;
+import lycanite.lycanitesmobs.shadowmobs.mobevent.MobEventBlackPlague;
 import lycanite.lycanitesmobs.shadowmobs.mobevent.MobEventShadowGames;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
@@ -168,11 +170,23 @@ public class ShadowMobs {
         eventSpawner.ignoreMobConditions = true;
     	eventSpawner.addSpawn(MobInfo.getFromName("grue"));
     	eventSpawner.addSpawn(MobInfo.getFromName("phantom"));
-    	//eventSpawner.addSpawn(MobInfo.getFromName("epion"));
-        if(eventSpawner.hasSpawns())
-        	mobEvent.addSpawner(eventSpawner);
-        if(mobEvent.hasSpawners())
-        	MobEventManager.instance.addWorldEvent(mobEvent);
+        mobEvent.addSpawner(eventSpawner);
+        MobEventManager.instance.addWorldEvent(mobEvent);
+
+        mobEvent = new MobEventBlackPlague("blackplague", this.group).setDimensions("-1");
+        mobEvent.minDay = 10;
+        eventSpawner = new SpawnTypeLand("blackplague")
+                .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
+        eventSpawner.materials = new Material[] {Material.air};
+        eventSpawner.ignoreBiome = true;
+        eventSpawner.ignoreLight = true;
+        eventSpawner.forceSpawning = true;
+        eventSpawner.ignoreMobConditions = true;
+        eventSpawner.addSpawn(MobInfo.getFromName("geist"));
+        eventSpawner.addSpawn(MobInfo.getFromName("ghoulzombie"));
+        eventSpawner.addSpawn(MobInfo.getFromName("cryptzombie"));
+        mobEvent.addSpawner(eventSpawner);
+        MobEventManager.instance.addWorldEvent(mobEvent);
 		
 		
 		// ========== Crafting ==========

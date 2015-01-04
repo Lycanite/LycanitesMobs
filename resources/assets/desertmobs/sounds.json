@@ -3,6 +3,10 @@
         "category": "record",
         "sounds": [{"name": "mobevent/marchofthegorgomites", "stream": true}]
     },
+    "mobevent.bladeflurry": {
+        "category": "record",
+        "sounds": [{"name": "mobevent/bladeflurry", "stream": true}]
+    },
     "entity.cryptzombie.say": {
         "category": "hostile",
         "sounds": [{"name": "entity/cryptzombie/say", "stream": false}]

@@ -14,6 +14,7 @@ import lycanite.lycanitesmobs.api.item.ItemTreat;
 import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeLand;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
 import lycanite.lycanitesmobs.arcticmobs.block.BlockFrostCloud;
 import lycanite.lycanitesmobs.arcticmobs.block.BlockFrostfire;
@@ -23,6 +24,7 @@ import lycanite.lycanitesmobs.arcticmobs.dispenser.*;
 import lycanite.lycanitesmobs.arcticmobs.entity.*;
 import lycanite.lycanitesmobs.arcticmobs.item.*;
 import lycanite.lycanitesmobs.arcticmobs.mobevent.MobEventSubZero;
+import lycanite.lycanitesmobs.arcticmobs.mobevent.MobEventWintersGrasp;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
@@ -197,19 +199,31 @@ public class ArcticMobs {
 		ConfigBase config = ConfigBase.getConfig(group, "spawning");
 		
 		// ========== Mob Events ==========
-        if(MobInfo.getFromName("reiver") != null) {
-			MobEventBase mobEvent = new MobEventSubZero("subzero", this.group);
-			SpawnTypeBase eventSpawner = new SpawnTypeSky("subzero")
-	            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-	        eventSpawner.materials = new Material[] {Material.air};
-	        eventSpawner.ignoreBiome = true;
-	        eventSpawner.ignoreLight = true;
-	        eventSpawner.forceSpawning = true;
-	        eventSpawner.ignoreMobConditions = true;
-	        eventSpawner.addSpawn(MobInfo.getFromName("reiver"));
-	        mobEvent.addSpawner(eventSpawner);
-			MobEventManager.instance.addWorldEvent(mobEvent);
-        }
+        MobEventBase mobEvent = new MobEventSubZero("subzero", this.group);
+        SpawnTypeBase eventSpawner = new SpawnTypeSky("subzero")
+            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
+        eventSpawner.materials = new Material[] {Material.air};
+        eventSpawner.ignoreBiome = true;
+        eventSpawner.ignoreLight = true;
+        eventSpawner.forceSpawning = true;
+        eventSpawner.ignoreMobConditions = true;
+        eventSpawner.addSpawn(MobInfo.getFromName("reiver"));
+        mobEvent.addSpawner(eventSpawner);
+        MobEventManager.instance.addWorldEvent(mobEvent);
+
+        mobEvent = new MobEventWintersGrasp("wintersgrasp", this.group);
+        mobEvent.minDay = 10;
+        eventSpawner = new SpawnTypeLand("wintersgrasp")
+                .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
+        eventSpawner.materials = new Material[] {Material.air};
+        eventSpawner.ignoreBiome = true;
+        eventSpawner.ignoreLight = true;
+        eventSpawner.forceSpawning = true;
+        eventSpawner.ignoreMobConditions = true;
+        eventSpawner.addSpawn(MobInfo.getFromName("wendigo"));
+        eventSpawner.addSpawn(MobInfo.getFromName("serpix"), 2);
+        mobEvent.addSpawner(eventSpawner);
+        MobEventManager.instance.addWorldEvent(mobEvent);
 		
 		// ========== Remove Vanilla Spawns ==========
 		BiomeGenBase[] biomes = group.biomes;

@@ -31,6 +31,7 @@ import lycanite.lycanitesmobs.desertmobs.item.ItemMudshotCharge;
 import lycanite.lycanitesmobs.desertmobs.item.ItemScepterMudshot;
 import lycanite.lycanitesmobs.desertmobs.item.ItemScepterScythe;
 import lycanite.lycanitesmobs.desertmobs.item.ItemThrowingScythe;
+import lycanite.lycanitesmobs.desertmobs.mobevent.MobEventBladeFlurry;
 import lycanite.lycanitesmobs.desertmobs.mobevent.MobEventMarchOfTheGorgomites;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
@@ -200,19 +201,29 @@ public class DesertMobs {
 		ConfigBase config = ConfigBase.getConfig(group, "spawning");
 		
 		// ========== Mob Events ==========
-        if(MobInfo.getFromName("gorgomite") != null) {
-			MobEventBase mobEvent = new MobEventMarchOfTheGorgomites("marchofthegorgomites", this.group);
-			SpawnTypeBase eventSpawner = new SpawnTypeLand("marchofthegorgomites")
-	            .setChance(1.0D).setBlockLimit(32).setMobLimit(8);
-	        eventSpawner.materials = new Material[] {Material.air};
-	        eventSpawner.ignoreBiome = true;
-	        eventSpawner.ignoreLight = true;
-	        eventSpawner.forceSpawning = true;
-	        eventSpawner.ignoreMobConditions = true;
-	        eventSpawner.addSpawn(MobInfo.getFromName("gorgomite"));
-	        mobEvent.addSpawner(eventSpawner);
-			MobEventManager.instance.addWorldEvent(mobEvent);
-        }
+        MobEventBase mobEvent = new MobEventMarchOfTheGorgomites("marchofthegorgomites", this.group);
+        SpawnTypeBase eventSpawner = new SpawnTypeLand("marchofthegorgomites")
+            .setChance(1.0D).setBlockLimit(32).setMobLimit(8);
+        eventSpawner.materials = new Material[] {Material.air};
+        eventSpawner.ignoreBiome = true;
+        eventSpawner.ignoreLight = true;
+        eventSpawner.forceSpawning = true;
+        eventSpawner.ignoreMobConditions = true;
+        eventSpawner.addSpawn(MobInfo.getFromName("gorgomite"));
+        mobEvent.addSpawner(eventSpawner);
+        MobEventManager.instance.addWorldEvent(mobEvent);
+
+        mobEvent = new MobEventBladeFlurry("bladeflurry", this.group);
+        eventSpawner = new SpawnTypeLand("bladeflurry")
+                .setChance(1.0D).setBlockLimit(32).setMobLimit(8);
+        eventSpawner.materials = new Material[] {Material.air};
+        eventSpawner.ignoreBiome = true;
+        eventSpawner.ignoreLight = true;
+        eventSpawner.forceSpawning = true;
+        eventSpawner.ignoreMobConditions = true;
+        eventSpawner.addSpawn(MobInfo.getFromName("clink"));
+        mobEvent.addSpawner(eventSpawner);
+        MobEventManager.instance.addWorldEvent(mobEvent);
 		
 		// ========== Remove Vanilla Spawns ==========
 		BiomeGenBase[] biomes = group.biomes;

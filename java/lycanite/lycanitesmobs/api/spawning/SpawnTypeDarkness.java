@@ -64,7 +64,7 @@ public class SpawnTypeDarkness extends SpawnTypeBase {
 			int lightLevel = world.getBlockLightValue(playerCoords.posX, playerCoords.posY, playerCoords.posZ);
 			byte darknessLevel = 0;
 			if(this.darknessLevels.containsKey(player))
-				darknessLevel = this.darknessLevels.get(player);
+				darknessLevel = (byte)Math.max(0, this.darknessLevels.get(player));
 
 			if(lightLevel <= this.lightLevelMax) {
 				float chance = 0.125F;
@@ -103,7 +103,7 @@ public class SpawnTypeDarkness extends SpawnTypeBase {
 			}
 			
 			// Light
-			else {
+			else if(darknessLevel > 0) {
 				if(darknessLevel == 2 && this.displayChatWarnings) {
 					String message = StatCollector.translateToLocal("spawner.darkness.level1.back");
 					player.addChatMessage(new ChatComponentText(message));

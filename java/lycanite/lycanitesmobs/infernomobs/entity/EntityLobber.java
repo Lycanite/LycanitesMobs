@@ -128,7 +128,7 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
 
         // Melt Blocks:
         if(!this.worldObj.isRemote && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing") && this.lobberMelting && this.ticksExisted % 10 == 0 && this.lavaContact()) {
-            int range = 2;
+            int range = 1;
             for(int w = -((int)Math.ceil(this.width) + range); w <= (Math.ceil(this.width) + range); w++)
                 for(int d = -((int)Math.ceil(this.width) + range); d <= (Math.ceil(this.width) + range); d++)
                     for(int h = 0; h <= Math.ceil(this.height); h++) {

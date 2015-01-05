@@ -758,6 +758,14 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     	if(player == null) return true;
     	return this.isTamed() && player.getCommandSenderName().equalsIgnoreCase(this.getOwnerName());
     }
+
+
+    // ========== Boss Health Bar ==========
+    public boolean showBossHealthBar() {
+        if(this.isTamed())
+            return false;
+        return super.showBossHealthBar();
+    }
     
     
     // ==================================================

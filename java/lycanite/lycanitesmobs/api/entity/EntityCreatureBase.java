@@ -39,6 +39,8 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.boss.BossStatus;
+import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecart;
@@ -66,7 +68,7 @@ import net.minecraftforge.common.ForgeHooks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public abstract class EntityCreatureBase extends EntityLiving {
+public abstract class EntityCreatureBase extends EntityLiving implements IBossDisplayData {
 	/** A snapshot of the base health for each mob. This is used when calculating subspecies or tamed health. **/
 	public static Map<Class, Double> baseHealthMap = new HashMap<Class, Double>();
 	
@@ -1141,6 +1143,11 @@ public abstract class EntityCreatureBase extends EntityLiving {
 			else if(this.getDistanceSqToEntity(this.pickupEntity) > 32D) {
 				this.dropPickupEntity();
 			}
+        }
+
+        // Boss Health Bar:
+        if(this.showBossHealthBar()) {
+            BossStatus.setBossStatus(this, true);
         }
     }
     
@@ -2519,6 +2526,21 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public byte testLightLevel(int x, int y, int z) {
         /*if(this.worldObj.getSavedLightValue(EnumSkyBlock.Sky, i, j, k) > this.rand.nextInt(32))
             return false;*/
+        Block spawnBlock = this.worldObj.getBlock(x, y, z);
+        if(y < 0)
+            return 0;
+
+        // Search The Ground Air Block for Light Level:
+        if(spawnBlock == null || spawnBlock.isAir(this.worldObj, x, y, z)) {
+            for(int possibleGroundY = Math.max(0, y - 1); possibleGroundY >= 0; possibleGroundY--) {
+                Block possibleGroundBlock = this.worldObj.getBlock(x, possibleGroundY, z);
+                if(possibleGroundBlock == null || possibleGroundBlock.isAir(this.worldObj, x, possibleGroundY, z))
+                    y = possibleGroundY;
+                else
+                    break;
+            }
+        }
+
         int light = this.worldObj.getBlockLightValue(x, y, z);
         if(this.worldObj.isThundering()) {
             int i1 = this.worldObj.skylightSubtracted;
@@ -2748,6 +2770,12 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public void setColor(int color) {
     	if(!this.worldObj.isRemote)
     		this.dataWatcher.updateObject(WATCHER_ID.COLOR.id, Byte.valueOf((byte)(color & 15)));
+    }
+
+
+    // ========== Boss Health Bar ==========
+    public boolean showBossHealthBar() {
+        return this.getSubspeciesIndex() >= 3;
     }
     
     

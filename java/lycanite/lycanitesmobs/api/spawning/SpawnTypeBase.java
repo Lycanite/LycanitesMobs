@@ -890,7 +890,7 @@ public class SpawnTypeBase {
             Block block = world.getBlock(originX, nextY, originZ);
             if(block != null && (
             		(!solid && block == insideBlock) ||
-            		(solid && world.isSideSolid(originX, nextY, originZ, ForgeDirection.UP))
+            		(solid && (world.isSideSolid(originX, nextY, originZ, ForgeDirection.UP) || world.isSideSolid(originX, nextY, originZ, ForgeDirection.DOWN)))
             )) {
             	
             	if(nextY + 1 > originY - minY && nextY + 1 < originY - maxY)

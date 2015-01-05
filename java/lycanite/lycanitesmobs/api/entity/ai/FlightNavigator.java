@@ -89,13 +89,22 @@ public class FlightNavigator {
 	// ==================================================
   	//                      Update
   	// ==================================================
+    private double randomStrafeAngle = 0;
 	public void updateFlight() {
 		if(this.targetPosition == null) return;
-		double dirX = (double)this.targetPosition.posX + 0.5D - this.host.posX;
-		double dirY = (double)this.targetPosition.posY + 0.1D - this.host.posY;
-		double dirZ = (double)this.targetPosition.posZ + 0.5D - this.host.posZ;
-		
-		double speed = this.host.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getAttributeValue() * 2;
+        if(this.randomStrafeAngle <= 0 && this.host.getRNG().nextDouble() <= 0.25D)
+            this.randomStrafeAngle = this.host.getRNG().nextBoolean() ? 90D : -90D;
+        if(this.randomStrafeAngle > 0)
+            this.randomStrafeAngle -= 0.5D;
+
+        double[] coords = this.host.getFacingPosition(this.targetPosition.posX + 0.5D, this.targetPosition.posY, this.targetPosition.posZ + 0.5D, 1.0D, this.randomStrafeAngle);
+        //double dirX = (double)this.targetPosition.posX + 0.5D - this.host.posX;
+        double dirX = coords[0] - this.host.posX;
+        double dirY = (double)this.targetPosition.posY + 0.1D - this.host.posY;
+        //double dirZ = (double)this.targetPosition.posZ + 0.5D - this.host.posZ;
+        double dirZ = coords[2] - this.host.posZ;
+
+        double speed = this.host.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getAttributeValue() * 2;
 		this.host.motionX += ((Math.signum(dirX) * speed - this.host.motionX) * 0.10000000149011612D*0.3D) * speedModifier;
 		this.host.motionY += ((Math.signum(dirY) * speed - this.host.motionY) * 0.10000000149011612D*0.3D) * speedModifier;
 		this.host.motionZ += ((Math.signum(dirZ) * speed - this.host.motionZ) * 0.10000000149011612D*0.3D) * speedModifier;

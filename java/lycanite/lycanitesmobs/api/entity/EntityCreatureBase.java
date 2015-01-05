@@ -1792,13 +1792,25 @@ public abstract class EntityCreatureBase extends EntityLiving implements IBossDi
 
     /** Returns the XYZ coordinate in front or behind the provided entity with the given distance and angle offset (in degrees), use a negative distance for behind. **/
     public double[] getFacingPosition(Entity entity, double distance, double angleOffset) {
-    	double angle = Math.toRadians(entity.rotationYaw) + angleOffset;
-    	double xAmount = -Math.sin(angle);
-    	double zAmount = Math.cos(angle);
-    	double[] coords = new double[3];
+        /*double angle = Math.toRadians(entity.rotationYaw) + angleOffset;
+        double xAmount = -Math.sin(angle);
+        double zAmount = Math.cos(angle);
+        double[] coords = new double[3];
         coords[0] = entity.posX + (distance * xAmount);
         coords[1] = entity.posY;
         coords[2] = entity.posZ + (distance * zAmount);
+        return coords;*/
+        return getFacingPosition(entity.posX, entity.posY, entity.posZ, distance, Math.toRadians(entity.rotationYaw) + angleOffset);
+    }
+
+    /** Returns the XYZ coordinate in front or behind the provided XYZ coords with the given distance and angle (in degrees), use a negative distance for behind. **/
+    public double[] getFacingPosition(double x, double y, double z, double distance, double angle) {
+    	double xAmount = -Math.sin(angle);
+    	double zAmount = Math.cos(angle);
+    	double[] coords = new double[3];
+        coords[0] = x + (distance * xAmount);
+        coords[1] = y;
+        coords[2] = z + (distance * zAmount);
         return coords;
     }
     

@@ -57,7 +57,7 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
         this.isLavaCreature = true;
         this.hasAttackSound = false;
 
-        this.lobberMelting = ConfigBase.getConfig(this.group, "general").getBool("Features", "Lobber Melting", this.lobberMelting, "Set to false to disable Lobbers melting certain blocks.");
+        this.lobberMelting = ConfigBase.getConfig(this.group, "general").getBool("Features", "Rare Lobber Melting", this.lobberMelting, "Set to false to disable Umber Lobbers melting certain blocks.");
         
         this.setWidth = 1.9F;
         this.setHeight = 3.5F;
@@ -126,9 +126,9 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
         	}
 		}
 
-        // Melt Blocks:
-        if(!this.worldObj.isRemote && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing") && this.lobberMelting && this.ticksExisted % 10 == 0 && this.lavaContact()) {
-            int range = 1;
+        // Rare Subspecies - Melt Blocks:
+        if(!this.worldObj.isRemote && this.getSubspeciesIndex() >= 3 && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing") && this.lobberMelting && this.ticksExisted % 10 == 0 && this.lavaContact()) {
+            int range = 2;
             for(int w = -((int)Math.ceil(this.width) + range); w <= (Math.ceil(this.width) + range); w++)
                 for(int d = -((int)Math.ceil(this.width) + range); d <= (Math.ceil(this.width) + range); d++)
                     for(int h = 0; h <= Math.ceil(this.height); h++) {

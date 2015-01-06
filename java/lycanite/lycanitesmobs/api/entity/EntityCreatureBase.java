@@ -1146,7 +1146,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements IBossDi
         }
 
         // Boss Health Bar:
-        if(this.showBossHealthBar()) {
+        if(this.worldObj.isRemote && this.showBossHealthBar()) {
             BossStatus.setBossStatus(this, true);
         }
     }

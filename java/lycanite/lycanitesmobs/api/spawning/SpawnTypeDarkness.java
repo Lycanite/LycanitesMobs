@@ -64,7 +64,8 @@ public class SpawnTypeDarkness extends SpawnTypeBase {
 			int lightLevel = world.getBlockLightValue(playerCoords.posX, playerCoords.posY, playerCoords.posZ);
 			byte darknessLevel = 0;
 			if(this.darknessLevels.containsKey(player))
-				darknessLevel = (byte)Math.max(0, this.darknessLevels.get(player));
+				darknessLevel = (byte)Math.max(0, Math.min(2, this.darknessLevels.get(player)));
+            LycanitesMobs.printDebug("CustomSpawner", "Darkness Level Read: " + darknessLevel);
 
 			if(lightLevel <= this.lightLevelMax) {
 				float chance = 0.125F;
@@ -112,6 +113,7 @@ public class SpawnTypeDarkness extends SpawnTypeBase {
 			}
 			
 			this.darknessLevels.put(player, darknessLevel);
+            LycanitesMobs.printDebug("CustomSpawner", "Darkness Level Write: " + darknessLevel);
 		}
 		return spawned;
     }

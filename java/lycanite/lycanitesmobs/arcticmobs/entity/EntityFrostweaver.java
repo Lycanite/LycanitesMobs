@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs.arcticmobs.entity;
 import java.util.HashMap;
 
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.IGroupIce;
 import lycanite.lycanitesmobs.api.IGroupPrey;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackRanged;
@@ -31,7 +32,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class EntityFrostweaver extends EntityCreatureTameable implements IMob {
+public class EntityFrostweaver extends EntityCreatureTameable implements IMob, IGroupIce {
     
     // ==================================================
  	//                    Constructor

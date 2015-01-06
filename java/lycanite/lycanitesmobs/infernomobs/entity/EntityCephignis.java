@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupAnimal;
+import lycanite.lycanitesmobs.api.IGroupFire;
 import lycanite.lycanitesmobs.api.IGroupPredator;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.EntityItemCustom;
@@ -35,7 +36,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class EntityCephignis extends EntityCreatureAgeable implements IAnimals, IGroupAnimal {
+public class EntityCephignis extends EntityCreatureAgeable implements IAnimals, IGroupAnimal, IGroupFire {
 
 	EntityAIWander wanderAI = new EntityAIWander(this);
 

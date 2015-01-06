@@ -45,6 +45,10 @@ public class DonationFamiliars {
             if(ObjectManager.getMob("zephyr") != null)
                 familiars.add(new PetEntryFamiliar("JaredBGreatZephyrThunnar", player, "zephyr").setEntityName("Thunnar").setEntitySize(0.4D));
         }
+        if("grimuars".equals(player.getCommandSenderName())) { // Merkaba5
+            if(ObjectManager.getMob("zephyr") != null)
+                familiars.add(new PetEntryFamiliar("grimuarsZephyrXor", player, "zephyr").setEntityName("Xor").setEntitySubspeciesID(2).setEntitySize(0.4D));
+        }
 
         // Patreon:
         if("beckyh2112".equals(player.getCommandSenderName())) {

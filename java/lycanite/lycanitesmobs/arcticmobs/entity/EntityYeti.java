@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupAnimal;
+import lycanite.lycanitesmobs.api.IGroupIce;
 import lycanite.lycanitesmobs.api.IGroupPredator;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
@@ -34,7 +35,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
-public class EntityYeti extends EntityCreatureAgeable implements IAnimals, IGroupAnimal {
+public class EntityYeti extends EntityCreatureAgeable implements IAnimals, IGroupAnimal, IGroupIce {
 	
 	// ==================================================
  	//                    Constructor

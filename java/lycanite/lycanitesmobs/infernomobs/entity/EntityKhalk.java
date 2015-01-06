@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs.infernomobs.entity;
 import java.util.HashMap;
 
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.IGroupFire;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
@@ -34,7 +35,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class EntityKhalk extends EntityCreatureTameable implements IMob {
+public class EntityKhalk extends EntityCreatureTameable implements IMob, IGroupFire {
 
     public boolean khalkLavaDeath = true;
 

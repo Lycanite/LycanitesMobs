@@ -1,6 +1,7 @@
 package lycanite.lycanitesmobs.shadowmobs.entity;
 
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.IGroupShadow;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.ai.*;
@@ -24,7 +25,7 @@ import net.minecraft.world.World;
 
 import java.util.HashMap;
 
-public class EntityGeist extends EntityCreatureAgeable implements IMob {
+public class EntityGeist extends EntityCreatureAgeable implements IMob, IGroupShadow {
 
     public boolean geistShadowfireDeath = true;
 

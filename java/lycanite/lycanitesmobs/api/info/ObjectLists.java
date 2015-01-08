@@ -228,13 +228,13 @@ public class ObjectLists {
 	// ========== Add From Config Value ==========
 	public static void addFromConfig(String listName) {
 		ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "itemlists");
-		config.setCategoryComment("item lists", "Here you can add items from vanilla Minecraft or other mods to various lists used by this mod. These are mostly food items that can be fed to farmable/tameable mobs. Format is: modname:itemname;metadata Multiple entries should be comma separated, be sure to use a colon and semicolon in the correct place.");
+		config.setCategoryComment("item lists", "Here you can add items from vanilla Minecraft or other mods to various lists used by this mod. These are mostly food items that can be fed to farmable/tameable mobs. Format is: mod:itemname,metadata Multiple entries should be semicolon separated, be sure to use a colon and semicolon in the correct place.");
 		String customDropsString = config.getString("Item Lists", listName).replace(" ", "");
 		LycanitesMobs.printDebug("ItemSetup", "~O========== Custom " + listName + " ==========O~");
 		if(customDropsString != null && customDropsString.length() > 0)
-    		for(String customDropEntryString : customDropsString.split(",")) {
+    		for(String customDropEntryString : customDropsString.split(";")) {
     			LycanitesMobs.printDebug("ItemSetup", "Adding: " + customDropEntryString);
-    			String[] customDropValues = customDropEntryString.split(";");
+    			String[] customDropValues = customDropEntryString.split(",");
 				String dropName = customDropValues[0];
 				int dropMeta = 0;
 				if(customDropValues.length > 1)

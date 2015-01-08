@@ -16,6 +16,7 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -78,6 +79,9 @@ public class ItemSwordBase extends ItemSword {
 	public void onUpdate(ItemStack itemStack, World world, Entity entity, int par4, boolean par5) {
 		super.onUpdate(itemStack, world, entity, par4, par5);
 	}
+
+    /** Called from the main EventListener this works the same as onUpdate but is called before the rest of the entity's logic. **/
+    public void onEarlyUpdate(ItemStack itemStack, EntityLivingBase entityLiving) { }
     
     
 	// ==================================================
@@ -182,6 +186,9 @@ public class ItemSwordBase extends ItemSword {
     public void onSpawnEntity(Entity entity) {
         return;
     }
+
+    /** Should return a chance from 0.0 to 1.0 which is used for special weapon effects such as randomly spawning minions when hitting enemies. **/
+    public float getSpecialEffectChance() { return 0.2F; }
 
 	
 	// ==================================================

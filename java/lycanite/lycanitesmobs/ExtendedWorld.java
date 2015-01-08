@@ -13,12 +13,11 @@ public class ExtendedWorld extends WorldSavedData {
 	public static Map<World, ExtendedWorld> loadedExtWorlds = new HashMap<World, ExtendedWorld>();
 	
 	public World world;
+    public long lastEventUpdateTime = 0;
 	
 	// Mob Events:
-	private long overallEventTime = 0;
-	private int mobEventTime = 0;
-	private int mobEventTarget = 0;
-	private int mobEventActiveTime = 0;
+	private long mobEventStartTargetTime = 0;
+    private long mobEventLastStartedTime = 0;
 	private String mobEventType = "";
 	private int mobEventCount = -1;
 	
@@ -31,7 +30,7 @@ public class ExtendedWorld extends WorldSavedData {
 			return null;
 		}
 		
-		// ALready Loaded:
+		// Already Loaded:
 		if(loadedExtWorlds.containsKey(world))
 			return loadedExtWorlds.get(world);
 		
@@ -68,11 +67,15 @@ public class ExtendedWorld extends WorldSavedData {
     //                        Init
     // ==================================================
 	public void init() {
+        this.lastEventUpdateTime = world.getTotalWorldTime() - 1;
+
 		// Start Saved Event:
-		if(!this.world.isRemote && !"".equals(this.mobEventType) && MobEventManager.instance.serverMobEvent == null) {
-			MobEventManager.instance.startMobEvent(this.mobEventType, this.world);
-			if(MobEventManager.instance.serverMobEvent != null)
-				MobEventManager.instance.serverMobEvent.ticks = this.mobEventActiveTime;
+		if(!this.world.isRemote && !"".equals(this.getMobEventType()) && MobEventManager.instance.serverMobEvent == null) {
+            long savedLastStartedTime = this.getMobEventLastStartedTime();
+			MobEventManager.instance.startMobEvent(this.getMobEventType(), this.world);
+			if(MobEventManager.instance.serverMobEvent != null) {
+                MobEventManager.instance.serverMobEvent.changeStartedWorldTime(savedLastStartedTime);
+            }
 		}
 	}
 	
@@ -80,10 +83,9 @@ public class ExtendedWorld extends WorldSavedData {
 	// ==================================================
     //                    Get Properties
     // ==================================================
-	public long getOverallEventTime() { return this.overallEventTime; }
-	public int getMobEventTime() { return this.mobEventTime; }
-	public int getMobEventTarget() { return this.mobEventTarget; }
-	public int getMobEventActiveTime() { return this.mobEventActiveTime; }
+	//public int getMobEventTime() { return this.mobEventTime; }
+	public long getMobEventStartTargetTime() { return this.mobEventStartTargetTime; }
+    public long getMobEventLastStartedTime() { return this.mobEventLastStartedTime; }
 	public String getMobEventType() { return this.mobEventType; }
 	public int getMobEventCount() { return this.mobEventCount; }
 	
@@ -91,26 +93,17 @@ public class ExtendedWorld extends WorldSavedData {
 	// ==================================================
     //                    Set Properties
     // ==================================================
-	public void setOverallEventTime(long setLong) {
-		if(this.overallEventTime != setLong)
+	public void setMobEventStartTargetTime(long setLong) {
+		if(this.mobEventStartTargetTime != setLong)
 			this.markDirty();
-		this.overallEventTime = setLong;
+		this.mobEventStartTargetTime = setLong;
+        LycanitesMobs.printDebug("", "[MobEvent] Next random mob will start after " + ((this.mobEventStartTargetTime - this.world.getTotalWorldTime()) / 20) + "secs.");
 	}
-	public void setMobEventTime(int setInt) {
-		if(this.mobEventTime != setInt)
-			this.markDirty();
-		this.mobEventTime = setInt;
-	}
-	public void setMobEventTarget(int setInt) {
-		if(this.mobEventTarget != setInt)
-			this.markDirty();
-		this.mobEventTarget = setInt;
-	}
-	public void setMobEventActiveTime(int setInt) {
-		if(this.mobEventActiveTime != setInt)
-			this.markDirty();
-		this.mobEventActiveTime = setInt;
-	}
+    public void setMobEventLastStartedTime(long setLong) {
+        if(this.mobEventLastStartedTime != setLong)
+            this.markDirty();
+        this.mobEventLastStartedTime = setLong;
+    }
 	public void setMobEventType(String setString) {
 		if(!this.mobEventType.equals(setString))
 			this.markDirty();
@@ -126,18 +119,12 @@ public class ExtendedWorld extends WorldSavedData {
     // ==================================================
 	@Override
 	public void readFromNBT(NBTTagCompound nbtTagCompound) {
-		if(nbtTagCompound.hasKey("OverallEventTime"))  {
-			this.overallEventTime = nbtTagCompound.getLong("OverallEventTime");
+		if(nbtTagCompound.hasKey("MobEventStartTargetTime"))  {
+			this.mobEventStartTargetTime = nbtTagCompound.getInteger("MobEventStartTargetTime");
 		}
-		if(nbtTagCompound.hasKey("MobEventTime"))  {
-			this.mobEventTime = nbtTagCompound.getInteger("MobEventTime");
-		}
-		if(nbtTagCompound.hasKey("MobEventTarget"))  {
-			this.mobEventTarget = nbtTagCompound.getInteger("MobEventTarget");
-		}
-		if(nbtTagCompound.hasKey("MobEventActiveTime"))  {
-			this.mobEventActiveTime = nbtTagCompound.getInteger("MobEventActiveTime");
-		}
+        if(nbtTagCompound.hasKey("MobEventLastStartedTime"))  {
+            this.mobEventLastStartedTime = nbtTagCompound.getInteger("MobEventLastStartedTime");
+        }
 		if(nbtTagCompound.hasKey("MobEventType"))  {
 			this.mobEventType = nbtTagCompound.getString("MobEventType");
 		}
@@ -152,10 +139,8 @@ public class ExtendedWorld extends WorldSavedData {
     // ==================================================
 	@Override
 	public void writeToNBT(NBTTagCompound nbtTagCompound) {
-		nbtTagCompound.setLong("OverallEventTime", this.overallEventTime);
-		nbtTagCompound.setInteger("MobEventTime", this.mobEventTime);
-		nbtTagCompound.setInteger("MobEventTarget", this.mobEventTarget);
-		nbtTagCompound.setInteger("MobEventActiveTime", this.mobEventActiveTime);
+		nbtTagCompound.setLong("MobEventStartTargetTime", this.mobEventStartTargetTime);
+		nbtTagCompound.setLong("MobEventLastStartedTime", this.mobEventLastStartedTime);
     	nbtTagCompound.setString("MobEventType", this.mobEventType);
     	nbtTagCompound.setInteger("MobEventCount", this.mobEventCount);
 	}

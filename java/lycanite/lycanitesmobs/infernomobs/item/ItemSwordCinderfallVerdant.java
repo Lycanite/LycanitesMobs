@@ -29,13 +29,17 @@ public class ItemSwordCinderfallVerdant extends ItemSwordCinderfall {
     // ==================================================
     //                  Entity Spawning
     // ==================================================
+    @Override
     public void onSpawnEntity(Entity entity) {
+        super.onSpawnEntity(entity);
         if(entity instanceof EntityCreatureBase) {
             EntityCreatureBase entityCreature = (EntityCreatureBase)entity;
             entityCreature.setSubspecies(2, true);
-            entityCreature.setTemporary(40 * 20);
         }
     }
+
+    @Override
+    public float getSpecialEffectChance() { return 0.4F; }
 
 
     // ==================================================

@@ -42,13 +42,14 @@ public class ItemSwordCinderfall extends ItemSwordBase {
      	entityHit.hurtResistantTime = 0;
      	entityHit.attackEntityFrom(DamageSource.causeMobDamage(entityUser).setFireDamage().setDamageBypassesArmor(), 2);
      	entityHit.setFire(4);
-     	if(entityUser.getRNG().nextFloat() <= 0.2F) {
+     	if(entityUser.getRNG().nextFloat() <= this.getSpecialEffectChance()) {
      		Entity entity = new EntityCinder(entityUser.worldObj);
      		entity.setLocationAndAngles(entityUser.posX, entityUser.posY, entityUser.posZ, entityUser.rotationYaw, 0.0F);
      		if(entity instanceof EntityCreatureBase) {
 	    		EntityCreatureBase entityCreature = (EntityCreatureBase)entity;
 	    		entityCreature.setMinion(true);
 	    		entityCreature.setTemporary(20 * 20);
+                entityCreature.setSizeScale(0.4D);
 		    	if(entityUser instanceof EntityPlayer && entityCreature instanceof EntityCreatureTameable) {
 		    		EntityCreatureTameable entityTameable = (EntityCreatureTameable)entityCreature;
 		    		entityTameable.setPlayerOwner((EntityPlayer)entityUser);

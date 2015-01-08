@@ -26,7 +26,7 @@ public class MobEventBase {
     public boolean forceSpawning = true;
     public boolean forceNoDespawn = true;
     public int minDay = 0;
-    public int duration = 60 * 20;
+    public int duration = 30 * 20;
     public int mobDuration = 10 * 60 * 20;
 	
 	// Dimensions:
@@ -40,8 +40,12 @@ public class MobEventBase {
 	public boolean dimensionWhitelist = false;
 
     // Active:
-    public int ticks = 0;
+    /** The world that this event is active in. **/
     public World world;
+    /** The world time that this event started at. **/
+    public long startedWorldTime = 0;
+    /** Increases every tick that this event is active. **/
+    public int ticks = 0;
     
 	
     // ==================================================
@@ -129,8 +133,8 @@ public class MobEventBase {
 	    		}
 	    	}
 		}
-		    
-		return validDimension && Math.floor(worldExt.getOverallEventTime() / 24000D) >= this.minDay;
+
+        return validDimension && Math.floor((MobEventManager.useTotalWorldTime ? world.getTotalWorldTime() : world.getWorldTime()) / 24000D) >= this.minDay;
 	}
 
 
@@ -186,14 +190,20 @@ public class MobEventBase {
     //                       Start
     // ==================================================
 	public void onStart(World world) {
-		LycanitesMobs.printInfo("", "Mob Event Started: " + this.getTitle() + " in Dimension: " + world.provider.dimensionId);
-		
 		this.world = world;
+        this.startedWorldTime = world.getTotalWorldTime();
         this.ticks = 0;
+
+        LycanitesMobs.printInfo("", "Mob Event Started: " + this.getTitle() + " In Dimension: " + world.provider.dimensionId + " Duration: " + (this.duration / 20) + "secs");
 
         if(world.isRemote)
             LycanitesMobs.printWarning("", "Created a MobEventBase with a client side world, things are going to get strange!");
 	}
+
+    public void changeStartedWorldTime(long newStartedTime) {
+        this.startedWorldTime = newStartedTime;
+        LycanitesMobs.printInfo("", "Mob Event Start Time Changed: " + this.getTitle() + " In Dimension: " + world.provider.dimensionId + " Duration: " + (this.duration / 20) + "secs" + " Time Remaining: " + ((this.duration - (this.world.getTotalWorldTime() - this.startedWorldTime)) / 20) + "secs");
+    }
 	
 	
     // ==================================================
@@ -239,7 +249,7 @@ public class MobEventBase {
         this.ticks++;
 
         // Stop Event When Time Runs Out:
-        if(this.ticks > this.duration) {
+        if(this.world.getTotalWorldTime() >= (this.startedWorldTime + this.duration)) {
         	MobEventManager.instance.stopMobEvent();
         }
 	}

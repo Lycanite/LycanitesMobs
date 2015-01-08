@@ -77,7 +77,7 @@ public class LycanitesMobs {
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
 		group = new GroupInfo(this, name);
-        ConfigBase.versionCheck("1.10.6.4", version);
+        ConfigBase.versionCheck("1.10.8.4", version);
 		group.loadFromConfig();
 		config = ConfigBase.getConfig(group, "general");
 		config.setCategoryComment("Debug", "Set debug options to true to show extra debugging information in the console.");

@@ -66,7 +66,7 @@ public class ExtendedEntity implements IExtendedEntityProperties {
 	// ==================================================
     //                      Update
     // ==================================================
-	public void update() {
+	public void onUpdate() {
         // Safe Position:
         if(this.lastSafePos == null) {
             this.lastSafePos = new double[]{this.entity.posX, this.entity.posY, this.entity.posZ};

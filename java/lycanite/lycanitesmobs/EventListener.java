@@ -122,7 +122,7 @@ public class EventListener {
 		// ========== Extended Entity ==========
 		ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(entity);
 		if(extendedEntity != null)
-			extendedEntity.update();
+			extendedEntity.onUpdate();
 
 		// ========== Extended Player ==========
 		if(entity instanceof EntityPlayer) {
@@ -132,6 +132,17 @@ public class EventListener {
 			if(playerExt != null)
 				playerExt.onUpdate();
 		}
+
+        // ========== Item Early Update ==========
+        if(event.entityLiving instanceof EntityPlayer) {
+            EntityPlayer entityPlayer = (EntityPlayer)event.entityLiving;
+            if(entityPlayer.getCurrentEquippedItem() != null) {
+                ItemStack equippedItemStack = entityPlayer.getCurrentEquippedItem();
+                if(equippedItemStack.getItem() instanceof ItemSwordBase) {
+                    ((ItemSwordBase)equippedItemStack.getItem()).onEarlyUpdate(equippedItemStack, event.entityLiving);
+                }
+            }
+        }
 	}
 	
 	
@@ -191,7 +202,7 @@ public class EventListener {
     // ==================================================
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void onLivingHurt(LivingHurtEvent event) {
-		if(event.isCancelable())
+		if(event.isCanceled())
 	      return;
 		
 		if(event.entityLiving == null || event.source == null)
@@ -211,6 +222,7 @@ public class EventListener {
 				
 				// Prevent Mounted Entities from Suffocating:
 				if("inWall".equals(event.source.damageType)) {
+                    event.ammount = 0;
 					event.setCanceled(true);
 					return;
 				}
@@ -218,6 +230,7 @@ public class EventListener {
 				// Copy Mount Immunities to Rider:
 				EntityCreatureRideable creatureRideable = (EntityCreatureRideable)event.entityLiving.ridingEntity;
 				if(!creatureRideable.isDamageTypeApplicable(event.source.damageType)) {
+                    event.ammount = 0;
 					event.setCanceled(true);
 					return;
 				}

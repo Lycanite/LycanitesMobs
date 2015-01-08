@@ -26,6 +26,7 @@ public class MobEventBase {
     public boolean forceSpawning = true;
     public boolean forceNoDespawn = true;
     public int minDay = 0;
+    public int firstScheduleDay = 0;
     public int duration = 30 * 20;
     public int mobDuration = 10 * 60 * 20;
 	
@@ -134,7 +135,11 @@ public class MobEventBase {
 	    	}
 		}
 
-        return validDimension && Math.floor((MobEventManager.useTotalWorldTime ? world.getTotalWorldTime() : world.getWorldTime()) / 24000D) >= this.minDay;
+        int currentDay = (int)Math.floor((MobEventManager.useTotalWorldTime ? world.getTotalWorldTime() : world.getWorldTime()) / 24000D);
+        int minimumRandomDay = this.minDay;
+        if(MobEventManager.mobEventsLocked)
+            minimumRandomDay = Math.max(minimumRandomDay, this.firstScheduleDay);
+        return validDimension && currentDay >= minimumRandomDay;
 	}
 
 

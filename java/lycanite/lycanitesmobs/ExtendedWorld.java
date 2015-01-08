@@ -14,6 +14,8 @@ public class ExtendedWorld extends WorldSavedData {
 	
 	public World world;
     public long lastEventUpdateTime = 0;
+    /** The last minute used when checking for scheduled events. **/
+    public int lastEventScheduleMinute = -1;
 	
 	// Mob Events:
 	private long mobEventStartTargetTime = 0;
@@ -68,6 +70,8 @@ public class ExtendedWorld extends WorldSavedData {
     // ==================================================
 	public void init() {
         this.lastEventUpdateTime = world.getTotalWorldTime() - 1;
+        int currentTotalMinutes = (int)Math.floor((MobEventManager.useTotalWorldTime ? world.getTotalWorldTime() : world.getWorldTime()) / 1000D);
+        this.lastEventScheduleMinute = currentTotalMinutes % 24;
 
 		// Start Saved Event:
 		if(!this.world.isRemote && !"".equals(this.getMobEventType()) && MobEventManager.instance.serverMobEvent == null) {

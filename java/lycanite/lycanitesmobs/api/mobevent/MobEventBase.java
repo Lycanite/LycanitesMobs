@@ -26,7 +26,7 @@ public class MobEventBase {
     public boolean forceSpawning = true;
     public boolean forceNoDespawn = true;
     public int minDay = 0;
-    public int firstScheduleDay = 0;
+    public int firstScheduleDay = -1;
     public int duration = 30 * 20;
     public int mobDuration = 10 * 60 * 20;
 	
@@ -71,7 +71,6 @@ public class MobEventBase {
 		this.minDay = config.getInt("Event Day Minimums", this.name, this.minDay);
         
 		// Event Dimensions:
-        config.setCategoryComment("Event Dimensions", "Sets which dimensions (by ID) that this event WILL NOT occur in. However if 'Spawn Dimensions Whitelist Mode' is set to true, it will instead set which dimensions that this event WILL ONLY occur in. Multiple entries should be comma separated.");
         SpawnDimensionSet eventDimensions = config.getDimensions("Event Dimensions", this.name + " Dimensions", this.dimensionEntries);
         this.dimensionBlacklist = eventDimensions.dimensionIDs;
         this.dimensionTypes = eventDimensions.dimensionTypes;
@@ -112,6 +111,8 @@ public class MobEventBase {
 	public boolean canStart(World world, ExtendedWorld worldExt) {
 		if(world.provider == null)
 			return false;
+        if(MobEventManager.mobEventsLocked && !MobEventManager.mobEventsLockedOnlyOnSchedule && this.firstScheduleDay < 0)
+            return false;
 		
 		boolean validDimension = false;
 		// Check Types:
@@ -195,11 +196,19 @@ public class MobEventBase {
     //                       Start
     // ==================================================
 	public void onStart(World world) {
+        // Check If Already Active On World:
+        boolean extended = false;
+        if(this.world != null) {
+            if(this.world.getTotalWorldTime() < (this.startedWorldTime + this.duration)) {
+                extended = true;
+            }
+        }
+
 		this.world = world;
         this.startedWorldTime = world.getTotalWorldTime();
         this.ticks = 0;
 
-        LycanitesMobs.printInfo("", "Mob Event Started: " + this.getTitle() + " In Dimension: " + world.provider.dimensionId + " Duration: " + (this.duration / 20) + "secs");
+        LycanitesMobs.printInfo("", "Mob Event " + (extended ? "Extended" : "Started") + ": " + this.getTitle() + " In Dimension: " + world.provider.dimensionId + " Duration: " + (this.duration / 20) + "secs");
 
         if(world.isRemote)
             LycanitesMobs.printWarning("", "Created a MobEventBase with a client side world, things are going to get strange!");

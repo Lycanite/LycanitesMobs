@@ -8,6 +8,7 @@ import lycanite.lycanitesmobs.api.IGroupIce;
 import lycanite.lycanitesmobs.api.IGroupPlant;
 import lycanite.lycanitesmobs.api.IGroupWater;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
+import lycanite.lycanitesmobs.api.entity.EntityItemCustom;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackRanged;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowOwner;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
@@ -227,6 +228,17 @@ public class EntityAfrit extends EntityCreatureTameable implements IMob, IGroupF
     @Override
     public float getFallResistance() {
         return 100;
+    }
+
+
+    // ==================================================
+    //                       Drops
+    // ==================================================
+    // ========== Apply Drop Effects ==========
+    /** Used to add effects or alter the dropped entity item. **/
+    @Override
+    public void applyDropEffects(EntityItemCustom entityitem) {
+        entityitem.setCanBurn(false);
     }
     
     

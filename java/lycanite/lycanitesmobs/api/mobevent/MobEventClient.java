@@ -26,6 +26,8 @@ public class MobEventClient {
     public int ticks = 0;
     public World world;
     public PositionedSoundRecord sound;
+    /** True if the started event was already running and show display as 'Event Extended' in chat. **/
+    public boolean extended = false;
     
     
 	// ==================================================
@@ -43,7 +45,7 @@ public class MobEventClient {
     //                       Start
     // ==================================================
 	public void onStart(World world, EntityPlayer player) {
-		String eventMessage = StatCollector.translateToLocal("event.started");
+		String eventMessage = StatCollector.translateToLocal("event." + (extended ? "extended" : "started"));
 		eventMessage = eventMessage.replace("%event%", this.mobEvent.getTitle());
 		player.addChatMessage(new ChatComponentText(eventMessage));
 		

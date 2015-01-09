@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import javafx.util.Pair;
 import lycanite.lycanitesmobs.ExtendedWorld;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.Utilities;
+import lycanite.lycanitesmobs.api.ValuePair;
 import lycanite.lycanitesmobs.api.config.ConfigSpawning;
 import lycanite.lycanitesmobs.api.network.MessageMobEvent;
 import net.minecraft.world.EnumDifficulty;
@@ -27,6 +27,7 @@ public class MobEventManager {
     public static boolean mobEventsRandom = true;
     public static int minEventsRandomDay = 0;
     public static boolean mobEventsLocked = false;
+    public static boolean mobEventsLockedOnlyOnSchedule = true;
     public static boolean useTotalWorldTime = true;
     public static int minTicksUntilEvent = 10 * 60 * 20;
     public static int maxTicksUntilEvent = 30 * 60 * 20;
@@ -37,7 +38,8 @@ public class MobEventManager {
     public Map<String, Map<String, MobEventBase>> worldMobEventSets = new HashMap<String, Map<String, MobEventBase>>();
     public MobEventBase serverMobEvent = null;
     public MobEventClient clientMobEvent = null;
-    public Map<Pair<Integer, Integer>, MobEventBase> eventSchedule;
+    public Map<ValuePair<Integer, Integer>, MobEventBase> eventSchedule;
+    public boolean eventScheduleLoaded = false;
 
     // Properties:
     public int baseRate = 10 * 20;
@@ -58,24 +60,31 @@ public class MobEventManager {
 	/** Called during start up, loads all global events and config settings into the manager. **/
 	public void loadMobEvents() {
 		ConfigSpawning config = ConfigSpawning.getConfig(LycanitesMobs.group, "mobevents");
+        config.setCategoryComment("Global", "These are various settings that apply to all events.");
         mobEventsEnabled = config.getBool("Global", "Mob Events Enabled", mobEventsEnabled, "If false, all mob events will be completely disabled.");
 
         mobEventsRandom = config.getBool("Global", "Random Mob Events", mobEventsRandom, "If false, mob events will no longer occur randomly but can still occur via other means such as by schedule. Set this to true if you want both random and scheduled events to take place and also take a look at 'Lock Random Mob Events' if doing so.");
         minEventsRandomDay = config.getInt("Global", "Random Mob Events Day Minimum", minEventsRandomDay, "If random events are enabled, they wont occur until this day is reached. Set to 0 to have random events enabled from the start of a world.");
 
-        mobEventsSchedule = config.getString("Global", "Mob Events Schedule", mobEventsSchedule, "Here you can add a list of scheduled events, leave blank to disable. Each entry should be: 'eventname,day,time' multiple entries should be separated by semicolons. For eventnames use '/lm mobevent list' when in game. Day is the target day number starting from day 0, see 'Use Total World Time' for how the world time is checked. Time is the minute of the in game day that the event should occur (there is 24 minutes in a Minecraft world use 0-23), this can also be random by typing 'random' as a value, note that you can only have 1 random scheduled event per day. You may add spaces anywhere as they will be ignored, also don't add the 'quotations'!");
+        mobEventsSchedule = config.getString("Global", "Mob Events Schedule", mobEventsSchedule, "Here you can add a list of scheduled events, leave blank to disable. Each entry should be: 'eventname,day,time' multiple entries should be separated by semicolons. For eventnames use '/lm mobevent list' when in game. Day is the target day number starting from day 0, see 'Use Total World Time' for how the world time is checked. Time is the minute of the in game day that the event should occur (there is 20 minutes in a Minecraft day/night cycle use 0-19), this can also be random by typing 'random' as a value, note that you can only have 1 random scheduled event per day. You may add spaces anywhere as they will be ignored, also don't add the 'quotations'!");
         mobEventsLocked = config.getBool("Global", "Lock Random Mob Events", mobEventsLocked, "If true, mob events will not occur randomly until they have been started from a schedule (or if an active world's schedule would have started the event at least once in the past).");
+        mobEventsLockedOnlyOnSchedule = config.getBool("Global", "Lock Random Mob Events Only On Schedule", mobEventsLockedOnlyOnSchedule, "Only used if 'Lock Random Mob Events' is set to true. If true, mob events that are scheduled will be locked from occuring randomly but mob events that aren't on a schedule will be unlocked. If false, all events that are not scheduled at least once will never occur randomly as they cannot be unlocked.");
 
-        useTotalWorldTime = config.getBool("Global", "Use Total World Time", useTotalWorldTime, "If true, the hidden total world time will be used event minimum days/schedules, if false the current world time is used instead, the current time is the time shown to players however it will reset to 0 if the world time is change via '/time set 0' or other commands/mods.");
+        useTotalWorldTime = config.getBool("Global", "Use Total World Time", useTotalWorldTime, "If true, the hidden total world time will be used for random event minimum days and scheduled events, if false the current world time is used instead, the current time is the time shown to players however it will reset to 0 if the world time is change via '/time set 0' or other commands/mods.");
 
-        minTicksUntilEvent = config.getInt("Global", "Min Ticks Until Event", minTicksUntilEvent, "Minimum time in ticks until a random event can occur. 20 Ticks = 1 Second.");
-		maxTicksUntilEvent = config.getInt("Global", "Max Ticks Until Event", maxTicksUntilEvent, "Maximum time in ticks until a random event can occur. 20 Ticks = 1 Second.");
+        minTicksUntilEvent = config.getInt("Global", "Min Ticks Until Random Event", minTicksUntilEvent, "Minimum time in ticks until a random event can occur. 20 Ticks = 1 Second.");
+		maxTicksUntilEvent = config.getInt("Global", "Max Ticks Until Random Event", maxTicksUntilEvent, "Maximum time in ticks until a random event can occur. 20 Ticks = 1 Second.");
 
         baseRate = config.getInt("Global", "Base Spawn Rate", baseRate, "Sets the base interval in ticks (20 ticks = 1 second) between each mob spawn, this is multiplied by 1.5 on easy and 0.5 on hard.");
 		baseRange = config.getInt("Global", "Base Spawn Range", baseRange, "Sets the base range in blocks from each player/area that event mobs will spawn.");
-		
-		config.setCategoryComment("Events Enabled", "Here each event can be turned on or off (true or false).");
-	}
+
+        config.setCategoryComment("Events Enabled", "Here each event can be turned on or off (true or false).");
+        config.setCategoryComment("Events Mob Durations", "Here you can set the duration (in ticks where 20 ticks = 1 second) of each event.");
+        config.setCategoryComment("Events Forced Spawning", "Sets which events force their mobs to spawn, forced spawns will ignore other mods that interfere with mob spawning.");
+        config.setCategoryComment("Events Forced No Despawning", "Sets which events force their spawned mobs to not despawn naturally (like most vanilla monsters do). However, mobs spawned by events will always only last 10 minutes and will then be forcefully despawned unless they are tamed by players, given a name tag, etc.");
+        config.setCategoryComment("Event Day Minimums", "The minimum day before each event can occur randomly. For example if Shadow Games is set to 10 then it wont ever occured as a random event until day 10. Note: If Schedules and Locked Random events are active, the random event will not occur until both the Minimum Event day set here and first Schedule is met (by default schedules and event locks aren't used).");
+        config.setCategoryComment("Event Dimensions", "Sets which dimensions (by ID) that this event WILL NOT occur in. However if 'Spawn Dimensions Whitelist Mode' is set to true, it will instead set which dimensions that this event WILL ONLY occur in. Multiple entries should be comma separated.");
+    }
 
 
     // ==================================================
@@ -119,9 +128,16 @@ public class MobEventManager {
 	/** Called every tick in a world and counts down to the next event then fires it! The countdown is paused during an event. **/
 	@SubscribeEvent
 	public void onWorldUpdate(WorldTickEvent event) {
+        if(!this.eventScheduleLoaded)
+            this.loadEventSchedule(mobEventsSchedule);
 		World world = event.world;
 		ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
 		if(world.isRemote || worldExt == null) return;
+
+        /*int currentDay = (int)Math.floor((MobEventManager.useTotalWorldTime ? world.getWorldTime() : world.getWorldTime()) / 24000D);
+        int currentMin = (int)((long)Math.floor((MobEventManager.useTotalWorldTime ? world.getWorldTime() : world.getWorldTime()) / 1200D) % 20);
+        int currentSec = (int)((long)Math.floor((MobEventManager.useTotalWorldTime ? world.getWorldTime() : world.getWorldTime()) / 20D) % 60);
+        LycanitesMobs.printDebug("", "Current Time: Day " + currentDay + " " + currentMin + ":" + currentSec);//XXX*/
 
         // Check If Events Are Completely Disabled:
         if(!this.mobEventsEnabled || world.difficultySetting == EnumDifficulty.PEACEFUL) {
@@ -190,10 +206,11 @@ public class MobEventManager {
     //                Scheduled Events
     // ==================================================
     public void loadEventSchedule(String schedule) {
+        this.eventScheduleLoaded = true;
         schedule = schedule.replace(" ", "");
         if("".equals(schedule))
             return;
-        this.eventSchedule = new HashMap<Pair<Integer, Integer>, MobEventBase>();
+        this.eventSchedule = new HashMap<ValuePair<Integer, Integer>, MobEventBase>();
 
         for(String scheduleEntry : schedule.split(";")) {
             String[] scheduleEntryParts = scheduleEntry.split(",");
@@ -201,13 +218,21 @@ public class MobEventManager {
                 if(!NumberUtils.isNumber(scheduleEntryParts[1])) continue;
                 int scheduleEntryDay = Integer.parseInt(scheduleEntryParts[1]);
 
-                if(!NumberUtils.isNumber(scheduleEntryParts[2])) continue;
-                int scheduleEntryMinute = Integer.parseInt(scheduleEntryParts[2]);
+                int scheduleEntryMinute = -1;
+                if(!"random".equals(scheduleEntryParts[2])) {
+                    if (!NumberUtils.isNumber(scheduleEntryParts[2])) continue;
+                    scheduleEntryMinute = Integer.parseInt(scheduleEntryParts[2]);
+                }
 
                 if(!worldMobEvents.containsKey(scheduleEntryParts[0])) continue;
                 MobEventBase scheduleEntryEvent = worldMobEvents.get(scheduleEntryParts[0]);
 
-                this.eventSchedule.put(new Pair<Integer, Integer>(scheduleEntryDay, scheduleEntryMinute), scheduleEntryEvent);
+                if(scheduleEntryEvent == null) continue;
+                if(scheduleEntryDay < scheduleEntryEvent.firstScheduleDay || scheduleEntryEvent.firstScheduleDay < 0)
+                    scheduleEntryEvent.firstScheduleDay = scheduleEntryDay;
+
+                this.eventSchedule.put(new ValuePair<Integer, Integer>(scheduleEntryDay, scheduleEntryMinute), scheduleEntryEvent);
+                LycanitesMobs.printDebug("MobEvents", "Added Event to Schedule: " + scheduleEntryEvent.getTitle() + " (" + scheduleEntryParts[0] + ") Starts On Day " + scheduleEntryDay + " At Minute " + (scheduleEntryMinute < 0 ? "Random" : scheduleEntryMinute));
             }
         }
     }
@@ -221,16 +246,23 @@ public class MobEventManager {
             dimensionID = world.provider.dimensionId;
 
         int currentDay = (int)Math.floor((MobEventManager.useTotalWorldTime ? world.getTotalWorldTime() : world.getWorldTime()) / 24000D);
-        int currentMinute = (int)((long)Math.floor((MobEventManager.useTotalWorldTime ? world.getTotalWorldTime() : world.getWorldTime()) / 1000D) % 24);
-        if(worldExt.lastEventScheduleMinute != currentMinute) {
-            worldExt.lastEventScheduleMinute = currentMinute;
-            if(currentMinute == 0 && eventSchedule.containsKey(new Pair<Integer, Integer>(currentDay, -1))) {
-                MobEventBase randomMinuteEvent = eventSchedule.get(new Pair<Integer, Integer>(currentDay, -1));
-                eventSchedule.put(new Pair<Integer, Integer>(currentDay, currentMinute + 1 + world.rand.nextInt(22 - currentMinute)), randomMinuteEvent);
-                eventSchedule.remove(new Pair<Integer, Integer>(currentDay, -1));
+        int currentMin = (int)((long)Math.floor((MobEventManager.useTotalWorldTime ? world.getTotalWorldTime() : world.getWorldTime()) / 1200D) % 20);
+        if(worldExt.lastEventScheduleMinute != currentMin) {
+            worldExt.lastEventScheduleMinute = currentMin;
+            LycanitesMobs.printDebug("MobEvents", "Checking world day and minute for scheduled event... Day " + currentDay + " Minute " + currentMin);
+            if(currentMin == 0 && eventSchedule.containsKey(new ValuePair<Integer, Integer>(currentDay, -1))) {
+                MobEventBase randomMinuteEvent = eventSchedule.get(new ValuePair<Integer, Integer>(currentDay, -1));
+                int randomMin = currentMin + 1 + world.rand.nextInt(18 - currentMin);
+                LycanitesMobs.printDebug("MobEvents", "Found a random event that needs assigned a minute (" + (randomMinuteEvent != null ? randomMinuteEvent.name : "null") + "), setting random minute to " + randomMin + " this should from 1 to 19.");
+                eventSchedule.put(new ValuePair<Integer, Integer>(currentDay, randomMin), randomMinuteEvent);
+                eventSchedule.remove(new ValuePair<Integer, Integer>(currentDay, -1));
             }
-            if(eventSchedule.containsKey(new Pair<Integer, Integer>(currentDay, currentMinute)))
-                return eventSchedule.get(new Pair<Integer, Integer>(currentDay, currentMinute));
+            if(eventSchedule.containsKey(new ValuePair<Integer, Integer>(currentDay, currentMin))) {
+                MobEventBase scheduledEvent = eventSchedule.get(new ValuePair<Integer, Integer>(currentDay, currentMin));
+                LycanitesMobs.printDebug("MobEvents", "Found a scheduled event (" + (scheduledEvent != null ? scheduledEvent.name : "null") + "), this event will now start...");
+                return scheduledEvent;
+            }
+            LycanitesMobs.printDebug("MobEvents", "No scheduled event found for this day and minute.");
         }
 
         return null;
@@ -348,8 +380,6 @@ public class MobEventManager {
 
         // Server Side:
         if(!world.isRemote) {
-            if(this.serverMobEvent != null)
-                this.stopMobEvent();
             this.serverMobEvent = mobEvent;
             ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
             worldExt.setMobEventType(this.serverMobEvent.name);
@@ -362,9 +392,11 @@ public class MobEventManager {
 
         // Client Side:
         if(world.isRemote) {
+            boolean extended = false;
             if(this.clientMobEvent != null)
-                this.stopMobEvent();
+                extended = this.clientMobEvent.mobEvent == mobEvent;
             this.clientMobEvent = mobEvent.getClientEvent(world);
+            this.clientMobEvent.extended = extended;
             if(LycanitesMobs.proxy.getClientPlayer() != null)
             	this.clientMobEvent.onStart(world, LycanitesMobs.proxy.getClientPlayer());
         }

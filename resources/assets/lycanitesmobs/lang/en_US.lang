@@ -1,5 +1,6 @@
 # ========== Events ==========
 event.started=%event% has begun!
+event.extended=%event% has been extended!
 event.finished=%event% is over!
 # %event% will be replaced with the name of the event, don't translate this!
 #

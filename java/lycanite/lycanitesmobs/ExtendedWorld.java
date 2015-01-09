@@ -101,7 +101,8 @@ public class ExtendedWorld extends WorldSavedData {
 		if(this.mobEventStartTargetTime != setLong)
 			this.markDirty();
 		this.mobEventStartTargetTime = setLong;
-        LycanitesMobs.printDebug("", "[MobEvent] Next random mob will start after " + ((this.mobEventStartTargetTime - this.world.getTotalWorldTime()) / 20) + "secs.");
+        if(setLong > 0)
+            LycanitesMobs.printDebug("MobEvents", "Next random mob will start after " + ((this.mobEventStartTargetTime - this.world.getTotalWorldTime()) / 20) + "secs.");
 	}
     public void setMobEventLastStartedTime(long setLong) {
         if(this.mobEventLastStartedTime != setLong)

@@ -68,7 +68,7 @@ import net.minecraftforge.common.ForgeHooks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public abstract class EntityCreatureBase extends EntityLiving implements IBossDisplayData {
+public abstract class EntityCreatureBase extends EntityLiving {
 	/** A snapshot of the base health for each mob. This is used when calculating subspecies or tamed health. **/
 	public static Map<Class, Double> baseHealthMap = new HashMap<Class, Double>();
 	
@@ -207,6 +207,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements IBossDi
 	public int flySoundSpeed = 0;
     /** An extra animation boolean. **/
     public boolean extraAnimation01 = false;
+    /** Holds Information for this mobs boss health should it be displayed in the boss health bar. Used by bosses and rare subspecies. **/
+    protected BossHealth bossHealth;
 	
 	// Data Watcher:
     /** The starting point for the datawatcher IDs used by this mod, lower IDs are used by vanilla code. **/
@@ -1147,7 +1149,9 @@ public abstract class EntityCreatureBase extends EntityLiving implements IBossDi
 
         // Boss Health Bar:
         if(this.worldObj.isRemote && this.showBossHealthBar()) {
-            BossStatus.setBossStatus(this, true);
+            if(this.bossHealth == null)
+                this.bossHealth = new BossHealth(this);
+            BossStatus.setBossStatus(this.bossHealth, true);
         }
     }
     

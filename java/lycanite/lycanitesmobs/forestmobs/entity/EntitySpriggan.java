@@ -114,8 +114,10 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
         // Farming:
         int currentFarmingRate = this.farmingRate;
         if(this.isTamed() && currentFarmingRate > 0) {
+            if(this.isPetType("familiar"))
+                currentFarmingRate = this.farmingRate * 10;
             if(this.subspecies != null)
-                currentFarmingRate = Math.max(1, Math.round((float)currentFarmingRate / 3));
+                currentFarmingRate = Math.max(1, Math.round((float)this.farmingRate / 3));
         	this.farmingTick++;
 	        int farmingRange = 16;
 	        int farmingHeight = 4;

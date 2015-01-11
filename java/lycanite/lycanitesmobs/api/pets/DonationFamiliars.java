@@ -63,6 +63,14 @@ public class DonationFamiliars {
             if(ObjectManager.getMob("cinder") != null)
                 familiars.add(new PetEntryFamiliar("mindboundCinder", player, "cinder").setEntitySize(0.85D));
         }
+        if("Ashvaela".equals(player.getCommandSenderName())) {
+            if(ObjectManager.getMob("geonach") != null)
+                familiars.add(new PetEntryFamiliar("AshvaelaGeonach", player, "geonach").setEntitySubspeciesID(3).setEntitySize(0.425D));
+        }
+        if("Ringowhs".equals(player.getCommandSenderName())) {
+            if(ObjectManager.getMob("jengu") != null)
+                familiars.add(new PetEntryFamiliar("RingowhsJengu", player, "jengu").setEntitySize(0.85D));
+        }
 
         return familiars;
     }

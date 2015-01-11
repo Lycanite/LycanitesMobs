@@ -120,7 +120,7 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
     public void onLivingUpdate() {
         super.onLivingUpdate();
         
-        if(!this.worldObj.isRemote && this.getSubspeciesIndex() == 3) {
+        if(!this.worldObj.isRemote && this.getSubspeciesIndex() == 3 && !this.isPetType("familiar")) {
 	    	// Random Charging:
 	    	if(this.hasAttackTarget() && this.getDistanceSqToEntity(this.getAttackTarget()) > 1 && this.getRNG().nextInt(20) == 0) {
 	    		if(this.posY - 1 > this.getAttackTarget().posY)

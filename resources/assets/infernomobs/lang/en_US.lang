@@ -49,6 +49,6 @@ item.afrittreat.description=A fiery treat for fiery imps!
 #
 # Blocks
 tile.purelava.name=Pure Lava
-tile.purelava.description=Clearer that regular lava, flows slightly faster and no inferno mobs spawn in this. Can be renewed like water.
+tile.purelava.description=Clearer than regular lava, flows slightly faster and no inferno mobs spawn in this. Can be renewed like water.
 tile.scorchfire.name=Scorchfire
 tile.scorchfire.description=An enchanted fire, not as hot as normal fire but it applies penetration, increasing the damage taken.

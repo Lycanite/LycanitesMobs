@@ -7,7 +7,9 @@ import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
+import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.info.Subspecies;
+import lycanite.lycanitesmobs.api.item.ItemCustomFood;
 import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
@@ -22,8 +24,12 @@ import lycanite.lycanitesmobs.shadowmobs.mobevent.MobEventBlackPlague;
 import lycanite.lycanitesmobs.shadowmobs.mobevent.MobEventShadowGames;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -33,6 +39,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 @Mod(modid = ShadowMobs.modid, name = ShadowMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid)
 public class ShadowMobs {
@@ -73,17 +80,26 @@ public class ShadowMobs {
 		
 		ObjectManager.addItem("bloodleechcharge", new ItemBloodleechCharge());
 		ObjectManager.addItem("bloodleechscepter", new ItemScepterBloodleech(), 2, 1, 1);
-		
-		/*ObjectManager.addItem("chupacabrameatraw", new ItemCustomFood("chupacabrameatraw", group, 2, 0.5F).setPotionEffect(Potion.digSlowdown.id, 45, 2, 0.8F));
+
+        ItemFood rawMeat = new ItemCustomFood("chupacabrameatraw", group, 4, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(Potion.hunger.id, 45, 2, 0.8F);
+        if(ObjectManager.getPotionEffect("fear") != null)
+            rawMeat.setPotionEffect(ObjectManager.getPotionEffect("fear").id, 10, 2, 0.8F);
+        ObjectManager.addItem("chupacabrameatraw", rawMeat);
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("chupacabrameatraw"));
 		OreDictionary.registerOre("listAllmuttonraw", ObjectManager.getItem("chupacabrameatraw"));
-		
-		ObjectManager.addItem("chupacabrameatcooked", new ItemCustomFood("chupacabrameatcooked", group, 6, 0.7F));
+
+		ItemFood cookedMeat = new ItemCustomFood("chupacabrameatcooked", group, 7, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setAlwaysEdible();
+        if(ObjectManager.getPotionEffect("leech") != null)
+            cookedMeat.setPotionEffect(ObjectManager.getPotionEffect("leech").id, 10, 1, 1.0F);
+        ObjectManager.addItem("chupacabrameatcooked", cookedMeat);
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("chupacabrameatcooked"));
 		OreDictionary.registerOre("listAllmuttoncooked", ObjectManager.getItem("chupacabrameatcooked"));
-		
-		ObjectManager.addItem("bloodchilli", new ItemCustomFood("bloodchilli", group, 6, 0.7F).setPotionEffect(Potion.digSpeed.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16));
-		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("bloodchilli"));*/
+
+        ItemFood meal = new ItemCustomFood("bloodchili", group, 7, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setAlwaysEdible();
+        meal.setMaxStackSize(16);
+        if(ObjectManager.getPotionEffect("leech") != null)
+            meal.setPotionEffect(ObjectManager.getPotionEffect("leech").id, 60, 1, 1.0F);
+		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("bloodchili"));
 
         ObjectManager.addItem("geistliver", new ItemGeistLiver());
 		
@@ -126,6 +142,14 @@ public class ShadowMobs {
         newMob.spawnInfo.setSpawnTypes("UNDEATH, MONSTER")
                 .setBiomes("GROUP, SPOOKY")
                 .setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
+        ObjectManager.addMob(newMob);
+
+        newMob = new MobInfo(group, "chupacabra", EntityChupacabra.class, 0x36251b, 0xaa8c63)
+                .setPeaceful(false).setSummonable(false).setSummonCost(3).setDungeonLevel(2)
+                .addSubspecies(new Subspecies("violet", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
+        newMob.spawnInfo.setSpawnTypes("UNDERGROUND")
+                .setBiomes("ALL, -OCEAN").setDimensions("-1, 1").setDimensionWhitelist(false)
+                .setSpawnWeight(6).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
         ObjectManager.addMob(newMob);
 
 		
@@ -190,15 +214,14 @@ public class ShadowMobs {
 		
 		
 		// ========== Crafting ==========
-		/*GameRegistry.addRecipe(new ShapelessOreRecipe(
-				new ItemStack(ObjectManager.getItem("peakskebab"), 1, 0),
+		GameRegistry.addRecipe(new ShapelessOreRecipe(
+				new ItemStack(ObjectManager.getItem("bloodchili"), 1, 0),
 				new Object[] {
-					Items.stick,
-					Items.carrot,
-					Items.melon,
-					ObjectManager.getItem("yalemeatcooked")
+					Items.bowl,
+                    new ItemStack(Items.dye, 1, 3),
+					ObjectManager.getItem("chupacabrameatcooked")
 				}
-			));*/
+			));
         
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("spectralboltscepter"), 1, 0),

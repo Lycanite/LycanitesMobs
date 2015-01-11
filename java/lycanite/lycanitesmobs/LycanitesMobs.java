@@ -88,14 +88,14 @@ public class LycanitesMobs {
 		config.setCategoryComment("Potion Effects", "Here you can override each potion effect ID from the automatic ID, use 0 if you want it to stay automatic. Overrides should only be needed if you are running a lot of mods that add custom effects.");
 		if(config.getBool("Potion Effects", "Enable Custom Effects", true, "Set to false to disable the custom potion effects.")) {
 			PotionBase.reserveEffectIDSpace();
-			ObjectManager.addPotionEffect("Paralysis", config, true, 0xFFFF00, 1, 0, false);
-			ObjectManager.addPotionEffect("Leech", config, false, 0x00FF99, 7, 0, true);
-			ObjectManager.addPotionEffect("Penetration", config, true, 0x222222, 7, 1, false);
-			ObjectManager.addPotionEffect("Recklessness", config, true, 0xFF0044, 4, 0, false);
-			ObjectManager.addPotionEffect("Rage", config, true, 0xFF4400, 4, 0, false);
-			ObjectManager.addPotionEffect("Weight", config, true, 0x000022, 1, 0, false);
-			ObjectManager.addPotionEffect("Swiftswimming", config, false, 0x0000FF, 0, 2, true);
-            ObjectManager.addPotionEffect("Fear", config, false, 0x220022, 7, 0, false);
+			ObjectManager.addPotionEffect("paralysis", config, true, 0xFFFF00, 1, 0, false);
+			ObjectManager.addPotionEffect("leech", config, false, 0x00FF99, 7, 0, true);
+			ObjectManager.addPotionEffect("penetration", config, true, 0x222222, 7, 1, false);
+			ObjectManager.addPotionEffect("recklessness", config, true, 0xFF0044, 4, 0, false);
+			ObjectManager.addPotionEffect("rage", config, true, 0xFF4400, 4, 0, false);
+			ObjectManager.addPotionEffect("weight", config, true, 0x000022, 1, 0, false);
+			ObjectManager.addPotionEffect("swiftswimming", config, false, 0x0000FF, 0, 2, true);
+            ObjectManager.addPotionEffect("fear", config, false, 0x220022, 7, 0, false);
 			MinecraftForge.EVENT_BUS.register(new PotionEffects());
 		}
 		
@@ -114,7 +114,6 @@ public class LycanitesMobs {
 		
 		mobEventManager = new MobEventManager();
 		mobEventManager.loadMobEvents();
-		//MinecraftForge.EVENT_BUS.register(mobEventManager);
 		FMLCommonHandler.instance().bus().register(mobEventManager);
 
 

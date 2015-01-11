@@ -282,6 +282,11 @@ public class SpawnInfo {
         return this;
     }
 
+    public SpawnInfo setDimensionWhitelist(boolean whitelist) {
+        this.dimensionWhitelist = whitelist;
+        return this;
+    }
+
     public SpawnInfo setBiomes(String string) {
         this.biomeEntries = string;
         return this;

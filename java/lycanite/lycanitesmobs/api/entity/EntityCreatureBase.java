@@ -770,6 +770,13 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public void setPetEntry(PetEntry petEntry) {
         this.petEntry = petEntry;
     }
+
+    /** Returns true if this creature has a pet entry and matches the procided entry type. **/
+    public boolean isPetType(String type) {
+        if(!this.hasPetEntry())
+            return false;
+        return type.equals(this.getPetEntry().getType());
+    }
     
     // ========== On Spawn ==========
     /** This is called when the mob is first spawned to the world either through natural spawning or from a Spawn Egg. **/

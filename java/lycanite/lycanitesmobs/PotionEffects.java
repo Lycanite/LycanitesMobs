@@ -37,8 +37,8 @@ public class PotionEffects {
 		}
 		
 		// ========== Paralysis ==========
-		if(ObjectManager.getPotionEffect("Paralysis") != null) {
-			if(!invulnerable && entity.isPotionActive(ObjectManager.getPotionEffect("Paralysis").getId())) {
+		if(ObjectManager.getPotionEffect("paralysis") != null) {
+			if(!invulnerable && entity.isPotionActive(ObjectManager.getPotionEffect("paralysis").getId())) {
 				entity.motionX = 0;
 				if(entity.motionY > 0)
 					entity.motionY = 0;
@@ -48,16 +48,16 @@ public class PotionEffects {
 		}
 		
 		// ========== Weight ==========
-		if(ObjectManager.getPotionEffect("Weight") != null) {
-			if(!invulnerable && entity.isPotionActive(ObjectManager.getPotionEffect("Weight").getId())) {
+		if(ObjectManager.getPotionEffect("weight") != null) {
+			if(!invulnerable && entity.isPotionActive(ObjectManager.getPotionEffect("weight").getId())) {
 				if(entity.motionY > -0.2D)
 					entity.motionY = -0.2D;
 			}
 		}
 		
 		// ========== Fear ==========
-		if(ObjectManager.getPotionEffect("Fear") != null) {
-			if(!entity.worldObj.isRemote && !invulnerable && entity.isPotionActive(ObjectManager.getPotionEffect("Fear").getId())) {
+		if(ObjectManager.getPotionEffect("fear") != null) {
+			if(!entity.worldObj.isRemote && !invulnerable && entity.isPotionActive(ObjectManager.getPotionEffect("fear").getId())) {
 				ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(entity);
 				if(extendedEntity != null) {
 					if(extendedEntity.fearEntity == null) {
@@ -87,13 +87,13 @@ public class PotionEffects {
 		if(invulnerable) return;
 			
 		// ========== Anti-Jumping ==========
-		if(ObjectManager.getPotionEffect("Paralysis") != null) {
-			if(entity.isPotionActive(ObjectManager.getPotionEffect("Paralysis").getId())) {
+		if(ObjectManager.getPotionEffect("paralysis") != null) {
+			if(entity.isPotionActive(ObjectManager.getPotionEffect("paralysis").getId())) {
 				if(event.isCancelable()) event.setCanceled(true);
 			}
 		}
-		if(ObjectManager.getPotionEffect("Weight") != null) {
-			if(entity.isPotionActive(ObjectManager.getPotionEffect("Weight").getId())) {
+		if(ObjectManager.getPotionEffect("weight") != null) {
+			if(entity.isPotionActive(ObjectManager.getPotionEffect("weight").getId())) {
 				if(event.isCancelable()) event.setCanceled(true);
 			}
 		}
@@ -111,18 +111,30 @@ public class PotionEffects {
         if(event.entityLiving == null)
             return;
 
+        // ========== Leeching ==========
+        if(ObjectManager.getPotionEffect("leech") != null && event.source.getEntity() != null) {
+            if(event.source.getEntity() instanceof EntityLivingBase) {
+                EntityLivingBase attackingEntity = (EntityLivingBase)(event.source.getEntity());
+                if(attackingEntity.isPotionActive(ObjectManager.getPotionEffect("leech").getId())) {
+                    float damage = event.ammount;
+                    float multiplier = attackingEntity.getActivePotionEffect(ObjectManager.getPotionEffect("leech")).getAmplifier();
+                    attackingEntity.heal(damage * multiplier);
+                }
+            }
+        }
+
         // ========== Penetration ==========
-        if(ObjectManager.getPotionEffect("Penetration") != null) {
-            if(event.entityLiving.isPotionActive(ObjectManager.getPotionEffect("Penetration").getId())) {
+        if(ObjectManager.getPotionEffect("penetration") != null) {
+            if(event.entityLiving.isPotionActive(ObjectManager.getPotionEffect("penetration").getId())) {
                 float damage = event.ammount;
-                float multiplier = event.entityLiving.getActivePotionEffect(ObjectManager.getPotionEffect("Penetration")).getAmplifier();
+                float multiplier = event.entityLiving.getActivePotionEffect(ObjectManager.getPotionEffect("penetration")).getAmplifier();
                 event.ammount = damage + ((damage * multiplier) / 2);
             }
         }
 
         // ========== Fear ==========
-        if(ObjectManager.getPotionEffect("Fear") != null) {
-            if(event.entityLiving.isPotionActive(ObjectManager.getPotionEffect("Fear").getId())) {
+        if(ObjectManager.getPotionEffect("fear") != null) {
+            if(event.entityLiving.isPotionActive(ObjectManager.getPotionEffect("fear").getId())) {
                 if("inWall".equals(event.source.damageType)) {
                     event.ammount = 0;
                     event.setCanceled(true);

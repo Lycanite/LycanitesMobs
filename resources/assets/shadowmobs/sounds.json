@@ -95,6 +95,34 @@
         "category": "hostile",
         "sounds": [{"name": "entity/geist/step", "stream": false}]
     },
+    "entity.chupacabra.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/chupacabra/say", "stream": false}]
+    },
+    "entity.chupacabra.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/chupacabra/hurt", "stream": false}]
+    },
+    "entity.chupacabra.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/chupacabra/death", "stream": false}]
+    },
+    "entity.chupacabra.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/chupacabra/attack", "stream": false}]
+    },
+    "entity.chupacabra.step": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/chupacabra/step", "stream": false}]
+    },
+    "entity.chupacabra.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/chupacabra/tame", "stream": false}]
+    },
+    "entity.chupacabra.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/chupacabra/beg", "stream": false}]
+    },
     "projectile.spectralbolt": {
         "category": "ambient",
         "sounds": [{"name": "projectile/spectralbolt", "stream": false}]

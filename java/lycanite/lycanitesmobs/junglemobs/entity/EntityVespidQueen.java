@@ -78,7 +78,8 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
         
         this.canGrow = true;
         this.babySpawnChance = 0D;
-        
+
+        this.stepHeight = 1.0F;
         this.justAttackedTime = (short)(10);
         
         this.vespidQueenSwarmLimit = ConfigBase.getConfig(this.group, "general").getInt("Features", "Vespid Queen Swarm Limit", this.vespidQueenSwarmLimit, "Limits how many Vespid drones a Queen can have before she will no longer spawn babies in hives.");

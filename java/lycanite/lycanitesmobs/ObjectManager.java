@@ -10,9 +10,11 @@ import lycanite.lycanitesmobs.api.info.ObjectLists;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.BehaviorProjectileDispense;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -61,8 +63,9 @@ public class ObjectManager {
 	}
 
 	// ========== Bucket ==========
-	public static Item addBucket(Item bucket, Block block) {
+	public static Item addBucket(Item bucket, Block block, Fluid fluid) {
 		buckets.put(block, bucket);
+        FluidContainerRegistry.registerFluidContainer(fluid, new ItemStack(bucket), new ItemStack(Items.bucket));
         return bucket;
 	}
 

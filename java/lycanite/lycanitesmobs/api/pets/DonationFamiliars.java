@@ -41,6 +41,14 @@ public class DonationFamiliars {
             if(ObjectManager.getMob("reiver") != null)
                 familiars.add(new PetEntryFamiliar("ganymedes01ReiverBob", player, "reiver").setEntityName("Bob").setEntitySize(0.4D));
         }
+        if("FatherToast".equals(player.getCommandSenderName())) {
+            if(ObjectManager.getMob("zephyr") != null)
+                familiars.add(new PetEntryFamiliar("FatherToastZephyrToastson", player, "zephyr").setEntityName("Toastson").setEntitySubspeciesID(1).setEntitySize(0.4D));
+        }
+        if("MotherToast".equals(player.getCommandSenderName())) {
+            if(ObjectManager.getMob("reiver") != null)
+                familiars.add(new PetEntryFamiliar("MotherToastReiverToastdottir", player, "reiver").setEntityName("Toastdottir").setEntitySize(0.4D));
+        }
         if("JaredBGreat".equals(player.getCommandSenderName())) { // BlackJar72
             if(ObjectManager.getMob("zephyr") != null)
                 familiars.add(new PetEntryFamiliar("JaredBGreatZephyrThunnar", player, "zephyr").setEntityName("Thunnar").setEntitySize(0.4D));

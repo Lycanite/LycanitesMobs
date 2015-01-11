@@ -556,7 +556,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     			return this.mobInfo.spawnInfo.dimensionWhitelist;
     		}
     	}
-        return !this.mobInfo.group.dimensionWhitelist;
+        return !this.mobInfo.spawnInfo.dimensionWhitelist;
     }
     
     // ========== Spawn Limit Check ==========
@@ -2806,6 +2806,12 @@ public abstract class EntityCreatureBase extends EntityLiving {
    	//                       Sounds
    	// ==================================================
     // ========== Idle ==========
+    /** Get number of ticks, at least during which the living entity will be silent. **/
+    @Override
+    public int getTalkInterval()
+    {
+        return 80;
+    }
     /** Returns the sound to play when this creature is making a random ambient roar, grunt, etc. **/
     @Override
     protected String getLivingSound() { return AssetManager.getSound(this.mobInfo.name + "_say"); }

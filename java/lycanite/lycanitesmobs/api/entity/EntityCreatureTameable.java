@@ -858,6 +858,13 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
    	//                       Sounds
    	// ==================================================
     // ========== Idle ==========
+    /** Get number of ticks, at least during which the living entity will be silent. **/
+    @Override
+    public int getTalkInterval() {
+        if(this.isTamed())
+            return 600;
+        return super.getTalkInterval();
+    }
     @Override
     protected String getLivingSound() {
     	String sound = "_say";

@@ -60,7 +60,8 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
         this.setWidth = 0.8F;
         this.setHeight = 1.8F;
         this.setupMob();
-        
+
+        this.stepHeight = 1.0F;
         this.attackPhaseMax = 3;
         this.justAttackedTime = (short)(10);
         

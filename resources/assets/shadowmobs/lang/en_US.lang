@@ -15,9 +15,17 @@ entity.shadowmobs.epion.name=Epion
 entity.shadowmobs.epion.description=Giant shadow blood bats! Epions spit Bloodleeches at their victims, draining health on hit. When in contact with the sun, Epions drop to the ground and explode on impact!
 entity.shadowmobs.geist.name=Geist
 entity.shadowmobs.geist.description=Geists are opportunistic creatures that deform and climb into undead lifeforms and feed off whatever their host is capable of killing. When their host dies, Geists leap out and reform for a surprise attack!
+entity.shadowmobs.chupacabra.name=Chupacabra
+entity.shadowmobs.chupacabra.description=Dreadful creatures that lurk within the darkest caverns beneath the earth, their insatiable hunger for flesh can be used to manipulate and farm them. Their bite is not only fatal but heals them.
 #
 # Items
 item.shadowspawn.name=Spawn
+item.chupacabrameatraw.name=Raw Chupacabra Meat
+item.chupacabrameatraw.description=Scaley flesh that oozes with blood. Eating it raw can cause terrifying hallucinations!
+item.chupacabrameatcooked.name=Cooked Chupacabra Meat
+item.chupacabrameatcooked.description=While the creature it comes from is disgusting, once cooked, this rich meat is absolutely delicious!
+item.bloodchili.name=Blood Chili
+item.bloodchili.description=An intense chili that empowers the consumer allowing them to consume the life force of any creature they attack, healing them.
 item.geistliver.name=Geist Liver
 item.geistliver.description=It has a very musky odor... Use to squeeze out a gout of Shadowfire.
 item.spectralboltcharge.name=Spectral Bolt Charge

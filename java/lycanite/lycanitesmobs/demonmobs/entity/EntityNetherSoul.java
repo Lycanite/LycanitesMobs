@@ -40,6 +40,8 @@ public class EntityNetherSoul extends EntityCreatureBase implements IMob {
         this.setWidth = 0.6F;
         this.setHeight = 0.8F;
         this.setupMob();
+
+        this.stepHeight = 1.0F;
         
         // AI Tasks:
         this.getNavigator().setAvoidsWater(true);

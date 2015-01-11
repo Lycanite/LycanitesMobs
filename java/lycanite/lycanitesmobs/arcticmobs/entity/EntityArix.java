@@ -55,6 +55,8 @@ public class EntityArix extends EntityCreatureTameable implements IMob, IGroupIc
         this.setWidth = 0.8F;
         this.setHeight = 0.8F;
         this.setupMob();
+
+        this.stepHeight = 1.0F;
         
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this));

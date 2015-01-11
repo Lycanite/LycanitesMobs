@@ -59,6 +59,8 @@ public class EntityAfrit extends EntityCreatureTameable implements IMob, IGroupF
         this.setWidth = 0.8F;
         this.setHeight = 0.8F;
         this.setupMob();
+
+        this.stepHeight = 1.0F;
         
         // AI Tasks:
         this.getNavigator().setCanSwim(true);

@@ -19,6 +19,7 @@ import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fluids.IFluidBlock;
 
 public class BlockFluidPureLava extends BlockFluidClassic {
 	public String blockName;

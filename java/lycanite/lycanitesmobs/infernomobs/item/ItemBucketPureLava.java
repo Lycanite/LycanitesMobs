@@ -18,6 +18,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fluids.Fluid;
 
 public class ItemBucketPureLava extends ItemBucket {
 	public String itemName;
@@ -26,13 +27,13 @@ public class ItemBucketPureLava extends ItemBucket {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemBucketPureLava() {
+    public ItemBucketPureLava(Fluid fluid) {
         super(ObjectManager.getBlock("purelava"));
 		this.setCreativeTab(LycanitesMobs.itemsTab);
         this.group = InfernoMobs.group;
         this.itemName = "bucketpurelava";
         this.setUnlocalizedName(this.itemName);
-        ObjectManager.addBucket(this, ObjectManager.getBlock("purelava"));
+        ObjectManager.addBucket(this, ObjectManager.getBlock("purelava"), fluid);
     }
     
     

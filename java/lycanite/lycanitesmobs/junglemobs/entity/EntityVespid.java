@@ -62,7 +62,8 @@ public class EntityVespid extends EntityCreatureAgeable implements IMob, IGroupP
 
         this.canGrow = true;
         this.babySpawnChance = 0.1D;
-        
+
+        this.stepHeight = 1.0F;
         this.justAttackedTime = (short)(10);
         
         this.vespidHiveBuilding = ConfigBase.getConfig(this.group, "general").getBool("Features", "Vespid Hive Building", this.vespidHiveBuilding, "Set to false to stop Vespids from building hives all together.");

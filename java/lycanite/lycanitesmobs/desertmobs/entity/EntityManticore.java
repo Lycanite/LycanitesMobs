@@ -48,6 +48,8 @@ public class EntityManticore extends EntityCreatureTameable implements IMob, IGr
         this.setWidth = 0.8F;
         this.setHeight = 1.2F;
         this.setupMob();
+
+        this.stepHeight = 1.0F;
         
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this));

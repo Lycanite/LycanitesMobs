@@ -48,6 +48,8 @@ public class EntityRaiko extends EntityCreatureBase implements IMob, IGroupHunte
         this.setWidth = 0.8F;
         this.setHeight = 1.8F;
         this.setupMob();
+
+        this.stepHeight = 1.0F;
         
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this));

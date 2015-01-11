@@ -99,6 +99,7 @@ public class ShadowMobs {
         meal.setMaxStackSize(16);
         if(ObjectManager.getPotionEffect("leech") != null)
             meal.setPotionEffect(ObjectManager.getPotionEffect("leech").id, 60, 1, 1.0F);
+        ObjectManager.addItem("leech", meal, 3, 1, 6);
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("bloodchili"));
 
         ObjectManager.addItem("geistliver", new ItemGeistLiver());
@@ -145,9 +146,9 @@ public class ShadowMobs {
         ObjectManager.addMob(newMob);
 
         newMob = new MobInfo(group, "chupacabra", EntityChupacabra.class, 0x36251b, 0xaa8c63)
-                .setPeaceful(false).setSummonable(false).setSummonCost(3).setDungeonLevel(2)
+                .setPeaceful(true).setSummonable(false).setSummonCost(3).setDungeonLevel(2)
                 .addSubspecies(new Subspecies("violet", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
-        newMob.spawnInfo.setSpawnTypes("UNDERGROUND")
+        newMob.spawnInfo.setSpawnTypes("UNDERGROUND").setDespawn(false)
                 .setBiomes("ALL, -OCEAN").setDimensions("-1, 1").setDimensionWhitelist(false)
                 .setSpawnWeight(6).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
         ObjectManager.addMob(newMob);
@@ -239,6 +240,6 @@ public class ShadowMobs {
 		
 		
 		// ========== Smelting ==========
-		//GameRegistry.addSmelting(ObjectManager.getItem("yalemeatraw"), new ItemStack(ObjectManager.getItem("yalemeatcooked"), 1), 0.5f);
+		GameRegistry.addSmelting(ObjectManager.getItem("chupacabrameatraw"), new ItemStack(ObjectManager.getItem("chupacabrameatcooked"), 1), 0.5f);
 	}
 }

@@ -48,8 +48,8 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
         this.setWidth = 0.8F;
         this.setHeight = 1.2F;
         this.setupMob();
+
         this.stepHeight = 1.0F;
-        
         this.farmingRate = ConfigBase.getConfig(this.group, "general").getInt("Features", "Spriggan Minion Crop Boosting", this.farmingRate, "Sets the rate in ticks (20 ticks = 1 second) that a Spriggan will boost nearby crops. Each boost will usually cause the crop to grow one stage.");
         
         // AI Tasks:

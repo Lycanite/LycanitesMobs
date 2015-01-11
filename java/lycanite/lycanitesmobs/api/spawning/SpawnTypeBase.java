@@ -126,6 +126,16 @@ public class SpawnTypeBase {
 		frostfireBlockSpawner.loadFromConfig();
         CustomSpawner.instance.updateSpawnTypes.add(frostfireBlockSpawner);
         spawnTypes.add(frostfireBlockSpawner);
+
+        // Underground Spawner:
+        SpawnTypeBase undergroundSpawner = new SpawnTypeUnderground("Underground")
+                .setRate(400).setChance(0.5D).setRange(32).setBlockLimit(16).setMobLimit(8);
+        undergroundSpawner.materials = new Material[] {Material.air};
+        undergroundSpawner.ignoreBiome = false;
+        undergroundSpawner.ignoreLight = false;
+        undergroundSpawner.loadFromConfig();
+        CustomSpawner.instance.updateSpawnTypes.add(undergroundSpawner);
+        spawnTypes.add(undergroundSpawner);
 		
 		// Sky Spawner:
 		SpawnTypeBase skySpawner = new SpawnTypeSky("Sky")
@@ -784,7 +794,24 @@ public class SpawnTypeBase {
         int[] xz = this.getRandomXZCoord(world, originPos.chunkPosX, originPos.chunkPosZ, rangeMin, range);
         int x = xz[0];
         int z = xz[1];
-        int y = this.getRandomYCoord(world, x, originPos.chunkPosY, z, rangeMin, range, true, Blocks.air);
+        int y = this.getRandomYCoord(world, x, originPos.chunkPosY, z, rangeMin, range, true, Blocks.air, false);
+        return y > -1 ? new ChunkPosition(x, y, z) : null;
+    }
+
+
+    // ==================================================
+    //            Get Random Underground Land Spawn Coord
+    // ==================================================
+    /** Gets a random spawn position from a the provided origin chunk position.
+     * @param world The world to search for coordinates in.
+     * @return Returns a ChunkPosition or null if no coord was found.
+     */
+    public ChunkPosition getRandomUndergroundLandCoord(World world, ChunkPosition originPos, int range) {
+        int radius = Math.round(range * 0.5F);
+        int[] xz = this.getRandomXZCoord(world, originPos.chunkPosX, originPos.chunkPosZ, rangeMin, range);
+        int x = xz[0];
+        int z = xz[1];
+        int y = this.getRandomYCoord(world, x, originPos.chunkPosY, z, rangeMin, 32, true, Blocks.air, true);
         return y > -1 ? new ChunkPosition(x, y, z) : null;
     }
 
@@ -801,7 +828,7 @@ public class SpawnTypeBase {
         int[] xz = this.getRandomXZCoord(world, originPos.chunkPosX, originPos.chunkPosZ, rangeMin, range);
         int x = xz[0];
         int z = xz[1];
-        int y = this.getRandomYCoord(world, x, originPos.chunkPosY, z, rangeMin, range, false, Blocks.water);
+        int y = this.getRandomYCoord(world, x, originPos.chunkPosY, z, rangeMin, range, false, Blocks.water, false);
         return y > -1 ? new ChunkPosition(x, y, z) : null;
     }
 
@@ -819,7 +846,7 @@ public class SpawnTypeBase {
         int[] xz = this.getRandomXZCoord(world, originPos.chunkPosX, originPos.chunkPosZ, rangeMin, range);
         int x = xz[0];
         int z = xz[1];
-        int y = this.getRandomYCoord(world, x, originPos.chunkPosY, z, rangeMin, range, false, Blocks.air);
+        int y = this.getRandomYCoord(world, x, originPos.chunkPosY, z, rangeMin, range, false, Blocks.air, false);
         return y > -1 ? new ChunkPosition(x, y, z) : null;
     }
 
@@ -880,13 +907,14 @@ public class SpawnTypeBase {
      * @param insideBlock The block type to spawn in, usually air can also be water or other liquids, etc.
      * @return The y position, -1 if a valid position could not be found.
      */
-    public int getRandomYCoord(World world, int originX, int originY, int originZ, int rangeMin, int rangeMax, boolean solid, Block insideBlock) {
+    public int getRandomYCoord(World world, int originX, int originY, int originZ, int rangeMin, int rangeMax, boolean solid, Block insideBlock, boolean underground) {
     	int minY = Math.max(originY - rangeMax, 0);
         int maxY = originY + rangeMax;
         List<Integer> yCoordsLow = new ArrayList<Integer>();
         List<Integer> yCoordsHigh = new ArrayList<Integer>();
+
+        // Get Every Valid Y Pos:
         for(int nextY = minY; nextY <= maxY; nextY++) {
-        	
             Block block = world.getBlock(originX, nextY, originZ);
             if(block != null && (
             		(!solid && block == insideBlock) ||
@@ -897,6 +925,8 @@ public class SpawnTypeBase {
             		continue;
             	
                 if(world.canBlockSeeTheSky(originX, nextY, originZ)) {
+                    if(underground)
+                        break;
                 	if(!solid) {
 	                    int skyCoord = nextY;
 	                    int skyMax = Math.min(world.getHeight() - 1, maxY) - skyCoord;
@@ -921,7 +951,8 @@ public class SpawnTypeBase {
                 }
             }
         }
-        
+
+        // Pick Random Y Pos:
         int y = -1;
         if(yCoordsHigh.size() > 0 && (yCoordsLow.size() <= 0 || world.rand.nextFloat() > 0.25F)) {
         	if(yCoordsHigh.size() == 1)

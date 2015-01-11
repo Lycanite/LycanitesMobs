@@ -44,7 +44,7 @@ public class EntityConcapedeHead extends EntityCreatureAgeable implements IAnima
     public EntityConcapedeHead(World world) {
         super(world);
         
-        CONCAPEDE_SIZE_MAX = ConfigBase.getConfig(group, "general").getInt("Features", "Concapede Size Limit", 10, "The maximum amount of segments long a Concapede can be, including the head.");
+        CONCAPEDE_SIZE_MAX = Math.max(1, ConfigBase.getConfig(group, "general").getInt("Features", "Concapede Size Limit", 10, "The maximum amount of segments long a Concapede can be, including the head."));
         
         // Setup:
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
@@ -102,7 +102,7 @@ public class EntityConcapedeHead extends EntityCreatureAgeable implements IAnima
 		// Create Starting Segments:
         if(!this.worldObj.isRemote && !this.hasMaster()) {
         	this.setGrowingAge(-this.growthTime / 4);
-        	int segmentCount = this.getRNG().nextInt(ConfigBase.getConfig(this.group, "general").getInt("Features", "Concapede Size Limit", 10, "The maximum amount of segments long a Concapede can be, including the head."));
+        	int segmentCount = this.getRNG().nextInt(CONCAPEDE_SIZE_MAX);
     		EntityCreatureAgeable parentSegment = this;
         	for(int segment = 0; segment < segmentCount; segment++) {
         		EntityConcapedeSegment segmentEntity = new EntityConcapedeSegment(parentSegment.worldObj);

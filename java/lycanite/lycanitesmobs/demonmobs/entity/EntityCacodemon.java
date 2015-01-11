@@ -52,6 +52,8 @@ public class EntityCacodemon extends EntityCreatureTameable {
         
         this.justAttackedTime = 20;
         this.setupMob();
+
+        this.stepHeight = 1.0F;
         
         // AI Tasks:
         this.getNavigator().setAvoidsWater(true);

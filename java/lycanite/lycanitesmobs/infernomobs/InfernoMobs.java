@@ -34,9 +34,12 @@ import lycanite.lycanitesmobs.infernomobs.mobevent.MobEventEruption;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -106,7 +109,7 @@ public class InfernoMobs {
 
 		ObjectManager.addItem("afrittreat", new ItemTreat("afrittreat", group));
 
-		ObjectManager.addItem("bucketpurelava", new ItemBucketPureLava());
+		ObjectManager.addItem("bucketpurelava", new ItemBucketPureLava(fluid).setContainerItem(Items.bucket));
 
         // ========== Create Blocks ==========
         AssetManager.addSound("scorchfire", group, "block.scorchfire");

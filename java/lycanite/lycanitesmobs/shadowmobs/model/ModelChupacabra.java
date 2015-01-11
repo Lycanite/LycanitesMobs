@@ -6,6 +6,7 @@ import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.model.ModelCustomObj;
 import lycanite.lycanitesmobs.infernomobs.InfernoMobs;
+import lycanite.lycanitesmobs.shadowmobs.ShadowMobs;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.model.obj.WavefrontObject;
@@ -22,7 +23,7 @@ public class ModelChupacabra extends ModelCustomObj {
 
     public ModelChupacabra(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Chupacabra", InfernoMobs.group, "entity/chupacabra");
+    	model = (WavefrontObject)AssetManager.getObjModel("Chupacabra", ShadowMobs.group, "entity/chupacabra");
     	
     	// Get Parts:
     	parts = model.groupObjects;
@@ -91,7 +92,7 @@ public class ModelChupacabra extends ModelCustomObj {
         }
 		
     	// Walking:
-    	float walkSwing = 0.3F;
+    	float walkSwing = 0.6F;
     	if(partName.equals("armright") || partName.equals("legleft"))
     		rotX += Math.toDegrees(MathHelper.cos(time * 0.6662F + (float)Math.PI) * walkSwing * distance);
     	if(partName.equals("armleft") || partName.equals("legright"))
@@ -100,14 +101,26 @@ public class ModelChupacabra extends ModelCustomObj {
         // Attack:
         if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
             if(partName.equals("armleft"))
-                rotate(-135.0F, 0.0F, 0.0F);
+                rotate(-75.0F, 0.0F, 0.0F);
             if(partName.equals("armright"))
-                rotate(-135.0F, 0.0F, 0.0F);
+                rotate(-75.0F, 0.0F, 0.0F);
         }
     	
     	// Apply Animations:
 		this.rotate(rotation, angleX, angleY, angleZ);
     	this.rotate(rotX, rotY, rotZ);
     	this.translate(posX, posY, posZ);
+    }
+
+
+    // ==================================================
+    //              Rotate and Translate
+    // ==================================================
+    @Override
+    public void childScale(String partName) {
+        if(partName.equals("head") || partName.equals("mouth"))
+            translate(-(getPartCenter(partName)[0] / 2), -(getPartCenter(partName)[1] / 2), -(getPartCenter(partName)[2] / 2));
+        else
+            super.childScale(partName);
     }
 }

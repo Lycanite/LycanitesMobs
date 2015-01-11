@@ -1,5 +1,6 @@
 package lycanite.lycanitesmobs.shadowmobs.entity;
 
+import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.*;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
@@ -15,6 +16,7 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -30,8 +32,8 @@ public class EntityChupacabra extends EntityCreatureTameable implements IAnimals
 	// ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityChupacabra(World par1World) {
-        super(par1World);
+    public EntityChupacabra(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEAD;
@@ -45,13 +47,12 @@ public class EntityChupacabra extends EntityCreatureTameable implements IAnimals
         this.setupMob();
         
         this.attackTime = 10;
-        this.stepHeight = 1.0F;
         
         // AI Tasks:
         this.getNavigator().setAvoidsWater(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIMate(this));
-        //this.tasks.addTask(2, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("pinkytreat"))).setTemptDistanceMin(4.0D));
+        //this.tasks.addTask(2, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("chupacabratreat"))).setTemptDistanceMin(4.0D));
         this.tasks.addTask(3, new EntityAIAttackMelee(this).setTargetClass(EntityPigZombie.class).setSpeed(1.5D).setRate(10).setDamage(8.0D).setRange(2.5D));
         this.tasks.addTask(4, new EntityAIAttackMelee(this).setSpeed(1.5D).setRate(10));
         this.tasks.addTask(7, new EntityAIWander(this).setSpeed(1.0D));
@@ -93,7 +94,8 @@ public class EntityChupacabra extends EntityCreatureTameable implements IAnimals
 	@Override
 	public void loadItemDrops() {
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("ChupacabraMeatRaw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("ChupacabraMeatCooked"))).setMinAmount(1).setMaxAmount(3));
-	}
+        this.drops.add(new DropRate(new ItemStack(Items.leather), 0.75F).setMinAmount(1).setMaxAmount(3));
+    }
 	
 	
 	// ==================================================

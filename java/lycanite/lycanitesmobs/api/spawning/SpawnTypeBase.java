@@ -159,7 +159,7 @@ public class SpawnTypeBase {
 		
 		// Lava Spawner:
 		SpawnTypeBase lavaBlockSpawner = new SpawnTypeBlock("Lava")
-				.setRate(400).setChance(0.25D).setRange(32).setBlockLimit(64).setMobLimit(32);
+				.setRate(400).setChance(0.5D).setRange(32).setBlockLimit(64).setMobLimit(32);
 		lavaBlockSpawner.blocks = new Block[] {Blocks.lava};
 		lavaBlockSpawner.ignoreBiome = true;
 		lavaBlockSpawner.ignoreLight = true;

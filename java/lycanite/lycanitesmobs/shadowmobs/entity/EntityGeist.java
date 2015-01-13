@@ -47,7 +47,7 @@ public class EntityGeist extends EntityCreatureAgeable implements IMob, IGroupSh
 
         this.geistShadowfireDeath = ConfigBase.getConfig(this.group, "general").getBool("Features", "Geist Shadowfire Death", this.geistShadowfireDeath, "Set to false to disable Geists from bursting into Shadowfire oh death.");
 
-        this.setWidth = 0.8F;
+        this.setWidth = 0.6F;
         this.setHeight = 2.4F;
         this.setupMob();
         

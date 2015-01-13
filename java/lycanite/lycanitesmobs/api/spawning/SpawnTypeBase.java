@@ -224,7 +224,7 @@ public class SpawnTypeBase {
 				.setRate(800).setChance(0.5D).setRange(48).setBlockLimit(32).setMobLimit(32);
 		lunarSpawner.materials = new Material[] {Material.air};
 		lunarSpawner.ignoreBiome = true;
-		lunarSpawner.ignoreDimension = true;
+		lunarSpawner.ignoreDimension = false;
 		lunarSpawner.ignoreLight = false;
 		lunarSpawner.forceSpawning = true;
 		lunarSpawner.loadFromConfig();

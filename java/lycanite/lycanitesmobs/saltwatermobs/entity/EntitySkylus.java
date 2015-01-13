@@ -65,7 +65,7 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroup
         this.getNavigator().setAvoidsWater(false);
         this.tasks.addTask(1, new EntityAIStayByWater(this));
         this.tasks.addTask(2, this.aiSit);
-        this.tasks.addTask(3, new EntityAIAttackMelee(this).setLongMemory(false).setRange(3D));
+        this.tasks.addTask(3, new EntityAIAttackMelee(this).setLongMemory(false).setRange(1D));
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
         this.tasks.addTask(6, wanderAI);
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));

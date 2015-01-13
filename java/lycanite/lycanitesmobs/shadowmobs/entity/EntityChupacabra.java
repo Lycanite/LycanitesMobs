@@ -52,16 +52,19 @@ public class EntityChupacabra extends EntityCreatureTameable implements IAnimals
         this.getNavigator().setAvoidsWater(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIMate(this));
-        //this.tasks.addTask(2, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("chupacabratreat"))).setTemptDistanceMin(4.0D));
-        this.tasks.addTask(3, new EntityAIAttackMelee(this).setTargetClass(EntityPigZombie.class).setSpeed(1.5D).setRate(10).setDamage(8.0D).setRange(2.5D));
-        this.tasks.addTask(4, new EntityAIAttackMelee(this).setSpeed(1.5D).setRate(10));
+        this.tasks.addTask(2, this.aiSit);
+        this.tasks.addTask(3, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
+        this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("chupacabratreat"))).setTemptDistanceMin(4.0D));
+        this.tasks.addTask(5, new EntityAIAttackMelee(this).setTargetClass(EntityPigZombie.class).setSpeed(1.5D).setRate(10).setDamage(8.0D).setRange(2.5D));
+        this.tasks.addTask(6, new EntityAIAttackMelee(this).setSpeed(1.5D).setRate(10));
         this.tasks.addTask(7, new EntityAIWander(this).setSpeed(1.0D));
+        this.tasks.addTask(9, new EntityAIBeg(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
-        
-        this.targetTasks.addTask(0, new EntityAITargetRiderRevenge(this));
-        this.targetTasks.addTask(1, new EntityAITargetRiderAttack(this));
-        this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
+
+        this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
+        this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
+        this.targetTasks.addTask(2, new EntityAITargetRevenge(this));
         if(MobInfo.predatorsAttackAnimals) {
             this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityCow.class).setTameTargetting(true));
             this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPig.class).setTameTargetting(true));
@@ -76,6 +79,7 @@ public class EntityChupacabra extends EntityCreatureTameable implements IAnimals
             this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(EntityAnimal.class));
         }
         this.targetTasks.addTask(6, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
+        this.targetTasks.addTask(7, new EntityAITargetOwnerThreats(this));
     }
     
     // ========== Stats ==========
@@ -125,6 +129,12 @@ public class EntityChupacabra extends EntityCreatureTameable implements IAnimals
     public boolean canBeTempted() {
     	return this.isChild();
     }
+
+
+    // ==================================================
+    //                     Pet Control
+    // ==================================================
+    public boolean petControlsEnabled() { return true; }
     
     
     // ==================================================
@@ -170,7 +180,7 @@ public class EntityChupacabra extends EntityCreatureTameable implements IAnimals
     // ==================================================
     @Override
     public boolean isTamingItem(ItemStack itemstack) {
-        return false;//itemstack.getItem() == ObjectManager.getItem("chupacabratreat") && this.isChild();
+        return itemstack.getItem() == ObjectManager.getItem("chupacabratreat") && this.isChild();
     }
     
     
@@ -180,6 +190,6 @@ public class EntityChupacabra extends EntityCreatureTameable implements IAnimals
     // ========== Healing Item ==========
     @Override
     public boolean isHealingItem(ItemStack testStack) {
-    	return ObjectLists.inItemList("CookedMeat", testStack);
+    	return ObjectLists.inItemList("cookedmeat", testStack);
     }
 }

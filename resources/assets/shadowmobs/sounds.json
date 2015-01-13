@@ -123,6 +123,10 @@
         "category": "hostile",
         "sounds": [{"name": "entity/chupacabra/beg", "stream": false}]
     },
+    "entity.chupacabra.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/chupacabra/eat", "stream": false}]
+    },
     "projectile.spectralbolt": {
         "category": "ambient",
         "sounds": [{"name": "projectile/spectralbolt", "stream": false}]

@@ -8,6 +8,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.settings.KeyBinding;
 
+import net.minecraft.util.StatCollector;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
@@ -21,12 +22,12 @@ public class KeyHandler {
 	
 	public boolean inventoryOpen = false;
 	
-	public KeyBinding mountAbility = new KeyBinding("Mount Ability", Keyboard.KEY_F, "Lycanites Mobs");
-	public KeyBinding mountInventory = new KeyBinding("Mount Inventory", Keyboard.KEY_H, "Lycanites Mobs");
-	public KeyBinding beastiary = new KeyBinding("Beastiary", Keyboard.KEY_B, "Lycanites Mobs");
-    public KeyBinding familiarManager = new KeyBinding("Familiar Manager", Keyboard.KEY_G, "Lycanites Mobs");
-	public KeyBinding minionManager = new KeyBinding("Minion Manager", Keyboard.KEY_H, "Lycanites Mobs");
-	public KeyBinding minionSelection = new KeyBinding("Minion Selection", Keyboard.KEY_J, "Lycanites Mobs");
+	public KeyBinding mountAbility = new KeyBinding(StatCollector.translateToLocal("key.mount.ability"), Keyboard.KEY_F, "Lycanites Mobs");
+	public KeyBinding mountInventory = new KeyBinding(StatCollector.translateToLocal("key.mount.inventory"), Keyboard.KEY_H, "Lycanites Mobs");
+	public KeyBinding beastiary = new KeyBinding(StatCollector.translateToLocal("key.beastiary"), Keyboard.KEY_B, "Lycanites Mobs");
+    public KeyBinding familiarManager = new KeyBinding(StatCollector.translateToLocal("key.familiar.manager"), Keyboard.KEY_G, "Lycanites Mobs");
+	public KeyBinding minionManager = new KeyBinding(StatCollector.translateToLocal("key.minion.manager"), Keyboard.KEY_H, "Lycanites Mobs");
+	public KeyBinding minionSelection = new KeyBinding(StatCollector.translateToLocal("key.minion.select"), Keyboard.KEY_J, "Lycanites Mobs");
 	
 	// ==================================================
     //                     Constructor

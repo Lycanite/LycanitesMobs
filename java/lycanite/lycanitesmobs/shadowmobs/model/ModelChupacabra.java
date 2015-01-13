@@ -118,7 +118,7 @@ public class ModelChupacabra extends ModelCustomObj {
     // ==================================================
     @Override
     public void childScale(String partName) {
-        if(partName.equals("head") || partName.equals("mouth"))
+        if(partName.equals("head"))
             translate(-(getPartCenter(partName)[0] / 2), -(getPartCenter(partName)[1] / 2), -(getPartCenter(partName)[2] / 2));
         else
             super.childScale(partName);

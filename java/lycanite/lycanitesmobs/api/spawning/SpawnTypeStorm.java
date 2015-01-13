@@ -61,10 +61,10 @@ public class SpawnTypeStorm extends SpawnTypeSky {
      */
     @Override
     public void spawnEntity(World world, EntityLiving entityLiving) {
-    	if(entityLiving.getRNG().nextFloat() >= 0.25F) {
+    	/*if(entityLiving.getRNG().nextFloat() >= 0.25F) {
 	    	EntityLightningBolt lightning = new EntityLightningBolt(world, entityLiving.posX, entityLiving.posY, entityLiving.posZ);
 	    	world.spawnEntityInWorld(lightning);
-    	}
+    	}*/
         super.spawnEntity(world, entityLiving);
     }
 }

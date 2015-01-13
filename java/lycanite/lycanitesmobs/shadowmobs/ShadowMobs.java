@@ -10,6 +10,7 @@ import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.info.Subspecies;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
+import lycanite.lycanitesmobs.api.item.ItemTreat;
 import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
@@ -63,7 +64,7 @@ public class ShadowMobs {
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
 		group = new GroupInfo(this, "Shadow Mobs")
-				.setDimensionBlacklist("1,2,-100").setDimensionWhitelist(true).setBiomes("END").setDungeonThemes("NECRO, SHADOW, DUNGEON")
+				.setDimensionBlacklist("1,-100").setDimensionWhitelist(true).setBiomes("END").setDungeonThemes("NECRO, SHADOW, DUNGEON")
                 .setEggName("shadowegg");
 		group.loadFromConfig();
 
@@ -103,6 +104,8 @@ public class ShadowMobs {
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("bloodchili"));
 
         ObjectManager.addItem("geistliver", new ItemGeistLiver());
+
+        ObjectManager.addItem("chupacabratreat", new ItemTreat("chupacabratreat", group));
 		
 		
 		// ========== Create Blocks ==========
@@ -133,7 +136,7 @@ public class ShadowMobs {
 		        .setPeaceful(false).setSummonable(false).setSummonCost(3).setDungeonLevel(2)
 		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("russet", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER, LUNAR")
-				.setBiomes("GROUP, SPOOKY")
+                .setBiomes("GROUP, SPOOKY").setDimensions("-1, 1").setDimensionWhitelist(false)
 				.setSpawnWeight(6).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
@@ -237,6 +240,13 @@ public class ShadowMobs {
 				Character.valueOf('C'), ObjectManager.getItem("bloodleechcharge"),
 				Character.valueOf('R'), Items.blaze_rod
 			}));
+
+        GameRegistry.addRecipe(new ShapedOreRecipe(
+                new ItemStack(ObjectManager.getItem("chupacabratreat"), 1, 0),
+                new Object[] { "TTT", "BBT", "TTT",
+                        Character.valueOf('T'), ObjectManager.getItem("geistliver"),
+                        Character.valueOf('B'), Items.bone
+                }));
 		
 		
 		// ========== Smelting ==========

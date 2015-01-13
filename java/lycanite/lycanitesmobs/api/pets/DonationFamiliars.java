@@ -29,6 +29,10 @@ public class DonationFamiliars {
         }
 
         // Celebs:
+        if("Jbams".equals(player.getCommandSenderName())) { // JonBams
+            if(ObjectManager.getMob("phantom") != null)
+                familiars.add(new PetEntryFamiliar("JbamsPhantomAmanda", player, "phantom").setEntityName("Amanda").setEntitySubspeciesID(1).setEntitySize(0.4D));
+        }
         if("kehaan".equals(player.getCommandSenderName())) {
             if(ObjectManager.getMob("grue") != null)
                 familiars.add(new PetEntryFamiliar("kehaanGrueMiniKehaan", player, "grue").setEntityName("Mini Kehaan").setEntitySubspeciesID(1).setEntitySize(0.85D));
@@ -52,6 +56,10 @@ public class DonationFamiliars {
         if("JaredBGreat".equals(player.getCommandSenderName())) { // BlackJar72
             if(ObjectManager.getMob("zephyr") != null)
                 familiars.add(new PetEntryFamiliar("JaredBGreatZephyrThunnar", player, "zephyr").setEntityName("Thunnar").setEntitySize(0.4D));
+        }
+        if("JarnoVH".equals(player.getCommandSenderName())) {
+            if(ObjectManager.getMob("chupacabra") != null)
+                familiars.add(new PetEntryFamiliar("JarnoVHChupacabraTimmy", player, "chupacabra").setEntityName("Face Biter").setEntitySize(0.8D));
         }
         if("grimuars".equals(player.getCommandSenderName())) { // Merkaba5
             if(ObjectManager.getMob("zephyr") != null)
@@ -78,6 +86,10 @@ public class DonationFamiliars {
         if("Ringowhs".equals(player.getCommandSenderName())) {
             if(ObjectManager.getMob("jengu") != null)
                 familiars.add(new PetEntryFamiliar("RingowhsJengu", player, "jengu").setEntitySize(0.85D));
+        }
+        if("PunitiveCape7".equals(player.getCommandSenderName())) {
+            if(ObjectManager.getMob("cinder") != null)
+                familiars.add(new PetEntryFamiliar("PunitiveCape7Cinder", player, "cinder").setEntitySize(0.85D).setEntitySubspeciesID(1));
         }
 
         return familiars;

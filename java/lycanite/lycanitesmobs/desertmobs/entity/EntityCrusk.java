@@ -206,6 +206,6 @@ public class EntityCrusk extends EntityCreatureTameable implements IGroupPredato
     // ========== Healing Item ==========
     @Override
     public boolean isHealingItem(ItemStack testStack) {
-    	return ObjectLists.inItemList("CookedMeat", testStack);
+    	return ObjectLists.inItemList("cookedmeat", testStack);
     }
 }

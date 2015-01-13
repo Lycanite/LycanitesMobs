@@ -176,3 +176,13 @@ potion.rage=Rage
 potion.weight=Weight
 potion.swiftswimming=Swiftswimming
 potion.fear=Fear
+#
+#
+#
+# ========== Key Bindings ==========
+key.mount.ability=Mount Ability
+key.mount.inventory=Mount Inventory
+key.beastiary=Beastiary
+key.familiar.manager=Familiar Manager
+key.minion.manager=Minion Manager
+key.minion.select=Minion Selection

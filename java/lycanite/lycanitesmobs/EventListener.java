@@ -5,6 +5,7 @@ import java.util.Calendar;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
 import lycanite.lycanitesmobs.api.entity.EntityItemCustom;
+import lycanite.lycanitesmobs.api.entity.MinionEntityDamageSource;
 import lycanite.lycanitesmobs.api.info.ItemInfo;
 import lycanite.lycanitesmobs.api.item.ItemBase;
 import lycanite.lycanitesmobs.api.item.ItemScepter;
@@ -12,10 +13,13 @@ import lycanite.lycanitesmobs.api.item.ItemSwordBase;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
@@ -205,37 +209,43 @@ public class EventListener {
 		if(event.isCanceled())
 	      return;
 		
-		if(event.entityLiving == null || event.source == null)
+		if(event.source == null || event.entityLiving == null)
 			return;
-		
-		ExtendedEntity entityExt = ExtendedEntity.getForEntity(event.entityLiving);
-		
-		// ========== Minimum Armor Damage ==========
-		// TODO: Found the cause of why this wasn't working here, should be moved back.
 
-        // ========== Minion Damage ==========
-        // TODO: The owner of the damage type should be the minion's master, however death messages should be customised to support this. Custom 'container' damage type?
-		
-		// ========== Mounted Protection ==========
-		if(event.entityLiving.ridingEntity != null) {
-			if(event.entityLiving.ridingEntity instanceof EntityCreatureRideable) {
-				
-				// Prevent Mounted Entities from Suffocating:
-				if("inWall".equals(event.source.damageType)) {
-                    event.ammount = 0;
-					event.setCanceled(true);
-					return;
-				}
-				
-				// Copy Mount Immunities to Rider:
-				EntityCreatureRideable creatureRideable = (EntityCreatureRideable)event.entityLiving.ridingEntity;
-				if(!creatureRideable.isDamageTypeApplicable(event.source.damageType)) {
-                    event.ammount = 0;
-					event.setCanceled(true);
-					return;
-				}
-			}
-		}
+        EntityLivingBase damagedEntity = event.entityLiving;
+
+        EntityDamageSource entityDamageSource = null;
+        if(event.source instanceof EntityDamageSource)
+            entityDamageSource = (EntityDamageSource)event.source;
+
+        Entity damagingEntity = null;
+        if(entityDamageSource != null)
+            damagingEntity = entityDamageSource.getSourceOfDamage();
+
+        // Entity Damage:
+        if(damagingEntity != null) {
+
+            // ========== Mounted Protection ==========
+            if(damagedEntity.ridingEntity != null) {
+                if(damagedEntity.ridingEntity instanceof EntityCreatureRideable) {
+
+                    // Prevent Mounted Entities from Suffocating:
+                    if("inWall".equals(event.source.damageType)) {
+                        event.ammount = 0;
+                        event.setCanceled(true);
+                        return;
+                    }
+
+                    // Copy Mount Immunities to Rider:
+                    EntityCreatureRideable creatureRideable = (EntityCreatureRideable)event.entityLiving.ridingEntity;
+                    if(!creatureRideable.isDamageTypeApplicable(event.source.damageType)) {
+                        event.ammount = 0;
+                        event.setCanceled(true);
+                        return;
+                    }
+                }
+            }
+        }
 	}
 	
 	

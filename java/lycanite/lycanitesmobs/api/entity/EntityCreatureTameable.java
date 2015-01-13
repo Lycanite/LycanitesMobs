@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs.api.entity;
 import java.util.HashMap;
 
 import lycanite.lycanitesmobs.AssetManager;
+import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAISit;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import net.minecraft.entity.Entity;
@@ -19,6 +20,7 @@ import net.minecraft.scoreboard.Team;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
@@ -399,6 +401,22 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
         }
 		return super.canAttackEntity(targetEntity);
 	}
+
+    // ========= Get Damage Source ==========
+    /**
+     * Returns the damage source to be used by this mob when dealing damage.
+     * @param nestedDamageSource This can be null or can be a passed entity damage source for all kinds of use, mainly for minion damage sources.
+     * @return
+     */
+    @Override
+    public DamageSource getDamageSource(EntityDamageSource nestedDamageSource) {
+        if(this.isTamed() && this.getOwner() != null) {
+            if(nestedDamageSource == null)
+                nestedDamageSource = new EntityDamageSource("mob", this);
+            return new MinionEntityDamageSource(nestedDamageSource, this.getOwner());
+        }
+        return super.getDamageSource(nestedDamageSource);
+    }
 	
     // ========== Attacked From ==========
     @Override

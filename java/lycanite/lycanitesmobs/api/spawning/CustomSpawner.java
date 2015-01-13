@@ -8,6 +8,7 @@ import java.util.Map;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
+import net.minecraft.block.BlockVine;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -189,7 +190,7 @@ public class CustomSpawner {
 		}
 		
 		// Crop Blocks:
-		if(event.block instanceof IPlantable) {
+		if(event.block instanceof IPlantable ||event.block instanceof BlockVine) {
 			for(SpawnTypeBase spawnType : this.cropBreakSpawnTypes) {
 				spawnType.spawnMobs(0, world, x, y, z, player);
 			}

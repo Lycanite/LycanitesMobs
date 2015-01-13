@@ -57,11 +57,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityMobSpawner;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.*;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
@@ -1595,13 +1591,13 @@ public abstract class EntityCreatureBase extends EntityLiving {
         boolean attackSuccess = false;
         float pierceDamage = 1 + (float)Math.floor(damage / this.getPierceValue());
         if(damage <= pierceDamage)
-        	attackSuccess = target.attackEntityFrom(DamageSource.causeMobDamage(this).setDamageBypassesArmor().setDamageIsAbsolute(), damage);
+        	attackSuccess = target.attackEntityFrom(this.getDamageSource(null).setDamageBypassesArmor().setDamageIsAbsolute(), damage);
         else {
         	int hurtResistantTimeBefore = target.hurtResistantTime;
-        	target.attackEntityFrom(DamageSource.causeMobDamage(this).setDamageBypassesArmor().setDamageIsAbsolute(), pierceDamage);
+        	target.attackEntityFrom(this.getDamageSource(null).setDamageBypassesArmor().setDamageIsAbsolute(), pierceDamage);
         	target.hurtResistantTime = hurtResistantTimeBefore;
     		damage -= pierceDamage;
-        	attackSuccess = target.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
+        	attackSuccess = target.attackEntityFrom(this.getDamageSource(null), damage);
         }
         
         if(attackSuccess) {
@@ -1636,6 +1632,18 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Used to scale how much damage this mob does, this is used by getAttackDamage() for melee and should be passed to projectiles for ranged attacks. **/
     public double getAttackDamageScale() {
     	return this.getDamageMultiplier();
+    }
+
+    // ========= Get Damage Source ==========
+    /**
+     * Returns the damage source to be used by this mob when dealing damage.
+     * @param nestedDamageSource This can be null or can be a passed damage source for all kinds of use, mainly for minion damage sources. This will override the damage source for EntityBase+Ageable.
+     * @return
+     */
+     public DamageSource getDamageSource(EntityDamageSource nestedDamageSource) {
+         if(nestedDamageSource != null)
+             return nestedDamageSource;
+        return DamageSource.causeMobDamage(this);
     }
     
     

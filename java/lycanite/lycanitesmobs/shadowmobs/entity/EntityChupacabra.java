@@ -36,7 +36,7 @@ public class EntityChupacabra extends EntityCreatureTameable implements IAnimals
         super(world);
         
         // Setup:
-        this.attribute = EnumCreatureAttribute.UNDEAD;
+        this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 0;
         this.experience = 5;
         this.hasAttackSound = true;
@@ -46,7 +46,7 @@ public class EntityChupacabra extends EntityCreatureTameable implements IAnimals
         this.setHeight = 0.95F;
         this.setupMob();
         
-        this.attackTime = 10;
+        this.attackTime = 15;
         
         // AI Tasks:
         this.getNavigator().setAvoidsWater(true);
@@ -87,10 +87,10 @@ public class EntityChupacabra extends EntityCreatureTameable implements IAnimals
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
 		baseAttributes.put("maxHealth", 15D);
-		baseAttributes.put("movementSpeed", 0.28D);
+		baseAttributes.put("movementSpeed", 0.26D);
 		baseAttributes.put("knockbackResistance", 0D);
 		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 3D);
+		baseAttributes.put("attackDamage", 1D);
         super.applyEntityAttributes(baseAttributes);
     }
 	
@@ -116,7 +116,7 @@ public class EntityChupacabra extends EntityCreatureTameable implements IAnimals
     		this.breed();
 
         // Leech:
-        float leeching = this.getAttackDamage(damageScale);
+        float leeching = this.getAttackDamage(damageScale) / 2;
         this.heal(leeching);
     	
         return true;

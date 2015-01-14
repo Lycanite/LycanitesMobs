@@ -95,6 +95,10 @@ public class DonationFamiliars {
             if(ObjectManager.getMob("spriggan") != null)
                 familiars.add(new PetEntryFamiliar("ApocDevSprigganObliterator", player, "spriggan").setEntityName("Obliterator").setEntitySize(0.6D).setEntitySubspeciesID(1));
         }
+        if("Headwound_".equals(player.getCommandSenderName())) {
+            if(ObjectManager.getMob("cinder") != null)
+                familiars.add(new PetEntryFamiliar("Headwound_Cinder", player, "cinder").setEntitySize(0.6D).setEntitySubspeciesID(2));
+        }
 
         return familiars;
     }

@@ -1996,6 +1996,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     
     // ========== Pickup ==========
     public boolean canPickupEntity(Entity entity) {
+        if(this.getPickupEntity() == entity)
+            return false;
     	ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(entity);
 		if(extendedEntity == null)
 			return false;

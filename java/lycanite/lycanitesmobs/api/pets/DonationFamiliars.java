@@ -22,10 +22,13 @@ public class DonationFamiliars {
             if(ObjectManager.getMob("grue") != null)
                 familiars.add(new PetEntryFamiliar("LycaniteGrueJasper", player, "grue").setEntityName("Jasper").setEntitySubspeciesID(2).setEntitySize(0.6D));
         }
-
         if("Kashiaka".equals(player.getCommandSenderName())) {
             if(ObjectManager.getMob("arix") != null)
                 familiars.add(new PetEntryFamiliar("KashiakaArixAlix", player, "arix").setEntityName("Alix").setEntitySubspeciesID(2).setEntitySize(0.6D));
+        }
+        if("quartzenstein".equals(player.getCommandSenderName())) {
+            if(ObjectManager.getMob("arix") != null)
+                familiars.add(new PetEntryFamiliar("quartzensteinArixAsterix", player, "arix").setEntityName("Asterix").setEntitySize(0.6D));
         }
 
         // Celebs:
@@ -85,7 +88,7 @@ public class DonationFamiliars {
         }
         if("Ringowhs".equals(player.getCommandSenderName())) {
             if(ObjectManager.getMob("jengu") != null)
-                familiars.add(new PetEntryFamiliar("RingowhsJengu", player, "jengu").setEntitySize(0.6D));
+                familiars.add(new PetEntryFamiliar("RingowhsJengu", player, "jengu").setEntityName("Gooderness Destroyer").setEntitySize(0.6D).setEntitySubspeciesID(1));
         }
         if("PunitiveCape7".equals(player.getCommandSenderName())) {
             if(ObjectManager.getMob("cinder") != null)
@@ -98,6 +101,14 @@ public class DonationFamiliars {
         if("Headwound_".equals(player.getCommandSenderName())) {
             if(ObjectManager.getMob("cinder") != null)
                 familiars.add(new PetEntryFamiliar("Headwound_Cinder", player, "cinder").setEntitySize(0.6D).setEntitySubspeciesID(2));
+        }
+        if("deanpryzmenski".equals(player.getCommandSenderName())) {
+            if(ObjectManager.getMob("zephyr") != null)
+                familiars.add(new PetEntryFamiliar("deanpryzmenskiZephyr", player, "zephyr").setEntitySize(0.6D));
+        }
+        if("angelofdespair".equals(player.getCommandSenderName())) {
+            if(ObjectManager.getMob("geonach") != null)
+                familiars.add(new PetEntryFamiliar("angelofdespairGeonach", player, "geonach").setEntitySize(0.6D).setEntitySubspeciesID(1));
         }
 
         return familiars;

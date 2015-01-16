@@ -40,7 +40,6 @@ public class EntityChupacabra extends EntityCreatureTameable implements IAnimals
         this.defense = 0;
         this.experience = 5;
         this.hasAttackSound = true;
-        this.spreadFire = true;
         
         this.setWidth = 0.9F;
         this.setHeight = 0.95F;

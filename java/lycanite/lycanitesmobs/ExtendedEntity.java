@@ -23,7 +23,8 @@ public class ExtendedEntity implements IExtendedEntityProperties {
 
     /** The last coordinates the entity was at where it wasn't inside an opaque block. (Helps prevent suffocation). **/
     double[] lastSafePos;
-	private boolean playerFlyingSnapshot;
+    private boolean playerAllowFlyingSnapshot;
+    private boolean playerIsFlyingSnapshot;
 	
 	public EntityFear fearEntity;
 	
@@ -100,7 +101,6 @@ public class ExtendedEntity implements IExtendedEntityProperties {
 				yPos = this.pickedUpByEntity.boundingBox.minY + entity.height;
 			}
 			this.entity.setPosition(this.pickedUpByEntity.posX + pickupOffset[0], yPos + pickupOffset[1], this.pickedUpByEntity.posZ + pickupOffset[2]);
-			//this.entity.setVelocity(this.pickedUpByEntity.motionX, this.pickedUpByEntity.motionY, this.pickedUpByEntity.motionZ); Not valid server side I think. :/
 			this.entity.motionX = this.pickedUpByEntity.motionX;
 			this.entity.motionY = this.pickedUpByEntity.motionY;
 			this.entity.motionZ = this.pickedUpByEntity.motionZ;
@@ -116,11 +116,12 @@ public class ExtendedEntity implements IExtendedEntityProperties {
 			}
     	}
 		else if(this.pickedUpByEntityID != (this.pickedUpByEntity != null ? this.pickedUpByEntity.getEntityId() : 0)) {
-			if(!this.entity.worldObj.isRemote && this.entity instanceof EntityPlayer) {
-				((EntityPlayer)this.entity).capabilities.allowFlying = this.playerFlyingSnapshot;
-			}
+			/*if(!this.entity.worldObj.isRemote && this.entity instanceof EntityPlayer) {
+				((EntityPlayer)this.entity).capabilities.allowFlying = this.playerAllowFlyingSnapshot;
+                ((EntityPlayer)this.entity).capabilities.isFlying = this.playerIsFlyingSnapshot;
+			}*/
+            this.pickedUpByEntityID = (this.pickedUpByEntity != null ? this.pickedUpByEntity.getEntityId() : 0);
 		}
-		this.pickedUpByEntityID = (this.pickedUpByEntity != null ? this.pickedUpByEntity.getEntityId() : 0);
 		
 		// Fear Entity:
 		if(this.fearEntity != null && !this.fearEntity.isEntityAlive())
@@ -129,7 +130,7 @@ public class ExtendedEntity implements IExtendedEntityProperties {
 	
 	
 	// ==================================================
-    //                 Death
+    //                       Death
     // ==================================================
 	public void onDeath() {
 		this.setPickedUpByEntity(null);
@@ -140,19 +141,31 @@ public class ExtendedEntity implements IExtendedEntityProperties {
     //                 Picked Up By Entity
     // ==================================================
 	public void setPickedUpByEntity(Entity pickedUpByEntity) {
+        if(this.pickedUpByEntity == pickedUpByEntity)
+            return;
+
 		if(this.entity.ridingEntity != null)
 			this.entity.mountEntity(null);
 		if(this.entity.riddenByEntity != null)
 			this.entity.riddenByEntity.mountEntity(null);
 		this.pickedUpByEntity = pickedUpByEntity;
+
+        // Server Side:
 		if(!this.entity.worldObj.isRemote) {
+
+            // Player Flying:
 			if(this.entity instanceof EntityPlayer) {
-				if(pickedUpByEntity != null)
-					this.playerFlyingSnapshot = ((EntityPlayer)this.entity).capabilities.allowFlying;
-				else
-					((EntityPlayer)this.entity).capabilities.allowFlying = this.playerFlyingSnapshot;
+				if(pickedUpByEntity != null) {
+                    this.playerAllowFlyingSnapshot = ((EntityPlayer) this.entity).capabilities.allowFlying;
+                    this.playerIsFlyingSnapshot = ((EntityPlayer)this.entity).capabilities.isFlying;
+                }
+				else {
+                    ((EntityPlayer)this.entity).capabilities.allowFlying = this.playerAllowFlyingSnapshot;
+                    ((EntityPlayer)this.entity).capabilities.isFlying = this.playerIsFlyingSnapshot;
+                }
 			}
 
+            // Safe Position:
             if(pickedUpByEntity == null) {
                 if(this.lastSafePos != null && this.lastSafePos.length >= 3)
                     this.entity.setPosition(this.lastSafePos[0], this.lastSafePos[1], this.lastSafePos[2]);
@@ -161,6 +174,7 @@ public class ExtendedEntity implements IExtendedEntityProperties {
                 this.entity.motionZ = 0;
                 this.entity.fallDistance = 0;
             }
+
 			MessageEntityPickedUp message = new MessageEntityPickedUp(this.entity, pickedUpByEntity);
 			LycanitesMobs.packetHandler.sendToDimension(message, this.entity.dimension);
 		}

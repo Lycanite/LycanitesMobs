@@ -71,8 +71,8 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
         this.canGrow = true;
         this.babySpawnChance = 0.1D;
         
-        this.setWidth = 0.8F;
-        this.setHeight = 1.6F;
+        this.setWidth = 0.9F;
+        this.setHeight = 1.8F;
         this.fleeHealthPercent = 1.0F;
         this.isHostileByDefault = false;
         this.setupMob();
@@ -195,10 +195,10 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
     }
 	
 	public int getMixedFurColor(EntityCreatureBase entityA, EntityCreatureBase entityB) {
-		int i = entityA.getColor();
-        int j = entityB.getColor();
+		int i = 15 - entityA.getColor();
+        int j = 15 - entityB.getColor();
         if(i == j)
-            return i;
+            return 15 - i;
         this.colorMixer.getStackInSlot(0).setItemDamage(i);
         this.colorMixer.getStackInSlot(1).setItemDamage(j);
         ItemStack itemstack = CraftingManager.getInstance().findMatchingRecipe(this.colorMixer, this.worldObj);
@@ -207,7 +207,7 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
             k = itemstack.getItemDamage();
         else
             k = this.worldObj.rand.nextBoolean() ? i : j;
-        return k;
+        return 15 - k;
     }
 	
 	

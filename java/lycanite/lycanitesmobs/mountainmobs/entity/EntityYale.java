@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
+import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupAnimal;
 import lycanite.lycanitesmobs.api.IGroupPredator;
@@ -196,6 +197,8 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
 	public int getMixedFurColor(EntityCreatureBase entityA, EntityCreatureBase entityB) {
 		int i = entityA.getColor();
         int j = entityB.getColor();
+        if(i == j)
+            return i;
         this.colorMixer.getStackInSlot(0).setItemDamage(i);
         this.colorMixer.getStackInSlot(1).setItemDamage(j);
         ItemStack itemstack = CraftingManager.getInstance().findMatchingRecipe(this.colorMixer, this.worldObj);
@@ -269,7 +272,7 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
 	public EntityCreatureAgeable createChild(EntityCreatureAgeable partner) {
 		EntityCreatureAgeable baby = new EntityYale(this.worldObj);
 		int color = this.getMixedFurColor(this, partner);
-		baby.setColor(15 - color);
+        baby.setColor(color);
 		return baby;
 	}
 	

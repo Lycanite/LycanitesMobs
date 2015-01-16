@@ -100,7 +100,7 @@ public class ShadowMobs {
         meal.setMaxStackSize(16);
         if(ObjectManager.getPotionEffect("leech") != null)
             meal.setPotionEffect(ObjectManager.getPotionEffect("leech").id, 60, 1, 1.0F);
-        ObjectManager.addItem("leech", meal, 3, 1, 6);
+        ObjectManager.addItem("bloodchili", meal, 3, 1, 6);
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("bloodchili"));
 
         ObjectManager.addItem("geistliver", new ItemGeistLiver());

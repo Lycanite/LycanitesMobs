@@ -271,6 +271,8 @@ public class ObjectLists {
 				return false;
 		if(item instanceof ItemPickaxe)
 			return true;
+		if(item.getHarvestLevel(new ItemStack(item), "pickaxe") != -1)
+			return true;
 		return item.func_150893_a(new ItemStack(item), Blocks.stone) > 1F;
 	}
 
@@ -279,6 +281,8 @@ public class ObjectLists {
 			return false;
 		if(item instanceof ItemAxe)
 			return true;
+		if(item.getHarvestLevel(new ItemStack(item), "axe") != -1)
+			return true;
 		return item.func_150893_a(new ItemStack(item), Blocks.log) > 1F;
 	}
 
@@ -286,6 +290,8 @@ public class ObjectLists {
 		if(item == null)
 			return false;
 		if(item instanceof ItemSpade)
+			return true;
+		if(item.getHarvestLevel(new ItemStack(item), "shovel") != -1)
 			return true;
 		return item.func_150893_a(new ItemStack(item), Blocks.dirt) > 1F;
 	}

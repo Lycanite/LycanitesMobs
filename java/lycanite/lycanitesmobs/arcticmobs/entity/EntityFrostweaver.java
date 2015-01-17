@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs.arcticmobs.entity;
 import java.util.HashMap;
 
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.IGroupFire;
 import lycanite.lycanitesmobs.api.IGroupIce;
 import lycanite.lycanitesmobs.api.IGroupPrey;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
@@ -61,8 +62,9 @@ public class EntityFrostweaver extends EntityCreatureTameable implements IMob, I
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
-        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
-        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
+        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupFire.class));
+        this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
+        this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         if(MobInfo.predatorsAttackAnimals) {
         	this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
         	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityChicken.class));

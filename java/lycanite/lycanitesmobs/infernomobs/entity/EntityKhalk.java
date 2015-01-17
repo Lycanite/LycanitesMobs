@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupFire;
+import lycanite.lycanitesmobs.api.IGroupIce;
+import lycanite.lycanitesmobs.api.IGroupWater;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
@@ -75,8 +77,10 @@ public class EntityKhalk extends EntityCreatureTameable implements IMob, IGroupF
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
-        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
-        this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
+        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupIce.class));
+        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupWater.class));
+        this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
+        this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
     

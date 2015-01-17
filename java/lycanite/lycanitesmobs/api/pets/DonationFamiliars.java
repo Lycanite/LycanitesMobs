@@ -110,6 +110,10 @@ public class DonationFamiliars {
             if(ObjectManager.getMob("geonach") != null)
                 familiars.add(new PetEntryFamiliar("angelofdespairGeonach", player, "geonach").setEntitySize(0.6D).setEntitySubspeciesID(1));
         }
+        if("callen444".equals(player.getCommandSenderName())) {
+            if(ObjectManager.getMob("pinky") != null)
+                familiars.add(new PetEntryFamiliar("callen444PinkyFluttershy", player, "pinky").setEntityName("Fluttershy").setEntitySize(1.1D));
+        }
 
         return familiars;
     }

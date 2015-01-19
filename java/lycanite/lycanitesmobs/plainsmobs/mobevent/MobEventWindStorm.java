@@ -14,22 +14,6 @@ public class MobEventWindStorm extends MobEventBase {
 	public MobEventWindStorm(String name, GroupInfo group) {
 		super(name, group);
 	}
-
-
-    // ==================================================
-    //                       Start
-    // ==================================================
-    public void onStart(World world) {
-        super.onStart(world);
-    }
-
-
-    // ==================================================
-    //                      Finish
-    // ==================================================
-    public void onFinish() {
-        super.onFinish();
-    }
 	
 	
     // ==================================================

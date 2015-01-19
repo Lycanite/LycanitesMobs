@@ -29,24 +29,6 @@ public class MobEventYule extends MobEventBase {
 			return false;
         return super.isEnabled();
     }
-
-
-    // ==================================================
-    //                       Start
-    // ==================================================
-	@Override
-    public void onStart(World world) {
-        super.onStart(world);
-    }
-
-
-    // ==================================================
-    //                      Finish
-    // ==================================================
-	@Override
-    public void onFinish() {
-        super.onFinish();
-    }
 	
 	
     // ==================================================

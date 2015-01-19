@@ -19,18 +19,11 @@ public class MobEventHellsFury extends MobEventBase {
     // ==================================================
     //                       Start
     // ==================================================
+    @Override
     public void onStart(World world) {
         super.onStart(world);
 		world.getWorldInfo().setRaining(false);
 		world.getWorldInfo().setThundering(false);
-    }
-
-
-    // ==================================================
-    //                      Finish
-    // ==================================================
-    public void onFinish() {
-        super.onFinish();
     }
 	
 	

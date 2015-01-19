@@ -44,12 +44,12 @@ public class MobEventClient {
     // ==================================================
     //                       Start
     // ==================================================
-	public void onStart(World world, EntityPlayer player) {
+	public void onStart(EntityPlayer player) {
 		String eventMessage = StatCollector.translateToLocal("event." + (extended ? "extended" : "started"));
 		eventMessage = eventMessage.replace("%event%", this.mobEvent.getTitle());
 		player.addChatMessage(new ChatComponentText(eventMessage));
 		
-		if(!player.capabilities.isCreativeMode || MobEventBase.testOnCreative) {
+		if(!player.capabilities.isCreativeMode || MobEventServer.testOnCreative) {
         	if(AssetManager.getSound("mobevent_" + this.mobEvent.name.toLowerCase()) == null)
         			AssetManager.addSound("mobevent_" + this.mobEvent.name.toLowerCase(), this.mobEvent.group, "mobevent." + this.mobEvent.name.toLowerCase());
             this.sound = PositionedSoundRecord.func_147673_a(new ResourceLocation(AssetManager.getSound("mobevent_" + this.mobEvent.name.toLowerCase())));
@@ -82,7 +82,7 @@ public class MobEventClient {
     @SideOnly(Side.CLIENT)
     public void onGUIUpdate(GuiOverlay gui, int sWidth, int sHeight) {
     	EntityPlayer player = LycanitesMobs.proxy.getClientPlayer();
-        if(player.capabilities.isCreativeMode && !MobEventBase.testOnCreative) return;
+        if(player.capabilities.isCreativeMode && !MobEventServer.testOnCreative) return;
         if(this.world == null || this.world != player.worldObj) return;
         if(!this.world.isRemote) return;
 

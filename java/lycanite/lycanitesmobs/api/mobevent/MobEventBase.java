@@ -16,8 +16,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 public class MobEventBase {
-	public static boolean testOnCreative = false;
-	
 	// Properties:
 	public String name = "mobevent";
 	public int weight = 8;
@@ -39,14 +37,6 @@ public class MobEventBase {
 	public String[] dimensionTypes;
 	/** Controls the behaviour of how Dimension IDs are read. If true only listed Dimension IDs are allowed instead of denied. **/
 	public boolean dimensionWhitelist = false;
-
-    // Active:
-    /** The world that this event is active in. **/
-    public World world;
-    /** The world time that this event started at. **/
-    public long startedWorldTime = 0;
-    /** Increases every tick that this event is active. **/
-    public int ticks = 0;
     
 	
     // ==================================================
@@ -103,7 +93,7 @@ public class MobEventBase {
 	
 	
     // ==================================================
-    //                    Can Start
+    //                      Can Start
     // ==================================================
 	/*
 	 * Returns true if this event is able to start on the provided extended world.
@@ -111,7 +101,7 @@ public class MobEventBase {
 	public boolean canStart(World world, ExtendedWorld worldExt) {
 		if(world.provider == null)
 			return false;
-        if(MobEventManager.mobEventsLocked && !MobEventManager.mobEventsLockedOnlyOnSchedule && this.firstScheduleDay < 0)
+        if(worldExt.mobEventsLocked && !worldExt.mobEventsLockedOnlyOnSchedule && this.firstScheduleDay < 0)
             return false;
 		
 		boolean validDimension = false;
@@ -136,9 +126,9 @@ public class MobEventBase {
 	    	}
 		}
 
-        int currentDay = (int)Math.floor((MobEventManager.useTotalWorldTime ? world.getTotalWorldTime() : world.getWorldTime()) / 24000D);
+        int currentDay = (int)Math.floor((worldExt.useTotalWorldTime ? world.getTotalWorldTime() : world.getWorldTime()) / 24000D);
         int minimumRandomDay = this.minDay;
-        if(MobEventManager.mobEventsLocked)
+        if(worldExt.mobEventsLocked)
             minimumRandomDay = Math.max(minimumRandomDay, this.firstScheduleDay);
         return validDimension && currentDay >= minimumRandomDay;
 	}
@@ -190,100 +180,33 @@ public class MobEventBase {
     public boolean hasSpawners() {
     	return this.spawners.size() > 0;
     }
-	
-	
-    // ==================================================
-    //                       Start
-    // ==================================================
-	public void onStart(World world) {
-        // Check If Already Active On World:
-        boolean extended = false;
-        if(this.world != null) {
-            if(this.world.getTotalWorldTime() < (this.startedWorldTime + this.duration)) {
-                extended = true;
-            }
-        }
 
-		this.world = world;
-        this.startedWorldTime = world.getTotalWorldTime();
-        this.ticks = 0;
 
-        LycanitesMobs.printInfo("", "Mob Event " + (extended ? "Extended" : "Started") + ": " + this.getTitle() + " In Dimension: " + world.provider.dimensionId + " Duration: " + (this.duration / 20) + "secs");
-
-        if(world.isRemote)
-            LycanitesMobs.printWarning("", "Created a MobEventBase with a client side world, things are going to get strange!");
-	}
-
-    public void changeStartedWorldTime(long newStartedTime) {
-        this.startedWorldTime = newStartedTime;
-        LycanitesMobs.printInfo("", "Mob Event Start Time Changed: " + this.getTitle() + " In Dimension: " + world.provider.dimensionId + " Duration: " + (this.duration / 20) + "secs" + " Time Remaining: " + ((this.duration - (this.world.getTotalWorldTime() - this.startedWorldTime)) / 20) + "secs");
-    }
-	
-	
     // ==================================================
-    //                      Finish
+    //               Start and Finish Effects
     // ==================================================
-	public void onFinish() {
-		LycanitesMobs.printInfo("", "Mob Event Finished: " + this.getTitle());
-	}
-	
-	
-    // ==================================================
-    //                      Update
-    // ==================================================
-	public void onUpdate() {
-		if(this.world == null) {
-			LycanitesMobs.printWarning("", "MobEventBase was trying to update without a world object, stopped!");
-			return;
-		}
-		else if(this.world.isRemote) {
-			LycanitesMobs.printWarning("", "MobEventBase was trying to update with a client side world, stopped!");
-			return;
-		}
-
-        // Spawn Near Players:
-        for(Object playerObj : this.world.playerEntities) {
-            if(playerObj instanceof EntityPlayer) {
-                EntityPlayer player = (EntityPlayer)playerObj;
-                if(!player.capabilities.isCreativeMode || testOnCreative) {
-	                int x = (int)player.posX;
-	                int y = (int)player.posY;
-	                int z = (int)player.posZ;
-	
-	                // Event Mob Spawning:
-	                int tickOffset = 0;
-	                for(SpawnTypeBase spawnType : this.spawners) {
-	                    spawnType.spawnMobs(this.ticks - tickOffset, this.world, x, y, z, player);
-	                    tickOffset += 7;
-	                }
-                }
-            }
-        }
-        
-        this.ticks++;
-
-        // Stop Event When Time Runs Out:
-        if(this.world.getTotalWorldTime() >= (this.startedWorldTime + this.duration)) {
-        	MobEventManager.instance.stopMobEvent();
-        }
-	}
+    public void onStart(World world) { }
+    public void onFinish(World world) { }
 
 
     // ==================================================
     //                   Spawn Effects
     // ==================================================
+    public void onSpawn(EntityLiving entity) {
+        if(entity instanceof EntityCreatureBase) {
+            EntityCreatureBase entityCreature = (EntityCreatureBase)entity;
+            entityCreature.setTemporary(this.mobDuration);
+        }
+    }
+	
+
+    // ==================================================
+    //                  Get Event Players
+    // ==================================================
+    public MobEventServer getServerEvent(World world) {
+        return new MobEventServer(this, world);
+    }
     public MobEventClient getClientEvent(World world) {
         return new MobEventClient(this, world);
     }
-	
-	
-    // ==================================================
-    //                   Spawn Effects
-    // ==================================================
-	public void onSpawn(EntityLiving entity) {
-		if(entity instanceof EntityCreatureBase) {
-			EntityCreatureBase entityCreature = (EntityCreatureBase)entity;
-			entityCreature.setTemporary(this.mobDuration);
-		}
-	}
 }

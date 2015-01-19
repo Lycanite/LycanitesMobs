@@ -24,11 +24,8 @@ public class MessageMobEvent implements IMessage, IMessageHandler<MessageMobEven
 	//                    Constructors
 	// ==================================================
 	public MessageMobEvent() {}
-	public MessageMobEvent(MobEventBase mobEvent) {
-        if(mobEvent != null)
-		    this.mobEventName = mobEvent.name;
-        else
-            this.mobEventName = "";
+	public MessageMobEvent(String mobEventName) {
+        this.mobEventName = mobEventName;
     }
 	
 	
@@ -43,11 +40,12 @@ public class MessageMobEvent implements IMessage, IMessageHandler<MessageMobEven
 		if(ctx.side != Side.CLIENT) return null;
 		EntityPlayer player = LycanitesMobs.proxy.getClientPlayer();
 		World world = player.worldObj;
+        ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
 		
 		if("".equals(message.mobEventName))
-			MobEventManager.instance.stopMobEvent();
+            worldExt.stopMobEvent();
 		else {
-			MobEventManager.instance.startMobEvent(message.mobEventName, world);
+            worldExt.startMobEvent(message.mobEventName);
 		}
 		return null;
 	}

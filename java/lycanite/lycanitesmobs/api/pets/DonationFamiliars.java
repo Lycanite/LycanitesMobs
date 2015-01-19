@@ -114,6 +114,18 @@ public class DonationFamiliars {
             if(ObjectManager.getMob("pinky") != null)
                 familiars.add(new PetEntryFamiliar("callen444PinkyFluttershy", player, "pinky").setEntityName("Fluttershy").setEntitySize(1.1D));
         }
+        if("CONfoundit".equals(player.getCommandSenderName())) {
+            if(ObjectManager.getMob("geonach") != null)
+                familiars.add(new PetEntryFamiliar("CONfoundit", player, "geonach").setEntitySubspeciesID(3).setEntitySize(0.15D));
+        }
+        if("nruffilo".equals(player.getCommandSenderName())) {
+            if(ObjectManager.getMob("uvaraptor") != null)
+                familiars.add(new PetEntryFamiliar("nruffiloUvaraptor", player, "uvaraptor").setEntitySize(1.1D));
+        }
+        if("AerinNight".equals(player.getCommandSenderName())) {
+            if(ObjectManager.getMob("spriggan") != null)
+                familiars.add(new PetEntryFamiliar("AerinNightSpriggan", player, "spriggan").setEntitySize(0.6D).setEntitySubspeciesID(2));
+        }
 
         return familiars;
     }

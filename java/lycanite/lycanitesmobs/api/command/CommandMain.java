@@ -100,11 +100,9 @@ public class CommandMain implements ICommand {
 					
 					// Get World:
 					World world = null;
-					if(commandSender.getEntityWorld() == null) {
-						if(args.length >= 4 && NumberUtils.isNumber(args[4])) {
-							world = DimensionManager.getWorld(Integer.parseInt(args[4]));
-						}
-					}
+                    if(args.length >= 4 && NumberUtils.isNumber(args[3])) {
+                        world = DimensionManager.getWorld(Integer.parseInt(args[3]));
+                    }
 					else {
 						world = commandSender.getEntityWorld();
 					}
@@ -115,19 +113,21 @@ public class CommandMain implements ICommand {
 						commandSender.addChatMessage(new ChatComponentText(reply));
 						return;
 					}
+
+                    ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
 					
 					// Force Enabled:
-					if(!MobEventManager.mobEventsEnabled) {
+					if(!worldExt.mobEventsEnabled) {
 						reply = StatCollector.translateToLocal("lyc.command.mobevent.enable");
 						commandSender.addChatMessage(new ChatComponentText(reply));
-						MobEventManager.mobEventsEnabled = true;
+                        worldExt.mobEventsEnabled = true;
 						ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "mobevents");
 						config.setBool("Global", "Mob Events Enabled", true);
 					}
 					
 					reply = StatCollector.translateToLocal("lyc.command.mobevent.start");
 					commandSender.addChatMessage(new ChatComponentText(reply));
-					MobEventManager.instance.startMobEvent(mobEventName, world);
+                    worldExt.startMobEvent(mobEventName);
 					return;
 				}
 				
@@ -135,33 +135,34 @@ public class CommandMain implements ICommand {
 				commandSender.addChatMessage(new ChatComponentText(reply));
 				return;
 			}
+
+            // Get World:
+            World world = null;
+            if(args.length >= 3 && NumberUtils.isNumber(args[2])) {
+                world = DimensionManager.getWorld(Integer.parseInt(args[2]));
+            }
+            else {
+                world = commandSender.getEntityWorld();
+            }
+
+            // No World:
+            if(world == null) {
+                reply = StatCollector.translateToLocal("lyc.command.mobevent.start.noworld");
+                commandSender.addChatMessage(new ChatComponentText(reply));
+                return;
+            }
+
+            LycanitesMobs.printDebug("", "Getting Extended World for Dimension: " + world.provider.dimensionId + " World: " + world);
+            ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
+            LycanitesMobs.printDebug("", "Got Extended World for Dimension: " + worldExt.world.provider.dimensionId + " World: " + worldExt.world);
+            if(worldExt == null) return;
 			
 			// Random:
 			if("random".equalsIgnoreCase(args[1])) {
-				// Get World:
-				World world = null;
-				if(commandSender.getEntityWorld() == null) {
-					if(args.length >= 4 && NumberUtils.isNumber(args[2])) {
-						world = DimensionManager.getWorld(Integer.parseInt(args[2]));
-					}
-				}
-				else {
-					world = commandSender.getEntityWorld();
-				}
-				
-				// No World:
-				if(world == null) {
-					reply = StatCollector.translateToLocal("lyc.command.mobevent.start.noworld");
-					commandSender.addChatMessage(new ChatComponentText(reply));
-					return;
-				}
-				
 				reply = StatCollector.translateToLocal("lyc.command.mobevent.random");
 				commandSender.addChatMessage(new ChatComponentText(reply));
-				ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
-				if(worldExt == null) return;
 				MobEventBase mobEvent = MobEventManager.instance.getRandomWorldMobEvent(world, worldExt);
-				MobEventManager.instance.startMobEvent(mobEvent, world);
+                worldExt.startMobEvent(mobEvent);
 				return;
 			}
 			
@@ -169,7 +170,7 @@ public class CommandMain implements ICommand {
 			if("stop".equalsIgnoreCase(args[1])) {
 				reply = StatCollector.translateToLocal("lyc.command.mobevent.stop");
 				commandSender.addChatMessage(new ChatComponentText(reply));
-				MobEventManager.instance.stopMobEvent();
+                worldExt.stopMobEvent();
 				return;
 			}
 			
@@ -188,7 +189,7 @@ public class CommandMain implements ICommand {
 			if("enable".equalsIgnoreCase(args[1])) {
 				reply = StatCollector.translateToLocal("lyc.command.mobevent.enable");
 				commandSender.addChatMessage(new ChatComponentText(reply));
-				MobEventManager.mobEventsEnabled = true;
+                worldExt.mobEventsEnabled = true;
 				ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "mobevents");
 				config.setBool("Global", "Mob Events Enabled", true);
 				return;
@@ -198,7 +199,7 @@ public class CommandMain implements ICommand {
 			if("disable".equalsIgnoreCase(args[1])) {
 				reply = StatCollector.translateToLocal("lyc.command.mobevent.disable");
 				commandSender.addChatMessage(new ChatComponentText(reply));
-				MobEventManager.mobEventsEnabled = false;
+                worldExt.mobEventsEnabled = false;
 				ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "mobevents");
 				config.setBool("Global", "Mob Events Enabled", false);
 				return;

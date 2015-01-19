@@ -19,18 +19,11 @@ public class MobEventTsunami extends MobEventBase {
     // ==================================================
     //                       Start
     // ==================================================
+    @Override
     public void onStart(World world) {
         super.onStart(world);
 		world.getWorldInfo().setRaining(true);
 		world.getWorldInfo().setThundering(true);
-    }
-
-
-    // ==================================================
-    //                      Finish
-    // ==================================================
-    public void onFinish() {
-        super.onFinish();
     }
 	
 	

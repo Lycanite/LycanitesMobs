@@ -131,6 +131,8 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
             return false;
         if(block.isNormalCube())
             return false;
+        if(this.getSubspeciesIndex() >= 3)
+            return true;
         if(this.testLightLevel(x, y, z) > 1)
             return false;
         return true;
@@ -222,6 +224,12 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
    	//                     Immunities
    	// ==================================================
     @Override
+    public boolean isDamageTypeApplicable(String type) {
+        if(type.equals("inWall")) return false;
+        return super.isDamageTypeApplicable(type);
+    }
+
+    @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
         if(potionEffect.getPotionID() == Potion.blindness.id) return false;
         if(ObjectManager.getPotionEffect("Fear") != null)
@@ -231,5 +239,5 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
     }
     
     /** Returns true if this mob should be damaged by the sun. **/
-    public boolean daylightBurns() { return !this.isTamed(); }
+    public boolean daylightBurns() { return !this.isTamed() && this.getSubspeciesIndex() < 3; }
 }

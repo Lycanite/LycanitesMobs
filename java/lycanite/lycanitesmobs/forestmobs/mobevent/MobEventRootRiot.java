@@ -14,22 +14,6 @@ public class MobEventRootRiot extends MobEventBase {
 	public MobEventRootRiot(String name, GroupInfo group) {
 		super(name, group);
 	}
-
-
-    // ==================================================
-    //                       Start
-    // ==================================================
-    public void onStart(World world) {
-        super.onStart(world);
-    }
-
-
-    // ==================================================
-    //                      Finish
-    // ==================================================
-    public void onFinish() {
-        super.onFinish();
-    }
 	
 	
     // ==================================================

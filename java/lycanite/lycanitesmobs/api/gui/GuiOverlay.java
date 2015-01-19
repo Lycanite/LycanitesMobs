@@ -1,8 +1,6 @@
 package lycanite.lycanitesmobs.api.gui;
 
-import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.ExtendedPlayer;
-import lycanite.lycanitesmobs.KeyHandler;
+import lycanite.lycanitesmobs.*;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
 import lycanite.lycanitesmobs.api.item.ItemStaffSummoning;
 import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
@@ -15,6 +13,7 @@ import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.boss.BossStatus;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 
@@ -42,6 +41,10 @@ public class GuiOverlay extends Gui {
     // ==================================================
 	@SubscribeEvent(priority = EventPriority.HIGH)
 	public void onRenderExperienceBar(RenderGameOverlayEvent event) {
+        if(LycanitesMobs.proxy.getClientPlayer() == null)
+            return;
+        EntityPlayer player = LycanitesMobs.proxy.getClientPlayer();
+
 		if(event.isCancelable() || event.type != ElementType.EXPERIENCE)
 	      return;
 
@@ -56,11 +59,12 @@ public class GuiOverlay extends Gui {
         int sHeight = scaledresolution.getScaledHeight();
 
         // ========== Mob Events Title ==========
-        if(MobEventManager.instance.clientMobEvent != null)
-            MobEventManager.instance.clientMobEvent.onGUIUpdate(this, sWidth, sHeight);
+        ExtendedWorld worldExt = ExtendedWorld.getForWorld(player.worldObj);
+        if(worldExt != null && worldExt.clientMobEvent != null)
+            worldExt.clientMobEvent.onGUIUpdate(this, sWidth, sHeight);
 		
 		// ========== Summoning Focus Bar ==========
-        ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer((EntityPlayer)this.mc.thePlayer);
+        ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
 		if(playerExt != null && !this.mc.thePlayer.capabilities.isCreativeMode
 				&& this.mc.thePlayer.getHeldItem() != null && this.mc.thePlayer.getHeldItem().getItem() instanceof ItemStaffSummoning) {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

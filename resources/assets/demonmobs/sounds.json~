@@ -111,21 +111,21 @@
         "category": "hostile",
         "sounds": [{"name": "entity/trite/attack", "stream": false}]
     },
-    "entity.astaroth.say": {
+    "entity.asmodi.say": {
         "category": "hostile",
-        "sounds": [{"name": "entity/astaroth/say", "stream": false}]
+        "sounds": [{"name": "entity/asmodi/say", "stream": false}]
     },
-    "entity.astaroth.hurt": {
+    "entity.asmodi.hurt": {
         "category": "hostile",
-        "sounds": [{"name": "entity/astaroth/hurt", "stream": false}]
+        "sounds": [{"name": "entity/asmodi/hurt", "stream": false}]
     },
-    "entity.astaroth.death": {
+    "entity.asmodi.death": {
         "category": "hostile",
-        "sounds": [{"name": "entity/astaroth/death", "stream": false}]
+        "sounds": [{"name": "entity/asmodi/death", "stream": false}]
     },
-    "entity.astaroth.step": {
+    "entity.asmodi.step": {
         "category": "hostile",
-        "sounds": [{"name": "entity/astaroth/step", "stream": false}]
+        "sounds": [{"name": "entity/asmodi/step", "stream": false}]
     },
     "entity.nethersoul.say": {
         "category": "hostile",

@@ -28,12 +28,12 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class EntityAsmodi extends EntityCreatureBase implements IMob {
+public class EntityAstaroth extends EntityCreatureBase implements IMob {
     
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityAsmodi(World par1World) {
+    public EntityAstaroth(World par1World) {
         super(par1World);
         
         // Setup:

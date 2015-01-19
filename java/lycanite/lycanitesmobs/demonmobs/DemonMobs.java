@@ -20,7 +20,7 @@ import lycanite.lycanitesmobs.demonmobs.dispenser.DispenserBehaviorDemonicLightn
 import lycanite.lycanitesmobs.demonmobs.dispenser.DispenserBehaviorDevilstar;
 import lycanite.lycanitesmobs.demonmobs.dispenser.DispenserBehaviorDoomfireball;
 import lycanite.lycanitesmobs.demonmobs.dispenser.DispenserBehaviorHellfireball;
-import lycanite.lycanitesmobs.demonmobs.entity.EntityAsmodi;
+import lycanite.lycanitesmobs.demonmobs.entity.EntityAstaroth;
 import lycanite.lycanitesmobs.demonmobs.entity.EntityBehemoth;
 import lycanite.lycanitesmobs.demonmobs.entity.EntityBelph;
 import lycanite.lycanitesmobs.demonmobs.entity.EntityCacodemon;
@@ -155,7 +155,7 @@ public class DemonMobs {
 				.setSpawnWeight(10).setAreaLimit(40).setGroupLimits(1, 10).setLightDark(true, true).setDungeonWeight(200);
 		ObjectManager.addMob(newMob);
 
-		newMob = new MobInfo(group, "asmodi", EntityAsmodi.class, 0x999944, 0x0000FF)
+		newMob = new MobInfo(group, "astaroth", EntityAstaroth.class, 0x999944, 0x0000FF)
 		        .setPeaceful(false).setSummonable(false).setSummonCost(8).setDungeonLevel(2)
 		        .addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER, PORTAL")

@@ -21,6 +21,7 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -108,11 +109,12 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
 	        	this.teleportTime = 60 + this.getRNG().nextInt(40);
         		this.playJumpSound();
         		double[] teleportPosition = this.getFacingPosition(this.getAttackTarget(), -this.getAttackTarget().width - 1D, 0);
-        		if(this.worldObj.isSideSolid((int)teleportPosition[0], (int)teleportPosition[1], (int)teleportPosition[2], ForgeDirection.DOWN)
-        		|| this.worldObj.isSideSolid((int)teleportPosition[0], (int)teleportPosition[1] + 1, (int)teleportPosition[2], ForgeDirection.DOWN))
-        			this.setPosition(this.getAttackTarget().posX, this.getAttackTarget().posY, this.getAttackTarget().posZ);
-        		else
-        			this.setPosition(teleportPosition[0], teleportPosition[1], teleportPosition[2]);
+        		if(this.canTeleportTo(this.worldObj, (int)teleportPosition[0], (int)teleportPosition[1], (int)teleportPosition[2])
+        		&& this.canTeleportTo(this.worldObj, (int)teleportPosition[0], (int)teleportPosition[1] + 1, (int)teleportPosition[2]))
+                    this.setPosition(teleportPosition[0], teleportPosition[1], teleportPosition[2]);
+        		else if(this.canTeleportTo(this.worldObj, (int)this.getAttackTarget().posX, (int)this.getAttackTarget().posY, (int)this.getAttackTarget().posZ)
+                && this.canTeleportTo(this.worldObj, (int)this.getAttackTarget().posX, (int)this.getAttackTarget().posY + 1, (int)this.getAttackTarget().posZ))
+                    this.setPosition(this.getAttackTarget().posX, this.getAttackTarget().posY, this.getAttackTarget().posZ);
 	        }
         }
         
@@ -121,6 +123,17 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
 	        for(int i = 0; i < 2; ++i) {
 	            this.worldObj.spawnParticle("witchMagic", this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
 	        }
+    }
+
+    public boolean canTeleportTo(World world, int x, int y, int z) {
+        Block block = this.worldObj.getBlock(x, y, z);
+        if(block == null)
+            return false;
+        if(block.isNormalCube())
+            return false;
+        if(this.testLightLevel(x, y, z) > 1)
+            return false;
+        return true;
     }
     
     

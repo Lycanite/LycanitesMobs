@@ -1,7 +1,7 @@
 package lycanite.lycanitesmobs.demonmobs;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.demonmobs.model.ModelAsmodi;
+import lycanite.lycanitesmobs.demonmobs.model.ModelAstaroth;
 import lycanite.lycanitesmobs.demonmobs.model.ModelBehemoth;
 import lycanite.lycanitesmobs.demonmobs.model.ModelBelph;
 import lycanite.lycanitesmobs.demonmobs.model.ModelCacodemon;
@@ -23,7 +23,7 @@ public class ClientSubProxy extends CommonSubProxy {
 		AssetManager.addModel("behemoth", new ModelBehemoth());
 		AssetManager.addModel("pinky", new ModelPinky());
 		AssetManager.addModel("trite", new ModelTrite());
-		AssetManager.addModel("asmodi", new ModelAsmodi());
+		AssetManager.addModel("astaroth", new ModelAstaroth());
 		AssetManager.addModel("nethersoul", new ModelNetherSoul());
 		AssetManager.addModel("cacodemon", new ModelCacodemon());
 	}

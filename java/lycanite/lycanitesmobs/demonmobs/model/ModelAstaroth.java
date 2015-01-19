@@ -10,18 +10,18 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ModelAsmodi extends ModelCustomObj {
+public class ModelAstaroth extends ModelCustomObj {
 	
 	// ==================================================
   	//                    Constructors
   	// ==================================================
-    public ModelAsmodi() {
+    public ModelAstaroth() {
         this(1.0F);
     }
     
-    public ModelAsmodi(float shadowSize) {
+    public ModelAstaroth(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Asmodi", DemonMobs.group, "entity/asmodi");
+    	model = (WavefrontObject)AssetManager.getObjModel("astaroth", DemonMobs.group, "entity/astaroth");
     	
     	// Get Parts:
     	parts = model.groupObjects;

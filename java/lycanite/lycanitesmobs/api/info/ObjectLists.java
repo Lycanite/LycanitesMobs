@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cpw.mods.fml.common.Loader;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
@@ -263,6 +264,9 @@ public class ObjectLists {
 			return true;
 		if(item instanceof ItemShears)
 			return false;
+		if (Loader.isModLoaded("TConstruct"))
+			if(item instanceof tconstruct.items.tools.Battleaxe || item instanceof tconstruct.library.tools.Weapon)
+				return true;
 		return item.func_150893_a(new ItemStack(item), Blocks.melon_block) > 1F;
 	}
 	
@@ -271,6 +275,9 @@ public class ObjectLists {
 				return false;
 		if(item instanceof ItemPickaxe)
 			return true;
+		if (Loader.isModLoaded("TConstruct"))
+			if(item instanceof tconstruct.items.tools.Pickaxe || item instanceof tconstruct.items.tools.Hammer)
+				return true;
 		if(item.getHarvestLevel(new ItemStack(item), "pickaxe") != -1)
 			return true;
 		return item.func_150893_a(new ItemStack(item), Blocks.stone) > 1F;
@@ -281,6 +288,9 @@ public class ObjectLists {
 			return false;
 		if(item instanceof ItemAxe)
 			return true;
+		if (Loader.isModLoaded("TConstruct"))
+			if(item instanceof tconstruct.items.tools.Battleaxe || item instanceof tconstruct.items.tools.LumberAxe || item instanceof tconstruct.items.tools.Hatchet || item instanceof tconstruct.items.tools.Mattock)
+				return true;
 		if(item.getHarvestLevel(new ItemStack(item), "axe") != -1)
 			return true;
 		return item.func_150893_a(new ItemStack(item), Blocks.log) > 1F;
@@ -291,6 +301,9 @@ public class ObjectLists {
 			return false;
 		if(item instanceof ItemSpade)
 			return true;
+		if (Loader.isModLoaded("TConstruct"))
+			if(item instanceof tconstruct.items.tools.Shovel || item instanceof tconstruct.items.tools.Excavator || item instanceof tconstruct.items.tools.Mattock)
+				return true;
 		if(item.getHarvestLevel(new ItemStack(item), "shovel") != -1)
 			return true;
 		return item.func_150893_a(new ItemStack(item), Blocks.dirt) > 1F;

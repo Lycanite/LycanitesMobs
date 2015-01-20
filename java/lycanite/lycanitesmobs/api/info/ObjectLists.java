@@ -232,7 +232,7 @@ public class ObjectLists {
 		String customDropsString = config.getString("Item Lists", listName).replace(" ", "");
 		LycanitesMobs.printDebug("ItemSetup", "~O========== Custom " + listName + " ==========O~");
 		if(customDropsString != null && customDropsString.length() > 0)
-    		for(String customDropEntryString : customDropsString.split(";")) {
+    		for(String customDropEntryString : customDropsString.replace(" ", "").split(";")) {
     			LycanitesMobs.printDebug("ItemSetup", "Adding: " + customDropEntryString);
     			String[] customDropValues = customDropEntryString.split(",");
 				String dropName = customDropValues[0];

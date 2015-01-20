@@ -2428,7 +2428,11 @@ public abstract class EntityCreatureBase extends EntityLiving {
   	// ==================================================
     // ========== Damage ==========
     /** Returns whether or not the given damage type is applicable, if not no damage will be taken. **/
-    public boolean isDamageTypeApplicable(String type) { return true; }
+    public boolean isDamageTypeApplicable(String type) {
+        if("inWall".equals(type) && this.getSubspeciesIndex() >= 3)
+            return false;
+        return true;
+    }
     /** Returns whether or not this entity can be harmed by the specified entity. **/
     public boolean isDamageEntityApplicable(Entity entity) { return true; }
     /** Returns whether or not the specified potion effect can be applied to this entity. **/

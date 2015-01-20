@@ -28,6 +28,15 @@ public class SpawnTypeDarkness extends SpawnTypeBase {
     public SpawnTypeDarkness(String typeName) {
         super(typeName);
         CustomSpawner.instance.updateSpawnTypes.add(this);
+    }
+
+
+    // ==================================================
+    //                 Load from Config
+    // ==================================================
+    @Override
+    public void loadFromConfig() {
+        super.loadFromConfig();
         ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "spawning");
         this.displayChatWarnings = config.getBool("Spawner Features", "Darkness Spawn Chat Warnings", this.displayChatWarnings, "Set to false to prevent the darkness warning messages from showing.");
         this.lightLevelMax = config.getInt("Spawner Features", "Darkness Spawn Highest Light Level", this.lightLevelMax, "The highest light level the Darkness spawn type will work in. 5 Is above ground in the overworld at night time. 0 is pitch black.");

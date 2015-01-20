@@ -800,23 +800,6 @@ public class SpawnTypeBase {
 
 
     // ==================================================
-    //            Get Random Underground Land Spawn Coord
-    // ==================================================
-    /** Gets a random spawn position from a the provided origin chunk position.
-     * @param world The world to search for coordinates in.
-     * @return Returns a ChunkPosition or null if no coord was found.
-     */
-    public ChunkPosition getRandomUndergroundLandCoord(World world, ChunkPosition originPos, int range) {
-        int radius = Math.round(range * 0.5F);
-        int[] xz = this.getRandomXZCoord(world, originPos.chunkPosX, originPos.chunkPosZ, rangeMin, range);
-        int x = xz[0];
-        int z = xz[1];
-        int y = this.getRandomYCoord(world, x, originPos.chunkPosY, z, rangeMin, 32, true, Blocks.air, true);
-        return y > -1 ? new ChunkPosition(x, y, z) : null;
-    }
-
-
-    // ==================================================
     //            Get Random Water Spawn Coord
     // ==================================================
     /** Gets a random spawn position from a the provided origin chunk position.

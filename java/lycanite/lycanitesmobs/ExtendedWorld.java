@@ -22,10 +22,8 @@ public class ExtendedWorld extends WorldSavedData {
 	public static String EXT_PROP_NAME = "LycanitesMobs";
 	public static Map<World, ExtendedWorld> loadedExtWorlds = new HashMap<World, ExtendedWorld>();
 
-    /** The current world instance, use this when interacting with the world itself. **/
+    /** The world instance to work with. **/
 	public World world;
-    /** An alternative world instance used for saving and loading additional world NBT data. **/
-    public World dataWorld;
     public long lastEventUpdateTime = 0;
     /** The last minute used when checking for scheduled events. **/
     public int lastEventScheduleMinute = -1;
@@ -65,20 +63,18 @@ public class ExtendedWorld extends WorldSavedData {
 		// Already Loaded:
 		if(loadedExtWorlds.containsKey(world)) {
             worldExt = loadedExtWorlds.get(world);
-            worldExt.world = world;
             return worldExt;
         }
 		
-		WorldSavedData worldSavedData = world.loadItemData(ExtendedWorld.class, EXT_PROP_NAME);
+		WorldSavedData worldSavedData = world.perWorldStorage.loadData(ExtendedWorld.class, EXT_PROP_NAME); //world.loadItemData(ExtendedWorld.class, EXT_PROP_NAME);
 		if(worldSavedData != null) {
 			worldExt = (ExtendedWorld)worldSavedData;
 			worldExt.world = world;
-            worldExt.dataWorld = world;
 			worldExt.init();
 		}
 		else {
 			worldExt = new ExtendedWorld(world);
-			world.setItemData(EXT_PROP_NAME, worldExt);
+			world.perWorldStorage.setData(EXT_PROP_NAME, worldExt); //world.setItemData(EXT_PROP_NAME, worldExt);
 		}
 
 		loadedExtWorlds.put(world, worldExt);
@@ -95,7 +91,6 @@ public class ExtendedWorld extends WorldSavedData {
 	public ExtendedWorld(World world) {
 		super(EXT_PROP_NAME);
 		this.world = world;
-        this.dataWorld = world;
 	}
 	
 	

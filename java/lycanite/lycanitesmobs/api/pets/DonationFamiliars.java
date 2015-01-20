@@ -111,8 +111,8 @@ public class DonationFamiliars {
                 familiars.add(new PetEntryFamiliar("angelofdespairGeonach", player, "geonach").setEntitySize(0.6D).setEntitySubspeciesID(1));
         }
         if("callen444".equals(player.getCommandSenderName())) {
-            if(ObjectManager.getMob("pinky") != null)
-                familiars.add(new PetEntryFamiliar("callen444PinkyFluttershy", player, "pinky").setEntityName("Fluttershy").setEntitySize(1.1D));
+            if(ObjectManager.getMob("phantom") != null)
+                familiars.add(new PetEntryFamiliar("callen444PhantomFluttershy", player, "phantom").setEntityName("Fluttershy").setEntitySize(0.6D));
         }
         if("CONfoundit".equals(player.getCommandSenderName())) {
             if(ObjectManager.getMob("geonach") != null)

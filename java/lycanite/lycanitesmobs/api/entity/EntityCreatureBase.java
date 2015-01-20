@@ -2075,7 +2075,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	if(this.isMinion()) return;
     	int subspeciesScale = 1;
     	if(this.getSubspeciesIndex() > 2)
-    		subspeciesScale = 8;
+    		subspeciesScale = 16;
     	else if(this.getSubspeciesIndex() > 0)
     		subspeciesScale = 4;
     	for(DropRate dropRate : this.drops) {

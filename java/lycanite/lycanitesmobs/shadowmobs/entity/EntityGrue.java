@@ -93,6 +93,14 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
         this.drops.add(new DropRate(new ItemStack(Items.ender_pearl), 0.5F).setMaxAmount(2));
         this.drops.add(new DropRate(new ItemStack(Blocks.obsidian), 0.5F).setMaxAmount(2));
 	}
+
+    // ========== On Spawn ==========
+    /** This is called when the mob is first spawned to the world either through natural spawning or from a Spawn Egg. **/
+    public void onFirstSpawn() {
+        super.onFirstSpawn();
+        if(this.getSubspeciesIndex() == 3)
+            this.setSizeScale(this.sizeScale * 2);
+    }
 	
 	
     // ==================================================

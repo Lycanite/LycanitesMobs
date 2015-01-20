@@ -4,6 +4,7 @@ desertmobs.description=Рождённые сухими и горячими пе�
 #
 # Mob Events
 mobevent.marchofthegorgomites.name=Марш Горгомитов
+mobevent.bladeflurry.name=Шквал Клинков
 #
 # Entites
 entity.desertmobs.cryptzombie.name=Мумия

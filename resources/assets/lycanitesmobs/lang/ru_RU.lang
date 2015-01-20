@@ -176,3 +176,13 @@ potion.recklessness=Ослепление
 potion.rage=Ярость
 potion.weight=Тяжесть
 potion.swiftswimming=Быстрое плавание
+#
+#
+#
+# ========== Key Bindings ==========
+key.mount.ability=Умение ездового питомца
+key.mount.inventory=Инвентарь ездового питомца
+key.beastiary=Бестиарий
+key.familiar.manager=Фамильяры
+key.minion.manager=Управление миньонами
+key.minion.select=Выбор миньона

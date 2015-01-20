@@ -4,6 +4,7 @@ arcticmobs.description=Создания льда и ветра, обычно ж�
 #
 # Mob Events
 mobevent.subzero.name=Ниже Нуля
+mobevent.wintersgrasp.name=Зимняя Хватка
 #
 # Entites
 entity.arcticmobs.reiver.name=Рейвер

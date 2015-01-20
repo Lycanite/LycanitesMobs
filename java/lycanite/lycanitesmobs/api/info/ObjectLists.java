@@ -19,6 +19,7 @@ import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 
 public class ObjectLists {
@@ -256,6 +257,7 @@ public class ObjectLists {
     // ==================================================
     //                   Check Tools
     // ==================================================
+    // ========== Sword ==========
 	public static boolean isSword(Item item) {
 		if(item == null)
 			return false;
@@ -265,35 +267,87 @@ public class ObjectLists {
 			return false;
 		return item.func_150893_a(new ItemStack(item), Blocks.melon_block) > 1F;
 	}
-	
+
+    // ========== Pickaxe ==========
 	public static boolean isPickaxe(Item item) {
 		if(item == null)
-				return false;
-		if(item instanceof ItemPickaxe)
-			return true;
-		if(item.getHarvestLevel(new ItemStack(item), "pickaxe") != -1)
-			return true;
-		return item.func_150893_a(new ItemStack(item), Blocks.stone) > 1F;
-	}
-
-	public static boolean isAxe(Item item) {
-		if(item == null)
 			return false;
-		if(item instanceof ItemAxe)
-			return true;
-		if(item.getHarvestLevel(new ItemStack(item), "axe") != -1)
-			return true;
-		return item.func_150893_a(new ItemStack(item), Blocks.log) > 1F;
+        try {
+
+            // Check Tinkers Tool:
+            String[] toolNameParts = item.getUnlocalizedName().split("\\.");
+            if(toolNameParts.length >= 3 && "InfiTool".equalsIgnoreCase(toolNameParts[1])) {
+                String toolName = toolNameParts[2];
+                if(!"Pickaxe".equalsIgnoreCase(toolName) && !"Hammer".equalsIgnoreCase(toolName))
+                    return false;
+                return true;
+            }
+
+            // Vanilla Based Checks:
+            if(item instanceof ItemPickaxe)
+                return true;
+            if(item.getHarvestLevel(new ItemStack(item), "pickaxe") != -1)
+                return true;
+            return item.func_150893_a(new ItemStack(item), Blocks.stone) > 1F;
+
+        }
+        catch(Exception e) {}
+        return false;
 	}
 
+    // ========== Axe ==========
+	public static boolean isAxe(Item item) {
+        if(item == null)
+            return false;
+        try {
+
+            // Check Tinkers Tool:
+            String[] toolNameParts = item.getUnlocalizedName().split("\\.");
+            for(String toolNamePart : toolNameParts)
+            if(toolNameParts.length >= 3 && "InfiTool".equalsIgnoreCase(toolNameParts[1])) {
+                String toolName = toolNameParts[2];
+                if(!"Hatchet".equalsIgnoreCase(toolName) && !"LumberAxe".equalsIgnoreCase(toolName) && !"Mattock".equalsIgnoreCase(toolName) && !"Battleaxe".equalsIgnoreCase(toolName))
+                    return false;
+                return true;
+            }
+
+            // Vanilla Based Checks:
+            if(item instanceof ItemAxe)
+                return true;
+            if(item.getHarvestLevel(new ItemStack(item), "axe") != -1)
+                return true;
+            return item.func_150893_a(new ItemStack(item), Blocks.log) > 1F;
+
+        }
+        catch(Exception e) {}
+        return false;
+	}
+
+    // ========== Shovel ==========
 	public static boolean isShovel(Item item) {
 		if(item == null)
-			return false;
-		if(item instanceof ItemSpade)
-			return true;
-		if(item.getHarvestLevel(new ItemStack(item), "shovel") != -1)
-			return true;
-		return item.func_150893_a(new ItemStack(item), Blocks.dirt) > 1F;
+            return false;
+        try {
+
+            // Check Tinkers Tool:
+            String[] toolNameParts = item.getUnlocalizedName().split("\\.");
+            if(toolNameParts.length >= 3 && "InfiTool".equalsIgnoreCase(toolNameParts[1])) {
+                String toolName = toolNameParts[2];
+                if(!"Shovel".equalsIgnoreCase(toolName) && !"Excavator".equalsIgnoreCase(toolName) && !"Mattock".equalsIgnoreCase(toolName))
+                    return false;
+                return true;
+            }
+
+            // Vanilla Based Checks:
+            if(item instanceof ItemSpade)
+                return true;
+            if(item.getHarvestLevel(new ItemStack(item), "shovel") != -1)
+                return true;
+            return item.func_150893_a(new ItemStack(item), Blocks.dirt) > 1F;
+
+        }
+        catch(Exception e) {}
+        return false;
 	}
 
 	

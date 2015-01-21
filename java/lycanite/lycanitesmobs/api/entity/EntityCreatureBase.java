@@ -1465,6 +1465,64 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	return this.homePosition.getDistanceSquared((int)this.posX, (int)this.posY, (int)this.posZ);
     }
 
+    // ========== Get Wander Position ==========
+    /** Takes an initial chunk coordinate for a random wander position and ten allows the entity to make changes to the position or react to it. **/
+    public ChunkCoordinates getWanderPosition(ChunkCoordinates wanderPosition) {
+        return wanderPosition;
+    }
+
+    // ========== Restrict Y Height From Ground ==========
+    /** Takes an initial chunk coordinate and returns an altered Y position relative to the ground using a minimum and maximum distance. **/
+    public int restrictYHeightFromGround(ChunkCoordinates coords, int minY, int maxY) {
+        int groundY = this.getGroundY(coords.posX, coords.posY, coords.posZ);
+        int airYMax = Math.min(this.getAirY(coords.posX, coords.posY, coords.posZ), groundY + maxY);
+        int airYMin = Math.min(airYMax, groundY + minY);
+        if(airYMin >= airYMax)
+            return airYMin;
+        return airYMin + this.getRNG().nextInt(airYMax - airYMin);
+    }
+
+    // ========== Get Ground Y Position ==========
+    /** Returns the Y position of the ground from the starting X, Y, Z position, this will work for getting the ground of caves or indoor areas too.
+     * The Y position returned will be the last air block found before the ground it hit and will thus not be the ground block Y position itself but the air above it. **/
+    public int getGroundY(int x, int y, int z) {
+        if(y <= 0)
+            return 0;
+        Block startBlock = this.worldObj.getBlock(x, y, z);
+        if(startBlock == null || startBlock.isAir(this.worldObj, x, y, z)) {
+            for(int possibleGroundY = Math.max(0, y - 1); possibleGroundY >= 0; possibleGroundY--) {
+                Block possibleGroundBlock = this.worldObj.getBlock(x, possibleGroundY, z);
+                if(possibleGroundBlock == null || possibleGroundBlock.isAir(this.worldObj, x, possibleGroundY, z))
+                    y = possibleGroundY;
+                else
+                    break;
+            }
+        }
+        return y;
+    }
+
+    // ========== Get Air Y Position ==========
+    /** Returns the Y position of the highest air block from the starting x, y, z position until either a solid block is hit or the sky is accessible. **/
+    public int getAirY(int x, int y, int z) {
+        int yMax = this.worldObj.provider.getActualHeight() - 1;
+        if(y >= yMax)
+            return yMax;
+        if(this.worldObj.canBlockSeeTheSky(x, y, z))
+            return yMax;
+
+        Block startBlock = this.worldObj.getBlock(x, y, z);
+        if(startBlock == null || startBlock.isAir(this.worldObj, x, y, z)) {
+            for(int possibleAirY = Math.min(yMax, y + 1); possibleAirY <= yMax; possibleAirY++) {
+                Block possibleGroundBlock = this.worldObj.getBlock(x, possibleAirY, z);
+                if(possibleGroundBlock == null || possibleGroundBlock.isAir(this.worldObj, x, possibleAirY, z))
+                    y = possibleAirY;
+                else
+                    break;
+            }
+        }
+        return y;
+    }
+
 	
 	// ==================================================
   	//                        Size
@@ -2566,17 +2624,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         Block spawnBlock = this.worldObj.getBlock(x, y, z);
         if(y < 0)
             return 0;
-
-        // Search The Ground Air Block for Light Level:
-        if(spawnBlock == null || spawnBlock.isAir(this.worldObj, x, y, z)) {
-            for(int possibleGroundY = Math.max(0, y - 1); possibleGroundY >= 0; possibleGroundY--) {
-                Block possibleGroundBlock = this.worldObj.getBlock(x, possibleGroundY, z);
-                if(possibleGroundBlock == null || possibleGroundBlock.isAir(this.worldObj, x, possibleGroundY, z))
-                    y = possibleGroundY;
-                else
-                    break;
-            }
-        }
+        y = this.getGroundY(x, y, z);
 
         int light = this.worldObj.getBlockLightValue(x, y, z);
         if(this.worldObj.isThundering()) {

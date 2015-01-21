@@ -26,6 +26,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
 public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter {
@@ -184,5 +185,18 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
         if(potionEffect.getPotionID() == Potion.weakness.id) return false;
         if(potionEffect.getPotionID() == Potion.digSlowdown.id) return false;
         return super.isPotionApplicable(potionEffect);
+    }
+
+
+    // ==================================================
+    //                     Positions
+    // ==================================================
+    // ========== Get Wander Position ==========
+    /** Takes an initial chunk coordinate for a random wander position and ten allows the entity to make changes to the position or react to it. **/
+    @Override
+    public ChunkCoordinates getWanderPosition(ChunkCoordinates wanderPosition) {
+        if(this.hasPickupEntity() && this.getPickupEntity() instanceof EntityPlayer)
+            wanderPosition.posY = this.restrictYHeightFromGround(wanderPosition, 4, 12);
+        return wanderPosition;
     }
 }

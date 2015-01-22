@@ -196,7 +196,7 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
     @Override
     public ChunkCoordinates getWanderPosition(ChunkCoordinates wanderPosition) {
         if(this.hasPickupEntity() && this.getPickupEntity() instanceof EntityPlayer)
-            wanderPosition.posY = this.restrictYHeightFromGround(wanderPosition, 4, 12);
+            wanderPosition.posY = this.restrictYHeightFromGround(wanderPosition, 6, 14);
         return wanderPosition;
     }
 }

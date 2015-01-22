@@ -17,7 +17,7 @@ import java.util.Map;
 
 
 public class SpawnTypeUnderground extends SpawnTypeLand {
-    public String dimensionYLevelsSetup = "56; 0,56; -1,16; 1,64; 2,48";
+    public String dimensionYLevelsSetup = "56; 0,56; -1,16; 1,64; 2,40; 7,40";
     public int defaultYLevel = 56;
     public Map<Integer, Integer> dimensionYLevels = new HashMap<Integer, Integer>();
 

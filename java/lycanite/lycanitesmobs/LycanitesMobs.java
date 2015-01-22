@@ -148,6 +148,7 @@ public class LycanitesMobs {
         ObjectManager.addItem("wintergiftlarge", new ItemWinterGiftLarge());
 
         // ========== Call Object Lists Setup ==========
+        ObjectLists.createCustomItems();
 		ObjectLists.createLists();
 
 		

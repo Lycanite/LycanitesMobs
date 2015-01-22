@@ -278,9 +278,9 @@ public class ObjectLists {
             String[] toolNameParts = item.getUnlocalizedName().split("\\.");
             if(toolNameParts.length >= 3 && "InfiTool".equalsIgnoreCase(toolNameParts[1])) {
                 String toolName = toolNameParts[2];
-                if(!"Pickaxe".equalsIgnoreCase(toolName) && !"Hammer".equalsIgnoreCase(toolName))
-                    return false;
-                return true;
+                if("Pickaxe".equalsIgnoreCase(toolName) || "Hammer".equalsIgnoreCase(toolName))
+                    return true;
+                return false;
             }
 
             // Vanilla Based Checks:
@@ -306,9 +306,9 @@ public class ObjectLists {
             for(String toolNamePart : toolNameParts)
             if(toolNameParts.length >= 3 && "InfiTool".equalsIgnoreCase(toolNameParts[1])) {
                 String toolName = toolNameParts[2];
-                if(!"Hatchet".equalsIgnoreCase(toolName) && !"LumberAxe".equalsIgnoreCase(toolName) && !"Mattock".equalsIgnoreCase(toolName) && !"Battleaxe".equalsIgnoreCase(toolName))
-                    return false;
-                return true;
+                if("Hatchet".equalsIgnoreCase(toolName) || "LumberAxe".equalsIgnoreCase(toolName) || "Mattock".equalsIgnoreCase(toolName) || "Battleaxe".equalsIgnoreCase(toolName))
+                    return true;
+                return false;
             }
 
             // Vanilla Based Checks:
@@ -333,9 +333,9 @@ public class ObjectLists {
             String[] toolNameParts = item.getUnlocalizedName().split("\\.");
             if(toolNameParts.length >= 3 && "InfiTool".equalsIgnoreCase(toolNameParts[1])) {
                 String toolName = toolNameParts[2];
-                if(!"Shovel".equalsIgnoreCase(toolName) && !"Excavator".equalsIgnoreCase(toolName) && !"Mattock".equalsIgnoreCase(toolName))
-                    return false;
-                return true;
+                if("Shovel".equalsIgnoreCase(toolName) || "Excavator".equalsIgnoreCase(toolName) || "Mattock".equalsIgnoreCase(toolName))
+                    return true;
+                return false;
             }
 
             // Vanilla Based Checks:

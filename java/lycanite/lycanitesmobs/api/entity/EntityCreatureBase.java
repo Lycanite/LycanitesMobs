@@ -165,6 +165,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	public int temporaryDuration = 0;
     /** If true, this mob will not despawn naturally regardless of other rules. **/
 	public boolean forceNoDespawn = false;
+    /** Can be set to true by custom spawners in rare cases. If true, this mob has a higher chance of being a subspecies. **/
+    public boolean spawnedRare = false;
     
     // Movement:
     /** Whether the mob should use it's leash AI or not. **/
@@ -786,7 +788,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Get Random Subspecies ==========
     public void getRandomSubspecies() {
     	if(this.subspecies == null && !this.isMinion()) {
-    		this.subspecies = this.mobInfo.getRandomSubspecies(this);
+    		this.subspecies = this.mobInfo.getRandomSubspecies(this, this.spawnedRare);
     		this.applySubspeciesHealthMultiplier();
     		if(this.subspecies != null)
     			LycanitesMobs.printDebug("Subspecies", "Setting " + this.getSpeciesName() + " to " + this.subspecies.getTitle());

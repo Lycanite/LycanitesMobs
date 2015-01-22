@@ -23,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class ObjectLists {
 	
@@ -141,6 +142,22 @@ public class ObjectLists {
 			return false;
 		return effectLists.get(list).contains(testPotion);
 	}
+
+    public static boolean isInOreDictionary(String oreEntry, Item item) {
+        return isInOreDictionary(oreEntry, new ItemStack(item));
+    }
+    public static boolean isInOreDictionary(String oreEntry, Block block) {
+        return isInOreDictionary(oreEntry, new ItemStack(block));
+    }
+    public static boolean isInOreDictionary(String oreEntry, ItemStack itemStack) {
+        if(itemStack == null) return false;
+        ArrayList<ItemStack> ores = OreDictionary.getOres(oreEntry);
+        if(ores == null) return false;
+        for(ItemStack ore : ores)
+            if(ore.getItem() == itemStack.getItem())
+                return true;
+        return false;
+    }
 
 
     // ==================================================

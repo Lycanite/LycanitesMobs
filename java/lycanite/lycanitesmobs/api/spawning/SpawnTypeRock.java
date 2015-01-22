@@ -6,10 +6,14 @@ import lycanite.lycanitesmobs.ExtendedWorld;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.api.info.ObjectLists;
+import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 
-public class SpawnTypeRock extends SpawnTypeBase {
+public class SpawnTypeRock extends SpawnTypeBlockBreak {
 	public int blockBreakRadius = 1;
 
     // ==================================================
@@ -17,8 +21,41 @@ public class SpawnTypeRock extends SpawnTypeBase {
     // ==================================================
     public SpawnTypeRock(String typeName) {
         super(typeName);
-        CustomSpawner.instance.oreBreakSpawnTypes.add(this);
         this.blockBreakRadius = ConfigBase.getConfig(LycanitesMobs.group, "spawning").getInt("Spawner Features", "Rock Spawn Block Break Radius", this.blockBreakRadius, "The block breaking radius aroud a mob spawned from the Rock Spawner.");
+    }
+
+
+    // ==================================================
+    //                     Block Harvest
+    // ==================================================
+    @Override
+    public boolean validBlockHarvest(Block block, World world, int x, int y, int z, Entity entity) {
+        String blockName = block.getUnlocalizedName();
+        String[] blockNameParts = blockName.split("\\.");
+        boolean isOre = false;
+        for(String blockNamePart : blockNameParts) {
+            int blockNamePartLength = blockNamePart.length();
+            if(blockNamePartLength >= 3) {
+                if(blockNamePart.substring(0, 3).equalsIgnoreCase("ore") || blockNamePart.substring(blockNamePartLength - 3, blockNamePartLength).equalsIgnoreCase("ore")) {
+                    isOre = true;
+                    break;
+                }
+            }
+        }
+        return isOre || block == Blocks.monster_egg;
+    }
+
+
+    // ==================================================
+    //                      Rare Block
+    // ==================================================
+    @Override
+    public boolean isRareBlock(Block block) {
+        if(block == Blocks.diamond_ore)
+           return true;
+        if(block == Blocks.emerald_ore)
+            return true;
+        return false;
     }
 
 
@@ -26,8 +63,10 @@ public class SpawnTypeRock extends SpawnTypeBase {
     //                 Check Spawn Chance
     // ==================================================
     @Override
-    public boolean canSpawn(long tick, World world, int x, int y, int z) {
+    public boolean canSpawn(long tick, World world, int x, int y, int z, boolean rare) {
     	double roll = world.rand.nextDouble();
+        if(rare)
+            roll /= 4;
     	ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
     	if(worldExt != null) {
     		if("boulderdash".equalsIgnoreCase(worldExt.getMobEventType()))

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import lycanite.lycanitesmobs.LycanitesMobs;
+import lycanite.lycanitesmobs.api.info.ObjectLists;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockVine;
@@ -14,6 +15,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayer.EnumStatus;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -22,6 +25,7 @@ import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class CustomSpawner {
     public static CustomSpawner instance;
@@ -151,9 +155,7 @@ public class CustomSpawner {
 	// ==================================================
 	//                 Harvest Drops Event
 	// ==================================================
-    public List<SpawnTypeBase> oreBreakSpawnTypes = new ArrayList<SpawnTypeBase>();
-    public List<SpawnTypeBase> cropBreakSpawnTypes = new ArrayList<SpawnTypeBase>();
-    public List<SpawnTypeBase> treeBreakSpawnTypes = new ArrayList<SpawnTypeBase>();
+    public List<SpawnTypeBlockBreak> blockSpawnTypes = new ArrayList<SpawnTypeBlockBreak>();
 	/** This uses the block harvest drops events to spawn mobs around blocks when they are destroyed. **/
 	@SubscribeEvent
 	public void onHarvestDrops(HarvestDropsEvent event) {
@@ -168,78 +170,10 @@ public class CustomSpawner {
 		int x = (int)event.x;
 		int y = (int)event.y;
 		int z = (int)event.z + 1;
-		
-		String blockName = event.block.getUnlocalizedName();
-		String[] blockNameParts = blockName.split("\\.");
-		
-		// Ore Blocks:
-		boolean isOre = false;
-		for(String blockNamePart : blockNameParts) {
-            int blockNamePartLength = blockNamePart.length();
-			if(blockNamePartLength >= 3) {
-                if(blockNamePart.substring(0, 3).equalsIgnoreCase("ore") || blockNamePart.substring(blockNamePartLength - 3, blockNamePartLength).equalsIgnoreCase("ore")) {
-                    isOre = true;
-                    break;
-                }
-            }
-		}
-		if(isOre || event.block == Blocks.monster_egg) {
-			for(SpawnTypeBase spawnType : this.oreBreakSpawnTypes) {
-				spawnType.spawnMobs(0, world, x, y, z, player);
-			}
-		}
-		
-		// Crop Blocks:
-		if(event.block instanceof IPlantable ||event.block instanceof BlockVine) {
-			for(SpawnTypeBase spawnType : this.cropBreakSpawnTypes) {
-				spawnType.spawnMobs(0, world, x, y, z, player);
-			}
-		}
-		
-		// Tree Blocks:
-		boolean isLog = false;
-		for(String blockNamePart : blockNameParts) {
-			if(blockNamePart.length() >= 3 && blockNamePart.substring(0, 3).equalsIgnoreCase("log")) {
-				isLog = true;
-				break;
-			}
-		}
-		if(isLog) {
-			for(int searchY = y + 1; searchY <= Math.min(world.getHeight(), y + 32); searchY++) {
-				Block searchBlock = world.getBlock(x, searchY, z);
-				if(searchBlock != event.block) {
-					if(searchBlock instanceof BlockLeaves) {
-						for(SpawnTypeBase spawnType : this.treeBreakSpawnTypes) {
-							spawnType.spawnMobs(0, world, x, y, z, player);
-						}
-					}
-					if(!world.isAirBlock(x, searchY, z))
-						break;
-				}
-			}
-		}
-        if(event.block instanceof BlockLeaves) {
-            for(int searchY = y - 1; searchY <= Math.max(0, y - 32); searchY++) {
-                Block searchBlock = world.getBlock(x, searchY, z);
-                if(searchBlock != event.block && searchBlock != null) {
-                    String searchBlockName = searchBlock.getUnlocalizedName();
-                    String[] searchBlockNameParts = searchBlockName.split("\\.");
-                    isLog = false;
-                    for(String searchBlockNamePart : searchBlockNameParts) {
-                        if(searchBlockNamePart.length() >= 3 && searchBlockNamePart.substring(0, 3).equalsIgnoreCase("log")) {
-                            isLog = true;
-                            break;
-                        }
-                    }
-                    if(isLog) {
-                        for(SpawnTypeBase spawnType : this.treeBreakSpawnTypes) {
-                            spawnType.spawnMobs(0, world, x, y, z, player);
-                        }
-                    }
-                    if(!world.isAirBlock(x, searchY, z))
-                        break;
-                }
-            }
+
+        for(SpawnTypeBlockBreak spawnType : this.blockSpawnTypes) {
+            if(spawnType.validBlockHarvest(event.block, world, x, y, z, player))
+                spawnType.spawnMobs(0, world, x, y, z, player, event.block);
         }
 	}
 
@@ -260,35 +194,11 @@ public class CustomSpawner {
         World world = event.world;
         int x = (int)event.x;
         int y = (int)event.y;
-        int z = (int)event.z;
+        int z = (int)event.z + 1;
 
-        // Tree Blocks:
-        if(event.block instanceof BlockLeaves) {
-            for(int searchX = x -1; searchX <= x + 1; searchX++) {
-                for(int searchZ = z -1; searchZ <= z + 1; searchZ++) {
-                    for(int searchY = y; searchY > Math.max(0, y - 32); searchY--) {
-                        Block searchBlock = world.getBlock(searchX, searchY, searchZ);
-                        if(searchBlock != event.block && searchBlock != null) {
-                            String searchBlockName = searchBlock.getUnlocalizedName();
-                            String[] searchBlockNameParts = searchBlockName.split("\\.");
-                            boolean isLog = false;
-                            for(String searchBlockNamePart : searchBlockNameParts) {
-                                if(searchBlockNamePart.length() >= 3 && searchBlockNamePart.substring(0, 3).equalsIgnoreCase("log")) {
-                                    isLog = true;
-                                    break;
-                                }
-                            }
-                            if(isLog) {
-                                for(SpawnTypeBase spawnType : this.treeBreakSpawnTypes) {
-                                    spawnType.spawnMobs(0, world, x, y, z, player);
-                                }
-                            }
-                            if(!world.isAirBlock(searchX, searchY, searchZ))
-                                break;
-                        }
-                    }
-                }
-            }
+        for(SpawnTypeBlockBreak spawnType : this.blockSpawnTypes) {
+            if(spawnType.validBlockBreak(event.block, world, x, y, z, player))
+                spawnType.spawnMobs(0, world, x, y, z, player);
         }
     }
 

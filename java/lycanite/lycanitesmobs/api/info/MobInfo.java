@@ -445,11 +445,15 @@ public class MobInfo {
     // ========== Get Random Subspecies ==========
     /**
      * Gets a random subspecies, normally used by a new mob when spawned.
+     * @param entity The entity that has this subspecies.
+     * @param rare If true, there will be much higher odds of a subspecies being picked.
      * @return A Subspecies or null if using the base species.
      */
-    public Subspecies getRandomSubspecies(EntityLivingBase entity) {
+    public Subspecies getRandomSubspecies(EntityLivingBase entity, boolean rare) {
     	LycanitesMobs.printDebug("Subspecies", "~0===== Subspecies =====0~");
     	LycanitesMobs.printDebug("Subspecies", "Selecting random subspecies for: " + entity);
+        if(rare)
+            LycanitesMobs.printDebug("Subspecies", "The conditions have been set to rare increasing the chances of a subspecies being picked.");
     	if(this.subspeciesAmount < 1) {
         	LycanitesMobs.printDebug("Subspecies", "No species available, will be base species.");
     		return null;
@@ -457,7 +461,10 @@ public class MobInfo {
     	LycanitesMobs.printDebug("Subspecies", "Subspecies Available: " + this.subspeciesAmount);
     	
         // Get Weights:
-        int totalWeight = Subspecies.baseSpeciesWeight;
+        int baseSpeciesWeightScaled = Subspecies.baseSpeciesWeight;
+        if(rare)
+            baseSpeciesWeightScaled /= 4;
+        int totalWeight = baseSpeciesWeightScaled;
         for(Subspecies subspeciesEntry : this.subspecies.values()) {
             totalWeight += subspeciesEntry.weight;
         }
@@ -466,13 +473,13 @@ public class MobInfo {
         // Roll and Check Default:
         int roll = entity.getRNG().nextInt(totalWeight);
     	LycanitesMobs.printDebug("Subspecies", "Rolled: " + roll);
-        if(roll <= Subspecies.baseSpeciesWeight) {
-        	LycanitesMobs.printDebug("Subspecies", "Base species selected: " + Subspecies.baseSpeciesWeight);
+        if(roll <= baseSpeciesWeightScaled) {
+        	LycanitesMobs.printDebug("Subspecies", "Base species selected: " + baseSpeciesWeightScaled);
             return null;
         }
 
         // Get Random Subspecies:
-        int checkWeight = Subspecies.baseSpeciesWeight;
+        int checkWeight = baseSpeciesWeightScaled;
         for(Subspecies subspeciesEntry : this.subspecies.values()) {
             checkWeight += subspeciesEntry.weight;
             if(roll <= checkWeight) {
@@ -483,6 +490,9 @@ public class MobInfo {
         
         LycanitesMobs.printWarning("Subspecies", "The roll was higher than the Total Weight, this shouldn't happen.");
         return null;
+    }
+    public Subspecies getRandomSubspecies(EntityLivingBase entity) {
+        return this.getRandomSubspecies(entity, false);
     }
 
 

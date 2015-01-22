@@ -34,7 +34,7 @@ public class SpawnTypeDeath extends SpawnTypeBase {
     //                 Check Spawn Chance
     // ==================================================
     @Override
-    public boolean canSpawn(long tick, World world, int x, int y, int z) {
+    public boolean canSpawn(long tick, World world, int x, int y, int z, boolean rare) {
         if(world.provider.dimensionId == 0 && world.isDaytime())
             return false;
     	double roll = world.rand.nextDouble();

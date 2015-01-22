@@ -20,7 +20,7 @@ public class SpawnTypeStorm extends SpawnTypeSky {
     //                 Check Spawn Chance
     // ==================================================
     @Override
-    public boolean canSpawn(long tick, World world, int x, int y, int z) {
+    public boolean canSpawn(long tick, World world, int x, int y, int z, boolean rare) {
         if(this.rate == 0 || tick % this.rate != 0)
             return false;
     	if(!world.isRaining())

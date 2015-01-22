@@ -416,12 +416,13 @@ public class SpawnTypeBase {
      * @param y Y position.
      * @param z Z position.
      * @param player The player or null if there is no player.
+     * @param rare If true, the spawn conditions are rarer than usual which means special things can be done such as having a higher chance of spawning a subspecies.
      */
-    public boolean spawnMobs(long tick, World world, int x, int y, int z, EntityPlayer player) {
+    public boolean spawnMobs(long tick, World world, int x, int y, int z, EntityPlayer player, boolean rare) {
         // Check If Able to Spawn:
         if(this.getSpawnList() == null || this.getSpawnList().size() < 1 || !this.enabled || !this.hasSpawns())
             return false;
-        if(!this.canSpawn(tick, world, x, y, z))
+        if(!this.canSpawn(tick, world, x, y, z, rare))
             return false;
         
         LycanitesMobs.printDebug("CustomSpawner", "~0==================== " + this.typeName + " Spawner ====================0~");
@@ -520,6 +521,7 @@ public class SpawnTypeBase {
             if(entityLiving instanceof EntityCreatureBase) {
             	EntityCreatureBase entityCreature = (EntityCreatureBase)entityLiving;
             	entityCreature.forceNoDespawn = this.forceNoDespawn;
+                entityCreature.spawnedRare = rare;
             	ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
             	if(this.mobEvent != null && worldExt != null) {
             		entityCreature.spawnEventType = this.mobEvent.name;
@@ -545,6 +547,9 @@ public class SpawnTypeBase {
         
         return mobsSpawned > 0;
     }
+    public boolean spawnMobs(long tick, World world, int x, int y, int z, EntityPlayer player) {
+        return this.spawnMobs(tick, world, x, y, z, player, false);
+    }
 
 
     // ==================================================
@@ -559,9 +564,10 @@ public class SpawnTypeBase {
      * @param x X position.
      * @param y Y position.
      * @param z Z position
+     * @param rare If true, the spawn conditions are rarer than usual which means there could be a higher chance of a mob spawning.
      * @return True if this spawn type should spawn mobs and false if it shouldn't this call.
      */
-    public boolean canSpawn(long tick, World world, int x, int y, int z) {
+    public boolean canSpawn(long tick, World world, int x, int y, int z, boolean rare) {
         if(this.getRate(world) == 0 || tick % this.getRate(world) != 0)
             return false;
         if(world.rand.nextDouble() >= this.chance)

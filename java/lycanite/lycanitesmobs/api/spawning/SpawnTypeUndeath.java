@@ -36,7 +36,7 @@ public class SpawnTypeUndeath extends SpawnTypeDeath {
     //                 Check Spawn Chance
     // ==================================================
     @Override
-    public boolean canSpawn(long tick, World world, int x, int y, int z) {
+    public boolean canSpawn(long tick, World world, int x, int y, int z, boolean rare) {
     	double roll = world.rand.nextDouble();
     	ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
     	if(worldExt != null) {

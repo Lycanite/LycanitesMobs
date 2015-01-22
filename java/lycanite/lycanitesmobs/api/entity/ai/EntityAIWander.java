@@ -4,7 +4,6 @@ import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Vec3;
-import net.minecraft.world.ChunkPosition;
 
 public class EntityAIWander extends EntityAIBase {
 	// Targets:
@@ -71,8 +70,9 @@ public class EntityAIWander extends EntityAIBase {
     public boolean continueExecuting() {
     	if(!host.useFlightNavigator())
     		return !this.host.getNavigator().noPath();
-    	else
-        	return !this.host.flightNavigator.atTargetPosition() && this.host.flightNavigator.isTargetPositionValid();
+    	else {
+            return !this.host.flightNavigator.atTargetPosition() && this.host.flightNavigator.isTargetPositionValid();
+        }
         	//return this.host.getRNG().nextInt(100) != 0 && !this.host.flightNavigator.atTargetPosition() && this.host.flightNavigator.isTargetPositionValid();
     }
     
@@ -84,6 +84,6 @@ public class EntityAIWander extends EntityAIBase {
     	if(!host.useFlightNavigator())
     		this.host.getNavigator().tryMoveToXYZ(this.xPosition, this.yPosition, this.zPosition, this.speed);
     	else
-    		host.flightNavigator.setTargetPosition(new ChunkCoordinates((int)xPosition, (int)yPosition, (int)zPosition), speed);
+    		host.flightNavigator.setTargetPosition(new ChunkCoordinates((int)this.xPosition, (int)this.yPosition, (int)this.zPosition), this.speed);
     }
 }

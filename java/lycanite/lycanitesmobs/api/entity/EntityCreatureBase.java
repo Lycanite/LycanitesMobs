@@ -676,7 +676,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         	this.spawnEventCount = -1;
         }
         else {
-        	if((!this.mobInfo.peacefulDifficulty && this.worldObj.difficultySetting == EnumDifficulty.PEACEFUL))
+        	if(!this.mobInfo.peacefulDifficulty && this.worldObj.difficultySetting == EnumDifficulty.PEACEFUL && !this.hasCustomNameTag())
             	return true;
         	
         	ExtendedWorld worldExt = ExtendedWorld.getForWorld(this.worldObj);

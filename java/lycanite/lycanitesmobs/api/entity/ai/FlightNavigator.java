@@ -77,11 +77,16 @@ public class FlightNavigator {
 			return false;
 		return true;
 	}
+
+    // ========== DistanceTo Target Position ==========
+    public double distanceToTargetPosition(){
+        return this.host.getDistance(targetPosition.posX, targetPosition.posY, targetPosition.posZ);
+    }
 	
 	// ========== Is At Target Position ==========
 	public boolean atTargetPosition(){
 		if(targetPosition != null)
-			return this.host.getDistance(targetPosition.posX, targetPosition.posY, targetPosition.posZ) < 0.25D;
+			return distanceToTargetPosition() < (this.host.width / 2);
 		return true;
 	}
 	

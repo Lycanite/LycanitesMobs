@@ -10,6 +10,8 @@ entity.freshwatermobs.jengu.name=Jengu
 entity.freshwatermobs.jengu.description=Water elementals known as the protectors of pure water, they will attack anyone they see as unpure (usually you)!
 entity.freshwatermobs.zephyr.name=Zephyr
 entity.freshwatermobs.zephyr.description=Fierce storm elementals usually found during heavy rain and especially during thunder storms. Beware as they will shock any foe close to them.
+entity.freshwatermobs.strider.name=Strider
+entity.freshwatermobs.strider.description=These giant amphibious fish-like creatures, are usually found in large lakes or rivers, they are feared for their dreadful tentacles from which they ensnare their victims.
 #
 # Items
 item.freshwaterspawn.name=Spawn

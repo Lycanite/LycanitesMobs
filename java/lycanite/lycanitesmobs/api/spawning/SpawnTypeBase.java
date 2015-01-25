@@ -893,7 +893,7 @@ public class SpawnTypeBase {
      * @param rangeMax The maximum range from the origin allowed.
      * @param rangeMin The minimum range from the origin allowed.
      * @param solid If true, this will search for a block with a solid top (land), else it will search for air (sky).
-     * @param insideBlock The block type to spawn in, usually air can also be water or other liquids, etc.
+     * @param insideBlock The block type to spawn in, usually air but can also be water or other liquids, etc.
      * @return The y position, -1 if a valid position could not be found.
      */
     public int getRandomYCoord(World world, int originX, int originY, int originZ, int rangeMin, int rangeMax, boolean solid, Block insideBlock, boolean underground) {
@@ -905,11 +905,7 @@ public class SpawnTypeBase {
         // Get Every Valid Y Pos:
         for(int nextY = minY; nextY <= maxY; nextY++) {
             Block block = world.getBlock(originX, nextY, originZ);
-            if(block != null && (
-            		(!solid && block == insideBlock) ||
-            		(solid && (block.isSideSolid(world, originX, nextY, originZ, ForgeDirection.UP) || block.isSideSolid(world, originX, nextY, originZ, ForgeDirection.DOWN)))
-            )) {
-            	
+            if(block != null && ((!solid && block == insideBlock) || (solid && this.validGroundBlock(block, world, originX, nextY, originZ)))) {
             	if(nextY + 1 > originY - minY && nextY + 1 < originY - maxY)
             		continue;
             	
@@ -957,6 +953,23 @@ public class SpawnTypeBase {
         }
         
         return y;
+    }
+
+    /** Returns true if the specified block is suitable for spawning land mobs on top of. **/
+    public boolean validGroundBlock(Block block, World world, int x, int y, int z) {
+        if(block == null)
+            return false;
+        try {
+            if(block.isNormalCube(world, x, y, z))
+                return true;
+        } catch(Exception e) {}
+        try {
+            if (block.isSideSolid(world, x, y, z, ForgeDirection.UP))
+                return true;
+            if (block.isSideSolid(world, x, y, z, ForgeDirection.DOWN))
+                return true;
+        } catch(Exception e) {}
+        return false;
     }
 
 

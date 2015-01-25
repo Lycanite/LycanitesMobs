@@ -74,7 +74,7 @@ public class ModelTrent extends ModelCustomObj {
     	}
     	
     	// Walking:
-    	float walkSwing = 0.6F;
+    	float walkSwing = 0.3F;
     	if(partName.equals("leftarm"))
     		rotX += Math.toDegrees(MathHelper.cos(time * walkSwing) * 2.0F * distance * 0.5F);
     	if(partName.equals("rightarm"))

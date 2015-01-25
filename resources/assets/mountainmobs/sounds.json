@@ -107,6 +107,14 @@
         "category": "hostile",
         "sounds": [{"name": "entity/beholder/death", "stream": false}]
     },
+    "entity.beholder.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/beholder/beg", "stream": false}]
+    },
+    "entity.beholder.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/beholder/tame", "stream": false}]
+    },
     "projectile.boulderblast": {
         "category": "ambient",
         "sounds": [{"name": "projectile/boulderblast", "stream": false}]

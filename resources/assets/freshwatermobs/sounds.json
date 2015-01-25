@@ -47,6 +47,38 @@
         "category": "hostile",
         "sounds": [{"name": "entity/zephyr/attack", "stream": false}]
     },
+	"entity.strider.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/strider/say", "stream": false}]
+    },
+    "entity.strider.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/strider/hurt", "stream": false}]
+    },
+    "entity.strider.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/strider/death", "stream": false}]
+    },
+    "entity.strider.step": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/strider/step", "stream": false}]
+    },
+    "entity.strider.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/strider/attack", "stream": false}]
+    },
+    "entity.strider.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/strider/beg", "stream": false}]
+    },
+    "entity.strider.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/strider/tame", "stream": false}]
+    },
+    "entity.strider.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/strider/eat", "stream": false}]
+    },
     "projectile.aquapulse": {
         "category": "ambient",
         "sounds": [{"name": "projectile/aquapulse", "stream": false}]

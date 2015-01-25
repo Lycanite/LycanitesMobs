@@ -13,6 +13,7 @@ import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
 import lycanite.lycanitesmobs.freshwatermobs.dispenser.DispenserBehaviorAquaPulse;
 import lycanite.lycanitesmobs.freshwatermobs.entity.EntityAquaPulse;
 import lycanite.lycanitesmobs.freshwatermobs.entity.EntityJengu;
+import lycanite.lycanitesmobs.freshwatermobs.entity.EntityStrider;
 import lycanite.lycanitesmobs.freshwatermobs.entity.EntityZephyr;
 import lycanite.lycanitesmobs.freshwatermobs.item.ItemAquaPulseCharge;
 import lycanite.lycanitesmobs.freshwatermobs.item.ItemFreshwaterEgg;
@@ -88,6 +89,13 @@ public class FreshwaterMobs {
 		        .addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("keppel", "uncommon"));
         newMob.spawnInfo.setSpawnTypes("STORM")
                 .setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
+        ObjectManager.addMob(newMob);
+
+        newMob = new MobInfo(group, "strider", EntityStrider.class, 0x2c90cd, 0x13ddf1)
+                .setPeaceful(false).setSummonable(false).setSummonCost(6).setDungeonLevel(2)
+                .addSubspecies(new Subspecies("scarlet", "uncommon")).addSubspecies(new Subspecies("ashen", "uncommon"));
+        newMob.spawnInfo.setSpawnTypes("WATER")
+                .setSpawnWeight(1).setAreaLimit(2).setGroupLimits(1, 2).setLightDark(false, true);
         ObjectManager.addMob(newMob);
 
 		

@@ -57,11 +57,6 @@ public class EntityAITargetAttack extends EntityAITarget {
     	return this;
     }
     
-    public EntityAITargetAttack setSightCheck(boolean setSightCheck) {
-    	this.checkSight = setSightCheck;
-    	return this;
-    }
-    
     public EntityAITargetAttack setOnlyNearby(boolean setNearby) {
     	this.nearbyOnly = setNearby;
     	return this;

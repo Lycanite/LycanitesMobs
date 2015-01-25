@@ -292,6 +292,7 @@ public class ExtendedWorld extends WorldSavedData {
         if(mobEvent == null) {
             LycanitesMobs.printWarning("", "Tried to start a null mob event, stopping any event instead.");
             this.stopMobEvent();
+            return;
         }
 
         // Server Side:
@@ -324,8 +325,10 @@ public class ExtendedWorld extends WorldSavedData {
         MobEventBase mobEvent;
         if(MobEventManager.instance.worldMobEvents.containsKey(mobEventName)) {
             mobEvent = MobEventManager.instance.worldMobEvents.get(mobEventName);
-            if(!mobEvent.isEnabled())
-                mobEvent = null;
+            if(!mobEvent.isEnabled()) {
+                LycanitesMobs.printWarning("", "Tried to start an event that was disabled with the name: '" + mobEventName + "' on " + (this.world.isRemote ? "Client" : "Server"));
+                return;
+            }
         }
         else {
             LycanitesMobs.printWarning("", "Tried to start an event with the invalid name: '" + mobEventName + "' on " + (this.world.isRemote ? "Client" : "Server"));

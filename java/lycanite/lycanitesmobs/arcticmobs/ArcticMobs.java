@@ -5,10 +5,7 @@ import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
-import lycanite.lycanitesmobs.api.info.GroupInfo;
-import lycanite.lycanitesmobs.api.info.MobInfo;
-import lycanite.lycanitesmobs.api.info.ObjectLists;
-import lycanite.lycanitesmobs.api.info.Subspecies;
+import lycanite.lycanitesmobs.api.info.*;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
 import lycanite.lycanitesmobs.api.item.ItemTreat;
 import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
@@ -247,42 +244,44 @@ public class ArcticMobs {
 				new ItemStack(ObjectManager.getItem("yetimeatcooked"), 1, 0),
 				new Object[] { ObjectManager.getItem("palesoup") }
 			));
-		
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("frostboltscepter"), 1, 0),
-				new Object[] { "CCC", "CRC", "CRC",
-				Character.valueOf('C'), ObjectManager.getItem("frostboltcharge"),
-				Character.valueOf('R'), Items.blaze_rod
-			}));
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("frostwebscepter"), 1, 0),
-				new Object[] { "CCC", "CRC", "CRC",
-				Character.valueOf('C'), ObjectManager.getItem("frostwebcharge"),
-				Character.valueOf('R'), Items.blaze_rod
-			}));
+        if(ItemInfo.enableWeaponRecipes) {
+            GameRegistry.addRecipe(new ShapedOreRecipe(
+                    new ItemStack(ObjectManager.getItem("frostboltscepter"), 1, 0),
+                    new Object[]{"CCC", "CRC", "CRC",
+                            Character.valueOf('C'), ObjectManager.getItem("frostboltcharge"),
+                            Character.valueOf('R'), Items.blaze_rod
+                    }));
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("tundrascepter"), 1, 0),
-				new Object[] { "SCS", "SRS", "SRS",
-				Character.valueOf('C'), ObjectManager.getItem("tundracharge"),
-				Character.valueOf('S'), ObjectManager.getItem("frostyfur"),
-				Character.valueOf('R'), Items.blaze_rod
-			}));
+            GameRegistry.addRecipe(new ShapedOreRecipe(
+                    new ItemStack(ObjectManager.getItem("frostwebscepter"), 1, 0),
+                    new Object[]{"CCC", "CRC", "CRC",
+                            Character.valueOf('C'), ObjectManager.getItem("frostwebcharge"),
+                            Character.valueOf('R'), Items.blaze_rod
+                    }));
 
-        GameRegistry.addRecipe(new ShapedOreRecipe(
-                new ItemStack(ObjectManager.getItem("icefirescepter"), 1, 0),
-                new Object[] { "CCC", "CRC", "CRC",
-                        Character.valueOf('C'), ObjectManager.getItem("icefirecharge"),
-                        Character.valueOf('R'), Items.blaze_rod
-                }));
+            GameRegistry.addRecipe(new ShapedOreRecipe(
+                    new ItemStack(ObjectManager.getItem("tundrascepter"), 1, 0),
+                    new Object[]{"SCS", "SRS", "SRS",
+                            Character.valueOf('C'), ObjectManager.getItem("tundracharge"),
+                            Character.valueOf('S'), ObjectManager.getItem("frostyfur"),
+                            Character.valueOf('R'), Items.blaze_rod
+                    }));
 
-        GameRegistry.addRecipe(new ShapedOreRecipe(
-                new ItemStack(ObjectManager.getItem("blizzardscepter"), 1, 0),
-                new Object[] { "CCC", "CRC", "CRC",
-                        Character.valueOf('C'), ObjectManager.getItem("blizzardcharge"),
-                        Character.valueOf('R'), Items.blaze_rod
-                }));
+            GameRegistry.addRecipe(new ShapedOreRecipe(
+                    new ItemStack(ObjectManager.getItem("icefirescepter"), 1, 0),
+                    new Object[]{"CCC", "CRC", "CRC",
+                            Character.valueOf('C'), ObjectManager.getItem("icefirecharge"),
+                            Character.valueOf('R'), Items.blaze_rod
+                    }));
+
+            GameRegistry.addRecipe(new ShapedOreRecipe(
+                    new ItemStack(ObjectManager.getItem("blizzardscepter"), 1, 0),
+                    new Object[]{"CCC", "CRC", "CRC",
+                            Character.valueOf('C'), ObjectManager.getItem("blizzardcharge"),
+                            Character.valueOf('R'), Items.blaze_rod
+                    }));
+        }
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("arixtreat"), 1, 0),

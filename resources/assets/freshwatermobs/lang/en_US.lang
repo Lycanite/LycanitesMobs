@@ -15,6 +15,8 @@ entity.freshwatermobs.strider.description=These giant amphibious fish-like creat
 #
 # Items
 item.freshwaterspawn.name=Spawn
+item.stridertreat.name=Strider Treat
+item.stridertreat.description=With the lapis bearing Silex being their favorite snack, this lapis encrusted bone might win over a Strider.
 item.aquapulsecharge.name=Aqua Pulse Charge
 item.aquapulsecharge.description=Use to throw a ball of mystic water or fire from a dispenser.
 item.aquapulsescepter.name=Aqua Pulse Scepter

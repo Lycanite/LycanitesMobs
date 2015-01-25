@@ -5,10 +5,7 @@ import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
-import lycanite.lycanitesmobs.api.info.GroupInfo;
-import lycanite.lycanitesmobs.api.info.MobInfo;
-import lycanite.lycanitesmobs.api.info.ObjectLists;
-import lycanite.lycanitesmobs.api.info.Subspecies;
+import lycanite.lycanitesmobs.api.info.*;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
 import lycanite.lycanitesmobs.api.item.ItemTreat;
 import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
@@ -233,33 +230,35 @@ public class DemonMobs {
 		}
 		
 		// ========== Crafting ==========
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("doomfirescepter"), 1, 0),
-				new Object[] { " C ", " R ", " R ",
-				Character.valueOf('C'), ObjectManager.getItem("doomfirecharge"),
-				Character.valueOf('R'), Items.blaze_rod
-			}));
-		
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("hellfirescepter"), 1, 0),
-				new Object[] { "CCC", "CRC", "CRC",
-				Character.valueOf('C'), ObjectManager.getItem("hellfirecharge"),
-				Character.valueOf('R'), Items.blaze_rod
-			}));
-		
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("devilstarscepter"), 1, 0),
-				new Object[] { " C ", " R ", " R ",
-				Character.valueOf('C'), ObjectManager.getItem("devilstarcharge"),
-				Character.valueOf('R'), Items.blaze_rod
-			}));
-		
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("demoniclightningscepter"), 1, 0),
-				new Object[] { " C ", " R ", " R ",
-				Character.valueOf('C'), ObjectManager.getItem("demoniclightningcharge"),
-				Character.valueOf('R'), Items.blaze_rod
-			}));
+        if(ItemInfo.enableWeaponRecipes) {
+            GameRegistry.addRecipe(new ShapedOreRecipe(
+                    new ItemStack(ObjectManager.getItem("doomfirescepter"), 1, 0),
+                    new Object[]{" C ", " R ", " R ",
+                            Character.valueOf('C'), ObjectManager.getItem("doomfirecharge"),
+                            Character.valueOf('R'), Items.blaze_rod
+                    }));
+
+            GameRegistry.addRecipe(new ShapedOreRecipe(
+                    new ItemStack(ObjectManager.getItem("hellfirescepter"), 1, 0),
+                    new Object[]{"CCC", "CRC", "CRC",
+                            Character.valueOf('C'), ObjectManager.getItem("hellfirecharge"),
+                            Character.valueOf('R'), Items.blaze_rod
+                    }));
+
+            GameRegistry.addRecipe(new ShapedOreRecipe(
+                    new ItemStack(ObjectManager.getItem("devilstarscepter"), 1, 0),
+                    new Object[]{" C ", " R ", " R ",
+                            Character.valueOf('C'), ObjectManager.getItem("devilstarcharge"),
+                            Character.valueOf('R'), Items.blaze_rod
+                    }));
+
+            GameRegistry.addRecipe(new ShapedOreRecipe(
+                    new ItemStack(ObjectManager.getItem("demoniclightningscepter"), 1, 0),
+                    new Object[]{" C ", " R ", " R ",
+                            Character.valueOf('C'), ObjectManager.getItem("demoniclightningcharge"),
+                            Character.valueOf('R'), Items.blaze_rod
+                    }));
+        }
 
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
 				new ItemStack(ObjectManager.getItem("devillasagna"), 1, 0),

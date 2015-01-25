@@ -4,10 +4,7 @@ import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
-import lycanite.lycanitesmobs.api.info.GroupInfo;
-import lycanite.lycanitesmobs.api.info.MobInfo;
-import lycanite.lycanitesmobs.api.info.ObjectLists;
-import lycanite.lycanitesmobs.api.info.Subspecies;
+import lycanite.lycanitesmobs.api.info.*;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
 import lycanite.lycanitesmobs.api.item.ItemTreat;
 import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
@@ -222,49 +219,51 @@ public class InfernoMobs {
 				new ItemStack(ObjectManager.getItem("cephignismeatcooked"), 1, 0),
 				new Object[] { ObjectManager.getItem("searingtaco") }
 			));
-		
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("emberscepter"), 1, 0),
-				new Object[] { "CCC", "CRC", "CRC",
-				Character.valueOf('C'), ObjectManager.getItem("embercharge"),
-				Character.valueOf('R'), Items.blaze_rod
-			}));
-		
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("cinderfallsword"), 1, 0),
-				new Object[] { "CCC", "CSC", "CJC",
-				Character.valueOf('C'), ObjectManager.getItem("embercharge"),
-				Character.valueOf('S'), Items.diamond_sword,
-				Character.valueOf('J'), ObjectManager.getItem("soulgazer")
-			}));
 
-        GameRegistry.addRecipe(new ShapedOreRecipe(
-                new ItemStack(ObjectManager.getItem("cinderfallswordazure"), 1, 0),
-                new Object[] { "DDD", "DSD", "DDD",
-                        Character.valueOf('D'), Items.diamond,
-                        Character.valueOf('S'), ObjectManager.getItem("cinderfallsword")
-                }));
+        if(ItemInfo.enableWeaponRecipes) {
+            GameRegistry.addRecipe(new ShapedOreRecipe(
+                    new ItemStack(ObjectManager.getItem("emberscepter"), 1, 0),
+                    new Object[]{"CCC", "CRC", "CRC",
+                            Character.valueOf('C'), ObjectManager.getItem("embercharge"),
+                            Character.valueOf('R'), Items.blaze_rod
+                    }));
 
-        GameRegistry.addRecipe(new ShapedOreRecipe(
-                new ItemStack(ObjectManager.getItem("cinderfallswordverdant"), 1, 0),
-                new Object[] { "DDD", "DSD", "DDD",
-                        Character.valueOf('D'), Items.emerald,
-                        Character.valueOf('S'), ObjectManager.getItem("cinderfallsword")
-                }));
+            GameRegistry.addRecipe(new ShapedOreRecipe(
+                    new ItemStack(ObjectManager.getItem("cinderfallsword"), 1, 0),
+                    new Object[]{"CCC", "CSC", "CJC",
+                            Character.valueOf('C'), ObjectManager.getItem("embercharge"),
+                            Character.valueOf('S'), Items.diamond_sword,
+                            Character.valueOf('J'), ObjectManager.getItem("soulgazer")
+                    }));
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("magmascepter"), 1, 0),
-				new Object[] { "CCC", "CRC", "CRC",
-				Character.valueOf('C'), ObjectManager.getItem("magmacharge"),
-				Character.valueOf('R'), Items.blaze_rod
-			}));
+            GameRegistry.addRecipe(new ShapedOreRecipe(
+                    new ItemStack(ObjectManager.getItem("cinderfallswordazure"), 1, 0),
+                    new Object[]{"DDD", "DSD", "DDD",
+                            Character.valueOf('D'), Items.diamond,
+                            Character.valueOf('S'), ObjectManager.getItem("cinderfallsword")
+                    }));
 
-        GameRegistry.addRecipe(new ShapedOreRecipe(
-                new ItemStack(ObjectManager.getItem("scorchfirescepter"), 1, 0),
-                new Object[] { "CCC", "CRC", "CRC",
-                        Character.valueOf('C'), ObjectManager.getItem("scorchfirecharge"),
-                        Character.valueOf('R'), Items.blaze_rod
-                }));
+            GameRegistry.addRecipe(new ShapedOreRecipe(
+                    new ItemStack(ObjectManager.getItem("cinderfallswordverdant"), 1, 0),
+                    new Object[]{"DDD", "DSD", "DDD",
+                            Character.valueOf('D'), Items.emerald,
+                            Character.valueOf('S'), ObjectManager.getItem("cinderfallsword")
+                    }));
+
+            GameRegistry.addRecipe(new ShapedOreRecipe(
+                    new ItemStack(ObjectManager.getItem("magmascepter"), 1, 0),
+                    new Object[]{"CCC", "CRC", "CRC",
+                            Character.valueOf('C'), ObjectManager.getItem("magmacharge"),
+                            Character.valueOf('R'), Items.blaze_rod
+                    }));
+
+            GameRegistry.addRecipe(new ShapedOreRecipe(
+                    new ItemStack(ObjectManager.getItem("scorchfirescepter"), 1, 0),
+                    new Object[]{"CCC", "CRC", "CRC",
+                            Character.valueOf('C'), ObjectManager.getItem("scorchfirecharge"),
+                            Character.valueOf('R'), Items.blaze_rod
+                    }));
+        }
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("afrittreat"), 1, 0),

@@ -4,8 +4,10 @@ import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
+import lycanite.lycanitesmobs.api.info.ItemInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.Subspecies;
+import lycanite.lycanitesmobs.api.item.ItemTreat;
 import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
@@ -72,6 +74,8 @@ public class FreshwaterMobs {
 
         ObjectManager.addItem("aquapulsecharge", new ItemAquaPulseCharge());
         ObjectManager.addItem("aquapulsescepter", new ItemScepterAquaPulse(), 2, 1, 1);
+
+        ObjectManager.addItem("stridertreat", new ItemTreat("stridertreat", group));
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("freshwateregg"), new DispenserBehaviorMobEggCustom());
@@ -156,12 +160,21 @@ public class FreshwaterMobs {
 				new Object[] { ObjectManager.getItem("seashellmaki") }
 			));*/
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-                new ItemStack(ObjectManager.getItem("aquapulsescepter"), 1, 0),
-                new Object[] { "CCC", "CRC", "CRC",
-                Character.valueOf('C'), ObjectManager.getItem("aquapulsecharge"),
-                Character.valueOf('R'), Items.blaze_rod
-        }));
+        if(ItemInfo.enableWeaponRecipes) {
+            GameRegistry.addRecipe(new ShapedOreRecipe(
+                    new ItemStack(ObjectManager.getItem("aquapulsescepter"), 1, 0),
+                    new Object[]{"CCC", "CRC", "CRC",
+                            Character.valueOf('C'), ObjectManager.getItem("aquapulsecharge"),
+                            Character.valueOf('R'), Items.blaze_rod
+                    }));
+        }
+
+        GameRegistry.addRecipe(new ShapedOreRecipe(
+                new ItemStack(ObjectManager.getItem("stridertreat"), 1, 0),
+                new Object[] { "TTT", "BBT", "TTT",
+                        Character.valueOf('T'), new ItemStack(Items.dye, 1, 4),
+                        Character.valueOf('B'), Items.bone
+                }));
 		
 		// ========== Smelting ==========
 		//GameRegistry.addSmelting(ObjectManager.getItem("ikameatraw"), new ItemStack(ObjectManager.getItem("ikameatcooked"), 1), 0.5f);

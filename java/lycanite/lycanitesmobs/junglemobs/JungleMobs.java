@@ -5,10 +5,7 @@ import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
-import lycanite.lycanitesmobs.api.info.GroupInfo;
-import lycanite.lycanitesmobs.api.info.MobInfo;
-import lycanite.lycanitesmobs.api.info.ObjectLists;
-import lycanite.lycanitesmobs.api.info.Subspecies;
+import lycanite.lycanitesmobs.api.info.*;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
 import lycanite.lycanitesmobs.api.item.ItemTreat;
 import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
@@ -283,13 +280,15 @@ public class JungleMobs {
 				new ItemStack(ObjectManager.getItem("concapedemeatcooked"), 1, 0),
 				new Object[] { ObjectManager.getItem("tropicalcurry") }
 			));
-		
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("poopscepter"), 1, 0),
-				new Object[] { "CCC", "CRC", "CRC",
-				Character.valueOf('C'), ObjectManager.getItem("poopcharge"),
-				Character.valueOf('R'), Items.blaze_rod
-			}));
+
+        if(ItemInfo.enableWeaponRecipes) {
+            GameRegistry.addRecipe(new ShapedOreRecipe(
+                    new ItemStack(ObjectManager.getItem("poopscepter"), 1, 0),
+                    new Object[]{"CCC", "CRC", "CRC",
+                            Character.valueOf('C'), ObjectManager.getItem("poopcharge"),
+                            Character.valueOf('R'), Items.blaze_rod
+                    }));
+        }
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("uvaraptortreat"), 1, 0),

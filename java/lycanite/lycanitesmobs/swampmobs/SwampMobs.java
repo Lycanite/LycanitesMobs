@@ -5,10 +5,7 @@ import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
-import lycanite.lycanitesmobs.api.info.GroupInfo;
-import lycanite.lycanitesmobs.api.info.MobInfo;
-import lycanite.lycanitesmobs.api.info.ObjectLists;
-import lycanite.lycanitesmobs.api.info.Subspecies;
+import lycanite.lycanitesmobs.api.info.*;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
 import lycanite.lycanitesmobs.api.item.ItemTreat;
 import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
@@ -223,43 +220,45 @@ public class SwampMobs {
 		}
 		
 		// ========== Crafting ==========
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("poisonrayscepter"), 1, 0),
-				new Object[] { "CPC", "CRC", "CRC",
-				Character.valueOf('C'), Items.fermented_spider_eye,
-				Character.valueOf('P'), ObjectManager.getItem("poisongland"),
-				Character.valueOf('R'), Items.blaze_rod
-			}));
-		
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("venomshotscepter"), 1, 0),
-				new Object[] { "CPC", "CRC", "CRC",
-				Character.valueOf('C'), Items.rotten_flesh,
-				Character.valueOf('P'), ObjectManager.getItem("poisongland"),
-				Character.valueOf('R'), Items.blaze_rod
-			}));
-		
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("venomaxeblade"), 1, 0),
-				new Object[] { "CCC", "CSC", "CJC",
-				Character.valueOf('C'), ObjectManager.getItem("poisongland"),
-				Character.valueOf('S'), Items.diamond_sword,
-				Character.valueOf('J'), ObjectManager.getItem("soulgazer")
-			}));
+        if(ItemInfo.enableWeaponRecipes) {
+            GameRegistry.addRecipe(new ShapedOreRecipe(
+                    new ItemStack(ObjectManager.getItem("poisonrayscepter"), 1, 0),
+                    new Object[]{"CPC", "CRC", "CRC",
+                            Character.valueOf('C'), Items.fermented_spider_eye,
+                            Character.valueOf('P'), ObjectManager.getItem("poisongland"),
+                            Character.valueOf('R'), Items.blaze_rod
+                    }));
 
-        GameRegistry.addRecipe(new ShapedOreRecipe(
-                new ItemStack(ObjectManager.getItem("goldenvenomaxeblade"), 1, 0),
-                new Object[] { "DDD", "DSD", "DDD",
-                        Character.valueOf('D'), Items.diamond,
-                        Character.valueOf('S'), ObjectManager.getItem("venomaxeblade")
-                }));
+            GameRegistry.addRecipe(new ShapedOreRecipe(
+                    new ItemStack(ObjectManager.getItem("venomshotscepter"), 1, 0),
+                    new Object[]{"CPC", "CRC", "CRC",
+                            Character.valueOf('C'), Items.rotten_flesh,
+                            Character.valueOf('P'), ObjectManager.getItem("poisongland"),
+                            Character.valueOf('R'), Items.blaze_rod
+                    }));
 
-        GameRegistry.addRecipe(new ShapedOreRecipe(
-                new ItemStack(ObjectManager.getItem("verdantvenomaxeblade"), 1, 0),
-                new Object[] { "DDD", "DSD", "DDD",
-                        Character.valueOf('D'), Items.emerald,
-                        Character.valueOf('S'), ObjectManager.getItem("venomaxeblade")
-                }));
+            GameRegistry.addRecipe(new ShapedOreRecipe(
+                    new ItemStack(ObjectManager.getItem("venomaxeblade"), 1, 0),
+                    new Object[]{"CCC", "CSC", "CJC",
+                            Character.valueOf('C'), ObjectManager.getItem("poisongland"),
+                            Character.valueOf('S'), Items.diamond_sword,
+                            Character.valueOf('J'), ObjectManager.getItem("soulgazer")
+                    }));
+
+            GameRegistry.addRecipe(new ShapedOreRecipe(
+                    new ItemStack(ObjectManager.getItem("goldenvenomaxeblade"), 1, 0),
+                    new Object[]{"DDD", "DSD", "DDD",
+                            Character.valueOf('D'), Items.diamond,
+                            Character.valueOf('S'), ObjectManager.getItem("venomaxeblade")
+                    }));
+
+            GameRegistry.addRecipe(new ShapedOreRecipe(
+                    new ItemStack(ObjectManager.getItem("verdantvenomaxeblade"), 1, 0),
+                    new Object[]{"DDD", "DSD", "DDD",
+                            Character.valueOf('D'), Items.emerald,
+                            Character.valueOf('S'), ObjectManager.getItem("venomaxeblade")
+                    }));
+        }
 		
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
 				new ItemStack(ObjectManager.getItem("mosspie"), 1, 0),

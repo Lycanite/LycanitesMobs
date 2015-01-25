@@ -4,10 +4,7 @@ import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
-import lycanite.lycanitesmobs.api.info.GroupInfo;
-import lycanite.lycanitesmobs.api.info.MobInfo;
-import lycanite.lycanitesmobs.api.info.ObjectLists;
-import lycanite.lycanitesmobs.api.info.Subspecies;
+import lycanite.lycanitesmobs.api.info.*;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
 import lycanite.lycanitesmobs.api.item.ItemTreat;
 import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
@@ -240,20 +237,22 @@ public class DesertMobs {
 				new ItemStack(ObjectManager.getItem("throwingscythe"), 17, 0),
 				new Object[] { Items.iron_ingot, ObjectManager.getItem("throwingscythe") }
 			));
-		
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("scythescepter"), 1, 0),
-				new Object[] { "CCC", "CRC", "CRC",
-				Character.valueOf('C'), ObjectManager.getItem("throwingscythe"),
-				Character.valueOf('R'), Items.blaze_rod
-			}));
-		
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("mudshotscepter"), 1, 0),
-				new Object[] { " C ", " R ", " R ",
-				Character.valueOf('C'), ObjectManager.getItem("mudshotcharge"),
-				Character.valueOf('R'), Items.blaze_rod
-			}));
+
+        if(ItemInfo.enableWeaponRecipes) {
+            GameRegistry.addRecipe(new ShapedOreRecipe(
+                    new ItemStack(ObjectManager.getItem("scythescepter"), 1, 0),
+                    new Object[]{"CCC", "CRC", "CRC",
+                            Character.valueOf('C'), ObjectManager.getItem("throwingscythe"),
+                            Character.valueOf('R'), Items.blaze_rod
+                    }));
+
+            GameRegistry.addRecipe(new ShapedOreRecipe(
+                    new ItemStack(ObjectManager.getItem("mudshotscepter"), 1, 0),
+                    new Object[]{" C ", " R ", " R ",
+                            Character.valueOf('C'), ObjectManager.getItem("mudshotcharge"),
+                            Character.valueOf('R'), Items.blaze_rod
+                    }));
+        }
 
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
 				new ItemStack(ObjectManager.getItem("ambercake"), 1, 0),

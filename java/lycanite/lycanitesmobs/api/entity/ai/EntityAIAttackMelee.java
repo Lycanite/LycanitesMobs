@@ -161,7 +161,7 @@ public class EntityAIAttackMelee extends EntityAIBase {
         EntityLivingBase attackTarget = this.host.getAttackTarget();
         this.host.getLookHelper().setLookPositionWithEntity(attackTarget, 30.0F, 30.0F);
 
-        double flightHeight= 0;
+        double flightHeight = 0;
         if(this.host.useFlightNavigator())
         	flightHeight = 0.25D;
 

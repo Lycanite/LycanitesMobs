@@ -91,8 +91,8 @@ public abstract class EntityAITarget extends EntityAIBase {
  	//                 Get Target Distance
  	// ==================================================
     protected double getTargetDistance() {
-    	IAttributeInstance attributeinstance = this.host.getEntityAttribute(SharedMonsterAttributes.followRange);
-        return attributeinstance == null ? 16.0D : attributeinstance.getAttributeValue();
+    	IAttributeInstance attributeInstance = this.host.getEntityAttribute(SharedMonsterAttributes.followRange);
+        return attributeInstance == null ? 16.0D : attributeInstance.getAttributeValue();
     }
     
     

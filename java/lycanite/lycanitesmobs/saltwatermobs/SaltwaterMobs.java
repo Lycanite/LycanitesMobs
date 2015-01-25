@@ -1,5 +1,13 @@
 package lycanite.lycanitesmobs.saltwatermobs;
 
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
@@ -12,11 +20,7 @@ import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
-import lycanite.lycanitesmobs.saltwatermobs.entity.EntityAbtu;
-import lycanite.lycanitesmobs.saltwatermobs.entity.EntityIka;
-import lycanite.lycanitesmobs.saltwatermobs.entity.EntityLacedon;
-import lycanite.lycanitesmobs.saltwatermobs.entity.EntityRaiko;
-import lycanite.lycanitesmobs.saltwatermobs.entity.EntitySkylus;
+import lycanite.lycanitesmobs.saltwatermobs.entity.*;
 import lycanite.lycanitesmobs.saltwatermobs.item.ItemSaltwaterEgg;
 import lycanite.lycanitesmobs.saltwatermobs.mobevent.MobEventSeaStorm;
 import net.minecraft.block.BlockDispenser;
@@ -27,14 +31,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = SaltwaterMobs.modid, name = SaltwaterMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid)
 public class SaltwaterMobs {

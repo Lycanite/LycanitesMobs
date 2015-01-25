@@ -29,6 +29,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
 public class EntityZoataur extends EntityCreatureTameable implements IGroupPredator, IMob {
@@ -105,9 +106,11 @@ public class EntityZoataur extends EntityCreatureTameable implements IGroupPreda
     // ==================================================
     // ========== On Damage ==========
     /** Called when this mob has received damage. Here a random blocking chance is applied. **/
-    public void onDamage() {
+    @Override
+    public void onDamage(DamageSource damageSrc, float damage) {
     	if(this.getRNG().nextDouble() > 0.6D)
     		this.setBlocking();
+        super.onDamage(damageSrc, damage);
     }
     
     // ========== Blocking ==========

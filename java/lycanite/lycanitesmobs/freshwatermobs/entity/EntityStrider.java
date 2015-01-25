@@ -1,11 +1,19 @@
 package lycanite.lycanitesmobs.freshwatermobs.entity;
 
+import lycanite.lycanitesmobs.ExtendedEntity;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
+import lycanite.lycanitesmobs.api.entity.EntityFear;
 import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
+import lycanite.lycanitesmobs.api.info.ObjectLists;
+import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.item.EntityBoat;
+import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,13 +22,18 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
 
 public class EntityStrider extends EntityCreatureTameable implements IMob {
 
-	EntityAIWander wanderAI = new EntityAIWander(this);
+    protected EntityAIWander wanderAI = new EntityAIWander(this);
+    protected EntityAIAttackMelee attackAI;
+
+    protected int pickupCooldown = 100;
 
     // ==================================================
  	//                    Constructor
@@ -49,13 +62,16 @@ public class EntityStrider extends EntityCreatureTameable implements IMob {
         this.getNavigator().setCanSwim(true);
         this.getNavigator().setAvoidsWater(false);
         this.tasks.addTask(0, new EntityAISwimming(this).setSink(true));
-        this.tasks.addTask(1, new EntityAIStayByWater(this).setSpeed(1.25D));
         this.tasks.addTask(2, this.aiSit);
-        this.tasks.addTask(3, new EntityAIAttackMelee(this).setLongMemory(false));
+        this.attackAI = new EntityAIAttackMelee(this).setLongMemory(false);
+        this.tasks.addTask(3, this.attackAI);
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
-        this.tasks.addTask(6, wanderAI);
+        this.tasks.addTask(5, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("stridertreat"))).setTemptDistanceMin(4.0D));
+        this.tasks.addTask(6, new EntityAIStayByWater(this).setSpeed(1.25D));
+        this.tasks.addTask(7, wanderAI);
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
+
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
         this.targetTasks.addTask(3, new EntityAITargetRevenge(this).setHelpCall(true));
@@ -91,12 +107,31 @@ public class EntityStrider extends EntityCreatureTameable implements IMob {
 	@Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
+        if(!this.worldObj.isRemote) {
+            // Wander Pause Rates:
+            if(this.isInWater())
+                this.wanderAI.setPauseRate(120);
+            else
+                this.wanderAI.setPauseRate(0);
 
-        // Wander Pause Rates:
-		if(this.isInWater())
-			this.wanderAI.setPauseRate(120);
-		else
-			this.wanderAI.setPauseRate(0);
+            // Entity Pickup Update:
+            this.attackAI.setEnabled(!this.hasPickupEntity());
+            if(this.hasPickupEntity()) {
+                ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(this.getPickupEntity());
+                if(extendedEntity != null)
+                    extendedEntity.setPickedUpByEntity(this);
+                if(this.ticksExisted % 20 == 0 && this.getRNG().nextBoolean()) {
+                    this.attackEntityAsMob(this.getPickupEntity(), 0.5F);
+                    if(this.getPickupEntity() instanceof EntityLivingBase) {
+                        if(ObjectManager.getPotionEffect("penetration") != null && ObjectManager.getPotionEffect("penetration").id < Potion.potionTypes.length)
+                            ((EntityLivingBase)this.getPickupEntity()).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("penetration").id, this.getEffectDuration(5), 1));
+                    }
+                }
+            }
+            else if(this.pickupCooldown > 0) {
+                this.pickupCooldown--;
+            }
+        }
     }
 
 	
@@ -138,17 +173,43 @@ public class EntityStrider extends EntityCreatureTameable implements IMob {
 	public boolean isPushedByWater() {
         return false;
     }
-    
-    
+
+
     // ==================================================
     //                      Attacks
     // ==================================================
-    // ========== Is Aggressive ==========
+    // ========== Melee Attack ==========
     @Override
-    public boolean isAggressive() {
-    	if(this.getAir() <= -100)
-    		return false;
-    	return super.isAggressive();
+    public boolean meleeAttack(Entity target, double damageScale) {
+        if(!super.meleeAttack(target, damageScale))
+            return false;
+
+        // Effect:
+        if(target instanceof EntityLivingBase) {
+            if(ObjectManager.getPotionEffect("penetration") != null && ObjectManager.getPotionEffect("penetration").id < Potion.potionTypes.length)
+                ((EntityLivingBase)target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("penetration").id, this.getEffectDuration(5), 1));
+        }
+
+        // Pickup:
+        if(this.canPickupEntity(target)) {
+            this.pickupEntity(target);
+            this.pickupCooldown = 100;
+        }
+
+        return true;
+    }
+
+
+    // ==================================================
+    //                   Taking Damage
+    // ==================================================
+    // ========== On Damage ==========
+    /** Called when this mob has received damage. Here a random blocking chance is applied. **/
+    @Override
+    public void onDamage(DamageSource damageSrc, float damage) {
+        if(this.hasPickupEntity() && this.getRNG().nextFloat() <= 0.25F)
+            this.dropPickupEntity();
+        super.onDamage(damageSrc, damage);
     }
     
     
@@ -168,10 +229,52 @@ public class EntityStrider extends EntityCreatureTameable implements IMob {
     public boolean canBreatheUnderwater() {
         return true;
     }
+
+
+    // ==================================================
+    //                     Abilities
+    // ==================================================
+    @Override
+    public double[] getPickupOffset(Entity entity) {
+        return new double[]{0, 5.5D, 0};
+    }
+
+    // ========== Pickup ==========
+    public boolean canPickupEntity(Entity entity) {
+        if(this.pickupCooldown > 0)
+            return false;
+        return super.canPickupEntity(entity);
+    }
+
+    public void dropPickupEntity() {
+        ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(this.getPickupEntity());
+        if(extendedEntity != null)
+            extendedEntity.setPickedUpByEntity(null);
+        this.pickupEntity = null;
+    }
     
     
     // ==================================================
     //                     Pet Control
     // ==================================================
     public boolean petControlsEnabled() { return true; }
+
+
+    // ==================================================
+    //                       Taming
+    // ==================================================
+    @Override
+    public boolean isTamingItem(ItemStack itemstack) {
+        return itemstack.getItem() == ObjectManager.getItem("stridertreat");
+    }
+
+
+    // ==================================================
+    //                       Healing
+    // ==================================================
+    // ========== Healing Item ==========
+    @Override
+    public boolean isHealingItem(ItemStack testStack) {
+        return ObjectLists.inItemList("cookedmeat", testStack);
+    }
 }

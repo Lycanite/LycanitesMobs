@@ -53,7 +53,7 @@ public class EntityStrider extends EntityCreatureTameable implements IMob {
         this.canGrow = true;
 
         this.setWidth = 4.9F;
-        this.setHeight = 9.9F;
+        this.setHeight = 10.9F;
         this.setupMob();
 
         this.stepHeight = 2.0F;
@@ -84,7 +84,7 @@ public class EntityStrider extends EntityCreatureTameable implements IMob {
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 80D);
+		baseAttributes.put("maxHealth", 100D);
 		baseAttributes.put("movementSpeed", 0.24D);
 		baseAttributes.put("knockbackResistance", 1.0D);
 		baseAttributes.put("followRange", 32D);

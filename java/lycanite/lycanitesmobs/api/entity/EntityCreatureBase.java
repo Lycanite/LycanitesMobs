@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import Reika.RotaryCraft.API.Interfaces.FlyingMob;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ExtendedEntity;
 import lycanite.lycanitesmobs.ExtendedWorld;
@@ -30,14 +31,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EnumCreatureAttribute;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.IEntityLivingData;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.boss.BossStatus;
 import net.minecraft.entity.boss.IBossDisplayData;
@@ -64,7 +58,7 @@ import net.minecraftforge.common.ForgeHooks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public abstract class EntityCreatureBase extends EntityLiving {
+public abstract class EntityCreatureBase extends EntityLiving implements FlyingMob {
 	/** A snapshot of the base health for each mob. This is used when calculating subspecies or tamed health. **/
 	public static Map<Class, Double> baseHealthMap = new HashMap<Class, Double>();
 	
@@ -693,6 +687,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Spawner Checking ==========
     /** Checks if a Monster Spawner that spawns this mob is near the XYZ locations, checks within an 8 block radius. **/
     public boolean isSpawnerNearby(World world, int x, int y, int z) {
+        if(world == null)
+            return false;
     	int checkRange = 8;
         if(!world.doChunksNearChunkExist(x, y, z, checkRange))
             return false;
@@ -1944,6 +1940,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     			return true;
     	return false;
     }
+    /** Returns true if this mob is currently flying. **/
+    public boolean isCurrentlyFlying() { return this.canFly(); }
     /** Can this entity by tempted (usually lured by an item) currently? **/
     public boolean canBeTempted() { return true; }
     

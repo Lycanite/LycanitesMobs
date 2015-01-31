@@ -28,13 +28,13 @@ public class ModelStrider extends ModelCustomObj {
     	parts = model.groupObjects;
     	
     	// Set Rotation Centers:
-        setPartCenter("mouth", 0F, 7.4F, 0.8F);
-    	setPartCenter("body", 0F, 8.0F, 0F);
+        setPartCenter("mouth", 0F, 8.4F, 0.8F);
+    	setPartCenter("body", 0F, 9.0F, 0F);
 
-    	setPartCenter("legleftfront", 1.0F, 7.6F, 0.5F);
-        setPartCenter("legrightfront", -1.0F, 7.6F, 0.5F);
-    	setPartCenter("legleftback", 1.0F, 7.6F, -0.4F);
-    	setPartCenter("legrightback", -1.0F, 7.6F, -0.4F);
+    	setPartCenter("legleftfront", 0.7F, 7.6F, 0.5F);
+        setPartCenter("legrightfront", -0.7F, 7.6F, 0.5F);
+    	setPartCenter("legleftback", 0.7F, 7.6F, -0.4F);
+    	setPartCenter("legrightback", -0.7F, 7.6F, -0.4F);
 
         this.lockHeadX = true;
         this.lockHeadY = true;
@@ -42,6 +42,7 @@ public class ModelStrider extends ModelCustomObj {
         // Trophy:
         this.trophyScale = 0.4F;
         this.trophyOffset = new float[] {0.0F, -0.2F, 0.0F};
+        this.bodyIsTrophy = true;
     }
     
     

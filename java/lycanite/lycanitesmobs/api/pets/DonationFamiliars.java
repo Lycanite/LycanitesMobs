@@ -138,6 +138,10 @@ public class DonationFamiliars {
             if(ObjectManager.getMob("spriggan") != null)
                 familiars.add(new PetEntryFamiliar("LeonzellSpriggan", player, "spriggan").setEntitySize(0.6D));
         }
+        if("Janadam7".equals(player.getCommandSenderName())) {
+            if(ObjectManager.getMob("cinder") != null)
+                familiars.add(new PetEntryFamiliar("Janadam7CinderDuckBoy", player, "cinder").setEntitySize(0.6D).setEntityName("DuckBoy").setEntitySubspeciesID(1));
+        }
 
         return familiars;
     }

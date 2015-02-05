@@ -54,7 +54,7 @@ public class SaltwaterMobs {
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
 		group = new GroupInfo(this, "Saltwater Mobs")
-				.setDimensionBlacklist("-1,1").setBiomes("OCEAN, BEACH").setDungeonThemes("WATER")
+				.setDimensionBlacklist("-1,1").setBiomes("OCEAN, BEACH").setDungeonThemes("WATER, DUNGEON")
                 .setEggName("saltwateregg");
 		group.loadFromConfig();
 

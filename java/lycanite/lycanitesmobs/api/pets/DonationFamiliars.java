@@ -40,9 +40,9 @@ public class DonationFamiliars {
             if(ObjectManager.getMob("grue") != null)
                 familiars.add(new PetEntryFamiliar("kehaanGrueMiniKehaan", player, "grue").setEntityName("Mini Kehaan").setEntitySubspeciesID(1).setEntitySize(0.6D));
         }
-        if("Augustus1979".equals(player.getCommandSenderName())) { // Gooderness
-            if(ObjectManager.getMob("beholder") != null)
-                familiars.add(new PetEntryFamiliar("kehaanGrueMiniKehaan", player, "beholder").setEntityName("Eye of the Baminati").setEntitySize(0.4D));
+        if("Gooderness".equals(player.getCommandSenderName()) || "Augustus1979".equals(player.getCommandSenderName())) {
+            if(ObjectManager.getMob("grue") != null)
+                familiars.add(new PetEntryFamiliar("GoodernessGrueChewie", player, "grue").setEntityName("Chewie").setEntitySubspeciesID(3).setEntitySize(0.3D));
         }
         if("ganymedes01".equals(player.getCommandSenderName())) {
             if(ObjectManager.getMob("reiver") != null)
@@ -74,9 +74,9 @@ public class DonationFamiliars {
             if(ObjectManager.getMob("jengu") != null)
                 familiars.add(new PetEntryFamiliar("beckyh2112Jengu", player, "jengu").setEntitySubspeciesID(1).setEntitySize(0.6D));
         }
-        if("Drcoolpig".equals(player.getCommandSenderName())) {
-            if(ObjectManager.getMob("jengu") != null)
-                familiars.add(new PetEntryFamiliar("DrcoolpigJengu", player, "jengu").setEntitySubspeciesID(1).setEntitySize(0.6D));
+        if("darknocious".equals(player.getCommandSenderName()) || "Drcoolpig".equals(player.getCommandSenderName())) {
+            if(ObjectManager.getMob("grue") != null)
+                familiars.add(new PetEntryFamiliar("darknociousGrue", player, "grue").setEntitySubspeciesID(1).setEntitySize(0.6D));
         }
         if("mindbound".equals(player.getCommandSenderName())) {
             if(ObjectManager.getMob("cinder") != null)
@@ -98,9 +98,9 @@ public class DonationFamiliars {
             if(ObjectManager.getMob("spriggan") != null)
                 familiars.add(new PetEntryFamiliar("ApocDevSprigganObliterator", player, "spriggan").setEntityName("Obliterator").setEntitySize(0.6D).setEntitySubspeciesID(1));
         }
-        if("Headwound_".equals(player.getCommandSenderName())) {
+        if("Headwound".equals(player.getCommandSenderName()) || "Headwound_".equals(player.getCommandSenderName())) {
             if(ObjectManager.getMob("cinder") != null)
-                familiars.add(new PetEntryFamiliar("Headwound_Cinder", player, "cinder").setEntitySize(0.6D).setEntitySubspeciesID(2));
+                familiars.add(new PetEntryFamiliar("HeadwoundCinder", player, "cinder").setEntitySize(0.6D).setEntitySubspeciesID(2));
         }
         if("deanpryzmenski".equals(player.getCommandSenderName())) {
             if(ObjectManager.getMob("zephyr") != null)

@@ -6,6 +6,8 @@ event.finished=%event% is over!
 #
 # Mob Events
 mobevent.bamstorm.name=Bamstorm
+mobevent.raptorrampage.name=Raptor Rampage
+mobevent.arachnophobia.name=Arachnophobia
 mobevent.halloween.name=Happy Halloween
 mobevent.roasting.name=Your Head Roasting On A Cinder Fire
 mobevent.rudolph.name=Rudolph The Bloodstained Jabberwock

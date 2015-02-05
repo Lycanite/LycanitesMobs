@@ -86,6 +86,10 @@ public class ExtendedEntity implements IExtendedEntityProperties {
 				if(((EntityLivingBase)this.pickedUpByEntity).getHealth() <= 0)
 					this.setPickedUpByEntity(null);
 			}
+            else if(this.entity instanceof EntityLivingBase && ObjectManager.getPotionEffect("weight") != null) {
+                if(((EntityLivingBase)(this.entity)).isPotionActive(ObjectManager.getPotionEffect("weight")))
+                    this.setPickedUpByEntity(null);
+            }
 			else if(this.entity.getDistanceSqToEntity(this.pickedUpByEntity) > 32D) {
 				this.setPickedUpByEntity(null);
 			}

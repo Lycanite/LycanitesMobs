@@ -3,6 +3,14 @@
         "category": "record",
         "sounds": [{"name": "mobevent/bamstorm", "stream": true}]
     },
+    "mobevent.raptorrampage": {
+        "category": "record",
+        "sounds": [{"name": "mobevent/raptorrampage", "stream": true}]
+    },
+    "mobevent.arachnophobia": {
+        "category": "record",
+        "sounds": [{"name": "mobevent/arachnophobia", "stream": true}]
+    },
     "mobevent.roasting": {
         "category": "record",
         "sounds": [{"name": "mobevent/roasting", "stream": true}]

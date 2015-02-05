@@ -71,7 +71,7 @@ public class InfernoMobs {
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
 		group = new GroupInfo(this, "Inferno Mobs")
-				.setDimensionBlacklist("").setBiomes("ALL").setDungeonThemes("FIERY, NETHER, DUNGEON")
+				.setDimensionBlacklist("").setBiomes("ALL").setDungeonThemes("FIERY, NETHER, NECRO")
                 .setEggName("infernoegg");
 		group.loadFromConfig();
 

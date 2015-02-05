@@ -3,12 +3,14 @@ package lycanite.lycanitesmobs.freshwatermobs.entity;
 import lycanite.lycanitesmobs.ExtendedEntity;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.EntityFear;
 import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -25,10 +27,13 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 
 import java.util.HashMap;
+import java.util.List;
 
-public class EntityStrider extends EntityCreatureTameable implements IMob {
+public class EntityStrider extends EntityCreatureRideable {
 
     protected EntityAIWander wanderAI = new EntityAIWander(this);
     protected EntityAIAttackMelee attackAI;
@@ -65,19 +70,21 @@ public class EntityStrider extends EntityCreatureTameable implements IMob {
         this.tasks.addTask(2, this.aiSit);
         this.attackAI = new EntityAIAttackMelee(this).setLongMemory(false);
         this.tasks.addTask(3, this.attackAI);
-        this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
+        //this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
         this.tasks.addTask(5, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("stridertreat"))).setTemptDistanceMin(4.0D));
         this.tasks.addTask(6, new EntityAIStayByWater(this).setSpeed(1.25D));
         this.tasks.addTask(7, wanderAI);
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
 
-        this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
-        this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
+        //this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
+        //this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
+        this.targetTasks.addTask(0, new EntityAITargetRiderRevenge(this));
+        this.targetTasks.addTask(1, new EntityAITargetRiderAttack(this));
         this.targetTasks.addTask(3, new EntityAITargetRevenge(this).setHelpCall(true));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class).setCheckSight(false));
         this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class).setCheckSight(false));
-        this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
+        //this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
     
     // ========== Stats ==========
@@ -95,8 +102,8 @@ public class EntityStrider extends EntityCreatureTameable implements IMob {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.fish), 0.5F).setBurningDrop(new ItemStack(Items.cooked_fished)).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Items.fish, 1, 3), 0.5F).setBurningDrop(new ItemStack(Items.cooked_fished, 1, 3)).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.fish), 1F).setBurningDrop(new ItemStack(Items.cooked_fished)).setMaxAmount(5));
+        this.drops.add(new DropRate(new ItemStack(Items.fish, 1, 3), 0.5F).setBurningDrop(new ItemStack(Items.cooked_fished, 1, 3)).setMaxAmount(5));
 	}
 	
 	
@@ -113,6 +120,10 @@ public class EntityStrider extends EntityCreatureTameable implements IMob {
                 this.wanderAI.setPauseRate(120);
             else
                 this.wanderAI.setPauseRate(0);
+
+            // Drop Owner When Tamed:
+            if(this.isTamed() && this.hasPickupEntity() && this.getPickupEntity() == this.getOwner())
+                this.dropPickupEntity();
 
             // Entity Pickup Update:
             this.attackAI.setEnabled(!this.hasPickupEntity());
@@ -134,6 +145,61 @@ public class EntityStrider extends EntityCreatureTameable implements IMob {
         }
     }
 
+
+    // ==================================================
+    //                   Mount Ability
+    // ==================================================
+    @Override
+    public void mountAbility(Entity rider) {
+        if(this.worldObj.isRemote)
+            return;
+
+        if(this.abilityToggled)
+            return;
+        if(this.getStamina() < this.getStaminaCost())
+            return;
+
+        // Penetrating Screech:
+        double distance = 10.0D;
+        List<EntityLivingBase> possibleTargets = this.worldObj.selectEntitiesWithinAABB(EntityLivingBase.class, this.boundingBox.expand(distance, distance, distance), null);
+        if(!possibleTargets.isEmpty()) {
+            for(EntityLivingBase possibleTarget : possibleTargets) {
+                if(possibleTarget != null && possibleTarget.isEntityAlive()
+                        && possibleTarget != this && possibleTarget != this.getRider()
+                        && !this.isOnSameTeam(possibleTarget)) {
+                    boolean doDamage = true;
+                    if(this.getRider() instanceof EntityPlayer) {
+                        if(MinecraftForge.EVENT_BUS.post(new AttackEntityEvent((EntityPlayer)this.getRider(), possibleTarget))) {
+                            doDamage = false;
+                        }
+                    }
+                    if(doDamage) {
+                        if(ObjectManager.getPotionEffect("penetration") != null && ObjectManager.getPotionEffect("penetration").id < Potion.potionTypes.length)
+                            possibleTarget.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("penetration").id, this.getEffectDuration(5), 1));
+                        else
+                            possibleTarget.addPotionEffect(new PotionEffect(Potion.weakness.id, 10 * 20, 0));
+                    }
+                }
+            }
+        }
+        this.playAttackSound();
+        this.setJustAttacked();
+
+        this.applyStaminaCost();
+    }
+
+    public float getStaminaCost() {
+        return 20;
+    }
+
+    public int getStaminaRecoveryWarmup() {
+        return 5 * 20;
+    }
+
+    public float getStaminaRecoveryMax() {
+        return 1.0F;
+    }
+
 	
     // ==================================================
     //                      Movement
@@ -142,10 +208,10 @@ public class EntityStrider extends EntityCreatureTameable implements IMob {
 	@Override
     public float getAISpeedModifier() {
     	if(this.isInWater()) // Checks specifically just for water.
-    		return 4.0F;
-    	else if(this.waterContact()) // Checks for water, rain, etc.
-    		return 1.5F;
-    	return 1.0F;
+            return 8F;
+    	if(this.waterContact()) // Checks for water, rain, etc.
+    		return 2F;
+        return super.getAISpeedModifier();
     }
     
 	// Pathing Weight:
@@ -172,6 +238,12 @@ public class EntityStrider extends EntityCreatureTameable implements IMob {
 	@Override
 	public boolean isPushedByWater() {
         return false;
+    }
+
+    // Mounted Y Offset:
+    @Override
+    public double getMountedYOffset() {
+        return (double)this.height * 1.0D;
     }
 
 
@@ -230,6 +302,11 @@ public class EntityStrider extends EntityCreatureTameable implements IMob {
         return true;
     }
 
+    @Override
+    public float getFallResistance() {
+        return 20;
+    }
+
 
     // ==================================================
     //                     Abilities
@@ -252,12 +329,19 @@ public class EntityStrider extends EntityCreatureTameable implements IMob {
             extendedEntity.setPickedUpByEntity(null);
         this.pickupEntity = null;
     }
+
+
+    // ==================================================
+    //                     Equipment
+    // ==================================================
+    @Override
+    public int getBagSize() { return 10; }
     
     
     // ==================================================
     //                     Pet Control
     // ==================================================
-    public boolean petControlsEnabled() { return true; }
+    public boolean petControlsEnabled() { return false; }
 
 
     // ==================================================

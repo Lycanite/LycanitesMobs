@@ -18,7 +18,7 @@ public class SharedMobEvents {
         MobEventBase bamstormEvent = new MobEventBamstorm("bamstorm", group);
 
         SpawnTypeBase bamLandSpawner = new SpawnTypeLand("bamstorm_land")
-                .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
+                .setChance(1.0D).setBlockLimit(32).setMobLimit(10);
         bamLandSpawner.materials = new Material[] {Material.air};
         bamLandSpawner.ignoreBiome = true;
         bamLandSpawner.ignoreLight = true;
@@ -31,7 +31,7 @@ public class SharedMobEvents {
         bamstormEvent.addSpawner(bamLandSpawner);
 
         SpawnTypeBase bamSkySpawner = new SpawnTypeSky("bamstorm_sky")
-                .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
+                .setChance(1.0D).setBlockLimit(32).setMobLimit(5);
         bamSkySpawner.materials = new Material[] {Material.air};
         bamSkySpawner.ignoreBiome = true;
         bamSkySpawner.ignoreLight = true;
@@ -42,6 +42,52 @@ public class SharedMobEvents {
         bamstormEvent.addSpawner(bamSkySpawner);
 
         MobEventManager.instance.addWorldEvent(bamstormEvent);
+
+
+        // Raptor Rampage:
+        MobEventBase event = new MobEventBase("raptorrampage", group);
+
+        SpawnTypeBase spawner = new SpawnTypeLand("raptorrampage_land")
+                .setChance(1.0D).setBlockLimit(32).setMobLimit(10);
+        spawner.materials = new Material[] {Material.air};
+        spawner.ignoreBiome = true;
+        spawner.ignoreLight = true;
+        spawner.forceSpawning = true;
+        spawner.ignoreMobConditions = true;
+        spawner.addSpawn(MobInfo.getFromName("ventoraptor"));
+        spawner.addSpawn(MobInfo.getFromName("uvaraptor"));
+        event.addSpawner(spawner);
+
+        spawner = new SpawnTypeSky("raptorrampage_sky")
+                .setChance(1.0D).setBlockLimit(32).setMobLimit(10);
+        spawner.materials = new Material[] {Material.air};
+        spawner.ignoreBiome = true;
+        spawner.ignoreLight = true;
+        spawner.forceSpawning = true;
+        spawner.ignoreMobConditions = true;
+        spawner.addSpawn(MobInfo.getFromName("ventoraptor"));
+        spawner.addSpawn(MobInfo.getFromName("uvaraptor"));
+        event.addSpawner(spawner);
+
+        MobEventManager.instance.addWorldEvent(event);
+
+
+        // Arachnophobia:
+        event = new MobEventBase("arachnophobia", group);
+
+        spawner = new SpawnTypeLand("arachnophobia_land")
+                .setChance(1.0D).setBlockLimit(32).setMobLimit(10);
+        spawner.materials = new Material[] {Material.air};
+        spawner.ignoreBiome = true;
+        spawner.ignoreLight = true;
+        spawner.forceSpawning = true;
+        spawner.ignoreMobConditions = true;
+        spawner.addSpawn(MobInfo.getFromName("tarantula"));
+        spawner.addSpawn(MobInfo.getFromName("frostweaver"));
+        spawner.addSpawn(MobInfo.getFromName("trite"));
+        event.addSpawner(spawner);
+
+        MobEventManager.instance.addWorldEvent(event);
 
 
 

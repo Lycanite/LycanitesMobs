@@ -79,6 +79,10 @@
         "category": "hostile",
         "sounds": [{"name": "entity/strider/eat", "stream": false}]
     },
+    "entity.strider.jump": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/strider/jump", "stream": false}]
+    },
     "projectile.aquapulse": {
         "category": "ambient",
         "sounds": [{"name": "projectile/aquapulse", "stream": false}]

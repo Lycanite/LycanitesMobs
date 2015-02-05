@@ -81,7 +81,7 @@ public class JungleMobs {
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
 		group = new GroupInfo(this, "Jungle Mobs")
-				.setDimensionBlacklist("-1,1").setBiomes("JUNGLE").setDungeonThemes("JUNGLE, DUNGEON, URBAN")
+				.setDimensionBlacklist("-1,1").setBiomes("JUNGLE").setDungeonThemes("JUNGLE, DUNGEON")
                 .setEggName("jungleegg");
 		group.loadFromConfig();
 		

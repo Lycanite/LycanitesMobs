@@ -71,7 +71,7 @@ public class ModelStrider extends ModelCustomObj {
         }
 		
     	// Walking:
-    	float walkSwing = 0.3F;
+    	float walkSwing = 0.15F;
     	if(partName.equals("legrightfront") || partName.equals("legleftback"))
     		rotX += Math.toDegrees(MathHelper.cos(time * 0.6662F + (float)Math.PI) * walkSwing * distance);
     	if(partName.equals("legleftfront") || partName.equals("legrightback"))
@@ -95,11 +95,11 @@ public class ModelStrider extends ModelCustomObj {
     // ==================================================
     //              Rotate and Translate
     // ==================================================
-    @Override
+    /*@Override
     public void childScale(String partName) {
         if(partName.equals("head"))
             translate(-(getPartCenter(partName)[0] / 2), -(getPartCenter(partName)[1] / 2), -(getPartCenter(partName)[2] / 2));
         else
             super.childScale(partName);
-    }
+    }*/
 }

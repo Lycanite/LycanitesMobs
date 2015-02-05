@@ -2061,6 +2061,9 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 			return false;
 		if((entity.ridingEntity != null && !(entity.ridingEntity instanceof EntityBoat) && !(entity.ridingEntity instanceof EntityMinecart)) || entity.riddenByEntity != null)
 			return false;
+        if(entity instanceof EntityLivingBase && ObjectManager.getPotionEffect("weight") != null)
+            if(((EntityLivingBase)entity).isPotionActive(ObjectManager.getPotionEffect("weight")))
+                return false;
 		return extendedEntity.pickedUpByEntity == null || extendedEntity.pickedUpByEntity instanceof EntityFear;
     }
     

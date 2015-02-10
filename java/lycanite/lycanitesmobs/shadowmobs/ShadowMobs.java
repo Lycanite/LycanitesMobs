@@ -103,6 +103,7 @@ public class ShadowMobs {
         ObjectManager.addItem("geistliver", new ItemGeistLiver());
 
         ObjectManager.addItem("chupacabratreat", new ItemTreat("chupacabratreat", group));
+        ObjectManager.addItem("shadetreat", new ItemTreat("shadetreat", group));
 		
 		
 		// ========== Create Blocks ==========
@@ -152,6 +153,14 @@ public class ShadowMobs {
         newMob.spawnInfo.setSpawnTypes("UNDERGROUND").setDespawn(false)
                 .setBiomes("ALL, -OCEAN").setDimensions("-1, 1").setDimensionWhitelist(false)
                 .setSpawnWeight(6).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
+        ObjectManager.addMob(newMob);
+
+        newMob = new MobInfo(group, "shade", EntityChupacabra.class, 0x000402, 0x102336)
+                .setPeaceful(true).setSummonable(false).setSummonCost(3).setDungeonLevel(3)
+                .addSubspecies(new Subspecies("keppel", "uncommon")).addSubspecies(new Subspecies("russet", "uncommon"));
+        newMob.spawnInfo.setSpawnTypes("UNDERGROUND, DARKNESS").setDespawn(false)
+                .setBiomes("ALL, -OCEAN").setDimensions("-1, 1").setDimensionWhitelist(false)
+                .setSpawnWeight(1).setAreaLimit(2).setGroupLimits(1, 3).setLightDark(false, true);
         ObjectManager.addMob(newMob);
 
 		
@@ -245,6 +254,13 @@ public class ShadowMobs {
                 new ItemStack(ObjectManager.getItem("chupacabratreat"), 1, 0),
                 new Object[] { "TTT", "BBT", "TTT",
                         Character.valueOf('T'), ObjectManager.getItem("geistliver"),
+                        Character.valueOf('B'), Items.bone
+                }));
+
+        GameRegistry.addRecipe(new ShapedOreRecipe(
+                new ItemStack(ObjectManager.getItem("shadetreat"), 1, 0),
+                new Object[] { "TTT", "BBT", "TTT",
+                        Character.valueOf('T'), Items.ender_pearl,
                         Character.valueOf('B'), Items.bone
                 }));
 		

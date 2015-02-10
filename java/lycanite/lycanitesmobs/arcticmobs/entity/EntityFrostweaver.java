@@ -157,6 +157,12 @@ public class EntityFrostweaver extends EntityCreatureTameable implements IMob, I
    	//                     Immunities
    	// ==================================================
     @Override
+    public boolean isDamageTypeApplicable(String type) {
+        if(type.equals("ooze")) return false;
+        return super.isDamageTypeApplicable(type);
+    }
+
+    @Override
     public boolean isPotionApplicable(PotionEffect par1PotionEffect) {
         if(par1PotionEffect.getPotionID() == Potion.moveSlowdown.id) return false;
         if(par1PotionEffect.getPotionID() == Potion.hunger.id) return false;

@@ -18,6 +18,7 @@ public class DonationFamiliars {
     public List<PetEntry> getFamilairsForPlayer(EntityPlayer player) {
         List<PetEntry> familiars = new ArrayList<PetEntry>();
 
+        // Nephrite Network:
         if("Lycanite".equals(player.getCommandSenderName())) {
             if(ObjectManager.getMob("grue") != null)
                 familiars.add(new PetEntryFamiliar("LycaniteGrueJasper", player, "grue").setEntityName("Jasper").setEntitySubspeciesID(2).setEntitySize(0.6D));
@@ -141,6 +142,10 @@ public class DonationFamiliars {
         if("Janadam7".equals(player.getCommandSenderName())) {
             if(ObjectManager.getMob("cinder") != null)
                 familiars.add(new PetEntryFamiliar("Janadam7CinderDuckBoy", player, "cinder").setEntitySize(0.6D).setEntityName("DuckBoy").setEntitySubspeciesID(1));
+        }
+        if("scottysnyder".equals(player.getCommandSenderName())) {
+            if(ObjectManager.getMob("spriggan") != null)
+                familiars.add(new PetEntryFamiliar("scottysnyderspriggan", player, "spriggan").setEntitySize(0.6D));
         }
 
         return familiars;

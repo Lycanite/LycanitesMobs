@@ -95,6 +95,27 @@ public class EntityTundra extends EntityProjectileBase {
     //========== Place Block ==========
     @Override
     public void placeBlock(World world, int x, int y, int z) {
+        if(ObjectManager.getBlock("ooze") != null) {
+            if(this.canDestroyBlockSub(x, y, z))
+                world.setBlock(x, y, z, ObjectManager.getBlock("ooze"), 12, 3);
+            if(this.canDestroyBlockSub(x + 1, y, z))
+                world.setBlock(x + 1, y, z, ObjectManager.getBlock("ooze"), 11, 3);
+            if(this.canDestroyBlockSub(x - 1, y, z))
+                world.setBlock(x - 1, y, z, ObjectManager.getBlock("ooze"), 11, 3);
+            if(this.canDestroyBlockSub(x, y, z + 1))
+                world.setBlock(x, y, z + 1, ObjectManager.getBlock("ooze"), 11, 3);
+            if(this.canDestroyBlockSub(x, y, z - 1))
+                world.setBlock(x, y, z - 1, ObjectManager.getBlock("ooze"), 11, 3);
+        }
+
+        Block blockBase = world.getBlock(x, y, z);
+        if(blockBase == Blocks.dirt || blockBase == Blocks.grass)
+            world.setBlock(x, y - 1, z, Blocks.snow, 0, 3);
+    }
+
+    /** Before Ooze
+    @Override
+    public void placeBlock(World world, int x, int y, int z) {
     	if(ObjectManager.getBlock("Frostfire") != null) {
     		if(this.canDestroyBlockSub(x, y, z))
 		   		 world.setBlock(x, y, z, ObjectManager.getBlock("Frostfire"), 12, 3);
@@ -125,7 +146,7 @@ public class EntityTundra extends EntityProjectileBase {
     	Block blockBase = world.getBlock(x, y, z);
     	if(blockBase == Blocks.dirt || blockBase == Blocks.grass)
     		world.setBlock(x, y - 1, z, Blocks.snow, 0, 3);
-    }
+    }**/
     
     //========== On Impact Particles/Sounds ==========
     @Override

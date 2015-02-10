@@ -5,25 +5,24 @@ import cpw.mods.fml.relauncher.SideOnly;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.model.ModelCustomObj;
-import lycanite.lycanitesmobs.infernomobs.InfernoMobs;
 import lycanite.lycanitesmobs.shadowmobs.ShadowMobs;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.model.obj.WavefrontObject;
 
 @SideOnly(Side.CLIENT)
-public class ModelChupacabra extends ModelCustomObj {
+public class ModelShade extends ModelCustomObj {
 
 	// ==================================================
   	//                    Constructors
   	// ==================================================
-    public ModelChupacabra() {
+    public ModelShade() {
         this(1.0F);
     }
 
-    public ModelChupacabra(float shadowSize) {
+    public ModelShade(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("chupacabra", ShadowMobs.group, "entity/chupacabra");
+    	model = (WavefrontObject)AssetManager.getObjModel("shade", ShadowMobs.group, "entity/shade");
     	
     	// Get Parts:
     	parts = model.groupObjects;
@@ -40,8 +39,7 @@ public class ModelChupacabra extends ModelCustomObj {
     	setPartCenter("legleft", 0.25F, 0.55F, -0.5F);
     	setPartCenter("legright", -0.25F, 0.55F, -0.5F);
     	
-    	setPartCenter("tailleft", 0.1F, 0.5F, -0.74F);
-        setPartCenter("tailright", -0.1F, 0.5F, -0.74F);
+    	setPartCenter("tail", 0F, 0.5F, -0.74F);
 
         // Trophy:
         this.trophyScale = 0.8F;
@@ -82,13 +80,17 @@ public class ModelChupacabra extends ModelCustomObj {
         if(partName.equals("mouth")) {
             this.rotate((float)-Math.toDegrees(MathHelper.cos(loop * 0.1F) * 0.1F - 0.1F), 0.0F, 0.0F);
         }
-    	if(partName.equals("tailleft")) {
-    		rotX = (float)-Math.toDegrees(MathHelper.cos(loop * 0.1F) * 0.05F - 0.05F);
-    		rotY = (float)-Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F - 0.05F);
-    	}
-        if(partName.equals("tailright")) {
-            rotX = (float)Math.toDegrees(MathHelper.cos(loop * 0.1F) * 0.05F - 0.05F);
-            rotY = (float)Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F - 0.05F);
+        if(partName.equals("armleft")) {
+            rotZ -= Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F + 0.05F);
+            rotX -= Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
+        }
+        if(partName.equals("armright")) {
+            rotZ += Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F + 0.05F);
+            rotX += Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
+        }
+        if(partName.equals("tail")) {
+            rotX = (float)-Math.toDegrees(MathHelper.cos(loop * 0.1F) * 0.05F - 0.05F);
+            rotY = (float)-Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F - 0.05F);
         }
 		
     	// Walking:
@@ -110,17 +112,5 @@ public class ModelChupacabra extends ModelCustomObj {
 		this.rotate(rotation, angleX, angleY, angleZ);
     	this.rotate(rotX, rotY, rotZ);
     	this.translate(posX, posY, posZ);
-    }
-
-
-    // ==================================================
-    //              Rotate and Translate
-    // ==================================================
-    @Override
-    public void childScale(String partName) {
-        if(partName.equals("head"))
-            translate(-(getPartCenter(partName)[0] / 2), -(getPartCenter(partName)[1] / 2), -(getPartCenter(partName)[2] / 2));
-        else
-            super.childScale(partName);
     }
 }

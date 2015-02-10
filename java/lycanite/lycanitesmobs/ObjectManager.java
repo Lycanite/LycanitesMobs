@@ -13,6 +13,7 @@ import net.minecraft.dispenser.BehaviorProjectileDispense;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -32,6 +33,8 @@ public class ObjectManager {
 	public static Map<String, MobInfo> mobs = new HashMap<String, MobInfo>();
 	
 	public static Map<String, Class> projectiles = new HashMap<String, Class>();
+
+    public static Map<String, DamageSource> damageSources = new HashMap<String, DamageSource>();
 	
 	public static GroupInfo currentGroup;
 	
@@ -140,6 +143,13 @@ public class ObjectManager {
 		addProjectile(name, entityClass);
 		BlockDispenser.dispenseBehaviorRegistry.putObject(item, dispenseBehaviour);
 	}
+
+
+    // ========== Damage Source ==========
+    public static void addDamageSource(String name, DamageSource damageSource) {
+        name = name.toLowerCase();
+        damageSources.put(name, damageSource);
+    }
 	
 	
     // ==================================================
@@ -178,4 +188,11 @@ public class ObjectManager {
 		if(!mobs.containsKey(mobName)) return null;
 		return mobs.get(mobName);
 	}
+
+    // ========== Damage Source ==========
+    public static DamageSource getDamageSource(String name) {
+        name = name.toLowerCase();
+        if(!damageSources.containsKey(name)) return null;
+        return damageSources.get(name);
+    }
 }

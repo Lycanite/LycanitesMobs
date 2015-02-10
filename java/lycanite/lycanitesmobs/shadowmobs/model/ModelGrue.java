@@ -22,7 +22,7 @@ public class ModelGrue extends ModelCustomObj {
     
     public ModelGrue(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Grue", ShadowMobs.group, "entity/grue");
+    	model = (WavefrontObject)AssetManager.getObjModel("grue", ShadowMobs.group, "entity/grue");
     	
     	// Get Parts:
     	parts = model.groupObjects;

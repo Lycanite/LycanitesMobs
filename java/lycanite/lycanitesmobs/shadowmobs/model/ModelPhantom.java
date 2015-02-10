@@ -22,7 +22,7 @@ public class ModelPhantom extends ModelCustomObj {
     
     public ModelPhantom(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Phantom", ShadowMobs.group, "entity/phantom");
+    	model = (WavefrontObject)AssetManager.getObjModel("phantom", ShadowMobs.group, "entity/phantom");
     	
     	// Get Parts:
     	parts = model.groupObjects;

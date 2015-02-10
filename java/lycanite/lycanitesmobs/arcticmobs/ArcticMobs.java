@@ -13,10 +13,7 @@ import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeLand;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
-import lycanite.lycanitesmobs.arcticmobs.block.BlockFrostCloud;
-import lycanite.lycanitesmobs.arcticmobs.block.BlockFrostfire;
-import lycanite.lycanitesmobs.arcticmobs.block.BlockFrostweb;
-import lycanite.lycanitesmobs.arcticmobs.block.BlockIcefire;
+import lycanite.lycanitesmobs.arcticmobs.block.*;
 import lycanite.lycanitesmobs.arcticmobs.dispenser.*;
 import lycanite.lycanitesmobs.arcticmobs.entity.*;
 import lycanite.lycanitesmobs.arcticmobs.item.*;
@@ -33,7 +30,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -75,6 +74,13 @@ public class ArcticMobs {
 
 		// ========== Set Current Group ==========
 		ObjectManager.setCurrentGroup(group);
+
+        // ========== Create Fluids ==========
+        AssetManager.addSound("ooze", group, "block.ooze");
+        ObjectManager.addDamageSource("ooze", new DamageSource("ooze"));
+        Fluid fluid = ObjectManager.addFluid(new Fluid("ooze"));
+        fluid.setLuminosity(10).setDensity(3000).setViscosity(5000).setTemperature(-1000);
+        ObjectManager.addBlock("ooze", new BlockFluidOoze(fluid));
 		
 		// ========== Create Items ==========
 		ObjectManager.addItem("arcticegg", new ItemArcticEgg());
@@ -106,14 +112,16 @@ public class ArcticMobs {
 		ObjectManager.addItem("arixtreat", new ItemTreat("arixtreat", group));
         ObjectManager.addItem("serpixtreat", new ItemTreat("serpixtreat", group));
 
-		// ========== Create Blocks ==========
-		ObjectManager.addBlock("frostweb", new BlockFrostweb());
-		
-		AssetManager.addSound("frostcloud", group, "block.frostcloud");
-		ObjectManager.addBlock("frostcloud", new BlockFrostCloud());
-		
-		AssetManager.addSound("frostfire", group, "block.frostfire");
-		ObjectManager.addBlock("frostfire", new BlockFrostfire());
+        ObjectManager.addItem("bucketooze", new ItemBucketOoze(fluid).setContainerItem(Items.bucket));
+
+        // ========== Create Blocks ==========
+        ObjectManager.addBlock("frostweb", new BlockFrostweb());
+
+        AssetManager.addSound("frostcloud", group, "block.frostcloud");
+        ObjectManager.addBlock("frostcloud", new BlockFrostCloud());
+
+        AssetManager.addSound("frostfire", group, "block.frostfire");
+        ObjectManager.addBlock("frostfire", new BlockFrostfire());
 
         AssetManager.addSound("icefire", group, "block.icefire");
         ObjectManager.addBlock("icefire", new BlockIcefire());
@@ -146,21 +154,21 @@ public class ArcticMobs {
         newMob = new MobInfo(group, "wendigo", EntityWendigo.class, 0xCCCCFF, 0x0055FF)
 		        .setPeaceful(false).setSummonable(false).setSummonCost(8).setDungeonLevel(2)
 		        .addSubspecies(new Subspecies("keppel", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER")
+		newMob.spawnInfo.setSpawnTypes("MONSTER, OOZE")
 				.setSpawnWeight(4).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
         newMob = new MobInfo(group, "arix", EntityArix.class, 0xDDDDFF, 0x9999FF)
                 .setPeaceful(false).setSummonable(false).setSummonCost(2).setDungeonLevel(1)
 		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"));
-        newMob.spawnInfo.setSpawnTypes("SKY")
+        newMob.spawnInfo.setSpawnTypes("SKY, OOZE")
                 .setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
         ObjectManager.addMob(newMob);
 
         newMob = new MobInfo(group, "serpix", EntitySerpix.class, 0xCCEEFF, 0x0000BB)
                 .setPeaceful(false).setSummonable(false).setSummonCost(8).setDungeonLevel(2)
                 .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
-        newMob.spawnInfo.setSpawnTypes("MONSTER")
+        newMob.spawnInfo.setSpawnTypes("MONSTER, OOZE")
                 .setSpawnWeight(4).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);
         ObjectManager.addMob(newMob);
 		

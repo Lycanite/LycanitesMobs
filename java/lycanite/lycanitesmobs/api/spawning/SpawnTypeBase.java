@@ -166,6 +166,16 @@ public class SpawnTypeBase {
 		lavaBlockSpawner.loadFromConfig();
         CustomSpawner.instance.updateSpawnTypes.add(lavaBlockSpawner);
         spawnTypes.add(lavaBlockSpawner);
+
+        // Ooze Spawner:
+        SpawnTypeBase spawner = new SpawnTypeBlock("Ooze")
+                .setRate(400).setChance(0.5D).setRange(32).setBlockLimit(64).setMobLimit(32);
+        spawner.blockStrings = new String[] {"ooze"};
+        spawner.ignoreBiome = true;
+        spawner.ignoreLight = true;
+        spawner.loadFromConfig();
+        CustomSpawner.instance.updateSpawnTypes.add(spawner);
+        spawnTypes.add(spawner);
 		
 		// Portal Spawner:
 		SpawnTypeBase portalBlockSpawner = new SpawnTypeBlock("Portal")

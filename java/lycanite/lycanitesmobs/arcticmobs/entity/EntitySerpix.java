@@ -213,6 +213,7 @@ public class EntitySerpix extends EntityCreatureTameable implements IGroupPredat
    	// ==================================================
     @Override
     public boolean isDamageTypeApplicable(String type) {
+        if(type.equals("ooze")) return false;
     	if(type.equals("cactus")) return false;
     	if(type.equals("inWall")) return false;
     	return super.isDamageTypeApplicable(type);

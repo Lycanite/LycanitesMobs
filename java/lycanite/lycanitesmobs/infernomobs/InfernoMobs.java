@@ -78,7 +78,7 @@ public class InfernoMobs {
 		// ========== Set Current Group ==========
 		ObjectManager.setCurrentGroup(group);
 		
-		// ========== Create Blocks/Fluids ==========
+		// ========== Create Fluids ==========
 		Fluid fluid = ObjectManager.addFluid(new Fluid("purelava"));
 		fluid.setLuminosity(15).setDensity(3000).setViscosity(5000).setTemperature(1100);
 		ObjectManager.addBlock("purelava", new BlockFluidPureLava(fluid));

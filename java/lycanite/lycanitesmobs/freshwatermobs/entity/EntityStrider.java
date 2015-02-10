@@ -276,7 +276,7 @@ public class EntityStrider extends EntityCreatureRideable {
     //                   Taking Damage
     // ==================================================
     // ========== On Damage ==========
-    /** Called when this mob has received damage. Here a random blocking chance is applied. **/
+    /** Called when this mob has received damage. Here there is a random chance of this mob dropping any picked up entities. **/
     @Override
     public void onDamage(DamageSource damageSrc, float damage) {
         if(this.hasPickupEntity() && this.getRNG().nextFloat() <= 0.25F)

@@ -49,6 +49,8 @@ public class EntityArix extends EntityCreatureTameable implements IMob, IGroupIc
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 0;
         this.experience = 5;
+        this.spawnsOnLand = true;
+        this.spawnsInWater = true;
         this.hasAttackSound = false;
         this.flySoundSpeed = 20;
         
@@ -182,6 +184,11 @@ public class EntityArix extends EntityCreatureTameable implements IMob, IGroupIc
   	// ==================================================
     @Override
     public boolean canFly() { return this.flightMode; }
+
+    @Override
+    public boolean canBreatheUnderwater() {
+        return true;
+    }
     
     
     // ==================================================

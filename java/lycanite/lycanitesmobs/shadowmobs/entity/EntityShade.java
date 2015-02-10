@@ -39,6 +39,7 @@ public class EntityShade extends EntityCreatureRideable implements IGroupPredato
         this.defense = 2;
         this.experience = 10;
         this.hasAttackSound = true;
+        this.hasJumpSound = true;
         
         this.setWidth = 0.9F;
         this.setHeight = 2.8F;
@@ -71,7 +72,6 @@ public class EntityShade extends EntityCreatureRideable implements IGroupPredato
         this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(EntityPigZombie.class));
         if(MobInfo.predatorsAttackAnimals) {
             this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupAlpha.class));
-            this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupAnimal.class));
             this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(EntityAnimal.class));
         }
         this.targetTasks.addTask(6, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
@@ -83,7 +83,7 @@ public class EntityShade extends EntityCreatureRideable implements IGroupPredato
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
 		baseAttributes.put("maxHealth", 30D);
-		baseAttributes.put("movementSpeed", 0.24D);
+		baseAttributes.put("movementSpeed", 0.26D);
 		baseAttributes.put("knockbackResistance", 0.5D);
 		baseAttributes.put("followRange", 16D);
 		baseAttributes.put("attackDamage", 3D);
@@ -134,7 +134,7 @@ public class EntityShade extends EntityCreatureRideable implements IGroupPredato
     // Mounted Y Offset:
     @Override
     public double getMountedYOffset() {
-        return (double)this.height * 1.0D;
+        return (double)this.height * 0.85D;
     }
 	
 	

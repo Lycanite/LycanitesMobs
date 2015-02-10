@@ -11,7 +11,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.init.Blocks;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -30,7 +34,7 @@ public class BlockFluidOoze extends BlockFluidClassic {
 	//                   Constructor
 	// ==================================================
 	public BlockFluidOoze(Fluid fluid) {
-		super(fluid, Material.lava);
+		super(fluid, Material.water);
 		this.blockName = "ooze";
         this.setBlockName(this.blockName);
 		this.group = ArcticMobs.group;
@@ -48,34 +52,13 @@ public class BlockFluidOoze extends BlockFluidClassic {
 	public boolean canDisplace(IBlockAccess world, int x, int y, int z) {
 		Block block = world.getBlock(x, y, z);
 		
-		/*/ Renewable Fluid:
-		if(block == this) {
-			BlockFluidClassic fluidBlock = (BlockFluidClassic)block;
-			if(world.getBlockMetadata(x, y, z) != 0) {
-				byte otherSourceBlocks = 0;
-				ArrayList<int[]> adjBlockCoords = new ArrayList<int[]>();
-				adjBlockCoords.add(new int[] {x - 1, y, z});
-				adjBlockCoords.add(new int[] {x + 1, y, z});
-				adjBlockCoords.add(new int[] {x, y + 1, z});
-				adjBlockCoords.add(new int[] {x, y, z - 1});
-				adjBlockCoords.add(new int[] {x, y, z + 1});
-				for(int[] adjBlockCoord : adjBlockCoords) {
-					Block adjBlock = world.getBlock(adjBlockCoord[0], adjBlockCoord[1], adjBlockCoord[2]);
-					int adjMetadata = world.getBlockMetadata(adjBlockCoord[0], adjBlockCoord[1], adjBlockCoord[2]);
-					if(adjBlock == this && adjMetadata == 0)
-						otherSourceBlocks++;
-					if(otherSourceBlocks > 1)
-						break;
-				}
-				
-				if(otherSourceBlocks > 1) {
-					if(world instanceof World) {
-						((World)world).setBlock(x, y, z, this, 0, 3);
-					}
-				}
-			}
+		// Freeze Water:
+		if(block == Blocks.water) {
+            if(world instanceof World) {
+                ((World)world).setBlock(x, y, z, Blocks.ice, 0, 3);
+            }
 			return false;
-		}*/
+		}
 		
 		if(block.getMaterial().isLiquid()) return false;
 		return super.canDisplace(world, x, y, z);
@@ -93,8 +76,24 @@ public class BlockFluidOoze extends BlockFluidClassic {
 	// ==================================================
 	@Override
 	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
-		if(entity instanceof EntityItem)
-			entity.attackEntityFrom(ObjectManager.getDamageSource("ooze"), 8F);
+        if(entity != null) {
+            // Damage:
+            if (entity instanceof EntityItem)
+                entity.attackEntityFrom(ObjectManager.getDamageSource("ooze"), 8F);
+            else {
+                entity.attackEntityFrom(ObjectManager.getDamageSource("ooze"), 1F);
+            }
+
+            // Extinguish:
+            if(entity.isBurning())
+                entity.extinguish();
+
+            // Effects:
+            if(entity instanceof EntityLivingBase) {
+                ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 5 * 20, 0));
+                ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(Potion.hunger.id, 5 * 20, 0));
+            }
+        }
 		super.onEntityCollidedWithBlock(world, x, y, z, entity);
 	}
     

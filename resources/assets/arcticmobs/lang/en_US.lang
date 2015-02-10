@@ -54,6 +54,8 @@ item.arixtreat.name=Arix Treat
 item.arixtreat.description=An icy treat for icy imps!
 item.serpixtreat.name=Serpix Treat
 item.serpixtreat.description=Serpix love to devour frosty flesh and bone!
+item.bucketooze.name=Ooze Bucket
+item.bucketooze.description=Ooze is an icy gel substance, causes slowness, hunger and applies low damage over time.
 #
 # Blocks
 tile.frostweb.name=Frostweb
@@ -64,3 +66,10 @@ tile.frostfire.name=Frostfire
 tile.frostfire.description=A magical flame that superfreezes, will cause damage and apply movement slowdown. Can spawn Reivers.
 tile.icefire.name=Icefire
 tile.icefire.description=A magical flame that freezes, will cause damage and apply movement slowdown.
+tile.ooze.name=Ooze
+tile.ooze.description=An icy gel substance, causes slowness, hunger and applies low damage over time.
+#
+#
+#
+# ========== Damage Types ==========
+death.attack.ooze=%1$s was frozen in the icy ooze!

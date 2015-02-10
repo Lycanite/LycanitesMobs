@@ -44,6 +44,8 @@ public class EntityWendigo extends EntityCreatureBase implements IMob, IGroupIce
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 3;
         this.experience = 10;
+        this.spawnsOnLand = true;
+        this.spawnsInWater = true;
         this.hasAttackSound = false;
         
         this.setWidth = 1.9F;
@@ -173,6 +175,15 @@ public class EntityWendigo extends EntityCreatureBase implements IMob, IGroupIce
         if(potionEffect.getPotionID() == Potion.moveSlowdown.id) return false;
         if(potionEffect.getPotionID() == Potion.hunger.id) return false;
         return super.isPotionApplicable(potionEffect);
+    }
+
+
+    // ==================================================
+    //                     Abilities
+    // ==================================================
+    @Override
+    public boolean canBreatheUnderwater() {
+        return true;
     }
 
 

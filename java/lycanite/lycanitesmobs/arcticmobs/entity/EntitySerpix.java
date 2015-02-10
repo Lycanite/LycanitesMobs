@@ -40,6 +40,8 @@ public class EntitySerpix extends EntityCreatureTameable implements IGroupPredat
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
         this.defense = 3;
         this.experience = 10;
+        this.spawnsOnLand = true;
+        this.spawnsInWater = true;
         this.hasAttackSound = false;
 
         this.babySpawnChance = 0.1D;
@@ -192,6 +194,11 @@ public class EntitySerpix extends EntityCreatureTameable implements IGroupPredat
    	// ==================================================
     public boolean canBeTempted() {
     	return this.isChild();
+    }
+
+    @Override
+    public boolean canBreatheUnderwater() {
+        return true;
     }
     
     

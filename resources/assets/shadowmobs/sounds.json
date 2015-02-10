@@ -127,6 +127,42 @@
         "category": "hostile",
         "sounds": [{"name": "entity/chupacabra/eat", "stream": false}]
     },
+    "entity.shade.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/shade/say", "stream": false}]
+    },
+    "entity.shade.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/shade/hurt", "stream": false}]
+    },
+    "entity.shade.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/shade/death", "stream": false}]
+    },
+    "entity.shade.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/shade/attack", "stream": false}]
+    },
+    "entity.shade.step": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/shade/step", "stream": false}]
+    },
+    "entity.shade.jump": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/shade/jump", "stream": false}]
+    },
+    "entity.shade.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/shade/tame", "stream": false}]
+    },
+    "entity.shade.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/shade/beg", "stream": false}]
+    },
+    "entity.shade.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/shade/eat", "stream": false}]
+    },
     "projectile.spectralbolt": {
         "category": "ambient",
         "sounds": [{"name": "projectile/spectralbolt", "stream": false}]

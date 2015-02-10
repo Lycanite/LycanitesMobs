@@ -490,7 +490,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     	LycanitesMobs.printDebug("MobSpawns", "Block preference.");
         if(this.getBlockPathWeight(i, j, k) < 0.0F && this.spawnedFromType == null)
         	return false;
-    	LycanitesMobs.printDebug("MobSpawns", "Checking for liquid (water, lava, etc).");
+    	LycanitesMobs.printDebug("MobSpawns", "Checking for liquid (water, lava, ooze, etc).");
         if(!this.spawnsInWater && this.worldObj.isAnyLiquid(this.boundingBox))
         	return false;
         else if(!this.spawnsOnLand && !this.worldObj.isAnyLiquid(this.boundingBox))

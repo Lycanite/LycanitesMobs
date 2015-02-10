@@ -17,6 +17,8 @@ entity.shadowmobs.geist.name=Geist
 entity.shadowmobs.geist.description=Geists are opportunistic creatures that deform and climb into undead lifeforms and feed off whatever their host is capable of killing. When their host dies, Geists leap out and reform for a surprise attack!
 entity.shadowmobs.chupacabra.name=Chupacabra
 entity.shadowmobs.chupacabra.description=Dreadful creatures that lurk within the darkest caverns beneath the earth, their insatiable hunger for flesh can be used to manipulate and farm them. Their bite is not only fatal but heals them.
+entity.shadowmobs.shade.name=Shade
+entity.shadowmobs.shade.description=Wicked embodiments of deadly shadow magic. Shades are large, fast and deadly. Their attacks drain a bit of health and they have a horrific howl sending all that oppose them running in fear!
 #
 # Items
 item.shadowspawn.name=Spawn
@@ -26,6 +28,8 @@ item.chupacabrameatcooked.name=Cooked Chupacabra Meat
 item.chupacabrameatcooked.description=While the creature it comes from is disgusting, once cooked, this rich meat is absolutely delicious!
 item.chupacabratreat.name=Chupacabra Treat
 item.chupacabratreat.description=Adult Chupacabra are too savage to tame but their young can be bribed with this shadowy treat!
+item.shadetreat.name=Shade Treat
+item.shadetreat.description=An expensive treat to make but worth it, Shades are very useful battle mounts.
 item.bloodchili.name=Blood Chili
 item.bloodchili.description=An intense chili that empowers the consumer allowing them to consume the life force of any creature they attack, healing them.
 item.geistliver.name=Geist Liver

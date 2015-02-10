@@ -155,7 +155,7 @@ public class ShadowMobs {
                 .setSpawnWeight(6).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
         ObjectManager.addMob(newMob);
 
-        newMob = new MobInfo(group, "shade", EntityChupacabra.class, 0x000402, 0x102336)
+        newMob = new MobInfo(group, "shade", EntityShade.class, 0x000402, 0x102336)
                 .setPeaceful(true).setSummonable(false).setSummonCost(3).setDungeonLevel(3)
                 .addSubspecies(new Subspecies("keppel", "uncommon")).addSubspecies(new Subspecies("russet", "uncommon"));
         newMob.spawnInfo.setSpawnTypes("UNDERGROUND, DARKNESS").setDespawn(false)

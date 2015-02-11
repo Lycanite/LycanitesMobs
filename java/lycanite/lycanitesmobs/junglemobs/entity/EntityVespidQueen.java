@@ -128,7 +128,7 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
   	// ==================================================
     @Override
     public boolean isPersistant() {
-    	if(this.hiveFoundationsSet() && this.worldObj.difficultySetting != EnumDifficulty.PEACEFUL)
+    	if(this.hasHome() && this.worldObj.difficultySetting != EnumDifficulty.PEACEFUL)
     		return true;
     	return super.isPersistant();
     }
@@ -159,7 +159,7 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
 	        }
 	        
 	        // Spawn Babies:
-	        if(!this.worldObj.isRemote && this.hiveFoundationsSet() && this.ticksExisted % 20 == 0) {
+	        if(!this.worldObj.isRemote && this.hiveFoundationsSet() && this.ticksExisted % 60 == 0) {
 				this.allyUpdate();
 	        }
         }
@@ -180,7 +180,7 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
 		// Spawn Babies:
 		if(this.vespidQueenSwarmLimit > 0 && this.nearbyCreatureCount(EntityVespid.class, 32D) < this.vespidQueenSwarmLimit) {
 			float random = this.rand.nextFloat();
-			if(random <= 0.1F) {
+			if(random <= 0.05F) {
 				EntityLivingBase minion = this.spawnAlly(this.posX - 2 + (random * 4), this.posY, this.posZ - 2 + (random * 4));
 				if(minion instanceof EntityCreatureAgeable) {
 		    		((EntityCreatureAgeable)minion).setGrowingAge(((EntityCreatureAgeable) minion).growthTime);

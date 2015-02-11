@@ -134,7 +134,7 @@ public class EntityEnt extends EntityCreatureTameable implements IMob, IGroupPla
     		return false;
     	
     	// Leech:
-    	float leeching = this.getAttackDamage(damageScale);
+    	float leeching = this.getEffectStrength(this.getAttackDamage(damageScale));
     	this.heal(leeching);
         
         return true;

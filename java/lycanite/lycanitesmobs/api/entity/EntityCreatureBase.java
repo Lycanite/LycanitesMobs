@@ -931,6 +931,12 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     public int getEffectDuration(int seconds) {
 		return Math.round(((float)seconds * (float)(this.getEffectMultiplier())) * 20) + (int)this.getEffectBoost();
     }
+    /** When given a base effect strngth value such as a life drain amount, this will return the scaled value with difficulty and other modifiers taken into account
+     * value - The base effect strength.
+     **/
+    public float getEffectStrength(float value) {
+        return Math.round((value * (float)(this.getEffectMultiplier()))) + this.getEffectBoost();
+    }
     
     // ========= Pierce ==========
     /** Returns the armor piercing multipler. **/
@@ -1636,6 +1642,11 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     public boolean attackEntityAsMob(Entity target, double damageScale) {
         if(!this.isEntityAlive())
             return false;
+        if(target == null)
+            return false;
+        if(!this.canEntityBeSeen(target))
+            return false;
+
         float damage = this.getAttackDamage(damageScale);
         int i = 0;
         

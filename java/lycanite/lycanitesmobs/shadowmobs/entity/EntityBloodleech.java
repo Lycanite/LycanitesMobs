@@ -47,7 +47,7 @@ public class EntityBloodleech extends EntityProjectileBase {
     @Override
     public void onDamage(EntityLivingBase target, float damage, boolean attackSuccess) {
     	if(this.getThrower() != null)
-            this.getThrower().heal(damage);
+            this.getThrower().heal(this.getEffectStrength(damage));
     	super.onDamage(target, damage, attackSuccess);
     }
     

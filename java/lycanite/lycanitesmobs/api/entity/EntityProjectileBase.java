@@ -326,6 +326,15 @@ public class EntityProjectileBase extends EntityThrowable {
     	 return seconds * 20;
      }
 
+    /** When given a base effect strngth value such as a life drain amount, this will return the scaled value with difficulty and other modifiers taken into account
+     * value - The base effect strength.
+     **/
+    public float getEffectStrength(float value) {
+        if(this.getThrower() != null && this.getThrower() instanceof EntityCreatureBase)
+            return ((EntityCreatureBase)this.getThrower()).getEffectStrength(value);
+        return value;
+    }
+
 
     // ==================================================
     //                      Utility

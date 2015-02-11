@@ -40,6 +40,7 @@ public class EntityShade extends EntityCreatureRideable implements IGroupPredato
         this.experience = 10;
         this.hasAttackSound = true;
         this.hasJumpSound = true;
+        this.canGrow = false;
         
         this.setWidth = 0.9F;
         this.setHeight = 2.8F;
@@ -148,7 +149,7 @@ public class EntityShade extends EntityCreatureRideable implements IGroupPredato
         	return false;
 
         // Leech:
-        float leeching = this.getAttackDamage(damageScale) / 4;
+        float leeching = this.getEffectStrength(this.getAttackDamage(damageScale) / 4);
         this.heal(leeching);
 
         if(this.getRNG().nextFloat() <= 0.15F)

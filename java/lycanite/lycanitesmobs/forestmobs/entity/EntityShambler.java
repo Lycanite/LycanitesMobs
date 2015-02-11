@@ -131,7 +131,7 @@ public class EntityShambler extends EntityCreatureTameable implements IMob, IGro
     		return false;
     	
     	// Leech:
-    	float leeching = this.getAttackDamage(damageScale) / 2;
+    	float leeching = this.getEffectStrength(this.getAttackDamage(damageScale) / 2);
     	this.heal(leeching);
     	
     	// Paralysis:

@@ -130,7 +130,7 @@ public class EntityTrent extends EntityCreatureBase implements IMob, IGroupPlant
     		return false;
     	
     	// Leech:
-    	float leeching = this.getAttackDamage(damageScale);
+    	float leeching = this.getEffectStrength(this.getAttackDamage(damageScale));
     	this.heal(leeching);
     	
     	// Paralysis:

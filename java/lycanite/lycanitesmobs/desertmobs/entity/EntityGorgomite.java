@@ -48,8 +48,8 @@ public class EntityGorgomite extends EntityCreatureBase implements IMob, IGroupP
         this.experience = 3;
         this.hasAttackSound = true;
         
-        this.setWidth = 0.6F;
-        this.setHeight = 0.5F;
+        this.setWidth = 1.3F;
+        this.setHeight = 0.9F;
         this.setupMob();
         
         this.gorgomiteSwarmLimit = ConfigBase.getConfig(this.group, "general").getInt("Features", "Gorgomite Swarm Limit", this.gorgomiteSwarmLimit, "Limits how many Gorgomites there can be when swarming.");

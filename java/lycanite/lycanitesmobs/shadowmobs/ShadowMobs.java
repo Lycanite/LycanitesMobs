@@ -196,7 +196,7 @@ public class ShadowMobs {
 		// ========== Mob Events ==========
 		MobEventBase mobEvent = new MobEventShadowGames("shadowgames", this.group).setDimensions("-1");
 		mobEvent.minDay = 10;
-		SpawnTypeBase eventSpawner = new SpawnTypeSky("shadowgames")
+		SpawnTypeBase eventSpawner = new SpawnTypeSky("shadowgames_sky")
             .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
         eventSpawner.materials = new Material[] {Material.air};
         eventSpawner.ignoreBiome = true;
@@ -205,6 +205,16 @@ public class ShadowMobs {
         eventSpawner.ignoreMobConditions = true;
     	eventSpawner.addSpawn(MobInfo.getFromName("grue"));
     	eventSpawner.addSpawn(MobInfo.getFromName("phantom"));
+        mobEvent.addSpawner(eventSpawner);
+        eventSpawner = new SpawnTypeLand("shadowgames_land")
+                .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
+        eventSpawner.materials = new Material[] {Material.air};
+        eventSpawner.ignoreBiome = true;
+        eventSpawner.ignoreLight = true;
+        eventSpawner.forceSpawning = true;
+        eventSpawner.ignoreMobConditions = true;
+        eventSpawner.addSpawn(MobInfo.getFromName("grue"));
+        eventSpawner.addSpawn(MobInfo.getFromName("shade"));
         mobEvent.addSpawner(eventSpawner);
         MobEventManager.instance.addWorldEvent(mobEvent);
 

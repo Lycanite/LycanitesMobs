@@ -80,7 +80,7 @@ public class EntityTrent extends EntityCreatureBase implements IMob, IGroupPlant
 		baseAttributes.put("maxHealth", 140D);
 		baseAttributes.put("movementSpeed", 0.18D);
 		baseAttributes.put("knockbackResistance", 1.0D);
-		baseAttributes.put("followRange", 32D);
+		baseAttributes.put("followRange", 16D);
 		baseAttributes.put("attackDamage", 4D);
         super.applyEntityAttributes(baseAttributes);
     }

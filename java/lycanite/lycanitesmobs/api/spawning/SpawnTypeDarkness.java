@@ -20,6 +20,10 @@ public class SpawnTypeDarkness extends SpawnTypeBase {
 	public boolean displayChatWarnings = true;
     /** The highest light level this spawner will work in. 5 Is above ground in the overworld at night time. 0 is pitch black. **/
     public int lightLevelMax = 5;
+    public int checkRate = 5 * 20;
+    public double lowChance = 0.125F;
+    public double medChance = 0.25F;
+    public double hiChance = 0.5F;
 	public Map<EntityPlayer, Byte> darknessLevels = new HashMap<EntityPlayer, Byte>();
 
     // ==================================================
@@ -40,6 +44,10 @@ public class SpawnTypeDarkness extends SpawnTypeBase {
         ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "spawning");
         this.displayChatWarnings = config.getBool("Spawner Features", "Darkness Spawn Chat Warnings", this.displayChatWarnings, "Set to false to prevent the darkness warning messages from showing.");
         this.lightLevelMax = config.getInt("Spawner Features", "Darkness Spawn Highest Light Level", this.lightLevelMax, "The highest light level the Darkness spawn type will work in. 5 Is above ground in the overworld at night time. 0 is pitch black.");
+        this.checkRate = config.getInt("Spawner Features", "Darkness Spawn Check Rate", this.checkRate, "The rate in ticks (20 ticks = 1 second) that the light level is checked, a higher rate will make things spawn much faster from the darkness.");
+        this.lowChance = config.getDouble("Spawner Features", "Darkness Spawn Low Chance", this.lowChance, "The chance from 0.0-1.0 that a monster will spawn when in most dark light levels.");
+        this.medChance = config.getDouble("Spawner Features", "Darkness Spawn Medium Chance", this.medChance, "The chance from 0.0-1.0 that a monster will spawn when in light level 1 (almost the darkest).");
+        this.hiChance = config.getDouble("Spawner Features", "Darkness Spawn High Chance", this.hiChance, "The chance from 0.0-1.0 that a monster will spawn when in light level 0 (the darkest).");
     }
 	
 	
@@ -69,7 +77,7 @@ public class SpawnTypeDarkness extends SpawnTypeBase {
         if(isValidBlock)
             isValidBlock = block.getMaterial() != Material.water;
 
-        if(!player.capabilities.isCreativeMode && isValidBlock && tick % (5 * 20) == 0 && this.enabled && this.hasSpawns()) {
+        if(!player.capabilities.isCreativeMode && isValidBlock && tick % this.checkRate == 0 && this.enabled && this.hasSpawns()) {
 			int lightLevel = world.getBlockLightValue(playerCoords.posX, playerCoords.posY, playerCoords.posZ);
 			byte darknessLevel = 0;
 			if(this.darknessLevels.containsKey(player))
@@ -77,11 +85,11 @@ public class SpawnTypeDarkness extends SpawnTypeBase {
             LycanitesMobs.printDebug("CustomSpawner", "Darkness Level Read: " + darknessLevel);
 
 			if(lightLevel <= this.lightLevelMax) {
-				float chance = 0.125F;
+				double chance = this.lowChance;
 				if(lightLevel <= 0)
-					chance = 0.5F;
+					chance = this.hiChance;
 				else if(lightLevel == 1)
-					chance = 0.25F;
+					chance = this.medChance;
 				float roll = player.getRNG().nextFloat();
 				ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
 		    	if(worldExt != null) {

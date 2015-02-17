@@ -94,7 +94,7 @@ public class EntityStrider extends EntityCreatureRideable {
 		baseAttributes.put("maxHealth", 100D);
 		baseAttributes.put("movementSpeed", 0.24D);
 		baseAttributes.put("knockbackResistance", 1.0D);
-		baseAttributes.put("followRange", 32D);
+		baseAttributes.put("followRange", 16D);
 		baseAttributes.put("attackDamage", 2D);
         super.applyEntityAttributes(baseAttributes);
     }
@@ -110,6 +110,7 @@ public class EntityStrider extends EntityCreatureRideable {
     // ==================================================
     //                      Updates
     // ==================================================
+    private int pickupTime = 0;
 	// ========== Living Update ==========
 	@Override
     public void onLivingUpdate() {
@@ -131,7 +132,7 @@ public class EntityStrider extends EntityCreatureRideable {
                 ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(this.getPickupEntity());
                 if(extendedEntity != null)
                     extendedEntity.setPickedUpByEntity(this);
-                if(this.ticksExisted % 20 == 0 && this.getRNG().nextBoolean()) {
+                if(this.pickupTime++ % 40 == 0) {
                     this.attackEntityAsMob(this.getPickupEntity(), 0.5F);
                     if(this.getPickupEntity() instanceof EntityLivingBase) {
                         if(ObjectManager.getPotionEffect("penetration") != null && ObjectManager.getPotionEffect("penetration").id < Potion.potionTypes.length)
@@ -139,8 +140,10 @@ public class EntityStrider extends EntityCreatureRideable {
                     }
                 }
             }
-            else if(this.pickupCooldown > 0) {
-                this.pickupCooldown--;
+            else {
+                if(this.pickupCooldown > 0)
+                    this.pickupCooldown--;
+                this.pickupTime = 0;
             }
         }
     }

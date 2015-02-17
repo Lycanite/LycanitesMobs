@@ -19,6 +19,7 @@ import lycanite.lycanitesmobs.arcticmobs.entity.*;
 import lycanite.lycanitesmobs.arcticmobs.item.*;
 import lycanite.lycanitesmobs.arcticmobs.mobevent.MobEventSubZero;
 import lycanite.lycanitesmobs.arcticmobs.mobevent.MobEventWintersGrasp;
+import lycanite.lycanitesmobs.arcticmobs.worldgen.WorldGeneratorArctic;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
@@ -202,6 +203,9 @@ public class ArcticMobs {
 		// ========== Set Current Group ==========
 		ObjectManager.setCurrentGroup(group);
 		ConfigBase config = ConfigBase.getConfig(group, "spawning");
+
+        // ========== World Generation ==========
+        GameRegistry.registerWorldGenerator(new WorldGeneratorArctic(), 0);
 		
 		// ========== Mob Events ==========
         MobEventBase mobEvent = new MobEventSubZero("subzero", this.group);

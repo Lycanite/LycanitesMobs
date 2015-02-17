@@ -1,7 +1,6 @@
 package lycanite.lycanitesmobs.arcticmobs.worldgen;
 
 import cpw.mods.fml.common.IWorldGenerator;
-import lycanite.lycanitesmobs.ObjectManager;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -11,15 +10,15 @@ import net.minecraftforge.common.BiomeDictionary;
 import java.util.Random;
 
 public class WorldGeneratorArctic implements IWorldGenerator {
-    protected final WorldGenerator oozeLakes;
-    protected final WorldGenerator oozePockets;
+    protected final WorldGenOozeLakes oozeLakes;
+    //protected final WorldGenerator oozePockets;
 
     // ==================================================
     //                    Constructors
     // ==================================================
     public WorldGeneratorArctic() {
         this.oozeLakes = new WorldGenOozeLakes();
-        this.oozePockets = new WorldGenOozePockets();
+        //this.oozePockets = new WorldGenOozePockets();
     }
 
 
@@ -37,21 +36,22 @@ public class WorldGeneratorArctic implements IWorldGenerator {
                  break;
              }
          }
-         if(!typeValid)
-             return;
 
-         if(random.nextInt(25) == 0) {
+         if(typeValid) {
              int x = chunkX * 16 + random.nextInt(16);
              int z = chunkZ * 16 + random.nextInt(16);
-             int y = world.getTopSolidOrLiquidBlock(x, z);
+             int y = random.nextInt(128);
              this.oozeLakes.generate(world, random, x, y, z);
          }
 
-         if(random.nextInt(25) == 0) {
+         if(random.nextDouble() <= this.oozeLakes.generateChance) {
              int x = chunkX * 16 + random.nextInt(16);
              int z = chunkZ * 16 + random.nextInt(16);
-             int y = world.getTopSolidOrLiquidBlock(x, z);
-             this.oozePockets.generate(world, random, x, y, z);
+             int top = Math.max(1, world.getTopSolidOrLiquidBlock(x, z) - 10);
+             if(top > 0) {
+                 int y = random.nextInt(top);
+                 this.oozeLakes.generate(world, random, x, y, z);
+             }
          }
     }
 }

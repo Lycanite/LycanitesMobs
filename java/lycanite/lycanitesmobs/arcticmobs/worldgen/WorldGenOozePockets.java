@@ -1,5 +1,6 @@
 package lycanite.lycanitesmobs.arcticmobs.worldgen;
 
+import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.config.ConfigSpawning;
 import lycanite.lycanitesmobs.api.info.GroupInfo;

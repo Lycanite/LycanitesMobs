@@ -17,6 +17,7 @@ import java.util.Random;
 public class WorldGenOozeLakes extends WorldGenLakes {
     public String name = "Ooze Lakes";
     public GroupInfo group = ArcticMobs.group;
+    public double generateChance = 0.04D;
 
     // Dimensions:
     /** A comma separated list of dimensions that this event can occur in. As read from the config **/
@@ -35,10 +36,14 @@ public class WorldGenOozeLakes extends WorldGenLakes {
         super(ObjectManager.getBlock("ooze"));
 
         ConfigSpawning config = ConfigSpawning.getConfig(this.group, "worldgen");
-        ConfigSpawning.SpawnDimensionSet dimensions = config.getDimensions("Event Dimensions", this.name + " Dimensions", this.dimensionEntries);
+
+        config.setCategoryComment("WorldGen Chances", "The chance that each worldgen will generate. You can set this to 0 to disable the worldgen or use the dimension black/white list. 1 = all over, 0.04 fairly rare.");
+        this.generateChance = config.getDouble("WorldGen Chances", this.name + " Chance", this.generateChance, "In COLD and SNOWY tagged biomes, this chance becomes 1 and lakes can appear above ground.");
+
+        ConfigSpawning.SpawnDimensionSet dimensions = config.getDimensions("WorldGen Dimensions", this.name + " Dimensions", this.dimensionEntries);
         this.dimensionBlacklist = dimensions.dimensionIDs;
         this.dimensionTypes = dimensions.dimensionTypes;
-        this.dimensionWhitelist = config.getBool("Event Dimensions", this.name + " Dimensions Whitelist Mode", this.dimensionWhitelist);
+        this.dimensionWhitelist = config.getBool("WorldGen Dimensions", this.name + " Dimensions Whitelist Mode", this.dimensionWhitelist);
     }
 
 
@@ -47,6 +52,8 @@ public class WorldGenOozeLakes extends WorldGenLakes {
     // ==================================================
     @Override
     public boolean generate(World world, Random random, int x, int y, int z) {
+        if(this.generateChance <= 0)
+            return false;
         if(!this.isValidDimension(world))
             return false;
         return super.generate(world, random, x, y, z);

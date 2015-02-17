@@ -73,7 +73,7 @@ public class EntityWendigo extends EntityCreatureBase implements IMob, IGroupIce
 		baseAttributes.put("maxHealth", 80D);
 		baseAttributes.put("movementSpeed", 0.16D);
 		baseAttributes.put("knockbackResistance", 1.0D);
-		baseAttributes.put("followRange", 32D);
+		baseAttributes.put("followRange", 16D);
 		baseAttributes.put("attackDamage", 1D);
         super.applyEntityAttributes(baseAttributes);
     }

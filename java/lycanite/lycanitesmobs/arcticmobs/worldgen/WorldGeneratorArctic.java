@@ -12,12 +12,14 @@ import java.util.Random;
 
 public class WorldGeneratorArctic implements IWorldGenerator {
     protected final WorldGenerator oozeLakes;
+    protected final WorldGenerator oozePockets;
 
     // ==================================================
     //                    Constructors
     // ==================================================
     public WorldGeneratorArctic() {
         this.oozeLakes = new WorldGenOozeLakes();
+        this.oozePockets = new WorldGenOozePockets();
     }
 
 
@@ -43,6 +45,13 @@ public class WorldGeneratorArctic implements IWorldGenerator {
              int z = chunkZ * 16 + random.nextInt(16);
              int y = world.getTopSolidOrLiquidBlock(x, z);
              this.oozeLakes.generate(world, random, x, y, z);
+         }
+
+         if(random.nextInt(25) == 0) {
+             int x = chunkX * 16 + random.nextInt(16);
+             int z = chunkZ * 16 + random.nextInt(16);
+             int y = world.getTopSolidOrLiquidBlock(x, z);
+             this.oozePockets.generate(world, random, x, y, z);
          }
     }
 }

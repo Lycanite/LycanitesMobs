@@ -1,21 +1,16 @@
 package lycanite.lycanitesmobs.arcticmobs.worldgen;
 
-import cpw.mods.fml.common.IWorldGenerator;
-import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.config.ConfigSpawning;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
-import net.minecraft.block.Block;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraft.world.gen.feature.WorldGenLakes;
+import net.minecraft.world.gen.feature.WorldGenLiquids;
 
 import java.util.Random;
 
-public class WorldGenOozeLakes extends WorldGenLakes {
-    public String name = "Ooze Lakes";
+public class WorldGenOozePockets extends WorldGenLiquids {
+    public String name = "Ooze Pockets";
     public GroupInfo group = ArcticMobs.group;
 
     // Dimensions:
@@ -31,7 +26,7 @@ public class WorldGenOozeLakes extends WorldGenLakes {
     // ==================================================
     //                    Constructors
     // ==================================================
-    public WorldGenOozeLakes() {
+    public WorldGenOozePockets() {
         super(ObjectManager.getBlock("ooze"));
 
         ConfigSpawning config = ConfigSpawning.getConfig(this.group, "worldgen");

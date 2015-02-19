@@ -1,4 +1,4 @@
-package lycanite.lycanitesmobs.arcticmobs.worldgen;
+package lycanite.lycanitesmobs.infernomobs.worldgen;
 
 import cpw.mods.fml.common.IWorldGenerator;
 import lycanite.lycanitesmobs.api.IWorldGenBase;
@@ -7,14 +7,14 @@ import net.minecraft.world.chunk.IChunkProvider;
 
 import java.util.Random;
 
-public class WorldGeneratorArctic implements IWorldGenerator {
-    protected final IWorldGenBase oozeLakes;
+public class WorldGeneratorInferno implements IWorldGenerator {
+    protected final IWorldGenBase pureLavaLakes;
 
     // ==================================================
     //                    Constructors
     // ==================================================
-    public WorldGeneratorArctic() {
-        this.oozeLakes = new WorldGenOozeLakes();
+    public WorldGeneratorInferno() {
+        this.pureLavaLakes = new WorldGenPureLavaLakes();
     }
 
 
@@ -23,6 +23,6 @@ public class WorldGeneratorArctic implements IWorldGenerator {
     // ==================================================
      @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
-         this.oozeLakes.onWorldGen(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
+         this.pureLavaLakes.onWorldGen(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
     }
 }

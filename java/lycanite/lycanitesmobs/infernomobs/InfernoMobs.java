@@ -28,6 +28,7 @@ import lycanite.lycanitesmobs.infernomobs.entity.EntityScorchfireball;
 import lycanite.lycanitesmobs.infernomobs.item.*;
 import lycanite.lycanitesmobs.infernomobs.mobevent.MobEventCinderfall;
 import lycanite.lycanitesmobs.infernomobs.mobevent.MobEventEruption;
+import lycanite.lycanitesmobs.infernomobs.worldgen.WorldGeneratorInferno;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Items;
@@ -178,6 +179,9 @@ public class InfernoMobs {
 	public void postInit(FMLPostInitializationEvent event) {
 		// ========== Set Current Group ==========
 		ObjectManager.setCurrentGroup(this.group);
+
+        // ========== World Generation ==========
+        GameRegistry.registerWorldGenerator(new WorldGeneratorInferno(), 0);
 		
 		// ========== Mob Events ==========
         MobEventBase mobEvent = new MobEventCinderfall("cinderfall", this.group).setDimensions("1");

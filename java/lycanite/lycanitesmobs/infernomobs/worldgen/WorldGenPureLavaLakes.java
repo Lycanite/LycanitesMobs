@@ -1,10 +1,10 @@
-package lycanite.lycanitesmobs.arcticmobs.worldgen;
+package lycanite.lycanitesmobs.infernomobs.worldgen;
 
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IWorldGenBase;
 import lycanite.lycanitesmobs.api.config.ConfigSpawning;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
-import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
+import lycanite.lycanitesmobs.infernomobs.InfernoMobs;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -13,33 +13,33 @@ import net.minecraftforge.common.BiomeDictionary;
 
 import java.util.Random;
 
-public class WorldGenOozeLakes extends WorldGenLakes implements IWorldGenBase {
-    public String name = "Ooze Lakes";
-    public GroupInfo group = ArcticMobs.group;
+public class WorldGenPureLavaLakes extends WorldGenLakes implements IWorldGenBase {
+    public String name = "Pure Lava Lakes";
+    public GroupInfo group = InfernoMobs.group;
     public double generateUndergroundChance = 0.04D;
-    public double generateSurfaceChance = 0.125D;
+    public double generateSurfaceChance = 0;
 
     // Dimensions:
     /** A comma separated list of dimensions that this event can occur in. As read from the config **/
-    public String dimensionEntries = "-1, 1";
+    public String dimensionEntries = "-1";
     /** A blacklist of dimension IDs (changes to whitelist if dimensionWhitelist is true) that this event can occur in. **/
     public int[] dimensionBlacklist;
     /** Extra dimension type info, can contain values such as ALL or VANILLA. **/
     public String[] dimensionTypes;
     /** Controls the behaviour of how Dimension IDs are read. If true only listed Dimension IDs are allowed instead of denied. **/
-    public boolean dimensionWhitelist = false;
+    public boolean dimensionWhitelist = true;
 
     // ==================================================
     //                    Constructors
     // ==================================================
-    public WorldGenOozeLakes() {
-        super(ObjectManager.getBlock("ooze"));
+    public WorldGenPureLavaLakes() {
+        super(ObjectManager.getBlock("purelava"));
 
         ConfigSpawning config = ConfigSpawning.getConfig(this.group, "worldgen");
 
         config.setCategoryComment("WorldGen Chances", "The chance that each worldgen will generate. You can set this to 0 to disable the worldgen or use the dimension black/white list. 1 = all over, 0.04 fairly rare.");
         this.generateUndergroundChance = config.getDouble("WorldGen Chances", this.name + " Underground Chance", this.generateUndergroundChance);
-        this.generateSurfaceChance = config.getDouble("WorldGen Chances", this.name + " Surface Chance", this.generateSurfaceChance, "Ooze only generates on the surface when in COLD and SNOWY tagged biomes.");
+        this.generateSurfaceChance = config.getDouble("WorldGen Chances", this.name + " Surface Chance", this.generateSurfaceChance);
 
         ConfigSpawning.SpawnDimensionSet dimensions = config.getDimensions("WorldGen Dimensions", this.name + " Dimensions", this.dimensionEntries);
         this.dimensionBlacklist = dimensions.dimensionIDs;
@@ -56,23 +56,11 @@ public class WorldGenOozeLakes extends WorldGenLakes implements IWorldGenBase {
         if(!this.isValidDimension(world))
             return;
 
-        if(this.generateSurfaceChance > 0) {
-            BiomeGenBase biome = world.getBiomeGenForCoords(chunkX, chunkZ);
-            BiomeDictionary.Type[] biomeTypes = BiomeDictionary.getTypesForBiome(biome);
-            boolean typeValid = false;
-            for(BiomeDictionary.Type type : biomeTypes) {
-                if((type == BiomeDictionary.Type.SNOWY) || (type == BiomeDictionary.Type.COLD)) {
-                    typeValid = true;
-                    break;
-                }
-            }
-
-            if(typeValid && (this.generateSurfaceChance >= 1 || random.nextDouble() <= this.generateSurfaceChance)) {
-                int x = chunkX * 16 + random.nextInt(16);
-                int z = chunkZ * 16 + random.nextInt(16);
-                int y = random.nextInt(128);
-                this.generate(world, random, x, y, z);
-            }
+        if(this.generateSurfaceChance > 0 && (this.generateSurfaceChance >= 1 || random.nextDouble() <= this.generateSurfaceChance)) {
+            int x = chunkX * 16 + random.nextInt(16);
+            int z = chunkZ * 16 + random.nextInt(16);
+            int y = random.nextInt(128);
+            this.generate(world, random, x, y, z);
         }
 
         if(this.generateUndergroundChance > 0 && (this.generateUndergroundChance >= 1 || random.nextDouble() <= this.generateUndergroundChance)) {

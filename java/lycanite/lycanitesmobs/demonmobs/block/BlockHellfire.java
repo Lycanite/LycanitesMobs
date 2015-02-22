@@ -14,6 +14,7 @@ import lycanite.lycanitesmobs.ClientProxy;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.block.BlockBase;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
+import lycanite.lycanitesmobs.api.info.ItemInfo;
 import lycanite.lycanitesmobs.demonmobs.DemonMobs;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -74,18 +75,25 @@ public class BlockHellfire extends BlockBase {
 		// If Hellfire is disabled, use regular fire instead:
 		if(!ConfigBase.getConfig(this.group, "general").getBool("Features", "Enable Hellfire"))
     		world.setBlock(x, y, z, Blocks.fire);
+
+        boolean canSpread = true;
 		
 		// Remove if the doFireTick rule is false:
-		if(!world.getGameRules().getGameRuleBooleanValue("doFireTick")) {
+		if(!world.getGameRules().getGameRuleBooleanValue("doFireTick") && ItemInfo.removeOnNoFireTick) {
 			world.setBlockToAir(x, y, z);
 			return;
 		}
+        else if(!world.getGameRules().getGameRuleBooleanValue("doFireTick") && !ItemInfo.removeOnNoFireTick)
+            return;
+
 		
 		Block base = world.getBlock(x, y - 1, z);
 		
 		// Take Over Replaceable Blocks:
 		if(base == Blocks.snow_layer || base == Blocks.tallgrass) {
-			 world.setBlock(x, y - 1, z, this);
+			world.setBlock(x, y - 1, z, this);
+            world.setBlockToAir(x, y, z);
+            return;
 		}
 		
         boolean onFireFuel = (base != null && base.isFireSource(world, x, y - 1, z, ForgeDirection.UP));

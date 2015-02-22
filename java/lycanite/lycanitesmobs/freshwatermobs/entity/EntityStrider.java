@@ -203,6 +203,9 @@ public class EntityStrider extends EntityCreatureRideable {
         return 1.0F;
     }
 
+    @Override
+    public boolean shouldDismountInWater(Entity rider) { return false; }
+
 	
     // ==================================================
     //                      Movement

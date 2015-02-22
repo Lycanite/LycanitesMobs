@@ -102,7 +102,10 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
     	}
     }
     
-    public void riderEffects(EntityLivingBase rider) {}
+    public void riderEffects(EntityLivingBase rider) {
+        if(!rider.canBreatheUnderwater() && rider.isInWater())
+            rider.setAir(300);
+    }
 
     
     // ==================================================

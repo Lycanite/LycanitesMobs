@@ -14,6 +14,7 @@ import lycanite.lycanitesmobs.ClientProxy;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.block.BlockBase;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
+import lycanite.lycanitesmobs.api.info.ItemInfo;
 import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockIce;
@@ -77,6 +78,14 @@ public class BlockFrostfire extends BlockBase {
     	// ========== Main Fire Logic ==========
 		if(!ConfigBase.getConfig(this.group, "general").getBool("Features", "Enable Frostfire"))
     		world.setBlockToAir(x, y, z);
+
+        // Remove if the doFireTick rule is false:
+        if(!world.getGameRules().getGameRuleBooleanValue("doFireTick") && ItemInfo.removeOnNoFireTick) {
+            world.setBlockToAir(x, y, z);
+            return;
+        }
+        else if(!world.getGameRules().getGameRuleBooleanValue("doFireTick") && !ItemInfo.removeOnNoFireTick)
+            return;
 		
 		Block base = world.getBlock(x, y - 1, z);
 		

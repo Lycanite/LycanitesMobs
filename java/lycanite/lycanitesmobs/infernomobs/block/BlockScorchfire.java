@@ -14,6 +14,7 @@ import lycanite.lycanitesmobs.ClientProxy;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.block.BlockBase;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
+import lycanite.lycanitesmobs.api.info.ItemInfo;
 import lycanite.lycanitesmobs.infernomobs.InfernoMobs;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -76,12 +77,14 @@ public class BlockScorchfire extends BlockBase {
 		// If Scorchfire is disabled, use regular fire instead:
 		if(!ConfigBase.getConfig(this.group, "general").getBool("Features", "Enable Scorchfire"))
     		world.setBlock(x, y, z, Blocks.fire);
-		
-		// Remove if the doFireTick rule is false:
-		if(!world.getGameRules().getGameRuleBooleanValue("doFireTick")) {
-			world.setBlockToAir(x, y, z);
-			return;
-		}
+
+        // Remove if the doFireTick rule is false:
+        if(!world.getGameRules().getGameRuleBooleanValue("doFireTick") && ItemInfo.removeOnNoFireTick) {
+            world.setBlockToAir(x, y, z);
+            return;
+        }
+        else if(!world.getGameRules().getGameRuleBooleanValue("doFireTick") && !ItemInfo.removeOnNoFireTick)
+            return;
 		
 		Block base = world.getBlock(x, y - 1, z);
 		

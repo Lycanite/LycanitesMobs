@@ -75,8 +75,6 @@ public class BlockHellfire extends BlockBase {
 		// If Hellfire is disabled, use regular fire instead:
 		if(!ConfigBase.getConfig(this.group, "general").getBool("Features", "Enable Hellfire"))
     		world.setBlock(x, y, z, Blocks.fire);
-
-        boolean canSpread = true;
 		
 		// Remove if the doFireTick rule is false:
 		if(!world.getGameRules().getGameRuleBooleanValue("doFireTick") && ItemInfo.removeOnNoFireTick) {

@@ -145,7 +145,11 @@ public class DonationFamiliars {
         }
         if("scottysnyder".equals(player.getCommandSenderName())) {
             if(ObjectManager.getMob("spriggan") != null)
-                familiars.add(new PetEntryFamiliar("scottysnyderspriggan", player, "spriggan").setEntitySize(0.6D));
+                familiars.add(new PetEntryFamiliar("scottysnyderSpriggan", player, "spriggan").setEntitySize(0.6D));
+        }
+        if("Aldaitha".equals(player.getCommandSenderName())) {
+            if(ObjectManager.getMob("spriggan") != null)
+                familiars.add(new PetEntryFamiliar("AldaithaSprigganIvyZealkiller", player, "spriggan").setEntitySubspeciesID(2).setEntitySize(0.6D).setEntityName("Ivy Zealkiller"));
         }
 
         return familiars;

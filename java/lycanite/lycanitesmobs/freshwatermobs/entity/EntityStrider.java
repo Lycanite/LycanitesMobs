@@ -252,6 +252,16 @@ public class EntityStrider extends EntityCreatureRideable {
         return (double)this.height * 1.0D;
     }
 
+    // Mount/Dismount:
+    @Override
+    public void onDismounted(Entity entity) {
+        super.onDismounted(entity);
+        if(entity != null && entity instanceof EntityLivingBase) {
+            if(ObjectManager.getPotionEffect("fallresist") != null && ObjectManager.getPotionEffect("fallresist").id < Potion.potionTypes.length)
+                ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("fallresist").id, 3 * 20, 1));
+        }
+    }
+
 
     // ==================================================
     //                      Attacks

@@ -96,6 +96,7 @@ public class LycanitesMobs {
 			ObjectManager.addPotionEffect("weight", config, true, 0x000022, 1, 0, false);
 			ObjectManager.addPotionEffect("swiftswimming", config, false, 0x0000FF, 0, 2, true);
             ObjectManager.addPotionEffect("fear", config, false, 0x220022, 7, 0, false);
+            ObjectManager.addPotionEffect("fallresist", config, false, 0xDDFFFF, 0, 0, false);
 			MinecraftForge.EVENT_BUS.register(new PotionEffects());
 		}
 		

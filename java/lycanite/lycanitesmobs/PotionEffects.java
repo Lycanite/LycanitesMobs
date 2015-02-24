@@ -111,6 +111,16 @@ public class PotionEffects {
         if(event.entityLiving == null)
             return;
 
+        // ========== Penetration ==========
+        if(ObjectManager.getPotionEffect("fallresist") != null) {
+            if(event.entityLiving.isPotionActive(ObjectManager.getPotionEffect("fallresist").getId())) {
+                if("fall".equals(event.source.damageType)) {
+                    event.ammount = 0;
+                    event.setCanceled(true);
+                }
+            }
+        }
+
         // ========== Leeching ==========
         if(ObjectManager.getPotionEffect("leech") != null && event.source.getEntity() != null) {
             if(event.source.getEntity() instanceof EntityLivingBase) {

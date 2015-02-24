@@ -18,10 +18,13 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 public class EntityCreatureRideable extends EntityCreatureTameable {
-	
+
+    public Entity lastRiddenByEntity = null;
+
 	// Jumping:
 	public boolean mountJumping = false;
 	public float jumpPower = 0.0F;
+
 	public boolean abilityToggled = false;
 	public boolean inventoryToggled = false;
 	
@@ -54,6 +57,13 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
     @Override
     public void onLivingUpdate() {
     	super.onLivingUpdate();
+
+        if(this.lastRiddenByEntity != this.riddenByEntity) {
+            if(this.lastRiddenByEntity != null)
+                this.onDismounted(this.lastRiddenByEntity);
+            this.lastRiddenByEntity = this.riddenByEntity;
+        }
+
     	if(this.hasRiderTarget() && this.getRiderTarget() instanceof EntityLivingBase) {
     		EntityLivingBase riderLiving = (EntityLivingBase)this.getRiderTarget();
     		
@@ -112,6 +122,8 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
     //                   Mount Ability
     // ==================================================
     public void mountAbility(Entity rider) {}
+
+    public void onDismounted(Entity entity) {}
 	
     
 	// ==================================================

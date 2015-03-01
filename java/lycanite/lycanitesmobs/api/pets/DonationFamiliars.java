@@ -155,6 +155,14 @@ public class DonationFamiliars {
             if(ObjectManager.getMob("spriggan") != null)
                 familiars.add(new PetEntryFamiliar("Gtprider_1Spriggan", player, "spriggan").setEntitySubspeciesID(2).setEntitySize(0.6D));
         }
+        if("gaurdion".equals(player.getCommandSenderName())) {
+            if(ObjectManager.getMob("spriggan") != null)
+                familiars.add(new PetEntryFamiliar("gaurdionSpriggan", player, "spriggan").setEntitySize(0.6D));
+        }
+        if("RoguesDad".equals(player.getCommandSenderName())) {
+            if(ObjectManager.getMob("phantom") != null)
+                familiars.add(new PetEntryFamiliar("RoguesDadPhantom", player, "phantom").setEntitySize(0.6D));
+        }
 
         return familiars;
     }

@@ -460,24 +460,31 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     /** First stage checks for spawning, if this check fails the creature will not spawn. **/
     public boolean fixedSpawnCheck(World world, int i, int j, int k) {
     	if(this.spawnedFromType == null || (this.spawnedFromType != null && !this.spawnedFromType.ignoreLight)) {
-	    	LycanitesMobs.printDebug("MobSpawns", "Checking light level: Darkness");
             byte light = this.testLightLevel(i, j, k);
             boolean validLight = false;
+            Block spawnBlock = world.getBlock(i, j, k);
+
+	    	LycanitesMobs.printDebug("MobSpawns", "Checking light level: Darkness");
 	    	if(this.mobInfo.spawnInfo.spawnsInDark && light <= 1)
                 validLight = true;
+
 	    	LycanitesMobs.printDebug("MobSpawns", "Checking light level: Lightness");
 	    	if(this.mobInfo.spawnInfo.spawnsInLight && light >= 2)
                 validLight = true;
+
             if(!validLight)
                 return false;
     	}
+
     	LycanitesMobs.printDebug("MobSpawns", "Checking entity collision.");
         if(!this.worldObj.checkNoEntityCollision(this.boundingBox))
         	return false;
+
     	LycanitesMobs.printDebug("MobSpawns", "Checking solid block collision.");
         if(!this.spawnsInBlock && !this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).isEmpty()) {
         	return false;
         }
+
     	return true;
     }
     
@@ -1522,6 +1529,30 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
                     y = possibleAirY;
                 else
                     break;
+            }
+        }
+        return y;
+    }
+
+    // ========== Get Water Surface Y Position ==========
+    /** Returns the Y position of the water surface (the first air block found when searching up in water).
+     * If the water is covered by a solid block, the initial Y position will be returned instead.
+     * This will search up to 16 blocks up. **/
+    public int getWaterSurfaceY(int x, int y, int z) {
+        if(y <= 0)
+            return 0;
+        int yMax = this.worldObj.provider.getActualHeight() - 1;
+        if(y >= yMax)
+            return yMax;
+        yMax = Math.min(yMax, y + 16);
+        Block startBlock = this.worldObj.getBlock(x, y, z);
+        if(startBlock != null && startBlock.getMaterial() == Material.water) {
+            for(int possibleSurfaceY = y + 1; possibleSurfaceY <= yMax; possibleSurfaceY++) {
+                Block possibleSurfaceBlock = this.worldObj.getBlock(x, possibleSurfaceY, z);
+                if(possibleSurfaceBlock == null || possibleSurfaceBlock.isAir(this.worldObj, x, possibleSurfaceY, z))
+                    return possibleSurfaceY;
+                else if(possibleSurfaceBlock.getMaterial() != Material.water)
+                    return possibleSurfaceY - 1;
             }
         }
         return y;
@@ -2638,7 +2669,10 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         Block spawnBlock = this.worldObj.getBlock(x, y, z);
         if(y < 0)
             return 0;
-        y = this.getGroundY(x, y, z);
+        if(spawnBlock != null && spawnBlock.getMaterial() == Material.water)
+            y = this.getWaterSurfaceY(x, y, z);
+        else
+            y = this.getGroundY(x, y, z);
 
         int light = this.worldObj.getBlockLightValue(x, y, z);
         if(this.worldObj.isThundering()) {
@@ -2647,9 +2681,9 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
             light = this.worldObj.getBlockLightValue(x, y, z);
             this.worldObj.skylightSubtracted = i1;
         }
-        
+
         if(light == 0) return 0;
-        if(light <= 8) return 1;
+        if(light <= 7) return 1;
         if(light <= 14) return 2;
         return 3;
     }

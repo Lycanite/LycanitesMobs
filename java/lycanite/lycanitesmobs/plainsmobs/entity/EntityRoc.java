@@ -162,7 +162,8 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
     @Override
     public void pickupEntity(Entity entity) {
     	super.pickupEntity(entity);
-    	this.leap(1.0F, 2.0D);
+        if(this.worldObj.getBlock((int)this.posX, (int)this.posY, (int)this.posZ) != null && this.worldObj.canBlockSeeTheSky((int)this.posX, (int)this.posY, (int)this.posZ))
+            this.leap(1.0F, 2.0D);
     }
     
     @Override

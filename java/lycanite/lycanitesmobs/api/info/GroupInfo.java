@@ -16,6 +16,9 @@ public class GroupInfo {
     // ========== Group General ==========
 	/** The mod this group belongs to. **/
 	public Object mod;
+
+    /** A unique ID for this group. **/
+    public int id;
 	
     /** The name of this group, normally displayed in the config. **/
     public String name;
@@ -83,6 +86,7 @@ public class GroupInfo {
     	this.mod = mod;
         this.name = name;
         this.filename = name.toLowerCase().replace(" ", "");
+        this.id = id;
         this.achievementIDBase = id * 10000;
         if(id < 100)
             this.achievementIDBase += 10000;

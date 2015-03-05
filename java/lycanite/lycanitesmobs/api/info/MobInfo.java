@@ -298,7 +298,7 @@ public class MobInfo {
         this.boostDamage = config.getInt("Boosts", this.getCfgName("Damage"), this.boostDamage, "Damage dealt, both melee and ranged. 1 = half a heart.");
         this.boostHaste = config.getInt("Boosts", this.getCfgName("Haste"), this.boostHaste, "Attack and ability speeds in ticks. Average attack rate is 20 (1 second).");
         this.boostEffect = config.getInt("Boosts", this.getCfgName("Effect"), this.boostEffect, "Effect strengths and durations in ticks (20 ticks = 1 second).");
-        this.boostPierce = config.getInt("Boosts", this.getCfgName("Pierce"), this.boostPierce, "Use to directly derease or increase the piercing value. By default it is 5 so for every 5 damage dealt, 1 damage ignores armor. A positive boost lowers the attack required per armor piercing damage, therefor a boost of 2 will change the piercing stat to 3.");
+        this.boostPierce = config.getInt("Boosts", this.getCfgName("Pierce"), this.boostPierce, "Use to directly decrease or increase the piercing value. By default it is 5 so for every 5 damage dealt, 1 damage ignores armor. A positive boost lowers the attack required per armor piercing damage, therefor a boost of 2 will change the piercing stat to 3.");
         
         // Register Mob:
         this.registerMob();
@@ -307,14 +307,15 @@ public class MobInfo {
         this.spawnInfo.loadFromConfig();
 
         // Add Achievements:
-        int achievementX = 0;
+        int achievementX = this.group.id * 4;
         int achievementY = this.mobID;
         ItemStack achievementStack = new ItemStack(Items.bone);
         ObjectManager.addAchievement(this.name + ".kill", new Achievement(this.name + ".kill", this.name + ".kill", achievementX, achievementY, achievementStack, null));
-        ObjectManager.addAchievement(this.name + ".learn", new Achievement(this.name + ".learn", this.name + ".learn", achievementX, achievementY, achievementStack, null));
-        if(this.entityClass.isAssignableFrom(EntityCreatureTameable.class) && tamingEnabled)
-            ObjectManager.addAchievement(this.name + ".tame", new Achievement(this.name + ".tame", this.name + ".tame", achievementX, achievementY, achievementStack, null));
-
+        ObjectManager.addAchievement(this.name + ".learn", new Achievement(this.name + ".learn", this.name + ".learn", achievementX + 1, achievementY, achievementStack, null));
+        if(this.isSummonable())
+            ObjectManager.addAchievement(this.name + ".summon", new Achievement(this.name + ".summon", this.name + ".summon", achievementX + 2, achievementY, achievementStack, null));
+        else if(this.entityClass.isAssignableFrom(EntityCreatureTameable.class) && tamingEnabled)
+            ObjectManager.addAchievement(this.name + ".tame", new Achievement(this.name + ".tame", this.name + ".tame", achievementX + 2, achievementY, achievementStack, null));
     }
 
 

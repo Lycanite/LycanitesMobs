@@ -142,6 +142,13 @@ public class ItemBase extends Item {
     public IIcon getIconFromDamage(int damage) {
     	return AssetManager.getIcon(this.itemName);
     }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIconIndex(ItemStack itemStack)
+    {
+        return super.getIconIndex(itemStack);
+    }
     
     // ========== Register Icons ==========
     @SideOnly(Side.CLIENT)

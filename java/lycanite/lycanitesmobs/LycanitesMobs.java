@@ -22,6 +22,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.stats.Achievement;
+import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -69,7 +71,8 @@ public class LycanitesMobs {
 	// Texture Path:
 	public static String texturePath = "mods/lycanitesmobs/";
 
-    // Global Achievement Base ID:
+    // Achievements:
+    public static AchievementPage achievementPage;
     public static int achievementGlobalBaseID = 5500;
 	
 	
@@ -150,6 +153,8 @@ public class LycanitesMobs {
 		ObjectManager.addItem("halloweentreat", new ItemHalloweenTreat());
         ObjectManager.addItem("wintergift", new ItemWinterGift());
         ObjectManager.addItem("wintergiftlarge", new ItemWinterGiftLarge());
+
+        ObjectManager.addItem("mobtoken", new ItemMobToken(group));
 
         // ========== Call Object Lists Setup ==========
         ObjectLists.createCustomItems();
@@ -284,6 +289,11 @@ public class LycanitesMobs {
 					}
 				));
 		}
+
+
+        // ========== Achievement Page ==========
+        achievementPage = new AchievementPage(modid, ObjectManager.achievements.values().toArray(new Achievement[ObjectManager.achievements.values().size()]));
+        AchievementPage.registerAchievementPage(achievementPage);
     }
 	
 	

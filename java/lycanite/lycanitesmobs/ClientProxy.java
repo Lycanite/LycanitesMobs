@@ -12,13 +12,10 @@ import lycanite.lycanitesmobs.api.gui.GuiOverlay;
 import lycanite.lycanitesmobs.api.gui.TabManager;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
-import lycanite.lycanitesmobs.api.render.RenderBlock;
-import lycanite.lycanitesmobs.api.render.RenderCreature;
-import lycanite.lycanitesmobs.api.render.RenderNone;
-import lycanite.lycanitesmobs.api.render.RenderParticle;
-import lycanite.lycanitesmobs.api.render.RenderProjectile;
+import lycanite.lycanitesmobs.api.render.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -65,6 +62,9 @@ public class ClientProxy extends CommonProxy {
     public void registerRenders() {
 		// Blocks:
 		RenderingRegistry.registerBlockHandler(new RenderBlock());
+
+        // Item:
+        MinecraftForgeClient.registerItemRenderer(ObjectManager.getItem("mobtoken", new RenderItemMobToken()));
 		
 		// Creatures:
 		for(Entry<String, MobInfo> mobEntry : ObjectManager.mobs.entrySet())

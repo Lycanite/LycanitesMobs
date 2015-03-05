@@ -1,9 +1,6 @@
 package lycanite.lycanitesmobs.api.entity;
 
-import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.ExtendedPlayer;
-import lycanite.lycanitesmobs.LycanitesMobs;
-import lycanite.lycanitesmobs.Utilities;
+import lycanite.lycanitesmobs.*;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.item.ItemStaffSummoning;
 import net.minecraft.entity.Entity;
@@ -129,6 +126,7 @@ public class EntityPortal extends EntityProjectileBase {
 		    		this.portalItem.applyMinionBehaviour((EntityCreatureTameable)entityCreature, this.shootingEntity);
 		    	}
 		    	this.portalItem.applyMinionEffects(entityCreature);
+                this.shootingEntity.addStat(ObjectManager.getAchievement(entityCreature.mobInfo.name + ".summon"), 1);
 	    	}
 	    	this.worldObj.spawnEntityInWorld(entity);
     	}

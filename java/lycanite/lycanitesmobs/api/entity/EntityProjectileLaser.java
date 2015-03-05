@@ -86,6 +86,7 @@ public class EntityProjectileLaser extends EntityProjectileBase {
         this.setSize(projectileWidth, projectileHeight);
         this.setRange(16.0F);
         this.setLaserWidth(1.0F);
+        this.knockbackChance = 0D;
         this.targetX = this.posX;
         this.targetY = this.posY;
         this.targetZ = this.posZ;
@@ -398,9 +399,13 @@ public class EntityProjectileLaser extends EntityProjectileBase {
         
         // Prevent Knockback:
         double targetKnockbackResistance = 0;
-        if(target instanceof EntityLivingBase) {
-        	targetKnockbackResistance = ((EntityLivingBase)target).getEntityAttribute(SharedMonsterAttributes.knockbackResistance).getAttributeValue();
-        	((EntityLivingBase)target).getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(1);
+        if(this.knockbackChance < 1) {
+            if(this.knockbackChance <= 0 || this.rand.nextDouble() <= this.knockbackChance) {
+                if(target instanceof EntityLivingBase) {
+                    targetKnockbackResistance = ((EntityLivingBase)target).getEntityAttribute(SharedMonsterAttributes.knockbackResistance).getAttributeValue();
+                    ((EntityLivingBase)target).getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(1);
+                }
+            }
         }
         
         // Deal Damage:
@@ -432,9 +437,13 @@ public class EntityProjectileLaser extends EntityProjectileBase {
         	this.onDamage((EntityLivingBase)target, damageInit, attackSuccess);
     	
         // Restore Knockback:
-    	if(target instanceof EntityLivingBase)
-        	((EntityLivingBase)target).getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(targetKnockbackResistance);
-    	
+        if(this.knockbackChance < 1) {
+            if(this.knockbackChance <= 0 || this.rand.nextDouble() <= this.knockbackChance) {
+                if(target instanceof EntityLivingBase)
+                    ((EntityLivingBase)target).getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(targetKnockbackResistance);
+            }
+        }
+
         return attackSuccess;
     }
     

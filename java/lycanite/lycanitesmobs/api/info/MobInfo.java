@@ -9,11 +9,14 @@ import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.mods.DLDungeons;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.stats.Achievement;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import cpw.mods.fml.common.registry.EntityRegistry;
@@ -302,6 +305,16 @@ public class MobInfo {
 
         // Spawn Info:
         this.spawnInfo.loadFromConfig();
+
+        // Add Achievements:
+        int achievementX = 0;
+        int achievementY = this.mobID;
+        ItemStack achievementStack = new ItemStack(Items.bone);
+        ObjectManager.addAchievement(this.name + ".kill", new Achievement(this.name + ".kill", this.name + ".kill", achievementX, achievementY, achievementStack, null));
+        ObjectManager.addAchievement(this.name + ".learn", new Achievement(this.name + ".learn", this.name + ".learn", achievementX, achievementY, achievementStack, null));
+        if(this.entityClass.isAssignableFrom(EntityCreatureTameable.class) && tamingEnabled)
+            ObjectManager.addAchievement(this.name + ".tame", new Achievement(this.name + ".tame", this.name + ".tame", achievementX, achievementY, achievementStack, null));
+
     }
 
 

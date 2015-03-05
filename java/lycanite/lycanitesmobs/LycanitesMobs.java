@@ -68,6 +68,9 @@ public class LycanitesMobs {
 	
 	// Texture Path:
 	public static String texturePath = "mods/lycanitesmobs/";
+
+    // Global Achievement Base ID:
+    public static int achievementGlobalBaseID = 5500;
 	
 	
 	// ==================================================
@@ -76,7 +79,7 @@ public class LycanitesMobs {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
-		group = new GroupInfo(this, name);
+		group = new GroupInfo(this, name, achievementGlobalBaseID);
         ConfigBase.versionCheck("1.10.11.0", version);
 		group.loadFromConfig();
 		config = ConfigBase.getConfig(group, "general");

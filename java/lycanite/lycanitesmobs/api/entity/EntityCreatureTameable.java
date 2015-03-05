@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
+import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAISit;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import net.minecraft.entity.Entity;
@@ -472,6 +473,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
                 tameMessage = tameMessage.replace("%creature%", this.getSpeciesName());
         		player.addChatMessage(new ChatComponentText(tameMessage));
         		this.playTameEffect(this.isTamed());
+                player.addStat(ObjectManager.getAchievement(this.mobInfo.name + ".tame"), 1);
             }
             else {
             	String tameFailedMessage = StatCollector.translateToLocal("message.pet.tamefail");

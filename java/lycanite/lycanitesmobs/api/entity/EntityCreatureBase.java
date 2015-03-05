@@ -1813,8 +1813,13 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         super.onDeath(damageSource);
         if(!this.dead)
             return;
-        if(!this.worldObj.isRemote)
+        if(!this.worldObj.isRemote) {
             this.inventory.dropInventory();
+            if(damageSource.getEntity() != null) {
+                if(damageSource.getEntity() instanceof EntityPlayer)
+                    ((EntityPlayer)damageSource.getEntity()).addStat(ObjectManager.getAchievement(this.mobInfo.name + ".kill"), 1);
+            }
+        }
     }
     
     

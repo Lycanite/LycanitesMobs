@@ -40,6 +40,7 @@ public class EntityDemonicSpark extends EntityProjectileBase {
     	this.group = DemonMobs.group;
     	this.setBaseDamage(5);
     	this.setProjectileScale(1F);
+        this.knockbackChance = 0D;
     }
 	
     

@@ -68,7 +68,7 @@ public class PlainsMobs {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
-		group = new GroupInfo(this, "Plains Mobs")
+		group = new GroupInfo(this, "Plains Mobs", 0)
 				.setDimensionBlacklist("-1,1").setBiomes("PLAINS, SAVANNA, -SNOWY").setDungeonThemes("PLAINS, DUNGEON")
                 .setEggName("plainsegg");
 		group.loadFromConfig();

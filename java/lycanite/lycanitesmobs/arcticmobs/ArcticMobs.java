@@ -68,7 +68,7 @@ public class ArcticMobs {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
-		group = new GroupInfo(this, "Arctic Mobs")
+		group = new GroupInfo(this, "Arctic Mobs", 6)
 				.setDimensionBlacklist("-1,1").setBiomes("COLD, SNOWY, CONIFEROUS, -END").setDungeonThemes("FROZEN, DUNGEON")
                 .setEggName("arcticegg");
 		group.loadFromConfig();

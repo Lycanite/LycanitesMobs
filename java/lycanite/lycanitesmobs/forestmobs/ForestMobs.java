@@ -70,7 +70,7 @@ public class ForestMobs {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
-		group = new GroupInfo(this, "Forest Mobs")
+		group = new GroupInfo(this, "Forest Mobs", 1)
 				.setDimensionBlacklist("-1,1").setBiomes("FOREST, -MOUNTAIN").setDungeonThemes("FOREST, DUNGEON")
                 .setEggName("forestegg");
 		group.loadFromConfig();

@@ -35,6 +35,7 @@ public class EntityBloodleech extends EntityProjectileBase {
     	this.entityName = "bloodleech";
     	this.group = ShadowMobs.group;
     	this.setBaseDamage(2);
+        this.knockbackChance = 0.5D;
     	
     	this.waterProof = true;
     }

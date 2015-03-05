@@ -13,6 +13,7 @@ import net.minecraft.dispenser.BehaviorProjectileDispense;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.stats.Achievement;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -35,6 +36,8 @@ public class ObjectManager {
 	public static Map<String, Class> projectiles = new HashMap<String, Class>();
 
     public static Map<String, DamageSource> damageSources = new HashMap<String, DamageSource>();
+
+    public static Map<String, Achievement> achievements = new HashMap<String, Achievement>();
 	
 	public static GroupInfo currentGroup;
 	
@@ -150,6 +153,16 @@ public class ObjectManager {
         name = name.toLowerCase();
         damageSources.put(name, damageSource);
     }
+
+
+    // ========== Achievement ==========
+    public static void addAchievement(String name, Achievement achievement) {
+        name = name.toLowerCase();
+        if(achievements.containsKey(name))
+            return;
+        achievement.registerStat();
+        achievements.put(name, achievement);
+    }
 	
 	
     // ==================================================
@@ -194,5 +207,12 @@ public class ObjectManager {
         name = name.toLowerCase();
         if(!damageSources.containsKey(name)) return null;
         return damageSources.get(name);
+    }
+
+    // ========== Achievement ==========
+    public static Achievement getAchievement(String name) {
+        name = name.toLowerCase();
+        if(!achievements.containsKey(name)) return null;
+        return achievements.get(name);
     }
 }

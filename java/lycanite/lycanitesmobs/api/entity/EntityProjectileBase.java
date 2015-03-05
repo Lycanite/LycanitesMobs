@@ -6,6 +6,7 @@ import lycanite.lycanitesmobs.api.info.MobInfo;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.server.MinecraftServer;
@@ -25,6 +26,7 @@ public class EntityProjectileBase extends EntityThrowable {
 	public byte baseDamage = 1;
 	public float projectileScale = 1.0f;
 	public int projectileLife = 200;
+    public double knockbackChance = 1;
 	
 	public boolean waterProof = false;
 	public boolean lavaProof = false;
@@ -115,6 +117,17 @@ public class EntityProjectileBase extends EntityThrowable {
  							pierceValue = ((EntityCreatureBase)this.getThrower()).getPierceValue();
  				        float pierceDamage = 1 + (float)Math.floor(damage / pierceValue);
 
+                        // Prevent Knockback:
+                        double targetKnockbackResistance = 0;
+                        if(this.knockbackChance < 1) {
+                            if(this.knockbackChance <= 0 || this.rand.nextDouble() <= this.knockbackChance) {
+                                if(target instanceof EntityLivingBase) {
+                                    targetKnockbackResistance = ((EntityLivingBase)target).getEntityAttribute(SharedMonsterAttributes.knockbackResistance).getAttributeValue();
+                                    ((EntityLivingBase)target).getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(1);
+                                }
+                            }
+                        }
+
                         // Deal Damage:
                         if(this.getThrower() instanceof EntityCreatureBase) {
                             EntityCreatureBase creatureThrower = (EntityCreatureBase)this.getThrower();
@@ -141,6 +154,14 @@ public class EntityProjectileBase extends EntityThrowable {
                         }
 
  				        this.onDamage(target, damageInit, attackSuccess);
+
+                        // Restore Knockback:
+                        if(this.knockbackChance < 1) {
+                            if(this.knockbackChance <= 0 || this.rand.nextDouble() <= this.knockbackChance) {
+                                if(target instanceof EntityLivingBase)
+                                    ((EntityLivingBase)target).getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(targetKnockbackResistance);
+                            }
+                        }
  					}
  				}
  			}

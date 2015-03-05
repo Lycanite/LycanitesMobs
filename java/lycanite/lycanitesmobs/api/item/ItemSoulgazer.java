@@ -1,6 +1,7 @@
 package lycanite.lycanitesmobs.api.item;
 
 import lycanite.lycanitesmobs.ExtendedPlayer;
+import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityFear;
 import lycanite.lycanitesmobs.api.info.CreatureKnowledge;
@@ -76,8 +77,9 @@ public class ItemSoulgazer extends ItemBase {
         		summonMessage = summonMessage.replace("%creature%", mobInfo.getTitle());
         		player.addChatMessage(new ChatComponentText(summonMessage));
     		}
+            player.addStat(ObjectManager.getAchievement(mobInfo.name + ".learn"), 1);
     	}
-    	
+
     	playerExt.getBeastiary().addToKnowledgeList(new CreatureKnowledge(player, mobInfo.name, 1));
     	return true;
     }

@@ -72,7 +72,7 @@ public class MountainMobs {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
-		group = new GroupInfo(this, "Mountain Mobs")
+		group = new GroupInfo(this, "Mountain Mobs", 5)
 				.setDimensionBlacklist("-1,1").setBiomes("MOUNTAIN").setDungeonThemes("MOUNTAIN, WASTELAND, NECRO")
                 .setEggName("mountainegg");
 		group.loadFromConfig();

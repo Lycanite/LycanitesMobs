@@ -37,6 +37,7 @@ public class EntityThrowingScythe extends EntityProjectileBase {
     	this.group = DesertMobs.group;
     	this.setBaseDamage(3);
     	this.setProjectileScale(1F);
+        this.knockbackChance = 0.25D;
     	
     	this.waterProof = true;
     }

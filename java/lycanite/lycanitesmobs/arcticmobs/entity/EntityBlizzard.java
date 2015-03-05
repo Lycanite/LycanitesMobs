@@ -43,6 +43,7 @@ public class EntityBlizzard extends EntityProjectileBase {
     	this.group = ArcticMobs.group;
     	this.setBaseDamage(1);
     	this.setProjectileScale(2F);
+        this.knockbackChance = 0D;
     }
     
     

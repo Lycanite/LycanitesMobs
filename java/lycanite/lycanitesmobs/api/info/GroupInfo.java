@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs.api.info;
 import java.util.HashMap;
 import java.util.Map;
 
+import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.config.ConfigSpawning;
 import lycanite.lycanitesmobs.api.config.ConfigSpawning.SpawnDimensionSet;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -31,6 +32,10 @@ public class GroupInfo {
 
     /** The next available ID for registering a projectile. **/
     public int nextProjectileID = 100;
+
+    // ========== Achievement IDs ==========
+    /** The base ID for this group to go from (this has the global mod achievement ID base added to it which is the LycanitesMobs base GroupInfo). Use getAchievementID(int id) to get an ID for this group. **/
+    public int achievementIDBase = 1000;
 	
 	// ========== Spawn Dimensions ==========
     /** A comma separated list of dimensions that mobs in this group spawn in. As read from the config **/
@@ -74,11 +79,14 @@ public class GroupInfo {
     // ==================================================
     //                     Constructor
     // ==================================================
-    public GroupInfo(Object mod, String name) {
+    public GroupInfo(Object mod, String name, int id) {
     	this.mod = mod;
         this.name = name;
         this.filename = name.toLowerCase().replace(" ", "");
-        
+        this.achievementIDBase = id * 10000;
+        if(id < 100)
+            this.achievementIDBase += 10000;
+
         groups.put(this.name, this);
     }
 
@@ -147,6 +155,18 @@ public class GroupInfo {
 
     public String getEggName() {
         return this.eggName;
+    }
+
+
+    // ==================================================
+    //                  Achievement IDs
+    // ==================================================
+    /** Converts the provided child ID into a global ID. **/
+    public int getAchievementID(int childID) {
+        int baseID = this.achievementIDBase;
+        if(this != LycanitesMobs.group)
+            baseID += (LycanitesMobs.achievementGlobalBaseID * 10000);
+        return baseID + childID;
     }
 
 

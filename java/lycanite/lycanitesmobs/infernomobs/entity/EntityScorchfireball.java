@@ -40,6 +40,7 @@ public class EntityScorchfireball extends EntityProjectileBase {
     	this.group = InfernoMobs.group;
     	this.setBaseDamage(1);
     	this.setProjectileScale(2F);
+        this.knockbackChance = 0.5D;
     }
     
     

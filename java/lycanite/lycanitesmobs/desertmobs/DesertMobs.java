@@ -76,7 +76,7 @@ public class DesertMobs {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
-		group = new GroupInfo(this, "Desert Mobs")
+		group = new GroupInfo(this, "Desert Mobs", 4)
                 .setDimensionBlacklist("-1,1").setBiomes("SANDY, WASTELAND, MESA, -COLD").setDungeonThemes("DESERT, WASTELAND, NECRO")
                 .setEggName("desertegg");
 		group.loadFromConfig();

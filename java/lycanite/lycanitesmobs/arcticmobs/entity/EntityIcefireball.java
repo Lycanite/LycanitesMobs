@@ -38,6 +38,7 @@ public class EntityIcefireball extends EntityProjectileBase {
     	this.group = ArcticMobs.group;
     	this.setBaseDamage(2);
     	this.setProjectileScale(2F);
+        this.knockbackChance = 0.5D;
     }
     
     

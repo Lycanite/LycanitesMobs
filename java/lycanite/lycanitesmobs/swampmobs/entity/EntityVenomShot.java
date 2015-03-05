@@ -40,6 +40,7 @@ public class EntityVenomShot extends EntityProjectileBase {
     	this.group = SwampMobs.group;
     	this.setBaseDamage(3);
     	this.setProjectileScale(2.5F);
+        this.knockbackChance = 0.5D;
     }
     
     

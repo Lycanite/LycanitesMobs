@@ -40,6 +40,7 @@ public class EntityDevilstar extends EntityProjectileBase {
     	this.group = DemonMobs.group;
     	this.setBaseDamage(2);
     	this.setProjectileScale(0.75F);
+        this.knockbackChance = 0.25D;
     	
     	this.waterProof = true;
     }

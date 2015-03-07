@@ -18,7 +18,7 @@ public class ItemMobToken extends ItemBase {
 	// ==================================================
     public ItemMobToken(GroupInfo group) {
         super();
-		this.itemName = "Mob Token";
+		this.itemName = "mobtoken";
 		this.group = group;
         this.textureName = this.itemName.toLowerCase();
         this.setUnlocalizedName(this.itemName);

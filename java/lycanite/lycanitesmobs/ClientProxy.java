@@ -64,7 +64,7 @@ public class ClientProxy extends CommonProxy {
 		RenderingRegistry.registerBlockHandler(new RenderBlock());
 
         // Item:
-        MinecraftForgeClient.registerItemRenderer(ObjectManager.getItem("mobtoken", new RenderItemMobToken()));
+        MinecraftForgeClient.registerItemRenderer(ObjectManager.getItem("mobtoken"), new RenderItemMobToken());
 		
 		// Creatures:
 		for(Entry<String, MobInfo> mobEntry : ObjectManager.mobs.entrySet())

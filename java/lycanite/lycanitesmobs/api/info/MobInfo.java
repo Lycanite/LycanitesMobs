@@ -16,6 +16,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.stats.Achievement;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -308,9 +309,10 @@ public class MobInfo {
         this.spawnInfo.loadFromConfig();
 
         // Add Achievements:
-        int achievementX = this.group.id * 4;
+        int achievementX = this.group.order * 4;
         int achievementY = this.mobID;
-        ItemStack achievementStack = new ItemStack(Items.bone);
+        ItemStack achievementStack = new ItemStack(ObjectManager.getItem("mobtoken"));
+        achievementStack.setTagInfo("Mob", new NBTTagString(this.name));
         ObjectManager.addAchievement(this.name + ".kill", new Achievement(this.name + ".kill", this.name + ".kill", achievementX, achievementY, achievementStack, null));
         ObjectManager.addAchievement(this.name + ".learn", new Achievement(this.name + ".learn", this.name + ".learn", achievementX + 1, achievementY, achievementStack, null));
         if(this.isSummonable())

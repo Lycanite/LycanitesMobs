@@ -17,8 +17,8 @@ public class GroupInfo {
 	/** The mod this group belongs to. **/
 	public Object mod;
 
-    /** A unique ID for this group. **/
-    public int id;
+    /** A unique Order ID for this group, used when all groups need to be displayed in an order. Orders above 99 will be ignored. **/
+    public int order;
 	
     /** The name of this group, normally displayed in the config. **/
     public String name;
@@ -82,13 +82,13 @@ public class GroupInfo {
     // ==================================================
     //                     Constructor
     // ==================================================
-    public GroupInfo(Object mod, String name, int id) {
+    public GroupInfo(Object mod, String name, int order) {
     	this.mod = mod;
         this.name = name;
         this.filename = name.toLowerCase().replace(" ", "");
-        this.id = id;
-        this.achievementIDBase = id * 10000;
-        if(id < 100)
+        this.order = order;
+        this.achievementIDBase = order * 10000;
+        if(order < 100)
             this.achievementIDBase += 10000;
 
         groups.put(this.name, this);

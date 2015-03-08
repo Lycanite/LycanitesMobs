@@ -75,7 +75,7 @@ public class ModelIka extends ModelCustomObj {
         }
 		
 		// Shell:
-		if(partName.equals("shell") && entity.getHealth() <= entity.getMaxHealth() / 2) {
+		if(entity != null && partName.equals("shell") && entity.getHealth() <= entity.getMaxHealth() / 2) {
 	    	this.scale(0, 0, 0);
 		}
 		

@@ -82,7 +82,7 @@ public class DemonMobs {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
-		group = new GroupInfo(this, "Demon Mobs", 12)
+		group = new GroupInfo(this, "Demon Mobs", 11)
                 .setDimensionBlacklist("-1").setDimensionWhitelist(true).setBiomes("NETHER").setDungeonThemes("NETHER, NECRO")
                 .setEggName("demonegg");
 		group.loadFromConfig();

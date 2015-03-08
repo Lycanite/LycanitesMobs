@@ -81,7 +81,7 @@ public class ModelAbtu extends ModelCustomObj {
     	}
     	
     	// Walking:
-    	if(entity.isInWater()) {
+    	if(entity == null || entity.isInWater()) {
 	    	if(partName.equals("body")) {
 				rotY += (float)-Math.toDegrees(MathHelper.cos(time * 0.1F) * 0.2F);
 			}

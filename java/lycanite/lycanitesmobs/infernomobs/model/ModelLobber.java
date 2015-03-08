@@ -41,7 +41,7 @@ public class ModelLobber extends ModelCustomObj {
     }
     
     
- // ==================================================
+    // ==================================================
    	//                 Animate Part
    	// ==================================================
     float maxLeg = 0F;
@@ -71,7 +71,7 @@ public class ModelLobber extends ModelCustomObj {
     	}
     	
     	// Walking:
-    	if(entity.onGround || entity.isInWater()) {
+    	if(entity == null || entity.onGround || entity.isInWater()) {
 	    	float walkSwing = 0.6F;
 	    	if(partName.equals("leftarm")) {
 	    		rotX += Math.toDegrees(MathHelper.cos(time * walkSwing) * 1.0F * distance * 0.5F);

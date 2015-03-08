@@ -60,7 +60,7 @@ public class ShadowMobs {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
-		group = new GroupInfo(this, "Shadow Mobs", 11)
+		group = new GroupInfo(this, "Shadow Mobs", 10)
 				.setDimensionBlacklist("1,-100").setDimensionWhitelist(true).setBiomes("END").setDungeonThemes("SHADOW, NECRO")
                 .setEggName("shadowegg");
 		group.loadFromConfig();

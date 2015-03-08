@@ -37,7 +37,7 @@ public class RenderItemMobToken implements IItemRenderer {
         if(mobInfo == null)
             return;
         if(AssetManager.getTexture(mobInfo.name) == null)
-            return;
+            AssetManager.addTexture(mobInfo.name, mobInfo.group, "textures/entity/" + mobInfo.name.toLowerCase() + ".png");
         if(AssetManager.getModel(mobInfo.name) == null)
             return;
 
@@ -46,34 +46,34 @@ public class RenderItemMobToken implements IItemRenderer {
 
         if(type == ItemRenderType.EQUIPPED_FIRST_PERSON) {
             float scale = 0.7F;
-            GL11.glTranslatef(1.0F, 0.7F, 0.6F);
+            GL11.glTranslatef(1.0F, 0.35F, 0.6F);
             GL11.glScalef(scale, scale, scale);
             GL11.glRotatef(205.0F, 0.0F, 0.0F, 1.0F);
             GL11.glRotatef(100.0F, 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(-5.0F, 1.0F, 0.0F, 0.0F);
         }
         else if(type == ItemRenderType.EQUIPPED) {
-            float scale = 0.25F;
-            GL11.glTranslatef(0F, 0.7F, 0.3F);
+            float scale = 0.5F;
+            GL11.glTranslatef(0F, 0.35F, 0.15F);
             GL11.glScalef(scale, scale, scale);
             GL11.glRotatef(205.0F, 0.0F, 0.0F, 1.0F);
             GL11.glRotatef(100.0F, 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(-5.0F, 1.0F, 0.0F, 0.0F);
         }
-        else if(type == ItemRenderType.ENTITY) {
-            float scale = 0.5F;
-            GL11.glTranslatef(75F, 75F, 0F);
+        else if(type == ItemRenderType.INVENTORY) {
+            float scale = 12F;
+            GL11.glTranslatef(8F, 0F, -40F);
             GL11.glScalef(scale, scale, scale);
-            GL11.glRotatef(100.0F, 0.0F, 1.0F, 0.0F);
+            GL11.glRotatef(35.0F, 0.0F, 1.0F, 0.0F);
         }
         else {
-            float scale = 4F;
-            GL11.glTranslatef(5F, 5F, 0F);
+            float scale = 1F;
+            GL11.glTranslatef(0F, 1F, 0F);
             GL11.glScalef(scale, scale, scale);
-            //GL11.glRotatef(205.0F, 0.0F, 0.0F, 1.0F);
+            GL11.glRotatef(180.0F, 1.0F, 0.0F, 0.0F);
         }
 
-        AssetManager.getModel(mobInfo.name).render(null, 0, 0, 0, 0, 0, 0.0625F);
+        AssetManager.getModel(mobInfo.name).render(null, 0, 0, 0, 0, 0, -1F); // Full Entity 0.0625F
 
         GL11.glPopMatrix();
     }

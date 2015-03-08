@@ -80,7 +80,7 @@ public class ModelArix extends ModelCustomObj {
     		rotX = (float)-Math.toDegrees(MathHelper.cos(loop * 0.1F) * 0.05F - 0.05F);
     		rotY = (float)-Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F - 0.05F);
     	}
-        if(entity.onGround || entity.isInWater()) {
+        if(entity == null || entity.onGround || entity.isInWater()) {
             if(partName.equals("wingright")) {
                 rotZ -= Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F + 0.05F);
                 rotX -= Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
@@ -92,7 +92,7 @@ public class ModelArix extends ModelCustomObj {
         }
     	
     	// Walking:
-    	if(entity.onGround || entity.isInWater()) {
+    	if(entity == null || entity.onGround || entity.isInWater()) {
 	    	float walkSwing = 0.6F;
 	    	if(partName.equals("armleft") || partName.equals("wingright")) {
 	    		rotX += Math.toDegrees(MathHelper.cos(time * walkSwing) * 1.0F * distance * 0.5F);
@@ -116,7 +116,7 @@ public class ModelArix extends ModelCustomObj {
 		}
 		
 		// Flying:
-		if(!entity.onGround && !entity.isInWater()) {
+		if(entity != null && !entity.onGround && !entity.isInWater()) {
             if(partName.equals("wingleft")) {
                 rotX = 20;
                 rotX -= Math.toDegrees(MathHelper.sin(loop * 0.4F) * 0.6F);

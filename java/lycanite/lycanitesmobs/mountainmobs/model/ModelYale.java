@@ -79,7 +79,7 @@ public class ModelYale extends ModelCustomObj {
     	}
     	
     	// Walking:
-    	if(entity.onGround || entity.isInWater()) {
+    	if(entity == null || entity.onGround || entity.isInWater()) {
 	    	float walkSwing = 0.6F;
 	    	if(partName.equals("armleft")) {
 	    		rotX += Math.toDegrees(MathHelper.cos(time * walkSwing) * 1.0F * distance * 0.5F);
@@ -102,7 +102,7 @@ public class ModelYale extends ModelCustomObj {
 		}
 		
 		// Jump:
-		if(!entity.onGround && !entity.isInWater()) {
+		if(entity != null && !entity.onGround && !entity.isInWater()) {
 	    	if(partName.equals("armleft")) {
 		        rotZ -= 10;
 		        rotX -= 50;

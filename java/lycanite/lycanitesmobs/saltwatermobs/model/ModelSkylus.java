@@ -75,7 +75,7 @@ public class ModelSkylus extends ModelCustomObj {
     	}
     	
     	// Walking:
-    	if(entity.onGround || entity.isInWater()) {
+    	if(entity == null || entity.onGround || entity.isInWater()) {
 	    	float walkSwing = 0.6F;
 	    	if(partName.equals("tentaclem") || partName.equals("tentaclel2") || partName.equals("tentacler2")) {
 	    		rotX += Math.toDegrees(MathHelper.cos(time * walkSwing) * 1.0F * distance * 0.5F);
@@ -96,7 +96,7 @@ public class ModelSkylus extends ModelCustomObj {
 		}
 		
 		// Shell:
-		if(partName.equals("shell") && entity.getHealth() <= entity.getMaxHealth() / 2) {
+		if(entity != null && partName.equals("shell") && entity.getHealth() <= entity.getMaxHealth() / 2) {
 	    	this.scale(0, 0, 0);
 		}
 		

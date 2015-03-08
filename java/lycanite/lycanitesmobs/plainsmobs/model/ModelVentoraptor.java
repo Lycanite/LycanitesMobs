@@ -90,7 +90,7 @@ public class ModelVentoraptor extends ModelCustomObj {
     	}
     	
     	// Walking:
-    	if(entity.onGround || entity.isInWater()) {
+    	if(entity == null || entity.onGround || entity.isInWater()) {
 	    	float walkSwing = 0.6F;
 	    	if(partName.equals("leftarm")) {
 	    		rotX += Math.toDegrees(MathHelper.cos(time * walkSwing) * 1.0F * distance * 0.5F);
@@ -114,7 +114,7 @@ public class ModelVentoraptor extends ModelCustomObj {
 		}
 		
 		// Jump:
-		if(!entity.onGround && !entity.isInWater()) {
+		if(entity != null && !entity.onGround && !entity.isInWater()) {
 	    	if(partName.equals("leftarm")) {
 		        rotZ += 10;
 		        rotX -= 35;

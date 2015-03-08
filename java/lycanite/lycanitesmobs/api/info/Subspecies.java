@@ -4,6 +4,7 @@ package lycanite.lycanitesmobs.api.info;
 import java.util.HashMap;
 import java.util.Map;
 
+import lycanite.lycanitesmobs.api.config.ConfigBase;
 import net.minecraft.util.StatCollector;
 
 public class Subspecies {
@@ -30,6 +31,18 @@ public class Subspecies {
 
     /** The weight of this subspecies, used when randomly determining the subspecies of a mob. A base species uses the static baseSpeciesWeight value. **/
     public int weight;
+
+
+    // ==================================================
+    //        Load Global Settings From Config
+    // ==================================================
+    public static void loadGlobalSettings(ConfigBase config) {
+        baseSpeciesWeight = config.getInt("Mob Variations", "Subspecies Base Weight", baseSpeciesWeight, "The weight of common subspecies (regular mobs).");
+        //commonWeights.put("common", config.getInt("Mob Variations", "Subspecies Common Weight", commonWeights.get("common"), "The weight of common subspecies (currently there are no common subspecies added or planned, this is just a placeholder)."));
+        commonWeights.put("uncommon", config.getInt("Mob Variations", "Subspecies Uncommon Weight", commonWeights.get("uncommon"), "The weight of uncommon subspecies (such as Azure, Verdant, Scarlet, etc)."));
+        commonWeights.put("rare", config.getInt("Mob Variations", "Subspecies Rare Weight", commonWeights.get("rare"), "The weight of rare subspecies (such as Lunar or Celestial)."));
+        //commonWeights.put("legendary", config.getInt("Mob Variations", "Subspecies Legendary Weight", commonWeights.get("legendary"), "The weight of legendary subspecies (currently there are no legendary subspecies added or planned, this is just a placeholder)."));
+    }
 
 
     // ==================================================

@@ -84,7 +84,7 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 80D);
+		baseAttributes.put("maxHealth", 30D);
 		baseAttributes.put("movementSpeed", 0.16D);
 		baseAttributes.put("knockbackResistance", 1.0D);
 		baseAttributes.put("followRange", 16D);

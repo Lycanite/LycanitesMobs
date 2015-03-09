@@ -107,7 +107,7 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 60D);
+		baseAttributes.put("maxHealth", 20D);
 		baseAttributes.put("movementSpeed", 0.28D);
 		baseAttributes.put("knockbackResistance", 0.25D);
 		baseAttributes.put("followRange", 24D);

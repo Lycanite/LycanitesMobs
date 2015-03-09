@@ -469,6 +469,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     	if(!this.worldObj.isRemote)
             if(this.rand.nextInt(3) == 0) {
                 this.setPlayerOwner(player);
+                this.unsetTemporary();
                 String tameMessage = StatCollector.translateToLocal("message.pet.tamed");
                 tameMessage = tameMessage.replace("%creature%", this.getSpeciesName());
         		player.addChatMessage(new ChatComponentText(tameMessage));

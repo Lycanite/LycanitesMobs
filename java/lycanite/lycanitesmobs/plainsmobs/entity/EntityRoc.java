@@ -67,7 +67,7 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 25D);
+		baseAttributes.put("maxHealth", 15D);
 		baseAttributes.put("movementSpeed", 0.42D);
 		baseAttributes.put("knockbackResistance", 0.0D);
 		baseAttributes.put("followRange", 48D);

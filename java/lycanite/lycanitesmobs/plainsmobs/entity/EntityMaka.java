@@ -79,7 +79,7 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 20D);
+		baseAttributes.put("maxHealth", 10D);
 		baseAttributes.put("movementSpeed", 0.28D);
 		baseAttributes.put("knockbackResistance", 1D);
 		baseAttributes.put("followRange", 20D);

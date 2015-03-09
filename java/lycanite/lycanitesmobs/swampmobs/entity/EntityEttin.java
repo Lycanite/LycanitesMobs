@@ -69,7 +69,7 @@ public class EntityEttin extends EntityCreatureAgeable implements IMob {
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 60D);
+		baseAttributes.put("maxHealth", 30D);
 		baseAttributes.put("movementSpeed", 0.16D);
 		baseAttributes.put("knockbackResistance", 0.5D);
 		baseAttributes.put("followRange", 16D);

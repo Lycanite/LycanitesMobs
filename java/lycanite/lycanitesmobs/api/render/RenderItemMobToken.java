@@ -3,7 +3,10 @@ package lycanite.lycanitesmobs.api.render;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.info.MobInfo;
+import lycanite.lycanitesmobs.api.model.ModelCustom;
+import lycanite.lycanitesmobs.api.model.ModelCustomObj;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
@@ -62,7 +65,7 @@ public class RenderItemMobToken implements IItemRenderer {
         }
         else if(type == ItemRenderType.INVENTORY) {
             float scale = 12F;
-            GL11.glTranslatef(8F, 0F, -40F);
+            GL11.glTranslatef(8F, -8F, -40F);
             GL11.glScalef(scale, scale, scale);
             GL11.glRotatef(35.0F, 0.0F, 1.0F, 0.0F);
         }
@@ -73,7 +76,11 @@ public class RenderItemMobToken implements IItemRenderer {
             GL11.glRotatef(180.0F, 1.0F, 0.0F, 0.0F);
         }
 
-        AssetManager.getModel(mobInfo.name).render(null, 0, 0, 0, 0, 0, -1F); // Full Entity 0.0625F
+        float modelScale = -1F;
+        ModelBase model = AssetManager.getModel(mobInfo.name);
+        if(model instanceof ModelCustom)
+            modelScale = 0.0625F;
+        model.render(null, 0, 0, 0, 0, 0, modelScale);
 
         GL11.glPopMatrix();
     }

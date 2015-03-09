@@ -74,7 +74,7 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
 	@Override
 	protected void applyEntityAttributes() {
         HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-        baseAttributes.put("maxHealth", 20D);
+        baseAttributes.put("maxHealth", 15D);
         baseAttributes.put("movementSpeed", 0.24D);
         baseAttributes.put("knockbackResistance", 0.0D);
         baseAttributes.put("followRange", 16D);

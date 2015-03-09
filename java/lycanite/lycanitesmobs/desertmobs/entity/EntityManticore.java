@@ -73,7 +73,7 @@ public class EntityManticore extends EntityCreatureTameable implements IMob, IGr
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 20D);
+		baseAttributes.put("maxHealth", 10D);
 		baseAttributes.put("movementSpeed", 0.32D);
 		baseAttributes.put("knockbackResistance", 0.0D);
 		baseAttributes.put("followRange", 16D);

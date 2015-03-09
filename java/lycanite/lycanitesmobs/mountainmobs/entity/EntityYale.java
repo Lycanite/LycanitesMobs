@@ -109,7 +109,7 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 20D);
+		baseAttributes.put("maxHealth", 10D);
 		baseAttributes.put("movementSpeed", 0.26D);
 		baseAttributes.put("knockbackResistance", 0.25D);
 		baseAttributes.put("followRange", 16D);

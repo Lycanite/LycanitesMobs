@@ -31,8 +31,8 @@ public class ExtendedWorld extends WorldSavedData {
     // Mob Events World Config:
     public boolean configLoaded = false;
     public boolean useTotalWorldTime = true;
-    public int minTicksUntilEvent = 10 * 60 * 20;
-    public int maxTicksUntilEvent = 30 * 60 * 20;
+    public int minTicksUntilEvent = 60 * 60 * 20;
+    public int maxTicksUntilEvent = 120 * 60 * 20;
     public boolean mobEventsEnabled = true;
     public boolean mobEventsRandom = true;
     public String mobEventsSchedule = "";

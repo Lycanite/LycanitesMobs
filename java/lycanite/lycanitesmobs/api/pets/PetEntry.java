@@ -259,7 +259,6 @@ public class PetEntry {
                 entityTameable.setPlayerOwner((EntityPlayer) this.host);
                 this.summonSet.applyBehaviour(entityTameable);
             }
-
         }
         this.respawnTime = this.respawnTimeMax;
         this.spawnCount++;

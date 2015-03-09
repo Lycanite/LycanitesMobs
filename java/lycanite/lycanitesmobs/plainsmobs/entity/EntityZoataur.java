@@ -86,7 +86,7 @@ public class EntityZoataur extends EntityCreatureTameable implements IGroupPreda
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
 		baseAttributes.put("maxHealth", 20D);
-		baseAttributes.put("movementSpeed", 0.28D);
+		baseAttributes.put("movementSpeed", 0.24D);
 		baseAttributes.put("knockbackResistance", 0.0D);
 		baseAttributes.put("followRange", 16D);
 		baseAttributes.put("attackDamage", 4D);

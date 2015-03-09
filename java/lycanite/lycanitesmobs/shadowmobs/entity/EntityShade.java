@@ -54,7 +54,7 @@ public class EntityShade extends EntityCreatureRideable implements IGroupPredato
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, this.aiSit);
         this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("shadetreat"))).setTemptDistanceMin(4.0D));
-        this.tasks.addTask(6, new EntityAIAttackMelee(this).setSpeed(1.5D).setRate(10));
+        this.tasks.addTask(6, new EntityAIAttackMelee(this).setSpeed(1.5D).setRate(40));
         this.tasks.addTask(7, new EntityAIWander(this).setSpeed(1.0D));
         this.tasks.addTask(9, new EntityAIBeg(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
@@ -83,7 +83,7 @@ public class EntityShade extends EntityCreatureRideable implements IGroupPredato
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 30D);
+		baseAttributes.put("maxHealth", 20D);
 		baseAttributes.put("movementSpeed", 0.26D);
 		baseAttributes.put("knockbackResistance", 0.5D);
 		baseAttributes.put("followRange", 16D);

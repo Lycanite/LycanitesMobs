@@ -45,7 +45,7 @@ public class LycanitesMobs {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String version = "1.10.11.4 - MC 1.7.10";
+	public static final String version = "1.10.11.5 - MC 1.7.10";
 	
 	public static final PacketHandler packetHandler = new PacketHandler();
 
@@ -292,7 +292,7 @@ public class LycanitesMobs {
 
 
         // ========== Achievement Page ==========
-        achievementPage = new AchievementPage(modid, ObjectManager.achievements.values().toArray(new Achievement[ObjectManager.achievements.values().size()]));
+        achievementPage = new AchievementPage(name, ObjectManager.achievements.values().toArray(new Achievement[ObjectManager.achievements.values().size()]));
         AchievementPage.registerAchievementPage(achievementPage);
     }
 	

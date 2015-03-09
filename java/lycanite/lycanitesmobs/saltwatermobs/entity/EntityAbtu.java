@@ -35,6 +35,7 @@ import net.minecraft.world.World;
 public class EntityAbtu extends EntityCreatureTameable implements IMob, IGroupPredator {
 	
 	EntityAIWander wanderAI = new EntityAIWander(this);
+    int swarmLimit = 5;
     
     // ==================================================
  	//                    Constructor
@@ -56,6 +57,8 @@ public class EntityAbtu extends EntityCreatureTameable implements IMob, IGroupPr
         this.setWidth = 1.3F;
         this.setHeight = 1.8F;
         this.setupMob();
+
+        this.swarmLimit = ConfigBase.getConfig(this.group, "general").getInt("Features", "Abtu Swarm Limit", this.swarmLimit, "Limits how many Abtu there can be when swarming.");
         
         // AI Tasks:
         this.getNavigator().setCanSwim(true);
@@ -81,7 +84,7 @@ public class EntityAbtu extends EntityCreatureTameable implements IMob, IGroupPr
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 7D);
+		baseAttributes.put("maxHealth", 5D);
 		baseAttributes.put("movementSpeed", 0.24D);
 		baseAttributes.put("knockbackResistance", 0.0D);
 		baseAttributes.put("followRange", 32D);
@@ -124,8 +127,7 @@ public class EntityAbtu extends EntityCreatureTameable implements IMob, IGroupPr
 			return;
 		
 		// Spawn Minions:
-		int swarmLimit = ConfigBase.getConfig(this.group, "general").getInt("Features", "Abtu Swarm Limit", 20, "Limits how many Abtu there can be when swarming.");
-		if(swarmLimit > 0 && this.nearbyCreatureCount(this.getClass(), 64D) < swarmLimit) {
+		if(this.swarmLimit > 0 && this.nearbyCreatureCount(this.getClass(), 64D) < this.swarmLimit) {
 			float random = this.rand.nextFloat();
 			float spawnChance = 0.1F;
 			if(!this.isChild())

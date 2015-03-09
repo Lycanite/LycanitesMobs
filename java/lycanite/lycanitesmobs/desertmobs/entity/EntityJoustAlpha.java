@@ -70,7 +70,7 @@ public class EntityJoustAlpha extends EntityCreatureAgeable implements IAnimals,
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 40D);
+		baseAttributes.put("maxHealth", 20D);
 		baseAttributes.put("movementSpeed", 0.32D);
 		baseAttributes.put("knockbackResistance", 0.25D);
 		baseAttributes.put("followRange", 16D);

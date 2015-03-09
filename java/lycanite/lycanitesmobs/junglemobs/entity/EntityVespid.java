@@ -91,7 +91,7 @@ public class EntityVespid extends EntityCreatureAgeable implements IMob, IGroupP
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 15D);
+		baseAttributes.put("maxHealth", 5D);
 		baseAttributes.put("movementSpeed", 0.38D);
 		baseAttributes.put("knockbackResistance", 0D);
 		baseAttributes.put("followRange", 24D);

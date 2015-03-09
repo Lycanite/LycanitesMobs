@@ -61,7 +61,7 @@ public class EntityAstaroth extends EntityCreatureBase implements IMob {
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 80D);
+		baseAttributes.put("maxHealth", 40D);
 		baseAttributes.put("movementSpeed", 0.24D);
 		baseAttributes.put("knockbackResistance", 1.0D);
 		baseAttributes.put("followRange", 40D);

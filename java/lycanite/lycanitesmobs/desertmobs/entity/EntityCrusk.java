@@ -90,7 +90,7 @@ public class EntityCrusk extends EntityCreatureTameable implements IGroupPredato
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 60D);
+		baseAttributes.put("maxHealth", 20D);
 		baseAttributes.put("movementSpeed", 0.24D);
 		baseAttributes.put("knockbackResistance", 0.5D);
 		baseAttributes.put("followRange", 16D);

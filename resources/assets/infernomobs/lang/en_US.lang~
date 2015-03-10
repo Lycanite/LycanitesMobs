@@ -37,10 +37,6 @@ achievement.afrit.tame=Winged Fire
 achievement.afrit.tame.desc=Tame an Afrit.
 entity.infernomobs.khalk.name=Khalk
 entity.infernomobs.khalk.description=Large magma beasts known for their incredible defense and deadly offsense. On death, their bodies break down into lava!
-achievement.khalk.kill=Run Its Melting!
-achievement.khalk.kill.desc=Slay a Khalk.
-achievement.khalk.learn=Magma Giants
-achievement.khalk.learn.desc=Add a Khalk to your Beastiary.
 #
 # Items
 item.infernospawn.name=Spawn

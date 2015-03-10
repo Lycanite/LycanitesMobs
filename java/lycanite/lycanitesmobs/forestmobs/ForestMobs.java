@@ -117,14 +117,14 @@ public class ForestMobs {
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "shambler", EntityShambler.class, 0xDDFF22, 0x005511)
-		        .setPeaceful(false).setSummonable(false).setSummonCost(4).setDungeonLevel(1)
+		        .setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(1)
 		        .addSubspecies(new Subspecies("dark", "uncommon")).addSubspecies(new Subspecies("keppel", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER")
 				.setSpawnWeight(4).setAreaLimit(6).setGroupLimits(1, 2).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "arisaur", EntityArisaur.class, 0x008800, 0x00FF00)
-		        .setPeaceful(true).setSummonable(false).setSummonCost(2).setDungeonLevel(-1)
+		        .setPeaceful(true).setSummonCost(2).setDungeonLevel(-1)
 		        .addSubspecies(new Subspecies("russet", "uncommon")).addSubspecies(new Subspecies("keppel", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("CREATURE").setDespawn(false)
 				.setSpawnWeight(10).setAreaLimit(12).setGroupLimits(1, 3).setLightDark(true, false).setDungeonWeight(0);

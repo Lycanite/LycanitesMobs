@@ -97,21 +97,21 @@ public class SaltwaterMobs {
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "ika", EntityIka.class, 0x99FFBB, 0x229944)
-		        .setPeaceful(true).setSummonable(false).setSummonCost(2).setDungeonLevel(-1)
+		        .setPeaceful(true).setSummonCost(2).setDungeonLevel(-1)
 		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("golden", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("WATER").setDespawn(false)
 				.setSpawnWeight(6).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(true, false).setDungeonWeight(0);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "abtu", EntityAbtu.class, 0xFFBB00, 0x44AAFF)
-		        .setPeaceful(false).setSummonable(false).setSummonCost(2).setDungeonLevel(2)
+		        .setPeaceful(false).setSummonCost(2).setDungeonLevel(2)
 		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("WATER")
 				.setSpawnWeight(8).setAreaLimit(32).setGroupLimits(1, 5).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "raiko", EntityRaiko.class, 0xCCCCDD, 0xFF6633)
-		        .setPeaceful(false).setSummonable(false).setSummonCost(4).setDungeonLevel(2)
+		        .setPeaceful(false).setSummonCost(4).setDungeonLevel(2)
 		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("golden", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("SKY")
 				.setSpawnWeight(4).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);

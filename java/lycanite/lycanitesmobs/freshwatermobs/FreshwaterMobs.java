@@ -96,7 +96,7 @@ public class FreshwaterMobs {
         ObjectManager.addMob(newMob);
 
         newMob = new MobInfo(group, "strider", EntityStrider.class, 0x2c90cd, 0x13ddf1)
-                .setPeaceful(false).setSummonable(false).setSummonCost(6).setDungeonLevel(2)
+                .setPeaceful(false).setTameable(true).setSummonCost(6).setDungeonLevel(2)
                 .addSubspecies(new Subspecies("scarlet", "uncommon")).addSubspecies(new Subspecies("ashen", "uncommon"));
         newMob.spawnInfo.setSpawnTypes("WATER")
                 .setSpawnWeight(1).setAreaLimit(2).setGroupLimits(1, 2).setLightDark(false, true);

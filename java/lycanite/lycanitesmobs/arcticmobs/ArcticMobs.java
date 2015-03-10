@@ -146,28 +146,28 @@ public class ArcticMobs {
 		ObjectManager.addMob(newMob);
 		
         newMob = new MobInfo(group, "yeti", EntityYeti.class, 0xEEEEFF, 0x000099)
-		        .setPeaceful(true).setSummonable(false).setSummonCost(2).setDungeonLevel(-1)
+		        .setPeaceful(true).setSummonCost(2).setDungeonLevel(-1)
 		        .addSubspecies(new Subspecies("russet", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("CREATURE").setDespawn(false)
 				.setSpawnWeight(10).setAreaLimit(5).setGroupLimits(1, 4).setLightDark(true, false).setDungeonWeight(0);
 		ObjectManager.addMob(newMob);
 		
         newMob = new MobInfo(group, "wendigo", EntityWendigo.class, 0xCCCCFF, 0x0055FF)
-		        .setPeaceful(false).setSummonable(false).setSummonCost(8).setDungeonLevel(2)
+		        .setPeaceful(false).setSummonCost(8).setDungeonLevel(2)
 		        .addSubspecies(new Subspecies("keppel", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER, OOZE")
 				.setSpawnWeight(4).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
         newMob = new MobInfo(group, "arix", EntityArix.class, 0xDDDDFF, 0x9999FF)
-                .setPeaceful(false).setSummonable(false).setSummonCost(2).setDungeonLevel(1)
+                .setPeaceful(false).setTameable(true).setSummonCost(2).setDungeonLevel(1)
 		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"));
         newMob.spawnInfo.setSpawnTypes("SKY, OOZE")
                 .setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
         ObjectManager.addMob(newMob);
 
         newMob = new MobInfo(group, "serpix", EntitySerpix.class, 0xCCEEFF, 0x0000BB)
-                .setPeaceful(false).setSummonable(false).setSummonCost(8).setDungeonLevel(2)
+                .setPeaceful(false).setTameable(true).setSummonCost(8).setDungeonLevel(2)
                 .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
         newMob.spawnInfo.setSpawnTypes("MONSTER, OOZE")
                 .setSpawnWeight(4).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);

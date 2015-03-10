@@ -132,7 +132,7 @@ public class ShadowMobs {
 		AssetManager.addSound("phantom_say_jon", group, "entity.phantom.say.jon");
         
         newMob = new MobInfo(group, "epion", EntityEpion.class, 0x553300, 0xFF22DD)
-		        .setPeaceful(false).setSummonable(false).setSummonCost(3).setDungeonLevel(2)
+		        .setPeaceful(false).setSummonCost(3).setDungeonLevel(2)
 		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("russet", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER, LUNAR")
                 .setBiomes("GROUP, SPOOKY").setDimensions("-1, 1").setDimensionWhitelist(false)
@@ -140,7 +140,7 @@ public class ShadowMobs {
 		ObjectManager.addMob(newMob);
 
         newMob = new MobInfo(group, "geist", EntityGeist.class, 0x705449, 0x310e08)
-                .setPeaceful(false).setSummonable(false).setSummonCost(3).setDungeonLevel(2)
+                .setPeaceful(false).setSummonCost(3).setDungeonLevel(2)
                 .addSubspecies(new Subspecies("dark", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
         newMob.spawnInfo.setSpawnTypes("UNDEATH, MONSTER")
                 .setBiomes("GROUP, SPOOKY")
@@ -148,7 +148,7 @@ public class ShadowMobs {
         ObjectManager.addMob(newMob);
 
         newMob = new MobInfo(group, "chupacabra", EntityChupacabra.class, 0x36251b, 0xaa8c63)
-                .setPeaceful(true).setSummonable(false).setSummonCost(3).setDungeonLevel(2)
+                .setPeaceful(true).setTameable(true).setSummonCost(3).setDungeonLevel(2)
                 .addSubspecies(new Subspecies("violet", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
         newMob.spawnInfo.setSpawnTypes("UNDERGROUND").setDespawn(false)
                 .setBiomes("ALL, -OCEAN").setDimensions("-1, 1").setDimensionWhitelist(false)
@@ -156,7 +156,7 @@ public class ShadowMobs {
         ObjectManager.addMob(newMob);
 
         newMob = new MobInfo(group, "shade", EntityShade.class, 0x000402, 0x102336)
-                .setPeaceful(true).setSummonable(false).setSummonCost(3).setDungeonLevel(3)
+                .setPeaceful(true).setTameable(true).setSummonCost(3).setDungeonLevel(3)
                 .addSubspecies(new Subspecies("keppel", "uncommon")).addSubspecies(new Subspecies("russet", "uncommon"));
         newMob.spawnInfo.setSpawnTypes("UNDERGROUND, DARKNESS").setDespawn(false)
                 .setBiomes("ALL, -OCEAN").setDimensions("-1, 1").setDimensionWhitelist(false)

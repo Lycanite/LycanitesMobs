@@ -81,7 +81,7 @@ public class EntityCacodemon extends EntityCreatureTameable {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
 		baseAttributes.put("maxHealth", 20D);
 		baseAttributes.put("movementSpeed", 0.24D);
-		baseAttributes.put("knockbackResistance", 0.0D);
+		baseAttributes.put("knockbackResistance", 1.0D);
 		baseAttributes.put("followRange", 40D);
 		baseAttributes.put("attackDamage", 0D);
         super.applyEntityAttributes(baseAttributes);

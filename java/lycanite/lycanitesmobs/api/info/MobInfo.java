@@ -63,6 +63,9 @@ public class MobInfo {
 	
 	/** A static ArrayList of all summonable creature names. **/
 	public static List<String> summonableCreatures = new ArrayList<String>();
+
+    /** A static ArrayList of all tameable creature names. **/
+    public static List<String> tameableCreatures = new ArrayList<String>();
 	
 	/** A static Name to Instance map of all mob groups. **/
 	public static Map<String, GroupInfo> mobGroups = new HashMap<String, GroupInfo>();
@@ -165,10 +168,10 @@ public class MobInfo {
         Subspecies.loadGlobalSettings(config);
 
         String[] difficultyNames = new String[] {"Easy", "Normal", "Hard"};
-        double[] difficultyDefaults = new double[] {0.5D, 1.0D, 1.25D};
+        double[] difficultyDefaults = new double[] {0.5D, 1.0D, 1.1D};
         String[] statNames = new String[] {"Defense", "Speed", "Damage", "Haste", "Effect", "Pierce"};
 		difficultyMutlipliers = new HashMap<String, Double>();
-        config.setCategoryComment("Difficulty Multipliers", "Here you can scale the stats of every mob on a per difficulty basis. Note that on easy, speed is kept at 100% as 0.5 makes them stupidly slow.");
+        config.setCategoryComment("Difficulty Multipliers", "Here you can scale the stats of every mob on a per difficulty basis. Note that on easy, speed is kept at 1.0 by default as 0.5 makes them stupidly slow.");
         int difficultyIndex = 0;
         for(String difficultyName : difficultyNames) {
             for(String statName : statNames) {
@@ -317,7 +320,7 @@ public class MobInfo {
         ObjectManager.addAchievement(this.name + ".learn", new Achievement(this.name + ".learn", this.name + ".learn", achievementX + 1, achievementY, achievementStack, null));
         if(this.isSummonable())
             ObjectManager.addAchievement(this.name + ".summon", new Achievement(this.name + ".summon", this.name + ".summon", achievementX + 2, achievementY, achievementStack, null));
-        else if(this.entityClass.isAssignableFrom(EntityCreatureTameable.class) && tamingEnabled)
+        if(this.isTameable())
             ObjectManager.addAchievement(this.name + ".tame", new Achievement(this.name + ".tame", this.name + ".tame", achievementX + 2, achievementY, achievementStack, null));
     }
 
@@ -426,6 +429,21 @@ public class MobInfo {
 	public boolean isSummonable() {
 		return summonableCreatures.contains(this.name);
 	}
+
+    // ========== Tameable ==========
+    public MobInfo setTameable(boolean tameable) {
+        if(tameable && !tameableCreatures.contains(this.name))
+            tameableCreatures.add(this.name);
+        if(!tameable)
+            tameableCreatures.remove(this.name);
+        return this;
+    }
+
+    public boolean isTameable() {
+        if(!tamingEnabled)
+            return false;
+        return tameableCreatures.contains(this.name);
+    }
 
 	// ========== Dummy ==========
 	public MobInfo setDummy(boolean bool) {

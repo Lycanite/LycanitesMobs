@@ -114,14 +114,14 @@ public class MountainMobs {
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "troll", EntityTroll.class, 0x007711, 0xEEEEEE)
-		        .setPeaceful(false).setSummonable(false).setSummonCost(6).setDungeonLevel(2)
+		        .setPeaceful(false).setSummonCost(6).setDungeonLevel(2)
 		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("russet", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER")
 				.setSpawnWeight(4).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "yale", EntityYale.class, 0xFFEEAA, 0xFFDD77)
-		        .setPeaceful(true).setSummonable(false).setSummonCost(1).setDungeonLevel(-1)
+		        .setPeaceful(true).setSummonCost(1).setDungeonLevel(-1)
 		        .addSubspecies(new Subspecies("light", "uncommon")).addSubspecies(new Subspecies("golden", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("CREATURE").setDespawn(false)
 				.setSpawnWeight(14).setAreaLimit(5).setGroupLimits(1, 4).setLightDark(true, false).setDungeonWeight(0);

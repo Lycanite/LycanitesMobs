@@ -130,21 +130,21 @@ public class JungleMobs {
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "uvaraptor", EntityUvaraptor.class, 0x00FF33, 0xFF00FF)
-		        .setPeaceful(false).setSummonable(false).setSummonCost(4).setDungeonLevel(1)
+		        .setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(1)
 		        .addSubspecies(new Subspecies("scarlet", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER")
 				.setSpawnWeight(6).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "concapede", EntityConcapedeHead.class, 0x111144, 0xDD0000)
-		        .setPeaceful(true).setSummonable(false).setSummonCost(2).setDungeonLevel(2)
+		        .setPeaceful(true).setSummonCost(2).setDungeonLevel(2)
 		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("CREATURE").setDespawn(false)
 				.setSpawnWeight(18).setAreaLimit(10).setGroupLimits(1, 1).setLightDark(true, true);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "concapedesegment", EntityConcapedeSegment.class, 0x000022, 0x990000)
-		        .setPeaceful(true).setSummonable(false).setSummonCost(1).setDungeonLevel(-1)
+		        .setPeaceful(true).setSummonCost(1).setDungeonLevel(-1)
 		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("CREATURE")
 				.setSpawnWeight(0).setAreaLimit(0).setGroupLimits(0, 0).setLightDark(false, false).setEnabled(false);
@@ -158,21 +158,21 @@ public class JungleMobs {
 		ObjectManager.addMob(newMob);
         
         newMob = new MobInfo(group, "conba", EntityConba.class, 0x665500, 0xCC99BB)
-		        .setPeaceful(false).setSummonable(false).setSummonCost(2).setDungeonLevel(0)
+		        .setPeaceful(false).setSummonCost(2).setDungeonLevel(0)
 		        .addSubspecies(new Subspecies("violet", "uncommon")).addSubspecies(new Subspecies("dark", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER")
 				.setSpawnWeight(10).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
         
         newMob = new MobInfo(group, "vespid", EntityVespid.class, 0x112200, 0x998800)
-		        .setPeaceful(false).setSummonable(false).setSummonCost(2).setDungeonLevel(2)
+		        .setPeaceful(false).setSummonCost(2).setDungeonLevel(2)
 		        .addSubspecies(new Subspecies("scarlet", "uncommon")).addSubspecies(new Subspecies("ashen", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER")
 				.setSpawnWeight(10).setAreaLimit(10).setGroupLimits(1, 6).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
         
         newMob = new MobInfo(group, "vespidqueen", EntityVespidQueen.class, 0x223300, 0xFFCC00)
-		        .setPeaceful(false).setSummonable(false).setSummonCost(2).setDungeonLevel(3)
+		        .setPeaceful(false).setSummonCost(2).setDungeonLevel(3)
 		        .addSubspecies(new Subspecies("scarlet", "uncommon")).addSubspecies(new Subspecies("ashen", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER")
 				.setSpawnWeight(1).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);

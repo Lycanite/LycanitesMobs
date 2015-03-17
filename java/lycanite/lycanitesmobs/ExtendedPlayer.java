@@ -145,11 +145,13 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 
         // Familiars:
         if(!player.worldObj.isRemote && !this.setupPlayerFamiliars) {
-            for(PetEntry petEntry : DonationFamiliars.instance.getFamilairsForPlayer(this.player)) {
-                if(!this.petManager.hasEntry(petEntry)) {
-                    this.petManager.addEntry(petEntry);
+            Map<String, PetEntry> playerFamiliars = DonationFamiliars.instance.getFamiliarsForPlayer(this.player);
+            if(playerFamiliars != null)
+                for(PetEntry petEntry : playerFamiliars.values()) {
+                    if(!this.petManager.hasEntry(petEntry)) {
+                        this.petManager.addEntry(petEntry);
+                    }
                 }
-            }
             this.setupPlayerFamiliars = true;
         }
 		

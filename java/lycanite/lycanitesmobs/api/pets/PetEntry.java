@@ -57,6 +57,8 @@ public class PetEntry {
     public int subspeciesID = 0;
     /** The size scale to use for the entity. **/
     public double entitySize = 1.0D;
+    /** Coloring for this entity suc as collar coloring. **/
+    public String color;
 
     /** If true, a teleport has been requested to teleport the entity (if active) to the host entity. **/
     public boolean teleportEntity = false;
@@ -70,7 +72,7 @@ public class PetEntry {
         this.host = host;
 
         ExtendedPlayer playerExt = null;
-        if(host instanceof EntityPlayer)
+        if(host != null && host instanceof EntityPlayer)
             playerExt = ExtendedPlayer.getForPlayer((EntityPlayer)host);
         this.summonSet = new SummonSet(playerExt);
         this.summonSet.summonableOnly = false;
@@ -96,6 +98,11 @@ public class PetEntry {
 
     public PetEntry setEntitySize(double size) {
         this.entitySize = size;
+        return this;
+    }
+
+    public PetEntry setColor(String color) {
+        this.color = color;
         return this;
     }
 

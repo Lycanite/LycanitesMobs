@@ -129,7 +129,7 @@ public class SpawnTypeBase {
 
         // Underground Spawner:
         SpawnTypeBase undergroundSpawner = new SpawnTypeUnderground("Underground")
-                .setRate(400).setChance(0.5D).setRange(32).setBlockLimit(16).setMobLimit(8);
+                .setRate(800).setChance(0.25D).setRange(32).setBlockLimit(16).setMobLimit(8);
         undergroundSpawner.materials = new Material[] {Material.air};
         undergroundSpawner.ignoreBiome = false;
         undergroundSpawner.ignoreLight = false;
@@ -139,7 +139,7 @@ public class SpawnTypeBase {
 		
 		// Sky Spawner:
 		SpawnTypeBase skySpawner = new SpawnTypeSky("Sky")
-				.setRate(400).setChance(0.5D).setRange(48).setBlockLimit(16).setMobLimit(8);
+				.setRate(800).setChance(0.5D).setRange(48).setBlockLimit(16).setMobLimit(8);
 		skySpawner.materials = new Material[] {Material.air};
 		skySpawner.ignoreBiome = false;
 		skySpawner.ignoreLight = false;
@@ -149,7 +149,7 @@ public class SpawnTypeBase {
 		
 		// Water Spawner:
 		SpawnTypeBase waterSpawner = new SpawnTypeWater("Water")
-				.setRate(200).setChance(0.75D).setRange(32).setBlockLimit(64).setMobLimit(32);
+				.setRate(400).setChance(0.75D).setRange(32).setBlockLimit(64).setMobLimit(32);
 		waterSpawner.blocks = new Block[] {Blocks.water};
 		waterSpawner.ignoreBiome = false;
 		waterSpawner.ignoreLight = false;
@@ -191,7 +191,7 @@ public class SpawnTypeBase {
 		
 		// Rock Spawner:
 		SpawnTypeBase rockSpawner = new SpawnTypeRock("Rock")
-				.setRate(0).setChance(0.03D).setRange(2).setBlockLimit(32).setMobLimit(1);
+				.setRate(0).setChance(0.02D).setRange(2).setBlockLimit(32).setMobLimit(1);
 		rockSpawner.materials = new Material[] {Material.air};
 		rockSpawner.ignoreBiome = true;
 		rockSpawner.ignoreLight = true;
@@ -201,7 +201,7 @@ public class SpawnTypeBase {
 		
 		// Crop Spawner:
 		SpawnTypeBase cropSpawner = new SpawnTypeCrop("Crop")
-				.setRate(0).setChance(0.01D).setRange(2).setBlockLimit(32).setMobLimit(1);
+				.setRate(0).setChance(0.005D).setRange(2).setBlockLimit(32).setMobLimit(1);
 		cropSpawner.materials = new Material[] {Material.air};
 		cropSpawner.ignoreBiome = true;
 		cropSpawner.ignoreLight = true;
@@ -211,7 +211,7 @@ public class SpawnTypeBase {
 		
 		// Tree Spawner:
 		SpawnTypeBase treeSpawner = new SpawnTypeTree("Tree")
-				.setRate(0).setChance(0.03D).setRange(2).setBlockLimit(32).setMobLimit(1);
+				.setRate(0).setChance(0.01D).setRange(2).setBlockLimit(32).setMobLimit(1);
 		treeSpawner.materials = new Material[] {Material.air};
 		treeSpawner.ignoreBiome = true;
 		treeSpawner.ignoreLight = true;
@@ -231,7 +231,7 @@ public class SpawnTypeBase {
 		
 		// Lunar Spawner:
 		SpawnTypeBase lunarSpawner = new SpawnTypeLunar("Lunar")
-				.setRate(800).setChance(0.5D).setRange(48).setBlockLimit(32).setMobLimit(32);
+				.setRate(800).setChance(0.125D).setRange(48).setBlockLimit(32).setMobLimit(32);
 		lunarSpawner.materials = new Material[] {Material.air};
 		lunarSpawner.ignoreBiome = true;
 		lunarSpawner.ignoreDimension = false;
@@ -243,6 +243,7 @@ public class SpawnTypeBase {
 		// Darkness Spawner:
 		SpawnTypeBase darknessSpawner = new SpawnTypeDarkness("Darkness")
 				.setRate(0).setChance(0.1D).setRange(2).setBlockLimit(32).setMobLimit(1);
+        darknessSpawner.enabled = false;
 		darknessSpawner.materials = new Material[] {Material.air};
 		darknessSpawner.ignoreBiome = true;
 		darknessSpawner.ignoreDimension = true;

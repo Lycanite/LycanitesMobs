@@ -106,6 +106,15 @@ public class PetEntry {
         return this;
     }
 
+    public PetEntry setOwner(EntityLivingBase owner) {
+        this.host = owner;
+        if(host != null && host instanceof EntityPlayer) {
+            ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer((EntityPlayer) host);
+            this.summonSet.playerExt = playerExt;
+        }
+        return this;
+    }
+
 
     // ==================================================
     //                       Name

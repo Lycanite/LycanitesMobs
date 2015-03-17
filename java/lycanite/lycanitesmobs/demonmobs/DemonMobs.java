@@ -274,14 +274,14 @@ public class DemonMobs {
 			));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("pinkytreat"), 1, 0),
+				new ItemStack(ObjectManager.getItem("pinkytreat"), 4, 0),
 				new Object[] { "TTT", "BBT", "TTT",
 				Character.valueOf('T'), ObjectManager.getItem("hellfirecharge"),
 				Character.valueOf('B'), Items.bone
 			}));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("cacodemontreat"), 1, 0),
+				new ItemStack(ObjectManager.getItem("cacodemontreat"), 4, 0),
 				new Object[] { "TTT", "BBT", "TTT",
 				Character.valueOf('T'), ObjectManager.getItem("pinkymeatcooked"),
 				Character.valueOf('B'), Items.bone

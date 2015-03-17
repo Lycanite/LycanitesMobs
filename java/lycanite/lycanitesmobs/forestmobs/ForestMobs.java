@@ -226,7 +226,7 @@ public class ForestMobs {
 			));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("shamblertreat"), 1, 0),
+				new ItemStack(ObjectManager.getItem("shamblertreat"), 4, 0),
 				new Object[] { "TTT", "BBT", "TTT",
 				Character.valueOf('T'), ObjectManager.getItem("arisaurmeatcooked"),
 				Character.valueOf('B'), Items.reeds

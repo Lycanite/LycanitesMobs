@@ -270,7 +270,7 @@ public class InfernoMobs {
         }
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("afrittreat"), 1, 0),
+				new ItemStack(ObjectManager.getItem("afrittreat"), 4, 0),
 				new Object[] { "TTT", "BBT", "TTT",
 				Character.valueOf('T'), Items.gunpowder,
 				Character.valueOf('B'), Items.bone

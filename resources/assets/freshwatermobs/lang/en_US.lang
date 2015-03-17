@@ -30,9 +30,21 @@ achievement.strider.learn=Strider Knowledge
 achievement.strider.learn.desc=Add a Strider to your Beastiary.
 achievement.strider.tame=Explore The Depths!
 achievement.strider.tame.desc=Tame a Strider.
+entity.freshwatermobs.silex.name=Silex
+entity.freshwatermobs.silex.description=Beautiful fish with scales encrusted with Lapis Lazuli. Silex are known to eat the Lapis off of each other's scales as well as natural formations from rocks.
+achievement.silex.kill=Rock Fishing!
+achievement.silex.kill.desc=Slay a Silex.
+achievement.silex.learn=Fish of Lapis
+achievement.silex.learn.desc=Add a Silex to your Beastiary.
 #
 # Items
 item.freshwaterspawn.name=Spawn
+item.silexmeatraw.name=Raw Silex Meat
+item.silexmeatraw.description=Very sharp and boney!
+item.silexmeatcooked.name=Cooked Silex Meat
+item.silexmeatcooked.description=Very refreshing!
+item.lapisfishandchips.name=Lapis Fish and Chips
+item.lapisfishandchips.description=Swim through the water with the grace of a Silex after eating this delicacy. The chips are chunky fries rather than thin crispy potato wafers.
 item.stridertreat.name=Strider Treat
 item.stridertreat.description=With the lapis bearing Silex being their favorite snack, this lapis encrusted bone might win over a Strider.
 item.aquapulsecharge.name=Aqua Pulse Charge

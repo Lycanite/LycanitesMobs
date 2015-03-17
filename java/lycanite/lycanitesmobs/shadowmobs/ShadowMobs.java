@@ -119,7 +119,7 @@ public class ShadowMobs {
 		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1)
 		        .addSubspecies(new Subspecies("crimson", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"))
                 .addSubspecies(new Subspecies("lunar", "rare"));
-		newMob.spawnInfo.setSpawnTypes("DARKNESS, MONSTER")
+		newMob.spawnInfo.setSpawnTypes("UNDERGROUND, DARKNESS")
 				.setSpawnWeight(8).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
         
@@ -261,14 +261,14 @@ public class ShadowMobs {
         }
 
         GameRegistry.addRecipe(new ShapedOreRecipe(
-                new ItemStack(ObjectManager.getItem("chupacabratreat"), 1, 0),
+                new ItemStack(ObjectManager.getItem("chupacabratreat"), 4, 0),
                 new Object[] { "TTT", "BBT", "TTT",
                         Character.valueOf('T'), ObjectManager.getItem("geistliver"),
                         Character.valueOf('B'), Items.bone
                 }));
 
         GameRegistry.addRecipe(new ShapedOreRecipe(
-                new ItemStack(ObjectManager.getItem("shadetreat"), 1, 0),
+                new ItemStack(ObjectManager.getItem("shadetreat"), 4, 0),
                 new Object[] { "TTT", "BBT", "TTT",
                         Character.valueOf('T'), Items.ender_pearl,
                         Character.valueOf('B'), Items.bone

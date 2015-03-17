@@ -12,7 +12,7 @@ public class ItemTreat extends ItemBase {
         super();
 		this.itemName = setItemName;
 		this.group = group;
-        this.setMaxStackSize(1);
+        this.setMaxStackSize(16);
         this.textureName = this.itemName.toLowerCase();
         this.setUnlocalizedName(this.itemName);
         this.setup();

@@ -283,14 +283,14 @@ public class SwampMobs {
 			));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("lurkertreat"), 1, 0),
+				new ItemStack(ObjectManager.getItem("lurkertreat"), 4, 0),
 				new Object[] { "TTT", "BBT", "TTT",
 				Character.valueOf('T'), ObjectManager.getItem("aspidmeatcooked"),
 				Character.valueOf('B'), Items.bone
 			}));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("eyewigtreat"), 1, 0),
+				new ItemStack(ObjectManager.getItem("eyewigtreat"), 4, 0),
 				new Object[] { "TTT", "BBT", "TTT",
 				Character.valueOf('T'), ObjectManager.getItem("poisongland"),
 				Character.valueOf('B'), Items.bone

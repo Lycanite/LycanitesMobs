@@ -205,7 +205,7 @@ public class PlainsMobs {
 			));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("ventoraptortreat"), 1, 0),
+				new ItemStack(ObjectManager.getItem("ventoraptortreat"), 4, 0),
 				new Object[] { "TTT", "BBT", "TTT",
 				Character.valueOf('T'), ObjectManager.getItem("makameatcooked"),
 				Character.valueOf('B'), Items.bone

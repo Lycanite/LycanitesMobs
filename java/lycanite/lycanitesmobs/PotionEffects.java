@@ -2,6 +2,9 @@ package lycanite.lycanitesmobs;
 
 import lycanite.lycanitesmobs.api.entity.EntityFear;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
@@ -9,7 +12,11 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
+import java.util.UUID;
+
 public class PotionEffects {
+    private static final UUID swiftswimmingMoveBoostUUID = UUID.fromString("6d4fe17f-06eb-4ebc-a573-364b79faed5e");
+    private static final AttributeModifier swiftswimmingMoveBoost = (new AttributeModifier(swiftswimmingMoveBoostUUID, "Swiftswimming Speed Boost", 0.6D, 2)).setSaved(false);
 	
 	// ==================================================
 	//                    Entity Update
@@ -54,6 +61,24 @@ public class PotionEffects {
 					entity.motionY = -0.2D;
 			}
 		}
+
+        // ========== Swiftswimming ==========
+        if(ObjectManager.getPotionEffect("swiftswimming") != null && entity instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer)entity;
+            if(entity.isPotionActive(ObjectManager.getPotionEffect("swiftswimming").getId()) && entity.isInWater()) {
+                int amplifier = entity.getActivePotionEffect(ObjectManager.getPotionEffect("swiftswimming")).getAmplifier();
+                IAttributeInstance movement = entity.getEntityAttribute(SharedMonsterAttributes.movementSpeed);
+                if(movement.getModifier(swiftswimmingMoveBoostUUID) == null) {
+                    movement.applyModifier(swiftswimmingMoveBoost);
+                }
+            }
+            else {
+                IAttributeInstance movement = entity.getEntityAttribute(SharedMonsterAttributes.movementSpeed);
+                if(movement.getModifier(swiftswimmingMoveBoostUUID) != null) {
+                    movement.removeModifier(swiftswimmingMoveBoost);
+                }
+            }
+        }
 		
 		// ========== Fear ==========
 		if(ObjectManager.getPotionEffect("fear") != null) {

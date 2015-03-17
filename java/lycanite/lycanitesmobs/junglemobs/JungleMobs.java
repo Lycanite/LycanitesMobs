@@ -291,7 +291,7 @@ public class JungleMobs {
         }
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("uvaraptortreat"), 1, 0),
+				new ItemStack(ObjectManager.getItem("uvaraptortreat"), 4, 0),
 				new Object[] { "TTT", "BBT", "TTT",
 				Character.valueOf('T'), ObjectManager.getItem("concapedemeatcooked"),
 				Character.valueOf('B'), Items.bone

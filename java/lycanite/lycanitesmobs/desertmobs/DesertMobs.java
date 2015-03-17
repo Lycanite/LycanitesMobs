@@ -268,14 +268,14 @@ public class DesertMobs {
 			));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("crusktreat"), 1, 0),
+				new ItemStack(ObjectManager.getItem("crusktreat"), 4, 0),
 				new Object[] { "TTT", "BBT", "TTT",
 				Character.valueOf('T'), ObjectManager.getItem("joustmeatcooked"),
 				Character.valueOf('B'), Items.bone
 			}));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("erepedetreat"), 1, 0),
+				new ItemStack(ObjectManager.getItem("erepedetreat"), 4, 0),
 				new Object[] { "TTT", "BBT", "TTT",
 				Character.valueOf('T'), Items.gold_ingot,
 				Character.valueOf('B'), Items.bone

@@ -1,32 +1,5 @@
 package lycanite.lycanitesmobs.freshwatermobs;
 
-import lycanite.lycanitesmobs.LycanitesMobs;
-import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
-import lycanite.lycanitesmobs.api.info.GroupInfo;
-import lycanite.lycanitesmobs.api.info.ItemInfo;
-import lycanite.lycanitesmobs.api.info.MobInfo;
-import lycanite.lycanitesmobs.api.info.Subspecies;
-import lycanite.lycanitesmobs.api.item.ItemTreat;
-import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
-import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
-import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
-import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
-import lycanite.lycanitesmobs.freshwatermobs.dispenser.DispenserBehaviorAquaPulse;
-import lycanite.lycanitesmobs.freshwatermobs.entity.EntityAquaPulse;
-import lycanite.lycanitesmobs.freshwatermobs.entity.EntityJengu;
-import lycanite.lycanitesmobs.freshwatermobs.entity.EntityStrider;
-import lycanite.lycanitesmobs.freshwatermobs.entity.EntityZephyr;
-import lycanite.lycanitesmobs.freshwatermobs.item.ItemAquaPulseCharge;
-import lycanite.lycanitesmobs.freshwatermobs.item.ItemFreshwaterEgg;
-import lycanite.lycanitesmobs.freshwatermobs.item.ItemScepterAquaPulse;
-import lycanite.lycanitesmobs.freshwatermobs.mobevent.MobEventTsunami;
-import net.minecraft.block.BlockDispenser;
-import net.minecraft.block.material.Material;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -35,6 +8,30 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
+import lycanite.lycanitesmobs.LycanitesMobs;
+import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
+import lycanite.lycanitesmobs.api.info.*;
+import lycanite.lycanitesmobs.api.item.ItemCustomFood;
+import lycanite.lycanitesmobs.api.item.ItemTreat;
+import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
+import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
+import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
+import lycanite.lycanitesmobs.freshwatermobs.dispenser.DispenserBehaviorAquaPulse;
+import lycanite.lycanitesmobs.freshwatermobs.entity.*;
+import lycanite.lycanitesmobs.freshwatermobs.item.ItemAquaPulseCharge;
+import lycanite.lycanitesmobs.freshwatermobs.item.ItemFreshwaterEgg;
+import lycanite.lycanitesmobs.freshwatermobs.item.ItemScepterAquaPulse;
+import lycanite.lycanitesmobs.freshwatermobs.mobevent.MobEventTsunami;
+import net.minecraft.block.BlockDispenser;
+import net.minecraft.block.material.Material;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemFood;
+import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 @Mod(modid = FreshwaterMobs.modid, name = FreshwaterMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid)
 public class FreshwaterMobs {
@@ -71,6 +68,17 @@ public class FreshwaterMobs {
         int rawFoodEffectID = Potion.weakness.id;
         if(ObjectManager.getPotionEffect("penetration") != null)
             rawFoodEffectID = ObjectManager.getPotionEffect("penetration").getId();
+        ObjectManager.addItem("silexmeatraw", new ItemCustomFood("silexmeatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(rawFoodEffectID, 45, 2, 0.8F));
+        ObjectLists.addItem("rawfish", ObjectManager.getItem("silexmeatraw"));
+
+        int cookedFoodEffectID = Potion.moveSpeed.id;
+        if(ObjectManager.getPotionEffect("swiftswimming") != null)
+            cookedFoodEffectID = ObjectManager.getPotionEffect("swiftswimming").getId();
+        ObjectManager.addItem("silexmeatcooked", new ItemCustomFood("silexmeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(cookedFoodEffectID, 10, 2, 1.0F).setAlwaysEdible());
+        ObjectLists.addItem("cookedfish", ObjectManager.getItem("silexmeatcooked"));
+
+        ObjectManager.addItem("lapisfishandchips", new ItemCustomFood("lapisfishandchips", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(cookedFoodEffectID, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
+        ObjectLists.addItem("cookedfish", ObjectManager.getItem("lapisfishandchips"));
 
         ObjectManager.addItem("aquapulsecharge", new ItemAquaPulseCharge());
         ObjectManager.addItem("aquapulsescepter", new ItemScepterAquaPulse(), 2, 1, 1);
@@ -100,6 +108,13 @@ public class FreshwaterMobs {
                 .addSubspecies(new Subspecies("scarlet", "uncommon")).addSubspecies(new Subspecies("ashen", "uncommon"));
         newMob.spawnInfo.setSpawnTypes("WATER")
                 .setSpawnWeight(1).setAreaLimit(2).setGroupLimits(1, 2).setLightDark(false, true);
+        ObjectManager.addMob(newMob);
+
+        newMob = new MobInfo(group, "silex", EntitySilex.class, 0x263abd, 0x040e75)
+                .setPeaceful(true).setSummonCost(2).setDungeonLevel(-1)
+                .addSubspecies(new Subspecies("light", "uncommon")).addSubspecies(new Subspecies("keppel", "uncommon"));
+        newMob.spawnInfo.setSpawnTypes("WATER").setDespawn(false)
+                .setSpawnWeight(6).setAreaLimit(10).setGroupLimits(1, 6).setLightDark(true, false).setDungeonWeight(0);
         ObjectManager.addMob(newMob);
 
 		
@@ -147,18 +162,17 @@ public class FreshwaterMobs {
         }
 		
 		// ========== Crafting ==========
-        /*GameRegistry.addRecipe(new ShapelessOreRecipe(
-                new ItemStack(ObjectManager.getItem("seashellmaki"), 1, 0),
+        GameRegistry.addRecipe(new ShapelessOreRecipe(
+                new ItemStack(ObjectManager.getItem("lapisfishandchips"), 1, 0),
                 new Object[]{
-                        Blocks.vine,
-                        Items.wheat,
-                        ObjectManager.getItem("ikameatcooked"),
+                        Items.potato,
+                        ObjectManager.getItem("silexmeatcooked")
                 }
         ));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
-				new ItemStack(ObjectManager.getItem("ikameatcooked"), 1, 0),
-				new Object[] { ObjectManager.getItem("seashellmaki") }
-			));*/
+				new ItemStack(ObjectManager.getItem("silexmeatcooked"), 1, 0),
+				new Object[] { ObjectManager.getItem("lapisfishandchips") }
+			));
 
         if(ItemInfo.enableWeaponRecipes) {
             GameRegistry.addRecipe(new ShapedOreRecipe(
@@ -170,13 +184,13 @@ public class FreshwaterMobs {
         }
 
         GameRegistry.addRecipe(new ShapedOreRecipe(
-                new ItemStack(ObjectManager.getItem("stridertreat"), 1, 0),
+                new ItemStack(ObjectManager.getItem("stridertreat"), 4, 0),
                 new Object[] { "TTT", "BBT", "TTT",
-                        Character.valueOf('T'), new ItemStack(Items.dye, 1, 4),
+                        Character.valueOf('T'), ObjectManager.getItem("silexmeatcooked"),
                         Character.valueOf('B'), Items.bone
                 }));
 		
 		// ========== Smelting ==========
-		//GameRegistry.addSmelting(ObjectManager.getItem("ikameatraw"), new ItemStack(ObjectManager.getItem("ikameatcooked"), 1), 0.5f);
+		GameRegistry.addSmelting(ObjectManager.getItem("silexmeatraw"), new ItemStack(ObjectManager.getItem("silexmeatcooked"), 1), 0.5f);
 	}
 }

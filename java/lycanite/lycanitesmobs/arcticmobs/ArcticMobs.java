@@ -296,14 +296,14 @@ public class ArcticMobs {
         }
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("arixtreat"), 1, 0),
+				new ItemStack(ObjectManager.getItem("arixtreat"), 4, 0),
 				new Object[] { "TTT", "BBT", "TTT",
 				Character.valueOf('T'), Blocks.packed_ice,
 				Character.valueOf('B'), Items.bone
 			}));
 
         GameRegistry.addRecipe(new ShapedOreRecipe(
-                new ItemStack(ObjectManager.getItem("serpixtreat"), 1, 0),
+                new ItemStack(ObjectManager.getItem("serpixtreat"), 4, 0),
                 new Object[] { "TTT", "BBT", "TTT",
                         Character.valueOf('T'), ObjectManager.getItem("frostyfur"),
                         Character.valueOf('B'), Items.bone

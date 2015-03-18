@@ -272,7 +272,7 @@ public class PetEntry {
 
             if(entityCreature instanceof EntityCreatureTameable && this.host instanceof EntityPlayer) {
                 EntityCreatureTameable entityTameable = (EntityCreatureTameable)entityCreature;
-                entityTameable.setPlayerOwner((EntityPlayer) this.host);
+                entityTameable.setPlayerOwner((EntityPlayer)this.host);
                 this.summonSet.applyBehaviour(entityTameable);
             }
         }

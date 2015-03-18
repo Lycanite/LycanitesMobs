@@ -1,6 +1,7 @@
 package lycanite.lycanitesmobs.api.entity;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
@@ -35,6 +36,9 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
 	public float staminaRecovery = 0.5F;
 	public boolean isMobWhenNotTamed = true;
 	public float sittingGuardRange = 16F;
+
+    // Owner:
+    public UUID ownerUUID;
 	
 	// AI:
 	public EntityAISit aiSit = new EntityAISit(this);
@@ -489,6 +493,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     	this.setTamed(true);
         this.clearMovement();
         this.setAttackTarget((EntityLivingBase)null);
+        this.ownerUUID = player.getUniqueID();
         this.setOwner(player.getCommandSenderName());
         this.setSitting(false);
         this.setFollowing(true);
@@ -510,8 +515,8 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     	return this.getOwnerName();
     }
     
-    public void setOwner(String playername) {
-        this.dataWatcher.updateObject(WATCHER_ID.OWNER.id, playername);
+    public void setOwner(String owner) {
+        this.dataWatcher.updateObject(WATCHER_ID.OWNER.id, owner);
     }
     
     @Override
@@ -807,6 +812,17 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
         	this.setOwner("");
             this.setTamed(false);
         }
+
+        if(nbtTagCompound.hasKey("OwnerUUID")) {
+            String uuidString = nbtTagCompound.getString("OwnerUUID");
+            if(!"".equals(uuidString))
+                this.ownerUUID = UUID.fromString(uuidString);
+            else
+                this.ownerUUID = null;
+        }
+        else {
+            this.ownerUUID = null;
+        }
         
         if(nbtTagCompound.hasKey("Sitting")) {
 	        this.setSitting(nbtTagCompound.getBoolean("Sitting"));
@@ -864,6 +880,12 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
         }
         else {
         	nbtTagCompound.setString("Owner", this.getOwnerName());
+        }
+        if(this.ownerUUID == null) {
+            nbtTagCompound.setString("OwnerUUID", "");
+        }
+        else {
+            nbtTagCompound.setString("OwnerUUID", this.ownerUUID.toString());
         }
         nbtTagCompound.setBoolean("Sitting", this.isSitting());
         nbtTagCompound.setBoolean("Following", this.isFollowing());

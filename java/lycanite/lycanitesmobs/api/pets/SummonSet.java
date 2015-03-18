@@ -116,8 +116,6 @@ public class SummonSet {
     //                        Sync
     // ==================================================
 	public void readFromPacket(String summonType, byte behaviour) {
-		if(this.playerExt.beastiary == null)
-			return;
 		this.setSummonType(summonType);
 		this.setBehaviourByte(behaviour);
 	}

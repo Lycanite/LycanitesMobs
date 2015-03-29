@@ -13,13 +13,7 @@ import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeLand;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
 import lycanite.lycanitesmobs.forestmobs.dispenser.DispenserBehaviorLifeDrain;
-import lycanite.lycanitesmobs.forestmobs.entity.EntityArisaur;
-import lycanite.lycanitesmobs.forestmobs.entity.EntityEnt;
-import lycanite.lycanitesmobs.forestmobs.entity.EntityLifeDrain;
-import lycanite.lycanitesmobs.forestmobs.entity.EntityLifeDrainEnd;
-import lycanite.lycanitesmobs.forestmobs.entity.EntityShambler;
-import lycanite.lycanitesmobs.forestmobs.entity.EntitySpriggan;
-import lycanite.lycanitesmobs.forestmobs.entity.EntityTrent;
+import lycanite.lycanitesmobs.forestmobs.entity.*;
 import lycanite.lycanitesmobs.forestmobs.item.ItemFoodPaleoSalad;
 import lycanite.lycanitesmobs.forestmobs.item.ItemForestEgg;
 import lycanite.lycanitesmobs.forestmobs.item.ItemLifeDrainCharge;
@@ -94,6 +88,7 @@ public class ForestMobs {
 		ObjectLists.addItem("vegetables", ObjectManager.getItem("paleosalad"));
 
 		ObjectManager.addItem("shamblertreat", new ItemTreat("shamblertreat", group));
+        ObjectManager.addItem("wargtreat", new ItemTreat("wargtreat", group));
 
         ObjectManager.addItem("lifedraincharge", new ItemLifeDrainCharge());
         ObjectManager.addItem("lifedrainscepter", new ItemScepterLifeDrain(), 2, 1, 1);
@@ -134,6 +129,13 @@ public class ForestMobs {
                 .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
 		        .addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
         newMob.spawnInfo.setSpawnTypes("CROP, SKY")
+                .setSpawnWeight(4).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
+        ObjectManager.addMob(newMob);
+
+        newMob = new MobInfo(group, "warg", EntityWarg.class, 0x321806, 0x68523b)
+                .setPeaceful(false).setSummonable(false).setSummonCost(4).setDungeonLevel(1)
+                .addSubspecies(new Subspecies("ashen", "uncommon")).addSubspecies(new Subspecies("dark", "uncommon"));
+        newMob.spawnInfo.setSpawnTypes("MONSTER")
                 .setSpawnWeight(4).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
         ObjectManager.addMob(newMob);
 
@@ -228,9 +230,16 @@ public class ForestMobs {
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("shamblertreat"), 4, 0),
 				new Object[] { "TTT", "BBT", "TTT",
-				Character.valueOf('T'), ObjectManager.getItem("arisaurmeatcooked"),
+				Character.valueOf('T'), ObjectManager.getItem("lifedraincharge"),
 				Character.valueOf('B'), Items.reeds
 			}));
+
+        GameRegistry.addRecipe(new ShapedOreRecipe(
+                new ItemStack(ObjectManager.getItem("wargtreat"), 4, 0),
+                new Object[] { "TTT", "BBT", "TTT",
+                        Character.valueOf('T'), ObjectManager.getItem("arisaurmeatcooked"),
+                        Character.valueOf('B'), Items.bone
+                }));
 
         if(ItemInfo.enableWeaponRecipes) {
             GameRegistry.addRecipe(new ShapedOreRecipe(

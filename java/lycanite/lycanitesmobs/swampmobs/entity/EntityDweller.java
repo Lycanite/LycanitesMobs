@@ -16,6 +16,8 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
@@ -156,6 +158,20 @@ public class EntityDweller extends EntityCreatureTameable implements IMob {
     	if(this.getAir() <= -100)
     		return false;
     	return super.isAggressive();
+    }
+
+    // ========== Melee Attack ==========
+    @Override
+    public boolean meleeAttack(Entity target, double damageScale) {
+        if(!super.meleeAttack(target, damageScale))
+            return false;
+
+        // Effect:
+        if(target instanceof EntityLivingBase) {
+            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.poison.id, this.getEffectDuration(5), 1));
+        }
+
+        return true;
     }
     
     

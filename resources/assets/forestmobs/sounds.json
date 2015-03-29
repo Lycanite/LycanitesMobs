@@ -127,6 +127,46 @@
         "category": "hostile",
         "sounds": [{"name": "entity/spriggan/tame", "stream": false}]
     },
+    "entity.warg.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/warg/say", "stream": false}]
+    },
+    "entity.warg.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/warg/hurt", "stream": false}]
+    },
+    "entity.warg.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/warg/death", "stream": false}]
+    },
+    "entity.warg.step": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/warg/step", "stream": false}]
+    },
+    "entity.warg.jump": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/warg/jump", "stream": false}]
+    },
+    "entity.warg.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/warg/attack", "stream": false}]
+    },
+    "entity.warg.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/warg/beg", "stream": false}]
+    },
+    "entity.warg.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/warg/tame", "stream": false}]
+    },
+    "entity.warg.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/warg/eat", "stream": false}]
+    },
+    "entity.warg.mount": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/warg/mount", "stream": false}]
+    },
     "projectile.lifedrain": {
         "category": "ambient",
         "sounds": [{"name": "projectile/lifedrain", "stream": false}]

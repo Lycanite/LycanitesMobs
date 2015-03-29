@@ -266,10 +266,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
   	// ==================================================
     public EntityCreatureBase(World world) {
         super(world);
-        this.mobInfo = MobInfo.mobClassToInfo.get(this.getClass());
-        this.group = mobInfo.group;
-        this.extraMobBehaviour = new ExtraMobBehaviour(this);
-        this.flightNavigator = new FlightNavigator(this);
+        // Anything that needs to be loaded first should be in applyEntityAttributes().
     }
     
     // ========== Setup ==========
@@ -301,7 +298,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     }
     
     // ========== Attributes ==========
-    /** Creates and sets all the entity attributes with default values. **/
+    /** Creates and sets all the entity attributes with default values. This should be overriden by specific entities and should always run applyEntityAttributes(HashMap<String, Double> baseAttributes). **/
+    @Override
     protected void applyEntityAttributes() {
         HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
 		baseAttributes.put("maxHealth", 0D);
@@ -312,12 +310,17 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         this.applyEntityAttributes(baseAttributes);
     }
     
-    /** Creates and sets all the entity attributes using a HashMap of values. **/
+    /** Creates and sets all the entity attributes using a HashMap of values. This must always be called. **/
     protected void applyEntityAttributes(HashMap<String, Double> baseAttributes) {
+        this.mobInfo = MobInfo.mobClassToInfo.get(this.getClass());
+        this.group = mobInfo.group;
+        this.extraMobBehaviour = new ExtraMobBehaviour(this);
+        this.flightNavigator = new FlightNavigator(this);
+
         super.applyEntityAttributes();
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage);
         if(baseAttributes.containsKey("maxHealth")) {
-        	this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(baseAttributes.get("maxHealth"));
+        	this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue((baseAttributes.get("maxHealth") * this.getHealthMultiplier()) + this.getHealthBoost());
         	baseHealthMap.put(this.getClass(), baseAttributes.get("maxHealth"));
         }
         if(baseAttributes.containsKey("movementSpeed"))
@@ -813,7 +816,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     /** Returns the base health for this mob. This is not the current max health. **/
     public double getBaseHealth() {
     	if(baseHealthMap.containsKey(this.getClass()))
-    		return baseHealthMap.get(this.getClass());
+    		return (baseHealthMap.get(this.getClass()) * this.getHealthMultiplier()) + this.getHealthBoost();
     	return 10D;
     }
 
@@ -843,6 +846,22 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 			difficultyName = "Normal";
 		return MobInfo.difficultyMutlipliers.get(difficultyName.toUpperCase() + "-" + stat.toUpperCase());
 	}
+
+    // ========= Health ==========
+    /** Returns the health scale of this mob. **/
+    public double getHealthMultiplier() {
+        double multiplier = this.mobInfo.multiplierHealth * this.getDifficultyMultiplier("health");
+        if(this.extraMobBehaviour != null)
+            multiplier *= this.extraMobBehaviour.multiplierHealth;
+        return multiplier;
+    }
+    /** Returns the health boost of this mob. **/
+    public int getHealthBoost() {
+        int boost = this.mobInfo.boostHealth;
+        if(this.extraMobBehaviour != null)
+            boost += this.extraMobBehaviour.boostHealth;
+        return boost;
+    }
     
     // ========= Defense ==========
     /** Returns the defense scale of this mob, see getDamageAfterDefense() for the logic. **/

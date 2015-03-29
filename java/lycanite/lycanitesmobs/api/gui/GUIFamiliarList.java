@@ -59,6 +59,8 @@ public class GUIFamiliarList extends GuiScrollingList {
 	@Override
 	protected void drawSlot(int index, int boxRight, int boxTop, int boxBottom, Tessellator tessellator) {
 		MobInfo mobInfo = this.familiarList.get(index).summonSet.getMobInfo();
+        if(mobInfo == null)
+            return;
 		this.parentGUI.getFontRenderer().drawString(mobInfo.getTitle(), this.left + 18 , boxTop + 4, 0xFFFFFF);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(mobInfo.getIcon());
 		this.parentGUI.drawImage(this.left, boxTop, 0, 0, 16, 16, 0.0625F, 0.0625F);

@@ -48,7 +48,7 @@ public class SharedMobEvents {
         MobEventBase event = new MobEventBase("raptorrampage", group);
 
         SpawnTypeBase spawner = new SpawnTypeLand("raptorrampage_land")
-                .setChance(1.0D).setBlockLimit(32).setMobLimit(10);
+                .setChance(1.0D).setBlockLimit(32).setMobLimit(5);
         spawner.materials = new Material[] {Material.air};
         spawner.ignoreBiome = true;
         spawner.ignoreLight = true;
@@ -59,7 +59,7 @@ public class SharedMobEvents {
         event.addSpawner(spawner);
 
         spawner = new SpawnTypeSky("raptorrampage_sky")
-                .setChance(1.0D).setBlockLimit(32).setMobLimit(10);
+                .setChance(1.0D).setBlockLimit(32).setMobLimit(5);
         spawner.materials = new Material[] {Material.air};
         spawner.ignoreBiome = true;
         spawner.ignoreLight = true;

@@ -9,13 +9,15 @@ public class ExtraMobBehaviour {
 	public EntityCreatureBase host;
 	
 	// ========== Stats ==========
+    public double multiplierHealth = 1.0D;
 	public double multiplierDefense = 1.0D;
 	public double multiplierSpeed = 1.0D;
 	public double multiplierDamage = 1.0D;
 	public double multiplierHaste = 1.0D;
 	public double multiplierEffect = 1.0D;
 	public double multiplierPierce = 1.0D;
-	
+
+    public int boostHealth = 0;
 	public int boostDefense = 0;
 	public int boostSpeed = 0;
 	public int boostDamage = 0;
@@ -54,6 +56,9 @@ public class ExtraMobBehaviour {
     /** Called from this host passing a compound storing all the extra behaviour options. **/
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
     	// Stat Multipliers:
+        if(nbtTagCompound.hasKey("MultiplierHealth")) {
+            this.multiplierHealth = nbtTagCompound.getDouble("MultiplierHealth");
+        }
     	if(nbtTagCompound.hasKey("MultiplierDefense")) {
     		this.multiplierDefense = nbtTagCompound.getDouble("MultiplierDefense");
     	}
@@ -74,6 +79,9 @@ public class ExtraMobBehaviour {
     	}
 
     	// Stat Boosts:
+        if(nbtTagCompound.hasKey("BoostHealth")) {
+            this.boostHealth = nbtTagCompound.getInteger("BoostHealth");
+        }
     	if(nbtTagCompound.hasKey("BoostDefense")) {
     		this.boostDefense = nbtTagCompound.getInteger("BoostDefense");
     	}
@@ -143,6 +151,7 @@ public class ExtraMobBehaviour {
     /** Called from this host passing a compound writing all the extra behaviour options. **/
     public void writeToNBT(NBTTagCompound nbtTagCompound) {
     	// Stat Multipliers:
+        nbtTagCompound.setDouble("MultiplierHealth", this.multiplierHealth);
     	nbtTagCompound.setDouble("MultiplierDefense", this.multiplierDefense);
     	nbtTagCompound.setDouble("MultiplierSpeed", this.multiplierSpeed);
     	nbtTagCompound.setDouble("MultiplierDamage", this.multiplierDamage);
@@ -151,6 +160,7 @@ public class ExtraMobBehaviour {
     	nbtTagCompound.setDouble("MultiplierPierce", this.multiplierPierce);
 
     	// Stat Boosts:
+        nbtTagCompound.setInteger("BoostHealth", this.boostHealth);
     	nbtTagCompound.setInteger("BoostDefense", this.boostDefense);
     	nbtTagCompound.setInteger("BoostSpeed", this.boostSpeed);
     	nbtTagCompound.setInteger("BoostDamage", this.boostDamage);

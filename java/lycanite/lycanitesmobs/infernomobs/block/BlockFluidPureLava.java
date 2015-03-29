@@ -11,6 +11,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -75,6 +76,14 @@ public class BlockFluidPureLava extends BlockFluidClassic {
 			}
 			return false;
 		}
+
+        // Water Cobblestone:
+        if(block == Blocks.water) {
+            if(world instanceof World) {
+                ((World)world).setBlock(x, y, z, Blocks.stone, 0, 3);
+            }
+            return false;
+        }
 		
 		if(block.getMaterial().isLiquid()) return false;
 		return super.canDisplace(world, x, y, z);

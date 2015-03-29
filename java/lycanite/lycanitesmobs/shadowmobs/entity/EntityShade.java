@@ -52,7 +52,7 @@ public class EntityShade extends EntityCreatureRideable implements IGroupPredato
         // AI Tasks:
         this.getNavigator().setAvoidsWater(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(2, this.aiSit);
+        //this.tasks.addTask(2, this.aiSit);
         this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("shadetreat"))).setTemptDistanceMin(4.0D));
         this.tasks.addTask(6, new EntityAIAttackMelee(this).setSpeed(1.5D).setRate(40));
         this.tasks.addTask(7, new EntityAIWander(this).setSpeed(1.0D));
@@ -152,7 +152,7 @@ public class EntityShade extends EntityCreatureRideable implements IGroupPredato
         float leeching = this.getEffectStrength(this.getAttackDamage(damageScale) / 4);
         this.heal(leeching);
 
-        if(this.getRNG().nextFloat() <= 0.15F)
+        if(this.getRNG().nextFloat() <= 0.1F)
             this.specialAttack();
     	
         return true;
@@ -160,7 +160,7 @@ public class EntityShade extends EntityCreatureRideable implements IGroupPredato
 
     // ========== Horrifying Howl ==========
     public void specialAttack() {
-        double distance = 5.0D;
+        double distance = 4.0D;
         List<EntityLivingBase> possibleTargets = this.worldObj.selectEntitiesWithinAABB(EntityLivingBase.class, this.boundingBox.expand(distance, distance, distance), null);
         if(!possibleTargets.isEmpty()) {
             for(EntityLivingBase possibleTarget : possibleTargets) {
@@ -175,7 +175,7 @@ public class EntityShade extends EntityCreatureRideable implements IGroupPredato
                     }
                     if(doDamage) {
                         if(ObjectManager.getPotionEffect("penetration") != null && ObjectManager.getPotionEffect("fear").id < Potion.potionTypes.length)
-                            possibleTarget.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("fear").id, this.getEffectDuration(5), 1));
+                            possibleTarget.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("fear").id, this.getEffectDuration(3), 1));
                         else
                             possibleTarget.addPotionEffect(new PotionEffect(Potion.weakness.id, 10 * 20, 0));
                     }

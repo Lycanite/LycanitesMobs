@@ -1,8 +1,11 @@
 package lycanite.lycanitesmobs.api.entity.ai;
 
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MathHelper;
 
@@ -31,6 +34,7 @@ public class EntityAIAttackRanged extends EntityAIBase {
     private float flyingHeight = 2.0F;
     private boolean longMemory = true;
     private boolean checkSight = true;
+    private boolean mountedAttacking = true;
     public boolean enabled = true;
     
     // ==================================================
@@ -101,6 +105,10 @@ public class EntityAIAttackRanged extends EntityAIBase {
     	this.flyingHeight = setFlyingHeight;
     	return this;
     }
+    public EntityAIAttackRanged setMountedAttacking(boolean bool) {
+        this.mountedAttacking = bool;
+        return this;
+    }
     public EntityAIAttackRanged setEnabled(boolean setEnabled) {
     	this.enabled = setEnabled;
     	return this;
@@ -123,6 +131,11 @@ public class EntityAIAttackRanged extends EntityAIBase {
         // Should Execute:
     	if(!this.enabled)
     		return false;
+        if(!this.mountedAttacking && this.host instanceof EntityCreatureRideable) {
+            EntityCreatureRideable rideableHost = (EntityCreatureRideable)this.host;
+            if(rideableHost.getRiderTarget() instanceof EntityPlayer)
+                return false;
+        }
         EntityLivingBase possibleAttackTarget = this.host.getAttackTarget();
         if(possibleAttackTarget == null)
             return false;

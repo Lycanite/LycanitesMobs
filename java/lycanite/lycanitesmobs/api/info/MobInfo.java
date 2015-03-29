@@ -127,13 +127,15 @@ public class MobInfo {
 	public int dungeonLevel = -1;
 	
 	// ========== Per Mob Stats ==========
+    public double multiplierHealth = 1.0D;
 	public double multiplierDefense = 1.0D;
 	public double multiplierSpeed = 1.0D;
 	public double multiplierDamage = 1.0D;
 	public double multiplierHaste = 1.0D;
 	public double multiplierEffect = 1.0D;
 	public double multiplierPierce = 1.0D;
-	
+
+    public int boostHealth = 0;
 	public int boostDefense = 0;
 	public int boostSpeed = 0;
 	public int boostDamage = 0;
@@ -169,14 +171,14 @@ public class MobInfo {
 
         String[] difficultyNames = new String[] {"Easy", "Normal", "Hard"};
         double[] difficultyDefaults = new double[] {0.5D, 1.0D, 1.1D};
-        String[] statNames = new String[] {"Defense", "Speed", "Damage", "Haste", "Effect", "Pierce"};
+        String[] statNames = new String[] {"Health", "Defense", "Speed", "Damage", "Haste", "Effect", "Pierce"};
 		difficultyMutlipliers = new HashMap<String, Double>();
         config.setCategoryComment("Difficulty Multipliers", "Here you can scale the stats of every mob on a per difficulty basis. Note that on easy, speed is kept at 1.0 by default as 0.5 makes them stupidly slow.");
         int difficultyIndex = 0;
         for(String difficultyName : difficultyNames) {
             for(String statName : statNames) {
                 double defaultValue = difficultyDefaults[difficultyIndex];
-                if("Easy".equalsIgnoreCase(difficultyName) && "Speed".equalsIgnoreCase(statName))
+                if("Easy".equalsIgnoreCase(difficultyName) && ("Health".equalsIgnoreCase(statName) || "Speed".equalsIgnoreCase(statName)))
                     defaultValue = 1.0D;
                 difficultyMutlipliers.put((difficultyName + "-" + statName).toUpperCase(), config.getDouble("Difficulty Multipliers", difficultyName + " " + statName, defaultValue));
             }
@@ -290,6 +292,7 @@ public class MobInfo {
         // Load Stats:
         config = ConfigBase.getConfig(this.group, "stats");
         config.setCategoryComment("Multipliers", "Here you can scale each mob stat,for instance setting 2 will double the stat, setting 0.5 will half it.");
+        this.multiplierHealth = config.getDouble("Multipliers", this.getCfgName("Health"), this.multiplierHealth, "The maximum amount of health each mob has. Already spawned mobs will not be affected by any changes. 1 health = half a heart.");
         this.multiplierDefense = config.getDouble("Multipliers", this.getCfgName("Defense"), this.multiplierDefense, "How much damage is blocked, minimum damage dealt is 1.");
         this.multiplierSpeed = config.getDouble("Multipliers", this.getCfgName("Speed"), this.multiplierSpeed, "Movement speed.");
         this.multiplierDamage = config.getDouble("Multipliers", this.getCfgName("Damage"), this.multiplierDamage, "Damage dealt, both melee and ranged.");
@@ -298,6 +301,7 @@ public class MobInfo {
         this.multiplierPierce = config.getDouble("Multipliers", this.getCfgName("Pierce"), this.multiplierPierce, "Affects how much damage the mob deals that ignores armor. At 1.0 for every 5 damage dealt, 1 damage ignores armor. At 2.0 for every 3 (2.5 rouded) damage dealt 1 damage ignores armor. At 0.5 for every 10 damage dealt, 1 damage ignores armor.");
 
         config.setCategoryComment("Boosts", "Here you can increase or decrease each stat by a specific amount. (Use a negative number to decrease.)");
+        this.boostHealth = config.getInt("Boosts", this.getCfgName("Health"), this.boostHealth, "The maximum amount of health each mob has. Already spawned mobs will not be affected by any changes. 1 health = half a heart.");
         this.boostDefense = config.getInt("Boosts", this.getCfgName("Defense"), this.boostDefense, "How much damage is blocked, minimum damage dealt is 1.");
         this.boostSpeed = config.getInt("Boosts", this.getCfgName("Speed"), this.boostSpeed, "Movement speed. Average speed is 28");
         this.boostDamage = config.getInt("Boosts", this.getCfgName("Damage"), this.boostDamage, "Damage dealt, both melee and ranged. 1 = half a heart.");

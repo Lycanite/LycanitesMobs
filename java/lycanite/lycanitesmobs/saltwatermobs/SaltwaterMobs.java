@@ -107,7 +107,7 @@ public class SaltwaterMobs {
 		        .setPeaceful(false).setSummonCost(2).setDungeonLevel(2)
 		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("WATER")
-				.setSpawnWeight(8).setAreaLimit(32).setGroupLimits(1, 5).setLightDark(false, true);
+				.setSpawnWeight(2).setAreaLimit(32).setGroupLimits(1, 5).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "raiko", EntityRaiko.class, 0xCCCCDD, 0xFF6633)

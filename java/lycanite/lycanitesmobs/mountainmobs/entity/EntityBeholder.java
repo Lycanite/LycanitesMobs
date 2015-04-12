@@ -113,12 +113,12 @@ public class EntityBeholder extends EntityCreatureTameable {
                         }
         			}
         		}
-        		if(goodEffectIDs.size() > 0) {
+        		if(goodEffectIDs.size() > 0 && this.getRNG().nextBoolean()) {
         			if(goodEffectIDs.size() > 1)
         				targetLiving.removePotionEffect(goodEffectIDs.get(this.getRNG().nextInt(goodEffectIDs.size())));
         			else
         				targetLiving.removePotionEffect(goodEffectIDs.get(0));
-    		    	float leeching = damage * 1.5F;
+    		    	float leeching = damage * 1.1F;
     		    	this.heal(leeching);
         		}
         	}

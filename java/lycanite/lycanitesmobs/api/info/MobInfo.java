@@ -307,7 +307,7 @@ public class MobInfo {
         this.boostDamage = config.getInt("Boosts", this.getCfgName("Damage"), this.boostDamage, "Damage dealt, both melee and ranged. 1 = half a heart.");
         this.boostHaste = config.getInt("Boosts", this.getCfgName("Haste"), this.boostHaste, "Attack and ability speeds in ticks. Average attack rate is 20 (1 second).");
         this.boostEffect = config.getInt("Boosts", this.getCfgName("Effect"), this.boostEffect, "Effect strengths and durations in ticks (20 ticks = 1 second).");
-        this.boostPierce = config.getInt("Boosts", this.getCfgName("Pierce"), this.boostPierce, "Use to directly decrease or increase the piercing value. By default it is 5 so for every 5 damage dealt, 1 damage ignores armor. A positive boost lowers the attack required per armor piercing damage, therefor a boost of 2 will change the piercing stat to 3.");
+        this.boostPierce = config.getInt("Boosts", this.getCfgName("Pierce"), this.boostPierce, "Use to directly decrease or increase the piercing value. By default it is 5 so for every 5 damage dealt, 1 damage ignores armor. A positive boost lowers the attack required per armor piercing damage, therefore a boost of 2 will lower the piercing stat from 5 to 3.");
         
         // Register Mob:
         this.registerMob();

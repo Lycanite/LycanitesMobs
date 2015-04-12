@@ -985,9 +985,9 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     }
     /** Returns the calculated armor piercing value. This is with all multipliers and boosts applied. Cannot be less than 1 where all damage will pierce. **/
     public double getPierceValue() {
-    	double value = 5;
+    	double value = this.getPierceBase();
     	value *= 1 / this.getPierceMultiplier();
-    	value += Math.max(0, this.getPierceBoost());
+    	value -= Math.max(0, this.getPierceBoost());
     	return Math.max(1.0D, value);
     }
     
@@ -2925,7 +2925,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
      * @param color The color ID to use (see the static RenderCreature.colorTable array).
      */
     public void setColor(int color) {
-    	if(!this.worldObj.isRemote)
+    	if(this.worldObj != null && !this.worldObj.isRemote)
     		this.dataWatcher.updateObject(WATCHER_ID.COLOR.id, Byte.valueOf((byte)(color & 15)));
     }
 

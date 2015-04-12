@@ -431,7 +431,7 @@ public class SpawnTypeBase {
      */
     public boolean spawnMobs(long tick, World world, int x, int y, int z, EntityPlayer player, boolean rare) {
         // Check If Able to Spawn:
-        if(this.getSpawnList() == null || this.getSpawnList().size() < 1 || !this.enabled || !this.hasSpawns())
+        if(this.getSpawnList() == null || this.getSpawnList().size() < 1 || !this.enabled || !this.hasSpawns() || !world.getGameRules().getGameRuleBooleanValue("doMobSpawning"))
             return false;
         if(!this.canSpawn(tick, world, x, y, z, rare))
             return false;

@@ -279,7 +279,7 @@ public class EntityStrider extends EntityCreatureRideable {
         }
 
         // Pickup:
-        if(this.canPickupEntity(target)) {
+        if(this.canPickupEntity(target) && this.canEntityBeSeen(target)) {
             this.pickupEntity(target);
             this.pickupCooldown = 100;
         }

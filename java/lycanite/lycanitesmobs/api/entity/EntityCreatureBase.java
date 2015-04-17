@@ -838,6 +838,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     
     /** Returns the shared multiplier for all stats based on difficulty. **/
 	public double getDifficultyMultiplier(String stat) {
+        if(this.worldObj == null)
+            return MobInfo.difficultyMutlipliers.get("NORMAL" + "-" + stat.toUpperCase());
 		EnumDifficulty difficulty = this.worldObj.difficultySetting;
 		String difficultyName = "Easy";
 		if(difficulty.getDifficultyId() >= 3)
@@ -2693,7 +2695,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         Block spawnBlock = this.worldObj.getBlock(x, y, z);
         if(y < 0)
             return 0;
-        if(spawnBlock != null && spawnBlock.getMaterial() == Material.water)
+        if(spawnBlock != null && spawnBlock.getMaterial() == Material.water && SpawnInfo.useSurfaceLightLevel)
             y = this.getWaterSurfaceY(x, y, z);
         else
             y = this.getGroundY(x, y, z);

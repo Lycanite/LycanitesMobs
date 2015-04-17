@@ -17,6 +17,7 @@ public class SpawnInfo {
 	public static boolean disableAllSpawning = false;
 	public static boolean disableDungeonSpawners = false;
 	public static boolean enforceBlockCost = true;
+	public static boolean useSurfaceLightLevel = true;
 	public static double spawnWeightScale = 1.0D;
 	public static double dungeonSpawnerWeightScale = 1.0D;
 
@@ -105,7 +106,8 @@ public class SpawnInfo {
         disableAllSpawning = config.getBool("Global Spawning", "Disable Spawning", disableAllSpawning, "If true, all mobs from this mod will not spawn at all.");
         enforceBlockCost = config.getBool("Global Spawning", "Enforce Block Costs", enforceBlockCost, "If true, mobs will double check if their required blocks are nearby, such as Cinders needing so many blocks of fire.");
         spawnWeightScale = config.getDouble("Global Spawning", "Weight Scale", spawnWeightScale, "Scales the spawn weights of all mobs from this mod. For example, you can use this to quickly half the spawn rates of mobs from this mod compared to vanilla/other mod mobs by setting it to 0.5.");
-        
+		useSurfaceLightLevel = config.getBool("Global Spawning", "Use Surface Light Level", useSurfaceLightLevel, "If true, when water mobs spawn, instead of checking the light level of the block the mob is spawning at, the light level of the surface (if possible) is checked. This stops mobs like Jengus from spawning at the bottom of deep rivers during the day, set to false for the old way.");
+
         config.setCategoryComment("Dungeon Features", "Here you can set special features used in dungeon generation.");
         disableDungeonSpawners = config.getBool("Dungeon Features", "Disable Dungeon Spawners", disableDungeonSpawners, "If true, newly generated dungeons wont create spawners with mobs from this mod.");
 		dungeonSpawnerWeightScale = config.getDouble("Dungeon Features", "Dungeon Spawner Weight Scale", dungeonSpawnerWeightScale, "Scales the weight of dungeons using spawners from this mod. For example, you can half the chances all dungeons having spawners with mobs from this mod in them by setting this to 0.5.");

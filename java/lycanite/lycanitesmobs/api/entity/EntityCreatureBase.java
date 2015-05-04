@@ -549,6 +549,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
                         return this.mobInfo.group.dimensionWhitelist;
                     }
                 }
+                if(this.mobInfo.spawnInfo.dimensionBlacklist == null || this.mobInfo.spawnInfo.dimensionBlacklist.length == 0)
+                    return this.mobInfo.group.dimensionWhitelist; // If there are no specific IDs, end with the group white/blacklist setting.
             }
     	}
 		

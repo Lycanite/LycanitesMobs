@@ -115,6 +115,46 @@
         "category": "hostile",
         "sounds": [{"name": "entity/beholder/tame", "stream": false}]
     },
+    "entity.barghest.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/barghest/say", "stream": false}]
+    },
+    "entity.barghest.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/barghest/hurt", "stream": false}]
+    },
+    "entity.barghest.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/barghest/death", "stream": false}]
+    },
+    "entity.barghest.step": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/barghest/step", "stream": false}]
+    },
+    "entity.barghest.jump": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/barghest/jump", "stream": false}]
+    },
+    "entity.barghest.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/barghest/attack", "stream": false}]
+    },
+    "entity.barghest.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/barghest/beg", "stream": false}]
+    },
+    "entity.barghest.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/barghest/tame", "stream": false}]
+    },
+    "entity.barghest.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/barghest/eat", "stream": false}]
+    },
+    "entity.barghest.mount": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/barghest/mount", "stream": false}]
+    },
     "projectile.boulderblast": {
         "category": "ambient",
         "sounds": [{"name": "projectile/boulderblast", "stream": false}]

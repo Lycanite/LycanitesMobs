@@ -6,21 +6,14 @@ import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.api.info.*;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
+import lycanite.lycanitesmobs.api.item.ItemTreat;
 import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
 import lycanite.lycanitesmobs.mountainmobs.dispenser.DispenserBehaviorArcaneLaserStorm;
 import lycanite.lycanitesmobs.mountainmobs.dispenser.DispenserBehaviorBoulderBlast;
-import lycanite.lycanitesmobs.mountainmobs.entity.EntityArcaneLaser;
-import lycanite.lycanitesmobs.mountainmobs.entity.EntityArcaneLaserEnd;
-import lycanite.lycanitesmobs.mountainmobs.entity.EntityArcaneLaserStorm;
-import lycanite.lycanitesmobs.mountainmobs.entity.EntityBeholder;
-import lycanite.lycanitesmobs.mountainmobs.entity.EntityBoulderBlast;
-import lycanite.lycanitesmobs.mountainmobs.entity.EntityGeonach;
-import lycanite.lycanitesmobs.mountainmobs.entity.EntityJabberwock;
-import lycanite.lycanitesmobs.mountainmobs.entity.EntityTroll;
-import lycanite.lycanitesmobs.mountainmobs.entity.EntityYale;
+import lycanite.lycanitesmobs.mountainmobs.entity.*;
 import lycanite.lycanitesmobs.mountainmobs.item.ItemArcaneLaserStormCharge;
 import lycanite.lycanitesmobs.mountainmobs.item.ItemBoulderBlastCharge;
 import lycanite.lycanitesmobs.mountainmobs.item.ItemMountainEgg;
@@ -100,6 +93,8 @@ public class MountainMobs {
 		
 		ObjectManager.addItem("peakskebab", new ItemCustomFood("peakskebab", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(Potion.digSpeed.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("peakskebab"));
+
+		ObjectManager.addItem("barghesttreat", new ItemTreat("barghesttreat", group));
 		
 		
 		// ========== Create Mobs ==========
@@ -140,6 +135,13 @@ public class MountainMobs {
 		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("SKY")
 				.setSpawnWeight(1).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "barghest", EntityBarghest.class, 0xD08237, 0x00070A)
+				.setPeaceful(false).setSummonable(true).setSummonCost(4).setDungeonLevel(1)
+				.addSubspecies(new Subspecies("dark", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("MONSTER")
+				.setSpawnWeight(4).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 		
@@ -214,6 +216,13 @@ public class MountainMobs {
 				new ItemStack(ObjectManager.getItem("yalemeatcooked"), 1, 0),
 				new Object[] { ObjectManager.getItem("peakskebab") }
 			));
+
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("barghesttreat"), 4, 0),
+				new Object[] { "TTT", "BBT", "TTT",
+						Character.valueOf('T'), ObjectManager.getItem("yalemeatcooked"),
+						Character.valueOf('B'), Items.bone
+				}));
 
         if(ItemInfo.enableWeaponRecipes) {
             GameRegistry.addRecipe(new ShapedOreRecipe(

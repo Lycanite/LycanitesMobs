@@ -1,11 +1,7 @@
 package lycanite.lycanitesmobs.mountainmobs;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.mountainmobs.model.ModelBeholder;
-import lycanite.lycanitesmobs.mountainmobs.model.ModelGeonach;
-import lycanite.lycanitesmobs.mountainmobs.model.ModelJabberwock;
-import lycanite.lycanitesmobs.mountainmobs.model.ModelTroll;
-import lycanite.lycanitesmobs.mountainmobs.model.ModelYale;
+import lycanite.lycanitesmobs.mountainmobs.model.*;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class ClientSubProxy extends CommonSubProxy {
@@ -22,5 +18,6 @@ public class ClientSubProxy extends CommonSubProxy {
 		AssetManager.addModel("yale", new ModelYale());
 		AssetManager.addModel("geonach", new ModelGeonach());
 		AssetManager.addModel("beholder", new ModelBeholder());
+		AssetManager.addModel("barghest", new ModelBarghest());
 	}
 }

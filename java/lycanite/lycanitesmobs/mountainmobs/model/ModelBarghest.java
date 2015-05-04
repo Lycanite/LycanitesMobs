@@ -1,4 +1,4 @@
-package lycanite.lycanitesmobs.forestmobs.model;
+package lycanite.lycanitesmobs.mountainmobs.model;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -6,40 +6,40 @@ import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.model.ModelCustomObj;
 import lycanite.lycanitesmobs.forestmobs.ForestMobs;
-import lycanite.lycanitesmobs.shadowmobs.ShadowMobs;
+import lycanite.lycanitesmobs.mountainmobs.MountainMobs;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.model.obj.WavefrontObject;
 
 @SideOnly(Side.CLIENT)
-public class ModelWarg extends ModelCustomObj {
+public class ModelBarghest extends ModelCustomObj {
 
 	// ==================================================
   	//                    Constructors
   	// ==================================================
-    public ModelWarg() {
+    public ModelBarghest() {
         this(1.0F);
     }
 
-    public ModelWarg(float shadowSize) {
+    public ModelBarghest(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("warg", ForestMobs.group, "entity/warg");
+    	model = (WavefrontObject)AssetManager.getObjModel("barghest", MountainMobs.group, "entity/barghest");
     	
     	// Get Parts:
     	parts = model.groupObjects;
     	
     	// Set Rotation Centers:
-    	setPartCenter("head", 0F, 1.1F, 0.9F);
-        setPartCenter("mouth", 0F, 1.4F, 1.0F);
+    	setPartCenter("head", 0F, 0.9F, 1.0F);
+        setPartCenter("mouth", 0F, 0.82F, 1.4F);
 
     	setPartCenter("body", 0F, 1.0F, 0F);
 
-    	setPartCenter("legleftfront", 0.38F, 1.0F, 0.5F);
-    	setPartCenter("legrightfront", -0.38F, 1.0F, 0.5F);
-        setPartCenter("legleftback", 0.28F, 1.0F, -0.3F);
-        setPartCenter("legrightback", -0.28F, 1.0F, -0.3F);
+    	setPartCenter("legleftfront", 0.27F, 0.9F, 0.6F);
+    	setPartCenter("legrightfront", -0.27F, 0.9F, 0.6F);
+        setPartCenter("legleftback", 0.34661F, 0.9F, -0.5F);
+        setPartCenter("legrightback", -0.34661F, 0.9F, -0.5F);
     	
-    	setPartCenter("tail", 0F, 1.0F, -0.8F);
+    	setPartCenter("tail", 0F, 1.0F, -1.0F);
 
         // Trophy:
         this.trophyScale = 0.8F;
@@ -80,10 +80,10 @@ public class ModelWarg extends ModelCustomObj {
         if(partName.equals("mouth")) {
             this.rotate((float)-Math.toDegrees(MathHelper.cos(loop * 0.1F) * 0.1F - 0.1F), 0.0F, 0.0F);
         }
-    	if(partName.equals("tail")) {
-    		rotX = (float)-Math.toDegrees(MathHelper.cos(loop * 0.1F) * 0.05F - 0.05F);
-    		rotY = (float)-Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F - 0.05F);
-    	}
+        if(partName.equals("tail")) {
+            rotX = (float)-Math.toDegrees(MathHelper.cos(loop * 0.1F) * 0.05F - 0.05F);
+            rotY = (float)-Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F - 0.05F);
+        }
 		
     	// Walking:
     	float walkSwing = 0.6F;

@@ -1593,7 +1593,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 
     /** When called, this reapplies the initial width and height this mob and then applies sizeScale. **/
 	public void updateSize() {
-        this.setSize(this.setWidth, this.setHeight);
+        this.setSize(Math.max(this.setWidth, 0.5F), Math.max(this.setHeight, 0.5F));
     }
 
     /** Sets the size scale and updates the mobs size. **/

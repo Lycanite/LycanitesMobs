@@ -1,6 +1,5 @@
-package lycanite.lycanitesmobs.forestmobs.entity;
+package lycanite.lycanitesmobs.mountainmobs.entity;
 
-import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupAlpha;
 import lycanite.lycanitesmobs.api.IGroupAnimal;
@@ -22,7 +21,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
@@ -30,7 +28,7 @@ import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import java.util.HashMap;
 import java.util.List;
 
-public class EntityWarg extends EntityCreatureRideable implements IGroupPredator {
+public class EntityBarghest extends EntityCreatureRideable implements IGroupPredator {
 
     protected boolean leapedAbilityQueued = false;
     protected boolean leapedAbilityReady = false;
@@ -38,7 +36,7 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityWarg(World world) {
+    public EntityBarghest(World world) {
         super(world);
         
         // Setup:
@@ -61,7 +59,7 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this));
         //this.tasks.addTask(2, new EntityAIPlayerControl(this));
-        this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("wargtreat"))).setTemptDistanceMin(4.0D));
+        this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("barghesttreat"))).setTemptDistanceMin(4.0D));
         this.tasks.addTask(5, new EntityAIAttackMelee(this).setTargetClass(EntityPlayer.class).setLongMemory(false));
         this.tasks.addTask(6, new EntityAIAttackMelee(this));
         this.tasks.addTask(7, new EntityAIFollowParent(this).setSpeed(1.0D));
@@ -115,7 +113,7 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
         if(!this.isTamed() && this.onGround && !this.worldObj.isRemote) {
         	if(this.hasAttackTarget()) {
         		if(this.rand.nextInt(10) == 0)
-        			this.leap(6.0F, 0.5D, this.getAttackTarget());
+        			this.leap(4.0F, 0.7D, this.getAttackTarget());
         	}
         }
 
@@ -141,7 +139,7 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
                                 }
                             }
                             if(doDamage) {
-                                possibleTarget.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("Paralysis").id, this.getEffectDuration(2), 0));
+                                possibleTarget.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("Weight").id, this.getEffectDuration(4), 0));
                             }
                         }
                     }
@@ -152,10 +150,10 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
     }
     
     public void riderEffects(EntityLivingBase rider) {
-    	if(rider.isPotionActive(Potion.moveSlowdown))
-    		rider.removePotionEffect(Potion.moveSlowdown.id);
-    	if(rider.isPotionActive(ObjectManager.getPotionEffect("Paralysis")))
-    		rider.removePotionEffect(ObjectManager.getPotionEffect("Paralysis").id);
+    	if(rider.isPotionActive(Potion.digSlowdown))
+    		rider.removePotionEffect(Potion.digSlowdown.id);
+    	if(rider.isPotionActive(ObjectManager.getPotionEffect("Weight")))
+    		rider.removePotionEffect(ObjectManager.getPotionEffect("Weight").id);
     }
 
 	
@@ -173,7 +171,7 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
     // ========== Mounted Offset ==========
     @Override
     public double getMountedYOffset() {
-        return (double)this.height * 0.85D;
+        return (double)this.height * 0.8D;
     }
 
     // ========== Leap ==========
@@ -203,8 +201,8 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
             return false;
 
         // Effect:
-        if(target instanceof EntityLivingBase && this.leapedAbilityReady && ObjectManager.getPotionEffect("Paralysis") != null) {
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("Paralysis").id, this.getEffectDuration(2), 0));
+        if(target instanceof EntityLivingBase && this.leapedAbilityReady && ObjectManager.getPotionEffect("Weight") != null) {
+            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("Weight").id, this.getEffectDuration(4), 0));
         }
 
         return true;
@@ -226,7 +224,7 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
     		return;
     	
     	this.playJumpSound();
-    	this.leap(4.0D, 0.5D);
+    	this.leap(2.0D, 1.5D);
     	
     	this.applyStaminaCost();
     }
@@ -249,6 +247,13 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
     // ==================================================
     public int getNoBagSize() { return 0; }
     public int getBagSize() { return 10; }
+
+
+    // ==================================================
+    //                     Abilities
+    // ==================================================
+    @Override
+    public boolean canClimb() { return true; }
     
     
     // ==================================================
@@ -256,9 +261,9 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotionID() == Potion.moveSlowdown.id) return false;
-        if(ObjectManager.getPotionEffect("Paralysis") != null)
-            if(potionEffect.getPotionID() == ObjectManager.getPotionEffect("Paralysis").id) return false;
+        if(potionEffect.getPotionID() == Potion.digSlowdown.id) return false;
+        if(ObjectManager.getPotionEffect("Weight") != null)
+            if(potionEffect.getPotionID() == ObjectManager.getPotionEffect("Weight").id) return false;
         super.isPotionApplicable(potionEffect);
         return true;
     }
@@ -275,7 +280,7 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
     // ========== Create Child ==========
 	@Override
 	public EntityCreatureAgeable createChild(EntityCreatureAgeable baby) {
-		return new EntityWarg(this.worldObj);
+		return new EntityBarghest(this.worldObj);
 	}
 	
 	// ========== Breeding Item ==========
@@ -292,7 +297,7 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
     public boolean isTamingItem(ItemStack itemStack) {
     	if(itemStack == null)
     		return false;
-    	return itemStack.getItem() == ObjectManager.getItem("wargtreat");
+    	return itemStack.getItem() == ObjectManager.getItem("barghesttreat");
     }
     
     

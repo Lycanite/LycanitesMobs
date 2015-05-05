@@ -221,7 +221,7 @@ public class DemonMobs {
         }
 		
 		// ========== Remove Vanilla Spawns ==========
-		BiomeGenBase[] biomes = group.biomes;
+		BiomeGenBase[] biomes = {BiomeGenBase.hell};
 		if(group.controlVanillaSpawns) {
 			EntityRegistry.removeSpawn(EntityPigZombie.class, EnumCreatureType.monster, biomes);
 			EntityRegistry.removeSpawn(EntityGhast.class, EnumCreatureType.monster, biomes);

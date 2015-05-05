@@ -521,45 +521,58 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     // ========== Spawn Dimension Check ==========
     public boolean isNativeDimension(World world) {
     	if(this.spawnedFromType != null) {
-    		if(this.spawnedFromType.ignoreDimension)
-    			return true;
+    		if(this.spawnedFromType.ignoreDimension) {
+                LycanitesMobs.printDebug("MobSpawns", "Dimension check is ignored by " + this.spawnedFromType.typeName + " spawn type.");
+                return true;
+            }
     	}
-    	if(world == null || world.provider == null || this.mobInfo == null || this.mobInfo.spawnInfo == null || this.mobInfo.spawnInfo.dimensionTypes == null)
-    		return true;
+    	if(world == null || world.provider == null || this.mobInfo == null || this.mobInfo.spawnInfo == null || this.mobInfo.spawnInfo.dimensionTypes == null) {
+            LycanitesMobs.printDebug("MobSpawns", "No dimension spawn settings were found for this mob, defaulting to valid.");
+            return true;
+        }
     	
     	// Check Types:
 		for(String spawnDimensionType : this.mobInfo.spawnInfo.dimensionTypes) {
     		if("ALL".equalsIgnoreCase(spawnDimensionType)) {
+                LycanitesMobs.printDebug("MobSpawns", "All dimensions allowed.");
     			return true;
     		}
     		if("VANILLA".equalsIgnoreCase(spawnDimensionType)) {
+                LycanitesMobs.printDebug("MobSpawns", "Vanilla only: Overworld, Nether and End.");
     			return world.provider.dimensionId > -2 && world.provider.dimensionId < 2;
     		}
             if("GROUP".equalsIgnoreCase(spawnDimensionType)) {
             	for(String groupSpawnDimensionType : this.mobInfo.group.dimensionTypes) {
 	            	if("ALL".equalsIgnoreCase(groupSpawnDimensionType)) {
+                        LycanitesMobs.printDebug("MobSpawns", "All dimensions allowed by group.");
 	        			return true;
 	        		}
 	        		if("VANILLA".equalsIgnoreCase(groupSpawnDimensionType)) {
+                        LycanitesMobs.printDebug("MobSpawns", "Vanilla only by group: Overworld, Nether and End.");
 	        			return world.provider.dimensionId > -2 && world.provider.dimensionId < 2;
 	        		}
             	}
                 for(int spawnDimension : this.mobInfo.group.dimensionBlacklist) {
                     if(world.provider.dimensionId == spawnDimension) {
+                        LycanitesMobs.printDebug("MobSpawns", "Dimension is in group " + (this.mobInfo.group.dimensionWhitelist ? "whitelist, allowed" : "blacklist, not allowed") + ".");
                         return this.mobInfo.group.dimensionWhitelist;
                     }
                 }
-                if(this.mobInfo.spawnInfo.dimensionBlacklist == null || this.mobInfo.spawnInfo.dimensionBlacklist.length == 0)
-                    return this.mobInfo.group.dimensionWhitelist; // If there are no specific IDs, end with the group white/blacklist setting.
+                if(this.mobInfo.spawnInfo.dimensionBlacklist == null || this.mobInfo.spawnInfo.dimensionBlacklist.length == 0) {
+                    LycanitesMobs.printDebug("MobSpawns", "Dimension was not in group " + (this.mobInfo.group.dimensionWhitelist ? "whitelist, not allowed" : "blacklist, allowed") + " and there are no entries in the mob specific black/whitelist.");
+                    return !this.mobInfo.group.dimensionWhitelist;
+                }
             }
     	}
 		
 		// Check IDs:
     	for(int spawnDimension : this.mobInfo.spawnInfo.dimensionBlacklist) {
     		if(world.provider.dimensionId == spawnDimension) {
+                LycanitesMobs.printDebug("MobSpawns", "Dimension is in " + (this.mobInfo.spawnInfo.dimensionWhitelist ? "whitelist, allowed" : "blacklist, not allowed") + ".");
     			return this.mobInfo.spawnInfo.dimensionWhitelist;
     		}
     	}
+        LycanitesMobs.printDebug("MobSpawns", "Dimension was not in " + (this.mobInfo.spawnInfo.dimensionWhitelist ? "whitelist, not allowed" : "blacklist, allowed") + ".");
         return !this.mobInfo.spawnInfo.dimensionWhitelist;
     }
     

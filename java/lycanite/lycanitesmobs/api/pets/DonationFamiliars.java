@@ -94,7 +94,7 @@ public class DonationFamiliars {
         String playerUUID = player.getUniqueID().toString();
         Map<String, PetEntry> playerFamiliarEntries = this.playerFamiliars.get(playerUUID);
         if(playerFamiliarEntries != null)
-            for(PetEntry familiarEntry : this.playerFamiliars.get(playerUUID).values()) {
+            for(PetEntry familiarEntry : playerFamiliarEntries.values()) {
                 if(familiarEntry.host == null)
                     familiarEntry.host = player;
             }

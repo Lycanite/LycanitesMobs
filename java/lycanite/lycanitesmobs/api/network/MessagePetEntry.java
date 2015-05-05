@@ -51,9 +51,9 @@ public class MessagePetEntry implements IMessage, IMessageHandler<MessagePetEntr
 	public IMessage onMessage(MessagePetEntry message, MessageContext ctx) {
 		EntityPlayer player = null;
 		if(ctx.side == Side.CLIENT)
-			player = LycanitesMobs.proxy.getClientPlayer();
+			player = LycanitesMobs.proxy.getClientPlayer(); // Client can only send commands.
 		else if(ctx.side == Side.SERVER)
-			player = ctx.getServerHandler().playerEntity;
+			player = ctx.getServerHandler().playerEntity; // Server can add or remove entries.
 		if(player == null) return null;
 		ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
 		if(playerExt == null) return null;

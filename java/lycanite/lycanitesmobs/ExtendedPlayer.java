@@ -130,6 +130,20 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 				}
 			}
 		}
+
+		// Familiars:
+		if(!player.worldObj.isRemote && !this.setupPlayerFamiliars) {
+			Map<String, PetEntry> playerFamiliars = DonationFamiliars.instance.getFamiliarsForPlayer(this.player);
+			if(playerFamiliars != null) {
+				for (PetEntry petEntry : playerFamiliars.values()) {
+					if (!this.petManager.hasEntry(petEntry)) {
+						this.petManager.addEntry(petEntry);
+					}
+				}
+				this.sendPetEntriesToPlayer("familiar");
+			}
+			this.setupPlayerFamiliars = true;
+		}
 		
 		// Initial Network Sync:
 		if(!this.player.worldObj.isRemote && this.needsFirstSync) {
@@ -142,18 +156,6 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 
         // Pet Manager:
         this.petManager.onUpdate(player.worldObj);
-
-        // Familiars:
-        if(!player.worldObj.isRemote && !this.setupPlayerFamiliars) {
-            Map<String, PetEntry> playerFamiliars = DonationFamiliars.instance.getFamiliarsForPlayer(this.player);
-            if(playerFamiliars != null)
-                for(PetEntry petEntry : playerFamiliars.values()) {
-                    if(!this.petManager.hasEntry(petEntry)) {
-                        this.petManager.addEntry(petEntry);
-                    }
-                }
-            this.setupPlayerFamiliars = true;
-        }
 		
 		this.currentTick++;
 	}
@@ -273,8 +275,8 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
     //                 Request GUI Data
     // ==================================================
 	public void requestGUI(byte guiID) {
-        if(guiID == GuiHandler.PlayerGuiType.FAMILIAR_MANAGER.id)
-            this.sendPetEntriesToPlayer("familiar");
+        //if(guiID == GuiHandler.PlayerGuiType.FAMILIAR_MANAGER.id)
+            //this.sendPetEntriesToPlayer("familiar");
 		//if(guiID == GuiHandler.PlayerGuiType.MINION_MANAGER.id)
 			//this.sendAllSummonSetsToPlayer();
 		//if(guiID == GuiHandler.PlayerGuiType.BEASTIARY.id)

@@ -1559,24 +1559,27 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 
     // ========== Get Water Surface Y Position ==========
     /** Returns the Y position of the water surface (the first air block found when searching up in water).
-     * If the water is covered by a solid block, the initial Y position will be returned instead.
-     * This will search up to 16 blocks up. **/
+     * If the water is covered by a solid block, the highest Y water position will be returned instead.
+     * This will search up to 24 blocks up. **/
     public int getWaterSurfaceY(int x, int y, int z) {
         if(y <= 0)
             return 0;
         int yMax = this.worldObj.provider.getActualHeight() - 1;
         if(y >= yMax)
             return yMax;
-        yMax = Math.min(yMax, y + 16);
+        int yLimit = 24;
+        yMax = Math.min(yMax, y + yLimit);
         Block startBlock = this.worldObj.getBlock(x, y, z);
         if(startBlock != null && startBlock.getMaterial() == Material.water) {
-            for(int possibleSurfaceY = y + 1; possibleSurfaceY <= yMax; possibleSurfaceY++) {
+            int possibleSurfaceY = y;
+            for(possibleSurfaceY += 1; possibleSurfaceY <= yMax; possibleSurfaceY++) {
                 Block possibleSurfaceBlock = this.worldObj.getBlock(x, possibleSurfaceY, z);
-                if(possibleSurfaceBlock == null || possibleSurfaceBlock.isAir(this.worldObj, x, possibleSurfaceY, z))
+                if(possibleSurfaceBlock != null && possibleSurfaceBlock.isAir(this.worldObj, x, possibleSurfaceY, z))
                     return possibleSurfaceY;
-                else if(possibleSurfaceBlock.getMaterial() != Material.water)
+                else if(possibleSurfaceBlock == null || possibleSurfaceBlock.getMaterial() != Material.water)
                     return possibleSurfaceY - 1;
             }
+            return Math.max(possibleSurfaceY - 1, y);
         }
         return y;
     }

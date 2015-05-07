@@ -157,7 +157,7 @@ public class ItemSwordBase extends ItemSword {
     }
     
     // ========== Entity Interaction ==========
-    public boolean onItemRightClickOnEntity(EntityPlayer player, Entity entity) {
+    public boolean onItemRightClickOnEntity(EntityPlayer player, Entity entity, ItemStack itemStack) {
     	return false;
     }
 

@@ -23,11 +23,14 @@ public class KeyHandler {
 	public boolean inventoryOpen = false;
 	
 	public KeyBinding mountAbility = new KeyBinding(StatCollector.translateToLocal("key.mount.ability"), Keyboard.KEY_F, "Lycanites Mobs");
-	public KeyBinding mountInventory = new KeyBinding(StatCollector.translateToLocal("key.mount.inventory"), Keyboard.KEY_H, "Lycanites Mobs");
-	public KeyBinding beastiary = new KeyBinding(StatCollector.translateToLocal("key.beastiary"), Keyboard.KEY_B, "Lycanites Mobs");
-    public KeyBinding familiarManager = new KeyBinding(StatCollector.translateToLocal("key.familiar.manager"), Keyboard.KEY_G, "Lycanites Mobs");
-	public KeyBinding minionManager = new KeyBinding(StatCollector.translateToLocal("key.minion.manager"), Keyboard.KEY_H, "Lycanites Mobs");
-	public KeyBinding minionSelection = new KeyBinding(StatCollector.translateToLocal("key.minion.select"), Keyboard.KEY_J, "Lycanites Mobs");
+	public KeyBinding mountInventory = new KeyBinding(StatCollector.translateToLocal("key.mount.inventory"), Keyboard.KEY_NONE, "Lycanites Mobs");
+	public KeyBinding beastiary = new KeyBinding(StatCollector.translateToLocal("key.beastiary"), Keyboard.KEY_NONE, "Lycanites Mobs");
+	public KeyBinding lmMainMenu = new KeyBinding(StatCollector.translateToLocal("key.lycanitesmobs.menu"), Keyboard.KEY_G, "Lycanites Mobs");
+	public KeyBinding petManager = new KeyBinding(StatCollector.translateToLocal("key.pet.manager"), Keyboard.KEY_NONE, "Lycanites Mobs");
+	public KeyBinding mountManager = new KeyBinding(StatCollector.translateToLocal("key.mount.manager"), Keyboard.KEY_NONE, "Lycanites Mobs");
+    public KeyBinding familiarManager = new KeyBinding(StatCollector.translateToLocal("key.familiar.manager"), Keyboard.KEY_NONE, "Lycanites Mobs");
+	public KeyBinding minionManager = new KeyBinding(StatCollector.translateToLocal("key.minion.manager"), Keyboard.KEY_NONE, "Lycanites Mobs");
+	public KeyBinding minionSelection = new KeyBinding(StatCollector.translateToLocal("key.minion.select"), Keyboard.KEY_R, "Lycanites Mobs");
 	
 	// ==================================================
     //                     Constructor
@@ -39,7 +42,10 @@ public class KeyHandler {
 		// Register Keys:
 		ClientRegistry.registerKeyBinding(mountAbility);
 		ClientRegistry.registerKeyBinding(mountInventory);
+		ClientRegistry.registerKeyBinding(lmMainMenu);
 		ClientRegistry.registerKeyBinding(beastiary);
+		ClientRegistry.registerKeyBinding(petManager);
+		ClientRegistry.registerKeyBinding(mountManager);
         ClientRegistry.registerKeyBinding(familiarManager);
 		ClientRegistry.registerKeyBinding(minionManager);
 		ClientRegistry.registerKeyBinding(minionSelection);
@@ -69,6 +75,11 @@ public class KeyHandler {
 		// Mount Inventory: Adds to control states.
 		if(this.mountInventory.isPressed()) {
 			controlStates += ExtendedPlayer.CONTROL_ID.MOUNT_INVENTORY.id;
+		}
+
+		// LM Main Menu: Opens GUI.
+		if(this.lmMainMenu.isPressed()) {
+			GUILMMainMenu.openToPlayer(this.mc.thePlayer);
 		}
 
 		// Beastiary: Opens GUI and sends data request packet.

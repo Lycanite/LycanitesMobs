@@ -113,7 +113,8 @@ gui.minion.soulgazerinfo=You haven't added any creatures that can be summoned to
 # Pet Manager:
 gui.petmanager.name=Pet Manager
 gui.petmanager.empty=No Pets
-gui.petmanager.info=Some creatures can be tamed as either Pets or Mounts. You can craft various treats in order to tame these creatures. You can then soulbind tamed pets to yourself where you can summon and dismiss them at will, they will also respawn over time should they die!
+gui.petmanager.info=Some creatures can be tamed as either Pets or Mounts. You can craft various treats in order to tame these creatures. You can then soulbind tamed pets to yourself using a Soulstone. Once soulbound, you can summon and dismiss your pet at will, they will also respawn over time should they die!
+gui.petmanager.removed=Your %creature% has been unbound, it will still exist in the world but will no longer revive after death.
 #
 # Mount Manager:
 gui.mountmanager.name=Mount Manager
@@ -144,6 +145,8 @@ message.soulgazer.new=You have gained knowledge of the %creature%! Check your Be
 message.soulgazer.summonable=You are now able to summon the %creature%! You will need a Summoning Staff.
 message.soulgazer.known=You already have full knowledge of this creature.
 message.soulgazer.unknown=The Soulgazer finds nother special about this creature.
+message.soulstone.invalid=The Soulstone cannot bind to this creature.
+message.soulstone.added=Your %creature% has been bound, you will now find it in your Pet Manager.
 message.pet.tamed=The %creature% seems to love you now!
 message.pet.tamefail=The %creature% wants more!
 message.pet.mount.baby=The %creature% is too young to carry you!
@@ -187,7 +190,10 @@ potion.fallresist=Fall Resistance
 # ========== Key Bindings ==========
 key.mount.ability=Mount Ability
 key.mount.inventory=Mount Inventory
+key.lycanitesmobs.menu=Lycanites Mobs Main Menu
 key.beastiary=Beastiary
+key.pet.manager=Pet Manager
+key.mount.manager=Mount Manager
 key.familiar.manager=Familiar Manager
 key.minion.manager=Minion Manager
 key.minion.select=Minion Selection

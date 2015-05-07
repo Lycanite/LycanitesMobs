@@ -196,22 +196,24 @@ public class EntityProjectileLaser extends EntityProjectileBase {
 				possibleLaserEnd = this.worldObj.getEntityByID(this.laserEndRef);
 			if(possibleLaserEnd != null && possibleLaserEnd instanceof EntityProjectileLaserEnd)
 				this.laserEnd = (EntityProjectileLaserEnd)possibleLaserEnd;
-			else
+			else {
 				this.laserEnd = null;
-			return;
+				return;
+			}
 		}
-		
+
 		if(this.laserEnd == null)
 			fireProjectile();
 		
 		if(this.laserEnd == null)
 			this.laserEndRef = -1;
 		else {
-			this.laserEndRef = this.laserEnd.getEntityId();
+			if(!this.worldObj.isRemote)
+				this.laserEndRef = this.laserEnd.getEntityId();
 			
 			// Entity Aiming:
 			if(this.shootingEntity != null && this.useEntityAttackTarget) {
-				if(this.shootingEntity instanceof EntityCreatureBase && ((EntityCreatureBase)this.shootingEntity).hasAttackTarget()) {
+				if(this.shootingEntity instanceof EntityCreatureBase && ((EntityCreatureBase)this.shootingEntity).getAttackTarget() != null) {
 					EntityLivingBase attackTarget = ((EntityCreatureBase)this.shootingEntity).getAttackTarget();
 					this.targetX = attackTarget.posX;
 					this.targetY = attackTarget.posY + (attackTarget.height / 2);

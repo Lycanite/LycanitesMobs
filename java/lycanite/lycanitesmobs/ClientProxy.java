@@ -5,11 +5,7 @@ import java.util.Map.Entry;
 import lycanite.lycanitesmobs.api.entity.EntityFear;
 import lycanite.lycanitesmobs.api.entity.EntityParticle;
 import lycanite.lycanitesmobs.api.entity.EntityPortal;
-import lycanite.lycanitesmobs.api.gui.GUITabBeastiary;
-import lycanite.lycanitesmobs.api.gui.GUITabMinion;
-import lycanite.lycanitesmobs.api.gui.GUITabMount;
-import lycanite.lycanitesmobs.api.gui.GuiOverlay;
-import lycanite.lycanitesmobs.api.gui.TabManager;
+import lycanite.lycanitesmobs.api.gui.*;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.render.*;
@@ -39,14 +35,18 @@ public class ClientProxy extends CommonProxy {
 		// ========== Add GUI Textures ==========
 		GroupInfo group = LycanitesMobs.group;
 		AssetManager.addTexture("GUIInventoryCreature", group, "textures/guis/inventory_creature.png");
+		AssetManager.addTexture("GUILMMainMenu", group, "textures/guis/lmmainmenu.png");
 		AssetManager.addTexture("GUIBeastiary", group, "textures/guis/beastiary.png");
+		AssetManager.addTexture("GUIPet", group, "textures/guis/pet.png");
+		AssetManager.addTexture("GUIMount", group, "textures/guis/mount.png");
         AssetManager.addTexture("GUIFamiliar", group, "textures/guis/familiar.png");
         AssetManager.addTexture("GUIMinion", group, "textures/guis/minion.png");
 
 		// ========== Add GUI Tabs ==========
-		TabManager.registerTab(new GUITabBeastiary(0));
-		TabManager.registerTab(new GUITabMinion(1));
-		TabManager.registerTab(new GUITabMount(2));
+		TabManager.registerTab(new GUITabMain(0));
+		//TabManager.registerTab(new GUITabBeastiary(1));
+		//TabManager.registerTab(new GUITabMinion(2));
+		//TabManager.registerTab(new GUITabMount(3));
     }
 	
 	

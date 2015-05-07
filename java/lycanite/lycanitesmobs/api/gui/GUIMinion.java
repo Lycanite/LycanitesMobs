@@ -152,7 +152,6 @@ public class GUIMinion extends GuiScreen {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIMinion"));
         this.drawTexturedModalRect(this.windowX, this.windowY, 0, 0, this.windowWidth, this.windowHeight);
-        
 	}
 	
 	
@@ -168,6 +167,8 @@ public class GUIMinion extends GuiScreen {
         int buttonHeight = 32;
         int buttonX = this.windowX + 2;
         int buttonY = this.windowY + 16;
+
+		this.buttonList.add(new GUITabMain(55555));
         
         // Tabs:
         int tabCount = 5;

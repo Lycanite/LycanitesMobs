@@ -74,6 +74,9 @@ public class LycanitesMobs {
     // Achievements:
     public static AchievementPage achievementPage;
     public static int achievementGlobalBaseID = 5500;
+
+	// Extra Config Settings:
+	public static boolean disableNausea = false;
 	
 	
 	// ==================================================
@@ -87,6 +90,8 @@ public class LycanitesMobs {
 		group.loadFromConfig();
 		config = ConfigBase.getConfig(group, "general");
 		config.setCategoryComment("Debug", "Set debug options to true to show extra debugging information in the console.");
+		config.setCategoryComment("Extras", "Other extra config settings, some of the aren't necessarily specific to Lycanites Mobs.");
+		disableNausea = config.getBool("Extras", "Disable Nausea Debuff", disableNausea, "Set to true to disable the nausea debuff on players.");
 		this.packetHandler.init();
 		
 		
@@ -139,6 +144,7 @@ public class LycanitesMobs {
 		
 		// ========== Create Items ==========
 		ObjectManager.addItem("soulgazer", new ItemSoulgazer());
+		ObjectManager.addItem("soulstone", new ItemSoulstone());
 		ObjectManager.addItem("summoningstaff", new ItemStaffSummoning());
 		ObjectManager.addItem("stablesummoningstaff", new ItemStaffStable());
 		ObjectManager.addItem("bloodsummoningstaff", new ItemStaffBlood());
@@ -217,6 +223,14 @@ public class LycanitesMobs {
 				Character.valueOf('D'), Items.diamond,
 				Character.valueOf('B'), Items.bone
 			}));
+
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("soulstone"), 1, 0),
+				new Object[] { "DPD", "PSP", "DPD",
+						Character.valueOf('D'), Items.ender_pearl,
+						Character.valueOf('S'), ObjectManager.getItem("soulgazer"),
+						Character.valueOf('P'), Items.ender_pearl
+				}));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("summoningstaff"), 1, 0),

@@ -162,19 +162,15 @@ public class EventListener {
 		
 		// Item onItemRightClickOnEntity():
 		if(player.getHeldItem() != null) {
-			Item item = player.getHeldItem().getItem();
+			ItemStack itemStack = player.getHeldItem();
+			Item item = itemStack.getItem();
 			if(item instanceof ItemBase)
-				if(((ItemBase)item).onItemRightClickOnEntity(player, entity)) {
-					if(event.isCancelable())
-						event.setCanceled(true);
-				}
-			if(item instanceof ItemScepter)
-				if(((ItemScepter)item).onItemRightClickOnEntity(player, entity)) {
+				if(((ItemBase)item).onItemRightClickOnEntity(player, entity, itemStack)) {
 					if(event.isCancelable())
 						event.setCanceled(true);
 				}
 			if(item instanceof ItemSwordBase)
-				if(((ItemSwordBase)item).onItemRightClickOnEntity(player, entity)) {
+				if(((ItemSwordBase)item).onItemRightClickOnEntity(player, entity, itemStack)) {
 					if(event.isCancelable())
 						event.setCanceled(true);
 				}

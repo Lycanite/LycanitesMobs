@@ -1,12 +1,15 @@
 package lycanite.lycanitesmobs;
 
 import lycanite.lycanitesmobs.api.entity.EntityFear;
+import lycanite.lycanitesmobs.api.item.ItemSwordBase;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -91,6 +94,13 @@ public class PotionEffects {
 						extendedEntity.fearEntity = fearEntity;
 					}
 				}
+			}
+		}
+
+		// ========== Disable Nausea ==========
+		if(LycanitesMobs.disableNausea && event.entityLiving instanceof EntityPlayer) {
+			if(entity.isPotionActive(Potion.confusion.getId())) {
+				entity.removePotionEffect(Potion.confusion.getId());
 			}
 		}
 	}

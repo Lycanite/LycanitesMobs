@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs.api.item;
 import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.EntityFear;
 import lycanite.lycanitesmobs.api.info.CreatureKnowledge;
 import lycanite.lycanitesmobs.api.info.MobInfo;
@@ -13,15 +14,14 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-public class ItemSoulgazer extends ItemBase {
-	
+public class ItemSoulstone extends ItemBase {
+
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemSoulgazer() {
+    public ItemSoulstone() {
         super();
-        this.setMaxStackSize(1);
-        this.itemName = "soulgazer";
+        this.itemName = "soulstone";
         this.setup();
     }
 	
@@ -39,26 +39,23 @@ public class ItemSoulgazer extends ItemBase {
 	//                       Use
 	// ==================================================
 	// ========== Entity Interaction ==========
-	@Override
     public boolean onItemRightClickOnEntity(EntityPlayer player, Entity entity, ItemStack itemStack) {
     	ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
     	if(playerExt == null)
     		return false;
-    	if(!(entity instanceof EntityCreatureBase)) {
+    	if(!(entity instanceof EntityCreatureTameable)) {
     		if(!player.worldObj.isRemote)
-    			player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("message.soulgazer.unknown")));
+    			player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("message.soulstone.invalid")));
     		return false;
     	}
-    	if(entity instanceof EntityFear) {
-    		return false;
-    	}
-    	MobInfo mobInfo = ((EntityCreatureBase)entity).mobInfo;
-    	if(playerExt.getBeastiary().hasFullKnowledge(mobInfo.name)) {
-    		if(!player.worldObj.isRemote)
-    			player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("message.soulgazer.known")));
-    		return false;
-    	}
-    	
+
+		MobInfo mobInfo = ((EntityCreatureTameable)entity).mobInfo;
+
+		if(!player.capabilities.isCreativeMode)
+			itemStack.stackSize -= 1;
+		if(itemStack.stackSize <= 0)
+			player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack)null);
+
     	if(player.worldObj.isRemote) {
     		for(int i = 0; i < 32; ++i) {
     			entity.worldObj.spawnParticle("happyVillager",
@@ -70,7 +67,7 @@ public class ItemSoulgazer extends ItemBase {
     	}
     	
     	if(!player.worldObj.isRemote) {
-    		String message = StatCollector.translateToLocal("message.soulgazer.new");
+    		String message = StatCollector.translateToLocal("message.soulstone.added");
     		message = message.replace("%creature%", mobInfo.getTitle());
     		player.addChatMessage(new ChatComponentText(message));
     		if(mobInfo.isSummonable()) {

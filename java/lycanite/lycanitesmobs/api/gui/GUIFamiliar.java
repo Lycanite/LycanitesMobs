@@ -152,6 +152,8 @@ public class GUIFamiliar extends GuiScreen {
         int buttonY = this.windowY + 5;
         int buttonX = this.windowX + (buttonSpacing * 2);
 
+        this.buttonList.add(new GUITabMain(55555));
+
         this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.SPAWNING.id, buttonX, this.windowY + this.windowHeight - buttonHeight - 9, buttonWidth, buttonHeight, "..."));
 
         buttonX = this.centerX + buttonSpacing;

@@ -178,6 +178,8 @@ public class GUIBeastiary extends GuiScreen {
         int buttonHeight = 20;
         int buttonX = this.windowX + 6;
         int buttonY = this.windowY;
+
+		this.buttonList.add(new GUITabMain(55555));
      }
 	
 	

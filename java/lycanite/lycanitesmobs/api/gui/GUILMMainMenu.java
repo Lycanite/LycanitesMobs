@@ -100,7 +100,7 @@ public class GUILMMainMenu extends GuiScreen {
 	
 	
 	// ==================================================
-  	//                    Controls
+  	//                     Controls
   	// ==================================================
 	protected void drawControls() {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -151,10 +151,10 @@ public class GUILMMainMenu extends GuiScreen {
 				GUIBeastiary.openToPlayer(this.player);
 			}
 			if(guiButton.id == GuiHandler.PlayerGuiType.PET_MANAGER.id) {
-				//GUIPetManager.openToPlayer(this.player);
+				GUIPetManager.openToPlayer(this.player);
 			}
 			if(guiButton.id == GuiHandler.PlayerGuiType.MOUNT_MANAGER.id) {
-				//GUIMountManager.openToPlayer(this.player);
+				GUIMountManager.openToPlayer(this.player);
 			}
 			if(guiButton.id == GuiHandler.PlayerGuiType.MINION_MANAGER.id) {
 				GUIMinion.openToPlayer(this.player, this.playerExt.selectedSummonSet);

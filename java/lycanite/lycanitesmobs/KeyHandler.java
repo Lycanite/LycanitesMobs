@@ -88,6 +88,16 @@ public class KeyHandler {
 			GUIBeastiary.openToPlayer(this.mc.thePlayer);
 		}
 
+		// Pet Manager: Opens GUI.
+		if(this.petManager.isPressed()) {
+			GUIPetManager.openToPlayer(this.mc.thePlayer);
+		}
+
+		// Mount Manager: Opens GUI.
+		if(this.mountManager.isPressed()) {
+			GUIMountManager.openToPlayer(this.mc.thePlayer);
+		}
+
         // Familiar Manager: Opens GUI and sends data request packet.
         if(this.familiarManager.isPressed()) {
             MessageGUIRequest message = new MessageGUIRequest(GuiHandler.PlayerGuiType.FAMILIAR_MANAGER.id);

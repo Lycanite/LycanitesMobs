@@ -4,22 +4,16 @@ import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.GuiHandler;
 import lycanite.lycanitesmobs.LycanitesMobs;
-import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
-import lycanite.lycanitesmobs.api.info.GroupInfo;
-import lycanite.lycanitesmobs.api.info.MobInfo;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
-
 import org.lwjgl.opengl.GL11;
 
-public class GUIBeastiary extends GuiScreen {
+public class GUIMountManager extends GuiScreen {
 	public EntityPlayer player;
 	public ExtendedPlayer playerExt;
 	public int centerX;
@@ -30,20 +24,18 @@ public class GUIBeastiary extends GuiScreen {
 	public int halfY;
 	public int windowX;
 	public int windowY;
-	
-	public GUIBeastiaryGroupList groupList;
-	public GUIBeastiaryCreatureList creatureList;
+
 	public EntityLivingBase creaturePreviewEntity;
-		
+
 	public static void openToPlayer(EntityPlayer player) {
 		if(player != null && player.worldObj != null)
-			player.openGui(LycanitesMobs.instance, GuiHandler.GuiType.PLAYER.id, player.worldObj, GuiHandler.PlayerGuiType.BEASTIARY.id, 0, 0);
+			player.openGui(LycanitesMobs.instance, GuiHandler.GuiType.PLAYER.id, player.worldObj, GuiHandler.PlayerGuiType.MOUNT_MANAGER.id, 0, 0);
 	}
-	
+
 	// ==================================================
   	//                    Constructor
   	// ==================================================
-	public GUIBeastiary(EntityPlayer player) {
+	public GUIMountManager(EntityPlayer player) {
 		super();
 		this.player = player;
 		this.playerExt = ExtendedPlayer.getForPlayer(player);
@@ -65,7 +57,6 @@ public class GUIBeastiary extends GuiScreen {
 	@Override
 	public void initGui() {
 		super.initGui();
-		this.updateSelectedCreature();
 		
         this.buttonList.clear();
 		this.windowWidth = 256;
@@ -86,15 +77,8 @@ public class GUIBeastiary extends GuiScreen {
         int listX = this.windowX + (buttonSpacing * 2);
         
 		// Group List:
-		this.groupList = new GUIBeastiaryGroupList(this, listWidth, listHeight, listTop, listBottom, listX, 16);
-		this.groupList.registerScrollButtons(this.buttonList, 51, 52);
-		
-		listTop += listHeight + buttonSpacing;
-		listBottom += listHeight + buttonSpacing;
-		
-		// Creature List:
-		this.creatureList = new GUIBeastiaryCreatureList(this, listWidth, listHeight, listTop, listBottom, listX, 20);
-		this.creatureList.registerScrollButtons(this.buttonList, 53, 54);
+		//this.creatureList = new GUIBeastiaryGroupList(this, listWidth, listHeight, listTop, listBottom, listX, 16);
+		//this.creatureList.registerScrollButtons(this.buttonList, 51, 52);
 	}
 	
 	
@@ -107,8 +91,7 @@ public class GUIBeastiary extends GuiScreen {
         this.drawGuiContainerForegroundLayer(x, y, f);
         
         // Creature List:
-		this.groupList.drawScreen(x, y, f);
-		this.creatureList.drawScreen(x, y, f);
+		//this.creatureList.drawScreen(x, y, f);
         super.drawScreen(x, y, f);
 	}
 	
@@ -117,44 +100,7 @@ public class GUIBeastiary extends GuiScreen {
   	//                    Foreground
   	// ==================================================
 	protected void drawGuiContainerForegroundLayer(int x, int y, float f) {
-		boolean hasSomeKnowledge = this.playerExt.beastiary.creatureKnowledgeList.size() > 0;
-		this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.beastiary.name"), this.windowX + 24, this.windowY + 8, 0xFFFFFF);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		
-		// Draw Creature Entry:
-		if(this.getSelectedCreature() != null && this.creaturePreviewEntity != null && hasSomeKnowledge) {
-			int creatureSize = 17;
-			int creatureScale = Math.round((1.8F / this.creaturePreviewEntity.height) * creatureSize);
-			int creatureX = this.centerX + (this.halfX / 2);
-			int creatureY = this.windowY + 32 + creatureSize;
-			// X, Y, Scale, RotX, RotY, RotHead, EntityLivingBase
-			GuiInventory.func_147046_a(creatureX, creatureY, creatureScale, (float)(creatureX) - x, (float)(creatureY) - y, this.creaturePreviewEntity);
-			
-			this.fontRendererObj.drawString(this.getSelectedCreature().getTitle(), this.centerX + 8, this.windowY + 8, 0xFFFFFF);
-			this.fontRendererObj.drawSplitString(this.getSelectedCreature().getDescription(), this.centerX + 8, creatureY + creatureSize + 2, this.halfX - 16, 0xFFFFFF);
-		}
-		
-		// Draw Group Entry:
-		else if(this.getSelectedGroup() != null && hasSomeKnowledge) {
-			this.fontRendererObj.drawString(StatCollector.translateToLocal(this.getSelectedGroup().filename + ".name"), this.centerX + 8, this.windowY + 8, 0xFFFFFF);
-			this.fontRendererObj.drawSplitString(StatCollector.translateToLocal(this.getSelectedGroup().filename + ".description"), this.centerX + 8, this.windowY + 24, this.halfX - 16, 0xFFFFFF);
-		}
-		
-		// Draw Soulgazer Instructions:
-		else if(hasSomeKnowledge) {
-			this.fontRendererObj.drawString("", this.centerX + 8, this.windowY + 8, 0xFFFFFF);
-			this.fontRendererObj.drawSplitString(StatCollector.translateToLocal("gui.beastiary.selectacreature"), this.centerX + 8, this.windowY + 24, this.halfX - 16, 0xFFFFFF);
-		}
-		
-		// Draw Soulgazer Instructions:
-		else {
-			this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.beastiary.empty"), this.centerX + 8, this.windowY + 8, 0xFFFFFF);
-			this.fontRendererObj.drawSplitString(StatCollector.translateToLocal("gui.beastiary.soulgazerinfo"), this.centerX + 8, this.windowY + 24, this.halfX - 16, 0xFFFFFF);
-			int recipeWidth = 108;
-			int recipeHeight = 54;
-			this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIBeastiary"));
-	        this.drawTexturedModalRect(this.centerX + (this.halfX / 2) - (recipeWidth / 2), this.windowY + this.windowHeight - recipeHeight - 4, 0, 256 - recipeHeight, recipeWidth, recipeHeight);
-		}
+		this.getFontRenderer().drawString(StatCollector.translateToLocal("gui.mountmanager.name"), this.centerX - 24, this.windowY + 6, 0xFFFFFF);
 	}
 	
 	
@@ -163,7 +109,7 @@ public class GUIBeastiary extends GuiScreen {
   	// ==================================================
 	protected void drawGuiContainerBackgroundLayer(int x, int y, float f) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIBeastiary"));
+        this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIPet"));
         this.drawTexturedModalRect(this.windowX, this.windowY, 0, 0, this.windowWidth, this.windowHeight);
 	}
 	
@@ -189,53 +135,6 @@ public class GUIBeastiary extends GuiScreen {
 	@Override
 	protected void actionPerformed(GuiButton guiButton) {
 		super.actionPerformed(guiButton);
-	}
-
-	
-	// ==================================================
-  	//                 Creature Selection
-  	// ==================================================
-	public void selectCategory(String category) {
-		this.playerExt.beastiaryCategory = category; 
-	}
-	
-	public void selectGroup(GroupInfo group) {
-		this.playerExt.beastiaryGroup = group;
-		this.playerExt.beastiaryCategory = "group"; 
-		if(this.creatureList != null) {
-			this.creatureList.updateList();
-			this.selectCreature(null);
-		}
-		this.updateSelectedCreature();
-	}
-	
-	public GroupInfo getSelectedGroup() {
-		return this.playerExt.beastiaryGroup;
-	}
-	
-	public void selectCreature(MobInfo mobInfo) {
-		this.playerExt.beastiaryCreature = mobInfo;
-		this.updateSelectedCreature();
-	}
-	
-	public MobInfo getSelectedCreature() {
-		return this.playerExt.beastiaryCreature;
-	}
-	
-	public void updateSelectedCreature() {
-		if(this.getSelectedCreature() == null)
-			this.creaturePreviewEntity = null;
-		else
-			try {
-				this.creaturePreviewEntity = (EntityLivingBase)this.getSelectedCreature().entityClass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {this.player.worldObj});
-				this.creaturePreviewEntity.onGround = true;
-				if(this.creaturePreviewEntity instanceof EntityCreatureAgeable) {
-					((EntityCreatureAgeable)this.creaturePreviewEntity).setGrowingAge(0);
-				}
-			} catch (Exception e) {
-				LycanitesMobs.printWarning("", "Tried to preview an invalid creature in the Beastiary.");
-				e.printStackTrace();
-			}
 	}
 	
 	

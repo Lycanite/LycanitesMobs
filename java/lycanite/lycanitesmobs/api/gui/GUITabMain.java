@@ -10,6 +10,10 @@ public class GUITabMain extends GUITab {
         super(id, GUITab.startX, GUITab.startY, new ItemStack(ObjectManager.getItem("soulgazer")));
     }
 
+    public GUITabMain(int id, int x, int y) {
+        super(id, x, y, new ItemStack(ObjectManager.getItem("soulgazer")));
+    }
+
     @Override
     public void onTabClicked () {
         GUILMMainMenu.openToPlayer(Minecraft.getMinecraft().thePlayer);

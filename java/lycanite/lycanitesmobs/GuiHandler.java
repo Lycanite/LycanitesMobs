@@ -95,6 +95,12 @@ public class GuiHandler implements IGuiHandler {
 			if(x == PlayerGuiType.BEASTIARY.id) {
 				return new GUIBeastiary(player);
 			}
+			if(x == PlayerGuiType.PET_MANAGER.id) {
+				return new GUIPetManager(player);
+			}
+			if(x == PlayerGuiType.MOUNT_MANAGER.id) {
+				return new GUIMountManager(player);
+			}
             if(x == PlayerGuiType.FAMILIAR_MANAGER.id) {
                 return new GUIFamiliar(player);
             }

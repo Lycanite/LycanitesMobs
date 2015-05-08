@@ -18,7 +18,7 @@ public class PotionBase extends Potion {
 		if(originalLength < safeLength)
 			newLength = originalLength + customPotionLength;
 		customPotionOffset = Math.min(originalLength, (safeLength - 1) - customPotionLength);
-		// TODO: Check if other mods have taken the last IDs, if so keep going lower until a free set of 24 IDs are found.
+		// TODO: Check if other mods have taken the last IDs, if so keep going lower until a free set of IDs are found.
 
 		LycanitesMobs.printDebug("EffectsSetup", "~O========== Custom Potion Effects Setup ==========O~");
 		LycanitesMobs.printDebug("EffectsSetup", "Initial size is: " + originalLength + " (vanilla size is: " + vanillaLength + ")");

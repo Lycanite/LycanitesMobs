@@ -159,8 +159,6 @@ public class GUIMinion extends GuiScreen {
   	//                    Controls
   	// ==================================================
 	protected void drawControls() {
-		if(!this.hasSummonableMinions()) return;
-		
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         int buttonSpacing = 2;
         int buttonWidth = 32;
@@ -168,7 +166,9 @@ public class GUIMinion extends GuiScreen {
         int buttonX = this.windowX + 2;
         int buttonY = this.windowY + 16;
 
-		this.buttonList.add(new GUITabMain(55555));
+		this.buttonList.add(new GUITabMain(55555, buttonX, this.windowY - 27));
+
+		if(!this.hasSummonableMinions()) return;
         
         // Tabs:
         int tabCount = 5;

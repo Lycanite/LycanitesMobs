@@ -59,6 +59,8 @@ subspecies.umber.name=Umber
 # ========== Items ==========
 item.soulgazer.name=Soulgazer
 item.soulgazer.description=Use on a creature to add it to the Beastiary.
+item.soulstone.name=Soulstone
+item.soulstone.description=Use on a tamed creature to bind it to your spirit allowing you to summon and dismiss it anywhere anytime. Bound pets or mounts will also respawn after death.
 item.summoningstaff.name=Summoning Staff
 item.summoningstaff.description=Summon minions to do your bidding! Start using to create a portal, over time the portal will drain your Summoning Focus (above your hunger bar).
 item.mobtoken.name=Mob Token

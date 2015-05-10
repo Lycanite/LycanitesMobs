@@ -158,7 +158,7 @@ public class EntityShade extends EntityCreatureRideable implements IGroupPredato
         return true;
     }
 
-    // ========== Horrifying Howl ==========
+    // ========== Horrific Howl ==========
     public void specialAttack() {
         double distance = 4.0D;
         List<EntityLivingBase> possibleTargets = this.worldObj.selectEntitiesWithinAABB(EntityLivingBase.class, this.boundingBox.expand(distance, distance, distance), null);
@@ -175,7 +175,7 @@ public class EntityShade extends EntityCreatureRideable implements IGroupPredato
                     }
                     if(doDamage) {
                         if(ObjectManager.getPotionEffect("penetration") != null && ObjectManager.getPotionEffect("fear").id < Potion.potionTypes.length)
-                            possibleTarget.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("fear").id, this.getEffectDuration(3), 1));
+                            possibleTarget.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("fear").id, this.getEffectDuration(5), 1));
                         else
                             possibleTarget.addPotionEffect(new PotionEffect(Potion.weakness.id, 10 * 20, 0));
                     }

@@ -17,6 +17,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 public class GUIFamiliar extends GuiScreen {
 	public EntityPlayer player;
 	public ExtendedPlayer playerExt;
@@ -91,8 +94,7 @@ public class GUIFamiliar extends GuiScreen {
 					this.windowHeight - 16 - (buttonSpacing * 2),
 					this.windowY + 16,
 					this.windowY + this.windowHeight - 28 - (buttonSpacing * 2),
-					this.windowX + (buttonSpacing * 2),
-					20
+					this.windowX + (buttonSpacing * 2)
 				);
 			this.list.registerScrollButtons(this.buttonList, 51, 52);
 		}
@@ -125,7 +127,7 @@ public class GUIFamiliar extends GuiScreen {
 		}
 
         this.getFontRenderer().drawString(StatCollector.translateToLocal("gui.familiarmanager.empty"), this.windowX + 18, this.windowY + 6, 0xFFFFFF);
-        this.fontRendererObj.drawSplitString(StatCollector.translateToLocal("gui.familiarmanager.info"), this.windowX + 8, this.windowY + 24, this.windowWidth - 16, 0xFFFFFF);
+        this.fontRendererObj.drawSplitString(StatCollector.translateToLocal("gui.familiarmanager.info"), this.windowX + 16, this.windowY + 24, this.windowWidth - 32, 0xFFFFFF);
     }
 	
 	
@@ -143,9 +145,7 @@ public class GUIFamiliar extends GuiScreen {
   	//                    Controls
   	// ==================================================
 	protected void drawControls() {
-		if(!this.hasFamiliars()) return;
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        // Behaviour:
         int buttonSpacing = 1;
         int buttonWidth = (this.windowWidth / 2) - (buttonSpacing * 4);
         int buttonHeight = 20;
@@ -153,6 +153,11 @@ public class GUIFamiliar extends GuiScreen {
         int buttonX = this.windowX + (buttonSpacing * 2);
 
         this.buttonList.add(new GUITabMain(55555, buttonX, this.windowY - 27));
+
+        if(!this.hasFamiliars()) {
+            this.buttonList.add(new GuiButton(100, this.windowX + (this.windowWidth / 2) - (buttonWidth / 2), this.windowY + this.windowHeight - buttonHeight - 16, buttonWidth, buttonHeight, "Patreon"));
+            return;
+        }
 
         this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.SPAWNING.id, buttonX, this.windowY + this.windowHeight - buttonHeight - 9, buttonWidth, buttonHeight, "..."));
 
@@ -235,11 +240,23 @@ public class GUIFamiliar extends GuiScreen {
             if(guiButton.id == EntityCreatureBase.GUI_COMMAND_ID.SPAWNING.id)
                 this.petEntry.spawningActive = !this.petEntry.spawningActive;
 
-            this.playerExt.sendPetEntryToServer(this.petEntry);
+            // Patreon Button:
+            if(guiButton.id == 100) {
+                try {
+                    this.openURI(new URI("https://www.patreon.com/lycanite"));
+                } catch (URISyntaxException e) {}
+            }
+
+            if(guiButton.id < 100)
+                this.playerExt.sendPetEntryToServer(this.petEntry);
 		}
 		super.actionPerformed(guiButton);
 	}
-	
+
+
+    // ==================================================
+    //                 Familiar Selection
+    // ==================================================
 	public void selectPetEntry(PetEntry petEntry) {
         this.petEntry = this.playerExt.petManager.getEntry(petEntry.petEntryID);
 		this.summonSet = this.petEntry.summonSet;
@@ -281,5 +298,20 @@ public class GUIFamiliar extends GuiScreen {
         tessellator.addVertexWithUV((double)(x + w), (double)(y + 0), (double)z, (double)((float)(u + w) * s), (double)((float)(v + 0) * t));
         tessellator.addVertexWithUV((double)(x + 0), (double)(y + 0), (double)z, (double)((float)(u + 0) * s), (double)((float)(v + 0) * t));
         tessellator.draw();
+    }
+
+
+    // ==================================================
+    //                     Open URI
+    // ==================================================
+    private void openURI(URI uri) {
+        try {
+            Class oclass = Class.forName("java.awt.Desktop");
+            Object object = oclass.getMethod("getDesktop", new Class[0]).invoke((Object)null, new Object[0]);
+            oclass.getMethod("browse", new Class[] {URI.class}).invoke(object, new Object[]{uri});
+        }
+        catch (Throwable throwable) {
+            LycanitesMobs.printWarning("", "Unable to open link: " + uri.toString());
+        }
     }
 }

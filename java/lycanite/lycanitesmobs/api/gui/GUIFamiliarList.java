@@ -6,6 +6,7 @@ import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.pets.PetEntry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
+import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,8 +20,8 @@ public class GUIFamiliarList extends GuiScrollingList {
 	// ==================================================
   	//                    Constructor
   	// ==================================================
-	public GUIFamiliarList(GUIFamiliar parentGUI, ExtendedPlayer playerExt, int width, int height, int top, int bottom, int left, int entryHeight) {
-		super(Minecraft.getMinecraft(), width, height, top, bottom, left, entryHeight);
+	public GUIFamiliarList(GUIFamiliar parentGUI, ExtendedPlayer playerExt, int width, int height, int top, int bottom, int left) {
+		super(Minecraft.getMinecraft(), width, height, top, bottom, left, 20);
 		this.parentGUI = parentGUI;
 		this.familiarList = playerExt.petManager.getEntryList("familiar");
 	}
@@ -58,11 +59,38 @@ public class GUIFamiliarList extends GuiScrollingList {
 
 	@Override
 	protected void drawSlot(int index, int boxRight, int boxTop, int boxBottom, Tessellator tessellator) {
-		MobInfo mobInfo = this.familiarList.get(index).summonSet.getMobInfo();
+		PetEntry petEntry = this.familiarList.get(index);
+		MobInfo mobInfo = petEntry.summonSet.getMobInfo();
         if(mobInfo == null)
             return;
-		this.parentGUI.getFontRenderer().drawString(mobInfo.getTitle(), this.left + 18 , boxTop + 4, 0xFFFFFF);
+
+		int boxLeft = this.left;
+		if(petEntry.spawningActive) {
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			GL11.glDisable(GL11.GL_TEXTURE_2D);
+			tessellator.startDrawingQuads();
+			if(this.isSelected(index)) {
+				tessellator.setColorRGBA(192, 255, 232, 255);
+				tessellator.addVertexWithUV((double) boxLeft, (double) (boxTop + boxBottom + 2), 0.0D, 0.0D, 1.0D);
+				tessellator.addVertexWithUV((double) boxRight, (double) (boxTop + boxBottom + 2), 0.0D, 1.0D, 1.0D);
+				tessellator.addVertexWithUV((double) boxRight, (double) (boxTop - 2), 0.0D, 1.0D, 0.0D);
+				tessellator.addVertexWithUV((double) boxLeft, (double) (boxTop - 2), 0.0D, 0.0D, 0.0D);
+			}
+			tessellator.setColorRGBA(64, 128, 96, 32);
+			tessellator.addVertexWithUV((double) (boxLeft + 1), (double) (boxTop + boxBottom + 1), 0.0D, 0.0D, 1.0D);
+			tessellator.addVertexWithUV((double) (boxRight - 1), (double) (boxTop + boxBottom + 1), 0.0D, 1.0D, 1.0D);
+			tessellator.addVertexWithUV((double) (boxRight - 1), (double) (boxTop - 1), 0.0D, 1.0D, 0.0D);
+			tessellator.addVertexWithUV((double) (boxLeft + 1), (double) (boxTop - 1), 0.0D, 0.0D, 0.0D);
+			tessellator.draw();
+			GL11.glEnable(GL11.GL_TEXTURE_2D);
+		}
+
+		String petName = mobInfo.getTitle();
+//		if(!"".equals(petEntry.entityName)) // TODO Enable this for wider familiar GUI.
+//			petName = petEntry.entityName + " (" + petName + ")";
+		this.parentGUI.getFontRenderer().drawString(petName, boxLeft + 20 , boxTop + 4, 0xFFFFFF);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(mobInfo.getIcon());
-		this.parentGUI.drawImage(this.left, boxTop, 0, 0, 16, 16, 0.0625F, 0.0625F);
+		this.parentGUI.drawImage(this.left + 2, boxTop, 0, 0, 16, 16, 0.0625F, 0.0625F);
+
 	}
 }

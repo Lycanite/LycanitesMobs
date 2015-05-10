@@ -86,14 +86,14 @@ public class GUIBeastiary extends GuiScreen {
         int listX = this.windowX + (buttonSpacing * 2);
         
 		// Group List:
-		this.groupList = new GUIBeastiaryGroupList(this, listWidth, listHeight, listTop, listBottom, listX, 16);
+		this.groupList = new GUIBeastiaryGroupList(this, listWidth, listHeight, listTop, listBottom, listX);
 		this.groupList.registerScrollButtons(this.buttonList, 51, 52);
 		
 		listTop += listHeight + buttonSpacing;
 		listBottom += listHeight + buttonSpacing;
 		
 		// Creature List:
-		this.creatureList = new GUIBeastiaryCreatureList(this, listWidth, listHeight, listTop, listBottom, listX, 20);
+		this.creatureList = new GUIBeastiaryCreatureList(this, listWidth, listHeight, listTop, listBottom, listX);
 		this.creatureList.registerScrollButtons(this.buttonList, 53, 54);
 	}
 	
@@ -128,9 +128,12 @@ public class GUIBeastiary extends GuiScreen {
 			int creatureX = this.centerX + (this.halfX / 2);
 			int creatureY = this.windowY + 32 + creatureSize;
 			// X, Y, Scale, RotX, RotY, RotHead, EntityLivingBase
-			GuiInventory.func_147046_a(creatureX, creatureY, creatureScale, (float)(creatureX) - x, (float)(creatureY) - y, this.creaturePreviewEntity);
+			GuiInventory.func_147046_a(creatureX, creatureY, creatureScale, (float) (creatureX) - x, (float) (creatureY) - y, this.creaturePreviewEntity);
 			
+			// Title:
 			this.fontRendererObj.drawString(this.getSelectedCreature().getTitle(), this.centerX + 8, this.windowY + 8, 0xFFFFFF);
+			
+			// Description:
 			this.fontRendererObj.drawSplitString(this.getSelectedCreature().getDescription(), this.centerX + 8, creatureY + creatureSize + 2, this.halfX - 16, 0xFFFFFF);
 		}
 		
@@ -165,6 +168,21 @@ public class GUIBeastiary extends GuiScreen {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIBeastiary"));
         this.drawTexturedModalRect(this.windowX, this.windowY, 0, 0, this.windowWidth, this.windowHeight);
+
+		// Level:
+		if(this.getSelectedCreature() != null) {
+			int levelBarWidth = 9;
+			int levelBarHeight = 9;
+			int levelBarX = this.centerX + 8;
+			int levelBarY = this.windowY + 64 - levelBarHeight;
+			int levelBarU = 256 - (levelBarWidth * 2);
+			int levelBarV = 256 - levelBarHeight;
+			int level = this.getSelectedCreature().summonCost;
+
+			for(int currentLevel = 0; currentLevel < level; currentLevel++) {
+				this.drawTexturedModalRect(levelBarX + (levelBarWidth * currentLevel), levelBarY, levelBarU, levelBarV, levelBarWidth, levelBarHeight);
+			}
+		}
 	}
 	
 	

@@ -77,7 +77,7 @@ public class EntityTrent extends EntityCreatureBase implements IMob, IGroupPlant
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 30D);
+		baseAttributes.put("maxHealth", 40D);
 		baseAttributes.put("movementSpeed", 0.18D);
 		baseAttributes.put("knockbackResistance", 1.0D);
 		baseAttributes.put("followRange", 16D);
@@ -91,8 +91,9 @@ public class EntityTrent extends EntityCreatureBase implements IMob, IGroupPlant
         this.drops.add(new DropRate(new ItemStack(Blocks.log, 1, 0), 1).setMaxAmount(32));
         this.drops.add(new DropRate(new ItemStack(Items.stick), 0.75F).setMaxAmount(16).setBurningDrop(new ItemStack(Items.coal)));
         this.drops.add(new DropRate(new ItemStack(Items.wheat_seeds), 0.1F).setMaxAmount(5));
-        this.drops.add(new DropRate(new ItemStack(Items.pumpkin_seeds), 0.05F).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.melon_seeds), 0.05F).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.pumpkin_seeds), 0.1F).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.melon_seeds), 0.1F).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.apple), 0.2F).setMaxAmount(3));
         this.drops.add(new DropRate(new ItemStack(Items.emerald), 0.01F).setMaxAmount(1));
 	}
 	

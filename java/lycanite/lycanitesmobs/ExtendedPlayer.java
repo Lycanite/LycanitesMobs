@@ -42,6 +42,12 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 		public byte id;
 		private CONTROL_ID(byte i) { id = i; }
 	}
+
+	// Spirit:
+	public int spiritCharge = 200;
+	public int spiritMax = (this.spiritCharge * 20);
+	public int spirit = this.spiritMax;
+	public int spiritReserved = 0;
 	
 	// Summoning:
 	public int summonFocusCharge = 600;
@@ -116,18 +122,35 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 	/** Called by the EventListener, runs any logic on the main player entity's main update loop. **/
 	public void onUpdate() {
 		boolean creative = this.player.capabilities.isCreativeMode;
-		
-		// Summoning Focus Stat Update:
+
+		// Stats:
 		if(!player.worldObj.isRemote) {
+			boolean sync = false;
+
+			// Spirit Stat Update:
+			this.spirit = Math.min(Math.max(this.spirit, 0), this.spiritMax - this.spiritReserved);
+			if(this.spirit < this.spiritMax - this.spiritReserved) {
+				this.spirit++;
+				if(this.currentTick % 20 == 0 || this.spirit == this.spiritMax - this.spiritReserved) {
+					sync = true;
+				}
+			}
+
+			// Summoning Focus Stat Update:
 			this.summonFocus = Math.min(Math.max(this.summonFocus, 0), this.summonFocusMax);
 			if(this.summonFocus < this.summonFocusMax) {
 				this.summonFocus++;
-			}
-			if(!creative && this.currentTick % 20 == 0) {
-				if(this.summonFocus < this.summonFocusMax || (player.getHeldItem() != null && player.getHeldItem().getItem() instanceof ItemStaffSummoning)) {
-					MessagePlayerStats message = new MessagePlayerStats(this);
-					LycanitesMobs.packetHandler.sendToPlayer(message, (EntityPlayerMP)this.player);
+				if(!creative && this.currentTick % 20 == 0
+						|| this.summonFocus == this.summonFocusMax
+						|| (player.getHeldItem() != null && player.getHeldItem().getItem() instanceof ItemStaffSummoning)) {
+					sync = true;
 				}
+			}
+
+			// Sync Stats To Client:
+			if(sync) {
+				MessagePlayerStats message = new MessagePlayerStats(this);
+				LycanitesMobs.packetHandler.sendToPlayer(message, (EntityPlayerMP)this.player);
 			}
 		}
 
@@ -135,8 +158,8 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 		if(!player.worldObj.isRemote && !this.setupPlayerFamiliars) {
 			Map<String, PetEntry> playerFamiliars = DonationFamiliars.instance.getFamiliarsForPlayer(this.player);
 			if(playerFamiliars != null) {
-				for (PetEntry petEntry : playerFamiliars.values()) {
-					if (!this.petManager.hasEntry(petEntry)) {
+				for(PetEntry petEntry : playerFamiliars.values()) {
+					if(!this.petManager.hasEntry(petEntry)) {
 						this.petManager.addEntry(petEntry);
 					}
 				}
@@ -152,12 +175,12 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 			MessageSummonSetSelection message = new MessageSummonSetSelection(this);
 			LycanitesMobs.packetHandler.sendToPlayer(message, (EntityPlayerMP)this.player);
 		}
-		needsFirstSync = false;
 
         // Pet Manager:
         this.petManager.onUpdate(player.worldObj);
 		
 		this.currentTick++;
+		this.needsFirstSync = false;
 	}
 	
 	

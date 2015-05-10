@@ -3,16 +3,20 @@ package lycanite.lycanitesmobs.api.item;
 import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.EntityFear;
 import lycanite.lycanitesmobs.api.info.CreatureKnowledge;
 import lycanite.lycanitesmobs.api.info.MobInfo;
+import lycanite.lycanitesmobs.api.pets.PetEntry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+
+import java.util.UUID;
 
 public class ItemSoulstone extends ItemBase {
 
@@ -49,12 +53,20 @@ public class ItemSoulstone extends ItemBase {
     		return false;
     	}
 
-		MobInfo mobInfo = ((EntityCreatureTameable)entity).mobInfo;
+		EntityCreatureTameable entityTameable = (EntityCreatureTameable)entity;
+		MobInfo mobInfo = entityTameable.mobInfo;
+	 	if(!mobInfo.isTameable() || entityTameable.getPetEntry() != null) {
+			if(!player.worldObj.isRemote)
+				player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("message.soulstone.invalid")));
+			return false;
+		}
 
-		if(!player.capabilities.isCreativeMode)
-			itemStack.stackSize -= 1;
-		if(itemStack.stackSize <= 0)
-			player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack)null);
+		if(!player.worldObj.isRemote) {
+			if (!player.capabilities.isCreativeMode)
+				itemStack.stackSize -= 1;
+			if (itemStack.stackSize <= 0)
+				player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack) null);
+		}
 
     	if(player.worldObj.isRemote) {
     		for(int i = 0; i < 32; ++i) {
@@ -67,18 +79,22 @@ public class ItemSoulstone extends ItemBase {
     	}
     	
     	if(!player.worldObj.isRemote) {
-    		String message = StatCollector.translateToLocal("message.soulstone.added");
+			String petType = "pet";
+			if(entity instanceof EntityCreatureRideable)
+				petType = "mount";
+
+    		String message = StatCollector.translateToLocal("message.soulstone." + petType + ".added");
     		message = message.replace("%creature%", mobInfo.getTitle());
     		player.addChatMessage(new ChatComponentText(message));
-    		if(mobInfo.isSummonable()) {
-        		String summonMessage = StatCollector.translateToLocal("message.soulgazer.summonable");
-        		summonMessage = summonMessage.replace("%creature%", mobInfo.getTitle());
-        		player.addChatMessage(new ChatComponentText(summonMessage));
-    		}
-            player.addStat(ObjectManager.getAchievement(mobInfo.name + ".learn"), 1);
-    	}
+            //player.addStat(ObjectManager.getAchievement("soulstone"), 1);
 
-    	playerExt.getBeastiary().addToKnowledgeList(new CreatureKnowledge(player, mobInfo.name, 1));
+			// Add Pet Entry:
+			PetEntry petEntry = PetEntry.createFromEntity(player, entityTameable, petType);
+			playerExt.petManager.addEntry(petEntry);
+			playerExt.sendPetEntriesToPlayer(petType);
+			petEntry.assignEntity(entity);
+			entityTameable.setPetEntry(petEntry);
+    	}
     	return true;
     }
 }

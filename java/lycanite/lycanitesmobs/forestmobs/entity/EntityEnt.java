@@ -98,6 +98,7 @@ public class EntityEnt extends EntityCreatureTameable implements IMob, IGroupPla
         this.drops.add(new DropRate(new ItemStack(Items.wheat_seeds), 0.1F).setMaxAmount(3));
         this.drops.add(new DropRate(new ItemStack(Items.pumpkin_seeds), 0.05F).setMaxAmount(1));
         this.drops.add(new DropRate(new ItemStack(Items.melon_seeds), 0.05F).setMaxAmount(1));
+        this.drops.add(new DropRate(new ItemStack(Items.apple), 0.05F).setMaxAmount(1));
 	}
 	
 	

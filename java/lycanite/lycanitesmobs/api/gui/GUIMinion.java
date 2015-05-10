@@ -93,8 +93,7 @@ public class GUIMinion extends GuiScreen {
 					this.windowHeight - 16 - (buttonSpacing * 2),
 					this.windowY + 52,
 					this.windowY + 16 + this.windowHeight - 16 - (buttonSpacing * 2),
-					this.windowX + (buttonSpacing * 2),
-					20
+					this.windowX + (buttonSpacing * 2)
 				);
 			this.list.registerScrollButtons(this.buttonList, 51, 52);
 		}
@@ -269,9 +268,12 @@ public class GUIMinion extends GuiScreen {
 			}
 		}
 		super.actionPerformed(guiButton);
-		//openToPlayer(this.player, this.editSet);
 	}
-	
+
+
+	// ==================================================
+	//                  Minion Selection
+	// ==================================================
 	public void selectMinion(String minionName) {
 		this.summonSet.setSummonType(minionName);
 		this.playerExt.sendSummonSetToServer((byte)this.editSet);

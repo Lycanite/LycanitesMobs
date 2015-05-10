@@ -275,7 +275,7 @@ public class EntityStrider extends EntityCreatureRideable {
         // Effect:
         if(target instanceof EntityLivingBase) {
             if(ObjectManager.getPotionEffect("penetration") != null && ObjectManager.getPotionEffect("penetration").id < Potion.potionTypes.length)
-                ((EntityLivingBase)target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("penetration").id, this.getEffectDuration(5), 1));
+                ((EntityLivingBase)target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("penetration").id, this.getEffectDuration(8), 1));
         }
 
         // Pickup:
@@ -351,7 +351,7 @@ public class EntityStrider extends EntityCreatureRideable {
     //                     Equipment
     // ==================================================
     @Override
-    public int getBagSize() { return 10; }
+    public int getBagSize() { return 15; }
     
     
     // ==================================================

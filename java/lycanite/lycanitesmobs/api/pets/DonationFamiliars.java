@@ -78,9 +78,15 @@ public class DonationFamiliars {
                 familiarEntry.setEntityName(familiar_name);
             familiarEntry.setColor(familiar_color);
 
+            // Add Pet Entries or Update Existing Entries:
             if(!this.playerFamiliars.containsKey(minecraft_uuid))
                 playerFamiliars.put(minecraft_uuid, new HashMap<String, PetEntry>());
-            playerFamiliars.get(minecraft_uuid).put(familiarEntryName, familiarEntry);
+            if(!playerFamiliars.containsKey(familiarEntryName))
+                playerFamiliars.get(minecraft_uuid).put(familiarEntryName, familiarEntry);
+            else {
+                PetEntry existingEntry = playerFamiliars.get(minecraft_uuid).get(familiarEntryName);
+                existingEntry.copy(familiarEntry);
+            }
         }
     }
 

@@ -16,8 +16,8 @@ public class GUIMinionList extends GuiScrollingList {
 	// ==================================================
   	//                    Constructor
   	// ==================================================
-	public GUIMinionList(GUIMinion parentGUI, ExtendedPlayer playerExt, int width, int height, int top, int bottom, int left, int entryHeight) {
-		super(Minecraft.getMinecraft(), width, height, top, bottom, left, entryHeight);
+	public GUIMinionList(GUIMinion parentGUI, ExtendedPlayer playerExt, int width, int height, int top, int bottom, int left) {
+		super(Minecraft.getMinecraft(), width, height, top, bottom, left, 20);
 		this.parentGUI = parentGUI;
 		this.minionList = playerExt.getBeastiary().getSummonableList();
 	}
@@ -57,8 +57,8 @@ public class GUIMinionList extends GuiScrollingList {
 	protected void drawSlot(int index, int boxRight, int boxTop, int boxBottom, Tessellator tessellator) {
 		String mobName = this.minionList.get(index);
 		MobInfo mobInfo = MobInfo.mobNameToInfo.get(mobName);
-		this.parentGUI.getFontRenderer().drawString(mobInfo.getTitle(), this.left + 18 , boxTop + 4, 0xFFFFFF);
+		this.parentGUI.getFontRenderer().drawString(mobInfo.getTitle(), this.left + 20 , boxTop + 4, 0xFFFFFF);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(mobInfo.getIcon());
-		this.parentGUI.drawImage(this.left, boxTop, 0, 0, 16, 16, 0.0625F, 0.0625F);
+		this.parentGUI.drawImage(this.left + 2, boxTop, 0, 0, 16, 16, 0.0625F, 0.0625F);
 	}
 }

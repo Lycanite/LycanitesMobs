@@ -11,14 +11,15 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 
 public class MessagePlayerStats implements IMessage, IMessageHandler<MessagePlayerStats, IMessage> {
+	public int spirit;
 	public int summonFocus;
-	
 	
 	// ==================================================
 	//                    Constructors
 	// ==================================================
 	public MessagePlayerStats() {}
 	public MessagePlayerStats(ExtendedPlayer playerExt) {
+		this.spirit = playerExt.spirit;
 		this.summonFocus = playerExt.summonFocus;
 	}
 	
@@ -35,7 +36,8 @@ public class MessagePlayerStats implements IMessage, IMessageHandler<MessagePlay
 		EntityPlayer player = LycanitesMobs.proxy.getClientPlayer();
 		ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
 		if(playerExt == null) return null;
-		
+
+		playerExt.spirit = message.spirit;
 		playerExt.summonFocus = message.summonFocus;
 		return null;
 	}
@@ -50,6 +52,7 @@ public class MessagePlayerStats implements IMessage, IMessageHandler<MessagePlay
 	@Override
 	public void fromBytes(ByteBuf buf) {
 		PacketBuffer packet = new PacketBuffer(buf);
+		this.spirit = packet.readInt();
 		this.summonFocus = packet.readInt();
 	}
 	
@@ -63,6 +66,7 @@ public class MessagePlayerStats implements IMessage, IMessageHandler<MessagePlay
 	@Override
 	public void toBytes(ByteBuf buf) {
 		PacketBuffer packet = new PacketBuffer(buf);
+		packet.writeInt(this.spirit);
 		packet.writeInt(this.summonFocus);
 	}
 	

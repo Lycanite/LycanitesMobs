@@ -6,6 +6,7 @@ import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.info.CreatureKnowledge;
+import lycanite.lycanitesmobs.api.info.MobInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,6 +17,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class PetEntry {
     /** The unique name for this entry, used when reading and writing NBT Data. If it is an empty string "" or null then NBT Data will not be stored. **/
@@ -26,7 +28,7 @@ public class PetEntry {
     public int petEntryID;
     /** The type of entry this is. This should really always be set if this entry is to be added to a manager. This should only be set when the entry is instantiated and then kept the same. **/
     private String type;
-    /** This is set to false if this entry has been removed. Used by PetManagers to auto-remove finished entries. **/
+    /** This is set to false if this entry has been removed. Used by PetManagers to auto-remove finished temporary entries. **/
     public boolean active = true;
 
     /** A timer used to count down to 0 for respawning. **/
@@ -41,7 +43,7 @@ public class PetEntry {
     public boolean temporary = false;
     /** For temporary entities, this will set how the long the entity will last before it despawns. **/
     public int temporaryDuration = 5 * 20;
-    /** True if this entry should keep its entity spawned/respawned. False if the entity should be remvoed and not spawned. This can be turned on and off (such as for familiars). **/
+    /** True if this entry should keep its entity spawned/respawned. False if the entity should be removed and not spawned. This can be turned on and off (such as for familiars). **/
     public boolean spawningActive = true;
 
     /** The entity that this entry belongs to. **/
@@ -57,11 +59,28 @@ public class PetEntry {
     public int subspeciesID = 0;
     /** The size scale to use for the entity. **/
     public double entitySize = 1.0D;
-    /** Coloring for this entity suc as collar coloring. **/
+    /** Coloring for this entity such as collar coloring. **/
     public String color;
 
     /** If true, a teleport has been requested to teleport the entity (if active) to the host entity. **/
     public boolean teleportEntity = false;
+
+    // ==================================================
+    //                 Create from Entity
+    // ==================================================
+    /** Returns a new PetEntry based off the provided entity for the provided player. **/
+    public static PetEntry createFromEntity(EntityPlayer player, EntityCreatureBase entity, String petType) {
+        MobInfo mobInfo = entity.mobInfo;
+        String entryName = petType + "-" + player.getCommandSenderName() + mobInfo.name + "-" + UUID.randomUUID().toString();
+        PetEntry petEntry = new PetEntry(entryName, petType, player, mobInfo.name);
+        if(entity.hasCustomNameTag())
+            petEntry.setEntityName(entity.getCustomNameTag());
+        petEntry.setEntitySubspeciesID(entity.getSubspeciesIndex());
+        petEntry.setEntitySize(entity.sizeScale);
+        //petEntry.setColor(entity.getColor());
+        return petEntry;
+    }
+
 	
     // ==================================================
     //                     Constructor
@@ -82,6 +101,7 @@ public class PetEntry {
         if("minion".equalsIgnoreCase(this.type))
             this.temporary = true;
 	}
+
 
     // ==================================================
     //                     Set Values
@@ -113,6 +133,30 @@ public class PetEntry {
             this.summonSet.playerExt = playerExt;
         }
         return this;
+    }
+
+
+    // ==================================================
+    //                     Get Values
+    // ==================================================
+    public MobInfo getMobInfo() {
+        if(this.summonSet == null || "".equals(this.summonSet.summonType))
+            return null;
+        return MobInfo.getFromName(this.summonSet.summonType);
+    }
+
+
+    // ==================================================
+    //                     Copy Entry
+    // ==================================================
+    /** Makes this entry copy all information from another entry, useful for updating entries. Does not copy over the owner, ID or entry name and will only copy the SummonSet's summon type. **/
+    public void copy(PetEntry copyEntry) {
+        this.setEntityName(copyEntry.entityName);
+        this.setEntitySubspeciesID(copyEntry.subspeciesID);
+        this.setEntitySize(copyEntry.entitySize);
+        this.setColor(copyEntry.color);
+        if(copyEntry.summonSet != null)
+            this.summonSet.setSummonType(copyEntry.summonSet.summonType);
     }
 
 
@@ -202,7 +246,7 @@ public class PetEntry {
 
 
     // ==================================================
-    //                    Active Check
+    //                 On Behaviour Update
     // ==================================================
     /** Called when this entry's entity behaviour has been changed by the client. **/
     public void onBehaviourUpdate() {
@@ -250,6 +294,7 @@ public class PetEntry {
                 this.summonSet.applyBehaviour(entityTameable);
             }
 
+            // Better Spawn Location and Angle:
             float randomAngle = 45F + (45F * this.host.getRNG().nextFloat());
             if(this.host.getRNG().nextBoolean())
                 randomAngle = -randomAngle;
@@ -303,6 +348,40 @@ public class PetEntry {
     /** Called when the entity for this entry is despawned. **/
     public void onDespawnEntity(Entity entity) {
         // This can be used on extensions of this class for NBT data, etc.
+    }
+
+
+    // ==================================================
+    //                    Assign Entity
+    // ==================================================
+    /** Connects this petEntry to the provided entity. If there is already an entity attached then the attached entity will be despawned. **/
+    public void assignEntity(Entity entity) {
+        if(this.entity != null)
+            this.despawnEntity();
+        this.spawningActive = true;
+        this.entity = entity;
+
+        if(this.entity instanceof EntityCreatureBase) {
+            EntityCreatureBase entityCreature = (EntityCreatureBase) this.entity;
+            entityCreature.setMinion(true);
+            entityCreature.setPetEntry(this);
+
+            if(entityCreature instanceof EntityCreatureTameable) {
+                EntityCreatureTameable entityTameable = (EntityCreatureTameable)entityCreature;
+                this.summonSet.updateBehaviour(entityTameable);
+            }
+
+            if(this.temporary)
+                entityCreature.setTemporary(this.temporaryDuration);
+
+            if(this.entityName != null && !"".equals(this.entityName))
+                entityCreature.setCustomNameTag(this.entityName);
+            entityCreature.setSizeScale(this.entitySize);
+            entityCreature.setSubspecies(this.subspeciesID, false);
+        }
+
+        this.spawnCount++;
+        this.onSpawnEntity(this.entity);
     }
 
 

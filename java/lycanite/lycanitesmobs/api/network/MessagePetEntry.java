@@ -62,7 +62,7 @@ public class MessagePetEntry implements IMessage, IMessageHandler<MessagePetEntr
         PetEntry petEntry = petManager.getEntry(message.petEntryID);
         if(petEntry == null) {
             if(ctx.side == Side.SERVER) {
-                return null; //Client should not be able to tell the server to add a new entry!
+                return null; // Client should not be able to tell the server to add a new entry!
             }
             petEntry = new PetEntry(this.petEntryName, message.petEntryType, player, this.summonType);
             petManager.addEntry(petEntry, message.petEntryID);

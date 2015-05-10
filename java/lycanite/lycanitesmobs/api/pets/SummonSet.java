@@ -74,7 +74,7 @@ public class SummonSet {
 	}
 	
 	public MobInfo getMobInfo() {
-		return MobInfo.mobNameToInfo.get(this.summonType);
+		return MobInfo.getFromName(this.summonType);
 	}
 
     /** Applies all behaviour in this set to the provided entity. **/

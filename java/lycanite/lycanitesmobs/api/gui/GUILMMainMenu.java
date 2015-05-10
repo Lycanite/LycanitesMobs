@@ -5,13 +5,14 @@ import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.GuiHandler;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.info.MobInfo;
-import lycanite.lycanitesmobs.api.network.MessageSummonSetSelection;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class GUILMMainMenu extends GuiScreen {
 	public EntityPlayer player;
@@ -85,7 +86,8 @@ public class GUILMMainMenu extends GuiScreen {
   	//                    Foreground
   	// ==================================================
 	protected void drawGuiContainerForegroundLayer() {
-		this.getFontRenderer().drawString(LycanitesMobs.name, this.windowX + 52, this.windowY + 6, 0xFFFFFF);
+		this.getFontRenderer().drawString(LycanitesMobs.name, this.windowX + 51, this.windowY + 6, 0xFFFFFF);
+		this.getFontRenderer().drawString(LycanitesMobs.version, this.windowX + 4, this.windowY + this.windowHeight - 12, 0xFFFFFF);
 	}
 	
 	
@@ -105,9 +107,11 @@ public class GUILMMainMenu extends GuiScreen {
 	protected void drawControls() {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         int buttonSpacing = 2;
-        int buttonWidth = this.windowWidth / 2;
+        int buttonWidth = (this.windowWidth - 16) / 2;
         int buttonHeight = 20;
-        int buttonX = this.centerX - Math.round(buttonWidth / 2);
+		int buttonX =this.centerX - Math.round(buttonWidth / 2);
+        int buttonXLeft = this.centerX - buttonWidth - buttonSpacing;
+		int buttonXRight = this.centerX + buttonSpacing;
         int buttonY = this.centerY - Math.round(buttonHeight / 2);
         GuiButton button;
         MobInfo mobInfo;
@@ -117,24 +121,25 @@ public class GUILMMainMenu extends GuiScreen {
         button = new GuiButton(GuiHandler.PlayerGuiType.BEASTIARY.id, buttonX, nextY, buttonWidth, buttonHeight, "Beastiary");
     	this.buttonList.add(button);
 
-		// Pet Manager:
+		// Pet & Mount Managers:
 		nextY += buttonHeight + buttonSpacing;
-		button = new GuiButton(GuiHandler.PlayerGuiType.PET_MANAGER.id, buttonX, nextY, buttonWidth, buttonHeight, "Pets");
+		button = new GuiButton(GuiHandler.PlayerGuiType.PET_MANAGER.id, buttonXLeft, nextY, buttonWidth, buttonHeight, "Pets");
+		this.buttonList.add(button);
+		button = new GuiButton(GuiHandler.PlayerGuiType.MOUNT_MANAGER.id, buttonXRight, nextY, buttonWidth, buttonHeight, "Mounts");
 		this.buttonList.add(button);
 
-		// Mount Manager:
+		// Minion & Familiar Managers:
 		nextY += buttonHeight + buttonSpacing;
-		button = new GuiButton(GuiHandler.PlayerGuiType.MOUNT_MANAGER.id, buttonX, nextY, buttonWidth, buttonHeight, "Mounts");
+		button = new GuiButton(GuiHandler.PlayerGuiType.MINION_MANAGER.id, buttonXLeft, nextY, buttonWidth, buttonHeight, "Minions");
+		this.buttonList.add(button);
+		button = new GuiButton(GuiHandler.PlayerGuiType.FAMILIAR_MANAGER.id, buttonXRight, nextY, buttonWidth, buttonHeight, "Familiars");
 		this.buttonList.add(button);
 
-		// Minion Manager:
-		nextY += buttonHeight + buttonSpacing;
-		button = new GuiButton(GuiHandler.PlayerGuiType.MINION_MANAGER.id, buttonX, nextY, buttonWidth, buttonHeight, "Minions");
+		// Web Links:
+		nextY += (buttonHeight + buttonSpacing) * 2; // Double space for a nice gap.
+		button = new GuiButton(100, buttonXLeft, nextY, buttonWidth, buttonHeight, "Website");
 		this.buttonList.add(button);
-
-		// Familiar Manager:
-		nextY += buttonHeight + buttonSpacing;
-		button = new GuiButton(GuiHandler.PlayerGuiType.FAMILIAR_MANAGER.id, buttonX, nextY, buttonWidth, buttonHeight, "Familiars");
+		button = new GuiButton(101, buttonXRight, nextY, buttonWidth, buttonHeight, "Patreon");
 		this.buttonList.add(button);
     }
 
@@ -162,6 +167,16 @@ public class GUILMMainMenu extends GuiScreen {
 			if(guiButton.id == GuiHandler.PlayerGuiType.FAMILIAR_MANAGER.id) {
 				GUIFamiliar.openToPlayer(this.player);
 			}
+			if(guiButton.id == 100) {
+				try {
+					this.openURI(new URI("http://lycanitesmobs.nephrite.uk"));
+				} catch (URISyntaxException e) {}
+			}
+			if(guiButton.id == 101) {
+				try {
+					this.openURI(new URI("https://www.patreon.com/lycanite"));
+				} catch (URISyntaxException e) {}
+			}
 		}
 		super.actionPerformed(guiButton);
 	}
@@ -175,5 +190,20 @@ public class GUILMMainMenu extends GuiScreen {
 		if(par2 == 1 || par2 == this.mc.gameSettings.keyBindInventory.getKeyCode())
         	 this.mc.thePlayer.closeScreen();
 		super.keyTyped(par1, par2);
+	}
+
+
+	// ==================================================
+	//                     Open URI
+	// ==================================================
+	private void openURI(URI uri) {
+		try {
+			Class oclass = Class.forName("java.awt.Desktop");
+			Object object = oclass.getMethod("getDesktop", new Class[0]).invoke((Object)null, new Object[0]);
+			oclass.getMethod("browse", new Class[] {URI.class}).invoke(object, new Object[]{uri});
+		}
+		catch (Throwable throwable) {
+			LycanitesMobs.printWarning("", "Unable to open link: " + uri.toString());
+		}
 	}
 }

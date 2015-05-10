@@ -15,8 +15,8 @@ public class GUIBeastiaryCreatureList extends GuiScrollingList {
 	// ==================================================
   	//                    Constructor
   	// ==================================================
-	public GUIBeastiaryCreatureList(GUIBeastiary parentGUI, int width, int height, int top, int bottom, int left, int entryHeight) {
-		super(Minecraft.getMinecraft(), width, height, top, bottom, left, entryHeight);
+	public GUIBeastiaryCreatureList(GUIBeastiary parentGUI, int width, int height, int top, int bottom, int left) {
+		super(Minecraft.getMinecraft(), width, height, top, bottom, left, 20);
 		this.parentGUI = parentGUI;
 		this.updateList();
 	}
@@ -70,10 +70,10 @@ public class GUIBeastiaryCreatureList extends GuiScrollingList {
 	protected void drawSlot(int index, int boxRight, int boxTop, int boxBottom, Tessellator tessellator) {
 		MobInfo mobInfo = this.creatureList.get(index);
 		if(mobInfo == null) return;
-		this.parentGUI.getFontRenderer().drawString(mobInfo.getTitle(), this.left + 18 , boxTop + 4, 0xFFFFFF);
+		this.parentGUI.getFontRenderer().drawString(mobInfo.getTitle(), this.left + 20 , boxTop + 4, 0xFFFFFF);
 		if(mobInfo.getIcon() != null) {
 			Minecraft.getMinecraft().getTextureManager().bindTexture(mobInfo.getIcon());
-			this.parentGUI.drawImage(this.left, boxTop, 0, 0, 16, 16, 0.0625F, 0.0625F);
+			this.parentGUI.drawImage(this.left + 2, boxTop, 0, 0, 16, 16, 0.0625F, 0.0625F);
 		}
 	}
 }

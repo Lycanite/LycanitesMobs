@@ -56,7 +56,7 @@ public class PetManager {
     public void addEntry(PetEntry petEntry) {
         this.addEntry(petEntry, -1);
     }
-    /** Adds a new PetEntry and executes onAdd() methods. The provided entry should have set whether it's a pet, mount, minion, etc. This will also set a specific ID for the entry to use. **/
+    /** Adds a new PetEntry and executes onAdd() methods. The provided entry should have set whether it's a pet, mount, minion, etc. This will also set a specific ID for the entry to use which should only really be done client side. **/
     public void addEntry(PetEntry petEntry, int entryID) {
         if(this.allEntries.containsValue(petEntry)) {
             LycanitesMobs.printWarning("", "[Pet Manager] Tried to add a Pet Entry that is already added!");
@@ -68,7 +68,9 @@ public class PetManager {
             petEntry.readFromNBT(this.entryNBTs.get(petEntry.name));
 
         if(entryID < 0)
-            entryID = this.nextID;
+            entryID = this.nextID++;
+        else if(entryID >= this.nextID)
+            this.nextID = entryID + 1;
         this.allEntries.put(entryID, petEntry);
 
         if("pet".equalsIgnoreCase(petEntry.getType()))
@@ -143,17 +145,7 @@ public class PetManager {
 
     /** Returns the requested pet entry from the specified type by id. **/
     public PetEntry getEntry(String type, int id) {
-        if("pet".equalsIgnoreCase(type))
-            return this.pets.get(id);
-        else if("mount".equalsIgnoreCase(type))
-            return this.mounts.get(id);
-        else if("minion".equalsIgnoreCase(type))
-            return this.minions.get(id);
-        else if("guardian".equalsIgnoreCase(type))
-            return this.guardians.get(id);
-        else if("familiar".equalsIgnoreCase(type))
-            return this.familiars.get(id);
-        return null;
+        return this.getEntryList(type).get(id);
     }
 
     /** Returns the requested entry list. **/
@@ -176,7 +168,7 @@ public class PetManager {
     //                        NBT
     // ==================================================
     // ========== Read ===========
-    /** Reads a list of Creature Knowledge from a player's NBTTag. **/
+    /** Reads a list of Pet Entries from a player's NBTTag. **/
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
         if(!nbtTagCompound.hasKey("PetManager"))
             return;

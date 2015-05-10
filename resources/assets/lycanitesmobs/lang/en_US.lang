@@ -102,16 +102,6 @@ gui.beastiary.empty=No Creatures
 gui.beastiary.soulgazerinfo=You currently do not have any creatures added to your Beastiary. To discover new creatures you must craft a Soulgazer and then use it on any creatures that you find.
 gui.beastiary.selectacreature=Select a group and then select a creature.
 #
-# Familiar Manager:
-gui.familiarmanager.name=Familiar Manager
-gui.familiarmanager.empty=No Familiars
-gui.familiarmanager.info=You don't have any familiars. Familiars are special minions that will always be by your side. There is currently no way to obtain familiars, however those who have donated to this mod may be able to obtain familiars in the future.
-#
-# Minion Manager:
-gui.minion.name=Minion Manager
-gui.minion.empty=No Summonable Creatures
-gui.minion.soulgazerinfo=You haven't added any creatures that can be summoned to your Beastiary yet. Keep searching, not every creature can be summoned.
-#
 # Pet Manager:
 gui.petmanager.name=Pet Manager
 gui.petmanager.empty=No Pets
@@ -122,6 +112,16 @@ gui.petmanager.removed=Your %creature% has been unbound, it will still exist in 
 gui.mountmanager.name=Mount Manager
 gui.mountmanager.empty=No Mounts
 gui.mountmanager.info=Some creatures can be tamed as either Pets or Mounts. You can craft various treats in order to tame these creatures. You can then soulbind tamed mounts to yourself where you can summon and dismiss them at will allowing you to have a small inventory of various mounts!
+#
+# Minion Manager:
+gui.minion.name=Minion Manager
+gui.minion.empty=No Summonable Creatures
+gui.minion.soulgazerinfo=You haven't added any creatures that can be summoned to your Beastiary yet. Keep searching, not every creature can be summoned.
+#
+# Familiar Manager:
+gui.familiarmanager.name=Familiar Manager
+gui.familiarmanager.empty=No Familiars
+gui.familiarmanager.info=You don't have any familiars. Familiars are special minions that will always be by your side. Familiars are given to Patreon donaters as thanks for supporting this mod.
 #
 # Pet/Minion:
 gui.pet.sitting=Sitting
@@ -148,7 +148,8 @@ message.soulgazer.summonable=You are now able to summon the %creature%! You will
 message.soulgazer.known=You already have full knowledge of this creature.
 message.soulgazer.unknown=The Soulgazer finds nother special about this creature.
 message.soulstone.invalid=The Soulstone cannot bind to this creature.
-message.soulstone.added=Your %creature% has been bound, you will now find it in your Pet Manager.
+message.soulstone.pet.added=Your %creature% has been bound, you will now find it in your Pet Manager.
+message.soulstone.mount.added=Your %creature% has been bound, you will now find it in your Mount Manager.
 message.pet.tamed=The %creature% seems to love you now!
 message.pet.tamefail=The %creature% wants more!
 message.pet.mount.baby=The %creature% is too young to carry you!

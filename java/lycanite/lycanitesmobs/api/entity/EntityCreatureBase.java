@@ -780,7 +780,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         return this.getPetEntry() != null;
     }
 
-    /** Returns true if this mob has a pet entry. **/
+    /** Returns this mob's pet entry if it has one. **/
     public PetEntry getPetEntry() {
         return this.petEntry;
     }
@@ -790,7 +790,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         this.petEntry = petEntry;
     }
 
-    /** Returns true if this creature has a pet entry and matches the procided entry type. **/
+    /** Returns true if this creature has a pet entry and matches the provided entry type. **/
     public boolean isPetType(String type) {
         if(!this.hasPetEntry())
             return false;

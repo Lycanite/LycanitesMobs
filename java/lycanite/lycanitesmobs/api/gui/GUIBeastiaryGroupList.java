@@ -17,8 +17,8 @@ public class GUIBeastiaryGroupList extends GuiScrollingList {
 	// ==================================================
   	//                    Constructor
   	// ==================================================
-	public GUIBeastiaryGroupList(GUIBeastiary parentGUI, int width, int height, int top, int bottom, int left, int entryHeight) {
-		super(Minecraft.getMinecraft(), width, height, top, bottom, left, entryHeight);
+	public GUIBeastiaryGroupList(GUIBeastiary parentGUI, int width, int height, int top, int bottom, int left) {
+		super(Minecraft.getMinecraft(), width, height, top, bottom, left, 16);
 		this.parentGUI = parentGUI;
 		this.updateList();
 	}

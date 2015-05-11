@@ -7,6 +7,7 @@ import lycanite.lycanitesmobs.GuiHandler;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.info.MobInfo;
+import lycanite.lycanitesmobs.api.network.MessageGUIRequest;
 import lycanite.lycanitesmobs.api.pets.PetEntry;
 import lycanite.lycanitesmobs.api.pets.SummonSet;
 import net.minecraft.client.gui.FontRenderer;
@@ -42,8 +43,11 @@ public class GUIFamiliar extends GuiScreen {
   	//                      Opener
   	// ==================================================
 	public static void openToPlayer(EntityPlayer player) {
-		if(player != null && player.worldObj != null)
-			player.openGui(LycanitesMobs.instance, GuiHandler.GuiType.PLAYER.id, player.worldObj, GuiHandler.PlayerGuiType.FAMILIAR_MANAGER.id, 0, 0);
+		if(player != null && player.worldObj != null) {
+            player.openGui(LycanitesMobs.instance, GuiHandler.GuiType.PLAYER.id, player.worldObj, GuiHandler.PlayerGuiType.FAMILIAR_MANAGER.id, 0, 0);
+            MessageGUIRequest message = new MessageGUIRequest(GuiHandler.PlayerGuiType.FAMILIAR_MANAGER.id);
+            LycanitesMobs.packetHandler.sendToServer(message);
+        }
 	}
 
 	public FontRenderer getFontRenderer() {

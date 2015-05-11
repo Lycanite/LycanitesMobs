@@ -80,11 +80,11 @@ public class DonationFamiliars {
 
             // Add Pet Entries or Update Existing Entries:
             if(!this.playerFamiliars.containsKey(minecraft_uuid))
-                playerFamiliars.put(minecraft_uuid, new HashMap<String, PetEntry>());
-            if(!playerFamiliars.containsKey(familiarEntryName))
-                playerFamiliars.get(minecraft_uuid).put(familiarEntryName, familiarEntry);
+                this.playerFamiliars.put(minecraft_uuid, new HashMap<String, PetEntry>());
+            if(!this.playerFamiliars.containsKey(familiarEntryName))
+                this.playerFamiliars.get(minecraft_uuid).put(familiarEntryName, familiarEntry);
             else {
-                PetEntry existingEntry = playerFamiliars.get(minecraft_uuid).get(familiarEntryName);
+                PetEntry existingEntry = this.playerFamiliars.get(minecraft_uuid).get(familiarEntryName);
                 existingEntry.copy(familiarEntry);
             }
         }

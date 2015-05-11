@@ -48,6 +48,7 @@ public class EntityDemonicBlast extends EntityProjectileBase {
     	this.group = DemonMobs.group;
     	this.setBaseDamage(8);
     	this.setProjectileScale(2.5F);
+		this.pierce = true;
     }
 	
     

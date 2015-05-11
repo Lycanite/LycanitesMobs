@@ -85,10 +85,7 @@ public class GUIFamiliarList extends GuiScrollingList {
 			GL11.glEnable(GL11.GL_TEXTURE_2D);
 		}
 
-		String petName = mobInfo.getTitle();
-//		if(!"".equals(petEntry.entityName)) // TODO Enable this for wider familiar GUI.
-//			petName = petEntry.entityName + " (" + petName + ")";
-		this.parentGUI.getFontRenderer().drawString(petName, boxLeft + 20 , boxTop + 4, 0xFFFFFF);
+		this.parentGUI.getFontRenderer().drawString(petEntry.getDisplayName(), boxLeft + 20 , boxTop + 4, 0xFFFFFF);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(mobInfo.getIcon());
 		this.parentGUI.drawImage(this.left + 2, boxTop, 0, 0, 16, 16, 0.0625F, 0.0625F);
 

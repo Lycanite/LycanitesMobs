@@ -10,6 +10,7 @@ import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.pets.PetEntry;
 import lycanite.lycanitesmobs.api.pets.PetManager;
 import lycanite.lycanitesmobs.api.pets.SummonSet;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 
@@ -23,6 +24,7 @@ public class MessagePetEntry implements IMessage, IMessageHandler<MessagePetEntr
     public boolean teleportEntity;
     public String summonType;
 	public byte behaviour;
+	public int petEntryEntityID;
 
 
 	// ==================================================
@@ -38,6 +40,7 @@ public class MessagePetEntry implements IMessage, IMessageHandler<MessagePetEntr
         SummonSet summonSet = petEntry.summonSet;
         this.summonType = summonSet.summonType;
 		this.behaviour = summonSet.getBehaviourByte();
+		this.petEntryEntityID = petEntry.entity != null ? petEntry.entity.getEntityId() : 0;
 	}
 	
 	
@@ -73,6 +76,14 @@ public class MessagePetEntry implements IMessage, IMessageHandler<MessagePetEntr
 		summonSet.readFromPacket(message.summonType, message.behaviour);
         if(ctx.side == Side.SERVER)
             petEntry.onBehaviourUpdate();
+
+		if(ctx.side == Side.CLIENT) {
+			Entity entity = null;
+			if(message.petEntryEntityID != 0) {
+				entity = player.worldObj.getEntityByID(message.petEntryEntityID);
+			}
+			petEntry.entity = entity;
+		}
 		return null;
 	}
 	
@@ -94,6 +105,7 @@ public class MessagePetEntry implements IMessage, IMessageHandler<MessagePetEntr
             this.teleportEntity = packet.readBoolean();
 			this.summonType = packet.readStringFromBuffer(256);
 			this.behaviour = packet.readByte();
+			this.petEntryEntityID = packet.readInt();
 		} catch (IOException e) {
 			LycanitesMobs.printWarning("", "There was a problem decoding the packet: " + packet + ".");
 			e.printStackTrace();
@@ -118,6 +130,7 @@ public class MessagePetEntry implements IMessage, IMessageHandler<MessagePetEntr
             packet.writeBoolean(this.teleportEntity);
 			packet.writeStringToBuffer(this.summonType);
 			packet.writeByte(this.behaviour);
+			packet.writeInt(this.petEntryEntityID);
 		} catch (IOException e) {
 			LycanitesMobs.printWarning("", "There was a problem encoding the packet: " + packet + ".");
 			e.printStackTrace();

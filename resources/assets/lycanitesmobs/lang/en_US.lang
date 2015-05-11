@@ -177,6 +177,12 @@ common.no=No
 #
 #
 #
+# ========== Stats ==========
+stat.spirit.name=Spirit
+stat.spirit.description=Summoned pets and mounts reserve your spirit. Each pet or mount varies in spirit cost which you can see in the pet or mount lists. Should your pet or mount be banished or die, your spirit will slowly recharge back up.
+#
+#
+#
 # ========== Potion Effects ==========
 potion.paralysis=Paralysis
 potion.leech=Leech

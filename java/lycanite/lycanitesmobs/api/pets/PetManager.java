@@ -172,6 +172,7 @@ public class PetManager {
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
         if(!nbtTagCompound.hasKey("PetManager"))
             return;
+        this.entryNBTs = new HashMap<String, NBTTagCompound>();
 
         // Load All NBT Data Into The Map:
         NBTTagList entryList = nbtTagCompound.getTagList("PetManager", 10);
@@ -183,8 +184,19 @@ public class PetManager {
 
         // Have All Entries In Use Read From The Map:
         for(PetEntry petEntry : this.allEntries.values()) {
-            if(this.entryNBTs.containsKey(petEntry.name))
+            if(this.entryNBTs.containsKey(petEntry.name)) {
                 petEntry.readFromNBT(this.entryNBTs.get(petEntry.name));
+                this.entryNBTs.remove(petEntry.name);
+            }
+        }
+
+        // Create New Entries For Pets and Mounts:
+        for(NBTTagCompound nbtEntry : this.entryNBTs.values()) {
+            if(nbtEntry.hasKey("Type") && ("pet".equalsIgnoreCase(nbtEntry.getString("Type")) || "mount".equalsIgnoreCase(nbtEntry.getString("Type")))) {
+                PetEntry petEntry = new PetEntry(nbtEntry.getString("EntryName"), nbtEntry.getString("Type"), this.host, nbtEntry.getString("SummonType"));
+                petEntry.readFromNBT(nbtEntry);
+                this.addEntry(petEntry);
+            }
         }
     }
 

@@ -45,7 +45,7 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 
 	// Spirit:
 	public int spiritCharge = 200;
-	public int spiritMax = (this.spiritCharge * 20);
+	public int spiritMax = (this.spiritCharge * 10);
 	public int spirit = this.spiritMax;
 	public int spiritReserved = 0;
 	
@@ -58,7 +58,7 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 	public int summonSetMax = 5;
 
     // Familiars:
-    private boolean setupPlayerFamiliars = false;
+    private boolean setupPetManager = false;
 	
 	// ==================================================
     //                   Get for Player
@@ -154,8 +154,10 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 			}
 		}
 
-		// Familiars:
-		if(!player.worldObj.isRemote && !this.setupPlayerFamiliars) {
+		// Pet Manager Setup:
+		if(!player.worldObj.isRemote && !this.setupPetManager) {
+
+			// Load Familiars:
 			Map<String, PetEntry> playerFamiliars = DonationFamiliars.instance.getFamiliarsForPlayer(this.player);
 			if(playerFamiliars != null) {
 				for(PetEntry petEntry : playerFamiliars.values()) {
@@ -165,7 +167,8 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 				}
 				this.sendPetEntriesToPlayer("familiar");
 			}
-			this.setupPlayerFamiliars = true;
+
+			this.setupPetManager = true;
 		}
 		
 		// Initial Network Sync:
@@ -248,7 +251,7 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 	public void sendPetEntriesToPlayer(String entryType) {
 		if(this.player.worldObj.isRemote) return;
 		for(PetEntry petEntry : this.petManager.allEntries.values()) {
-            if(entryType.equals(petEntry.getType())) {
+            if(entryType.equals(petEntry.getType()) || "".equals(entryType)) {
                 MessagePetEntry message = new MessagePetEntry(this, petEntry);
                 LycanitesMobs.packetHandler.sendToPlayer(message, (EntityPlayerMP)this.player);
             }
@@ -298,8 +301,12 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
     //                 Request GUI Data
     // ==================================================
 	public void requestGUI(byte guiID) {
-        //if(guiID == GuiHandler.PlayerGuiType.FAMILIAR_MANAGER.id)
-            //this.sendPetEntriesToPlayer("familiar");
+		if(guiID == GuiHandler.PlayerGuiType.PET_MANAGER.id)
+			this.sendPetEntriesToPlayer("pet");
+		if(guiID == GuiHandler.PlayerGuiType.MOUNT_MANAGER.id)
+			this.sendPetEntriesToPlayer("mount");
+        if(guiID == GuiHandler.PlayerGuiType.FAMILIAR_MANAGER.id)
+            this.sendPetEntriesToPlayer("familiar");
 		//if(guiID == GuiHandler.PlayerGuiType.MINION_MANAGER.id)
 			//this.sendAllSummonSetsToPlayer();
 		//if(guiID == GuiHandler.PlayerGuiType.BEASTIARY.id)

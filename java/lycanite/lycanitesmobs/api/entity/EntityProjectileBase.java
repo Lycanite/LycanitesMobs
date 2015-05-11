@@ -27,6 +27,7 @@ public class EntityProjectileBase extends EntityThrowable {
 	public float projectileScale = 1.0f;
 	public int projectileLife = 200;
     public double knockbackChance = 1;
+    public boolean pierce = false;
 	
 	public boolean waterProof = false;
 	public boolean lavaProof = false;
@@ -92,7 +93,8 @@ public class EntityProjectileBase extends EntityThrowable {
   	// ==================================================
      @Override
      protected void onImpact(MovingObjectPosition movingObjectPosition) {
-     	boolean collided = false;
+     	 boolean collided = false;
+         boolean entityCollision = false;
      	
      	// Entity Hit:
      	if(movingObjectPosition.entityHit != null) {
@@ -166,6 +168,7 @@ public class EntityProjectileBase extends EntityThrowable {
  				}
  			}
  			collided = true;
+            entityCollision = true;
 
      		int i = (int)Math.floor(movingObjectPosition.entityHit.posX);
      		int j = (int)Math.floor(movingObjectPosition.entityHit.posY);
@@ -216,7 +219,7 @@ public class EntityProjectileBase extends EntityThrowable {
  	        	this.onImpactVisuals();
  	        
  	        // Remove Projectile:
- 	        if(!this.worldObj.isRemote) {
+ 	        if(!this.worldObj.isRemote && (!this.pierce || (this.pierce && !entityCollision))) {
  	            this.setDead();
  	        }
      	}

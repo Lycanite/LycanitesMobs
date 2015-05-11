@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs;
 import lycanite.lycanitesmobs.api.gui.*;
 import lycanite.lycanitesmobs.api.network.MessageGUIRequest;
 import lycanite.lycanitesmobs.api.network.MessagePlayerControl;
+import lycanite.lycanitesmobs.api.network.PacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
@@ -77,37 +78,33 @@ public class KeyHandler {
 			controlStates += ExtendedPlayer.CONTROL_ID.MOUNT_INVENTORY.id;
 		}
 
-		// LM Main Menu: Opens GUI.
+		// LM Main Menu:
 		if(this.lmMainMenu.isPressed()) {
 			GUILMMainMenu.openToPlayer(this.mc.thePlayer);
 		}
 
-		// Beastiary: Opens GUI and sends data request packet.
+		// Beastiary:
 		if(this.beastiary.isPressed()) {
-			//MessageGUIRequest message = new MessageGUIRequest(GuiHandler.PlayerGuiType.BEASTIARY.id);
 			GUIBeastiary.openToPlayer(this.mc.thePlayer);
 		}
 
-		// Pet Manager: Opens GUI.
+		// Pet Manager:
 		if(this.petManager.isPressed()) {
 			GUIPetManager.openToPlayer(this.mc.thePlayer);
 		}
 
-		// Mount Manager: Opens GUI.
+		// Mount Manager:
 		if(this.mountManager.isPressed()) {
 			GUIMountManager.openToPlayer(this.mc.thePlayer);
 		}
 
-        // Familiar Manager: Opens GUI and sends data request packet.
+        // Familiar Manager:
         if(this.familiarManager.isPressed()) {
-            MessageGUIRequest message = new MessageGUIRequest(GuiHandler.PlayerGuiType.FAMILIAR_MANAGER.id);
-            LycanitesMobs.packetHandler.sendToServer(message);
             GUIFamiliar.openToPlayer(this.mc.thePlayer);
         }
 
-		// Minion Manager: Opens GUI and sends data request packet.
+		// Minion Manager: Opens GUI.
 		if(this.minionManager.isPressed()) {
-			//MessageGUIRequest message = new MessageGUIRequest(GuiHandler.PlayerGuiType.MINION_MANAGER.id);
 			GUIMinion.openToPlayer(this.mc.thePlayer, playerExt.selectedSummonSet);
 		}
 		

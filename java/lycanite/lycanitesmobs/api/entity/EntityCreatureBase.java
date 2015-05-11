@@ -843,11 +843,11 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     	}
     	else if(this.getSubspeciesIndex() < 3) {
     		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(this.getBaseHealth() * 4);
-    		this.setHealth((float)(this.getBaseHealth() * 4));
+    		this.setHealth((float)(this.getBaseHealth() * Subspecies.uncommonHealthScale));
     	}
     	else {
     		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(this.getBaseHealth() * 10);
-    		this.setHealth((float)(this.getBaseHealth() * 10));
+    		this.setHealth((float)(this.getBaseHealth() * Subspecies.rareHealthScale));
     	}
     }
     
@@ -2222,9 +2222,9 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     	if(this.isMinion()) return;
     	int subspeciesScale = 1;
     	if(this.getSubspeciesIndex() > 2)
-    		subspeciesScale = 16;
+    		subspeciesScale = Subspecies.rareDropScale;
     	else if(this.getSubspeciesIndex() > 0)
-    		subspeciesScale = 4;
+    		subspeciesScale = Subspecies.uncommonDropScale;
     	for(DropRate dropRate : this.drops) {
     		int quantity = dropRate.getQuantity(this.rand, lootLevel) * subspeciesScale;
     		if(this.extraMobBehaviour != null && this.extraMobBehaviour.itemDropMultiplierOverride != 1)

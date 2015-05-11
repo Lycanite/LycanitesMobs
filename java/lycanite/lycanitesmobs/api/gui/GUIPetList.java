@@ -67,8 +67,8 @@ public class GUIPetList extends GuiScrollingList {
 		int levelBarWidth = 9;
 		int levelBarHeight = 9;
 		int levelBarX = boxLeft + 20;
-		int levelBarY = boxBottom - levelBarHeight;
-		int levelBarU = 256 - (levelBarWidth * 2);
+		int levelBarY = boxTop + boxBottom - levelBarHeight - 4;
+		int levelBarU = 256 - levelBarWidth;
 		int levelBarV = 256 - levelBarHeight;
 		int level = mobInfo.summonCost;
 
@@ -93,19 +93,16 @@ public class GUIPetList extends GuiScrollingList {
 			GL11.glEnable(GL11.GL_TEXTURE_2D);
 
 			// Active Level Texture:
-			levelBarU += levelBarWidth;
+			levelBarU -= levelBarWidth;
 		}
 
 		// Summon Level:
 		Minecraft.getMinecraft().getTextureManager().bindTexture(AssetManager.getTexture("GUIBeastiary"));
 		for(int currentLevel = 0; currentLevel < level; currentLevel++) {
-			this.parentGUI.drawImage(levelBarX + (levelBarWidth * currentLevel), levelBarY, levelBarU, levelBarV, levelBarWidth, levelBarHeight, 0.0625F, 0.0625F);
+			this.parentGUI.drawImage(levelBarX + (levelBarWidth * currentLevel), levelBarY, levelBarU, levelBarV, levelBarWidth, levelBarHeight, 0.00390625F, 0.00390625F);
 		}
 
-		String petName = mobInfo.getTitle();
-		if(!"".equals(petEntry.entityName))
-			petName = petEntry.entityName + " (" + petName + ")";
-		this.parentGUI.getFontRenderer().drawString(petName, boxLeft + 20 , boxTop + 2, 0xFFFFFF);
+		this.parentGUI.getFontRenderer().drawString(petEntry.getDisplayName(), boxLeft + 20 , boxTop + 2, 0xFFFFFF);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(mobInfo.getIcon());
 		this.parentGUI.drawImage(this.left + 2, boxTop + 4, 0, 0, 16, 16, 0.0625F, 0.0625F);
 	}

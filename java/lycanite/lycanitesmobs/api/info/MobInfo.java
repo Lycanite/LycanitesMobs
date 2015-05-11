@@ -72,7 +72,8 @@ public class MobInfo {
 	
 	/** Set to true if Doomlike Dungeons is loaded allowing mobs to register their Dungeon themes. **/
 	public static boolean dlDungeonsLoaded = false;
-	
+
+
 	// ========== Per Mob Settings ==========
 	/** Mod Group **/
 	public GroupInfo group;

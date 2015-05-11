@@ -52,6 +52,12 @@ public class PetEntry {
     public SummonSet summonSet;
     /** The current entity instance that this entry is using. **/
     public Entity entity;
+    /** The current entity NBT data. **/
+    public NBTTagCompound entityNBT;
+    /** Entity Health **/
+    public float entityHealth = 1;
+    /** Entity Max Health **/
+    public float entityMaxHealth = 1;
 
     /** The name to use for the entity. Leave empty/null "" for no name. **/
     public String entityName = "";
@@ -60,7 +66,7 @@ public class PetEntry {
     /** The size scale to use for the entity. **/
     public double entitySize = 1.0D;
     /** Coloring for this entity such as collar coloring. **/
-    public String color;
+    public String color = "000000";
 
     /** If true, a teleport has been requested to teleport the entity (if active) to the host entity. **/
     public boolean teleportEntity = false;
@@ -77,7 +83,7 @@ public class PetEntry {
             petEntry.setEntityName(entity.getCustomNameTag());
         petEntry.setEntitySubspeciesID(entity.getSubspeciesIndex());
         petEntry.setEntitySize(entity.sizeScale);
-        //petEntry.setColor(entity.getColor());
+        petEntry.setColor("000000");
         return petEntry;
     }
 
@@ -145,6 +151,14 @@ public class PetEntry {
         return MobInfo.getFromName(this.summonSet.summonType);
     }
 
+    public float getHealth() {
+        return this.entityHealth;
+    }
+
+    public float getMaxHealth() {
+        return this.entityMaxHealth;
+    }
+
 
     // ==================================================
     //                     Copy Entry
@@ -164,7 +178,10 @@ public class PetEntry {
     //                       Name
     // ==================================================
     public String getDisplayName() {
-        return this.summonSet.getMobInfo().getTitle();
+        String displayName = this.summonSet.getMobInfo().getTitle();
+        if(!"".equals(this.entityName))
+            displayName = this.entityName + " (" + displayName + ")";
+        return displayName;
     }
 
 
@@ -225,6 +242,11 @@ public class PetEntry {
             if(this.entity != null) {
                 if(this.teleportEntity)
                     this.entity.setPosition(this.host.posX, this.host.posY, this.host.posZ);
+                if(entity instanceof EntityLivingBase) {
+                    EntityLivingBase entityLiving = (EntityLivingBase)this.entity;
+                    this.entityHealth = entityLiving.getHealth();
+                    this.entityMaxHealth = entityLiving.getMaxHealth();
+                }
             }
         }
 
@@ -323,6 +345,7 @@ public class PetEntry {
         }
         this.respawnTime = this.respawnTimeMax;
         this.spawnCount++;
+        this.loadEntityNBT();
         this.onSpawnEntity(this.entity);
         this.host.worldObj.spawnEntityInWorld(entity);
     }
@@ -341,6 +364,7 @@ public class PetEntry {
         if(this.entity == null)
             return;
         this.onDespawnEntity(this.entity);
+        this.saveEntityNBT();
         this.entity.setDead();
         this.entity = null;
     }
@@ -381,6 +405,8 @@ public class PetEntry {
         }
 
         this.spawnCount++;
+        this.respawnTime = this.respawnTimeMax;
+        this.saveEntityNBT();
         this.onSpawnEntity(this.entity);
     }
 
@@ -408,6 +434,18 @@ public class PetEntry {
             this.spawningActive = nbtTagCompound.getBoolean("SpawningActive");
 
         this.summonSet.readFromNBT(nbtTagCompound);
+
+        // Load Entity:
+        if(nbtTagCompound.hasKey("EntityName"))
+            this.setEntityName(nbtTagCompound.getString("EntityName"));
+        if(nbtTagCompound.hasKey("SubspeciesID"))
+            this.setEntitySubspeciesID(nbtTagCompound.getInteger("SubspeciesID"));
+        if(nbtTagCompound.hasKey("EntitySize"))
+            this.setEntitySize(nbtTagCompound.getDouble("EntitySize"));
+        if(nbtTagCompound.hasKey("Color"))
+            this.setColor(nbtTagCompound.getString("Color"));
+        if(nbtTagCompound.hasKey("EntityNBT"))
+            this.entityNBT = nbtTagCompound.getCompoundTag("EntityNBT");
     }
 
     // ========== Write ==========
@@ -422,5 +460,34 @@ public class PetEntry {
         nbtTagCompound.setBoolean("Respawning", this.isRespawning);
         nbtTagCompound.setBoolean("SpawningActive", this.spawningActive);
         this.summonSet.writeToNBT(nbtTagCompound);
+
+        // Save Entity:
+        if ("pet".equals(this.type) || "mount".equals(this.type)) {
+            this.saveEntityNBT();
+            nbtTagCompound.setString("EntityName", this.entityName);
+            nbtTagCompound.setInteger("SubspeciesID", this.subspeciesID);
+            nbtTagCompound.setDouble("EntitySize", this.entitySize);
+            nbtTagCompound.setString("Color", this.color);
+            nbtTagCompound.setTag("EntityNBT", this.entityNBT);
+        }
+    }
+
+    // ========== Save Entity NBT ==========
+    /** If this PetEntry currently has an active entity, this will save that entity. **/
+    public void saveEntityNBT() {
+        if(this.entity != null) {
+            if(this.entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).hasCustomNameTag())
+                this.entityName = ((EntityCreatureBase)entity).getCustomNameTag();
+            if(this.entityNBT == null)
+                this.entityNBT = new NBTTagCompound();
+            this.entity.writeToNBT(this.entityNBT);
+        }
+    }
+
+    // ========== Load Entity NBT ==========
+    /** If this PetEntry is spawning a new entity, this will load any saved NBT data onto it. **/
+    public void loadEntityNBT() {
+        if(this.entityNBT != null)
+            this.entity.readFromNBT(this.entityNBT);
     }
 }

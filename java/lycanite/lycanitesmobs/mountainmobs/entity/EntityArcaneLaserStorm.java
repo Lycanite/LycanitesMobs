@@ -47,6 +47,7 @@ public class EntityArcaneLaserStorm extends EntityProjectileBase {
     	this.group = MountainMobs.group;
     	this.setBaseDamage(8);
     	this.setProjectileScale(4F);
+        this.pierce = true;
     }
 	
     

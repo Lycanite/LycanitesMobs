@@ -6,12 +6,9 @@ import java.util.Map;
 import lycanite.lycanitesmobs.api.info.Beastiary;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
-import lycanite.lycanitesmobs.api.network.MessagePetEntry;
+import lycanite.lycanitesmobs.api.network.*;
 import lycanite.lycanitesmobs.api.pets.*;
 import lycanite.lycanitesmobs.api.item.ItemStaffSummoning;
-import lycanite.lycanitesmobs.api.network.MessagePlayerStats;
-import lycanite.lycanitesmobs.api.network.MessageSummonSet;
-import lycanite.lycanitesmobs.api.network.MessageSummonSetSelection;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -267,6 +264,12 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 	public void sendPetEntryToServer(PetEntry petEntry) {
 		if(!this.player.worldObj.isRemote) return;
         MessagePetEntry message = new MessagePetEntry(this, petEntry);
+		LycanitesMobs.packetHandler.sendToServer(message);
+	}
+
+	public void sendPetEntryRemoveRequest(PetEntry petEntry) {
+		if(!this.player.worldObj.isRemote) return;
+		MessagePetEntryRemove message = new MessagePetEntryRemove(this, petEntry);
 		LycanitesMobs.packetHandler.sendToServer(message);
 	}
 

@@ -244,9 +244,9 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 	}
 	
 	// GUI Commands:
-	/** A list of GUI command IDs to be used by GUICreature via a network packet. **/
+	/** A list of GUI command IDs to be used by pet or creature GUIs via a network packet. **/
 	public static enum GUI_COMMAND_ID {
-		CLOSE((byte)0), SITTING((byte)1), FOLLOWING((byte)2), PASSIVE((byte)3), STANCE((byte)4), PVP((byte)5), TELEPORT((byte)6), SPAWNING((byte)7);
+		CLOSE((byte)0), SITTING((byte)1), FOLLOWING((byte)2), PASSIVE((byte)3), STANCE((byte)4), PVP((byte)5), TELEPORT((byte)6), SPAWNING((byte)7), RELEASE((byte)8);
 		public byte id;
 		private GUI_COMMAND_ID(byte i) { id = i; }
 	}

@@ -54,6 +54,8 @@ public class PetEntry {
     public Entity entity;
     /** The current entity NBT data. **/
     public NBTTagCompound entityNBT;
+    /** Entity update tick, this counts up each tick as the entity is spawned and active and is paused when the entity is inactive. **/
+    public int entityTick = 0;
     /** Entity Health **/
     public float entityHealth = 1;
     /** Entity Max Health **/
@@ -70,6 +72,9 @@ public class PetEntry {
 
     /** If true, a teleport has been requested to teleport the entity (if active) to the host entity. **/
     public boolean teleportEntity = false;
+
+    /** If true, a release is pending where the player must confirm the release. This will not release the entity, instead the player must confirm that. Only used client side. **/
+    public boolean releaseEntity = false;
 
     // ==================================================
     //                 Create from Entity
@@ -152,10 +157,14 @@ public class PetEntry {
     }
 
     public float getHealth() {
+        if(this.entity != null && this.entity instanceof EntityLivingBase)
+            this.entityHealth = ((EntityLivingBase)this.entity).getHealth();
         return this.entityHealth;
     }
 
     public float getMaxHealth() {
+        if(this.entity != null && this.entity instanceof EntityLivingBase)
+            this.entityMaxHealth = ((EntityLivingBase)this.entity).getMaxHealth();
         return this.entityMaxHealth;
     }
 
@@ -196,10 +205,10 @@ public class PetEntry {
 
 
     // ==================================================
-    //                       On Remove
+    //                       Remove
     // ==================================================
     /** Called when this entry is finished and should be removed. Note: The PetManager will auto remove any inactive entries it might have. **/
-    public void onRemove() {
+    public void remove() {
         this.active = false;
     }
 	
@@ -215,7 +224,7 @@ public class PetEntry {
 		if(!this.active)
             return;
         if(!this.isActive()) {
-            this.onRemove();
+            this.remove();
             return;
         }
 
@@ -225,6 +234,7 @@ public class PetEntry {
             if(this.entity != null && !this.entity.isEntityAlive()) {
                 this.entity = null;
                 this.isRespawning = true;
+                this.respawnTime = this.respawnTimeMax;
             }
 
             // No Entity:
@@ -238,12 +248,15 @@ public class PetEntry {
                 }
             }
 
-            // Actions:
+            // Entity Update:
             if(this.entity != null) {
+                this.entityTick++;
                 if(this.teleportEntity)
                     this.entity.setPosition(this.host.posX, this.host.posY, this.host.posZ);
                 if(entity instanceof EntityLivingBase) {
                     EntityLivingBase entityLiving = (EntityLivingBase)this.entity;
+                    if(this.entityTick % 20 == 0 && entityLiving.getHealth() < entityLiving.getMaxHealth())
+                        entityLiving.setHealth(Math.min(entityLiving.getHealth() + 1, entityLiving.getMaxHealth()));
                     this.entityHealth = entityLiving.getHealth();
                     this.entityMaxHealth = entityLiving.getMaxHealth();
                 }
@@ -343,7 +356,6 @@ public class PetEntry {
                 this.summonSet.applyBehaviour(entityTameable);
             }
         }
-        this.respawnTime = this.respawnTimeMax;
         this.spawnCount++;
         this.loadEntityNBT();
         this.onSpawnEntity(this.entity);
@@ -405,7 +417,6 @@ public class PetEntry {
         }
 
         this.spawnCount++;
-        this.respawnTime = this.respawnTimeMax;
         this.saveEntityNBT();
         this.onSpawnEntity(this.entity);
     }

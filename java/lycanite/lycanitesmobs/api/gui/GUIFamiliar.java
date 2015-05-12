@@ -247,7 +247,7 @@ public class GUIFamiliar extends GuiScreen {
             // Patreon Button:
             if(guiButton.id == 100) {
                 try {
-                    this.openURI(new URI("https://www.patreon.com/lycanite"));
+                    this.openURI(new URI(LycanitesMobs.websitePatreon));
                 } catch (URISyntaxException e) {}
             }
 

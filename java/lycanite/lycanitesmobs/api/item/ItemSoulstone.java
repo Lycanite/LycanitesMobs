@@ -55,9 +55,14 @@ public class ItemSoulstone extends ItemBase {
 
 		EntityCreatureTameable entityTameable = (EntityCreatureTameable)entity;
 		MobInfo mobInfo = entityTameable.mobInfo;
-	 	if(!mobInfo.isTameable() || entityTameable.getPetEntry() != null) {
+	 	if(!mobInfo.isTameable()) {
 			if(!player.worldObj.isRemote)
 				player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("message.soulstone.invalid")));
+			return false;
+		}
+		if(entityTameable.getPetEntry() != null) {
+			if(!player.worldObj.isRemote)
+				player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("message.soulstone.exists")));
 			return false;
 		}
 
@@ -65,7 +70,7 @@ public class ItemSoulstone extends ItemBase {
 			if (!player.capabilities.isCreativeMode)
 				itemStack.stackSize -= 1;
 			if (itemStack.stackSize <= 0)
-				player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack) null);
+				player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack)null);
 		}
 
     	if(player.worldObj.isRemote) {

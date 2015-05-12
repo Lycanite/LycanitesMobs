@@ -133,7 +133,7 @@ public class ForestMobs {
         ObjectManager.addMob(newMob);
 
         newMob = new MobInfo(group, "warg", EntityWarg.class, 0x321806, 0x68523b)
-                .setPeaceful(false).setSummonable(false).setSummonCost(4).setDungeonLevel(1)
+                .setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(1)
                 .addSubspecies(new Subspecies("ashen", "uncommon")).addSubspecies(new Subspecies("dark", "uncommon"));
         newMob.spawnInfo.setSpawnTypes("MONSTER")
                 .setSpawnWeight(4).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);

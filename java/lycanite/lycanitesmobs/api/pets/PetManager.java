@@ -29,6 +29,8 @@ public class PetManager {
 	public List<PetEntry> familiars = new ArrayList<PetEntry>();
     // I might also add slaves for mobs that are temporarily under the host's control who can break free, etc instead of despawning.
 
+    /** Newly added PetEntries that need to be synced to the client player. **/
+    public List<PetEntry> newEntries = new ArrayList<PetEntry>();
     /** A map containing NBT Tag Compunds mapped to Unique Pet Entry Names. **/
     public Map<String, NBTTagCompound> entryNBTs = new HashMap<String, NBTTagCompound>();
 	
@@ -85,12 +87,8 @@ public class PetManager {
             this.familiars.add(petEntry);
 
         petEntry.onAdd(this, entryID);
-
-        if(this.host instanceof EntityPlayer) {
-            ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer((EntityPlayer)this.host);
-            if(playerExt != null)
-                playerExt.sendPetEntryToPlayer(petEntry);
-        }
+        if(!this.host.worldObj.isRemote)
+            this.newEntries.add(petEntry);
     }
 
 
@@ -126,6 +124,18 @@ public class PetManager {
     // ==================================================
 	/** Called by the host's entity update, runs any logic to manage pet entries. **/
 	public void onUpdate(World world) {
+
+        // New Entries:
+        if(this.newEntries.size() > 0 && this.host instanceof EntityPlayer) {
+            for(PetEntry petEntry : this.newEntries) {
+                ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer((EntityPlayer) this.host);
+                if(playerExt != null)
+                    playerExt.sendPetEntryToPlayer(petEntry);
+            }
+            this.newEntries = new ArrayList<PetEntry>();
+        }
+
+        // Entry Updates:
 		for(PetEntry petEntry : this.allEntries.values()) {
             if(petEntry.active)
 			    petEntry.onUpdate(world);

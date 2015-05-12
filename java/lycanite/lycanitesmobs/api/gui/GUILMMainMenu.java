@@ -169,12 +169,12 @@ public class GUILMMainMenu extends GuiScreen {
 			}
 			if(guiButton.id == 100) {
 				try {
-					this.openURI(new URI("http://lycanitesmobs.nephrite.uk"));
+					this.openURI(new URI(LycanitesMobs.website));
 				} catch (URISyntaxException e) {}
 			}
 			if(guiButton.id == 101) {
 				try {
-					this.openURI(new URI("https://www.patreon.com/lycanite"));
+					this.openURI(new URI(LycanitesMobs.websitePatreon));
 				} catch (URISyntaxException e) {}
 			}
 		}

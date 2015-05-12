@@ -135,6 +135,8 @@ gui.pet.defensive=Defensive
 gui.pet.pvp=PVP
 gui.pet.active=Active
 gui.pet.teleport=Teleport
+gui.pet.release=Release
+gui.pet.release.confirm=Are you sure you want to release this pet? Once released the creature will despawn for good, any items it has will be dropped.
 #
 # Mounts:
 gui.mount.controls=Press %control% to use mount ability
@@ -146,8 +148,9 @@ gui.mount.controls=Press %control% to use mount ability
 message.soulgazer.new=You have gained knowledge of the %creature%! Check your Beastiary!
 message.soulgazer.summonable=You are now able to summon the %creature%! You will need a Summoning Staff.
 message.soulgazer.known=You already have full knowledge of this creature.
-message.soulgazer.unknown=The Soulgazer finds nother special about this creature.
+message.soulgazer.unknown=The Soulgazer finds nothing special about this creature.
 message.soulstone.invalid=The Soulstone cannot bind to this creature.
+message.soulstone.exists=This creature is already bound.
 message.soulstone.pet.added=Your %creature% has been bound, you will now find it in your Pet Manager.
 message.soulstone.mount.added=Your %creature% has been bound, you will now find it in your Mount Manager.
 message.pet.tamed=The %creature% seems to love you now!

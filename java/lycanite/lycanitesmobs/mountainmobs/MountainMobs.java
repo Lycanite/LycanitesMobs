@@ -138,7 +138,7 @@ public class MountainMobs {
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "barghest", EntityBarghest.class, 0xD08237, 0x00070A)
-				.setPeaceful(false).setSummonable(true).setSummonCost(4).setDungeonLevel(1)
+				.setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(1)
 				.addSubspecies(new Subspecies("dark", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER")
 				.setSpawnWeight(4).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);

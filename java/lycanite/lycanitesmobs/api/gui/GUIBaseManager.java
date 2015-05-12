@@ -124,11 +124,17 @@ public class GUIBaseManager extends GuiScreen {
 			return;
 		}
 
+		if(!this.hasSelectedPet())
+			return;
+
 		// Title:
 		this.getFontRenderer().drawString(StatCollector.translateToLocal("gui." + this.type + "manager.name"), this.centerX - 24, this.windowY + 6, 0xFFFFFF);
 
 		// Spirit Title:
 		this.getFontRenderer().drawString(StatCollector.translateToLocal("stat.spirit.name"), this.windowX + 16, this.windowY + 20, 0xFFFFFF);
+
+		// Removal Confirmation:
+		this.getFontRenderer().drawSplitString(StatCollector.translateToLocal("gui.pet.manager.remove"), this.windowX + 16, this.windowY + 30, this.windowWidth - 32, 0xFFFFFF);
 	}
 	
 	
@@ -141,7 +147,7 @@ public class GUIBaseManager extends GuiScreen {
 
         this.drawTexturedModalRect(this.windowX, this.windowY, 0, 0, this.windowWidth, this.windowHeight);
 
-		if(!this.hasPets())
+		if(!this.hasSelectedPet())
 			return;
 
 		// Spirit Bar:
@@ -193,7 +199,7 @@ public class GUIBaseManager extends GuiScreen {
         int buttonY = this.windowY;
 
 		this.buttonList.add(new GUITabMain(55555, buttonX, buttonY - 24));
-		if(!this.hasPets())
+		if(!this.hasSelectedPet())
 			return;
 
 		buttonX = this.centerX + buttonSpacing;
@@ -217,10 +223,15 @@ public class GUIBaseManager extends GuiScreen {
 		// PVP:
 		buttonY += buttonHeight + (buttonSpacing * 2);
 		this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.PVP.id, buttonX, buttonY, buttonWidth, buttonHeight, "..."));
+		this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.RELEASE.id, buttonXRight, buttonY, buttonWidth, buttonHeight, "..."));
+
+		// Removal Confirmation:
+		this.buttonList.add(new GuiButton(101, buttonX, buttonY, buttonWidth, buttonHeight, StatCollector.translateToLocal("common.yes")));
+		this.buttonList.add(new GuiButton(102, buttonXRight, buttonY, buttonWidth, buttonHeight, StatCollector.translateToLocal("common.no")));
 	}
 
 	public void updateControls() {
-		if(!this.hasPets()) return;
+		if(!this.hasSelectedPet()) return;
 
 		for(Object buttonObj : this.buttonList) {
 			if(buttonObj instanceof GuiButton) {
@@ -248,6 +259,32 @@ public class GUIBaseManager extends GuiScreen {
 
 				if(button.id == EntityCreatureBase.GUI_COMMAND_ID.PVP.id)
 					button.displayString = StatCollector.translateToLocal("gui.pet.pvp") + ": " + (this.summonSet.getPVP() ? StatCollector.translateToLocal("common.yes") : StatCollector.translateToLocal("common.no"));
+
+				// Remove:
+				if(button.id == EntityCreatureBase.GUI_COMMAND_ID.RELEASE.id)
+					button.displayString = StatCollector.translateToLocal("gui.pet.release");
+
+				// Removal Confirmation:
+				if(!this.selectedPet.releaseEntity) {
+					if(button.id < 100) {
+						button.enabled = true;
+						button.visible = true;
+					}
+					else if(button.id == 101 || button.id == 102) {
+						button.enabled = false;
+						button.visible = false;
+					}
+				}
+				else {
+					if(button.id < 100) {
+						button.enabled = false;
+						button.visible = false;
+					}
+					else if(button.id == 101 || button.id == 102) {
+						button.enabled = true;
+						button.visible = true;
+					}
+				}
 			}
 		}
 	}
@@ -258,6 +295,42 @@ public class GUIBaseManager extends GuiScreen {
   	// ==================================================
 	@Override
 	protected void actionPerformed(GuiButton guiButton) {
+		// Behaviour Button:
+		if(guiButton.id == EntityCreatureBase.GUI_COMMAND_ID.SITTING.id)
+			this.summonSet.sitting = !this.summonSet.sitting;
+		if(guiButton.id == EntityCreatureBase.GUI_COMMAND_ID.FOLLOWING.id)
+			this.summonSet.following = !this.summonSet.following;
+		if(guiButton.id == EntityCreatureBase.GUI_COMMAND_ID.PASSIVE.id)
+			this.summonSet.passive = !this.summonSet.passive;
+		if(guiButton.id == EntityCreatureBase.GUI_COMMAND_ID.STANCE.id)
+			this.summonSet.aggressive = !this.summonSet.aggressive;
+		if(guiButton.id == EntityCreatureBase.GUI_COMMAND_ID.PVP.id)
+			this.summonSet.pvp = !this.summonSet.pvp;
+
+		// Action Button:
+		if(guiButton.id == EntityCreatureBase.GUI_COMMAND_ID.TELEPORT.id)
+			this.selectedPet.teleportEntity = true;
+		if(guiButton.id == EntityCreatureBase.GUI_COMMAND_ID.SPAWNING.id)
+			this.selectedPet.spawningActive = !this.selectedPet.spawningActive;
+
+		// Release and Confirmation:
+		if(guiButton.id == EntityCreatureBase.GUI_COMMAND_ID.RELEASE.id) {
+			if(!this.selectedPet.releaseEntity)
+				this.selectedPet.releaseEntity = true;
+		}
+
+		if(guiButton.id == 101 && this.selectedPet.releaseEntity) { // Yes
+			this.playerExt.sendPetEntryRemoveRequest(this.selectedPet);
+		}
+
+		if (guiButton.id == 102) { // No
+			this.selectPet(this.selectedPet);
+		}
+
+		if(guiButton.id < 100) {
+			this.playerExt.sendPetEntryToServer(this.selectedPet);
+		}
+
 		super.actionPerformed(guiButton);
 	}
 
@@ -268,7 +341,7 @@ public class GUIBaseManager extends GuiScreen {
 	public void selectPet(PetEntry petSelection) {
 		this.selectedPet = petSelection;
 		this.summonSet = this.selectedPet.summonSet;
-
+		this.selectedPet.releaseEntity = false;
 	}
 
 	public PetEntry getSelectedPet() {
@@ -307,6 +380,10 @@ public class GUIBaseManager extends GuiScreen {
 	// ==================================================
 	public boolean hasPets() {
 		return this.playerExt.petManager.getEntryList(this.type) != null && this.playerExt.petManager.getEntryList(this.type).size() > 0;
+	}
+
+	public boolean hasSelectedPet() {
+		return this.hasPets() && this.selectedPet != null;
 	}
 
 

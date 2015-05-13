@@ -184,8 +184,8 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     protected void updateAITick() {
         this.dataWatcher.updateObject(WATCHER_ID.HEALTH.id, Float.valueOf(this.getHealth()));
     }
-    
-    
+
+
     // ==================================================
     //                       Interact
     // ==================================================
@@ -211,7 +211,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
                 commands.put(CMD_PRIOR.ITEM_USE.id, "Feed");
     		
     		// Equipment:
-    		if(this.isTamed() && !this.isChild() && !this.isMinion() && player.getCommandSenderName().equalsIgnoreCase(this.getOwnerName())) {
+    		if(this.isTamed() && !this.isChild() && this.canEquip() && player.getCommandSenderName().equalsIgnoreCase(this.getOwnerName())) {
 	    		String equipSlot = this.inventory.getSlotForEquipment(itemStack);
 	    		if(equipSlot != null && (this.inventory.getEquipmentStack(equipSlot) == null || this.inventory.getEquipmentStack(equipSlot).getItem() != itemStack.getItem()))
 	    			commands.put(CMD_PRIOR.EQUIPPING.id, "Equip Item");

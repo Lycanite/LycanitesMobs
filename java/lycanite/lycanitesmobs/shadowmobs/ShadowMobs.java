@@ -156,7 +156,7 @@ public class ShadowMobs {
         ObjectManager.addMob(newMob);
 
         newMob = new MobInfo(group, "shade", EntityShade.class, 0x000402, 0x102336)
-                .setPeaceful(true).setTameable(true).setSummonCost(3).setDungeonLevel(3)
+                .setPeaceful(true).setTameable(true).setSummonCost(4).setDungeonLevel(3)
                 .addSubspecies(new Subspecies("keppel", "uncommon")).addSubspecies(new Subspecies("russet", "uncommon"));
         newMob.spawnInfo.setSpawnTypes("UNDERGROUND, DARKNESS").setDespawn(false)
                 .setBiomes("ALL, -OCEAN").setDimensions("-1, 1").setDimensionWhitelist(false)

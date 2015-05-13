@@ -134,7 +134,8 @@ public class GUIBaseManager extends GuiScreen {
 		this.getFontRenderer().drawString(StatCollector.translateToLocal("stat.spirit.name"), this.windowX + 16, this.windowY + 20, 0xFFFFFF);
 
 		// Removal Confirmation:
-		this.getFontRenderer().drawSplitString(StatCollector.translateToLocal("gui.pet.manager.remove"), this.windowX + 16, this.windowY + 30, this.windowWidth - 32, 0xFFFFFF);
+		if(this.selectedPet.releaseEntity)
+			this.getFontRenderer().drawSplitString(StatCollector.translateToLocal("gui.pet.release.confirm"), this.centerX + 2, this.windowY + 41, (this.windowWidth / 2) - 2, 0xFFFFFF);
 	}
 	
 	
@@ -159,17 +160,25 @@ public class GUIBaseManager extends GuiScreen {
 		int spiritBarV = 256 - spiritBarHeight;
 
 		for(int spiritBarEnergyN = 0; spiritBarEnergyN < 10; spiritBarEnergyN++) {
+			// Empty:
 			this.drawTexturedModalRect(spiritBarX + (spiritBarWidth * spiritBarEnergyN), spiritBarY, spiritBarU, spiritBarV, spiritBarWidth, spiritBarHeight);
-			if(this.playerExt.spirit >= this.playerExt.spiritMax - (spiritBarEnergyN * this.playerExt.spiritCharge)) {
+			// Full:
+			if(this.playerExt.spirit >= spiritBarEnergyN * this.playerExt.spiritCharge) {
 				this.drawTexturedModalRect(spiritBarX + (spiritBarWidth * spiritBarEnergyN), spiritBarY, spiritBarU - spiritBarWidth, spiritBarV, spiritBarWidth, spiritBarHeight);
 			}
+			// Partial:
 			else if(this.playerExt.spirit + this.playerExt.spiritCharge > this.playerExt.spiritMax - (spiritBarEnergyN * this.playerExt.spiritCharge)) {
 				float spiritChargeScale = (float)(this.playerExt.spirit % this.playerExt.spiritCharge) / (float)this.playerExt.spiritCharge;
-				this.drawTexturedModalRect((spiritBarX + (spiritBarWidth * spiritBarEnergyN)) + (spiritBarWidth - Math.round((float)spiritBarWidth * spiritChargeScale)), spiritBarY, spiritBarU - Math.round((float)spiritBarWidth * spiritChargeScale), spiritBarV, Math.round((float)spiritBarWidth * spiritChargeScale), spiritBarHeight);
+				this.drawTexturedModalRect(spiritBarX + (spiritBarWidth * spiritBarEnergyN), spiritBarY, spiritBarU, spiritBarV, Math.round((float)spiritBarWidth * spiritChargeScale), spiritBarHeight);
 			}
 		}
+		// Reserved Spirit:
+		spiritBarU -= spiritBarWidth * 2;
+		for(int spiritBarReservedN = 1; spiritBarReservedN * this.playerExt.spiritCharge <= this.playerExt.spiritReserved; spiritBarReservedN++) {
+			this.drawTexturedModalRect(spiritBarX + (spiritBarWidth * 10) - (spiritBarWidth * spiritBarReservedN), spiritBarY, spiritBarU, spiritBarV, spiritBarWidth, spiritBarHeight);
+		}
 
-		// Health Bar:
+		// Health and Respawn Bar:
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIInventoryCreature"));
 
@@ -181,8 +190,14 @@ public class GUIBaseManager extends GuiScreen {
 		int barV = 256 - (barHeight * 2);
 		this.drawTexturedModalRect(barX, barY, barU, barV, barWidth, barHeight);
 
-		barWidth = Math.round(barWidth * (this.selectedPet.getHealth() / this.selectedPet.getMaxHealth()));
-		barV = barV + barHeight;
+		if(!this.selectedPet.isRespawning) {
+			barWidth = Math.round(barWidth * (this.selectedPet.getHealth() / this.selectedPet.getMaxHealth()));
+			barV = barV + barHeight;
+		}
+		else {
+			barWidth = barWidth - Math.round(barWidth * ((float)this.selectedPet.respawnTime / (float)this.selectedPet.respawnTimeMax));
+			barV = barV - barHeight;
+		}
 		this.drawTexturedModalRect(barX, barY, barU, barV, barWidth, barHeight);
 	}
 	
@@ -199,8 +214,6 @@ public class GUIBaseManager extends GuiScreen {
         int buttonY = this.windowY;
 
 		this.buttonList.add(new GUITabMain(55555, buttonX, buttonY - 24));
-		if(!this.hasSelectedPet())
-			return;
 
 		buttonX = this.centerX + buttonSpacing;
 		int buttonXRight = buttonX + buttonWidth + buttonSpacing;
@@ -231,11 +244,16 @@ public class GUIBaseManager extends GuiScreen {
 	}
 
 	public void updateControls() {
-		if(!this.hasSelectedPet()) return;
-
 		for(Object buttonObj : this.buttonList) {
 			if(buttonObj instanceof GuiButton) {
 				GuiButton button = (GuiButton)buttonObj;
+
+				// Inactive:
+				if(!this.hasSelectedPet()) {
+					button.enabled = false;
+					button.visible = false;
+					continue;
+				}
 
 				// Action Buttons:
 				if(button.id == EntityCreatureBase.GUI_COMMAND_ID.SPAWNING.id)
@@ -245,19 +263,19 @@ public class GUIBaseManager extends GuiScreen {
 					button.displayString = StatCollector.translateToLocal("gui.pet.teleport");
 
 				// Behaviour Buttons:
-				if(button.id == EntityCreatureBase.GUI_COMMAND_ID.SITTING.id)
+				if (button.id == EntityCreatureBase.GUI_COMMAND_ID.SITTING.id)
 					button.displayString = StatCollector.translateToLocal("gui.pet.sitting") + ": " + (this.summonSet.getSitting() ? StatCollector.translateToLocal("common.yes") : StatCollector.translateToLocal("common.no"));
 
-				if(button.id == EntityCreatureBase.GUI_COMMAND_ID.FOLLOWING.id)
+				if (button.id == EntityCreatureBase.GUI_COMMAND_ID.FOLLOWING.id)
 					button.displayString = (this.summonSet.getFollowing() ? StatCollector.translateToLocal("gui.pet.follow") : StatCollector.translateToLocal("gui.pet.wander"));
 
-				if(button.id == EntityCreatureBase.GUI_COMMAND_ID.PASSIVE.id)
+				if (button.id == EntityCreatureBase.GUI_COMMAND_ID.PASSIVE.id)
 					button.displayString = StatCollector.translateToLocal("gui.pet.passive") + ": " + (this.summonSet.getPassive() ? StatCollector.translateToLocal("common.yes") : StatCollector.translateToLocal("common.no"));
 
-				if(button.id == EntityCreatureBase.GUI_COMMAND_ID.STANCE.id)
+				if (button.id == EntityCreatureBase.GUI_COMMAND_ID.STANCE.id)
 					button.displayString = (this.summonSet.getAggressive() ? StatCollector.translateToLocal("gui.pet.aggressive") : StatCollector.translateToLocal("gui.pet.defensive"));
 
-				if(button.id == EntityCreatureBase.GUI_COMMAND_ID.PVP.id)
+				if (button.id == EntityCreatureBase.GUI_COMMAND_ID.PVP.id)
 					button.displayString = StatCollector.translateToLocal("gui.pet.pvp") + ": " + (this.summonSet.getPVP() ? StatCollector.translateToLocal("common.yes") : StatCollector.translateToLocal("common.no"));
 
 				// Remove:
@@ -285,6 +303,14 @@ public class GUIBaseManager extends GuiScreen {
 						button.visible = true;
 					}
 				}
+
+				// Hidden Mount Buttons:
+				if("mount".equals(this.type)) {
+					if(button.id >= EntityCreatureBase.GUI_COMMAND_ID.SITTING.id && button.id <= EntityCreatureBase.GUI_COMMAND_ID.PVP.id) {
+						button.enabled = false;
+						button.visible = false;
+					}
+				}
 			}
 		}
 	}
@@ -295,6 +321,12 @@ public class GUIBaseManager extends GuiScreen {
   	// ==================================================
 	@Override
 	protected void actionPerformed(GuiButton guiButton) {
+		// Inactive:
+		if(!this.hasSelectedPet()) {
+			super.actionPerformed(guiButton);
+			return;
+		}
+
 		// Behaviour Button:
 		if(guiButton.id == EntityCreatureBase.GUI_COMMAND_ID.SITTING.id)
 			this.summonSet.sitting = !this.summonSet.sitting;

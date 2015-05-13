@@ -55,7 +55,7 @@ public class GUICreature extends GuiContainer {
 	@Override
 	protected void drawGuiContainerForegroundLayer(int i, int j) {
 		this.fontRendererObj.drawString(this.creatureInventory.getInventoryName(), 8, 6, 4210752);
-        this.fontRendererObj.drawString(this.playerInventory.getInventoryName(), 8, this.ySize - 96 + 2, 4210752);
+        this.fontRendererObj.drawString(StatCollector.translateToLocal(this.playerInventory.getInventoryName()), 8, this.ySize - 96 + 2, 4210752);
     }
 	
 	

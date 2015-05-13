@@ -25,6 +25,9 @@ public class MessagePetEntry implements IMessage, IMessageHandler<MessagePetEntr
     public String summonType;
 	public byte behaviour;
 	public int petEntryEntityID;
+	public int respawnTime;
+	public int respawnTimeMax;
+	public boolean isRespawning;
 
 
 	// ==================================================
@@ -41,6 +44,9 @@ public class MessagePetEntry implements IMessage, IMessageHandler<MessagePetEntr
         this.summonType = summonSet.summonType;
 		this.behaviour = summonSet.getBehaviourByte();
 		this.petEntryEntityID = petEntry.entity != null ? petEntry.entity.getEntityId() : 0;
+		this.respawnTime = petEntry.respawnTime;
+		this.respawnTimeMax = petEntry.respawnTimeMax;
+		this.isRespawning = petEntry.isRespawning;
 	}
 	
 	
@@ -74,6 +80,7 @@ public class MessagePetEntry implements IMessage, IMessageHandler<MessagePetEntr
         petEntry.teleportEntity = message.teleportEntity;
 		SummonSet summonSet = petEntry.summonSet;
 		summonSet.readFromPacket(message.summonType, message.behaviour);
+
         if(ctx.side == Side.SERVER)
             petEntry.onBehaviourUpdate();
 
@@ -83,6 +90,9 @@ public class MessagePetEntry implements IMessage, IMessageHandler<MessagePetEntr
 				entity = player.worldObj.getEntityByID(message.petEntryEntityID);
 			}
 			petEntry.entity = entity;
+			petEntry.respawnTime = message.respawnTime;
+			petEntry.respawnTimeMax = message.respawnTimeMax;
+			petEntry.isRespawning = message.isRespawning;
 		}
 		return null;
 	}
@@ -106,6 +116,9 @@ public class MessagePetEntry implements IMessage, IMessageHandler<MessagePetEntr
 			this.summonType = packet.readStringFromBuffer(256);
 			this.behaviour = packet.readByte();
 			this.petEntryEntityID = packet.readInt();
+			this.respawnTime = packet.readInt();
+			this.respawnTimeMax = packet.readInt();
+			this.isRespawning = packet.readBoolean();
 		} catch (IOException e) {
 			LycanitesMobs.printWarning("", "There was a problem decoding the packet: " + packet + ".");
 			e.printStackTrace();
@@ -131,6 +144,9 @@ public class MessagePetEntry implements IMessage, IMessageHandler<MessagePetEntr
 			packet.writeStringToBuffer(this.summonType);
 			packet.writeByte(this.behaviour);
 			packet.writeInt(this.petEntryEntityID);
+			packet.writeInt(this.respawnTime);
+			packet.writeInt(this.respawnTimeMax);
+			packet.writeBoolean(this.isRespawning);
 		} catch (IOException e) {
 			LycanitesMobs.printWarning("", "There was a problem encoding the packet: " + packet + ".");
 			e.printStackTrace();

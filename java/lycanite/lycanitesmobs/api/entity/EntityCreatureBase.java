@@ -2497,6 +2497,11 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     public int getSpaceForStack(ItemStack pickupStack) {
     	return this.inventory.getSpaceForStack(pickupStack);
     }
+
+    /** Returns true if the player is allowed to equip this creature with items such as armor or saddles. **/
+    public boolean canEquip() {
+        return this.mobInfo.isTameable();
+    }
     
     // ========== Set Equipment ==========
     // Vanilla Conversion: 0 = Weapon/Item,  1 = Feet -> 4 = Head
@@ -2908,14 +2913,14 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     	equipmentName = equipmentName.toLowerCase();
     	String textureName = this.getTextureName();
     	textureName += "_" + equipmentName;
-    	if(this.isMinion())
+    	if(!this.canEquip())
     		return this.getTexture();
     	if(AssetManager.getTexture(textureName) == null)
     		AssetManager.addTexture(textureName, this.group, "textures/entity/" + textureName.toLowerCase() + ".png");
     	return AssetManager.getTexture(textureName);
     }
 
-    /** Gets the name of this creature's texture, normally links to it's code name but can be overriden by subspecies and alpha creatures. **/
+    /** Gets the name of this creature's texture, normally links to it's code name but can be overridden by subspecies and alpha creatures. **/
     public String getTextureName() {
     	return this.mobInfo.name;
     }

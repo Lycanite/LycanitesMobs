@@ -126,7 +126,7 @@ public class PetManager {
 	public void onUpdate(World world) {
 
         // New Entries:
-        if(this.newEntries.size() > 0 && this.host instanceof EntityPlayer) {
+        if(!world.isRemote && this.newEntries.size() > 0 && this.host instanceof EntityPlayer) {
             for(PetEntry petEntry : this.newEntries) {
                 ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer((EntityPlayer) this.host);
                 if(playerExt != null)
@@ -135,8 +135,30 @@ public class PetManager {
             this.newEntries = new ArrayList<PetEntry>();
         }
 
+        // Spirit Reset:
+        if(this.host instanceof EntityPlayer) {
+            ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer((EntityPlayer)this.host);
+            if(playerExt != null)
+                playerExt.spiritReserved = 0;
+        }
+
         // Entry Updates:
 		for(PetEntry petEntry : this.allEntries.values()) {
+
+            // Pet and Mount Spirit Check:
+            if(this.host instanceof EntityPlayer) {
+                ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer((EntityPlayer)this.host);
+                if(playerExt != null && ("pet".equals(petEntry.getType()) || "mount".equals(petEntry.getType()))) {
+                    int spiritCost = playerExt.spiritCharge * petEntry.getMobInfo().summonCost;
+                    if(petEntry.spawningActive)
+                        playerExt.spiritReserved += spiritCost;
+                    if(playerExt.spiritReserved > playerExt.spirit) {
+                        petEntry.spawningActive = false;
+                        playerExt.spiritReserved -= spiritCost;
+                    }
+                }
+            }
+
             if(petEntry.active)
 			    petEntry.onUpdate(world);
             else

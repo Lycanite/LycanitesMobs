@@ -9,8 +9,6 @@ import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.pets.PetEntry;
 import lycanite.lycanitesmobs.api.pets.PetManager;
-import lycanite.lycanitesmobs.api.pets.SummonSet;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 
@@ -49,6 +47,7 @@ public class MessagePetEntryRemove implements IMessage, IMessageHandler<MessageP
         PetManager petManager = playerExt.petManager;
         PetEntry petEntry = petManager.getEntry(message.petEntryID);
         if(petEntry == null) {
+			LycanitesMobs.printWarning("", "Tried to remove a null PetEntry from " + (player.worldObj.isRemote ? "client" : "server") + "!");
             return null; // Nothing to remove!
         }
         petEntry.remove();

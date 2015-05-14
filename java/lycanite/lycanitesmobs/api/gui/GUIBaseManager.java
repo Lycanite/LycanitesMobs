@@ -148,8 +148,12 @@ public class GUIBaseManager extends GuiScreen {
 
         this.drawTexturedModalRect(this.windowX, this.windowY, 0, 0, this.windowWidth, this.windowHeight);
 
-		if(!this.hasSelectedPet())
+		if(!this.hasSelectedPet()) {
+			int recipeWidth = 108;
+			int recipeHeight = 54;
+			this.drawTexturedModalRect(this.centerX - (recipeWidth / 2), this.windowY + this.windowHeight - recipeHeight - 16, 0, 256 - recipeHeight, recipeWidth, recipeHeight);
 			return;
+		}
 
 		// Spirit Bar:
 		int spiritBarWidth = 9;
@@ -159,17 +163,17 @@ public class GUIBaseManager extends GuiScreen {
 		int spiritBarU = 256 - spiritBarWidth;
 		int spiritBarV = 256 - spiritBarHeight;
 
-		for(int spiritBarEnergyN = 0; spiritBarEnergyN < 10; spiritBarEnergyN++) {
+		for(int spiritBarEnergyN = 1; spiritBarEnergyN <= 10; spiritBarEnergyN++) {
 			// Empty:
-			this.drawTexturedModalRect(spiritBarX + (spiritBarWidth * spiritBarEnergyN), spiritBarY, spiritBarU, spiritBarV, spiritBarWidth, spiritBarHeight);
+			this.drawTexturedModalRect(spiritBarX - spiritBarWidth + (spiritBarWidth * spiritBarEnergyN), spiritBarY, spiritBarU, spiritBarV, spiritBarWidth, spiritBarHeight);
 			// Full:
 			if(this.playerExt.spirit >= spiritBarEnergyN * this.playerExt.spiritCharge) {
-				this.drawTexturedModalRect(spiritBarX + (spiritBarWidth * spiritBarEnergyN), spiritBarY, spiritBarU - spiritBarWidth, spiritBarV, spiritBarWidth, spiritBarHeight);
+				this.drawTexturedModalRect(spiritBarX - spiritBarWidth + (spiritBarWidth * spiritBarEnergyN), spiritBarY, spiritBarU - spiritBarWidth, spiritBarV, spiritBarWidth, spiritBarHeight);
 			}
 			// Partial:
-			else if(this.playerExt.spirit + this.playerExt.spiritCharge > this.playerExt.spiritMax - (spiritBarEnergyN * this.playerExt.spiritCharge)) {
+			else if(this.playerExt.spirit + this.playerExt.spiritCharge > spiritBarEnergyN * this.playerExt.spiritCharge) {
 				float spiritChargeScale = (float)(this.playerExt.spirit % this.playerExt.spiritCharge) / (float)this.playerExt.spiritCharge;
-				this.drawTexturedModalRect(spiritBarX + (spiritBarWidth * spiritBarEnergyN), spiritBarY, spiritBarU, spiritBarV, Math.round((float)spiritBarWidth * spiritChargeScale), spiritBarHeight);
+				this.drawTexturedModalRect(spiritBarX - spiritBarWidth + (spiritBarWidth * spiritBarEnergyN), spiritBarY, spiritBarU - spiritBarWidth, spiritBarV, Math.round((float)spiritBarWidth * spiritChargeScale), spiritBarHeight);
 			}
 		}
 		// Reserved Spirit:
@@ -247,6 +251,13 @@ public class GUIBaseManager extends GuiScreen {
 		for(Object buttonObj : this.buttonList) {
 			if(buttonObj instanceof GuiButton) {
 				GuiButton button = (GuiButton)buttonObj;
+
+				// Tab:
+				if(button instanceof GUITabMain) {
+					button.enabled = true;
+					button.visible = true;
+					continue;
+				}
 
 				// Inactive:
 				if(!this.hasSelectedPet()) {

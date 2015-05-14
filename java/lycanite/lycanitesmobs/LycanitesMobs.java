@@ -230,7 +230,7 @@ public class LycanitesMobs {
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("soulstone"), 1, 0),
 				new Object[] { "DPD", "PSP", "DPD",
-						Character.valueOf('D'), Items.ender_pearl,
+						Character.valueOf('D'), Items.diamond,
 						Character.valueOf('S'), ObjectManager.getItem("soulgazer"),
 						Character.valueOf('P'), Items.ender_pearl
 				}));

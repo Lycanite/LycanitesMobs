@@ -57,37 +57,54 @@ public class DonationFamiliars {
         }
 
         // Parse JSON File:
-        JsonParser jsonParser = new JsonParser();
-        JsonArray jsonArray = jsonParser.parse(jsonString).getAsJsonArray();
-        Iterator<JsonElement> jsonIterator = jsonArray.iterator();
-        while(jsonIterator.hasNext()) {
-            JsonObject familiarJson = jsonIterator.next().getAsJsonObject();
-            String minecraft_uuid = familiarJson.get("minecraft_uuid").getAsString();
-            String donation_username = familiarJson.get("donation_username").getAsString();
-            String familiar_species = familiarJson.get("familiar_species").getAsString();
-            int familiar_subspecies = familiarJson.get("familiar_subspecies").getAsInt();
-            String familiar_name = familiarJson.get("familiar_name").getAsString();
-            String familiar_color = familiarJson.get("familiar_color").getAsString();
+        if(!this.parseFamiliarJSON(jsonString)) // Try and parse web JSON.
+            this.parseFamiliarJSON(this.getLocalJSON()); // If it fails, use local copy.
+    }
 
-            String familiarEntryName = donation_username + familiar_species + familiar_name;
-            PetEntryFamiliar familiarEntry = new PetEntryFamiliar(familiarEntryName, null, familiar_species);
-            familiarEntry.setEntitySubspeciesID(familiar_subspecies);
-            familiarEntry.setEntitySize(familiar_subspecies < 3 ? 0.6D : 0.3D);
 
-            if(!"".equals(familiar_name))
-                familiarEntry.setEntityName(familiar_name);
-            familiarEntry.setColor(familiar_color);
+    // ==================================================
+    //                 Parse Familiar JSON
+    // ==================================================
+    // Parses JSON to Familiars, returns false if the JSON is invalid.
+    public boolean parseFamiliarJSON(String jsonString) {
+        try {
+            JsonParser jsonParser = new JsonParser();
+            JsonElement jsonElement = jsonParser.parse(jsonString);
+            JsonArray jsonArray = jsonElement.getAsJsonArray();
+            Iterator<JsonElement> jsonIterator = jsonArray.iterator();
+            while (jsonIterator.hasNext()) {
+                JsonObject familiarJson = jsonIterator.next().getAsJsonObject();
+                String minecraft_uuid = familiarJson.get("minecraft_uuid").getAsString();
+                String donation_username = familiarJson.get("donation_username").getAsString();
+                String familiar_species = familiarJson.get("familiar_species").getAsString();
+                int familiar_subspecies = familiarJson.get("familiar_subspecies").getAsInt();
+                String familiar_name = familiarJson.get("familiar_name").getAsString();
+                String familiar_color = familiarJson.get("familiar_color").getAsString();
 
-            // Add Pet Entries or Update Existing Entries:
-            if(!this.playerFamiliars.containsKey(minecraft_uuid))
-                this.playerFamiliars.put(minecraft_uuid, new HashMap<String, PetEntry>());
-            if(!this.playerFamiliars.containsKey(familiarEntryName))
-                this.playerFamiliars.get(minecraft_uuid).put(familiarEntryName, familiarEntry);
-            else {
-                PetEntry existingEntry = this.playerFamiliars.get(minecraft_uuid).get(familiarEntryName);
-                existingEntry.copy(familiarEntry);
+                String familiarEntryName = donation_username + familiar_species + familiar_name;
+                PetEntryFamiliar familiarEntry = new PetEntryFamiliar(familiarEntryName, null, familiar_species);
+                familiarEntry.setEntitySubspeciesID(familiar_subspecies);
+                familiarEntry.setEntitySize(familiar_subspecies < 3 ? 0.6D : 0.3D);
+
+                if (!"".equals(familiar_name))
+                    familiarEntry.setEntityName(familiar_name);
+                familiarEntry.setColor(familiar_color);
+
+                // Add Pet Entries or Update Existing Entries:
+                if (!this.playerFamiliars.containsKey(minecraft_uuid))
+                    this.playerFamiliars.put(minecraft_uuid, new HashMap<String, PetEntry>());
+                if (!this.playerFamiliars.containsKey(familiarEntryName))
+                    this.playerFamiliars.get(minecraft_uuid).put(familiarEntryName, familiarEntry);
+                else {
+                    PetEntry existingEntry = this.playerFamiliars.get(minecraft_uuid).get(familiarEntryName);
+                    existingEntry.copy(familiarEntry);
+                }
             }
         }
+        catch(Exception e) {
+            return false;
+        }
+        return true;
     }
 
 

@@ -148,6 +148,24 @@ public class PetEntry {
         return this;
     }
 
+    /** Used to set whether this PetEntry spawns mobs, this will also take a Spirit cost if Spirit is used (server side). use a direct spawningActive = true/false to avoid the Spirit cost. **/
+    public PetEntry setSpawningActive(boolean spawningActive) {
+        if(!this.host.worldObj.isRemote) {
+            if(!spawningActive)
+                this.despawnEntity();
+            else if(this.usesSpirit() && this.summonSet.playerExt != null) {
+                if(this.summonSet.playerExt.spirit < this.getSpiritCost()) {
+                    this.spawningActive = false;
+                    return this;
+                }
+                this.summonSet.playerExt.spirit -= this.getSpiritCost();
+                this.summonSet.playerExt.spiritReserved += this.getSpiritCost();
+            }
+        }
+        this.spawningActive = spawningActive;
+        return this;
+    }
+
 
     // ==================================================
     //                     Get Values
@@ -211,6 +229,7 @@ public class PetEntry {
     // ==================================================
     /** Called when this entry is finished and should be removed. Note: The PetManager will auto remove any inactive entries it might have. **/
     public void remove() {
+        this.setSpawningActive(false);
         this.active = false;
     }
 	
@@ -418,7 +437,7 @@ public class PetEntry {
     public void assignEntity(Entity entity) {
         if(this.entity != null)
             this.despawnEntity();
-        this.spawningActive = true;
+        this.setSpawningActive(true);
         this.entity = entity;
 
         if(this.entity instanceof EntityCreatureBase) {
@@ -456,11 +475,29 @@ public class PetEntry {
 
 
     // ==================================================
+    //                    Spirit Cost
+    // ==================================================
+    /** Returns true if this PetEntry uses spirit to summon. **/
+    public boolean usesSpirit() {
+        return "pet".equals(this.getType()) || "mount".equals(this.getType());
+    }
+
+    /** Returns the spirit cost of this entity. **/
+    public int getSpiritCost() {
+        if(this.summonSet.playerExt == null)
+            return 0;
+        return this.summonSet.playerExt.spiritCharge * this.getMobInfo().summonCost;
+    }
+
+
+    // ==================================================
     //                        NBT
     // ==================================================
     // ========== Read ===========
     /** Reads pet entry from NBTTag. Should be called by PetManagers or other classes that store PetEntries and NBT Data for them. **/
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
+        if(nbtTagCompound.hasKey("Active"))
+            this.active = nbtTagCompound.getBoolean("Active");
         if(nbtTagCompound.hasKey("RespawnTime"))
             this.respawnTime = nbtTagCompound.getInteger("RespawnTime");
         if(nbtTagCompound.hasKey("Respawning"))
@@ -488,16 +525,18 @@ public class PetEntry {
     public void writeToNBT(NBTTagCompound nbtTagCompound) {
         if(this.name == null || "".equals(this.name))
             return;
-        nbtTagCompound.setString("EntryName", this.name);
-        nbtTagCompound.setInteger("ID", this.petEntryID);
-        nbtTagCompound.setString("Type", this.getType());
+        nbtTagCompound.setBoolean("Active", this.active);
         nbtTagCompound.setInteger("RespawnTime", this.respawnTime);
         nbtTagCompound.setBoolean("Respawning", this.isRespawning);
         nbtTagCompound.setBoolean("SpawningActive", this.spawningActive);
+
+        nbtTagCompound.setInteger("ID", this.petEntryID);
+        nbtTagCompound.setString("EntryName", this.name);
+        nbtTagCompound.setString("Type", this.getType());
         this.summonSet.writeToNBT(nbtTagCompound);
 
         // Save Entity:
-        if ("pet".equals(this.type) || "mount".equals(this.type)) {
+        if (this.usesSpirit()) {
             this.saveEntityNBT();
             nbtTagCompound.setString("EntityName", this.entityName);
             nbtTagCompound.setInteger("SubspeciesID", this.subspeciesID);

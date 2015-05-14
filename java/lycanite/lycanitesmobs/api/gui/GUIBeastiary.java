@@ -5,6 +5,7 @@ import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.GuiHandler;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import net.minecraft.client.gui.FontRenderer;
@@ -18,6 +19,9 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class GUIBeastiary extends GuiScreen {
 	public EntityPlayer player;
@@ -104,6 +108,7 @@ public class GUIBeastiary extends GuiScreen {
 	@Override
 	public void drawScreen(int x, int y, float f) {
         this.drawGuiContainerBackgroundLayer(x, y, f);
+		this.updateControls();
         this.drawGuiContainerForegroundLayer(x, y, f);
         
         // Creature List:
@@ -198,7 +203,11 @@ public class GUIBeastiary extends GuiScreen {
         int buttonY = this.windowY;
 
 		this.buttonList.add(new GUITabMain(55555, buttonX, buttonY - 24));
+		this.buttonList.add(new GuiButton(100, this.centerX - (buttonWidth / 2), this.windowY + this.windowHeight + 4, buttonWidth, buttonHeight, StatCollector.translateToLocal("gui.beastiary.website")));
+
      }
+
+	public void updateControls() {}
 	
 	
 	// ==================================================
@@ -206,6 +215,16 @@ public class GUIBeastiary extends GuiScreen {
   	// ==================================================
 	@Override
 	protected void actionPerformed(GuiButton guiButton) {
+		// Website Button:
+		if(guiButton.id == 100) {
+			try {
+				String url = LycanitesMobs.website + "/creature";
+				if(this.getSelectedCreature() != null)
+					url += "/" + this.getSelectedCreature().name;
+				this.openURI(new URI(url));
+			} catch (URISyntaxException e) {}
+		}
+
 		super.actionPerformed(guiButton);
 	}
 
@@ -281,4 +300,19 @@ public class GUIBeastiary extends GuiScreen {
         tessellator.addVertexWithUV((double)(x + 0), (double)(y + 0), (double)z, (double)((float)(u + 0) * s), (double)((float)(v + 0) * t));
         tessellator.draw();
     }
+
+
+	// ==================================================
+	//                     Open URI
+	// ==================================================
+	private void openURI(URI uri) {
+		try {
+			Class oclass = Class.forName("java.awt.Desktop");
+			Object object = oclass.getMethod("getDesktop", new Class[0]).invoke((Object)null, new Object[0]);
+			oclass.getMethod("browse", new Class[] {URI.class}).invoke(object, new Object[]{uri});
+		}
+		catch (Throwable throwable) {
+			LycanitesMobs.printWarning("", "Unable to open link: " + uri.toString());
+		}
+	}
 }

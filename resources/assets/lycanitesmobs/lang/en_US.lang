@@ -101,6 +101,7 @@ gui.beastiary.name=Beastiary
 gui.beastiary.empty=No Creatures
 gui.beastiary.soulgazerinfo=You currently do not have any creatures added to your Beastiary. To discover new creatures you must craft a Soulgazer and then use it on any creatures that you find.
 gui.beastiary.selectacreature=Select a group and then select a creature.
+gui.beastiary.website=View On Website
 #
 # Pet Manager:
 gui.petmanager.name=Pet Manager

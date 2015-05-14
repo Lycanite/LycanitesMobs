@@ -25,7 +25,7 @@ public class MobEventBase {
     public boolean forceNoDespawn = true;
     public int minDay = 0;
     public int firstScheduleDay = -1;
-    public int duration = 30 * 20;
+    public int duration = 60 * 20;
     public int mobDuration = 10 * 60 * 20;
 	
 	// Dimensions:

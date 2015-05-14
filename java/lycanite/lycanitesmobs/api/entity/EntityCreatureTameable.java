@@ -479,6 +479,8 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
         		player.addChatMessage(new ChatComponentText(tameMessage));
         		this.playTameEffect(this.isTamed());
                 player.addStat(ObjectManager.getAchievement(this.mobInfo.name + ".tame"), 1);
+                if(this.timeUntilPortal > this.getPortalCooldown())
+                    this.timeUntilPortal = this.getPortalCooldown();
             }
             else {
             	String tameFailedMessage = StatCollector.translateToLocal("message.pet.tamefail");

@@ -178,7 +178,7 @@ public class SpawnTypeBase {
         spawnTypes.add(spawner);
 		
 		// Portal Spawner:
-		SpawnTypeBase portalBlockSpawner = new SpawnTypeBlock("Portal")
+		SpawnTypeBase portalBlockSpawner = new SpawnTypePortal("Portal")
 				.setRate(1200).setChance(0.25D).setRange(32).setBlockLimit(32).setMobLimit(1);
 		portalBlockSpawner.blocks = new Block[] {Blocks.portal};
 		portalBlockSpawner.ignoreBiome = true;

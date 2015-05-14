@@ -76,7 +76,7 @@ public class MessagePetEntry implements IMessage, IMessageHandler<MessagePetEntr
             petEntry = new PetEntry(this.petEntryName, message.petEntryType, player, this.summonType);
             petManager.addEntry(petEntry, message.petEntryID);
         }
-        petEntry.spawningActive = message.spawningActive;
+        petEntry.setSpawningActive(message.spawningActive);
         petEntry.teleportEntity = message.teleportEntity;
 		SummonSet summonSet = petEntry.summonSet;
 		summonSet.readFromPacket(message.summonType, message.behaviour);

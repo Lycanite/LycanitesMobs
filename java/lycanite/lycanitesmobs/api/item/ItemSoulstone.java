@@ -55,7 +55,7 @@ public class ItemSoulstone extends ItemBase {
 
 		EntityCreatureTameable entityTameable = (EntityCreatureTameable)entity;
 		MobInfo mobInfo = entityTameable.mobInfo;
-	 	if(!mobInfo.isTameable()) {
+	 	if(!mobInfo.isTameable() || entityTameable.getOwner() != player) {
 			if(!player.worldObj.isRemote)
 				player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("message.soulstone.invalid")));
 			return false;

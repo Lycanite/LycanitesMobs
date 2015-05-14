@@ -31,6 +31,8 @@ public class PetManager {
 
     /** Newly added PetEntries that need to be synced to the client player. **/
     public List<PetEntry> newEntries = new ArrayList<PetEntry>();
+    /** PetEntries that need to be removed. **/
+    public List<PetEntry> removedEntries = new ArrayList<PetEntry>();
     /** A map containing NBT Tag Compunds mapped to Unique Pet Entry Names. **/
     public Map<String, NBTTagCompound> entryNBTs = new HashMap<String, NBTTagCompound>();
 	
@@ -104,7 +106,7 @@ public class PetManager {
             return;
         }
 
-        this.allEntries.remove(petEntry);
+        this.allEntries.remove(petEntry.petEntryID);
 
         if("pet".equalsIgnoreCase(petEntry.getType()))
             this.pets.remove(petEntry);
@@ -135,26 +137,21 @@ public class PetManager {
             this.newEntries = new ArrayList<PetEntry>();
         }
 
-        // Spirit Reset:
-        if(this.host instanceof EntityPlayer) {
-            ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer((EntityPlayer)this.host);
-            if(playerExt != null)
-                playerExt.spiritReserved = 0;
-        }
-
         // Entry Updates:
+        int newSpiritReserved = 0;
 		for(PetEntry petEntry : this.allEntries.values()) {
 
             // Pet and Mount Spirit Check:
             if(this.host instanceof EntityPlayer) {
                 ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer((EntityPlayer)this.host);
-                if(playerExt != null && ("pet".equals(petEntry.getType()) || "mount".equals(petEntry.getType()))) {
-                    int spiritCost = playerExt.spiritCharge * petEntry.getMobInfo().summonCost;
-                    if(petEntry.spawningActive)
-                        playerExt.spiritReserved += spiritCost;
-                    if(playerExt.spiritReserved > playerExt.spirit) {
-                        petEntry.spawningActive = false;
-                        playerExt.spiritReserved -= spiritCost;
+                if(playerExt != null && petEntry.usesSpirit()) {
+                    int spiritCost = petEntry.getSpiritCost();
+                    if(petEntry.spawningActive && petEntry.active) {
+                        newSpiritReserved += spiritCost;
+                        if((playerExt.spirit + playerExt.spiritReserved < newSpiritReserved) || newSpiritReserved > playerExt.spiritMax) {
+                            petEntry.spawningActive = false;
+                            newSpiritReserved -= spiritCost;
+                        }
                     }
                 }
             }
@@ -162,8 +159,23 @@ public class PetManager {
             if(petEntry.active)
 			    petEntry.onUpdate(world);
             else
-                this.removeEntry(petEntry);
+                removedEntries.add(petEntry);
 		}
+
+        // Remove Inactive Entries:
+        if(this.removedEntries.size() > 0) {
+            for(PetEntry petEntry : this.removedEntries) {
+                this.removeEntry(petEntry);
+            }
+            this.removedEntries = new ArrayList<PetEntry>();
+        }
+
+        // Spirit Reserved:
+        if(this.host instanceof EntityPlayer) {
+            ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer((EntityPlayer)this.host);
+            if(playerExt != null)
+                playerExt.spiritReserved = newSpiritReserved;
+        }
 	}
 
 
@@ -227,7 +239,8 @@ public class PetManager {
             if(nbtEntry.hasKey("Type") && ("pet".equalsIgnoreCase(nbtEntry.getString("Type")) || "mount".equalsIgnoreCase(nbtEntry.getString("Type")))) {
                 PetEntry petEntry = new PetEntry(nbtEntry.getString("EntryName"), nbtEntry.getString("Type"), this.host, nbtEntry.getString("SummonType"));
                 petEntry.readFromNBT(nbtEntry);
-                this.addEntry(petEntry);
+                if(petEntry.active)
+                    this.addEntry(petEntry);
             }
         }
     }
@@ -240,6 +253,8 @@ public class PetManager {
 
         // Save Entries In Use:
         for(PetEntry petEntry : this.allEntries.values()) {
+            if(!petEntry.active)
+                continue;
             NBTTagCompound nbtEntry = new NBTTagCompound();
             petEntry.writeToNBT(nbtEntry);
             entryList.appendTag(nbtEntry);
@@ -247,11 +262,11 @@ public class PetManager {
         }
 
         // Update Saved Entries Not In Use:
-        for(Map.Entry<String, NBTTagCompound> entryNBTSet : this.entryNBTs.entrySet()) {
-            if(!writtenEntries.contains(entryNBTSet.getKey())) {
-                entryList.appendTag(entryNBTSet.getValue());
-            }
-        }
+//        for(Map.Entry<String, NBTTagCompound> entryNBTSet : this.entryNBTs.entrySet()) {
+//            if(!writtenEntries.contains(entryNBTSet.getKey())) {
+//                entryList.appendTag(entryNBTSet.getValue());
+//            }
+//        }
 
         nbtTagCompound.setTag("PetManager", entryList);
     }

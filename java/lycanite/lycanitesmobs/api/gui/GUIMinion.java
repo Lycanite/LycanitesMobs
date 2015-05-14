@@ -139,7 +139,7 @@ public class GUIMinion extends GuiScreen {
 			int recipeWidth = 108;
 			int recipeHeight = 54;
 			this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIBeastiary"));
-	        this.drawTexturedModalRect(this.windowX + (this.windowWidth / 2) - (recipeWidth / 2), this.windowY + this.windowHeight - recipeHeight - 4, 0, 256 - recipeHeight, recipeWidth, recipeHeight);
+	        this.drawTexturedModalRect(this.windowX + (this.windowWidth / 2) - (recipeWidth / 2), this.windowY + this.windowHeight - recipeHeight - 16, 0, 256 - recipeHeight, recipeWidth, recipeHeight);
 		}
     }
 	

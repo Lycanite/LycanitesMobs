@@ -41,7 +41,7 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 	}
 
 	// Spirit:
-	public int spiritCharge = 200;
+	public int spiritCharge = 100;
 	public int spiritMax = (this.spiritCharge * 10);
 	public int spirit = this.spiritMax;
 	public int spiritReserved = 0;
@@ -121,30 +121,30 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 		boolean creative = this.player.capabilities.isCreativeMode;
 
 		// Stats:
+		boolean sync = false;
+
+		// Spirit Stat Update:
+		this.spirit = Math.min(Math.max(this.spirit, 0), this.spiritMax - this.spiritReserved);
+		if(this.spirit < this.spiritMax - this.spiritReserved) {
+			this.spirit++;
+			if(!player.worldObj.isRemote && this.currentTick % 20 == 0 || this.spirit == this.spiritMax - this.spiritReserved) {
+				sync = true;
+			}
+		}
+
+		// Summoning Focus Stat Update:
+		this.summonFocus = Math.min(Math.max(this.summonFocus, 0), this.summonFocusMax);
+		if(this.summonFocus < this.summonFocusMax) {
+			this.summonFocus++;
+			if(!player.worldObj.isRemote && !creative && this.currentTick % 20 == 0
+					|| this.summonFocus == this.summonFocusMax
+					|| (player.getHeldItem() != null && player.getHeldItem().getItem() instanceof ItemStaffSummoning)) {
+				sync = true;
+			}
+		}
+
+		// Sync Stats To Client:
 		if(!player.worldObj.isRemote) {
-			boolean sync = false;
-
-			// Spirit Stat Update:
-			this.spirit = Math.min(Math.max(this.spirit, 0), this.spiritMax - this.spiritReserved);
-			if(this.spirit < this.spiritMax - this.spiritReserved) {
-				this.spirit++;
-				if(this.currentTick % 20 == 0 || this.spirit == this.spiritMax - this.spiritReserved) {
-					sync = true;
-				}
-			}
-
-			// Summoning Focus Stat Update:
-			this.summonFocus = Math.min(Math.max(this.summonFocus, 0), this.summonFocusMax);
-			if(this.summonFocus < this.summonFocusMax) {
-				this.summonFocus++;
-				if(!creative && this.currentTick % 20 == 0
-						|| this.summonFocus == this.summonFocusMax
-						|| (player.getHeldItem() != null && player.getHeldItem().getItem() instanceof ItemStaffSummoning)) {
-					sync = true;
-				}
-			}
-
-			// Sync Stats To Client:
 			if(sync) {
 				MessagePlayerStats message = new MessagePlayerStats(this);
 				LycanitesMobs.packetHandler.sendToPlayer(message, (EntityPlayerMP)this.player);
@@ -269,6 +269,7 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 
 	public void sendPetEntryRemoveRequest(PetEntry petEntry) {
 		if(!this.player.worldObj.isRemote) return;
+		petEntry.remove();
 		MessagePetEntryRemove message = new MessagePetEntryRemove(this, petEntry);
 		LycanitesMobs.packetHandler.sendToServer(message);
 	}
@@ -332,6 +333,9 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 		if(extTagCompound.hasKey("SummonFocus"))
 			this.summonFocus = extTagCompound.getInteger("SummonFocus");
 
+		if(extTagCompound.hasKey("Spirit"))
+			this.spirit = extTagCompound.getInteger("Spirit");
+
 		if(extTagCompound.hasKey("SelectedSummonSet"))
 			this.selectedSummonSet = extTagCompound.getInteger("SelectedSummonSet");
 		
@@ -353,10 +357,10 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 		NBTTagCompound extTagCompound = new NBTTagCompound();
 		
     	this.beastiary.writeToNBT(extTagCompound);
-        this.petManager.writeToNBT(extTagCompound);
+		this.petManager.writeToNBT(extTagCompound);
     	
 		extTagCompound.setInteger("SummonFocus", this.summonFocus);
-		
+		extTagCompound.setInteger("Spirit", this.spirit);
 		extTagCompound.setInteger("SelectedSummonSet", this.selectedSummonSet);
 		
 		NBTTagList nbtSummonSets = new NBTTagList();

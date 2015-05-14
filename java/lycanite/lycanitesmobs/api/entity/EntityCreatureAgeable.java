@@ -75,6 +75,8 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
     
     public void setFarmed() {
     	this.hasBeenFarmed = true;
+        if(this.timeUntilPortal > this.getPortalCooldown())
+            this.timeUntilPortal = this.getPortalCooldown();
     }
     
     // ========== Get Random Subspecies ==========

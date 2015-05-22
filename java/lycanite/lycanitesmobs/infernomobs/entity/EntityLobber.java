@@ -100,6 +100,14 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
         this.drops.add(new DropRate(new ItemStack(Items.blaze_powder), 0.5F).setMaxAmount(6));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("MagmaCharge")), 0.25F));
 	}
+
+    // ========== On Spawn ==========
+    /** This is called when the mob is first spawned to the world either through natural spawning or from a Spawn Egg. **/
+    public void onFirstSpawn() {
+        super.onFirstSpawn();
+        if(this.getSubspeciesIndex() == 3)
+            this.setSizeScale(this.sizeScale * 4);
+    }
     
     
     // ==================================================
@@ -119,15 +127,28 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
         // Fire Trail:
         if(!this.worldObj.isRemote && this.isMoving() && this.ticksExisted % 5 == 0) {
         	int trailHeight = 1;
+            int trailWidth = 1;
+            if(this.getSubspeciesIndex() >- 3)
+                trailWidth = 3;
         	for(int y = 0; y < trailHeight; y++) {
         		Block block = this.worldObj.getBlock((int)this.posX, (int)this.posY + y, (int)this.posZ);
-        		if(block == Blocks.air || block == Blocks.fire || block == Blocks.snow_layer || block == Blocks.tallgrass || block == ObjectManager.getBlock("frostfire"))
-        			this.worldObj.setBlock((int)this.posX, (int)this.posY + y, (int)this.posZ, Blocks.fire);
+        		if(block == Blocks.air || block == Blocks.fire || block == Blocks.snow_layer || block == Blocks.tallgrass || block == ObjectManager.getBlock("frostfire")) {
+                    if(trailWidth == 1)
+                        this.worldObj.setBlock((int) this.posX, (int) this.posY + y, (int) this.posZ, Blocks.fire);
+                    else
+                        for(int x = -(trailWidth / 2); x < (trailWidth / 2) + 1; x++) {
+                            for(int z = -(trailWidth / 2); z < (trailWidth / 2) + 1; z++) {
+                                this.worldObj.setBlock((int) this.posX + x, (int) this.posY + y, (int) this.posZ + z, Blocks.fire);
+                            }
+                        }
+                }
         	}
 		}
 
-        // Rare Subspecies - Melt Blocks:
-        if(!this.worldObj.isRemote && this.getSubspeciesIndex() >= 3 && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing") && this.lobberMelting && this.ticksExisted % 10 == 0 && this.lavaContact()) {
+        // Rare Subspecies Powers:
+        if(!this.worldObj.isRemote && this.getSubspeciesIndex() >= 3 && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing") && this.lobberMelting && this.ticksExisted % 10 == 0) {
+
+            // Melt Blocks:
             int range = 2;
             for(int w = -((int)Math.ceil(this.width) + range); w <= (Math.ceil(this.width) + range); w++)
                 for(int d = -((int)Math.ceil(this.width) + range); d <= (Math.ceil(this.width) + range); d++)
@@ -140,6 +161,15 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
                             this.worldObj.setBlock((int)this.posX + w, (int)this.posY + h, (int)this.posZ + d, Blocks.lava, metadata, 3);
                         }
                     }
+
+            // Random Projectiles:
+            if(this.ticksExisted % 40 == 0) {
+                EntityProjectileBase projectile = new EntityMagma(this.worldObj, this);
+                projectile.setProjectileScale(2f);
+                projectile.setThrowableHeading((2 * this.getRNG().nextFloat()) - 1, this.getRNG().nextFloat(), (2 * this.getRNG().nextFloat()) - 1, 1.2F, 6.0F);
+                this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+                this.worldObj.spawnEntityInWorld(projectile);
+            }
         }
         
         // Particles:
@@ -222,7 +252,7 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
         double d2 = target.posZ - this.posZ + accuracy;
         float f1 = MathHelper.sqrt_double(d0 * d0 + d2 * d2) * 0.2F;
         float velocity = 1.2F;
-        projectile.setThrowableHeading(d0, d1 + (double)f1, d2, velocity, 6.0F);
+        projectile.setThrowableHeading(d0, d1 + (double) f1, d2, velocity, 6.0F);
         
         // Launch:
         this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
@@ -254,7 +284,7 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
     public boolean canBurn() { return false; }
     
     @Override
-    public boolean waterDamage() { return true; }
+    public boolean waterDamage() { return this.getSubspeciesIndex() < 3; }
     
     @Override
     public boolean canBreatheUnderwater() {

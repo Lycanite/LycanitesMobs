@@ -319,7 +319,9 @@ public class EntityProjectileBase extends EntityThrowable {
      //                      Scale
      // ==================================================
      public void setProjectileScale(float newScale) {
-     	this.projectileScale = newScale;
+     	 this.projectileScale = newScale;
+         if(this.getThrower() != null && this.getThrower() instanceof EntityCreatureBase)
+             this.projectileScale *= ((EntityCreatureBase)this.getThrower()).sizeScale;
      }
      
      public float getProjectileScale() {

@@ -2581,7 +2581,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     // ========== Damage ==========
     /** Returns whether or not the given damage type is applicable, if not no damage will be taken. **/
     public boolean isDamageTypeApplicable(String type) {
-        if("inWall".equals(type) && this.getSubspeciesIndex() >= 3)
+        if(("inWall".equals(type) || "cactus".equals(type)) && this.getSubspeciesIndex() >= 3)
             return false;
         return true;
     }

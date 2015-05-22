@@ -126,7 +126,8 @@ public class InfernoMobs {
 
 		newMob = new MobInfo(group, "lobber", EntityLobber.class, 0x330011, 0xFF5500)
 		        .setPeaceful(false).setSummonCost(8).setDungeonLevel(2)
-		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
+		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"))
+				.addSubspecies(new Subspecies("umber", "rare"));
 		newMob.spawnInfo.setSpawnTypes("LAVA").setBlockCost(16)
 				.setSpawnWeight(2).setAreaLimit(2).setGroupLimits(1, 3).setLightDark(false, true);
 		ObjectManager.addMob(newMob);

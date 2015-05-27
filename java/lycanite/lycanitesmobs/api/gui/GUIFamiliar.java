@@ -142,6 +142,31 @@ public class GUIFamiliar extends GuiScreen {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIFamiliar"));
         this.drawTexturedModalRect(this.windowX, this.windowY, 0, 0, this.windowWidth, this.windowHeight);
+
+        if(this.petEntry == null)
+            return;
+
+        // Health and Respawn Bar:
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIInventoryCreature"));
+
+        int barWidth = 80;
+        int barHeight = 11;
+        int barX = this.centerX + 2;
+        int barY = this.windowY + 16;
+        int barU = 144;
+        int barV = 256 - (barHeight * 2);
+        this.drawTexturedModalRect(barX, barY, barU, barV, barWidth, barHeight);
+
+        if(!this.petEntry.isRespawning) {
+            barWidth = Math.round(barWidth * (this.petEntry.getHealth() / this.petEntry.getMaxHealth()));
+            barV = barV + barHeight;
+        }
+        else {
+            barWidth = barWidth - Math.round(barWidth * ((float)this.petEntry.respawnTime / (float)this.petEntry.respawnTimeMax));
+            barV = barV - barHeight;
+        }
+        this.drawTexturedModalRect(barX, barY, barU, barV, barWidth, barHeight);
 	}
 	
 	

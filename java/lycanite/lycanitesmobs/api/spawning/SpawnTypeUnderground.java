@@ -73,6 +73,9 @@ public class SpawnTypeUnderground extends SpawnTypeLand {
      */
     @Override
     public List<int[]> getSpawnCoordinates(World world, int x, int y, int z) {
+        if(world.provider.dimensionId == 1) // Act as Land Spawn Type in The End.
+            return super.getSpawnCoordinates(world, x, y, z);
+
     	List<int[]> blockCoords = null;
         int range = this.getRange(world);
         ChunkPosition originPos = new ChunkPosition(x, this.getYLevelForWorld(world), z);

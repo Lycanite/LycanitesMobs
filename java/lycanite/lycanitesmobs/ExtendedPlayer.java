@@ -93,6 +93,7 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
     // ==================================================
 	public void onJoinWorld() {
 		this.needsFirstSync = true;
+		this.setupPetManager = false;
 		
 		if(this.player.worldObj.isRemote)
 			return;
@@ -157,6 +158,7 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 			// Load Familiars:
 			Map<String, PetEntry> playerFamiliars = DonationFamiliars.instance.getFamiliarsForPlayer(this.player);
 			if(playerFamiliars != null) {
+				this.petManager.clearEntries("familiar");
 				for(PetEntry petEntry : playerFamiliars.values()) {
 					if(!this.petManager.hasEntry(petEntry)) {
 						this.petManager.addEntry(petEntry);
@@ -177,6 +179,8 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 		}
 
         // Pet Manager:
+		if(this.petManager.host != this.player)
+			this.petManager.host = this.player;
         this.petManager.onUpdate(player.worldObj);
 		
 		this.currentTick++;

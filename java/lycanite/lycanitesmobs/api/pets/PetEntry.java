@@ -279,8 +279,14 @@ public class PetEntry {
             // Entity Update:
             if(this.entity != null) {
                 this.entityTick++;
-                if(this.teleportEntity)
+
+                // Teleport Entity:
+                if(this.teleportEntity) {
+                    if(this.entity.worldObj != this.host.worldObj)
+                        this.entity.travelToDimension(this.host.worldObj.provider.dimensionId);
                     this.entity.setPosition(this.host.posX, this.host.posY, this.host.posZ);
+                }
+
                 if(entity instanceof EntityLivingBase) {
                     EntityLivingBase entityLiving = (EntityLivingBase)this.entity;
                     if(this.entityTick % 20 == 0 && entityLiving.getHealth() < entityLiving.getMaxHealth())
@@ -294,7 +300,7 @@ public class PetEntry {
         // Inactive Spawning:
         else {
             // Remove Entity If Spawned:
-            if(this.entity != null && this.entity.isEntityAlive()) {
+            if(this.entity != null) {
                 this.saveEntityNBT();
                 this.entity.setDead();
                 this.entity = null;

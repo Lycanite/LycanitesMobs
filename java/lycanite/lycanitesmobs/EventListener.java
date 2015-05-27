@@ -183,15 +183,11 @@ public class EventListener {
     // ==================================================
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void onAttackTarget(LivingSetAttackTargetEvent event) {
-		if(event.isCancelable() && event.isCanceled())
-	      return;
-		
 		// Better Invisibility:
 		if(event.entityLiving != null) {
 			if(!event.entityLiving.isPotionActive(Potion.nightVision) && event.target != null) {
 				if(event.target.isInvisible())
-					if(event.isCancelable())
-						event.setCanceled(true);
+					event.entityLiving.setRevengeTarget(null);
 			}
 		}
 	}
@@ -214,34 +210,30 @@ public class EventListener {
         if(event.source instanceof EntityDamageSource)
             entityDamageSource = (EntityDamageSource)event.source;
 
-        Entity damagingEntity = null;
-        if(entityDamageSource != null)
-            damagingEntity = entityDamageSource.getSourceOfDamage();
+//        Entity damagingEntity = null;
+//        if(entityDamageSource != null)
+//            damagingEntity = entityDamageSource.getSourceOfDamage();
 
-        // Entity Damage:
-        if(damagingEntity != null) {
+		// ========== Mounted Protection ==========
+		if(damagedEntity.ridingEntity != null) {
+			if(damagedEntity.ridingEntity instanceof EntityCreatureRideable) {
 
-            // ========== Mounted Protection ==========
-            if(damagedEntity.ridingEntity != null) {
-                if(damagedEntity.ridingEntity instanceof EntityCreatureRideable) {
+				// Prevent Mounted Entities from Suffocating:
+				if("inWall".equals(event.source.damageType)) {
+					event.ammount = 0;
+					event.setCanceled(true);
+					return;
+				}
 
-                    // Prevent Mounted Entities from Suffocating:
-                    if("inWall".equals(event.source.damageType)) {
-                        event.ammount = 0;
-                        event.setCanceled(true);
-                        return;
-                    }
-
-                    // Copy Mount Immunities to Rider:
-                    EntityCreatureRideable creatureRideable = (EntityCreatureRideable)event.entityLiving.ridingEntity;
-                    if(!creatureRideable.isDamageTypeApplicable(event.source.damageType)) {
-                        event.ammount = 0;
-                        event.setCanceled(true);
-                        return;
-                    }
-                }
-            }
-        }
+				// Copy Mount Immunities to Rider:
+				EntityCreatureRideable creatureRideable = (EntityCreatureRideable)event.entityLiving.ridingEntity;
+				if(!creatureRideable.isDamageTypeApplicable(event.source.damageType)) {
+					event.ammount = 0;
+					event.setCanceled(true);
+					return;
+				}
+			}
+		}
 	}
 	
 	

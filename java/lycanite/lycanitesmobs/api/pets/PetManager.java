@@ -119,6 +119,35 @@ public class PetManager {
         else if("familiar".equalsIgnoreCase(petEntry.getType()))
             this.familiars.remove(petEntry);
     }
+
+    /** Clears an entire list of entries, best used for clean loads. **/
+    public void clearEntries(String type) {
+        if("pet".equalsIgnoreCase(type)) {
+            for(PetEntry petEntry : this.pets)
+                this.allEntries.remove(petEntry.petEntryID);
+            this.pets = new ArrayList<PetEntry>();
+        }
+        else if("mount".equalsIgnoreCase(type)) {
+            for(PetEntry petEntry : this.mounts)
+                this.allEntries.remove(petEntry.petEntryID);
+            this.mounts = new ArrayList<PetEntry>();
+        }
+        else if("minion".equalsIgnoreCase(type)) {
+            for(PetEntry petEntry : this.minions)
+                this.allEntries.remove(petEntry.petEntryID);
+            this.minions = new ArrayList<PetEntry>();
+        }
+        else if("guardian".equalsIgnoreCase(type)) {
+            for(PetEntry petEntry : this.guardians)
+                this.allEntries.remove(petEntry.petEntryID);
+            this.guardians = new ArrayList<PetEntry>();
+        }
+        else if("familiar".equalsIgnoreCase(type)) {
+            for(PetEntry petEntry : this.familiars)
+                this.allEntries.remove(petEntry.petEntryID);
+            this.familiars = new ArrayList<PetEntry>();
+        }
+    }
 	
 	
 	// ==================================================
@@ -140,6 +169,10 @@ public class PetManager {
         // Entry Updates:
         int newSpiritReserved = 0;
 		for(PetEntry petEntry : this.allEntries.values()) {
+
+            // Owner Check:
+            if(petEntry.host != this.host)
+                petEntry.setOwner(this.host);
 
             // Pet and Mount Spirit Check:
             if(this.host instanceof EntityPlayer) {

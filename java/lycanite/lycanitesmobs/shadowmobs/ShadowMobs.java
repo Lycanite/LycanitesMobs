@@ -120,6 +120,7 @@ public class ShadowMobs {
 		        .addSubspecies(new Subspecies("crimson", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"))
                 .addSubspecies(new Subspecies("lunar", "rare"));
 		newMob.spawnInfo.setSpawnTypes("UNDERGROUND, DARKNESS")
+                .setBiomes("ALL").setDimensions("-1").setDimensionWhitelist(false)
 				.setSpawnWeight(8).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
         
@@ -127,6 +128,7 @@ public class ShadowMobs {
 		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1)
 		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("DEATH, SLEEP, MONSTER")
+                .setBiomes("SPOOKY").setDimensions("-1000").setDimensionWhitelist(false)
 				.setSpawnWeight(8).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 		AssetManager.addSound("phantom_say_jon", group, "entity.phantom.say.jon");
@@ -151,16 +153,16 @@ public class ShadowMobs {
                 .setPeaceful(true).setTameable(true).setSummonCost(3).setDungeonLevel(2)
                 .addSubspecies(new Subspecies("violet", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
         newMob.spawnInfo.setSpawnTypes("UNDERGROUND").setDespawn(false)
-                .setBiomes("ALL, -OCEAN").setDimensions("-1, 1").setDimensionWhitelist(false)
-                .setSpawnWeight(6).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
+                .setBiomes("ALL").setDimensions("-1").setDimensionWhitelist(false)
+                .setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
         ObjectManager.addMob(newMob);
 
         newMob = new MobInfo(group, "shade", EntityShade.class, 0x000402, 0x102336)
                 .setPeaceful(true).setTameable(true).setSummonCost(4).setDungeonLevel(3)
                 .addSubspecies(new Subspecies("keppel", "uncommon")).addSubspecies(new Subspecies("russet", "uncommon"));
         newMob.spawnInfo.setSpawnTypes("UNDERGROUND, DARKNESS").setDespawn(false)
-                .setBiomes("ALL, -OCEAN").setDimensions("-1, 1").setDimensionWhitelist(false)
-                .setSpawnWeight(1).setAreaLimit(2).setGroupLimits(1, 3).setLightDark(false, true);
+                .setBiomes("ALL").setDimensions("-1").setDimensionWhitelist(false)
+                .setSpawnWeight(2).setAreaLimit(2).setGroupLimits(1, 3).setLightDark(false, true);
         ObjectManager.addMob(newMob);
 
 		

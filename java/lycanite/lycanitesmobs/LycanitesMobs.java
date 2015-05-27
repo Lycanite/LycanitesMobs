@@ -45,7 +45,7 @@ public class LycanitesMobs {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String version = "1.11.0.0 - MC 1.7.10";
+	public static final String version = "1.11.0.1 - MC 1.7.10";
 	public static final String website = "http://lycanitesmobs.com";
 	public static final String websiteAPI = "http://api.lycanitesmobs.com";
 	public static final String websitePatreon = "https://www.patreon.com/lycanite";
@@ -89,7 +89,7 @@ public class LycanitesMobs {
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
 		group = new GroupInfo(this, name, achievementGlobalBaseID);
-        ConfigBase.versionCheck("1.10.12.1", version);
+        ConfigBase.versionCheck("1.11.0.1", version);
 		group.loadFromConfig();
 		config = ConfigBase.getConfig(group, "general");
 		config.setCategoryComment("Debug", "Set debug options to true to show extra debugging information in the console.");

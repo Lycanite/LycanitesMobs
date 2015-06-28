@@ -83,7 +83,7 @@ public class EntityShade extends EntityCreatureRideable implements IGroupPredato
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 20D);
+		baseAttributes.put("maxHealth", 40D);
 		baseAttributes.put("movementSpeed", 0.26D);
 		baseAttributes.put("knockbackResistance", 0.5D);
 		baseAttributes.put("followRange", 16D);

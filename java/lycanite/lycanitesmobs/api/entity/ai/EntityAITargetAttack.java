@@ -3,6 +3,9 @@ package lycanite.lycanitesmobs.api.entity.ai;
 import java.util.Collections;
 import java.util.List;
 
+import lycanite.lycanitesmobs.api.IGroupAlpha;
+import lycanite.lycanitesmobs.api.IGroupAnimal;
+import lycanite.lycanitesmobs.api.IGroupPredator;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import net.minecraft.command.IEntitySelector;
@@ -107,6 +110,12 @@ public class EntityAITargetAttack extends EntityAITarget {
     	// Own Class Check:
     	if(this.targetClass != this.host.getClass() && target.getClass() == this.host.getClass())
             return false;
+
+        // Predator Animal/Alpha Check:
+        if(this.targetClass == IGroupAnimal.class || this.targetClass == IGroupAlpha.class) {
+            if(target instanceof IGroupPredator)
+                return false;
+        }
     	
     	// Class Check:
     	if(!this.host.canAttackClass(target.getClass()))

@@ -2957,7 +2957,10 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 
     // ========== Boss Health Bar ==========
     public boolean showBossHealthBar() {
-        return this.getSubspeciesIndex() >= 3;
+        // Rare subspecies health bar:
+        if(this.getSubspeciesIndex() >= 3)
+            return Subspecies.rareHealthBars;
+        return false;
     }
     
     

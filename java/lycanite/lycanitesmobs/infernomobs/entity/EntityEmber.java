@@ -16,18 +16,18 @@ public class EntityEmber extends EntityProjectileBase {
     // ==================================================
  	//                   Constructors
  	// ==================================================
-    public EntityEmber(World par1World) {
-        super(par1World);
+    public EntityEmber(World world) {
+        super(world);
         this.setSize(0.3125F, 0.3125F);
     }
 
-    public EntityEmber(World par1World, EntityLivingBase par2EntityLivingBase) {
-        super(par1World, par2EntityLivingBase);
+    public EntityEmber(World world, EntityLivingBase entityLivingBase) {
+        super(world, entityLivingBase);
         this.setSize(0.3125F, 0.3125F);
     }
 
-    public EntityEmber(World par1World, double par2, double par4, double par6) {
-        super(par1World, par2, par4, par6);
+    public EntityEmber(World world, double x, double y, double z) {
+        super(world, x, y, z);
         this.setSize(0.3125F, 0.3125F);
     }
     

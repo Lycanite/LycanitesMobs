@@ -32,6 +32,9 @@ public class Subspecies {
     /** The drop amount scale of rare subspecies. **/
     public static int rareDropScale = 10;
 
+    /** Whether rare subspecies should show boss health bars or not. **/
+    public static boolean rareHealthBars = false;
+
     // ========== Subspecies General ==========
     /** The Mob Info of the mob this Subspecies belongs to. Set by MobInfo when this is added to it. **/
     public MobInfo mobInfo;
@@ -60,6 +63,8 @@ public class Subspecies {
         rareHealthScale = config.getDouble("Mob Variations", "Subspecies Uncommon Health Scale", rareHealthScale, "When a creature is set to the rare subspecies (Celestial, Lunar, etc) its health is multiplied by this value.");
         uncommonDropScale = config.getInt("Mob Variations", "Subspecies Uncommon Item Drops Scale", uncommonDropScale, "When a creature with the uncommon subspecies (Azure, Verdant, etc) dies, its item drops amount is multiplied by this value.");
         rareDropScale = config.getInt("Mob Variations", "Subspecies Uncommon Item Drops Scale", rareDropScale, "When a creature with the rare subspecies (Celestial, Lunar, etc) dies, its item drops amount is multiplied by this value.");
+
+        rareHealthBars = config.getBool("Mob Variations", "Subspecies Rare Health Bars", rareHealthBars, "If set to true, rare subspecies such as the Lunar Grue or Celestial Geonach will display boss health bars.");
     }
 
 

@@ -17,12 +17,7 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAIMoveRestriction;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.FlightNavigator;
-import lycanite.lycanitesmobs.api.info.DropRate;
-import lycanite.lycanitesmobs.api.info.ExtraMobBehaviour;
-import lycanite.lycanitesmobs.api.info.GroupInfo;
-import lycanite.lycanitesmobs.api.info.MobInfo;
-import lycanite.lycanitesmobs.api.info.SpawnInfo;
-import lycanite.lycanitesmobs.api.info.Subspecies;
+import lycanite.lycanitesmobs.api.info.*;
 import lycanite.lycanitesmobs.api.inventory.ContainerCreature;
 import lycanite.lycanitesmobs.api.inventory.InventoryCreature;
 import lycanite.lycanitesmobs.api.pets.PetEntry;
@@ -82,6 +77,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 	public int spawnEventCount = -1;
     /** The Pet Entry for this mob, this binds this mob to a entity for special interaction, it will also cause this mob to be removed if the entity it is bound to is removed or dead. **/
     public PetEntry petEntry;
+    /** If true, this mob will be treated as if it was spawned from an Altar, this is typically called directly by AltarInfo or by events triggered by AltarInfo. **/
+    public boolean altarSummoned = false;
 	
 	// Size:
     /** The width of this mob. XZ axis. **/
@@ -826,7 +823,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 	
 	
 	// ==================================================
-	//             Stat Multipliers and Boosts
+	//            Stat Multipliers and Boosts
 	// ==================================================
     /** Returns the base health for this mob. This is not the current max health. **/
     public double getBaseHealth() {
@@ -864,10 +861,17 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 		return MobInfo.difficultyMutlipliers.get(difficultyName.toUpperCase() + "-" + stat.toUpperCase());
 	}
 
+    /** Returns the Altar multiplier, usually used by Altar 'mini-boss' rare subspecies. **/
+    public double getAltarMultiplier(String stat) {
+        return AltarInfo.rareSubspeciesMutlipliers.get(stat.toUpperCase());
+    }
+
     // ========= Health ==========
     /** Returns the health scale of this mob. **/
     public double getHealthMultiplier() {
         double multiplier = this.mobInfo.multiplierHealth * this.getDifficultyMultiplier("health");
+        if(this.altarSummoned)
+            multiplier *= this.getAltarMultiplier("health");
         if(this.extraMobBehaviour != null)
             multiplier *= this.extraMobBehaviour.multiplierHealth;
         return multiplier;
@@ -884,6 +888,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     /** Returns the defense scale of this mob, see getDamageAfterDefense() for the logic. **/
     public double getDefenseMultiplier() {
     	double multiplier = this.mobInfo.multiplierDefense * this.getDifficultyMultiplier("defense");
+        if(this.altarSummoned)
+            multiplier *= this.getAltarMultiplier("defense");
     	if(this.extraMobBehaviour != null)
     		multiplier *= this.extraMobBehaviour.multiplierDefense;
     	return multiplier;
@@ -900,6 +906,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     /** Returns the speed scale of this mob. **/
     public double getSpeedMultiplier() {
     	double multiplier = this.mobInfo.multiplierSpeed * this.getDifficultyMultiplier("speed");
+        if(this.altarSummoned)
+            multiplier *= this.getAltarMultiplier("speed");
     	if(this.extraMobBehaviour != null)
     		multiplier *= this.extraMobBehaviour.multiplierSpeed;
     	return multiplier;
@@ -916,6 +924,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     /**Returns the damage scale of this mob. **/
     public double getDamageMultiplier() {
     	double multiplier = this.mobInfo.multiplierDamage * this.getDifficultyMultiplier("damage");
+        if(this.altarSummoned)
+            multiplier *= this.getAltarMultiplier("damage");
     	if(this.extraMobBehaviour != null)
     		multiplier *= this.extraMobBehaviour.multiplierDamage;
     	return multiplier;
@@ -932,6 +942,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     /** Used to scale the rate of abilities such as attack speed. Note: Abilities are normally capped at around 10 ticks minimum due to performance issues and the entity update rate. **/
     public double getHasteMultiplier() {
     	double multiplier = this.mobInfo.multiplierHaste * this.getDifficultyMultiplier("haste");
+        if(this.altarSummoned)
+            multiplier *= this.getAltarMultiplier("haste");
     	if(this.extraMobBehaviour != null)
     		multiplier *= this.extraMobBehaviour.multiplierHaste;
     	return multiplier;
@@ -957,6 +969,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     /** Returns the duration scale of any effects that this mob uses, can include both buffs and debuffs on the enemy. **/
     public double getEffectMultiplier() {
     	double multiplier = this.mobInfo.multiplierEffect * this.getDifficultyMultiplier("effect");
+        if(this.altarSummoned)
+            multiplier *= this.getAltarMultiplier("effect");
     	if(this.extraMobBehaviour != null)
     		multiplier *= this.extraMobBehaviour.multiplierEffect;
     	return multiplier;
@@ -985,6 +999,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     /** Returns the armor piercing multipler. **/
     public double getPierceMultiplier() {
     	double multiplier = this.mobInfo.multiplierPierce * this.getDifficultyMultiplier("pierce");
+        if(this.altarSummoned)
+            multiplier *= this.getAltarMultiplier("pierce");
     	if(this.extraMobBehaviour != null)
     		multiplier *= this.extraMobBehaviour.multiplierPierce;
     	return multiplier;

@@ -121,7 +121,8 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
 	@Override
 	public void loadItemDrops() {
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("YaleMeatRaw")), 1).setMinAmount(1).setMaxAmount(3));
-		this.woolDrop = new DropRate(new ItemStack(Blocks.wool), 1).setMinAmount(1).setMaxAmount(3);
+        if(this.woolDrop == null)
+		    this.woolDrop = new DropRate(new ItemStack(Blocks.wool), 1).setMinAmount(1).setMaxAmount(3);
         this.drops.add(this.woolDrop);
 	}
 	
@@ -185,6 +186,8 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
 	
 	@Override
 	public void setColor(int color) {
+        if(this.woolDrop == null)
+            this.woolDrop = new DropRate(new ItemStack(Blocks.wool), 1).setMinAmount(1).setMaxAmount(3);
 		this.woolDrop.setDrop(new ItemStack(Blocks.wool, 1, color));
 		super.setColor(color);
 	}

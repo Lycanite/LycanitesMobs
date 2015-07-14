@@ -43,6 +43,7 @@ public class ItemSoulstone extends ItemBase {
 	//                       Use
 	// ==================================================
 	// ========== Entity Interaction ==========
+    @Override
     public boolean onItemRightClickOnEntity(EntityPlayer player, Entity entity, ItemStack itemStack) {
     	ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
     	if(playerExt == null)

@@ -4,11 +4,7 @@ import lycanite.lycanitesmobs.api.command.CommandMain;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.entity.EntityFear;
 import lycanite.lycanitesmobs.api.entity.EntityPortal;
-import lycanite.lycanitesmobs.api.info.GroupInfo;
-import lycanite.lycanitesmobs.api.info.ItemInfo;
-import lycanite.lycanitesmobs.api.info.MobInfo;
-import lycanite.lycanitesmobs.api.info.ObjectLists;
-import lycanite.lycanitesmobs.api.info.SpawnInfo;
+import lycanite.lycanitesmobs.api.info.*;
 import lycanite.lycanitesmobs.api.item.*;
 import lycanite.lycanitesmobs.api.mobevent.*;
 import lycanite.lycanitesmobs.api.mods.DLDungeons;
@@ -134,6 +130,10 @@ public class LycanitesMobs {
 
         // ========== Item Info ==========
         ItemInfo.loadGlobalSettings();
+
+
+        // ========== Altar Info ==========
+        AltarInfo.loadGlobalSettings();
 		
 		
 		// ========== Register Event Listeners ==========
@@ -148,6 +148,7 @@ public class LycanitesMobs {
 		// ========== Create Items ==========
 		ObjectManager.addItem("soulgazer", new ItemSoulgazer());
 		ObjectManager.addItem("soulstone", new ItemSoulstone());
+        ObjectManager.addItem("soulkey", new ItemSoulkey());
 		ObjectManager.addItem("summoningstaff", new ItemStaffSummoning());
 		ObjectManager.addItem("stablesummoningstaff", new ItemStaffStable());
 		ObjectManager.addItem("bloodsummoningstaff", new ItemStaffBlood());

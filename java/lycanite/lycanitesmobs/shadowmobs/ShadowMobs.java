@@ -17,6 +17,7 @@ import lycanite.lycanitesmobs.shadowmobs.block.BlockShadowfire;
 import lycanite.lycanitesmobs.shadowmobs.dispenser.DispenserBehaviorBloodleech;
 import lycanite.lycanitesmobs.shadowmobs.dispenser.DispenserBehaviorSpectralbolt;
 import lycanite.lycanitesmobs.shadowmobs.entity.*;
+import lycanite.lycanitesmobs.shadowmobs.info.AltarInfoLunarGrue;
 import lycanite.lycanitesmobs.shadowmobs.item.*;
 import lycanite.lycanitesmobs.shadowmobs.mobevent.MobEventBlackPlague;
 import lycanite.lycanitesmobs.shadowmobs.mobevent.MobEventShadowGames;
@@ -223,7 +224,7 @@ public class ShadowMobs {
         mobEvent = new MobEventBlackPlague("blackplague", this.group).setDimensions("-1");
         mobEvent.minDay = 10;
         eventSpawner = new SpawnTypeLand("blackplague")
-                .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
+                .setChance(1.0D).setBlockLimit(32).setMobLimit(8);
         eventSpawner.materials = new Material[] {Material.air};
         eventSpawner.ignoreBiome = true;
         eventSpawner.ignoreLight = true;
@@ -234,9 +235,14 @@ public class ShadowMobs {
         eventSpawner.addSpawn(MobInfo.getFromName("cryptzombie"));
         mobEvent.addSpawner(eventSpawner);
         MobEventManager.instance.addWorldEvent(mobEvent);
-		
-		
-		// ========== Crafting ==========
+
+
+        // ========== Altars ==========
+        AltarInfo lunarGrueAltar = new AltarInfoLunarGrue("LunarGrueAltar");
+        AltarInfo.addAltar(lunarGrueAltar);
+
+
+        // ========== Crafting ==========
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
 				new ItemStack(ObjectManager.getItem("bloodchili"), 1, 0),
 				new Object[] {

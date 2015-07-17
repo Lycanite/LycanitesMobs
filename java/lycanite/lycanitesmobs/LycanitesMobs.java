@@ -235,6 +235,14 @@ public class LycanitesMobs {
 						Character.valueOf('S'), ObjectManager.getItem("soulgazer"),
 						Character.valueOf('P'), Items.ender_pearl
 				}));
+
+        GameRegistry.addRecipe(new ShapedOreRecipe(
+                new ItemStack(ObjectManager.getItem("soulkey"), 1, 0),
+                new Object[] { "DND", "DSD", "DDD",
+                        Character.valueOf('N'), Items.nether_star,
+                        Character.valueOf('S'), ObjectManager.getItem("soulgazer"),
+                        Character.valueOf('D'), Items.diamond
+                }));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("summoningstaff"), 1, 0),

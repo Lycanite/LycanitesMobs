@@ -25,6 +25,7 @@ import lycanite.lycanitesmobs.infernomobs.entity.EntityKhalk;
 import lycanite.lycanitesmobs.infernomobs.entity.EntityLobber;
 import lycanite.lycanitesmobs.infernomobs.entity.EntityMagma;
 import lycanite.lycanitesmobs.infernomobs.entity.EntityScorchfireball;
+import lycanite.lycanitesmobs.infernomobs.info.AltarInfoUmberLobber;
 import lycanite.lycanitesmobs.infernomobs.item.*;
 import lycanite.lycanitesmobs.infernomobs.mobevent.MobEventCinderfall;
 import lycanite.lycanitesmobs.infernomobs.mobevent.MobEventEruption;
@@ -181,9 +182,11 @@ public class InfernoMobs {
 		// ========== Set Current Group ==========
 		ObjectManager.setCurrentGroup(this.group);
 
+
         // ========== World Generation ==========
         GameRegistry.registerWorldGenerator(new WorldGeneratorInferno(), 0);
-		
+
+
 		// ========== Mob Events ==========
         MobEventBase mobEvent = new MobEventCinderfall("cinderfall", this.group).setDimensions("1");
         SpawnTypeBase eventSpawner = new SpawnTypeSky("cinderfall")
@@ -210,7 +213,13 @@ public class InfernoMobs {
         eventSpawner.addSpawn(MobInfo.getFromName("khalk"), 2);
         mobEvent.addSpawner(eventSpawner);
         MobEventManager.instance.addWorldEvent(mobEvent);
-		
+
+
+        // ========== Altars ==========
+        AltarInfo umberLobberAltar = new AltarInfoUmberLobber("UmberLobberAltar");
+        AltarInfo.addAltar(umberLobberAltar);
+
+
 		// ========== Crafting ==========
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
 				new ItemStack(ObjectManager.getItem("searingtaco"), 1, 0),
@@ -284,7 +293,8 @@ public class InfernoMobs {
 					Items.ghast_tear
 				}
 			));
-		
+
+
 		// ========== Smelting ==========
 		//GameRegistry.addSmelting(ObjectManager.getItem("sauropodmeatraw").itemID, new ItemStack(ObjectManager.getItem("sauropodmeatcooked"), 1), 0.5f);
 	}

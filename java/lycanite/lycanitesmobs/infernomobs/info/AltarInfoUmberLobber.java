@@ -1,19 +1,20 @@
-package lycanite.lycanitesmobs.shadowmobs.info;
+package lycanite.lycanitesmobs.infernomobs.info;
 
+import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.info.AltarInfo;
-import lycanite.lycanitesmobs.shadowmobs.entity.EntityGrue;
+import lycanite.lycanitesmobs.infernomobs.entity.EntityLobber;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 
-public class AltarInfoLunarGrue extends AltarInfo {
+public class AltarInfoUmberLobber extends AltarInfo {
 
     // ==================================================
     //                    Constructor
     // ==================================================
-    public AltarInfoLunarGrue(String name) {
+    public AltarInfoUmberLobber(String name) {
         super(name);
     }
 
@@ -44,12 +45,6 @@ public class AltarInfoLunarGrue extends AltarInfo {
         // Lower:
         if(world.getBlock(x, y - 1, z) != bodyBlock)
             return false;
-        if(world.getBlock(x, y - 2, z) != bodyBlock)
-            return false;
-        if(world.getBlock(x, y - 3, z) != bodyBlock)
-            return false;
-        if(world.getBlock(x, y - 4, z) != bodyBlock)
-            return false;
 
         // X Rotation:
         if(this.checkRotationX(bodyBlock, entity, world, x, y, z))
@@ -77,6 +72,22 @@ public class AltarInfoLunarGrue extends AltarInfo {
         if(world.getBlock(x + 2, y + 1, z) != bodyBlock)
             return false;
 
+        // Left Leg:
+        if(world.getBlock(x - 1, y - 1, z) != bodyBlock)
+            return false;
+        if(world.getBlock(x - 1, y - 2, z) != bodyBlock)
+            return false;
+        if(world.getBlock(x - 2, y - 2, z) != bodyBlock)
+            return false;
+
+        // Right Leg:
+        if(world.getBlock(x + 1, y - 1, z) != bodyBlock)
+            return false;
+        if(world.getBlock(x + 1, y - 2, z) != bodyBlock)
+            return false;
+        if(world.getBlock(x + 2, y - 2, z) != bodyBlock)
+            return false;
+
         return true;
     }
 
@@ -96,6 +107,22 @@ public class AltarInfoLunarGrue extends AltarInfo {
         if(world.getBlock(x, y + 2, z + 2) != bodyBlock)
             return false;
         if(world.getBlock(x, y + 1, z + 2) != bodyBlock)
+            return false;
+
+        // Left Leg:
+        if(world.getBlock(x, y - 1, z - 1) != bodyBlock)
+            return false;
+        if(world.getBlock(x, y - 2, z - 1) != bodyBlock)
+            return false;
+        if(world.getBlock(x, y - 2, z - 2) != bodyBlock)
+            return false;
+
+        // Right Leg:
+        if(world.getBlock(x, y - 1, z + 1) != bodyBlock)
+            return false;
+        if(world.getBlock(x, y - 2, z + 1) != bodyBlock)
+            return false;
+        if(world.getBlock(x, y - 2, z + 2) != bodyBlock)
             return false;
 
         return true;
@@ -127,12 +154,12 @@ public class AltarInfoLunarGrue extends AltarInfo {
         entity.motionY = 0.5D;
 
         // Spawn Mini Boss:
-        EntityCreatureBase entityGrue = new EntityGrue(world);
-        entityGrue.altarSummoned = true;
-        entityGrue.forceBossHealthBar = true;
-        entityGrue.setSubspecies(3, true);
-        entityGrue.setLocationAndAngles(x, y - 2, z, 0, 0);
-        world.spawnEntityInWorld(entityGrue);
-        entityGrue.destroyArea(x, y, z, 10000, false, 2);
+        EntityCreatureBase entityLobber = new EntityLobber(world);
+        entityLobber.altarSummoned = true;
+        entityLobber.forceBossHealthBar = true;
+        entityLobber.setSubspecies(3, true);
+        entityLobber.setLocationAndAngles(x, y - 2, z, 0, 0);
+        world.spawnEntityInWorld(entityLobber);
+        entityLobber.destroyArea(x, y, z, 10000, false, 2);
     }
 }

@@ -79,6 +79,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     public PetEntry petEntry;
     /** If true, this mob will be treated as if it was spawned from an Altar, this is typically called directly by AltarInfo or by events triggered by AltarInfo. **/
     public boolean altarSummoned = false;
+    /** If true, this mob will show a boss health bar, regardless of other properties, unless overridden by a subclass. **/
+    public boolean forceBossHealthBar = false;
 	
 	// Size:
     /** The width of this mob. XZ axis. **/
@@ -2973,6 +2975,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 
     // ========== Boss Health Bar ==========
     public boolean showBossHealthBar() {
+        if(this.forceBossHealthBar)
+            return true;
         // Rare subspecies health bar:
         if(this.getSubspeciesIndex() >= 3)
             return Subspecies.rareHealthBars;

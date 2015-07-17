@@ -1,6 +1,7 @@
 package lycanite.lycanitesmobs.api.item;
 
 import lycanite.lycanitesmobs.ExtendedPlayer;
+import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.info.AltarInfo;
@@ -42,37 +43,24 @@ public class ItemSoulkey extends ItemBase {
 	// ==================================================
     @Override
     public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int facing, float par8, float par9, float par10) {
-        if(!AltarInfo.checkAltarsEnabled())
+        if(!AltarInfo.checkAltarsEnabled()) {
+            String message = StatCollector.translateToLocal("message.soulkey.disabled");
+            player.addChatMessage(new ChatComponentText(message));
             return false;
-
-        // Apply Facing Direction to Block Coords:
-        if (facing == 0) {
-            --y;
-        }
-        if (facing == 1)  {
-            ++y;
-        }
-        if (facing == 2) {
-            --z;
-        }
-        if (facing == 3) {
-            ++z;
-        }
-        if (facing == 4) {
-            --x;
-        }
-        if (facing == 5) {
-            ++x;
         }
 
         // Get Possible Altars:
         List<AltarInfo> possibleAltars = new ArrayList<AltarInfo>();
         for(AltarInfo altarInfo : AltarInfo.altars.values()) {
-            if(altarInfo.quickCheck(player, world, x, y, z))
+            if(altarInfo.quickCheck(player, world, x, y, z)) {
                 possibleAltars.add(altarInfo);
+            }
         }
-        if(possibleAltars.size() < 1)
+        if(possibleAltars.size() < 1) {
+            String message = StatCollector.translateToLocal("message.soulkey.none");
+            player.addChatMessage(new ChatComponentText(message));
             return false;
+        }
 
         // Activate First Valid Altar:
         for(AltarInfo altarInfo : possibleAltars) {
@@ -86,9 +74,13 @@ public class ItemSoulkey extends ItemBase {
                         player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack)null);
                 }
                 altarInfo.activate(player, world, x, y, z);
+                String message = StatCollector.translateToLocal("message.soulkey.active");
+                player.addChatMessage(new ChatComponentText(message));
                 return true;
             }
         }
+        String message = StatCollector.translateToLocal("message.soulkey.invalid");
+        player.addChatMessage(new ChatComponentText(message));
 
         return false;
     }

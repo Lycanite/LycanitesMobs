@@ -58,9 +58,11 @@ subspecies.umber.name=Umber
 #
 # ========== Items ==========
 item.soulgazer.name=Soulgazer
-item.soulgazer.description=Use on a creature to add it to the Beastiary.
+item.soulgazer.description=Use on a creature to add it to the Beastiary. To open your Beastiary, either click on the Beastiary tab of your survival inventory or press the Beastiary key (set via the Controls menu).
 item.soulstone.name=Soulstone
 item.soulstone.description=Use on a tamed creature to bind it to your spirit allowing you to summon and dismiss it anywhere anytime. Bound pets or mounts will also respawn after death.
+item.soulkey.name=Soulkey
+item.soulkey.description=Use to activate a summoning altar to call for a rare monster or activate a special event.
 item.summoningstaff.name=Summoning Staff
 item.summoningstaff.description=Summon minions to do your bidding! Start using to create a portal, over time the portal will drain your Summoning Focus (above your hunger bar).
 item.mobtoken.name=Mob Token
@@ -154,6 +156,10 @@ message.soulstone.invalid=The Soulstone cannot bind to this creature.
 message.soulstone.exists=This creature is already bound.
 message.soulstone.pet.added=Your %creature% has been bound, you will now find it in your Pet Manager.
 message.soulstone.mount.added=Your %creature% has been bound, you will now find it in your Mount Manager.
+message.soulkey.disabled=Altars are disabled.
+message.soulkey.none=The Soulkey is unable to locate an Altar.
+message.soulkey.invalid=The Soulkey begins to trigger the Altar... But the Altar is not correctly built and fails!
+message.soulkey.active=The Soulkey activates the Altar!
 message.pet.tamed=The %creature% seems to love you now!
 message.pet.tamefail=The %creature% wants more!
 message.pet.mount.baby=The %creature% is too young to carry you!

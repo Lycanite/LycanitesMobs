@@ -1113,6 +1113,15 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         	this.onFirstSpawn();
         	this.firstSpawn = false;
         }
+
+        // Prevent Creative Attack Target:
+        if(this.hasAttackTarget()) {
+            if(this.getAttackTarget() instanceof EntityPlayer) {
+                EntityPlayer targetPlayer = (EntityPlayer)this.getAttackTarget();
+                if(targetPlayer.capabilities.isCreativeMode)
+                    this.setAttackTarget(null);
+            }
+        }
         
         // Fleeing:
         if(this.hasAvoidTarget()) {
@@ -1652,6 +1661,11 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 	public boolean canAttackEntity(EntityLivingBase targetEntity) {
 		if(!MobInfo.mobsAttackVillagers && targetEntity instanceof EntityVillager)
 			return false;
+        if(targetEntity instanceof EntityPlayer) {
+            EntityPlayer targetPlayer = (EntityPlayer)targetEntity;
+            if(targetPlayer.capabilities.isCreativeMode)
+                return false;
+        }
 		return true;
 	}
 	
@@ -2244,7 +2258,11 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     	else if(this.getSubspeciesIndex() > 0)
     		subspeciesScale = Subspecies.uncommonDropScale;
     	for(DropRate dropRate : this.drops) {
-    		int quantity = dropRate.getQuantity(this.rand, lootLevel) * subspeciesScale;
+            if(dropRate.subspeciesID >= 0 && dropRate.subspeciesID != this.getSubspeciesIndex())
+                continue;
+    		int quantity = dropRate.getQuantity(this.rand, lootLevel);
+            if(dropRate.subspeciesID < 0)
+                quantity *= subspeciesScale;
     		if(this.extraMobBehaviour != null && this.extraMobBehaviour.itemDropMultiplierOverride != 1)
     			quantity = Math.round((float)quantity * (float)this.extraMobBehaviour.itemDropMultiplierOverride);
     		ItemStack dropStack = null;

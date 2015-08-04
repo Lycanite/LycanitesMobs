@@ -1,26 +1,24 @@
 package lycanite.lycanitesmobs.api.info;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import cpw.mods.fml.common.registry.EntityRegistry;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
-import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.mods.DLDungeons;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.stats.Achievement;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
-import cpw.mods.fml.common.registry.EntityRegistry;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class MobInfo {
@@ -269,23 +267,33 @@ public class MobInfo {
         // Load Item Drops:
         config.setCategoryComment("Default Item Drops", "If false, only custom item drops are dropped.");
         this.defaultDrops = config.getBool("Default Item Drops", this.getCfgName("Default Drops"), this.defaultDrops);
+
         config.setCategoryComment("Custom Item Drops", "Allows for custom items drops per mob. Format is: mod:item,metadata,chance,min,max Multiple drops should be semicolon separated and chances are in decimal format. minecraft:wool;2;0.25;0;3 is Green Wool with a 25% drop rate and will drop 0 to 3 blocks. Be sure to use a colon for mod:item and semicolons for everything else.");
         String customDropsString = config.getString("Custom Item Drops", this.getCfgName("Custom Drops"), "");
         if(customDropsString != null && customDropsString.length() > 0) {
             for(String customDropEntryString : customDropsString.split(";")) {
                 String[] customDropValues = customDropEntryString.split(",");
                 if(customDropValues.length >= 5) {
+
                     String dropName = customDropValues[0];
                     int dropMeta = Integer.parseInt(customDropValues[1]);
                     float dropChance = Math.max(0F, Math.min(1F, Float.parseFloat(customDropValues[2])));
                     int dropMin = Integer.parseInt(customDropValues[3]);
                     int dropMax = Integer.parseInt(customDropValues[4]);
+                    int subspeciesID = -1;
+                    if(customDropValues.length >= 6)
+                        subspeciesID = Integer.parseInt(customDropValues[5]);
+
                     ItemStack drop = null;
                     if(Item.itemRegistry.getObject(dropName) != null)
                         drop = new ItemStack((Item)Item.itemRegistry.getObject(dropName), 1, dropMeta);
                     else if(Block.blockRegistry.getObject(dropName) != null)
                         drop = new ItemStack((Block)Block.blockRegistry.getObject(dropName), 1, dropMeta);
-                    this.customDrops.add(new DropRate(drop, dropChance).setMinAmount(dropMin).setMaxAmount(dropMax));
+
+                    DropRate dropRate = new DropRate(drop, dropChance).setMinAmount(dropMin).setMaxAmount(dropMax);
+                    dropRate.setSubspecies(subspeciesID);
+
+                    this.customDrops.add(dropRate);
                 }
             }
         }

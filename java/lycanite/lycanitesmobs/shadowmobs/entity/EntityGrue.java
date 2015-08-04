@@ -92,6 +92,7 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
 	public void loadItemDrops() {
         this.drops.add(new DropRate(new ItemStack(Items.ender_pearl), 0.5F).setMaxAmount(2));
         this.drops.add(new DropRate(new ItemStack(Blocks.obsidian), 0.5F).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("soulstoneshadow")), 1F).setMaxAmount(1).setSubspecies(3));
 	}
 
     // ========== On Spawn ==========

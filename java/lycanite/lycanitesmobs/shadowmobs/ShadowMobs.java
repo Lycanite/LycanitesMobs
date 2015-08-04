@@ -73,6 +73,7 @@ public class ShadowMobs {
 		
 		// ========== Create Items ==========
 		ObjectManager.addItem("shadowegg", new ItemShadowEgg());
+        ObjectManager.addItem("soulstoneshadow", new ItemSoulstoneShadow(group));
 		
 		ObjectManager.addItem("spectralboltcharge", new ItemSpectralboltCharge());
 		ObjectManager.addItem("spectralboltscepter", new ItemScepterSpectralbolt(), 2, 1, 1);

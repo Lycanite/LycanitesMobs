@@ -10,7 +10,11 @@ import java.util.Map;
 
 public class AltarInfo {
     // ========== Global Settings ==========
+    /** If false, altars wont work. **/
     public static boolean altarsEnabled = true;
+
+    /** If set to true, Altars will only activate in dimensions that the monster spawned or event started is allowed in. **/
+    public static boolean checkDimensions = false;
 
     /** A static map containing all the global multipliers for each stat applied to rare subspecies spawned via Altars. **/
     public static Map<String, Double> rareSubspeciesMutlipliers = new HashMap<String, Double>();
@@ -30,6 +34,7 @@ public class AltarInfo {
         ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "general");
         config.setCategoryComment("Altars", "Altars are block arrangements that can be activated using Soulkeys to summon rare subspecies as mini bosses or trigger events including boss events.");
         altarsEnabled = config.getBool("Altars", "Altars Enabled", altarsEnabled, "Set to false to disable altars, Soulkeys can still be crafted but wont work on Altars.");
+        checkDimensions = config.getBool("Altars", "Check Dimension", checkDimensions, "If set to true, Altars will only activate in dimensions that the monster spawned or event started is allowed in.");
 
 
         String[] statNames = new String[] {"Health", "Defense", "Speed", "Damage", "Haste", "Effect", "Pierce"};
@@ -92,8 +97,8 @@ public class AltarInfo {
     // ==================================================
     //                     Activate
     // ==================================================
-    /** Called when this Altar should activate. This will typically destroy the Altar and summon a rare mob or activate an event such as a boss event. **/
-    public void activate(Entity entity, World world, int x, int y, int z) {
-
+    /** Called when this Altar should activate. This will typically destroy the Altar and summon a rare mob or activate an event such as a boss event. If false is returned then the activation did not work, this is the place to check for things like dimensions. **/
+    public boolean activate(Entity entity, World world, int x, int y, int z) {
+        return false;
     }
 }

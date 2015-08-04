@@ -1,6 +1,5 @@
 package lycanite.lycanitesmobs.infernomobs.info;
 
-import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.info.AltarInfo;
 import lycanite.lycanitesmobs.infernomobs.entity.EntityLobber;
@@ -24,14 +23,14 @@ public class AltarInfoUmberLobber extends AltarInfo {
     // ==================================================
     /** Called first when checking for a valid altar, this should be fairly lightweight such as just checking if the first block checked is valid, a more in depth check if then done after. **/
     public boolean quickCheck(Entity entity, World world, int x, int y, int z) {
-        if(world.getBlock(x, y, z) == Blocks.diamond_block)
-            return true;
-        return false;
+        if(world.getBlock(x, y, z) != Blocks.diamond_block)
+            return false;
+        return true;
     }
 
     /** Called if the QuickCheck() is passed, this should check the entire altar structure and if true is returned, the altar will activate. **/
     public boolean fullCheck(Entity entity, World world, int x, int y, int z) {
-        if(world.getBlock(x, y, z) != Blocks.diamond_block)
+        if(!this.quickCheck(entity, world, x, y, z))
             return false;
 
         Block bodyBlock = Blocks.obsidian;
@@ -132,10 +131,15 @@ public class AltarInfoUmberLobber extends AltarInfo {
     // ==================================================
     //                     Activate
     // ==================================================
-    /** Called when this Altar should activate. This will typically destroy the Altar and summon a rare mob or activate an event such as a boss event. **/
-    public void activate(Entity entity, World world, int x, int y, int z) {
+    /** Called when this Altar should activate. This will typically destroy the Altar and summon a rare mob or activate an event such as a boss event. If false is returned then the activation did not work, this is the place to check for things like dimensions. **/
+    public boolean activate(Entity entity, World world, int x, int y, int z) {
         if(world.isRemote)
-            return;
+            return true;
+
+        // Create Mini Boss:
+        EntityCreatureBase entityLobber = new EntityLobber(world);
+        if(checkDimensions && !entityLobber.isNativeDimension(world))
+            return false;
 
         // Destroy Altar:
         for(int xTarget = x - 4; xTarget <= x + 4; xTarget++) {
@@ -154,12 +158,13 @@ public class AltarInfoUmberLobber extends AltarInfo {
         entity.motionY = 0.5D;
 
         // Spawn Mini Boss:
-        EntityCreatureBase entityLobber = new EntityLobber(world);
         entityLobber.altarSummoned = true;
         entityLobber.forceBossHealthBar = true;
         entityLobber.setSubspecies(3, true);
         entityLobber.setLocationAndAngles(x, y - 2, z, 0, 0);
         world.spawnEntityInWorld(entityLobber);
         entityLobber.destroyArea(x, y, z, 10000, false, 2);
+
+        return true;
     }
 }

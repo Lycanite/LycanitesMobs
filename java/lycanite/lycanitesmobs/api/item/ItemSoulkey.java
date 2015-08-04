@@ -73,7 +73,11 @@ public class ItemSoulkey extends ItemBase {
                     if (itemStack.stackSize <= 0)
                         player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack)null);
                 }
-                altarInfo.activate(player, world, x, y, z);
+                if(!altarInfo.activate(player, world, x, y, z)) {
+                    String message = StatCollector.translateToLocal("message.soulkey.badlocation");
+                    player.addChatMessage(new ChatComponentText(message));
+                    return false;
+                }
                 String message = StatCollector.translateToLocal("message.soulkey.active");
                 player.addChatMessage(new ChatComponentText(message));
                 return true;

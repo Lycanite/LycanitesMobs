@@ -87,6 +87,7 @@ public class InfernoMobs {
 		
 		// ========== Create Items ==========
 		ObjectManager.addItem("infernoegg", new ItemInfernoEgg());
+        ObjectManager.addItem("soulstoneinferno", new ItemSoulstoneInferno(group));
 		
 		ObjectManager.addItem("cephignismeatcooked", new ItemCustomFood("cephignismeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(Potion.fireResistance.id, 20, 2, 1.0F).setAlwaysEdible());
 		ObjectLists.addItem("cookedfish", ObjectManager.getItem("cephignismeatcooked"));

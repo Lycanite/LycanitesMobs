@@ -54,6 +54,8 @@ achievement.shade.tame.desc=Tame a Shade.
 #
 # Items
 item.shadowspawn.name=Spawn
+item.soulstoneshadow.name=Shadow Soulstone
+item.soulstoneshadow.description=A dark soul is contained within! Use this item to release what is inside!
 item.chupacabrameatraw.name=Raw Chupacabra Meat
 item.chupacabrameatraw.description=Scaley flesh that oozes with blood. Eating it raw can cause terrifying hallucinations!
 item.chupacabrameatcooked.name=Cooked Chupacabra Meat

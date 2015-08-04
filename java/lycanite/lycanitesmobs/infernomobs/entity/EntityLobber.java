@@ -98,7 +98,8 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
         this.drops.add(new DropRate(new ItemStack(Items.coal), 1.0F).setMaxAmount(16));
         this.drops.add(new DropRate(new ItemStack(Items.magma_cream), 0.75F).setMaxAmount(3));
         this.drops.add(new DropRate(new ItemStack(Items.blaze_powder), 0.5F).setMaxAmount(6));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("MagmaCharge")), 0.25F));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("magmacharge")), 0.25F));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("soulstoneinferno")), 1F).setMaxAmount(1).setSubspecies(3));
 	}
 
     // ========== On Spawn ==========

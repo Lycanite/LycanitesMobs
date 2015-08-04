@@ -44,6 +44,8 @@ achievement.khalk.learn.desc=Add a Khalk to your Beastiary.
 #
 # Items
 item.infernospawn.name=Spawn
+item.soulstoneinferno.name=Inferno Soulstone
+item.soulstoneinferno.description=A fiery soul is contained within! Use this item to release what is inside!
 item.cephignismeatcooked.name=Cooked Cephignis Meat
 item.cephignismeatcooked.description=Very spicy fish!
 item.searingtaco.name=Searing Taco

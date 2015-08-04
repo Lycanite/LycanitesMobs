@@ -18,6 +18,9 @@ public class DropRate {
 	public int maxAmount = 1;
 	
 	public float chance = 0;
+
+    /** The ID of the subspecies that this drop is restricted to. An ID below 0 will have this drop ignore the subspecies. **/
+    public int subspeciesID = -1;
 	
     // ==================================================
    	//                     Constructor
@@ -62,6 +65,11 @@ public class DropRate {
 		this.chance = chance;
 		return this;
 	}
+
+    public DropRate setSubspecies(int subspeciesID) {
+        this.subspeciesID = subspeciesID;
+        return this;
+    }
 
 	
     // ==================================================

@@ -1064,7 +1064,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         super.onUpdate();
         
         if(this.despawnCheck()) {
-        	this.inventory.dropInventory();
+            if(!this.isBoundPet())
+        	    this.inventory.dropInventory();
         	this.setDead();
         }
         
@@ -1885,7 +1886,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         if(!this.dead)
             return;
         if(!this.worldObj.isRemote) {
-            this.inventory.dropInventory();
+            if(!this.isBoundPet())
+                this.inventory.dropInventory();
             if(damageSource.getEntity() != null) {
                 if(damageSource.getEntity() instanceof EntityPlayer)
                     ((EntityPlayer)damageSource.getEntity()).addStat(ObjectManager.getAchievement(this.mobInfo.name + ".kill"), 1);
@@ -2241,8 +2243,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     /** Gets the item ID of what this mob mostly drops. This is provided for compatibility but is not used by the DropRate code. **/
     @Override
     protected Item getDropItem() {
-        if(drops.get(0) != null && !this.isMinion())
-        	return drops.get(0).item.getItem();
+        if(this.drops != null && this.drops.get(0) != null && !this.isMinion() && !this.isBoundPet())
+        	return this.drops.get(0).item.getItem();
         else
         	return null;
     }
@@ -2251,12 +2253,13 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     /** Cycles through all of this entity's DropRates and drops random loot, usually called on death. If this mob is a minion, this method is cancelled. **/
     @Override
     protected void dropFewItems(boolean playerKill, int lootLevel) {
-    	if(this.isMinion()) return;
+    	if(this.worldObj.isRemote || this.isMinion() || this.isBoundPet()) return;
     	int subspeciesScale = 1;
     	if(this.getSubspeciesIndex() > 2)
     		subspeciesScale = Subspecies.rareDropScale;
     	else if(this.getSubspeciesIndex() > 0)
     		subspeciesScale = Subspecies.uncommonDropScale;
+
     	for(DropRate dropRate : this.drops) {
             if(dropRate.subspeciesID >= 0 && dropRate.subspeciesID != this.getSubspeciesIndex())
                 continue;
@@ -2277,7 +2280,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     /** Called when doing a rare drop, this is part of the vanilla code and is not used, instead the custom DropRate code is used in dropFewItems(). **/
     @Override
     protected void dropRareDrop(int par1) {
-    	if(this.isMinion()) return;
+    	if(this.isMinion() || this.isBoundPet()) return;
     	super.dropRareDrop(par1);
     }
     

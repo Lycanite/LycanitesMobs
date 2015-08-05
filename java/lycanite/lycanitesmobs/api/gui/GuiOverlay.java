@@ -3,17 +3,13 @@ package lycanite.lycanitesmobs.api.gui;
 import lycanite.lycanitesmobs.*;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
 import lycanite.lycanitesmobs.api.item.ItemStaffSummoning;
-import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.settings.GameSettings;
-import net.minecraft.entity.boss.BossStatus;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 
@@ -60,8 +56,8 @@ public class GuiOverlay extends Gui {
 
         // ========== Mob Events Title ==========
         ExtendedWorld worldExt = ExtendedWorld.getForWorld(player.worldObj);
-        if(worldExt != null && worldExt.clientMobEvent != null)
-            worldExt.clientMobEvent.onGUIUpdate(this, sWidth, sHeight);
+        if(worldExt != null && worldExt.clientWorldEvent != null)
+            worldExt.clientWorldEvent.onGUIUpdate(this, sWidth, sHeight);
 		
 		// ========== Summoning Focus Bar ==========
         ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);

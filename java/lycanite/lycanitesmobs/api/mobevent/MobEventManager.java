@@ -4,20 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import lycanite.lycanitesmobs.ExtendedWorld;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.Utilities;
-import lycanite.lycanitesmobs.api.ValuePair;
 import lycanite.lycanitesmobs.api.config.ConfigSpawning;
-import lycanite.lycanitesmobs.api.network.MessageMobEvent;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
-import org.apache.commons.lang3.math.NumberUtils;
 
 
 public class MobEventManager {
@@ -25,6 +21,7 @@ public class MobEventManager {
     public static MobEventManager instance;
     
     // Mob Events:
+    public Map<String, MobEventBase> allMobEvents = new HashMap<String, MobEventBase>();
     public Map<String, MobEventBase> worldMobEvents = new HashMap<String, MobEventBase>();
     public Map<String, Map<String, MobEventBase>> worldMobEventSets = new HashMap<String, Map<String, MobEventBase>>();
 
@@ -72,7 +69,20 @@ public class MobEventManager {
     //                 Add Mob Event
     // ==================================================
     /**
-     * Adds the provided World Mob Event.
+     * Adds the provided Mob Event.
+     *  **/
+    public void addMobEvent(MobEventBase mobEvent) {
+        if(mobEvent != null) {
+            this.allMobEvents.put(mobEvent.name, mobEvent);
+        }
+    }
+
+
+    // ==================================================
+    //                 Add World Event
+    // ==================================================
+    /**
+     * Adds the provided World Mob Event, this will also then add it to the allMobEvents list too.
      *  **/
     public void addWorldEvent(MobEventBase mobEvent, String set) {
         if(mobEvent != null && mobEvent.hasSpawners()) {
@@ -81,6 +91,7 @@ public class MobEventManager {
                 this.worldMobEventSets.put(set, new HashMap<String, MobEventBase>());
             this.worldMobEventSets.get(set).put(mobEvent.name, mobEvent);
             this.worldMobEvents.put(mobEvent.name, mobEvent);
+            this.addMobEvent(mobEvent);
         }
     }
 
@@ -106,8 +117,8 @@ public class MobEventManager {
 
         // Check If Events Are Completely Disabled:
         if(!this.mobEventsEnabled || !worldExt.mobEventsEnabled || world.difficultySetting == EnumDifficulty.PEACEFUL) {
-            if(worldExt.serverMobEvent != null)
-                worldExt.stopMobEvent();
+            if(worldExt.serverWorldEvent != null)
+                worldExt.stopWorldEvent();
             return;
         }
 
@@ -127,27 +138,27 @@ public class MobEventManager {
             if(worldExt.eventSchedule != null && worldExt.eventSchedule.size() > 0) {
                 MobEventBase newEvent = worldExt.getScheduledWorldMobEvent();
                 if(newEvent != null) {
-                    worldExt.startMobEvent(newEvent);
+                    worldExt.startWorldEvent(newEvent);
                 }
             }
         }
 
         // Update Active Event If Present and Return:
-        if(worldExt.serverMobEvent != null) {
-            worldExt.serverMobEvent.onUpdate();
+        if(worldExt.serverWorldEvent != null) {
+            worldExt.serverWorldEvent.onUpdate();
             return;
         }
 
         // Random Events:
         if(!this.mobEventsRandom || !worldExt.mobEventsRandom) return;
         if(worldExt.minEventsRandomDay > 0 && Math.floor((worldExt.useTotalWorldTime ? world.getTotalWorldTime() : world.getWorldTime()) / 24000D) < worldExt.minEventsRandomDay) return;
-        if(worldExt.getMobEventStartTargetTime() <= 0 || worldExt.getMobEventStartTargetTime() > world.getTotalWorldTime() + worldExt.maxTicksUntilEvent) {
-            worldExt.setMobEventStartTargetTime(world.getTotalWorldTime() + worldExt.getRandomEventDelay(world.rand));
+        if(worldExt.getWorldEventStartTargetTime() <= 0 || worldExt.getWorldEventStartTargetTime() > world.getTotalWorldTime() + worldExt.maxTicksUntilEvent) {
+            worldExt.setWorldEventStartTargetTime(world.getTotalWorldTime() + worldExt.getRandomEventDelay(world.rand));
         }
-        if(world.getTotalWorldTime() >= worldExt.getMobEventStartTargetTime()) {
+        if(world.getTotalWorldTime() >= worldExt.getWorldEventStartTargetTime()) {
 			MobEventBase newEvent = this.getRandomWorldMobEvent(world, worldExt);
 			if(newEvent != null) {
-                worldExt.startMobEvent(newEvent);
+                worldExt.startWorldEvent(newEvent);
 			}
 		}
     }
@@ -167,8 +178,8 @@ public class MobEventManager {
         if(!world.isRemote || worldExt == null) return;
 
 		// Update Active Event and Return:
-		if(worldExt.clientMobEvent != null) {
-			worldExt.clientMobEvent.onUpdate();
+		if(worldExt.clientWorldEvent != null) {
+			worldExt.clientWorldEvent.onUpdate();
 		}
 	}
 

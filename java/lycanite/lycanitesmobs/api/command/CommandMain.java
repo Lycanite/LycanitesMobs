@@ -127,7 +127,7 @@ public class CommandMain implements ICommand {
 					
 					reply = StatCollector.translateToLocal("lyc.command.mobevent.start");
 					commandSender.addChatMessage(new ChatComponentText(reply));
-                    worldExt.startMobEvent(mobEventName);
+                    worldExt.startWorldEvent(mobEventName);
 					return;
 				}
 				
@@ -162,7 +162,7 @@ public class CommandMain implements ICommand {
 				reply = StatCollector.translateToLocal("lyc.command.mobevent.random");
 				commandSender.addChatMessage(new ChatComponentText(reply));
 				MobEventBase mobEvent = MobEventManager.instance.getRandomWorldMobEvent(world, worldExt);
-                worldExt.startMobEvent(mobEvent);
+                worldExt.startWorldEvent(mobEvent);
 				return;
 			}
 			
@@ -170,7 +170,7 @@ public class CommandMain implements ICommand {
 			if("stop".equalsIgnoreCase(args[1])) {
 				reply = StatCollector.translateToLocal("lyc.command.mobevent.stop");
 				commandSender.addChatMessage(new ChatComponentText(reply));
-                worldExt.stopMobEvent();
+                worldExt.stopWorldEvent();
 				return;
 			}
 			

@@ -536,7 +536,7 @@ public class SpawnTypeBase {
             	ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
             	if(this.mobEvent != null && worldExt != null) {
             		entityCreature.spawnEventType = this.mobEvent.name;
-            		entityCreature.spawnEventCount = worldExt.getMobEventCount();
+            		entityCreature.spawnEventCount = worldExt.getWorldEventCount();
             	}
             }
             this.spawnEntity(world, entityLiving);

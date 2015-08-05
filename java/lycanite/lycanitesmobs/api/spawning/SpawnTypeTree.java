@@ -5,7 +5,6 @@ import java.util.List;
 import lycanite.lycanitesmobs.ExtendedWorld;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockLeaves;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 
@@ -88,7 +87,7 @@ public class SpawnTypeTree extends SpawnTypeBlockBreak {
     	double roll = world.rand.nextDouble();
     	ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
     	if(worldExt != null) {
-    		if("rootriot".equalsIgnoreCase(worldExt.getMobEventType()))
+    		if("rootriot".equalsIgnoreCase(worldExt.getWorldEventType()))
     			roll /= 4;
     	}
         if(roll >= this.chance)

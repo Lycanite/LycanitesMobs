@@ -6,7 +6,6 @@ import lycanite.lycanitesmobs.ExtendedWorld;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
-import lycanite.lycanitesmobs.api.info.ObjectLists;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -69,7 +68,7 @@ public class SpawnTypeRock extends SpawnTypeBlockBreak {
             roll /= 4;
     	ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
     	if(worldExt != null) {
-    		if("boulderdash".equalsIgnoreCase(worldExt.getMobEventType()))
+    		if("boulderdash".equalsIgnoreCase(worldExt.getWorldEventType()))
     			roll /= 4;
     	}
         if(roll >= this.chance)

@@ -14,7 +14,6 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class SpawnTypeDarkness extends SpawnTypeBase {
 	public boolean displayChatWarnings = true;
@@ -93,7 +92,7 @@ public class SpawnTypeDarkness extends SpawnTypeBase {
 				float roll = player.getRNG().nextFloat();
 				ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
 		    	if(worldExt != null) {
-		    		if("shadowgames".equalsIgnoreCase(worldExt.getMobEventType()))
+		    		if("shadowgames".equalsIgnoreCase(worldExt.getWorldEventType()))
 		    			roll /= 2;
 		    	}
 				

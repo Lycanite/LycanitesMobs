@@ -1,13 +1,10 @@
 package lycanite.lycanitesmobs.api.spawning;
 
 import lycanite.lycanitesmobs.ExtendedWorld;
-import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.world.World;
-
-import java.util.List;
 
 public class SpawnTypeUndeath extends SpawnTypeDeath {
 
@@ -40,7 +37,7 @@ public class SpawnTypeUndeath extends SpawnTypeDeath {
     	double roll = world.rand.nextDouble();
     	ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
     	if(worldExt != null) {
-    		if("blackplague".equalsIgnoreCase(worldExt.getMobEventType()))
+    		if("blackplague".equalsIgnoreCase(worldExt.getWorldEventType()))
     			roll /= 4;
     	}
         if(roll >= this.chance)

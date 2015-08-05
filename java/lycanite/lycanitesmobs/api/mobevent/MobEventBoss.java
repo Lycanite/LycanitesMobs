@@ -25,8 +25,7 @@ public class MobEventBoss extends MobEventBase {
     @Override
     public void loadFromConfig() {
         ConfigSpawning config = ConfigSpawning.getConfig(LycanitesMobs.group, "mobevents");
-        this.duration = config.getInt("Boss Event Durations", this.name, this.duration);
-        this.mobDuration = 10 * 20;
+        this.duration = 10 * 20;
         this.forceSpawning = true;
         this.forceNoDespawn = true;
         this.minDay = config.getInt("Boss Event Day Minimums", this.name, this.minDay);

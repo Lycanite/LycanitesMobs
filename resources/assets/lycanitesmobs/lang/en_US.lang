@@ -2,6 +2,9 @@
 event.started=%event% has begun!
 event.extended=%event% has been extended!
 event.finished=%event% is over!
+event.boss.started=%event% has been called!
+event.boss.extended=%event% is coming!
+event.boss.finished=%event% is unleashed!
 # %event% will be replaced with the name of the event, don't translate this!
 #
 # Mob Events
@@ -90,6 +93,7 @@ item.wintergift.bad=Bwahahahaha! Good tidings I bring, for me!
 item.wintergiftlarge.name=Large Winter Gift
 item.wintergiftlarge.description=It's December 25th! Time to open your big presents! Ignore the screeching sound the box makes, it's nothing...
 item.wintergiftlarge.bad=Aaaahhhhh Haaa Haaa Haaa Ha Ha Ha! Bwahahahah! Merry Christmas!
+item.horsearmor.name=Pet Armor
 #
 #
 #

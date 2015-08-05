@@ -68,7 +68,7 @@ public class MobEventServerBoss extends MobEventServer {
         // Stop Event When Time Runs Out:
         if(this.world.getTotalWorldTime() >= (this.startedWorldTime + this.mobEvent.duration)) {
             ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
-            worldExt.stopWorldEvent();
+            worldExt.stopMobEvent(this);
         }
     }
 }

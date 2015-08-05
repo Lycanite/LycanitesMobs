@@ -14,6 +14,7 @@ import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
 import lycanite.lycanitesmobs.mountainmobs.dispenser.DispenserBehaviorArcaneLaserStorm;
 import lycanite.lycanitesmobs.mountainmobs.dispenser.DispenserBehaviorBoulderBlast;
 import lycanite.lycanitesmobs.mountainmobs.entity.*;
+import lycanite.lycanitesmobs.mountainmobs.info.AltarInfoCelestialGeonach;
 import lycanite.lycanitesmobs.mountainmobs.item.ItemArcaneLaserStormCharge;
 import lycanite.lycanitesmobs.mountainmobs.item.ItemBoulderBlastCharge;
 import lycanite.lycanitesmobs.mountainmobs.item.ItemMountainEgg;
@@ -200,6 +201,11 @@ public class MountainMobs {
 			EntityRegistry.removeSpawn(EntityPig.class, EnumCreatureType.creature, biomes);
 			EntityRegistry.removeSpawn(EntitySheep.class, EnumCreatureType.creature, biomes);
 		}
+
+
+        // ========== Altars ==========
+        AltarInfo celestialGeonachAltar = new AltarInfoCelestialGeonach("CelestialGeonachAltar");
+        AltarInfo.addAltar(celestialGeonachAltar);
 		
 		
 		// ========== Crafting ==========

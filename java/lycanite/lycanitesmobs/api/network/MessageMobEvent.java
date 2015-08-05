@@ -16,16 +16,14 @@ import cpw.mods.fml.relauncher.Side;
 
 public class MessageMobEvent implements IMessage, IMessageHandler<MessageMobEvent, IMessage> {
 	public String mobEventName;
-    public int index;
 
 
 	// ==================================================
 	//                    Constructors
 	// ==================================================
 	public MessageMobEvent() {}
-	public MessageMobEvent(String mobEventName, int index) {
+	public MessageMobEvent(String mobEventName) {
         this.mobEventName = mobEventName;
-        this.index = index;
     }
 	
 	
@@ -43,9 +41,9 @@ public class MessageMobEvent implements IMessage, IMessageHandler<MessageMobEven
         ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
 		
 		if("".equals(message.mobEventName))
-            worldExt.stopMobEvent(this.index);
+            worldExt.stopMobEvent(message.mobEventName);
 		else {
-            worldExt.startMobEvent(message.mobEventName, this.index);
+            worldExt.startMobEvent(message.mobEventName);
 		}
 		return null;
 	}
@@ -62,7 +60,6 @@ public class MessageMobEvent implements IMessage, IMessageHandler<MessageMobEven
 		PacketBuffer packet = new PacketBuffer(buf);
         try {
 		    this.mobEventName = packet.readStringFromBuffer(256);
-            this.index = packet.readInt();
         } catch (IOException e) {
             LycanitesMobs.printWarning("", "There was a problem decoding the packet: " + packet + ".");
             e.printStackTrace();
@@ -81,7 +78,6 @@ public class MessageMobEvent implements IMessage, IMessageHandler<MessageMobEven
 		PacketBuffer packet = new PacketBuffer(buf);
         try {
 		    packet.writeStringToBuffer(this.mobEventName);
-            packet.writeInt(this.index);
         } catch (IOException e) {
             LycanitesMobs.printWarning("", "There was a problem encoding the packet: " + packet + ".");
             e.printStackTrace();

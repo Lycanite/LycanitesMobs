@@ -4,6 +4,7 @@ demonmobs.description=Wicked fiends from the depths of the firey hellish Nether!
 #
 # Mob Events
 mobevent.hellsfury.name=Hells Fury
+mobevent.rahovart.name=Rahovart
 #
 # Entites
 entity.demonmobs.belph.name=Belph

@@ -1,7 +1,5 @@
 package lycanite.lycanitesmobs;
 
-import java.util.*;
-
 import lycanite.lycanitesmobs.api.ValuePair;
 import lycanite.lycanitesmobs.api.config.ConfigSpawning;
 import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
@@ -14,6 +12,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import org.apache.commons.lang3.math.NumberUtils;
+
+import java.util.*;
 
 public class ExtendedWorld extends WorldSavedData {
 	public static String EXT_PROP_NAME = "LycanitesMobs";
@@ -40,7 +40,7 @@ public class ExtendedWorld extends WorldSavedData {
 	
 	// Mob Events:
     public List<MobEventServer> serverMobEvents = new ArrayList<MobEventServer>();
-    public List<MobEventClient> clientMobEvents = new ArrayList<MobEventClient>();
+    public Map<String, MobEventClient> clientMobEvents = new HashMap<String, MobEventClient>();
     public Map<ValuePair<Integer, Integer>, MobEventBase> eventSchedule;
     public MobEventServer serverWorldEvent = null;
     public MobEventClient clientWorldEvent = null;
@@ -344,36 +344,39 @@ public class ExtendedWorld extends WorldSavedData {
     /**
      * Starts a provided Mob Event (provided by instance) on the provided world.
      *  **/
-    public void startMobEvent(MobEventBase mobEvent, int index) {
+    public void startMobEvent(MobEventBase mobEvent) {
         if(mobEvent == null) {
-            LycanitesMobs.printWarning("", "Tried to start a null mob event with index " + index + ", stopping this index instead.");
-            this.stopMobEvent(index);
+            LycanitesMobs.printWarning("", "Tried to start a null mob event.");
             return;
         }
 
         // Server Side:
         if(!this.world.isRemote) {
-            this.serverMobEvents.set(index, mobEvent.getServerEvent(this.world));
-            this.serverMobEvents.get(index).onStart();
+            MobEventServer mobEventServer = mobEvent.getServerEvent(this.world);
+            this.serverMobEvents.add(mobEventServer);
+            mobEventServer.onStart();
             this.updateAllClientsEvents();
         }
 
         // Client Side:
         if(this.world.isRemote) {
             boolean extended = false;
-            if(this.clientMobEvents.get(index) != null)
-                extended = this.clientMobEvents.get(index).mobEvent == mobEvent;
-            this.clientMobEvents.set(index, mobEvent.getClientEvent(this.world));
-            this.clientMobEvents.get(index).extended = extended;
-            if(LycanitesMobs.proxy.getClientPlayer() != null && !extended)
-                this.clientMobEvents.get(index).onStart(LycanitesMobs.proxy.getClientPlayer());
+            if(this.clientMobEvents.get(mobEvent.name) != null)
+                extended = this.clientMobEvents.get(mobEvent.name).mobEvent == mobEvent;
+            if(!extended) {
+                MobEventClient mobEventClient = mobEvent.getClientEvent(this.world);
+                this.clientMobEvents.put(mobEvent.name, mobEventClient);
+                mobEventClient.extended = extended;
+                if (LycanitesMobs.proxy.getClientPlayer() != null)
+                    mobEventClient.onStart(LycanitesMobs.proxy.getClientPlayer());
+            }
         }
     }
 
     /**
      * Starts a provided World Event (provided by name) on the provided world.
      *  **/
-    public void startMobEvent(String mobEventName, int index) {
+    public void startMobEvent(String mobEventName) {
         MobEventBase mobEvent;
         if(MobEventManager.instance.allMobEvents.containsKey(mobEventName)) {
             mobEvent = MobEventManager.instance.allMobEvents.get(mobEventName);
@@ -387,7 +390,14 @@ public class ExtendedWorld extends WorldSavedData {
             return;
         }
 
-        this.startMobEvent(mobEvent, index);
+        this.startMobEvent(mobEvent);
+    }
+
+    /**
+     * Returns the next available index for a world event. Server only.
+     */
+    public int getNextMobEventIndex() {
+        return this.serverMobEvents.size() + 1;
     }
 
 
@@ -395,21 +405,26 @@ public class ExtendedWorld extends WorldSavedData {
     //                 Stop World Event
     // ==================================================
     /**
-     * Stops a Mob Event.
+     * Stops a Mob Event. (Server Side)
      *  **/
-    public void stopMobEvent(int index) {
+    public void stopMobEvent(MobEventServer mobEventServer) {
         // Server Side:
-        if(this.serverMobEvents.get(index) != null) {
-            this.serverMobEvents.get(index).onFinish();
-            this.serverMobEvents.set(index, null);
+        if(this.serverMobEvents.contains(mobEventServer)) {
+            mobEventServer.onFinish();
+            this.serverMobEvents.remove(mobEventServer);
             this.updateAllClientsEvents();
         }
+    }
 
+    /**
+     * Stops a Mob Event. (Client Side)
+     *  **/
+    public void stopMobEvent(String mobEventName) {
         // Client Side:
-        if(this.clientMobEvents.get(index) != null) {
+        if(this.clientMobEvents.get(mobEventName) != null) {
             if(LycanitesMobs.proxy.getClientPlayer() != null)
-                this.clientMobEvents.get(index).onFinish(LycanitesMobs.proxy.getClientPlayer());
-            this.clientMobEvents.set(index, null);
+                this.clientMobEvents.get(mobEventName).onFinish(LycanitesMobs.proxy.getClientPlayer());
+            this.clientMobEvents.put(mobEventName, null);
         }
     }
 
@@ -421,11 +436,9 @@ public class ExtendedWorld extends WorldSavedData {
     public void updateAllClientsEvents() {
         MessageWorldEvent message = new MessageWorldEvent(this.getWorldEventType());
         LycanitesMobs.packetHandler.sendToDimension(message, this.world.provider.dimensionId);
-        int index = 0;
         for(MobEventServer mobEventServer : this.serverMobEvents) {
-            MessageMobEvent messageMobEvent = new MessageMobEvent(mobEventServer.mobEvent != null ? mobEventServer.mobEvent.name : "", index);
+            MessageMobEvent messageMobEvent = new MessageMobEvent(mobEventServer.mobEvent != null ? mobEventServer.mobEvent.name : "");
             LycanitesMobs.packetHandler.sendToDimension(messageMobEvent, this.world.provider.dimensionId);
-            index++;
         }
     }
 	

@@ -107,19 +107,22 @@ public class AltarInfoLunarGrue extends AltarInfo {
     // ==================================================
     /** Called when this Altar should activate. This will typically destroy the Altar and summon a rare mob or activate an event such as a boss event. If false is returned then the activation did not work, this is the place to check for things like dimensions. **/
     public boolean activate(Entity entity, World world, int x, int y, int z) {
-        if(world.isRemote)
+        if (world.isRemote)
             return true;
 
         // Create Mini Boss:
         EntityCreatureBase entityGrue = new EntityGrue(world);
-        if(checkDimensions && !entityGrue.isNativeDimension(world))
+        if (checkDimensions && !entityGrue.isNativeDimension(world))
             return false;
 
         // Destroy Altar:
-        for(int xTarget = x - 4; xTarget <= x + 4; xTarget++) {
-            for(int yTarget = y - 4; yTarget <= y + 4; yTarget++) {
-                if(y > 0)
-                    world.func_147480_a(xTarget, yTarget, z, false);
+        int size = 4;
+        for (int xTarget = x - size; xTarget <= x + size; xTarget++) {
+            for (int zTarget = z - size; zTarget <= z + size; zTarget++) {
+                for (int yTarget = y - size; yTarget <= y + size; yTarget++) {
+                    if (y > 0)
+                        world.func_147480_a(xTarget, yTarget, zTarget, false);
+                }
             }
         }
 

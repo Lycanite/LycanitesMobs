@@ -72,9 +72,10 @@ public class MobEventManager {
      * Adds the provided Mob Event.
      *  **/
     public void addMobEvent(MobEventBase mobEvent) {
-        if(mobEvent != null) {
-            this.allMobEvents.put(mobEvent.name, mobEvent);
-        }
+        if(mobEvent == null)
+            return;
+        mobEvent.loadFromConfig();
+        this.allMobEvents.put(mobEvent.name, mobEvent);
     }
 
 
@@ -86,12 +87,11 @@ public class MobEventManager {
      *  **/
     public void addWorldEvent(MobEventBase mobEvent, String set) {
         if(mobEvent != null && mobEvent.hasSpawners()) {
-        	mobEvent.loadFromConfig();
+            this.addMobEvent(mobEvent);
             if(!this.worldMobEventSets.containsKey(set))
                 this.worldMobEventSets.put(set, new HashMap<String, MobEventBase>());
             this.worldMobEventSets.get(set).put(mobEvent.name, mobEvent);
             this.worldMobEvents.put(mobEvent.name, mobEvent);
-            this.addMobEvent(mobEvent);
         }
     }
 
@@ -110,10 +110,13 @@ public class MobEventManager {
 		ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
 		if(world.isRemote || worldExt == null) return;
 
-        /*int currentDay = (int)Math.floor((MobEventManager.useTotalWorldTime ? world.getWorldTime() : world.getWorldTime()) / 24000D);
-        int currentMin = (int)((long)Math.floor((MobEventManager.useTotalWorldTime ? world.getWorldTime() : world.getWorldTime()) / 1200D) % 20);
-        int currentSec = (int)((long)Math.floor((MobEventManager.useTotalWorldTime ? world.getWorldTime() : world.getWorldTime()) / 20D) % 60);
-        LycanitesMobs.printDebug("", "Current Time: Day " + currentDay + " " + currentMin + ":" + currentSec);//XXX*/
+        // Update Mob Events:
+        for(MobEventServer mobEventServer : worldExt.serverMobEvents.toArray(new MobEventServer[worldExt.serverMobEvents.size()])) {
+            mobEventServer.onUpdate();
+        }
+
+
+        // Update World Event:
 
         // Check If Events Are Completely Disabled:
         if(!this.mobEventsEnabled || !worldExt.mobEventsEnabled || world.difficultySetting == EnumDifficulty.PEACEFUL) {
@@ -131,7 +134,7 @@ public class MobEventManager {
 			return;
 		}
 
-        // Scheduled Events:
+        // Scheduled World Events:
         if(this.mobEventsSchedule) {
             if(!worldExt.eventScheduleLoaded)
                 worldExt.loadEventSchedule(worldExt.mobEventsSchedule);
@@ -149,7 +152,7 @@ public class MobEventManager {
             return;
         }
 
-        // Random Events:
+        // Random World Events:
         if(!this.mobEventsRandom || !worldExt.mobEventsRandom) return;
         if(worldExt.minEventsRandomDay > 0 && Math.floor((worldExt.useTotalWorldTime ? world.getTotalWorldTime() : world.getWorldTime()) / 24000D) < worldExt.minEventsRandomDay) return;
         if(worldExt.getWorldEventStartTargetTime() <= 0 || worldExt.getWorldEventStartTargetTime() > world.getTotalWorldTime() + worldExt.maxTicksUntilEvent) {
@@ -177,7 +180,12 @@ public class MobEventManager {
         ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
         if(!world.isRemote || worldExt == null) return;
 
-		// Update Active Event and Return:
+        // Update Mob Events:
+        for(MobEventClient mobEventClient : worldExt.clientMobEvents.values()) {
+            mobEventClient.onUpdate();
+        }
+
+		// Update World Event:
 		if(worldExt.clientWorldEvent != null) {
 			worldExt.clientWorldEvent.onUpdate();
 		}

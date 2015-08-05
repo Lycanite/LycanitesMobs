@@ -1,5 +1,14 @@
 package lycanite.lycanitesmobs.demonmobs;
 
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
@@ -17,28 +26,11 @@ import lycanite.lycanitesmobs.demonmobs.dispenser.DispenserBehaviorDemonicLightn
 import lycanite.lycanitesmobs.demonmobs.dispenser.DispenserBehaviorDevilstar;
 import lycanite.lycanitesmobs.demonmobs.dispenser.DispenserBehaviorDoomfireball;
 import lycanite.lycanitesmobs.demonmobs.dispenser.DispenserBehaviorHellfireball;
-import lycanite.lycanitesmobs.demonmobs.entity.EntityAstaroth;
-import lycanite.lycanitesmobs.demonmobs.entity.EntityBehemoth;
-import lycanite.lycanitesmobs.demonmobs.entity.EntityBelph;
-import lycanite.lycanitesmobs.demonmobs.entity.EntityCacodemon;
-import lycanite.lycanitesmobs.demonmobs.entity.EntityDemonicBlast;
-import lycanite.lycanitesmobs.demonmobs.entity.EntityDemonicSpark;
-import lycanite.lycanitesmobs.demonmobs.entity.EntityDevilstar;
-import lycanite.lycanitesmobs.demonmobs.entity.EntityDoomfireball;
-import lycanite.lycanitesmobs.demonmobs.entity.EntityHellfireball;
-import lycanite.lycanitesmobs.demonmobs.entity.EntityNetherSoul;
-import lycanite.lycanitesmobs.demonmobs.entity.EntityPinky;
-import lycanite.lycanitesmobs.demonmobs.entity.EntityTrite;
-import lycanite.lycanitesmobs.demonmobs.item.ItemDemonEgg;
-import lycanite.lycanitesmobs.demonmobs.item.ItemDemonicLightning;
-import lycanite.lycanitesmobs.demonmobs.item.ItemDevilstar;
-import lycanite.lycanitesmobs.demonmobs.item.ItemDoomfireball;
-import lycanite.lycanitesmobs.demonmobs.item.ItemHellfireball;
-import lycanite.lycanitesmobs.demonmobs.item.ItemScepterDemonicLightning;
-import lycanite.lycanitesmobs.demonmobs.item.ItemScepterDevilstar;
-import lycanite.lycanitesmobs.demonmobs.item.ItemScepterDoomfire;
-import lycanite.lycanitesmobs.demonmobs.item.ItemScepterHellfire;
+import lycanite.lycanitesmobs.demonmobs.entity.*;
+import lycanite.lycanitesmobs.demonmobs.info.AltarInfoRahovart;
+import lycanite.lycanitesmobs.demonmobs.item.*;
 import lycanite.lycanitesmobs.demonmobs.mobevent.MobEventHellsFury;
+import lycanite.lycanitesmobs.demonmobs.mobevent.MobEventRahovart;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
@@ -51,15 +43,6 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = DemonMobs.modid, name = DemonMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid)
 public class DemonMobs {
@@ -204,7 +187,7 @@ public class DemonMobs {
 		ObjectManager.setCurrentGroup(group);
 		ConfigBase config = ConfigBase.getConfig(group, "spawning");
 		
-		// ========== Mob Events ==========
+		// ========== World Events ==========
         if(MobInfo.getFromName("nethersoul") != null) {
 			MobEventBase mobEvent = new MobEventHellsFury("hellsfury", this.group).setDimensions("1");
 			SpawnTypeBase eventSpawner = new SpawnTypeSky("hellsfury")
@@ -219,6 +202,10 @@ public class DemonMobs {
 	        mobEvent.addSpawner(eventSpawner);
 			MobEventManager.instance.addWorldEvent(mobEvent);
         }
+
+        // ========== Boss Events ==========
+        MobEventBase mobEvent = new MobEventRahovart("rahovart", this.group).setDimensions("");
+        MobEventManager.instance.addMobEvent(mobEvent);
 		
 		// ========== Remove Vanilla Spawns ==========
 		BiomeGenBase[] biomes = {BiomeGenBase.hell};
@@ -228,7 +215,13 @@ public class DemonMobs {
 			EntityRegistry.addSpawn(EntityPigZombie.class, 100, 1, 4, EnumCreatureType.monster, biomes);
 			EntityRegistry.addSpawn(EntityGhast.class, 50, 1, 2, EnumCreatureType.monster, biomes);
 		}
-		
+
+
+        // ========== Altars ==========
+        AltarInfo rahovartAltar = new AltarInfoRahovart("RahovartAltar");
+        AltarInfo.addAltar(rahovartAltar);
+
+
 		// ========== Crafting ==========
         if(ItemInfo.enableWeaponRecipes) {
             GameRegistry.addRecipe(new ShapedOreRecipe(

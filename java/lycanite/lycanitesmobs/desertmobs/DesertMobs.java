@@ -121,7 +121,7 @@ public class DesertMobs {
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "crusk", EntityCrusk.class, 0xFFDDAA, 0x000000)
-		        .setPeaceful(false).setTameable(true).setSummonCost(2).setDungeonLevel(2)
+		        .setPeaceful(false).setTameable(true).setSummonCost(8).setDungeonLevel(2)
 		        .addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("light", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER")
 				.setSpawnWeight(2).setAreaLimit(3).setGroupLimits(1, 1).setLightDark(false, true);

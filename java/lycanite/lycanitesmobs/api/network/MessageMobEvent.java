@@ -43,7 +43,7 @@ public class MessageMobEvent implements IMessage, IMessageHandler<MessageMobEven
 		if("".equals(message.mobEventName))
             worldExt.stopMobEvent(message.mobEventName);
 		else {
-            worldExt.startMobEvent(message.mobEventName);
+            worldExt.startMobEvent(message.mobEventName, 0, 0, 0);
 		}
 		return null;
 	}

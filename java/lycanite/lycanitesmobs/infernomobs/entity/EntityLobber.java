@@ -129,7 +129,7 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
         if(!this.worldObj.isRemote && this.isMoving() && this.ticksExisted % 5 == 0) {
         	int trailHeight = 1;
             int trailWidth = 1;
-            if(this.getSubspeciesIndex() >- 3)
+            if(this.getSubspeciesIndex() >= 3)
                 trailWidth = 3;
         	for(int y = 0; y < trailHeight; y++) {
         		Block block = this.worldObj.getBlock((int)this.posX, (int)this.posY + y, (int)this.posZ);

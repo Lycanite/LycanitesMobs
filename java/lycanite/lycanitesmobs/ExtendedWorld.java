@@ -2,10 +2,7 @@ package lycanite.lycanitesmobs;
 
 import lycanite.lycanitesmobs.api.ValuePair;
 import lycanite.lycanitesmobs.api.config.ConfigSpawning;
-import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
-import lycanite.lycanitesmobs.api.mobevent.MobEventClient;
-import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
-import lycanite.lycanitesmobs.api.mobevent.MobEventServer;
+import lycanite.lycanitesmobs.api.mobevent.*;
 import lycanite.lycanitesmobs.api.network.MessageMobEvent;
 import lycanite.lycanitesmobs.api.network.MessageWorldEvent;
 import net.minecraft.nbt.NBTTagCompound;
@@ -344,7 +341,7 @@ public class ExtendedWorld extends WorldSavedData {
     /**
      * Starts a provided Mob Event (provided by instance) on the provided world.
      *  **/
-    public void startMobEvent(MobEventBase mobEvent) {
+    public void startMobEvent(MobEventBase mobEvent, int originX, int originY, int originZ) {
         if(mobEvent == null) {
             LycanitesMobs.printWarning("", "Tried to start a null mob event.");
             return;
@@ -354,6 +351,12 @@ public class ExtendedWorld extends WorldSavedData {
         if(!this.world.isRemote) {
             MobEventServer mobEventServer = mobEvent.getServerEvent(this.world);
             this.serverMobEvents.add(mobEventServer);
+            if(mobEventServer instanceof MobEventServerBoss) {
+                MobEventServerBoss mobEventServerBoss = (MobEventServerBoss)mobEventServer;
+                mobEventServerBoss.originX = originX;
+                mobEventServerBoss.originY = originY;
+                mobEventServerBoss.originZ = originZ;
+            }
             mobEventServer.onStart();
             this.updateAllClientsEvents();
         }
@@ -376,7 +379,7 @@ public class ExtendedWorld extends WorldSavedData {
     /**
      * Starts a provided World Event (provided by name) on the provided world.
      *  **/
-    public void startMobEvent(String mobEventName) {
+    public void startMobEvent(String mobEventName, int originX, int originY, int originZ) {
         MobEventBase mobEvent;
         if(MobEventManager.instance.allMobEvents.containsKey(mobEventName)) {
             mobEvent = MobEventManager.instance.allMobEvents.get(mobEventName);
@@ -390,7 +393,7 @@ public class ExtendedWorld extends WorldSavedData {
             return;
         }
 
-        this.startMobEvent(mobEvent);
+        this.startMobEvent(mobEvent, originX, originY, originZ);
     }
 
     /**

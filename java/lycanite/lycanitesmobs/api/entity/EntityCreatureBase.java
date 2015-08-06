@@ -54,9 +54,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 public abstract class EntityCreatureBase extends EntityLiving implements FlyingMob {
 	/** A snapshot of the base health for each mob. This is used when calculating subspecies or tamed health. **/
 	public static Map<Class, Double> baseHealthMap = new HashMap<Class, Double>();
-	
-    // UUID:
-	//public static final UUID field_110179_h = UUID.fromString("E199AD21-BA8A-4C53-8D13-6182D5C69D3A");
     
 	// Info:
 	/** A class that contains information about this mob, this class also links to the SpawnInfo class relevant to this mob. **/
@@ -108,8 +105,16 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 	public int currentFleeTime = 0;
     /** What percentage of health this mob will run away at, from 0.0F to 1.0F **/
 	public float fleeHealthPercent = 0;
+    /** The current Battle Phase of this mob, each Phase uses different behaviours. Used by bosses. **/
+    public int battlePhase = 0;
+    /** The maximum amount of damage this mob can take. If 0 or less, this is ignored. **/
+    public int damageMax = 0;
 	
 	// Abilities:
+    /** If true, this mob is to be treated as a boss. Boss mobs gain some defensive abilities. **/
+    public boolean boss = false;
+    /** The battle range of this boss mob, anything out of this range cannot harm the boss. This will also affect other things related to the boss. **/
+    public int bossRange = 56;
 	/** Whether or not this mob is hostile by default. Use isHostile() when check if this mob is hostile. **/
 	public boolean isHostileByDefault = true;
     /** Whether if this mob is on fire, it should spread it to other entities when melee attacking. **/
@@ -746,6 +751,12 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     	return false;
     }
 
+    // ========== Boss ==========
+    /** Returns whether or not this mob is a boss. **/
+    public boolean isBoss() {
+        return this.boss;
+    }
+
     // ========== Minion ==========
     /** Set whether this mob is a minion or not, this should be used if this mob is summoned. **/
     public void setMinion(boolean minion) { this.isMinion = minion; }
@@ -1023,6 +1034,15 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     	value -= Math.max(0, this.getPierceBoost());
     	return Math.max(1.0D, value);
     }
+
+
+    // ==================================================
+    //                  Battle Phases
+    // ==================================================
+    /** Called every update, this usually manages which phase this mob is using health but it can use any aspect of the mob to determine the Battle Phase and could even be random. **/
+    public void updateBattlePhase() {
+
+    }
     
     
     // ==================================================
@@ -1105,6 +1125,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
+        this.updateBattlePhase();
         this.updateArmSwingProgress();
         
         // First Spawn:
@@ -1828,6 +1849,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         if(!this.isDamageEntityApplicable(damageSrc.getEntity())) return false;
         damage = this.getDamageAfterDefense(damage);
         damage *= this.getDamageModifier(damageSrc);
+        if(this.isBoss() && !(damageSrc.getEntity() instanceof EntityPlayer))
+            damage *= 0.25F;
         
         if(super.attackEntityFrom(damageSrc, damage)) {
         	this.onDamage(damageSrc, damage);
@@ -1860,7 +1883,10 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 	    		scaledDefense = 1;
 	    	scaledDefense *= this.getBlockingMultiplier();
     	}
-    	return Math.max(damage - scaledDefense, minDamage);
+        damage -= scaledDefense;
+        if(this.damageMax > 0)
+            damage = Math.min(damage, this.damageMax);
+    	return Math.max(damage, minDamage);
     }
     
     // ========== On Damage ==========
@@ -2623,7 +2649,14 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         return true;
     }
     /** Returns whether or not this entity can be harmed by the specified entity. **/
-    public boolean isDamageEntityApplicable(Entity entity) { return true; }
+    public boolean isDamageEntityApplicable(Entity entity) {
+        if(this.isBoss()) {
+            if(entity == null)
+                return false;
+            return this.getDistanceToEntity(entity) <= this.bossRange;
+        }
+        return true;
+    }
     /** Returns whether or not the specified potion effect can be applied to this entity. **/
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {

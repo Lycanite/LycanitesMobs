@@ -80,8 +80,9 @@ public class EntityBehemoth extends EntityCreatureTameable implements IMob {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("HellfireCharge")), 1).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("HellfireCharge")), 0.1F).setMinAmount(5).setMaxAmount(7));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("hellfirecharge")), 1).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("hellfirecharge")), 0.1F).setMinAmount(5).setMaxAmount(7));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("demonicsoulstone")), 1F).setMinAmount(1).setMaxAmount(1).setSubspecies(3));
 	}
 	
 	

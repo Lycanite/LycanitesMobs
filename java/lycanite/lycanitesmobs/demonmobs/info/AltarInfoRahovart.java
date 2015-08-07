@@ -84,7 +84,7 @@ public class AltarInfoRahovart extends AltarInfo {
         ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
         if(worldExt == null)
             return false;
-        worldExt.startMobEvent("rahovart");
+        worldExt.startMobEvent("rahovart", x, Math.max(1, y - 3), z);
 
         return true;
     }

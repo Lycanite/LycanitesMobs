@@ -61,6 +61,9 @@ public class SpawnInfo {
 	
 	/** The list of biomes that this mob spawns in. Use this to get the biomes not biomeTypes. **/
 	public BiomeGenBase[] biomes;
+
+    /** If true, the biome check will be ignored completely, essnetially using ALL does the same thing but it doesn't always work with some mods. **/
+    public boolean ignoreBiome = false;
 	
 	// ========== Spawn Chance ==========
 	/** The chance of this mob spawning over others. **/
@@ -153,8 +156,9 @@ public class SpawnInfo {
         this.dimensionWhitelist = config.getBool("Spawn Dimensions", this.getCfgName("Spawn Dimensions Whitelist Mode"), this.dimensionWhitelist);
 
         // Spawn Biomes:
-		config.setCategoryComment("Spawn Biomes", "Sets which biomes this mob spawns in using Biome Tags. Multiple entries should be comma separated and can be subtractive if provided with a - in front.");
+		config.setCategoryComment("Spawn Biomes", "Sets which biomes this mob spawns in using Biome Tags. Multiple entries should be comma separated and can be subtractive if provided with a - in front. You can also have a mob skip the biome check completely if ALL is not working correctly for modded biomes.");
 		this.biomes = config.getBiomes("Spawn Biomes", this.getCfgName("Spawn Biomes"), this.biomeEntries);
+        this.ignoreBiome = config.getBool("Spawn Biomes", this.getCfgName("Spawn Ignores Biome Check"), this.ignoreBiome);
 		
 		// Spawn Weight:
 		config.setCategoryComment("Spawn Weights", "The higher the weight, the more likely the mob will spawn randomly instead of others. Vanilla Zombies have a weight of 8.");

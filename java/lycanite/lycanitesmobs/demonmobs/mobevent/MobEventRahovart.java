@@ -64,23 +64,26 @@ public class MobEventRahovart extends MobEventBoss {
 
     public void buildArena(World world, int originX, int originY, int originZ) {
         double rubbleChance = 0.01D;
-        int radius = 50;
+        int radius = 60;
         int height = 120;
         Block primaryBlock = Blocks.obsidian;
 
         int stripNumber = 1;
-        for(int x = originX - radius; x <= originX + radius; x++) {
-            float stripNormal = stripNumber / radius;
-            int stripRadius = Math.round(radius * stripNormal);
-            stripRadius += stripRadius * (world.rand.nextDouble() * 2);
-            stripRadius = Math.max(2, Math.min(radius, stripRadius));
+        for(int x = originX - radius; x < originX + radius; x++) {
+            float stripNormal = (float)stripNumber / (float)radius;
+            if(stripNumber > radius)
+                stripNormal = (float)(radius - (stripNumber - radius)) / (float)radius;
+            int stripRadius = Math.round((float)radius * stripNormal);
+            stripRadius += 5 + Math.round(20 * world.rand.nextDouble());
+            stripRadius = Math.max(5, Math.min(radius, stripRadius));
 
-            for(int z = originZ - stripRadius; z <= originZ + stripRadius; z++) {
+            for(int z = originZ - stripRadius; z < originZ + stripRadius; z++) {
                 int y = originY;
                 world.setBlock(x, y, z, primaryBlock);
+                y++;
                 if(world.rand.nextDouble() <= rubbleChance) {
-                    y++;
                     world.setBlock(x, y, z, primaryBlock);
+                    y++;
                 }
                 while(y <= originY + height && y < world.getHeight()) {
                     world.setBlockToAir(x, y, z);
@@ -120,10 +123,12 @@ public class MobEventRahovart extends MobEventBoss {
         for(int y = originY; y <= originY + height; y++) {
             if(y <= originY + radius) {
                 for (int x = originX - radius; x <= originX + radius; x++) {
-                    float stripNormal = stripNumber / radius;
-                    int stripRadius = Math.round(radius * stripNormal);
-                    stripRadius += stripRadius * (world.rand.nextDouble() * 2);
-                    stripRadius = Math.max(2, Math.min(radius, stripRadius));
+                    float stripNormal = (float)stripNumber / (float)radius;
+                    if(stripNumber > radius)
+                        stripNormal = (float)(radius - (stripNumber - radius)) / (float)radius;
+                    int stripRadius = Math.round((float)radius * stripNormal);
+                    stripRadius += Math.round(5 * world.rand.nextDouble());
+                    stripRadius = Math.max(5, Math.min(radius, stripRadius));
 
                     for (int z = originZ - stripRadius; z <= originZ + stripRadius; z++) {
                         world.setBlock(x, y, z, primaryBlock);
@@ -144,11 +149,17 @@ public class MobEventRahovart extends MobEventBoss {
 
     public void buildDecoration(World world, int originX, int originY, int originZ) {
         Block primaryBlock = Blocks.netherrack;
+        Block hazardBlock = ObjectManager.getBlock("hellfire");
         world.setBlock(originX, originY + 1, originZ, primaryBlock);
+        world.setBlock(originX, originY + 2, originZ, primaryBlock);
+        world.setBlock(originX, originY + 3, originZ, hazardBlock);
         world.setBlock(originX + 1, originY + 1, originZ, primaryBlock);
+        world.setBlock(originX + 1, originY + 2, originZ, hazardBlock);
         world.setBlock(originX - 1, originY + 1, originZ, primaryBlock);
+        world.setBlock(originX - 1, originY + 2, originZ, hazardBlock);
         world.setBlock(originX, originY + 1, originZ + 1, primaryBlock);
+        world.setBlock(originX, originY + 2, originZ + 1, hazardBlock);
         world.setBlock(originX, originY + 1, originZ - 1, primaryBlock);
-        world.setBlock(originX, originY + 2, originZ, ObjectManager.getBlock("hellfire"));
+        world.setBlock(originX, originY + 2, originZ - 1, hazardBlock);
     }
 }

@@ -669,7 +669,7 @@ public class SpawnTypeBase {
             }
             
             // Check Biomes:
-            boolean isValidBiome = this.ignoreBiome;
+            boolean isValidBiome = this.ignoreBiome || possibleSpawn.ignoreBiome;
             if(enoughCoords && !isValidBiome) {
                 for(BiomeGenBase validBiome : possibleSpawn.biomes) {
                     for(BiomeGenBase targetBiome : biomes) {

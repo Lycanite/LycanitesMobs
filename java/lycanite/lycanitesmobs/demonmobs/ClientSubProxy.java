@@ -1,13 +1,7 @@
 package lycanite.lycanitesmobs.demonmobs;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.demonmobs.model.ModelAstaroth;
-import lycanite.lycanitesmobs.demonmobs.model.ModelBehemoth;
-import lycanite.lycanitesmobs.demonmobs.model.ModelBelph;
-import lycanite.lycanitesmobs.demonmobs.model.ModelCacodemon;
-import lycanite.lycanitesmobs.demonmobs.model.ModelNetherSoul;
-import lycanite.lycanitesmobs.demonmobs.model.ModelPinky;
-import lycanite.lycanitesmobs.demonmobs.model.ModelTrite;
+import lycanite.lycanitesmobs.demonmobs.model.*;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class ClientSubProxy extends CommonSubProxy {
@@ -26,5 +20,6 @@ public class ClientSubProxy extends CommonSubProxy {
 		AssetManager.addModel("astaroth", new ModelAstaroth());
 		AssetManager.addModel("nethersoul", new ModelNetherSoul());
 		AssetManager.addModel("cacodemon", new ModelCacodemon());
+        AssetManager.addModel("rahovart", new ModelRahovart());
 	}
 }

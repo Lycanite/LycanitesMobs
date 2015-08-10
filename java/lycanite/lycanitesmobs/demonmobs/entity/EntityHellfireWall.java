@@ -4,12 +4,20 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.IGroupDemon;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
+import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.demonmobs.DemonMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 
 public class EntityHellfireWall extends EntityProjectileBase {
 
@@ -21,17 +29,14 @@ public class EntityHellfireWall extends EntityProjectileBase {
  	// ==================================================
     public EntityHellfireWall(World par1World) {
         super(par1World);
-        this.setSize(0.3125F, 0.3125F);
     }
 
     public EntityHellfireWall(World par1World, EntityLivingBase par2EntityLivingBase) {
         super(par1World, par2EntityLivingBase);
-        this.setSize(0.3125F, 0.3125F);
     }
 
     public EntityHellfireWall(World par1World, double par2, double par4, double par6) {
         super(par1World, par2, par4, par6);
-        this.setSize(0.3125F, 0.3125F);
     }
     
     // ========== Setup Projectile ==========
@@ -39,10 +44,13 @@ public class EntityHellfireWall extends EntityProjectileBase {
     	this.entityName = "hellfirewall";
     	this.group = DemonMobs.group;
     	this.setBaseDamage(10);
-    	this.setProjectileScale(10F);
+    	this.setProjectileScale(20F);
+        this.setSize(11F, 11F);
+        this.movement = false;
         this.pierce = true;
         this.pierceBlocks = true;
         this.projectileLife = 5 * 20;
+        this.animationFrameMax = 59;
     }
     
     
@@ -55,6 +63,18 @@ public class EntityHellfireWall extends EntityProjectileBase {
     	if(!entityLiving.isImmuneToFire())
     		entityLiving.setFire(this.getEffectDuration(10) / 20);
     	return true;
+    }
+
+    //========== Do Damage Check ==========
+    public boolean canDamage(EntityLivingBase targetEntity) {
+        EntityLivingBase owner = this.getThrower();
+        if(owner == null) {
+            if(targetEntity instanceof EntityRahovart)
+                return false;
+            if(targetEntity instanceof IGroupDemon)
+                return false;
+        }
+        return super.canDamage(targetEntity);
     }
     
     

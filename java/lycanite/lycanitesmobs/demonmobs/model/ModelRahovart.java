@@ -28,13 +28,13 @@ public class ModelRahovart extends ModelCustomObj {
     	parts = model.groupObjects;
     	
     	// Set Rotation Centers:
-    	setPartCenter("head", 0F, 5F, 0.8F);
-    	setPartCenter("body", 0F, 5F, 0.8F);
-    	setPartCenter("armleft", 0.6F, 5F, 0F);
-    	setPartCenter("armright", -0.6F, 5F, 0F);
-    	setPartCenter("legleft", 0.5F, 3.4F, 0F);
-    	setPartCenter("legright", -0.5F, 3.4F, 0F);
-        setPartCenter("tail", 0F, 3.4F, 0F);
+    	setPartCenter("head", 0F, 46.55F, 0F);
+    	setPartCenter("body", 0F, 22.05F, 0F);
+    	setPartCenter("armleft", 11.2F, 39.55F, 0F);
+    	setPartCenter("armright", -11.2F, 39.55F, 0F);
+    	setPartCenter("legleft", 4.9F, 22.4F, 0F);
+    	setPartCenter("legright", -4.9F, 22.4F, 0F);
+        setPartCenter("tail", 0F, 37.8F, -9.45F);
     	
     	lockHeadX = false;
     	lockHeadY = false;

@@ -675,8 +675,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
      * There is also the vanilla variable persistenceRequired which is handled in vanilla code too.
     **/
     public boolean isPersistant() {
-        // Don't Despawn Rares:
-        if(this.getSubspeciesIndex() >= 3)
+        // Don't Despawn Bosses or Rares:
+        if(this.boss || this.getSubspeciesIndex() >= 3)
             return true;
     	return false;
     }
@@ -1888,7 +1888,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     public float getDamageAfterDefense(float damage) {
     	float baseDefense = (float)(this.defense + this.getDefenseBoost());
     	float scaledDefense = baseDefense * (float)this.getDefenseMultiplier();
-    	float minDamage = 1F;
+    	float minDamage = 0F;
     	if(this.isBlocking()) {
 	    	if(scaledDefense <= 0)
 	    		scaledDefense = 1;

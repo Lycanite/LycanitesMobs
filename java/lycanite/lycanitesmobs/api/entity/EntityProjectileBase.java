@@ -23,6 +23,7 @@ public class EntityProjectileBase extends EntityThrowable {
 	public GroupInfo group;
 	
 	// Properties:
+    public boolean movement = true;
 	public byte baseDamage = 1;
 	public float projectileScale = 1.0f;
 	public int projectileLife = 200;
@@ -32,6 +33,10 @@ public class EntityProjectileBase extends EntityThrowable {
 	
 	public boolean waterProof = false;
 	public boolean lavaProof = false;
+
+    // Animation:
+    public int animationFrame = 0;
+    public int animationFrameMax = 0;
 	
 	// ==================================================
  	//                   Constructors
@@ -63,7 +68,8 @@ public class EntityProjectileBase extends EntityThrowable {
  	// ==================================================
     @Override
     public void onUpdate() {
-    	super.onUpdate();
+        if(this.movement)
+    	    super.onUpdate();
     	if(this.isInWeb)
     		this.isInWeb = false;
     	
@@ -76,6 +82,14 @@ public class EntityProjectileBase extends EntityThrowable {
     		if(this.projectileLife-- <= 0)
     			this.setDead();
     	}
+
+        // Animation:
+        if(this.animationFrameMax > 0) {
+            if (this.animationFrame == this.animationFrameMax || this.animationFrame < 0)
+                this.animationFrame = 0;
+            else
+                this.animationFrame++;
+        }
     }
 	
     

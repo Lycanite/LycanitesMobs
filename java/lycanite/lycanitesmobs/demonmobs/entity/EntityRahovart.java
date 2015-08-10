@@ -1,11 +1,13 @@
 package lycanite.lycanitesmobs.demonmobs.entity;
 
 import lycanite.lycanitesmobs.AssetManager;
+import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupDemon;
 import lycanite.lycanitesmobs.api.IGroupFire;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
+import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.MobInfo;
@@ -53,8 +55,8 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
         this.experience = 10;
         this.hasAttackSound = false;
         
-        this.setWidth = 1.0F;
-        this.setHeight = 3.2F;
+        this.setWidth = 10F;
+        this.setHeight = 50F;
         this.setupMob();
 
         // Boss:
@@ -107,6 +109,24 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
     public void onLivingUpdate() {
         super.onLivingUpdate();
 
+        this.updateHellfireCharge();
+        if(this.ticksExisted % 20 == 0) {
+            if(this.hellfireEnergy < 100)
+                this.hellfireEnergy++;
+            else
+                this.hellfireEnergy = 0;
+            this.hellfireEnergy = Math.max(0, Math.min(100, this.hellfireEnergy));
+        }
+
+        // Random Projectiles:
+        if(this.ticksExisted % 40 == 0) {
+            EntityProjectileBase projectile = new EntityHellfireball(this.worldObj, this);
+            projectile.setProjectileScale(8f);
+            projectile.setThrowableHeading((this.getRNG().nextFloat()) - 0.5F, this.getRNG().nextFloat(), (this.getRNG().nextFloat()) - 0.5F, 1.2F, 6.0F);
+            this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+            this.worldObj.spawnEntityInWorld(projectile);
+        }
+
         // Hellfire Trail:
         if(!this.worldObj.isRemote && this.isMoving() && this.ticksExisted % 5 == 0) {
             int trailHeight = 5;
@@ -146,6 +166,30 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
         }
         this.battlePhase = 0;
     }
+
+
+    // ==================================================
+    //                     Hellfire
+    // ==================================================
+    public List<EntityHellfireWall> hellfireWalls = new ArrayList<EntityHellfireWall>();
+    public void updateHellfireCharge() {
+        int hellfireChargeCount = Math.round((float)this.hellfireEnergy / 20);
+        while(this.hellfireWalls.size() < hellfireChargeCount) {
+            EntityHellfireWall hellfireWall = new EntityHellfireWall(this.worldObj, this);
+            this.hellfireWalls.add(hellfireWall);
+            this.worldObj.spawnEntityInWorld(hellfireWall);
+        }
+        while(this.hellfireWalls.size() > hellfireChargeCount) {
+            this.hellfireWalls.get(this.hellfireWalls.size() - 1).projectileLife = 0;
+            this.hellfireWalls.remove(this.hellfireWalls.size() - 1);
+        }
+        int i = 0;
+        for(EntityHellfireWall hellfireWall : this.hellfireWalls) {
+            hellfireWall.setPosition(this.posX, this.posY + 5 + (10 * i), this.posZ);
+            hellfireWall.projectileLife = 5;
+            i++;
+        }
+    }
 	
 	
 	// ==================================================
@@ -174,10 +218,10 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
     public void rangedAttack(Entity target, float range) {
     	// Type:
     	EntityHellfireball projectile = new EntityHellfireball(this.worldObj, this);
-        projectile.setProjectileScale(2f);
+        projectile.setProjectileScale(8f);
     	
     	// Y Offset:
-    	projectile.posY -= this.height / 4;
+    	projectile.posY -= this.height / 2;
     	
     	// Accuracy:
     	float accuracy = 1.0F * (this.getRNG().nextFloat() - 0.5F);

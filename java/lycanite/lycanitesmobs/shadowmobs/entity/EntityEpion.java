@@ -110,19 +110,10 @@ public class EntityEpion extends EntityCreatureTameable implements IMob, IGroupS
 				if(this.subspecies != null)
 					explosionRadius = 3;
 				explosionRadius = Math.max(2, Math.round((float)explosionRadius * (float)this.sizeScale));
-	        	this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, explosionRadius, true);
+                if(this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing") && this.epionGreifing)
+	        	    this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, explosionRadius, true);
 	        	this.setDead();
         	}
-        	/*if(this.daylightBurns() && this.worldObj.isDaytime() && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing") && this.epionGreifing) {
-	        	float brightness = this.getBrightness(1.0F);
-	            if(brightness > 0.5F && this.rand.nextFloat() * 30.0F < (brightness - 0.4F) * 2.0F && this.worldObj.canBlockSeeTheSky(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ))) {
-	            	int explosionRadius = 1;
-	    			if(this.subspecies != null)
-	    				explosionRadius = 3;
-	    			explosionRadius = Math.max(1, Math.round((float)explosionRadius * (float)this.sizeScale));
-	            	this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, explosionRadius, true);
-	            }
-	        }*/
         }
         
         // Particles:

@@ -1,5 +1,6 @@
 package lycanite.lycanitesmobs.api.render;
 
+import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityParticle;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileLaser;
@@ -61,7 +62,7 @@ public class RenderProjectile extends Render {
         GL11.glScalef(0.5F * scale, 0.5F * scale, 0.5F * scale);
         Tessellator tessellator = Tessellator.instance;
         
-        this.renderTexture(tessellator);
+        this.renderTexture(tessellator, entity);
         //this.renderIcon(tessellator, icon);
         
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
@@ -139,11 +140,19 @@ public class RenderProjectile extends Render {
     // ==================================================
     //                  Render Texture
     // ==================================================
-    private void renderTexture(Tessellator tessellator) {
+    private void renderTexture(Tessellator tessellator, Entity entity) {
     	float uMin = 0;
         float uMax = 1;
         float vMin = 0;
         float vMax = 1;
+        if(entity instanceof EntityProjectileBase) {
+            EntityProjectileBase entityProjectile = (EntityProjectileBase)entity;
+            if(entityProjectile.animationFrameMax > 0) {
+                vMin = (float)entityProjectile.animationFrame / (float)entityProjectile.animationFrameMax;
+                vMax = vMin + (1F / (float)entityProjectile.animationFrameMax);
+            }
+        }
+
         float f6 = 1.0F;
         float f7 = 0.5F;
         float f8 = 0.5F;

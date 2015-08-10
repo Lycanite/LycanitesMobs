@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs.demonmobs.entity;
 import java.util.HashMap;
 
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.IGroupDemon;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackRanged;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIBeg;
@@ -33,7 +34,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class EntityCacodemon extends EntityCreatureTameable {
+public class EntityCacodemon extends EntityCreatureTameable implements IGroupDemon {
     
     // ==================================================
  	//                    Constructor

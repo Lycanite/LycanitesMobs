@@ -2,12 +2,16 @@ package lycanite.lycanitesmobs.demonmobs.entity;
 
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.IGroupDemon;
+import lycanite.lycanitesmobs.api.IGroupFire;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
+import lycanite.lycanitesmobs.api.info.MobInfo;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.monster.IMob;
@@ -28,7 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDisplayData {
+public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDisplayData, IGroupDemon {
 
     public List<EntityPlayer> playerTargets = new ArrayList<EntityPlayer>();
     public List<EntityBelph> belphMinions = new ArrayList<EntityBelph>(); // Phase 0
@@ -153,6 +157,16 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
     	if(targetClass.isAssignableFrom(EntityBelph.class))
     		return false;
         return super.canAttackClass(targetClass);
+    }
+
+    public boolean canAttackEntity(EntityLivingBase targetEntity) {
+        if(targetEntity instanceof IGroupDemon || targetEntity instanceof IGroupFire) {
+            if(targetEntity instanceof EntityCreatureTameable)
+                return ((EntityCreatureTameable)targetEntity).getOwner() instanceof EntityPlayer;
+            else
+                return false;
+        }
+        return super.canAttackEntity(targetEntity);
     }
     
     // ========== Ranged Attack ==========

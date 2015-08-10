@@ -56,7 +56,15 @@ public class MobEventRahovart extends MobEventBoss {
             this.buildObstacles(world, originX, originY, originZ);
         }
 
-        if(time == 9 * 20) {
+        if(time >= 6 * 20 && time % 10 == 0) {
+            // TODO: Random explosions
+        }
+
+        if(time == 15 * 20) {
+            // TODO: Create Hellfire Pillar.
+        }
+
+        if(time == 19 * 20) {
             // TODO: Summon Rahovart.
         }
     }

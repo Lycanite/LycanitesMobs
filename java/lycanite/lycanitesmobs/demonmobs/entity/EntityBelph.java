@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs.demonmobs.entity;
 import java.util.HashMap;
 
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.IGroupDemon;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackRanged;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIBreakDoor;
@@ -30,7 +31,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class EntityBelph extends EntityCreatureTameable implements IMob {
+public class EntityBelph extends EntityCreatureTameable implements IMob, IGroupDemon {
     
     // ==================================================
  	//                    Constructor

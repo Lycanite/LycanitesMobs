@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs.demonmobs.entity;
 import java.util.HashMap;
 
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.IGroupDemon;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackRanged;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
@@ -28,7 +29,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class EntityAstaroth extends EntityCreatureBase implements IMob {
+public class EntityAstaroth extends EntityCreatureBase implements IMob, IGroupDemon {
     
     // ==================================================
  	//                    Constructor

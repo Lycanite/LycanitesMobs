@@ -29,6 +29,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.boss.BossStatus;
+import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecart;
@@ -1043,6 +1044,11 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     public void updateBattlePhase() {
 
     }
+
+    /** Returns the current battle phase. **/
+    public int getBattlePhase() {
+        return this.battlePhase;
+    }
     
     
     // ==================================================
@@ -1677,6 +1683,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 			return false;
 		return true;
 	}
+
     /** Returns whether or not this mob is allowed to attack the given target entity. **/
 	public boolean canAttackEntity(EntityLivingBase targetEntity) {
 		if(!MobInfo.mobsAttackVillagers && targetEntity instanceof EntityVillager)
@@ -1684,6 +1691,10 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         if(targetEntity instanceof EntityPlayer) {
             EntityPlayer targetPlayer = (EntityPlayer)targetEntity;
             if(targetPlayer.capabilities.isCreativeMode)
+                return false;
+        }
+        if(targetEntity instanceof EntityCreatureBase && !(this instanceof IBossDisplayData)) {
+            if (this.getOwner() == null && targetEntity instanceof IBossDisplayData && !((EntityCreatureBase)targetEntity).canAttackEntity(this))
                 return false;
         }
 		return true;

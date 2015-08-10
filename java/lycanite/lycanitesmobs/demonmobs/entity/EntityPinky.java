@@ -4,11 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.IGroupAlpha;
-import lycanite.lycanitesmobs.api.IGroupAnimal;
-import lycanite.lycanitesmobs.api.IGroupHunter;
-import lycanite.lycanitesmobs.api.IGroupPredator;
-import lycanite.lycanitesmobs.api.IGroupPrey;
+import lycanite.lycanitesmobs.api.*;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
@@ -44,7 +40,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 
-public class EntityPinky extends EntityCreatureRideable implements IAnimals, IGroupAnimal, IGroupAlpha, IGroupPredator, IGroupHunter {
+public class EntityPinky extends EntityCreatureRideable implements IAnimals, IGroupAnimal, IGroupAlpha, IGroupPredator, IGroupHunter, IGroupDemon {
 	
 	EntityAIPlayerControl playerControlAI;
 	

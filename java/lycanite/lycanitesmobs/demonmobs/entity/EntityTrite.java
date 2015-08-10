@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs.demonmobs.entity;
 import java.util.HashMap;
 
 import lycanite.lycanitesmobs.api.IGroupAnimal;
+import lycanite.lycanitesmobs.api.IGroupDemon;
 import lycanite.lycanitesmobs.api.IGroupPrey;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
@@ -28,7 +29,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
-public class EntityTrite extends EntityCreatureBase implements IMob {
+public class EntityTrite extends EntityCreatureBase implements IMob, IGroupDemon {
     
     // ==================================================
  	//                    Constructor

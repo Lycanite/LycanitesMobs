@@ -156,15 +156,22 @@ public class DemonMobs {
 				.setSpawnWeight(4).setAreaLimit(5).setGroupLimits(1, 1).setLightDark(true, true).setDungeonWeight(80);
 		ObjectManager.addMob(newMob);
 
+        newMob = new MobInfo(group, "rahovart", EntityRahovart.class, 0x000000, 0xFF0000)
+                .setPeaceful(false).setSummonCost(100).setDungeonLevel(4);
+        newMob.spawnInfo.setSpawnTypes("")
+                .setSpawnWeight(1).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(true, true).setDungeonWeight(0);
+        ObjectManager.addMob(newMob);
+
 		
 		// ========== Create Projectiles ==========
 		ObjectManager.addProjectile("hellfireball", EntityHellfireball.class, ObjectManager.getItem("hellfirecharge"), new DispenserBehaviorHellfireball());
 		ObjectManager.addProjectile("doomfireball", EntityDoomfireball.class, ObjectManager.getItem("doomfirecharge"), new DispenserBehaviorDoomfireball());
 		ObjectManager.addProjectile("devilstar", EntityDevilstar.class, ObjectManager.getItem("devilstarcharge"), new DispenserBehaviorDevilstar());
 		ObjectManager.addProjectile("demonicspark", EntityDemonicSpark.class);
-		ObjectManager.addProjectile("demonicblast", EntityDemonicBlast.class, ObjectManager.getItem("demoniclightningcharge"), new DispenserBehaviorDemonicLightning());
-		
-		// ========== Register Models ==========
+        ObjectManager.addProjectile("demonicblast", EntityDemonicBlast.class, ObjectManager.getItem("demoniclightningcharge"), new DispenserBehaviorDemonicLightning());
+        ObjectManager.addProjectile("hellfirewall", EntityHellfireWall.class);
+
+        // ========== Register Models ==========
 		proxy.registerModels();
 	}
 	

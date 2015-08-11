@@ -130,8 +130,9 @@ public class MobEventRahovart extends MobEventBoss {
 
         while(angle < 360) {
             angle += 5 + (5 * world.rand.nextDouble());
-            double x = radius * Math.cos(angle) - Math.sin(angle);
-            double z = radius * Math.sin(angle) + Math.cos(angle);
+            double angleRadians = Math.toRadians(angle);
+            double x = radius * Math.cos(angleRadians) - Math.sin(angleRadians);
+            double z = radius * Math.sin(angleRadians) + Math.cos(angleRadians);
             decorationCoords.add(this.buildPillar(world, originX + (int) Math.ceil(x), originY, originZ + (int) Math.ceil(z)));
         }
 

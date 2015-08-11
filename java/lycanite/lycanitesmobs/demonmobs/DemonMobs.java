@@ -170,6 +170,7 @@ public class DemonMobs {
 		ObjectManager.addProjectile("demonicspark", EntityDemonicSpark.class);
         ObjectManager.addProjectile("demonicblast", EntityDemonicBlast.class, ObjectManager.getItem("demoniclightningcharge"), new DispenserBehaviorDemonicLightning());
         ObjectManager.addProjectile("hellfirewall", EntityHellfireWall.class);
+        ObjectManager.addProjectile("hellfireorb", EntityHellfireOrb.class);
 
         // ========== Register Models ==========
 		proxy.registerModels();

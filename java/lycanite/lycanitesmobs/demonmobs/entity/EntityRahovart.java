@@ -171,22 +171,35 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
     // ==================================================
     //                     Hellfire
     // ==================================================
-    public List<EntityHellfireWall> hellfireWalls = new ArrayList<EntityHellfireWall>();
+    public List<EntityHellfireOrb> hellfireOrbs = new ArrayList<EntityHellfireOrb>();
     public void updateHellfireCharge() {
-        int hellfireChargeCount = Math.round((float)this.hellfireEnergy / 20);
-        while(this.hellfireWalls.size() < hellfireChargeCount) {
-            EntityHellfireWall hellfireWall = new EntityHellfireWall(this.worldObj, this);
-            this.hellfireWalls.add(hellfireWall);
-            this.worldObj.spawnEntityInWorld(hellfireWall);
+        int hellfireOrbMax = 5;
+        int hellfireChargeCount = Math.round((float)this.hellfireEnergy * (100F / hellfireOrbMax));
+        int hellfireOrbRotationTime = 5 * 20;
+        double hellfireOrbAngle = 360 * (this.ticksExisted % hellfireOrbRotationTime / hellfireOrbRotationTime);
+        double hellfireOrbAngleOffset = 360 / hellfireOrbMax;
+
+        // Add Required Orbs:
+        while(this.hellfireOrbs.size() < hellfireChargeCount) {
+            EntityHellfireOrb hellfireOrb = new EntityHellfireOrb(this.worldObj, this);
+            this.hellfireOrbs.add(hellfireOrb);
+            this.worldObj.spawnEntityInWorld(hellfireOrb);
         }
-        while(this.hellfireWalls.size() > hellfireChargeCount) {
-            this.hellfireWalls.get(this.hellfireWalls.size() - 1).projectileLife = 0;
-            this.hellfireWalls.remove(this.hellfireWalls.size() - 1);
+
+        // Remove Excess Orbs:
+        while(this.hellfireOrbs.size() > hellfireChargeCount) {
+            this.hellfireOrbs.get(this.hellfireOrbs.size() - 1).projectileLife = 0;
+            this.hellfireOrbs.remove(this.hellfireOrbs.size() - 1);
         }
+
+        // Update Orbs:
         int i = 0;
-        for(EntityHellfireWall hellfireWall : this.hellfireWalls) {
-            hellfireWall.setPosition(this.posX, this.posY + 5 + (10 * i), this.posZ);
-            hellfireWall.projectileLife = 5;
+        for(EntityHellfireOrb hellfireOrb : this.hellfireOrbs) {
+            double rotationRadians = Math.toRadians(hellfireOrbAngle + (hellfireOrbAngleOffset * i));
+            double x = this.posX + (this.width * Math.cos(rotationRadians) - Math.sin(rotationRadians));
+            double z = this.posZ + (this.width * Math.sin(rotationRadians) + Math.cos(rotationRadians));
+            hellfireOrb.setPosition(x, this.posY + (this.height * 0.75F), z);
+            hellfireOrb.projectileLife = 5;
             i++;
         }
     }

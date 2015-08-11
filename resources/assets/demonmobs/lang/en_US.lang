@@ -57,6 +57,12 @@ achievement.cacodemon.learn=The Ugly Demon
 achievement.cacodemon.learn.desc=Add a Cacodemon to your Beastiary.
 achievement.cacodemon.tame=Demon Tamer!
 achievement.cacodemon.tame.desc=Tame a Cacodemon.
+entity.demonmobs.rahovart.name=Rahovart
+entity.demonmobs.rahovart.description=As the lord of the underworld Rahovart's name alone strikes fear and terror into the hearts of even the most evil of beings.
+achievement.rahovart.kill=The Lord Falls
+achievement.rahovart.kill.desc=Slay a Rahovart.
+achievement.rahovart.learn=Demonic Ruler
+achievement.rahovart.learn.desc=Add a Rahovart to your Beastiary.
 #
 # Items
 item.demonspawn.name=Spawn

@@ -17,7 +17,7 @@ public class EntityProjectileLaser extends EntityProjectileBase {
     /** The entity that this laser should appear from. **/
 	public Entity followEntity;
 	public int shootingEntityRef = -1;
-	public int shootingEntityID = 10;
+	public int shootingEntityID = 11;
 	
 	public float projectileWidth = 0.2f;
 	public float projectileHeight = 0.2f;
@@ -25,14 +25,14 @@ public class EntityProjectileLaser extends EntityProjectileBase {
 	// Laser:
 	public EntityProjectileLaserEnd laserEnd;
 	public int laserEndRef = -1;
-	public int laserEndID = 11;
+	public int laserEndID = 12;
 	
 	public int laserTime = 100;
 	public int laserDelay = 20;
 	public float laserRange;
 	public float laserWidth;
 	public float laserLength = 10;
-	public int laserTimeID = 12;
+	public int laserTimeID = 13;
 
 	// Laser End:
     /** If true, this entity will use the attack target position of the entity that has fired this if possible. **/
@@ -45,7 +45,7 @@ public class EntityProjectileLaser extends EntityProjectileBase {
 	public double offsetX = 0;
 	public double offsetY = 0;
 	public double offsetZ = 0;
-	public int offsetIDStart = 13;
+	public int offsetIDStart = 14;
 	
     // ==================================================
  	//                   Constructors

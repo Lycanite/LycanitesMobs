@@ -26,6 +26,7 @@ public class EntityProjectileBase extends EntityThrowable {
     public boolean movement = true;
 	public byte baseDamage = 1;
 	public float projectileScale = 1.0f;
+    public float projectileScaleLast = 1.0F;
 	public int projectileLife = 200;
     public double knockbackChance = 1;
     public boolean pierce = false;
@@ -35,6 +36,7 @@ public class EntityProjectileBase extends EntityThrowable {
 	public boolean lavaProof = false;
 
     // Animation:
+    public int projectileScaleID = 10;
     public int animationFrame = 0;
     public int animationFrameMax = 0;
 	
@@ -43,24 +45,33 @@ public class EntityProjectileBase extends EntityThrowable {
  	// ==================================================
     public EntityProjectileBase(World world) {
         super(world);
+        this.dataWatcher.addObject(this.projectileScaleID, this.projectileScale);
         this.setSize(0.3125F, 0.3125F);
         this.setup();
     }
 
     public EntityProjectileBase(World world, EntityLivingBase entityLiving) {
         super(world, entityLiving);
+        this.dataWatcher.addObject(this.projectileScaleID, this.projectileScale);
         this.setSize(0.3125F, 0.3125F);
         this.setup();
     }
 
     public EntityProjectileBase(World world, double par2, double par4, double par6) {
         super(world, par2, par4, par6);
+        this.dataWatcher.addObject(this.projectileScaleID, this.projectileScale);
         this.setSize(0.3125F, 0.3125F);
         this.setup();
     }
     
     // ========== Setup Projectile ==========
-    public void setup() {}
+    public void setup() {
+
+    }
+
+    public void setProjectileSize(float width, float height) {
+        this.setSize(width, height);
+    }
 	
     
     // ==================================================
@@ -82,6 +93,11 @@ public class EntityProjectileBase extends EntityThrowable {
     		if(this.projectileLife-- <= 0)
     			this.setDead();
     	}
+
+        // Sync Scale:
+        if(this.worldObj.isRemote && this.ticksExisted % 20 == 0) {
+            this.projectileScale = this.dataWatcher.getWatchableObjectFloat(this.projectileScaleID);
+        }
 
         // Animation:
         if(this.animationFrameMax > 0) {
@@ -339,6 +355,9 @@ public class EntityProjectileBase extends EntityThrowable {
      // ==================================================
      public void setProjectileScale(float newScale) {
      	 this.projectileScale = newScale;
+         if(this.worldObj.isRemote)
+             return;
+         this.dataWatcher.updateObject(this.projectileScaleID, this.projectileScale);
          if(this.getThrower() != null && this.getThrower() instanceof EntityCreatureBase)
              this.projectileScale *= ((EntityCreatureBase)this.getThrower()).sizeScale;
      }

@@ -83,7 +83,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
 		baseAttributes.put("maxHealth", 10000D);
 		baseAttributes.put("movementSpeed", 0.32D);
 		baseAttributes.put("knockbackResistance", 1D);
-		baseAttributes.put("followRange", 56D);
+		baseAttributes.put("followRange", 40D);
 		baseAttributes.put("attackDamage", 18D);
         super.applyEntityAttributes(baseAttributes);
     }
@@ -105,12 +105,13 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
     //                      Updates
     // ==================================================
 	// ========== Living Update ==========
+    protected long updateTick = 0;
 	@Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
 
         this.updateHellfireCharge();
-        if(this.ticksExisted % 20 == 0) {
+        if(this.updateTick % 20 == 0) {
             if(this.hellfireEnergy < 100)
                 this.hellfireEnergy++;
             else
@@ -119,7 +120,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
         }
 
         // Random Projectiles:
-        if(this.ticksExisted % 40 == 0) {
+        if(!this.worldObj.isRemote && this.updateTick % 40 == 0) {
             EntityProjectileBase projectile = new EntityHellfireball(this.worldObj, this);
             projectile.setProjectileScale(8f);
             projectile.setThrowableHeading((this.getRNG().nextFloat()) - 0.5F, this.getRNG().nextFloat(), (this.getRNG().nextFloat()) - 0.5F, 1.2F, 6.0F);
@@ -128,7 +129,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
         }
 
         // Hellfire Trail:
-        if(!this.worldObj.isRemote && this.isMoving() && this.ticksExisted % 5 == 0) {
+        if(!this.worldObj.isRemote && this.updateTick % 5 == 0 && this.isMoving()) {
             int trailHeight = 5;
             int trailWidth = 1;
             if(this.getSubspeciesIndex() >= 3)
@@ -147,6 +148,8 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
                 }
             }
         }
+
+        this.updateTick++;
     }
 
 
@@ -173,10 +176,13 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
     // ==================================================
     public List<EntityHellfireOrb> hellfireOrbs = new ArrayList<EntityHellfireOrb>();
     public void updateHellfireCharge() {
+        if(this.worldObj.isRemote)
+            return;
+
         int hellfireOrbMax = 5;
-        int hellfireChargeCount = Math.round((float)this.hellfireEnergy * (100F / hellfireOrbMax));
+        int hellfireChargeCount = Math.round((float)this.hellfireEnergy / (100F / hellfireOrbMax));
         int hellfireOrbRotationTime = 5 * 20;
-        double hellfireOrbAngle = 360 * (this.ticksExisted % hellfireOrbRotationTime / hellfireOrbRotationTime);
+        double hellfireOrbAngle = 360 * ((float)(this.updateTick % hellfireOrbRotationTime) / hellfireOrbRotationTime);
         double hellfireOrbAngleOffset = 360 / hellfireOrbMax;
 
         // Add Required Orbs:
@@ -184,21 +190,25 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
             EntityHellfireOrb hellfireOrb = new EntityHellfireOrb(this.worldObj, this);
             this.hellfireOrbs.add(hellfireOrb);
             this.worldObj.spawnEntityInWorld(hellfireOrb);
+            hellfireOrb.setProjectileSize(10F, 10F);
+            hellfireOrb.setProjectileScale(20);
         }
 
         // Remove Excess Orbs:
         while(this.hellfireOrbs.size() > hellfireChargeCount) {
-            this.hellfireOrbs.get(this.hellfireOrbs.size() - 1).projectileLife = 0;
+            this.hellfireOrbs.get(this.hellfireOrbs.size() - 1).setDead();
             this.hellfireOrbs.remove(this.hellfireOrbs.size() - 1);
         }
 
         // Update Orbs:
-        int i = 0;
-        for(EntityHellfireOrb hellfireOrb : this.hellfireOrbs) {
-            double rotationRadians = Math.toRadians(hellfireOrbAngle + (hellfireOrbAngleOffset * i));
-            double x = this.posX + (this.width * Math.cos(rotationRadians) - Math.sin(rotationRadians));
-            double z = this.posZ + (this.width * Math.sin(rotationRadians) + Math.cos(rotationRadians));
-            hellfireOrb.setPosition(x, this.posY + (this.height * 0.75F), z);
+        for(int i = 0; i < this.hellfireOrbs.size(); i++) {
+            EntityHellfireOrb hellfireOrb = this.hellfireOrbs.get(i);
+            double rotationRadians = Math.toRadians((hellfireOrbAngle + (hellfireOrbAngleOffset * i)) % 360);
+            double x = (this.width * 2) * Math.cos(rotationRadians) - Math.sin(rotationRadians);
+            double z = (this.width * 2) * Math.sin(rotationRadians) + Math.cos(rotationRadians);
+            hellfireOrb.posX = this.posX + x;
+            hellfireOrb.posY = this.posY + (this.height * 0.75F);
+            hellfireOrb.posZ = this.posZ + z;
             hellfireOrb.projectileLife = 5;
             i++;
         }

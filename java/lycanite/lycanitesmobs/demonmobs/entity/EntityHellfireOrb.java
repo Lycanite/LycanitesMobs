@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 public class EntityHellfireOrb extends EntityProjectileBase {
 
 	// Properties:
-	public Entity shootingEntity;
+    public int hellfireOrbRotationTime = 5 * 20;
 
     // ==================================================
  	//                   Constructors
@@ -35,13 +35,22 @@ public class EntityHellfireOrb extends EntityProjectileBase {
     	this.entityName = "hellfireorb";
     	this.group = DemonMobs.group;
     	this.setBaseDamage(0);
-    	this.setProjectileScale(10F);
+    	this.setProjectileScale(2F);
         this.setSize(2F, 2F);
         this.movement = false;
         this.pierce = true;
         this.pierceBlocks = true;
         this.projectileLife = 5 * 20;
-        this.animationFrameMax = 59;
+        this.animationFrameMax = 4;
+    }
+
+
+    // ==================================================
+    //                      Update
+    // ==================================================
+    @Override
+    public void onUpdate() {
+        super.onUpdate();
     }
     
     

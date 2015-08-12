@@ -77,6 +77,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     public boolean altarSummoned = false;
     /** If true, this mob will show a boss health bar, regardless of other properties, unless overridden by a subclass. **/
     public boolean forceBossHealthBar = false;
+    /** The living update tick. **/
+    public long updateTick = 0;
 	
 	// Size:
     /** The width of this mob. XZ axis. **/
@@ -115,7 +117,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     /** If true, this mob is to be treated as a boss. Boss mobs gain some defensive abilities. **/
     public boolean boss = false;
     /** The battle range of this boss mob, anything out of this range cannot harm the boss. This will also affect other things related to the boss. **/
-    public int bossRange = 56;
+    public int bossRange = 60;
 	/** Whether or not this mob is hostile by default. Use isHostile() when check if this mob is hostile. **/
 	public boolean isHostileByDefault = true;
     /** Whether if this mob is on fire, it should spread it to other entities when melee attacking. **/
@@ -661,6 +663,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     		return false;
     	if(this.forceNoDespawn)
     		return false;
+        if(this.boss || this.getSubspeciesIndex() >= 3)
+            return false;
     	if(this.isPersistant() || this.getLeashed() || (this.hasCustomNameTag() && "".equals(this.spawnEventType)))
     		return false;
     	return super.canDespawn();
@@ -675,9 +679,6 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
      * There is also the vanilla variable persistenceRequired which is handled in vanilla code too.
     **/
     public boolean isPersistant() {
-        // Don't Despawn Bosses or Rares:
-        if(this.boss || this.getSubspeciesIndex() >= 3)
-            return true;
     	return false;
     }
     
@@ -763,7 +764,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     public void summonMinion(EntityLivingBase minion, double angle, double distance) {
         double angleRadians = Math.toRadians(angle);
         double x = this.posX + ((this.width + distance) * Math.cos(angleRadians) - Math.sin(angleRadians));
-        double y = this.posY;
+        double y = this.posY + 1;
         double z = this.posZ + ((this.width + distance) * Math.sin(angleRadians) + Math.cos(angleRadians));
         minion.setLocationAndAngles(x, y, z, this.rand.nextFloat() * 360.0F, 0.0F);
         if(minion instanceof EntityCreatureBase) {
@@ -776,10 +777,11 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
             minion.setRevengeTarget(this.getAttackTarget());
     }
 
-    // ========== Minion Death ==========
-    public void onMinionDeath(EntityLivingBase minion) {
+    // ========== Minion Update ==========
+    public void onMinionUpdate(EntityLivingBase minion, long tick) {}
 
-    }
+    // ========== Minion Death ==========
+    public void onMinionDeath(EntityLivingBase minion) {}
 
     // ========== Minion ==========
     /** Set whether this mob is a minion or not, this should be used if this mob is summoned. **/
@@ -1279,6 +1281,12 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
                 this.bossHealth = new BossHealth(this);
             BossStatus.setBossStatus(this.bossHealth, true);
         }
+
+        // Minion To Master Update:
+        if(this.getMasterTarget() != null && this.getMasterTarget() instanceof EntityCreatureBase)
+            ((EntityCreatureBase)this.getMasterTarget()).onMinionUpdate(this, this.updateTick);
+
+        this.updateTick++;
     }
     
     // ========== Sync Update ==========
@@ -1951,6 +1959,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
                     ((EntityPlayer)damageSource.getEntity()).addStat(ObjectManager.getAchievement(this.mobInfo.name + ".kill"), 1);
             }
         }
+        if(this.getMasterTarget() != null && this.getMasterTarget() instanceof EntityCreatureBase)
+            ((EntityCreatureBase)this.getMasterTarget()).onMinionDeath(this);
     }
     
     

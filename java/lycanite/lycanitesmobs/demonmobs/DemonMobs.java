@@ -157,7 +157,7 @@ public class DemonMobs {
 		ObjectManager.addMob(newMob);
 
         newMob = new MobInfo(group, "rahovart", EntityRahovart.class, 0x000000, 0xFF0000)
-                .setPeaceful(false).setSummonCost(100).setDungeonLevel(4);
+                .setPeaceful(false).setSummonCost(100).setDungeonLevel(4).setBoss(true);
         newMob.spawnInfo.setSpawnTypes("")
                 .setSpawnWeight(1).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(true, true).setDungeonWeight(0);
         ObjectManager.addMob(newMob);

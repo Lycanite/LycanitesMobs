@@ -108,6 +108,9 @@ public class MobInfo {
 	
 	/** A list of all the custom item drops this mob should drop, readily parsed from the config. To be safe, this list should be copied into the entity instance. **/
 	public List<DropRate> customDrops = new ArrayList<DropRate>();
+
+    /** If true, this is a boss mob. Bosses are updated more frequently and have a larger tracking range by default. **/
+    public boolean boss = false;
 	
 	/** If true, this is not a true mob, for example the fear entity. It will also not be automatically registered. **/
 	public boolean dummy = false;
@@ -353,7 +356,7 @@ public class MobInfo {
 		if(!ObjectManager.entityLists.containsKey(this.group.filename))
 			ObjectManager.entityLists.put(this.group.filename, new EntityListCustom());
 		ObjectManager.entityLists.get(this.group.filename).addMapping(this.entityClass, this.getRegistryName(), this.mobID, this.eggBackColor, this.eggForeColor);
-		EntityRegistry.registerModEntity(this.entityClass, name, this.mobID, group.mod, 128, 3, true);
+		EntityRegistry.registerModEntity(this.entityClass, name, this.mobID, group.mod, this.isBoss() ? 256 : 128, this.isBoss() ? 6 : 3, true);
 		
 		// Debug Message - Added:
 		LycanitesMobs.printDebug("MobSetup", "Mob Added: " + name + " - " + this.entityClass + " (" + group.name + ")");
@@ -456,6 +459,15 @@ public class MobInfo {
         if(!tamingEnabled)
             return false;
         return tameableCreatures.contains(this.name);
+    }
+
+    // ========== Boss ==========
+    public MobInfo setBoss(boolean bool) {
+        this.boss = bool;
+        return this;
+    }
+    public boolean isBoss() {
+        return this.boss;
     }
 
 	// ========== Dummy ==========

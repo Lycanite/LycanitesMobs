@@ -142,14 +142,16 @@ public class MobEventRahovart extends MobEventBoss {
 
 
     public int[] buildPillar(World world, int originX, int originY, int originZ) {
-        int radius = 5;
+        int radiusMax = 5;
         int height = 40 + Math.round(20 * world.rand.nextFloat());
         Block primaryBlock = Blocks.obsidian;
         int[] decorationCoord = new int[] {originX, originY, originZ};
 
-        int stripNumber = 1;
+        int radius = radiusMax;
+        int radiusHeight = radiusMax;
         for(int y = originY; y <= originY + height; y++) {
-            if(y <= originY + radius) {
+            if(y <= originY + (radiusMax * radiusMax)) {
+                int stripNumber = 1;
                 for (int x = originX - radius; x <= originX + radius; x++) {
                     float stripNormal = (float)stripNumber / (float)radius;
                     if(stripNumber > radius)
@@ -166,6 +168,10 @@ public class MobEventRahovart extends MobEventBoss {
             else {
                 world.setBlock(originX, y, originZ, primaryBlock, 0, 2);
                 decorationCoord = new int[] {originX, y, originZ};
+            }
+            if(--radiusHeight <= 0) {
+                radiusHeight = radiusMax;
+                radius--;
             }
         }
 

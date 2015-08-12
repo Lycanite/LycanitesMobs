@@ -1,6 +1,5 @@
 package lycanite.lycanitesmobs.demonmobs.entity;
 
-import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupDemon;
@@ -10,7 +9,6 @@ import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
-import lycanite.lycanitesmobs.api.info.MobInfo;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -27,23 +25,34 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDisplayData, IGroupDemon {
 
     public List<EntityPlayer> playerTargets = new ArrayList<EntityPlayer>();
-    public List<EntityBelph> hellfireBelphMinions = new ArrayList<EntityBelph>(); // Phase 0
-    public List<EntityBehemoth> hellfireBehemothMinions = new ArrayList<EntityBehemoth>(); // Phase 1
-    //public List<EntityHellfireBarrier> hellfireBarriers = new ArrayList<EntityHellfireBarrier>(); // Phase 2
     public int hellfireEnergy = 0;
+    public List<EntityHellfireOrb> hellfireOrbs = new ArrayList<EntityHellfireOrb>();
+
+    // First Phase:
+    public List<EntityBelph> hellfireBelphMinions = new ArrayList<EntityBelph>();
+    public Map<EntityBelph, Integer> hellfireBelphEnergies = new HashMap<EntityBelph, Integer>();
+    public Map<EntityBelph, List<EntityHellfireOrb>> hellfireBelphOrbs = new HashMap<EntityBelph, List<EntityHellfireOrb>>();
+
+    // Second Phase:
+    public List<EntityBehemoth> hellfireBehemothMinions = new ArrayList<EntityBehemoth>();
+    public Map<EntityBehemoth, Integer> hellfireBehemothEnergies = new HashMap<EntityBehemoth, Integer>();
+    public Map<EntityBehemoth, List<EntityHellfireOrb>> hellfireBehemothOrbs = new HashMap<EntityBehemoth, List<EntityHellfireOrb>>();
     public int hellfireWallTime = 0;
     public int hellfireWallTimeMax = 10 * 20;
     public boolean hellfireWallClockwise = false;
+
+    // Third Phase:
+    //public List<EntityHellfireBarrier> hellfireBarriers = new ArrayList<EntityHellfireBarrier>();
 
 
     // ==================================================
@@ -55,7 +64,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEAD;
         this.defense = 2;
-        this.experience = 10;
+        this.experience = 1000;
         this.hasAttackSound = false;
         
         this.setWidth = 10F;
@@ -65,7 +74,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
         // Boss:
         this.boss = true;
         this.forceBossHealthBar = true;
-        this.damageMax = 40;
+        this.damageMax = 100;
         
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this));
@@ -108,128 +117,16 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
     //                      Updates
     // ==================================================
 	// ========== Living Update ==========
-    protected long updateTick = 0;
 	@Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
 
         // Hellfire Update:
-        this.updateHellfireOrbs();
+        this.updateHellfireOrbs(this, this.updateTick, 5, this.hellfireEnergy, 10, this.hellfireOrbs);
 
-        // XXX Testing:
-        if(this.updateTick % 20 == 0) {
-            if(this.hellfireEnergy < 100)
-                this.hellfireEnergy++;
-            else
-                this.hellfireEnergy = 0;
-            this.hellfireEnergy = Math.max(0, Math.min(100, this.hellfireEnergy));
-        }
-
-        // ===== First Phase - Hellfire Wave =====
-        if(this.getBattlePhase() == 0) {
-            // Clean Up:
-            if(!this.hellfireBehemothMinions.isEmpty())
-                this.hellfireBehemothMinions = new ArrayList<EntityBehemoth>();
-            this.hellfireWallTime = 0;
-
-            // Hellfire Energy:
-            if(this.hellfireEnergy >= 100) {
-                this.hellfireEnergy = 0;
-                this.hellfireWaveAttack(this.rotationYaw);
-            }
-
-            // Every 5 Secs:
-            if(this.updateTick % 100 == 0) {
-                int summonAmount = this.getRNG().nextInt(6); // 0-5 Hellfire Belphs
-                for(int summonCount = 0; summonCount <= summonAmount; summonCount++) {
-                    EntityBelph minion = new EntityBelph(this.worldObj);
-                    this.summonMinion(minion, this.getRNG().nextDouble() * 360, 5);
-                    this.hellfireBelphMinions.add(minion);
-                }
-            }
-        }
-
-        // ===== Second Phase - Hellfire Wall =====
-        if(this.getBattlePhase() == 2) {
-            // Clean Up:
-            if(!this.hellfireBelphMinions.isEmpty())
-                this.hellfireBelphMinions = new ArrayList<EntityBelph>();
-
-            // Hellfire Energy:
-            if(this.hellfireEnergy >= 100) {
-                this.hellfireEnergy = 0;
-                this.hellfireWallAttack(this.rotationYaw);
-            }
-
-            // Hellfire Wall:
-            if(this.hellfireWallTime > 0) {
-                this.hellfireWallUpdate();
-                this.hellfireWallTime--;
-            }
-
-            // Every 10 Secs:
-            if(this.updateTick % 200 == 0) {
-                int summonAmount = 2; // 2 Hellfire Behemoth
-                for(int summonCount = 0; summonCount <= summonAmount; summonCount++) {
-                    EntityBehemoth minion = new EntityBehemoth(this.worldObj);
-                    this.summonMinion(minion, this.getRNG().nextDouble() * 360, 5);
-                    this.hellfireBehemothMinions.add(minion);
-                }
-            }
-
-            // Every 5 Secs:
-            if(this.updateTick % 100 == 0) {
-                int summonAmount = this.getRNG().nextInt(4); // 0-3 Belphs
-                for(int summonCount = 0; summonCount <= summonAmount; summonCount++) {
-                    EntityBelph minion = new EntityBelph(this.worldObj);
-                    this.summonMinion(minion, this.getRNG().nextDouble() * 360, 5);
-                }
-            }
-        }
-
-        // ===== Third Phase - Hellfire Barrier =====
-        if(this.getBattlePhase() >= 3) {
-            // Clean Up:
-            if(!this.hellfireBelphMinions.isEmpty())
-                this.hellfireBelphMinions = new ArrayList<EntityBelph>();
-            if(!this.hellfireBehemothMinions.isEmpty())
-                this.hellfireBehemothMinions = new ArrayList<EntityBehemoth>();
-            this.hellfireWallTime = 0;
-
-            // Hellfire Energy - Every Second:
-            if(this.hellfireEnergy < 100)
-                this.hellfireEnergy += 10;
-            else {
-                this.hellfireEnergy = 0;
-                this.hellfireBarrierAttack(this.rotationYaw);
-            }
-
-            // Hellfire Barriers:
-            //if(this.hellfireBarriers.size() > 0)
-                //this.hellfireBarrierUpdate();
-
-            // Every 10 Secs:
-            if(this.updateTick % 200 == 0) {
-                if(this.getRNG().nextDouble() <= 0.25D) { // 25% Behemoth Chance
-                    EntityBehemoth minion = new EntityBehemoth(this.worldObj);
-                    this.summonMinion(minion, this.getRNG().nextDouble() * 360, 5);
-                }
-            }
-
-            // Every 5 Secs:
-            if(this.updateTick % 100 == 0) {
-                int summonAmount = this.getRNG().nextInt(4); // 0-3 Belphs
-                for(int summonCount = 0; summonCount <= summonAmount; summonCount++) {
-                    EntityBelph minion = new EntityBelph(this.worldObj);
-                    this.summonMinion(minion, this.getRNG().nextDouble() * 360, 5);
-                }
-                summonAmount = this.getRNG().nextInt(3); // 0-2 Nether Souls
-                for(int summonCount = 0; summonCount <= summonAmount; summonCount++) {
-                    EntityNetherSoul minion = new EntityNetherSoul(this.worldObj);
-                    this.summonMinion(minion, this.getRNG().nextDouble() * 360, 5);
-                }
-            }
-        }
+        // Update Phases:
+        if(!this.worldObj.isRemote)
+            this.updatePhases();
 
         // Random Projectiles:
         if(!this.worldObj.isRemote && this.updateTick % 40 == 0) {
@@ -260,8 +157,188 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
                 }
             }
         }
+    }
 
-        this.updateTick++;
+    // ========== Phases Update ==========
+    public void updatePhases() {
+        // ===== First Phase - Hellfire Wave =====
+        if(this.getBattlePhase() == 0) {
+            // Clean Up:
+            if(!this.hellfireBehemothMinions.isEmpty())
+                this.hellfireBehemothMinions = new ArrayList<EntityBehemoth>();
+            this.hellfireWallTime = 0;
+
+            // Hellfire Minion Update - Every Second:
+            if(this.updateTick % 20 == 0) {
+                for (EntityBelph minion : this.hellfireBelphMinions.toArray(new EntityBelph[this.hellfireBelphMinions.size()])) {
+                    if (minion.isDead) {
+                        this.onMinionDeath(minion);
+                        continue;
+                    }
+                    if (!this.hellfireBelphEnergies.containsKey(minion))
+                        this.hellfireBelphEnergies.put(minion, 0);
+                    int minionEnergy = this.hellfireBelphEnergies.get(minion);
+                    if (!this.hellfireBelphOrbs.containsKey(minion))
+                        this.hellfireBelphOrbs.put(minion, new ArrayList<EntityHellfireOrb>());
+                    minionEnergy += 5;
+                    if (minionEnergy >= 100) {
+                        this.hellfireEnergy += 10;
+                        this.onMinionDeath(minion);
+                        this.worldObj.createExplosion(minion, minion.posX, minion.posY, minion.posZ, 1, false);
+                        minion.setDead();
+                        continue;
+                    } else
+                        this.hellfireBelphEnergies.put(minion, minionEnergy);
+                }
+            }
+
+            // Hellfire Charged:
+            if(this.hellfireEnergy >= 100) {
+                this.hellfireEnergy = 0;
+                this.hellfireWaveAttack(this.rotationYaw);
+            }
+
+            // Every 10 Secs:
+            if(this.updateTick % 200 == 0) {
+                int summonAmount = this.getRNG().nextInt(6); // 0-5 Hellfire Belphs
+                for(int summonCount = 0; summonCount <= summonAmount; summonCount++) {
+                    EntityBelph minion = new EntityBelph(this.worldObj);
+                    this.summonMinion(minion, this.getRNG().nextDouble() * 360, 5);
+                    this.hellfireBelphMinions.add(minion);
+                }
+            }
+        }
+
+        // ===== Second Phase - Hellfire Wall =====
+        if(this.getBattlePhase() == 1) {
+            // Clean Up:
+            if(!this.hellfireBelphMinions.isEmpty())
+                this.hellfireBelphMinions = new ArrayList<EntityBelph>();
+
+            // Hellfire Minion Update - Every Second:
+            if(this.updateTick % 20 == 0) {
+                for (EntityBehemoth minion : this.hellfireBehemothMinions.toArray(new EntityBehemoth[this.hellfireBehemothMinions.size()])) {
+                    if (minion.isDead) {
+                        this.onMinionDeath(minion);
+                        continue;
+                    }
+                    if (!this.hellfireBehemothEnergies.containsKey(minion))
+                        this.hellfireBehemothEnergies.put(minion, 0);
+                    int minionEnergy = this.hellfireBehemothEnergies.get(minion);
+                    if (!this.hellfireBehemothOrbs.containsKey(minion))
+                        this.hellfireBehemothOrbs.put(minion, new ArrayList<EntityHellfireOrb>());
+                    minionEnergy += 5;
+                    if (minionEnergy >= 100) {
+                        this.hellfireEnergy += 50;
+                        this.onMinionDeath(minion);
+                        this.worldObj.createExplosion(minion, minion.posX, minion.posY, minion.posZ, 1, false);
+                        minion.setDead();
+                        continue;
+                    }
+                    this.hellfireBehemothEnergies.put(minion, minionEnergy);
+                }
+            }
+
+            // Hellfire Charged:
+            if(this.hellfireEnergy >= 100) {
+                this.hellfireEnergy = 0;
+                this.hellfireWallAttack(this.rotationYaw);
+            }
+
+            // Hellfire Wall:
+            if(this.hellfireWallTime > 0) {
+                this.hellfireWallUpdate();
+                this.hellfireWallTime--;
+            }
+
+            // Every 10 Secs:
+            if(this.updateTick % 200 == 0) {
+                int summonAmount = 2; // 2 Hellfire Behemoth
+                for(int summonCount = 0; summonCount <= summonAmount; summonCount++) {
+                    EntityBehemoth minion = new EntityBehemoth(this.worldObj);
+                    this.summonMinion(minion, this.getRNG().nextDouble() * 360, 5);
+                    this.hellfireBehemothMinions.add(minion);
+                }
+            }
+
+            // Every 20 Secs:
+            if(this.updateTick % 400 == 0) {
+                int summonAmount = this.getRNG().nextInt(4); // 0-3 Belphs
+                for(int summonCount = 0; summonCount <= summonAmount; summonCount++) {
+                    EntityBelph minion = new EntityBelph(this.worldObj);
+                    this.summonMinion(minion, this.getRNG().nextDouble() * 360, 5);
+                }
+            }
+        }
+
+        // ===== Third Phase - Hellfire Barrier =====
+        if(this.getBattlePhase() >= 2) {
+            // Clean Up:
+            if(!this.hellfireBelphMinions.isEmpty())
+                this.hellfireBelphMinions = new ArrayList<EntityBelph>();
+            if(!this.hellfireBehemothMinions.isEmpty())
+                this.hellfireBehemothMinions = new ArrayList<EntityBehemoth>();
+            this.hellfireWallTime = 0;
+
+            // Hellfire Energy - Every Second:
+            if(this.updateTick % 20 == 0) {
+                if (this.hellfireEnergy < 100)
+                    this.hellfireEnergy += 10;
+            }
+
+            // Hellfire Charged:
+            if(this.hellfireEnergy >= 100) {
+                this.hellfireEnergy = 0;
+                this.hellfireBarrierAttack(this.rotationYaw);
+            }
+
+            // Hellfire Barriers:
+            //if(this.hellfireBarriers.size() > 0)
+            //this.hellfireBarrierUpdate();
+
+            // Every 10 Secs:
+            if(this.updateTick % 200 == 0) {
+                if(this.getRNG().nextDouble() <= 0.25D) { // 25% Behemoth Chance
+                    EntityBehemoth minion = new EntityBehemoth(this.worldObj);
+                    this.summonMinion(minion, this.getRNG().nextDouble() * 360, 5);
+                }
+            }
+
+            // Every 20 Secs:
+            if(this.updateTick % 400 == 0) {
+                int summonAmount = this.getRNG().nextInt(4); // 0-3 Belphs
+                for(int summonCount = 0; summonCount <= summonAmount; summonCount++) {
+                    EntityBelph minion = new EntityBelph(this.worldObj);
+                    this.summonMinion(minion, this.getRNG().nextDouble() * 360, 5);
+                }
+                summonAmount = this.getRNG().nextInt(3); // 0-2 Nether Souls
+                for(int summonCount = 0; summonCount <= summonAmount; summonCount++) {
+                    EntityNetherSoul minion = new EntityNetherSoul(this.worldObj);
+                    this.summonMinion(minion, this.getRNG().nextDouble() * 360, 5);
+                }
+            }
+        }
+    }
+
+    // ========== Minion Update ==========
+    @Override
+    public void onMinionUpdate(EntityLivingBase minionEntity, long tick) {
+        if(minionEntity instanceof EntityBelph) {
+            EntityBelph minion = (EntityBelph)minionEntity;
+            if(!this.hellfireBelphEnergies.containsKey(minion))
+                this.hellfireBelphEnergies.put(minion, 0);
+            if(!this.hellfireBelphOrbs.containsKey(minion))
+                this.hellfireBelphOrbs.put(minion, new ArrayList<EntityHellfireOrb>());
+            this.updateHellfireOrbs(minion, tick, 3, this.hellfireBelphEnergies.get(minion), 0.5F, this.hellfireBelphOrbs.get(minion));
+        }
+        if(minionEntity instanceof EntityBehemoth) {
+            EntityBehemoth minion = (EntityBehemoth)minionEntity;
+            if(!this.hellfireBehemothEnergies.containsKey(minion))
+                this.hellfireBehemothEnergies.put(minion, 0);
+            if(!this.hellfireBehemothOrbs.containsKey(minion))
+                this.hellfireBehemothOrbs.put(minion, new ArrayList<EntityHellfireOrb>());
+            this.updateHellfireOrbs(minion, tick, 3, this.hellfireBehemothEnergies.get(minion), 1F, this.hellfireBehemothOrbs.get(minion));
+        }
     }
 
     // ========== Minion Death ==========
@@ -269,12 +346,14 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
     public void onMinionDeath(EntityLivingBase minion) {
         if(minion instanceof EntityBelph && this.hellfireBelphMinions.contains(minion)) {
             this.hellfireBelphMinions.remove(minion);
-            this.hellfireEnergy += 10;
+            this.hellfireBelphEnergies.remove(minion);
+            this.hellfireBelphOrbs.remove(minion);
             return;
         }
         if(minion instanceof EntityBehemoth && this.hellfireBehemothMinions.contains(minion)) {
             this.hellfireBehemothMinions.remove(minion);
-            this.hellfireEnergy += 20;
+            this.hellfireBehemothEnergies.remove(minion);
+            this.hellfireBehemothOrbs.remove(minion);
             return;
         }
     }
@@ -286,11 +365,11 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
     @Override
     public void updateBattlePhase() {
         double healthNormal = this.getHealth() / this.getMaxHealth();
-        if(healthNormal <= 20) {
+        if(healthNormal <= 0.2D) {
             this.battlePhase = 2;
             return;
         }
-        if(healthNormal <= 60) {
+        if(healthNormal <= 0.6D) {
             this.battlePhase = 1;
             return;
         }
@@ -301,44 +380,40 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
     // ==================================================
     //                     Hellfire
     // ==================================================
-    public List<EntityHellfireOrb> hellfireOrbs = new ArrayList<EntityHellfireOrb>();
-    public void updateHellfireOrbs() {
-        if(this.worldObj.isRemote)
+    public void updateHellfireOrbs(EntityLivingBase entity, long orbTick, int hellfireOrbMax, int hellfireOrbEnergy, float orbSize, List<EntityHellfireOrb> hellfireOrbs) {
+        if(entity.worldObj.isRemote)
             return;
 
-        int hellfireOrbMax = 5;
-        int hellfireChargeCount = Math.round((float)Math.max(this.hellfireEnergy, 100) / (100F / hellfireOrbMax));
+        int hellfireChargeCount = Math.round((float)Math.min(hellfireOrbEnergy, 100) / (100F / hellfireOrbMax));
         int hellfireOrbRotationTime = 5 * 20;
-        double hellfireOrbAngle = 360 * ((float)(this.updateTick % hellfireOrbRotationTime) / hellfireOrbRotationTime);
+        double hellfireOrbAngle = 360 * ((float)(orbTick % hellfireOrbRotationTime) / hellfireOrbRotationTime);
         double hellfireOrbAngleOffset = 360 / hellfireOrbMax;
 
         // Add Required Orbs:
-        while(this.hellfireOrbs.size() < hellfireChargeCount) {
-            EntityHellfireOrb hellfireOrb = new EntityHellfireOrb(this.worldObj, this);
-            this.hellfireOrbs.add(hellfireOrb);
-            this.worldObj.spawnEntityInWorld(hellfireOrb);
-            hellfireOrb.setProjectileSize(10F, 10F);
-            hellfireOrb.setProjectileScale(20);
+        while(hellfireOrbs.size() < hellfireChargeCount) {
+            EntityHellfireOrb hellfireOrb = new EntityHellfireOrb(entity.worldObj, entity);
+            hellfireOrbs.add(hellfireOrb);
+            entity.worldObj.spawnEntityInWorld(hellfireOrb);
+            hellfireOrb.setProjectileSize(orbSize, orbSize);
+            hellfireOrb.setProjectileScale(orbSize * 2);
         }
 
         // Remove Excess Orbs:
-        while(this.hellfireOrbs.size() > hellfireChargeCount) {
-            this.hellfireOrbs.get(this.hellfireOrbs.size() - 1).setDead();
-            this.hellfireOrbs.remove(this.hellfireOrbs.size() - 1);
+        while(hellfireOrbs.size() > hellfireChargeCount) {
+            hellfireOrbs.get(hellfireOrbs.size() - 1).setDead();
+            hellfireOrbs.remove(hellfireOrbs.size() - 1);
         }
 
         // Update Orbs:
-        for(int i = 0; i < this.hellfireOrbs.size(); i++) {
-            EntityHellfireOrb hellfireOrb = this.hellfireOrbs.get(i);
-            LycanitesMobs.printDebug("", "Hellfire Orb " + i + " - Angle: " + ((hellfireOrbAngle + (hellfireOrbAngleOffset * i)) % 360));
+        for(int i = 0; i < hellfireOrbs.size(); i++) {
+            EntityHellfireOrb hellfireOrb = hellfireOrbs.get(i);
             double rotationRadians = Math.toRadians((hellfireOrbAngle + (hellfireOrbAngleOffset * i)) % 360);
-            double x = (this.width * 2) * Math.cos(rotationRadians) - Math.sin(rotationRadians);
-            double z = (this.width * 2) * Math.sin(rotationRadians) + Math.cos(rotationRadians);
-            hellfireOrb.posX = this.posX + x;
-            hellfireOrb.posY = this.posY + (this.height * 0.75F);
-            hellfireOrb.posZ = this.posZ + z;
+            double x = (entity.width * 2) * Math.cos(rotationRadians) - Math.sin(rotationRadians);
+            double z = (entity.width * 2) * Math.sin(rotationRadians) + Math.cos(rotationRadians);
+            hellfireOrb.posX = entity.posX + x;
+            hellfireOrb.posY = entity.posY + (entity.height * 0.75F);
+            hellfireOrb.posZ = entity.posZ + z;
             hellfireOrb.projectileLife = 5;
-            i++;
         }
     }
 	

@@ -12,9 +12,6 @@ import net.minecraft.world.World;
 
 public class EntityHellfireOrb extends EntityProjectileBase {
 
-	// Properties:
-    public int hellfireOrbRotationTime = 5 * 20;
-
     // ==================================================
  	//                   Constructors
  	// ==================================================

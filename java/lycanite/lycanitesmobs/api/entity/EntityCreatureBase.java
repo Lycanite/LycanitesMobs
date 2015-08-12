@@ -758,6 +758,29 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         return this.boss;
     }
 
+
+    // ========== Summoning ==========
+    public void summonMinion(EntityLivingBase minion, double angle, double distance) {
+        double angleRadians = Math.toRadians(angle);
+        double x = this.posX + ((this.width + distance) * Math.cos(angleRadians) - Math.sin(angleRadians));
+        double y = this.posY;
+        double z = this.posZ + ((this.width + distance) * Math.sin(angleRadians) + Math.cos(angleRadians));
+        minion.setLocationAndAngles(x, y, z, this.rand.nextFloat() * 360.0F, 0.0F);
+        if(minion instanceof EntityCreatureBase) {
+            ((EntityCreatureBase)minion).setMinion(true);
+            ((EntityCreatureBase)minion).setSubspecies(this.getSubspeciesIndex(), true);
+            ((EntityCreatureBase)minion).setMasterTarget(this);
+        }
+        this.worldObj.spawnEntityInWorld(minion);
+        if(this.getAttackTarget() != null)
+            minion.setRevengeTarget(this.getAttackTarget());
+    }
+
+    // ========== Minion Death ==========
+    public void onMinionDeath(EntityLivingBase minion) {
+
+    }
+
     // ========== Minion ==========
     /** Set whether this mob is a minion or not, this should be used if this mob is summoned. **/
     public void setMinion(boolean minion) { this.isMinion = minion; }

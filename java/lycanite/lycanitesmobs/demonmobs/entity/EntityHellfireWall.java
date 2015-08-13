@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs.demonmobs.entity;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import lycanite.lycanitesmobs.AssetManager;
+import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupDemon;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
@@ -49,8 +50,18 @@ public class EntityHellfireWall extends EntityProjectileBase {
         this.movement = false;
         this.pierce = true;
         this.pierceBlocks = true;
-        this.projectileLife = 5 * 20;
+        this.projectileLife = 2 * 20;
         this.animationFrameMax = 59;
+        this.noClip = true;
+    }
+
+
+    // ==================================================
+    //                      Update
+    // ==================================================
+    @Override
+    public void onUpdate() {
+        super.onUpdate();
     }
     
     

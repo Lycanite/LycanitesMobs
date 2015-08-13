@@ -96,6 +96,7 @@ public class EntityProjectileLaser extends EntityProjectileBase {
         this.dataWatcher.addObject(this.offsetIDStart, (float)this.offsetX);
         this.dataWatcher.addObject(this.offsetIDStart + 1, (float)this.offsetY);
         this.dataWatcher.addObject(this.offsetIDStart + 2, (float)this.offsetZ);
+        this.noClip = true;
     }
 	
     

@@ -124,6 +124,10 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
         // Hellfire Update:
         this.updateHellfireOrbs(this, this.updateTick, 5, this.hellfireEnergy, 10, this.hellfireOrbs);
 
+        if(this.updateTick % 100 == 0) {
+            this.hellfireWaveAttack(this.rotationYaw);
+        }
+
         // Update Phases:
         if(!this.worldObj.isRemote)
             this.updatePhases();
@@ -468,7 +472,10 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
 
     // ========== Hellfire Wave ==========
     public void hellfireWaveAttack(double angle) {
-        // TODO: Hellfire Wave
+        EntityHellfireWave hellfireWave = new EntityHellfireWave(this.worldObj, this);
+        hellfireWave.posY = this.posY;
+        hellfireWave.rotation = angle;
+        this.worldObj.spawnEntityInWorld(hellfireWave);
     }
 
     // ========== Hellfire Wall ==========

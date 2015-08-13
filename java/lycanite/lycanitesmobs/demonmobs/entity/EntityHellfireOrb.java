@@ -37,8 +37,9 @@ public class EntityHellfireOrb extends EntityProjectileBase {
         this.movement = false;
         this.pierce = true;
         this.pierceBlocks = true;
-        this.projectileLife = 5 * 20;
+        this.projectileLife = 2 * 20;
         this.animationFrameMax = 4;
+        this.noClip = true;
     }
 
 

@@ -51,6 +51,7 @@ public class EntityProjectileLaserEnd extends EntityProjectileBase {
         this.dataWatcher.addObject(this.posIDStart, (float)this.posX);
         this.dataWatcher.addObject(this.posIDStart + 1, (float)this.posY);
         this.dataWatcher.addObject(this.posIDStart + 2, (float)this.posZ);
+        this.noClip = true;
     }
     
     

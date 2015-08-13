@@ -35,6 +35,7 @@ public class EntityProjectileRapidFire extends EntityProjectileBase {
         projectileClass = entityClass;
         this.rapidTime = setTime;
         this.rapidDelay = setDelay;
+        this.noClip = true;
     }
 
     public EntityProjectileRapidFire(Class entityClass, World world, double par2, double par4, double par6, int setTime, int setDelay) {
@@ -43,6 +44,7 @@ public class EntityProjectileRapidFire extends EntityProjectileBase {
         projectileClass = entityClass;
         this.rapidTime = setTime;
         this.rapidDelay = setDelay;
+        this.noClip = true;
     }
 
     public EntityProjectileRapidFire(Class entityClass, World world, EntityLivingBase entityLivingBase, int setTime, int setDelay) {
@@ -55,6 +57,7 @@ public class EntityProjectileRapidFire extends EntityProjectileBase {
         this.offsetZ = this.posZ - entityLivingBase.posZ;
         this.rapidTime = setTime;
         this.rapidDelay = setDelay;
+        this.noClip = true;
     }
 	
     

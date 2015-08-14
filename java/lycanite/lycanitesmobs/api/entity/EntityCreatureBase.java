@@ -1913,6 +1913,12 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         }
         return false;
     }
+
+    // ========== Attacked From Part ==========
+    /** Called when this entity has been attacked from a specific hit area entity, uses the HitArea Entity, DamageSource and damage value. **/
+    public boolean attackEntityFromArea(EntityHitArea entityHitArea, DamageSource damageSrc, float damage) {
+        return this.attackEntityFrom(damageSrc, damage);
+    }
     
     // ========== Defense ==========
     /** This is provided with how much damage this mob will take and returns the reduced (or sometimes increased) damage with defense applied. Note: Damage Modifiers are applied after this. This also applies the blocking ability. **/

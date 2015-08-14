@@ -6,6 +6,7 @@ import lycanite.lycanitesmobs.api.IGroupDemon;
 import lycanite.lycanitesmobs.api.IGroupFire;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
+import lycanite.lycanitesmobs.api.entity.EntityHitArea;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
@@ -35,6 +36,9 @@ import java.util.Map;
 public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDisplayData, IGroupDemon {
 
     public List<EntityPlayer> playerTargets = new ArrayList<EntityPlayer>();
+    public EntityHitArea hitAreaLower;
+    public EntityHitArea hitAreaMid;
+    public EntityHitArea hitAreaUpper;
     public int hellfireEnergy = 0;
     public List<EntityHellfireOrb> hellfireOrbs = new ArrayList<EntityHellfireOrb>();
 
@@ -119,6 +123,8 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
 	// ========== Living Update ==========
 	@Override
     public void onLivingUpdate() {
+        this.updateHitAreas();
+
         super.onLivingUpdate();
 
         // Hellfire Update:
@@ -161,6 +167,39 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
                 }
             }
         }
+    }
+
+    // ========== Hit Areas ==========
+    public void updateHitAreas() {
+        // Lower:
+        if(this.hitAreaLower == null) {
+            this.hitAreaLower = new EntityHitArea(this, this.width * 1.1F, this.height / 3);
+            this.worldObj.spawnEntityInWorld(this.hitAreaLower);
+        }
+        this.hitAreaLower.posX = this.posX;
+        this.hitAreaLower.posY = this.posY;
+        this.hitAreaLower.posZ = this.posZ;
+        this.hitAreaLower.rotationYaw = this.rotationYaw;
+
+        // Mid:
+        if(this.hitAreaMid == null) {
+            this.hitAreaMid = new EntityHitArea(this, this.width * 1.1F, this.height / 3);
+            this.worldObj.spawnEntityInWorld(this.hitAreaMid);
+        }
+        this.hitAreaMid.posX = this.posX;
+        this.hitAreaMid.posY = this.posY + (this.height / 3);
+        this.hitAreaMid.posZ = this.posZ;
+        this.hitAreaMid.rotationYaw = this.rotationYaw;
+
+        // Upper:
+        if(this.hitAreaUpper == null) {
+            this.hitAreaUpper = new EntityHitArea(this, this.width * 1.1F, this.height / 3);
+            this.worldObj.spawnEntityInWorld(this.hitAreaUpper);
+        }
+        this.hitAreaUpper.posX = this.posX;
+        this.hitAreaUpper.posY = this.posY + ((this.height / 3) * 2);
+        this.hitAreaUpper.posZ = this.posZ;
+        this.hitAreaUpper.rotationYaw = this.rotationYaw;
     }
 
     // ========== Phases Update ==========

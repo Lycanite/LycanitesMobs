@@ -1,9 +1,11 @@
 package lycanite.lycanitesmobs.api.entity;
 
+import lycanite.lycanitesmobs.LycanitesMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IEntityMultiPart;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.world.World;
 
 
 public class EntityHitArea extends Entity {
@@ -15,9 +17,20 @@ public class EntityHitArea extends Entity {
         this.setSize(width, height);
     }
 
+    public EntityHitArea(World world) {
+        super(world);
+    }
 
     @Override
     protected void entityInit() {}
+
+
+    @Override
+    public void onUpdate() {
+        if(this.owner == null && !this.worldObj.isRemote)
+            this.setDead();
+        super.onUpdate();
+    }
 
 
     @Override
@@ -39,6 +52,8 @@ public class EntityHitArea extends Entity {
     public boolean attackEntityFrom(DamageSource damageSource, float damageAmount) {
         if(this.isEntityInvulnerable())
             return false;
+        if(this.owner == null)
+            return true;
         if(this.owner instanceof EntityCreatureBase)
             return ((EntityCreatureBase)this.owner).attackEntityFromArea(this, damageSource, damageAmount);
         return this.owner.attackEntityFrom(damageSource, damageAmount);

@@ -54,9 +54,11 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
     public int hellfireWallTime = 0;
     public int hellfireWallTimeMax = 10 * 20;
     public boolean hellfireWallClockwise = false;
+    public EntityHellfireBarrier hellfireWallLeft;
+    public EntityHellfireBarrier hellfireWallRight;
 
     // Third Phase:
-    //public List<EntityHellfireBarrier> hellfireBarriers = new ArrayList<EntityHellfireBarrier>();
+    public List<EntityHellfireBarrier> hellfireBarriers = new ArrayList<EntityHellfireBarrier>();
 
 
     // ==================================================
@@ -123,16 +125,10 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
 	// ========== Living Update ==========
 	@Override
     public void onLivingUpdate() {
-        this.updateHitAreas();
-
         super.onLivingUpdate();
 
         // Hellfire Update:
         this.updateHellfireOrbs(this, this.updateTick, 5, this.hellfireEnergy, 10, this.hellfireOrbs);
-
-        if(this.updateTick % 100 == 0) {
-            this.hellfireWaveAttack(this.rotationYaw);
-        }
 
         // Update Phases:
         if(!this.worldObj.isRemote)
@@ -167,13 +163,16 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
                 }
             }
         }
+
+        if(!this.worldObj.isRemote)
+            this.updateHitAreas();
     }
 
     // ========== Hit Areas ==========
     public void updateHitAreas() {
         // Lower:
         if(this.hitAreaLower == null) {
-            this.hitAreaLower = new EntityHitArea(this, this.width * 1.1F, this.height / 3);
+            this.hitAreaLower = new EntityHitArea(this, this.width * 1.5F, this.height / 3);
             this.worldObj.spawnEntityInWorld(this.hitAreaLower);
         }
         this.hitAreaLower.posX = this.posX;
@@ -183,7 +182,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
 
         // Mid:
         if(this.hitAreaMid == null) {
-            this.hitAreaMid = new EntityHitArea(this, this.width * 1.1F, this.height / 3);
+            this.hitAreaMid = new EntityHitArea(this, this.width * 1.5F, this.height / 3);
             this.worldObj.spawnEntityInWorld(this.hitAreaMid);
         }
         this.hitAreaMid.posX = this.posX;
@@ -193,7 +192,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
 
         // Upper:
         if(this.hitAreaUpper == null) {
-            this.hitAreaUpper = new EntityHitArea(this, this.width * 1.1F, this.height / 3);
+            this.hitAreaUpper = new EntityHitArea(this, this.width * 1.5F, this.height / 3);
             this.worldObj.spawnEntityInWorld(this.hitAreaUpper);
         }
         this.hitAreaUpper.posX = this.posX;
@@ -259,7 +258,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
                 this.hellfireBelphMinions = new ArrayList<EntityBelph>();
 
             // Hellfire Minion Update - Every Second:
-            if(this.updateTick % 20 == 0) {
+            if(this.hellfireWallTime <= 0 && this.updateTick % 20 == 0) {
                 for (EntityBehemoth minion : this.hellfireBehemothMinions.toArray(new EntityBehemoth[this.hellfireBehemothMinions.size()])) {
                     if (minion.isDead) {
                         this.onMinionDeath(minion);
@@ -361,6 +360,9 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
                 }
             }
         }
+
+        if(this.hellfireWallTime <= 0)
+            this.hellfireWallCleanup();
     }
 
     // ========== Minion Update ==========
@@ -417,6 +419,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
             return;
         }
         this.battlePhase = 0;
+        if(true) this.battlePhase = 1; //XXX TEST!!!!!
     }
 
 
@@ -527,7 +530,37 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
         double hellfireWallNormal = this.hellfireWallTime / this.hellfireWallTimeMax;
         if(this.hellfireWallClockwise)
             hellfireWallNormal = 1 - hellfireWallNormal;
-        // TODO: Hellfire Wall
+
+        // Left (Positive) Wall:
+        if(this.hellfireWallLeft == null) {
+            this.hellfireWallLeft = new EntityHellfireBarrier(this.worldObj, this);
+            this.worldObj.spawnEntityInWorld(this.hellfireWallLeft);
+        }
+        this.hellfireWallLeft.posX = this.posX;
+        this.hellfireWallLeft.posY = this.posY;
+        this.hellfireWallLeft.posZ = this.posZ;
+        this.hellfireWallLeft.rotation = hellfireWallNormal * 360;
+
+        // Right (Negative) Wall:
+        if(this.hellfireWallRight == null) {
+            this.hellfireWallRight = new EntityHellfireBarrier(this.worldObj, this);
+            this.worldObj.spawnEntityInWorld(this.hellfireWallRight);
+        }
+        this.hellfireWallRight.posX = this.posX;
+        this.hellfireWallRight.posY = this.posY;
+        this.hellfireWallRight.posZ = this.posZ;
+        this.hellfireWallRight.rotation = 180 + (hellfireWallNormal * 360);
+    }
+
+    public void hellfireWallCleanup() {
+        if(this.hellfireWallLeft != null) {
+            this.hellfireWallLeft.setDead();
+            this.hellfireWallLeft = null;
+        }
+        if(this.hellfireWallRight != null) {
+            this.hellfireWallRight.setDead();
+            this.hellfireWallRight = null;
+        }
     }
 
     // ========== Hellfire Barrier ==========

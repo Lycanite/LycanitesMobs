@@ -3,6 +3,10 @@
         "category": "record",
         "sounds": [{"name": "mobevent/hellsfury", "stream": true}]
     },
+    "mobevent.rahovart": {
+        "category": "record",
+        "sounds": [{"name": "mobevent/rahovart", "stream": true}]
+    },
     "entity.belph.say": {
         "category": "hostile",
         "sounds": [{"name": "entity/belph/say", "stream": false}]
@@ -186,6 +190,26 @@
     "projectile.demonicblast": {
         "category": "ambient",
         "sounds": [{"name": "projectile/demonicblast", "stream": false}]
+    },
+    "entity.rahovart.say": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/rahovart/say", "stream": false}]
+    },
+    "entity.rahovart.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/rahovart/hurt", "stream": false}]
+    },
+    "entity.rahovart.death": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/rahovart/death", "stream": false}]
+    },
+    "entity.rahovart.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/rahovart/attack", "stream": false}]
+    },
+    "entity.rahovart.step": {
+        "category": "hostile",
+        "sounds": [{"name": "entity/rahovart/step", "stream": false}]
     },
     "block.hellfire": {
         "category": "block",

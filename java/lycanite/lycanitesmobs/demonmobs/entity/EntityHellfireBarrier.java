@@ -3,47 +3,42 @@ package lycanite.lycanitesmobs.demonmobs.entity;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.IGroupDemon;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.demonmobs.DemonMobs;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class EntityHellfireWave extends EntityProjectileBase {
+public class EntityHellfireBarrier extends EntityProjectileBase {
 
 	// Properties:
     public EntityHellfireWall[][] hellfireWalls;
     protected int hellfireWidth = 10;
     protected int hellfireHeight = 5;
     public int time = 0;
-    public int timeMax = 10 * 20;
+    public int timeMax = 120 * 20;
     public float angle = 90;
     public double rotation = 0;
 
     // ==================================================
  	//                   Constructors
  	// ==================================================
-    public EntityHellfireWave(World par1World) {
+    public EntityHellfireBarrier(World par1World) {
         super(par1World);
     }
 
-    public EntityHellfireWave(World par1World, EntityLivingBase par2EntityLivingBase) {
+    public EntityHellfireBarrier(World par1World, EntityLivingBase par2EntityLivingBase) {
         super(par1World, par2EntityLivingBase);
     }
 
-    public EntityHellfireWave(World par1World, double par2, double par4, double par6) {
+    public EntityHellfireBarrier(World par1World, double par2, double par4, double par6) {
         super(par1World, par2, par4, par6);
     }
     
     // ========== Setup Projectile ==========
     public void setup() {
-    	this.entityName = "hellfirewave";
+    	this.entityName = "hellfirebarrier";
     	this.group = DemonMobs.group;
     	this.setBaseDamage(0);
     	this.setProjectileScale(0F);
@@ -88,9 +83,9 @@ public class EntityHellfireWave extends EntityProjectileBase {
         // Move:
         for(int row = 0; row < this.hellfireHeight; row++) {
             for(int col = 0; col < this.hellfireWidth; col++) {
-                double rotationRadians = Math.toRadians(((((float)col / this.hellfireWidth) * this.angle) - (this.angle / 2) + this.rotation) % 360);
-                double x = (((float)this.time / this.timeMax) * 200) * Math.cos(rotationRadians) - Math.sin(rotationRadians);
-                double z = (((float)this.time / this.timeMax) * 200) * Math.sin(rotationRadians) + Math.cos(rotationRadians);
+                double rotationRadians = Math.toRadians(this.rotation);
+                double x = (((float)col / this.hellfireWidth) * 200) * Math.cos(rotationRadians) - Math.sin(rotationRadians);
+                double z = (((float)col / this.hellfireWidth) * 200) * Math.sin(rotationRadians) + Math.cos(rotationRadians);
                 hellfireWalls[row][col].posX = this.posX + x;
                 hellfireWalls[row][col].posY = this.posY + 5 + (10 * row);
                 hellfireWalls[row][col].posZ = this.posZ + z;

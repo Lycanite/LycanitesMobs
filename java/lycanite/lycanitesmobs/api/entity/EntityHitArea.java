@@ -27,7 +27,7 @@ public class EntityHitArea extends Entity {
 
     @Override
     public void onUpdate() {
-        if(this.owner == null && !this.worldObj.isRemote)
+        if((this.owner == null || this.owner.isDead) && !this.worldObj.isRemote)
             this.setDead();
         super.onUpdate();
     }

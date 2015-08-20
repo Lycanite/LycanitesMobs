@@ -17,7 +17,7 @@ public class EntityHellfireBarrier extends EntityProjectileBase {
     protected int hellfireWidth = 10;
     protected int hellfireHeight = 5;
     public int time = 0;
-    public int timeMax = 120 * 20;
+    public int timeMax = 2 * 20;
     public float angle = 90;
     public double rotation = 0;
 
@@ -84,8 +84,8 @@ public class EntityHellfireBarrier extends EntityProjectileBase {
         for(int row = 0; row < this.hellfireHeight; row++) {
             for(int col = 0; col < this.hellfireWidth; col++) {
                 double rotationRadians = Math.toRadians(this.rotation);
-                double x = (((float)col / this.hellfireWidth) * 200) * Math.cos(rotationRadians) - Math.sin(rotationRadians);
-                double z = (((float)col / this.hellfireWidth) * 200) * Math.sin(rotationRadians) + Math.cos(rotationRadians);
+                double x = (((float)col / this.hellfireWidth) * 100) * Math.cos(rotationRadians) + Math.sin(rotationRadians);
+                double z = (((float)col / this.hellfireWidth) * 100) * Math.sin(rotationRadians) - Math.cos(rotationRadians);
                 hellfireWalls[row][col].posX = this.posX + x;
                 hellfireWalls[row][col].posY = this.posY + 5 + (10 * row);
                 hellfireWalls[row][col].posZ = this.posZ + z;

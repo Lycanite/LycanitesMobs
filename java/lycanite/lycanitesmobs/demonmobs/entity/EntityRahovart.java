@@ -203,6 +203,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
 
     // ========== Phases Update ==========
     public void updatePhases() {
+
         // ===== First Phase - Hellfire Wave =====
         if(this.getBattlePhase() == 0) {
             // Clean Up:
@@ -222,7 +223,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
                     int minionEnergy = this.hellfireBelphEnergies.get(minion);
                     if (!this.hellfireBelphOrbs.containsKey(minion))
                         this.hellfireBelphOrbs.put(minion, new ArrayList<EntityHellfireOrb>());
-                    minionEnergy += 5;
+                    minionEnergy += 5; // Charged after 20 secs.
                     if (minionEnergy >= 100) {
                         this.hellfireEnergy += 10;
                         this.onMinionDeath(minion);
@@ -242,7 +243,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
 
             // Every 10 Secs:
             if(this.updateTick % 200 == 0) {
-                int summonAmount = this.getRNG().nextInt(6); // 0-5 Hellfire Belphs
+                int summonAmount = this.getRNG().nextInt(3); // 0-5 Hellfire Belphs
                 for(int summonCount = 0; summonCount <= summonAmount; summonCount++) {
                     EntityBelph minion = new EntityBelph(this.worldObj);
                     this.summonMinion(minion, this.getRNG().nextDouble() * 360, 5);
@@ -269,7 +270,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
                     int minionEnergy = this.hellfireBehemothEnergies.get(minion);
                     if (!this.hellfireBehemothOrbs.containsKey(minion))
                         this.hellfireBehemothOrbs.put(minion, new ArrayList<EntityHellfireOrb>());
-                    minionEnergy += 5;
+                    minionEnergy += 5; // Charged after 20 secs.
                     if (minionEnergy >= 100) {
                         this.hellfireEnergy += 50;
                         this.onMinionDeath(minion);
@@ -293,8 +294,8 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
                 this.hellfireWallTime--;
             }
 
-            // Every 10 Secs:
-            if(this.updateTick % 200 == 0) {
+            // Every 20 Secs:
+            if(this.updateTick % 400 == 0) {
                 int summonAmount = 2; // 2 Hellfire Behemoth
                 for(int summonCount = 0; summonCount <= summonAmount; summonCount++) {
                     EntityBehemoth minion = new EntityBehemoth(this.worldObj);
@@ -303,9 +304,9 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
                 }
             }
 
-            // Every 20 Secs:
-            if(this.updateTick % 400 == 0) {
-                int summonAmount = this.getRNG().nextInt(4); // 0-3 Belphs
+            // Every 10 Secs:
+            if(this.updateTick % 200 == 0) {
+                int summonAmount = this.getRNG().nextInt(4) - 1; // 0-2 Belphs with 50% fail chance.
                 for(int summonCount = 0; summonCount <= summonAmount; summonCount++) {
                     EntityBelph minion = new EntityBelph(this.worldObj);
                     this.summonMinion(minion, this.getRNG().nextDouble() * 360, 5);
@@ -433,7 +434,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
         int hellfireChargeCount = Math.round((float)Math.min(hellfireOrbEnergy, 100) / (100F / hellfireOrbMax));
         int hellfireOrbRotationTime = 5 * 20;
         double hellfireOrbAngle = 360 * ((float)(orbTick % hellfireOrbRotationTime) / hellfireOrbRotationTime);
-        double hellfireOrbAngleOffset = 360 / hellfireOrbMax;
+        double hellfireOrbAngleOffset = 360.0D / hellfireOrbMax;
 
         // Add Required Orbs:
         while(hellfireOrbs.size() < hellfireChargeCount) {
@@ -454,11 +455,11 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
         for(int i = 0; i < hellfireOrbs.size(); i++) {
             EntityHellfireOrb hellfireOrb = hellfireOrbs.get(i);
             double rotationRadians = Math.toRadians((hellfireOrbAngle + (hellfireOrbAngleOffset * i)) % 360);
-            double x = (entity.width * 2) * Math.cos(rotationRadians) - Math.sin(rotationRadians);
-            double z = (entity.width * 2) * Math.sin(rotationRadians) + Math.cos(rotationRadians);
-            hellfireOrb.posX = entity.posX + x;
+            double x = (entity.width * 1.25D) * Math.cos(rotationRadians) + (entity.width * 1.25D) * Math.sin(rotationRadians);
+            double z = (entity.width * 1.25D) * Math.sin(rotationRadians) - (entity.width * 1.25D) * Math.cos(rotationRadians);
+            hellfireOrb.posX = entity.posX - x;
             hellfireOrb.posY = entity.posY + (entity.height * 0.75F);
-            hellfireOrb.posZ = entity.posZ + z;
+            hellfireOrb.posZ = entity.posZ - z;
             hellfireOrb.projectileLife = 5;
         }
     }
@@ -527,29 +528,32 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
     }
 
     public void hellfireWallUpdate() {
-        double hellfireWallNormal = this.hellfireWallTime / this.hellfireWallTimeMax;
+        double hellfireWallNormal = (double)this.hellfireWallTime / this.hellfireWallTimeMax;
+        double hellfireWallAngle = 360;
         if(this.hellfireWallClockwise)
-            hellfireWallNormal = 1 - hellfireWallNormal;
+            hellfireWallAngle = -360;
 
         // Left (Positive) Wall:
         if(this.hellfireWallLeft == null) {
             this.hellfireWallLeft = new EntityHellfireBarrier(this.worldObj, this);
             this.worldObj.spawnEntityInWorld(this.hellfireWallLeft);
         }
+        this.hellfireWallLeft.time = 2 * 20;
         this.hellfireWallLeft.posX = this.posX;
         this.hellfireWallLeft.posY = this.posY;
         this.hellfireWallLeft.posZ = this.posZ;
-        this.hellfireWallLeft.rotation = hellfireWallNormal * 360;
+        this.hellfireWallLeft.rotation = hellfireWallNormal * hellfireWallAngle;
 
         // Right (Negative) Wall:
         if(this.hellfireWallRight == null) {
             this.hellfireWallRight = new EntityHellfireBarrier(this.worldObj, this);
             this.worldObj.spawnEntityInWorld(this.hellfireWallRight);
         }
+        this.hellfireWallRight.time = 2 * 20;
         this.hellfireWallRight.posX = this.posX;
         this.hellfireWallRight.posY = this.posY;
         this.hellfireWallRight.posZ = this.posZ;
-        this.hellfireWallRight.rotation = 180 + (hellfireWallNormal * 360);
+        this.hellfireWallRight.rotation = 180 + (hellfireWallNormal * hellfireWallAngle);
     }
 
     public void hellfireWallCleanup() {

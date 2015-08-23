@@ -36,9 +36,6 @@ import java.util.Map;
 public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDisplayData, IGroupDemon {
 
     public List<EntityPlayer> playerTargets = new ArrayList<EntityPlayer>();
-    public EntityHitArea hitAreaLower;
-    public EntityHitArea hitAreaMid;
-    public EntityHitArea hitAreaUpper;
     public int hellfireEnergy = 0;
     public List<EntityHellfireOrb> hellfireOrbs = new ArrayList<EntityHellfireOrb>();
 
@@ -73,9 +70,10 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
         this.experience = 1000;
         this.hasAttackSound = false;
         
-        this.setWidth = 10F;
+        this.setWidth = 15F;
         this.setHeight = 50F;
         this.setupMob();
+        this.hitAreaScale = 1.5F;
 
         // Boss:
         this.boss = true;
@@ -98,7 +96,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 10000D);
+		baseAttributes.put("maxHealth", 5000D);
 		baseAttributes.put("movementSpeed", 0.32D);
 		baseAttributes.put("knockbackResistance", 1D);
 		baseAttributes.put("followRange", 40D);
@@ -163,42 +161,6 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
                 }
             }
         }
-
-        if(!this.worldObj.isRemote)
-            this.updateHitAreas();
-    }
-
-    // ========== Hit Areas ==========
-    public void updateHitAreas() {
-        // Lower:
-        if(this.hitAreaLower == null) {
-            this.hitAreaLower = new EntityHitArea(this, this.width * 1.5F, this.height / 3);
-            this.worldObj.spawnEntityInWorld(this.hitAreaLower);
-        }
-        this.hitAreaLower.posX = this.posX;
-        this.hitAreaLower.posY = this.posY;
-        this.hitAreaLower.posZ = this.posZ;
-        this.hitAreaLower.rotationYaw = this.rotationYaw;
-
-        // Mid:
-        if(this.hitAreaMid == null) {
-            this.hitAreaMid = new EntityHitArea(this, this.width * 1.5F, this.height / 3);
-            this.worldObj.spawnEntityInWorld(this.hitAreaMid);
-        }
-        this.hitAreaMid.posX = this.posX;
-        this.hitAreaMid.posY = this.posY + (this.height / 3);
-        this.hitAreaMid.posZ = this.posZ;
-        this.hitAreaMid.rotationYaw = this.rotationYaw;
-
-        // Upper:
-        if(this.hitAreaUpper == null) {
-            this.hitAreaUpper = new EntityHitArea(this, this.width * 1.5F, this.height / 3);
-            this.worldObj.spawnEntityInWorld(this.hitAreaUpper);
-        }
-        this.hitAreaUpper.posX = this.posX;
-        this.hitAreaUpper.posY = this.posY + ((this.height / 3) * 2);
-        this.hitAreaUpper.posZ = this.posZ;
-        this.hitAreaUpper.rotationYaw = this.rotationYaw;
     }
 
     // ========== Phases Update ==========
@@ -385,6 +347,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
                 this.hellfireBehemothOrbs.put(minion, new ArrayList<EntityHellfireOrb>());
             this.updateHellfireOrbs(minion, tick, 3, this.hellfireBehemothEnergies.get(minion), 1F, this.hellfireBehemothOrbs.get(minion));
         }
+        super.onMinionUpdate(minionEntity, tick);
     }
 
     // ========== Minion Death ==========

@@ -10,6 +10,8 @@ import net.minecraft.world.World;
 
 public class EntityHitArea extends Entity {
     public Entity owner;
+    private static byte widthID = 12;
+    private static byte heightID = 13;
 
     public EntityHitArea(Entity ownerEntity, float width, float height) {
         super(ownerEntity.worldObj);
@@ -22,7 +24,10 @@ public class EntityHitArea extends Entity {
     }
 
     @Override
-    protected void entityInit() {}
+    protected void entityInit() {
+        this.dataWatcher.addObject(this.widthID, this.width);
+        this.dataWatcher.addObject(this.heightID, this.height);
+    }
 
 
     @Override
@@ -30,6 +35,16 @@ public class EntityHitArea extends Entity {
         if((this.owner == null || this.owner.isDead) && !this.worldObj.isRemote)
             this.setDead();
         super.onUpdate();
+        if(!this.worldObj.isRemote) {
+            this.dataWatcher.updateObject(this.widthID, this.width);
+            this.dataWatcher.updateObject(this.heightID, this.height);
+        }
+        else {
+            float newWidth = this.dataWatcher.getWatchableObjectFloat(this.widthID);
+            float newHeight = this.dataWatcher.getWatchableObjectFloat(this.heightID);
+            if(this.width != newWidth || this.height != newHeight)
+                this.setSize(newWidth, newHeight);
+        }
     }
 
 
@@ -44,12 +59,14 @@ public class EntityHitArea extends Entity {
     @Override
     public boolean canBeCollidedWith()
     {
-        return false;
+        return true;
     }
 
 
     @Override
     public boolean attackEntityFrom(DamageSource damageSource, float damageAmount) {
+        if(this.worldObj.isRemote)
+            return true;
         if(this.isEntityInvulnerable())
             return false;
         if(this.owner == null)

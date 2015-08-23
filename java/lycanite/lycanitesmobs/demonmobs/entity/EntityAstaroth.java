@@ -46,6 +46,7 @@ public class EntityAstaroth extends EntityCreatureBase implements IMob, IGroupDe
         this.setWidth = 3.5F;
         this.setHeight = 2.0F;
         this.setupMob();
+        this.hitAreaScale = 1.5F;
         
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this));

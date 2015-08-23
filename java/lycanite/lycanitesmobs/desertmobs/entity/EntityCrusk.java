@@ -59,6 +59,7 @@ public class EntityCrusk extends EntityCreatureTameable implements IGroupPredato
         this.setDepth = 5.8F;
         this.setHeight = 1.8F;
         this.setupMob();
+        this.hitAreaScale = 1.5F;
         
         // AI Tasks:
         this.getNavigator().setAvoidsWater(true);

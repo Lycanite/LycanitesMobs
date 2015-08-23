@@ -89,6 +89,10 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 	public float setHeight = 1.8F;
     /** The size scale of this mob. Randomly varies normally by 10%. **/
 	public double sizeScale = 1.0D;
+    /** An array of additional hitboxes for large entities. **/
+    public EntityHitArea[][][] hitAreas;
+    /** A scale relative to this entity's width for melee and ranged hit collision. **/
+    public float hitAreaScale = 1;
 	
 	// Stats:
 	/** The defense rating of this mob. This is how much damage it can withstand.
@@ -278,7 +282,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     /** This should be called by the specific mob entity and set the default starting values. **/
     public void setupMob() {
         // Size:
-        this.setSize(setWidth, setHeight);
+        this.setSize(this.setWidth, this.setHeight);
         
         // Stats:
         this.stepHeight = 0.5F;
@@ -287,6 +291,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         if(this.mobInfo.defaultDrops)
         	this.loadItemDrops();
         this.loadCustomDrops();
+        this.experienceValue = this.experience;
         
         // Fire Immunity:
         this.isImmuneToFire = !this.canBurn();
@@ -1082,6 +1087,12 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     /** Sets the subspecies of this mob by index. If not a valid ID or 0 it will be set to null which is for base species. **/
     public void setSubspecies(int subspeciesIndex, boolean resetHealth) {
     	this.subspecies = this.mobInfo.getSubspecies(subspeciesIndex);
+        int scaledExp = this.experience;
+        if(subspeciesIndex == 1 || subspeciesIndex == 2)
+            scaledExp = Math.round((float)(this.experience * Subspecies.uncommonExperienceScale));
+        else if(subspeciesIndex >= 3)
+            scaledExp = Math.round((float)(this.experience * Subspecies.rareExperienceScale));
+        this.experienceValue = scaledExp;
     	if(resetHealth)
     		this.applySubspeciesHealthMultiplier();
     }
@@ -1111,6 +1122,9 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     	if(this.dataWatcher != null)
     		this.onSyncUpdate();
         super.onUpdate();
+
+        if(!this.worldObj.isRemote)
+            this.updateHitAreas();
         
         if(this.despawnCheck()) {
             if(!this.isBoundPet())
@@ -1377,6 +1391,60 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         		this.updateSize();
         	}
         }
+    }
+
+    // ========== Hit Areas ==========
+    public void updateHitAreas() {
+        int hitAreaHeightCount = Math.max(1, Math.round(this.height / 4));
+        int hitAreaWidthCount =  Math.max(1, Math.round(this.width / 4));
+        if(hitAreaHeightCount < 2 && hitAreaWidthCount < 2) {
+            this.hitAreas = null;
+            return;
+        }
+
+        if(this.hitAreas == null || this.hitAreas[0] == null || this.hitAreas[0][0] == null ||
+                this.hitAreas.length != hitAreaHeightCount || this.hitAreas[0].length != hitAreaWidthCount || this.hitAreas[0][0].length != hitAreaWidthCount)
+            this.hitAreas = new EntityHitArea[hitAreaHeightCount][hitAreaWidthCount][hitAreaWidthCount];
+
+        for(int y = 0; y < hitAreaHeightCount; y++) {
+            for(int x = 0; x < hitAreaWidthCount; x++) {
+                for(int z = 0; z < hitAreaWidthCount; z++) {
+                    if(y != 0 && y != hitAreaHeightCount - 1 && x != 0 && x != hitAreaWidthCount - 1 && z != 0 && z != hitAreaWidthCount - 1)
+                        continue;
+                    if(this.hitAreas[y][x][z] == null) {
+                        this.hitAreas[y][x][z] = new EntityHitArea(this, (this.width / hitAreaWidthCount) * this.hitAreaScale, this.height / hitAreaHeightCount);
+                        this.worldObj.spawnEntityInWorld(this.hitAreas[y][x][z]);
+                    }
+                    this.hitAreas[y][x][z].posX = this.posX - ((this.width * this.hitAreaScale) / 2) + (((this.width * this.hitAreaScale) / hitAreaWidthCount) / 2) + (((this.width * this.hitAreaScale) / hitAreaWidthCount) * x);
+                    this.hitAreas[y][x][z].posY = this.posY + ((this.height / hitAreaHeightCount) * y);
+                    this.hitAreas[y][x][z].posZ = this.posZ - ((this.width * this.hitAreaScale) / 2) + (((this.width * this.hitAreaScale) / hitAreaWidthCount) / 2) + (((this.width * this.hitAreaScale) / hitAreaWidthCount) * z);
+                    this.hitAreas[y][x][z].rotationYaw = this.rotationYaw;
+                }
+            }
+        }
+
+        /*
+
+        int hitAreaHeightCount = Math.round(this.height / 4);
+        if(hitAreaHeightCount < 2) {
+            this.hitAreas = null;
+            return;
+        }
+
+        if(this.hitAreas == null || this.hitAreas.length != hitAreaHeightCount)
+            this.hitAreas = new EntityHitArea[hitAreaHeightCount];
+
+        for(int i = 0; i < hitAreaHeightCount; i++) {
+            if(this.hitAreas[i] == null) {
+                this.hitAreas[i] = new EntityHitArea(this, this.width * this.hitAreaScale, this.height / hitAreaHeightCount);
+                this.worldObj.spawnEntityInWorld(this.hitAreas[i]);
+            }
+            this.hitAreas[i].posX = this.posX;
+            this.hitAreas[i].posY = this.posY + ((this.height / hitAreaHeightCount) * i);
+            this.hitAreas[i].posZ = this.posZ;
+            this.hitAreas[i].rotationYaw = this.rotationYaw;
+        }
+         */
     }
     
     
@@ -1689,6 +1757,9 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 	@Override
 	protected void setSize(float width, float height) {
         super.setSize(width * (float)this.sizeScale, height * (float)this.sizeScale);
+        this.width = width;
+        this.height = height;
+        this.hitAreas = null;
     }
 
     /** When called, this reapplies the initial width and height this mob and then applies sizeScale. **/

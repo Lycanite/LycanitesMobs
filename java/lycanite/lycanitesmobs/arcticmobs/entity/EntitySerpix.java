@@ -51,6 +51,7 @@ public class EntitySerpix extends EntityCreatureTameable implements IGroupPredat
         this.setDepth = 6.8F;
         this.setHeight = 1.8F;
         this.setupMob();
+        this.hitAreaScale = 1.5F;
         
         // AI Tasks:
         this.getNavigator().setAvoidsWater(true);

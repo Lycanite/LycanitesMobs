@@ -108,10 +108,10 @@ public class MobEventRahovart extends MobEventBoss {
                 int y = originY;
                 world.setBlock(x, y, z, primaryBlock, 0, 2);
                 y++;
-                if(world.rand.nextDouble() <= rubbleChance) {
+                /*if(world.rand.nextDouble() <= rubbleChance) { // Rubble Disabled
                     world.setBlock(x, y, z, primaryBlock, 0, 2);
                     y++;
-                }
+                }*/
                 while(y <= originY + height && y < world.getHeight()) {
                     world.setBlock(x, y, z, Blocks.air, 0, 2);
                     y++;

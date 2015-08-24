@@ -83,7 +83,7 @@ public class EntityRemobra extends EntityCreatureTameable implements IMob, IGrou
 	@Override
 	public void loadItemDrops() {
         this.drops.add(new DropRate(new ItemStack(Items.slime_ball), 0.5F));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("PoisonGland")), 0.25F));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("PoisonGland")), 1F));
 	}
 	
 	

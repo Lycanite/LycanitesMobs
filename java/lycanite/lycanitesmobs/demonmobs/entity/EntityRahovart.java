@@ -131,8 +131,9 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
         this.updateHellfireOrbs(this, this.updateTick, 5, this.hellfireEnergy, 10, this.hellfireOrbs);
 
         // Update Phases:
-        if(!this.worldObj.isRemote)
-            this.updatePhases();
+        //if(!this.worldObj.isRemote)
+            //this.updatePhases();
+        this.hellfireEnergy = 10;
 
         // Random Projectiles:
         if(!this.worldObj.isRemote && this.updateTick % 40 == 0) {

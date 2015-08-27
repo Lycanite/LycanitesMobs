@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs.demonmobs.entity;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import lycanite.lycanitesmobs.AssetManager;
+import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.IGroupDemon;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.demonmobs.DemonMobs;
@@ -49,6 +50,7 @@ public class EntityHellfireOrb extends EntityProjectileBase {
     @Override
     public void onUpdate() {
         super.onUpdate();
+        LycanitesMobs.printDebug("", "Hellfire Orb (" + (this.worldObj.isRemote ? "Client" : "Server") + ") Pos: " + this.posX + " " + this.posY + " " + this.posZ);
     }
     
     

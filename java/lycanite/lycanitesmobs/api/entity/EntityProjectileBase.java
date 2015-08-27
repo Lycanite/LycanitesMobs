@@ -80,6 +80,11 @@ public class EntityProjectileBase extends EntityThrowable {
     public void onUpdate() {
         if(this.movement)
     	    super.onUpdate();
+        else {
+            this.lastTickPosX = this.posX;
+            this.lastTickPosY = this.posY;
+            this.lastTickPosZ = this.posZ;
+        }
     	if(this.isInWeb)
     		this.isInWeb = false;
     	

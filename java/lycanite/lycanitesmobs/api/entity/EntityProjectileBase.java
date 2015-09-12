@@ -38,6 +38,7 @@ public class EntityProjectileBase extends EntityThrowable {
     public int projectileScaleID = 10;
     public int animationFrame = 0;
     public int animationFrameMax = 0;
+    public boolean clientOnly = false;
 	
 	// ==================================================
  	//                   Constructors
@@ -94,9 +95,11 @@ public class EntityProjectileBase extends EntityThrowable {
     			this.setDead();
     		else if(!this.lavaProof && this.isInsideOfMaterial(Material.lava))
     			this.setDead();
-    		if(this.projectileLife-- <= 0)
-    			this.setDead();
     	}
+        if(!this.worldObj.isRemote || this.clientOnly) {
+            if(this.projectileLife-- <= 0)
+                this.setDead();
+        }
 
         // Sync Scale:
         if(this.worldObj.isRemote && this.ticksExisted % 20 == 0) {
@@ -359,7 +362,7 @@ public class EntityProjectileBase extends EntityThrowable {
      // ==================================================
      public void setProjectileScale(float newScale) {
      	 this.projectileScale = newScale;
-         if(this.worldObj.isRemote)
+         if(this.worldObj.isRemote && !this.clientOnly)
              return;
          this.dataWatcher.updateObject(this.projectileScaleID, this.projectileScale);
          if(this.getThrower() != null && this.getThrower() instanceof EntityCreatureBase)

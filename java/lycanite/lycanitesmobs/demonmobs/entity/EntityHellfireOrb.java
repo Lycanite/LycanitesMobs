@@ -38,7 +38,7 @@ public class EntityHellfireOrb extends EntityProjectileBase {
         this.movement = false;
         this.pierce = true;
         this.pierceBlocks = true;
-        this.projectileLife = 2 * 20;
+        this.projectileLife = 5;
         this.animationFrameMax = 4;
         this.noClip = true;
     }
@@ -50,7 +50,6 @@ public class EntityHellfireOrb extends EntityProjectileBase {
     @Override
     public void onUpdate() {
         super.onUpdate();
-        LycanitesMobs.printDebug("", "Hellfire Orb (" + (this.worldObj.isRemote ? "Client" : "Server") + ") Pos: " + this.posX + " " + this.posY + " " + this.posZ);
     }
     
     

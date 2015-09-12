@@ -130,15 +130,19 @@ public class ObjectManager {
 	
 
 	// ========== Projectile ==========
-	public static void addProjectile(String name, Class entityClass) {
-		name = name.toLowerCase();
-		GroupInfo group = currentGroup;
-		AssetManager.addSound(name, group, "projectile." + name);
-		
-		int projectileID = group.getNextProjectileID();
-		EntityRegistry.registerModEntity(entityClass, name, projectileID, group.mod, 64, 1, true);
+    public static void addProjectile(String name, Class entityClass, int updateFrequency) {
+        name = name.toLowerCase();
+        GroupInfo group = currentGroup;
+        AssetManager.addSound(name, group, "projectile." + name);
 
-		projectiles.put(name, entityClass);
+        int projectileID = group.getNextProjectileID();
+        EntityRegistry.registerModEntity(entityClass, name, projectileID, group.mod, 64, updateFrequency, true);
+
+        projectiles.put(name, entityClass);
+    }
+
+	public static void addProjectile(String name, Class entityClass) {
+		addProjectile(name, entityClass, 1);
 	}
 	
 	public static void addProjectile(String name, Class entityClass, Item item, BehaviorProjectileDispense dispenseBehaviour) {

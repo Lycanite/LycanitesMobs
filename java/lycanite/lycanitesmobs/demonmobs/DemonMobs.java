@@ -64,15 +64,18 @@ public class DemonMobs {
 	// ==================================================
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+
 		// ========== Config ==========
 		group = new GroupInfo(this, "Demon Mobs", 11)
                 .setDimensionBlacklist("-1").setDimensionWhitelist(true).setBiomes("NETHER").setDungeonThemes("NETHER, NECRO")
                 .setEggName("demonegg");
 		group.loadFromConfig();
 
+
 		// ========== Set Current Group ==========
 		ObjectManager.setCurrentGroup(group);
-		
+
+
 		// ========== Create Items ==========
 		ObjectManager.addItem("demonegg", new ItemDemonEgg());
 		ObjectManager.addItem("doomfirecharge", new ItemDoomfireball());
@@ -98,11 +101,13 @@ public class DemonMobs {
 		ObjectManager.addItem("hellfirescepter", new ItemScepterHellfire(), 2, 1, 1);
 		ObjectManager.addItem("devilstarscepter", new ItemScepterDevilstar(), 2, 1, 1);
 		ObjectManager.addItem("demoniclightningscepter", new ItemScepterDemonicLightning(), 2, 1, 1);
-		
+
+
 		// ========== Create Blocks ==========
 		AssetManager.addSound("hellfire", group, "block.hellfire");
 		ObjectManager.addBlock("hellfire", new BlockHellfire());
-		
+
+
 		// ========== Create Mobs ==========
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("demonegg"), new DispenserBehaviorMobEggCustom());
 		MobInfo newMob;
@@ -174,6 +179,7 @@ public class DemonMobs {
         ObjectManager.addProjectile("hellfirewave", EntityHellfireWave.class);
         ObjectManager.addProjectile("hellfirebarrier", EntityHellfireBarrier.class);
 
+
         // ========== Register Models ==========
 		proxy.registerModels();
 	}
@@ -193,10 +199,12 @@ public class DemonMobs {
 	// ==================================================
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
+
 		// ========== Set Current Group ==========
 		ObjectManager.setCurrentGroup(group);
 		ConfigBase config = ConfigBase.getConfig(group, "spawning");
-		
+
+
 		// ========== World Events ==========
         if(MobInfo.getFromName("nethersoul") != null) {
 			MobEventBase mobEvent = new MobEventHellsFury("hellsfury", this.group).setDimensions("1");
@@ -213,10 +221,12 @@ public class DemonMobs {
 			MobEventManager.instance.addWorldEvent(mobEvent);
         }
 
+
         // ========== Boss Events ==========
         MobEventBase mobEvent = new MobEventRahovart("rahovart", this.group).setDimensions("");
         MobEventManager.instance.addMobEvent(mobEvent);
-		
+
+
 		// ========== Remove Vanilla Spawns ==========
 		BiomeGenBase[] biomes = {BiomeGenBase.hell};
 		if(group.controlVanillaSpawns) {
@@ -289,7 +299,8 @@ public class DemonMobs {
 				Character.valueOf('T'), ObjectManager.getItem("pinkymeatcooked"),
 				Character.valueOf('B'), Items.bone
 			}));
-		
+
+
 		// ========== Smelting ==========
 		GameRegistry.addSmelting(ObjectManager.getItem("pinkymeatraw"), new ItemStack(ObjectManager.getItem("pinkymeatcooked"), 1), 0.5f);
 	}

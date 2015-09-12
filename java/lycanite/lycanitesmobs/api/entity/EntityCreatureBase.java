@@ -220,6 +220,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 		CLIMBING(watcherID++), STEALTH(watcherID++), HUNGER(watcherID++), STAMINA(watcherID++),
 		AGE(watcherID++), LOVE(watcherID++),
 		TAMED(watcherID++), OWNER(watcherID++), COLOR(watcherID++), SIZE(watcherID++), SUBSPECIES(watcherID++), LAST(watcherID++),
+        SPECIAL(watcherID++),
 		EQUIPMENT(watcherID++);
 		
 		public final byte id;

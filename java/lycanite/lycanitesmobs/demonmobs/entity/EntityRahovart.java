@@ -117,6 +117,14 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("hellfirecharge")), 0.5F).setMinAmount(10).setMaxAmount(50));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("demonicsoulstone")), 1F).setMinAmount(5).setMaxAmount(5));
 	}
+
+    // ========== Init ==========
+    /** Initiates the entity setting all the values to be watched by the datawatcher. **/
+    @Override
+    protected void entityInit() {
+        super.entityInit();
+        this.dataWatcher.addObject(WATCHER_ID.SPECIAL.id, this.hellfireEnergy);
+    }
 	
 	
     // ==================================================
@@ -126,6 +134,12 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
 	@Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
+
+        // Sync Hellfire Energy:
+        if(!this.worldObj.isRemote)
+            this.dataWatcher.updateObject(WATCHER_ID.SPECIAL.id, this.hellfireEnergy);
+        else
+            this.hellfireEnergy = this.dataWatcher.getWatchableObjectInt(WATCHER_ID.SPECIAL.id);
 
         // Hellfire Update:
         this.updateHellfireOrbs(this, this.updateTick, 5, this.hellfireEnergy, 10, this.hellfireOrbs);
@@ -394,7 +408,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
     //                     Hellfire
     // ==================================================
     public void updateHellfireOrbs(EntityLivingBase entity, long orbTick, int hellfireOrbMax, int hellfireOrbEnergy, float orbSize, List<EntityHellfireOrb> hellfireOrbs) {
-        if(entity.worldObj.isRemote)
+        if(!entity.worldObj.isRemote)
             return;
 
         int hellfireChargeCount = Math.round((float)Math.min(hellfireOrbEnergy, 100) / (100F / hellfireOrbMax));
@@ -405,6 +419,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
         // Add Required Orbs:
         while(hellfireOrbs.size() < hellfireChargeCount) {
             EntityHellfireOrb hellfireOrb = new EntityHellfireOrb(entity.worldObj, entity);
+            hellfireOrb.clientOnly = true;
             hellfireOrbs.add(hellfireOrb);
             entity.worldObj.spawnEntityInWorld(hellfireOrb);
             hellfireOrb.setProjectileSize(orbSize, orbSize);
@@ -426,6 +441,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
             hellfireOrb.posX = entity.posX - x;
             hellfireOrb.posY = entity.posY + (entity.height * 0.75F);
             hellfireOrb.posZ = entity.posZ - z;
+            hellfireOrb.setPosition(entity.posX - x, entity.posY + (entity.height * 0.75F), entity.posZ - z);
             hellfireOrb.projectileLife = 5;
         }
     }

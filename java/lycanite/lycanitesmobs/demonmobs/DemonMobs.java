@@ -156,7 +156,8 @@ public class DemonMobs {
 
 		newMob = new MobInfo(group, "cacodemon", EntityCacodemon.class, 0xFF0000, 0x000099)
 		        .setPeaceful(false).setTameable(true).setSummonCost(6).setDungeonLevel(2)
-		        .addSubspecies(new Subspecies("russet", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"));
+		        .addSubspecies(new Subspecies("russet", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"))
+				.addSubspecies(new Subspecies("ebon", "rare"));
 		newMob.spawnInfo.setSpawnTypes("PORTAL, SKY")
 				.setSpawnWeight(4).setAreaLimit(5).setGroupLimits(1, 1).setLightDark(true, true).setDungeonWeight(80);
 		ObjectManager.addMob(newMob);

@@ -297,6 +297,6 @@ public class InfernoMobs {
 
 
 		// ========== Smelting ==========
-		//GameRegistry.addSmelting(ObjectManager.getItem("sauropodmeatraw").itemID, new ItemStack(ObjectManager.getItem("sauropodmeatcooked"), 1), 0.5f);
+		//GameRegistry.addSmelting(ObjectManager.getItem("cephignismeatraw").itemID, new ItemStack(ObjectManager.getItem("cephignismeatcooked"), 1), 0.5f); Cephignis live in lava, cooking is redundant!
 	}
 }

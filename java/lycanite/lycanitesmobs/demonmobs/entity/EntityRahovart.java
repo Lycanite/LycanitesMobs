@@ -1,12 +1,10 @@
 package lycanite.lycanitesmobs.demonmobs.entity;
 
-import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupDemon;
 import lycanite.lycanitesmobs.api.IGroupFire;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
-import lycanite.lycanitesmobs.api.entity.EntityHitArea;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
@@ -197,7 +195,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
                         this.onMinionDeath(minion);
                         continue;
                     }
-                    if (!this.hellfireBelphEnergies.containsKey(minion))
+                    if (!this.hellfireBelphEnergies.containsKey(minion)) // TODO: Continue From Here! Also Ebon Cacodemon Abilities & Altar and Celestial Geonach Altar
                         this.hellfireBelphEnergies.put(minion, 0);
                     int minionEnergy = this.hellfireBelphEnergies.get(minion);
                     if (!this.hellfireBelphOrbs.containsKey(minion))
@@ -315,8 +313,8 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
             }
 
             // Hellfire Barriers:
-            //if(this.hellfireBarriers.size() > 0)
-            //this.hellfireBarrierUpdate();
+            if(this.hellfireBarriers.size() > 0)
+                this.hellfireBarrierUpdate();
 
             // Every 10 Secs:
             if(this.updateTick % 200 == 0) {

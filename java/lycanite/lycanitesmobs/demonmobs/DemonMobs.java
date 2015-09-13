@@ -27,6 +27,7 @@ import lycanite.lycanitesmobs.demonmobs.dispenser.DispenserBehaviorDevilstar;
 import lycanite.lycanitesmobs.demonmobs.dispenser.DispenserBehaviorDoomfireball;
 import lycanite.lycanitesmobs.demonmobs.dispenser.DispenserBehaviorHellfireball;
 import lycanite.lycanitesmobs.demonmobs.entity.*;
+import lycanite.lycanitesmobs.demonmobs.info.AltarInfoEbonCacodemon;
 import lycanite.lycanitesmobs.demonmobs.info.AltarInfoRahovart;
 import lycanite.lycanitesmobs.demonmobs.item.*;
 import lycanite.lycanitesmobs.demonmobs.mobevent.MobEventHellsFury;
@@ -78,6 +79,8 @@ public class DemonMobs {
 
 		// ========== Create Items ==========
 		ObjectManager.addItem("demonegg", new ItemDemonEgg());
+		ObjectManager.addItem("soulstonedemonic", new ItemSoulstoneDemonic(group));
+
 		ObjectManager.addItem("doomfirecharge", new ItemDoomfireball());
 		ObjectManager.addItem("hellfirecharge", new ItemHellfireball());
 		ObjectManager.addItem("devilstarcharge", new ItemDevilstar());
@@ -239,6 +242,8 @@ public class DemonMobs {
 
 
         // ========== Altars ==========
+		AltarInfo ebonCacodemonAltar = new AltarInfoEbonCacodemon("EbonCacodemonAltar");
+		AltarInfo.addAltar(ebonCacodemonAltar);
         AltarInfo rahovartAltar = new AltarInfoRahovart("RahovartAltar");
         AltarInfo.addAltar(rahovartAltar);
 

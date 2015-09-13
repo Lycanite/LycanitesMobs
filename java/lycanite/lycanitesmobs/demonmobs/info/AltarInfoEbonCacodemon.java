@@ -1,19 +1,19 @@
-package lycanite.lycanitesmobs.mountainmobs.info;
+package lycanite.lycanitesmobs.demonmobs.info;
 
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.info.AltarInfo;
-import lycanite.lycanitesmobs.mountainmobs.entity.EntityGeonach;
+import lycanite.lycanitesmobs.demonmobs.entity.EntityCacodemon;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 
-public class AltarInfoCelestialGeonach extends AltarInfo {
+public class AltarInfoEbonCacodemon extends AltarInfo {
 
     // ==================================================
     //                    Constructor
     // ==================================================
-    public AltarInfoCelestialGeonach(String name) {
+    public AltarInfoEbonCacodemon(String name) {
         super(name);
     }
 
@@ -64,13 +64,9 @@ public class AltarInfoCelestialGeonach extends AltarInfo {
             return false;
         if(world.getBlock(x - 2, y + 1, z) != bodyBlock)
             return false;
-        if(world.getBlock(x - 3, y + 1, z) != bodyBlock)
-            return false;
         if(world.getBlock(x - 1, y, z) != bodyBlock)
             return false;
         if(world.getBlock(x - 2, y, z) != bodyBlock)
-            return false;
-        if(world.getBlock(x - 3, y, z) != bodyBlock)
             return false;
 
         // Right Arm:
@@ -80,13 +76,25 @@ public class AltarInfoCelestialGeonach extends AltarInfo {
             return false;
         if(world.getBlock(x + 2, y + 1, z) != bodyBlock)
             return false;
-        if(world.getBlock(x + 3, y + 1, z) != bodyBlock)
-            return false;
         if(world.getBlock(x + 1, y, z) != bodyBlock)
             return false;
         if(world.getBlock(x + 2, y, z) != bodyBlock)
             return false;
-        if(world.getBlock(x + 3, y, z) != bodyBlock)
+
+        // Left Leg:
+        if(world.getBlock(x - 1, y - 1, z) != bodyBlock)
+            return false;
+        if(world.getBlock(x - 1, y - 2, z) != bodyBlock)
+            return false;
+        if(world.getBlock(x - 1, y - 2, z) != bodyBlock)
+            return false;
+
+        // Right Leg:
+        if(world.getBlock(x + 1, y - 1, z) != bodyBlock)
+            return false;
+        if(world.getBlock(x + 1, y - 2, z) != bodyBlock)
+            return false;
+        if(world.getBlock(x + 1, y - 2, z) != bodyBlock)
             return false;
 
         return true;
@@ -101,13 +109,9 @@ public class AltarInfoCelestialGeonach extends AltarInfo {
             return false;
         if(world.getBlock(x, y + 1, z - 2) != bodyBlock)
             return false;
-        if(world.getBlock(x, y + 1, z - 3) != bodyBlock)
-            return false;
         if(world.getBlock(x, y, z - 1) != bodyBlock)
             return false;
         if(world.getBlock(x, y, z - 2) != bodyBlock)
-            return false;
-        if(world.getBlock(x, y, z - 3) != bodyBlock)
             return false;
 
         // Right Arm:
@@ -117,13 +121,25 @@ public class AltarInfoCelestialGeonach extends AltarInfo {
             return false;
         if(world.getBlock(x, y + 1, z + 2) != bodyBlock)
             return false;
-        if(world.getBlock(x, y + 1, z + 3) != bodyBlock)
-            return false;
         if(world.getBlock(x, y, z + 1) != bodyBlock)
             return false;
         if(world.getBlock(x, y, z + 2) != bodyBlock)
             return false;
-        if(world.getBlock(x, y, z + 3) != bodyBlock)
+
+        // Left Leg:
+        if(world.getBlock(x, y - 1, z - 1) != bodyBlock)
+            return false;
+        if(world.getBlock(x, y - 2, z - 1) != bodyBlock)
+            return false;
+        if(world.getBlock(x, y - 2, z - 1) != bodyBlock)
+            return false;
+
+        // Right Leg:
+        if(world.getBlock(x, y - 1, z + 1) != bodyBlock)
+            return false;
+        if(world.getBlock(x, y - 2, z + 1) != bodyBlock)
+            return false;
+        if(world.getBlock(x, y - 2, z + 1) != bodyBlock)
             return false;
 
         return true;
@@ -139,8 +155,8 @@ public class AltarInfoCelestialGeonach extends AltarInfo {
             return true;
 
         // Create Mini Boss:
-        EntityCreatureBase entityGeonach = new EntityGeonach(world);
-        if(checkDimensions && !entityGeonach.isNativeDimension(world))
+        EntityCreatureBase entityCreature = new EntityCacodemon(world);
+        if(checkDimensions && !entityCreature.isNativeDimension(world))
             return false;
 
         // Destroy Altar:
@@ -158,17 +174,17 @@ public class AltarInfoCelestialGeonach extends AltarInfo {
         double angle = Math.toRadians(entity.rotationYaw + 180);
         double xAmount = -Math.sin(angle);
         double zAmount = Math.cos(angle);
-        entity.motionX = xAmount * 2 + entity.motionX * 0.2D;
-        entity.motionZ = zAmount * 2 + entity.motionZ * 0.2D;
-        entity.motionY = 0.5D;
+        entityCreature.motionX = xAmount * 2 + entity.motionX * 0.2D;
+        entityCreature.motionZ = zAmount * 2 + entity.motionZ * 0.2D;
+        entityCreature.motionY = 0.5D;
 
         // Spawn Mini Boss:
-        entityGeonach.altarSummoned = true;
-        entityGeonach.forceBossHealthBar = true;
-        entityGeonach.setSubspecies(3, true);
-        entityGeonach.setLocationAndAngles(x, y - 2, z, 0, 0);
-        world.spawnEntityInWorld(entityGeonach);
-        entityGeonach.destroyArea(x, y, z, 10000, false, 2);
+        entityCreature.altarSummoned = true;
+        entityCreature.forceBossHealthBar = true;
+        entityCreature.setSubspecies(3, true);
+        entityCreature.setLocationAndAngles(x, y - 2, z, 0, 0);
+        world.spawnEntityInWorld(entityCreature);
+        entityCreature.destroyArea(x, y, z, 10000, false, 2);
 
         return true;
     }

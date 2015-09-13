@@ -73,7 +73,15 @@ public class EntityHellfireBarrier extends EntityProjectileBase {
                         hellfireWalls[row][col] = new EntityHellfireWall(this.worldObj, this.getThrower());
                     else
                         hellfireWalls[row][col] = new EntityHellfireWall(this.worldObj, this.posX, this.posY + 5 + (10 * row), this.posZ);
+
+                    double rotationRadians = Math.toRadians(this.rotation);
+                    double x = (((float)col / this.hellfireWidth) * 100) * Math.cos(rotationRadians) + Math.sin(rotationRadians);
+                    double z = (((float)col / this.hellfireWidth) * 100) * Math.sin(rotationRadians) - Math.cos(rotationRadians);
+                    hellfireWalls[row][col].posX = this.posX + x;
                     hellfireWalls[row][col].posY = this.posY + 5 + (10 * row);
+                    hellfireWalls[row][col].posZ = this.posZ + z;
+                    hellfireWalls[row][col].projectileLife = 2 * 20;
+
                     this.worldObj.spawnEntityInWorld(hellfireWalls[row][col]);
                     hellfireWalls[row][col].setProjectileScale(20F);
                 }
@@ -83,6 +91,7 @@ public class EntityHellfireBarrier extends EntityProjectileBase {
         // Move:
         for(int row = 0; row < this.hellfireHeight; row++) {
             for(int col = 0; col < this.hellfireWidth; col++) {
+
                 double rotationRadians = Math.toRadians(this.rotation);
                 double x = (((float)col / this.hellfireWidth) * 100) * Math.cos(rotationRadians) + Math.sin(rotationRadians);
                 double z = (((float)col / this.hellfireWidth) * 100) * Math.sin(rotationRadians) - Math.cos(rotationRadians);
@@ -90,6 +99,7 @@ public class EntityHellfireBarrier extends EntityProjectileBase {
                 hellfireWalls[row][col].posY = this.posY + 5 + (10 * row);
                 hellfireWalls[row][col].posZ = this.posZ + z;
                 hellfireWalls[row][col].projectileLife = 2 * 20;
+
                 if(this.isDead)
                     hellfireWalls[row][col].setDead();
             }

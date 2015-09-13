@@ -470,7 +470,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     
     // ========== Tame Entity ==========
     public boolean tame(EntityPlayer player) {
-    	if(!this.worldObj.isRemote)
+    	if(!this.worldObj.isRemote && this.getSubspeciesIndex() < 3)
             if(this.rand.nextInt(3) == 0) {
                 this.setPlayerOwner(player);
                 this.unsetTemporary();

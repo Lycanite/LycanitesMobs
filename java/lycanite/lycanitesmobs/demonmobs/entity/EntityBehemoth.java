@@ -1,6 +1,8 @@
 package lycanite.lycanitesmobs.demonmobs.entity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ObjectManager;
@@ -33,6 +35,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public class EntityBehemoth extends EntityCreatureTameable implements IMob, IGroupDemon {
+
+    public int hellfireEnergy = 0;
+    public List<EntityHellfireOrb> hellfireOrbs = new ArrayList<EntityHellfireOrb>();
     
     // ==================================================
  	//                    Constructor
@@ -85,6 +90,14 @@ public class EntityBehemoth extends EntityCreatureTameable implements IMob, IGro
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("hellfirecharge")), 0.1F).setMinAmount(5).setMaxAmount(7));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("demonicsoulstone")), 1F).setMinAmount(1).setMaxAmount(1).setSubspecies(3));
 	}
+
+    // ========== Init ==========
+    /** Initiates the entity setting all the values to be watched by the datawatcher. **/
+    @Override
+    protected void entityInit() {
+        super.entityInit();
+        this.dataWatcher.addObject(WATCHER_ID.SPECIAL.id, this.hellfireEnergy);
+    }
 	
 	
     // ==================================================
@@ -94,6 +107,16 @@ public class EntityBehemoth extends EntityCreatureTameable implements IMob, IGro
 	@Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
+
+        // Sync Hellfire Energy:
+        if(!this.worldObj.isRemote)
+            this.dataWatcher.updateObject(WATCHER_ID.SPECIAL.id, this.hellfireEnergy);
+        else
+            this.hellfireEnergy = this.dataWatcher.getWatchableObjectInt(WATCHER_ID.SPECIAL.id);
+
+        // Hellfire Update:
+        if(this.worldObj.isRemote && this.hellfireEnergy > 0)
+            EntityRahovart.updateHellfireOrbs(this, this.updateTick, 3, this.hellfireEnergy, 1F, this.hellfireOrbs);
         
         // Hellfire Trail:
         if(!this.worldObj.isRemote && (this.ticksExisted % 10 == 0 || this.isMoving() && this.ticksExisted % 5 == 0)) {

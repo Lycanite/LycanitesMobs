@@ -23,7 +23,7 @@ public class ModelCacodemon extends ModelCustomObj {
     
     public ModelCacodemon(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Cacodemon", DemonMobs.group, "entity/cacodemon");
+    	model = (WavefrontObject)AssetManager.getObjModel("cacodemon", DemonMobs.group, "entity/cacodemon");
     	
     	// Get Parts:
     	parts = model.groupObjects;
@@ -66,26 +66,26 @@ public class ModelCacodemon extends ModelCustomObj {
 		
     	// Mouth:
     	if(partName.equals("topmouth"))
-			rotX -= 5F;
+			rotate(-5F, rotY, rotZ);
 		if(partName.equals("bottommouth"))
-			rotX += 5F;
+			rotate(5F, rotY, rotZ);
     	
 		// Attack:
     	if((entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked())
     			|| (entity instanceof EntityCreatureAgeable && ((EntityCreatureAgeable)entity).isInLove())) {
 			if(partName.equals("topmouth"))
-				rotX -= 25F;
+				rotate(-25F, rotY, rotZ);
 			if(partName.equals("bottommouth"))
-				rotX += 25F;
-			rotX += 25F / 2F;
+				rotate(25F, rotY, rotZ);
+			rotate(25F / 2, rotY, rotZ);
 		}
 		
 		// Sit:
     	if((entity instanceof EntityCreatureTameable && ((EntityCreatureTameable)entity).isSitting())) {
 			if(partName.equals("topmouth"))
-				rotX += 5F;
+				rotate(5F, rotY, rotZ);
 			if(partName.equals("bottommouth"))
-				rotX -= 5F;
+				rotate(-5F, rotY, rotZ);
 		}
 		
     	// Apply Animations:

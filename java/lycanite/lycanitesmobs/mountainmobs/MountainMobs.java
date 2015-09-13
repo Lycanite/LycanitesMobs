@@ -15,11 +15,7 @@ import lycanite.lycanitesmobs.mountainmobs.dispenser.DispenserBehaviorArcaneLase
 import lycanite.lycanitesmobs.mountainmobs.dispenser.DispenserBehaviorBoulderBlast;
 import lycanite.lycanitesmobs.mountainmobs.entity.*;
 import lycanite.lycanitesmobs.mountainmobs.info.AltarInfoCelestialGeonach;
-import lycanite.lycanitesmobs.mountainmobs.item.ItemArcaneLaserStormCharge;
-import lycanite.lycanitesmobs.mountainmobs.item.ItemBoulderBlastCharge;
-import lycanite.lycanitesmobs.mountainmobs.item.ItemMountainEgg;
-import lycanite.lycanitesmobs.mountainmobs.item.ItemScepterArcaneLaserStorm;
-import lycanite.lycanitesmobs.mountainmobs.item.ItemScepterBoulderBlast;
+import lycanite.lycanitesmobs.mountainmobs.item.*;
 import lycanite.lycanitesmobs.mountainmobs.mobevent.MobEventBoulderDash;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
@@ -78,6 +74,7 @@ public class MountainMobs {
 		
 		// ========== Create Items ==========
 		ObjectManager.addItem("mountainegg", new ItemMountainEgg());
+		ObjectManager.addItem("soulstonemountain", new ItemSoulstoneMountain(group));
 		
 		ObjectManager.addItem("boulderblastcharge", new ItemBoulderBlastCharge());
 		ObjectManager.addItem("boulderblastscepter", new ItemScepterBoulderBlast(), 2, 1, 1);

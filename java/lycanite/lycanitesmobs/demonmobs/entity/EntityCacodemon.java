@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupDemon;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackRanged;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIBeg;
@@ -22,6 +23,7 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -94,8 +96,57 @@ public class EntityCacodemon extends EntityCreatureTameable implements IGroupDem
         this.drops.add(new DropRate(new ItemStack(Items.ghast_tear), 0.25F).setMinAmount(1).setMaxAmount(3));
         this.drops.add(new DropRate(new ItemStack(Items.gunpowder), 0.5F).setMinAmount(1).setMaxAmount(3));
         this.drops.add(new DropRate(new ItemStack(Items.blaze_powder), 0.5F).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("DemonicLightningCharge")), 0.25F));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("demoniclightningcharge")), 0.75F));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("demonicsoulstone")), 1).setMinAmount(1).setSubspecies(3));
 	}
+
+    // ========== On Spawn ==========
+    /** This is called when the mob is first spawned to the world either through natural spawning or from a Spawn Egg. **/
+    public void onFirstSpawn() {
+        super.onFirstSpawn();
+        if(this.getSubspeciesIndex() == 3)
+            this.setSizeScale(this.sizeScale * 2);
+    }
+
+
+    // ==================================================
+    //                      Updates
+    // ==================================================
+    // ========== Living Update ==========
+    @Override
+    public void onLivingUpdate() {
+        if(!this.worldObj.isRemote && this.hasAttackTarget() && this.ticksExisted % 20 == 0) {
+            this.allyUpdate();
+        }
+
+        super.onLivingUpdate();
+    }
+
+    // ========== Spawn Minions ==========
+    public void allyUpdate() {
+        if(this.worldObj.isRemote)
+            return;
+
+        // Spawn Minions:
+        if(this.nearbyCreatureCount(EntityNetherSoul.class, 64D) < 10) {
+            float random = this.rand.nextFloat();
+            if(random <= 0.1F)
+                this.spawnAlly(this.posX - 2 + (random * 4), this.posY, this.posZ - 2 + (random * 4));
+        }
+    }
+
+    public void spawnAlly(double x, double y, double z) {
+        EntityLivingBase minion = new EntityNetherSoul(this.worldObj);
+        minion.setLocationAndAngles(x, y, z, this.rand.nextFloat() * 360.0F, 0.0F);
+        if(minion instanceof EntityCreatureBase) {
+            EntityCreatureBase minionCreature = (EntityCreatureBase)minion;
+            minionCreature.setMinion(true);
+            minionCreature.setMasterTarget(this);
+        }
+        this.worldObj.spawnEntityInWorld(minion);
+        if(this.getAttackTarget() != null)
+            minion.setRevengeTarget(this.getAttackTarget());
+    }
 	
 	
 	// ==================================================

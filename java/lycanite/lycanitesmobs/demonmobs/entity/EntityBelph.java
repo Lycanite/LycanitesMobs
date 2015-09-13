@@ -1,6 +1,8 @@
 package lycanite.lycanitesmobs.demonmobs.entity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupDemon;
@@ -32,6 +34,9 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 public class EntityBelph extends EntityCreatureTameable implements IMob, IGroupDemon {
+
+    public int hellfireEnergy = 0;
+    public List<EntityHellfireOrb> hellfireOrbs = new ArrayList<EntityHellfireOrb>();
     
     // ==================================================
  	//                    Constructor
@@ -86,6 +91,34 @@ public class EntityBelph extends EntityCreatureTameable implements IMob, IGroupD
         this.drops.add(new DropRate(new ItemStack(Items.nether_wart), 1).setMinAmount(1).setMaxAmount(3));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("DoomfireCharge")), 0.25F));
 	}
+
+    // ========== Init ==========
+    /** Initiates the entity setting all the values to be watched by the datawatcher. **/
+    @Override
+    protected void entityInit() {
+        super.entityInit();
+        this.dataWatcher.addObject(WATCHER_ID.SPECIAL.id, this.hellfireEnergy);
+    }
+
+
+    // ==================================================
+    //                      Updates
+    // ==================================================
+    // ========== Living Update ==========
+    @Override
+    public void onLivingUpdate() {
+        super.onLivingUpdate();
+
+        // Sync Hellfire Energy:
+        if (!this.worldObj.isRemote)
+            this.dataWatcher.updateObject(WATCHER_ID.SPECIAL.id, this.hellfireEnergy);
+        else
+            this.hellfireEnergy = this.dataWatcher.getWatchableObjectInt(WATCHER_ID.SPECIAL.id);
+
+        // Hellfire Update:
+        if(this.worldObj.isRemote && this.hellfireEnergy > 0)
+            EntityRahovart.updateHellfireOrbs(this, this.updateTick, 3, this.hellfireEnergy, 0.5F, this.hellfireOrbs);
+    }
     
     
     // ==================================================

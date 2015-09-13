@@ -1796,9 +1796,13 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
             if(targetPlayer.capabilities.isCreativeMode)
                 return false;
         }
-        if(targetEntity instanceof EntityCreatureBase && !(this instanceof IBossDisplayData)) {
-            if (this.getOwner() == null && targetEntity instanceof IBossDisplayData && !((EntityCreatureBase)targetEntity).canAttackEntity(this))
+        if(targetEntity instanceof EntityCreatureBase) {
+            if(((EntityCreatureBase)targetEntity).getMasterTarget() == this)
                 return false;
+            if (!(this instanceof IBossDisplayData)) {
+                if (this.getOwner() == null && targetEntity instanceof IBossDisplayData && !((EntityCreatureBase)targetEntity).canAttackEntity(this))
+                    return false;
+            }
         }
 		return true;
 	}
@@ -2209,7 +2213,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     /** Returns true if this mob is currently flying. **/
     public boolean isCurrentlyFlying() { return this.canFly(); }
     /** Can this entity by tempted (usually lured by an item) currently? **/
-    public boolean canBeTempted() { return true; }
+    public boolean canBeTempted() { return this.getSubspeciesIndex() < 3; }
     
     /** Called when the creature has eaten. Some special AIs use this such as EntityAIEatBLock. **/
     public void onEat() {}

@@ -66,6 +66,8 @@ achievement.rahovart.learn.desc=Add a Rahovart to your Beastiary.
 #
 # Items
 item.demonspawn.name=Spawn
+item.soulstonedemonic.name=Demonic Soulstone
+item.soulstonedemonic.description=A demonic soul is contained within! Use this item to release what is inside... or use it to craft a Demonic Soulcube to summon something truly evil!
 item.pinkymeatraw.name=Raw Pinky Meat
 item.pinkymeatraw.description=Withering demonic energy pulses through this meat, it must be cleaned by fire.
 item.pinkymeatcooked.name=Cooked Pinky Meat

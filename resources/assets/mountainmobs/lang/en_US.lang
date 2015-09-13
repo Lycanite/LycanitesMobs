@@ -53,6 +53,8 @@ achievement.barghest.tame.desc=Tame a Barghest.
 #
 # Items
 item.mountainspawn.name=Spawn
+item.soulstonemountain.name=Mountain Soulstone
+item.soulstonemountain.description=A spirit of the mountains is contained within! Use this item to release what is inside!
 item.yalemeatraw.name=Raw Yale Meat
 item.yalemeatraw.description=Tastes a bit like mutton. Very chewy when raw, causes dig speed slowdown.
 item.yalemeatcooked.name=Cooked Yale Meat

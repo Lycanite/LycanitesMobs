@@ -34,7 +34,7 @@ public class MobEventClientBoss extends MobEventClient {
 		eventMessage = eventMessage.replace("%event%", this.mobEvent.getTitle());
 		player.addChatMessage(new ChatComponentText(eventMessage));
 		
-		if(!player.capabilities.isCreativeMode || MobEventServer.testOnCreative) {
+		if(!player.capabilities.isCreativeMode || MobEventServer.testOnCreative || this.mobEvent instanceof MobEventBoss) {
         	if(AssetManager.getSound("mobevent_" + this.mobEvent.name.toLowerCase()) == null)
         			AssetManager.addSound("mobevent_" + this.mobEvent.name.toLowerCase(), this.mobEvent.group, "mobevent." + this.mobEvent.name.toLowerCase());
             this.sound = PositionedSoundRecord.func_147673_a(new ResourceLocation(AssetManager.getSound("mobevent_" + this.mobEvent.name.toLowerCase())));

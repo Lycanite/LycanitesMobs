@@ -96,5 +96,7 @@ item.demoniclightningscepter.name=Demonic Lightning Scepter
 item.demoniclightningscepter.description=High Damage, Charge Up, Applies Wither, Sparks Fly Off
 #
 # Blocks
+tile.soulcubedemonic.name=Demonic Soulcube
+tile.soulcubedemonic.description=A source of great demonic energy waiting to be unleashed, perfect for luring a great evil...
 tile.hellfire.name=Hellfire
 tile.hellfire.description=A wicked flame tainted by twisted demonic energy. Burns longer, spreads slower, deals more damage than fire.

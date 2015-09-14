@@ -365,19 +365,20 @@ public class ExtendedWorld extends WorldSavedData {
         if(this.world.isRemote) {
             boolean extended = false;
             if(this.clientMobEvents.get(mobEvent.name) != null)
-                extended = this.clientMobEvents.get(mobEvent.name).mobEvent == mobEvent;
+                extended = this.clientMobEvents.get(mobEvent.name).mobEvent.equals(mobEvent);
             if(!extended) {
                 MobEventClient mobEventClient = mobEvent.getClientEvent(this.world);
                 this.clientMobEvents.put(mobEvent.name, mobEventClient);
                 mobEventClient.extended = extended;
-                if (LycanitesMobs.proxy.getClientPlayer() != null)
+                if(LycanitesMobs.proxy.getClientPlayer() != null) {
                     mobEventClient.onStart(LycanitesMobs.proxy.getClientPlayer());
+                }
             }
         }
     }
 
     /**
-     * Starts a provided World Event (provided by name) on the provided world.
+     * Starts a provided Mob Event (provided by name) on the provided world.
      *  **/
     public void startMobEvent(String mobEventName, int originX, int originY, int originZ) {
         MobEventBase mobEvent;

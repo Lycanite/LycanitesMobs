@@ -47,6 +47,7 @@ public class MobEventRahovart extends MobEventBoss {
     /** This is the main boss setup, this will create the arena, decorate it, move players and finally, summon the boss. The time value is used to determine what to do. **/
     @Override
     public void bossSetup(int time, World world, int originX, int originY, int originZ) {
+        originX += 20;
         int height = 120;
         if(world.getHeight() <= height)
             originY = 1;
@@ -57,14 +58,14 @@ public class MobEventRahovart extends MobEventBoss {
             this.buildArena(world, originX, originY, originZ);
         }
 
-        if(time == 2 * 20) {
+        /*if(time == 2 * 20) {
             for(Object playerObject : world.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(originX - 20, originY - 20, originZ - 20, originX + 20, originY + 20, originZ + 20))) {
                 if(playerObject instanceof EntityPlayer) {
                     EntityPlayer entityPlayer = (EntityPlayer)playerObject;
-                    entityPlayer.setLocationAndAngles(originX - 40, originY + 1, originZ, entityPlayer.rotationYaw, entityPlayer.rotationPitch);
+                    entityPlayer.setPositionAndRotation(originX - 40, originY + 1, originZ, entityPlayer.rotationYaw, entityPlayer.rotationPitch);
                 }
             }
-        }
+        }*/
 
         if(time >= 3 * 20 && time % 10 == 0) {
             world.createExplosion(null, originX - 20 + world.rand.nextInt(40), originY + 50 + world.rand.nextInt(20), originZ - 20 + world.rand.nextInt(40), 2, true);

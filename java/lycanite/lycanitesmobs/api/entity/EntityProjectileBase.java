@@ -34,10 +34,11 @@ public class EntityProjectileBase extends EntityThrowable {
 	public boolean waterProof = false;
 	public boolean lavaProof = false;
 
-    // Animation:
+    // Texture and Animation:
     public int projectileScaleID = 10;
     public int animationFrame = 0;
     public int animationFrameMax = 0;
+    public int textureTiling = 1;
     public boolean clientOnly = false;
 	
 	// ==================================================
@@ -79,13 +80,25 @@ public class EntityProjectileBase extends EntityThrowable {
  	// ==================================================
     @Override
     public void onUpdate() {
-        if(this.movement)
-    	    super.onUpdate();
-        else {
-            this.lastTickPosX = this.posX;
-            this.lastTickPosY = this.posY;
-            this.lastTickPosZ = this.posZ;
+
+        if(!this.movement) {
+            this.inGround = false;
+            this.timeUntilPortal = this.getPortalCooldown();
         }
+        double initX = this.posX;
+        double initY = this.posY;
+        double initZ = this.posZ;
+        super.onUpdate();
+        if(!this.movement) {
+            this.posX = initX;
+            this.posY = initY;
+            this.posZ = initZ;
+            this.motionX = 0;
+            this.motionY = 0;
+            this.motionZ = 0;
+            this.setPosition(this.posX, this.posY, this.posZ);
+        }
+
     	if(this.isInWeb)
     		this.isInWeb = false;
     	

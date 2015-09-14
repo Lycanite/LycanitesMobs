@@ -1,6 +1,7 @@
 package lycanite.lycanitesmobs.demonmobs.info;
 
 import lycanite.lycanitesmobs.ExtendedWorld;
+import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.info.AltarInfo;
 import lycanite.lycanitesmobs.demonmobs.entity.EntityBehemoth;
@@ -24,7 +25,7 @@ public class AltarInfoRahovart extends AltarInfo {
     // ==================================================
     /** Called first when checking for a valid altar, this should be fairly lightweight such as just checking if the first block checked is valid, a more in depth check if then done after. **/
     public boolean quickCheck(Entity entity, World world, int x, int y, int z) {
-        if(world.getBlock(x, y, z) != Blocks.diamond_block)
+        if(world.getBlock(x, y, z) != ObjectManager.getBlock("soulcubedemonic"))
             return false;
         return true;
     }

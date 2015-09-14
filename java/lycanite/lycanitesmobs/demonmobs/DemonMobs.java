@@ -12,6 +12,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.block.BlockSoulcube;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.api.info.*;
@@ -37,6 +38,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.monster.EntityPigZombie;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
@@ -107,6 +109,7 @@ public class DemonMobs {
 
 
 		// ========== Create Blocks ==========
+        ObjectManager.addBlock("soulcubedemonic", new BlockSoulcube(group, "soulcubedemonic"));
 		AssetManager.addSound("hellfire", group, "block.hellfire");
 		ObjectManager.addBlock("hellfire", new BlockHellfire());
 
@@ -249,6 +252,13 @@ public class DemonMobs {
 
 
 		// ========== Crafting ==========
+        GameRegistry.addRecipe(new ShapedOreRecipe(
+                new ItemStack(ObjectManager.getBlock("soulcubedemonic"), 1, 0),
+                new Object[] { "DDD", "DSD", "DDD",
+                        Character.valueOf('S'), ObjectManager.getItem("soulstonedemonic"),
+                        Character.valueOf('D'), Blocks.diamond_block
+                }));
+
         if(ItemInfo.enableWeaponRecipes) {
             GameRegistry.addRecipe(new ShapedOreRecipe(
                     new ItemStack(ObjectManager.getItem("doomfirescepter"), 1, 0),

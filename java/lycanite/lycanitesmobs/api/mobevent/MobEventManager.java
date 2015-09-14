@@ -110,13 +110,14 @@ public class MobEventManager {
 		ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
 		if(world.isRemote || worldExt == null) return;
 
-        // Update Mob Events:
+
+        // ===== Update Mob Events =====
         for(MobEventServer mobEventServer : worldExt.serverMobEvents.toArray(new MobEventServer[worldExt.serverMobEvents.size()])) {
             mobEventServer.onUpdate();
         }
 
 
-        // Update World Event:
+        // ===== Update World Event =====
 
         // Check If Events Are Completely Disabled:
         if(!this.mobEventsEnabled || !worldExt.mobEventsEnabled || world.difficultySetting == EnumDifficulty.PEACEFUL) {

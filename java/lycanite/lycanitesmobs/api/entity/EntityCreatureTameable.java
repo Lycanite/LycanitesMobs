@@ -547,7 +547,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     
     
     // ==================================================
-    //                     Pet Control
+    //                    Pet Control
     // ==================================================
     public boolean petControlsEnabled() { return false; }
     public byte behaviourBitMask() { return this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id); }

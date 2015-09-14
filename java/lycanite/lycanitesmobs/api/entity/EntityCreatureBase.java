@@ -1967,8 +1967,10 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         if(!this.isDamageEntityApplicable(damageSrc.getEntity())) return false;
         damage = this.getDamageAfterDefense(damage);
         damage *= this.getDamageModifier(damageSrc);
-        if(this.isBoss() && !(damageSrc.getEntity() instanceof EntityPlayer))
-            damage *= 0.25F;
+        if(this.isBoss()) {
+            if (!(damageSrc.getEntity() instanceof EntityPlayer))
+                damage *= 0.25F;
+        }
         
         if(super.attackEntityFrom(damageSrc, damage)) {
         	this.onDamage(damageSrc, damage);
@@ -2770,7 +2772,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     // ========== Damage ==========
     /** Returns whether or not the given damage type is applicable, if not no damage will be taken. **/
     public boolean isDamageTypeApplicable(String type) {
-        if(("inWall".equals(type) || "cactus".equals(type)) && this.getSubspeciesIndex() >= 3)
+        if(("inWall".equals(type) || "cactus".equals(type)) && (this.getSubspeciesIndex() >= 3 || this.isBoss()))
             return false;
         return true;
     }
@@ -3165,13 +3167,23 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     // ==================================================
    	//                       Sounds
    	// ==================================================
+    /** Returns the volume of this entity. **/
+    @Override
+    protected float getSoundVolume() {
+        if(this.isBoss())
+            return 4.0F;
+        if(this.getSubspeciesIndex() >= 3)
+            return 2.0F;
+        return 1.0F;
+    }
+
     // ========== Idle ==========
     /** Get number of ticks, at least during which the living entity will be silent. **/
     @Override
-    public int getTalkInterval()
-    {
+    public int getTalkInterval() {
         return 80;
     }
+
     /** Returns the sound to play when this creature is making a random ambient roar, grunt, etc. **/
     @Override
     protected String getLivingSound() { return AssetManager.getSound(this.mobInfo.name + "_say"); }
@@ -3188,30 +3200,37 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
      
     // ========== Step ==========
     /** Plays an additional footstep sound that this creature makes when moving on the ground (all mobs use the block's stepping sounds by default). **/
-    protected void getStepSound(int par1, int par2, int par3, int par4) {
-    	 if(this.useFlightNavigator() || !this.hasStepSound) return;
-    	 this.playSound(AssetManager.getSound(this.mobInfo.name + "_step"), 0.25F, 1.0F);
+    protected void playStepSound(int x, int y, int z, Block block) {
+    	 if(this.useFlightNavigator() || !this.hasStepSound)
+             return;
+    	 this.playSound(AssetManager.getSound(this.mobInfo.name + "_step"), this.getSoundVolume() / 2, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+    }
+
+    /** Vanilla Step Method **/
+    @Override
+    protected void func_145780_a(int x, int y, int z, Block block) {
+        this.playStepSound(x, y, z, block);
     }
      
     // ========== Jump ==========
     /** Plays the jump sound when this creature jumps. **/
     public void playJumpSound() {
     	if(!this.hasJumpSound) return;
-    	this.playSound(AssetManager.getSound(this.mobInfo.name + "_jump"), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+    	this.playSound(AssetManager.getSound(this.mobInfo.name + "_jump"), this.getSoundVolume(), 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
     }
      
     // ========== Fly ==========
     /** Plays a flying sound, usually a wing flap, called randomly when flying. **/
     protected void playFlySound() {
     	if(!this.canFly()) return;
-      	this.playSound(AssetManager.getSound(this.mobInfo.name + "_fly"), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+      	this.playSound(AssetManager.getSound(this.mobInfo.name + "_fly"), this.getSoundVolume(), 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
     }
 
     // ========== Attack ==========
     /** Plays an attack sound, called once this creature has attacked. note that ranged attacks normally rely on the projectiles playing their launched sound instead. **/
     protected void playAttackSound() {
      	if(!this.hasAttackSound) return;
-     	this.playSound(AssetManager.getSound(this.mobInfo.name + "_attack"), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+     	this.playSound(AssetManager.getSound(this.mobInfo.name + "_attack"), this.getSoundVolume(), 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
     }
     
     // ========== Play Sound ==========

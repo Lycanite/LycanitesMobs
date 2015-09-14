@@ -19,8 +19,9 @@ public class EntityHellfireWave extends EntityProjectileBase {
 
 	// Properties:
     public EntityHellfireWall[][] hellfireWalls;
-    protected int hellfireWidth = 10;
-    protected int hellfireHeight = 5;
+    protected int hellfireWidth = 20;
+    protected int hellfireHeight = 10;
+    protected int hellfireSize = 10;
     public int time = 0;
     public int timeMax = 10 * 20;
     public float angle = 90;
@@ -54,6 +55,8 @@ public class EntityHellfireWave extends EntityProjectileBase {
         this.projectileLife = 5 * 20;
         this.animationFrameMax = 59;
         this.noClip = true;
+        this.waterProof = true;
+        this.lavaProof = true;
     }
 
 
@@ -77,10 +80,10 @@ public class EntityHellfireWave extends EntityProjectileBase {
                     if(this.getThrower() != null)
                         hellfireWalls[row][col] = new EntityHellfireWall(this.worldObj, this.getThrower());
                     else
-                        hellfireWalls[row][col] = new EntityHellfireWall(this.worldObj, this.posX, this.posY + 5 + (10 * row), this.posZ);
-                    hellfireWalls[row][col].posY = this.posY + 5 + (10 * row);
+                        hellfireWalls[row][col] = new EntityHellfireWall(this.worldObj, this.posX, this.posY + 5 + (this.hellfireSize * row), this.posZ);
+                    hellfireWalls[row][col].posY = this.posY + (this.hellfireSize * row);
                     this.worldObj.spawnEntityInWorld(hellfireWalls[row][col]);
-                    hellfireWalls[row][col].setProjectileScale(20F);
+                    hellfireWalls[row][col].setProjectileScale(this.hellfireSize * 2);
                 }
             }
         }
@@ -92,7 +95,7 @@ public class EntityHellfireWave extends EntityProjectileBase {
                 double x = (((float)this.time / this.timeMax) * 200) * Math.cos(rotationRadians) - Math.sin(rotationRadians);
                 double z = (((float)this.time / this.timeMax) * 200) * Math.sin(rotationRadians) + Math.cos(rotationRadians);
                 hellfireWalls[row][col].posX = this.posX + x;
-                hellfireWalls[row][col].posY = this.posY + 5 + (10 * row);
+                hellfireWalls[row][col].posY = this.posY + (this.hellfireSize * row);
                 hellfireWalls[row][col].posZ = this.posZ + z;
                 hellfireWalls[row][col].projectileLife = 2 * 20;
                 if(this.isDead)

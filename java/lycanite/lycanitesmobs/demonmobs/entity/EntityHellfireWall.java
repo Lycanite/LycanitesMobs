@@ -16,9 +16,14 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
+
+import java.util.List;
 
 public class EntityHellfireWall extends EntityProjectileBase {
 
@@ -46,13 +51,16 @@ public class EntityHellfireWall extends EntityProjectileBase {
     	this.group = DemonMobs.group;
     	this.setBaseDamage(10);
     	this.setProjectileScale(20F);
-        this.setSize(11F, 11F);
+        this.setSize(10F, 10F);
         this.movement = false;
         this.pierce = true;
         this.pierceBlocks = true;
         this.projectileLife = 2 * 20;
         this.animationFrameMax = 59;
+        this.textureTiling = 2;
         this.noClip = true;
+        this.waterProof = true;
+        this.lavaProof = true;
     }
 
 
@@ -62,12 +70,23 @@ public class EntityHellfireWall extends EntityProjectileBase {
     @Override
     public void onUpdate() {
         super.onUpdate();
+
+        Vec3 vec3 = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
+        Vec3 vec31 = Vec3.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+        MovingObjectPosition movingobjectposition = this.worldObj.rayTraceBlocks(vec3, vec31);
+
+        if (!this.worldObj.isRemote) {
+            List list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
+            double d0 = 0.0D;
+            EntityLivingBase entitylivingbase = this.getThrower();
+
+            for (int j = 0; j < list.size(); ++j) {
+                Entity entity = (Entity)list.get(j);
+                this.onImpact(new MovingObjectPosition(entity));
+            }
+        }
     }
-    
-    
-    // ==================================================
- 	//                     Impact
- 	// ==================================================
+
     //========== Entity Living Collision ==========
     @Override
     public boolean entityLivingCollision(EntityLivingBase entityLiving) {

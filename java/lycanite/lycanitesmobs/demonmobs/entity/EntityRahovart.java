@@ -1,5 +1,7 @@
 package lycanite.lycanitesmobs.demonmobs.entity;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupDemon;
@@ -44,7 +46,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
     // Second Phase:
     public List<EntityBehemoth> hellfireBehemothMinions = new ArrayList<EntityBehemoth>();
     public int hellfireWallTime = 0;
-    public int hellfireWallTimeMax = 10 * 20;
+    public int hellfireWallTimeMax = 15 * 20;
     public boolean hellfireWallClockwise = false;
     public EntityHellfireBarrier hellfireWallLeft;
     public EntityHellfireBarrier hellfireWallRight;
@@ -249,9 +251,9 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
                 this.hellfireWaveAttack(angle);
             }
 
-            // Every 10 Secs:
-            if(this.updateTick % 200 == 0) {
-                int summonAmount = this.getRNG().nextInt(3); // 0-5 Hellfire Belphs
+            // Every 5 Secs:
+            if(this.updateTick % 100 == 0) {
+                int summonAmount = this.getRNG().nextInt(3); // 0-2 Hellfire Belphs
                 summonAmount *= this.playerTargets.size();
                 if(summonAmount > 0)
                     for(int summonCount = 0; summonCount <= summonAmount; summonCount++) {
@@ -697,5 +699,18 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
             }
             nbtTagCompound.setTag("BehemothIDs", behemothIDs);
         }
+    }
+
+
+    // ==================================================
+    //                   Brightness
+    // ==================================================
+    public float getBrightness(float par1) {
+        return 1.0F;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public int getBrightnessForRender(float par1) {
+        return 15728880;
     }
 }

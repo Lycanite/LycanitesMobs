@@ -244,9 +244,11 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
         this.scaledHeight = height;
         if(!validWidth)
             this.setAgeScale(1.0F);
+        super.setSize(width, height);
     }
 
     /** When called, this reapplies the initial width and height this mob and then applies sizeScale. **/
+    @Override
 	public void updateSize() {
         this.setSize(this.setWidth, this.setHeight);
         this.setScaleForAge(this.isChild());

@@ -5,6 +5,7 @@ event.finished=%event% is over!
 event.boss.started=%event% has been called!
 event.boss.extended=%event% is coming!
 event.boss.finished=%event% is unleashed!
+event.boss.phase=Phase
 # %event% will be replaced with the name of the event, don't translate this!
 #
 # Mob Events

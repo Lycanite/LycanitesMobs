@@ -85,7 +85,17 @@ public class AltarInfoRahovart extends AltarInfo {
         ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
         if(worldExt == null)
             return false;
-        worldExt.startMobEvent("rahovart", x, Math.max(1, y - 3), z);
+
+        int originX = x;
+        int originY = Math.max(1, y - 3);
+        int originZ = z;
+        if(entity != null) {
+            double[] coords = this.getFacingPosition(x, y, z, 10, entity.rotationYaw);
+            originX = Math.round((float)coords[0]);
+            originZ = Math.round((float)coords[2]);
+        }
+
+        worldExt.startMobEvent("rahovart", originX, originY, originZ);
 
         return true;
     }

@@ -93,8 +93,9 @@ public class ModelCustomObj extends ModelBase {
 		}
 		else {
 			scale *= 16;
-			if(entity instanceof EntityCreatureBase)
-				scale *= ((EntityCreatureBase)entity).sizeScale;
+			if(entity instanceof EntityCreatureBase) {
+                scale *= ((EntityCreatureBase) entity).getRenderScale();
+            }
 		}
 
         // Render and Animate Each Part:

@@ -102,12 +102,22 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("soulstoneinferno")), 1F).setMaxAmount(1).setSubspecies(3));
 	}
 
-    // ========== On Spawn ==========
-    /** This is called when the mob is first spawned to the world either through natural spawning or from a Spawn Egg. **/
-    public void onFirstSpawn() {
-        super.onFirstSpawn();
-        if(this.getSubspeciesIndex() == 3)
-            this.setSizeScale(this.sizeScale * 4);
+    // ========== Set Size ==========
+    @Override
+    public void setSize(float width, float height) {
+        if(this.getSubspeciesIndex() == 3) {
+            super.setSize(width * 3, height * 3);
+            return;
+        }
+        super.setSize(width, height);
+    }
+
+    @Override
+    public double getRenderScale() {
+        if(this.getSubspeciesIndex() == 3) {
+            return this.sizeScale * 3;
+        }
+        return this.sizeScale;
     }
     
     

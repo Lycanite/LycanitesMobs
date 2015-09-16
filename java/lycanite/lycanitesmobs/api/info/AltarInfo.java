@@ -101,4 +101,18 @@ public class AltarInfo {
     public boolean activate(Entity entity, World world, int x, int y, int z) {
         return false;
     }
+
+
+    // ==================================================
+    //                     Utility
+    // ==================================================
+    public double[] getFacingPosition(double x, double y, double z, double distance, double angle) {
+        double xAmount = -Math.sin(angle);
+        double zAmount = Math.cos(angle);
+        double[] coords = new double[3];
+        coords[0] = x + (distance * xAmount);
+        coords[1] = y;
+        coords[2] = z + (distance * zAmount);
+        return coords;
+    }
 }

@@ -283,7 +283,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     /** This should be called by the specific mob entity and set the default starting values. **/
     public void setupMob() {
         // Size:
-        this.setSize(this.setWidth, this.setHeight);
+        this.updateSize();
         
         // Stats:
         this.stepHeight = 0.5F;
@@ -525,6 +525,10 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     	LycanitesMobs.printDebug("MobSpawns", "Counting mobs of the same kind, max allowed is: " + this.mobInfo.spawnInfo.spawnAreaLimit);
         if(!this.spawnLimitCheck(world, i, j, k))
         	return false;
+        LycanitesMobs.printDebug("MobSpawns", "Checking for nearby bosses.");
+        List bosses = this.getNearbyEntities(IBossDisplayData.class, SpawnInfo.spawnLimitRange);
+        if(bosses.size() > 0)
+            return false;
         	
         return true;
     }
@@ -1423,29 +1427,6 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
                 }
             }
         }
-
-        /*
-
-        int hitAreaHeightCount = Math.round(this.height / 4);
-        if(hitAreaHeightCount < 2) {
-            this.hitAreas = null;
-            return;
-        }
-
-        if(this.hitAreas == null || this.hitAreas.length != hitAreaHeightCount)
-            this.hitAreas = new EntityHitArea[hitAreaHeightCount];
-
-        for(int i = 0; i < hitAreaHeightCount; i++) {
-            if(this.hitAreas[i] == null) {
-                this.hitAreas[i] = new EntityHitArea(this, this.width * this.hitAreaScale, this.height / hitAreaHeightCount);
-                this.worldObj.spawnEntityInWorld(this.hitAreas[i]);
-            }
-            this.hitAreas[i].posX = this.posX;
-            this.hitAreas[i].posY = this.posY + ((this.height / hitAreaHeightCount) * i);
-            this.hitAreas[i].posZ = this.posZ;
-            this.hitAreas[i].rotationYaw = this.rotationYaw;
-        }
-         */
     }
     
     
@@ -1763,7 +1744,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         this.hitAreas = null;
     }
 
-    /** When called, this reapplies the initial width and height this mob and then applies sizeScale. **/
+    /** When called, this reapplies the initial width and height of this mob and then applies sizeScale. **/
 	public void updateSize() {
         this.setSize(Math.max(this.setWidth, 0.5F), Math.max(this.setHeight, 0.5F));
     }
@@ -1772,6 +1753,11 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 	public void setSizeScale(double scale) {
 		this.sizeScale = scale;
         this.updateSize();
+    }
+
+    /** Returns the model scale for rendering. **/
+    public double getRenderScale() {
+        return this.sizeScale;
     }
     
     
@@ -2147,7 +2133,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         coords[1] = entity.posY;
         coords[2] = entity.posZ + (distance * zAmount);
         return coords;*/
-        return getFacingPosition(entity.posX, entity.posY, entity.posZ, distance, Math.toRadians(entity.rotationYaw) + angleOffset);
+        return this.getFacingPosition(entity.posX, entity.posY, entity.posZ, distance, Math.toRadians(entity.rotationYaw) + angleOffset);
     }
 
     /** Returns the XYZ coordinate in front or behind the provided XYZ coords with the given distance and angle (in degrees), use a negative distance for behind. **/
@@ -3025,14 +3011,14 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     	if(nbtTagCompound.hasKey("Color")) {
     		this.setColor(nbtTagCompound.getByte("Color"));
     	}
+
+        if(nbtTagCompound.hasKey("Subspecies")) {
+            this.setSubspecies(nbtTagCompound.getByte("Subspecies"), false);
+        }
     	
     	if(nbtTagCompound.hasKey("Size")) {
     		this.sizeScale = nbtTagCompound.getDouble("Size");
     		this.updateSize();
-    	}
-    	
-    	if(nbtTagCompound.hasKey("Subspecies")) {
-    		this.setSubspecies(nbtTagCompound.getByte("Subspecies"), false);
     	}
     	
         super.readEntityFromNBT(nbtTagCompound);
@@ -3061,9 +3047,9 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     	nbtTagCompound.setInteger("TemporaryDuration", this.temporaryDuration);
         nbtTagCompound.setBoolean("IsBoundPet", this.isBoundPet());
     	nbtTagCompound.setBoolean("ForceNoDespawn", this.forceNoDespawn);
-    	nbtTagCompound.setByte("Color", (byte)this.getColor());
+    	nbtTagCompound.setByte("Color", (byte) this.getColor());
+        nbtTagCompound.setByte("Subspecies", (byte) this.getSubspeciesIndex());
     	nbtTagCompound.setDouble("Size", this.sizeScale);
-    	nbtTagCompound.setByte("Subspecies", (byte)this.getSubspeciesIndex());
     	
     	if(this.hasHome()) {
     		ChunkCoordinates homePos = this.getHomePosition();

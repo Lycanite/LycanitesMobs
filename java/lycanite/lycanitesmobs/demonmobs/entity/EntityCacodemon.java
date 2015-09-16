@@ -2,6 +2,7 @@ package lycanite.lycanitesmobs.demonmobs.entity;
 
 import java.util.HashMap;
 
+import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupDemon;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
@@ -57,6 +58,7 @@ public class EntityCacodemon extends EntityCreatureTameable implements IGroupDem
         this.setupMob();
 
         this.stepHeight = 1.0F;
+        this.hitAreaScale = 1.5F;
         
         // AI Tasks:
         this.getNavigator().setAvoidsWater(true);
@@ -97,15 +99,25 @@ public class EntityCacodemon extends EntityCreatureTameable implements IGroupDem
         this.drops.add(new DropRate(new ItemStack(Items.gunpowder), 0.5F).setMinAmount(1).setMaxAmount(3));
         this.drops.add(new DropRate(new ItemStack(Items.blaze_powder), 0.5F).setMinAmount(1).setMaxAmount(3));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("demoniclightningcharge")), 0.75F));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("demonicsoulstone")), 1).setMinAmount(1).setSubspecies(3));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("soulstonedemonic")), 1).setMinAmount(1).setSubspecies(3));
 	}
 
-    // ========== On Spawn ==========
-    /** This is called when the mob is first spawned to the world either through natural spawning or from a Spawn Egg. **/
-    public void onFirstSpawn() {
-        super.onFirstSpawn();
-        if(this.getSubspeciesIndex() == 3)
-            this.setSizeScale(this.sizeScale * 2);
+    // ========== Size ==========
+    @Override
+    public void setSize(float width, float height) {
+        if(this.getSubspeciesIndex() == 3) {
+            super.setSize(width * 2, height * 2);
+            return;
+        }
+        super.setSize(width, height);
+    }
+
+    @Override
+    public double getRenderScale() {
+        if(this.getSubspeciesIndex() == 3) {
+            return this.sizeScale * 2;
+        }
+        return this.sizeScale;
     }
 
 
@@ -115,7 +127,7 @@ public class EntityCacodemon extends EntityCreatureTameable implements IGroupDem
     // ========== Living Update ==========
     @Override
     public void onLivingUpdate() {
-        if(!this.worldObj.isRemote && this.hasAttackTarget() && this.ticksExisted % 20 == 0) {
+        if(!this.worldObj.isRemote && this.getSubspeciesIndex() == 3 && this.hasAttackTarget() && this.ticksExisted % 20 == 0) {
             this.allyUpdate();
         }
 

@@ -170,13 +170,22 @@ public class AltarInfoEbonCacodemon extends AltarInfo {
             }
         }
 
-        // Knockback:
-        double angle = Math.toRadians(entity.rotationYaw + 180);
-        double xAmount = -Math.sin(angle);
-        double zAmount = Math.cos(angle);
-        entityCreature.motionX = xAmount * 2 + entity.motionX * 0.2D;
-        entityCreature.motionZ = zAmount * 2 + entity.motionZ * 0.2D;
-        entityCreature.motionY = 0.5D;
+        // Offset:
+        if(entity != null) {
+            double[] coords = this.getFacingPosition(x, y, z, 10, entity.rotationYaw);
+            x = Math.round((float)coords[0]);
+            z = Math.round((float)coords[2]);
+        }
+
+        // Clear Spawn Area:
+        for (int xTarget = x - size; xTarget <= x + size; xTarget++) {
+            for (int zTarget = z - size; zTarget <= z + size; zTarget++) {
+                for (int yTarget = y - size; yTarget <= y + size; yTarget++) {
+                    if (y > 0)
+                        world.func_147480_a(xTarget, yTarget, zTarget, false);
+                }
+            }
+        }
 
         // Spawn Mini Boss:
         entityCreature.altarSummoned = true;

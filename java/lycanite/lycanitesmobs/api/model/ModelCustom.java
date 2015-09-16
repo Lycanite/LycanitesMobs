@@ -56,8 +56,9 @@ public class ModelCustom extends ModelBase {
     @Override
     public void render(Entity entity, float time, float distance, float loop, float lookY, float lookX, float scale) {
         float sizeScale = 1F;
-		if(entity instanceof EntityCreatureBase)
-			sizeScale *= ((EntityCreatureBase)entity).sizeScale;
+		if(entity instanceof EntityCreatureBase) {
+            sizeScale *= ((EntityCreatureBase) entity).getRenderScale();
+        }
     	GL11.glScalef(sizeScale, sizeScale, sizeScale);
     	GL11.glTranslatef(0, -(sizeScale - 1) * 2, 0);
     	

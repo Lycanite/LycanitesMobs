@@ -83,8 +83,8 @@ public class EntityWendigo extends EntityCreatureBase implements IMob, IGroupIce
 	public void loadItemDrops() {
         this.drops.add(new DropRate(new ItemStack(Blocks.snow), 0.5F).setMaxAmount(8));
         this.drops.add(new DropRate(new ItemStack(Blocks.packed_ice), 0.25F).setMaxAmount(8));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("FrostyFur")), 0.25F).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("TundraCharge")), 0.25F));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("FrostyFur")), 0.75F).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("TundraCharge")), 0.75F));
 	}
     
     

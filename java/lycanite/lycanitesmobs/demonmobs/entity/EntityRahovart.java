@@ -16,6 +16,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.boss.IBossDisplayData;
+import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,6 +27,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
@@ -139,7 +141,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
     public void onLivingUpdate() {
         super.onLivingUpdate();
 
-        if(this.hasAttackTarget()) {
+        if(this.hasAttackTarget() && !this.worldObj.isRemote) {
             this.getLookHelper().setLookPositionWithEntity(this.getAttackTarget(), 30.0F, 30.0F);
         }
 
@@ -644,6 +646,15 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
     
     @Override
     public boolean canBurn() { return false; }
+
+    @Override
+    public boolean isDamageEntityApplicable(Entity entity) {
+        if(entity instanceof EntityPigZombie) {
+            entity.setDead();
+            return false;
+        }
+        return super.isDamageEntityApplicable(entity);
+    }
 
     
     // ==================================================

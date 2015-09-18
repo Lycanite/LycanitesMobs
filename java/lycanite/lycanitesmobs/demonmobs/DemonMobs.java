@@ -12,6 +12,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.block.BlockBase;
 import lycanite.lycanitesmobs.api.block.BlockSoulcube;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
@@ -33,6 +34,7 @@ import lycanite.lycanitesmobs.demonmobs.info.AltarInfoRahovart;
 import lycanite.lycanitesmobs.demonmobs.item.*;
 import lycanite.lycanitesmobs.demonmobs.mobevent.MobEventHellsFury;
 import lycanite.lycanitesmobs.demonmobs.mobevent.MobEventRahovart;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
@@ -112,6 +114,10 @@ public class DemonMobs {
         ObjectManager.addBlock("soulcubedemonic", new BlockSoulcube(group, "soulcubedemonic"));
 		AssetManager.addSound("hellfire", group, "block.hellfire");
 		ObjectManager.addBlock("hellfire", new BlockHellfire());
+        ObjectManager.addBlock("demonstone", new BlockBase(Material.rock, group, "demonstone").setHardness(10.0F).setResistance(2000.0F).setCreativeTab(LycanitesMobs.itemsTab));
+        ObjectManager.addBlock("demonbrick", new BlockBase(Material.rock, group, "demonbrick").setHardness(10.0F).setResistance(2000.0F).setCreativeTab(LycanitesMobs.itemsTab));
+        ObjectManager.addBlock("demontile", new BlockBase(Material.rock, group, "demontile").setHardness(10.0F).setResistance(2000.0F).setCreativeTab(LycanitesMobs.itemsTab));
+        ObjectManager.addBlock("demoncrystal", new BlockBase(Material.glass, group, "demoncrystal").setHardness(5.0F).setResistance(2000.0F).setCreativeTab(LycanitesMobs.itemsTab).setStepSound(Block.soundTypeGlass).setLightLevel(1.0F));
 
 
 		// ========== Create Mobs ==========
@@ -258,6 +264,38 @@ public class DemonMobs {
                         Character.valueOf('S'), ObjectManager.getItem("soulstonedemonic"),
                         Character.valueOf('D'), Blocks.diamond_block
                 }));
+
+        GameRegistry.addRecipe(new ShapelessOreRecipe(
+                new ItemStack(ObjectManager.getBlock("demonstone"), 1, 0),
+                new Object[] {
+                        Items.nether_wart,
+                        Items.nether_wart,
+                        Blocks.cobblestone
+                }
+        ));
+        GameRegistry.addRecipe(new ShapedOreRecipe(
+                new ItemStack(ObjectManager.getBlock("demonbrick"), 4, 0),
+                new Object[]{"BB", "BB",
+                        Character.valueOf('B'), ObjectManager.getBlock("demonstone")
+                }));
+        GameRegistry.addRecipe(new ShapedOreRecipe(
+                new ItemStack(ObjectManager.getBlock("demontile"), 4, 0),
+                new Object[] { "BB", "BB",
+                        Character.valueOf('B'), ObjectManager.getBlock("demonbrick")
+                }));
+        GameRegistry.addRecipe(new ShapedOreRecipe(
+                new ItemStack(ObjectManager.getBlock("demonstone"), 4, 0),
+                new Object[] { "BB", "BB",
+                        Character.valueOf('B'), ObjectManager.getBlock("demontile")
+                }));
+        GameRegistry.addRecipe(new ShapelessOreRecipe(
+                new ItemStack(ObjectManager.getBlock("demoncrystal"), 1, 0),
+                new Object[] {
+                        Items.nether_wart,
+                        Items.nether_wart,
+                        Blocks.glowstone
+                }
+        ));
 
         if(ItemInfo.enableWeaponRecipes) {
             GameRegistry.addRecipe(new ShapedOreRecipe(

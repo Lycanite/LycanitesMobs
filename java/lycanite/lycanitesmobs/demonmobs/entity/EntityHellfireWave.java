@@ -19,8 +19,8 @@ public class EntityHellfireWave extends EntityProjectileBase {
 
 	// Properties:
     public EntityHellfireWall[][] hellfireWalls;
-    protected int hellfireWidth = 20;
-    protected int hellfireHeight = 10;
+    protected int hellfireWidth = 10;
+    protected int hellfireHeight = 5;
     protected int hellfireSize = 10;
     public int time = 0;
     public int timeMax = 10 * 20;

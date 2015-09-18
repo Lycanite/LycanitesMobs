@@ -43,7 +43,7 @@ public class ItemSoulkey extends ItemBase {
 	// ==================================================
     @Override
     public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int facing, float par8, float par9, float par10) {
-        if(!AltarInfo.checkAltarsEnabled()) {
+        if(!AltarInfo.checkAltarsEnabled() && !player.worldObj.isRemote) {
             String message = StatCollector.translateToLocal("message.soulkey.disabled");
             player.addChatMessage(new ChatComponentText(message));
             return false;
@@ -52,7 +52,7 @@ public class ItemSoulkey extends ItemBase {
         // Get Possible Altars:
         List<AltarInfo> possibleAltars = new ArrayList<AltarInfo>();
         for(AltarInfo altarInfo : AltarInfo.altars.values()) {
-            if(altarInfo.quickCheck(player, world, x, y, z)) {
+            if(altarInfo.checkBlockEvent(player, world, x, y, z) && altarInfo.quickCheck(player, world, x, y, z)) {
                 possibleAltars.add(altarInfo);
             }
         }

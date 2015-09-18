@@ -1537,6 +1537,12 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     @Override
     /** Returns whether or not this entity can be leashed at all. **/
     public boolean allowLeashing() { return false; }
+
+    // ========== Can Be Pushed ==========
+    @Override
+    public boolean canBePushed() {
+        return super.canBePushed();
+    }
     
     // ========== Can leash ==========
     /** Returns whether or not this entity can be leashed to the specified player. Useful for tamed entites. **/

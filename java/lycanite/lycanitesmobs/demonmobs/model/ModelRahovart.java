@@ -79,7 +79,7 @@ public class ModelRahovart extends ModelCustomObj {
         }
     	
     	// Walking:
-    	float walkSwing = 0.1F;
+    	float walkSwing = 0.05F;
     	if(partName.equals("armleft"))
     		rotX += Math.toDegrees(MathHelper.cos(time * walkSwing) * distance * 0.5F);
     	if(partName.equals("armright"))
@@ -92,9 +92,9 @@ public class ModelRahovart extends ModelCustomObj {
 		// Attack:
 		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
 	    	if(partName.equals("armleft"))
-	    		rotate(0.0F, -25.0F, 0.0F);
+	    		rotate(-40.0F, 0.0F, 0.0F);
 	    	if(partName.equals("armright"))
-	    		rotate(0.0F, 25.0F, 0.0F);
+	    		rotate(-40.0F, 0.0F, 0.0F);
 		}
 		
     	// Apply Animations:

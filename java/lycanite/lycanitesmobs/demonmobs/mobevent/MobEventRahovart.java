@@ -96,7 +96,9 @@ public class MobEventRahovart extends MobEventBoss {
         double rubbleChance = 0.01D;
         int radius = 60;
         int height = 120;
-        Block primaryBlock = Blocks.obsidian;
+        Block primaryBlock = ObjectManager.getBlock("demontile");
+        Block secondaryBlock = ObjectManager.getBlock("demoncrystal");
+        double secondaryChance = 0.01D;
 
         int stripNumber = 1;
         for(int x = originX - radius; x < originX + radius; x++) {
@@ -107,7 +109,10 @@ public class MobEventRahovart extends MobEventBoss {
 
             for(int z = originZ - stripRadius; z < originZ + stripRadius; z++) {
                 int y = originY;
-                world.setBlock(x, y, z, primaryBlock, 0, 2);
+                if(world.rand.nextDouble() > secondaryChance)
+                    world.setBlock(x, y, z, primaryBlock, 0, 2);
+                else
+                    world.setBlock(x, y, z, secondaryBlock, 0, 2);
                 y++;
                 /*if(world.rand.nextDouble() <= rubbleChance) { // Rubble Disabled
                     world.setBlock(x, y, z, primaryBlock, 0, 2);
@@ -145,7 +150,9 @@ public class MobEventRahovart extends MobEventBoss {
     public int[] buildPillar(World world, int originX, int originY, int originZ) {
         int radiusMax = 5;
         int height = 40 + Math.round(20 * world.rand.nextFloat());
-        Block primaryBlock = Blocks.obsidian;
+        Block primaryBlock = ObjectManager.getBlock("demonbrick");
+        Block secondaryBlock = ObjectManager.getBlock("demonstone");
+        double secondaryChance = 0.4D;
         int[] decorationCoord = new int[] {originX, originY, originZ};
 
         int radius = radiusMax;
@@ -160,14 +167,20 @@ public class MobEventRahovart extends MobEventBoss {
                     int stripRadius = Math.round(radius * (float) Math.sin(Math.toRadians(90 * stripNormal)));
 
                     for (int z = originZ - stripRadius; z <= originZ + stripRadius; z++) {
-                        world.setBlock(x, y, z, primaryBlock, 0, 2);
+                        if(world.rand.nextDouble() > secondaryChance)
+                            world.setBlock(x, y, z, primaryBlock, 0, 2);
+                        else
+                            world.setBlock(x, y, z, secondaryBlock, 0, 2);
                     }
 
                     stripNumber++;
                 }
             }
             else {
-                world.setBlock(originX, y, originZ, primaryBlock, 0, 2);
+                if(world.rand.nextDouble() > secondaryChance)
+                    world.setBlock(originX, y, originZ, primaryBlock, 0, 2);
+                else
+                    world.setBlock(originX, y, originZ, secondaryBlock, 0, 2);
                 decorationCoord = new int[] {originX, y, originZ};
             }
             if(--radiusHeight <= 0) {

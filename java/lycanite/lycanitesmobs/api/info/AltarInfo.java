@@ -83,6 +83,11 @@ public class AltarInfo {
     // ==================================================
     //                     Checking
     // ==================================================
+    /** Called before all other checks to see if the player has permission to build in the area of this Altar using the BlockPlaceEvent. **/
+    public boolean checkBlockEvent(Entity entity, World world, int x, int y, int z) {
+        return true;
+    }
+
     /** Called first when checking for a valid altar, this should be fairly lightweight such as just checking if the first block checked is valid, a more in depth check if then done after. **/
     public boolean quickCheck(Entity entity, World world, int x, int y, int z) {
         return false;
@@ -107,8 +112,8 @@ public class AltarInfo {
     //                     Utility
     // ==================================================
     public double[] getFacingPosition(double x, double y, double z, double distance, double angle) {
-        double xAmount = -Math.sin(angle);
-        double zAmount = Math.cos(angle);
+        double xAmount = -Math.sin(Math.toRadians(angle));
+        double zAmount = Math.cos(Math.toRadians(angle));
         double[] coords = new double[3];
         coords[0] = x + (distance * xAmount);
         coords[1] = y;

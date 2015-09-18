@@ -67,6 +67,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
         this.defense = 2;
         this.experience = 1000;
         this.hasAttackSound = false;
+        this.justAttackedTime = 40;
         
         this.setWidth = 15F;
         this.setHeight = 50F;
@@ -114,7 +115,11 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
         this.drops.add(new DropRate(new ItemStack(Items.nether_star), 0.5F).setMinAmount(5).setMaxAmount(8));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("doomfirecharge")), 0.5F).setMinAmount(20).setMaxAmount(100));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("hellfirecharge")), 0.5F).setMinAmount(10).setMaxAmount(50));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("demonicsoulstone")), 1F).setMinAmount(5).setMaxAmount(5));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("soulstonedemonic")), 1F).setMinAmount(5).setMaxAmount(5));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("demonstone")), 1F).setMinAmount(64).setMaxAmount(128));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("demonbrick")), 1F).setMinAmount(64).setMaxAmount(128));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("demontile")), 1F).setMinAmount(64).setMaxAmount(128));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("demoncrystal")), 1F).setMinAmount(64).setMaxAmount(128));
 	}
 
     // ========== Init ==========
@@ -133,6 +138,10 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
 	@Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
+
+        if(this.hasAttackTarget()) {
+            this.getLookHelper().setLookPositionWithEntity(this.getAttackTarget(), 30.0F, 30.0F);
+        }
 
         // Sync Hellfire Energy:
         if(!this.worldObj.isRemote)
@@ -157,13 +166,13 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
         }
 
         // Passive Attacks:
-        if(!this.worldObj.isRemote && this.updateTick % 40 == 0) {
+        if(!this.worldObj.isRemote && this.updateTick % 20 == 0) {
 
             // Random Projectiles:
             for(int i = 0; i < 3; i++) {
                 EntityProjectileBase projectile = new EntityHellfireball(this.worldObj, this);
                 projectile.setProjectileScale(8f);
-                projectile.setThrowableHeading((this.getRNG().nextFloat()) - 0.5F, this.getRNG().nextFloat(), (this.getRNG().nextFloat()) - 0.5F, 1.2F, 6.0F);
+                projectile.setThrowableHeading((this.getRNG().nextFloat()) - 0.5F, this.getRNG().nextFloat(), (this.getRNG().nextFloat()) - 0.5F, 1.2F, 3.0F);
                 this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
                 this.worldObj.spawnEntityInWorld(projectile);
             }
@@ -181,26 +190,10 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
                     }
                 }
             }
-        }
 
-        // Hellfire Trail:
-        if(!this.worldObj.isRemote && this.updateTick % 5 == 0 && this.isMoving()) {
-            int trailHeight = 5;
-            int trailWidth = 1;
-            if(this.getSubspeciesIndex() >= 3)
-                trailWidth = 10;
-            for(int y = 0; y < trailHeight; y++) {
-                Block block = this.worldObj.getBlock((int)this.posX, (int)this.posY + y, (int)this.posZ);
-                if(block == Blocks.air || block == Blocks.fire || block == Blocks.snow_layer || block == Blocks.tallgrass || block == ObjectManager.getBlock("frostfire")) {
-                    if(trailWidth == 1)
-                        this.worldObj.setBlock((int) this.posX, (int) this.posY + y, (int) this.posZ, ObjectManager.getBlock("hellfire"));
-                    else
-                        for(int x = -(trailWidth / 2); x < (trailWidth / 2) + 1; x++) {
-                            for(int z = -(trailWidth / 2); z < (trailWidth / 2) + 1; z++) {
-                                this.worldObj.setBlock((int) this.posX + x, (int) this.posY + y, (int) this.posZ + z, ObjectManager.getBlock("hellfire"));
-                            }
-                        }
-                }
+            // Primary Target
+            if(this.hasAttackTarget()) {
+                this.rangedAttack(this.getAttackTarget(), 1F);
             }
         }
     }
@@ -527,6 +520,8 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
 
     // ========== Hellfire Wave ==========
     public void hellfireWaveAttack(double angle) {
+        this.setJustAttacked();
+        this.playAttackSound();
         EntityHellfireWave hellfireWave = new EntityHellfireWave(this.worldObj, this);
         hellfireWave.posY = this.posY;
         hellfireWave.rotation = angle;
@@ -535,11 +530,16 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
 
     // ========== Hellfire Wall ==========
     public void hellfireWallAttack(double angle) {
+        this.playAttackSound();
+        this.setJustAttacked();
+
         this.hellfireWallTime = this.hellfireWallTimeMax;
         this.hellfireWallClockwise = this.getRNG().nextBoolean();
     }
 
     public void hellfireWallUpdate() {
+        this.setJustAttacked();
+
         double hellfireWallNormal = (double)this.hellfireWallTime / this.hellfireWallTimeMax;
         double hellfireWallAngle = 360;
         if(this.hellfireWallClockwise)
@@ -581,6 +581,9 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
 
     // ========== Hellfire Barrier ==========
     public void hellfireBarrierAttack(double angle) {
+        this.setJustAttacked();
+        this.playAttackSound();
+
         EntityHellfireBarrier hellfireBarrier = new EntityHellfireBarrier(this.worldObj, this);
         this.worldObj.spawnEntityInWorld(hellfireBarrier);
         hellfireBarrier.time = 0;
@@ -616,6 +619,16 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
         }
         this.hellfireBarriers = new ArrayList<EntityHellfireBarrier>();
         this.hellfireBarrierHealth = 100;
+    }
+
+
+    // ==================================================
+    //                     Movement
+    // ==================================================
+    // ========== Can Be Pushed ==========
+    @Override
+    public boolean canBePushed() {
+        return false;
     }
     
     

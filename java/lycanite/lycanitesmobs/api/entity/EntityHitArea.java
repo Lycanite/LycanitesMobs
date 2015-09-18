@@ -5,6 +5,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.IEntityMultiPart;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 
 
@@ -79,5 +80,12 @@ public class EntityHitArea extends Entity {
     @Override
     public boolean isEntityEqual(Entity entity) {
         return this == entity || this.owner == entity;
+    }
+
+    @Override
+    public String getCommandSenderName() {
+        if(this.owner != null)
+            return this.owner.getCommandSenderName();
+        return "Hit Area";
     }
 }

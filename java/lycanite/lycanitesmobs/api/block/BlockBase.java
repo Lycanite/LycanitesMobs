@@ -50,6 +50,13 @@ public class BlockBase extends Block {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
+    public BlockBase(Material material, GroupInfo group, String name) {
+        super(material);
+        this.group = group;
+        this.blockName = name;
+        this.setup();
+    }
+
 	public BlockBase(Material material) {
 		super(material);
 	}

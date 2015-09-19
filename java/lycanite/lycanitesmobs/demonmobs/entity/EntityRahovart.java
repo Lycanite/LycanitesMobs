@@ -57,6 +57,8 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
     public List<EntityHellfireBarrier> hellfireBarriers = new ArrayList<EntityHellfireBarrier>();
     public int hellfireBarrierHealth = 100;
 
+    public float damageTakenThisSec = 0;
+
 
     // ==================================================
  	//                    Constructor
@@ -80,7 +82,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
         // Boss:
         this.boss = true;
         this.forceBossHealthBar = true;
-        this.damageMax = 100;
+        this.damageMax = 50;
         
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this));
@@ -139,6 +141,10 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
 	// ========== Living Update ==========
 	@Override
     public void onLivingUpdate() {
+        if(!this.worldObj.isRemote && this.updateTick % 20 == 0) {
+            this.damageTakenThisSec = 0;
+        }
+
         super.onLivingUpdate();
 
         if(this.hasAttackTarget() && !this.worldObj.isRemote) {
@@ -499,6 +505,8 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
     	// Type:
     	EntityHellfireball projectile = new EntityHellfireball(this.worldObj, this);
         projectile.setProjectileScale(8f);
+        if(!(target instanceof EntityPlayer))
+            projectile.setBaseDamage(20);
     	
     	// Y Offset:
     	projectile.posY -= this.height / 2;
@@ -637,6 +645,19 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
     // ==================================================
     //                     Immunities
     // ==================================================
+    @Override
+    public boolean isEntityInvulnerable() {
+        if(this.damageTakenThisSec >= 50)
+            return true;
+        return super.isEntityInvulnerable();
+    }
+
+    @Override
+    public void onDamage(DamageSource damageSrc, float damage) {
+        this.damageTakenThisSec += damage;
+        super.onDamage(damageSrc, damage);
+    }
+
     @Override
     public boolean isPotionApplicable(PotionEffect par1PotionEffect) {
         if(par1PotionEffect.getPotionID() == Potion.wither.id) return false;

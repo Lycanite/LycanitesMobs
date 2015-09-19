@@ -2762,12 +2762,18 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
   	//                     Immunities
   	// ==================================================
     // ========== Damage ==========
+    @Override
+    public boolean isEntityInvulnerable() {
+        return super.isEntityInvulnerable();
+    }
+
     /** Returns whether or not the given damage type is applicable, if not no damage will be taken. **/
     public boolean isDamageTypeApplicable(String type) {
         if(("inWall".equals(type) || "cactus".equals(type)) && (this.getSubspeciesIndex() >= 3 || this.isBoss()))
             return false;
         return true;
     }
+
     /** Returns whether or not this entity can be harmed by the specified entity. **/
     public boolean isDamageEntityApplicable(Entity entity) {
         if(this.isBoss()) {
@@ -2777,6 +2783,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         }
         return true;
     }
+
     /** Returns whether or not the specified potion effect can be applied to this entity. **/
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
@@ -2791,6 +2798,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     }
     /** Returns true if this mob should be damaged by the sun. **/
     public boolean daylightBurns() { return false; }
+
     /** Returns true if this mob should be damaged by water. **/
     public boolean waterDamage() { return false; }
     

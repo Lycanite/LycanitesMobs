@@ -13,6 +13,8 @@ import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.demonmobs.DemonMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.boss.IBossDisplayData;
+import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
@@ -96,6 +98,7 @@ public class EntityHellfireWall extends EntityProjectileBase {
     }
 
     //========== Do Damage Check ==========
+    @Override
     public boolean canDamage(EntityLivingBase targetEntity) {
         EntityLivingBase owner = this.getThrower();
         if(owner == null) {
@@ -105,6 +108,25 @@ public class EntityHellfireWall extends EntityProjectileBase {
                 return false;
         }
         return super.canDamage(targetEntity);
+    }
+
+    //========== On Damage ==========
+    @Override
+    public void onDamage(EntityLivingBase target, float damage, boolean attackSuccess) {
+        boolean obliterate = true;
+        if(target instanceof EntityPlayer)
+            obliterate = false;
+        else if(target instanceof EntityTameable) {
+            obliterate = !(((EntityTameable)target).getOwner() instanceof EntityPlayer);
+        }
+        else if(target instanceof EntityCreatureTameable) {
+            obliterate = !(((EntityCreatureTameable)target).getOwner() instanceof EntityPlayer);
+        }
+        if(target instanceof EntityCreatureBase && target instanceof IBossDisplayData)
+            obliterate = false;
+        if(obliterate)
+            target.setHealth(0);
+        super.onDamage(target, damage, attackSuccess);
     }
     
     

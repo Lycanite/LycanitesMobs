@@ -16,6 +16,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.boss.IBossDisplayData;
+import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
@@ -58,6 +59,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
     public int hellfireBarrierHealth = 100;
 
     public float damageTakenThisSec = 0;
+    public float healthLastTick = -1;
 
 
     // ==================================================
@@ -141,6 +143,12 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
 	// ========== Living Update ==========
 	@Override
     public void onLivingUpdate() {
+        // Enforce Damage Limit:
+        if(this.healthLastTick < 0)
+            this.healthLastTick = this.getHealth();
+        if(this.healthLastTick - this.getHealth() > 50)
+            this.setHealth(this.healthLastTick);
+        this.healthLastTick = this.getHealth();
         if(!this.worldObj.isRemote && this.updateTick % 20 == 0) {
             this.damageTakenThisSec = 0;
         }
@@ -671,6 +679,10 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
     @Override
     public boolean isDamageEntityApplicable(Entity entity) {
         if(entity instanceof EntityPigZombie) {
+            entity.setDead();
+            return false;
+        }
+        if(entity instanceof EntityIronGolem) {
             entity.setDead();
             return false;
         }

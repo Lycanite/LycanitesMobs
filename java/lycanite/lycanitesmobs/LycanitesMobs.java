@@ -1,5 +1,6 @@
 package lycanite.lycanitesmobs;
 
+import lycanite.lycanitesmobs.api.block.BlockSummoningPedestal;
 import lycanite.lycanitesmobs.api.command.CommandMain;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.entity.EntityFear;
@@ -144,6 +145,10 @@ public class LycanitesMobs {
         
 		// ========== Set Current Mod ==========
 		ObjectManager.setCurrentGroup(group);
+
+
+        // ========== Create Blocks ==========
+        ObjectManager.addBlock("summoningaltar", new BlockSummoningPedestal(group));
 		
 		
 		// ========== Create Items ==========

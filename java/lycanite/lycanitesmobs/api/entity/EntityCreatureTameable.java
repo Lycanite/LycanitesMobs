@@ -492,11 +492,21 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     }
     
     public void setPlayerOwner(EntityPlayer player) {
-    	this.setTamed(true);
-        this.clearMovement();
-        this.setAttackTarget((EntityLivingBase)null);
-        this.ownerUUID = player.getUniqueID();
+        this.setPlayerOwner();
+        this.setOwnerUUID(player.getUniqueID());
         this.setOwner(player.getCommandSenderName());
+    }
+
+    public void setPlayerOwner(UUID playerUUID, String playerName) {
+        this.setPlayerOwner();
+        this.setOwnerUUID(playerUUID);
+        this.setOwner(playerName);
+    }
+
+    public void setPlayerOwner() {
+        this.setTamed(true);
+        this.clearMovement();
+        this.setAttackTarget((EntityLivingBase) null);
         this.setSitting(false);
         this.setFollowing(true);
         this.setPassive(false);
@@ -520,10 +530,20 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     public void setOwner(String owner) {
         this.dataWatcher.updateObject(WATCHER_ID.OWNER.id, owner);
     }
+
+    public UUID getOwnerUUID() {
+        return this.ownerUUID;
+    }
+
+    public void setOwnerUUID(UUID ownerUUID) {
+        this.ownerUUID = ownerUUID;
+    }
     
     @Override
     public EntityLivingBase getOwner() {
-        return this.worldObj.getPlayerEntityByName(this.getOwnerName());
+        if(this.getOwnerUUID() == null)
+            return null;
+        return this.worldObj.func_152378_a(this.getOwnerUUID()); // getPlayerEntityByUUID
     }
     
     
@@ -818,9 +838,9 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
         if(nbtTagCompound.hasKey("OwnerUUID")) {
             String uuidString = nbtTagCompound.getString("OwnerUUID");
             if(!"".equals(uuidString))
-                this.ownerUUID = UUID.fromString(uuidString);
+                this.setOwnerUUID(UUID.fromString(uuidString));
             else
-                this.ownerUUID = null;
+                this.setOwnerUUID(null);
         }
         else {
             this.ownerUUID = null;
@@ -883,11 +903,11 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
         else {
         	nbtTagCompound.setString("Owner", this.getOwnerName());
         }
-        if(this.ownerUUID == null) {
+        if(this.getOwnerUUID() == null) {
             nbtTagCompound.setString("OwnerUUID", "");
         }
         else {
-            nbtTagCompound.setString("OwnerUUID", this.ownerUUID.toString());
+            nbtTagCompound.setString("OwnerUUID", this.getOwnerUUID().toString());
         }
         nbtTagCompound.setBoolean("Sitting", this.isSitting());
         nbtTagCompound.setBoolean("Following", this.isFollowing());

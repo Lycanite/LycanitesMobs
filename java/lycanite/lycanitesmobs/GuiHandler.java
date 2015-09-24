@@ -19,7 +19,7 @@ public class GuiHandler implements IGuiHandler {
 		private GuiType(byte i) { id = i; }
 	}
     public static enum PlayerGuiType {
-		LM_MAIN_MENU((byte)0), BEASTIARY((byte)1), PET_MANAGER((byte)2), MOUNT_MANAGER((byte)3), FAMILIAR_MANAGER((byte)4), MINION_MANAGER((byte)5), MINION_SELECTION((byte)6);
+		LM_MAIN_MENU((byte)0), BEASTIARY((byte)1), PET_MANAGER((byte)2), MOUNT_MANAGER((byte)3), FAMILIAR_MANAGER((byte)4), MINION_MANAGER((byte)5), MINION_SELECTION((byte)6), SUMMONING_PEDESTAL((byte)7);
 		public byte id;
 		private PlayerGuiType(byte i) { id = i; }
 	}

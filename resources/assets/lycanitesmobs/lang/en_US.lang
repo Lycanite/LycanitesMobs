@@ -60,6 +60,12 @@ subspecies.umber.name=Umber
 #
 #
 #
+# ========== Blocks ==========
+tile.summoningpedestal.name=Summoning Pedestal
+tile.summoningpedestal.description=This pedestal is able to create a constant summoning portal that will summon the selected minion. Some pedestals can be player owned and some not.
+#
+#
+#
 # ========== Items ==========
 item.soulgazer.name=Soulgazer
 item.soulgazer.description=Use on a creature to add it to the Beastiary. To open your Beastiary, either click on the Beastiary tab of your survival inventory or press the Beastiary key (set via the Controls menu).
@@ -94,7 +100,9 @@ item.wintergift.bad=Bwahahahaha! Good tidings I bring, for me!
 item.wintergiftlarge.name=Large Winter Gift
 item.wintergiftlarge.description=It's December 25th! Time to open your big presents! Ignore the screeching sound the box makes, it's nothing...
 item.wintergiftlarge.bad=Aaaahhhhh Haaa Haaa Haaa Ha Ha Ha! Bwahahahah! Merry Christmas!
-item.horsearmor.name=Pet Armor
+item.horsearmormetal.name=Iron Pet Armor
+item.horsearmorgold.name=Golden Pet Armor
+item.horsearmordiamond.name=Diamond Pet Armor
 #
 #
 #
@@ -124,7 +132,8 @@ gui.mountmanager.info=Some creatures can be tamed as either Pets or Mounts. You 
 # Minion Manager:
 gui.minion.name=Minion Manager
 gui.minion.empty=No Summonable Creatures
-gui.minion.soulgazerinfo=You haven't added any creatures that can be summoned to your Beastiary yet. Keep searching, not every creature can be summoned.
+gui.minion.info=You haven't added any creatures that can be summoned to your Beastiary yet. Keep searching, not every creature can be summoned.
+gui.summoningpedestal.name=Summoning Pedestal
 #
 # Familiar Manager:
 gui.familiarmanager.name=Familiar Manager
@@ -197,6 +206,8 @@ common.no=No
 # ========== Stats ==========
 stat.spirit.name=Spirit
 stat.spirit.description=Summoned pets and mounts reserve your spirit. Each pet or mount varies in spirit cost which you can see in the pet or mount lists. Should your pet or mount be banished or die, your spirit will slowly recharge back up.
+stat.portal.name=Portal Capacity
+stat.portal.description=Summoning portals are only able to maintain the presence of a limited amount of creatures and are unable to summon more unless a current creature despawns or dies.
 #
 #
 #

@@ -15,6 +15,7 @@ import lycanite.lycanitesmobs.api.spawning.CustomSpawner;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeLand;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
+import lycanite.lycanitesmobs.api.tileentity.TileEntitySummoningPedestal;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
@@ -148,7 +149,7 @@ public class LycanitesMobs {
 
 
         // ========== Create Blocks ==========
-        ObjectManager.addBlock("summoningaltar", new BlockSummoningPedestal(group));
+        ObjectManager.addBlock("summoningpedestal", new BlockSummoningPedestal(group));
 		
 		
 		// ========== Create Items ==========
@@ -171,6 +172,11 @@ public class LycanitesMobs {
         ObjectManager.addItem("wintergiftlarge", new ItemWinterGiftLarge());
 
         ObjectManager.addItem("mobtoken", new ItemMobToken(group));
+
+
+        // ========== Create Tile Entities ==========
+        ObjectManager.addTileEntity("summoningpedestal", TileEntitySummoningPedestal.class);
+
 
         // ========== Call Object Lists Setup ==========
         ObjectLists.createCustomItems();

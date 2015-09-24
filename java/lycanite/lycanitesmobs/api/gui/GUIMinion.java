@@ -130,12 +130,12 @@ public class GUIMinion extends GuiScreen {
 		
 		if(hasSomeKnowledge) {
 			this.getFontRenderer().drawString(StatCollector.translateToLocal("gui.minion.empty"), this.windowX + 18, this.windowY + 6, 0xFFFFFF);
-			this.fontRendererObj.drawSplitString(StatCollector.translateToLocal("gui.minion.soulgazerinfo"), this.windowX + 8, this.windowY + 24, this.windowWidth - 16, 0xFFFFFF);
+			this.fontRendererObj.drawSplitString(StatCollector.translateToLocal("gui.minion.info"), this.windowX + 8, this.windowY + 24, this.windowWidth - 16, 0xFFFFFF);
 		}
 		
 		else {
 			this.getFontRenderer().drawString(StatCollector.translateToLocal("gui.beastiary.empty"), this.windowX + 52, this.windowY + 6, 0xFFFFFF);
-			this.fontRendererObj.drawSplitString(StatCollector.translateToLocal("gui.beastiary.soulgazerinfo"), this.windowX + 8, this.windowY + 24, this.windowWidth - 16, 0xFFFFFF);
+			this.fontRendererObj.drawSplitString(StatCollector.translateToLocal("gui.beastiary.info"), this.windowX + 8, this.windowY + 24, this.windowWidth - 16, 0xFFFFFF);
 			int recipeWidth = 108;
 			int recipeHeight = 54;
 			this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIBeastiary"));

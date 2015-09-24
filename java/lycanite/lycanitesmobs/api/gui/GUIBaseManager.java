@@ -128,15 +128,23 @@ public class GUIBaseManager extends GuiScreen {
 			return;
 
 		// Title:
-		this.getFontRenderer().drawString(StatCollector.translateToLocal("gui." + this.type + "manager.name"), this.centerX - 24, this.windowY + 6, 0xFFFFFF);
+		this.getFontRenderer().drawString(this.getTitle(), this.centerX - 24, this.windowY + 6, 0xFFFFFF);
 
 		// Spirit Title:
-		this.getFontRenderer().drawString(StatCollector.translateToLocal("stat.spirit.name"), this.windowX + 16, this.windowY + 20, 0xFFFFFF);
+		this.getFontRenderer().drawString(this.getEnergyTitle(), this.windowX + 16, this.windowY + 20, 0xFFFFFF);
 
 		// Removal Confirmation:
 		if(this.selectedPet.releaseEntity)
 			this.getFontRenderer().drawSplitString(StatCollector.translateToLocal("gui.pet.release.confirm"), this.centerX + 2, this.windowY + 41, (this.windowWidth / 2) - 2, 0xFFFFFF);
 	}
+
+    public String getTitle() {
+        return StatCollector.translateToLocal("gui." + this.type + "manager.name");
+    }
+
+    public String getEnergyTitle() {
+        return StatCollector.translateToLocal("stat.spirit.name");
+    }
 	
 	
 	// ==================================================
@@ -155,55 +163,62 @@ public class GUIBaseManager extends GuiScreen {
 			return;
 		}
 
-		// Spirit Bar:
-		int spiritBarWidth = 9;
-		int spiritBarHeight = 9;
-		int spiritBarX = this.windowX + 16;
-		int spiritBarY = this.windowY + 40 - spiritBarHeight;
-		int spiritBarU = 256 - spiritBarWidth;
-		int spiritBarV = 256 - spiritBarHeight;
-
-		for(int spiritBarEnergyN = 1; spiritBarEnergyN <= 10; spiritBarEnergyN++) {
-			// Empty:
-			this.drawTexturedModalRect(spiritBarX - spiritBarWidth + (spiritBarWidth * spiritBarEnergyN), spiritBarY, spiritBarU, spiritBarV, spiritBarWidth, spiritBarHeight);
-			// Full:
-			if(this.playerExt.spirit >= spiritBarEnergyN * this.playerExt.spiritCharge) {
-				this.drawTexturedModalRect(spiritBarX - spiritBarWidth + (spiritBarWidth * spiritBarEnergyN), spiritBarY, spiritBarU - spiritBarWidth, spiritBarV, spiritBarWidth, spiritBarHeight);
-			}
-			// Partial:
-			else if(this.playerExt.spirit + this.playerExt.spiritCharge > spiritBarEnergyN * this.playerExt.spiritCharge) {
-				float spiritChargeScale = (float)(this.playerExt.spirit % this.playerExt.spiritCharge) / (float)this.playerExt.spiritCharge;
-				this.drawTexturedModalRect(spiritBarX - spiritBarWidth + (spiritBarWidth * spiritBarEnergyN), spiritBarY, spiritBarU - spiritBarWidth, spiritBarV, Math.round((float)spiritBarWidth * spiritChargeScale), spiritBarHeight);
-			}
-		}
-		// Reserved Spirit:
-		spiritBarU -= spiritBarWidth * 2;
-		for(int spiritBarReservedN = 1; spiritBarReservedN * this.playerExt.spiritCharge <= this.playerExt.spiritReserved; spiritBarReservedN++) {
-			this.drawTexturedModalRect(spiritBarX + (spiritBarWidth * 10) - (spiritBarWidth * spiritBarReservedN), spiritBarY, spiritBarU, spiritBarV, spiritBarWidth, spiritBarHeight);
-		}
-
-		// Health and Respawn Bar:
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIInventoryCreature"));
-
-		int barWidth = 80;
-		int barHeight = 11;
-		int barX = this.centerX + 2;
-		int barY = this.windowY + 26;
-		int barU = 144;
-		int barV = 256 - (barHeight * 2);
-		this.drawTexturedModalRect(barX, barY, barU, barV, barWidth, barHeight);
-
-		if(!this.selectedPet.isRespawning) {
-			barWidth = Math.round(barWidth * (this.selectedPet.getHealth() / this.selectedPet.getMaxHealth()));
-			barV = barV + barHeight;
-		}
-		else {
-			barWidth = barWidth - Math.round(barWidth * ((float)this.selectedPet.respawnTime / (float)this.selectedPet.respawnTimeMax));
-			barV = barV - barHeight;
-		}
-		this.drawTexturedModalRect(barX, barY, barU, barV, barWidth, barHeight);
+        this.drawEnergyBar();
+        this.drawHealthBar();
 	}
+
+    public void drawEnergyBar() {
+        // Spirit Bar:
+        int energyBarWidth = 9;
+        int energyBarHeight = 9;
+        int energyBarX = this.windowX + 16;
+        int energyBarY = this.windowY + 40 - energyBarHeight;
+        int energyBarU = 256 - energyBarWidth;
+        int energyBarV = 256 - energyBarHeight;
+
+        for(int energyBarEnergyN = 1; energyBarEnergyN <= 10; energyBarEnergyN++) {
+            // Empty:
+            this.drawTexturedModalRect(energyBarX - energyBarWidth + (energyBarWidth * energyBarEnergyN), energyBarY, energyBarU, energyBarV, energyBarWidth, energyBarHeight);
+            // Full:
+            if(this.playerExt.spirit >= energyBarEnergyN * this.playerExt.spiritCharge) {
+                this.drawTexturedModalRect(energyBarX - energyBarWidth + (energyBarWidth * energyBarEnergyN), energyBarY, energyBarU - energyBarWidth, energyBarV, energyBarWidth, energyBarHeight);
+            }
+            // Partial:
+            else if(this.playerExt.spirit + this.playerExt.spiritCharge > energyBarEnergyN * this.playerExt.spiritCharge) {
+                float spiritChargeScale = (float)(this.playerExt.spirit % this.playerExt.spiritCharge) / (float)this.playerExt.spiritCharge;
+                this.drawTexturedModalRect(energyBarX - energyBarWidth + (energyBarWidth * energyBarEnergyN), energyBarY, energyBarU - energyBarWidth, energyBarV, Math.round((float)energyBarWidth * spiritChargeScale), energyBarHeight);
+            }
+        }
+        // Reserved Spirit:
+        energyBarU -= energyBarWidth * 2;
+        for(int spiritBarReservedN = 1; spiritBarReservedN * this.playerExt.spiritCharge <= this.playerExt.spiritReserved; spiritBarReservedN++) {
+            this.drawTexturedModalRect(energyBarX + (energyBarWidth * 10) - (energyBarWidth * spiritBarReservedN), energyBarY, energyBarU, energyBarV, energyBarWidth, energyBarHeight);
+        }
+    }
+
+    public void drawHealthBar() {
+        // Health and Respawn Bar:
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIInventoryCreature"));
+
+        int barWidth = 80;
+        int barHeight = 11;
+        int barX = this.centerX + 2;
+        int barY = this.windowY + 26;
+        int barU = 144;
+        int barV = 256 - (barHeight * 2);
+        this.drawTexturedModalRect(barX, barY, barU, barV, barWidth, barHeight);
+
+        if(!this.selectedPet.isRespawning) {
+            barWidth = Math.round(barWidth * (this.selectedPet.getHealth() / this.selectedPet.getMaxHealth()));
+            barV = barV + barHeight;
+        }
+        else {
+            barWidth = barWidth - Math.round(barWidth * ((float)this.selectedPet.respawnTime / (float)this.selectedPet.respawnTimeMax));
+            barV = barV - barHeight;
+        }
+        this.drawTexturedModalRect(barX, barY, barU, barV, barWidth, barHeight);
+    }
 	
 	
 	// ==================================================

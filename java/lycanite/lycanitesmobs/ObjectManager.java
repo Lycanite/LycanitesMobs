@@ -28,6 +28,7 @@ public class ObjectManager {
 	public static Map<String, Fluid> fluids = new HashMap<String, Fluid>();
     public static Map<Block, Item> buckets = new HashMap<Block, Item>();
 	public static Map<String, Item> items = new HashMap<String, Item>();
+    public static Map<String, Class> tileEntities = new HashMap<String, Class>();
 	public static Map<String, PotionBase> potionEffects = new HashMap<String, PotionBase>();
 	
 	public static Map<String, EntityListCustom> entityLists = new HashMap<String, EntityListCustom>();
@@ -91,7 +92,15 @@ public class ObjectManager {
 		return addItem(name, item);
 	}
 
-	// ========== Potion Effect ==========
+    // ========== Tile Entity ==========
+    public static Class addTileEntity(String name, Class tileEntityClass) {
+        name = name.toLowerCase();
+        tileEntities.put(name, tileEntityClass);
+        GameRegistry.registerTileEntity(tileEntityClass, LycanitesMobs.modid + "." + name);
+        return tileEntityClass;
+    }
+
+    // ========== Potion Effect ==========
 	public static PotionBase addPotionEffect(String name, ConfigBase config, boolean isBad, int color, int iconX, int iconY, boolean goodEffect) {
 		int effectIDOverride = config.getInt("Potion Effects", name + " Effect Override ID", 0);
 		name = name.toLowerCase();
@@ -185,6 +194,13 @@ public class ObjectManager {
 		if(!items.containsKey(name)) return null;
 		return items.get(name);
 	}
+
+    // ========== Tile Entity ==========
+    public static Class getTileEntity(String name) {
+        name = name.toLowerCase();
+        if(!tileEntities.containsKey(name)) return null;
+        return tileEntities.get(name);
+    }
 	
 	// ========== Potion Effect ==========
 	public static PotionBase getPotionEffect(String name) {

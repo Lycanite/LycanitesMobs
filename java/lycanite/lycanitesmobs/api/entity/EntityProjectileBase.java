@@ -385,6 +385,10 @@ public class EntityProjectileBase extends EntityThrowable {
      public float getProjectileScale() {
          return this.projectileScale;
      }
+
+    public float getTextureOffsetY() {
+        return 0;
+    }
      
      
      // ==================================================

@@ -1,6 +1,7 @@
 package lycanite.lycanitesmobs.api.tileentity;
 
 import lycanite.lycanitesmobs.api.entity.EntityPortal;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
@@ -51,5 +52,14 @@ public class TileEntityBase extends TileEntity {
     @Override
     public void writeToNBT(NBTTagCompound nbtTagCompound) {
         super.writeToNBT(nbtTagCompound);
+    }
+
+
+    // ========================================
+    //                Open GUI
+    // ========================================
+    /** Called by the GUI Handler when opening a GUI. **/
+    public Object getGUI(EntityPlayer player) {
+        return null;
     }
 }

@@ -2,9 +2,11 @@ package lycanite.lycanitesmobs.api.tileentity;
 
 import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.LycanitesMobs;
+import lycanite.lycanitesmobs.api.container.ContainerBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.EntityPortal;
+import lycanite.lycanitesmobs.api.gui.GUISummoningPedestal;
 import lycanite.lycanitesmobs.api.pets.SummonSet;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -214,5 +216,16 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
 
 
         nbtTagCompound.setString("OwnerName", this.ownerName);
+    }
+
+
+    // ========================================
+    //                Open GUI
+    // ========================================
+    @Override
+    public Object getGUI(EntityPlayer player) {
+        if(this.worldObj.isRemote)
+            return new GUISummoningPedestal(player, this);
+        return new ContainerBase(this);
     }
 }

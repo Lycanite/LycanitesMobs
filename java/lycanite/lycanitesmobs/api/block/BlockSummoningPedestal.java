@@ -5,6 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.LycanitesMobs;
+import lycanite.lycanitesmobs.api.gui.GUISummoningPedestal;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.tileentity.TileEntityBase;
 import lycanite.lycanitesmobs.api.tileentity.TileEntitySummoningPedestal;
@@ -16,6 +17,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -84,6 +86,14 @@ public class BlockSummoningPedestal extends BlockBase implements ITileEntityProv
         super.onBlockEventReceived(world, x, y, z, eventID, eventArg);
         TileEntity tileEntity = world.getTileEntity(x, y, z);
         return tileEntity != null && tileEntity.receiveClientEvent(eventID, eventArg);
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+        if(!world.isRemote) {
+            GUISummoningPedestal.openToPlayer(player, x, y, z);
+        }
+        return true;
     }
 
 

@@ -25,11 +25,9 @@ public class GUISummoningPedestal extends GUIBaseManager {
     // ==================================================
     //                      Opener
     // ==================================================
-    public static void openToPlayer(EntityPlayer player) {
+    public static void openToPlayer(EntityPlayer player, int x, int y, int z) {
         if(player != null && player.worldObj != null) {
-            player.openGui(LycanitesMobs.instance, GuiHandler.GuiType.PLAYER.id, player.worldObj, GuiHandler.PlayerGuiType.SUMMONING_PEDESTAL.id, 0, 0);
-            MessageGUIRequest message = new MessageGUIRequest(GuiHandler.PlayerGuiType.SUMMONING_PEDESTAL.id);
-            LycanitesMobs.packetHandler.sendToServer(message);
+            player.openGui(LycanitesMobs.instance, GuiHandler.GuiType.TILEENTITY.id, player.worldObj, x, y, z);
         }
     }
 

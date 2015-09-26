@@ -3,6 +3,8 @@ package lycanite.lycanitesmobs;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.gui.*;
 import lycanite.lycanitesmobs.api.inventory.ContainerCreature;
+import lycanite.lycanitesmobs.api.tileentity.TileEntityBase;
+import lycanite.lycanitesmobs.api.tileentity.TileEntitySummoningPedestal;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -19,7 +21,7 @@ public class GuiHandler implements IGuiHandler {
 		private GuiType(byte i) { id = i; }
 	}
     public static enum PlayerGuiType {
-		LM_MAIN_MENU((byte)0), BEASTIARY((byte)1), PET_MANAGER((byte)2), MOUNT_MANAGER((byte)3), FAMILIAR_MANAGER((byte)4), MINION_MANAGER((byte)5), MINION_SELECTION((byte)6), SUMMONING_PEDESTAL((byte)7);
+		LM_MAIN_MENU((byte)0), BEASTIARY((byte)1), PET_MANAGER((byte)2), MOUNT_MANAGER((byte)3), FAMILIAR_MANAGER((byte)4), MINION_MANAGER((byte)5), MINION_SELECTION((byte)6);
 		public byte id;
 		private PlayerGuiType(byte i) { id = i; }
 	}
@@ -40,7 +42,9 @@ public class GuiHandler implements IGuiHandler {
 		// ========== Tile Entity ==========
 		if(id == GuiType.TILEENTITY.id) {
 			TileEntity tileEntity = world.getTileEntity(x, y, z);
-			// Use instanceof to distinguish tile entity actions.
+			if(tileEntity instanceof TileEntityBase)
+                return ((TileEntityBase)tileEntity).getGUI(player);
+
 		}
 		
 		// ========== Entity ==========
@@ -72,7 +76,8 @@ public class GuiHandler implements IGuiHandler {
 		// ========== Tile Entity ==========
 		if(id == GuiType.TILEENTITY.id) {
 			TileEntity tileEntity = world.getTileEntity(x, y, z);
-			// Use instanceof to distinguish tile entity actions.
+            if(tileEntity instanceof TileEntityBase)
+                return ((TileEntityBase)tileEntity).getGUI(player);
 		}
 		
 		// ========== Entity ==========

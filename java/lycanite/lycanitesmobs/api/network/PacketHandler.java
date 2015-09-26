@@ -40,6 +40,7 @@ public class PacketHandler {
 		this.network.registerMessage(MessagePetEntryRemove.class, MessagePetEntryRemove.class, messageID++, Side.SERVER);
 		this.network.registerMessage(MessageSummonSet.class, MessageSummonSet.class, messageID++, Side.SERVER);
 		this.network.registerMessage(MessageSummonSetSelection.class, MessageSummonSetSelection.class, messageID++, Side.SERVER);
+        this.network.registerMessage(MessageSummoningPedestal.class, MessageSummoningPedestal.class, messageID++, Side.SERVER);
 	}
 	
 	

@@ -133,6 +133,9 @@ gui.mountmanager.info=Some creatures can be tamed as either Pets or Mounts. You 
 gui.minion.name=Minion Manager
 gui.minion.empty=No Summonable Creatures
 gui.minion.info=You haven't added any creatures that can be summoned to your Beastiary yet. Keep searching, not every creature can be summoned.
+gui.minionmanager.name=Minion Manager
+gui.minionmanager.empty=No Summonable Creatures
+gui.minionmanager.info=You haven't added any creatures that can be summoned to your Beastiary yet. Keep searching, not every creature can be summoned.
 gui.summoningpedestal.name=Summoning Pedestal
 #
 # Familiar Manager:

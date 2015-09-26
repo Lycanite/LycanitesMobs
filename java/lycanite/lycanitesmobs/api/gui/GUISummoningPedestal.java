@@ -8,6 +8,7 @@ import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.network.MessageGUIRequest;
+import lycanite.lycanitesmobs.api.pets.PetEntry;
 import lycanite.lycanitesmobs.api.pets.SummonSet;
 import lycanite.lycanitesmobs.api.tileentity.TileEntitySummoningPedestal;
 import net.minecraft.client.gui.FontRenderer;
@@ -21,6 +22,7 @@ import org.lwjgl.opengl.GL11;
 
 public class GUISummoningPedestal extends GUIBaseManager {
     public TileEntitySummoningPedestal summoningPedestal;
+
 
     // ==================================================
     //                      Opener
@@ -37,6 +39,7 @@ public class GUISummoningPedestal extends GUIBaseManager {
     public GUISummoningPedestal(EntityPlayer player, TileEntitySummoningPedestal summoningPedestal) {
         super(player, "minion");
         this.summoningPedestal = summoningPedestal;
+        this.summonSet = this.summoningPedestal.summonSet;
     }
 
 
@@ -44,13 +47,21 @@ public class GUISummoningPedestal extends GUIBaseManager {
     //                       Init
     // ==================================================
     @Override
-    public void initGui() {
-        super.initGui();
-
+    public void initList() {
         // Default Selection: TODO: get active minion from Pedestal.
-        if (this.hasPets()) {
-            this.selectPet(this.playerExt.petManager.getEntry(this.type, 0));
+        if(this.hasPets() && this.summoningPedestal.summonSet != null) {
+            this.selectMinion(this.summoningPedestal.summonSet.summonType);
         }
+
+        int buttonSpacing = 2;
+        int listWidth = (this.windowWidth / 2) - (buttonSpacing * 4);
+        int listHeight = this.windowHeight - (39 + buttonSpacing) - 16; // 39 = Title Height + Spirit Height, 24 = Excess
+        int listTop = this.windowY + 39 + buttonSpacing; // 39 = Title Height + Spirit Height
+        int listBottom = listTop + listHeight;
+        int listX = this.windowX + (buttonSpacing * 2);
+
+        this.list = new GUISummoningPedestalList(this, this.playerExt, listWidth, listHeight, listTop, listBottom, listX);
+        this.list.registerScrollButtons(this.buttonList, 51, 52);
     }
 
 
@@ -99,6 +110,96 @@ public class GUISummoningPedestal extends GUIBaseManager {
     @Override
     public void drawHealthBar() {
         // TODO: Draw the time until the next minion is summoned.
+    }
+
+
+    // ==================================================
+    //                     Controls
+    // ==================================================
+    @Override
+    protected void drawControls() {
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        int buttonSpacing = 2;
+        int buttonWidth = (this.windowWidth / 4) - (buttonSpacing * 2);
+        int buttonHeight = 20;
+        int buttonX = this.windowX + 6;
+        int buttonY = this.windowY;
+
+        this.buttonList.add(new GUITabMain(this.tabButtonID, buttonX, buttonY - 24));
+
+        buttonX = this.centerX + buttonSpacing;
+        int buttonXRight = buttonX + buttonWidth + buttonSpacing;
+        buttonY = this.windowY + 39 + buttonSpacing;
+
+        // Sitting and Following:
+        buttonY += buttonHeight + (buttonSpacing * 2);
+        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.SITTING.id, buttonX, buttonY, buttonWidth * 2, buttonHeight, "..."));
+
+        // Passive and Stance:
+        buttonY += buttonHeight + (buttonSpacing * 2);
+        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.PASSIVE.id, buttonX, buttonY, buttonWidth, buttonHeight, "..."));
+        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.STANCE.id, buttonXRight, buttonY, buttonWidth, buttonHeight, "..."));
+
+        // PVP:
+        buttonY += buttonHeight + (buttonSpacing * 2);
+        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.PVP.id, buttonX, buttonY, buttonWidth * 2, buttonHeight, "..."));
+    }
+
+    @Override
+    public void updateButtons(GuiButton button) {
+        // Behaviour Buttons:
+        if (button.id == EntityCreatureBase.GUI_COMMAND_ID.SITTING.id)
+            button.displayString = StatCollector.translateToLocal("gui.pet.sitting") + ": " + (this.summonSet.getSitting() ? StatCollector.translateToLocal("common.yes") : StatCollector.translateToLocal("common.no"));
+
+        if (button.id == EntityCreatureBase.GUI_COMMAND_ID.PASSIVE.id)
+            button.displayString = StatCollector.translateToLocal("gui.pet.passive") + ": " + (this.summonSet.getPassive() ? StatCollector.translateToLocal("common.yes") : StatCollector.translateToLocal("common.no"));
+
+        if (button.id == EntityCreatureBase.GUI_COMMAND_ID.STANCE.id)
+            button.displayString = (this.summonSet.getAggressive() ? StatCollector.translateToLocal("gui.pet.aggressive") : StatCollector.translateToLocal("gui.pet.defensive"));
+
+        if (button.id == EntityCreatureBase.GUI_COMMAND_ID.PVP.id)
+            button.displayString = StatCollector.translateToLocal("gui.pet.pvp") + ": " + (this.summonSet.getPVP() ? StatCollector.translateToLocal("common.yes") : StatCollector.translateToLocal("common.no"));
+
+        // Hidden Mount Buttons:
+        if("mount".equals(this.type)) {
+            if(button.id >= EntityCreatureBase.GUI_COMMAND_ID.SITTING.id && button.id <= EntityCreatureBase.GUI_COMMAND_ID.PVP.id) {
+                button.enabled = false;
+                button.visible = false;
+            }
+        }
+    }
+
+
+    // ==================================================
+    //                      Actions
+    // ==================================================
+    @Override
+    public void sendCommandsToServer() {
+        this.summoningPedestal.sendSummonSetToServer(this.summonSet);
+    }
+
+
+    // ==================================================
+    //                    Pet Selection
+    // ==================================================
+    @Override
+    public void selectMinion(String minionName) {
+        this.summonSet.setSummonType(minionName);
+        this.sendCommandsToServer();
+    }
+
+
+    // ==================================================
+    //                     Has Pets
+    // ==================================================
+    @Override
+    public boolean hasPets() {
+        return this.playerExt.getBeastiary().getSummonableList().size() > 0;
+    }
+
+    @Override
+    public boolean hasSelectedPet() {
+        return this.hasPets() && this.summonSet != null && !this.summonSet.summonType.equals("");
     }
 
 

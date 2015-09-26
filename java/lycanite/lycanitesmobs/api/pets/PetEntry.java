@@ -150,6 +150,8 @@ public class PetEntry {
 
     /** Used to set whether this PetEntry spawns mobs, this will also take a Spirit cost if Spirit is used (server side). use a direct spawningActive = true/false to avoid the Spirit cost. **/
     public PetEntry setSpawningActive(boolean spawningActive) {
+        if(this.spawningActive == spawningActive)
+            return this;
         if(!this.host.worldObj.isRemote) {
             if(!spawningActive)
                 this.despawnEntity();

@@ -49,32 +49,29 @@ public class MobEventRahovart extends MobEventBoss {
     public void bossSetup(int time, World world, int originX, int originY, int originZ) {
         originX += 20;
         int height = 120;
+        if(originY < 5)
+            originY = 5;
         if(world.getHeight() <= height)
-            originY = 1;
+            originY = 5;
         else if(originY + height >= world.getHeight())
-            originY = Math.max(0, world.getHeight() - height - 1);
+            originY = Math.max(5, world.getHeight() - height - 1);
 
+        // Build Floor:
         if(time == 1 * 20) {
             this.buildArena(world, originX, originY, originZ);
         }
 
-        /*if(time == 2 * 20) {
-            for(Object playerObject : world.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(originX - 20, originY - 20, originZ - 20, originX + 20, originY + 20, originZ + 20))) {
-                if(playerObject instanceof EntityPlayer) {
-                    EntityPlayer entityPlayer = (EntityPlayer)playerObject;
-                    entityPlayer.setPositionAndRotation(originX - 40, originY + 1, originZ, entityPlayer.rotationYaw, entityPlayer.rotationPitch);
-                }
-            }
-        }*/
-
+        // Explosions:
         if(time >= 3 * 20 && time % 10 == 0) {
             world.createExplosion(null, originX - 20 + world.rand.nextInt(40), originY + 50 + world.rand.nextInt(20), originZ - 20 + world.rand.nextInt(40), 2, true);
         }
 
+        // Build Obstacles:
         if(time == 5 * 20) {
             this.buildObstacles(world, originX, originY, originZ);
         }
 
+        // Hellfire Pillar Effect:
         if(time == 10 * 20) {
             for(int i = 0; i < 10; i++) {
                 EntityProjectileBase entityProjectileBase = new EntityHellfireWall(world, originX, originY + (10 * i), originZ);
@@ -83,6 +80,7 @@ public class MobEventRahovart extends MobEventBoss {
             }
         }
 
+        // Spawn Boss:
         if(time == 19 * 20) {
             EntityCreatureBase entityCreatureBase = new EntityRahovart(world);
             entityCreatureBase.setLocationAndAngles(originX, originY, originZ, 0, 0);
@@ -92,6 +90,9 @@ public class MobEventRahovart extends MobEventBoss {
     }
 
 
+    // ==================================================
+    //                     Arena Floor
+    // ==================================================
     public void buildArena(World world, int originX, int originY, int originZ) {
         double rubbleChance = 0.01D;
         int radius = 60;
@@ -109,15 +110,14 @@ public class MobEventRahovart extends MobEventBoss {
 
             for(int z = originZ - stripRadius; z < originZ + stripRadius; z++) {
                 int y = originY;
+                // Build Floor:
+                Block buildBlock = primaryBlock;
                 if(world.rand.nextDouble() > secondaryChance)
-                    world.setBlock(x, y, z, primaryBlock, 0, 2);
-                else
-                    world.setBlock(x, y, z, secondaryBlock, 0, 2);
+                    buildBlock = secondaryBlock;
+                world.setBlock(x, y, z, primaryBlock, 0, 2);
+                world.setBlock(x, y - 1, z, primaryBlock, 0, 2);
+                world.setBlock(x, y - 2, z, primaryBlock, 0, 2);
                 y++;
-                /*if(world.rand.nextDouble() <= rubbleChance) { // Rubble Disabled
-                    world.setBlock(x, y, z, primaryBlock, 0, 2);
-                    y++;
-                }*/
                 while(y <= originY + height && y < world.getHeight()) {
                     world.setBlock(x, y, z, Blocks.air, 0, 2);
                     y++;
@@ -129,6 +129,9 @@ public class MobEventRahovart extends MobEventBoss {
     }
 
 
+    // ==================================================
+    //                   Arena Obstacles
+    // ==================================================
     public void buildObstacles(World world, int originX, int originY, int originZ) {
         double angle = 0;
         int radius = 50;
@@ -146,7 +149,7 @@ public class MobEventRahovart extends MobEventBoss {
             this.buildDecoration(world, decorationCoord[0], decorationCoord[1], decorationCoord[2]);
     }
 
-
+    /** Builds an actual pillars. **/
     public int[] buildPillar(World world, int originX, int originY, int originZ) {
         int radiusMax = 5;
         int height = 40 + Math.round(20 * world.rand.nextFloat());
@@ -192,7 +195,7 @@ public class MobEventRahovart extends MobEventBoss {
         return decorationCoord;
     }
 
-
+    /** Adds decoration to a pillar. **/
     public void buildDecoration(World world, int originX, int originY, int originZ) {
         Block primaryBlock = Blocks.netherrack;
         Block hazardBlock = ObjectManager.getBlock("hellfire");

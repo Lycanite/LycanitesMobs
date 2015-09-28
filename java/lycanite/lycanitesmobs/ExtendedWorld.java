@@ -364,8 +364,8 @@ public class ExtendedWorld extends WorldSavedData {
         // Client Side:
         if(this.world.isRemote) {
             boolean extended = false;
-            if(this.clientMobEvents.get(mobEvent.name) != null)
-                extended = this.clientMobEvents.get(mobEvent.name).mobEvent.equals(mobEvent);
+            /*if(this.clientMobEvents.get(mobEvent.name) != null)
+                extended = this.clientMobEvents.get(mobEvent.name).mobEvent.equals(mobEvent);*/
             if(!extended) {
                 MobEventClient mobEventClient = mobEvent.getClientEvent(this.world);
                 this.clientMobEvents.put(mobEvent.name, mobEventClient);

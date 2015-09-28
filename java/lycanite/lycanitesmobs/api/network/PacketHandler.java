@@ -31,6 +31,7 @@ public class PacketHandler {
 		this.network.registerMessage(MessageEntityPickedUp.class, MessageEntityPickedUp.class, messageID++, Side.CLIENT);
 		this.network.registerMessage(MessageWorldEvent.class, MessageWorldEvent.class, messageID++, Side.CLIENT);
         this.network.registerMessage(MessageMobEvent.class, MessageMobEvent.class, messageID++, Side.CLIENT);
+        this.network.registerMessage(MessageSummoningPedestalStats.class, MessageSummoningPedestalStats.class, messageID++, Side.CLIENT);
 		
 		// Client to Server:
 		this.network.registerMessage(MessageEntityGUICommand.class, MessageEntityGUICommand.class, messageID++, Side.SERVER);
@@ -40,7 +41,7 @@ public class PacketHandler {
 		this.network.registerMessage(MessagePetEntryRemove.class, MessagePetEntryRemove.class, messageID++, Side.SERVER);
 		this.network.registerMessage(MessageSummonSet.class, MessageSummonSet.class, messageID++, Side.SERVER);
 		this.network.registerMessage(MessageSummonSetSelection.class, MessageSummonSetSelection.class, messageID++, Side.SERVER);
-        this.network.registerMessage(MessageSummoningPedestal.class, MessageSummoningPedestal.class, messageID++, Side.SERVER);
+        this.network.registerMessage(MessageSummoningPedestalSummonSet.class, MessageSummoningPedestalSummonSet.class, messageID++, Side.SERVER);
 	}
 	
 	

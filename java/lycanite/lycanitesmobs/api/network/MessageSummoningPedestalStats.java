@@ -5,7 +5,6 @@ import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
-import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.pets.SummonSet;
 import lycanite.lycanitesmobs.api.tileentity.TileEntitySummoningPedestal;
@@ -15,9 +14,9 @@ import net.minecraft.tileentity.TileEntity;
 
 import java.io.IOException;
 
-public class MessageSummoningPedestal implements IMessage, IMessageHandler<MessageSummoningPedestal, IMessage> {
-	public String summonType;
-	public byte behaviour;
+public class MessageSummoningPedestalStats implements IMessage, IMessageHandler<MessageSummoningPedestalStats, IMessage> {
+	public int capacity;
+	public int progress;
     public int x;
     public int y;
     public int z;
@@ -26,10 +25,10 @@ public class MessageSummoningPedestal implements IMessage, IMessageHandler<Messa
 	// ==================================================
 	//                    Constructors
 	// ==================================================
-	public MessageSummoningPedestal() {}
-	public MessageSummoningPedestal(SummonSet summonSet, int x, int y, int z) {
-		this.summonType = summonSet.summonType;
-		this.behaviour = summonSet.getBehaviourByte();
+	public MessageSummoningPedestalStats() {}
+	public MessageSummoningPedestalStats(int capacity, int progress, int x, int y, int z) {
+		this.capacity = capacity;
+        this.progress = progress;
         this.x = x;
         this.y = y;
         this.z = z;
@@ -43,21 +42,20 @@ public class MessageSummoningPedestal implements IMessage, IMessageHandler<Messa
 	 * Called when this message is received.
 	 */
 	@Override
-	public IMessage onMessage(MessageSummoningPedestal message, MessageContext ctx) {
+	public IMessage onMessage(MessageSummoningPedestalStats message, MessageContext ctx) {
 		EntityPlayer player = null;
-		if(ctx.side == Side.CLIENT)
+		if(ctx.side == Side.SERVER)
 			return null;
 
-        player = ctx.getServerHandler().playerEntity;
+        player = LycanitesMobs.proxy.getClientPlayer();
         TileEntity tileEntity = player.worldObj.getTileEntity(message.x, message.y, message.z);
         TileEntitySummoningPedestal summoningPedestal = null;
         if(tileEntity instanceof TileEntitySummoningPedestal)
             summoningPedestal = (TileEntitySummoningPedestal)tileEntity;
         if(summoningPedestal == null)
             return null;
-        if(summoningPedestal.summonSet == null)
-            summoningPedestal.summonSet = new SummonSet(null);
-        summoningPedestal.summonSet.readFromPacket(message.summonType, message.behaviour);
+        summoningPedestal.capacity = message.capacity;
+        summoningPedestal.summonProgress = message.progress;
 		return null;
 	}
 	
@@ -71,16 +69,11 @@ public class MessageSummoningPedestal implements IMessage, IMessageHandler<Messa
 	@Override
 	public void fromBytes(ByteBuf buf) {
 		PacketBuffer packet = new PacketBuffer(buf);
-		try {
-            this.x = packet.readInt();
-            this.y = packet.readInt();
-            this.z = packet.readInt();
-			this.summonType = packet.readStringFromBuffer(256);
-			this.behaviour = packet.readByte();
-		} catch (IOException e) {
-			LycanitesMobs.printWarning("", "There was a problem decoding the packet: " + packet + ".");
-			e.printStackTrace();
-		}
+        this.x = packet.readInt();
+        this.y = packet.readInt();
+        this.z = packet.readInt();
+        this.capacity = packet.readInt();
+        this.progress = packet.readInt();
 	}
 	
 	
@@ -93,16 +86,11 @@ public class MessageSummoningPedestal implements IMessage, IMessageHandler<Messa
 	@Override
 	public void toBytes(ByteBuf buf) {
 		PacketBuffer packet = new PacketBuffer(buf);
-		try {
-            packet.writeInt(this.x);
-            packet.writeInt(this.y);
-            packet.writeInt(this.z);
-			packet.writeStringToBuffer(this.summonType);
-			packet.writeByte(this.behaviour);
-		} catch (IOException e) {
-			LycanitesMobs.printWarning("", "There was a problem encoding the packet: " + packet + ".");
-			e.printStackTrace();
-		}
+        packet.writeInt(this.x);
+        packet.writeInt(this.y);
+        packet.writeInt(this.z);
+        packet.writeInt(this.capacity);
+        packet.writeInt(this.progress);
 	}
 	
 }

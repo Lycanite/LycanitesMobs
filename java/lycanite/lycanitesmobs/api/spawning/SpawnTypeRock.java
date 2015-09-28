@@ -9,26 +9,42 @@ import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 
 public class SpawnTypeRock extends SpawnTypeBlockBreak {
 	public int blockBreakRadius = 1;
+    public boolean playerOnly = false;
 
     // ==================================================
     //                     Constructor
     // ==================================================
     public SpawnTypeRock(String typeName) {
         super(typeName);
-        this.blockBreakRadius = ConfigBase.getConfig(LycanitesMobs.group, "spawning").getInt("Spawner Features", "Rock Spawn Block Break Radius", this.blockBreakRadius, "The block breaking radius aroud a mob spawned from the Rock Spawner.");
     }
 
 
     // ==================================================
+    //                 Load from Config
+    // ==================================================
+    @Override
+    public void loadFromConfig() {
+        super.loadFromConfig();
+        ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "spawning");
+
+        this.blockBreakRadius = config.getInt("Spawner Features", "Rock Spawn Block Break Radius", this.blockBreakRadius, "The block breaking radius aroud a mob spawned from the Rock Spawner.");
+        this.playerOnly = config.getBool("Spawner Features", "Rock Spawn Player Only", this.playerOnly, "If true, this spawn type will only react to blocks broken by actual player (for example this will stop BuildCraft Quarries from spawning Geonach).");
+    }
+
+
+        // ==================================================
     //                     Block Harvest
     // ==================================================
     @Override
     public boolean validBlockHarvest(Block block, World world, int x, int y, int z, Entity entity) {
+        if(this.playerOnly && !(entity instanceof EntityPlayer))
+            return false;
         String blockName = block.getUnlocalizedName();
         String[] blockNameParts = blockName.split("\\.");
         boolean isOre = false;

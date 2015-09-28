@@ -117,7 +117,7 @@ public class EntityShade extends EntityCreatureRideable implements IGroupPredato
     }
 
     public float getStaminaCost() {
-        return 20;
+        return 100;
     }
 
     public int getStaminaRecoveryWarmup() {

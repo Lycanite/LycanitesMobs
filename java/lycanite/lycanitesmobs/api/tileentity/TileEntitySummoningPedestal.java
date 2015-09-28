@@ -1,25 +1,34 @@
 package lycanite.lycanitesmobs.api.tileentity;
 
-import lycanite.lycanitesmobs.ExtendedPlayer;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.container.ContainerBase;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.EntityPortal;
 import lycanite.lycanitesmobs.api.gui.GUISummoningPedestal;
-import lycanite.lycanitesmobs.api.network.MessageSummoningPedestal;
-import lycanite.lycanitesmobs.api.network.PacketHandler;
+import lycanite.lycanitesmobs.api.network.MessageSummoningPedestalStats;
+import lycanite.lycanitesmobs.api.network.MessageSummoningPedestalSummonSet;
 import lycanite.lycanitesmobs.api.pets.SummonSet;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.util.AxisAlignedBB;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.UUID;
 
 public class TileEntitySummoningPedestal extends TileEntityBase {
+
+    public long updateTick = 0;
 
     // Summoning Properties:
     public EntityPortal summoningPortal;
@@ -34,6 +43,10 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
     public int capacityMax = (this.capacityCharge * 10);
     public int summonProgress = 0;
     public int summonProgressMax = 3 * 60;
+
+    // Summoned Minions:
+    public List<EntityCreatureBase> minions = new ArrayList<>();
+    protected String[] loadMinionIDs;
 
 
     // ========================================
@@ -54,7 +67,36 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
     /** The main update called every tick. **/
     @Override
     public void updateEntity() {
-        if(this.worldObj.isRemote || this.summonSet == null)
+        // Client Side Only:
+        if(this.worldObj.isRemote) {
+            if(this.summonProgress >= this.summonProgressMax)
+                this.summonProgress = 0;
+            else if(this.summonProgress > 0)
+                this.summonProgress++;
+            return;
+        }
+
+        // Load Minion IDs:
+        if(this.loadMinionIDs != null) {
+            int range = 20;
+            List nearbyEntities = this.worldObj.getEntitiesWithinAABB(EntityCreatureBase.class,
+                    AxisAlignedBB.getBoundingBox(this.xCoord - range, this.yCoord - range, this.zCoord - range, this.xCoord + range, this.yCoord + range, this.zCoord + range));
+            Iterator possibleEntities = nearbyEntities.iterator();
+            while(possibleEntities.hasNext()) {
+                EntityCreatureBase possibleEntity = (EntityCreatureBase)possibleEntities.next();
+                for(String loadMinionID : this.loadMinionIDs) {
+                    UUID uuid = null;
+                    try { uuid = UUID.fromString(loadMinionID); } catch (Exception e) {}
+                    if(possibleEntity.getUniqueID().equals(uuid)) {
+                        this.minions.add(possibleEntity);
+                        break;
+                    }
+                }
+            }
+            this.loadMinionIDs = null;
+        }
+
+        if(this.summonSet == null)
             return;
 
         if(this.summonSet.getFollowing())
@@ -67,17 +109,37 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
             this.worldObj.spawnEntityInWorld(this.summoningPortal);
         }
 
+        // Update Minions:
+        if(this.updateTick % 100 == 0) {
+            this.capacity = 0;
+            for (EntityCreatureBase minion : this.minions.toArray(new EntityCreatureBase[this.minions.size()])) {
+                if(minion == null || minion.isDead)
+                    this.minions.remove(minion);
+                else {
+                    this.capacity += (minion.mobInfo.summonCost * this.capacityCharge);
+                }
+            }
+        }
+
         // Check Capacity:
-        if(this.capacity-- + this.summonSet.getMobInfo().summonCost > this.capacityMax) {
+        if(this.capacity + this.summonSet.getMobInfo().summonCost > this.capacityMax) {
             this.summonProgress = 0;
         }
 
         // Summon Minions:
-        if(this.summonProgress++ >= this.summonProgressMax) {
+        else if(this.summonProgress++ >= this.summonProgressMax) {
             this.summoningPortal.summonCreatures();
             this.summonProgress = 0;
             this.capacity = Math.min(this.capacity + (this.capacityCharge * this.summonSet.getMobInfo().summonCost), this.capacityMax);
         }
+
+        // Sync To Client:
+        if(this.updateTick % 20 == 0) {
+            LycanitesMobs.packetHandler.sendToAllAround(new MessageSummoningPedestalStats(this.capacity, this.summonProgress, this.xCoord, this.yCoord, this.zCoord),
+                    new NetworkRegistry.TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 5D));
+        }
+
+        this.updateTick++;
     }
 
 
@@ -131,6 +193,8 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
     public void applyMinionBehaviour(EntityCreatureTameable minion) {
         if(this.summonSet != null)
             this.summonSet.applyBehaviour(minion);
+        this.minions.add(minion);
+        minion.setHome(this.xCoord, this.yCoord, this.zCoord, 20);
     }
 
 
@@ -184,7 +248,7 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
     }
 
     public void sendSummonSetToServer(SummonSet summonSet) {
-        LycanitesMobs.packetHandler.sendToServer(new MessageSummoningPedestal(summonSet, this.xCoord, this.yCoord, this.zCoord));
+        LycanitesMobs.packetHandler.sendToServer(new MessageSummoningPedestalSummonSet(summonSet, this.xCoord, this.yCoord, this.zCoord));
     }
 
 
@@ -222,6 +286,17 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
         }
         else
             this.summonSet = null;
+
+        if(nbtTagCompound.hasKey("MinionIDs")) {
+            NBTTagList minionIDs = nbtTagCompound.getTagList("MinionIDs", 10);
+            this.loadMinionIDs = new String[minionIDs.tagCount()];
+            for(int i = 0; i < minionIDs.tagCount(); i++) {
+                NBTTagCompound minionID = minionIDs.getCompoundTagAt(i);
+                if(minionID.hasKey("ID")) {
+                    this.loadMinionIDs[i] = minionID.getString("ID");
+                }
+            }
+        }
     }
 
     /** Writes to NBT data. **/
@@ -242,8 +317,17 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
             nbtTagCompound.setTag("SummonSet", summonSetNBT);
         }
 
-
         nbtTagCompound.setString("OwnerName", this.ownerName);
+
+        if(this.minions.size() > 0) {
+            NBTTagList minionIDs = new NBTTagList();
+            for(EntityLivingBase minion : this.minions) {
+                NBTTagCompound minionID = new NBTTagCompound();
+                minionID.setString("ID", minion.getUniqueID().toString());
+                minionIDs.appendTag(minionID);
+            }
+            nbtTagCompound.setTag("MinionIDs", minionIDs);
+        }
     }
 
 

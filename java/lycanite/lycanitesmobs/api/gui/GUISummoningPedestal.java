@@ -109,7 +109,22 @@ public class GUISummoningPedestal extends GUIBaseManager {
 
     @Override
     public void drawHealthBar() {
-        // TODO: Draw the time until the next minion is summoned.
+        // Summoning Progress Bar:
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIInventoryCreature"));
+
+        int barWidth = 80;
+        int barHeight = 11;
+        int barX = this.centerX + 2;
+        int barY = this.windowY + 26;
+        int barU = 144;
+        int barV = 256 - (barHeight * 2);
+        this.drawTexturedModalRect(barX, barY, barU, barV, barWidth, barHeight);
+
+        barWidth = Math.round((float)barWidth * ((float)this.summoningPedestal.summonProgress / this.summoningPedestal.summonProgressMax));
+        barV = barV + barHeight;
+
+        this.drawTexturedModalRect(barX, barY, barU, barV, barWidth, barHeight);
     }
 
 

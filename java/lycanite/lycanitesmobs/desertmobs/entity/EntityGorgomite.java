@@ -85,8 +85,8 @@ public class EntityGorgomite extends EntityCreatureBase implements IMob, IGroupP
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Blocks.sandstone), 1).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Blocks.stone), 1).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Blocks.sandstone), 1).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Blocks.stone), 1).setMinAmount(1).setMaxAmount(2));
         this.drops.add(new DropRate(new ItemStack(Items.flint), 0.5F));
         this.drops.add(new DropRate(new ItemStack(Blocks.iron_ore), 0.1F));
 	}
@@ -113,7 +113,7 @@ public class EntityGorgomite extends EntityCreatureBase implements IMob, IGroupP
 		// Spawn Minions:
 		if(this.gorgomiteSwarmLimit > 0 && this.nearbyCreatureCount(this.getClass(), 64D) < this.gorgomiteSwarmLimit) {
 			float random = this.rand.nextFloat();
-			if(random <= 0.1F)
+			if(random <= 0.25F)
 				this.spawnAlly(this.posX - 2 + (random * 4), this.posY, this.posZ - 2 + (random * 4));
 		}
 	}

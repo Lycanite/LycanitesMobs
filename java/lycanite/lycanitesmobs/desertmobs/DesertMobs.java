@@ -199,6 +199,7 @@ public class DesertMobs {
 		
 		// ========== Mob Events ==========
         MobEventBase mobEvent = new MobEventMarchOfTheGorgomites("marchofthegorgomites", this.group);
+        mobEvent.minDay = 10;
         SpawnTypeBase eventSpawner = new SpawnTypeLand("marchofthegorgomites")
             .setChance(1.0D).setBlockLimit(32).setMobLimit(8);
         eventSpawner.materials = new Material[] {Material.air};

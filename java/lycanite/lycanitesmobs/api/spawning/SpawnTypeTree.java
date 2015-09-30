@@ -32,6 +32,8 @@ public class SpawnTypeTree extends SpawnTypeBlockBreak {
     // ==================================================
     @Override
     public boolean validBlockHarvest(Block block, World world, int x, int y, int z, Entity entity) {
+        if(!super.validBlockHarvest(block, world, x, y, z, entity))
+            return false;
         return this.isTreeLogBlock(block, world, x, y, z) || this.isTreeLeavesBlock(block, world, x, y, z);
     }
 

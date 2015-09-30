@@ -10,6 +10,7 @@ import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.api.info.MobInfo;
+import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.demonmobs.DemonMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -17,6 +18,8 @@ import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
@@ -25,6 +28,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EntityHellfireWall extends EntityProjectileBase {
@@ -113,6 +117,21 @@ public class EntityHellfireWall extends EntityProjectileBase {
     //========== On Damage ==========
     @Override
     public void onDamage(EntityLivingBase target, float damage, boolean attackSuccess) {
+
+        // Remove Good Potion Effects:
+        for(Object potionEffectObj : target.getActivePotionEffects().toArray(new Object[target.getActivePotionEffects().size()])) {
+            if(potionEffectObj instanceof PotionEffect) {
+                int potionID = ((PotionEffect)potionEffectObj).getPotionID();
+                if(potionID >= Potion.potionTypes.length)
+                    continue;
+                Potion potion = Potion.potionTypes[potionID];
+                if(potion != null) {
+                    if(ObjectLists.inEffectList("buffs", potion))
+                        target.removePotionEffect(potionID);
+                }
+            }
+        }
+
         boolean obliterate = true;
         if(target instanceof EntityPlayer)
             obliterate = false;

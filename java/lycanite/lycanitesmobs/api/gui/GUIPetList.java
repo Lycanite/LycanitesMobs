@@ -51,11 +51,6 @@ public class GUIPetList extends GuiScrollingList {
 	@Override
 	protected void drawBackground() {}
 
-    @Override
-    protected int getContentHeight() {
-        return this.getSize() * 24;
-    }
-
 	@Override
 	protected void drawSlot(int index, int boxRight, int boxTop, int boxBottom, Tessellator tessellator) {
 		PetEntry petEntry = this.petList.get(index);

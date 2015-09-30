@@ -48,7 +48,6 @@ public class GUISummoningPedestal extends GUIBaseManager {
     // ==================================================
     @Override
     public void initList() {
-        // Default Selection: TODO: get active minion from Pedestal.
         if(this.hasPets() && this.summoningPedestal.summonSet != null) {
             this.selectMinion(this.summoningPedestal.summonSet.summonType);
         }

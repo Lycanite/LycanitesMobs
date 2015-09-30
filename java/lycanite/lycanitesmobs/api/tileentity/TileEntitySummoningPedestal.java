@@ -45,7 +45,7 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
     public int summonProgressMax = 3 * 60;
 
     // Summoned Minions:
-    public List<EntityCreatureBase> minions = new ArrayList<>();
+    public List<EntityCreatureBase> minions = new ArrayList<EntityCreatureBase>();
     protected String[] loadMinionIDs;
 
 
@@ -96,7 +96,7 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
             this.loadMinionIDs = null;
         }
 
-        if(this.summonSet == null)
+        if(this.summonSet == null || this.summonSet.getMobInfo() == null)
             return;
 
         if(this.summonSet.getFollowing())

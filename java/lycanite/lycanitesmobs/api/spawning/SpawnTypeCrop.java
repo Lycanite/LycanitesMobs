@@ -24,6 +24,8 @@ public class SpawnTypeCrop extends SpawnTypeBlockBreak {
     // ==================================================
     @Override
     public boolean validBlockHarvest(Block block, World world, int x, int y, int z, Entity entity) {
+        if(!super.validBlockHarvest(block, world, x, y, z, entity))
+            return false;
         return block instanceof IPlantable || block instanceof BlockVine;
     }
 

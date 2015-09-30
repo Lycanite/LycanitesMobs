@@ -84,7 +84,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
         // Boss:
         this.boss = true;
         this.forceBossHealthBar = true;
-        this.damageMax = 50;
+        this.damageMax = 25;
         
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this));
@@ -517,7 +517,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
             projectile.setBaseDamage(20);
     	
     	// Y Offset:
-    	projectile.posY -= this.height / 2;
+    	projectile.posY -= this.height * 0.25F;
     	
     	// Accuracy:
     	float accuracy = 1.0F * (this.getRNG().nextFloat() - 0.5F);

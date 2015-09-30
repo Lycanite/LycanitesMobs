@@ -23,6 +23,7 @@ public class ItemSoulgazer extends ItemBase {
         this.setMaxStackSize(1);
         this.itemName = "soulgazer";
         this.setup();
+        this.setContainerItem(this); // Infinite use in the crafting grid.
     }
 	
     
@@ -83,5 +84,14 @@ public class ItemSoulgazer extends ItemBase {
 
     	playerExt.getBeastiary().addToKnowledgeList(new CreatureKnowledge(player, mobInfo.name, 1));
     	return true;
+    }
+
+
+    // ==================================================
+    //                      Crafting
+    // ==================================================
+    @Override
+    public boolean doesContainerItemLeaveCraftingGrid(ItemStack itemStack) {
+        return false;
     }
 }

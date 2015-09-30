@@ -2,12 +2,14 @@ package lycanite.lycanitesmobs.api.spawning;
 
 
 import lycanite.lycanitesmobs.LycanitesMobs;
+import lycanite.lycanitesmobs.api.config.ConfigBase;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
 public class SpawnTypeBlockBreak extends SpawnTypeBase {
+    public boolean playerOnly = false;
 
     // ==================================================
     //                     Constructor
@@ -15,6 +17,18 @@ public class SpawnTypeBlockBreak extends SpawnTypeBase {
     public SpawnTypeBlockBreak(String typeName) {
         super(typeName);
         CustomSpawner.instance.blockSpawnTypes.add(this);
+    }
+
+
+    // ==================================================
+    //                 Load from Config
+    // ==================================================
+    @Override
+    public void loadFromConfig() {
+        super.loadFromConfig();
+        ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "spawning");
+
+        this.playerOnly = config.getBool("Spawner Features", this.getCfgName("Player Only"), this.playerOnly, "If true, this spawn type will only react to blocks broken by actual player (for example this will stop BuildCraft Quarries from spawning Geonach).");
     }
 
 
@@ -39,7 +53,11 @@ public class SpawnTypeBlockBreak extends SpawnTypeBase {
     // ==================================================
     //                     Block Harvest
     // ==================================================
-    public boolean validBlockHarvest(Block block, World world, int x, int y, int z, Entity entity) { return false; }
+    public boolean validBlockHarvest(Block block, World world, int x, int y, int z, Entity entity) {
+        if(this.playerOnly && !(entity instanceof EntityPlayer))
+            return false;
+        return true;
+    }
 
 
     // ==================================================

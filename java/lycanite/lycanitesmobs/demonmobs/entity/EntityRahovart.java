@@ -2,6 +2,7 @@ package lycanite.lycanitesmobs.demonmobs.entity;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupDemon;
@@ -79,7 +80,6 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
         this.setHeight = 50F;
         this.setupMob();
         this.hitAreaScale = 2F;
-        this.setHomeDistanceMax(5);
 
         // Boss:
         this.boss = true;
@@ -155,8 +155,27 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
 
         super.onLivingUpdate();
 
+        // Look At Target:
         if(this.hasAttackTarget() && !this.worldObj.isRemote) {
             this.getLookHelper().setLookPositionWithEntity(this.getAttackTarget(), 30.0F, 30.0F);
+        }
+
+        // Force Home Point:
+        if(!this.worldObj.isRemote && this.hasHome()) {
+            if(this.worldObj.isAirBlock((int)this.getHomePosition().posX, (int)this.getHomePosition().posY, (int)this.getHomePosition().posZ))
+                this.posY = this.getHomePosition().posY;
+
+            double range = this.getHomeDistanceMax();
+
+            if(this.getHomePosition().posX - this.posX > range)
+                this.posX = this.getHomePosition().posX + range;
+            else if(this.getHomePosition().posX - this.posX < -range)
+                this.posX = this.getHomePosition().posX - range;
+
+            if(this.getHomePosition().posZ - this.posZ > range)
+                this.posZ = this.getHomePosition().posZ + range;
+            else if(this.getHomePosition().posZ - this.posZ < -range)
+                this.posZ = this.getHomePosition().posZ - range;
         }
 
         // Sync Hellfire Energy:
@@ -756,6 +775,18 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
             }
             nbtTagCompound.setTag("BehemothIDs", behemothIDs);
         }
+    }
+
+
+    // ==================================================
+    //                       Sounds
+    // ==================================================
+    // ========== Step ==========
+    @Override
+    protected void playStepSound(int x, int y, int z, Block block) {
+        if(this.hasHome())
+            return;
+        super.playStepSound(x, y, z, block);
     }
 
 

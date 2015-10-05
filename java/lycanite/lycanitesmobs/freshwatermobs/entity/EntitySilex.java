@@ -121,6 +121,12 @@ public class EntitySilex extends EntityCreatureAgeable implements IAnimals, IGro
    	//                     Immunities
    	// ==================================================
     @Override
+    public boolean isDamageTypeApplicable(String type) {
+        if(type.equals("inWall")) return false;
+        return super.isDamageTypeApplicable(type);
+    }
+
+    @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
         if(ObjectManager.getPotionEffect("Penetration") != null)
             if(potionEffect.getPotionID() == ObjectManager.getPotionEffect("Penetration").id) return false;

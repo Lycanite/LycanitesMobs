@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ExtendedPlayer;
+import lycanite.lycanitesmobs.GuiHandler;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.gui.GUISummoningPedestal;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
@@ -91,7 +92,9 @@ public class BlockSummoningPedestal extends BlockBase implements ITileEntityProv
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
         if(!world.isRemote) {
-            GUISummoningPedestal.openToPlayer(player, x, y, z);
+            if(player != null && player.worldObj != null) {
+                player.openGui(LycanitesMobs.instance, GuiHandler.GuiType.TILEENTITY.id, player.worldObj, x, y, z);
+            }
         }
         return true;
     }

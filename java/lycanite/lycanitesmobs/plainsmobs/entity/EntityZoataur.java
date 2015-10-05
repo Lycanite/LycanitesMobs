@@ -99,6 +99,21 @@ public class EntityZoataur extends EntityCreatureTameable implements IGroupPreda
         this.drops.add(new DropRate(new ItemStack(Items.leather), 1F).setMaxAmount(5));
         this.drops.add(new DropRate(new ItemStack(Items.bone), 0.5F).setMaxAmount(3));
 	}
+
+
+    // ==================================================
+    //                      Updates
+    // ==================================================
+    // ========== Living Update ==========
+    @Override
+    public void onLivingUpdate() {
+        // Force Blocking:
+        if(!this.worldObj.isRemote && this.isBlocking() && this.hasAttackTarget()) {
+            this.setAttackTarget(null);
+        }
+
+        super.onLivingUpdate();
+    }
 	
 	
     // ==================================================
@@ -108,7 +123,7 @@ public class EntityZoataur extends EntityCreatureTameable implements IGroupPreda
     /** Called when this mob has received damage. Here a random blocking chance is applied. **/
     @Override
     public void onDamage(DamageSource damageSrc, float damage) {
-    	if(this.getRNG().nextDouble() > 0.6D)
+    	if(this.getRNG().nextDouble() > 0.75D && this.getHealth() / this.getMaxHealth() > 0.25F)
     		this.setBlocking();
         super.onDamage(damageSrc, damage);
     }

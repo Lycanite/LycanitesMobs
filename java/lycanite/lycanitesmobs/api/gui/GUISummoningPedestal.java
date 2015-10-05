@@ -23,16 +23,6 @@ import org.lwjgl.opengl.GL11;
 public class GUISummoningPedestal extends GUIBaseManager {
     public TileEntitySummoningPedestal summoningPedestal;
 
-
-    // ==================================================
-    //                      Opener
-    // ==================================================
-    public static void openToPlayer(EntityPlayer player, int x, int y, int z) {
-        if(player != null && player.worldObj != null) {
-            player.openGui(LycanitesMobs.instance, GuiHandler.GuiType.TILEENTITY.id, player.worldObj, x, y, z);
-        }
-    }
-
     // ==================================================
     //                    Constructor
     // ==================================================

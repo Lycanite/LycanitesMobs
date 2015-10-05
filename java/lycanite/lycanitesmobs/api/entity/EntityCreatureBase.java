@@ -131,7 +131,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 	/** When above 0 this mob will be considered blocking and this will count down to 0. Blocking mobs have additional defense. **/
 	public int currentBlockingTime = 0;
 	/** How long this mob should usually block for in ticks. **/
-	public int blockingTime = 100;
+	public int blockingTime = 60;
 	/** The entity picked up by this entity (if any). **/
     public Entity pickupEntity;
 	
@@ -1141,7 +1141,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         this.isImmuneToFire = !this.canBurn();
         
         // Not Walking on Land:
-        if(!this.canWalk() && !this.canFly() && !this.isInWater() && this.isMoving())
+        if((!this.canWalk() && !this.canFly() && !this.isInWater() && this.isMoving()) || !this.canMove())
         	this.clearMovement();
         
         // Climbing:
@@ -1776,6 +1776,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 	public boolean canAttackClass(Class targetClass) {
 		if(!MobInfo.mobsAttackVillagers && targetClass == EntityVillager.class)
 			return false;
+        if(this.isBlocking())
+            return false;
 		return true;
 	}
 
@@ -2183,7 +2185,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     
     // ========== Movement ==========
     /** Can this entity move currently? **/
-    public boolean canMove() { return true; }
+    public boolean canMove() { return !this.isBlocking(); }
     /** Can this entity move across land currently? Usually used for swimming mobs to prevent land movement. **/
     public boolean canWalk() { return true; }
     /** Can this entity free swim currently? (This doesn't stop the entity from moving in water but is used for smooth flight-like swimming). **/
@@ -2194,7 +2196,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     	return false;
     }
     /** Can this entity jump currently? **/
-    public boolean canJump() { return true; }
+    public boolean canJump() { return !this.isBlocking(); }
     /** Can this entity climb currently? **/
     public boolean canClimb() { return false; }
     /** Can this entity fly currently? If true it will use the flight navigator. **/
@@ -2209,7 +2211,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     /** Can this entity by tempted (usually lured by an item) currently? **/
     public boolean canBeTempted() { return this.getSubspeciesIndex() < 3; }
     
-    /** Called when the creature has eaten. Some special AIs use this such as EntityAIEatBLock. **/
+    /** Called when the creature has eaten. Some special AIs use this such as EntityAIEatBlock. **/
     public void onEat() {}
     
     // ========== Stealth ==========

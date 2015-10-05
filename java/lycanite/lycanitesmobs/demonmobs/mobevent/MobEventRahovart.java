@@ -83,9 +83,9 @@ public class MobEventRahovart extends MobEventBoss {
         // Spawn Boss:
         if(time == 19 * 20) {
             EntityCreatureBase entityCreatureBase = new EntityRahovart(world);
-            entityCreatureBase.setLocationAndAngles(originX, originY, originZ, 0, 0);
+            entityCreatureBase.setLocationAndAngles(originX, originY + 1, originZ, 0, 0);
             world.spawnEntityInWorld(entityCreatureBase);
-            entityCreatureBase.setHome(originX, originY, originZ, 20);
+            entityCreatureBase.setHome(originX, originY, originZ, 5);
         }
     }
 

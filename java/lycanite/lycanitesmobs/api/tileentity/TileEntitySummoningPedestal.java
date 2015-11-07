@@ -222,7 +222,7 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
         }
 
         // Server to Client:
-        if(!this.worldObj.isRemote) {
+        if(!this.worldObj.isRemote && this.getOwnerUUID() != null && this.getOwnerName() != null) {
             syncData.setString("OwnerUUID", this.getOwnerUUID().toString());
             syncData.setString("OwnerName", this.getOwnerName());
         }

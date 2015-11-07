@@ -897,7 +897,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     
     /** Returns the shared multiplier for all stats based on difficulty. **/
 	public double getDifficultyMultiplier(String stat) {
-        if(this.worldObj == null)
+        if(this.worldObj == null || this.worldObj.difficultySetting == null)
             return MobInfo.difficultyMutlipliers.get("NORMAL" + "-" + stat.toUpperCase());
 		EnumDifficulty difficulty = this.worldObj.difficultySetting;
 		String difficultyName = "Easy";

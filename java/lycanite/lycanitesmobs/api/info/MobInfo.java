@@ -212,7 +212,7 @@ public class MobInfo {
 	}
 	
 	/**
-	 * Tells every registered MobInfo to load from the configs. This should be called in post init so that Biome Tags and other things are defnitely set.
+	 * Tells every registered MobInfo to load from the configs. This should be called in init so that all mobs can read entity IDs.
 	 * @return
 	 */
 	public static void loadAllFromConfigs() {
@@ -221,6 +221,17 @@ public class MobInfo {
 				mobInfo.loadFromConfigs();
 		}
 	}
+
+    /**
+     * Tells every registered MobInfo to load their from the configs. This should be called in post init so that Biome Tags and other things are definitely set.
+     * @return
+     */
+    public static void loadAllSpawningFromConfigs() {
+        for(MobInfo mobInfo : mobNameToInfo.values()) {
+            if(mobInfo != null)
+                mobInfo.spawnInfo.loadFromConfig();
+        }
+    }
 	
 	
     // ==================================================
@@ -323,9 +334,6 @@ public class MobInfo {
         
         // Register Mob:
         this.registerMob();
-
-        // Spawn Info:
-        this.spawnInfo.loadFromConfig();
 
         // Add Achievements:
         int achievementX = this.group.order * 4;

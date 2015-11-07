@@ -64,9 +64,24 @@ public class EventListener {
 	public void onEntityConstructing(EntityConstructing event) {
 		if(event.entity == null)
 			return;
+        if(event.entity.worldObj == null || !event.entity.worldObj.isRemote)
+            return;
+
+        // ========== Force Remove Entity ==========
+        if(!(event.entity instanceof EntityLivingBase)) {
+            if(ExtendedEntity.FORCE_REMOVE_ENTITY_IDS != null && ExtendedEntity.FORCE_REMOVE_ENTITY_IDS.length > 0) {
+                LycanitesMobs.printDebug("ForceRemoveEntity", "Forced entity removal, checking: " + event.entity.getCommandSenderName());
+                for(String forceRemoveID : ExtendedEntity.FORCE_REMOVE_ENTITY_IDS) {
+                    if(forceRemoveID.equalsIgnoreCase(event.entity.getCommandSenderName())) {
+                        event.entity.setDead();
+                        break;
+                    }
+                }
+            }
+        }
 		
 		// ========== Extended Entity ==========
-		if(event.entity != null)
+		if(event.entity instanceof EntityLivingBase)
 			ExtendedEntity.getForEntity(event.entity);
 		
 		// ========== Extended Player ==========

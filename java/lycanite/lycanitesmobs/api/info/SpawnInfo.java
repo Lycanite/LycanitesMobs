@@ -134,6 +134,7 @@ public class SpawnInfo {
     //                 Load from Config
     // ==================================================
 	public void loadFromConfig() {
+        if(this.mobInfo.dummy) return;
 		ConfigSpawning config = ConfigSpawning.getConfig(this.mobInfo.group, "spawning");
 		
 		// Enabled:

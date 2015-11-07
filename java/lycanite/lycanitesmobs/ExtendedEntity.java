@@ -14,6 +14,8 @@ import net.minecraftforge.common.IExtendedEntityProperties;
 
 public class ExtendedEntity implements IExtendedEntityProperties {
 	public static String EXT_PROP_NAME = "LycanitesMobsEntity";
+    public static String[] FORCE_REMOVE_ENTITY_IDS;
+    public static int FORCE_REMOVE_ENTITY_TICKS = 40;
 	
 	public Entity entity;
 	
@@ -27,6 +29,11 @@ public class ExtendedEntity implements IExtendedEntityProperties {
     private boolean playerIsFlyingSnapshot;
 	
 	public EntityFear fearEntity;
+
+    // Force Remove:
+    boolean forceRemoveChecked = false;
+    boolean forceRemove = false;
+    int forceRemoveTicks = FORCE_REMOVE_ENTITY_TICKS;
 	
 	// ==================================================
     //                   Get for Entity
@@ -68,6 +75,23 @@ public class ExtendedEntity implements IExtendedEntityProperties {
     //                      Update
     // ==================================================
 	public void onUpdate() {
+        if(this.entity == null)
+            return;
+
+        // Force Remove Entity:
+        if(this.entity.worldObj != null && !this.entity.worldObj.isRemote && FORCE_REMOVE_ENTITY_IDS != null && FORCE_REMOVE_ENTITY_IDS.length > 0 && !this.forceRemoveChecked) {
+            LycanitesMobs.printDebug("ForceRemoveEntity", "Forced entity removal, checking: " + this.entity.getCommandSenderName());
+            for(String forceRemoveID : FORCE_REMOVE_ENTITY_IDS) {
+                if(forceRemoveID.equalsIgnoreCase(this.entity.getCommandSenderName())) {
+                    this.forceRemove = true;
+                    break;
+                }
+            }
+            this.forceRemoveChecked = true;
+        }
+        if(this.forceRemove && this.forceRemoveTicks-- <= 0)
+            this.entity.setDead();
+
         // Safe Position:
         if(this.lastSafePos == null) {
             this.lastSafePos = new double[]{this.entity.posX, this.entity.posY, this.entity.posZ};
@@ -145,7 +169,7 @@ public class ExtendedEntity implements IExtendedEntityProperties {
     //                 Picked Up By Entity
     // ==================================================
 	public void setPickedUpByEntity(Entity pickedUpByEntity) {
-        if(this.pickedUpByEntity == pickedUpByEntity)
+        if(this.pickedUpByEntity == pickedUpByEntity || this.entity == null)
             return;
 
 		if(this.entity.ridingEntity != null)

@@ -24,7 +24,7 @@ public class ConfigSpawning extends ConfigBase {
          ConfigBase config = ConfigBase.configs.get(configFileName);
          if(config instanceof ConfigSpawning)
          	return (ConfigSpawning)config;
-     	LycanitesMobs.printWarning("", "[Config] Tried to access a Base Config as a Spawning Config!");
+     	LycanitesMobs.printWarning("", "[Config] Tried to access the Base Config: " + configName + " as a Spawning Config from group: " + group.name + "!");
      	return null;
      }
     

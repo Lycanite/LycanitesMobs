@@ -305,7 +305,10 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     // ========== Load Custom Drops ==========
     /** Loads custom item drops from the config. **/
     public void loadCustomDrops() {
-    	this.drops.addAll(this.mobInfo.customDrops);
+        for(DropRate drop : this.mobInfo.customDrops) {
+            DropRate newDrop = new DropRate(drop.item.copy(), drop.chance).setMinAmount(drop.minAmount).setMaxAmount(drop.maxAmount).setChance(drop.chance).setSubspecies(drop.subspeciesID).setBurningDrop(drop.burningItem);
+            this.drops.add (newDrop);
+        }
     }
     
     // ========== Attributes ==========

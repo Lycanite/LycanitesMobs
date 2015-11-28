@@ -61,7 +61,9 @@ public class ExtendedWorld extends WorldSavedData {
             worldExt = loadedExtWorlds.get(world);
             return worldExt;
         }
-		
+
+        if (world.MAX_ENTITY_RADIUS < 50)
+            world.MAX_ENTITY_RADIUS = 50;
 		WorldSavedData worldSavedData = world.perWorldStorage.loadData(ExtendedWorld.class, EXT_PROP_NAME); //world.loadItemData(ExtendedWorld.class, EXT_PROP_NAME);
 		if(worldSavedData != null) {
 			worldExt = (ExtendedWorld)worldSavedData;

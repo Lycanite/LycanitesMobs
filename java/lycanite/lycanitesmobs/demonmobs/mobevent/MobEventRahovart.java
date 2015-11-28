@@ -85,7 +85,7 @@ public class MobEventRahovart extends MobEventBoss {
             EntityCreatureBase entityCreatureBase = new EntityRahovart(world);
             entityCreatureBase.setLocationAndAngles(originX, originY + 1, originZ, 0, 0);
             world.spawnEntityInWorld(entityCreatureBase);
-            entityCreatureBase.setHome(originX, originY, originZ, 5);
+            entityCreatureBase.setHome(originX, originY + 1, originZ, 2);
         }
     }
 
@@ -149,7 +149,7 @@ public class MobEventRahovart extends MobEventBoss {
             this.buildDecoration(world, decorationCoord[0], decorationCoord[1], decorationCoord[2]);
     }
 
-    /** Builds an actual pillars. **/
+    /** Builds an actual pillar. **/
     public int[] buildPillar(World world, int originX, int originY, int originZ) {
         int radiusMax = 5;
         int height = 40 + Math.round(20 * world.rand.nextFloat());

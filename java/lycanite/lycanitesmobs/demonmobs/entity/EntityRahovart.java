@@ -281,7 +281,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IBossDis
 
             // Every 5 Secs:
             if(this.updateTick % 100 == 0) {
-                int summonAmount = this.getRNG().nextInt(3); // 0-2 Hellfire Belphs
+                int summonAmount = this.getRNG().nextInt(4); // 0-3 Hellfire Belphs
                 summonAmount *= this.playerTargets.size();
                 if(summonAmount > 0)
                     for(int summonCount = 0; summonCount <= summonAmount; summonCount++) {

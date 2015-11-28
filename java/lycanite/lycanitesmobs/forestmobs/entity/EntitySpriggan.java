@@ -179,7 +179,7 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
     	// Create New Laser:
     	if(this.projectile == null) {
 	    	// Type:
-	    	this.projectile = new EntityLifeDrain(this.worldObj, this, 25, 40);
+	    	this.projectile = new EntityLifeDrain(this.worldObj, this, 25, 20);
             this.projectile.setBaseDamage(1);
 	    	
 	    	// Launch:

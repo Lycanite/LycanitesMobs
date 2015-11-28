@@ -79,8 +79,10 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     	
     	String ownerName = this.getOwnerName();
     	String ownerSuffix = "'s ";
-    	if("s".equals(ownerName.substring(ownerName.length() - 1)) || "S".equals(ownerName.substring(ownerName.length() - 1)))
-    			ownerSuffix = "' ";
+        if(ownerName != null && ownerName.length() > 0) {
+            if ("s".equals(ownerName.substring(ownerName.length() - 1)) || "S".equals(ownerName.substring(ownerName.length() - 1)))
+                ownerSuffix = "' ";
+        }
     	String ownedName = ownerName + ownerSuffix + this.getFullName();
     	
     	if(this.hasCustomNameTag())

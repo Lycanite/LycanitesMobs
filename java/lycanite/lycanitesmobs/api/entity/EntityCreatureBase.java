@@ -463,10 +463,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     /** Checks if the creature is able to spawn at it's initial position. **/
     @Override
     public boolean getCanSpawnHere() {
-		int i = MathHelper.floor_double(this.posX);
-	    int j = MathHelper.floor_double(this.getCollisionBoundingBox().minY);
-	    int k = MathHelper.floor_double(this.posZ);
-	    return this.spawnCheck(this.worldObj, i, j, k);
+	    return this.spawnCheck(this.worldObj, this.getPosition());
     }
 
     @Override
@@ -474,7 +471,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         return this.mobInfo.spawnInfo.spawnGroupMax;
     }
     
-    public boolean spawnCheck(World world, int i, int j, int k) {
+    public boolean spawnCheck(World world, BlockPos pos) {
         if(world.isRemote)
             return false;
 
@@ -485,16 +482,16 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     	LycanitesMobs.printDebug("MobSpawns", "Checking for peaceful difficulty...");
         if(!this.mobInfo.peacefulDifficulty && this.worldObj.getDifficulty() == EnumDifficulty.PEACEFUL) return false;
         
-    	LycanitesMobs.printDebug("MobSpawns", "Target Spawn Location: x" + i + " y" + j + " z" + k);
+    	LycanitesMobs.printDebug("MobSpawns", "Target Spawn Location: " + pos);
         
         // Fixed Spawning Checks:
     	LycanitesMobs.printDebug("MobSpawns", "Fixed spawn check (light level, obstacles, etc)...");
-        if(!this.fixedSpawnCheck(world, i, j, k))
+        if(!this.fixedSpawnCheck(world, pos))
         	return false;
         
     	// Spawner Check:
     	LycanitesMobs.printDebug("MobSpawns", "Checking for nearby spawner...");
-        if(this.isSpawnerNearby(world, i, j, k)) {
+        if(this.isSpawnerNearby(world, pos)) {
         	LycanitesMobs.printDebug("MobSpawns", "Spawner found, skpping other checks.");
         	LycanitesMobs.printDebug("MobSpawns", "Spawn Check Passed!");
         	return true;
@@ -503,7 +500,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         
         // Natural Spawning Checks:
     	LycanitesMobs.printDebug("MobSpawns", "Natural spawn check (dimension, area limit, ground type, water, lava, underground)...");
-        if(!this.naturalSpawnCheck(world, i, j, k))
+        if(!this.naturalSpawnCheck(world, pos))
         	return false;
         
         // Forced Spawn Chance:
@@ -526,11 +523,11 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 
     // ========== Fixed Spawn Check ==========
     /** First stage checks for spawning, if this check fails the creature will not spawn. **/
-    public boolean fixedSpawnCheck(World world, int i, int j, int k) {
+    public boolean fixedSpawnCheck(World world, BlockPos pos) {
     	if(this.spawnedFromType == null || (this.spawnedFromType != null && !this.spawnedFromType.ignoreLight)) {
-            byte light = this.testLightLevel(i, j, k);
+            byte light = this.testLightLevel(pos);
             boolean validLight = false;
-            Block spawnBlock = world.getBlockState(new BlockPos(i, j, k)).getBlock();
+            Block spawnBlock = world.getBlockState(pos).getBlock();
 
 	    	LycanitesMobs.printDebug("MobSpawns", "Checking light level: Darkness");
 	    	if(this.mobInfo.spawnInfo.spawnsInDark && light <= 1)
@@ -558,12 +555,12 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     
     // ========== Natural Spawn Check ==========
     /** Second stage checks for spawning, this check is ignored if there is a valid monster spawner nearby. **/
-    public boolean naturalSpawnCheck(World world, int i, int j, int k) {
+    public boolean naturalSpawnCheck(World world, BlockPos pos) {
     	LycanitesMobs.printDebug("MobSpawns", "Checking dimension.");
     	if(!this.isNativeDimension(this.worldObj))
     		return false;
     	LycanitesMobs.printDebug("MobSpawns", "Block preference.");
-        if(this.getBlockPathWeight(i, j, k) < 0.0F && this.spawnedFromType == null)
+        if(this.getBlockPathWeight(pos.getX(), pos.getY(), pos.getZ()) < 0.0F && this.spawnedFromType == null)
         	return false;
     	LycanitesMobs.printDebug("MobSpawns", "Checking for liquid (water, lava, ooze, etc).");
         if(!this.spawnsInWater && this.worldObj.isAnyLiquid(this.getCollisionBoundingBox()))
@@ -571,13 +568,13 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         else if(!this.spawnsOnLand && !this.worldObj.isAnyLiquid(this.getCollisionBoundingBox()))
         	return false;
     	LycanitesMobs.printDebug("MobSpawns", "Checking for underground.");
-        if(!this.spawnsUnderground && this.isBlockUnderground(i, j + 1, k))
+        if(!this.spawnsUnderground && this.isBlockUnderground(pos.getX(), pos.getY() + 1, pos.getZ()))
         	return false;
     	LycanitesMobs.printDebug("MobSpawns", "Checking required blocks.");
-        if(!spawnBlockCheck(world, i, j, k))
+        if(!spawnBlockCheck(world, pos.getX(), pos.getY(), pos.getZ()))
         	return false;
     	LycanitesMobs.printDebug("MobSpawns", "Counting mobs of the same kind, max allowed is: " + this.mobInfo.spawnInfo.spawnAreaLimit);
-        if(!this.spawnLimitCheck(world, i, j, k))
+        if(!this.spawnLimitCheck(world, pos.getX(), pos.getY(), pos.getZ()))
         	return false;
         LycanitesMobs.printDebug("MobSpawns", "Checking for nearby bosses.");
         List bosses = this.getNearbyEntities(IGroupBoss.class, SpawnInfo.spawnLimitRange);
@@ -779,7 +776,10 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     
     // ========== Spawner Checking ==========
     /** Checks if a Monster Spawner that spawns this mob is near the xyz locations, checks within an 8 block radius. **/
-    public boolean isSpawnerNearby(World world, int x, int y, int z) {
+    public boolean isSpawnerNearby(World world, BlockPos pos) {
+        int x = pos.getX();
+        int y = pos.getY();
+        int z = pos.getZ();
         if(world == null)
             return false;
     	int checkRange = 8;
@@ -1865,7 +1865,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     /** Returns the Y position of the water surface (the first air block found when searching up in water).
      * If the water is covered by a solid block, the highest Y water position will be returned instead.
      * This will search up to 24 blocks up. **/
-    public int getWaterSurfaceY(BlockPos pos) {
+        public int getWaterSurfaceY(BlockPos pos) {
         int y = pos.getY();
         if(y <= 0)
             return 0;
@@ -3061,32 +3061,27 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
      * Light enough for spawnsInLight: 2 = Light, 3 = Bright
     **/
     public byte testLightLevel() {
-        int i = MathHelper.floor_double(this.posX);
-        int j = MathHelper.floor_double(this.getCollisionBoundingBox().minY);
-        int k = MathHelper.floor_double(this.posZ);
-    	return testLightLevel(i, j, k);
+    	return testLightLevel(this.getPosition());
     }
 
     /** Returns a light rating for the light level the specified XYZ position.
      * Dark enough for spawnsInDarkness: 0 = Dark, 1 = Dim
      * Light enough for spawnsInLight: 2 = Light, 3 = Bright
     **/
-    public byte testLightLevel(int x, int y, int z) {
-        /*if(this.worldObj.getSavedLightValue(EnumSkyBlock.Sky, i, j, k) > this.rand.nextInt(32))
-            return false;*/
-        IBlockState spawnBlockState = this.worldObj.getBlockState(new BlockPos(x, y, z));
-        if(y < 0)
+    public byte testLightLevel(BlockPos pos) {
+        IBlockState spawnBlockState = this.worldObj.getBlockState(pos);
+        if(pos.getY() < 0)
             return 0;
         if(spawnBlockState != null && spawnBlockState.getMaterial() == Material.water && SpawnInfo.useSurfaceLightLevel)
-            y = this.getWaterSurfaceY(new BlockPos(x, y, z));
+            pos = new BlockPos(pos.getX(), this.getWaterSurfaceY(pos), pos.getZ());
         else
-            y = this.getGroundY(new BlockPos(x, y, z));
+            pos = new BlockPos(pos.getX(), this.getGroundY(pos), pos.getZ());
 
-        int light = this.worldObj.getLight(new BlockPos(x, y, z));
-        if(this.worldObj.isThundering()) {
+        int light = this.worldObj.getLightFromNeighbors(pos);
+        if (this.worldObj.isThundering()) {
             int originalSkylight = this.worldObj.getSkylightSubtracted();
             this.worldObj.setSkylightSubtracted(10);
-            light = this.worldObj.getLight(new BlockPos(x, y, z));
+            light = this.worldObj.getLightFromNeighbors(pos);
             this.worldObj.setSkylightSubtracted(originalSkylight);
         }
 
@@ -3131,7 +3126,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
    	public List getNearbyEntities(final Class targetClass, double range) {
    		return this.worldObj.getEntitiesWithinAABB(Entity.class, this.getCollisionBoundingBox().expand(range, range, range), new Predicate<Entity>() {
             public boolean apply(Entity entity) {
-                return entity.getClass().isAssignableFrom(targetClass);
+                return targetClass.isAssignableFrom(entity.getClass());
             }
         });
    	}

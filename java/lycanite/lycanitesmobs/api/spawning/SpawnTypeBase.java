@@ -515,7 +515,7 @@ public class SpawnTypeBase {
                 LycanitesMobs.printDebug("CustomSpawner", "Ignoring all mob spawn checks except for collision...");
                 boolean ignoreLightTemp = this.ignoreLight;
                 this.ignoreLight = true;
-                validLocation = ((EntityCreatureBase)entityLiving).fixedSpawnCheck(world, coord[0], coord[1], coord[2]);
+                validLocation = ((EntityCreatureBase)entityLiving).fixedSpawnCheck(world, new BlockPos(coord[0], coord[1], coord[2]));
                 this.ignoreLight = ignoreLightTemp;
             }
 
@@ -803,7 +803,7 @@ public class SpawnTypeBase {
     // ==================================================
     /** Gets a random spawn position from a the provided origin chunk position.
      * @param world The world to search for coordinates in.
-     * @return Returns a ChunkPosition or null if no coord was found.
+     * @return Returns a BlockPos or null if no coord was found.
      */
     public BlockPos getRandomLandCoord(World world, BlockPos originPos, int range) {
         int radius = Math.round(range * 0.5F);
@@ -820,7 +820,7 @@ public class SpawnTypeBase {
     // ==================================================
     /** Gets a random spawn position from a the provided origin chunk position.
      * @param world The world to search for coordinates in.
-     * @return Returns a ChunkPosition or null if no coord was found.
+     * @return Returns a BlockPos or null if no coord was found.
      */
     public BlockPos getRandomWaterCoord(World world, BlockPos originPos, int range) {
         int radius = Math.round(range * 0.5F);
@@ -838,7 +838,7 @@ public class SpawnTypeBase {
     /** Gets a random sky spawn position from a the provided origin chunk position.
      * This checks for open air spaces.
      * @param world The world to search for coordinates in.
-     * @return Returns a ChunkPosition or null if no coord was found.
+     * @return Returns a BlockPos or null if no coord was found.
      */
     public BlockPos getRandomSkyCoord(World world, BlockPos originPos, int range) {
         int radius = Math.round(range * 0.5F);

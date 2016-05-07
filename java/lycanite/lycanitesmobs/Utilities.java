@@ -80,7 +80,7 @@ public class Utilities {
 			for(Entity ent : allEntities) {
 				if(ent.canBeCollidedWith() && !excluded.contains(ent)) {
 					float entBorder = ent.getCollisionBorderSize();
-					entityBb = ent.getCollisionBoundingBox();
+					entityBb = ent.getEntityBoundingBox();
 					if(entityBb != null) {
 						entityBb = entityBb.expand(entBorder, entBorder, entBorder);
 						intercept = entityBb.calculateIntercept(startVec, endVec);
@@ -127,7 +127,7 @@ public class Utilities {
 		for(Entity ent : allEntities) {
 			if(ent.canBeCollidedWith() && !excluded.contains(ent)) {
 				float entBorder = ent.getCollisionBorderSize();
-				entityBb = ent.getCollisionBoundingBox();
+				entityBb = ent.getEntityBoundingBox();
 				if(entityBb != null) {
 					entityBb = entityBb.expand(entBorder, entBorder, entBorder);
 					intercept = entityBb.calculateIntercept(startVec, endVec);

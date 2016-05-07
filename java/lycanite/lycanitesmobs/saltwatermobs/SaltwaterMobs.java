@@ -55,31 +55,31 @@ public class SaltwaterMobs {
 		// ========== Config ==========
 		group = new GroupInfo(this, "Saltwater Mobs", 8)
 				.setDimensionBlacklist("-1,1").setBiomes("OCEAN, BEACH").setDungeonThemes("WATER, DUNGEON")
-                .setEggName("saltwateregg");
+                .setEggName("saltwaterspawn");
 		group.loadFromConfig();
 
 		// ========== Set Current Group ==========
 		ObjectManager.setCurrentGroup(group);
 		
 		// ========== Create Items ==========
-		ObjectManager.addItem("saltwateregg", new ItemSaltwaterEgg());
+		ObjectManager.addItem("saltwaterspawn", new ItemSaltwaterEgg());
 
-        int rawFoodEffectID = Potion.blindness.id;
+        Potion rawFoodEffectID = Potion.getPotionFromResourceLocation("blindness");
         if(ObjectManager.getPotionEffect("weight") != null)
-            rawFoodEffectID = ObjectManager.getPotionEffect("weight").getId();
+            rawFoodEffectID = ObjectManager.getPotionEffect("weight");
         ObjectManager.addItem("ikameatraw", new ItemCustomFood("ikameatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(rawFoodEffectID, 45, 2, 0.8F));
         ObjectLists.addItem("rawfish", ObjectManager.getItem("ikameatraw"));
         OreDictionary.registerOre("listAllfishraw", ObjectManager.getItem("ikameatraw"));
 
-        ObjectManager.addItem("ikameatcooked", new ItemCustomFood("ikameatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(Potion.waterBreathing.id, 20, 2, 1.0F).setAlwaysEdible());
+        ObjectManager.addItem("ikameatcooked", new ItemCustomFood("ikameatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(Potion.getPotionFromResourceLocation("water_breathing"), 20, 2, 1.0F).setAlwaysEdible());
         ObjectLists.addItem("cookedfish", ObjectManager.getItem("ikameatcooked"));
         OreDictionary.registerOre("listAllfishcooked", ObjectManager.getItem("ikameatcooked"));
 
-        ObjectManager.addItem("seashellmaki", new ItemCustomFood("seashellmaki", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(Potion.waterBreathing.id, 120, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
+        ObjectManager.addItem("seashellmaki", new ItemCustomFood("seashellmaki", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(Potion.getPotionFromResourceLocation("water_breathing"), 120, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
         ObjectLists.addItem("cookedfish", ObjectManager.getItem("seashellmaki"));
 		
 		// ========== Create Mobs ==========
-		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("saltwateregg"), new DispenserBehaviorMobEggCustom());
+		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("saltwaterspawn"), new DispenserBehaviorMobEggCustom());
 		MobInfo newMob;
         
         newMob = new MobInfo(group, "lacedon", EntityLacedon.class, 0x000099, 0x2244FF)
@@ -116,14 +116,10 @@ public class SaltwaterMobs {
 		newMob.spawnInfo.setSpawnTypes("SKY")
 				.setSpawnWeight(4).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
-
-		
-		// ========== Create Projectiles ==========
-		//ObjectManager.addProjectile("ember", EntityEmber.class, ObjectManager.getItem("embercharge"), new DispenserBehaviorEmber());
 		
 		
 		// ========== Register Models ==========
-		proxy.registerModels();
+		proxy.registerModels(this.group);
 	}
 	
 	
@@ -172,13 +168,6 @@ public class SaltwaterMobs {
 				new ItemStack(ObjectManager.getItem("ikameatcooked"), 1, 0),
 				new Object[] { ObjectManager.getItem("seashellmaki") }
 			));
-
-		/*GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("emberscepter"), 1, 0),
-				new Object[] { "CCC", "CRC", "CRC",
-				Character.valueOf('C'), ObjectManager.getItem("embercharge"),
-				Character.valueOf('R'), Item.blazeRod
-			}));*/
 		
 		// ========== Smelting ==========
 		GameRegistry.addSmelting(ObjectManager.getItem("ikameatraw"), new ItemStack(ObjectManager.getItem("ikameatcooked"), 1), 0.5f);

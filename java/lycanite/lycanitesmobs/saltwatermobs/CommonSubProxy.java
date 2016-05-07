@@ -1,8 +1,10 @@
 package lycanite.lycanitesmobs.saltwatermobs;
 
+import lycanite.lycanitesmobs.api.info.GroupInfo;
+
 public class CommonSubProxy {
 	
 	
 	// ========== Client Only ==========
-    public void registerModels() {}
+    public void registerModels(GroupInfo groupInfo) {}
 }

@@ -17,7 +17,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
@@ -165,7 +165,7 @@ public class EntityRaiko extends EntityCreatureBase implements IMob, IGroupHunte
     @Override
     public void pickupEntity(Entity entity) {
     	super.pickupEntity(entity);
-        if(this.worldObj.getBlock((int)this.posX, (int)this.posY, (int)this.posZ) != null && this.worldObj.canBlockSeeTheSky((int)this.posX, (int)this.posY, (int)this.posZ))
+        if(this.worldObj.getBlockState(this.getPosition()) != null && this.worldObj.canBlockSeeSky(this.getPosition()))
     	    this.leap(1.0F, 2.0D);
     }
 
@@ -173,8 +173,8 @@ public class EntityRaiko extends EntityCreatureBase implements IMob, IGroupHunte
     public void dropPickupEntity() {
     	// Drop Weight Effect:
         if(this.pickupEntity != null && this.pickupEntity instanceof EntityLivingBase) {
-            if(ObjectManager.getPotionEffect("Weight") != null && ObjectManager.getPotionEffect("Weight").id < Potion.potionTypes.length)
-                ((EntityLivingBase)this.pickupEntity).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("Weight").id, this.getEffectDuration(5), 1));
+            if(ObjectManager.getPotionEffect("weight") != null)
+                ((EntityLivingBase)this.pickupEntity).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("weight"), this.getEffectDuration(5), 1));
         }
     	super.dropPickupEntity();
     }
@@ -196,9 +196,9 @@ public class EntityRaiko extends EntityCreatureBase implements IMob, IGroupHunte
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-    	if(ObjectManager.getPotionEffect("Weight") != null)
-        	if(potionEffect.getPotionID() == ObjectManager.getPotionEffect("Weight").id) return false;
-        if(potionEffect.getPotionID() == Potion.blindness.id) return false;
+        if(ObjectManager.getPotionEffect("weight") != null)
+            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("weight")) return false;
+        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("blindness")) return false;
         return super.isPotionApplicable(potionEffect);
     }
 
@@ -209,9 +209,9 @@ public class EntityRaiko extends EntityCreatureBase implements IMob, IGroupHunte
     // ========== Get Wander Position ==========
     /** Takes an initial chunk coordinate for a random wander position and ten allows the entity to make changes to the position or react to it. **/
     @Override
-    public ChunkCoordinates getWanderPosition(ChunkCoordinates wanderPosition) {
+    public BlockPos getWanderPosition(BlockPos wanderPosition) {
         if(this.hasPickupEntity() && this.getPickupEntity() instanceof EntityPlayer)
-            wanderPosition.posY = this.restrictYHeightFromGround(wanderPosition, 6, 14);
+            wanderPosition = new BlockPos(wanderPosition.getX(), this.restrictYHeightFromGround(wanderPosition, 6, 14), wanderPosition.getZ());
         return wanderPosition;
     }
 }

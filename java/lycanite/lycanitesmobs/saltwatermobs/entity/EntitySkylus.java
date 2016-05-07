@@ -1,13 +1,19 @@
 package lycanite.lycanitesmobs.saltwatermobs.entity;
 
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.IGroupAnimal;
+import lycanite.lycanitesmobs.api.IGroupPredator;
+import lycanite.lycanitesmobs.api.IGroupPrey;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
+import lycanite.lycanitesmobs.api.info.MobInfo;
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
+import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -15,42 +21,41 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
 
-public class EntityLacedon extends EntityCreatureTameable implements IMob {
+public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroupPredator {
 	
 	EntityAIWander wanderAI = new EntityAIWander(this);
     
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityLacedon(World world) {
+    public EntitySkylus(World world) {
         super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 0;
         this.experience = 7;
-        this.spawnsOnLand = true;
+        this.spawnsOnLand = false;
         this.spawnsInWater = true;
         this.hasAttackSound = true;
 
-        this.babySpawnChance = 0.1D;
+        this.babySpawnChance = 0.01D;
         this.canGrow = true;
         
-        this.setWidth = 0.8F;
+        this.setWidth = 1.5F;
         this.setHeight = 1.6F;
         this.setupMob();
         
         // AI Tasks:
-        this.getNavigator().setCanSwim(true);
-        this.getNavigator().setAvoidsWater(false);
-        this.tasks.addTask(0, new EntityAISwimming(this).setSink(true));
-        this.tasks.addTask(1, new EntityAIStayByWater(this).setSpeed(1.25D));
+        this.tasks.addTask(1, new EntityAIStayByWater(this));
         this.tasks.addTask(2, this.aiSit);
-        this.tasks.addTask(3, new EntityAIAttackMelee(this).setLongMemory(false));
+        this.tasks.addTask(3, new EntityAIAttackMelee(this).setLongMemory(false).setRange(1D));
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
         this.tasks.addTask(6, wanderAI);
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
@@ -60,6 +65,11 @@ public class EntityLacedon extends EntityCreatureTameable implements IMob {
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
+        this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
+        if(MobInfo.predatorsAttackAnimals) {
+            this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupAnimal.class).setPackHuntingScale(1, 3));
+            this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(EntityAnimal.class).setPackHuntingScale(1, 3));
+        }
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
     
@@ -67,8 +77,8 @@ public class EntityLacedon extends EntityCreatureTameable implements IMob {
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 15D);
-		baseAttributes.put("movementSpeed", 0.16D);
+		baseAttributes.put("maxHealth", 20D);
+		baseAttributes.put("movementSpeed", 0.24D);
 		baseAttributes.put("knockbackResistance", 0.0D);
 		baseAttributes.put("followRange", 32D);
 		baseAttributes.put("attackDamage", 2D);
@@ -78,10 +88,7 @@ public class EntityLacedon extends EntityCreatureTameable implements IMob {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.fish), 1).setBurningDrop(new ItemStack(Items.cooked_fished)).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.fish, 1, 1), 0.5F).setBurningDrop(new ItemStack(Items.cooked_fished, 1, 1)).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.fish, 1, 2), 0.1F).setMinAmount(1).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Items.fish, 1, 3), 0.25F).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.dye, 1, 0), 1).setMinAmount(1).setMaxAmount(5));
     }
     
     
@@ -95,7 +102,7 @@ public class EntityLacedon extends EntityCreatureTameable implements IMob {
         
         // Wander Pause Rates:
 		if(this.isInWater())
-			this.wanderAI.setPauseRate(120);
+			this.wanderAI.setPauseRate(20);
 		else
 			this.wanderAI.setPauseRate(0);
     }
@@ -104,41 +111,46 @@ public class EntityLacedon extends EntityCreatureTameable implements IMob {
     // ==================================================
     //                      Movement
     // ==================================================
-    // ========== Movement Speed Modifier ==========
+	// ========== Movement Speed Modifier ==========
     @Override
     public float getAISpeedModifier() {
-    	if(this.isInWater()) // Checks specifically just for water.
-    		return 8.0F;
-    	else if(this.waterContact()) // Checks for water, rain, etc.
-    		return 1.5F;
-    	return super.getAISpeedModifier();
-    }
-    
-	// Pathing Weight:
-	@Override
-	public float getBlockPathWeight(int par1, int par2, int par3) {
-		int waterWeight = 10;
-		
-        if(this.worldObj.getBlock(par1, par2, par3) == Blocks.water)
-        	return (super.getBlockPathWeight(par1, par2, par3) + 1) * (waterWeight + 1);
-		if(this.worldObj.getBlock(par1, par2, par3) == Blocks.flowing_water)
-			return (super.getBlockPathWeight(par1, par2, par3) + 1) * waterWeight;
-        if(this.worldObj.isRaining() && this.worldObj.canBlockSeeTheSky(par1, par2, par3))
-        	return (super.getBlockPathWeight(par1, par2, par3) + 1) * (waterWeight + 1);
-        
-        if(this.getAttackTarget() != null)
-        	return super.getBlockPathWeight(par1, par2, par3);
-        if(this.waterContact())
-			return -999999.0F;
-		
-		return super.getBlockPathWeight(par1, par2, par3);
+    	if(this.getHealth() > (this.getMaxHealth() / 2)) // Slower with shell.
+    		return 0.25F;
+    	return 1.0F;
     }
 	
-	// Pushed By Water:
+    // Pathing Weight:
 	@Override
-	public boolean isPushedByWater() {
-        return false;
+	public float getBlockPathWeight(int x, int y, int z) {
+        int waterWeight = 10;
+
+        Block block = this.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock();
+        if(block == Blocks.water)
+            return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
+        if(block == Blocks.flowing_water)
+            return (super.getBlockPathWeight(x, y, z) + 1) * waterWeight;
+        if(this.worldObj.isRaining() && this.worldObj.canBlockSeeSky(new BlockPos(x, y, z)))
+            return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
+
+        if(this.getAttackTarget() != null)
+            return super.getBlockPathWeight(x, y, z);
+        if(this.waterContact())
+            return -999999.0F;
+
+        return super.getBlockPathWeight(x, y, z);
     }
+	
+	// Swimming:
+	@Override
+	public boolean canSwim() {
+		return true;
+	}
+	
+	// Walking:
+	@Override
+	public boolean canWalk() {
+		return false;
+	}
     
     
     // ==================================================
@@ -152,19 +164,26 @@ public class EntityLacedon extends EntityCreatureTameable implements IMob {
     	
     	// Effect:
         if(target instanceof EntityLivingBase) {
-    		if(ObjectManager.getPotionEffect("Weight") != null && ObjectManager.getPotionEffect("Weight").id < Potion.potionTypes.length)
-    			((EntityLivingBase)target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("Weight").id, this.getEffectDuration(5), 1));
+    		((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("blindness"), this.getEffectDuration(5), 1));
         }
         
         return true;
     }
     
+	// ========== Attack Haste Modifier ==========
+    @Override
+    public double getHasteMultiplier() {
+    	if(this.getHealth() > (this.getMaxHealth() / 2)) // Slower with shell.
+    		return 0.25F;
+    	return 1.0F;
+    }
+    
     // ========== Is Aggressive ==========
     @Override
     public boolean isAggressive() {
-    	if(this.getAir() <= -100)
+    	if(this.isInWater())
     		return false;
-    	return super.isAggressive();
+    	else return super.isAggressive();
     }
     
     
@@ -173,9 +192,9 @@ public class EntityLacedon extends EntityCreatureTameable implements IMob {
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-    	if(ObjectManager.getPotionEffect("Weight") != null)
-        	if(potionEffect.getPotionID() == ObjectManager.getPotionEffect("Weight").id) return false;
-        if(potionEffect.getPotionID() == Potion.blindness.id) return false;
+        if(ObjectManager.getPotionEffect("weight") != null)
+            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("weight")) return false;
+        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("blindness")) return false;
         return super.isPotionApplicable(potionEffect);
     }
     
@@ -187,6 +206,18 @@ public class EntityLacedon extends EntityCreatureTameable implements IMob {
     @Override
     public boolean canBreatheAboveWater() {
         return false;
+    }
+    
+    
+    // ==================================================
+   	//                    Taking Damage
+   	// ==================================================
+    // ========== Damage Modifier ==========
+    /** A multiplier that alters how much damage this mob receives from the given DamageSource, use for resistances and weaknesses. Note: The defense multiplier is handled before this. **/
+    public float getDamageModifier(DamageSource damageSrc) {
+    	if(this.getHealth() > (this.getMaxHealth() / 2)) // Stronger with shell.
+    		return 0.25F;
+    	return 1.0F;
     }
     
     

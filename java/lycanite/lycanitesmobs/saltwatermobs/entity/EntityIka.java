@@ -7,6 +7,7 @@ import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
@@ -48,8 +50,6 @@ public class EntityIka extends EntityCreatureAgeable implements IAnimals, IGroup
         this.setupMob();
         
         // AI Tasks:
-        this.getNavigator().setCanSwim(true);
-        this.getNavigator().setAvoidsWater(false);
         this.tasks.addTask(0, new EntityAISwimming(this).setSink(true));
         this.tasks.addTask(1, new EntityAIAttackMelee(this).setLongMemory(false));
         this.tasks.addTask(2, new EntityAITempt(this).setItemList("Vegetables"));
@@ -119,23 +119,24 @@ public class EntityIka extends EntityCreatureAgeable implements IAnimals, IGroup
     }
 	
     // Pathing Weight:
-	@Override
-	public float getBlockPathWeight(int par1, int par2, int par3) {
-		int waterWeight = 10;
-		
-        if(this.worldObj.getBlock(par1, par2, par3) == Blocks.water)
-        	return (super.getBlockPathWeight(par1, par2, par3) + 1) * (waterWeight + 1);
-		if(this.worldObj.getBlock(par1, par2, par3) == Blocks.flowing_water)
-			return (super.getBlockPathWeight(par1, par2, par3) + 1) * waterWeight;
-        if(this.worldObj.isRaining() && this.worldObj.canBlockSeeTheSky(par1, par2, par3))
-        	return (super.getBlockPathWeight(par1, par2, par3) + 1) * (waterWeight + 1);
-        
+    @Override
+    public float getBlockPathWeight(int x, int y, int z) {
+        int waterWeight = 10;
+        BlockPos pos = new BlockPos(x, y, z);
+        IBlockState blockState = this.worldObj.getBlockState(pos);
+        if(blockState.getBlock() == Blocks.water)
+            return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
+        if(blockState.getBlock() == Blocks.flowing_water)
+            return (super.getBlockPathWeight(x, y, z) + 1) * waterWeight;
+        if(this.worldObj.isRaining() && this.worldObj.canBlockSeeSky(pos))
+            return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
+
         if(this.getAttackTarget() != null)
-        	return super.getBlockPathWeight(par1, par2, par3);
+            return super.getBlockPathWeight(x, y, z);
         if(this.waterContact())
-			return -999999.0F;
-		
-		return super.getBlockPathWeight(par1, par2, par3);
+            return -999999.0F;
+
+        return super.getBlockPathWeight(x, y, z);
     }
 
     // Pushed By Water:
@@ -146,7 +147,7 @@ public class EntityIka extends EntityCreatureAgeable implements IAnimals, IGroup
 
     // ========== Can leash ==========
     @Override
-    public boolean canLeash(EntityPlayer player) { return true; }
+    public boolean canBeLeashedTo(EntityPlayer player) { return true; }
 
     // ========== Can Be Tempted ==========
     @Override
@@ -168,9 +169,9 @@ public class EntityIka extends EntityCreatureAgeable implements IAnimals, IGroup
 
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-    	if(ObjectManager.getPotionEffect("Weight") != null)
-        	if(potionEffect.getPotionID() == ObjectManager.getPotionEffect("Weight").id) return false;
-        if(potionEffect.getPotionID() == Potion.blindness.id) return false;
+        if(ObjectManager.getPotionEffect("weight") != null)
+            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("weight")) return false;
+        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("blindness")) return false;
         return super.isPotionApplicable(potionEffect);
     }
     

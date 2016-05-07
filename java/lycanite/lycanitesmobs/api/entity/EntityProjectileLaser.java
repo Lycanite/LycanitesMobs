@@ -277,16 +277,18 @@ public class EntityProjectileLaser extends EntityProjectileBase {
 			this.laserEnd.onUpdateEnd(newTargetX, newTargetY, newTargetZ);
 			
 			// Damage:
-			if(this.laserTime % this.laserDelay == 0 && this.isEntityAlive())
-				if(target != null && target.entityHit != null)
-					if(this.laserEnd.getDistanceToEntity(target.entityHit) <= (this.laserWidth * 10)) {
-						boolean doDamage = true;
-						if(target.entityHit instanceof EntityLivingBase) {
-							doDamage = this.canDamage((EntityLivingBase)target.entityHit);
-						}
-						if(doDamage)
-							this.updateDamage(target.entityHit);
-					}
+			if(this.laserTime % this.laserDelay == 0 && this.isEntityAlive()) {
+                if (target != null && target.entityHit != null) {
+                    if(this.laserEnd.getDistanceToEntity(target.entityHit) <= (this.laserWidth * 10)) {
+                        boolean doDamage = true;
+                        if (target.entityHit instanceof EntityLivingBase) {
+                            doDamage = this.canDamage((EntityLivingBase) target.entityHit);
+                        }
+                        if (doDamage)
+                            this.updateDamage(target.entityHit);
+                    }
+                }
+            }
 		}
 		
 		this.dataWatcher.set(LASER_END_ID, this.laserEndRef);

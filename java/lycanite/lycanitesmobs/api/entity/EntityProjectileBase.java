@@ -285,7 +285,7 @@ public class EntityProjectileBase extends EntityThrowable {
      //========== Do Damage Check ==========
      public boolean canDamage(EntityLivingBase targetEntity) {
     	 EntityLivingBase owner = this.getThrower();
-	    if(owner != null) {
+	     if(owner != null) {
 
             if(owner instanceof EntityCreatureBase) {
                 EntityCreatureBase ownerCreature = (EntityCreatureBase)owner;

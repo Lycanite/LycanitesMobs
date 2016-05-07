@@ -371,12 +371,12 @@ public class PetEntry {
             if(this.host.getRNG().nextBoolean())
                 randomAngle = -randomAngle;
             double[] spawnPos = entityCreature.getFacingPosition(this.host, -1, randomAngle);
-            if(!entity.worldObj.isSideSolid(new BlockPos((int)spawnPos[0], (int)spawnPos[1], (int)spawnPos[2]), EnumFacing.UP))
-                entity.setLocationAndAngles((int)spawnPos[0], (int)spawnPos[1], (int)spawnPos[2], this.host.rotationYaw, 0.0F);
+            if(!this.entity.worldObj.isSideSolid(new BlockPos((int)spawnPos[0], (int)spawnPos[1], (int)spawnPos[2]), EnumFacing.UP))
+                this.entity.setLocationAndAngles((int)spawnPos[0], (int)spawnPos[1], (int)spawnPos[2], this.host.rotationYaw, 0.0F);
             else {
                 spawnPos = entityCreature.getFacingPosition(this.host, -1, -randomAngle);
-                if(entity.worldObj.isSideSolid(new BlockPos((int) spawnPos[0], (int) spawnPos[1], (int) spawnPos[2]), EnumFacing.UP))
-                    entity.setLocationAndAngles((int) spawnPos[0], (int) spawnPos[1], (int) spawnPos[2], this.host.rotationYaw, 0.0F);
+                if(this.entity.worldObj.isSideSolid(new BlockPos((int) spawnPos[0], (int) spawnPos[1], (int) spawnPos[2]), EnumFacing.UP))
+                    this.entity.setLocationAndAngles((int) spawnPos[0], (int) spawnPos[1], (int) spawnPos[2], this.host.rotationYaw, 0.0F);
             }
 
             // Temporary:
@@ -406,7 +406,7 @@ public class PetEntry {
         }
 
         this.onSpawnEntity(this.entity);
-        this.host.worldObj.spawnEntityInWorld(entity);
+        this.host.worldObj.spawnEntityInWorld(this.entity);
     }
 
     /** Called when the entity for this entry is spawned just before it is added to the world. **/

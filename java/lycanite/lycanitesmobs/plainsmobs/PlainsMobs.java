@@ -78,11 +78,11 @@ public class PlainsMobs {
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("makameatraw"));
 		OreDictionary.registerOre("listAllporkraw", ObjectManager.getItem("makameatraw"));
 		
-		ObjectManager.addItem("makameatcooked", new ItemCustomFood("makameatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(Potion.getPotionFromResourceLocation("absorbtion"), 10, 2, 1.0F).setAlwaysEdible());
+		ObjectManager.addItem("makameatcooked", new ItemCustomFood("makameatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(Potion.getPotionFromResourceLocation("absorption"), 10, 2, 1.0F).setAlwaysEdible());
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("makameatcooked"));
 		OreDictionary.registerOre("listAllporkcooked", ObjectManager.getItem("makameatcooked"));
 		
-		ObjectManager.addItem("bulwarkburger", new ItemCustomFood("bulwarkburger", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(Potion.getPotionFromResourceLocation("absorbtion"), 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
+		ObjectManager.addItem("bulwarkburger", new ItemCustomFood("bulwarkburger", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(Potion.getPotionFromResourceLocation("absorption"), 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("bulwarkburger"));
 
 		ObjectManager.addItem("ventoraptortreat", new ItemTreat("ventoraptortreat", group));

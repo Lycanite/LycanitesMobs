@@ -1,20 +1,10 @@
 package lycanite.lycanitesmobs.freshwatermobs.entity;
 
-import java.util.HashMap;
-
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupFire;
 import lycanite.lycanitesmobs.api.IGroupWater;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackRanged;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowOwner;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerAttack;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerRevenge;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerThreats;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
+import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -24,8 +14,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+
+import java.util.HashMap;
 
 public class EntityJengu extends EntityCreatureTameable implements IMob, IGroupWater {
 
@@ -49,8 +42,6 @@ public class EntityJengu extends EntityCreatureTameable implements IMob, IGroupW
         this.stepHeight = 1.0F;
         
         // AI Tasks:
-        this.getNavigator().setCanSwim(true);
-        this.getNavigator().setAvoidsWater(false);
         this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(100).setRange(14.0F).setMinChaseDistance(5.0F).setChaseTime(-1));
         this.tasks.addTask(3, this.aiSit);
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
@@ -95,8 +86,8 @@ public class EntityJengu extends EntityCreatureTameable implements IMob, IGroupW
         // Particles:
         if(this.worldObj.isRemote)
 	        for(int i = 0; i < 2; ++i) {
-                this.worldObj.spawnParticle("splash", this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
-                this.worldObj.spawnParticle("dripWater", this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
+                this.worldObj.spawnParticle(EnumParticleTypes.WATER_SPLASH, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
+                this.worldObj.spawnParticle(EnumParticleTypes.DRIP_WATER, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
             }
     }
     
@@ -167,9 +158,9 @@ public class EntityJengu extends EntityCreatureTameable implements IMob, IGroupW
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
         if(ObjectManager.getPotionEffect("Penetration") != null)
-            if(potionEffect.getPotionID() == ObjectManager.getPotionEffect("Penetration").id) return false;
+            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("Penetration")) return false;
         if(ObjectManager.getPotionEffect("Paralysis") != null)
-            if(potionEffect.getPotionID() == ObjectManager.getPotionEffect("Paralysis").id) return false;
+            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("Paralysis")) return false;
         return super.isPotionApplicable(potionEffect);
     }
     

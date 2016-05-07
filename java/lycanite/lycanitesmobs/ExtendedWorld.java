@@ -64,7 +64,7 @@ public class ExtendedWorld extends WorldSavedData {
 
         if (world.MAX_ENTITY_RADIUS < 50)
             world.MAX_ENTITY_RADIUS = 50;
-		WorldSavedData worldSavedData = world.perWorldStorage.loadData(ExtendedWorld.class, EXT_PROP_NAME); //world.loadItemData(ExtendedWorld.class, EXT_PROP_NAME);
+		WorldSavedData worldSavedData = world.getPerWorldStorage().loadData(ExtendedWorld.class, EXT_PROP_NAME);
 		if(worldSavedData != null) {
 			worldExt = (ExtendedWorld)worldSavedData;
 			worldExt.world = world;
@@ -72,7 +72,7 @@ public class ExtendedWorld extends WorldSavedData {
 		}
 		else {
 			worldExt = new ExtendedWorld(world);
-			world.perWorldStorage.setData(EXT_PROP_NAME, worldExt); //world.setItemData(EXT_PROP_NAME, worldExt);
+			world.getPerWorldStorage().setData(EXT_PROP_NAME, worldExt);
 		}
 
 		loadedExtWorlds.put(world, worldExt);
@@ -136,7 +136,7 @@ public class ExtendedWorld extends WorldSavedData {
     }
 
     protected String getConfigEntryName(String name) {
-        return name + " " + this.world.provider.getDimensionName() + " (" + this.world.provider.dimensionId + ")";
+        return name + " " + this.world.provider.getDimensionType().getName() + " (" + this.world.provider.getDimension() + ")";
     }
 	
 	
@@ -216,7 +216,7 @@ public class ExtendedWorld extends WorldSavedData {
 
         int dimensionID = 0;
         if(this.world.provider != null)
-            dimensionID = this.world.provider.dimensionId;
+            dimensionID = this.world.provider.getDimension();
 
         int currentDay = (int)Math.floor((this.useTotalWorldTime ? this.world.getTotalWorldTime() : this.world.getWorldTime()) / 24000D);
         int currentMin = (int)((long)Math.floor((this.useTotalWorldTime ? this.world.getTotalWorldTime() : this.world.getWorldTime()) / 1200D) % 20);
@@ -441,10 +441,10 @@ public class ExtendedWorld extends WorldSavedData {
     /** Sends a packet to all clients updating their events for the provided world. **/
     public void updateAllClientsEvents() {
         MessageWorldEvent message = new MessageWorldEvent(this.getWorldEventType());
-        LycanitesMobs.packetHandler.sendToDimension(message, this.world.provider.dimensionId);
+        LycanitesMobs.packetHandler.sendToDimension(message, this.world.provider.getDimension());
         for(MobEventServer mobEventServer : this.serverMobEvents) {
             MessageMobEvent messageMobEvent = new MessageMobEvent(mobEventServer.mobEvent != null ? mobEventServer.mobEvent.name : "");
-            LycanitesMobs.packetHandler.sendToDimension(messageMobEvent, this.world.provider.dimensionId);
+            LycanitesMobs.packetHandler.sendToDimension(messageMobEvent, this.world.provider.getDimension());
         }
     }
 	

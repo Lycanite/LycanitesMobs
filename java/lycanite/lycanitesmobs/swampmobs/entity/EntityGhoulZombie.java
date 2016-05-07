@@ -1,17 +1,7 @@
 package lycanite.lycanitesmobs.swampmobs.entity;
 
-import java.util.HashMap;
-
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIBreakDoor;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIMoveVillage;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
+import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -23,9 +13,12 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
+
+import java.util.HashMap;
 
 public class EntityGhoulZombie extends EntityCreatureAgeable implements IMob {
     
@@ -50,7 +43,11 @@ public class EntityGhoulZombie extends EntityCreatureAgeable implements IMob {
         this.setupMob();
         
         // AI Tasks:
-        this.getNavigator().setBreakDoors(true);
+        if(this.getNavigator() instanceof PathNavigateGround) {
+            PathNavigateGround pathNavigateGround = (PathNavigateGround)this.getNavigator();
+            pathNavigateGround.setBreakDoors(true);
+            pathNavigateGround.setAvoidSun(true);
+        }
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIBreakDoor(this));
         this.tasks.addTask(3, new EntityAIAttackMelee(this).setTargetClass(EntityPlayer.class).setLongMemory(false));
@@ -92,10 +89,10 @@ public class EntityGhoulZombie extends EntityCreatureAgeable implements IMob {
     public boolean meleeAttack(Entity target, double damageScale) {
     	if(!super.meleeAttack(target, damageScale))
     		return false;
-    	
-    	// Wither:
+
+        // Effect:
         if(target instanceof EntityLivingBase) {
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.poison.id, this.getEffectDuration(5), 0));
+            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("poison"), this.getEffectDuration(5), 1));
         }
         
         return true;
@@ -103,23 +100,23 @@ public class EntityGhoulZombie extends EntityCreatureAgeable implements IMob {
     
     // ========== On Kill ==========
     @Override
-    public void onKillEntity(EntityLivingBase par1EntityLivingBase) {
-        super.onKillEntity(par1EntityLivingBase);
+    public void onKillEntity(EntityLivingBase entityLivingBase) {
+        super.onKillEntity(entityLivingBase);
 
-        if(this.worldObj.difficultySetting.getDifficultyId() >= 2 && par1EntityLivingBase instanceof EntityVillager) {
-            if (this.worldObj.difficultySetting.getDifficultyId() == 2 && this.rand.nextBoolean()) return;
+        if(this.worldObj.getDifficulty().getDifficultyId() >= 2 && entityLivingBase instanceof EntityVillager) {
+            if (this.worldObj.getDifficulty().getDifficultyId() == 2 && this.rand.nextBoolean()) return;
 
-            EntityZombie entityzombie = new EntityZombie(this.worldObj);
-            entityzombie.copyLocationAndAnglesFrom(par1EntityLivingBase);
-            this.worldObj.removeEntity(par1EntityLivingBase);
-            entityzombie.onSpawnWithEgg((IEntityLivingData)null);
-            entityzombie.setVillager(true);
+            EntityZombie entityZombie = new EntityZombie(this.worldObj);
+            entityZombie.copyLocationAndAnglesFrom(entityLivingBase);
+            this.worldObj.removeEntity(entityLivingBase);
+            entityZombie.onInitialSpawn(this.worldObj.getDifficultyForLocation(this.getPosition()), (IEntityLivingData) null);
+            entityZombie.setVillagerType(((EntityVillager) entityLivingBase).getProfession());
 
-            if(par1EntityLivingBase.isChild())
-                entityzombie.setChild(true);
+            if(entityLivingBase.isChild())
+                entityZombie.setChild(true);
 
-            this.worldObj.spawnEntityInWorld(entityzombie);
-            this.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1016, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
+            this.worldObj.spawnEntityInWorld(entityZombie);
+            this.worldObj.playAuxSFXAtEntity(null, 1016, entityZombie.getPosition(), 0);
         }
     }
     
@@ -128,12 +125,12 @@ public class EntityGhoulZombie extends EntityCreatureAgeable implements IMob {
    	//                     Immunities
    	// ==================================================
     @Override
-    public boolean isPotionApplicable(PotionEffect par1PotionEffect) {
-        if(par1PotionEffect.getPotionID() == Potion.poison.id) return false;
-        if(par1PotionEffect.getPotionID() == Potion.blindness.id) return false;
-        super.isPotionApplicable(par1PotionEffect);
-        return true;
+    public boolean isPotionApplicable(PotionEffect potionEffect) {
+        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("poison")) return false;
+        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("blindness")) return false;
+        return super.isPotionApplicable(potionEffect);
     }
+
     @Override
     public boolean daylightBurns() { return !this.isChild(); }
 	

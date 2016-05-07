@@ -2,7 +2,7 @@ package lycanite.lycanitesmobs.api.entity.ai;
 
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.math.BlockPos;
 
 public class EntityAIStayByHome extends EntityAIBase {
 	// Targets:
@@ -64,14 +64,14 @@ public class EntityAIStayByHome extends EntityAIBase {
     public void startExecuting() {
         this.host.clearMovement();
         if(this.host.hasHome() && this.host.getDistanceFromHome() > 1.0F) {
-        	ChunkCoordinates homePos = this.host.getHomePosition();
+            BlockPos homePos = this.host.getHomePosition();
         	double speed = this.speed;
         	if(this.host.getDistanceFromHome() > this.host.getHomeDistanceMax())
         		speed = this.farSpeed;
 	    	if(!host.useFlightNavigator())
-	    		this.host.getNavigator().tryMoveToXYZ(homePos.posX, homePos.posY, homePos.posZ, this.speed);
+	    		this.host.getNavigator().tryMoveToXYZ(homePos.getX(), homePos.getY(), homePos.getZ(), this.speed);
 	    	else
-	    		host.flightNavigator.setTargetPosition(new ChunkCoordinates((int)homePos.posX, (int)homePos.posY, (int)homePos.posZ), speed);
+	    		host.flightNavigator.setTargetPosition(new BlockPos((int)homePos.getX(), (int)homePos.getY(), (int)homePos.getZ()), speed);
         }
     }
 }

@@ -1,12 +1,13 @@
 package lycanite.lycanitesmobs.api.info;
 
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
 
 public class DropRate {
 	// ========== Item ==========
@@ -102,7 +103,7 @@ public class DropRate {
 		
 		for(Object potionEffect : entity.getActivePotionEffects()) {
 			if(potionEffect instanceof PotionEffect) {
-				int effectID = ((PotionEffect)potionEffect).getPotionID();
+				int effectID = Potion.getIdFromPotion(((PotionEffect) potionEffect).getPotion());
 				if(effectsItem.containsKey(effectID))
 					drop = effectsItem.get(effectID);
 			}

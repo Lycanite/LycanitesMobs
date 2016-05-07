@@ -1,9 +1,5 @@
 package lycanite.lycanitesmobs.plainsmobs.entity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import lycanite.lycanitesmobs.api.IGroupAlpha;
 import lycanite.lycanitesmobs.api.IGroupHunter;
 import lycanite.lycanitesmobs.api.IGroupPredator;
@@ -11,21 +7,7 @@ import lycanite.lycanitesmobs.api.IGroupPrey;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIAvoid;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowOwner;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIGetBlock;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIGetItem;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAvoid;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerAttack;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerRevenge;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerThreats;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
+import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import net.minecraft.block.Block;
@@ -39,8 +21,12 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class EntityKobold extends EntityCreatureTameable implements IMob, IGroupPrey {
     public boolean torchGreifing = true;
@@ -100,6 +86,7 @@ public class EntityKobold extends EntityCreatureTameable implements IMob, IGroup
 		baseAttributes.put("knockbackResistance", 0.0D);
 		baseAttributes.put("followRange", 16D);
 		baseAttributes.put("attackDamage", 2D);
+        baseAttributes.put("attackSpeed", 4D);
         super.applyEntityAttributes(baseAttributes);
     }
 	
@@ -134,20 +121,21 @@ public class EntityKobold extends EntityCreatureTameable implements IMob, IGroup
         super.onLivingUpdate();
         
         // Torch Looting:
-        if(!this.isTamed() && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing") && this.torchGreifing) {
+        if(!this.isTamed() && this.worldObj.getGameRules().getBoolean("mobGriefing") && this.torchGreifing) {
 	        if(this.torchLootingTime-- <= 0) {
 	        	this.torchLootingTime = 60;
 	        	int distance = 2;
 	        	String targetName = "torch";
-	        	List possibleTargets = new ArrayList<ChunkCoordinates>();
+	        	List possibleTargets = new ArrayList<BlockPos>();
 	            for(int x = (int)this.posX - distance; x < (int)this.posX + distance; x++) {
 	            	for(int y = (int)this.posY - distance; y < (int)this.posY + distance; y++) {
 	            		for(int z = (int)this.posZ - distance; z < (int)this.posZ + distance; z++) {
-	            			Block searchBlock = this.worldObj.getBlock(x, y, z);
+                            BlockPos pos = new BlockPos(x, y, z);
+	            			Block searchBlock = this.worldObj.getBlockState(pos).getBlock();
 	                    	if(searchBlock != null && searchBlock != Blocks.air) {
-	                    		ChunkCoordinates possibleTarget = null;
+	                    		BlockPos possibleTarget = null;
 	                			if(ObjectLists.isName(searchBlock, targetName)) {
-	                				this.worldObj.func_147480_a(x, y, z, true); //destroyBlock()
+	                				this.worldObj.destroyBlock(pos, true);
 	                				break;
 	                			}
 	                    	}
@@ -186,10 +174,10 @@ public class EntityKobold extends EntityCreatureTameable implements IMob, IGroup
    	//                     Immunities
    	// ==================================================
     @Override
-    public boolean isPotionApplicable(PotionEffect par1PotionEffect) {
-        if(par1PotionEffect.getPotionID() == Potion.weakness.id) return false;
-        if(par1PotionEffect.getPotionID() == Potion.digSlowdown.id) return false;
-        return super.isPotionApplicable(par1PotionEffect);
+    public boolean isPotionApplicable(PotionEffect potionEffect) {
+        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("weakness")) return false;
+        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("mining_fatigue")) return false;
+        return super.isPotionApplicable(potionEffect);
     }
 	
 	

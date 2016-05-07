@@ -1,7 +1,6 @@
 package lycanite.lycanitesmobs.api.pets;
 
 import lycanite.lycanitesmobs.ExtendedPlayer;
-import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.info.MobInfo;

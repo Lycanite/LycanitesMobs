@@ -1,26 +1,22 @@
 package lycanite.lycanitesmobs;
 
-import java.util.Map.Entry;
-
 import lycanite.lycanitesmobs.api.entity.EntityFear;
 import lycanite.lycanitesmobs.api.entity.EntityHitArea;
-import lycanite.lycanitesmobs.api.entity.EntityParticle;
 import lycanite.lycanitesmobs.api.entity.EntityPortal;
-import lycanite.lycanitesmobs.api.gui.*;
+import lycanite.lycanitesmobs.api.gui.GUITabMain;
+import lycanite.lycanitesmobs.api.gui.GuiOverlay;
+import lycanite.lycanitesmobs.api.gui.TabManager;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
-import lycanite.lycanitesmobs.api.info.MobInfo;
-import lycanite.lycanitesmobs.api.render.*;
+import lycanite.lycanitesmobs.api.render.RenderRegister;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class ClientProxy extends CommonProxy {
 	
 	// Render ID:
-	public static int RENDER_ID = RenderingRegistry.getNextAvailableRenderId();
+	//public static int RENDER_ID = RenderingRegistry.getNextAvailableRenderId();
 	
 	// ========== Register Event Handlers ==========
 	@Override
@@ -33,6 +29,8 @@ public class ClientProxy extends CommonProxy {
 	// ========== Register Assets ==========
 	@Override
     public void registerAssets() {
+        ObjectManager.RegisterModels();
+
 		// ========== Add GUI Textures ==========
 		GroupInfo group = LycanitesMobs.group;
 		AssetManager.addTexture("GUIInventoryCreature", group, "textures/guis/inventory_creature.png");
@@ -61,28 +59,21 @@ public class ClientProxy extends CommonProxy {
 	
 	// ========== Register Renders ==========
 	@Override
-    public void registerRenders() {
-		// Blocks:
-		RenderingRegistry.registerBlockHandler(new RenderBlock());
+    public void registerRenders(GroupInfo groupInfo) {
+
+        // Blocks:
+        //RenderingRegistry.registerBlockHandler(new RenderBlock());
 
         // Item:
-        MinecraftForgeClient.registerItemRenderer(ObjectManager.getItem("mobtoken"), new RenderItemMobToken());
-		
-		// Creatures:
-		for(Entry<String, MobInfo> mobEntry : ObjectManager.mobs.entrySet())
-            RenderingRegistry.registerEntityRenderingHandler(mobEntry.getValue().entityClass, new RenderCreature(mobEntry.getKey()));
-		
-		// Projectiles:
-		for(Entry<String, Class> projectileEntry : ObjectManager.projectiles.entrySet())
-            RenderingRegistry.registerEntityRenderingHandler(projectileEntry.getValue(), new RenderProjectile());
-		
-		// Particles:
-		RenderingRegistry.registerEntityRenderingHandler(EntityParticle.class, new RenderParticle());
-		
+        //MinecraftForgeClient.registerItemRenderer(ObjectManager.getItem("mobtoken"), new RenderItemMobToken());
+
 		// Special Entites:
-        RenderingRegistry.registerEntityRenderingHandler(EntityHitArea.class, new RenderNone());
-		RenderingRegistry.registerEntityRenderingHandler(EntityPortal.class, new RenderProjectile());
-		RenderingRegistry.registerEntityRenderingHandler(EntityFear.class, new RenderNone());
+        groupInfo.specialClasses.add(EntityHitArea.class);
+        groupInfo.specialClasses.add(EntityFear.class);
+        groupInfo.projectileClasses.add(EntityPortal.class);
+
+        RenderRegister renderRegister = new RenderRegister(groupInfo);
+        renderRegister.registerRenderFactories();
     }
 	
 	// ========== Get Client Player Entity ==========

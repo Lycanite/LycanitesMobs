@@ -6,13 +6,11 @@ import lycanite.lycanitesmobs.api.config.ConfigSpawning;
 import lycanite.lycanitesmobs.api.config.ConfigSpawning.SpawnDimensionSet;
 import lycanite.lycanitesmobs.api.config.ConfigSpawning.SpawnTypeSet;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.DungeonHooks;
-import cpw.mods.fml.common.registry.EntityRegistry;
-
-import java.util.List;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 public class SpawnInfo {
 	// ========== Global Spawn Settings ==========
@@ -216,7 +214,7 @@ public class SpawnInfo {
 				for(EnumCreatureType creatureType : this.creatureTypes) {
 					EntityRegistry.addSpawn(mobInfo.entityClass, this.spawnWeight, ignoreWorldGenSpawning ? 0 : this.spawnGroupMin, ignoreWorldGenSpawning ? 0 : this.spawnGroupMax, creatureType, this.biomes);
 					for(BiomeGenBase biome : this.biomes) {
-						if(biome == BiomeGenBase.hell) {
+						if(biome == BiomeGenBase.biomeRegistry.getObject(new ResourceLocation("hell"))) {
 							EntityRegistry.addSpawn(mobInfo.entityClass, this.spawnWeight * 10, ignoreWorldGenSpawning ? 0 : this.spawnGroupMin, ignoreWorldGenSpawning ? 0 : this.spawnGroupMax, creatureType, biome);
 							break;
 						}
@@ -244,7 +242,7 @@ public class SpawnInfo {
 				for(BiomeGenBase biome : this.biomes) {
 					if(!"".equals(biomesList))
 						biomesList += ", ";
-					biomesList += biome.biomeName;
+					biomesList += biome.getBiomeName();
 				}
 			}
 			LycanitesMobs.printDebug("MobSetup", "Biomes: " + biomesList);

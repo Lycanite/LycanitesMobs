@@ -1,7 +1,8 @@
 package lycanite.lycanitesmobs.api.entity.ai;
 
+import com.google.common.base.Predicate;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
-import net.minecraft.command.IEntitySelector;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -9,7 +10,7 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.pathfinding.PathPoint;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 
 public abstract class EntityAITarget extends EntityAIBase {
     // Targets:
@@ -17,8 +18,8 @@ public abstract class EntityAITarget extends EntityAIBase {
     protected EntityLivingBase target;
     
     // Properties:
-    protected IEntitySelector targetSelector;
-    
+    protected Predicate<Entity> targetSelector;
+
     protected boolean checkSight = true;
     protected boolean nearbyOnly = false;
     private int cantSeeTime;
@@ -91,7 +92,7 @@ public abstract class EntityAITarget extends EntityAIBase {
  	//                 Get Target Distance
  	// ==================================================
     protected double getTargetDistance() {
-    	IAttributeInstance attributeInstance = this.host.getEntityAttribute(SharedMonsterAttributes.followRange);
+    	IAttributeInstance attributeInstance = this.host.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE);
         return attributeInstance == null ? 16.0D : attributeInstance.getAttributeValue();
     }
     

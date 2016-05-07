@@ -1,18 +1,15 @@
 package lycanite.lycanitesmobs.api.network;
 
 import io.netty.buffer.ByteBuf;
-
-import java.io.IOException;
-
 import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.info.CreatureKnowledge;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class MessageCreatureKnowledge implements IMessage, IMessageHandler<MessageCreatureKnowledge, IMessage> {
 	public String creatureName;
@@ -57,13 +54,9 @@ public class MessageCreatureKnowledge implements IMessage, IMessageHandler<Messa
 	@Override
 	public void fromBytes(ByteBuf buf) {
 		PacketBuffer packet = new PacketBuffer(buf);
-		try {
-			this.creatureName = packet.readStringFromBuffer(256);
-			this.completion = packet.readDouble();
-		} catch (IOException e) {
-			LycanitesMobs.printWarning("", "There was a problem decoding the packet: " + packet + ".");
-			e.printStackTrace();
-		}
+        this.creatureName = packet.readStringFromBuffer(256);
+        this.completion = packet.readDouble();
+        LycanitesMobs.printWarning("", "There was a problem decoding the packet: " + packet + ".");
 	}
 	
 	
@@ -76,13 +69,8 @@ public class MessageCreatureKnowledge implements IMessage, IMessageHandler<Messa
 	@Override
 	public void toBytes(ByteBuf buf) {
 		PacketBuffer packet = new PacketBuffer(buf);
-		try {
-			packet.writeStringToBuffer(this.creatureName);
-			packet.writeDouble(this.completion);
-		} catch (IOException e) {
-			LycanitesMobs.printWarning("", "There was a problem encoding the packet: " + packet + ".");
-			e.printStackTrace();
-		}
+		packet.writeString(this.creatureName);
+        packet.writeDouble(this.completion);
 	}
 	
 }

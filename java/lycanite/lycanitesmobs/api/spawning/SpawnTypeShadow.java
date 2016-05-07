@@ -1,9 +1,9 @@
 package lycanite.lycanitesmobs.api.spawning;
 
-import java.util.List;
-
 import lycanite.lycanitesmobs.ExtendedWorld;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class SpawnTypeShadow extends SpawnTypeBase {
 

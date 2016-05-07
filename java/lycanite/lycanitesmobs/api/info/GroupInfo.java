@@ -1,12 +1,14 @@
 package lycanite.lycanitesmobs.api.info;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.config.ConfigSpawning;
 import lycanite.lycanitesmobs.api.config.ConfigSpawning.SpawnDimensionSet;
 import net.minecraft.world.biome.BiomeGenBase;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class GroupInfo {
@@ -29,12 +31,23 @@ public class GroupInfo {
     /** The name of the egg item this group uses. **/
     public String eggName = "spawnegg";
     
-    // ========== Mob IDs ==========
+    // ========== Mobs ==========
+    /** A list of all MobInfos assigned to this group. **/
+    public List<MobInfo> mobInfos = new ArrayList<MobInfo>();
+
     /** The next available ID for registering a mob. **/
     public int nextMobID = 0;
 
     /** The next available ID for registering a projectile. **/
     public int nextProjectileID = 100;
+
+    // ========== Projectiles ==========
+    /** A list of all Projectile Classes assigned to this group. **/
+    public List<Class> projectileClasses = new ArrayList<Class>();
+
+    // ========== Special Entities ==========
+    /** A list of all Special Entities Classes assigned to this group (to be rendered invisible). **/
+    public List<Class> specialClasses = new ArrayList<Class>();
 
     // ========== Achievement IDs ==========
     /** The base ID for this group to go from (this has the global mod achievement ID base added to it which is the LycanitesMobs base GroupInfo). Use getAchievementID(int id) to get an ID for this group. **/

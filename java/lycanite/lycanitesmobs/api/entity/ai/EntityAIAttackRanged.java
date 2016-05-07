@@ -2,12 +2,11 @@ package lycanite.lycanitesmobs.api.entity.ai;
 
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
-import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 
 public class EntityAIAttackRanged extends EntityAIBase {
     // Targets:
@@ -133,7 +132,7 @@ public class EntityAIAttackRanged extends EntityAIBase {
     		return false;
         if(!this.mountedAttacking && this.host instanceof EntityCreatureRideable) {
             EntityCreatureRideable rideableHost = (EntityCreatureRideable)this.host;
-            if(rideableHost.getRiderTarget() instanceof EntityPlayer)
+            if(rideableHost.getControllingPassenger() instanceof EntityPlayer)
                 return false;
         }
         EntityLivingBase possibleAttackTarget = this.host.getAttackTarget();
@@ -181,7 +180,7 @@ public class EntityAIAttackRanged extends EntityAIBase {
   	//                   Update Task
   	// ==================================================
     public void updateTask() {
-        double distance = this.host.getDistanceSq(this.attackTarget.posX, this.attackTarget.boundingBox.minY, this.attackTarget.posZ);
+        double distance = this.host.getDistanceSq(this.attackTarget.posX, this.attackTarget.getEntityBoundingBox().minY, this.attackTarget.posZ);
         boolean hasSight = this.host.getEntitySenses().canSee(this.attackTarget);
         float flyingHeightOffset = this.flyingHeight;
         
@@ -202,7 +201,7 @@ public class EntityAIAttackRanged extends EntityAIBase {
         	if(!this.host.useFlightNavigator())
         		this.host.getNavigator().tryMoveToEntityLiving(this.attackTarget, this.speed);
         	else
-        		this.host.flightNavigator.setTargetPosition(new ChunkCoordinates((int)this.attackTarget.posX, (int)(this.attackTarget.posY + flyingHeightOffset), (int)this.attackTarget.posZ), speed);
+        		this.host.flightNavigator.setTargetPosition(new BlockPos((int)this.attackTarget.posX, (int)(this.attackTarget.posY + flyingHeightOffset), (int)this.attackTarget.posZ), speed);
 
         this.host.getLookHelper().setLookPositionWithEntity(this.attackTarget, 30.0F, 30.0F);
         float rangeFactor;

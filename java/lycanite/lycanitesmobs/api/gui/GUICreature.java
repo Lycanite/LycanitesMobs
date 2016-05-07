@@ -1,7 +1,5 @@
 package lycanite.lycanitesmobs.api.gui;
 
-import java.util.List;
-
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
@@ -15,9 +13,11 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
-import net.minecraft.util.StatCollector;
-
+import net.minecraft.util.text.translation.I18n;
 import org.lwjgl.opengl.GL11;
+
+import java.io.IOException;
+import java.util.List;
 
 public class GUICreature extends GuiContainer {
 	public EntityCreatureBase creature;
@@ -54,8 +54,8 @@ public class GUICreature extends GuiContainer {
   	// ==================================================
 	@Override
 	protected void drawGuiContainerForegroundLayer(int i, int j) {
-		this.fontRendererObj.drawString(this.creatureInventory.getInventoryName(), 8, 6, 4210752);
-        this.fontRendererObj.drawString(StatCollector.translateToLocal(this.playerInventory.getInventoryName()), 8, this.ySize - 96 + 2, 4210752);
+		this.fontRendererObj.drawString(this.creatureInventory.getName(), 8, 6, 4210752);
+        this.fontRendererObj.drawString(I18n.translateToLocal(this.playerInventory.getName()), 8, this.ySize - 96 + 2, 4210752);
     }
 	
 	
@@ -91,7 +91,7 @@ public class GUICreature extends GuiContainer {
         int creatureWidth = 54;
         int creatureHeight = 54;
         this.drawTexturedModalRect(backX - creatureWidth + 1, backY + 17, statusWidth, 256 - creatureHeight, creatureWidth, creatureHeight);
-        GuiInventory.func_147046_a(backX + 26 - creatureWidth + 1, backY + 60, 17, (float)backX - mouseX, (float)backY - mouseY, this.creature);
+        GuiInventory.drawEntityOnScreen(backX + 26 - creatureWidth + 1, backY + 60, 17, (float) backX - mouseX, (float) backY - mouseY, this.creature);
 	}
 	
 	// ========== Draw Creature Health ===========
@@ -156,23 +156,23 @@ public class GUICreature extends GuiContainer {
         int buttonX = backX + this.xSize;
         int buttonY = backY;
         
-        String buttonText = StatCollector.translateToLocal("gui.pet.sitting") + ": " + (pet.isSitting() ? StatCollector.translateToLocal("common.yes") : StatCollector.translateToLocal("common.no"));
+        String buttonText = I18n.translateToLocal("gui.pet.sitting") + ": " + (pet.isSitting() ? I18n.translateToLocal("common.yes") : I18n.translateToLocal("common.no"));
         buttonY += buttonSpacing;
         this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.SITTING.id, buttonX + buttonSpacing, buttonY, buttonWidth, buttonHeight, buttonText));
         
-        buttonText = StatCollector.translateToLocal("gui.pet.movement") + ": " + (pet.isFollowing() ? StatCollector.translateToLocal("gui.pet.follow") : StatCollector.translateToLocal("gui.pet.wander"));
+        buttonText = I18n.translateToLocal("gui.pet.movement") + ": " + (pet.isFollowing() ? I18n.translateToLocal("gui.pet.follow") : I18n.translateToLocal("gui.pet.wander"));
         buttonY += buttonHeight + (buttonSpacing * 2);
         this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.FOLLOWING.id, buttonX + buttonSpacing, buttonY, buttonWidth, buttonHeight, buttonText));
         
-        buttonText = StatCollector.translateToLocal("gui.pet.passive") + ": " + (pet.isPassive() ? StatCollector.translateToLocal("common.yes") : StatCollector.translateToLocal("common.no"));
+        buttonText = I18n.translateToLocal("gui.pet.passive") + ": " + (pet.isPassive() ? I18n.translateToLocal("common.yes") : I18n.translateToLocal("common.no"));
         buttonY += buttonHeight + (buttonSpacing * 2);
         this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.PASSIVE.id, buttonX + buttonSpacing, buttonY, buttonWidth, buttonHeight, buttonText));
         
-        buttonText = StatCollector.translateToLocal("gui.pet.stance") + ": " + (pet.isAggressive() ? StatCollector.translateToLocal("gui.pet.aggressive") : StatCollector.translateToLocal("gui.pet.defensive"));
+        buttonText = I18n.translateToLocal("gui.pet.stance") + ": " + (pet.isAggressive() ? I18n.translateToLocal("gui.pet.aggressive") : I18n.translateToLocal("gui.pet.defensive"));
         buttonY += buttonHeight + (buttonSpacing * 2);
         this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.STANCE.id, buttonX + buttonSpacing, buttonY, buttonWidth, buttonHeight, buttonText));
         
-        buttonText = StatCollector.translateToLocal("gui.pet.pvp") + ": " + (pet.isPVP() ? StatCollector.translateToLocal("common.yes") : StatCollector.translateToLocal("common.no"));
+        buttonText = I18n.translateToLocal("gui.pet.pvp") + ": " + (pet.isPVP() ? I18n.translateToLocal("common.yes") : I18n.translateToLocal("common.no"));
         buttonY += buttonHeight + (buttonSpacing * 2);
         this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.PVP.id, buttonX + buttonSpacing, buttonY, buttonWidth, buttonHeight, buttonText));
     }
@@ -182,7 +182,7 @@ public class GUICreature extends GuiContainer {
   	//                     Actions
   	// ==================================================
 	@Override
-	protected void actionPerformed(GuiButton guiButton) {
+	protected void actionPerformed(GuiButton guiButton) throws IOException {
 		if(guiButton != null) {
 			MessageEntityGUICommand message = new MessageEntityGUICommand((byte)guiButton.id, this.creature);
 			LycanitesMobs.packetHandler.sendToServer(message);			

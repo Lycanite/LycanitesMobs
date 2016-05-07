@@ -57,7 +57,7 @@ public class EntityAIPlayerControl extends EntityAIBase {
     		return false;
     	if(!this.host.hasRiderTarget())
     		return false;
-    	if(!(this.host.getRiderTarget() instanceof EntityLivingBase))
+    	if(!(this.host.getControllingPassenger() instanceof EntityLivingBase))
     		return false;
     	return true;
     }

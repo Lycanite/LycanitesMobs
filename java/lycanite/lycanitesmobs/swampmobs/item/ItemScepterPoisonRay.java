@@ -1,13 +1,16 @@
 package lycanite.lycanitesmobs.swampmobs.item;
 
-import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
+import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileLaser;
 import lycanite.lycanitesmobs.api.item.ItemScepter;
 import lycanite.lycanitesmobs.swampmobs.SwampMobs;
 import lycanite.lycanitesmobs.swampmobs.entity.EntityPoisonRay;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
 public class ItemScepterPoisonRay extends ItemScepter {
@@ -21,7 +24,6 @@ public class ItemScepterPoisonRay extends ItemScepter {
     	this.group = SwampMobs.group;
     	this.itemName = "poisonrayscepter";
         this.setup();
-        this.textureName = "scepterpoisonray";
     }
 	
     
@@ -30,9 +32,9 @@ public class ItemScepterPoisonRay extends ItemScepter {
 	// ==================================================
     // ========== Start ==========
     @Override
-    public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
-    	this.projectileTarget = null;
-        return super.onItemRightClick(itemStack, world, player);
+    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer player, EnumHand hand) {
+        this.projectileTarget = null;
+        return super.onItemRightClick(itemStack, world, player, hand);
     }
     
     @Override
@@ -50,15 +52,15 @@ public class ItemScepterPoisonRay extends ItemScepter {
 	//                      Attack
 	// ==================================================
     @Override
-    public boolean rapidAttack(ItemStack itemStack, World world, EntityPlayer player) {
+    public boolean rapidAttack(ItemStack itemStack, World world, EntityLivingBase entity) {
     	if(!world.isRemote) {
     		if(this.projectileTarget != null && this.projectileTarget.isEntityAlive()) {
     			projectileTarget.setTime(20);
     		}
     		else {
-    			this.projectileTarget = new EntityPoisonRay(world, player, 20, 10);
+    			this.projectileTarget = new EntityPoisonRay(world, entity, 20, 10);
     			world.spawnEntityInWorld(this.projectileTarget);
-            	world.playSoundAtEntity(player, ((EntityProjectileBase)this.projectileTarget).getLaunchSound(), 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+                this.playSound(itemStack, world, entity, 1, this.projectileTarget);
     		}
     	}
     	return true;
@@ -70,7 +72,7 @@ public class ItemScepterPoisonRay extends ItemScepter {
 	// ==================================================
     @Override
     public boolean getIsRepairable(ItemStack itemStack, ItemStack repairStack) {
-        if(repairStack.getItem() == Items.fermented_spider_eye) return true;
+        if(repairStack.getItem() == Items.fermented_spider_eye || repairStack.getItem() == ObjectManager.getItem("poisongland")) return true;
         return super.getIsRepairable(itemStack, repairStack);
     }
 }

@@ -6,19 +6,15 @@ import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
-import lycanite.lycanitesmobs.api.info.CreatureKnowledge;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 public class PetEntry {
@@ -84,9 +80,9 @@ public class PetEntry {
     /** Returns a new PetEntry based off the provided entity for the provided player. **/
     public static PetEntry createFromEntity(EntityPlayer player, EntityCreatureBase entity, String petType) {
         MobInfo mobInfo = entity.mobInfo;
-        String entryName = petType + "-" + player.getCommandSenderName() + mobInfo.name + "-" + UUID.randomUUID().toString();
+        String entryName = petType + "-" + player.getName() + mobInfo.name + "-" + UUID.randomUUID().toString();
         PetEntry petEntry = new PetEntry(entryName, petType, player, mobInfo.name);
-        if(entity.hasCustomNameTag())
+        if(entity.hasCustomName())
             petEntry.setEntityName(entity.getCustomNameTag());
         petEntry.setEntitySubspeciesID(entity.getSubspeciesIndex());
         petEntry.setEntitySize(entity.sizeScale);
@@ -285,7 +281,7 @@ public class PetEntry {
                 // Teleport Entity:
                 if(this.teleportEntity) {
                     if(this.entity.worldObj != this.host.worldObj)
-                        this.entity.travelToDimension(this.host.worldObj.provider.dimensionId);
+                        this.entity.changeDimension(this.host.worldObj.provider.getDimension());
                     this.entity.setPosition(this.host.posX, this.host.posY, this.host.posZ);
                 }
 
@@ -375,11 +371,11 @@ public class PetEntry {
             if(this.host.getRNG().nextBoolean())
                 randomAngle = -randomAngle;
             double[] spawnPos = entityCreature.getFacingPosition(this.host, -1, randomAngle);
-            if(!entity.worldObj.isSideSolid((int)spawnPos[0], (int)spawnPos[1], (int)spawnPos[2], ForgeDirection.UP))
+            if(!entity.worldObj.isSideSolid(new BlockPos((int)spawnPos[0], (int)spawnPos[1], (int)spawnPos[2]), EnumFacing.UP))
                 entity.setLocationAndAngles((int)spawnPos[0], (int)spawnPos[1], (int)spawnPos[2], this.host.rotationYaw, 0.0F);
             else {
                 spawnPos = entityCreature.getFacingPosition(this.host, -1, -randomAngle);
-                if(entity.worldObj.isSideSolid((int) spawnPos[0], (int) spawnPos[1], (int) spawnPos[2], ForgeDirection.UP))
+                if(entity.worldObj.isSideSolid(new BlockPos((int) spawnPos[0], (int) spawnPos[1], (int) spawnPos[2]), EnumFacing.UP))
                     entity.setLocationAndAngles((int) spawnPos[0], (int) spawnPos[1], (int) spawnPos[2], this.host.rotationYaw, 0.0F);
             }
 

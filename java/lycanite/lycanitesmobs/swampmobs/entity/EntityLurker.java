@@ -1,34 +1,13 @@
 package lycanite.lycanitesmobs.swampmobs.entity;
 
-import java.util.HashMap;
-
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupHunter;
 import lycanite.lycanitesmobs.api.IGroupPrey;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIAvoid;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIBeg;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowOwner;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowParent;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIMate;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIStealth;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerAttack;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerRevenge;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerThreats;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetParent;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITempt;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
+import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
-import lycanite.lycanitesmobs.desertmobs.entity.EntityJoust;
-import lycanite.lycanitesmobs.desertmobs.entity.EntityJoustAlpha;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -39,9 +18,12 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.HashMap;
 
 public class EntityLurker extends EntityCreatureTameable implements IGroupHunter {
     
@@ -82,11 +64,12 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
         if(MobInfo.predatorsAttackAnimals) {
-        	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityChicken.class));
+            this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityChicken.class));
+            this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
 	        if(ObjectManager.getMob("Joust") != null)
-	        	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityJoust.class));
+	        	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(ObjectManager.getMob("Joust")));
 	        if(ObjectManager.getMob("JoustAlpha") != null)
-	        	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityJoustAlpha.class));
+	        	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(ObjectManager.getMob("JoustAlpha")));
         }
         this.targetTasks.addTask(0, new EntityAITargetParent(this).setSightCheck(false).setDistance(32.0D));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
@@ -122,7 +105,7 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
         
         // Lurker Blind Stalking:
         if(this.getAttackTarget() != null) {
-        	if(this.getAttackTarget().isPotionActive(Potion.blindness.id))
+        	if(this.getAttackTarget().isPotionActive(Potion.getPotionFromResourceLocation("blindness")))
         		this.setAvoidTarget(this.getAttackTarget());
         	else
         		this.setAvoidTarget(null);
@@ -151,8 +134,8 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
     	
     	// Effect:
         if(target instanceof EntityLivingBase) {
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.poison.id, this.getEffectDuration(8), 1));
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.blindness.id, this.getEffectDuration(8), 0));
+            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("poison"), this.getEffectDuration(8), 1));
+            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("blindness"), this.getEffectDuration(8), 0));
         }
         
         return true;
@@ -173,7 +156,7 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
 	    			if(itemstack != null && isTamingItem(itemstack))
 	    				return false;
 	    		}
-	    		if(!this.getAttackTarget().isPotionActive(Potion.blindness.id))
+	    		if(!this.getAttackTarget().isPotionActive(Potion.getPotionFromResourceLocation("blindness")))
 	    			return false;
 	    		if(this.getDistanceSqToEntity(this.getAttackTarget()) < (5.0D * 5.0D))
 	    			return false;
@@ -189,7 +172,7 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
     @Override
     public void startStealth() {
     	if(this.worldObj.isRemote) {
-            String particle = "smoke";
+            EnumParticleTypes particle = EnumParticleTypes.SMOKE_NORMAL;
             double d0 = this.rand.nextGaussian() * 0.02D;
             double d1 = this.rand.nextGaussian() * 0.02D;
             double d2 = this.rand.nextGaussian() * 0.02D;
@@ -224,11 +207,10 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
    	//                     Immunities
    	// ==================================================
     @Override
-    public boolean isPotionApplicable(PotionEffect par1PotionEffect) {
-        if(par1PotionEffect.getPotionID() == Potion.poison.id) return false;
-        if(par1PotionEffect.getPotionID() == Potion.blindness.id) return false;
-        super.isPotionApplicable(par1PotionEffect);
-        return true;
+    public boolean isPotionApplicable(PotionEffect potionEffect) {
+        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("poison")) return false;
+        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("blindness")) return false;
+        return super.isPotionApplicable(potionEffect);
     }
     
     

@@ -1,10 +1,10 @@
 package lycanite.lycanitesmobs.api.spawning;
 
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import net.minecraft.world.ChunkPosition;
-import net.minecraft.world.World;
 
 
 public class SpawnTypeWater extends SpawnTypeBase {
@@ -32,12 +32,12 @@ public class SpawnTypeWater extends SpawnTypeBase {
     public List<int[]> getSpawnCoordinates(World world, int x, int y, int z) {
     	List<int[]> blockCoords = new ArrayList<int[]>();
         int range = this.getRange(world);
-        ChunkPosition originPos = new ChunkPosition(x, y, z);
+        BlockPos originPos = new BlockPos(x, y, z);
 
         for(int i = 0; i < this.blockLimit; i++) {
-        	ChunkPosition chunkCoords = this.getRandomWaterCoord(world, originPos, range);
+            BlockPos chunkCoords = this.getRandomWaterCoord(world, originPos, range);
         	if(chunkCoords != null) {
-        		blockCoords.add(new int[] {chunkCoords.chunkPosX, chunkCoords.chunkPosY, chunkCoords.chunkPosZ});
+        		blockCoords.add(new int[] {chunkCoords.getX(), chunkCoords.getY(), chunkCoords.getZ()});
         	}
         }
         

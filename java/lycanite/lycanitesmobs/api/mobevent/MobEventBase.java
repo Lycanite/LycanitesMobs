@@ -1,8 +1,5 @@
 package lycanite.lycanitesmobs.api.mobevent;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import lycanite.lycanitesmobs.ExtendedWorld;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.config.ConfigSpawning;
@@ -11,9 +8,11 @@ import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MobEventBase {
 	// Properties:
@@ -73,7 +72,7 @@ public class MobEventBase {
     // ==================================================
     /** Returns the translated name of this event. **/
 	public String getTitle() {
-		return StatCollector.translateToLocal("mobevent." + this.name + ".name");
+		return I18n.translateToLocal("mobevent." + this.name + ".name");
 	}
 
     /** Returns a translated string to overlay the event image, this returns an empty string for english as the image itself has the title in english. **/
@@ -111,7 +110,7 @@ public class MobEventBase {
     			validDimension = true;
     		}
     		else if("VANILLA".equalsIgnoreCase(eventDimensionType)) {
-    			validDimension = world.provider.dimensionId > -2 && world.provider.dimensionId < 2;
+    			validDimension = world.provider.getDimension() > -2 && world.provider.getDimension() < 2;
     		}
     	}
 		
@@ -119,7 +118,7 @@ public class MobEventBase {
 		if(!validDimension) {
 			validDimension =  !this.dimensionWhitelist;
 	    	for(int eventDimension : this.dimensionBlacklist) {
-	    		if(world.provider.dimensionId == eventDimension) {
+	    		if(world.provider.getDimension() == eventDimension) {
 	    			validDimension = this.dimensionWhitelist;
 	    			break;
 	    		}
@@ -146,9 +145,9 @@ public class MobEventBase {
     /* Returns the rate that event mobs are spawned at in ticks. This changes based on the difficulty of the provided world. */
     public int getRate(World world) {
         int base = MobEventManager.instance.baseRate;
-        if(world.difficultySetting.getDifficultyId() <= 1)
+        if(world.getDifficulty().getDifficultyId() <= 1)
             return Math.round(base * 1.5F);
-        else if(world.difficultySetting.getDifficultyId() == 2)
+        else if(world.getDifficulty().getDifficultyId() == 2)
             return base;
         else
             return Math.round(base * 0.75F);
@@ -157,9 +156,9 @@ public class MobEventBase {
     /* Returns the distance from the player that event mobs are spawned from. This changes based on the difficulty of the provided world. */
     public int getRange(World world) {
         int base = MobEventManager.instance.baseRange;
-        if(world.difficultySetting.getDifficultyId() <= 1)
+        if(world.getDifficulty().getDifficultyId() <= 1)
             return Math.round(base * 1.5F);
-        else if(world.difficultySetting.getDifficultyId() == 2)
+        else if(world.getDifficulty().getDifficultyId() == 2)
             return base;
         else
             return Math.round(base * 0.75F);

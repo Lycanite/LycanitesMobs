@@ -1,19 +1,20 @@
 package lycanite.lycanitesmobs.api.spawning;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import lycanite.lycanitesmobs.ExtendedWorld;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class SpawnTypeDarkness extends SpawnTypeBase {
 	public boolean displayChatWarnings = true;
@@ -68,16 +69,17 @@ public class SpawnTypeDarkness extends SpawnTypeBase {
     public boolean spawnMobs(long tick, World world, int x, int y, int z, EntityPlayer player) {
     	boolean spawned = false;
 
-        ChunkCoordinates playerCoords = player.getPlayerCoordinates();
-        Block block = world.getBlock(playerCoords.posX, playerCoords.posY, playerCoords.posZ);
+        BlockPos playerCoords = player.getPosition();
+        IBlockState blockState = world.getBlockState(playerCoords);
+        Block block = blockState.getBlock();
         boolean isValidBlock = block != null;
         if(isValidBlock)
-            isValidBlock = !block.isNormalCube();
+            isValidBlock = !blockState.isNormalCube();
         if(isValidBlock)
-            isValidBlock = block.getMaterial() != Material.water;
+            isValidBlock = blockState.getMaterial() != Material.water;
 
         if(!player.capabilities.isCreativeMode && isValidBlock && tick % this.checkRate == 0 && this.enabled && this.hasSpawns()) {
-			int lightLevel = world.getBlockLightValue(playerCoords.posX, playerCoords.posY, playerCoords.posZ);
+			int lightLevel = world.getLight(playerCoords);
 			byte darknessLevel = 0;
 			if(this.darknessLevels.containsKey(player))
 				darknessLevel = (byte)Math.max(0, Math.min(2, this.darknessLevels.get(player)));
@@ -99,19 +101,19 @@ public class SpawnTypeDarkness extends SpawnTypeBase {
 				if(chance > roll) {
 					darknessLevel++;
 					if(darknessLevel == 1 && this.displayChatWarnings) {
-						String message = StatCollector.translateToLocal("spawner.darkness.level1");
-						player.addChatMessage(new ChatComponentText(message));
+						String message = I18n.translateToLocal("spawner.darkness.level1");
+						player.addChatMessage(new TextComponentString(message));
 					}
 					else if(darknessLevel == 2 && this.displayChatWarnings) {
-						String message = StatCollector.translateToLocal("spawner.darkness.level2");
-						player.addChatMessage(new ChatComponentText(message));
+						String message = I18n.translateToLocal("spawner.darkness.level2");
+						player.addChatMessage(new TextComponentString(message));
 					}
 					else if(darknessLevel == 3) {
 						if(this.displayChatWarnings) {
-							String message = StatCollector.translateToLocal("spawner.darkness.level3");
-							player.addChatMessage(new ChatComponentText(message));
+							String message = I18n.translateToLocal("spawner.darkness.level3");
+							player.addChatMessage(new TextComponentString(message));
 						}
-						spawned = super.spawnMobs(tick, world, playerCoords.posX, playerCoords.posY, playerCoords.posZ, player);
+						spawned = super.spawnMobs(tick, world, playerCoords.getX(), playerCoords.getY(), playerCoords.getZ(), player);
 						darknessLevel = 0;
 					}
 					else
@@ -122,8 +124,8 @@ public class SpawnTypeDarkness extends SpawnTypeBase {
 			// Light
 			else if(darknessLevel > 0) {
 				if(darknessLevel == 2 && this.displayChatWarnings) {
-					String message = StatCollector.translateToLocal("spawner.darkness.level1.back");
-					player.addChatMessage(new ChatComponentText(message));
+					String message = I18n.translateToLocal("spawner.darkness.level1.back");
+					player.addChatMessage(new TextComponentString(message));
 				}
 				darknessLevel--;
 			}

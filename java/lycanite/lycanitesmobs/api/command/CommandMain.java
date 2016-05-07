@@ -1,8 +1,5 @@
 package lycanite.lycanitesmobs.api.command;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import lycanite.lycanitesmobs.ExtendedWorld;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
@@ -12,12 +9,15 @@ import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
-
 import org.apache.commons.lang3.math.NumberUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CommandMain implements ICommand {
 	
@@ -57,7 +57,7 @@ public class CommandMain implements ICommand {
 	}
 
 	@Override
-	public List addTabCompletionOptions(ICommandSender commandSender, String[] args) {
+	public List getTabCompletionOptions(MinecraftServer server, ICommandSender commandSender, String[] args, BlockPos pos) {
 		return null;
 	}
 
@@ -65,33 +65,38 @@ public class CommandMain implements ICommand {
 	public boolean isUsernameIndex(String[] p_82358_1_, int p_82358_2_) {
 		return false;
 	}
+
+    @Override
+    public int compareTo(ICommand p_compareTo_1_) {
+        return this.getCommandName().compareTo(p_compareTo_1_.getCommandName());
+    }
 	
 	
 	// ==================================================
 	//                      Process
 	// ==================================================
 	@Override
-	public void processCommand(ICommandSender commandSender, String[] args) {
-		String reply = StatCollector.translateToLocal("lyc.command.invalid");
+	public void execute(MinecraftServer server, ICommandSender commandSender, String[] args) {
+		String reply = I18n.translateToLocal("lyc.command.invalid");
 		if(args.length < 1) {
-			commandSender.addChatMessage(new ChatComponentText(reply));
-			commandSender.addChatMessage(new ChatComponentText(this.getCommandUsage(commandSender)));
+			commandSender.addChatMessage(new TextComponentString(reply));
+			commandSender.addChatMessage(new TextComponentString(this.getCommandUsage(commandSender)));
 			return;
 		}
 		
 		// Mob Event:
 		if("mobevent".equalsIgnoreCase(args[0])) {
-			reply = StatCollector.translateToLocal("lyc.command.mobevent.invalid");
+			reply = I18n.translateToLocal("lyc.command.mobevent.invalid");
 			if(args.length < 2) {
-				commandSender.addChatMessage(new ChatComponentText(reply));
+				commandSender.addChatMessage(new TextComponentString(reply));
 				return;
 			}
 			
 			// Start:
 			if("start".equalsIgnoreCase(args[1])) {
-				reply = StatCollector.translateToLocal("lyc.command.mobevent.start.invalid");
+				reply = I18n.translateToLocal("lyc.command.mobevent.start.invalid");
 				if(args.length < 3) {
-					commandSender.addChatMessage(new ChatComponentText(reply));
+					commandSender.addChatMessage(new TextComponentString(reply));
 					return;
 				}
 				
@@ -109,8 +114,8 @@ public class CommandMain implements ICommand {
 					
 					// No World:
 					if(world == null) {
-						reply = StatCollector.translateToLocal("lyc.command.mobevent.start.noworld");
-						commandSender.addChatMessage(new ChatComponentText(reply));
+						reply = I18n.translateToLocal("lyc.command.mobevent.start.noworld");
+						commandSender.addChatMessage(new TextComponentString(reply));
 						return;
 					}
 
@@ -118,21 +123,21 @@ public class CommandMain implements ICommand {
 					
 					// Force Enabled:
 					if(!worldExt.mobEventsEnabled) {
-						reply = StatCollector.translateToLocal("lyc.command.mobevent.enable");
-						commandSender.addChatMessage(new ChatComponentText(reply));
+						reply = I18n.translateToLocal("lyc.command.mobevent.enable");
+						commandSender.addChatMessage(new TextComponentString(reply));
                         worldExt.mobEventsEnabled = true;
 						ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "mobevents");
 						config.setBool("Global", "Mob Events Enabled", true);
 					}
 					
-					reply = StatCollector.translateToLocal("lyc.command.mobevent.start");
-					commandSender.addChatMessage(new ChatComponentText(reply));
+					reply = I18n.translateToLocal("lyc.command.mobevent.start");
+					commandSender.addChatMessage(new TextComponentString(reply));
                     worldExt.startWorldEvent(mobEventName);
 					return;
 				}
 				
-				reply = StatCollector.translateToLocal("lyc.command.mobevent.start.unknown");
-				commandSender.addChatMessage(new ChatComponentText(reply));
+				reply = I18n.translateToLocal("lyc.command.mobevent.start.unknown");
+				commandSender.addChatMessage(new TextComponentString(reply));
 				return;
 			}
 
@@ -147,20 +152,20 @@ public class CommandMain implements ICommand {
 
             // No World:
             if(world == null) {
-                reply = StatCollector.translateToLocal("lyc.command.mobevent.start.noworld");
-                commandSender.addChatMessage(new ChatComponentText(reply));
+                reply = I18n.translateToLocal("lyc.command.mobevent.start.noworld");
+                commandSender.addChatMessage(new TextComponentString(reply));
                 return;
             }
 
-            LycanitesMobs.printDebug("", "Getting Extended World for Dimension: " + world.provider.dimensionId + " World: " + world);
+            LycanitesMobs.printDebug("", "Getting Extended World for Dimension: " + world.provider.getDimension() + " World: " + world);
             ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
-            LycanitesMobs.printDebug("", "Got Extended World for Dimension: " + worldExt.world.provider.dimensionId + " World: " + worldExt.world);
+            LycanitesMobs.printDebug("", "Got Extended World for Dimension: " + worldExt.world.provider.getDimension() + " World: " + worldExt.world);
             if(worldExt == null) return;
 			
 			// Random:
 			if("random".equalsIgnoreCase(args[1])) {
-				reply = StatCollector.translateToLocal("lyc.command.mobevent.random");
-				commandSender.addChatMessage(new ChatComponentText(reply));
+				reply = I18n.translateToLocal("lyc.command.mobevent.random");
+				commandSender.addChatMessage(new TextComponentString(reply));
 				MobEventBase mobEvent = MobEventManager.instance.getRandomWorldMobEvent(world, worldExt);
                 worldExt.startWorldEvent(mobEvent);
 				return;
@@ -168,27 +173,27 @@ public class CommandMain implements ICommand {
 			
 			// Stop:
 			if("stop".equalsIgnoreCase(args[1])) {
-				reply = StatCollector.translateToLocal("lyc.command.mobevent.stop");
-				commandSender.addChatMessage(new ChatComponentText(reply));
+				reply = I18n.translateToLocal("lyc.command.mobevent.stop");
+				commandSender.addChatMessage(new TextComponentString(reply));
                 worldExt.stopWorldEvent();
 				return;
 			}
 			
 			// List:
 			if("list".equalsIgnoreCase(args[1])) {
-				reply = StatCollector.translateToLocal("lyc.command.mobevent.list");
-				commandSender.addChatMessage(new ChatComponentText(reply));
+				reply = I18n.translateToLocal("lyc.command.mobevent.list");
+				commandSender.addChatMessage(new TextComponentString(reply));
 				for(MobEventBase mobEvent : MobEventManager.instance.worldMobEvents.values()) {
 					String eventName = mobEvent.name + " (" + mobEvent.getTitle() + ")";
-					commandSender.addChatMessage(new ChatComponentText(eventName));
+					commandSender.addChatMessage(new TextComponentString(eventName));
 				}
 				return;
 			}
 			
 			// Enable:
 			if("enable".equalsIgnoreCase(args[1])) {
-				reply = StatCollector.translateToLocal("lyc.command.mobevent.enable");
-				commandSender.addChatMessage(new ChatComponentText(reply));
+				reply = I18n.translateToLocal("lyc.command.mobevent.enable");
+				commandSender.addChatMessage(new TextComponentString(reply));
                 worldExt.mobEventsEnabled = true;
 				ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "mobevents");
 				config.setBool("Global", "Mob Events Enabled", true);
@@ -197,8 +202,8 @@ public class CommandMain implements ICommand {
 			
 			// Disable:
 			if("disable".equalsIgnoreCase(args[1])) {
-				reply = StatCollector.translateToLocal("lyc.command.mobevent.disable");
-				commandSender.addChatMessage(new ChatComponentText(reply));
+				reply = I18n.translateToLocal("lyc.command.mobevent.disable");
+				commandSender.addChatMessage(new TextComponentString(reply));
                 worldExt.mobEventsEnabled = false;
 				ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "mobevents");
 				config.setBool("Global", "Mob Events Enabled", false);
@@ -206,32 +211,25 @@ public class CommandMain implements ICommand {
 			}
 		}
 		
-		commandSender.addChatMessage(new ChatComponentText(reply));
-		commandSender.addChatMessage(new ChatComponentText(this.getCommandUsage(commandSender)));
+		commandSender.addChatMessage(new TextComponentString(reply));
+		commandSender.addChatMessage(new TextComponentString(this.getCommandUsage(commandSender)));
 	}
 	
 	
 	// ==================================================
 	//                     Permission
 	// ==================================================
+    public int getRequiredPermissionLevel()
+    {
+        return 4;
+    }
+
 	@Override
-	public boolean canCommandSenderUseCommand(ICommandSender commandSender) {
+	public boolean checkPermission(MinecraftServer server, ICommandSender commandSender) {
 		if(commandSender instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer)commandSender;
-			if(!MinecraftServer.getServer().getConfigurationManager().func_152596_g(player.getGameProfile())) //isOpped()
+			if(!commandSender.canCommandSenderUseCommand(this.getRequiredPermissionLevel(), this.getCommandName()))
 				return false;
 		}
 		return true;
 	}
-
-	
-	
-	// ==================================================
-	//                      Unknown
-	// ==================================================
-	@Override
-	public int compareTo(Object object) {
-		return 0;
-	}
-
 }

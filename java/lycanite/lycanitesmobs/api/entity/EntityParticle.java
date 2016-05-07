@@ -4,8 +4,8 @@ import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 public class EntityParticle extends EntityThrowable {
@@ -77,7 +77,7 @@ public class EntityParticle extends EntityThrowable {
     }
 	
 	@Override
-	protected void onImpact(MovingObjectPosition movingobjectposition) {
+	protected void onImpact(RayTraceResult rayTraceResult) {
 		return;
 	}
 	

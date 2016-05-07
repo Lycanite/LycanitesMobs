@@ -1,214 +1,214 @@
 {
     "mobevent.marchofthegorgomites": {
         "category": "record",
-        "sounds": [{"name": "mobevent/marchofthegorgomites", "stream": true}]
+        "sounds": [{"name": "desertmobs:mobevent/marchofthegorgomites", "stream": true}]
     },
     "mobevent.bladeflurry": {
         "category": "record",
-        "sounds": [{"name": "mobevent/bladeflurry", "stream": true}]
+        "sounds": [{"name": "desertmobs:mobevent/bladeflurry", "stream": true}]
     },
     "entity.cryptzombie.say": {
         "category": "hostile",
-        "sounds": [{"name": "entity/cryptzombie/say", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/cryptzombie/say", "stream": false}]
     },
     "entity.cryptzombie.hurt": {
         "category": "hostile",
-        "sounds": [{"name": "entity/cryptzombie/hurt", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/cryptzombie/hurt", "stream": false}]
     },
     "entity.cryptzombie.death": {
         "category": "hostile",
-        "sounds": [{"name": "entity/cryptzombie/death", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/cryptzombie/death", "stream": false}]
     },
     "entity.cryptzombie.step": {
         "category": "hostile",
-        "sounds": [{"name": "entity/cryptzombie/step", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/cryptzombie/step", "stream": false}]
     },
     "entity.clink.say": {
         "category": "hostile",
-        "sounds": [{"name": "entity/clink/say", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/clink/say", "stream": false}]
     },
     "entity.clink.hurt": {
         "category": "hostile",
-        "sounds": [{"name": "entity/clink/hurt", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/clink/hurt", "stream": false}]
     },
     "entity.clink.death": {
         "category": "hostile",
-        "sounds": [{"name": "entity/clink/death", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/clink/death", "stream": false}]
     },
     "entity.clink.step": {
         "category": "hostile",
-        "sounds": [{"name": "entity/clink/step", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/clink/step", "stream": false}]
     },
     "entity.clink.beg": {
         "category": "hostile",
-        "sounds": [{"name": "entity/clink/beg", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/clink/beg", "stream": false}]
     },
     "entity.clink.tame": {
         "category": "hostile",
-        "sounds": [{"name": "entity/clink/tame", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/clink/tame", "stream": false}]
     },
     "entity.crusk.say": {
         "category": "hostile",
-        "sounds": [{"name": "entity/crusk/say", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/crusk/say", "stream": false}]
     },
     "entity.crusk.hurt": {
         "category": "hostile",
-        "sounds": [{"name": "entity/crusk/hurt", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/crusk/hurt", "stream": false}]
     },
     "entity.crusk.death": {
         "category": "hostile",
-        "sounds": [{"name": "entity/crusk/death", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/crusk/death", "stream": false}]
     },
     "entity.crusk.step": {
         "category": "hostile",
-        "sounds": [{"name": "entity/crusk/step", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/crusk/step", "stream": false}]
     },
     "entity.crusk.attack": {
         "category": "hostile",
-        "sounds": [{"name": "entity/crusk/attack", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/crusk/attack", "stream": false}]
     },
     "entity.crusk.beg": {
         "category": "hostile",
-        "sounds": [{"name": "entity/crusk/beg", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/crusk/beg", "stream": false}]
     },
     "entity.crusk.tame": {
         "category": "hostile",
-        "sounds": [{"name": "entity/crusk/tame", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/crusk/tame", "stream": false}]
     },
     "entity.crusk.eat": {
         "category": "hostile",
-        "sounds": [{"name": "entity/crusk/eat", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/crusk/eat", "stream": false}]
     },
     "entity.joust.say": {
         "category": "neutral",
-        "sounds": [{"name": "entity/joust/say", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/joust/say", "stream": false}]
     },
     "entity.joust.hurt": {
         "category": "neutral",
-        "sounds": [{"name": "entity/joust/hurt", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/joust/hurt", "stream": false}]
     },
     "entity.joust.death": {
         "category": "neutral",
-        "sounds": [{"name": "entity/joust/death", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/joust/death", "stream": false}]
     },
     "entity.joust.step": {
         "category": "neutral",
-        "sounds": [{"name": "entity/joust/step", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/joust/step", "stream": false}]
     },
     "entity.joust.attack": {
         "category": "hostile",
-        "sounds": [{"name": "entity/joust/attack", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/joust/attack", "stream": false}]
     },
     "entity.joustalpha.say": {
         "category": "hostile",
-        "sounds": [{"name": "entity/joust/say", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/joust/say", "stream": false}]
     },
     "entity.joustalpha.hurt": {
         "category": "hostile",
-        "sounds": [{"name": "entity/joust/hurt", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/joust/hurt", "stream": false}]
     },
     "entity.joustalpha.death": {
         "category": "hostile",
-        "sounds": [{"name": "entity/joust/death", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/joust/death", "stream": false}]
     },
     "entity.joustalpha.step": {
         "category": "hostile",
-        "sounds": [{"name": "entity/joust/step", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/joust/step", "stream": false}]
     },
     "entity.joustalpha.attack": {
         "category": "hostile",
-        "sounds": [{"name": "entity/joust/attack", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/joust/attack", "stream": false}]
     },
     "entity.erepede.say": {
         "category": "hostile",
-        "sounds": [{"name": "entity/erepede/say", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/erepede/say", "stream": false}]
     },
     "entity.erepede.hurt": {
         "category": "hostile",
-        "sounds": [{"name": "entity/erepede/hurt", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/erepede/hurt", "stream": false}]
     },
     "entity.erepede.death": {
         "category": "hostile",
-        "sounds": [{"name": "entity/erepede/death", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/erepede/death", "stream": false}]
     },
     "entity.erepede.step": {
         "category": "hostile",
-        "sounds": [{"name": "entity/erepede/step", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/erepede/step", "stream": false}]
     },
     "entity.erepede.jump": {
         "category": "hostile",
-        "sounds": [{"name": "entity/erepede/jump", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/erepede/jump", "stream": false}]
     },
     "entity.erepede.beg": {
         "category": "hostile",
-        "sounds": [{"name": "entity/erepede/beg", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/erepede/beg", "stream": false}]
     },
     "entity.erepede.tame": {
         "category": "hostile",
-        "sounds": [{"name": "entity/erepede/tame", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/erepede/tame", "stream": false}]
     },
     "entity.erepede.eat": {
         "category": "hostile",
-        "sounds": [{"name": "entity/erepede/eat", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/erepede/eat", "stream": false}]
     },
     "entity.erepede.mount": {
         "category": "hostile",
-        "sounds": [{"name": "entity/erepede/mount", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/erepede/mount", "stream": false}]
     },
     "entity.gorgomite.say": {
         "category": "hostile",
-        "sounds": [{"name": "entity/gorgomite/say", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/gorgomite/say", "stream": false}]
     },
     "entity.gorgomite.hurt": {
         "category": "hostile",
-        "sounds": [{"name": "entity/gorgomite/hurt", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/gorgomite/hurt", "stream": false}]
     },
     "entity.gorgomite.death": {
         "category": "hostile",
-        "sounds": [{"name": "entity/gorgomite/death", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/gorgomite/death", "stream": false}]
     },
     "entity.gorgomite.step": {
         "category": "hostile",
-        "sounds": [{"name": "entity/gorgomite/step", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/gorgomite/step", "stream": false}]
     },
     "entity.gorgomite.attack": {
         "category": "hostile",
-        "sounds": [{"name": "entity/gorgomite/attack", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/gorgomite/attack", "stream": false}]
     },
     "entity.manticore.say": {
         "category": "hostile",
-        "sounds": [{"name": "entity/manticore/say", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/manticore/say", "stream": false}]
     },
     "entity.manticore.hurt": {
         "category": "hostile",
-        "sounds": [{"name": "entity/manticore/hurt", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/manticore/hurt", "stream": false}]
     },
     "entity.manticore.death": {
         "category": "hostile",
-        "sounds": [{"name": "entity/manticore/death", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/manticore/death", "stream": false}]
     },
     "entity.manticore.fly": {
         "category": "hostile",
-        "sounds": [{"name": "entity/manticore/fly", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/manticore/fly", "stream": false}]
     },
     "entity.manticore.attack": {
         "category": "hostile",
-        "sounds": [{"name": "entity/manticore/attack", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/manticore/attack", "stream": false}]
     },
     "entity.manticore.beg": {
         "category": "hostile",
-        "sounds": [{"name": "entity/manticore/beg", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/manticore/beg", "stream": false}]
     },
     "entity.manticore.tame": {
         "category": "hostile",
-        "sounds": [{"name": "entity/manticore/tame", "stream": false}]
+        "sounds": [{"name": "desertmobs:entity/manticore/tame", "stream": false}]
     },
     "projectile.throwingscythe": {
         "category": "ambient",
-        "sounds": [{"name": "projectile/throwingscythe", "stream": false}]
+        "sounds": [{"name": "desertmobs:projectile/throwingscythe", "stream": false}]
     },
     "projectile.mudshot": {
         "category": "ambient",
-        "sounds": [{"name": "projectile/mudshot", "stream": false}]
+        "sounds": [{"name": "desertmobs:projectile/mudshot", "stream": false}]
     }
 }

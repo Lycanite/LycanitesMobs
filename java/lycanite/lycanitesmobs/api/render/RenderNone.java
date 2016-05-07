@@ -1,26 +1,23 @@
 package lycanite.lycanitesmobs.api.render;
 
-import lycanite.lycanitesmobs.api.entity.EntityParticle;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RenderNone extends Render {
-	private IIcon icon;
-	public ResourceLocation texture;
     private float scale;
     private int renderTime = 0;
     
     // ==================================================
     //                     Constructor
     // ==================================================
-    public RenderNone() {
-    	super();
+    public RenderNone(RenderManager renderManager) {
+    	super(renderManager);
     }
     
     
@@ -39,9 +36,7 @@ public class RenderNone extends Render {
     // ========== Get Texture ==========
     @Override
     protected ResourceLocation getEntityTexture(Entity entity) {
-    	if(entity instanceof EntityParticle)
-    		this.texture = ((EntityParticle)entity).getTexture();
-    	return texture;
+    	return null;
     }
     
     
@@ -50,13 +45,5 @@ public class RenderNone extends Render {
     // ==================================================
     private void renderTexture(Tessellator tessellator) {
     	return;
-    }
-    
-    
-    // ==================================================
-    //                    Render Icon
-    // ==================================================
-    private void renderIcon(Tessellator par1Tessellator, IIcon par2Icon) {
-        return;
     }
 }

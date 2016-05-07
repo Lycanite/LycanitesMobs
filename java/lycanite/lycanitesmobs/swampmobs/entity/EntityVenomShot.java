@@ -4,11 +4,15 @@ import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.swampmobs.SwampMobs;
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class EntityVenomShot extends EntityProjectileBase {
@@ -50,49 +54,52 @@ public class EntityVenomShot extends EntityProjectileBase {
     //========== Entity Living Collision ==========
     @Override
     public boolean entityLivingCollision(EntityLivingBase entityLiving) {
-    	entityLiving.addPotionEffect(new PotionEffect(Potion.poison.id, this.getEffectDuration(5), 0));
+    	entityLiving.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("poison"), this.getEffectDuration(5), 0));
     	return true;
     }
     
     //========== Can Destroy Block ==========
     @Override
-    public boolean canDestroyBlock(int x, int y, int z) {
-    	if(this.worldObj.getBlock(x, y, z) == Blocks.snow)
-    		return true;
-    	if(this.worldObj.getBlock(x, y, z) == Blocks.tallgrass)
-    		return true;
-    	if(ObjectManager.getBlock("PoisonCloud") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("PoisonCloud"))
-    		return true;
-    	if(ObjectManager.getBlock("PoopCloud") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("PoopCloud"))
-    		return true;
-    	if(ObjectManager.getBlock("FrostCloud") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("FrostCloud"))
-    		return true;
-    	if(ObjectManager.getBlock("Frostweb") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("Frostweb"))
-    		return true;
-    	if(ObjectManager.getBlock("QuickWeb") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("QuickWeb"))
-    		return true;
-    	if(ObjectManager.getBlock("Hellfire") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("Hellfire"))
-    		return true;
-        if(ObjectManager.getBlock("Frostfire") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("Frostfire"))
+    public boolean canDestroyBlock(BlockPos pos) {
+        Block block = this.worldObj.getBlockState(pos).getBlock();
+        if(block == Blocks.snow_layer)
             return true;
-    	if(ObjectManager.getBlock("Icefire") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("Icefire"))
-    		return true;
-        if(ObjectManager.getBlock("Scorchfire") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("Scorchfire"))
+        if(block == Blocks.tallgrass)
             return true;
-   	 	return super.canDestroyBlock(x, y, z);
+        if(block == Blocks.web)
+            return true;
+        if(ObjectManager.getBlock("PoisonCloud") != null && block == ObjectManager.getBlock("PoisonCloud"))
+            return true;
+        if(ObjectManager.getBlock("PoopCloud") != null && block == ObjectManager.getBlock("PoopCloud"))
+            return true;
+        if(ObjectManager.getBlock("FrostCloud") != null && block == ObjectManager.getBlock("FrostCloud"))
+            return true;
+        if(ObjectManager.getBlock("Frostweb") != null && block == ObjectManager.getBlock("Frostweb"))
+            return true;
+        if(ObjectManager.getBlock("QuickWeb") != null && block == ObjectManager.getBlock("QuickWeb"))
+            return true;
+        if(ObjectManager.getBlock("Hellfire") != null && block == ObjectManager.getBlock("Hellfire"))
+            return true;
+        if(ObjectManager.getBlock("Frostfire") != null && block == ObjectManager.getBlock("Frostfire"))
+            return true;
+        if(ObjectManager.getBlock("Icefire") != null && block == ObjectManager.getBlock("Icefire"))
+            return true;
+        if(ObjectManager.getBlock("Scorchfire") != null && block == ObjectManager.getBlock("Scorchfire"))
+            return true;
+        return super.canDestroyBlock(pos);
     }
     
     //========== Place Block ==========
     @Override
-    public void placeBlock(World world, int x, int y, int z) {
-	   	 world.setBlock(x, y, z, ObjectManager.getBlock("PoisonCloud"));
+    public void placeBlock(World world, BlockPos pos) {
+	   	 world.setBlockState(pos, ObjectManager.getBlock("poisoncloud").getDefaultState());
     }
     
     //========== On Impact Particles/Sounds ==========
     @Override
     public void onImpactVisuals() {
     	for(int i = 0; i < 8; ++i)
-    		this.worldObj.spawnParticle("portal", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
+    		this.worldObj.spawnParticle(EnumParticleTypes.PORTAL, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
     }
     
     
@@ -100,7 +107,7 @@ public class EntityVenomShot extends EntityProjectileBase {
  	//                      Sounds
  	// ==================================================
     @Override
-    public String getLaunchSound() {
-    	return AssetManager.getSound("VenomShot");
+    public SoundEvent getLaunchSound() {
+    	return AssetManager.getSound("venomshot");
     }
 }

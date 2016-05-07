@@ -1,24 +1,15 @@
 package lycanite.lycanitesmobs.swampmobs;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.swampmobs.model.ModelAspid;
-import lycanite.lycanitesmobs.swampmobs.model.ModelDweller;
-import lycanite.lycanitesmobs.swampmobs.model.ModelEttin;
-import lycanite.lycanitesmobs.swampmobs.model.ModelEyewig;
-import lycanite.lycanitesmobs.swampmobs.model.ModelGhoulZombie;
-import lycanite.lycanitesmobs.swampmobs.model.ModelLurker;
-import lycanite.lycanitesmobs.swampmobs.model.ModelRemobra;
-import cpw.mods.fml.client.registry.RenderingRegistry;
+import lycanite.lycanitesmobs.api.info.GroupInfo;
+import lycanite.lycanitesmobs.api.render.RenderRegister;
+import lycanite.lycanitesmobs.swampmobs.model.*;
 
 public class ClientSubProxy extends CommonSubProxy {
 	
-	// ========== Render ID ==========
-	public static int RENDER_ID = RenderingRegistry.getNextAvailableRenderId();
-	
-	
 	// ========== Register Models ==========
 	@Override
-    public void registerModels() {
+    public void registerModels(GroupInfo groupInfo) {
 		AssetManager.addModel("ghoulzombie", new ModelGhoulZombie());
 		AssetManager.addModel("dweller", new ModelDweller());
 		AssetManager.addModel("ettin", new ModelEttin());
@@ -26,5 +17,9 @@ public class ClientSubProxy extends CommonSubProxy {
 		AssetManager.addModel("eyewig", new ModelEyewig());
 		AssetManager.addModel("aspid", new ModelAspid());
 		AssetManager.addModel("remobra", new ModelRemobra());
+
+        // Register Renderers:
+        RenderRegister renderRegister = new RenderRegister(groupInfo);
+        renderRegister.registerRenderFactories();
 	}
 }

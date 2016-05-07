@@ -1,7 +1,5 @@
 package lycanite.lycanitesmobs.swampmobs.entity;
 
-import java.util.HashMap;
-
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupPrey;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
@@ -20,6 +18,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
+
+import java.util.HashMap;
 
 public class EntityEyewig extends EntityCreatureRideable {
 	EntityAIAttackRanged rangedAttackAI;
@@ -89,10 +89,10 @@ public class EntityEyewig extends EntityCreatureRideable {
     // ==================================================
 	// ========== Rider Effects ==========
 	public void riderEffects(EntityLivingBase rider) {
-    	if(rider.isPotionActive(Potion.poison))
-    		rider.removePotionEffect(Potion.poison.id);
-    	if(rider.isPotionActive(Potion.blindness))
-    		rider.removePotionEffect(Potion.blindness.id);
+    	if(rider.isPotionActive(Potion.getPotionFromResourceLocation("poison")))
+    		rider.removePotionEffect(Potion.getPotionFromResourceLocation("poison.id"));
+    	if(rider.isPotionActive(Potion.getPotionFromResourceLocation("blindness")))
+    		rider.removePotionEffect(Potion.getPotionFromResourceLocation("blindness"));
     }
 
 	
@@ -139,10 +139,10 @@ public class EntityEyewig extends EntityCreatureRideable {
     	// Create New Laser:
     	if(this.abilityProjectile == null) {
 	    	// Type:
-    		if(this.getRiderTarget() == null || !(this.getRiderTarget() instanceof EntityLivingBase))
+    		if(this.getControllingPassenger() == null || !(this.getControllingPassenger() instanceof EntityLivingBase))
     			return;
     		
-    		this.abilityProjectile = new EntityPoisonRay(this.worldObj, (EntityLivingBase)this.getRiderTarget(), 25, 20, this);
+    		this.abilityProjectile = new EntityPoisonRay(this.worldObj, (EntityLivingBase)this.getControllingPassenger(), 25, 20, this);
     		this.abilityProjectile.setOffset(0, 0.5, 0);
 	    	
 	    	// Launch:
@@ -168,7 +168,7 @@ public class EntityEyewig extends EntityCreatureRideable {
     	
     	// Effect:
         if(target instanceof EntityLivingBase) {
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.blindness.id, this.getEffectDuration(8), 0));
+            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("blindness"), this.getEffectDuration(8), 0));
         }
         
         return true;
@@ -228,10 +228,10 @@ public class EntityEyewig extends EntityCreatureRideable {
    	//                     Immunities
    	// ==================================================
     @Override
-    public boolean isPotionApplicable(PotionEffect par1PotionEffect) {
-        if(par1PotionEffect.getPotionID() == Potion.poison.id) return false;
-        if(par1PotionEffect.getPotionID() == Potion.blindness.id) return false;
-        return super.isPotionApplicable(par1PotionEffect);
+    public boolean isPotionApplicable(PotionEffect potionEffect) {
+        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("poison")) return false;
+        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("blindness")) return false;
+        return super.isPotionApplicable(potionEffect);
     }
     
     @Override

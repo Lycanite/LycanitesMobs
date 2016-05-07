@@ -1,19 +1,18 @@
 package lycanite.lycanitesmobs.api.config;
 
+import lycanite.lycanitesmobs.LycanitesMobs;
+import lycanite.lycanitesmobs.api.info.GroupInfo;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.config.Property;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import lycanite.lycanitesmobs.LycanitesMobs;
-import lycanite.lycanitesmobs.api.info.GroupInfo;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.common.config.Property;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 
 public class ConfigBase {
     // ========== Version Check ==========
@@ -169,7 +168,7 @@ public class ConfigBase {
         category = category.toLowerCase();
         boolean newEntry = !this.config.getCategory(category).containsKey(key);
 		Property property = this.config.get(category, key, defaultValue);
-		if(comment != null) property.comment = comment;
+		if(comment != null) property.setComment(comment);
         if(newEntry) this.config.save();
 		return property.getBoolean(defaultValue);
 	}
@@ -187,7 +186,7 @@ public class ConfigBase {
         category = category.toLowerCase();
         boolean newEntry = !this.config.getCategory(category).containsKey(key);
 		Property property = this.config.get(category, key, defaultValue);
-		if(comment != null) property.comment = comment;
+		if(comment != null) property.setComment(comment);
         if(newEntry) this.config.save();
 		return property.getInt(defaultValue);
 	}
@@ -205,7 +204,7 @@ public class ConfigBase {
         category = category.toLowerCase();
         boolean newEntry = !this.config.getCategory(category).containsKey(key);
 		Property property = this.config.get(category, key, defaultValue);
-		if(comment != null) property.comment = comment;
+		if(comment != null) property.setComment(comment);
         if(newEntry) this.config.save();
 		return property.getDouble(defaultValue);
 	}
@@ -223,7 +222,7 @@ public class ConfigBase {
         category = category.toLowerCase();
         boolean newEntry = !this.config.getCategory(category).containsKey(key);
 		Property property = this.config.get(category, key, defaultValue);
-		if(comment != null) property.comment = comment;
+		if(comment != null) property.setComment(comment);
         if(newEntry) this.config.save();
 		return property.getString();
 	}
@@ -246,7 +245,7 @@ public class ConfigBase {
         category = category.toLowerCase();
         boolean newEntry = !this.config.getCategory(category).containsKey(key);
 		Property property = this.config.get(category, key, defaultValue);
-		if(comment != null) property.comment = comment;
+		if(comment != null) property.setComment(comment);
         if(newEntry) this.config.save();
 		return property.getBooleanList();
 	}
@@ -264,7 +263,7 @@ public class ConfigBase {
         category = category.toLowerCase();
         boolean newEntry = !this.config.getCategory(category).containsKey(key);
 		Property property = this.config.get(category, key, defaultValue);
-		if(comment != null) property.comment = comment;
+		if(comment != null) property.setComment(comment);
         if(newEntry) this.config.save();
 		return property.getIntList();
 	}
@@ -282,7 +281,7 @@ public class ConfigBase {
         category = category.toLowerCase();
         boolean newEntry = !this.config.getCategory(category).containsKey(key);
 		Property property = this.config.get(category, key, defaultValue);
-		if(comment != null) property.comment = comment;
+		if(comment != null) property.setComment(comment);
         if(newEntry) this.config.save();
 		return property.getDoubleList();
 	}
@@ -300,7 +299,7 @@ public class ConfigBase {
         category = category.toLowerCase();
         boolean newEntry = !this.config.getCategory(category).containsKey(key);
 		Property property = this.config.get(category, key, defaultValue);
-		if(comment != null) property.comment = comment;
+		if(comment != null) property.setComment(comment);
         if(newEntry) this.config.save();
 		return property.getStringList();
 	}
@@ -320,7 +319,7 @@ public class ConfigBase {
 	public void setBool(String category, String key, boolean value, String comment) {
         category = category.toLowerCase();
 		Property property = this.config.get(category, key, value);
-		if(comment != null) property.comment = comment;
+		if(comment != null) property.setComment(comment);
 		property.set(value);
 		this.update();
 	}
@@ -332,7 +331,7 @@ public class ConfigBase {
 	public void setInt(String category, String key, int value, String comment) {
         category = category.toLowerCase();
 		Property property = this.config.get(category, key, value);
-		if(comment != null) property.comment = comment;
+		if(comment != null) property.setComment(comment);
 		property.set(value);
 		this.update();
 	}
@@ -344,7 +343,7 @@ public class ConfigBase {
 	public void setDouble(String category, String key, double value, String comment) {
         category = category.toLowerCase();
 		Property property = this.config.get(category, key, value);
-		if(comment != null) property.comment = comment;
+		if(comment != null) property.setComment(comment);
 		property.set(value);
 		this.update();
 	}
@@ -356,7 +355,7 @@ public class ConfigBase {
 	public void setString(String category, String key, String value, String comment) {
         category = category.toLowerCase();
 		Property property = this.config.get(category, key, value);
-		if(comment != null) property.comment = comment;
+		if(comment != null) property.setComment(comment);
 		property.set(value);
 		this.update();
 	}
@@ -377,7 +376,7 @@ public class ConfigBase {
             valuesList.add(objValue.toString());
         String[] values = valuesList.toArray(new String[valuesList.size()]);
 		Property property = this.config.get(category, key, values);
-		if(comment != null) property.comment = comment;
+		if(comment != null) property.setComment(comment);
 		property.set(values);
 		this.update();
 	}

@@ -1,13 +1,11 @@
 package lycanite.lycanitesmobs.swampmobs.model;
 
-import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.api.model.ModelCustomObj;
 import lycanite.lycanitesmobs.swampmobs.SwampMobs;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.util.MathHelper;
-import net.minecraftforge.client.model.obj.WavefrontObject;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ModelRemobra extends ModelCustomObj {
@@ -21,10 +19,10 @@ public class ModelRemobra extends ModelCustomObj {
     
     public ModelRemobra(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Remobra", SwampMobs.group, "entity/remobra");
+    	this.initModel("Remobra", SwampMobs.group, "entity/remobra");
     	
-    	// Get Parts:
-    	parts = model.groupObjects;
+
+
     	
     	// Set Rotation Centers:
     	setPartCenter("body", 0F, 0.8F, 0.0F);

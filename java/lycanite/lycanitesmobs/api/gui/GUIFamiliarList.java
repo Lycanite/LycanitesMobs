@@ -1,17 +1,14 @@
 package lycanite.lycanitesmobs.api.gui;
 
-import cpw.mods.fml.client.GuiScrollingList;
 import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.pets.PetEntry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
-import org.lwjgl.opengl.GL11;
+import net.minecraftforge.fml.client.GuiScrollingList;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class GUIFamiliarList extends GuiScrollingList {
     GUIFamiliar parentGUI;
@@ -61,7 +58,10 @@ public class GUIFamiliarList extends GuiScrollingList {
 
 		int boxLeft = this.left;
 		if(petEntry.spawningActive) {
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            if(this.isSelected(index))
+                super.drawGradientRect(boxLeft, boxTop, boxRight, boxBottom, 0x99FFEE, 0x99FFEE);
+            super.drawGradientRect(boxLeft, boxTop, boxRight, boxBottom, 0x448877, 0x448877);
+			/*GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glDisable(GL11.GL_TEXTURE_2D);
 			tessellator.startDrawingQuads();
 			if(this.isSelected(index)) {
@@ -77,12 +77,12 @@ public class GUIFamiliarList extends GuiScrollingList {
 			tessellator.addVertexWithUV((double) (boxRight - 1), (double) (boxTop - 1), 0.0D, 1.0D, 0.0D);
 			tessellator.addVertexWithUV((double) (boxLeft + 1), (double) (boxTop - 1), 0.0D, 0.0D, 0.0D);
 			tessellator.draw();
-			GL11.glEnable(GL11.GL_TEXTURE_2D);
+			GL11.glEnable(GL11.GL_TEXTURE_2D);*/
 		}
 
 		this.parentGUI.getFontRenderer().drawString(petEntry.getDisplayName(), boxLeft + 20 , boxTop + 4, 0xFFFFFF);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(mobInfo.getIcon());
-		this.parentGUI.drawImage(this.left + 2, boxTop, 0, 0, 16, 16, 0.0625F, 0.0625F);
+		this.parentGUI.drawTexturedModalRect(this.left + 2, boxTop, 0, 0, 16, 16);
 
 	}
 }

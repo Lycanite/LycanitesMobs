@@ -26,11 +26,11 @@ public class ItemFoodBattleBurrito extends ItemCustomFood {
     @Override
     protected void onFoodEaten(ItemStack itemStack, World world, EntityPlayer player) {
         super.onFoodEaten(itemStack, world, player);
-        player.addPotionEffect(new PotionEffect(Potion.damageBoost.id, this.getEffectDuration(), 3));
-        player.addPotionEffect(new PotionEffect(Potion.resistance.id, this.getEffectDuration(), 3));
-        player.addPotionEffect(new PotionEffect(Potion.regeneration.id, this.getEffectDuration(), 1));
-        player.addPotionEffect(new PotionEffect(Potion.field_76444_x.id, this.getEffectDuration(), 3)); // Absorption
-        player.addPotionEffect(new PotionEffect(Potion.field_76434_w.id, this.getEffectDuration(), 3)); // Health Boost
-        player.addPotionEffect(new PotionEffect(Potion.heal.id, 1, 3));
+        player.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("damage_boost"), this.getEffectDuration(), 3));
+        player.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("resistance"), this.getEffectDuration(), 3));
+        player.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("regeneration"), this.getEffectDuration(), 1));
+        player.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("absorption"), this.getEffectDuration(), 3));
+        player.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("health_boost"), this.getEffectDuration(), 3));
+        player.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("instant_health"), 1, 3));
     }
 }

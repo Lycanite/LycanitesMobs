@@ -1,15 +1,14 @@
 package lycanite.lycanitesmobs.api.gui;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
-import cpw.mods.fml.client.GuiScrollingList;
-import org.lwjgl.opengl.GL11;
+import net.minecraftforge.fml.client.GuiScrollingList;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class GUIMinionList extends GuiScrollingList {
 	GUIMinion parentGUI;
@@ -67,11 +66,11 @@ public class GUIMinionList extends GuiScrollingList {
 		// Summon Level:
 		Minecraft.getMinecraft().getTextureManager().bindTexture(AssetManager.getTexture("GUIBeastiary"));
 		for(int currentLevel = 0; currentLevel < level; currentLevel++) {
-			this.parentGUI.drawImage(levelBarX + (levelBarWidth * currentLevel), levelBarY, levelBarU, levelBarV, levelBarWidth, levelBarHeight, 0.00390625F, 0.00390625F);
+			this.parentGUI.drawTexturedModalRect(levelBarX + (levelBarWidth * currentLevel), levelBarY, levelBarU, levelBarV, levelBarWidth, levelBarHeight);
 		}
 
 		this.parentGUI.getFontRenderer().drawString(mobInfo.getTitle(), this.left + 20 , boxTop + 4, 0xFFFFFF);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(mobInfo.getIcon());
-		this.parentGUI.drawImage(this.left + 2, boxTop + 4, 0, 0, 16, 16, 0.0625F, 0.0625F);
+		this.parentGUI.drawTexturedModalRect(this.left + 2, boxTop + 4, 0, 0, 16, 16);
 	}
 }

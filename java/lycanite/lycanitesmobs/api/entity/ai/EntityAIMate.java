@@ -1,12 +1,12 @@
 package lycanite.lycanitesmobs.api.entity.ai;
 
-import java.util.Iterator;
-import java.util.List;
-
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.math.BlockPos;
+
+import java.util.Iterator;
+import java.util.List;
 
 public class EntityAIMate extends EntityAIBase {
 	// Targets:
@@ -87,7 +87,7 @@ public class EntityAIMate extends EntityAIBase {
         if(!this.host.useFlightNavigator())
         	this.host.getNavigator().tryMoveToEntityLiving(this.partner, this.speed);
         else
-        	this.host.flightNavigator.setTargetPosition(new ChunkCoordinates((int)this.partner.posX, (int)this.partner.posY, (int)this.partner.posZ), speed);
+        	this.host.flightNavigator.setTargetPosition(new BlockPos((int)this.partner.posX, (int)this.partner.posY, (int)this.partner.posZ), speed);
         if(this.host.getDistanceSqToEntity(this.partner) < this.mateDistance)
 	        ++this.mateTime;
 	        if(this.mateTime >= mateTimeMax)
@@ -100,7 +100,7 @@ public class EntityAIMate extends EntityAIBase {
   	// ==================================================
     private EntityCreatureAgeable getPartner() {
         float distance = 8.0F;
-        List possibleMates = this.host.worldObj.getEntitiesWithinAABB(this.targetClass, this.host.boundingBox.expand((double)distance, (double)distance, (double)distance));
+        List possibleMates = this.host.worldObj.getEntitiesWithinAABB(this.targetClass, this.host.getEntityBoundingBox().expand((double)distance, (double)distance, (double)distance));
         double closestDistance = Double.MAX_VALUE;
         EntityCreatureAgeable newMate = null;
         Iterator possibleMate = possibleMates.iterator();

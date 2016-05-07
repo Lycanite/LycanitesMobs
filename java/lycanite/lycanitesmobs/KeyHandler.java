@@ -1,21 +1,17 @@
 package lycanite.lycanitesmobs;
 
 import lycanite.lycanitesmobs.api.gui.*;
-import lycanite.lycanitesmobs.api.network.MessageGUIRequest;
 import lycanite.lycanitesmobs.api.network.MessagePlayerControl;
-import lycanite.lycanitesmobs.api.network.PacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.settings.KeyBinding;
-
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 
 public class KeyHandler {
 	public static KeyHandler instance;
@@ -23,15 +19,15 @@ public class KeyHandler {
 	
 	public boolean inventoryOpen = false;
 	
-	public KeyBinding mountAbility = new KeyBinding(StatCollector.translateToLocal("key.mount.ability"), Keyboard.KEY_F, "Lycanites Mobs");
-	public KeyBinding mountInventory = new KeyBinding(StatCollector.translateToLocal("key.mount.inventory"), Keyboard.KEY_NONE, "Lycanites Mobs");
-	public KeyBinding beastiary = new KeyBinding(StatCollector.translateToLocal("key.beastiary"), Keyboard.KEY_NONE, "Lycanites Mobs");
-	public KeyBinding lmMainMenu = new KeyBinding(StatCollector.translateToLocal("key.lycanitesmobs.menu"), Keyboard.KEY_G, "Lycanites Mobs");
-	public KeyBinding petManager = new KeyBinding(StatCollector.translateToLocal("key.pet.manager"), Keyboard.KEY_NONE, "Lycanites Mobs");
-	public KeyBinding mountManager = new KeyBinding(StatCollector.translateToLocal("key.mount.manager"), Keyboard.KEY_NONE, "Lycanites Mobs");
-    public KeyBinding familiarManager = new KeyBinding(StatCollector.translateToLocal("key.familiar.manager"), Keyboard.KEY_NONE, "Lycanites Mobs");
-	public KeyBinding minionManager = new KeyBinding(StatCollector.translateToLocal("key.minion.manager"), Keyboard.KEY_NONE, "Lycanites Mobs");
-	public KeyBinding minionSelection = new KeyBinding(StatCollector.translateToLocal("key.minion.select"), Keyboard.KEY_R, "Lycanites Mobs");
+	public KeyBinding mountAbility = new KeyBinding(I18n.translateToLocal("key.mount.ability"), Keyboard.KEY_X, "Lycanites Mobs");
+	public KeyBinding mountInventory = new KeyBinding(I18n.translateToLocal("key.mount.inventory"), Keyboard.KEY_NONE, "Lycanites Mobs");
+	public KeyBinding beastiary = new KeyBinding(I18n.translateToLocal("key.beastiary"), Keyboard.KEY_NONE, "Lycanites Mobs");
+	public KeyBinding lmMainMenu = new KeyBinding(I18n.translateToLocal("key.lycanitesmobs.menu"), Keyboard.KEY_G, "Lycanites Mobs");
+	public KeyBinding petManager = new KeyBinding(I18n.translateToLocal("key.pet.manager"), Keyboard.KEY_NONE, "Lycanites Mobs");
+	public KeyBinding mountManager = new KeyBinding(I18n.translateToLocal("key.mount.manager"), Keyboard.KEY_NONE, "Lycanites Mobs");
+    public KeyBinding familiarManager = new KeyBinding(I18n.translateToLocal("key.familiar.manager"), Keyboard.KEY_NONE, "Lycanites Mobs");
+	public KeyBinding minionManager = new KeyBinding(I18n.translateToLocal("key.minion.manager"), Keyboard.KEY_NONE, "Lycanites Mobs");
+	public KeyBinding minionSelection = new KeyBinding(I18n.translateToLocal("key.minion.select"), Keyboard.KEY_R, "Lycanites Mobs");
 	
 	// ==================================================
     //                     Constructor
@@ -117,19 +113,23 @@ public class KeyHandler {
 		if(this.mc.inGameHasFocus) {
 			// ========== HUD Controls ==========
 			// Minion Selection: Opens GUI.
-			if(this.minionSelection.getIsKeyPressed()) {
+			if(this.minionSelection.isPressed()) {
 				GUIMinionSelection.openToPlayer(this.mc.thePlayer);
 			}
 			
 			
 			// ========== Action Controls ==========
 			// Vanilla Jump: Adds to control states.
-			if(this.mc.gameSettings.keyBindJump.getIsKeyPressed())
+			if(this.mc.gameSettings.keyBindJump.isPressed())
 				controlStates += ExtendedPlayer.CONTROL_ID.JUMP.id;
 			
 			// Mount Ability: Adds to control states.
-			if(this.mountAbility.getIsKeyPressed())
+			if(this.mountAbility.isPressed())
 				controlStates += ExtendedPlayer.CONTROL_ID.MOUNT_ABILITY.id;
+
+            // Custom Item Left Click Use:
+            //if(Mouse.isButtonDown(0))
+                //controlStates += ExtendedPlayer.CONTROL_ID.LEFT_CLICK.id;
 		}
 		
 		

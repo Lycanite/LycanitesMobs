@@ -1,6 +1,7 @@
 package lycanite.lycanitesmobs.api.entity.ai;
 
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumDifficulty;
 
 public class EntityAIBreakDoor extends EntityAIDoorInteract {
@@ -23,10 +24,10 @@ public class EntityAIBreakDoor extends EntityAIDoorInteract {
     public boolean shouldExecute() {
     	if(!super.shouldExecute())
     		return false;
-    	if(!this.host.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"))
+    	if(!this.host.worldObj.getGameRules().getBoolean("mobGriefing"))
     		return false;
     	
-        return !this.targetDoor.func_150015_f(this.host.worldObj, this.entityPosX, this.entityPosY, this.entityPosZ); // isDoorOpen()
+        return !this.targetDoor.isOpen(this.host.worldObj, new BlockPos(this.entityPosX, this.entityPosY, this.entityPosZ));
     }
 
 	
@@ -44,7 +45,7 @@ public class EntityAIBreakDoor extends EntityAIDoorInteract {
  	// ==================================================
     public boolean continueExecuting() {
         double distance = this.host.getDistanceSq((double)this.entityPosX, (double)this.entityPosY, (double)this.entityPosZ);
-        return this.breakingTime <= 240 && !this.targetDoor.func_150015_f(this.host.worldObj, this.entityPosX, this.entityPosY, this.entityPosZ) && distance < 4.0D; // isDoorOpen()
+        return this.breakingTime <= 240 && !this.targetDoor.isOpen(this.host.worldObj, new BlockPos(this.entityPosX, this.entityPosY, this.entityPosZ)) && distance < 4.0D; // isDoorOpen()
     }
 
 	
@@ -53,7 +54,7 @@ public class EntityAIBreakDoor extends EntityAIDoorInteract {
  	// ==================================================
     public void resetTask() {
         super.resetTask();
-        this.host.worldObj.destroyBlockInWorldPartially(this.host.getEntityId(), this.entityPosX, this.entityPosY, this.entityPosZ, -1);
+        this.host.worldObj.sendBlockBreakProgress(this.host.getEntityId(), new BlockPos(this.entityPosX, this.entityPosY, this.entityPosZ), -1);
     }
 
 	
@@ -64,20 +65,20 @@ public class EntityAIBreakDoor extends EntityAIDoorInteract {
         super.updateTask();
 
         if(this.host.getRNG().nextInt(20) == 0)
-            this.host.worldObj.playAuxSFX(1010, this.entityPosX, this.entityPosY, this.entityPosZ, 0);
+            this.host.worldObj.playAuxSFX(1010, new BlockPos(this.entityPosX, this.entityPosY, this.entityPosZ), 0);
 
         ++this.breakingTime;
         int breaking = (int)((float)this.breakingTime / 240.0F * 10.0F);
 
         if(breaking != this.lastBreakTime) {
-            this.host.worldObj.destroyBlockInWorldPartially(this.host.getEntityId(), this.entityPosX, this.entityPosY, this.entityPosZ, breaking);
+            this.host.worldObj.sendBlockBreakProgress(this.host.getEntityId(), new BlockPos(this.entityPosX, this.entityPosY, this.entityPosZ), breaking);
             this.lastBreakTime = breaking;
         }
 
-        if(this.breakingTime == 240 && this.host.worldObj.difficultySetting == EnumDifficulty.HARD) {
-            this.host.worldObj.setBlockToAir(this.entityPosX, this.entityPosY, this.entityPosZ);
-            this.host.worldObj.playAuxSFX(1012, this.entityPosX, this.entityPosY, this.entityPosZ, 0);
-            this.host.worldObj.playAuxSFX(2001, this.entityPosX, this.entityPosY, this.entityPosZ, 0);
+        if(this.breakingTime == 240 && this.host.worldObj.getDifficulty() == EnumDifficulty.HARD) {
+            this.host.worldObj.setBlockToAir(new BlockPos(this.entityPosX, this.entityPosY, this.entityPosZ));
+            this.host.worldObj.playAuxSFX(1012, new BlockPos(this.entityPosX, this.entityPosY, this.entityPosZ), 0);
+            this.host.worldObj.playAuxSFX(2001, new BlockPos(this.entityPosX, this.entityPosY, this.entityPosZ), 0);
         }
     }
 }

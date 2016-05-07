@@ -1,14 +1,12 @@
 package lycanite.lycanitesmobs.swampmobs.model;
 
-import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.model.ModelCustomObj;
 import lycanite.lycanitesmobs.swampmobs.SwampMobs;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.util.MathHelper;
-import net.minecraftforge.client.model.obj.WavefrontObject;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ModelEyewig extends ModelCustomObj {
@@ -22,10 +20,10 @@ public class ModelEyewig extends ModelCustomObj {
     
     public ModelEyewig(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Eyewig", SwampMobs.group, "entity/eyewig");
+    	this.initModel("Eyewig", SwampMobs.group, "entity/eyewig");
     	
-    	// Get Parts:
-    	parts = model.groupObjects;
+
+
     	
     	// Set Rotation Centers:
     	setPartCenter("head", 0F, 0.5F, 1.0F);

@@ -5,8 +5,9 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.pathfinding.PathPoint;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 
 public class EntityAIAttackMelee extends EntityAIBase {
 	// Targets:
@@ -93,7 +94,7 @@ public class EntityAIAttackMelee extends EntityAIBase {
             return false;
         if(!attackTarget.isEntityAlive())
             return false;
-        if(this.host.getDistance(this.attackTarget.posX, this.attackTarget.boundingBox.minY, this.attackTarget.posZ) > this.maxChaseDistance)
+        if(this.host.getDistance(this.attackTarget.posX, this.attackTarget.getEntityBoundingBox().minY, this.attackTarget.posZ) > this.maxChaseDistance)
         	return false;
         if(this.targetClass != null && !this.targetClass.isAssignableFrom(attackTarget.getClass()))
             return false;
@@ -104,7 +105,7 @@ public class EntityAIAttackMelee extends EntityAIBase {
 	            return this.pathToTarget != null;
         	}
         	else
-        		return this.host.flightNavigator.setTargetPosition(new ChunkCoordinates((int)attackTarget.posX, (int)attackTarget.posY, (int)attackTarget.posZ), speed);
+        		return this.host.flightNavigator.setTargetPosition(new BlockPos((int)attackTarget.posX, (int)attackTarget.posY, (int)attackTarget.posZ), speed);
         }
         return true;
     }
@@ -121,7 +122,7 @@ public class EntityAIAttackMelee extends EntityAIBase {
         	return false;
         if(!this.host.isEntityAlive() || !attackTarget.isEntityAlive())
         	return false;
-        if(this.host.getDistance(this.attackTarget.posX, this.attackTarget.boundingBox.minY, this.attackTarget.posZ) > this.maxChaseDistance)
+        if(this.host.getDistance(this.attackTarget.posX, this.attackTarget.getEntityBoundingBox().minY, this.attackTarget.posZ) > this.maxChaseDistance)
         	return false;
         if(!this.longMemory)
         	if(!this.host.useFlightNavigator() && this.host.getNavigator().noPath())
@@ -139,7 +140,7 @@ public class EntityAIAttackMelee extends EntityAIBase {
     	if(!this.host.useFlightNavigator())
     		this.host.getNavigator().setPath(this.pathToTarget, this.speed);
     	else if(attackTarget != null)
-    		this.host.flightNavigator.setTargetPosition(new ChunkCoordinates((int)attackTarget.posX, (int)(attackTarget.posY+1.0), (int)attackTarget.posZ), speed);
+    		this.host.flightNavigator.setTargetPosition(new BlockPos((int)attackTarget.posX, (int)(attackTarget.posY+1.0), (int)attackTarget.posZ), speed);
         this.repathTime = 0;
     }
 	
@@ -184,17 +185,17 @@ public class EntityAIAttackMelee extends EntityAIBase {
         	
         	// Fly to Target:
         	else {
-        		this.host.flightNavigator.setTargetPosition(new ChunkCoordinates((int)attackTarget.posX, (int)(attackTarget.boundingBox.minY + flightHeight), (int)attackTarget.posZ), speed);
+        		this.host.flightNavigator.setTargetPosition(new BlockPos((int)attackTarget.posX, (int)(attackTarget.getEntityBoundingBox().minY + flightHeight), (int)attackTarget.posZ), speed);
         	}
         }
         
         // Damage Target:
         this.attackTime = Math.max(this.attackTime - 1, 0);
-        if(this.host.getDistance(attackTarget.posX, attackTarget.boundingBox.minY + flightHeight, attackTarget.posZ) <= this.attackRange + attackTarget.width) {
+        if(this.host.getDistance(attackTarget.posX, attackTarget.getEntityBoundingBox().minY + flightHeight, attackTarget.posZ) <= this.attackRange + attackTarget.width) {
             if(this.attackTime <= 0) {
                 this.attackTime = Math.round((float)this.attackTimeMax + ((float)this.attackTimeMax - ((float)this.attackTimeMax * (float)this.host.getHasteMultiplier())));
-                if(this.host.getHeldItem() != null)
-                    this.host.swingItem();
+                if(this.host.getHeldItemMainhand() != null)
+                    this.host.swingArm(EnumHand.MAIN_HAND);
                 this.host.meleeAttack(attackTarget, damage);
             }
         }

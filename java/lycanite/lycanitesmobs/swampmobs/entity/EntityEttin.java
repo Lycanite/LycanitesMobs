@@ -1,17 +1,8 @@
 package lycanite.lycanitesmobs.swampmobs.entity;
 
-import java.util.HashMap;
-
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIBreakDoor;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
+import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -21,9 +12,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
+
+import java.util.HashMap;
 
 public class EntityEttin extends EntityCreatureAgeable implements IMob {
 	public boolean ettinGreifing = true;
@@ -53,7 +47,10 @@ public class EntityEttin extends EntityCreatureAgeable implements IMob {
         this.attackPhaseMax = 2;
         
         // AI Tasks:
-        this.getNavigator().setBreakDoors(true);
+        if(this.getNavigator() instanceof PathNavigateGround) {
+            PathNavigateGround pathNavigateGround = (PathNavigateGround)this.getNavigator();
+            pathNavigateGround.setBreakDoors(true);
+        }
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIBreakDoor(this));
         this.tasks.addTask(3, new EntityAIAttackMelee(this).setLongMemory(false));
@@ -96,7 +93,7 @@ public class EntityEttin extends EntityCreatureAgeable implements IMob {
     public void onLivingUpdate() {
     	// Destroy Blocks:
 		if(!this.worldObj.isRemote)
-	        if(this.getAttackTarget() != null && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing") && this.ettinGreifing) {
+	        if(this.getAttackTarget() != null && this.worldObj.getGameRules().getBoolean("mobGriefing") && this.ettinGreifing) {
 		    	float distance = this.getAttackTarget().getDistanceToEntity(this);
 		    		if(distance <= this.width + 4.0F)
 		    			this.destroyArea((int)this.posX, (int)this.posY, (int)this.posZ, 10, true);
@@ -123,11 +120,10 @@ public class EntityEttin extends EntityCreatureAgeable implements IMob {
    	//                     Immunities
    	// ==================================================
     @Override
-    public boolean isPotionApplicable(PotionEffect par1PotionEffect) {
-        if(par1PotionEffect.getPotionID() == Potion.poison.id) return false;
-        if(par1PotionEffect.getPotionID() == Potion.blindness.id) return false;
-        super.isPotionApplicable(par1PotionEffect);
-        return true;
+    public boolean isPotionApplicable(PotionEffect potionEffect) {
+        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("poison")) return false;
+        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("blindness")) return false;
+        return super.isPotionApplicable(potionEffect);
     }
 	
 	

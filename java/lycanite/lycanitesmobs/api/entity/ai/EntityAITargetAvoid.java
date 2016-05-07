@@ -1,11 +1,12 @@
 package lycanite.lycanitesmobs.api.entity.ai;
 
+import com.google.common.base.Predicate;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+
 import java.util.Collections;
 import java.util.List;
-
-import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
-import net.minecraft.command.IEntitySelector;
-import net.minecraft.entity.EntityLivingBase;
 
 public class EntityAITargetAvoid extends EntityAITarget {
 	// Targets:
@@ -22,7 +23,14 @@ public class EntityAITargetAvoid extends EntityAITarget {
     public EntityAITargetAvoid(EntityCreatureBase setHost) {
         super(setHost);
         this.setMutexBits(8);
-        this.targetSelector = new EntityAITargetSelector(this, (IEntitySelector)null);
+        this.targetSelector = new Predicate<Entity>() {
+            @Override
+            public boolean apply(Entity input) {
+                if(!(input instanceof EntityLivingBase))
+                    return false;
+                return EntityAITargetAvoid.this.isSuitableTarget((EntityLivingBase)input, false);
+            }
+        };
         this.targetSorter = new EntityAITargetSorterNearest(setHost);
     }
     
@@ -50,8 +58,8 @@ public class EntityAITargetAvoid extends EntityAITarget {
     	this.cantSeeTimeMax = setCantSeeTimeMax;
     	return this;
     }
-    public EntityAITargetAvoid setSelector(IEntitySelector selector) {
-    	this.targetSelector = new EntityAITargetSelector(this, selector);
+    public EntityAITargetAvoid setSelector(Predicate<Entity> selector) {
+    	this.targetSelector = selector;
     	return this;
     }
     public EntityAITargetAvoid setTameTargetting(boolean setTargetting) {
@@ -74,7 +82,11 @@ public class EntityAITargetAvoid extends EntityAITarget {
  	// ==================================================
     @Override
     protected boolean isValidTarget(EntityLivingBase target) {
-    	// Own Class Check:
+        // Target Class Check:
+        if(this.targetClass != null && !this.targetClass.isAssignableFrom(target.getClass()))
+            return false;
+
+        // Own Class Check:
     	if(this.targetClass != this.host.getClass() && target.getClass() == this.host.getClass())
             return false;
         
@@ -95,7 +107,7 @@ public class EntityAITargetAvoid extends EntityAITarget {
         double distance = this.getTargetDistance();
         double heightDistance = 4.0D;
         if(this.host.useFlightNavigator()) heightDistance = distance;
-        List possibleTargets = this.host.worldObj.selectEntitiesWithinAABB(this.targetClass, this.host.boundingBox.expand(distance, heightDistance, distance), this.targetSelector);
+        List possibleTargets = this.host.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, this.host.getEntityBoundingBox().expand(distance, heightDistance, distance), this.targetSelector);
         Collections.sort(possibleTargets, this.targetSorter);
         
         if(possibleTargets.isEmpty())

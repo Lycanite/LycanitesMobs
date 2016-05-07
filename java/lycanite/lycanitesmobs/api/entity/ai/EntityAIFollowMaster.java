@@ -1,8 +1,7 @@
 package lycanite.lycanitesmobs.api.entity.ai;
 
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
-
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.Entity;
 
 public class EntityAIFollowMaster extends EntityAIFollow {
 	// Targets:
@@ -43,7 +42,7 @@ public class EntityAIFollowMaster extends EntityAIFollow {
  	//                    Get Target
  	// ==================================================
     @Override
-    public EntityLivingBase getTarget() {
+    public Entity getTarget() {
     	return this.host.getMasterTarget();
     }
 }

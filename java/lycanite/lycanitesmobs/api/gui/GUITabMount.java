@@ -21,7 +21,7 @@ public class GUITabMount extends GUITab {
     	return false;
         /*boolean ridingMount = Minecraft.getMinecraft().thePlayer.ridingEntity instanceof EntityCreatureRideable;
         if(ridingMount)
-        	this.icon = ((EntityCreatureRideable)Minecraft.getMinecraft().thePlayer.ridingEntity).mobInfo.getIcon();
+        	this.icon = ((EntityCreatureRideable)Minecraft.getMinecraft().thePlayer.ridingEntity).mobInfo.getSprite();
         return ridingMount;*/
     }
 }

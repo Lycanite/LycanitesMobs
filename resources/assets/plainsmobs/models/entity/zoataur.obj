@@ -1,6 +1,6 @@
-# Blender v2.67 (sub 0) OBJ File: 'centaur.blend'
+# Blender v2.67 (sub 0) OBJ File: 'zoataur.blend'
 # www.blender.org
-mtllib centaur.mtl
+mtllib zoataur.mtl
 o FrontRightLeg
 v -0.350000 1.158579 0.744949
 v -0.350000 1.055051 0.358579

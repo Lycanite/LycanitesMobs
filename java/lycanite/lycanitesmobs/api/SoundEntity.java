@@ -2,20 +2,22 @@ package lycanite.lycanitesmobs.api;
 
 import net.minecraft.client.audio.MovingSound;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.ResourceLocation;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class SoundEntity extends MovingSound {
     private final Entity entity;
 
-    public SoundEntity(Entity entity, String sound, Float volume) {
-        super(new ResourceLocation(sound));
+    public SoundEntity(SoundEvent soundIn, SoundCategory categoryIn, Entity entity, float volume) {
+        super(soundIn, categoryIn);
         this.entity = entity;
         this.repeat = true;
         this.volume = volume;
-        this.field_147665_h = 0;
+        this.pitch = 1.0F;
+        this.repeat = false;
     }
 
     public void update() {

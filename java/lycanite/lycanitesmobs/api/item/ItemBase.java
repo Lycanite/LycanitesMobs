@@ -1,26 +1,40 @@
 package lycanite.lycanitesmobs.api.item;
 
-import java.util.List;
-
-import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 public class ItemBase extends Item {
 	public static int descriptionWidth = 128;
+    public static IItemColor itemColor = new IItemColor() {
+        public int getColorFromItemstack(ItemStack stack, int tintIndex) {
+            Item item = stack.getItem();
+            if(item == null || !(item instanceof ItemBase))
+                return 16777215;
+            ItemBase itemBase = (ItemBase)item;
+            return itemBase.getColorFromItemstack(stack, tintIndex);
+        }
+    };
 	
 	public String itemName = "Item";
 	public GroupInfo group = LycanitesMobs.group;
@@ -35,9 +49,9 @@ public class ItemBase extends Item {
     }
     
     public void setup() {
-        this.setCreativeTab(LycanitesMobs.itemsTab);
     	this.setUnlocalizedName(this.itemName);
         this.textureName = this.itemName.toLowerCase();
+        this.setCreativeTab(LycanitesMobs.itemsTab);
         int nameLength = this.textureName.length();
         if(nameLength > 6 && this.textureName.substring(nameLength - 6, nameLength).equalsIgnoreCase("charge")) {
         	this.textureName = this.textureName.substring(0, nameLength - 6);
@@ -52,7 +66,7 @@ public class ItemBase extends Item {
     public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List textList, boolean par4) {
     	String description = this.getDescription(itemStack, entityPlayer, textList, par4);
     	if(!"".equalsIgnoreCase(description) && !("item." + this.itemName + ".description").equals(description)) {
-    		FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+    		FontRenderer fontRenderer = Minecraft.getMinecraft().fontRendererObj;
     		List formattedDescriptionList = fontRenderer.listFormattedStringToWidth(description, descriptionWidth);
     		for(Object formattedDescription : formattedDescriptionList) {
     			if(formattedDescription instanceof String)
@@ -63,7 +77,7 @@ public class ItemBase extends Item {
     }
     
     public String getDescription(ItemStack itemStack, EntityPlayer entityPlayer, List textList, boolean par4) {
-    	return StatCollector.translateToLocal("item." + this.itemName + ".description");
+    	return I18n.translateToLocal("item." + this.itemName + ".description");
     }
 	
     
@@ -81,32 +95,36 @@ public class ItemBase extends Item {
 	// ==================================================
     // ========== Use ==========
     @Override
-    public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int p_77648_7_, float p_77648_8_, float p_77648_9_, float p_77648_10_) {
-    	return super.onItemUse(itemStack, player, world, x, y, z, p_77648_7_, p_77648_8_, p_77648_9_, p_77648_10_);
+    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    	return super.onItemUse(stack, playerIn, worldIn, pos, hand, facing, hitX, hitY, hitZ);
     }
     
     // ========== Start ==========
     @Override
-    public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
-    	return itemStack;
+    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
+        return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
+    }
+
+    public void onItemLeftClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
+        return;
     }
 
     // ========== Using ==========
     @Override
-    public void onUsingTick(ItemStack itemStack, EntityPlayer player, int useRemaining) {
-    	super.onUsingTick(itemStack, player, useRemaining);
+    public void onUsingTick(ItemStack itemStack, EntityLivingBase entity, int useRemaining) {
+    	super.onUsingTick(itemStack, entity, useRemaining);
     }
     
     // ========== Stop ==========
     @Override
-    public void onPlayerStoppedUsing(ItemStack itemStack, World world, EntityPlayer player, int useRemaining) {
-    	super.onPlayerStoppedUsing(itemStack, world, player, useRemaining);
+    public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
+    	super.onPlayerStoppedUsing(stack, worldIn, entityLiving, timeLeft);
     }
 
     // ========== Animation ==========
     @Override
-    public EnumAction getItemUseAction(ItemStack par1ItemStack) {
-        return EnumAction.none;
+    public EnumAction getItemUseAction(ItemStack itemStack) {
+        return super.getItemUseAction(itemStack);
     }
     
     // ========== Entity Interaction ==========
@@ -136,31 +154,25 @@ public class ItemBase extends Item {
 	// ==================================================
 	//                     Visuals
 	// ==================================================
-    // ========== Get Icon ==========
-    @SideOnly(Side.CLIENT)
-    @Override
-    public IIcon getIconFromDamage(int damage) {
-    	return AssetManager.getIcon(this.itemName);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIconIndex(ItemStack itemStack)
-    {
-        return super.getIconIndex(itemStack);
-    }
-    
-    // ========== Register Icons ==========
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IIconRegister iconRegister) {
-    	AssetManager.addIcon(this.itemName, this.group, this.textureName, iconRegister);
-    }
-
     // ========== Holding Angle ==========
     @SideOnly(Side.CLIENT)
     @Override
     public boolean isFull3D() {
-        return true;
+        return super.isFull3D();
+    }
+
+    // ========== Get Model Resource Location ==========
+    public ModelResourceLocation getModelResourceLocation() {
+        return new ModelResourceLocation(this.getRegistryName(), "inventory");
+    }
+
+    // ========== Use Colors ==========
+    public boolean useItemColors() {
+        return false;
+    }
+
+    // ========== Get Color from ItemStack ==========
+    public int getColorFromItemstack(ItemStack itemStack, int tintIndex) {
+        return 16777215;
     }
 }

@@ -1,8 +1,11 @@
 package lycanite.lycanitesmobs.api.entity;
 
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 public class EntityProjectileLaserEnd extends EntityProjectileBase {
@@ -18,6 +21,11 @@ public class EntityProjectileLaserEnd extends EntityProjectileBase {
 	private float projectileWidth = 0.2f;
 	private float projectileHeight = 0.2f;
 	private double projectileSpeed;
+
+    // Datawatcher:
+    protected static final DataParameter<Float> POS_X = EntityDataManager.<Float>createKey(EntityProjectileLaserEnd.class, DataSerializers.FLOAT);
+    protected static final DataParameter<Float> POS_Y = EntityDataManager.<Float>createKey(EntityProjectileLaserEnd.class, DataSerializers.FLOAT);
+    protected static final DataParameter<Float> POS_Z = EntityDataManager.<Float>createKey(EntityProjectileLaserEnd.class, DataSerializers.FLOAT);
 	
     // ==================================================
  	//                   Constructors
@@ -48,9 +56,9 @@ public class EntityProjectileLaserEnd extends EntityProjectileBase {
 	        this.targetY = this.laserEntity.posY;
 	        this.targetZ = this.laserEntity.posZ;
         }
-        this.dataWatcher.addObject(this.posIDStart, (float)this.posX);
-        this.dataWatcher.addObject(this.posIDStart + 1, (float)this.posY);
-        this.dataWatcher.addObject(this.posIDStart + 2, (float)this.posZ);
+        this.dataWatcher.register(POS_X, (float) this.posX);
+        this.dataWatcher.register(POS_Y, (float) this.posY);
+        this.dataWatcher.register(POS_Z, (float)this.posZ);
         this.noClip = true;
     }
     
@@ -62,9 +70,9 @@ public class EntityProjectileLaserEnd extends EntityProjectileBase {
     @Override
     public void onUpdate() {
     	if(this.worldObj.isRemote) {
-    		this.posX = this.dataWatcher.getWatchableObjectFloat(this.posIDStart);
-    		this.posY = this.dataWatcher.getWatchableObjectFloat(this.posIDStart + 1);
-    		this.posZ = this.dataWatcher.getWatchableObjectFloat(this.posIDStart + 2);
+    		this.posX = this.dataWatcher.get(POS_X);
+    		this.posY = this.dataWatcher.get(POS_Y);
+    		this.posZ = this.dataWatcher.get(POS_Z);
     		return;
     	}
     	
@@ -74,9 +82,9 @@ public class EntityProjectileLaserEnd extends EntityProjectileBase {
     	if(this.isEntityAlive())
     		this.moveToTarget();
     	
-    	this.dataWatcher.updateObject(this.posIDStart, (float)this.posX);
-    	this.dataWatcher.updateObject(this.posIDStart + 1, (float)this.posY);
-    	this.dataWatcher.updateObject(this.posIDStart + 2, (float)this.posZ);
+    	this.dataWatcher.set(POS_X, (float) this.posX);
+    	this.dataWatcher.set(POS_Y, (float) this.posY);
+    	this.dataWatcher.set(POS_Z, (float) this.posZ);
     }
     
     // ========== End Update ==========
@@ -137,7 +145,7 @@ public class EntityProjectileLaserEnd extends EntityProjectileBase {
  	//                     Impact
  	// ==================================================
     @Override
-    protected void onImpact(MovingObjectPosition movingObjectPos) {}
+    protected void onImpact(RayTraceResult rayTraceResult) {}
     
     
     // ==================================================

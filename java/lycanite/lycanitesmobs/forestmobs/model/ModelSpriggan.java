@@ -1,14 +1,12 @@
 package lycanite.lycanitesmobs.forestmobs.model;
 
-import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.model.ModelCustomObj;
 import lycanite.lycanitesmobs.forestmobs.ForestMobs;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.util.MathHelper;
-import net.minecraftforge.client.model.obj.WavefrontObject;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ModelSpriggan extends ModelCustomObj {
@@ -22,10 +20,10 @@ public class ModelSpriggan extends ModelCustomObj {
 
     public ModelSpriggan(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Spriggan", ForestMobs.group, "entity/spriggan");
+    	this.initModel("Spriggan", ForestMobs.group, "entity/spriggan");
     	
-    	// Get Parts:
-    	parts = model.groupObjects;
+
+
     	
     	// Set Rotation Centers:
     	setPartCenter("head", 0F, 1.44F, 0F);

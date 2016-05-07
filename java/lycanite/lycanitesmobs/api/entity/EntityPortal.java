@@ -6,9 +6,13 @@ import lycanite.lycanitesmobs.api.item.ItemStaffSummoning;
 import lycanite.lycanitesmobs.api.tileentity.TileEntitySummoningPedestal;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class EntityPortal extends EntityProjectileBase {
@@ -29,6 +33,9 @@ public class EntityPortal extends EntityProjectileBase {
     public String ownerName;
     public int ownerNameID;
     public TileEntitySummoningPedestal summoningPedestal;
+
+    // Datawatcher:
+    protected static final DataParameter<String> OWNER_NAME = EntityDataManager.<String>createKey(EntityPortal.class, DataSerializers.STRING);
 	
     // ==================================================
  	//                   Constructors
@@ -50,22 +57,20 @@ public class EntityPortal extends EntityProjectileBase {
         super(world);
         this.summoningPedestal = summoningPedestal;
         this.setStats();
-        this.posX = summoningPedestal.xCoord + 0.5D;
-        this.posY = summoningPedestal.yCoord + 1.5D;
-        this.posZ = summoningPedestal.zCoord + 0.5D;
+        this.posX = summoningPedestal.getPos().getX() + 0.5D;
+        this.posY = summoningPedestal.getPos().getY() + 1.5D;
+        this.posZ = summoningPedestal.getPos().getZ() + 0.5D;
     }
     
     public void setStats() {
     	this.entityName = "summoningportal";
-        this.setProjectileSize(2, 3);
         this.setProjectileScale(6);
         this.moveToTarget();
 
         this.animationFrameMax = 7;
         this.movement = false;
 
-        this.ownerNameID = this.projectileScaleID + 1;
-        this.dataWatcher.addObject(this.ownerNameID, "");
+        this.dataWatcher.register(OWNER_NAME, "");
     }
     
     
@@ -91,16 +96,16 @@ public class EntityPortal extends EntityProjectileBase {
         if(!this.worldObj.isRemote) {
             // Summoning Staff or Summoning Pedestal (with active player):
             if(this.shootingEntity != null)
-                this.dataWatcher.updateObject(this.ownerNameID, this.shootingEntity.getCommandSenderName());
+                this.dataWatcher.set(OWNER_NAME, this.shootingEntity.getName());
             // Summoning Pedestal:
             else if(this.summoningPedestal != null)
-                this.dataWatcher.updateObject(this.ownerNameID, this.summoningPedestal.getOwnerName());
+                this.dataWatcher.set(OWNER_NAME, this.summoningPedestal.getOwnerName());
             // Wild:
             else
-                this.dataWatcher.updateObject(this.ownerNameID, "");
+                this.dataWatcher.set(OWNER_NAME, "");
         }
         else {
-            this.ownerName = this.dataWatcher.getWatchableObjectString(this.ownerNameID);
+            this.ownerName = this.dataWatcher.get(OWNER_NAME);
         }
 
     	// ========== Check for Despawn ==========
@@ -164,7 +169,7 @@ public class EntityPortal extends EntityProjectileBase {
                 float distance = this.rand.nextFloat() * 2;
                 double x = distance * Math.cos(angle) + Math.sin(angle);
                 double z = distance * Math.sin(angle) - Math.cos(angle);
-                this.worldObj.spawnParticle("portal",
+                this.worldObj.spawnParticle(EnumParticleTypes.PORTAL,
                         this.posX + x,
                         this.posY + (4.0F * this.rand.nextFloat()) - 2.0F,
                         this.posZ + z,
@@ -195,14 +200,14 @@ public class EntityPortal extends EntityProjectileBase {
 	    		return false;
 	    	entity.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rand.nextFloat() * 360.0F, 0.0F);
 	    	if(entity instanceof EntityCreatureBase) {
-	    		EntityCreatureBase entityCreature = (EntityCreatureBase)entity;
+                EntityCreatureBase entityCreature = (EntityCreatureBase) entity;
 
                 // Summoning Staff:
-                if(this.shootingEntity != null && this.summoningPedestal == null) {
+                if (this.shootingEntity != null && this.summoningPedestal == null) {
                     entityCreature.setMinion(true);
-                    if(entityCreature instanceof EntityCreatureTameable) {
-                        ((EntityCreatureTameable)entityCreature).setPlayerOwner(this.shootingEntity);
-                        if(this.portalItem != null) {
+                    if (entityCreature instanceof EntityCreatureTameable) {
+                        ((EntityCreatureTameable) entityCreature).setPlayerOwner(this.shootingEntity);
+                        if (this.portalItem != null) {
                             this.portalItem.applyMinionBehaviour((EntityCreatureTameable) entityCreature, this.shootingEntity);
                             this.portalItem.applyMinionEffects(entityCreature);
                         }
@@ -210,20 +215,20 @@ public class EntityPortal extends EntityProjectileBase {
                 }
 
                 // Summoning Pedestal:
-                else if(this.summoningPedestal != null && this.summoningPedestal.getOwnerUUID() != null) {
+                else if (this.summoningPedestal != null && this.summoningPedestal.getOwnerUUID() != null) {
                     entityCreature.setMinion(true);
-                    if(entityCreature instanceof EntityCreatureTameable) {
-                        ((EntityCreatureTameable)entityCreature).setPlayerOwner(this.summoningPedestal.getOwnerUUID(), this.summoningPedestal.getOwnerName());
-                        this.summoningPedestal.applyMinionBehaviour((EntityCreatureTameable)entityCreature);
+                    if (entityCreature instanceof EntityCreatureTameable) {
+                        ((EntityCreatureTameable) entityCreature).setPlayerOwner(this.summoningPedestal.getOwnerUUID(), this.summoningPedestal.getOwnerName());
+                        this.summoningPedestal.applyMinionBehaviour((EntityCreatureTameable) entityCreature);
                     }
                 }
 
-                if(this.summonDuration > 0)
-	    		    entityCreature.setTemporary(this.summonDuration);
+                if (this.summonDuration > 0)
+                    entityCreature.setTemporary(this.summonDuration);
 
-                if(this.shootingEntity != null)
+                if (this.shootingEntity != null)
                     this.shootingEntity.addStat(ObjectManager.getAchievement(entityCreature.mobInfo.name + ".summon"), 1);
-	    	}
+            }
 	    	this.worldObj.spawnEntityInWorld(entity);
     	}
     	boolean summonedCreatures = this.summonAmount > 0;
@@ -245,13 +250,13 @@ public class EntityPortal extends EntityProjectileBase {
     public void moveToTarget() {
     	if(this.shootingEntity != null && this.summoningPedestal == null) {
     		// Get Look Target
-	        Vec3 lookDirection = this.shootingEntity.getLookVec();
+	        Vec3d lookDirection = this.shootingEntity.getLookVec();
 			this.targetX = this.shootingEntity.posX + (lookDirection.xCoord * this.portalRange);
 			this.targetY = this.shootingEntity.posY + this.shootingEntity.getEyeHeight() + (lookDirection.yCoord * this.portalRange);
 			this.targetZ = this.shootingEntity.posZ + (lookDirection.zCoord * this.portalRange);
 	        
 			// Apply Raytrace to Look Target:
-			MovingObjectPosition target = Utilities.raytrace(this.worldObj, this.shootingEntity.posX, this.shootingEntity.posY + this.shootingEntity.getEyeHeight(), this.shootingEntity.posZ, this.targetX, this.targetY, this.targetZ, 1.0F, null);
+			RayTraceResult target = Utilities.raytrace(this.worldObj, this.shootingEntity.posX, this.shootingEntity.posY + this.shootingEntity.getEyeHeight(), this.shootingEntity.posZ, this.targetX, this.targetY, this.targetZ, 1.0F, null);
 	        if(target != null && target.hitVec != null) {
 				this.targetX = target.hitVec.xCoord;
 				this.targetY = target.hitVec.yCoord;
@@ -285,7 +290,7 @@ public class EntityPortal extends EntityProjectileBase {
  	//                     Impact
  	// ==================================================
     @Override
-    protected void onImpact(MovingObjectPosition movingObjectPos) {}
+    protected void onImpact(RayTraceResult movingObjectPos) {}
     
     
     // ==================================================
@@ -301,7 +306,7 @@ public class EntityPortal extends EntityProjectileBase {
             AssetManager.addTexture(this.entityName + "_player", LycanitesMobs.group, "textures/particles/" + this.entityName.toLowerCase() + "_player.png");
 
         if(this.ownerName != null) {
-            if(this.ownerName.equalsIgnoreCase(LycanitesMobs.proxy.getClientPlayer().getCommandSenderName()))
+            if(this.ownerName.equalsIgnoreCase(LycanitesMobs.proxy.getClientPlayer().getName()))
                 return AssetManager.getTexture(this.entityName + "_client");
             if(!this.ownerName.equalsIgnoreCase(""))
                 return AssetManager.getTexture(this.entityName + "_player");

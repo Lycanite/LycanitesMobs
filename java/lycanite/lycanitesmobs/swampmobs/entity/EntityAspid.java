@@ -1,27 +1,15 @@
 package lycanite.lycanitesmobs.swampmobs.entity;
 
-import java.util.HashMap;
-
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupAnimal;
 import lycanite.lycanitesmobs.api.IGroupPredator;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIAvoid;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowParent;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIMate;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAvoid;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetParent;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITempt;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
+import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -32,7 +20,10 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import java.util.HashMap;
 
 public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGroupAnimal {
 	
@@ -59,7 +50,6 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
         this.setupMob();
         
         // AI Tasks:
-        this.getNavigator().setAvoidsWater(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIAttackMelee(this).setLongMemory(false));
         this.tasks.addTask(2, new EntityAIAvoid(this).setNearSpeed(1.3D).setFarSpeed(1.2D).setNearDistance(5.0D).setFarDistance(20.0D));
@@ -89,9 +79,9 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("AspidMeatRaw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("AspidMeatCooked"))).setMinAmount(2).setMaxAmount(5));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("aspidmeatraw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("aspidmeatcooked"))).setMinAmount(2).setMaxAmount(5));
         this.drops.add(new DropRate(new ItemStack(Items.slime_ball), 0.25F));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("PoisonGland")), 0.25F));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("poisongland")), 0.25F));
 	}
 	
 	
@@ -109,9 +99,9 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
         	if(this.isChild())
         		trailHeight = 1;
         	for(int y = 0; y < trailHeight; y++) {
-        		Block block = this.worldObj.getBlock((int)this.posX, (int)this.posY + y, (int)this.posZ);
-        		if(block == Blocks.air || block == Blocks.snow || block == ObjectManager.getBlock("PoisonCloud"))
-        			this.worldObj.setBlock((int)this.posX, (int)this.posY + y, (int)this.posZ, ObjectManager.getBlock("PoisonCloud"));
+        		Block block = this.worldObj.getBlockState(new BlockPos(this.posX, this.posY + y, this.posZ)).getBlock();
+        		if(block == Blocks.air || block == Blocks.snow || block == ObjectManager.getBlock("poisoncloud"))
+        			this.worldObj.setBlockState(new BlockPos(this.posX, this.posY + y, this.posZ), ObjectManager.getBlock("poisoncloud").getDefaultState());
         	}
 		}
     }
@@ -123,22 +113,22 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
 	// ========== Pathing Weight ==========
 	@Override
 	public float getBlockPathWeight(int par1, int par2, int par3) {
-		if(this.worldObj.getBlock(par1, par2 - 1, par3) != Blocks.air) {
-			Block block = this.worldObj.getBlock(par1, par2 - 1, par3);
-			if(block.getMaterial() == Material.grass)
-				return 10F;
-			if(block.getMaterial() == Material.ground)
-				return 7F;
-		}
+        if(this.worldObj.getBlockState(new BlockPos(par1, par2 - 1, par3)).getBlock() != Blocks.air) {
+            IBlockState blocStatek = this.worldObj.getBlockState(new BlockPos(par1, par2 - 1, par3));
+            if(blocStatek.getMaterial() == Material.grass)
+                return 10F;
+            if(blocStatek.getMaterial() == Material.ground)
+                return 7F;
+        }
         return super.getBlockPathWeight(par1, par2, par3);
     }
     
 	// ========== Can leash ==========
     @Override
-    public boolean canLeash(EntityPlayer player) {
+    public boolean canBeLeashedTo(EntityPlayer player) {
 	    if(!this.hasAttackTarget() && !this.hasMaster())
 	        return true;
-	    return super.canLeash(player);
+	    return super.canBeLeashedTo(player);
     }
     
     
@@ -153,7 +143,7 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
     	
     	// Effect:
         if(target instanceof EntityLivingBase) {
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.poison.id, this.getEffectDuration(8), 0));
+            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("poison"), this.getEffectDuration(8), 0));
         }
         
         return true;
@@ -165,8 +155,8 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotionID() == Potion.poison.id) return false;
-        if(potionEffect.getPotionID() == Potion.blindness.id) return false;
+        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("poison")) return false;
+        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("blindness")) return false;
         return super.isPotionApplicable(potionEffect);
     }
     

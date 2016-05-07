@@ -1,19 +1,19 @@
 package lycanite.lycanitesmobs.api.mobevent;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import lycanite.lycanitesmobs.ExtendedWorld;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.Utilities;
 import lycanite.lycanitesmobs.api.config.ConfigSpawning;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class MobEventManager {
@@ -120,7 +120,7 @@ public class MobEventManager {
         // ===== Update World Event =====
 
         // Check If Events Are Completely Disabled:
-        if(!this.mobEventsEnabled || !worldExt.mobEventsEnabled || world.difficultySetting == EnumDifficulty.PEACEFUL) {
+        if(!this.mobEventsEnabled || !worldExt.mobEventsEnabled || world.getDifficulty() == EnumDifficulty.PEACEFUL) {
             if(worldExt.serverWorldEvent != null)
                 worldExt.stopWorldEvent();
             return;
@@ -203,7 +203,7 @@ public class MobEventManager {
 	public MobEventBase getRandomWorldMobEvent(World world, ExtendedWorld worldExt) {
 		int dimensionID = 0;
 		if(world.provider != null)
-			dimensionID = world.provider.dimensionId;
+			dimensionID = world.provider.getDimension();
 		
 		// Seasonal Events:
 		if(Utilities.isHalloween() && this.worldMobEvents.containsKey("halloween"))

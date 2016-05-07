@@ -1,20 +1,29 @@
 package lycanite.lycanitesmobs.api.model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.api.info.GroupInfo;
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraftforge.client.model.obj.GroupObject;
-import net.minecraftforge.client.model.obj.WavefrontObject;
-
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.IModelCustomData;
+import net.minecraftforge.client.model.obj.OBJModel;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import lycanite.lycanitesmobs.api.modelloader.obj.ObjObject;
+import lycanite.lycanitesmobs.api.modelloader.obj.TessellatorModel;
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @SideOnly(Side.CLIENT)
 public class ModelCustomObj extends ModelBase {
@@ -26,9 +35,11 @@ public class ModelCustomObj extends ModelBase {
 	
 	// Model:
     /** An instance of the model, the model should only be set once and not during every tick or things will get very laggy! **/
-	public WavefrontObject model;
+    public TessellatorModel wavefrontObject;
+
     /** A list of all parts that belong to this model. **/
-	public ArrayList<GroupObject> parts;
+    public List<ObjObject> wavefrontParts;
+
     /** A map containing the XYZ offset for each part to use when centering. **/
 	public Map<String, float[]> partCenters = new HashMap<String, float[]>();
     /** A map containing the XYZ sub-offset for each part to use when centering. These are for parts with two centers such as mouth parts that match their centers to the head part but have a subcenter for opening and closing. **/
@@ -51,11 +62,11 @@ public class ModelCustomObj extends ModelBase {
     public float[] trophyOffset = new float[0];
     /** Used for positioning this model's mouth parts when displaying as a trophy. If an empty array, no offset is applied, otherwise it must have at least 3 entries (x, y, z). **/
     public float[] trophyMouthOffset = new float[0];
-    
+
     // Coloring:
 	/** If true, no color effects will be applied, this is usually used for when the model is rendered as a red damage overlay, etc. **/
     public boolean dontColor = false;
-    
+
 	// ==================================================
   	//                    Constructors
   	// ==================================================
@@ -65,6 +76,25 @@ public class ModelCustomObj extends ModelBase {
     
     public ModelCustomObj(float shadowSize) {
     	// Here a model should get its model, collect its parts into a list and then set the centers for each part.
+    }
+
+
+    // ==================================================
+    //                    Load Model
+    // ==================================================
+    public static IModelCustomData loadModel(ResourceLocation resourceLocation) {
+        return new OBJModel(new OBJModel.MaterialLibrary(), resourceLocation);
+    }
+
+
+    // ==================================================
+    //                    Init Model
+    // ==================================================
+    public ModelCustomObj initModel(String name, GroupInfo groupInfo, String path) {
+        this.wavefrontObject = new TessellatorModel("/assets/" + groupInfo.filename + "/models/" + path + ".obj");
+        this.wavefrontParts = this.wavefrontObject.objObjects;
+
+        return this;
     }
     
     
@@ -99,20 +129,20 @@ public class ModelCustomObj extends ModelBase {
 		}
 
         // Render and Animate Each Part:
-    	for(GroupObject part : this.parts) {
-    		if(part.name == null)
+        for(ObjObject part : this.wavefrontParts) {
+    		if(part.getName() == null)
     			continue;
 
             // Trophy - Check if Trophy Part:
-    		boolean isTrophyPart = this.isTrophyPart(part);
-    		if(this.bodyIsTrophy && part.name.toLowerCase().contains("body")) {
+    		boolean isTrophyPart = this.isTrophyPart(part.getName());
+    		if(this.bodyIsTrophy && part.getName().toLowerCase().contains("body")) {
                 isTrophyPart = true;
     		}
             if(trophyModel && !isTrophyPart)
                 continue;
 
             // Begin Rendering Part:
-            GL11.glPushMatrix();
+            GlStateManager.pushMatrix();
 
             // Apply Initial Offsets: (To Match Blender OBJ Export)
             this.rotate(modelXRotOffset, 1F, 0F, 0F);
@@ -120,7 +150,7 @@ public class ModelCustomObj extends ModelBase {
 
             // Baby Heads:
             if(this.isChild && !trophyModel)
-                this.childScale(part.name.toLowerCase());
+                this.childScale(part.getName().toLowerCase());
 
             // Apply Scales:
             this.scale(scale, scale, scale);
@@ -128,37 +158,57 @@ public class ModelCustomObj extends ModelBase {
                 this.scale(this.trophyScale, this.trophyScale, this.trophyScale);
 
             // Animate (Part is centered and then animated):
-            this.centerPart(part.name.toLowerCase());
-            this.animatePart(part.name.toLowerCase(), (EntityLiving)entity, time, distance, loop, -lookY, lookX, scale);
+            this.centerPart(part.getName().toLowerCase());
+            this.animatePart(part.getName().toLowerCase(), (EntityLiving)entity, time, distance, loop, -lookY, lookX, scale);
 
             // Trophy - Positioning:
             if(trophyModel) {
-                if(!part.name.toLowerCase().contains("head") && !part.name.toLowerCase().contains("body")) {
-                	float[] mouthOffset = this.comparePartCenters(this.bodyIsTrophy ? "body" : "head", part.name.toLowerCase());
+                if(!part.getName().toLowerCase().contains("head") && !part.getName().toLowerCase().contains("body")) {
+                	float[] mouthOffset = this.comparePartCenters(this.bodyIsTrophy ? "body" : "head", part.getName().toLowerCase());
                     this.translate(mouthOffset[0], mouthOffset[1], mouthOffset[2]);
                     if(this.trophyMouthOffset.length >= 3)
                     	this.translate(this.trophyMouthOffset[0], this.trophyMouthOffset[1], this.trophyMouthOffset[2]);
                 }
-                if(part.name.toLowerCase().contains("head")) {
-                	if(!part.name.toLowerCase().contains("left")) {
+                if(part.getName().toLowerCase().contains("head")) {
+                	if(!part.getName().toLowerCase().contains("left")) {
                 			this.translate(-0.3F, 0, 0);
                 			this.rotate(5F, 0, 1, 0);
                 	}
-                	if(!part.name.toLowerCase().contains("right")) {
+                	if(!part.getName().toLowerCase().contains("right")) {
                 			this.translate(0.3F, 0, 0);
                 			this.rotate(-5F, 0, 1, 0);
                 	}
                 }
-                this.uncenterPart(part.name.toLowerCase());
+                this.uncenterPart(part.getName().toLowerCase());
                 if(this.trophyOffset.length >= 3)
                     this.translate(this.trophyOffset[0], this.trophyOffset[1], this.trophyOffset[2]);
             }
 
-            // Finish Rendering Part (Part is returned to its position then rendered):
-            this.uncenterPart(part.name.toLowerCase());
-            part.render();
-            GL11.glPopMatrix();
+            // Render:
+            this.uncenterPart(part.getName().toLowerCase());
+            GlStateManager.disableLighting();
+            this.wavefrontObject.renderGroup(part);
+
+            GlStateManager.popMatrix();
     	}
+    }
+
+
+    public void renderBakedModel(IBakedModel bakedModel) {
+        Tessellator tessellator = Tessellator.getInstance();
+        VertexBuffer vertexbuffer = tessellator.getBuffer();
+        vertexbuffer.begin(4, DefaultVertexFormats.POSITION_TEX);
+
+        for(EnumFacing enumfacing : EnumFacing.values()) {
+            List<BakedQuad> list = bakedModel.getQuads(null, enumfacing, 0);
+            if (!list.isEmpty()) {
+                for(BakedQuad quad : list) {
+                    vertexbuffer.addVertexData(quad.getVertexData());
+                }
+            }
+        }
+
+        vertexbuffer.finishDrawing();
     }
     
     
@@ -176,10 +226,10 @@ public class ModelCustomObj extends ModelBase {
     }
 
     /** Returns true if the provided part should be shown for the trophy model. **/
-    public boolean isTrophyPart(GroupObject part) {
+    public boolean isTrophyPart(OBJModel.Group part) {
     	if(part == null)
     		return false;
-    	return this.isTrophyPart(part.name.toLowerCase());
+    	return this.isTrophyPart(part.getName().toLowerCase());
     }
     
     

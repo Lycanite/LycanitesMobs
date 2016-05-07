@@ -1,13 +1,11 @@
 package lycanite.lycanitesmobs.plainsmobs.model;
 
-import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.api.model.ModelCustomObj;
 import lycanite.lycanitesmobs.plainsmobs.PlainsMobs;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.util.MathHelper;
-import net.minecraftforge.client.model.obj.WavefrontObject;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ModelMaka extends ModelCustomObj {
@@ -21,10 +19,10 @@ public class ModelMaka extends ModelCustomObj {
     
     public ModelMaka(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Maka", PlainsMobs.group, "entity/maka");
+    	this.initModel("Maka", PlainsMobs.group, "entity/maka");
     	
-    	// Get Parts:
-    	parts = model.groupObjects;
+
+
     	
     	// Set Rotation Centers:
     	setPartCenter("head", 0F, 1.4F, 2.0F);

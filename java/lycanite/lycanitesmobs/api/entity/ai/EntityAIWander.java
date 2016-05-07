@@ -2,8 +2,8 @@ package lycanite.lycanitesmobs.api.entity.ai;
 
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 
 public class EntityAIWander extends EntityAIBase {
 	// Targets:
@@ -48,16 +48,14 @@ public class EntityAIWander extends EntityAIBase {
         else if(pauseRate != 0 && this.host.getRNG().nextInt(pauseRate) != 0)
             return false;
         else {
-        	int flight = 0;
-        	if(this.host.useFlightNavigator()) flight = 20;
-            Vec3 newTarget = RandomPositionGenerator.findRandomTarget(this.host, 10, 7, flight);
+            Vec3d newTarget = RandomPositionGenerator.findRandomTarget(this.host, 10, 7, this.host.getFlyingHeight());
             if(newTarget == null)
                 return false;
             else {
-                ChunkCoordinates wanderPosition = this.host.getWanderPosition(new ChunkCoordinates((int)newTarget.xCoord, (int)newTarget.yCoord, (int)newTarget.zCoord));
-                this.xPosition = wanderPosition.posX;
-                this.yPosition = wanderPosition.posY;
-                this.zPosition = wanderPosition.posZ;
+                BlockPos wanderPosition = this.host.getWanderPosition(new BlockPos((int)newTarget.xCoord, (int)newTarget.yCoord, (int)newTarget.zCoord));
+                this.xPosition = wanderPosition.getX();
+                this.yPosition = wanderPosition.getY();
+                this.zPosition = wanderPosition.getZ();
                 return true;
             }
         }
@@ -81,9 +79,10 @@ public class EntityAIWander extends EntityAIBase {
    	//                     Start
    	// ==================================================
     public void startExecuting() {
-    	if(!host.useFlightNavigator())
-    		this.host.getNavigator().tryMoveToXYZ(this.xPosition, this.yPosition, this.zPosition, this.speed);
+    	if(!host.useFlightNavigator()) {
+            this.host.getNavigator().tryMoveToXYZ(this.xPosition, this.yPosition, this.zPosition, this.speed);
+        }
     	else
-    		host.flightNavigator.setTargetPosition(new ChunkCoordinates((int)this.xPosition, (int)this.yPosition, (int)this.zPosition), this.speed);
+    		host.flightNavigator.setTargetPosition(new BlockPos((int)this.xPosition, (int)this.yPosition, (int)this.zPosition), this.speed);
     }
 }

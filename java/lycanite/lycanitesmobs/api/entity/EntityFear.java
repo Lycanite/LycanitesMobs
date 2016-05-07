@@ -1,23 +1,19 @@
 package lycanite.lycanitesmobs.api.entity;
 
-import java.util.HashMap;
-
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
 import lycanite.lycanitesmobs.api.inventory.InventoryCreature;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityFlying;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EnumCreatureAttribute;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.HashMap;
 
 public class EntityFear extends EntityCreatureBase {
     public Entity fearedEntity;
@@ -56,7 +52,7 @@ public class EntityFear extends EntityCreatureBase {
 
         // Stats:
         this.experienceValue = 0;
-        this.inventory = new InventoryCreature(this.getCommandSenderName(), this);
+        this.inventory = new InventoryCreature(this.getName(), this);
         if(this.mobInfo.defaultDrops)
             this.loadItemDrops();
         this.loadCustomDrops();
@@ -152,7 +148,7 @@ public class EntityFear extends EntityCreatureBase {
 		
         if(feared instanceof EntityLivingBase && !(feared instanceof EntityPlayer)) {
 	        EntityLivingBase fearedEntityLiving = (EntityLivingBase)feared;
-	        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(fearedEntityLiving.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getBaseValue());
+	        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(fearedEntityLiving.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getBaseValue());
         }
     }
 	
@@ -210,17 +206,17 @@ public class EntityFear extends EntityCreatureBase {
     // ========== Idle ==========
     /** Returns the sound to play when this creature is making a random ambient roar, grunt, etc. **/
     @Override
-    protected String getLivingSound() { return AssetManager.getSound("effect_fear"); }
+    protected SoundEvent getAmbientSound() { return AssetManager.getSound("effect_fear"); }
 
     // ========== Hurt ==========
     /** Returns the sound to play when this creature is damaged. **/
     @Override
-    protected String getHurtSound() { return AssetManager.getSound("effect_fear"); }
+    protected SoundEvent getHurtSound() { return AssetManager.getSound("effect_fear"); }
 
     // ========== Death ==========
     /** Returns the sound to play when this creature dies. **/
     @Override
-    protected String getDeathSound() { return AssetManager.getSound("effect_fear"); }
+    protected SoundEvent getDeathSound() { return AssetManager.getSound("effect_fear"); }
      
     // ========== Fly ==========
     /** Plays a flying sound, usually a wing flap, called randomly when flying. **/

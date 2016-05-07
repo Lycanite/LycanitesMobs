@@ -1,17 +1,15 @@
 package lycanite.lycanitesmobs.api.item;
 
-import lycanite.lycanitesmobs.ExtendedPlayer;
-import lycanite.lycanitesmobs.LycanitesMobs;
-import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
-import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.info.AltarInfo;
-import lycanite.lycanitesmobs.api.info.MobInfo;
-import lycanite.lycanitesmobs.api.pets.PetEntry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -42,29 +40,29 @@ public class ItemSoulkey extends ItemBase {
 	//                       Use
 	// ==================================================
     @Override
-    public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int facing, float par8, float par9, float par10) {
+    public EnumActionResult onItemUse(ItemStack itemStack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if(!AltarInfo.checkAltarsEnabled() && !player.worldObj.isRemote) {
-            String message = StatCollector.translateToLocal("message.soulkey.disabled");
-            player.addChatMessage(new ChatComponentText(message));
-            return false;
+            String message = I18n.translateToLocal("message.soulkey.disabled");
+            player.addChatMessage(new TextComponentString(message));
+            return EnumActionResult.FAIL;
         }
 
         // Get Possible Altars:
         List<AltarInfo> possibleAltars = new ArrayList<AltarInfo>();
         for(AltarInfo altarInfo : AltarInfo.altars.values()) {
-            if(altarInfo.checkBlockEvent(player, world, x, y, z) && altarInfo.quickCheck(player, world, x, y, z)) {
+            if(altarInfo.checkBlockEvent(player, world, pos) && altarInfo.quickCheck(player, world, pos)) {
                 possibleAltars.add(altarInfo);
             }
         }
         if(possibleAltars.size() < 1) {
-            String message = StatCollector.translateToLocal("message.soulkey.none");
-            player.addChatMessage(new ChatComponentText(message));
-            return false;
+            String message = I18n.translateToLocal("message.soulkey.none");
+            player.addChatMessage(new TextComponentString(message));
+            return EnumActionResult.FAIL;
         }
 
         // Activate First Valid Altar:
         for(AltarInfo altarInfo : possibleAltars) {
-            if(altarInfo.fullCheck(player, world, x, y, z)) {
+            if(altarInfo.fullCheck(player, world, pos)) {
 
                 // Valid Altar:
                 if(!player.worldObj.isRemote) {
@@ -73,19 +71,19 @@ public class ItemSoulkey extends ItemBase {
                     if (itemStack.stackSize <= 0)
                         player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack)null);
                 }
-                if(!altarInfo.activate(player, world, x, y, z)) {
-                    String message = StatCollector.translateToLocal("message.soulkey.badlocation");
-                    player.addChatMessage(new ChatComponentText(message));
-                    return false;
+                if(!altarInfo.activate(player, world, pos)) {
+                    String message = I18n.translateToLocal("message.soulkey.badlocation");
+                    player.addChatMessage(new TextComponentString(message));
+                    return EnumActionResult.FAIL;
                 }
-                String message = StatCollector.translateToLocal("message.soulkey.active");
-                player.addChatMessage(new ChatComponentText(message));
-                return true;
+                String message = I18n.translateToLocal("message.soulkey.active");
+                player.addChatMessage(new TextComponentString(message));
+                return EnumActionResult.SUCCESS;
             }
         }
-        String message = StatCollector.translateToLocal("message.soulkey.invalid");
-        player.addChatMessage(new ChatComponentText(message));
+        String message = I18n.translateToLocal("message.soulkey.invalid");
+        player.addChatMessage(new TextComponentString(message));
 
-        return false;
+        return EnumActionResult.FAIL;
     }
 }

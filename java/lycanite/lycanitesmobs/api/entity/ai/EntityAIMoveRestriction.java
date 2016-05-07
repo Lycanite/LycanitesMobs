@@ -2,8 +2,8 @@ package lycanite.lycanitesmobs.api.entity.ai;
 
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 
 public class EntityAIMoveRestriction extends EntityAIBase {
 	// Targets:
@@ -39,8 +39,8 @@ public class EntityAIMoveRestriction extends EntityAIBase {
     public boolean shouldExecute() {
         if(this.host.hasHome())
             return false;
-        ChunkCoordinates chunkcoordinates = this.host.getHomePosition();
-        Vec3 vec3 = RandomPositionGenerator.findRandomTargetTowards(this.host, 16, 7, Vec3.createVectorHelper((double)chunkcoordinates.posX, (double)chunkcoordinates.posY, (double)chunkcoordinates.posZ));
+        BlockPos chunkcoordinates = this.host.getHomePosition();
+        Vec3d vec3 = RandomPositionGenerator.findRandomTargetTowards(this.host, 16, 7, new Vec3d((double)chunkcoordinates.getX(), (double)chunkcoordinates.getY(), (double)chunkcoordinates.getZ()));
         if(vec3 == null)
             return false;
         

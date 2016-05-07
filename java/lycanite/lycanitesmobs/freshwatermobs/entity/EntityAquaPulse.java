@@ -3,11 +3,14 @@ package lycanite.lycanitesmobs.freshwatermobs.entity;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.freshwatermobs.FreshwaterMobs;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class EntityAquaPulse extends EntityProjectileBase {
@@ -18,19 +21,16 @@ public class EntityAquaPulse extends EntityProjectileBase {
     // ==================================================
  	//                   Constructors
  	// ==================================================
-    public EntityAquaPulse(World par1World) {
-        super(par1World);
-        this.setSize(0.3125F, 0.3125F);
+    public EntityAquaPulse(World world) {
+        super(world);
     }
 
-    public EntityAquaPulse(World par1World, EntityLivingBase par2EntityLivingBase) {
-        super(par1World, par2EntityLivingBase);
-        this.setSize(0.3125F, 0.3125F);
+    public EntityAquaPulse(World world, EntityLivingBase entityLivingBase) {
+        super(world, entityLivingBase);
     }
 
-    public EntityAquaPulse(World par1World, double par2, double par4, double par6) {
-        super(par1World, par2, par4, par6);
-        this.setSize(0.3125F, 0.3125F);
+    public EntityAquaPulse(World world, double x, double y, double z) {
+        super(world, x, y, z);
     }
     
     // ========== Setup Projectile ==========
@@ -49,66 +49,80 @@ public class EntityAquaPulse extends EntityProjectileBase {
     //========== Entity Living Collision ==========
     @Override
     public boolean entityLivingCollision(EntityLivingBase entityLiving) {
-    	if(ObjectManager.getPotionEffect("Penetration") != null && ObjectManager.getPotionEffect("Penetration").id < Potion.potionTypes.length)
-            entityLiving.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("Penetration").id, this.getEffectDuration(8), 2));
+    	if(ObjectManager.getPotionEffect("Penetration") != null)
+            entityLiving.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("Penetration"), this.getEffectDuration(8), 2));
         return true;
     }
     
     //========== Can Destroy Block ==========
     @Override
-    public boolean canDestroyBlock(int x, int y, int z) {
+    public boolean canDestroyBlock(BlockPos pos) {
     	return true;
     }
-    
-    public boolean canDestroyBlockSub(int x, int y, int z) {
-    	if(this.worldObj.getBlock(x, y, z) == Blocks.snow_layer)
+
+    public boolean canDestroyBlockSub(BlockPos pos) {
+        Block block = this.worldObj.getBlockState(pos).getBlock();
+    	if(block == Blocks.snow_layer)
     		return true;
-    	if(this.worldObj.getBlock(x, y, z) == Blocks.tallgrass)
+    	if(block == Blocks.tallgrass)
     		return true;
-    	if(this.worldObj.getBlock(x, y, z) == Blocks.fire)
+    	if(block == Blocks.fire)
     		return true;
-    	if(this.worldObj.getBlock(x, y, z) == Blocks.web)
+    	if(block == Blocks.web)
     		return true;
-    	if(ObjectManager.getBlock("PoisonCloud") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("PoisonCloud"))
+    	if(ObjectManager.getBlock("PoisonCloud") != null && block == ObjectManager.getBlock("PoisonCloud"))
     		return true;
-    	if(ObjectManager.getBlock("FrostCloud") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("FrostCloud"))
-    		return true;
-    	if(ObjectManager.getBlock("Frostweb") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("Frostweb"))
-    		return true;
-    	if(ObjectManager.getBlock("QuickWeb") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("QuickWeb"))
-    		return true;
-    	if(ObjectManager.getBlock("Hellfire") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("Hellfire"))
-    		return true;
-        if(ObjectManager.getBlock("Frostfire") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("Frostfire"))
+        if(ObjectManager.getBlock("PoopCloud") != null && block == ObjectManager.getBlock("PoopCloud"))
             return true;
-    	if(ObjectManager.getBlock("Icefire") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("Icefire"))
+    	if(ObjectManager.getBlock("FrostCloud") != null && block == ObjectManager.getBlock("FrostCloud"))
     		return true;
-        if(ObjectManager.getBlock("Scorchfire") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("Scorchfire"))
+    	if(ObjectManager.getBlock("Frostweb") != null && block == ObjectManager.getBlock("Frostweb"))
+    		return true;
+    	if(ObjectManager.getBlock("QuickWeb") != null && block == ObjectManager.getBlock("QuickWeb"))
+    		return true;
+    	if(ObjectManager.getBlock("Hellfire") != null && block == ObjectManager.getBlock("Hellfire"))
+    		return true;
+        if(ObjectManager.getBlock("Frostfire") != null && block == ObjectManager.getBlock("Frostfire"))
             return true;
-   	 	return super.canDestroyBlock(x, y, z);
+    	if(ObjectManager.getBlock("Icefire") != null && block == ObjectManager.getBlock("Icefire"))
+    		return true;
+        if(ObjectManager.getBlock("Scorchfire") != null && block == ObjectManager.getBlock("Scorchfire"))
+            return true;
+   	 	return super.canDestroyBlock(pos);
     }
     
     //========== Place Block ==========
     @Override
-    public void placeBlock(World world, int x, int y, int z) {
-        if(this.canDestroyBlockSub(x, y, z))
-            world.setBlock(x, y, z, Blocks.flowing_water, 12, 3);
-        if(this.canDestroyBlockSub(x + 1, y, z))
-            world.setBlock(x + 1, y, z, Blocks.flowing_water, 11, 3);
-        if(this.canDestroyBlockSub(x - 1, y, z))
-            world.setBlock(x - 1, y, z, Blocks.flowing_water, 11, 3);
-        if(this.canDestroyBlockSub(x, y, z + 1))
-            world.setBlock(x, y, z + 1, Blocks.flowing_water, 11, 3);
-        if(this.canDestroyBlockSub(x, y, z - 1))
-            world.setBlock(x, y, z - 1, Blocks.flowing_water, 11, 3);
+    public void placeBlock(World world, BlockPos pos) {
+        IBlockState flowingWaterBig = Blocks.flowing_water.getStateFromMeta(12);
+        IBlockState flowingWater = Blocks.flowing_water.getStateFromMeta(11);
+        if(this.canDestroyBlockSub(pos))
+            world.setBlockState(pos, flowingWaterBig, 3);
+        if(this.canDestroyBlockSub(new BlockPos(pos.getX() + 1, pos.getY(), pos.getZ())))
+            world.setBlockState(new BlockPos(pos.getX() + 1, pos.getY(), pos.getZ()), flowingWater, 3);
+        if(this.canDestroyBlockSub(new BlockPos(pos.getX() - 1, pos.getY(), pos.getZ())))
+            world.setBlockState(new BlockPos(pos.getX() - 1, pos.getY(), pos.getZ()), flowingWater, 3);
+        if(this.canDestroyBlockSub(new BlockPos(pos.getX(), pos.getY(), pos.getZ() + 1)))
+            world.setBlockState(new BlockPos(pos.getX(), pos.getY(), pos.getZ() + 1), flowingWater, 3);
+        if(this.canDestroyBlockSub(new BlockPos(pos.getX(), pos.getY(), pos.getZ() - 1)))
+            world.setBlockState(new BlockPos(pos.getX(), pos.getY(), pos.getZ() - 1), flowingWater, 3);
     }
     
     //========== On Impact Particles/Sounds ==========
     @Override
     public void onImpactVisuals() {
     	for(int i = 0; i < 8; ++i) {
-    		this.worldObj.spawnParticle("splash", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
-    		this.worldObj.spawnParticle("splash", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
+    		this.worldObj.spawnParticle(EnumParticleTypes.WATER_SPLASH, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
+    		this.worldObj.spawnParticle(EnumParticleTypes.WATER_SPLASH, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
     	}
+    }
+
+
+    // ==================================================
+    //                      Visuals
+    // ==================================================
+    @Override
+    public String getTextureName() {
+        return this.entityName.toLowerCase() + "charge";
     }
 }

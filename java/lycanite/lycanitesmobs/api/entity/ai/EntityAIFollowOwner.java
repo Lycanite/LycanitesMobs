@@ -1,8 +1,10 @@
 package lycanite.lycanitesmobs.api.entity.ai;
 
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.MathHelper;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public class EntityAIFollowOwner extends EntityAIFollow {
@@ -44,7 +46,7 @@ public class EntityAIFollowOwner extends EntityAIFollow {
  	//                    Get Target
  	// ==================================================
     @Override
-    public EntityLivingBase getTarget() {
+    public Entity getTarget() {
     	if(!this.host.isFollowing())
     		return null;
     	return this.host.getOwner();
@@ -69,7 +71,7 @@ public class EntityAIFollowOwner extends EntityAIFollow {
     	if(this.getTarget() != null) {
     		World world = this.getTarget().worldObj;
 	    	int i = MathHelper.floor_double(this.getTarget().posX) - 2;
-	        int j = MathHelper.floor_double(this.getTarget().boundingBox.minY);
+	        int j = MathHelper.floor_double(this.getTarget().getEntityBoundingBox().minY);
 	        int k = MathHelper.floor_double(this.getTarget().posZ) - 2;
 
             if(this.host.canFly() || this.getTarget().isInWater()) {
@@ -80,8 +82,8 @@ public class EntityAIFollowOwner extends EntityAIFollow {
 	
 	        for(int l = 0; l <= 4; ++l) {
 	            for(int i1 = 0; i1 <= 4; ++i1) {
-	                if((l < 1 || i1 < 1 || l > 3 || i1 > 3) && this.host.worldObj.doesBlockHaveSolidTopSurface(world, i + l, j - 1, k + i1) && !this.host.worldObj.isBlockNormalCubeDefault(i + l, j, k + i1, true) && !this.host.worldObj.isBlockNormalCubeDefault(i + l, j + 1, k + i1, true)) {
-	                    this.host.setLocationAndAngles((double)((float)(i + l) + 0.5F), (double)j, (double)((float)(k + i1) + 0.5F), this.host.rotationYaw, this.host.rotationPitch);
+	                if((l < 1 || i1 < 1 || l > 3 || i1 > 3) && this.host.worldObj.isSideSolid(new BlockPos(i + l, j - 1, k + i1), EnumFacing.UP) && !this.host.worldObj.isBlockNormalCube(new BlockPos(i + l, j, k + i1), true) && !this.host.worldObj.isBlockNormalCube(new BlockPos(i + l, j + 1, k + i1), true)) {
+                        this.host.setLocationAndAngles((double)((float)(i + l) + 0.5F), (double)j, (double)((float)(k + i1) + 0.5F), this.host.rotationYaw, this.host.rotationPitch);
 	                    this.host.clearMovement();
 	                    return;
 	                }

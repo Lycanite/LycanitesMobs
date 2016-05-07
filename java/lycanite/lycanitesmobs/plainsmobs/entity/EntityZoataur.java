@@ -1,23 +1,11 @@
 package lycanite.lycanitesmobs.plainsmobs.entity;
 
-import java.util.HashMap;
-
 import lycanite.lycanitesmobs.api.IGroupAlpha;
 import lycanite.lycanitesmobs.api.IGroupAnimal;
 import lycanite.lycanitesmobs.api.IGroupPredator;
 import lycanite.lycanitesmobs.api.IGroupPrey;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIBeg;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowOwner;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerAttack;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerRevenge;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
+import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -31,6 +19,8 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+
+import java.util.HashMap;
 
 public class EntityZoataur extends EntityCreatureTameable implements IGroupPredator, IMob {
     
@@ -90,6 +80,7 @@ public class EntityZoataur extends EntityCreatureTameable implements IGroupPreda
 		baseAttributes.put("knockbackResistance", 0.0D);
 		baseAttributes.put("followRange", 16D);
 		baseAttributes.put("attackDamage", 4D);
+        baseAttributes.put("attackSpeed", 4D);
         super.applyEntityAttributes(baseAttributes);
     }
 	
@@ -146,8 +137,8 @@ public class EntityZoataur extends EntityCreatureTameable implements IGroupPreda
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotionID() == Potion.weakness.id) return false;
-        if(potionEffect.getPotionID() == Potion.digSlowdown.id) return false;
+        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("weakness")) return false;
+        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("mining_fatigue")) return false;
         return super.isPotionApplicable(potionEffect);
     }
     

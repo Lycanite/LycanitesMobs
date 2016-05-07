@@ -1,6 +1,5 @@
 package lycanite.lycanitesmobs.api.info;
 
-import cpw.mods.fml.common.registry.EntityRegistry;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
@@ -13,7 +12,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.stats.Achievement;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -239,6 +239,7 @@ public class MobInfo {
     // ==================================================
 	public MobInfo(GroupInfo group, String name, Class entityClass, int eggBack, int eggFore) {
 		this.group = group;
+        this.group.mobInfos.add(this);
 		if(!mobGroups.containsKey(group.filename))
 			mobGroups.put(group.filename, group);
 		this.mobID = this.group.getNextMobID();
@@ -299,10 +300,10 @@ public class MobInfo {
                         subspeciesID = Integer.parseInt(customDropValues[5]);
 
                     ItemStack drop = null;
-                    if(Item.itemRegistry.getObject(dropName) != null)
-                        drop = new ItemStack((Item)Item.itemRegistry.getObject(dropName), 1, dropMeta);
-                    else if(Block.blockRegistry.getObject(dropName) != null)
-                        drop = new ItemStack((Block)Block.blockRegistry.getObject(dropName), 1, dropMeta);
+                    if(Item.getByNameOrId(dropName) != null)
+                        drop = new ItemStack((Item)Item.getByNameOrId(dropName), 1, dropMeta);
+                    else if(Block.getBlockFromName(dropName) != null)
+                        drop = new ItemStack((Block)Block.getBlockFromName(dropName), 1, dropMeta);
 
                     DropRate dropRate = new DropRate(drop, dropChance).setMinAmount(dropMin).setMaxAmount(dropMax);
                     dropRate.setSubspecies(subspeciesID);
@@ -363,7 +364,7 @@ public class MobInfo {
 		// Mapping and Registration:
 		if(!ObjectManager.entityLists.containsKey(this.group.filename))
 			ObjectManager.entityLists.put(this.group.filename, new EntityListCustom());
-		ObjectManager.entityLists.get(this.group.filename).addMapping(this.entityClass, this.getRegistryName(), this.mobID, this.eggBackColor, this.eggForeColor);
+		ObjectManager.entityLists.get(this.group.filename).addMapping(this.entityClass, this.getRegistryName(), this.eggBackColor, this.eggForeColor);
 		EntityRegistry.registerModEntity(this.entityClass, name, this.mobID, group.mod, this.isBoss() ? 256 : 128, this.isBoss() ? 6 : 3, true);
 		
 		// Debug Message - Added:
@@ -374,6 +375,10 @@ public class MobInfo {
 	// ==================================================
     //                 Names and Titles
     // ==================================================
+    public String getEntityID() {
+        return this.name;
+    }
+
 	public String getRegistryName() {
 		return this.group.filename + "." + this.name;
 	}
@@ -383,11 +388,11 @@ public class MobInfo {
     }
 	
 	public String getTitle() {
-		return StatCollector.translateToLocal("entity." + this.getRegistryName() + ".name");
+		return I18n.translateToLocal("entity." + this.getRegistryName() + ".name");
 	}
 	
 	public String getDescription() {
-		return StatCollector.translateToLocal("entity." + this.getRegistryName() + ".description");
+		return I18n.translateToLocal("entity." + this.getRegistryName() + ".description");
 	}
 	
 	

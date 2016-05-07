@@ -6,10 +6,17 @@ import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.EntityPortal;
 import lycanite.lycanitesmobs.api.gui.GUIMinion;
 import lycanite.lycanitesmobs.api.pets.SummonSet;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemStaffSummoning extends ItemScepter {
 	public EntityPortal portalEntity;
@@ -21,7 +28,14 @@ public class ItemStaffSummoning extends ItemScepter {
         super();
         this.itemName = "summoningstaff";
         this.setup();
-        this.textureName = "staffsummoning";
+        this.textureName = "summoningstaff";
+
+        this.addPropertyOverride(new ResourceLocation("using"), new IItemPropertyGetter() {
+            @SideOnly(Side.CLIENT)
+            public float apply(ItemStack itemStack, World world, EntityLivingBase entity) {
+                return entity != null && entity.isHandActive() && entity.getActiveItemStack() == itemStack ? 1.0F : 0.0F;
+            }
+        });
     }
 	
     
@@ -35,13 +49,13 @@ public class ItemStaffSummoning extends ItemScepter {
     }
     
     @Override
-    public void damageItemRapid(ItemStack itemStack, EntityPlayer player) {
+    public void damageItemRapid(ItemStack itemStack, EntityLivingBase entity) {
         return;
     }
     
-    public void damageItemCharged(ItemStack itemStack, EntityPlayer player, float power) {
+    public void damageItemCharged(ItemStack itemStack, EntityLivingBase entity, float power) {
     	if(this.portalEntity != null) {
-    		itemStack.damageItem((int)(5 * this.portalEntity.summonAmount), player);
+    		itemStack.damageItem((5 * this.portalEntity.summonAmount), entity);
     	}
     }
     
@@ -91,8 +105,8 @@ public class ItemStaffSummoning extends ItemScepter {
     
     // ========== On Stop Using ==========
     @Override
-    public void onPlayerStoppedUsing(ItemStack itemStack, World world, EntityPlayer player, int useRemaining) {
-    	super.onPlayerStoppedUsing(itemStack, world, player, useRemaining);
+    public void onPlayerStoppedUsing(ItemStack itemStack, World world, EntityLivingBase entity, int useRemaining) {
+    	super.onPlayerStoppedUsing(itemStack, world, entity, useRemaining);
 		this.portalEntity = null;
     }
 	
@@ -102,8 +116,8 @@ public class ItemStaffSummoning extends ItemScepter {
 	// ==================================================
     // ========== Start ==========
     @Override
-    public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
-		ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer((EntityPlayer)player);
+    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer player, EnumHand hand) {
+		ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
 		if(playerExt != null) {
 			// Summon Selected Mob:
 			SummonSet summonSet = playerExt.getSelectedSummonSet();
@@ -123,18 +137,18 @@ public class ItemStaffSummoning extends ItemScepter {
 					GUIMinion.openToPlayer(player, playerExt.selectedSummonSet);
 			}
 		}
-        return super.onItemRightClick(itemStack, world, player);
+        return super.onItemRightClick(itemStack, world, player, hand);
     }
     
     // ========== Rapid ==========
     @Override
-    public boolean rapidAttack(ItemStack itemStack, World world, EntityPlayer player) {
+    public boolean rapidAttack(ItemStack itemStack, World world, EntityLivingBase entity) {
     	return false;
     }
     
     // ========== Charged ==========
     @Override
-    public boolean chargedAttack(ItemStack itemStack, World world, EntityPlayer player, float power) {
+    public boolean chargedAttack(ItemStack itemStack, World world, EntityLivingBase entity, float power) {
     	if(this.portalEntity != null) {
 			boolean success = this.portalEntity.summonCreatures();
 			this.portalEntity = null;

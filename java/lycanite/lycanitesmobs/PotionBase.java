@@ -1,6 +1,5 @@
 package lycanite.lycanitesmobs;
 
-import lycanite.lycanitesmobs.api.helpers.LMReflectionHelper;
 import net.minecraft.potion.Potion;
 
 public class PotionBase extends Potion {
@@ -11,14 +10,13 @@ public class PotionBase extends Potion {
 	//                    Constructor
 	// ==================================================
 	public static void reserveEffectIDSpace() {
-		int vanillaLength = 32;
+		/*int vanillaLength = 32;
 		int safeLength = 128;
 		int originalLength = Potion.potionTypes.length;
 		int newLength = originalLength;
 		if(originalLength < safeLength)
 			newLength = originalLength + customPotionLength;
 		customPotionOffset = Math.min(originalLength, (safeLength - 1) - customPotionLength);
-		// TODO: Check if other mods have taken the last IDs, if so keep going lower until a free set of IDs are found.
 
 		LycanitesMobs.printDebug("EffectsSetup", "~O========== Custom Potion Effects Setup ==========O~");
 		LycanitesMobs.printDebug("EffectsSetup", "Initial size is: " + originalLength + " (vanilla size is: " + vanillaLength + ")");
@@ -37,7 +35,7 @@ public class PotionBase extends Potion {
 		
 		LMReflectionHelper.setPrivateFinalValue(Potion.class, null, newPotionTypes, "potionTypes", "field_76425_a");
 		LycanitesMobs.printDebug("EffectsSetup", "Replaced the old list with the new list: " + Potion.potionTypes);
-		LycanitesMobs.printDebug("EffectsSetup", "New list length is: " + Potion.potionTypes.length + " this should be " + newLength);
+		LycanitesMobs.printDebug("EffectsSetup", "New list length is: " + Potion.potionTypes.length + " this should be " + newLength);*/
 	}
 	
 	public static int getNextPotionID() {
@@ -49,19 +47,13 @@ public class PotionBase extends Potion {
 	//                    Constructor
 	// ==================================================
 	public PotionBase(String name, boolean badEffect, int color) {
-		super(getNextPotionID(), badEffect, color);
+		super(badEffect, color);
 		this.setPotionName(name);
 		this.effectAdded(false);
 	}
-
-	public PotionBase(int forcedID, String name, boolean badEffect, int color) {
-		super(forcedID, badEffect, color);
-		this.setPotionName(name);
-		this.effectAdded(true);
-	}
 	
 	public void effectAdded(boolean forced) {
-		if(this.getId() >= Potion.potionTypes.length) {
+		/*if(this.getId() >= Potion.potionTypes.length) {
 			LycanitesMobs.printWarning("", "A problem occured when adding a new Potion Effect:");
 			LycanitesMobs.printWarning("", "The effect ID is higher than the effect bounds, this will cause problems in game. For safety the game has been crashed!");
 			if(forced)
@@ -72,7 +64,7 @@ public class PotionBase extends Potion {
 			LycanitesMobs.printWarning("", "Potion Effect Name: " + this.getName() + " ID: " + this.getId());
 			throw new RuntimeException();
 		}
-		LycanitesMobs.printDebug("EffectsSetup", "New Potion Effect added: " + this.getName() + "(ID: " + this.getId() + (forced ? " FORCED" : "") + ")");
+		LycanitesMobs.printDebug("EffectsSetup", "New Potion Effect added: " + this.getName() + "(ID: " + this.getId() + (forced ? " FORCED" : "") + ")");*/
 	}
 	
 	

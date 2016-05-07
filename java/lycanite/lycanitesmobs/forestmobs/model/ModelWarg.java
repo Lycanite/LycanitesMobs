@@ -1,15 +1,12 @@
 package lycanite.lycanitesmobs.forestmobs.model;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.model.ModelCustomObj;
 import lycanite.lycanitesmobs.forestmobs.ForestMobs;
-import lycanite.lycanitesmobs.shadowmobs.ShadowMobs;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.util.MathHelper;
-import net.minecraftforge.client.model.obj.WavefrontObject;
+import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ModelWarg extends ModelCustomObj {
@@ -23,10 +20,10 @@ public class ModelWarg extends ModelCustomObj {
 
     public ModelWarg(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("warg", ForestMobs.group, "entity/warg");
+    	this.initModel("warg", ForestMobs.group, "entity/warg");
     	
-    	// Get Parts:
-    	parts = model.groupObjects;
+
+
     	
     	// Set Rotation Centers:
     	setPartCenter("head", 0F, 1.1F, 0.9F);

@@ -1,11 +1,11 @@
 package lycanite.lycanitesmobs.api.spawning;
 
-import java.util.List;
-
 import lycanite.lycanitesmobs.ExtendedWorld;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class SpawnTypeDeath extends SpawnTypeBase {
 
@@ -35,7 +35,7 @@ public class SpawnTypeDeath extends SpawnTypeBase {
     // ==================================================
     @Override
     public boolean canSpawn(long tick, World world, int x, int y, int z, boolean rare) {
-        if(world.provider.dimensionId == 0 && world.isDaytime())
+        if(world.provider.getDimension() == 0 && world.isDaytime())
             return false;
     	double roll = world.rand.nextDouble();
     	ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);

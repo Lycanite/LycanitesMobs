@@ -1,206 +1,206 @@
 {
     "mobevent.poopparty": {
         "category": "record",
-        "sounds": [{"name": "mobevent/poopparty", "stream": true}]
+        "sounds": [{"name": "junglemobs:mobevent/poopparty", "stream": true}]
     },
     "mobevent.theswarm": {
         "category": "record",
-        "sounds": [{"name": "mobevent/theswarm", "stream": true}]
+        "sounds": [{"name": "junglemobs:mobevent/theswarm", "stream": true}]
     },
     "entity.geken.say": {
         "category": "hostile",
-        "sounds": [{"name": "entity/geken/say", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/geken/say", "stream": false}]
     },
     "entity.geken.hurt": {
         "category": "hostile",
-        "sounds": [{"name": "entity/geken/hurt", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/geken/hurt", "stream": false}]
     },
     "entity.geken.death": {
         "category": "hostile",
-        "sounds": [{"name": "entity/geken/death", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/geken/death", "stream": false}]
     },
     "entity.geken.step": {
         "category": "hostile",
-        "sounds": [{"name": "entity/geken/step", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/geken/step", "stream": false}]
     },
     "entity.geken.attack": {
         "category": "hostile",
-        "sounds": [{"name": "entity/geken/attack", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/geken/attack", "stream": false}]
     },
     "entity.geken.beg": {
         "category": "hostile",
-        "sounds": [{"name": "entity/geken/beg", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/geken/beg", "stream": false}]
     },
     "entity.geken.tame": {
         "category": "hostile",
-        "sounds": [{"name": "entity/geken/tame", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/geken/tame", "stream": false}]
     },
     "entity.uvaraptor.say": {
         "category": "hostile",
-        "sounds": [{"name": "entity/uvaraptor/say", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/uvaraptor/say", "stream": false}]
     },
     "entity.uvaraptor.hurt": {
         "category": "hostile",
-        "sounds": [{"name": "entity/uvaraptor/hurt", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/uvaraptor/hurt", "stream": false}]
     },
     "entity.uvaraptor.death": {
         "category": "hostile",
-        "sounds": [{"name": "entity/uvaraptor/death", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/uvaraptor/death", "stream": false}]
     },
     "entity.uvaraptor.step": {
         "category": "hostile",
-        "sounds": [{"name": "entity/uvaraptor/step", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/uvaraptor/step", "stream": false}]
     },
     "entity.uvaraptor.jump": {
         "category": "hostile",
-        "sounds": [{"name": "entity/uvaraptor/jump", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/uvaraptor/jump", "stream": false}]
     },
     "entity.uvaraptor.attack": {
         "category": "hostile",
-        "sounds": [{"name": "entity/uvaraptor/attack", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/uvaraptor/attack", "stream": false}]
     },
     "entity.uvaraptor.beg": {
         "category": "hostile",
-        "sounds": [{"name": "entity/uvaraptor/beg", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/uvaraptor/beg", "stream": false}]
     },
     "entity.uvaraptor.tame": {
         "category": "hostile",
-        "sounds": [{"name": "entity/uvaraptor/tame", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/uvaraptor/tame", "stream": false}]
     },
     "entity.uvaraptor.eat": {
         "category": "hostile",
-        "sounds": [{"name": "entity/uvaraptor/eat", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/uvaraptor/eat", "stream": false}]
     },
     "entity.uvaraptor.mount": {
         "category": "hostile",
-        "sounds": [{"name": "entity/uvaraptor/mount", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/uvaraptor/mount", "stream": false}]
     },
     "entity.concapede.say": {
         "category": "hostile",
-        "sounds": [{"name": "entity/concapede/say", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/concapede/say", "stream": false}]
     },
     "entity.concapede.hurt": {
         "category": "hostile",
-        "sounds": [{"name": "entity/concapede/hurt", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/concapede/hurt", "stream": false}]
     },
     "entity.concapede.death": {
         "category": "hostile",
-        "sounds": [{"name": "entity/concapede/death", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/concapede/death", "stream": false}]
     },
     "entity.concapede.step": {
         "category": "hostile",
-        "sounds": [{"name": "entity/concapede/step", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/concapede/step", "stream": false}]
     },
     "entity.concapede.attack": {
         "category": "hostile",
-        "sounds": [{"name": "entity/concapede/attack", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/concapede/attack", "stream": false}]
     },
     "entity.concapedesegment.say": {
         "category": "hostile",
-        "sounds": [{"name": "entity/concapede/say", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/concapede/say", "stream": false}]
     },
     "entity.concapedesegment.hurt": {
         "category": "hostile",
-        "sounds": [{"name": "entity/concapede/hurt", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/concapede/hurt", "stream": false}]
     },
     "entity.concapedesegment.death": {
         "category": "hostile",
-        "sounds": [{"name": "entity/concapede/death", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/concapede/death", "stream": false}]
     },
     "entity.concapedesegment.step": {
         "category": "hostile",
-        "sounds": [{"name": "entity/concapede/step", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/concapede/step", "stream": false}]
     },
     "entity.concapedesegment.attack": {
         "category": "hostile",
-        "sounds": [{"name": "entity/concapede/attack", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/concapede/attack", "stream": false}]
     },
     "entity.tarantula.say": {
         "category": "hostile",
-        "sounds": [{"name": "entity/tarantula/say", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/tarantula/say", "stream": false}]
     },
     "entity.tarantula.hurt": {
         "category": "hostile",
-        "sounds": [{"name": "entity/tarantula/hurt", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/tarantula/hurt", "stream": false}]
     },
     "entity.tarantula.death": {
         "category": "hostile",
-        "sounds": [{"name": "entity/tarantula/death", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/tarantula/death", "stream": false}]
     },
     "entity.tarantula.step": {
         "category": "hostile",
-        "sounds": [{"name": "entity/tarantula/step", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/tarantula/step", "stream": false}]
     },
     "entity.tarantula.attack": {
         "category": "hostile",
-        "sounds": [{"name": "entity/tarantula/attack", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/tarantula/attack", "stream": false}]
     },
     "entity.tarantula.beg": {
         "category": "hostile",
-        "sounds": [{"name": "entity/tarantula/beg", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/tarantula/beg", "stream": false}]
     },
     "entity.tarantula.tame": {
         "category": "hostile",
-        "sounds": [{"name": "entity/tarantula/tame", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/tarantula/tame", "stream": false}]
     },
 	"entity.conba.say": {
         "category": "hostile",
-        "sounds": [{"name": "entity/conba/say", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/conba/say", "stream": false}]
     },
     "entity.conba.hurt": {
         "category": "hostile",
-        "sounds": [{"name": "entity/conba/hurt", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/conba/hurt", "stream": false}]
     },
     "entity.conba.death": {
         "category": "hostile",
-        "sounds": [{"name": "entity/conba/death", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/conba/death", "stream": false}]
     },
     "entity.conba.attack": {
         "category": "hostile",
-        "sounds": [{"name": "entity/conba/attack", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/conba/attack", "stream": false}]
     },
     "entity.conba.step": {
         "category": "hostile",
-        "sounds": [{"name": "entity/conba/step", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/conba/step", "stream": false}]
     },
     "entity.vespid.say": {
         "category": "hostile",
-        "sounds": [{"name": "entity/vespid/say", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/vespid/say", "stream": false}]
     },
     "entity.vespid.hurt": {
         "category": "hostile",
-        "sounds": [{"name": "entity/vespid/hurt", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/vespid/hurt", "stream": false}]
     },
     "entity.vespid.death": {
         "category": "hostile",
-        "sounds": [{"name": "entity/vespid/death", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/vespid/death", "stream": false}]
     },
     "entity.vespid.attack": {
         "category": "hostile",
-        "sounds": [{"name": "entity/vespid/attack", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/vespid/attack", "stream": false}]
     },
     "entity.vespidqueen.say": {
         "category": "hostile",
-        "sounds": [{"name": "entity/vespid/say", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/vespid/say", "stream": false}]
     },
     "entity.vespidqueen.hurt": {
         "category": "hostile",
-        "sounds": [{"name": "entity/vespid/hurt", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/vespid/hurt", "stream": false}]
     },
     "entity.vespidqueen.death": {
         "category": "hostile",
-        "sounds": [{"name": "entity/vespid/death", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/vespid/death", "stream": false}]
     },
     "entity.vespidqueen.attack": {
         "category": "hostile",
-        "sounds": [{"name": "entity/vespid/attack", "stream": false}]
+        "sounds": [{"name": "junglemobs:entity/vespid/attack", "stream": false}]
     },
     "projectile.poop": {
         "category": "ambient",
-        "sounds": [{"name": "projectile/poop", "stream": false}]
+        "sounds": [{"name": "junglemobs:projectile/poop", "stream": false}]
     },
     "block.poopcloud": {
         "category": "block",
-        "sounds": [{"name": "block/poopcloud", "stream": false}]
+        "sounds": [{"name": "junglemobs:block/poopcloud", "stream": false}]
     }
 }

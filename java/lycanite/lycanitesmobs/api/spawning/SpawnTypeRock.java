@@ -1,7 +1,5 @@
 package lycanite.lycanitesmobs.api.spawning;
 
-import java.util.List;
-
 import lycanite.lycanitesmobs.ExtendedWorld;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
@@ -9,9 +7,10 @@ import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class SpawnTypeRock extends SpawnTypeBlockBreak {
 	public int blockBreakRadius = 1;

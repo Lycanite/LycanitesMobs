@@ -3,7 +3,6 @@ package lycanite.lycanitesmobs.plainsmobs.mobevent;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.world.World;
 
 public class MobEventWindStorm extends MobEventBase {
 

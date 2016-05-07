@@ -2,11 +2,8 @@ package lycanite.lycanitesmobs.api.spawning;
 
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
-import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.ChunkPosition;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -73,19 +70,19 @@ public class SpawnTypeUnderground extends SpawnTypeLand {
      */
     @Override
     public List<int[]> getSpawnCoordinates(World world, int x, int y, int z) {
-        if(world.provider.dimensionId == 1) // Act as Land Spawn Type in The End.
+        if(world.provider.getDimension() == 1) // Act as Land Spawn Type in The End.
             return super.getSpawnCoordinates(world, x, y, z);
 
     	List<int[]> blockCoords = null;
         int range = this.getRange(world);
-        ChunkPosition originPos = new ChunkPosition(x, this.getYLevelForWorld(world), z);
+        BlockPos originPos = new BlockPos(x, this.getYLevelForWorld(world), z);
 
         for(int i = 0; i < this.blockLimit; i++) {
-        	ChunkPosition chunkCoords = this.getRandomUndergroundLandCoord(world, originPos, range);
+            BlockPos chunkCoords = this.getRandomUndergroundLandCoord(world, originPos, range);
         	if(chunkCoords != null) {
         		if(blockCoords == null)
         			blockCoords = new ArrayList<int[]>();
-        		blockCoords.add(new int[] {chunkCoords.chunkPosX, chunkCoords.chunkPosY, chunkCoords.chunkPosZ});
+        		blockCoords.add(new int[] {chunkCoords.getX(), chunkCoords.getY(), chunkCoords.getZ()});
         	}
         }
         
@@ -97,8 +94,8 @@ public class SpawnTypeUnderground extends SpawnTypeLand {
     //               Get Y Level For World
     // ==================================================
     public int getYLevelForWorld(World world) {
-        if(this.dimensionYLevels.containsKey(world.provider.dimensionId))
-            return this.dimensionYLevels.get(world.provider.dimensionId);
+        if(this.dimensionYLevels.containsKey(world.provider.getDimension()))
+            return this.dimensionYLevels.get(world.provider.getDimension());
         return this.defaultYLevel;
     }
 
@@ -110,12 +107,12 @@ public class SpawnTypeUnderground extends SpawnTypeLand {
      * @param world The world to search for coordinates in.
      * @return Returns a ChunkPosition or null if no coord was found.
      */
-    public ChunkPosition getRandomUndergroundLandCoord(World world, ChunkPosition originPos, int range) {
+    public BlockPos getRandomUndergroundLandCoord(World world, BlockPos originPos, int range) {
         int radius = Math.round(range * 0.5F);
-        int[] xz = this.getRandomXZCoord(world, originPos.chunkPosX, originPos.chunkPosZ, rangeMin, range);
+        int[] xz = this.getRandomXZCoord(world, originPos.getX(), originPos.getZ(), rangeMin, range);
         int x = xz[0];
         int z = xz[1];
-        int y = this.getRandomYCoord(world, x, 0, z, rangeMin, originPos.chunkPosY, true, Blocks.air, true);
-        return y > -1 ? new ChunkPosition(x, y, z) : null;
+        int y = this.getRandomYCoord(world, x, 0, z, rangeMin, originPos.getY(), true, Blocks.air, true);
+        return y > -1 ? new BlockPos(x, y, z) : null;
     }
 }

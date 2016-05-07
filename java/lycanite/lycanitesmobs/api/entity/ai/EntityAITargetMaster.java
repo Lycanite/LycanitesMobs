@@ -1,23 +1,23 @@
 package lycanite.lycanitesmobs.api.entity.ai;
 
-import java.util.Collections;
-import java.util.List;
-
+import com.google.common.base.Predicate;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
-import net.minecraft.command.IEntitySelector;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.passive.EntityAnimal;
+
+import java.util.Collections;
+import java.util.List;
 
 public class EntityAITargetMaster extends EntityAITarget {
 	// Targets:
     private Class targetClass = EntityLivingBase.class;
     
     // Properties:
-    private IEntitySelector targetSelector;
     private EntityAITargetSorterNearest targetSorter;
     private boolean tameTargeting = false;
     
@@ -30,7 +30,14 @@ public class EntityAITargetMaster extends EntityAITarget {
     public EntityAITargetMaster(EntityCreatureBase setHost) {
         super(setHost);
         this.setMutexBits(4);
-        this.targetSelector = new EntityAITargetSelector(this, (IEntitySelector)null);
+        this.targetSelector = new Predicate<Entity>() {
+            @Override
+            public boolean apply(Entity input) {
+                if(!(input instanceof EntityLivingBase))
+                    return false;
+                return EntityAITargetMaster.this.isSuitableTarget((EntityLivingBase)input, false);
+            }
+        };
         this.targetSorter = new EntityAITargetSorterNearest(setHost);
     }
     
@@ -87,7 +94,11 @@ public class EntityAITargetMaster extends EntityAITarget {
  	// ==================================================
     @Override
     protected boolean isValidTarget(EntityLivingBase target) {
-    	if(target instanceof EntityAnimal && ((EntityAnimal)target).getGrowingAge() < 0)
+        // Target Class Check:
+        if(this.targetClass != null && !this.targetClass.isAssignableFrom(target.getClass()))
+            return false;
+
+        if(target instanceof EntityAnimal && ((EntityAnimal)target).getGrowingAge() < 0)
             return false;
     	if(target instanceof EntityCreatureAgeable && ((EntityCreatureAgeable)target).getGrowingAge() < 0)
             return false;
@@ -106,7 +117,7 @@ public class EntityAITargetMaster extends EntityAITarget {
     protected double getTargetDistance() {
     	if(targetDistance > -1)
     		return targetDistance;
-    	IAttributeInstance attributeinstance = this.host.getEntityAttribute(SharedMonsterAttributes.followRange);
+    	IAttributeInstance attributeinstance = this.host.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE);
         return attributeinstance == null ? 16.0D : attributeinstance.getAttributeValue();
     }
     
@@ -123,7 +134,7 @@ public class EntityAITargetMaster extends EntityAITarget {
         double distance = this.getTargetDistance();
         double heightDistance = 4.0D;
         if(this.host.useFlightNavigator()) heightDistance = distance;
-        List possibleTargets = this.host.worldObj.selectEntitiesWithinAABB(this.targetClass, this.host.boundingBox.expand(distance, heightDistance, distance), this.targetSelector);
+        List possibleTargets = this.host.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, this.host.getEntityBoundingBox().expand(distance, heightDistance, distance), this.targetSelector);
         Collections.sort(possibleTargets, this.targetSorter);
         
         if(possibleTargets.isEmpty())

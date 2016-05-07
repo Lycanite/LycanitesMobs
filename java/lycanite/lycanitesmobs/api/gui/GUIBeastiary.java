@@ -5,21 +5,19 @@ import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.GuiHandler;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
-import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiInventory;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-
 import org.lwjgl.opengl.GL11;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -123,7 +121,7 @@ public class GUIBeastiary extends GuiScreen {
   	// ==================================================
 	protected void drawGuiContainerForegroundLayer(int x, int y, float f) {
 		boolean hasSomeKnowledge = this.playerExt.beastiary.creatureKnowledgeList.size() > 0;
-		this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.beastiary.name"), this.windowX + 24, this.windowY + 8, 0xFFFFFF);
+		this.fontRendererObj.drawString(I18n.translateToLocal("gui.beastiary.name"), this.windowX + 24, this.windowY + 8, 0xFFFFFF);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
 		// Draw Creature Entry:
@@ -133,7 +131,7 @@ public class GUIBeastiary extends GuiScreen {
 			int creatureX = this.centerX + (this.halfX / 2);
 			int creatureY = this.windowY + 32 + creatureSize;
 			// X, Y, Scale, RotX, RotY, RotHead, EntityLivingBase
-			GuiInventory.func_147046_a(creatureX, creatureY, creatureScale, (float) (creatureX) - x, (float) (creatureY) - y, this.creaturePreviewEntity);
+			GuiInventory.drawEntityOnScreen(creatureX, creatureY, creatureScale, (float) (creatureX) - x, (float) (creatureY) - y, this.creaturePreviewEntity);
 			
 			// Title:
 			this.fontRendererObj.drawString(this.getSelectedCreature().getTitle(), this.centerX + 8, this.windowY + 8, 0xFFFFFF);
@@ -144,20 +142,20 @@ public class GUIBeastiary extends GuiScreen {
 		
 		// Draw Group Entry:
 		else if(this.getSelectedGroup() != null && hasSomeKnowledge) {
-			this.fontRendererObj.drawString(StatCollector.translateToLocal(this.getSelectedGroup().filename + ".name"), this.centerX + 8, this.windowY + 8, 0xFFFFFF);
-			this.fontRendererObj.drawSplitString(StatCollector.translateToLocal(this.getSelectedGroup().filename + ".description"), this.centerX + 8, this.windowY + 24, this.halfX - 16, 0xFFFFFF);
+			this.fontRendererObj.drawString(I18n.translateToLocal(this.getSelectedGroup().filename + ".name"), this.centerX + 8, this.windowY + 8, 0xFFFFFF);
+			this.fontRendererObj.drawSplitString(I18n.translateToLocal(this.getSelectedGroup().filename + ".description"), this.centerX + 8, this.windowY + 24, this.halfX - 16, 0xFFFFFF);
 		}
 		
 		// Draw Soulgazer Instructions:
 		else if(hasSomeKnowledge) {
 			this.fontRendererObj.drawString("", this.centerX + 8, this.windowY + 8, 0xFFFFFF);
-			this.fontRendererObj.drawSplitString(StatCollector.translateToLocal("gui.beastiary.selectacreature"), this.centerX + 8, this.windowY + 24, this.halfX - 16, 0xFFFFFF);
+			this.fontRendererObj.drawSplitString(I18n.translateToLocal("gui.beastiary.selectacreature"), this.centerX + 8, this.windowY + 24, this.halfX - 16, 0xFFFFFF);
 		}
 		
 		// Draw Soulgazer Instructions:
 		else {
-			this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.beastiary.empty"), this.centerX + 8, this.windowY + 8, 0xFFFFFF);
-			this.fontRendererObj.drawSplitString(StatCollector.translateToLocal("gui.beastiary.soulgazerinfo"), this.centerX + 8, this.windowY + 24, this.halfX - 16, 0xFFFFFF);
+			this.fontRendererObj.drawString(I18n.translateToLocal("gui.beastiary.empty"), this.centerX + 8, this.windowY + 8, 0xFFFFFF);
+			this.fontRendererObj.drawSplitString(I18n.translateToLocal("gui.beastiary.soulgazerinfo"), this.centerX + 8, this.windowY + 24, this.halfX - 16, 0xFFFFFF);
 			int recipeWidth = 108;
 			int recipeHeight = 54;
 			this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIBeastiary"));
@@ -203,7 +201,7 @@ public class GUIBeastiary extends GuiScreen {
         int buttonY = this.windowY;
 
 		this.buttonList.add(new GUITabMain(55555, buttonX, buttonY - 24));
-		this.buttonList.add(new GuiButton(100, this.centerX - (buttonWidth / 2), this.windowY + this.windowHeight + 4, buttonWidth, buttonHeight, StatCollector.translateToLocal("gui.beastiary.website")));
+		this.buttonList.add(new GuiButton(100, this.centerX - (buttonWidth / 2), this.windowY + this.windowHeight + 4, buttonWidth, buttonHeight, I18n.translateToLocal("gui.beastiary.website")));
 
      }
 
@@ -214,7 +212,7 @@ public class GUIBeastiary extends GuiScreen {
   	//                     Actions
   	// ==================================================
 	@Override
-	protected void actionPerformed(GuiButton guiButton) {
+	protected void actionPerformed(GuiButton guiButton) throws IOException {
 		// Website Button:
 		if(guiButton.id == 100) {
 			try {
@@ -280,26 +278,11 @@ public class GUIBeastiary extends GuiScreen {
   	//                     Key Press
   	// ==================================================
 	@Override
-	protected void keyTyped(char par1, int par2) {
+	protected void keyTyped(char par1, int par2) throws IOException {
 		if(par2 == 1 || par2 == this.mc.gameSettings.keyBindInventory.getKeyCode())
         	 this.mc.thePlayer.closeScreen();
 		super.keyTyped(par1, par2);
 	}
-	
-	
-	// ==================================================
-  	//                     Draw Image
-  	// ==================================================
-	public void drawImage(int x, int y, int u, int v, int w, int h, float s, float t) {
-		float z = this.zLevel;
-        Tessellator tessellator = Tessellator.instance;
-        tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV((double)(x + 0), (double)(y + h), (double)z, (double)((float)(u + 0) * s), (double)((float)(v + h) * t));
-        tessellator.addVertexWithUV((double)(x + w), (double)(y + h), (double)z, (double)((float)(u + w) * s), (double)((float)(v + h) * t));
-        tessellator.addVertexWithUV((double)(x + w), (double)(y + 0), (double)z, (double)((float)(u + w) * s), (double)((float)(v + 0) * t));
-        tessellator.addVertexWithUV((double)(x + 0), (double)(y + 0), (double)z, (double)((float)(u + 0) * s), (double)((float)(v + 0) * t));
-        tessellator.draw();
-    }
 
 
 	// ==================================================

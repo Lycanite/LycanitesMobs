@@ -1,24 +1,18 @@
 package lycanite.lycanitesmobs.api.item;
 
-import java.util.List;
-
-import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.ItemInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.world.World;
+import net.minecraft.util.text.translation.I18n;
+
+import java.util.List;
 
 public class ItemCustomFood extends ItemFood {
 
@@ -36,9 +30,7 @@ public class ItemCustomFood extends ItemFood {
     public FOOD_CLASS foodClass = FOOD_CLASS.NONE;
 
     /** The ID of the potion effect that will occur upon eating this food. Set using setPotionEffect(). */
-    protected int effectID;
-    /** The amplifier of the potion effect that will occur upon eating this food. Set using setPotionEffect(). */
-    protected int effectAmplifier;
+    protected PotionEffect effect;
     /** The ID of the chance effect that will occur upon eating this food. Set using setPotionEffect(). */
     protected float effectChance;
 
@@ -67,7 +59,7 @@ public class ItemCustomFood extends ItemFood {
     public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List textList, boolean par4) {
     	String description = this.getDescription(itemStack, entityPlayer, textList, par4);
     	if(!"".equalsIgnoreCase(description) && !("item." + this.itemName + ".description").equals(description)) {
-    		FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+    		FontRenderer fontRenderer = Minecraft.getMinecraft().fontRendererObj;
     		List formattedDescriptionList = fontRenderer.listFormattedStringToWidth(description, ItemBase.descriptionWidth);
     		for(Object formattedDescription : formattedDescriptionList) {
     			if(formattedDescription instanceof String)
@@ -78,7 +70,7 @@ public class ItemCustomFood extends ItemFood {
     }
     
     public String getDescription(ItemStack itemStack, EntityPlayer entityPlayer, List textList, boolean par4) {
-    	return StatCollector.translateToLocal("item." + this.itemName + ".description");
+    	return I18n.translateToLocal("item." + this.itemName + ".description");
     }
 
 
@@ -97,42 +89,28 @@ public class ItemCustomFood extends ItemFood {
         return 1;
     }
 
-    public ItemCustomFood setPotionEffect(int id, int amplifier, float chance) {
-        this.effectID = id;
-        this.effectAmplifier = amplifier;
-        this.effectChance = chance;
+    public ItemCustomFood setPotionEffect(Potion potion, int duration, int amplifier, float chance) {
+        PotionEffect potionEffect = new PotionEffect(potion, duration, amplifier, false, false);
+        this.effect = potionEffect;
+        this.setPotionEffect(potionEffect, chance);
         return this;
-    }
-
-    @Override
-    public ItemFood setPotionEffect(int id, int duration, int amplifier, float chance) {
-        return this.setPotionEffect(id, amplifier, chance);
-    }
-
-    @Override
-    protected void onFoodEaten(ItemStack itemStack, World world, EntityPlayer player) {
-        if(world.isRemote || this.effectID <= 0)
-            return;
-        if(player.getRNG().nextFloat() >= this.effectChance)
-            return;
-        player.addPotionEffect(new PotionEffect(this.effectID, this.getEffectDuration(), this.effectAmplifier));
     }
 
 
     // ==================================================
     //                     Visuals
     // ==================================================
-    // ========== Get Icon ==========
+    /*/ ========== Get Icon ==========
     @SideOnly(Side.CLIENT)
     @Override
     public IIcon getIconFromDamage(int par1) {
-        return AssetManager.getIcon(itemName);
+        return AssetManager.getSprite(itemName);
     }
     
     // ========== Register Icons ==========
     @SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IIconRegister iconRegister) {
-        AssetManager.addIcon(itemName, group, texturePath, iconRegister);
-    }
+        AssetManager.addSprite(itemName, group, texturePath, iconRegister);
+    }*/
 }

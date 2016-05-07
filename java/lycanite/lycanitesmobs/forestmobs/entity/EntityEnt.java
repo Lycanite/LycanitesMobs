@@ -1,24 +1,12 @@
 package lycanite.lycanitesmobs.forestmobs.entity;
 
-import java.util.HashMap;
-
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupFire;
 import lycanite.lycanitesmobs.api.IGroupPlant;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowOwner;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerAttack;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerRevenge;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerThreats;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
+import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import net.minecraft.entity.Entity;
@@ -34,8 +22,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+
+import java.util.HashMap;
 
 public class EntityEnt extends EntityCreatureTameable implements IMob, IGroupPlant {
     
@@ -109,12 +100,12 @@ public class EntityEnt extends EntityCreatureTameable implements IMob, IGroupPla
 	@Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        
+
         // Water Healing:
         if(this.isInWater())
-        	this.addPotionEffect(new PotionEffect(Potion.regeneration.id, 3 * 20, 2));
-        else if(this.worldObj.isRaining() && this.worldObj.canBlockSeeTheSky((int)this.posX, (int)this.posY, (int)this.posZ))
-        	this.addPotionEffect(new PotionEffect(Potion.regeneration.id, 3 * 20, 1));
+            this.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("regeneration"), 3 * 20, 2));
+        else if(this.worldObj.isRaining() && this.worldObj.canBlockSeeSky(this.getPosition()))
+            this.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("regeneration"), 3 * 20, 1));
     }
     
     // ==================================================
@@ -147,26 +138,26 @@ public class EntityEnt extends EntityCreatureTameable implements IMob, IGroupPla
    	// ==================================================
     // ========== Damage Modifier ==========
     public float getDamageModifier(DamageSource damageSrc) {
-    	if(damageSrc.isFireDamage())
-    		return 4.0F;
-    	if(damageSrc.getEntity() != null) {
-    		Item heldItem = null;
-    		if(damageSrc.getEntity() instanceof EntityPlayer) {
-    			EntityPlayer entityPlayer = (EntityPlayer)damageSrc.getEntity();
-	    		if(entityPlayer.getHeldItem() != null) {
-	    			heldItem = entityPlayer.getHeldItem().getItem();
-	    		}
-    		}
-    		else if(damageSrc.getEntity() instanceof EntityLiving) {
-	    		EntityLiving entityLiving = (EntityLiving)damageSrc.getEntity();
-	    		if(entityLiving.getHeldItem() != null) {
-	    			heldItem = entityLiving.getHeldItem().getItem();
-	    		}
-    		}
-    		if(ObjectLists.isAxe(heldItem))
-				return 4.0F;
-    	}
-    	return 1.0F;
+        if(damageSrc.isFireDamage())
+            return 4.0F;
+        if(damageSrc.getEntity() != null) {
+            Item heldItem = null;
+            if(damageSrc.getEntity() instanceof EntityPlayer) {
+                EntityPlayer entityPlayer = (EntityPlayer)damageSrc.getEntity();
+                if(entityPlayer.getHeldItem(EnumHand.MAIN_HAND) != null) {
+                    heldItem = entityPlayer.getHeldItem(EnumHand.MAIN_HAND).getItem();
+                }
+            }
+            else if(damageSrc.getEntity() instanceof EntityLiving) {
+                EntityLiving entityLiving = (EntityLiving)damageSrc.getEntity();
+                if(entityLiving.getHeldItem(EnumHand.MAIN_HAND) != null) {
+                    heldItem = entityLiving.getHeldItem(EnumHand.MAIN_HAND).getItem();
+                }
+            }
+            if(ObjectLists.isAxe(heldItem))
+                return 4.0F;
+        }
+        return super.getDamageModifier(damageSrc);
     }
     
     
@@ -175,9 +166,9 @@ public class EntityEnt extends EntityCreatureTameable implements IMob, IGroupPla
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotionID() == Potion.moveSlowdown.id) return false;
-        if(ObjectManager.getPotionEffect("Paralysis") != null)
-        	if(potionEffect.getPotionID() == ObjectManager.getPotionEffect("Paralysis").id) return false;
+        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("slowness")) return false;
+        if(ObjectManager.getPotionEffect("paralysis") != null)
+            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("paralysis")) return false;
         super.isPotionApplicable(potionEffect);
         return true;
     }

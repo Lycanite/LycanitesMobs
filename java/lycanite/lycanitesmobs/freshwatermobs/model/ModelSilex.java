@@ -1,13 +1,11 @@
 package lycanite.lycanitesmobs.freshwatermobs.model;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.api.model.ModelCustomObj;
 import lycanite.lycanitesmobs.freshwatermobs.FreshwaterMobs;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.util.MathHelper;
-import net.minecraftforge.client.model.obj.WavefrontObject;
+import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ModelSilex extends ModelCustomObj {
@@ -21,10 +19,10 @@ public class ModelSilex extends ModelCustomObj {
 
     public ModelSilex(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("silex", FreshwaterMobs.group, "entity/silex");
+    	this.initModel("silex", FreshwaterMobs.group, "entity/silex");
     	
-    	// Get Parts:
-    	parts = model.groupObjects;
+
+
     	
     	// Set Rotation Centers:
     	setPartCenter("body", 0F, 0.5F, 0F);

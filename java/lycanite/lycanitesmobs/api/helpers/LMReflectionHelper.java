@@ -1,10 +1,10 @@
 package lycanite.lycanitesmobs.api.helpers;
 
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
-import cpw.mods.fml.relauncher.ReflectionHelper;
 
 public class LMReflectionHelper {
 	/**

@@ -1,10 +1,10 @@
 package lycanite.lycanitesmobs.api.spawning;
 
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import net.minecraft.world.ChunkPosition;
-import net.minecraft.world.World;
 
 
 public class SpawnTypeLand extends SpawnTypeBase {
@@ -32,14 +32,14 @@ public class SpawnTypeLand extends SpawnTypeBase {
     public List<int[]> getSpawnCoordinates(World world, int x, int y, int z) {
     	List<int[]> blockCoords = null;
         int range = this.getRange(world);
-        ChunkPosition originPos = new ChunkPosition(x, y, z);
+        BlockPos originPos = new BlockPos(x, y, z);
 
         for(int i = 0; i < this.blockLimit; i++) {
-        	ChunkPosition chunkCoords = this.getRandomLandCoord(world, originPos, range);
+            BlockPos chunkCoords = this.getRandomLandCoord(world, originPos, range);
         	if(chunkCoords != null) {
         		if(blockCoords == null)
         			blockCoords = new ArrayList<int[]>();
-        		blockCoords.add(new int[] {chunkCoords.chunkPosX, chunkCoords.chunkPosY, chunkCoords.chunkPosZ});
+        		blockCoords.add(new int[] {chunkCoords.getX(), chunkCoords.getY(), chunkCoords.getZ()});
         	}
         }
         

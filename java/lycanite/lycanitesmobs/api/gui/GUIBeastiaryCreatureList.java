@@ -1,12 +1,12 @@
 package lycanite.lycanitesmobs.api.gui;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
-import cpw.mods.fml.client.GuiScrollingList;
+import net.minecraftforge.fml.client.GuiScrollingList;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class GUIBeastiaryCreatureList extends GuiScrollingList {
 	GUIBeastiary parentGUI;
@@ -73,7 +73,7 @@ public class GUIBeastiaryCreatureList extends GuiScrollingList {
 		this.parentGUI.getFontRenderer().drawString(mobInfo.getTitle(), this.left + 20 , boxTop + 4, 0xFFFFFF);
 		if(mobInfo.getIcon() != null) {
 			Minecraft.getMinecraft().getTextureManager().bindTexture(mobInfo.getIcon());
-			this.parentGUI.drawImage(this.left + 2, boxTop, 0, 0, 16, 16, 0.0625F, 0.0625F);
+			this.parentGUI.drawTexturedModalRect(this.left + 2, boxTop, 0, 0, 16, 16);
 		}
 	}
 }

@@ -10,14 +10,13 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
-
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.common.eventhandler.EventPriority;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class GuiOverlay extends Gui {
 	public Minecraft mc;
@@ -42,7 +41,7 @@ public class GuiOverlay extends Gui {
             return;
         EntityPlayer player = LycanitesMobs.proxy.getClientPlayer();
 
-		if(event.isCancelable() || event.type != ElementType.EXPERIENCE)
+		if(event.isCancelable() || event.getType() != ElementType.EXPERIENCE)
 	      return;
 
         GL11.glPushMatrix();
@@ -51,7 +50,7 @@ public class GuiOverlay extends Gui {
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
-		ScaledResolution scaledresolution = new ScaledResolution(this.mc, this.mc.displayWidth, this.mc.displayHeight);
+		ScaledResolution scaledresolution = new ScaledResolution(this.mc);
 		int sWidth = scaledresolution.getScaledWidth();
         int sHeight = scaledresolution.getScaledHeight();
 
@@ -66,8 +65,10 @@ public class GuiOverlay extends Gui {
 		
 		// ========== Summoning Focus Bar ==========
         ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
-		if(playerExt != null && !this.mc.thePlayer.capabilities.isCreativeMode
-				&& this.mc.thePlayer.getHeldItem() != null && this.mc.thePlayer.getHeldItem().getItem() instanceof ItemStaffSummoning) {
+		if(playerExt != null && !this.mc.thePlayer.capabilities.isCreativeMode && (
+                (this.mc.thePlayer.getHeldItem(EnumHand.MAIN_HAND) != null && this.mc.thePlayer.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemStaffSummoning)
+                || (this.mc.thePlayer.getHeldItem(EnumHand.OFF_HAND) != null && this.mc.thePlayer.getHeldItem(EnumHand.OFF_HAND).getItem() instanceof ItemStaffSummoning)
+                )) {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIInventoryCreature"));
 			
@@ -98,8 +99,8 @@ public class GuiOverlay extends Gui {
 		}
 		
 		// ========== Mount Stamina Bar ==========
-		if(this.mc.thePlayer.ridingEntity != null && this.mc.thePlayer.ridingEntity instanceof EntityCreatureRideable) {
-			EntityCreatureRideable mount = (EntityCreatureRideable)this.mc.thePlayer.ridingEntity;
+		if(this.mc.thePlayer.getRidingEntity() != null && this.mc.thePlayer.getRidingEntity() instanceof EntityCreatureRideable) {
+			EntityCreatureRideable mount = (EntityCreatureRideable)this.mc.thePlayer.getRidingEntity();
             float mountStamina = mount.getStaminaPercent();
             
             // Mount Controls Message:
@@ -107,10 +108,10 @@ public class GuiOverlay extends Gui {
             	GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             	if(this.mountMessageTime < 60)
             		GL11.glColor4f(1.0F, 1.0F, 1.0F, (float)this.mountMessageTime / (float)60);
-            	String mountMessage = StatCollector.translateToLocal("gui.mount.controls");
+            	String mountMessage = I18n.translateToLocal("gui.mount.controls");
             	mountMessage = mountMessage.replace("%control%", GameSettings.getKeyDisplayString(KeyHandler.instance.mountAbility.getKeyCode()));
-            	int stringWidth = this.mc.fontRenderer.getStringWidth(mountMessage);
-            	this.mc.fontRenderer.drawString(mountMessage, (sWidth / 2) - (stringWidth / 2), sHeight - 64, 0xFFFFFF);
+            	int stringWidth = this.mc.fontRendererObj.getStringWidth(mountMessage);
+            	this.mc.fontRendererObj.drawString(mountMessage, (sWidth / 2) - (stringWidth / 2), sHeight - 64, 0xFFFFFF);
             }
             
             // Mount Ability Stamina Bar:

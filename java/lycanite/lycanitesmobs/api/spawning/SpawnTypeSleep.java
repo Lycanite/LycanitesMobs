@@ -1,8 +1,8 @@
 package lycanite.lycanitesmobs.api.spawning;
 
-import java.util.List;
-
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class SpawnTypeSleep extends SpawnTypeBase {
 

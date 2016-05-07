@@ -1,16 +1,18 @@
 package lycanite.lycanitesmobs.api.entity.ai;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.pathfinding.PathEntity;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.pathfinding.PathNavigateGround;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.village.Village;
 import net.minecraft.village.VillageDoorInfo;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class EntityAIMoveVillage extends EntityAIBase {
 	// Targets:
@@ -54,28 +56,29 @@ public class EntityAIMoveVillage extends EntityAIBase {
         if(this.isNocturnal && this.host.worldObj.isDaytime())
             return false;
         
-        Village village = this.host.worldObj.villageCollectionObj.findNearestVillage(MathHelper.floor_double(this.host.posX), MathHelper.floor_double(this.host.posY), MathHelper.floor_double(this.host.posZ), 0);
+        Village village = this.host.worldObj.villageCollectionObj.getNearestVillage(new BlockPos(MathHelper.floor_double(this.host.posX), MathHelper.floor_double(this.host.posY), MathHelper.floor_double(this.host.posZ)), 0);
         if(village == null)
             return false;
         
         this.doorInfo = this.getDoorInfo(village);
         if(this.doorInfo == null)
             return false;
-        
-        boolean flag = this.host.getNavigator().getCanBreakDoors();
-        this.host.getNavigator().setBreakDoors(false);
-        this.entityPathNavigate = this.host.getNavigator().getPathToXYZ((double)this.doorInfo.posX, (double)this.doorInfo.posY, (double)this.doorInfo.posZ);
-        this.host.getNavigator().setBreakDoors(flag);
+
+        PathNavigateGround pathNavigate = (PathNavigateGround)this.host.getNavigator();
+        boolean flag = pathNavigate.getEnterDoors();
+        pathNavigate.setBreakDoors(false);
+        this.entityPathNavigate = this.host.getNavigator().getPathToXYZ((double)this.doorInfo.getInsideOffsetX(), (double)this.doorInfo.getInsidePosY(), (double)this.doorInfo.getInsideOffsetZ());
+        pathNavigate.setBreakDoors(flag);
 
         if(this.entityPathNavigate != null)
             return true;
         
-        Vec3 vec3 = RandomPositionGenerator.findRandomTargetTowards(this.host, 10, 7, Vec3.createVectorHelper((double)this.doorInfo.posX, (double)this.doorInfo.posY, (double)this.doorInfo.posZ));
+        Vec3d vec3 = RandomPositionGenerator.findRandomTargetTowards(this.host, 10, 7, new Vec3d((double)this.doorInfo.getInsideOffsetX(), (double)this.doorInfo.getInsidePosY(), (double)this.doorInfo.getInsideOffsetZ()));
         if(vec3 == null)
             return false;
-        this.host.getNavigator().setBreakDoors(false);
+        pathNavigate.setBreakDoors(false);
         this.entityPathNavigate = this.host.getNavigator().getPathToXYZ(vec3.xCoord, vec3.yCoord, vec3.zCoord);
-        this.host.getNavigator().setBreakDoors(flag);
+        pathNavigate.setBreakDoors(flag);
         return this.entityPathNavigate != null;
     }
 	
@@ -92,7 +95,7 @@ public class EntityAIMoveVillage extends EntityAIBase {
         else
         {
             float f = this.host.width + 4.0F;
-            return this.host.getDistanceSq((double)this.doorInfo.posX, (double)this.doorInfo.posY, (double)this.doorInfo.posZ) > (double)(f * f);
+            return this.host.getDistanceSq((double)this.doorInfo.getInsideOffsetX(), (double)this.doorInfo.getInsidePosY(), (double)this.doorInfo.getInsideOffsetZ()) > (double)(f * f);
         }
     }
 	
@@ -111,7 +114,7 @@ public class EntityAIMoveVillage extends EntityAIBase {
  	// ==================================================
     public void resetTask()
     {
-        if (this.host.getNavigator().noPath() || this.host.getDistanceSq((double)this.doorInfo.posX, (double)this.doorInfo.posY, (double)this.doorInfo.posZ) < 16.0D)
+        if (this.host.getNavigator().noPath() || this.host.getDistanceSq((double)this.doorInfo.getInsideOffsetX(), (double)this.doorInfo.getInsidePosY(), (double)this.doorInfo.getInsideOffsetZ()) < 16.0D)
         {
             this.doorList.add(this.doorInfo);
         }
@@ -149,7 +152,7 @@ public class EntityAIMoveVillage extends EntityAIBase {
                 return false;
             villagedoorinfo1 = (VillageDoorInfo)iterator.next();
         }
-        while(par1VillageDoorInfo.posX != villagedoorinfo1.posX || par1VillageDoorInfo.posY != villagedoorinfo1.posY || par1VillageDoorInfo.posZ != villagedoorinfo1.posZ);
+        while(par1VillageDoorInfo.getInsideOffsetX() != villagedoorinfo1.getInsideOffsetX() || par1VillageDoorInfo.getInsidePosY() != villagedoorinfo1.getInsidePosY() || par1VillageDoorInfo.getInsideOffsetZ() != villagedoorinfo1.getInsideOffsetZ());
 
         return true;
     }

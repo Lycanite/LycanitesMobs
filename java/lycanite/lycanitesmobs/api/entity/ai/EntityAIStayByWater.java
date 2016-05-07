@@ -1,10 +1,10 @@
 package lycanite.lycanitesmobs.api.entity.ai;
 
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.math.BlockPos;
 
 public class EntityAIStayByWater extends EntityAIBase {
 	// Targets:
@@ -51,7 +51,7 @@ public class EntityAIStayByWater extends EntityAIBase {
     public boolean shouldExecute() {
     	// Set home when in water or lava (for lava creatures).
     	if(this.host.isInWater()) {
-    		Block waterBlock = this.host.worldObj.getBlock((int)this.host.posX, (int)this.host.posY, (int)this.host.posZ - 1);
+    		IBlockState waterBlock = this.host.worldObj.getBlockState(new BlockPos((int) this.host.posX, (int) this.host.posY, (int) this.host.posZ - 1));
     		if((!this.host.isLavaCreature && waterBlock.getMaterial() == Material.water) ||
     			(this.host.isLavaCreature && waterBlock.getMaterial() == Material.lava)) {
 	    		this.waterX = (int)this.host.posX;
@@ -159,7 +159,7 @@ public class EntityAIStayByWater extends EntityAIBase {
 	    		this.host.getNavigator().tryMoveToXYZ(this.waterX + overshotX, this.waterY, this.waterZ + overshotZ, this.speed);
 	    	}
 	    	else
-	    		host.flightNavigator.setTargetPosition(new ChunkCoordinates((int)this.waterX, (int)this.waterY, (int)this.waterZ), this.speed);
+	    		host.flightNavigator.setTargetPosition(new BlockPos((int)this.waterX, (int)this.waterY, (int)this.waterZ), this.speed);
     	}
     }
 	

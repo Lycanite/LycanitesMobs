@@ -10,8 +10,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 public class ItemHalloweenTreat extends ItemBase {
@@ -50,11 +51,11 @@ public class ItemHalloweenTreat extends ItemBase {
   	//                       Good
   	// ==================================================
     public void openGood(ItemStack itemStack, World world, EntityPlayer player) {
-    	String message = StatCollector.translateToLocal("item." + this.itemName + ".good");
-		player.addChatMessage(new ChatComponentText(message));
+    	String message = I18n.translateToLocal("item." + this.itemName + ".good");
+		player.addChatMessage(new TextComponentString(message));
 		if(AssetManager.getSound(this.itemName + "_good") == null)
 			AssetManager.addSound(this.itemName + "_good", this.group, "item." + this.itemName + ".good");
-		world.playSoundAtEntity(player, AssetManager.getSound(this.itemName + "_good"), 5.0F, 1.0F);
+		world.playSound(player, player.posX, player.posY, player.posZ, AssetManager.getSound(this.itemName + "_good"), SoundCategory.AMBIENT, 5.0F, 1.0F);
 		
 		// Three Random Treats:
 		for(int i = 0; i < 3; i++) {
@@ -64,7 +65,7 @@ public class ItemHalloweenTreat extends ItemBase {
 			if(dropStack != null && dropStack.getItem() != null) {
 				dropStack.stackSize = 1 + player.getRNG().nextInt(4);
 				EntityItemCustom entityItem = new EntityItemCustom(world, player.posX, player.posY, player.posZ, dropStack);
-				entityItem.delayBeforeCanPickup = 10;
+				entityItem.setPickupDelay(10);
 				world.spawnEntityInWorld(entityItem);
 			}
 		}
@@ -75,11 +76,11 @@ public class ItemHalloweenTreat extends ItemBase {
   	//                       Bad
   	// ==================================================
     public void openBad(ItemStack itemStack, World world, EntityPlayer player) {
-    	String message = StatCollector.translateToLocal("item." + this.itemName + ".bad");
-		player.addChatMessage(new ChatComponentText(message));
+    	String message = I18n.translateToLocal("item." + this.itemName + ".bad");
+		player.addChatMessage(new TextComponentString(message));
 		if(AssetManager.getSound(this.itemName + "_bad") == null)
 			AssetManager.addSound(this.itemName + "_bad", this.group, "item." + this.itemName + ".bad");
-		world.playSoundAtEntity(player, AssetManager.getSound(this.itemName + "_bad"), 5.0F, 1.0F);
+        world.playSound(player, player.posX, player.posY, player.posZ, AssetManager.getSound(this.itemName + "_bad"), SoundCategory.AMBIENT, 5.0F, 1.0F);
 		
 		// One Random Trick:
 		Class[] entityClasses = ObjectLists.getEntites("halloween_tricks");

@@ -1,9 +1,5 @@
 package lycanite.lycanitesmobs.api.info;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.network.MessageBeastiary;
@@ -13,6 +9,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class Beastiary {
 	public EntityPlayer player;

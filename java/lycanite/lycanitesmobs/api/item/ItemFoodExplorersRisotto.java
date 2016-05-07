@@ -26,9 +26,9 @@ public class ItemFoodExplorersRisotto extends ItemCustomFood {
     @Override
     protected void onFoodEaten(ItemStack itemStack, World world, EntityPlayer player) {
         super.onFoodEaten(itemStack, world, player);
-        player.addPotionEffect(new PotionEffect(Potion.moveSpeed.id, this.getEffectDuration(), 3));
-        player.addPotionEffect(new PotionEffect(Potion.digSpeed.id, this.getEffectDuration(), 3));
-        player.addPotionEffect(new PotionEffect(Potion.waterBreathing.id, this.getEffectDuration(), 1));
-        player.addPotionEffect(new PotionEffect(Potion.jump.id, this.getEffectDuration(), 1));
+        player.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("speed"), this.getEffectDuration(), 3));
+        player.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("haste"), this.getEffectDuration(), 3));
+        player.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("water_breathing"), this.getEffectDuration(), 1));
+        player.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("jump_boost"), this.getEffectDuration(), 1));
     }
 }

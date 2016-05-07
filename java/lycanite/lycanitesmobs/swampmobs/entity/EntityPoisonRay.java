@@ -8,6 +8,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
 public class EntityPoisonRay extends EntityProjectileLaser {
@@ -68,7 +69,7 @@ public class EntityPoisonRay extends EntityProjectileLaser {
     	boolean damageDealt = super.updateDamage(target);
         if(this.getThrower() != null && damageDealt) {
         	if(target instanceof EntityLivingBase)
-    			((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.poison.id, this.getEffectDuration(5), 0));
+    			((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("poison"), this.getEffectDuration(5), 0));
         }
         return damageDealt;
     }
@@ -89,12 +90,12 @@ public class EntityPoisonRay extends EntityProjectileLaser {
  	//                      Sounds
  	// ==================================================
     @Override
-    public String getLaunchSound() {
+    public SoundEvent getLaunchSound() {
     	return AssetManager.getSound(entityName);
     }
 	
 	@Override
-	public String getBeamSound() {
+	public SoundEvent getBeamSound() {
     	return AssetManager.getSound(entityName);
 	}
 }

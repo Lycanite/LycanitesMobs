@@ -1,29 +1,22 @@
 package lycanite.lycanitesmobs.api.info;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
-import lycanite.lycanitesmobs.api.item.ItemBase;
 import lycanite.lycanitesmobs.api.item.ItemCustom;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemAxe;
-import net.minecraft.item.ItemPickaxe;
-import net.minecraft.item.ItemShears;
-import net.minecraft.item.ItemSpade;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.item.*;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ObjectLists {
 	
@@ -120,6 +113,8 @@ public class ObjectLists {
     // ==================================================
 	public static boolean inItemList(String list, ItemStack testStack) {
 		list = list.toLowerCase();
+        if(testStack == null || testStack.getItem() == null)
+            return false;
 		if(!itemLists.containsKey(list))
 			return false;
 		for(ItemStack listStack : itemLists.get(list))
@@ -151,7 +146,7 @@ public class ObjectLists {
     }
     public static boolean isInOreDictionary(String oreEntry, ItemStack itemStack) {
         if(itemStack == null) return false;
-        ArrayList<ItemStack> ores = OreDictionary.getOres(oreEntry);
+        List<ItemStack> ores = OreDictionary.getOres(oreEntry);
         if(ores == null) return false;
         for(ItemStack ore : ores)
             if(ore.getItem() == itemStack.getItem())
@@ -205,7 +200,7 @@ public class ObjectLists {
 		ObjectLists.addItem("rawfish", Items.fish);
 
 		// Cooked Fish: (For those fish fiends!)
-		ObjectLists.addItem("cookedfish", Items.cooked_fished);
+		ObjectLists.addItem("cookedfish", Items.cooked_fish);
 		
 		// Cactus Food: (Jousts love these!)
 		ObjectLists.addItem("cactusfood", new ItemStack(Items.dye, 1, 2)); // Cactus Green
@@ -233,31 +228,35 @@ public class ObjectLists {
 		
 		// ========== Effects ==========
 		// Buffs:
-		ObjectLists.addEffect("buffs", Potion.damageBoost);
-		ObjectLists.addEffect("buffs", Potion.digSpeed);
-		ObjectLists.addEffect("buffs", Potion.fireResistance);
-		ObjectLists.addEffect("buffs", Potion.heal);
-		ObjectLists.addEffect("buffs", Potion.invisibility);
-		ObjectLists.addEffect("buffs", Potion.jump);
-		ObjectLists.addEffect("buffs", Potion.moveSpeed);
-		ObjectLists.addEffect("buffs", Potion.nightVision);
-		ObjectLists.addEffect("buffs", Potion.regeneration);
-		ObjectLists.addEffect("buffs", Potion.resistance);
-		ObjectLists.addEffect("buffs", Potion.waterBreathing);
-		ObjectLists.addEffect("buffs", Potion.field_76434_w); // Health Boost
-		ObjectLists.addEffect("buffs", Potion.field_76444_x); // Absorption		
-		ObjectLists.addEffect("buffs", Potion.field_76443_y); // Saturation
+		ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("strength"));
+		ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("haste"));
+		ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("fire_resistance"));
+		ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("instant_health"));
+		ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("invisibility"));
+		ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("jump_boost"));
+		ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("speed"));
+		ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("night_vision"));
+		ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("regeneration"));
+		ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("resistance"));
+		ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("water_breathing"));
+		ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("health_boost"));
+		ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("absorption"));
+		ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("saturation"));
+        ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("glowing"));
+        ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("levitation"));
+        ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("luck"));
 		
 		// Debuffs:
-		ObjectLists.addEffect("debuffs", Potion.blindness);
-		ObjectLists.addEffect("debuffs", Potion.confusion);
-		ObjectLists.addEffect("debuffs", Potion.digSlowdown);
-		ObjectLists.addEffect("debuffs", Potion.harm);
-		ObjectLists.addEffect("debuffs", Potion.hunger);
-		ObjectLists.addEffect("debuffs", Potion.moveSlowdown);
-		ObjectLists.addEffect("debuffs", Potion.poison);
-		ObjectLists.addEffect("debuffs", Potion.weakness);
-		ObjectLists.addEffect("debuffs", Potion.wither);
+        ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("blindness"));
+        ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("nausea"));
+        ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("mining_fatigue"));
+        ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("instant_damage"));
+        ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("hunger"));
+        ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("slowness"));
+        ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("poison"));
+        ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("weakness"));
+        ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("wither"));
+        ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("unluck"));
 	}
 	
 	// ========== Add From Config Value ==========
@@ -274,13 +273,13 @@ public class ObjectLists {
 				int dropMeta = 0;
 				if(customDropValues.length > 1)
 					dropMeta = Integer.parseInt(customDropValues[1]);
-				if(Item.itemRegistry.getObject(dropName) != null) {
-					Item customItem = (Item)Item.itemRegistry.getObject(dropName);
+				if(Item.itemRegistry.getObject(new ResourceLocation(dropName)) != null) {
+					Item customItem = (Item)Item.itemRegistry.getObject(new ResourceLocation(dropName));
 					ObjectLists.addItem(listName, new ItemStack(customItem, 1, dropMeta));
 	    			LycanitesMobs.printDebug("ItemSetup", "As Item: " + customItem);
 				}
-				else if(Block.blockRegistry.getObject(dropName) != null) {
-					Block customBlock = (Block)Block.blockRegistry.getObject(dropName);
+				else if(Block.blockRegistry.getObject(new ResourceLocation(dropName)) != null) {
+					Block customBlock = (Block)Block.blockRegistry.getObject(new ResourceLocation(dropName));
 					ObjectLists.addItem(listName, new ItemStack(customBlock, 1, dropMeta));
 	    			LycanitesMobs.printDebug("ItemSetup", "As Block: " + customBlock);
 				}
@@ -299,7 +298,7 @@ public class ObjectLists {
 			return true;
 		if(item instanceof ItemShears)
 			return false;
-		return item.func_150893_a(new ItemStack(item), Blocks.melon_block) > 1F;
+		return item.getStrVsBlock(new ItemStack(item), Blocks.melon_block.getDefaultState()) > 1F;
 	}
 
     // ========== Pickaxe ==========
@@ -322,7 +321,7 @@ public class ObjectLists {
                 return true;
             if(item.getHarvestLevel(new ItemStack(item), "pickaxe") != -1)
                 return true;
-            return item.func_150893_a(new ItemStack(item), Blocks.stone) > 1F;
+            return item.getStrVsBlock(new ItemStack(item), Blocks.stone.getDefaultState()) > 1F;
 
         }
         catch(Exception e) {}
@@ -350,7 +349,7 @@ public class ObjectLists {
                 return true;
             if(item.getHarvestLevel(new ItemStack(item), "axe") != -1)
                 return true;
-            return item.func_150893_a(new ItemStack(item), Blocks.log) > 1F;
+            return item.getStrVsBlock(new ItemStack(item), Blocks.log.getDefaultState()) > 1F;
 
         }
         catch(Exception e) {}
@@ -377,7 +376,7 @@ public class ObjectLists {
                 return true;
             if(item.getHarvestLevel(new ItemStack(item), "shovel") != -1)
                 return true;
-            return item.func_150893_a(new ItemStack(item), Blocks.dirt) > 1F;
+            return item.getStrVsBlock(new ItemStack(item), Blocks.dirt.getDefaultState()) > 1F;
 
         }
         catch(Exception e) {}

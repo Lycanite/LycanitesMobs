@@ -1,21 +1,27 @@
 package lycanite.lycanitesmobs.swampmobs.block;
 
-import java.util.Random;
-
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.block.BlockBase;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.swampmobs.SwampMobs;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.Random;
 
 public class BlockPoisonCloud extends BlockBase {
 	
@@ -24,8 +30,9 @@ public class BlockPoisonCloud extends BlockBase {
 	// ==================================================
 	public BlockPoisonCloud() {
 		super(Material.plants);
-		
-		// Properties:
+        this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, 0));
+
+        // Properties:
 		this.group = SwampMobs.group;
 		this.blockName = "poisoncloud";
 		this.setup();
@@ -45,22 +52,41 @@ public class BlockPoisonCloud extends BlockBase {
 	}
 
 
+    // ==================================================
+    //                   Block States
+    // ==================================================
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return this.getDefaultState().withProperty(AGE, meta);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(AGE);
+    }
+
+    @Override
+    public BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, AGE);
+    }
+
+
 	// ==================================================
 	//                     Break
 	// ==================================================
 	@Override
-	public Item getItemDropped(int metadata, Random random, int fortune) {
+	public Item getItemDropped(IBlockState blockState, Random random, int fortune) {
 		return ObjectManager.getItem("poisongland");
 	}
 	
 	@Override
-	public int damageDropped(int metadata) {
+	public int damageDropped(IBlockState blockState) {
 		return 0;
 	}
     
 	@Override
-	public int quantityDropped(Random par1Random) {
-        return 0;
+	public int quantityDropped(Random random) {
+        return 1;
     }
     
     
@@ -68,10 +94,10 @@ public class BlockPoisonCloud extends BlockBase {
 	//                Collision Effects
 	// ==================================================
     @Override
-    public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
-		super.onEntityCollidedWithBlock(world, x, y, z, entity);
+    public void onEntityCollidedWithBlock(World world, BlockPos pos, Entity entity) {
+		super.onEntityCollidedWithBlock(world, pos, entity);
 		if(entity instanceof EntityLivingBase) {
-			((EntityLivingBase)entity).addPotionEffect(new PotionEffect(Potion.poison.id, 5 * 20, 0));
+			((EntityLivingBase)entity).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("poison"), 5 * 20, 0));
 		}
 	}
     
@@ -79,11 +105,14 @@ public class BlockPoisonCloud extends BlockBase {
 	// ==================================================
 	//                      Particles
 	// ==================================================
-    @Override
     @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(World world, int x, int y, int z, Random random) {
+    @Override
+    public void randomDisplayTick(IBlockState blockState, World world, BlockPos pos, Random random) {
+        int x = pos.getX();
+        int y = pos.getX();
+        int z = pos.getX();
     	if(random.nextInt(24) == 0)
-        	world.playSound((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), AssetManager.getSound("poisoncloud"), 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F, false);
+        	world.playSound((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), AssetManager.getSound("poisoncloud"), SoundCategory.AMBIENT, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F, false);
 
         int l;
         float f; 
@@ -94,26 +123,18 @@ public class BlockPoisonCloud extends BlockBase {
             f = (float)x + random.nextFloat();
             f1 = (float)y + random.nextFloat() * 0.5F;
             f2 = (float)z + random.nextFloat();
-            //TODO EntityParticle particle = new EntityParticle(par1World, f, f1, f2, "poisoncloud", this.mod);
-            world.spawnParticle("portal", (double)f, (double)f1, (double)f2, 0.0D, 0.0D, 0.0D);
-            world.spawnParticle("smoke", (double)f, (double)f1, (double)f2, 0.0D, 0.0D, 0.0D);
+            world.spawnParticle(EnumParticleTypes.PORTAL, (double)f, (double)f1, (double)f2, 0.0D, 0.0D, 0.0D);
+            world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, (double)f, (double)f1, (double)f2, 0.0D, 0.0D, 0.0D);
         }
     }
-    
-    
-	// ==================================================
-	//                      Visuals
-	// ==================================================
-    // ========== Get Render Type ==========
+
+
+    // ==================================================
+    //                      Rendering
+    // ==================================================
     @SideOnly(Side.CLIENT)
     @Override
-    public int getRenderType() {
-        return BlockBase.RENDER_TYPE.CROSS.id;
+    public BlockRenderLayer getBlockLayer() {
+        return BlockRenderLayer.CUTOUT;
     }
-    
-    // ========== Render As Normal ==========
- 	@Override
- 	public boolean renderAsNormalBlock() {
- 		return false;
- 	}
 }

@@ -1,14 +1,14 @@
 package lycanite.lycanitesmobs.api.inventory;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ContainerBase extends Container {
 	public Map<Integer, String> specialSlots = new HashMap<Integer, String>();

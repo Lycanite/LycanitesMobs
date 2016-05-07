@@ -6,7 +6,8 @@ import lycanite.lycanitesmobs.api.info.ObjectLists;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.pathfinding.PathNavigateGround;
+import net.minecraft.util.math.BlockPos;
 
 public class EntityAITempt extends EntityAIBase {
     // Targets:
@@ -19,7 +20,7 @@ public class EntityAITempt extends EntityAIBase {
     private boolean ignoreTemptMeta = false;
     private String temptList = null;
     private int retemptTime;
-    private int retemptTimeMax = 100;
+    private int retemptTimeMax = 10; // Lowered from 100 because it's just annoying!
     private double temptDistanceMin = 1.0D * 1.0D;
     private double temptDistanceMax = 10.0D;
     private boolean scaredByPlayerMovement = false;
@@ -30,7 +31,7 @@ public class EntityAITempt extends EntityAIBase {
     private double targetZ;
     private double targetPitch;
     private double targetYaw;
-    private boolean avoidWater;
+    private boolean canSwim;
     private boolean isRunning;
 	
 	// ==================================================
@@ -101,22 +102,27 @@ public class EntityAITempt extends EntityAIBase {
         this.player = this.host.worldObj.getClosestPlayerToEntity(this.host, this.temptDistanceMax);
         if(this.player == null)
             return false;
-        
-        ItemStack itemstack = this.player.getCurrentEquippedItem();
-        if(itemstack == null)
-        	return false;
-        if(this.temptList != null) {
-        	if(!ObjectLists.inItemList(this.temptList, itemstack))
-        		return false;
-        }
-        else {
-	        if(itemstack.getItem() != this.temptItem.getItem())
-	        	return false;
-	        if(!this.ignoreTemptMeta && itemstack.getItemDamage() != this.temptItem.getItemDamage())
-	        	return false;
-        }
+
+        if(!this.isTemptStack(this.player.getHeldItemMainhand()) || !this.isTemptStack(this.player.getHeldItemOffhand()))
+            return false;
         
         this.host.setStealth(0.0F);
+        return true;
+    }
+
+    public boolean isTemptStack(ItemStack itemStack) {
+        if(itemStack == null)
+            return false;
+        if(this.temptList != null) {
+            if(!ObjectLists.inItemList(this.temptList, itemStack))
+                return false;
+        }
+        else {
+            if(itemStack.getItem() != this.temptItem.getItem())
+                return false;
+            if(!this.ignoreTemptMeta && itemStack.getItem() == this.temptItem.getItem() && itemStack.getItemDamage() != this.temptItem.getItemDamage())
+                return false;
+        }
         return true;
     }
     
@@ -154,8 +160,11 @@ public class EntityAITempt extends EntityAIBase {
         this.targetY = this.player.posY;
         this.targetZ = this.player.posZ;
         this.isRunning = true;
-        this.avoidWater = this.host.getNavigator().getAvoidsWater();
-        this.host.getNavigator().setAvoidsWater(false);
+        if (this.host.getNavigator() instanceof PathNavigateGround) {
+            PathNavigateGround navigateGround = (PathNavigateGround) this.host.getNavigator();
+            this.canSwim = !navigateGround.getCanSwim();
+            navigateGround.setCanSwim(true);
+        }
         if(this.stopAttack)
         	this.host.setAttackTarget(null);
     }
@@ -169,7 +178,10 @@ public class EntityAITempt extends EntityAIBase {
         this.host.getNavigator().clearPathEntity();
         this.retemptTime = this.retemptTimeMax;
         this.isRunning = false;
-        this.host.getNavigator().setAvoidsWater(this.avoidWater);
+        if (this.host.getNavigator() instanceof PathNavigateGround) {
+            PathNavigateGround navigateGround = (PathNavigateGround) this.host.getNavigator();
+            navigateGround.setCanSwim(this.canSwim);
+        }
     }
     
     
@@ -186,7 +198,7 @@ public class EntityAITempt extends EntityAIBase {
         	if(!this.host.useFlightNavigator())
         		this.host.getNavigator().tryMoveToEntityLiving(this.player, this.speed);
         	else
-        		this.host.flightNavigator.setTargetPosition(new ChunkCoordinates((int)this.player.posX, (int)this.player.posY, (int)this.player.posZ), speed);
+        		this.host.flightNavigator.setTargetPosition(new BlockPos((int)this.player.posX, (int)this.player.posY, (int)this.player.posZ), speed);
         }
     }
     

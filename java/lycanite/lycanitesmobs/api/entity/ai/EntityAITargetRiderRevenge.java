@@ -1,10 +1,13 @@
 package lycanite.lycanitesmobs.api.entity.ai;
 
-import java.util.Iterator;
-import java.util.List;
-
+import com.google.common.base.Predicate;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+
+import java.util.Iterator;
+import java.util.List;
 
 public class EntityAITargetRiderRevenge extends EntityAITargetAttack {
 	
@@ -55,7 +58,7 @@ public class EntityAITargetRiderRevenge extends EntityAITargetAttack {
     		return false;
     	if(this.host.getRider() == null)
     		return false;
-        int i = this.host.getRider().func_142015_aE(); // Get Riders Revenge Timer
+        int i = this.host.getRider().getRevengeTimer();
         if(i == this.revengeTime)
         	return false;
         if(!this.isSuitableTarget(this.host.getRider().getAITarget(), false))
@@ -69,11 +72,16 @@ public class EntityAITargetRiderRevenge extends EntityAITargetAttack {
  	// ==================================================
     public void startExecuting() {
         this.target = this.host.getRider().getAITarget();
-        this.revengeTime = this.host.getRider().func_142015_aE(); // Get Riders Revenge Timer
+        this.revengeTime = this.host.getRider().getRevengeTimer();
         
         if(this.callForHelp) {
             double d0 = this.getTargetDistance();
-            List allies = this.host.worldObj.selectEntitiesWithinAABB(this.host.getClass(), this.host.boundingBox.expand(d0, 4.0D, d0), this.targetSelector);
+            List allies = this.host.worldObj.getEntitiesWithinAABB(this.host.getClass(), this.host.getEntityBoundingBox().expand(d0, 4.0D, d0), new Predicate<Entity>() {
+                @Override
+                public boolean apply(Entity input) {
+                    return input instanceof EntityLivingBase;
+                }
+            });
             Iterator possibleAllies = allies.iterator();
 
             while(possibleAllies.hasNext()) {

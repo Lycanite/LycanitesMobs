@@ -3,9 +3,11 @@ package lycanite.lycanitesmobs.api.entity.ai;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 
 public class EntityAIEatBlock extends EntityAIBase {
 	// Targets:
@@ -61,22 +63,22 @@ public class EntityAIEatBlock extends EntityAIBase {
     	 int i = MathHelper.floor_double(this.host.posX);
          int j = MathHelper.floor_double(this.host.posY);
          int k = MathHelper.floor_double(this.host.posZ);
-         
-         Block block = this.host.worldObj.getBlock(i, j - 1, k);
-         return this.isValidBlock(block);
+
+         IBlockState blockState = this.host.worldObj.getBlockState(new BlockPos(i, j - 1, k));
+         return this.isValidBlock(blockState);
      }
   	
      
   	// ==================================================
    	//                 Valid Block Check
    	// ==================================================
-     public boolean isValidBlock(Block block) {
+     public boolean isValidBlock(IBlockState blockState) {
          for(Block edibleBlock : this.blocks) {
-        	 if(edibleBlock == block)
+        	 if(edibleBlock == blockState.getBlock())
         		 return true;
          }
          
-         Material material = block.getMaterial();
+         Material material = blockState.getMaterial();
          for(Material edibleMaterial : this.materials) {
         	 if(edibleMaterial == material)
         		 return true;
@@ -120,15 +122,15 @@ public class EntityAIEatBlock extends EntityAIBase {
          int i = MathHelper.floor_double(this.host.posX);
          int j = MathHelper.floor_double(this.host.posY);
          int k = MathHelper.floor_double(this.host.posZ);
-         Block block = this.host.worldObj.getBlock(i, j - 1, k);
+         IBlockState blockState = this.host.worldObj.getBlockState(new BlockPos(i, j - 1, k));
          
-         if(this.isValidBlock(block)) {
+         if(this.isValidBlock(blockState)) {
              //if(this.host.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"))
-        	 this.host.worldObj.func_147480_a(i, j - 1, k, false);
+        	 this.host.worldObj.setBlockToAir(new BlockPos(i, j - 1, k)); // Might be something else was x, y, z, false
          }
 
-         this.host.worldObj.playAuxSFX(2001, i, j - 1, k, Block.getIdFromBlock(block));
-         this.host.worldObj.setBlock(i, j - 1, k, this.replaceBlock, 0, 2);
+         this.host.worldObj.playAuxSFX(2001, new BlockPos(i, j - 1, k), Block.getIdFromBlock(blockState.getBlock()));
+         this.host.worldObj.setBlockState(new BlockPos(i, j - 1, k), this.replaceBlock.getDefaultState(), 2);
          this.host.onEat();
      }
 }

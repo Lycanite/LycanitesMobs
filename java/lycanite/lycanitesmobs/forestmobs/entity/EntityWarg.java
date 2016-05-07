@@ -1,6 +1,6 @@
 package lycanite.lycanitesmobs.forestmobs.entity;
 
-import lycanite.lycanitesmobs.LycanitesMobs;
+import com.google.common.base.Predicate;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupAlpha;
 import lycanite.lycanitesmobs.api.IGroupAnimal;
@@ -22,7 +22,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
@@ -128,21 +127,31 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
             this.leapedAbilityReady = false;
             if(ObjectManager.getPotionEffect("Paralysis") != null) {
                 double distance = 4.0D;
-                List<EntityLivingBase> possibleTargets = this.worldObj.selectEntitiesWithinAABB(EntityLivingBase.class, this.boundingBox.expand(distance, distance, distance), null);
+                List<EntityLivingBase> possibleTargets = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().expand(distance, distance, distance), new Predicate<EntityLivingBase>() {
+                    @Override
+                    public boolean apply(EntityLivingBase possibleTarget) {
+                        if (!possibleTarget.isEntityAlive()
+                                || possibleTarget == EntityWarg.this
+                                || EntityWarg.this.isRidingOrBeingRiddenBy(possibleTarget)
+                                || EntityWarg.this.isOnSameTeam(possibleTarget))
+                            return false;
+
+                        return true;
+                    }
+                });
                 if(!possibleTargets.isEmpty()) {
                     for(EntityLivingBase possibleTarget : possibleTargets) {
-                        if(possibleTarget != null && possibleTarget.isEntityAlive()
-                                && possibleTarget != this && possibleTarget != this.getRider()
-                                && !this.isOnSameTeam(possibleTarget)) {
-                            boolean doDamage = true;
-                            if(this.getRider() instanceof EntityPlayer) {
-                                if(MinecraftForge.EVENT_BUS.post(new AttackEntityEvent((EntityPlayer)this.getRider(), possibleTarget))) {
-                                    doDamage = false;
-                                }
+                        boolean doDamage = true;
+                        if(this.getRider() instanceof EntityPlayer) {
+                            if(MinecraftForge.EVENT_BUS.post(new AttackEntityEvent((EntityPlayer)this.getRider(), possibleTarget))) {
+                                doDamage = false;
                             }
-                            if(doDamage) {
-                                possibleTarget.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("Paralysis").id, this.getEffectDuration(2), 0));
-                            }
+                        }
+                        if(doDamage) {
+                            if (ObjectManager.getPotionEffect("paralysis") != null)
+                                possibleTarget.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("paralysis"), this.getEffectDuration(5), 1));
+                            else
+                                possibleTarget.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("slowness"), 10 * 20, 0));
                         }
                     }
                 }
@@ -152,10 +161,10 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
     }
     
     public void riderEffects(EntityLivingBase rider) {
-    	if(rider.isPotionActive(Potion.moveSlowdown))
-    		rider.removePotionEffect(Potion.moveSlowdown.id);
+    	if(rider.isPotionActive(Potion.getPotionFromResourceLocation("slowness")))
+    		rider.removePotionEffect(Potion.getPotionFromResourceLocation("slowness"));
     	if(rider.isPotionActive(ObjectManager.getPotionEffect("Paralysis")))
-    		rider.removePotionEffect(ObjectManager.getPotionEffect("Paralysis").id);
+    		rider.removePotionEffect(ObjectManager.getPotionEffect("Paralysis"));
     }
 
 	
@@ -204,7 +213,7 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
 
         // Effect:
         if(target instanceof EntityLivingBase && this.leapedAbilityReady && ObjectManager.getPotionEffect("Paralysis") != null) {
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("Paralysis").id, this.getEffectDuration(2), 0));
+            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("Paralysis"), this.getEffectDuration(2), 0));
         }
 
         return true;
@@ -256,9 +265,9 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotionID() == Potion.moveSlowdown.id) return false;
-        if(ObjectManager.getPotionEffect("Paralysis") != null)
-            if(potionEffect.getPotionID() == ObjectManager.getPotionEffect("Paralysis").id) return false;
+        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("slowness")) return false;
+        if(ObjectManager.getPotionEffect("paralysis") != null)
+            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("paralysis")) return false;
         super.isPotionApplicable(potionEffect);
         return true;
     }

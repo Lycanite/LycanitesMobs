@@ -1,22 +1,20 @@
 package lycanite.lycanitesmobs.api.entity.ai;
 
-import java.util.Collections;
-import java.util.List;
-
+import com.google.common.base.Predicate;
 import lycanite.lycanitesmobs.api.IGroupAlpha;
 import lycanite.lycanitesmobs.api.IGroupAnimal;
 import lycanite.lycanitesmobs.api.IGroupPredator;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
-import net.minecraft.command.IEntitySelector;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityOwnable;
 
-import org.apache.commons.lang3.StringUtils;
-
+import java.util.Collections;
+import java.util.List;
 public class EntityAITargetAttack extends EntityAITarget {
 	// Targets:
-    private Class targetClass = EntityLivingBase.class;
+    public Class targetClass = EntityLivingBase.class;
     private List<Class> targetClasses = null;
     
     // Properties:
@@ -32,7 +30,14 @@ public class EntityAITargetAttack extends EntityAITarget {
     public EntityAITargetAttack(EntityCreatureBase setHost) {
         super(setHost);
         this.setMutexBits(1);
-        this.targetSelector = new EntityAITargetSelector(this, (IEntitySelector)null);
+        this.targetSelector = new Predicate<Entity>() {
+            @Override
+            public boolean apply(Entity input) {
+                if(!(input instanceof EntityLivingBase))
+                    return false;
+                return EntityAITargetAttack.this.isSuitableTarget((EntityLivingBase)input, false);
+            }
+        };
         this.targetSorter = new EntityAITargetSorterNearest(setHost);
     }
     
@@ -70,8 +75,8 @@ public class EntityAITargetAttack extends EntityAITarget {
     	return this;
     }
     
-    public EntityAITargetAttack setSelector(IEntitySelector selector) {
-    	this.targetSelector = new EntityAITargetSelector(this, selector);
+    public EntityAITargetAttack setSelector(Predicate<Entity> selector) {
+    	this.targetSelector = selector;
     	return this;
     }
     
@@ -107,6 +112,10 @@ public class EntityAITargetAttack extends EntityAITarget {
  	// ==================================================
     @Override
     protected boolean isValidTarget(EntityLivingBase target) {
+        // Target Class Check:
+        if(this.targetClass != null && !this.targetClass.isAssignableFrom(target.getClass()))
+            return false;
+
     	// Own Class Check:
     	if(this.targetClass != this.host.getClass() && target.getClass() == this.host.getClass())
             return false;
@@ -126,8 +135,8 @@ public class EntityAITargetAttack extends EntityAITarget {
         	return false;
         
         // Ownable Checks:
-        if(this.host instanceof IEntityOwnable && StringUtils.isNotEmpty(((IEntityOwnable)this.host).func_152113_b())) { //getOwnerName()
-            if(target instanceof IEntityOwnable && ((IEntityOwnable)this.host).func_152113_b().equals(((IEntityOwnable)target).func_152113_b())) //getOwnerName()
+        if(this.host instanceof IEntityOwnable && ((IEntityOwnable)this.host).getOwner() != null) {
+            if(target instanceof IEntityOwnable && ((IEntityOwnable)this.host).getOwner() == ((IEntityOwnable)target).getOwner())
                 return false;
             if(target == ((IEntityOwnable)this.host).getOwner())
                 return false;
@@ -140,11 +149,16 @@ public class EntityAITargetAttack extends EntityAITarget {
         // Pack Size Check:
         if(this.allySize > 0 && this.enemySize > 0) {
         	double hostPackRange = 32D;
-        	double hostPackSize = this.host.worldObj.getEntitiesWithinAABB(this.host.getClass(), this.host.boundingBox.expand(hostPackRange, hostPackRange, hostPackRange)).size();
+        	double hostPackSize = this.host.worldObj.getEntitiesWithinAABB(this.host.getClass(), this.host.getEntityBoundingBox().expand(hostPackRange, hostPackRange, hostPackRange)).size();
         	double hostPackScale = hostPackSize / this.allySize;
 
         	double targetPackRange = 64D;
-        	double targetPackSize = target.worldObj.getEntitiesWithinAABB(this.targetClass, target.boundingBox.expand(targetPackRange, targetPackRange, targetPackRange)).size();
+        	double targetPackSize = target.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, target.getEntityBoundingBox().expand(targetPackRange, targetPackRange, targetPackRange), new Predicate<EntityLivingBase>() {
+                @Override
+                public boolean apply(EntityLivingBase entity) {
+                    return entity.getClass().isAssignableFrom(EntityAITargetAttack.this.targetClass);
+                }
+            }).size();
         	double targetPackScale = targetPackSize / this.enemySize;
         	
         	if(hostPackScale < targetPackScale)
@@ -171,9 +185,9 @@ public class EntityAITargetAttack extends EntityAITarget {
         double distance = this.getTargetDistance();
         double heightDistance = 4.0D + this.host.height;
         if(this.host.useFlightNavigator()) heightDistance = distance;
-        List possibleTargets = this.host.worldObj.selectEntitiesWithinAABB(this.targetClass, this.host.boundingBox.expand(distance, heightDistance, distance), this.targetSelector);
+        List possibleTargets = this.host.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, this.host.getEntityBoundingBox().expand(distance, heightDistance, distance), this.targetSelector);
         Collections.sort(possibleTargets, this.targetSorter);
-        
+
         if(possibleTargets.isEmpty())
             this.target = null;
         else

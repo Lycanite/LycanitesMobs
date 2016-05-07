@@ -66,7 +66,7 @@ public class MobEventBoss extends MobEventBase {
                 validDimension = true;
             }
             else if("VANILLA".equalsIgnoreCase(eventDimensionType)) {
-                validDimension = world.provider.dimensionId > -2 && world.provider.dimensionId < 2;
+                validDimension = world.provider.getDimension() > -2 && world.provider.getDimension() < 2;
             }
         }
 
@@ -74,7 +74,7 @@ public class MobEventBoss extends MobEventBase {
         if(!validDimension) {
             validDimension =  !this.dimensionWhitelist;
             for(int eventDimension : this.dimensionBlacklist) {
-                if(world.provider.dimensionId == eventDimension) {
+                if(world.provider.getDimension() == eventDimension) {
                     validDimension = this.dimensionWhitelist;
                     break;
                 }

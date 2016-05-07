@@ -1,14 +1,10 @@
 package lycanite.lycanitesmobs.api.item;
 
-import java.util.List;
-
-import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,12 +12,17 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 public class ItemSwordBase extends ItemSword {
 	public static int descriptionWidth = 128;
@@ -57,7 +58,7 @@ public class ItemSwordBase extends ItemSword {
     public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List textList, boolean par4) {
     	String description = this.getDescription(itemStack, entityPlayer, textList, par4);
     	if(!"".equalsIgnoreCase(description) && !("item." + this.itemName + ".description").equals(description)) {
-    		FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+    		FontRenderer fontRenderer = Minecraft.getMinecraft().fontRendererObj;
     		List formattedDescriptionList = fontRenderer.listFormattedStringToWidth(description, descriptionWidth);
     		for(Object formattedDescription : formattedDescriptionList) {
     			if(formattedDescription instanceof String)
@@ -68,7 +69,7 @@ public class ItemSwordBase extends ItemSword {
     }
     
     public String getDescription(ItemStack itemStack, EntityPlayer entityPlayer, List textList, boolean par4) {
-    	return StatCollector.translateToLocal("item." + this.itemName + ".description");
+    	return I18n.translateToLocal("item." + this.itemName + ".description");
     }
 	
     
@@ -76,12 +77,12 @@ public class ItemSwordBase extends ItemSword {
 	//                      Update
 	// ==================================================
 	@Override
-	public void onUpdate(ItemStack itemStack, World world, Entity entity, int par4, boolean par5) {
-		super.onUpdate(itemStack, world, entity, par4, par5);
+	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+		super.onUpdate(stack, worldIn, entityIn, itemSlot, isSelected);
 	}
 
     /** Called from the main EventListener this works the same as onUpdate but is called before the rest of the entity's logic. **/
-    public void onEarlyUpdate(ItemStack itemStack, EntityLivingBase entityLiving) { }
+    public void onEarlyUpdate(ItemStack itemStack, EntityLivingBase entityLiving, EnumHand hand) { }
     
     
 	// ==================================================
@@ -95,13 +96,9 @@ public class ItemSwordBase extends ItemSword {
      * Diamond returns 3 which is +7 damage.
      * @return
      */
-    public float getDamage() {
-        return this.toolMaterial.getDamageVsEntity();
-    }
     @Override
-    public float func_150931_i()
-    {
-        return this.getDamage();
+    public float getDamageVsEntity() {
+        return this.toolMaterial.getDamageVsEntity();
     }
 
 	// ========== Hit Entity ==========
@@ -112,14 +109,14 @@ public class ItemSwordBase extends ItemSword {
     
 	// ========== Block Destruction ==========
     @Override
-    public boolean onBlockDestroyed(ItemStack itemStack, World world, Block block, int x, int y, int z, EntityLivingBase entityLiving) {
-        return super.onBlockDestroyed(itemStack, world, block, x, y, z, entityLiving);
+    public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState blockIn, BlockPos pos, EntityLivingBase entityLiving) {
+        return super.onBlockDestroyed(stack, worldIn, blockIn, pos, entityLiving);
     }
     
     // ========== Block Effectiveness ==========
     @Override
-    public float func_150893_a(ItemStack itemStack, Block block) {
-        return super.func_150893_a(itemStack, block);
+    public float getStrVsBlock(ItemStack itemStack, IBlockState state) {
+        return super.getStrVsBlock(itemStack, state);
     }
     
     
@@ -128,26 +125,26 @@ public class ItemSwordBase extends ItemSword {
 	// ==================================================
     // ========== Use ==========
     @Override
-    public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int p_77648_7_, float p_77648_8_, float p_77648_9_, float p_77648_10_) {
-    	return super.onItemUse(itemStack, player, world, x, y, z, p_77648_7_, p_77648_8_, p_77648_9_, p_77648_10_);
+    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    	return super.onItemUse(stack, playerIn, worldIn, pos, hand, facing, hitX, hitY, hitZ);
     }
     
     // ========== Start ==========
     @Override
-    public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
-    	return super.onItemRightClick(itemStack, world, player);
+    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer player, EnumHand hand) {
+    	return super.onItemRightClick(itemStack, world, player, hand);
     }
 
     // ========== Using ==========
     @Override
-    public void onUsingTick(ItemStack itemStack, EntityPlayer player, int useRemaining) {
-    	super.onUsingTick(itemStack, player, useRemaining);
+    public void onUsingTick(ItemStack itemStack, EntityLivingBase entity, int useRemaining) {
+    	super.onUsingTick(itemStack, entity, useRemaining);
     }
     
     // ========== Stop ==========
     @Override
-    public void onPlayerStoppedUsing(ItemStack itemStack, World world, EntityPlayer player, int useRemaining) {
-    	super.onPlayerStoppedUsing(itemStack, world, player, useRemaining);
+    public void onPlayerStoppedUsing(ItemStack itemStack, World world, EntityLivingBase entity, int useRemaining) {
+    	super.onPlayerStoppedUsing(itemStack, world, entity, useRemaining);
     }
 
     // ========== Animation ==========
@@ -194,20 +191,6 @@ public class ItemSwordBase extends ItemSword {
 	// ==================================================
 	//                     Visuals
 	// ==================================================
-    // ========== Get Icon ==========
-    @SideOnly(Side.CLIENT)
-    @Override
-    public IIcon getIconFromDamage(int damage) {
-    	return AssetManager.getIcon(this.itemName);
-    }
-    
-    // ========== Register Icons ==========
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IIconRegister iconRegister) {
-    	AssetManager.addIcon(this.itemName, this.group, this.textureName, iconRegister);
-    }
-
     // ========== Holding Angle ==========
     @SideOnly(Side.CLIENT)
     @Override

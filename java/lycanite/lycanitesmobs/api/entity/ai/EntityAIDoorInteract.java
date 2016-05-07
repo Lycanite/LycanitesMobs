@@ -2,13 +2,15 @@ package lycanite.lycanitesmobs.api.entity.ai;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.init.Blocks;
 import net.minecraft.pathfinding.PathEntity;
-import net.minecraft.pathfinding.PathNavigate;
+import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.pathfinding.PathPoint;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 
 public abstract class EntityAIDoorInteract extends EntityAIBase {
 	// Targets:
@@ -39,11 +41,11 @@ public abstract class EntityAIDoorInteract extends EntityAIBase {
     public boolean shouldExecute() {
         if(!this.host.isCollidedHorizontally)
             return false;
-        
-        PathNavigate pathnavigate = this.host.getNavigator();
-        PathEntity pathentity = pathnavigate.getPath();
 
-        if(pathentity != null && !pathentity.isFinished() && pathnavigate.getCanBreakDoors()) {
+        PathNavigateGround pathnavigateground = (PathNavigateGround)this.host.getNavigator();
+        PathEntity pathentity = pathnavigateground.getPath();
+
+        if(pathentity != null && !pathentity.isFinished() && pathnavigateground.getEnterDoors()) {
             for(int i = 0; i < Math.min(pathentity.getCurrentPathIndex() + 2, pathentity.getCurrentPathLength()); ++i) {
                 PathPoint pathpoint = pathentity.getPathPointFromIndex(i);
                 this.entityPosX = pathpoint.xCoord;
@@ -51,7 +53,7 @@ public abstract class EntityAIDoorInteract extends EntityAIBase {
                 this.entityPosZ = pathpoint.zCoord;
 
                 if(this.host.getDistanceSq((double)this.entityPosX, this.host.posY, (double)this.entityPosZ) <= 2.25D) {
-                    this.targetDoor = this.findUsableDoor(this.entityPosX, this.entityPosY, this.entityPosZ);
+                    this.targetDoor = this.findUsableDoor(new BlockPos(this.entityPosX, this.entityPosY, this.entityPosZ));
 
                     if(this.targetDoor != null)
                         return true;
@@ -61,7 +63,7 @@ public abstract class EntityAIDoorInteract extends EntityAIBase {
             this.entityPosX = MathHelper.floor_double(this.host.posX);
             this.entityPosY = MathHelper.floor_double(this.host.posY + 1.0D);
             this.entityPosZ = MathHelper.floor_double(this.host.posZ);
-            this.targetDoor = this.findUsableDoor(this.entityPosX, this.entityPosY, this.entityPosZ);
+            this.targetDoor = this.findUsableDoor(new BlockPos(this.entityPosX, this.entityPosY, this.entityPosZ));
             return this.targetDoor != null;
         }
         return false;
@@ -102,8 +104,9 @@ public abstract class EntityAIDoorInteract extends EntityAIBase {
 	// ==================================================
  	//                    Find Door
  	// ==================================================
-    private BlockDoor findUsableDoor(int par1, int par2, int par3) {
-        Block block = this.host.worldObj.getBlock(par1, par2, par3);
-        return block != Blocks.wooden_door ? null : (BlockDoor)block;
+    private BlockDoor findUsableDoor(BlockPos pos) {
+        IBlockState iblockstate = this.host.worldObj.getBlockState(pos);
+        Block block = iblockstate.getBlock();
+        return block instanceof BlockDoor && iblockstate.getMaterial() == Material.wood ? (BlockDoor)block : null;
     }
 }

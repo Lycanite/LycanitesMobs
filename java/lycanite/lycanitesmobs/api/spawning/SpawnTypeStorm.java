@@ -1,7 +1,7 @@
 package lycanite.lycanitesmobs.api.spawning;
 
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.effect.EntityLightningBolt;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class SpawnTypeStorm extends SpawnTypeSky {
@@ -45,7 +45,7 @@ public class SpawnTypeStorm extends SpawnTypeSky {
      * @return Returns true if it is a valid coordinate so that it can be added to the list.
      */
     public boolean isValidCoord(World world, int x, int y, int z) {
-    	if(!world.canLightningStrikeAt(x, y, z))
+    	if(!world.canBlockSeeSky(new BlockPos(x, y, z)))
     		return false;
     	return super.isValidCoord(world, x, y, z);
     }

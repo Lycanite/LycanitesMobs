@@ -25,7 +25,7 @@ public class ItemFoodPaleoSalad extends ItemCustomFood {
   	//                     Effects
   	// ==================================================
     protected void onFoodEaten(ItemStack itemStack, World world, EntityPlayer player) {
-        player.addPotionEffect(new PotionEffect(Potion.field_76434_w.id, this.getEffectDuration(), 2));
-        player.addPotionEffect(new PotionEffect(Potion.heal.id, 1, 3));
+        player.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("regeneration"), this.getEffectDuration(), 2));
+        player.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("instant_health"), 1, 3));
     }
 }

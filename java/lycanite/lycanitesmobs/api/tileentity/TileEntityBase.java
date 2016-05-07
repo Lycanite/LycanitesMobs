@@ -4,10 +4,11 @@ import lycanite.lycanitesmobs.api.entity.EntityPortal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
 
-public class TileEntityBase extends TileEntity {
+public class TileEntityBase extends TileEntity implements ITickable {
     public EntityPortal summoningPortal;
 
     // ========================================
@@ -22,12 +23,13 @@ public class TileEntityBase extends TileEntity {
     // ========================================
     /** The main update called every tick. **/
     @Override
-    public void updateEntity() {}
+    public void update() {}
 
 
     // ========================================
     //              Client Events
     // ========================================
+    @Override
     public boolean receiveClientEvent(int eventID, int eventArg) {
         return false;
     }
@@ -36,7 +38,8 @@ public class TileEntityBase extends TileEntity {
     // ========================================
     //             Network Packets
     // ========================================
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {}
+    @Override
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {}
 
 
     // ========================================

@@ -6,6 +6,7 @@ import lycanite.lycanitesmobs.forestmobs.ForestMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
 public class EntityLifeDrain extends EntityProjectileLaser {
@@ -95,12 +96,12 @@ public class EntityLifeDrain extends EntityProjectileLaser {
  	//                      Sounds
  	// ==================================================
     @Override
-    public String getLaunchSound() {
+    public SoundEvent getLaunchSound() {
     	return AssetManager.getSound(entityName);
     }
 	
 	@Override
-	public String getBeamSound() {
+	public SoundEvent getBeamSound() {
     	return AssetManager.getSound(entityName);
 	}
 }

@@ -1,17 +1,16 @@
 package lycanite.lycanitesmobs.api.config;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.BiomeDictionary;
-
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ConfigSpawning extends ConfigBase {
 	
@@ -86,13 +85,13 @@ public class ConfigSpawning extends ConfigBase {
         List<EnumCreatureType> creatureTypeList = new ArrayList<EnumCreatureType>();
         for(String spawnTypeEntry : spawnTypeEntries.split(",")) {
             if ("MONSTER".equalsIgnoreCase(spawnTypeEntry))
-                creatureTypeList.add(EnumCreatureType.monster);
+                creatureTypeList.add(EnumCreatureType.MONSTER);
             else if ("CREATURE".equalsIgnoreCase(spawnTypeEntry) || "ANIMAL".equalsIgnoreCase(spawnTypeEntry))
-                creatureTypeList.add(EnumCreatureType.creature);
+                creatureTypeList.add(EnumCreatureType.CREATURE);
             else if ("WATERCREATURE".equalsIgnoreCase(spawnTypeEntry))
-                creatureTypeList.add(EnumCreatureType.waterCreature);
+                creatureTypeList.add(EnumCreatureType.WATER_CREATURE);
             else if ("AMBIENT".equalsIgnoreCase(spawnTypeEntry))
-                creatureTypeList.add(EnumCreatureType.ambient);
+                creatureTypeList.add(EnumCreatureType.AMBIENT);
         }
         
         EnumCreatureType[] creatureTypes = creatureTypeList.toArray(new EnumCreatureType[creatureTypeList.size()]);

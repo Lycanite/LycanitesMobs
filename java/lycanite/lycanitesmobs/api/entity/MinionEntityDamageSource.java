@@ -2,8 +2,8 @@ package lycanite.lycanitesmobs.api.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.util.EntityDamageSource;
+import net.minecraft.util.text.ITextComponent;
 
 public class MinionEntityDamageSource extends EntityDamageSource {
     EntityDamageSource minionDamageSource;
@@ -38,8 +38,8 @@ public class MinionEntityDamageSource extends EntityDamageSource {
     //                    Chat Message
     // ==================================================
     @Override
-    public IChatComponent func_151519_b(EntityLivingBase slainEntity) {
-        return this.minionDamageSource.func_151519_b(slainEntity);
+    public ITextComponent getDeathMessage(EntityLivingBase slainEntity) {
+        return this.minionDamageSource.getDeathMessage(slainEntity);
         /*String minionName = this.getSourceOfDamage().getCommandSenderName();
         String ownerName = this.minionOwner.getCommandSenderName();
         String ownerSuffix = "'s ";

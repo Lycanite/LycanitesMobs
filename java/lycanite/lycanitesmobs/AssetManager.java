@@ -1,24 +1,24 @@
 package lycanite.lycanitesmobs;
-import java.util.HashMap;
-import java.util.Map;
 
 import lycanite.lycanitesmobs.api.info.GroupInfo;
+import lycanite.lycanitesmobs.api.model.ModelCustomObj;
 import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
+import net.minecraft.util.SoundEvent;
+import net.minecraftforge.client.model.IModelCustomData;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class AssetManager {
 	
 	// Maps:
 	public static Map<String, ResourceLocation> textures = new HashMap<String, ResourceLocation>();
-	public static Map<String, IIcon> icons = new HashMap<String, IIcon>();
-	public static Map<String, IIcon[]> iconGroups = new HashMap<String, IIcon[]>();
-	public static Map<String, String> sounds = new HashMap<String, String>();
+	public static Map<String, ResourceLocation[]> textureGroups = new HashMap<String, ResourceLocation[]>();
+	public static Map<String, SoundEvent> sounds = new HashMap<String, SoundEvent>();
 	public static Map<String, ModelBase> models = new HashMap<String, ModelBase>();
-	public static Map<String, IModelCustom> objModels = new HashMap<String, IModelCustom>();
+	public static Map<String, IModelCustomData> objModels = new HashMap<String, IModelCustomData>();
 	
     // ==================================================
     //                        Add
@@ -29,29 +29,23 @@ public class AssetManager {
 		textures.put(name, new ResourceLocation(group.filename, path));
 	}
 	
-	// ========== Icon ==========
-	public static void addIcon(String name, IIcon icon) {
+	// ========== Texture Group ==========
+	public static void addTextureGroup(String name, GroupInfo group, String[] paths) {
 		name = name.toLowerCase();
-		icons.put(name, icon);
-	}
-	public static void addIcon(String name, GroupInfo group, String path, IIconRegister iconRegister) {
-		name = name.toLowerCase();
-		icons.put(name, iconRegister.registerIcon(group.filename + ":" + path));
-	}
-	
-	// ========== Icon Group ==========
-	public static void addIconGroup(String name, GroupInfo group, String[] paths, IIconRegister iconRegister) {
-		name = name.toLowerCase();
-		IIcon[] iconGroup = new IIcon[paths.length];
+        ResourceLocation[] textureGroup = new ResourceLocation[paths.length];
 		for(int i = 0; i < paths.length; i++)
-			iconGroup[i] = iconRegister.registerIcon(group.filename + ":" + paths[i]);
-		iconGroups.put(name, iconGroup);
+            textureGroup[i] = new ResourceLocation(group.filename, paths[i]);
+        textureGroups.put(name, textureGroup);
 	}
 	
 	// ========== Sound ==========
 	public static void addSound(String name, GroupInfo group, String path) {
 		name = name.toLowerCase();
-		sounds.put(name, group.filename + ":" + path);
+        ResourceLocation resourceLocation = new ResourceLocation(group.filename, path);
+        SoundEvent soundEvent = new SoundEvent(resourceLocation);
+        soundEvent.setRegistryName(resourceLocation);
+		sounds.put(name, soundEvent);
+        GameRegistry.register(soundEvent);
 	}
 	
 	// ========== Model ==========
@@ -63,7 +57,7 @@ public class AssetManager {
 	// ========== Obj Model ==========
 	public static void addObjModel(String name, GroupInfo group, String path) {
 		name = name.toLowerCase();
-		objModels.put(name, AdvancedModelLoader.loadModel(new ResourceLocation(group.filename, "models/" + path + ".obj")));
+		objModels.put(name, ModelCustomObj.loadModel(new ResourceLocation(group.filename, "models/" + path + ".obj")));
 	}
 	
 	
@@ -78,24 +72,16 @@ public class AssetManager {
 		return textures.get(name);
 	}
 	
-	// ========== Icon ==========
-	public static IIcon getIcon(String name) {
-		name = name.toLowerCase();
-		if(!icons.containsKey(name))
-			return null;
-		return icons.get(name);
-	}
-	
 	// ========== Icon Group ==========
-	public static IIcon[] getIconGroup(String name) {
+	public static ResourceLocation[] getTextureGroup(String name) {
 		name = name.toLowerCase();
-		if(!iconGroups.containsKey(name))
+		if(!textureGroups.containsKey(name))
 			return null;
-		return iconGroups.get(name);
+		return textureGroups.get(name);
 	}
 	
 	// ========== Sound ==========
-	public static String getSound(String name) {
+	public static SoundEvent getSound(String name) {
 		name = name.toLowerCase();
 		if(!sounds.containsKey(name))
 			return null;
@@ -111,13 +97,13 @@ public class AssetManager {
 	}
 	
 	// ========== Obj Model ==========
-	public static IModelCustom getObjModel(String name) {
+	public static IModelCustomData getObjModel(String name) {
 		name = name.toLowerCase();
 		if(!objModels.containsKey(name))
 			return null;
 		return objModels.get(name);
 	}
-	public static IModelCustom getObjModel(String name, GroupInfo group, String path) {
+	public static IModelCustomData getObjModel(String name, GroupInfo group, String path) {
 		name = name.toLowerCase();
 		if(!objModels.containsKey(name))
 			addObjModel(name, group, path);

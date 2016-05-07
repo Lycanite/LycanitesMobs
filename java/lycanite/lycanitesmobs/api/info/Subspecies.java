@@ -1,11 +1,11 @@
 package lycanite.lycanitesmobs.api.info;
 
 
+import lycanite.lycanitesmobs.api.config.ConfigBase;
+import net.minecraft.util.text.translation.I18n;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import lycanite.lycanitesmobs.api.config.ConfigBase;
-import net.minecraft.util.StatCollector;
 
 public class Subspecies {
     // ========== Subspecies Global ==========
@@ -94,6 +94,6 @@ public class Subspecies {
     //                     Get Title
     // ==================================================
     public String getTitle() {
-        return StatCollector.translateToLocal("subspecies." + this.name + ".name");
+        return I18n.translateToLocal("subspecies." + this.name + ".name");
     }
 }

@@ -1,22 +1,17 @@
 package lycanite.lycanitesmobs.api.item;
 
 import lycanite.lycanitesmobs.ExtendedPlayer;
-import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
-import lycanite.lycanitesmobs.api.entity.EntityFear;
-import lycanite.lycanitesmobs.api.info.CreatureKnowledge;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.pets.PetEntry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-
-import java.util.UUID;
 
 public class ItemSoulstone extends ItemBase {
 
@@ -50,7 +45,7 @@ public class ItemSoulstone extends ItemBase {
     		return false;
     	if(!(entity instanceof EntityCreatureTameable)) {
     		if(!player.worldObj.isRemote)
-    			player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("message.soulstone.invalid")));
+    			player.addChatMessage(new TextComponentString(I18n.translateToLocal("message.soulstone.invalid")));
     		return false;
     	}
 
@@ -58,12 +53,12 @@ public class ItemSoulstone extends ItemBase {
 		MobInfo mobInfo = entityTameable.mobInfo;
 	 	if(!mobInfo.isTameable() || entityTameable.getOwner() != player) {
 			if(!player.worldObj.isRemote)
-				player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("message.soulstone.untamed")));
+				player.addChatMessage(new TextComponentString(I18n.translateToLocal("message.soulstone.untamed")));
 			return false;
 		}
 		if(entityTameable.getPetEntry() != null) {
 			if(!player.worldObj.isRemote)
-				player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("message.soulstone.exists")));
+				player.addChatMessage(new TextComponentString(I18n.translateToLocal("message.soulstone.exists")));
 			return false;
 		}
 
@@ -76,7 +71,7 @@ public class ItemSoulstone extends ItemBase {
 
     	if(player.worldObj.isRemote) {
     		for(int i = 0; i < 32; ++i) {
-    			entity.worldObj.spawnParticle("happyVillager",
+    			entity.worldObj.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY,
     					entity.posX + (4.0F * player.getRNG().nextFloat()) - 2.0F,
     					entity.posY + (4.0F * player.getRNG().nextFloat()) - 2.0F,
     					entity.posZ + (4.0F * player.getRNG().nextFloat()) - 2.0F,
@@ -89,9 +84,9 @@ public class ItemSoulstone extends ItemBase {
 			if(entity instanceof EntityCreatureRideable)
 				petType = "mount";
 
-    		String message = StatCollector.translateToLocal("message.soulstone." + petType + ".added");
+    		String message = I18n.translateToLocal("message.soulstone." + petType + ".added");
     		message = message.replace("%creature%", mobInfo.getTitle());
-    		player.addChatMessage(new ChatComponentText(message));
+    		player.addChatMessage(new TextComponentString(message));
             //player.addStat(ObjectManager.getAchievement("soulstone"), 1);
 
 			// Add Pet Entry:

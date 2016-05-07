@@ -3,17 +3,20 @@ package lycanite.lycanitesmobs.api.entity;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
@@ -25,7 +28,7 @@ public class EntityProjectileBase extends EntityThrowable {
 	// Properties:
     public boolean movement = true;
 	public byte baseDamage = 1;
-	public float projectileScale = 1.0f;
+	public float projectileScale = 0.25F;
 	public int projectileLife = 200;
     public double knockbackChance = 1;
     public boolean pierce = false;
@@ -35,43 +38,42 @@ public class EntityProjectileBase extends EntityThrowable {
 	public boolean lavaProof = false;
 
     // Texture and Animation:
-    public int projectileScaleID = 10;
     public int animationFrame = 0;
     public int animationFrameMax = 0;
     public int textureTiling = 1;
     public boolean clientOnly = false;
+
+    // Data Manager:
+    protected static final DataParameter<Float> SCALE = EntityDataManager.<Float>createKey(EntityProjectileBase.class, DataSerializers.FLOAT);
 	
 	// ==================================================
  	//                   Constructors
  	// ==================================================
     public EntityProjectileBase(World world) {
         super(world);
-        this.dataWatcher.addObject(this.projectileScaleID, this.projectileScale);
-        this.setSize(0.3125F, 0.3125F);
+        this.dataWatcher.register(SCALE, this.projectileScale);
+        this.setProjectileScale(this.projectileScale);
         this.setup();
     }
 
     public EntityProjectileBase(World world, EntityLivingBase entityLiving) {
         super(world, entityLiving);
-        this.dataWatcher.addObject(this.projectileScaleID, this.projectileScale);
-        this.setSize(0.3125F, 0.3125F);
+        this.func_184538_a(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0.0F, 1.5F, 1.0F);
+        this.dataWatcher.register(SCALE, this.projectileScale);
+        this.setProjectileScale(this.projectileScale);
         this.setup();
     }
 
-    public EntityProjectileBase(World world, double par2, double par4, double par6) {
-        super(world, par2, par4, par6);
-        this.dataWatcher.addObject(this.projectileScaleID, this.projectileScale);
-        this.setSize(0.3125F, 0.3125F);
+    public EntityProjectileBase(World world, double x, double y, double z) {
+        super(world, x, y, z);
+        this.dataWatcher.register(SCALE, this.projectileScale);
+        this.setProjectileScale(this.projectileScale);
         this.setup();
     }
     
     // ========== Setup Projectile ==========
     public void setup() {
 
-    }
-
-    public void setProjectileSize(float width, float height) {
-        this.setSize(width, height);
     }
 	
     
@@ -80,7 +82,6 @@ public class EntityProjectileBase extends EntityThrowable {
  	// ==================================================
     @Override
     public void onUpdate() {
-
         if(!this.movement) {
             this.inGround = false;
             this.timeUntilPortal = this.getPortalCooldown();
@@ -99,14 +100,13 @@ public class EntityProjectileBase extends EntityThrowable {
             this.setPosition(this.posX, this.posY, this.posZ);
         }
 
-    	if(this.isInWeb)
-    		this.isInWeb = false;
+    	this.isInWeb = false;
     	
     	// Terrain Destruction
     	if(!this.worldObj.isRemote) {
     		if(!this.waterProof && this.isInWater())
     			this.setDead();
-    		else if(!this.lavaProof && this.isInsideOfMaterial(Material.lava))
+    		else if(!this.lavaProof && this.isInLava())
     			this.setDead();
     	}
         if(!this.worldObj.isRemote || this.clientOnly) {
@@ -116,7 +116,7 @@ public class EntityProjectileBase extends EntityThrowable {
 
         // Sync Scale:
         if(this.worldObj.isRemote && this.ticksExisted % 20 == 0) {
-            this.projectileScale = this.dataWatcher.getWatchableObjectFloat(this.projectileScaleID);
+            this.projectileScale = this.dataWatcher.get(SCALE);
         }
 
         // Animation:
@@ -143,23 +143,23 @@ public class EntityProjectileBase extends EntityThrowable {
   	//                       Impact
   	// ==================================================
      @Override
-     protected void onImpact(MovingObjectPosition movingObjectPosition) {
+     protected void onImpact(RayTraceResult rayTraceResult) {
      	 boolean collided = false;
          boolean entityCollision = false;
          boolean blockCollision = false;
      	
      	// Entity Hit:
-     	if(movingObjectPosition.entityHit != null) {
-     		if(movingObjectPosition.entityHit == this.getThrower())
+     	if(rayTraceResult.entityHit != null) {
+     		if(rayTraceResult.entityHit == this.getThrower())
      			return;
      		boolean doDamage = true;
- 			if(movingObjectPosition.entityHit instanceof EntityLivingBase) {
- 				doDamage = this.canDamage((EntityLivingBase)movingObjectPosition.entityHit);
+ 			if(rayTraceResult.entityHit instanceof EntityLivingBase) {
+ 				doDamage = this.canDamage((EntityLivingBase)rayTraceResult.entityHit);
  			}
  			if(doDamage) {
- 				this.entityCollision(movingObjectPosition.entityHit);
- 				if(movingObjectPosition.entityHit instanceof EntityLivingBase) {
- 					EntityLivingBase target = (EntityLivingBase)movingObjectPosition.entityHit;
+ 				this.entityCollision(rayTraceResult.entityHit);
+ 				if(rayTraceResult.entityHit instanceof EntityLivingBase) {
+ 					EntityLivingBase target = (EntityLivingBase)rayTraceResult.entityHit;
  					if(this.entityLivingCollision(target)) {
  						//movingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), this.getDamage((EntityLivingBase)movingObjectPosition.entityHit));
 
@@ -176,8 +176,8 @@ public class EntityProjectileBase extends EntityThrowable {
                         if(this.knockbackChance < 1) {
                             if(this.knockbackChance <= 0 || this.rand.nextDouble() <= this.knockbackChance) {
                                 if(target instanceof EntityLivingBase) {
-                                    targetKnockbackResistance = ((EntityLivingBase)target).getEntityAttribute(SharedMonsterAttributes.knockbackResistance).getAttributeValue();
-                                    ((EntityLivingBase)target).getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(1);
+                                    targetKnockbackResistance = ((EntityLivingBase)target).getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).getAttributeValue();
+                                    ((EntityLivingBase)target).getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1);
                                 }
                             }
                         }
@@ -213,7 +213,7 @@ public class EntityProjectileBase extends EntityThrowable {
                         if(this.knockbackChance < 1) {
                             if(this.knockbackChance <= 0 || this.rand.nextDouble() <= this.knockbackChance) {
                                 if(target instanceof EntityLivingBase)
-                                    ((EntityLivingBase)target).getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(targetKnockbackResistance);
+                                    ((EntityLivingBase)target).getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(targetKnockbackResistance);
                             }
                         }
  					}
@@ -222,45 +222,47 @@ public class EntityProjectileBase extends EntityThrowable {
  			collided = true;
             entityCollision = true;
 
-     		int i = (int)Math.floor(movingObjectPosition.entityHit.posX);
-     		int j = (int)Math.floor(movingObjectPosition.entityHit.posY);
-            int k = (int)Math.floor(movingObjectPosition.entityHit.posZ);
-            if(!this.worldObj.isRemote && this.canDestroyBlock(i, j, k))
-            	this.placeBlock(this.worldObj, i, j, k);
+     		int i = (int)Math.floor(rayTraceResult.entityHit.posX);
+     		int j = (int)Math.floor(rayTraceResult.entityHit.posY);
+            int k = (int)Math.floor(rayTraceResult.entityHit.posZ);
+            BlockPos pos = new BlockPos(i, j, k);
+            if(!this.worldObj.isRemote && this.canDestroyBlock(pos))
+            	this.placeBlock(this.worldObj, pos);
      	}
      	
      	// Block Hit:
      	else {
-     		int i = movingObjectPosition.blockX;
-     		int j = movingObjectPosition.blockY;
-            int k = movingObjectPosition.blockZ;
-            if(this.worldObj.getBlock(i, j, k) != null)
-            	collided = this.worldObj.getBlock(i, j, k).getCollisionBoundingBoxFromPool(this.worldObj, i, j, k) != null;
+     		int i = rayTraceResult.getBlockPos().getX();
+     		int j = rayTraceResult.getBlockPos().getY();
+            int k = rayTraceResult.getBlockPos().getZ();
+            if(this.worldObj.getBlockState(new BlockPos(i, j, k)) != null)
+            	collided = this.worldObj.getBlockState(new BlockPos(i, j, k)).getCollisionBoundingBox(this.worldObj, new BlockPos(i, j, k)) != null;
              
  	        if(collided) {
                 blockCollision = true;
- 	            switch(movingObjectPosition.sideHit) {
- 		            case 0:
+ 	            switch(rayTraceResult.sideHit) {
+                    case DOWN:
  		                --j;
  		                break;
- 		            case 1:
+                    case UP:
  		                ++j;
  		                break;
- 		            case 2:
+                    case SOUTH:
  		                --k;
  		                break;
- 		            case 3:
+                    case NORTH:
  		                ++k;
  		                break;
- 		            case 4:
+                    case WEST:
  		                --i;
  		                break;
- 		            case 5:
+                    case EAST:
  		                ++i;
  	            }
- 	            
- 	            if(!this.worldObj.isRemote && this.canDestroyBlock(i, j, k))
- 	            	this.placeBlock(this.worldObj, i, j, k);
+
+                BlockPos pos = new BlockPos(i, j, k);
+ 	            if(!this.worldObj.isRemote && this.canDestroyBlock(pos))
+ 	            	this.placeBlock(this.worldObj, pos);
  	        }
      	}
      	
@@ -299,7 +301,7 @@ public class EntityProjectileBase extends EntityThrowable {
 		    }
 		    
 		    // Player PVP:
-		    if(!MinecraftServer.getServer().isPVPEnabled()) {
+		    if(!this.worldObj.getMinecraftServer().isPVPEnabled()) {
 		    	if(owner instanceof EntityPlayer) {
 			    	if(targetEntity instanceof EntityPlayer)
 			    		return false;
@@ -328,18 +330,17 @@ public class EntityProjectileBase extends EntityThrowable {
      
      //========== Entity Living Collision ==========
      public boolean entityLivingCollision(EntityLivingBase entityLiving) {
-    	 //entityLiving.addPotionEffect(new PotionEffect(Potion.name.id, 3 * 20, 0));
     	 return true;
      }
      
      //========== Can Destroy Block ==========
-     public boolean canDestroyBlock(int x, int y, int z) {
-    	 return this.worldObj.isAirBlock(x, y, z);
+     public boolean canDestroyBlock(BlockPos pos) {
+    	 return this.worldObj.isAirBlock(pos);
      }
      
      //========== Place Block ==========
-     public void placeBlock(World world, int x, int y, int z) {
-    	 //world.setBlock(x, y, z, ObjectManager.getBlock("BlockName").blockID);
+     public void placeBlock(World world, BlockPos pos) {
+    	 //world.setBlock(pos, ObjectManager.getBlock("BlockName").blockID);
      }
      
      //========== On Impact Splash/Ricochet Server Side ==========
@@ -375,9 +376,10 @@ public class EntityProjectileBase extends EntityThrowable {
      // ==================================================
      public void setProjectileScale(float newScale) {
      	 this.projectileScale = newScale;
+         this.setSize(newScale, newScale);
          if(this.worldObj.isRemote && !this.clientOnly)
              return;
-         this.dataWatcher.updateObject(this.projectileScaleID, this.projectileScale);
+         this.dataWatcher.set(SCALE, this.projectileScale);
          if(this.getThrower() != null && this.getThrower() instanceof EntityCreatureBase)
              this.projectileScale *= ((EntityCreatureBase)this.getThrower()).sizeScale;
      }
@@ -449,17 +451,21 @@ public class EntityProjectileBase extends EntityThrowable {
      // ==================================================
      //                      Visuals
      // ==================================================
+    public String getTextureName() {
+        return this.entityName.toLowerCase();
+    }
+
      public ResourceLocation getTexture() {
-     	if(AssetManager.getTexture(this.entityName) == null)
-     		AssetManager.addTexture(this.entityName, this.group, "textures/items/" + this.entityName.toLowerCase() + ".png");
-     	return AssetManager.getTexture(this.entityName);
+     	if(AssetManager.getTexture(this.getTextureName()) == null)
+     		AssetManager.addTexture(this.getTextureName(), this.group, "textures/items/" + this.getTextureName() + ".png");
+     	return AssetManager.getTexture(this.getTextureName());
      }
      
      
      // ==================================================
      //                      Sounds
      // ==================================================
-     public String getLaunchSound() {
+     public SoundEvent getLaunchSound() {
      	return AssetManager.getSound(this.entityName);
      }
 }

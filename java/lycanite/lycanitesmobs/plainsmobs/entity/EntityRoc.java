@@ -1,18 +1,10 @@
 package lycanite.lycanitesmobs.plainsmobs.entity;
 
-import java.util.HashMap;
-
 import lycanite.lycanitesmobs.ExtendedEntity;
 import lycanite.lycanitesmobs.api.IGroupHunter;
 import lycanite.lycanitesmobs.api.IGroupPrey;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
+import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -26,8 +18,10 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import java.util.HashMap;
 
 public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter {
     public EntityAIAttackMelee attackAI = new EntityAIAttackMelee(this).setLongMemory(false);
@@ -72,6 +66,7 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
 		baseAttributes.put("knockbackResistance", 0.0D);
 		baseAttributes.put("followRange", 48D);
 		baseAttributes.put("attackDamage", 2D);
+        baseAttributes.put("attackSpeed", 4D);
         super.applyEntityAttributes(baseAttributes);
     }
 	
@@ -101,7 +96,7 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
 	    		if(this.ticksExisted % 100 == 0 && this.getRNG().nextBoolean()) {
 	    			if(this.getPickupEntity() instanceof EntityPlayer) {
 		    			for(int distToGround = 0; distToGround < 8; distToGround++) {
-		    				Block searchBlock = this.worldObj.getBlock((int)this.posX, (int)this.posY + 1 + distToGround, (int)this.posZ);
+		    				Block searchBlock = this.worldObj.getBlockState(new BlockPos((int)this.posX, (int)this.posY + 1 + distToGround, (int)this.posZ)).getBlock();
 		    				if(searchBlock != null && searchBlock != Blocks.air) {
 		    					this.dropPickupEntity();
 		    					break;
@@ -145,10 +140,6 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
     
     @Override
 	public boolean canAttackEntity(EntityLivingBase targetEntity) {
-    	/*if(!this.worldObj.isDaytime())
-    		return super.canAttackEntity(targetEntity);
-		if((targetEntity instanceof EntityPlayer || targetEntity instanceof EntityVillager) && (targetEntity.getHealth() / targetEntity.getMaxHealth()) > 0.5F)
-			return false;*/
 		return super.canAttackEntity(targetEntity);
 	}
     
@@ -162,7 +153,7 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
     @Override
     public void pickupEntity(Entity entity) {
     	super.pickupEntity(entity);
-        if(this.worldObj.getBlock((int)this.posX, (int)this.posY, (int)this.posZ) != null && this.worldObj.canBlockSeeTheSky((int)this.posX, (int)this.posY, (int)this.posZ))
+        if(this.worldObj.getBlockState(this.getPosition()) != null && this.worldObj.canBlockSeeSky(this.getPosition()))
             this.leap(1.0F, 2.0D);
     }
     
@@ -183,8 +174,8 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotionID() == Potion.weakness.id) return false;
-        if(potionEffect.getPotionID() == Potion.digSlowdown.id) return false;
+        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("weakness")) return false;
+        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("mining_fatigue")) return false;
         return super.isPotionApplicable(potionEffect);
     }
 
@@ -195,9 +186,9 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
     // ========== Get Wander Position ==========
     /** Takes an initial chunk coordinate for a random wander position and ten allows the entity to make changes to the position or react to it. **/
     @Override
-    public ChunkCoordinates getWanderPosition(ChunkCoordinates wanderPosition) {
+    public BlockPos getWanderPosition(BlockPos wanderPosition) {
         if(this.hasPickupEntity() && this.getPickupEntity() instanceof EntityPlayer)
-            wanderPosition.posY = this.restrictYHeightFromGround(wanderPosition, 6, 14);
+            wanderPosition = new BlockPos(wanderPosition.getX(), this.restrictYHeightFromGround(wanderPosition, 6, 14), wanderPosition.getZ());
         return wanderPosition;
     }
 }

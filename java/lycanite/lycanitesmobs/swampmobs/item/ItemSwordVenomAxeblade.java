@@ -6,8 +6,8 @@ import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.item.ItemSwordBase;
 import lycanite.lycanitesmobs.swampmobs.SwampMobs;
 import lycanite.lycanitesmobs.swampmobs.entity.EntityRemobra;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,9 +16,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class ItemSwordVenomAxeblade extends ItemSwordBase {
 	int particleTime = 0;
@@ -27,7 +28,7 @@ public class ItemSwordVenomAxeblade extends ItemSwordBase {
 	//                   Constructor
 	// ==================================================
     public ItemSwordVenomAxeblade() {
-        super(Item.ToolMaterial.EMERALD);
+        super(Item.ToolMaterial.DIAMOND);
     	this.group = SwampMobs.group;
     	this.itemName = "venomaxeblade";
         this.setup();
@@ -48,12 +49,13 @@ public class ItemSwordVenomAxeblade extends ItemSwordBase {
 
     /** Called from the main EventListener if the entity is holding this item when damaged. If this returns false, the damage will be blocked all together. **/
     @Override
-    public void onEarlyUpdate(ItemStack itemStack, EntityLivingBase entityLiving) {
-        super.onEarlyUpdate(itemStack, entityLiving);
+    public void onEarlyUpdate(ItemStack itemStack, EntityLivingBase entityLiving, EnumHand hand) {
+        super.onEarlyUpdate(itemStack, entityLiving, hand);
         if(itemStack == null || itemStack.getItem() != this)
             return;
-        if(entityLiving.isPotionActive(Potion.poison))
-            entityLiving.removePotionEffect(Potion.poison.id);
+        Potion potion = Potion.getPotionFromResourceLocation("poison");
+        if(entityLiving.isPotionActive(potion))
+            entityLiving.removePotionEffect(potion);
     }
 	
     
@@ -67,7 +69,7 @@ public class ItemSwordVenomAxeblade extends ItemSwordBase {
      		return false;
      	if(entityUser.worldObj.isRemote)
      		return true;
-     	entityHit.addPotionEffect(new PotionEffect(Potion.poison.id, 6 * 20, 0));
+     	entityHit.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("poison"), 6 * 20, 0));
      	if(entityUser.getRNG().nextFloat() <= this.getSpecialEffectChance()) {
      		Entity entity = new EntityRemobra(entityUser.worldObj);
      		entity.setLocationAndAngles(entityUser.posX, entityUser.posY, entityUser.posZ, entityUser.rotationYaw, 0.0F);
@@ -89,9 +91,9 @@ public class ItemSwordVenomAxeblade extends ItemSwordBase {
 		    	if(entityUser.getRNG().nextBoolean())
 		    		randomAngle = -randomAngle;
 		    	double[] spawnPos = entityCreature.getFacingPosition(entityUser, -1, randomAngle);
-		    	if(!entity.worldObj.isSideSolid((int)spawnPos[0], (int)spawnPos[1], (int)spawnPos[2], ForgeDirection.UP))
+		    	if(!entity.worldObj.isSideSolid(new BlockPos((int)spawnPos[0], (int)spawnPos[1], (int)spawnPos[2]), EnumFacing.UP))
 		    		randomAngle = -randomAngle;
-		    	if(entity.worldObj.isSideSolid((int)spawnPos[0], (int)spawnPos[1], (int)spawnPos[2], ForgeDirection.UP))
+		    	if(entity.worldObj.isSideSolid(new BlockPos((int)spawnPos[0], (int)spawnPos[1], (int)spawnPos[2]), EnumFacing.UP))
 		    		entity.setLocationAndAngles((int)spawnPos[0], (int)spawnPos[1], (int)spawnPos[2], entityUser.rotationYaw, 0.0F);
 	    	}
             this.onSpawnEntity(entity);
@@ -102,11 +104,11 @@ public class ItemSwordVenomAxeblade extends ItemSwordBase {
      
      // ========== Block Effectiveness ==========
      @Override
-     public float func_150893_a(ItemStack itemStack, Block block) {
-    	 if(block.getMaterial() == Material.wood || block.getMaterial() == Material.plants || block.getMaterial() == Material.vine) {
-    		 return Items.diamond_axe.func_150893_a(itemStack, block);
+     public float getStrVsBlock(ItemStack itemStack, IBlockState state) {
+    	 if(state.getMaterial() == Material.wood || state.getMaterial() == Material.plants || state.getMaterial() == Material.vine) {
+    		 return Items.diamond_axe.getStrVsBlock(itemStack, state);
     	 }
-    	 return super.func_150893_a(itemStack, block);
+    	 return super.getStrVsBlock(itemStack, state);
      }
 
 	

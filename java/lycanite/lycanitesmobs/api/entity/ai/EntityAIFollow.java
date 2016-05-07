@@ -1,9 +1,9 @@
 package lycanite.lycanitesmobs.api.entity.ai;
 
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.math.BlockPos;
 
 public class EntityAIFollow extends EntityAIBase {
 	// Targets:
@@ -30,7 +30,7 @@ public class EntityAIFollow extends EntityAIBase {
 	// ==================================================
  	//                    Get Target
  	// ==================================================
-    public EntityLivingBase getTarget() {
+    public Entity getTarget() {
     	return null;
     }
     
@@ -64,7 +64,7 @@ public class EntityAIFollow extends EntityAIBase {
   	//                  Should Execute
   	// ==================================================
     public boolean shouldExecute() {
-    	EntityLivingBase target = this.getTarget();
+    	Entity target = this.getTarget();
 	    if(target == null)
 	        return false;
         if(!target.isEntityAlive())
@@ -84,7 +84,7 @@ public class EntityAIFollow extends EntityAIBase {
   	//                Continue Executing
   	// ==================================================
     public boolean continueExecuting() {
-    	EntityLivingBase target = this.getTarget();
+    	Entity target = this.getTarget();
     	if(target == null)
     		return false;
         if(!target.isEntityAlive())
@@ -114,7 +114,7 @@ public class EntityAIFollow extends EntityAIBase {
     public void updateTask() {
         if(this.updateRate-- <= 0) {
             this.updateRate = 10;
-            EntityLivingBase target = this.getTarget();
+            Entity target = this.getTarget();
         	if(!this.host.useFlightNavigator()) {
         		if(this.behindDistance == 0 || !(target instanceof EntityCreatureBase))
         			this.host.getNavigator().tryMoveToEntityLiving(target, this.speed);
@@ -125,10 +125,10 @@ public class EntityAIFollow extends EntityAIBase {
         	}
         	else {
         		if(this.behindDistance == 0 || !(target instanceof EntityCreatureBase))
-        			this.host.flightNavigator.setTargetPosition(new ChunkCoordinates((int)target.posX, (int)target.posY, (int)target.posZ), this.speed);
+        			this.host.flightNavigator.setTargetPosition(new BlockPos((int)target.posX, (int)target.posY, (int)target.posZ), this.speed);
         		else {
         			double[] coords = ((EntityCreatureBase)target).getFacingPosition(-this.behindDistance);
-        			this.host.flightNavigator.setTargetPosition(new ChunkCoordinates((int)coords[0], (int)coords[1], (int)coords[2]), this.speed);
+        			this.host.flightNavigator.setTargetPosition(new BlockPos((int)coords[0], (int)coords[1], (int)coords[2]), this.speed);
         		}
         	}
         }

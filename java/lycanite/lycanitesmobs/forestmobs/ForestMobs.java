@@ -27,21 +27,20 @@ import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = ForestMobs.modid, name = ForestMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid)
 public class ForestMobs {
@@ -73,18 +72,18 @@ public class ForestMobs {
 		ObjectManager.setCurrentGroup(group);
 		
 		// ========== Create Items ==========
-		ObjectManager.addItem("forestegg", new ItemForestEgg());
-		
-		ItemFood rawMeat =  new ItemCustomFood("arisaurmeatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(Potion.hunger.id, 45, 2, 0.8F);
+		ObjectManager.addItem("forestspawn", new ItemForestEgg());
+
+        ItemCustomFood rawMeat =  new ItemCustomFood("arisaurmeatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(Potion.getPotionFromResourceLocation("saturation"), 45, 2, 0.8F);
 		if(ObjectManager.getPotionEffect("paralysis") != null)
-			rawMeat.setPotionEffect(ObjectManager.getPotionEffect("paralysis").id, 10, 2, 0.8F);
+			rawMeat.setPotionEffect(ObjectManager.getPotionEffect("paralysis"), 10, 2, 0.8F);
 		ObjectManager.addItem("arisaurmeatraw", rawMeat);
 		ObjectLists.addItem("vegetables", ObjectManager.getItem("arisaurmeatraw"));
 		
-		ObjectManager.addItem("arisaurmeatcooked", new ItemFoodPaleoSalad("arisaurmeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setAlwaysEdible()); // Health Boost
+		ObjectManager.addItem("arisaurmeatcooked", new ItemFoodPaleoSalad("arisaurmeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setAlwaysEdible());
 		ObjectLists.addItem("vegetables", ObjectManager.getItem("arisaurmeatcooked"));
 		
-		ObjectManager.addItem("paleosalad", new ItemFoodPaleoSalad("paleosalad", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6); // Health Boost
+		ObjectManager.addItem("paleosalad", new ItemFoodPaleoSalad("paleosalad", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
 		ObjectLists.addItem("vegetables", ObjectManager.getItem("paleosalad"));
 
 		ObjectManager.addItem("shamblertreat", new ItemTreat("shamblertreat", group));
@@ -94,7 +93,7 @@ public class ForestMobs {
         ObjectManager.addItem("lifedrainscepter", new ItemScepterLifeDrain(), 2, 1, 1);
 		
 		// ========== Create Mobs ==========
-		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("forestegg"), new DispenserBehaviorMobEggCustom());
+		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("forestspawn"), new DispenserBehaviorMobEggCustom());
 		MobInfo newMob;
         
         newMob = new MobInfo(group, "ent", EntityEnt.class, 0x997700, 0x00FF22)
@@ -145,7 +144,7 @@ public class ForestMobs {
 		ObjectManager.addProjectile("lifedrainend", EntityLifeDrainEnd.class);
 		
 		// ========== Register Models ==========
-		proxy.registerModels();
+		proxy.registerModels(this.group);
 	}
 	
 	
@@ -200,9 +199,9 @@ public class ForestMobs {
 		// ========== Remove Vanilla Spawns ==========
 		BiomeGenBase[] biomes = group.biomes;
 		if(group.controlVanillaSpawns) {
-			EntityRegistry.removeSpawn(EntityZombie.class, EnumCreatureType.monster, biomes);
-			EntityRegistry.removeSpawn(EntitySpider.class, EnumCreatureType.monster, biomes);
-			EntityRegistry.removeSpawn(EntityCreeper.class, EnumCreatureType.monster, biomes);
+			EntityRegistry.removeSpawn(EntityZombie.class, EnumCreatureType.MONSTER, biomes);
+			EntityRegistry.removeSpawn(EntitySpider.class, EnumCreatureType.MONSTER, biomes);
+			EntityRegistry.removeSpawn(EntityCreeper.class, EnumCreatureType.MONSTER, biomes);
 		}
 		
 		// ========== Crafting ==========

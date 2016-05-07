@@ -9,8 +9,9 @@ import lycanite.lycanitesmobs.api.network.MessageSummonSetSelection;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
-
 import org.lwjgl.opengl.GL11;
+
+import java.io.IOException;
 
 public class GUIMinionSelection extends GuiScreen {
 	public EntityPlayer player;
@@ -151,7 +152,7 @@ public class GUIMinionSelection extends GuiScreen {
   	//                     Actions
   	// ==================================================
 	@Override
-	protected void actionPerformed(GuiButton guiButton) {
+	protected void actionPerformed(GuiButton guiButton) throws IOException {
 		if(guiButton != null) {
 			this.playerExt.setSelectedSummonSet(guiButton.id);
 			MessageSummonSetSelection message = new MessageSummonSetSelection(this.playerExt);
@@ -165,7 +166,7 @@ public class GUIMinionSelection extends GuiScreen {
   	//                     Key Press
   	// ==================================================
 	@Override
-	protected void keyTyped(char par1, int par2) {
+	protected void keyTyped(char par1, int par2) throws IOException {
 		if(par2 == 1 || par2 == this.mc.gameSettings.keyBindInventory.getKeyCode())
         	 this.mc.thePlayer.closeScreen();
 		super.keyTyped(par1, par2);

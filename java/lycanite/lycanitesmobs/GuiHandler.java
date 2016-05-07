@@ -4,12 +4,12 @@ import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.gui.*;
 import lycanite.lycanitesmobs.api.inventory.ContainerCreature;
 import lycanite.lycanitesmobs.api.tileentity.TileEntityBase;
-import lycanite.lycanitesmobs.api.tileentity.TileEntitySummoningPedestal;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.network.IGuiHandler;
+import net.minecraftforge.fml.common.network.IGuiHandler;
 
 public class GuiHandler implements IGuiHandler {
 	public static GuiHandler instance;
@@ -41,7 +41,7 @@ public class GuiHandler implements IGuiHandler {
 	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
 		// ========== Tile Entity ==========
 		if(id == GuiType.TILEENTITY.id) {
-			TileEntity tileEntity = world.getTileEntity(x, y, z);
+			TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
 			if(tileEntity instanceof TileEntityBase)
                 return ((TileEntityBase)tileEntity).getGUI(player);
 
@@ -75,7 +75,7 @@ public class GuiHandler implements IGuiHandler {
 	public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
 		// ========== Tile Entity ==========
 		if(id == GuiType.TILEENTITY.id) {
-			TileEntity tileEntity = world.getTileEntity(x, y, z);
+			TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
             if(tileEntity instanceof TileEntityBase)
                 return ((TileEntityBase)tileEntity).getGUI(player);
 		}

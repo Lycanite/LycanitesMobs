@@ -1,14 +1,12 @@
 package lycanite.lycanitesmobs.plainsmobs.model;
 
-import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.model.ModelCustomObj;
 import lycanite.lycanitesmobs.plainsmobs.PlainsMobs;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.util.MathHelper;
-import net.minecraftforge.client.model.obj.WavefrontObject;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ModelVentoraptor extends ModelCustomObj {
@@ -22,10 +20,10 @@ public class ModelVentoraptor extends ModelCustomObj {
     
     public ModelVentoraptor(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("Ventoraptor", PlainsMobs.group, "entity/ventoraptor");
+    	this.initModel("Ventoraptor", PlainsMobs.group, "entity/ventoraptor");
     	
-    	// Get Parts:
-    	parts = model.groupObjects;
+
+
     	
     	// Set Rotation Centers:
     	setPartCenter("head", 0F, 1.4F, 0.9F);

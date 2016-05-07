@@ -8,7 +8,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
+
+import java.util.Random;
 
 public class DispenserBehaviorBase extends BehaviorProjectileDispense {
 	
@@ -16,24 +20,24 @@ public class DispenserBehaviorBase extends BehaviorProjectileDispense {
 	//                      Dispense
 	// ==================================================
 	@Override
-    public ItemStack dispenseStack(IBlockSource blockSource, ItemStack itemStack) {
+    public ItemStack dispenseStack(IBlockSource blockSource, ItemStack stack) {
         World world = blockSource.getWorld();
-        IPosition position = BlockDispenser.func_149939_a(blockSource); // getIPositionFromBlockSource()
-        EnumFacing facing = BlockDispenser.func_149937_b(blockSource.getBlockMetadata()); // getFacing()
+        IPosition position = BlockDispenser.getDispensePosition(blockSource);
+        EnumFacing facing = BlockDispenser.getFacing(blockSource.getBlockMetadata());
         
-        IProjectile iprojectile = this.getProjectileEntity(world, position);
+        IProjectile iprojectile = this.getProjectileEntity(world, position, stack);
         if(iprojectile == null)
-        	return itemStack;
+        	return stack;
         
-        iprojectile.setThrowableHeading((double)facing.getFrontOffsetX(), (double)facing.getFrontOffsetY(), (double)facing.getFrontOffsetZ(), this.func_82500_b(), this.func_82498_a());
+        iprojectile.setThrowableHeading((double)facing.getFrontOffsetX(), (double)facing.getFrontOffsetY(), (double)facing.getFrontOffsetZ(), this.getProjectileVelocity(), this.getProjectileInaccuracy());
         world.spawnEntityInWorld((Entity)iprojectile);
-        itemStack.splitStack(1);
+        stack.splitStack(1);
         
-        return itemStack;
+        return stack;
     }
     
 	@Override
-    protected IProjectile getProjectileEntity(World par1World, IPosition par2IPosition) {
+    protected IProjectile getProjectileEntity(World world, IPosition pos, ItemStack stack) {
         return null;
     }
     
@@ -42,7 +46,14 @@ public class DispenserBehaviorBase extends BehaviorProjectileDispense {
 	//                        Sound
 	// ==================================================
 	@Override
-    protected void playDispenseSound(IBlockSource par1IBlockSource) {
-        return;
+    protected void playDispenseSound(IBlockSource blockSource) {
+        SoundEvent soundEvent = this.getDispenseSound();
+        if(soundEvent == null)
+            return;
+        blockSource.getWorld().playSound(blockSource.getX(), blockSource.getY(), blockSource.getZ(), this.getDispenseSound(), SoundCategory.AMBIENT, 1.0F, 1.0F / (new Random().nextFloat() * 0.4F + 0.8F), false);
+    }
+
+    protected SoundEvent getDispenseSound() {
+        return null;
     }
 }

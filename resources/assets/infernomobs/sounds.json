@@ -1,134 +1,134 @@
 {
     "mobevent.cinderfall": {
         "category": "record",
-        "sounds": [{"name": "mobevent/cinderfall", "stream": true}]
+        "sounds": [{"name": "infernomobs:mobevent/cinderfall", "stream": true}]
     },
     "mobevent.eruption": {
         "category": "record",
-        "sounds": [{"name": "mobevent/eruption", "stream": true}]
+        "sounds": [{"name": "infernomobs:mobevent/eruption", "stream": true}]
     },
     "entity.cinder.say": {
         "category": "hostile",
-        "sounds": [{"name": "entity/cinder/say", "stream": false}]
+        "sounds": [{"name": "infernomobs:entity/cinder/say", "stream": false}]
     },
     "entity.cinder.hurt": {
         "category": "hostile",
-        "sounds": [{"name": "entity/cinder/hurt", "stream": false}]
+        "sounds": [{"name": "infernomobs:entity/cinder/hurt", "stream": false}]
     },
     "entity.cinder.death": {
         "category": "hostile",
-        "sounds": [{"name": "entity/cinder/death", "stream": false}]
+        "sounds": [{"name": "infernomobs:entity/cinder/death", "stream": false}]
     },
     "entity.cinder.beg": {
         "category": "hostile",
-        "sounds": [{"name": "entity/cinder/beg", "stream": false}]
+        "sounds": [{"name": "infernomobs:entity/cinder/beg", "stream": false}]
     },
     "entity.cinder.tame": {
         "category": "hostile",
-        "sounds": [{"name": "entity/cinder/tame", "stream": false}]
+        "sounds": [{"name": "infernomobs:entity/cinder/tame", "stream": false}]
     },
     "entity.lobber.say": {
         "category": "hostile",
-        "sounds": [{"name": "entity/lobber/say", "stream": false}]
+        "sounds": [{"name": "infernomobs:entity/lobber/say", "stream": false}]
     },
     "entity.lobber.hurt": {
         "category": "hostile",
-        "sounds": [{"name": "entity/lobber/hurt", "stream": false}]
+        "sounds": [{"name": "infernomobs:entity/lobber/hurt", "stream": false}]
     },
     "entity.lobber.death": {
         "category": "hostile",
-        "sounds": [{"name": "entity/lobber/death", "stream": false}]
+        "sounds": [{"name": "infernomobs:entity/lobber/death", "stream": false}]
     },
     "entity.lobber.step": {
         "category": "hostile",
-        "sounds": [{"name": "entity/lobber/step", "stream": false}]
+        "sounds": [{"name": "infernomobs:entity/lobber/step", "stream": false}]
     },
     "entity.cephignis.say": {
         "category": "neutral",
-        "sounds": [{"name": "entity/cephignis/say", "stream": false}]
+        "sounds": [{"name": "infernomobs:entity/cephignis/say", "stream": false}]
     },
     "entity.cephignis.hurt": {
         "category": "neutral",
-        "sounds": [{"name": "entity/cephignis/hurt", "stream": false}]
+        "sounds": [{"name": "infernomobs:entity/cephignis/hurt", "stream": false}]
     },
     "entity.cephignis.death": {
         "category": "neutral",
-        "sounds": [{"name": "entity/cephignis/death", "stream": false}]
+        "sounds": [{"name": "infernomobs:entity/cephignis/death", "stream": false}]
     },
     "entity.afrit.say": {
         "category": "hostile",
-        "sounds": [{"name": "entity/afrit/say", "stream": false}]
+        "sounds": [{"name": "infernomobs:entity/afrit/say", "stream": false}]
     },
     "entity.afrit.hurt": {
         "category": "hostile",
-        "sounds": [{"name": "entity/afrit/hurt", "stream": false}]
+        "sounds": [{"name": "infernomobs:entity/afrit/hurt", "stream": false}]
     },
     "entity.afrit.death": {
         "category": "hostile",
-        "sounds": [{"name": "entity/afrit/death", "stream": false}]
+        "sounds": [{"name": "infernomobs:entity/afrit/death", "stream": false}]
     },
     "entity.afrit.beg": {
         "category": "hostile",
-        "sounds": [{"name": "entity/afrit/beg", "stream": false}]
+        "sounds": [{"name": "infernomobs:entity/afrit/beg", "stream": false}]
     },
     "entity.afrit.tame": {
         "category": "hostile",
-        "sounds": [{"name": "entity/afrit/tame", "stream": false}]
+        "sounds": [{"name": "infernomobs:entity/afrit/tame", "stream": false}]
     },
     "entity.afrit.eat": {
         "category": "hostile",
-        "sounds": [{"name": "entity/afrit/eat", "stream": false}]
+        "sounds": [{"name": "infernomobs:entity/afrit/eat", "stream": false}]
     },
     "entity.afrit.fly": {
         "category": "hostile",
-        "sounds": [{"name": "entity/afrit/fly", "stream": false}]
+        "sounds": [{"name": "infernomobs:entity/afrit/fly", "stream": false}]
     },
     "entity.khalk.say": {
         "category": "hostile",
-        "sounds": [{"name": "entity/khalk/say", "stream": false}]
+        "sounds": [{"name": "infernomobs:entity/khalk/say", "stream": false}]
     },
     "entity.khalk.hurt": {
         "category": "hostile",
-        "sounds": [{"name": "entity/khalk/hurt", "stream": false}]
+        "sounds": [{"name": "infernomobs:entity/khalk/hurt", "stream": false}]
     },
     "entity.khalk.death": {
         "category": "hostile",
-        "sounds": [{"name": "entity/khalk/death", "stream": false}]
+        "sounds": [{"name": "infernomobs:entity/khalk/death", "stream": false}]
     },
     "entity.khalk.attack": {
         "category": "hostile",
-        "sounds": [{"name": "entity/khalk/attack", "stream": false}]
+        "sounds": [{"name": "infernomobs:entity/khalk/attack", "stream": false}]
     },
     "entity.khalk.step": {
         "category": "hostile",
-        "sounds": [{"name": "entity/khalk/step", "stream": false}]
+        "sounds": [{"name": "infernomobs:entity/khalk/step", "stream": false}]
     },
     "entity.khalk.beg": {
         "category": "hostile",
-        "sounds": [{"name": "entity/khalk/beg", "stream": false}]
+        "sounds": [{"name": "infernomobs:entity/khalk/beg", "stream": false}]
     },
     "entity.khalk.tame": {
         "category": "hostile",
-        "sounds": [{"name": "entity/khalk/tame", "stream": false}]
+        "sounds": [{"name": "infernomobs:entity/khalk/tame", "stream": false}]
     },
     "entity.khalk.eat": {
         "category": "hostile",
-        "sounds": [{"name": "entity/khalk/eat", "stream": false}]
+        "sounds": [{"name": "infernomobs:entity/khalk/eat", "stream": false}]
     },
     "projectile.ember": {
         "category": "ambient",
-        "sounds": [{"name": "projectile/ember", "stream": false}]
+        "sounds": [{"name": "infernomobs:projectile/ember", "stream": false}]
     },
     "projectile.magma": {
         "category": "ambient",
-        "sounds": [{"name": "projectile/magma", "stream": false}]
+        "sounds": [{"name": "infernomobs:projectile/magma", "stream": false}]
     },
     "projectile.scorchfireball": {
         "category": "ambient",
-        "sounds": [{"name": "projectile/scorchfireball", "stream": false}]
+        "sounds": [{"name": "infernomobs:projectile/scorchfireball", "stream": false}]
     },
     "block.scorchfire": {
         "category": "block",
-        "sounds": [{"name": "block/scorchfire", "stream": false}]
+        "sounds": [{"name": "infernomobs:block/scorchfire", "stream": false}]
     }
 }

@@ -33,7 +33,7 @@ public class ItemSwordVenomAxebladeGolden extends ItemSwordVenomAxeblade {
     // ==================================================
     // ========== Get Sword Damage ==========
     @Override
-    public float getDamage() {
+    public float getDamageVsEntity() {
         return 4F;
     }
 }

@@ -1,13 +1,12 @@
 package lycanite.lycanitesmobs.api.gui;
 
-import cpw.mods.fml.client.GuiScrollingList;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.pets.PetEntry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
-import org.lwjgl.opengl.GL11;
+import net.minecraftforge.fml.client.GuiScrollingList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +68,10 @@ public class GUIPetList extends GuiScrollingList {
 
 		// Spawned Entry:
 		if(petEntry.spawningActive) {
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            if(this.isSelected(index))
+                super.drawGradientRect(boxLeft, boxTop, boxRight, boxBottom, 0x99FFEE, 0x99FFEE);
+            super.drawGradientRect(boxLeft, boxTop, boxRight, boxBottom, 0x448877, 0x448877);
+			/*GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glDisable(GL11.GL_TEXTURE_2D);
 			tessellator.startDrawingQuads();
 			if(this.isSelected(index)) {
@@ -85,7 +87,7 @@ public class GUIPetList extends GuiScrollingList {
 			tessellator.addVertexWithUV((double) (boxRight - 1), (double) (boxTop - 1), 0.0D, 1.0D, 0.0D);
 			tessellator.addVertexWithUV((double) (boxLeft + 1), (double) (boxTop - 1), 0.0D, 0.0D, 0.0D);
 			tessellator.draw();
-			GL11.glEnable(GL11.GL_TEXTURE_2D);
+			GL11.glEnable(GL11.GL_TEXTURE_2D);*/
 
 			// Active Level Texture:
 			levelBarU -= levelBarWidth;
@@ -94,11 +96,11 @@ public class GUIPetList extends GuiScrollingList {
 		// Summon Level:
 		Minecraft.getMinecraft().getTextureManager().bindTexture(AssetManager.getTexture("GUIBeastiary"));
 		for(int currentLevel = 0; currentLevel < level; currentLevel++) {
-			this.parentGUI.drawImage(levelBarX + (levelBarWidth * currentLevel), levelBarY, levelBarU, levelBarV, levelBarWidth, levelBarHeight, 0.00390625F, 0.00390625F);
+			this.parentGUI.drawTexturedModalRect(levelBarX + (levelBarWidth * currentLevel), levelBarY, levelBarU, levelBarV, levelBarWidth, levelBarHeight);
 		}
 
 		this.parentGUI.getFontRenderer().drawString(petEntry.getDisplayName(), boxLeft + 20 , boxTop + 2, 0xFFFFFF);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(mobInfo.getIcon());
-		this.parentGUI.drawImage(this.left + 2, boxTop + 4, 0, 0, 16, 16, 0.0625F, 0.0625F);
+		this.parentGUI.drawTexturedModalRect(this.left + 2, boxTop + 4, 0, 0, 16, 16);
 	}
 }

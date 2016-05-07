@@ -1,12 +1,13 @@
 package lycanite.lycanitesmobs.api.spawning;
 
-import java.util.List;
-
 import lycanite.lycanitesmobs.ExtendedWorld;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class SpawnTypeTree extends SpawnTypeBlockBreak {
 
@@ -46,11 +47,11 @@ public class SpawnTypeTree extends SpawnTypeBlockBreak {
             for(int searchX = x - 1; searchX <= x + 1; searchX++) {
                 for(int searchZ = z - 1; searchZ <= z + 1; searchZ++) {
                     for(int searchY = y; searchY <= Math.min(world.getHeight(), y + 32); searchY++) {
-                        Block searchBlock = world.getBlock(searchX, searchY, searchZ);
+                        Block searchBlock = world.getBlockState(new BlockPos(searchX, searchY, searchZ)).getBlock();
                         if(searchBlock != block && searchBlock != null) {
                             if(ObjectLists.isInOreDictionary("treeLeaves", searchBlock))
                                 return true;
-                            if(!world.isAirBlock(x, searchY, z))
+                            if(!world.isAirBlock(new BlockPos(x, searchY, z)))
                                 break;
                         }
                     }
@@ -65,12 +66,12 @@ public class SpawnTypeTree extends SpawnTypeBlockBreak {
             for(int searchX = x - 1; searchX <= x + 1; searchX++) {
                 for(int searchZ = z - 1; searchZ <= z + 1; searchZ++) {
                     for(int searchY = y; searchY >= Math.max(0, y - 32); searchY--) {
-                        Block searchBlock = world.getBlock(searchX, searchY, searchZ);
+                        Block searchBlock = world.getBlockState(new BlockPos(searchX, searchY, searchZ)).getBlock();
                         if(searchBlock != block && searchBlock != null) {
                             if(ObjectLists.isInOreDictionary("logWood", searchBlock)) {
                                 return true;
                             }
-                            if(!world.isAirBlock(x, searchY, z))
+                            if(!world.isAirBlock(new BlockPos(x, searchY, z)))
                                 break;
                         }
                     }

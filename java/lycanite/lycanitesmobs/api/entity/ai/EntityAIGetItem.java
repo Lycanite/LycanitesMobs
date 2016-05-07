@@ -1,14 +1,14 @@
 package lycanite.lycanitesmobs.api.entity.ai;
 
-import java.util.Collections;
-import java.util.List;
-
+import com.google.common.base.Predicate;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
-import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.math.BlockPos;
+
+import java.util.Collections;
+import java.util.List;
 
 public class EntityAIGetItem extends EntityAIBase {
 	// Targets:
@@ -16,7 +16,7 @@ public class EntityAIGetItem extends EntityAIBase {
 	private EntityItem target;
 	
 	// Properties:
-    private IEntitySelector targetSelector;
+    private Predicate<EntityItem> targetSelector;
     private EntityAITargetSorterNearest targetSorter;
     private double distanceMax = 32.0D * 32.0D;
     double speed = 1.0D;
@@ -33,7 +33,12 @@ public class EntityAIGetItem extends EntityAIBase {
         super();
         this.setMutexBits(1);
         this.host = setHost;
-        this.targetSelector = new EntityAITargetSelector(this, (IEntitySelector)null);
+        this.targetSelector = new Predicate<EntityItem>() {
+            @Override
+            public boolean apply(EntityItem input) {
+                return true;
+            }
+        };
         this.targetSorter = new EntityAITargetSorterNearest(setHost);
     }
     
@@ -77,7 +82,7 @@ public class EntityAIGetItem extends EntityAIBase {
     	
         double heightDistance = 4.0D;
         if(this.host.useFlightNavigator()) heightDistance = this.distanceMax;
-        List possibleTargets = this.host.worldObj.selectEntitiesWithinAABB(EntityItem.class, this.host.boundingBox.expand(this.distanceMax, heightDistance, this.distanceMax), this.targetSelector);
+        List possibleTargets = this.host.worldObj.getEntitiesWithinAABB(EntityItem.class, this.host.getEntityBoundingBox().expand(this.distanceMax, heightDistance, this.distanceMax), this.targetSelector);
         
         if(possibleTargets.isEmpty())
             return false;
@@ -138,7 +143,7 @@ public class EntityAIGetItem extends EntityAIBase {
         	if(!this.host.useFlightNavigator())
         		this.host.getNavigator().tryMoveToEntityLiving(this.target, this.speed);
         	else
-        		this.host.flightNavigator.setTargetPosition(new ChunkCoordinates((int)this.target.posX, (int)this.target.posY, (int)this.target.posZ), this.speed);
+        		this.host.flightNavigator.setTargetPosition(new BlockPos((int)this.target.posX, (int)this.target.posY, (int)this.target.posZ), this.speed);
         }
     }
 }

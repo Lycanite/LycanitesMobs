@@ -3,20 +3,18 @@ package lycanite.lycanitesmobs.freshwatermobs.entity;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupAnimal;
 import lycanite.lycanitesmobs.api.IGroupPredator;
-import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
-import lycanite.lycanitesmobs.api.info.ObjectLists;
+import net.minecraft.block.Block;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
@@ -45,8 +43,6 @@ public class EntitySilex extends EntityCreatureAgeable implements IAnimals, IGro
         this.setupMob();
         
         // AI Tasks:
-        this.getNavigator().setCanSwim(true);
-        this.getNavigator().setAvoidsWater(false);
         this.tasks.addTask(1, new EntityAIStayByWater(this));
         this.tasks.addTask(2, new EntityAIAttackMelee(this).setLongMemory(false));
         this.tasks.addTask(3, new EntityAITempt(this).setItem(new ItemStack(Items.dye, 1, 4)));
@@ -86,22 +82,23 @@ public class EntitySilex extends EntityCreatureAgeable implements IAnimals, IGro
     // ==================================================
 	// Pathing Weight:
 	@Override
-	public float getBlockPathWeight(int par1, int par2, int par3) {
+	public float getBlockPathWeight(int x, int y, int z) {
 		int waterWeight = 10;
-		
-        if(this.worldObj.getBlock(par1, par2, par3) == Blocks.water)
-        	return (super.getBlockPathWeight(par1, par2, par3) + 1) * (waterWeight + 1);
-		if(this.worldObj.getBlock(par1, par2, par3) == Blocks.flowing_water)
-			return (super.getBlockPathWeight(par1, par2, par3) + 1) * waterWeight;
-        if(this.worldObj.isRaining() && this.worldObj.canBlockSeeTheSky(par1, par2, par3))
-        	return (super.getBlockPathWeight(par1, par2, par3) + 1) * (waterWeight + 1);
+
+        Block block = this.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock();
+        if(block == Blocks.water)
+        	return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
+		if(block == Blocks.flowing_water)
+			return (super.getBlockPathWeight(x, y, z) + 1) * waterWeight;
+        if(this.worldObj.isRaining() && this.worldObj.canBlockSeeSky(new BlockPos(x, y, z)))
+        	return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
         
         if(this.getAttackTarget() != null)
-        	return super.getBlockPathWeight(par1, par2, par3);
+        	return super.getBlockPathWeight(x, y, z);
         if(this.waterContact())
 			return -999999.0F;
 		
-		return super.getBlockPathWeight(par1, par2, par3);
+		return super.getBlockPathWeight(x, y, z);
     }
 	
 	// Swimming:
@@ -129,9 +126,9 @@ public class EntitySilex extends EntityCreatureAgeable implements IAnimals, IGro
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
         if(ObjectManager.getPotionEffect("Penetration") != null)
-            if(potionEffect.getPotionID() == ObjectManager.getPotionEffect("Penetration").id) return false;
+            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("Penetration")) return false;
         if(ObjectManager.getPotionEffect("Paralysis") != null)
-            if(potionEffect.getPotionID() == ObjectManager.getPotionEffect("Paralysis").id) return false;
+            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("Paralysis")) return false;
         return super.isPotionApplicable(potionEffect);
     }
     

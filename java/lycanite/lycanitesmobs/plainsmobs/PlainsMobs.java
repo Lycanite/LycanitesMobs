@@ -14,12 +14,7 @@ import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.api.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeSky;
-import lycanite.lycanitesmobs.plainsmobs.entity.EntityKobold;
-import lycanite.lycanitesmobs.plainsmobs.entity.EntityMaka;
-import lycanite.lycanitesmobs.plainsmobs.entity.EntityMakaAlpha;
-import lycanite.lycanitesmobs.plainsmobs.entity.EntityRoc;
-import lycanite.lycanitesmobs.plainsmobs.entity.EntityVentoraptor;
-import lycanite.lycanitesmobs.plainsmobs.entity.EntityZoataur;
+import lycanite.lycanitesmobs.plainsmobs.entity.*;
 import lycanite.lycanitesmobs.plainsmobs.item.ItemPlainsEgg;
 import lycanite.lycanitesmobs.plainsmobs.mobevent.MobEventWindStorm;
 import net.minecraft.block.BlockDispenser;
@@ -34,18 +29,18 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = PlainsMobs.modid, name = PlainsMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid)
 public class PlainsMobs {
@@ -70,30 +65,30 @@ public class PlainsMobs {
 		// ========== Config ==========
 		group = new GroupInfo(this, "Plains Mobs", 0)
 				.setDimensionBlacklist("-1,1").setBiomes("PLAINS, SAVANNA, -SNOWY").setDungeonThemes("PLAINS, DUNGEON")
-                .setEggName("plainsegg");
+                .setEggName("plainsspawn");
 		group.loadFromConfig();
 
 		// ========== Set Current Group ==========
 		ObjectManager.setCurrentGroup(group);
 		
 		// ========== Create Items ==========
-		ObjectManager.addItem("plainsegg", new ItemPlainsEgg());
+		ObjectManager.addItem("plainsspawn", new ItemPlainsEgg());
 		
-		ObjectManager.addItem("makameatraw", new ItemCustomFood("makameatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(Potion.weakness.id, 45, 2, 0.8F));
+		ObjectManager.addItem("makameatraw", new ItemCustomFood("makameatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(Potion.getPotionFromResourceLocation("weakness"), 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("makameatraw"));
 		OreDictionary.registerOre("listAllporkraw", ObjectManager.getItem("makameatraw"));
 		
-		ObjectManager.addItem("makameatcooked", new ItemCustomFood("makameatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(Potion.field_76444_x.id, 10, 2, 1.0F).setAlwaysEdible());
+		ObjectManager.addItem("makameatcooked", new ItemCustomFood("makameatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(Potion.getPotionFromResourceLocation("absorbtion"), 10, 2, 1.0F).setAlwaysEdible());
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("makameatcooked"));
 		OreDictionary.registerOre("listAllporkcooked", ObjectManager.getItem("makameatcooked"));
 		
-		ObjectManager.addItem("bulwarkburger", new ItemCustomFood("bulwarkburger", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(Potion.field_76444_x.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6); // Absorbtion
+		ObjectManager.addItem("bulwarkburger", new ItemCustomFood("bulwarkburger", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(Potion.getPotionFromResourceLocation("absorbtion"), 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("bulwarkburger"));
 
 		ObjectManager.addItem("ventoraptortreat", new ItemTreat("ventoraptortreat", group));
 		
 		// ========== Create Mobs ==========
-		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("plainsegg"), new DispenserBehaviorMobEggCustom());
+		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("plainsspawn"), new DispenserBehaviorMobEggCustom());
 		MobInfo newMob;
         
         newMob = new MobInfo(group, "kobold", EntityKobold.class, 0x996633, 0xFF7777)
@@ -142,8 +137,8 @@ public class PlainsMobs {
 		// ========== Create Projectiles ==========
 		//ObjectManager.addProjectile("Template", EntityTemplate.class, Item.templateCharge, new DispenserBehaviorPoisonRay());
 		
-		// ========== Register Models ==========
-		proxy.registerModels();
+		// ========== Register Rendering ==========
+		proxy.registerRenders(this.group);
 	}
 	
 	
@@ -183,11 +178,11 @@ public class PlainsMobs {
 		// ========== Remove Vanilla Spawns ==========
 		BiomeGenBase[] biomes = group.biomes;
 		if(group.controlVanillaSpawns) {
-			EntityRegistry.removeSpawn(EntitySkeleton.class, EnumCreatureType.monster, biomes);
-			EntityRegistry.removeSpawn(EntitySpider.class, EnumCreatureType.monster, biomes);
-			EntityRegistry.removeSpawn(EntityWitch.class, EnumCreatureType.monster, biomes);
-			EntityRegistry.removeSpawn(EntityPig.class, EnumCreatureType.creature, biomes);
-			EntityRegistry.removeSpawn(EntityChicken.class, EnumCreatureType.creature, biomes);
+			EntityRegistry.removeSpawn(EntitySkeleton.class, EnumCreatureType.MONSTER, biomes);
+			EntityRegistry.removeSpawn(EntitySpider.class, EnumCreatureType.MONSTER, biomes);
+			EntityRegistry.removeSpawn(EntityWitch.class, EnumCreatureType.MONSTER, biomes);
+			EntityRegistry.removeSpawn(EntityPig.class, EnumCreatureType.CREATURE, biomes);
+			EntityRegistry.removeSpawn(EntityChicken.class, EnumCreatureType.CREATURE, biomes);
 		}
 		
 		// ========== Crafting ==========

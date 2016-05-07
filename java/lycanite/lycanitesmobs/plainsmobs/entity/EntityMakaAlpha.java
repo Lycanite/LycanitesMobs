@@ -1,21 +1,14 @@
 package lycanite.lycanitesmobs.plainsmobs.entity;
 
-import java.util.HashMap;
-
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupAlpha;
 import lycanite.lycanitesmobs.api.IGroupPredator;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
+import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.EntityVillager;
@@ -24,9 +17,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import java.util.HashMap;
 
 public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, IGroupAlpha {
 	
@@ -48,7 +45,7 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
         this.setupMob();
         
         // AI Tasks:
-        this.getNavigator().setAvoidsWater(true);
+        ((PathNavigateGround)this.getNavigator()).setCanSwim(false);
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(5, new EntityAIAttackMelee(this).setTargetClass(EntityPlayer.class).setLongMemory(false));
         this.tasks.addTask(6, new EntityAIAttackMelee(this));
@@ -101,23 +98,24 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
 	// ==================================================
    	//                      Movement
    	// ==================================================
-	// ========== Pathing Weight ==========
-	@Override
-	public float getBlockPathWeight(int par1, int par2, int par3) {
-		if(this.worldObj.getBlock(par1, par2 - 1, par3) != Blocks.air) {
-			Block block = this.worldObj.getBlock(par1, par2 - 1, par3);
-			if(block.getMaterial() == Material.grass)
-				return 10F;
-			if(block.getMaterial() == Material.ground)
-				return 7F;
-		}
-        return super.getBlockPathWeight(par1, par2, par3);
-    }
-    
-	// ========== Can leash ==========
+    // ========== Pathing Weight ==========
     @Override
-    public boolean canLeash(EntityPlayer player) {
-	    return true;
+    public float getBlockPathWeight(int x, int y, int z) {
+        IBlockState blockState = this.worldObj.getBlockState(new BlockPos(x, y - 1, z));
+        Block block = blockState.getBlock();
+        if(block != Blocks.air) {
+            if(blockState.getMaterial() == Material.grass)
+                return 10F;
+            if(blockState.getMaterial() == Material.ground)
+                return 7F;
+        }
+        return super.getBlockPathWeight(x, y, z);
+    }
+
+    // ========== Can leash ==========
+    @Override
+    public boolean canBeLeashedTo(EntityPlayer player) {
+        return true;
     }
 	
 	
@@ -145,7 +143,7 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
     public void setAttackTarget(EntityLivingBase entity) {
     	if(entity == null && this.getAttackTarget() instanceof EntityMakaAlpha && this.getHealth() < this.getMaxHealth()) {
     		this.heal((this.getMaxHealth() - this.getHealth()) / 2);
-    		this.addPotionEffect(new PotionEffect(Potion.regeneration.id, 20 * 20, 2, true));
+    		this.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("regeneration"), 20 * 20, 2, false, false));
     	}
     	super.setAttackTarget(entity);
     }
@@ -156,10 +154,9 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotionID() == Potion.weakness.id) return false;
-        if(potionEffect.getPotionID() == Potion.digSlowdown.id) return false;
-        super.isPotionApplicable(potionEffect);
-        return true;
+        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("weakness")) return false;
+        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("mining_fatigue")) return false;
+        return super.isPotionApplicable(potionEffect);
     }
     
     

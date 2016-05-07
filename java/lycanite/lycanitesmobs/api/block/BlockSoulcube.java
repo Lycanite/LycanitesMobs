@@ -2,6 +2,7 @@ package lycanite.lycanitesmobs.api.block;
 
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 
 public class BlockSoulcube extends BlockBase {
@@ -22,6 +23,6 @@ public class BlockSoulcube extends BlockBase {
 		this.setHardness(5F);
         this.setResistance(10F);
 		this.setHarvestLevel("pickaxe", 2);
-		this.setStepSound(this.soundTypeGlass);
+		this.setStepSound(SoundType.GLASS);
 	}
 }

@@ -1,13 +1,5 @@
 package lycanite.lycanitesmobs.freshwatermobs;
 
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
@@ -27,9 +19,16 @@ import lycanite.lycanitesmobs.freshwatermobs.mobevent.MobEventTsunami;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
@@ -63,17 +62,17 @@ public class FreshwaterMobs {
 		ObjectManager.setCurrentGroup(group);
 		
 		// ========== Create Items ==========
-		ObjectManager.addItem("freshwateregg", new ItemFreshwaterEgg());
+		ObjectManager.addItem("freshwaterspawn", new ItemFreshwaterEgg());
 
-        int rawFoodEffectID = Potion.weakness.id;
+        Potion rawFoodEffectID = Potion.getPotionFromResourceLocation("weakness");
         if(ObjectManager.getPotionEffect("penetration") != null)
-            rawFoodEffectID = ObjectManager.getPotionEffect("penetration").getId();
+            rawFoodEffectID = ObjectManager.getPotionEffect("penetration");
         ObjectManager.addItem("silexmeatraw", new ItemCustomFood("silexmeatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(rawFoodEffectID, 45, 2, 0.8F));
         ObjectLists.addItem("rawfish", ObjectManager.getItem("silexmeatraw"));
 
-        int cookedFoodEffectID = Potion.moveSpeed.id;
+        Potion cookedFoodEffectID = Potion.getPotionFromResourceLocation("movement_speed");
         if(ObjectManager.getPotionEffect("swiftswimming") != null)
-            cookedFoodEffectID = ObjectManager.getPotionEffect("swiftswimming").getId();
+            cookedFoodEffectID = ObjectManager.getPotionEffect("swiftswimming");
         ObjectManager.addItem("silexmeatcooked", new ItemCustomFood("silexmeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(cookedFoodEffectID, 10, 2, 1.0F).setAlwaysEdible());
         ObjectLists.addItem("cookedfish", ObjectManager.getItem("silexmeatcooked"));
 
@@ -86,7 +85,7 @@ public class FreshwaterMobs {
         ObjectManager.addItem("stridertreat", new ItemTreat("stridertreat", group));
 		
 		// ========== Create Mobs ==========
-		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("freshwateregg"), new DispenserBehaviorMobEggCustom());
+		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("freshwaterspawn"), new DispenserBehaviorMobEggCustom());
 		MobInfo newMob;
         
         newMob = new MobInfo(group, "jengu", EntityJengu.class, 0x000099, 0x4444FF)
@@ -122,7 +121,7 @@ public class FreshwaterMobs {
 		ObjectManager.addProjectile("aquapulse", EntityAquaPulse.class, ObjectManager.getItem("aquapulsecharge"), new DispenserBehaviorAquaPulse());
 		
 		// ========== Register Models ==========
-		proxy.registerModels();
+		proxy.registerModels(this.group);
 	}
 	
 	

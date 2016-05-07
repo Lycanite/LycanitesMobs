@@ -2,6 +2,7 @@ package lycanite.lycanitesmobs.api.entity.ai;
 
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.pathfinding.PathNavigateGround;
 
 public class EntityAISwimming extends EntityAIBase {
 	// Targets:
@@ -16,7 +17,8 @@ public class EntityAISwimming extends EntityAIBase {
     public EntityAISwimming(EntityCreatureBase setEntity) {
         this.host = setEntity;
         this.setMutexBits(4);
-        setEntity.getNavigator().setCanSwim(true);
+        if(setEntity.getNavigator() instanceof PathNavigateGround)
+            ((PathNavigateGround)setEntity.getNavigator()).setCanSwim(true);
     }
     
     
@@ -33,7 +35,7 @@ public class EntityAISwimming extends EntityAIBase {
    	//                  Should Execute
    	// ==================================================
     public boolean shouldExecute() {
-        return this.host.isInWater() || this.host.handleLavaMovement();
+        return this.host.isInWater() || this.host.isInLava();
     }
     
     
@@ -45,16 +47,17 @@ public class EntityAISwimming extends EntityAIBase {
 	    	double targetY = this.host.posY;
 	    	if(!this.host.useFlightNavigator()) {
 	    		if(!this.host.getNavigator().noPath())
-	    			targetY = this.host.getNavigator().getPath().getPosition(this.host).yCoord;
+                    targetY = this.host.getNavigator().getPath().getPosition(this.host).yCoord;
 	    	}
 	    	else {
-	    		if(!this.host.flightNavigator.atTargetPosition())
-	    		targetY = this.host.flightNavigator.targetPosition.posY;
+	    		if(!this.host.flightNavigator.atTargetPosition()) {
+                    targetY = this.host.flightNavigator.targetPosition.getY();
+                }
 	    	}
-	    	if(this.sink && this.host.posY < targetY)
-	    		this.host.getJumpHelper().setJumping();
+	    	if(this.host.posY < targetY && !this.host.canSwim())
+                this.host.getJumpHelper().setJumping();
     	}
-    	else if(this.host.getRNG().nextFloat() < 0.8F)
+    	else if(this.host.getRNG().nextFloat() < 0.8F && !this.host.canSwim())
             this.host.getJumpHelper().setJumping();
     }
 }

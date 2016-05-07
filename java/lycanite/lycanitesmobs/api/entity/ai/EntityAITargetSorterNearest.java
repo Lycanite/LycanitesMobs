@@ -1,9 +1,9 @@
 package lycanite.lycanitesmobs.api.entity.ai;
 
-import java.util.Comparator;
-
 import net.minecraft.entity.Entity;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.math.BlockPos;
+
+import java.util.Comparator;
 
 public class EntityAITargetSorterNearest implements Comparator {
     private final Entity host;
@@ -23,8 +23,8 @@ public class EntityAITargetSorterNearest implements Comparator {
     public int compare(Object objectA, Object objectB) {
     	if(objectA instanceof Entity && objectB instanceof Entity)
     		return this.compareDistanceSq((Entity)objectA, (Entity)objectB);
-    	if(objectA instanceof ChunkCoordinates && objectB instanceof ChunkCoordinates)
-    		return this.compareDistanceSq((ChunkCoordinates)objectA, (ChunkCoordinates)objectB);
+    	if(objectA instanceof BlockPos && objectB instanceof BlockPos)
+    		return this.compareDistanceSq((BlockPos)objectA, (BlockPos)objectB);
     	return 0;
     }
     
@@ -38,10 +38,10 @@ public class EntityAITargetSorterNearest implements Comparator {
         return distanceA < distanceB ? -1 : (distanceA > distanceB ? 1 : 0);
     }
 
-    public int compareDistanceSq(ChunkCoordinates targetA, ChunkCoordinates targetB) {
-    	ChunkCoordinates hostCoords = new ChunkCoordinates((int)this.host.posX, (int)this.host.posY, (int)this.host.posZ);
-        double distanceA = hostCoords.getDistanceSquaredToChunkCoordinates(targetA);
-        double distanceB = hostCoords.getDistanceSquaredToChunkCoordinates(targetB);
+    public int compareDistanceSq(BlockPos targetA, BlockPos targetB) {
+        BlockPos hostCoords = new BlockPos((int)this.host.posX, (int)this.host.posY, (int)this.host.posZ);
+        double distanceA = hostCoords.getDistance(targetA.getX(), targetA.getY(), targetA.getZ());
+        double distanceB = hostCoords.getDistance(targetB.getX(), targetB.getY(), targetB.getZ());
         return distanceA < distanceB ? -1 : (distanceA > distanceB ? 1 : 0);
     }
 }

@@ -1,14 +1,14 @@
 package lycanite.lycanitesmobs.api.gui;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.StatCollector;
-import cpw.mods.fml.client.GuiScrollingList;
+import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.fml.client.GuiScrollingList;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class GUIBeastiaryGroupList extends GuiScrollingList {
 	GUIBeastiary parentGUI;
@@ -70,6 +70,6 @@ public class GUIBeastiaryGroupList extends GuiScrollingList {
 	protected void drawSlot(int index, int boxRight, int boxTop, int boxBottom, Tessellator tessellator) {
 		GroupInfo group = this.groupList.get(index);
 		if(group == null) return;
-		this.parentGUI.getFontRenderer().drawString(StatCollector.translateToLocal(group.filename + ".name"), this.left + 2 , boxTop + 4, 0xFFFFFF);
+		this.parentGUI.getFontRenderer().drawString(I18n.translateToLocal(group.filename + ".name"), this.left + 2 , boxTop + 4, 0xFFFFFF);
 	}
 }

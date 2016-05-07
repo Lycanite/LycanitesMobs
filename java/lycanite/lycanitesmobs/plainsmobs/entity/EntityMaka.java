@@ -1,38 +1,28 @@
 package lycanite.lycanitesmobs.plainsmobs.entity;
 
-import java.util.HashMap;
-
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupAnimal;
 import lycanite.lycanitesmobs.api.IGroupPredator;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIAvoid;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowMaster;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowParent;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIMate;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAvoid;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetMaster;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetParent;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITempt;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
+import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import java.util.HashMap;
 
 public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGroupAnimal {
 	
@@ -58,7 +48,7 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
         this.setupMob();
         
         // AI Tasks:
-        this.getNavigator().setAvoidsWater(true);
+        ((PathNavigateGround)this.getNavigator()).setCanSwim(false);
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIAttackMelee(this).setLongMemory(false));
         this.tasks.addTask(2, new EntityAIAvoid(this).setNearSpeed(1.3D).setFarSpeed(1.2D).setNearDistance(5.0D).setFarDistance(20.0D));
@@ -83,7 +73,8 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
 		baseAttributes.put("movementSpeed", 0.28D);
 		baseAttributes.put("knockbackResistance", 1D);
 		baseAttributes.put("followRange", 20D);
-		baseAttributes.put("attackDamage", 1D);
+		baseAttributes.put("attackDamage", 2D);
+        baseAttributes.put("attackSpeed", 8D);
         super.applyEntityAttributes(baseAttributes);
     }
 	
@@ -100,20 +91,21 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
    	// ==================================================
 	// ========== Pathing Weight ==========
 	@Override
-	public float getBlockPathWeight(int par1, int par2, int par3) {
-		if(this.worldObj.getBlock(par1, par2 - 1, par3) != Blocks.air) {
-			Block block = this.worldObj.getBlock(par1, par2 - 1, par3);
-			if(block.getMaterial() == Material.grass)
+	public float getBlockPathWeight(int x, int y, int z) {
+        IBlockState blockState = this.worldObj.getBlockState(new BlockPos(x, y - 1, z));
+        Block block = blockState.getBlock();
+		if(block != Blocks.air) {
+			if(blockState.getMaterial() == Material.grass)
 				return 10F;
-			if(block.getMaterial() == Material.ground)
+			if(blockState.getMaterial() == Material.ground)
 				return 7F;
 		}
-        return super.getBlockPathWeight(par1, par2, par3);
+        return super.getBlockPathWeight(x, y, z);
     }
     
 	// ========== Can leash ==========
     @Override
-    public boolean canLeash(EntityPlayer player) {
+    public boolean canBeLeashedTo(EntityPlayer player) {
 	    return true;
     }
 	
@@ -135,8 +127,8 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotionID() == Potion.weakness.id) return false;
-        if(potionEffect.getPotionID() == Potion.digSlowdown.id) return false;
+        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("weakness")) return false;
+        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("mining_fatigue")) return false;
         return super.isPotionApplicable(potionEffect);
     }
     

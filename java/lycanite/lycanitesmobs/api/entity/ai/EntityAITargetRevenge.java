@@ -1,10 +1,10 @@
 package lycanite.lycanitesmobs.api.entity.ai;
 
-import java.util.Iterator;
-import java.util.List;
-
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
+
+import java.util.Iterator;
+import java.util.List;
 
 public class EntityAITargetRevenge extends EntityAITargetAttack {
 	
@@ -57,7 +57,7 @@ public class EntityAITargetRevenge extends EntityAITargetAttack {
  	//                  Should Execute
  	// ==================================================
     public boolean shouldExecute() {
-        int i = this.host.func_142015_aE(); // Get Revenge Timer
+        int i = this.host.getRevengeTimer();
         if(!this.host.isAggressive() && !(this.host instanceof EntityCreatureTameable))
         	return false;
         if(!this.host.isAggressive() && this.host instanceof EntityCreatureTameable && !((EntityCreatureTameable)this.host).isTamed())
@@ -71,16 +71,16 @@ public class EntityAITargetRevenge extends EntityAITargetAttack {
  	// ==================================================
     public void startExecuting() {
         this.target = this.host.getAITarget();
-        this.revengeTime = this.host.func_142015_aE(); // Get Revenge Timer
+        this.revengeTime = this.host.getRevengeTimer();
 
         if(this.callForHelp && (!(this.host instanceof EntityCreatureTameable) || (this.host instanceof EntityCreatureTameable && !((EntityCreatureTameable)this.host).isTamed()))) {
             double d0 = this.getTargetDistance();
-            List allies = this.host.worldObj.selectEntitiesWithinAABB(this.host.getClass(), this.host.boundingBox.expand(d0, 4.0D, d0), this.targetSelector);
+            List allies = this.host.worldObj.getEntitiesWithinAABB(this.host.getClass(), this.host.getEntityBoundingBox().expand(d0, 4.0D, d0), this.targetSelector);
             if(this.helpClasses != null)
 	            for(Class helpClass : this.helpClasses) {
 	            	if(helpClass != null && EntityCreatureBase.class.isAssignableFrom(helpClass) && !this.target.getClass().isAssignableFrom(helpClass)) {
-	            		allies.addAll(this.host.worldObj.selectEntitiesWithinAABB(helpClass, this.host.boundingBox.expand(d0, 4.0D, d0), this.targetSelector));
-	            	}
+	            		allies.addAll(this.host.worldObj.getEntitiesWithinAABB(helpClass, this.host.getEntityBoundingBox().expand(d0, 4.0D, d0), this.targetSelector));
+                    }
 	            }
             Iterator possibleAllies = allies.iterator();
             

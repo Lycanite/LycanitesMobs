@@ -1,8 +1,9 @@
 package lycanite.lycanitesmobs;
 
-import java.io.File;
-
+import lycanite.lycanitesmobs.api.info.GroupInfo;
 import net.minecraft.entity.player.EntityPlayer;
+
+import java.io.File;
 
 public class CommonProxy {
 	
@@ -25,6 +26,6 @@ public class CommonProxy {
 	
 	// ========== Client Only ==========
     public void registerAssets() {}
-    public void registerRenders() {}
+    public void registerRenders(GroupInfo groupInfo) {}
     public EntityPlayer getClientPlayer() { return null; }
 }

@@ -1,11 +1,11 @@
 package lycanite.lycanitesmobs.api.gui;
 
-import java.lang.reflect.Field;
-import java.util.List;
-
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.entity.player.EntityPlayer;
+
+import java.lang.reflect.Field;
+import java.util.List;
 
 /**
  * A sneaky snooping class that taps into GuiInventory to try and grab stuff from those stupid protected fields!

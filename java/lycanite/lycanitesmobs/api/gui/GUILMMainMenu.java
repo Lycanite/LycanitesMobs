@@ -11,6 +11,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import org.lwjgl.opengl.GL11;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -150,7 +151,7 @@ public class GUILMMainMenu extends GuiScreen {
   	//                     Actions
   	// ==================================================
 	@Override
-	protected void actionPerformed(GuiButton guiButton) {
+	protected void actionPerformed(GuiButton guiButton) throws IOException {
 		if(guiButton != null) {
 			if(guiButton.id == GuiHandler.PlayerGuiType.BEASTIARY.id) {
 				GUIBeastiary.openToPlayer(this.player);
@@ -186,7 +187,7 @@ public class GUILMMainMenu extends GuiScreen {
   	//                     Key Press
   	// ==================================================
 	@Override
-	protected void keyTyped(char par1, int par2) {
+	protected void keyTyped(char par1, int par2) throws IOException {
 		if(par2 == 1 || par2 == this.mc.gameSettings.keyBindInventory.getKeyCode())
         	 this.mc.thePlayer.closeScreen();
 		super.keyTyped(par1, par2);

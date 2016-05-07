@@ -1,31 +1,21 @@
 package lycanite.lycanitesmobs.api.spawning;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import lycanite.lycanitesmobs.LycanitesMobs;
-import lycanite.lycanitesmobs.api.info.ObjectLists;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.BlockVine;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayer.EnumStatus;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CustomSpawner {
     public static CustomSpawner instance;
@@ -51,7 +41,7 @@ public class CustomSpawner {
 	/** This uses the player update events to spawn mobs around each player randomly over time. **/
 	@SubscribeEvent
 	public void onEntityUpdate(LivingUpdateEvent event) {
-		EntityLivingBase entity = event.entityLiving;
+		EntityLivingBase entity = event.getEntityLiving();
 		if(entity == null || !(entity instanceof EntityPlayer) || entity.worldObj == null || entity.worldObj.isRemote || event.isCanceled())
 			return;
 		
@@ -126,12 +116,12 @@ public class CustomSpawner {
 	/** This uses the entity death events to spawn mobs when other mobs/players die. **/
 	@SubscribeEvent
 	public void onEntityDeath(LivingDeathEvent event) {
-		EntityLivingBase entity = event.entityLiving;
+		EntityLivingBase entity = event.getEntityLiving();
 		if(entity == null || entity.worldObj == null || entity.worldObj.isRemote || event.isCanceled())
 			return;
 		
 		// ========== Get Killer ==========
-		Entity killerEntity = event.source.getSourceOfDamage();
+		Entity killerEntity = event.getSource().getSourceOfDamage();
 		if(!(killerEntity instanceof EntityLivingBase))
 			return;
 		EntityLivingBase killer = (EntityLivingBase)killerEntity;
@@ -159,21 +149,21 @@ public class CustomSpawner {
 	/** This uses the block harvest drops events to spawn mobs around blocks when they are destroyed. **/
 	@SubscribeEvent
 	public void onHarvestDrops(HarvestDropsEvent event) {
-		EntityPlayer player = event.harvester;
-		if(event.block == null || event.world == null || event.world.isRemote || event.isCanceled())
+		EntityPlayer player = event.getHarvester();
+		if(event.getState() == null || event.getWorld() == null || event.getWorld().isRemote || event.isCanceled())
 			return;
 		if(player != null && player.capabilities.isCreativeMode) // No Spawning for Creative Players
 			return;
 		
 		// Spawn On Block Harvest:
-		World world = event.world;
-		int x = (int)event.x;
-		int y = (int)event.y;
-		int z = (int)event.z + 1;
+		World world = event.getWorld();
+		int x = event.getPos().getX();
+		int y = event.getPos().getY();
+		int z = event.getPos().getZ() + 1;
 
         for(SpawnTypeBlockBreak spawnType : this.blockSpawnTypes) {
-            if(spawnType.validBlockHarvest(event.block, world, x, y, z, player))
-                spawnType.spawnMobs(0, world, x, y, z, player, event.block);
+            if(spawnType.validBlockHarvest(event.getState().getBlock(), world, x, y, z, player))
+                spawnType.spawnMobs(0, world, x, y, z, player, event.getState().getBlock());
         }
 	}
 
@@ -185,19 +175,19 @@ public class CustomSpawner {
     @SubscribeEvent
     public void onBlockBreak(BlockEvent.BreakEvent event) {
         EntityPlayer player = event.getPlayer();
-        if(event.block == null || event.world == null || event.world.isRemote || event.isCanceled())
+        if(event.getState().getBlock() == null || event.getWorld() == null || event.getWorld().isRemote || event.isCanceled())
             return;
         if(player == null || (player != null && player.capabilities.isCreativeMode)) // No Spawning for Creative Players
             return;
 
         // Spawn On Block Harvest:
-        World world = event.world;
-        int x = (int)event.x;
-        int y = (int)event.y;
-        int z = (int)event.z + 1;
+        World world = event.getWorld();
+        int x = (int)event.getPos().getX();
+        int y = (int)event.getPos().getY();
+        int z = (int)event.getPos().getZ() + 1;
 
         for(SpawnTypeBlockBreak spawnType : this.blockSpawnTypes) {
-            if(spawnType.validBlockBreak(event.block, world, x, y, z, player))
+            if(spawnType.validBlockBreak(event.getState().getBlock(), world, x, y, z, player))
                 spawnType.spawnMobs(0, world, x, y, z, player);
         }
     }
@@ -210,15 +200,15 @@ public class CustomSpawner {
 	/** This uses the player sleep in bed event to spawn mobs. **/
 	@SubscribeEvent
 	public void onSleep(PlayerSleepInBedEvent event) {
-		EntityPlayer player = event.entityPlayer; // Only fire when used by a player.
+		EntityPlayer player = event.getEntityPlayer();
 		if(player == null || event.isCanceled())
 			return;
 		
 		// Get Coords:
 		World world = player.worldObj;
-		int x = (int)event.x;
-		int y = (int)event.y;
-		int z = (int)event.z + 1;
+        int x = (int)event.getPos().getX();
+        int y = (int)event.getPos().getY();
+        int z = (int)event.getPos().getZ() + 1;
 		
 		if(world == null || world.isRemote || world.provider.isDaytime())
 			return;
@@ -232,7 +222,7 @@ public class CustomSpawner {
 		
 		// Possible Interrupt:
 		if(interrupted)
-			event.result = EnumStatus.NOT_SAFE;
+			event.setResult(EnumStatus.NOT_SAFE);
 	}
 
 	

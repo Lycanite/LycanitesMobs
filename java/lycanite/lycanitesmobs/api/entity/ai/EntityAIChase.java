@@ -3,8 +3,8 @@ package lycanite.lycanitesmobs.api.entity.ai;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 
 public class EntityAIChase extends EntityAIBase {
 	// Targets:
@@ -51,7 +51,7 @@ public class EntityAIChase extends EntityAIBase {
         else if(this.host.getDistanceSqToEntity(this.target) > (double)(this.maxTargetDistance * this.maxTargetDistance))
             return false;
         
-        Vec3 vec3 = RandomPositionGenerator.findRandomTargetTowards(this.host, 16, 7, Vec3.createVectorHelper(this.target.posX, this.target.posY, this.target.posZ));
+        Vec3d vec3 = RandomPositionGenerator.findRandomTargetTowards(this.host, 16, 7, new Vec3d(this.target.posX, this.target.posY, this.target.posZ));
         if(vec3 == null)
             return false;
         
@@ -77,7 +77,7 @@ public class EntityAIChase extends EntityAIBase {
     	if(!this.host.useFlightNavigator())
     		this.host.getNavigator().tryMoveToXYZ(this.movePosX, this.movePosY, this.movePosZ, this.speed);
     	else
-    		this.host.flightNavigator.setTargetPosition(new ChunkCoordinates((int)this.movePosX, (int)this.movePosY, (int)this.movePosZ), speed);
+    		this.host.flightNavigator.setTargetPosition(new BlockPos((int)this.movePosX, (int)this.movePosY, (int)this.movePosZ), speed);
     }
 	
     

@@ -10,13 +10,12 @@ import lycanite.lycanitesmobs.api.pets.SummonSet;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.StatCollector;
-
+import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.fml.client.GuiScrollingList;
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.client.GuiScrollingList;
+import java.io.IOException;
 
 public class GUIMinion extends GuiScreen {
 	public static int tabButtonID = 100;
@@ -121,7 +120,7 @@ public class GUIMinion extends GuiScreen {
   	// ==================================================
 	protected void drawGuiContainerForegroundLayer() {
 		if(this.hasSummonableMinions()) {
-			this.getFontRenderer().drawString(StatCollector.translateToLocal("gui.minion.name"), this.windowX + 52, this.windowY + 6, 0xFFFFFF);
+			this.getFontRenderer().drawString(I18n.translateToLocal("gui.minion.name"), this.windowX + 52, this.windowY + 6, 0xFFFFFF);
 			return;
 		}
 		
@@ -129,13 +128,13 @@ public class GUIMinion extends GuiScreen {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
 		if(hasSomeKnowledge) {
-			this.getFontRenderer().drawString(StatCollector.translateToLocal("gui.minion.empty"), this.windowX + 18, this.windowY + 6, 0xFFFFFF);
-			this.fontRendererObj.drawSplitString(StatCollector.translateToLocal("gui.minion.info"), this.windowX + 8, this.windowY + 24, this.windowWidth - 16, 0xFFFFFF);
+			this.getFontRenderer().drawString(I18n.translateToLocal("gui.minion.empty"), this.windowX + 18, this.windowY + 6, 0xFFFFFF);
+			this.fontRendererObj.drawSplitString(I18n.translateToLocal("gui.minion.info"), this.windowX + 8, this.windowY + 24, this.windowWidth - 16, 0xFFFFFF);
 		}
 		
 		else {
-			this.getFontRenderer().drawString(StatCollector.translateToLocal("gui.beastiary.empty"), this.windowX + 52, this.windowY + 6, 0xFFFFFF);
-			this.fontRendererObj.drawSplitString(StatCollector.translateToLocal("gui.beastiary.info"), this.windowX + 8, this.windowY + 24, this.windowWidth - 16, 0xFFFFFF);
+			this.getFontRenderer().drawString(I18n.translateToLocal("gui.beastiary.empty"), this.windowX + 52, this.windowY + 6, 0xFFFFFF);
+			this.fontRendererObj.drawSplitString(I18n.translateToLocal("gui.beastiary.info"), this.windowX + 8, this.windowY + 24, this.windowWidth - 16, 0xFFFFFF);
 			int recipeWidth = 108;
 			int recipeHeight = 54;
 			this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIBeastiary"));
@@ -216,19 +215,19 @@ public class GUIMinion extends GuiScreen {
         		// Behaviour Buttons:
         		if(button.id < this.tabButtonID) {
 	        		if(button.id == EntityCreatureBase.GUI_COMMAND_ID.SITTING.id)
-	        			button.displayString = StatCollector.translateToLocal("gui.pet.sitting") + ": " + (this.summonSet.getSitting() ? StatCollector.translateToLocal("common.yes") : StatCollector.translateToLocal("common.no"));
+	        			button.displayString = I18n.translateToLocal("gui.pet.sitting") + ": " + (this.summonSet.getSitting() ? I18n.translateToLocal("common.yes") : I18n.translateToLocal("common.no"));
 	        		
 	        		if(button.id == EntityCreatureBase.GUI_COMMAND_ID.FOLLOWING.id)
-	        			button.displayString = (this.summonSet.getFollowing() ? StatCollector.translateToLocal("gui.pet.follow") : StatCollector.translateToLocal("gui.pet.wander"));
+	        			button.displayString = (this.summonSet.getFollowing() ? I18n.translateToLocal("gui.pet.follow") : I18n.translateToLocal("gui.pet.wander"));
 	        		
 	        		if(button.id == EntityCreatureBase.GUI_COMMAND_ID.PASSIVE.id)
-	        			button.displayString = StatCollector.translateToLocal("gui.pet.passive") + ": " + (this.summonSet.getPassive() ? StatCollector.translateToLocal("common.yes") : StatCollector.translateToLocal("common.no"));
+	        			button.displayString = I18n.translateToLocal("gui.pet.passive") + ": " + (this.summonSet.getPassive() ? I18n.translateToLocal("common.yes") : I18n.translateToLocal("common.no"));
 	        		
 	        		if(button.id == EntityCreatureBase.GUI_COMMAND_ID.STANCE.id)
-	        			button.displayString = (this.summonSet.getAggressive() ? StatCollector.translateToLocal("gui.pet.aggressive") : StatCollector.translateToLocal("gui.pet.defensive"));
+	        			button.displayString = (this.summonSet.getAggressive() ? I18n.translateToLocal("gui.pet.aggressive") : I18n.translateToLocal("gui.pet.defensive"));
 	        		
 	        		if(button.id == EntityCreatureBase.GUI_COMMAND_ID.PVP.id)
-	        			button.displayString = StatCollector.translateToLocal("gui.pet.pvp") + ": " + (this.summonSet.getPVP() ? StatCollector.translateToLocal("common.yes") : StatCollector.translateToLocal("common.no"));
+	        			button.displayString = I18n.translateToLocal("gui.pet.pvp") + ": " + (this.summonSet.getPVP() ? I18n.translateToLocal("common.yes") : I18n.translateToLocal("common.no"));
         		}
         		
         		// Tabs:
@@ -244,7 +243,7 @@ public class GUIMinion extends GuiScreen {
   	//                     Actions
   	// ==================================================
 	@Override
-	protected void actionPerformed(GuiButton guiButton) {
+	protected void actionPerformed(GuiButton guiButton) throws IOException {
 		if(guiButton != null) {
 			// Behaviour Button:
 			if(guiButton.id < this.tabButtonID) {
@@ -303,24 +302,9 @@ public class GUIMinion extends GuiScreen {
   	//                     Key Press
   	// ==================================================
 	@Override
-	protected void keyTyped(char par1, int par2) {
+	protected void keyTyped(char par1, int par2) throws IOException {
 		if(par2 == 1 || par2 == this.mc.gameSettings.keyBindInventory.getKeyCode())
         	 this.mc.thePlayer.closeScreen();
 		super.keyTyped(par1, par2);
 	}
-	
-	
-	// ==================================================
-  	//                     Draw Image
-  	// ==================================================
-	public void drawImage(int x, int y, int u, int v, int w, int h, float s, float t) {
-		float z = this.zLevel;
-        Tessellator tessellator = Tessellator.instance;
-        tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV((double)(x + 0), (double)(y + h), (double)z, (double)((float)(u + 0) * s), (double)((float)(v + h) * t));
-        tessellator.addVertexWithUV((double)(x + w), (double)(y + h), (double)z, (double)((float)(u + w) * s), (double)((float)(v + h) * t));
-        tessellator.addVertexWithUV((double)(x + w), (double)(y + 0), (double)z, (double)((float)(u + w) * s), (double)((float)(v + 0) * t));
-        tessellator.addVertexWithUV((double)(x + 0), (double)(y + 0), (double)z, (double)((float)(u + 0) * s), (double)((float)(v + 0) * t));
-        tessellator.draw();
-    }
 }

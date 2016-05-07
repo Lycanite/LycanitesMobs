@@ -1,17 +1,5 @@
 package lycanite.lycanitesmobs;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
 import lycanite.lycanitesmobs.api.block.BlockSummoningPedestal;
 import lycanite.lycanitesmobs.api.command.CommandMain;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
@@ -34,15 +22,25 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
 import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-@Mod(modid = LycanitesMobs.modid, name = LycanitesMobs.name, version = LycanitesMobs.version)
+@Mod(modid = LycanitesMobs.modid, name = LycanitesMobs.name, version = LycanitesMobs.version, dependencies = "required-after:Forge@[11.16.0.1865,)", useMetadata = false)
 public class LycanitesMobs {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String version = "1.13.0.4 - MC 1.7.10";
+	public static final String version = "1.14.0.0 - MC 1.9.0";
 	public static final String website = "http://lycanitesmobs.com";
 	public static final String websiteAPI = "http://api.lycanitesmobs.com";
 	public static final String websitePatreon = "https://www.patreon.com/lycanite";
@@ -53,7 +51,7 @@ public class LycanitesMobs {
     public static ConfigBase config;
 	
 	// Instance:
-	@Instance(modid)
+	@Mod.Instance(modid)
 	public static LycanitesMobs instance;
 	
 	// Proxy:
@@ -82,7 +80,7 @@ public class LycanitesMobs {
 	// ==================================================
 	//                Pre-Initialization
 	// ==================================================
-	@EventHandler
+	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
 		group = new GroupInfo(this, name, achievementGlobalBaseID);
@@ -101,6 +99,9 @@ public class LycanitesMobs {
                 printInfo("", removeEntityID);
         }
         ExtendedEntity.FORCE_REMOVE_ENTITY_TICKS = config.getInt("Admin", "Force Remove Entity Ticks", 40, "How many ticks it takes for an entity to be forcefully removed (1 second = 20 ticks). This only applies to EntityLiving, other entities are instantly removed.");
+
+        // Register Rendering Factories:
+        proxy.registerRenders(this.group);
 
 		this.packetHandler.init();
 		
@@ -199,7 +200,7 @@ public class LycanitesMobs {
 	// ==================================================
 	//                  Initialization
 	// ==================================================
-	@EventHandler
+	@Mod.EventHandler
     public void load(FMLInitializationEvent event) {
 		// ========== Register and Initialize Handlers ==========
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
@@ -223,7 +224,7 @@ public class LycanitesMobs {
 	// ==================================================
 	//                Post-Initialization
 	// ==================================================
-	@EventHandler
+	@Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
 
         // ========== Assign Mob Spawning ==========
@@ -233,8 +234,7 @@ public class LycanitesMobs {
 
 		// ========== Register and Initialize Handlers/Objects ==========
 		proxy.registerAssets();
-		proxy.registerTileEntities();
-		proxy.registerRenders();
+        proxy.registerTileEntities();
 		
 		
 		// ========== Mob Events ==========
@@ -248,12 +248,12 @@ public class LycanitesMobs {
         
 		// ========== Crafting ==========
 		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("soulgazer"), 1, 0),
-				new Object[] { "GBG", "BDB", "GBG",
-				Character.valueOf('G'), Items.gold_ingot,
-				Character.valueOf('D'), Items.diamond,
-				Character.valueOf('B'), Items.bone
-			}));
+                new ItemStack(ObjectManager.getItem("soulgazer"), 1, 0),
+                new Object[]{"GBG", "BDB", "GBG",
+                        Character.valueOf('G'), Items.gold_ingot,
+                        Character.valueOf('D'), Items.diamond,
+                        Character.valueOf('B'), Items.bone
+                }));
 
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("soulstone"), 1, 0),
@@ -362,7 +362,7 @@ public class LycanitesMobs {
     // ==================================================
     //                    Server Load
     // ==================================================
-	@EventHandler
+	@Mod.EventHandler
 	public void serverLoad(FMLServerStartingEvent event) {
 		// ========== Commands ==========
 		event.registerServerCommand(new CommandMain());

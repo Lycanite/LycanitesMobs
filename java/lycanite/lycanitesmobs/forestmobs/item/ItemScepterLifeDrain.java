@@ -1,13 +1,15 @@
 package lycanite.lycanitesmobs.forestmobs.item;
 
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileLaser;
 import lycanite.lycanitesmobs.api.item.ItemScepter;
 import lycanite.lycanitesmobs.forestmobs.ForestMobs;
 import lycanite.lycanitesmobs.forestmobs.entity.EntityLifeDrain;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
 public class ItemScepterLifeDrain extends ItemScepter {
@@ -30,9 +32,9 @@ public class ItemScepterLifeDrain extends ItemScepter {
 	// ==================================================
     // ========== Start ==========
     @Override
-    public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
+    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer player, EnumHand hand) {
     	this.projectileTarget = null;
-        return super.onItemRightClick(itemStack, world, player);
+        return super.onItemRightClick(itemStack, world, player, hand);
     }
     
     @Override
@@ -50,21 +52,21 @@ public class ItemScepterLifeDrain extends ItemScepter {
 	//                      Attack
 	// ==================================================
     @Override
-    public boolean rapidAttack(ItemStack itemStack, World world, EntityPlayer player) {
+    public boolean rapidAttack(ItemStack itemStack, World world, EntityLivingBase entity) {
     	if(!world.isRemote) {
     		if(this.projectileTarget != null && this.projectileTarget.isEntityAlive()) {
     			projectileTarget.setTime(20);
     		}
     		else {
-    			this.projectileTarget = new EntityLifeDrain(world, player, 20, 10);
+    			this.projectileTarget = new EntityLifeDrain(world, entity, 20, 10);
     			world.spawnEntityInWorld(this.projectileTarget);
-            	world.playSoundAtEntity(player, ((EntityProjectileBase)this.projectileTarget).getLaunchSound(), 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+                this.playSound(itemStack, world, entity, 1, this.projectileTarget);
     		}
     	}
     	return true;
     }
 
-	
+
 	// ==================================================
 	//                     Repairs
 	// ==================================================

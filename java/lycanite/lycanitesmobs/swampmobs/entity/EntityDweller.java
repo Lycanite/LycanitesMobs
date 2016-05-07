@@ -1,21 +1,9 @@
 package lycanite.lycanitesmobs.swampmobs.entity;
 
-import java.util.HashMap;
-
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowOwner;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIStayByWater;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerAttack;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerRevenge;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetOwnerThreats;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
+import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -25,9 +13,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import java.util.HashMap;
 
 public class EntityDweller extends EntityCreatureTameable implements IMob {
 	
@@ -47,16 +39,16 @@ public class EntityDweller extends EntityCreatureTameable implements IMob {
         this.spawnsInWater = true;
         this.hasAttackSound = true;
 
-        this.babySpawnChance = 0.1D;
+        this.babySpawnChance = 0.01D;
         this.canGrow = false;
         
         this.setWidth = 0.8F;
         this.setHeight = 1.6F;
         this.setupMob();
+
+        this.setPathPriority(PathNodeType.WATER, 0F);
         
         // AI Tasks:
-        this.getNavigator().setCanSwim(true);
-        this.getNavigator().setAvoidsWater(false);
         this.tasks.addTask(0, new EntityAISwimming(this).setSink(true));
         this.tasks.addTask(1, new EntityAIStayByWater(this).setSpeed(1.25D));
         this.tasks.addTask(2, this.aiSit);
@@ -88,8 +80,8 @@ public class EntityDweller extends EntityCreatureTameable implements IMob {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.fish), 0.5F).setBurningDrop(new ItemStack(Items.cooked_fished)).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Items.fish, 1, 3), 0.5F).setBurningDrop(new ItemStack(Items.cooked_fished, 1, 3)).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.fish), 0.5F).setBurningDrop(new ItemStack(Items.cooked_fish)).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.fish, 1, 3), 0.5F).setBurningDrop(new ItemStack(Items.cooked_fish, 1, 3)).setMaxAmount(2));
 	}
 	
 	
@@ -124,22 +116,23 @@ public class EntityDweller extends EntityCreatureTameable implements IMob {
     
 	// Pathing Weight:
 	@Override
-	public float getBlockPathWeight(int par1, int par2, int par3) {
+	public float getBlockPathWeight(int x, int y, int z) {
 		int waterWeight = 10;
-		
-        if(this.worldObj.getBlock(par1, par2, par3) == Blocks.water)
-        	return (super.getBlockPathWeight(par1, par2, par3) + 1) * (waterWeight + 1);
-		if(this.worldObj.getBlock(par1, par2, par3) == Blocks.flowing_water)
-			return (super.getBlockPathWeight(par1, par2, par3) + 1) * waterWeight;
-        if(this.worldObj.isRaining() && this.worldObj.canBlockSeeTheSky(par1, par2, par3))
-        	return (super.getBlockPathWeight(par1, par2, par3) + 1) * (waterWeight + 1);
+        BlockPos pos = new BlockPos(x, y, z);
+        IBlockState blockState = this.worldObj.getBlockState(pos);
+        if(blockState.getBlock() == Blocks.water)
+        	return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
+		if(blockState.getBlock() == Blocks.flowing_water)
+			return (super.getBlockPathWeight(x, y, z) + 1) * waterWeight;
+        if(this.worldObj.isRaining() && this.worldObj.canBlockSeeSky(pos))
+        	return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
         
         if(this.getAttackTarget() != null)
-        	return super.getBlockPathWeight(par1, par2, par3);
+        	return super.getBlockPathWeight(x, y, z);
         if(this.waterContact())
 			return -999999.0F;
 		
-		return super.getBlockPathWeight(par1, par2, par3);
+		return super.getBlockPathWeight(x, y, z);
     }
 	
 	// Pushed By Water:
@@ -168,7 +161,7 @@ public class EntityDweller extends EntityCreatureTameable implements IMob {
 
         // Effect:
         if(target instanceof EntityLivingBase) {
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.poison.id, this.getEffectDuration(5), 1));
+            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("poison"), this.getEffectDuration(5), 1));
         }
 
         return true;
@@ -180,10 +173,9 @@ public class EntityDweller extends EntityCreatureTameable implements IMob {
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotionID() == Potion.poison.id) return false;
-        if(potionEffect.getPotionID() == Potion.blindness.id) return false;
-        super.isPotionApplicable(potionEffect);
-        return true;
+        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("poison")) return false;
+        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("blindness")) return false;
+        return super.isPotionApplicable(potionEffect);
     }
     
     @Override

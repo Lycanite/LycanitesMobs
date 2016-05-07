@@ -1,23 +1,12 @@
 package lycanite.lycanitesmobs.api.gui;
 
-import cpw.mods.fml.client.GuiScrollingList;
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.ExtendedPlayer;
-import lycanite.lycanitesmobs.GuiHandler;
-import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
-import lycanite.lycanitesmobs.api.info.MobInfo;
-import lycanite.lycanitesmobs.api.network.MessageGUIRequest;
-import lycanite.lycanitesmobs.api.pets.PetEntry;
-import lycanite.lycanitesmobs.api.pets.SummonSet;
 import lycanite.lycanitesmobs.api.tileentity.TileEntitySummoningPedestal;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import org.lwjgl.opengl.GL11;
 
 public class GUISummoningPedestal extends GUIBaseManager {
@@ -59,12 +48,12 @@ public class GUISummoningPedestal extends GUIBaseManager {
     // ==================================================
     @Override
     public String getTitle() {
-        return StatCollector.translateToLocal("gui." + "summoningpedestal.name");
+        return I18n.translateToLocal("gui." + "summoningpedestal.name");
     }
 
     @Override
     public String getEnergyTitle() {
-        return StatCollector.translateToLocal("stat.portal.name");
+        return I18n.translateToLocal("stat.portal.name");
     }
 
 
@@ -153,16 +142,16 @@ public class GUISummoningPedestal extends GUIBaseManager {
     public void updateButtons(GuiButton button) {
         // Behaviour Buttons:
         if (button.id == EntityCreatureBase.GUI_COMMAND_ID.SITTING.id)
-            button.displayString = StatCollector.translateToLocal("gui.pet.sitting") + ": " + (this.summonSet.getSitting() ? StatCollector.translateToLocal("common.yes") : StatCollector.translateToLocal("common.no"));
+            button.displayString = I18n.translateToLocal("gui.pet.sitting") + ": " + (this.summonSet.getSitting() ? I18n.translateToLocal("common.yes") : I18n.translateToLocal("common.no"));
 
         if (button.id == EntityCreatureBase.GUI_COMMAND_ID.PASSIVE.id)
-            button.displayString = StatCollector.translateToLocal("gui.pet.passive") + ": " + (this.summonSet.getPassive() ? StatCollector.translateToLocal("common.yes") : StatCollector.translateToLocal("common.no"));
+            button.displayString = I18n.translateToLocal("gui.pet.passive") + ": " + (this.summonSet.getPassive() ? I18n.translateToLocal("common.yes") : I18n.translateToLocal("common.no"));
 
         if (button.id == EntityCreatureBase.GUI_COMMAND_ID.STANCE.id)
-            button.displayString = (this.summonSet.getAggressive() ? StatCollector.translateToLocal("gui.pet.aggressive") : StatCollector.translateToLocal("gui.pet.defensive"));
+            button.displayString = (this.summonSet.getAggressive() ? I18n.translateToLocal("gui.pet.aggressive") : I18n.translateToLocal("gui.pet.defensive"));
 
         if (button.id == EntityCreatureBase.GUI_COMMAND_ID.PVP.id)
-            button.displayString = StatCollector.translateToLocal("gui.pet.pvp") + ": " + (this.summonSet.getPVP() ? StatCollector.translateToLocal("common.yes") : StatCollector.translateToLocal("common.no"));
+            button.displayString = I18n.translateToLocal("gui.pet.pvp") + ": " + (this.summonSet.getPVP() ? I18n.translateToLocal("common.yes") : I18n.translateToLocal("common.no"));
 
         // Hidden Mount Buttons:
         if("mount".equals(this.type)) {

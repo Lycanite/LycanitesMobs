@@ -3,7 +3,7 @@ package lycanite.lycanitesmobs.api.entity.ai;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.math.BlockPos;
 
 public class EntityAISit extends EntityAIBase {
 	// Targets:
@@ -55,7 +55,9 @@ public class EntityAISit extends EntityAIBase {
         if(!this.host.onGround && !this.host.useFlightNavigator())
             return false;
 
-        EntityLivingBase owner = this.host.getOwner();
+        if (!(this.host.getOwner() instanceof EntityLivingBase))
+            return false;
+        EntityLivingBase owner = (EntityLivingBase)this.host.getOwner();
         if(owner != null && this.host.getDistanceSqToEntity(owner) < 144.0D && owner.getAITarget() != null && !this.host.isPassive())
         	return false;
         
@@ -69,14 +71,14 @@ public class EntityAISit extends EntityAIBase {
     public void startExecuting() {
         this.host.clearMovement();
         if(this.host.hasHome() && this.host.getDistanceFromHome() > 1.0F) {
-        	ChunkCoordinates homePos = this.host.getHomePosition();
+        	BlockPos homePos = this.host.getHomePosition();
         	double speed = this.speed;
         	if(this.host.getDistanceFromHome() > this.host.getHomeDistanceMax())
         		speed = this.farSpeed;
 	    	if(!host.useFlightNavigator())
-	    		this.host.getNavigator().tryMoveToXYZ(homePos.posX, homePos.posY, homePos.posZ, this.speed);
+	    		this.host.getNavigator().tryMoveToXYZ(homePos.getX(), homePos.getY(), homePos.getZ(), this.speed);
 	    	else
-	    		host.flightNavigator.setTargetPosition(new ChunkCoordinates((int)homePos.posX, (int)homePos.posY, (int)homePos.posZ), speed);
+	    		host.flightNavigator.setTargetPosition(new BlockPos((int)homePos.getX(), (int)homePos.getY(), (int)homePos.getZ()), speed);
         }
     }
 }

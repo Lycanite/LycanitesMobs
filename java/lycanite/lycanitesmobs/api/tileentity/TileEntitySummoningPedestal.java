@@ -1,9 +1,7 @@
 package lycanite.lycanitesmobs.api.tileentity;
 
-import cpw.mods.fml.common.network.NetworkRegistry;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.container.ContainerBase;
-import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.EntityPortal;
@@ -11,15 +9,15 @@ import lycanite.lycanitesmobs.api.gui.GUISummoningPedestal;
 import lycanite.lycanitesmobs.api.network.MessageSummoningPedestalStats;
 import lycanite.lycanitesmobs.api.network.MessageSummoningPedestalSummonSet;
 import lycanite.lycanitesmobs.api.pets.SummonSet;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -66,7 +64,7 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
     // ========================================
     /** The main update called every tick. **/
     @Override
-    public void updateEntity() {
+    public void update() {
         // Client Side Only:
         if(this.worldObj.isRemote) {
             if(this.summonProgress >= this.summonProgressMax)
@@ -80,7 +78,8 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
         if(this.loadMinionIDs != null) {
             int range = 20;
             List nearbyEntities = this.worldObj.getEntitiesWithinAABB(EntityCreatureBase.class,
-                    AxisAlignedBB.getBoundingBox(this.xCoord - range, this.yCoord - range, this.zCoord - range, this.xCoord + range, this.yCoord + range, this.zCoord + range));
+                    new AxisAlignedBB(this.getPos().getX() - range, this.getPos().getY() - range, this.getPos().getZ() - range,
+                            this.getPos().getX() + range, this.getPos().getY() + range, this.getPos().getZ() + range));
             Iterator possibleEntities = nearbyEntities.iterator();
             while(possibleEntities.hasNext()) {
                 EntityCreatureBase possibleEntity = (EntityCreatureBase)possibleEntities.next();
@@ -135,8 +134,8 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
 
         // Sync To Client:
         if(this.updateTick % 20 == 0) {
-            LycanitesMobs.packetHandler.sendToAllAround(new MessageSummoningPedestalStats(this.capacity, this.summonProgress, this.xCoord, this.yCoord, this.zCoord),
-                    new NetworkRegistry.TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 5D));
+            LycanitesMobs.packetHandler.sendToAllAround(new MessageSummoningPedestalStats(this.capacity, this.summonProgress, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ()),
+                    new NetworkRegistry.TargetPoint(this.worldObj.provider.getDimension(), this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), 5D));
         }
 
         this.updateTick++;
@@ -150,7 +149,7 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
     public void setOwner(EntityLivingBase entity) {
         if(entity instanceof EntityPlayer) {
             this.ownerUUID = entity.getUniqueID();
-            this.ownerName = entity.getCommandSenderName();
+            this.ownerName = entity.getName();
         }
     }
 
@@ -168,7 +167,7 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
     public EntityPlayer getPlayer() {
         if(this.ownerUUID == null)
             return null;
-        return this.worldObj.func_152378_a(this.ownerUUID); // getPlayerEntityByUUID
+        return this.worldObj.getPlayerEntityByUUID(this.ownerUUID);
     }
 
     /** Returns the class that this is summoning. **/
@@ -194,7 +193,7 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
         if(this.summonSet != null)
             this.summonSet.applyBehaviour(minion);
         this.minions.add(minion);
-        minion.setHome(this.xCoord, this.yCoord, this.zCoord, 20);
+        minion.setHome(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), 20);
     }
 
 
@@ -227,15 +226,15 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
             syncData.setString("OwnerName", this.getOwnerName());
         }
 
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, syncData);
+        return new SPacketUpdateTileEntity(this.getPos(), 1, syncData);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
         if(!this.worldObj.isRemote)
             return;
 
-        NBTTagCompound syncData = packet.func_148857_g(); // Get NBT from Packet.
+        NBTTagCompound syncData = packet.getNbtCompound();
         if (syncData.hasKey("OwnerUUID"))
             this.ownerUUID = UUID.fromString(syncData.getString("OwnerUUID"));
         if (syncData.hasKey("OwnerName"))
@@ -248,7 +247,7 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
     }
 
     public void sendSummonSetToServer(SummonSet summonSet) {
-        LycanitesMobs.packetHandler.sendToServer(new MessageSummoningPedestalSummonSet(summonSet, this.xCoord, this.yCoord, this.zCoord));
+        LycanitesMobs.packetHandler.sendToServer(new MessageSummoningPedestalSummonSet(summonSet, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ()));
     }
 
 

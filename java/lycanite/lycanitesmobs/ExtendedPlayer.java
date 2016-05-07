@@ -1,24 +1,26 @@
 package lycanite.lycanitesmobs;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import lycanite.lycanitesmobs.api.info.Beastiary;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
-import lycanite.lycanitesmobs.api.network.*;
-import lycanite.lycanitesmobs.api.pets.*;
+import lycanite.lycanitesmobs.api.item.ItemBase;
 import lycanite.lycanitesmobs.api.item.ItemStaffSummoning;
-import net.minecraft.entity.Entity;
+import lycanite.lycanitesmobs.api.network.*;
+import lycanite.lycanitesmobs.api.pets.DonationFamiliars;
+import lycanite.lycanitesmobs.api.pets.PetEntry;
+import lycanite.lycanitesmobs.api.pets.PetManager;
+import lycanite.lycanitesmobs.api.pets.SummonSet;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.world.World;
-import net.minecraftforge.common.IExtendedEntityProperties;
+import net.minecraft.util.EnumHand;
 
-public class ExtendedPlayer implements IExtendedEntityProperties {
-	public static String EXT_PROP_NAME = "LycanitesMobsPlayer";
+import java.util.HashMap;
+import java.util.Map;
+
+public class ExtendedPlayer {
+    public static Map<EntityPlayer, ExtendedPlayer> extendedPlayers = new HashMap<EntityPlayer, ExtendedPlayer>();
 	public static Map<String, NBTTagCompound> backupNBTTags = new HashMap<String, NBTTagCompound>();
 	
 	// Player Info and Containers:
@@ -35,7 +37,7 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 	// Action Controls:
 	public byte controlStates = 0;
 	public static enum CONTROL_ID {
-		JUMP((byte)1), MOUNT_ABILITY((byte)2), MOUNT_INVENTORY((byte)4);
+		JUMP((byte)1), MOUNT_ABILITY((byte)2), MOUNT_INVENTORY((byte)4), LEFT_CLICK((byte)8);
 		public byte id;
 		private CONTROL_ID(byte i) { id = i; }
 	}
@@ -65,14 +67,11 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 			//LycanitesMobs.printWarning("", "Tried to access an ExtendedPlayer from a null EntityPlayer.");
 			return null;
 		}
-		IExtendedEntityProperties playerIExt = player.getExtendedProperties(EXT_PROP_NAME);
-		ExtendedPlayer playerExt;
-		if(playerIExt != null)
-			playerExt = (ExtendedPlayer)playerIExt;
-		else
-			playerExt = new ExtendedPlayer(player);
-		
-		return playerExt;
+
+        if(extendedPlayers.containsKey(player))
+            return extendedPlayers.get(player);
+
+        return new ExtendedPlayer(player);
 	}
 	
 	
@@ -84,7 +83,7 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 		this.beastiary = new Beastiary(player);
 		this.petManager = new PetManager(player);
 		
-		player.registerExtendedProperties(ExtendedPlayer.EXT_PROP_NAME, this);
+		extendedPlayers.put(player, this);
 	}
 	
 	
@@ -99,26 +98,24 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 			return;
 		
 		// Check for Backup:
-		if(backupNBTTags.containsKey(this.player.getCommandSenderName())) {
-			this.loadNBTData(backupNBTTags.get(this.player.getCommandSenderName()));
-			backupNBTTags.remove(this.player.getCommandSenderName());
+		if(backupNBTTags.containsKey(this.player.getName())) {
+			this.loadNBTData(backupNBTTags.get(this.player.getName()));
+			backupNBTTags.remove(this.player.getName());
 		}
 	}
-	
-	
-	// ==================================================
-    //                       Init
-    // ==================================================
-	@Override
-	public void init(Entity entity, World world) {
-		
-	}
+
 	
 	// ==================================================
     //                       Update
     // ==================================================
 	/** Called by the EventListener, runs any logic on the main player entity's main update loop. **/
 	public void onUpdate() {
+        // Custom Item Left Click Use:
+        if(this.isControlActive(CONTROL_ID.LEFT_CLICK) && this.player.getHeldItemMainhand() != null && this.player.getHeldItemMainhand().getItem() instanceof ItemBase) {
+            ItemBase itemBase = (ItemBase)this.player.getHeldItemMainhand().getItem();
+            itemBase.onItemLeftClick(this.player.getHeldItemMainhand(), this.player.getEntityWorld(), this.player, EnumHand.MAIN_HAND);
+        }
+
 		boolean creative = this.player.capabilities.isCreativeMode;
 
 		// Stats:
@@ -138,8 +135,9 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 		if(this.summonFocus < this.summonFocusMax) {
 			this.summonFocus++;
 			if(!player.worldObj.isRemote && !creative && this.currentTick % 20 == 0
-					|| this.summonFocus == this.summonFocusMax
-					|| (player.getHeldItem() != null && player.getHeldItem().getItem() instanceof ItemStaffSummoning)) {
+					|| this.summonFocus < this.summonFocusMax
+					|| (player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() instanceof ItemStaffSummoning)
+                    || (player.getHeldItemOffhand() != null && player.getHeldItemOffhand().getItem() instanceof ItemStaffSummoning)) {
 				sync = true;
 			}
 		}
@@ -238,11 +236,11 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
     //                    Death Backup
     // ==================================================
 	public void onDeath() {
-		if(backupNBTTags.containsKey(this.player.getCommandSenderName()))
+		if(backupNBTTags.containsKey(this.player.getName()))
 			return;
 		NBTTagCompound nbtTagCompound = new NBTTagCompound();
 		this.saveNBTData(nbtTagCompound);
-		backupNBTTags.put(this.player.getCommandSenderName(), nbtTagCompound);
+		backupNBTTags.put(this.player.getName(), nbtTagCompound);
 	}
 	
 	
@@ -315,21 +313,17 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 			this.sendPetEntriesToPlayer("mount");
         if(guiID == GuiHandler.PlayerGuiType.FAMILIAR_MANAGER.id)
             this.sendPetEntriesToPlayer("familiar");
-		//if(guiID == GuiHandler.PlayerGuiType.MINION_MANAGER.id)
-			//this.sendAllSummonSetsToPlayer();
-		//if(guiID == GuiHandler.PlayerGuiType.BEASTIARY.id)
-			//this.beastiary.sendAllToClient();
 	}
 	
 	
 	// ==================================================
     //                        NBT
     // ==================================================
+    // TODO Move this NBT into a new Capability.
    	// ========== Read ===========
     /** Reads a list of Creature Knowledge from a player's NBTTag. **/
-	@Override
     public void loadNBTData(NBTTagCompound nbtTagCompound) {
-		NBTTagCompound extTagCompound = nbtTagCompound.getCompoundTag(EXT_PROP_NAME);
+		NBTTagCompound extTagCompound = nbtTagCompound.getCompoundTag("LycanitesMobsPlayer");
 		
     	this.beastiary.readFromNBT(extTagCompound);
         this.petManager.readFromNBT(extTagCompound);
@@ -356,7 +350,6 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
     
     // ========== Write ==========
     /** Writes a list of Creature Knowledge to a player's NBTTag. **/
-	@Override
     public void saveNBTData(NBTTagCompound nbtTagCompound) {
 		NBTTagCompound extTagCompound = new NBTTagCompound();
 		
@@ -376,6 +369,6 @@ public class ExtendedPlayer implements IExtendedEntityProperties {
 		}
 		extTagCompound.setTag("SummonSets", nbtSummonSets);
     	
-    	nbtTagCompound.setTag(EXT_PROP_NAME, extTagCompound);
+    	nbtTagCompound.setTag("LycanitesMobsPlayer", extTagCompound);
     }
 }

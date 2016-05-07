@@ -1,18 +1,17 @@
 package lycanite.lycanitesmobs.api.entity.ai;
 
-import java.util.Collections;
-import java.util.List;
-
+import com.google.common.base.Predicate;
 import lycanite.lycanitesmobs.api.IGroupAnimal;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
-import net.minecraft.command.IEntitySelector;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.monster.IMob;
 
-import org.apache.commons.lang3.StringUtils;
+import java.util.Collections;
+import java.util.List;
 
 public class EntityAITargetOwnerThreats extends EntityAITarget {
 	// Properties:
@@ -26,7 +25,14 @@ public class EntityAITargetOwnerThreats extends EntityAITarget {
         super((EntityCreatureBase)setHost);
     	this.tamedHost = setHost;
         this.setMutexBits(1);
-        this.targetSelector = new EntityAITargetSelector(this, (IEntitySelector)null);
+        this.targetSelector = new Predicate<Entity>() {
+            @Override
+            public boolean apply(Entity input) {
+                if(!(input instanceof EntityLivingBase))
+                    return false;
+                return EntityAITargetOwnerThreats.this.isSuitableTarget((EntityLivingBase)input, false);
+            }
+        };
         this.targetSorter = new EntityAITargetSorterNearest(setHost);
     }
     
@@ -49,8 +55,8 @@ public class EntityAITargetOwnerThreats extends EntityAITarget {
     	return this;
     }
     
-    public EntityAITargetOwnerThreats setSelector(IEntitySelector selector) {
-    	this.targetSelector = new EntityAITargetSelector(this, selector);
+    public EntityAITargetOwnerThreats setSelector(Predicate<Entity> selector) {
+    	this.targetSelector = selector;
     	return this;
     }
     
@@ -62,7 +68,7 @@ public class EntityAITargetOwnerThreats extends EntityAITarget {
     protected EntityLivingBase getTarget() { return this.host.getAttackTarget(); }
     @Override
     protected void setTarget(EntityLivingBase newTarget) { this.host.setAttackTarget(newTarget); }
-    protected EntityLivingBase getOwner() { return this.host.getOwner(); }
+    protected Entity getOwner() { return this.host.getOwner(); }
     
     
     // ==================================================
@@ -83,8 +89,8 @@ public class EntityAITargetOwnerThreats extends EntityAITarget {
             return false;
     	
     	// Ownable Checks:
-        if(this.host instanceof IEntityOwnable && StringUtils.isNotEmpty(((IEntityOwnable)this.host).func_152113_b())) { //getOwnerName()
-            if(target instanceof IEntityOwnable && ((IEntityOwnable)this.host).func_152113_b().equals(((IEntityOwnable)target).func_152113_b())) // getOwnerName()
+        if(this.host instanceof IEntityOwnable && ((IEntityOwnable)this.host).getOwner() != null) {
+            if(target instanceof IEntityOwnable && ((IEntityOwnable)this.host).getOwner() == ((IEntityOwnable)target).getOwner())
                 return false;
             if(target == ((IEntityOwnable)this.host).getOwner())
                 return false;
@@ -116,7 +122,7 @@ public class EntityAITargetOwnerThreats extends EntityAITarget {
         double distance = this.getTargetDistance() - this.host.width;
         double heightDistance = 4.0D - this.host.height;
         if(this.host.useFlightNavigator()) heightDistance = this.getTargetDistance() - this.host.height;
-        List possibleTargets = this.host.worldObj.selectEntitiesWithinAABB(EntityLivingBase.class, this.host.boundingBox.expand(distance, heightDistance, distance), this.targetSelector);
+        List possibleTargets = this.host.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, this.host.getEntityBoundingBox().expand(distance, heightDistance, distance), this.targetSelector);
         Collections.sort(possibleTargets, this.targetSorter);
         
         if(possibleTargets.isEmpty())

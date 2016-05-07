@@ -1,14 +1,14 @@
 package lycanite.lycanitesmobs.api.entity;
 
-import java.lang.reflect.Constructor;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+
+import java.lang.reflect.Constructor;
 
 public class EntityProjectileRapidFire extends EntityProjectileBase {
 	// Properties:
@@ -160,7 +160,7 @@ public class EntityProjectileRapidFire extends EntityProjectileBase {
  	//                     Impact
  	// ==================================================
     @Override
-    protected void onImpact(MovingObjectPosition par1MovingObjectPosition) {
+    protected void onImpact(RayTraceResult rayTraceResult) {
     	return;
     }
     

@@ -1,9 +1,5 @@
 package lycanite.lycanitesmobs.api.network;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import cpw.mods.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
 import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.LycanitesMobs;
@@ -13,8 +9,10 @@ import lycanite.lycanitesmobs.api.pets.SummonSet;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
-
-import java.io.IOException;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class MessagePetEntry implements IMessage, IMessageHandler<MessagePetEntry, IMessage> {
     public String petEntryName;
@@ -107,22 +105,17 @@ public class MessagePetEntry implements IMessage, IMessageHandler<MessagePetEntr
 	@Override
 	public void fromBytes(ByteBuf buf) {
 		PacketBuffer packet = new PacketBuffer(buf);
-		try {
-            this.petEntryName = packet.readStringFromBuffer(256);
-            this.petEntryID = packet.readInt();
-            this.petEntryType = packet.readStringFromBuffer(256);
-            this.spawningActive = packet.readBoolean();
-            this.teleportEntity = packet.readBoolean();
-			this.summonType = packet.readStringFromBuffer(256);
-			this.behaviour = packet.readByte();
-			this.petEntryEntityID = packet.readInt();
-			this.respawnTime = packet.readInt();
-			this.respawnTimeMax = packet.readInt();
-			this.isRespawning = packet.readBoolean();
-		} catch (IOException e) {
-			LycanitesMobs.printWarning("", "There was a problem decoding the packet: " + packet + ".");
-			e.printStackTrace();
-		}
+        this.petEntryName = packet.readStringFromBuffer(256);
+        this.petEntryID = packet.readInt();
+        this.petEntryType = packet.readStringFromBuffer(256);
+        this.spawningActive = packet.readBoolean();
+        this.teleportEntity = packet.readBoolean();
+        this.summonType = packet.readStringFromBuffer(256);
+        this.behaviour = packet.readByte();
+        this.petEntryEntityID = packet.readInt();
+        this.respawnTime = packet.readInt();
+        this.respawnTimeMax = packet.readInt();
+        this.isRespawning = packet.readBoolean();
 	}
 	
 	
@@ -135,22 +128,17 @@ public class MessagePetEntry implements IMessage, IMessageHandler<MessagePetEntr
 	@Override
 	public void toBytes(ByteBuf buf) {
 		PacketBuffer packet = new PacketBuffer(buf);
-		try {
-            packet.writeStringToBuffer(this.petEntryName);
-			packet.writeInt(this.petEntryID);
-            packet.writeStringToBuffer(this.petEntryType);
-            packet.writeBoolean(this.spawningActive);
-            packet.writeBoolean(this.teleportEntity);
-			packet.writeStringToBuffer(this.summonType);
-			packet.writeByte(this.behaviour);
-			packet.writeInt(this.petEntryEntityID);
-			packet.writeInt(this.respawnTime);
-			packet.writeInt(this.respawnTimeMax);
-			packet.writeBoolean(this.isRespawning);
-		} catch (IOException e) {
-			LycanitesMobs.printWarning("", "There was a problem encoding the packet: " + packet + ".");
-			e.printStackTrace();
-		}
+        packet.writeString(this.petEntryName);
+        packet.writeInt(this.petEntryID);
+        packet.writeString(this.petEntryType);
+        packet.writeBoolean(this.spawningActive);
+        packet.writeBoolean(this.teleportEntity);
+        packet.writeString(this.summonType);
+        packet.writeByte(this.behaviour);
+        packet.writeInt(this.petEntryEntityID);
+        packet.writeInt(this.respawnTime);
+        packet.writeInt(this.respawnTimeMax);
+        packet.writeBoolean(this.isRespawning);
 	}
 	
 }

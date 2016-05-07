@@ -1,19 +1,17 @@
 package lycanite.lycanitesmobs.api.model;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 @SideOnly(Side.CLIENT)
 public class ModelCustom extends ModelBase {

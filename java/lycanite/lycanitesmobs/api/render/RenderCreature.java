@@ -1,28 +1,20 @@
 package lycanite.lycanitesmobs.api.render;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
-import lycanite.lycanitesmobs.api.model.ModelCustomObj;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.RenderLivingEvent;
-import net.minecraftforge.common.MinecraftForge;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RenderCreature extends RenderLiving {
@@ -36,9 +28,8 @@ public class RenderCreature extends RenderLiving {
     // ==================================================
   	//                    Constructor
   	// ==================================================
-    public RenderCreature(String setEntityName) {
-    	super(AssetManager.getModel(setEntityName), 0.5F);
-    	this.setRenderPassModel(AssetManager.getModel(setEntityName));
+    public RenderCreature(String entityID, RenderManager renderManager) {
+    	super(renderManager, AssetManager.getModel(entityID), 0.5F);
     }
     
     
@@ -52,8 +43,10 @@ public class RenderCreature extends RenderLiving {
     * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
     */
     @Override
-    public void doRender(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9) {
-    	EntityLivingBase par1EntityLivingBase = (EntityLivingBase)par1EntityLiving;
+    public void doRender(EntityLiving entityLiving, double par2, double par4, double par6, float par8, float par9) {
+        super.doRender(entityLiving, par2, par4, par6, par8, par9);
+
+    	/*EntityLivingBase par1EntityLivingBase = (EntityLivingBase)entityLiving;
        if(MinecraftForge.EVENT_BUS.post(new RenderLivingEvent.Pre(par1EntityLivingBase, this, par2, par4, par6))) return;
        GL11.glPushMatrix();
        GL11.glDisable(GL11.GL_CULL_FACE);
@@ -248,7 +241,7 @@ public class RenderCreature extends RenderLiving {
        
        // Render Leash:
        if(par1EntityLivingBase instanceof EntityLiving)
-    	   this.func_110827_b((EntityLiving)par1EntityLivingBase, par2, par4, par6, par8, par9);
+    	   this.func_110827_b((EntityLiving)par1EntityLivingBase, par2, par4, par6, par8, par9);*/
    }
     
     
@@ -330,8 +323,12 @@ public class RenderCreature extends RenderLiving {
  	// ==================================================
     // ========== Main ==========
     @Override
-    protected void bindEntityTexture(Entity entity) {
-        this.bindTexture(this.getEntityTexture(entity));
+    protected boolean bindEntityTexture(Entity entity) {
+        ResourceLocation texture = this.getEntityTexture(entity);
+        if(texture == null)
+            return false;
+        this.bindTexture(texture);
+        return true;
     }
     
     @Override
@@ -354,9 +351,8 @@ public class RenderCreature extends RenderLiving {
     
     // ========== Bind ==========
     @Override
-    protected void bindTexture(ResourceLocation texture) {
-    	if(texture != null)
-    		this.renderManager.renderEngine.bindTexture(texture);
+    public void bindTexture(ResourceLocation texture) {
+    	this.renderManager.renderEngine.bindTexture(texture);
     }
     
     
@@ -370,20 +366,20 @@ public class RenderCreature extends RenderLiving {
     
     /** If true, display the name of the entity above it. **/
     @Override
-    protected boolean func_110813_b(EntityLiving renderEntity) {
+    protected boolean canRenderName(EntityLiving renderEntity) {
     	if(!Minecraft.isGuiEnabled()) return false;
     	if(renderEntity == this.renderManager.livingPlayer) return false;
     	if(renderEntity.isInvisibleToPlayer(Minecraft.getMinecraft().thePlayer)) return false;
-    	if(renderEntity.riddenByEntity != null) return false;
+    	if(renderEntity.getControllingPassenger() != null) return false;
     	
     	if(renderEntity.getAlwaysRenderNameTagForRender()) {
     		if(renderEntity instanceof EntityCreatureTameable)
     			if(((EntityCreatureTameable)renderEntity).isTamed())
-    				return renderEntity == this.renderManager.field_147941_i;
+    				return renderEntity == this.renderManager.pointedEntity;
     		return true;
     	}
     	
-    	return renderEntity.hasCustomNameTag() && renderEntity == this.renderManager.field_147941_i;
+    	return renderEntity.hasCustomName() && renderEntity == this.renderManager.pointedEntity;
     }
     
     

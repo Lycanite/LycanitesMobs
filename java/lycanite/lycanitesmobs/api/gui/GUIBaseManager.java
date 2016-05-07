@@ -1,10 +1,7 @@
 package lycanite.lycanitesmobs.api.gui;
 
-import cpw.mods.fml.client.GuiScrollingList;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ExtendedPlayer;
-import lycanite.lycanitesmobs.GuiHandler;
-import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.pets.PetEntry;
@@ -12,13 +9,13 @@ import lycanite.lycanitesmobs.api.pets.SummonSet;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.fml.client.GuiScrollingList;
 import org.lwjgl.opengl.GL11;
+
+import java.io.IOException;
 
 public class GUIBaseManager extends GuiScreen {
 	public EntityPlayer player;
@@ -128,8 +125,8 @@ public class GUIBaseManager extends GuiScreen {
 
 		// No Pets:
 		if(!this.hasPets()) {
-			this.getFontRenderer().drawString(StatCollector.translateToLocal("gui." + this.type + "manager.empty"), this.centerX - 24, this.windowY + 6, 0xFFFFFF);
-			this.getFontRenderer().drawSplitString(StatCollector.translateToLocal("gui." + this.type + "manager.info"), this.windowX + 16, this.windowY + 30, this.windowWidth - 32, 0xFFFFFF);
+			this.getFontRenderer().drawString(I18n.translateToLocal("gui." + this.type + "manager.empty"), this.centerX - 24, this.windowY + 6, 0xFFFFFF);
+			this.getFontRenderer().drawSplitString(I18n.translateToLocal("gui." + this.type + "manager.info"), this.windowX + 16, this.windowY + 30, this.windowWidth - 32, 0xFFFFFF);
 			return;
 		}
 
@@ -144,15 +141,15 @@ public class GUIBaseManager extends GuiScreen {
 
 		// Removal Confirmation:
 		if((this.type.equalsIgnoreCase("pet") || this.type.equalsIgnoreCase("mount")) && this.selectedPet.releaseEntity)
-			this.getFontRenderer().drawSplitString(StatCollector.translateToLocal("gui.pet.release.confirm"), this.centerX + 2, this.windowY + 41, (this.windowWidth / 2) - 2, 0xFFFFFF);
+			this.getFontRenderer().drawSplitString(I18n.translateToLocal("gui.pet.release.confirm"), this.centerX + 2, this.windowY + 41, (this.windowWidth / 2) - 2, 0xFFFFFF);
 	}
 
     public String getTitle() {
-        return StatCollector.translateToLocal("gui." + this.type + "manager.name");
+        return I18n.translateToLocal("gui." + this.type + "manager.name");
     }
 
     public String getEnergyTitle() {
-        return StatCollector.translateToLocal("stat.spirit.name");
+        return I18n.translateToLocal("stat.spirit.name");
     }
 	
 	
@@ -267,8 +264,8 @@ public class GUIBaseManager extends GuiScreen {
 		this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.RELEASE.id, buttonXRight, buttonY, buttonWidth, buttonHeight, "..."));
 
 		// Removal Confirmation:
-		this.buttonList.add(new GuiButton(101, buttonX, buttonY, buttonWidth, buttonHeight, StatCollector.translateToLocal("common.yes")));
-		this.buttonList.add(new GuiButton(102, buttonXRight, buttonY, buttonWidth, buttonHeight, StatCollector.translateToLocal("common.no")));
+		this.buttonList.add(new GuiButton(101, buttonX, buttonY, buttonWidth, buttonHeight, I18n.translateToLocal("common.yes")));
+		this.buttonList.add(new GuiButton(102, buttonXRight, buttonY, buttonWidth, buttonHeight, I18n.translateToLocal("common.no")));
 	}
 
 	public void updateControls() {
@@ -298,30 +295,30 @@ public class GUIBaseManager extends GuiScreen {
     public void updateButtons(GuiButton button) {
         // Action Buttons:
         if(button.id == EntityCreatureBase.GUI_COMMAND_ID.SPAWNING.id)
-            button.displayString = StatCollector.translateToLocal("gui.pet.active") + ": " + (this.selectedPet.spawningActive ? StatCollector.translateToLocal("common.yes") : StatCollector.translateToLocal("common.no"));
+            button.displayString = I18n.translateToLocal("gui.pet.active") + ": " + (this.selectedPet.spawningActive ? I18n.translateToLocal("common.yes") : I18n.translateToLocal("common.no"));
 
         if(button.id == EntityCreatureBase.GUI_COMMAND_ID.TELEPORT.id)
-            button.displayString = StatCollector.translateToLocal("gui.pet.teleport");
+            button.displayString = I18n.translateToLocal("gui.pet.teleport");
 
         // Behaviour Buttons:
         if (button.id == EntityCreatureBase.GUI_COMMAND_ID.SITTING.id)
-            button.displayString = StatCollector.translateToLocal("gui.pet.sitting") + ": " + (this.summonSet.getSitting() ? StatCollector.translateToLocal("common.yes") : StatCollector.translateToLocal("common.no"));
+            button.displayString = I18n.translateToLocal("gui.pet.sitting") + ": " + (this.summonSet.getSitting() ? I18n.translateToLocal("common.yes") : I18n.translateToLocal("common.no"));
 
         if (button.id == EntityCreatureBase.GUI_COMMAND_ID.FOLLOWING.id)
-            button.displayString = (this.summonSet.getFollowing() ? StatCollector.translateToLocal("gui.pet.follow") : StatCollector.translateToLocal("gui.pet.wander"));
+            button.displayString = (this.summonSet.getFollowing() ? I18n.translateToLocal("gui.pet.follow") : I18n.translateToLocal("gui.pet.wander"));
 
         if (button.id == EntityCreatureBase.GUI_COMMAND_ID.PASSIVE.id)
-            button.displayString = StatCollector.translateToLocal("gui.pet.passive") + ": " + (this.summonSet.getPassive() ? StatCollector.translateToLocal("common.yes") : StatCollector.translateToLocal("common.no"));
+            button.displayString = I18n.translateToLocal("gui.pet.passive") + ": " + (this.summonSet.getPassive() ? I18n.translateToLocal("common.yes") : I18n.translateToLocal("common.no"));
 
         if (button.id == EntityCreatureBase.GUI_COMMAND_ID.STANCE.id)
-            button.displayString = (this.summonSet.getAggressive() ? StatCollector.translateToLocal("gui.pet.aggressive") : StatCollector.translateToLocal("gui.pet.defensive"));
+            button.displayString = (this.summonSet.getAggressive() ? I18n.translateToLocal("gui.pet.aggressive") : I18n.translateToLocal("gui.pet.defensive"));
 
         if (button.id == EntityCreatureBase.GUI_COMMAND_ID.PVP.id)
-            button.displayString = StatCollector.translateToLocal("gui.pet.pvp") + ": " + (this.summonSet.getPVP() ? StatCollector.translateToLocal("common.yes") : StatCollector.translateToLocal("common.no"));
+            button.displayString = I18n.translateToLocal("gui.pet.pvp") + ": " + (this.summonSet.getPVP() ? I18n.translateToLocal("common.yes") : I18n.translateToLocal("common.no"));
 
         // Remove:
         if(button.id == EntityCreatureBase.GUI_COMMAND_ID.RELEASE.id)
-            button.displayString = StatCollector.translateToLocal("gui.pet.release");
+            button.displayString = I18n.translateToLocal("gui.pet.release");
 
         // Removal Confirmation:
         if(!this.selectedPet.releaseEntity) {
@@ -359,7 +356,7 @@ public class GUIBaseManager extends GuiScreen {
   	//                     Actions
   	// ==================================================
 	@Override
-	protected void actionPerformed(GuiButton guiButton) {
+	protected void actionPerformed(GuiButton guiButton) throws IOException {
 		// Inactive:
 		if(!this.hasSelectedPet()) {
 			super.actionPerformed(guiButton);
@@ -444,26 +441,11 @@ public class GUIBaseManager extends GuiScreen {
   	//                     Key Press
   	// ==================================================
 	@Override
-	protected void keyTyped(char par1, int par2) {
+	protected void keyTyped(char par1, int par2) throws IOException {
 		if(par2 == 1 || par2 == this.mc.gameSettings.keyBindInventory.getKeyCode())
         	 this.mc.thePlayer.closeScreen();
 		super.keyTyped(par1, par2);
 	}
-	
-	
-	// ==================================================
-  	//                     Draw Image
-  	// ==================================================
-	public void drawImage(int x, int y, int u, int v, int w, int h, float s, float t) {
-		float z = this.zLevel;
-        Tessellator tessellator = Tessellator.instance;
-        tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV((double)(x + 0), (double)(y + h), (double)z, (double)((float)(u + 0) * s), (double)((float)(v + h) * t));
-        tessellator.addVertexWithUV((double)(x + w), (double)(y + h), (double)z, (double)((float)(u + w) * s), (double)((float)(v + h) * t));
-        tessellator.addVertexWithUV((double)(x + w), (double)(y + 0), (double)z, (double)((float)(u + w) * s), (double)((float)(v + 0) * t));
-        tessellator.addVertexWithUV((double)(x + 0), (double)(y + 0), (double)z, (double)((float)(u + 0) * s), (double)((float)(v + 0) * t));
-        tessellator.draw();
-    }
 
 
 	// ==================================================

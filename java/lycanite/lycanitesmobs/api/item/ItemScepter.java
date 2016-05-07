@@ -1,24 +1,26 @@
 package lycanite.lycanitesmobs.api.item;
 
-import lycanite.lycanitesmobs.AssetManager;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import com.google.common.collect.Multimap;
+import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumAction;
+import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-import com.google.common.collect.Multimap;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import java.util.UUID;
 
 public class ItemScepter extends ItemBase {
-    private float damageScale = 1.0F;
-    private int weaponFlash = 0;
+    protected float damageScale = 1.0F;
+    protected int weaponFlash = 0;
 	
 	// ==================================================
 	//                   Constructor
@@ -27,6 +29,13 @@ public class ItemScepter extends ItemBase {
         super();
         this.setMaxStackSize(1);
         this.setMaxDamage(this.getDurability());
+
+        this.addPropertyOverride(new ResourceLocation("using"), new IItemPropertyGetter() {
+            @SideOnly(Side.CLIENT)
+            public float apply(ItemStack itemStack, World world, EntityLivingBase entity) {
+                return entity != null && entity.isHandActive() && entity.getActiveItemStack() == itemStack ? 1.0F : 0.0F;
+            }
+        });
     }
 	
     
@@ -42,39 +51,63 @@ public class ItemScepter extends ItemBase {
 	// ==================================================
 	//                       Use
 	// ==================================================
+    // ========== Prevent Swing ==========
+    @Override
+    public boolean onEntitySwing(EntityLivingBase entity, ItemStack itemStack) {
+        if(entity instanceof EntityPlayer) {
+            entity.setActiveHand(EnumHand.MAIN_HAND);
+            return true;
+        }
+        return super.onEntitySwing(entity, itemStack);
+    }
+    @Override
+    public boolean onLeftClickEntity(ItemStack itemStack, EntityPlayer player, Entity entity) {
+        return true;
+    }
+
     // ========== Start ==========
     @Override
-    public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
-    	player.setItemInUse(itemStack, this.getMaxItemUseDuration(itemStack));
-        return itemStack;
+    public void onItemLeftClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
+        if(hand == EnumHand.OFF_HAND)
+            return;
+        //playerIn.setActiveHand(hand);
+    }
+
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
+        //if(hand == EnumHand.MAIN_HAND)
+            //return new ActionResult(EnumActionResult.PASS, itemStackIn);
+        playerIn.setActiveHand(hand);
+        return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
     }
 
     // ========== Using ==========
     // Was onUsingItemTick() but acted weird, using the EventListener to replicate.
     @Override
-    public void onUsingTick(ItemStack itemStack, EntityPlayer player, int useRemaining) {
-    	if(itemStack == null || player == null || player.worldObj == null)
+    public void onUsingTick(ItemStack itemStack, EntityLivingBase entity, int useRemaining) {
+    	if(itemStack == null || entity == null || entity.worldObj == null)
     		return;
     	int useTime = this.getMaxItemUseDuration(itemStack) - useRemaining;
     	if(useTime > this.getRapidTime(itemStack)) {
     		int rapidRemainder = useTime % this.getRapidTime(itemStack);
-    		if(rapidRemainder == 0 && player.worldObj != null) {
-    			if(this.rapidAttack(itemStack, player.worldObj, player)) {
-		    		this.damageItemRapid(itemStack, player);
+    		if(rapidRemainder == 0 && entity.worldObj != null) {
+    			if(this.rapidAttack(itemStack, entity.worldObj, entity)) {
+		    		this.damageItemRapid(itemStack, entity);
 		    		this.weaponFlash = Math.max(20, this.getRapidTime(itemStack));
 		    	}
     		}
     	}
     	if(useTime >= this.getChargeTime(itemStack))
     		this.weaponFlash = Math.max(20, this.getChargeTime(itemStack));
-    	super.onUsingTick(itemStack, player, useRemaining);
+
+    	super.onUsingTick(itemStack, entity, useRemaining);
     }
     
     // ========== Stop ==========
     @Override
-    public void onPlayerStoppedUsing(ItemStack itemStack, World world, EntityPlayer player, int useRemaining) {
-    	int useTime = this.getMaxItemUseDuration(itemStack) - useRemaining;
-    	float power = (float)useTime / (float)this.getChargeTime(itemStack);
+    public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
+    	int useTime = this.getMaxItemUseDuration(stack) - timeLeft;
+    	float power = (float)useTime / (float)this.getChargeTime(stack);
     	
     	this.weaponFlash = 0;
     	
@@ -83,25 +116,25 @@ public class ItemScepter extends ItemBase {
     	if(power > 1.0F)
     		power = 1.0F;
     	
-    	if(this.chargedAttack(itemStack, world, player, power)) {
-    		this.damageItemCharged(itemStack, player, power);
-    		this.weaponFlash = Math.min(20, this.getChargeTime(itemStack));
+    	if(this.chargedAttack(stack, worldIn, entityLiving, power)) {
+    		this.damageItemCharged(stack, entityLiving, power);
+    		this.weaponFlash = Math.min(20, this.getChargeTime(stack));
     	}
     }
 
     // ========== Animation ==========
     @Override
     public EnumAction getItemUseAction(ItemStack par1ItemStack) {
-        return EnumAction.bow;
+        return EnumAction.BOW;
     }
 
     // ========== Durability ==========
-    public void damageItemRapid(ItemStack itemStack, EntityPlayer player) {
-        itemStack.damageItem(1, player);
+    public void damageItemRapid(ItemStack itemStack, EntityLivingBase entity) {
+        itemStack.damageItem(1, entity);
     }
     
-    public void damageItemCharged(ItemStack itemStack, EntityPlayer player, float power) {
-    	itemStack.damageItem((int)(10 * power), player);
+    public void damageItemCharged(ItemStack itemStack, EntityLivingBase entity, float power) {
+    	itemStack.damageItem((int)(10 * power), entity);
     }
     
     public int getDurability() {
@@ -128,7 +161,7 @@ public class ItemScepter extends ItemBase {
 	// ==================================================
 	//                      Attack
 	// ==================================================
-    public boolean rapidAttack(ItemStack itemStack, World world, EntityPlayer player) {
+    public boolean rapidAttack(ItemStack itemStack, World world, EntityLivingBase entity) {
     	if(!world.isRemote) {
         	//EntityThrowable projectile = new EntityThrowable(world, player);
         	//world.spawnEntityInWorld(projectile);
@@ -137,7 +170,7 @@ public class ItemScepter extends ItemBase {
     	return false;
     }
     
-    public boolean chargedAttack(ItemStack itemStack, World world, EntityPlayer player, float power) {
+    public boolean chargedAttack(ItemStack itemStack, World world, EntityLivingBase entity, float power) {
     	if(!world.isRemote) {
         	//EntityThrowable projectile = new EntityThrowable(world, player);
     		//projectile.setDamage((int)(projectile.getDamage() * power));
@@ -151,12 +184,12 @@ public class ItemScepter extends ItemBase {
 	// ==================================================
 	//                      Stats
 	// ==================================================
-    /*@Override
-    public Multimap getItemAttributeModifiers() {
-        Multimap multimap = super.getItemAttributeModifiers();
-        multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(field_111210_e, "Weapon modifier", (double)this.damageScale, 0));
+    @Override
+    public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
+        Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot, stack);
+        multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getAttributeUnlocalizedName(), new AttributeModifier(UUID.randomUUID(), "Weapon modifier", (double)this.damageScale, 0));
         return multimap;
-    }*/
+    }
 
 	
 	// ==================================================
@@ -167,6 +200,14 @@ public class ItemScepter extends ItemBase {
         return 18;
     }
 
+
+    // ==================================================
+    //                     Sounds
+    // ==================================================
+    public void playSound(ItemStack itemStack, World world, EntityLivingBase entity, float power, EntityProjectileBase projectile) {
+        world.playSound(entity.posX, entity.posY, entity.posZ, projectile.getLaunchSound(), SoundCategory.PLAYERS, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F), false);
+    }
+
 	
 	// ==================================================
 	//                     Repairs
@@ -175,27 +216,6 @@ public class ItemScepter extends ItemBase {
     public boolean getIsRepairable(ItemStack itemStack, ItemStack repairStack) {
         //if(repairStack.itemID == -1) return true;
         return super.getIsRepairable(itemStack, repairStack);
-    }
-    
-	
-	// ==================================================
-	//                     Visuals
-	// ==================================================
-    // ========== Get Icon ==========
-    @SideOnly(Side.CLIENT)
-    @Override
-    public IIcon getIconFromDamage(int damage) {
-    	if(this.weaponFlash-- > 0) {
-            return AssetManager.getIconGroup(this.itemName)[1];
-    	}
-        return AssetManager.getIconGroup(this.itemName)[0];
-    }
-    
-    // ========== Register Icons ==========
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IIconRegister iconRegister) {
-    	AssetManager.addIconGroup(this.itemName, this.group, new String[] {this.textureName, this.textureName + "_fire"}, iconRegister);
     }
 
     // ========== Holding Angle ==========

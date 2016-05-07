@@ -1,32 +1,35 @@
 package lycanite.lycanitesmobs.api.block;
 
-import java.util.List;
-import java.util.Random;
-
-import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.translation.I18n;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.List;
+import java.util.Random;
 
 public class BlockBase extends Block {
 	
 	// Properties:
 	public GroupInfo group;
 	public String blockName = "BlockBase";
+    public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 15);
 	
 	// Stats:
 	/** If set to a value above 0, the block will update on the specified number of ticks. **/
@@ -38,7 +41,7 @@ public class BlockBase extends Block {
 	/** Will falling blocks such as sand or gravel destroy this block if they land on it? */
 	public boolean canBeCrushed = false;
 	
-	/** If true, this block can be walked through. **/
+	/** If true, this block can be walked through, if false, it can be walked through based on the material. **/
 	public boolean noEntityCollision = false;
 	/** If true, this block cannot be broken or even hit like a solid block. **/
 	public boolean noBreakCollision = false;
@@ -69,16 +72,21 @@ public class BlockBase extends Block {
 	
 	/** Should be called by a child class once the blockName and other important variables are set, kind of a late construct. **/
 	public void setup() {
-		this.setBlockName(this.blockName);
-        this.setBlockTextureName(this.blockName.toLowerCase());
+        this.setRegistryName(new ResourceLocation(this.group.filename, this.blockName.toLowerCase()));
+		this.setUnlocalizedName(this.blockName);
 	}
 
 
     // ==================================================
     //                      Info
     // ==================================================
-    public String getDescription(ItemStack itemStack, EntityPlayer entityPlayer, List textList, boolean par4) {
-        return StatCollector.translateToLocal("tile." + this.blockName + ".description");
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+        tooltip.add(this.getDescription(stack, player));
+    }
+
+    public String getDescription(ItemStack itemStack, EntityPlayer entityPlayer) {
+        return I18n.translateToLocal("tile." + this.blockName + ".description");
     }
 	
 	
@@ -86,10 +94,10 @@ public class BlockBase extends Block {
 	//                      Place
 	// ==================================================
 	@Override
-	public void onBlockAdded(World world, int x, int y, int z) {
+	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
 		// Initial Block Ticking:
 		if(this.tickRate > 0)
-			world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world));
+			world.scheduleBlockUpdate(pos, this, this.tickRate(world), 1);
 	}
 	
 	
@@ -98,12 +106,12 @@ public class BlockBase extends Block {
 	// ==================================================
 	//========== Drops ==========
 	@Override
-	public Item getItemDropped(int breakID, Random random, int zero) {
-        return super.getItemDropped(breakID, random, zero);
+	public Item getItemDropped(IBlockState state, Random random, int zero) {
+        return super.getItemDropped(state, random, zero);
 	}
 	
 	@Override
-	public int damageDropped(int breakMetadata) {
+	public int damageDropped(IBlockState state) {
 		return 0;
 	}
     
@@ -111,17 +119,36 @@ public class BlockBase extends Block {
 	public int quantityDropped(Random random) {
         return 1;
     }
+
+
+    // ==================================================
+    //                   Block States
+    // ==================================================
+    @Override
+    public BlockStateContainer createBlockState() {
+        return super.createBlockState();
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return this.getDefaultState();
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return 0;
+    }
 	
 
 	// ==================================================
 	//                   Block Updates
 	// ==================================================
-	public void onNeighborBlockChange(World world, int x, int y, int z, int blockID) {
+	public void onNeighborBlockChange(World world, BlockPos pos, int blockID) {
         // Crushable:
-		Block block = world.getBlock(x, y, z);
+		Block block = world.getBlockState(pos).getBlock();
 		if(this.canBeCrushed)
 			if(block == Blocks.sand || block == Blocks.gravel)
-	        	world.setBlockToAir(x, y, z);
+	        	world.setBlockToAir(pos);
     }
     
     
@@ -136,23 +163,17 @@ public class BlockBase extends Block {
 
     // ========== Tick Update ==========
     @Override
-    public void updateTick(World world, int x, int y, int z, Random random) {
-		if(world.isRemote)
+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+		if(worldIn.isRemote)
 			return;
 		
 		// Remove On Tick:
 		if(this.removeOnTick)
-			world.setBlockToAir(x, y, z);
+            worldIn.setBlockToAir(pos);
 		
 		// Looping Tick:
 		else if(this.tickRate > 0 && this.loopTicks)
-			world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world));
-    }
-    
-    // ========== High Update Priority ==========
-    @Override
-    public boolean func_149698_L() {
-    	return super.func_149698_L();
+            worldIn.scheduleBlockUpdate(pos, this, this.tickRate(worldIn), 1);
     }
     
     // ========== Should Tick ==========
@@ -166,10 +187,24 @@ public class BlockBase extends Block {
 	//                    Collision
 	// ==================================================
     @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
-    	if(this.noEntityCollision)
-    		return null;
-        return super.getCollisionBoundingBoxFromPool(par1World, par2, par3, par4);
+    public boolean isPassable(IBlockAccess worldIn, BlockPos pos) {
+        if(this.noEntityCollision)
+            return true;
+        return !this.blockMaterial.blocksMovement();
+    }
+
+    @Override
+    public boolean isBlockSolid(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
+        if(this.noEntityCollision)
+            return false;
+        return worldIn.getBlockState(pos).getMaterial().isSolid();
+    }
+
+    @Override
+    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World world, BlockPos pos) {
+        if(!this.isCollidable())
+            return null;
+        return super.getCollisionBoundingBox(state, world, pos);
     }
     
     // ========== Punch Collision ==========
@@ -180,8 +215,17 @@ public class BlockBase extends Block {
     
     // ========== Is Opaque ==========
     @Override
-    public boolean isOpaqueCube() {
+    public boolean isOpaqueCube(IBlockState state) {
         return this.isOpaque;
+    }
+
+    // ========== Client Bounding Box ==========
+    @SideOnly(Side.CLIENT)
+    @Override
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World world, BlockPos pos) {
+        if(!this.isCollidable())
+            return null;
+        return super.getCollisionBoundingBox(state, world, pos);
     }
     
     
@@ -189,44 +233,37 @@ public class BlockBase extends Block {
 	//                Collision Effects
 	// ==================================================
     @Override
-    public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
-		super.onEntityCollidedWithBlock(world, x, y, z, entity);
+    public void onEntityCollidedWithBlock(World world, BlockPos pos, Entity entity) {
+		super.onEntityCollidedWithBlock(world, pos, entity);
 	}
+
+    @Override
+    public Boolean isEntityInsideMaterial(IBlockAccess world, BlockPos blockpos, IBlockState iblockstate, Entity entity, double yToTest, Material materialIn, boolean testingHead) {
+        if(this.noEntityCollision && world instanceof World)
+            this.onEntityCollidedWithBlock((World)world, blockpos, entity);
+        return super.isEntityInsideMaterial(world, blockpos, iblockstate, entity, yToTest, materialIn, testingHead);
+    }
     
     
 	// ==================================================
 	//                      Visuals
 	// ==================================================
-    // ========== Register Icons ==========
+    /*/ ========== Get Texture from Side and Metadata ==========
     @SideOnly(Side.CLIENT)
-    @Override
-    public void registerBlockIcons(IIconRegister iconRegister) {
-    	AssetManager.addIcon(this.blockName, this.group, this.getTextureName(), iconRegister);
+    public ResourceLocation getTexture(int side, int metadata) {
+        return AssetManager.getTexture(blockName);
     }
     
-    // ========== Get Icon from Side and Metadata ==========
+    // ========== Get Sub Texture ==========
     @SideOnly(Side.CLIENT)
-    @Override
-    public IIcon getIcon(int side, int metadata) {
-        return AssetManager.getIcon(blockName);
-    }
-    
-    // ========== Get Sub Icon ==========
-    @SideOnly(Side.CLIENT)
-    public IIcon getSubIcon(int subID) {
-        return AssetManager.getIconGroup(blockName)[subID];
+    public ResourceLocation getSubTexture(int subID) {
+        return AssetManager.getTextureGroup(blockName)[subID];
     }
 
     // ========== Get Render Type ==========
     @SideOnly(Side.CLIENT)
     @Override
-    public int getRenderType() {
-        return super.getRenderType();
-    }
-    
-    // ========== Render As Normal ==========
- 	@Override
- 	public boolean renderAsNormalBlock() {
- 		return true;
- 	}
+    public EnumBlockRenderType getRenderType(IBlockState state) {
+        return super.getRenderType(state);
+    }*/
 }

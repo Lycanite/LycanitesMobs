@@ -9,8 +9,9 @@ import lycanite.lycanitesmobs.api.info.MobInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 public class ItemSoulgazer extends ItemBase {
@@ -47,7 +48,7 @@ public class ItemSoulgazer extends ItemBase {
     		return false;
     	if(!(entity instanceof EntityCreatureBase)) {
     		if(!player.worldObj.isRemote)
-    			player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("message.soulgazer.unknown")));
+    			player.addChatMessage(new TextComponentString(I18n.translateToLocal("message.soulgazer.unknown")));
     		return false;
     	}
     	if(entity instanceof EntityFear) {
@@ -56,13 +57,13 @@ public class ItemSoulgazer extends ItemBase {
     	MobInfo mobInfo = ((EntityCreatureBase)entity).mobInfo;
     	if(playerExt.getBeastiary().hasFullKnowledge(mobInfo.name)) {
     		if(!player.worldObj.isRemote)
-    			player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("message.soulgazer.known")));
+    			player.addChatMessage(new TextComponentString(I18n.translateToLocal("message.soulgazer.known")));
     		return false;
     	}
     	
     	if(player.worldObj.isRemote) {
     		for(int i = 0; i < 32; ++i) {
-    			entity.worldObj.spawnParticle("happyVillager",
+    			entity.worldObj.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY,
     					entity.posX + (4.0F * player.getRNG().nextFloat()) - 2.0F,
     					entity.posY + (4.0F * player.getRNG().nextFloat()) - 2.0F,
     					entity.posZ + (4.0F * player.getRNG().nextFloat()) - 2.0F,
@@ -71,13 +72,13 @@ public class ItemSoulgazer extends ItemBase {
     	}
     	
     	if(!player.worldObj.isRemote) {
-    		String message = StatCollector.translateToLocal("message.soulgazer.new");
+    		String message = I18n.translateToLocal("message.soulgazer.new");
     		message = message.replace("%creature%", mobInfo.getTitle());
-    		player.addChatMessage(new ChatComponentText(message));
+    		player.addChatMessage(new TextComponentString(message));
     		if(mobInfo.isSummonable()) {
-        		String summonMessage = StatCollector.translateToLocal("message.soulgazer.summonable");
+        		String summonMessage = I18n.translateToLocal("message.soulgazer.summonable");
         		summonMessage = summonMessage.replace("%creature%", mobInfo.getTitle());
-        		player.addChatMessage(new ChatComponentText(summonMessage));
+        		player.addChatMessage(new TextComponentString(summonMessage));
     		}
             player.addStat(ObjectManager.getAchievement(mobInfo.name + ".learn"), 1);
     	}
@@ -90,7 +91,7 @@ public class ItemSoulgazer extends ItemBase {
     // ==================================================
     //                      Crafting
     // ==================================================
-    @Override
+    //TODO Figure out how this is now done!
     public boolean doesContainerItemLeaveCraftingGrid(ItemStack itemStack) {
         return false;
     }

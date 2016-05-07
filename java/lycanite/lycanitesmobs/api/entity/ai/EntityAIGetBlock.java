@@ -1,21 +1,21 @@
 package lycanite.lycanitesmobs.api.entity.ai;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import net.minecraft.block.Block;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.math.BlockPos;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class EntityAIGetBlock extends EntityAIBase {
 	// Targets:
 	private EntityCreatureBase host;
-	private ChunkCoordinates target;
+	private BlockPos target;
 	private int targetingTime = 0;
     private EntityAITargetSorterNearest targetSorter;
 	
@@ -79,10 +79,10 @@ public class EntityAIGetBlock extends EntityAIBase {
   	//                  Should Execute
   	// ==================================================
     public boolean shouldExecute() {
-    	if(!this.host.canPickupItems() || !this.host.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"))
+    	if(!this.host.canPickupItems() || !this.host.worldObj.getGameRules().getBoolean("mobGriefing"))
     		return false;
     	
-    	if(!this.host.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"))
+    	if(!this.host.worldObj.getGameRules().getBoolean("mobGriefing"))
     		return false;
 
     	if(!this.tamedLooting) {
@@ -100,21 +100,21 @@ public class EntityAIGetBlock extends EntityAIBase {
     	}
     	
         int heightDistance = 2;
-        List possibleTargets = new ArrayList<ChunkCoordinates>();
+        List possibleTargets = new ArrayList<BlockPos>();
         for(int x = (int)this.host.posX - this.distanceMax; x < (int)this.host.posX + this.distanceMax; x++) {
         	for(int y = (int)this.host.posY - heightDistance; y < (int)this.host.posY + heightDistance; y++) {
         		for(int z = (int)this.host.posZ - this.distanceMax; z < (int)this.host.posZ + this.distanceMax; z++) {
-        			Block searchBlock = this.host.worldObj.getBlock(x, y, z);
+        			Block searchBlock = this.host.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock();
                 	if(searchBlock != null && searchBlock != Blocks.air) {
-                		ChunkCoordinates possibleTarget = null;
+                        BlockPos possibleTarget = null;
                 		if(!"".equalsIgnoreCase(this.targetBlockName)) {
                 			if(ObjectLists.isName(searchBlock, this.targetBlockName)) {
-                				possibleTarget = new ChunkCoordinates(x, y, z);
+                				possibleTarget = new BlockPos(x, y, z);
                 			}
                 		}
                 		else {
                 			if(searchBlock == this.targetBlock)
-                				possibleTarget = new ChunkCoordinates(x + 1, y, z);
+                				possibleTarget = new BlockPos(x + 1, y, z);
                 		}
                 		if(possibleTarget != null) {
                 			possibleTargets.add(possibleTarget);
@@ -127,7 +127,7 @@ public class EntityAIGetBlock extends EntityAIBase {
         if(possibleTargets.isEmpty())
             return false;
         Collections.sort(possibleTargets, this.targetSorter);
-        this.target = (ChunkCoordinates)possibleTargets.get(0);
+        this.target = (BlockPos)possibleTargets.get(0);
         
         return this.continueExecuting();
     }
@@ -140,10 +140,10 @@ public class EntityAIGetBlock extends EntityAIBase {
     	if(this.target == null)
             return false;
     	
-    	if(!this.host.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"))
+    	if(!this.host.worldObj.getGameRules().getBoolean("mobGriefing"))
     		return false;
         
-        double distance = this.host.getDistanceSq(this.target.posX, this.target.posY, this.target.posZ);
+        double distance = this.host.getDistanceSq(this.target.getX(), this.target.getY(), this.target.getZ());
         if(distance > this.distanceMax)
         	return false;
         
@@ -182,7 +182,7 @@ public class EntityAIGetBlock extends EntityAIBase {
         if(this.updateRate-- <= 0) {
             this.updateRate = 10;
         	if(!this.host.useFlightNavigator())
-        		this.host.getNavigator().tryMoveToXYZ(this.target.posX, this.target.posY, this.target.posZ, this.speed);
+        		this.host.getNavigator().tryMoveToXYZ(this.target.getX(), this.target.getY(), this.target.getZ(), this.speed);
         	else
         		this.host.flightNavigator.setTargetPosition(this.target, this.speed);
         }

@@ -5,7 +5,7 @@ import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.api.item.ItemScepter;
 import lycanite.lycanitesmobs.freshwatermobs.FreshwaterMobs;
 import lycanite.lycanitesmobs.freshwatermobs.entity.EntityAquaPulse;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -19,7 +19,6 @@ public class ItemScepterAquaPulse extends ItemScepter {
     	this.group = FreshwaterMobs.group;
     	this.itemName = "aquapulsescepter";
         this.setup();
-        this.textureName = "scepteraquapulse";
     }
 	
     
@@ -41,12 +40,12 @@ public class ItemScepterAquaPulse extends ItemScepter {
 	//                      Attack
 	// ==================================================
     @Override
-    public boolean chargedAttack(ItemStack itemStack, World world, EntityPlayer player, float power) {
+    public boolean chargedAttack(ItemStack itemStack, World world, EntityLivingBase entity, float power) {
     	if(!world.isRemote) {
-    		EntityProjectileBase projectile = new EntityAquaPulse(world, player);
+    		EntityProjectileBase projectile = new EntityAquaPulse(world, entity);
     		projectile.setBaseDamage((int)(projectile.getDamage(null) * power * 2));
         	world.spawnEntityInWorld(projectile);
-            world.playSoundAtEntity(player, projectile.getLaunchSound(), 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+            this.playSound(itemStack, world, entity, power, projectile);
         }
     	return true;
     }

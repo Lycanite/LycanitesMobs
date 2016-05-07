@@ -1,31 +1,26 @@
 package lycanite.lycanitesmobs.freshwatermobs.entity;
 
+import com.google.common.base.Predicate;
 import lycanite.lycanitesmobs.ExtendedEntity;
-import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
-import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
-import lycanite.lycanitesmobs.api.entity.EntityFear;
 import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
-import net.minecraft.entity.item.EntityBoat;
-import net.minecraft.entity.item.EntityMinecart;
-import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
@@ -61,11 +56,10 @@ public class EntityStrider extends EntityCreatureRideable {
         this.setHeight = 10.9F;
         this.setupMob();
 
+        this.setPathPriority(PathNodeType.WATER, 0F);
         this.stepHeight = 2.0F;
         
         // AI Tasks:
-        this.getNavigator().setCanSwim(true);
-        this.getNavigator().setAvoidsWater(false);
         this.tasks.addTask(0, new EntityAISwimming(this).setSink(true));
         this.tasks.addTask(2, this.aiSit);
         this.attackAI = new EntityAIAttackMelee(this).setLongMemory(false);
@@ -102,8 +96,8 @@ public class EntityStrider extends EntityCreatureRideable {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.fish), 1F).setBurningDrop(new ItemStack(Items.cooked_fished)).setMaxAmount(5));
-        this.drops.add(new DropRate(new ItemStack(Items.fish, 1, 3), 0.5F).setBurningDrop(new ItemStack(Items.cooked_fished, 1, 3)).setMaxAmount(5));
+        this.drops.add(new DropRate(new ItemStack(Items.fish), 1F).setBurningDrop(new ItemStack(Items.cooked_fish)).setMaxAmount(5));
+        this.drops.add(new DropRate(new ItemStack(Items.fish, 1, 3), 0.5F).setBurningDrop(new ItemStack(Items.cooked_fish, 1, 3)).setMaxAmount(5));
 	}
 	
 	
@@ -135,8 +129,8 @@ public class EntityStrider extends EntityCreatureRideable {
                 if(this.pickupTime++ % 40 == 0) {
                     this.attackEntityAsMob(this.getPickupEntity(), 0.5F);
                     if(this.getPickupEntity() instanceof EntityLivingBase) {
-                        if(ObjectManager.getPotionEffect("penetration") != null && ObjectManager.getPotionEffect("penetration").id < Potion.potionTypes.length)
-                            ((EntityLivingBase)this.getPickupEntity()).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("penetration").id, this.getEffectDuration(5), 1));
+                        if(ObjectManager.getPotionEffect("penetration") != null)
+                            ((EntityLivingBase)this.getPickupEntity()).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("penetration"), this.getEffectDuration(5), 1));
                     }
                 }
             }
@@ -164,24 +158,31 @@ public class EntityStrider extends EntityCreatureRideable {
 
         // Penetrating Screech:
         double distance = 10.0D;
-        List<EntityLivingBase> possibleTargets = this.worldObj.selectEntitiesWithinAABB(EntityLivingBase.class, this.boundingBox.expand(distance, distance, distance), null);
+        List<EntityLivingBase> possibleTargets = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().expand(distance, distance, distance), new Predicate<EntityLivingBase>() {
+            @Override
+            public boolean apply(EntityLivingBase possibleTarget) {
+                if(!possibleTarget.isEntityAlive()
+                        || possibleTarget == EntityStrider.this
+                        || EntityStrider.this.isRidingOrBeingRiddenBy(possibleTarget)
+                        || EntityStrider.this.isOnSameTeam(possibleTarget))
+                    return false;
+
+                return true;
+            }
+        });
         if(!possibleTargets.isEmpty()) {
             for(EntityLivingBase possibleTarget : possibleTargets) {
-                if(possibleTarget != null && possibleTarget.isEntityAlive()
-                        && possibleTarget != this && possibleTarget != this.getRider()
-                        && !this.isOnSameTeam(possibleTarget)) {
-                    boolean doDamage = true;
-                    if(this.getRider() instanceof EntityPlayer) {
-                        if(MinecraftForge.EVENT_BUS.post(new AttackEntityEvent((EntityPlayer)this.getRider(), possibleTarget))) {
-                            doDamage = false;
-                        }
+                boolean doDamage = true;
+                if(this.getRider() instanceof EntityPlayer) {
+                    if(MinecraftForge.EVENT_BUS.post(new AttackEntityEvent((EntityPlayer)this.getRider(), possibleTarget))) {
+                        doDamage = false;
                     }
-                    if(doDamage) {
-                        if(ObjectManager.getPotionEffect("penetration") != null && ObjectManager.getPotionEffect("penetration").id < Potion.potionTypes.length)
-                            possibleTarget.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("penetration").id, this.getEffectDuration(5), 1));
-                        else
-                            possibleTarget.addPotionEffect(new PotionEffect(Potion.weakness.id, 10 * 20, 0));
-                    }
+                }
+                if(doDamage) {
+                    if (ObjectManager.getPotionEffect("penetration") != null)
+                        possibleTarget.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("penetration"), this.getEffectDuration(5), 1));
+                    else
+                        possibleTarget.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("weakness"), 10 * 20, 0));
                 }
             }
         }
@@ -222,22 +223,23 @@ public class EntityStrider extends EntityCreatureRideable {
     
 	// Pathing Weight:
 	@Override
-	public float getBlockPathWeight(int par1, int par2, int par3) {
-		int waterWeight = 10;
-		
-        if(this.worldObj.getBlock(par1, par2, par3) == Blocks.water)
-        	return (super.getBlockPathWeight(par1, par2, par3) + 1) * (waterWeight + 1);
-		if(this.worldObj.getBlock(par1, par2, par3) == Blocks.flowing_water)
-			return (super.getBlockPathWeight(par1, par2, par3) + 1) * waterWeight;
-        if(this.worldObj.isRaining() && this.worldObj.canBlockSeeTheSky(par1, par2, par3))
-        	return (super.getBlockPathWeight(par1, par2, par3) + 1) * (waterWeight + 1);
-        
+	public float getBlockPathWeight(int x, int y, int z) {
+        int waterWeight = 10;
+
+        Block block = this.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock();
+        if(block == Blocks.water)
+            return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
+        if(block == Blocks.flowing_water)
+            return (super.getBlockPathWeight(x, y, z) + 1) * waterWeight;
+        if(this.worldObj.isRaining() && this.worldObj.canBlockSeeSky(new BlockPos(x, y, z)))
+            return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
+
         if(this.getAttackTarget() != null)
-        	return super.getBlockPathWeight(par1, par2, par3);
+            return super.getBlockPathWeight(x, y, z);
         if(this.waterContact())
-			return -999999.0F;
-		
-		return super.getBlockPathWeight(par1, par2, par3);
+            return -999999.0F;
+
+        return super.getBlockPathWeight(x, y, z);
     }
 	
 	// Pushed By Water:
@@ -257,8 +259,8 @@ public class EntityStrider extends EntityCreatureRideable {
     public void onDismounted(Entity entity) {
         super.onDismounted(entity);
         if(entity != null && entity instanceof EntityLivingBase) {
-            if(ObjectManager.getPotionEffect("fallresist") != null && ObjectManager.getPotionEffect("fallresist").id < Potion.potionTypes.length)
-                ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("fallresist").id, 3 * 20, 1));
+            if(ObjectManager.getPotionEffect("fallresist") != null)
+                ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("fallresist"), 3 * 20, 1));
         }
     }
 
@@ -274,8 +276,8 @@ public class EntityStrider extends EntityCreatureRideable {
 
         // Effect:
         if(target instanceof EntityLivingBase) {
-            if(ObjectManager.getPotionEffect("penetration") != null && ObjectManager.getPotionEffect("penetration").id < Potion.potionTypes.length)
-                ((EntityLivingBase)target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("penetration").id, this.getEffectDuration(8), 1));
+            if(ObjectManager.getPotionEffect("penetration") != null)
+                ((EntityLivingBase)target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("penetration"), this.getEffectDuration(8), 1));
         }
 
         // Pickup:
@@ -307,9 +309,9 @@ public class EntityStrider extends EntityCreatureRideable {
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
         if(ObjectManager.getPotionEffect("Penetration") != null)
-            if(potionEffect.getPotionID() == ObjectManager.getPotionEffect("Penetration").id) return false;
+            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("Penetration")) return false;
         if(ObjectManager.getPotionEffect("Paralysis") != null)
-            if(potionEffect.getPotionID() == ObjectManager.getPotionEffect("Paralysis").id) return false;
+            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("Paralysis")) return false;
         return super.isPotionApplicable(potionEffect);
     }
     

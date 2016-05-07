@@ -3,9 +3,10 @@ package lycanite.lycanitesmobs.api.entity.ai;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.math.BlockPos;
 
 public class EntityAIPlaceBlock extends EntityAIBase {
 	// Targets:
@@ -96,7 +97,7 @@ public class EntityAIPlaceBlock extends EntityAIBase {
     	if(!host.useFlightNavigator())
     		this.host.getNavigator().tryMoveToXYZ(this.xPosition, this.yPosition, this.zPosition, this.speed);
     	else
-    		host.flightNavigator.setTargetPosition(new ChunkCoordinates(xPosition, yPosition, zPosition), speed);
+    		host.flightNavigator.setTargetPosition(new BlockPos(xPosition, yPosition, zPosition), speed);
     }
 	
     
@@ -120,14 +121,14 @@ public class EntityAIPlaceBlock extends EntityAIBase {
     		if(!host.useFlightNavigator())
         		this.host.getNavigator().tryMoveToXYZ(this.xPosition, this.yPosition, this.zPosition, this.speed);
         	else
-        		host.flightNavigator.setTargetPosition(new ChunkCoordinates(xPosition, yPosition, zPosition), speed);
+        		host.flightNavigator.setTargetPosition(new BlockPos(xPosition, yPosition, zPosition), speed);
     	}
     	
         this.host.getLookHelper().setLookPosition(this.xPosition, this.yPosition, this.zPosition, 30.0F, 30.0F);
         
         // Place Block:
         if(this.host.getDistanceSq(this.xPosition, this.yPosition, this.zPosition) <= this.range) {
-        	this.host.worldObj.setBlock(this.xPosition, this.yPosition, this.zPosition, this.block, this.metadata, 3);
+        	this.host.worldObj.setBlockState(new BlockPos(this.xPosition, this.yPosition, this.zPosition), this.block.getDefaultState(), 3); // TODO Metadata!
             this.block = null;
             this.host.clearMovement();
         }
@@ -144,11 +145,12 @@ public class EntityAIPlaceBlock extends EntityAIBase {
    	//                  Can Place Block
    	// ==================================================
     public boolean canPlaceBlock(int x, int y, int z) {
-    	Block targetBlock = this.host.worldObj.getBlock(x, y, z);
+    	IBlockState targetState = this.host.worldObj.getBlockState(new BlockPos(x, y, z));
+        Block targetBlock = targetState.getBlock();
     	if(targetBlock == null)
     		return false;
     	else {
-    		if(targetBlock.getMaterial() == Material.water || targetBlock.getMaterial() == Material.lava) {
+    		if(targetState.getMaterial() == Material.water || targetState.getMaterial() == Material.lava) {
 	    		if(!this.replaceLiquid)
 	    			return false;
     		}

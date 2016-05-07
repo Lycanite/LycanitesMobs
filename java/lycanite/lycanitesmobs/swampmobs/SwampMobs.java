@@ -16,16 +16,7 @@ import lycanite.lycanitesmobs.plainsmobs.mobevent.MobEventWindStorm;
 import lycanite.lycanitesmobs.swampmobs.block.BlockPoisonCloud;
 import lycanite.lycanitesmobs.swampmobs.dispenser.DispenserBehaviorPoisonRay;
 import lycanite.lycanitesmobs.swampmobs.dispenser.DispenserBehaviorVenomShot;
-import lycanite.lycanitesmobs.swampmobs.entity.EntityAspid;
-import lycanite.lycanitesmobs.swampmobs.entity.EntityDweller;
-import lycanite.lycanitesmobs.swampmobs.entity.EntityEttin;
-import lycanite.lycanitesmobs.swampmobs.entity.EntityEyewig;
-import lycanite.lycanitesmobs.swampmobs.entity.EntityGhoulZombie;
-import lycanite.lycanitesmobs.swampmobs.entity.EntityLurker;
-import lycanite.lycanitesmobs.swampmobs.entity.EntityPoisonRay;
-import lycanite.lycanitesmobs.swampmobs.entity.EntityPoisonRayEnd;
-import lycanite.lycanitesmobs.swampmobs.entity.EntityRemobra;
-import lycanite.lycanitesmobs.swampmobs.entity.EntityVenomShot;
+import lycanite.lycanitesmobs.swampmobs.entity.*;
 import lycanite.lycanitesmobs.swampmobs.item.*;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
@@ -41,18 +32,18 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = SwampMobs.modid, name = SwampMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid)
 public class SwampMobs {
@@ -77,24 +68,24 @@ public class SwampMobs {
 		// ========== Config ==========
 		group = new GroupInfo(this, "Swamp Mobs", 2)
 				.setDimensionBlacklist("").setBiomes("SWAMP, SPOOKY").setDungeonThemes("SWAMP, NECRO")
-                .setEggName("swampegg");
+                .setEggName("swampspawn");
 		group.loadFromConfig();
 
 		// ========== Set Current Group ==========
 		ObjectManager.setCurrentGroup(group);
 		
 		// ========== Create Items ==========
-		ObjectManager.addItem("swampegg", new ItemSwampEgg());
+		ObjectManager.addItem("swampspawn", new ItemSwampEgg());
 		
-		ObjectManager.addItem("aspidmeatraw", new ItemCustomFood("aspidmeatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(Potion.poison.id, 45, 2, 0.8F));
+		ObjectManager.addItem("aspidmeatraw", new ItemCustomFood("aspidmeatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(Potion.getPotionFromResourceLocation("poison"), 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("aspidmeatraw"));
 		OreDictionary.registerOre("listAllbeefraw", ObjectManager.getItem("aspidmeatraw"));
 		
-		ObjectManager.addItem("aspidmeatcooked", new ItemCustomFood("aspidmeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(Potion.regeneration.id, 10, 2, 1.0F).setAlwaysEdible());
+		ObjectManager.addItem("aspidmeatcooked", new ItemCustomFood("aspidmeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(Potion.getPotionFromResourceLocation("regeneration"), 10, 2, 1.0F).setAlwaysEdible());
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("aspidmeatcooked"));
 		OreDictionary.registerOre("listAllbeefcooked", ObjectManager.getItem("aspidmeatcooked"));
 		
-		ObjectManager.addItem("mosspie", new ItemCustomFood("mosspie", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(Potion.regeneration.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
+		ObjectManager.addItem("mosspie", new ItemCustomFood("mosspie", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(Potion.getPotionFromResourceLocation("regeneration"), 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("mosspie"));
 
 		ObjectManager.addItem("lurkertreat", new ItemTreat("lurkertreat", group));
@@ -112,7 +103,7 @@ public class SwampMobs {
 		ObjectManager.addBlock("poisoncloud", new BlockPoisonCloud());
 		
 		// ========== Create Mobs ==========
-		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("swampegg"), new DispenserBehaviorMobEggCustom());
+		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("swampspawn"), new DispenserBehaviorMobEggCustom());
 		MobInfo newMob;
         
         newMob = new MobInfo(group, "ghoulzombie", EntityGhoulZombie.class, 0x009966, 0xAAFFDD)
@@ -171,7 +162,7 @@ public class SwampMobs {
 		ObjectManager.addProjectile("venomshot", EntityVenomShot.class, ObjectManager.getItem("poisongland"), new DispenserBehaviorVenomShot());
 		
 		// ========== Register Models ==========
-		proxy.registerModels();
+		proxy.registerModels(this.group);
 	}
 	
 	
@@ -211,12 +202,12 @@ public class SwampMobs {
 		// ========== Remove Vanilla Spawns ==========
 		BiomeGenBase[] biomes = group.biomes;
 		if(group.controlVanillaSpawns) {
-			EntityRegistry.removeSpawn(EntityZombie.class, EnumCreatureType.monster, biomes);
-			EntityRegistry.removeSpawn(EntitySkeleton.class, EnumCreatureType.monster, biomes);
-			EntityRegistry.removeSpawn(EntityCreeper.class, EnumCreatureType.monster, biomes);
-			EntityRegistry.removeSpawn(EntitySpider.class, EnumCreatureType.monster, biomes);
-			EntityRegistry.removeSpawn(EntitySheep.class, EnumCreatureType.creature, biomes);
-			EntityRegistry.removeSpawn(EntityCow.class, EnumCreatureType.creature, biomes);
+			EntityRegistry.removeSpawn(EntityZombie.class, EnumCreatureType.MONSTER, biomes);
+			EntityRegistry.removeSpawn(EntitySkeleton.class, EnumCreatureType.MONSTER, biomes);
+			EntityRegistry.removeSpawn(EntityCreeper.class, EnumCreatureType.MONSTER, biomes);
+			EntityRegistry.removeSpawn(EntitySpider.class, EnumCreatureType.MONSTER, biomes);
+			EntityRegistry.removeSpawn(EntitySheep.class, EnumCreatureType.CREATURE, biomes);
+			EntityRegistry.removeSpawn(EntityCow.class, EnumCreatureType.CREATURE, biomes);
 		}
 		
 		// ========== Crafting ==========

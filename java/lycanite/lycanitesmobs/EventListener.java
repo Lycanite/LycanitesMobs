@@ -1,27 +1,24 @@
 package lycanite.lycanitesmobs;
 
-import java.util.Calendar;
-
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
 import lycanite.lycanitesmobs.api.entity.EntityItemCustom;
-import lycanite.lycanitesmobs.api.entity.MinionEntityDamageSource;
 import lycanite.lycanitesmobs.api.info.ItemInfo;
 import lycanite.lycanitesmobs.api.item.ItemBase;
-import lycanite.lycanitesmobs.api.item.ItemScepter;
 import lycanite.lycanitesmobs.api.item.ItemSwordBase;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -29,96 +26,105 @@ import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
-import net.minecraftforge.event.entity.player.EntityInteractEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.WorldEvent;
-import cpw.mods.fml.common.eventhandler.Event.Result;
-import cpw.mods.fml.common.eventhandler.EventPriority;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class EventListener {
-	
+
     // ==================================================
     //                     Constructor
     // ==================================================
 	public EventListener() {}
-	
-	
+
+
     // ==================================================
     //                    World Load
     // ==================================================
 	@SubscribeEvent
 	public void onWorldLoading(WorldEvent.Load event) {
-		if(event.world == null)
+		if(event.getWorld() == null)
 			return;
-		
+
 		// ========== Extended World ==========
-		ExtendedWorld.getForWorld(event.world);
+		ExtendedWorld.getForWorld(event.getWorld());
 	}
-	
-	
+
+
+    // ==================================================
+    //                Attach Capabilities
+    // ==================================================
+    @SubscribeEvent
+    public void onAttachCapabilities(AttachCapabilitiesEvent.Entity event) {
+        // TODO Use capabilities for player NBT.
+    }
+
+
 	// ==================================================
     //                Entity Constructing
     // ==================================================
 	@SubscribeEvent
 	public void onEntityConstructing(EntityConstructing event) {
-		if(event.entity == null)
+		if(event.getEntity() == null)
 			return;
-        if(event.entity.worldObj == null || !event.entity.worldObj.isRemote)
+        if(event.getEntity().worldObj == null || event.getEntity().worldObj.isRemote)
             return;
 
         // ========== Force Remove Entity ==========
-        if(!(event.entity instanceof EntityLivingBase)) {
+        if(!(event.getEntity() instanceof EntityLivingBase)) {
             if(ExtendedEntity.FORCE_REMOVE_ENTITY_IDS != null && ExtendedEntity.FORCE_REMOVE_ENTITY_IDS.length > 0) {
-                LycanitesMobs.printDebug("ForceRemoveEntity", "Forced entity removal, checking: " + event.entity.getCommandSenderName());
+                LycanitesMobs.printDebug("ForceRemoveEntity", "Forced entity removal, checking: " + event.getEntity().getName());
                 for(String forceRemoveID : ExtendedEntity.FORCE_REMOVE_ENTITY_IDS) {
-                    if(forceRemoveID.equalsIgnoreCase(event.entity.getCommandSenderName())) {
-                        event.entity.setDead();
+                    if(forceRemoveID.equalsIgnoreCase(event.getEntity().getName())) {
+                        event.getEntity().setDead();
                         break;
                     }
                 }
             }
         }
-		
-		// ========== Extended Entity ==========
-		if(event.entity instanceof EntityLivingBase)
-			ExtendedEntity.getForEntity(event.entity);
-		
-		// ========== Extended Player ==========
-		if(event.entity instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer)event.entity;
-			ExtendedPlayer.getForPlayer(player);
-		}
+
+        // ========== Extended Entity ==========
+        if(event.getEntity() instanceof EntityLivingBase)
+            ExtendedEntity.getForEntity(event.getEntity());
+
+        // ========== Extended Player ==========
+        if(event.getEntity() instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer)event.getEntity();
+            ExtendedPlayer.getForPlayer(player);
+        }
 	}
-	
-	
+
+
 	// ==================================================
     //                  Entity Join World
     // ==================================================
 	@SubscribeEvent
 	public void onEntityJoinWorld(EntityJoinWorldEvent event) {
 		// ========== Extended Player ==========
-		if(event.entity instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer)event.entity;
+		if(event.getEntity() instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer)event.getEntity();
 			ExtendedPlayer playerExtended = ExtendedPlayer.getForPlayer(player);
 			playerExtended.onJoinWorld();
 		}
 	}
-	
-	
+
+
 	// ==================================================
     //                 Living Death Event
     // ==================================================
 	@SubscribeEvent
 	public void onLivingDeathEvent(LivingDeathEvent event) {
-		EntityLivingBase entity = event.entityLiving;
+		EntityLivingBase entity = event.getEntityLiving();
 		if(entity == null) return;
-		
+
 		// ========== Extended Entity ==========
 		ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(entity);
 		if(extendedEntity != null)
 			extendedEntity.onDeath();
-		
+
 		// ========== Extended Player ==========
 		if(entity instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer)entity;
@@ -128,14 +134,14 @@ public class EventListener {
         // ========== Minion Kills ==========
         // TODO: If damage is minion/pet damage set the entity to the minion's owner instead so they are credited for the kill?
 	}
-	
-	
+
+
 	// ==================================================
 	//                    Entity Update
 	// ==================================================
 	@SubscribeEvent
 	public void onEntityUpdate(LivingUpdateEvent event) {
-		EntityLivingBase entity = event.entityLiving;
+		EntityLivingBase entity = event.getEntityLiving();
 		if(entity == null) return;
 
 		// ========== Extended Entity ==========
@@ -146,68 +152,73 @@ public class EventListener {
 		// ========== Extended Player ==========
 		if(entity instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer)entity;
-			
+
 			ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
 			if(playerExt != null)
 				playerExt.onUpdate();
 		}
 
         // ========== Item Early Update ==========
-        if(event.entityLiving instanceof EntityPlayer) {
-            EntityPlayer entityPlayer = (EntityPlayer)event.entityLiving;
-            if(entityPlayer.getCurrentEquippedItem() != null) {
-                ItemStack equippedItemStack = entityPlayer.getCurrentEquippedItem();
+        if(event.getEntityLiving() instanceof EntityPlayer) {
+            EntityPlayer entityPlayer = (EntityPlayer)event.getEntityLiving();
+            if(entityPlayer.getHeldItem(EnumHand.MAIN_HAND) != null) {
+                ItemStack equippedItemStack = entityPlayer.getHeldItem(EnumHand.MAIN_HAND);
                 if(equippedItemStack.getItem() instanceof ItemSwordBase) {
-                    ((ItemSwordBase)equippedItemStack.getItem()).onEarlyUpdate(equippedItemStack, event.entityLiving);
+                    ((ItemSwordBase)equippedItemStack.getItem()).onEarlyUpdate(equippedItemStack, event.getEntityLiving(), EnumHand.MAIN_HAND);
+                }
+            }
+            if(entityPlayer.getHeldItem(EnumHand.OFF_HAND) != null) {
+                ItemStack equippedItemStack = entityPlayer.getHeldItem(EnumHand.OFF_HAND);
+                if(equippedItemStack.getItem() instanceof ItemSwordBase) {
+                    ((ItemSwordBase)equippedItemStack.getItem()).onEarlyUpdate(equippedItemStack, event.getEntityLiving(), EnumHand.OFF_HAND);
                 }
             }
         }
 	}
-	
-	
+
+
     // ==================================================
     //               Entity Interact Event
     // ==================================================
 	@SubscribeEvent
-	public void onEntityInteract(EntityInteractEvent event) {
-		EntityPlayer player = event.entityPlayer;
-		Entity entity = event.target;
-		if(player == null || entity == null)
+	public void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
+		EntityPlayer player = event.getEntityPlayer();
+		Entity entity = event.getTarget();
+        if(player == null || entity == null)
 			return;
-		
-		// Item onItemRightClickOnEntity():
-		if(player.getHeldItem() != null) {
-			ItemStack itemStack = player.getHeldItem();
-			Item item = itemStack.getItem();
-			if(item instanceof ItemBase)
-				if(((ItemBase)item).onItemRightClickOnEntity(player, entity, itemStack)) {
-					if(event.isCancelable())
-						event.setCanceled(true);
-				}
-			if(item instanceof ItemSwordBase)
-				if(((ItemSwordBase)item).onItemRightClickOnEntity(player, entity, itemStack)) {
-					if(event.isCancelable())
-						event.setCanceled(true);
-				}
-		}
+
+        if (player.getHeldItem(event.getHand()) != null) {
+            ItemStack itemStack = player.getHeldItem(event.getHand());
+            Item item = itemStack.getItem();
+            if (item instanceof ItemBase)
+                if (((ItemBase) item).onItemRightClickOnEntity(player, entity, itemStack)) {
+                    if (event.isCancelable())
+                        event.setCanceled(true);
+                }
+            if (item instanceof ItemSwordBase)
+                if (((ItemSwordBase) item).onItemRightClickOnEntity(player, entity, itemStack)) {
+                    if (event.isCancelable())
+                        event.setCanceled(true);
+                }
+        }
 	}
-	
-	
+
+
     // ==================================================
     //                 Attack Target Event
     // ==================================================
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void onAttackTarget(LivingSetAttackTargetEvent event) {
 		// Better Invisibility:
-		if(event.entityLiving != null) {
-			if(!event.entityLiving.isPotionActive(Potion.nightVision) && event.target != null) {
-				if(event.target.isInvisible())
-					event.entityLiving.setRevengeTarget(null);
+		if(event.getEntityLiving() != null) {
+			if(!event.getEntityLiving().isPotionActive(Potion.getPotionFromResourceLocation("nightVision")) && event.getTarget() != null) {
+				if(event.getTarget().isInvisible())
+					event.getEntityLiving().setRevengeTarget(null);
 			}
 		}
 	}
-	
-	
+
+
     // ==================================================
     //                 Living Hurt Event
     // ==================================================
@@ -215,59 +226,59 @@ public class EventListener {
 	public void onLivingHurt(LivingHurtEvent event) {
 		if(event.isCanceled())
 	      return;
-		
-		if(event.source == null || event.entityLiving == null)
+
+		if(event.getSource() == null || event.getEntityLiving() == null)
 			return;
 
-        EntityLivingBase damagedEntity = event.entityLiving;
+        EntityLivingBase damagedEntity = event.getEntityLiving();
 
         EntityDamageSource entityDamageSource = null;
-        if(event.source instanceof EntityDamageSource)
-            entityDamageSource = (EntityDamageSource)event.source;
+        if(event.getSource() instanceof EntityDamageSource)
+            entityDamageSource = (EntityDamageSource)event.getSource();
 
 //        Entity damagingEntity = null;
 //        if(entityDamageSource != null)
 //            damagingEntity = entityDamageSource.getSourceOfDamage();
 
 		// ========== Mounted Protection ==========
-		if(damagedEntity.ridingEntity != null) {
-			if(damagedEntity.ridingEntity instanceof EntityCreatureRideable) {
+		if(damagedEntity.getRidingEntity() != null) {
+			if(damagedEntity.getRidingEntity() instanceof EntityCreatureRideable) {
 
 				// Prevent Mounted Entities from Suffocating:
-				if("inWall".equals(event.source.damageType)) {
-					event.ammount = 0;
+				if("inWall".equals(event.getSource().damageType)) {
+					event.setAmount(0);
 					event.setCanceled(true);
 					return;
 				}
 
 				// Copy Mount Immunities to Rider:
-				EntityCreatureRideable creatureRideable = (EntityCreatureRideable)event.entityLiving.ridingEntity;
-				if(!creatureRideable.isDamageTypeApplicable(event.source.damageType)) {
-					event.ammount = 0;
+				EntityCreatureRideable creatureRideable = (EntityCreatureRideable)event.getEntityLiving().getRidingEntity();
+				if(!creatureRideable.isDamageTypeApplicable(event.getSource().damageType)) {
+					event.setAmount(0);
 					event.setCanceled(true);
 					return;
 				}
 			}
 		}
 	}
-	
-	
+
+
 	// ==================================================
     //                 Living Drops Event
     // ==================================================
 	@SubscribeEvent
     public void onLivingDrops(LivingDropsEvent event) {
-		World world = event.entityLiving.worldObj;
-		
+		World world = event.getEntityLiving().worldObj;
+
 		// Seasonal Items:
         if(ItemInfo.seasonalItemDropChance > 0
             && (Utilities.isHalloween() || Utilities.isYuletide() || Utilities.isNewYear())) {
             boolean noSeaonalDrop = false;
             boolean alwaysDrop = false;
-            if(event.entityLiving instanceof EntityCreatureBase) {
-                if (((EntityCreatureBase) event.entityLiving).isMinion())
+            if(event.getEntityLiving() instanceof EntityCreatureBase) {
+                if (((EntityCreatureBase) event.getEntityLiving()).isMinion())
                     noSeaonalDrop = true;
-                if (((EntityCreatureBase) event.entityLiving).getSubspecies() != null)
+                if (((EntityCreatureBase) event.getEntityLiving()).getSubspecies() != null)
                     alwaysDrop = true;
             }
 
@@ -280,10 +291,10 @@ public class EventListener {
                     seasonalItem = ObjectManager.getItem("wintergiftlarge");
             }
 
-            if(seasonalItem != null && !noSeaonalDrop && (alwaysDrop || event.entityLiving.getRNG().nextFloat() < ItemInfo.seasonalItemDropChance)) {
+            if(seasonalItem != null && !noSeaonalDrop && (alwaysDrop || event.getEntityLiving().getRNG().nextFloat() < ItemInfo.seasonalItemDropChance)) {
                 ItemStack dropStack = new ItemStack(seasonalItem, 1);
-                EntityItemCustom entityItem = new EntityItemCustom(world, event.entityLiving.posX, event.entityLiving.posY, event.entityLiving.posZ, dropStack);
-                entityItem.delayBeforeCanPickup = 10;
+                EntityItemCustom entityItem = new EntityItemCustom(world, event.getEntityLiving().posX, event.getEntityLiving().posY, event.getEntityLiving().posZ, dropStack);
+                entityItem.setPickupDelay(10);
                 world.spawnEntityInWorld(entityItem);
             }
         }
@@ -295,20 +306,18 @@ public class EventListener {
     // ==================================================
 	@SubscribeEvent
     public void onBucketFill(FillBucketEvent event) {
-        World world = event.world;
-        MovingObjectPosition pos = event.target;
-        Block block = world.getBlock(pos.blockX, pos.blockY, pos.blockZ);
+        World world = event.getWorld();
+        BlockPos pos = event.getTarget().getBlockPos();
+        Block block = world.getBlockState(pos).getBlock();
         Item bucket = ObjectManager.buckets.get(block);
-        ItemStack result = null;
-        if(bucket != null && world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0) {
-            world.setBlockToAir(pos.blockX, pos.blockY, pos.blockZ);
-            result = new ItemStack(bucket);
+        if(bucket != null && ((Integer)world.getBlockState(pos).getValue(BlockLiquid.LEVEL)).intValue() == 0) {
+            world.setBlockToAir(pos);
         }
         
-        if(result == null)
+        if(bucket == null)
         	return;
 
-        event.result = result;
+        event.getFilledBucket().setItem(bucket);
         event.setResult(Result.ALLOW);
     }
 }

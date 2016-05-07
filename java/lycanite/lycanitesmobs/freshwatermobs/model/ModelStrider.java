@@ -1,14 +1,12 @@
 package lycanite.lycanitesmobs.freshwatermobs.model;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.model.ModelCustomObj;
 import lycanite.lycanitesmobs.freshwatermobs.FreshwaterMobs;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.util.MathHelper;
-import net.minecraftforge.client.model.obj.WavefrontObject;
+import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ModelStrider extends ModelCustomObj {
@@ -22,10 +20,10 @@ public class ModelStrider extends ModelCustomObj {
 
     public ModelStrider(float shadowSize) {
     	// Load Model:
-    	model = (WavefrontObject)AssetManager.getObjModel("strider", FreshwaterMobs.group, "entity/strider");
+    	this.initModel("strider", FreshwaterMobs.group, "entity/strider");
     	
-    	// Get Parts:
-    	parts = model.groupObjects;
+
+
     	
     	// Set Rotation Centers:
         setPartCenter("mouth", 0F, 8.4F, 0.8F);

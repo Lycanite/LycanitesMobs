@@ -1,32 +1,31 @@
 package lycanite.lycanitesmobs.api.entity;
 
-import java.util.HashMap;
-import java.util.UUID;
-
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAISit;
 import lycanite.lycanitesmobs.api.info.MobInfo;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.IEntityOwnable;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.scoreboard.Team;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.HashMap;
+import java.util.UUID;
 
 public class EntityCreatureTameable extends EntityCreatureAgeable implements IEntityOwnable {
 	
@@ -42,7 +41,12 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
 	
 	// AI:
 	public EntityAISit aiSit = new EntityAISit(this);
-	
+
+    // Datawatcher:
+    protected static final DataParameter<Byte> TAMED = EntityDataManager.<Byte>createKey(EntityCreatureBase.class, DataSerializers.BYTE);
+    protected static final DataParameter<String> OWNER = EntityDataManager.<String>createKey(EntityCreatureBase.class, DataSerializers.STRING);
+    protected static final DataParameter<Float> HUNGER = EntityDataManager.<Float>createKey(EntityCreatureBase.class, DataSerializers.FLOAT);
+    protected static final DataParameter<Float> STAMINA = EntityDataManager.<Float>createKey(EntityCreatureBase.class, DataSerializers.FLOAT);
     /** Used for the TAMED WATCHER_ID, this holds a series of booleans that describe the tamed status as well as instructed behaviour. **/
 	public static enum TAMED_ID {
 		IS_TAMED((byte)1), MOVE_SIT((byte)2), MOVE_FOLLOW((byte)4),
@@ -64,18 +68,17 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataWatcher.addObject(WATCHER_ID.TAMED.id, (byte)0);
-        this.dataWatcher.addObject(WATCHER_ID.OWNER.id, "");
-        this.dataWatcher.addObject(WATCHER_ID.HEALTH.id, new Float(this.getHealth()));
-        this.dataWatcher.addObject(WATCHER_ID.HUNGER.id, new Float(this.getCreatureHungerMax()));
-        this.dataWatcher.addObject(WATCHER_ID.STAMINA.id, new Float(this.getStaminaMax()));
+        this.dataWatcher.register(TAMED, (byte)0);
+        this.dataWatcher.register(OWNER, "");
+        this.dataWatcher.register(HUNGER, new Float(this.getCreatureHungerMax()));
+        this.dataWatcher.register(STAMINA, new Float(this.getStaminaMax()));
     }
     
     // ========== Name ==========
     @Override
-    public String getCommandSenderName() {
+    public String getName() {
     	if(!this.isTamed() || !MobInfo.ownerTags)
-    		return super.getCommandSenderName();
+    		return super.getName();
     	
     	String ownerName = this.getOwnerName();
     	String ownerSuffix = "'s ";
@@ -85,8 +88,8 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
         }
     	String ownedName = ownerName + ownerSuffix + this.getFullName();
     	
-    	if(this.hasCustomNameTag())
-    		return super.getCommandSenderName() + " (" + ownedName + ")";
+    	if(this.hasCustomName())
+    		return super.getName() + " (" + ownedName + ")";
     	else
     		return ownedName;
     }
@@ -133,7 +136,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     	double tamedHealth = this.getBaseHealth();
     	if(this.isTamed()) {
     		tamedHealth *= 3;
-    		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(tamedHealth);
+    		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(tamedHealth);
 	    	if(this.getHealth() > tamedHealth)
 	    		this.setHealth((float)tamedHealth);
     	}
@@ -148,10 +151,10 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
   	// ==================================================
     // ========== Can leash ==========
     @Override
-    public boolean canLeash(EntityPlayer player) {
-	    if(this.isTamed() && player.getCommandSenderName().equalsIgnoreCase(this.getOwnerName()))
+    public boolean canBeLeashedTo(EntityPlayer player) {
+	    if(this.isTamed() && player.getName().equalsIgnoreCase(this.getOwnerName()))
 	        return true;
-	    return super.canLeash(player);
+	    return super.canBeLeashedTo(player);
     }
     
     // ========== Test Leash ==========
@@ -181,11 +184,6 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     	if(this.staminaRecovery < this.getStaminaRecoveryMax())
     		this.staminaRecovery = Math.min(this.staminaRecovery + (this.getStaminaRecoveryMax() / this.getStaminaRecoveryWarmup()), this.getStaminaRecoveryMax());
     }
-    
-    @Override
-    protected void updateAITick() {
-        this.dataWatcher.updateObject(WATCHER_ID.HEALTH.id, Float.valueOf(this.getHealth()));
-    }
 
 
     // ==================================================
@@ -198,7 +196,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     	commands.putAll(super.getInteractCommands(player, itemStack));
 		
 		// Open GUI:
-		if(!this.worldObj.isRemote && this.isTamed() && (itemStack == null || player.isSneaking()) && player.getCommandSenderName().equalsIgnoreCase(this.getOwnerName()))
+		if(!this.worldObj.isRemote && this.isTamed() && (itemStack == null || player.isSneaking()) && player.getName().equalsIgnoreCase(this.getOwnerName()))
 			commands.put(CMD_PRIOR.MAIN.id, "GUI");
     	
     	// Server Item Commands:
@@ -209,11 +207,11 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     			commands.put(CMD_PRIOR.IMPORTANT.id, "Tame");
     		
     		// Feeding:
-    		if(this.isTamed() && this.isHealingItem(itemStack) && this.dataWatcher.getWatchableObjectFloat(WATCHER_ID.HEALTH.id) < this.getMaxHealth())
+    		if(this.isTamed() && this.isHealingItem(itemStack) && this.getHealth() < this.getMaxHealth())
                 commands.put(CMD_PRIOR.ITEM_USE.id, "Feed");
     		
     		// Equipment:
-    		if(this.isTamed() && !this.isChild() && this.canEquip() && player.getCommandSenderName().equalsIgnoreCase(this.getOwnerName())) {
+    		if(this.isTamed() && !this.isChild() && this.canEquip() && player.getName().equalsIgnoreCase(this.getOwnerName())) {
 	    		String equipSlot = this.inventory.getSlotForEquipment(itemStack);
 	    		if(equipSlot != null && (this.inventory.getEquipmentStack(equipSlot) == null || this.inventory.getEquipmentStack(equipSlot).getItem() != itemStack.getItem()))
 	    			commands.put(CMD_PRIOR.EQUIPPING.id, "Equip Item");
@@ -221,7 +219,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     	}
 		
 		// Sit:
-		//if(this.isTamed() && this.canSit() && player.getCommandSenderName().equalsIgnoreCase(this.getOwnerName()) && !this.worldObj.isRemote)
+		//if(this.isTamed() && this.canSit() && player.getName().equalsIgnoreCase(this.getOwnerName()) && !this.worldObj.isRemote)
 			//commands.put(CMD_PRIOR.MAIN.id, "Sit");
     	
     	return commands;
@@ -248,12 +246,12 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     		int healAmount = 4;
     		if(itemStack.getItem() instanceof ItemFood) {
     			ItemFood itemFood = (ItemFood)itemStack.getItem();
-    			healAmount = itemFood.func_150905_g(itemStack); // getHealAmount() + itemStack arg.
+    			healAmount = itemFood.getHealAmount(itemStack);
     		}
     		this.heal((float)healAmount);
             this.playEatSound();
             if(this.worldObj.isRemote) {
-                String particle = "heart";
+                EnumParticleTypes particle = EnumParticleTypes.HEART;
                 double d0 = this.rand.nextGaussian() * 0.02D;
                 double d1 = this.rand.nextGaussian() * 0.02D;
                 double d2 = this.rand.nextGaussian() * 0.02D;
@@ -291,7 +289,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     public boolean canNameTag(EntityPlayer player) {
     	if(!this.isTamed())
     		return super.canNameTag(player);
-    	else if(this.isTamed() && player.getCommandSenderName().equalsIgnoreCase(this.getOwnerName()))
+    	else if(this.isTamed() && player.getName().equalsIgnoreCase(this.getOwnerName()))
     		return super.canNameTag(player);
     	return false;
     }
@@ -345,7 +343,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     @Override
     public Team getTeam() {
         if(this.isTamed()) {
-            EntityLivingBase owner = this.getOwner();
+            Entity owner = this.getOwner();
             if(owner != null)
                 return owner.getTeam();
         }
@@ -353,13 +351,13 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     }
     
     @Override
-    public boolean isOnSameTeam(EntityLivingBase target) {
+    public boolean isOnSameTeam(Entity target) {
         if(this.isTamed()) {
             if(target == this.getOwner())
                 return true;
             if(target instanceof EntityCreatureTameable) {
             	EntityCreatureTameable tamedTarget = (EntityCreatureTameable)target;
-            	if(tamedTarget.isTamed() && (!MinecraftServer.getServer().isPVPEnabled()) || !this.isPVP() || tamedTarget.getOwner() == this.getOwner())
+            	if(tamedTarget.isTamed() && (!this.worldObj.getMinecraftServer().isPVPEnabled()) || !this.isPVP() || tamedTarget.getOwner() == this.getOwner())
             		return true;
             }
             if(this.getOwner() != null)
@@ -368,10 +366,6 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
         return super.isOnSameTeam(target);
     }
     
-    // Unknown
-    public boolean func_142018_a(EntityLivingBase targetA, EntityLivingBase targetB) {
-        return true;
-    }
     
     // ==================================================
     //                       Attacks
@@ -392,7 +386,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
             if(this.getOwner() == targetEntity)
                 return false;
             if(!this.worldObj.isRemote) {
-                boolean canPVP = MinecraftServer.getServer().isPVPEnabled() && this.isPVP();
+                boolean canPVP = this.worldObj.getMinecraftServer().isPVPEnabled() && this.isPVP();
                 if(targetEntity instanceof EntityPlayer && !canPVP)
                     return false;
                 if(targetEntity instanceof EntityCreatureTameable) {
@@ -428,7 +422,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     // ========== Attacked From ==========
     @Override
     public boolean attackEntityFrom(DamageSource damageSrc, float damage) {
-        if (this.isEntityInvulnerable())
+        if (this.isEntityInvulnerable(damageSrc))
             return false;
         else {
             if(!this.isPassive())
@@ -450,17 +444,17 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     //                       Taming
     // ==================================================
     public boolean isTamed() {
-        return (this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id) & TAMED_ID.IS_TAMED.id) != 0;
+        return (this.dataWatcher.get(TAMED) & TAMED_ID.IS_TAMED.id) != 0;
     }
     
     public void setTamed(boolean setTamed) {
-        byte tamed = this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id);
+        byte tamed = this.dataWatcher.get(TAMED);
         if(setTamed) {
-            this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamed | TAMED_ID.IS_TAMED.id)));
+            this.dataWatcher.set(TAMED, Byte.valueOf((byte)(tamed | TAMED_ID.IS_TAMED.id)));
             this.spawnEventType = "";
         }
         else {
-            this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamed - (tamed & TAMED_ID.IS_TAMED.id))));
+            this.dataWatcher.set(TAMED, Byte.valueOf((byte)(tamed - (tamed & TAMED_ID.IS_TAMED.id))));
         }
         this.setAlwaysRenderNameTag(setTamed);
         this.applyTamedHealthMultiplier();
@@ -476,18 +470,18 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
             if(this.rand.nextInt(3) == 0) {
                 this.setPlayerOwner(player);
                 this.unsetTemporary();
-                String tameMessage = StatCollector.translateToLocal("message.pet.tamed");
+                String tameMessage = I18n.translateToLocal("message.pet.tamed");
                 tameMessage = tameMessage.replace("%creature%", this.getSpeciesName());
-        		player.addChatMessage(new ChatComponentText(tameMessage));
+        		player.addChatMessage(new TextComponentString(tameMessage));
         		this.playTameEffect(this.isTamed());
                 player.addStat(ObjectManager.getAchievement(this.mobInfo.name + ".tame"), 1);
                 if(this.timeUntilPortal > this.getPortalCooldown())
                     this.timeUntilPortal = this.getPortalCooldown();
             }
             else {
-            	String tameFailedMessage = StatCollector.translateToLocal("message.pet.tamefail");
+            	String tameFailedMessage = I18n.translateToLocal("message.pet.tamefail");
             	tameFailedMessage = tameFailedMessage.replace("%creature%", this.getSpeciesName());
-        		player.addChatMessage(new ChatComponentText(tameFailedMessage));
+        		player.addChatMessage(new TextComponentString(tameFailedMessage));
         		this.playTameEffect(this.isTamed());
             }
     	return this.isTamed();
@@ -495,13 +489,13 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     
     public void setPlayerOwner(EntityPlayer player) {
         this.setPlayerOwner();
-        this.setOwnerUUID(player.getUniqueID());
-        this.setOwner(player.getCommandSenderName());
+        this.setOwnerId(player.getUniqueID());
+        this.setOwner(player.getName());
     }
 
     public void setPlayerOwner(UUID playerUUID, String playerName) {
         this.setPlayerOwner();
-        this.setOwnerUUID(playerUUID);
+        this.setOwnerId(playerUUID);
         this.setOwner(playerName);
     }
 
@@ -522,30 +516,26 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     //                       Owner
     // ==================================================
     public String getOwnerName() {
-    	return this.dataWatcher.getWatchableObjectString(WATCHER_ID.OWNER.id);
-    }
-    @Override
-    public String func_152113_b() { //getOwnerName
-    	return this.getOwnerName();
+    	return this.dataWatcher.get(OWNER);
     }
     
     public void setOwner(String owner) {
-        this.dataWatcher.updateObject(WATCHER_ID.OWNER.id, owner);
+        this.dataWatcher.set(OWNER, owner);
     }
 
-    public UUID getOwnerUUID() {
+    public UUID getOwnerId() {
         return this.ownerUUID;
     }
 
-    public void setOwnerUUID(UUID ownerUUID) {
+    public void setOwnerId(UUID ownerUUID) {
         this.ownerUUID = ownerUUID;
     }
     
     @Override
-    public EntityLivingBase getOwner() {
-        if(this.getOwnerUUID() == null)
+    public Entity getOwner() {
+        if(this.getOwnerId() == null)
             return null;
-        return this.worldObj.func_152378_a(this.getOwnerUUID()); // getPlayerEntityByUUID
+        return this.worldObj.getPlayerEntityByUUID(this.getOwnerId());
     }
     
     
@@ -553,13 +543,13 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     //                       Healing
     // ==================================================
     @SideOnly(Side.CLIENT)
-    public void handleHealthUpdate(byte status) {
+    public void handleStatusUpdate(byte status) {
         if(status == 7)
             this.playTameEffect(true);
         else if(status == 6)
             this.playTameEffect(false);
         else
-            super.handleHealthUpdate(status);
+            super.handleStatusUpdate(status);
     }
     
     // ========== Feeding Food ==========
@@ -572,25 +562,25 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     //                    Pet Control
     // ==================================================
     public boolean petControlsEnabled() { return false; }
-    public byte behaviourBitMask() { return this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id); }
+    public byte behaviourBitMask() { return this.dataWatcher.get(TAMED); }
     
     // ========== Sitting ==========
     public boolean isSitting() {
     	if(!this.isTamed())
     		return false;
-        return (this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id) & TAMED_ID.MOVE_SIT.id) != 0;
+        return (this.dataWatcher.get(TAMED) & TAMED_ID.MOVE_SIT.id) != 0;
     }
 
     public void setSitting(boolean set) {
     	if(!this.petControlsEnabled())
     		set = false;
-        byte tamedStatus = this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id);
+        byte tamedStatus = this.dataWatcher.get(TAMED);
         if(set) {
-            this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamedStatus | TAMED_ID.MOVE_SIT.id)));
+            this.dataWatcher.set(TAMED, Byte.valueOf((byte) (tamedStatus | TAMED_ID.MOVE_SIT.id)));
             this.setHome((int)this.posX, (int)this.posY, (int)this.posZ, this.sittingGuardRange);
         }
         else {
-            this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamedStatus - (tamedStatus & TAMED_ID.MOVE_SIT.id))));
+            this.dataWatcher.set(TAMED, Byte.valueOf((byte) (tamedStatus - (tamedStatus & TAMED_ID.MOVE_SIT.id))));
             this.detachHome();
         }
     }
@@ -599,69 +589,69 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     public boolean isFollowing() {
     	if(!this.isTamed())
     		return false;
-        return (this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id) & TAMED_ID.MOVE_FOLLOW.id) != 0;
+        return (this.dataWatcher.get(TAMED) & TAMED_ID.MOVE_FOLLOW.id) != 0;
     }
 
     public void setFollowing(boolean set) {
     	if(!this.petControlsEnabled())
     		set = false;
-        byte tamedStatus = this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id);
+        byte tamedStatus = this.dataWatcher.get(TAMED);
         if(set)
-            this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamedStatus | TAMED_ID.MOVE_FOLLOW.id)));
+            this.dataWatcher.set(TAMED, Byte.valueOf((byte)(tamedStatus | TAMED_ID.MOVE_FOLLOW.id)));
         else
-            this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamedStatus - (tamedStatus & TAMED_ID.MOVE_FOLLOW.id))));
+            this.dataWatcher.set(TAMED, Byte.valueOf((byte)(tamedStatus - (tamedStatus & TAMED_ID.MOVE_FOLLOW.id))));
     }
     
     // ========== Passiveness ==========
     public boolean isPassive() {
     	if(!this.isTamed())
     		return false;
-        return (this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id) & TAMED_ID.STANCE_PASSIVE.id) != 0;
+        return (this.dataWatcher.get(TAMED) & TAMED_ID.STANCE_PASSIVE.id) != 0;
     }
 
     public void setPassive(boolean set) {
     	if(!this.petControlsEnabled())
     		set = false;
-        byte tamedStatus = this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id);
+        byte tamedStatus = this.dataWatcher.get(TAMED);
         if(set) {
-            this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamedStatus | TAMED_ID.STANCE_PASSIVE.id)));
+            this.dataWatcher.set(TAMED, Byte.valueOf((byte)(tamedStatus | TAMED_ID.STANCE_PASSIVE.id)));
             this.setAttackTarget(null);
             this.setStealth(0);
         }
         else
-            this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamedStatus - (tamedStatus & TAMED_ID.STANCE_PASSIVE.id))));
+            this.dataWatcher.set(TAMED, Byte.valueOf((byte)(tamedStatus - (tamedStatus & TAMED_ID.STANCE_PASSIVE.id))));
     }
     
     // ========== Agressiveness ==========
     public boolean isAggressive() {
     	if(!this.isTamed())
     		return super.isAggressive();
-        return (this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id) & TAMED_ID.STANCE_AGGRESSIVE.id) != 0;
+        return (this.dataWatcher.get(TAMED) & TAMED_ID.STANCE_AGGRESSIVE.id) != 0;
     }
 
     public void setAggressive(boolean set) {
     	if(!this.petControlsEnabled())
     		set = false;
-        byte tamedStatus = this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id);
+        byte tamedStatus = this.dataWatcher.get(TAMED);
         if(set)
-            this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamedStatus | TAMED_ID.STANCE_AGGRESSIVE.id)));
+            this.dataWatcher.set(TAMED, Byte.valueOf((byte)(tamedStatus | TAMED_ID.STANCE_AGGRESSIVE.id)));
         else
-            this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamedStatus - (tamedStatus & TAMED_ID.STANCE_AGGRESSIVE.id))));
+            this.dataWatcher.set(TAMED, Byte.valueOf((byte)(tamedStatus - (tamedStatus & TAMED_ID.STANCE_AGGRESSIVE.id))));
     }
     
     // ========== PvP ==========
     public boolean isPVP() {
-        return (this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id) & TAMED_ID.PVP.id) != 0;
+        return (this.dataWatcher.get(TAMED) & TAMED_ID.PVP.id) != 0;
     }
 
     public void setPVP(boolean set) {
     	if(!this.petControlsEnabled())
     		set = false;
-        byte tamedStatus = this.dataWatcher.getWatchableObjectByte(WATCHER_ID.TAMED.id);
+        byte tamedStatus = this.dataWatcher.get(TAMED);
         if(set)
-            this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamedStatus | TAMED_ID.PVP.id)));
+            this.dataWatcher.set(TAMED, Byte.valueOf((byte)(tamedStatus | TAMED_ID.PVP.id)));
         else
-            this.dataWatcher.updateObject(WATCHER_ID.TAMED.id, Byte.valueOf((byte)(tamedStatus - (tamedStatus & TAMED_ID.PVP.id))));
+            this.dataWatcher.set(TAMED, Byte.valueOf((byte)(tamedStatus - (tamedStatus & TAMED_ID.PVP.id))));
     }
     
     
@@ -674,7 +664,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     	if(!this.worldObj.isRemote)
     		return this.hunger;
     	else
-    		return this.dataWatcher.getWatchableObjectFloat(WATCHER_ID.HUNGER.id);
+    		return this.dataWatcher.get(HUNGER);
     }
     
     public void setCreatureHunger(float setHunger) {
@@ -691,14 +681,14 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     // ==================================================
     public float getStamina() {
     	if(this.worldObj != null && this.worldObj.isRemote)
-    		this.stamina = this.dataWatcher.getWatchableObjectFloat(WATCHER_ID.STAMINA.id);
+    		this.stamina = this.dataWatcher.get(STAMINA);
     	return this.stamina;
     }
     
     public void setStamina(float setStamina) {
     	this.stamina = setStamina;
     	if(this.worldObj != null && !this.worldObj.isRemote) {
-    		this.dataWatcher.updateObject(WATCHER_ID.STAMINA.id, setStamina);
+    		this.dataWatcher.set(STAMINA, setStamina);
     	}
     }
     
@@ -782,9 +772,9 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     //                       Client
     // ==================================================
     protected void playTameEffect(boolean success) {
-        String particle = "heart";
+        EnumParticleTypes particle = EnumParticleTypes.HEART;
         if(!success)
-        	particle = "smoke";
+        	particle = EnumParticleTypes.SMOKE_NORMAL;
 
         for(int i = 0; i < 7; ++i) {
             double d0 = this.rand.nextGaussian() * 0.02D;
@@ -806,15 +796,15 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     @Override
     public boolean canBeColored(EntityPlayer player) {
     	if(player == null) return true;
-    	return this.isTamed() && player.getCommandSenderName().equalsIgnoreCase(this.getOwnerName());
+    	return this.isTamed() && player.getName().equalsIgnoreCase(this.getOwnerName());
     }
 
 
     // ========== Boss Health Bar ==========
-    public boolean showBossHealthBar() {
+    public boolean showBossInfo() {
         if(this.isTamed())
             return false;
-        return super.showBossHealthBar();
+        return super.showBossInfo();
     }
     
     
@@ -840,9 +830,9 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
         if(nbtTagCompound.hasKey("OwnerUUID")) {
             String uuidString = nbtTagCompound.getString("OwnerUUID");
             if(!"".equals(uuidString))
-                this.setOwnerUUID(UUID.fromString(uuidString));
+                this.setOwnerId(UUID.fromString(uuidString));
             else
-                this.setOwnerUUID(null);
+                this.setOwnerId(null);
         }
         else {
             this.ownerUUID = null;
@@ -905,11 +895,11 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
         else {
         	nbtTagCompound.setString("Owner", this.getOwnerName());
         }
-        if(this.getOwnerUUID() == null) {
+        if(this.getOwnerId() == null) {
             nbtTagCompound.setString("OwnerUUID", "");
         }
         else {
-            nbtTagCompound.setString("OwnerUUID", this.getOwnerUUID().toString());
+            nbtTagCompound.setString("OwnerUUID", this.getOwnerId().toString());
         }
         nbtTagCompound.setBoolean("Sitting", this.isSitting());
         nbtTagCompound.setBoolean("Following", this.isFollowing());
@@ -933,7 +923,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
         return super.getTalkInterval();
     }
     @Override
-    protected String getLivingSound() {
+    protected SoundEvent getAmbientSound() {
     	String sound = "_say";
     	if(this.isTamed() && this.getHealth() < this.getMaxHealth())
     		sound = "_beg";

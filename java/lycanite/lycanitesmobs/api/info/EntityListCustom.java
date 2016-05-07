@@ -1,123 +1,59 @@
 package lycanite.lycanitesmobs.api.info;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
+import com.google.common.collect.Maps;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-import org.apache.logging.log4j.Level;
-
-import cpw.mods.fml.common.FMLLog;
+import java.util.HashMap;
+import java.util.Map;
 
 public class EntityListCustom {
-    /** Provides a mapping between entity classes and a string */
-    public Map stringToClassMapping = new HashMap();
-
-    /** Provides a mapping between a string and an entity classes */
-    public Map classToStringMapping = new HashMap();
-
     /** provides a mapping between an entityID and an Entity Class */
-    public Map IDtoClassMapping = new HashMap();
+    public Map<String, Class> IDtoClassMapping = new HashMap<String, Class>();
 
     /** provides a mapping between an Entity Class and an entity ID */
-    private Map classToIDMapping = new HashMap();
-
-    /** Maps entity names to their numeric identifiers */
-    private Map stringToIDMapping = new HashMap();
+    private Map<Class, String> classToIDMapping = new HashMap<Class, String>();
 
     /** This is a HashMap of the Creative Entity Eggs/Spawners. */
-    public HashMap entityEggs = new LinkedHashMap();
+    public Map<String, EntityEggInfo> entityEggs = Maps.<String, EntityEggInfo>newLinkedHashMap();
 
     /**
      * adds a mapping between Entity classes and both a string representation and an ID
      */
-    public void addMapping(Class par0Class, String par1Str, int par2) {
-        stringToClassMapping.put(par1Str, par0Class);
-        classToStringMapping.put(par0Class, par1Str);
-        IDtoClassMapping.put(Integer.valueOf(par2), par0Class);
-        classToIDMapping.put(par0Class, Integer.valueOf(par2));
-        stringToIDMapping.put(par1Str, Integer.valueOf(par2));
+    public void addMapping(Class entityClass, String entityID) {
+        this.IDtoClassMapping.put(entityID, entityClass);
+        this.classToIDMapping.put(entityClass, entityID);
     }
 
-    /**
-     * Adds an entity mapping with egg info.
-     */
-    public void addMapping(Class par0Class, String par1Str, int par2, int par3, int par4) {
-        addMapping(par0Class, par1Str, par2);
-        entityEggs.put(Integer.valueOf(par2), new EntityListCustom.EntityEggInfo(par2, par3, par4));
-    }
-
-    /**
-     * Create a new instance of an entity in the world by using the entity name.
-     */
-    public Entity createEntityByName(String par0Str, World par1World) {
-        Entity entity = null;
-
-        try {
-            Class oclass = (Class)stringToClassMapping.get(par0Str);
-
-            if (oclass != null) {
-                entity = (Entity)oclass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {par1World});
-            }
-        }
-        catch (Exception exception) {
-            exception.printStackTrace();
-        }
-
-        return entity;
+    public void addMapping(Class entityClass, String entityID, int baseColor, int spotColor) {
+        this.addMapping(entityClass, entityID);
+        this.entityEggs.put(entityID, new EntityEggInfo(entityID, baseColor, spotColor));
     }
 
     /**
      * create a new instance of an entity from NBT store
      */
-    public Entity createEntityFromNBT(NBTTagCompound par0NBTTagCompound, World par1World) {
+    public Entity createEntityFromNBT(NBTTagCompound nbtTagCompound, World world) {
         Entity entity = null;
 
-        if ("Minecart".equals(par0NBTTagCompound.getString("id"))) {
-            switch (par0NBTTagCompound.getInteger("Type")) {
+        if ("Minecart".equals(nbtTagCompound.getString("id"))) {
+            switch (nbtTagCompound.getInteger("Type")) {
                 case 0:
-                    par0NBTTagCompound.setString("id", "MinecartRideable");
+                    nbtTagCompound.setString("id", "MinecartRideable");
                     break;
                 case 1:
-                    par0NBTTagCompound.setString("id", "MinecartChest");
+                    nbtTagCompound.setString("id", "MinecartChest");
                     break;
                 case 2:
-                    par0NBTTagCompound.setString("id", "MinecartFurnace");
+                    nbtTagCompound.setString("id", "MinecartFurnace");
             }
 
-            par0NBTTagCompound.removeTag("Type");
+            nbtTagCompound.removeTag("Type");
         }
 
-        Class oclass = null;
-        try {
-            oclass = (Class)stringToClassMapping.get(par0NBTTagCompound.getString("id"));
-
-            if (oclass != null) {
-                entity = (Entity)oclass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {par1World});
-            }
-        }
-        catch (Exception exception) {
-            exception.printStackTrace();
-        }
-
-        if (entity != null) {
-            try {
-                entity.readFromNBT(par0NBTTagCompound);
-            }
-            catch (Exception e) {
-            	FMLLog.log(Level.ERROR, e,
-                        "An Entity %s(%s) has thrown an exception during loading, its state cannot be restored. Report this to the mod author",
-                        par0NBTTagCompound.getString("id"), oclass.getName());
-                entity = null;
-            }
-        }
-        else {
-        	LycanitesMobs.printWarning("","Unable to spawn entity with the id " + par0NBTTagCompound.getString("id"));
-        }
+        this.createEntityByID(nbtTagCompound.getString("id"), world);
 
         return entity;
     }
@@ -125,14 +61,14 @@ public class EntityListCustom {
     /**
      * Create a new instance of an entity in the world by using an entity ID.
      */
-    public Entity createEntityByID(int par0, World par1World) {
+    public Entity createEntityByID(String entityID, World world) {
         Entity entity = null;
 
         try {
-            Class oclass = getClassFromID(par0);
+            Class entityClass = this.getClassFromID(entityID);
 
-            if (oclass != null) {
-                entity = (Entity)oclass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {par1World});
+            if (entityClass != null) {
+                entity = (Entity)entityClass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {world});
             }
         }
         catch (Exception exception) {
@@ -140,7 +76,7 @@ public class EntityListCustom {
         }
 
         if (entity == null) {
-            LycanitesMobs.printWarning("","Unable to spawn entity with the id " + par0);
+            LycanitesMobs.printWarning("","Unable to spawn entity with the id " + entityID);
         }
 
         return entity;
@@ -149,47 +85,30 @@ public class EntityListCustom {
     /**
      * gets the entityID of a specific entity
      */
-    public int getEntityID(Entity par0Entity) {
-        Class oclass = par0Entity.getClass();
-        return classToIDMapping.containsKey(oclass) ? ((Integer)classToIDMapping.get(oclass)).intValue() : 0;
+    public String getEntityID(Entity entity) {
+        Class entityClass = entity.getClass();
+        return classToIDMapping.containsKey(entityClass) ? classToIDMapping.get(entityClass) : null;
     }
 
     /**
      * Return the class assigned to this entity ID.
      */
-    public Class getClassFromID(int par0) {
-        return (Class)IDtoClassMapping.get(Integer.valueOf(par0));
-    }
-
-    /**
-     * Gets the string representation of a specific entity.
-     */
-    public String getEntityString(Entity par0Entity) {
-        return (String)classToStringMapping.get(par0Entity.getClass());
-    }
-
-    /**
-     * Finds the class using IDtoClassMapping and classToStringMapping
-     */
-    public String getStringFromID(int par0) {
-        Class oclass = getClassFromID(par0);
-        return oclass != null ? (String)classToStringMapping.get(oclass) : null;
+    public Class getClassFromID(String entityID) {
+        return this.IDtoClassMapping.get(entityID);
     }
     
     public static class EntityEggInfo {
         /** The entityID of the spawned mob */
-        public final int spawnedID;
+        public final String spawnedID;
         /** Base color of the egg */
         public final int primaryColor;
         /** Color of the egg spots */
         public final int secondaryColor;
-        private static final String __OBFID = "CL_00001539";
 
-        public EntityEggInfo(int par1, int par2, int par3)
-        {
-            this.spawnedID = par1;
-            this.primaryColor = par2;
-            this.secondaryColor = par3;
+        public EntityEggInfo(String entityID, int primaryColor, int secondaryColor) {
+            this.spawnedID = entityID;
+            this.primaryColor = primaryColor;
+            this.secondaryColor = secondaryColor;
         }
     }
 }

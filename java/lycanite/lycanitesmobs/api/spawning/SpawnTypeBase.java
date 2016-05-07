@@ -1,11 +1,5 @@
 package lycanite.lycanitesmobs.api.spawning;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import lycanite.lycanitesmobs.ExtendedWorld;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
@@ -16,16 +10,19 @@ import lycanite.lycanitesmobs.api.info.SpawnInfo;
 import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.world.ChunkPosition;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.ForgeEventFactory;
-import cpw.mods.fml.common.eventhandler.Event.Result;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
+
+import java.util.*;
 
 public class SpawnTypeBase {
 	// ========== Spawn Type List ==========
@@ -431,7 +428,7 @@ public class SpawnTypeBase {
      */
     public boolean spawnMobs(long tick, World world, int x, int y, int z, EntityPlayer player, boolean rare) {
         // Check If Able to Spawn:
-        if(this.getSpawnList() == null || this.getSpawnList().size() < 1 || !this.enabled || !this.hasSpawns() || !world.getGameRules().getGameRuleBooleanValue("doMobSpawning"))
+        if(this.getSpawnList() == null || this.getSpawnList().size() < 1 || !this.enabled || !this.hasSpawns() || !world.getGameRules().getBoolean("doMobSpawning"))
             return false;
         if(!this.canSpawn(tick, world, x, y, z, rare))
             return false;
@@ -465,7 +462,7 @@ public class SpawnTypeBase {
         List<BiomeGenBase> targetBiomes = new ArrayList<BiomeGenBase>();
         if(!this.ignoreBiome) {
             for(int[] coord : coords) {
-                BiomeGenBase coordBiome = world.getBiomeGenForCoords(coord[0], coord[2]);
+                BiomeGenBase coordBiome = world.getBiomeGenForCoords(new BlockPos(coord[0], 0, coord[2]));
                 if(!targetBiomes.contains(coordBiome))
                     targetBiomes.add(coordBiome);
             }
@@ -541,8 +538,10 @@ public class SpawnTypeBase {
             }
             this.spawnEntity(world, entityLiving);
             
-            if(!ForgeEventFactory.doSpecialSpawn(entityLiving, world, (float)coord[0], (float)coord[1], (float)coord[2]))
-                entityLiving.onSpawnWithEgg(null);
+            if(!ForgeEventFactory.doSpecialSpawn(entityLiving, world, (float)coord[0], (float)coord[1], (float)coord[2])) {
+                if (entityLiving instanceof EntityCreatureBase)
+                    ((EntityCreatureBase)entityLiving).onInitialSpawn(world.getDifficultyForLocation(new BlockPos(coord[0], coord[1], coord[2])), null);
+            }
             LycanitesMobs.printDebug("CustomSpawner", "Spawn Check Passed! Mob spawned.");
             mobsSpawned++;
             if(!this.currentSpawnWaveCount.containsKey(spawnInfo))
@@ -767,7 +766,7 @@ public class SpawnTypeBase {
                     if(this.materials != null && this.materials.length > 0) {
                         if(blockCoords == null) blockCoords = new ArrayList<int[]>();
                         for(Material validMaterial : this.materials) {
-                            if(world.getBlock(i, j, k).getMaterial() == validMaterial && this.isValidCoord(world, i, j, k)) {
+                            if(world.getBlockState(new BlockPos(i, j, k)).getMaterial() == validMaterial && this.isValidCoord(world, i, j, k)) {
                                 blockCoords.add(new int[] {i, j, k});
                                 break;
                             }
@@ -776,7 +775,7 @@ public class SpawnTypeBase {
                     if(this.blocks != null && this.blocks.length > 0) {
                         if(blockCoords == null) blockCoords = new ArrayList<int[]>();
                         for(Block validBlock : this.blocks) {
-                            if(world.getBlock(i, j, k) == validBlock) {
+                            if(world.getBlockState(new BlockPos(i, j, k)).getBlock() == validBlock) {
                                 blockCoords.add(new int[] {i, j, k});
                                 break;
                             }
@@ -785,7 +784,7 @@ public class SpawnTypeBase {
                     if(this.blockStrings != null && this.blockStrings.length > 0) {
                         if(blockCoords == null) blockCoords = new ArrayList<int[]>();
                         for(String validBlockString : this.blockStrings) {
-                            if(world.getBlock(i, j, k) == ObjectManager.getBlock(validBlockString)) {
+                            if(world.getBlockState(new BlockPos(i, j, k)).getBlock() == ObjectManager.getBlock(validBlockString)) {
                                 blockCoords.add(new int[] {i, j, k});
                                 break;
                             }
@@ -806,13 +805,13 @@ public class SpawnTypeBase {
      * @param world The world to search for coordinates in.
      * @return Returns a ChunkPosition or null if no coord was found.
      */
-    public ChunkPosition getRandomLandCoord(World world, ChunkPosition originPos, int range) {
+    public BlockPos getRandomLandCoord(World world, BlockPos originPos, int range) {
         int radius = Math.round(range * 0.5F);
-        int[] xz = this.getRandomXZCoord(world, originPos.chunkPosX, originPos.chunkPosZ, rangeMin, range);
+        int[] xz = this.getRandomXZCoord(world, originPos.getX(), originPos.getZ(), rangeMin, range);
         int x = xz[0];
         int z = xz[1];
-        int y = this.getRandomYCoord(world, x, originPos.chunkPosY, z, rangeMin, range, true, Blocks.air, false);
-        return y > -1 ? new ChunkPosition(x, y, z) : null;
+        int y = this.getRandomYCoord(world, x, originPos.getY(), z, rangeMin, range, true, Blocks.air, false);
+        return y > -1 ? new BlockPos(x, y, z) : null;
     }
 
 
@@ -823,13 +822,13 @@ public class SpawnTypeBase {
      * @param world The world to search for coordinates in.
      * @return Returns a ChunkPosition or null if no coord was found.
      */
-    public ChunkPosition getRandomWaterCoord(World world, ChunkPosition originPos, int range) {
+    public BlockPos getRandomWaterCoord(World world, BlockPos originPos, int range) {
         int radius = Math.round(range * 0.5F);
-        int[] xz = this.getRandomXZCoord(world, originPos.chunkPosX, originPos.chunkPosZ, rangeMin, range);
+        int[] xz = this.getRandomXZCoord(world, originPos.getX(), originPos.getZ(), rangeMin, range);
         int x = xz[0];
         int z = xz[1];
-        int y = this.getRandomYCoord(world, x, originPos.chunkPosY, z, rangeMin, range, false, Blocks.water, false);
-        return y > -1 ? new ChunkPosition(x, y, z) : null;
+        int y = this.getRandomYCoord(world, x, originPos.getY(), z, rangeMin, range, false, Blocks.water, false);
+        return y > -1 ? new BlockPos(x, y, z) : null;
     }
 
 
@@ -841,13 +840,13 @@ public class SpawnTypeBase {
      * @param world The world to search for coordinates in.
      * @return Returns a ChunkPosition or null if no coord was found.
      */
-    public ChunkPosition getRandomSkyCoord(World world, ChunkPosition originPos, int range) {
+    public BlockPos getRandomSkyCoord(World world, BlockPos originPos, int range) {
         int radius = Math.round(range * 0.5F);
-        int[] xz = this.getRandomXZCoord(world, originPos.chunkPosX, originPos.chunkPosZ, rangeMin, range);
+        int[] xz = this.getRandomXZCoord(world, originPos.getX(), originPos.getZ(), rangeMin, range);
         int x = xz[0];
         int z = xz[1];
-        int y = this.getRandomYCoord(world, x, originPos.chunkPosY, z, rangeMin, range, false, Blocks.air, false);
-        return y > -1 ? new ChunkPosition(x, y, z) : null;
+        int y = this.getRandomYCoord(world, x, originPos.getY(), z, rangeMin, range, false, Blocks.air, false);
+        return y > -1 ? new BlockPos(x, y, z) : null;
     }
 
 
@@ -915,12 +914,13 @@ public class SpawnTypeBase {
 
         // Get Every Valid Y Pos:
         for(int nextY = minY; nextY <= maxY; nextY++) {
-            Block block = world.getBlock(originX, nextY, originZ);
-            if(block != null && ((!solid && block == insideBlock) || (solid && this.validGroundBlock(block, world, originX, nextY, originZ)))) {
+            IBlockState blockState = world.getBlockState(new BlockPos(originX, nextY, originZ));
+            Block block = blockState.getBlock();
+            if(block != null && ((!solid && block == insideBlock) || (solid && this.validGroundBlock(blockState, world, originX, nextY, originZ)))) {
             	if(nextY + 1 > originY - minY && nextY + 1 < originY - maxY)
             		continue;
             	
-                if(world.canBlockSeeTheSky(originX, nextY, originZ)) {
+                if(world.canBlockSeeSky(new BlockPos(originX, nextY, originZ))) {
                     if(underground)
                         break;
                 	if(!solid) {
@@ -967,17 +967,17 @@ public class SpawnTypeBase {
     }
 
     /** Returns true if the specified block is suitable for spawning land mobs on top of. **/
-    public boolean validGroundBlock(Block block, World world, int x, int y, int z) {
-        if(block == null)
+    public boolean validGroundBlock(IBlockState blockState, World world, int x, int y, int z) {
+        if(blockState == null)
             return false;
         try {
-            if(block.isNormalCube(world, x, y, z))
+            if(blockState.isNormalCube())
                 return true;
         } catch(Exception e) {}
         try {
-            if (block.isSideSolid(world, x, y, z, ForgeDirection.UP))
+            if (blockState.isSideSolid(world, new BlockPos(x, y, z), EnumFacing.UP))
                 return true;
-            if (block.isSideSolid(world, x, y, z, ForgeDirection.DOWN))
+            if (blockState.isSideSolid(world, new BlockPos(x, y, z), EnumFacing.DOWN))
                 return true;
         } catch(Exception e) {}
         return false;
@@ -993,11 +993,11 @@ public class SpawnTypeBase {
      * @return True if there is space else false.
      */
     public boolean doesCoordHaveSpace(World world, int x, int y, int z, Block insideBlock) {
-        Block feet = world.getBlock(x, y, z);
+        Block feet = world.getBlockState(new BlockPos(x, y, z)).getBlock();
         if(feet == null) return false;
         if(feet != insideBlock) return false;
 
-        Block head = world.getBlock(x, y + 1, z);
+        Block head = world.getBlockState(new BlockPos(x, y + 1, z)).getBlock();
         if(head == null) return false;
         if(head != insideBlock) return false;
 
@@ -1012,14 +1012,14 @@ public class SpawnTypeBase {
      * @param world The world to search for coordinates in.
      * @return Returns a ChunkPosition.
      */
-    public ChunkPosition getRandomChunkCoord(World world, Chunk chunk, int range) {
+    public BlockPos getRandomChunkCoord(World world, Chunk chunk, int range) {
     	range = Math.min(range, 16);
         int x = chunk.xPosition + world.rand.nextInt(range);
         int z = chunk.zPosition + world.rand.nextInt(range);
         x += 16 - range;
         z += 16 - range;
         int y = world.rand.nextInt(chunk == null ? world.getActualHeight() : chunk.getTopFilledSegment() + 1);
-        return new ChunkPosition(x, y, z);
+        return new BlockPos(x, y, z);
     }
     
     

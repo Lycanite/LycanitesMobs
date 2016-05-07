@@ -1,18 +1,16 @@
 package lycanite.lycanitesmobs.api.network;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import cpw.mods.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
-import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.pets.SummonSet;
 import lycanite.lycanitesmobs.api.tileentity.TileEntitySummoningPedestal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
-
-import java.io.IOException;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class MessageSummoningPedestalSummonSet implements IMessage, IMessageHandler<MessageSummoningPedestalSummonSet, IMessage> {
 	public String summonType;
@@ -48,7 +46,7 @@ public class MessageSummoningPedestalSummonSet implements IMessage, IMessageHand
 			return null;
 
         player = ctx.getServerHandler().playerEntity;
-        TileEntity tileEntity = player.worldObj.getTileEntity(message.x, message.y, message.z);
+        TileEntity tileEntity = player.worldObj.getTileEntity(new BlockPos(message.x, message.y, message.z));
         TileEntitySummoningPedestal summoningPedestal = null;
         if(tileEntity instanceof TileEntitySummoningPedestal)
             summoningPedestal = (TileEntitySummoningPedestal)tileEntity;
@@ -70,16 +68,11 @@ public class MessageSummoningPedestalSummonSet implements IMessage, IMessageHand
 	@Override
 	public void fromBytes(ByteBuf buf) {
 		PacketBuffer packet = new PacketBuffer(buf);
-		try {
-            this.x = packet.readInt();
-            this.y = packet.readInt();
-            this.z = packet.readInt();
-			this.summonType = packet.readStringFromBuffer(256);
-			this.behaviour = packet.readByte();
-		} catch (IOException e) {
-			LycanitesMobs.printWarning("", "There was a problem decoding the packet: " + packet + ".");
-			e.printStackTrace();
-		}
+        this.x = packet.readInt();
+        this.y = packet.readInt();
+        this.z = packet.readInt();
+        this.summonType = packet.readStringFromBuffer(256);
+        this.behaviour = packet.readByte();
 	}
 	
 	
@@ -92,16 +85,11 @@ public class MessageSummoningPedestalSummonSet implements IMessage, IMessageHand
 	@Override
 	public void toBytes(ByteBuf buf) {
 		PacketBuffer packet = new PacketBuffer(buf);
-		try {
-            packet.writeInt(this.x);
-            packet.writeInt(this.y);
-            packet.writeInt(this.z);
-			packet.writeStringToBuffer(this.summonType);
-			packet.writeByte(this.behaviour);
-		} catch (IOException e) {
-			LycanitesMobs.printWarning("", "There was a problem encoding the packet: " + packet + ".");
-			e.printStackTrace();
-		}
+        packet.writeInt(this.x);
+        packet.writeInt(this.y);
+        packet.writeInt(this.z);
+        packet.writeString(this.summonType);
+        packet.writeByte(this.behaviour);
 	}
 	
 }

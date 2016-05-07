@@ -1,10 +1,10 @@
 package lycanite.lycanitesmobs.api.mods;
 
-import java.lang.reflect.Method;
-
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.info.MobInfo;
-import cpw.mods.fml.common.Loader;
+import net.minecraftforge.fml.common.Loader;
+
+import java.lang.reflect.Method;
 
 /** This is a wrapper class for the DLDungeons API, uses reflection for now until I find a better way. **/
 public class DLDungeons {
@@ -12,7 +12,7 @@ public class DLDungeons {
 	// ========== Initialize ==========
 	/** Called if the DLDungeons API is found, this then asks the API if DLDungeons is ready to go, if so, it updates MobInfo so that mobs will register their themes. **/
 	public static void init() {
-		if(!Loader.isModLoaded("DLDungeonsJBG"))
+		if(!Loader.isModLoaded("DLDungeonsJBG") && !Loader.isModLoaded("dldungeonsjbg"))
 			return;
 		
 		LycanitesMobs.printInfo("", "Doomlike Dungeons Mod Detected...");

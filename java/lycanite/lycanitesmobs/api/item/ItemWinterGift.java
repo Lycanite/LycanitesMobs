@@ -6,20 +6,15 @@ import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityItemCustom;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
-import lycanite.lycanitesmobs.arcticmobs.entity.EntityWendigo;
-import lycanite.lycanitesmobs.demonmobs.entity.EntityBehemoth;
-import lycanite.lycanitesmobs.forestmobs.entity.EntityEnt;
-import lycanite.lycanitesmobs.forestmobs.entity.EntityTrent;
-import lycanite.lycanitesmobs.mountainmobs.entity.EntityJabberwock;
-import lycanite.lycanitesmobs.shadowmobs.entity.EntityPhantom;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 public class ItemWinterGift extends ItemBase {
@@ -58,11 +53,11 @@ public class ItemWinterGift extends ItemBase {
   	//                       Good
   	// ==================================================
     public void openGood(ItemStack itemStack, World world, EntityPlayer player) {
-    	String message = StatCollector.translateToLocal("item." + this.itemName + ".good");
-		player.addChatMessage(new ChatComponentText(message));
+    	String message = I18n.translateToLocal("item." + this.itemName + ".good");
+		player.addChatMessage(new TextComponentString(message));
 		if(AssetManager.getSound(this.itemName + "_good") == null)
 			AssetManager.addSound(this.itemName + "_good", this.group, "item." + this.itemName + ".good");
-		world.playSoundAtEntity(player, AssetManager.getSound(this.itemName + "_good"), 5.0F, 1.0F);
+		world.playSound(player, player.getPosition(), AssetManager.getSound(this.itemName + "_good"), SoundCategory.AMBIENT, 5.0F, 1.0F);
 		
 		// Three Random Gifts:
 		for(int i = 0; i < 3; i++) {
@@ -72,7 +67,7 @@ public class ItemWinterGift extends ItemBase {
 			if(dropStack != null && dropStack.getItem() != null) {
 				dropStack.stackSize = 1 + player.getRNG().nextInt(4);
 				EntityItemCustom entityItem = new EntityItemCustom(world, player.posX, player.posY, player.posZ, dropStack);
-				entityItem.delayBeforeCanPickup = 10;
+				entityItem.setPickupDelay(10);
 				world.spawnEntityInWorld(entityItem);
 			}
 		}
@@ -83,11 +78,11 @@ public class ItemWinterGift extends ItemBase {
   	//                       Bad
   	// ==================================================
     public void openBad(ItemStack itemStack, World world, EntityPlayer player) {
-    	String message = StatCollector.translateToLocal("item." + this.itemName + ".bad");
-		player.addChatMessage(new ChatComponentText(message));
+    	String message = I18n.translateToLocal("item." + this.itemName + ".bad");
+		player.addChatMessage(new TextComponentString(message));
 		if(AssetManager.getSound(this.itemName + "_bad") == null)
 			AssetManager.addSound(this.itemName + "_bad", this.group, "item." + this.itemName + ".bad");
-		world.playSoundAtEntity(player, AssetManager.getSound(this.itemName + "_bad"), 5.0F, 1.0F);
+        world.playSound(player, player.getPosition(), AssetManager.getSound(this.itemName + "_bad"), SoundCategory.AMBIENT, 5.0F, 1.0F);
 		
 		// One Random Trick:
 		Class[] entityClasses = ObjectLists.getEntites("winter_tricks");
@@ -103,19 +98,19 @@ public class ItemWinterGift extends ItemBase {
 	            entity.setLocationAndAngles(player.posX, player.posY, player.posZ, player.rotationYaw, player.rotationPitch);
 
                 // Themed Names:
-                if(entity instanceof EntityLivingBase) {
-                    EntityCreatureBase entityCreature = (EntityCreatureBase)entity;
-                    if(entityCreature instanceof EntityWendigo)
+                if (entity instanceof EntityLivingBase) {
+                    EntityCreatureBase entityCreature = (EntityCreatureBase) entity;
+                    if (entityCreature.mobInfo.getRegistryName().equals("wendigo"))
                         entityCreature.setCustomNameTag("Gooderness");
-                    else if(entityCreature instanceof EntityJabberwock)
+                    else if (entityCreature.mobInfo.getRegistryName().equals("jabberwock"))
                         entityCreature.setCustomNameTag("Rudolph");
-                    else if(entityCreature instanceof EntityEnt)
+                    else if (entityCreature.mobInfo.getRegistryName().equals("ent"))
                         entityCreature.setCustomNameTag("Salty Tree");
-                    else if(entityCreature instanceof EntityTrent)
+                    else if (entityCreature.mobInfo.getRegistryName().equals("trent"))
                         entityCreature.setCustomNameTag("Salty Tree");
-                    else if(entityCreature instanceof EntityPhantom)
+                    else if (entityCreature.mobInfo.getRegistryName().equals("phantom"))
                         entityCreature.setCustomNameTag("Satan Claws");
-                    else if(entityCreature instanceof EntityBehemoth)
+                    else if(entityCreature.mobInfo.getRegistryName().equals("behemoth"))
                         entityCreature.setCustomNameTag("Krampus");
                 }
 

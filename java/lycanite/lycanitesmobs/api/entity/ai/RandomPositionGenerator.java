@@ -1,54 +1,46 @@
 package lycanite.lycanitesmobs.api.entity.ai;
 
+import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
+
 import java.util.Random;
 
-import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
-
 public class RandomPositionGenerator {
-	private static Vec3 staticVector = Vec3.createVectorHelper(0.0D, 0.0D, 0.0D);
+	private static Vec3d staticVector = new Vec3d(0.0D, 0.0D, 0.0D);
 
     // ==================================================
  	//                 Find Random Target
  	// ==================================================
-    public static Vec3 findRandomTarget(EntityCreatureBase entity, int range, int height) {
+    public static Vec3d findRandomTarget(EntityCreatureBase entity, int range, int height) {
         return findRandomTarget(entity, range, height, 0);
     }
-    public static Vec3 findRandomTarget(EntityCreatureBase entity, int range, int height, int heightLevel) {
-        return getTargetBlock(entity, range, height, (Vec3)null, heightLevel);
+    public static Vec3d findRandomTarget(EntityCreatureBase entity, int range, int height, int heightLevel) {
+        return getTargetBlock(entity, range, height, (Vec3d)null, heightLevel);
     }
 
     // ========== Find Random Waypoint to Target ==========
-    public static Vec3 findRandomTargetTowards(EntityCreatureBase entity, int range, int height, Vec3 par3Vec3) {
-    	staticVector.xCoord = par3Vec3.xCoord - entity.posX;
-        staticVector.yCoord = par3Vec3.yCoord - entity.posY;
-        staticVector.zCoord = par3Vec3.zCoord - entity.posZ;
+    public static Vec3d findRandomTargetTowards(EntityCreatureBase entity, int range, int height, Vec3d par3Vec3d) {
+        staticVector = new Vec3d(par3Vec3d.xCoord - entity.posX, par3Vec3d.yCoord - entity.posY, par3Vec3d.zCoord - entity.posZ);
         return findRandomTargetTowards(entity, range, height, staticVector, 0);
     }
-    public static Vec3 findRandomTargetTowards(EntityCreatureBase entity, int range, int height, Vec3 par3Vec3, int heightLevel) {
-        staticVector.xCoord = par3Vec3.xCoord - entity.posX;
-        staticVector.yCoord = par3Vec3.yCoord - entity.posY;
-        staticVector.zCoord = par3Vec3.zCoord - entity.posZ;
+    public static Vec3d findRandomTargetTowards(EntityCreatureBase entity, int range, int height, Vec3d par3Vec3d, int heightLevel) {
+        staticVector = new Vec3d(par3Vec3d.xCoord - entity.posX, par3Vec3d.yCoord - entity.posY, par3Vec3d.zCoord - entity.posZ);
         return getTargetBlock(entity, range, height, staticVector, heightLevel);
     }
 
     // ========== Find Random Waypoint from Target ==========
-    public static Vec3 findRandomTargetAwayFrom(EntityCreatureBase entity, int range, int height, Vec3 par3Vec3) {
-    	staticVector.xCoord = entity.posX - par3Vec3.xCoord;
-        staticVector.yCoord = entity.posY - par3Vec3.yCoord;
-        staticVector.zCoord = entity.posZ - par3Vec3.zCoord;
+    public static Vec3d findRandomTargetAwayFrom(EntityCreatureBase entity, int range, int height, Vec3d par3Vec3d) {
+        staticVector = new Vec3d(par3Vec3d.xCoord - entity.posX, par3Vec3d.yCoord - entity.posY, par3Vec3d.zCoord - entity.posZ);
         return findRandomTargetAwayFrom(entity, range, height, staticVector, 0);
     }
-    public static Vec3 findRandomTargetAwayFrom(EntityCreatureBase entity, int range, int height, Vec3 par3Vec3, int heightLevel) {
-        staticVector.xCoord = entity.posX - par3Vec3.xCoord;
-        staticVector.yCoord = entity.posY - par3Vec3.yCoord;
-        staticVector.zCoord = entity.posZ - par3Vec3.zCoord;
+    public static Vec3d findRandomTargetAwayFrom(EntityCreatureBase entity, int range, int height, Vec3d par3Vec3d, int heightLevel) {
+        staticVector = new Vec3d(par3Vec3d.xCoord - entity.posX, par3Vec3d.yCoord - entity.posY, par3Vec3d.zCoord - entity.posZ);
         return getTargetBlock(entity, range, height, staticVector, heightLevel);
     }
 
     // ========== Get Target Block ==========
-    private static Vec3 getTargetBlock(EntityCreatureBase entity, int range, int height, Vec3 par3Vec3, int heightLevel) {
+    private static Vec3d getTargetBlock(EntityCreatureBase entity, int range, int height, Vec3d par3Vec3d, int heightLevel) {
         Random random = entity.getRNG();
         boolean validTarget = false;
         int targetX = 0;
@@ -58,7 +50,7 @@ public class RandomPositionGenerator {
         boolean pastHome;
 
         if(entity.hasHome()) {
-            double homeDist = (double)(entity.getHomePosition().getDistanceSquared(MathHelper.floor_double(entity.posX), MathHelper.floor_double(entity.posY), MathHelper.floor_double(entity.posZ)) + 4.0F);
+            double homeDist = (entity.getHomePosition().getDistance(MathHelper.floor_double(entity.posX), MathHelper.floor_double(entity.posY), MathHelper.floor_double(entity.posZ)) + 4.0F);
             double homeDistMax = (double)(entity.getHomeDistanceMax() + (float)range);
             pastHome = homeDist < homeDistMax * homeDistMax;
         }
@@ -68,15 +60,15 @@ public class RandomPositionGenerator {
         for(int j1 = 0; j1 < 10; ++j1) {
             int possibleX = random.nextInt(2 * range) - range;
             int possibleY = random.nextInt(2 * height) - height;
-            if(entity.useFlightNavigator() || (entity.canSwim() && (entity.isInWater() || entity.handleLavaMovement()))) {
-	            if(entity.posY > entity.worldObj.getPrecipitationHeight((int)entity.posX, (int)entity.posZ) + heightLevel * 1.25)
+            if(entity.useFlightNavigator() || (entity.canSwim() && (entity.isInWater() || entity.lavaContact()))) {
+	            if(entity.posY > entity.worldObj.getPrecipitationHeight(entity.getPosition()).getY() + heightLevel * 1.25)
 	        		possibleY = random.nextInt(2 * height) - height * 3 / 2;
-	            else if(entity.posY < entity.worldObj.getPrecipitationHeight( (int)entity.posX, (int)entity.posZ) + heightLevel)
+	            else if(entity.posY < entity.worldObj.getPrecipitationHeight(entity.getPosition()).getY() + heightLevel)
 	            	possibleY = random.nextInt(2 * height) - height / 2;
             }
             int possibleZ = random.nextInt(2 * range) - range;
 
-            if(par3Vec3 == null|| (double)possibleX * par3Vec3.xCoord + (double)possibleZ * par3Vec3.zCoord >= 0.0D) {
+            if(par3Vec3d == null|| (double)possibleX * par3Vec3d.xCoord + (double)possibleZ * par3Vec3d.zCoord >= 0.0D) {
             	possibleX += MathHelper.floor_double(entity.posX);
             	possibleY += MathHelper.floor_double(entity.posY);
             	possibleZ += MathHelper.floor_double(entity.posZ);
@@ -96,7 +88,7 @@ public class RandomPositionGenerator {
         }
 
         if(validTarget)
-            return Vec3.createVectorHelper((double)targetX, (double)targetY, (double)targetZ);
+            return new Vec3d((double)targetX, (double)targetY, (double)targetZ);
         else
         	return null;
     }

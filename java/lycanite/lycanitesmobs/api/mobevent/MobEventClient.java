@@ -5,17 +5,14 @@ import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.gui.GuiOverlay;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class MobEventClient {
 
@@ -45,14 +42,14 @@ public class MobEventClient {
     //                       Start
     // ==================================================
 	public void onStart(EntityPlayer player) {
-		String eventMessage = StatCollector.translateToLocal("event." + (extended ? "extended" : "started"));
+		String eventMessage = I18n.translateToLocal("event." + (extended ? "extended" : "started"));
 		eventMessage = eventMessage.replace("%event%", this.mobEvent.getTitle());
-		player.addChatMessage(new ChatComponentText(eventMessage));
+		player.addChatMessage(new TextComponentString(eventMessage));
 		
 		if(!player.capabilities.isCreativeMode || MobEventServer.testOnCreative || this.mobEvent instanceof MobEventBoss) {
         	if(AssetManager.getSound("mobevent_" + this.mobEvent.name.toLowerCase()) == null)
         			AssetManager.addSound("mobevent_" + this.mobEvent.name.toLowerCase(), this.mobEvent.group, "mobevent." + this.mobEvent.name.toLowerCase());
-            this.sound = PositionedSoundRecord.func_147673_a(new ResourceLocation(AssetManager.getSound("mobevent_" + this.mobEvent.name.toLowerCase())));
+            this.sound = PositionedSoundRecord.getMusicRecord(AssetManager.getSound("mobevent_" + this.mobEvent.name.toLowerCase()));
             Minecraft.getMinecraft().getSoundHandler().playSound(this.sound);
 		}
 	}
@@ -62,9 +59,9 @@ public class MobEventClient {
     //                      Finish
     // ==================================================
 	public void onFinish(EntityPlayer player) {
-		String eventMessage = StatCollector.translateToLocal("event.finished");
+		String eventMessage = I18n.translateToLocal("event.finished");
 		eventMessage = eventMessage.replace("%event%", this.mobEvent.getTitle());
-		player.addChatMessage(new ChatComponentText(eventMessage));
+		player.addChatMessage(new TextComponentString(eventMessage));
 	}
 
 

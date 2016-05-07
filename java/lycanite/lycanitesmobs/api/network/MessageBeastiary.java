@@ -1,21 +1,19 @@
 package lycanite.lycanitesmobs.api.network;
 
 import io.netty.buffer.ByteBuf;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
 import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.info.Beastiary;
 import lycanite.lycanitesmobs.api.info.CreatureKnowledge;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MessageBeastiary implements IMessage, IMessageHandler<MessageBeastiary, IMessage> {
 	public int entryAmount = 0;
@@ -77,20 +75,15 @@ public class MessageBeastiary implements IMessage, IMessageHandler<MessageBeasti
 	@Override
 	public void fromBytes(ByteBuf buf) {
 		PacketBuffer packet = new PacketBuffer(buf);
-		try {
-			this.entryAmount = packet.readInt();
-			if(this.entryAmount > 0) {
-				this.creatureNames = new String[this.entryAmount];
-				this.completions = new double[this.entryAmount];
-				for(int i = 0; i < this.entryAmount; i++) {
-					this.creatureNames[i] = packet.readStringFromBuffer(256);
-					this.completions[i] = packet.readDouble();
-				}
-			}
-		} catch (IOException e) {
-			LycanitesMobs.printWarning("", "There was a problem decoding the packet: " + packet + ".");
-			e.printStackTrace();
-		}
+        this.entryAmount = packet.readInt();
+        if(this.entryAmount > 0) {
+            this.creatureNames = new String[this.entryAmount];
+            this.completions = new double[this.entryAmount];
+            for(int i = 0; i < this.entryAmount; i++) {
+                this.creatureNames[i] = packet.readStringFromBuffer(256);
+                this.completions[i] = packet.readDouble();
+            }
+        }
 	}
 	
 	
@@ -103,18 +96,13 @@ public class MessageBeastiary implements IMessage, IMessageHandler<MessageBeasti
 	@Override
 	public void toBytes(ByteBuf buf) {
 		PacketBuffer packet = new PacketBuffer(buf);
-		try {
-			packet.writeInt(this.entryAmount);
-			if(this.entryAmount > 0) {
-				for(int i = 0; i < this.entryAmount; i++) {
-					packet.writeStringToBuffer(this.creatureNames[i]);
-					packet.writeDouble(this.completions[i]);
-				}
-			}
-		} catch (IOException e) {
-			LycanitesMobs.printWarning("", "There was a problem encoding the packet: " + packet + ".");
-			e.printStackTrace();
-		}
+        packet.writeInt(this.entryAmount);
+        if(this.entryAmount > 0) {
+            for(int i = 0; i < this.entryAmount; i++) {
+                packet.writeString(this.creatureNames[i]);
+                packet.writeDouble(this.completions[i]);
+            }
+        }
 	}
 	
 }

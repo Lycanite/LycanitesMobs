@@ -1,178 +1,178 @@
 {
     "mobevent.shadowgames": {
         "category": "record",
-        "sounds": [{"name": "mobevent/shadowgames", "stream": true}]
+        "sounds": [{"name": "shadowmobs:mobevent/shadowgames", "stream": true}]
     },
     "mobevent.blackplague": {
         "category": "record",
-        "sounds": [{"name": "mobevent/blackplague", "stream": true}]
+        "sounds": [{"name": "shadowmobs:mobevent/blackplague", "stream": true}]
     },
     "entity.grue.say": {
         "category": "hostile",
-        "sounds": [{"name": "entity/grue/say", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/grue/say", "stream": false}]
     },
     "entity.grue.hurt": {
         "category": "hostile",
-        "sounds": [{"name": "entity/grue/hurt", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/grue/hurt", "stream": false}]
     },
     "entity.grue.death": {
         "category": "hostile",
-        "sounds": [{"name": "entity/grue/death", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/grue/death", "stream": false}]
     },
     "entity.grue.attack": {
         "category": "hostile",
-        "sounds": [{"name": "entity/grue/attack", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/grue/attack", "stream": false}]
     },
     "entity.grue.beg": {
         "category": "hostile",
-        "sounds": [{"name": "entity/grue/beg", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/grue/beg", "stream": false}]
     },
     "entity.grue.tame": {
         "category": "hostile",
-        "sounds": [{"name": "entity/grue/tame", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/grue/tame", "stream": false}]
     },
     "entity.grue.jump": {
         "category": "hostile",
-        "sounds": [{"name": "entity/grue/jump", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/grue/jump", "stream": false}]
     },
     "entity.phantom.say": {
         "category": "hostile",
-        "sounds": [{"name": "entity/phantom/say", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/phantom/say", "stream": false}]
     },
     "entity.phantom.say.jon": {
         "category": "hostile",
-        "sounds": [{"name": "entity/phantom/say_jon", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/phantom/say_jon", "stream": false}]
     },
     "entity.phantom.hurt": {
         "category": "hostile",
-        "sounds": [{"name": "entity/phantom/hurt", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/phantom/hurt", "stream": false}]
     },
     "entity.phantom.death": {
         "category": "hostile",
-        "sounds": [{"name": "entity/phantom/death", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/phantom/death", "stream": false}]
     },
     "entity.phantom.beg": {
         "category": "hostile",
-        "sounds": [{"name": "entity/phantom/beg", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/phantom/beg", "stream": false}]
     },
     "entity.phantom.tame": {
         "category": "hostile",
-        "sounds": [{"name": "entity/phantom/tame", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/phantom/tame", "stream": false}]
     },
     "entity.epion.say": {
         "category": "hostile",
-        "sounds": [{"name": "entity/epion/say", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/epion/say", "stream": false}]
     },
     "entity.epion.hurt": {
         "category": "hostile",
-        "sounds": [{"name": "entity/epion/hurt", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/epion/hurt", "stream": false}]
     },
     "entity.epion.death": {
         "category": "hostile",
-        "sounds": [{"name": "entity/epion/death", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/epion/death", "stream": false}]
     },
     "entity.epion.fly": {
         "category": "hostile",
-        "sounds": [{"name": "entity/epion/fly", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/epion/fly", "stream": false}]
     },
     "entity.geist.say": {
         "category": "hostile",
-        "sounds": [{"name": "entity/geist/say", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/geist/say", "stream": false}]
     },
     "entity.geist.hurt": {
         "category": "hostile",
-        "sounds": [{"name": "entity/geist/hurt", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/geist/hurt", "stream": false}]
     },
     "entity.geist.death": {
         "category": "hostile",
-        "sounds": [{"name": "entity/geist/death", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/geist/death", "stream": false}]
     },
     "entity.geist.attack": {
         "category": "hostile",
-        "sounds": [{"name": "entity/geist/attack", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/geist/attack", "stream": false}]
     },
     "entity.geist.step": {
         "category": "hostile",
-        "sounds": [{"name": "entity/geist/step", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/geist/step", "stream": false}]
     },
     "entity.chupacabra.say": {
         "category": "hostile",
-        "sounds": [{"name": "entity/chupacabra/say", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/chupacabra/say", "stream": false}]
     },
     "entity.chupacabra.hurt": {
         "category": "hostile",
-        "sounds": [{"name": "entity/chupacabra/hurt", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/chupacabra/hurt", "stream": false}]
     },
     "entity.chupacabra.death": {
         "category": "hostile",
-        "sounds": [{"name": "entity/chupacabra/death", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/chupacabra/death", "stream": false}]
     },
     "entity.chupacabra.attack": {
         "category": "hostile",
-        "sounds": [{"name": "entity/chupacabra/attack", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/chupacabra/attack", "stream": false}]
     },
     "entity.chupacabra.step": {
         "category": "hostile",
-        "sounds": [{"name": "entity/chupacabra/step", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/chupacabra/step", "stream": false}]
     },
     "entity.chupacabra.tame": {
         "category": "hostile",
-        "sounds": [{"name": "entity/chupacabra/tame", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/chupacabra/tame", "stream": false}]
     },
     "entity.chupacabra.beg": {
         "category": "hostile",
-        "sounds": [{"name": "entity/chupacabra/beg", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/chupacabra/beg", "stream": false}]
     },
     "entity.chupacabra.eat": {
         "category": "hostile",
-        "sounds": [{"name": "entity/chupacabra/eat", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/chupacabra/eat", "stream": false}]
     },
     "entity.shade.say": {
         "category": "hostile",
-        "sounds": [{"name": "entity/shade/say", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/shade/say", "stream": false}]
     },
     "entity.shade.hurt": {
         "category": "hostile",
-        "sounds": [{"name": "entity/shade/hurt", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/shade/hurt", "stream": false}]
     },
     "entity.shade.death": {
         "category": "hostile",
-        "sounds": [{"name": "entity/shade/death", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/shade/death", "stream": false}]
     },
     "entity.shade.attack": {
         "category": "hostile",
-        "sounds": [{"name": "entity/shade/attack", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/shade/attack", "stream": false}]
     },
     "entity.shade.step": {
         "category": "hostile",
-        "sounds": [{"name": "entity/shade/step", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/shade/step", "stream": false}]
     },
     "entity.shade.jump": {
         "category": "hostile",
-        "sounds": [{"name": "entity/shade/jump", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/shade/jump", "stream": false}]
     },
     "entity.shade.tame": {
         "category": "hostile",
-        "sounds": [{"name": "entity/shade/tame", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/shade/tame", "stream": false}]
     },
     "entity.shade.beg": {
         "category": "hostile",
-        "sounds": [{"name": "entity/shade/beg", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/shade/beg", "stream": false}]
     },
     "entity.shade.eat": {
         "category": "hostile",
-        "sounds": [{"name": "entity/shade/eat", "stream": false}]
+        "sounds": [{"name": "shadowmobs:entity/shade/eat", "stream": false}]
     },
     "projectile.spectralbolt": {
         "category": "ambient",
-        "sounds": [{"name": "projectile/spectralbolt", "stream": false}]
+        "sounds": [{"name": "shadowmobs:projectile/spectralbolt", "stream": false}]
     },
     "projectile.bloodleech": {
         "category": "ambient",
-        "sounds": [{"name": "projectile/bloodleech", "stream": false}]
+        "sounds": [{"name": "shadowmobs:projectile/bloodleech", "stream": false}]
     },
     "block.shadowfire": {
         "category": "block",
-        "sounds": [{"name": "block/shadowfire", "stream": false}]
+        "sounds": [{"name": "shadowmobs:block/shadowfire", "stream": false}]
     }
 }

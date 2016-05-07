@@ -1,11 +1,10 @@
 package lycanite.lycanitesmobs.api.entity.ai;
 
-import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.pathfinding.PathEntity;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 
 public class EntityAIAvoid extends EntityAIBase {
     // Targets:
@@ -74,7 +73,7 @@ public class EntityAIAvoid extends EntityAIBase {
         	return false;
         }
         
-        Vec3 vec3 = RandomPositionGenerator.findRandomTargetAwayFrom(this.host, 24, 10, Vec3.createVectorHelper(this.avoidTarget.posX, this.avoidTarget.posY, this.avoidTarget.posZ));
+        Vec3d vec3 = RandomPositionGenerator.findRandomTargetAwayFrom(this.host, 24, 10, new Vec3d(this.avoidTarget.posX, this.avoidTarget.posY, this.avoidTarget.posZ));
         if(vec3 == null)
             return false;
         

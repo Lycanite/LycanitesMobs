@@ -29,12 +29,12 @@ public class MobEventServerBoss extends MobEventServer {
         this.startedWorldTime = world.getTotalWorldTime();
         this.ticks = 0;
 
-        LycanitesMobs.printInfo("", "Boss Event " + "Started" + ": " + this.mobEvent.getTitle() + " In Dimension: " + this.world.provider.dimensionId + " Intro Duration: " + (this.mobEvent.duration / 20) + "secs");
+        LycanitesMobs.printInfo("", "Boss Event " + "Started" + ": " + this.mobEvent.getTitle() + " In Dimension: " + this.world.provider.getDimension() + " Intro Duration: " + (this.mobEvent.duration / 20) + "secs");
     }
 
     public void changeStartedWorldTime(long newStartedTime) {
         this.startedWorldTime = newStartedTime;
-        LycanitesMobs.printInfo("", "Boss Event Start Time Changed: " + this.mobEvent.getTitle() + " In Dimension: " + this.world.provider.dimensionId + " Intro Duration: " + (this.mobEvent.duration / 20) + "secs" + " Time Remaining: " + ((this.mobEvent.duration - (this.world.getTotalWorldTime() - this.startedWorldTime)) / 20) + "secs");
+        LycanitesMobs.printInfo("", "Boss Event Start Time Changed: " + this.mobEvent.getTitle() + " In Dimension: " + this.world.provider.getDimension() + " Intro Duration: " + (this.mobEvent.duration / 20) + "secs" + " Time Remaining: " + ((this.mobEvent.duration - (this.world.getTotalWorldTime() - this.startedWorldTime)) / 20) + "secs");
     }
 
 

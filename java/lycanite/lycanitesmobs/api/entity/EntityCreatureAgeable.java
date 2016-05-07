@@ -1,13 +1,18 @@
 package lycanite.lycanitesmobs.api.entity;
 
-import java.util.HashMap;
-
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.info.Subspecies;
+import lycanite.lycanitesmobs.api.item.ItemCustomSpawnEgg;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
+
+import java.util.HashMap;
 
 public abstract class EntityCreatureAgeable extends EntityCreatureBase {
 	
@@ -31,6 +36,10 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
     public int breedingCooldown = 6000;
     
     public boolean hasBeenFarmed = false;
+
+    // Datawatcher:
+    protected static final DataParameter<Integer> AGE = EntityDataManager.<Integer>createKey(EntityCreatureBase.class, DataSerializers.VARINT);
+    protected static final DataParameter<Integer> LOVE = EntityDataManager.<Integer>createKey(EntityCreatureBase.class, DataSerializers.VARINT);
     
 	// ==================================================
   	//                    Constructor
@@ -50,8 +59,8 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataWatcher.addObject(WATCHER_ID.AGE.id, (int)0);
-        this.dataWatcher.addObject(WATCHER_ID.LOVE.id, (int)0);
+        this.dataWatcher.register(AGE, (int)0);
+        this.dataWatcher.register(LOVE, (int)0);
     }
     
     // ========== Name ==========
@@ -116,15 +125,15 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
             this.loveTime = 0;
 
         if(!this.worldObj.isRemote)
-        	this.dataWatcher.updateObject(WATCHER_ID.LOVE.id, (int)this.loveTime);
+        	this.dataWatcher.set(LOVE, (int)this.loveTime);
         if(this.worldObj.isRemote)
-        	this.loveTime = this.dataWatcher.getWatchableObjectInt(WATCHER_ID.LOVE.id);
+        	this.loveTime = this.dataWatcher.get(LOVE);
         
         if(this.isInLove()) {
         	this.setFarmed();
             --this.loveTime;
             if(this.worldObj.isRemote) {
-	            String particle = "heart";
+	            EnumParticleTypes particle = EnumParticleTypes.HEART;
 	            if(this.loveTime % 10 == 0) {
 	                double d0 = this.rand.nextGaussian() * 0.02D;
 	                double d1 = this.rand.nextGaussian() * 0.02D;
@@ -175,7 +184,8 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
     	
     	// Spawn Baby:
     	if(command.equals("Spawn Baby") && !this.worldObj.isRemote && ObjectManager.entityLists.containsKey(this.group.filename)) {
-			 Class eggClass = ObjectManager.entityLists.get(this.group.filename).getClassFromID(itemStack.getItemDamage());
+            ItemCustomSpawnEgg itemCustomSpawnEgg = (ItemCustomSpawnEgg)itemStack.getItem();
+			 Class eggClass = ObjectManager.entityLists.get(this.group.filename).getClassFromID(itemCustomSpawnEgg.getEntityIdFromItem(itemStack));
 			 if(eggClass != null && eggClass.isAssignableFrom(this.getClass())) {
 				 EntityCreatureAgeable baby = this.createChild(this);
 				 if(baby != null) {
@@ -204,11 +214,11 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
   	//                        Age
   	// ==================================================
 	public int getGrowingAge() {
-        return this.dataWatcher.getWatchableObjectInt(WATCHER_ID.AGE.id);
+        return this.dataWatcher.get(AGE);
     }
 	
 	public void setGrowingAge(int age) {
-		this.dataWatcher.updateObject(WATCHER_ID.AGE.id, (int)age);
+		this.dataWatcher.set(AGE, (int)age);
         this.setScaleForAge(this.isChild());
     }
 	
@@ -318,7 +328,7 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
                 double d0 = this.rand.nextGaussian() * 0.02D;
                 double d1 = this.rand.nextGaussian() * 0.02D;
                 double d2 = this.rand.nextGaussian() * 0.02D;
-                this.worldObj.spawnParticle("heart", this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + 0.5D + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d0, d1, d2);
+                this.worldObj.spawnParticle(EnumParticleTypes.HEART, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + 0.5D + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d0, d1, d2);
             }
 
             this.worldObj.spawnEntityInWorld(baby);

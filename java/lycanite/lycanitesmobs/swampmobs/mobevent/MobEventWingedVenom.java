@@ -1,14 +1,14 @@
 package lycanite.lycanitesmobs.swampmobs.mobevent;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import lycanite.lycanitesmobs.api.entity.EntityProjectileRapidFire;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
-import lycanite.lycanitesmobs.infernomobs.entity.EntityEmber;
+import lycanite.lycanitesmobs.swampmobs.entity.EntityVenomShot;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.world.World;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MobEventWingedVenom extends MobEventBase {
 
@@ -42,34 +42,34 @@ public class MobEventWingedVenom extends MobEventBase {
         List<EntityProjectileRapidFire> projectiles = new ArrayList<EntityProjectileRapidFire>();
         int rapidTime = 20;
 
-        EntityProjectileRapidFire projectileEntry = new EntityProjectileRapidFire(EntityEmber.class, entity.worldObj, entity, rapidTime, 3);
+        EntityProjectileRapidFire projectileEntry = new EntityProjectileRapidFire(EntityVenomShot.class, entity.worldObj, entity, rapidTime, 3);
         projectiles.add(projectileEntry);
 
-        projectileEntry = new EntityProjectileRapidFire(EntityEmber.class, entity.worldObj, entity, rapidTime, 3);
+        projectileEntry = new EntityProjectileRapidFire(EntityVenomShot.class, entity.worldObj, entity, rapidTime, 3);
         projectileEntry.setThrowableHeading((double)entity.posX + 1.0D, 0, (double)entity.posZ + 1.0D, 1.1F, 6.0F);
         projectiles.add(projectileEntry);
 
-        projectileEntry = new EntityProjectileRapidFire(EntityEmber.class, entity.worldObj, entity, rapidTime, 3);
+        projectileEntry = new EntityProjectileRapidFire(EntityVenomShot.class, entity.worldObj, entity, rapidTime, 3);
         projectileEntry.setThrowableHeading((double)entity.posX + 2.0D, 0, 0, 1.1F, 6.0F);
         projectiles.add(projectileEntry);
 
-        projectileEntry = new EntityProjectileRapidFire(EntityEmber.class, entity.worldObj, entity, rapidTime, 3);
+        projectileEntry = new EntityProjectileRapidFire(EntityVenomShot.class, entity.worldObj, entity, rapidTime, 3);
         projectileEntry.setThrowableHeading((double)entity.posX + 1.0D, 0, (double)entity.posZ - 1.0D, 1.1F, 6.0F);
         projectiles.add(projectileEntry);
 
-        projectileEntry = new EntityProjectileRapidFire(EntityEmber.class, entity.worldObj, entity, rapidTime, 3);
+        projectileEntry = new EntityProjectileRapidFire(EntityVenomShot.class, entity.worldObj, entity, rapidTime, 3);
         projectileEntry.setThrowableHeading(0, 0, (double)entity.posZ - 2.0D, 1.1F, 6.0F);
         projectiles.add(projectileEntry);
 
-        projectileEntry = new EntityProjectileRapidFire(EntityEmber.class, entity.worldObj, entity, rapidTime, 3);
+        projectileEntry = new EntityProjectileRapidFire(EntityVenomShot.class, entity.worldObj, entity, rapidTime, 3);
         projectileEntry.setThrowableHeading((double)entity.posX - 1.0D, 0, (double)entity.posZ - 1.0D, 1.1F, 6.0F);
         projectiles.add(projectileEntry);
 
-        projectileEntry = new EntityProjectileRapidFire(EntityEmber.class, entity.worldObj, entity, rapidTime, 3);
+        projectileEntry = new EntityProjectileRapidFire(EntityVenomShot.class, entity.worldObj, entity, rapidTime, 3);
         projectileEntry.setThrowableHeading((double)entity.posX - 2.0D, 0, 0, 1.1F, 6.0F);
         projectiles.add(projectileEntry);
 
-        projectileEntry = new EntityProjectileRapidFire(EntityEmber.class, entity.worldObj, entity, rapidTime, 3);
+        projectileEntry = new EntityProjectileRapidFire(EntityVenomShot.class, entity.worldObj, entity, rapidTime, 3);
         projectileEntry.setThrowableHeading((double)entity.posX - 1.0D, 0, (double)entity.posZ + 1.0D, 1.1F, 6.0F);
         projectiles.add(projectileEntry);
 

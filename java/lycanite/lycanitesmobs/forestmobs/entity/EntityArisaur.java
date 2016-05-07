@@ -1,29 +1,15 @@
 package lycanite.lycanitesmobs.forestmobs.entity;
 
-import java.util.HashMap;
-
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupAnimal;
 import lycanite.lycanitesmobs.api.IGroupPlant;
 import lycanite.lycanitesmobs.api.IGroupPredator;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIAttackMelee;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIAvoid;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowMaster;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollowParent;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAILookIdle;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIMate;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAISwimming;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAvoid;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetParent;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAITempt;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIWander;
-import lycanite.lycanitesmobs.api.entity.ai.EntityAIWatchClosest;
+import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.IAnimals;
@@ -35,7 +21,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import java.util.HashMap;
 
 public class EntityArisaur extends EntityCreatureAgeable implements IAnimals, IGroupAnimal, IGroupPlant {
 	
@@ -61,7 +51,6 @@ public class EntityArisaur extends EntityCreatureAgeable implements IAnimals, IG
         this.setupMob();
         
         // AI Tasks:
-        this.getNavigator().setAvoidsWater(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIAttackMelee(this).setLongMemory(false));
         this.tasks.addTask(2, new EntityAIAvoid(this).setNearSpeed(1.3D).setFarSpeed(1.2D).setNearDistance(5.0D).setFarDistance(20.0D));
@@ -107,9 +96,9 @@ public class EntityArisaur extends EntityCreatureAgeable implements IAnimals, IG
         
         // Water Healing:
         if(this.isInWater())
-        	this.addPotionEffect(new PotionEffect(Potion.regeneration.id, 3 * 20, 2));
-        else if(this.worldObj.isRaining() && this.worldObj.canBlockSeeTheSky((int)this.posX, (int)this.posY, (int)this.posZ))
-        	this.addPotionEffect(new PotionEffect(Potion.regeneration.id, 3 * 20, 1));
+        	this.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("regeneration"), 3 * 20, 2));
+        else if(this.worldObj.isRaining() && this.worldObj.canBlockSeeSky(this.getPosition()))
+        	this.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("regeneration"), 3 * 20, 1));
     }
 	
 	
@@ -119,11 +108,11 @@ public class EntityArisaur extends EntityCreatureAgeable implements IAnimals, IG
 	// ========== Pathing Weight ==========
 	@Override
 	public float getBlockPathWeight(int par1, int par2, int par3) {
-		if(this.worldObj.getBlock(par1, par2 - 1, par3) != Blocks.air) {
-			Block block = this.worldObj.getBlock(par1, par2 - 1, par3);
-			if(block.getMaterial() == Material.grass)
+		if(this.worldObj.getBlockState(new BlockPos(par1, par2 - 1, par3)).getBlock() != Blocks.air) {
+			IBlockState blocStatek = this.worldObj.getBlockState(new BlockPos(par1, par2 - 1, par3));
+			if(blocStatek.getMaterial() == Material.grass)
 				return 10F;
-			if(block.getMaterial() == Material.ground)
+			if(blocStatek.getMaterial() == Material.ground)
 				return 7F;
 		}
         return super.getBlockPathWeight(par1, par2, par3);
@@ -131,7 +120,7 @@ public class EntityArisaur extends EntityCreatureAgeable implements IAnimals, IG
     
 	// ========== Can leash ==========
     @Override
-    public boolean canLeash(EntityPlayer player) {
+    public boolean canBeLeashedTo(EntityPlayer player) {
 	    return true;
     }
     
@@ -147,20 +136,20 @@ public class EntityArisaur extends EntityCreatureAgeable implements IAnimals, IG
     		Item heldItem = null;
     		if(damageSrc.getEntity() instanceof EntityPlayer) {
     			EntityPlayer entityPlayer = (EntityPlayer)damageSrc.getEntity();
-	    		if(entityPlayer.getHeldItem() != null) {
-	    			heldItem = entityPlayer.getHeldItem().getItem();
+	    		if(entityPlayer.getHeldItem(EnumHand.MAIN_HAND) != null) {
+	    			heldItem = entityPlayer.getHeldItem(EnumHand.MAIN_HAND).getItem();
 	    		}
     		}
     		else if(damageSrc.getEntity() instanceof EntityLiving) {
 	    		EntityLiving entityLiving = (EntityLiving)damageSrc.getEntity();
-	    		if(entityLiving.getHeldItem() != null) {
-	    			heldItem = entityLiving.getHeldItem().getItem();
+	    		if(entityLiving.getHeldItem(EnumHand.MAIN_HAND) != null) {
+	    			heldItem = entityLiving.getHeldItem(EnumHand.MAIN_HAND).getItem();
 	    		}
     		}
     		if(ObjectLists.isAxe(heldItem))
 				return 4.0F;
     	}
-    	return 1.0F;
+        return super.getDamageModifier(damageSrc);
     }
     
     
@@ -169,9 +158,9 @@ public class EntityArisaur extends EntityCreatureAgeable implements IAnimals, IG
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotionID() == Potion.moveSlowdown.id) return false;
-        if(ObjectManager.getPotionEffect("Paralysis") != null)
-        	if(potionEffect.getPotionID() == ObjectManager.getPotionEffect("Paralysis").id) return false;
+        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("slowness")) return false;
+        if(ObjectManager.getPotionEffect("paralysis") != null)
+        	if(potionEffect.getPotion() == ObjectManager.getPotionEffect("paralysis")) return false;
         super.isPotionApplicable(potionEffect);
         return true;
     }

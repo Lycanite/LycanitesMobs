@@ -1,7 +1,5 @@
 package lycanite.lycanitesmobs.plainsmobs.entity;
 
-import java.util.HashMap;
-
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupAlpha;
 import lycanite.lycanitesmobs.api.IGroupAnimal;
@@ -24,6 +22,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
+
+import java.util.HashMap;
 
 public class EntityVentoraptor extends EntityCreatureRideable implements IGroupPredator {
     
@@ -85,6 +85,7 @@ public class EntityVentoraptor extends EntityCreatureRideable implements IGroupP
 		baseAttributes.put("knockbackResistance", 0.0D);
 		baseAttributes.put("followRange", 16D);
 		baseAttributes.put("attackDamage", 4D);
+        baseAttributes.put("attackSpeed", 4D);
         super.applyEntityAttributes(baseAttributes);
     }
 	
@@ -118,10 +119,10 @@ public class EntityVentoraptor extends EntityCreatureRideable implements IGroupP
     }
     
     public void riderEffects(EntityLivingBase rider) {
-    	if(rider.isPotionActive(Potion.weakness))
-    		rider.removePotionEffect(Potion.weakness.id);
-    	if(rider.isPotionActive(Potion.digSlowdown))
-    		rider.removePotionEffect(Potion.digSlowdown.id);
+        if(rider.isPotionActive(Potion.getPotionFromResourceLocation("weakness")))
+            rider.removePotionEffect(Potion.getPotionFromResourceLocation("weakness"));
+        if(rider.isPotionActive(Potion.getPotionFromResourceLocation("mining_fatigue")))
+            rider.removePotionEffect(Potion.getPotionFromResourceLocation("mining_fatigue"));
     }
 
 	
@@ -190,10 +191,10 @@ public class EntityVentoraptor extends EntityCreatureRideable implements IGroupP
    	//                     Immunities
    	// ==================================================
     @Override
-    public boolean isPotionApplicable(PotionEffect par1PotionEffect) {
-        if(par1PotionEffect.getPotionID() == Potion.weakness.id) return false;
-        if(par1PotionEffect.getPotionID() == Potion.digSlowdown.id) return false;
-        return super.isPotionApplicable(par1PotionEffect);
+    public boolean isPotionApplicable(PotionEffect potionEffect) {
+        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("weakness")) return false;
+        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("mining_fatigue")) return false;
+        return super.isPotionApplicable(potionEffect);
     }
     
     @Override

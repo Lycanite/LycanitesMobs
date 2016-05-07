@@ -1,11 +1,11 @@
 package lycanite.lycanitesmobs.api.entity;
 
-import lycanite.lycanitesmobs.LycanitesMobs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.IEntityMultiPart;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 
 
@@ -13,6 +13,10 @@ public class EntityHitArea extends Entity {
     public Entity owner;
     private static byte widthID = 12;
     private static byte heightID = 13;
+
+    // Datawatcher:
+    protected static final DataParameter<Float> WIDTH = EntityDataManager.<Float>createKey(EntityHitArea.class, DataSerializers.FLOAT);
+    protected static final DataParameter<Float> HEIGHT = EntityDataManager.<Float>createKey(EntityHitArea.class, DataSerializers.FLOAT);
 
     public EntityHitArea(Entity ownerEntity, float width, float height) {
         super(ownerEntity.worldObj);
@@ -26,8 +30,8 @@ public class EntityHitArea extends Entity {
 
     @Override
     protected void entityInit() {
-        this.dataWatcher.addObject(this.widthID, this.width);
-        this.dataWatcher.addObject(this.heightID, this.height);
+        this.dataWatcher.register(WIDTH, this.width);
+        this.dataWatcher.register(HEIGHT, this.height);
     }
 
 
@@ -37,12 +41,12 @@ public class EntityHitArea extends Entity {
             this.setDead();
         super.onUpdate();
         if(!this.worldObj.isRemote) {
-            this.dataWatcher.updateObject(this.widthID, this.width);
-            this.dataWatcher.updateObject(this.heightID, this.height);
+            this.dataWatcher.set(WIDTH, this.width);
+            this.dataWatcher.set(HEIGHT, this.height);
         }
         else {
-            float newWidth = this.dataWatcher.getWatchableObjectFloat(this.widthID);
-            float newHeight = this.dataWatcher.getWatchableObjectFloat(this.heightID);
+            float newWidth = this.dataWatcher.get(WIDTH);
+            float newHeight = this.dataWatcher.get(HEIGHT);
             if(this.width != newWidth || this.height != newHeight)
                 this.setSize(newWidth, newHeight);
         }
@@ -68,7 +72,7 @@ public class EntityHitArea extends Entity {
     public boolean attackEntityFrom(DamageSource damageSource, float damageAmount) {
         if(this.worldObj.isRemote)
             return true;
-        if(this.isEntityInvulnerable())
+        if(this.isEntityInvulnerable(damageSource))
             return false;
         if(this.owner == null)
             return true;
@@ -83,9 +87,9 @@ public class EntityHitArea extends Entity {
     }
 
     @Override
-    public String getCommandSenderName() {
+    public String getName() {
         if(this.owner != null)
-            return this.owner.getCommandSenderName();
+            return this.owner.getName();
         return "Hit Area";
     }
 }

@@ -1,10 +1,11 @@
 package lycanite.lycanitesmobs.api.entity.ai;
 
-import java.util.Iterator;
-import java.util.List;
-
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
+import net.minecraft.entity.EntityLivingBase;
+
+import java.util.Iterator;
+import java.util.List;
 
 public class EntityAITargetOwnerRevenge extends EntityAITargetAttack {
 	
@@ -55,10 +56,13 @@ public class EntityAITargetOwnerRevenge extends EntityAITargetAttack {
     		return false;
     	if(this.host.getOwner() == null)
     		return false;
-        int i = this.host.getOwner().func_142015_aE(); // Get Owners Revenge Timer
+        if (!(this.host.getOwner() instanceof EntityLivingBase))
+            return false;
+        EntityLivingBase owner = (EntityLivingBase)this.host.getOwner();
+        int i = owner.getRevengeTimer();
         if(i == this.revengeTime)
         	return false;
-        if(!this.isSuitableTarget(this.host.getOwner().getAITarget(), false))
+        if(!this.isSuitableTarget(owner.getAITarget(), false))
         	return false;
         return true;
     }
@@ -68,12 +72,13 @@ public class EntityAITargetOwnerRevenge extends EntityAITargetAttack {
  	//                 Start Executing
  	// ==================================================
     public void startExecuting() {
-        this.target = this.host.getOwner().getAITarget();
-        this.revengeTime = this.host.getOwner().func_142015_aE(); // Get Owners Revenge Timer
+        EntityLivingBase owner = (EntityLivingBase)this.host.getOwner();
+        this.target = owner.getAITarget();
+        this.revengeTime = owner.getRevengeTimer();
         
         if(this.callForHelp) {
             double d0 = this.getTargetDistance();
-            List allies = this.host.worldObj.selectEntitiesWithinAABB(this.host.getClass(), this.host.boundingBox.expand(d0, 4.0D, d0), this.targetSelector);
+            List allies = this.host.worldObj.getEntitiesWithinAABB(this.host.getClass(), this.host.getEntityBoundingBox().expand(d0, 4.0D, d0), this.targetSelector);
             Iterator possibleAllies = allies.iterator();
 
             while(possibleAllies.hasNext()) {

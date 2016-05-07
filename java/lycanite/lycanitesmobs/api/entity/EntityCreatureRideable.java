@@ -164,12 +164,11 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
     }
     
     // ========== Move with Heading ==========
-    // TODO Replace with newer mount controls.
     @Override
-    public void moveEntityWithHeading(float moveStrafe, float moveForward) {
+    public void moveEntityWithHeading(float strafe, float forward) {
     	// Check if Mounted:
     	if(!this.isTamed() || !this.hasSaddle() || !this.hasRiderTarget() || !(this.getControllingPassenger() instanceof EntityLivingBase) || !this.riderControl()) {
-    		super.moveEntityWithHeading(moveStrafe, moveForward);
+    		super.moveEntityWithHeading(strafe, forward);
     		return;
     	}
     	
@@ -180,43 +179,57 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
             this.rotationPitch = rider.rotationPitch * 0.5F;
             this.setRotation(this.rotationYaw, this.rotationPitch);
             this.rotationYawHead = this.renderYawOffset = this.rotationYaw;
-            moveStrafe = ((EntityLivingBase) rider).moveStrafing * 0.5F;
-            moveForward = ((EntityLivingBase) rider).moveForward;
+            strafe = rider.moveStrafing * 0.5F;
+            forward = rider.moveForward;
         }
-    	
-    	// Jumping Controls:
-    	if(!this.isMountJumping() && this.onGround) {
-	    	if(this.getControllingPassenger() instanceof EntityPlayer) {
-	    		EntityPlayer player = (EntityPlayer)this.getControllingPassenger();
-	    		ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
-	    		if(playerExt != null && playerExt.isControlActive(ExtendedPlayer.CONTROL_ID.JUMP))
-	    			this.startJumping();
-	    	}
-    	}
-    	
-    	// Jumping Behaviour:
-    	if(this.getJumpPower() > 0.0F && !this.isMountJumping() && this.onGround) {
-			this.motionY = this.getMountJumpHeight() * (double)this.getJumpPower();
-            if(this.isPotionActive(Potion.getPotionFromResourceLocation("jump_boost")))
-                this.motionY += (double)((float)(this.getActivePotionEffect(Potion.getPotionFromResourceLocation("jump_boost")).getAmplifier() + 1) * 0.1F);
-            this.setMountJumping(true);
-            this.isAirBorne = true;
-            if(moveForward > 0.0F) {
-                float f2 = MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F);
-                float f3 = MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F);
-                this.motionX += (double)(-0.4F * f2 * this.jumpPower);
-                this.motionZ += (double)(0.4F * f3 * this.jumpPower);
+
+        // Swimming / Flying Controls:
+        if(this.isInWater() || this.isInLava() || this.canFly()) {
+            if (this.getControllingPassenger() instanceof EntityPlayer) {
+                EntityPlayer player = (EntityPlayer) this.getControllingPassenger();
+                ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
+                if (playerExt != null && playerExt.isControlActive(ExtendedPlayer.CONTROL_ID.JUMP)) {
+                    this.motionY += this.getAIMoveSpeed() / 3;
+                }
             }
-            if(!this.worldObj.isRemote)
-            	this.playJumpSound();
-            this.setJumpPower(0);
         }
-        this.jumpMovementFactor = (float)(this.getAIMoveSpeed() * this.getGlideScale());
+
+        else {
+            // Jumping Controls:
+            if (!this.isMountJumping() && this.onGround) {
+                if (this.getControllingPassenger() instanceof EntityPlayer) {
+                    EntityPlayer player = (EntityPlayer) this.getControllingPassenger();
+                    ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
+                    if (playerExt != null && playerExt.isControlActive(ExtendedPlayer.CONTROL_ID.JUMP))
+                        this.startJumping();
+                }
+            }
+
+            // Jumping Behaviour:
+            if (this.getJumpPower() > 0.0F && !this.isMountJumping() && this.onGround && this.canPassengerSteer()) {
+                this.motionY = this.getMountJumpHeight() * (double) this.getJumpPower();
+                if (this.isPotionActive(Potion.getPotionFromResourceLocation("jump_boost")))
+                    this.motionY += (double) ((float) (this.getActivePotionEffect(Potion.getPotionFromResourceLocation("jump_boost")).getAmplifier() + 1) * 0.1F);
+                this.setMountJumping(true);
+                this.isAirBorne = true;
+                if (forward > 0.0F) {
+                    float f2 = MathHelper.sin(this.rotationYaw * (float) Math.PI / 180.0F);
+                    float f3 = MathHelper.cos(this.rotationYaw * (float) Math.PI / 180.0F);
+                    this.motionX += (double) (-0.4F * f2 * this.jumpPower);
+                    this.motionZ += (double) (0.4F * f3 * this.jumpPower);
+                }
+                if (!this.worldObj.isRemote)
+                    this.playJumpSound();
+                this.setJumpPower(0);
+                net.minecraftforge.common.ForgeHooks.onLivingJump(this);
+            }
+            this.jumpMovementFactor = (float) (this.getAIMoveSpeed() * this.getGlideScale());
+        }
         
         // Apply Movement:
-        if(!this.worldObj.isRemote) {
+        if(this.canPassengerSteer()) {
             this.setAIMoveSpeed((float)this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue());
-            super.moveEntityWithHeading(moveStrafe, moveForward);
+            super.moveEntityWithHeading(strafe, forward);
         }
         
         // Clear Jumping:
@@ -349,7 +362,7 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
     // ==================================================
     @Override
     public boolean canSit() { return false; }
-    
+
     public boolean canBeMounted(Entity entity) {
     	if(this.getControllingPassenger() != null)
     		return false;

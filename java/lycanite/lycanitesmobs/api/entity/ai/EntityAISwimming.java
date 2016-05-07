@@ -2,6 +2,7 @@ package lycanite.lycanitesmobs.api.entity.ai;
 
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.pathfinding.PathNavigateGround;
 
 public class EntityAISwimming extends EntityAIBase {
@@ -35,6 +36,8 @@ public class EntityAISwimming extends EntityAIBase {
    	//                  Should Execute
    	// ==================================================
     public boolean shouldExecute() {
+        if(this.host.getControllingPassenger() != null && this.host.getControllingPassenger() instanceof EntityPlayer && this.host.canBeSteered())
+            return false;
         return this.host.isInWater() || this.host.isInLava();
     }
     

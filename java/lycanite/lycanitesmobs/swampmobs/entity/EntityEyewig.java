@@ -99,14 +99,6 @@ public class EntityEyewig extends EntityCreatureRideable {
     // ==================================================
     //                      Movement
     // ==================================================
-    // ========== Movement Speed Modifier ==========
-    @Override
-    public float getAISpeedModifier() {
-    	if(this.isInWater())
-    		return 8.0F;
-    	return super.getAISpeedModifier();
-    }
-
     // Pushed By Water:
     @Override
     public boolean isPushedByWater() {

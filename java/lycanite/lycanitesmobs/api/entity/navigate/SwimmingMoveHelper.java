@@ -16,13 +16,13 @@ public class SwimmingMoveHelper extends EntityMoveHelper {
 
     public void onUpdateMoveHelper() {
         if (this.field_188491_h == EntityMoveHelper.Action.MOVE_TO && !this.parentEntity.getNavigator().noPath()) {
-            double d0 = this.posX - this.parentEntity.posX;
-            double d1 = this.posY - this.parentEntity.posY;
-            double d2 = this.posZ - this.parentEntity.posZ;
-            double d3 = d0 * d0 + d1 * d1 + d2 * d2;
-            d3 = (double) MathHelper.sqrt_double(d3);
-            d1 = d1 / d3;
-            float f = (float)(MathHelper.atan2(d2, d0) * (180D / Math.PI)) - 90.0F;
+            double x = this.posX - this.parentEntity.posX;
+            double y = this.posY - this.parentEntity.posY;
+            double z = this.posZ - this.parentEntity.posZ;
+            double distance = x * x + y * y + z * z;
+            distance = (double) MathHelper.sqrt_double(distance);
+            y = y / distance;
+            float f = (float)(MathHelper.atan2(z, x) * (180D / Math.PI)) - 90.0F;
             this.parentEntity.rotationYaw = this.limitAngle(this.parentEntity.rotationYaw, f, 90.0F);
             this.parentEntity.renderYawOffset = this.parentEntity.rotationYaw;
             float f1 = (float)(this.speed * this.parentEntity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue());
@@ -34,11 +34,11 @@ public class SwimmingMoveHelper extends EntityMoveHelper {
             this.parentEntity.motionZ += d4 * d6;
             d4 = Math.sin((double)(this.parentEntity.ticksExisted + this.parentEntity.getEntityId()) * 0.75D) * 0.05D;
             this.parentEntity.motionY += d4 * (d6 + d5) * 0.25D;
-            this.parentEntity.motionY += (double)this.parentEntity.getAIMoveSpeed() * d1 * 0.1D;
+            this.parentEntity.motionY += (double)this.parentEntity.getAIMoveSpeed() * y * 0.1D;
             EntityLookHelper entitylookhelper = this.parentEntity.getLookHelper();
-            double d7 = this.parentEntity.posX + d0 / d3 * 2.0D;
-            double d8 = (double)this.parentEntity.getEyeHeight() + this.parentEntity.posY + d1 / d3;
-            double d9 = this.parentEntity.posZ + d2 / d3 * 2.0D;
+            double d7 = this.parentEntity.posX + x / distance * 2.0D;
+            double d8 = (double)this.parentEntity.getEyeHeight() + this.parentEntity.posY + y / distance;
+            double d9 = this.parentEntity.posZ + z / distance * 2.0D;
             double d10 = entitylookhelper.getLookPosX();
             double d11 = entitylookhelper.getLookPosY();
             double d12 = entitylookhelper.getLookPosZ();

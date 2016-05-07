@@ -99,7 +99,7 @@ public class KeyHandler {
             GUIFamiliar.openToPlayer(this.mc.thePlayer);
         }
 
-		// Minion Manager: Opens GUI.
+		// Minion Manager:
 		if(this.minionManager.isPressed()) {
 			GUIMinion.openToPlayer(this.mc.thePlayer, playerExt.selectedSummonSet);
 		}
@@ -112,7 +112,7 @@ public class KeyHandler {
 		
 		if(this.mc.inGameHasFocus) {
 			// ========== HUD Controls ==========
-			// Minion Selection: Opens GUI.
+			// Minion Selection:
 			if(this.minionSelection.isPressed()) {
 				GUIMinionSelection.openToPlayer(this.mc.thePlayer);
 			}
@@ -120,11 +120,11 @@ public class KeyHandler {
 			
 			// ========== Action Controls ==========
 			// Vanilla Jump: Adds to control states.
-			if(this.mc.gameSettings.keyBindJump.isPressed())
+			if(this.mc.gameSettings.keyBindJump.isKeyDown())
 				controlStates += ExtendedPlayer.CONTROL_ID.JUMP.id;
 			
 			// Mount Ability: Adds to control states.
-			if(this.mountAbility.isPressed())
+			if(this.mountAbility.isKeyDown())
 				controlStates += ExtendedPlayer.CONTROL_ID.MOUNT_ABILITY.id;
 
             // Custom Item Left Click Use:

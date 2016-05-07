@@ -265,7 +265,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 	}
     /** Used for the ANIM_ID watcher bitmap, bitmaps save on many packets and make network performance better! **/
 	public static enum ANIM_ID {
-		ATTACKED((byte)1), GROUNDED((byte)2), BLOCKING((byte)4), MINION((byte)8), EXTRA01((byte)8);
+		ATTACKED((byte)1), GROUNDED((byte)2), IN_WATER((byte)4), BLOCKING((byte)8), MINION((byte)16), EXTRA01((byte)32);
 		public final byte id;
 	    private ANIM_ID(byte value) { this.id = value; }
 	    public byte getValue() { return id; }
@@ -1206,7 +1206,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         	this.clearMovement();
         
         // Climbing:
-        if(!this.worldObj.isRemote) {
+        if(!this.worldObj.isRemote || this.canPassengerSteer()) {
         	this.setBesideClimbableBlock(this.isCollidedHorizontally);
         	if(this.flySoundSpeed > 0 && this.ticksExisted % 20 == 0)
         		this.playFlySound();
@@ -1414,6 +1414,10 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         	// Airborne Animation:
         	if(this.onGround)
         		animations += ANIM_ID.GROUNDED.id;
+
+            // Swimming Animation:
+            if(this.inWater)
+                animations += ANIM_ID.IN_WATER.id;
         	
         	// Blocking Animation:
         	if(this.isBlocking())
@@ -1438,6 +1442,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         	else if((animations & ANIM_ID.ATTACKED.id) > 0)
         		this.setJustAttacked();
         	this.onGround = (animations & ANIM_ID.GROUNDED.id) > 0;
+            this.inWater = (animations & ANIM_ID.IN_WATER.id) > 0;
         	this.extraAnimation01 = (animations & ANIM_ID.EXTRA01.id) > 0;
         }
         
@@ -1576,6 +1581,20 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         }
         this.limbSwingAmount += (f2 - this.limbSwingAmount) * 0.4F;
         this.limbSwing += this.limbSwingAmount;
+    }
+
+    @Override
+    public void moveFlying(float strafe, float forward, float friction) {
+        if(!this.isPushedByWater() && this.canWalk() && this.isInWater()) {
+            float sliperryness = 0.91F;
+            BlockPos.PooledMutableBlockPos blockpos$pooledmutableblockpos = BlockPos.PooledMutableBlockPos.retain(this.posX, this.getEntityBoundingBox().minY - 1.0D, this.posZ);
+            if (this.onGround) {
+                sliperryness = this.worldObj.getBlockState(blockpos$pooledmutableblockpos).getBlock().slipperiness * sliperryness * 2;
+            }
+            float f7 = 0.16277136F / (sliperryness * sliperryness * sliperryness);
+            friction = this.getAIMoveSpeed() * f7;
+        }
+        super.moveFlying(strafe, forward, friction);
     }
 
     // ========== Move Swimming with Heading ==========
@@ -2404,9 +2423,10 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     /** Returns true if this entity is climbing a ladder or wall, can be used for animation. **/
     @Override
     public boolean isOnLadder() {
-    	if(this.useFlightNavigator() || this.canSwim()) return false;
-    	if(this.canClimb())
-    		return (this.dataWatcher.get(CLIMBING) & 1) != 0;
+    	if(this.canFly() || this.canSwim()) return false;
+    	if(this.canClimb()) {
+            return (this.dataWatcher.get(CLIMBING) & 1) != 0;
+        }
     	else
     		return super.isOnLadder();
     }
@@ -2415,7 +2435,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     public void setBesideClimbableBlock(boolean collided) {
     	if(this.canClimb()) {
 	        byte climbing = this.dataWatcher.get(CLIMBING);
-	        if(collided) climbing = (byte)(climbing | 1);
+	        if(collided)
+                climbing = (byte)(climbing | 1);
 	        else climbing &= -2;
 	        this.dataWatcher.set(CLIMBING, Byte.valueOf(climbing));
     	}
@@ -3098,10 +3119,12 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
    	@Override
     public EnumCreatureAttribute getCreatureAttribute() { return this.attribute; }
 
-    // ========== Y Offset ==========
+    // ========== Mounted Y Offset ==========
     /** A Y Offset used to position the mob that is riding this mob. **/
    	@Override
-    public double getYOffset() { return super.getYOffset() - 0.5D; }
+    public double getMountedYOffset() {
+        return super.getMountedYOffset() - 0.5D;
+    }
     
    	// ========== Get Nearby Entities ==========
    	/** Get entities that are near this entity. **/

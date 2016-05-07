@@ -57,7 +57,7 @@ public class EntityStrider extends EntityCreatureRideable {
         this.setupMob();
 
         this.setPathPriority(PathNodeType.WATER, 0F);
-        this.stepHeight = 2.0F;
+        this.stepHeight = 4.0F;
         
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this).setSink(true));
@@ -215,7 +215,7 @@ public class EntityStrider extends EntityCreatureRideable {
 	@Override
     public float getAISpeedModifier() {
     	if(this.isInWater()) // Checks specifically just for water.
-            return 8F;
+            return 3F;
     	if(this.waterContact()) // Checks for water, rain, etc.
     		return 2F;
         return super.getAISpeedModifier();
@@ -251,7 +251,7 @@ public class EntityStrider extends EntityCreatureRideable {
     // Mounted Y Offset:
     @Override
     public double getMountedYOffset() {
-        return (double)this.height * 1.0D;
+        return (double)this.height * 1.0D * this.sizeScale;
     }
 
     // Mount/Dismount:

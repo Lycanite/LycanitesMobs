@@ -8,7 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
-import net.minecraft.potion.Potion;
+import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundEvent;
@@ -54,7 +54,7 @@ public class EntityVenomShot extends EntityProjectileBase {
     //========== Entity Living Collision ==========
     @Override
     public boolean entityLivingCollision(EntityLivingBase entityLiving) {
-    	entityLiving.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("poison"), this.getEffectDuration(5), 0));
+    	entityLiving.addPotionEffect(new PotionEffect(MobEffects.poison, this.getEffectDuration(5), 0));
     	return true;
     }
     

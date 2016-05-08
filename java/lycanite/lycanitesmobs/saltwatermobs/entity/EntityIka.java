@@ -13,8 +13,8 @@ import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
@@ -171,7 +171,7 @@ public class EntityIka extends EntityCreatureAgeable implements IAnimals, IGroup
     public boolean isPotionApplicable(PotionEffect potionEffect) {
         if(ObjectManager.getPotionEffect("weight") != null)
             if(potionEffect.getPotion() == ObjectManager.getPotionEffect("weight")) return false;
-        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("blindness")) return false;
+        if(potionEffect.getPotion() == MobEffects.blindness) return false;
         return super.isPotionApplicable(potionEffect);
     }
     

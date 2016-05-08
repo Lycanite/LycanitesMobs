@@ -58,10 +58,10 @@ public class MessageBeastiary implements IMessage, IMessageHandler<MessageBeasti
 		for(int i = 0; i < message.entryAmount; i++) {
 			String creatureName = message.creatureNames[i];
 			double completion = message.completions[i];
-			CreatureKnowledge creatureKnowledge = new CreatureKnowledge(player, creatureName, completion);
+			CreatureKnowledge creatureKnowledge = new CreatureKnowledge(playerExt.getBeastiary(), creatureName, completion);
 			newKnowledgeList.put(creatureKnowledge.creatureName, creatureKnowledge);
 		}
-		playerExt.beastiary.newKnowledgeList(newKnowledgeList);
+		playerExt.getBeastiary().newKnowledgeList(newKnowledgeList);
 		return null;
 	}
 	

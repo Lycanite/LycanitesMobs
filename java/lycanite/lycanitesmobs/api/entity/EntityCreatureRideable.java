@@ -7,8 +7,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.DamageSource;
@@ -208,8 +208,8 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
             // Jumping Behaviour:
             if (this.getJumpPower() > 0.0F && !this.isMountJumping() && this.onGround && this.canPassengerSteer()) {
                 this.motionY = this.getMountJumpHeight() * (double) this.getJumpPower();
-                if (this.isPotionActive(Potion.getPotionFromResourceLocation("jump_boost")))
-                    this.motionY += (double) ((float) (this.getActivePotionEffect(Potion.getPotionFromResourceLocation("jump_boost")).getAmplifier() + 1) * 0.1F);
+                if (this.isPotionActive(MobEffects.jump))
+                    this.motionY += (double) ((float) (this.getActivePotionEffect(MobEffects.jump).getAmplifier() + 1) * 0.1F);
                 this.setMountJumping(true);
                 this.isAirBorne = true;
                 if (forward > 0.0F) {

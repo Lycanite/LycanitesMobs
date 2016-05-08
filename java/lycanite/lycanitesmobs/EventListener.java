@@ -1,5 +1,6 @@
 package lycanite.lycanitesmobs;
 
+import lycanite.lycanitesmobs.api.capabilities.IExtendedPlayer;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
 import lycanite.lycanitesmobs.api.entity.EntityItemCustom;
@@ -11,22 +12,27 @@ import net.minecraft.block.BlockLiquid;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EntityDamageSource;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
@@ -59,7 +65,43 @@ public class EventListener {
     // ==================================================
     @SubscribeEvent
     public void onAttachCapabilities(AttachCapabilitiesEvent.Entity event) {
-        // TODO Use capabilities for player NBT.
+        // TODO Move ExtendedEntity over to Capability.
+        if(event.getEntity() instanceof EntityPlayer) {
+            event.addCapability(new ResourceLocation(LycanitesMobs.modid, "IExtendedPlayer"), new ICapabilitySerializable<NBTTagCompound>() {
+                IExtendedPlayer instance = LycanitesMobs.EXTENDED_PLAYER.getDefaultInstance();
+
+                @Override
+                public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+                    return capability == LycanitesMobs.EXTENDED_PLAYER;
+                }
+
+                @Override
+                public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+                    return capability == LycanitesMobs.EXTENDED_PLAYER ? LycanitesMobs.EXTENDED_PLAYER.<T>cast(this.instance) : null;
+                }
+
+                @Override
+                public NBTTagCompound serializeNBT() {
+                    return (NBTTagCompound) LycanitesMobs.EXTENDED_PLAYER.getStorage().writeNBT(LycanitesMobs.EXTENDED_PLAYER, this.instance, null);
+                }
+
+                @Override
+                public void deserializeNBT(NBTTagCompound nbt) {
+                    LycanitesMobs.EXTENDED_PLAYER.getStorage().readNBT(LycanitesMobs.EXTENDED_PLAYER, this.instance, null, nbt);
+                }
+            });
+        }
+    }
+
+
+    // ==================================================
+    //                    Player Clone
+    // ==================================================
+    @SubscribeEvent
+    public void onPlayerClone(PlayerEvent.Clone event) {
+        ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(event.getOriginal());
+        if(extendedPlayer != null)
+            extendedPlayer.backupPlayer();
     }
 
 
@@ -68,10 +110,8 @@ public class EventListener {
     // ==================================================
 	@SubscribeEvent
 	public void onEntityConstructing(EntityConstructing event) {
-		if(event.getEntity() == null)
+		if(event.getEntity() == null || event.getEntity().worldObj == null || event.getEntity().worldObj.isRemote)
 			return;
-        if(event.getEntity().worldObj == null || event.getEntity().worldObj.isRemote)
-            return;
 
         // ========== Force Remove Entity ==========
         if(!(event.getEntity() instanceof EntityLivingBase)) {
@@ -89,26 +129,6 @@ public class EventListener {
         // ========== Extended Entity ==========
         if(event.getEntity() instanceof EntityLivingBase)
             ExtendedEntity.getForEntity(event.getEntity());
-
-        // ========== Extended Player ==========
-        if(event.getEntity() instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer)event.getEntity();
-            ExtendedPlayer.getForPlayer(player);
-        }
-	}
-
-
-	// ==================================================
-    //                  Entity Join World
-    // ==================================================
-	@SubscribeEvent
-	public void onEntityJoinWorld(EntityJoinWorldEvent event) {
-		// ========== Extended Player ==========
-		if(event.getEntity() instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer)event.getEntity();
-			ExtendedPlayer playerExtended = ExtendedPlayer.getForPlayer(player);
-			playerExtended.onJoinWorld();
-		}
 	}
 
 
@@ -130,9 +150,6 @@ public class EventListener {
 			EntityPlayer player = (EntityPlayer)entity;
 			ExtendedPlayer.getForPlayer(player).onDeath();
 		}
-
-        // ========== Minion Kills ==========
-        // TODO: If damage is minion/pet damage set the entity to the minion's owner instead so they are credited for the kill?
 	}
 
 
@@ -211,7 +228,7 @@ public class EventListener {
 	public void onAttackTarget(LivingSetAttackTargetEvent event) {
 		// Better Invisibility:
 		if(event.getEntityLiving() != null) {
-			if(!event.getEntityLiving().isPotionActive(Potion.getPotionFromResourceLocation("nightVision")) && event.getTarget() != null) {
+			if(!event.getEntityLiving().isPotionActive(MobEffects.nightVision) && event.getTarget() != null) {
 				if(event.getTarget().isInvisible())
 					event.getEntityLiving().setRevengeTarget(null);
 			}

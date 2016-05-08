@@ -6,6 +6,8 @@ import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.pets.SummonSet;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.IThreadListener;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -35,16 +37,28 @@ public class MessageSummonSet implements IMessage, IMessageHandler<MessageSummon
 	 * Called when this message is received.
 	 */
 	@Override
-	public IMessage onMessage(MessageSummonSet message, MessageContext ctx) {
-		EntityPlayer player = null;
-		if(ctx.side == Side.CLIENT)
-			player = LycanitesMobs.proxy.getClientPlayer();
-		else if(ctx.side == Side.SERVER)
-			player = ctx.getServerHandler().playerEntity;
-		if(player == null) return null;
-		ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
-		if(playerExt == null) return null;
-		
+	public IMessage onMessage(final MessageSummonSet message, final MessageContext ctx) {
+        // Server Side:
+        if(ctx.side == Side.SERVER) {
+            IThreadListener mainThread = (WorldServer) ctx.getServerHandler().playerEntity.worldObj;
+            mainThread.addScheduledTask(new Runnable() {
+                @Override
+                public void run() {
+                    EntityPlayer player = ctx.getServerHandler().playerEntity;
+                    ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
+
+                    SummonSet summonSet = playerExt.getSummonSet(message.summonSetID);
+                    summonSet.readFromPacket(message.summonType, message.behaviour);
+                }
+            });
+            return null;
+        }
+
+        // Client Side:
+        EntityPlayer player = LycanitesMobs.proxy.getClientPlayer();
+        ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
+        if(playerExt == null) return null;
+
 		SummonSet summonSet = playerExt.getSummonSet(message.summonSetID);
 		summonSet.readFromPacket(message.summonType, message.behaviour);
 		return null;

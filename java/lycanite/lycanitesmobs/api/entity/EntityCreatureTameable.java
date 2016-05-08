@@ -109,6 +109,8 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     public boolean despawnCheck() {
         if(this.worldObj.isRemote)
         	return false;
+        if(this.getPetEntry() != null && this.getPetEntry().entity != this && this.getPetEntry().entity != null)
+            return true;
     	if(this.isTamed() && !this.isTemporary)
     		return false;
         return super.despawnCheck();

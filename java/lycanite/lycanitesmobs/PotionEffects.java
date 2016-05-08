@@ -6,7 +6,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.potion.Potion;
+import net.minecraft.init.MobEffects;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -34,8 +34,8 @@ public class PotionEffects {
 		}
 		
 		// Night Vision Stops Blindness:
-		if(entity.isPotionActive(Potion.getPotionFromResourceLocation("blindness")) && entity.isPotionActive(Potion.getPotionFromResourceLocation("night_vision")))
-			entity.removePotionEffect(Potion.getPotionFromResourceLocation("blindness"));
+		if(entity.isPotionActive(MobEffects.blindness) && entity.isPotionActive(MobEffects.nightVision))
+			entity.removePotionEffect(MobEffects.blindness);
 		
 		boolean invulnerable = false;
 		if(entity instanceof EntityPlayer) {
@@ -96,8 +96,8 @@ public class PotionEffects {
 
 		// ========== Disable Nausea ==========
 		if(LycanitesMobs.disableNausea && event.getEntityLiving() instanceof EntityPlayer) {
-			if(entity.isPotionActive(Potion.getPotionFromResourceLocation("nausea"))) {
-				entity.removePotionEffect(Potion.getPotionFromResourceLocation("nausea"));
+			if(entity.isPotionActive(MobEffects.confusion)) {
+				entity.removePotionEffect(MobEffects.confusion);
 			}
 		}
 	}

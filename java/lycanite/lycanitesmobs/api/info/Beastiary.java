@@ -1,11 +1,11 @@
 package lycanite.lycanitesmobs.api.info;
 
+import lycanite.lycanitesmobs.ExtendedPlayer;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.network.MessageBeastiary;
 import lycanite.lycanitesmobs.api.network.MessageCreatureKnowledge;
 import lycanite.lycanitesmobs.api.pets.SummonSet;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -15,14 +15,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public class Beastiary {
-	public EntityPlayer player;
+	public ExtendedPlayer extendedPlayer;
 	public Map<String, CreatureKnowledge> creatureKnowledgeList = new HashMap<String, CreatureKnowledge>();
 	
     // ==================================================
     //                     Constructor
     // ==================================================
-	public Beastiary(EntityPlayer player) {
-		this.player = player;
+	public Beastiary(ExtendedPlayer extendedPlayer) {
+		this.extendedPlayer = extendedPlayer;
 	}
 	
 	
@@ -85,13 +85,13 @@ public class Beastiary {
 	/** Sends a new Beastiary entry (CreatureKnowledge) to the client. Shouldn't really be needed, just add it client side. **/
 	public void sendNewToClient(CreatureKnowledge newKnowledge) {
 		MessageCreatureKnowledge message = new MessageCreatureKnowledge(newKnowledge);
-		LycanitesMobs.packetHandler.sendToPlayer(message, (EntityPlayerMP)this.player);
+		LycanitesMobs.packetHandler.sendToPlayer(message, (EntityPlayerMP)this.extendedPlayer.getPlayer());
 	}
 	
 	/** Sends the whole Beastiary progress to the client, use sparingly! **/
 	public void sendAllToClient() {
 		MessageBeastiary message = new MessageBeastiary(this);
-		LycanitesMobs.packetHandler.sendToPlayer(message, (EntityPlayerMP)this.player);
+		LycanitesMobs.packetHandler.sendToPlayer(message, (EntityPlayerMP)this.extendedPlayer.getPlayer());
 	}
 	
 	
@@ -109,7 +109,7 @@ public class Beastiary {
 	    	NBTTagCompound nbtKnowledge = (NBTTagCompound)knowledgeList.getCompoundTagAt(i);
     		if(nbtKnowledge.hasKey("CreatureName") && nbtKnowledge.hasKey("Completion")) {
 	    		CreatureKnowledge creatureKnowledge = new CreatureKnowledge(
-	    				player,
+                        this,
 	    				nbtKnowledge.getString("CreatureName"),
 	    				nbtKnowledge.getDouble("Completion")
 	    			);

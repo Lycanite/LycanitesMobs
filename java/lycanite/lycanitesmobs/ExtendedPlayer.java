@@ -1,5 +1,6 @@
 package lycanite.lycanitesmobs;
 
+import lycanite.lycanitesmobs.api.capabilities.IExtendedPlayer;
 import lycanite.lycanitesmobs.api.info.Beastiary;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
@@ -19,8 +20,8 @@ import net.minecraft.util.EnumHand;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ExtendedPlayer {
-    public static Map<EntityPlayer, ExtendedPlayer> extendedPlayers = new HashMap<EntityPlayer, ExtendedPlayer>();
+public class ExtendedPlayer implements IExtendedPlayer {
+    public static Map<EntityPlayer, ExtendedPlayer> clientExtendedPlayers = new HashMap<EntityPlayer, ExtendedPlayer>();
 	public static Map<String, NBTTagCompound> backupNBTTags = new HashMap<String, NBTTagCompound>();
 	
 	// Player Info and Containers:
@@ -57,7 +58,7 @@ public class ExtendedPlayer {
 	public int summonSetMax = 5;
 
     // Familiars:
-    private boolean setupPetManager = false;
+    private boolean petManagerSetup = false;
 	
 	// ==================================================
     //                   Get for Player
@@ -68,41 +69,60 @@ public class ExtendedPlayer {
 			return null;
 		}
 
-        if(extendedPlayers.containsKey(player))
-            return extendedPlayers.get(player);
+        // Client Side:
+        if(player.worldObj != null && player.worldObj.isRemote) {
+            if(clientExtendedPlayers.containsKey(player))
+                return clientExtendedPlayers.get(player);
+            ExtendedPlayer extendedPlayer = new ExtendedPlayer();
+            extendedPlayer.setPlayer(player);
+            clientExtendedPlayers.put(player, extendedPlayer);
+        }
 
-        return new ExtendedPlayer(player);
+        // Server Side:
+        IExtendedPlayer iExtendedPlayer = player.getCapability(LycanitesMobs.EXTENDED_PLAYER, null);
+        if(!(iExtendedPlayer instanceof ExtendedPlayer))
+            return null;
+        ExtendedPlayer extendedPlayer = (ExtendedPlayer)iExtendedPlayer;
+        if(extendedPlayer.getPlayer() == null)
+            extendedPlayer.setPlayer(player);
+        return extendedPlayer;
 	}
-	
-	
-	// ==================================================
+
+
+    // ==================================================
     //                    Constructor
     // ==================================================
-	public ExtendedPlayer(EntityPlayer player) {
-		this.player = player;
-		this.beastiary = new Beastiary(player);
-		this.petManager = new PetManager(player);
-		
-		extendedPlayers.put(player, this);
-	}
+    public ExtendedPlayer() {
+        this.beastiary = new Beastiary(this);
+        this.petManager = new PetManager(this.player);
+    }
 	
 	
 	// ==================================================
-    //                    Join World
+    //                    Player Entity
     // ==================================================
-	public void onJoinWorld() {
-		this.needsFirstSync = true;
-		this.setupPetManager = false;
-		
-		if(this.player.worldObj.isRemote)
-			return;
-		
-		// Check for Backup:
-		if(backupNBTTags.containsKey(this.player.getName())) {
-			this.loadNBTData(backupNBTTags.get(this.player.getName()));
-			backupNBTTags.remove(this.player.getName());
-		}
+    /** Called when the player entity is being cloned, backups all data so that it can be loaded into a new ExtendedPlayer for the clone. **/
+    public void backupPlayer() {
+        if(this.player != null) {
+            NBTTagCompound nbtTagCompound = new NBTTagCompound();
+            this.writeNBT(nbtTagCompound);
+            backupNBTTags.put(this.player.getName(), nbtTagCompound);
+        }
+    }
+
+    /** Initially sets the player entity and loads any backup data, if the entity is being cloned from another call backupPlayer() instead so that the clone's ExtendedPlayer can load it. **/
+	public void setPlayer(EntityPlayer player) {
+        this.player = player;
+        this.petManager.host = player;
+        if(backupNBTTags.containsKey(this.player.getName())) {
+            this.readNBT(backupNBTTags.get(this.player.getName()));
+            backupNBTTags.remove(this.player.getName());
+        }
 	}
+
+    public EntityPlayer getPlayer() {
+        return this.player;
+    }
 
 	
 	// ==================================================
@@ -125,7 +145,7 @@ public class ExtendedPlayer {
 		this.spirit = Math.min(Math.max(this.spirit, 0), this.spiritMax - this.spiritReserved);
 		if(this.spirit < this.spiritMax - this.spiritReserved) {
 			this.spirit++;
-			if(!player.worldObj.isRemote && this.currentTick % 20 == 0 || this.spirit == this.spiritMax - this.spiritReserved) {
+			if(!this.player.worldObj.isRemote && this.currentTick % 20 == 0 || this.spirit == this.spiritMax - this.spiritReserved) {
 				sync = true;
 			}
 		}
@@ -134,24 +154,24 @@ public class ExtendedPlayer {
 		this.summonFocus = Math.min(Math.max(this.summonFocus, 0), this.summonFocusMax);
 		if(this.summonFocus < this.summonFocusMax) {
 			this.summonFocus++;
-			if(!player.worldObj.isRemote && !creative && this.currentTick % 20 == 0
+			if(!this.player.worldObj.isRemote && !creative && this.currentTick % 20 == 0
 					|| this.summonFocus < this.summonFocusMax
-					|| (player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() instanceof ItemStaffSummoning)
-                    || (player.getHeldItemOffhand() != null && player.getHeldItemOffhand().getItem() instanceof ItemStaffSummoning)) {
+					|| (this.player.getHeldItemMainhand() != null && this.player.getHeldItemMainhand().getItem() instanceof ItemStaffSummoning)
+                    || (this.player.getHeldItemOffhand() != null && this.player.getHeldItemOffhand().getItem() instanceof ItemStaffSummoning)) {
 				sync = true;
 			}
 		}
 
 		// Sync Stats To Client:
-		if(!player.worldObj.isRemote) {
+		if(!this.player.worldObj.isRemote) {
 			if(sync) {
 				MessagePlayerStats message = new MessagePlayerStats(this);
-				LycanitesMobs.packetHandler.sendToPlayer(message, (EntityPlayerMP)this.player);
+				LycanitesMobs.packetHandler.sendToPlayer(message, (EntityPlayerMP) this.player);
 			}
 		}
 
 		// Pet Manager Setup:
-		if(!player.worldObj.isRemote && !this.setupPetManager) {
+		if(!this.player.worldObj.isRemote && !this.petManagerSetup) {
 
 			// Load Familiars:
 			Map<String, PetEntry> playerFamiliars = DonationFamiliars.instance.getFamiliarsForPlayer(this.player);
@@ -165,7 +185,7 @@ public class ExtendedPlayer {
 				this.sendPetEntriesToPlayer("familiar");
 			}
 
-			this.setupPetManager = true;
+			this.petManagerSetup = true;
 		}
 		
 		// Initial Network Sync:
@@ -177,9 +197,7 @@ public class ExtendedPlayer {
 		}
 
         // Pet Manager:
-		if(this.petManager.host != this.player)
-			this.petManager.host = this.player;
-        this.petManager.onUpdate(player.worldObj);
+        this.petManager.onUpdate(this.player.worldObj);
 		
 		this.currentTick++;
 		this.needsFirstSync = false;
@@ -202,13 +220,13 @@ public class ExtendedPlayer {
 			this.summonSets.put(setID, new SummonSet(this));
 		return this.summonSets.get(setID);
 	}
-	
+
 	public SummonSet getSelectedSummonSet() {
 		if(this.selectedSummonSet != this.validateSummonSetID(this.selectedSummonSet))
 			this.setSelectedSummonSet(this.selectedSummonSet); // This is a fail safe and shouldn't really happen, it will fix the current set ID if it is invalid, resending packets too.
 		return this.getSummonSet(this.selectedSummonSet);
 	}
-	
+
 	public void setSelectedSummonSet(int targetSetID) {
 		targetSetID = validateSummonSetID(targetSetID);
 		this.selectedSummonSet = targetSetID;
@@ -224,7 +242,7 @@ public class ExtendedPlayer {
 	
 	
 	// ==================================================
-    //                      Beastiary
+    //                    Beastiary
     // ==================================================
 	/** Returns the player's beastiary, will also update the client, access the beastiary variable directly when loading NBT data as the network player is null at first. **/
 	public Beastiary getBeastiary() {
@@ -233,14 +251,10 @@ public class ExtendedPlayer {
 	
 	
 	// ==================================================
-    //                    Death Backup
+    //                      Death
     // ==================================================
 	public void onDeath() {
-		if(backupNBTTags.containsKey(this.player.getName()))
-			return;
-		NBTTagCompound nbtTagCompound = new NBTTagCompound();
-		this.saveNBTData(nbtTagCompound);
-		backupNBTTags.put(this.player.getName(), nbtTagCompound);
+
 	}
 	
 	
@@ -314,20 +328,19 @@ public class ExtendedPlayer {
         if(guiID == GuiHandler.PlayerGuiType.FAMILIAR_MANAGER.id)
             this.sendPetEntriesToPlayer("familiar");
 	}
-	
-	
+
+
 	// ==================================================
     //                        NBT
     // ==================================================
-    // TODO Move this NBT into a new Capability.
    	// ========== Read ===========
     /** Reads a list of Creature Knowledge from a player's NBTTag. **/
-    public void loadNBTData(NBTTagCompound nbtTagCompound) {
+    public void readNBT(NBTTagCompound nbtTagCompound) {
 		NBTTagCompound extTagCompound = nbtTagCompound.getCompoundTag("LycanitesMobsPlayer");
-		
+
     	this.beastiary.readFromNBT(extTagCompound);
         this.petManager.readFromNBT(extTagCompound);
-		
+
 		if(extTagCompound.hasKey("SummonFocus"))
 			this.summonFocus = extTagCompound.getInteger("SummonFocus");
 
@@ -336,7 +349,7 @@ public class ExtendedPlayer {
 
 		if(extTagCompound.hasKey("SelectedSummonSet"))
 			this.selectedSummonSet = extTagCompound.getInteger("SelectedSummonSet");
-		
+
 		if(extTagCompound.hasKey("SummonSets")) {
 			NBTTagList nbtSummonSets = extTagCompound.getTagList("SummonSets", 10);
 			for(int setID = 0; setID < this.summonSetMax; setID++) {
@@ -347,19 +360,19 @@ public class ExtendedPlayer {
 			}
 		}
     }
-    
+
     // ========== Write ==========
     /** Writes a list of Creature Knowledge to a player's NBTTag. **/
-    public void saveNBTData(NBTTagCompound nbtTagCompound) {
+    public void writeNBT(NBTTagCompound nbtTagCompound) {
 		NBTTagCompound extTagCompound = new NBTTagCompound();
-		
+
     	this.beastiary.writeToNBT(extTagCompound);
 		this.petManager.writeToNBT(extTagCompound);
-    	
+
 		extTagCompound.setInteger("SummonFocus", this.summonFocus);
 		extTagCompound.setInteger("Spirit", this.spirit);
 		extTagCompound.setInteger("SelectedSummonSet", this.selectedSummonSet);
-		
+
 		NBTTagList nbtSummonSets = new NBTTagList();
 		for(int setID = 0; setID < this.summonSetMax; setID++) {
 			NBTTagCompound nbtSummonSet = new NBTTagCompound();
@@ -368,7 +381,7 @@ public class ExtendedPlayer {
 			nbtSummonSets.appendTag(nbtSummonSet);
 		}
 		extTagCompound.setTag("SummonSets", nbtSummonSets);
-    	
+
     	nbtTagCompound.setTag("LycanitesMobsPlayer", extTagCompound);
     }
 }

@@ -16,9 +16,9 @@ import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
@@ -96,9 +96,9 @@ public class EntityArisaur extends EntityCreatureAgeable implements IAnimals, IG
         
         // Water Healing:
         if(this.isInWater())
-        	this.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("regeneration"), 3 * 20, 2));
+        	this.addPotionEffect(new PotionEffect(MobEffects.regeneration, 3 * 20, 2));
         else if(this.worldObj.isRaining() && this.worldObj.canBlockSeeSky(this.getPosition()))
-        	this.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("regeneration"), 3 * 20, 1));
+        	this.addPotionEffect(new PotionEffect(MobEffects.regeneration, 3 * 20, 1));
     }
 	
 	
@@ -158,7 +158,7 @@ public class EntityArisaur extends EntityCreatureAgeable implements IAnimals, IG
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("slowness")) return false;
+        if(potionEffect.getPotion() == MobEffects.moveSlowdown) return false;
         if(ObjectManager.getPotionEffect("paralysis") != null)
         	if(potionEffect.getPotion() == ObjectManager.getPotionEffect("paralysis")) return false;
         super.isPotionApplicable(potionEffect);

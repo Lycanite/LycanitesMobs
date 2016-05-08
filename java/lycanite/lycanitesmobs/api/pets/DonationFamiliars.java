@@ -19,13 +19,13 @@ import java.util.Map;
 public class DonationFamiliars {
     public static DonationFamiliars instance = new DonationFamiliars();
     public Map<String, Map<String, PetEntry>> playerFamiliars = new HashMap<String, Map<String, PetEntry>>();
-    public boolean jsonLoaded = false;
+    public long jsonLoadedTime = -1;
 
     // ==================================================
     //                  Read From JSON
     // ==================================================
     public void readFromJSON() {
-        this.jsonLoaded = true;
+        this.jsonLoadedTime = System.currentTimeMillis() / 1000;
 
         // Load JSON File:
         String jsonString = null;
@@ -112,7 +112,8 @@ public class DonationFamiliars {
     //              Get Familiars For Player
     // ==================================================
     public Map<String, PetEntry> getFamiliarsForPlayer(EntityPlayer player) {
-        if(!this.jsonLoaded)
+        long currentTime = System.currentTimeMillis() / 1000;
+        if(this.jsonLoadedTime < 0 || currentTime - this.jsonLoadedTime > 60 * 60)
             this.readFromJSON();
         String playerUUID = player.getUniqueID().toString();
         Map<String, PetEntry> playerFamiliarEntries = this.playerFamiliars.get(playerUUID);

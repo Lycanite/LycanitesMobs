@@ -19,6 +19,7 @@ import lycanite.lycanitesmobs.freshwatermobs.mobevent.MobEventTsunami;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraftforge.fml.common.Mod;
@@ -64,13 +65,13 @@ public class FreshwaterMobs {
 		// ========== Create Items ==========
 		ObjectManager.addItem("freshwaterspawn", new ItemFreshwaterEgg());
 
-        Potion rawFoodEffectID = Potion.getPotionFromResourceLocation("weakness");
+        Potion rawFoodEffectID = MobEffects.weakness;
         if(ObjectManager.getPotionEffect("penetration") != null)
             rawFoodEffectID = ObjectManager.getPotionEffect("penetration");
         ObjectManager.addItem("silexmeatraw", new ItemCustomFood("silexmeatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(rawFoodEffectID, 45, 2, 0.8F));
         ObjectLists.addItem("rawfish", ObjectManager.getItem("silexmeatraw"));
 
-        Potion cookedFoodEffectID = Potion.getPotionFromResourceLocation("movement_speed");
+        Potion cookedFoodEffectID = MobEffects.moveSpeed;
         if(ObjectManager.getPotionEffect("swiftswimming") != null)
             cookedFoodEffectID = ObjectManager.getPotionEffect("swiftswimming");
         ObjectManager.addItem("silexmeatcooked", new ItemCustomFood("silexmeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(cookedFoodEffectID, 10, 2, 1.0F).setAlwaysEdible());

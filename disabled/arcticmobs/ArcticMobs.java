@@ -29,6 +29,7 @@ import net.minecraft.entity.monster.EntityWitch;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.DamageSource;
@@ -87,15 +88,15 @@ public class ArcticMobs {
 		// ========== Create Items ==========
 		ObjectManager.addItem("arcticegg", new ItemArcticEgg());
 		
-		ObjectManager.addItem("yetimeatraw", new ItemCustomFood("yetimeatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(Potion.getPotionFromResourceLocation("slowness"), 45, 2, 0.8F));
+		ObjectManager.addItem("yetimeatraw", new ItemCustomFood("yetimeatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(MobEffects.moveSlowdown, 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("yetimeatraw"));
 		OreDictionary.registerOre("listAllporkraw", ObjectManager.getItem("yetimeatraw"));
 		
-		ObjectManager.addItem("yetimeatcooked", new ItemCustomFood("yetimeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(Potion.getPotionFromResourceLocation("resistance"), 10, 2, 1.0F).setAlwaysEdible());
+		ObjectManager.addItem("yetimeatcooked", new ItemCustomFood("yetimeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(MobEffects.resistance, 10, 2, 1.0F).setAlwaysEdible());
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("yetimeatcooked"));
 		OreDictionary.registerOre("listAllporkcooked", ObjectManager.getItem("yetimeatcooked"));
 		
-		ObjectManager.addItem("palesoup", new ItemCustomFood("palesoup", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(Potion.getPotionFromResourceLocation("resistance"), 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
+		ObjectManager.addItem("palesoup", new ItemCustomFood("palesoup", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(MobEffects.resistance, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("palesoup"));
 
 		ObjectManager.addItem("frostyfur", new ItemFrostyFur());

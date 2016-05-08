@@ -14,8 +14,8 @@ import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
@@ -89,10 +89,10 @@ public class EntityEyewig extends EntityCreatureRideable {
     // ==================================================
 	// ========== Rider Effects ==========
 	public void riderEffects(EntityLivingBase rider) {
-    	if(rider.isPotionActive(Potion.getPotionFromResourceLocation("poison")))
-    		rider.removePotionEffect(Potion.getPotionFromResourceLocation("poison.id"));
-    	if(rider.isPotionActive(Potion.getPotionFromResourceLocation("blindness")))
-    		rider.removePotionEffect(Potion.getPotionFromResourceLocation("blindness"));
+    	if(rider.isPotionActive(MobEffects.poison))
+    		rider.removePotionEffect(MobEffects.poison);
+    	if(rider.isPotionActive(MobEffects.blindness))
+    		rider.removePotionEffect(MobEffects.blindness);
     }
 
 	
@@ -160,7 +160,7 @@ public class EntityEyewig extends EntityCreatureRideable {
     	
     	// Effect:
         if(target instanceof EntityLivingBase) {
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("blindness"), this.getEffectDuration(8), 0));
+            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.blindness, this.getEffectDuration(8), 0));
         }
         
         return true;
@@ -221,8 +221,8 @@ public class EntityEyewig extends EntityCreatureRideable {
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("poison")) return false;
-        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("blindness")) return false;
+        if(potionEffect.getPotion() == MobEffects.poison) return false;
+        if(potionEffect.getPotion() == MobEffects.blindness) return false;
         return super.isPotionApplicable(potionEffect);
     }
     

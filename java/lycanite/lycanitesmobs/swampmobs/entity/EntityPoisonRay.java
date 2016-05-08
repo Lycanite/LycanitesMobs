@@ -5,7 +5,7 @@ import lycanite.lycanitesmobs.api.entity.EntityProjectileLaser;
 import lycanite.lycanitesmobs.swampmobs.SwampMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.potion.Potion;
+import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -69,7 +69,7 @@ public class EntityPoisonRay extends EntityProjectileLaser {
     	boolean damageDealt = super.updateDamage(target);
         if(this.getThrower() != null && damageDealt) {
         	if(target instanceof EntityLivingBase)
-    			((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("poison"), this.getEffectDuration(5), 0));
+    			((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.poison, this.getEffectDuration(5), 0));
         }
         return damageDealt;
     }

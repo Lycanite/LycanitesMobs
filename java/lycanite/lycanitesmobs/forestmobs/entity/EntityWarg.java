@@ -19,8 +19,8 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -151,7 +151,7 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
                             if (ObjectManager.getPotionEffect("paralysis") != null)
                                 possibleTarget.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("paralysis"), this.getEffectDuration(5), 1));
                             else
-                                possibleTarget.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("slowness"), 10 * 20, 0));
+                                possibleTarget.addPotionEffect(new PotionEffect(MobEffects.moveSlowdown, 10 * 20, 0));
                         }
                     }
                 }
@@ -161,8 +161,8 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
     }
     
     public void riderEffects(EntityLivingBase rider) {
-    	if(rider.isPotionActive(Potion.getPotionFromResourceLocation("slowness")))
-    		rider.removePotionEffect(Potion.getPotionFromResourceLocation("slowness"));
+    	if(rider.isPotionActive(MobEffects.moveSlowdown))
+    		rider.removePotionEffect(MobEffects.moveSlowdown);
     	if(rider.isPotionActive(ObjectManager.getPotionEffect("Paralysis")))
     		rider.removePotionEffect(ObjectManager.getPotionEffect("Paralysis"));
     }
@@ -265,7 +265,7 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("slowness")) return false;
+        if(potionEffect.getPotion() == MobEffects.moveSlowdown) return false;
         if(ObjectManager.getPotionEffect("paralysis") != null)
             if(potionEffect.getPotion() == ObjectManager.getPotionEffect("paralysis")) return false;
         super.isPotionApplicable(potionEffect);

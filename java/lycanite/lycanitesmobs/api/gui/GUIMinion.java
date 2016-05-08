@@ -134,7 +134,7 @@ public class GUIMinion extends GuiScreen {
 		
 		else {
 			this.getFontRenderer().drawString(I18n.translateToLocal("gui.beastiary.empty"), this.windowX + 52, this.windowY + 6, 0xFFFFFF);
-			this.fontRendererObj.drawSplitString(I18n.translateToLocal("gui.beastiary.info"), this.windowX + 8, this.windowY + 24, this.windowWidth - 16, 0xFFFFFF);
+			this.fontRendererObj.drawSplitString(I18n.translateToLocal("gui.beastiary.soulgazerinfo"), this.windowX + 8, this.windowY + 24, this.windowWidth - 16, 0xFFFFFF);
 			int recipeWidth = 108;
 			int recipeHeight = 54;
 			this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIBeastiary"));
@@ -263,6 +263,7 @@ public class GUIMinion extends GuiScreen {
 			// Tab Button:
 			if(guiButton.id >= this.tabButtonID) {
 				this.editSet = guiButton.id - this.tabButtonID;
+                if(this.editSet > 0 && this.editSet <= this.playerExt.summonSetMax)
 				this.summonSet = this.playerExt.getSummonSet(this.editSet);
 			}
 		}

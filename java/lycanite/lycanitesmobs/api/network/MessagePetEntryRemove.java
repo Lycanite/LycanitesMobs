@@ -7,6 +7,8 @@ import lycanite.lycanitesmobs.api.pets.PetEntry;
 import lycanite.lycanitesmobs.api.pets.PetManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.IThreadListener;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -32,20 +34,37 @@ public class MessagePetEntryRemove implements IMessage, IMessageHandler<MessageP
 	 * Called when this message is received.
 	 */
 	@Override
-	public IMessage onMessage(MessagePetEntryRemove message, MessageContext ctx) {
-		EntityPlayer player = null;
-		if(ctx.side == Side.CLIENT)
-			player = LycanitesMobs.proxy.getClientPlayer(); // Client can only send commands.
-		else if(ctx.side == Side.SERVER)
-			player = ctx.getServerHandler().playerEntity; // Server can add or remove entries.
-		if(player == null) return null;
-		ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
+	public IMessage onMessage(final MessagePetEntryRemove message, final MessageContext ctx) {
+        // Server Side:
+        if(ctx.side == Side.SERVER) {
+            IThreadListener mainThread = (WorldServer) ctx.getServerHandler().playerEntity.worldObj;
+            mainThread.addScheduledTask(new Runnable() {
+                @Override
+                public void run() {
+                    EntityPlayer player = ctx.getServerHandler().playerEntity;
+                    ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
+
+                    PetManager petManager = playerExt.petManager;
+                    PetEntry petEntry = petManager.getEntry(message.petEntryID);
+                    if(petEntry == null) {
+                        LycanitesMobs.printWarning("", "Tried to remove a null PetEntry from server!");
+                        return; // Nothing to remove!
+                    }
+                    petEntry.remove();
+                }
+            });
+            return null;
+        }
+
+        // Client Side:
+        EntityPlayer player = LycanitesMobs.proxy.getClientPlayer();
+        ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
 		if(playerExt == null) return null;
 
         PetManager petManager = playerExt.petManager;
         PetEntry petEntry = petManager.getEntry(message.petEntryID);
         if(petEntry == null) {
-			LycanitesMobs.printWarning("", "Tried to remove a null PetEntry from " + (player.worldObj.isRemote ? "client" : "server") + "!");
+			LycanitesMobs.printWarning("", "Tried to remove a null PetEntry from client!");
             return null; // Nothing to remove!
         }
         petEntry.remove();

@@ -19,6 +19,7 @@ import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraftforge.fml.common.Mod;
@@ -64,18 +65,18 @@ public class SaltwaterMobs {
 		// ========== Create Items ==========
 		ObjectManager.addItem("saltwaterspawn", new ItemSaltwaterEgg());
 
-        Potion rawFoodEffectID = Potion.getPotionFromResourceLocation("blindness");
+        Potion rawFoodEffectID = MobEffects.blindness;
         if(ObjectManager.getPotionEffect("weight") != null)
             rawFoodEffectID = ObjectManager.getPotionEffect("weight");
         ObjectManager.addItem("ikameatraw", new ItemCustomFood("ikameatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(rawFoodEffectID, 45, 2, 0.8F));
         ObjectLists.addItem("rawfish", ObjectManager.getItem("ikameatraw"));
         OreDictionary.registerOre("listAllfishraw", ObjectManager.getItem("ikameatraw"));
 
-        ObjectManager.addItem("ikameatcooked", new ItemCustomFood("ikameatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(Potion.getPotionFromResourceLocation("water_breathing"), 20, 2, 1.0F).setAlwaysEdible());
+        ObjectManager.addItem("ikameatcooked", new ItemCustomFood("ikameatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(MobEffects.waterBreathing, 20, 2, 1.0F).setAlwaysEdible());
         ObjectLists.addItem("cookedfish", ObjectManager.getItem("ikameatcooked"));
         OreDictionary.registerOre("listAllfishcooked", ObjectManager.getItem("ikameatcooked"));
 
-        ObjectManager.addItem("seashellmaki", new ItemCustomFood("seashellmaki", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(Potion.getPotionFromResourceLocation("water_breathing"), 120, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
+        ObjectManager.addItem("seashellmaki", new ItemCustomFood("seashellmaki", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(MobEffects.waterBreathing, 120, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
         ObjectLists.addItem("cookedfish", ObjectManager.getItem("seashellmaki"));
 		
 		// ========== Create Mobs ==========

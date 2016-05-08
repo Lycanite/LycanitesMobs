@@ -6,7 +6,9 @@ import lycanite.lycanitesmobs.api.tileentity.TileEntitySummoningPedestal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IThreadListener;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -40,22 +42,27 @@ public class MessageSummoningPedestalSummonSet implements IMessage, IMessageHand
 	 * Called when this message is received.
 	 */
 	@Override
-	public IMessage onMessage(MessageSummoningPedestalSummonSet message, MessageContext ctx) {
-		EntityPlayer player = null;
-		if(ctx.side == Side.CLIENT)
-			return null;
-
-        player = ctx.getServerHandler().playerEntity;
-        TileEntity tileEntity = player.worldObj.getTileEntity(new BlockPos(message.x, message.y, message.z));
-        TileEntitySummoningPedestal summoningPedestal = null;
-        if(tileEntity instanceof TileEntitySummoningPedestal)
-            summoningPedestal = (TileEntitySummoningPedestal)tileEntity;
-        if(summoningPedestal == null)
+	public IMessage onMessage(final MessageSummoningPedestalSummonSet message, final MessageContext ctx) {
+        // Server Side:
+        if(ctx.side != Side.SERVER)
             return null;
-        if(summoningPedestal.summonSet == null)
-            summoningPedestal.summonSet = new SummonSet(null);
-        summoningPedestal.summonSet.readFromPacket(message.summonType, message.behaviour);
-		return null;
+        IThreadListener mainThread = (WorldServer) ctx.getServerHandler().playerEntity.worldObj;
+        mainThread.addScheduledTask(new Runnable() {
+            @Override
+            public void run() {
+                EntityPlayer player = ctx.getServerHandler().playerEntity;
+                TileEntity tileEntity = player.worldObj.getTileEntity(new BlockPos(message.x, message.y, message.z));
+                TileEntitySummoningPedestal summoningPedestal = null;
+                if(tileEntity instanceof TileEntitySummoningPedestal)
+                    summoningPedestal = (TileEntitySummoningPedestal)tileEntity;
+                if(summoningPedestal == null)
+                    return;
+                if(summoningPedestal.summonSet == null)
+                    summoningPedestal.summonSet = new SummonSet(null);
+                summoningPedestal.summonSet.readFromPacket(message.summonType, message.behaviour);
+            }
+        });
+        return null;
 	}
 	
 	

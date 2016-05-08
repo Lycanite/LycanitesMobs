@@ -12,6 +12,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
@@ -53,7 +54,7 @@ public class ItemSwordVenomAxeblade extends ItemSwordBase {
         super.onEarlyUpdate(itemStack, entityLiving, hand);
         if(itemStack == null || itemStack.getItem() != this)
             return;
-        Potion potion = Potion.getPotionFromResourceLocation("poison");
+        Potion potion = MobEffects.poison;
         if(entityLiving.isPotionActive(potion))
             entityLiving.removePotionEffect(potion);
     }
@@ -69,7 +70,7 @@ public class ItemSwordVenomAxeblade extends ItemSwordBase {
      		return false;
      	if(entityUser.worldObj.isRemote)
      		return true;
-     	entityHit.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("poison"), 6 * 20, 0));
+     	entityHit.addPotionEffect(new PotionEffect(MobEffects.poison, 6 * 20, 0));
      	if(entityUser.getRNG().nextFloat() <= this.getSpecialEffectChance()) {
      		Entity entity = new EntityRemobra(entityUser.worldObj);
      		entity.setLocationAndAngles(entityUser.posX, entityUser.posY, entityUser.posZ, entityUser.rotationYaw, 0.0F);

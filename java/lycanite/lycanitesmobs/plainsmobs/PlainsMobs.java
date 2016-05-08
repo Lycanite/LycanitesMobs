@@ -26,8 +26,8 @@ import net.minecraft.entity.monster.EntityWitch;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -74,15 +74,15 @@ public class PlainsMobs {
 		// ========== Create Items ==========
 		ObjectManager.addItem("plainsspawn", new ItemPlainsEgg());
 		
-		ObjectManager.addItem("makameatraw", new ItemCustomFood("makameatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(Potion.getPotionFromResourceLocation("weakness"), 45, 2, 0.8F));
+		ObjectManager.addItem("makameatraw", new ItemCustomFood("makameatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(MobEffects.weakness, 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("makameatraw"));
 		OreDictionary.registerOre("listAllporkraw", ObjectManager.getItem("makameatraw"));
 		
-		ObjectManager.addItem("makameatcooked", new ItemCustomFood("makameatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(Potion.getPotionFromResourceLocation("absorption"), 10, 2, 1.0F).setAlwaysEdible());
+		ObjectManager.addItem("makameatcooked", new ItemCustomFood("makameatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(MobEffects.absorption, 10, 2, 1.0F).setAlwaysEdible());
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("makameatcooked"));
 		OreDictionary.registerOre("listAllporkcooked", ObjectManager.getItem("makameatcooked"));
 		
-		ObjectManager.addItem("bulwarkburger", new ItemCustomFood("bulwarkburger", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(Potion.getPotionFromResourceLocation("absorption"), 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
+		ObjectManager.addItem("bulwarkburger", new ItemCustomFood("bulwarkburger", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(MobEffects.absorption, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("bulwarkburger"));
 
 		ObjectManager.addItem("ventoraptortreat", new ItemTreat("ventoraptortreat", group));

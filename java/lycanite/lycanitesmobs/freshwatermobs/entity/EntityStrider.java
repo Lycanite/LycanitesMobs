@@ -15,9 +15,9 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
@@ -182,7 +182,7 @@ public class EntityStrider extends EntityCreatureRideable {
                     if (ObjectManager.getPotionEffect("penetration") != null)
                         possibleTarget.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("penetration"), this.getEffectDuration(5), 1));
                     else
-                        possibleTarget.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("weakness"), 10 * 20, 0));
+                        possibleTarget.addPotionEffect(new PotionEffect(MobEffects.weakness, 10 * 20, 0));
                 }
             }
         }

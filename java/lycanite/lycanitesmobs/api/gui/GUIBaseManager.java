@@ -162,15 +162,17 @@ public class GUIBaseManager extends GuiScreen {
 
         this.drawTexturedModalRect(this.windowX, this.windowY, 0, 0, this.windowWidth, this.windowHeight);
 
-		if(!this.hasSelectedPet()) {
+		if(!this.hasPets()) {
 			int recipeWidth = 108;
 			int recipeHeight = 54;
 			this.drawTexturedModalRect(this.centerX - (recipeWidth / 2), this.windowY + this.windowHeight - recipeHeight - 16, 0, 256 - recipeHeight, recipeWidth, recipeHeight);
 			return;
 		}
 
-        this.drawEnergyBar();
-        this.drawHealthBar();
+        if(this.hasSelectedPet()) {
+            this.drawEnergyBar();
+            this.drawHealthBar();
+        }
 	}
 
     public void drawEnergyBar() {

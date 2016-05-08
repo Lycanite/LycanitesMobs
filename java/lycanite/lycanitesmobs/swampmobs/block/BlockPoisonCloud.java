@@ -10,8 +10,8 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumParticleTypes;
@@ -97,7 +97,7 @@ public class BlockPoisonCloud extends BlockBase {
     public void onEntityCollidedWithBlock(World world, BlockPos pos, Entity entity) {
 		super.onEntityCollidedWithBlock(world, pos, entity);
 		if(entity instanceof EntityLivingBase) {
-			((EntityLivingBase)entity).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("poison"), 5 * 20, 0));
+			((EntityLivingBase)entity).addPotionEffect(new PotionEffect(MobEffects.poison, 5 * 20, 0));
 		}
 	}
     

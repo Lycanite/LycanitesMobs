@@ -12,9 +12,9 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -161,7 +161,7 @@ public class EntityDweller extends EntityCreatureTameable implements IMob {
 
         // Effect:
         if(target instanceof EntityLivingBase) {
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("poison"), this.getEffectDuration(5), 1));
+            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.poison, this.getEffectDuration(5), 1));
         }
 
         return true;
@@ -173,8 +173,8 @@ public class EntityDweller extends EntityCreatureTameable implements IMob {
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("poison")) return false;
-        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("blindness")) return false;
+        if(potionEffect.getPotion() == MobEffects.poison) return false;
+        if(potionEffect.getPotion() == MobEffects.blindness) return false;
         return super.isPotionApplicable(potionEffect);
     }
     

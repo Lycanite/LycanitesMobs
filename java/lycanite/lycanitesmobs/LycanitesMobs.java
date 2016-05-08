@@ -1,6 +1,8 @@
 package lycanite.lycanitesmobs;
 
 import lycanite.lycanitesmobs.api.block.BlockSummoningPedestal;
+import lycanite.lycanitesmobs.api.capabilities.ExtendedPlayerStorage;
+import lycanite.lycanitesmobs.api.capabilities.IExtendedPlayer;
 import lycanite.lycanitesmobs.api.command.CommandMain;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.entity.EntityFear;
@@ -22,6 +24,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
 import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -57,6 +62,10 @@ public class LycanitesMobs {
 	// Proxy:
 	@SidedProxy(clientSide="lycanite.lycanitesmobs.ClientProxy", serverSide="lycanite.lycanitesmobs.CommonProxy")
 	public static CommonProxy proxy;
+
+    // Capabilities:
+    @CapabilityInject(IExtendedPlayer.class)
+    public static final Capability<IExtendedPlayer> EXTENDED_PLAYER = null;
 	
 	// Spawning:
 	public static CustomSpawner customSpawner;
@@ -146,6 +155,10 @@ public class LycanitesMobs {
 
         // ========== Altar Info ==========
         AltarInfo.loadGlobalSettings();
+
+
+        // ========== Register Capabilities ==========
+        CapabilityManager.INSTANCE.register(IExtendedPlayer.class, new ExtendedPlayerStorage(), ExtendedPlayer.class);
 		
 		
 		// ========== Register Event Listeners ==========

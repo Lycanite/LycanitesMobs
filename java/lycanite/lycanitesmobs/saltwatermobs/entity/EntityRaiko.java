@@ -14,8 +14,8 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -198,7 +198,7 @@ public class EntityRaiko extends EntityCreatureBase implements IMob, IGroupHunte
     public boolean isPotionApplicable(PotionEffect potionEffect) {
         if(ObjectManager.getPotionEffect("weight") != null)
             if(potionEffect.getPotion() == ObjectManager.getPotionEffect("weight")) return false;
-        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("blindness")) return false;
+        if(potionEffect.getPotion() == MobEffects.blindness) return false;
         return super.isPotionApplicable(potionEffect);
     }
 

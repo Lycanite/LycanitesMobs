@@ -15,9 +15,9 @@ import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNavigateGround;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -127,8 +127,8 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("weakness")) return false;
-        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("mining_fatigue")) return false;
+        if(potionEffect.getPotion() == MobEffects.weakness) return false;
+        if(potionEffect.getPotion() == MobEffects.digSlowdown) return false;
         return super.isPotionApplicable(potionEffect);
     }
     

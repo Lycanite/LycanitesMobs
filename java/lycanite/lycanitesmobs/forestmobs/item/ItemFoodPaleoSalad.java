@@ -3,8 +3,8 @@ package lycanite.lycanitesmobs.forestmobs.item;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.item.ItemCustomFood;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
@@ -25,7 +25,7 @@ public class ItemFoodPaleoSalad extends ItemCustomFood {
   	//                     Effects
   	// ==================================================
     protected void onFoodEaten(ItemStack itemStack, World world, EntityPlayer player) {
-        player.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("regeneration"), this.getEffectDuration(), 2));
-        player.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("instant_health"), 1, 3));
+        player.addPotionEffect(new PotionEffect(MobEffects.regeneration, this.getEffectDuration(), 2));
+        player.addPotionEffect(new PotionEffect(MobEffects.heal, 1, 3));
     }
 }

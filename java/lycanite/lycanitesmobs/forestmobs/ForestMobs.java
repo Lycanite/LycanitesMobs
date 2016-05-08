@@ -27,8 +27,8 @@ import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -74,7 +74,7 @@ public class ForestMobs {
 		// ========== Create Items ==========
 		ObjectManager.addItem("forestspawn", new ItemForestEgg());
 
-        ItemCustomFood rawMeat =  new ItemCustomFood("arisaurmeatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(Potion.getPotionFromResourceLocation("saturation"), 45, 2, 0.8F);
+        ItemCustomFood rawMeat =  new ItemCustomFood("arisaurmeatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(MobEffects.saturation, 45, 2, 0.8F);
 		if(ObjectManager.getPotionEffect("paralysis") != null)
 			rawMeat.setPotionEffect(ObjectManager.getPotionEffect("paralysis"), 10, 2, 0.8F);
 		ObjectManager.addItem("arisaurmeatraw", rawMeat);

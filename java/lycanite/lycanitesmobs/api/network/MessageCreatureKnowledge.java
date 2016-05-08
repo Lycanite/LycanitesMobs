@@ -40,7 +40,7 @@ public class MessageCreatureKnowledge implements IMessage, IMessageHandler<Messa
 		if(playerExt == null)
 			return null;
 		
-		playerExt.beastiary.addToKnowledgeList(new CreatureKnowledge(player, message.creatureName, message.completion));
+		playerExt.beastiary.addToKnowledgeList(new CreatureKnowledge(playerExt.beastiary, message.creatureName, message.completion));
 		return null;
 	}
 	

@@ -2,7 +2,6 @@ package lycanite.lycanitesmobs.api.pets;
 
 
 import lycanite.lycanitesmobs.ExtendedPlayer;
-import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
@@ -344,20 +343,21 @@ public class PetEntry {
         try {
             this.entity = (Entity)this.summonSet.getCreatureClass().getConstructor(new Class[] {World.class}).newInstance(new Object[] {this.host.worldObj});
         } catch (Exception e) {
-            LycanitesMobs.printWarning("", "[Pet Entry] A none Entity class was set in a PetEntry, only classes of Entity are valid!");
-            e.printStackTrace();
+            //LycanitesMobs.printWarning("", "[Pet Entry] A none Entity class was set in a PetEntry, only classes of Entity are valid!");
+            //e.printStackTrace();
         }
-        if(this.entity == null)
+        Entity spawnedEntity = this.entity;
+        if(spawnedEntity == null)
             return;
 
         // Load NBT Data:
         this.loadEntityNBT();
 
         // Spawn Location:
-        this.entity.setLocationAndAngles(this.host.posX, this.host.posY, this.host.posZ, this.host.rotationYaw, 0.0F);
+        spawnedEntity.setLocationAndAngles(this.host.posX, this.host.posY, this.host.posZ, this.host.rotationYaw, 0.0F);
 
-        if(this.entity instanceof EntityCreatureBase) {
-            EntityCreatureBase entityCreature = (EntityCreatureBase)this.entity;
+        if(spawnedEntity instanceof EntityCreatureBase) {
+            EntityCreatureBase entityCreature = (EntityCreatureBase)spawnedEntity;
             entityCreature.setMinion(true);
             entityCreature.setPetEntry(this);
 
@@ -371,12 +371,12 @@ public class PetEntry {
             if(this.host.getRNG().nextBoolean())
                 randomAngle = -randomAngle;
             double[] spawnPos = entityCreature.getFacingPosition(this.host, -1, randomAngle);
-            if(!this.entity.worldObj.isSideSolid(new BlockPos((int)spawnPos[0], (int)spawnPos[1], (int)spawnPos[2]), EnumFacing.UP))
-                this.entity.setLocationAndAngles((int)spawnPos[0], (int)spawnPos[1], (int)spawnPos[2], this.host.rotationYaw, 0.0F);
+            if(!spawnedEntity.worldObj.isSideSolid(new BlockPos((int)spawnPos[0], (int)spawnPos[1], (int)spawnPos[2]), EnumFacing.UP))
+                spawnedEntity.setLocationAndAngles((int)spawnPos[0], (int)spawnPos[1], (int)spawnPos[2], this.host.rotationYaw, 0.0F);
             else {
                 spawnPos = entityCreature.getFacingPosition(this.host, -1, -randomAngle);
-                if(this.entity.worldObj.isSideSolid(new BlockPos((int) spawnPos[0], (int) spawnPos[1], (int) spawnPos[2]), EnumFacing.UP))
-                    this.entity.setLocationAndAngles((int) spawnPos[0], (int) spawnPos[1], (int) spawnPos[2], this.host.rotationYaw, 0.0F);
+                if(spawnedEntity.worldObj.isSideSolid(new BlockPos((int) spawnPos[0], (int) spawnPos[1], (int) spawnPos[2]), EnumFacing.UP))
+                    spawnedEntity.setLocationAndAngles((int) spawnPos[0], (int) spawnPos[1], (int) spawnPos[2], this.host.rotationYaw, 0.0F);
             }
 
             // Temporary:
@@ -400,13 +400,14 @@ public class PetEntry {
         this.spawnCount++;
 
         // Respawn with half health:
-        if(this.entity instanceof EntityLivingBase && this.isRespawning) {
-            EntityLivingBase entityLiving = (EntityLivingBase)this.entity;
+        if(spawnedEntity instanceof EntityLivingBase && this.isRespawning) {
+            EntityLivingBase entityLiving = (EntityLivingBase)spawnedEntity;
             entityLiving.setHealth(entityLiving.getMaxHealth() / 2);
         }
 
-        this.onSpawnEntity(this.entity);
-        this.host.worldObj.spawnEntityInWorld(this.entity);
+        this.onSpawnEntity(spawnedEntity);
+        this.host.worldObj.spawnEntityInWorld(spawnedEntity);
+        this.entity = spawnedEntity;
     }
 
     /** Called when the entity for this entry is spawned just before it is added to the world. **/

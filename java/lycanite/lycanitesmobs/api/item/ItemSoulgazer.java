@@ -83,7 +83,7 @@ public class ItemSoulgazer extends ItemBase {
             player.addStat(ObjectManager.getAchievement(mobInfo.name + ".learn"), 1);
     	}
 
-    	playerExt.getBeastiary().addToKnowledgeList(new CreatureKnowledge(player, mobInfo.name, 1));
+    	playerExt.getBeastiary().addToKnowledgeList(new CreatureKnowledge(playerExt.getBeastiary(), mobInfo.name, 1));
     	return true;
     }
 

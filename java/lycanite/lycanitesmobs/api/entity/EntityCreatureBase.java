@@ -1,8 +1,8 @@
 package lycanite.lycanitesmobs.api.entity;
 
 import Reika.RotaryCraft.API.Interfaces.FlyingMob;
-import com.google.common.base.*;
 import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
 import lycanite.lycanitesmobs.*;
 import lycanite.lycanitesmobs.api.IGroupBoss;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIMoveRestriction;
@@ -34,6 +34,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -42,7 +43,6 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.*;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityMobSpawner;
@@ -1324,7 +1324,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     	if(!this.worldObj.isRemote) {
 	        if(this.isStealthed() && !this.isInvisible())
 	        	setInvisible(true);
-	        else if(!this.isStealthed() && this.isInvisible() && !this.isPotionActive(Potion.getPotionFromResourceLocation("invisibility")))
+	        else if(!this.isStealthed() && this.isInvisible() && !this.isPotionActive(MobEffects.invisibility))
 	        	setInvisible(false);
     	}
         if(this.isStealthed()) {
@@ -1332,7 +1332,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         		startStealth();
         	onStealth();
         }
-        else if(this.isInvisible() && !this.isPotionActive(Potion.getPotionFromResourceLocation("invisibility")))
+        else if(this.isInvisible() && !this.isPotionActive(MobEffects.invisibility))
         	setInvisible(false);
         this.stealthPrev = this.isStealthed();
         

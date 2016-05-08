@@ -5,7 +5,9 @@ import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.IThreadListener;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -33,15 +35,21 @@ public class MessageEntityGUICommand implements IMessage, IMessageHandler<Messag
 	 * Called when this message is received.
 	 */
 	@Override
-	public IMessage onMessage(MessageEntityGUICommand message, MessageContext ctx) {
+	public IMessage onMessage(final MessageEntityGUICommand message, final MessageContext ctx) {
 		if(ctx.side != Side.SERVER) return null;
-		EntityPlayer player = ctx.getServerHandler().playerEntity;
-		World world = player.worldObj;
-		Entity entity = world.getEntityByID(message.entityID);
-		if(entity instanceof EntityCreatureTameable) {
-			EntityCreatureTameable pet = (EntityCreatureTameable)entity;
-			pet.performGUICommand((EntityPlayer)player, message.guiCommandID);
-		}
+        IThreadListener mainThread = (WorldServer)ctx.getServerHandler().playerEntity.worldObj;
+        mainThread.addScheduledTask(new Runnable() {
+            @Override
+            public void run() {
+                EntityPlayer player = ctx.getServerHandler().playerEntity;
+                World world = player.worldObj;
+                Entity entity = world.getEntityByID(message.entityID);
+                if (entity instanceof EntityCreatureTameable) {
+                    EntityCreatureTameable pet = (EntityCreatureTameable) entity;
+                    pet.performGUICommand(player, message.guiCommandID);
+                }
+            }
+        });
 		return null;
 	}
 	

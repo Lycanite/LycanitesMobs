@@ -8,6 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.*;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
@@ -228,35 +229,35 @@ public class ObjectLists {
 		
 		// ========== Effects ==========
 		// Buffs:
-		ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("strength"));
-		ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("haste"));
-		ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("fire_resistance"));
-		ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("instant_health"));
-		ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("invisibility"));
-		ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("jump_boost"));
-		ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("speed"));
-		ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("night_vision"));
-		ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("regeneration"));
-		ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("resistance"));
-		ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("water_breathing"));
-		ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("health_boost"));
-		ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("absorption"));
-		ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("saturation"));
-        ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("glowing"));
-        ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("levitation"));
-        ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("luck"));
+		ObjectLists.addEffect("buffs", MobEffects.damageBoost);
+		ObjectLists.addEffect("buffs", MobEffects.digSpeed);
+		ObjectLists.addEffect("buffs", MobEffects.fireResistance);
+		ObjectLists.addEffect("buffs", MobEffects.heal);
+		ObjectLists.addEffect("buffs", MobEffects.invisibility);
+		ObjectLists.addEffect("buffs", MobEffects.jump);
+		ObjectLists.addEffect("buffs", MobEffects.moveSpeed);
+		ObjectLists.addEffect("buffs", MobEffects.nightVision);
+		ObjectLists.addEffect("buffs", MobEffects.regeneration);
+		ObjectLists.addEffect("buffs", MobEffects.resistance);
+		ObjectLists.addEffect("buffs", MobEffects.waterBreathing);
+		ObjectLists.addEffect("buffs", MobEffects.healthBoost);
+		ObjectLists.addEffect("buffs", MobEffects.absorption);
+		ObjectLists.addEffect("buffs", MobEffects.saturation);
+        ObjectLists.addEffect("buffs", MobEffects.glowing);
+        ObjectLists.addEffect("buffs", MobEffects.levitation);
+        ObjectLists.addEffect("buffs", MobEffects.luck);
 		
 		// Debuffs:
-        ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("blindness"));
-        ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("nausea"));
-        ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("mining_fatigue"));
-        ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("instant_damage"));
-        ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("hunger"));
-        ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("slowness"));
-        ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("poison"));
-        ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("weakness"));
-        ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("wither"));
-        ObjectLists.addEffect("buffs", Potion.getPotionFromResourceLocation("unluck"));
+        ObjectLists.addEffect("buffs", MobEffects.blindness);
+        ObjectLists.addEffect("buffs", MobEffects.confusion);
+        ObjectLists.addEffect("buffs", MobEffects.digSlowdown);
+        ObjectLists.addEffect("buffs", MobEffects.harm);
+        ObjectLists.addEffect("buffs", MobEffects.hunger);
+        ObjectLists.addEffect("buffs", MobEffects.moveSlowdown);
+        ObjectLists.addEffect("buffs", MobEffects.poison);
+        ObjectLists.addEffect("buffs", MobEffects.weakness);
+        ObjectLists.addEffect("buffs", MobEffects.wither);
+        ObjectLists.addEffect("buffs", MobEffects.unluck);
 	}
 	
 	// ========== Add From Config Value ==========

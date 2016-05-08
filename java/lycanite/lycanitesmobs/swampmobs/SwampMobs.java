@@ -29,8 +29,8 @@ import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -77,15 +77,15 @@ public class SwampMobs {
 		// ========== Create Items ==========
 		ObjectManager.addItem("swampspawn", new ItemSwampEgg());
 		
-		ObjectManager.addItem("aspidmeatraw", new ItemCustomFood("aspidmeatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(Potion.getPotionFromResourceLocation("poison"), 45, 2, 0.8F));
+		ObjectManager.addItem("aspidmeatraw", new ItemCustomFood("aspidmeatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(MobEffects.poison, 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("aspidmeatraw"));
 		OreDictionary.registerOre("listAllbeefraw", ObjectManager.getItem("aspidmeatraw"));
 		
-		ObjectManager.addItem("aspidmeatcooked", new ItemCustomFood("aspidmeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(Potion.getPotionFromResourceLocation("regeneration"), 10, 2, 1.0F).setAlwaysEdible());
+		ObjectManager.addItem("aspidmeatcooked", new ItemCustomFood("aspidmeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(MobEffects.regeneration, 10, 2, 1.0F).setAlwaysEdible());
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("aspidmeatcooked"));
 		OreDictionary.registerOre("listAllbeefcooked", ObjectManager.getItem("aspidmeatcooked"));
 		
-		ObjectManager.addItem("mosspie", new ItemCustomFood("mosspie", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(Potion.getPotionFromResourceLocation("regeneration"), 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
+		ObjectManager.addItem("mosspie", new ItemCustomFood("mosspie", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(MobEffects.regeneration, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("mosspie"));
 
 		ObjectManager.addItem("lurkertreat", new ItemTreat("lurkertreat", group));

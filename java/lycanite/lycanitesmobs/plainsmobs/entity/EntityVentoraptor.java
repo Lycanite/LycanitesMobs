@@ -18,8 +18,8 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
@@ -119,10 +119,10 @@ public class EntityVentoraptor extends EntityCreatureRideable implements IGroupP
     }
     
     public void riderEffects(EntityLivingBase rider) {
-        if(rider.isPotionActive(Potion.getPotionFromResourceLocation("weakness")))
-            rider.removePotionEffect(Potion.getPotionFromResourceLocation("weakness"));
-        if(rider.isPotionActive(Potion.getPotionFromResourceLocation("mining_fatigue")))
-            rider.removePotionEffect(Potion.getPotionFromResourceLocation("mining_fatigue"));
+        if(rider.isPotionActive(MobEffects.weakness))
+            rider.removePotionEffect(MobEffects.weakness);
+        if(rider.isPotionActive(MobEffects.digSlowdown))
+            rider.removePotionEffect(MobEffects.digSlowdown);
     }
 
 	
@@ -192,8 +192,8 @@ public class EntityVentoraptor extends EntityCreatureRideable implements IGroupP
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("weakness")) return false;
-        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("mining_fatigue")) return false;
+        if(potionEffect.getPotion() == MobEffects.weakness) return false;
+        if(potionEffect.getPotion() == MobEffects.digSlowdown) return false;
         return super.isPotionApplicable(potionEffect);
     }
     

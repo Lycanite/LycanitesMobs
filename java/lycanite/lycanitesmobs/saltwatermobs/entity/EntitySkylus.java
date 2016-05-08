@@ -18,8 +18,8 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
@@ -164,7 +164,7 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroup
     	
     	// Effect:
         if(target instanceof EntityLivingBase) {
-    		((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("blindness"), this.getEffectDuration(5), 1));
+    		((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.blindness, this.getEffectDuration(5), 1));
         }
         
         return true;
@@ -194,7 +194,7 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroup
     public boolean isPotionApplicable(PotionEffect potionEffect) {
         if(ObjectManager.getPotionEffect("weight") != null)
             if(potionEffect.getPotion() == ObjectManager.getPotionEffect("weight")) return false;
-        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("blindness")) return false;
+        if(potionEffect.getPotion() == MobEffects.blindness) return false;
         return super.isPotionApplicable(potionEffect);
     }
     

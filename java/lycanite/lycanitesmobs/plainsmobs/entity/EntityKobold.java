@@ -18,8 +18,8 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -175,8 +175,8 @@ public class EntityKobold extends EntityCreatureTameable implements IMob, IGroup
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("weakness")) return false;
-        if(potionEffect.getPotion() == Potion.getPotionFromResourceLocation("mining_fatigue")) return false;
+        if(potionEffect.getPotion() == MobEffects.weakness) return false;
+        if(potionEffect.getPotion() == MobEffects.digSlowdown) return false;
         return super.isPotionApplicable(potionEffect);
     }
 	

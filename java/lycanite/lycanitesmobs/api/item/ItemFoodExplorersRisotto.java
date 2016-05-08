@@ -2,8 +2,8 @@ package lycanite.lycanitesmobs.api.item;
 
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
@@ -26,9 +26,9 @@ public class ItemFoodExplorersRisotto extends ItemCustomFood {
     @Override
     protected void onFoodEaten(ItemStack itemStack, World world, EntityPlayer player) {
         super.onFoodEaten(itemStack, world, player);
-        player.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("speed"), this.getEffectDuration(), 3));
-        player.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("haste"), this.getEffectDuration(), 3));
-        player.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("water_breathing"), this.getEffectDuration(), 1));
-        player.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("jump_boost"), this.getEffectDuration(), 1));
+        player.addPotionEffect(new PotionEffect(MobEffects.moveSpeed, this.getEffectDuration(), 3));
+        player.addPotionEffect(new PotionEffect(MobEffects.digSpeed, this.getEffectDuration(), 3));
+        player.addPotionEffect(new PotionEffect(MobEffects.waterBreathing, this.getEffectDuration(), 1));
+        player.addPotionEffect(new PotionEffect(MobEffects.jump, this.getEffectDuration(), 1));
     }
 }

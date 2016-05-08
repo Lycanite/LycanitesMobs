@@ -91,8 +91,7 @@ public class PetManager {
             this.familiars.add(petEntry);
 
         petEntry.onAdd(this, entryID);
-        if(!this.host.worldObj.isRemote)
-            this.newEntries.add(petEntry);
+        this.newEntries.add(petEntry);
     }
 
 
@@ -159,11 +158,13 @@ public class PetManager {
 	public void onUpdate(World world) {
 
         // New Entries:
-        if(!world.isRemote && this.newEntries.size() > 0 && this.host instanceof EntityPlayer) {
-            for(PetEntry petEntry : this.newEntries) {
-                ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer((EntityPlayer) this.host);
-                if(playerExt != null)
-                    playerExt.sendPetEntryToPlayer(petEntry);
+        if(this.newEntries.size() > 0) {
+            if (!world.isRemote && this.host instanceof EntityPlayer) {
+                for (PetEntry petEntry : this.newEntries) {
+                    ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer((EntityPlayer) this.host);
+                    if (playerExt != null)
+                        playerExt.sendPetEntryToPlayer(petEntry);
+                }
             }
             this.newEntries = new ArrayList<PetEntry>();
         }

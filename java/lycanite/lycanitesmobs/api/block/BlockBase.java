@@ -36,7 +36,7 @@ public class BlockBase extends Block {
 	public int tickRate = 0;
 	/** If true, this block will be set to air on it's first tick, useful for blocks that despawn over time like fire. **/
 	public boolean removeOnTick = false;
-	/** If true after performing a tick update another tick update will be scheduled thus creating a loop. **/
+	/** If true after performing a tick update, another tick update will be scheduled thus creating a loop. **/
 	public boolean loopTicks = true;
 	/** Will falling blocks such as sand or gravel destroy this block if they land on it? */
 	public boolean canBeCrushed = false;
@@ -97,7 +97,7 @@ public class BlockBase extends Block {
 	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
 		// Initial Block Ticking:
 		if(this.tickRate > 0)
-			world.scheduleBlockUpdate(pos, this, this.tickRate(world), 1);
+			world.scheduleUpdate(pos, this, this.tickRate(world));
 	}
 	
 	
@@ -163,17 +163,17 @@ public class BlockBase extends Block {
 
     // ========== Tick Update ==========
     @Override
-    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-		if(worldIn.isRemote)
+    public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+		if(world.isRemote)
 			return;
 		
 		// Remove On Tick:
 		if(this.removeOnTick)
-            worldIn.setBlockToAir(pos);
+            world.setBlockToAir(pos);
 		
 		// Looping Tick:
 		else if(this.tickRate > 0 && this.loopTicks)
-            worldIn.scheduleBlockUpdate(pos, this, this.tickRate(worldIn), 1);
+            world.scheduleBlockUpdate(pos, this, this.tickRate(world), 1);
     }
     
     // ========== Should Tick ==========

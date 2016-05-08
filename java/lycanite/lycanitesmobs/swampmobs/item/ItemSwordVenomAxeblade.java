@@ -91,11 +91,11 @@ public class ItemSwordVenomAxeblade extends ItemSwordBase {
 		    	float randomAngle = 45F + (45F * entityUser.getRNG().nextFloat());
 		    	if(entityUser.getRNG().nextBoolean())
 		    		randomAngle = -randomAngle;
-		    	double[] spawnPos = entityCreature.getFacingPosition(entityUser, -1, randomAngle);
-		    	if(!entity.worldObj.isSideSolid(new BlockPos((int)spawnPos[0], (int)spawnPos[1], (int)spawnPos[2]), EnumFacing.UP))
+		    	BlockPos spawnPos = entityCreature.getFacingPosition(entityUser, -1, randomAngle);
+		    	if(!entity.worldObj.isSideSolid(spawnPos, EnumFacing.UP))
 		    		randomAngle = -randomAngle;
-		    	if(entity.worldObj.isSideSolid(new BlockPos((int)spawnPos[0], (int)spawnPos[1], (int)spawnPos[2]), EnumFacing.UP))
-		    		entity.setLocationAndAngles((int)spawnPos[0], (int)spawnPos[1], (int)spawnPos[2], entityUser.rotationYaw, 0.0F);
+		    	if(entity.worldObj.isSideSolid(new BlockPos(spawnPos), EnumFacing.UP))
+		    		entity.setLocationAndAngles(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), entityUser.rotationYaw, 0.0F);
 	    	}
             this.onSpawnEntity(entity);
      		entityUser.worldObj.spawnEntityInWorld(entity);

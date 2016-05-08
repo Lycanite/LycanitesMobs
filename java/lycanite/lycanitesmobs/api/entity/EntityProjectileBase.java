@@ -28,7 +28,7 @@ public class EntityProjectileBase extends EntityThrowable {
 	// Properties:
     public boolean movement = true;
 	public byte baseDamage = 1;
-	public float projectileScale = 0.25F;
+	public float projectileScale = 1F;
 	public int projectileLife = 200;
     public double knockbackChance = 1;
     public boolean pierce = false;

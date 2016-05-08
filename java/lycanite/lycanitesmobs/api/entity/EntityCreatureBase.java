@@ -2282,13 +2282,13 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 
     
     // ========== Get Facing Coords ==========
-    /** Returns the XYZ coordinate in front or behind this entity (using its rotation angle) with the given distance, use a negative distance for behind. **/
-    public double[] getFacingPosition(double distance) {
+    /** Returns the BlockPos in front or behind this entity (using its rotation angle) with the given distance, use a negative distance for behind. **/
+    public BlockPos getFacingPosition(double distance) {
         return this.getFacingPosition(this, distance, 0D);
     }
 
-    /** Returns the XYZ coordinate in front or behind the provided entity with the given distance and angle offset (in degrees), use a negative distance for behind. **/
-    public double[] getFacingPosition(Entity entity, double distance, double angleOffset) {
+    /** Returns the BlockPos in front or behind the provided entity with the given distance and angle offset (in degrees), use a negative distance for behind. **/
+    public BlockPos getFacingPosition(Entity entity, double distance, double angleOffset) {
         /*double angle = Math.toRadians(entity.rotationYaw) + angleOffset;
         double xAmount = -Math.sin(angle);
         double zAmount = Math.cos(angle);
@@ -2300,15 +2300,12 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         return this.getFacingPosition(entity.posX, entity.posY, entity.posZ, distance, Math.toRadians(entity.rotationYaw) + angleOffset);
     }
 
-    /** Returns the XYZ coordinate in front or behind the provided XYZ coords with the given distance and angle (in degrees), use a negative distance for behind. **/
-    public double[] getFacingPosition(double x, double y, double z, double distance, double angle) {
+    /** Returns the BlockPos in front or behind the provided XYZ coords with the given distance and angle (in degrees), use a negative distance for behind. **/
+    public BlockPos getFacingPosition(double x, double y, double z, double distance, double angle) {
     	double xAmount = -Math.sin(angle);
     	double zAmount = Math.cos(angle);
-    	double[] coords = new double[3];
-        coords[0] = x + (distance * xAmount);
-        coords[1] = y;
-        coords[2] = z + (distance * zAmount);
-        return coords;
+        BlockPos pos = new BlockPos(x + (distance * xAmount), y, z + (distance * zAmount));
+        return pos;
     }
     
     

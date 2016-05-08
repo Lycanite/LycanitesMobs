@@ -370,13 +370,13 @@ public class PetEntry {
             float randomAngle = 45F + (45F * this.host.getRNG().nextFloat());
             if(this.host.getRNG().nextBoolean())
                 randomAngle = -randomAngle;
-            double[] spawnPos = entityCreature.getFacingPosition(this.host, -1, randomAngle);
-            if(!spawnedEntity.worldObj.isSideSolid(new BlockPos((int)spawnPos[0], (int)spawnPos[1], (int)spawnPos[2]), EnumFacing.UP))
-                spawnedEntity.setLocationAndAngles((int)spawnPos[0], (int)spawnPos[1], (int)spawnPos[2], this.host.rotationYaw, 0.0F);
+            BlockPos spawnPos = entityCreature.getFacingPosition(this.host, -1, randomAngle);
+            if(!spawnedEntity.worldObj.isSideSolid(spawnPos, EnumFacing.UP))
+                spawnedEntity.setLocationAndAngles(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), this.host.rotationYaw, 0.0F);
             else {
                 spawnPos = entityCreature.getFacingPosition(this.host, -1, -randomAngle);
-                if(spawnedEntity.worldObj.isSideSolid(new BlockPos((int) spawnPos[0], (int) spawnPos[1], (int) spawnPos[2]), EnumFacing.UP))
-                    spawnedEntity.setLocationAndAngles((int) spawnPos[0], (int) spawnPos[1], (int) spawnPos[2], this.host.rotationYaw, 0.0F);
+                if(spawnedEntity.worldObj.isSideSolid(spawnPos, EnumFacing.UP))
+                    spawnedEntity.setLocationAndAngles(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), this.host.rotationYaw, 0.0F);
             }
 
             // Temporary:

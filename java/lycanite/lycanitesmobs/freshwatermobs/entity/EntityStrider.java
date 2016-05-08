@@ -164,7 +164,9 @@ public class EntityStrider extends EntityCreatureRideable {
                 if(!possibleTarget.isEntityAlive()
                         || possibleTarget == EntityStrider.this
                         || EntityStrider.this.isRidingOrBeingRiddenBy(possibleTarget)
-                        || EntityStrider.this.isOnSameTeam(possibleTarget))
+                        || EntityStrider.this.isOnSameTeam(possibleTarget)
+                        || EntityStrider.this.canAttackClass(possibleTarget.getClass())
+                        || EntityStrider.this.canAttackEntity(possibleTarget))
                     return false;
 
                 return true;

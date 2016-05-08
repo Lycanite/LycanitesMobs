@@ -133,7 +133,9 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
                         if (!possibleTarget.isEntityAlive()
                                 || possibleTarget == EntityWarg.this
                                 || EntityWarg.this.isRidingOrBeingRiddenBy(possibleTarget)
-                                || EntityWarg.this.isOnSameTeam(possibleTarget))
+                                || EntityWarg.this.isOnSameTeam(possibleTarget)
+                                || EntityWarg.this.canAttackClass(possibleTarget.getClass())
+                                || EntityWarg.this.canAttackEntity(possibleTarget))
                             return false;
 
                         return true;

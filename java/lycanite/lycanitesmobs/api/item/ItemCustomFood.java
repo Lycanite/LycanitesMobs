@@ -96,6 +96,11 @@ public class ItemCustomFood extends ItemFood {
         return this;
     }
 
+    public ItemCustomFood setAlwaysEdible() {
+        super.setAlwaysEdible();
+        return this;
+    }
+
 
     // ==================================================
     //                     Visuals

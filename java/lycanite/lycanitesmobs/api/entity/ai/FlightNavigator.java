@@ -102,12 +102,12 @@ public class FlightNavigator {
         if(this.randomStrafeAngle > 0)
             this.randomStrafeAngle -= 0.5D;
 
-        double[] coords = this.host.getFacingPosition(this.targetPosition.getX() + 0.5D, this.targetPosition.getY(), this.targetPosition.getZ() + 0.5D, 1.0D, this.randomStrafeAngle);
+        BlockPos pos = this.host.getFacingPosition(this.targetPosition.getX() + 0.5D, this.targetPosition.getY(), this.targetPosition.getZ() + 0.5D, 1.0D, this.randomStrafeAngle);
         //double dirX = (double)this.targetPosition.getX() + 0.5D - this.host.posX;
-        double dirX = coords[0] - this.host.posX;
+        double dirX = pos.getX() - this.host.posX;
         double dirY = (double)this.targetPosition.getY() + 0.1D - this.host.posY;
         //double dirZ = (double)this.targetPosition.getZ() + 0.5D - this.host.posZ;
-        double dirZ = coords[2] - this.host.posZ;
+        double dirZ = pos.getZ() - this.host.posZ;
 
         double speed = this.host.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue() * 2;
 		this.host.motionX += ((Math.signum(dirX) * speed - this.host.motionX) * 0.10000000149011612D*0.3D) * speedModifier;

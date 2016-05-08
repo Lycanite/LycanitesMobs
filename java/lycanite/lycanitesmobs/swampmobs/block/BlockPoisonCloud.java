@@ -107,24 +107,21 @@ public class BlockPoisonCloud extends BlockBase {
 	// ==================================================
     @SideOnly(Side.CLIENT)
     @Override
-    public void randomDisplayTick(IBlockState blockState, World world, BlockPos pos, Random random) {
+    public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random random) {
+        super.randomDisplayTick(state, world, pos, random);
+
         int x = pos.getX();
         int y = pos.getX();
         int z = pos.getX();
     	if(random.nextInt(24) == 0)
-        	world.playSound((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), AssetManager.getSound("poisoncloud"), SoundCategory.AMBIENT, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F, false);
+        	world.playSound((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), AssetManager.getSound("poisoncloud"), SoundCategory.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F, false);
 
-        int l;
-        float f; 
-        float f1;
-        float f2;
-
-        for(l = 0; l < 12; ++l) {
-            f = (float)x + random.nextFloat();
-            f1 = (float)y + random.nextFloat() * 0.5F;
-            f2 = (float)z + random.nextFloat();
-            world.spawnParticle(EnumParticleTypes.PORTAL, (double)f, (double)f1, (double)f2, 0.0D, 0.0D, 0.0D);
-            world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, (double)f, (double)f1, (double)f2, 0.0D, 0.0D, 0.0D);
+        for(int particleCount = 0; particleCount < 12; ++particleCount) {
+            float particleX = (float)x + random.nextFloat();
+            float particleY = (float)y + random.nextFloat() * 0.5F;
+            float particleZ = (float)z + random.nextFloat();
+            world.spawnParticle(EnumParticleTypes.PORTAL, (double)particleX, (double)particleY, (double)particleZ, 0.0D, 0.0D, 0.0D, new int[0]);
+            world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, (double)particleX, (double)particleY, (double)particleZ, 0.0D, 0.0D, 0.0D, new int[0]);
         }
     }
 

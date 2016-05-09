@@ -1,8 +1,5 @@
 package lycanite.lycanitesmobs.api.mobevent;
 
-import lycanite.lycanitesmobs.AssetManager;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.translation.I18n;
@@ -29,10 +26,7 @@ public class MobEventClientBoss extends MobEventClient {
 		player.addChatMessage(new TextComponentString(eventMessage));
 		
 		if(!player.capabilities.isCreativeMode || MobEventServer.testOnCreative || this.mobEvent instanceof MobEventBoss) {
-        	if(AssetManager.getSound("mobevent_" + this.mobEvent.name.toLowerCase()) == null)
-        			AssetManager.addSound("mobevent_" + this.mobEvent.name.toLowerCase(), this.mobEvent.group, "mobevent." + this.mobEvent.name.toLowerCase());
-            this.sound = PositionedSoundRecord.getMusicRecord(AssetManager.getSound("mobevent_" + this.mobEvent.name.toLowerCase()));
-            Minecraft.getMinecraft().getSoundHandler().playSound(this.sound);
+            this.playSound();
 		}
 	}
 	

@@ -4,9 +4,11 @@ import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.gui.GuiOverlay;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
@@ -47,14 +49,18 @@ public class MobEventClient {
 		player.addChatMessage(new TextComponentString(eventMessage));
 		
 		if(!player.capabilities.isCreativeMode || MobEventServer.testOnCreative || this.mobEvent instanceof MobEventBoss) {
-        	if(AssetManager.getSound("mobevent_" + this.mobEvent.name.toLowerCase()) == null) {
-                LycanitesMobs.printWarning("MobEvent", "Sound missing for: " + this.mobEvent.getTitle());
-                return;
-            }
-            this.sound = PositionedSoundRecord.getRecordSoundRecord(AssetManager.getSound("mobevent_" + this.mobEvent.name.toLowerCase()), 0.0F, 0.0F, 0.0F);
-            Minecraft.getMinecraft().getSoundHandler().playSound(this.sound);
+        	this.playSound();
 		}
 	}
+
+    public void playSound() {
+        if(AssetManager.getSound("mobevent_" + this.mobEvent.name.toLowerCase()) == null) {
+            LycanitesMobs.printWarning("MobEvent", "Sound missing for: " + this.mobEvent.getTitle());
+            return;
+        }
+        this.sound = new PositionedSoundRecord(AssetManager.getSound("mobevent_" + this.mobEvent.name.toLowerCase()).getSoundName(), SoundCategory.RECORDS, 1.0F, 1.0F, false, 0, ISound.AttenuationType.NONE, 0.0F, 0.0F, 0.0F);
+        Minecraft.getMinecraft().getSoundHandler().playSound(this.sound);
+    }
 	
 	
     // ==================================================

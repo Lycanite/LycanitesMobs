@@ -1,7 +1,9 @@
 package lycanite.lycanitesmobs;
 
 import lycanite.lycanitesmobs.api.block.BlockSummoningPedestal;
+import lycanite.lycanitesmobs.api.capabilities.ExtendedEntityStorage;
 import lycanite.lycanitesmobs.api.capabilities.ExtendedPlayerStorage;
+import lycanite.lycanitesmobs.api.capabilities.IExtendedEntity;
 import lycanite.lycanitesmobs.api.capabilities.IExtendedPlayer;
 import lycanite.lycanitesmobs.api.command.CommandMain;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
@@ -64,6 +66,8 @@ public class LycanitesMobs {
 	public static CommonProxy proxy;
 
     // Capabilities:
+    @CapabilityInject(IExtendedEntity.class)
+    public static final Capability<IExtendedEntity> EXTENDED_ENTITY = null;
     @CapabilityInject(IExtendedPlayer.class)
     public static final Capability<IExtendedPlayer> EXTENDED_PLAYER = null;
 	
@@ -159,6 +163,7 @@ public class LycanitesMobs {
 
         // ========== Register Capabilities ==========
         CapabilityManager.INSTANCE.register(IExtendedPlayer.class, new ExtendedPlayerStorage(), ExtendedPlayer.class);
+        CapabilityManager.INSTANCE.register(IExtendedEntity.class, new ExtendedEntityStorage(), ExtendedEntity.class);
 		
 		
 		// ========== Register Event Listeners ==========

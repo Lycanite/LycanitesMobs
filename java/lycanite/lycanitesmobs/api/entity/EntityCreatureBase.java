@@ -140,7 +140,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 	/** How long this mob should usually block for in ticks. **/
 	public int blockingTime = 60;
 	/** The entity picked up by this entity (if any). **/
-    public Entity pickupEntity;
+    public EntityLivingBase pickupEntity;
 	
 	// Positions:
     /** A location used for mobs that stick around a certain home spot. **/
@@ -2485,7 +2485,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     }
     
     // ========== Pickup ==========
-    public boolean canPickupEntity(Entity entity) {
+    public boolean canPickupEntity(EntityLivingBase entity) {
         if(this.getPickupEntity() == entity)
             return false;
     	ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(entity);
@@ -2493,20 +2493,20 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 			return false;
 		if((entity.getRidingEntity() != null && !(entity.getRidingEntity() instanceof EntityBoat) && !(entity.getRidingEntity() instanceof EntityMinecart)) || entity.getControllingPassenger() != null)
 			return false;
-        if(entity instanceof EntityLivingBase && ObjectManager.getPotionEffect("weight") != null)
-            if(((EntityLivingBase)entity).isPotionActive(ObjectManager.getPotionEffect("weight")))
+        if(ObjectManager.getPotionEffect("weight") != null)
+            if((entity).isPotionActive(ObjectManager.getPotionEffect("weight")))
                 return false;
 		return extendedEntity.pickedUpByEntity == null || extendedEntity.pickedUpByEntity instanceof EntityFear;
     }
     
-    public void pickupEntity(Entity entity) {
+    public void pickupEntity(EntityLivingBase entity) {
     	ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(entity);
 		if(extendedEntity != null)
 			extendedEntity.setPickedUpByEntity(this);
     	this.pickupEntity = entity;
     }
     
-    public Entity getPickupEntity() {
+    public EntityLivingBase getPickupEntity() {
     	return this.pickupEntity;
     }
     

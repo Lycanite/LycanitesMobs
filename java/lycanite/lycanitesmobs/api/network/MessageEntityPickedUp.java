@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import lycanite.lycanitesmobs.ExtendedEntity;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.world.World;
@@ -40,8 +41,10 @@ public class MessageEntityPickedUp implements IMessage, IMessageHandler<MessageE
 		World world = player.worldObj;
 		Entity pickedUpEntity = world.getEntityByID(message.pickedUpEntityID);
 		Entity pickedUpByEntity = message.pickedUpByEntityID != 0 ? world.getEntityByID(message.pickedUpByEntityID) : null;
-		
-		ExtendedEntity pickedUpEntityExt = ExtendedEntity.getForEntity(pickedUpEntity);
+
+        if(!(pickedUpEntity instanceof EntityLivingBase))
+            return null;
+		ExtendedEntity pickedUpEntityExt = ExtendedEntity.getForEntity((EntityLivingBase)pickedUpEntity);
 		if(pickedUpEntityExt != null)
 			pickedUpEntityExt.setPickedUpByEntity(pickedUpByEntity);
 		return null;

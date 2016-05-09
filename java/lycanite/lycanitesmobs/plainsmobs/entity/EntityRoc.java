@@ -129,10 +129,13 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
     public boolean meleeAttack(Entity target, double damageScale) {
     	if(!super.meleeAttack(target, damageScale))
     		return false;
-    	
-    	// Pickup:
-        if(this.canPickupEntity(target)) {
-        	this.pickupEntity(target);
+
+        if(target instanceof EntityLivingBase) {
+            EntityLivingBase entityLivingBase = (EntityLivingBase)target;
+            // Pickup:
+            if (this.canPickupEntity(entityLivingBase)) {
+                this.pickupEntity(entityLivingBase);
+            }
         }
         
         return true;
@@ -151,7 +154,7 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
     public boolean canFly() { return true; }
     
     @Override
-    public void pickupEntity(Entity entity) {
+    public void pickupEntity(EntityLivingBase entity) {
     	super.pickupEntity(entity);
         if(this.worldObj.getBlockState(this.getPosition()) != null && this.worldObj.canBlockSeeSky(this.getPosition()))
             this.leap(1.0F, 2.0D);

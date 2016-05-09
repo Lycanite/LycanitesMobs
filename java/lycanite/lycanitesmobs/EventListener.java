@@ -1,5 +1,6 @@
 package lycanite.lycanitesmobs;
 
+import lycanite.lycanitesmobs.api.capabilities.IExtendedEntity;
 import lycanite.lycanitesmobs.api.capabilities.IExtendedPlayer;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
@@ -65,7 +66,32 @@ public class EventListener {
     // ==================================================
     @SubscribeEvent
     public void onAttachCapabilities(AttachCapabilitiesEvent.Entity event) {
-        // TODO Move ExtendedEntity over to Capability.
+        if(event.getEntity() instanceof EntityLivingBase) {
+            event.addCapability(new ResourceLocation(LycanitesMobs.modid, "IExtendedEntity"), new ICapabilitySerializable<NBTTagCompound>() {
+                IExtendedEntity instance = LycanitesMobs.EXTENDED_ENTITY.getDefaultInstance();
+
+                @Override
+                public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+                    return capability == LycanitesMobs.EXTENDED_ENTITY;
+                }
+
+                @Override
+                public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+                    return capability == LycanitesMobs.EXTENDED_ENTITY ? LycanitesMobs.EXTENDED_ENTITY.<T>cast(this.instance) : null;
+                }
+
+                @Override
+                public NBTTagCompound serializeNBT() {
+                    return (NBTTagCompound) LycanitesMobs.EXTENDED_ENTITY.getStorage().writeNBT(LycanitesMobs.EXTENDED_ENTITY, this.instance, null);
+                }
+
+                @Override
+                public void deserializeNBT(NBTTagCompound nbt) {
+                    LycanitesMobs.EXTENDED_ENTITY.getStorage().readNBT(LycanitesMobs.EXTENDED_ENTITY, this.instance, null, nbt);
+                }
+            });
+        }
+
         if(event.getEntity() instanceof EntityPlayer) {
             event.addCapability(new ResourceLocation(LycanitesMobs.modid, "IExtendedPlayer"), new ICapabilitySerializable<NBTTagCompound>() {
                 IExtendedPlayer instance = LycanitesMobs.EXTENDED_PLAYER.getDefaultInstance();
@@ -125,10 +151,6 @@ public class EventListener {
                 }
             }
         }
-
-        // ========== Extended Entity ==========
-        if(event.getEntity() instanceof EntityLivingBase)
-            ExtendedEntity.getForEntity(event.getEntity());
 	}
 
 
@@ -141,14 +163,16 @@ public class EventListener {
 		if(entity == null) return;
 
 		// ========== Extended Entity ==========
-		ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(entity);
-		if(extendedEntity != null)
-			extendedEntity.onDeath();
+        ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(entity);
+        if (extendedEntity != null)
+            extendedEntity.onDeath();
 
 		// ========== Extended Player ==========
 		if(entity instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer)entity;
-			ExtendedPlayer.getForPlayer(player).onDeath();
+            ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(player);
+            if(extendedPlayer != null)
+			    extendedPlayer.onDeath();
 		}
 	}
 
@@ -169,7 +193,6 @@ public class EventListener {
 		// ========== Extended Player ==========
 		if(entity instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer)entity;
-
 			ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
 			if(playerExt != null)
 				playerExt.onUpdate();

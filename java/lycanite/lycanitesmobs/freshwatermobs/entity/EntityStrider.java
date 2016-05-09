@@ -276,16 +276,17 @@ public class EntityStrider extends EntityCreatureRideable {
         if(!super.meleeAttack(target, damageScale))
             return false;
 
-        // Effect:
         if(target instanceof EntityLivingBase) {
-            if(ObjectManager.getPotionEffect("penetration") != null)
-                ((EntityLivingBase)target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("penetration"), this.getEffectDuration(8), 1));
-        }
+            EntityLivingBase entityLivingBase = (EntityLivingBase)target;
+            // Effect:
+            if (ObjectManager.getPotionEffect("penetration") != null)
+                entityLivingBase.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("penetration"), this.getEffectDuration(8), 1));
 
-        // Pickup:
-        if(this.canPickupEntity(target) && this.canEntityBeSeen(target)) {
-            this.pickupEntity(target);
-            this.pickupCooldown = 100;
+            // Pickup:
+            if (this.canPickupEntity(entityLivingBase) && this.canEntityBeSeen(target)) {
+                this.pickupEntity(entityLivingBase);
+                this.pickupCooldown = 100;
+            }
         }
 
         return true;
@@ -337,7 +338,7 @@ public class EntityStrider extends EntityCreatureRideable {
     }
 
     // ========== Pickup ==========
-    public boolean canPickupEntity(Entity entity) {
+    public boolean canPickupEntity(EntityLivingBase entity) {
         if(this.pickupCooldown > 0)
             return false;
         return super.canPickupEntity(entity);

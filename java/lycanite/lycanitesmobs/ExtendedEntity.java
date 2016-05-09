@@ -1,31 +1,36 @@
 package lycanite.lycanitesmobs;
 
+import lycanite.lycanitesmobs.api.capabilities.IExtendedEntity;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityFear;
 import lycanite.lycanitesmobs.api.network.MessageEntityPickedUp;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class ExtendedEntity {
-    public static Map<Entity, ExtendedEntity> extendedEntities = new HashMap<Entity, ExtendedEntity>();
+public class ExtendedEntity implements IExtendedEntity {
+    public static Map<Entity, ExtendedEntity> clientExtendedEntities = new HashMap<Entity, ExtendedEntity>();
     public static String[] FORCE_REMOVE_ENTITY_IDS;
     public static int FORCE_REMOVE_ENTITY_TICKS = 40;
-	
-	public Entity entity;
-	
-	// States:
-	public Entity pickedUpByEntity;
-	private int pickedUpByEntityID;
 
+    // Entity Instance:
+	public EntityLivingBase entity;
+
+    // Safe Position:
     /** The last coordinates the entity was at where it wasn't inside an opaque block. (Helps prevent suffocation). **/
     double[] lastSafePos;
     private boolean playerAllowFlyingSnapshot;
     private boolean playerIsFlyingSnapshot;
 	
+	// Picked Up:
+	public Entity pickedUpByEntity;
+	private int pickedUpByEntityID;
+
+    // Fear:
 	public EntityFear fearEntity;
 
     // Force Remove:
@@ -36,26 +41,51 @@ public class ExtendedEntity {
 	// ==================================================
     //                   Get for Entity
     // ==================================================
-	public static ExtendedEntity getForEntity(Entity entity) {
+	public static ExtendedEntity getForEntity(EntityLivingBase entity) {
 		if(entity == null) {
 			//LycanitesMobs.printWarning("", "Tried to access an ExtendedEntity from a null Entity.");
 			return null;
 		}
 
-		if(extendedEntities.containsKey(entity))
-            return extendedEntities.get(entity);
+        // Client Side:
+        if(entity.worldObj != null && entity.worldObj.isRemote) {
+            if(clientExtendedEntities.containsKey(entity))
+                return clientExtendedEntities.get(entity);
+            ExtendedEntity extendedEntity = new ExtendedEntity();
+            extendedEntity.setEntity(entity);
+            clientExtendedEntities.put(entity, extendedEntity);
+        }
 
-		return new ExtendedEntity(entity);
+        // Server Side:
+        IExtendedEntity iExtendedEntity = entity.getCapability(LycanitesMobs.EXTENDED_ENTITY, null);
+        if(!(iExtendedEntity instanceof ExtendedEntity))
+            return null;
+        ExtendedEntity extendedEntity = (ExtendedEntity)iExtendedEntity;
+        if(extendedEntity.getEntity() == null)
+            extendedEntity.setEntity(entity);
+        return extendedEntity;
 	}
 	
 	
 	// ==================================================
     //                    Constructor
     // ==================================================
-	public ExtendedEntity(Entity entity) {
-        this.entity = entity;
-		extendedEntities.put(entity, this);
+	public ExtendedEntity() {
+
 	}
+
+
+    // ==================================================
+    //                      Entity
+    // ==================================================
+    /** Initially sets the entity. **/
+    public void setEntity(EntityLivingBase entity) {
+        this.entity = entity;
+    }
+
+    public EntityLivingBase getEntity() {
+        return this.entity;
+    }
 	
 	
 	// ==================================================
@@ -93,6 +123,9 @@ public class ExtendedEntity {
             // Fear Entity:
             if (this.fearEntity != null && !this.fearEntity.isEntityAlive())
                 this.fearEntity = null;
+
+            // Picked Up By Entity:
+            this.updatePickedUpByEntity();
         }
         catch(Exception e) {}
 	}
@@ -202,4 +235,20 @@ public class ExtendedEntity {
 	public boolean isFeared() {
 		return this.pickedUpByEntity instanceof EntityFear;
 	}
+
+
+    // ==================================================
+    //                        NBT
+    // ==================================================
+    // ========== Read ===========
+    /** Reads a list of Creature Knowledge from a player's NBTTag. **/
+    public void readNBT(NBTTagCompound nbtTagCompound) {
+
+    }
+
+    // ========== Write ==========
+    /** Writes a list of Creature Knowledge to a player's NBTTag. **/
+    public void writeNBT(NBTTagCompound nbtTagCompound) {
+
+    }
 }

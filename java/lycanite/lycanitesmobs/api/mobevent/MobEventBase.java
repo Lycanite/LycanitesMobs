@@ -1,5 +1,6 @@
 package lycanite.lycanitesmobs.api.mobevent;
 
+import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ExtendedWorld;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.config.ConfigSpawning;
@@ -44,6 +45,8 @@ public class MobEventBase {
 	public MobEventBase(String name, GroupInfo group) {
 		this.name = name;
 		this.group = group;
+
+        AssetManager.addSound("mobevent_" + this.name.toLowerCase(), this.group, "mobevent." + this.name.toLowerCase());
 	}
     
 	

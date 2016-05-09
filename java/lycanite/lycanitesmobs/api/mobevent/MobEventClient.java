@@ -47,9 +47,11 @@ public class MobEventClient {
 		player.addChatMessage(new TextComponentString(eventMessage));
 		
 		if(!player.capabilities.isCreativeMode || MobEventServer.testOnCreative || this.mobEvent instanceof MobEventBoss) {
-        	if(AssetManager.getSound("mobevent_" + this.mobEvent.name.toLowerCase()) == null)
-        			AssetManager.addSound("mobevent_" + this.mobEvent.name.toLowerCase(), this.mobEvent.group, "mobevent." + this.mobEvent.name.toLowerCase());
-            this.sound = PositionedSoundRecord.getMusicRecord(AssetManager.getSound("mobevent_" + this.mobEvent.name.toLowerCase()));
+        	if(AssetManager.getSound("mobevent_" + this.mobEvent.name.toLowerCase()) == null) {
+                LycanitesMobs.printWarning("MobEvent", "Sound missing for: " + this.mobEvent.getTitle());
+                return;
+            }
+            this.sound = PositionedSoundRecord.getRecordSoundRecord(AssetManager.getSound("mobevent_" + this.mobEvent.name.toLowerCase()), 0.0F, 0.0F, 0.0F);
             Minecraft.getMinecraft().getSoundHandler().playSound(this.sound);
 		}
 	}

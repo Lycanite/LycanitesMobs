@@ -7,16 +7,28 @@ import lycanite.lycanitesmobs.api.gui.GUITabMain;
 import lycanite.lycanitesmobs.api.gui.GuiOverlay;
 import lycanite.lycanitesmobs.api.gui.TabManager;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
+import lycanite.lycanitesmobs.api.item.ItemBase;
 import lycanite.lycanitesmobs.api.render.RenderRegister;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class ClientProxy extends CommonProxy {
-	
-	// Render ID:
-	//public static int RENDER_ID = RenderingRegistry.getNextAvailableRenderId();
+
+    public static IItemColor itemColor = new IItemColor() {
+        public int getColorFromItemstack(ItemStack stack, int tintIndex) {
+            Item item = stack.getItem();
+            if(item == null || !(item instanceof ItemBase))
+                return 16777215;
+            ItemBase itemBase = (ItemBase)item;
+            return itemBase.getColorFromItemstack(stack, tintIndex);
+        }
+    };
+
 	
 	// ========== Register Event Handlers ==========
 	@Override

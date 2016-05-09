@@ -23,6 +23,8 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -244,6 +246,7 @@ public class ObjectManager {
     // ==================================================
     //           Register Block and Item Models
     // ==================================================
+    @SideOnly(Side.CLIENT)
     public static void RegisterModels() {
         for(Block block : blocks.values()) {
             Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), "inventory"));
@@ -254,7 +257,7 @@ public class ObjectManager {
                 ItemBase itemBase = (ItemBase)item;
                 Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, 0, itemBase.getModelResourceLocation());
                 if(itemBase.useItemColors())
-                    Minecraft.getMinecraft().getItemColors().registerItemColorHandler(ItemBase.itemColor, item);
+                    Minecraft.getMinecraft().getItemColors().registerItemColorHandler(ClientProxy.itemColor, item);
             }
             else
                 Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));

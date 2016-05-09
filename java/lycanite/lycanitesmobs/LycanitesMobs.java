@@ -161,6 +161,7 @@ public class LycanitesMobs {
         AltarInfo.loadGlobalSettings();
 
 
+
         // ========== Register Capabilities ==========
         CapabilityManager.INSTANCE.register(IExtendedPlayer.class, new ExtendedPlayerStorage(), ExtendedPlayer.class);
         CapabilityManager.INSTANCE.register(IExtendedEntity.class, new ExtendedEntityStorage(), ExtendedEntity.class);

@@ -3,8 +3,10 @@ package lycanite.lycanitesmobs.api.network;
 import io.netty.buffer.ByteBuf;
 import lycanite.lycanitesmobs.ExtendedWorld;
 import lycanite.lycanitesmobs.LycanitesMobs;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.IThreadListener;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -31,17 +33,23 @@ public class MessageMobEvent implements IMessage, IMessageHandler<MessageMobEven
 	 * Called when this message is received.
 	 */
 	@Override
-	public IMessage onMessage(MessageMobEvent message, MessageContext ctx) {
+	public IMessage onMessage(final MessageMobEvent message, final MessageContext ctx) {
 		if(ctx.side != Side.CLIENT) return null;
-		EntityPlayer player = LycanitesMobs.proxy.getClientPlayer();
-		World world = player.worldObj;
-        ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
-		
-		if("".equals(message.mobEventName))
-            worldExt.stopMobEvent(message.mobEventName);
-		else {
-            worldExt.startMobEvent(message.mobEventName, 0, 0, 0);
-		}
+        IThreadListener mainThread = Minecraft.getMinecraft();
+        mainThread.addScheduledTask(new Runnable() {
+            @Override
+            public void run() {
+                EntityPlayer player = LycanitesMobs.proxy.getClientPlayer();
+                World world = player.worldObj;
+                ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
+
+                if ("".equals(message.mobEventName))
+                    worldExt.stopMobEvent(message.mobEventName);
+                else {
+                    worldExt.startMobEvent(message.mobEventName, 0, 0, 0);
+                }
+            }
+        });
 		return null;
 	}
 	

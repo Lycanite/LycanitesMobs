@@ -5,7 +5,6 @@ import lycanite.lycanitesmobs.api.info.GroupInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,15 +25,6 @@ import java.util.List;
 
 public class ItemBase extends Item {
 	public static int descriptionWidth = 128;
-    public static IItemColor itemColor = new IItemColor() {
-        public int getColorFromItemstack(ItemStack stack, int tintIndex) {
-            Item item = stack.getItem();
-            if(item == null || !(item instanceof ItemBase))
-                return 16777215;
-            ItemBase itemBase = (ItemBase)item;
-            return itemBase.getColorFromItemstack(stack, tintIndex);
-        }
-    };
 	
 	public String itemName = "Item";
 	public GroupInfo group = LycanitesMobs.group;

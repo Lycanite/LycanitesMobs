@@ -31,13 +31,13 @@
         "category": "record",
         "sounds":
 		[
-			{"name": "mobevent/halloween", "stream": true},
-			{"name": "mobevent/halloween_lycanite", "stream": true},
-			{"name": "mobevent/halloween_toast", "stream": true},
-			{"name": "mobevent/halloween_gooderness", "stream": true},
-			{"name": "mobevent/halloween_jarno", "stream": true},
-			{"name": "mobevent/halloween_kehaan", "stream": true},
-			{"name": "mobevent/halloween_jonbams", "stream": true}
+			{"name": "lycanitesmobs:mobevent/halloween", "stream": true},
+			{"name": "lycanitesmobs:mobevent/halloween_lycanite", "stream": true},
+			{"name": "lycanitesmobs:mobevent/halloween_toast", "stream": true},
+			{"name": "lycanitesmobs:mobevent/halloween_gooderness", "stream": true},
+			{"name": "lycanitesmobs:mobevent/halloween_jarno", "stream": true},
+			{"name": "lycanitesmobs:mobevent/halloween_kehaan", "stream": true},
+			{"name": "lycanitesmobs:mobevent/halloween_jonbams", "stream": true}
 		]
     },
     "effect.fear": {

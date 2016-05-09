@@ -789,9 +789,23 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
             		IBlockState spawnerBlock = world.getBlockState(new BlockPos(i, j, k));
             		if(spawnerBlock != null) {
 	            		TileEntity tileEntity = world.getTileEntity(new BlockPos(i, j, k));
+
 	            		if(tileEntity != null && tileEntity instanceof TileEntityMobSpawner) {
-	            			if(((TileEntityMobSpawner)tileEntity).getSpawnerBaseLogic().getCachedEntity().getClass() == this.getClass())
-	            				return true;
+                            try {
+                                // Horribly hacky way to get the mob spawned by a spawner using NBT because stupid private variables!
+                                TileEntityMobSpawner mobSpawner = (TileEntityMobSpawner) tileEntity;
+                                NBTTagCompound nbt = new NBTTagCompound();
+                                mobSpawner.getSpawnerBaseLogic().writeToNBT(nbt);
+                                if (nbt.hasKey("SpawnData")) {
+                                    NBTTagCompound spawnData = nbt.getCompoundTag("SpawnData");
+                                    if (spawnData.hasKey("id")) {
+                                        String mobSpawnerMobName = spawnData.getString("id");
+                                        if (mobSpawnerMobName.equalsIgnoreCase(this.getName()))
+                                            return true;
+                                    }
+                                }
+                            } catch (Exception e) {}
+
 	            		}
 	            	}	
             	}

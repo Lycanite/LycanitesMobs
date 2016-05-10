@@ -2,23 +2,17 @@ package lycanite.lycanitesmobs.api.model;
 
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
+import lycanite.lycanitesmobs.api.modelloader.obj.ObjObject;
+import lycanite.lycanitesmobs.api.modelloader.obj.TessellatorModel;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IModelCustomData;
 import net.minecraftforge.client.model.obj.OBJModel;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import lycanite.lycanitesmobs.api.modelloader.obj.ObjObject;
-import lycanite.lycanitesmobs.api.modelloader.obj.TessellatorModel;
 import org.lwjgl.opengl.GL11;
 
 import java.util.HashMap;
@@ -187,28 +181,11 @@ public class ModelCustomObj extends ModelBase {
             // Render:
             this.uncenterPart(part.getName().toLowerCase());
             GlStateManager.disableLighting();
+            // TODO Fix bad lighting.
             this.wavefrontObject.renderGroup(part);
-
+            GlStateManager.enableLighting();
             GlStateManager.popMatrix();
     	}
-    }
-
-
-    public void renderBakedModel(IBakedModel bakedModel) {
-        Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer vertexbuffer = tessellator.getBuffer();
-        vertexbuffer.begin(4, DefaultVertexFormats.POSITION_TEX);
-
-        for(EnumFacing enumfacing : EnumFacing.values()) {
-            List<BakedQuad> list = bakedModel.getQuads(null, enumfacing, 0);
-            if (!list.isEmpty()) {
-                for(BakedQuad quad : list) {
-                    vertexbuffer.addVertexData(quad.getVertexData());
-                }
-            }
-        }
-
-        vertexbuffer.finishDrawing();
     }
     
     

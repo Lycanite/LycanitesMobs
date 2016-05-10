@@ -3307,8 +3307,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
      * @return A color ID that is used by the static RenderCreature.colorTable array.
      */
     public int getColor() {
-		if(this.dataWatcher == null) return 0;
-        return this.dataWatcher.get(COLOR) & 15;
+		if(this.getDataManager() == null) return 0;
+        return this.getDataManager().get(COLOR) & 15;
     }
     
     /**

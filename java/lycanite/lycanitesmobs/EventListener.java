@@ -22,6 +22,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
@@ -347,17 +348,20 @@ public class EventListener {
 	@SubscribeEvent
     public void onBucketFill(FillBucketEvent event) {
         World world = event.getWorld();
-        BlockPos pos = event.getTarget().getBlockPos();
+        RayTraceResult target = event.getTarget();
+        if(target == null)
+            return;
+        BlockPos pos = target.getBlockPos();
         Block block = world.getBlockState(pos).getBlock();
         Item bucket = ObjectManager.buckets.get(block);
-        if(bucket != null && ((Integer)world.getBlockState(pos).getValue(BlockLiquid.LEVEL)).intValue() == 0) {
+        if(bucket != null && world.getBlockState(pos).getValue(BlockLiquid.LEVEL) == 0) {
             world.setBlockToAir(pos);
         }
         
         if(bucket == null)
         	return;
 
-        event.getFilledBucket().setItem(bucket);
+        event.setFilledBucket(new ItemStack(bucket));
         event.setResult(Result.ALLOW);
     }
 }

@@ -89,6 +89,8 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroup
 	@Override
 	public void loadItemDrops() {
         this.drops.add(new DropRate(new ItemStack(Items.dye, 1, 0), 1).setMinAmount(1).setMaxAmount(5));
+        this.drops.add(new DropRate(new ItemStack(Items.prismarine_shard, 1), 0.5F).setMaxAmount(1));
+        this.drops.add(new DropRate(new ItemStack(Items.prismarine_crystals, 1), 0.125F).setMaxAmount(1));
     }
     
     

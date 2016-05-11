@@ -1,5 +1,6 @@
 package lycanite.lycanitesmobs;
 
+import lycanite.lycanitesmobs.api.block.BlockFluidBase;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.info.EntityListCustom;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
@@ -8,8 +9,12 @@ import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.item.ItemBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemMeshDefinition;
+import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.dispenser.BehaviorProjectileDispense;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -18,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -72,7 +78,9 @@ public class ObjectManager {
 	}
 
 	// ========== Fluid ==========
-	public static Fluid addFluid(Fluid fluid) {
+	public static Fluid addFluid(String fluidName) {
+        GroupInfo group = currentGroup;
+        Fluid fluid = new Fluid(fluidName, new ResourceLocation(group.filename, "blocks/" + fluidName + "_still"), new ResourceLocation(group.filename, "blocks/" + fluidName + "_flow"));
 		String name = fluid.getUnlocalizedName().toLowerCase();
 		fluids.put(name, fluid);
 		FluidRegistry.registerFluid(fluid);
@@ -248,7 +256,28 @@ public class ObjectManager {
     // ==================================================
     @SideOnly(Side.CLIENT)
     public static void RegisterModels() {
-        for(Block block : blocks.values()) {
+        for(final Block block : blocks.values()) {
+
+            // Fluids:
+            if(block instanceof BlockFluidBase) {
+                final ModelResourceLocation fluidLocation = new ModelResourceLocation(block.getRegistryName(), ((BlockFluidBase)block).blockName);
+                Item item = Item.getItemFromBlock(block);
+                ModelBakery.registerItemVariants(item);
+                ModelLoader.setCustomMeshDefinition(item, new ItemMeshDefinition() {
+                    @Override
+                    public ModelResourceLocation getModelLocation(ItemStack itemStack) {
+                        return fluidLocation;
+                    }
+                });
+                ModelLoader.setCustomStateMapper(block, new StateMapperBase() {
+                    @Override
+                    protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+                        return fluidLocation;
+                    }
+                });
+                continue;
+            }
+
             Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), "inventory"));
         }
 

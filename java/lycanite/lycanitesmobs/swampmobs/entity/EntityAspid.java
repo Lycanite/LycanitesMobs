@@ -93,15 +93,15 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
     public void onLivingUpdate() {
         super.onLivingUpdate();
         
-        // Poison Trail:
+        // Trail:
         if(!this.worldObj.isRemote && (this.ticksExisted % 10 == 0 || this.isMoving() && this.ticksExisted % 5 == 0)) {
         	int trailHeight = 2;
         	if(this.isChild())
         		trailHeight = 1;
         	for(int y = 0; y < trailHeight; y++) {
-        		Block block = this.worldObj.getBlockState(new BlockPos(this.posX, this.posY + y, this.posZ)).getBlock();
+        		Block block = this.worldObj.getBlockState(this.getPosition().add(0, y, 0)).getBlock();
         		if(block == Blocks.air || block == Blocks.snow || block == ObjectManager.getBlock("poisoncloud"))
-        			this.worldObj.setBlockState(new BlockPos(this.posX, this.posY + y, this.posZ), ObjectManager.getBlock("poisoncloud").getDefaultState());
+        			this.worldObj.setBlockState(this.getPosition().add(0, y, 0), ObjectManager.getBlock("poisoncloud").getDefaultState());
         	}
 		}
     }

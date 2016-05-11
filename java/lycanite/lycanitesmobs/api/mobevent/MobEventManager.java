@@ -27,7 +27,7 @@ public class MobEventManager {
 
     // Properties:
     public boolean mobEventsEnabled = true;
-    public boolean mobEventsRandom = true;
+    public boolean mobEventsRandom = false;
     public boolean mobEventsSchedule = true;
     public int baseRate = 10 * 20;
     public int baseRange = 32;

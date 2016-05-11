@@ -98,6 +98,8 @@ public class EntityStrider extends EntityCreatureRideable {
 	public void loadItemDrops() {
         this.drops.add(new DropRate(new ItemStack(Items.fish), 1F).setBurningDrop(new ItemStack(Items.cooked_fish)).setMaxAmount(5));
         this.drops.add(new DropRate(new ItemStack(Items.fish, 1, 3), 0.5F).setBurningDrop(new ItemStack(Items.cooked_fish, 1, 3)).setMaxAmount(5));
+        this.drops.add(new DropRate(new ItemStack(Items.prismarine_shard, 1), 1F).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.prismarine_crystals, 1), 0.25F).setMaxAmount(1));
 	}
 	
 	

@@ -90,7 +90,7 @@ public class ItemCustomFood extends ItemFood {
     }
 
     public ItemCustomFood setPotionEffect(Potion potion, int duration, int amplifier, float chance) {
-        PotionEffect potionEffect = new PotionEffect(potion, duration, amplifier, false, false);
+        PotionEffect potionEffect = new PotionEffect(potion, duration * 20, amplifier, false, false);
         this.effect = potionEffect;
         this.setPotionEffect(potionEffect, chance);
         return this;

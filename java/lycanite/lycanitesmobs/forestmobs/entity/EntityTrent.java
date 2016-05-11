@@ -46,6 +46,7 @@ public class EntityTrent extends EntityCreatureBase implements IMob, IGroupPlant
         
         this.setWidth = 2.9F;
         this.setHeight = 7.9F;
+        this.solidCollision = true;
         this.setupMob();
 
         this.stepHeight = 2.0F;

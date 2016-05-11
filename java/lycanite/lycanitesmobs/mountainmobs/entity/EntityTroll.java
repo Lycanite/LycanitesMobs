@@ -54,6 +54,7 @@ public class EntityTroll extends EntityCreatureBase implements IMob {
         
         this.setWidth = 1.5F;
         this.setHeight = 3.2F;
+        this.solidCollision = true;
         this.setupMob();
     	
         // AI Tasks:

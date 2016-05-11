@@ -48,6 +48,7 @@ public class EntityArisaur extends EntityCreatureAgeable implements IAnimals, IG
         this.setHeight = 4.2F;
         this.fleeHealthPercent = 1.0F;
         this.isHostileByDefault = false;
+        this.solidCollision = true;
         this.setupMob();
         
         // AI Tasks:

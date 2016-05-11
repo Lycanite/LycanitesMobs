@@ -141,6 +141,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 	public int blockingTime = 60;
 	/** The entity picked up by this entity (if any). **/
     public EntityLivingBase pickupEntity;
+    /** If true, this entity will have a solid collision box allowing other entities to stand on top of it as well as blocking player movement based on mass more effectively. **/
+    public boolean solidCollision = false;
 	
 	// Positions:
     /** A location used for mobs that stick around a certain home spot. **/
@@ -542,17 +544,17 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     	}
 
     	LycanitesMobs.printDebug("MobSpawns", "Checking entity collision.");
-        if(!this.worldObj.checkNoEntityCollision(this.getCollisionBoundingBox()))
-        	return false;
+        if(!this.worldObj.checkNoEntityCollision(this.getEntityBoundingBox()))
+            return false;
 
     	LycanitesMobs.printDebug("MobSpawns", "Checking solid block collision.");
-        if(!this.spawnsInBlock && !this.worldObj.getCollisionBoxes(this.getCollisionBoundingBox()).isEmpty()) {
+        if(!this.spawnsInBlock && !this.worldObj.getCollisionBoxes(this.getEntityBoundingBox()).isEmpty()) {
         	return false;
         }
 
     	return true;
     }
-    
+
     // ========== Natural Spawn Check ==========
     /** Second stage checks for spawning, this check is ignored if there is a valid monster spawner nearby. **/
     public boolean naturalSpawnCheck(World world, BlockPos pos) {
@@ -563,10 +565,10 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         if(this.getBlockPathWeight(pos.getX(), pos.getY(), pos.getZ()) < 0.0F && this.spawnedFromType == null)
         	return false;
     	LycanitesMobs.printDebug("MobSpawns", "Checking for liquid (water, lava, ooze, etc).");
-        if(!this.spawnsInWater && this.worldObj.isAnyLiquid(this.getCollisionBoundingBox()))
-        	return false;
-        else if(!this.spawnsOnLand && !this.worldObj.isAnyLiquid(this.getCollisionBoundingBox()))
-        	return false;
+        if(!this.spawnsInWater && this.worldObj.isAnyLiquid(this.getEntityBoundingBox()))
+            return false;
+        else if(!this.spawnsOnLand && !this.worldObj.isAnyLiquid(this.getEntityBoundingBox()))
+            return false;
     	LycanitesMobs.printDebug("MobSpawns", "Checking for underground.");
         if(!this.spawnsUnderground && this.isBlockUnderground(pos.getX(), pos.getY() + 1, pos.getZ()))
         	return false;
@@ -580,10 +582,10 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         List bosses = this.getNearbyEntities(IGroupBoss.class, SpawnInfo.spawnLimitRange);
         if(bosses.size() > 0)
             return false;
-        	
+
         return true;
     }
-    
+
     // ========== Spawn Dimension Check ==========
     public boolean isNativeDimension(World world) {
     	if(this.spawnedFromType != null) {
@@ -596,7 +598,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
             LycanitesMobs.printDebug("MobSpawns", "No dimension spawn settings were found for this mob, defaulting to valid.");
             return true;
         }
-    	
+
     	// Check Types:
 		for(String spawnDimensionType : this.mobInfo.spawnInfo.dimensionTypes) {
     		if("ALL".equalsIgnoreCase(spawnDimensionType)) {
@@ -630,7 +632,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
                 }
             }
     	}
-		
+
 		// Check IDs:
     	for(int spawnDimension : this.mobInfo.spawnInfo.dimensionBlacklist) {
     		if(world.provider.getDimension() == spawnDimension) {
@@ -641,7 +643,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         LycanitesMobs.printDebug("MobSpawns", "Dimension was not in " + (this.mobInfo.spawnInfo.dimensionWhitelist ? "whitelist, not allowed" : "blacklist, allowed") + ".");
         return !this.mobInfo.spawnInfo.dimensionWhitelist;
     }
-    
+
     // ========== Spawn Limit Check ==========
     /** Checks for nearby entities of this type from the ijk (xyz) location, mobs use this so that too many don't spawn in the same area. Returns true if the mob should spawn. **/
     public boolean spawnLimitCheck(World world, int i, int j, int k) {
@@ -656,7 +658,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
          }
          return true;
     }
-    
+
     // ========== Spawn Block Check ==========
     /** Checks for nearby blocks from the xyz block location, Cinders use this when spawning by Fire Blocks. **/
     public boolean spawnBlockCheck(World world, int x, int y, int z) {
@@ -705,7 +707,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         }
     	return true;
     }
-    
+
     // ========== Egg Spawn ==========
     /** Called once this mob is initially spawned. **/
     @Override
@@ -713,7 +715,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     	livingData = super.onInitialSpawn(difficulty, livingData);
         return livingData;
     }
-    
+
     // ========== Despawning ==========
     /** Returns whether this mob should despawn overtime or not. Config defined forced despawns override everything except tamed creatures and tagged creatures. **/
     @Override
@@ -730,7 +732,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     		return false;
     	return super.canDespawn();
     }
-    
+
     /** Returns true if this mob should not despawn in unloaded chunks.
      * Most farmable mobs never despawn, but can be set to despawn in the config where this will kick in.
      * Here mobs can check if they have ever been fed or bred or moved from their home dimension.
@@ -742,20 +744,20 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     public boolean isPersistant() {
     	return false;
     }
-    
+
     /** A check that is constantly done, if this returns true, this entity will be removed, used normally for peaceful difficulty removal and temporary minions. **/
     public boolean despawnCheck() {
         if(this.worldObj.isRemote)
         	return false;
-        
+
         // Disabled Mobs:
         if(!this.mobInfo.mobEnabled)
         	return true;
-        
+
         // Temporary Mobs:
         if(this.isTemporary && this.temporaryDuration-- <= 0)
         	return true;
-        
+
         // Mob Event Despawning:
         if(this.getLeashed() || this.isPersistant()) {
         	this.spawnEventType = "";
@@ -764,7 +766,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         else {
         	if(!this.mobInfo.peacefulDifficulty && this.worldObj.getDifficulty() == EnumDifficulty.PEACEFUL && !this.hasCustomName())
             	return true;
-        	
+
         	ExtendedWorld worldExt = ExtendedWorld.getForWorld(this.worldObj);
         	if(worldExt != null) {
         		if(!"".equals(this.spawnEventType) && this.spawnEventCount >= 0 && this.spawnEventCount != worldExt.getWorldEventCount())
@@ -773,7 +775,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         }
         return false;
     }
-    
+
     // ========== Spawner Checking ==========
     /** Checks if a Monster Spawner that spawns this mob is near the xyz locations, checks within an 8 block radius. **/
     public boolean isSpawnerNearby(World world, BlockPos pos) {
@@ -807,11 +809,11 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
                             } catch (Exception e) {}
 
 	            		}
-	            	}	
+	            	}
             	}
     	return false;
     }
-    
+
     // ========== Block Checking ==========
     /** Checks if the specified block is underground (unable to see the sky above it). This checks through leaves, plants, grass and vine materials. **/
     public boolean isBlockUnderground(int x, int y, int z) {
@@ -875,7 +877,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     public boolean isMinion() {
         return this.isMinion;
     }
-    
+
     // ========== Temporary Mob ==========
     /** Make this mob temporary where it will desapwn once the specified duration (in ticks) reaches 0. **/
     public void setTemporary(int duration) {
@@ -915,7 +917,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
             return false;
         return type.equals(this.getPetEntry().getType());
     }
-    
+
     // ========== On Spawn ==========
     /** This is called when the mob is first spawned to the world either through natural spawning or from a Spawn Egg. **/
     public void onFirstSpawn() {
@@ -924,7 +926,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         if(MobInfo.randomSizes)
     	    this.getRandomSize();
     }
-    
+
     // ========== Get Random Subspecies ==========
     public void getRandomSubspecies() {
     	if(this.subspecies == null && !this.isMinion()) {
@@ -936,14 +938,14 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     			LycanitesMobs.printDebug("Subspecies", "Setting " + this.getSpeciesName() + " to base species.");
     	}
     }
-    
+
     // ========== Get Random Size ==========
     public void getRandomSize() {
     	this.sizeScale = 1.0D + (0.35D * (0.5D - this.getRNG().nextDouble()));
     	this.updateSize();
     }
-	
-	
+
+
 	// ==================================================
 	//            Stat Multipliers and Boosts
 	// ==================================================
@@ -969,7 +971,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     		this.setHealth((float)(this.getBaseHealth() * Subspecies.rareHealthScale));
     	}
     }
-    
+
     /** Returns the shared multiplier for all stats based on difficulty. **/
 	public double getDifficultyMultiplier(String stat) {
         if(this.worldObj == null || this.worldObj.getDifficulty() == null)
@@ -1005,7 +1007,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
             boost += this.extraMobBehaviour.boostHealth;
         return boost;
     }
-    
+
     // ========= Defense ==========
     /** Returns the defense scale of this mob, see getDamageAfterDefense() for the logic. **/
     public double getDefenseMultiplier() {
@@ -1023,7 +1025,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     		boost += this.extraMobBehaviour.boostDefense;
     	return boost;
     }
-    
+
     // ========= Speed ==========
     /** Returns the speed scale of this mob. **/
     public double getSpeedMultiplier() {
@@ -1041,7 +1043,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     		boost += this.extraMobBehaviour.boostSpeed;
     	return boost;
     }
-    
+
     // ========= Damage ==========
     /**Returns the damage scale of this mob. **/
     public double getDamageMultiplier() {
@@ -1059,7 +1061,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     		boost += this.extraMobBehaviour.boostDamage;
     	return boost;
     }
-    
+
     // ========= Haste ==========
     /** Used to scale the rate of abilities such as attack speed. Note: Abilities are normally capped at around 10 ticks minimum due to performance issues and the entity update rate. **/
     public double getHasteMultiplier() {
@@ -1086,7 +1088,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     	ticks = Math.round((float)ticks * (float)ticksScale);
 		return Math.max(0, ticks);
     }
-    
+
     // ========= Effect ==========
     /** Returns the duration scale of any effects that this mob uses, can include both buffs and debuffs on the enemy. **/
     public double getEffectMultiplier() {
@@ -1116,7 +1118,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     public float getEffectStrength(float value) {
         return Math.round((value * (float)(this.getEffectMultiplier()))) + this.getEffectBoost();
     }
-    
+
     // ========= Pierce ==========
     /** Returns the armor piercing multipler. **/
     public double getPierceMultiplier() {
@@ -1159,8 +1161,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     public int getBattlePhase() {
         return this.battlePhase;
     }
-    
-    
+
+
     // ==================================================
   	//                    Subspecies
   	// ==================================================
@@ -1191,8 +1193,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     public int getSubspeciesIndex() {
     	return this.getSubspecies() != null ? this.getSubspecies().index : 0;
     }
-    
-    
+
+
     // ==================================================
   	//                     Updates
   	// ==================================================
@@ -1205,27 +1207,27 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 
         if(!this.worldObj.isRemote)
             this.updateHitAreas();
-        
+
         if(this.despawnCheck()) {
             if(!this.isBoundPet())
         	    this.inventory.dropInventory();
         	this.setDead();
         }
-        
+
         // Fire Immunity:
         this.isImmuneToFire = !this.canBurn();
-        
+
         // Not Walking on Land:
         if((!this.canWalk() && !this.canFly() && !this.isInWater() && this.isMoving()) || !this.canMove())
         	this.clearMovement();
-        
+
         // Climbing:
         if(!this.worldObj.isRemote || this.canPassengerSteer()) {
         	this.setBesideClimbableBlock(this.isCollidedHorizontally);
         	if(this.flySoundSpeed > 0 && this.ticksExisted % 20 == 0)
         		this.playFlySound();
         }
-        
+
         // GUI Refresh Tick:
         if(!this.worldObj.isRemote && this.guiViewers.size() <= 0)
         	this.guiRefreshTick = 0;
@@ -1240,7 +1242,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         if(this.bossInfo != null)
             this.bossInfo.setPercent(this.getHealth() / this.getMaxHealth());
     }
-    
+
     // ========== AI ==========
     /** Runs through all the AI tasks this mob has on the update, will update the flight navigator if this mob is using it too. **/
     @Override
@@ -1249,7 +1251,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
             flightNavigator.updateFlight();
         super.updateAITasks();
     }
-    
+
     // ========== Living ==========
     /** The main update method, behaviour and custom update logic should go here. **/
     @Override
@@ -1257,7 +1259,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         super.onLivingUpdate();
         this.updateBattlePhase();
         this.updateArmSwingProgress();
-        
+
         // First Spawn:
         if(!this.worldObj.isRemote && this.firstSpawn) {
         	this.onFirstSpawn();
@@ -1272,18 +1274,18 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
                     this.setAttackTarget(null);
             }
         }
-        
+
         // Fleeing:
         if(this.hasAvoidTarget()) {
         	if(this.currentFleeTime-- <= 0)
         		this.setAvoidTarget(null);
         }
-        
+
         // Gliding:
         if(!this.onGround && this.motionY < 0.0D) {
             this.motionY *= this.getFallingMod();
         }
-        
+
         // Sunlight Damage:
         if(!this.worldObj.isRemote && this.daylightBurns() && this.worldObj.isDaytime()) {
         	float brightness = this.getBrightness(1.0F);
@@ -1304,12 +1306,12 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
                     this.setFire(8);
             }
         }
-        
+
         // Water Damage:
         if(!this.worldObj.isRemote && this.waterDamage() && this.isWet()) {
             this.attackEntityFrom(DamageSource.drown, 1.0F);
         }
-        
+
         // Out of Water Suffocation:
         if(!this.worldObj.isRemote && !this.canBreatheAboveWater()) {
 	        int currentAir = this.getAir();
@@ -1328,12 +1330,12 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 		        }
 	        }
         }
-        
+
         // Time Out Quicker In Light:
         float light = this.getBrightness(1.0F);
         if(!this.mobInfo.spawnInfo.spawnsInLight && light > 0.5F)
             this.entityAge += 2;
-        
+
 	    // Stealth Invisibility:
     	if(!this.worldObj.isRemote) {
 	        if(this.isStealthed() && !this.isInvisible())
@@ -1349,18 +1351,18 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         else if(this.isInvisible() && !this.isPotionActive(MobEffects.invisibility))
         	setInvisible(false);
         this.stealthPrev = this.isStealthed();
-        
+
         // Blocking:
         if(this.currentBlockingTime > 0) {
         	this.currentBlockingTime--;
         }
         if(this.currentBlockingTime < 0)
         	this.currentBlockingTime = 0;
-        
+
         // Pickup Items:
         if(this.ticksExisted % 10 == 0 && !this.worldObj.isRemote && this.isEntityAlive() && this.canPickupItems())
         	this.pickupItems();
-        
+
         // Entity Pickups:
         if(this.pickupEntity != null) {
 			if(!this.pickupEntity.isEntityAlive())
@@ -1390,7 +1392,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 
         this.updateTick++;
     }
-    
+
     // ========== Sync Update ==========
     /** An update that is called to sync things with the client and server such as various entity targets, attack phases, animations, etc. **/
     public void onSyncUpdate() {
@@ -1409,22 +1411,22 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     			targets += TARGET_ID.RIDER.id;
     		this.dataWatcher.set(TARGET, targets);
     	}
-    	
+
 		// Attack Phase:
     	if(!this.worldObj.isRemote)
     		this.dataWatcher.set(ATTACK_PHASE, this.attackPhase);
-        
+
     	// Animations Server:
         if(!this.worldObj.isRemote) {
         	byte animations = 0;
-        	
+
         	// Atttacked Animation and Sound:
         	if(this.justAttacked == this.justAttackedTime) {
         		animations += ANIM_ID.ATTACKED.id;
         		this.justAttacked = 0;
         		this.playAttackSound();
         	}
-        	
+
         	// Airborne Animation:
         	if(this.onGround)
         		animations += ANIM_ID.GROUNDED.id;
@@ -1432,22 +1434,22 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
             // Swimming Animation:
             if(this.inWater)
                 animations += ANIM_ID.IN_WATER.id;
-        	
+
         	// Blocking Animation:
         	if(this.isBlocking())
         		animations += ANIM_ID.BLOCKING.id;
-        	
+
         	// Blocking Animation:
         	if(this.isMinion())
         		animations += ANIM_ID.MINION.id;
-        	
+
         	// Extra Animation 01:
         	if(this.extraAnimation01())
         		animations += ANIM_ID.EXTRA01.id;
-        	
+
         	this.dataWatcher.set(ANIMATION, animations);
         }
-        
+
         // Animations Client:
         else if(this.worldObj.isRemote) {
         	byte animations = this.dataWatcher.get(ANIMATION);
@@ -1459,12 +1461,12 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
             this.inWater = (animations & ANIM_ID.IN_WATER.id) > 0;
         	this.extraAnimation01 = (animations & ANIM_ID.EXTRA01.id) > 0;
         }
-        
+
         // Is Minon:
         if(this.worldObj.isRemote) {
     		this.isMinion = (this.dataWatcher.get(ANIMATION) & ANIM_ID.MINION.id) > 0;
         }
-        
+
         // Subspecies:
         if(!this.worldObj.isRemote) {
     		this.dataWatcher.set(SUBSPECIES, Byte.valueOf((byte)this.getSubspeciesIndex()));
@@ -1473,7 +1475,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         	if(this.getSubspeciesIndex() != this.dataWatcher.get(SUBSPECIES))
         		this.setSubspecies(this.dataWatcher.get(SUBSPECIES), false);
         }
-        
+
         // Size:
         if(!this.worldObj.isRemote) {
     		this.dataWatcher.set(SIZE, Float.valueOf((float)this.sizeScale));
@@ -1520,7 +1522,9 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     // ========== Get Collision Bounding Box ==========
     @Override
     public AxisAlignedBB getCollisionBoundingBox() {
-        return this.getEntityBoundingBox();
+        if(this.solidCollision)
+            return this.getEntityBoundingBox();
+        return null;
     }
     
     
@@ -2900,7 +2904,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     // ========== Pickup Items ==========
     /** Called on the update if this mob is able to pickup items. Searches for all nearby item entities and picks them up. **/
     public void pickupItems() {
-    	 List list = this.worldObj.getEntitiesWithinAABB(EntityItem.class, this.getCollisionBoundingBox().expand(1.0D, 0.0D, 1.0D));
+    	 List list = this.worldObj.getEntitiesWithinAABB(EntityItem.class, this.getEntityBoundingBox().expand(1.0D, 0.0D, 1.0D));
          Iterator iterator = list.iterator();
 
          while (iterator.hasNext()) {
@@ -3135,7 +3139,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
    	// ========== Get Nearby Entities ==========
    	/** Get entities that are near this entity. **/
    	public List getNearbyEntities(final Class targetClass, double range) {
-   		return this.worldObj.getEntitiesWithinAABB(Entity.class, this.getCollisionBoundingBox().expand(range, range, range), new Predicate<Entity>() {
+   		return this.worldObj.getEntitiesWithinAABB(Entity.class, this.getEntityBoundingBox().expand(range, range, range), new Predicate<Entity>() {
             public boolean apply(Entity entity) {
                 return targetClass.isAssignableFrom(entity.getClass());
             }

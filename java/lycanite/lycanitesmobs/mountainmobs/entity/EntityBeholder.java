@@ -43,6 +43,7 @@ public class EntityBeholder extends EntityCreatureTameable {
         this.setHeight = 3.9F;
         
         this.justAttackedTime = 20;
+        this.solidCollision = true;
         this.setupMob();
 
         this.stepHeight = 1.0F;

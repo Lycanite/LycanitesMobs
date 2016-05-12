@@ -1,7 +1,9 @@
 package lycanite.lycanitesmobs;
 
 import lycanite.lycanitesmobs.api.info.GroupInfo;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 
 import java.io.File;
 
@@ -28,4 +30,9 @@ public class CommonProxy {
     public void registerAssets() {}
     public void registerRenders(GroupInfo groupInfo) {}
     public EntityPlayer getClientPlayer() { return null; }
+
+
+    // ========== Renders ==========
+    public void addBlockRender(GroupInfo group, Block block) {}
+    public void addItemRender(GroupInfo group, Item item) {}
 }

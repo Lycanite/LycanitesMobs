@@ -9,7 +9,6 @@ import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.pets.SummonSet;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.client.GuiScrollingList;
@@ -17,7 +16,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 
-public class GUIMinion extends GuiScreen {
+public class GUIMinion extends GUIBaseScreen {
 	public static int tabButtonID = 100;
 	
 	public EntityPlayer player;

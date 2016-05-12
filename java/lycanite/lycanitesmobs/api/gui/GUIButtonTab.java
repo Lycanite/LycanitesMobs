@@ -3,11 +3,10 @@ package lycanite.lycanitesmobs.api.gui;
 import lycanite.lycanitesmobs.AssetManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-public class GUIButtonTab extends GuiButton {
+public class GUIButtonTab extends GUIBaseButton {
 	ResourceLocation texture;
 	
 	// ==================================================
@@ -43,7 +42,7 @@ public class GUIButtonTab extends GuiButton {
             minecraft.getTextureManager().bindTexture(AssetManager.getTexture("GUIInventoryCreature"));
             this.drawTexturedModalRect(buttonX, buttonY, 32, hoverState * 32, this.width, this.height);
             Minecraft.getMinecraft().getTextureManager().bindTexture(this.texture);
-    		this.drawTexturedModalRect(buttonX + 4, buttonY + 4, 0, 0, 16, 16);
+    		this.drawTexturedModalRect(buttonX + 4, buttonY + 4, 0, 0, 16, 16, 16);
             
             this.mouseDragged(minecraft, mouseX, mouseY);
             int textColor = 14737632;

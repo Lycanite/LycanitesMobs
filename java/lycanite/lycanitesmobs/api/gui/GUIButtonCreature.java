@@ -4,10 +4,9 @@ import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
 import org.lwjgl.opengl.GL11;
 
-public class GUIButtonCreature extends GuiButton {
+public class GUIButtonCreature extends GUIBaseButton {
 	public MobInfo mobInfo;
 	
 	// ==================================================
@@ -44,7 +43,7 @@ public class GUIButtonCreature extends GuiButton {
             this.drawTexturedModalRect(buttonX, buttonY, 193, 187 - (hoverState * 32), this.width, this.height);
             if(mobInfo != null) {
 	            Minecraft.getMinecraft().getTextureManager().bindTexture(mobInfo.getIcon());
-	    		this.drawTexturedModalRect(buttonX + 8, buttonY + 8, 0, 0, 16, 16);
+	    		this.drawTexturedModalRect(buttonX + 8, buttonY + 8, 0, 0, 16, 16, 16);
             }
             
             this.mouseDragged(minecraft, mouseX, mouseY);

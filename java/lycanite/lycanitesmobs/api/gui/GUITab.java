@@ -1,14 +1,13 @@
 package lycanite.lycanitesmobs.api.gui;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-public abstract class GUITab extends GuiButton {
+public abstract class GUITab extends GUIBaseButton {
 	public ResourceLocation texture = new ResourceLocation("textures/gui/container/creative_inventory/tabs.png");
     public ResourceLocation icon = null;
     public ItemStack renderStack;
@@ -59,7 +58,7 @@ public abstract class GUITab extends GuiButton {
             this.drawTexturedModalRect(tabX, tabY, xOffset * 28, yTexPos, 28, ySize);
             if(this.icon != null) {
             	mc.renderEngine.bindTexture(this.icon);
-            	this.drawTexturedModalRect(tabX + 6, tabY + 6, 0, 0, 16, 16);
+            	this.drawTexturedModalRect(tabX + 6, tabY + 6, 0, 0, 16, 16, 16);
             }
             else {
                 return;

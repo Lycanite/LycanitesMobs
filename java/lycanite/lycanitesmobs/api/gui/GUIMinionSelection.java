@@ -7,13 +7,12 @@ import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.network.MessageSummonSetSelection;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 
-public class GUIMinionSelection extends GuiScreen {
+public class GUIMinionSelection extends GUIBaseScreen {
 	public EntityPlayer player;
 	public ExtendedPlayer playerExt;
 	

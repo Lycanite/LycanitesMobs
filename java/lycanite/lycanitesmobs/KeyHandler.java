@@ -128,7 +128,7 @@ public class KeyHandler {
 				controlStates += ExtendedPlayer.CONTROL_ID.MOUNT_ABILITY.id;
 
             // Custom Item Left Click Use:
-            //if(Mouse.isButtonDown(0))
+            //if(Minecraft.getMinecraft().gameSettings.keyBindAttack.getKeyCode())
                 //controlStates += ExtendedPlayer.CONTROL_ID.LEFT_CLICK.id;
 		}
 		

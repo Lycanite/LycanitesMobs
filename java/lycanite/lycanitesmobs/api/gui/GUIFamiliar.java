@@ -10,7 +10,6 @@ import lycanite.lycanitesmobs.api.pets.PetEntry;
 import lycanite.lycanitesmobs.api.pets.SummonSet;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.client.GuiScrollingList;
@@ -20,7 +19,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class GUIFamiliar extends GuiScreen {
+public class GUIFamiliar extends GUIBaseScreen {
 	public EntityPlayer player;
 	public ExtendedPlayer playerExt;
     public PetEntry petEntry;

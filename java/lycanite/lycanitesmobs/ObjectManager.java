@@ -1,6 +1,5 @@
 package lycanite.lycanitesmobs;
 
-import lycanite.lycanitesmobs.api.block.BlockFluidBase;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.info.EntityListCustom;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
@@ -9,12 +8,7 @@ import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.item.ItemBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemMeshDefinition;
-import net.minecraft.client.renderer.block.model.ModelBakery;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.dispenser.BehaviorProjectileDispense;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -23,7 +17,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -74,13 +67,14 @@ public class ObjectManager {
 		blocks.put(name, block);
         GameRegistry.register(block);
         GameRegistry.register(new ItemBlock(block), block.getRegistryName());
+        LycanitesMobs.proxy.addBlockRender(currentGroup, block);
         return block;
 	}
 
 	// ========== Fluid ==========
 	public static Fluid addFluid(String fluidName) {
         GroupInfo group = currentGroup;
-        Fluid fluid = new Fluid(fluidName, new ResourceLocation(group.filename, "blocks/" + fluidName + "_still"), new ResourceLocation(group.filename, "blocks/" + fluidName + "_flow"));
+        Fluid fluid = new Fluid(fluidName, new ResourceLocation(group.filename + ":blocks/" + fluidName + "_still"), new ResourceLocation(group.filename + ":blocks/" + fluidName + "_flow"));
 		String name = fluid.getUnlocalizedName().toLowerCase();
 		fluids.put(name, fluid);
 		FluidRegistry.registerFluid(fluid);
@@ -100,6 +94,7 @@ public class ObjectManager {
 		items.put(name, item);
 		if(currentGroup != null)
 			GameRegistry.register(item, new ResourceLocation(currentGroup.filename, name));
+        LycanitesMobs.proxy.addItemRender(currentGroup, item);
         return item;
 	}
 
@@ -256,13 +251,22 @@ public class ObjectManager {
     // ==================================================
     @SideOnly(Side.CLIENT)
     public static void RegisterModels() {
+        for(Item item : items.values()) {
+            if(item instanceof ItemBase) {
+                ItemBase itemBase = (ItemBase) item;
+                if (itemBase.useItemColors())
+                    Minecraft.getMinecraft().getItemColors().registerItemColorHandler(ClientProxy.itemColor, item);
+            }
+        }
+        /* Moved to LycanitesMobs client proxy and called as block/item is registered.
         for(final Block block : blocks.values()) {
 
             // Fluids:
             if(block instanceof BlockFluidBase) {
-                final ModelResourceLocation fluidLocation = new ModelResourceLocation(block.getRegistryName(), ((BlockFluidBase)block).blockName);
+                BlockFluidBase blockFluid = (BlockFluidBase)block;
                 Item item = Item.getItemFromBlock(block);
                 ModelBakery.registerItemVariants(item);
+                final ModelResourceLocation fluidLocation = new ModelResourceLocation(blockFluid.group.filename + ":fluid", blockFluid.getFluid().getName());
                 ModelLoader.setCustomMeshDefinition(item, new ItemMeshDefinition() {
                     @Override
                     public ModelResourceLocation getModelLocation(ItemStack itemStack) {
@@ -290,6 +294,6 @@ public class ObjectManager {
             }
             else
                 Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
-        }
+        }*/
     }
 }

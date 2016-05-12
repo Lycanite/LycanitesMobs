@@ -90,7 +90,7 @@ public class InfernoMobs {
 		ObjectManager.addItem("embercharge", new ItemEmberCharge());
 		ObjectManager.addItem("emberscepter", new ItemScepterEmber(), 2, 1, 1);
 		ObjectManager.addItem("cinderfallsword", new ItemSwordCinderfall(), 2, 1, 1);
-        ObjectManager.addItem("azurecinderfallsworde", new ItemSwordCinderfallAzure());
+        ObjectManager.addItem("azurecinderfallsword", new ItemSwordCinderfallAzure());
         ObjectManager.addItem("verdantcinderfallsword", new ItemSwordCinderfallVerdant());
 		ObjectManager.addItem("magmacharge", new ItemMagmaCharge());
 		ObjectManager.addItem("magmascepter", new ItemScepterMagma(), 2, 1, 1);

@@ -1,5 +1,6 @@
 package lycanite.lycanitesmobs;
 
+import lycanite.lycanitesmobs.api.block.BlockFluidBase;
 import lycanite.lycanitesmobs.api.entity.EntityFear;
 import lycanite.lycanitesmobs.api.entity.EntityHitArea;
 import lycanite.lycanitesmobs.api.entity.EntityPortal;
@@ -9,11 +10,18 @@ import lycanite.lycanitesmobs.api.gui.TabManager;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.item.ItemBase;
 import lycanite.lycanitesmobs.api.render.RenderRegister;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemMeshDefinition;
+import net.minecraft.client.renderer.block.model.ModelBakery;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
@@ -93,4 +101,42 @@ public class ClientProxy extends CommonProxy {
     public EntityPlayer getClientPlayer() {
 		return Minecraft.getMinecraft().thePlayer;
 	}
+
+
+    // ========== Renders ==========
+    public void addBlockRender(GroupInfo group, Block block) {
+        // Fluids:
+        if(block instanceof BlockFluidBase) {
+            BlockFluidBase blockFluid = (BlockFluidBase)block;
+            Item item = Item.getItemFromBlock(block);
+            ModelBakery.registerItemVariants(item);
+            final ModelResourceLocation fluidLocation = new ModelResourceLocation(blockFluid.group.filename + ":fluid", blockFluid.getFluid().getName());
+            ModelLoader.setCustomMeshDefinition(item, new ItemMeshDefinition() {
+                @Override
+                public ModelResourceLocation getModelLocation(ItemStack itemStack) {
+                    return fluidLocation;
+                }
+            });
+            ModelLoader.setCustomStateMapper(block, new StateMapperBase() {
+                @Override
+                protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+                    return fluidLocation;
+                }
+            });
+            return;
+        }
+
+        this.addItemRender(group, Item.getItemFromBlock(block));
+    }
+
+    public void addItemRender(GroupInfo group, Item item) {
+        if(item instanceof ItemBase) {
+            ItemBase itemBase = (ItemBase) item;
+            ModelLoader.setCustomModelResourceLocation(item, 0, itemBase.getModelResourceLocation());
+            //if (itemBase.useItemColors()) Handled in Object Manager at PostInit for now.
+                //Minecraft.getMinecraft().getItemColors().registerItemColorHandler(ClientProxy.itemColor, item);
+            return;
+        }
+        ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
+    }
 }

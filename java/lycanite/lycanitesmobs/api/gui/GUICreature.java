@@ -9,7 +9,6 @@ import lycanite.lycanitesmobs.api.inventory.ContainerCreature;
 import lycanite.lycanitesmobs.api.inventory.InventoryCreature;
 import lycanite.lycanitesmobs.api.network.MessageEntityGUICommand;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
@@ -19,7 +18,7 @@ import org.lwjgl.opengl.GL11;
 import java.io.IOException;
 import java.util.List;
 
-public class GUICreature extends GuiContainer {
+public class GUICreature extends GUIBaseContainer {
 	public EntityCreatureBase creature;
 	public InventoryCreature creatureInventory;
 	public InventoryPlayer playerInventory;

@@ -84,14 +84,11 @@ public class MobEventServer {
             if(playerObj instanceof EntityPlayer) {
                 EntityPlayer player = (EntityPlayer)playerObj;
                 if(!player.capabilities.isCreativeMode || testOnCreative) {
-                    int x = (int)player.posX;
-                    int y = (int)player.posY;
-                    int z = (int)player.posZ;
 
                     // Event Mob Spawning:
                     int tickOffset = 0;
                     for(SpawnTypeBase spawnType : this.mobEvent.spawners) {
-                        spawnType.spawnMobs(this.ticks - tickOffset, this.world, x, y, z, player);
+                        spawnType.spawnMobs(this.ticks - tickOffset, this.world, player.getPosition(), player);
                         tickOffset += 7;
                     }
                 }

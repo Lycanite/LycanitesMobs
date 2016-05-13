@@ -63,26 +63,24 @@ public class SpawnTypeUnderground extends SpawnTypeLand {
     /**
      * Searches for coordinates to spawn mobs exactly at. By default this uses te block lists.
      * @param world The world to spawn in.
-     * @param x X position.
-     * @param y Y position.
-     * @param z Z position
+     * @param pos Spawn origin position.
      * @return A list of int arrays, each array should contain 3 integers of x, y and z. Should return an empty list instead of null else a waning will show.
      */
     @Override
-    public List<int[]> getSpawnCoordinates(World world, int x, int y, int z) {
+    public List<BlockPos> getSpawnCoordinates(World world, BlockPos pos) {
         if(world.provider.getDimension() == 1) // Act as Land Spawn Type in The End.
-            return super.getSpawnCoordinates(world, x, y, z);
+            return super.getSpawnCoordinates(world, pos);
 
-    	List<int[]> blockCoords = null;
+    	List<BlockPos> blockCoords = null;
         int range = this.getRange(world);
-        BlockPos originPos = new BlockPos(x, this.getYLevelForWorld(world), z);
+        BlockPos originPos = new BlockPos(pos.getX(), this.getYLevelForWorld(world), pos.getZ());
 
         for(int i = 0; i < this.blockLimit; i++) {
             BlockPos chunkCoords = this.getRandomUndergroundLandCoord(world, originPos, range);
         	if(chunkCoords != null) {
         		if(blockCoords == null)
-        			blockCoords = new ArrayList<int[]>();
-        		blockCoords.add(new int[] {chunkCoords.getX(), chunkCoords.getY(), chunkCoords.getZ()});
+        			blockCoords = new ArrayList<BlockPos>();
+        		blockCoords.add(chunkCoords);
         	}
         }
         
@@ -112,7 +110,7 @@ public class SpawnTypeUnderground extends SpawnTypeLand {
         int[] xz = this.getRandomXZCoord(world, originPos.getX(), originPos.getZ(), rangeMin, range);
         int x = xz[0];
         int z = xz[1];
-        int y = this.getRandomYCoord(world, x, 0, z, rangeMin, originPos.getY(), true, Blocks.air, true);
+        int y = this.getRandomYCoord(world, new BlockPos(x, 0, z), rangeMin, originPos.getY(), true, Blocks.air, true);
         return y > -1 ? new BlockPos(x, y, z) : null;
     }
 }

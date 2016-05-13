@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs.api.spawning;
 import lycanite.lycanitesmobs.ExtendedWorld;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public class SpawnTypeDeath extends SpawnTypeBase {
     //                 Check Spawn Chance
     // ==================================================
     @Override
-    public boolean canSpawn(long tick, World world, int x, int y, int z, boolean rare) {
+    public boolean canSpawn(long tick, World world, BlockPos pos, boolean rare) {
         if(world.provider.getDimension() == 0 && world.isDaytime())
             return false;
     	double roll = world.rand.nextDouble();
@@ -53,7 +54,7 @@ public class SpawnTypeDeath extends SpawnTypeBase {
     //                 Order Coordinates
     // ==================================================
     @Override
-    public List<int[]> orderCoords(List<int[]> coords, int x, int y, int z) {
-        return this.orderCoordsCloseToFar(coords, x, y, z);
+    public List<BlockPos> orderCoords(List<BlockPos> coords, BlockPos pos) {
+        return this.orderCoordsCloseToFar(coords, pos);
     }
 }

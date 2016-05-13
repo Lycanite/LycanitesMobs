@@ -29,17 +29,16 @@ public class SpawnTypeLand extends SpawnTypeBase {
      * @return A list of int arrays, each array should contain 3 integers of x, y and z. Should return an empty list instead of null else a waning will show.
      */
     @Override
-    public List<int[]> getSpawnCoordinates(World world, int x, int y, int z) {
-    	List<int[]> blockCoords = null;
+    public List<BlockPos> getSpawnCoordinates(World world, BlockPos pos) {
+    	List<BlockPos> blockCoords = null;
         int range = this.getRange(world);
-        BlockPos originPos = new BlockPos(x, y, z);
 
         for(int i = 0; i < this.blockLimit; i++) {
-            BlockPos chunkCoords = this.getRandomLandCoord(world, originPos, range);
+            BlockPos chunkCoords = this.getRandomLandCoord(world, pos, range);
         	if(chunkCoords != null) {
         		if(blockCoords == null)
-        			blockCoords = new ArrayList<int[]>();
-        		blockCoords.add(new int[] {chunkCoords.getX(), chunkCoords.getY(), chunkCoords.getZ()});
+        			blockCoords = new ArrayList<BlockPos>();
+        		blockCoords.add(chunkCoords);
         	}
         }
         

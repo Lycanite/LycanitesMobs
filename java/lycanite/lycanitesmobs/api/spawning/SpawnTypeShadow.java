@@ -1,6 +1,7 @@
 package lycanite.lycanitesmobs.api.spawning;
 
 import lycanite.lycanitesmobs.ExtendedWorld;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class SpawnTypeShadow extends SpawnTypeBase {
     //                 Check Spawn Chance
     // ==================================================
     @Override
-    public boolean canSpawn(long tick, World world, int x, int y, int z, boolean rare) {
+    public boolean canSpawn(long tick, World world, BlockPos pos, boolean rare) {
     	double roll = world.rand.nextDouble();
     	ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
     	if(worldExt != null) {
@@ -37,7 +38,7 @@ public class SpawnTypeShadow extends SpawnTypeBase {
     //                 Order Coordinates
     // ==================================================
     @Override
-    public List<int[]> orderCoords(List<int[]> coords, int x, int y, int z) {
-        return this.orderCoordsCloseToFar(coords, x, y, z);
+    public List<BlockPos> orderCoords(List<BlockPos> coords, BlockPos pos) {
+        return this.orderCoordsCloseToFar(coords, pos);
     }
 }

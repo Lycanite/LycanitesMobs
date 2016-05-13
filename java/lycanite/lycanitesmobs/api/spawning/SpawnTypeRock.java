@@ -8,6 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -39,8 +40,8 @@ public class SpawnTypeRock extends SpawnTypeBlockBreak {
     //                     Block Harvest
     // ==================================================
     @Override
-    public boolean validBlockHarvest(Block block, World world, int x, int y, int z, Entity entity) {
-        if(!super.validBlockHarvest(block, world, x, y, z, entity))
+    public boolean validBlockHarvest(Block block, World world, BlockPos pos, Entity entity) {
+        if(!super.validBlockHarvest(block, world, pos, entity))
             return false;
         String blockName = block.getUnlocalizedName();
         String[] blockNameParts = blockName.split("\\.");
@@ -75,7 +76,7 @@ public class SpawnTypeRock extends SpawnTypeBlockBreak {
     //                 Check Spawn Chance
     // ==================================================
     @Override
-    public boolean canSpawn(long tick, World world, int x, int y, int z, boolean rare) {
+    public boolean canSpawn(long tick, World world, BlockPos pos, boolean rare) {
     	double roll = world.rand.nextDouble();
         if(rare)
             roll /= 4;
@@ -94,8 +95,8 @@ public class SpawnTypeRock extends SpawnTypeBlockBreak {
     //                 Order Coordinates
     // ==================================================
     @Override
-    public List<int[]> orderCoords(List<int[]> coords, int x, int y, int z) {
-        return this.orderCoordsCloseToFar(coords, x, y, z);
+    public List<BlockPos> orderCoords(List<BlockPos> coords, BlockPos pos) {
+        return this.orderCoordsCloseToFar(coords, pos);
     }
     
     

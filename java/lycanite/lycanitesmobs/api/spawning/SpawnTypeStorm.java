@@ -20,7 +20,7 @@ public class SpawnTypeStorm extends SpawnTypeSky {
     //                 Check Spawn Chance
     // ==================================================
     @Override
-    public boolean canSpawn(long tick, World world, int x, int y, int z, boolean rare) {
+    public boolean canSpawn(long tick, World world, BlockPos pos, boolean rare) {
         if(this.rate == 0 || tick % this.rate != 0)
             return false;
     	if(!world.isRaining())
@@ -39,15 +39,13 @@ public class SpawnTypeStorm extends SpawnTypeSky {
     // ==================================================
     /** Checks if th eprovided world coordinate is valid for this spawner to use. This should not include block type/material checks as they are done elsewhere.
      * @param world The world to search for coordinates in.
-     * @param x X position to check.
-     * @param y Y position to check.
-     * @param z Z position to check.
+     * @param pos Position to check.
      * @return Returns true if it is a valid coordinate so that it can be added to the list.
      */
-    public boolean isValidCoord(World world, int x, int y, int z) {
-    	if(!world.canBlockSeeSky(new BlockPos(x, y, z)))
+    public boolean isValidCoord(World world, BlockPos pos) {
+    	if(!world.canBlockSeeSky(pos))
     		return false;
-    	return super.isValidCoord(world, x, y, z);
+    	return super.isValidCoord(world, pos);
     }
     
     

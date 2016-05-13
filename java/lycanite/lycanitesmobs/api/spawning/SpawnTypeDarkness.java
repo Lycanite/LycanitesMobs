@@ -60,13 +60,11 @@ public class SpawnTypeDarkness extends SpawnTypeBase {
      * This method is usually called by the Custom Spawner class where this spawn type is added to its Spawn Type lists.
      * @param tick Used by spawn types that attempt spawn on a regular basis. Use 0 for event based spawning.
      * @param world The world to spawn in.
-     * @param x X position.
-     * @param y Y position.
-     * @param z Z position.
+     * @param pos Spawn origin position.
      * @param player The player or null if there is no player.
      */
     @Override
-    public boolean spawnMobs(long tick, World world, int x, int y, int z, EntityPlayer player) {
+    public boolean spawnMobs(long tick, World world, BlockPos pos, EntityPlayer player) {
     	boolean spawned = false;
 
         BlockPos playerCoords = player.getPosition();
@@ -113,7 +111,7 @@ public class SpawnTypeDarkness extends SpawnTypeBase {
 							String message = I18n.translateToLocal("spawner.darkness.level3");
 							player.addChatMessage(new TextComponentString(message));
 						}
-						spawned = super.spawnMobs(tick, world, playerCoords.getX(), playerCoords.getY(), playerCoords.getZ(), player);
+						spawned = super.spawnMobs(tick, world, playerCoords, player);
 						darknessLevel = 0;
 					}
 					else
@@ -141,7 +139,7 @@ public class SpawnTypeDarkness extends SpawnTypeBase {
     //                 Check Spawn Chance
     // ==================================================
     @Override
-    public boolean canSpawn(long tick, World world, int x, int y, int z, boolean rare) {
+    public boolean canSpawn(long tick, World world, BlockPos pos, boolean rare) {
         return true;
     }
 
@@ -150,7 +148,7 @@ public class SpawnTypeDarkness extends SpawnTypeBase {
     //                 Order Coordinates
     // ==================================================
     @Override
-    public List<int[]> orderCoords(List<int[]> coords, int x, int y, int z) {
-        return this.orderCoordsCloseToFar(coords, x, y, z);
+    public List<BlockPos> orderCoords(List<BlockPos> coords, BlockPos pos) {
+        return this.orderCoordsCloseToFar(coords, pos);
     }
 }

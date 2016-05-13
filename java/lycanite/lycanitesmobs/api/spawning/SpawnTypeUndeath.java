@@ -4,6 +4,7 @@ import lycanite.lycanitesmobs.ExtendedWorld;
 import lycanite.lycanitesmobs.ObjectManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class SpawnTypeUndeath extends SpawnTypeDeath {
@@ -33,7 +34,7 @@ public class SpawnTypeUndeath extends SpawnTypeDeath {
     //                 Check Spawn Chance
     // ==================================================
     @Override
-    public boolean canSpawn(long tick, World world, int x, int y, int z, boolean rare) {
+    public boolean canSpawn(long tick, World world, BlockPos pos, boolean rare) {
     	double roll = world.rand.nextDouble();
     	ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
     	if(worldExt != null) {

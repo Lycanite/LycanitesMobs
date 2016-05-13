@@ -107,7 +107,7 @@ public class FreshwaterMobs {
                 .setPeaceful(false).setTameable(true).setSummonCost(6).setDungeonLevel(2)
                 .addSubspecies(new Subspecies("scarlet", "uncommon")).addSubspecies(new Subspecies("ashen", "uncommon"));
         newMob.spawnInfo.setSpawnTypes("WATER")
-                .setSpawnWeight(1).setAreaLimit(2).setGroupLimits(1, 2).setLightDark(false, true);
+                .setSpawnWeight(1).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);
         ObjectManager.addMob(newMob);
 
         newMob = new MobInfo(group, "silex", EntitySilex.class, 0x263abd, 0x040e75)

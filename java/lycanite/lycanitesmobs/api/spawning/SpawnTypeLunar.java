@@ -22,8 +22,8 @@ public class SpawnTypeLunar extends SpawnTypeBase {
     //                 Check Spawn Chance
     // ==================================================
     @Override
-    public boolean canSpawn(long tick, World world, int x, int y, int z, boolean rare) {
-        if(!super.canSpawn(tick, world, x, y, z, rare))
+    public boolean canSpawn(long tick, World world, BlockPos originPos, boolean rare) {
+        if(!super.canSpawn(tick, world, originPos, rare))
         	return false;
     	if(world.provider.getMoonPhase(world.getWorldTime()) != 0 || world.provider.isDaytime())
     		return false;
@@ -43,17 +43,16 @@ public class SpawnTypeLunar extends SpawnTypeBase {
      * @return A list of int arrays, each array should contain 3 integers of x, y and z. Should return an empty list instead of null else a waning will show.
      */
     @Override
-    public List<int[]> getSpawnCoordinates(World world, int x, int y, int z) {
-    	List<int[]> blockCoords = null;
+    public List<BlockPos> getSpawnCoordinates(World world, BlockPos originPos) {
+    	List<BlockPos> blockCoords = null;
         int range = this.getRange(world);
-        BlockPos originPos = new BlockPos(x, y, z);
         
         for(int i = 0; i < this.blockLimit; i++) {
             BlockPos chunkCoords = this.getRandomSkyCoord(world, originPos, range);
         	if(chunkCoords != null) {
         		if(blockCoords == null)
-        			blockCoords = new ArrayList<int[]>();
-        		blockCoords.add(new int[] {chunkCoords.getX(), chunkCoords.getY(), chunkCoords.getZ()});
+        			blockCoords = new ArrayList<BlockPos>();
+        		blockCoords.add(chunkCoords);
         	}
         }
         

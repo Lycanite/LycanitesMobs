@@ -204,7 +204,7 @@ public class BlockBase extends Block {
     public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World world, BlockPos pos) {
         if(!this.isCollidable())
             return null;
-        return super.getCollisionBoundingBox(state, world, pos);
+        return super.getSelectedBoundingBox(state, world, pos);
     }
     
     // ========== Punch Collision ==========

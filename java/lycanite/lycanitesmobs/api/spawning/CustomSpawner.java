@@ -4,6 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayer.EnumStatus;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
@@ -48,9 +49,6 @@ public class CustomSpawner {
 		// ========== Spawn Near Players ==========
 		EntityPlayer player = (EntityPlayer)entity;
 		World world = player.worldObj;
-		int x = (int)player.posX;
-		int y = (int)player.posY;
-		int z = (int)player.posZ;
 		
 		if(!entityUpdateTicks.containsKey(player))
 			entityUpdateTicks.put(player, (long)0);
@@ -59,7 +57,7 @@ public class CustomSpawner {
 		// Custom Mob Spawning:
 		int tickOffset = 0;
 		for(SpawnTypeBase spawnType : this.updateSpawnTypes) {
-			spawnType.spawnMobs(entityUpdateTick - tickOffset, world, x, y, z, player);
+			spawnType.spawnMobs(entityUpdateTick - tickOffset, world, player.getPosition(), player);
 			tickOffset += 105;
 		}
 		
@@ -130,14 +128,11 @@ public class CustomSpawner {
 		
 		// ========== Get Coords ==========
 		World world = entity.worldObj;
-		int x = (int)entity.posX;
-		int y = (int)entity.posY;
-		int z = (int)entity.posZ;
 		
 		// ========== Pass To Spawners ==========
 		for(SpawnTypeDeath spawnType : this.deathSpawnTypes) {
 			if(spawnType.isValidKill(entity, killer))
-				spawnType.spawnMobs(0, world, x, y, z, null);
+				spawnType.spawnMobs(0, world, entity.getPosition(), null);
 		}
 	}
 
@@ -157,13 +152,11 @@ public class CustomSpawner {
 		
 		// Spawn On Block Harvest:
 		World world = event.getWorld();
-		int x = event.getPos().getX();
-		int y = event.getPos().getY();
-		int z = event.getPos().getZ() + 1;
+        BlockPos spawnPos = event.getPos().add(0, 0, 1);
 
         for(SpawnTypeBlockBreak spawnType : this.blockSpawnTypes) {
-            if(spawnType.validBlockHarvest(event.getState().getBlock(), world, x, y, z, player))
-                spawnType.spawnMobs(0, world, x, y, z, player, event.getState().getBlock());
+            if(spawnType.validBlockHarvest(event.getState().getBlock(), world, spawnPos, player))
+                spawnType.spawnMobs(0, world, spawnPos, player, event.getState().getBlock());
         }
 	}
 
@@ -182,13 +175,11 @@ public class CustomSpawner {
 
         // Spawn On Block Harvest:
         World world = event.getWorld();
-        int x = (int)event.getPos().getX();
-        int y = (int)event.getPos().getY();
-        int z = (int)event.getPos().getZ() + 1;
+        BlockPos spawnPos = event.getPos().add(0, 0, 1);
 
         for(SpawnTypeBlockBreak spawnType : this.blockSpawnTypes) {
-            if(spawnType.validBlockBreak(event.getState().getBlock(), world, x, y, z, player))
-                spawnType.spawnMobs(0, world, x, y, z, player);
+            if(spawnType.validBlockBreak(event.getState().getBlock(), world, spawnPos, player))
+                spawnType.spawnMobs(0, world, spawnPos, player);
         }
     }
 
@@ -206,9 +197,7 @@ public class CustomSpawner {
 		
 		// Get Coords:
 		World world = player.worldObj;
-        int x = (int)event.getPos().getX();
-        int y = (int)event.getPos().getY();
-        int z = (int)event.getPos().getZ() + 1;
+        BlockPos spawnPos = event.getPos().add(0, 0, 1);
 		
 		if(world == null || world.isRemote || world.provider.isDaytime())
 			return;
@@ -216,7 +205,7 @@ public class CustomSpawner {
 		// Run Spawners:
 		boolean interrupted = false;
 		for(SpawnTypeBase spawnType : this.sleepSpawnTypes) {
-			if(spawnType.spawnMobs(0, world, x, y, z, player))
+			if(spawnType.spawnMobs(0, world, spawnPos, player))
 				interrupted = true;
 		}
 		

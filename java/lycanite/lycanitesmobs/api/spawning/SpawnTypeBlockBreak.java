@@ -6,6 +6,7 @@ import lycanite.lycanitesmobs.api.config.ConfigBase;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class SpawnTypeBlockBreak extends SpawnTypeBase {
@@ -35,17 +36,17 @@ public class SpawnTypeBlockBreak extends SpawnTypeBase {
     // ==================================================
     //                    Spawn Mobs
     // ==================================================
-    public boolean spawnMobs(long tick, World world, int x, int y, int z, EntityPlayer player, Block block) {
+    public boolean spawnMobs(long tick, World world, BlockPos pos, EntityPlayer player, Block block) {
         boolean rare = this.isRareBlock(block);
         LycanitesMobs.printDebug("CustomSpawnerBlockBreak", this.typeName + ": A valid block was broken/harvested for this spawner." + (rare ? " (Rare)" : ""));
-        return super.spawnMobs(tick, world, x, y, z, player, rare);
+        return super.spawnMobs(tick, world, pos, player, rare);
     }
 
 
     // ==================================================
     //                     Block Break
     // ==================================================
-    public boolean validBlockBreak(Block block, World world, int x, int y, int z, Entity entity) {
+    public boolean validBlockBreak(Block block, World world, BlockPos pos, Entity entity) {
         return false;
     }
 
@@ -53,7 +54,7 @@ public class SpawnTypeBlockBreak extends SpawnTypeBase {
     // ==================================================
     //                     Block Harvest
     // ==================================================
-    public boolean validBlockHarvest(Block block, World world, int x, int y, int z, Entity entity) {
+    public boolean validBlockHarvest(Block block, World world, BlockPos pos, Entity entity) {
         if(this.playerOnly && !(entity instanceof EntityPlayer))
             return false;
         return true;

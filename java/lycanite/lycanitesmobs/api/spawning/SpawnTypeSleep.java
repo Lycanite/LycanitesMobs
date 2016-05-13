@@ -1,5 +1,6 @@
 package lycanite.lycanitesmobs.api.spawning;
 
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class SpawnTypeSleep extends SpawnTypeBase {
     //                 Check Spawn Chance
     // ==================================================
     @Override
-    public boolean canSpawn(long tick, World world, int x, int y, int z, boolean rare) {
+    public boolean canSpawn(long tick, World world, BlockPos pos, boolean rare) {
         if(world.rand.nextDouble() >= this.chance)
             return false;
         return true;
@@ -30,7 +31,7 @@ public class SpawnTypeSleep extends SpawnTypeBase {
     //                 Order Coordinates
     // ==================================================
     @Override
-    public List<int[]> orderCoords(List<int[]> coords, int x, int y, int z) {
-        return this.orderCoordsCloseToFar(coords, x, y, z);
+    public List<BlockPos> orderCoords(List<BlockPos> coords, BlockPos pos) {
+        return this.orderCoordsCloseToFar(coords, pos);
     }
 }

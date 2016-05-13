@@ -23,8 +23,8 @@ public class SpawnTypeTree extends SpawnTypeBlockBreak {
     //                     Block Break
     // ==================================================
     @Override
-    public boolean validBlockBreak(Block block, World world, int x, int y, int z, Entity entity) {
-        return this.isTreeLeavesBlock(block, world, x, y, z);
+    public boolean validBlockBreak(Block block, World world, BlockPos pos, Entity entity) {
+        return this.isTreeLeavesBlock(block, world, pos);
     }
 
 
@@ -32,18 +32,21 @@ public class SpawnTypeTree extends SpawnTypeBlockBreak {
     //                     Block Harvest
     // ==================================================
     @Override
-    public boolean validBlockHarvest(Block block, World world, int x, int y, int z, Entity entity) {
-        if(!super.validBlockHarvest(block, world, x, y, z, entity))
+    public boolean validBlockHarvest(Block block, World world, BlockPos pos, Entity entity) {
+        if(!super.validBlockHarvest(block, world, pos, entity))
             return false;
-        return this.isTreeLogBlock(block, world, x, y, z) || this.isTreeLeavesBlock(block, world, x, y, z);
+        return this.isTreeLogBlock(block, world, pos) || this.isTreeLeavesBlock(block, world, pos);
     }
 
 
     // ==================================================
     //                    Check Blocks
     // ==================================================
-    public boolean isTreeLogBlock(Block block, World world, int x, int y, int z) {
+    public boolean isTreeLogBlock(Block block, World world, BlockPos pos) {
         if(ObjectLists.isInOreDictionary("logWood", block)) {
+            int x = pos.getX();
+            int y = pos.getY();
+            int z = pos.getZ();
             for(int searchX = x - 1; searchX <= x + 1; searchX++) {
                 for(int searchZ = z - 1; searchZ <= z + 1; searchZ++) {
                     for(int searchY = y; searchY <= Math.min(world.getHeight(), y + 32); searchY++) {
@@ -61,8 +64,11 @@ public class SpawnTypeTree extends SpawnTypeBlockBreak {
         return false;
     }
 
-    public boolean isTreeLeavesBlock(Block block, World world, int x, int y, int z) {
+    public boolean isTreeLeavesBlock(Block block, World world, BlockPos pos) {
         if(ObjectLists.isInOreDictionary("treeLeaves", block)) {
+            int x = pos.getX();
+            int y = pos.getY();
+            int z = pos.getZ();
             for(int searchX = x - 1; searchX <= x + 1; searchX++) {
                 for(int searchZ = z - 1; searchZ <= z + 1; searchZ++) {
                     for(int searchY = y; searchY >= Math.max(0, y - 32); searchY--) {
@@ -86,7 +92,7 @@ public class SpawnTypeTree extends SpawnTypeBlockBreak {
     //                 Check Spawn Chance
     // ==================================================
     @Override
-    public boolean canSpawn(long tick, World world, int x, int y, int z, boolean rare) {
+    public boolean canSpawn(long tick, World world, BlockPos pos, boolean rare) {
     	double roll = world.rand.nextDouble();
     	ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
     	if(worldExt != null) {
@@ -103,7 +109,7 @@ public class SpawnTypeTree extends SpawnTypeBlockBreak {
     //                 Order Coordinates
     // ==================================================
     @Override
-    public List<int[]> orderCoords(List<int[]> coords, int x, int y, int z) {
-        return this.orderCoordsCloseToFar(coords, x, y, z);
+    public List<BlockPos> orderCoords(List<BlockPos> coords, BlockPos pos) {
+        return this.orderCoordsCloseToFar(coords, pos);
     }
 }

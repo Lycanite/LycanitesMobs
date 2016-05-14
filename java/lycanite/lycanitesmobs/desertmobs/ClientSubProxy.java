@@ -1,18 +1,15 @@
 package lycanite.lycanitesmobs.desertmobs;
 
 import lycanite.lycanitesmobs.AssetManager;
+import lycanite.lycanitesmobs.api.info.GroupInfo;
+import lycanite.lycanitesmobs.api.render.RenderRegister;
 import lycanite.lycanitesmobs.desertmobs.model.*;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
 public class ClientSubProxy extends CommonSubProxy {
 	
-	// ========== Render ID ==========
-	public static int RENDER_ID = RenderingRegistry.getNextAvailableRenderId();
-	
-	
 	// ========== Register Models ==========
 	@Override
-    public void registerModels() {
+    public void registerModels(GroupInfo groupInfo) {
 		AssetManager.addModel("cryptzombie", new ModelCryptZombie());
 		AssetManager.addModel("crusk", new ModelCrusk());
 		AssetManager.addModel("clink", new ModelClink());
@@ -21,5 +18,9 @@ public class ClientSubProxy extends CommonSubProxy {
 		AssetManager.addModel("erepede", new ModelErepede());
 		AssetManager.addModel("gorgomite", new ModelGorgomite());
 		AssetManager.addModel("manticore", new ModelManticore());
+
+        // Register Renderers:
+        RenderRegister renderRegister = new RenderRegister(groupInfo);
+        renderRegister.registerRenderFactories();
 	}
 }

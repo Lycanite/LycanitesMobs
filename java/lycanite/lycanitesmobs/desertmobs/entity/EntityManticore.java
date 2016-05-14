@@ -13,8 +13,8 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
@@ -102,8 +102,8 @@ public class EntityManticore extends EntityCreatureTameable implements IMob, IGr
     	
     	// Effects:
         if(target instanceof EntityLivingBase) {
-        	((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.hunger.id, this.getEffectDuration(7), 0));
-        	((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.weakness.id, this.getEffectDuration(7), 0));
+        	((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.hunger, this.getEffectDuration(7), 0));
+        	((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.weakness, this.getEffectDuration(7), 0));
         }
         
         return true;
@@ -133,10 +133,9 @@ public class EntityManticore extends EntityCreatureTameable implements IMob, IGr
     }
     
     @Override
-    public boolean isPotionApplicable(PotionEffect par1PotionEffect) {
-        if(par1PotionEffect.getPotionID() == Potion.hunger.id) return false;
-        if(par1PotionEffect.getPotionID() == Potion.weakness.id) return false;
-        super.isPotionApplicable(par1PotionEffect);
-        return true;
+    public boolean isPotionApplicable(PotionEffect potionEffect) {
+        if(potionEffect.getPotion() == MobEffects.hunger) return false;
+        if(potionEffect.getPotion() == MobEffects.weakness) return false;
+        return super.isPotionApplicable(potionEffect);
     }
 }

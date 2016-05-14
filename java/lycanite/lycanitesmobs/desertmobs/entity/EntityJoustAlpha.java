@@ -7,17 +7,18 @@ import lycanite.lycanitesmobs.api.IGroupPrey;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
@@ -42,7 +43,6 @@ public class EntityJoustAlpha extends EntityCreatureAgeable implements IAnimals,
         this.setupMob();
         
         // AI Tasks:
-        this.getNavigator().setAvoidsWater(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(3, new EntityAIAttackMelee(this).setRate(10).setLongMemory(false));
         this.tasks.addTask(4, new EntityAIFollowParent(this).setSpeed(1.0D));
@@ -82,17 +82,17 @@ public class EntityJoustAlpha extends EntityCreatureAgeable implements IAnimals,
    	// ==================================================
 	// Pathing Weight:
 	@Override
-	public float getBlockPathWeight(int par1, int par2, int par3) {
-		if(this.worldObj.getBlock(par1, par2 - 1, par3) != Blocks.air) {
-			Block block = this.worldObj.getBlock(par1, par2 - 1, par3);
-			if(block.getMaterial() == Material.sand)
-				return 10F;
-			if(block.getMaterial() == Material.clay)
-				return 7F;
-			if(block.getMaterial() == Material.rock)
-				return 5F;
-		}
-        return super.getBlockPathWeight(par1, par2, par3);
+	public float getBlockPathWeight(int x, int y, int z) {
+        IBlockState blockState = this.worldObj.getBlockState(new BlockPos(x, y - 1, z));
+        if(blockState.getBlock() != Blocks.air) {
+            if(blockState.getMaterial() == Material.sand)
+                return 10F;
+            if(blockState.getMaterial() == Material.clay)
+                return 7F;
+            if(blockState.getMaterial() == Material.rock)
+                return 5F;
+        }
+        return super.getBlockPathWeight(x, y, z);
     }
 	
 	
@@ -104,7 +104,7 @@ public class EntityJoustAlpha extends EntityCreatureAgeable implements IAnimals,
     public void setAttackTarget(EntityLivingBase entity) {
     	if(entity == null && this.getAttackTarget() instanceof EntityJoustAlpha && this.getHealth() < this.getMaxHealth()) {
     		this.heal((this.getMaxHealth() - this.getHealth()) / 2);
-    		this.addPotionEffect(new PotionEffect(Potion.regeneration.id, 10 * 20, 2, true));
+    		this.addPotionEffect(new PotionEffect(MobEffects.regeneration, 10 * 20, 2, false, true));
     	}
     	super.setAttackTarget(entity);
     }
@@ -120,11 +120,10 @@ public class EntityJoustAlpha extends EntityCreatureAgeable implements IAnimals,
     }
     
     @Override
-    public boolean isPotionApplicable(PotionEffect par1PotionEffect) {
-        if(par1PotionEffect.getPotionID() == Potion.hunger.id) return false;
-        if(par1PotionEffect.getPotionID() == Potion.weakness.id) return false;
-        super.isPotionApplicable(par1PotionEffect);
-        return true;
+    public boolean isPotionApplicable(PotionEffect potionEffect) {
+        if(potionEffect.getPotion() == MobEffects.hunger) return false;
+        if(potionEffect.getPotion() == MobEffects.weakness) return false;
+        return super.isPotionApplicable(potionEffect);
     }
     
     

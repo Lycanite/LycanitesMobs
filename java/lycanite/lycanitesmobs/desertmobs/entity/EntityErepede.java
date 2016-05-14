@@ -10,6 +10,7 @@ import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -18,8 +19,8 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -52,7 +53,6 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
         this.isMobWhenNotTamed = true;
         
         // AI Tasks:
-        this.getNavigator().setAvoidsWater(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIPlayerControl(this));
         this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("erepedetreat"))).setTemptDistanceMin(4.0D));
@@ -108,10 +108,10 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
     }
     
     public void riderEffects(EntityLivingBase rider) {
-    	if(rider.isPotionActive(Potion.weakness))
-    		rider.removePotionEffect(Potion.weakness.id);
-    	if(rider.isPotionActive(Potion.hunger))
-    		rider.removePotionEffect(Potion.hunger.id);
+    	if(rider.isPotionActive(MobEffects.weakness))
+    		rider.removePotionEffect(MobEffects.weakness);
+    	if(rider.isPotionActive(MobEffects.hunger))
+    		rider.removePotionEffect(MobEffects.hunger);
     }
 
 	
@@ -121,11 +121,12 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
     // ========== Movement Speed Modifier ==========
     @Override
     public float getAISpeedModifier() {
-    	if(this.hasRiderTarget())
-	    	if(this.worldObj.getBlock((int)this.posX, (int)this.boundingBox.minY - 1, (int)this.posZ).getMaterial() == Material.sand
-	    		|| (this.worldObj.getBlock((int)this.posX, (int)this.boundingBox.minY - 1, (int)this.posZ).getMaterial() == Material.air
-	    		&& this.worldObj.getBlock((int)this.posX, (int)this.boundingBox.minY - 2, (int)this.posZ).getMaterial() == Material.sand))
-	    		return 1.8F;
+    	if(this.hasRiderTarget()) {
+            IBlockState blockState = this.worldObj.getBlockState(this.getPosition().add(0, -1, 0));
+            if (blockState.getMaterial() == Material.sand
+                    || (blockState == Material.air && this.worldObj.getBlockState(this.getPosition().add(0, -2, 0)).getMaterial() == Material.sand))
+                return 1.8F;
+        }
     	return 1.0F;
     }
     
@@ -220,10 +221,10 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
     }
     
     @Override
-    public boolean isPotionApplicable(PotionEffect par1PotionEffect) {
-        if(par1PotionEffect.getPotionID() == Potion.hunger.id) return false;
-        if(par1PotionEffect.getPotionID() == Potion.weakness.id) return false;
-        return super.isPotionApplicable(par1PotionEffect);
+    public boolean isPotionApplicable(PotionEffect potionEffect) {
+        if(potionEffect.getPotion() == MobEffects.hunger) return false;
+        if(potionEffect.getPotion() == MobEffects.weakness) return false;
+        return super.isPotionApplicable(potionEffect);
     }
     
     @Override
@@ -258,7 +259,7 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
     
     @Override
     public void setTamed(boolean setTamed) {
-    	this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D);
+    	this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
     	super.setTamed(setTamed);
     }
     

@@ -14,9 +14,7 @@ public class EntityAIStayByWater extends EntityAIBase {
     private double speed = 1.0D;
     private double strayDistance = 64.0D;
     
-    private double waterX;
-    private double waterY;
-    private double waterZ;
+    private BlockPos waterPos;
     private boolean hasWaterPos = false;
 
     private int waterSearchRate = 0;
@@ -51,12 +49,10 @@ public class EntityAIStayByWater extends EntityAIBase {
     public boolean shouldExecute() {
     	// Set home when in water or lava (for lava creatures).
     	if(this.host.isInWater()) {
-    		IBlockState waterBlock = this.host.worldObj.getBlockState(new BlockPos((int) this.host.posX, (int) this.host.posY, (int) this.host.posZ - 1));
+    		IBlockState waterBlock = this.host.worldObj.getBlockState(this.host.getPosition());
     		if((!this.host.isLavaCreature && waterBlock.getMaterial() == Material.water) ||
     			(this.host.isLavaCreature && waterBlock.getMaterial() == Material.lava)) {
-	    		this.waterX = (int)this.host.posX;
-	    		this.waterY = (int)this.host.posY;
-	    		this.waterZ = (int)this.host.posZ - 1;
+	    		this.waterPos = this.host.getPosition();
 	    		this.hasWaterPos = true;
 	    		return false;
     		}
@@ -65,7 +61,7 @@ public class EntityAIStayByWater extends EntityAIBase {
     	// If we're not in water:
     	if(!this.host.isInWater()) {
     		// If we have a water position but it is no longer water/lava, clear the water position. It is up to the water searcher, wander AI and path weights for find a new water position.
-    		if(this.hasWaterPos && !this.host.canBreatheAtLocation((int)this.waterX, (int)this.waterY, (int)this.waterZ)) {
+    		if(this.hasWaterPos && !this.isValidWaterPosition(this.waterPos)) {
 	    		this.hasWaterPos = false;
     		}
     		
@@ -83,25 +79,27 @@ public class EntityAIStayByWater extends EntityAIBase {
 	    		int searchRangeX = 32;
 	    		int searchRangeY = 8;
 	    		int searchRangeZ = 32;
-	    		for(int searchX = (int)this.host.posX - searchRangeX; searchX <= (int)this.host.posX + searchRangeX; ++searchX) {
-	    			for(int searchY = (int)this.host.posY - searchRangeY; searchY <= (int)this.host.posY + searchRangeY; ++searchY) {
-	    				for(int searchZ = (int)this.host.posZ - searchRangeZ; searchZ <= (int)this.host.posZ + searchRangeZ; ++searchZ) {
-	    					
+                BlockPos hostPos = this.host.getPosition();
+	    		for(int searchX = hostPos.getX() - searchRangeX; searchX <= hostPos.getX() + searchRangeX; ++searchX) {
+	    			for(int searchY = hostPos.getY() - searchRangeY; searchY <= hostPos.getY() + searchRangeY; ++searchY) {
+	    				for(int searchZ = hostPos.getZ() - searchRangeZ; searchZ <= hostPos.getZ() + searchRangeZ; ++searchZ) {
+	    					BlockPos searchPos = new BlockPos(searchX, searchY, searchZ);
+
 	    					// If the block is closer than the last valid location...
-	    					double searchDistance = this.host.getDistance(searchX, searchY, searchZ);
+	    					double searchDistance = this.host.getDistanceSq(searchPos);
     		    			if(!this.hasWaterPos || searchDistance < closestDistance) {
 		    					
-    		    				// And the host can breathe it...
-    		    				if(this.host.canBreatheAtLocation(searchX, searchY, searchZ)) {
+    		    				// And it is a valid water position...
+    		    				if(this.isValidWaterPosition(searchPos)) {
 		    						
     		    					// If the host has a rounded width larger than 1 then check if it can fit in the target block...
     		    					boolean enoughSpace = Math.round(this.host.width) <= 1;
 		    						if(!enoughSpace) {
 		    							enoughSpace = true;
-			    						int neededSpace = Math.round(this.host.width) - 1;
+			    						int neededSpace = Math.round(this.host.width + 0.5F);
 			    						for(int adjX = searchX - neededSpace; adjX <= searchX + neededSpace; ++adjX) {
 			    							for(int adjZ = searchZ - neededSpace; adjZ <= searchZ + neededSpace; ++adjZ) {
-			    								if(!this.host.canBreatheAtLocation(adjX, searchY, adjZ)) {
+			    								if(this.host.worldObj.getBlockState(new BlockPos(adjX, searchY, adjZ)).getMaterial().isSolid()) {
 			    									enoughSpace = false;
 			    									break;
 			    								}
@@ -112,10 +110,8 @@ public class EntityAIStayByWater extends EntityAIBase {
 		    						// If all is good, then set it as the new water position!
 		    						if(enoughSpace) {
 		    							closestDistance = searchDistance;
-		    		    				this.waterX = searchX;
-		    		    	    		this.waterY = searchY;
-		    		    	    		this.waterZ = searchZ;
-		    		    	    		this.hasWaterPos = true;
+		    		    				this.waterPos = searchPos;
+                                        this.hasWaterPos = true;
 		    						}
 		    					}
 		    		    	}
@@ -136,6 +132,20 @@ public class EntityAIStayByWater extends EntityAIBase {
         // At this point the host should return to the water position, if there is one.
         return this.hasWaterPos;
     }
+
+    public boolean isValidWaterPosition(BlockPos pos) {
+        if(!this.host.canBreatheUnderwater())
+            return false;
+        if(!this.host.waterDamage()) {
+            if(this.host.worldObj.getBlockState(pos).getMaterial() == Material.water)
+                return true;
+        }
+        if(this.host.isImmuneToFire() || this.host.isLavaCreature) {
+            if(this.host.worldObj.getBlockState(pos).getMaterial() == Material.lava)
+                return true;
+        }
+        return false;
+    }
     
     
     // ==================================================
@@ -152,14 +162,11 @@ public class EntityAIStayByWater extends EntityAIBase {
     public void updateTask() {
         if(this.updateRate-- <= 0) {
             this.updateRate = 20;
-            double overshot = 1D;
-            double overshotX = (this.host.posX > this.waterX ? -overshot : overshot);
-            double overshotZ = (this.host.posZ > this.waterZ ? -overshot : overshot);
 	    	if(!host.useFlightNavigator()) {
-	    		this.host.getNavigator().tryMoveToXYZ(this.waterX + overshotX, this.waterY, this.waterZ + overshotZ, this.speed);
+	    		this.host.getNavigator().tryMoveToXYZ(this.waterPos.getX() + 0.5D, this.waterPos.getY(), this.waterPos.getZ() + 0.5D, this.speed);
 	    	}
 	    	else
-	    		host.flightNavigator.setTargetPosition(new BlockPos((int)this.waterX, (int)this.waterY, (int)this.waterZ), this.speed);
+	    		host.flightNavigator.setTargetPosition(this.waterPos, this.speed);
     	}
     }
 	
@@ -176,6 +183,8 @@ public class EntityAIStayByWater extends EntityAIBase {
  	//              Get Distance From Water
  	// ==================================================
     public double getDistanceFromWater() {
-    	return this.host.getDistance(this.waterX, this.waterY, this.waterZ);
+        if(!this.hasWaterPos)
+            return 0;
+    	return this.host.getDistanceSq(this.waterPos);
     }
 }

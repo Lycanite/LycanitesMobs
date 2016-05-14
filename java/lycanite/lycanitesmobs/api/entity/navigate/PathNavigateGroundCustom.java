@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs.api.entity.navigate;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.math.BlockPos;
@@ -14,6 +15,12 @@ public class PathNavigateGroundCustom extends PathNavigateGround {
 
     public PathNavigateGroundCustom(EntityLiving entitylivingIn, World worldIn) {
         super(entitylivingIn, worldIn);
+    }
+
+    @Override
+    public PathEntity getPathToPos(BlockPos pos) {
+        PathEntity pathEntity = super.getPathToPos(pos);
+        return pathEntity;
     }
 
     /** Unchanged from PathNavigateGround, only overridden because isSafeToStandAt is private for some odd reason. */

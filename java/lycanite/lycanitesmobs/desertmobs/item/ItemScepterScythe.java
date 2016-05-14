@@ -5,7 +5,7 @@ import lycanite.lycanitesmobs.api.entity.EntityProjectileRapidFire;
 import lycanite.lycanitesmobs.api.item.ItemScepter;
 import lycanite.lycanitesmobs.desertmobs.DesertMobs;
 import lycanite.lycanitesmobs.desertmobs.entity.EntityThrowingScythe;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -41,9 +41,9 @@ public class ItemScepterScythe extends ItemScepter {
 	//                      Attack
 	// ==================================================
     @Override
-    public boolean rapidAttack(ItemStack itemStack, World world, EntityPlayer player) {
+    public boolean rapidAttack(ItemStack itemStack, World world, EntityLivingBase entity) {
     	if(!world.isRemote) {
-        	EntityProjectileRapidFire projectile = new EntityProjectileRapidFire(EntityThrowingScythe.class, world, player, 15, 5);
+        	EntityProjectileRapidFire projectile = new EntityProjectileRapidFire(EntityThrowingScythe.class, world, entity, 15, 5);
         	world.spawnEntityInWorld(projectile);
         }
     	return true;
@@ -55,7 +55,7 @@ public class ItemScepterScythe extends ItemScepter {
 	// ==================================================
     @Override
     public boolean getIsRepairable(ItemStack itemStack, ItemStack repairStack) {
-        if(repairStack.getItem() == ObjectManager.getItem("ThrowingScythe")) return true;
+        if(repairStack.getItem() == ObjectManager.getItem("throwingscythe")) return true;
         return super.getIsRepairable(itemStack, repairStack);
     }
 }

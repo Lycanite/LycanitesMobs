@@ -11,18 +11,17 @@ import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
@@ -51,7 +50,6 @@ public class EntityCrusk extends EntityCreatureTameable implements IGroupPredato
         this.hitAreaScale = 1.5F;
         
         // AI Tasks:
-        this.getNavigator().setAvoidsWater(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIStealth(this).setStealthTime(60));
         this.tasks.addTask(2, this.aiSit);
@@ -105,20 +103,18 @@ public class EntityCrusk extends EntityCreatureTameable implements IGroupPredato
     public boolean canStealth() {
     	if(this.isTamed() && this.isSitting())
     		return false;
-        int i = MathHelper.floor_double(this.posX);
-        int j = MathHelper.floor_double(this.posY);
-        int k = MathHelper.floor_double(this.posZ);
-        if(this.worldObj.getBlock(i, j - 1, k) != Blocks.air) {
-        	Block floorBlock = this.worldObj.getBlock(i, j - 1, k);
-        	if(floorBlock.getMaterial() == Material.ground) return true;
-        	if(floorBlock.getMaterial() == Material.grass) return true;
-        	if(floorBlock.getMaterial() == Material.leaves) return true;
-        	if(floorBlock.getMaterial() == Material.sand) return true;
-        	if(floorBlock.getMaterial() == Material.clay) return true;
-        	if(floorBlock.getMaterial() == Material.snow) return true;
-        	if(floorBlock.getMaterial() == Material.craftedSnow) return true;
+        IBlockState blockState = this.worldObj.getBlockState(this.getPosition().add(0, -1, 0));
+        if(blockState.getBlock() != Blocks.air) {
+        	if(blockState.getMaterial() == Material.ground) return true;
+        	if(blockState.getMaterial() == Material.grass) return true;
+        	if(blockState.getMaterial() == Material.leaves) return true;
+        	if(blockState.getMaterial() == Material.sand) return true;
+        	if(blockState.getMaterial() == Material.clay) return true;
+        	if(blockState.getMaterial() == Material.snow) return true;
+        	if(blockState.getMaterial() == Material.craftedSnow) return true;
         }
-        if(this.worldObj.getBlock(i, j - 1, k) == Blocks.netherrack) return true;
+        if(blockState.getBlock() == Blocks.netherrack)
+            return true;
     	return false;
     }
     
@@ -155,11 +151,10 @@ public class EntityCrusk extends EntityCreatureTameable implements IGroupPredato
     }
     
     @Override
-    public boolean isPotionApplicable(PotionEffect par1PotionEffect) {
-        if(par1PotionEffect.getPotionID() == Potion.hunger.id) return false;
-        if(par1PotionEffect.getPotionID() == Potion.weakness.id) return false;
-        super.isPotionApplicable(par1PotionEffect);
-        return true;
+    public boolean isPotionApplicable(PotionEffect potionEffect) {
+        if(potionEffect.getPotion() == MobEffects.hunger) return false;
+        if(potionEffect.getPotion() == MobEffects.weakness) return false;
+        return super.isPotionApplicable(potionEffect);
     }
 	
 	

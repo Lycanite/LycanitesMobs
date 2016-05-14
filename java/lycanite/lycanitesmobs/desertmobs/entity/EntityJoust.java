@@ -6,15 +6,16 @@ import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
@@ -42,7 +43,6 @@ public class EntityJoust extends EntityCreatureAgeable implements IAnimals, IGro
         this.setupMob();
         
         // AI Tasks:
-        this.getNavigator().setAvoidsWater(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIMate(this));
         this.tasks.addTask(2, new EntityAITempt(this).setItemList("CactusFood"));
@@ -82,25 +82,25 @@ public class EntityJoust extends EntityCreatureAgeable implements IAnimals, IGro
    	// ==================================================
 	// ========== Pathing Weight ==========
 	@Override
-	public float getBlockPathWeight(int par1, int par2, int par3) {
-		if(this.worldObj.getBlock(par1, par2 - 1, par3) != Blocks.air) {
-			Block block = this.worldObj.getBlock(par1, par2 - 1, par3);
-			if(block.getMaterial() == Material.sand)
+	public float getBlockPathWeight(int x, int y, int z) {
+        IBlockState blockState = this.worldObj.getBlockState(new BlockPos(x, y - 1, z));
+		if(blockState.getBlock() != Blocks.air) {
+			if(blockState.getMaterial() == Material.sand)
 				return 10F;
-			if(block.getMaterial() == Material.clay)
+			if(blockState.getMaterial() == Material.clay)
 				return 7F;
-			if(block.getMaterial() == Material.rock)
+			if(blockState.getMaterial() == Material.rock)
 				return 5F;
 		}
-        return super.getBlockPathWeight(par1, par2, par3);
+        return super.getBlockPathWeight(x, y, z);
     }
     
 	// ========== Can leash ==========
     @Override
-    public boolean canLeash(EntityPlayer player) {
+    public boolean canBeLeashedTo(EntityPlayer player) {
 	    if(!this.hasAttackTarget() && !this.hasMaster())
 	        return true;
-	    return super.canLeash(player);
+	    return super.canBeLeashedTo(player);
     }
 	
 	
@@ -126,11 +126,10 @@ public class EntityJoust extends EntityCreatureAgeable implements IAnimals, IGro
     }
     
     @Override
-    public boolean isPotionApplicable(PotionEffect par1PotionEffect) {
-        if(par1PotionEffect.getPotionID() == Potion.hunger.id) return false;
-        if(par1PotionEffect.getPotionID() == Potion.weakness.id) return false;
-        super.isPotionApplicable(par1PotionEffect);
-        return true;
+    public boolean isPotionApplicable(PotionEffect potionEffect) {
+        if(potionEffect.getPotion() == MobEffects.hunger) return false;
+        if(potionEffect.getPotion() == MobEffects.weakness) return false;
+        return super.isPotionApplicable(potionEffect);
     }
     
     
@@ -146,7 +145,7 @@ public class EntityJoust extends EntityCreatureAgeable implements IAnimals, IGro
 	// ========== Breeding Item ==========
 	@Override
 	public boolean isBreedingItem(ItemStack testStack) {
-		return ObjectLists.inItemList("CactusFood", testStack);
+		return ObjectLists.inItemList("cactusfood", testStack);
     }
     
     

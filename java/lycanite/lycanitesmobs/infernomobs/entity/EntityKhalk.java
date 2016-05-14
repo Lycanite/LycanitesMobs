@@ -63,7 +63,8 @@ public class EntityKhalk extends EntityCreatureTameable implements IMob, IGroupF
     	
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(3, new EntityAIAttackMelee(this).setRate(20));
+        this.tasks.addTask(2, new EntityAIAttackMelee(this).setRate(20));
+        this.tasks.addTask(3, new EntityAIStayByWater(this).setSpeed(1.25D));
         this.tasks.addTask(4, this.aiSit);
         this.tasks.addTask(5, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
         this.tasks.addTask(6, new EntityAIWander(this).setPauseRate(30));

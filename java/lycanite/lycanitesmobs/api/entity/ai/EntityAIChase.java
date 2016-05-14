@@ -15,9 +15,7 @@ public class EntityAIChase extends EntityAIBase {
     private double speed = 1.0D;
     private float maxTargetDistance = 8.0F;
     
-    private double movePosX;
-    private double movePosY;
-    private double movePosZ;
+    private BlockPos movePos;
 	
 	// ==================================================
  	//                    Constructor
@@ -48,16 +46,14 @@ public class EntityAIChase extends EntityAIBase {
         this.target = this.host.getAttackTarget();
         if(this.target == null)
             return false;
-        else if(this.host.getDistanceSqToEntity(this.target) > (double)(this.maxTargetDistance * this.maxTargetDistance))
-            return false;
+        //else if(this.host.getDistanceSqToEntity(this.target) > (double)(this.maxTargetDistance * this.maxTargetDistance))
+            //return false;
         
         Vec3d vec3 = RandomPositionGenerator.findRandomTargetTowards(this.host, 16, 7, new Vec3d(this.target.posX, this.target.posY, this.target.posZ));
         if(vec3 == null)
             return false;
         
-        this.movePosX = vec3.xCoord;
-        this.movePosY = vec3.yCoord;
-        this.movePosZ = vec3.zCoord;
+        this.movePos = new BlockPos(vec3.xCoord, vec3.yCoord, vec3.zCoord);
         return true;
     }
 	
@@ -75,9 +71,9 @@ public class EntityAIChase extends EntityAIBase {
  	// ==================================================
     public void startExecuting() {
     	if(!this.host.useFlightNavigator())
-    		this.host.getNavigator().tryMoveToXYZ(this.movePosX, this.movePosY, this.movePosZ, this.speed);
+    		this.host.getNavigator().tryMoveToXYZ(this.movePos.getX(), this.movePos.getY(), this.movePos.getZ(), this.speed);
     	else
-    		this.host.flightNavigator.setTargetPosition(new BlockPos((int)this.movePosX, (int)this.movePosY, (int)this.movePosZ), speed);
+    		this.host.flightNavigator.setTargetPosition(this.movePos, speed);
     }
 	
     

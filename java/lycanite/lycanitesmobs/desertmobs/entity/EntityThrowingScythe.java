@@ -1,45 +1,41 @@
 package lycanite.lycanitesmobs.desertmobs.entity;
 
-import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.desertmobs.DesertMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 
-public class EntityMudshot extends EntityProjectileBase {
+public class EntityThrowingScythe extends EntityProjectileBase {
 	
 	// Properties:
 	public Entity shootingEntity;
-	private float projectileWidth = 0.2f;
-	private float projectileHeight = 0.2f;
 	
     // ==================================================
  	//                   Constructors
  	// ==================================================
-    public EntityMudshot(World par1World) {
-        super(par1World);
-        this.setSize(projectileWidth, projectileHeight);
+    public EntityThrowingScythe(World world) {
+        super(world);
     }
 
-    public EntityMudshot(World par1World, EntityLivingBase par2EntityLivingBase) {
-        super(par1World, par2EntityLivingBase);
-        this.setSize(projectileWidth, projectileHeight);
+    public EntityThrowingScythe(World world, EntityLivingBase entityLivingBase) {
+        super(world, entityLivingBase);
     }
 
-    public EntityMudshot(World par1World, double par2, double par4, double par6) {
-        super(par1World, par2, par4, par6);
-        this.setSize(projectileWidth, projectileHeight);
+    public EntityThrowingScythe(World world, double x, double y, double z) {
+        super(world, x, y, z);
     }
     
     // ========== Setup Projectile ==========
     public void setup() {
-    	this.entityName = "mudshot";
+    	this.entityName = "throwingscythe";
     	this.group = DesertMobs.group;
-    	this.setBaseDamage(4);
+    	this.setBaseDamage(3);
     	this.setProjectileScale(1F);
+        this.knockbackChance = 0.25D;
+    	
+    	this.waterProof = true;
     }
 	
     
@@ -67,26 +63,10 @@ public class EntityMudshot extends EntityProjectileBase {
     // ==================================================
  	//                     Impact
  	// ==================================================
-    //========== Entity Living Collision ==========
-    @Override
-    public boolean entityLivingCollision(EntityLivingBase entityLiving) {
-    	entityLiving.addPotionEffect(new PotionEffect(Potion.weakness.id, this.getEffectDuration(10), 0));
-    	return true;
-    }
-    
     //========== On Impact Particles/Sounds ==========
     @Override
     public void onImpactVisuals() {
     	for(int i = 0; i < 8; ++i)
-    		this.worldObj.spawnParticle("smoke", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
-    }
-    
-    
-    // ==================================================
- 	//                      Sounds
- 	// ==================================================
-    @Override
-    public String getLaunchSound() {
-    	return AssetManager.getSound("Mudshot");
+    		this.worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
     }
 }

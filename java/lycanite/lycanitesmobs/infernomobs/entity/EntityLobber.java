@@ -63,8 +63,8 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
         
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this).setSink(true));
-        this.tasks.addTask(1, new EntityAIStayByWater(this).setSpeed(1.25D));
-        this.tasks.addTask(3, new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(100).setRange(16.0F).setMinChaseDistance(8.0F).setChaseTime(-1));
+        this.tasks.addTask(1, new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(100).setRange(16.0F).setMinChaseDistance(8.0F).setChaseTime(-1));
+        this.tasks.addTask(2, new EntityAIStayByWater(this).setSpeed(1.25D));
         this.tasks.addTask(6, wanderAI);
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));

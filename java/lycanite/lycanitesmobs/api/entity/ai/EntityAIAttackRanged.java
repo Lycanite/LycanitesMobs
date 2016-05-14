@@ -27,9 +27,9 @@ public class EntityAIAttackRanged extends EntityAIBase {
     private double speed = 1.0D;
     private int chaseTime;
     private int chaseTimeMax = -1; // Average of 20
-    private float range = 5.0F;
-    private float attackDistance = 5.0F * 5.0F;
-    private float minChaseDistance = 2.0F;
+    private float range = 6.0F;
+    private float attackDistance = 5.0F;
+    private float minChaseDistance = 3.0F;
     private float flyingHeight = 2.0F;
     private boolean longMemory = true;
     private boolean checkSight = true;
@@ -89,11 +89,11 @@ public class EntityAIAttackRanged extends EntityAIBase {
     
     public EntityAIAttackRanged setRange(float setRange) {
     	this.range = setRange;
-    	this.attackDistance = setRange * setRange;
+    	this.attackDistance = setRange;
     	return this;
     }
     public EntityAIAttackRanged setMinChaseDistance(float setMinDist) {
-    	this.minChaseDistance = setMinDist * setMinDist;
+    	this.minChaseDistance = setMinDist;
     	return this;
     }
     public EntityAIAttackRanged setChaseTime(int setChaseTime) {
@@ -150,8 +150,10 @@ public class EntityAIAttackRanged extends EntityAIBase {
   	// ==================================================
     public boolean continueExecuting() {
     	if(!this.longMemory)
-	    	if(!this.host.useFlightNavigator() && !this.host.getNavigator().noPath()) return this.shouldExecute();
-	    	else if(this.host.useFlightNavigator() && this.host.flightNavigator.targetPosition == null) return this.shouldExecute();
+	    	if(!this.host.useFlightNavigator() && !this.host.getNavigator().noPath())
+                return this.shouldExecute();
+	    	else if(this.host.useFlightNavigator() && this.host.flightNavigator.targetPosition == null)
+                return this.shouldExecute();
 
     	// Should Execute:
     	if(!this.enabled)
@@ -180,7 +182,7 @@ public class EntityAIAttackRanged extends EntityAIBase {
   	//                   Update Task
   	// ==================================================
     public void updateTask() {
-        double distance = this.host.getDistanceSq(this.attackTarget.posX, this.attackTarget.getEntityBoundingBox().minY, this.attackTarget.posZ);
+        double distance = this.host.getDistanceToEntity(this.attackTarget);
         boolean hasSight = this.host.getEntitySenses().canSee(this.attackTarget);
         float flyingHeightOffset = this.flyingHeight;
         
@@ -192,16 +194,22 @@ public class EntityAIAttackRanged extends EntityAIBase {
         if(!hasSight)
         	flyingHeightOffset = 0;
 
-        if(distance <= this.minChaseDistance || (this.chaseTimeMax >= 0 && distance <= (double)this.attackDistance && this.chaseTime >= this.chaseTimeMax))
-        	if(!this.host.useFlightNavigator())
-        		this.host.getNavigator().clearPathEntity();
-        	else
-        		this.host.flightNavigator.clearTargetPosition(1.0D);
-        else
-        	if(!this.host.useFlightNavigator())
-        		this.host.getNavigator().tryMoveToEntityLiving(this.attackTarget, this.speed);
-        	else
-        		this.host.flightNavigator.setTargetPosition(new BlockPos((int)this.attackTarget.posX, (int)(this.attackTarget.posY + flyingHeightOffset), (int)this.attackTarget.posZ), speed);
+        // If within min range or chase timed out:
+        if(distance <= this.minChaseDistance || (this.chaseTimeMax >= 0 && distance <= (double)this.attackDistance && this.chaseTime >= this.chaseTimeMax)) {
+            if(!this.host.useFlightNavigator())
+                this.host.getNavigator().clearPathEntity();
+            else
+                this.host.flightNavigator.clearTargetPosition(1.0D);
+        }
+        else {
+            BlockPos targetPosition = this.attackTarget.getPosition();
+            if(this.host.canFly())
+                targetPosition = targetPosition.add(0, flyingHeightOffset, 0);
+            if(!this.host.useFlightNavigator())
+                this.host.getNavigator().tryMoveToXYZ(targetPosition.getX(), targetPosition.getY(), targetPosition.getZ(), this.speed);
+            else
+                this.host.flightNavigator.setTargetPosition(targetPosition, this.speed);
+        }
 
         this.host.getLookHelper().setLookPositionWithEntity(this.attackTarget, 30.0F, 30.0F);
         float rangeFactor;
@@ -228,7 +236,7 @@ public class EntityAIAttackRanged extends EntityAIBase {
 	            if(distance > (double)this.attackDistance || (this.checkSight && !hasSight))
 	                return;
 	
-	            rangeFactor = MathHelper.sqrt_double(distance) / this.range;
+	            rangeFactor = (float)distance / this.range;
 	            float outerRangeFactor = rangeFactor; // Passed to the attack, clamps targets within 10% closeness.
 	            if(rangeFactor < 0.1F)
 	            	outerRangeFactor = 0.1F;

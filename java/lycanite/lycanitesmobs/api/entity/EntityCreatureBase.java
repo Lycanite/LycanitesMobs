@@ -9,10 +9,7 @@ import lycanite.lycanitesmobs.api.entity.ai.EntityAIMoveRestriction;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
 import lycanite.lycanitesmobs.api.entity.ai.FlightNavigator;
-import lycanite.lycanitesmobs.api.entity.navigate.FlightMoveHelper;
-import lycanite.lycanitesmobs.api.entity.navigate.PathNavigateFlight;
-import lycanite.lycanitesmobs.api.entity.navigate.PathNavigateGroundCustom;
-import lycanite.lycanitesmobs.api.entity.navigate.SwimmingMoveHelper;
+import lycanite.lycanitesmobs.api.entity.navigate.*;
 import lycanite.lycanitesmobs.api.info.*;
 import lycanite.lycanitesmobs.api.inventory.ContainerCreature;
 import lycanite.lycanitesmobs.api.inventory.InventoryCreature;
@@ -244,9 +241,9 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     public static final DataParameter<Optional<ItemStack>> EQUIPMENT_SADDLE = EntityDataManager.<Optional<ItemStack>>createKey(EntityCreatureBase.class, DataSerializers.OPTIONAL_ITEM_STACK);
 
     /** The starting point for the datawatcher IDs used by this mod, lower IDs are used by vanilla code. **/
-	private static byte watcherID = 12;
+	//private static byte watcherID = 12;
     /** A collection of IDs used by the datawatcher (used to sync clients and the server with certain values). **/
-	public static enum WATCHER_ID {
+	/*public enum WATCHER_ID {
 		HEALTH(watcherID++), TARGET(watcherID++), ANIMATION(watcherID++), ATTACK_PHASE(watcherID++),
 		CLIMBING(watcherID++), STEALTH(watcherID++), HUNGER(watcherID++), STAMINA(watcherID++),
 		AGE(watcherID++), LOVE(watcherID++),
@@ -257,16 +254,16 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 		public final byte id;
 	    private WATCHER_ID(byte value) { this.id = value; }
 	    public byte getValue() { return id; }
-	}
+	}*/
     /** Used for the TARGET watcher bitmap, bitmaps save on many packets and make network performance better! **/
-	public static enum TARGET_ID {
+	public enum TARGET_ID {
 		ATTACK((byte)1), MASTER((byte)2), PARENT((byte)4), AVOID((byte)8), RIDER((byte)16);
 		public final byte id;
 	    private TARGET_ID(byte value) { this.id = value; }
 	    public byte getValue() { return id; }
 	}
     /** Used for the ANIM_ID watcher bitmap, bitmaps save on many packets and make network performance better! **/
-	public static enum ANIM_ID {
+	public enum ANIM_ID {
 		ATTACKED((byte)1), GROUNDED((byte)2), IN_WATER((byte)4), BLOCKING((byte)8), MINION((byte)16), EXTRA01((byte)32);
 		public final byte id;
 	    private ANIM_ID(byte value) { this.id = value; }
@@ -277,7 +274,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 	
 	// Interact:
 	/** Used for the tidier interact code, these are commonly used right click item command priorities. **/
-	public static enum CMD_PRIOR {
+	public enum CMD_PRIOR {
 		OVERRIDE(0), IMPORTANT(1), EQUIPPING(2), ITEM_USE(3), EMPTY_HAND(4), MAIN(5);
 		public final int id;
 	    private CMD_PRIOR(int value) { this.id = value; }
@@ -286,7 +283,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 	
 	// GUI Commands:
 	/** A list of GUI command IDs to be used by pet or creature GUIs via a network packet. **/
-	public static enum GUI_COMMAND_ID {
+	public enum GUI_COMMAND_ID {
 		CLOSE((byte)0), SITTING((byte)1), FOLLOWING((byte)2), PASSIVE((byte)3), STANCE((byte)4), PVP((byte)5), TELEPORT((byte)6), SPAWNING((byte)7), RELEASE((byte)8);
 		public byte id;
 		private GUI_COMMAND_ID(byte i) { id = i; }
@@ -307,9 +304,32 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
   	// ==================================================
     public EntityCreatureBase(World world) {
         super(world);
+
+        // Swimming:
         if(this.canWade() && this.getNavigator() instanceof PathNavigateGround) {
             PathNavigateGround groundNavigator = (PathNavigateGround)this.getNavigator();
             groundNavigator.setCanSwim(true);
+        }
+
+        // Path On Fire or In Lava:
+        if(!this.canBurn()) {
+            this.setPathPriority(PathNodeType.DANGER_FIRE, 0.0F);
+            this.setPathPriority(PathNodeType.DAMAGE_FIRE, 0.0F);
+            if(this.canBreatheUnderwater()) {
+                this.setPathPriority(PathNodeType.LAVA, 8.0F);
+                if(!this.canBreatheAboveWater() || this.isLavaCreature) {
+                    this.setPathPriority(PathNodeType.LAVA, 0.0F);
+                }
+            }
+        }
+
+        // Path In Water:
+        if(this.waterDamage())
+            this.setPathPriority(PathNodeType.WATER, -1.0F);
+        else if(this.canBreatheUnderwater()) {
+            this.setPathPriority(PathNodeType.WATER, 8.0F);
+            if(!this.canBreatheAboveWater())
+                this.setPathPriority(PathNodeType.WATER, 0.0F);
         }
     }
     
@@ -336,6 +356,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
             this.moveHelper = new FlightMoveHelper(this);
         else if(this.canSwim() && !this.canWalk())
             this.moveHelper = new SwimmingMoveHelper(this);
+        //else
+            //this.moveHelper = new GroundMoveHelper(this);
     }
     
     // ========== Load Item Drops ==========
@@ -357,6 +379,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     protected void applyEntityAttributes() {
         HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
 		baseAttributes.put("maxHealth", 20D);
+        baseAttributes.put("armor", 0D);
 		baseAttributes.put("movementSpeed", 1D);
 		baseAttributes.put("knockbackResistance", 0D);
 		baseAttributes.put("followRange", 35D);
@@ -1536,6 +1559,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 	    Returns a float where 0.0F is a standard path, anything higher is a preferred path.
 	    For example, animals that spawn on grass return 10.0F for path blocks that are Grass.
 	    Mobs that prefer the darkness will return a higher value for darker blocks.
+        TODO: Deprecated and now only used when spawning.
     **/
     // ========== Get Block Path Weight ==========
     public float getBlockPathWeight(int par1, int par2, int par3) {
@@ -3029,8 +3053,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     }
     
     /** Returns true if the target location has a block that this mob can breathe in (air, water, lava, depending on the creature). **/
-    public boolean canBreatheAtLocation(int x, int y, int z) {
-    	IBlockState blockState = this.worldObj.getBlockState(new BlockPos(x, y, z));
+    public boolean canBreatheAtLocation(BlockPos pos) {
+    	IBlockState blockState = this.worldObj.getBlockState(pos);
     	if(blockState == null)
     		return true;
     	if(this.canBreatheAboveWater() && blockState.getMaterial() == Material.air)

@@ -22,8 +22,8 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.*;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -61,25 +61,25 @@ public class DesertMobs {
 		// ========== Config ==========
 		group = new GroupInfo(this, "Desert Mobs", 4)
                 .setDimensionBlacklist("-1,1").setBiomes("SANDY, WASTELAND, MESA, -COLD").setDungeonThemes("DESERT, WASTELAND, NECRO")
-                .setEggName("desertegg");
+                .setEggName("desertspawn");
 		group.loadFromConfig();
 
 		// ========== Set Current Group ==========
 		ObjectManager.setCurrentGroup(group);
 		
 		// ========== Create Items ==========
-		ObjectManager.addItem("desertegg", new ItemDesertEgg());
+		ObjectManager.addItem("desertspawn", new ItemDesertEgg());
 		ObjectManager.addItem("throwingscythe", new ItemThrowingScythe());
 		
-		ObjectManager.addItem("joustmeatraw", new ItemCustomFood("joustmeatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(Potion.moveSlowdown.id, 45, 2, 0.8F));
+		ObjectManager.addItem("joustmeatraw", new ItemCustomFood("joustmeatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(MobEffects.moveSlowdown, 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("joustmeatraw"));
 		OreDictionary.registerOre("listAllchickenraw", ObjectManager.getItem("joustmeatraw"));
 		
-		ObjectManager.addItem("joustmeatcooked", new ItemCustomFood("joustmeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(Potion.moveSpeed.id, 10, 2, 1.0F).setAlwaysEdible());
+		ObjectManager.addItem("joustmeatcooked", new ItemCustomFood("joustmeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(MobEffects.moveSpeed, 10, 2, 1.0F).setAlwaysEdible());
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("joustmeatcooked"));
 		OreDictionary.registerOre("listAllchickencooked", ObjectManager.getItem("joustmeatcooked"));
 		
-		ObjectManager.addItem("ambercake", new ItemCustomFood("ambercake", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(Potion.moveSpeed.id, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
+		ObjectManager.addItem("ambercake", new ItemCustomFood("ambercake", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(MobEffects.moveSpeed, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("ambercake"));
 
 		ObjectManager.addItem("crusktreat", new ItemTreat("crusktreat", group));
@@ -93,7 +93,7 @@ public class DesertMobs {
         // No blocks.
 		
 		// ========== Create Mobs ==========
-		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("desertegg"), new DispenserBehaviorMobEggCustom());
+		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("desertspawn"), new DispenserBehaviorMobEggCustom());
 		MobInfo newMob;
         
         newMob = new MobInfo(group, "cryptzombie", EntityCryptZombie.class, 0xCC9966, 0xAA8800)
@@ -158,7 +158,7 @@ public class DesertMobs {
 		ObjectManager.addProjectile("mudshot", EntityMudshot.class, ObjectManager.getItem("mudshotcharge"), new DispenserBehaviorMudshot());
 		
 		// ========== Register Models ==========
-		proxy.registerModels();
+		proxy.registerModels(this.group);
 	}
 	
 	
@@ -209,11 +209,11 @@ public class DesertMobs {
 		// ========== Remove Vanilla Spawns ==========
 		BiomeGenBase[] biomes = group.biomes;
 		if(group.controlVanillaSpawns) {
-			EntityRegistry.removeSpawn(EntityZombie.class, EnumCreatureType.monster, biomes);
-			EntityRegistry.removeSpawn(EntitySkeleton.class, EnumCreatureType.monster, biomes);
-			EntityRegistry.removeSpawn(EntityCreeper.class, EnumCreatureType.monster, biomes);
-			EntityRegistry.removeSpawn(EntitySpider.class, EnumCreatureType.monster, biomes);
-			EntityRegistry.removeSpawn(EntityWitch.class, EnumCreatureType.monster, biomes);
+			EntityRegistry.removeSpawn(EntityZombie.class, EnumCreatureType.MONSTER, biomes);
+			EntityRegistry.removeSpawn(EntitySkeleton.class, EnumCreatureType.MONSTER, biomes);
+			EntityRegistry.removeSpawn(EntityCreeper.class, EnumCreatureType.MONSTER, biomes);
+			EntityRegistry.removeSpawn(EntitySpider.class, EnumCreatureType.MONSTER, biomes);
+			EntityRegistry.removeSpawn(EntityWitch.class, EnumCreatureType.MONSTER, biomes);
 		}
 		
 		// ========== Crafting ==========

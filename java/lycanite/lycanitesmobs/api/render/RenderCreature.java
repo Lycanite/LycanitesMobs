@@ -6,26 +6,22 @@ import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.model.ModelCustom;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class RenderCreature extends RenderLiving {
+public class RenderCreature extends RenderLiving<EntityCreatureBase> {
+    private static final DynamicTexture textureBrightness = new DynamicTexture(16, 16);
 	
 	/** A color table for mobs that can be dyed or pet collars. Follows the same pattern as the vanilla sheep. */
 	public static final float[][] colorTable = new float[][] {{1.0F, 1.0F, 1.0F}, {0.85F, 0.5F, 0.2F}, {0.7F, 0.3F, 0.85F}, {0.4F, 0.6F, 0.85F}, {0.9F, 0.9F, 0.2F}, {0.5F, 0.8F, 0.1F}, {0.95F, 0.5F, 0.65F}, {0.3F, 0.3F, 0.3F}, {0.6F, 0.6F, 0.6F}, {0.3F, 0.5F, 0.6F}, {0.5F, 0.25F, 0.7F}, {0.2F, 0.3F, 0.7F}, {0.4F, 0.3F, 0.2F}, {0.4F, 0.5F, 0.2F}, {0.6F, 0.2F, 0.2F}, {0.1F, 0.1F, 0.1F}};
-    
-	/** Enchanted glint effect texture. **/
-	private static final ResourceLocation RES_ITEM_GLINT = new ResourceLocation("textures/misc/enchanted_item_glint.png");
-	
+
     // ==================================================
   	//                    Constructor
   	// ==================================================
@@ -43,12 +39,12 @@ public class RenderCreature extends RenderLiving {
  	// ==================================================
     /**
     * Actually renders the given argument. This is a synthetic bridge method, always casting down its argument and then
-    * handing it off to a worker function which does the actual work. In all probabilty, the class Render is generic
+    * handing it off to a worker function which does the actual work. In all probability, the class Render is generic
     * (Render<T extends Entity) and this method has signature public void func_76986_a(T entity, double d, double d1,
     * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
     */
     @Override
-    public void doRender(EntityLiving entity, double x, double y, double z, float entityYaw, float partialTicks) {
+    public void doRender(EntityCreatureBase entity, double x, double y, double z, float entityYaw, float partialTicks) {
         //if (net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.client.event.RenderLivingEvent.Pre<T>(entity, this, x, y, z)))
         //    return;
         super.doRender(entity, x, y, z, entityYaw, partialTicks);
@@ -255,8 +251,8 @@ public class RenderCreature extends RenderLiving {
     // ==================================================
  	//                  Render Equipment
  	// ==================================================
-    @SuppressWarnings("unused") //TODO Collar textures.
-	protected int shouldRenderPass(EntityLivingBase entity, int renderPass, float partialTick) {
+    @SuppressWarnings("unused") //TODO Migrate to render layers.
+	protected int shouldRenderPass(EntityCreatureBase entity, int renderPass, float partialTick) {
     	if(!(entity instanceof EntityCreatureBase))
     		return -1;
     	EntityCreatureBase creature = (EntityCreatureBase)entity;
@@ -301,36 +297,12 @@ public class RenderCreature extends RenderLiving {
     }
     
     
-    /**
-     * Renders the model in RenderLiving
-     */
-    protected void renderPassModel(ModelBase model, EntityLivingBase entityLivingBase, float time, float distance, float loop, float lookX, float lookY, float scale) {
-        if (!entityLivingBase.isInvisible())
-        	model.render(entityLivingBase, time, distance, loop, lookX, lookY, scale);
-        else if (!entityLivingBase.isInvisibleToPlayer(Minecraft.getMinecraft().thePlayer)) {
-            GL11.glPushMatrix();
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.15F);
-            GL11.glDepthMask(false);
-            GL11.glEnable(GL11.GL_BLEND);
-            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
-            model.render(entityLivingBase, time, distance, loop, lookX, lookY, scale);
-            GL11.glDisable(GL11.GL_BLEND);
-            GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
-            GL11.glPopMatrix();
-            GL11.glDepthMask(true);
-        }
-        else
-        	model.setRotationAngles(time, distance, loop, lookX, lookY, scale, entityLivingBase);
-    }
-    
-    
     // ==================================================
  	//                     Visuals
  	// ==================================================
     // ========== Main ==========
     @Override
-    protected boolean bindEntityTexture(Entity entity) {
+    protected boolean bindEntityTexture(EntityCreatureBase entity) {
         ResourceLocation texture = this.getEntityTexture(entity);
         if(texture == null)
             return false;
@@ -339,9 +311,9 @@ public class RenderCreature extends RenderLiving {
     }
     
     @Override
-    protected ResourceLocation getEntityTexture(Entity entity) {
+    protected ResourceLocation getEntityTexture(EntityCreatureBase entity) {
     	if(entity instanceof EntityCreatureBase)
-    		return ((EntityCreatureBase)entity).getTexture();
+    		return entity.getTexture();
         return null;
     }
     
@@ -356,24 +328,18 @@ public class RenderCreature extends RenderLiving {
         return null;
     }
     
-    // ========== Bind ==========
-    @Override
-    public void bindTexture(ResourceLocation texture) {
-    	this.renderManager.renderEngine.bindTexture(texture);
-    }
-    
     
     // ==================================================
   	//                     Effects
   	// ==================================================
     @Override
-    protected void preRenderCallback(EntityLivingBase entity, float particleTickTime) {
+    protected void preRenderCallback(EntityCreatureBase entity, float particleTickTime) {
         // No effects.
     }
     
     /** If true, display the name of the entity above it. **/
     @Override
-    protected boolean canRenderName(EntityLiving renderEntity) {
+    protected boolean canRenderName(EntityCreatureBase renderEntity) {
     	if(!Minecraft.isGuiEnabled()) return false;
     	if(renderEntity == this.renderManager.livingPlayer) return false;
     	if(renderEntity.isInvisibleToPlayer(Minecraft.getMinecraft().thePlayer)) return false;

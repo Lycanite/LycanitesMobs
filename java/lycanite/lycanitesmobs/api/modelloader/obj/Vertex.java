@@ -11,31 +11,27 @@ public class Vertex
     private Vector3f normal;
     private Vector3f tangent;
 
-    public Vertex(Vector3f pos, Vector2f texCoords, Vector3f normal, Vector3f tangent)
-    {
+    public Vertex(Vector3f pos, Vector2f texCoords, Vector3f normal, Vector3f tangent) {
         this.pos = pos;
         this.texCoords = texCoords;
         this.normal = normal;
         this.tangent = tangent;
     }
     
-    public Vector3f getPos()
-    {
+    public Vector3f getPos() {
         return pos;
     }
     
-    public Vector2f getTexCoords()
-    {
+    public Vector2f getTexCoords() {
         return texCoords;
     }
-    
-    public Vector3f getNormal()
-    {
+
+    /** Returns per vertex normal for smoother shading. **/
+    public Vector3f getNormal() {
         return normal;
     }
     
-    public Vector3f getTangent()
-    {
+    public Vector3f getTangent() {
         return tangent;
     }
 

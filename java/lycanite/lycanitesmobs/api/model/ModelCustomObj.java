@@ -15,6 +15,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
+import javax.vecmath.Vector4f;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -183,10 +184,7 @@ public class ModelCustomObj extends ModelCustom {
 
             // Render:
             this.uncenterPart(partName);
-            GlStateManager.disableLighting();
-            // TODO Fix bad lighting.
-            this.wavefrontObject.renderGroup(part);
-            GlStateManager.enableLighting();
+            this.wavefrontObject.renderGroup(part, this.getPartColor(partName, entity, layer, trophyModel));
             GlStateManager.popMatrix();
     	}
     }
@@ -212,6 +210,15 @@ public class ModelCustomObj extends ModelCustom {
     /** Returns true if the part can be rendered, this can do various checks such as Yale wool only rendering in the YaleWoolLayer or hiding body parts in place of armor parts, etc. **/
     public boolean canRenderPart(String partName, Entity entity, LayerRenderer<EntityCreatureBase> layer, boolean trophy) {
         return true;
+    }
+
+
+    // ==================================================
+    //                Get Part Color
+    // ==================================================
+    /** Returns the coloring to be used for this part and layer. **/
+    public Vector4f getPartColor(String partName, Entity entity, LayerRenderer<EntityCreatureBase> layer, boolean trophy) {
+        return new Vector4f(1, 1, 1, 1);
     }
     
     

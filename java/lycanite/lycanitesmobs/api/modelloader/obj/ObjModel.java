@@ -4,6 +4,7 @@ import lycanite.lycanitesmobs.api.modelloader.obj.ObjEvent.EventType;
 import net.minecraft.entity.Entity;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 
+import javax.vecmath.Vector4f;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -18,13 +19,11 @@ public abstract class ObjModel extends Model
 
     public Entity entity;
     
-    ObjModel()
-    {
+    ObjModel() {
         objObjects = new ArrayList<ObjObject>();
     }
     
-    public ObjModel(String classpathElem)
-    {
+    public ObjModel(String classpathElem) {
         this();
         this.filename = classpathElem;
         if(filename.contains("/"))
@@ -33,8 +32,7 @@ public abstract class ObjModel extends Model
             setID(filename);
     }
     
-    protected byte[] read(InputStream resource) throws IOException
-    {
+    protected byte[] read(InputStream resource) throws IOException {
         int i;
         byte[] buffer = new byte[65565];
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -47,22 +45,23 @@ public abstract class ObjModel extends Model
         return out.toByteArray();
     }
 
-    public void renderGroup(ObjObject group)
-    {
+    public void renderGroup(ObjObject group) {
+        this.renderGroup(group, new Vector4f(1, 1, 1, 1));
+    }
+
+    public void renderGroup(ObjObject group, Vector4f color) {
         if(fireEvent(new ObjEvent(this, EventType.PRE_RENDER_GROUP).setData(group, group)))
-            this.renderGroupImpl(group);
+            this.renderGroupImpl(group, color);
         fireEvent(new ObjEvent(this, EventType.POST_RENDER_GROUP).setData(group, group));
     }
     
-    public void renderGroups(String groupsName)
-    {
+    public void renderGroups(String groupsName) {
         if(fireEvent(new ObjEvent(this, EventType.PRE_RENDER_GROUPS).setData(groupsName)))
             this.renderGroupsImpl(groupsName);
         fireEvent(new ObjEvent(this, EventType.POST_RENDER_GROUPS).setData(groupsName));
     }
     
-    public void render()
-    {
+    public void render() {
         if(fireEvent(new ObjEvent(this, EventType.PRE_RENDER_ALL)))
             this.renderImpl();
         fireEvent(new ObjEvent(this, EventType.POST_RENDER_ALL));
@@ -70,7 +69,7 @@ public abstract class ObjModel extends Model
     
     protected abstract void renderGroupsImpl(String groupsName);
     
-    protected abstract void renderGroupImpl(ObjObject objGroup);
+    protected abstract void renderGroupImpl(ObjObject objGroup, Vector4f color);
 
     protected abstract void renderImpl();
     

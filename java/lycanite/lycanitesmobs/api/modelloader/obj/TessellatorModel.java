@@ -9,8 +9,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.EventBus;
-import org.lwjgl.util.vector.Vector3f;
 
+import javax.vecmath.Vector4f;
 import java.io.IOException;
 import java.util.*;
 
@@ -57,12 +57,10 @@ public class TessellatorModel extends ObjModel
     @Override
     public void renderImpl()
     {
-        Collections.sort(objObjects, new Comparator<ObjObject>()
-        {
+        Collections.sort(objObjects, new Comparator<ObjObject>() {
 
             @Override
-            public int compare(ObjObject a, ObjObject b)
-            {
+            public int compare(ObjObject a, ObjObject b) {
                 Vec3d v = Minecraft.getMinecraft().getRenderViewEntity().getPositionVector();
                 double aDist = v.distanceTo(new Vec3d(a.center.x, a.center.y, a.center.z));
                 double bDist = v.distanceTo(new Vec3d(b.center.x, b.center.y, b.center.z));
@@ -88,84 +86,56 @@ public class TessellatorModel extends ObjModel
     }
 
     @Override
-    public void renderGroupImpl(ObjObject obj)
-    {
+    public void renderGroupImpl(ObjObject obj, Vector4f color) {
         Tessellator tess = Tessellator.getInstance();
         VertexBuffer vertexBuffer = tess.getBuffer();
         if(obj.mesh == null) {
             return;
         }
-        Vector3f color = new Vector3f(1, 1, 1);
-        float alpha = 1f;
-        if(obj.material != null) {
-            //GL11.glBindTexture(GL11.GL_TEXTURE_2D, obj.material.diffuseTexture);
-            // color = new Vector3f(obj.material.diffuseColor.x*obj.material.ambientColor.x,
-            // obj.material.diffuseColor.y*obj.material.ambientColor.y,
-            // obj.material.diffuseColor.z*obj.material.ambientColor.z);
-            // alpha = obj.material.transparency;
-        }
+        //Vector4f color = new Vector4f(1, 1, 1, 1);
+        /*if(obj.material != null) {
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, obj.material.diffuseTexture);
+            color = new Vector3f(
+                    obj.material.diffuseColor.x * obj.material.ambientColor.x,
+                    obj.material.diffuseColor.y * obj.material.ambientColor.y,
+                    obj.material.diffuseColor.z * obj.material.ambientColor.z);
+            alpha = obj.material.transparency;
+        }*/
         int[] indices = obj.mesh.indices;
         Vertex[] vertices = obj.mesh.vertices;
         vertexBuffer.begin(GL_TRIANGLES, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
 
-        /*/Lighting Settings:
-        int entityX = MathHelper.floor_double(this.entity.posX);
-        int entityY = MathHelper.floor_double(this.entity.posY);
-        int entityZ = MathHelper.floor_double(this.entity.posZ);
-        int lightQuality = 5;
-        if (Minecraft.getMinecraft().gameSettings.fancyGraphics)
-            lightQuality = 10;*/
-
-
-
         for(int i = 0; i < indices.length; i += 3) {
-            int i0 = indices[i];
-            int i1 = indices[i + 1];
-            int i2 = indices[i + 2];
-            Vertex v0 = vertices[i0];
-            Vertex v1 = vertices[i1];
-            Vertex v2 = vertices[i2];
-
-            /*/ Lighting:
-            BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
-            int lightHeight = this.entity.worldObj.getPrecipitationHeight(blockpos$mutableblockpos).getY();
-            blockpos$mutableblockpos.set(entityX - lightQuality, lightHeight, entityZ - lightQuality);
-            int lightLevel = this.entity.worldObj.getCombinedLight(blockpos$mutableblockpos, 0);
-            int s = lightLevel >> 16 & 65535;
-            int t = lightLevel & 65535;*/
-
-            vertexBuffer
-                    .pos(v0.getPos().x, v0.getPos().y, v0.getPos().z)
-                    .tex(v0.getTexCoords().x, 1f - v0.getTexCoords().y)
-                    .color(color.x, color.y, color.z, alpha)
-                    .normal(v0.getNormal().x, v0.getNormal().y, v0.getNormal().z)
-                    .endVertex();
-
-            vertexBuffer
-                    .pos(v1.getPos().x, v1.getPos().y, v1.getPos().z)
-                    .tex(v1.getTexCoords().x, 1f - v1.getTexCoords().y)
-                    .color(color.x, color.y, color.z, alpha)
-                    .normal(v1.getNormal().x, v1.getNormal().y, v1.getNormal().z)
-                    .endVertex();
-
-            vertexBuffer
-                    .pos(v2.getPos().x, v2.getPos().y, v2.getPos().z)
-                    .tex(v2.getTexCoords().x, 1f - v2.getTexCoords().y)
-                    .color(color.x, color.y, color.z, alpha)
-                    .normal(v2.getNormal().x, v2.getNormal().y, v2.getNormal().z)
-                    .endVertex();
-
-            /*vertexBuffer.setColorRGBA_F(color.x, color.y, color.z, alpha);
-            vertexBuffer.setNormal(v0.getNormal().x, v0.getNormal().y, v0.getNormal().z);
-            vertexBuffer.addVertexWithUV(v0.getPos().x, v0.getPos().y, v0.getPos().z, v0.getTexCoords().x, 1f - v0.getTexCoords().y);
-
-            vertexBuffer.setNormal(v1.getNormal().x, v1.getNormal().y, v1.getNormal().z);
-            vertexBuffer.addVertexWithUV(v1.getPos().x, v1.getPos().y, v1.getPos().z, v1.getTexCoords().x, 1f - v1.getTexCoords().y);
-
-            vertexBuffer.setNormal(v2.getNormal().x, v2.getNormal().y, v2.getNormal().z);
-            vertexBuffer.addVertexWithUV(v2.getPos().x, v2.getPos().y, v2.getPos().z, v2.getTexCoords().x, 1f - v2.getTexCoords().y);*/
+            javax.vecmath.Vector3f normal = this.getNormal(vertices[indices[i]].getPos(), vertices[indices[i + 1]].getPos(), vertices[indices[i + 2]].getPos());
+            for(int iv = 0; iv < 3; iv++) {
+                Vertex v = vertices[indices[i + iv]];
+                vertexBuffer
+                        .pos(v.getPos().x, v.getPos().y, v.getPos().z)
+                        .tex(v.getTexCoords().x, 1f - v.getTexCoords().y)
+                        .color(color.x, color.y, color.z, color.w)
+                        .normal(normal.x, normal.y, normal.z)
+                        //.normal(v.getFaceNormal().x, v.getFaceNormal().y, v.getFaceNormal().z)
+                        //.normal(v.getNormal().x, v.getNormal().y, v.getNormal().z)
+                        .endVertex();
+            }
         }
         tess.draw();
+    }
+
+    public javax.vecmath.Vector3f getNormal(javax.vecmath.Vector3f p1, javax.vecmath.Vector3f p2, javax.vecmath.Vector3f p3) {
+        javax.vecmath.Vector3f output = new javax.vecmath.Vector3f();
+
+        // Calculate Edges:
+        javax.vecmath.Vector3f calU = new javax.vecmath.Vector3f(p2.x - p1.x, p2.y - p1.y, p2.z - p1.z);
+        javax.vecmath.Vector3f calV = new javax.vecmath.Vector3f(p3.x - p1.x, p3.y - p1.y, p3.z - p1.z);
+
+        // Cross Edges
+        output.x = calU.y * calV.z - calU.z * calV.y;
+        output.y = calU.z * calV.x - calU.x * calV.z;
+        output.z = calU.x * calV.y - calU.y * calV.x;
+
+        output.normalize();
+        return output;
     }
 
     @Override

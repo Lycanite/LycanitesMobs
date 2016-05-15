@@ -12,6 +12,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.vecmath.Vector4f;
+
 @SideOnly(Side.CLIENT)
 public class ModelYale extends ModelCustomObj {
 	
@@ -60,10 +62,25 @@ public class ModelYale extends ModelCustomObj {
     // ==================================================
     @Override
     public boolean canRenderPart(String partName, Entity entity, LayerRenderer<EntityCreatureBase> layer, boolean trophy) {
-        if("fur".equals(partName)) {
-            return layer instanceof LayerYaleWool;
+        if(layer instanceof LayerYaleWool) {
+            return ((LayerYaleWool)layer).canRenderPart(partName);
         }
         return super.canRenderPart(partName, entity, layer, trophy);
+    }
+
+
+    // ==================================================
+    //                Get Part Color
+    // ==================================================
+    /** Returns the coloring to be used for this part and layer. **/
+    public Vector4f getPartColor(String partName, Entity entity, LayerRenderer<EntityCreatureBase> layer, boolean trophy) {
+        if(layer != null && layer instanceof LayerYaleWool) {
+            if(entity != null && !entity.isInvisible() && entity instanceof EntityCreatureBase) {
+                int colorID = ((EntityCreatureBase)entity).getColor();
+                return new Vector4f(RenderCreature.colorTable[colorID][0], RenderCreature.colorTable[colorID][1], RenderCreature.colorTable[colorID][2], 1.0F);
+            }
+        }
+        return super.getPartColor(partName, entity, layer, trophy);
     }
     
     

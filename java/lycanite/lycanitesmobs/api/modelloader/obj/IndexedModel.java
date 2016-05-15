@@ -5,8 +5,7 @@ import javax.vecmath.Vector3f;
 import java.util.ArrayList;
 
 
-public class IndexedModel
-{
+public class IndexedModel {
 
 	private ArrayList<Vector3f> vertices;
 	private ArrayList<Vector2f> texCoords;
@@ -15,8 +14,7 @@ public class IndexedModel
 	private ArrayList<Integer> indices;
     private ArrayList<OBJLoader.OBJIndex> objindices;
 
-	public IndexedModel()
-	{
+	public IndexedModel() {
 		vertices = new ArrayList<Vector3f>();
 		texCoords = new ArrayList<Vector2f>();
 		normals = new ArrayList<Vector3f>();
@@ -25,40 +23,35 @@ public class IndexedModel
 		objindices = new ArrayList<OBJLoader.OBJIndex>();
 	}
 
-	public ArrayList<Vector3f> getPositions()
-	{
+	public ArrayList<Vector3f> getPositions() {
 		return vertices;
 	}
 
-	public ArrayList<Vector2f> getTexCoords()
-	{
+	public ArrayList<Vector2f> getTexCoords() {
 		return texCoords;
 	}
 
-	public ArrayList<Vector3f> getNormals()
-	{
+	public ArrayList<Vector3f> getNormals() {
 		return normals;
 	}
 
-	public ArrayList<Integer> getIndices()
-	{
+	public ArrayList<Integer> getIndices() {
 		return indices;
 	}
 
-	public ArrayList<Vector3f> getTangents()
-	{
+	public ArrayList<Vector3f> getTangents() {
 		return tangents;
 	}
 
-	public void toMesh(Mesh mesh)
-	{
+	public void toMesh(Mesh mesh) {
 		ArrayList<Vertex> verticesList = new ArrayList<Vertex>();
 		int n = Math.min(vertices.size(), Math.min(texCoords.size(), normals.size()));
-		for(int i = 0; i < n; i++ )
-		{
-			Vertex vertex = new Vertex(vertices.get(i), 
+		for(int i = 0; i < n; i++ ) {
+			Vertex vertex = new Vertex(
+                    vertices.get(i),
 			        texCoords.get(i), 
-			        normals.get(i), new Vector3f());
+			        normals.get(i),
+                    new Vector3f());
 			verticesList.add(vertex);
 		}
 		Integer[] indicesArray = indices.toArray(new Integer[0]);
@@ -70,14 +63,13 @@ public class IndexedModel
 		mesh.indices = indicesArrayInt;
 	}
 
-	public void computeNormals()
-	{
-		for(int i = 0; i < indices.size(); i += 3)
-		{
+	public void computeNormals() {
+		for(int i = 0; i < indices.size(); i += 3) {
 			int x = indices.get(i);
 			int y = indices.get(i + 1);
 			int z = indices.get(i + 2);
 
+            // Per Vertex Normal:
 			Vector3f v = (Vector3f)vertices.get(y).clone();
 			v.sub(vertices.get(x));
 			Vector3f l0 = v;
@@ -97,22 +89,41 @@ public class IndexedModel
 			v = (Vector3f)normals.get(z).clone();
             v.add(normal);
 			normals.set(z, v);
+
+            /*/ Per Face Normal:
+            Vector3f faceNormal = this.getFaceNormal(vertices.get(x), vertices.get(y), vertices.get(z));
+            faceNormals.set(x, faceNormal);
+            faceNormals.set(y, faceNormal);
+            faceNormals.set(z, faceNormal);*/
 		}
 
-		for(int i = 0; i < normals.size(); i++ )
-		{
+		for(int i = 0; i < normals.size(); i++ ) {
 			normals.get(i).normalize();
 		}
 	}
 
-	public void computeTangents()
-	{
+    public Vector3f getFaceNormal(Vector3f p1, Vector3f p2, Vector3f p3) {
+        Vector3f output = new Vector3f();
+
+        // Calculate Edges:
+        javax.vecmath.Vector3f calU = new javax.vecmath.Vector3f(p2.x - p1.x, p2.y - p1.y, p2.z - p1.z);
+        javax.vecmath.Vector3f calV = new javax.vecmath.Vector3f(p3.x - p1.x, p3.y - p1.y, p3.z - p1.z);
+
+        // Cross Edges
+        output.x = calU.y * calV.z - calU.z * calV.y;
+        output.y = calU.z * calV.x - calU.x * calV.z;
+        output.z = calU.x * calV.y - calU.y * calV.x;
+
+        output.normalize();
+        return output;
+    }
+
+	public void computeTangents() {
 		tangents.clear();
 		for(int i = 0; i < vertices.size(); i++ )
 			tangents.add(new Vector3f());
 
-		for(int i = 0; i < indices.size(); i += 3)
-		{
+		for(int i = 0; i < indices.size(); i += 3) {
 			int i0 = indices.get(i);
 			int i1 = indices.get(i + 1);
 			int i2 = indices.get(i + 2);
@@ -149,13 +160,11 @@ public class IndexedModel
 			tangents.get(i).normalize();
 	}
 
-    public ArrayList<OBJLoader.OBJIndex> getObjIndices()
-    {
+    public ArrayList<OBJLoader.OBJIndex> getObjIndices() {
         return objindices;
     }
 
-    public org.lwjgl.util.vector.Vector3f computeCenter()
-    {
+    public org.lwjgl.util.vector.Vector3f computeCenter() {
         float x = 0;
         float y = 0;
         float z = 0;

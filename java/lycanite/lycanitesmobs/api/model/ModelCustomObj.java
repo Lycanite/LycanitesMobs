@@ -4,8 +4,8 @@ import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.modelloader.obj.ObjObject;
 import lycanite.lycanitesmobs.api.modelloader.obj.TessellatorModel;
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.ResourceLocation;
@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 @SideOnly(Side.CLIENT)
-public class ModelCustomObj extends ModelBase {
+public class ModelCustomObj extends ModelCustom {
     // Global:
     /** An initial x rotation applied to make Blender models match Minecraft. **/
     public static float modelXRotOffset = 180F;
@@ -103,10 +103,11 @@ public class ModelCustomObj extends ModelBase {
      * @param loop A continuous loop counting every tick, used for constant idle animations, etc.
      * @param lookY A y looking rotation used by the head, etc.
      * @param lookX An x looking rotation used by the head, etc.
+     * @param layer The layer that is being rendered, if null the default base layer is being rendered.
      * @param scale Use to scale this mob. The default scale is 0.0625 (not sure why)! For a trophy/head-only model, set the scale to a negative amount, -1 will return a head similar in size to that of a Zombie head.
      */
     @Override
-    public void render(Entity entity, float time, float distance, float loop, float lookY, float lookX, float scale) {
+    public void render(Entity entity, float time, float distance, float loop, float lookY, float lookX, float scale, LayerRenderer<EntityCreatureBase> layer) {
     	super.render(entity, time, distance, loop, lookY, lookX, scale);
 
         // Assess Scale and Check if Trophy:

@@ -1,8 +1,10 @@
 package lycanite.lycanitesmobs.api.model;
 
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.api.render.RenderCreature;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraftforge.fml.relauncher.Side;
@@ -53,6 +55,10 @@ public class ModelCustom extends ModelBase {
    	// ==================================================
     @Override
     public void render(Entity entity, float time, float distance, float loop, float lookY, float lookX, float scale) {
+        this.render(entity, time, distance, loop, lookY, lookX, scale, null);
+    }
+
+    public void render(Entity entity, float time, float distance, float loop, float lookY, float lookX, float scale, LayerRenderer<EntityCreatureBase> layer) {
         float sizeScale = 1F;
 		if(entity instanceof EntityCreatureBase) {
             sizeScale *= ((EntityCreatureBase) entity).getRenderScale();
@@ -82,5 +88,13 @@ public class ModelCustom extends ModelBase {
    	// ==================================================
     public void animate(EntityLiving entity, float time, float distance, float loop, float lookY, float lookX, float scale) {
     	return;
+    }
+
+
+    // ==================================================
+    //             Add Custom Render Layers
+    // ==================================================
+    public void addCustomLayers(RenderCreature renderer) {
+
     }
 }

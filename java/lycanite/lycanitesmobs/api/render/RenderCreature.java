@@ -4,6 +4,7 @@ import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
+import lycanite.lycanitesmobs.api.model.ModelCustom;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderLiving;
@@ -30,6 +31,10 @@ public class RenderCreature extends RenderLiving {
   	// ==================================================
     public RenderCreature(String entityID, RenderManager renderManager) {
     	super(renderManager, AssetManager.getModel(entityID), 0.5F);
+        if(this.mainModel instanceof ModelCustom) {
+            ModelCustom modelCustom = (ModelCustom)this.mainModel;
+            modelCustom.addCustomLayers(this);
+        }
     }
     
     

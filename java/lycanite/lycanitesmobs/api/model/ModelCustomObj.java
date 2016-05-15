@@ -118,11 +118,12 @@ public class ModelCustomObj extends ModelBase {
 		else {
 			scale *= 16;
 			if(entity instanceof EntityCreatureBase) {
-                scale *= ((EntityCreatureBase) entity).getRenderScale();
+                scale *= ((EntityCreatureBase)entity).getRenderScale();
             }
 		}
 
         // Render and Animate Each Part:
+        this.wavefrontObject.entity = entity;
         for(ObjObject part : this.wavefrontParts) {
     		if(part.getName() == null)
     			continue;

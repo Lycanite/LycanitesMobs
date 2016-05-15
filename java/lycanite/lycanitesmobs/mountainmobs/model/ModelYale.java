@@ -114,7 +114,8 @@ public class ModelYale extends ModelCustomObj {
 		}
 		
 		// Fur:
-		if(!this.dontColor) GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+		if(!this.dontColor)
+            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		if(partName.equals("fur") && entity instanceof EntityYale) {
 			if(!((EntityYale)entity).hasFur()) {
 				this.scale(0, 0, 0);

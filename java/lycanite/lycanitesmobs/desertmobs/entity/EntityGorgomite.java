@@ -25,7 +25,7 @@ import java.util.HashMap;
 
 public class EntityGorgomite extends EntityCreatureBase implements IMob, IGroupPrey {
 	private EntityAIAttackRanged rangedAttackAI;
-	private int gorgomiteSwarmLimit = 20;
+	private int gorgomiteSwarmLimit = 10;
     
     // ==================================================
  	//                    Constructor
@@ -127,8 +127,10 @@ public class EntityGorgomite extends EntityCreatureBase implements IMob, IGroupP
 	// ========== Attack Class ==========
     @Override
     public boolean canAttackClass(Class targetClass) {
-    	if(targetClass.isAssignableFrom(EntityJoustAlpha.class))
+    	if(targetClass.isAssignableFrom(IGroupAlpha.class))
         	return false;
+        if(targetClass.isAssignableFrom(IGroupPredator.class))
+            return false;
     	return super.canAttackClass(targetClass);
     }
     

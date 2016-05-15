@@ -30,12 +30,11 @@ public class RandomPositionGenerator {
     }
 
     // ========== Find Random Waypoint from Target ==========
-    public static Vec3d findRandomTargetAwayFrom(EntityCreatureBase entity, int range, int height, Vec3d par3Vec3d) {
-        staticVector = new Vec3d(par3Vec3d.xCoord - entity.posX, par3Vec3d.yCoord - entity.posY, par3Vec3d.zCoord - entity.posZ);
-        return findRandomTargetAwayFrom(entity, range, height, staticVector, 0);
+    public static Vec3d findRandomTargetAwayFrom(EntityCreatureBase entity, int range, int height, Vec3d avoidTarget) {
+        return findRandomTargetAwayFrom(entity, range, height, avoidTarget, 0);
     }
-    public static Vec3d findRandomTargetAwayFrom(EntityCreatureBase entity, int range, int height, Vec3d par3Vec3d, int heightLevel) {
-        staticVector = new Vec3d(par3Vec3d.xCoord - entity.posX, par3Vec3d.yCoord - entity.posY, par3Vec3d.zCoord - entity.posZ);
+    public static Vec3d findRandomTargetAwayFrom(EntityCreatureBase entity, int range, int height, Vec3d avoidTarget, int heightLevel) {
+        staticVector = new Vec3d(entity.posX, entity.posY, entity.posZ).subtract(avoidTarget);
         return getTargetBlock(entity, range, height, staticVector, heightLevel);
     }
 

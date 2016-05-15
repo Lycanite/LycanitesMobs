@@ -99,6 +99,11 @@ public class EntityAITargetAvoid extends EntityAITarget {
   	// ==================================================
     @Override
     public boolean shouldExecute() {
+        // Check for other avoid target AIs:
+        EntityLivingBase avoidTarget = this.getTarget();
+        if(avoidTarget != null && !this.isValidTarget(avoidTarget))
+            return false;
+
     	this.target = null;
     	
         if(this.targetChance > 0 && this.host.getRNG().nextInt(this.targetChance) != 0)

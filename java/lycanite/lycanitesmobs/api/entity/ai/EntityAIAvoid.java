@@ -1,5 +1,6 @@
 package lycanite.lycanitesmobs.api.entity.ai;
 
+import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -69,18 +70,24 @@ public class EntityAIAvoid extends EntityAIBase {
         if(this.targetClass != null && !this.targetClass.isAssignableFrom(this.avoidTarget.getClass()))
             return false;
 
-        if(this.host.getDistanceSqToEntity(this.avoidTarget) >= this.farDistance) {
+        /*if(this.host.getDistanceSqToEntity(this.avoidTarget) >= this.farDistance) {
         	return false;
+        }*/
+        
+        Vec3d avoidVector = RandomPositionGenerator.findRandomTargetAwayFrom(this.host, 16, 7, new Vec3d(this.avoidTarget.posX, this.avoidTarget.posY, this.avoidTarget.posZ));
+        if(avoidVector == null)
+            return false;
+        
+        if(this.avoidTarget.getDistanceSq(avoidVector.xCoord, avoidVector.yCoord, avoidVector.zCoord) < this.avoidTarget.getDistanceSqToEntity(this.host))
+            return false;
+
+        if(!this.host.useFlightNavigator()) {
+            this.pathEntity = this.host.getNavigator().getPathToXYZ(avoidVector.xCoord, avoidVector.yCoord, avoidVector.zCoord);
+            if(this.pathEntity == null)// || !this.pathEntity.isDestinationSame(avoidVector))
+                return false;
         }
         
-        Vec3d vec3 = RandomPositionGenerator.findRandomTargetAwayFrom(this.host, 24, 10, new Vec3d(this.avoidTarget.posX, this.avoidTarget.posY, this.avoidTarget.posZ));
-        if(vec3 == null)
-            return false;
-        
-        if(this.avoidTarget.getDistanceSq(vec3.xCoord, vec3.yCoord, vec3.zCoord) < this.avoidTarget.getDistanceSqToEntity(this.host))
-            return false;
-        
-        return this.pathEntity == null ? false : this.pathEntity.isDestinationSame(vec3);
+        return true;
     }
 	
     
@@ -92,8 +99,9 @@ public class EntityAIAvoid extends EntityAIBase {
         	return false;
 		if(this.host.useFlightNavigator() && this.host.flightNavigator.atTargetPosition())
 			return false;
-        if(this.host.getDistanceSqToEntity(this.avoidTarget) >= this.farDistance)
-        	return false;
+
+        /*if(this.host.getDistanceSqToEntity(this.avoidTarget) >= this.farDistance)
+        	return false;*/
     	return true;
     }
 	
@@ -121,7 +129,7 @@ public class EntityAIAvoid extends EntityAIBase {
  	//                      Update
  	// ==================================================
     public void updateTask() {
-        if(this.host.getDistanceSqToEntity(this.avoidTarget) < 49.0D)
+        if(this.host.getDistanceSqToEntity(this.avoidTarget) < this.nearDistance)
         	if(!this.host.useFlightNavigator())
         		this.host.getNavigator().setSpeed(this.nearSpeed);
         	else

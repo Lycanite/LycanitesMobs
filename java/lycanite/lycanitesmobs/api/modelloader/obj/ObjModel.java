@@ -1,12 +1,13 @@
 package lycanite.lycanitesmobs.api.modelloader.obj;
 
+import lycanite.lycanitesmobs.api.modelloader.obj.ObjEvent.EventType;
+import net.minecraft.entity.Entity;
+import org.apache.commons.io.output.ByteArrayOutputStream;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.io.output.ByteArrayOutputStream;
-import lycanite.lycanitesmobs.api.modelloader.obj.ObjEvent.EventType;
 
 public abstract class ObjModel extends Model
 {
@@ -14,6 +15,8 @@ public abstract class ObjModel extends Model
     public List<ObjObject> objObjects;
 
     protected String filename;
+
+    public Entity entity;
     
     ObjModel()
     {

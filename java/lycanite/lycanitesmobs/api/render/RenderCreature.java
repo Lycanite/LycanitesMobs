@@ -43,8 +43,10 @@ public class RenderCreature extends RenderLiving {
     * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
     */
     @Override
-    public void doRender(EntityLiving entityLiving, double par2, double par4, double par6, float par8, float par9) {
-        super.doRender(entityLiving, par2, par4, par6, par8, par9);
+    public void doRender(EntityLiving entity, double x, double y, double z, float entityYaw, float partialTicks) {
+        //if (net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.client.event.RenderLivingEvent.Pre<T>(entity, this, x, y, z)))
+        //    return;
+        super.doRender(entity, x, y, z, entityYaw, partialTicks);
 
     	/*EntityLivingBase par1EntityLivingBase = (EntityLivingBase)entityLiving;
        if(MinecraftForge.EVENT_BUS.post(new RenderLivingEvent.Pre(par1EntityLivingBase, this, par2, par4, par6))) return;
@@ -297,24 +299,24 @@ public class RenderCreature extends RenderLiving {
     /**
      * Renders the model in RenderLiving
      */
-    protected void renderPassModel(ModelBase model, EntityLivingBase par1EntityLivingBase, float par2, float par3, float par4, float par5, float par6, float par7) {
-        if (!par1EntityLivingBase.isInvisible())
-        	model.render(par1EntityLivingBase, par2, par3, par4, par5, par6, par7);
-        else if (!par1EntityLivingBase.isInvisibleToPlayer(Minecraft.getMinecraft().thePlayer)) {
+    protected void renderPassModel(ModelBase model, EntityLivingBase entityLivingBase, float time, float distance, float loop, float lookX, float lookY, float scale) {
+        if (!entityLivingBase.isInvisible())
+        	model.render(entityLivingBase, time, distance, loop, lookX, lookY, scale);
+        else if (!entityLivingBase.isInvisibleToPlayer(Minecraft.getMinecraft().thePlayer)) {
             GL11.glPushMatrix();
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.15F);
             GL11.glDepthMask(false);
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
-            model.render(par1EntityLivingBase, par2, par3, par4, par5, par6, par7);
+            model.render(entityLivingBase, time, distance, loop, lookX, lookY, scale);
             GL11.glDisable(GL11.GL_BLEND);
             GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
             GL11.glPopMatrix();
             GL11.glDepthMask(true);
         }
         else
-        	model.setRotationAngles(par2, par3, par4, par5, par6, par7, par1EntityLivingBase);
+        	model.setRotationAngles(time, distance, loop, lookX, lookY, scale, entityLivingBase);
     }
     
     

@@ -112,8 +112,10 @@ public class MobEventManager {
 
 
         // ===== Update Mob Events =====
-        for(MobEventServer mobEventServer : worldExt.serverMobEvents.toArray(new MobEventServer[worldExt.serverMobEvents.size()])) {
-            mobEventServer.onUpdate();
+        if(worldExt.serverMobEvents.size() > 0) {
+            for (MobEventServer mobEventServer : worldExt.serverMobEvents.toArray(new MobEventServer[worldExt.serverMobEvents.size()])) {
+                mobEventServer.onUpdate();
+            }
         }
 
 

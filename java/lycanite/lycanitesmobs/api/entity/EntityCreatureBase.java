@@ -944,6 +944,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     // ========== On Spawn ==========
     /** This is called when the mob is first spawned to the world either through natural spawning or from a Spawn Egg. **/
     public void onFirstSpawn() {
+        if(this.hasPetEntry())
+            return;
         if(MobInfo.subspeciesSpawn)
     	    this.getRandomSubspecies();
         if(MobInfo.randomSizes)
@@ -964,8 +966,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 
     // ========== Get Random Size ==========
     public void getRandomSize() {
-    	this.sizeScale = 1.0D + (0.35D * (0.5D - this.getRNG().nextDouble()));
-    	this.updateSize();
+    	this.setSizeScale(1.0D + (0.35D * (0.5D - this.getRNG().nextDouble())));
     }
 
 

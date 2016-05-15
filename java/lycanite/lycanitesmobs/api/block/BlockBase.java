@@ -186,6 +186,7 @@ public class BlockBase extends Block {
 	// ==================================================
 	//                    Collision
 	// ==================================================
+	// ========== Is Block Passable ==========
     @Override
     public boolean isPassable(IBlockAccess worldIn, BlockPos pos) {
         if(this.noEntityCollision)
@@ -193,6 +194,7 @@ public class BlockBase extends Block {
         return !this.blockMaterial.blocksMovement();
     }
 
+    // ========== Is Block Solid ==========
     @Override
     public boolean isBlockSolid(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
         if(this.noEntityCollision)
@@ -200,17 +202,24 @@ public class BlockBase extends Block {
         return worldIn.getBlockState(pos).getMaterial().isSolid();
     }
 
+    // ========== Physical Collision Box ==========
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+        if(!this.isCollidable())
+            return Block.NULL_AABB;
+        return super.getBoundingBox(state, world, pos);
+    }
+
+    // ========== Selection Box ==========
     @Override
     public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World world, BlockPos pos) {
-        if(!this.isCollidable())
-            return null;
         return super.getSelectedBoundingBox(state, world, pos);
     }
     
     // ========== Punch Collision ==========
     @Override
     public boolean isCollidable() {
-        return !this.noBreakCollision;
+        return !this.noEntityCollision;
     }
     
     // ========== Is Opaque ==========
@@ -223,9 +232,9 @@ public class BlockBase extends Block {
     @SideOnly(Side.CLIENT)
     @Override
     public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World world, BlockPos pos) {
-        if(!this.isCollidable())
+        if(this.noBreakCollision)
             return null;
-        return super.getCollisionBoundingBox(state, world, pos);
+        return super.getSelectedBoundingBox(state, world, pos);
     }
     
     

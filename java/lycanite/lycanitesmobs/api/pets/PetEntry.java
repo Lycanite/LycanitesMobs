@@ -438,7 +438,7 @@ public class PetEntry {
     // ==================================================
     //                    Assign Entity
     // ==================================================
-    /** Connects this petEntry to the provided entity. If there is already an entity attached then the attached entity will be despawned. **/
+    /** Connects this PetEntry to the provided entity. If there is already an entity attached then the attached entity will be despawned. **/
     public void assignEntity(Entity entity) {
         if(this.entity != null)
             this.despawnEntity();

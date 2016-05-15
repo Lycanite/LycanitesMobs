@@ -1,6 +1,6 @@
 package lycanite.lycanitesmobs.api.modelloader.obj;
 
-import lycanite.lycanitesmobs.api.modelloader.obj.*;
+import lycanite.lycanitesmobs.api.modelloader.obj.ObjEvent.EventType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
@@ -9,7 +9,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.EventBus;
-import lycanite.lycanitesmobs.api.modelloader.obj.ObjEvent.EventType;
 import org.lwjgl.util.vector.Vector3f;
 
 import java.io.IOException;
@@ -108,6 +107,17 @@ public class TessellatorModel extends ObjModel
         int[] indices = obj.mesh.indices;
         Vertex[] vertices = obj.mesh.vertices;
         vertexBuffer.begin(GL_TRIANGLES, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
+
+        /*/Lighting Settings:
+        int entityX = MathHelper.floor_double(this.entity.posX);
+        int entityY = MathHelper.floor_double(this.entity.posY);
+        int entityZ = MathHelper.floor_double(this.entity.posZ);
+        int lightQuality = 5;
+        if (Minecraft.getMinecraft().gameSettings.fancyGraphics)
+            lightQuality = 10;*/
+
+
+
         for(int i = 0; i < indices.length; i += 3) {
             int i0 = indices[i];
             int i1 = indices[i + 1];
@@ -115,6 +125,14 @@ public class TessellatorModel extends ObjModel
             Vertex v0 = vertices[i0];
             Vertex v1 = vertices[i1];
             Vertex v2 = vertices[i2];
+
+            /*/ Lighting:
+            BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
+            int lightHeight = this.entity.worldObj.getPrecipitationHeight(blockpos$mutableblockpos).getY();
+            blockpos$mutableblockpos.set(entityX - lightQuality, lightHeight, entityZ - lightQuality);
+            int lightLevel = this.entity.worldObj.getCombinedLight(blockpos$mutableblockpos, 0);
+            int s = lightLevel >> 16 & 65535;
+            int t = lightLevel & 65535;*/
 
             vertexBuffer
                     .pos(v0.getPos().x, v0.getPos().y, v0.getPos().z)

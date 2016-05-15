@@ -108,8 +108,6 @@ public class ModelCustomObj extends ModelCustom {
      */
     @Override
     public void render(Entity entity, float time, float distance, float loop, float lookY, float lookX, float scale, LayerRenderer<EntityCreatureBase> layer) {
-    	super.render(entity, time, distance, loop, lookY, lookX, scale);
-
         // Assess Scale and Check if Trophy:
 		boolean trophyModel = false;
 		if(scale < 0) {
@@ -128,13 +126,16 @@ public class ModelCustomObj extends ModelCustom {
         for(ObjObject part : this.wavefrontParts) {
     		if(part.getName() == null)
     			continue;
+            String partName = part.getName().toLowerCase();
 
             // Trophy - Check if Trophy Part:
-    		boolean isTrophyPart = this.isTrophyPart(part.getName());
-    		if(this.bodyIsTrophy && part.getName().toLowerCase().contains("body")) {
+    		boolean isTrophyPart = this.isTrophyPart(partName);
+    		if(this.bodyIsTrophy && partName.contains("body")) {
                 isTrophyPart = true;
     		}
-            if(trophyModel && !isTrophyPart)
+
+            // Skip Part If Not Rendered:
+            if(!this.canRenderPart(partName, entity, layer, trophyModel) || (trophyModel && !isTrophyPart))
                 continue;
 
             // Begin Rendering Part:
@@ -146,7 +147,7 @@ public class ModelCustomObj extends ModelCustom {
 
             // Baby Heads:
             if(this.isChild && !trophyModel)
-                this.childScale(part.getName().toLowerCase());
+                this.childScale(partName);
 
             // Apply Scales:
             this.scale(scale, scale, scale);
@@ -154,34 +155,34 @@ public class ModelCustomObj extends ModelCustom {
                 this.scale(this.trophyScale, this.trophyScale, this.trophyScale);
 
             // Animate (Part is centered and then animated):
-            this.centerPart(part.getName().toLowerCase());
-            this.animatePart(part.getName().toLowerCase(), (EntityLiving)entity, time, distance, loop, -lookY, lookX, scale);
+            this.centerPart(partName);
+            this.animatePart(partName, (EntityLiving)entity, time, distance, loop, -lookY, lookX, scale);
 
             // Trophy - Positioning:
             if(trophyModel) {
-                if(!part.getName().toLowerCase().contains("head") && !part.getName().toLowerCase().contains("body")) {
-                	float[] mouthOffset = this.comparePartCenters(this.bodyIsTrophy ? "body" : "head", part.getName().toLowerCase());
+                if(!partName.contains("head") && !partName.contains("body")) {
+                	float[] mouthOffset = this.comparePartCenters(this.bodyIsTrophy ? "body" : "head", partName);
                     this.translate(mouthOffset[0], mouthOffset[1], mouthOffset[2]);
                     if(this.trophyMouthOffset.length >= 3)
                     	this.translate(this.trophyMouthOffset[0], this.trophyMouthOffset[1], this.trophyMouthOffset[2]);
                 }
-                if(part.getName().toLowerCase().contains("head")) {
-                	if(!part.getName().toLowerCase().contains("left")) {
+                if(partName.contains("head")) {
+                	if(!partName.contains("left")) {
                 			this.translate(-0.3F, 0, 0);
                 			this.rotate(5F, 0, 1, 0);
                 	}
-                	if(!part.getName().toLowerCase().contains("right")) {
+                	if(!partName.contains("right")) {
                 			this.translate(0.3F, 0, 0);
                 			this.rotate(-5F, 0, 1, 0);
                 	}
                 }
-                this.uncenterPart(part.getName().toLowerCase());
+                this.uncenterPart(partName);
                 if(this.trophyOffset.length >= 3)
                     this.translate(this.trophyOffset[0], this.trophyOffset[1], this.trophyOffset[2]);
             }
 
             // Render:
-            this.uncenterPart(part.getName().toLowerCase());
+            this.uncenterPart(partName);
             GlStateManager.disableLighting();
             // TODO Fix bad lighting.
             this.wavefrontObject.renderGroup(part);
@@ -204,11 +205,13 @@ public class ModelCustomObj extends ModelCustom {
     	return false;
     }
 
-    /** Returns true if the provided part should be shown for the trophy model. **/
-    public boolean isTrophyPart(OBJModel.Group part) {
-    	if(part == null)
-    		return false;
-    	return this.isTrophyPart(part.getName().toLowerCase());
+
+    // ==================================================
+    //                Can Render Part
+    // ==================================================
+    /** Returns true if the part can be rendered, this can do various checks such as Yale wool only rendering in the YaleWoolLayer or hiding body parts in place of armor parts, etc. **/
+    public boolean canRenderPart(String partName, Entity entity, LayerRenderer<EntityCreatureBase> layer, boolean trophy) {
+        return true;
     }
     
     

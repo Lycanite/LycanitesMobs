@@ -1,9 +1,15 @@
 package lycanite.lycanitesmobs.mountainmobs.renderer;
 
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.api.model.ModelCustom;
 import lycanite.lycanitesmobs.api.render.RenderCreature;
+import lycanite.lycanitesmobs.mountainmobs.entity.EntityYale;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+@SideOnly(Side.CLIENT)
 public class LayerYaleWool implements LayerRenderer<EntityCreatureBase> {
     RenderCreature renderer;
 
@@ -16,13 +22,21 @@ public class LayerYaleWool implements LayerRenderer<EntityCreatureBase> {
 
 
     @Override
-    public void doRenderLayer(EntityCreatureBase entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        //TODO Render wool layer!
+    public void doRenderLayer(EntityCreatureBase entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+        if(entity != null && !entity.isInvisible() && entity instanceof EntityYale) {
+            if(!((EntityYale)entity).hasFur())
+                return;
+            int colorID = entity.getColor();
+            GlStateManager.color(RenderCreature.colorTable[colorID][0], RenderCreature.colorTable[colorID][1], RenderCreature.colorTable[colorID][2], 1.0F);
+        }
+
+        if(this.renderer.getMainModel() instanceof ModelCustom)
+            ((ModelCustom)this.renderer.getMainModel()).render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, this);
     }
 
 
     @Override
     public boolean shouldCombineTextures() {
-        return false;
+        return true;
     }
 }

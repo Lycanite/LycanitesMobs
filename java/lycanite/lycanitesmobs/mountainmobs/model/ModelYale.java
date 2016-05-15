@@ -4,8 +4,9 @@ import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.model.ModelCustomObj;
 import lycanite.lycanitesmobs.api.render.RenderCreature;
 import lycanite.lycanitesmobs.mountainmobs.MountainMobs;
-import lycanite.lycanitesmobs.mountainmobs.entity.EntityYale;
-import net.minecraft.client.renderer.GlStateManager;
+import lycanite.lycanitesmobs.mountainmobs.renderer.LayerYaleWool;
+import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -42,6 +43,27 @@ public class ModelYale extends ModelCustomObj {
     	// Trophy:
         this.trophyScale = 1.0F;
         this.trophyOffset = new float[] {0.0F, -0.15F, -0.4F};
+    }
+
+
+    // ==================================================
+    //             Add Custom Render Layers
+    // ==================================================
+    @Override
+    public void addCustomLayers(RenderCreature renderer) {
+        renderer.addLayer(new LayerYaleWool(renderer));
+    }
+
+
+    // ==================================================
+    //                Can Render Part
+    // ==================================================
+    @Override
+    public boolean canRenderPart(String partName, Entity entity, LayerRenderer<EntityCreatureBase> layer, boolean trophy) {
+        if("fur".equals(partName)) {
+            return layer instanceof LayerYaleWool;
+        }
+        return super.canRenderPart(partName, entity, layer, trophy);
     }
     
     
@@ -113,7 +135,7 @@ public class ModelYale extends ModelCustomObj {
 	    		rotX -= 50;
 		}
 		
-		// Fur:
+		/*/ Fur:
 		if(!this.dontColor)
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		if(partName.equals("fur") && entity instanceof EntityYale) {
@@ -124,7 +146,7 @@ public class ModelYale extends ModelCustomObj {
 				int colorID = ((EntityCreatureBase)entity).getColor();
                 GlStateManager.color(RenderCreature.colorTable[colorID][0], RenderCreature.colorTable[colorID][1], RenderCreature.colorTable[colorID][2], 1.0F);
 			}
-		}
+		}*/
     	
     	// Apply Animations:
 		this.rotate(rotation, angleX, angleY, angleZ);

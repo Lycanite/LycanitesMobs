@@ -8,8 +8,6 @@ import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
-import lycanite.lycanitesmobs.api.render.RenderCreature;
-import lycanite.lycanitesmobs.mountainmobs.renderer.LayerYaleWool;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -303,13 +301,5 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
     public void writeEntityToNBT(NBTTagCompound nbtTagCompound) {
     	super.writeEntityToNBT(nbtTagCompound);
     	nbtTagCompound.setBoolean("HasFur", this.hasFur());
-    }
-
-
-    // ==================================================
-    //             Add Custom Render Layers
-    // ==================================================
-    public void applyRenderer(RenderCreature renderer) {
-        renderer.addLayer(new LayerYaleWool(renderer));
     }
 }

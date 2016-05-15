@@ -2782,7 +2782,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     	
     	// Color:
     	if("Color".equals(command)) {
-    		int colorID = itemStack.getItemDamage(); // TODO Investigate EnumDyeColor
+    		int colorID = 15 - itemStack.getItemDamage();
             if(colorID != this.getColor()) {
                 this.setColor(colorID);
         		this.consumePlayersItem(player, itemStack);

@@ -1,5 +1,5 @@
 {
-	"variants": {
-		"normal": { "model": "arcticmobs:frostweb" }
-	}
+	"multipart": [
+		{ "apply": { "model" : "arcticmobs:frostweb" } }
+	]
 }

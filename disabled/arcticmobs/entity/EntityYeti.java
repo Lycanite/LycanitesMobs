@@ -10,6 +10,7 @@ import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -17,9 +18,11 @@ import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
@@ -45,7 +48,6 @@ public class EntityYeti extends EntityCreatureAgeable implements IAnimals, IGrou
         this.setupMob();
         
         // AI Tasks:
-        this.getNavigator().setAvoidsWater(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIAttackMelee(this).setLongMemory(false));
         this.tasks.addTask(2, new EntityAIAvoid(this).setNearSpeed(1.3D).setFarSpeed(1.2D).setNearDistance(5.0D).setFarDistance(20.0D));
@@ -90,22 +92,22 @@ public class EntityYeti extends EntityCreatureAgeable implements IAnimals, IGrou
     public void onLivingUpdate() {
         super.onLivingUpdate();
         
-        // Frost Trail:
+        // Trail:
         if(!this.worldObj.isRemote && (this.ticksExisted % 10 == 0 || this.isMoving() && this.ticksExisted % 5 == 0)) {
-        	int trailHeight = 3;
-        	if(this.isChild())
-        		trailHeight = 2;
-        	for(int y = 0; y < trailHeight; y++) {
-        		Block block = this.worldObj.getBlock((int)this.posX, (int)this.posY + y, (int)this.posZ);
-        		if(block == Blocks.air || block == ObjectManager.getBlock("FrostCloud"))
-        			this.worldObj.setBlock((int)this.posX, (int)this.posY + y, (int)this.posZ, ObjectManager.getBlock("FrostCloud"));
-        	}
-		}
+            int trailHeight = 2;
+            if(this.isChild())
+                trailHeight = 1;
+            for(int y = 0; y < trailHeight; y++) {
+                Block block = this.worldObj.getBlockState(this.getPosition().add(0, y, 0)).getBlock();
+                if(block == Blocks.air || block == Blocks.snow || block == ObjectManager.getBlock("frostcloud"))
+                    this.worldObj.setBlockState(this.getPosition().add(0, y, 0), ObjectManager.getBlock("frostcloud").getDefaultState());
+            }
+        }
         
         // Particles:
         if(this.worldObj.isRemote)
 	        for(int i = 0; i < 2; ++i) {
-	            this.worldObj.spawnParticle("snowshovel", this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
+	            this.worldObj.spawnParticle(EnumParticleTypes.SNOW_SHOVEL, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
 	        }
     }
 	
@@ -115,23 +117,22 @@ public class EntityYeti extends EntityCreatureAgeable implements IAnimals, IGrou
    	// ==================================================
 	// ========== Pathing Weight ==========
 	@Override
-	public float getBlockPathWeight(int par1, int par2, int par3) {
-		if(this.worldObj.getBlock(par1, par2 - 1, par3) != Blocks.air) {
-			Block block = this.worldObj.getBlock(par1, par2 - 1, par3);
-			if(block.getMaterial() == Material.grass || block.getMaterial() == Material.snow)
-				return 10F;
-			if(block.getMaterial() == Material.ground || block.getMaterial() == Material.ice)
-				return 7F;
-		}
-        return super.getBlockPathWeight(par1, par2, par3);
+	public float getBlockPathWeight(int x, int y, int z) {
+        IBlockState blockState = this.worldObj.getBlockState(new BlockPos(x, y - 1, z));
+        Block block = blockState.getBlock();
+        if(block != Blocks.air) {
+            if(blockState.getMaterial() == Material.grass || blockState.getMaterial() == Material.snow)
+                return 10F;
+            if(blockState.getMaterial() == Material.ground || blockState.getMaterial() == Material.ice)
+                return 7F;
+        }
+        return super.getBlockPathWeight(x, y, z);
     }
     
 	// ========== Can leash ==========
     @Override
-    public boolean canLeash(EntityPlayer player) {
-	    if(!this.hasAttackTarget() && !this.hasMaster())
-	        return true;
-	    return super.canLeash(player);
+    public boolean canBeLeashedTo(EntityPlayer player) {
+	    return true;
     }
     
     
@@ -146,7 +147,7 @@ public class EntityYeti extends EntityCreatureAgeable implements IAnimals, IGrou
     	
     	// Effect:
         if(target instanceof EntityLivingBase) {
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, this.getEffectDuration(8), 0));
+            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.moveSlowdown, this.getEffectDuration(8), 0));
         }
         
         return true;
@@ -163,10 +164,10 @@ public class EntityYeti extends EntityCreatureAgeable implements IAnimals, IGrou
     }
 
     @Override
-    public boolean isPotionApplicable(PotionEffect par1PotionEffect) {
-        if(par1PotionEffect.getPotionID() == Potion.moveSlowdown.id) return false;
-        if(par1PotionEffect.getPotionID() == Potion.hunger.id) return false;
-        return super.isPotionApplicable(par1PotionEffect);
+    public boolean isPotionApplicable(PotionEffect potionEffect) {
+        if(potionEffect.getPotion() == MobEffects.moveSlowdown) return false;
+        if(potionEffect.getPotion() == MobEffects.hunger) return false;
+        return super.isPotionApplicable(potionEffect);
     }
     
     

@@ -9,8 +9,8 @@ import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -18,9 +18,10 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
@@ -54,13 +55,12 @@ public class EntitySerpix extends EntityCreatureTameable implements IGroupPredat
         this.hitAreaScale = 1.5F;
         
         // AI Tasks:
-        this.getNavigator().setAvoidsWater(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIStealth(this).setStealthTime(60));
         this.tasks.addTask(2, this.aiSit);
         this.tasks.addTask(3, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
         this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("serpixtreat"))).setTemptDistanceMin(4.0D));
-        this.tasks.addTask(5, new EntityAIAttackRanged(this).setSpeed(0.5D).setRate(20).setStaminaTime(100).setRange(12.0F).setMinChaseDistance(8.0F).setChaseTime(-1));
+        this.tasks.addTask(5, new EntityAIAttackRanged(this).setSpeed(0.5D).setRate(20).setStaminaTime(100).setRange(12.0F).setMinChaseDistance(8.0F));
         this.tasks.addTask(7, new EntityAIWander(this));
         this.tasks.addTask(9, new EntityAIBeg(this));
 
@@ -137,7 +137,7 @@ public class EntitySerpix extends EntityCreatureTameable implements IGroupPredat
         projectileEntry7.offsetY -= 10D;
         projectiles.add(projectileEntry7);
 
-        double[] launchPos = this.getFacingPosition(4D);
+        BlockPos launchPos = this.getFacingPosition(4D);
         for(EntityProjectileRapidFire projectile : projectiles) {
             projectile.setProjectileScale(1f);
 
@@ -148,16 +148,16 @@ public class EntitySerpix extends EntityCreatureTameable implements IGroupPredat
             float accuracy = 1.0F * (this.getRNG().nextFloat() - 0.5F);
 
             // Set Velocities:
-            double d0 = target.posX - launchPos[0] + accuracy;
+            double d0 = target.posX - launchPos.getX() + accuracy;
             double d1 = target.posY + (double)target.getEyeHeight() - 1.100000023841858D - projectile.posY + accuracy;
-            double d2 = target.posZ - launchPos[2] + accuracy;
+            double d2 = target.posZ - launchPos.getZ() + accuracy;
             float f1 = MathHelper.sqrt_double(d0 * d0 + d2 * d2) * 0.2F;
             float velocity = 1.2F;
             projectile.setThrowableHeading(d0, d1 + (double)f1, d2, velocity, 6.0F);
 
             // Launch:
             this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-            projectile.setPosition(launchPos[0], launchPos[1], launchPos[2]);
+            projectile.setPosition(launchPos.getX(), launchPos.getY(), launchPos.getZ());
             this.worldObj.spawnEntityInWorld(projectile);
         }
 
@@ -170,23 +170,21 @@ public class EntitySerpix extends EntityCreatureTameable implements IGroupPredat
    	// ==================================================
     @Override
     public boolean canStealth() {
-    	if(this.isTamed() && this.isSitting())
-    		return false;
-        int i = MathHelper.floor_double(this.posX);
-        int j = MathHelper.floor_double(this.posY);
-        int k = MathHelper.floor_double(this.posZ);
-        if(this.worldObj.getBlock(i, j - 1, k) != Blocks.air) {
-        	Block floorBlock = this.worldObj.getBlock(i, j - 1, k);
-        	if(floorBlock.getMaterial() == Material.ground) return true;
-        	if(floorBlock.getMaterial() == Material.grass) return true;
-        	if(floorBlock.getMaterial() == Material.leaves) return true;
-        	if(floorBlock.getMaterial() == Material.sand) return true;
-        	if(floorBlock.getMaterial() == Material.clay) return true;
-        	if(floorBlock.getMaterial() == Material.snow) return true;
-        	if(floorBlock.getMaterial() == Material.craftedSnow) return true;
+        if(this.isTamed() && this.isSitting())
+            return false;
+        IBlockState blockState = this.worldObj.getBlockState(this.getPosition().add(0, -1, 0));
+        if(blockState.getBlock() != Blocks.air) {
+            if(blockState.getMaterial() == Material.ground) return true;
+            if(blockState.getMaterial() == Material.grass) return true;
+            if(blockState.getMaterial() == Material.leaves) return true;
+            if(blockState.getMaterial() == Material.sand) return true;
+            if(blockState.getMaterial() == Material.clay) return true;
+            if(blockState.getMaterial() == Material.snow) return true;
+            if(blockState.getMaterial() == Material.craftedSnow) return true;
         }
-        if(this.worldObj.getBlock(i, j - 1, k) == Blocks.netherrack) return true;
-    	return false;
+        if(blockState.getBlock() == Blocks.netherrack)
+            return true;
+        return false;
     }
     
     
@@ -229,8 +227,8 @@ public class EntitySerpix extends EntityCreatureTameable implements IGroupPredat
 
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotionID() == Potion.moveSlowdown.id) return false;
-        if(potionEffect.getPotionID() == Potion.hunger.id) return false;
+        if(potionEffect.getPotion() == MobEffects.moveSlowdown) return false;
+        if(potionEffect.getPotion() == MobEffects.hunger) return false;
         return super.isPotionApplicable(potionEffect);
     }
 	

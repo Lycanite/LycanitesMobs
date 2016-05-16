@@ -57,7 +57,7 @@ public class EntityAfrit extends EntityCreatureTameable implements IMob, IGroupF
         this.setPathPriority(PathNodeType.LAVA, 0F);
         
         // AI Tasks:
-        this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(80).setRange(14.0F).setMinChaseDistance(5.0F).setChaseTime(-1).setCheckSight(false));
+        this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(80).setRange(14.0F).setMinChaseDistance(5.0F).setCheckSight(false));
         this.tasks.addTask(3, this.aiSit);
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
         this.tasks.addTask(5, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("afrittreat"))).setTemptDistanceMin(4.0D));
@@ -90,7 +90,7 @@ public class EntityAfrit extends EntityCreatureTameable implements IMob, IGroupF
 	@Override
 	public void loadItemDrops() {
         this.drops.add(new DropRate(new ItemStack(Items.coal), 0.5F));
-        this.drops.add(new DropRate(new ItemStack(Items.blaze_rod), 0.1F));
+        this.drops.add(new DropRate(new ItemStack(Items.blaze_rod), 0.2F));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("scorchfirecharge")), 0.25F).setMaxAmount(3));
 	}
 	

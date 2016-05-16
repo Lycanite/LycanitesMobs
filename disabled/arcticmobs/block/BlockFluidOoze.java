@@ -1,78 +1,70 @@
 package lycanite.lycanitesmobs.arcticmobs.block;
 
-import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.info.GroupInfo;
+import lycanite.lycanitesmobs.api.block.BlockFluidBase;
 import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
-import net.minecraft.potion.Potion;
+import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-public class BlockFluidOoze extends BlockFluidClassic {
-	public String blockName;
-	public GroupInfo group;
+public class BlockFluidOoze extends BlockFluidBase {
 
 	// ==================================================
 	//                   Constructor
 	// ==================================================
 	public BlockFluidOoze(Fluid fluid) {
-		super(fluid, Material.water);
-		this.blockName = "ooze";
-        this.setBlockName(this.blockName);
-		this.group = ArcticMobs.group;
-		this.setRenderPass(0);
+        super(fluid, Material.water, ArcticMobs.group, "ooze");
 
         this.setLightOpacity(0);
         this.setLightLevel(0.25F);
 	}
-    
-    
-	// ==================================================
-	//                       Fluid
-	// ==================================================
-	@Override
-	public boolean canDisplace(IBlockAccess world, int x, int y, int z) {
-		Block block = world.getBlock(x, y, z);
-		
-		// Freeze Water:
-		if(block == Blocks.water) {
+
+
+    // ==================================================
+    //                       Fluid
+    // ==================================================
+    @Override
+    public boolean canDisplace(IBlockAccess world, BlockPos pos) {
+        IBlockState blockState = world.getBlockState(pos);
+
+        // Freeze Water:
+        if(blockState == Blocks.water) {
             if(world instanceof World) {
-                ((World)world).setBlock(x, y, z, Blocks.ice, 0, 3);
+                ((World)world).setBlockState(pos, Blocks.ice.getDefaultState());
             }
-			return false;
-		}
-		
-		if(block.getMaterial().isLiquid()) return false;
-		return super.canDisplace(world, x, y, z);
-	}
-	
-	@Override
-	public boolean displaceIfPossible(World world, int x, int y, int z) {
-		if(world.getBlock(x, y, z).getMaterial().isLiquid()) return this.canDisplace(world, x, y, z);
-		return super.displaceIfPossible(world, x, y, z);
-	}
+            return false;
+        }
+
+        if(blockState.getMaterial().isLiquid()) return false;
+        return super.canDisplace(world, pos);
+    }
+
+    @Override
+    public boolean displaceIfPossible(World world, BlockPos pos) {
+        if(world.getBlockState(pos).getMaterial().isLiquid()) return this.canDisplace(world, pos);
+        return super.displaceIfPossible(world, pos);
+    }
     
     
 	// ==================================================
 	//                      Collision
 	// ==================================================
 	@Override
-	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
+	public void onEntityCollidedWithBlock(World world, BlockPos pos, Entity entity) {
         if(entity != null) {
             // Damage:
             if (!(entity instanceof EntityItem)) {
@@ -85,11 +77,11 @@ public class BlockFluidOoze extends BlockFluidClassic {
 
             // Effects:
             if(entity instanceof EntityLivingBase) {
-                ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 5 * 20, 0));
-                ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(Potion.hunger.id, 5 * 20, 0));
+                ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(MobEffects.moveSlowdown, 5 * 20, 0));
+                ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(MobEffects.hunger, 5 * 20, 0));
             }
         }
-		super.onEntityCollidedWithBlock(world, x, y, z, entity);
+		super.onEntityCollidedWithBlock(world, pos, entity);
 	}
     
     
@@ -98,37 +90,17 @@ public class BlockFluidOoze extends BlockFluidClassic {
 	// ==================================================
     @Override
     @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(World world, int x, int y, int z, Random random) {
-    	int l;
+    public void randomDisplayTick(IBlockState blockState, World world, BlockPos pos, Random random) {
         float f; 
         float f1;
         float f2;
         
         if (random.nextInt(100) == 0) {
-	        f = (float)x + random.nextFloat();
-	        f1 = (float)y + random.nextFloat() * 0.5F;
-	        f2 = (float)z + random.nextFloat();
-	        world.spawnParticle("snowshovel", (double)f, (double)f1, (double)f2, 0.0D, 0.0D, 0.0D);
+            f = (float)pos.getX() + random.nextFloat();
+            f1 = (float)pos.getY() + random.nextFloat() * 0.5F;
+            f2 = (float)pos.getZ() + random.nextFloat();
+	        world.spawnParticle(EnumParticleTypes.SNOW_SHOVEL, (double)f, (double)f1, (double)f2, 0.0D, 0.0D, 0.0D);
         }
-        super.randomDisplayTick(world, x, y, z, random);
-    }
-    
-    
-	// ==================================================
-	//                      Visuals
-	// ==================================================
-    // ========== Register Icons ==========
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerBlockIcons(IIconRegister iconRegister) {
-    	AssetManager.addSprite(this.blockName + "_still", this.group, this.blockName + "_still", iconRegister);
-    	AssetManager.addSprite(this.blockName + "_flow", this.group, this.blockName + "_flow", iconRegister);
-    }
-    
-    // ========== Get Icon ==========
-    @SideOnly(Side.CLIENT)
-    @Override
-    public IIcon getIcon(int side, int meta) {
-    	return (side == 0 || side == 1) ? AssetManager.getSprite(this.blockName + "_still") : AssetManager.getSprite(this.blockName + "_flow");
+        super.randomDisplayTick(blockState, world, pos, random);
     }
 }

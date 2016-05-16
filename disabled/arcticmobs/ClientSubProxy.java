@@ -1,23 +1,24 @@
 package lycanite.lycanitesmobs.arcticmobs;
 
 import lycanite.lycanitesmobs.AssetManager;
+import lycanite.lycanitesmobs.api.info.GroupInfo;
+import lycanite.lycanitesmobs.api.render.RenderRegister;
 import lycanite.lycanitesmobs.arcticmobs.model.*;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
 public class ClientSubProxy extends CommonSubProxy {
 	
-	// ========== Render ID ==========
-	public static int RENDER_ID = RenderingRegistry.getNextAvailableRenderId();
-	
-	
 	// ========== Register Models ==========
 	@Override
-    public void registerModels() {
+    public void registerModels(GroupInfo groupInfo) {
 		AssetManager.addModel("reiver", new ModelReiver());
 		AssetManager.addModel("frostweaver", new ModelFrostweaver());
 		AssetManager.addModel("yeti", new ModelYeti());
 		AssetManager.addModel("wendigo", new ModelWendigo());
         AssetManager.addModel("arix", new ModelArix());
         AssetManager.addModel("serpix", new ModelSerpix());
+
+        // Register Renderers:
+        RenderRegister renderRegister = new RenderRegister(groupInfo);
+        renderRegister.registerRenderFactories();
 	}
 }

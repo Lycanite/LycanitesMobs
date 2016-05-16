@@ -1,11 +1,10 @@
 package lycanite.lycanitesmobs.arcticmobs.item;
 
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.api.item.ItemScepter;
 import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
 import lycanite.lycanitesmobs.arcticmobs.entity.EntityFrostweb;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -19,7 +18,6 @@ public class ItemScepterFrostweb extends ItemScepter {
     	this.group = ArcticMobs.group;
     	this.itemName = "frostwebscepter";
         this.setup();
-        this.textureName = "scepterfrostweb";
     }
 	
     
@@ -41,11 +39,11 @@ public class ItemScepterFrostweb extends ItemScepter {
 	//                      Attack
 	// ==================================================
     @Override
-    public boolean rapidAttack(ItemStack itemStack, World world, EntityPlayer player) {
+    public boolean rapidAttack(ItemStack itemStack, World world, EntityLivingBase entity) {
     	if(!world.isRemote) {
-        	EntityFrostweb projectile = new EntityFrostweb(world, player);
+        	EntityFrostweb projectile = new EntityFrostweb(world, entity);
         	world.spawnEntityInWorld(projectile);
-            world.playSoundAtEntity(player, ((EntityProjectileBase)projectile).getLaunchSound(), 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+            this.playSound(itemStack, world, entity, 1, projectile);
         }
     	return true;
     }

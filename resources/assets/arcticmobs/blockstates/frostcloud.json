@@ -1,5 +1,5 @@
 {
-	"variants": {
-		"normal": { "model": "arcticmobs:frostcloud" }
-	}
+	"multipart": [
+		{ "apply": { "model" : "arcticmobs:frostcloud" } }
+	]
 }

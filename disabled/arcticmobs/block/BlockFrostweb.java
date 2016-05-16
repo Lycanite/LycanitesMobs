@@ -1,13 +1,19 @@
 package lycanite.lycanitesmobs.arcticmobs.block;
 
+import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.block.BlockBase;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -47,19 +53,19 @@ public class BlockFrostweb extends BlockBase {
 	// ==================================================
 	//                     Break
 	// ==================================================
-	@Override
-	public Item getItemDropped(int breakID, Random random, int zero) {
+    @Override
+    public Item getItemDropped(IBlockState blockState, Random random, int fortune) {
         return ObjectManager.getItem("frostwebcharge");
-	}
-	
-	@Override
-	public int damageDropped(int metadata) {
-		return 0;
-	}
-    
-	@Override
-	public int quantityDropped(Random par1Random) {
+    }
+
+    @Override
+    public int damageDropped(IBlockState blockState) {
         return 0;
+    }
+
+    @Override
+    public int quantityDropped(Random random) {
+        return 1;
     }
     
     
@@ -67,8 +73,8 @@ public class BlockFrostweb extends BlockBase {
 	//                Collision Effects
 	// ==================================================
     @Override
-    public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
-		super.onEntityCollidedWithBlock(world, x, y, z, entity);
+    public void onEntityCollidedWithBlock(World world, BlockPos pos, Entity entity) {
+		super.onEntityCollidedWithBlock(world, pos, entity);
 		entity.setInWeb();
 	}
     
@@ -78,34 +84,30 @@ public class BlockFrostweb extends BlockBase {
 	// ==================================================
     @SideOnly(Side.CLIENT)
     @Override
-    public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
-        int l;
-        float f;
-        float f1;
-        float f2;
+    public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random random) {
+        super.randomDisplayTick(state, world, pos, random);
 
-        for(l = 0; l < 12; ++l) {
-            f = (float)par2 + par5Random.nextFloat();
-            f1 = (float)par3 + par5Random.nextFloat();
-            f2 = (float)par4 + par5Random.nextFloat();
-            par1World.spawnParticle("snowshovel", (double)f, (double)f1, (double)f2, 0.0D, 0.0D, 0.0D);
+        int x = pos.getX();
+        int y = pos.getY();
+        int z = pos.getZ();
+        if(random.nextInt(24) == 0)
+            world.playSound((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), AssetManager.getSound("poisoncloud"), SoundCategory.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F, false);
+
+        for(int particleCount = 0; particleCount < 12; ++particleCount) {
+            float particleX = (float)x + random.nextFloat();
+            float particleY = (float)y + random.nextFloat() * 0.5F;
+            float particleZ = (float)z + random.nextFloat();
+            world.spawnParticle(EnumParticleTypes.SNOW_SHOVEL, (double)particleX, (double)particleY, (double)particleZ, 0.0D, 0.0D, 0.0D, new int[0]);
         }
     }
-    
-    
-	// ==================================================
-	//                      Visuals
-	// ==================================================
-    // ========== Get Render Type ==========
+
+
+    // ==================================================
+    //                      Rendering
+    // ==================================================
     @SideOnly(Side.CLIENT)
     @Override
-    public int getRenderType() {
-        return BlockBase.RENDER_TYPE.CROSS.id;
+    public BlockRenderLayer getBlockLayer() {
+        return BlockRenderLayer.CUTOUT;
     }
-    
-    // ========== Render As Normal ==========
- 	@Override
- 	public boolean renderAsNormalBlock() {
- 		return false;
- 	}
 }

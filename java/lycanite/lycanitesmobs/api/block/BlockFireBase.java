@@ -246,24 +246,9 @@ public class BlockFireBase extends BlockBase {
         }
     }
 
-    /** Returns true if the block at the provided position and face can catch fire. **/
-    public boolean canCatchFire(IBlockAccess world, BlockPos pos, EnumFacing face) {
-        return world.getBlockState(pos).getBlock().isFlammable(world, pos, face);
-    }
-
-    /** Checks if the provided block is a fire source, can be overridden for custom sources. **/
-    public boolean isBlockFireSource(Block block, World world, BlockPos pos, EnumFacing side) {
-        return block.isFireSource(world, pos, side);
-    }
-
-    /** Returns true if this fire block should be extinguished, can check for rain and position, etc. **/
-    protected boolean canDie(World world, BlockPos pos) {
-        return world.isRainingAt(pos) || world.isRainingAt(pos.west()) || world.isRainingAt(pos.east()) || world.isRainingAt(pos.north()) || world.isRainingAt(pos.south());
-    }
-
     /** Attempts to ignite the position. **/
     private void tryCatchFire(World world, BlockPos pos, int chance, Random random, int age, EnumFacing face) {
-        int flammability = world.getBlockState(pos).getBlock().getFlammability(world, pos, face);
+        int flammability = this.getBlockFlammability(world, pos, face);
         if (Math.round(random.nextInt(chance) / this.spreadChance) < flammability) {
             IBlockState blockState = world.getBlockState(pos);
 
@@ -281,6 +266,26 @@ public class BlockFireBase extends BlockBase {
                 Blocks.tnt.onBlockDestroyedByPlayer(world, pos, blockState.withProperty(BlockTNT.EXPLODE, Boolean.valueOf(true)));
             }
         }
+    }
+
+    /** Returns true if the block at the provided position and face can catch fire. **/
+    public boolean canCatchFire(IBlockAccess world, BlockPos pos, EnumFacing face) {
+        return world.getBlockState(pos).getBlock().isFlammable(world, pos, face);
+    }
+
+    /** Checks if the provided block is a fire source, can be overridden for custom sources. **/
+    public boolean isBlockFireSource(Block block, World world, BlockPos pos, EnumFacing side) {
+        return block.isFireSource(world, pos, side);
+    }
+
+    /** Returns how flammable the target block is. **/
+    public int getBlockFlammability(IBlockAccess world, BlockPos pos, EnumFacing face) {
+        return world.getBlockState(pos).getBlock().getFlammability(world, pos, face);
+    }
+
+    /** Returns true if this fire block should be extinguished, can check for rain and position, etc. **/
+    protected boolean canDie(World world, BlockPos pos) {
+        return world.isRainingAt(pos) || world.isRainingAt(pos.west()) || world.isRainingAt(pos.east()) || world.isRainingAt(pos.north()) || world.isRainingAt(pos.south());
     }
 
 

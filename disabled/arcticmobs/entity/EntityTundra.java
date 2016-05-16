@@ -4,11 +4,14 @@ import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
-import net.minecraft.potion.Potion;
+import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class EntityTundra extends EntityProjectileBase {
@@ -19,19 +22,16 @@ public class EntityTundra extends EntityProjectileBase {
     // ==================================================
  	//                   Constructors
  	// ==================================================
-    public EntityTundra(World par1World) {
-        super(par1World);
-        this.setSize(0.3125F, 0.3125F);
+    public EntityTundra(World world) {
+        super(world);
     }
 
-    public EntityTundra(World par1World, EntityLivingBase par2EntityLivingBase) {
-        super(par1World, par2EntityLivingBase);
-        this.setSize(0.3125F, 0.3125F);
+    public EntityTundra(World world, EntityLivingBase entityLivingBase) {
+        super(world, entityLivingBase);
     }
 
-    public EntityTundra(World par1World, double par2, double par4, double par6) {
-        super(par1World, par2, par4, par6);
-        this.setSize(0.3125F, 0.3125F);
+    public EntityTundra(World world, double x, double y, double z) {
+        super(world, x, y, z);
     }
     
     // ========== Setup Projectile ==========
@@ -50,110 +50,72 @@ public class EntityTundra extends EntityProjectileBase {
     //========== Entity Living Collision ==========
     @Override
     public boolean entityLivingCollision(EntityLivingBase entityLiving) {
-    	entityLiving.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, this.getEffectDuration(2), 0));
+    	entityLiving.addPotionEffect(new PotionEffect(MobEffects.moveSlowdown, this.getEffectDuration(2), 0));
     	return true;
     }
     
     //========== Can Destroy Block ==========
     @Override
-    public boolean canDestroyBlock(int x, int y, int z) {
-    	return true;
+    public boolean canDestroyBlock(BlockPos pos) {
+        return true;
     }
-    
-    public boolean canDestroyBlockSub(int x, int y, int z) {
-    	if(this.worldObj.getBlock(x, y, z) == Blocks.snow_layer)
-    		return true;
-    	if(this.worldObj.getBlock(x, y, z) == Blocks.tallgrass)
-    		return true;
-    	if(this.worldObj.getBlock(x, y, z) == Blocks.fire)
-    		return true;
-    	if(this.worldObj.getBlock(x, y, z) == Blocks.web)
-    		return true;
-    	if(this.worldObj.getBlock(x, y, z) == Blocks.lava)
-    		return true;
-    	if(this.worldObj.getBlock(x, y, z) == Blocks.flowing_lava)
-    		return true;
-    	if(ObjectManager.getBlock("PoisonCloud") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("PoisonCloud"))
-    		return true;
-    	if(ObjectManager.getBlock("FrostCloud") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("FrostCloud"))
-    		return true;
-    	if(ObjectManager.getBlock("Frostweb") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("Frostweb"))
-    		return true;
-    	if(ObjectManager.getBlock("QuickWeb") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("QuickWeb"))
-    		return true;
-    	if(ObjectManager.getBlock("Hellfire") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("Hellfire"))
-    		return true;
-        if(ObjectManager.getBlock("Frostfire") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("Frostfire"))
+
+    public boolean canDestroyBlockSub(BlockPos pos) {
+        Block block = this.worldObj.getBlockState(pos).getBlock();
+        if(block == Blocks.snow_layer)
             return true;
-    	if(ObjectManager.getBlock("Icefire") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("Icefire"))
-    		return true;
-        if(ObjectManager.getBlock("Scorchfire") != null && this.worldObj.getBlock(x, y, z) == ObjectManager.getBlock("Scorchfire"))
+        if(block == Blocks.tallgrass)
             return true;
-   	 	return super.canDestroyBlock(x, y, z);
+        if(block == Blocks.fire)
+            return true;
+        if(block == Blocks.web)
+            return true;
+        if(ObjectManager.getBlock("PoisonCloud") != null && block == ObjectManager.getBlock("PoisonCloud"))
+            return true;
+        if(ObjectManager.getBlock("FrostCloud") != null && block == ObjectManager.getBlock("FrostCloud"))
+            return true;
+        if(ObjectManager.getBlock("PoopCloud") != null && block == ObjectManager.getBlock("PoopCloud"))
+            return true;
+        if(ObjectManager.getBlock("Frostweb") != null && block == ObjectManager.getBlock("Frostweb"))
+            return true;
+        if(ObjectManager.getBlock("QuickWeb") != null && block == ObjectManager.getBlock("QuickWeb"))
+            return true;
+        if(ObjectManager.getBlock("Hellfire") != null && block == ObjectManager.getBlock("Hellfire"))
+            return true;
+        if(ObjectManager.getBlock("Frostfire") != null && block == ObjectManager.getBlock("Frostfire"))
+            return true;
+        if(ObjectManager.getBlock("Icefire") != null && block == ObjectManager.getBlock("Icefire"))
+            return true;
+        if(ObjectManager.getBlock("Scorchfire") != null && block == ObjectManager.getBlock("Scorchfire"))
+            return true;
+        return super.canDestroyBlock(pos);
     }
     
     //========== Place Block ==========
     @Override
-    public void placeBlock(World world, int x, int y, int z) {
+    public void placeBlock(World world, BlockPos pos) {
         if(ObjectManager.getBlock("ooze") != null) {
-            if(this.canDestroyBlockSub(x, y, z))
-                world.setBlock(x, y, z, ObjectManager.getBlock("ooze"), 12, 3);
-            if(this.canDestroyBlockSub(x + 1, y, z))
-                world.setBlock(x + 1, y, z, ObjectManager.getBlock("ooze"), 11, 3);
-            if(this.canDestroyBlockSub(x - 1, y, z))
-                world.setBlock(x - 1, y, z, ObjectManager.getBlock("ooze"), 11, 3);
-            if(this.canDestroyBlockSub(x, y, z + 1))
-                world.setBlock(x, y, z + 1, ObjectManager.getBlock("ooze"), 11, 3);
-            if(this.canDestroyBlockSub(x, y, z - 1))
-                world.setBlock(x, y, z - 1, ObjectManager.getBlock("ooze"), 11, 3);
+            IBlockState placedBlockBig = ObjectManager.getBlock("ooze").getStateFromMeta(12);
+            IBlockState placedBlock = ObjectManager.getBlock("ooze").getStateFromMeta(11);
+            if(this.canDestroyBlockSub(pos))
+                world.setBlockState(pos, placedBlockBig, 3);
+            if(this.canDestroyBlockSub(new BlockPos(pos.getX() + 1, pos.getY(), pos.getZ())))
+                world.setBlockState(new BlockPos(pos.getX() + 1, pos.getY(), pos.getZ()), placedBlock, 3);
+            if(this.canDestroyBlockSub(new BlockPos(pos.getX() - 1, pos.getY(), pos.getZ())))
+                world.setBlockState(new BlockPos(pos.getX() - 1, pos.getY(), pos.getZ()), placedBlock, 3);
+            if(this.canDestroyBlockSub(new BlockPos(pos.getX(), pos.getY(), pos.getZ() + 1)))
+                world.setBlockState(new BlockPos(pos.getX(), pos.getY(), pos.getZ() + 1), placedBlock, 3);
+            if(this.canDestroyBlockSub(new BlockPos(pos.getX(), pos.getY(), pos.getZ() - 1)))
+                world.setBlockState(new BlockPos(pos.getX(), pos.getY(), pos.getZ() - 1), placedBlock, 3);
         }
-
-        Block blockBase = world.getBlock(x, y, z);
-        if(blockBase == Blocks.dirt || blockBase == Blocks.grass)
-            world.setBlock(x, y - 1, z, Blocks.snow, 0, 3);
     }
-
-    /** Before Ooze
-    @Override
-    public void placeBlock(World world, int x, int y, int z) {
-    	if(ObjectManager.getBlock("Frostfire") != null) {
-    		if(this.canDestroyBlockSub(x, y, z))
-		   		 world.setBlock(x, y, z, ObjectManager.getBlock("Frostfire"), 12, 3);
-		   	 if(this.canDestroyBlockSub(x + 1, y, z))
-		   		 world.setBlock(x + 1, y, z, ObjectManager.getBlock("Frostfire"), 11, 3);
-		   	 if(this.canDestroyBlockSub(x - 1, y, z))
-			   	 world.setBlock(x - 1, y, z, ObjectManager.getBlock("Frostfire"), 11, 3);
-		   	 if(this.canDestroyBlockSub(x, y, z + 1))
-			   	 world.setBlock(x, y, z + 1, ObjectManager.getBlock("Frostfire"), 11, 3);
-		   	 if(this.canDestroyBlockSub(x, y, z - 1))
-			   	 world.setBlock(x, y, z - 1, ObjectManager.getBlock("Frostfire"), 11, 3);
-    	}
-    	
-    	y++;
-    	if(ObjectManager.getBlock("FrostCloud") != null) {
-		   	 if(this.canDestroyBlockSub(x, y, z))
-		   		 world.setBlock(x, y, z, ObjectManager.getBlock("FrostCloud"), 12, 3);
-		   	 if(this.canDestroyBlockSub(x + 1, y, z))
-		   		 world.setBlock(x + 1, y, z, ObjectManager.getBlock("FrostCloud"), 11, 3);
-		   	 if(this.canDestroyBlockSub(x - 1, y, z))
-			   	 world.setBlock(x - 1, y, z, ObjectManager.getBlock("FrostCloud"), 11, 3);
-		   	 if(this.canDestroyBlockSub(x, y, z + 1))
-			   	 world.setBlock(x, y, z + 1, ObjectManager.getBlock("FrostCloud"), 11, 3);
-		   	 if(this.canDestroyBlockSub(x, y, z - 1))
-			   	 world.setBlock(x, y, z - 1, ObjectManager.getBlock("FrostCloud"), 11, 3);
-    	}
-    	
-    	Block blockBase = world.getBlock(x, y, z);
-    	if(blockBase == Blocks.dirt || blockBase == Blocks.grass)
-    		world.setBlock(x, y - 1, z, Blocks.snow, 0, 3);
-    }**/
     
     //========== On Impact Particles/Sounds ==========
     @Override
     public void onImpactVisuals() {
     	for(int i = 0; i < 8; ++i) {
-    		this.worldObj.spawnParticle("snowshovel", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
-    		this.worldObj.spawnParticle("snowshovel", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
+    		this.worldObj.spawnParticle(EnumParticleTypes.SNOW_SHOVEL, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
+    		this.worldObj.spawnParticle(EnumParticleTypes.SNOW_SHOVEL, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
     	}
     }
 }

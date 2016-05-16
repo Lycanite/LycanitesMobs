@@ -2410,7 +2410,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     public int getFlyingHeight() {
         if(!this.canFly())
             return 20;
-        return 40;
+        return 0;
     }
     /** Returns true if this mob is currently flying. **/
     public boolean isCurrentlyFlying() { return this.canFly(); }

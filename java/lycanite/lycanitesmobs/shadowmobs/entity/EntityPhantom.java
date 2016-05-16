@@ -47,7 +47,7 @@ public class EntityPhantom extends EntityCreatureTameable implements IMob, IGrou
         
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(40).setRange(14.0F).setMinChaseDistance(0.75F).setChaseTime(-1));
+        this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(40).setRange(14.0F).setMinChaseDistance(0.75F).setCheckSight(false));
         this.tasks.addTask(3, this.aiSit);
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
         this.tasks.addTask(8, new EntityAIWander(this));
@@ -135,6 +135,11 @@ public class EntityPhantom extends EntityCreatureTameable implements IMob, IGrou
   	// ==================================================
     @Override
     public boolean canFly() { return true; }
+
+    @Override
+    public boolean useFlightNavigator() {
+        return true;
+    }
     
     
     // ==================================================

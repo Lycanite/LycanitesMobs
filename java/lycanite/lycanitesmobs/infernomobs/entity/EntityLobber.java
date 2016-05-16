@@ -63,7 +63,7 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
         
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this).setSink(true));
-        this.tasks.addTask(1, new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(100).setRange(16.0F).setMinChaseDistance(8.0F).setChaseTime(-1));
+        this.tasks.addTask(1, new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(100).setRange(16.0F).setMinChaseDistance(8.0F));
         this.tasks.addTask(2, new EntityAIStayByWater(this).setSpeed(1.25D));
         this.tasks.addTask(6, wanderAI);
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
@@ -139,7 +139,7 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
                 trailWidth = 3;
         	for(int y = 0; y < trailHeight; y++) {
         		Block block = this.worldObj.getBlockState(this.getPosition().add(0, y, 0)).getBlock();
-        		if(block == Blocks.air || block == Blocks.fire || block == Blocks.snow_layer || block == Blocks.tallgrass || block == ObjectManager.getBlock("frostfire")) {
+        		if(block == Blocks.air || block == Blocks.fire || block == Blocks.snow_layer || block == Blocks.tallgrass || block == ObjectManager.getBlock("frostfire") || block == ObjectManager.getBlock("icefire")) {
                     if(trailWidth == 1)
                         this.worldObj.setBlockState(this.getPosition().add(0, y, 0), Blocks.fire.getDefaultState());
                     else

@@ -1,0 +1,7 @@
+{
+    "parent": "arcticmobs:block/icefire_side_alt",
+    "textures": {
+        "particle": "arcticmobs:blocks/icefire_layer_1",
+        "fire": "arcticmobs:blocks/icefire_layer_1"
+    }
+}

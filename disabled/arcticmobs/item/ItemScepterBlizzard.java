@@ -1,11 +1,10 @@
 package lycanite.lycanitesmobs.arcticmobs.item;
 
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.api.item.ItemScepter;
 import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
 import lycanite.lycanitesmobs.arcticmobs.entity.EntityBlizzard;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -19,7 +18,6 @@ public class ItemScepterBlizzard extends ItemScepter {
     	this.group = ArcticMobs.group;
     	this.itemName = "blizzardscepter";
         this.setup();
-        this.textureName = "scepterblizzard";
     }
 	
     
@@ -41,36 +39,36 @@ public class ItemScepterBlizzard extends ItemScepter {
 	//                      Attack
 	// ==================================================
     @Override
-    public boolean rapidAttack(ItemStack itemStack, World world, EntityPlayer player) {
+    public boolean rapidAttack(ItemStack itemStack, World world, EntityLivingBase entity) {
     	if(!world.isRemote) {
-        	EntityBlizzard projectile = new EntityBlizzard(world, player);
+        	EntityBlizzard projectile = new EntityBlizzard(world, entity);
         	world.spawnEntityInWorld(projectile);
         	
-        	projectile = new EntityBlizzard(world, player);
+        	projectile = new EntityBlizzard(world, entity);
         	projectile.setPosition(projectile.posX + 1.0D, projectile.posY, projectile.posZ);
         	world.spawnEntityInWorld(projectile);
         	
-        	projectile = new EntityBlizzard(world, player);
+        	projectile = new EntityBlizzard(world, entity);
         	projectile.setPosition(projectile.posX - 1.0D, projectile.posY, projectile.posZ);
         	world.spawnEntityInWorld(projectile);
         	
-        	projectile = new EntityBlizzard(world, player);
+        	projectile = new EntityBlizzard(world, entity);
         	projectile.setPosition(projectile.posX, projectile.posY, projectile.posZ + 1.0D);
         	world.spawnEntityInWorld(projectile);
         	
-        	projectile = new EntityBlizzard(world, player);
+        	projectile = new EntityBlizzard(world, entity);
         	projectile.setPosition(projectile.posX, projectile.posY, projectile.posZ - 1.0D);
         	world.spawnEntityInWorld(projectile);
         	
-        	projectile = new EntityBlizzard(world, player);
+        	projectile = new EntityBlizzard(world, entity);
         	projectile.setPosition(projectile.posX, projectile.posY + 1.0D, projectile.posZ);
         	world.spawnEntityInWorld(projectile);
         	
-        	projectile = new EntityBlizzard(world, player);
+        	projectile = new EntityBlizzard(world, entity);
         	projectile.setPosition(projectile.posX, projectile.posY - 1.0D, projectile.posZ);
         	world.spawnEntityInWorld(projectile);
-        	
-            world.playSoundAtEntity(player, ((EntityProjectileBase)projectile).getLaunchSound(), 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+
+            this.playSound(itemStack, world, entity, 1, projectile);
         }
     	return true;
     }

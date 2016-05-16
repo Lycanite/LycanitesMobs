@@ -45,7 +45,7 @@ public class ItemScepterMagma extends ItemScepter {
     		EntityProjectileBase projectile = new EntityMagma(world, entity);
     		projectile.setBaseDamage((int)(projectile.getDamage(null) * power * 2));
         	world.spawnEntityInWorld(projectile);
-            this.playSound(itemStack, world, entity, 1, projectile);
+            this.playSound(itemStack, world, entity, power, projectile);
         }
     	return true;
     }
@@ -56,7 +56,7 @@ public class ItemScepterMagma extends ItemScepter {
 	// ==================================================
     @Override
     public boolean getIsRepairable(ItemStack itemStack, ItemStack repairStack) {
-        if(repairStack.getItem() == ObjectManager.getItem("MagmaCharge")) return true;
+        if(repairStack.getItem() == ObjectManager.getItem("magmacharge")) return true;
         return super.getIsRepairable(itemStack, repairStack);
     }
 }

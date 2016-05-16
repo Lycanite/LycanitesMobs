@@ -5,8 +5,10 @@ import lycanite.lycanitesmobs.api.IWorldGenBase;
 import lycanite.lycanitesmobs.api.config.ConfigSpawning;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenLakes;
 import net.minecraftforge.common.BiomeDictionary;
@@ -52,12 +54,12 @@ public class WorldGenOozeLakes extends WorldGenLakes implements IWorldGenBase {
     //                    Generate
     // ==================================================
     @Override
-    public void onWorldGen(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
+    public void onWorldGen(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
         if(!this.isValidDimension(world))
             return;
 
         if(this.generateSurfaceChance > 0) {
-            BiomeGenBase biome = world.getBiomeGenForCoords(chunkX, chunkZ);
+            BiomeGenBase biome = world.getBiomeGenForCoords(new BlockPos(chunkX, 0, chunkZ));
             BiomeDictionary.Type[] biomeTypes = BiomeDictionary.getTypesForBiome(biome);
             boolean typeValid = false;
             for(BiomeDictionary.Type type : biomeTypes) {
@@ -71,24 +73,24 @@ public class WorldGenOozeLakes extends WorldGenLakes implements IWorldGenBase {
                 int x = chunkX * 16 + random.nextInt(16);
                 int z = chunkZ * 16 + random.nextInt(16);
                 int y = random.nextInt(128);
-                this.generate(world, random, x, y, z);
+                this.generate(world, random, new BlockPos(x, y, z));
             }
         }
 
         if(this.generateUndergroundChance > 0 && (this.generateUndergroundChance >= 1 || random.nextDouble() <= this.generateUndergroundChance)) {
             int x = chunkX * 16 + random.nextInt(16);
             int z = chunkZ * 16 + random.nextInt(16);
-            int top = Math.max(1, world.getTopSolidOrLiquidBlock(x, z) - 10);
+            int top = Math.max(1, world.getTopSolidOrLiquidBlock(new BlockPos(x, 0, z)).getY() - 10);
             if(top > 0) {
                 int y = random.nextInt(top);
-                this.generate(world, random, x, y, z);
+                this.generate(world, random, new BlockPos(x, y, z));
             }
         }
     }
 
     @Override
-    public boolean generate(World world, Random random, int x, int y, int z) {
-        return super.generate(world, random, x, y, z);
+    public boolean generate(World world, Random random, BlockPos pos) {
+        return super.generate(world, random, pos);
     }
 
 
@@ -103,7 +105,7 @@ public class WorldGenOozeLakes extends WorldGenLakes implements IWorldGenBase {
                 validDimension = true;
             }
             else if("VANILLA".equalsIgnoreCase(eventDimensionType)) {
-                validDimension = world.provider.dimensionId > -2 && world.provider.dimensionId < 2;
+                validDimension = world.provider.getDimension() > -2 && world.provider.getDimension() < 2;
             }
         }
 
@@ -111,7 +113,7 @@ public class WorldGenOozeLakes extends WorldGenLakes implements IWorldGenBase {
         if(!validDimension) {
             validDimension =  !this.dimensionWhitelist;
             for(int eventDimension : this.dimensionBlacklist) {
-                if(world.provider.dimensionId == eventDimension) {
+                if(world.provider.getDimension() == eventDimension) {
                     validDimension = this.dimensionWhitelist;
                     break;
                 }

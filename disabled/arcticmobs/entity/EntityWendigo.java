@@ -15,9 +15,10 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -31,8 +32,8 @@ public class EntityWendigo extends EntityCreatureBase implements IMob, IGroupIce
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityWendigo(World par1World) {
-        super(par1World);
+    public EntityWendigo(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
@@ -47,10 +48,8 @@ public class EntityWendigo extends EntityCreatureBase implements IMob, IGroupIce
         this.setupMob();
         
         // AI Tasks:
-        this.getNavigator().setCanSwim(true);
-        this.getNavigator().setAvoidsWater(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(3, new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(100).setRange(16.0F).setMinChaseDistance(8.0F).setChaseTime(-1));
+        this.tasks.addTask(3, new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(100).setRange(16.0F).setMinChaseDistance(8.0F));
         this.tasks.addTask(6, wanderAI);
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
@@ -77,8 +76,8 @@ public class EntityWendigo extends EntityCreatureBase implements IMob, IGroupIce
 	public void loadItemDrops() {
         this.drops.add(new DropRate(new ItemStack(Blocks.snow), 0.5F).setMaxAmount(8));
         this.drops.add(new DropRate(new ItemStack(Blocks.packed_ice), 0.25F).setMaxAmount(8));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("FrostyFur")), 0.75F).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("TundraCharge")), 0.75F));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("frostyfur")), 0.75F).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("tundracharge")), 0.75F));
 	}
     
     
@@ -89,28 +88,44 @@ public class EntityWendigo extends EntityCreatureBase implements IMob, IGroupIce
 	@Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        
-        // Frosty Trail:
-        if(!this.worldObj.isRemote && (this.ticksExisted % 10 == 0 || this.isMoving() && this.ticksExisted % 5 == 0)) {
-        	Block blockGround = this.worldObj.getBlock((int)this.posX, (int)this.posY - 1, (int)this.posZ);
-        	Block blockFeet = this.worldObj.getBlock((int)this.posX, (int)this.posY, (int)this.posZ);
-        	
-        	if(blockGround == Blocks.water)
-        		this.worldObj.setBlock((int)this.posX, (int)this.posY - 1, (int)this.posZ, Blocks.ice);
-        	
-    		if(blockFeet == Blocks.air || blockFeet == Blocks.fire || blockFeet == Blocks.snow_layer || blockFeet == Blocks.tallgrass || blockFeet == ObjectManager.getBlock("poisoncloud") || blockFeet == ObjectManager.getBlock("frostcloud") || blockFeet == ObjectManager.getBlock("frostfire"))
-    			this.worldObj.setBlock((int)this.posX, (int)this.posY, (int)this.posZ, ObjectManager.getBlock("frostfire"));
-		}
+
+        // Trail:
+        if(!this.worldObj.isRemote && this.isMoving() && this.ticksExisted % 5 == 0) {
+            int trailHeight = 1;
+            int trailWidth = 1;
+            if(this.getSubspeciesIndex() >= 3)
+                trailWidth = 3;
+            for(int y = 0; y < trailHeight; y++) {
+                Block block = this.worldObj.getBlockState(this.getPosition().add(0, y, 0)).getBlock();
+                if(block == Blocks.air || block == Blocks.fire || block == Blocks.snow_layer || block == Blocks.tallgrass || block == ObjectManager.getBlock("scorchfire")) {
+                    if(trailWidth == 1)
+                        this.worldObj.setBlockState(this.getPosition().add(0, y, 0), ObjectManager.getBlock("frostfire").getDefaultState());
+                    else
+                        for(int x = -(trailWidth / 2); x < (trailWidth / 2) + 1; x++) {
+                            for(int z = -(trailWidth / 2); z < (trailWidth / 2) + 1; z++) {
+                                this.worldObj.setBlockState(this.getPosition().add(x, y, z), ObjectManager.getBlock("frostfire").getDefaultState());
+                            }
+                        }
+                }
+            }
+        }
+
+        // Freeze Water:
+        if(!this.worldObj.isRemote && this.isMoving() && this.ticksExisted % 5 == 0) {
+            Block block = this.worldObj.getBlockState(this.getPosition().add(0, -1, 0)).getBlock();
+            if(block == Blocks.water)
+                this.worldObj.setBlockState(this.getPosition().add(0, -1, 0), Blocks.ice.getDefaultState());
+        }
         
         // Particles:
         if(this.worldObj.isRemote) {
 	        for(int i = 0; i < 2; ++i) {
-	            this.worldObj.spawnParticle("snowshovel", this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
-	            this.worldObj.spawnParticle("snowshovel", this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
+	            this.worldObj.spawnParticle(EnumParticleTypes.SNOW_SHOVEL, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
+	            this.worldObj.spawnParticle(EnumParticleTypes.SNOW_SHOVEL, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
 	        }
 	        if(this.ticksExisted % 10 == 0)
 		        for(int i = 0; i < 2; ++i) {
-		            this.worldObj.spawnParticle("snowshovel", this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
+		            this.worldObj.spawnParticle(EnumParticleTypes.SNOW_SHOVEL, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
 		        }
         }
     }
@@ -166,8 +181,8 @@ public class EntityWendigo extends EntityCreatureBase implements IMob, IGroupIce
 
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotionID() == Potion.moveSlowdown.id) return false;
-        if(potionEffect.getPotionID() == Potion.hunger.id) return false;
+        if(potionEffect.getPotion() == MobEffects.moveSlowdown) return false;
+        if(potionEffect.getPotion() == MobEffects.hunger) return false;
         return super.isPotionApplicable(potionEffect);
     }
 

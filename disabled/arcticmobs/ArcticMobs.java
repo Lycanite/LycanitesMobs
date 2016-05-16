@@ -31,9 +31,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.common.Mod;
@@ -72,7 +70,7 @@ public class ArcticMobs {
 		// ========== Config ==========
 		group = new GroupInfo(this, "Arctic Mobs", 6)
 				.setDimensionBlacklist("-1,1").setBiomes("COLD, SNOWY, CONIFEROUS, -END").setDungeonThemes("FROZEN, DUNGEON")
-                .setEggName("arcticegg");
+                .setEggName("arcticspawn");
 		group.loadFromConfig();
 
 		// ========== Set Current Group ==========
@@ -81,12 +79,12 @@ public class ArcticMobs {
         // ========== Create Fluids ==========
         AssetManager.addSound("ooze", group, "block.ooze");
         ObjectManager.addDamageSource("ooze", new DamageSource("ooze"));
-        Fluid fluid = ObjectManager.addFluid(new Fluid("ooze", new ResourceLocation("ooze_still"), new ResourceLocation("ooze_flowing")));
+        Fluid fluid = ObjectManager.addFluid("ooze");
         fluid.setLuminosity(10).setDensity(3000).setViscosity(5000).setTemperature(-1000);
         ObjectManager.addBlock("ooze", new BlockFluidOoze(fluid));
 		
 		// ========== Create Items ==========
-		ObjectManager.addItem("arcticegg", new ItemArcticEgg());
+		ObjectManager.addItem("arcticspawn", new ItemArcticEgg());
 		
 		ObjectManager.addItem("yetimeatraw", new ItemCustomFood("yetimeatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(MobEffects.moveSlowdown, 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("yetimeatraw"));
@@ -130,7 +128,7 @@ public class ArcticMobs {
         ObjectManager.addBlock("icefire", new BlockIcefire());
 		
 		// ========== Create Mobs ==========
-		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("arcticegg"), new DispenserBehaviorMobEggCustom());
+		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("arcticspawn"), new DispenserBehaviorMobEggCustom());
         MobInfo newMob;
         
         newMob = new MobInfo(group, "reiver", EntityReiver.class, 0xDDEEFF, 0x99DDEE)
@@ -184,7 +182,7 @@ public class ArcticMobs {
 
 
         // ========== Register Models ==========
-		proxy.registerModels();
+		proxy.registerModels(this.group);
 	}
 	
 	

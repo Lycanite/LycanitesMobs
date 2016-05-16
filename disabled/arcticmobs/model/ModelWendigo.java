@@ -21,10 +21,7 @@ public class ModelWendigo extends ModelCustomObj {
     public ModelWendigo(float shadowSize) {
     	// Load Model:
     	this.initModel("Wendigo", ArcticMobs.group, "entity/wendigo");
-    	
 
-
-    	
     	// Set Rotation Centers:
     	setPartCenter("head", 0F, 3.0F, 0.3F);
     	setPartCenter("body", 0F, 3.0F, 0.3F);

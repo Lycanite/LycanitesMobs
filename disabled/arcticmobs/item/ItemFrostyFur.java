@@ -8,6 +8,11 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class ItemFrostyFur extends ItemBase {
@@ -26,52 +31,24 @@ public class ItemFrostyFur extends ItemBase {
 	// ==================================================
 	//                    Item Use
 	// ==================================================
-    public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10) {
-        if (par3World.isRemote) {
-            return true;
+    @Override
+    public EnumActionResult onItemUse(ItemStack itemStack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        if (world.isRemote) {
+            return EnumActionResult.SUCCESS;
         }
         else {
-            if (par7 == 0) {
-                --par5;
-            }
-
-            if (par7 == 1)  {
-                ++par5;
-            }
-
-            if (par7 == 2) {
-                --par6;
-            }
-
-            if (par7 == 3) {
-                ++par6;
-            }
-
-            if (par7 == 4) {
-                --par4;
-            }
-
-            if (par7 == 5) {
-                ++par4;
-            }
-
-            if(!par2EntityPlayer.canPlayerEdit(par4, par5, par6, par7, par1ItemStack)) {
-                return false;
-            }
-            else {
-                Block block = par3World.getBlock(par4, par5, par6);
-
-                if (block == Blocks.air) {
-                    par3World.playSoundEffect((double)par4 + 0.5D, (double)par5 + 0.5D, (double)par6 + 0.5D, AssetManager.getSound("FrostCloud"), 1.0F, itemRand.nextFloat() * 0.4F + 0.8F);
-                    par3World.setBlock(par4, par5, par6, ObjectManager.getBlock("FrostCloud"));
+            pos = pos.offset(facing);
+            if(player.canPlayerEdit(pos, facing, itemStack)) {
+                Block block = world.getBlockState(pos).getBlock();
+                if(block == Blocks.air) {
+                    world.playSound((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, AssetManager.getSound("frostcloud"), SoundCategory.PLAYERS, 1.0F, itemRand.nextFloat() * 0.4F + 0.8F, false);
+                    world.setBlockState(pos, ObjectManager.getBlock("frostcloud").getDefaultState());
                 }
-
-                if (!par2EntityPlayer.capabilities.isCreativeMode) {
-                    --par1ItemStack.stackSize;
-                }
-
-                return true;
+                if(!player.capabilities.isCreativeMode)
+                    --itemStack.stackSize;
+                return EnumActionResult.SUCCESS;
             }
         }
+        return EnumActionResult.FAIL;
     }
 }

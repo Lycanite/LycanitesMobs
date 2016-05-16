@@ -7,7 +7,6 @@ import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
@@ -15,9 +14,10 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
@@ -52,7 +52,7 @@ public class EntityArix extends EntityCreatureTameable implements IMob, IGroupIc
         
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(80).setRange(14.0F).setMinChaseDistance(5.0F).setChaseTime(-1).setCheckSight(false));
+        this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(80).setRange(14.0F).setMinChaseDistance(5.0F).setCheckSight(false));
         this.tasks.addTask(3, this.aiSit);
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
         this.tasks.addTask(5, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("arixtreat"))).setTemptDistanceMin(4.0D));
@@ -95,39 +95,11 @@ public class EntityArix extends EntityCreatureTameable implements IMob, IGroupIc
 	@Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-
-        //Flight Mode:
-        if(!this.worldObj.isRemote) {
-            if(this.hasAttackTarget() || (!this.isSitting() && this.isFollowing())) {
-                this.flightToggleTime = 0;
-                this.flightMode = true;
-            }
-            if(this.isSitting())
-                this.flightToggleTime = 0;
-            if(this.flightToggleTime++ >= this.flightToggleTimeMax) {
-                this.flightToggleTime = 0;
-                if(this.getRNG().nextBoolean()) {
-                	boolean solidBeneath = false;
-                	int searchX = (int)Math.floor(this.posX);
-                	int searchY = (int)Math.floor(this.posY) + 1;
-                	int searchZ = (int)Math.floor(this.posZ);
-                	while(searchY > 0) {
-                		Block searchBlock = this.worldObj.getBlock(searchX, searchY, searchZ);
-                		if(searchBlock != null) {
-                			solidBeneath = this.worldObj.doesBlockHaveSolidTopSurface(this.worldObj, searchX, searchY, searchZ);
-                			break;
-                		}
-                		searchY--;
-                	}
-                    this.flightMode = !this.flightMode;
-                }
-            }
-        }
         
         // Particles:
         if(this.worldObj.isRemote)
 	        for(int i = 0; i < 2; ++i) {
-	            this.worldObj.spawnParticle("snowshovel", this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
+	            this.worldObj.spawnParticle(EnumParticleTypes.SNOW_SHOVEL, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
 	        }
     }
     
@@ -207,8 +179,8 @@ public class EntityArix extends EntityCreatureTameable implements IMob, IGroupIc
 
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotionID() == Potion.moveSlowdown.id) return false;
-        if(potionEffect.getPotionID() == Potion.hunger.id) return false;
+        if(potionEffect.getPotion() == MobEffects.moveSlowdown) return false;
+        if(potionEffect.getPotion() == MobEffects.hunger) return false;
         return super.isPotionApplicable(potionEffect);
     }
 

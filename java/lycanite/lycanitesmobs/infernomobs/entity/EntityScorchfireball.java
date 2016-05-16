@@ -24,19 +24,16 @@ public class EntityScorchfireball extends EntityProjectileBase {
     // ==================================================
  	//                   Constructors
  	// ==================================================
-    public EntityScorchfireball(World par1World) {
-        super(par1World);
-        this.setSize(0.3125F, 0.3125F);
+    public EntityScorchfireball(World world) {
+        super(world);
     }
 
-    public EntityScorchfireball(World par1World, EntityLivingBase par2EntityLivingBase) {
-        super(par1World, par2EntityLivingBase);
-        this.setSize(0.3125F, 0.3125F);
+    public EntityScorchfireball(World world, EntityLivingBase entityLivingBase) {
+        super(world, entityLivingBase);
     }
 
-    public EntityScorchfireball(World par1World, double par2, double par4, double par6) {
-        super(par1World, par2, par4, par6);
-        this.setSize(0.3125F, 0.3125F);
+    public EntityScorchfireball(World world, double x, double y, double z) {
+        super(world, x, y, z);
     }
     
     // ========== Setup Projectile ==========

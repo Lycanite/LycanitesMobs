@@ -120,7 +120,7 @@ public class BlockFireBase extends BlockBase {
 
         // Increase Age:
         if (age < 15) {
-            state = state.withProperty(AGE, Integer.valueOf(age + rand.nextInt(this.agingRate) / 2));
+            state = state.withProperty(AGE, Math.max(age + rand.nextInt(this.agingRate) / 2, 15));
             world.setBlockState(pos, state, 4);
         }
 

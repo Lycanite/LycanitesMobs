@@ -57,6 +57,7 @@ public class EntityKhalk extends EntityCreatureTameable implements IMob, IGroupF
 
         this.setWidth = 4.5F;
         this.setHeight = 3.5F;
+        this.solidCollision = true;
         this.setupMob();
 
         this.setPathPriority(PathNodeType.LAVA, 0F);

@@ -114,7 +114,7 @@ public class EntityFear extends EntityCreatureBase {
         }
         
         // Set Rotation:
-        if(this.hasPickupEntity()) {
+        if(this.hasPickupEntity() && !(this.getPickupEntity() instanceof EntityPlayer)) {
         	this.getPickupEntity().rotationYaw = this.rotationYaw;
         	this.getPickupEntity().rotationPitch = this.rotationPitch;
         }

@@ -98,8 +98,8 @@ public class BlockShadowfire extends BlockFireBase {
             if(!entityLiving.isPotionApplicable(effectBlindness) && (effectFear == null || !entityLiving.isPotionApplicable(effectFear)))
                 return;
             entityLiving.addPotionEffect(effectBlindness);
-            if(effectFear != null)
-                entityLiving.addPotionEffect(effectFear);
+            //if(effectFear != null)
+                //entityLiving.addPotionEffect(effectFear);
         }
         entity.attackEntityFrom(DamageSource.magic, 1);
     }

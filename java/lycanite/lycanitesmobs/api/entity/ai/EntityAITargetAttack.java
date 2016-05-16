@@ -112,6 +112,10 @@ public class EntityAITargetAttack extends EntityAITarget {
  	// ==================================================
     @Override
     protected boolean isValidTarget(EntityLivingBase target) {
+        // Pickup Check:
+        if(this.host.hasPickupEntity() && target != this.host.getPickupEntity())
+            return false;
+
         // Target Class Check:
         if(this.targetClass != null && !this.targetClass.isAssignableFrom(target.getClass()))
             return false;

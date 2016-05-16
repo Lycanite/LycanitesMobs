@@ -1665,7 +1665,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     // ========== Clear Movement ==========
     /** Cuts off all movement for this update, will clear any pathfinder paths, works with the flight navigator too. **/
     public void clearMovement() {
-    	if(!useFlightNavigator())
+    	if(!this.useFlightNavigator() && this.getNavigator() != null)
         	this.getNavigator().clearPathEntity();
         else
         	this.flightNavigator.clearTargetPosition(1.0D);
@@ -2154,8 +2154,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         if(this.isEntityInvulnerable(damageSrc)) return false;
         if(!this.isDamageTypeApplicable(damageSrc.getDamageType())) return false;
         if(!this.isDamageEntityApplicable(damageSrc.getEntity())) return false;
-        damage = this.getDamageAfterDefense(damage);
         damage *= this.getDamageModifier(damageSrc);
+        damage = this.getDamageAfterDefense(damage);
         if(this.isBoss()) {
             if (!(damageSrc.getEntity() instanceof EntityPlayer))
                 damage *= 0.25F;
@@ -2410,7 +2410,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     public int getFlyingHeight() {
         if(!this.canFly())
             return 20;
-        return 0;
+        return 40;
     }
     /** Returns true if this mob is currently flying. **/
     public boolean isCurrentlyFlying() { return this.canFly(); }
@@ -2547,6 +2547,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 		if(extendedEntity != null)
 			extendedEntity.setPickedUpByEntity(this);
     	this.pickupEntity = entity;
+        this.clearMovement();
     }
     
     public EntityLivingBase getPickupEntity() {

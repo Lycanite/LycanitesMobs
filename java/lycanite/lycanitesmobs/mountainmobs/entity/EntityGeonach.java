@@ -8,7 +8,6 @@ import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.EntitySilverfish;
@@ -42,7 +41,7 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 4;
+        this.defense = 3;
         this.experience = 5;
         this.hasAttackSound = true;
         
@@ -214,6 +213,7 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
    	//                    Taking Damage
    	// ==================================================
     // ========== Damage Modifier ==========
+    @Override
     public float getDamageModifier(DamageSource damageSrc) {
     	if(damageSrc.getEntity() != null) {
             // Silverfish Extermination:
@@ -223,20 +223,14 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
 
             // Pickaxe Damage:
     		Item heldItem = null;
-    		if(damageSrc.getEntity() instanceof EntityPlayer) {
-    			EntityPlayer entityPlayer = (EntityPlayer)damageSrc.getEntity();
-	    		if(entityPlayer.getHeldItem(EnumHand.MAIN_HAND) != null) {
-	    			heldItem = entityPlayer.getHeldItem(EnumHand.MAIN_HAND).getItem();
-	    		}
-    		}
-    		else if(damageSrc.getEntity() instanceof EntityLiving) {
-	    		EntityLiving entityLiving = (EntityLiving)damageSrc.getEntity();
+    		if(damageSrc.getEntity() instanceof EntityLivingBase) {
+                EntityLivingBase entityLiving = (EntityLivingBase)damageSrc.getEntity();
 	    		if(entityLiving.getHeldItem(EnumHand.MAIN_HAND) != null) {
 	    			heldItem = entityLiving.getHeldItem(EnumHand.MAIN_HAND).getItem();
 	    		}
     		}
     		if(ObjectLists.isPickaxe(heldItem))
-				return 4.0F;
+                return 4.0F;
     	}
     	return 1.0F;
     }

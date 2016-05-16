@@ -42,7 +42,7 @@ public class EntityVespid extends EntityCreatureAgeable implements IMob, IGroupP
         
         // Setup:
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
-        this.defense = 1;
+        this.defense = 0;
         this.experience = 5;
         this.hasAttackSound = true;
         

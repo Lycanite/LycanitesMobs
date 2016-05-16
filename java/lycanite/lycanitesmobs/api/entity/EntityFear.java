@@ -30,6 +30,7 @@ public class EntityFear extends EntityCreatureBase {
         this.hasStepSound = false;
         this.hasAttackSound = false;
         this.spreadFire = false;
+        this.setSize(0.8f, 1.8f);
 
         this.setupMob();
         

@@ -45,7 +45,7 @@ public class EntityAIWander extends EntityAIBase {
     public boolean shouldExecute() {
         if(this.host.getAge() >= 100)
             return false;
-        else if(pauseRate != 0 && this.host.getRNG().nextInt(pauseRate) != 0)
+        else if(this.pauseRate != 0 && this.host.getRNG().nextInt(this.pauseRate) != 0)
             return false;
         else {
             Vec3d newTarget = RandomPositionGenerator.findRandomTarget(this.host, 10, 7, this.host.getFlyingHeight());

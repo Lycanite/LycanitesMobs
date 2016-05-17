@@ -52,10 +52,12 @@ public class EntityAIWander extends EntityAIBase {
             if(newTarget == null)
                 return false;
             else {
+                // Random Position:
                 BlockPos wanderPosition = this.host.getWanderPosition(new BlockPos((int)newTarget.xCoord, (int)newTarget.yCoord, (int)newTarget.zCoord));
                 this.xPosition = wanderPosition.getX();
                 this.yPosition = wanderPosition.getY();
                 this.zPosition = wanderPosition.getZ();
+
                 return true;
             }
         }

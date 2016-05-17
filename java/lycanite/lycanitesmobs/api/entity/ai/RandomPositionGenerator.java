@@ -39,7 +39,7 @@ public class RandomPositionGenerator {
     }
 
     // ========== Get Target Block ==========
-    private static Vec3d getTargetBlock(EntityCreatureBase entity, int range, int height, Vec3d par3Vec3d, int heightLevel) {
+    private static Vec3d getTargetBlock(EntityCreatureBase entity, int range, int height, Vec3d target, int heightLevel) {
         Random random = entity.getRNG();
         boolean validTarget = false;
         int targetX = 0;
@@ -59,15 +59,17 @@ public class RandomPositionGenerator {
         for(int j1 = 0; j1 < 10; ++j1) {
             int possibleX = random.nextInt(2 * range) - range;
             int possibleY = random.nextInt(2 * height) - height;
-            if(entity.canFly() || (entity.canSwim() && (entity.isInWater() || entity.lavaContact()))) {
+            int possibleZ = random.nextInt(2 * range) - range;
+
+            // Random Height:
+            if(entity.canFly() || (entity.canSwim() && entity.isInWater())) {
 	            if(entity.posY > entity.worldObj.getPrecipitationHeight(entity.getPosition()).getY() + heightLevel * 1.25)
-	        		possibleY = random.nextInt(2 * height) - height / 2;
+	        		possibleY = random.nextInt(2 * height) - height * 3 / 2;
 	            else if(entity.posY < entity.worldObj.getPrecipitationHeight(entity.getPosition()).getY() + heightLevel)
 	            	possibleY = random.nextInt(2 * height) - height / 2;
             }
-            int possibleZ = random.nextInt(2 * range) - range;
 
-            if(par3Vec3d == null|| (double)possibleX * par3Vec3d.xCoord + (double)possibleZ * par3Vec3d.zCoord >= 0.0D) {
+            if(target == null|| (double)possibleX * target.xCoord + (double)possibleZ * target.zCoord >= 0.0D) {
             	possibleX += MathHelper.floor_double(entity.posX);
             	possibleY += MathHelper.floor_double(entity.posY);
             	possibleZ += MathHelper.floor_double(entity.posZ);

@@ -55,7 +55,7 @@ public class EntitySerpix extends EntityCreatureTameable implements IGroupPredat
         this.hitAreaScale = 1.5F;
         
         // AI Tasks:
-        this.tasks.addTask(0, new EntityAISwimming(this));
+        this.tasks.addTask(0, new EntityAISwimming(this).setSink(true));
         this.tasks.addTask(1, new EntityAIStealth(this).setStealthTime(60));
         this.tasks.addTask(2, this.aiSit);
         this.tasks.addTask(3, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
@@ -99,6 +99,24 @@ public class EntitySerpix extends EntityCreatureTameable implements IGroupPredat
         this.drops.add(new DropRate(new ItemStack(Blocks.iron_ore), 0.5F).setMinAmount(2).setMaxAmount(3));
         this.drops.add(new DropRate(new ItemStack(Blocks.gold_ore), 0.25F).setMinAmount(1).setMaxAmount(2));
 	}
+
+
+    // ==================================================
+    //                      Movement
+    // ==================================================
+    // ========== Movement Speed Modifier ==========
+    @Override
+    public float getAISpeedModifier() {
+        if(this.isInWater())
+            return 4.0F;
+        return 1.0F;
+    }
+
+    // Pushed By Water:
+    @Override
+    public boolean isPushedByWater() {
+        return false;
+    }
 
 
     // ==================================================

@@ -20,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
@@ -48,7 +49,7 @@ public class EntityWendigo extends EntityCreatureBase implements IMob, IGroupIce
         this.setupMob();
         
         // AI Tasks:
-        this.tasks.addTask(0, new EntityAISwimming(this));
+        this.tasks.addTask(0, new EntityAISwimming(this).setSink(true));
         this.tasks.addTask(3, new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(100).setRange(16.0F).setMinChaseDistance(8.0F));
         this.tasks.addTask(6, wanderAI);
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
@@ -128,6 +129,42 @@ public class EntityWendigo extends EntityCreatureBase implements IMob, IGroupIce
 		            this.worldObj.spawnParticle(EnumParticleTypes.SNOW_SHOVEL, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
 		        }
         }
+    }
+
+
+    // ==================================================
+    //                      Movement
+    // ==================================================
+    // ========== Movement Speed Modifier ==========
+    @Override
+    public float getAISpeedModifier() {
+        if(this.isInWater())
+            return 4.0F;
+        return 1.0F;
+    }
+
+    // Pathing Weight:
+    @Override
+    public float getBlockPathWeight(int x, int y, int z) {
+        int waterWeight = 10;
+        BlockPos pos = new BlockPos(x, y, z);
+        if(ObjectManager.getBlock("ooze") != null) {
+            if (this.worldObj.getBlockState(pos).getBlock() == ObjectManager.getBlock("ooze"))
+                return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
+        }
+
+        if(this.getAttackTarget() != null)
+            return super.getBlockPathWeight(x, y, z);
+        if(this.isInWater())
+            return -999999.0F;
+
+        return super.getBlockPathWeight(x, y, z);
+    }
+
+    // Pushed By Water:
+    @Override
+    public boolean isPushedByWater() {
+        return false;
     }
     
     

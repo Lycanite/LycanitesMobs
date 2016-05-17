@@ -65,6 +65,8 @@ public class ModelYale extends ModelCustomObj {
         if(layer instanceof LayerYaleWool) {
             return ((LayerYaleWool)layer).canRenderPart(partName);
         }
+        if("fur".equals(partName))
+            return false;
         return super.canRenderPart(partName, entity, layer, trophy);
     }
 

@@ -2,13 +2,12 @@ package lycanite.lycanitesmobs.api.gui;
 
 import lycanite.lycanitesmobs.KeyHandler;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 public class GUITabMount extends GUITab {
 	
 	public GUITabMount(int id) {
-        super(id, GUITab.startX, GUITab.startY, new ItemStack(Items.saddle));
+        super(id, GUITab.startX, GUITab.startY, new ResourceLocation("textures/items/saddle.png"));
     }
 
     @Override

@@ -200,7 +200,7 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
     @Override
     public float getAISpeedModifier() {
     	if(this.lavaContact())
-    		return 16.0F;
+    		return 4.0F;
     	return 1.0F;
     }
     

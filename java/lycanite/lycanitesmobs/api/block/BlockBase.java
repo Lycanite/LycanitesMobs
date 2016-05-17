@@ -205,14 +205,14 @@ public class BlockBase extends Block {
     // ========== Physical Collision Box ==========
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
-        if(!this.isCollidable())
-            return Block.NULL_AABB;
         return super.getBoundingBox(state, world, pos);
     }
 
     // ========== Selection Box ==========
     @Override
     public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World world, BlockPos pos) {
+        if(!this.isCollidable())
+            return Block.NULL_AABB;
         return super.getSelectedBoundingBox(state, world, pos);
     }
     

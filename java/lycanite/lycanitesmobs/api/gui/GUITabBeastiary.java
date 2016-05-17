@@ -1,13 +1,13 @@
 package lycanite.lycanitesmobs.api.gui;
 
-import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.LycanitesMobs;
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 public class GUITabBeastiary extends GUITab {
 	
 	public GUITabBeastiary(int id) {
-        super(id, GUITab.startX, GUITab.startY, new ItemStack(ObjectManager.getItem("soulgazer")));
+        super(id, GUITab.startX, GUITab.startY, new ResourceLocation(LycanitesMobs.modid, "textures/items/soulgazer.png"));
     }
 
     @Override

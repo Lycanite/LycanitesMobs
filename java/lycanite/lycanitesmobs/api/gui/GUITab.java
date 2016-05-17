@@ -2,16 +2,12 @@ package lycanite.lycanitesmobs.api.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiInventory;
-import net.minecraft.client.renderer.RenderItem;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 public abstract class GUITab extends GUIBaseButton {
 	public ResourceLocation texture = new ResourceLocation("textures/gui/container/creative_inventory/tabs.png");
     public ResourceLocation icon = null;
-    public ItemStack renderStack;
-    public RenderItem itemRenderer;
     public static int startX = 0;
     public static int startY = 0;
     public static int tabWidth = 28;
@@ -22,12 +18,6 @@ public abstract class GUITab extends GUIBaseButton {
     public GUITab(int id, int posX, int posY, ResourceLocation icon) {
         super(550 + id, posX, posY, tabWidth, tabHeight, "");
         this.icon = icon;
-        this.tabID = id;
-    }
-
-    public GUITab(int id, int posX, int posY, ItemStack renderStack) {
-        super(550 + id, posX, posY, 28, 32, "");
-        this.renderStack = renderStack;
         this.tabID = id;
     }
 
@@ -58,21 +48,7 @@ public abstract class GUITab extends GUIBaseButton {
             this.drawTexturedModalRect(tabX, tabY, xOffset * 28, yTexPos, 28, ySize);
             if(this.icon != null) {
             	mc.renderEngine.bindTexture(this.icon);
-            	this.drawTexturedModalRect(tabX + 6, tabY + 6, 0, 0, 16, 16, 16);
-            }
-            else {
-                return;
-	            /*RenderHelper.enableGUIStandardItemLighting();
-	            this.zLevel = 100.0F;
-	            this.itemRenderer.zLevel = 100.0F;
-	            GL11.glEnable(GL11.GL_LIGHTING);
-	            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-	            this.itemRenderer.renderItemAndEffectIntoGUI(renderStack, tabX + 6, tabY + 8);
-	            this.itemRenderer.renderItemOverlayIntoGUI(mc.fontRendererObj, renderStack, tabX + 6, tabY + 8, null);
-	            GL11.glDisable(GL11.GL_LIGHTING);
-	            this.itemRenderer.zLevel = 0.0F;
-	            this.zLevel = 0.0F;
-	            RenderHelper.disableStandardItemLighting();*/
+            	this.drawTexturedModalRect(tabX + 6, tabY + 10, 0, 0, 16, 16, 16);
             }
         }
     }

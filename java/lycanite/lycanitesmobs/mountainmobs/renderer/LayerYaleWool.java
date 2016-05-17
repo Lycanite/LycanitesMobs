@@ -22,11 +22,10 @@ public class LayerYaleWool implements LayerRenderer<EntityCreatureBase> {
 
     @Override
     public void doRenderLayer(EntityCreatureBase entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        if(entity != null && !entity.isInvisible() && entity instanceof EntityYale) {
-            if(!((EntityYale)entity).hasFur())
+        if(entity != null && entity instanceof EntityYale) {
+            if(!((EntityYale)entity).hasFur() || entity.isInvisible()) {
                 return;
-            //int colorID = entity.getColor();
-            //GlStateManager.color(RenderCreature.colorTable[colorID][0], RenderCreature.colorTable[colorID][1], RenderCreature.colorTable[colorID][2], 1.0F);
+            }
         }
 
         if(this.renderer.getMainModel() instanceof ModelCustom)

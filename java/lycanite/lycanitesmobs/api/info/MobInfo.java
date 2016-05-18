@@ -182,6 +182,8 @@ public class MobInfo {
                 double defaultValue = difficultyDefaults[difficultyIndex];
                 if("Easy".equalsIgnoreCase(difficultyName) && ("Health".equalsIgnoreCase(statName) || "Speed".equalsIgnoreCase(statName)))
                     defaultValue = 1.0D;
+                if("Hard".equalsIgnoreCase(difficultyName) && ("Speed".equalsIgnoreCase(statName)))
+                    defaultValue = 1.0D;
                 difficultyMutlipliers.put((difficultyName + "-" + statName).toUpperCase(), config.getDouble("Difficulty Multipliers", difficultyName + " " + statName, defaultValue));
             }
             difficultyIndex++;

@@ -105,7 +105,7 @@ public class EntityAbtu extends EntityCreatureTameable implements IMob, IGroupPr
 
         // Random Leaping:
         if(!this.worldObj.isRemote) {
-            if(this.hasAttackTarget() && this.isChild()) {
+            if(this.hasAttackTarget() && this.isChild() && (this.isInWater() || this.onGround)) {
                 if(this.getRNG().nextInt(10) == 0)
                     this.leap(4.0F, 0.6D, this.getAttackTarget());
             }

@@ -8,7 +8,6 @@ import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
@@ -197,7 +196,7 @@ public class EntityTroll extends EntityCreatureBase implements IMob {
     		if(damageSrc.getEntity() != null) {
     			Item heldItem = null;
         		if(damageSrc.getEntity() instanceof EntityLivingBase) {
-                    EntityLivingBase entityLiving = (EntityLiving)damageSrc.getEntity();
+                    EntityLivingBase entityLiving = (EntityLivingBase)damageSrc.getEntity();
     	    		if(entityLiving.getHeldItem(EnumHand.MAIN_HAND) != null) {
     	    			heldItem = entityLiving.getHeldItem(EnumHand.MAIN_HAND).getItem();
     	    		}

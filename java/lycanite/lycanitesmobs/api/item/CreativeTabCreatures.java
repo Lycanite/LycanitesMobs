@@ -18,14 +18,14 @@ public class CreativeTabCreatures extends CreativeTabs {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Item getTabIconItem() {
-		if(ObjectManager.getItem("DemonEgg") != null)
-			return ObjectManager.getItem("DemonEgg");
-		else if(ObjectManager.getItem("DesertEgg") != null)
-			return ObjectManager.getItem("DesertEgg");
-		else if(ObjectManager.getItem("PlainsEgg") != null)
-			return ObjectManager.getItem("PlainsEgg");
-		else if(ObjectManager.getItem("SwampEgg") != null)
-			return ObjectManager.getItem("SwampEgg");
+		if(ObjectManager.getItem("demonspawn") != null)
+			return ObjectManager.getItem("demonspawn");
+		else if(ObjectManager.getItem("desertspawn") != null)
+			return ObjectManager.getItem("desertspawn");
+		else if(ObjectManager.getItem("plainsspawn") != null)
+			return ObjectManager.getItem("plainsspawn");
+		else if(ObjectManager.getItem("swampspawn") != null)
+			return ObjectManager.getItem("swampspawn");
 		else
 			return Items.spawn_egg;
 	}

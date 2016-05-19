@@ -2,17 +2,18 @@ package lycanite.lycanitesmobs.api.entity.navigate;
 
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 
 public class FlightMoveHelper extends EntityMoveHelper {
-    private EntityCreatureBase parentEntity;
+    private EntityCreatureBase entityCreature;
     private int courseChangeCooldown;
 
     public FlightMoveHelper(EntityCreatureBase entityCreatureBase) {
         super(entityCreatureBase);
-        this.parentEntity = entityCreatureBase;
+        this.entityCreature = entityCreatureBase;
     }
 
     /**
@@ -21,23 +22,20 @@ public class FlightMoveHelper extends EntityMoveHelper {
      */
     public void onUpdateMoveHelper() {
         if (this.field_188491_h == EntityMoveHelper.Action.MOVE_TO) {
-            double x = this.posX - this.parentEntity.posX;
-            double y = this.posY - this.parentEntity.posY;
-            double z = this.posZ - this.parentEntity.posZ;
-            double distance = x * x + y * y + z * z;
+            double xDistance = this.posX - this.entityCreature.posX;
+            double yDistance = this.posY - this.entityCreature.posY;
+            double zDistance = this.posZ - this.entityCreature.posZ;
+            double distance = xDistance * xDistance + yDistance * yDistance + zDistance * zDistance;
 
             if (this.courseChangeCooldown-- <= 0) {
-                this.courseChangeCooldown += this.parentEntity.getRNG().nextInt(5) + 2;
+                this.courseChangeCooldown += this.entityCreature.getRNG().nextInt(5) + 2;
                 distance = (double)MathHelper.sqrt_double(distance);
                 if(distance >= 1D) {
-                    //if (this.isNotColliding(this.posX, this.posY, this.posZ, distance)) {
-                        this.parentEntity.motionX += x / distance * 0.1D;
-                        this.parentEntity.motionY += y / distance * 0.1D;
-                        this.parentEntity.motionZ += z / distance * 0.1D;
-                    //}
-                    //else {
-                    //    this.field_188491_h = EntityMoveHelper.Action.WAIT;
-                    //}
+                    this.entityCreature.setAIMoveSpeed((float)this.entityCreature.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue());
+                    double speed = (this.entityCreature.getAIMoveSpeed() / 2.4D) * this.getSpeed();
+                    this.entityCreature.motionX += xDistance / distance * speed;
+                    this.entityCreature.motionY += yDistance / distance * speed;
+                    this.entityCreature.motionZ += zDistance / distance * speed;
                 }
                 else {
                     this.field_188491_h = EntityMoveHelper.Action.WAIT;
@@ -46,14 +44,14 @@ public class FlightMoveHelper extends EntityMoveHelper {
         }
 
         // Look At Target or Movement Direction:
-        if (this.parentEntity.getAttackTarget() != null) {
-            EntityLivingBase entitylivingbase = this.parentEntity.getAttackTarget();
-            double distanceX = entitylivingbase.posX - this.parentEntity.posX;
-            double distanceY = entitylivingbase.posZ - this.parentEntity.posZ;
-            this.parentEntity.renderYawOffset = this.parentEntity.rotationYaw = -((float)MathHelper.atan2(distanceX, distanceY)) * (180F / (float)Math.PI);
+        if (this.entityCreature.getAttackTarget() != null) {
+            EntityLivingBase entitylivingbase = this.entityCreature.getAttackTarget();
+            double distanceX = entitylivingbase.posX - this.entityCreature.posX;
+            double distanceY = entitylivingbase.posZ - this.entityCreature.posZ;
+            this.entityCreature.renderYawOffset = this.entityCreature.rotationYaw = -((float)MathHelper.atan2(distanceX, distanceY)) * (180F / (float)Math.PI);
         }
         else if(this.field_188491_h == EntityMoveHelper.Action.MOVE_TO) {
-            this.parentEntity.renderYawOffset = this.parentEntity.rotationYaw = -((float)MathHelper.atan2(this.parentEntity.motionX, this.parentEntity.motionZ)) * (180F / (float)Math.PI);
+            this.entityCreature.renderYawOffset = this.entityCreature.rotationYaw = -((float)MathHelper.atan2(this.entityCreature.motionX, this.entityCreature.motionZ)) * (180F / (float)Math.PI);
         }
     }
 
@@ -61,15 +59,15 @@ public class FlightMoveHelper extends EntityMoveHelper {
      * Checks if entity bounding box is not colliding with terrain.
      */
     private boolean isNotColliding(double x, double y, double z, double p_179926_7_) {
-        double d0 = (x - this.parentEntity.posX) / p_179926_7_;
-        double d1 = (y - this.parentEntity.posY) / p_179926_7_;
-        double d2 = (z - this.parentEntity.posZ) / p_179926_7_;
-        AxisAlignedBB axisalignedbb = this.parentEntity.getEntityBoundingBox();
+        double d0 = (x - this.entityCreature.posX) / p_179926_7_;
+        double d1 = (y - this.entityCreature.posY) / p_179926_7_;
+        double d2 = (z - this.entityCreature.posZ) / p_179926_7_;
+        AxisAlignedBB axisalignedbb = this.entityCreature.getEntityBoundingBox();
 
         for (int i = 1; (double)i < p_179926_7_; ++i) {
             axisalignedbb = axisalignedbb.offset(d0, d1, d2);
 
-            if (!this.parentEntity.worldObj.getCubes(this.parentEntity, axisalignedbb).isEmpty()) {
+            if (!this.entityCreature.worldObj.getCubes(this.entityCreature, axisalignedbb).isEmpty()) {
                 return false;
             }
         }

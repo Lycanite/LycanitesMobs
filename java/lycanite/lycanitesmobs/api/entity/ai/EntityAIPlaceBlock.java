@@ -7,6 +7,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 
 public class EntityAIPlaceBlock extends EntityAIBase {
 	// Targets:
@@ -15,13 +16,11 @@ public class EntityAIPlaceBlock extends EntityAIBase {
     // Properties:
     private double speed = 1.0D;
     private double range = 2.0D;
-    private double maxDistance = 64.0D * 64.0D;
+    private double maxDistance = 64.0D;
     private boolean replaceSolid = false;
     private boolean replaceLiquid = true;
     
-    private int xPosition;
-    private int yPosition;
-    private int zPosition;
+    private BlockPos pos;
     public Block block;
     public int metadata = 0;
     
@@ -48,14 +47,12 @@ public class EntityAIPlaceBlock extends EntityAIBase {
     	return this;
     }
     public EntityAIPlaceBlock setMaxDistance(double setMax) {
-    	this.maxDistance = setMax * setMax;
+    	this.maxDistance = setMax;
     	return this;
     }
-    public EntityAIPlaceBlock setBlockPlacement(Block block, int x, int y, int z) {
-    	this.xPosition = x;
-    	this.yPosition = y;
-    	this.zPosition = z;
-    	this.block = block;
+    public EntityAIPlaceBlock setBlockPlacement(Block block, BlockPos pos) {
+        this.block = block;
+    	this.pos = pos;
     	return this;
     }
     public EntityAIPlaceBlock setMetadata(int setMetadata) {
@@ -80,7 +77,7 @@ public class EntityAIPlaceBlock extends EntityAIBase {
         if(this.block == null)
             return false;
         
-    	if(!this.canPlaceBlock(this.xPosition, this.yPosition, this.zPosition)) {
+    	if(!this.canPlaceBlock(this.pos)) {
             this.block = null;
     		return false;
     	}
@@ -95,9 +92,9 @@ public class EntityAIPlaceBlock extends EntityAIBase {
     @Override
     public void startExecuting() {
     	if(!host.useFlightNavigator())
-    		this.host.getNavigator().tryMoveToXYZ(this.xPosition, this.yPosition, this.zPosition, this.speed);
+    		this.host.getNavigator().tryMoveToXYZ(this.pos.getX(), this.pos.getY(), this.pos.getZ(), this.speed);
     	else
-    		host.flightNavigator.setTargetPosition(new BlockPos(xPosition, yPosition, zPosition), speed);
+    		host.flightNavigator.setTargetPosition(this.pos, this.speed);
     }
 	
     
@@ -119,22 +116,22 @@ public class EntityAIPlaceBlock extends EntityAIBase {
     	if(this.repathTime-- <= 0) {
     		this.repathTime = 20;
     		if(!host.useFlightNavigator())
-        		this.host.getNavigator().tryMoveToXYZ(this.xPosition, this.yPosition, this.zPosition, this.speed);
+        		this.host.getNavigator().tryMoveToXYZ(this.pos.getX(), this.pos.getY(), this.pos.getZ(), this.speed);
         	else
-        		host.flightNavigator.setTargetPosition(new BlockPos(xPosition, yPosition, zPosition), speed);
+        		host.flightNavigator.setTargetPosition(this.pos, this.speed);
     	}
     	
-        this.host.getLookHelper().setLookPosition(this.xPosition, this.yPosition, this.zPosition, 30.0F, 30.0F);
+        this.host.getLookHelper().setLookPosition(this.pos.getX(), this.pos.getY(), this.pos.getZ(), 30.0F, 30.0F);
         
         // Place Block:
-        if(this.host.getDistanceSq(this.xPosition, this.yPosition, this.zPosition) <= this.range) {
-        	this.host.worldObj.setBlockState(new BlockPos(this.xPosition, this.yPosition, this.zPosition), this.block.getDefaultState(), 3); // TODO Metadata!
+        if(MathHelper.sqrt_double(this.host.getDistanceSq(this.pos)) <= this.range) {
+        	this.host.worldObj.setBlockState(this.pos, this.block.getStateFromMeta(this.metadata), 3);
             this.block = null;
             this.host.clearMovement();
         }
         
         // Cancel If Too Far:
-        if(this.host.getDistanceSq(this.xPosition, this.yPosition, this.zPosition) >= this.maxDistance) {
+        if(MathHelper.sqrt_double(this.host.getDistanceSq(this.pos)) >= this.maxDistance) {
             this.block = null;
             this.host.clearMovement();
         }
@@ -144,8 +141,8 @@ public class EntityAIPlaceBlock extends EntityAIBase {
     // ==================================================
    	//                  Can Place Block
    	// ==================================================
-    public boolean canPlaceBlock(int x, int y, int z) {
-    	IBlockState targetState = this.host.worldObj.getBlockState(new BlockPos(x, y, z));
+    public boolean canPlaceBlock(BlockPos pos) {
+    	IBlockState targetState = this.host.worldObj.getBlockState(pos);
         Block targetBlock = targetState.getBlock();
     	if(targetBlock == null)
     		return false;
@@ -156,6 +153,10 @@ public class EntityAIPlaceBlock extends EntityAIBase {
     		}
     		else if(targetBlock != Blocks.air && !this.replaceSolid)
 	    		return false;
+            if(!this.host.useFlightNavigator() && this.host.getNavigator() != null) {
+                if(this.host.getNavigator().getPathToPos(pos) == null)
+                    return false;
+            }
     	}
     	return true;
     }

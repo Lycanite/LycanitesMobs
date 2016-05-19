@@ -21,6 +21,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecart;
@@ -184,6 +185,10 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     private EntityAIBase leashMoveTowardsRestrictionAI = new EntityAIMoveRestriction(this);
     /** The flight navigator class, a makeshift class that handles flight and free swimming movement, replaces the pathfinder. **/
     public FlightNavigator flightNavigator;
+    /** A path navigator for swimming, used typically by flying mobs for when they land in the water as swimming-only mobs use a swimming navigator by default. **/
+    public PathNavigate navigatorSwimming;
+    /** A move helper for swimming, used typically by flying mobs for when they land in the water as swimming-only mobs use a swimming move helper by default. **/
+    public EntityMoveHelper moveHelperSwimming;
     
     // Targets:
     /** A target used for alpha creatures or connected mobs such as following concapede segements. **/
@@ -1661,6 +1666,32 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
             return new PathNavigateClimber(this, world);
         return new PathNavigateGroundCustom(this, world);
     }
+
+    // ========== Get Navigator ==========
+    /** Returns the movement helper that this entity should use. **/
+    public PathNavigate getNavigator() {
+        /*if(this.hasAttackTarget()) {
+            if (!(super.getNavigator() instanceof PathNavigateSwimmer) && this.canSwim() && this.isInWater() && this.getAttackTarget().isInWater()) {
+                if (this.navigatorSwimming == null)
+                    this.navigatorSwimming = new PathNavigateSwimmer(this, this.worldObj);
+                return this.navigatorSwimming;
+            }
+        }*/
+        return super.getNavigator();
+    }
+
+    // ========== Get Move Helper ==========
+    /** Returns the movement helper that this entity should use. **/
+    public EntityMoveHelper getMoveHelper() {
+        /*if(this.hasAttackTarget()) {
+            if (!(super.getMoveHelper() instanceof SwimmingMoveHelper) && this.canSwim() && this.isInWater() && this.getAttackTarget().isInWater()) {
+                if (this.moveHelperSwimming == null)
+                    this.moveHelperSwimming = new SwimmingMoveHelper(this);
+                return this.moveHelperSwimming;
+            }
+        }*/
+        return super.getMoveHelper();
+    }
     
     // ========== Clear Movement ==========
     /** Cuts off all movement for this update, will clear any pathfinder paths, works with the flight navigator too. **/
@@ -1993,6 +2024,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
                     return false;
             }
         }
+        if(!this.canSwim() && this.canFly() && targetEntity.isInWater())
+            return false;
 		return true;
 	}
 	

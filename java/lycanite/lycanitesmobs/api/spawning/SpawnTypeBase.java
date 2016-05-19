@@ -468,8 +468,8 @@ public class SpawnTypeBase {
 
         // Choose Mobs:
         LycanitesMobs.printDebug("CustomSpawner", "Getting a list of all mobs that can spawn within the found coordinates.");
-        List<SpawnInfo> possibleSpawns = this.getPossibleSpawns(coords.size(), targetBiomes);
-        if(possibleSpawns == null || possibleSpawns.size() <= 0) {
+        Map<BiomeGenBase, List<SpawnInfo>> possibleSpawns = this.getPossibleSpawns(coords.size(), targetBiomes);
+        if(possibleSpawns == null || possibleSpawns.isEmpty()) {
             LycanitesMobs.printDebug("CustomSpawner", "No mobs are able to spawn, either not enough blocks, empty biome/dimension or all weights are 0. Spawning cancelled.");
             return false;
         }
@@ -480,7 +480,14 @@ public class SpawnTypeBase {
         for(BlockPos coord : coords) {
         	
             // Get EntityLiving to Spawn:
-            SpawnInfo spawnInfo = this.getRandomMob(possibleSpawns, world);
+            BiomeGenBase spawnBiome = world.getBiomeGenForCoords(coord);
+            if(!possibleSpawns.containsKey(spawnBiome))
+                continue;
+            if(possibleSpawns.get(spawnBiome).isEmpty()) {
+                LycanitesMobs.printWarning("CustomSpawner", "Tried to spawn in " + spawnBiome + " but there are no possible spawns yet it has a list instantiated, skipping.");
+                continue;
+            }
+            SpawnInfo spawnInfo = this.getRandomMob(possibleSpawns.get(spawnBiome), world);
             EntityLiving entityLiving = null;
             try {
                 entityLiving = (EntityLiving)spawnInfo.mobInfo.entityClass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {world});
@@ -632,10 +639,10 @@ public class SpawnTypeBase {
      * Returns a list of all mobs that are able to spawn within the provided biomes and number coordinates.
      * @param coordsFound The number of coordinates found, some mobs require a certain amount of blocks for example to be able to spawn.
      * @param biomes A list of all biomes found from the coordinates.
-     * @return Array list of Spawn Info.
+     * @return Map of possible spawns keyed by each provided biome type.
      */
-    public List<SpawnInfo> getPossibleSpawns(int coordsFound, List<BiomeGenBase> biomes) {
-        List<SpawnInfo> possibleSpawns = new ArrayList<SpawnInfo>();
+    public Map<BiomeGenBase, List<SpawnInfo>> getPossibleSpawns(int coordsFound, List<BiomeGenBase> biomes) {
+        Map<BiomeGenBase, List<SpawnInfo>> possibleSpawns = new HashMap<BiomeGenBase, List<SpawnInfo>>();
         for(SpawnInfo possibleSpawn : this.getSpawnList()) {
         	// Check Spawn Wave Limit:
         	boolean withinWaveLimit = true;
@@ -662,26 +669,28 @@ public class SpawnTypeBase {
             }
             
             // Check Biomes:
-            boolean isValidBiome = this.ignoreBiome || possibleSpawn.ignoreBiome;
-            if(enoughCoords && !isValidBiome) {
+            List<BiomeGenBase> spawnBiomes = new ArrayList<BiomeGenBase>();
+            if(enoughCoords) {
                 for(BiomeGenBase validBiome : possibleSpawn.biomes) {
                     for(BiomeGenBase targetBiome : biomes) {
-                        if(targetBiome == validBiome) {
-                            isValidBiome = true;
+                        if(targetBiome == validBiome || this.ignoreBiome || possibleSpawn.ignoreBiome) {
+                            spawnBiomes.add(targetBiome);
                             break;
                         }
                     }
-                    if(isValidBiome)
-                        break;
                 }
             }
-            if(!isValidBiome)
+            if(spawnBiomes.isEmpty())
                 LycanitesMobs.printDebug("CustomSpawner", possibleSpawn.mobInfo.name + ": No valid spawning biomes could be found within the coordinates.");
             
             // Add If Valid:
-            if(isEnabled && enoughCoords && isValidBiome) {
+            if(isEnabled && enoughCoords && !spawnBiomes.isEmpty()) {
                 LycanitesMobs.printDebug("CustomSpawner", possibleSpawn.mobInfo.name + ": Able to spawn.");
-                possibleSpawns.add(possibleSpawn);
+                for(BiomeGenBase spawnBiome : spawnBiomes) {
+                    if(!possibleSpawns.containsKey(spawnBiome))
+                        possibleSpawns.put(spawnBiome, new ArrayList<SpawnInfo>());
+                    possibleSpawns.get(spawnBiome).add(possibleSpawn);
+                }
             }
         }
         return possibleSpawns;

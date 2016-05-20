@@ -13,8 +13,8 @@ public class EntityAIFollow extends EntityAIBase {
     double speed = 1.0D;
     Class targetClass;
     private int updateRate;
-    double strayDistance = 1.0D * 1.0D;
-    double lostDistance = 64.0D * 64.0D;
+    double strayDistance = 1.0D;
+    double lostDistance = 64.0D;
     double behindDistance = 0;
     
 	
@@ -47,11 +47,11 @@ public class EntityAIFollow extends EntityAIBase {
     	return this;
     }
     public EntityAIFollow setStrayDistance(double setDist) {
-    	this.strayDistance = setDist * setDist;
+    	this.strayDistance = setDist;
     	return this;
     }
     public EntityAIFollow setLostDistance(double setDist) {
-    	this.lostDistance = setDist * setDist;
+    	this.lostDistance = setDist;
     	return this;
     }
     public EntityAIFollow setFollowBehind(double setDist) {
@@ -69,8 +69,8 @@ public class EntityAIFollow extends EntityAIBase {
 	        return false;
         if(!target.isEntityAlive())
         	return false;
-	    
-	    double distance = this.host.getDistanceSqToEntity(target);
+
+        double distance = Math.sqrt(this.host.getDistanceSqToEntity(target));
 	    if(distance > this.lostDistance && this.lostDistance != 0)
 	        return false;
 	    if(distance <= this.strayDistance && this.strayDistance != 0)
@@ -90,7 +90,7 @@ public class EntityAIFollow extends EntityAIBase {
         if(!target.isEntityAlive())
         	return false;
         
-        double distance = this.host.getDistanceSqToEntity(target);
+        double distance = Math.sqrt(this.host.getDistanceSqToEntity(target));
         if(distance > this.lostDistance && this.lostDistance != 0)
         	this.host.setMasterTarget(null);
         if(distance <= this.strayDistance && this.strayDistance != 0)
@@ -116,8 +116,9 @@ public class EntityAIFollow extends EntityAIBase {
             this.updateRate = 10;
             Entity target = this.getTarget();
         	if(!this.host.useDirectNavigator()) {
-        		if(this.behindDistance == 0 || !(target instanceof EntityCreatureBase))
-        			this.host.getNavigator().tryMoveToEntityLiving(target, this.speed);
+        		if(this.behindDistance == 0 || !(target instanceof EntityCreatureBase)) {
+                    this.host.getNavigator().tryMoveToEntityLiving(target, this.speed);
+                }
         		else {
         			BlockPos pos = ((EntityCreatureBase)target).getFacingPosition(-this.behindDistance);
         			this.host.getNavigator().tryMoveToXYZ(pos.getX(), pos.getY(), pos.getZ(), this.speed);

@@ -1,5 +1,6 @@
 package lycanite.lycanitesmobs.api.entity.ai;
 
+import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
@@ -21,7 +22,7 @@ public class EntityAITempt extends EntityAIBase {
     private String temptList = null;
     private int retemptTime;
     private int retemptTimeMax = 10; // Lowered from 100 because it's just annoying!
-    private double temptDistanceMin = 1.0D * 1.0D;
+    private double temptDistanceMin = 1.0D;
     private double temptDistanceMax = 10.0D;
     private boolean scaredByPlayerMovement = false;
     private boolean stopAttack = false;
@@ -67,11 +68,11 @@ public class EntityAITempt extends EntityAIBase {
     	return this;
     }
     public EntityAITempt setTemptDistanceMin(double dist) {
-    	this.temptDistanceMin = dist * dist;
+    	this.temptDistanceMin = dist;
     	return this;
     }
     public EntityAITempt setTemptDistanceMax(double dist) {
-    	this.temptDistanceMax = dist * dist;
+    	this.temptDistanceMax = dist;
     	return this;
     }
     public EntityAITempt setScaredByMovement(boolean scared) {
@@ -103,7 +104,7 @@ public class EntityAITempt extends EntityAIBase {
         if(this.player == null)
             return false;
 
-        if(!this.isTemptStack(this.player.getHeldItemMainhand()) || !this.isTemptStack(this.player.getHeldItemOffhand()))
+        if(!this.isTemptStack(this.player.getHeldItemMainhand()) && !this.isTemptStack(this.player.getHeldItemOffhand()))
             return false;
         
         this.host.setStealth(0.0F);
@@ -177,6 +178,11 @@ public class EntityAITempt extends EntityAIBase {
         this.player = null;
         this.host.getNavigator().clearPathEntity();
         this.retemptTime = this.retemptTimeMax;
+        if(this.host instanceof EntityCreatureAgeable) {
+            EntityCreatureAgeable ageable = (EntityCreatureAgeable)this.host;
+            if(!ageable.isChild() && !ageable.canBreed())
+                this.retemptTime *= 10;
+        }
         this.isRunning = false;
         if (this.host.getNavigator() instanceof PathNavigateGround) {
             PathNavigateGround navigateGround = (PathNavigateGround) this.host.getNavigator();

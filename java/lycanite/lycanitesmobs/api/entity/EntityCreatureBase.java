@@ -1406,12 +1406,12 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         }
 
         // Boss Health Bar:
-        if(this.worldObj.isRemote && this.showBossInfo()) {
+        if(!this.worldObj.isRemote && this.showBossInfo()) {
             if(this.bossInfo == null) {
                 if(this.boss)
-                    this.createBossInfo(BossInfo.Color.BLUE, false);
+                    this.createBossInfo(BossInfo.Color.RED, false);
                 else
-                    this.createBossInfo(BossInfo.Color.PURPLE, false);
+                    this.createBossInfo(BossInfo.Color.GREEN, false);
             }
         }
 
@@ -3386,7 +3386,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 
     // ========== Boss Info ==========
     public boolean showBossInfo() {
-        if(this.forceBossHealthBar)
+        if(this.forceBossHealthBar || this.isBoss())
             return true;
         // Rare subspecies health bar:
         if(this.getSubspeciesIndex() >= 3)

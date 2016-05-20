@@ -207,6 +207,8 @@ public class ObjectLists {
 		ObjectLists.addItem("cactusfood", new ItemStack(Items.dye, 1, 2)); // Cactus Green
 		
 		// Mushrooms: (Fungi treats!)
+        ObjectLists.addItem("mushrooms", Items.mushroom_stew);
+        ObjectLists.addItem("mushrooms", Blocks.red_mushroom);
 		ObjectLists.addItem("mushrooms", Blocks.brown_mushroom);
 		ObjectLists.addItem("mushrooms", Blocks.red_mushroom);
 		ObjectLists.addItem("mushrooms", Blocks.brown_mushroom_block);

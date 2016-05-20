@@ -21,6 +21,7 @@ public class EntityHitArea extends Entity {
         this.owner = ownerEntity;
         this.setSize(width, height);
         this.noClip = true;
+        this.isImmuneToFire = true;
     }
 
     public EntityHitArea(World world) {
@@ -49,6 +50,11 @@ public class EntityHitArea extends Entity {
             if(this.width != newWidth || this.height != newHeight)
                 this.setSize(newWidth, newHeight);
         }
+    }
+
+    @Override
+    public boolean isBurning() {
+        return false;
     }
 
 

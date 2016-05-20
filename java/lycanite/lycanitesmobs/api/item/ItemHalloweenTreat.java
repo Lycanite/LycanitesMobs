@@ -10,6 +10,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.translation.I18n;
@@ -31,7 +34,8 @@ public class ItemHalloweenTreat extends ItemBase {
     // ==================================================
  	//                    Item Use
  	// ==================================================
-     public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer player, EnumHand hand) {
          if(!player.capabilities.isCreativeMode) {
              --itemStack.stackSize;
          }
@@ -43,7 +47,7 @@ public class ItemHalloweenTreat extends ItemBase {
          		this.openBad(itemStack, world, player);
          }
 
-         return itemStack;
+        return new ActionResult(EnumActionResult.SUCCESS, itemStack);
      }
     
     

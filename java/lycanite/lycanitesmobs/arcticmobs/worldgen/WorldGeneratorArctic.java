@@ -22,7 +22,7 @@ public class WorldGeneratorArctic implements IWorldGenerator {
     // ==================================================
     //                      Generate
     // ==================================================
-     @Override
+    @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
          this.oozeLakes.onWorldGen(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
     }

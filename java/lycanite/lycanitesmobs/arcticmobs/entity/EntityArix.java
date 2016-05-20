@@ -25,10 +25,6 @@ import java.util.HashMap;
 
 public class EntityArix extends EntityCreatureTameable implements IMob, IGroupIce {
 
-    public boolean flightMode = true;
-    public int flightToggleTime = 0;
-    public int flightToggleTimeMax = 200;
-
     // ==================================================
  	//                    Constructor
  	// ==================================================
@@ -145,7 +141,10 @@ public class EntityArix extends EntityCreatureTameable implements IMob, IGroupIc
   	//                     Abilities
   	// ==================================================
     @Override
-    public boolean canFly() { return this.flightMode; }
+    public boolean canFly() { return true; }
+
+    @Override
+    public boolean canSwim() { return true; }
 
     @Override
     public boolean canBreatheUnderwater() {

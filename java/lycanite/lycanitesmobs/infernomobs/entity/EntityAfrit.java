@@ -28,10 +28,6 @@ import java.util.HashMap;
 
 public class EntityAfrit extends EntityCreatureTameable implements IMob, IGroupFire {
 
-    //public boolean flightMode = true;
-    //public int flightToggleTime = 0;
-    //public int flightToggleTimeMax = 200;
-
     // ==================================================
  	//                    Constructor
  	// ==================================================
@@ -102,34 +98,6 @@ public class EntityAfrit extends EntityCreatureTameable implements IMob, IGroupF
 	@Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-
-        /*/Flight Mode:
-        if(!this.worldObj.isRemote) {
-            if(this.hasAttackTarget() || (!this.isSitting() && this.isFollowing())) {
-                this.flightToggleTime = 0;
-                this.flightMode = true;
-            }
-            if(this.isSitting())
-                this.flightToggleTime = 0;
-            if(this.flightToggleTime++ >= this.flightToggleTimeMax) {
-                this.flightToggleTime = 0;
-                if(this.getRNG().nextBoolean()) {
-                	boolean solidBeneath = false;
-                	int searchX = (int)Math.floor(this.posX);
-                	int searchY = (int)Math.floor(this.posY) + 1;
-                	int searchZ = (int)Math.floor(this.posZ);
-                	while(searchY > 0) {
-                		Block searchBlock = this.worldObj.getBlock(searchX, searchY, searchZ);
-                		if(searchBlock != null) {
-                			solidBeneath = this.worldObj.doesBlockHaveSolidTopSurface(this.worldObj, searchX, searchY, searchZ);
-                			break;
-                		}
-                		searchY--;
-                	}
-                    this.flightMode = !this.flightMode;
-                }
-            }
-        }*/
 
         // Particles:
         if(this.worldObj.isRemote)

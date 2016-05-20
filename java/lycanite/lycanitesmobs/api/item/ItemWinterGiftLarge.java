@@ -8,6 +8,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.translation.I18n;
@@ -29,7 +32,8 @@ public class ItemWinterGiftLarge extends ItemBase {
     // ==================================================
  	//                    Item Use
  	// ==================================================
-     public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer player, EnumHand hand) {
          if(!player.capabilities.isCreativeMode) {
              --itemStack.stackSize;
          }
@@ -38,7 +42,7 @@ public class ItemWinterGiftLarge extends ItemBase {
          	this.open(itemStack, world, player);
          }
 
-         return itemStack;
+        return new ActionResult(EnumActionResult.SUCCESS, itemStack);
      }
     
     

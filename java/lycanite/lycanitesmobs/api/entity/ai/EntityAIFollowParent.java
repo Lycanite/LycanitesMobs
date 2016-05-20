@@ -62,7 +62,7 @@ public class EntityAIFollowParent extends EntityAIFollow {
   	// ==================================================
     @Override
     public boolean shouldExecute() {
-    	if(!this.followAsAdult && this.host.getGrowingAge() >= 0)
+    	if(!this.followAsAdult && !this.host.isChild())
     		return false;
     	return super.shouldExecute();
     }
@@ -73,7 +73,7 @@ public class EntityAIFollowParent extends EntityAIFollow {
   	// ==================================================
     @Override
     public boolean continueExecuting() {
-    	if(!this.followAsAdult && this.host.getGrowingAge() >= 0)
+    	if(!this.followAsAdult && !this.host.isChild())
     		return false;
     	return super.continueExecuting();
     }

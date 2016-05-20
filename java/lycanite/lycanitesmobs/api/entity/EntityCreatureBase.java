@@ -8,7 +8,7 @@ import lycanite.lycanitesmobs.api.IGroupBoss;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAIMoveRestriction;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetAttack;
 import lycanite.lycanitesmobs.api.entity.ai.EntityAITargetRevenge;
-import lycanite.lycanitesmobs.api.entity.ai.FlightNavigator;
+import lycanite.lycanitesmobs.api.entity.ai.DirectNavigator;
 import lycanite.lycanitesmobs.api.entity.navigate.*;
 import lycanite.lycanitesmobs.api.info.*;
 import lycanite.lycanitesmobs.api.inventory.ContainerCreature;
@@ -186,7 +186,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     /** Movement AI for mobs that are leashed. **/
     private EntityAIBase leashMoveTowardsRestrictionAI = new EntityAIMoveRestriction(this);
     /** The flight navigator class, a makeshift class that handles flight and free swimming movement, replaces the pathfinder. **/
-    public FlightNavigator flightNavigator;
+    public DirectNavigator flightNavigator;
     /** A path navigator for swimming, used typically by flying mobs for when they land in the water as swimming-only mobs use a swimming navigator by default. **/
     public PathNavigate navigatorSwimming;
     /** A move helper for swimming, used typically by flying mobs for when they land in the water as swimming-only mobs use a swimming move helper by default. **/
@@ -398,7 +398,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         this.mobInfo = MobInfo.mobClassToInfo.get(this.getClass());
         this.group = mobInfo.group;
         this.extraMobBehaviour = new ExtraMobBehaviour(this);
-        this.flightNavigator = new FlightNavigator(this);
+        this.flightNavigator = new DirectNavigator(this);
 
         super.applyEntityAttributes();
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
@@ -1588,6 +1588,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
      * Used mainly for flying 'ghost' mobs that should fly through the terrain.
      */
     public boolean useDirectNavigator() {
+        if(this.isInWater() && this.getNavigator() instanceof PathNavigateFlight)
+            return true;
     	return false;
     }
     

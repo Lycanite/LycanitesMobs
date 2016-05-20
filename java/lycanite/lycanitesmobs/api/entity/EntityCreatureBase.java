@@ -98,6 +98,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     public float hitAreaScale = 1;
     /** How many ticks until this mob can attack again. **/
     public int attackTime = 20;
+    /** A bounding box used for rendering, usually null as the base bounding box is used unless overridden. **/
+    //public AxisAlignedBB renderBoundingBox = null;
 	
 	// Stats:
 	/** The defense rating of this mob. This is how much damage it can withstand.
@@ -336,6 +338,12 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
             if(!this.canBreatheAboveWater())
                 this.setPathPriority(PathNodeType.WATER, 0.0F);
         }
+
+        // Navigation:
+        if(this.canFly())
+            this.moveHelper = new FlightMoveHelper(this);
+        else if(this.canSwim() && !this.canWalk())
+            this.moveHelper = new SwimmingMoveHelper(this);
     }
     
     // ========== Setup ==========
@@ -355,14 +363,6 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         
         // Fire Immunity:
         this.isImmuneToFire = !this.canBurn();
-
-        // Navigation:
-        if(this.canFly())
-            this.moveHelper = new FlightMoveHelper(this);
-        else if(this.canSwim() && !this.canWalk())
-            this.moveHelper = new SwimmingMoveHelper(this);
-        //else
-            //this.moveHelper = new GroundMoveHelper(this);
     }
     
     // ========== Load Item Drops ==========
@@ -1229,6 +1229,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
   	// ==================================================
     // ========== Main ==========
     /** The main update method, all the important updates go here. **/
+    @Override
     public void onUpdate() {
     	if(this.dataWatcher != null)
     		this.onSyncUpdate();
@@ -1276,7 +1277,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     /** Runs through all the AI tasks this mob has on the update, will update the flight navigator if this mob is using it too. **/
     @Override
     protected void updateAITasks() {
-		if(this.useFlightNavigator())
+		if(this.useDirectNavigator())
             flightNavigator.updateFlight();
         super.updateAITasks();
     }
@@ -1519,9 +1520,9 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 
     // ========== Hit Areas ==========
     public void updateHitAreas() {
+        int hitAreaWidthCount = Math.max(1, Math.round(this.width / 4));
         int hitAreaHeightCount = Math.max(1, Math.round(this.height / 4));
-        int hitAreaWidthCount =  Math.max(1, Math.round(this.width / 4));
-        if(hitAreaHeightCount < 2 && hitAreaWidthCount < 2) {
+        if(hitAreaWidthCount < 2 && hitAreaHeightCount < 2) {
             this.hitAreas = null;
             return;
         }
@@ -1539,6 +1540,11 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
                         this.hitAreas[y][x][z] = new EntityHitArea(this, (this.width / hitAreaWidthCount) * this.hitAreaScale, this.height / hitAreaHeightCount);
                         this.worldObj.spawnEntityInWorld(this.hitAreas[y][x][z]);
                     }
+                    /*this.hitAreas[y][x][z].setPositionAndUpdate(
+                            this.posX - ((this.width * this.hitAreaScale) / 2) + (((this.width * this.hitAreaScale) / hitAreaWidthCount) / 2) + (((this.width * this.hitAreaScale) / hitAreaWidthCount) * x),
+                            this.posY + ((this.height / hitAreaHeightCount) * y),
+                            posZ = this.posZ - ((this.width * this.hitAreaScale) / 2) + (((this.width * this.hitAreaScale) / hitAreaWidthCount) / 2) + (((this.width * this.hitAreaScale) / hitAreaWidthCount) * z)
+                    );*/
                     this.hitAreas[y][x][z].posX = this.posX - ((this.width * this.hitAreaScale) / 2) + (((this.width * this.hitAreaScale) / hitAreaWidthCount) / 2) + (((this.width * this.hitAreaScale) / hitAreaWidthCount) * x);
                     this.hitAreas[y][x][z].posY = this.posY + ((this.height / hitAreaHeightCount) * y);
                     this.hitAreas[y][x][z].posZ = this.posZ - ((this.width * this.hitAreaScale) / 2) + (((this.width * this.hitAreaScale) / hitAreaWidthCount) / 2) + (((this.width * this.hitAreaScale) / hitAreaWidthCount) * z);
@@ -1581,7 +1587,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
      * Returns true if this entity should use a direct navigator with no pathing.
      * Used mainly for flying 'ghost' mobs that should fly through the terrain.
      */
-    public boolean useFlightNavigator() {
+    public boolean useDirectNavigator() {
     	return false;
     }
     
@@ -1589,7 +1595,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     /** Moves the entity, redirects to the flight navigator if this mob should use that instead. **/
     @Override
     public void moveEntityWithHeading(float moveStrafe, float moveForward) {
-    	if(!this.useFlightNavigator()) {
+    	if(!this.useDirectNavigator()) {
             if(this.canFly() && !this.isInWater() && !this.isInLava())
                 this.moveFlyingWithHeading(moveStrafe, moveForward);
             else if(this.canSwim() && (this.isInWater() || this.isInLava()))
@@ -1696,7 +1702,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     // ========== Clear Movement ==========
     /** Cuts off all movement for this update, will clear any pathfinder paths, works with the flight navigator too. **/
     public void clearMovement() {
-    	if(!this.useFlightNavigator() && this.getNavigator() != null)
+    	if(!this.useDirectNavigator() && this.getNavigator() != null)
         	this.getNavigator().clearPathEntity();
         else
         	this.flightNavigator.clearTargetPosition(1.0D);
@@ -1756,7 +1762,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     // ========== Is Moving ==========
     /** Returns true if this entity is moving towards a destination (doesn't check if this entity is being pushed, etc though). **/
     public boolean isMoving() {
-    	if(!this.useFlightNavigator())
+    	if(!this.useDirectNavigator())
         	return this.getNavigator().getPath() != null;
         else
         	return !this.flightNavigator.atTargetPosition();
@@ -1970,9 +1976,14 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     /** Sets the width and height of this mob. This applies sizeScale to the provided arguments. **/
 	@Override
 	protected void setSize(float width, float height) {
-        super.setSize(width * (float)this.sizeScale, height * (float)this.sizeScale);
+        width *= (float)this.sizeScale;
+        height *= (float)this.sizeScale;
+        super.setSize(width, height);
+        /*if (width == this.width || height == this.height)
+            return;
+        this.setEntityBoundingBox(new AxisAlignedBB(-(width / 2), 0, -(width / 2), (width / 2), height, (width / 2)));
         this.width = width;
-        this.height = height;
+        this.height = height;*/
         this.hitAreas = null;
     }
 
@@ -3326,6 +3337,24 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     // ==================================================
     //                       Visuals
     // ==================================================
+    /* Returns true if this entity can be rendered, compensation for entity height has been added here. **
+    @SideOnly(Side.CLIENT)
+    @Override
+    public boolean isInRangeToRender3d(double x, double y, double z) {
+        double xDistance = this.posX - x;
+        double yDistance = this.posY - y;
+        double zDistance = this.posZ - z;
+
+        double heightOffset = -yDistance;
+        double heightCompensation = 0;
+        if(heightOffset > 0)
+            heightCompensation = Math.min(heightOffset, this.height);
+        yDistance -= heightCompensation;
+
+        double distance = xDistance * xDistance + yDistance * yDistance + zDistance * zDistance;
+        return this.isInRangeToRenderDist(distance);
+    }*/
+
     /** Returns this creature's main texture. Also checks for for subspecies. **/
     public ResourceLocation getTexture() {
         String textureName = this.getTextureName();

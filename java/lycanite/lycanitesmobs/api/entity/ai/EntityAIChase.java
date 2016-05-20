@@ -70,7 +70,7 @@ public class EntityAIChase extends EntityAIBase {
  	//                      Start
  	// ==================================================
     public void startExecuting() {
-    	if(!this.host.useFlightNavigator())
+    	if(!this.host.useDirectNavigator())
     		this.host.getNavigator().tryMoveToXYZ(this.movePos.getX(), this.movePos.getY(), this.movePos.getZ(), this.speed);
     	else
     		this.host.flightNavigator.setTargetPosition(this.movePos, speed);

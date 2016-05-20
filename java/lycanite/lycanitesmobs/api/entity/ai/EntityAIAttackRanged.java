@@ -150,9 +150,9 @@ public class EntityAIAttackRanged extends EntityAIBase {
   	// ==================================================
     public boolean continueExecuting() {
     	if(!this.longMemory)
-	    	if(!this.host.useFlightNavigator() && !this.host.getNavigator().noPath())
+	    	if(!this.host.useDirectNavigator() && !this.host.getNavigator().noPath())
                 return this.shouldExecute();
-	    	else if(this.host.useFlightNavigator() && this.host.flightNavigator.targetPosition == null)
+	    	else if(this.host.useDirectNavigator() && this.host.flightNavigator.targetPosition == null)
                 return this.shouldExecute();
 
     	// Should Execute:
@@ -196,7 +196,7 @@ public class EntityAIAttackRanged extends EntityAIBase {
 
         // If within min range or chase timed out:
         if(distance <= this.minChaseDistance || (this.chaseTimeMax >= 0 && distance <= (double)this.attackDistance && this.chaseTime >= this.chaseTimeMax)) {
-            if(!this.host.useFlightNavigator())
+            if(!this.host.useDirectNavigator())
                 this.host.getNavigator().clearPathEntity();
             else
                 this.host.flightNavigator.clearTargetPosition(1.0D);
@@ -205,7 +205,7 @@ public class EntityAIAttackRanged extends EntityAIBase {
             BlockPos targetPosition = this.attackTarget.getPosition();
             if(this.host.canFly())
                 targetPosition = targetPosition.add(0, flyingHeightOffset, 0);
-            if(!this.host.useFlightNavigator())
+            if(!this.host.useDirectNavigator())
                 this.host.getNavigator().tryMoveToXYZ(targetPosition.getX(), targetPosition.getY(), targetPosition.getZ(), this.speed);
             else
                 this.host.flightNavigator.setTargetPosition(targetPosition, this.speed);

@@ -181,7 +181,7 @@ public class EntityAIGetBlock extends EntityAIBase {
     public void updateTask() {
         if(this.updateRate-- <= 0) {
             this.updateRate = 10;
-        	if(!this.host.useFlightNavigator())
+        	if(!this.host.useDirectNavigator())
         		this.host.getNavigator().tryMoveToXYZ(this.target.getX(), this.target.getY(), this.target.getZ(), this.speed);
         	else
         		this.host.flightNavigator.setTargetPosition(this.target, this.speed);

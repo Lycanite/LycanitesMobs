@@ -4,13 +4,14 @@ import lycanite.lycanitesmobs.api.capabilities.IExtendedPlayer;
 import lycanite.lycanitesmobs.api.info.Beastiary;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
-import lycanite.lycanitesmobs.api.item.ItemBase;
 import lycanite.lycanitesmobs.api.item.ItemStaffSummoning;
 import lycanite.lycanitesmobs.api.network.*;
 import lycanite.lycanitesmobs.api.pets.DonationFamiliars;
 import lycanite.lycanitesmobs.api.pets.PetEntry;
 import lycanite.lycanitesmobs.api.pets.PetManager;
 import lycanite.lycanitesmobs.api.pets.SummonSet;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -38,10 +39,11 @@ public class ExtendedPlayer implements IExtendedPlayer {
 	// Action Controls:
 	public byte controlStates = 0;
 	public static enum CONTROL_ID {
-		JUMP((byte)1), MOUNT_ABILITY((byte)2), MOUNT_INVENTORY((byte)4), LEFT_CLICK((byte)8);
+		JUMP((byte)1), MOUNT_ABILITY((byte)2), MOUNT_INVENTORY((byte)4), ATTACK((byte)8);
 		public byte id;
 		private CONTROL_ID(byte i) { id = i; }
 	}
+    public boolean hasAttacked = false; // If true, this entity has attacked this tick.
 
 	// Spirit:
 	public int spiritCharge = 100;
@@ -124,18 +126,37 @@ public class ExtendedPlayer implements IExtendedPlayer {
         return this.player;
     }
 
+    /** Returns true if the provided entity is within melee attack range and is considered large. This is used for when the vanilla attack range fails on big entities. **/
+    public boolean canMeleeBigEntity(Entity targetEntity) {
+        if(targetEntity == null || !(targetEntity instanceof EntityLivingBase))
+            return false;
+        if(targetEntity.height <= 4 && targetEntity.width <= 4)
+            return false;
+        double heightOffset = this.player.posY - targetEntity.posY;
+        double heightCompensation = 0;
+        if(heightOffset > 0)
+            heightCompensation = Math.min(heightOffset, targetEntity.height);
+        double distance = Math.sqrt(this.player.getDistanceSqToEntity(targetEntity));
+        double range = 6 + heightCompensation + (targetEntity.width / 2);
+        return distance <= range;
+    }
+
+    /** Makes this player attempt to melee attack. This is typically used for when the vanilla attack range fails on big entities. **/
+    public void meleeAttack(Entity targetEntity) {
+        if(!this.hasAttacked && this.player.getHeldItemMainhand() != null && this.canMeleeBigEntity(targetEntity)) {
+            this.player.attackTargetEntityWithCurrentItem(targetEntity);
+            this.player.resetCooldown();
+            this.player.swingArm(EnumHand.MAIN_HAND);
+        }
+    }
+
 	
 	// ==================================================
     //                       Update
     // ==================================================
 	/** Called by the EventListener, runs any logic on the main player entity's main update loop. **/
 	public void onUpdate() {
-        // Custom Item Left Click Use:
-        if(this.isControlActive(CONTROL_ID.LEFT_CLICK) && this.player.getHeldItemMainhand() != null && this.player.getHeldItemMainhand().getItem() instanceof ItemBase) {
-            ItemBase itemBase = (ItemBase)this.player.getHeldItemMainhand().getItem();
-            itemBase.onItemLeftClick(this.player.getHeldItemMainhand(), this.player.getEntityWorld(), this.player, EnumHand.MAIN_HAND);
-        }
-
+        this.hasAttacked = false;
 		boolean creative = this.player.capabilities.isCreativeMode;
 
 		// Stats:

@@ -14,7 +14,6 @@ import net.minecraftforge.fml.relauncher.Side;
 public class MessagePlayerControl implements IMessage, IMessageHandler<MessagePlayerControl, IMessage> {
 	public byte controlStates;
 	
-	
 	// ==================================================
 	//                    Constructors
 	// ==================================================

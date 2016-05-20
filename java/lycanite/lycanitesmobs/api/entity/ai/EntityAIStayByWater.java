@@ -162,7 +162,7 @@ public class EntityAIStayByWater extends EntityAIBase {
     public void updateTask() {
         if(this.updateRate-- <= 0) {
             this.updateRate = 20;
-	    	if(!host.useFlightNavigator()) {
+	    	if(!host.useDirectNavigator()) {
 	    		this.host.getNavigator().tryMoveToXYZ(this.waterPos.getX() + 0.5D, this.waterPos.getY(), this.waterPos.getZ() + 0.5D, this.speed);
 	    	}
 	    	else

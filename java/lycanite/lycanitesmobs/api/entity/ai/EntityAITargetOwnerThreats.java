@@ -121,7 +121,7 @@ public class EntityAITargetOwnerThreats extends EntityAITarget {
         
         double distance = this.getTargetDistance() - this.host.width;
         double heightDistance = 4.0D - this.host.height;
-        if(this.host.useFlightNavigator()) heightDistance = this.getTargetDistance() - this.host.height;
+        if(this.host.useDirectNavigator()) heightDistance = this.getTargetDistance() - this.host.height;
         List possibleTargets = this.host.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, this.host.getEntityBoundingBox().expand(distance, heightDistance, distance), this.targetSelector);
         Collections.sort(possibleTargets, this.targetSorter);
         

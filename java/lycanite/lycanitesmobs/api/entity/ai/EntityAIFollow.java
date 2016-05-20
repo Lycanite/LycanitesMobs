@@ -115,7 +115,7 @@ public class EntityAIFollow extends EntityAIBase {
         if(this.updateRate-- <= 0) {
             this.updateRate = 10;
             Entity target = this.getTarget();
-        	if(!this.host.useFlightNavigator()) {
+        	if(!this.host.useDirectNavigator()) {
         		if(this.behindDistance == 0 || !(target instanceof EntityCreatureBase))
         			this.host.getNavigator().tryMoveToEntityLiving(target, this.speed);
         		else {

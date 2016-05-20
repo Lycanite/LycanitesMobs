@@ -137,7 +137,7 @@ public class EntityPhantom extends EntityCreatureTameable implements IMob, IGrou
     public boolean canFly() { return true; }
 
     @Override
-    public boolean useFlightNavigator() {
+    public boolean useDirectNavigator() {
         return true;
     }
     

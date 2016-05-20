@@ -11,8 +11,6 @@ import net.minecraft.world.World;
 
 public class EntityHitArea extends Entity {
     public Entity owner;
-    private static byte widthID = 12;
-    private static byte heightID = 13;
 
     // Datawatcher:
     protected static final DataParameter<Float> WIDTH = EntityDataManager.<Float>createKey(EntityHitArea.class, DataSerializers.FLOAT);
@@ -22,6 +20,7 @@ public class EntityHitArea extends Entity {
         super(ownerEntity.worldObj);
         this.owner = ownerEntity;
         this.setSize(width, height);
+        this.noClip = true;
     }
 
     public EntityHitArea(World world) {
@@ -54,16 +53,15 @@ public class EntityHitArea extends Entity {
 
 
     @Override
-    protected void readEntityFromNBT(NBTTagCompound p_70037_1_) {}
+    protected void readEntityFromNBT(NBTTagCompound nbtTagCompound) {}
 
 
     @Override
-    protected void writeEntityToNBT(NBTTagCompound p_70014_1_) {}
+    protected void writeEntityToNBT(NBTTagCompound nbtTagCompound) {}
 
 
     @Override
-    public boolean canBeCollidedWith()
-    {
+    public boolean canBeCollidedWith() {
         return true;
     }
 

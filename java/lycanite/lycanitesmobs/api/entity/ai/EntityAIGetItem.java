@@ -81,7 +81,7 @@ public class EntityAIGetItem extends EntityAIBase {
     	}
     	
         double heightDistance = 4.0D;
-        if(this.host.useFlightNavigator()) heightDistance = this.distanceMax;
+        if(this.host.useDirectNavigator()) heightDistance = this.distanceMax;
         List possibleTargets = this.host.worldObj.getEntitiesWithinAABB(EntityItem.class, this.host.getEntityBoundingBox().expand(this.distanceMax, heightDistance, this.distanceMax), this.targetSelector);
         
         if(possibleTargets.isEmpty())
@@ -140,7 +140,7 @@ public class EntityAIGetItem extends EntityAIBase {
     public void updateTask() {
         if(this.updateRate-- <= 0) {
             this.updateRate = 10;
-        	if(!this.host.useFlightNavigator())
+        	if(!this.host.useDirectNavigator())
         		this.host.getNavigator().tryMoveToEntityLiving(this.target, this.speed);
         	else
         		this.host.flightNavigator.setTargetPosition(new BlockPos((int)this.target.posX, (int)this.target.posY, (int)this.target.posZ), this.speed);

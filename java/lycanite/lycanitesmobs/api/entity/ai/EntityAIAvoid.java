@@ -1,6 +1,5 @@
 package lycanite.lycanitesmobs.api.entity.ai;
 
-import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -81,7 +80,7 @@ public class EntityAIAvoid extends EntityAIBase {
         if(this.avoidTarget.getDistanceSq(avoidVector.xCoord, avoidVector.yCoord, avoidVector.zCoord) < this.avoidTarget.getDistanceSqToEntity(this.host))
             return false;
 
-        if(!this.host.useFlightNavigator()) {
+        if(!this.host.useDirectNavigator()) {
             this.pathEntity = this.host.getNavigator().getPathToXYZ(avoidVector.xCoord, avoidVector.yCoord, avoidVector.zCoord);
             if(this.pathEntity == null)// || !this.pathEntity.isDestinationSame(avoidVector))
                 return false;
@@ -95,9 +94,9 @@ public class EntityAIAvoid extends EntityAIBase {
  	//                 Continue Executing
  	// ==================================================
     public boolean continueExecuting() {
-        if(!this.host.useFlightNavigator() && this.host.getNavigator().noPath())
+        if(!this.host.useDirectNavigator() && this.host.getNavigator().noPath())
         	return false;
-		if(this.host.useFlightNavigator() && this.host.flightNavigator.atTargetPosition())
+		if(this.host.useDirectNavigator() && this.host.flightNavigator.atTargetPosition())
 			return false;
 
         /*if(this.host.getDistanceSqToEntity(this.avoidTarget) >= this.farDistance)
@@ -110,7 +109,7 @@ public class EntityAIAvoid extends EntityAIBase {
  	//                      Start
  	// ==================================================
     public void startExecuting() {
-    	if(!this.host.useFlightNavigator())
+    	if(!this.host.useDirectNavigator())
     		this.host.getNavigator().setPath(this.pathEntity, this.farSpeed);
     	else
     		this.host.flightNavigator.setTargetPosition(this.avoidTarget, this.farSpeed);
@@ -130,12 +129,12 @@ public class EntityAIAvoid extends EntityAIBase {
  	// ==================================================
     public void updateTask() {
         if(this.host.getDistanceSqToEntity(this.avoidTarget) < this.nearDistance)
-        	if(!this.host.useFlightNavigator())
+        	if(!this.host.useDirectNavigator())
         		this.host.getNavigator().setSpeed(this.nearSpeed);
         	else
         		this.host.flightNavigator.speedModifier = this.nearSpeed;
         else
-        	if(!this.host.useFlightNavigator())
+        	if(!this.host.useDirectNavigator())
         		this.host.getNavigator().setSpeed(this.farSpeed);
         	else
         		this.host.flightNavigator.speedModifier = this.farSpeed;

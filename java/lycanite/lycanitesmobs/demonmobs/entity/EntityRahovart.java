@@ -27,6 +27,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -81,12 +82,12 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
         this.setWidth = 15F;
         this.setHeight = 50F;
         this.solidCollision = true;
+        this.entityCollisionReduction = 1.0F;
         this.setupMob();
         this.hitAreaScale = 2F;
 
         // Boss:
         this.boss = true;
-        this.forceBossHealthBar = true;
         this.damageMax = 25;
         
         // AI Tasks:
@@ -107,24 +108,24 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 5000D);
-		baseAttributes.put("movementSpeed", 0.32D);
-		baseAttributes.put("knockbackResistance", 1D);
-		baseAttributes.put("followRange", 40D);
-		baseAttributes.put("attackDamage", 18D);
+        baseAttributes.put("maxHealth", 5000D);
+        baseAttributes.put("movementSpeed", 0.32D);
+        baseAttributes.put("knockbackResistance", 1D);
+        baseAttributes.put("followRange", 40D);
+        baseAttributes.put("attackDamage", 18D);
         super.applyEntityAttributes(baseAttributes);
     }
 	
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.blaze_powder), 0.5F).setMinAmount(20).setMaxAmount(50));
-        this.drops.add(new DropRate(new ItemStack(Items.blaze_rod), 0.5F).setMinAmount(10).setMaxAmount(20));
-        this.drops.add(new DropRate(new ItemStack(Items.diamond), 0.75F).setMinAmount(10).setMaxAmount(20));
-        this.drops.add(new DropRate(new ItemStack(Items.nether_star), 0.5F).setMinAmount(5).setMaxAmount(8));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("doomfirecharge")), 0.5F).setMinAmount(20).setMaxAmount(100));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("hellfirecharge")), 0.5F).setMinAmount(10).setMaxAmount(50));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("soulstonedemonic")), 1F).setMinAmount(5).setMaxAmount(5));
+        this.drops.add(new DropRate(new ItemStack(Items.blaze_powder), 1F).setMinAmount(20).setMaxAmount(50));
+        this.drops.add(new DropRate(new ItemStack(Items.blaze_rod), 1F).setMinAmount(10).setMaxAmount(20));
+        this.drops.add(new DropRate(new ItemStack(Items.diamond), 1F).setMinAmount(10).setMaxAmount(20));
+        this.drops.add(new DropRate(new ItemStack(Items.nether_star), 1F).setMinAmount(1).setMaxAmount(8));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("doomfirecharge")), 1F).setMinAmount(20).setMaxAmount(100));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("hellfirecharge")), 1F).setMinAmount(10).setMaxAmount(50));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("soulstonedemonic")), 1F).setMinAmount(1).setMaxAmount(3));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("demonstone")), 1F).setMinAmount(64).setMaxAmount(128));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("demonbrick")), 1F).setMinAmount(64).setMaxAmount(128));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("demontile")), 1F).setMinAmount(64).setMaxAmount(128));
@@ -137,6 +138,13 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
     protected void entityInit() {
         super.entityInit();
         this.dataWatcher.register(EntityRahovart.HELLFIRE_ENERGY, this.hellfireEnergy);
+    }
+
+    // ========== Rendering Distance ==========
+    /** Returns a larger bounding box for rendering this large entity. **/
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox() {
+        return this.getEntityBoundingBox().expand(10, 50, 10).offset(0, 25, 0);
     }
 	
 	

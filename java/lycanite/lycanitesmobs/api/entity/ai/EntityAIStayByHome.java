@@ -51,7 +51,7 @@ public class EntityAIStayByHome extends EntityAIBase {
     		return false;
         if(this.host.isInWater() && !this.host.canBreatheUnderwater())
             return false;
-        if(!this.host.onGround && !this.host.useFlightNavigator())
+        if(!this.host.onGround && !this.host.useDirectNavigator())
             return false;
         
         return true;
@@ -68,7 +68,7 @@ public class EntityAIStayByHome extends EntityAIBase {
         	double speed = this.speed;
         	if(this.host.getDistanceFromHome() > this.host.getHomeDistanceMax())
         		speed = this.farSpeed;
-	    	if(!host.useFlightNavigator())
+	    	if(!host.useDirectNavigator())
 	    		this.host.getNavigator().tryMoveToXYZ(homePos.getX(), homePos.getY(), homePos.getZ(), this.speed);
 	    	else
 	    		host.flightNavigator.setTargetPosition(new BlockPos((int)homePos.getX(), (int)homePos.getY(), (int)homePos.getZ()), speed);

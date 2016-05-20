@@ -95,7 +95,7 @@ public class MobEventRahovart extends MobEventBoss {
         int height = 120;
         Block primaryBlock = ObjectManager.getBlock("demontile");
         Block secondaryBlock = ObjectManager.getBlock("demoncrystal");
-        double secondaryChance = 0.01D;
+        double secondaryChance = 0.05D;
 
         int stripNumber = 1;
         for(int x = originX - radius; x < originX + radius; x++) {
@@ -108,11 +108,11 @@ public class MobEventRahovart extends MobEventBoss {
                 int y = originY;
                 // Build Floor:
                 Block buildBlock = primaryBlock;
-                if(world.rand.nextDouble() > secondaryChance)
+                if(world.rand.nextDouble() <= secondaryChance)
                     buildBlock = secondaryBlock;
-                world.setBlockState(new BlockPos(x, y, z), primaryBlock.getDefaultState(), 2);
-                world.setBlockState(new BlockPos(x, y - 1, z), primaryBlock.getDefaultState(), 2);
-                world.setBlockState(new BlockPos(x, y - 2, z), primaryBlock.getDefaultState(), 2);
+                world.setBlockState(new BlockPos(x, y, z), buildBlock.getDefaultState(), 2);
+                world.setBlockState(new BlockPos(x, y - 1, z), buildBlock.getDefaultState(), 2);
+                world.setBlockState(new BlockPos(x, y - 2, z), buildBlock.getDefaultState(), 2);
                 y++;
                 while(y <= originY + height && y < world.getHeight()) {
                     world.setBlockState(new BlockPos(x, y, z), Blocks.air.getDefaultState(), 2);

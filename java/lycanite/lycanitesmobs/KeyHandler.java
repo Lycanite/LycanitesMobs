@@ -1,12 +1,16 @@
 package lycanite.lycanitesmobs;
 
 import lycanite.lycanitesmobs.api.gui.*;
+import lycanite.lycanitesmobs.api.network.MessagePlayerAttack;
 import lycanite.lycanitesmobs.api.network.MessagePlayerControl;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
@@ -127,9 +131,10 @@ public class KeyHandler {
 			if(this.mountAbility.isKeyDown())
 				controlStates += ExtendedPlayer.CONTROL_ID.MOUNT_ABILITY.id;
 
-            // Custom Item Left Click Use:
-            //if(Minecraft.getMinecraft().gameSettings.keyBindAttack.getKeyCode())
-                //controlStates += ExtendedPlayer.CONTROL_ID.LEFT_CLICK.id;
+            // Attack Key Pressed:
+            if(Minecraft.getMinecraft().gameSettings.keyBindAttack.isKeyDown()) {
+                controlStates += ExtendedPlayer.CONTROL_ID.ATTACK.id;
+            }
 		}
 		
 		
@@ -140,4 +145,29 @@ public class KeyHandler {
 		LycanitesMobs.packetHandler.sendToServer(message);
 		playerExt.controlStates = controlStates;
 	}
+
+
+    // ==================================================
+    //                   Item Use Events
+    // ==================================================
+    /** Player 'mouse' events, these are actually events based on attack or item use actions and are still triggered if the key binding is no longer a mouse click. **/
+    @SubscribeEvent
+    public void onMouseEvent(MouseEvent event) {
+        ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(this.mc.thePlayer);
+        if(playerExt == null)
+            return;
+
+        // Left (Attack):
+        if(event.getButton() == 0) {
+            // Disable attack for large entity reach override:
+            if(!this.mc.thePlayer.isSpectator() && !this.mc.thePlayer.isRowingBoat() && this.mc.objectMouseOver.typeOfHit == RayTraceResult.Type.ENTITY) {
+                Entity entityHit = this.mc.objectMouseOver.entityHit;
+                if(playerExt.canMeleeBigEntity(entityHit)) {
+                    MessagePlayerAttack message = new MessagePlayerAttack(entityHit);
+                    LycanitesMobs.packetHandler.sendToServer(message);
+                    //event.setCanceled(true);
+                }
+            }
+        }
+    }
 }

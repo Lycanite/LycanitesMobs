@@ -68,7 +68,7 @@ public class EntityAIWander extends EntityAIBase {
    	//                Continue Executing
    	// ==================================================
     public boolean continueExecuting() {
-    	if(!host.useFlightNavigator())
+    	if(!host.useDirectNavigator())
     		return !this.host.getNavigator().noPath();
     	else {
             return !this.host.flightNavigator.atTargetPosition() && this.host.flightNavigator.isTargetPositionValid();
@@ -81,7 +81,7 @@ public class EntityAIWander extends EntityAIBase {
    	//                     Start
    	// ==================================================
     public void startExecuting() {
-    	if(!host.useFlightNavigator()) {
+    	if(!host.useDirectNavigator()) {
             this.host.getNavigator().tryMoveToXYZ(this.xPosition, this.yPosition, this.zPosition, this.speed);
         }
     	else

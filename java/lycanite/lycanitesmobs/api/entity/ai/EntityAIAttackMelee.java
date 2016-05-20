@@ -99,7 +99,7 @@ public class EntityAIAttackMelee extends EntityAIBase {
         if(this.targetClass != null && !this.targetClass.isAssignableFrom(attackTarget.getClass()))
             return false;
         if(--this.repathTime <= 0) {
-        	if(!this.host.useFlightNavigator()) {
+        	if(!this.host.useDirectNavigator()) {
 	            this.pathToTarget = this.host.getNavigator().getPathToEntityLiving(attackTarget);
 	            this.repathTime = 4 + this.host.getRNG().nextInt(7);
 	            return this.pathToTarget != null;
@@ -125,9 +125,9 @@ public class EntityAIAttackMelee extends EntityAIBase {
         if(this.host.getDistance(this.attackTarget.posX, this.attackTarget.getEntityBoundingBox().minY, this.attackTarget.posZ) > this.maxChaseDistance)
         	return false;
         if(!this.longMemory)
-        	if(!this.host.useFlightNavigator() && this.host.getNavigator().noPath())
+        	if(!this.host.useDirectNavigator() && this.host.getNavigator().noPath())
         		return false;
-        	else if(this.host.useFlightNavigator() && (this.host.flightNavigator.atTargetPosition() || !this.host.flightNavigator.isTargetPositionValid()))
+        	else if(this.host.useDirectNavigator() && (this.host.flightNavigator.atTargetPosition() || !this.host.flightNavigator.isTargetPositionValid()))
         		return false;
         return this.host.positionNearHome(MathHelper.floor_double(attackTarget.posX), MathHelper.floor_double(attackTarget.posY), MathHelper.floor_double(attackTarget.posZ));
     }
@@ -137,7 +137,7 @@ public class EntityAIAttackMelee extends EntityAIBase {
  	//                   Start Executing
  	// ==================================================
     public void startExecuting() {
-    	if(!this.host.useFlightNavigator())
+    	if(!this.host.useDirectNavigator())
     		this.host.getNavigator().setPath(this.pathToTarget, this.speed);
     	else if(attackTarget != null)
     		this.host.flightNavigator.setTargetPosition(new BlockPos((int)attackTarget.posX, (int)(attackTarget.posY+1.0), (int)attackTarget.posZ), speed);
@@ -163,14 +163,14 @@ public class EntityAIAttackMelee extends EntityAIBase {
         this.host.getLookHelper().setLookPositionWithEntity(attackTarget, 30.0F, 30.0F);
 
         double flightHeight = 0;
-        if(this.host.useFlightNavigator())
+        if(this.host.useDirectNavigator())
         	flightHeight = 0.25D;
 
         if((this.longMemory || this.host.getEntitySenses().canSee(attackTarget)) && --this.repathTime <= 0) {
 	        this.repathTime = failedPathFindingPenalty + 4 + this.host.getRNG().nextInt(7);
 	        
 	        // Walk to Target:
-        	if(!this.host.useFlightNavigator()) {
+        	if(!this.host.useDirectNavigator()) {
         		this.host.getNavigator().tryMoveToEntityLiving(attackTarget, this.speed);
 	            if(this.host.getNavigator().getPath() != null) {
 	                PathPoint finalPathPoint = this.host.getNavigator().getPath().getFinalPathPoint();

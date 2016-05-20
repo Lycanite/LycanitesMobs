@@ -91,7 +91,7 @@ public class EntityAIPlaceBlock extends EntityAIBase {
    	// ==================================================
     @Override
     public void startExecuting() {
-    	if(!host.useFlightNavigator())
+    	if(!host.useDirectNavigator())
     		this.host.getNavigator().tryMoveToXYZ(this.pos.getX(), this.pos.getY(), this.pos.getZ(), this.speed);
     	else
     		host.flightNavigator.setTargetPosition(this.pos, this.speed);
@@ -115,7 +115,7 @@ public class EntityAIPlaceBlock extends EntityAIBase {
     public void updateTask() {
     	if(this.repathTime-- <= 0) {
     		this.repathTime = 20;
-    		if(!host.useFlightNavigator())
+    		if(!host.useDirectNavigator())
         		this.host.getNavigator().tryMoveToXYZ(this.pos.getX(), this.pos.getY(), this.pos.getZ(), this.speed);
         	else
         		host.flightNavigator.setTargetPosition(this.pos, this.speed);
@@ -153,7 +153,7 @@ public class EntityAIPlaceBlock extends EntityAIBase {
     		}
     		else if(targetBlock != Blocks.air && !this.replaceSolid)
 	    		return false;
-            if(!this.host.useFlightNavigator() && this.host.getNavigator() != null) {
+            if(!this.host.useDirectNavigator() && this.host.getNavigator() != null) {
                 if(this.host.getNavigator().getPathToPos(pos) == null)
                     return false;
             }

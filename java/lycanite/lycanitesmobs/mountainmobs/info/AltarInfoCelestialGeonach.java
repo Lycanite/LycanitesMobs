@@ -23,16 +23,22 @@ public class AltarInfoCelestialGeonach extends AltarInfo {
     //                     Checking
     // ==================================================
     /** Called first when checking for a valid altar, this should be fairly lightweight such as just checking if the first block checked is valid, a more in depth check if then done after. **/
-    public boolean quickCheck(Entity entity, World world, int x, int y, int z) {
-        if(world.getBlockState(new BlockPos(x, y, z)).getBlock() != Blocks.diamond_block)
+    @Override
+    public boolean quickCheck(Entity entity, World world, BlockPos pos) {
+        if(world.getBlockState(pos).getBlock() != Blocks.diamond_block)
             return false;
         return true;
     }
 
     /** Called if the QuickCheck() is passed, this should check the entire altar structure and if true is returned, the altar will activate. **/
-    public boolean fullCheck(Entity entity, World world, int x, int y, int z) {
-        if(!this.quickCheck(entity, world, x, y, z))
+    @Override
+    public boolean fullCheck(Entity entity, World world, BlockPos pos) {
+        if(!this.quickCheck(entity, world, pos))
             return false;
+
+        int x = pos.getX();
+        int y = pos.getY();
+        int z = pos.getZ();
 
         Block bodyBlock = Blocks.obsidian;
 
@@ -135,9 +141,14 @@ public class AltarInfoCelestialGeonach extends AltarInfo {
     //                     Activate
     // ==================================================
     /** Called when this Altar should activate. This will typically destroy the Altar and summon a rare mob or activate an event such as a boss event. If false is returned then the activation did not work, this is the place to check for things like dimensions. **/
-    public boolean activate(Entity entity, World world, int x, int y, int z) {
+    @Override
+    public boolean activate(Entity entity, World world, BlockPos pos) {
         if(world.isRemote)
             return true;
+
+        int x = pos.getX();
+        int y = pos.getY();
+        int z = pos.getZ();
 
         // Create Mini Boss:
         EntityCreatureBase entityGeonach = new EntityGeonach(world);
@@ -156,11 +167,8 @@ public class AltarInfoCelestialGeonach extends AltarInfo {
         }
 
         // Offset:
-        if(entity != null) {
-            double[] coords = this.getFacingPosition(x, y, z, 10, entity.rotationYaw);
-            x = Math.round((float)coords[0]);
-            z = Math.round((float)coords[2]);
-        }
+        if(entity != null)
+            pos = this.getFacingPosition(pos, 10, entity.rotationYaw);
 
         // Clear Spawn Area:
         for (int xTarget = x - size; xTarget <= x + size; xTarget++) {

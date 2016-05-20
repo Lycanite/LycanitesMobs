@@ -158,8 +158,9 @@ public class EntityShade extends EntityCreatureRideable implements IGroupPredato
         return true;
     }
 
-    // Horrific Howl:
+    // ========== Special Attack ==========
     public void specialAttack() {
+        // Horrific Howl:
         double distance = 5.0D;
         List<EntityLivingBase> possibleTargets = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().expand(distance, distance, distance), new Predicate<EntityLivingBase>() {
             @Override
@@ -171,7 +172,6 @@ public class EntityShade extends EntityCreatureRideable implements IGroupPredato
                         || EntityShade.this.canAttackClass(possibleTarget.getClass())
                         || EntityShade.this.canAttackEntity(possibleTarget))
                     return false;
-
                 return true;
             }
         });

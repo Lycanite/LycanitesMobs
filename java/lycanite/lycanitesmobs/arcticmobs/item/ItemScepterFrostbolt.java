@@ -54,7 +54,7 @@ public class ItemScepterFrostbolt extends ItemScepter {
 	// ==================================================
     @Override
     public boolean getIsRepairable(ItemStack itemStack, ItemStack repairStack) {
-        if(repairStack.getItem() == ObjectManager.getItem("FrostboltCharge")) return true;
+        if(repairStack.getItem() == ObjectManager.getItem("frostboltcharge")) return true;
         return super.getIsRepairable(itemStack, repairStack);
     }
 }

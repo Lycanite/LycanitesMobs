@@ -98,7 +98,7 @@ public class EntityWendigo extends EntityCreatureBase implements IMob, IGroupIce
                 trailWidth = 3;
             for(int y = 0; y < trailHeight; y++) {
                 Block block = this.worldObj.getBlockState(this.getPosition().add(0, y, 0)).getBlock();
-                if(block == Blocks.air || block == Blocks.fire || block == Blocks.snow_layer || block == Blocks.tallgrass || block == ObjectManager.getBlock("scorchfire")) {
+                if(block != null && (block == Blocks.air || block == Blocks.fire || block == Blocks.snow_layer || block == Blocks.tallgrass || block == ObjectManager.getBlock("scorchfire") || block == ObjectManager.getBlock("doomfire"))) {
                     if(trailWidth == 1)
                         this.worldObj.setBlockState(this.getPosition().add(0, y, 0), ObjectManager.getBlock("frostfire").getDefaultState());
                     else

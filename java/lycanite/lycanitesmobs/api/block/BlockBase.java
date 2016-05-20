@@ -2,6 +2,7 @@ package lycanite.lycanitesmobs.api.block;
 
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
@@ -251,6 +252,11 @@ public class BlockBase extends Block {
         if(this.noEntityCollision && world instanceof World)
             this.onEntityCollidedWithBlock((World)world, blockpos, entity);
         return super.isEntityInsideMaterial(world, blockpos, iblockstate, entity, yToTest, materialIn, testingHead);
+    }
+
+    /** Sets the stepping sound for this block, this method is added because setStepSound is now private. **/
+    public BlockBase setBlockStepSound(SoundType soundType) {
+        return (BlockBase)this.setStepSound(soundType);
     }
     
     

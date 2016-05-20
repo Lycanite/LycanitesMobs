@@ -214,5 +214,9 @@
     "block.hellfire": {
         "category": "block",
         "sounds": [{"name": "demonmobs:block/hellfire", "stream": false}]
+    },
+    "block.doomfire": {
+        "category": "block",
+        "sounds": [{"name": "demonmobs:block/doomfire", "stream": false}]
     }
 }

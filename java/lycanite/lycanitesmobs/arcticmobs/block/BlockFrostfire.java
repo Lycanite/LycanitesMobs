@@ -127,7 +127,7 @@ public class BlockFrostfire extends BlockFireBase {
         int y = pos.getY();
         int z = pos.getZ();
         if(random.nextInt(24) == 0)
-            world.playSound((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), AssetManager.getSound("icefire"), SoundCategory.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F, false);
+            world.playSound((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), AssetManager.getSound("frostfire"), SoundCategory.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F, false);
 
         for(int particleCount = 0; particleCount < 12; ++particleCount) {
             float particleX = (float)x + random.nextFloat();

@@ -161,5 +161,5 @@ public class EntityFrostweaver extends EntityCreatureTameable implements IMob, I
     }
     
     @Override
-    public boolean webproof() { return true; }
+    public boolean webProof() { return true; }
 }

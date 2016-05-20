@@ -1,5 +1,6 @@
 package lycanite.lycanitesmobs.api.model;
 
+import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.modelloader.obj.ObjObject;
@@ -88,6 +89,8 @@ public class ModelCustomObj extends ModelCustom {
     public ModelCustomObj initModel(String name, GroupInfo groupInfo, String path) {
         this.wavefrontObject = new TessellatorModel("/assets/" + groupInfo.filename + "/models/" + path + ".obj");
         this.wavefrontParts = this.wavefrontObject.objObjects;
+        if(this.wavefrontParts.isEmpty())
+            LycanitesMobs.printWarning("", "Unable to load any parts for the " + name + " model!");
 
         return this;
     }

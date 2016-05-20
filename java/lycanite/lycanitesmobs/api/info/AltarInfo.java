@@ -112,13 +112,14 @@ public class AltarInfo {
     // ==================================================
     //                     Utility
     // ==================================================
-    public double[] getFacingPosition(double x, double y, double z, double distance, double angle) {
+    public BlockPos getFacingPosition(BlockPos pos, double distance, double angle) {
         double xAmount = -Math.sin(Math.toRadians(angle));
         double zAmount = Math.cos(Math.toRadians(angle));
-        double[] coords = new double[3];
-        coords[0] = x + (distance * xAmount);
-        coords[1] = y;
-        coords[2] = z + (distance * zAmount);
-        return coords;
+        BlockPos facingPos = new BlockPos(
+            Math.round((double)pos.getX() + (distance * xAmount)),
+            pos.getY(),
+            Math.round((double) pos.getZ() + (distance * zAmount))
+        );
+        return facingPos;
     }
 }

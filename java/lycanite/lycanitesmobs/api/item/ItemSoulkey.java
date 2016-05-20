@@ -1,5 +1,6 @@
 package lycanite.lycanitesmobs.api.item;
 
+import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.info.AltarInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -49,12 +50,14 @@ public class ItemSoulkey extends ItemBase {
 
         // Get Possible Altars:
         List<AltarInfo> possibleAltars = new ArrayList<AltarInfo>();
+        if(AltarInfo.altars.isEmpty())
+            LycanitesMobs.printWarning("", "No altars have been registered, Soulkeys will not work at all.");
         for(AltarInfo altarInfo : AltarInfo.altars.values()) {
             if(altarInfo.checkBlockEvent(player, world, pos) && altarInfo.quickCheck(player, world, pos)) {
                 possibleAltars.add(altarInfo);
             }
         }
-        if(possibleAltars.size() < 1) {
+        if(possibleAltars.isEmpty()) {
             String message = I18n.translateToLocal("message.soulkey.none");
             player.addChatMessage(new TextComponentString(message));
             return EnumActionResult.FAIL;

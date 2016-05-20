@@ -284,6 +284,9 @@ public class EntityProjectileBase extends EntityThrowable {
      
      //========== Do Damage Check ==========
      public boolean canDamage(EntityLivingBase targetEntity) {
+         if(this.worldObj.isRemote)
+             return false;
+
     	 EntityLivingBase owner = this.getThrower();
 	     if(owner != null) {
 

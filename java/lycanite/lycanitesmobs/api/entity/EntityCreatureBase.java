@@ -3039,10 +3039,10 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     
     // ========== Environmental ==========
     /** If true, this mob isn't slowed down by webs. **/
-    public boolean webproof() { return false; }
-    /** If webproof() is false, this mob will be affected by webbing on the update that this is called. **/
+    public boolean webProof() { return false; }
+    /** If webProof() is false, this mob will be affected by webbing on the update that this is called. **/
     @Override
-    public void setInWeb() { if(!webproof()) super.setInWeb(); }
+    public void setInWeb() { if(!webProof()) super.setInWeb(); }
     
     // Breathing:
     /** If true, this mob wont lose air when underwater. **/

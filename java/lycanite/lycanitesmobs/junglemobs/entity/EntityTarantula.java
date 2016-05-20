@@ -172,5 +172,5 @@ public class EntityTarantula extends EntityCreatureTameable implements IMob {
     }
     
     @Override
-    public boolean webproof() { return true; }
+    public boolean webProof() { return true; }
 }

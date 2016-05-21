@@ -106,7 +106,7 @@ public class SpawnTypeBase {
 		
 		// Fire Spawner:
 		SpawnTypeBase fireBlockSpawner = new SpawnTypeBlock("Fire")
-				.setRate(400).setChance(0.5D).setRange(32).setBlockLimit(32).setMobLimit(32);
+				.setRate(400).setChance(0.5D).setRange(32).setBlockLimit(32).setMobLimit(8);
 		fireBlockSpawner.blocks = new Block[] {Blocks.fire};
 		fireBlockSpawner.ignoreBiome = true;
 		fireBlockSpawner.ignoreLight = true;
@@ -116,7 +116,7 @@ public class SpawnTypeBase {
 		
 		// Frostfire Spawner:
 		SpawnTypeBase frostfireBlockSpawner = new SpawnTypeBlock("Frostfire")
-				.setRate(400).setChance(0.5D).setRange(32).setBlockLimit(32).setMobLimit(32);
+				.setRate(400).setChance(0.5D).setRange(32).setBlockLimit(32).setMobLimit(8);
 		frostfireBlockSpawner.blockStrings = new String[] {"frostfire"};
 		frostfireBlockSpawner.ignoreBiome = true;
 		frostfireBlockSpawner.ignoreLight = true;
@@ -146,7 +146,7 @@ public class SpawnTypeBase {
 		
 		// Water Spawner:
 		SpawnTypeBase waterSpawner = new SpawnTypeWater("Water")
-				.setRate(400).setChance(0.75D).setRange(32).setBlockLimit(64).setMobLimit(32);
+				.setRate(400).setChance(0.75D).setRange(32).setBlockLimit(64).setMobLimit(16);
 		waterSpawner.blocks = new Block[] {Blocks.water};
 		waterSpawner.ignoreBiome = false;
 		waterSpawner.ignoreLight = false;
@@ -156,7 +156,7 @@ public class SpawnTypeBase {
 		
 		// Lava Spawner:
 		SpawnTypeBase lavaBlockSpawner = new SpawnTypeBlock("Lava")
-				.setRate(400).setChance(0.5D).setRange(32).setBlockLimit(64).setMobLimit(32);
+				.setRate(400).setChance(0.5D).setRange(32).setBlockLimit(64).setMobLimit(8);
 		lavaBlockSpawner.blocks = new Block[] {Blocks.lava};
 		lavaBlockSpawner.ignoreBiome = true;
 		lavaBlockSpawner.ignoreLight = true;
@@ -166,7 +166,7 @@ public class SpawnTypeBase {
 
         // Ooze Spawner:
         SpawnTypeBase spawner = new SpawnTypeBlock("Ooze")
-                .setRate(400).setChance(0.5D).setRange(32).setBlockLimit(64).setMobLimit(32);
+                .setRate(400).setChance(0.5D).setRange(32).setBlockLimit(64).setMobLimit(8);
         spawner.blockStrings = new String[] {"ooze"};
         spawner.ignoreBiome = true;
         spawner.ignoreLight = true;
@@ -218,7 +218,7 @@ public class SpawnTypeBase {
 		
 		// Storm Spawner:
 		SpawnTypeBase stormSpawner = new SpawnTypeStorm("Storm")
-				.setRate(800).setChance(0.125D).setRange(48).setBlockLimit(32).setMobLimit(32);
+				.setRate(800).setChance(0.125D).setRange(48).setBlockLimit(32).setMobLimit(8);
 		stormSpawner.materials = new Material[] {Material.air};
 		stormSpawner.ignoreBiome = true;
 		stormSpawner.ignoreLight = true;
@@ -228,7 +228,7 @@ public class SpawnTypeBase {
 		
 		// Lunar Spawner:
 		SpawnTypeBase lunarSpawner = new SpawnTypeLunar("Lunar")
-				.setRate(800).setChance(0.125D).setRange(48).setBlockLimit(32).setMobLimit(32);
+				.setRate(800).setChance(0.125D).setRange(48).setBlockLimit(32).setMobLimit(8);
 		lunarSpawner.materials = new Material[] {Material.air};
 		lunarSpawner.ignoreBiome = true;
 		lunarSpawner.ignoreDimension = false;
@@ -468,10 +468,17 @@ public class SpawnTypeBase {
 
         // Choose Mobs:
         LycanitesMobs.printDebug("CustomSpawner", "Getting a list of all mobs that can spawn within the found coordinates.");
-        Map<BiomeGenBase, List<SpawnInfo>> possibleSpawns = this.getPossibleSpawns(coords.size(), targetBiomes);
-        if(possibleSpawns == null || possibleSpawns.isEmpty()) {
-            LycanitesMobs.printDebug("CustomSpawner", "No mobs are able to spawn, either not enough blocks, empty biome/dimension or all weights are 0. Spawning cancelled.");
+        List<SpawnInfo> spawnList = this.getSpawnList();
+        if(spawnList.isEmpty()) {
+            LycanitesMobs.printDebug("CustomSpawner", "No mobs are able to spawn, from this spawn type at all. Spawning cancelled.");
             return false;
+        }
+        Map<BiomeGenBase, List<SpawnInfo>> possibleSpawns = this.getPossibleSpawns(spawnList, coords.size(), targetBiomes);
+        if(!this.ignoreBiome) {
+            if (possibleSpawns == null || possibleSpawns.isEmpty()) {
+                LycanitesMobs.printDebug("CustomSpawner", "No mobs are able to spawn, either not enough blocks, empty biome/dimension or all weights are 0. Spawning cancelled.");
+                return false;
+            }
         }
 
         // Spawn Chosen Mobs:
@@ -480,14 +487,22 @@ public class SpawnTypeBase {
         for(BlockPos coord : coords) {
         	
             // Get EntityLiving to Spawn:
-            BiomeGenBase spawnBiome = world.getBiomeGenForCoords(coord);
-            if(!possibleSpawns.containsKey(spawnBiome))
-                continue;
-            if(possibleSpawns.get(spawnBiome).isEmpty()) {
-                LycanitesMobs.printWarning("CustomSpawner", "Tried to spawn in " + spawnBiome + " but there are no possible spawns yet it has a list instantiated, skipping.");
-                continue;
+            SpawnInfo spawnInfo = null;
+            if(!this.ignoreBiome) {
+                BiomeGenBase spawnBiome = world.getBiomeGenForCoords(coord);
+                if (!possibleSpawns.containsKey(spawnBiome))
+                    continue;
+                if (possibleSpawns.get(spawnBiome).isEmpty()) {
+                    LycanitesMobs.printWarning("CustomSpawner", "Tried to spawn in " + spawnBiome + " but there are no possible spawns yet it has a list instantiated, skipping.");
+                    continue;
+                }
+                spawnInfo = this.getRandomMob(possibleSpawns.get(spawnBiome), world);
             }
-            SpawnInfo spawnInfo = this.getRandomMob(possibleSpawns.get(spawnBiome), world);
+            else {
+                spawnInfo = this.getRandomMob(spawnList, world);
+            }
+
+            // Create Entity:
             EntityLiving entityLiving = null;
             try {
                 entityLiving = (EntityLiving)spawnInfo.mobInfo.entityClass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {world});
@@ -637,13 +652,14 @@ public class SpawnTypeBase {
     // ==================================================
     /**
      * Returns a list of all mobs that are able to spawn within the provided biomes and number coordinates.
+     * @param spawnList A list of spawn info to choose from.
      * @param coordsFound The number of coordinates found, some mobs require a certain amount of blocks for example to be able to spawn.
      * @param biomes A list of all biomes found from the coordinates.
      * @return Map of possible spawns keyed by each provided biome type.
      */
-    public Map<BiomeGenBase, List<SpawnInfo>> getPossibleSpawns(int coordsFound, List<BiomeGenBase> biomes) {
+    public Map<BiomeGenBase, List<SpawnInfo>> getPossibleSpawns(List<SpawnInfo> spawnList, int coordsFound, List<BiomeGenBase> biomes) {
         Map<BiomeGenBase, List<SpawnInfo>> possibleSpawns = new HashMap<BiomeGenBase, List<SpawnInfo>>();
-        for(SpawnInfo possibleSpawn : this.getSpawnList()) {
+        for(SpawnInfo possibleSpawn : spawnList) {
         	// Check Spawn Wave Limit:
         	boolean withinWaveLimit = true;
         	if(this.spawnWaveLimits.containsKey(possibleSpawn) && this.currentSpawnWaveCount.containsKey(possibleSpawn)) {

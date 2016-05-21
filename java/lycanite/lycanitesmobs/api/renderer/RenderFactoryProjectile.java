@@ -1,4 +1,4 @@
-package lycanite.lycanitesmobs.api.render;
+package lycanite.lycanitesmobs.api.renderer;
 
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;

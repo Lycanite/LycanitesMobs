@@ -9,7 +9,7 @@ import lycanite.lycanitesmobs.api.gui.GuiOverlay;
 import lycanite.lycanitesmobs.api.gui.TabManager;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.item.ItemBase;
-import lycanite.lycanitesmobs.api.render.RenderRegister;
+import lycanite.lycanitesmobs.api.renderer.RenderRegister;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;

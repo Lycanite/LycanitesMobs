@@ -16,7 +16,7 @@ public class ObjEvent
         PRE_RENDER_GROUPS(true), 
         
         /**
-         * data[0] = current object ObjObject | data[1] = group to render ObjGroup| data.length = 2
+         * data[0] = current object ObjObject | data[1] = group to renderer ObjGroup| data.length = 2
          */
         PRE_RENDER_GROUP(true),
         
@@ -31,7 +31,7 @@ public class ObjEvent
         POST_RENDER_GROUPS(false), 
         
         /**
-         * data[0] = current object ObjObject | data[1] = group to render ObjGroup| data.length = 2
+         * data[0] = current object ObjObject | data[1] = group to renderer ObjGroup| data.length = 2
          */
         POST_RENDER_GROUP(false);
 

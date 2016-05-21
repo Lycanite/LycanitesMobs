@@ -1,4 +1,4 @@
-package lycanite.lycanitesmobs.api.render;
+package lycanite.lycanitesmobs.api.renderer;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;

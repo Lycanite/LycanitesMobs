@@ -5,8 +5,8 @@ import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.modelloader.obj.ObjObject;
 import lycanite.lycanitesmobs.api.modelloader.obj.TessellatorModel;
+import lycanite.lycanitesmobs.api.renderer.LayerBase;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.ResourceLocation;
@@ -16,7 +16,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
-import javax.vecmath.Vector4f;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -111,7 +110,7 @@ public class ModelCustomObj extends ModelCustom {
      * @param scale Use to scale this mob. The default scale is 0.0625 (not sure why)! For a trophy/head-only model, set the scale to a negative amount, -1 will return a head similar in size to that of a Zombie head.
      */
     @Override
-    public void render(Entity entity, float time, float distance, float loop, float lookY, float lookX, float scale, LayerRenderer<EntityCreatureBase> layer) {
+    public void render(Entity entity, float time, float distance, float loop, float lookY, float lookX, float scale, LayerBase layer) {
         // Assess Scale and Check if Trophy:
 		boolean trophyModel = false;
 		if(scale < 0) {
@@ -205,24 +204,6 @@ public class ModelCustomObj extends ModelCustom {
 			return true;
     	return false;
     }
-
-
-    // ==================================================
-    //                Can Render Part
-    // ==================================================
-    /** Returns true if the part can be rendered, this can do various checks such as Yale wool only rendering in the YaleWoolLayer or hiding body parts in place of armor parts, etc. **/
-    public boolean canRenderPart(String partName, Entity entity, LayerRenderer<EntityCreatureBase> layer, boolean trophy) {
-        return true;
-    }
-
-
-    // ==================================================
-    //                Get Part Color
-    // ==================================================
-    /** Returns the coloring to be used for this part and layer. **/
-    public Vector4f getPartColor(String partName, Entity entity, LayerRenderer<EntityCreatureBase> layer, boolean trophy) {
-        return new Vector4f(1, 1, 1, 1);
-    }
     
     
     // ==================================================
@@ -237,7 +218,7 @@ public class ModelCustomObj extends ModelCustom {
      * @param loop A continuous loop counting every tick, used for constant idle animations, etc.
      * @param lookY A y looking rotation used by the head, etc.
      * @param lookX An x looking rotation used by the head, etc.
-     * @param scale Used for scale based changes during animation but not to actually apply the scale as it is applied in the render method.
+     * @param scale Used for scale based changes during animation but not to actually apply the scale as it is applied in the renderer method.
      */
     public void animatePart(String partName, EntityLiving entity, float time, float distance, float loop, float lookY, float lookX, float scale) {
     	float pi = (float)Math.PI;

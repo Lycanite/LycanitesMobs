@@ -2,7 +2,7 @@ package lycanite.lycanitesmobs.desertmobs;
 
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
-import lycanite.lycanitesmobs.api.render.RenderRegister;
+import lycanite.lycanitesmobs.api.renderer.RenderRegister;
 import lycanite.lycanitesmobs.desertmobs.model.*;
 
 public class ClientSubProxy extends CommonSubProxy {

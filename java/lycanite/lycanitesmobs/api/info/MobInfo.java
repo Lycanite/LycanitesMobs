@@ -152,25 +152,30 @@ public class MobInfo {
     //        Load Global Settings From Config
     // ==================================================
 	public static void loadGlobalSettings() {
+        // GUI:
 		ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "general");
 		config.setCategoryComment("GUI", "Mostly client side settings that affect visuals such as mob names or inventory tabs, etc.");
 		subspeciesTags = config.getBool("GUI", "Subspecies Tags", subspeciesTags, "If true, all mobs that are a subspecies will always show their nametag.");
-				
+
+        // Pets:
 		config.setCategoryComment("Pets", "Here you can control all settings related to taming and mounting.");
 		ownerTags = config.getBool("Pets", "Owner Tags", ownerTags, "If true, tamed mobs will display their owner's name in their name tag.");
 		tamingEnabled = config.getBool("Pets", "Taming", tamingEnabled, "Set to false to disable pet/mount taming.");
 		mountingEnabled = config.getBool("Pets", "Mounting", mountingEnabled, "Set to false to disable mounts.");
 		friendlyFire = config.getBool("Pets", "Friendly Fire", friendlyFire, "If true, pets, minions, etc can't harm their owners (with ranged attacks, etc).");
-		
+
+        // Interaction:
 		config.setCategoryComment("Mob Interaction", "Here you can control how mobs interact with other mobs.");
         predatorsAttackAnimals = config.getBool("Mob Interaction", "Predators Attack Animals", predatorsAttackAnimals, "Set to false to prevent predator mobs from attacking animals/farmable mobs.");
 		mobsAttackVillagers = config.getBool("Mob Interaction", "Mobs Attack Villagers", mobsAttackVillagers, "Set to false to prevent mobs that attack players from also attacking villagers.");
 
+        // Variations:
         config.setCategoryComment("Mob Variations", "Settings for how mobs randomly vary such as subspecies. Subspecies are uncommon and rare variants of regular mobs, uncommon subspecies tend to be a bit tougher and rare subspecies are quite powerful and can be considered as mini bosses..");
         subspeciesSpawn = config.getBool("Mob Variations", "Subspecies Can Spawn", subspeciesSpawn, "Set to false to prevent subspecies from spawning, this will not affect mobs that have already spawned as subspecies.");
         randomSizes = config.getBool("Mob Variations", "Random Sizes", randomSizes, "Set to false to prevent mobs from having a random size variation when spawning, this will not affect mobs that have already spawned.");
         Subspecies.loadGlobalSettings(config);
 
+        // Difficulty:
         String[] difficultyNames = new String[] {"Easy", "Normal", "Hard"};
         double[] difficultyDefaults = new double[] {0.5D, 1.0D, 1.1D};
         String[] statNames = new String[] {"Health", "Defense", "Speed", "Damage", "Haste", "Effect", "Pierce"};

@@ -277,13 +277,21 @@ public class InfernoMobs {
 				Character.valueOf('B'), Items.bone
 			}));
 
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
+        GameRegistry.addRecipe(new ShapedOreRecipe(
+                new ItemStack(ObjectManager.getItem("bucketpurelava"), 1, 0),
+                new Object[] { " G ", "IMI", " I ",
+                        Character.valueOf('I'), Items.iron_ingot,
+                        Character.valueOf('G'), Items.ghast_tear,
+                        Character.valueOf('M'), Items.magma_cream
+                }));
+
+		/*GameRegistry.addRecipe(new ShapelessOreRecipe(
 				new ItemStack(ObjectManager.getItem("bucketpurelava"), 1, 0),
 				new Object[] {
 					Items.lava_bucket,
 					Items.ghast_tear
 				}
-			));
+			));*/
 
 
 		// ========== Smelting ==========

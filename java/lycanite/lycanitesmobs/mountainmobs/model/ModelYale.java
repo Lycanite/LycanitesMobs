@@ -2,17 +2,13 @@ package lycanite.lycanitesmobs.mountainmobs.model;
 
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.model.ModelCustomObj;
-import lycanite.lycanitesmobs.api.render.RenderCreature;
+import lycanite.lycanitesmobs.api.renderer.RenderCreature;
 import lycanite.lycanitesmobs.mountainmobs.MountainMobs;
 import lycanite.lycanitesmobs.mountainmobs.renderer.LayerYaleWool;
-import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.vecmath.Vector4f;
 
 @SideOnly(Side.CLIENT)
 public class ModelYale extends ModelCustomObj {
@@ -53,36 +49,8 @@ public class ModelYale extends ModelCustomObj {
     // ==================================================
     @Override
     public void addCustomLayers(RenderCreature renderer) {
+        super.addCustomLayers(renderer);
         renderer.addLayer(new LayerYaleWool(renderer));
-    }
-
-
-    // ==================================================
-    //                Can Render Part
-    // ==================================================
-    @Override
-    public boolean canRenderPart(String partName, Entity entity, LayerRenderer<EntityCreatureBase> layer, boolean trophy) {
-        if(layer instanceof LayerYaleWool) {
-            return ((LayerYaleWool)layer).canRenderPart(partName);
-        }
-        if("fur".equals(partName))
-            return false;
-        return super.canRenderPart(partName, entity, layer, trophy);
-    }
-
-
-    // ==================================================
-    //                Get Part Color
-    // ==================================================
-    /** Returns the coloring to be used for this part and layer. **/
-    public Vector4f getPartColor(String partName, Entity entity, LayerRenderer<EntityCreatureBase> layer, boolean trophy) {
-        if(layer != null && layer instanceof LayerYaleWool) {
-            if(entity != null && !entity.isInvisible() && entity instanceof EntityCreatureBase) {
-                int colorID = ((EntityCreatureBase)entity).getColor();
-                return new Vector4f(RenderCreature.colorTable[colorID][0], RenderCreature.colorTable[colorID][1], RenderCreature.colorTable[colorID][2], 1.0F);
-            }
-        }
-        return super.getPartColor(partName, entity, layer, trophy);
     }
     
     
@@ -153,19 +121,6 @@ public class ModelYale extends ModelCustomObj {
 	    	if(partName.equals("legleftback") || partName.equals("legrightback"))
 	    		rotX -= 50;
 		}
-		
-		/*/ Fur:
-		if(!this.dontColor)
-            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-		if(partName.equals("fur") && entity instanceof EntityYale) {
-			if(!((EntityYale)entity).hasFur()) {
-				this.scale(0, 0, 0);
-			}
-			else if(entity instanceof EntityCreatureBase && !this.dontColor) {
-				int colorID = ((EntityCreatureBase)entity).getColor();
-                GlStateManager.color(RenderCreature.colorTable[colorID][0], RenderCreature.colorTable[colorID][1], RenderCreature.colorTable[colorID][2], 1.0F);
-			}
-		}*/
     	
     	// Apply Animations:
 		this.rotate(rotation, angleX, angleY, angleZ);

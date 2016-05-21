@@ -987,16 +987,19 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 
     /** Applies the subspecies health multipler for this mob. **/
     public void applySubspeciesHealthMultiplier() {
+        // Common:
     	if(this.getSubspeciesIndex() < 1) {
     		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.getBaseHealth());
     		this.setHealth((float)(this.getBaseHealth()));
     	}
+        // Uncommon:
     	else if(this.getSubspeciesIndex() < 3) {
-    		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.getBaseHealth() * 4);
+    		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.getBaseHealth());
     		this.setHealth((float)(this.getBaseHealth() * Subspecies.uncommonHealthScale));
     	}
+        // Rare:
     	else {
-    		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.getBaseHealth() * 10);
+    		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.getBaseHealth());
     		this.setHealth((float)(this.getBaseHealth() * Subspecies.rareHealthScale));
     	}
     }
@@ -1198,12 +1201,12 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     /** Sets the subspecies of this mob by index. If not a valid ID or 0 it will be set to null which is for base species. **/
     public void setSubspecies(int subspeciesIndex, boolean resetHealth) {
     	this.subspecies = this.mobInfo.getSubspecies(subspeciesIndex);
-        int scaledExp = this.experience;
+        float scaledExp = this.experience;
         if(subspeciesIndex == 1 || subspeciesIndex == 2)
             scaledExp = Math.round((float)(this.experience * Subspecies.uncommonExperienceScale));
         else if(subspeciesIndex >= 3)
             scaledExp = Math.round((float)(this.experience * Subspecies.rareExperienceScale));
-        this.experienceValue = scaledExp;
+        this.experienceValue = Math.round(scaledExp);
     	if(resetHealth)
     		this.applySubspeciesHealthMultiplier();
     }

@@ -1,16 +1,19 @@
 package lycanite.lycanitesmobs.api.model;
 
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
-import lycanite.lycanitesmobs.api.render.RenderCreature;
+import lycanite.lycanitesmobs.api.renderer.LayerBase;
+import lycanite.lycanitesmobs.api.renderer.LayerEquipment;
+import lycanite.lycanitesmobs.api.renderer.LayerSaddle;
+import lycanite.lycanitesmobs.api.renderer.RenderCreature;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
+import javax.vecmath.Vector4f;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -32,9 +35,15 @@ public class ModelCustom extends ModelBase {
     	// Texture:
     	textureWidth = 128;
         textureHeight = 128;
-        
-        // Create Animator:
-        //animator = new Animator(this);
+    }
+
+
+    // ==================================================
+    //             Add Custom Render Layers
+    // ==================================================
+    public void addCustomLayers(RenderCreature renderer) {
+        renderer.addLayer(new LayerEquipment(renderer, "chest"));
+        renderer.addLayer(new LayerSaddle(renderer));
     }
     
     
@@ -58,7 +67,7 @@ public class ModelCustom extends ModelBase {
         this.render(entity, time, distance, loop, lookY, lookX, scale, null);
     }
 
-    public void render(Entity entity, float time, float distance, float loop, float lookY, float lookX, float scale, LayerRenderer<EntityCreatureBase> layer) {
+    public void render(Entity entity, float time, float distance, float loop, float lookY, float lookX, float scale, LayerBase layer) {
         float sizeScale = 1F;
 		if(entity instanceof EntityCreatureBase) {
             sizeScale *= ((EntityCreatureBase) entity).getRenderScale();
@@ -68,6 +77,40 @@ public class ModelCustom extends ModelBase {
     	
     	setAngles((EntityLiving)entity, time, distance, loop, lookY, lookX, scale);
     	animate((EntityLiving)entity, time, distance, loop, lookY, lookX, scale);
+    }
+
+
+    // ==================================================
+    //                Can Render Part
+    // ==================================================
+    /** Returns true if the part can be rendered, this can do various checks such as Yale wool only rendering in the YaleWoolLayer or hiding body parts in place of armor parts, etc. **/
+    public boolean canRenderPart(String partName, Entity entity, LayerBase layer, boolean trophy) {
+        if(layer == null)
+            return this.canBaseRenderPart(partName, entity, trophy);
+        if(entity instanceof EntityCreatureBase)
+            return layer.canRenderPart(partName, (EntityCreatureBase)entity, trophy);
+        return false;
+    }
+
+    /** Returns true if the part can be rendered on the base layer. **/
+    public boolean canBaseRenderPart(String partName, Entity entity, boolean trophy) {
+        return true;
+    }
+
+
+    // ==================================================
+    //                Get Part Color
+    // ==================================================
+    /** Returns the coloring to be used for this part and layer. **/
+    public Vector4f getPartColor(String partName, Entity entity, LayerBase layer, boolean trophy) {
+        if(layer == null || !(entity instanceof EntityCreatureBase))
+            return this.getBasePartColor(partName, entity, trophy);
+        return layer.getPartColor(partName, (EntityCreatureBase)entity, trophy);
+    }
+
+    /** Returns the coloring to be used for this part on the base layer. **/
+    public Vector4f getBasePartColor(String partName, Entity entity, boolean trophy) {
+        return new Vector4f(1, 1, 1, 1);
     }
     
     
@@ -88,13 +131,5 @@ public class ModelCustom extends ModelBase {
    	// ==================================================
     public void animate(EntityLiving entity, float time, float distance, float loop, float lookY, float lookX, float scale) {
     	return;
-    }
-
-
-    // ==================================================
-    //             Add Custom Render Layers
-    // ==================================================
-    public void addCustomLayers(RenderCreature renderer) {
-
     }
 }

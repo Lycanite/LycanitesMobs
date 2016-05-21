@@ -72,8 +72,8 @@ public class EntitySilex extends EntityCreatureAgeable implements IAnimals, IGro
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("silexmeatraw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("silexmeatcooked"))).setMinAmount(2).setMaxAmount(5));
-        this.drops.add(new DropRate(new ItemStack(Items.dye, 1, 4), 1).setMinAmount(6).setMaxAmount(16));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("silexmeatraw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("silexmeatcooked"))).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.dye, 1, 4), 1).setMinAmount(2).setMaxAmount(4));
     }
 
 	

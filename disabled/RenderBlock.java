@@ -1,4 +1,4 @@
-package lycanite.lycanitesmobs.api.render;
+package lycanite.lycanitesmobs.api.renderer;
 
 import lycanite.lycanitesmobs.ClientProxy;
 import lycanite.lycanitesmobs.api.block.BlockBase;

@@ -1,4 +1,4 @@
-package lycanite.lycanitesmobs.api.render;
+package lycanite.lycanitesmobs.api.renderer;
 
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;

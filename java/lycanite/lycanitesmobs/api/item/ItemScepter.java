@@ -204,7 +204,7 @@ public class ItemScepter extends ItemBase {
     //                     Sounds
     // ==================================================
     public void playSound(ItemStack itemStack, World world, EntityLivingBase entity, float power, EntityProjectileBase projectile) {
-        world.playSound(entity.posX, entity.posY, entity.posZ, projectile.getLaunchSound(), SoundCategory.PLAYERS, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F), false);
+        this.playSound(world, entity.posX, entity.posY, entity.posZ, projectile.getLaunchSound(), SoundCategory.PLAYERS, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
     }
 
 	

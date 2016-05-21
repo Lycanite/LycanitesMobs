@@ -61,7 +61,7 @@ public class ItemWinterGift extends ItemBase {
 		player.addChatMessage(new TextComponentString(message));
 		if(AssetManager.getSound(this.itemName + "_good") == null)
 			AssetManager.addSound(this.itemName + "_good", this.group, "item." + this.itemName + ".good");
-		world.playSound(player, player.getPosition(), AssetManager.getSound(this.itemName + "_good"), SoundCategory.AMBIENT, 5.0F, 1.0F);
+        this.playSound(world, player.getPosition(), AssetManager.getSound(this.itemName + "_good"), SoundCategory.AMBIENT, 5.0F, 1.0F);
 		
 		// Three Random Gifts:
 		for(int i = 0; i < 3; i++) {
@@ -86,9 +86,9 @@ public class ItemWinterGift extends ItemBase {
 		player.addChatMessage(new TextComponentString(message));
 		if(AssetManager.getSound(this.itemName + "_bad") == null)
 			AssetManager.addSound(this.itemName + "_bad", this.group, "item." + this.itemName + ".bad");
-        world.playSound(player, player.getPosition(), AssetManager.getSound(this.itemName + "_bad"), SoundCategory.AMBIENT, 5.0F, 1.0F);
-		
-		// One Random Trick:
+        this.playSound(world, player.getPosition(), AssetManager.getSound(this.itemName + "_bad"), SoundCategory.AMBIENT, 5.0F, 1.0F);
+
+        // One Random Trick:
 		Class[] entityClasses = ObjectLists.getEntites("winter_tricks");
         if(entityClasses == null) return;
         if(entityClasses.length <= 0) return;

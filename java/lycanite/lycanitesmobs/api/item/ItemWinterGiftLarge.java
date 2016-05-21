@@ -54,7 +54,7 @@ public class ItemWinterGiftLarge extends ItemBase {
 		player.addChatMessage(new TextComponentString(message));
 		if(AssetManager.getSound(this.itemName + "_bad") == null)
 			AssetManager.addSound(this.itemName + "_bad", this.group, "item." + this.itemName + ".bad");
-        world.playSound(player, player.getPosition(), AssetManager.getSound(this.itemName + "_bad"), SoundCategory.AMBIENT, 5.0F, 1.0F);
+        this.playSound(world, player.getPosition(), AssetManager.getSound(this.itemName + "_bad"), SoundCategory.AMBIENT, 5.0F, 1.0F);
 		
 		// Lots of Random Tricks:
 		Class[] entityClasses = ObjectLists.getEntites("winter_tricks");

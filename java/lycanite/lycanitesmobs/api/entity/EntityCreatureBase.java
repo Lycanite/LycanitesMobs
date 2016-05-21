@@ -994,12 +994,12 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     	}
         // Uncommon:
     	else if(this.getSubspeciesIndex() < 3) {
-    		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.getBaseHealth());
+    		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.getBaseHealth() * Subspecies.uncommonHealthScale);
     		this.setHealth((float)(this.getBaseHealth() * Subspecies.uncommonHealthScale));
     	}
         // Rare:
     	else {
-    		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.getBaseHealth());
+    		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.getBaseHealth() * Subspecies.rareHealthScale);
     		this.setHealth((float)(this.getBaseHealth() * Subspecies.rareHealthScale));
     	}
     }

@@ -33,7 +33,7 @@ public class ItemCharge extends ItemBase {
             if(projectile == null)
                 return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStack);
             world.spawnEntityInWorld(projectile);
-            world.playSound(entityPlayer, entityPlayer.getPosition(), projectile.getLaunchSound(), SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+            this.playSound(world, entityPlayer.getPosition(), projectile.getLaunchSound(), SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
         }
 
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStack);

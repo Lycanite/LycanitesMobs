@@ -59,7 +59,7 @@ public class ItemHalloweenTreat extends ItemBase {
 		player.addChatMessage(new TextComponentString(message));
 		if(AssetManager.getSound(this.itemName + "_good") == null)
 			AssetManager.addSound(this.itemName + "_good", this.group, "item." + this.itemName + ".good");
-		world.playSound(player, player.posX, player.posY, player.posZ, AssetManager.getSound(this.itemName + "_good"), SoundCategory.AMBIENT, 5.0F, 1.0F);
+        this.playSound(world, player.posX, player.posY, player.posZ, AssetManager.getSound(this.itemName + "_good"), SoundCategory.AMBIENT, 5.0F, 1.0F);
 		
 		// Three Random Treats:
 		for(int i = 0; i < 3; i++) {
@@ -84,7 +84,7 @@ public class ItemHalloweenTreat extends ItemBase {
 		player.addChatMessage(new TextComponentString(message));
 		if(AssetManager.getSound(this.itemName + "_bad") == null)
 			AssetManager.addSound(this.itemName + "_bad", this.group, "item." + this.itemName + ".bad");
-        world.playSound(player, player.posX, player.posY, player.posZ, AssetManager.getSound(this.itemName + "_bad"), SoundCategory.AMBIENT, 5.0F, 1.0F);
+        this.playSound(world, player.posX, player.posY, player.posZ, AssetManager.getSound(this.itemName + "_bad"), SoundCategory.AMBIENT, 5.0F, 1.0F);
 		
 		// One Random Trick:
 		Class[] entityClasses = ObjectLists.getEntites("halloween_tricks");

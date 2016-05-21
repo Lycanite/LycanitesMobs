@@ -2,7 +2,7 @@ package lycanite.lycanitesmobs.api.entity.ai;
 
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -21,7 +21,7 @@ public class EntityAIMoveVillage extends EntityAIBase {
     // Properties:
     private double speed;
     private boolean isNocturnal = true;
-    private PathEntity entityPathNavigate;
+    private Path entityPathNavigate;
     private VillageDoorInfo doorInfo;
     private List doorList = new ArrayList();
 	

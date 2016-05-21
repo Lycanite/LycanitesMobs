@@ -70,7 +70,7 @@ public class EntityPortal extends EntityProjectileBase {
         this.animationFrameMax = 7;
         this.movement = false;
 
-        this.dataWatcher.register(OWNER_NAME, "");
+        this.dataManager.register(OWNER_NAME, "");
     }
     
     
@@ -96,16 +96,16 @@ public class EntityPortal extends EntityProjectileBase {
         if(!this.worldObj.isRemote) {
             // Summoning Staff or Summoning Pedestal (with active player):
             if(this.shootingEntity != null)
-                this.dataWatcher.set(OWNER_NAME, this.shootingEntity.getName());
+                this.dataManager.set(OWNER_NAME, this.shootingEntity.getName());
             // Summoning Pedestal:
             else if(this.summoningPedestal != null)
-                this.dataWatcher.set(OWNER_NAME, this.summoningPedestal.getOwnerName());
+                this.dataManager.set(OWNER_NAME, this.summoningPedestal.getOwnerName());
             // Wild:
             else
-                this.dataWatcher.set(OWNER_NAME, "");
+                this.dataManager.set(OWNER_NAME, "");
         }
         else {
-            this.ownerName = this.dataWatcher.get(OWNER_NAME);
+            this.ownerName = this.dataManager.get(OWNER_NAME);
         }
 
     	// ========== Check for Despawn ==========

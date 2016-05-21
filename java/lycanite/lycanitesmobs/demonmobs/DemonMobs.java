@@ -37,7 +37,7 @@ import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -245,7 +245,7 @@ public class DemonMobs {
 
 
 		// ========== Edit Vanilla Spawns ==========
-		BiomeGenBase[] biomes = { BiomeGenBase.biomeRegistry.getObject(new ResourceLocation("hell")) };
+		Biome[] biomes = { Biome.biomeRegistry.getObject(new ResourceLocation("hell")) };
 		if(group.controlVanillaSpawns) {
 			EntityRegistry.removeSpawn(EntityPigZombie.class, EnumCreatureType.MONSTER, biomes);
 			EntityRegistry.removeSpawn(EntityGhast.class, EnumCreatureType.MONSTER, biomes);

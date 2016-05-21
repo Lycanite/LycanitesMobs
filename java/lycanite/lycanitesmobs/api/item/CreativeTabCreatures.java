@@ -27,6 +27,6 @@ public class CreativeTabCreatures extends CreativeTabs {
 		else if(ObjectManager.getItem("swampspawn") != null)
 			return ObjectManager.getItem("swampspawn");
 		else
-			return Items.spawn_egg;
+			return Items.SPAWN_EGG;
 	}
 }

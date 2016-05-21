@@ -7,8 +7,8 @@ import lycanite.lycanitesmobs.api.config.ConfigSpawning.SpawnDimensionSet;
 import lycanite.lycanitesmobs.api.config.ConfigSpawning.SpawnTypeSet;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.init.Biomes;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.DungeonHooks;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 
@@ -58,7 +58,7 @@ public class SpawnInfo {
     public String biomeEntries = "GROUP";
 	
 	/** The list of biomes that this mob spawns in. Use this to get the biomes not biomeTypes. **/
-	public BiomeGenBase[] biomes;
+	public Biome[] biomes;
 
     /** If true, the biome check will be ignored completely, essnetially using ALL does the same thing but it doesn't always work with some mods. **/
     public boolean ignoreBiome = false;
@@ -213,8 +213,8 @@ public class SpawnInfo {
 			if(this.enabled && this.mobInfo.mobEnabled && this.spawnWeight > 0 && this.spawnGroupMax > 0) {
 				for(EnumCreatureType creatureType : this.creatureTypes) {
 					EntityRegistry.addSpawn(mobInfo.entityClass, this.spawnWeight, ignoreWorldGenSpawning ? 0 : this.spawnGroupMin, ignoreWorldGenSpawning ? 0 : this.spawnGroupMax, creatureType, this.biomes);
-					for(BiomeGenBase biome : this.biomes) {
-						if(biome == BiomeGenBase.biomeRegistry.getObject(new ResourceLocation("hell"))) {
+					for(Biome biome : this.biomes) {
+						if(biome == Biomes.HELL) {
 							EntityRegistry.addSpawn(mobInfo.entityClass, this.spawnWeight * 10, ignoreWorldGenSpawning ? 0 : this.spawnGroupMin, ignoreWorldGenSpawning ? 0 : this.spawnGroupMax, creatureType, biome);
 							break;
 						}
@@ -239,7 +239,7 @@ public class SpawnInfo {
 				LycanitesMobs.printDebug("MobSetup", "Custom Spawn Type: " + spawnType != null ? spawnType.typeName : "NULL");
 			String biomesList = "";
 			if(LycanitesMobs.config.getBool("Debug", "MobSetup")) {
-				for(BiomeGenBase biome : this.biomes) {
+				for(Biome biome : this.biomes) {
 					if(!"".equals(biomesList))
 						biomesList += ", ";
 					biomesList += biome.getBiomeName();

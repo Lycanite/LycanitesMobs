@@ -59,8 +59,8 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataWatcher.register(AGE, (int)0);
-        this.dataWatcher.register(LOVE, (int)0);
+        this.dataManager.register(AGE, (int)0);
+        this.dataManager.register(LOVE, (int)0);
     }
     
     // ========== Name ==========
@@ -125,9 +125,9 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
             this.loveTime = 0;
 
         if(!this.worldObj.isRemote)
-        	this.dataWatcher.set(LOVE, (int)this.loveTime);
+        	this.dataManager.set(LOVE, (int)this.loveTime);
         if(this.worldObj.isRemote)
-        	this.loveTime = this.dataWatcher.get(LOVE);
+        	this.loveTime = this.dataManager.get(LOVE);
         
         if(this.isInLove()) {
         	this.setFarmed();
@@ -147,10 +147,11 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
     }
     
     // ========== AI Update ==========
-    protected void updateAITick() {
+    @Override
+    protected void updateAITasks() {
         if(!this.canBreed())
             this.loveTime = 0;
-        super.updateAITick();
+        super.updateAITasks();
     }
     
 	
@@ -214,11 +215,11 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
   	//                        Age
   	// ==================================================
 	public int getGrowingAge() {
-        return this.dataWatcher.get(AGE);
+        return this.dataManager.get(AGE);
     }
 	
 	public void setGrowingAge(int age) {
-		this.dataWatcher.set(AGE, (int)age);
+		this.dataManager.set(AGE, (int)age);
         this.setScaleForAge(this.isChild());
     }
 	

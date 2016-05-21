@@ -35,15 +35,15 @@ public class BlockFluidBase extends BlockFluidClassic {
     //                Collision Effects
     // ==================================================
     @Override
-    public void onEntityCollidedWithBlock(World world, BlockPos pos, Entity entity) {
-        super.onEntityCollidedWithBlock(world, pos, entity);
+    public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
+        super.onEntityCollidedWithBlock(world, pos, state, entity);
     }
 
     @Override
-    public Boolean isEntityInsideMaterial(IBlockAccess world, BlockPos blockpos, IBlockState iblockstate, Entity entity, double yToTest, Material materialIn, boolean testingHead) {
+    public Boolean isEntityInsideMaterial(IBlockAccess world, BlockPos blockpos, IBlockState state, Entity entity, double yToTest, Material materialIn, boolean testingHead) {
         if(world instanceof World)
-            this.onEntityCollidedWithBlock((World)world, blockpos, entity);
-        return super.isEntityInsideMaterial(world, blockpos, iblockstate, entity, yToTest, materialIn, testingHead);
+            this.onEntityCollidedWithBlock((World)world, blockpos, state, entity);
+        return super.isEntityInsideMaterial(world, blockpos, state, entity, yToTest, materialIn, testingHead);
     }
 
 

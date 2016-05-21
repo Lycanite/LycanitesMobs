@@ -423,11 +423,11 @@ public class InventoryCreature implements IInventory {
 		
 		// Basic Armor:
 		if(this.basicArmor) {
-			if(itemStack.getItem() == Items.iron_horse_armor)
+			if(itemStack.getItem() == Items.IRON_HORSE_ARMOR)
 				return "chest";
-	    	if(itemStack.getItem() == Items.golden_horse_armor)
+	    	if(itemStack.getItem() == Items.GOLDEN_HORSE_ARMOR)
 	    		return "chest";
-	    	if(itemStack.getItem() == Items.diamond_horse_armor)
+	    	if(itemStack.getItem() == Items.DIAMOND_HORSE_ARMOR)
 	    		return "chest";
 		}
 		
@@ -449,7 +449,7 @@ public class InventoryCreature implements IInventory {
 			return "saddle";
 		
 		// Bag:
-		if(itemStack.getItem() == Item.getItemFromBlock(Blocks.chest))
+		if(itemStack.getItem() == Item.getItemFromBlock(Blocks.CHEST))
 			return "bag";
 		
 		return null;
@@ -480,11 +480,11 @@ public class InventoryCreature implements IInventory {
     		else if(armor.getArmorMaterial() == ItemArmor.ArmorMaterial.DIAMOND)
     			return "Diamond";
     	}
-    	if(equipmentStack.getItem() == Items.iron_horse_armor)
+    	if(equipmentStack.getItem() == Items.IRON_HORSE_ARMOR)
     		return "Iron";
-    	if(equipmentStack.getItem() == Items.golden_horse_armor)
+    	if(equipmentStack.getItem() == Items.GOLDEN_HORSE_ARMOR)
     		return "Gold";
-    	if(equipmentStack.getItem() == Items.diamond_horse_armor)
+    	if(equipmentStack.getItem() == Items.DIAMOND_HORSE_ARMOR)
     		return "Diamond";
     	return null;
     }

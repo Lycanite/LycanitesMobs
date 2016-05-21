@@ -27,6 +27,6 @@ public class CreativeTabItems extends CreativeTabs {
 		else if(ObjectManager.getItem("PoisonGland") != null)
 			return ObjectManager.getItem("PoisonGland");
 		else
-			return Items.bone;
+			return Items.BONE;
 	}
 }

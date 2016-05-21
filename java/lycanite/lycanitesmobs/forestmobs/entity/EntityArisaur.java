@@ -83,7 +83,7 @@ public class EntityArisaur extends EntityCreatureAgeable implements IAnimals, IG
 	@Override
 	public void loadItemDrops() {
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("arisaurmeatraw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("arisaurmeatcooked"))).setMaxAmount(6));
-        this.drops.add(new DropRate(new ItemStack(Items.apple), 0.5F).setMinAmount(0).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.APPLE), 0.5F).setMinAmount(0).setMaxAmount(3));
     }
 	
 	
@@ -97,9 +97,9 @@ public class EntityArisaur extends EntityCreatureAgeable implements IAnimals, IG
         
         // Water Healing:
         if(this.isInWater())
-        	this.addPotionEffect(new PotionEffect(MobEffects.regeneration, 3 * 20, 2));
+        	this.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 3 * 20, 2));
         else if(this.worldObj.isRaining() && this.worldObj.canBlockSeeSky(this.getPosition()))
-        	this.addPotionEffect(new PotionEffect(MobEffects.regeneration, 3 * 20, 1));
+        	this.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 3 * 20, 1));
     }
 	
 	
@@ -109,11 +109,11 @@ public class EntityArisaur extends EntityCreatureAgeable implements IAnimals, IG
 	// ========== Pathing Weight ==========
 	@Override
 	public float getBlockPathWeight(int par1, int par2, int par3) {
-		if(this.worldObj.getBlockState(new BlockPos(par1, par2 - 1, par3)).getBlock() != Blocks.air) {
-			IBlockState blocStatek = this.worldObj.getBlockState(new BlockPos(par1, par2 - 1, par3));
-			if(blocStatek.getMaterial() == Material.grass)
+		if(this.worldObj.getBlockState(new BlockPos(par1, par2 - 1, par3)).getBlock() != Blocks.AIR) {
+			IBlockState blocState = this.worldObj.getBlockState(new BlockPos(par1, par2 - 1, par3));
+			if(blocState.getMaterial() == Material.GRASS)
 				return 10F;
-			if(blocStatek.getMaterial() == Material.ground)
+			if(blocState.getMaterial() == Material.GROUND)
 				return 7F;
 		}
         return super.getBlockPathWeight(par1, par2, par3);
@@ -159,7 +159,7 @@ public class EntityArisaur extends EntityCreatureAgeable implements IAnimals, IG
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.moveSlowdown) return false;
+        if(potionEffect.getPotion() == MobEffects.SLOWNESS) return false;
         if(ObjectManager.getPotionEffect("paralysis") != null)
         	if(potionEffect.getPotion() == ObjectManager.getPotionEffect("paralysis")) return false;
         super.isPotionApplicable(potionEffect);

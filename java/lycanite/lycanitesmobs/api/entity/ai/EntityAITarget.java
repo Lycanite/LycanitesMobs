@@ -8,7 +8,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.math.MathHelper;
 
@@ -149,12 +149,12 @@ public abstract class EntityAITarget extends EntityAIBase {
  	// ==================================================
     private boolean isNearby(EntityLivingBase target) {
         this.targetSearchDelay = 10 + this.host.getRNG().nextInt(5);
-        PathEntity pathentity = this.host.getNavigator().getPathToEntityLiving(target);
+        Path path = this.host.getNavigator().getPathToEntityLiving(target);
 
-        if(pathentity == null)
+        if(path == null)
             return false;
         else {
-            PathPoint pathpoint = pathentity.getFinalPathPoint();
+            PathPoint pathpoint = path.getFinalPathPoint();
             if(pathpoint == null)
                 return false;
             else {

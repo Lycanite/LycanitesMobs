@@ -51,22 +51,22 @@ public class EntityProjectileBase extends EntityThrowable {
  	// ==================================================
     public EntityProjectileBase(World world) {
         super(world);
-        this.dataWatcher.register(SCALE, this.projectileScale);
+        this.dataManager.register(SCALE, this.projectileScale);
         this.setProjectileScale(this.projectileScale);
         this.setup();
     }
 
     public EntityProjectileBase(World world, EntityLivingBase entityLiving) {
         super(world, entityLiving);
-        this.func_184538_a(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0.0F, 1.5F, 1.0F);
-        this.dataWatcher.register(SCALE, this.projectileScale);
+        this.setHeadingFromThrower(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0.0F, 1.5F, 1.0F);
+        this.dataManager.register(SCALE, this.projectileScale);
         this.setProjectileScale(this.projectileScale);
         this.setup();
     }
 
     public EntityProjectileBase(World world, double x, double y, double z) {
         super(world, x, y, z);
-        this.dataWatcher.register(SCALE, this.projectileScale);
+        this.dataManager.register(SCALE, this.projectileScale);
         this.setProjectileScale(this.projectileScale);
         this.setup();
     }
@@ -116,7 +116,7 @@ public class EntityProjectileBase extends EntityThrowable {
 
         // Sync Scale:
         if(this.worldObj.isRemote && this.ticksExisted % 20 == 0) {
-            this.projectileScale = this.dataWatcher.get(SCALE);
+            this.projectileScale = this.dataManager.get(SCALE);
         }
 
         // Animation:
@@ -382,7 +382,7 @@ public class EntityProjectileBase extends EntityThrowable {
          this.setSize(newScale, newScale);
          if(this.worldObj.isRemote && !this.clientOnly)
              return;
-         this.dataWatcher.set(SCALE, this.projectileScale);
+         this.dataManager.set(SCALE, this.projectileScale);
          if(this.getThrower() != null && this.getThrower() instanceof EntityCreatureBase)
              this.projectileScale *= ((EntityCreatureBase)this.getThrower()).sizeScale;
      }

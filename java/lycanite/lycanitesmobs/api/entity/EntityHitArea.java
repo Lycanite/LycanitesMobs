@@ -30,8 +30,8 @@ public class EntityHitArea extends Entity {
 
     @Override
     protected void entityInit() {
-        this.dataWatcher.register(WIDTH, this.width);
-        this.dataWatcher.register(HEIGHT, this.height);
+        this.dataManager.register(WIDTH, this.width);
+        this.dataManager.register(HEIGHT, this.height);
     }
 
 
@@ -41,12 +41,12 @@ public class EntityHitArea extends Entity {
             this.setDead();
         super.onUpdate();
         if(!this.worldObj.isRemote) {
-            this.dataWatcher.set(WIDTH, this.width);
-            this.dataWatcher.set(HEIGHT, this.height);
+            this.dataManager.set(WIDTH, this.width);
+            this.dataManager.set(HEIGHT, this.height);
         }
         else {
-            float newWidth = this.dataWatcher.get(WIDTH);
-            float newHeight = this.dataWatcher.get(HEIGHT);
+            float newWidth = this.dataManager.get(WIDTH);
+            float newHeight = this.dataManager.get(HEIGHT);
             if(this.width != newWidth || this.height != newHeight)
                 this.setSize(newWidth, newHeight);
         }

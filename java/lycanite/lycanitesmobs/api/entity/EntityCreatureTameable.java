@@ -68,10 +68,10 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataWatcher.register(TAMED, (byte)0);
-        this.dataWatcher.register(OWNER, "");
-        this.dataWatcher.register(HUNGER, new Float(this.getCreatureHungerMax()));
-        this.dataWatcher.register(STAMINA, new Float(this.getStaminaMax()));
+        this.dataManager.register(TAMED, (byte)0);
+        this.dataManager.register(OWNER, "");
+        this.dataManager.register(HUNGER, new Float(this.getCreatureHungerMax()));
+        this.dataManager.register(STAMINA, new Float(this.getStaminaMax()));
     }
     
     // ========== Name ==========
@@ -446,17 +446,17 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     //                       Taming
     // ==================================================
     public boolean isTamed() {
-        return (this.dataWatcher.get(TAMED) & TAMED_ID.IS_TAMED.id) != 0;
+        return (this.dataManager.get(TAMED) & TAMED_ID.IS_TAMED.id) != 0;
     }
     
     public void setTamed(boolean setTamed) {
-        byte tamed = this.dataWatcher.get(TAMED);
+        byte tamed = this.dataManager.get(TAMED);
         if(setTamed) {
-            this.dataWatcher.set(TAMED, Byte.valueOf((byte)(tamed | TAMED_ID.IS_TAMED.id)));
+            this.dataManager.set(TAMED, Byte.valueOf((byte)(tamed | TAMED_ID.IS_TAMED.id)));
             this.spawnEventType = "";
         }
         else {
-            this.dataWatcher.set(TAMED, Byte.valueOf((byte)(tamed - (tamed & TAMED_ID.IS_TAMED.id))));
+            this.dataManager.set(TAMED, Byte.valueOf((byte)(tamed - (tamed & TAMED_ID.IS_TAMED.id))));
         }
         this.setAlwaysRenderNameTag(setTamed);
         this.applyTamedHealthMultiplier();
@@ -518,11 +518,11 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     //                       Owner
     // ==================================================
     public String getOwnerName() {
-    	return this.dataWatcher.get(OWNER);
+    	return this.dataManager.get(OWNER);
     }
     
     public void setOwner(String owner) {
-        this.dataWatcher.set(OWNER, owner);
+        this.dataManager.set(OWNER, owner);
     }
 
     public UUID getOwnerId() {
@@ -564,25 +564,25 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     //                    Pet Control
     // ==================================================
     public boolean petControlsEnabled() { return false; }
-    public byte behaviourBitMask() { return this.dataWatcher.get(TAMED); }
+    public byte behaviourBitMask() { return this.dataManager.get(TAMED); }
     
     // ========== Sitting ==========
     public boolean isSitting() {
     	if(!this.isTamed())
     		return false;
-        return (this.dataWatcher.get(TAMED) & TAMED_ID.MOVE_SIT.id) != 0;
+        return (this.dataManager.get(TAMED) & TAMED_ID.MOVE_SIT.id) != 0;
     }
 
     public void setSitting(boolean set) {
     	if(!this.petControlsEnabled())
     		set = false;
-        byte tamedStatus = this.dataWatcher.get(TAMED);
+        byte tamedStatus = this.dataManager.get(TAMED);
         if(set) {
-            this.dataWatcher.set(TAMED, Byte.valueOf((byte) (tamedStatus | TAMED_ID.MOVE_SIT.id)));
+            this.dataManager.set(TAMED, Byte.valueOf((byte) (tamedStatus | TAMED_ID.MOVE_SIT.id)));
             this.setHome((int)this.posX, (int)this.posY, (int)this.posZ, this.sittingGuardRange);
         }
         else {
-            this.dataWatcher.set(TAMED, Byte.valueOf((byte) (tamedStatus - (tamedStatus & TAMED_ID.MOVE_SIT.id))));
+            this.dataManager.set(TAMED, Byte.valueOf((byte) (tamedStatus - (tamedStatus & TAMED_ID.MOVE_SIT.id))));
             this.detachHome();
         }
     }
@@ -591,69 +591,69 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     public boolean isFollowing() {
     	if(!this.isTamed())
     		return false;
-        return (this.dataWatcher.get(TAMED) & TAMED_ID.MOVE_FOLLOW.id) != 0;
+        return (this.dataManager.get(TAMED) & TAMED_ID.MOVE_FOLLOW.id) != 0;
     }
 
     public void setFollowing(boolean set) {
     	if(!this.petControlsEnabled())
     		set = false;
-        byte tamedStatus = this.dataWatcher.get(TAMED);
+        byte tamedStatus = this.dataManager.get(TAMED);
         if(set)
-            this.dataWatcher.set(TAMED, Byte.valueOf((byte)(tamedStatus | TAMED_ID.MOVE_FOLLOW.id)));
+            this.dataManager.set(TAMED, Byte.valueOf((byte)(tamedStatus | TAMED_ID.MOVE_FOLLOW.id)));
         else
-            this.dataWatcher.set(TAMED, Byte.valueOf((byte)(tamedStatus - (tamedStatus & TAMED_ID.MOVE_FOLLOW.id))));
+            this.dataManager.set(TAMED, Byte.valueOf((byte)(tamedStatus - (tamedStatus & TAMED_ID.MOVE_FOLLOW.id))));
     }
     
     // ========== Passiveness ==========
     public boolean isPassive() {
     	if(!this.isTamed())
     		return false;
-        return (this.dataWatcher.get(TAMED) & TAMED_ID.STANCE_PASSIVE.id) != 0;
+        return (this.dataManager.get(TAMED) & TAMED_ID.STANCE_PASSIVE.id) != 0;
     }
 
     public void setPassive(boolean set) {
     	if(!this.petControlsEnabled())
     		set = false;
-        byte tamedStatus = this.dataWatcher.get(TAMED);
+        byte tamedStatus = this.dataManager.get(TAMED);
         if(set) {
-            this.dataWatcher.set(TAMED, Byte.valueOf((byte)(tamedStatus | TAMED_ID.STANCE_PASSIVE.id)));
+            this.dataManager.set(TAMED, Byte.valueOf((byte)(tamedStatus | TAMED_ID.STANCE_PASSIVE.id)));
             this.setAttackTarget(null);
             this.setStealth(0);
         }
         else
-            this.dataWatcher.set(TAMED, Byte.valueOf((byte)(tamedStatus - (tamedStatus & TAMED_ID.STANCE_PASSIVE.id))));
+            this.dataManager.set(TAMED, Byte.valueOf((byte)(tamedStatus - (tamedStatus & TAMED_ID.STANCE_PASSIVE.id))));
     }
     
     // ========== Agressiveness ==========
     public boolean isAggressive() {
     	if(!this.isTamed())
     		return super.isAggressive();
-        return (this.dataWatcher.get(TAMED) & TAMED_ID.STANCE_AGGRESSIVE.id) != 0;
+        return (this.dataManager.get(TAMED) & TAMED_ID.STANCE_AGGRESSIVE.id) != 0;
     }
 
     public void setAggressive(boolean set) {
     	if(!this.petControlsEnabled())
     		set = false;
-        byte tamedStatus = this.dataWatcher.get(TAMED);
+        byte tamedStatus = this.dataManager.get(TAMED);
         if(set)
-            this.dataWatcher.set(TAMED, Byte.valueOf((byte)(tamedStatus | TAMED_ID.STANCE_AGGRESSIVE.id)));
+            this.dataManager.set(TAMED, Byte.valueOf((byte)(tamedStatus | TAMED_ID.STANCE_AGGRESSIVE.id)));
         else
-            this.dataWatcher.set(TAMED, Byte.valueOf((byte)(tamedStatus - (tamedStatus & TAMED_ID.STANCE_AGGRESSIVE.id))));
+            this.dataManager.set(TAMED, Byte.valueOf((byte)(tamedStatus - (tamedStatus & TAMED_ID.STANCE_AGGRESSIVE.id))));
     }
     
     // ========== PvP ==========
     public boolean isPVP() {
-        return (this.dataWatcher.get(TAMED) & TAMED_ID.PVP.id) != 0;
+        return (this.dataManager.get(TAMED) & TAMED_ID.PVP.id) != 0;
     }
 
     public void setPVP(boolean set) {
     	if(!this.petControlsEnabled())
     		set = false;
-        byte tamedStatus = this.dataWatcher.get(TAMED);
+        byte tamedStatus = this.dataManager.get(TAMED);
         if(set)
-            this.dataWatcher.set(TAMED, Byte.valueOf((byte)(tamedStatus | TAMED_ID.PVP.id)));
+            this.dataManager.set(TAMED, Byte.valueOf((byte)(tamedStatus | TAMED_ID.PVP.id)));
         else
-            this.dataWatcher.set(TAMED, Byte.valueOf((byte)(tamedStatus - (tamedStatus & TAMED_ID.PVP.id))));
+            this.dataManager.set(TAMED, Byte.valueOf((byte)(tamedStatus - (tamedStatus & TAMED_ID.PVP.id))));
     }
     
     
@@ -666,7 +666,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     	if(!this.worldObj.isRemote)
     		return this.hunger;
     	else
-    		return this.dataWatcher.get(HUNGER);
+    		return this.dataManager.get(HUNGER);
     }
     
     public void setCreatureHunger(float setHunger) {
@@ -683,14 +683,14 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     // ==================================================
     public float getStamina() {
     	if(this.worldObj != null && this.worldObj.isRemote)
-    		this.stamina = this.dataWatcher.get(STAMINA);
+    		this.stamina = this.dataManager.get(STAMINA);
     	return this.stamina;
     }
     
     public void setStamina(float setStamina) {
     	this.stamina = setStamina;
     	if(this.worldObj != null && !this.worldObj.isRemote) {
-    		this.dataWatcher.set(STAMINA, setStamina);
+    		this.dataManager.set(STAMINA, setStamina);
     	}
     }
     

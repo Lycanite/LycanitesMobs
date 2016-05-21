@@ -97,7 +97,7 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataWatcher.register(FUR, (byte) 1);
+        this.dataManager.register(FUR, (byte) 1);
     }
     
     // ========== Stats ==========
@@ -159,13 +159,13 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
 	
 	// ========== Fur ==========
 	public boolean hasFur() {
-		if(this.dataWatcher == null) return true;
-		return this.dataWatcher.get(FUR) > 0;
+		if(this.dataManager == null) return true;
+		return this.dataManager.get(FUR) > 0;
 	}
 
 	public void setFur(boolean fur) {
 		if(!this.worldObj.isRemote)
-			this.dataWatcher.set(FUR, (byte) (fur ? 1 : 0));
+			this.dataManager.set(FUR, (byte) (fur ? 1 : 0));
 	}
 	
 	@Override

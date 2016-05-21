@@ -4,7 +4,6 @@ import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityMoveHelper;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 
 public class FlightMoveHelper extends EntityMoveHelper {
@@ -21,7 +20,7 @@ public class FlightMoveHelper extends EntityMoveHelper {
      * field_188491_h = Current Move Action
      */
     public void onUpdateMoveHelper() {
-        if (this.field_188491_h == EntityMoveHelper.Action.MOVE_TO) {
+        if (this.action == EntityMoveHelper.Action.MOVE_TO) {
             double xDistance = this.posX - this.entityCreature.posX;
             double yDistance = this.posY - this.entityCreature.posY;
             double zDistance = this.posZ - this.entityCreature.posZ;
@@ -38,7 +37,7 @@ public class FlightMoveHelper extends EntityMoveHelper {
                     this.entityCreature.motionZ += zDistance / distance * speed;
                 }
                 else {
-                    this.field_188491_h = EntityMoveHelper.Action.WAIT;
+                    this.action = EntityMoveHelper.Action.WAIT;
                 }
             }
         }
@@ -50,28 +49,8 @@ public class FlightMoveHelper extends EntityMoveHelper {
             double distanceY = entitylivingbase.posZ - this.entityCreature.posZ;
             this.entityCreature.renderYawOffset = this.entityCreature.rotationYaw = -((float)MathHelper.atan2(distanceX, distanceY)) * (180F / (float)Math.PI);
         }
-        else if(this.field_188491_h == EntityMoveHelper.Action.MOVE_TO) {
+        else if(this.action == EntityMoveHelper.Action.MOVE_TO) {
             this.entityCreature.renderYawOffset = this.entityCreature.rotationYaw = -((float)MathHelper.atan2(this.entityCreature.motionX, this.entityCreature.motionZ)) * (180F / (float)Math.PI);
         }
-    }
-
-    /**
-     * Checks if entity bounding box is not colliding with terrain.
-     */
-    private boolean isNotColliding(double x, double y, double z, double p_179926_7_) {
-        double d0 = (x - this.entityCreature.posX) / p_179926_7_;
-        double d1 = (y - this.entityCreature.posY) / p_179926_7_;
-        double d2 = (z - this.entityCreature.posZ) / p_179926_7_;
-        AxisAlignedBB axisalignedbb = this.entityCreature.getEntityBoundingBox();
-
-        for (int i = 1; (double)i < p_179926_7_; ++i) {
-            axisalignedbb = axisalignedbb.offset(d0, d1, d2);
-
-            if (!this.entityCreature.worldObj.getCubes(this.entityCreature, axisalignedbb).isEmpty()) {
-                return false;
-            }
-        }
-
-        return true;
     }
 }

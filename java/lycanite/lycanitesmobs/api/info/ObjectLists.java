@@ -11,7 +11,6 @@ import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.*;
 import net.minecraft.potion.Potion;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
@@ -177,52 +176,52 @@ public class ObjectLists {
 	public static void createLists() {
 		// ========== Item Lists ==========
 		// Raw Meat: (A bit cold...)
-		ObjectLists.addItem("rawmeat", Items.beef);
-		ObjectLists.addItem("rawmeat", Items.porkchop);
-		ObjectLists.addItem("rawmeat", Items.chicken);
+		ObjectLists.addItem("rawmeat", Items.BEEF);
+		ObjectLists.addItem("rawmeat", Items.PORKCHOP);
+		ObjectLists.addItem("rawmeat", Items.CHICKEN);
 		
 		// Cooked Meat: (Meaty goodness for carnivorous pets!)
-		ObjectLists.addItem("cookedmeat", Items.cooked_beef);
-		ObjectLists.addItem("cookedmeat", Items.cooked_porkchop);
-		ObjectLists.addItem("cookedmeat", Items.cooked_chicken);
+		ObjectLists.addItem("cookedmeat", Items.COOKED_BEEF);
+		ObjectLists.addItem("cookedmeat", Items.COOKED_PORKCHOP);
+		ObjectLists.addItem("cookedmeat", Items.COOKED_CHICKEN);
 		
 		// Prepared Vegetables: (For most vegetarian pets.)
-		ObjectLists.addItem("vegetables", Items.wheat);
-		ObjectLists.addItem("vegetables", Items.carrot);
-		ObjectLists.addItem("vegetables", Items.potato);
+		ObjectLists.addItem("vegetables", Items.WHEAT);
+		ObjectLists.addItem("vegetables", Items.CARROT);
+		ObjectLists.addItem("vegetables", Items.POTATO);
 		
 		// Fruit: (For exotic pets!)
-		ObjectLists.addItem("fruit", Items.apple);
-		ObjectLists.addItem("fruit", Items.melon);
-		ObjectLists.addItem("fruit", Blocks.pumpkin);
-		ObjectLists.addItem("fruit", Items.pumpkin_pie);
+		ObjectLists.addItem("fruit", Items.APPLE);
+		ObjectLists.addItem("fruit", Items.MELON);
+		ObjectLists.addItem("fruit", Blocks.PUMPKIN);
+		ObjectLists.addItem("fruit", Items.PUMPKIN_PIE);
 
 		// Raw Fish: (Very smelly!)
-		ObjectLists.addItem("rawfish", Items.fish);
+		ObjectLists.addItem("rawfish", Items.FISH);
 
 		// Cooked Fish: (For those fish fiends!)
-		ObjectLists.addItem("cookedfish", Items.cooked_fish);
+		ObjectLists.addItem("cookedfish", Items.COOKED_FISH);
 		
 		// Cactus Food: (Jousts love these!)
-		ObjectLists.addItem("cactusfood", new ItemStack(Items.dye, 1, 2)); // Cactus Green
+		ObjectLists.addItem("cactusfood", new ItemStack(Items.DYE, 1, 2)); // Cactus Green
 		
 		// Mushrooms: (Fungi treats!)
-        ObjectLists.addItem("mushrooms", Items.mushroom_stew);
-        ObjectLists.addItem("mushrooms", Blocks.red_mushroom);
-		ObjectLists.addItem("mushrooms", Blocks.brown_mushroom);
-		ObjectLists.addItem("mushrooms", Blocks.red_mushroom);
-		ObjectLists.addItem("mushrooms", Blocks.brown_mushroom_block);
-		ObjectLists.addItem("mushrooms", Blocks.red_mushroom_block);
+        ObjectLists.addItem("mushrooms", Items.MUSHROOM_STEW);
+        ObjectLists.addItem("mushrooms", Blocks.RED_MUSHROOM);
+		ObjectLists.addItem("mushrooms", Blocks.BROWN_MUSHROOM);
+		ObjectLists.addItem("mushrooms", Blocks.RED_MUSHROOM);
+		ObjectLists.addItem("mushrooms", Blocks.BROWN_MUSHROOM_BLOCK);
+		ObjectLists.addItem("mushrooms", Blocks.RED_MUSHROOM_BLOCK);
 		
 		// Sweets: (Sweet sugary goodness!)
-		ObjectLists.addItem("sweets", Items.sugar);
-		ObjectLists.addItem("sweets", new ItemStack(Items.dye, 1, 15)); // Cocoa Beans
-		ObjectLists.addItem("sweets", Items.cookie);
-		ObjectLists.addItem("sweets", Blocks.cake);
-		ObjectLists.addItem("sweets", Items.pumpkin_pie);
+		ObjectLists.addItem("sweets", Items.SUGAR);
+		ObjectLists.addItem("sweets", new ItemStack(Items.DYE, 1, 15)); // Cocoa Beans
+		ObjectLists.addItem("sweets", Items.COOKIE);
+		ObjectLists.addItem("sweets", Blocks.CAKE);
+		ObjectLists.addItem("sweets", Items.PUMPKIN_PIE);
 		
 		// Fuel: (Fiery awesomeness!)
-		ObjectLists.addItem("fuel", Items.coal);
+		ObjectLists.addItem("fuel", Items.COAL);
 		
 		// Custom Entries:
 		for(String itemListName : itemListNames) {
@@ -231,35 +230,35 @@ public class ObjectLists {
 		
 		// ========== Effects ==========
 		// Buffs:
-		ObjectLists.addEffect("buffs", MobEffects.damageBoost);
-		ObjectLists.addEffect("buffs", MobEffects.digSpeed);
-		ObjectLists.addEffect("buffs", MobEffects.fireResistance);
-		ObjectLists.addEffect("buffs", MobEffects.heal);
-		ObjectLists.addEffect("buffs", MobEffects.invisibility);
-		ObjectLists.addEffect("buffs", MobEffects.jump);
-		ObjectLists.addEffect("buffs", MobEffects.moveSpeed);
-		ObjectLists.addEffect("buffs", MobEffects.nightVision);
-		ObjectLists.addEffect("buffs", MobEffects.regeneration);
-		ObjectLists.addEffect("buffs", MobEffects.resistance);
-		ObjectLists.addEffect("buffs", MobEffects.waterBreathing);
-		ObjectLists.addEffect("buffs", MobEffects.healthBoost);
-		ObjectLists.addEffect("buffs", MobEffects.absorption);
-		ObjectLists.addEffect("buffs", MobEffects.saturation);
-        ObjectLists.addEffect("buffs", MobEffects.glowing);
-        ObjectLists.addEffect("buffs", MobEffects.levitation);
-        ObjectLists.addEffect("buffs", MobEffects.luck);
+		ObjectLists.addEffect("buffs", MobEffects.STRENGTH);
+		ObjectLists.addEffect("buffs", MobEffects.HASTE);
+		ObjectLists.addEffect("buffs", MobEffects.FIRE_RESISTANCE);
+		ObjectLists.addEffect("buffs", MobEffects.INSTANT_HEALTH);
+		ObjectLists.addEffect("buffs", MobEffects.INVISIBILITY);
+		ObjectLists.addEffect("buffs", MobEffects.JUMP_BOOST);
+		ObjectLists.addEffect("buffs", MobEffects.SPEED);
+		ObjectLists.addEffect("buffs", MobEffects.NIGHT_VISION);
+		ObjectLists.addEffect("buffs", MobEffects.REGENERATION);
+		ObjectLists.addEffect("buffs", MobEffects.RESISTANCE);
+		ObjectLists.addEffect("buffs", MobEffects.WATER_BREATHING);
+		ObjectLists.addEffect("buffs", MobEffects.HEALTH_BOOST);
+		ObjectLists.addEffect("buffs", MobEffects.ABSORPTION);
+		ObjectLists.addEffect("buffs", MobEffects.SATURATION);
+        ObjectLists.addEffect("buffs", MobEffects.GLOWING);
+        ObjectLists.addEffect("buffs", MobEffects.LEVITATION);
+        ObjectLists.addEffect("buffs", MobEffects.LUCK);
 		
 		// Debuffs:
-        ObjectLists.addEffect("buffs", MobEffects.blindness);
-        ObjectLists.addEffect("buffs", MobEffects.confusion);
-        ObjectLists.addEffect("buffs", MobEffects.digSlowdown);
-        ObjectLists.addEffect("buffs", MobEffects.harm);
-        ObjectLists.addEffect("buffs", MobEffects.hunger);
-        ObjectLists.addEffect("buffs", MobEffects.moveSlowdown);
-        ObjectLists.addEffect("buffs", MobEffects.poison);
-        ObjectLists.addEffect("buffs", MobEffects.weakness);
-        ObjectLists.addEffect("buffs", MobEffects.wither);
-        ObjectLists.addEffect("buffs", MobEffects.unluck);
+        ObjectLists.addEffect("buffs", MobEffects.BLINDNESS);
+        ObjectLists.addEffect("buffs", MobEffects.NAUSEA);
+        ObjectLists.addEffect("buffs", MobEffects.WEAKNESS);
+        ObjectLists.addEffect("buffs", MobEffects.INSTANT_DAMAGE);
+        ObjectLists.addEffect("buffs", MobEffects.HUNGER);
+        ObjectLists.addEffect("buffs", MobEffects.SLOWNESS);
+        ObjectLists.addEffect("buffs", MobEffects.POISON);
+        ObjectLists.addEffect("buffs", MobEffects.WEAKNESS);
+        ObjectLists.addEffect("buffs", MobEffects.WITHER);
+        ObjectLists.addEffect("buffs", MobEffects.UNLUCK);
 	}
 	
 	// ========== Add From Config Value ==========
@@ -276,13 +275,13 @@ public class ObjectLists {
 				int dropMeta = 0;
 				if(customDropValues.length > 1)
 					dropMeta = Integer.parseInt(customDropValues[1]);
-				if(Item.itemRegistry.getObject(new ResourceLocation(dropName)) != null) {
-					Item customItem = (Item)Item.itemRegistry.getObject(new ResourceLocation(dropName));
+				if(Item.getByNameOrId(dropName) != null) {
+					Item customItem = Item.getByNameOrId(dropName);
 					ObjectLists.addItem(listName, new ItemStack(customItem, 1, dropMeta));
 	    			LycanitesMobs.printDebug("ItemSetup", "As Item: " + customItem);
 				}
-				else if(Block.blockRegistry.getObject(new ResourceLocation(dropName)) != null) {
-					Block customBlock = (Block)Block.blockRegistry.getObject(new ResourceLocation(dropName));
+				else if(Block.getBlockFromName(dropName) != null) {
+					Block customBlock = Block.getBlockFromName(dropName);
 					ObjectLists.addItem(listName, new ItemStack(customBlock, 1, dropMeta));
 	    			LycanitesMobs.printDebug("ItemSetup", "As Block: " + customBlock);
 				}
@@ -301,7 +300,7 @@ public class ObjectLists {
 			return true;
 		if(item instanceof ItemShears)
 			return false;
-		return item.getStrVsBlock(new ItemStack(item), Blocks.melon_block.getDefaultState()) > 1F;
+		return item.getStrVsBlock(new ItemStack(item), Blocks.MELON_BLOCK.getDefaultState()) > 1F;
 	}
 
     // ========== Pickaxe ==========
@@ -324,7 +323,7 @@ public class ObjectLists {
                 return true;
             if(item.getHarvestLevel(new ItemStack(item), "pickaxe") != -1)
                 return true;
-            return item.getStrVsBlock(new ItemStack(item), Blocks.stone.getDefaultState()) > 1F;
+            return item.getStrVsBlock(new ItemStack(item), Blocks.STONE.getDefaultState()) > 1F;
 
         }
         catch(Exception e) {}
@@ -352,7 +351,7 @@ public class ObjectLists {
                 return true;
             if(item.getHarvestLevel(new ItemStack(item), "axe") != -1)
                 return true;
-            return item.getStrVsBlock(new ItemStack(item), Blocks.log.getDefaultState()) > 1F;
+            return item.getStrVsBlock(new ItemStack(item), Blocks.LOG.getDefaultState()) > 1F;
 
         }
         catch(Exception e) {}
@@ -379,7 +378,7 @@ public class ObjectLists {
                 return true;
             if(item.getHarvestLevel(new ItemStack(item), "shovel") != -1)
                 return true;
-            return item.getStrVsBlock(new ItemStack(item), Blocks.dirt.getDefaultState()) > 1F;
+            return item.getStrVsBlock(new ItemStack(item), Blocks.DIRT.getDefaultState()) > 1F;
 
         }
         catch(Exception e) {}

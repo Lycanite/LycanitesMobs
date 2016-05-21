@@ -129,14 +129,14 @@ public class ItemWinterGift extends ItemBase {
     // ==================================================
     public static void createObjectLists() {
         // Halloween Treats:
-        ObjectLists.addItem("winter_gifts", Items.diamond);
-        ObjectLists.addItem("winter_gifts", Items.gold_ingot);
-        ObjectLists.addItem("winter_gifts", Items.emerald);
-        ObjectLists.addItem("winter_gifts", Blocks.iron_block);
-        ObjectLists.addItem("winter_gifts", Items.ender_pearl);
-        ObjectLists.addItem("winter_gifts", Items.blaze_rod);
-        ObjectLists.addItem("winter_gifts", Items.glowstone_dust);
-        ObjectLists.addItem("winter_gifts", Items.coal);
+        ObjectLists.addItem("winter_gifts", Items.DIAMOND);
+        ObjectLists.addItem("winter_gifts", Items.GOLD_INGOT);
+        ObjectLists.addItem("winter_gifts", Items.EMERALD);
+        ObjectLists.addItem("winter_gifts", Blocks.IRON_BLOCK);
+        ObjectLists.addItem("winter_gifts", Items.ENDER_PEARL);
+        ObjectLists.addItem("winter_gifts", Items.BLAZE_ROD);
+        ObjectLists.addItem("winter_gifts", Items.GLOWSTONE_DUST);
+        ObjectLists.addItem("winter_gifts", Items.COAL);
         ObjectLists.addItem("winter_gifts", ObjectManager.getItem("mosspie"));
         ObjectLists.addItem("winter_gifts", ObjectManager.getItem("ambercake"));
         ObjectLists.addItem("winter_gifts", ObjectManager.getItem("peakskebab"));

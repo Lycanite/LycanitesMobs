@@ -137,7 +137,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataWatcher.register(EntityRahovart.HELLFIRE_ENERGY, this.hellfireEnergy);
+        this.dataManager.register(EntityRahovart.HELLFIRE_ENERGY, this.hellfireEnergy);
     }
 
     // ========== Rendering Distance ==========
@@ -191,9 +191,9 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
 
         // Sync Hellfire Energy:
         if(!this.worldObj.isRemote)
-            this.dataWatcher.set(HELLFIRE_ENERGY, this.hellfireEnergy);
+            this.dataManager.set(HELLFIRE_ENERGY, this.hellfireEnergy);
         else
-            this.hellfireEnergy = this.dataWatcher.get(HELLFIRE_ENERGY);
+            this.hellfireEnergy = this.dataManager.get(HELLFIRE_ENERGY);
 
         // Hellfire Update:
         updateHellfireOrbs(this, this.updateTick, 5, this.hellfireEnergy, 10, this.hellfireOrbs);

@@ -3,7 +3,7 @@ package lycanite.lycanitesmobs.api.entity.ai;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -13,7 +13,7 @@ public class EntityAIAttackMelee extends EntityAIBase {
 	// Targets:
 	private EntityCreatureBase host;
     private EntityLivingBase attackTarget;
-    private PathEntity pathToTarget;
+    private Path pathToTarget;
     
     // Properties:
     private double speed = 1.0D;

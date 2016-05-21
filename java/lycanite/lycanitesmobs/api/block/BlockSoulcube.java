@@ -11,7 +11,7 @@ public class BlockSoulcube extends BlockBase {
 	//                   Constructor
 	// ==================================================
 	public BlockSoulcube(GroupInfo group, String name) {
-		super(Material.iron);
+		super(Material.IRON);
         this.setCreativeTab(LycanitesMobs.itemsTab);
 		
 		// Properties:
@@ -23,6 +23,6 @@ public class BlockSoulcube extends BlockBase {
 		this.setHardness(5F);
         this.setResistance(10F);
 		this.setHarvestLevel("pickaxe", 2);
-		this.setStepSound(SoundType.GLASS);
+		this.setSoundType(SoundType.GLASS);
 	}
 }

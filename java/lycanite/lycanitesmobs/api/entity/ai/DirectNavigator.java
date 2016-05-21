@@ -115,7 +115,7 @@ public class DirectNavigator {
 		this.host.motionY += ((Math.signum(dirY) * speed - this.host.motionY) * 0.10000000149011612D*0.3D) * this.speedModifier;
 		this.host.motionZ += ((Math.signum(dirZ) * speed - this.host.motionZ) * 0.10000000149011612D*0.3D) * this.speedModifier;
 		float fullAngle = (float)(Math.atan2(this.host.motionZ, this.host.motionX) * 180.0D / Math.PI) - 90.0F;
-		float angle = MathHelper.wrapAngleTo180_float(fullAngle - this.host.rotationYaw);
+		float angle = MathHelper.wrapDegrees(fullAngle - this.host.rotationYaw);
 		this.host.moveForward = 0.5F;
 		if(this.faceMovement && this.host.getAttackTarget() != null && (this.host.motionX > 0.025F || this.host.motionZ > 0.025F))
 			this.host.rotationYaw += angle;
@@ -184,7 +184,7 @@ public class DirectNavigator {
 		double distX = targetPosition.getX() - this.host.posX;
 		double distZ = targetPosition.getZ() - this.host.posZ;
 		float fullAngle = (float)(Math.atan2(distZ, distX) * 180.0D / Math.PI);// - 90.0F;
-		float angle = MathHelper.wrapAngleTo180_float(fullAngle - this.host.rotationYaw);
+		float angle = MathHelper.wrapDegrees(fullAngle - this.host.rotationYaw);
 		if(angle > 30.0F) angle = 30.0F;
 		if(angle < -30.0F) angle = -30.0F;
 		this.host.renderYawOffset = this.host.rotationYaw += angle;
@@ -195,7 +195,7 @@ public class DirectNavigator {
 		double distX = target.getX() - this.host.posX;
 		double distZ = target.getZ() - this.host.posZ;
 		float fullAngle = (float)(Math.atan2(distZ, distX) * 180.0D / Math.PI) - 90.0F;
-		float angle = MathHelper.wrapAngleTo180_float(fullAngle - this.host.rotationYaw);
+		float angle = MathHelper.wrapDegrees(fullAngle - this.host.rotationYaw);
 		this.host.rotationYaw += angle; 
     }
 }

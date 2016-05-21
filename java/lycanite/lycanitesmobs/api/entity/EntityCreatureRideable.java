@@ -146,7 +146,7 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
     protected boolean isMovementBlocked() {
     	// This will disable AI, we don't want this though!
         //return this.hasRiderTarget() && this.isSaddled() ? true : false;
-    	return false;
+    	return super.isMovementBlocked();
     }
     
     @Override
@@ -208,8 +208,8 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
             // Jumping Behaviour:
             if (this.getJumpPower() > 0.0F && !this.isMountJumping() && this.onGround && this.canPassengerSteer()) {
                 this.motionY = this.getMountJumpHeight() * (double) this.getJumpPower();
-                if (this.isPotionActive(MobEffects.jump))
-                    this.motionY += (double) ((float) (this.getActivePotionEffect(MobEffects.jump).getAmplifier() + 1) * 0.1F);
+                if (this.isPotionActive(MobEffects.JUMP_BOOST))
+                    this.motionY += (double) ((float) (this.getActivePotionEffect(MobEffects.JUMP_BOOST).getAmplifier() + 1) * 0.1F);
                 this.setMountJumping(true);
                 this.isAirBorne = true;
                 if (forward > 0.0F) {

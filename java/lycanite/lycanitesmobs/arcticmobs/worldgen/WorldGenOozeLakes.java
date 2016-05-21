@@ -7,7 +7,7 @@ import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenLakes;
@@ -59,7 +59,7 @@ public class WorldGenOozeLakes extends WorldGenLakes implements IWorldGenBase {
             return;
 
         if(this.generateSurfaceChance > 0) {
-            BiomeGenBase biome = world.getBiomeGenForCoords(new BlockPos(chunkX * 16, 0, chunkZ * 16));
+            Biome biome = world.getBiomeGenForCoords(new BlockPos(chunkX * 16, 0, chunkZ * 16));
             if(biome == null)
                 return;
             BiomeDictionary.Type[] biomeTypes = BiomeDictionary.getTypesForBiome(biome);

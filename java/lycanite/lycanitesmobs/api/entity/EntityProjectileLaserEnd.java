@@ -56,9 +56,9 @@ public class EntityProjectileLaserEnd extends EntityProjectileBase {
 	        this.targetY = this.laserEntity.posY;
 	        this.targetZ = this.laserEntity.posZ;
         }
-        this.dataWatcher.register(POS_X, (float) this.posX);
-        this.dataWatcher.register(POS_Y, (float) this.posY);
-        this.dataWatcher.register(POS_Z, (float)this.posZ);
+        this.dataManager.register(POS_X, (float) this.posX);
+        this.dataManager.register(POS_Y, (float) this.posY);
+        this.dataManager.register(POS_Z, (float)this.posZ);
         this.noClip = true;
     }
     
@@ -70,9 +70,9 @@ public class EntityProjectileLaserEnd extends EntityProjectileBase {
     @Override
     public void onUpdate() {
     	if(this.worldObj.isRemote) {
-    		this.posX = this.dataWatcher.get(POS_X);
-    		this.posY = this.dataWatcher.get(POS_Y);
-    		this.posZ = this.dataWatcher.get(POS_Z);
+    		this.posX = this.dataManager.get(POS_X);
+    		this.posY = this.dataManager.get(POS_Y);
+    		this.posZ = this.dataManager.get(POS_Z);
     		return;
     	}
     	
@@ -82,9 +82,9 @@ public class EntityProjectileLaserEnd extends EntityProjectileBase {
     	if(this.isEntityAlive())
     		this.moveToTarget();
     	
-    	this.dataWatcher.set(POS_X, (float) this.posX);
-    	this.dataWatcher.set(POS_Y, (float) this.posY);
-    	this.dataWatcher.set(POS_Z, (float) this.posZ);
+    	this.dataManager.set(POS_X, (float) this.posX);
+    	this.dataManager.set(POS_Y, (float) this.posY);
+    	this.dataManager.set(POS_Z, (float) this.posZ);
     }
     
     // ========== End Update ==========

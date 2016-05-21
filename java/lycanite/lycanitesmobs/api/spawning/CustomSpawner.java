@@ -3,7 +3,6 @@ package lycanite.lycanitesmobs.api.spawning;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayer.EnumStatus;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -211,7 +210,7 @@ public class CustomSpawner {
 		
 		// Possible Interrupt:
 		if(interrupted)
-			event.setResult(EnumStatus.NOT_SAFE);
+			event.setResult(EntityPlayer.SleepResult.NOT_SAFE);
 	}
 
 	

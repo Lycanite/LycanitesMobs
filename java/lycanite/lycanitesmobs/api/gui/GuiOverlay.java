@@ -83,7 +83,7 @@ public class GuiOverlay extends GUIBase {
             int summonBarV = 256 - summonBarHeight;
             
             summonBarY -= barYSpace;
-            if(this.mc.thePlayer.isInsideOfMaterial(Material.water))
+            if(this.mc.thePlayer.isInsideOfMaterial(Material.WATER))
             	summonBarY -= barYSpace;
             
             for(int summonBarEnergyN = 0; summonBarEnergyN < 10; summonBarEnergyN++) {
@@ -116,7 +116,7 @@ public class GuiOverlay extends GUIBase {
             
             // Mount Ability Stamina Bar:
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			this.mc.getTextureManager().bindTexture(Gui.icons);
+			this.mc.getTextureManager().bindTexture(Gui.ICONS);
             int staminaBarWidth = 182;
             int staminaBarHeight = 5;
             int staminaEnergyWidth = (int)((float)(staminaBarWidth + 1) * mountStamina);
@@ -138,6 +138,6 @@ public class GuiOverlay extends GUIBase {
 			this.mountMessageTime = this.mountMessageTimeMax;
 
         GL11.glPopMatrix();
-		this.mc.getTextureManager().bindTexture(Gui.icons);
+		this.mc.getTextureManager().bindTexture(Gui.ICONS);
 	}
 }

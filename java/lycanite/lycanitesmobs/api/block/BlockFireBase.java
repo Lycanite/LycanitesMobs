@@ -52,7 +52,7 @@ public class BlockFireBase extends BlockBase {
         this.tickRate = 30; // Default tick rate, configs can set this to 1 to remove this fire block from worlds.
         this.setLightOpacity(1);
         this.setTickRandomly(this.tickRandomly);
-        this.setStepSound(SoundType.CLOTH);
+        this.setSoundType(SoundType.CLOTH);
         this.disableStats();
     }
 
@@ -62,7 +62,7 @@ public class BlockFireBase extends BlockBase {
     // ==================================================
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
-        if (!worldIn.getBlockState(pos.down()).isSideSolid(worldIn, pos.down(), EnumFacing.UP) && !Blocks.fire.canCatchFire(worldIn, pos.down(), EnumFacing.UP)) {
+        if (!worldIn.getBlockState(pos.down()).isSideSolid(worldIn, pos.down(), EnumFacing.UP) && !Blocks.FIRE.canCatchFire(worldIn, pos.down(), EnumFacing.UP)) {
             return state.withProperty(NORTH, this.canCatchFire(worldIn, pos.north(), EnumFacing.SOUTH))
                     .withProperty(EAST,  this.canCatchFire(worldIn, pos.east(), EnumFacing.WEST))
                     .withProperty(SOUTH, this.canCatchFire(worldIn, pos.south(), EnumFacing.NORTH))
@@ -206,7 +206,7 @@ public class BlockFireBase extends BlockBase {
 
     /** Called when an adjacent block changes. **/
     @Override
-    public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block) {
         if (!world.getBlockState(pos.down()).isSideSolid(world, pos, EnumFacing.UP) && !this.canNeighborCatchFire(world, pos)) {
             world.setBlockToAir(pos);
         }
@@ -262,8 +262,8 @@ public class BlockFireBase extends BlockBase {
                 world.setBlockToAir(pos);
             }
 
-            if (this.triggerTNT && blockState.getBlock() == Blocks.tnt) {
-                Blocks.tnt.onBlockDestroyedByPlayer(world, pos, blockState.withProperty(BlockTNT.EXPLODE, Boolean.valueOf(true)));
+            if (this.triggerTNT && blockState.getBlock() == Blocks.TNT) {
+                Blocks.TNT.onBlockDestroyedByPlayer(world, pos, blockState.withProperty(BlockTNT.EXPLODE, Boolean.valueOf(true)));
             }
         }
     }

@@ -3,7 +3,7 @@ package lycanite.lycanitesmobs.api.info;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.config.ConfigSpawning;
 import lycanite.lycanitesmobs.api.config.ConfigSpawning.SpawnDimensionSet;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -71,7 +71,7 @@ public class GroupInfo {
     public String biomeEntries = "";
 	
 	/** The list of biomes that mobs in this group spawn. Use this stores the actual biomes not biome tags. **/
-	public BiomeGenBase[] biomes = new BiomeGenBase[0];
+	public Biome[] biomes = new Biome[0];
 	
 	// ========== Vanilla Controls ==========
 	/** If true, this group will edit the vanilla mob spawns a little bit. **/

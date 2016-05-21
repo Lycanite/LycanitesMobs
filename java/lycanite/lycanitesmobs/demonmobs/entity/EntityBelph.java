@@ -89,7 +89,7 @@ public class EntityBelph extends EntityCreatureTameable implements IMob, IGroupD
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataWatcher.register(EntityRahovart.HELLFIRE_ENERGY, this.hellfireEnergy);
+        this.dataManager.register(EntityRahovart.HELLFIRE_ENERGY, this.hellfireEnergy);
     }
 
 
@@ -103,9 +103,9 @@ public class EntityBelph extends EntityCreatureTameable implements IMob, IGroupD
 
         // Sync Hellfire Energy:
         if (!this.worldObj.isRemote)
-            this.dataWatcher.set(EntityRahovart.HELLFIRE_ENERGY, this.hellfireEnergy);
+            this.dataManager.set(EntityRahovart.HELLFIRE_ENERGY, this.hellfireEnergy);
         else
-            this.hellfireEnergy = this.dataWatcher.get(EntityRahovart.HELLFIRE_ENERGY);
+            this.hellfireEnergy = this.dataManager.get(EntityRahovart.HELLFIRE_ENERGY);
 
         // Hellfire Update:
         if(this.worldObj.isRemote && this.hellfireEnergy > 0)

@@ -14,8 +14,9 @@ public class SwimmingMoveHelper extends EntityMoveHelper {
         this.parentEntity = entityCreatureBase;
     }
 
+    @Override
     public void onUpdateMoveHelper() {
-        if (this.field_188491_h == EntityMoveHelper.Action.MOVE_TO && !this.parentEntity.getNavigator().noPath()) {
+        if (this.action == EntityMoveHelper.Action.MOVE_TO && !this.parentEntity.getNavigator().noPath()) {
             double x = this.posX - this.parentEntity.posX;
             double y = this.posY - this.parentEntity.posY;
             double z = this.posZ - this.parentEntity.posZ;

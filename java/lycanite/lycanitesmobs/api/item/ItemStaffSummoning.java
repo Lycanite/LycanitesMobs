@@ -163,7 +163,7 @@ public class ItemStaffSummoning extends ItemScepter {
 	// ==================================================
     @Override
     public boolean getIsRepairable(ItemStack itemStack, ItemStack repairStack) {
-    	if(repairStack.getItem() == Items.gold_ingot) return true;
+    	if(repairStack.getItem() == Items.GOLD_INGOT) return true;
         return super.getIsRepairable(itemStack, repairStack);
     }
 }

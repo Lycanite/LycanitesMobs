@@ -11,70 +11,56 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 
-public class FlightNodeProcessor extends NodeProcessor
-{
-    public void func_186315_a(IBlockAccess sourceIn, EntityLiving mob)
-    {
-        super.func_186315_a(sourceIn, mob);
+public class FlightNodeProcessor extends NodeProcessor {
+    @Override
+    public PathPoint getStart() {
+        return this.openPoint(MathHelper.floor_double(this.entity.getEntityBoundingBox().minX), MathHelper.floor_double(this.entity.getEntityBoundingBox().minY + 0.5D), MathHelper.floor_double(this.entity.getEntityBoundingBox().minZ));
     }
 
-    public void postProcess()
-    {
-        super.postProcess();
+    @Override
+    public PathPoint getPathPointToCoords(double x, double y, double z) {
+        return this.openPoint(MathHelper.floor_double(x - (double)(this.entity.width / 2.0F)), MathHelper.floor_double(y + 0.5D), MathHelper.floor_double(z - (double)(this.entity.width / 2.0F)));
     }
 
-    public PathPoint func_186318_b()
-    {
-        return this.openPoint(MathHelper.floor_double(this.field_186326_b.getEntityBoundingBox().minX), MathHelper.floor_double(this.field_186326_b.getEntityBoundingBox().minY + 0.5D), MathHelper.floor_double(this.field_186326_b.getEntityBoundingBox().minZ));
-    }
-
-    public PathPoint func_186325_a(double p_186325_1_, double p_186325_3_, double p_186325_5_)
-    {
-        return this.openPoint(MathHelper.floor_double(p_186325_1_ - (double)(this.field_186326_b.width / 2.0F)), MathHelper.floor_double(p_186325_3_ + 0.5D), MathHelper.floor_double(p_186325_5_ - (double)(this.field_186326_b.width / 2.0F)));
-    }
-
-    public int func_186320_a(PathPoint[] p_186320_1_, PathPoint p_186320_2_, PathPoint p_186320_3_, float p_186320_4_)
-    {
+    @Override
+    public int findPathOptions(PathPoint[] pathOptions, PathPoint currentPoint, PathPoint targetPoint, float maxDistance) {
         int i = 0;
 
-        for (EnumFacing enumfacing : EnumFacing.values())
-        {
-            PathPoint pathpoint = this.func_186328_b(p_186320_2_.xCoord + enumfacing.getFrontOffsetX(), p_186320_2_.yCoord + enumfacing.getFrontOffsetY(), p_186320_2_.zCoord + enumfacing.getFrontOffsetZ());
+        for (EnumFacing enumfacing : EnumFacing.values()) {
+            PathPoint pathpoint = this.getFlightNode(currentPoint.xCoord + enumfacing.getFrontOffsetX(), currentPoint.yCoord + enumfacing.getFrontOffsetY(), currentPoint.zCoord + enumfacing.getFrontOffsetZ());
 
-            if (pathpoint != null && !pathpoint.visited && pathpoint.distanceTo(p_186320_3_) < p_186320_4_)
-            {
-                p_186320_1_[i++] = pathpoint;
+            if (pathpoint != null && !pathpoint.visited && pathpoint.distanceTo(targetPoint) < maxDistance) {
+                pathOptions[i++] = pathpoint;
             }
         }
 
         return i;
     }
 
-    public PathNodeType func_186319_a(IBlockAccess p_186319_1_, int p_186319_2_, int p_186319_3_, int p_186319_4_, EntityLiving p_186319_5_, int p_186319_6_, int p_186319_7_, int p_186319_8_, boolean p_186319_9_, boolean p_186319_10_)
-    {
+    @Override
+    public PathNodeType getPathNodeType(IBlockAccess blockaccess, int x, int y, int z, EntityLiving entityliving, int xSize, int ySize, int zSize, boolean canBreakDoors, boolean canEnterDoors) {
         return PathNodeType.OPEN;
     }
 
-    private PathPoint func_186328_b(int p_186328_1_, int p_186328_2_, int p_186328_3_)
-    {
-        PathNodeType pathnodetype = this.func_186327_c(p_186328_1_, p_186328_2_, p_186328_3_);
-        return pathnodetype == PathNodeType.OPEN ? this.openPoint(p_186328_1_, p_186328_2_, p_186328_3_) : null;
+    @Override
+    public PathNodeType getPathNodeType(IBlockAccess x, int y, int z, int p_186330_4_) {
+        return PathNodeType.OPEN;
     }
 
-    private PathNodeType func_186327_c(int p_186327_1_, int p_186327_2_, int p_186327_3_)
-    {
+    protected PathPoint getFlightNode(int x, int y, int z) {
+        PathNodeType pathnodetype = this.isFree(x, y, z);
+        return pathnodetype == PathNodeType.OPEN ? this.openPoint(x, y, z) : null;
+    }
+
+    protected PathNodeType isFree(int p_186327_1_, int p_186327_2_, int p_186327_3_) {
         BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
-        for (int i = p_186327_1_; i < p_186327_1_ + this.entitySizeX; ++i)
-        {
-            for (int j = p_186327_2_; j < p_186327_2_ + this.entitySizeY; ++j)
-            {
-                for (int k = p_186327_3_; k < p_186327_3_ + this.entitySizeZ; ++k)
-                {
-                    IBlockState iblockstate = this.blockaccess.getBlockState(blockpos$mutableblockpos.set(i, j, k));
+        for (int i = p_186327_1_; i < p_186327_1_ + this.entitySizeX; ++i) {
+            for (int j = p_186327_2_; j < p_186327_2_ + this.entitySizeY; ++j) {
+                for (int k = p_186327_3_; k < p_186327_3_ + this.entitySizeZ; ++k) {
+                    IBlockState iblockstate = this.blockaccess.getBlockState(blockpos$mutableblockpos.setPos(i, j, k));
 
-                    if (iblockstate.getMaterial() != Material.air)
-                    {
+                    if (iblockstate.getMaterial() != Material.AIR) {
                         return PathNodeType.BLOCKED;
                     }
                 }

@@ -4,7 +4,7 @@ import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -128,19 +128,19 @@ public class ConfigSpawning extends ConfigBase {
 	
 	
 	// ========== Get Spawn Biomes ==========
-	public BiomeGenBase[] getBiomes(String category, String key) {
+	public Biome[] getBiomes(String category, String key) {
 		return this.getBiomes(category, key, "");
 	}
 	
-	public BiomeGenBase[] getBiomes(String category, String key, String defaultValue) {
+	public Biome[] getBiomes(String category, String key, String defaultValue) {
 		return this.getBiomes(category, key, defaultValue, null);
 	}
 	
-	public BiomeGenBase[] getBiomes(String category, String key, String defaultValue, String comment) {
+	public Biome[] getBiomes(String category, String key, String defaultValue, String comment) {
 		String biomeEntries = this.getString(category, key, defaultValue);
 		biomeEntries = biomeEntries.replace(" ", "");
         
-        List<BiomeGenBase> biomeList = new ArrayList<BiomeGenBase>();
+        List<Biome> biomeList = new ArrayList<Biome>();
         for(String biomeEntry : biomeEntries.split(",")) {
         	if("".equals(biomeEntry))
         		break;
@@ -151,13 +151,13 @@ public class ConfigSpawning extends ConfigBase {
                 biomeEntry = biomeEntry.substring(1);
             }
 
-            BiomeGenBase[] selectedBiomes = null;
+            Biome[] selectedBiomes = null;
             if("ALL".equals(biomeEntry)) {
                 for(BiomeDictionary.Type biomeType : BiomeDictionary.Type.values()) {
                     if(selectedBiomes == null)
                         selectedBiomes = BiomeDictionary.getBiomesForType(biomeType);
                     else {
-                    	BiomeGenBase[] typeBiomes = BiomeDictionary.getBiomesForType(biomeType);
+                    	Biome[] typeBiomes = BiomeDictionary.getBiomesForType(biomeType);
                     	if(typeBiomes != null)
                     		selectedBiomes = ArrayUtils.addAll(selectedBiomes, typeBiomes);
                     }
@@ -178,7 +178,7 @@ public class ConfigSpawning extends ConfigBase {
             }
 
             if(selectedBiomes != null) {
-                for(BiomeGenBase biome : selectedBiomes)
+                for(Biome biome : selectedBiomes)
                     if(additive && !biomeList.contains(biome)) {
                         biomeList.add(biome);
                     }
@@ -188,6 +188,6 @@ public class ConfigSpawning extends ConfigBase {
             }
         }
         
-        return biomeList.toArray(new BiomeGenBase[biomeList.size()]);
+        return biomeList.toArray(new Biome[biomeList.size()]);
 	}
 }

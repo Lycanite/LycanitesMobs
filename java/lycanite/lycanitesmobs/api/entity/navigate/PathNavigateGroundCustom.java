@@ -3,7 +3,7 @@ package lycanite.lycanitesmobs.api.entity.navigate;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.math.BlockPos;
@@ -18,8 +18,8 @@ public class PathNavigateGroundCustom extends PathNavigateGround {
     }
 
     @Override
-    public PathEntity getPathToPos(BlockPos pos) {
-        PathEntity pathEntity = super.getPathToPos(pos);
+    public Path getPathToPos(BlockPos pos) {
+        Path pathEntity = super.getPathToPos(pos);
         return pathEntity;
     }
 
@@ -106,7 +106,7 @@ public class PathNavigateGroundCustom extends PathNavigateGround {
                     double d1 = (double)l + 0.5D - vec31.zCoord;
 
                     if (d0 * p_179683_8_ + d1 * p_179683_10_ >= 0.0D) {
-                        PathNodeType pathnodetype = this.nodeProcessor.func_186319_a(this.worldObj, k, y - 1, l, this.theEntity, sizeX, sizeY, sizeZ, true, true);
+                        PathNodeType pathnodetype = this.nodeProcessor.getPathNodeType(this.worldObj, k, y - 1, l, this.theEntity, sizeX, sizeY, sizeZ, true, true);
 
                         if (pathnodetype == PathNodeType.WATER && !this.theEntity.canBreatheUnderwater()) {
                             return false;
@@ -120,7 +120,7 @@ public class PathNavigateGroundCustom extends PathNavigateGround {
                             return false;
                         }
 
-                        pathnodetype = this.nodeProcessor.func_186319_a(this.worldObj, k, y, l, this.theEntity, sizeX, sizeY, sizeZ, true, true);
+                        pathnodetype = this.nodeProcessor.getPathNodeType(this.worldObj, k, y, l, this.theEntity, sizeX, sizeY, sizeZ, true, true);
                         float f = this.theEntity.getPathPriority(pathnodetype);
 
                         if (f < 0.0F || f >= 8.0F) {

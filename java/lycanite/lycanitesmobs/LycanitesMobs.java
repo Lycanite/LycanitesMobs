@@ -269,77 +269,77 @@ public class LycanitesMobs {
 		GameRegistry.addRecipe(new ShapedOreRecipe(
                 new ItemStack(ObjectManager.getItem("soulgazer"), 1, 0),
                 new Object[]{"GBG", "BDB", "GBG",
-                        Character.valueOf('G'), Items.gold_ingot,
-                        Character.valueOf('D'), Items.diamond,
-                        Character.valueOf('B'), Items.bone
+                        Character.valueOf('G'), Items.GOLD_INGOT,
+                        Character.valueOf('D'), Items.DIAMOND,
+                        Character.valueOf('B'), Items.BONE
                 }));
 
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("soulstone"), 1, 0),
 				new Object[] { "DPD", "PSP", "DPD",
-						Character.valueOf('D'), Items.diamond,
+						Character.valueOf('D'), Items.DIAMOND,
 						Character.valueOf('S'), ObjectManager.getItem("soulgazer"),
-						Character.valueOf('P'), Items.ender_pearl
+						Character.valueOf('P'), Items.ENDER_PEARL
 				}));
 
         GameRegistry.addRecipe(new ShapedOreRecipe(
                 new ItemStack(ObjectManager.getItem("soulkey"), 1, 0),
                 new Object[] { "DND", "DSD", "DDD",
-                        Character.valueOf('N'), Items.nether_star,
+                        Character.valueOf('N'), Items.NETHER_STAR,
                         Character.valueOf('S'), ObjectManager.getItem("soulgazer"),
-                        Character.valueOf('D'), Items.diamond
+                        Character.valueOf('D'), Items.DIAMOND
                 }));
 
         GameRegistry.addRecipe(new ShapedOreRecipe(
                 new ItemStack(ObjectManager.getBlock("summoningpedestal"), 1, 0),
                 new Object[] { "GNG", "DSD", "GDG",
-                        Character.valueOf('N'), Items.nether_star,
+                        Character.valueOf('N'), Items.NETHER_STAR,
                         Character.valueOf('S'), ObjectManager.getItem("soulstone"),
-                        Character.valueOf('D'), Blocks.diamond_block,
-                        Character.valueOf('G'), Blocks.gold_block
+                        Character.valueOf('D'), Blocks.DIAMOND_BLOCK,
+                        Character.valueOf('G'), Blocks.GOLD_BLOCK
                 }));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("summoningstaff"), 1, 0),
 				new Object[] { " E ", " B ", " G ",
-				Character.valueOf('E'), Items.ender_pearl,
-				Character.valueOf('B'), Items.bone,
-				Character.valueOf('G'), Items.gold_ingot
+				Character.valueOf('E'), Items.ENDER_PEARL,
+				Character.valueOf('B'), Items.BONE,
+				Character.valueOf('G'), Items.GOLD_INGOT
 			}));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("stablesummoningstaff"), 1, 0),
 				new Object[] { " D ", " S ", " G ",
 				Character.valueOf('S'), ObjectManager.getItem("summoningstaff"),
-				Character.valueOf('G'), Items.gold_ingot,
-				Character.valueOf('D'), Items.diamond
+				Character.valueOf('G'), Items.GOLD_INGOT,
+				Character.valueOf('D'), Items.DIAMOND
 			}));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("bloodsummoningstaff"), 1, 0),
 				new Object[] { "RRR", "BSB", "NDN",
 				Character.valueOf('S'), ObjectManager.getItem("summoningstaff"),
-				Character.valueOf('R'), Items.redstone,
-				Character.valueOf('B'), Items.bone,
-				Character.valueOf('N'), Items.nether_wart,
-				Character.valueOf('D'), Items.diamond
+				Character.valueOf('R'), Items.REDSTONE,
+				Character.valueOf('B'), Items.BONE,
+				Character.valueOf('N'), Items.NETHER_WART,
+				Character.valueOf('D'), Items.DIAMOND
 			}));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("sturdysummoningstaff"), 1, 0),
 				new Object[] { "III", "ISI", " O ",
 				Character.valueOf('S'), ObjectManager.getItem("summoningstaff"),
-				Character.valueOf('I'), Items.iron_ingot,
-				Character.valueOf('O'), Blocks.obsidian
+				Character.valueOf('I'), Items.IRON_INGOT,
+				Character.valueOf('O'), Blocks.OBSIDIAN
 			}));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("savagesummoningstaff"), 1, 0),
 				new Object[] { "LLL", "BSB", "GGG",
 				Character.valueOf('S'), ObjectManager.getItem("summoningstaff"),
-				Character.valueOf('B'), Items.bone,
-				Character.valueOf('G'), Items.ghast_tear,
-				Character.valueOf('L'), new ItemStack(Items.dye, 1, 4)
+				Character.valueOf('B'), Items.BONE,
+				Character.valueOf('G'), Items.GHAST_TEAR,
+				Character.valueOf('L'), new ItemStack(Items.DYE, 1, 4)
 			}));
 		
 		// Super Food:

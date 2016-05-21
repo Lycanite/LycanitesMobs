@@ -144,11 +144,11 @@ public class BlockBase extends Block {
 	// ==================================================
 	//                   Block Updates
 	// ==================================================
-	public void onNeighborBlockChange(World world, BlockPos pos, int blockID) {
+    @Override
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block) {
         // Crushable:
-		Block block = world.getBlockState(pos).getBlock();
 		if(this.canBeCrushed)
-			if(block == Blocks.sand || block == Blocks.gravel)
+			if(block == Blocks.SAND || block == Blocks.GRAVEL)
 	        	world.setBlockToAir(pos);
     }
     
@@ -243,20 +243,20 @@ public class BlockBase extends Block {
 	//                Collision Effects
 	// ==================================================
     @Override
-    public void onEntityCollidedWithBlock(World world, BlockPos pos, Entity entity) {
-		super.onEntityCollidedWithBlock(world, pos, entity);
+    public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState blockState, Entity entity) {
+		super.onEntityCollidedWithBlock(world, pos, blockState, entity);
 	}
 
     @Override
-    public Boolean isEntityInsideMaterial(IBlockAccess world, BlockPos blockpos, IBlockState iblockstate, Entity entity, double yToTest, Material materialIn, boolean testingHead) {
+    public Boolean isEntityInsideMaterial(IBlockAccess world, BlockPos blockpos, IBlockState blockState, Entity entity, double yToTest, Material materialIn, boolean testingHead) {
         if(this.noEntityCollision && world instanceof World)
-            this.onEntityCollidedWithBlock((World)world, blockpos, entity);
-        return super.isEntityInsideMaterial(world, blockpos, iblockstate, entity, yToTest, materialIn, testingHead);
+            this.onEntityCollidedWithBlock((World)world, blockpos, blockState, entity);
+        return super.isEntityInsideMaterial(world, blockpos, blockState, entity, yToTest, materialIn, testingHead);
     }
 
     /** Sets the stepping sound for this block, this method is added because setStepSound is now private. **/
     public BlockBase setBlockStepSound(SoundType soundType) {
-        return (BlockBase)this.setStepSound(soundType);
+        return (BlockBase)this.setSoundType(soundType);
     }
     
     

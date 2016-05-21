@@ -426,15 +426,15 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataWatcher.register(TARGET, (byte) 0);
-        this.dataWatcher.register(ATTACK_PHASE, (byte) 0);
-        this.dataWatcher.register(ANIMATION, (byte) 0);
-        this.dataWatcher.register(CLIMBING, (byte) 0);
-        this.dataWatcher.register(STEALTH, (float) 0.0F);
-        this.dataWatcher.register(COLOR, (byte) 0);
-        this.dataWatcher.register(SIZE, (float) 1D);
-        this.dataWatcher.register(SUBSPECIES, (byte) 0);
-        InventoryCreature.registerDataParameters(this.dataWatcher);
+        this.dataManager.register(TARGET, (byte) 0);
+        this.dataManager.register(ATTACK_PHASE, (byte) 0);
+        this.dataManager.register(ANIMATION, (byte) 0);
+        this.dataManager.register(CLIMBING, (byte) 0);
+        this.dataManager.register(STEALTH, (float) 0.0F);
+        this.dataManager.register(COLOR, (byte) 0);
+        this.dataManager.register(SIZE, (float) 1D);
+        this.dataManager.register(SUBSPECIES, (byte) 0);
+        InventoryCreature.registerDataParameters(this.dataManager);
         this.initiated = true;
     }
     
@@ -593,9 +593,9 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         if(this.getBlockPathWeight(pos.getX(), pos.getY(), pos.getZ()) < 0.0F && this.spawnedFromType == null)
         	return false;
     	LycanitesMobs.printDebug("MobSpawns", "Checking for liquid (water, lava, ooze, etc).");
-        if(!this.spawnsInWater && this.worldObj.isAnyLiquid(this.getEntityBoundingBox()))
+        if(!this.spawnsInWater && this.worldObj.containsAnyLiquid(this.getEntityBoundingBox()))
             return false;
-        else if(!this.spawnsOnLand && !this.worldObj.isAnyLiquid(this.getEntityBoundingBox()))
+        else if(!this.spawnsOnLand && !this.worldObj.containsAnyLiquid(this.getEntityBoundingBox()))
             return false;
     	LycanitesMobs.printDebug("MobSpawns", "Checking for underground.");
         if(!this.spawnsUnderground && this.isBlockUnderground(pos.getX(), pos.getY() + 1, pos.getZ()))
@@ -849,11 +849,11 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     		return false;
     	for(int j = y; j < this.worldObj.getHeight(); j++) {
     		Material blockMaterial = this.worldObj.getBlockState(new BlockPos(x, j, z)).getMaterial();
-    		if(blockMaterial != Material.air
-    				&& blockMaterial != Material.leaves
-    				&& blockMaterial != Material.plants
-    				&& blockMaterial != Material.grass
-    				&& blockMaterial != Material.vine)
+    		if(blockMaterial != Material.AIR
+    				&& blockMaterial != Material.LEAVES
+    				&& blockMaterial != Material.PLANTS
+    				&& blockMaterial != Material.GRASS
+    				&& blockMaterial != Material.VINE)
     			return true;
     	}
     	return false;
@@ -1234,7 +1234,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     /** The main update method, all the important updates go here. **/
     @Override
     public void onUpdate() {
-    	if(this.dataWatcher != null)
+    	if(this.dataManager != null)
     		this.onSyncUpdate();
         super.onUpdate();
 
@@ -1373,7 +1373,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     	if(!this.worldObj.isRemote) {
 	        if(this.isStealthed() && !this.isInvisible())
 	        	setInvisible(true);
-	        else if(!this.isStealthed() && this.isInvisible() && !this.isPotionActive(MobEffects.invisibility))
+	        else if(!this.isStealthed() && this.isInvisible() && !this.isPotionActive(MobEffects.INVISIBILITY))
 	        	setInvisible(false);
     	}
         if(this.isStealthed()) {
@@ -1381,7 +1381,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         		startStealth();
         	onStealth();
         }
-        else if(this.isInvisible() && !this.isPotionActive(MobEffects.invisibility))
+        else if(this.isInvisible() && !this.isPotionActive(MobEffects.INVISIBILITY))
         	setInvisible(false);
         this.stealthPrev = this.isStealthed();
 
@@ -1442,12 +1442,12 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     			targets += TARGET_ID.AVOID.id;
     		if(this.getControllingPassenger() != null)
     			targets += TARGET_ID.RIDER.id;
-    		this.dataWatcher.set(TARGET, targets);
+    		this.dataManager.set(TARGET, targets);
     	}
 
 		// Attack Phase:
     	if(!this.worldObj.isRemote)
-    		this.dataWatcher.set(ATTACK_PHASE, this.attackPhase);
+    		this.dataManager.set(ATTACK_PHASE, this.attackPhase);
 
     	// Animations Server:
         if(!this.worldObj.isRemote) {
@@ -1480,12 +1480,12 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         	if(this.extraAnimation01())
         		animations += ANIM_ID.EXTRA01.id;
 
-        	this.dataWatcher.set(ANIMATION, animations);
+        	this.dataManager.set(ANIMATION, animations);
         }
 
         // Animations Client:
         else if(this.worldObj.isRemote) {
-        	byte animations = this.dataWatcher.get(ANIMATION);
+        	byte animations = this.dataManager.get(ANIMATION);
         	if(this.justAttacked > 0)
         		this.justAttacked--;
         	else if((animations & ANIM_ID.ATTACKED.id) > 0)
@@ -1497,25 +1497,25 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 
         // Is Minon:
         if(this.worldObj.isRemote) {
-    		this.isMinion = (this.dataWatcher.get(ANIMATION) & ANIM_ID.MINION.id) > 0;
+    		this.isMinion = (this.dataManager.get(ANIMATION) & ANIM_ID.MINION.id) > 0;
         }
 
         // Subspecies:
         if(!this.worldObj.isRemote) {
-    		this.dataWatcher.set(SUBSPECIES, Byte.valueOf((byte)this.getSubspeciesIndex()));
+    		this.dataManager.set(SUBSPECIES, Byte.valueOf((byte)this.getSubspeciesIndex()));
         }
         else {
-        	if(this.getSubspeciesIndex() != this.dataWatcher.get(SUBSPECIES))
-        		this.setSubspecies(this.dataWatcher.get(SUBSPECIES), false);
+        	if(this.getSubspeciesIndex() != this.dataManager.get(SUBSPECIES))
+        		this.setSubspecies(this.dataManager.get(SUBSPECIES), false);
         }
 
         // Size:
         if(!this.worldObj.isRemote) {
-    		this.dataWatcher.set(SIZE, Float.valueOf((float)this.sizeScale));
+    		this.dataManager.set(SIZE, Float.valueOf((float)this.sizeScale));
         }
         else {
-        	if(this.sizeScale != this.dataWatcher.get(SIZE)) {
-        		this.sizeScale = this.dataWatcher.get(SIZE);
+        	if(this.sizeScale != this.dataManager.get(SIZE)) {
+        		this.sizeScale = this.dataManager.get(SIZE);
         		this.updateSize();
         	}
         }
@@ -1642,7 +1642,6 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         this.limbSwing += this.limbSwingAmount;
     }
 
-    @Override
     public void moveFlying(float strafe, float forward, float friction) {
         if(!this.isPushedByWater() && this.canWalk() && this.isInWater()) {
             float sliperryness = 0.91F;
@@ -1653,7 +1652,6 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
             float f7 = 0.16277136F / (sliperryness * sliperryness * sliperryness);
             friction = this.getAIMoveSpeed() * f7;
         }
-        super.moveFlying(strafe, forward, friction);
     }
 
     // ========== Move Swimming with Heading ==========
@@ -1960,13 +1958,13 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         int yLimit = 24;
         yMax = Math.min(yMax, y + yLimit);
         IBlockState startBlock = this.worldObj.getBlockState(pos);
-        if(startBlock != null && startBlock.getMaterial() == Material.water) {
+        if(startBlock != null && startBlock.getMaterial() == Material.WATER) {
             int possibleSurfaceY = y;
             for(possibleSurfaceY += 1; possibleSurfaceY <= yMax; possibleSurfaceY++) {
                 IBlockState possibleSurfaceBlock = this.worldObj.getBlockState(new BlockPos(pos.getX(), possibleSurfaceY, pos.getZ()));
                 if(possibleSurfaceBlock != null && possibleSurfaceBlock.getBlock().isAir(possibleSurfaceBlock, this.worldObj, new BlockPos(pos.getX(), possibleSurfaceY, pos.getZ())))
                     return possibleSurfaceY;
-                else if(possibleSurfaceBlock == null || possibleSurfaceBlock.getMaterial() != Material.water)
+                else if(possibleSurfaceBlock == null || possibleSurfaceBlock.getMaterial() != Material.WATER)
                     return possibleSurfaceY - 1;
             }
             return Math.max(possibleSurfaceY - 1, y);
@@ -2105,7 +2103,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     // ========== Phase ==========
     /** Returns the current attack phase of this mob, used when deciding which attack to use and which animations to use. **/
     public byte getAttackPhase() {
-    	return this.dataWatcher.get(ATTACK_PHASE);
+    	return this.dataManager.get(ATTACK_PHASE);
     }
     /** Sets the current attack phase of this mobs. **/
     public void setAttackPhase(byte setAttackPhase) { attackPhase = setAttackPhase; }
@@ -2305,7 +2303,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     	if(!this.worldObj.isRemote)
     		return this.getAttackTarget() != null;
     	else
-    		return (this.dataWatcher.get(TARGET) & TARGET_ID.ATTACK.id) > 0;
+    		return (this.dataManager.get(TARGET) & TARGET_ID.ATTACK.id) > 0;
     }
 
     /** Returns this entity's Master Target. **/
@@ -2317,7 +2315,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     	if(!this.worldObj.isRemote)
     		return this.getMasterTarget() != null;
     	else
-    		return (this.dataWatcher.get(TARGET) & TARGET_ID.MASTER.id) > 0;
+    		return (this.dataManager.get(TARGET) & TARGET_ID.MASTER.id) > 0;
     }
 
     /** Returns this entity's Parent Target. **/
@@ -2329,7 +2327,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     	if(!this.worldObj.isRemote)
     		return this.getParentTarget() != null;
     	else
-    		return (this.dataWatcher.get(TARGET) & TARGET_ID.PARENT.id) > 0;
+    		return (this.dataManager.get(TARGET) & TARGET_ID.PARENT.id) > 0;
     }
 
     /** Returns this entity's Avoid Target. **/
@@ -2344,7 +2342,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     	if(!this.worldObj.isRemote)
     		return this.getAvoidTarget() != null;
     	else
-    		return (this.dataWatcher.get(TARGET) & TARGET_ID.AVOID.id) > 0;
+    		return (this.dataManager.get(TARGET) & TARGET_ID.AVOID.id) > 0;
     }
 
     /** Returns this entity's Owner Target. **/
@@ -2359,12 +2357,13 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     }
     /** Sets this entity's Rider Target **/
     public void setRiderTarget(Entity setTarget) { this.addPassenger(setTarget); }
+
     /** Returns true if this mob has a Rider Target **/
     public boolean hasRiderTarget() {
     	if(!this.worldObj.isRemote)
     		return this.getControllingPassenger() != null;
     	else
-    		return (this.dataWatcher.get(TARGET) & TARGET_ID.RIDER.id) > 0;
+    		return (this.dataManager.get(TARGET) & TARGET_ID.RIDER.id) > 0;
     }
 
     @Override
@@ -2480,7 +2479,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 
     /** Get the current stealth percentage, 0.0F = not stealthed, 1.0F = completely stealthed, used for animation such as burrowing crusks. **/
     public float getStealth() {
-    	return this.dataWatcher.get(STEALTH);
+    	return this.dataManager.get(STEALTH);
     }
 
     /** Sets the current stealth percentage. **/
@@ -2488,7 +2487,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     	setStealth = Math.min(setStealth, 1);
     	setStealth = Math.max(setStealth, 0);
     	if(this.worldObj != null && !this.worldObj.isRemote)
-    		this.dataWatcher.set(STEALTH, setStealth);
+    		this.dataManager.set(STEALTH, setStealth);
     }
 
     /** Returns true if this mob is fully stealthed (1.0F or above). **/
@@ -2514,7 +2513,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     public boolean isOnLadder() {
     	if(this.canFly() || this.canSwim()) return false;
     	if(this.canClimb()) {
-            return (this.dataWatcher.get(CLIMBING) & 1) != 0;
+            return (this.dataManager.get(CLIMBING) & 1) != 0;
         }
     	else
     		return super.isOnLadder();
@@ -2523,17 +2522,17 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     /** Used to set whether this mob is climbing up a block or not. **/
     public void setBesideClimbableBlock(boolean collided) {
     	if(this.canClimb()) {
-	        byte climbing = this.dataWatcher.get(CLIMBING);
+	        byte climbing = this.dataManager.get(CLIMBING);
 	        if(collided)
                 climbing = (byte)(climbing | 1);
 	        else climbing &= -2;
-	        this.dataWatcher.set(CLIMBING, Byte.valueOf(climbing));
+	        this.dataManager.set(CLIMBING, Byte.valueOf(climbing));
     	}
     }
 
     /** Returns whether or not this mob is next to a climbable blocks or not. **/
     public boolean isBesideClimbableBlock() {
-        return (this.dataWatcher.get(CLIMBING) & 1) != 0;
+        return (this.dataManager.get(CLIMBING) & 1) != 0;
     }
     
     // ========== Falling ==========
@@ -2567,7 +2566,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     /** Returns true if this mob is blocking. **/
     public boolean isBlocking() {
     	if(this.worldObj.isRemote)
-    		return (this.dataWatcher.get(ANIMATION) & ANIM_ID.BLOCKING.id) > 0;
+    		return (this.dataManager.get(ANIMATION) & ANIM_ID.BLOCKING.id) > 0;
     	return this.currentBlockingTime > 0;
     }
     
@@ -2630,7 +2629,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 		    		if(blockState != null) {
 			    		float hardness = blockState.getBlockHardness(this.worldObj, new BlockPos(x + w, y + h, z + d));
 			    		Material material = blockState.getMaterial();
-			    		if(hardness >= 0 && strength >= hardness && strength >= blockState.getBlock().getExplosionResistance(this) && material != Material.water && material != Material.lava)
+			    		if(hardness >= 0 && strength >= hardness && strength >= blockState.getBlock().getExplosionResistance(this) && material != Material.WATER && material != Material.LAVA)
 			    			this.worldObj.destroyBlock(new BlockPos(x + w, y + h, z + d), drop);
 		    		}
 		    	}
@@ -2797,11 +2796,11 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     	// Item Commands:
     	if(itemStack != null) {
     		// Leash:
-    		if(itemStack.getItem() == Items.lead && this.canBeLeashedTo(player))
+    		if(itemStack.getItem() == Items.LEAD && this.canBeLeashedTo(player))
     			commands.put(CMD_PRIOR.ITEM_USE.id, "Leash");
     		
     		// Name Tag:
-    		if(itemStack.getItem() == Items.name_tag) {
+    		if(itemStack.getItem() == Items.NAME_TAG) {
     			if(this.canNameTag(player))
     				return new HashMap<Integer, String>(); // Cancels all commands so that vanilla can take care of name tagging.
     			else
@@ -2809,7 +2808,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     		}
     		
     		// Coloring:
-    		if(this.canBeColored(player) && itemStack.getItem() == Items.dye)
+    		if(this.canBeColored(player) && itemStack.getItem() == Items.DYE)
     			commands.put(CMD_PRIOR.ITEM_USE.id, "Color");
     				
     	}
@@ -2888,7 +2887,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     		 player.inventory.setInventorySlotContents(player.inventory.currentItem, newStack);
          
     	 else if(!player.inventory.addItemStackToInventory(newStack))
-        	 player.dropPlayerItemWithRandomChoice(newStack, false);
+        	 player.dropItem(newStack, false);
     	
     }
     
@@ -3108,12 +3107,12 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     	IBlockState blockState = this.worldObj.getBlockState(pos);
     	if(blockState == null)
     		return true;
-    	if(this.canBreatheAboveWater() && blockState.getMaterial() == Material.air)
+    	if(this.canBreatheAboveWater() && blockState.getMaterial() == Material.AIR)
     		return true;
     	if(this.canBreatheUnderwater()) {
-	    	if(!this.isLavaCreature && blockState.getMaterial() == Material.water)
+	    	if(!this.isLavaCreature && blockState.getMaterial() == Material.WATER)
 	    		return true;
-	    	if(this.isLavaCreature && blockState.getMaterial() == Material.lava)
+	    	if(this.isLavaCreature && blockState.getMaterial() == Material.LAVA)
 	    		return true;
     	}
     	return false;
@@ -3129,9 +3128,9 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         IBlockState blockState = this.worldObj.getBlockState(new BlockPos(x, y, z));
 		if(blockState == null)
 			return false;
-		if(this.isLavaCreature && Material.lava.equals(blockState.getMaterial()))
+		if(this.isLavaCreature && Material.LAVA.equals(blockState.getMaterial()))
 			return true;
-		else if(Material.water.equals(blockState.getMaterial()))
+		else if(Material.WATER.equals(blockState.getMaterial()))
 			return true;
 		return false;
 	}
@@ -3162,7 +3161,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         IBlockState spawnBlockState = this.worldObj.getBlockState(pos);
         if(pos.getY() < 0)
             return 0;
-        if(spawnBlockState != null && spawnBlockState.getMaterial() == Material.water && SpawnInfo.useSurfaceLightLevel)
+        if(spawnBlockState != null && spawnBlockState.getMaterial() == Material.WATER && SpawnInfo.useSurfaceLightLevel)
             pos = new BlockPos(pos.getX(), this.getWaterSurfaceY(pos), pos.getZ());
         else
             pos = new BlockPos(pos.getX(), this.getGroundY(pos), pos.getZ());
@@ -3414,7 +3413,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
      */
     public void setColor(int color) {
     	if(this.worldObj != null && !this.worldObj.isRemote)
-    		this.dataWatcher.set(COLOR, Byte.valueOf((byte)(color & 15)));
+    		this.dataManager.set(COLOR, Byte.valueOf((byte)(color & 15)));
     }
 
 
@@ -3429,15 +3428,15 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     }
 
     @Override
-    public void setBossVisibleTo(EntityPlayerMP player) {
-        super.setBossVisibleTo(player);
+    public void addTrackingPlayer(EntityPlayerMP player) {
+        super.addTrackingPlayer(player);
         if(this.bossInfo != null)
             this.bossInfo.addPlayer(player);
     }
 
     @Override
-    public void setBossNonVisibleTo(EntityPlayerMP player) {
-        super.setBossNonVisibleTo(player);
+    public void removeTrackingPlayer(EntityPlayerMP player) {
+        super.removeTrackingPlayer(player);
         if(this.bossInfo != null)
             this.bossInfo.removePlayer(player);
     }
@@ -3493,21 +3492,21 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     // ========== Fall ==========
     @Override
     protected SoundEvent getFallSound(int height) {
-        return height > 4 ? SoundEvents.entity_hostile_big_fall : SoundEvents.entity_hostile_small_fall;
+        return height > 4 ? SoundEvents.ENTITY_HOSTILE_BIG_FALL : SoundEvents.ENTITY_HOSTILE_SMALL_FALL;
     }
 
     // ========== Swim ==========
     @Override
     protected SoundEvent getSwimSound()
     {
-        return SoundEvents.entity_hostile_swim;
+        return SoundEvents.ENTITY_HOSTILE_SWIM;
     }
 
     // ========== Splash ==========
     @Override
     protected SoundEvent getSplashSound()
     {
-        return SoundEvents.entity_hostile_splash;
+        return SoundEvents.ENTITY_HOSTILE_SPLASH;
     }
      
     // ========== Jump ==========

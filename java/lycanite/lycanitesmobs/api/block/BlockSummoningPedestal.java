@@ -44,7 +44,7 @@ public class BlockSummoningPedestal extends BlockBase implements ITileEntityProv
 	//                   Constructor
 	// ==================================================
 	public BlockSummoningPedestal(GroupInfo group) {
-		super(Material.iron);
+		super(Material.IRON);
         this.setCreativeTab(LycanitesMobs.itemsTab);
         this.setDefaultState(this.getBlockState().getBaseState().withProperty(PROPERTY_OWNER, EnumSummoningPedestal.NONE));
 		
@@ -57,7 +57,7 @@ public class BlockSummoningPedestal extends BlockBase implements ITileEntityProv
 		this.setHardness(5F);
         this.setResistance(10F);
 		this.setHarvestLevel("pickaxe", 2);
-		this.setStepSound(SoundType.METAL);
+		this.setSoundType(SoundType.METAL);
 
         // Tile Entity:
         this.isBlockContainer = true;
@@ -104,7 +104,7 @@ public class BlockSummoningPedestal extends BlockBase implements ITileEntityProv
     }
 
     @Override
-    public boolean onBlockEventReceived(World worldIn, BlockPos pos, IBlockState state, int eventID, int eventParam) {
+    public boolean eventReceived(IBlockState state, World worldIn, BlockPos pos, int eventID, int eventParam) {
         TileEntity tileEntity = worldIn.getTileEntity(pos);
         return tileEntity != null && tileEntity.receiveClientEvent(eventID, eventParam);
     }

@@ -19,7 +19,7 @@ public class SharedMobEvents {
 
         SpawnTypeBase bamLandSpawner = new SpawnTypeLand("bamstorm_land")
                 .setChance(1.0D).setBlockLimit(32).setMobLimit(10);
-        bamLandSpawner.materials = new Material[] {Material.air};
+        bamLandSpawner.materials = new Material[] {Material.AIR};
         bamLandSpawner.ignoreBiome = true;
         bamLandSpawner.ignoreLight = true;
         bamLandSpawner.forceSpawning = true;
@@ -32,7 +32,7 @@ public class SharedMobEvents {
 
         SpawnTypeBase bamSkySpawner = new SpawnTypeSky("bamstorm_sky")
                 .setChance(1.0D).setBlockLimit(32).setMobLimit(5);
-        bamSkySpawner.materials = new Material[] {Material.air};
+        bamSkySpawner.materials = new Material[] {Material.AIR};
         bamSkySpawner.ignoreBiome = true;
         bamSkySpawner.ignoreLight = true;
         bamSkySpawner.forceSpawning = true;
@@ -49,7 +49,7 @@ public class SharedMobEvents {
 
         SpawnTypeBase spawner = new SpawnTypeLand("raptorrampage_land")
                 .setChance(1.0D).setBlockLimit(32).setMobLimit(5);
-        spawner.materials = new Material[] {Material.air};
+        spawner.materials = new Material[] {Material.AIR};
         spawner.ignoreBiome = true;
         spawner.ignoreLight = true;
         spawner.forceSpawning = true;
@@ -60,7 +60,7 @@ public class SharedMobEvents {
 
         spawner = new SpawnTypeSky("raptorrampage_sky")
                 .setChance(1.0D).setBlockLimit(32).setMobLimit(5);
-        spawner.materials = new Material[] {Material.air};
+        spawner.materials = new Material[] {Material.AIR};
         spawner.ignoreBiome = true;
         spawner.ignoreLight = true;
         spawner.forceSpawning = true;
@@ -77,7 +77,7 @@ public class SharedMobEvents {
 
         spawner = new SpawnTypeLand("arachnophobia_land")
                 .setChance(1.0D).setBlockLimit(32).setMobLimit(10);
-        spawner.materials = new Material[] {Material.air};
+        spawner.materials = new Material[] {Material.AIR};
         spawner.ignoreBiome = true;
         spawner.ignoreLight = true;
         spawner.forceSpawning = true;
@@ -98,7 +98,7 @@ public class SharedMobEvents {
 
         SpawnTypeBase halloweenLandSpawner = new SpawnTypeLand("halloween_land")
                 .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-        halloweenLandSpawner.materials = new Material[] {Material.air};
+        halloweenLandSpawner.materials = new Material[] {Material.AIR};
         halloweenLandSpawner.ignoreBiome = true;
         halloweenLandSpawner.ignoreLight = true;
         halloweenLandSpawner.forceSpawning = true;
@@ -114,7 +114,7 @@ public class SharedMobEvents {
 
         SpawnTypeBase halloweenSkySpawner = new SpawnTypeSky("halloween_sky")
                 .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-        halloweenSkySpawner.materials = new Material[] {Material.air};
+        halloweenSkySpawner.materials = new Material[] {Material.AIR};
         halloweenSkySpawner.ignoreBiome = true;
         halloweenSkySpawner.ignoreLight = true;
         halloweenSkySpawner.forceSpawning = true;
@@ -138,7 +138,7 @@ public class SharedMobEvents {
 
         SpawnTypeBase roastingLandSpawner = new SpawnTypeLand("roasting_land")
                 .setChance(0.5D).setBlockLimit(32).setMobLimit(3);
-        roastingLandSpawner.materials = new Material[] {Material.air};
+        roastingLandSpawner.materials = new Material[] {Material.AIR};
         roastingLandSpawner.ignoreBiome = true;
         roastingLandSpawner.ignoreLight = true;
         roastingLandSpawner.forceSpawning = true;
@@ -149,7 +149,7 @@ public class SharedMobEvents {
 
         SpawnTypeBase roastingSkySpawner = new SpawnTypeSky("roasting_sky")
                 .setChance(1.0D).setBlockLimit(32).setMobLimit(6);
-        roastingSkySpawner.materials = new Material[] {Material.air};
+        roastingSkySpawner.materials = new Material[] {Material.AIR};
         roastingSkySpawner.ignoreBiome = true;
         roastingSkySpawner.ignoreLight = true;
         roastingSkySpawner.forceSpawning = true;
@@ -168,7 +168,7 @@ public class SharedMobEvents {
 
         SpawnTypeBase rudolphLandSpawner = new SpawnTypeLand("rudolph_land")
                 .setChance(1.0D).setBlockLimit(32).setMobLimit(5);
-        rudolphLandSpawner.materials = new Material[] {Material.air};
+        rudolphLandSpawner.materials = new Material[] {Material.AIR};
         rudolphLandSpawner.ignoreBiome = true;
         rudolphLandSpawner.ignoreLight = true;
         rudolphLandSpawner.forceSpawning = true;
@@ -184,7 +184,7 @@ public class SharedMobEvents {
 
         SpawnTypeBase saltytreeLandSpawner = new SpawnTypeLand("saltytree_land")
                 .setChance(1.0D).setBlockLimit(32).setMobLimit(5);
-        saltytreeLandSpawner.materials = new Material[] {Material.air};
+        saltytreeLandSpawner.materials = new Material[] {Material.AIR};
         saltytreeLandSpawner.ignoreBiome = true;
         saltytreeLandSpawner.ignoreLight = true;
         saltytreeLandSpawner.forceSpawning = true;
@@ -201,7 +201,7 @@ public class SharedMobEvents {
 
         SpawnTypeBase satanclawsSkySpawner = new SpawnTypeSky("satanclaws_sky")
                 .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-        satanclawsSkySpawner.materials = new Material[] {Material.air};
+        satanclawsSkySpawner.materials = new Material[] {Material.AIR};
         satanclawsSkySpawner.ignoreBiome = true;
         satanclawsSkySpawner.ignoreLight = true;
         satanclawsSkySpawner.forceSpawning = true;

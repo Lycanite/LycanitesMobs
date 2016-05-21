@@ -106,12 +106,12 @@ public class EntityProjectileLaser extends EntityProjectileBase {
         this.targetX = this.posX;
         this.targetY = this.posY;
         this.targetZ = this.posZ;
-        this.dataWatcher.register(SHOOTING_ENTITY_ID, this.shootingEntityRef);
-        this.dataWatcher.register(LASER_END_ID, this.laserEndRef);
-        this.dataWatcher.register(LASER_TIME, this.laserTime);
-        this.dataWatcher.register(OFFSET_X, (float) this.offsetX);
-        this.dataWatcher.register(OFFSET_Y, (float) this.offsetY);
-        this.dataWatcher.register(OFFSET_Z, (float) this.offsetZ);
+        this.dataManager.register(SHOOTING_ENTITY_ID, this.shootingEntityRef);
+        this.dataManager.register(LASER_END_ID, this.laserEndRef);
+        this.dataManager.register(LASER_TIME, this.laserTime);
+        this.dataManager.register(OFFSET_X, (float) this.offsetX);
+        this.dataManager.register(OFFSET_Y, (float) this.offsetY);
+        this.dataManager.register(OFFSET_Z, (float) this.offsetZ);
         this.noClip = true;
     }
 	
@@ -133,10 +133,10 @@ public class EntityProjectileLaser extends EntityProjectileBase {
     @Override
     public void onUpdate() {
     	if(!this.worldObj.isRemote) {
-    		this.dataWatcher.set(LASER_TIME, this.laserTime);
+    		this.dataManager.set(LASER_TIME, this.laserTime);
     	}
     	else {
-    		this.laserTime = this.dataWatcher.get(LASER_TIME);
+    		this.laserTime = this.dataManager.get(LASER_TIME);
     	}
     	this.syncShootingEntity();
     	
@@ -219,7 +219,7 @@ public class EntityProjectileLaser extends EntityProjectileBase {
  	// ==================================================
 	public void updateEnd() {
 		if(this.worldObj.isRemote) {
-			this.laserEndRef = this.dataWatcher.get(LASER_END_ID);
+			this.laserEndRef = this.dataManager.get(LASER_END_ID);
 			Entity possibleLaserEnd = null;
 			if(this.laserEndRef != -1)
 				possibleLaserEnd = this.worldObj.getEntityByID(this.laserEndRef);
@@ -291,7 +291,7 @@ public class EntityProjectileLaser extends EntityProjectileBase {
             }
 		}
 		
-		this.dataWatcher.set(LASER_END_ID, this.laserEndRef);
+		this.dataManager.set(LASER_END_ID, this.laserEndRef);
 		if(this.getBeamSound() != null)
 			this.playSound(this.getBeamSound(), 1.0F, 1.0F / (this.rand.nextFloat() * 0.4F + 0.8F));
 	}
@@ -348,10 +348,10 @@ public class EntityProjectileLaser extends EntityProjectileBase {
     	if(!this.worldObj.isRemote) {
     		if(this.shootingEntity == null) this.shootingEntityRef = -1;
     		else this.shootingEntityRef = this.shootingEntity.getEntityId();
-    		this.dataWatcher.set(SHOOTING_ENTITY_ID, this.shootingEntityRef);
+    		this.dataManager.set(SHOOTING_ENTITY_ID, this.shootingEntityRef);
     	}
     	else {
-    		this.shootingEntityRef = this.dataWatcher.get(SHOOTING_ENTITY_ID);
+    		this.shootingEntityRef = this.dataManager.get(SHOOTING_ENTITY_ID);
             if(this.shootingEntityRef == -1) this.shootingEntity = null;
     		else {
     			Entity possibleShootingEntity = this.worldObj.getEntityByID(this.shootingEntityRef);
@@ -365,14 +365,14 @@ public class EntityProjectileLaser extends EntityProjectileBase {
     
     public void syncOffset() {
     	if(!this.worldObj.isRemote) {
-    		this.dataWatcher.set(OFFSET_X, (float) this.offsetX);
-    		this.dataWatcher.set(OFFSET_Y, (float) this.offsetY);
-    		this.dataWatcher.set(OFFSET_Z, (float) this.offsetZ);
+    		this.dataManager.set(OFFSET_X, (float) this.offsetX);
+    		this.dataManager.set(OFFSET_Y, (float) this.offsetY);
+    		this.dataManager.set(OFFSET_Z, (float) this.offsetZ);
     	}
     	else {
-    		this.offsetX = this.dataWatcher.get(OFFSET_X);
-    		this.offsetY = this.dataWatcher.get(OFFSET_Y);
-    		this.offsetZ = this.dataWatcher.get(OFFSET_Z);
+    		this.offsetX = this.dataManager.get(OFFSET_X);
+    		this.offsetY = this.dataManager.get(OFFSET_Y);
+    		this.offsetZ = this.dataManager.get(OFFSET_Z);
         }
     }
 	

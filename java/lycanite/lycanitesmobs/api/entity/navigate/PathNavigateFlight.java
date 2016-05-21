@@ -79,7 +79,7 @@ public class PathNavigateFlight extends PathNavigate {
      * Returns true if the provided position is a valid position to randomly wander to.
      */
     @Override
-    public boolean func_188555_b(BlockPos pos) {
+    public boolean canEntityStandOnPos(BlockPos pos) {
         return !this.worldObj.getBlockState(pos).isFullBlock();
     }
 }

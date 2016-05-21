@@ -17,7 +17,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
@@ -107,7 +107,7 @@ public class SpawnTypeBase {
 		// Fire Spawner:
 		SpawnTypeBase fireBlockSpawner = new SpawnTypeBlock("Fire")
 				.setRate(400).setChance(0.5D).setRange(32).setBlockLimit(32).setMobLimit(8);
-		fireBlockSpawner.blocks = new Block[] {Blocks.fire};
+		fireBlockSpawner.blocks = new Block[] {Blocks.FIRE};
 		fireBlockSpawner.ignoreBiome = true;
 		fireBlockSpawner.ignoreLight = true;
 		fireBlockSpawner.loadFromConfig();
@@ -127,7 +127,7 @@ public class SpawnTypeBase {
         // Underground Spawner:
         SpawnTypeBase undergroundSpawner = new SpawnTypeUnderground("Underground")
                 .setRate(800).setChance(0.25D).setRange(32).setBlockLimit(16).setMobLimit(8);
-        undergroundSpawner.materials = new Material[] {Material.air};
+        undergroundSpawner.materials = new Material[] {Material.AIR};
         undergroundSpawner.ignoreBiome = false;
         undergroundSpawner.ignoreLight = false;
         undergroundSpawner.loadFromConfig();
@@ -137,7 +137,7 @@ public class SpawnTypeBase {
 		// Sky Spawner:
 		SpawnTypeBase skySpawner = new SpawnTypeSky("Sky")
 				.setRate(800).setChance(0.5D).setRange(48).setBlockLimit(16).setMobLimit(8);
-		skySpawner.materials = new Material[] {Material.air};
+		skySpawner.materials = new Material[] {Material.AIR};
 		skySpawner.ignoreBiome = false;
 		skySpawner.ignoreLight = false;
 		skySpawner.loadFromConfig();
@@ -147,7 +147,7 @@ public class SpawnTypeBase {
 		// Water Spawner:
 		SpawnTypeBase waterSpawner = new SpawnTypeWater("Water")
 				.setRate(400).setChance(0.75D).setRange(32).setBlockLimit(64).setMobLimit(16);
-		waterSpawner.blocks = new Block[] {Blocks.water};
+		waterSpawner.blocks = new Block[] {Blocks.WATER};
 		waterSpawner.ignoreBiome = false;
 		waterSpawner.ignoreLight = false;
 		waterSpawner.loadFromConfig();
@@ -157,7 +157,7 @@ public class SpawnTypeBase {
 		// Lava Spawner:
 		SpawnTypeBase lavaBlockSpawner = new SpawnTypeBlock("Lava")
 				.setRate(400).setChance(0.5D).setRange(32).setBlockLimit(64).setMobLimit(8);
-		lavaBlockSpawner.blocks = new Block[] {Blocks.lava};
+		lavaBlockSpawner.blocks = new Block[] {Blocks.LAVA};
 		lavaBlockSpawner.ignoreBiome = true;
 		lavaBlockSpawner.ignoreLight = true;
 		lavaBlockSpawner.loadFromConfig();
@@ -177,7 +177,7 @@ public class SpawnTypeBase {
 		// Portal Spawner:
 		SpawnTypeBase portalBlockSpawner = new SpawnTypePortal("Portal")
 				.setRate(1200).setChance(0.25D).setRange(32).setBlockLimit(32).setMobLimit(1);
-		portalBlockSpawner.blocks = new Block[] {Blocks.portal};
+		portalBlockSpawner.blocks = new Block[] {Blocks.PORTAL};
 		portalBlockSpawner.ignoreBiome = true;
 		portalBlockSpawner.ignoreDimension = true;
 		portalBlockSpawner.ignoreLight = true;
@@ -189,7 +189,7 @@ public class SpawnTypeBase {
 		// Rock Spawner:
 		SpawnTypeBase rockSpawner = new SpawnTypeRock("Rock")
 				.setRate(0).setChance(0.02D).setRange(2).setBlockLimit(32).setMobLimit(1);
-		rockSpawner.materials = new Material[] {Material.air};
+		rockSpawner.materials = new Material[] {Material.AIR};
 		rockSpawner.ignoreBiome = true;
 		rockSpawner.ignoreLight = true;
 		rockSpawner.forceSpawning = true;
@@ -199,7 +199,7 @@ public class SpawnTypeBase {
 		// Crop Spawner:
 		SpawnTypeBase cropSpawner = new SpawnTypeCrop("Crop")
 				.setRate(0).setChance(0.005D).setRange(2).setBlockLimit(32).setMobLimit(1);
-		cropSpawner.materials = new Material[] {Material.air};
+		cropSpawner.materials = new Material[] {Material.AIR};
 		cropSpawner.ignoreBiome = true;
 		cropSpawner.ignoreLight = true;
 		cropSpawner.forceSpawning = true;
@@ -209,7 +209,7 @@ public class SpawnTypeBase {
 		// Tree Spawner:
 		SpawnTypeBase treeSpawner = new SpawnTypeTree("Tree")
 				.setRate(0).setChance(0.01D).setRange(2).setBlockLimit(32).setMobLimit(1);
-		treeSpawner.materials = new Material[] {Material.air};
+		treeSpawner.materials = new Material[] {Material.AIR};
 		treeSpawner.ignoreBiome = true;
 		treeSpawner.ignoreLight = true;
 		treeSpawner.forceSpawning = true;
@@ -219,7 +219,7 @@ public class SpawnTypeBase {
 		// Storm Spawner:
 		SpawnTypeBase stormSpawner = new SpawnTypeStorm("Storm")
 				.setRate(800).setChance(0.125D).setRange(48).setBlockLimit(32).setMobLimit(8);
-		stormSpawner.materials = new Material[] {Material.air};
+		stormSpawner.materials = new Material[] {Material.AIR};
 		stormSpawner.ignoreBiome = true;
 		stormSpawner.ignoreLight = true;
 		stormSpawner.forceSpawning = true;
@@ -229,7 +229,7 @@ public class SpawnTypeBase {
 		// Lunar Spawner:
 		SpawnTypeBase lunarSpawner = new SpawnTypeLunar("Lunar")
 				.setRate(800).setChance(0.125D).setRange(48).setBlockLimit(32).setMobLimit(8);
-		lunarSpawner.materials = new Material[] {Material.air};
+		lunarSpawner.materials = new Material[] {Material.AIR};
 		lunarSpawner.ignoreBiome = true;
 		lunarSpawner.ignoreDimension = false;
 		lunarSpawner.ignoreLight = false;
@@ -241,7 +241,7 @@ public class SpawnTypeBase {
 		SpawnTypeBase darknessSpawner = new SpawnTypeDarkness("Darkness")
 				.setRate(0).setChance(0.1D).setRange(2).setBlockLimit(32).setMobLimit(1);
         darknessSpawner.enabled = false;
-		darknessSpawner.materials = new Material[] {Material.air};
+		darknessSpawner.materials = new Material[] {Material.AIR};
 		darknessSpawner.ignoreBiome = true;
 		darknessSpawner.ignoreDimension = true;
 		darknessSpawner.ignoreLight = true;
@@ -263,7 +263,7 @@ public class SpawnTypeBase {
 		// Death Spawner:
 		SpawnTypeBase deathSpawner = new SpawnTypeDeath("Death")
 				.setRate(0).setChance(0.03D).setRange(2).setBlockLimit(32).setMobLimit(1);
-		deathSpawner.materials = new Material[] {Material.air};
+		deathSpawner.materials = new Material[] {Material.AIR};
 		deathSpawner.ignoreBiome = true;
 		deathSpawner.ignoreDimension = true;
 		deathSpawner.ignoreLight = true;
@@ -274,7 +274,7 @@ public class SpawnTypeBase {
         // Undeath Spawner:
         SpawnTypeBase undeathSpawner = new SpawnTypeUndeath("Undeath")
                 .setRate(0).setChance(0.03D).setRange(2).setBlockLimit(32).setMobLimit(1);
-        undeathSpawner.materials = new Material[] {Material.air};
+        undeathSpawner.materials = new Material[] {Material.AIR};
         undeathSpawner.ignoreBiome = true;
         undeathSpawner.ignoreDimension = true;
         undeathSpawner.ignoreLight = true;
@@ -285,7 +285,7 @@ public class SpawnTypeBase {
 		// Sleep Spawner:
 		SpawnTypeBase sleepSpawner = new SpawnTypeSleep("Sleep")
 				.setRate(0).setChance(0.1D).setRange(2).setBlockLimit(32).setMobLimit(1);
-		sleepSpawner.materials = new Material[] {Material.air};
+		sleepSpawner.materials = new Material[] {Material.AIR};
 		sleepSpawner.ignoreBiome = true;
 		sleepSpawner.ignoreDimension = true;
 		sleepSpawner.ignoreLight = true;
@@ -457,10 +457,10 @@ public class SpawnTypeBase {
         LycanitesMobs.printDebug("CustomSpawner", "Applied coordinate limits. New size is " + coords.size());
 
         // Get Biomes from Coords:
-        List<BiomeGenBase> targetBiomes = new ArrayList<BiomeGenBase>();
+        List<Biome> targetBiomes = new ArrayList<Biome>();
         if(!this.ignoreBiome) {
             for(BlockPos coord : coords) {
-                BiomeGenBase coordBiome = world.getBiomeGenForCoords(coord);
+                Biome coordBiome = world.getBiomeGenForCoords(coord);
                 if(!targetBiomes.contains(coordBiome))
                     targetBiomes.add(coordBiome);
             }
@@ -473,7 +473,7 @@ public class SpawnTypeBase {
             LycanitesMobs.printDebug("CustomSpawner", "No mobs are able to spawn, from this spawn type at all. Spawning cancelled.");
             return false;
         }
-        Map<BiomeGenBase, List<SpawnInfo>> possibleSpawns = this.getPossibleSpawns(spawnList, coords.size(), targetBiomes);
+        Map<Biome, List<SpawnInfo>> possibleSpawns = this.getPossibleSpawns(spawnList, coords.size(), targetBiomes);
         if(!this.ignoreBiome) {
             if (possibleSpawns == null || possibleSpawns.isEmpty()) {
                 LycanitesMobs.printDebug("CustomSpawner", "No mobs are able to spawn, either not enough blocks, empty biome/dimension or all weights are 0. Spawning cancelled.");
@@ -489,7 +489,7 @@ public class SpawnTypeBase {
             // Get EntityLiving to Spawn:
             SpawnInfo spawnInfo = null;
             if(!this.ignoreBiome) {
-                BiomeGenBase spawnBiome = world.getBiomeGenForCoords(coord);
+                Biome spawnBiome = world.getBiomeGenForCoords(coord);
                 if (!possibleSpawns.containsKey(spawnBiome))
                     continue;
                 if (possibleSpawns.get(spawnBiome).isEmpty()) {
@@ -657,8 +657,8 @@ public class SpawnTypeBase {
      * @param biomes A list of all biomes found from the coordinates.
      * @return Map of possible spawns keyed by each provided biome type.
      */
-    public Map<BiomeGenBase, List<SpawnInfo>> getPossibleSpawns(List<SpawnInfo> spawnList, int coordsFound, List<BiomeGenBase> biomes) {
-        Map<BiomeGenBase, List<SpawnInfo>> possibleSpawns = new HashMap<BiomeGenBase, List<SpawnInfo>>();
+    public Map<Biome, List<SpawnInfo>> getPossibleSpawns(List<SpawnInfo> spawnList, int coordsFound, List<Biome> biomes) {
+        Map<Biome, List<SpawnInfo>> possibleSpawns = new HashMap<Biome, List<SpawnInfo>>();
         for(SpawnInfo possibleSpawn : spawnList) {
         	// Check Spawn Wave Limit:
         	boolean withinWaveLimit = true;
@@ -685,10 +685,10 @@ public class SpawnTypeBase {
             }
             
             // Check Biomes:
-            List<BiomeGenBase> spawnBiomes = new ArrayList<BiomeGenBase>();
+            List<Biome> spawnBiomes = new ArrayList<Biome>();
             if(enoughCoords) {
-                for(BiomeGenBase validBiome : possibleSpawn.biomes) {
-                    for(BiomeGenBase targetBiome : biomes) {
+                for(Biome validBiome : possibleSpawn.biomes) {
+                    for(Biome targetBiome : biomes) {
                         if(targetBiome == validBiome || this.ignoreBiome || possibleSpawn.ignoreBiome) {
                             spawnBiomes.add(targetBiome);
                             break;
@@ -702,7 +702,7 @@ public class SpawnTypeBase {
             // Add If Valid:
             if(isEnabled && enoughCoords && !spawnBiomes.isEmpty()) {
                 LycanitesMobs.printDebug("CustomSpawner", possibleSpawn.mobInfo.name + ": Able to spawn.");
-                for(BiomeGenBase spawnBiome : spawnBiomes) {
+                for(Biome spawnBiome : spawnBiomes) {
                     if(!possibleSpawns.containsKey(spawnBiome))
                         possibleSpawns.put(spawnBiome, new ArrayList<SpawnInfo>());
                     possibleSpawns.get(spawnBiome).add(possibleSpawn);
@@ -837,7 +837,7 @@ public class SpawnTypeBase {
         int[] xz = this.getRandomXZCoord(world, originPos.getX(), originPos.getZ(), rangeMin, range);
         int x = xz[0];
         int z = xz[1];
-        int y = this.getRandomYCoord(world, new BlockPos(x, originPos.getY(), z), 0, range, true, Blocks.air, false);
+        int y = this.getRandomYCoord(world, new BlockPos(x, originPos.getY(), z), 0, range, true, Blocks.AIR, false);
         return y > -1 ? new BlockPos(x, y, z) : null;
     }
 
@@ -853,7 +853,7 @@ public class SpawnTypeBase {
         int[] xz = this.getRandomXZCoord(world, originPos.getX(), originPos.getZ(), rangeMin, range);
         int x = xz[0];
         int z = xz[1];
-        int y = this.getRandomYCoord(world, new BlockPos(x, originPos.getY(), z), 0, range, false, Blocks.water, false);
+        int y = this.getRandomYCoord(world, new BlockPos(x, originPos.getY(), z), 0, range, false, Blocks.WATER, false);
         return y > -1 ? new BlockPos(x, y, z) : null;
     }
 
@@ -870,7 +870,7 @@ public class SpawnTypeBase {
         int[] xz = this.getRandomXZCoord(world, originPos.getX(), originPos.getZ(), rangeMin, range);
         int x = xz[0];
         int z = xz[1];
-        int y = this.getRandomYCoord(world, new BlockPos(x, originPos.getY(), z), 0, range, false, Blocks.air, false);
+        int y = this.getRandomYCoord(world, new BlockPos(x, originPos.getY(), z), 0, range, false, Blocks.AIR, false);
         return y > -1 ? new BlockPos(x, y, z) : null;
     }
 
@@ -967,7 +967,7 @@ public class SpawnTypeBase {
 	                    int skyRange = Math.min(world.getHeight() - 1, maxY) - skyCoord;
                         // Get random y coord within inside block:
 	                    if(skyRange > 1) {
-                            if(insideBlock != Blocks.air)
+                            if(insideBlock != Blocks.AIR)
                                 skyRange = this.getInsideBlockHeight(world, checkPos, insideBlock);
                             nextY += world.rand.nextInt(skyRange);
                         }

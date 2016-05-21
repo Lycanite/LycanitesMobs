@@ -3,7 +3,7 @@ package lycanite.lycanitesmobs.api.entity.ai;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.pathfinding.Path;
 import net.minecraft.util.math.Vec3d;
 
 public class EntityAIAvoid extends EntityAIBase {
@@ -18,7 +18,7 @@ public class EntityAIAvoid extends EntityAIBase {
     private double nearDistance = 49.0D;
     private Class targetClass;
     private float distanceFromEntity = 6.0F;
-    private PathEntity pathEntity;
+    private Path pathEntity;
 	
 	// ==================================================
  	//                    Constructor

@@ -75,7 +75,7 @@ public class EntityClink extends EntityCreatureTameable implements IMob {
 	@Override
 	public void loadItemDrops() {
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("throwingscythe")), 1).setMinAmount(2).setMaxAmount(7));
-        this.drops.add(new DropRate(new ItemStack(Items.iron_ingot), 0.1F).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.IRON_INGOT), 0.1F).setMinAmount(1).setMaxAmount(3));
 	}
     
     
@@ -128,8 +128,8 @@ public class EntityClink extends EntityCreatureTameable implements IMob {
     
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.hunger) return false;
-        if(potionEffect.getPotion() == MobEffects.weakness) return false;
+        if(potionEffect.getPotion() == MobEffects.HUNGER) return false;
+        if(potionEffect.getPotion() == MobEffects.WEAKNESS) return false;
         return super.isPotionApplicable(potionEffect);
     }
     

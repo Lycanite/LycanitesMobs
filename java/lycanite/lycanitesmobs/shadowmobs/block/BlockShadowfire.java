@@ -33,7 +33,7 @@ public class BlockShadowfire extends BlockFireBase {
 	//                   Constructor
 	// ==================================================
 	public BlockShadowfire() {
-		super(Material.fire, ShadowMobs.group, "shadowfire");
+		super(Material.FIRE, ShadowMobs.group, "shadowfire");
 		
 		// Stats:
 		this.tickRate = 30;
@@ -61,7 +61,7 @@ public class BlockShadowfire extends BlockFireBase {
     }
 
     public boolean isBlockFireSource(Block block, World world, BlockPos pos, EnumFacing side) {
-        return block == Blocks.obsidian;
+        return block == Blocks.OBSIDIAN;
     }
 
     protected boolean canDie(World world, BlockPos pos) {
@@ -82,14 +82,11 @@ public class BlockShadowfire extends BlockFireBase {
     //                Collision Effects
     // ==================================================
     @Override
-    public void onEntityCollidedWithBlock(World world, BlockPos pos, Entity entity) {
-        super.onEntityCollidedWithBlock(world, pos, entity);
-
+    public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
+        super.onEntityCollidedWithBlock(world, pos, state, entity);
         if(entity instanceof EntityItem)
             return;
-
-        super.onEntityCollidedWithBlock(world, pos, entity);
-        PotionEffect effectBlindness = new PotionEffect(MobEffects.blindness, 5 * 20, 0);
+        PotionEffect effectBlindness = new PotionEffect(MobEffects.BLINDNESS, 5 * 20, 0);
         PotionEffect effectFear = null;
         if(ObjectManager.getPotionEffect("fear") != null)
             effectFear = new PotionEffect(ObjectManager.getPotionEffect("fear"), 5 * 20, 0);

@@ -64,13 +64,13 @@ public class EntityHellfireball extends EntityProjectileBase {
 
     public boolean canDestroyBlockSub(BlockPos pos) {
         Block block = this.worldObj.getBlockState(pos).getBlock();
-        if(block == Blocks.snow_layer)
+        if(block == Blocks.SNOW_LAYER)
             return true;
-        if(block == Blocks.tallgrass)
+        if(block == Blocks.TALLGRASS)
             return true;
-        if(block == Blocks.fire)
+        if(block == Blocks.FIRE)
             return true;
-        if(block == Blocks.web)
+        if(block == Blocks.WEB)
             return true;
         if(ObjectManager.getBlock("PoisonCloud") != null && block == ObjectManager.getBlock("PoisonCloud"))
             return true;

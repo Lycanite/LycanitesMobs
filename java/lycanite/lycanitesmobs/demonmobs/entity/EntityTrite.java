@@ -73,9 +73,9 @@ public class EntityTrite extends EntityCreatureBase implements IMob, IGroupDemon
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.string), 1).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.spider_eye), 0.5F).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Items.fermented_spider_eye), 0.25F));
+        this.drops.add(new DropRate(new ItemStack(Items.STRING), 1).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.SPIDER_EYE), 0.5F).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.FERMENTED_SPIDER_EYE), 0.25F));
 	}
 	
 	
@@ -112,7 +112,7 @@ public class EntityTrite extends EntityCreatureBase implements IMob, IGroupDemon
     	
     	// Wither:
         if(target instanceof EntityLivingBase) {
-        	((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.wither, this.getEffectDuration(5), 0));
+        	((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.WITHER, this.getEffectDuration(5), 0));
         }
         
         return true;
@@ -132,7 +132,7 @@ public class EntityTrite extends EntityCreatureBase implements IMob, IGroupDemon
   	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.wither) return false;
+        if(potionEffect.getPotion() == MobEffects.WITHER) return false;
         super.isPotionApplicable(potionEffect);
         return true;
     }

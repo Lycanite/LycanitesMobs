@@ -77,15 +77,15 @@ public class SwampMobs {
 		// ========== Create Items ==========
 		ObjectManager.addItem("swampspawn", new ItemSwampEgg());
 		
-		ObjectManager.addItem("aspidmeatraw", new ItemCustomFood("aspidmeatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(MobEffects.poison, 45, 2, 0.8F));
+		ObjectManager.addItem("aspidmeatraw", new ItemCustomFood("aspidmeatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(MobEffects.POISON, 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("aspidmeatraw"));
 		OreDictionary.registerOre("listAllbeefraw", ObjectManager.getItem("aspidmeatraw"));
 		
-		ObjectManager.addItem("aspidmeatcooked", new ItemCustomFood("aspidmeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(MobEffects.regeneration, 10, 2, 1.0F).setAlwaysEdible());
+		ObjectManager.addItem("aspidmeatcooked", new ItemCustomFood("aspidmeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(MobEffects.REGENERATION, 10, 2, 1.0F).setAlwaysEdible());
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("aspidmeatcooked"));
 		OreDictionary.registerOre("listAllbeefcooked", ObjectManager.getItem("aspidmeatcooked"));
 		
-		ObjectManager.addItem("mosspie", new ItemCustomFood("mosspie", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(MobEffects.regeneration, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
+		ObjectManager.addItem("mosspie", new ItemCustomFood("mosspie", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(MobEffects.REGENERATION, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("mosspie"));
 
 		ObjectManager.addItem("lurkertreat", new ItemTreat("lurkertreat", group));
@@ -103,7 +103,7 @@ public class SwampMobs {
 		ObjectManager.addBlock("poisoncloud", new BlockPoisonCloud());
 		
 		// ========== Create Mobs ==========
-		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("swampspawn"), new DispenserBehaviorMobEggCustom());
+		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ObjectManager.getItem("swampspawn"), new DispenserBehaviorMobEggCustom());
 		MobInfo newMob;
         
         newMob = new MobInfo(group, "ghoulzombie", EntityGhoulZombie.class, 0x009966, 0xAAFFDD)
@@ -157,7 +157,7 @@ public class SwampMobs {
 
 		
 		// ========== Create Projectiles ==========
-		ObjectManager.addProjectile("poisonray", EntityPoisonRay.class, Items.fermented_spider_eye, new DispenserBehaviorPoisonRay());
+		ObjectManager.addProjectile("poisonray", EntityPoisonRay.class, Items.FERMENTED_SPIDER_EYE, new DispenserBehaviorPoisonRay());
 		ObjectManager.addProjectile("poisonrayend", EntityPoisonRayEnd.class);
 		ObjectManager.addProjectile("venomshot", EntityVenomShot.class, ObjectManager.getItem("poisongland"), new DispenserBehaviorVenomShot());
 		
@@ -189,7 +189,7 @@ public class SwampMobs {
 			MobEventBase mobEvent = new MobEventWindStorm("wingedvenom", this.group);
 			SpawnTypeBase eventSpawner = new SpawnTypeSky("wingedvenom")
 	            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-	        eventSpawner.materials = new Material[] {Material.air};
+	        eventSpawner.materials = new Material[] {Material.AIR};
 	        eventSpawner.ignoreBiome = true;
 	        eventSpawner.ignoreLight = true;
 	        eventSpawner.forceSpawning = true;
@@ -215,38 +215,38 @@ public class SwampMobs {
             GameRegistry.addRecipe(new ShapedOreRecipe(
                     new ItemStack(ObjectManager.getItem("poisonrayscepter"), 1, 0),
                     new Object[]{"CPC", "CRC", "CRC",
-                            Character.valueOf('C'), Items.fermented_spider_eye,
+                            Character.valueOf('C'), Items.FERMENTED_SPIDER_EYE,
                             Character.valueOf('P'), ObjectManager.getItem("poisongland"),
-                            Character.valueOf('R'), Items.blaze_rod
+                            Character.valueOf('R'), Items.BLAZE_ROD
                     }));
 
             GameRegistry.addRecipe(new ShapedOreRecipe(
                     new ItemStack(ObjectManager.getItem("venomshotscepter"), 1, 0),
                     new Object[]{"CPC", "CRC", "CRC",
-                            Character.valueOf('C'), Items.rotten_flesh,
+                            Character.valueOf('C'), Items.ROTTEN_FLESH,
                             Character.valueOf('P'), ObjectManager.getItem("poisongland"),
-                            Character.valueOf('R'), Items.blaze_rod
+                            Character.valueOf('R'), Items.BLAZE_ROD
                     }));
 
             GameRegistry.addRecipe(new ShapedOreRecipe(
                     new ItemStack(ObjectManager.getItem("venomaxeblade"), 1, 0),
                     new Object[]{"CCC", "CSC", "CJC",
                             Character.valueOf('C'), ObjectManager.getItem("poisongland"),
-                            Character.valueOf('S'), Items.diamond_sword,
+                            Character.valueOf('S'), Items.DIAMOND_SWORD,
                             Character.valueOf('J'), ObjectManager.getItem("soulgazer")
                     }));
 
             GameRegistry.addRecipe(new ShapedOreRecipe(
                     new ItemStack(ObjectManager.getItem("goldenvenomaxeblade"), 1, 0),
                     new Object[]{"DDD", "DSD", "DDD",
-                            Character.valueOf('D'), Items.diamond,
+                            Character.valueOf('D'), Items.DIAMOND,
                             Character.valueOf('S'), ObjectManager.getItem("venomaxeblade")
                     }));
 
             GameRegistry.addRecipe(new ShapedOreRecipe(
                     new ItemStack(ObjectManager.getItem("verdantvenomaxeblade"), 1, 0),
                     new Object[]{"DDD", "DSD", "DDD",
-                            Character.valueOf('D'), Items.emerald,
+                            Character.valueOf('D'), Items.EMERALD,
                             Character.valueOf('S'), ObjectManager.getItem("venomaxeblade")
                     }));
         }
@@ -254,8 +254,8 @@ public class SwampMobs {
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
 				new ItemStack(ObjectManager.getItem("mosspie"), 1, 0),
 				new Object[] {
-					Blocks.vine,
-					Blocks.red_mushroom,
+					Blocks.VINE,
+					Blocks.RED_MUSHROOM,
 					ObjectManager.getItem("aspidmeatcooked")
 				}
 			));
@@ -263,8 +263,8 @@ public class SwampMobs {
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
 				new ItemStack(ObjectManager.getItem("mosspie"), 1, 0),
 				new Object[] {
-					Blocks.vine,
-					Blocks.brown_mushroom,
+					Blocks.VINE,
+					Blocks.BROWN_MUSHROOM,
 					ObjectManager.getItem("aspidmeatcooked")
 				}
 			));
@@ -277,14 +277,14 @@ public class SwampMobs {
 				new ItemStack(ObjectManager.getItem("lurkertreat"), 4, 0),
 				new Object[] { "TTT", "BBT", "TTT",
 				Character.valueOf('T'), ObjectManager.getItem("aspidmeatcooked"),
-				Character.valueOf('B'), Items.bone
+				Character.valueOf('B'), Items.BONE
 			}));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("eyewigtreat"), 4, 0),
 				new Object[] { "TTT", "BBT", "TTT",
 				Character.valueOf('T'), ObjectManager.getItem("poisongland"),
-				Character.valueOf('B'), Items.bone
+				Character.valueOf('B'), Items.BONE
 			}));
 		
 		// ========== Smelting ==========

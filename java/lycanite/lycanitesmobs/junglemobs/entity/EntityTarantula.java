@@ -76,8 +76,8 @@ public class EntityTarantula extends EntityCreatureTameable implements IMob {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.string), 1.0F).setMaxAmount(6));
-        this.drops.add(new DropRate(new ItemStack(Items.spider_eye), 0.5F).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.STRING), 1.0F).setMaxAmount(6));
+        this.drops.add(new DropRate(new ItemStack(Items.SPIDER_EYE), 0.5F).setMaxAmount(2));
 	}
 	
 	
@@ -106,7 +106,7 @@ public class EntityTarantula extends EntityCreatureTameable implements IMob {
             int trailHeight = 1;
             for(int y = 0; y < trailHeight; y++) {
                 Block block = this.worldObj.getBlockState(this.getPosition().add(0, y, 0)).getBlock();
-                if(block == Blocks.air || block == Blocks.snow || block == ObjectManager.getBlock("quickweb"))
+                if(block == Blocks.AIR || block == Blocks.SNOW || block == ObjectManager.getBlock("quickweb"))
                     this.worldObj.setBlockState(this.getPosition().add(0, y, 0), ObjectManager.getBlock("quickweb").getDefaultState());
             }
         }
@@ -127,7 +127,7 @@ public class EntityTarantula extends EntityCreatureTameable implements IMob {
             byte effectSeconds = 8;
             if(target instanceof EntityPlayer)
             	effectSeconds /= 2;
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.poison, this.getEffectDuration(effectSeconds), 0));
+            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.POISON, this.getEffectDuration(effectSeconds), 0));
         }
         
         return true;
@@ -161,8 +161,8 @@ public class EntityTarantula extends EntityCreatureTameable implements IMob {
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.poison) return false;
-        if(potionEffect.getPotion() == MobEffects.moveSlowdown) return false;
+        if(potionEffect.getPotion() == MobEffects.POISON) return false;
+        if(potionEffect.getPotion() == MobEffects.SLOWNESS) return false;
         return super.isPotionApplicable(potionEffect);
     }
     

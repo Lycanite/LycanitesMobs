@@ -80,7 +80,7 @@ public class EntityBelph extends EntityCreatureTameable implements IMob, IGroupD
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.nether_wart), 1).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.NETHER_WART), 1).setMinAmount(1).setMaxAmount(3));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("DoomfireCharge")), 0.25F));
 	}
 
@@ -165,7 +165,7 @@ public class EntityBelph extends EntityCreatureTameable implements IMob, IGroupD
     // ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.wither) return false;
+        if(potionEffect.getPotion() == MobEffects.WITHER) return false;
         super.isPotionApplicable(potionEffect);
         return true;
     }

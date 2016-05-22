@@ -93,10 +93,10 @@ public class EntityKobold extends EntityCreatureTameable implements IMob, IGroup
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.coal), 0.25F).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Items.iron_ingot), 0.05F).setMaxAmount(1));
-        this.drops.add(new DropRate(new ItemStack(Items.gold_nugget), 0.025F).setMaxAmount(1));
-        this.drops.add(new DropRate(new ItemStack(Items.emerald), 0.01F).setMaxAmount(1));
+        this.drops.add(new DropRate(new ItemStack(Items.COAL), 0.25F).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.IRON_INGOT), 0.05F).setMaxAmount(1));
+        this.drops.add(new DropRate(new ItemStack(Items.GOLD_NUGGET), 0.025F).setMaxAmount(1));
+        this.drops.add(new DropRate(new ItemStack(Items.EMERALD), 0.01F).setMaxAmount(1));
 	}
 	
 	
@@ -132,7 +132,7 @@ public class EntityKobold extends EntityCreatureTameable implements IMob, IGroup
 	            		for(int z = (int)this.posZ - distance; z < (int)this.posZ + distance; z++) {
                             BlockPos pos = new BlockPos(x, y, z);
 	            			Block searchBlock = this.worldObj.getBlockState(pos).getBlock();
-	                    	if(searchBlock != null && searchBlock != Blocks.air) {
+	                    	if(searchBlock != null && searchBlock != Blocks.AIR) {
 	                    		BlockPos possibleTarget = null;
 	                			if(ObjectLists.isName(searchBlock, targetName)) {
 	                				this.worldObj.destroyBlock(pos, true);
@@ -175,8 +175,8 @@ public class EntityKobold extends EntityCreatureTameable implements IMob, IGroup
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.weakness) return false;
-        if(potionEffect.getPotion() == MobEffects.digSlowdown) return false;
+        if(potionEffect.getPotion() == MobEffects.WEAKNESS) return false;
+        if(potionEffect.getPotion() == MobEffects.SLOWNESS) return false;
         return super.isPotionApplicable(potionEffect);
     }
 	

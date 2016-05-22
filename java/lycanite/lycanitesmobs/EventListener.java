@@ -252,7 +252,7 @@ public class EventListener {
 	public void onAttackTarget(LivingSetAttackTargetEvent event) {
 		// Better Invisibility:
 		if(event.getEntityLiving() != null) {
-			if(!event.getEntityLiving().isPotionActive(MobEffects.nightVision) && event.getTarget() != null) {
+			if(!event.getEntityLiving().isPotionActive(MobEffects.NIGHT_VISION) && event.getTarget() != null) {
 				if(event.getTarget().isInvisible())
 					event.getEntityLiving().setRevengeTarget(null);
 			}

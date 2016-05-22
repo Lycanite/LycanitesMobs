@@ -87,8 +87,8 @@ public class EntityZoataur extends EntityCreatureTameable implements IGroupPreda
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.leather), 1F).setMaxAmount(5));
-        this.drops.add(new DropRate(new ItemStack(Items.bone), 0.5F).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.LEATHER), 1F).setMaxAmount(5));
+        this.drops.add(new DropRate(new ItemStack(Items.BONE), 0.5F).setMaxAmount(3));
 	}
 
 
@@ -137,8 +137,8 @@ public class EntityZoataur extends EntityCreatureTameable implements IGroupPreda
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.weakness) return false;
-        if(potionEffect.getPotion() == MobEffects.digSlowdown) return false;
+        if(potionEffect.getPotion() == MobEffects.WEAKNESS) return false;
+        if(potionEffect.getPotion() == MobEffects.MINING_FATIGUE) return false;
         return super.isPotionApplicable(potionEffect);
     }
     

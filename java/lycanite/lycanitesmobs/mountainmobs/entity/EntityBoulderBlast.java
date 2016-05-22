@@ -48,7 +48,7 @@ public class EntityBoulderBlast extends EntityProjectileBase {
     //========== Entity Living Collision ==========
     @Override
     public boolean entityLivingCollision(EntityLivingBase entityLiving) {
-    	entityLiving.addPotionEffect(new PotionEffect(MobEffects.digSlowdown, this.getEffectDuration(5), 0));
+    	entityLiving.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, this.getEffectDuration(5), 0));
     	return true;
     }
     

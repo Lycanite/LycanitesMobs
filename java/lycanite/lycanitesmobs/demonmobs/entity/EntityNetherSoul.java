@@ -64,9 +64,9 @@ public class EntityNetherSoul extends EntityCreatureBase implements IMob {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.bone), 1).setMinAmount(2).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Items.gunpowder), 0.75F).setMinAmount(1).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Items.blaze_powder), 0.5F).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.BONE), 1).setMinAmount(2).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.GUNPOWDER), 0.75F).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.BLAZE_POWDER), 0.5F).setMinAmount(1).setMaxAmount(2));
 	}
     
     
@@ -120,7 +120,7 @@ public class EntityNetherSoul extends EntityCreatureBase implements IMob {
     // ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.wither) return false;
+        if(potionEffect.getPotion() == MobEffects.WITHER) return false;
         super.isPotionApplicable(potionEffect);
         return true;
     }

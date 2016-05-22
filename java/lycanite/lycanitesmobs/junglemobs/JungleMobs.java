@@ -85,15 +85,15 @@ public class JungleMobs {
 		// ========== Create Items ==========
 		ObjectManager.addItem("junglespawn", new ItemJungleEgg());
 		
-		ObjectManager.addItem("concapedemeatraw", new ItemCustomFood("concapedemeatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(MobEffects.moveSlowdown, 45, 2, 0.8F));
+		ObjectManager.addItem("concapedemeatraw", new ItemCustomFood("concapedemeatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(MobEffects.SLOWNESS, 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("concapedemeatraw"));
 		OreDictionary.registerOre("listAllchickenraw", ObjectManager.getItem("concapedemeatraw"));
 		
-		ObjectManager.addItem("concapedemeatcooked", new ItemCustomFood("concapedemeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(MobEffects.jump, 10, 2, 1.0F).setAlwaysEdible());
+		ObjectManager.addItem("concapedemeatcooked", new ItemCustomFood("concapedemeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(MobEffects.JUMP_BOOST, 10, 2, 1.0F).setAlwaysEdible());
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("concapedemeatcooked"));
 		OreDictionary.registerOre("listAllchickencooked", ObjectManager.getItem("concapedemeatcooked"));
 		
-		ObjectManager.addItem("tropicalcurry", new ItemCustomFood("tropicalcurry", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(MobEffects.jump, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
+		ObjectManager.addItem("tropicalcurry", new ItemCustomFood("tropicalcurry", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(MobEffects.JUMP_BOOST, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("tropicalcurry"));
 		
 		ObjectManager.addItem("poopcharge", new ItemPoopCharge());
@@ -111,7 +111,7 @@ public class JungleMobs {
 		
 		
 		// ========== Create Mobs ==========
-		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("junglespawn"), new DispenserBehaviorMobEggCustom());
+		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ObjectManager.getItem("junglespawn"), new DispenserBehaviorMobEggCustom());
 		MobInfo newMob;
         
         newMob = new MobInfo(group, "geken", EntityGeken.class, 0x00AA00, 0xFFFF00)
@@ -205,7 +205,7 @@ public class JungleMobs {
 			MobEventBase mobEvent = new MobEventPoopParty("poopparty", this.group);
 			SpawnTypeBase eventSpawner = new SpawnTypeLand("poopparty")
 	            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-	        eventSpawner.materials = new Material[] {Material.air};
+	        eventSpawner.materials = new Material[] {Material.AIR};
 	        eventSpawner.ignoreBiome = true;
 	        eventSpawner.ignoreLight = true;
 	        eventSpawner.forceSpawning = true;
@@ -221,7 +221,7 @@ public class JungleMobs {
 	     
 		SpawnTypeBase theSwarmLandSpawner = new SpawnTypeLand("theswarm_land")
 	         .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-		theSwarmLandSpawner.materials = new Material[] {Material.air};
+		theSwarmLandSpawner.materials = new Material[] {Material.AIR};
 		theSwarmLandSpawner.ignoreBiome = true;
 		theSwarmLandSpawner.ignoreLight = true;
 		theSwarmLandSpawner.forceSpawning = true;
@@ -232,7 +232,7 @@ public class JungleMobs {
 	     
 		SpawnTypeBase theSwarmSkySpawner = new SpawnTypeSky("theswarm_sky")
 	         .setChance(1.0D).setBlockLimit(32).setMobLimit(8);
-		theSwarmSkySpawner.materials = new Material[] {Material.air};
+		theSwarmSkySpawner.materials = new Material[] {Material.AIR};
 		theSwarmSkySpawner.ignoreBiome = true;
 		theSwarmSkySpawner.ignoreLight = true;
 		theSwarmSkySpawner.forceSpawning = true;
@@ -262,9 +262,9 @@ public class JungleMobs {
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
 				new ItemStack(ObjectManager.getItem("tropicalcurry"), 1, 0),
 				new Object[] {
-					Items.bowl,
-					new ItemStack(Items.dye, 1, 3),
-					Blocks.vine,
+					Items.BOWL,
+					new ItemStack(Items.DYE, 1, 3),
+					Blocks.VINE,
 					ObjectManager.getItem("concapedemeatcooked")
 				}
 			));
@@ -278,7 +278,7 @@ public class JungleMobs {
                     new ItemStack(ObjectManager.getItem("poopscepter"), 1, 0),
                     new Object[]{"CCC", "CRC", "CRC",
                             Character.valueOf('C'), ObjectManager.getItem("poopcharge"),
-                            Character.valueOf('R'), Items.blaze_rod
+                            Character.valueOf('R'), Items.BLAZE_ROD
                     }));
         }
 		
@@ -286,26 +286,26 @@ public class JungleMobs {
 				new ItemStack(ObjectManager.getItem("uvaraptortreat"), 4, 0),
 				new Object[] { "TTT", "BBT", "TTT",
 				Character.valueOf('T'), ObjectManager.getItem("concapedemeatcooked"),
-				Character.valueOf('B'), Items.bone
+				Character.valueOf('B'), Items.BONE
 			}));
 		
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
-				new ItemStack(Items.clay_ball, 4, 0),
+				new ItemStack(Items.CLAY_BALL, 4, 0),
 				new Object[] {
 					ObjectManager.getBlock("propolis")
 				}
 			));
 		
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
-				new ItemStack(Blocks.mycelium, 2, 0),
+				new ItemStack(Blocks.MYCELIUM, 2, 0),
 				new Object[] {
 					ObjectManager.getBlock("propolis"),
-					Blocks.dirt
+					Blocks.DIRT
 				}
 			));
 		
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
-				new ItemStack(Items.sugar, 4, 0),
+				new ItemStack(Items.SUGAR, 4, 0),
 				new Object[] {
 					ObjectManager.getBlock("veswax")
 				}
@@ -314,7 +314,7 @@ public class JungleMobs {
 		
 		// ========== Smelting ==========
 		GameRegistry.addSmelting(ObjectManager.getItem("concapedemeatraw"), new ItemStack(ObjectManager.getItem("concapedemeatcooked"), 1), 0.5f);
-		GameRegistry.addSmelting(ObjectManager.getBlock("propolis"), new ItemStack(Blocks.hardened_clay, 1), 0.5f);
-		GameRegistry.addSmelting(ObjectManager.getBlock("veswax"), new ItemStack(Items.sugar, 6), 0.5f);
+		GameRegistry.addSmelting(ObjectManager.getBlock("propolis"), new ItemStack(Blocks.HARDENED_CLAY, 1), 0.5f);
+		GameRegistry.addSmelting(ObjectManager.getBlock("veswax"), new ItemStack(Items.SUGAR, 6), 0.5f);
 	}
 }

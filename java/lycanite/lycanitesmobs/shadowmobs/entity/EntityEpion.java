@@ -79,8 +79,8 @@ public class EntityEpion extends EntityCreatureTameable implements IMob, IGroupS
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.leather), 1.0F).setMaxAmount(5));
-        this.drops.add(new DropRate(new ItemStack(Items.gunpowder), 0.5F).setMaxAmount(4));
+        this.drops.add(new DropRate(new ItemStack(Items.LEATHER), 1.0F).setMaxAmount(5));
+        this.drops.add(new DropRate(new ItemStack(Items.GUNPOWDER), 0.5F).setMaxAmount(4));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("BloodleechCharge")), 0.25F).setMaxAmount(3));
 	}
 	
@@ -171,7 +171,7 @@ public class EntityEpion extends EntityCreatureTameable implements IMob, IGroupS
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.blindness) return false;
+        if(potionEffect.getPotion() == MobEffects.BLINDNESS) return false;
         if(ObjectManager.getPotionEffect("Fear") != null)
             if(potionEffect.getPotion() == ObjectManager.getPotionEffect("Fear")) return false;
         super.isPotionApplicable(potionEffect);

@@ -23,7 +23,7 @@ public class BlockPropolis extends BlockBase {
 	//                   Constructor
 	// ==================================================
 	public BlockPropolis() {
-		super(Material.clay);
+		super(Material.CLAY);
         this.setCreativeTab(LycanitesMobs.itemsTab);
 		
 		// Properties:
@@ -34,7 +34,7 @@ public class BlockPropolis extends BlockBase {
 		// Stats:
 		this.setHardness(0.6F);
 		this.setHarvestLevel("shovel", 0);
-		this.setStepSound(SoundType.GROUND);
+		this.setSoundType(SoundType.GROUND);
 		this.tickRate = 100;
 		this.removeOnTick = true;
 	}

@@ -74,10 +74,10 @@ public class EntityManticore extends EntityCreatureTameable implements IMob, IGr
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Blocks.sandstone), 1).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Blocks.stone), 1).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.flint), 0.5F));
-        this.drops.add(new DropRate(new ItemStack(Blocks.iron_ore), 0.25F));
+        this.drops.add(new DropRate(new ItemStack(Blocks.SANDSTONE), 1).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Blocks.STONE), 1).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.FLINT), 0.5F));
+        this.drops.add(new DropRate(new ItemStack(Blocks.IRON_ORE), 0.25F));
 	}
 	
 	
@@ -102,8 +102,8 @@ public class EntityManticore extends EntityCreatureTameable implements IMob, IGr
     	
     	// Effects:
         if(target instanceof EntityLivingBase) {
-        	((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.hunger, this.getEffectDuration(7), 0));
-        	((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.weakness, this.getEffectDuration(7), 0));
+        	((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.HUNGER, this.getEffectDuration(7), 0));
+        	((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, this.getEffectDuration(7), 0));
         }
         
         return true;
@@ -134,8 +134,8 @@ public class EntityManticore extends EntityCreatureTameable implements IMob, IGr
     
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.hunger) return false;
-        if(potionEffect.getPotion() == MobEffects.weakness) return false;
+        if(potionEffect.getPotion() == MobEffects.HUNGER) return false;
+        if(potionEffect.getPotion() == MobEffects.WEAKNESS) return false;
         return super.isPotionApplicable(potionEffect);
     }
 }

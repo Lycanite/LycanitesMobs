@@ -23,9 +23,7 @@ public class SpawnTypeLand extends SpawnTypeBase {
     /**
      * Searches for coordinates to spawn mobs exactly at. By default this uses te block lists.
      * @param world The world to spawn in.
-     * @param x X position.
-     * @param y Y position.
-     * @param z Z position
+     * @param pos Block position.
      * @return A list of int arrays, each array should contain 3 integers of x, y and z. Should return an empty list instead of null else a waning will show.
      */
     @Override

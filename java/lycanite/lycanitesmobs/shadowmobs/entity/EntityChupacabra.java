@@ -90,7 +90,7 @@ public class EntityChupacabra extends EntityCreatureTameable implements IAnimals
 	@Override
 	public void loadItemDrops() {
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("ChupacabraMeatRaw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("ChupacabraMeatCooked"))).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.leather), 0.75F).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.LEATHER), 0.75F).setMinAmount(1).setMaxAmount(3));
     }
 	
 	
@@ -141,7 +141,7 @@ public class EntityChupacabra extends EntityCreatureTameable implements IAnimals
     // ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.blindness) return false;
+        if(potionEffect.getPotion() == MobEffects.BLINDNESS) return false;
         if(ObjectManager.getPotionEffect("Fear") != null)
             if(potionEffect.getPotion() == ObjectManager.getPotionEffect("Fear")) return false;
         super.isPotionApplicable(potionEffect);

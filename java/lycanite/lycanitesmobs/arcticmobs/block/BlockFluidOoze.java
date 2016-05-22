@@ -27,7 +27,7 @@ public class BlockFluidOoze extends BlockFluidBase {
 	//                   Constructor
 	// ==================================================
 	public BlockFluidOoze(Fluid fluid) {
-        super(fluid, Material.water, ArcticMobs.group, "ooze");
+        super(fluid, Material.WATER, ArcticMobs.group, "ooze");
 
         this.setLightOpacity(0);
         this.setLightLevel(0.25F);
@@ -42,9 +42,9 @@ public class BlockFluidOoze extends BlockFluidBase {
         IBlockState blockState = world.getBlockState(pos);
 
         // Freeze Water:
-        if(blockState == Blocks.water) {
+        if(blockState == Blocks.WATER) {
             if(world instanceof World) {
-                ((World)world).setBlockState(pos, Blocks.ice.getDefaultState());
+                ((World)world).setBlockState(pos, Blocks.ICE.getDefaultState());
             }
             return false;
         }
@@ -64,7 +64,7 @@ public class BlockFluidOoze extends BlockFluidBase {
 	//                      Collision
 	// ==================================================
 	@Override
-	public void onEntityCollidedWithBlock(World world, BlockPos pos, Entity entity) {
+    public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
         if(entity != null) {
             // Damage:
             if (!(entity instanceof EntityItem)) {
@@ -77,11 +77,11 @@ public class BlockFluidOoze extends BlockFluidBase {
 
             // Effects:
             if(entity instanceof EntityLivingBase) {
-                ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(MobEffects.moveSlowdown, 5 * 20, 0));
-                ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(MobEffects.hunger, 5 * 20, 0));
+                ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 5 * 20, 0));
+                ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(MobEffects.HUNGER, 5 * 20, 0));
             }
         }
-		super.onEntityCollidedWithBlock(world, pos, entity);
+		super.onEntityCollidedWithBlock(world, pos, state, entity);
 	}
     
     

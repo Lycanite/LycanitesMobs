@@ -92,8 +92,8 @@ public class EntityVentoraptor extends EntityCreatureRideable implements IGroupP
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.feather), 1F).setMaxAmount(5));
-        this.drops.add(new DropRate(new ItemStack(Items.bone), 0.5F).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.FEATHER), 1F).setMaxAmount(5));
+        this.drops.add(new DropRate(new ItemStack(Items.BONE), 0.5F).setMaxAmount(3));
 	}
 	
 	
@@ -119,10 +119,10 @@ public class EntityVentoraptor extends EntityCreatureRideable implements IGroupP
     }
     
     public void riderEffects(EntityLivingBase rider) {
-        if(rider.isPotionActive(MobEffects.weakness))
-            rider.removePotionEffect(MobEffects.weakness);
-        if(rider.isPotionActive(MobEffects.digSlowdown))
-            rider.removePotionEffect(MobEffects.digSlowdown);
+        if(rider.isPotionActive(MobEffects.WEAKNESS))
+            rider.removePotionEffect(MobEffects.WEAKNESS);
+        if(rider.isPotionActive(MobEffects.SLOWNESS))
+            rider.removePotionEffect(MobEffects.SLOWNESS);
     }
 
 	
@@ -192,8 +192,8 @@ public class EntityVentoraptor extends EntityCreatureRideable implements IGroupP
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.weakness) return false;
-        if(potionEffect.getPotion() == MobEffects.digSlowdown) return false;
+        if(potionEffect.getPotion() == MobEffects.WEAKNESS) return false;
+        if(potionEffect.getPotion() == MobEffects.MINING_FATIGUE) return false;
         return super.isPotionApplicable(potionEffect);
     }
     

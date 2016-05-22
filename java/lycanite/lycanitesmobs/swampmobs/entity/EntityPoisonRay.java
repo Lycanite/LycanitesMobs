@@ -69,7 +69,7 @@ public class EntityPoisonRay extends EntityProjectileLaser {
     	boolean damageDealt = super.updateDamage(target);
         if(this.getThrower() != null && damageDealt) {
         	if(target instanceof EntityLivingBase)
-    			((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.poison, this.getEffectDuration(5), 0));
+    			((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.POISON, this.getEffectDuration(5), 0));
         }
         return damageDealt;
     }

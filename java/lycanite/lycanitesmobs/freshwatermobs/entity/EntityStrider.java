@@ -96,10 +96,10 @@ public class EntityStrider extends EntityCreatureRideable {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.fish), 1F).setBurningDrop(new ItemStack(Items.cooked_fish)).setMaxAmount(5));
-        this.drops.add(new DropRate(new ItemStack(Items.fish, 1, 3), 0.5F).setBurningDrop(new ItemStack(Items.cooked_fish, 1, 3)).setMaxAmount(5));
-        this.drops.add(new DropRate(new ItemStack(Items.prismarine_shard, 1), 1F).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Items.prismarine_crystals, 1), 0.25F).setMaxAmount(1));
+        this.drops.add(new DropRate(new ItemStack(Items.FISH), 1F).setBurningDrop(new ItemStack(Items.COOKED_FISH)).setMaxAmount(5));
+        this.drops.add(new DropRate(new ItemStack(Items.FISH, 1, 3), 0.5F).setBurningDrop(new ItemStack(Items.COOKED_FISH, 1, 3)).setMaxAmount(5));
+        this.drops.add(new DropRate(new ItemStack(Items.PRISMARINE_SHARD, 1), 1F).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.PRISMARINE_CRYSTALS, 1), 0.25F).setMaxAmount(1));
 	}
 	
 	
@@ -186,7 +186,7 @@ public class EntityStrider extends EntityCreatureRideable {
                     if (ObjectManager.getPotionEffect("penetration") != null)
                         possibleTarget.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("penetration"), this.getEffectDuration(5), 1));
                     else
-                        possibleTarget.addPotionEffect(new PotionEffect(MobEffects.weakness, 10 * 20, 0));
+                        possibleTarget.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 10 * 20, 0));
                 }
             }
         }
@@ -231,9 +231,9 @@ public class EntityStrider extends EntityCreatureRideable {
         int waterWeight = 10;
 
         Block block = this.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock();
-        if(block == Blocks.water)
+        if(block == Blocks.WATER)
             return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
-        if(block == Blocks.flowing_water)
+        if(block == Blocks.FLOWING_WATER)
             return (super.getBlockPathWeight(x, y, z) + 1) * waterWeight;
         if(this.worldObj.isRaining() && this.worldObj.canBlockSeeSky(new BlockPos(x, y, z)))
             return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);

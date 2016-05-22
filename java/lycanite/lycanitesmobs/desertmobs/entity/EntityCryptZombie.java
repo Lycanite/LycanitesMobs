@@ -76,8 +76,8 @@ public class EntityCryptZombie extends EntityCreatureAgeable implements IMob {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.rotten_flesh), 1).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.gold_nugget), 0.25F).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.ROTTEN_FLESH), 1).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.GOLD_NUGGET), 0.25F).setMaxAmount(2));
 	}
     
     
@@ -92,7 +92,7 @@ public class EntityCryptZombie extends EntityCreatureAgeable implements IMob {
     	
     	// Wither:
         if(target instanceof EntityLivingBase) {
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.hunger, this.getEffectDuration(7), 0));
+            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.HUNGER, this.getEffectDuration(7), 0));
         }
         
         return true;
@@ -116,7 +116,7 @@ public class EntityCryptZombie extends EntityCreatureAgeable implements IMob {
                 entityZombie.setChild(true);
 
             this.worldObj.spawnEntityInWorld(entityZombie);
-            this.worldObj.playAuxSFXAtEntity(null, 1016, entityZombie.getPosition(), 0);
+            this.worldObj.playEvent(null, 1016, entityZombie.getPosition(), 0);
         }
     }
     
@@ -126,8 +126,8 @@ public class EntityCryptZombie extends EntityCreatureAgeable implements IMob {
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.hunger) return false;
-        if(potionEffect.getPotion() == MobEffects.weakness) return false;
+        if(potionEffect.getPotion() == MobEffects.HUNGER) return false;
+        if(potionEffect.getPotion() == MobEffects.WEAKNESS) return false;
         return super.isPotionApplicable(potionEffect);
     }
 	

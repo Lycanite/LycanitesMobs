@@ -25,7 +25,7 @@ public class AltarInfoCelestialGeonach extends AltarInfo {
     /** Called first when checking for a valid altar, this should be fairly lightweight such as just checking if the first block checked is valid, a more in depth check if then done after. **/
     @Override
     public boolean quickCheck(Entity entity, World world, BlockPos pos) {
-        if(world.getBlockState(pos).getBlock() != Blocks.diamond_block)
+        if(world.getBlockState(pos).getBlock() != Blocks.DIAMOND_BLOCK)
             return false;
         return true;
     }
@@ -40,7 +40,7 @@ public class AltarInfoCelestialGeonach extends AltarInfo {
         int y = pos.getY();
         int z = pos.getZ();
 
-        Block bodyBlock = Blocks.obsidian;
+        Block bodyBlock = Blocks.OBSIDIAN;
 
         // Upper:
         if(world.getBlockState(new BlockPos(x, y + 1, z)).getBlock() != bodyBlock)

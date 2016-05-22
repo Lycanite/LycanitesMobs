@@ -36,7 +36,7 @@ public class AltarInfoRahovart extends AltarInfo {
         if(!this.quickCheck(entity, world, pos))
             return false;
 
-        Block bodyBlock = Blocks.obsidian;
+        Block bodyBlock = Blocks.OBSIDIAN;
 
         // Middle:
         if(world.getBlockState(pos.add(0, -2, 0)).getBlock() != bodyBlock)
@@ -68,7 +68,7 @@ public class AltarInfoRahovart extends AltarInfo {
             return false;
         if(world.getBlockState(pos).getBlock() != bodyBlock)
             return false;
-        if(world.getBlockState(pos.add(0, 1, 0)).getBlock() != Blocks.diamond_block)
+        if(world.getBlockState(pos.add(0, 1, 0)).getBlock() != Blocks.DIAMOND_BLOCK)
             return false;
         return true;
     }

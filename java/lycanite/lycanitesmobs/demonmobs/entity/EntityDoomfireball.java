@@ -59,13 +59,13 @@ public class EntityDoomfireball extends EntityProjectileBase {
     @Override
     public boolean canDestroyBlock(BlockPos pos) {
         Block block = this.worldObj.getBlockState(pos).getBlock();
-        if(block == Blocks.snow_layer)
+        if(block == Blocks.SNOW_LAYER)
             return true;
-        if(block == Blocks.tallgrass)
+        if(block == Blocks.TALLGRASS)
             return true;
-        if(block == Blocks.fire)
+        if(block == Blocks.FIRE)
             return true;
-        if(block == Blocks.web)
+        if(block == Blocks.WEB)
             return true;
         if(ObjectManager.getBlock("PoisonCloud") != null && block == ObjectManager.getBlock("PoisonCloud"))
             return true;
@@ -93,7 +93,7 @@ public class EntityDoomfireball extends EntityProjectileBase {
     public void placeBlock(World world, BlockPos pos) {
         Block block = ObjectManager.getBlock("doomfire");
         if(block == null)
-            block = Blocks.fire;
+            block = Blocks.FIRE;
 	   	 world.setBlockState(pos, block.getDefaultState());
     }
     

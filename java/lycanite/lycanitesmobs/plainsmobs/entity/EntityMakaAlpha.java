@@ -75,7 +75,7 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
 	@Override
 	public void loadItemDrops() {
 	    this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("MakaMeatRaw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("MakaMeatCooked"))).setMinAmount(3).setMaxAmount(7));
-	    this.drops.add(new DropRate(new ItemStack(Items.leather), 0.75F).setMinAmount(2).setMaxAmount(4));
+	    this.drops.add(new DropRate(new ItemStack(Items.LEATHER), 0.75F).setMinAmount(2).setMaxAmount(4));
 	}
 	
 	
@@ -103,10 +103,10 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
     public float getBlockPathWeight(int x, int y, int z) {
         IBlockState blockState = this.worldObj.getBlockState(new BlockPos(x, y - 1, z));
         Block block = blockState.getBlock();
-        if(block != Blocks.air) {
-            if(blockState.getMaterial() == Material.grass)
+        if(block != Blocks.AIR) {
+            if(blockState.getMaterial() == Material.GRASS)
                 return 10F;
-            if(blockState.getMaterial() == Material.ground)
+            if(blockState.getMaterial() == Material.GROUND)
                 return 7F;
         }
         return super.getBlockPathWeight(x, y, z);
@@ -143,7 +143,7 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
     public void setAttackTarget(EntityLivingBase entity) {
     	if(entity == null && this.getAttackTarget() instanceof EntityMakaAlpha && this.getHealth() < this.getMaxHealth()) {
     		this.heal((this.getMaxHealth() - this.getHealth()) / 2);
-    		this.addPotionEffect(new PotionEffect(MobEffects.regeneration, 20 * 20, 2, false, false));
+    		this.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 20 * 20, 2, false, false));
     	}
     	super.setAttackTarget(entity);
     }
@@ -154,8 +154,8 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.weakness) return false;
-        if(potionEffect.getPotion() == MobEffects.digSlowdown) return false;
+        if(potionEffect.getPotion() == MobEffects.WEAKNESS) return false;
+        if(potionEffect.getPotion() == MobEffects.MINING_FATIGUE) return false;
         return super.isPotionApplicable(potionEffect);
     }
     

@@ -94,10 +94,10 @@ public class EntitySerpix extends EntityCreatureTameable implements IGroupPredat
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.snowball), 1).setMinAmount(6).setMaxAmount(12));
+        this.drops.add(new DropRate(new ItemStack(Items.SNOWBALL), 1).setMinAmount(6).setMaxAmount(12));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("blizzardcharge")), 0.5F).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Blocks.iron_ore), 0.5F).setMinAmount(2).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Blocks.gold_ore), 0.25F).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Blocks.IRON_ORE), 0.5F).setMinAmount(2).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Blocks.GOLD_ORE), 0.25F).setMinAmount(1).setMaxAmount(2));
 	}
 
 
@@ -191,16 +191,16 @@ public class EntitySerpix extends EntityCreatureTameable implements IGroupPredat
         if(this.isTamed() && this.isSitting())
             return false;
         IBlockState blockState = this.worldObj.getBlockState(this.getPosition().add(0, -1, 0));
-        if(blockState.getBlock() != Blocks.air) {
-            if(blockState.getMaterial() == Material.ground) return true;
-            if(blockState.getMaterial() == Material.grass) return true;
-            if(blockState.getMaterial() == Material.leaves) return true;
-            if(blockState.getMaterial() == Material.sand) return true;
-            if(blockState.getMaterial() == Material.clay) return true;
-            if(blockState.getMaterial() == Material.snow) return true;
-            if(blockState.getMaterial() == Material.craftedSnow) return true;
+        if(blockState.getBlock() != Blocks.AIR) {
+            if(blockState.getMaterial() == Material.GROUND) return true;
+            if(blockState.getMaterial() == Material.GRASS) return true;
+            if(blockState.getMaterial() == Material.LEAVES) return true;
+            if(blockState.getMaterial() == Material.SAND) return true;
+            if(blockState.getMaterial() == Material.CLAY) return true;
+            if(blockState.getMaterial() == Material.SNOW) return true;
+            if(blockState.getMaterial() == Material.CRAFTED_SNOW) return true;
         }
-        if(blockState.getBlock() == Blocks.netherrack)
+        if(blockState.getBlock() == Blocks.NETHERRACK)
             return true;
         return false;
     }
@@ -245,8 +245,8 @@ public class EntitySerpix extends EntityCreatureTameable implements IGroupPredat
 
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.moveSlowdown) return false;
-        if(potionEffect.getPotion() == MobEffects.hunger) return false;
+        if(potionEffect.getPotion() == MobEffects.SLOWNESS) return false;
+        if(potionEffect.getPotion() == MobEffects.HUNGER) return false;
         return super.isPotionApplicable(potionEffect);
     }
 	

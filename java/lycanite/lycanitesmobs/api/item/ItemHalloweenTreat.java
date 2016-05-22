@@ -109,13 +109,13 @@ public class ItemHalloweenTreat extends ItemBase {
     // ==================================================
     public static void createObjectLists() {
         // Halloween Treats:
-        ObjectLists.addItem("halloween_treats", Items.diamond);
-        ObjectLists.addItem("halloween_treats", Items.gold_ingot);
-        ObjectLists.addItem("halloween_treats", Items.emerald);
-        ObjectLists.addItem("halloween_treats", Blocks.iron_block);
-        ObjectLists.addItem("halloween_treats", Items.ender_pearl);
-        ObjectLists.addItem("halloween_treats", Items.blaze_rod);
-        ObjectLists.addItem("halloween_treats", Items.glowstone_dust);
+        ObjectLists.addItem("halloween_treats", Items.DIAMOND);
+        ObjectLists.addItem("halloween_treats", Items.GOLD_INGOT);
+        ObjectLists.addItem("halloween_treats", Items.EMERALD);
+        ObjectLists.addItem("halloween_treats", Blocks.IRON_BLOCK);
+        ObjectLists.addItem("halloween_treats", Items.ENDER_PEARL);
+        ObjectLists.addItem("halloween_treats", Items.BLAZE_ROD);
+        ObjectLists.addItem("halloween_treats", Items.GLOWSTONE_DUST);
         ObjectLists.addItem("halloween_treats", ObjectManager.getItem("mosspie"));
         ObjectLists.addItem("halloween_treats", ObjectManager.getItem("bulwarkburger"));
         ObjectLists.addItem("halloween_treats", ObjectManager.getItem("paleosalad"));

@@ -72,7 +72,7 @@ public class ItemScepterPoisonRay extends ItemScepter {
 	// ==================================================
     @Override
     public boolean getIsRepairable(ItemStack itemStack, ItemStack repairStack) {
-        if(repairStack.getItem() == Items.fermented_spider_eye || repairStack.getItem() == ObjectManager.getItem("poisongland")) return true;
+        if(repairStack.getItem() == Items.FERMENTED_SPIDER_EYE || repairStack.getItem() == ObjectManager.getItem("poisongland")) return true;
         return super.getIsRepairable(itemStack, repairStack);
     }
 }

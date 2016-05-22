@@ -79,8 +79,8 @@ public class EntityYeti extends EntityCreatureAgeable implements IAnimals, IGrou
 	public void loadItemDrops() {
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("YetiMeatRaw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("YetiMeatCooked"))).setMinAmount(2).setMaxAmount(5));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("FrostyFur")), 0.25F).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Items.snowball), 0.25F).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Blocks.packed_ice), 0.25F).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.SNOWBALL), 0.25F).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Blocks.PACKED_ICE), 0.25F).setMaxAmount(3));
 	}
 	
 	
@@ -99,7 +99,7 @@ public class EntityYeti extends EntityCreatureAgeable implements IAnimals, IGrou
                 trailHeight = 1;
             for(int y = 0; y < trailHeight; y++) {
                 Block block = this.worldObj.getBlockState(this.getPosition().add(0, y, 0)).getBlock();
-                if(block == Blocks.air || block == Blocks.snow || block == ObjectManager.getBlock("frostcloud"))
+                if(block == Blocks.AIR || block == Blocks.SNOW || block == ObjectManager.getBlock("frostcloud"))
                     this.worldObj.setBlockState(this.getPosition().add(0, y, 0), ObjectManager.getBlock("frostcloud").getDefaultState());
             }
         }
@@ -120,10 +120,10 @@ public class EntityYeti extends EntityCreatureAgeable implements IAnimals, IGrou
 	public float getBlockPathWeight(int x, int y, int z) {
         IBlockState blockState = this.worldObj.getBlockState(new BlockPos(x, y - 1, z));
         Block block = blockState.getBlock();
-        if(block != Blocks.air) {
-            if(blockState.getMaterial() == Material.grass || blockState.getMaterial() == Material.snow)
+        if(block != Blocks.AIR) {
+            if(blockState.getMaterial() == Material.GRASS || blockState.getMaterial() == Material.SNOW)
                 return 10F;
-            if(blockState.getMaterial() == Material.ground || blockState.getMaterial() == Material.ice)
+            if(blockState.getMaterial() == Material.GROUND || blockState.getMaterial() == Material.ICE)
                 return 7F;
         }
         return super.getBlockPathWeight(x, y, z);
@@ -147,7 +147,7 @@ public class EntityYeti extends EntityCreatureAgeable implements IAnimals, IGrou
     	
     	// Effect:
         if(target instanceof EntityLivingBase) {
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.moveSlowdown, this.getEffectDuration(8), 0));
+            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, this.getEffectDuration(8), 0));
         }
         
         return true;
@@ -165,8 +165,8 @@ public class EntityYeti extends EntityCreatureAgeable implements IAnimals, IGrou
 
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.moveSlowdown) return false;
-        if(potionEffect.getPotion() == MobEffects.hunger) return false;
+        if(potionEffect.getPotion() == MobEffects.SLOWNESS) return false;
+        if(potionEffect.getPotion() == MobEffects.HUNGER) return false;
         return super.isPotionApplicable(potionEffect);
     }
     
@@ -198,7 +198,7 @@ public class EntityYeti extends EntityCreatureAgeable implements IAnimals, IGrou
     	
     	if(itemStack != null) {
     		// Milk:
-    		if(itemStack.getItem() == Items.bucket)
+    		if(itemStack.getItem() == Items.BUCKET)
     			commands.put(CMD_PRIOR.ITEM_USE.id, "Milk");
     	}
     	
@@ -211,7 +211,7 @@ public class EntityYeti extends EntityCreatureAgeable implements IAnimals, IGrou
     	
     	// Milk:
     	if(command.equals("Milk")) {
-    		this.replacePlayersItem(player, itemStack, new ItemStack(Items.milk_bucket));
+    		this.replacePlayersItem(player, itemStack, new ItemStack(Items.MILK_BUCKET));
     	}
     	
     	super.performCommand(command, player, itemStack);

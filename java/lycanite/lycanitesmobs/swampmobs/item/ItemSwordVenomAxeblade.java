@@ -54,7 +54,7 @@ public class ItemSwordVenomAxeblade extends ItemSwordBase {
         super.onEarlyUpdate(itemStack, entityLiving, hand);
         if(itemStack == null || itemStack.getItem() != this)
             return;
-        Potion potion = MobEffects.poison;
+        Potion potion = MobEffects.POISON;
         if(entityLiving.isPotionActive(potion))
             entityLiving.removePotionEffect(potion);
     }
@@ -70,7 +70,7 @@ public class ItemSwordVenomAxeblade extends ItemSwordBase {
      		return false;
      	if(entityUser.worldObj.isRemote)
      		return true;
-     	entityHit.addPotionEffect(new PotionEffect(MobEffects.poison, 6 * 20, 0));
+     	entityHit.addPotionEffect(new PotionEffect(MobEffects.POISON, 6 * 20, 0));
      	if(entityUser.getRNG().nextFloat() <= this.getSpecialEffectChance()) {
      		Entity entity = new EntityRemobra(entityUser.worldObj);
      		entity.setLocationAndAngles(entityUser.posX, entityUser.posY, entityUser.posZ, entityUser.rotationYaw, 0.0F);
@@ -106,8 +106,8 @@ public class ItemSwordVenomAxeblade extends ItemSwordBase {
      // ========== Block Effectiveness ==========
      @Override
      public float getStrVsBlock(ItemStack itemStack, IBlockState state) {
-    	 if(state.getMaterial() == Material.wood || state.getMaterial() == Material.plants || state.getMaterial() == Material.vine) {
-    		 return Items.diamond_axe.getStrVsBlock(itemStack, state);
+    	 if(state.getMaterial() == Material.WOOD || state.getMaterial() == Material.PLANTS || state.getMaterial() == Material.VINE) {
+    		 return Items.DIAMOND_AXE.getStrVsBlock(itemStack, state);
     	 }
     	 return super.getStrVsBlock(itemStack, state);
      }

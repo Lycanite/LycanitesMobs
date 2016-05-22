@@ -74,21 +74,21 @@ public class PlainsMobs {
 		// ========== Create Items ==========
 		ObjectManager.addItem("plainsspawn", new ItemPlainsEgg());
 		
-		ObjectManager.addItem("makameatraw", new ItemCustomFood("makameatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(MobEffects.weakness, 45, 2, 0.8F));
+		ObjectManager.addItem("makameatraw", new ItemCustomFood("makameatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(MobEffects.WEAKNESS, 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("makameatraw"));
 		OreDictionary.registerOre("listAllporkraw", ObjectManager.getItem("makameatraw"));
 		
-		ObjectManager.addItem("makameatcooked", new ItemCustomFood("makameatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(MobEffects.absorption, 10, 2, 1.0F).setAlwaysEdible());
+		ObjectManager.addItem("makameatcooked", new ItemCustomFood("makameatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(MobEffects.ABSORPTION, 10, 2, 1.0F).setAlwaysEdible());
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("makameatcooked"));
 		OreDictionary.registerOre("listAllporkcooked", ObjectManager.getItem("makameatcooked"));
 		
-		ObjectManager.addItem("bulwarkburger", new ItemCustomFood("bulwarkburger", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(MobEffects.absorption, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
+		ObjectManager.addItem("bulwarkburger", new ItemCustomFood("bulwarkburger", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(MobEffects.ABSORPTION, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("bulwarkburger"));
 
 		ObjectManager.addItem("ventoraptortreat", new ItemTreat("ventoraptortreat", group));
 		
 		// ========== Create Mobs ==========
-		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("plainsspawn"), new DispenserBehaviorMobEggCustom());
+		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ObjectManager.getItem("plainsspawn"), new DispenserBehaviorMobEggCustom());
 		MobInfo newMob;
         
         newMob = new MobInfo(group, "kobold", EntityKobold.class, 0x996633, 0xFF7777)
@@ -165,7 +165,7 @@ public class PlainsMobs {
 			MobEventBase mobEvent = new MobEventWindStorm("windstorm", this.group);
 			SpawnTypeBase eventSpawner = new SpawnTypeSky("windstorm")
 	            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-	        eventSpawner.materials = new Material[] {Material.air};
+	        eventSpawner.materials = new Material[] {Material.AIR};
 	        eventSpawner.ignoreBiome = true;
 	        eventSpawner.ignoreLight = true;
 	        eventSpawner.forceSpawning = true;
@@ -189,9 +189,9 @@ public class PlainsMobs {
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
 				new ItemStack(ObjectManager.getItem("bulwarkburger"), 1, 0),
 				new Object[] {
-					Items.bread,
+					Items.BREAD,
 					ObjectManager.getItem("makameatcooked"),
-					Items.bread
+					Items.BREAD
 				}
 			));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
@@ -203,7 +203,7 @@ public class PlainsMobs {
 				new ItemStack(ObjectManager.getItem("ventoraptortreat"), 4, 0),
 				new Object[] { "TTT", "BBT", "TTT",
 				Character.valueOf('T'), ObjectManager.getItem("makameatcooked"),
-				Character.valueOf('B'), Items.bone
+				Character.valueOf('B'), Items.BONE
 			}));
 		
 		// ========== Smelting ==========

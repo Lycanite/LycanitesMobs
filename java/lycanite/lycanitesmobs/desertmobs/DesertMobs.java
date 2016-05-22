@@ -71,15 +71,15 @@ public class DesertMobs {
 		ObjectManager.addItem("desertspawn", new ItemDesertEgg());
 		ObjectManager.addItem("throwingscythe", new ItemThrowingScythe());
 		
-		ObjectManager.addItem("joustmeatraw", new ItemCustomFood("joustmeatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(MobEffects.moveSlowdown, 45, 2, 0.8F));
+		ObjectManager.addItem("joustmeatraw", new ItemCustomFood("joustmeatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(MobEffects.SLOWNESS, 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("joustmeatraw"));
 		OreDictionary.registerOre("listAllchickenraw", ObjectManager.getItem("joustmeatraw"));
 		
-		ObjectManager.addItem("joustmeatcooked", new ItemCustomFood("joustmeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(MobEffects.moveSpeed, 10, 2, 1.0F).setAlwaysEdible());
+		ObjectManager.addItem("joustmeatcooked", new ItemCustomFood("joustmeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(MobEffects.SPEED, 10, 2, 1.0F).setAlwaysEdible());
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("joustmeatcooked"));
 		OreDictionary.registerOre("listAllchickencooked", ObjectManager.getItem("joustmeatcooked"));
 		
-		ObjectManager.addItem("ambercake", new ItemCustomFood("ambercake", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(MobEffects.moveSpeed, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
+		ObjectManager.addItem("ambercake", new ItemCustomFood("ambercake", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(MobEffects.SPEED, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("ambercake"));
 
 		ObjectManager.addItem("crusktreat", new ItemTreat("crusktreat", group));
@@ -93,7 +93,7 @@ public class DesertMobs {
         // No blocks.
 		
 		// ========== Create Mobs ==========
-		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("desertspawn"), new DispenserBehaviorMobEggCustom());
+		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ObjectManager.getItem("desertspawn"), new DispenserBehaviorMobEggCustom());
 		MobInfo newMob;
         
         newMob = new MobInfo(group, "cryptzombie", EntityCryptZombie.class, 0xCC9966, 0xAA8800)
@@ -185,7 +185,7 @@ public class DesertMobs {
         mobEvent.minDay = 10;
         SpawnTypeBase eventSpawner = new SpawnTypeLand("marchofthegorgomites")
             .setChance(1.0D).setBlockLimit(32).setMobLimit(8);
-        eventSpawner.materials = new Material[] {Material.air};
+        eventSpawner.materials = new Material[] {Material.AIR};
         eventSpawner.ignoreBiome = true;
         eventSpawner.ignoreLight = true;
         eventSpawner.forceSpawning = true;
@@ -197,7 +197,7 @@ public class DesertMobs {
         mobEvent = new MobEventBladeFlurry("bladeflurry", this.group);
         eventSpawner = new SpawnTypeLand("bladeflurry")
                 .setChance(1.0D).setBlockLimit(32).setMobLimit(8);
-        eventSpawner.materials = new Material[] {Material.air};
+        eventSpawner.materials = new Material[] {Material.AIR};
         eventSpawner.ignoreBiome = true;
         eventSpawner.ignoreLight = true;
         eventSpawner.forceSpawning = true;
@@ -219,7 +219,7 @@ public class DesertMobs {
 		// ========== Crafting ==========
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
 				new ItemStack(ObjectManager.getItem("throwingscythe"), 17, 0),
-				new Object[] { Items.iron_ingot, ObjectManager.getItem("throwingscythe") }
+				new Object[] { Items.IRON_INGOT, ObjectManager.getItem("throwingscythe") }
 			));
 
         if(ItemInfo.enableWeaponRecipes) {
@@ -227,22 +227,22 @@ public class DesertMobs {
                     new ItemStack(ObjectManager.getItem("scythescepter"), 1, 0),
                     new Object[]{"CCC", "CRC", "CRC",
                             Character.valueOf('C'), ObjectManager.getItem("throwingscythe"),
-                            Character.valueOf('R'), Items.blaze_rod
+                            Character.valueOf('R'), Items.BLAZE_ROD
                     }));
 
             GameRegistry.addRecipe(new ShapedOreRecipe(
                     new ItemStack(ObjectManager.getItem("mudshotscepter"), 1, 0),
                     new Object[]{" C ", " R ", " R ",
                             Character.valueOf('C'), ObjectManager.getItem("mudshotcharge"),
-                            Character.valueOf('R'), Items.blaze_rod
+                            Character.valueOf('R'), Items.BLAZE_ROD
                     }));
         }
 
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
 				new ItemStack(ObjectManager.getItem("ambercake"), 1, 0),
 				new Object[] {
-					Items.sugar,
-					new ItemStack(Items.dye, 1, 2),
+					Items.SUGAR,
+					new ItemStack(Items.DYE, 1, 2),
 					ObjectManager.getItem("joustmeatcooked")
 				}
 			));
@@ -255,14 +255,14 @@ public class DesertMobs {
 				new ItemStack(ObjectManager.getItem("crusktreat"), 4, 0),
 				new Object[] { "TTT", "BBT", "TTT",
 				Character.valueOf('T'), ObjectManager.getItem("joustmeatcooked"),
-				Character.valueOf('B'), Items.bone
+				Character.valueOf('B'), Items.BONE
 			}));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("erepedetreat"), 4, 0),
 				new Object[] { "TTT", "BBT", "TTT",
-				Character.valueOf('T'), Items.gold_ingot,
-				Character.valueOf('B'), Items.bone
+				Character.valueOf('T'), Items.GOLD_INGOT,
+				Character.valueOf('B'), Items.BONE
 			}));
 		
 		// ========== Smelting ==========

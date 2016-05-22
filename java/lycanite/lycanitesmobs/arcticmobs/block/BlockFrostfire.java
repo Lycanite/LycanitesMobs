@@ -33,7 +33,7 @@ public class BlockFrostfire extends BlockFireBase {
     //                   Constructor
     // ==================================================
     public BlockFrostfire() {
-        super(Material.fire, ArcticMobs.group, "frostfire");
+        super(Material.FIRE, ArcticMobs.group, "frostfire");
 
         // Stats:
         this.tickRate = 30;
@@ -63,14 +63,14 @@ public class BlockFrostfire extends BlockFireBase {
     @Override
     public boolean canCatchFire(IBlockAccess world, BlockPos pos, EnumFacing face) {
         Block block = world.getBlockState(pos).getBlock();
-        if(block ==  Blocks.ice)
+        if(block ==  Blocks.ICE)
             return true;
         return false;
     }
 
     @Override
     public boolean isBlockFireSource(Block block, World world, BlockPos pos, EnumFacing side) {
-        if(block == Blocks.snow || block == Blocks.frosted_ice || block == Blocks.packed_ice)
+        if(block == Blocks.SNOW || block == Blocks.FROSTED_ICE || block == Blocks.PACKED_ICE)
             return true;
         return false;
     }
@@ -78,7 +78,7 @@ public class BlockFrostfire extends BlockFireBase {
     @Override
     public int getBlockFlammability(IBlockAccess world, BlockPos pos, EnumFacing face) {
         Block block = world.getBlockState(pos).getBlock();
-        if(block ==  Blocks.ice)
+        if(block ==  Blocks.ICE)
             return 20;
         return 0;
     }
@@ -93,8 +93,8 @@ public class BlockFrostfire extends BlockFireBase {
     //                Collision Effects
     // ==================================================
     @Override
-    public void onEntityCollidedWithBlock(World world, BlockPos pos, Entity entity) {
-        super.onEntityCollidedWithBlock(world, pos, entity);
+    public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
+        super.onEntityCollidedWithBlock(world, pos, state, entity);
 
         if(entity instanceof EntityItem) // Icefire shouldn't destroy items.
             return;
@@ -102,8 +102,8 @@ public class BlockFrostfire extends BlockFireBase {
         if(entity.isBurning())
             entity.extinguish();
 
-        PotionEffect effectSlowness = new PotionEffect(MobEffects.moveSlowdown, 5 * 20, 0);
-        PotionEffect effectHunger = new PotionEffect(MobEffects.hunger, 5 * 20, 0); // No applied, used to check for immunity only.
+        PotionEffect effectSlowness = new PotionEffect(MobEffects.SLOWNESS, 5 * 20, 0);
+        PotionEffect effectHunger = new PotionEffect(MobEffects.HUNGER, 5 * 20, 0); // No applied, used to check for immunity only.
         if(entity instanceof EntityLivingBase) {
             EntityLivingBase entityLiving = (EntityLivingBase)entity;
             if(!entityLiving.isPotionApplicable(effectSlowness) && !entityLiving.isPotionApplicable(effectHunger))

@@ -80,9 +80,9 @@ public class EntityCacodemon extends EntityCreatureTameable implements IGroupDem
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.ghast_tear), 0.25F).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.gunpowder), 0.5F).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.blaze_powder), 0.5F).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.GHAST_TEAR), 0.25F).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.GUNPOWDER), 0.5F).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.BLAZE_POWDER), 0.5F).setMinAmount(1).setMaxAmount(3));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("demoniclightningcharge")), 0.75F));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("soulstonedemonic")), 1).setMinAmount(1).setSubspecies(3));
 	}
@@ -207,7 +207,7 @@ public class EntityCacodemon extends EntityCreatureTameable implements IGroupDem
 
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.wither) return false;
+        if(potionEffect.getPotion() == MobEffects.WITHER) return false;
         super.isPotionApplicable(potionEffect);
         return true;
     }

@@ -16,7 +16,7 @@ public class EntityAIEatBlock extends EntityAIBase {
     // Properties:
     private Block[] blocks = new Block[0];
     private Material[] materials = new Material[0];
-    private Block replaceBlock = Blocks.air;
+    private Block replaceBlock = Blocks.AIR;
     private int eatTime = 40;
     private int eatTimeMax = 40;
 	
@@ -129,7 +129,7 @@ public class EntityAIEatBlock extends EntityAIBase {
         	 this.host.worldObj.setBlockToAir(new BlockPos(i, j - 1, k)); // Might be something else was x, y, z, false
          }
 
-         this.host.worldObj.playAuxSFX(2001, new BlockPos(i, j - 1, k), Block.getIdFromBlock(blockState.getBlock()));
+         this.host.worldObj.playEvent(2001, new BlockPos(i, j - 1, k), Block.getIdFromBlock(blockState.getBlock()));
          this.host.worldObj.setBlockState(new BlockPos(i, j - 1, k), this.replaceBlock.getDefaultState(), 2);
          this.host.onEat();
      }

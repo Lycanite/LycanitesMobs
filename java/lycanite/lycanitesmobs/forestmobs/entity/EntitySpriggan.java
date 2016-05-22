@@ -88,11 +88,11 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.stick), 0.5F).setMaxAmount(6).setBurningDrop(new ItemStack(Items.coal, 1, 1)));
-        this.drops.add(new DropRate(new ItemStack(Blocks.vine), 0.1F).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.wheat_seeds), 0.1F).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.pumpkin_seeds), 0.05F).setMaxAmount(1));
-        this.drops.add(new DropRate(new ItemStack(Items.melon_seeds), 0.05F).setMaxAmount(1));
+        this.drops.add(new DropRate(new ItemStack(Items.STICK), 0.5F).setMaxAmount(6).setBurningDrop(new ItemStack(Items.COAL, 1, 1)));
+        this.drops.add(new DropRate(new ItemStack(Blocks.VINE), 0.1F).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.WHEAT_SEEDS), 0.1F).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.PUMPKIN_SEEDS), 0.05F).setMaxAmount(1));
+        this.drops.add(new DropRate(new ItemStack(Items.MELON_SEEDS), 0.05F).setMaxAmount(1));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("lifedraincharge")), 0.25F).setMaxAmount(1));
 	}
 
@@ -108,9 +108,9 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
 
         // Water Healing:
         if(this.isInWater())
-            this.addPotionEffect(new PotionEffect(MobEffects.regeneration, 3 * 20, 2));
+            this.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 3 * 20, 2));
         else if(this.worldObj.isRaining() && this.worldObj.canBlockSeeSky(this.getPosition()))
-            this.addPotionEffect(new PotionEffect(MobEffects.regeneration, 3 * 20, 1));
+            this.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 3 * 20, 1));
 
         // Farming:
         int currentFarmingRate = this.farmingRate;
@@ -127,7 +127,7 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
 	        		for(int z = (int)this.posZ - farmingRange; z <= (int)this.posZ + farmingRange; z++) {
                         BlockPos pos = new BlockPos(x, y, z);
 	        			Block farmingBlock = this.worldObj.getBlockState(pos).getBlock();
-	        			if(farmingBlock != null && farmingBlock instanceof IPlantable && farmingBlock instanceof IGrowable && farmingBlock != Blocks.tallgrass && farmingBlock != Blocks.double_plant) {
+	        			if(farmingBlock != null && farmingBlock instanceof IPlantable && farmingBlock instanceof IGrowable && farmingBlock != Blocks.TALLGRASS && farmingBlock != Blocks.DOUBLE_PLANT) {
 	        				
 		        			// Boost Crops Every X Seconds:
 		        			if(!this.worldObj.isRemote && this.farmingTick % (currentFarmingRate) == 0) {
@@ -163,7 +163,7 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
                         this.posY + this.rand.nextDouble() * (double) this.height,
                         this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width,
                         0.0D, 0.0D, 0.0D,
-                        Blocks.tallgrass.getStateId(Blocks.tallgrass.getDefaultState()));
+                        Blocks.TALLGRASS.getStateId(Blocks.TALLGRASS.getDefaultState()));
             }
     }
 
@@ -249,7 +249,7 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
     // ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.moveSlowdown) return false;
+        if(potionEffect.getPotion() == MobEffects.SLOWNESS) return false;
         if(ObjectManager.getPotionEffect("paralysis") != null)
             if(potionEffect.getPotion() == ObjectManager.getPotionEffect("paralysis")) return false;
         super.isPotionApplicable(potionEffect);

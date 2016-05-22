@@ -76,9 +76,9 @@ public class EntityPhantom extends EntityCreatureTameable implements IMob, IGrou
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.bone), 1.0F).setMaxAmount(5));
-        this.drops.add(new DropRate(new ItemStack(Blocks.obsidian), 0.5F).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Blocks.skull, 1, 1), 0.25F).setMaxAmount(1));
+        this.drops.add(new DropRate(new ItemStack(Items.BONE), 1.0F).setMaxAmount(5));
+        this.drops.add(new DropRate(new ItemStack(Blocks.OBSIDIAN), 0.5F).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Blocks.SKULL, 1, 1), 0.25F).setMaxAmount(1));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("SpectralboltCharge")), 0.25F).setMaxAmount(3));
 	}
 	
@@ -159,7 +159,7 @@ public class EntityPhantom extends EntityCreatureTameable implements IMob, IGrou
     
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.blindness) return false;
+        if(potionEffect.getPotion() == MobEffects.BLINDNESS) return false;
         if(ObjectManager.getPotionEffect("Fear") != null)
             if(potionEffect.getPotion() == ObjectManager.getPotionEffect("Fear")) return false;
         super.isPotionApplicable(potionEffect);

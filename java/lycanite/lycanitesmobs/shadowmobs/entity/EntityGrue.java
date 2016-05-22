@@ -81,8 +81,8 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.ender_pearl), 0.5F).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Blocks.obsidian), 0.5F).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.ENDER_PEARL), 0.5F).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Blocks.OBSIDIAN), 0.5F).setMaxAmount(2));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("soulstoneshadow")), 1F).setMaxAmount(1).setSubspecies(3));
 	}
 
@@ -209,7 +209,7 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
     	
     	// Effects:
         if(target instanceof EntityLivingBase) {
-        	((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.blindness, this.getEffectDuration(7), 0));
+        	((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, this.getEffectDuration(7), 0));
         }
         
         return true;
@@ -240,7 +240,7 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
 
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.blindness) return false;
+        if(potionEffect.getPotion() == MobEffects.BLINDNESS) return false;
         if(ObjectManager.getPotionEffect("Fear") != null)
             if(potionEffect.getPotion() == ObjectManager.getPotionEffect("Fear")) return false;
         super.isPotionApplicable(potionEffect);

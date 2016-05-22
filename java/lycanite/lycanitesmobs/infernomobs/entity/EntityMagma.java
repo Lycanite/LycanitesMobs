@@ -62,13 +62,13 @@ public class EntityMagma extends EntityProjectileBase {
     
     public boolean canDestroyBlockSub(BlockPos pos) {
         Block block = this.worldObj.getBlockState(pos).getBlock();
-        if(block == Blocks.snow_layer)
+        if(block == Blocks.SNOW_LAYER)
             return true;
-        if(block == Blocks.tallgrass)
+        if(block == Blocks.TALLGRASS)
             return true;
-        if(block == Blocks.fire)
+        if(block == Blocks.FIRE)
             return true;
-        if(block == Blocks.web)
+        if(block == Blocks.WEB)
             return true;
         if(ObjectManager.getBlock("PoisonCloud") != null && block == ObjectManager.getBlock("PoisonCloud"))
             return true;
@@ -94,8 +94,8 @@ public class EntityMagma extends EntityProjectileBase {
     //========== Place Block ==========
     @Override
     public void placeBlock(World world, BlockPos pos) {
-        IBlockState placedBlockBig = Blocks.flowing_lava.getStateFromMeta(12);
-        IBlockState placedBlock = Blocks.flowing_lava.getStateFromMeta(11);
+        IBlockState placedBlockBig = Blocks.FLOWING_LAVA.getStateFromMeta(12);
+        IBlockState placedBlock = Blocks.FLOWING_LAVA.getStateFromMeta(11);
         if(this.canDestroyBlockSub(pos))
             world.setBlockState(pos, placedBlockBig, 3);
         if(this.canDestroyBlockSub(new BlockPos(pos.getX() + 1, pos.getY(), pos.getZ())))

@@ -27,7 +27,7 @@ public class BlockFluidPureLava extends BlockFluidBase {
 	//                   Constructor
 	// ==================================================
 	public BlockFluidPureLava(Fluid fluid) {
-		super(fluid, Material.lava, InfernoMobs.group, "purelava");
+		super(fluid, Material.LAVA, InfernoMobs.group, "purelava");
 
         this.setLightOpacity(1);
         this.setLightLevel(1.0F);
@@ -72,9 +72,9 @@ public class BlockFluidPureLava extends BlockFluidBase {
 		}
 
         // Water Cobblestone:
-        if(blockState == Blocks.water) {
+        if(blockState == Blocks.WATER) {
             if(world instanceof World) {
-                ((World)world).setBlockState(pos, Blocks.stone.getDefaultState());
+                ((World)world).setBlockState(pos, Blocks.STONE.getDefaultState());
             }
             return false;
         }
@@ -94,10 +94,10 @@ public class BlockFluidPureLava extends BlockFluidBase {
 	//                      Collision
 	// ==================================================
 	@Override
-	public void onEntityCollidedWithBlock(World world, BlockPos pos, Entity entity) {
+    public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
 		if(entity instanceof EntityItem)
 			entity.attackEntityFrom(DamageSource.lava, 10F);
-		super.onEntityCollidedWithBlock(world, pos, entity);
+        super.onEntityCollidedWithBlock(world, pos, state, entity);
 	}
     
     

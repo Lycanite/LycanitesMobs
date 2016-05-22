@@ -81,22 +81,22 @@ public class MountainMobs {
         ObjectManager.addItem("arcanelaserstormcharge", new ItemArcaneLaserStormCharge());
         ObjectManager.addItem("arcanelaserstormscepter", new ItemScepterArcaneLaserStorm(), 2, 1, 1);
 		
-		ObjectManager.addItem("yalemeatraw", new ItemCustomFood("yalemeatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(MobEffects.digSlowdown, 45, 2, 0.8F));
+		ObjectManager.addItem("yalemeatraw", new ItemCustomFood("yalemeatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(MobEffects.MINING_FATIGUE, 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("yalemeatraw"));
 		OreDictionary.registerOre("listAllmuttonraw", ObjectManager.getItem("yalemeatraw"));
 		
-		ObjectManager.addItem("yalemeatcooked", new ItemCustomFood("yalemeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(MobEffects.digSpeed, 10, 2, 1.0F).setAlwaysEdible());
+		ObjectManager.addItem("yalemeatcooked", new ItemCustomFood("yalemeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(MobEffects.HASTE, 10, 2, 1.0F).setAlwaysEdible());
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("yalemeatcooked"));
 		OreDictionary.registerOre("listAllmuttoncooked", ObjectManager.getItem("yalemeatcooked"));
 		
-		ObjectManager.addItem("peakskebab", new ItemCustomFood("peakskebab", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(MobEffects.digSpeed, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
+		ObjectManager.addItem("peakskebab", new ItemCustomFood("peakskebab", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(MobEffects.HASTE, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("peakskebab"));
 
 		ObjectManager.addItem("barghesttreat", new ItemTreat("barghesttreat", group));
 		
 		
 		// ========== Create Mobs ==========
-		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("mountainspawn"), new DispenserBehaviorMobEggCustom());
+		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ObjectManager.getItem("mountainspawn"), new DispenserBehaviorMobEggCustom());
 		MobInfo newMob;
         
         newMob = new MobInfo(group, "jabberwock", EntityJabberwock.class, 0x662222, 0xFFFFAA)
@@ -179,7 +179,7 @@ public class MountainMobs {
 			MobEventBase mobEvent = new MobEventBoulderDash("boulderdash", this.group);
 			SpawnTypeBase eventSpawner = new SpawnTypeSky("boulderdash")
 	            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-	        eventSpawner.materials = new Material[] {Material.air};
+	        eventSpawner.materials = new Material[] {Material.AIR};
 	        eventSpawner.ignoreBiome = true;
 	        eventSpawner.ignoreLight = true;
 	        eventSpawner.forceSpawning = true;
@@ -209,9 +209,9 @@ public class MountainMobs {
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
 				new ItemStack(ObjectManager.getItem("peakskebab"), 1, 0),
 				new Object[] {
-					Items.stick,
-					Items.carrot,
-					Items.melon,
+					Items.STICK,
+					Items.CARROT,
+					Items.MELON,
 					ObjectManager.getItem("yalemeatcooked")
 				}
 			));
@@ -224,7 +224,7 @@ public class MountainMobs {
 				new ItemStack(ObjectManager.getItem("barghesttreat"), 4, 0),
 				new Object[] { "TTT", "BBT", "TTT",
 						Character.valueOf('T'), ObjectManager.getItem("yalemeatcooked"),
-						Character.valueOf('B'), Items.bone
+						Character.valueOf('B'), Items.BONE
 				}));
 
         if(ItemInfo.enableWeaponRecipes) {
@@ -232,14 +232,14 @@ public class MountainMobs {
                     new ItemStack(ObjectManager.getItem("boulderblastscepter"), 1, 0),
                     new Object[]{"CCC", "CRC", "CRC",
                             Character.valueOf('C'), ObjectManager.getItem("boulderblastcharge"),
-                            Character.valueOf('R'), Items.blaze_rod
+                            Character.valueOf('R'), Items.BLAZE_ROD
                     }));
 
             GameRegistry.addRecipe(new ShapedOreRecipe(
                     new ItemStack(ObjectManager.getItem("arcanelaserstormscepter"), 1, 0),
                     new Object[]{" C ", " R ", " R ",
                             Character.valueOf('C'), ObjectManager.getItem("arcanelaserstormcharge"),
-                            Character.valueOf('R'), Items.blaze_rod
+                            Character.valueOf('R'), Items.BLAZE_ROD
                     }));
         }
 		

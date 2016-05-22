@@ -45,7 +45,7 @@ public class EntityFrostbolt extends EntityProjectileBase {
     //========== Entity Living Collision ==========
     @Override
     public boolean entityLivingCollision(EntityLivingBase entityLiving) {
-        entityLiving.addPotionEffect(new PotionEffect(MobEffects.moveSlowdown, this.getEffectDuration(8), 0));
+        entityLiving.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, this.getEffectDuration(8), 0));
     	return true;
     }
     

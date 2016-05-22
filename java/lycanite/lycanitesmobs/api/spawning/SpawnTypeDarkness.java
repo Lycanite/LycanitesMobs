@@ -74,7 +74,7 @@ public class SpawnTypeDarkness extends SpawnTypeBase {
         if(isValidBlock)
             isValidBlock = !blockState.isNormalCube();
         if(isValidBlock)
-            isValidBlock = blockState.getMaterial() != Material.water;
+            isValidBlock = blockState.getMaterial() != Material.WATER;
 
         if(!player.capabilities.isCreativeMode && isValidBlock && tick % this.checkRate == 0 && this.enabled && this.hasSpawns()) {
 			int lightLevel = world.getLight(playerCoords);

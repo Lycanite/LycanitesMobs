@@ -65,22 +65,22 @@ public class SaltwaterMobs {
 		// ========== Create Items ==========
 		ObjectManager.addItem("saltwaterspawn", new ItemSaltwaterEgg());
 
-        Potion rawFoodEffectID = MobEffects.blindness;
+        Potion rawFoodEffectID = MobEffects.BLINDNESS;
         if(ObjectManager.getPotionEffect("weight") != null)
             rawFoodEffectID = ObjectManager.getPotionEffect("weight");
         ObjectManager.addItem("ikameatraw", new ItemCustomFood("ikameatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(rawFoodEffectID, 45, 2, 0.8F));
         ObjectLists.addItem("rawfish", ObjectManager.getItem("ikameatraw"));
         OreDictionary.registerOre("listAllfishraw", ObjectManager.getItem("ikameatraw"));
 
-        ObjectManager.addItem("ikameatcooked", new ItemCustomFood("ikameatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(MobEffects.waterBreathing, 20, 2, 1.0F).setAlwaysEdible());
+        ObjectManager.addItem("ikameatcooked", new ItemCustomFood("ikameatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(MobEffects.WATER_BREATHING, 20, 2, 1.0F).setAlwaysEdible());
         ObjectLists.addItem("cookedfish", ObjectManager.getItem("ikameatcooked"));
         OreDictionary.registerOre("listAllfishcooked", ObjectManager.getItem("ikameatcooked"));
 
-        ObjectManager.addItem("seashellmaki", new ItemCustomFood("seashellmaki", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(MobEffects.waterBreathing, 120, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
+        ObjectManager.addItem("seashellmaki", new ItemCustomFood("seashellmaki", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(MobEffects.WATER_BREATHING, 120, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
         ObjectLists.addItem("cookedfish", ObjectManager.getItem("seashellmaki"));
 		
 		// ========== Create Mobs ==========
-		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("saltwaterspawn"), new DispenserBehaviorMobEggCustom());
+		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ObjectManager.getItem("saltwaterspawn"), new DispenserBehaviorMobEggCustom());
 		MobInfo newMob;
         
         newMob = new MobInfo(group, "lacedon", EntityLacedon.class, 0x000099, 0x2244FF)
@@ -146,7 +146,7 @@ public class SaltwaterMobs {
 			MobEventBase mobEvent = new MobEventSeaStorm("seastorm", this.group);
 			SpawnTypeBase eventSpawner = new SpawnTypeSky("seastorm")
 	            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-	        eventSpawner.materials = new Material[] {Material.air};
+	        eventSpawner.materials = new Material[] {Material.AIR};
 	        eventSpawner.ignoreBiome = true;
 	        eventSpawner.ignoreLight = true;
 	        eventSpawner.forceSpawning = true;
@@ -160,8 +160,8 @@ public class SaltwaterMobs {
         GameRegistry.addRecipe(new ShapelessOreRecipe(
                 new ItemStack(ObjectManager.getItem("seashellmaki"), 1, 0),
                 new Object[]{
-                        Blocks.vine,
-                        Items.wheat,
+                        Blocks.VINE,
+                        Items.WHEAT,
                         ObjectManager.getItem("ikameatcooked"),
                 }
         ));

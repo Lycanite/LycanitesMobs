@@ -23,9 +23,7 @@ public class SpawnTypeSky extends SpawnTypeBase {
     /**
      * Searches for coordinates to spawn mobs exactly at. By default this uses the block lists.
      * @param world The world to spawn in.
-     * @param x X position.
-     * @param y Y position.
-     * @param z Z position
+     * @param originPos Block position to spawn around.
      * @return A list of integer arrays, each array should contain 3 integers of x, y and z. Should return an empty list instead of null else a waning will show.
      */
     @Override

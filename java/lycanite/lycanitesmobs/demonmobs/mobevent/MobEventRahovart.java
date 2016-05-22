@@ -115,7 +115,7 @@ public class MobEventRahovart extends MobEventBoss {
                 world.setBlockState(new BlockPos(x, y - 2, z), buildBlock.getDefaultState(), 2);
                 y++;
                 while(y <= originY + height && y < world.getHeight()) {
-                    world.setBlockState(new BlockPos(x, y, z), Blocks.air.getDefaultState(), 2);
+                    world.setBlockState(new BlockPos(x, y, z), Blocks.AIR.getDefaultState(), 2);
                     y++;
                 }
             }
@@ -193,7 +193,7 @@ public class MobEventRahovart extends MobEventBoss {
 
     /** Adds decoration to a pillar. **/
     public void buildDecoration(World world, int originX, int originY, int originZ) {
-        Block primaryBlock = Blocks.netherrack;
+        Block primaryBlock = Blocks.NETHERRACK;
         Block hazardBlock = ObjectManager.getBlock("hellfire");
         world.setBlockState(new BlockPos(originX, originY + 1, originZ), primaryBlock.getDefaultState(), 2);
         world.setBlockState(new BlockPos(originX, originY + 2, originZ), primaryBlock.getDefaultState(), 2);

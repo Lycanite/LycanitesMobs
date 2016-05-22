@@ -23,7 +23,7 @@ public class BlockQuickWeb extends BlockBase {
 	//                   Constructor
 	// ==================================================
 	public BlockQuickWeb() {
-		super(Material.web);
+		super(Material.WEB);
         this.setCreativeTab(LycanitesMobs.itemsTab);
 		
 		// Properties:
@@ -70,8 +70,8 @@ public class BlockQuickWeb extends BlockBase {
 	//                Collision Effects
 	// ==================================================
     @Override
-    public void onEntityCollidedWithBlock(World world, BlockPos pos, Entity entity) {
-        super.onEntityCollidedWithBlock(world, pos, entity);
+    public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
+        super.onEntityCollidedWithBlock(world, pos, state, entity);
         entity.setInWeb();
     }
 

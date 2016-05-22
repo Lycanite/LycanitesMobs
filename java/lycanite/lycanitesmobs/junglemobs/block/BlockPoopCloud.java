@@ -30,7 +30,7 @@ public class BlockPoopCloud extends BlockBase {
 	//                   Constructor
 	// ==================================================
 	public BlockPoopCloud() {
-		super(Material.plants);
+		super(Material.PLANTS);
         this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, 0));
 		
 		// Properties:
@@ -95,11 +95,11 @@ public class BlockPoopCloud extends BlockBase {
 	//                Collision Effects
 	// ==================================================
     @Override
-    public void onEntityCollidedWithBlock(World world, BlockPos pos, Entity entity) {
-        super.onEntityCollidedWithBlock(world, pos, entity);
+    public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
+        super.onEntityCollidedWithBlock(world, pos, state, entity);
         if(entity instanceof EntityLivingBase) {
-            ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(MobEffects.moveSlowdown, 5 * 20, 0));
-            ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(MobEffects.confusion, 2 * 20, 0));
+            ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 5 * 20, 0));
+            ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 2 * 20, 0));
         }
     }
     
@@ -125,7 +125,7 @@ public class BlockPoopCloud extends BlockBase {
             world.spawnParticle(EnumParticleTypes.BLOCK_CRACK,
                     (double)particleX, (double)particleY, (double)particleZ,
                     0.0D, 0.0D, 0.0D,
-                    Blocks.tallgrass.getStateId(Blocks.dirt.getDefaultState())
+                    Blocks.TALLGRASS.getStateId(Blocks.DIRT.getDefaultState())
             );
         }
     }

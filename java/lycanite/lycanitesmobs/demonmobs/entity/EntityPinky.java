@@ -113,8 +113,8 @@ public class EntityPinky extends EntityCreatureRideable implements IAnimals, IGr
     }
     
     public void riderEffects(EntityLivingBase rider) {
-    	if(rider.isPotionActive(MobEffects.wither))
-    		rider.removePotionEffect(MobEffects.wither);
+    	if(rider.isPotionActive(MobEffects.WITHER))
+    		rider.removePotionEffect(MobEffects.WITHER);
         if(rider.isBurning())
             rider.setFire(0);
     }
@@ -200,7 +200,7 @@ public class EntityPinky extends EntityCreatureRideable implements IAnimals, IGr
                     }
                 }
                 if(doDamage) {
-                    possibleTarget.addPotionEffect(new PotionEffect(MobEffects.wither, 10 * 20, 0));
+                    possibleTarget.addPotionEffect(new PotionEffect(MobEffects.WITHER, 10 * 20, 0));
                 }
             }
         }
@@ -229,7 +229,7 @@ public class EntityPinky extends EntityCreatureRideable implements IAnimals, IGr
     // ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.wither) return false;
+        if(potionEffect.getPotion() == MobEffects.WITHER) return false;
         super.isPotionApplicable(potionEffect);
         return true;
     }

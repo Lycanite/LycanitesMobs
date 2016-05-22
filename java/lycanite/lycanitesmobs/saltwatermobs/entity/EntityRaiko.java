@@ -73,8 +73,8 @@ public class EntityRaiko extends EntityCreatureBase implements IMob, IGroupHunte
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.feather), 1.0F).setMinAmount(3).setMaxAmount(5));
-        this.drops.add(new DropRate(new ItemStack(Items.bone), 0.75F).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.FEATHER), 1.0F).setMinAmount(3).setMaxAmount(5));
+        this.drops.add(new DropRate(new ItemStack(Items.BONE), 0.75F).setMinAmount(1).setMaxAmount(3));
 	}
 	
 	
@@ -201,7 +201,7 @@ public class EntityRaiko extends EntityCreatureBase implements IMob, IGroupHunte
     public boolean isPotionApplicable(PotionEffect potionEffect) {
         if(ObjectManager.getPotionEffect("weight") != null)
             if(potionEffect.getPotion() == ObjectManager.getPotionEffect("weight")) return false;
-        if(potionEffect.getPotion() == MobEffects.blindness) return false;
+        if(potionEffect.getPotion() == MobEffects.BLINDNESS) return false;
         return super.isPotionApplicable(potionEffect);
     }
 

@@ -92,8 +92,8 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.flint), 1).setMinAmount(1).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Blocks.iron_ore), 0.5F).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.FLINT), 1).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Blocks.IRON_ORE), 0.5F).setMinAmount(1).setMaxAmount(2));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("MudshotCharge")), 0.25F));
 	}
 	
@@ -108,10 +108,10 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
     }
     
     public void riderEffects(EntityLivingBase rider) {
-    	if(rider.isPotionActive(MobEffects.weakness))
-    		rider.removePotionEffect(MobEffects.weakness);
-    	if(rider.isPotionActive(MobEffects.hunger))
-    		rider.removePotionEffect(MobEffects.hunger);
+    	if(rider.isPotionActive(MobEffects.WEAKNESS))
+    		rider.removePotionEffect(MobEffects.WEAKNESS);
+    	if(rider.isPotionActive(MobEffects.HUNGER))
+    		rider.removePotionEffect(MobEffects.HUNGER);
     }
 
 	
@@ -123,8 +123,8 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
     public float getAISpeedModifier() {
     	if(this.hasRiderTarget()) {
             IBlockState blockState = this.worldObj.getBlockState(this.getPosition().add(0, -1, 0));
-            if (blockState.getMaterial() == Material.sand
-                    || (blockState == Material.air && this.worldObj.getBlockState(this.getPosition().add(0, -2, 0)).getMaterial() == Material.sand))
+            if (blockState.getMaterial() == Material.SAND
+                    || (blockState == Material.AIR && this.worldObj.getBlockState(this.getPosition().add(0, -2, 0)).getMaterial() == Material.SAND))
                 return 1.8F;
         }
     	return 1.0F;
@@ -222,8 +222,8 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
     
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.hunger) return false;
-        if(potionEffect.getPotion() == MobEffects.weakness) return false;
+        if(potionEffect.getPotion() == MobEffects.HUNGER) return false;
+        if(potionEffect.getPotion() == MobEffects.WEAKNESS) return false;
         return super.isPotionApplicable(potionEffect);
     }
     

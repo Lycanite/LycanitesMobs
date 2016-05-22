@@ -28,7 +28,7 @@ public class BlockScorchfire extends BlockFireBase {
 	//                   Constructor
 	// ==================================================
 	public BlockScorchfire() {
-		super(Material.fire, InfernoMobs.group, "scorchfire");
+		super(Material.FIRE, InfernoMobs.group, "scorchfire");
 
         // Stats:
         this.tickRate = 30;
@@ -56,8 +56,8 @@ public class BlockScorchfire extends BlockFireBase {
 	//                Collision Effects
 	// ==================================================
     @Override
-    public void onEntityCollidedWithBlock(World world, BlockPos pos, Entity entity) {
-		super.onEntityCollidedWithBlock(world, pos, entity);
+    public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
+        super.onEntityCollidedWithBlock(world, pos, state, entity);
 		if(entity instanceof EntityItem && ((EntityItem)entity).getEntityItem() != null)
     		if(((EntityItem)entity).getEntityItem().getItem() == ObjectManager.getItem("scorchfirecharge"))
     			return;

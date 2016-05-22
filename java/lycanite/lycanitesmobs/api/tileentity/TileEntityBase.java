@@ -53,8 +53,8 @@ public class TileEntityBase extends TileEntity implements ITickable {
 
     /** Writes to NBT data. **/
     @Override
-    public void writeToNBT(NBTTagCompound nbtTagCompound) {
-        super.writeToNBT(nbtTagCompound);
+    public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound) {
+        return super.writeToNBT(nbtTagCompound);
     }
 
 

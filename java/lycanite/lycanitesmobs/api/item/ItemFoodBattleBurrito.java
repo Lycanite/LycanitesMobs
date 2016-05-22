@@ -26,11 +26,11 @@ public class ItemFoodBattleBurrito extends ItemCustomFood {
     @Override
     protected void onFoodEaten(ItemStack itemStack, World world, EntityPlayer player) {
         super.onFoodEaten(itemStack, world, player);
-        player.addPotionEffect(new PotionEffect(MobEffects.damageBoost, this.getEffectDuration(), 3));
-        player.addPotionEffect(new PotionEffect(MobEffects.resistance, this.getEffectDuration(), 3));
-        player.addPotionEffect(new PotionEffect(MobEffects.regeneration, this.getEffectDuration(), 1));
-        player.addPotionEffect(new PotionEffect(MobEffects.absorption, this.getEffectDuration(), 3));
-        player.addPotionEffect(new PotionEffect(MobEffects.healthBoost, this.getEffectDuration(), 3));
-        player.addPotionEffect(new PotionEffect(MobEffects.heal, 1, 3));
+        player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, this.getEffectDuration(), 3));
+        player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, this.getEffectDuration(), 3));
+        player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, this.getEffectDuration(), 1));
+        player.addPotionEffect(new PotionEffect(MobEffects.ABSORPTION, this.getEffectDuration(), 3));
+        player.addPotionEffect(new PotionEffect(MobEffects.HEALTH_BOOST, this.getEffectDuration(), 3));
+        player.addPotionEffect(new PotionEffect(MobEffects.INSTANT_HEALTH, 1, 3));
     }
 }

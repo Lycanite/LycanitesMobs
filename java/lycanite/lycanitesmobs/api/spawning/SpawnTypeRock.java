@@ -55,7 +55,7 @@ public class SpawnTypeRock extends SpawnTypeBlockBreak {
                 }
             }
         }
-        return isOre || block == Blocks.monster_egg;
+        return isOre || block == Blocks.MONSTER_EGG;
     }
 
 
@@ -64,9 +64,9 @@ public class SpawnTypeRock extends SpawnTypeBlockBreak {
     // ==================================================
     @Override
     public boolean isRareBlock(Block block) {
-        if(block == Blocks.diamond_ore)
+        if(block == Blocks.DIAMOND_ORE)
            return true;
-        if(block == Blocks.emerald_ore)
+        if(block == Blocks.EMERALD_ORE)
             return true;
         return false;
     }

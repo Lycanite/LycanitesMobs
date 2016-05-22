@@ -78,9 +78,9 @@ public class EntityEyewig extends EntityCreatureRideable {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.spider_eye), 0.9F).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Items.fermented_spider_eye), 0.2F));
-        this.drops.add(new DropRate(new ItemStack(Items.string), 1).setMinAmount(2).setMaxAmount(5));
+        this.drops.add(new DropRate(new ItemStack(Items.SPIDER_EYE), 0.9F).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.FERMENTED_SPIDER_EYE), 0.2F));
+        this.drops.add(new DropRate(new ItemStack(Items.STRING), 1).setMinAmount(2).setMaxAmount(5));
 	}
 	
 	
@@ -89,10 +89,10 @@ public class EntityEyewig extends EntityCreatureRideable {
     // ==================================================
 	// ========== Rider Effects ==========
 	public void riderEffects(EntityLivingBase rider) {
-    	if(rider.isPotionActive(MobEffects.poison))
-    		rider.removePotionEffect(MobEffects.poison);
-    	if(rider.isPotionActive(MobEffects.blindness))
-    		rider.removePotionEffect(MobEffects.blindness);
+    	if(rider.isPotionActive(MobEffects.POISON))
+    		rider.removePotionEffect(MobEffects.POISON);
+    	if(rider.isPotionActive(MobEffects.BLINDNESS))
+    		rider.removePotionEffect(MobEffects.BLINDNESS);
     }
 
 	
@@ -160,7 +160,7 @@ public class EntityEyewig extends EntityCreatureRideable {
     	
     	// Effect:
         if(target instanceof EntityLivingBase) {
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.blindness, this.getEffectDuration(8), 0));
+            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, this.getEffectDuration(8), 0));
         }
         
         return true;
@@ -221,8 +221,8 @@ public class EntityEyewig extends EntityCreatureRideable {
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.poison) return false;
-        if(potionEffect.getPotion() == MobEffects.blindness) return false;
+        if(potionEffect.getPotion() == MobEffects.POISON) return false;
+        if(potionEffect.getPotion() == MobEffects.BLINDNESS) return false;
         return super.isPotionApplicable(potionEffect);
     }
     

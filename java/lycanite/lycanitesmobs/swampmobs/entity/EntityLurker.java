@@ -90,8 +90,8 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.string), 0.5F).setMinAmount(2).setMaxAmount(5));
-        this.drops.add(new DropRate(new ItemStack(Items.leather), 0.5F).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.STRING), 0.5F).setMinAmount(2).setMaxAmount(5));
+        this.drops.add(new DropRate(new ItemStack(Items.LEATHER), 0.5F).setMaxAmount(2));
 	}
 	
 	
@@ -105,7 +105,7 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
         
         // Lurker Blind Stalking:
         if(this.getAttackTarget() != null) {
-        	if(this.getAttackTarget().isPotionActive(MobEffects.blindness))
+        	if(this.getAttackTarget().isPotionActive(MobEffects.BLINDNESS))
         		this.setAvoidTarget(this.getAttackTarget());
         	else
         		this.setAvoidTarget(null);
@@ -134,8 +134,8 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
     	
     	// Effect:
         if(target instanceof EntityLivingBase) {
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.poison, this.getEffectDuration(8), 1));
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.blindness, this.getEffectDuration(8), 0));
+            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.POISON, this.getEffectDuration(8), 1));
+            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, this.getEffectDuration(8), 0));
         }
         
         return true;
@@ -156,7 +156,7 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
 	    			if(itemstack != null && isTamingItem(itemstack))
 	    				return false;
 	    		}
-	    		if(!this.getAttackTarget().isPotionActive(MobEffects.blindness))
+	    		if(!this.getAttackTarget().isPotionActive(MobEffects.BLINDNESS))
 	    			return false;
 	    		if(this.getDistanceSqToEntity(this.getAttackTarget()) < (5.0D * 5.0D))
 	    			return false;
@@ -208,8 +208,8 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.poison) return false;
-        if(potionEffect.getPotion() == MobEffects.blindness) return false;
+        if(potionEffect.getPotion() == MobEffects.POISON) return false;
+        if(potionEffect.getPotion() == MobEffects.BLINDNESS) return false;
         return super.isPotionApplicable(potionEffect);
     }
     

@@ -85,12 +85,12 @@ public class EntityShambler extends EntityCreatureTameable implements IMob, IGro
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Blocks.log, 1, 0), 1).setMaxAmount(6));
-        this.drops.add(new DropRate(new ItemStack(Items.stick), 0.5F).setMaxAmount(6).setBurningDrop(new ItemStack(Items.coal)));
-        this.drops.add(new DropRate(new ItemStack(Blocks.vine), 0.1F).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.wheat_seeds), 0.1F).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.pumpkin_seeds), 0.05F).setMaxAmount(1));
-        this.drops.add(new DropRate(new ItemStack(Items.melon_seeds), 0.05F).setMaxAmount(1));
+        this.drops.add(new DropRate(new ItemStack(Blocks.LOG, 1, 0), 1).setMaxAmount(6));
+        this.drops.add(new DropRate(new ItemStack(Items.STICK), 0.5F).setMaxAmount(6).setBurningDrop(new ItemStack(Items.COAL)));
+        this.drops.add(new DropRate(new ItemStack(Blocks.VINE), 0.1F).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.WHEAT_SEEDS), 0.1F).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.PUMPKIN_SEEDS), 0.05F).setMaxAmount(1));
+        this.drops.add(new DropRate(new ItemStack(Items.MELON_SEEDS), 0.05F).setMaxAmount(1));
 	}
 	
 	
@@ -104,9 +104,9 @@ public class EntityShambler extends EntityCreatureTameable implements IMob, IGro
 
         // Water Healing:
         if(this.isInWater())
-            this.addPotionEffect(new PotionEffect(MobEffects.regeneration, 3 * 20, 2));
+            this.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 3 * 20, 2));
         else if(this.worldObj.isRaining() && this.worldObj.canBlockSeeSky(this.getPosition()))
-            this.addPotionEffect(new PotionEffect(MobEffects.regeneration, 3 * 20, 1));
+            this.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 3 * 20, 1));
     }
 
     
@@ -166,7 +166,7 @@ public class EntityShambler extends EntityCreatureTameable implements IMob, IGro
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.moveSlowdown) return false;
+        if(potionEffect.getPotion() == MobEffects.SLOWNESS) return false;
         if(ObjectManager.getPotionEffect("paralysis") != null)
             if(potionEffect.getPotion() == ObjectManager.getPotionEffect("paralysis")) return false;
         super.isPotionApplicable(potionEffect);

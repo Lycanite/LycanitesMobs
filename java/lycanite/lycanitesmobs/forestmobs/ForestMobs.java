@@ -74,7 +74,7 @@ public class ForestMobs {
 		// ========== Create Items ==========
 		ObjectManager.addItem("forestspawn", new ItemForestEgg());
 
-        ItemCustomFood rawMeat =  new ItemCustomFood("arisaurmeatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(MobEffects.saturation, 45, 2, 0.8F);
+        ItemCustomFood rawMeat =  new ItemCustomFood("arisaurmeatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(MobEffects.SATURATION, 45, 2, 0.8F);
 		if(ObjectManager.getPotionEffect("paralysis") != null)
 			rawMeat.setPotionEffect(ObjectManager.getPotionEffect("paralysis"), 10, 2, 0.8F);
 		ObjectManager.addItem("arisaurmeatraw", rawMeat);
@@ -93,7 +93,7 @@ public class ForestMobs {
         ObjectManager.addItem("lifedrainscepter", new ItemScepterLifeDrain(), 2, 1, 1);
 		
 		// ========== Create Mobs ==========
-		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("forestspawn"), new DispenserBehaviorMobEggCustom());
+		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ObjectManager.getItem("forestspawn"), new DispenserBehaviorMobEggCustom());
 		MobInfo newMob;
         
         newMob = new MobInfo(group, "ent", EntityEnt.class, 0x997700, 0x00FF22)
@@ -172,7 +172,7 @@ public class ForestMobs {
         
 		SpawnTypeBase bamLandSpawner = new SpawnTypeLand("rootriot_land")
             .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-		bamLandSpawner.materials = new Material[] {Material.air};
+		bamLandSpawner.materials = new Material[] {Material.AIR};
 		bamLandSpawner.ignoreBiome = true;
 		bamLandSpawner.ignoreLight = true;
 		bamLandSpawner.forceSpawning = true;
@@ -183,7 +183,7 @@ public class ForestMobs {
         
 		SpawnTypeBase bamSkySpawner = new SpawnTypeSky("rootriot_sky")
             .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-		bamSkySpawner.materials = new Material[] {Material.air};
+		bamSkySpawner.materials = new Material[] {Material.AIR};
 		bamSkySpawner.ignoreBiome = true;
 		bamSkySpawner.ignoreLight = true;
 		bamSkySpawner.forceSpawning = true;
@@ -208,16 +208,16 @@ public class ForestMobs {
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
 				new ItemStack(ObjectManager.getItem("paleosalad"), 1, 0),
 				new Object[] {
-					Blocks.leaves,
-					Items.carrot,
+					Blocks.LEAVES,
+					Items.CARROT,
 					ObjectManager.getItem("arisaurmeatcooked")
 				}
 			));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
 				new ItemStack(ObjectManager.getItem("paleosalad"), 1, 0),
 				new Object[] {
-					Blocks.leaves2,
-					Items.carrot,
+					Blocks.LEAVES2,
+					Items.CARROT,
 					ObjectManager.getItem("arisaurmeatcooked")
 				}
 			));
@@ -230,14 +230,14 @@ public class ForestMobs {
 				new ItemStack(ObjectManager.getItem("shamblertreat"), 4, 0),
 				new Object[] { "TTT", "BBT", "TTT",
 				Character.valueOf('T'), ObjectManager.getItem("lifedraincharge"),
-				Character.valueOf('B'), Items.reeds
+				Character.valueOf('B'), Items.REEDS
 			}));
 
         GameRegistry.addRecipe(new ShapedOreRecipe(
                 new ItemStack(ObjectManager.getItem("wargtreat"), 4, 0),
                 new Object[] { "TTT", "BBT", "TTT",
                         Character.valueOf('T'), ObjectManager.getItem("arisaurmeatcooked"),
-                        Character.valueOf('B'), Items.bone
+                        Character.valueOf('B'), Items.BONE
                 }));
 
         if(ItemInfo.enableWeaponRecipes) {
@@ -245,7 +245,7 @@ public class ForestMobs {
                     new ItemStack(ObjectManager.getItem("lifedrainscepter"), 1, 0),
                     new Object[]{"CCC", "CRC", "CRC",
                             Character.valueOf('C'), ObjectManager.getItem("lifedraincharge"),
-                            Character.valueOf('R'), Items.blaze_rod
+                            Character.valueOf('R'), Items.BLAZE_ROD
                     }));
         }
 		

@@ -26,7 +26,7 @@ public class BlockDoomfire extends BlockFireBase {
 	//                   Constructor
 	// ==================================================
 	public BlockDoomfire() {
-		super(Material.fire, DemonMobs.group, "doomfire");
+		super(Material.FIRE, DemonMobs.group, "doomfire");
 
         // Stats:
         this.tickRate = 30;
@@ -54,8 +54,8 @@ public class BlockDoomfire extends BlockFireBase {
     //                Collision Effects
     // ==================================================
     @Override
-    public void onEntityCollidedWithBlock(World world, BlockPos pos, Entity entity) {
-        super.onEntityCollidedWithBlock(world, pos, entity);
+    public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
+        super.onEntityCollidedWithBlock(world, pos, state, entity);
         if(entity instanceof EntityItem && ((EntityItem)entity).getEntityItem() != null)
             if(((EntityItem)entity).getEntityItem().getItem() == ObjectManager.getItem("hellfirecharge"))
                 return;

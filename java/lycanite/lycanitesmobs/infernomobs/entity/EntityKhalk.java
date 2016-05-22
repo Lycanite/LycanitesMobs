@@ -97,9 +97,9 @@ public class EntityKhalk extends EntityCreatureTameable implements IMob, IGroupF
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.coal), 1.0F).setMaxAmount(32));
-        this.drops.add(new DropRate(new ItemStack(Items.magma_cream), 0.75F).setMaxAmount(5));
-        this.drops.add(new DropRate(new ItemStack(Items.blaze_powder), 0.5F).setMaxAmount(8));
+        this.drops.add(new DropRate(new ItemStack(Items.COAL), 1.0F).setMaxAmount(32));
+        this.drops.add(new DropRate(new ItemStack(Items.MAGMA_CREAM), 0.75F).setMaxAmount(5));
+        this.drops.add(new DropRate(new ItemStack(Items.BLAZE_POWDER), 0.5F).setMaxAmount(8));
 	}
 	
 	
@@ -137,9 +137,9 @@ public class EntityKhalk extends EntityCreatureTameable implements IMob, IGroupF
     public float getBlockPathWeight(int x, int y, int z) {
         int waterWeight = 10;
         BlockPos pos = new BlockPos(x, y, z);
-        if(this.worldObj.getBlockState(pos).getBlock() == Blocks.lava)
+        if(this.worldObj.getBlockState(pos).getBlock() == Blocks.LAVA)
             return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
-        if(this.worldObj.getBlockState(pos).getBlock() == Blocks.flowing_lava)
+        if(this.worldObj.getBlockState(pos).getBlock() == Blocks.FLOWING_LAVA)
             return (super.getBlockPathWeight(x, y, z) + 1) * waterWeight;
 
         if(this.getAttackTarget() != null)
@@ -184,10 +184,10 @@ public class EntityKhalk extends EntityCreatureTameable implements IMob, IGroupF
 				for(int y = (int)this.posY; y <= (int)this.posY + lavaHeight; y++) {
 					for(int z = (int)this.posZ - lavaWidth; z <= (int)this.posZ + lavaWidth; z++) {
 						Block block = this.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock();
-						if(block == Blocks.air) {
-							IBlockState blockState = Blocks.flowing_lava.getStateFromMeta(11);
+						if(block == Blocks.AIR) {
+							IBlockState blockState = Blocks.FLOWING_LAVA.getStateFromMeta(11);
 							if(x == (int)this.posX && y == (int)this.posY && z == (int)this.posZ)
-								blockState = Blocks.flowing_lava.getStateFromMeta(12);
+								blockState = Blocks.FLOWING_LAVA.getStateFromMeta(12);
 							this.worldObj.setBlockState(new BlockPos(x, y, z), blockState, 3);
 						}
 					}

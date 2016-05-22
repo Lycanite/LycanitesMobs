@@ -50,8 +50,8 @@ public class EntityAIStayByWater extends EntityAIBase {
     	// Set home when in water or lava (for lava creatures).
     	if(this.host.isInWater()) {
     		IBlockState waterBlock = this.host.worldObj.getBlockState(this.host.getPosition());
-    		if((!this.host.isLavaCreature && waterBlock.getMaterial() == Material.water) ||
-    			(this.host.isLavaCreature && waterBlock.getMaterial() == Material.lava)) {
+    		if((!this.host.isLavaCreature && waterBlock.getMaterial() == Material.WATER) ||
+    			(this.host.isLavaCreature && waterBlock.getMaterial() == Material.LAVA)) {
 	    		this.waterPos = this.host.getPosition();
 	    		this.hasWaterPos = true;
 	    		return false;
@@ -137,11 +137,11 @@ public class EntityAIStayByWater extends EntityAIBase {
         if(!this.host.canBreatheUnderwater())
             return false;
         if(!this.host.waterDamage()) {
-            if(this.host.worldObj.getBlockState(pos).getMaterial() == Material.water)
+            if(this.host.worldObj.getBlockState(pos).getMaterial() == Material.WATER)
                 return true;
         }
         if(this.host.isImmuneToFire() || this.host.isLavaCreature) {
-            if(this.host.worldObj.getBlockState(pos).getMaterial() == Material.lava)
+            if(this.host.worldObj.getBlockState(pos).getMaterial() == Material.LAVA)
                 return true;
         }
         return false;

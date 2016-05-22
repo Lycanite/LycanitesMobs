@@ -80,8 +80,8 @@ public class EntityDweller extends EntityCreatureTameable implements IMob {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.fish), 0.5F).setBurningDrop(new ItemStack(Items.cooked_fish)).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Items.fish, 1, 3), 0.5F).setBurningDrop(new ItemStack(Items.cooked_fish, 1, 3)).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.FISH), 0.5F).setBurningDrop(new ItemStack(Items.COOKED_FISH)).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.FISH, 1, 3), 0.5F).setBurningDrop(new ItemStack(Items.COOKED_FISH, 1, 3)).setMaxAmount(2));
 	}
 	
 	
@@ -120,9 +120,9 @@ public class EntityDweller extends EntityCreatureTameable implements IMob {
 		int waterWeight = 10;
         BlockPos pos = new BlockPos(x, y, z);
         IBlockState blockState = this.worldObj.getBlockState(pos);
-        if(blockState.getBlock() == Blocks.water)
+        if(blockState.getBlock() == Blocks.WATER)
         	return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
-		if(blockState.getBlock() == Blocks.flowing_water)
+		if(blockState.getBlock() == Blocks.FLOWING_WATER)
 			return (super.getBlockPathWeight(x, y, z) + 1) * waterWeight;
         if(this.worldObj.isRaining() && this.worldObj.canBlockSeeSky(pos))
         	return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
@@ -161,7 +161,7 @@ public class EntityDweller extends EntityCreatureTameable implements IMob {
 
         // Effect:
         if(target instanceof EntityLivingBase) {
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.poison, this.getEffectDuration(5), 1));
+            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.POISON, this.getEffectDuration(5), 1));
         }
 
         return true;
@@ -173,8 +173,8 @@ public class EntityDweller extends EntityCreatureTameable implements IMob {
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.poison) return false;
-        if(potionEffect.getPotion() == MobEffects.blindness) return false;
+        if(potionEffect.getPotion() == MobEffects.POISON) return false;
+        if(potionEffect.getPotion() == MobEffects.BLINDNESS) return false;
         return super.isPotionApplicable(potionEffect);
     }
     

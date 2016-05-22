@@ -45,7 +45,7 @@ public class EntitySilex extends EntityCreatureAgeable implements IAnimals, IGro
         // AI Tasks:
         this.tasks.addTask(1, new EntityAIStayByWater(this));
         this.tasks.addTask(2, new EntityAIAttackMelee(this).setLongMemory(false));
-        this.tasks.addTask(3, new EntityAITempt(this).setItem(new ItemStack(Items.dye, 1, 4)));
+        this.tasks.addTask(3, new EntityAITempt(this).setItem(new ItemStack(Items.DYE, 1, 4)));
         this.tasks.addTask(4, new EntityAIAvoid(this).setNearSpeed(1.3D).setFarSpeed(1.2D).setNearDistance(5.0D).setFarDistance(20.0D));
         this.tasks.addTask(5, new EntityAIMate(this));
         this.tasks.addTask(6, new EntityAIFollowParent(this).setSpeed(1.0D));
@@ -73,7 +73,7 @@ public class EntitySilex extends EntityCreatureAgeable implements IAnimals, IGro
 	@Override
 	public void loadItemDrops() {
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("silexmeatraw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("silexmeatcooked"))).setMinAmount(1).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Items.dye, 1, 4), 1).setMinAmount(2).setMaxAmount(4));
+        this.drops.add(new DropRate(new ItemStack(Items.DYE, 1, 4), 1).setMinAmount(2).setMaxAmount(4));
     }
 
 	
@@ -86,9 +86,9 @@ public class EntitySilex extends EntityCreatureAgeable implements IAnimals, IGro
 		int waterWeight = 10;
 
         Block block = this.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock();
-        if(block == Blocks.water)
+        if(block == Blocks.WATER)
         	return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
-		if(block == Blocks.flowing_water)
+		if(block == Blocks.FLOWING_WATER)
 			return (super.getBlockPathWeight(x, y, z) + 1) * waterWeight;
         if(this.worldObj.isRaining() && this.worldObj.canBlockSeeSky(new BlockPos(x, y, z)))
         	return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
@@ -160,6 +160,6 @@ public class EntitySilex extends EntityCreatureAgeable implements IAnimals, IGro
     public boolean isBreedingItem(ItemStack testStack) {
         if(testStack == null || !this.isInWater())
             return false;
-        return testStack.getItem() == Items.dye && testStack.getItemDamage() == 4;
+        return testStack.getItem() == Items.DYE && testStack.getItemDamage() == 4;
     }
 }

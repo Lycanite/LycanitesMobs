@@ -88,7 +88,7 @@ public class EntityAbtu extends EntityCreatureTameable implements IMob, IGroupPr
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.fish, 1, 1), 0.5F).setMinAmount(1).setMaxAmount(2).setBurningDrop(new ItemStack(Items.cooked_fish, 1, 1)));
+        this.drops.add(new DropRate(new ItemStack(Items.FISH, 1, 1), 0.5F).setMinAmount(1).setMaxAmount(2).setBurningDrop(new ItemStack(Items.COOKED_FISH, 1, 1)));
     }
     
     
@@ -151,9 +151,9 @@ public class EntityAbtu extends EntityCreatureTameable implements IMob, IGroupPr
         int waterWeight = 10;
 
         Block block = this.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock();
-        if(block == Blocks.water)
+        if(block == Blocks.WATER)
             return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
-        if(block == Blocks.flowing_water)
+        if(block == Blocks.FLOWING_WATER)
             return (super.getBlockPathWeight(x, y, z) + 1) * waterWeight;
         if(this.worldObj.isRaining() && this.worldObj.canBlockSeeSky(new BlockPos(x, y, z)))
             return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
@@ -196,7 +196,7 @@ public class EntityAbtu extends EntityCreatureTameable implements IMob, IGroupPr
     public boolean isPotionApplicable(PotionEffect potionEffect) {
     	if(ObjectManager.getPotionEffect("weight") != null)
         	if(potionEffect.getPotion() == ObjectManager.getPotionEffect("weight")) return false;
-        if(potionEffect.getPotion() == MobEffects.blindness) return false;
+        if(potionEffect.getPotion() == MobEffects.BLINDNESS) return false;
         return super.isPotionApplicable(potionEffect);
     }
     

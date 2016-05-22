@@ -64,7 +64,7 @@ public class ExtendedWorld extends WorldSavedData {
 
         if (world.MAX_ENTITY_RADIUS < 50)
             world.MAX_ENTITY_RADIUS = 50;
-		WorldSavedData worldSavedData = world.getPerWorldStorage().loadData(ExtendedWorld.class, EXT_PROP_NAME);
+		WorldSavedData worldSavedData = world.getPerWorldStorage().getOrLoadData(ExtendedWorld.class, EXT_PROP_NAME);
 		if(worldSavedData != null) {
 			worldExt = (ExtendedWorld)worldSavedData;
 			worldExt.world = world;
@@ -473,11 +473,12 @@ public class ExtendedWorld extends WorldSavedData {
     //                    Write To NBT
     // ==================================================
 	@Override
-	public void writeToNBT(NBTTagCompound nbtTagCompound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound) {
 		nbtTagCompound.setLong("WorldEventStartTargetTime", this.worldEventStartTargetTime);
 		nbtTagCompound.setLong("WorldEventLastStartedTime", this.worldEventLastStartedTime);
     	nbtTagCompound.setString("WorldEventType", this.worldEventType);
     	nbtTagCompound.setInteger("WorldEventCount", this.worldEventCount);
+        return nbtTagCompound;
 	}
 	
 }

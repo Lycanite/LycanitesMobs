@@ -79,7 +79,7 @@ public class ShadowMobs {
 		ObjectManager.addItem("bloodleechcharge", new ItemBloodleechCharge());
 		ObjectManager.addItem("bloodleechscepter", new ItemScepterBloodleech(), 2, 1, 1);
 
-        ItemCustomFood rawMeat = new ItemCustomFood("chupacabrameatraw", group, 4, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(MobEffects.hunger, 45, 2, 0.8F);
+        ItemCustomFood rawMeat = new ItemCustomFood("chupacabrameatraw", group, 4, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(MobEffects.HUNGER, 45, 2, 0.8F);
         if(ObjectManager.getPotionEffect("fear") != null)
             rawMeat.setPotionEffect(ObjectManager.getPotionEffect("fear"), 10, 2, 0.8F);
         ObjectManager.addItem("chupacabrameatraw", rawMeat);
@@ -112,7 +112,7 @@ public class ShadowMobs {
 		
 		
 		// ========== Create Mobs ==========
-		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("shadowspawn"), new DispenserBehaviorMobEggCustom());
+		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ObjectManager.getItem("shadowspawn"), new DispenserBehaviorMobEggCustom());
 		MobInfo newMob;
         
         newMob = new MobInfo(group, "grue", EntityGrue.class, 0x191017, 0xBB44AA)
@@ -200,7 +200,7 @@ public class ShadowMobs {
 		mobEvent.minDay = 10;
 		SpawnTypeBase eventSpawner = new SpawnTypeSky("shadowgames_sky")
             .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-        eventSpawner.materials = new Material[] {Material.air};
+        eventSpawner.materials = new Material[] {Material.AIR};
         eventSpawner.ignoreBiome = true;
         eventSpawner.ignoreLight = true;
         eventSpawner.forceSpawning = true;
@@ -210,7 +210,7 @@ public class ShadowMobs {
         mobEvent.addSpawner(eventSpawner);
         eventSpawner = new SpawnTypeLand("shadowgames_land")
                 .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-        eventSpawner.materials = new Material[] {Material.air};
+        eventSpawner.materials = new Material[] {Material.AIR};
         eventSpawner.ignoreBiome = true;
         eventSpawner.ignoreLight = true;
         eventSpawner.forceSpawning = true;
@@ -224,7 +224,7 @@ public class ShadowMobs {
         mobEvent.minDay = 10;
         eventSpawner = new SpawnTypeLand("blackplague")
                 .setChance(1.0D).setBlockLimit(32).setMobLimit(8);
-        eventSpawner.materials = new Material[] {Material.air};
+        eventSpawner.materials = new Material[] {Material.AIR};
         eventSpawner.ignoreBiome = true;
         eventSpawner.ignoreLight = true;
         eventSpawner.forceSpawning = true;
@@ -245,8 +245,8 @@ public class ShadowMobs {
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
 				new ItemStack(ObjectManager.getItem("bloodchili"), 1, 0),
 				new Object[] {
-					Items.bowl,
-                    new ItemStack(Items.dye, 1, 3),
+					Items.BOWL,
+                    new ItemStack(Items.DYE, 1, 3),
 					ObjectManager.getItem("chupacabrameatcooked")
 				}
 			));
@@ -256,14 +256,14 @@ public class ShadowMobs {
                     new ItemStack(ObjectManager.getItem("spectralboltscepter"), 1, 0),
                     new Object[]{"CCC", "CRC", "CRC",
                             Character.valueOf('C'), ObjectManager.getItem("spectralboltcharge"),
-                            Character.valueOf('R'), Items.blaze_rod
+                            Character.valueOf('R'), Items.BLAZE_ROD
                     }));
 
             GameRegistry.addRecipe(new ShapedOreRecipe(
                     new ItemStack(ObjectManager.getItem("bloodleechscepter"), 1, 0),
                     new Object[]{"CCC", "CRC", "CRC",
                             Character.valueOf('C'), ObjectManager.getItem("bloodleechcharge"),
-                            Character.valueOf('R'), Items.blaze_rod
+                            Character.valueOf('R'), Items.BLAZE_ROD
                     }));
         }
 
@@ -271,14 +271,14 @@ public class ShadowMobs {
                 new ItemStack(ObjectManager.getItem("chupacabratreat"), 4, 0),
                 new Object[] { "TTT", "BBT", "TTT",
                         Character.valueOf('T'), ObjectManager.getItem("geistliver"),
-                        Character.valueOf('B'), Items.bone
+                        Character.valueOf('B'), Items.BONE
                 }));
 
         GameRegistry.addRecipe(new ShapedOreRecipe(
                 new ItemStack(ObjectManager.getItem("shadetreat"), 4, 0),
                 new Object[] { "TTT", "BBT", "TTT",
-                        Character.valueOf('T'), Items.ender_pearl,
-                        Character.valueOf('B'), Items.bone
+                        Character.valueOf('T'), Items.ENDER_PEARL,
+                        Character.valueOf('B'), Items.BONE
                 }));
 		
 		

@@ -93,7 +93,7 @@ public class EntityConba extends EntityCreatureTameable implements IMob {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.dye, 1, 3), 1).setMinAmount(1).setMaxAmount(5));
+        this.drops.add(new DropRate(new ItemStack(Items.DYE, 1, 3), 1).setMinAmount(1).setMaxAmount(5));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("poopcharge")), 0.75F));
 	}
     
@@ -267,9 +267,9 @@ public class EntityConba extends EntityCreatureTameable implements IMob {
     // ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.poison) return false;
-        if(potionEffect.getPotion() == MobEffects.moveSlowdown) return false;
-        if(potionEffect.getPotion() == MobEffects.confusion) return false;
+        if(potionEffect.getPotion() == MobEffects.POISON) return false;
+        if(potionEffect.getPotion() == MobEffects.SLOWNESS) return false;
+        if(potionEffect.getPotion() == MobEffects.NAUSEA) return false;
         return super.isPotionApplicable(potionEffect);
     }
     

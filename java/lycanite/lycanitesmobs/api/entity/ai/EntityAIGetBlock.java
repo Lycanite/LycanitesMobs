@@ -26,7 +26,7 @@ public class EntityAIGetBlock extends EntityAIBase {
     private int cantSeeTime = 0;
     protected int cantSeeTimeMax = 60;
     private int updateRate = 0;
-    public Block targetBlock = Blocks.torch;
+    public Block targetBlock = Blocks.TORCH;
     public String targetBlockName = "";
     public boolean tamedLooting = true;
     
@@ -105,7 +105,7 @@ public class EntityAIGetBlock extends EntityAIBase {
         	for(int y = (int)this.host.posY - heightDistance; y < (int)this.host.posY + heightDistance; y++) {
         		for(int z = (int)this.host.posZ - this.distanceMax; z < (int)this.host.posZ + this.distanceMax; z++) {
         			Block searchBlock = this.host.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock();
-                	if(searchBlock != null && searchBlock != Blocks.air) {
+                	if(searchBlock != null && searchBlock != Blocks.AIR) {
                         BlockPos possibleTarget = null;
                 		if(!"".equalsIgnoreCase(this.targetBlockName)) {
                 			if(ObjectLists.isName(searchBlock, this.targetBlockName)) {

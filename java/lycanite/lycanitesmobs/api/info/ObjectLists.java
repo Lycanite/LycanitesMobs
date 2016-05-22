@@ -251,7 +251,7 @@ public class ObjectLists {
 		// Debuffs:
         ObjectLists.addEffect("buffs", MobEffects.BLINDNESS);
         ObjectLists.addEffect("buffs", MobEffects.NAUSEA);
-        ObjectLists.addEffect("buffs", MobEffects.WEAKNESS);
+        ObjectLists.addEffect("buffs", MobEffects.MINING_FATIGUE);
         ObjectLists.addEffect("buffs", MobEffects.INSTANT_DAMAGE);
         ObjectLists.addEffect("buffs", MobEffects.HUNGER);
         ObjectLists.addEffect("buffs", MobEffects.SLOWNESS);

@@ -29,7 +29,7 @@ public class BlockPoisonCloud extends BlockBase {
 	//                   Constructor
 	// ==================================================
 	public BlockPoisonCloud() {
-		super(Material.plants);
+		super(Material.PLANTS);
         this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, 0));
 
         // Properties:
@@ -94,10 +94,10 @@ public class BlockPoisonCloud extends BlockBase {
 	//                Collision Effects
 	// ==================================================
     @Override
-    public void onEntityCollidedWithBlock(World world, BlockPos pos, Entity entity) {
-		super.onEntityCollidedWithBlock(world, pos, entity);
+    public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
+        super.onEntityCollidedWithBlock(world, pos, state, entity);
 		if(entity instanceof EntityLivingBase) {
-			((EntityLivingBase)entity).addPotionEffect(new PotionEffect(MobEffects.poison, 5 * 20, 0));
+			((EntityLivingBase)entity).addPotionEffect(new PotionEffect(MobEffects.POISON, 5 * 20, 0));
 		}
 	}
     

@@ -97,8 +97,8 @@ public class EntityBarghest extends EntityCreatureRideable implements IGroupPred
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.leather), 1F).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.bone), 0.5F).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.LEATHER), 1F).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.BONE), 0.5F).setMaxAmount(2));
 	}
 	
 	
@@ -152,7 +152,7 @@ public class EntityBarghest extends EntityCreatureRideable implements IGroupPred
                         if (ObjectManager.getPotionEffect("weight") != null)
                             possibleTarget.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("weight"), this.getEffectDuration(5), 1));
                         else
-                            possibleTarget.addPotionEffect(new PotionEffect(MobEffects.moveSlowdown, 10 * 20, 0));
+                            possibleTarget.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 10 * 20, 0));
                     }
                 }
             }
@@ -161,8 +161,8 @@ public class EntityBarghest extends EntityCreatureRideable implements IGroupPred
     }
     
     public void riderEffects(EntityLivingBase rider) {
-    	if(rider.isPotionActive(MobEffects.digSlowdown))
-    		rider.removePotionEffect(MobEffects.digSlowdown);
+    	if(rider.isPotionActive(MobEffects.SLOWNESS))
+    		rider.removePotionEffect(MobEffects.SLOWNESS);
     	if(rider.isPotionActive(ObjectManager.getPotionEffect("weight")))
     		rider.removePotionEffect(ObjectManager.getPotionEffect("weight"));
     }
@@ -272,7 +272,7 @@ public class EntityBarghest extends EntityCreatureRideable implements IGroupPred
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.digSlowdown) return false;
+        if(potionEffect.getPotion() == MobEffects.MINING_FATIGUE) return false;
         if(ObjectManager.getPotionEffect("weight") != null)
             if(potionEffect.getPotion() == ObjectManager.getPotionEffect("weight")) return false;
         return super.isPotionApplicable(potionEffect);

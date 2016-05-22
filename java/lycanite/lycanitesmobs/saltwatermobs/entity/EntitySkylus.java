@@ -88,9 +88,9 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroup
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.dye, 1, 0), 1).setMinAmount(1).setMaxAmount(5));
-        this.drops.add(new DropRate(new ItemStack(Items.prismarine_shard, 1), 0.5F).setMaxAmount(1));
-        this.drops.add(new DropRate(new ItemStack(Items.prismarine_crystals, 1), 0.125F).setMaxAmount(1));
+        this.drops.add(new DropRate(new ItemStack(Items.DYE, 1, 0), 1).setMinAmount(1).setMaxAmount(5));
+        this.drops.add(new DropRate(new ItemStack(Items.PRISMARINE_SHARD, 1), 0.5F).setMaxAmount(1));
+        this.drops.add(new DropRate(new ItemStack(Items.PRISMARINE_CRYSTALS, 1), 0.125F).setMaxAmount(1));
     }
     
     
@@ -127,9 +127,9 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroup
         int waterWeight = 10;
 
         Block block = this.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock();
-        if(block == Blocks.water)
+        if(block == Blocks.WATER)
             return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
-        if(block == Blocks.flowing_water)
+        if(block == Blocks.FLOWING_WATER)
             return (super.getBlockPathWeight(x, y, z) + 1) * waterWeight;
         if(this.worldObj.isRaining() && this.worldObj.canBlockSeeSky(new BlockPos(x, y, z)))
             return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
@@ -166,7 +166,7 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroup
     	
     	// Effect:
         if(target instanceof EntityLivingBase) {
-    		((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.blindness, this.getEffectDuration(5), 1));
+    		((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, this.getEffectDuration(5), 1));
         }
         
         return true;
@@ -196,7 +196,7 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroup
     public boolean isPotionApplicable(PotionEffect potionEffect) {
         if(ObjectManager.getPotionEffect("weight") != null)
             if(potionEffect.getPotion() == ObjectManager.getPotionEffect("weight")) return false;
-        if(potionEffect.getPotion() == MobEffects.blindness) return false;
+        if(potionEffect.getPotion() == MobEffects.BLINDNESS) return false;
         return super.isPotionApplicable(potionEffect);
     }
     

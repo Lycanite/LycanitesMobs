@@ -86,15 +86,15 @@ public class ArcticMobs {
 		// ========== Create Items ==========
 		ObjectManager.addItem("arcticspawn", new ItemArcticEgg());
 		
-		ObjectManager.addItem("yetimeatraw", new ItemCustomFood("yetimeatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(MobEffects.moveSlowdown, 45, 2, 0.8F));
+		ObjectManager.addItem("yetimeatraw", new ItemCustomFood("yetimeatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(MobEffects.SLOWNESS, 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("yetimeatraw"));
 		OreDictionary.registerOre("listAllporkraw", ObjectManager.getItem("yetimeatraw"));
 		
-		ObjectManager.addItem("yetimeatcooked", new ItemCustomFood("yetimeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(MobEffects.resistance, 10, 2, 1.0F).setAlwaysEdible());
+		ObjectManager.addItem("yetimeatcooked", new ItemCustomFood("yetimeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(MobEffects.RESISTANCE, 10, 2, 1.0F).setAlwaysEdible());
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("yetimeatcooked"));
 		OreDictionary.registerOre("listAllporkcooked", ObjectManager.getItem("yetimeatcooked"));
 		
-		ObjectManager.addItem("palesoup", new ItemCustomFood("palesoup", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(MobEffects.resistance, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
+		ObjectManager.addItem("palesoup", new ItemCustomFood("palesoup", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(MobEffects.RESISTANCE, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("palesoup"));
 
 		ObjectManager.addItem("frostyfur", new ItemFrostyFur());
@@ -113,7 +113,7 @@ public class ArcticMobs {
 		ObjectManager.addItem("arixtreat", new ItemTreat("arixtreat", group));
         ObjectManager.addItem("serpixtreat", new ItemTreat("serpixtreat", group));
 
-        ObjectManager.addItem("bucketooze", new ItemBucketOoze(fluid).setContainerItem(Items.bucket));
+        ObjectManager.addItem("bucketooze", new ItemBucketOoze(fluid).setContainerItem(Items.BUCKET));
 
         // ========== Create Blocks ==========
         ObjectManager.addBlock("frostweb", new BlockFrostweb());
@@ -128,7 +128,7 @@ public class ArcticMobs {
         ObjectManager.addBlock("icefire", new BlockIcefire());
 		
 		// ========== Create Mobs ==========
-		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("arcticspawn"), new DispenserBehaviorMobEggCustom());
+		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ObjectManager.getItem("arcticspawn"), new DispenserBehaviorMobEggCustom());
         MobInfo newMob;
         
         newMob = new MobInfo(group, "reiver", EntityReiver.class, 0xDDEEFF, 0x99DDEE)
@@ -211,7 +211,7 @@ public class ArcticMobs {
         MobEventBase mobEvent = new MobEventSubZero("subzero", this.group);
         SpawnTypeBase eventSpawner = new SpawnTypeSky("subzero")
             .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-        eventSpawner.materials = new Material[] {Material.air};
+        eventSpawner.materials = new Material[] {Material.AIR};
         eventSpawner.ignoreBiome = true;
         eventSpawner.ignoreLight = true;
         eventSpawner.forceSpawning = true;
@@ -224,7 +224,7 @@ public class ArcticMobs {
         mobEvent.minDay = 10;
         eventSpawner = new SpawnTypeLand("wintersgrasp")
                 .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-        eventSpawner.materials = new Material[] {Material.air};
+        eventSpawner.materials = new Material[] {Material.AIR};
         eventSpawner.ignoreBiome = true;
         eventSpawner.ignoreLight = true;
         eventSpawner.forceSpawning = true;
@@ -247,8 +247,8 @@ public class ArcticMobs {
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
 				new ItemStack(ObjectManager.getItem("palesoup"), 1, 0),
 				new Object[] {
-					Items.milk_bucket.setContainerItem(Items.bucket),
-					Items.bowl,
+					Items.MILK_BUCKET.setContainerItem(Items.BUCKET),
+					Items.BOWL,
 					ObjectManager.getItem("yetimeatcooked")
 				}
 			));
@@ -262,14 +262,14 @@ public class ArcticMobs {
                     new ItemStack(ObjectManager.getItem("frostboltscepter"), 1, 0),
                     new Object[]{"CCC", "CRC", "CRC",
                             Character.valueOf('C'), ObjectManager.getItem("frostboltcharge"),
-                            Character.valueOf('R'), Items.blaze_rod
+                            Character.valueOf('R'), Items.BLAZE_ROD
                     }));
 
             GameRegistry.addRecipe(new ShapedOreRecipe(
                     new ItemStack(ObjectManager.getItem("frostwebscepter"), 1, 0),
                     new Object[]{"CCC", "CRC", "CRC",
                             Character.valueOf('C'), ObjectManager.getItem("frostwebcharge"),
-                            Character.valueOf('R'), Items.blaze_rod
+                            Character.valueOf('R'), Items.BLAZE_ROD
                     }));
 
             GameRegistry.addRecipe(new ShapedOreRecipe(
@@ -277,36 +277,36 @@ public class ArcticMobs {
                     new Object[]{"SCS", "SRS", "SRS",
                             Character.valueOf('C'), ObjectManager.getItem("tundracharge"),
                             Character.valueOf('S'), ObjectManager.getItem("frostyfur"),
-                            Character.valueOf('R'), Items.blaze_rod
+                            Character.valueOf('R'), Items.BLAZE_ROD
                     }));
 
             GameRegistry.addRecipe(new ShapedOreRecipe(
                     new ItemStack(ObjectManager.getItem("icefirescepter"), 1, 0),
                     new Object[]{"CCC", "CRC", "CRC",
                             Character.valueOf('C'), ObjectManager.getItem("icefirecharge"),
-                            Character.valueOf('R'), Items.blaze_rod
+                            Character.valueOf('R'), Items.BLAZE_ROD
                     }));
 
             GameRegistry.addRecipe(new ShapedOreRecipe(
                     new ItemStack(ObjectManager.getItem("blizzardscepter"), 1, 0),
                     new Object[]{"CCC", "CRC", "CRC",
                             Character.valueOf('C'), ObjectManager.getItem("blizzardcharge"),
-                            Character.valueOf('R'), Items.blaze_rod
+                            Character.valueOf('R'), Items.BLAZE_ROD
                     }));
         }
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("arixtreat"), 4, 0),
 				new Object[] { "TTT", "BBT", "TTT",
-				Character.valueOf('T'), Blocks.packed_ice,
-				Character.valueOf('B'), Items.bone
+				Character.valueOf('T'), Blocks.PACKED_ICE,
+				Character.valueOf('B'), Items.BONE
 			}));
 
         GameRegistry.addRecipe(new ShapedOreRecipe(
                 new ItemStack(ObjectManager.getItem("serpixtreat"), 4, 0),
                 new Object[] { "TTT", "BBT", "TTT",
                         Character.valueOf('T'), ObjectManager.getItem("frostyfur"),
-                        Character.valueOf('B'), Items.bone
+                        Character.valueOf('B'), Items.BONE
                 }));
 		
 		// ========== Smelting ==========

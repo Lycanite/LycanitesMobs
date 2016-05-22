@@ -110,7 +110,7 @@ public class SpawnTypeUnderground extends SpawnTypeLand {
         int[] xz = this.getRandomXZCoord(world, originPos.getX(), originPos.getZ(), rangeMin, range);
         int x = xz[0];
         int z = xz[1];
-        int y = this.getRandomYCoord(world, new BlockPos(x, 0, z), rangeMin, originPos.getY(), true, Blocks.air, true);
+        int y = this.getRandomYCoord(world, new BlockPos(x, 0, z), rangeMin, originPos.getY(), true, Blocks.AIR, true);
         return y > -1 ? new BlockPos(x, y, z) : null;
     }
 }

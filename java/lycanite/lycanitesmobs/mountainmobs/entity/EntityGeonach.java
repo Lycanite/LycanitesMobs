@@ -88,10 +88,10 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Blocks.stone), 1F).setMaxAmount(8));
-        this.drops.add(new DropRate(new ItemStack(Blocks.iron_ore), 0.75F).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Items.quartz), 0.75F).setMaxAmount(5));
-        this.drops.add(new DropRate(new ItemStack(Blocks.gold_ore), 0.1F).setMaxAmount(1));
+        this.drops.add(new DropRate(new ItemStack(Blocks.STONE), 1F).setMaxAmount(8));
+        this.drops.add(new DropRate(new ItemStack(Blocks.IRON_ORE), 0.75F).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.QUARTZ), 0.75F).setMaxAmount(5));
+        this.drops.add(new DropRate(new ItemStack(Blocks.GOLD_ORE), 0.1F).setMaxAmount(1));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("soulstonemountain")), 1F).setMaxAmount(1).setSubspecies(3));
 	}
 
@@ -145,7 +145,7 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
                         this.posY + this.rand.nextDouble() * (double) this.height,
                         this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width,
                         0.0D, 0.0D, 0.0D,
-                        Blocks.tallgrass.getStateId(Blocks.stone.getDefaultState()));
+                        Blocks.TALLGRASS.getStateId(Blocks.STONE.getDefaultState()));
             }
     }
 
@@ -177,7 +177,7 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
         	if(this.getAttackPhase() == 2 && ObjectManager.getPotionEffect("weight") != null)
         		((EntityLivingBase)target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("weight"), this.getEffectDuration(7), 0));
         	else
-        		((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.digSlowdown, this.getEffectDuration(7), 0));
+        		((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, this.getEffectDuration(7), 0));
         }
         
         // Update Phase:
@@ -247,7 +247,7 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
 
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.digSlowdown) return false;
+        if(potionEffect.getPotion() == MobEffects.MINING_FATIGUE) return false;
         if(ObjectManager.getPotionEffect("weight") != null)
             if(potionEffect.getPotion() == ObjectManager.getPotionEffect("weight")) return false;
         return super.isPotionApplicable(potionEffect);

@@ -93,7 +93,7 @@ public class EntityVespid extends EntityCreatureAgeable implements IMob, IGroupP
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.clay_ball), 0.5F).setMaxAmount(16));
+        this.drops.add(new DropRate(new ItemStack(Items.CLAY_BALL), 0.5F).setMaxAmount(16));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getBlock("propolis")), 0.5F).setMaxAmount(4));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getBlock("veswax")), 0.5F).setMaxAmount(4));
 	}
@@ -307,7 +307,7 @@ public class EntityVespid extends EntityCreatureAgeable implements IMob, IGroupP
             byte effectSeconds = 8;
             if(target instanceof EntityPlayer)
             	effectSeconds /= 2;
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.poison, this.getEffectDuration(effectSeconds), 0));
+            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.POISON, this.getEffectDuration(effectSeconds), 0));
         }
         
         return true;
@@ -355,8 +355,8 @@ public class EntityVespid extends EntityCreatureAgeable implements IMob, IGroupP
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.poison) return false;
-        if(potionEffect.getPotion() == MobEffects.moveSlowdown) return false;
+        if(potionEffect.getPotion() == MobEffects.POISON) return false;
+        if(potionEffect.getPotion() == MobEffects.SLOWNESS) return false;
         return super.isPotionApplicable(potionEffect);
     }
     

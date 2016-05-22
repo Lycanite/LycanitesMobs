@@ -147,11 +147,11 @@ public class EntityAIPlaceBlock extends EntityAIBase {
     	if(targetBlock == null)
     		return false;
     	else {
-    		if(targetState.getMaterial() == Material.water || targetState.getMaterial() == Material.lava) {
+    		if(targetState.getMaterial() == Material.WATER || targetState.getMaterial() == Material.LAVA) {
 	    		if(!this.replaceLiquid)
 	    			return false;
     		}
-    		else if(targetBlock != Blocks.air && !this.replaceSolid)
+    		else if(targetBlock != Blocks.AIR && !this.replaceSolid)
 	    		return false;
             if(!this.host.useDirectNavigator() && this.host.getNavigator() != null) {
                 if(this.host.getNavigator().getPathToPos(pos) == null)

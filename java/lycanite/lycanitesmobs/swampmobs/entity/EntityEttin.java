@@ -78,11 +78,11 @@ public class EntityEttin extends EntityCreatureAgeable implements IMob {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Blocks.log), 1).setMinAmount(2).setMaxAmount(6));
-        this.drops.add(new DropRate(new ItemStack(Blocks.brown_mushroom), 1).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Blocks.red_mushroom), 1).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.leather), 1).setMinAmount(2).setMaxAmount(6));
-        this.drops.add(new DropRate(new ItemStack(Items.coal), 1).setMinAmount(2).setMaxAmount(8));
+        this.drops.add(new DropRate(new ItemStack(Blocks.LOG), 1).setMinAmount(2).setMaxAmount(6));
+        this.drops.add(new DropRate(new ItemStack(Blocks.BROWN_MUSHROOM), 1).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Blocks.RED_MUSHROOM), 1).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.LEATHER), 1).setMinAmount(2).setMaxAmount(6));
+        this.drops.add(new DropRate(new ItemStack(Items.COAL), 1).setMinAmount(2).setMaxAmount(8));
 	}
 	
 	
@@ -122,8 +122,8 @@ public class EntityEttin extends EntityCreatureAgeable implements IMob {
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.poison) return false;
-        if(potionEffect.getPotion() == MobEffects.blindness) return false;
+        if(potionEffect.getPotion() == MobEffects.POISON) return false;
+        if(potionEffect.getPotion() == MobEffects.BLINDNESS) return false;
         return super.isPotionApplicable(potionEffect);
     }
 	

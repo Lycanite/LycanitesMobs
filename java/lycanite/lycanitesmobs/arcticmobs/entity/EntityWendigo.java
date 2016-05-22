@@ -75,8 +75,8 @@ public class EntityWendigo extends EntityCreatureBase implements IMob, IGroupIce
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Blocks.snow), 0.5F).setMaxAmount(8));
-        this.drops.add(new DropRate(new ItemStack(Blocks.packed_ice), 0.25F).setMaxAmount(8));
+        this.drops.add(new DropRate(new ItemStack(Blocks.SNOW), 0.5F).setMaxAmount(8));
+        this.drops.add(new DropRate(new ItemStack(Blocks.PACKED_ICE), 0.25F).setMaxAmount(8));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("frostyfur")), 0.75F).setMaxAmount(2));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("tundracharge")), 0.75F));
 	}
@@ -98,7 +98,7 @@ public class EntityWendigo extends EntityCreatureBase implements IMob, IGroupIce
                 trailWidth = 3;
             for(int y = 0; y < trailHeight; y++) {
                 Block block = this.worldObj.getBlockState(this.getPosition().add(0, y, 0)).getBlock();
-                if(block != null && (block == Blocks.air || block == Blocks.fire || block == Blocks.snow_layer || block == Blocks.tallgrass || block == ObjectManager.getBlock("scorchfire") || block == ObjectManager.getBlock("doomfire"))) {
+                if(block != null && (block == Blocks.AIR || block == Blocks.FIRE || block == Blocks.SNOW_LAYER || block == Blocks.TALLGRASS || block == ObjectManager.getBlock("scorchfire") || block == ObjectManager.getBlock("doomfire"))) {
                     if(trailWidth == 1)
                         this.worldObj.setBlockState(this.getPosition().add(0, y, 0), ObjectManager.getBlock("frostfire").getDefaultState());
                     else
@@ -114,8 +114,8 @@ public class EntityWendigo extends EntityCreatureBase implements IMob, IGroupIce
         // Freeze Water:
         if(!this.worldObj.isRemote && this.isMoving() && this.ticksExisted % 5 == 0) {
             Block block = this.worldObj.getBlockState(this.getPosition().add(0, -1, 0)).getBlock();
-            if(block == Blocks.water)
-                this.worldObj.setBlockState(this.getPosition().add(0, -1, 0), Blocks.ice.getDefaultState());
+            if(block == Blocks.WATER)
+                this.worldObj.setBlockState(this.getPosition().add(0, -1, 0), Blocks.ICE.getDefaultState());
         }
         
         // Particles:
@@ -218,8 +218,8 @@ public class EntityWendigo extends EntityCreatureBase implements IMob, IGroupIce
 
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.moveSlowdown) return false;
-        if(potionEffect.getPotion() == MobEffects.hunger) return false;
+        if(potionEffect.getPotion() == MobEffects.SLOWNESS) return false;
+        if(potionEffect.getPotion() == MobEffects.HUNGER) return false;
         return super.isPotionApplicable(potionEffect);
     }
 

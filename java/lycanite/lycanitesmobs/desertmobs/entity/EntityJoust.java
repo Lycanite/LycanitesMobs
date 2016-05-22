@@ -84,12 +84,12 @@ public class EntityJoust extends EntityCreatureAgeable implements IAnimals, IGro
 	@Override
 	public float getBlockPathWeight(int x, int y, int z) {
         IBlockState blockState = this.worldObj.getBlockState(new BlockPos(x, y - 1, z));
-		if(blockState.getBlock() != Blocks.air) {
-			if(blockState.getMaterial() == Material.sand)
+		if(blockState.getBlock() != Blocks.AIR) {
+			if(blockState.getMaterial() == Material.SAND)
 				return 10F;
-			if(blockState.getMaterial() == Material.clay)
+			if(blockState.getMaterial() == Material.CLAY)
 				return 7F;
-			if(blockState.getMaterial() == Material.rock)
+			if(blockState.getMaterial() == Material.ROCK)
 				return 5F;
 		}
         return super.getBlockPathWeight(x, y, z);
@@ -127,8 +127,8 @@ public class EntityJoust extends EntityCreatureAgeable implements IAnimals, IGro
     
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.hunger) return false;
-        if(potionEffect.getPotion() == MobEffects.weakness) return false;
+        if(potionEffect.getPotion() == MobEffects.HUNGER) return false;
+        if(potionEffect.getPotion() == MobEffects.WEAKNESS) return false;
         return super.isPotionApplicable(potionEffect);
     }
     

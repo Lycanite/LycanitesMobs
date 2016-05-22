@@ -154,7 +154,7 @@ public class KeyHandler {
     @SubscribeEvent
     public void onMouseEvent(MouseEvent event) {
         ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(this.mc.thePlayer);
-        if(playerExt == null)
+        if(this.mc.thePlayer == null || playerExt == null || this.mc.objectMouseOver == null)
             return;
 
         // Left (Attack):

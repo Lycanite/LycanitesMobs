@@ -86,7 +86,7 @@ public class EntityCephignis extends EntityCreatureAgeable implements IAnimals, 
 	@Override
 	public void loadItemDrops() {
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("CephignisMeatCooked")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("CephignisMeatCooked"))).setMinAmount(2).setMaxAmount(5));
-        this.drops.add(new DropRate(new ItemStack(Items.magma_cream, 1, 0), 0.25F).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.MAGMA_CREAM, 1, 0), 0.25F).setMinAmount(1).setMaxAmount(2));
     }
     
     
@@ -116,9 +116,9 @@ public class EntityCephignis extends EntityCreatureAgeable implements IAnimals, 
         BlockPos pos = new BlockPos(x, y, z);
         if(this.worldObj.getBlockState(pos).getBlock() == ObjectManager.getBlock("purelava"))
             return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 2);
-        if(this.worldObj.getBlockState(pos).getBlock() == Blocks.lava)
+        if(this.worldObj.getBlockState(pos).getBlock() == Blocks.LAVA)
             return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
-        if(this.worldObj.getBlockState(pos).getBlock() == Blocks.flowing_lava)
+        if(this.worldObj.getBlockState(pos).getBlock() == Blocks.FLOWING_LAVA)
             return (super.getBlockPathWeight(x, y, z) + 1) * waterWeight;
 
         if(this.getAttackTarget() != null)

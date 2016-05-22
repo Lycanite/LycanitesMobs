@@ -74,8 +74,8 @@ public class EntityReiver extends EntityCreatureTameable implements IMob, IGroup
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.snowball), 0.5F).setMaxAmount(8));
-        this.drops.add(new DropRate(new ItemStack(Blocks.ice), 0.25F).setMaxAmount(8));
+        this.drops.add(new DropRate(new ItemStack(Items.SNOWBALL), 0.5F).setMaxAmount(8));
+        this.drops.add(new DropRate(new ItemStack(Blocks.ICE), 0.25F).setMaxAmount(8));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("FrostboltCharge")), 0.25F).setMaxAmount(3));
 	}
 	
@@ -159,8 +159,8 @@ public class EntityReiver extends EntityCreatureTameable implements IMob, IGroup
 
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.moveSlowdown) return false;
-        if(potionEffect.getPotion() == MobEffects.hunger) return false;
+        if(potionEffect.getPotion() == MobEffects.SLOWNESS) return false;
+        if(potionEffect.getPotion() == MobEffects.HUNGER) return false;
         return super.isPotionApplicable(potionEffect);
     }
     

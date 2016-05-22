@@ -14,7 +14,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -210,7 +209,7 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
     //             Network Packets
     // ========================================
     @Override
-    public Packet getDescriptionPacket() {
+    public SPacketUpdateTileEntity getUpdatePacket() {
         NBTTagCompound syncData = new NBTTagCompound();
 
         // Both:
@@ -300,7 +299,7 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
 
     /** Writes to NBT data. **/
     @Override
-    public void writeToNBT(NBTTagCompound nbtTagCompound) {
+    public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound) {
         super.writeToNBT(nbtTagCompound);
 
         if(this.ownerUUID == null) {
@@ -327,6 +326,8 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
             }
             nbtTagCompound.setTag("MinionIDs", minionIDs);
         }
+
+        return nbtTagCompound;
     }
 
 

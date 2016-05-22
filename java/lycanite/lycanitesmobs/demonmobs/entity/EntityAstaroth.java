@@ -67,8 +67,8 @@ public class EntityAstaroth extends EntityCreatureBase implements IMob, IGroupDe
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.iron_ingot), 1).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.redstone), 1).setMinAmount(3).setMaxAmount(8));
+        this.drops.add(new DropRate(new ItemStack(Items.IRON_INGOT), 1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.REDSTONE), 1).setMinAmount(3).setMaxAmount(8));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("devilstarcharge")), 0.5F));
 	}
     
@@ -138,7 +138,7 @@ public class EntityAstaroth extends EntityCreatureBase implements IMob, IGroupDe
     // ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.wither) return false;
+        if(potionEffect.getPotion() == MobEffects.WITHER) return false;
         super.isPotionApplicable(potionEffect);
         return true;
     }

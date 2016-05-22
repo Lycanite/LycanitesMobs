@@ -54,7 +54,7 @@ public class EntityVenomShot extends EntityProjectileBase {
     //========== Entity Living Collision ==========
     @Override
     public boolean entityLivingCollision(EntityLivingBase entityLiving) {
-    	entityLiving.addPotionEffect(new PotionEffect(MobEffects.poison, this.getEffectDuration(5), 0));
+    	entityLiving.addPotionEffect(new PotionEffect(MobEffects.POISON, this.getEffectDuration(5), 0));
     	return true;
     }
     
@@ -62,11 +62,11 @@ public class EntityVenomShot extends EntityProjectileBase {
     @Override
     public boolean canDestroyBlock(BlockPos pos) {
         Block block = this.worldObj.getBlockState(pos).getBlock();
-        if(block == Blocks.snow_layer)
+        if(block == Blocks.SNOW_LAYER)
             return true;
-        if(block == Blocks.tallgrass)
+        if(block == Blocks.TALLGRASS)
             return true;
-        if(block == Blocks.web)
+        if(block == Blocks.WEB)
             return true;
         if(ObjectManager.getBlock("PoisonCloud") != null && block == ObjectManager.getBlock("PoisonCloud"))
             return true;

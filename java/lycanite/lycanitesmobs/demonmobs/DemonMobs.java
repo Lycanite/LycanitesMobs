@@ -32,11 +32,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.monster.EntityPigZombie;
+import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -92,15 +92,15 @@ public class DemonMobs {
 		ObjectManager.addItem("devilstarcharge", new ItemDevilstarCharge());
 		ObjectManager.addItem("demoniclightningcharge", new ItemDemonicLightningCharge());
 		
-		ObjectManager.addItem("pinkymeatraw", new ItemCustomFood("pinkymeatraw", group, 4, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(MobEffects.wither, 30, 0, 0.8F));
+		ObjectManager.addItem("pinkymeatraw", new ItemCustomFood("pinkymeatraw", group, 4, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(MobEffects.WITHER, 30, 0, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("pinkymeatraw"));
 		OreDictionary.registerOre("listAllbeefraw", ObjectManager.getItem("pinkymeatraw"));
 		
-		ObjectManager.addItem("pinkymeatcooked", new ItemCustomFood("pinkymeatcooked", group, 7, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(MobEffects.damageBoost, 10, 0, 1.0F).setAlwaysEdible());
+		ObjectManager.addItem("pinkymeatcooked", new ItemCustomFood("pinkymeatcooked", group, 7, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(MobEffects.STRENGTH, 10, 0, 1.0F).setAlwaysEdible());
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("pinkymeatcooked"));
 		OreDictionary.registerOre("listAllbeefcooked", ObjectManager.getItem("pinkymeatcooked"));
 		
-		ObjectManager.addItem("devillasagna", new ItemCustomFood("devillasagna", group, 7, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(MobEffects.damageBoost, 60, 0, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
+		ObjectManager.addItem("devillasagna", new ItemCustomFood("devillasagna", group, 7, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(MobEffects.STRENGTH, 60, 0, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("devillasagna"));
 
 		ObjectManager.addItem("pinkytreat", new ItemTreat("pinkytreat", group));
@@ -118,14 +118,14 @@ public class DemonMobs {
 		ObjectManager.addBlock("hellfire", new BlockHellfire());
         AssetManager.addSound("doomfire", group, "block.doomfire");
         ObjectManager.addBlock("doomfire", new BlockDoomfire());
-        ObjectManager.addBlock("demonstone", new BlockBase(Material.rock, group, "demonstone").setHardness(10.0F).setResistance(2000.0F).setCreativeTab(LycanitesMobs.itemsTab));
-        ObjectManager.addBlock("demonbrick", new BlockBase(Material.rock, group, "demonbrick").setHardness(10.0F).setResistance(2000.0F).setCreativeTab(LycanitesMobs.itemsTab));
-        ObjectManager.addBlock("demontile", new BlockBase(Material.rock, group, "demontile").setHardness(10.0F).setResistance(2000.0F).setCreativeTab(LycanitesMobs.itemsTab));
-        ObjectManager.addBlock("demoncrystal", new BlockBase(Material.glass, group, "demoncrystal").setBlockStepSound(SoundType.GLASS).setHardness(5.0F).setResistance(2000.0F).setLightLevel(1.0F).setCreativeTab(LycanitesMobs.itemsTab));
+        ObjectManager.addBlock("demonstone", new BlockBase(Material.ROCK, group, "demonstone").setHardness(10.0F).setResistance(2000.0F).setCreativeTab(LycanitesMobs.itemsTab));
+        ObjectManager.addBlock("demonbrick", new BlockBase(Material.ROCK, group, "demonbrick").setHardness(10.0F).setResistance(2000.0F).setCreativeTab(LycanitesMobs.itemsTab));
+        ObjectManager.addBlock("demontile", new BlockBase(Material.ROCK, group, "demontile").setHardness(10.0F).setResistance(2000.0F).setCreativeTab(LycanitesMobs.itemsTab));
+        ObjectManager.addBlock("demoncrystal", new BlockBase(Material.GLASS, group, "demoncrystal").setBlockStepSound(SoundType.GLASS).setHardness(5.0F).setResistance(2000.0F).setLightLevel(1.0F).setCreativeTab(LycanitesMobs.itemsTab));
 
 
 		// ========== Create Mobs ==========
-		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("demonspawn"), new DispenserBehaviorMobEggCustom());
+		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ObjectManager.getItem("demonspawn"), new DispenserBehaviorMobEggCustom());
 		MobInfo newMob;
         
         newMob = new MobInfo(group, "belph", EntityBelph.class, 0x992222, 0x000000)
@@ -227,7 +227,7 @@ public class DemonMobs {
 			MobEventBase mobEvent = new MobEventHellsFury("hellsfury", this.group).setDimensions("1");
 			SpawnTypeBase eventSpawner = new SpawnTypeSky("hellsfury")
 	            .setChance(1.0D).setBlockLimit(32).setMobLimit(5);
-	        eventSpawner.materials = new Material[] {Material.air};
+	        eventSpawner.materials = new Material[] {Material.AIR};
 	        eventSpawner.ignoreBiome = true;
 	        eventSpawner.ignoreLight = true;
 	        eventSpawner.forceSpawning = true;
@@ -245,7 +245,7 @@ public class DemonMobs {
 
 
 		// ========== Edit Vanilla Spawns ==========
-		Biome[] biomes = { Biome.biomeRegistry.getObject(new ResourceLocation("hell")) };
+		Biome[] biomes = {Biomes.HELL };
 		if(group.controlVanillaSpawns) {
 			EntityRegistry.removeSpawn(EntityPigZombie.class, EnumCreatureType.MONSTER, biomes);
 			EntityRegistry.removeSpawn(EntityGhast.class, EnumCreatureType.MONSTER, biomes);
@@ -266,15 +266,15 @@ public class DemonMobs {
                 new ItemStack(ObjectManager.getBlock("soulcubedemonic"), 1, 0),
                 new Object[] { "DDD", "DSD", "DDD",
                         Character.valueOf('S'), ObjectManager.getItem("soulstonedemonic"),
-                        Character.valueOf('D'), Blocks.diamond_block
+                        Character.valueOf('D'), Blocks.DIAMOND_BLOCK
                 }));
 
         GameRegistry.addRecipe(new ShapelessOreRecipe(
                 new ItemStack(ObjectManager.getBlock("demonstone"), 1, 0),
                 new Object[] {
-                        Items.nether_wart,
-                        Items.nether_wart,
-                        Blocks.cobblestone
+                        Items.NETHER_WART,
+                        Items.NETHER_WART,
+                        Blocks.COBBLESTONE
                 }
         ));
         GameRegistry.addRecipe(new ShapedOreRecipe(
@@ -295,9 +295,9 @@ public class DemonMobs {
         GameRegistry.addRecipe(new ShapelessOreRecipe(
                 new ItemStack(ObjectManager.getBlock("demoncrystal"), 1, 0),
                 new Object[] {
-                        Items.nether_wart,
-                        Items.nether_wart,
-                        Blocks.glowstone
+                        Items.NETHER_WART,
+                        Items.NETHER_WART,
+                        Blocks.GLOWSTONE
                 }
         ));
 
@@ -306,36 +306,36 @@ public class DemonMobs {
                     new ItemStack(ObjectManager.getItem("doomfirescepter"), 1, 0),
                     new Object[]{" C ", " R ", " R ",
                             Character.valueOf('C'), ObjectManager.getItem("doomfirecharge"),
-                            Character.valueOf('R'), Items.blaze_rod
+                            Character.valueOf('R'), Items.BLAZE_ROD
                     }));
 
             GameRegistry.addRecipe(new ShapedOreRecipe(
                     new ItemStack(ObjectManager.getItem("hellfirescepter"), 1, 0),
                     new Object[]{"CCC", "CRC", "CRC",
                             Character.valueOf('C'), ObjectManager.getItem("hellfirecharge"),
-                            Character.valueOf('R'), Items.blaze_rod
+                            Character.valueOf('R'), Items.BLAZE_ROD
                     }));
 
             GameRegistry.addRecipe(new ShapedOreRecipe(
                     new ItemStack(ObjectManager.getItem("devilstarscepter"), 1, 0),
                     new Object[]{" C ", " R ", " R ",
                             Character.valueOf('C'), ObjectManager.getItem("devilstarcharge"),
-                            Character.valueOf('R'), Items.blaze_rod
+                            Character.valueOf('R'), Items.BLAZE_ROD
                     }));
 
             GameRegistry.addRecipe(new ShapedOreRecipe(
                     new ItemStack(ObjectManager.getItem("demoniclightningscepter"), 1, 0),
                     new Object[]{" C ", " R ", " R ",
                             Character.valueOf('C'), ObjectManager.getItem("demoniclightningcharge"),
-                            Character.valueOf('R'), Items.blaze_rod
+                            Character.valueOf('R'), Items.BLAZE_ROD
                     }));
         }
 
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
 				new ItemStack(ObjectManager.getItem("devillasagna"), 1, 0),
 				new Object[] {
-					Items.nether_wart,
-					Items.wheat,
+					Items.NETHER_WART,
+					Items.WHEAT,
 					ObjectManager.getItem("pinkymeatcooked")
 				}
 			));
@@ -348,14 +348,14 @@ public class DemonMobs {
 				new ItemStack(ObjectManager.getItem("pinkytreat"), 4, 0),
 				new Object[] { "TTT", "BBT", "TTT",
 				Character.valueOf('T'), ObjectManager.getItem("hellfirecharge"),
-				Character.valueOf('B'), Items.bone
+				Character.valueOf('B'), Items.BONE
 			}));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("cacodemontreat"), 4, 0),
 				new Object[] { "TTT", "BBT", "TTT",
 				Character.valueOf('T'), ObjectManager.getItem("pinkymeatcooked"),
-				Character.valueOf('B'), Items.bone
+				Character.valueOf('B'), Items.BONE
 			}));
 
 

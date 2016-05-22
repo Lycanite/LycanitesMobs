@@ -77,7 +77,7 @@ public class EntityGeken extends EntityCreatureTameable implements IMob {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.bone), 1).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.BONE), 1).setMinAmount(1).setMaxAmount(2));
 	}
 	
 	
@@ -114,7 +114,7 @@ public class EntityGeken extends EntityCreatureTameable implements IMob {
     	
     	// Poison:
         if(target instanceof EntityLivingBase) {
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.poison, this.getEffectDuration(5), 0));
+            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.POISON, this.getEffectDuration(5), 0));
         }
         
         // Update Phase:
@@ -132,8 +132,8 @@ public class EntityGeken extends EntityCreatureTameable implements IMob {
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.poison) return false;
-        if(potionEffect.getPotion() == MobEffects.moveSlowdown) return false;
+        if(potionEffect.getPotion() == MobEffects.POISON) return false;
+        if(potionEffect.getPotion() == MobEffects.SLOWNESS) return false;
         return super.isPotionApplicable(potionEffect);
     }
     

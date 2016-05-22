@@ -81,7 +81,7 @@ public class EntityIka extends EntityCreatureAgeable implements IAnimals, IGroup
 	@Override
 	public void loadItemDrops() {
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("IkaMeatRaw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("IkaMeatCooked"))).setMinAmount(2).setMaxAmount(5));
-        this.drops.add(new DropRate(new ItemStack(Items.dye, 1, 0), 0.25F).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.DYE, 1, 0), 0.25F).setMinAmount(1).setMaxAmount(2));
     }
     
     
@@ -124,9 +124,9 @@ public class EntityIka extends EntityCreatureAgeable implements IAnimals, IGroup
         int waterWeight = 10;
         BlockPos pos = new BlockPos(x, y, z);
         IBlockState blockState = this.worldObj.getBlockState(pos);
-        if(blockState.getBlock() == Blocks.water)
+        if(blockState.getBlock() == Blocks.WATER)
             return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
-        if(blockState.getBlock() == Blocks.flowing_water)
+        if(blockState.getBlock() == Blocks.FLOWING_WATER)
             return (super.getBlockPathWeight(x, y, z) + 1) * waterWeight;
         if(this.worldObj.isRaining() && this.worldObj.canBlockSeeSky(pos))
             return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
@@ -171,7 +171,7 @@ public class EntityIka extends EntityCreatureAgeable implements IAnimals, IGroup
     public boolean isPotionApplicable(PotionEffect potionEffect) {
         if(ObjectManager.getPotionEffect("weight") != null)
             if(potionEffect.getPotion() == ObjectManager.getPotionEffect("weight")) return false;
-        if(potionEffect.getPotion() == MobEffects.blindness) return false;
+        if(potionEffect.getPotion() == MobEffects.BLINDNESS) return false;
         return super.isPotionApplicable(potionEffect);
     }
     

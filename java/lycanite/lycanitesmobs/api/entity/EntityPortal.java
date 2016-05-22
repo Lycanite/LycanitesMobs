@@ -43,6 +43,7 @@ public class EntityPortal extends EntityProjectileBase {
     public EntityPortal(World world) {
         super(world);
         this.setStats();
+        this.isImmuneToFire = true;
     }
 
     public EntityPortal(World world, EntityPlayer shooter, Class summonClass, ItemStaffSummoning portalItem) {

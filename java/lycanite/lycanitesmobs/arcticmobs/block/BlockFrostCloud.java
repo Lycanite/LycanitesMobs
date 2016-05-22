@@ -29,7 +29,7 @@ public class BlockFrostCloud extends BlockBase {
 	//                   Constructor
 	// ==================================================
 	public BlockFrostCloud() {
-		super(Material.plants);
+		super(Material.PLANTS);
         this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, 0));
 		
 		// Properties:
@@ -94,11 +94,11 @@ public class BlockFrostCloud extends BlockBase {
 	//                Collision Effects
 	// ==================================================
     @Override
-    public void onEntityCollidedWithBlock(World world, BlockPos pos, Entity entity) {
-        super.onEntityCollidedWithBlock(world, pos, entity);
+    public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
+        super.onEntityCollidedWithBlock(world, pos, state, entity);
         if(entity instanceof EntityLivingBase) {
-            ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(MobEffects.moveSlowdown, 5 * 20, 0));
-            ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(MobEffects.hunger, 2 * 20, 0));
+            ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 5 * 20, 0));
+            ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(MobEffects.HUNGER, 2 * 20, 0));
         }
     }
     

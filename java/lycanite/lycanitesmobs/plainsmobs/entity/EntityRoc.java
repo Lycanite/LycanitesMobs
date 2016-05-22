@@ -73,8 +73,8 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.feather), 1.0F).setMinAmount(3).setMaxAmount(5));
-        this.drops.add(new DropRate(new ItemStack(Items.bone), 0.75F).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.FEATHER), 1.0F).setMinAmount(3).setMaxAmount(5));
+        this.drops.add(new DropRate(new ItemStack(Items.BONE), 0.75F).setMinAmount(1).setMaxAmount(3));
 	}
 	
 	
@@ -97,7 +97,7 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
 	    			if(this.getPickupEntity() instanceof EntityPlayer) {
 		    			for(int distToGround = 0; distToGround < 8; distToGround++) {
 		    				Block searchBlock = this.worldObj.getBlockState(new BlockPos((int)this.posX, (int)this.posY + 1 + distToGround, (int)this.posZ)).getBlock();
-		    				if(searchBlock != null && searchBlock != Blocks.air) {
+		    				if(searchBlock != null && searchBlock != Blocks.AIR) {
 		    					this.dropPickupEntity();
 		    					break;
 		    				}
@@ -177,8 +177,8 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.weakness) return false;
-        if(potionEffect.getPotion() == MobEffects.digSlowdown) return false;
+        if(potionEffect.getPotion() == MobEffects.WEAKNESS) return false;
+        if(potionEffect.getPotion() == MobEffects.MINING_FATIGUE) return false;
         return super.isPotionApplicable(potionEffect);
     }
 

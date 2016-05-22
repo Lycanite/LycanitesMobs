@@ -70,8 +70,8 @@ public class EntityZephyr extends EntityCreatureTameable implements IMob, IGroup
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.gunpowder), 0.5F).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.glowstone_dust), 0.5F).setMaxAmount(5));
+        this.drops.add(new DropRate(new ItemStack(Items.GUNPOWDER), 0.5F).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.GLOWSTONE_DUST), 0.5F).setMaxAmount(5));
 	}
 	
 	

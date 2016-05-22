@@ -85,8 +85,8 @@ public class EntityAfrit extends EntityCreatureTameable implements IMob, IGroupF
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.coal), 0.5F));
-        this.drops.add(new DropRate(new ItemStack(Items.blaze_rod), 0.2F));
+        this.drops.add(new DropRate(new ItemStack(Items.COAL), 0.5F));
+        this.drops.add(new DropRate(new ItemStack(Items.BLAZE_ROD), 0.2F));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("scorchfirecharge")), 0.25F).setMaxAmount(3));
 	}
 	

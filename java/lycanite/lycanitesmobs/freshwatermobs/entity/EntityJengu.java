@@ -184,7 +184,7 @@ public class EntityJengu extends EntityCreatureTameable implements IMob, IGroupW
 
         if(itemStack != null) {
             // Water:
-            if(itemStack.getItem() == Items.bucket && this.isTamed())
+            if(itemStack.getItem() == Items.BUCKET && this.isTamed())
                 commands.put(CMD_PRIOR.ITEM_USE.id, "Water");
         }
 
@@ -197,7 +197,7 @@ public class EntityJengu extends EntityCreatureTameable implements IMob, IGroupW
 
         // Water:
         if(command.equals("Water")) {
-            this.replacePlayersItem(player, itemStack, new ItemStack(Items.water_bucket));
+            this.replacePlayersItem(player, itemStack, new ItemStack(Items.WATER_BUCKET));
         }
 
         super.performCommand(command, player, itemStack);

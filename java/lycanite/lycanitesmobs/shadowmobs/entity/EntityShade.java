@@ -94,8 +94,8 @@ public class EntityShade extends EntityCreatureRideable implements IGroupPredato
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.ender_pearl), 1F).setMaxAmount(5));
-        this.drops.add(new DropRate(new ItemStack(Blocks.obsidian), 0.75F).setMaxAmount(5));
+        this.drops.add(new DropRate(new ItemStack(Items.ENDER_PEARL), 1F).setMaxAmount(5));
+        this.drops.add(new DropRate(new ItemStack(Blocks.OBSIDIAN), 0.75F).setMaxAmount(5));
     }
 
 
@@ -187,7 +187,7 @@ public class EntityShade extends EntityCreatureRideable implements IGroupPredato
                     if (ObjectManager.getPotionEffect("fear") != null)
                         possibleTarget.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("fear"), this.getEffectDuration(5), 1));
                     else
-                        possibleTarget.addPotionEffect(new PotionEffect(MobEffects.weakness, 10 * 20, 0));
+                        possibleTarget.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 10 * 20, 0));
                 }
             }
         }
@@ -228,7 +228,7 @@ public class EntityShade extends EntityCreatureRideable implements IGroupPredato
 
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.blindness) return false;
+        if(potionEffect.getPotion() == MobEffects.BLINDNESS) return false;
         if(ObjectManager.getPotionEffect("Fear") != null)
             if(potionEffect.getPotion() == ObjectManager.getPotionEffect("Fear")) return false;
         super.isPotionApplicable(potionEffect);

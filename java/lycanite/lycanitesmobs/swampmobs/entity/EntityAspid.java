@@ -80,7 +80,7 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
 	@Override
 	public void loadItemDrops() {
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("aspidmeatraw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("aspidmeatcooked"))).setMinAmount(2).setMaxAmount(5));
-        this.drops.add(new DropRate(new ItemStack(Items.slime_ball), 0.25F));
+        this.drops.add(new DropRate(new ItemStack(Items.SLIME_BALL), 0.25F));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("poisongland")), 0.25F));
 	}
 	
@@ -100,7 +100,7 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
         		trailHeight = 1;
         	for(int y = 0; y < trailHeight; y++) {
         		Block block = this.worldObj.getBlockState(this.getPosition().add(0, y, 0)).getBlock();
-        		if(block == Blocks.air || block == Blocks.snow || block == ObjectManager.getBlock("poisoncloud"))
+        		if(block == Blocks.AIR || block == Blocks.SNOW || block == ObjectManager.getBlock("poisoncloud"))
         			this.worldObj.setBlockState(this.getPosition().add(0, y, 0), ObjectManager.getBlock("poisoncloud").getDefaultState());
         	}
 		}
@@ -113,11 +113,11 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
 	// ========== Pathing Weight ==========
 	@Override
 	public float getBlockPathWeight(int par1, int par2, int par3) {
-        if(this.worldObj.getBlockState(new BlockPos(par1, par2 - 1, par3)).getBlock() != Blocks.air) {
+        if(this.worldObj.getBlockState(new BlockPos(par1, par2 - 1, par3)).getBlock() != Blocks.AIR) {
             IBlockState blocStatek = this.worldObj.getBlockState(new BlockPos(par1, par2 - 1, par3));
-            if(blocStatek.getMaterial() == Material.grass)
+            if(blocStatek.getMaterial() == Material.GRASS)
                 return 10F;
-            if(blocStatek.getMaterial() == Material.ground)
+            if(blocStatek.getMaterial() == Material.GROUND)
                 return 7F;
         }
         return super.getBlockPathWeight(par1, par2, par3);
@@ -143,7 +143,7 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
     	
     	// Effect:
         if(target instanceof EntityLivingBase) {
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.poison, this.getEffectDuration(8), 0));
+            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.POISON, this.getEffectDuration(8), 0));
         }
         
         return true;
@@ -155,8 +155,8 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.poison) return false;
-        if(potionEffect.getPotion() == MobEffects.blindness) return false;
+        if(potionEffect.getPotion() == MobEffects.POISON) return false;
+        if(potionEffect.getPotion() == MobEffects.BLINDNESS) return false;
         return super.isPotionApplicable(potionEffect);
     }
     

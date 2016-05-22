@@ -79,12 +79,12 @@ public class InfernoMobs {
 		ObjectManager.addItem("infernospawn", new ItemInfernoEgg());
         ObjectManager.addItem("soulstoneinferno", new ItemSoulstoneInferno(group));
 		
-		ObjectManager.addItem("cephignismeatcooked", new ItemCustomFood("cephignismeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(MobEffects.fireResistance, 20, 2, 1.0F).setAlwaysEdible());
+		ObjectManager.addItem("cephignismeatcooked", new ItemCustomFood("cephignismeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(MobEffects.FIRE_RESISTANCE, 20, 2, 1.0F).setAlwaysEdible());
 		ObjectLists.addItem("cookedfish", ObjectManager.getItem("cephignismeatcooked"));
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("cephignismeatcooked"));
 		OreDictionary.registerOre("listAllfishcooked", ObjectManager.getItem("cephignismeatcooked"));
 		
-		ObjectManager.addItem("searingtaco", new ItemCustomFood("searingtaco", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(MobEffects.fireResistance, 120, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
+		ObjectManager.addItem("searingtaco", new ItemCustomFood("searingtaco", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(MobEffects.FIRE_RESISTANCE, 120, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
 		ObjectLists.addItem("cookedfish", ObjectManager.getItem("searingtaco"));
 		
 		ObjectManager.addItem("embercharge", new ItemEmberCharge());
@@ -99,14 +99,14 @@ public class InfernoMobs {
 
 		ObjectManager.addItem("afrittreat", new ItemTreat("afrittreat", group));
 
-		ObjectManager.addItem("bucketpurelava", new ItemBucketPureLava(fluid).setContainerItem(Items.bucket));
+		ObjectManager.addItem("bucketpurelava", new ItemBucketPureLava(fluid).setContainerItem(Items.BUCKET));
 
         // ========== Create Blocks ==========
         AssetManager.addSound("scorchfire", group, "block.scorchfire");
         ObjectManager.addBlock("scorchfire", new BlockScorchfire());
 		
 		// ========== Create Mobs ==========
-		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("infernospawn"), new DispenserBehaviorMobEggCustom());
+		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ObjectManager.getItem("infernospawn"), new DispenserBehaviorMobEggCustom());
 		MobInfo newMob;
         
         newMob = new MobInfo(group, "cinder", EntityCinder.class, 0xFF9900, 0xFFFF00)
@@ -182,7 +182,7 @@ public class InfernoMobs {
         MobEventBase mobEvent = new MobEventCinderfall("cinderfall", this.group).setDimensions("1");
         SpawnTypeBase eventSpawner = new SpawnTypeSky("cinderfall")
                 .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-        eventSpawner.materials = new Material[] {Material.air};
+        eventSpawner.materials = new Material[] {Material.AIR};
         eventSpawner.ignoreBiome = true;
         eventSpawner.ignoreLight = true;
         eventSpawner.forceSpawning = true;
@@ -195,7 +195,7 @@ public class InfernoMobs {
         mobEvent.minDay = 10;
         eventSpawner = new SpawnTypeLand("eruption")
                 .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-        eventSpawner.materials = new Material[] {Material.air};
+        eventSpawner.materials = new Material[] {Material.AIR};
         eventSpawner.ignoreBiome = true;
         eventSpawner.ignoreLight = true;
         eventSpawner.forceSpawning = true;
@@ -215,9 +215,9 @@ public class InfernoMobs {
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
 				new ItemStack(ObjectManager.getItem("searingtaco"), 1, 0),
 				new Object[] {
-					Items.blaze_powder,
+					Items.BLAZE_POWDER,
 					ObjectManager.getItem("cephignismeatcooked"),
-					Items.wheat
+					Items.WHEAT
 				}
 			));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
@@ -230,28 +230,28 @@ public class InfernoMobs {
                     new ItemStack(ObjectManager.getItem("emberscepter"), 1, 0),
                     new Object[]{"CCC", "CRC", "CRC",
                             Character.valueOf('C'), ObjectManager.getItem("embercharge"),
-                            Character.valueOf('R'), Items.blaze_rod
+                            Character.valueOf('R'), Items.BLAZE_ROD
                     }));
 
             GameRegistry.addRecipe(new ShapedOreRecipe(
                     new ItemStack(ObjectManager.getItem("cinderfallsword"), 1, 0),
                     new Object[]{"CCC", "CSC", "CJC",
                             Character.valueOf('C'), ObjectManager.getItem("embercharge"),
-                            Character.valueOf('S'), Items.diamond_sword,
+                            Character.valueOf('S'), Items.DIAMOND_SWORD,
                             Character.valueOf('J'), ObjectManager.getItem("soulgazer")
                     }));
 
             GameRegistry.addRecipe(new ShapedOreRecipe(
                     new ItemStack(ObjectManager.getItem("cinderfallswordazure"), 1, 0),
                     new Object[]{"DDD", "DSD", "DDD",
-                            Character.valueOf('D'), Items.diamond,
+                            Character.valueOf('D'), Items.DIAMOND,
                             Character.valueOf('S'), ObjectManager.getItem("cinderfallsword")
                     }));
 
             GameRegistry.addRecipe(new ShapedOreRecipe(
                     new ItemStack(ObjectManager.getItem("cinderfallswordverdant"), 1, 0),
                     new Object[]{"DDD", "DSD", "DDD",
-                            Character.valueOf('D'), Items.emerald,
+                            Character.valueOf('D'), Items.EMERALD,
                             Character.valueOf('S'), ObjectManager.getItem("cinderfallsword")
                     }));
 
@@ -259,30 +259,30 @@ public class InfernoMobs {
                     new ItemStack(ObjectManager.getItem("magmascepter"), 1, 0),
                     new Object[]{"CCC", "CRC", "CRC",
                             Character.valueOf('C'), ObjectManager.getItem("magmacharge"),
-                            Character.valueOf('R'), Items.blaze_rod
+                            Character.valueOf('R'), Items.BLAZE_ROD
                     }));
 
             GameRegistry.addRecipe(new ShapedOreRecipe(
                     new ItemStack(ObjectManager.getItem("scorchfirescepter"), 1, 0),
                     new Object[]{"CCC", "CRC", "CRC",
                             Character.valueOf('C'), ObjectManager.getItem("scorchfirecharge"),
-                            Character.valueOf('R'), Items.blaze_rod
+                            Character.valueOf('R'), Items.BLAZE_ROD
                     }));
         }
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("afrittreat"), 4, 0),
 				new Object[] { "TTT", "BBT", "TTT",
-				Character.valueOf('T'), Items.gunpowder,
-				Character.valueOf('B'), Items.bone
+				Character.valueOf('T'), Items.GUNPOWDER,
+				Character.valueOf('B'), Items.BONE
 			}));
 
         GameRegistry.addRecipe(new ShapedOreRecipe(
                 new ItemStack(ObjectManager.getItem("bucketpurelava"), 1, 0),
                 new Object[] { " G ", "IMI", " I ",
-                        Character.valueOf('I'), Items.iron_ingot,
-                        Character.valueOf('G'), Items.ghast_tear,
-                        Character.valueOf('M'), Items.magma_cream
+                        Character.valueOf('I'), Items.IRON_INGOT,
+                        Character.valueOf('G'), Items.GHAST_TEAR,
+                        Character.valueOf('M'), Items.MAGMA_CREAM
                 }));
 
 		/*GameRegistry.addRecipe(new ShapelessOreRecipe(

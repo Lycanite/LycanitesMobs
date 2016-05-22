@@ -65,7 +65,7 @@ public class EntityAIBreakDoor extends EntityAIDoorInteract {
         super.updateTask();
 
         if(this.host.getRNG().nextInt(20) == 0)
-            this.host.worldObj.playAuxSFX(1010, new BlockPos(this.entityPosX, this.entityPosY, this.entityPosZ), 0);
+            this.host.worldObj.playEvent(1010, new BlockPos(this.entityPosX, this.entityPosY, this.entityPosZ), 0);
 
         ++this.breakingTime;
         int breaking = (int)((float)this.breakingTime / 240.0F * 10.0F);
@@ -77,8 +77,8 @@ public class EntityAIBreakDoor extends EntityAIDoorInteract {
 
         if(this.breakingTime == 240 && this.host.worldObj.getDifficulty() == EnumDifficulty.HARD) {
             this.host.worldObj.setBlockToAir(new BlockPos(this.entityPosX, this.entityPosY, this.entityPosZ));
-            this.host.worldObj.playAuxSFX(1012, new BlockPos(this.entityPosX, this.entityPosY, this.entityPosZ), 0);
-            this.host.worldObj.playAuxSFX(2001, new BlockPos(this.entityPosX, this.entityPosY, this.entityPosZ), 0);
+            this.host.worldObj.playEvent(1012, new BlockPos(this.entityPosX, this.entityPosY, this.entityPosZ), 0);
+            this.host.worldObj.playEvent(2001, new BlockPos(this.entityPosX, this.entityPosY, this.entityPosZ), 0);
         }
     }
 }

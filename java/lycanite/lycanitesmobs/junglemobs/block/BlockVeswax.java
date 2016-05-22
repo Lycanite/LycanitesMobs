@@ -25,7 +25,7 @@ public class BlockVeswax extends BlockBase {
 	//                   Constructor
 	// ==================================================
 	public BlockVeswax() {
-		super(Material.wood);
+		super(Material.WOOD);
         this.setCreativeTab(LycanitesMobs.itemsTab);
 		
 		// Properties:
@@ -36,7 +36,7 @@ public class BlockVeswax extends BlockBase {
 		// Stats:
 		this.setHardness(0.6F);
 		this.setHarvestLevel("axe", 0);
-        this.setStepSound(SoundType.WOOD);
+        this.setSoundType(SoundType.WOOD);
 		this.tickRate = 100;
 		this.removeOnTick = true;
 	}

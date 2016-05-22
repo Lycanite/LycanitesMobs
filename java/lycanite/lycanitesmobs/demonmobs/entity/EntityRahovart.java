@@ -119,10 +119,10 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.blaze_powder), 1F).setMinAmount(20).setMaxAmount(50));
-        this.drops.add(new DropRate(new ItemStack(Items.blaze_rod), 1F).setMinAmount(10).setMaxAmount(20));
-        this.drops.add(new DropRate(new ItemStack(Items.diamond), 1F).setMinAmount(10).setMaxAmount(20));
-        this.drops.add(new DropRate(new ItemStack(Items.nether_star), 1F).setMinAmount(1).setMaxAmount(8));
+        this.drops.add(new DropRate(new ItemStack(Items.BLAZE_POWDER), 1F).setMinAmount(20).setMaxAmount(50));
+        this.drops.add(new DropRate(new ItemStack(Items.BLAZE_ROD), 1F).setMinAmount(10).setMaxAmount(20));
+        this.drops.add(new DropRate(new ItemStack(Items.DIAMOND), 1F).setMinAmount(10).setMaxAmount(20));
+        this.drops.add(new DropRate(new ItemStack(Items.NETHER_STAR), 1F).setMinAmount(1).setMaxAmount(8));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("doomfirecharge")), 1F).setMinAmount(20).setMaxAmount(100));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("hellfirecharge")), 1F).setMinAmount(10).setMaxAmount(50));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("soulstonedemonic")), 1F).setMinAmount(1).setMaxAmount(3));
@@ -697,7 +697,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
 
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.wither) return false;
+        if(potionEffect.getPotion() == MobEffects.WITHER) return false;
         super.isPotionApplicable(potionEffect);
         return true;
     }

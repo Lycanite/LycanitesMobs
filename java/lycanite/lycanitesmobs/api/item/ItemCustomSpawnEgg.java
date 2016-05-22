@@ -34,6 +34,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
@@ -99,7 +100,7 @@ public class ItemCustomSpawnEgg extends ItemBase {
         }
         
         // Edit Spawner:
-        if(block == Blocks.mob_spawner) {
+        if(block == Blocks.MOB_SPAWNER) {
         	TileEntity tileEntity = world.getTileEntity(pos);
         	if(tileEntity != null && tileEntity instanceof TileEntityMobSpawner) {
         		TileEntityMobSpawner spawner = (TileEntityMobSpawner)tileEntity;
@@ -122,6 +123,8 @@ public class ItemCustomSpawnEgg extends ItemBase {
 	        if(entity != null) {
 	            if(entity instanceof EntityLivingBase && itemStack.hasDisplayName())
 	                ((EntityLiving)entity).setCustomNameTag(itemStack.getDisplayName());
+
+                applyItemEntityDataToEntity(world, player, itemStack, entity);
 	
 	            if(!player.capabilities.isCreativeMode)
 	                --itemStack.stackSize;
@@ -140,21 +143,21 @@ public class ItemCustomSpawnEgg extends ItemBase {
         if(world.isRemote)
             return new ActionResult(EnumActionResult.PASS, itemStack);
         else {
-            RayTraceResult movingobjectposition = this.getMovingObjectPositionFromPlayer(world, player, true);
+            RayTraceResult rayTraceResult = this.rayTrace(world, player, true);
 
-            if(movingobjectposition == null)
+            if(rayTraceResult == null)
                 return new ActionResult(EnumActionResult.PASS, itemStack);
             else
-                if(movingobjectposition.typeOfHit == RayTraceResult.Type.BLOCK) {
-                    BlockPos pos = movingobjectposition.getBlockPos();
+                if(rayTraceResult.typeOfHit == RayTraceResult.Type.BLOCK) {
+                    BlockPos pos = rayTraceResult.getBlockPos();
 
                     if(!world.canMineBlockBody(player, pos))
                         return new ActionResult(EnumActionResult.FAIL, itemStack);
 
-                    if(!player.canPlayerEdit(pos, movingobjectposition.sideHit, itemStack))
+                    if(!player.canPlayerEdit(pos, rayTraceResult.sideHit, itemStack))
                         return new ActionResult(EnumActionResult.PASS, itemStack);
 
-                    if(world.getBlockState(pos).getMaterial() == Material.water) {
+                    if(world.getBlockState(pos).getMaterial() == Material.WATER) {
                         Entity entity = spawnCreature(world, this.getEntityIdFromItem(itemStack), (double)pos.getX(), (double)pos.getY(), (double)pos.getZ());
 
                         if(entity != null)
@@ -185,7 +188,7 @@ public class ItemCustomSpawnEgg extends ItemBase {
 
                 if(entity != null && entity instanceof EntityLivingBase) {
                     EntityLiving entityliving = (EntityLiving)entity;
-                    entity.setLocationAndAngles(x, y, z, MathHelper.wrapAngleTo180_float(world.rand.nextFloat() * 360.0F), 0.0F);
+                    entity.setLocationAndAngles(x, y, z, MathHelper.wrapDegrees(world.rand.nextFloat() * 360.0F), 0.0F);
                     entityliving.rotationYawHead = entityliving.rotationYaw;
                     entityliving.renderYawOffset = entityliving.rotationYaw;
                     entityliving.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(entityliving)), (IEntityLivingData)null);
@@ -263,14 +266,14 @@ public class ItemCustomSpawnEgg extends ItemBase {
     // ==================================================
     //         Apply Item Entity Data To Entity
     // ==================================================
-    public static void applyItemEntityDataToEntity(World entityWorld, EntityPlayer p_185079_1_, ItemStack stack, Entity targetEntity) {
+    public static void applyItemEntityDataToEntity(World entityWorld, @Nullable EntityPlayer player, ItemStack stack, @Nullable Entity targetEntity) {
         MinecraftServer minecraftserver = entityWorld.getMinecraftServer();
         if (minecraftserver != null && targetEntity != null) {
             NBTTagCompound nbttagcompound = stack.getTagCompound();
 
             if (nbttagcompound != null && nbttagcompound.hasKey("EntityTag", 10))
             {
-                if (!entityWorld.isRemote && targetEntity.func_184213_bq() && (p_185079_1_ == null || !minecraftserver.getPlayerList().canSendCommands(p_185079_1_.getGameProfile())))
+                if (!entityWorld.isRemote && targetEntity.ignoreItemEntityData() && (player == null || !minecraftserver.getPlayerList().canSendCommands(player.getGameProfile())))
                 {
                     return;
                 }

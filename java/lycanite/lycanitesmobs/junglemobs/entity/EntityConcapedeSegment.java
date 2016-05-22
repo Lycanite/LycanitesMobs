@@ -83,7 +83,7 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
 	@Override
 	public void loadItemDrops() {
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("concapedemeatraw")), 1).setMinAmount(2).setMaxAmount(3).setBurningDrop(new ItemStack(ObjectManager.getItem("concapedemeatcooked"))));
-        this.drops.add(new DropRate(new ItemStack(Items.string), 0.25F).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.STRING), 0.25F).setMinAmount(1).setMaxAmount(2));
 	}
 
     // ==================================================
@@ -224,10 +224,10 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
     public float getBlockPathWeight(int x, int y, int z) {
         IBlockState blockState = this.worldObj.getBlockState(new BlockPos(x, y - 1, z));
         Block block = blockState.getBlock();
-        if(block != Blocks.air) {
-            if(blockState.getMaterial() == Material.grass)
+        if(block != Blocks.AIR) {
+            if(blockState.getMaterial() == Material.GRASS)
                 return 10F;
-            if(blockState.getMaterial() == Material.ground)
+            if(blockState.getMaterial() == Material.GROUND)
                 return 7F;
         }
         return super.getBlockPathWeight(x, y, z);
@@ -290,8 +290,8 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
 
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.poison) return false;
-        if(potionEffect.getPotion() == MobEffects.moveSlowdown) return false;
+        if(potionEffect.getPotion() == MobEffects.POISON) return false;
+        if(potionEffect.getPotion() == MobEffects.SLOWNESS) return false;
         return super.isPotionApplicable(potionEffect);
     }
     

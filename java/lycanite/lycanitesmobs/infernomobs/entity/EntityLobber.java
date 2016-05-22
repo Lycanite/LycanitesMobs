@@ -91,9 +91,9 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.coal), 1.0F).setMaxAmount(16));
-        this.drops.add(new DropRate(new ItemStack(Items.magma_cream), 0.75F).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.blaze_powder), 0.5F).setMaxAmount(6));
+        this.drops.add(new DropRate(new ItemStack(Items.COAL), 1.0F).setMaxAmount(16));
+        this.drops.add(new DropRate(new ItemStack(Items.MAGMA_CREAM), 0.75F).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.BLAZE_POWDER), 0.5F).setMaxAmount(6));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("magmacharge")), 0.25F));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("soulstoneinferno")), 1F).setMaxAmount(1).setSubspecies(3));
 	}
@@ -139,13 +139,13 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
                 trailWidth = 3;
         	for(int y = 0; y < trailHeight; y++) {
         		Block block = this.worldObj.getBlockState(this.getPosition().add(0, y, 0)).getBlock();
-        		if(block == Blocks.air || block == Blocks.fire || block == Blocks.snow_layer || block == Blocks.tallgrass || block == ObjectManager.getBlock("frostfire") || block == ObjectManager.getBlock("icefire")) {
+        		if(block == Blocks.AIR || block == Blocks.FIRE || block == Blocks.SNOW_LAYER || block == Blocks.TALLGRASS || block == ObjectManager.getBlock("frostfire") || block == ObjectManager.getBlock("icefire")) {
                     if(trailWidth == 1)
-                        this.worldObj.setBlockState(this.getPosition().add(0, y, 0), Blocks.fire.getDefaultState());
+                        this.worldObj.setBlockState(this.getPosition().add(0, y, 0), Blocks.FIRE.getDefaultState());
                     else
                         for(int x = -(trailWidth / 2); x < (trailWidth / 2) + 1; x++) {
                             for(int z = -(trailWidth / 2); z < (trailWidth / 2) + 1; z++) {
-                                this.worldObj.setBlockState(this.getPosition().add(x, y, z), Blocks.fire.getDefaultState());
+                                this.worldObj.setBlockState(this.getPosition().add(x, y, z), Blocks.FIRE.getDefaultState());
                             }
                         }
                 }
@@ -161,10 +161,10 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
                 for(int d = -((int)Math.ceil(this.width) + range); d <= (Math.ceil(this.width) + range); d++)
                     for(int h = 0; h <= Math.ceil(this.height); h++) {
                         Block block = this.worldObj.getBlockState(this.getPosition().add(w, h, d)).getBlock();
-                        if(block == Blocks.obsidian || block == Blocks.cobblestone || block == Blocks.dirt || block == Blocks.planks || block == Blocks.gravel || block == Blocks.sand) {
-                            IBlockState blockState = Blocks.lava.getStateFromMeta(12);
-                            if(block == Blocks.obsidian)
-                                blockState = Blocks.lava.getDefaultState();
+                        if(block == Blocks.OBSIDIAN || block == Blocks.COBBLESTONE || block == Blocks.DIRT || block == Blocks.PLANKS || block == Blocks.GRAVEL || block == Blocks.SAND) {
+                            IBlockState blockState = Blocks.LAVA.getStateFromMeta(12);
+                            if(block == Blocks.OBSIDIAN)
+                                blockState = Blocks.LAVA.getDefaultState();
                             this.worldObj.setBlockState(this.getPosition().add(w, h, d), blockState);
                         }
                     }
@@ -209,9 +209,9 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
 	public float getBlockPathWeight(int x, int y, int z) {
 		int waterWeight = 10;
 		BlockPos pos = new BlockPos(x, y, z);
-        if(this.worldObj.getBlockState(pos).getBlock() == Blocks.lava)
+        if(this.worldObj.getBlockState(pos).getBlock() == Blocks.LAVA)
         	return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
-		if(this.worldObj.getBlockState(pos).getBlock() == Blocks.flowing_lava)
+		if(this.worldObj.getBlockState(pos).getBlock() == Blocks.FLOWING_LAVA)
 			return (super.getBlockPathWeight(x, y, z) + 1) * waterWeight;
         
         if(this.getAttackTarget() != null)

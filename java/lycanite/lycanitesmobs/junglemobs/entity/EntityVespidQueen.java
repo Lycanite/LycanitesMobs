@@ -113,7 +113,7 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.clay_ball), 0.5F).setMaxAmount(16));
+        this.drops.add(new DropRate(new ItemStack(Items.CLAY_BALL), 0.5F).setMaxAmount(16));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getBlock("propolis")), 0.5F).setMaxAmount(8));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getBlock("veswax")), 0.5F).setMaxAmount(8));
 	}
@@ -375,9 +375,9 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
 		Block targetBlock = targetState.getBlock();
         if(targetBlock == null)
 			return false;
-		if(targetBlock == Blocks.air)
+		if(targetBlock == Blocks.AIR)
 			return true;
-		if(targetState.getMaterial() == Material.water || targetState.getMaterial() == Material.lava)
+		if(targetState.getMaterial() == Material.WATER || targetState.getMaterial() == Material.LAVA)
 			return true;
 		return false;
 	}
@@ -402,7 +402,7 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
             byte effectSeconds = 16;
             if(target instanceof EntityPlayer)
             	effectSeconds /= 2;
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.poison, this.getEffectDuration(effectSeconds), 0));
+            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.POISON, this.getEffectDuration(effectSeconds), 0));
         }
         
         return true;
@@ -445,8 +445,8 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.poison) return false;
-        if(potionEffect.getPotion() == MobEffects.moveSlowdown) return false;
+        if(potionEffect.getPotion() == MobEffects.POISON) return false;
+        if(potionEffect.getPotion() == MobEffects.SLOWNESS) return false;
         return super.isPotionApplicable(potionEffect);
     }
     

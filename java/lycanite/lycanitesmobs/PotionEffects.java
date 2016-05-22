@@ -34,8 +34,8 @@ public class PotionEffects {
 		}
 		
 		// Night Vision Stops Blindness:
-		if(entity.isPotionActive(MobEffects.blindness) && entity.isPotionActive(MobEffects.nightVision))
-			entity.removePotionEffect(MobEffects.blindness);
+		if(entity.isPotionActive(MobEffects.BLINDNESS) && entity.isPotionActive(MobEffects.NIGHT_VISION))
+			entity.removePotionEffect(MobEffects.BLINDNESS);
 		
 		boolean invulnerable = false;
 		if(entity instanceof EntityPlayer) {
@@ -96,8 +96,8 @@ public class PotionEffects {
 
 		// ========== Disable Nausea ==========
 		if(LycanitesMobs.disableNausea && event.getEntityLiving() instanceof EntityPlayer) {
-			if(entity.isPotionActive(MobEffects.confusion)) {
-				entity.removePotionEffect(MobEffects.confusion);
+			if(entity.isPotionActive(MobEffects.NAUSEA)) {
+				entity.removePotionEffect(MobEffects.NAUSEA);
 			}
 		}
 	}

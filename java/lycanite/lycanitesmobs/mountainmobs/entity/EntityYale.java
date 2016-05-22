@@ -80,7 +80,7 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
         this.tasks.addTask(3, new EntityAIMate(this));
         this.tasks.addTask(4, new EntityAITempt(this).setItemList("vegetables"));
         this.tasks.addTask(5, new EntityAIFollowParent(this).setSpeed(1.0D));
-        this.tasks.addTask(6, new EntityAIEatBlock(this).setBlocks(Blocks.grass).setReplaceBlock(Blocks.dirt));
+        this.tasks.addTask(6, new EntityAIEatBlock(this).setBlocks(Blocks.GRASS).setReplaceBlock(Blocks.DIRT));
         this.tasks.addTask(7, new EntityAIWander(this).setPauseRate(30));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
@@ -89,8 +89,8 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
         this.targetTasks.addTask(3, new EntityAITargetAvoid(this).setTargetClass(IGroupPredator.class));
         
         // Add Dyes to the Color Mixer:
-        this.colorMixer.setInventorySlotContents(0, new ItemStack(Items.dye, 1, 0));
-        this.colorMixer.setInventorySlotContents(1, new ItemStack(Items.dye, 1, 0));
+        this.colorMixer.setInventorySlotContents(0, new ItemStack(Items.DYE, 1, 0));
+        this.colorMixer.setInventorySlotContents(1, new ItemStack(Items.DYE, 1, 0));
     }
 	
 	// ========== Init ==========
@@ -117,7 +117,7 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
 	public void loadItemDrops() {
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("YaleMeatRaw")), 1).setMinAmount(1).setMaxAmount(3));
         if(this.woolDrop == null)
-		    this.woolDrop = new DropRate(new ItemStack(Blocks.wool), 1).setMinAmount(1).setMaxAmount(3);
+		    this.woolDrop = new DropRate(new ItemStack(Blocks.WOOL), 1).setMinAmount(1).setMaxAmount(3);
         this.drops.add(this.woolDrop);
 	}
 	
@@ -182,8 +182,8 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
 	@Override
 	public void setColor(int color) {
         if(this.woolDrop == null)
-            this.woolDrop = new DropRate(new ItemStack(Blocks.wool), 1).setMinAmount(1).setMaxAmount(3);
-		this.woolDrop.setDrop(new ItemStack(Blocks.wool, 1, color));
+            this.woolDrop = new DropRate(new ItemStack(Blocks.WOOL), 1).setMinAmount(1).setMaxAmount(3);
+		this.woolDrop.setDrop(new ItemStack(Blocks.WOOL, 1, color));
 		super.setColor(color);
 	}
 	
@@ -201,7 +201,7 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
         this.colorMixer.getStackInSlot(1).setItemDamage(j);
         ItemStack itemstack = CraftingManager.getInstance().findMatchingRecipe(this.colorMixer, this.worldObj);
         int k;
-        if(itemstack != null && itemstack.getItem() == Items.dye)
+        if(itemstack != null && itemstack.getItem() == Items.DYE)
             k = itemstack.getItemDamage();
         else
             k = this.worldObj.rand.nextBoolean() ? i : j;
@@ -217,10 +217,10 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
     public float getBlockPathWeight(int x, int y, int z) {
         IBlockState blockState = this.worldObj.getBlockState(new BlockPos(x, y - 1, z));
         Block block = blockState.getBlock();
-        if(block != Blocks.air) {
-            if(blockState.getMaterial() == Material.grass)
+        if(block != Blocks.AIR) {
+            if(blockState.getMaterial() == Material.GRASS)
                 return 10F;
-            if(blockState.getMaterial() == Material.ground)
+            if(blockState.getMaterial() == Material.GROUND)
                 return 7F;
         }
         return super.getBlockPathWeight(x, y, z);
@@ -238,7 +238,7 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.digSlowdown) return false;
+        if(potionEffect.getPotion() == MobEffects.MINING_FATIGUE) return false;
         if(ObjectManager.getPotionEffect("weight") != null)
         	if(potionEffect.getPotion() == ObjectManager.getPotionEffect("weight")) return false;
         return super.isPotionApplicable(potionEffect);

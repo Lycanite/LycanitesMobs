@@ -78,10 +78,10 @@ public class EntityBeholder extends EntityCreatureTameable {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.ghast_tear), 0.25F).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.gunpowder), 0.5F).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.glowstone_dust), 0.5F).setMinAmount(4).setMaxAmount(16));
-        this.drops.add(new DropRate(new ItemStack(Items.ender_eye), 0.25F).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.GHAST_TEAR), 0.25F).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.GUNPOWDER), 0.5F).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.GLOWSTONE_DUST), 0.5F).setMinAmount(4).setMaxAmount(16));
+        this.drops.add(new DropRate(new ItemStack(Items.ENDER_EYE), 0.25F).setMinAmount(1).setMaxAmount(2));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("arcanelaserstormcharge")), 0.25F));
 	}
 
@@ -184,7 +184,7 @@ public class EntityBeholder extends EntityCreatureTameable {
 
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.digSlowdown) return false;
+        if(potionEffect.getPotion() == MobEffects.MINING_FATIGUE) return false;
         if(ObjectManager.getPotionEffect("weight") != null)
             if(potionEffect.getPotion() == ObjectManager.getPotionEffect("weight")) return false;
         return super.isPotionApplicable(potionEffect);

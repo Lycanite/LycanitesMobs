@@ -55,7 +55,7 @@ public class ItemScepterVenomShot extends ItemScepter {
 	// ==================================================
     @Override
     public boolean getIsRepairable(ItemStack itemStack, ItemStack repairStack) {
-        if(repairStack.getItem() == Items.rotten_flesh || repairStack.getItem() == ObjectManager.getItem("poisongland")) return true;
+        if(repairStack.getItem() == Items.ROTTEN_FLESH || repairStack.getItem() == ObjectManager.getItem("poisongland")) return true;
         return super.getIsRepairable(itemStack, repairStack);
     }
 }

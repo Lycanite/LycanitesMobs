@@ -84,7 +84,7 @@ public class ObjectManager {
 	// ========== Bucket ==========
 	public static Item addBucket(Item bucket, Block block, Fluid fluid) {
 		buckets.put(block, bucket);
-        FluidContainerRegistry.registerFluidContainer(fluid, new ItemStack(bucket), new ItemStack(Items.bucket));
+        FluidContainerRegistry.registerFluidContainer(fluid, new ItemStack(bucket), new ItemStack(Items.BUCKET));
         return bucket;
 	}
 
@@ -166,7 +166,7 @@ public class ObjectManager {
 	public static void addProjectile(String name, Class entityClass, Item item, BehaviorProjectileDispense dispenseBehaviour) {
 		name = name.toLowerCase();
 		addProjectile(name, entityClass);
-		BlockDispenser.dispenseBehaviorRegistry.putObject(item, dispenseBehaviour);
+		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(item, dispenseBehaviour);
 	}
 
 

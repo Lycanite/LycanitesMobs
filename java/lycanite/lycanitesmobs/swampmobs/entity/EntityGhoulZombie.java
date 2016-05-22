@@ -76,8 +76,8 @@ public class EntityGhoulZombie extends EntityCreatureAgeable implements IMob {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.rotten_flesh), 1).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.coal), 0.25F).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.ROTTEN_FLESH), 1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.COAL), 0.25F).setMaxAmount(2));
 	}
     
     
@@ -92,7 +92,7 @@ public class EntityGhoulZombie extends EntityCreatureAgeable implements IMob {
 
         // Effect:
         if(target instanceof EntityLivingBase) {
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.poison, this.getEffectDuration(5), 1));
+            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.POISON, this.getEffectDuration(5), 1));
         }
         
         return true;
@@ -116,7 +116,7 @@ public class EntityGhoulZombie extends EntityCreatureAgeable implements IMob {
                 entityZombie.setChild(true);
 
             this.worldObj.spawnEntityInWorld(entityZombie);
-            this.worldObj.playAuxSFXAtEntity(null, 1016, entityZombie.getPosition(), 0);
+            this.worldObj.playEvent(null, 1016, entityZombie.getPosition(), 0);
         }
     }
     
@@ -126,8 +126,8 @@ public class EntityGhoulZombie extends EntityCreatureAgeable implements IMob {
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.poison) return false;
-        if(potionEffect.getPotion() == MobEffects.blindness) return false;
+        if(potionEffect.getPotion() == MobEffects.POISON) return false;
+        if(potionEffect.getPotion() == MobEffects.BLINDNESS) return false;
         return super.isPotionApplicable(potionEffect);
     }
 

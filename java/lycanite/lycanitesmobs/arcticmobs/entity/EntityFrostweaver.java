@@ -78,8 +78,8 @@ public class EntityFrostweaver extends EntityCreatureTameable implements IMob, I
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.string), 1.0F).setMaxAmount(6));
-        this.drops.add(new DropRate(new ItemStack(Items.spider_eye), 0.5F).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.STRING), 1.0F).setMaxAmount(6));
+        this.drops.add(new DropRate(new ItemStack(Items.SPIDER_EYE), 0.5F).setMaxAmount(2));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("FrostwebCharge")), 0.25F).setMaxAmount(3));
 	}
 	
@@ -155,8 +155,8 @@ public class EntityFrostweaver extends EntityCreatureTameable implements IMob, I
 
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.moveSlowdown) return false;
-        if(potionEffect.getPotion() == MobEffects.hunger) return false;
+        if(potionEffect.getPotion() == MobEffects.SLOWNESS) return false;
+        if(potionEffect.getPotion() == MobEffects.HUNGER) return false;
         return super.isPotionApplicable(potionEffect);
     }
     

@@ -116,7 +116,7 @@ public class EntityBehemoth extends EntityCreatureTameable implements IMob, IGro
                 trailWidth = 3;
             for(int y = 0; y < trailHeight; y++) {
                 Block block = this.worldObj.getBlockState(this.getPosition().add(0, y, 0)).getBlock();
-                if(block != null && (block == Blocks.air || block == Blocks.fire || block == Blocks.snow_layer || block == Blocks.tallgrass || block == ObjectManager.getBlock("frostfire") || block == ObjectManager.getBlock("icefire") || block == ObjectManager.getBlock("scorchfire") || block == ObjectManager.getBlock("doomfire"))) {
+                if(block != null && (block == Blocks.AIR || block == Blocks.FIRE || block == Blocks.SNOW_LAYER || block == Blocks.TALLGRASS || block == ObjectManager.getBlock("frostfire") || block == ObjectManager.getBlock("icefire") || block == ObjectManager.getBlock("scorchfire") || block == ObjectManager.getBlock("doomfire"))) {
                     if(trailWidth == 1)
                         this.worldObj.setBlockState(this.getPosition().add(0, y, 0), ObjectManager.getBlock("hellfire").getDefaultState());
                     else
@@ -175,7 +175,7 @@ public class EntityBehemoth extends EntityCreatureTameable implements IMob, IGro
     // ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.wither) return false;
+        if(potionEffect.getPotion() == MobEffects.WITHER) return false;
         super.isPotionApplicable(potionEffect);
         return true;
     }

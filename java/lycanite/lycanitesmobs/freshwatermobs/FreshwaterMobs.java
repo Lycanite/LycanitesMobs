@@ -65,13 +65,13 @@ public class FreshwaterMobs {
 		// ========== Create Items ==========
 		ObjectManager.addItem("freshwaterspawn", new ItemFreshwaterEgg());
 
-        Potion rawFoodEffectID = MobEffects.weakness;
+        Potion rawFoodEffectID = MobEffects.WEAKNESS;
         if(ObjectManager.getPotionEffect("penetration") != null)
             rawFoodEffectID = ObjectManager.getPotionEffect("penetration");
         ObjectManager.addItem("silexmeatraw", new ItemCustomFood("silexmeatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(rawFoodEffectID, 45, 2, 0.8F));
         ObjectLists.addItem("rawfish", ObjectManager.getItem("silexmeatraw"));
 
-        Potion cookedFoodEffectID = MobEffects.moveSpeed;
+        Potion cookedFoodEffectID = MobEffects.SPEED;
         if(ObjectManager.getPotionEffect("swiftswimming") != null)
             cookedFoodEffectID = ObjectManager.getPotionEffect("swiftswimming");
         ObjectManager.addItem("silexmeatcooked", new ItemCustomFood("silexmeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(cookedFoodEffectID, 10, 2, 1.0F).setAlwaysEdible());
@@ -86,7 +86,7 @@ public class FreshwaterMobs {
         ObjectManager.addItem("stridertreat", new ItemTreat("stridertreat", group));
 		
 		// ========== Create Mobs ==========
-		BlockDispenser.dispenseBehaviorRegistry.putObject(ObjectManager.getItem("freshwaterspawn"), new DispenserBehaviorMobEggCustom());
+		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ObjectManager.getItem("freshwaterspawn"), new DispenserBehaviorMobEggCustom());
 		MobInfo newMob;
         
         newMob = new MobInfo(group, "jengu", EntityJengu.class, 0x000099, 0x4444FF)
@@ -148,7 +148,7 @@ public class FreshwaterMobs {
 			MobEventBase mobEvent = new MobEventTsunami("tsunami", this.group);
 			SpawnTypeBase eventSpawner = new SpawnTypeSky("tsunami")
 	            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-	        eventSpawner.materials = new Material[] {Material.air};
+	        eventSpawner.materials = new Material[] {Material.AIR};
 	        eventSpawner.ignoreBiome = true;
 	        eventSpawner.ignoreLight = true;
 	        eventSpawner.forceSpawning = true;
@@ -165,7 +165,7 @@ public class FreshwaterMobs {
         GameRegistry.addRecipe(new ShapelessOreRecipe(
                 new ItemStack(ObjectManager.getItem("lapisfishandchips"), 1, 0),
                 new Object[]{
-                        Items.potato,
+                        Items.POTATO,
                         ObjectManager.getItem("silexmeatcooked")
                 }
         ));
@@ -179,7 +179,7 @@ public class FreshwaterMobs {
                     new ItemStack(ObjectManager.getItem("aquapulsescepter"), 1, 0),
                     new Object[]{"CCC", "CRC", "CRC",
                             Character.valueOf('C'), ObjectManager.getItem("aquapulsecharge"),
-                            Character.valueOf('R'), Items.blaze_rod
+                            Character.valueOf('R'), Items.BLAZE_ROD
                     }));
         }
 
@@ -187,7 +187,7 @@ public class FreshwaterMobs {
                 new ItemStack(ObjectManager.getItem("stridertreat"), 4, 0),
                 new Object[] { "TTT", "BBT", "TTT",
                         Character.valueOf('T'), ObjectManager.getItem("silexmeatcooked"),
-                        Character.valueOf('B'), Items.bone
+                        Character.valueOf('B'), Items.BONE
                 }));
 		
 		// ========== Smelting ==========

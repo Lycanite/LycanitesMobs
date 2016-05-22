@@ -82,7 +82,7 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
 	@Override
 	public void loadItemDrops() {
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("MakaMeatRaw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("MakaMeatCooked"))).setMaxAmount(6));
-        this.drops.add(new DropRate(new ItemStack(Items.leather), 0.5F).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.LEATHER), 0.5F).setMinAmount(1).setMaxAmount(3));
     }
 	
 	
@@ -94,10 +94,10 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
 	public float getBlockPathWeight(int x, int y, int z) {
         IBlockState blockState = this.worldObj.getBlockState(new BlockPos(x, y - 1, z));
         Block block = blockState.getBlock();
-		if(block != Blocks.air) {
-			if(blockState.getMaterial() == Material.grass)
+		if(block != Blocks.AIR) {
+			if(blockState.getMaterial() == Material.GRASS)
 				return 10F;
-			if(blockState.getMaterial() == Material.ground)
+			if(blockState.getMaterial() == Material.GROUND)
 				return 7F;
 		}
         return super.getBlockPathWeight(x, y, z);
@@ -127,8 +127,8 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.weakness) return false;
-        if(potionEffect.getPotion() == MobEffects.digSlowdown) return false;
+        if(potionEffect.getPotion() == MobEffects.WEAKNESS) return false;
+        if(potionEffect.getPotion() == MobEffects.MINING_FATIGUE) return false;
         return super.isPotionApplicable(potionEffect);
     }
     

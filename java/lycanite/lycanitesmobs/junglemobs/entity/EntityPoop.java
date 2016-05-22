@@ -50,8 +50,8 @@ public class EntityPoop extends EntityProjectileBase {
     //========== Entity Living Collision ==========
     @Override
     public boolean entityLivingCollision(EntityLivingBase entityLiving) {
-    	entityLiving.addPotionEffect(new PotionEffect(MobEffects.moveSlowdown, this.getEffectDuration(3), 0));
-    	entityLiving.addPotionEffect(new PotionEffect(MobEffects.confusion, this.getEffectDuration(5), 0));
+    	entityLiving.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, this.getEffectDuration(3), 0));
+    	entityLiving.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, this.getEffectDuration(5), 0));
     	return true;
     }
 
@@ -81,7 +81,7 @@ public class EntityPoop extends EntityProjectileBase {
             this.worldObj.spawnParticle(EnumParticleTypes.BLOCK_CRACK,
                     this.posX, this.posY, this.posZ,
                     0.0D, 0.0D, 0.0D,
-                    Blocks.tallgrass.getStateId(Blocks.dirt.getDefaultState())
+                    Blocks.TALLGRASS.getStateId(Blocks.DIRT.getDefaultState())
             );
     }
     

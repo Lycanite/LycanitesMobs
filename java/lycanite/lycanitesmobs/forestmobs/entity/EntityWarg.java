@@ -97,8 +97,8 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.leather), 1F).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.bone), 0.5F).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.LEATHER), 1F).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.BONE), 0.5F).setMaxAmount(2));
 	}
 	
 	
@@ -152,7 +152,7 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
                         if (ObjectManager.getPotionEffect("paralysis") != null)
                             possibleTarget.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("paralysis"), this.getEffectDuration(5), 1));
                         else
-                            possibleTarget.addPotionEffect(new PotionEffect(MobEffects.moveSlowdown, 10 * 20, 0));
+                            possibleTarget.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 10 * 20, 0));
                     }
                 }
             }
@@ -161,10 +161,10 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
     }
     
     public void riderEffects(EntityLivingBase rider) {
-    	if(rider.isPotionActive(MobEffects.moveSlowdown))
-    		rider.removePotionEffect(MobEffects.moveSlowdown);
-    	if(rider.isPotionActive(ObjectManager.getPotionEffect("Paralysis")))
-    		rider.removePotionEffect(ObjectManager.getPotionEffect("Paralysis"));
+    	if(rider.isPotionActive(MobEffects.SLOWNESS))
+    		rider.removePotionEffect(MobEffects.SLOWNESS);
+    	if(rider.isPotionActive(ObjectManager.getPotionEffect("paralysis")))
+    		rider.removePotionEffect(ObjectManager.getPotionEffect("paralysis"));
     }
 
 	
@@ -265,7 +265,7 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.moveSlowdown) return false;
+        if(potionEffect.getPotion() == MobEffects.SLOWNESS) return false;
         if(ObjectManager.getPotionEffect("paralysis") != null)
             if(potionEffect.getPotion() == ObjectManager.getPotionEffect("paralysis")) return false;
         super.isPotionApplicable(potionEffect);

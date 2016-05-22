@@ -72,7 +72,7 @@ public class EntityRemobra extends EntityCreatureTameable implements IMob, IGrou
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.slime_ball), 0.5F));
+        this.drops.add(new DropRate(new ItemStack(Items.SLIME_BALL), 0.5F));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("PoisonGland")), 1F));
 	}
 	
@@ -130,8 +130,8 @@ public class EntityRemobra extends EntityCreatureTameable implements IMob, IGrou
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.poison) return false;
-        if(potionEffect.getPotion() == MobEffects.blindness) return false;
+        if(potionEffect.getPotion() == MobEffects.POISON) return false;
+        if(potionEffect.getPotion() == MobEffects.BLINDNESS) return false;
         return super.isPotionApplicable(potionEffect);
     }
     

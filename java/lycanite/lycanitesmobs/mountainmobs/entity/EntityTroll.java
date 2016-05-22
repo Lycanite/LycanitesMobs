@@ -92,10 +92,10 @@ public class EntityTroll extends EntityCreatureBase implements IMob {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Blocks.log), 1).setMinAmount(2).setMaxAmount(6));
-        this.drops.add(new DropRate(new ItemStack(Items.bone), 1).setMinAmount(2).setMaxAmount(6));
-        this.drops.add(new DropRate(new ItemStack(Items.leather), 1).setMinAmount(2).setMaxAmount(6));
-        this.drops.add(new DropRate(new ItemStack(Items.coal), 1).setMinAmount(2).setMaxAmount(8));
+        this.drops.add(new DropRate(new ItemStack(Blocks.LOG), 1).setMinAmount(2).setMaxAmount(6));
+        this.drops.add(new DropRate(new ItemStack(Items.BONE), 1).setMinAmount(2).setMaxAmount(6));
+        this.drops.add(new DropRate(new ItemStack(Items.LEATHER), 1).setMinAmount(2).setMaxAmount(6));
+        this.drops.add(new DropRate(new ItemStack(Items.COAL), 1).setMinAmount(2).setMaxAmount(8));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("BoulderBlastCharge")), 0.5F).setMinAmount(1).setMaxAmount(1));
 	}
     
@@ -219,7 +219,7 @@ public class EntityTroll extends EntityCreatureBase implements IMob {
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.digSlowdown) return false;
+        if(potionEffect.getPotion() == MobEffects.MINING_FATIGUE) return false;
         if(ObjectManager.getPotionEffect("weight") != null)
             if(potionEffect.getPotion() == ObjectManager.getPotionEffect("weight")) return false;
         return super.isPotionApplicable(potionEffect);

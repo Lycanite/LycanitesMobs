@@ -86,8 +86,8 @@ public class EntityGeist extends EntityCreatureAgeable implements IMob, IGroupSh
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.rotten_flesh), 1).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.ender_pearl), 0.25F).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.ROTTEN_FLESH), 1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.ENDER_PEARL), 0.25F).setMaxAmount(2));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("geistliver")), 0.25F).setMaxAmount(1));
 	}
     
@@ -113,7 +113,7 @@ public class EntityGeist extends EntityCreatureAgeable implements IMob, IGroupSh
                 entityZombie.setChild(true);
 
             this.worldObj.spawnEntityInWorld(entityZombie);
-            this.worldObj.playAuxSFXAtEntity(null, 1016, entityZombie.getPosition(), 0);
+            this.worldObj.playEvent(null, 1016, entityZombie.getPosition(), 0);
         }
     }
 
@@ -130,10 +130,10 @@ public class EntityGeist extends EntityCreatureAgeable implements IMob, IGroupSh
                 for(int y = (int)this.posY - shadowfireHeight; y <= (int)this.posY + shadowfireHeight; y++) {
                     for(int z = (int)this.posZ - shadowfireWidth; z <= (int)this.posZ + shadowfireWidth; z++) {
                         Block block = this.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock();
-                        if(block != Blocks.air) {
+                        if(block != Blocks.AIR) {
                             BlockPos placePos = new BlockPos(x, y + 1, z);
                             Block upperBlock = this.worldObj.getBlockState(placePos).getBlock();
-                            if(upperBlock == Blocks.air) {
+                            if(upperBlock == Blocks.AIR) {
                                 this.worldObj.setBlockState(placePos, ObjectManager.getBlock("shadowfire").getDefaultState(), 3);
                             }
                         }
@@ -150,7 +150,7 @@ public class EntityGeist extends EntityCreatureAgeable implements IMob, IGroupSh
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.blindness) return false;
+        if(potionEffect.getPotion() == MobEffects.BLINDNESS) return false;
         if(ObjectManager.getPotionEffect("Fear") != null)
             if(potionEffect.getPotion() == ObjectManager.getPotionEffect("Fear")) return false;
         super.isPotionApplicable(potionEffect);

@@ -119,7 +119,7 @@ public class EntityDemonicBlast extends EntityProjectileBase {
     //========== Entity Living Collision ==========
     @Override
     public boolean entityLivingCollision(EntityLivingBase entityLiving) {
-    	entityLiving.addPotionEffect(new PotionEffect(MobEffects.wither, this.getEffectDuration(10), 0));
+    	entityLiving.addPotionEffect(new PotionEffect(MobEffects.WITHER, this.getEffectDuration(10), 0));
     	return true;
     }
     

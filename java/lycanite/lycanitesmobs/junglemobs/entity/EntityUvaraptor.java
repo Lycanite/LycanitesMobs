@@ -90,8 +90,8 @@ public class EntityUvaraptor extends EntityCreatureRideable implements IGroupPre
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.feather), 1F).setMaxAmount(5));
-        this.drops.add(new DropRate(new ItemStack(Items.bone), 0.5F).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.FEATHER), 1F).setMaxAmount(5));
+        this.drops.add(new DropRate(new ItemStack(Items.BONE), 0.5F).setMaxAmount(3));
 	}
 	
 	
@@ -117,10 +117,10 @@ public class EntityUvaraptor extends EntityCreatureRideable implements IGroupPre
     }
     
     public void riderEffects(EntityLivingBase rider) {
-    	if(rider.isPotionActive(MobEffects.poison))
-    		rider.removePotionEffect(MobEffects.poison);
-    	if(rider.isPotionActive(MobEffects.moveSlowdown))
-    		rider.removePotionEffect(MobEffects.moveSlowdown);
+    	if(rider.isPotionActive(MobEffects.POISON))
+    		rider.removePotionEffect(MobEffects.POISON);
+    	if(rider.isPotionActive(MobEffects.SLOWNESS))
+    		rider.removePotionEffect(MobEffects.SLOWNESS);
     }
 
 	
@@ -190,8 +190,8 @@ public class EntityUvaraptor extends EntityCreatureRideable implements IGroupPre
    	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.poison) return false;
-        if(potionEffect.getPotion() == MobEffects.moveSlowdown) return false;
+        if(potionEffect.getPotion() == MobEffects.POISON) return false;
+        if(potionEffect.getPotion() == MobEffects.SLOWNESS) return false;
         return super.isPotionApplicable(potionEffect);
     }
     

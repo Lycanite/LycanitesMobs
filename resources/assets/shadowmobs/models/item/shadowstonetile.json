@@ -1,5 +1,5 @@
 {
-	"parent": "demonmobs:block/demontile",
+	"parent": "shadowmobs:block/shadowstonetile",
 	"display": {
 		"thirdperson": {
 			"rotation": [ 10, -45, 170],

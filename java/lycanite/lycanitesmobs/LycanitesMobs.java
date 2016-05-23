@@ -76,7 +76,8 @@ public class LycanitesMobs {
 	public static MobEventManager mobEventManager;
 	
 	// Creative Tab:
-	public static final CreativeTabs itemsTab = new CreativeTabItems(CreativeTabs.getNextID(), modid + ".items");
+    public static final CreativeTabs itemsTab = new CreativeTabItems(CreativeTabs.getNextID(), modid + ".items");
+    public static final CreativeTabs blocksTab = new CreativeTabBlocks(CreativeTabs.getNextID(), modid + ".blocks");
 	public static final CreativeTabs creaturesTab = new CreativeTabCreatures(CreativeTabs.getNextID(), modid + ".creatures");
 	
 	// Texture Path:
@@ -370,6 +371,9 @@ public class LycanitesMobs {
 					}
 				));
 		}
+
+        // Create all Recipe Makder recipes!
+        RecipeMaker.createAllRecipies();
 
 
         // ========== Achievement Page ==========

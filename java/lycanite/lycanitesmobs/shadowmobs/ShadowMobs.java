@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs.shadowmobs;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.RecipeMaker;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorMobEggCustom;
 import lycanite.lycanitesmobs.api.info.*;
@@ -23,6 +24,7 @@ import lycanite.lycanitesmobs.shadowmobs.mobevent.MobEventBlackPlague;
 import lycanite.lycanitesmobs.shadowmobs.mobevent.MobEventShadowGames;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
@@ -109,6 +111,8 @@ public class ShadowMobs {
 		// ========== Create Blocks ==========
 		AssetManager.addSound("shadowfire", group, "block.shadowfire");
 		ObjectManager.addBlock("shadowfire", new BlockShadowfire());
+
+        RecipeMaker.addStoneBlocks(group, "shadow", Blocks.OBSIDIAN);
 		
 		
 		// ========== Create Mobs ==========

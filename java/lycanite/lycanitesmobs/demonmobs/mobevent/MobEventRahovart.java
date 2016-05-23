@@ -93,7 +93,7 @@ public class MobEventRahovart extends MobEventBoss {
         double rubbleChance = 0.01D;
         int radius = 60;
         int height = 120;
-        Block primaryBlock = ObjectManager.getBlock("demontile");
+        Block primaryBlock = ObjectManager.getBlock("demonstonetile");
         Block secondaryBlock = ObjectManager.getBlock("demoncrystal");
         double secondaryChance = 0.05D;
 
@@ -149,7 +149,7 @@ public class MobEventRahovart extends MobEventBoss {
     public int[] buildPillar(World world, int originX, int originY, int originZ) {
         int radiusMax = 5;
         int height = 40 + Math.round(20 * world.rand.nextFloat());
-        Block primaryBlock = ObjectManager.getBlock("demonbrick");
+        Block primaryBlock = ObjectManager.getBlock("demonstonebrick");
         Block secondaryBlock = ObjectManager.getBlock("demonstone");
         double secondaryChance = 0.4D;
         int[] decorationCoord = new int[] {originX, originY, originZ};

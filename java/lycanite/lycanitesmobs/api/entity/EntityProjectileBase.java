@@ -236,7 +236,7 @@ public class EntityProjectileBase extends EntityThrowable {
      		int j = rayTraceResult.getBlockPos().getY();
             int k = rayTraceResult.getBlockPos().getZ();
             if(this.worldObj.getBlockState(new BlockPos(i, j, k)) != null)
-            	collided = this.worldObj.getBlockState(new BlockPos(i, j, k)).getSelectedBoundingBox(this.worldObj, new BlockPos(i, j, k)) != null;
+            	collided = this.worldObj.getBlockState(new BlockPos(i, j, k)).getBoundingBox(this.worldObj, new BlockPos(i, j, k)) != null;
              
  	        if(collided) {
                 blockCollision = true;

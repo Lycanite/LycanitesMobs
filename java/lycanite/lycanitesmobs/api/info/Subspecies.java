@@ -16,7 +16,7 @@ public class Subspecies {
     public static Map<String, Integer> commonWeights = new HashMap<String, Integer>() {{
     	put("common", 100);
     	put("uncommon", 20);
-    	put("rare", 5);
+    	put("rare", 2);
     	put("legendary", 1);
     }};
 
@@ -39,7 +39,7 @@ public class Subspecies {
     public static double rareExperienceScale = 10.0D;
 
     /** Whether rare subspecies should show boss health bars or not. **/
-    public static boolean rareHealthBars = true;
+    public static boolean rareHealthBars = false;
 
     // ========== Subspecies General ==========
     /** The Mob Info of the mob this Subspecies belongs to. Set by MobInfo when this is added to it. **/

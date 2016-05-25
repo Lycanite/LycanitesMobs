@@ -42,7 +42,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-@Mod(modid = LycanitesMobs.modid, name = LycanitesMobs.name, version = LycanitesMobs.version, dependencies = "required-after:Forge@[11.16.0.1865,)", useMetadata = false)
+@Mod(modid = LycanitesMobs.modid, name = LycanitesMobs.name, version = LycanitesMobs.version, dependencies = "required-after:Forge@[12.17.0.1908,)", useMetadata = false)
 public class LycanitesMobs {
 	
 	public static final String modid = "lycanitesmobs";

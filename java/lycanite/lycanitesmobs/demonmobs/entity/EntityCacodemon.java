@@ -10,6 +10,7 @@ import lycanite.lycanitesmobs.api.info.ObjectLists;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -62,6 +63,7 @@ public class EntityCacodemon extends EntityCreatureTameable implements IGroupDem
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
+        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityGhast.class));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
     

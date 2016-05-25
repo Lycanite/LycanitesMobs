@@ -1485,7 +1485,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 
         // Animations Client:
         else if(this.worldObj.isRemote) {
-        	byte animations = this.dataManager.get(ANIMATION);
+        	byte animations = Byte.valueOf(this.dataManager.get(ANIMATION));
         	if(this.justAttacked > 0)
         		this.justAttacked--;
         	else if((animations & ANIM_ID.ATTACKED.id) > 0)
@@ -1497,7 +1497,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 
         // Is Minon:
         if(this.worldObj.isRemote) {
-    		this.isMinion = (this.dataManager.get(ANIMATION) & ANIM_ID.MINION.id) > 0;
+    		this.isMinion = (Byte.valueOf(this.dataManager.get(ANIMATION)) & ANIM_ID.MINION.id) > 0;
         }
 
         // Subspecies:
@@ -1505,8 +1505,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     		this.dataManager.set(SUBSPECIES, Byte.valueOf((byte)this.getSubspeciesIndex()));
         }
         else {
-        	if(this.getSubspeciesIndex() != this.dataManager.get(SUBSPECIES))
-        		this.setSubspecies(this.dataManager.get(SUBSPECIES), false);
+        	if(this.getSubspeciesIndex() != Byte.valueOf(this.dataManager.get(SUBSPECIES)))
+        		this.setSubspecies(Byte.valueOf(this.dataManager.get(SUBSPECIES)), false);
         }
 
         // Size:
@@ -1514,8 +1514,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     		this.dataManager.set(SIZE, Float.valueOf((float)this.sizeScale));
         }
         else {
-        	if(this.sizeScale != this.dataManager.get(SIZE)) {
-        		this.sizeScale = this.dataManager.get(SIZE);
+        	if(this.sizeScale != Float.valueOf(this.dataManager.get(SIZE))) {
+        		this.sizeScale = Float.valueOf(this.dataManager.get(SIZE));
         		this.updateSize();
         	}
         }
@@ -2103,7 +2103,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     // ========== Phase ==========
     /** Returns the current attack phase of this mob, used when deciding which attack to use and which animations to use. **/
     public byte getAttackPhase() {
-    	return this.dataManager.get(ATTACK_PHASE);
+    	return Byte.valueOf(this.dataManager.get(ATTACK_PHASE));
     }
     /** Sets the current attack phase of this mobs. **/
     public void setAttackPhase(byte setAttackPhase) { attackPhase = setAttackPhase; }
@@ -2303,7 +2303,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     	if(!this.worldObj.isRemote)
     		return this.getAttackTarget() != null;
     	else
-    		return (this.dataManager.get(TARGET) & TARGET_ID.ATTACK.id) > 0;
+    		return (Byte.valueOf(this.dataManager.get(TARGET)) & TARGET_ID.ATTACK.id) > 0;
     }
 
     /** Returns this entity's Master Target. **/
@@ -2315,7 +2315,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     	if(!this.worldObj.isRemote)
     		return this.getMasterTarget() != null;
     	else
-    		return (this.dataManager.get(TARGET) & TARGET_ID.MASTER.id) > 0;
+    		return (Byte.valueOf(this.dataManager.get(TARGET)) & TARGET_ID.MASTER.id) > 0;
     }
 
     /** Returns this entity's Parent Target. **/
@@ -2327,7 +2327,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     	if(!this.worldObj.isRemote)
     		return this.getParentTarget() != null;
     	else
-    		return (this.dataManager.get(TARGET) & TARGET_ID.PARENT.id) > 0;
+    		return (Byte.valueOf(this.dataManager.get(TARGET)) & TARGET_ID.PARENT.id) > 0;
     }
 
     /** Returns this entity's Avoid Target. **/
@@ -2342,7 +2342,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     	if(!this.worldObj.isRemote)
     		return this.getAvoidTarget() != null;
     	else
-    		return (this.dataManager.get(TARGET) & TARGET_ID.AVOID.id) > 0;
+    		return (Byte.valueOf(this.dataManager.get(TARGET)) & TARGET_ID.AVOID.id) > 0;
     }
 
     /** Returns this entity's Owner Target. **/
@@ -2363,7 +2363,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     	if(!this.worldObj.isRemote)
     		return this.getControllingPassenger() != null;
     	else
-    		return (this.dataManager.get(TARGET) & TARGET_ID.RIDER.id) > 0;
+    		return (Byte.valueOf(this.dataManager.get(TARGET)) & TARGET_ID.RIDER.id) > 0;
     }
 
     @Override
@@ -2479,7 +2479,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 
     /** Get the current stealth percentage, 0.0F = not stealthed, 1.0F = completely stealthed, used for animation such as burrowing crusks. **/
     public float getStealth() {
-    	return this.dataManager.get(STEALTH);
+    	return Float.valueOf(this.dataManager.get(STEALTH));
     }
 
     /** Sets the current stealth percentage. **/
@@ -2513,7 +2513,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     public boolean isOnLadder() {
     	if(this.canFly() || this.canSwim()) return false;
     	if(this.canClimb()) {
-            return (this.dataManager.get(CLIMBING) & 1) != 0;
+            return (Byte.valueOf(this.dataManager.get(CLIMBING)) & 1) != 0;
         }
     	else
     		return super.isOnLadder();
@@ -2522,7 +2522,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     /** Used to set whether this mob is climbing up a block or not. **/
     public void setBesideClimbableBlock(boolean collided) {
     	if(this.canClimb()) {
-	        byte climbing = this.dataManager.get(CLIMBING);
+	        byte climbing = Byte.valueOf(this.dataManager.get(CLIMBING));
 	        if(collided)
                 climbing = (byte)(climbing | 1);
 	        else climbing &= -2;
@@ -2532,7 +2532,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 
     /** Returns whether or not this mob is next to a climbable blocks or not. **/
     public boolean isBesideClimbableBlock() {
-        return (this.dataManager.get(CLIMBING) & 1) != 0;
+        return (Byte.valueOf(this.dataManager.get(CLIMBING)) & 1) != 0;
     }
     
     // ========== Falling ==========
@@ -2566,7 +2566,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     /** Returns true if this mob is blocking. **/
     public boolean isBlocking() {
     	if(this.worldObj.isRemote)
-    		return (this.dataManager.get(ANIMATION) & ANIM_ID.BLOCKING.id) > 0;
+    		return (Byte.valueOf(this.dataManager.get(ANIMATION)) & ANIM_ID.BLOCKING.id) > 0;
     	return this.currentBlockingTime > 0;
     }
     
@@ -3404,7 +3404,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
      */
     public int getColor() {
 		if(this.getDataManager() == null) return 0;
-        return this.getDataManager().get(COLOR) & 15;
+        return Integer.valueOf(this.getDataManager().get(COLOR)) & 15;
     }
     
     /**

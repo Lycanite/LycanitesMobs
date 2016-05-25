@@ -27,7 +27,7 @@ public class BlockFrostweb extends BlockBase {
 	// ==================================================
 	public BlockFrostweb() {
 		super(Material.WEB);
-        this.setCreativeTab(LycanitesMobs.itemsTab);
+        this.setCreativeTab(LycanitesMobs.blocksTab);
 		
 		// Properties:
 		this.group = ArcticMobs.group;

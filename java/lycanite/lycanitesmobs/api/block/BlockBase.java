@@ -77,6 +77,12 @@ public class BlockBase extends Block {
 		this.setUnlocalizedName(this.blockName);
 	}
 
+    /** Copies various basic attributes from this block to the provided block, such as hardness. **/
+    public void copyAttributesTo(Block block) {
+        block.setHardness(this.blockHardness);
+        block.setResistance(this.blockResistance);
+    }
+
 
     // ==================================================
     //                      Info
@@ -150,6 +156,7 @@ public class BlockBase extends Block {
 		if(this.canBeCrushed)
 			if(block == Blocks.SAND || block == Blocks.GRAVEL)
 	        	world.setBlockToAir(pos);
+        super.neighborChanged(state, world, pos, block);
     }
     
     
@@ -189,18 +196,18 @@ public class BlockBase extends Block {
 	// ==================================================
 	// ========== Is Block Passable ==========
     @Override
-    public boolean isPassable(IBlockAccess worldIn, BlockPos pos) {
+    public boolean isPassable(IBlockAccess world, BlockPos pos) {
         if(this.noEntityCollision)
             return true;
-        return !this.blockMaterial.blocksMovement();
+        return super.isPassable(world, pos);
     }
 
     // ========== Is Block Solid ==========
     @Override
-    public boolean isBlockSolid(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
+    public boolean isBlockSolid(IBlockAccess world, BlockPos pos, EnumFacing side) {
         if(this.noEntityCollision)
             return false;
-        return worldIn.getBlockState(pos).getMaterial().isSolid();
+        return super.isBlockSolid(world, pos, side);
     }
 
     // ========== Physical Collision Box ==========
@@ -209,7 +216,16 @@ public class BlockBase extends Block {
         return super.getBoundingBox(state, world, pos);
     }
 
+    // ========== Collision Bounding Box ==========
+    @Override
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World world, BlockPos pos) {
+        if(this.noBreakCollision)
+            return null;
+        return super.getCollisionBoundingBox(state, world, pos);
+    }
+
     // ========== Selection Box ==========
+    @SideOnly(Side.CLIENT)
     @Override
     public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World world, BlockPos pos) {
         if(!this.isCollidable())
@@ -227,15 +243,6 @@ public class BlockBase extends Block {
     @Override
     public boolean isOpaqueCube(IBlockState state) {
         return this.isOpaque;
-    }
-
-    // ========== Client Bounding Box ==========
-    @SideOnly(Side.CLIENT)
-    @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World world, BlockPos pos) {
-        if(this.noBreakCollision)
-            return null;
-        return super.getSelectedBoundingBox(state, world, pos);
     }
     
     
@@ -258,27 +265,4 @@ public class BlockBase extends Block {
     public BlockBase setBlockStepSound(SoundType soundType) {
         return (BlockBase)this.setSoundType(soundType);
     }
-    
-    
-	// ==================================================
-	//                      Visuals
-	// ==================================================
-    /*/ ========== Get Texture from Side and Metadata ==========
-    @SideOnly(Side.CLIENT)
-    public ResourceLocation getTexture(int side, int metadata) {
-        return AssetManager.getTexture(blockName);
-    }
-    
-    // ========== Get Sub Texture ==========
-    @SideOnly(Side.CLIENT)
-    public ResourceLocation getSubTexture(int subID) {
-        return AssetManager.getTextureGroup(blockName)[subID];
-    }
-
-    // ========== Get Render Type ==========
-    @SideOnly(Side.CLIENT)
-    @Override
-    public EnumBlockRenderType getRenderType(IBlockState state) {
-        return super.getRenderType(state);
-    }*/
 }

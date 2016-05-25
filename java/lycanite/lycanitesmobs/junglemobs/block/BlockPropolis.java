@@ -24,7 +24,7 @@ public class BlockPropolis extends BlockBase {
 	// ==================================================
 	public BlockPropolis() {
 		super(Material.CLAY);
-        this.setCreativeTab(LycanitesMobs.itemsTab);
+        this.setCreativeTab(LycanitesMobs.blocksTab);
 		
 		// Properties:
 		this.group = JungleMobs.group;

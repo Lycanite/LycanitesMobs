@@ -109,6 +109,7 @@ item.horsearmordiamond.name=Diamond Pet Armor
 # ========== GUIs ==========
 # Creative Tab names:
 itemGroup.lycanitesmobs.items=Lycanites Mobs: Items
+itemGroup.lycanitesmobs.blocks=Lycanites Mobs: Blocks
 itemGroup.lycanitesmobs.creatures=Lycanites Mobs: Creatures
 #
 # Beastiary:

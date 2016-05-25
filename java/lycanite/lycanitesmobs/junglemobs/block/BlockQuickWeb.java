@@ -24,7 +24,7 @@ public class BlockQuickWeb extends BlockBase {
 	// ==================================================
 	public BlockQuickWeb() {
 		super(Material.WEB);
-        this.setCreativeTab(LycanitesMobs.itemsTab);
+        this.setCreativeTab(LycanitesMobs.blocksTab);
 		
 		// Properties:
 		this.group = JungleMobs.group;

@@ -45,7 +45,7 @@ public class BlockSummoningPedestal extends BlockBase implements ITileEntityProv
 	// ==================================================
 	public BlockSummoningPedestal(GroupInfo group) {
 		super(Material.IRON);
-        this.setCreativeTab(LycanitesMobs.itemsTab);
+        this.setCreativeTab(LycanitesMobs.blocksTab);
         this.setDefaultState(this.getBlockState().getBaseState().withProperty(PROPERTY_OWNER, EnumSummoningPedestal.NONE));
 		
 		// Properties:

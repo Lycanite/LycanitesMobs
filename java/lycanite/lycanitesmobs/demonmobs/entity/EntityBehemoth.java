@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs.demonmobs.entity;
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupDemon;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
@@ -15,6 +16,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
@@ -25,6 +29,9 @@ import java.util.HashMap;
 import java.util.List;
 
 public class EntityBehemoth extends EntityCreatureTameable implements IMob, IGroupDemon {
+
+    // Data Manager:
+    protected static final DataParameter<Integer> HELLFIRE_ENERGY = EntityDataManager.<Integer>createKey(EntityCreatureBase.class, DataSerializers.VARINT);
 
     public int hellfireEnergy = 0;
     public List<EntityHellfireOrb> hellfireOrbs = new ArrayList<EntityHellfireOrb>();
@@ -86,7 +93,7 @@ public class EntityBehemoth extends EntityCreatureTameable implements IMob, IGro
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataManager.register(EntityRahovart.HELLFIRE_ENERGY, this.hellfireEnergy);
+        this.dataManager.register(HELLFIRE_ENERGY, this.hellfireEnergy);
     }
 	
 	
@@ -100,9 +107,9 @@ public class EntityBehemoth extends EntityCreatureTameable implements IMob, IGro
 
         // Sync Hellfire Energy:
         if (!this.worldObj.isRemote)
-            this.dataManager.set(EntityRahovart.HELLFIRE_ENERGY, this.hellfireEnergy);
+            this.dataManager.set(HELLFIRE_ENERGY, this.hellfireEnergy);
         else
-            this.hellfireEnergy = this.dataManager.get(EntityRahovart.HELLFIRE_ENERGY);
+            this.hellfireEnergy = this.dataManager.get(HELLFIRE_ENERGY);
 
         // Hellfire Update:
         if(this.worldObj.isRemote && this.hellfireEnergy > 0)

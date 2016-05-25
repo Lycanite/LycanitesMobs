@@ -564,7 +564,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     //                    Pet Control
     // ==================================================
     public boolean petControlsEnabled() { return false; }
-    public byte behaviourBitMask() { return this.dataManager.get(TAMED); }
+    public byte behaviourBitMask() { return Byte.valueOf(this.dataManager.get(TAMED)); }
     
     // ========== Sitting ==========
     public boolean isSitting() {
@@ -666,7 +666,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     	if(!this.worldObj.isRemote)
     		return this.hunger;
     	else
-    		return this.dataManager.get(HUNGER);
+    		return Float.valueOf(this.dataManager.get(HUNGER));
     }
     
     public void setCreatureHunger(float setHunger) {

@@ -1,11 +1,13 @@
 package lycanite.lycanitesmobs;
 
+import lycanite.lycanitesmobs.api.block.BlockSlabCustom;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.info.EntityListCustom;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.api.item.ItemBase;
+import lycanite.lycanitesmobs.api.item.ItemSlabCustom;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.client.Minecraft;
@@ -66,7 +68,12 @@ public class ObjectManager {
 		name = name.toLowerCase();
 		blocks.put(name, block);
         GameRegistry.register(block);
-        GameRegistry.register(new ItemBlock(block), block.getRegistryName());
+        if(block instanceof BlockSlabCustom) {
+            BlockSlabCustom blockSlab = (BlockSlabCustom)block;
+            GameRegistry.register(new ItemSlabCustom(blockSlab, blockSlab, blockSlab.getDoubleBlock()), block.getRegistryName());
+        }
+        else
+            GameRegistry.register(new ItemBlock(block), block.getRegistryName());
         LycanitesMobs.proxy.addBlockRender(currentGroup, block);
         return block;
 	}

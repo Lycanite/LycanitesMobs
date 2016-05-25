@@ -22,6 +22,7 @@ public class BlockPillar extends BlockBase {
 	// ==================================================
 	public BlockPillar(Material material, GroupInfo group, String name) {
 		super(material, group, name);
+        this.setDefaultState(this.blockState.getBaseState().withProperty(AXIS, EnumFacing.Axis.Y));
 	}
 
 

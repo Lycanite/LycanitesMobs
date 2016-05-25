@@ -12,7 +12,7 @@ public class BlockSoulcube extends BlockBase {
 	// ==================================================
 	public BlockSoulcube(GroupInfo group, String name) {
 		super(Material.IRON);
-        this.setCreativeTab(LycanitesMobs.itemsTab);
+        this.setCreativeTab(LycanitesMobs.blocksTab);
 		
 		// Properties:
 		this.group = group;

@@ -151,7 +151,10 @@ public class MobEventRahovart extends MobEventBoss {
         int height = 40 + Math.round(20 * world.rand.nextFloat());
         Block primaryBlock = ObjectManager.getBlock("demonstonebrick");
         Block secondaryBlock = ObjectManager.getBlock("demonstone");
+        Block tetriaryBlock = ObjectManager.getBlock("demonstonechiseled");
+        Block pillarBlock = ObjectManager.getBlock("demonstonepillar");
         double secondaryChance = 0.4D;
+        double tetriaryChance = 0.05D;
         int[] decorationCoord = new int[] {originX, originY, originZ};
 
         int radius = radiusMax;
@@ -166,20 +169,24 @@ public class MobEventRahovart extends MobEventBoss {
                     int stripRadius = Math.round(radius * (float) Math.sin(Math.toRadians(90 * stripNormal)));
 
                     for (int z = originZ - stripRadius; z <= originZ + stripRadius; z++) {
-                        if(world.rand.nextDouble() > secondaryChance)
-                            world.setBlockState(new BlockPos(x, y, z), primaryBlock.getDefaultState(), 2);
-                        else
-                            world.setBlockState(new BlockPos(x, y, z), secondaryBlock.getDefaultState(), 2);
+                        if(x == originX && z == originZ) {
+                            world.setBlockState(new BlockPos(x, y, z), pillarBlock.getDefaultState(), 2);
+                        }
+                        else {
+                            if (world.rand.nextDouble() > secondaryChance)
+                                world.setBlockState(new BlockPos(x, y, z), primaryBlock.getDefaultState(), 2);
+                            else if (world.rand.nextDouble() > tetriaryChance)
+                                world.setBlockState(new BlockPos(x, y, z), secondaryBlock.getDefaultState(), 2);
+                            else
+                                world.setBlockState(new BlockPos(x, y, z), tetriaryBlock.getDefaultState(), 2);
+                        }
                     }
 
                     stripNumber++;
                 }
             }
             else {
-                if(world.rand.nextDouble() > secondaryChance)
-                    world.setBlockState(new BlockPos(originX, y, originZ), primaryBlock.getDefaultState(), 2);
-                else
-                    world.setBlockState(new BlockPos(originX, y, originZ), secondaryBlock.getDefaultState(), 2);
+                world.setBlockState(new BlockPos(originX, y, originZ), pillarBlock.getDefaultState(), 2);
                 decorationCoord = new int[] {originX, y, originZ};
             }
             if(--radiusHeight <= 0) {

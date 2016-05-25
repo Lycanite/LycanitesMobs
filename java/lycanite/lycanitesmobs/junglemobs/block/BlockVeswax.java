@@ -26,7 +26,7 @@ public class BlockVeswax extends BlockBase {
 	// ==================================================
 	public BlockVeswax() {
 		super(Material.WOOD);
-        this.setCreativeTab(LycanitesMobs.itemsTab);
+        this.setCreativeTab(LycanitesMobs.blocksTab);
 		
 		// Properties:
 		this.group = JungleMobs.group;

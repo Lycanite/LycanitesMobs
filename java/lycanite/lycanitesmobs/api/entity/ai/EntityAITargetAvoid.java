@@ -5,16 +5,12 @@ import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 
-import java.util.Collections;
-import java.util.List;
-
 public class EntityAITargetAvoid extends EntityAITarget {
 	// Targets:
     private Class targetClass = EntityLivingBase.class;
     
     // Properties:
     private int targetChance = 0;
-    private EntityAITargetSorterNearest targetSorter;
     protected boolean tameTargeting = false;
     
     // ==================================================
@@ -23,15 +19,6 @@ public class EntityAITargetAvoid extends EntityAITarget {
     public EntityAITargetAvoid(EntityCreatureBase setHost) {
         super(setHost);
         this.setMutexBits(8);
-        this.targetSelector = new Predicate<Entity>() {
-            @Override
-            public boolean apply(Entity input) {
-                if(!(input instanceof EntityLivingBase))
-                    return false;
-                return EntityAITargetAvoid.this.isSuitableTarget((EntityLivingBase)input, false);
-            }
-        };
-        this.targetSorter = new EntityAITargetSorterNearest(setHost);
     }
     
     
@@ -42,29 +29,40 @@ public class EntityAITargetAvoid extends EntityAITarget {
     	this.targetChance = setChance;
     	return this;
     }
+
     public EntityAITargetAvoid setTargetClass(Class setTargetClass) {
     	this.targetClass = setTargetClass;
     	return this;
     }
+
     public EntityAITargetAvoid setSightCheck(boolean setSightCheck) {
     	this.checkSight = setSightCheck;
     	return this;
     }
+
     public EntityAITargetAvoid setOnlyNearby(boolean setNearby) {
     	this.nearbyOnly = setNearby;
     	return this;
     }
+
     public EntityAITargetAvoid setCantSeeTimeMax(int setCantSeeTimeMax) {
     	this.cantSeeTimeMax = setCantSeeTimeMax;
     	return this;
     }
+
     public EntityAITargetAvoid setSelector(Predicate<Entity> selector) {
     	this.targetSelector = selector;
     	return this;
     }
+
     public EntityAITargetAvoid setTameTargetting(boolean setTargetting) {
     	this.tameTargeting = setTargetting;
     	return this;
+    }
+
+    public EntityAITargetAvoid setHelpCall(boolean setHelp) {
+        this.callForHelp = setHelp;
+        return this;
     }
     
     
@@ -111,15 +109,11 @@ public class EntityAITargetAvoid extends EntityAITarget {
         
         double distance = this.getTargetDistance();
         double heightDistance = 4.0D;
-        if(this.host.useDirectNavigator()) heightDistance = distance;
-        List possibleTargets = this.host.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, this.host.getEntityBoundingBox().expand(distance, heightDistance, distance), this.targetSelector);
-        Collections.sort(possibleTargets, this.targetSorter);
-        
-        if(possibleTargets.isEmpty())
-            return false;
-        else
-            this.target = (EntityLivingBase)possibleTargets.get(0);
-        
+        if(this.host.useDirectNavigator())
+            heightDistance = distance;
+        this.target = this.getNewTarget(distance, heightDistance, distance);
+        if(this.callForHelp)
+            this.callNearbyForHelp();
         return this.target != null;
     }
 }

@@ -17,7 +17,7 @@ public class EntityAIGetBlock extends EntityAIBase {
 	private EntityCreatureBase host;
 	private BlockPos target;
 	private int targetingTime = 0;
-    private EntityAITargetSorterNearest targetSorter;
+    private TargetSorterNearest targetSorter;
 	
 	// Properties:
     private int distanceMax = 8;
@@ -37,7 +37,7 @@ public class EntityAIGetBlock extends EntityAIBase {
         super();
         this.setMutexBits(1);
         this.host = setHost;
-        this.targetSorter = new EntityAITargetSorterNearest(setHost);
+        this.targetSorter = new TargetSorterNearest(setHost);
     }
     
     

@@ -73,11 +73,16 @@ public class EntityAITargetOwnerAttack extends EntityAITarget {
   	//                    Valid Target
   	// ==================================================
     private boolean isTargetValid(EntityLivingBase target) {
-    	if(target == null) return false;
-    	if(!target.isEntityAlive()) return false;
-		if(target == this.host) return false;
-		if(!this.host.canAttackClass(target.getClass())) return false;
-		if(!this.host.canAttackEntity(target)) return false;
+    	if(target == null)
+            return false;
+    	if(!target.isEntityAlive())
+            return false;
+		if(target == this.host)
+            return false;
+		if(!this.host.canAttackClass(target.getClass()))
+            return false;
+		if(!this.host.canAttackEntity(target))
+            return false;
     	return true;
     }
     

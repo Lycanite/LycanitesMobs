@@ -64,7 +64,8 @@ public class EntityAITargetMasterAttack extends EntityAIBase {
     	if(target == null) return false;
     	if(!target.isEntityAlive()) return false;
 		if(target == this.host) return false;
-		if(!this.host.canAttackClass(target.getClass())) return false;
+		if(!this.host.canAttackClass(target.getClass()))
+            return false;
     	return true;
     }
     

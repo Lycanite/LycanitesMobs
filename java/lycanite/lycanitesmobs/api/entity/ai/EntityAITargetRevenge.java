@@ -1,5 +1,6 @@
 package lycanite.lycanitesmobs.api.entity.ai;
 
+import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 
@@ -9,7 +10,6 @@ import java.util.List;
 public class EntityAITargetRevenge extends EntityAITargetAttack {
 	
 	// Properties:
-    boolean callForHelp = false;
     Class[] helpClasses = null;
     private int revengeTime;
     private boolean tameTargeting = true;
@@ -73,23 +73,29 @@ public class EntityAITargetRevenge extends EntityAITargetAttack {
         this.target = this.host.getAITarget();
         this.revengeTime = this.host.getRevengeTimer();
 
-        if(this.callForHelp && (!(this.host instanceof EntityCreatureTameable) || (this.host instanceof EntityCreatureTameable && !((EntityCreatureTameable)this.host).isTamed()))) {
-            double d0 = this.getTargetDistance();
-            List allies = this.host.worldObj.getEntitiesWithinAABB(this.host.getClass(), this.host.getEntityBoundingBox().expand(d0, 4.0D, d0), this.targetSelector);
-            if(this.helpClasses != null)
-	            for(Class helpClass : this.helpClasses) {
-	            	if(helpClass != null && EntityCreatureBase.class.isAssignableFrom(helpClass) && !this.target.getClass().isAssignableFrom(helpClass)) {
-	            		allies.addAll(this.host.worldObj.getEntitiesWithinAABB(helpClass, this.host.getEntityBoundingBox().expand(d0, 4.0D, d0), this.targetSelector));
+        try {
+            if (this.callForHelp && (!(this.host instanceof EntityCreatureTameable) || (this.host instanceof EntityCreatureTameable && !((EntityCreatureTameable) this.host).isTamed()))) {
+                double d0 = this.getTargetDistance();
+                List allies = this.host.worldObj.getEntitiesWithinAABB(this.host.getClass(), this.host.getEntityBoundingBox().expand(d0, 4.0D, d0), this.targetSelector);
+                if (this.helpClasses != null)
+                    for (Class helpClass : this.helpClasses) {
+                        if (helpClass != null && EntityCreatureBase.class.isAssignableFrom(helpClass) && !this.target.getClass().isAssignableFrom(helpClass)) {
+                            allies.addAll(this.host.worldObj.getEntitiesWithinAABB(helpClass, this.host.getEntityBoundingBox().expand(d0, 4.0D, d0), this.targetSelector));
+                        }
                     }
-	            }
-            Iterator possibleAllies = allies.iterator();
-            
-            while(possibleAllies.hasNext()) {
-                EntityCreatureBase possibleAlly = (EntityCreatureBase)possibleAllies.next();
-                if(possibleAlly != this.host && possibleAlly.getAttackTarget() == null && !possibleAlly.isOnSameTeam(this.target) && possibleAlly.isProtective(this.host))
-                	if(!(possibleAlly instanceof EntityCreatureTameable) || (possibleAlly instanceof EntityCreatureTameable && !((EntityCreatureTameable)possibleAlly).isTamed()))
-                	possibleAlly.setAttackTarget(this.target);
+                Iterator possibleAllies = allies.iterator();
+
+                while (possibleAllies.hasNext()) {
+                    EntityCreatureBase possibleAlly = (EntityCreatureBase) possibleAllies.next();
+                    if (possibleAlly != this.host && possibleAlly.getAttackTarget() == null && !possibleAlly.isOnSameTeam(this.target) && possibleAlly.isProtective(this.host))
+                        if (!(possibleAlly instanceof EntityCreatureTameable) || (possibleAlly instanceof EntityCreatureTameable && !((EntityCreatureTameable) possibleAlly).isTamed()))
+                            possibleAlly.setAttackTarget(this.target);
+                }
             }
+        }
+        catch (Exception e) {
+            LycanitesMobs.printWarning("", "An exception occurred when selecting help targets in revenge, this has been skipped to prevent a crash.");
+            e.printStackTrace();
         }
 
         super.startExecuting();

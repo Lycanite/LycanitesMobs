@@ -1,6 +1,7 @@
 package lycanite.lycanitesmobs.api.entity.ai;
 
 import com.google.common.base.Predicate;
+import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.IGroupAlpha;
 import lycanite.lycanitesmobs.api.IGroupAnimal;
 import lycanite.lycanitesmobs.api.IGroupPredator;
@@ -10,7 +11,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityOwnable;
 
-import java.util.Collections;
 import java.util.List;
 public class EntityAITargetAttack extends EntityAITarget {
 	// Targets:
@@ -19,7 +19,6 @@ public class EntityAITargetAttack extends EntityAITarget {
     
     // Properties:
     private int targetChance = 0;
-    private EntityAITargetSorterNearest targetSorter;
     protected boolean tameTargeting = false;
     private int allySize = 0;
     private int enemySize = 0;
@@ -30,15 +29,6 @@ public class EntityAITargetAttack extends EntityAITarget {
     public EntityAITargetAttack(EntityCreatureBase setHost) {
         super(setHost);
         this.setMutexBits(1);
-        this.targetSelector = new Predicate<Entity>() {
-            @Override
-            public boolean apply(Entity input) {
-                if(!(input instanceof EntityLivingBase))
-                    return false;
-                return EntityAITargetAttack.this.isSuitableTarget((EntityLivingBase)input, false);
-            }
-        };
-        this.targetSorter = new EntityAITargetSorterNearest(setHost);
     }
     
     
@@ -78,6 +68,11 @@ public class EntityAITargetAttack extends EntityAITarget {
     public EntityAITargetAttack setSelector(Predicate<Entity> selector) {
     	this.targetSelector = selector;
     	return this;
+    }
+
+    public EntityAITargetAttack setHelpCall(boolean setHelp) {
+        this.callForHelp = setHelp;
+        return this;
     }
     
     public EntityAITargetAttack setTameTargetting(boolean setTargetting) {
@@ -152,21 +147,27 @@ public class EntityAITargetAttack extends EntityAITarget {
         
         // Pack Size Check:
         if(this.allySize > 0 && this.enemySize > 0) {
-        	double hostPackRange = 32D;
-        	double hostPackSize = this.host.worldObj.getEntitiesWithinAABB(this.host.getClass(), this.host.getEntityBoundingBox().expand(hostPackRange, hostPackRange, hostPackRange)).size();
-        	double hostPackScale = hostPackSize / this.allySize;
+            try {
+                double hostPackRange = 32D;
+                double hostPackSize = this.host.worldObj.getEntitiesWithinAABB(this.host.getClass(), this.host.getEntityBoundingBox().expand(hostPackRange, hostPackRange, hostPackRange)).size();
+                double hostPackScale = hostPackSize / this.allySize;
 
-        	double targetPackRange = 64D;
-        	double targetPackSize = target.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, target.getEntityBoundingBox().expand(targetPackRange, targetPackRange, targetPackRange), new Predicate<EntityLivingBase>() {
-                @Override
-                public boolean apply(EntityLivingBase entity) {
-                    return entity.getClass().isAssignableFrom(EntityAITargetAttack.this.targetClass);
-                }
-            }).size();
-        	double targetPackScale = targetPackSize / this.enemySize;
-        	
-        	if(hostPackScale < targetPackScale)
-        		return false;
+                double targetPackRange = 64D;
+                double targetPackSize = target.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, target.getEntityBoundingBox().expand(targetPackRange, targetPackRange, targetPackRange), new Predicate<EntityLivingBase>() {
+                    @Override
+                    public boolean apply(EntityLivingBase entity) {
+                        return entity.getClass().isAssignableFrom(EntityAITargetAttack.this.targetClass);
+                    }
+                }).size();
+                double targetPackScale = targetPackSize / this.enemySize;
+
+                if (hostPackScale < targetPackScale)
+                    return false;
+            }
+            catch (Exception e) {
+                LycanitesMobs.printWarning("", "An exception occurred when assessing pack sizes, this has been skipped to prevent a crash.");
+                e.printStackTrace();
+            }
         }
         
     	return true;
@@ -190,14 +191,9 @@ public class EntityAITargetAttack extends EntityAITarget {
         double heightDistance = 4.0D + this.host.height;
         if(this.host.useDirectNavigator())
             heightDistance = distance;
-        List possibleTargets = this.host.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, this.host.getEntityBoundingBox().expand(distance, heightDistance, distance), this.targetSelector);
-        Collections.sort(possibleTargets, this.targetSorter);
-
-        if(possibleTargets.isEmpty())
-            this.target = null;
-        else
-            this.target = (EntityLivingBase)possibleTargets.get(0);
-        
+        this.target = this.getNewTarget(distance, heightDistance, distance);
+        if(this.callForHelp)
+            this.callNearbyForHelp();
         return this.target != null;
     }
 }

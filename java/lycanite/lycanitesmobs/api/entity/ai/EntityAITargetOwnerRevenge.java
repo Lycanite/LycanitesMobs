@@ -1,11 +1,7 @@
 package lycanite.lycanitesmobs.api.entity.ai;
 
-import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import net.minecraft.entity.EntityLivingBase;
-
-import java.util.Iterator;
-import java.util.List;
 
 public class EntityAITargetOwnerRevenge extends EntityAITargetAttack {
 	
@@ -13,7 +9,6 @@ public class EntityAITargetOwnerRevenge extends EntityAITargetAttack {
 	private EntityCreatureTameable host;
 	
 	// Properties:
-    boolean callForHelp = false;
     private int revengeTime;
 	
 	// ==================================================
@@ -75,19 +70,9 @@ public class EntityAITargetOwnerRevenge extends EntityAITargetAttack {
         EntityLivingBase owner = (EntityLivingBase)this.host.getOwner();
         this.target = owner.getAITarget();
         this.revengeTime = owner.getRevengeTimer();
-        
         if(this.callForHelp) {
-            double d0 = this.getTargetDistance();
-            List allies = this.host.worldObj.getEntitiesWithinAABB(this.host.getClass(), this.host.getEntityBoundingBox().expand(d0, 4.0D, d0), this.targetSelector);
-            Iterator possibleAllies = allies.iterator();
-
-            while(possibleAllies.hasNext()) {
-                EntityCreatureBase possibleAlly = (EntityCreatureBase)possibleAllies.next();
-                if(possibleAlly != this.host && possibleAlly.getAttackTarget() == null && !possibleAlly.isOnSameTeam(this.target))
-                	possibleAlly.setAttackTarget(this.target);
-            }
+            this.callNearbyForHelp();
         }
-
         super.startExecuting();
     }
 }

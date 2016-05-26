@@ -17,7 +17,7 @@ public class EntityAIGetItem extends EntityAIBase {
 	
 	// Properties:
     private Predicate<EntityItem> targetSelector;
-    private EntityAITargetSorterNearest targetSorter;
+    private TargetSorterNearest targetSorter;
     private double distanceMax = 32.0D * 32.0D;
     double speed = 1.0D;
     private boolean checkSight = true;
@@ -39,7 +39,7 @@ public class EntityAIGetItem extends EntityAIBase {
                 return true;
             }
         };
-        this.targetSorter = new EntityAITargetSorterNearest(setHost);
+        this.targetSorter = new TargetSorterNearest(setHost);
     }
     
     

@@ -10,30 +10,17 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.monster.IMob;
 
-import java.util.Collections;
-import java.util.List;
-
 public class EntityAITargetOwnerThreats extends EntityAITarget {
 	// Properties:
 	private EntityCreatureTameable tamedHost;
-    private EntityAITargetSorterNearest targetSorter;
     
     // ==================================================
   	//                    Constructor
   	// ==================================================
     public EntityAITargetOwnerThreats(EntityCreatureTameable setHost) {
-        super((EntityCreatureBase)setHost);
+        super((EntityCreatureBase) setHost);
     	this.tamedHost = setHost;
         this.setMutexBits(1);
-        this.targetSelector = new Predicate<Entity>() {
-            @Override
-            public boolean apply(Entity input) {
-                if(!(input instanceof EntityLivingBase))
-                    return false;
-                return EntityAITargetOwnerThreats.this.isSuitableTarget((EntityLivingBase)input, false);
-            }
-        };
-        this.targetSorter = new EntityAITargetSorterNearest(setHost);
     }
     
     
@@ -95,8 +82,22 @@ public class EntityAITargetOwnerThreats extends EntityAITarget {
             if(target == ((IEntityOwnable)this.host).getOwner())
                 return false;
         }
+
+        // Threat Check:
+        if(target instanceof IMob && !(target instanceof IEntityOwnable) && !(target instanceof EntityCreatureBase)) {
+            return true;
+        }
+        else if(target instanceof EntityCreatureBase && ((EntityCreatureBase)target).isHostile() && !(target instanceof IGroupAnimal)) {
+            return true;
+        }
+        else if(target instanceof EntityLiving && ((EntityLiving)target).getAttackTarget() == this.getOwner()) {
+            return true;
+        }
+        else if(target.getAITarget() == this.getOwner()) {
+            return true;
+        }
         
-    	return true;
+    	return false;
     }
     
     
@@ -121,34 +122,13 @@ public class EntityAITargetOwnerThreats extends EntityAITarget {
         
         double distance = this.getTargetDistance() - this.host.width;
         double heightDistance = 4.0D - this.host.height;
-        if(this.host.useDirectNavigator()) heightDistance = this.getTargetDistance() - this.host.height;
-        List possibleTargets = this.host.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, this.host.getEntityBoundingBox().expand(distance, heightDistance, distance), this.targetSelector);
-        Collections.sort(possibleTargets, this.targetSorter);
-        
-        if(possibleTargets.isEmpty())
-            this.target = null;
-        else {
-        	for(Object possibleTargetObj : possibleTargets) {
-        		if(possibleTargetObj instanceof EntityLivingBase) {
-	        		EntityLivingBase possibleTarget = (EntityLivingBase)possibleTargetObj;
-	        		if(possibleTarget instanceof IMob && !(possibleTarget instanceof IEntityOwnable) && !(possibleTarget instanceof EntityCreatureBase)) {
-	        			this.target = possibleTarget;
-	        		}
-	        		else if(possibleTarget instanceof EntityCreatureBase && ((EntityCreatureBase)possibleTarget).isHostile() && !(possibleTarget instanceof IGroupAnimal)) {
-	        			this.target = possibleTarget;
-	        		}
-	        		else if(possibleTarget instanceof EntityLiving && ((EntityLiving)possibleTarget).getAttackTarget() == this.getOwner()) {
-	        			this.target = possibleTarget;
-	        		}
-	        		else if(possibleTarget.getAITarget() == this.getOwner()) {
-	        			this.target = possibleTarget;
-	        		}
-	        		if(this.target != null)
-	        			break;
-        		}
-        	}
-        }
-        
+        if(this.host.useDirectNavigator())
+            heightDistance = this.getTargetDistance() - this.host.height;
+        if(this.host.useDirectNavigator())
+            heightDistance = distance;
+        this.target = this.getNewTarget(distance, heightDistance, distance);
+        if(this.callForHelp)
+            this.callNearbyForHelp();
         return this.target != null;
     }
 }

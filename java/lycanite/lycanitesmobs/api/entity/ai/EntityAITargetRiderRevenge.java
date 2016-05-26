@@ -1,6 +1,7 @@
 package lycanite.lycanitesmobs.api.entity.ai;
 
 import com.google.common.base.Predicate;
+import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import net.minecraft.entity.Entity;
@@ -73,22 +74,28 @@ public class EntityAITargetRiderRevenge extends EntityAITargetAttack {
     public void startExecuting() {
         this.target = this.host.getRider().getAITarget();
         this.revengeTime = this.host.getRider().getRevengeTimer();
-        
-        if(this.callForHelp) {
-            double d0 = this.getTargetDistance();
-            List allies = this.host.worldObj.getEntitiesWithinAABB(this.host.getClass(), this.host.getEntityBoundingBox().expand(d0, 4.0D, d0), new Predicate<Entity>() {
-                @Override
-                public boolean apply(Entity input) {
-                    return input instanceof EntityLivingBase;
-                }
-            });
-            Iterator possibleAllies = allies.iterator();
 
-            while(possibleAllies.hasNext()) {
-                EntityCreatureBase possibleAlly = (EntityCreatureBase)possibleAllies.next();
-                if(possibleAlly != this.host && possibleAlly.getAttackTarget() == null && !possibleAlly.isOnSameTeam(this.target))
-                	possibleAlly.setAttackTarget(this.target);
+        try {
+            if (this.callForHelp) {
+                double d0 = this.getTargetDistance();
+                List allies = this.host.worldObj.getEntitiesWithinAABB(this.host.getClass(), this.host.getEntityBoundingBox().expand(d0, 4.0D, d0), new Predicate<Entity>() {
+                    @Override
+                    public boolean apply(Entity input) {
+                        return input instanceof EntityLivingBase;
+                    }
+                });
+                Iterator possibleAllies = allies.iterator();
+
+                while (possibleAllies.hasNext()) {
+                    EntityCreatureBase possibleAlly = (EntityCreatureBase) possibleAllies.next();
+                    if (possibleAlly != this.host && possibleAlly.getAttackTarget() == null && !possibleAlly.isOnSameTeam(this.target))
+                        possibleAlly.setAttackTarget(this.target);
+                }
             }
+        }
+        catch(Exception e) {
+            LycanitesMobs.printWarning("", "An exception occurred when selecting help targets in rider revenge, this has been skipped to prevent a crash.");
+            e.printStackTrace();
         }
 
         super.startExecuting();

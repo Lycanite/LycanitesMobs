@@ -43,7 +43,7 @@ public class EntityAstaroth extends EntityCreatureBase implements IMob, IGroupDe
         
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(10).setRange(40.0F).setMinChaseDistance(16.0F).setChaseTime(-1));
+        this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(5).setRange(40.0F).setMinChaseDistance(16.0F).setChaseTime(-1));
         this.tasks.addTask(6, new EntityAIWander(this).setSpeed(1.0D));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));

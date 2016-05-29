@@ -173,11 +173,13 @@ public class EntityProjectileBase extends EntityThrowable {
 
                         // Prevent Knockback:
                         double targetKnockbackResistance = 0;
+                        boolean stopKnockback = false;
                         if(this.knockbackChance < 1) {
                             if(this.knockbackChance <= 0 || this.rand.nextDouble() <= this.knockbackChance) {
                                 if(target instanceof EntityLivingBase) {
                                     targetKnockbackResistance = ((EntityLivingBase)target).getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).getAttributeValue();
                                     ((EntityLivingBase)target).getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1);
+                                    stopKnockback = true;
                                 }
                             }
                         }
@@ -210,11 +212,9 @@ public class EntityProjectileBase extends EntityThrowable {
  				        this.onDamage(target, damageInit, attackSuccess);
 
                         // Restore Knockback:
-                        if(this.knockbackChance < 1) {
-                            if(this.knockbackChance <= 0 || this.rand.nextDouble() <= this.knockbackChance) {
-                                if(target instanceof EntityLivingBase)
-                                    ((EntityLivingBase)target).getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(targetKnockbackResistance);
-                            }
+                        if(stopKnockback) {
+                            if(target instanceof EntityLivingBase)
+                                ((EntityLivingBase)target).getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(targetKnockbackResistance);
                         }
  					}
  				}

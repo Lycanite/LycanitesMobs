@@ -139,6 +139,11 @@ public class EntityTrite extends EntityCreatureBase implements IMob, IGroupDemon
     
     @Override
     public boolean canBurn() { return false; }
+
+    @Override
+    public float getFallResistance() {
+        return 10;
+    }
     
     // ========== Environmental ==========
     @Override

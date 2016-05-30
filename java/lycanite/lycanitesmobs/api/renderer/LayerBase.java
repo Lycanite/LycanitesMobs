@@ -54,6 +54,9 @@ public class LayerBase implements LayerRenderer<EntityCreatureBase> {
     }
 
     public boolean canRenderPart(String partName, EntityCreatureBase entity, boolean trophy) {
+        if(this.renderer.getMainModel() instanceof ModelCustom) {
+            ((ModelCustom)this.renderer.getMainModel()).canBaseRenderPart(partName, entity, trophy);
+        }
         return true;
     }
 

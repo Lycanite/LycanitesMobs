@@ -7,6 +7,10 @@
         "category": "record",
         "sounds": [{"name": "demonmobs:mobevent/rahovart", "stream": true}]
     },
+    "mobevent.asmodeus": {
+        "category": "record",
+        "sounds": [{"name": "demonmobs:mobevent/asmodeus", "stream": true}]
+    },
     "entity.belph.say": {
         "category": "hostile",
         "sounds": [{"name": "demonmobs:entity/belph/say", "stream": false}]

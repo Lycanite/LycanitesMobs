@@ -171,6 +171,14 @@ public class EntityCacodemon extends EntityCreatureTameable implements IGroupDem
 	// ==================================================
    	//                      Attacks
    	// ==================================================
+    // ========== Set Attack Target ==========
+    @Override
+    public boolean canAttackClass(Class targetClass) {
+        if(targetClass.isAssignableFrom(EntityTrite.class) || targetClass.isAssignableFrom(EntityAstaroth.class) || targetClass.isAssignableFrom(EntityAsmodeus.class))
+            return false;
+        return super.canAttackClass(targetClass);
+    }
+
 	// ========== Ranged Attack ==========
     @Override
     public void rangedAttack(Entity target, float range) {

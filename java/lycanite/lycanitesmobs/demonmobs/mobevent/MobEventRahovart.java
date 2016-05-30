@@ -54,7 +54,7 @@ public class MobEventRahovart extends MobEventBoss {
 
         // Build Floor:
         if(time == 1 * 20) {
-            this.buildArena(world, originX, originY, originZ);
+            this.buildArenaFloor(world, originX, originY, originZ);
         }
 
         // Explosions:
@@ -63,12 +63,12 @@ public class MobEventRahovart extends MobEventBoss {
         }
 
         // Build Obstacles:
-        if(time == 5 * 20) {
+        if(time == 10 * 20) {
             this.buildObstacles(world, originX, originY, originZ);
         }
 
         // Hellfire Pillar Effect:
-        if(time == 10 * 20) {
+        if(time == 25 * 20) {
             for(int i = 0; i < 10; i++) {
                 EntityProjectileBase entityProjectileBase = new EntityHellfireWall(world, originX, originY + (10 * i), originZ);
                 entityProjectileBase.projectileLife = 9 * 20;
@@ -77,7 +77,7 @@ public class MobEventRahovart extends MobEventBoss {
         }
 
         // Spawn Boss:
-        if(time == 19 * 20) {
+        if(time == 29 * 20) {
             EntityCreatureBase entityCreatureBase = new EntityRahovart(world);
             entityCreatureBase.setLocationAndAngles(originX, originY + 1, originZ, 0, 0);
             world.spawnEntityInWorld(entityCreatureBase);
@@ -89,7 +89,7 @@ public class MobEventRahovart extends MobEventBoss {
     // ==================================================
     //                     Arena Floor
     // ==================================================
-    public void buildArena(World world, int originX, int originY, int originZ) {
+    public void buildArenaFloor(World world, int originX, int originY, int originZ) {
         double rubbleChance = 0.01D;
         int radius = 60;
         int height = 120;

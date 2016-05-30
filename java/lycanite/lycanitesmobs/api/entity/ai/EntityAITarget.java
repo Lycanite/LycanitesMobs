@@ -121,11 +121,11 @@ public abstract class EntityAITarget extends EntityAIBase {
     public EntityLivingBase getNewTarget(double rangeX, double rangeY, double rangeZ) {
         EntityLivingBase newTarget = null;
         try {
-            List possibleTargets = this.getPossibleTargets(rangeX, rangeY, rangeZ);
+            List<EntityLivingBase> possibleTargets = this.getPossibleTargets(EntityLivingBase.class, rangeX, rangeY, rangeZ);
             if (possibleTargets.isEmpty())
                 return null;
             Collections.sort(possibleTargets, this.nearestSorter);
-            newTarget = (EntityLivingBase) possibleTargets.get(0);
+            newTarget = possibleTargets.get(0);
         }
         catch (Exception e) {
             LycanitesMobs.printWarning("", "An exception occurred when target selecting, this has been skipped to prevent a crash.");
@@ -138,8 +138,8 @@ public abstract class EntityAITarget extends EntityAIBase {
     // ==================================================
     //               Get Possible Targets
     // ==================================================
-    public List getPossibleTargets(double rangeX, double rangeY, double rangeZ) {
-        return this.host.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, this.host.getEntityBoundingBox().expand(rangeX, rangeY, rangeZ), Predicates.and(new Predicate[]{EntitySelectors.CAN_AI_TARGET, this.targetSelector}));
+    public <T extends Entity> List<T> getPossibleTargets(Class <? extends T > clazz, double rangeX, double rangeY, double rangeZ) {
+        return this.host.worldObj.<T>getEntitiesWithinAABB(clazz, this.host.getEntityBoundingBox().expand(rangeX, rangeY, rangeZ), Predicates.and(new Predicate[]{EntitySelectors.CAN_AI_TARGET, this.targetSelector}));
     }
     
     

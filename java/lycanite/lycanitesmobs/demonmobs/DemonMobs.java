@@ -21,9 +21,11 @@ import lycanite.lycanitesmobs.demonmobs.dispenser.DispenserBehaviorDevilstar;
 import lycanite.lycanitesmobs.demonmobs.dispenser.DispenserBehaviorDoomfireball;
 import lycanite.lycanitesmobs.demonmobs.dispenser.DispenserBehaviorHellfireball;
 import lycanite.lycanitesmobs.demonmobs.entity.*;
+import lycanite.lycanitesmobs.demonmobs.info.AltarInfoAsmodeus;
 import lycanite.lycanitesmobs.demonmobs.info.AltarInfoEbonCacodemon;
 import lycanite.lycanitesmobs.demonmobs.info.AltarInfoRahovart;
 import lycanite.lycanitesmobs.demonmobs.item.*;
+import lycanite.lycanitesmobs.demonmobs.mobevent.MobEventAsmodeus;
 import lycanite.lycanitesmobs.demonmobs.mobevent.MobEventHellsFury;
 import lycanite.lycanitesmobs.demonmobs.mobevent.MobEventRahovart;
 import net.minecraft.block.BlockDispenser;
@@ -176,7 +178,13 @@ public class DemonMobs {
 		ObjectManager.addMob(newMob);
 
         newMob = new MobInfo(group, "rahovart", EntityRahovart.class, 0x000000, 0xFF0000)
-                .setPeaceful(false).setSummonCost(100).setDungeonLevel(4).setBoss(true);
+                .setPeaceful(false).setSummonCost(100).setDungeonLevel(-1).setBoss(true);
+        newMob.spawnInfo.setSpawnTypes("")
+                .setSpawnWeight(1).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(true, true).setDungeonWeight(0);
+        ObjectManager.addMob(newMob);
+
+        newMob = new MobInfo(group, "asmodeus", EntityAsmodeus.class, 0x222222, 0x997700)
+                .setPeaceful(false).setSummonCost(100).setDungeonLevel(-1).setBoss(true);
         newMob.spawnInfo.setSpawnTypes("")
                 .setSpawnWeight(1).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(true, true).setDungeonWeight(0);
         ObjectManager.addMob(newMob);
@@ -192,6 +200,9 @@ public class DemonMobs {
         ObjectManager.addProjectile("hellfireorb", EntityHellfireOrb.class);
         ObjectManager.addProjectile("hellfirewave", EntityHellfireWave.class);
         ObjectManager.addProjectile("hellfirebarrier", EntityHellfireBarrier.class);
+        ObjectManager.addProjectile("hellshield", EntityHellShield.class);
+        ObjectManager.addProjectile("helllaser", EntityHellLaser.class);
+        ObjectManager.addProjectile("helllaserend", EntityHellLaserEnd.class);
 
 
         // ========== Register Models ==========
@@ -240,6 +251,9 @@ public class DemonMobs {
         MobEventBase mobEvent = new MobEventRahovart("rahovart", this.group).setDimensions("");
         MobEventManager.instance.addMobEvent(mobEvent);
 
+        mobEvent = new MobEventAsmodeus("asmodeus", this.group).setDimensions("");
+        MobEventManager.instance.addMobEvent(mobEvent);
+
 
 		// ========== Edit Vanilla Spawns ==========
 		Biome[] biomes = {Biomes.HELL };
@@ -256,6 +270,8 @@ public class DemonMobs {
 		AltarInfo.addAltar(ebonCacodemonAltar);
         AltarInfo rahovartAltar = new AltarInfoRahovart("RahovartAltar");
         AltarInfo.addAltar(rahovartAltar);
+        AltarInfo asmodeusAltar = new AltarInfoAsmodeus("AsmodeusAltar");
+        AltarInfo.addAltar(asmodeusAltar);
 
 
 		// ========== Crafting ==========

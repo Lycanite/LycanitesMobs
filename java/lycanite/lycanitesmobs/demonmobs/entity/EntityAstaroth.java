@@ -71,6 +71,32 @@ public class EntityAstaroth extends EntityCreatureBase implements IMob, IGroupDe
         this.drops.add(new DropRate(new ItemStack(Items.REDSTONE), 1).setMinAmount(3).setMaxAmount(8));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("devilstarcharge")), 0.5F));
 	}
+
+
+    // ==================================================
+    //                      Updates
+    // ==================================================
+    // ========== Living Update ==========
+    @Override
+    public void onLivingUpdate() {
+        super.onLivingUpdate();
+
+        // Asmodeus Master:
+        if(this.updateTick % 10 == 0) {
+            if (this.getMasterTarget() != null && this.getMasterTarget() instanceof EntityAsmodeus) {
+                EntityHellShield projectile = new EntityHellShield(this.worldObj, this);
+                projectile.setProjectileScale(4f);
+                projectile.posY -= this.height * 0.35D;
+                double dX = this.getMasterTarget().posX - this.posX;
+                double dY = this.getMasterTarget().posY + (this.getMasterTarget().height * 0.75D) - projectile.posY;
+                double dZ = this.getMasterTarget().posZ - this.posZ;
+                double distance = MathHelper.sqrt_double(dX * dX + dZ * dZ) * 0.1F;
+                float velocity = 0.8F;
+                projectile.setThrowableHeading(dX, dY + distance, dZ, velocity, 0.0F);
+                this.worldObj.spawnEntityInWorld(projectile);
+            }
+        }
+    }
     
     
 	// ==================================================
@@ -79,7 +105,7 @@ public class EntityAstaroth extends EntityCreatureBase implements IMob, IGroupDe
     // ========== Set Attack Target ==========
     @Override
     public boolean canAttackClass(Class targetClass) {
-    	if(targetClass.isAssignableFrom(EntityTrite.class))
+    	if(targetClass.isAssignableFrom(EntityTrite.class) || targetClass.isAssignableFrom(EntityCacodemon.class) || targetClass.isAssignableFrom(EntityAsmodeus.class))
     		return false;
         return super.canAttackClass(targetClass);
     }

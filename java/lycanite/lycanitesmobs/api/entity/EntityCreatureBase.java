@@ -48,6 +48,7 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.*;
 import net.minecraftforge.fml.relauncher.Side;
@@ -457,11 +458,11 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     /** Returns the full name of this entity. **/
     public String getFullName() {
     	String name = "";
-    	if(!"".equals(getAgeName()))
-    		name += getAgeName() + " ";
-    	if(!"".equals(getSubspeciesTitle()))
-    		name += getSubspeciesTitle() + " ";
-    	return name + getSpeciesName();
+    	if(!"".equals(this.getAgeName()))
+    		name += this.getAgeName() + " ";
+    	if(!"".equals(this.getSubspeciesTitle()))
+    		name += this.getSubspeciesTitle() + " ";
+    	return name + this.getSpeciesName();
     }
     
     /** Returns the species name of this entity. **/
@@ -871,7 +872,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     }
 
     public void createBossInfo(BossInfo.Color color, boolean darkenSky) {
-        this.bossInfo = (BossInfoServer)(new BossInfoServer(this.getDisplayName(), color, BossInfo.Overlay.PROGRESS)).setDarkenSky(darkenSky);
+        this.bossInfo = (BossInfoServer)(new BossInfoServer(new TextComponentString(this.getFullName()), color, BossInfo.Overlay.PROGRESS)).setDarkenSky(darkenSky);
     }
 
 
@@ -1192,6 +1193,18 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     /** Returns the current battle phase. **/
     public int getBattlePhase() {
         return this.battlePhase;
+    }
+
+    /** Sets the current battle phase. **/
+    public void setBattlePhase(int phase) {
+        if(this.getBattlePhase() == phase)
+            return;
+        this.battlePhase = phase;
+        if(this.bossInfo != null) {
+            String name = this.getFullName();
+            name += " (Phase " + (this.getBattlePhase() + 1) + ")";
+            this.bossInfo.setName(new TextComponentString(name));
+        }
     }
 
 
@@ -3372,14 +3385,19 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 
     /** Returns this creature's equipment texture. **/
     public ResourceLocation getEquipmentTexture(String equipmentName) {
-    	equipmentName = equipmentName.toLowerCase();
-    	String textureName = this.getTextureName();
-    	textureName += "_" + equipmentName;
-    	if(!this.canEquip())
-    		return this.getTexture();
-    	if(AssetManager.getTexture(textureName) == null)
-    		AssetManager.addTexture(textureName, this.group, "textures/entity/" + textureName.toLowerCase() + ".png");
-    	return AssetManager.getTexture(textureName);
+        if(!this.canEquip())
+            return this.getTexture();
+    	return this.getSubTexture(equipmentName);
+    }
+
+    /** Returns this creature's equipment texture. **/
+    public ResourceLocation getSubTexture(String subName) {
+        subName = subName.toLowerCase();
+        String textureName = this.getTextureName();
+        textureName += "_" + subName;
+        if(AssetManager.getTexture(textureName) == null)
+            AssetManager.addTexture(textureName, this.group, "textures/entity/" + textureName.toLowerCase() + ".png");
+        return AssetManager.getTexture(textureName);
     }
 
     /** Gets the name of this creature's texture, normally links to it's code name but can be overridden by subspecies and alpha creatures. **/

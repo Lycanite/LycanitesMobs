@@ -96,10 +96,11 @@ public class EntityDemonicBlast extends EntityProjectileBase {
 		if(this.motionZ < 0) motionT -= this.motionZ * 2;
         projectile.setThrowableHeading(this.motionX / motionT + (rand.nextGaussian() - 0.5D), this.motionY / motionT + (rand.nextGaussian() - 0.5D), this.motionZ / motionT + (rand.nextGaussian() - 0.5D), velocity, 0);
         
-        if(projectile instanceof EntityProjectileBase)
-        	this.playSound(((EntityProjectileBase)projectile).getLaunchSound(), 1.0F, 1.0F / (this.rand.nextFloat() * 0.4F + 0.8F));
+        if(projectile instanceof EntityProjectileBase) {
+            this.playSound(((EntityProjectileBase) projectile).getLaunchSound(), 1.0F, 1.0F / (this.rand.nextFloat() * 0.4F + 0.8F));
+        }
         
-        world.spawnEntityInWorld((Entity)projectile);
+        world.spawnEntityInWorld((Entity) projectile);
     }
 	
     

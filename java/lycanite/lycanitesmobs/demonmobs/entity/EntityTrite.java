@@ -99,7 +99,7 @@ public class EntityTrite extends EntityCreatureBase implements IMob, IGroupDemon
     // ========== Set Attack Target ==========
     @Override
     public boolean canAttackClass(Class targetClass) {
-    	if(targetClass.isAssignableFrom(EntityAstaroth.class))
+    	if(targetClass.isAssignableFrom(EntityCacodemon.class) || targetClass.isAssignableFrom(EntityAstaroth.class) || targetClass.isAssignableFrom(EntityAsmodeus.class))
     		return false;
         return super.canAttackClass(targetClass);
     }

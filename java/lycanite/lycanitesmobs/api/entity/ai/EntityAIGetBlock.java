@@ -100,7 +100,7 @@ public class EntityAIGetBlock extends EntityAIBase {
     	}
     	
         int heightDistance = 2;
-        List possibleTargets = new ArrayList<BlockPos>();
+        List<BlockPos> possibleTargets = new ArrayList<BlockPos>();
         for(int x = (int)this.host.posX - this.distanceMax; x < (int)this.host.posX + this.distanceMax; x++) {
         	for(int y = (int)this.host.posY - heightDistance; y < (int)this.host.posY + heightDistance; y++) {
         		for(int z = (int)this.host.posZ - this.distanceMax; z < (int)this.host.posZ + this.distanceMax; z++) {
@@ -127,7 +127,7 @@ public class EntityAIGetBlock extends EntityAIBase {
         if(possibleTargets.isEmpty())
             return false;
         Collections.sort(possibleTargets, this.targetSorter);
-        this.target = (BlockPos)possibleTargets.get(0);
+        this.target = possibleTargets.get(0);
         
         return this.continueExecuting();
     }

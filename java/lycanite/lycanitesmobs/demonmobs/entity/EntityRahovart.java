@@ -81,7 +81,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
         
         this.setWidth = 15F;
         this.setHeight = 50F;
-        this.solidCollision = true;
+        this.solidCollision = false;
         this.entityCollisionReduction = 1.0F;
         this.setupMob();
         this.hitAreaScale = 2F;
@@ -100,6 +100,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
 
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(EntityBelph.class));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(EntityBehemoth.class));
+        this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(EntityNetherSoul.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
     }
@@ -462,14 +463,14 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
     public void updateBattlePhase() {
         double healthNormal = this.getHealth() / this.getMaxHealth();
         if(healthNormal <= 0.2D) {
-            this.battlePhase = 2;
+            this.setBattlePhase(2);
             return;
         }
         if(healthNormal <= 0.6D) {
-            this.battlePhase = 1;
+            this.setBattlePhase(1);
             return;
         }
-        this.battlePhase = 0;
+        this.setBattlePhase(0);
     }
 
 

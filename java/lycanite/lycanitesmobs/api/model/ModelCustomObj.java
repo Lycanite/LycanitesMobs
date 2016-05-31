@@ -143,6 +143,7 @@ public class ModelCustomObj extends ModelCustom {
 
             // Begin Rendering Part:
             GlStateManager.pushMatrix();
+            GlStateManager.enableAlpha();
 
             // Apply Initial Offsets: (To Match Blender OBJ Export)
             this.rotate(modelXRotOffset, 1F, 0F, 0F);

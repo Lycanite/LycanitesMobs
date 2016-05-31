@@ -44,7 +44,7 @@ public class MobEventRahovart extends MobEventBoss {
     @Override
     public void bossSetup(int time, World world, int originX, int originY, int originZ) {
         originX += 20;
-        int height = 120;
+        int height = 40;
         if(originY < 5)
             originY = 5;
         if(world.getHeight() <= height)
@@ -92,7 +92,7 @@ public class MobEventRahovart extends MobEventBoss {
     public void buildArenaFloor(World world, int originX, int originY, int originZ) {
         double rubbleChance = 0.01D;
         int radius = 60;
-        int height = 120;
+        int height = 40;
         Block primaryBlock = ObjectManager.getBlock("demonstonetile");
         Block secondaryBlock = ObjectManager.getBlock("demoncrystal");
         double secondaryChance = 0.05D;
@@ -148,7 +148,7 @@ public class MobEventRahovart extends MobEventBoss {
     /** Builds an actual pillar. **/
     public int[] buildPillar(World world, int originX, int originY, int originZ) {
         int radiusMax = 5;
-        int height = 40 + Math.round(20 * world.rand.nextFloat());
+        int height = 20 + Math.round(20 * world.rand.nextFloat());
         Block primaryBlock = ObjectManager.getBlock("demonstonebrick");
         Block secondaryBlock = ObjectManager.getBlock("demonstone");
         Block tetriaryBlock = ObjectManager.getBlock("demonstonechiseled");

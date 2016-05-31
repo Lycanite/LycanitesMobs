@@ -84,9 +84,10 @@ public abstract class EntityAITarget extends EntityAIBase {
             return false;
         if(!this.getTarget().isEntityAlive())
             return false;
-        
-        double distance = this.getTargetDistance();
-        if(this.host.getDistanceSqToEntity(this.getTarget()) > distance * distance)
+
+        // Target Out of Range:
+        double distance = this.getTargetDistance() + 2;
+        if(Math.sqrt(this.host.getDistanceSqToEntity(this.getTarget())) > distance)
             return false;
         
         if(this.checkSight)

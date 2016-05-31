@@ -33,7 +33,6 @@ public class EntityHellfireOrb extends EntityProjectileBase {
     	this.group = DemonMobs.group;
     	this.setBaseDamage(0);
     	this.setProjectileScale(2F);
-        this.setSize(2F, 2F);
         this.movement = false;
         this.pierce = true;
         this.pierceBlocks = true;

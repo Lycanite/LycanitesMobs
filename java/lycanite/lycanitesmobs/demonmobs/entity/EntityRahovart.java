@@ -53,7 +53,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
     // Second Phase:
     public List<EntityBehemoth> hellfireBehemothMinions = new ArrayList<EntityBehemoth>();
     public int hellfireWallTime = 0;
-    public int hellfireWallTimeMax = 15 * 20;
+    public int hellfireWallTimeMax = 20 * 20;
     public boolean hellfireWallClockwise = false;
     public EntityHellfireBarrier hellfireWallLeft;
     public EntityHellfireBarrier hellfireWallRight;
@@ -79,8 +79,8 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
         this.hasAttackSound = false;
         this.justAttackedTime = 40;
         
-        this.setWidth = 15F;
-        this.setHeight = 50F;
+        this.setWidth = 7F;
+        this.setHeight = 25F;
         this.solidCollision = false;
         this.entityCollisionReduction = 1.0F;
         this.setupMob();
@@ -127,10 +127,10 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("doomfirecharge")), 1F).setMinAmount(20).setMaxAmount(100));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("hellfirecharge")), 1F).setMinAmount(10).setMaxAmount(50));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("soulstonedemonic")), 1F).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("demonstone")), 1F).setMinAmount(64).setMaxAmount(128));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("demonstonebrick")), 1F).setMinAmount(64).setMaxAmount(128));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("demonstonetile")), 1F).setMinAmount(64).setMaxAmount(128));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("demoncrystal")), 1F).setMinAmount(64).setMaxAmount(128));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getBlock("demonstone")), 1F).setMinAmount(64).setMaxAmount(128));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getBlock("demonstonebrick")), 1F).setMinAmount(64).setMaxAmount(128));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getBlock("demonstonetile")), 1F).setMinAmount(64).setMaxAmount(128));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getBlock("demoncrystal")), 1F).setMinAmount(64).setMaxAmount(128));
 	}
 
     // ========== Init ==========
@@ -269,7 +269,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
                     }
                     minion.hellfireEnergy += 5; // Charged after 20 secs.
                     if (minion.hellfireEnergy >= 100) {
-                        this.hellfireEnergy += 10;
+                        this.hellfireEnergy += 20;
                         this.onMinionDeath(minion);
                         this.worldObj.createExplosion(minion, minion.posX, minion.posY, minion.posZ, 1, false);
                         minion.hellfireEnergy = 0;
@@ -492,7 +492,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
             hellfireOrb.clientOnly = true;
             hellfireOrbs.add(hellfireOrb);
             entity.worldObj.spawnEntityInWorld(hellfireOrb);
-            hellfireOrb.setProjectileScale(orbSize * 2);
+            hellfireOrb.setProjectileScale(orbSize);
         }
 
         // Remove Excess Orbs:

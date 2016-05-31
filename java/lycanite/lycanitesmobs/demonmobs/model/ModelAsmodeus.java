@@ -28,22 +28,22 @@ public class ModelAsmodeus extends ModelCustomObj {
 
     	// Set Rotation Centers:
         // Blender: Y = Z
-    	setPartCenter("head", 0F, 20F, 0F);
-        setPartCenter("shield", 0F, 20F, 0F);
-    	setPartCenter("body", 0F, 20F, 0F);
-        setPartCenter("turret", 0F, 15.44F, -1.99F);
-        setPartCenter("weapon", 0F, 9.2F, -14.05F);
+    	setPartCenter("head", 0F, 10F, 0F);
+        setPartCenter("shield", 0F, 10F, 0F);
+    	setPartCenter("body", 0F, 10F, 0F);
+        setPartCenter("turret", 0F, 7.72F, -0.995F);
+        setPartCenter("weapon", 0F, 4.6F, -7.025F);
 
-    	setPartCenter("armleft", 13F, 31.2F, -4F);
-    	setPartCenter("armright", -13F, 31.2F, -4F);
+    	setPartCenter("armleft", 6.8F, 15.6F, -2F);
+    	setPartCenter("armright", -6.8F, 15.6F, -2F);
 
-    	setPartCenter("legleftfront", 10.28513F, 18.4F, -6.4F);
-    	setPartCenter("legleftmiddle", 12.8F, 18.4F, 0F);
-    	setPartCenter("legleftback", 10.28513F, 18.4F, 6.4F);
+    	setPartCenter("legleftfront", 5.14256F, 9.2F, -3.2F);
+    	setPartCenter("legleftmiddle", 12.8F, 9.2F, 0F);
+    	setPartCenter("legleftback", 5.14256F, 9.2F, 3.2F);
 
-    	setPartCenter("legrightfront", -10.28513F, 18.4F, -6.4F);
-    	setPartCenter("legrightmiddle", -12.8F, 18.4F, 0F);
-    	setPartCenter("legrightback", -10.28513F, 18.4F, 6.4F);
+    	setPartCenter("legrightfront", -5.14256F, 9.2F, -3.2F);
+    	setPartCenter("legrightmiddle", -12.8F, 9.2F, 0F);
+    	setPartCenter("legrightback", -5.14256F, 9.2F, 3.2F);
     	
     	lockHeadX = true;
     	lockHeadY = true;
@@ -139,7 +139,12 @@ public class ModelAsmodeus extends ModelCustomObj {
         if(partName.contains("turret") || partName.contains("weapon")) {
             if(partName.contains("weapon"))
                 this.centerPartToPart("weapon", "turret");
-            this.rotate((float)Math.toDegrees(lookX / (180F / Math.PI)) - 10F, (float)Math.toDegrees(lookY / (180F / Math.PI)), 0);
+            float xRotation = 0F;
+            if(entity instanceof EntityCreatureBase) {
+                if(((EntityCreatureBase)entity).hasAttackTarget())
+                    xRotation = (float) Math.toDegrees(lookX / (180F / Math.PI)) - 25F;
+            }
+            this.rotate(xRotation, (float) Math.toDegrees(lookY / (180F / Math.PI)), 0);
             if(partName.contains("weapon"))
                 this.uncenterPartToPart("weapon", "turret");
         }
@@ -147,8 +152,15 @@ public class ModelAsmodeus extends ModelCustomObj {
         // Spinning Weapon:
         if(entity instanceof EntityCreatureBase) {
             if (partName.contains("weapon") && ((EntityCreatureBase)entity).justAttacked()) {
-                rotZ += time;
+                rotZ -= loop * 30;
             }
+        }
+
+        // Spinning Shield:
+        if(partName.contains("shield")) {
+            rotY += loop * 30;
+            float shieldScale = 1.05F + ((0.5F + (MathHelper.sin(loop / 4) / 2)) / 8);
+            this.scale(shieldScale, shieldScale, shieldScale);
         }
 		
     	// Apply Animations:

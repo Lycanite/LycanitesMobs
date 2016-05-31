@@ -38,6 +38,6 @@ public class LayerShield extends LayerBase {
 
     @Override
     public Vector4f getPartColor(String partName, EntityCreatureBase entity, boolean trophy) {
-        return new Vector4f(1, 1, 1, 0.25F);
+        return new Vector4f(1, 1, 1, 1); // TODO Alpha not working.
     }
 }

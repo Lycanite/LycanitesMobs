@@ -15,7 +15,7 @@ public class EntityHellfireWave extends EntityProjectileBase {
 
 	// Properties:
     public EntityHellfireWall[][] hellfireWalls;
-    protected int hellfireWidth = 10;
+    protected int hellfireWidth = 5;
     protected int hellfireHeight = 5;
     protected int hellfireSize = 10;
     public int time = 0;
@@ -26,16 +26,16 @@ public class EntityHellfireWave extends EntityProjectileBase {
     // ==================================================
  	//                   Constructors
  	// ==================================================
-    public EntityHellfireWave(World par1World) {
-        super(par1World);
+    public EntityHellfireWave(World world) {
+        super(world);
     }
 
-    public EntityHellfireWave(World par1World, EntityLivingBase par2EntityLivingBase) {
-        super(par1World, par2EntityLivingBase);
+    public EntityHellfireWave(World world, EntityLivingBase shooterEntity) {
+        super(world, shooterEntity);
     }
 
-    public EntityHellfireWave(World par1World, double par2, double par4, double par6) {
-        super(par1World, par2, par4, par6);
+    public EntityHellfireWave(World world, double x, double y, double z) {
+        super(world, x, y, z);
     }
     
     // ========== Setup Projectile ==========

@@ -44,7 +44,7 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
 
     // Third Phase:
     public int rebuildAstarothRespawnTime = 0;
-    public int rebuildAstarothRespawnTimeMax = 15;
+    public int rebuildAstarothRespawnTimeMax = 20;
 
     public float damageTakenThisSec = 0;
     public float healthLastTick = -1;
@@ -62,9 +62,9 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
         this.hasAttackSound = false;
         this.justAttackedTime = 100;
         
-        this.setWidth = 30F;
-        this.setHeight = 42F;
-        this.solidCollision = false;
+        this.setWidth = 20F;
+        this.setHeight = 21F;
+        this.solidCollision = true;
         this.entityCollisionReduction = 1.0F;
         this.setupMob();
         this.hitAreaScale = 2F;
@@ -75,7 +75,7 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
         
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(5).setStaminaTime(200).setRange(100.0F).setChaseTime(0).setCheckSight(false));
+        this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(5).setStaminaTime(200).setRange(90.0F).setChaseTime(0).setCheckSight(false));
         //this.tasks.addTask(6, new EntityAIWander(this).setSpeed(1.0D));
         this.tasks.addTask(7, new EntityAIStayByHome(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
@@ -93,10 +93,10 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 5000D);
+		baseAttributes.put("maxHealth", 300D);
 		baseAttributes.put("movementSpeed", 0.32D);
 		baseAttributes.put("knockbackResistance", 1D);
-		baseAttributes.put("followRange", 40D);
+		baseAttributes.put("followRange", 100D);
 		baseAttributes.put("attackDamage", 18D);
         super.applyEntityAttributes(baseAttributes);
     }
@@ -112,10 +112,10 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("devilstarcharge")), 1F).setMinAmount(10).setMaxAmount(50));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("demoniclightningcharge")), 1F).setMinAmount(10).setMaxAmount(50));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("soulstonedemonic")), 1F).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("demonstone")), 1F).setMinAmount(64).setMaxAmount(128));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("demonstonebrick")), 1F).setMinAmount(64).setMaxAmount(128));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("demonstonetile")), 1F).setMinAmount(64).setMaxAmount(128));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("demoncrystal")), 1F).setMinAmount(64).setMaxAmount(128));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getBlock("demonstone")), 1F).setMinAmount(64).setMaxAmount(128));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getBlock("demonstonebrick")), 1F).setMinAmount(64).setMaxAmount(128));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getBlock("demonstonetile")), 1F).setMinAmount(64).setMaxAmount(128));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getBlock("demoncrystal")), 1F).setMinAmount(64).setMaxAmount(128));
 	}
 
     // ========== Rendering Distance ==========
@@ -229,6 +229,7 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
                 for (int i = 0; i < 2 * playerCount; i++) {
                     EntityAstaroth minion = new EntityAstaroth(this.worldObj);
                     this.summonMinion(minion, this.getRNG().nextDouble() * 360, 10);
+                    minion.setSizeScale(2.5D);
                     this.astarothMinions.add(minion);
                 }
                 this.hellshieldAstarothRespawnTime = this.hellshieldAstarothRespawnTimeMax;
@@ -238,12 +239,13 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
 
         // ===== Third Phase - Rebuild =====
         else if(this.updateTick % 20 == 0) {
-            if(this.astarothMinions.size() < playerCount * 6) {
+            if(this.astarothMinions.size() < playerCount * 4) {
                 // Summon Astaroth:
                 if (this.rebuildAstarothRespawnTime-- <= 0) {
-                    for (int i = 0; i < playerCount * 2; i++) {
+                    for (int i = 0; i < playerCount; i++) {
                         EntityAstaroth minion = new EntityAstaroth(this.worldObj);
                         this.summonMinion(minion, this.getRNG().nextDouble() * 360, 10);
+                        minion.setSizeScale(2.5D);
                         this.astarothMinions.add(minion);
                     }
                     this.rebuildAstarothRespawnTime = this.rebuildAstarothRespawnTimeMax;
@@ -324,12 +326,15 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
         projectile.setProjectileScale(4f);
     	
     	// Y Offset:
-    	projectile.posY -= this.height * 0.35D;
+        BlockPos offset = this.getFacingPosition(this, 13, this.getRotationYawHead() - this.rotationYaw);
+        projectile.posX = offset.getX();
+        projectile.posY = offset.getY() + (this.height * 0.2D);
+        projectile.posZ = offset.getZ();
     	
     	// Set Velocities:
-        double d0 = target.posX - this.posX;
+        double d0 = target.posX - projectile.posX;
         double d1 = target.posY - (target.height * 0.25D) - projectile.posY;
-        double d2 = target.posZ - this.posZ;
+        double d2 = target.posZ - projectile.posZ;
         float f1 = MathHelper.sqrt_double(d0 * d0 + d2 * d2) * 0.1F;
         float velocity = 1.2F;
         projectile.setThrowableHeading(d0, d1 + (double) f1, d2, velocity, 0.0F);
@@ -387,6 +392,14 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
     // ==================================================
     //                     Immunities
     // ==================================================
+    // ========== Damage ==========
+    @Override
+    public boolean isEntityInvulnerable(DamageSource source) {
+        if(this.isBlocking())
+            return true;
+        return super.isEntityInvulnerable(source);
+    }
+
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
         if(potionEffect.getPotion() == MobEffects.WITHER) return false;
@@ -405,8 +418,7 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
         return this.getBattlePhase() == 1 && !this.astarothMinions.isEmpty();
     }
 
-    @Override
-    public int getBlockingMultiplier() {
-        return 1000;
+    public boolean canAttackWhileBlocking() {
+        return true;
     }
 }

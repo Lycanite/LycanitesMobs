@@ -950,7 +950,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     // ========== On Spawn ==========
     /** This is called when the mob is first spawned to the world either through natural spawning or from a Spawn Egg. **/
     public void onFirstSpawn() {
-        if(this.hasPetEntry())
+        if(this.hasPetEntry() || this.isMinion())
             return;
         if(MobInfo.subspeciesSpawn)
     	    this.getRandomSubspecies();
@@ -2029,7 +2029,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 	public boolean canAttackClass(Class targetClass) {
 		if(!MobInfo.mobsAttackVillagers && targetClass == EntityVillager.class)
 			return false;
-        if(this.isBlocking())
+        if(this.isBlocking() && !this.canAttackWhileBlocking())
             return false;
 		return true;
 	}
@@ -2393,19 +2393,12 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 
     /** Returns the BlockPos in front or behind the provided entity with the given distance and angle offset (in degrees), use a negative distance for behind. **/
     public BlockPos getFacingPosition(Entity entity, double distance, double angleOffset) {
-        /*double angle = Math.toRadians(entity.rotationYaw) + angleOffset;
-        double xAmount = -Math.sin(angle);
-        double zAmount = Math.cos(angle);
-        double[] coords = new double[3];
-        coords[0] = entity.posX + (distance * xAmount);
-        coords[1] = entity.posY;
-        coords[2] = entity.posZ + (distance * zAmount);
-        return coords;*/
-        return this.getFacingPosition(entity.posX, entity.posY, entity.posZ, distance, Math.toRadians(entity.rotationYaw) + angleOffset);
+        return this.getFacingPosition(entity.posX, entity.posY, entity.posZ, distance, entity.rotationYaw + angleOffset);
     }
 
     /** Returns the BlockPos in front or behind the provided XYZ coords with the given distance and angle (in degrees), use a negative distance for behind. **/
     public BlockPos getFacingPosition(double x, double y, double z, double distance, double angle) {
+        angle = Math.toRadians(angle);
     	double xAmount = -Math.sin(angle);
     	double zAmount = Math.cos(angle);
         BlockPos pos = new BlockPos(x + (distance * xAmount), y, z + (distance * zAmount));
@@ -2581,6 +2574,11 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     	if(this.worldObj.isRemote)
     		return (Byte.valueOf(this.dataManager.get(ANIMATION)) & ANIM_ID.BLOCKING.id) > 0;
     	return this.currentBlockingTime > 0;
+    }
+
+    /** Returns true if this mob can attack while blocking. **/
+    public boolean canAttackWhileBlocking() {
+        return false;
     }
     
     /** Returns the blocking defense multiplier, when blocking this mobs defense is multiplied by this, also if this mobs defense is below 1 it will be moved up to one. **/

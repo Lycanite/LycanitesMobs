@@ -93,7 +93,7 @@ public class MobEventAsmodeus extends MobEventBoss {
     // ==================================================
     public void buildArenaFloor(World world, int originX, int originY, int originZ) {
         int radius = 80;
-        int height = 40;
+        int height = 30;
         int minX = originX - radius;
         int maxX = originX + radius;
         int minY = originY;
@@ -134,7 +134,7 @@ public class MobEventAsmodeus extends MobEventBoss {
     public void buildArenaWalls(World world, int originX, int originY, int originZ) {
         int radius = 80;
         int thickness = 4;
-        int height = 30;
+        int height = 20;
         int minX = originX - (radius + thickness);
         int maxX = originX + (radius + thickness);
         int minY = originY;
@@ -191,7 +191,7 @@ public class MobEventAsmodeus extends MobEventBoss {
     /** Builds an actual pillar. **/
     public void buildPillar(World world, int originX, int originY, int originZ) {
         int radius = 2;
-        int height = 40;
+        int height = 30;
         int minX = originX - radius;
         int maxX = originX + radius;
         int minY = originY;

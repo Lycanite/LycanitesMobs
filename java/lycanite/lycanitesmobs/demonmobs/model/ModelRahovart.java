@@ -23,13 +23,14 @@ public class ModelRahovart extends ModelCustomObj {
     	this.initModel("rahovart", DemonMobs.group, "entity/rahovart");
 
     	// Set Rotation Centers:
-    	setPartCenter("head", 0F, 46.55F, 0F);
-    	setPartCenter("body", 0F, 22.05F, 0F);
-    	setPartCenter("armleft", 11.2F, 39.55F, 0F);
-    	setPartCenter("armright", -11.2F, 39.55F, 0F);
-    	setPartCenter("legleft", 4.9F, 22.4F, 0F);
-    	setPartCenter("legright", -4.9F, 22.4F, 0F);
-        setPartCenter("tail", 0F, 37.8F, -9.45F);
+    	setPartCenter("head", 0F, 23.275F, 0F);
+        setPartCenter("mouth", 0F, 23.075F, -2.5F);
+    	setPartCenter("body", 0F, 11.025F, 0F);
+    	setPartCenter("armleft", 5.6F, 19.775F, 0F);
+    	setPartCenter("armright", -5.6F, 19.775F, 0F);
+    	setPartCenter("legleft", 2.45F, 11.2F, 0F);
+    	setPartCenter("legright", -2.45F, 11.2F, 0F);
+        setPartCenter("tail", 0F, 18.9F, 18.9F);
     	
     	lockHeadX = false;
     	lockHeadY = false;
@@ -58,8 +59,21 @@ public class ModelRahovart extends ModelCustomObj {
     	float rotX = 0F;
     	float rotY = 0F;
     	float rotZ = 0F;
+
+        // Looking:
+        if(partName.equals("mouth")) {
+            this.centerPartToPart("mouth", "head");
+            if(!lockHeadX)
+                this.rotate((float)Math.toDegrees(lookX / (180F / (float) Math.PI)), 0, 0);
+            if(!lockHeadY)
+                this.rotate(0, (float)Math.toDegrees(lookY / (180F / (float)Math.PI)), 0);
+            this.uncenterPartToPart("mouth", "head");
+        }
     	
     	// Idle:
+        if (partName.equals("mouth")) {
+            rotX += (MathHelper.cos(loop * 0.09F) * 0.05F - 0.05F);
+        }
     	if(partName.equals("armleft")) {
 	        rotZ -= Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F + 0.05F);
 	        rotX -= Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
@@ -88,8 +102,8 @@ public class ModelRahovart extends ModelCustomObj {
 		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
 	    	if(partName.equals("armleft"))
 	    		rotate(-40.0F, 0.0F, 0.0F);
-	    	if(partName.equals("armright"))
-	    		rotate(-40.0F, 0.0F, 0.0F);
+	    	//if(partName.equals("armright"))
+	    		//rotate(-40.0F, 0.0F, 0.0F);
 		}
 		
     	// Apply Animations:

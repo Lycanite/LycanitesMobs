@@ -21,18 +21,16 @@ public class ModelStrider extends ModelCustomObj {
     public ModelStrider(float shadowSize) {
     	// Load Model:
     	this.initModel("strider", FreshwaterMobs.group, "entity/strider");
-    	
 
-
-    	
     	// Set Rotation Centers:
-        setPartCenter("mouth", 0F, 8.4F, 0.8F);
-    	setPartCenter("body", 0F, 9.0F, 0F);
+    	setPartCenter("body", 0F, 4.0F, 0F);
 
-    	setPartCenter("legleftfront", 0.7F, 7.6F, 0.5F);
-        setPartCenter("legrightfront", -0.7F, 7.6F, 0.5F);
-    	setPartCenter("legleftback", 0.7F, 7.6F, -0.4F);
-    	setPartCenter("legrightback", -0.7F, 7.6F, -0.4F);
+        setPartCenter("armleft", 0.2F, 4.5F, -0.9F);
+        setPartCenter("armright", -0.2F, 4.5F, -0.9F);
+
+    	setPartCenter("legleft", 0.7F, 3.9F, 0F);
+        setPartCenter("legright", -0.7F, 3.9F, 0F);
+    	setPartCenter("legback", 0F, 4F, 0.4F);
 
         this.lockHeadX = true;
         this.lockHeadY = true;
@@ -64,23 +62,37 @@ public class ModelStrider extends ModelCustomObj {
     	float rotZ = 0F;
     	
     	// Idle:
-        if(partName.equals("mouth")) {
-            this.rotate((float)-Math.toDegrees(MathHelper.cos(loop * 0.1F) * 0.1F - 0.1F), 0.0F, 0.0F);
+        if(partName.equals("armleft")) {
+            rotZ -= Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F + 0.05F);
+            rotX -= Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
+        }
+        if(partName.equals("armright")) {
+            rotZ += Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F + 0.05F);
+            rotX += Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
         }
 		
     	// Walking:
     	float walkSwing = 0.15F;
-    	if(partName.equals("legrightfront") || partName.equals("legleftback"))
-    		rotX += Math.toDegrees(MathHelper.cos(time * 0.6662F + (float)Math.PI) * walkSwing * distance);
-    	if(partName.equals("legleftfront") || partName.equals("legrightback"))
-    		rotX += Math.toDegrees(MathHelper.cos(time * 0.6662F) * walkSwing * distance);
+    	if(partName.equals("legleft"))
+    		rotX += Math.toDegrees(MathHelper.cos(time * 0.6662F + (float)Math.PI) * walkSwing * (distance / 2));
+    	if(partName.equals("legright"))
+    		rotX += Math.toDegrees(MathHelper.cos(time * 0.6662F) * walkSwing * (distance / 2));
+        if(partName.equals("legback"))
+            rotX += Math.toDegrees(MathHelper.cos(time * 0.6662F) * walkSwing * distance);
 
         // Attack:
         if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
-            if(partName.equals("legleftfront"))
+            if(partName.equals("armleft"))
                 rotate(-25.0F, 0.0F, 0.0F);
-            if(partName.equals("legrightfront"))
+            if(partName.equals("armright"))
                 rotate(-25.0F, 0.0F, 0.0F);
+        }
+
+        // Pickup:
+        if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).hasPickupEntity()) {
+            if (partName.equals("armleft") || partName.equals("armright")) {
+                rotX += 20D;
+            }
         }
     	
     	// Apply Animations:

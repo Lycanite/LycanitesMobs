@@ -81,7 +81,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
         
         this.setWidth = 7F;
         this.setHeight = 25F;
-        this.solidCollision = false;
+        this.solidCollision = true;
         this.entityCollisionReduction = 1.0F;
         this.setupMob();
         this.hitAreaScale = 2F;
@@ -94,7 +94,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
         this.tasks.addTask(0, new EntityAISwimming(this));
         //this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(60).setRange(32).setMinChaseDistance(0F).setChaseTime(-1));
         //this.tasks.addTask(6, new EntityAIWander(this).setSpeed(1.0D));
-        this.tasks.addTask(7, new EntityAIStayByHome(this));
+        //this.tasks.addTask(7, new EntityAIStayByHome(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
 
@@ -146,6 +146,17 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox() {
         return this.getEntityBoundingBox().expand(10, 50, 10).offset(0, 25, 0);
+    }
+
+
+    // ==================================================
+    //                      Positions
+    // ==================================================
+    // ========== Arena Center ==========
+    /** Sets the central arena point for this mob to use. **/
+    public void setArenaCenter(BlockPos pos) {
+        super.setArenaCenter(pos);
+        this.setHome(pos.getX(), pos.getY(), pos.getZ(), 2);
     }
 	
 	
@@ -226,7 +237,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
 
             // Player Projectiles and Checks
             for(EntityPlayer target : this.playerTargets) {
-                if(target.capabilities.isCreativeMode)
+                if(target.capabilities.isCreativeMode || target.isSpectator())
                     continue;
                 this.rangedAttack(target, 1F);
                 if(target.posY > this.posY + this.height + 5) {
@@ -719,11 +730,20 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
         return super.isDamageEntityApplicable(entity);
     }
 
-    
+
     // ==================================================
-    //                     Pet Control
+    //                    Taking Damage
     // ==================================================
-    public boolean petControlsEnabled() { return true; }
+    // ========== Attacked From ==========
+    /** Called when this entity has been attacked, uses a DamageSource and damage value. **/
+    @Override
+    public boolean attackEntityFrom(DamageSource damageSrc, float damage) {
+        if(this.playerTargets != null && damageSrc.getEntity() != null && damageSrc.getEntity() instanceof EntityPlayer) {
+            if (!this.playerTargets.contains(damageSrc.getEntity()))
+                this.playerTargets.add((EntityPlayer)damageSrc.getEntity());
+        }
+        return super.attackEntityFrom(damageSrc, damage);
+    }
 
 
     // ==================================================

@@ -1,9 +1,8 @@
 package lycanite.lycanitesmobs.freshwatermobs.entity;
 
-import com.google.common.base.Predicate;
 import lycanite.lycanitesmobs.ExtendedEntity;
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.ObjectLists;
@@ -15,20 +14,16 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.AttackEntityEvent;
 
 import java.util.HashMap;
-import java.util.List;
 
-public class EntityStrider extends EntityCreatureRideable {
+public class EntityStrider extends EntityCreatureTameable {
 
     protected EntityAIWander wanderAI = new EntityAIWander(this);
     protected EntityAIAttackMelee attackAI;
@@ -52,8 +47,8 @@ public class EntityStrider extends EntityCreatureRideable {
         this.babySpawnChance = 0D;
         this.canGrow = true;
 
-        this.setWidth = 4.9F;
-        this.setHeight = 10.9F;
+        this.setWidth = 1.5F;
+        this.setHeight = 5F;
         this.setupMob();
 
         this.setPathPriority(PathNodeType.WATER, 0F);
@@ -64,21 +59,21 @@ public class EntityStrider extends EntityCreatureRideable {
         this.tasks.addTask(2, this.aiSit);
         this.attackAI = new EntityAIAttackMelee(this).setLongMemory(false);
         this.tasks.addTask(3, this.attackAI);
-        //this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
+        this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
         this.tasks.addTask(5, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("stridertreat"))).setTemptDistanceMin(4.0D));
         this.tasks.addTask(6, new EntityAIStayByWater(this).setSpeed(1.25D));
         this.tasks.addTask(7, wanderAI);
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
 
-        //this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
-        //this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
+        this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
+        this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
         this.targetTasks.addTask(0, new EntityAITargetRiderRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetRiderAttack(this));
         this.targetTasks.addTask(3, new EntityAITargetRevenge(this).setHelpCall(true));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class).setCheckSight(false));
         this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class).setCheckSight(false));
-        //this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
+        this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
     
     // ========== Stats ==========
@@ -148,7 +143,7 @@ public class EntityStrider extends EntityCreatureRideable {
     // ==================================================
     //                   Mount Ability
     // ==================================================
-    @Override
+    /*@Override
     public void mountAbility(Entity rider) {
         if(this.worldObj.isRemote)
             return;
@@ -211,6 +206,22 @@ public class EntityStrider extends EntityCreatureRideable {
     @Override
     public boolean shouldDismountInWater(Entity rider) { return false; }
 
+    // Mounted Y Offset:
+    @Override
+    public double getMountedYOffset() {
+        return (double)this.height * 1.0D * this.sizeScale;
+    }
+
+    // Mount/Dismount:
+    @Override
+    public void onDismounted(Entity entity) {
+        super.onDismounted(entity);
+        if(entity != null && entity instanceof EntityLivingBase) {
+            if(ObjectManager.getPotionEffect("fallresist") != null)
+                ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("fallresist"), 3 * 20, 1));
+        }
+    }*/
+
 	
     // ==================================================
     //                      Movement
@@ -250,22 +261,6 @@ public class EntityStrider extends EntityCreatureRideable {
 	@Override
 	public boolean isPushedByWater() {
         return false;
-    }
-
-    // Mounted Y Offset:
-    @Override
-    public double getMountedYOffset() {
-        return (double)this.height * 1.0D * this.sizeScale;
-    }
-
-    // Mount/Dismount:
-    @Override
-    public void onDismounted(Entity entity) {
-        super.onDismounted(entity);
-        if(entity != null && entity instanceof EntityLivingBase) {
-            if(ObjectManager.getPotionEffect("fallresist") != null)
-                ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("fallresist"), 3 * 20, 1));
-        }
     }
 
 
@@ -364,7 +359,7 @@ public class EntityStrider extends EntityCreatureRideable {
     // ==================================================
     //                     Pet Control
     // ==================================================
-    public boolean petControlsEnabled() { return false; }
+    public boolean petControlsEnabled() { return true; }
 
 
     // ==================================================

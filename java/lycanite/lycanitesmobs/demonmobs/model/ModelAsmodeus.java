@@ -80,60 +80,73 @@ public class ModelAsmodeus extends ModelCustomObj {
     float maxLeg = 0F;
     @Override
     public void animatePart(String partName, EntityLiving entity, float time, float distance, float loop, float lookY, float lookX, float scale) {
-    	super.animatePart(partName, entity, time, distance, loop, lookY, lookX, scale);
-    	float pi = (float)Math.PI;
-    	float posX = 0F;
-    	float posY = 0F;
-    	float posZ = 0F;
-    	float angleX = 0F;
-    	float angleY = 0F;
-    	float angleZ = 0F;
-    	float rotation = 0F;
-    	float rotX = 0F;
-    	float rotY = 0F;
-    	float rotZ = 0F;
-    	
-    	// Leg Angles:
-    	if(partName.equals("legleftfront") || partName.equals("legleftback") || partName.equals("legrightmiddle")
-    			|| partName.equals("legleftmiddle") || partName.equals("legrightfront") || partName.equals("legrightback"))
-    		angleZ = 1F;
-    	if(partName.equals("legleftfront")) angleY = 30F / 360F;
-    	if(partName.equals("legleftmiddle")) angleY = 0F;
-    	if(partName.equals("legleftback")) angleY = -30F / 360F;
-    	if(partName.equals("legrightfront")) angleY = -30F / 360F;
-    	if(partName.equals("legrightmiddle")) angleY = 0F;
-    	if(partName.equals("legrightback")) angleY = 30F / 360F;
-    	
-    	// Idle - Arms:
-    	float armSwing = 0.3F;
-    	if(partName.equals("armleft")) {
-    		rotZ += -Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F - 0.05F);
-    		rotX += -Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
-    	}
-    	if(partName.equals("armright")) {
-    		rotZ += Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F + 0.05F);
-    		rotX += Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
-    	}
-    	
-    	// Walking - Arms:
-    	if(partName.equals("armleft")) {
-    		rotX += Math.toDegrees(MathHelper.cos(time * 0.6662F) * 2.0F * distance * armSwing);
-    	}
-    	if(partName.equals("armright")) {
-    		rotX += Math.toDegrees(MathHelper.cos(time * 0.6662F + (float)Math.PI) * 2.0F * distance * armSwing);
+        super.animatePart(partName, entity, time, distance, loop, lookY, lookX, scale);
+        float pi = (float) Math.PI;
+        float posX = 0F;
+        float posY = 0F;
+        float posZ = 0F;
+        float angleX = 0F;
+        float angleY = 0F;
+        float angleZ = 0F;
+        float rotation = 0F;
+        float rotX = 0F;
+        float rotY = 0F;
+        float rotZ = 0F;
+
+        // Leg Angles:
+        if (partName.equals("legleftfront") || partName.equals("legleftback") || partName.equals("legrightmiddle")
+                || partName.equals("legleftmiddle") || partName.equals("legrightfront") || partName.equals("legrightback"))
+            angleZ = 1F;
+        if (partName.equals("legleftfront")) angleY = 30F / 360F;
+        if (partName.equals("legleftmiddle")) angleY = 0F;
+        if (partName.equals("legleftback")) angleY = -30F / 360F;
+        if (partName.equals("legrightfront")) angleY = -30F / 360F;
+        if (partName.equals("legrightmiddle")) angleY = 0F;
+        if (partName.equals("legrightback")) angleY = 30F / 360F;
+
+        // Idle - Arms:
+        float armSwing = 0.3F;
+        if (partName.equals("armleft")) {
+            rotZ += -Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F - 0.05F);
+            rotX += -Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
         }
-    	
-    	// Walking - Legs:
-    	float walkSwing = 0.3F;
-    	if(partName.equals("legleftfront") || partName.equals("legleftback") || partName.equals("legrightmiddle"))
-    		rotation += Math.toDegrees(MathHelper.cos(time * 0.6662F + (float)Math.PI) * walkSwing * distance);
-    	if(partName.equals("legleftmiddle") || partName.equals("legrightfront") || partName.equals("legrightback"))
-    		rotation += Math.toDegrees(MathHelper.cos(time * 0.6662F) * walkSwing * distance);
-    	
-    	// Walking - Bobbing:
-		float bob = MathHelper.cos(time * 0.6662F + (float)Math.PI) * walkSwing * distance;
-		if(bob < 0) bob += -bob * 2;
-		posY += bob;
+        if (partName.equals("armright")) {
+            rotZ += Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F + 0.05F);
+            rotX += Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
+        }
+
+        // Walking:
+        if (entity == null || entity.onGround) {
+            // Arms:
+            if (partName.equals("armleft")) {
+                rotX += Math.toDegrees(MathHelper.cos(time * 0.6662F) * 2.0F * distance * armSwing);
+            }
+            if (partName.equals("armright")) {
+                rotX += Math.toDegrees(MathHelper.cos(time * 0.6662F + (float) Math.PI) * 2.0F * distance * armSwing);
+            }
+
+            // Legs:
+            float walkSwing = 0.3F;
+            if (partName.equals("legleftfront") || partName.equals("legleftback") || partName.equals("legrightmiddle"))
+                rotation += Math.toDegrees(MathHelper.cos(time * 0.6662F + (float) Math.PI) * walkSwing * distance);
+            if (partName.equals("legleftmiddle") || partName.equals("legrightfront") || partName.equals("legrightback"))
+                rotation += Math.toDegrees(MathHelper.cos(time * 0.6662F) * walkSwing * distance);
+
+            // Bobbing:
+            float bob = MathHelper.cos(time * 0.6662F + (float) Math.PI) * walkSwing * distance;
+            if (bob < 0) bob += -bob * 2;
+            posY += bob;
+        }
+
+        // Jumping
+        else {
+            // Legs:
+            float walkSwing = 0.3F;
+            if (partName.equals("legleftfront") || partName.equals("legleftback") || partName.equals("legrightmiddle"))
+                rotation += 20F;
+            if (partName.equals("legleftmiddle") || partName.equals("legrightfront") || partName.equals("legrightback"))
+                rotation += 20F;
+        }
 
         // Turret:
         if(partName.contains("turret") || partName.contains("weapon")) {

@@ -17,10 +17,10 @@ public class EntityAIAttackRanged extends EntityAIBase {
     private int attackTime;
     private int attackTimeClose = 20;
     private int attackTimeFar = 20;
-    
+
     private int attackStamina = 0;
     private int attackStaminaMax = 0;
-    private boolean attackOnCooldown = false;
+    public boolean attackOnCooldown = false;
     private int staminaRecoverRate = 1;
     private int staminaDrainRate = 1;
     

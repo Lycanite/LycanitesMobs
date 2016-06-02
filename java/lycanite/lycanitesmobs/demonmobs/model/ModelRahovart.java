@@ -30,7 +30,7 @@ public class ModelRahovart extends ModelCustomObj {
     	setPartCenter("armright", -5.6F, 19.775F, 0F);
     	setPartCenter("legleft", 2.45F, 11.2F, 0F);
     	setPartCenter("legright", -2.45F, 11.2F, 0F);
-        setPartCenter("tail", 0F, 18.9F, 18.9F);
+        setPartCenter("tail", 0F, 18.9F, 4.725F);
     	
     	lockHeadX = false;
     	lockHeadY = false;
@@ -102,8 +102,6 @@ public class ModelRahovart extends ModelCustomObj {
 		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
 	    	if(partName.equals("armleft"))
 	    		rotate(-40.0F, 0.0F, 0.0F);
-	    	//if(partName.equals("armright"))
-	    		//rotate(-40.0F, 0.0F, 0.0F);
 		}
 		
     	// Apply Animations:

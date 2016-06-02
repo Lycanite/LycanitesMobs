@@ -147,9 +147,11 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 	
 	// Positions:
     /** A location used for mobs that stick around a certain home spot. **/
-	private BlockPos homePosition = new BlockPos(0, 0, 0);
+    protected BlockPos homePosition = new BlockPos(0, 0, 0);
     /** How far this mob can move from their home spot. **/
-    private float homeDistanceMax = -1.0F;
+    protected float homeDistanceMax = -1.0F;
+    /** A central point set by arenas or events that spawn mobs. Bosses use this to setup arena-based movement. **/
+    protected BlockPos arenaCenter = null;
     
     // Spawning:
     /** Use the onSpawn() method and not this variable. True if this creature has spawned for the first time (naturally or via spawn egg, etc, not reloaded from a saved chunk). **/
@@ -236,10 +238,6 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     protected static final DataParameter<Byte> COLOR = EntityDataManager.<Byte>createKey(EntityCreatureBase.class, DataSerializers.BYTE);
     protected static final DataParameter<Float> SIZE = EntityDataManager.<Float>createKey(EntityCreatureBase.class, DataSerializers.FLOAT);
     protected static final DataParameter<Byte> SUBSPECIES = EntityDataManager.<Byte>createKey(EntityCreatureBase.class, DataSerializers.BYTE);
-    protected static final DataParameter<Byte> LAST = EntityDataManager.<Byte>createKey(EntityCreatureBase.class, DataSerializers.BYTE);
-
-    protected static final DataParameter<Byte> SPECIAL = EntityDataManager.<Byte>createKey(EntityCreatureBase.class, DataSerializers.BYTE);
-    protected static final DataParameter<Byte> EQUIPMENT = EntityDataManager.<Byte>createKey(EntityCreatureBase.class, DataSerializers.BYTE); // TODO Remove if unused.
 
     public static final DataParameter<Optional<ItemStack>> EQUIPMENT_HEAD = EntityDataManager.<Optional<ItemStack>>createKey(EntityCreatureBase.class, DataSerializers.OPTIONAL_ITEM_STACK);
     public static final DataParameter<Optional<ItemStack>> EQUIPMENT_CHEST = EntityDataManager.<Optional<ItemStack>>createKey(EntityCreatureBase.class, DataSerializers.OPTIONAL_ITEM_STACK);
@@ -1829,28 +1827,53 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     	double angle = Math.toRadians(this.rotationYaw);
     	double xAmount = -Math.sin(angle);
     	double zAmount = Math.cos(angle);
-        this.motionX = xAmount * distance + this.motionX * 0.2D;
+        /*this.motionX = xAmount * distance + this.motionX * 0.2D;
         this.motionZ = zAmount * distance + this.motionZ * 0.2D;
-        this.motionY = leapHeight;
+        this.motionY = leapHeight;*/
+        this.addVelocity(
+                xAmount * distance + this.motionX * 0.2D,
+                leapHeight,
+                zAmount * distance + this.motionZ * 0.2D
+        );
     }
     
     // ========== Leap to Target ==========
     /** 
      * When called, this entity will leap towards the given target entity with the given height.
      * This is very sensitive, a large distance or height can cause the entity to zoom off for thousands of blocks!
+     * If the target distance is greater than range, the leap will be cancelled.
      * A distance of 1.0D is around 10 blocks forwards, a height of 0.5D is about 10 blocks up.
      * Tip: Use a negative height for flying and swimming mobs so that they can swoop down in the air or water
     **/
     public void leap(float range, double leapHeight, Entity target) {
-        if(target == null) return;
-        float distance = target.getDistanceToEntity(this);
-    	if(distance > 2.0F && distance <= range) {
-            double xDist = this.getAttackTarget().posX - this.posX;
-            double zDist = this.getAttackTarget().posZ - this.posZ;
-            float mixedDist = MathHelper.sqrt_double(xDist * xDist + zDist * zDist);
-            this.motionX = xDist / (double)mixedDist * 0.5D * 0.8D + this.motionX * 0.2D;
-            this.motionZ = zDist / (double)mixedDist * 0.5D * 0.8D + this.motionZ * 0.2D;
-            this.motionY = leapHeight;
+        if(target == null)
+            return;
+        this.leap(range, leapHeight, target.getPosition());
+    }
+
+    /**
+     * When called, this entity will leap towards the given target entity with the given height.
+     * This is very sensitive, a large distance or height can cause the entity to zoom off for thousands of blocks!
+     * If the target distance is greater than range, the leap will be cancelled.
+     * A distance of 1.0D is around 10 blocks forwards, a height of 0.5D is about 10 blocks up.
+     * Tip: Use a negative height for flying and swimming mobs so that they can swoop down in the air or water
+     **/
+    public void leap(float range, double leapHeight, BlockPos targetPos) {
+        if(targetPos == null)
+            return;
+        double distance = MathHelper.sqrt_double(targetPos.distanceSq(this.getPosition()));
+        if(distance > 2.0F && distance <= range) {
+            double xDist = targetPos.getX() - this.getPosition().getX();
+            double zDist = targetPos.getZ() - this.getPosition().getZ();
+            double xzDist = MathHelper.sqrt_double(xDist * xDist + zDist * zDist);
+            /*this.motionX = xDist / xzDist * 0.5D * 0.8D + this.motionX * 0.2D;
+            this.motionZ = zDist / xzDist * 0.5D * 0.8D + this.motionZ * 0.2D;
+            this.motionY = leapHeight;*/
+            this.addVelocity(
+                    xDist / xzDist * 0.5D * 0.8D + this.motionX * 0.2D,
+                    leapHeight,
+                    zDist / xzDist * 0.5D * 0.8D + this.motionZ * 0.2D
+            );
         }
     }
     
@@ -1895,6 +1918,22 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     /** Returns the distance that the entity's position is from the home position. **/
     public double getDistanceFromHome() {
     	return this.homePosition.getDistance((int) this.posX, (int) this.posY, (int) this.posZ);
+    }
+
+    // ========== Arena Center ==========
+    /** Returns true if this mob was spawned by an arena and has been set an arena center (typically used arena-based movement by bosses, etc). **/
+    public boolean hasArenaCenter() {
+        return this.getArenaCenter() != null;
+    }
+
+    /** Sets the central arena point for this mob to use. **/
+    public void setArenaCenter(BlockPos pos) {
+        this.arenaCenter = pos;
+    }
+
+    /** Returns the central arena position that this mob is using or null if not set. **/
+    public BlockPos getArenaCenter() {
+        return this.arenaCenter;
     }
 
     // ========== Get Wander Position ==========
@@ -3302,6 +3341,10 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         if(nbtTagCompound.hasKey("HomeX") && nbtTagCompound.hasKey("HomeY") && nbtTagCompound.hasKey("HomeZ") && nbtTagCompound.hasKey("HomeDistanceMax")) {
         	this.setHome(nbtTagCompound.getInteger("HomeX"), nbtTagCompound.getInteger("HomeY"), nbtTagCompound.getInteger("HomeZ"), nbtTagCompound.getFloat("HomeDistanceMax"));
         }
+
+        if(nbtTagCompound.hasKey("ArenaX") && nbtTagCompound.hasKey("ArenaY") && nbtTagCompound.hasKey("ArenaZ")) {
+            this.setArenaCenter(new BlockPos(nbtTagCompound.getInteger("ArenaX"), nbtTagCompound.getInteger("ArenaY"), nbtTagCompound.getInteger("ArenaZ")));
+        }
     }
     
     // ========== Write ==========
@@ -3329,6 +3372,13 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     		nbtTagCompound.setInteger("HomeZ", homePos.getZ());
     		nbtTagCompound.setFloat("HomeDistanceMax", this.getHomeDistanceMax());
     	}
+
+        if(this.hasArenaCenter()) {
+            BlockPos arenaPos = this.getArenaCenter();
+            nbtTagCompound.setInteger("ArenaX", arenaPos.getX());
+            nbtTagCompound.setInteger("ArenaY", arenaPos.getY());
+            nbtTagCompound.setInteger("ArenaZ", arenaPos.getZ());
+        }
     	
         super.writeEntityToNBT(nbtTagCompound);
         this.inventory.writeToNBT(nbtTagCompound);

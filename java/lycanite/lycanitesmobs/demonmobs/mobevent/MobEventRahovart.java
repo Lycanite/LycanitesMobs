@@ -59,7 +59,7 @@ public class MobEventRahovart extends MobEventBoss {
 
         // Explosions:
         if(time >= 3 * 20 && time % 10 == 0) {
-            world.createExplosion(null, originX - 20 + world.rand.nextInt(40), originY + 50 + world.rand.nextInt(20), originZ - 20 + world.rand.nextInt(40), 2, true);
+            world.createExplosion(null, originX - 20 + world.rand.nextInt(40), originY + 25 + world.rand.nextInt(10), originZ - 20 + world.rand.nextInt(40), 2, true);
         }
 
         // Build Obstacles:
@@ -69,7 +69,7 @@ public class MobEventRahovart extends MobEventBoss {
 
         // Hellfire Pillar Effect:
         if(time == 25 * 20) {
-            for(int i = 0; i < 10; i++) {
+            for(int i = 0; i < 5; i++) {
                 EntityProjectileBase entityProjectileBase = new EntityHellfireWall(world, originX, originY + (10 * i), originZ);
                 entityProjectileBase.projectileLife = 9 * 20;
                 world.spawnEntityInWorld(entityProjectileBase);
@@ -81,7 +81,7 @@ public class MobEventRahovart extends MobEventBoss {
             EntityCreatureBase entityCreatureBase = new EntityRahovart(world);
             entityCreatureBase.setLocationAndAngles(originX, originY + 1, originZ, 0, 0);
             world.spawnEntityInWorld(entityCreatureBase);
-            entityCreatureBase.setHome(originX, originY + 1, originZ, 2);
+            entityCreatureBase.setArenaCenter(new BlockPos(originX, originY + 1, originZ));
         }
     }
 

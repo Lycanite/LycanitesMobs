@@ -47,8 +47,8 @@ public class EntityStrider extends EntityCreatureTameable {
         this.babySpawnChance = 0D;
         this.canGrow = true;
 
-        this.setWidth = 1.5F;
-        this.setHeight = 5F;
+        this.setWidth = 3F;
+        this.setHeight = 10F;
         this.setupMob();
 
         this.setPathPriority(PathNodeType.WATER, 0F);

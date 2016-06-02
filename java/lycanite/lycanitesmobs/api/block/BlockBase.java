@@ -219,8 +219,8 @@ public class BlockBase extends Block {
     // ========== Collision Bounding Box ==========
     @Override
     public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World world, BlockPos pos) {
-        if(this.noBreakCollision)
-            return null;
+        if(!this.isCollidable())
+            return Block.NULL_AABB;
         return super.getCollisionBoundingBox(state, world, pos);
     }
 
@@ -228,8 +228,8 @@ public class BlockBase extends Block {
     @SideOnly(Side.CLIENT)
     @Override
     public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World world, BlockPos pos) {
-        if(!this.isCollidable())
-            return Block.NULL_AABB;
+        //if(!this.noBreakCollision)
+        //    return Block.NULL_AABB;
         return super.getSelectedBoundingBox(state, world, pos);
     }
     

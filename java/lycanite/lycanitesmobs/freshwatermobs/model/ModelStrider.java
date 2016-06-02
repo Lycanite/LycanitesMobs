@@ -23,14 +23,14 @@ public class ModelStrider extends ModelCustomObj {
     	this.initModel("strider", FreshwaterMobs.group, "entity/strider");
 
     	// Set Rotation Centers:
-    	setPartCenter("body", 0F, 4.0F, 0F);
+    	setPartCenter("body", 0F, 8.0F, 0F);
 
-        setPartCenter("armleft", 0.2F, 4.5F, -0.9F);
-        setPartCenter("armright", -0.2F, 4.5F, -0.9F);
+        setPartCenter("armleft", 0.4F, 9F, -1.8F);
+        setPartCenter("armright", -0.4F, 9F, -1.8F);
 
-    	setPartCenter("legleft", 0.7F, 3.9F, 0F);
-        setPartCenter("legright", -0.7F, 3.9F, 0F);
-    	setPartCenter("legback", 0F, 4F, 0.4F);
+    	setPartCenter("legleft", 1.4F, 7.8F, 0F);
+        setPartCenter("legright", -1.4F, 7.8F, 0F);
+    	setPartCenter("legback", 0F, 8F, 0.8F);
 
         this.lockHeadX = true;
         this.lockHeadY = true;

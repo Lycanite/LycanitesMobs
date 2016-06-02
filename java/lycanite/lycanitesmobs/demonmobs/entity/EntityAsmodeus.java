@@ -123,7 +123,7 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 300D);
+		baseAttributes.put("maxHealth", 5000D);
 		baseAttributes.put("movementSpeed", 0.32D);
 		baseAttributes.put("knockbackResistance", 1D);
 		baseAttributes.put("followRange", 100D);

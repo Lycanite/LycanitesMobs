@@ -200,6 +200,7 @@ public class DemonMobs {
         ObjectManager.addProjectile("hellfireorb", EntityHellfireOrb.class);
         ObjectManager.addProjectile("hellfirewave", EntityHellfireWave.class);
         ObjectManager.addProjectile("hellfirebarrier", EntityHellfireBarrier.class);
+        ObjectManager.addProjectile("devilgatling", EntityDevilGatling.class);
         ObjectManager.addProjectile("hellshield", EntityHellShield.class);
         ObjectManager.addProjectile("helllaser", EntityHellLaser.class);
         ObjectManager.addProjectile("helllaserend", EntityHellLaserEnd.class);

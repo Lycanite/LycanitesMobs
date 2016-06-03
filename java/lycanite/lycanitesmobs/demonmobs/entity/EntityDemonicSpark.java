@@ -38,7 +38,7 @@ public class EntityDemonicSpark extends EntityProjectileBase {
     	this.setBaseDamage(5);
     	this.setProjectileScale(1F);
         this.knockbackChance = 0D;
-        this.projectileLife = 100;
+        this.projectileLife = 50;
     }
 	
     

@@ -96,8 +96,8 @@ public class EntityAITargetParent extends EntityAITarget {
  	// ==================================================
     @Override
     protected double getTargetDistance() {
-    	if(targetDistance > -1)
-    		return targetDistance;
+    	if(this.targetDistance > -1)
+    		return this.targetDistance;
         IAttributeInstance attributeinstance = this.host.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE);
         return attributeinstance == null ? 16.0D : attributeinstance.getAttributeValue();
     }
@@ -114,7 +114,7 @@ public class EntityAITargetParent extends EntityAITarget {
     		return false;
     	}
     	
-        if(this.targetChance > 0 && this.host.getRNG().nextInt(this.targetChance) != 0)
+        if(this.host.updateTick % 20 != 0 && this.targetChance > 0 && this.host.getRNG().nextInt(this.targetChance) != 0)
             return false;
         
         double distance = this.getTargetDistance();

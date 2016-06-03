@@ -4,6 +4,7 @@ import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.pathfinding.Path;
+import net.minecraft.pathfinding.PathFinder;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.math.BlockPos;
@@ -13,17 +14,27 @@ import net.minecraft.world.World;
 
 public class PathNavigateGroundCustom extends PathNavigateGround {
 
-    public PathNavigateGroundCustom(EntityLiving entitylivingIn, World worldIn) {
-        super(entitylivingIn, worldIn);
+    public PathNavigateGroundCustom(EntityLiving entityLiving, World world) {
+        super(entityLiving, world);
     }
+
+    /** Uses custom walk node processor. **/
+    @Override
+    protected PathFinder getPathFinder() {
+        this.nodeProcessor = new WalkNodeProcessorCustom();
+        this.nodeProcessor.setCanEnterDoors(true);
+        return new PathFinder(this.nodeProcessor);
+    }
+
 
     @Override
     public Path getPathToPos(BlockPos pos) {
-        Path pathEntity = super.getPathToPos(pos);
-        return pathEntity;
+        Path path = super.getPathToPos(pos);
+        return path;
     }
 
-    /** Unchanged from PathNavigateGround, only overridden because isSafeToStandAt is private for some odd reason. */
+
+    /** Unchanged from PathNavigateGround, only overridden because isSafeToStandAt is private. */
     @Override
     protected boolean isDirectPathBetweenPoints(Vec3d posVec31, Vec3d posVec32, int sizeX, int sizeY, int sizeZ) {
         int i = MathHelper.floor_double(posVec31.xCoord);
@@ -93,6 +104,9 @@ public class PathNavigateGroundCustom extends PathNavigateGround {
     }
 
     private boolean isSafeToStandAt(int x, int y, int z, int sizeX, int sizeY, int sizeZ, Vec3d vec31, double p_179683_8_, double p_179683_10_) {
+        sizeX = Math.min(sizeX, 2);
+        sizeY = Math.min(sizeY, 3);
+        sizeZ = Math.min(sizeZ, 2);
         int i = x - sizeX / 2;
         int j = z - sizeZ / 2;
 
@@ -142,7 +156,9 @@ public class PathNavigateGroundCustom extends PathNavigateGround {
         }
     }
 
-    private boolean isPositionClear(int p_179692_1_, int p_179692_2_, int p_179692_3_, int p_179692_4_, int p_179692_5_, int p_179692_6_, Vec3d p_179692_7_, double p_179692_8_, double p_179692_10_) {
+    /** Unchanged from PathNavigateGround, only overridden because isSafeToStandAt is private. */
+    private boolean isPositionClear(int p_179692_1_, int p_179692_2_, int p_179692_3_, int p_179692_4_, int p_179692_5_, int p_179692_6_, Vec3d p_179692_7_, double p_179692_8_, double p_179692_10_)
+    {
         for (BlockPos blockpos : BlockPos.getAllInBox(new BlockPos(p_179692_1_, p_179692_2_, p_179692_3_), new BlockPos(p_179692_1_ + p_179692_4_ - 1, p_179692_2_ + p_179692_5_ - 1, p_179692_3_ + p_179692_6_ - 1)))
         {
             double d0 = (double)blockpos.getX() + 0.5D - p_179692_7_.xCoord;

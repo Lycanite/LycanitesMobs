@@ -74,7 +74,7 @@ public class EntityAstaroth extends EntityCreatureBase implements IMob, IGroupDe
 
 
     // ==================================================
-    //                      Updates
+    //                      Update
     // ==================================================
     // ========== Living Update ==========
     @Override
@@ -82,10 +82,10 @@ public class EntityAstaroth extends EntityCreatureBase implements IMob, IGroupDe
         super.onLivingUpdate();
 
         // Asmodeus Master:
-        if(this.updateTick % 10 == 0) {
-            if (this.getMasterTarget() != null && this.getMasterTarget() instanceof EntityAsmodeus) {
+        if(this.updateTick % 20 == 0) {
+            if (this.getMasterTarget() != null && this.getMasterTarget() instanceof EntityAsmodeus && ((EntityCreatureBase)this.getMasterTarget()).getBattlePhase() > 0) {
                 EntityHellShield projectile = new EntityHellShield(this.worldObj, this);
-                projectile.setProjectileScale(4f);
+                projectile.setProjectileScale(3f);
                 projectile.posY -= this.height * 0.35D;
                 double dX = this.getMasterTarget().posX - this.posX;
                 double dY = this.getMasterTarget().posY + (this.getMasterTarget().height * 0.75D) - projectile.posY;

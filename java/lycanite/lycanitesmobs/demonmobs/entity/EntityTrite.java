@@ -38,7 +38,7 @@ public class EntityTrite extends EntityCreatureBase implements IMob, IGroupDemon
         this.hasAttackSound = true;
         
         this.setWidth = 0.9F;
-        this.setHeight = 0.6F;
+        this.setHeight = 0.9F;
         this.setupMob();
         
         // AI Tasks:

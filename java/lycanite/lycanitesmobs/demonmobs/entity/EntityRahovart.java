@@ -216,7 +216,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
 
         // Player Targets and No Player Healing:
         if(!this.worldObj.isRemote && this.updateTick % 200 == 0) {
-            this.playerTargets = this.getNearbyEntities(EntityPlayer.class, 64);
+            this.playerTargets = this.getNearbyEntities(EntityPlayer.class, null, 64);
         }
         if(!this.worldObj.isRemote && this.updateTick % 20 == 0) {
             if (this.playerTargets.size() == 0)

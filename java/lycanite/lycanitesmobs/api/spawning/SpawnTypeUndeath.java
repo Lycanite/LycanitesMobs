@@ -2,6 +2,7 @@ package lycanite.lycanitesmobs.api.spawning;
 
 import lycanite.lycanitesmobs.ExtendedWorld;
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.api.IGroupDemon;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.util.math.BlockPos;
@@ -24,7 +25,7 @@ public class SpawnTypeUndeath extends SpawnTypeDeath {
     public boolean isValidKill(EntityLivingBase entity, EntityLivingBase killer) {
     	if(entity == null || killer == null)
     		return false;
-    	if(entity.getCreatureAttribute() != EnumCreatureAttribute.UNDEAD || entity.getClass() == ObjectManager.getMob("geist"))
+    	if(entity.getCreatureAttribute() != EnumCreatureAttribute.UNDEAD || entity instanceof IGroupDemon || entity.getClass() == ObjectManager.getMob("geist"))
     		return false;
     	return true;
     }

@@ -62,7 +62,7 @@ public class EntityStrider extends EntityCreatureTameable {
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
         this.tasks.addTask(5, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("stridertreat"))).setTemptDistanceMin(4.0D));
         this.tasks.addTask(6, new EntityAIStayByWater(this).setSpeed(1.25D));
-        this.tasks.addTask(7, wanderAI);
+        this.tasks.addTask(7, this.wanderAI);
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
 

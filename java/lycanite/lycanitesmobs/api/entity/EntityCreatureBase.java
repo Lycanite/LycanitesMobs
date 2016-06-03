@@ -248,6 +248,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     public static final DataParameter<Optional<ItemStack>> EQUIPMENT_BAG = EntityDataManager.<Optional<ItemStack>>createKey(EntityCreatureBase.class, DataSerializers.OPTIONAL_ITEM_STACK);
     public static final DataParameter<Optional<ItemStack>> EQUIPMENT_SADDLE = EntityDataManager.<Optional<ItemStack>>createKey(EntityCreatureBase.class, DataSerializers.OPTIONAL_ITEM_STACK);
 
+    protected static final DataParameter<Optional<BlockPos>> ARENA = EntityDataManager.<Optional<BlockPos>>createKey(EntityCreatureBase.class, DataSerializers.OPTIONAL_BLOCK_POS);
+
     /** The starting point for the datawatcher IDs used by this mod, lower IDs are used by vanilla code. **/
 	//private static byte watcherID = 12;
     /** A collection of IDs used by the datawatcher (used to sync clients and the server with certain values). **/
@@ -312,12 +314,15 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
   	// ==================================================
     public EntityCreatureBase(World world) {
         super(world);
+        this.width = this.setWidth;
+        this.height = this.setHeight;
 
-        // Swimming:
-        if(this.canWade() && this.getNavigator() instanceof PathNavigateGround) {
-            PathNavigateGround groundNavigator = (PathNavigateGround)this.getNavigator();
-            groundNavigator.setCanSwim(true);
-        }
+        // Navigation:
+        if(this.canFly())
+            this.moveHelper = new FlightMoveHelper(this);
+        else if(this.canSwim() && !this.canWalk())
+            this.moveHelper = new SwimmingMoveHelper(this);
+        this.moveHelper = new WalkMoveHelper(this);
 
         // Path On Fire or In Lava:
         if(!this.canBurn()) {
@@ -340,11 +345,11 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
                 this.setPathPriority(PathNodeType.WATER, 0.0F);
         }
 
-        // Navigation:
-        if(this.canFly())
-            this.moveHelper = new FlightMoveHelper(this);
-        else if(this.canSwim() && !this.canWalk())
-            this.moveHelper = new SwimmingMoveHelper(this);
+        // Swimming:
+        if(this.canWade() && this.getNavigator() instanceof PathNavigateGround) {
+            PathNavigateGround groundNavigator = (PathNavigateGround)this.getNavigator();
+            groundNavigator.setCanSwim(true);
+        }
     }
     
     // ========== Setup ==========
@@ -435,6 +440,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         this.dataManager.register(COLOR, (byte) 0);
         this.dataManager.register(SIZE, (float) 1D);
         this.dataManager.register(SUBSPECIES, (byte) 0);
+        this.dataManager.register(ARENA, Optional.<BlockPos>absent());
         InventoryCreature.registerDataParameters(this.dataManager);
         this.initiated = true;
     }
@@ -608,7 +614,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         if(!this.spawnLimitCheck(world, pos.getX(), pos.getY(), pos.getZ()))
         	return false;
         LycanitesMobs.printDebug("MobSpawns", "Checking for nearby bosses.");
-        List bosses = this.getNearbyEntities(IGroupBoss.class, SpawnInfo.spawnLimitRange);
+        List bosses = this.getNearbyEntities(EntityCreatureBase.class, IGroupBoss.class, SpawnInfo.spawnLimitRange);
         if(bosses.size() > 0)
             return false;
 
@@ -680,7 +686,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     	 double range = SpawnInfo.spawnLimitRange;
     	 LycanitesMobs.printDebug("MobSpawns", "Checking spawn area limit. Limit of: " + spawnLimit + " Range of: " + range);
          if(spawnLimit > 0 && range > 0) {
-         	List targets = this.getNearbyEntities(this.mobInfo.entityClass, range);
+         	List targets = this.getNearbyEntities(EntityCreatureBase.class, this.mobInfo.entityClass, range);
          	LycanitesMobs.printDebug("MobSpawns", "Found " + targets.size() + " of this mob within the radius (class is " + this.mobInfo.entityClass + ").");
          	if(targets.size() >= spawnLimit)
          		return false;
@@ -1531,6 +1537,11 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         		this.updateSize();
         	}
         }
+
+        // Arena:
+        if(!this.worldObj.isRemote) {
+            this.dataManager.set(ARENA, this.getArenaCenter() != null ? Optional.<BlockPos>of(this.getArenaCenter()) : Optional.<BlockPos>absent());
+        }
     }
 
     // ========== Hit Areas ==========
@@ -2043,6 +2054,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         this.width = width;
         this.height = height;*/
         this.hitAreas = null;
+        if(!this.worldObj.isRemote && this.getNavigator() != null && this.getNavigator().getNodeProcessor() != null && this.getNavigator().getNodeProcessor() instanceof WalkNodeProcessorCustom)
+            ((WalkNodeProcessorCustom)this.getNavigator().getNodeProcessor()).updateEntitySize(this);
     }
 
     /** When called, this reapplies the initial width and height of this mob and then applies sizeScale. **/
@@ -3248,7 +3261,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     // Nearby Creature Count:
     /** Returns how many entities of the specified class around within the specified ranged, used mostly for mobs that summon other mobs and other group behaviours. **/
     public int nearbyCreatureCount(Class targetClass, double range) {
-    	return this.getNearbyEntities(targetClass, range).size();
+    	return this.getNearbyEntities(Entity.class, targetClass, range).size();
     }
     
     // ========== Creature Attribute ==========
@@ -3264,14 +3277,16 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     }
     
    	// ========== Get Nearby Entities ==========
-   	/** Get entities that are near this entity. **/
-   	public List getNearbyEntities(final Class targetClass, double range) {
-   		return this.worldObj.getEntitiesWithinAABB(Entity.class, this.getEntityBoundingBox().expand(range, range, range), new Predicate<Entity>() {
+    /** Get entities that are near this entity. **/
+    public <T extends Entity> List<T> getNearbyEntities(Class <? extends T > clazz, final Class filterClass, double range) {
+        return this.worldObj.<T>getEntitiesWithinAABB(clazz, this.getEntityBoundingBox().expand(range, range, range), new Predicate<Entity>() {
             public boolean apply(Entity entity) {
-                return targetClass.isAssignableFrom(entity.getClass());
+                if(filterClass == null)
+                    return true;
+                return filterClass.isAssignableFrom(entity.getClass());
             }
         });
-   	}
+    }
     
     // ==================================================
     //                        NBT

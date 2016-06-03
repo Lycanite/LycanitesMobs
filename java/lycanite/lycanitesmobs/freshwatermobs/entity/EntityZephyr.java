@@ -115,7 +115,7 @@ public class EntityZephyr extends EntityCreatureTameable implements IMob, IGroup
         if(!this.worldObj.isRemote && ++aoeAttackTick == 40) {
             aoeAttackTick = 0;
             boolean applyEffect = this.getRNG().nextFloat() >= 0.5F;
-            List aoeTargets = this.getNearbyEntities(EntityLivingBase.class, 4);
+            List aoeTargets = this.getNearbyEntities(EntityLivingBase.class, null, 4);
             for(Object entityObj : aoeTargets) {
                 EntityLivingBase target = (EntityLivingBase)entityObj;
                 if(target != this && this.canAttackClass(entityObj.getClass()) && this.canAttackEntity(target) && this.getEntitySenses().canSee(target)) {
@@ -130,7 +130,7 @@ public class EntityZephyr extends EntityCreatureTameable implements IMob, IGroup
         if(this.worldObj.isRemote) {
             this.worldObj.spawnParticle(EnumParticleTypes.CLOUD, this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width, this.posY + this.rand.nextDouble() * (double) this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width, 0.0D, 0.0D, 0.0D);
             
-            List aoeTargets = this.getNearbyEntities(EntityLivingBase.class, 4);
+            List aoeTargets = this.getNearbyEntities(EntityLivingBase.class, null, 4);
             for(Object entityObj : aoeTargets) {
                 EntityLivingBase target = (EntityLivingBase)entityObj;
                 if(this.canAttackClass(entityObj.getClass()) && this.canAttackEntity(target) && this.getEntitySenses().canSee(target)) {

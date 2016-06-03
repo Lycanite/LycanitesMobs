@@ -1,6 +1,8 @@
 package lycanite.lycanitesmobs.api.entity.ai;
 
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
+import net.minecraft.pathfinding.PathNavigate;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
@@ -40,6 +42,7 @@ public class RandomPositionGenerator {
 
     // ========== Get Target Block ==========
     private static Vec3d getTargetBlock(EntityCreatureBase entity, int range, int height, Vec3d target, int heightLevel) {
+        PathNavigate pathNavigate = entity.getNavigator();
         Random random = entity.getRNG();
         boolean validTarget = false;
         int targetX = 0;
@@ -56,7 +59,7 @@ public class RandomPositionGenerator {
         else
         	pastHome = false;
 
-        for(int j1 = 0; j1 < 10; ++j1) {
+        for(int attempt = 0; attempt < 10; ++attempt) {
             int possibleX = random.nextInt(2 * range) - range;
             int possibleY = random.nextInt(2 * height) - height;
             int possibleZ = random.nextInt(2 * range) - range;
@@ -69,14 +72,14 @@ public class RandomPositionGenerator {
 	            	possibleY = random.nextInt(2 * height) - height / 2;
             }
 
-            if(target == null|| (double)possibleX * target.xCoord + (double)possibleZ * target.zCoord >= 0.0D) {
+            if(target == null || (double)possibleX * target.xCoord + (double)possibleZ * target.zCoord >= 0.0D) {
             	possibleX += MathHelper.floor_double(entity.posX);
             	possibleY += MathHelper.floor_double(entity.posY);
             	possibleZ += MathHelper.floor_double(entity.posZ);
+                BlockPos possiblePos = new BlockPos(possibleX, possibleY, possibleZ);
 
-                if(!pastHome || entity.positionNearHome(possibleX, possibleY, possibleZ)) {
+                if((!pastHome || entity.positionNearHome(possibleX, possibleY, possibleZ)) && pathNavigate.canEntityStandOnPos(possiblePos)) {
                     float pathWeight = entity.getBlockPathWeight(possibleX, possibleY, possibleZ);
-                    
                     if(pathWeight > pathMin) {
                     	pathMin = pathWeight;
                     	targetX = possibleX;

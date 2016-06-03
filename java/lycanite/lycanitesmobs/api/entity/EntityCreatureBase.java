@@ -57,6 +57,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.*;
 
 public abstract class EntityCreatureBase extends EntityLiving implements FlyingMob {
+    public static Boolean ENABLE_HITAREAS = true;
+
 	/** A snapshot of the base health for each mob. This is used when calculating subspecies or tamed health. **/
 	public static Map<Class, Double> baseHealthMap = new HashMap<Class, Double>();
     
@@ -870,7 +872,10 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     }
 
     public void createBossInfo(BossInfo.Color color, boolean darkenSky) {
-        this.bossInfo = (BossInfoServer)(new BossInfoServer(new TextComponentString(this.getFullName()), color, BossInfo.Overlay.PROGRESS)).setDarkenSky(darkenSky);
+        String name = this.getFullName();
+        if(this.isBoss())
+            name += " (Phase " + (this.getBattlePhase() + 1) + ")";
+        this.bossInfo = (BossInfoServer)(new BossInfoServer(new TextComponentString(name), color, BossInfo.Overlay.PROGRESS)).setDarkenSky(darkenSky);
     }
 
 
@@ -1408,14 +1413,10 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         	this.pickupItems();
 
         // Entity Pickups:
-        if(this.pickupEntity != null) {
+        if(!this.worldObj.isRemote && this.pickupEntity != null) {
 			if(!this.pickupEntity.isEntityAlive())
 				this.dropPickupEntity();
-			else if(this.pickupEntity instanceof EntityLivingBase) {
-				if(((EntityLivingBase)this.pickupEntity).getHealth() <= 0)
-					this.dropPickupEntity();
-			}
-			else if(this.getDistanceSqToEntity(this.pickupEntity) > 32D) {
+			else if(Math.sqrt(this.getDistanceSqToEntity(this.pickupEntity)) > 32D) {
 				this.dropPickupEntity();
 			}
         }
@@ -1534,6 +1535,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 
     // ========== Hit Areas ==========
     public void updateHitAreas() {
+        if(!ENABLE_HITAREAS)
+            return;
         int hitAreaWidthCount = Math.max(1, Math.round(this.width / 4));
         int hitAreaHeightCount = Math.max(1, Math.round(this.height / 4));
         if(hitAreaWidthCount < 2 && hitAreaHeightCount < 2) {

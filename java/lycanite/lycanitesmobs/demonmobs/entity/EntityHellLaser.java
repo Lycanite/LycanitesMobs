@@ -48,7 +48,7 @@ public class EntityHellLaser extends EntityProjectileLaser {
     public void setStats() {
 		super.setStats();
         this.setRange(16.0F);
-        this.setLaserWidth(2.0F);
+        this.setLaserWidth(4.0F);
     }
 	
     

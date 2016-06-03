@@ -6,6 +6,7 @@ import lycanite.lycanitesmobs.api.renderer.LayerFire;
 import lycanite.lycanitesmobs.api.renderer.LayerShield;
 import lycanite.lycanitesmobs.api.renderer.RenderCreature;
 import lycanite.lycanitesmobs.demonmobs.DemonMobs;
+import lycanite.lycanitesmobs.demonmobs.entity.EntityAsmodeus;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.MathHelper;
@@ -38,11 +39,11 @@ public class ModelAsmodeus extends ModelCustomObj {
     	setPartCenter("armright", -6.8F, 15.6F, -2F);
 
     	setPartCenter("legleftfront", 5.14256F, 9.2F, -3.2F);
-    	setPartCenter("legleftmiddle", 12.8F, 9.2F, 0F);
+    	setPartCenter("legleftmiddle", 6.4F, 9.2F, 0F);
     	setPartCenter("legleftback", 5.14256F, 9.2F, 3.2F);
 
     	setPartCenter("legrightfront", -5.14256F, 9.2F, -3.2F);
-    	setPartCenter("legrightmiddle", -12.8F, 9.2F, 0F);
+    	setPartCenter("legrightmiddle", -6.4F, 9.2F, 0F);
     	setPartCenter("legrightback", -5.14256F, 9.2F, 3.2F);
     	
     	lockHeadX = true;
@@ -142,10 +143,10 @@ public class ModelAsmodeus extends ModelCustomObj {
         else {
             // Legs:
             float walkSwing = 0.3F;
-            if (partName.equals("legleftfront") || partName.equals("legleftback") || partName.equals("legrightmiddle"))
+            if (partName.equals("legleftfront") || partName.equals("legleftmiddle") || partName.equals("legleftback"))
                 rotation += 20F;
-            if (partName.equals("legleftmiddle") || partName.equals("legrightfront") || partName.equals("legrightback"))
-                rotation += 20F;
+            if (partName.equals("legrightfront") || partName.equals("legrightmiddle") || partName.equals("legrightback"))
+                rotation -= 20F;
         }
 
         // Turret:
@@ -163,9 +164,13 @@ public class ModelAsmodeus extends ModelCustomObj {
         }
 
         // Spinning Weapon:
-        if(entity instanceof EntityCreatureBase) {
-            if (partName.contains("weapon") && ((EntityCreatureBase)entity).justAttacked()) {
+        if(entity instanceof EntityAsmodeus && partName.contains("weapon")) {
+            EntityAsmodeus entityAsmodeus = (EntityAsmodeus)entity;
+            if (entityAsmodeus.justAttacked()) {
                 rotZ -= loop * 30;
+            }
+            else if (entityAsmodeus.aiRangedAttack != null && !entityAsmodeus.aiRangedAttack.attackOnCooldown) {
+                rotZ -= loop * 7.5F;
             }
         }
 

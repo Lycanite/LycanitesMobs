@@ -1,10 +1,10 @@
 package lycanite.lycanitesmobs.demonmobs.entity;
 
+import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupDemon;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
-import lycanite.lycanitesmobs.api.entity.EntityProjectileLaser;
 import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.entity.navigate.ArenaNode;
 import lycanite.lycanitesmobs.api.entity.navigate.ArenaNodeNetwork;
@@ -20,6 +20,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -36,7 +38,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDemon {
 
@@ -49,13 +50,19 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
     public List<EntityAstaroth> astarothMinions = new ArrayList<EntityAstaroth>();
     public List<EntityCacodemon> cacodemonMinions = new ArrayList<EntityCacodemon>();
 
+    // First Phase:
+    public int devilstarStreamTime = 0;
+    public int devilstarStreamTimeMax = 5 * 20;
+    public int devilstarStreamCharge = 20 * 20;
+    public int devilstarStreamChargeMax = 20 * 20;
+
     // Second Phase:
     public int hellshieldAstarothRespawnTime = 0;
-    public int hellshieldAstarothRespawnTimeMax = 15;
+    public int hellshieldAstarothRespawnTimeMax = 30;
 
     // Third Phase:
     public int rebuildAstarothRespawnTime = 0;
-    public int rebuildAstarothRespawnTimeMax = 20;
+    public int rebuildAstarothRespawnTimeMax = 40;
 
     // Boss Health:
     public float damageTakenThisSec = 0;
@@ -81,7 +88,7 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
         this.defense = 2;
         this.experience = 1000;
         this.hasAttackSound = false;
-        this.justAttackedTime = 100;
+        this.justAttackedTime = 30;
         
         this.setWidth = 20F;
         this.setHeight = 21F;
@@ -96,7 +103,7 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
         
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.aiRangedAttack = new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(5).setStaminaTime(200).setRange(90.0F).setChaseTime(0).setCheckSight(false);
+        this.aiRangedAttack = new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(5).setStaminaTime(200).setStaminaDrainRate(3).setRange(90.0F).setChaseTime(0).setCheckSight(false);
         this.tasks.addTask(2, this.aiRangedAttack);
         //this.tasks.addTask(6, new EntityAIWander(this).setSpeed(1.0D));
         //this.tasks.addTask(7, new EntityAIStayByHome(this));
@@ -163,14 +170,8 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
     /** Sets the central arena point for this mob to use. **/
     public void setArenaCenter(BlockPos pos) {
         super.setArenaCenter(pos);
-        this.setHome(pos.getX(), pos.getY(), pos.getZ(), 2);
         this.arenaNodeNetwork = new ArenaNodeNetworkGrid(this.worldObj, pos, 3, 1, 3, 60);
         this.currentArenaNode = this.arenaNodeNetwork.getClosestNode(this.getPosition());
-    }
-
-    @Override
-    public boolean positionNearHome(int x, int y, int z) {
-        return true;
     }
 
 
@@ -223,22 +224,25 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
         }
         else {
             this.noClip = false;
-        }
-        if(!this.worldObj.isRemote && this.hasHome() && this.arenaJumpingTime <= 0) {
-            if(this.worldObj.isAirBlock(this.getHomePosition()))
-                this.posY = this.getHomePosition().getY();
+            if (!this.worldObj.isRemote && this.currentArenaNode != null && this.currentArenaNode.pos != null) {
+                BlockPos arenaPos = this.currentArenaNode.pos;
+                if (this.worldObj.isAirBlock(arenaPos))
+                    this.posY = arenaPos.getY();
+                else if (this.worldObj.isAirBlock(arenaPos.add(0, 1, 0)))
+                    this.posY = arenaPos.add(0, 1, 0).getY();
 
-            double range = this.getHomeDistanceMax();
+                double range = 1D;
 
-            if(this.getHomePosition().getX() - this.posX > range)
-                this.posX = this.getHomePosition().getX() + range;
-            else if(this.getHomePosition().getX() - this.posX < -range)
-                this.posX = this.getHomePosition().getX() - range;
+                if (arenaPos.getX() - this.posX > range)
+                    this.posX = arenaPos.getX() + range;
+                else if (arenaPos.getX() - this.posX < -range)
+                    this.posX = arenaPos.getX() - range;
 
-            if(this.getHomePosition().getZ() - this.posZ > range)
-                this.posZ = this.getHomePosition().getZ() + range;
-            else if(this.getHomePosition().getZ() - this.posZ < -range)
-                this.posZ = this.getHomePosition().getZ() - range;
+                if (arenaPos.getZ() - this.posZ > range)
+                    this.posZ = arenaPos.getZ() + range;
+                else if (arenaPos.getZ() - this.posZ < -range)
+                    this.posZ = arenaPos.getZ() - range;
+            }
         }
 
         // Passive Attacks:
@@ -247,12 +251,33 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
             for(EntityPlayer target : this.playerTargets) {
                 if(target.capabilities.isCreativeMode || target.isSpectator())
                     continue;
-                this.rangedAttack(target, 1F);
                 if(target.posY > this.posY + this.height + 5) {
                     for(int i = 0; i < 3; i++) {
                         EntityNetherSoul minion = new EntityNetherSoul(this.worldObj);
                         this.summonMinion(minion, this.getRNG().nextDouble() * 360, 5);
                     }
+                }
+            }
+        }
+
+        // Clean Minion Lists:
+        if(this.worldObj.isRemote && this.updateTick % 200 == 0) {
+            if(!this.triteMinions.isEmpty()) {
+                for (EntityTrite minion : this.triteMinions.toArray(new EntityTrite[this.triteMinions.size()])) {
+                    if(minion == null || !minion.isEntityAlive())
+                        this.triteMinions.remove(minion);
+                }
+            }
+            if(!this.astarothMinions.isEmpty()) {
+                for (EntityAstaroth minion : this.astarothMinions.toArray(new EntityAstaroth[this.astarothMinions.size()])) {
+                    if(minion == null || !minion.isEntityAlive())
+                        this.astarothMinions.remove(minion);
+                }
+            }
+            if(!this.cacodemonMinions.isEmpty()) {
+                for (EntityCacodemon minion : this.cacodemonMinions.toArray(new EntityCacodemon[this.cacodemonMinions.size()])) {
+                    if(minion == null || !minion.isEntityAlive())
+                        this.cacodemonMinions.remove(minion);
                 }
             }
         }
@@ -272,22 +297,28 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
 
         // ===== First Phase - Devilstar Stream =====
         if(this.getBattlePhase() == 0) {
-            // Devilstars:
-            this.attackHellLaser(20F);
-            this.attackHellLaser(-20F);
-            this.attackHellLaser(50F);
-            this.attackHellLaser(-50F);
-            this.attackHellLaser(90F);
-            this.attackHellLaser(-90F);
-            this.attackHellLaser(130F);
-            this.attackHellLaser(-130F);
-            this.attackHellLaser(160F);
-            this.attackHellLaser(-160F);
-            this.attackHellLaser(-180F);
+            // Devilstar Stream - Fire:
+            if(this.devilstarStreamTime > 0) {
+                this.devilstarStreamTime--;
+                if(this.updateTick % 10 == 0) {
+                    for (float angle = 0; angle < 360F; angle += 10F) {
+                        this.attackDevilstar(angle);
+                    }
+                }
+            }
+            // Devilstar Stream - Recharge:
+            else if(this.devilstarStreamCharge > 0) {
+                this.devilstarStreamCharge--;
+            }
+            // Devilstar Stream - Charged
+            else {
+                this.devilstarStreamCharge = this.devilstarStreamChargeMax;
+                this.devilstarStreamTime = this.devilstarStreamTimeMax;
+            }
 
             // Summon Trites:
-            if(this.triteMinions.size() < playerCount * 20 && this.updateTick % 10 * 20 == 0) {
-                for (int i = 0; i < 5 * playerCount; i++) {
+            if(this.triteMinions.size() < playerCount * 3 && this.updateTick % 10 * 20 == 0) {
+                for (int i = 0; i < 3 * playerCount; i++) {
                     EntityTrite minion = new EntityTrite(this.worldObj);
                     this.summonMinion(minion, this.getRNG().nextDouble() * 360, 20);
                     this.triteMinions.add(minion);
@@ -338,7 +369,7 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
 
             // Heal:
             if(!this.astarothMinions.isEmpty()) {
-                float healAmount = this.astarothMinions.size() * Math.min(Math.max(this.worldObj.getDifficulty().getDifficultyId(), 1), 3);
+                float healAmount = this.astarothMinions.size();
                 if (((this.getHealth() + healAmount) / this.getMaxHealth()) <= 0.2D)
                     this.heal(healAmount);
             }
@@ -375,8 +406,8 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
 
         // Update home position jumping time on node change to new node.
         if(this.currentArenaNode != null && this.currentArenaNode.pos != null) {
+            LycanitesMobs.printDebug("", "Changed node to: " + this.currentArenaNode.pos);
             this.arenaJumpingTime = this.arenaJumpingTimeMax;
-            this.setHome(this.currentArenaNode.pos.getX(), this.currentArenaNode.pos.getY(), this.currentArenaNode.pos.getZ(), 2);
             this.leap(200, this.jumpHeight, this.currentArenaNode.pos); // First leap for jump height.
         }
     }
@@ -456,23 +487,31 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
         super.rangedAttack(target, range);
     }
 
-    // ========== Devilstar Stream ==========
-    private Map<Float, EntityProjectileLaser> lasers = new HashMap<Float, EntityProjectileLaser>();
-    public void attackHellLaser(float angle) {
-        EntityProjectileLaser laser;
-        if(!lasers.containsKey(angle)) {
-            laser = new EntityHellLaser(this.worldObj, this, 20, 10);
-            laser.useEntityAttackTarget = false;
-        }
-        else
-            laser = this.lasers.get(angle);
+    // ========== Devilstars ==========
+    public void attackDevilstar(float angle) {
+        // Type:
+        EntityProjectileBase projectile = new EntityDevilstar(this.worldObj, this);
+        projectile.setProjectileScale(4f);
 
-        // Update Laser:
-        if(laser.isEntityAlive()) {
-            laser.setTime(20);
-            BlockPos targetPosition = this.getFacingPosition(this, angle, 100);
-            laser.setTarget(targetPosition.getX(), targetPosition.getY() + Math.sin(this.updateTick * 4), targetPosition.getZ());
-        }
+        // Y Offset:
+        BlockPos offset = this.getFacingPosition(this, 8, angle);
+        projectile.posX = offset.getX();
+        projectile.posY = offset.getY() + (this.height * 0.5D);
+        projectile.posZ = offset.getZ();
+
+        // Set Velocities:
+        float range = 30 + (30 * this.getRNG().nextFloat());
+        BlockPos target = this.getFacingPosition(this, range, angle);
+        double d0 = target.getX() - projectile.posX;
+        double d1 = target.getY() - projectile.posY;
+        double d2 = target.getZ() - projectile.posZ;
+        float f1 = MathHelper.sqrt_double(d0 * d0 + d2 * d2) * 0.1F;
+        float velocity = 1.2F;
+        projectile.setThrowableHeading(d0, d1 + (double)f1, d2, velocity, 0.0F);
+
+        // Launch:
+        this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+        this.worldObj.spawnEntityInWorld(projectile);
     }
 	
 	
@@ -545,5 +584,50 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
                 this.playerTargets.add((EntityPlayer)damageSrc.getEntity());
         }
         return super.attackEntityFrom(damageSrc, damage);
+    }
+
+
+    // ==================================================
+    //                       NBT
+    // ==================================================
+    // ========== Read ===========
+    @Override
+    public void readEntityFromNBT(NBTTagCompound nbtTagCompound) {
+        super.readEntityFromNBT(nbtTagCompound);
+        if(nbtTagCompound.hasKey("DevilstarStreamCharge")) {
+            this.devilstarStreamCharge = nbtTagCompound.getInteger("DevilstarStreamCharge");
+        }
+        if(nbtTagCompound.hasKey("DevilstarStreamTime")) {
+            this.devilstarStreamTime = nbtTagCompound.getInteger("DevilstarStreamTime");
+        }
+        if(nbtTagCompound.hasKey("AstarothIDs")) {
+            NBTTagList astarothIDs = nbtTagCompound.getTagList("AstarothIDs", 10);
+            for(int i = 0; i < astarothIDs.tagCount(); i++) {
+                NBTTagCompound astarothID = astarothIDs.getCompoundTagAt(i);
+                if(astarothID.hasKey("ID")) {
+                    Entity entity = this.worldObj.getEntityByID(astarothID.getInteger("ID"));
+                    if(entity != null && entity instanceof EntityAstaroth)
+                        this.astarothMinions.add((EntityAstaroth)entity);
+                }
+            }
+        }
+    }
+
+    // ========== Write ==========
+    /** Used when saving this mob to a chunk. **/
+    @Override
+    public void writeEntityToNBT(NBTTagCompound nbtTagCompound) {
+        super.writeEntityToNBT(nbtTagCompound);
+        nbtTagCompound.setInteger("DevilstarStreamCharge", this.devilstarStreamCharge);
+        nbtTagCompound.setInteger("DevilstarStreamTime", this.devilstarStreamTime);
+        if(this.getBattlePhase() > 0) {
+            NBTTagList astarothIDs = new NBTTagList();
+            for(EntityAstaroth entityAstaroth : this.astarothMinions) {
+                NBTTagCompound astarothID = new NBTTagCompound();
+                astarothID.setInteger("ID", entityAstaroth.getEntityId());
+                astarothIDs.appendTag(astarothID);
+            }
+            nbtTagCompound.setTag("AstarothIDs", astarothIDs);
+        }
     }
 }

@@ -12,6 +12,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -114,6 +115,14 @@ public class EntityProjectileLaser extends EntityProjectileBase {
         this.dataManager.register(OFFSET_Z, (float) this.offsetZ);
         this.noClip = true;
     }
+
+    @Override
+    public AxisAlignedBB getRenderBoundingBox() {
+        if(this.laserEnd == null)
+            return super.getRenderBoundingBox();
+        double distance = this.getDistanceToEntity(this.laserEnd);
+        return super.getRenderBoundingBox().expand(distance, distance, distance);
+    }
 	
     
     // ==================================================
@@ -128,7 +137,7 @@ public class EntityProjectileLaser extends EntityProjectileBase {
     
     
     // ==================================================
- 	//                   Update
+ 	//                      Update
  	// ==================================================
     @Override
     public void onUpdate() {
@@ -494,6 +503,10 @@ public class EntityProjectileLaser extends EntityProjectileBase {
 
     public float getLaserWidth() {
     	return this.laserWidth;
+    }
+
+    public float getLaserAlpha() {
+        return 0.25F + (float)(0.1F * Math.sin(this.ticksExisted));
     }
     
     

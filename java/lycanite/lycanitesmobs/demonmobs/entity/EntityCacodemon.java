@@ -184,7 +184,7 @@ public class EntityCacodemon extends EntityCreatureTameable implements IGroupDem
     public void rangedAttack(Entity target, float range) {
     	// Type:
     	EntityDemonicBlast projectile = new EntityDemonicBlast(this.worldObj, this);
-        projectile.setProjectileScale(1f);
+        projectile.setProjectileScale(2f);
     	
     	// Y Offset:
     	projectile.posY -= this.height * 0.5D;

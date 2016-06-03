@@ -752,6 +752,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
     // ========== Read ===========
     @Override
     public void readEntityFromNBT(NBTTagCompound nbtTagCompound) {
+        super.readEntityFromNBT(nbtTagCompound);
         if(nbtTagCompound.hasKey("HellfireEnergy")) {
             this.hellfireEnergy = nbtTagCompound.getInteger("HellfireEnergy");
         }
@@ -786,9 +787,10 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
     /** Used when saving this mob to a chunk. **/
     @Override
     public void writeEntityToNBT(NBTTagCompound nbtTagCompound) {
+        super.writeEntityToNBT(nbtTagCompound);
         nbtTagCompound.setInteger("HellfireEnergy", this.hellfireEnergy);
         nbtTagCompound.setInteger("HellfireWallTime", this.hellfireWallTime);
-        if(this.battlePhase == 0) {
+        if(this.getBattlePhase() == 0) {
             NBTTagList belphIDs = new NBTTagList();
             for(EntityBelph entityBelph : this.hellfireBelphMinions) {
                 NBTTagCompound belphID = new NBTTagCompound();
@@ -797,7 +799,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
             }
             nbtTagCompound.setTag("BelphIDs", belphIDs);
         }
-        if(this.battlePhase == 1) {
+        if(this.getBattlePhase() == 1) {
             NBTTagList behemothIDs = new NBTTagList();
             for(EntityBehemoth entityBehemoth : this.hellfireBehemothMinions) {
                 NBTTagCompound behemothID = new NBTTagCompound();

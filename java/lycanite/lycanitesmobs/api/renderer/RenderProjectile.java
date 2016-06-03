@@ -140,10 +140,13 @@ public class RenderProjectile extends Render {
     	float factor = (float)(1.0 / 16.0);
     	float lastSegment = 0;
     	float laserSize = entity.getLength();
-    	if(laserSize <= 0) return;
+    	if(laserSize <= 0)
+            return;
     	
     	// Render Laser Beam:
         GlStateManager.pushMatrix();
+        GlStateManager.enableAlpha();
+        GlStateManager.color(1, 1, 1, entity.getLaserAlpha());
         GlStateManager.translate(x, y, z);
     	this.bindTexture(this.getLaserTexture(entity));
         

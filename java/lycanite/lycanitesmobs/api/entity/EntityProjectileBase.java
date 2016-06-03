@@ -115,7 +115,7 @@ public class EntityProjectileBase extends EntityThrowable {
         }
 
         // Sync Scale:
-        if(this.worldObj.isRemote && this.ticksExisted % 20 == 0) {
+        if(this.worldObj.isRemote) {
             this.projectileScale = this.dataManager.get(SCALE);
         }
 
@@ -382,9 +382,9 @@ public class EntityProjectileBase extends EntityThrowable {
          this.setSize(newScale, newScale);
          if(this.worldObj.isRemote && !this.clientOnly)
              return;
-         this.dataManager.set(SCALE, this.projectileScale);
          if(this.getThrower() != null && this.getThrower() instanceof EntityCreatureBase)
              this.projectileScale *= ((EntityCreatureBase)this.getThrower()).sizeScale;
+         this.dataManager.set(SCALE, this.projectileScale);
      }
      
      public float getProjectileScale() {

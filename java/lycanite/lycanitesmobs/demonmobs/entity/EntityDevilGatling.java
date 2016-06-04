@@ -2,14 +2,20 @@ package lycanite.lycanitesmobs.demonmobs.entity;
 
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
+import lycanite.lycanitesmobs.api.info.ObjectLists;
 import lycanite.lycanitesmobs.demonmobs.DemonMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EntityDevilGatling extends EntityProjectileBase {
 
@@ -71,9 +77,27 @@ public class EntityDevilGatling extends EntityProjectileBase {
  	// ==================================================
     //========== Entity Living Collision ==========
     @Override
-    public boolean entityLivingCollision(EntityLivingBase entityLiving) {
-    	//entityLiving.addPotionEffect(new PotionEffect(MobEffects.WITHER, this.getEffectDuration(10), 0));
-    	return super.entityLivingCollision(entityLiving);
+    public void onDamage(EntityLivingBase target, float damage, boolean attackSuccess) {
+    	super.onDamage(target, damage, attackSuccess);
+        // Remove Buffs:
+        if(this.rand.nextBoolean()) {
+            List<Potion> goodEffects = new ArrayList<Potion>();
+            for (Object potionEffectObj : target.getActivePotionEffects()) {
+                if (potionEffectObj instanceof PotionEffect) {
+                    Potion potion = ((PotionEffect) potionEffectObj).getPotion();
+                    if (potion != null) {
+                        if (ObjectLists.inEffectList("buffs", potion))
+                            goodEffects.add(potion);
+                    }
+                }
+            }
+            if (!goodEffects.isEmpty()) {
+                if (goodEffects.size() > 1)
+                    target.removePotionEffect(goodEffects.get(this.rand.nextInt(goodEffects.size())));
+                else
+                    target.removePotionEffect(goodEffects.get(0));
+            }
+        }
     }
     
     //========== On Impact Particles/Sounds ==========

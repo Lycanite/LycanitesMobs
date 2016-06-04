@@ -94,7 +94,6 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
         this.tasks.addTask(0, new EntityAISwimming(this));
         //this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(60).setRange(32).setMinChaseDistance(0F).setChaseTime(-1));
         //this.tasks.addTask(6, new EntityAIWander(this).setSpeed(1.0D));
-        //this.tasks.addTask(7, new EntityAIStayByHome(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
 
@@ -134,7 +133,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
 	}
 
     // ========== Init ==========
-    /** Initiates the entity setting all the values to be watched by the datawatcher. **/
+    /** Initiates the entity setting all the values to be watched by the data manager. **/
     @Override
     protected void entityInit() {
         super.entityInit();
@@ -156,7 +155,6 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
     /** Sets the central arena point for this mob to use. **/
     public void setArenaCenter(BlockPos pos) {
         super.setArenaCenter(pos);
-        this.setHome(pos.getX(), pos.getY(), pos.getZ(), 2);
     }
 	
 	
@@ -183,22 +181,17 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
             this.getLookHelper().setLookPositionWithEntity(this.getAttackTarget(), 30.0F, 30.0F);
         }
 
-        // Force Home Point:
-        if(!this.worldObj.isRemote && this.hasHome()) {
-            if(this.worldObj.isAirBlock(this.getHomePosition()))
-                this.posY = this.getHomePosition().getY();
+        // Arena Snapping:
+        if(this.hasArenaCenter()) {
+            BlockPos arenaPos = this.getArenaCenter();
+            double arenaY = this.posY;
+            if (this.worldObj.isAirBlock(arenaPos))
+                arenaY = arenaPos.getY();
+            else if (this.worldObj.isAirBlock(arenaPos.add(0, 1, 0)))
+                arenaY = arenaPos.add(0, 1, 0).getY();
 
-            double range = this.getHomeDistanceMax();
-
-            if(this.getHomePosition().getX() - this.posX > range)
-                this.posX = this.getHomePosition().getX() + range;
-            else if(this.getHomePosition().getX() - this.posX < -range)
-                this.posX = this.getHomePosition().getX() - range;
-
-            if(this.getHomePosition().getZ() - this.posZ > range)
-                this.posZ = this.getHomePosition().getZ() + range;
-            else if(this.getHomePosition().getZ() - this.posZ < -range)
-                this.posZ = this.getHomePosition().getZ() - range;
+            if (this.posX != arenaPos.getX() || this.posY != arenaY || this.posZ != arenaPos.getZ())
+                this.setPosition(arenaPos.getX(), arenaY, arenaPos.getZ());
         }
 
         // Sync Hellfire Energy:
@@ -817,7 +810,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
     // ========== Step ==========
     @Override
     protected void playStepSound(BlockPos pos, Block block) {
-        if(this.hasHome())
+        if(this.hasArenaCenter())
             return;
         super.playStepSound(pos, block);
     }

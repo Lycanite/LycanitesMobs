@@ -103,6 +103,7 @@ public class PathNavigateGroundCustom extends PathNavigateGround {
         }
     }
 
+    /** Fixes lag caused by large entities. **/
     private boolean isSafeToStandAt(int x, int y, int z, int sizeX, int sizeY, int sizeZ, Vec3d vec31, double p_179683_8_, double p_179683_10_) {
         sizeX = Math.min(sizeX, 2);
         sizeY = Math.min(sizeY, 3);

@@ -1,6 +1,5 @@
 package lycanite.lycanitesmobs.demonmobs.entity;
 
-import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupDemon;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
@@ -132,7 +131,7 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataManager.register(ANIMATION_STATES, (byte)0);
+        this.dataManager.register(ANIMATION_STATES, (byte) 0);
     }
     
     // ========== Stats ==========
@@ -308,7 +307,6 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
     // ========== Set Current Arena Node ==========
     public void setCurrentArenaNode(ArenaNode arenaNode) {
         this.arenaNodeChangeCooldown = this.arenaNodeChangeCooldownMax;
-        LycanitesMobs.printDebug("", "Asmodeus: Arena Node Change " + (arenaNode != null ? arenaNode.pos : arenaNode)); // TODO Debug
         if(this.currentArenaNode == arenaNode)
             return;
         this.currentArenaNode = arenaNode;
@@ -325,8 +323,9 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
     // ========== Arena Movement Update ==========
     public void updateArenaMovement() {
         this.noClip = false;
-        if(this.currentArenaNode == null || this.currentArenaNode.pos == null)
+        if(this.currentArenaNode == null || this.currentArenaNode.pos == null) {
             return;
+        }
 
         // Jumping:
         if(this.arenaJumpingTime > 0) {
@@ -351,22 +350,8 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
         else if (this.worldObj.isAirBlock(arenaPos.add(0, 1, 0)))
             arenaY = arenaPos.add(0, 1, 0).getY();
 
-        double range = 1D;
-
-        double arenaX = this.posX;
-        if (arenaPos.getX() - this.posX > range)
-            arenaX = arenaPos.getX() + range;
-        else if (arenaPos.getX() - this.posX < -range)
-            arenaX = arenaPos.getX() - range;
-
-        double arenaZ = this.posZ;
-        if (arenaPos.getZ() - this.posZ > range)
-            arenaZ = arenaPos.getZ() + range;
-        else if (arenaPos.getZ() - this.posZ < -range)
-            arenaZ = arenaPos.getZ() - range;
-
-        if(this.posX != arenaX || this.posY != arenaY || this.posZ != arenaZ)
-            this.setPosition(arenaX, arenaY, arenaZ);
+        if(this.posX != arenaPos.getX() || this.posY != arenaY || this.posZ != arenaPos.getZ())
+            this.setPosition(arenaPos.getX(), arenaY, arenaPos.getZ());
     }
 
 

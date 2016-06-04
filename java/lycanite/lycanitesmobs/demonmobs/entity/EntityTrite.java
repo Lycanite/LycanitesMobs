@@ -43,7 +43,7 @@ public class EntityTrite extends EntityCreatureBase implements IMob, IGroupDemon
         
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(3, new EntityAIAttackMelee(this).setRate(10));
+        this.tasks.addTask(3, new EntityAIAttackMelee(this).setRate(20));
         this.tasks.addTask(6, new EntityAIWander(this).setSpeed(1.0D).setPauseRate(30));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));

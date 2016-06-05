@@ -658,4 +658,17 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
             nbtTagCompound.setTag("AstarothIDs", astarothIDs);
         }
     }
+
+
+    // ==================================================
+    //                   Brightness
+    // ==================================================
+    public float getBrightness(float par1) {
+        return 1.0F;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public int getBrightnessForRender(float par1) {
+        return 15728880;
+    }
 }

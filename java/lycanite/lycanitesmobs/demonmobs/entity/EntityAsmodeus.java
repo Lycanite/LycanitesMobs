@@ -492,7 +492,7 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
         projectile.setThrowableHeading(d0, d1 + (double) f1, d2, velocity, 0.0F);
         
         // Launch:
-        this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+        this.playSound(projectile.getLaunchSound(), this.getSoundVolume(), 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
         this.worldObj.spawnEntityInWorld(projectile);
 
         super.rangedAttack(target, range);

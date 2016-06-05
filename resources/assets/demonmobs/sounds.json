@@ -175,6 +175,50 @@
         "category": "hostile",
         "sounds": [{"name": "demonmobs:entity/cacodemon/eat", "stream": false}]
     },
+    "entity.rahovart.say": {
+        "category": "hostile",
+        "sounds": [{"name": "demonmobs:entity/rahovart/say", "stream": false}]
+    },
+    "entity.rahovart.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "demonmobs:entity/rahovart/hurt", "stream": false}]
+    },
+    "entity.rahovart.death": {
+        "category": "hostile",
+        "sounds": [{"name": "demonmobs:entity/rahovart/death", "stream": false}]
+    },
+    "entity.rahovart.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "demonmobs:entity/rahovart/attack", "stream": false}]
+    },
+    "entity.rahovart.step": {
+        "category": "hostile",
+        "sounds": [{"name": "demonmobs:entity/rahovart/step", "stream": false}]
+    },
+    "entity.rahovart.phase": {
+        "category": "hostile",
+        "sounds": [{"name": "demonmobs:entity/rahovart/phase", "stream": false}]
+    },
+    "entity.asmodeus.say": {
+        "category": "hostile",
+        "sounds": [{"name": "demonmobs:entity/asmodeus/say", "stream": false}]
+    },
+    "entity.asmodeus.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "demonmobs:entity/asmodeus/hurt", "stream": false}]
+    },
+    "entity.asmodeus.death": {
+        "category": "hostile",
+        "sounds": [{"name": "demonmobs:entity/asmodeus/death", "stream": false}]
+    },
+    "entity.asmodeus.step": {
+        "category": "hostile",
+        "sounds": [{"name": "demonmobs:entity/asmodeus/step", "stream": false}]
+    },
+    "entity.asmodeus.phase": {
+        "category": "hostile",
+        "sounds": [{"name": "demonmobs:entity/asmodeus/phase", "stream": false}]
+    },
     "projectile.doomfireball": {
         "category": "ambient",
         "sounds": [{"name": "demonmobs:projectile/doomfireball", "stream": false}]
@@ -195,25 +239,9 @@
         "category": "ambient",
         "sounds": [{"name": "demonmobs:projectile/demonicblast", "stream": false}]
     },
-    "entity.rahovart.say": {
-        "category": "hostile",
-        "sounds": [{"name": "demonmobs:entity/rahovart/say", "stream": false}]
-    },
-    "entity.rahovart.hurt": {
-        "category": "hostile",
-        "sounds": [{"name": "demonmobs:entity/rahovart/hurt", "stream": false}]
-    },
-    "entity.rahovart.death": {
-        "category": "hostile",
-        "sounds": [{"name": "demonmobs:entity/rahovart/death", "stream": false}]
-    },
-    "entity.rahovart.attack": {
-        "category": "hostile",
-        "sounds": [{"name": "demonmobs:entity/rahovart/attack", "stream": false}]
-    },
-    "entity.rahovart.step": {
-        "category": "hostile",
-        "sounds": [{"name": "demonmobs:entity/rahovart/step", "stream": false}]
+    "projectile.devilgatling": {
+        "category": "ambient",
+        "sounds": [{"name": "demonmobs:projectile/devilgatling", "stream": false}]
     },
     "block.hellfire": {
         "category": "block",

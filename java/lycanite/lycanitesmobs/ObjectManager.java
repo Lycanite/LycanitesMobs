@@ -2,6 +2,7 @@ package lycanite.lycanitesmobs;
 
 import lycanite.lycanitesmobs.api.block.BlockSlabCustom;
 import lycanite.lycanitesmobs.api.config.ConfigBase;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
 import lycanite.lycanitesmobs.api.info.EntityListCustom;
 import lycanite.lycanitesmobs.api.info.GroupInfo;
 import lycanite.lycanitesmobs.api.info.MobInfo;
@@ -144,10 +145,16 @@ public class ObjectManager {
 		AssetManager.addSound(name + "_attack", group, "entity." + name + ".attack");
 		AssetManager.addSound(name + "_jump", group, "entity." + name + ".jump");
 		AssetManager.addSound(name + "_fly", group, "entity." + name + ".fly");
-		AssetManager.addSound(name + "_tame", group, "entity." + name + ".tame");
-		AssetManager.addSound(name + "_beg", group, "entity." + name + ".beg");
-		AssetManager.addSound(name + "_eat", group, "entity." + name + ".eat");
-		AssetManager.addSound(name + "_mount", group, "entity." + name + ".mount");
+        if(mobInfo.isSummonable() || mobInfo.isTameable())
+		    AssetManager.addSound(name + "_tame", group, "entity." + name + ".tame");
+        if(mobInfo.isSummonable() || mobInfo.isTameable())
+            AssetManager.addSound(name + "_beg", group, "entity." + name + ".beg");
+        if(mobInfo.isTameable())
+            AssetManager.addSound(name + "_eat", group, "entity." + name + ".eat");
+        if(EntityCreatureRideable.class.isAssignableFrom(mobInfo.entityClass) && (mobInfo.isSummonable() || mobInfo.isTameable()))
+            AssetManager.addSound(name + "_mount", group, "entity." + name + ".mount");
+        if(mobInfo.isBoss())
+            AssetManager.addSound(name + "_phase", group, "entity." + name + ".phase");
 
         return mobInfo;
 	}

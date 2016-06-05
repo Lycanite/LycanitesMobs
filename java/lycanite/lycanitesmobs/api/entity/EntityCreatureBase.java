@@ -1214,6 +1214,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
             name += " (Phase " + (this.getBattlePhase() + 1) + ")";
             this.bossInfo.setName(new TextComponentString(name));
         }
+        this.playPhaseSound();
     }
 
 
@@ -3612,6 +3613,14 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     protected void playAttackSound() {
      	if(!this.hasAttackSound) return;
      	this.playSound(AssetManager.getSound(this.mobInfo.name + "_attack"), this.getSoundVolume(), 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+    }
+
+    // ========== Phase ==========
+    /** Plays a sound for when this mob changes battle phase, normally used by bosses. **/
+    protected void playPhaseSound() {
+        if(AssetManager.getSound(this.mobInfo.name + "_phase") == null)
+            return;
+        this.playSound(AssetManager.getSound(this.mobInfo.name + "_phase"), this.getSoundVolume() * 2, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
     }
     
     // ========== Play Sound ==========

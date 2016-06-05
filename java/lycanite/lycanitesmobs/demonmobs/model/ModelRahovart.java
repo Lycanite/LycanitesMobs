@@ -63,9 +63,9 @@ public class ModelRahovart extends ModelCustomObj {
         // Looking:
         if(partName.equals("mouth")) {
             this.centerPartToPart("mouth", "head");
-            if(!lockHeadX)
+            if(!this.lockHeadX)
                 this.rotate((float)Math.toDegrees(lookX / (180F / (float) Math.PI)), 0, 0);
-            if(!lockHeadY)
+            if(!this.lockHeadY)
                 this.rotate(0, (float)Math.toDegrees(lookY / (180F / (float)Math.PI)), 0);
             this.uncenterPartToPart("mouth", "head");
         }

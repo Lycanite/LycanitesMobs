@@ -97,6 +97,7 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
         this.experience = 1000;
         this.hasAttackSound = false;
         this.justAttackedTime = 30;
+        this.hasJumpSound = true;
         
         this.setWidth = 20F;
         this.setHeight = 21F;
@@ -339,6 +340,8 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
                 }
                 this.leap(200, dropForce, this.currentArenaNode.pos); // Leap for XZ movement and negative height for increased weight on update.
             }
+            if(this.arenaJumpingTime == 0)
+                this.playStepSound(this.currentArenaNode.pos.down(), this.worldObj.getBlockState(this.currentArenaNode.pos.down()).getBlock());
             return;
         }
 

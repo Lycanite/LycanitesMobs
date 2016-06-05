@@ -250,21 +250,6 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 
     protected static final DataParameter<Optional<BlockPos>> ARENA = EntityDataManager.<Optional<BlockPos>>createKey(EntityCreatureBase.class, DataSerializers.OPTIONAL_BLOCK_POS);
 
-    /** The starting point for the datawatcher IDs used by this mod, lower IDs are used by vanilla code. **/
-	//private static byte watcherID = 12;
-    /** A collection of IDs used by the datawatcher (used to sync clients and the server with certain values). **/
-	/*public enum WATCHER_ID {
-		HEALTH(watcherID++), TARGET(watcherID++), ANIMATION(watcherID++), ATTACK_PHASE(watcherID++),
-		CLIMBING(watcherID++), STEALTH(watcherID++), HUNGER(watcherID++), STAMINA(watcherID++),
-		AGE(watcherID++), LOVE(watcherID++),
-		TAMED(watcherID++), OWNER(watcherID++), COLOR(watcherID++), SIZE(watcherID++), SUBSPECIES(watcherID++), LAST(watcherID++),
-        SPECIAL(watcherID++),
-		EQUIPMENT(watcherID++);
-		
-		public final byte id;
-	    private WATCHER_ID(byte value) { this.id = value; }
-	    public byte getValue() { return id; }
-	}*/
     /** Used for the TARGET watcher bitmap, bitmaps save on many packets and make network performance better! **/
 	public enum TARGET_ID {
 		ATTACK((byte)1), MASTER((byte)2), PARENT((byte)4), AVOID((byte)8), RIDER((byte)16);
@@ -3421,24 +3406,6 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     // ==================================================
     //                       Visuals
     // ==================================================
-    /* Returns true if this entity can be rendered, compensation for entity height has been added here. **
-    @SideOnly(Side.CLIENT)
-    @Override
-    public boolean isInRangeToRender3d(double x, double y, double z) {
-        double xDistance = this.posX - x;
-        double yDistance = this.posY - y;
-        double zDistance = this.posZ - z;
-
-        double heightOffset = -yDistance;
-        double heightCompensation = 0;
-        if(heightOffset > 0)
-            heightCompensation = Math.min(heightOffset, this.height);
-        yDistance -= heightCompensation;
-
-        double distance = xDistance * xDistance + yDistance * yDistance + zDistance * zDistance;
-        return this.isInRangeToRenderDist(distance);
-    }*/
-
     /** Returns this creature's main texture. Also checks for for subspecies. **/
     public ResourceLocation getTexture() {
         String textureName = this.getTextureName();
@@ -3571,7 +3538,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
             super.playStepSound(pos, block);
             return;
         }
-        this.playSound(AssetManager.getSound(this.mobInfo.name + "_step"), this.getSoundVolume() / 2, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+        this.playSound(AssetManager.getSound(this.mobInfo.name + "_step"), this.getSoundVolume(), 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
     }
 
     // ========== Fall ==========

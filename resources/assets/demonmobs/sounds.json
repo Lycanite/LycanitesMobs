@@ -215,6 +215,10 @@
         "category": "hostile",
         "sounds": [{"name": "demonmobs:entity/asmodeus/step", "stream": false}]
     },
+    "entity.asmodeus.jump": {
+        "category": "hostile",
+        "sounds": [{"name": "demonmobs:entity/asmodeus/jump", "stream": false}]
+    },
     "entity.asmodeus.phase": {
         "category": "hostile",
         "sounds": [{"name": "demonmobs:entity/asmodeus/phase", "stream": false}]

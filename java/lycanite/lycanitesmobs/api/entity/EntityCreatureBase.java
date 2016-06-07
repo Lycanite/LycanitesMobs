@@ -307,7 +307,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
             this.moveHelper = new FlightMoveHelper(this);
         else if(this.canSwim() && !this.canWalk())
             this.moveHelper = new SwimmingMoveHelper(this);
-        this.moveHelper = new WalkMoveHelper(this);
+        else
+            this.moveHelper = new WalkMoveHelper(this);
 
         // Path On Fire or In Lava:
         if(!this.canBurn()) {

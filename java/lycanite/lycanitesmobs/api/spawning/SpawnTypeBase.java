@@ -20,6 +20,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 
 import java.util.*;
@@ -776,52 +777,67 @@ public class SpawnTypeBase {
     public List<BlockPos> searchForBlockCoords(World world, BlockPos searchPos) {
         List<BlockPos> blockCoords = null;
         int range = this.getRange(world);
-        int x = searchPos.getX();
-        int y = searchPos.getY();
-        int z = searchPos.getZ();
 
-        for(int j = y - range; j <= y + range; j++) {
+        for (int y = searchPos.getY() - range; y <= searchPos.getY() + range; y++) {
             // Y Limits:
-            if(j < 0) j = 0;
-            if(j >= world.getActualHeight()) break;
+            if (y < 0) y = 0;
+            if (y >= world.getActualHeight())
+                break;
 
-            for(int i = x - range; i <= x + range; i++) {
-                for(int k = z - range; k <= z + range; k++) {
-                    BlockPos spawnPos = new BlockPos(i, j, k);
+            for (int x = searchPos.getX() - range; x <= searchPos.getX() + range; x++) {
+                for (int z = searchPos.getZ() - range; z <= searchPos.getZ() + range; z++) {
+                    BlockPos spawnPos = new BlockPos(x, y, z);
                     IBlockState blockState = world.getBlockState(spawnPos);
-                    if(blockState == null)
-                        break;
-                    if(this.materials != null && this.materials.length > 0) {
-                        if(blockCoords == null) blockCoords = new ArrayList<BlockPos>();
-                        for(Material validMaterial : this.materials) {
-                            if(blockState.getMaterial() == validMaterial && this.isValidCoord(world, spawnPos)) {
+                    if (blockState == null)
+                        continue;
+
+                    // Ignore Flowing Liquids:
+                    if (blockState.getBlock() instanceof IFluidBlock) {
+                        float filled = ((IFluidBlock) blockState.getBlock()).getFilledPercentage(world, spawnPos);
+                        if (filled != 1 && filled != -1) {
+                            continue;
+                        }
+                    }
+
+                    // Check Materials:
+                    if (this.materials != null && this.materials.length > 0) {
+                        if (blockCoords == null)
+                            blockCoords = new ArrayList<BlockPos>();
+                        for (Material validMaterial : this.materials) {
+                            if (blockState.getMaterial() == validMaterial && this.isValidCoord(world, spawnPos)) {
                                 blockCoords.add(spawnPos);
-                                break;
+                                continue;
                             }
                         }
                     }
-                    if(this.blocks != null && this.blocks.length > 0) {
-                        if(blockCoords == null) blockCoords = new ArrayList<BlockPos>();
-                        for(Block validBlock : this.blocks) {
-                            if(blockState.getBlock() == validBlock) {
+
+                    // Check Blocks:
+                    if (this.blocks != null && this.blocks.length > 0) {
+                        if (blockCoords == null)
+                            blockCoords = new ArrayList<BlockPos>();
+                        for (Block validBlock : this.blocks) {
+                            if (blockState.getBlock() == validBlock) {
                                 blockCoords.add(spawnPos);
-                                break;
+                                continue;
                             }
                         }
                     }
-                    if(this.blockStrings != null && this.blockStrings.length > 0) {
-                        if(blockCoords == null) blockCoords = new ArrayList<BlockPos>();
-                        for(String validBlockString : this.blockStrings) {
-                            if(blockState.getBlock() == ObjectManager.getBlock(validBlockString)) {
+
+                    // Check Object Manager Blocks:
+                    if (this.blockStrings != null && this.blockStrings.length > 0) {
+                        if (blockCoords == null)
+                            blockCoords = new ArrayList<BlockPos>();
+                        for (String validBlockString : this.blockStrings) {
+                            if (blockState.getBlock() == ObjectManager.getBlock(validBlockString)) {
                                 blockCoords.add(spawnPos);
-                                break;
+                                continue;
                             }
                         }
                     }
                 }
             }
         }
-        
+
         return blockCoords;
     }
 

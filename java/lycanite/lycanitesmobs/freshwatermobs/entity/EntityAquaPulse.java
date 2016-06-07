@@ -4,6 +4,7 @@ import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.freshwatermobs.FreshwaterMobs;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -94,8 +95,8 @@ public class EntityAquaPulse extends EntityProjectileBase {
     //========== Place Block ==========
     @Override
     public void placeBlock(World world, BlockPos pos) {
-        IBlockState placedBlockBig = Blocks.FLOWING_WATER.getStateFromMeta(12);
-        IBlockState placedBlock = Blocks.FLOWING_WATER.getStateFromMeta(11);
+        IBlockState placedBlockBig = Blocks.FLOWING_WATER.getDefaultState().withProperty(BlockLiquid.LEVEL, 4);
+        IBlockState placedBlock = Blocks.FLOWING_WATER.getDefaultState().withProperty(BlockLiquid.LEVEL, 5);
         if(this.canDestroyBlockSub(pos))
             world.setBlockState(pos, placedBlockBig, 3);
         if(this.canDestroyBlockSub(new BlockPos(pos.getX() + 1, pos.getY(), pos.getZ())))

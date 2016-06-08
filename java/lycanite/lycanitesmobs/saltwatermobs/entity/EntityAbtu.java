@@ -116,15 +116,13 @@ public class EntityAbtu extends EntityCreatureTameable implements IMob, IGroupPr
     
     // ========== Spawn Minions ==========
 	public void allyUpdate() {
-		if(this.worldObj.isRemote)
+		if(this.worldObj.isRemote || this.isChild())
 			return;
 		
 		// Spawn Minions:
 		if(this.swarmLimit > 0 && this.nearbyCreatureCount(this.getClass(), 64D) < this.swarmLimit) {
 			float random = this.rand.nextFloat();
-			float spawnChance = 0.1F;
-			if(!this.isChild())
-				spawnChance = 0.5F;
+			float spawnChance = 0.25F;
 			if(random <= spawnChance)
 				this.spawnAlly(this.posX - 2 + (random * 4), this.posY, this.posZ - 2 + (random * 4));
 		}

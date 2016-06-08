@@ -9,9 +9,9 @@ import net.minecraft.util.math.MathHelper;
 public class SwimmingMoveHelper extends EntityMoveHelper {
     private EntityCreatureBase parentEntity;
 
-    public SwimmingMoveHelper(EntityCreatureBase entityCreatureBase) {
-        super(entityCreatureBase);
-        this.parentEntity = entityCreatureBase;
+    public SwimmingMoveHelper(EntityCreatureBase parentEntity) {
+        super(parentEntity);
+        this.parentEntity = parentEntity;
     }
 
     @Override
@@ -44,8 +44,7 @@ public class SwimmingMoveHelper extends EntityMoveHelper {
             double d11 = entitylookhelper.getLookPosY();
             double d12 = entitylookhelper.getLookPosZ();
 
-            if (!entitylookhelper.getIsLooking())
-            {
+            if (!entitylookhelper.getIsLooking()) {
                 d10 = d7;
                 d11 = d8;
                 d12 = d9;

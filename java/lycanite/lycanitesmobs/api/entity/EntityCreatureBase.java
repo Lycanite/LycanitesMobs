@@ -1668,7 +1668,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 
     // ========== Move Swimming with Heading ==========
     public void moveSwimmingWithHeading(float strafe, float forward) {
-        this.moveFlying(strafe, forward, 0.1F);
+        this.moveRelative(strafe, forward, 0.1F);
         this.moveEntity(this.motionX, this.motionY, this.motionZ);
         this.motionX *= 0.8999999761581421D;
         this.motionY *= 0.8999999761581421D;

@@ -48,6 +48,7 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.*;
@@ -191,7 +192,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     /** Movement AI for mobs that are leashed. **/
     private EntityAIBase leashMoveTowardsRestrictionAI = new EntityAIMoveRestriction(this);
     /** The flight navigator class, a makeshift class that handles flight and free swimming movement, replaces the pathfinder. **/
-    public DirectNavigator flightNavigator;
+    public DirectNavigator directNavigator;
     /** A path navigator for swimming, used typically by flying mobs for when they land in the water as swimming-only mobs use a swimming navigator by default. **/
     public PathNavigate navigatorSwimming;
     /** A move helper for swimming, used typically by flying mobs for when they land in the water as swimming-only mobs use a swimming move helper by default. **/
@@ -390,7 +391,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         this.mobInfo = MobInfo.mobClassToInfo.get(this.getClass());
         this.group = mobInfo.group;
         this.extraMobBehaviour = new ExtraMobBehaviour(this);
-        this.flightNavigator = new DirectNavigator(this);
+        this.directNavigator = new DirectNavigator(this);
 
         super.applyEntityAttributes();
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
@@ -1290,7 +1291,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     @Override
     protected void updateAITasks() {
 		if(this.useDirectNavigator())
-            flightNavigator.updateFlight();
+            directNavigator.updateFlight();
         super.updateAITasks();
     }
 
@@ -1621,7 +1622,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
                 super.moveEntityWithHeading(moveStrafe, moveForward);
         }
     	else
-            this.flightNavigator.flightMovement(moveStrafe, moveForward);
+            this.directNavigator.flightMovement(moveStrafe, moveForward);
     }
 
     // ========== Move Flying with Heading ==========
@@ -1720,7 +1721,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     	if(!this.useDirectNavigator() && this.getNavigator() != null)
         	this.getNavigator().clearPathEntity();
         else
-        	this.flightNavigator.clearTargetPosition(1.0D);
+        	this.directNavigator.clearTargetPosition(1.0D);
     }
     
     // ========== Leash ==========
@@ -1780,7 +1781,7 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     	if(!this.useDirectNavigator())
         	return this.getNavigator().getPath() != null;
         else
-        	return !this.flightNavigator.atTargetPosition();
+        	return !this.directNavigator.atTargetPosition();
     }
 
     // ========== Can Be Pushed ==========
@@ -2446,6 +2447,15 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         BlockPos pos = new BlockPos(x + (distance * xAmount), y, z + (distance * zAmount));
         return pos;
     }
+
+    /** Returns the BlockPos in front or behind the provided XYZ coords with the given distance and angle (in degrees), use a negative distance for behind. **/
+    public Vec3d getFacingPositionDouble(double x, double y, double z, double distance, double angle) {
+        angle = Math.toRadians(angle);
+        double xAmount = -Math.sin(angle);
+        double zAmount = Math.cos(angle);
+        Vec3d pos = new Vec3d(x + (distance * xAmount), y, z + (distance * zAmount));
+        return pos;
+    }
     
     
     // ==================================================
@@ -2507,6 +2517,12 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         if(!this.canFly())
             return 20;
         return 0;
+    }
+    /** Returns how high above attack targets this mob should fly when chasing. **/
+    public double getFlightOffset() {
+        if(!this.canFly())
+            return 0;
+        return 0.25D;
     }
     /** Returns true if this mob is currently flying. **/
     public boolean isCurrentlyFlying() { return this.canFly(); }

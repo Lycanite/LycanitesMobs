@@ -51,6 +51,12 @@ achievement.shade.learn=Darkness Incarnate!
 achievement.shade.learn.desc=Add a Shade to your Beastiary.
 achievement.shade.tame=Horrific Howl!
 achievement.shade.tame.desc=Tame a Shade.
+entity.shadowmobs.darkling.name=Darkling
+entity.shadowmobs.darkling.description=Foul little shadow insects that like to latch onto their victim and slowly drain their blood, feasting to regain any lost health! You best swat these pests off fast!
+achievement.darkling.kill=Get Off Me!
+achievement.darkling.kill.desc=Slay a Darkling.
+achievement.darkling.learn=Worse Than Lice!
+achievement.darkling.learn.desc=Add a Darkling to your Beastiary.
 #
 # Items
 item.shadowspawn.name=Spawn

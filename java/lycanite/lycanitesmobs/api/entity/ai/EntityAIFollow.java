@@ -126,10 +126,10 @@ public class EntityAIFollow extends EntityAIBase {
         	}
         	else {
         		if(this.behindDistance == 0 || !(target instanceof EntityCreatureBase))
-        			this.host.flightNavigator.setTargetPosition(new BlockPos((int)target.posX, (int)target.posY, (int)target.posZ), this.speed);
+        			this.host.directNavigator.setTargetPosition(new BlockPos((int)target.posX, (int)target.posY, (int)target.posZ), this.speed);
         		else {
                     BlockPos pos = ((EntityCreatureBase)target).getFacingPosition(-this.behindDistance);
-        			this.host.flightNavigator.setTargetPosition(pos, this.speed);
+        			this.host.directNavigator.setTargetPosition(pos, this.speed);
         		}
         	}
         }

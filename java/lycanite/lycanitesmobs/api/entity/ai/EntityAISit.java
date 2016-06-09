@@ -78,7 +78,7 @@ public class EntityAISit extends EntityAIBase {
 	    	if(!host.useDirectNavigator())
 	    		this.host.getNavigator().tryMoveToXYZ(homePos.getX(), homePos.getY(), homePos.getZ(), this.speed);
 	    	else
-	    		host.flightNavigator.setTargetPosition(new BlockPos((int)homePos.getX(), (int)homePos.getY(), (int)homePos.getZ()), speed);
+	    		host.directNavigator.setTargetPosition(new BlockPos((int)homePos.getX(), (int)homePos.getY(), (int)homePos.getZ()), speed);
         }
     }
 }

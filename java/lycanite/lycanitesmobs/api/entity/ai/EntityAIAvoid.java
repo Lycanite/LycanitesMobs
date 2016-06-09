@@ -96,7 +96,7 @@ public class EntityAIAvoid extends EntityAIBase {
     public boolean continueExecuting() {
         if(!this.host.useDirectNavigator() && this.host.getNavigator().noPath())
         	return false;
-		if(this.host.useDirectNavigator() && this.host.flightNavigator.atTargetPosition())
+		if(this.host.useDirectNavigator() && this.host.directNavigator.atTargetPosition())
 			return false;
 
         /*if(this.host.getDistanceSqToEntity(this.avoidTarget) >= this.farDistance)
@@ -112,7 +112,7 @@ public class EntityAIAvoid extends EntityAIBase {
     	if(!this.host.useDirectNavigator())
     		this.host.getNavigator().setPath(this.pathEntity, this.farSpeed);
     	else
-    		this.host.flightNavigator.setTargetPosition(this.avoidTarget, this.farSpeed);
+    		this.host.directNavigator.setTargetPosition(this.avoidTarget, this.farSpeed);
     }
 	
     
@@ -132,11 +132,11 @@ public class EntityAIAvoid extends EntityAIBase {
         	if(!this.host.useDirectNavigator())
         		this.host.getNavigator().setSpeed(this.nearSpeed);
         	else
-        		this.host.flightNavigator.speedModifier = this.nearSpeed;
+        		this.host.directNavigator.speedModifier = this.nearSpeed;
         else
         	if(!this.host.useDirectNavigator())
         		this.host.getNavigator().setSpeed(this.farSpeed);
         	else
-        		this.host.flightNavigator.speedModifier = this.farSpeed;
+        		this.host.directNavigator.speedModifier = this.farSpeed;
     }
 }

@@ -47,7 +47,6 @@ public class ModelGorgomite extends ModelCustomObj {
     // ==================================================
    	//                 Animate Part
    	// ==================================================
-    float maxLeg = 0F;
     @Override
     public void animatePart(String partName, EntityLiving entity, float time, float distance, float loop, float lookY, float lookX, float scale) {
     	super.animatePart(partName, entity, time, distance, loop, lookY, lookX, scale);
@@ -65,18 +64,12 @@ public class ModelGorgomite extends ModelCustomObj {
     	
     	// Head Rotation:
     	if(partName.equals("leftmouth") || partName.equals("rightmouth")) {
-    		if(partName.equals("leftmouth"))
-    			this.centerPartToPart("leftmouth", "head");
-    		if(partName.equals("rightmouth"))
-    			this.centerPartToPart("rightmouth", "head");
-    		if(!lockHeadX)
+            this.centerPartToPart(partName, "head");
+    		if(!this.lockHeadX)
     			rotX += Math.toDegrees(lookX / (180F / (float)Math.PI));
-    		if(!lockHeadY)
+    		if(!this.lockHeadY)
     			rotY += Math.toDegrees(lookY / (180F / (float)Math.PI));
-    		if(partName.equals("leftmouth"))
-    			this.uncenterPartToPart("leftmouth", "head");
-    		if(partName.equals("rightmouth"))
-    			this.uncenterPartToPart("rightmouth", "head");
+            this.uncenterPartToPart(partName, "head");
     	}
     	
     	// Idle:

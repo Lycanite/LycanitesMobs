@@ -166,7 +166,7 @@ public class EntityAIStayByWater extends EntityAIBase {
 	    		this.host.getNavigator().tryMoveToXYZ(this.waterPos.getX() + 0.5D, this.waterPos.getY(), this.waterPos.getZ() + 0.5D, this.speed);
 	    	}
 	    	else
-	    		host.flightNavigator.setTargetPosition(this.waterPos, this.speed);
+	    		host.directNavigator.setTargetPosition(this.waterPos, this.speed);
     	}
     }
 	

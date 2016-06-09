@@ -94,7 +94,7 @@ public class EntityAIPlaceBlock extends EntityAIBase {
     	if(!host.useDirectNavigator())
     		this.host.getNavigator().tryMoveToXYZ(this.pos.getX(), this.pos.getY(), this.pos.getZ(), this.speed);
     	else
-    		host.flightNavigator.setTargetPosition(this.pos, this.speed);
+    		host.directNavigator.setTargetPosition(this.pos, this.speed);
     }
 	
     
@@ -103,7 +103,7 @@ public class EntityAIPlaceBlock extends EntityAIBase {
  	// ==================================================
     public void resetTask() {
         this.host.getNavigator().clearPathEntity();
-        this.host.flightNavigator.clearTargetPosition(1.0D);
+        this.host.directNavigator.clearTargetPosition(1.0D);
         this.block = null;
     }
 	
@@ -118,7 +118,7 @@ public class EntityAIPlaceBlock extends EntityAIBase {
     		if(!host.useDirectNavigator())
         		this.host.getNavigator().tryMoveToXYZ(this.pos.getX(), this.pos.getY(), this.pos.getZ(), this.speed);
         	else
-        		host.flightNavigator.setTargetPosition(this.pos, this.speed);
+        		host.directNavigator.setTargetPosition(this.pos, this.speed);
     	}
     	
         this.host.getLookHelper().setLookPosition(this.pos.getX(), this.pos.getY(), this.pos.getZ(), 30.0F, 30.0F);

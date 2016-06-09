@@ -143,7 +143,7 @@ public class EntityAIGetItem extends EntityAIBase {
         	if(!this.host.useDirectNavigator())
         		this.host.getNavigator().tryMoveToEntityLiving(this.target, this.speed);
         	else
-        		this.host.flightNavigator.setTargetPosition(new BlockPos((int)this.target.posX, (int)this.target.posY, (int)this.target.posZ), this.speed);
+        		this.host.directNavigator.setTargetPosition(new BlockPos((int)this.target.posX, (int)this.target.posY, (int)this.target.posZ), this.speed);
         }
     }
 }

@@ -163,6 +163,26 @@
         "category": "hostile",
         "sounds": [{"name": "shadowmobs:entity/shade/eat", "stream": false}]
     },
+    "entity.darkling.say": {
+        "category": "hostile",
+        "sounds": [{"name": "shadowmobs:entity/darkling/say", "stream": false}]
+    },
+    "entity.darkling.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "shadowmobs:entity/darkling/hurt", "stream": false}]
+    },
+    "entity.darkling.death": {
+        "category": "hostile",
+        "sounds": [{"name": "shadowmobs:entity/darkling/death", "stream": false}]
+    },
+    "entity.darkling.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "shadowmobs:entity/darkling/attack", "stream": false}]
+    },
+    "entity.darkling.step": {
+        "category": "hostile",
+        "sounds": [{"name": "shadowmobs:entity/darkling/step", "stream": false}]
+    },
     "projectile.spectralbolt": {
         "category": "ambient",
         "sounds": [{"name": "shadowmobs:projectile/spectralbolt", "stream": false}]

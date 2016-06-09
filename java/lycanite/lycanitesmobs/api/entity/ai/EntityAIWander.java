@@ -71,9 +71,9 @@ public class EntityAIWander extends EntityAIBase {
     	if(!this.host.useDirectNavigator())
     		return !this.host.getNavigator().noPath();
     	else {
-            return !this.host.flightNavigator.atTargetPosition() && this.host.flightNavigator.isTargetPositionValid();
+            return !this.host.directNavigator.atTargetPosition() && this.host.directNavigator.isTargetPositionValid();
         }
-        	//return this.host.getRNG().nextInt(100) != 0 && !this.host.flightNavigator.atTargetPosition() && this.host.flightNavigator.isTargetPositionValid();
+        	//return this.host.getRNG().nextInt(100) != 0 && !this.host.directNavigator.atTargetPosition() && this.host.directNavigator.isTargetPositionValid();
     }
     
     
@@ -85,6 +85,6 @@ public class EntityAIWander extends EntityAIBase {
             this.host.getNavigator().tryMoveToXYZ(this.xPosition, this.yPosition, this.zPosition, this.speed);
         }
     	else
-    		host.flightNavigator.setTargetPosition(new BlockPos((int)this.xPosition, (int)this.yPosition, (int)this.zPosition), this.speed);
+    		host.directNavigator.setTargetPosition(new BlockPos((int)this.xPosition, (int)this.yPosition, (int)this.zPosition), this.speed);
     }
 }

@@ -87,7 +87,7 @@ public class EntityAIMate extends EntityAIBase {
         if(!this.host.useDirectNavigator())
         	this.host.getNavigator().tryMoveToEntityLiving(this.partner, this.speed);
         else
-        	this.host.flightNavigator.setTargetPosition(new BlockPos((int)this.partner.posX, (int)this.partner.posY, (int)this.partner.posZ), speed);
+        	this.host.directNavigator.setTargetPosition(new BlockPos((int)this.partner.posX, (int)this.partner.posY, (int)this.partner.posZ), speed);
         if(this.host.getDistanceSqToEntity(this.partner) < this.mateDistance)
 	        ++this.mateTime;
 	        if(this.mateTime >= mateTimeMax)

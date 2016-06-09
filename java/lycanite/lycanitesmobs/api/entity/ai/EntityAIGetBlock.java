@@ -184,7 +184,7 @@ public class EntityAIGetBlock extends EntityAIBase {
         	if(!this.host.useDirectNavigator())
         		this.host.getNavigator().tryMoveToXYZ(this.target.getX(), this.target.getY(), this.target.getZ(), this.speed);
         	else
-        		this.host.flightNavigator.setTargetPosition(this.target, this.speed);
+        		this.host.directNavigator.setTargetPosition(this.target, this.speed);
         }
     }
 }

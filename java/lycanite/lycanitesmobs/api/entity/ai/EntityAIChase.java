@@ -73,7 +73,7 @@ public class EntityAIChase extends EntityAIBase {
     	if(!this.host.useDirectNavigator())
     		this.host.getNavigator().tryMoveToXYZ(this.movePos.getX(), this.movePos.getY(), this.movePos.getZ(), this.speed);
     	else
-    		this.host.flightNavigator.setTargetPosition(this.movePos, speed);
+    		this.host.directNavigator.setTargetPosition(this.movePos, speed);
     }
 	
     
@@ -82,6 +82,6 @@ public class EntityAIChase extends EntityAIBase {
  	// ==================================================
     public void resetTask() {
         this.target = null;
-        this.host.flightNavigator.clearTargetPosition(1.0D);
+        this.host.directNavigator.clearTargetPosition(1.0D);
     }
 }

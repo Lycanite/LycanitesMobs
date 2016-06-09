@@ -152,7 +152,7 @@ public class EntityAIAttackRanged extends EntityAIBase {
     	if(!this.longMemory)
 	    	if(!this.host.useDirectNavigator() && !this.host.getNavigator().noPath())
                 return this.shouldExecute();
-	    	else if(this.host.useDirectNavigator() && this.host.flightNavigator.targetPosition == null)
+	    	else if(this.host.useDirectNavigator() && this.host.directNavigator.targetPosition == null)
                 return this.shouldExecute();
 
     	// Should Execute:
@@ -199,7 +199,7 @@ public class EntityAIAttackRanged extends EntityAIBase {
             if(!this.host.useDirectNavigator())
                 this.host.getNavigator().clearPathEntity();
             else
-                this.host.flightNavigator.clearTargetPosition(1.0D);
+                this.host.directNavigator.clearTargetPosition(1.0D);
         }
         else {
             BlockPos targetPosition = this.attackTarget.getPosition();
@@ -208,7 +208,7 @@ public class EntityAIAttackRanged extends EntityAIBase {
             if(!this.host.useDirectNavigator())
                 this.host.getNavigator().tryMoveToXYZ(targetPosition.getX(), targetPosition.getY(), targetPosition.getZ(), this.speed);
             else
-                this.host.flightNavigator.setTargetPosition(targetPosition, this.speed);
+                this.host.directNavigator.setTargetPosition(targetPosition, this.speed);
         }
 
         this.host.getLookHelper().setLookPositionWithEntity(this.attackTarget, 30.0F, 30.0F);

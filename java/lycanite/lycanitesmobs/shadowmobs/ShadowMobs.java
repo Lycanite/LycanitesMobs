@@ -169,6 +169,14 @@ public class ShadowMobs {
                 .setSpawnWeight(2).setAreaLimit(2).setGroupLimits(1, 3).setLightDark(false, true);
         ObjectManager.addMob(newMob);
 
+        newMob = new MobInfo(group, "darkling", EntityDarkling.class, 0x10191a, 0x9dfbcd)
+                .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1)
+                .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("russet", "uncommon"));
+        newMob.spawnInfo.setSpawnTypes("UNDERGROUND, DARKNESS")
+                .setBiomes("ALL").setDimensions("-1").setDimensionWhitelist(false)
+                .setSpawnWeight(8).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
+        ObjectManager.addMob(newMob);
+
 		
 		// ========== Create Projectiles ==========
 		ObjectManager.addProjectile("spectralbolt", EntitySpectralbolt.class, ObjectManager.getItem("spectralboltcharge"), new DispenserBehaviorSpectralbolt());

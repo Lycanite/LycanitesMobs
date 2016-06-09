@@ -50,9 +50,9 @@ public class EntityTrite extends EntityCreatureBase implements IMob, IGroupDemon
         this.targetTasks.addTask(0, new EntityAITargetRevenge(this));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
-        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityChicken.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
         if(MobInfo.predatorsAttackAnimals) {
+            this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityChicken.class));
             this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupAnimal.class).setPackHuntingScale(3, 1));
             this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(EntityAnimal.class).setPackHuntingScale(3, 1));
         }
@@ -96,7 +96,7 @@ public class EntityTrite extends EntityCreatureBase implements IMob, IGroupDemon
     // ==================================================
    	//                      Attacks
    	// ==================================================
-    // ========== Set Attack Target ==========
+    // ========== Can Attack Class ==========
     @Override
     public boolean canAttackClass(Class targetClass) {
     	if(targetClass.isAssignableFrom(EntityCacodemon.class) || targetClass.isAssignableFrom(EntityAstaroth.class) || targetClass.isAssignableFrom(EntityAsmodeus.class))

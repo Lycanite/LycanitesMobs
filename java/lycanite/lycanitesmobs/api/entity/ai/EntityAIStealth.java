@@ -58,7 +58,7 @@ public class EntityAIStealth extends EntityAIBase {
 		if(!this.stealthMove) {
 			if(!this.host.useDirectNavigator() && !this.host.getNavigator().noPath())
 				this.unstealth = true;
-			if(this.host.useDirectNavigator() && !this.host.flightNavigator.atTargetPosition())
+			if(this.host.useDirectNavigator() && !this.host.directNavigator.atTargetPosition())
 				this.unstealth = true;
 		}
 		
@@ -81,7 +81,7 @@ public class EntityAIStealth extends EntityAIBase {
 		if(!this.stealthMove) {
 			if(!this.host.useDirectNavigator() && !this.host.getNavigator().noPath())
 				this.unstealth = true;
-			if(this.host.useDirectNavigator() && !this.host.flightNavigator.atTargetPosition())
+			if(this.host.useDirectNavigator() && !this.host.directNavigator.atTargetPosition())
 				this.unstealth = true;
 		}
 		

@@ -108,7 +108,7 @@ public class EntityLacedon extends EntityCreatureTameable implements IMob {
     @Override
     public float getAISpeedModifier() {
     	if(this.isInWater()) // Checks specifically just for water.
-    		return 2.0F;
+    		return 8.0F;
     	else if(this.waterContact()) // Checks for water, rain, etc.
     		return 1.5F;
     	return super.getAISpeedModifier();

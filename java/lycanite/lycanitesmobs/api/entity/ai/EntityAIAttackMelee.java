@@ -98,14 +98,18 @@ public class EntityAIAttackMelee extends EntityAIBase {
         	return false;
         if(this.targetClass != null && !this.targetClass.isAssignableFrom(attackTarget.getClass()))
             return false;
+
         if(--this.repathTime <= 0) {
+            // Set Path:
         	if(!this.host.useDirectNavigator()) {
-	            this.pathToTarget = this.host.getNavigator().getPathToEntityLiving(attackTarget);
+                this.pathToTarget = this.host.getNavigator().getPathToXYZ(attackTarget.posX, attackTarget.posY + this.host.getFlightOffset(), attackTarget.posZ);
 	            this.repathTime = 4 + this.host.getRNG().nextInt(7);
 	            return this.pathToTarget != null;
         	}
+
+            // Set Direct Target:
         	else
-        		return this.host.flightNavigator.setTargetPosition(new BlockPos((int)attackTarget.posX, (int)attackTarget.posY, (int)attackTarget.posZ), speed);
+        		return this.host.directNavigator.setTargetPosition(new BlockPos((int)attackTarget.posX, (int)attackTarget.posY + this.host.getFlightOffset(), (int)attackTarget.posZ), speed);
         }
         return true;
     }
@@ -117,8 +121,8 @@ public class EntityAIAttackMelee extends EntityAIBase {
     public boolean continueExecuting() {
     	if(!this.enabled)
     		return false;
-        attackTarget = this.host.getAttackTarget();
-        if(attackTarget == null)
+        this.attackTarget = this.host.getAttackTarget();
+        if(this.attackTarget == null)
         	return false;
         if(!this.host.isEntityAlive() || !attackTarget.isEntityAlive())
         	return false;
@@ -127,7 +131,7 @@ public class EntityAIAttackMelee extends EntityAIBase {
         if(!this.longMemory)
         	if(!this.host.useDirectNavigator() && this.host.getNavigator().noPath())
         		return false;
-        	else if(this.host.useDirectNavigator() && (this.host.flightNavigator.atTargetPosition() || !this.host.flightNavigator.isTargetPositionValid()))
+        	else if(this.host.useDirectNavigator() && (this.host.directNavigator.atTargetPosition() || !this.host.directNavigator.isTargetPositionValid()))
         		return false;
         return this.host.positionNearHome(MathHelper.floor_double(attackTarget.posX), MathHelper.floor_double(attackTarget.posY), MathHelper.floor_double(attackTarget.posZ));
     }
@@ -140,7 +144,7 @@ public class EntityAIAttackMelee extends EntityAIBase {
     	if(!this.host.useDirectNavigator())
     		this.host.getNavigator().setPath(this.pathToTarget, this.speed);
     	else if(attackTarget != null)
-    		this.host.flightNavigator.setTargetPosition(new BlockPos((int)attackTarget.posX, (int)(attackTarget.posY+1.0), (int)attackTarget.posZ), speed);
+    		this.host.directNavigator.setTargetPosition(new BlockPos((int)attackTarget.posX, (int)(attackTarget.posY+1.0), (int)attackTarget.posZ), speed);
         this.repathTime = 0;
     }
 	
@@ -150,7 +154,7 @@ public class EntityAIAttackMelee extends EntityAIBase {
  	// ==================================================
     public void resetTask() {
         this.host.getNavigator().clearPathEntity();
-        this.host.flightNavigator.clearTargetPosition(1.0D);
+        this.host.directNavigator.clearTargetPosition(1.0D);
         this.attackTarget = null;
     }
 	
@@ -162,16 +166,12 @@ public class EntityAIAttackMelee extends EntityAIBase {
         EntityLivingBase attackTarget = this.host.getAttackTarget();
         this.host.getLookHelper().setLookPositionWithEntity(attackTarget, 30.0F, 30.0F);
 
-        double flightHeight = 0;
-        if(this.host.useDirectNavigator())
-        	flightHeight = 0.25D;
-
         if((this.longMemory || this.host.getEntitySenses().canSee(attackTarget)) && --this.repathTime <= 0) {
 	        this.repathTime = failedPathFindingPenalty + 4 + this.host.getRNG().nextInt(7);
 	        
-	        // Walk to Target:
+	        // Path To Target:
         	if(!this.host.useDirectNavigator()) {
-        		this.host.getNavigator().tryMoveToEntityLiving(attackTarget, this.speed);
+        		this.host.getNavigator().tryMoveToXYZ(attackTarget.posX, attackTarget.posY + this.host.getFlightOffset(), attackTarget.posZ, this.speed);
 	            if(this.host.getNavigator().getPath() != null) {
 	                PathPoint finalPathPoint = this.host.getNavigator().getPath().getFinalPathPoint();
 	                if(finalPathPoint != null && attackTarget.getDistance(finalPathPoint.xCoord, finalPathPoint.yCoord, finalPathPoint.zCoord) < 1)
@@ -183,15 +183,15 @@ public class EntityAIAttackMelee extends EntityAIBase {
 	                failedPathFindingPenalty += failedPathFindingPenaltyMax;
         	}
         	
-        	// Fly to Target:
+        	// Move Directly To Navigator:
         	else {
-        		this.host.flightNavigator.setTargetPosition(new BlockPos((int)attackTarget.posX, (int)(attackTarget.getEntityBoundingBox().minY + flightHeight), (int)attackTarget.posZ), speed);
+        		this.host.directNavigator.setTargetPosition(new BlockPos((int) attackTarget.posX, (int) (attackTarget.posY + this.host.getFlightOffset()), (int) attackTarget.posZ), speed);
         	}
         }
         
         // Damage Target:
         this.attackTime = Math.max(this.attackTime - 1, 0);
-        if(this.host.getDistance(attackTarget.posX, attackTarget.getEntityBoundingBox().minY + flightHeight, attackTarget.posZ) <= this.attackRange + attackTarget.width) {
+        if(this.host.getDistance(attackTarget.posX, attackTarget.posY + this.host.getFlightOffset(), attackTarget.posZ) <= this.attackRange + attackTarget.width) {
             if(this.attackTime <= 0) {
                 this.attackTime = Math.round((float)this.attackTimeMax + ((float)this.attackTimeMax - ((float)this.attackTimeMax * (float)this.host.getHasteMultiplier())));
                 if(this.host.getHeldItemMainhand() != null)

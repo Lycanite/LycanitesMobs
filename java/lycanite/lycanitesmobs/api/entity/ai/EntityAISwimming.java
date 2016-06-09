@@ -53,8 +53,8 @@ public class EntityAISwimming extends EntityAIBase {
                     targetY = this.host.getNavigator().getPath().getPosition(this.host).yCoord;
 	    	}
 	    	else {
-	    		if(!this.host.flightNavigator.atTargetPosition()) {
-                    targetY = this.host.flightNavigator.targetPosition.getY();
+	    		if(!this.host.directNavigator.atTargetPosition()) {
+                    targetY = this.host.directNavigator.targetPosition.getY();
                 }
 	    	}
 	    	if(this.host.posY < targetY && !this.host.canSwim())

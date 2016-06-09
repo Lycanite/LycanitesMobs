@@ -46,8 +46,8 @@ public class FlightMoveHelper extends EntityMoveHelper {
         if (this.entityCreature.getAttackTarget() != null) {
             EntityLivingBase entitylivingbase = this.entityCreature.getAttackTarget();
             double distanceX = entitylivingbase.posX - this.entityCreature.posX;
-            double distanceY = entitylivingbase.posZ - this.entityCreature.posZ;
-            this.entityCreature.renderYawOffset = this.entityCreature.rotationYaw = -((float)MathHelper.atan2(distanceX, distanceY)) * (180F / (float)Math.PI);
+            double distanceZ = entitylivingbase.posZ - this.entityCreature.posZ;
+            this.entityCreature.renderYawOffset = this.entityCreature.rotationYaw = -((float)MathHelper.atan2(distanceX, distanceZ)) * (180F / (float)Math.PI);
         }
         else if(this.action == EntityMoveHelper.Action.MOVE_TO) {
             this.entityCreature.renderYawOffset = this.entityCreature.rotationYaw = -((float)MathHelper.atan2(this.entityCreature.motionX, this.entityCreature.motionZ)) * (180F / (float)Math.PI);

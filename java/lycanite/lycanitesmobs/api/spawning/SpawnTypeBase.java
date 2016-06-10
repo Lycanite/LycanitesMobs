@@ -810,7 +810,7 @@ public class SpawnTypeBase {
                             blockCoords = new ArrayList<BlockPos>();
                         for (Material validMaterial : this.materials) {
                             if (blockState.getMaterial() == validMaterial && this.isValidCoord(world, spawnPos)) {
-                                if(!this.blockSurfaceOnly || (world.isAirBlock(spawnPos.add(0, 1, 0)))) {
+                                if(!this.blockSurfaceOnly || (world.isAirBlock(spawnPos.up()))) {
                                     blockCoords.add(spawnPos);
                                 }
                                 continue;
@@ -824,7 +824,9 @@ public class SpawnTypeBase {
                             blockCoords = new ArrayList<BlockPos>();
                         for (Block validBlock : this.blocks) {
                             if (blockState.getBlock() == validBlock) {
-                                blockCoords.add(spawnPos);
+                                if(!this.blockSurfaceOnly || (world.isAirBlock(spawnPos.up()))) {
+                                    blockCoords.add(spawnPos);
+                                }
                                 continue;
                             }
                         }
@@ -836,7 +838,9 @@ public class SpawnTypeBase {
                             blockCoords = new ArrayList<BlockPos>();
                         for (String validBlockString : this.blockStrings) {
                             if (blockState.getBlock() == ObjectManager.getBlock(validBlockString)) {
-                                blockCoords.add(spawnPos);
+                                if(!this.blockSurfaceOnly || (world.isAirBlock(spawnPos.up()))) {
+                                    blockCoords.add(spawnPos);
+                                }
                                 continue;
                             }
                         }

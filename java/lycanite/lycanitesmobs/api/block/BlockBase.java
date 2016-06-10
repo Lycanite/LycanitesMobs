@@ -172,15 +172,15 @@ public class BlockBase extends Block {
     // ========== Tick Update ==========
     @Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
-		if(world.isRemote)
-			return;
-		
-		// Remove On Tick:
-		if(this.removeOnTick)
+        if (world.isRemote)
+            return;
+
+        // Remove On Tick:
+        if (this.removeOnTick && this.canRemove(world, pos, state, rand))
             world.setBlockToAir(pos);
-		
-		// Looping Tick:
-		else if(this.tickRate > 0 && this.loopTicks)
+
+        // Looping Tick:
+        else if (this.tickRate > 0 && this.loopTicks)
             world.scheduleBlockUpdate(pos, this, this.tickRate(world), 1);
     }
     
@@ -188,6 +188,12 @@ public class BlockBase extends Block {
     @Override
     public boolean getTickRandomly() {
         return this.tickRate > 0;
+    }
+
+    // ========== Can Remove ==========
+    /** Returns true if the block should be removed naturally (remove on tick). **/
+    public boolean canRemove(World world, BlockPos pos, IBlockState state, Random rand) {
+        return true;
     }
     
     

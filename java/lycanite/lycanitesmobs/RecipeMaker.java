@@ -89,7 +89,7 @@ public class RecipeMaker {
     //               Create Stone Recipes
     // ==================================================
     /** Creates a set of crafting recipes for stone blocks such as tiles, bricks, pillars, etc. This is automatically called in Post Init on all blocks added via addStoneBlocks().
-     * @param stoneName The name of the stone block, such as "demon" or "shadow", etc. (stone and crystal are appended).
+     * @param stoneName The name of the stone block, such as "demon" or "shadow", etc. Stone and crystal are appended.
      * @param creationItem The block, item or item stack used to create this stone block from vanilla stone, such as how Nether Warts are used for demonstone (can be null for none).
      * @param creationBlock The block (can be item or item stack also) used in the base crafting recipe, usually cobblestone (can be null for none).
      * **/
@@ -98,8 +98,15 @@ public class RecipeMaker {
         // ========== Base ==========
         if(creationItem != null && creationBlock != null) {
             GameRegistry.addRecipe(new ShapelessOreRecipe(
-                    new ItemStack(ObjectManager.getBlock(stoneName + "stone"), 1, 0),
+                    new ItemStack(ObjectManager.getBlock(stoneName + "stone"), 9, 0),
                     creationItem,
+                    creationBlock,
+                    creationBlock,
+                    creationBlock,
+                    creationBlock,
+                    creationBlock,
+                    creationBlock,
+                    creationBlock,
                     creationBlock
             ));
         }

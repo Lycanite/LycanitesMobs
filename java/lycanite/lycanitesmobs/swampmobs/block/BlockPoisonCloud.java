@@ -10,6 +10,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.potion.PotionEffect;
@@ -40,7 +41,7 @@ public class BlockPoisonCloud extends BlockBase {
 		// Stats:
 		this.tickRate = ConfigBase.getConfig(this.group, "general").getBool("Features", "Enable Poison Clouds", true) ? 200 : 1;
 		this.removeOnTick = true;
-		this.loopTicks = false;
+		this.loopTicks = true;
 		this.canBeCrushed = true;
 		
 		this.noEntityCollision = true;
@@ -50,6 +51,19 @@ public class BlockPoisonCloud extends BlockBase {
 		this.setBlockUnbreakable();
 		this.setLightOpacity(1);
 	}
+
+
+    // ==================================================
+    //                     Ticking
+    // ==================================================
+    // ========== Can Remove ==========
+    /** Returns true if the block should be removed naturally (remove on tick). **/
+    @Override
+    public boolean canRemove(World world, BlockPos pos, IBlockState state, Random rand) {
+        if(world.getBlockState(pos.down()).getBlock() == Blocks.MYCELIUM)
+            return false;
+        return super.canRemove(world, pos, state, rand);
+    }
 
 
     // ==================================================

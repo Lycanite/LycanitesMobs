@@ -114,7 +114,7 @@ public class FreshwaterMobs {
                 .setPeaceful(true).setSummonCost(2).setDungeonLevel(-1)
                 .addSubspecies(new Subspecies("light", "uncommon")).addSubspecies(new Subspecies("keppel", "uncommon"));
         newMob.spawnInfo.setSpawnTypes("WATER").setDespawn(false)
-                .setSpawnWeight(6).setAreaLimit(10).setGroupLimits(1, 6).setLightDark(true, false).setDungeonWeight(0);
+                .setSpawnWeight(6).setAreaLimit(2).setGroupLimits(1, 6).setLightDark(true, false).setDungeonWeight(0);
         ObjectManager.addMob(newMob);
 
 		

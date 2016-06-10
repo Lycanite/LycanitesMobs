@@ -97,6 +97,9 @@ public class SpawnTypeBase {
 	
 	/** If true, this type will force spawned mobs to not despawn naturally. **/
 	public boolean forceNoDespawn = false;
+
+    /** If true, when spawning in blocks, only the surface block is valid (for example a water or fire block with an air block above it). **/
+    public boolean blockSurfaceOnly = false;
 	
 	
     // ==================================================
@@ -111,6 +114,7 @@ public class SpawnTypeBase {
 		fireBlockSpawner.blocks = new Block[] {Blocks.FIRE};
 		fireBlockSpawner.ignoreBiome = true;
 		fireBlockSpawner.ignoreLight = true;
+        fireBlockSpawner.blockSurfaceOnly = true;
 		fireBlockSpawner.loadFromConfig();
         CustomSpawner.instance.updateSpawnTypes.add(fireBlockSpawner);
         spawnTypes.add(fireBlockSpawner);
@@ -121,6 +125,7 @@ public class SpawnTypeBase {
 		frostfireBlockSpawner.blockStrings = new String[] {"frostfire"};
 		frostfireBlockSpawner.ignoreBiome = true;
 		frostfireBlockSpawner.ignoreLight = true;
+        frostfireBlockSpawner.blockSurfaceOnly = true;
 		frostfireBlockSpawner.loadFromConfig();
         CustomSpawner.instance.updateSpawnTypes.add(frostfireBlockSpawner);
         spawnTypes.add(frostfireBlockSpawner);
@@ -805,7 +810,9 @@ public class SpawnTypeBase {
                             blockCoords = new ArrayList<BlockPos>();
                         for (Material validMaterial : this.materials) {
                             if (blockState.getMaterial() == validMaterial && this.isValidCoord(world, spawnPos)) {
-                                blockCoords.add(spawnPos);
+                                if(!this.blockSurfaceOnly || (world.isAirBlock(spawnPos.add(0, 1, 0)))) {
+                                    blockCoords.add(spawnPos);
+                                }
                                 continue;
                             }
                         }

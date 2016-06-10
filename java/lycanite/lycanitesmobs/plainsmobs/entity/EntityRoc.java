@@ -1,6 +1,5 @@
 package lycanite.lycanitesmobs.plainsmobs.entity;
 
-import com.sun.javafx.geom.Vec2d;
 import lycanite.lycanitesmobs.ExtendedEntity;
 import lycanite.lycanitesmobs.api.IGroupHunter;
 import lycanite.lycanitesmobs.api.IGroupPrey;
@@ -21,6 +20,7 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
@@ -106,8 +106,8 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
 
                 // Drop Creeper On Target:
                 if(this.getPickupEntity() instanceof EntityCreeper && this.hasAttackTarget() && !(this.getAttackTarget() instanceof EntityCreeper)) {
-                    double distance = new Vec2d(this.posX, this.posZ).distance(new Vec2d(this.getAttackTarget().posX, this.getAttackTarget().posZ));
-                    if(distance <= 1D && this.posY > this.getAttackTarget().posY) {
+                    double distance = new Vec3d(this.posX, 0, this.posZ).distanceTo(new Vec3d(this.getAttackTarget().posX, 0, this.getAttackTarget().posZ));
+                    if(distance <= 2D && this.posY > this.getAttackTarget().posY) {
                         this.getPickupEntity().setRevengeTarget(this.getAttackTarget());
                         this.dropPickupEntity();
                         this.creeperDropCooldown = 6 * 20;

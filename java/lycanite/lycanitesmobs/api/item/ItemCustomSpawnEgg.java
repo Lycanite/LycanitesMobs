@@ -20,6 +20,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.MobSpawnerBaseLogic;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.ActionResult;
@@ -101,12 +102,16 @@ public class ItemCustomSpawnEgg extends ItemBase {
         
         // Edit Spawner:
         if(block == Blocks.MOB_SPAWNER) {
-        	TileEntity tileEntity = world.getTileEntity(pos);
-        	if(tileEntity != null && tileEntity instanceof TileEntityMobSpawner) {
-        		TileEntityMobSpawner spawner = (TileEntityMobSpawner)tileEntity;
-        		spawner.getSpawnerBaseLogic().setEntityName(this.getEntityIdFromItem(itemStack));
-        		world.markBlockRangeForRenderUpdate(pos, pos);
-        	}
+            TileEntity tileEntity = world.getTileEntity(pos);
+            MobSpawnerBaseLogic mobspawnerbaselogic = ((TileEntityMobSpawner)tileEntity).getSpawnerBaseLogic();
+            mobspawnerbaselogic.setEntityName(this.getEntityIdFromItem(itemStack));
+            tileEntity.markDirty();
+            world.notifyBlockUpdate(pos, blockState, blockState, 3);
+            if (!player.capabilities.isCreativeMode) {
+                --itemStack.stackSize;
+            }
+
+            return EnumActionResult.SUCCESS;
         }
         
         // Spawn Mob:

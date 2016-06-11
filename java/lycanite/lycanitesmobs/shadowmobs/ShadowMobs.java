@@ -129,7 +129,7 @@ public class ShadowMobs {
 		ObjectManager.addMob(newMob);
         
         newMob = new MobInfo(group, "phantom", EntityPhantom.class, 0x101519, 0xDD2233)
-		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1)
+		        .setPeaceful(false).setSummonable(false).setSummonCost(2).setDungeonLevel(1)
 		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("DEATH, SLEEP, MONSTER")
                 .setBiomes("SPOOKY").setDimensions("-1000").setDimensionWhitelist(false)

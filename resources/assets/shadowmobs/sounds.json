@@ -183,6 +183,14 @@
         "category": "hostile",
         "sounds": [{"name": "shadowmobs:entity/darkling/step", "stream": false}]
     },
+    "entity.darkling.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "shadowmobs:entity/darkling/beg", "stream": false}]
+    },
+    "entity.darkling.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "shadowmobs:entity/darkling/tame", "stream": false}]
+    },
     "projectile.spectralbolt": {
         "category": "ambient",
         "sounds": [{"name": "shadowmobs:projectile/spectralbolt", "stream": false}]

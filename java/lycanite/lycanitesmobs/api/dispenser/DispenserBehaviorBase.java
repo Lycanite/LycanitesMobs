@@ -48,9 +48,9 @@ public class DispenserBehaviorBase extends BehaviorProjectileDispense {
 	@Override
     protected void playDispenseSound(IBlockSource blockSource) {
         SoundEvent soundEvent = this.getDispenseSound();
-        if(soundEvent == null)
+        if(soundEvent == null || blockSource == null)
             return;
-        blockSource.getWorld().playSound(blockSource.getX(), blockSource.getY(), blockSource.getZ(), this.getDispenseSound(), SoundCategory.AMBIENT, 1.0F, 1.0F / (new Random().nextFloat() * 0.4F + 0.8F), false);
+        blockSource.getWorld().playSound(null, blockSource.getBlockPos(), soundEvent, SoundCategory.AMBIENT, 1.0F, 1.0F / (new Random().nextFloat() * 0.4F + 0.8F));
     }
 
     protected SoundEvent getDispenseSound() {

@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs.plainsmobs.entity;
 import lycanite.lycanitesmobs.ExtendedEntity;
 import lycanite.lycanitesmobs.api.IGroupHunter;
 import lycanite.lycanitesmobs.api.IGroupPrey;
+import lycanite.lycanitesmobs.api.config.ConfigBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
@@ -27,6 +28,8 @@ import java.util.HashMap;
 
 public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter {
     public EntityAIAttackMelee attackAI = new EntityAIAttackMelee(this).setLongMemory(false);
+
+    public boolean creeperDropping = true;
     int creeperDropCooldown = 0;
 	
     // ==================================================
@@ -41,6 +44,8 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
         this.experience = 7;
         this.hasAttackSound = true;
         this.flySoundSpeed = 20;
+
+        this.creeperDropping = ConfigBase.getConfig(this.group, "general").getBool("Features", "Roc Creeper Dropping", this.creeperDropping, "Set to false to prevent Rocs from picking up Creepers to drop on their victims!");
         
         this.setWidth = 0.8F;
         this.setHeight = 1.8F;
@@ -192,6 +197,8 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
     
     @Override
 	public boolean canAttackClass(Class targetClass) {
+        if(!this.creeperDropping && targetClass == EntityCreeper.class)
+            return false;
         if(this.hasPickupEntity()) {
             if (targetClass == EntityCreeper.class)
                 return false;

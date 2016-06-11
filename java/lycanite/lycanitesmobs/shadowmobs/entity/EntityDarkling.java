@@ -5,6 +5,7 @@ import lycanite.lycanitesmobs.api.IGroupAnimal;
 import lycanite.lycanitesmobs.api.IGroupPrey;
 import lycanite.lycanitesmobs.api.IGroupShadow;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.api.entity.ai.*;
 import lycanite.lycanitesmobs.api.info.DropRate;
 import lycanite.lycanitesmobs.api.info.MobInfo;
@@ -31,7 +32,7 @@ import net.minecraft.world.World;
 
 import java.util.HashMap;
 
-public class EntityDarkling extends EntityCreatureBase implements IMob, IGroupShadow {
+public class EntityDarkling extends EntityCreatureTameable implements IMob, IGroupShadow {
 
     // Data Manager:
     protected static final DataParameter<Integer> LATCH_TARGET = EntityDataManager.<Integer>createKey(EntityCreatureBase.class, DataSerializers.VARINT);
@@ -62,16 +63,21 @@ public class EntityDarkling extends EntityCreatureBase implements IMob, IGroupSh
         
         // AI Tasks:
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(3, new EntityAIAttackMelee(this).setRate(20));
+        this.tasks.addTask(1, new EntityAIStealth(this).setStealthTime(20).setStealthAttack(true).setStealthMove(true));
+        this.tasks.addTask(2, new EntityAIAttackMelee(this).setRate(20));
+        this.tasks.addTask(3, this.aiSit);
+        this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
         this.tasks.addTask(6, new EntityAIWander(this).setSpeed(1.0D).setPauseRate(30));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
-        this.targetTasks.addTask(0, new EntityAITargetRevenge(this));
-        this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
-        this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
+        this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
+        this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
+        this.targetTasks.addTask(2, new EntityAITargetRevenge(this));
+        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
+        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
         if(MobInfo.predatorsAttackAnimals) {
-            this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityChicken.class));
+            this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityChicken.class));
             this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupAnimal.class).setPackHuntingScale(3, 1));
             this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(EntityAnimal.class).setPackHuntingScale(3, 1));
         }
@@ -244,6 +250,12 @@ public class EntityDarkling extends EntityCreatureBase implements IMob, IGroupSh
     // ========== Movement ==========
     @Override
     public boolean canClimb() { return true; }
+
+
+    // ==================================================
+    //                     Pet Control
+    // ==================================================
+    public boolean petControlsEnabled() { return true; }
 
 
     // ==================================================

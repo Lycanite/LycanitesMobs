@@ -57,6 +57,8 @@ achievement.darkling.kill=Get Off Me!
 achievement.darkling.kill.desc=Slay a Darkling.
 achievement.darkling.learn=Worse Than Lice!
 achievement.darkling.learn.desc=Add a Darkling to your Beastiary.
+achievement.darkling.summon=Feed My Children!
+achievement.darkling.summon.desc=Summon a Darkling.
 #
 # Items
 item.shadowspawn.name=Spawn

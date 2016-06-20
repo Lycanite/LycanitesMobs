@@ -46,8 +46,8 @@ public class EntityWendigo extends EntityCreatureBase implements IMob, IGroupIce
         this.spawnsInWater = true;
         this.hasAttackSound = false;
         
-        this.setWidth = 1.9F;
-        this.setHeight = 3.5F;
+        this.setWidth = 1F;
+        this.setHeight = 4.5F;
         this.setupMob();
         
         // AI Tasks:

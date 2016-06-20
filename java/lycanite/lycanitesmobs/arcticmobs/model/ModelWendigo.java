@@ -23,12 +23,15 @@ public class ModelWendigo extends ModelCustomObj {
     	this.initModel("Wendigo", ArcticMobs.group, "entity/wendigo");
 
     	// Set Rotation Centers:
-    	setPartCenter("head", 0F, 3.0F, 0.3F);
-    	setPartCenter("body", 0F, 3.0F, 0.3F);
-    	setPartCenter("armleft", 1F, 2.5F, 0F);
-    	setPartCenter("armright", -1F, 2.5F, 0F);
-    	setPartCenter("legleft", 0.5F, 1.4F, 0F);
-    	setPartCenter("legright", -0.5F, 1.4F, 0F);
+    	setPartCenter("head", 0F, 4.392F, -0.216F);
+        setPartCenter("mouth", 0F, 4.4568F, -1.1376F);
+    	setPartCenter("body", 0F, 3.908F, 0.3F);
+    	setPartCenter("armleft", 0.504F, 4.032F, -0.036F);
+        setPartCenter("armright", -0.504F, 4.032F, -0.036F);
+    	setPartCenter("legleft", 0.216F, 2.592F, 0F);
+        setPartCenter("legright", -0.216F, 2.592F, 0F);
+
+        this.lockHeadY = true;
 
         // Tropy:
         this.trophyScale = 0.8F;
@@ -54,8 +57,21 @@ public class ModelWendigo extends ModelCustomObj {
     	float rotX = 0F;
     	float rotY = 0F;
     	float rotZ = 0F;
+
+        // Looking:
+        if(partName.equals("mouth")) {
+            this.centerPartToPart("mouth", "head");
+            if(!this.lockHeadX)
+                this.rotate((float)Math.toDegrees(lookX / (180F / (float) Math.PI)), 0, 0);
+            if(!this.lockHeadY)
+                this.rotate(0, (float)Math.toDegrees(lookY / (180F / (float)Math.PI)), 0);
+            this.uncenterPartToPart("mouth", "head");
+        }
     	
     	// Idle:
+        if (partName.equals("mouth")) {
+            rotX += (MathHelper.cos(loop * 0.09F) * 0.05F - 0.05F);
+        }
     	if(partName.equals("armleft")) {
 	        rotZ -= Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F + 0.05F);
 	        rotX -= Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);

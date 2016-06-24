@@ -23,7 +23,7 @@ public class DispenserBehaviorBase extends BehaviorProjectileDispense {
     public ItemStack dispenseStack(IBlockSource blockSource, ItemStack stack) {
         World world = blockSource.getWorld();
         IPosition position = BlockDispenser.getDispensePosition(blockSource);
-        EnumFacing facing = BlockDispenser.getFacing(blockSource.getBlockMetadata());
+        EnumFacing facing = blockSource.func_189992_e().getValue(BlockDispenser.FACING);
         
         IProjectile iprojectile = this.getProjectileEntity(world, position, stack);
         if(iprojectile == null)

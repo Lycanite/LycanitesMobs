@@ -23,7 +23,7 @@ public class DispenserBehaviorLifeDrain extends DispenserBehaviorBase {
     public ItemStack dispenseStack(IBlockSource blockSource, ItemStack itemStack) {
         World world = blockSource.getWorld();
         IPosition iposition = BlockDispenser.getDispensePosition(blockSource);
-        EnumFacing facing = BlockDispenser.getFacing(blockSource.getBlockMetadata());
+        EnumFacing facing = blockSource.func_189992_e().getValue(BlockDispenser.FACING);
         
         double targetX = iposition.getX();
 		double targetY = iposition.getY();

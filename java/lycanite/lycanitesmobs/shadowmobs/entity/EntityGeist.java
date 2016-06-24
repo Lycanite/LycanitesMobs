@@ -107,7 +107,7 @@ public class EntityGeist extends EntityCreatureAgeable implements IMob, IGroupSh
             entityZombie.copyLocationAndAnglesFrom(entityLivingBase);
             this.worldObj.removeEntity(entityLivingBase);
             entityZombie.onInitialSpawn(this.worldObj.getDifficultyForLocation(this.getPosition()), (IEntityLivingData) null);
-            entityZombie.setVillagerType(((EntityVillager) entityLivingBase).getProfession());
+            entityZombie.setVillagerType(((EntityVillager) entityLivingBase).getProfessionForge());
 
             if(entityLivingBase.isChild())
                 entityZombie.setChild(true);

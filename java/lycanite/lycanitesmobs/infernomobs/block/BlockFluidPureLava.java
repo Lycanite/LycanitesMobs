@@ -42,8 +42,8 @@ public class BlockFluidPureLava extends BlockFluidBase {
 		IBlockState blockState = world.getBlockState(pos);
 		
 		// Renewable Fluid:
-		if(blockState == this) {
-			BlockFluidClassic fluidBlock = (BlockFluidClassic)blockState;
+		if(blockState.getBlock() == this) {
+			BlockFluidClassic fluidBlock = (BlockFluidClassic)blockState.getBlock();
 			if(blockState.getBlock().getMetaFromState(blockState) != 0) {
 				byte otherSourceBlocks = 0;
 				ArrayList<BlockPos> adjBlockPositions = new ArrayList<BlockPos>();

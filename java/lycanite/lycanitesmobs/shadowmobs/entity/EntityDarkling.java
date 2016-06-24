@@ -169,20 +169,23 @@ public class EntityDarkling extends EntityCreatureTameable implements IMob, IGro
     //                     Latching
     // ==================================================
     public EntityLivingBase getLatchTarget() {
-        if(this.worldObj.isRemote) {
-            this.latchHeight = this.dataManager.get(LATCH_HEIGHT);
-            this.latchAngle = this.dataManager.get(LATCH_ANGLE);
-            int latchEntityID = this.getDataManager().get(LATCH_TARGET);
-            if(latchEntityID != this.latchEntityID) {
-                this.latchEntity = null;
-                this.latchEntityID = latchEntityID;
-                if(latchEntityID != 0) {
-                    Entity possilbeLatchEntity = this.worldObj.getEntityByID(latchEntityID);
-                    if(possilbeLatchEntity != null && possilbeLatchEntity instanceof EntityLivingBase)
-                    this.latchEntity = (EntityLivingBase)possilbeLatchEntity;
+        try {
+            if (this.worldObj.isRemote) {
+                this.latchHeight = this.dataManager.get(LATCH_HEIGHT);
+                this.latchAngle = this.dataManager.get(LATCH_ANGLE);
+                int latchEntityID = this.getDataManager().get(LATCH_TARGET);
+                if (latchEntityID != this.latchEntityID) {
+                    this.latchEntity = null;
+                    this.latchEntityID = latchEntityID;
+                    if (latchEntityID != 0) {
+                        Entity possilbeLatchEntity = this.worldObj.getEntityByID(latchEntityID);
+                        if (possilbeLatchEntity != null && possilbeLatchEntity instanceof EntityLivingBase)
+                            this.latchEntity = (EntityLivingBase) possilbeLatchEntity;
+                    }
                 }
             }
         }
+        catch (Exception e) {}
         return this.latchEntity;
     }
 

@@ -218,7 +218,7 @@ public class ShadowMobs {
         eventSpawner.forceSpawning = true;
         eventSpawner.ignoreMobConditions = true;
     	eventSpawner.addSpawn(MobInfo.getFromName("grue"));
-    	eventSpawner.addSpawn(MobInfo.getFromName("phantom"));
+        eventSpawner.addSpawn(MobInfo.getFromName("darkling"));
         mobEvent.addSpawner(eventSpawner);
         eventSpawner = new SpawnTypeLand("shadowgames_land")
                 .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
@@ -242,8 +242,7 @@ public class ShadowMobs {
         eventSpawner.forceSpawning = true;
         eventSpawner.ignoreMobConditions = true;
         eventSpawner.addSpawn(MobInfo.getFromName("geist"));
-        eventSpawner.addSpawn(MobInfo.getFromName("ghoulzombie"));
-        eventSpawner.addSpawn(MobInfo.getFromName("cryptzombie"));
+        eventSpawner.addSpawn(MobInfo.getFromName("phantom"));
         mobEvent.addSpawner(eventSpawner);
         MobEventManager.instance.addWorldEvent(mobEvent);
 

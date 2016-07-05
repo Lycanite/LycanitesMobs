@@ -179,7 +179,7 @@ public class EventListener {
 
 
 	// ==================================================
-	//                    Entity Update
+	//                   Entity Update
 	// ==================================================
 	@SubscribeEvent
 	public void onEntityUpdate(LivingUpdateEvent event) {

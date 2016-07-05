@@ -9,6 +9,7 @@ import lycanite.lycanitesmobs.api.info.MobInfo;
 import lycanite.lycanitesmobs.api.info.SpawnInfo;
 import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
@@ -800,6 +801,11 @@ public class SpawnTypeBase {
                     if (blockState.getBlock() instanceof IFluidBlock) {
                         float filled = ((IFluidBlock) blockState.getBlock()).getFilledPercentage(world, spawnPos);
                         if (filled != 1 && filled != -1) {
+                            continue;
+                        }
+                    }
+                    if (blockState.getBlock() instanceof BlockLiquid) {
+                        if (blockState.getBlock().getMetaFromState(blockState) != 0) {
                             continue;
                         }
                     }

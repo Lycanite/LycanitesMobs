@@ -39,6 +39,7 @@ public class EntityUvaraptor extends EntityCreatureRideable implements IGroupPre
         this.experience = 5;
         this.spawnsUnderground = false;
         this.hasAttackSound = true;
+        this.hasJumpSound = true;
         this.spreadFire = false;
 
         this.canGrow = true;

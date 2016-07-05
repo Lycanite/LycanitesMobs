@@ -44,6 +44,7 @@ public class ClientProxy extends CommonProxy {
 		// Event Listeners:
 		FMLCommonHandler.instance().bus().register(new KeyHandler(Minecraft.getMinecraft()));
 		MinecraftForge.EVENT_BUS.register(new GuiOverlay(Minecraft.getMinecraft()));
+        MinecraftForge.EVENT_BUS.register(new ClientEventListener());
 	}
 	
 	// ========== Register Assets ==========

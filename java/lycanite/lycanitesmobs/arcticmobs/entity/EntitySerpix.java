@@ -112,7 +112,7 @@ public class EntitySerpix extends EntityCreatureTameable implements IGroupPredat
     @Override
     public float getAISpeedModifier() {
         if(this.isInWater())
-            return 4.0F;
+            return 2.0F;
         return 1.0F;
     }
 

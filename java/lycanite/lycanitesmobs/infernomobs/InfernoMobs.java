@@ -98,6 +98,7 @@ public class InfernoMobs {
         ObjectManager.addItem("scorchfirescepter", new ItemScepterScorchfire(), 2, 1, 1);
 
 		ObjectManager.addItem("afrittreat", new ItemTreat("afrittreat", group));
+        ObjectManager.addItem("salamandertreat", new ItemTreat("salamandertreat", group));
 
 		ObjectManager.addItem("bucketpurelava", new ItemBucketPureLava(fluid).setContainerItem(Items.BUCKET));
 
@@ -143,6 +144,13 @@ public class InfernoMobs {
 		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"));
         newMob.spawnInfo.setSpawnTypes("LAVA").setBlockCost(32)
                 .setSpawnWeight(1).setAreaLimit(2).setGroupLimits(1, 3).setLightDark(false, true);
+        ObjectManager.addMob(newMob);
+
+        newMob = new MobInfo(group, "salamander", EntitySalamander.class, 0xAACC00, 0xDDFF22)
+                .setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(1)
+                .addSubspecies(new Subspecies("violet", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
+        newMob.spawnInfo.setSpawnTypes("LAVA").setBlockCost(16)
+                .setSpawnWeight(6).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
         ObjectManager.addMob(newMob);
 
 		
@@ -202,6 +210,7 @@ public class InfernoMobs {
         eventSpawner.ignoreMobConditions = true;
         eventSpawner.addSpawn(MobInfo.getFromName("lobber"));
         eventSpawner.addSpawn(MobInfo.getFromName("khalk"), 2);
+        eventSpawner.addSpawn(MobInfo.getFromName("salamander"));
         mobEvent.addSpawner(eventSpawner);
         MobEventManager.instance.addWorldEvent(mobEvent);
 
@@ -276,6 +285,13 @@ public class InfernoMobs {
 				Character.valueOf('T'), Items.GUNPOWDER,
 				Character.valueOf('B'), Items.BONE
 			}));
+
+        GameRegistry.addRecipe(new ShapedOreRecipe(
+                new ItemStack(ObjectManager.getItem("salamandertreat"), 4, 0),
+                new Object[] { "TTT", "BBT", "TTT",
+                        Character.valueOf('T'), Items.MAGMA_CREAM,
+                        Character.valueOf('B'), Items.BONE
+                }));
 
         GameRegistry.addRecipe(new ShapedOreRecipe(
                 new ItemStack(ObjectManager.getItem("bucketpurelava"), 1, 0),

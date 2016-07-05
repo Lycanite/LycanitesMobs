@@ -133,8 +133,8 @@ public class EntityBarghest extends EntityCreatureRideable implements IGroupPred
                             || possibleTarget == EntityBarghest.this
                             || EntityBarghest.this.isRidingOrBeingRiddenBy(possibleTarget)
                             || EntityBarghest.this.isOnSameTeam(possibleTarget)
-                            || EntityBarghest.this.canAttackClass(possibleTarget.getClass())
-                            || EntityBarghest.this.canAttackEntity(possibleTarget))
+                            || !EntityBarghest.this.canAttackClass(possibleTarget.getClass())
+                            || !EntityBarghest.this.canAttackEntity(possibleTarget))
                         return false;
 
                     return true;

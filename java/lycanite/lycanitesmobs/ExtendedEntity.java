@@ -49,8 +49,11 @@ public class ExtendedEntity implements IExtendedEntity {
 
         // Client Side:
         if(entity.worldObj != null && entity.worldObj.isRemote) {
-            if(clientExtendedEntities.containsKey(entity))
-                return clientExtendedEntities.get(entity);
+            if(clientExtendedEntities.containsKey(entity)) {
+                ExtendedEntity extendedEntity = clientExtendedEntities.get(entity);
+                extendedEntity.setEntity(entity);
+                return extendedEntity;
+            }
             ExtendedEntity extendedEntity = new ExtendedEntity();
             extendedEntity.setEntity(entity);
             clientExtendedEntities.put(entity, extendedEntity);
@@ -61,7 +64,7 @@ public class ExtendedEntity implements IExtendedEntity {
         if(!(iExtendedEntity instanceof ExtendedEntity))
             return null;
         ExtendedEntity extendedEntity = (ExtendedEntity)iExtendedEntity;
-        if(extendedEntity.getEntity() == null)
+        if(extendedEntity.getEntity() != entity)
             extendedEntity.setEntity(entity);
         return extendedEntity;
 	}
@@ -95,39 +98,36 @@ public class ExtendedEntity implements IExtendedEntity {
         if(this.entity == null)
             return;
 
-        try {
-            // Force Remove Entity:
-            if (this.entity.worldObj != null && !this.entity.worldObj.isRemote && FORCE_REMOVE_ENTITY_IDS != null && FORCE_REMOVE_ENTITY_IDS.length > 0 && !this.forceRemoveChecked) {
-                LycanitesMobs.printDebug("ForceRemoveEntity", "Forced entity removal, checking: " + this.entity.getName());
-                for (String forceRemoveID : FORCE_REMOVE_ENTITY_IDS) {
-                    if (forceRemoveID.equalsIgnoreCase(this.entity.getName())) {
-                        this.forceRemove = true;
-                        break;
-                    }
+        // Force Remove Entity:
+        if (this.entity.worldObj != null && !this.entity.worldObj.isRemote && FORCE_REMOVE_ENTITY_IDS != null && FORCE_REMOVE_ENTITY_IDS.length > 0 && !this.forceRemoveChecked) {
+            LycanitesMobs.printDebug("ForceRemoveEntity", "Forced entity removal, checking: " + this.entity.getName());
+            for (String forceRemoveID : FORCE_REMOVE_ENTITY_IDS) {
+                if (forceRemoveID.equalsIgnoreCase(this.entity.getName())) {
+                    this.forceRemove = true;
+                    break;
                 }
-                this.forceRemoveChecked = true;
             }
-            if (this.forceRemove && this.forceRemoveTicks-- <= 0)
-                this.entity.setDead();
-
-            // Safe Position:
-            if (this.lastSafePos == null) {
-                this.lastSafePos = new double[]{this.entity.posX, this.entity.posY, this.entity.posZ};
-            }
-            if (this.entity.noClip || (!this.entity.isEntityInsideOpaqueBlock())) {
-                this.lastSafePos[0] = this.entity.posX;
-                this.lastSafePos[1] = this.entity.posY;
-                this.lastSafePos[2] = this.entity.posZ;
-            }
-
-            // Fear Entity:
-            if (this.fearEntity != null && !this.fearEntity.isEntityAlive())
-                this.fearEntity = null;
-
-            // Picked Up By Entity:
-            this.updatePickedUpByEntity();
+            this.forceRemoveChecked = true;
         }
-        catch(Exception e) {}
+        if (this.forceRemove && this.forceRemoveTicks-- <= 0)
+            this.entity.setDead();
+
+        // Safe Position:
+        if (this.lastSafePos == null) {
+            this.lastSafePos = new double[]{this.entity.posX, this.entity.posY, this.entity.posZ};
+        }
+        if (this.entity.noClip || (!this.entity.isEntityInsideOpaqueBlock())) {
+            this.lastSafePos[0] = this.entity.posX;
+            this.lastSafePos[1] = this.entity.posY;
+            this.lastSafePos[2] = this.entity.posZ;
+        }
+
+        // Fear Entity:
+        if (this.fearEntity != null && !this.fearEntity.isEntityAlive())
+            this.fearEntity = null;
+
+        // Picked Up By Entity:
+        this.updatePickedUpByEntity();
 	}
 	
 	

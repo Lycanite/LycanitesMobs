@@ -57,7 +57,7 @@ public class EntityIka extends EntityCreatureAgeable implements IAnimals, IGroup
         this.tasks.addTask(4, new EntityAIAvoid(this).setNearSpeed(1.3D).setFarSpeed(1.2D).setNearDistance(5.0D).setFarDistance(20.0D));
         this.tasks.addTask(5, new EntityAIMate(this));
         this.tasks.addTask(6, new EntityAIFollowParent(this).setSpeed(1.0D));
-        this.tasks.addTask(7, new EntityAIWander(this));
+        this.tasks.addTask(7, this.wanderAI);
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAITargetRevenge(this).setHelpCall(true));

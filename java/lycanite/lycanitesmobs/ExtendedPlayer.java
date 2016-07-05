@@ -73,8 +73,11 @@ public class ExtendedPlayer implements IExtendedPlayer {
 
         // Client Side:
         if(player.worldObj != null && player.worldObj.isRemote) {
-            if(clientExtendedPlayers.containsKey(player))
-                return clientExtendedPlayers.get(player);
+            if(clientExtendedPlayers.containsKey(player)) {
+                ExtendedPlayer extendedPlayer = clientExtendedPlayers.get(player);
+                extendedPlayer.setPlayer(player);
+                return extendedPlayer;
+            }
             ExtendedPlayer extendedPlayer = new ExtendedPlayer();
             extendedPlayer.setPlayer(player);
             clientExtendedPlayers.put(player, extendedPlayer);
@@ -85,7 +88,7 @@ public class ExtendedPlayer implements IExtendedPlayer {
         if(!(iExtendedPlayer instanceof ExtendedPlayer))
             return null;
         ExtendedPlayer extendedPlayer = (ExtendedPlayer)iExtendedPlayer;
-        if(extendedPlayer.getPlayer() == null)
+        if(extendedPlayer.getPlayer() != player)
             extendedPlayer.setPlayer(player);
         return extendedPlayer;
 	}

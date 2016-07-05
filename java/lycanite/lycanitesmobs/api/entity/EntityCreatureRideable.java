@@ -189,7 +189,7 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
                 EntityPlayer player = (EntityPlayer) this.getControllingPassenger();
                 ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
                 if (playerExt != null && playerExt.isControlActive(ExtendedPlayer.CONTROL_ID.JUMP)) {
-                    this.motionY += this.getAIMoveSpeed() / 3;
+                    this.motionY = Math.max(this.getAIMoveSpeed() / this.getAISpeedModifier() / 3, this.motionY);
                 }
             }
         }

@@ -185,8 +185,8 @@ public class EntityPinky extends EntityCreatureRideable implements IAnimals, IGr
                         || possibleTarget == EntityPinky.this
                         || EntityPinky.this.isRidingOrBeingRiddenBy(possibleTarget)
                         || EntityPinky.this.isOnSameTeam(possibleTarget)
-                        || EntityPinky.this.canAttackClass(possibleTarget.getClass())
-                        || EntityPinky.this.canAttackEntity(possibleTarget))
+                        || !EntityPinky.this.canAttackClass(possibleTarget.getClass())
+                        || !EntityPinky.this.canAttackEntity(possibleTarget))
                     return false;
                 return true;
             }

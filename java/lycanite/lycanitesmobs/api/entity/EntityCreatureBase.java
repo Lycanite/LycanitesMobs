@@ -1817,6 +1817,15 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     public double getFallingMod() {
     	return 1.0D;
     }
+
+    // ========== Water Modifier ==========
+    /** Modifies movement resistance in water. **/
+    @Override
+    protected float func_189749_co() {
+        if(!this.isPushedByWater())
+            return 1F;
+        return 0.8F;
+    }
     
     // ========== Leap ==========
     /**
@@ -2425,6 +2434,14 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     @Override
     public Entity getControllingPassenger() {
         return this.getPassengers().isEmpty() ? null : (Entity)this.getPassengers().get(0);
+    }
+
+    /** Returns true if this creature can ride the provided entity. **/
+    @Override
+    protected boolean canBeRidden(Entity entity) {
+        if (this.isBoss())
+            return false;
+        return super.canBeRidden(entity);
     }
 
     

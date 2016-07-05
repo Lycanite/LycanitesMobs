@@ -133,8 +133,8 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
                             || possibleTarget == EntityWarg.this
                             || EntityWarg.this.isRidingOrBeingRiddenBy(possibleTarget)
                             || EntityWarg.this.isOnSameTeam(possibleTarget)
-                            || EntityWarg.this.canAttackClass(possibleTarget.getClass())
-                            || EntityWarg.this.canAttackEntity(possibleTarget))
+                            || !EntityWarg.this.canAttackClass(possibleTarget.getClass())
+                            || !EntityWarg.this.canAttackEntity(possibleTarget))
                         return false;
 
                     return true;
@@ -159,7 +159,8 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
             this.playAttackSound();
         }
     }
-    
+
+    @Override
     public void riderEffects(EntityLivingBase rider) {
     	if(rider.isPotionActive(MobEffects.SLOWNESS))
     		rider.removePotionEffect(MobEffects.SLOWNESS);
@@ -212,8 +213,8 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
             return false;
 
         // Effect:
-        if(target instanceof EntityLivingBase && this.leapedAbilityReady && ObjectManager.getPotionEffect("Paralysis") != null) {
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("Paralysis"), this.getEffectDuration(2), 0));
+        if(target instanceof EntityLivingBase && this.leapedAbilityReady && ObjectManager.getPotionEffect("paralysis") != null) {
+            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("paralysis"), this.getEffectDuration(2), 0));
         }
 
         return true;
@@ -223,40 +224,46 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
     // ==================================================
     //                   Mount Ability
     // ==================================================
+    @Override
     public void mountAbility(Entity rider) {
-    	if(this.worldObj.isRemote)
-    		return;
+        if(this.worldObj.isRemote)
+            return;
 
         if(!this.onGround)
             return;
-    	if(this.abilityToggled)
-    		return;
-    	if(this.getStamina() < this.getStaminaCost())
-    		return;
-    	
-    	this.playJumpSound();
-    	this.leap(4.0D, 0.5D);
-    	
-    	this.applyStaminaCost();
+        if(this.abilityToggled)
+            return;
+        if(this.getStamina() < this.getStaminaCost())
+            return;
+
+        this.playJumpSound();
+        this.leap(4.0D, 0.5D);
+
+        this.applyStaminaCost();
     }
-    
+
+    @Override
     public float getStaminaCost() {
-    	return 15;
+        return 15;
     }
-    
+
+    @Override
     public int getStaminaRecoveryWarmup() {
-    	return 5 * 20;
+        return 5 * 20;
     }
-    
+
+    @Override
     public float getStaminaRecoveryMax() {
-    	return 1.0F;
+        return 1.0F;
     }
     
     
     // ==================================================
     //                     Equipment
     // ==================================================
+    @Override
     public int getNoBagSize() { return 0; }
+    @Override
     public int getBagSize() { return 10; }
     
     

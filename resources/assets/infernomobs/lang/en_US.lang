@@ -41,6 +41,14 @@ achievement.khalk.kill=Run Its Melting!
 achievement.khalk.kill.desc=Slay a Khalk.
 achievement.khalk.learn=Magma Giants
 achievement.khalk.learn.desc=Add a Khalk to your Beastiary.
+entity.infernomobs.salamander.name=Salamander
+entity.infernomobs.salamander.description=Deadly reptiles that have adapted to incredible temperatures, they have a fiery bite! Tamed Salamanders make great mounts and even protect their rider from fire!
+achievement.salamander.kill=Fiery Menace!
+achievement.salamander.kill.desc=Slay a Salamander.
+achievement.salamander.learn=Burning Holes In Your Trousers!
+achievement.salamander.learn.desc=Add a Salamander to your Beastiary.
+achievement.salamander.tame=The Lava Steed!
+achievement.salamander.tame.desc=Tame a Salamander.
 #
 # Items
 item.infernospawn.name=Spawn
@@ -72,6 +80,8 @@ item.bucketpurelava.name=Pure Lava Bucket
 item.bucketpurelava.description=Clearer that regular lava, flows slightly faster and no inferno mobs spawn in this. Can be renewed like water.
 item.afrittreat.name=Afrit Treat
 item.afrittreat.description=A fiery treat for fiery imps!
+item.salamandertreat.name=Salamander Treat
+item.salamandertreat.description=A tasty bone dripping with magma, just how they like it!
 #
 # Blocks
 tile.purelava.name=Pure Lava

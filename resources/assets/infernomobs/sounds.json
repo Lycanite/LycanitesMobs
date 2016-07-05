@@ -115,6 +115,46 @@
         "category": "hostile",
         "sounds": [{"name": "infernomobs:entity/khalk/eat", "stream": false}]
     },
+    "entity.salamander.say": {
+        "category": "hostile",
+        "sounds": [{"name": "infernomobs:entity/salamander/say", "stream": false}]
+    },
+    "entity.salamander.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "infernomobs:entity/salamander/hurt", "stream": false}]
+    },
+    "entity.salamander.death": {
+        "category": "hostile",
+        "sounds": [{"name": "infernomobs:entity/salamander/death", "stream": false}]
+    },
+    "entity.salamander.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "infernomobs:entity/salamander/attack", "stream": false}]
+    },
+    "entity.salamander.step": {
+        "category": "hostile",
+        "sounds": [{"name": "infernomobs:entity/salamander/step", "stream": false}]
+    },
+    "entity.salamander.jump": {
+        "category": "hostile",
+        "sounds": [{"name": "infernomobs:entity/salamander/jump", "stream": false}]
+    },
+    "entity.salamander.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "infernomobs:entity/salamander/beg", "stream": false}]
+    },
+    "entity.salamander.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "infernomobs:entity/salamander/tame", "stream": false}]
+    },
+    "entity.salamander.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "infernomobs:entity/salamander/eat", "stream": false}]
+    },
+    "entity.salamander.mount": {
+        "category": "hostile",
+        "sounds": [{"name": "infernomobs:entity/salamander/mount", "stream": false}]
+    },
     "projectile.ember": {
         "category": "ambient",
         "sounds": [{"name": "infernomobs:projectile/ember", "stream": false}]

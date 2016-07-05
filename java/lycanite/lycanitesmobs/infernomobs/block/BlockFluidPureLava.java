@@ -13,7 +13,6 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -43,7 +42,6 @@ public class BlockFluidPureLava extends BlockFluidBase {
 		
 		// Renewable Fluid:
 		if(blockState.getBlock() == this) {
-			BlockFluidClassic fluidBlock = (BlockFluidClassic)blockState.getBlock();
 			if(blockState.getBlock().getMetaFromState(blockState) != 0) {
 				byte otherSourceBlocks = 0;
 				ArrayList<BlockPos> adjBlockPositions = new ArrayList<BlockPos>();

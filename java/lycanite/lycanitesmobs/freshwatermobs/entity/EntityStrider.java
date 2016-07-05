@@ -230,10 +230,16 @@ public class EntityStrider extends EntityCreatureTameable {
 	@Override
     public float getAISpeedModifier() {
     	if(this.isInWater()) // Checks specifically just for water.
-            return 3F;
+            return 2F;
     	if(this.waterContact()) // Checks for water, rain, etc.
-    		return 2F;
+    		return 1.5F;
         return super.getAISpeedModifier();
+    }
+
+    // Pushed By Water:
+    @Override
+    public boolean isPushedByWater() {
+        return false;
     }
     
 	// Pathing Weight:
@@ -255,12 +261,6 @@ public class EntityStrider extends EntityCreatureTameable {
             return -999999.0F;
 
         return super.getBlockPathWeight(x, y, z);
-    }
-	
-	// Pushed By Water:
-	@Override
-	public boolean isPushedByWater() {
-        return false;
     }
 
 

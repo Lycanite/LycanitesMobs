@@ -169,8 +169,8 @@ public class EntityShade extends EntityCreatureRideable implements IGroupPredato
                         || possibleTarget == EntityShade.this
                         || EntityShade.this.isRidingOrBeingRiddenBy(possibleTarget)
                         || EntityShade.this.isOnSameTeam(possibleTarget)
-                        || EntityShade.this.canAttackClass(possibleTarget.getClass())
-                        || EntityShade.this.canAttackEntity(possibleTarget))
+                        || !EntityShade.this.canAttackClass(possibleTarget.getClass())
+                        || !EntityShade.this.canAttackEntity(possibleTarget))
                     return false;
                 return true;
             }

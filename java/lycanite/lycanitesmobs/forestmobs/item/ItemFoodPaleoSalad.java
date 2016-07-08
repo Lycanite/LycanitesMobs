@@ -1,7 +1,7 @@
 package lycanite.lycanitesmobs.forestmobs.item;
 
-import lycanite.lycanitesmobs.api.info.GroupInfo;
-import lycanite.lycanitesmobs.api.item.ItemCustomFood;
+import lycanite.lycanitesmobs.core.info.GroupInfo;
+import lycanite.lycanitesmobs.core.item.ItemCustomFood;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;

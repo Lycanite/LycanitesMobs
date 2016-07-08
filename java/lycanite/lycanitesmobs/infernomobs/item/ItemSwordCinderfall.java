@@ -1,9 +1,9 @@
 package lycanite.lycanitesmobs.infernomobs.item;
 
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
-import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
-import lycanite.lycanitesmobs.api.item.ItemSwordBase;
+import lycanite.lycanitesmobs.core.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.core.entity.EntityCreatureTameable;
+import lycanite.lycanitesmobs.core.item.ItemSwordBase;
 import lycanite.lycanitesmobs.infernomobs.InfernoMobs;
 import lycanite.lycanitesmobs.infernomobs.entity.EntityCinder;
 import net.minecraft.entity.Entity;

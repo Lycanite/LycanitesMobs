@@ -1,7 +1,7 @@
 package lycanite.lycanitesmobs.junglemobs.dispenser;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorBase;
+import lycanite.lycanitesmobs.core.dispenser.DispenserBehaviorBase;
 import lycanite.lycanitesmobs.junglemobs.entity.EntityPoop;
 import net.minecraft.dispenser.IPosition;
 import net.minecraft.entity.IProjectile;

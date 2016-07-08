@@ -1,7 +1,7 @@
 package lycanite.lycanitesmobs.mountainmobs.item;
 
-import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
-import lycanite.lycanitesmobs.api.item.ItemCharge;
+import lycanite.lycanitesmobs.core.entity.EntityProjectileBase;
+import lycanite.lycanitesmobs.core.item.ItemCharge;
 import lycanite.lycanitesmobs.mountainmobs.MountainMobs;
 import lycanite.lycanitesmobs.mountainmobs.entity.EntityBoulderBlast;
 import net.minecraft.entity.player.EntityPlayer;

@@ -1,8 +1,8 @@
 package lycanite.lycanitesmobs.swampmobs.dispenser;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorBase;
-import lycanite.lycanitesmobs.api.entity.EntityProjectileLaser;
+import lycanite.lycanitesmobs.core.dispenser.DispenserBehaviorBase;
+import lycanite.lycanitesmobs.core.entity.EntityProjectileLaser;
 import lycanite.lycanitesmobs.swampmobs.entity.EntityPoisonRay;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.IBlockSource;

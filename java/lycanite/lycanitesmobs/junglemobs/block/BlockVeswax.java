@@ -1,7 +1,7 @@
 package lycanite.lycanitesmobs.junglemobs.block;
 
 import lycanite.lycanitesmobs.LycanitesMobs;
-import lycanite.lycanitesmobs.api.block.BlockBase;
+import lycanite.lycanitesmobs.core.block.BlockBase;
 import lycanite.lycanitesmobs.junglemobs.JungleMobs;
 import lycanite.lycanitesmobs.junglemobs.entity.EntityVespidQueen;
 import net.minecraft.block.BlockPistonBase;

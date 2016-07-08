@@ -1,8 +1,8 @@
 package lycanite.lycanitesmobs.infernomobs.item;
 
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
-import lycanite.lycanitesmobs.api.item.ItemScepter;
+import lycanite.lycanitesmobs.core.entity.EntityProjectileBase;
+import lycanite.lycanitesmobs.core.item.ItemScepter;
 import lycanite.lycanitesmobs.infernomobs.InfernoMobs;
 import lycanite.lycanitesmobs.infernomobs.entity.EntityMagma;
 import net.minecraft.entity.EntityLivingBase;

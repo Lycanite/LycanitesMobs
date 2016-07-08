@@ -2,7 +2,7 @@ package lycanite.lycanitesmobs.demonmobs.info;
 
 import lycanite.lycanitesmobs.ExtendedWorld;
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.info.AltarInfo;
+import lycanite.lycanitesmobs.core.info.AltarInfo;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;

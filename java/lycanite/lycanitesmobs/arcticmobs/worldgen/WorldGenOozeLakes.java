@@ -1,9 +1,9 @@
 package lycanite.lycanitesmobs.arcticmobs.worldgen;
 
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.IWorldGenBase;
-import lycanite.lycanitesmobs.api.config.ConfigSpawning;
-import lycanite.lycanitesmobs.api.info.GroupInfo;
+import lycanite.lycanitesmobs.core.IWorldGenBase;
+import lycanite.lycanitesmobs.core.config.ConfigSpawning;
+import lycanite.lycanitesmobs.core.info.GroupInfo;
 import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;

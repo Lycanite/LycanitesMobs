@@ -1,9 +1,9 @@
 package lycanite.lycanitesmobs;
 
-import lycanite.lycanitesmobs.api.capabilities.IExtendedEntity;
-import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
-import lycanite.lycanitesmobs.api.entity.EntityFear;
-import lycanite.lycanitesmobs.api.network.MessageEntityPickedUp;
+import lycanite.lycanitesmobs.core.capabilities.IExtendedEntity;
+import lycanite.lycanitesmobs.core.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.core.entity.EntityFear;
+import lycanite.lycanitesmobs.core.network.MessageEntityPickedUp;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;

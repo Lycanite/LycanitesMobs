@@ -2,7 +2,7 @@ package lycanite.lycanitesmobs.shadowmobs.entity;
 
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
+import lycanite.lycanitesmobs.core.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.shadowmobs.ShadowMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

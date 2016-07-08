@@ -1,8 +1,8 @@
 package lycanite.lycanitesmobs.swampmobs.entity;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.api.entity.EntityProjectileLaser;
-import lycanite.lycanitesmobs.api.entity.EntityProjectileLaserEnd;
+import lycanite.lycanitesmobs.core.entity.EntityProjectileLaser;
+import lycanite.lycanitesmobs.core.entity.EntityProjectileLaserEnd;
 import lycanite.lycanitesmobs.swampmobs.SwampMobs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;

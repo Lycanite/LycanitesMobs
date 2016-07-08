@@ -1,6 +1,6 @@
 package lycanite.lycanitesmobs.arcticmobs.worldgen;
 
-import lycanite.lycanitesmobs.api.IWorldGenBase;
+import lycanite.lycanitesmobs.core.IWorldGenBase;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;

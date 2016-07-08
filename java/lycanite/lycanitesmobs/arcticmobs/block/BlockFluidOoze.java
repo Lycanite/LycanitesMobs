@@ -1,7 +1,7 @@
 package lycanite.lycanitesmobs.arcticmobs.block;
 
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.block.BlockFluidBase;
+import lycanite.lycanitesmobs.core.block.BlockFluidBase;
 import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

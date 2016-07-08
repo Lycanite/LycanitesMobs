@@ -1,6 +1,6 @@
 package lycanite.lycanitesmobs.saltwatermobs.model;
 
-import lycanite.lycanitesmobs.api.model.ModelCustomObj;
+import lycanite.lycanitesmobs.core.model.ModelCustomObj;
 import lycanite.lycanitesmobs.saltwatermobs.SaltwaterMobs;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.MathHelper;

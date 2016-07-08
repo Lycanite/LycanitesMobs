@@ -1,7 +1,7 @@
 package lycanite.lycanitesmobs.demonmobs.model;
 
-import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
-import lycanite.lycanitesmobs.api.model.ModelBipedCustom;
+import lycanite.lycanitesmobs.core.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.core.model.ModelBipedCustom;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;

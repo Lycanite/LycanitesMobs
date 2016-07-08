@@ -1,8 +1,8 @@
 package lycanite.lycanitesmobs;
 
-import lycanite.lycanitesmobs.api.gui.*;
-import lycanite.lycanitesmobs.api.network.MessagePlayerAttack;
-import lycanite.lycanitesmobs.api.network.MessagePlayerControl;
+import lycanite.lycanitesmobs.core.gui.*;
+import lycanite.lycanitesmobs.core.network.MessagePlayerAttack;
+import lycanite.lycanitesmobs.core.network.MessagePlayerControl;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;

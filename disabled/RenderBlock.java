@@ -1,7 +1,7 @@
-package lycanite.lycanitesmobs.api.renderer;
+package lycanite.lycanitesmobs.core.renderer;
 
 import lycanite.lycanitesmobs.ClientProxy;
-import lycanite.lycanitesmobs.api.block.BlockBase;
+import lycanite.lycanitesmobs.core.block.BlockBase;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;

@@ -1,9 +1,9 @@
 package lycanite.lycanitesmobs;
 
-import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
-import lycanite.lycanitesmobs.api.gui.*;
-import lycanite.lycanitesmobs.api.inventory.ContainerCreature;
-import lycanite.lycanitesmobs.api.tileentity.TileEntityBase;
+import lycanite.lycanitesmobs.core.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.core.gui.*;
+import lycanite.lycanitesmobs.core.inventory.ContainerCreature;
+import lycanite.lycanitesmobs.core.tileentity.TileEntityBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;

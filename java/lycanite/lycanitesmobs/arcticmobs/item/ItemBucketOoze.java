@@ -2,8 +2,8 @@ package lycanite.lycanitesmobs.arcticmobs.item;
 
 import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.info.GroupInfo;
-import lycanite.lycanitesmobs.api.item.ItemBase;
+import lycanite.lycanitesmobs.core.info.GroupInfo;
+import lycanite.lycanitesmobs.core.item.ItemBase;
 import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;

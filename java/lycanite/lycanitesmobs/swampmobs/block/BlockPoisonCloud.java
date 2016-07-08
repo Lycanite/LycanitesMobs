@@ -2,8 +2,8 @@ package lycanite.lycanitesmobs.swampmobs.block;
 
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.block.BlockBase;
-import lycanite.lycanitesmobs.api.config.ConfigBase;
+import lycanite.lycanitesmobs.core.block.BlockBase;
+import lycanite.lycanitesmobs.core.config.ConfigBase;
 import lycanite.lycanitesmobs.swampmobs.SwampMobs;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;

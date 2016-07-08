@@ -1,8 +1,8 @@
 package lycanite.lycanitesmobs.mountainmobs.item;
 
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
-import lycanite.lycanitesmobs.api.item.ItemScepter;
+import lycanite.lycanitesmobs.core.entity.EntityProjectileBase;
+import lycanite.lycanitesmobs.core.item.ItemScepter;
 import lycanite.lycanitesmobs.mountainmobs.MountainMobs;
 import lycanite.lycanitesmobs.mountainmobs.entity.EntityArcaneLaserStorm;
 import net.minecraft.entity.EntityLivingBase;

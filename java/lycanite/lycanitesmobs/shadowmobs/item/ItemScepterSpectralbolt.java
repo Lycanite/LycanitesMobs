@@ -1,7 +1,7 @@
 package lycanite.lycanitesmobs.shadowmobs.item;
 
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.item.ItemScepter;
+import lycanite.lycanitesmobs.core.item.ItemScepter;
 import lycanite.lycanitesmobs.shadowmobs.ShadowMobs;
 import lycanite.lycanitesmobs.shadowmobs.entity.EntitySpectralbolt;
 import net.minecraft.entity.EntityLivingBase;

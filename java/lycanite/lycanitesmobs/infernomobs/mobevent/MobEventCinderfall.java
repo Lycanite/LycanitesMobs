@@ -1,8 +1,8 @@
 package lycanite.lycanitesmobs.infernomobs.mobevent;
 
-import lycanite.lycanitesmobs.api.entity.EntityProjectileRapidFire;
-import lycanite.lycanitesmobs.api.info.GroupInfo;
-import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
+import lycanite.lycanitesmobs.core.entity.EntityProjectileRapidFire;
+import lycanite.lycanitesmobs.core.info.GroupInfo;
+import lycanite.lycanitesmobs.core.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.infernomobs.entity.EntityEmber;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.world.World;

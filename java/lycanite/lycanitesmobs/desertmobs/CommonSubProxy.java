@@ -1,6 +1,6 @@
 package lycanite.lycanitesmobs.desertmobs;
 
-import lycanite.lycanitesmobs.api.info.GroupInfo;
+import lycanite.lycanitesmobs.core.info.GroupInfo;
 
 public class CommonSubProxy {
 	

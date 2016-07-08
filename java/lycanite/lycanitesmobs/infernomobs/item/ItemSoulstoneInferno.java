@@ -1,9 +1,9 @@
 package lycanite.lycanitesmobs.infernomobs.item;
 
 import lycanite.lycanitesmobs.ExtendedPlayer;
-import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
-import lycanite.lycanitesmobs.api.info.GroupInfo;
-import lycanite.lycanitesmobs.api.item.ItemSoulstone;
+import lycanite.lycanitesmobs.core.entity.EntityCreatureTameable;
+import lycanite.lycanitesmobs.core.info.GroupInfo;
+import lycanite.lycanitesmobs.core.item.ItemSoulstone;
 import lycanite.lycanitesmobs.infernomobs.entity.EntityAfrit;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;

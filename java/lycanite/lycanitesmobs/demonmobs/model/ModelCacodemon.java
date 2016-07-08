@@ -1,9 +1,9 @@
 package lycanite.lycanitesmobs.demonmobs.model;
 
-import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
-import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
-import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
-import lycanite.lycanitesmobs.api.model.ModelCustomObj;
+import lycanite.lycanitesmobs.core.entity.EntityCreatureAgeable;
+import lycanite.lycanitesmobs.core.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.core.entity.EntityCreatureTameable;
+import lycanite.lycanitesmobs.core.model.ModelCustomObj;
 import lycanite.lycanitesmobs.demonmobs.DemonMobs;
 import net.minecraft.entity.EntityLiving;
 import net.minecraftforge.fml.relauncher.Side;

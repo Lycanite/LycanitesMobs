@@ -1,8 +1,8 @@
 package lycanite.lycanitesmobs.demonmobs.entity;
 
-import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
-import lycanite.lycanitesmobs.api.entity.ai.*;
-import lycanite.lycanitesmobs.api.info.DropRate;
+import lycanite.lycanitesmobs.core.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.core.entity.ai.*;
+import lycanite.lycanitesmobs.core.info.DropRate;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;

@@ -1,8 +1,8 @@
 package lycanite.lycanitesmobs.forestmobs.dispenser;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorBase;
-import lycanite.lycanitesmobs.api.entity.EntityProjectileLaser;
+import lycanite.lycanitesmobs.core.dispenser.DispenserBehaviorBase;
+import lycanite.lycanitesmobs.core.entity.EntityProjectileLaser;
 import lycanite.lycanitesmobs.forestmobs.entity.EntityLifeDrain;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.IBlockSource;

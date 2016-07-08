@@ -1,6 +1,6 @@
 package lycanite.lycanitesmobs.demonmobs.item;
 
-import lycanite.lycanitesmobs.api.item.ItemCustomSpawnEgg;
+import lycanite.lycanitesmobs.core.item.ItemCustomSpawnEgg;
 import lycanite.lycanitesmobs.demonmobs.DemonMobs;
 
 public class ItemDemonEgg extends ItemCustomSpawnEgg {

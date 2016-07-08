@@ -1,6 +1,6 @@
 package lycanite.lycanitesmobs.infernomobs.block;
 
-import lycanite.lycanitesmobs.api.block.BlockFluidBase;
+import lycanite.lycanitesmobs.core.block.BlockFluidBase;
 import lycanite.lycanitesmobs.infernomobs.InfernoMobs;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

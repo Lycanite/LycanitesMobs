@@ -1,8 +1,8 @@
 package lycanite.lycanitesmobs.infernomobs.dispenser;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorBase;
-import lycanite.lycanitesmobs.api.entity.EntityProjectileRapidFire;
+import lycanite.lycanitesmobs.core.dispenser.DispenserBehaviorBase;
+import lycanite.lycanitesmobs.core.entity.EntityProjectileRapidFire;
 import lycanite.lycanitesmobs.infernomobs.entity.EntityEmber;
 import net.minecraft.dispenser.IPosition;
 import net.minecraft.entity.IProjectile;

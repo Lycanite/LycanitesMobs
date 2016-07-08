@@ -1,6 +1,6 @@
 package lycanite.lycanitesmobs.infernomobs.entity;
 
-import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
+import lycanite.lycanitesmobs.core.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.infernomobs.InfernoMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

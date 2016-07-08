@@ -1,7 +1,7 @@
 package lycanite.lycanitesmobs.arcticmobs.dispenser;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorBase;
+import lycanite.lycanitesmobs.core.dispenser.DispenserBehaviorBase;
 import lycanite.lycanitesmobs.arcticmobs.entity.EntityFrostbolt;
 import net.minecraft.dispenser.IPosition;
 import net.minecraft.entity.IProjectile;

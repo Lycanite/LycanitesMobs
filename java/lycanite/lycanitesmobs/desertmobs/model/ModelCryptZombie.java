@@ -1,6 +1,6 @@
 package lycanite.lycanitesmobs.desertmobs.model;
 
-import lycanite.lycanitesmobs.api.model.ModelCustomObj;
+import lycanite.lycanitesmobs.core.model.ModelCustomObj;
 import lycanite.lycanitesmobs.desertmobs.DesertMobs;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.MathHelper;

@@ -1,8 +1,8 @@
 package lycanite.lycanitesmobs.junglemobs.mobevent;
 
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.info.GroupInfo;
-import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
+import lycanite.lycanitesmobs.core.info.GroupInfo;
+import lycanite.lycanitesmobs.core.mobevent.MobEventBase;
 import net.minecraft.entity.EntityLiving;
 
 public class MobEventPoopParty extends MobEventBase {

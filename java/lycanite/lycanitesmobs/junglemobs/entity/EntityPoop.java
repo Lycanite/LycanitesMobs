@@ -2,7 +2,7 @@ package lycanite.lycanitesmobs.junglemobs.entity;
 
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
+import lycanite.lycanitesmobs.core.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.junglemobs.JungleMobs;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;

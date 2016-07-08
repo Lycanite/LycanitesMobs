@@ -6,13 +6,13 @@ import lycanite.lycanitesmobs.api.IGroupAlpha;
 import lycanite.lycanitesmobs.api.IGroupAnimal;
 import lycanite.lycanitesmobs.api.IGroupFire;
 import lycanite.lycanitesmobs.api.IGroupPrey;
-import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
-import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
-import lycanite.lycanitesmobs.api.entity.EntityItemCustom;
-import lycanite.lycanitesmobs.api.entity.ai.*;
-import lycanite.lycanitesmobs.api.info.DropRate;
-import lycanite.lycanitesmobs.api.info.MobInfo;
-import lycanite.lycanitesmobs.api.info.ObjectLists;
+import lycanite.lycanitesmobs.core.entity.EntityCreatureAgeable;
+import lycanite.lycanitesmobs.core.entity.EntityCreatureRideable;
+import lycanite.lycanitesmobs.core.entity.EntityItemCustom;
+import lycanite.lycanitesmobs.core.entity.ai.*;
+import lycanite.lycanitesmobs.core.info.DropRate;
+import lycanite.lycanitesmobs.core.info.MobInfo;
+import lycanite.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -111,9 +111,9 @@ public class EntitySalamander extends EntityCreatureRideable implements IMob, IG
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.COAL), 1.0F).setMaxAmount(32));
-        this.drops.add(new DropRate(new ItemStack(Items.MAGMA_CREAM), 0.75F).setMaxAmount(5));
-        this.drops.add(new DropRate(new ItemStack(Items.BLAZE_POWDER), 0.5F).setMaxAmount(8));
+        this.drops.add(new DropRate(new ItemStack(Items.COAL), 1.0F).setMaxAmount(8));
+        this.drops.add(new DropRate(new ItemStack(Items.MAGMA_CREAM), 0.75F).setMaxAmount(2));
+        this.drops.add(new DropRate(new ItemStack(Items.BLAZE_POWDER), 0.5F).setMaxAmount(4));
 	}
 	
 	

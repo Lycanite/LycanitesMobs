@@ -1,8 +1,8 @@
 package lycanite.lycanitesmobs.forestmobs;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.api.info.GroupInfo;
-import lycanite.lycanitesmobs.api.renderer.RenderRegister;
+import lycanite.lycanitesmobs.core.info.GroupInfo;
+import lycanite.lycanitesmobs.core.renderer.RenderRegister;
 import lycanite.lycanitesmobs.forestmobs.model.*;
 
 public class ClientSubProxy extends CommonSubProxy {

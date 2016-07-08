@@ -2,11 +2,11 @@ package lycanite.lycanitesmobs.swampmobs.entity;
 
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupPrey;
-import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
-import lycanite.lycanitesmobs.api.entity.ai.*;
-import lycanite.lycanitesmobs.api.info.DropRate;
-import lycanite.lycanitesmobs.api.info.MobInfo;
-import lycanite.lycanitesmobs.api.info.ObjectLists;
+import lycanite.lycanitesmobs.core.entity.EntityCreatureRideable;
+import lycanite.lycanitesmobs.core.entity.ai.*;
+import lycanite.lycanitesmobs.core.info.DropRate;
+import lycanite.lycanitesmobs.core.info.MobInfo;
+import lycanite.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;

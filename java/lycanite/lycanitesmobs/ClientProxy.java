@@ -1,15 +1,15 @@
 package lycanite.lycanitesmobs;
 
-import lycanite.lycanitesmobs.api.block.BlockFluidBase;
-import lycanite.lycanitesmobs.api.entity.EntityFear;
-import lycanite.lycanitesmobs.api.entity.EntityHitArea;
-import lycanite.lycanitesmobs.api.entity.EntityPortal;
-import lycanite.lycanitesmobs.api.gui.GUITabMain;
-import lycanite.lycanitesmobs.api.gui.GuiOverlay;
-import lycanite.lycanitesmobs.api.gui.TabManager;
-import lycanite.lycanitesmobs.api.info.GroupInfo;
-import lycanite.lycanitesmobs.api.item.ItemBase;
-import lycanite.lycanitesmobs.api.renderer.RenderRegister;
+import lycanite.lycanitesmobs.core.block.BlockFluidBase;
+import lycanite.lycanitesmobs.core.entity.EntityFear;
+import lycanite.lycanitesmobs.core.entity.EntityHitArea;
+import lycanite.lycanitesmobs.core.entity.EntityPortal;
+import lycanite.lycanitesmobs.core.gui.GUITabMain;
+import lycanite.lycanitesmobs.core.gui.GuiOverlay;
+import lycanite.lycanitesmobs.core.gui.TabManager;
+import lycanite.lycanitesmobs.core.info.GroupInfo;
+import lycanite.lycanitesmobs.core.item.ItemBase;
+import lycanite.lycanitesmobs.core.renderer.RenderRegister;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;

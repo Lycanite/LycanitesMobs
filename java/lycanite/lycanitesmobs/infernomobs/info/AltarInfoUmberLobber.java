@@ -1,7 +1,7 @@
 package lycanite.lycanitesmobs.infernomobs.info;
 
-import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
-import lycanite.lycanitesmobs.api.info.AltarInfo;
+import lycanite.lycanitesmobs.core.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.core.info.AltarInfo;
 import lycanite.lycanitesmobs.infernomobs.entity.EntityLobber;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;

@@ -1,6 +1,6 @@
 package lycanite.lycanitesmobs.junglemobs.model;
 
-import lycanite.lycanitesmobs.api.model.ModelCustomObj;
+import lycanite.lycanitesmobs.core.model.ModelCustomObj;
 import lycanite.lycanitesmobs.junglemobs.JungleMobs;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.MathHelper;

@@ -2,10 +2,10 @@ package lycanite.lycanitesmobs.shadowmobs.entity;
 
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupShadow;
-import lycanite.lycanitesmobs.api.config.ConfigBase;
-import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
-import lycanite.lycanitesmobs.api.entity.ai.*;
-import lycanite.lycanitesmobs.api.info.DropRate;
+import lycanite.lycanitesmobs.core.config.ConfigBase;
+import lycanite.lycanitesmobs.core.entity.EntityCreatureAgeable;
+import lycanite.lycanitesmobs.core.entity.ai.*;
+import lycanite.lycanitesmobs.core.info.DropRate;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;

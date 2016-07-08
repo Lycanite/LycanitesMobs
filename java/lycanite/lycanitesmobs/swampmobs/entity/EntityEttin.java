@@ -1,9 +1,9 @@
 package lycanite.lycanitesmobs.swampmobs.entity;
 
-import lycanite.lycanitesmobs.api.config.ConfigBase;
-import lycanite.lycanitesmobs.api.entity.EntityCreatureAgeable;
-import lycanite.lycanitesmobs.api.entity.ai.*;
-import lycanite.lycanitesmobs.api.info.DropRate;
+import lycanite.lycanitesmobs.core.config.ConfigBase;
+import lycanite.lycanitesmobs.core.entity.EntityCreatureAgeable;
+import lycanite.lycanitesmobs.core.entity.ai.*;
+import lycanite.lycanitesmobs.core.info.DropRate;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;

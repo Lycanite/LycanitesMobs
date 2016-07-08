@@ -2,7 +2,7 @@ package lycanite.lycanitesmobs.demonmobs.entity;
 
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.api.IGroupDemon;
-import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
+import lycanite.lycanitesmobs.core.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.demonmobs.DemonMobs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;

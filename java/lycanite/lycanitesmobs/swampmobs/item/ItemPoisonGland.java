@@ -2,7 +2,7 @@ package lycanite.lycanitesmobs.swampmobs.item;
 
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.item.ItemBase;
+import lycanite.lycanitesmobs.core.item.ItemBase;
 import lycanite.lycanitesmobs.swampmobs.SwampMobs;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;

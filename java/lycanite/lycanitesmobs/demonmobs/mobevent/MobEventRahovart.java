@@ -1,10 +1,10 @@
 package lycanite.lycanitesmobs.demonmobs.mobevent;
 
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
-import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
-import lycanite.lycanitesmobs.api.info.GroupInfo;
-import lycanite.lycanitesmobs.api.mobevent.MobEventBoss;
+import lycanite.lycanitesmobs.core.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.core.entity.EntityProjectileBase;
+import lycanite.lycanitesmobs.core.info.GroupInfo;
+import lycanite.lycanitesmobs.core.mobevent.MobEventBoss;
 import lycanite.lycanitesmobs.demonmobs.entity.EntityHellfireWall;
 import lycanite.lycanitesmobs.demonmobs.entity.EntityRahovart;
 import net.minecraft.block.Block;

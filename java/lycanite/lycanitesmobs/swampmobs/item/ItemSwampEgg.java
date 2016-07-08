@@ -1,6 +1,6 @@
 package lycanite.lycanitesmobs.swampmobs.item;
 
-import lycanite.lycanitesmobs.api.item.ItemCustomSpawnEgg;
+import lycanite.lycanitesmobs.core.item.ItemCustomSpawnEgg;
 import lycanite.lycanitesmobs.swampmobs.SwampMobs;
 
 public class ItemSwampEgg extends ItemCustomSpawnEgg {

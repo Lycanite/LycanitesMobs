@@ -1,7 +1,7 @@
 package lycanite.lycanitesmobs.infernomobs.dispenser;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorBase;
+import lycanite.lycanitesmobs.core.dispenser.DispenserBehaviorBase;
 import lycanite.lycanitesmobs.infernomobs.entity.EntityMagma;
 import net.minecraft.dispenser.IPosition;
 import net.minecraft.entity.IProjectile;

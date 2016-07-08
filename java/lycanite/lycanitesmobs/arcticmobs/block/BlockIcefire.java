@@ -2,8 +2,8 @@ package lycanite.lycanitesmobs.arcticmobs.block;
 
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.block.BlockFireBase;
-import lycanite.lycanitesmobs.api.config.ConfigBase;
+import lycanite.lycanitesmobs.core.block.BlockFireBase;
+import lycanite.lycanitesmobs.core.config.ConfigBase;
 import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

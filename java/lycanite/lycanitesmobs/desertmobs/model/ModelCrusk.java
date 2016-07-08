@@ -1,8 +1,8 @@
 package lycanite.lycanitesmobs.desertmobs.model;
 
-import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
-import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
-import lycanite.lycanitesmobs.api.model.ModelCustomObj;
+import lycanite.lycanitesmobs.core.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.core.entity.EntityCreatureTameable;
+import lycanite.lycanitesmobs.core.model.ModelCustomObj;
 import lycanite.lycanitesmobs.desertmobs.DesertMobs;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.MathHelper;

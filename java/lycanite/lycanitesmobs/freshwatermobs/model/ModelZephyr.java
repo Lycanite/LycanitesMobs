@@ -1,7 +1,7 @@
 package lycanite.lycanitesmobs.freshwatermobs.model;
 
-import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
-import lycanite.lycanitesmobs.api.model.ModelCustomObj;
+import lycanite.lycanitesmobs.core.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.core.model.ModelCustomObj;
 import lycanite.lycanitesmobs.freshwatermobs.FreshwaterMobs;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.MathHelper;

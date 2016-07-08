@@ -1,7 +1,7 @@
 package lycanite.lycanitesmobs.freshwatermobs.item;
 
-import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
-import lycanite.lycanitesmobs.api.item.ItemCharge;
+import lycanite.lycanitesmobs.core.entity.EntityProjectileBase;
+import lycanite.lycanitesmobs.core.item.ItemCharge;
 import lycanite.lycanitesmobs.freshwatermobs.FreshwaterMobs;
 import lycanite.lycanitesmobs.freshwatermobs.entity.EntityAquaPulse;
 import net.minecraft.entity.player.EntityPlayer;

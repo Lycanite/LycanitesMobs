@@ -1,7 +1,7 @@
 package lycanite.lycanitesmobs.arcticmobs.item;
 
-import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
-import lycanite.lycanitesmobs.api.item.ItemCharge;
+import lycanite.lycanitesmobs.core.entity.EntityProjectileBase;
+import lycanite.lycanitesmobs.core.item.ItemCharge;
 import lycanite.lycanitesmobs.arcticmobs.ArcticMobs;
 import lycanite.lycanitesmobs.arcticmobs.entity.EntityBlizzard;
 import net.minecraft.entity.player.EntityPlayer;

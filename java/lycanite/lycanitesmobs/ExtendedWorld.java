@@ -1,10 +1,10 @@
 package lycanite.lycanitesmobs;
 
-import lycanite.lycanitesmobs.api.ValuePair;
-import lycanite.lycanitesmobs.api.config.ConfigSpawning;
-import lycanite.lycanitesmobs.api.mobevent.*;
-import lycanite.lycanitesmobs.api.network.MessageMobEvent;
-import lycanite.lycanitesmobs.api.network.MessageWorldEvent;
+import lycanite.lycanitesmobs.core.ValuePair;
+import lycanite.lycanitesmobs.core.config.ConfigSpawning;
+import lycanite.lycanitesmobs.core.mobevent.*;
+import lycanite.lycanitesmobs.core.network.MessageMobEvent;
+import lycanite.lycanitesmobs.core.network.MessageWorldEvent;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;

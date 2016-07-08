@@ -1,9 +1,9 @@
 package lycanite.lycanitesmobs.shadowmobs.item;
 
 import lycanite.lycanitesmobs.ExtendedPlayer;
-import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
-import lycanite.lycanitesmobs.api.info.GroupInfo;
-import lycanite.lycanitesmobs.api.item.ItemSoulstone;
+import lycanite.lycanitesmobs.core.entity.EntityCreatureTameable;
+import lycanite.lycanitesmobs.core.info.GroupInfo;
+import lycanite.lycanitesmobs.core.item.ItemSoulstone;
 import lycanite.lycanitesmobs.shadowmobs.entity.EntityChupacabra;
 import lycanite.lycanitesmobs.shadowmobs.entity.EntityShade;
 import net.minecraft.entity.Entity;

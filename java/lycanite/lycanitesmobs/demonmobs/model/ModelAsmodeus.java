@@ -1,10 +1,10 @@
 package lycanite.lycanitesmobs.demonmobs.model;
 
-import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
-import lycanite.lycanitesmobs.api.model.ModelCustomObj;
-import lycanite.lycanitesmobs.api.renderer.LayerFire;
-import lycanite.lycanitesmobs.api.renderer.LayerShield;
-import lycanite.lycanitesmobs.api.renderer.RenderCreature;
+import lycanite.lycanitesmobs.core.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.core.model.ModelCustomObj;
+import lycanite.lycanitesmobs.core.renderer.LayerFire;
+import lycanite.lycanitesmobs.core.renderer.LayerShield;
+import lycanite.lycanitesmobs.core.renderer.RenderCreature;
 import lycanite.lycanitesmobs.demonmobs.DemonMobs;
 import lycanite.lycanitesmobs.demonmobs.entity.EntityAsmodeus;
 import net.minecraft.entity.Entity;

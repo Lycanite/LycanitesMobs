@@ -1,6 +1,6 @@
 package lycanite.lycanitesmobs.mountainmobs.item;
 
-import lycanite.lycanitesmobs.api.item.ItemCustomSpawnEgg;
+import lycanite.lycanitesmobs.core.item.ItemCustomSpawnEgg;
 import lycanite.lycanitesmobs.mountainmobs.MountainMobs;
 
 public class ItemMountainEgg extends ItemCustomSpawnEgg {

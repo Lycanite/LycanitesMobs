@@ -1,6 +1,6 @@
 package lycanite.lycanitesmobs.infernomobs.item;
 
-import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.core.entity.EntityCreatureBase;
 import net.minecraft.entity.Entity;
 
 public class ItemSwordCinderfallAzure extends ItemSwordCinderfall {

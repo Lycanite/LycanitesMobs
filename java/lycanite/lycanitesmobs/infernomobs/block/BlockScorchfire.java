@@ -2,8 +2,8 @@ package lycanite.lycanitesmobs.infernomobs.block;
 
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.block.BlockFireBase;
-import lycanite.lycanitesmobs.api.config.ConfigBase;
+import lycanite.lycanitesmobs.core.block.BlockFireBase;
+import lycanite.lycanitesmobs.core.config.ConfigBase;
 import lycanite.lycanitesmobs.infernomobs.InfernoMobs;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

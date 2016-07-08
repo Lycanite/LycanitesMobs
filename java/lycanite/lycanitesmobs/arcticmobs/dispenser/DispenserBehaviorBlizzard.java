@@ -1,8 +1,8 @@
 package lycanite.lycanitesmobs.arcticmobs.dispenser;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorBase;
-import lycanite.lycanitesmobs.api.entity.EntityProjectileRapidFire;
+import lycanite.lycanitesmobs.core.dispenser.DispenserBehaviorBase;
+import lycanite.lycanitesmobs.core.entity.EntityProjectileRapidFire;
 import lycanite.lycanitesmobs.arcticmobs.entity.EntityBlizzard;
 import net.minecraft.dispenser.IPosition;
 import net.minecraft.entity.IProjectile;

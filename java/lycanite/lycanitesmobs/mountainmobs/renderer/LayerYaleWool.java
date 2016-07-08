@@ -1,8 +1,8 @@
 package lycanite.lycanitesmobs.mountainmobs.renderer;
 
-import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
-import lycanite.lycanitesmobs.api.renderer.LayerBase;
-import lycanite.lycanitesmobs.api.renderer.RenderCreature;
+import lycanite.lycanitesmobs.core.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.core.renderer.LayerBase;
+import lycanite.lycanitesmobs.core.renderer.RenderCreature;
 import lycanite.lycanitesmobs.mountainmobs.entity.EntityYale;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;

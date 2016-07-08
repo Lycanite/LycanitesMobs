@@ -1,7 +1,7 @@
 package lycanite.lycanitesmobs.swampmobs.item;
 
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.item.ItemScepter;
+import lycanite.lycanitesmobs.core.item.ItemScepter;
 import lycanite.lycanitesmobs.swampmobs.SwampMobs;
 import lycanite.lycanitesmobs.swampmobs.entity.EntityVenomShot;
 import net.minecraft.entity.EntityLivingBase;

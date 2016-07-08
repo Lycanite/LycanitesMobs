@@ -1,8 +1,8 @@
 package lycanite.lycanitesmobs.forestmobs.item;
 
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.entity.EntityProjectileLaser;
-import lycanite.lycanitesmobs.api.item.ItemScepter;
+import lycanite.lycanitesmobs.core.entity.EntityProjectileLaser;
+import lycanite.lycanitesmobs.core.item.ItemScepter;
 import lycanite.lycanitesmobs.forestmobs.ForestMobs;
 import lycanite.lycanitesmobs.forestmobs.entity.EntityLifeDrain;
 import net.minecraft.entity.EntityLivingBase;

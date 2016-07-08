@@ -1,7 +1,7 @@
 package lycanite.lycanitesmobs.demonmobs.item;
 
-import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
-import lycanite.lycanitesmobs.api.item.ItemCharge;
+import lycanite.lycanitesmobs.core.entity.EntityProjectileBase;
+import lycanite.lycanitesmobs.core.item.ItemCharge;
 import lycanite.lycanitesmobs.demonmobs.DemonMobs;
 import lycanite.lycanitesmobs.demonmobs.entity.EntityDoomfireball;
 import net.minecraft.entity.player.EntityPlayer;

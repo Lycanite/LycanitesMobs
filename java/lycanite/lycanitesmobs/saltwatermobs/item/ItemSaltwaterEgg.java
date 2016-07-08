@@ -1,6 +1,6 @@
 package lycanite.lycanitesmobs.saltwatermobs.item;
 
-import lycanite.lycanitesmobs.api.item.ItemCustomSpawnEgg;
+import lycanite.lycanitesmobs.core.item.ItemCustomSpawnEgg;
 import lycanite.lycanitesmobs.saltwatermobs.SaltwaterMobs;
 
 public class ItemSaltwaterEgg extends ItemCustomSpawnEgg {

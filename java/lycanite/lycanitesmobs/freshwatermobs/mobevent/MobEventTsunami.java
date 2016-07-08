@@ -1,7 +1,7 @@
 package lycanite.lycanitesmobs.freshwatermobs.mobevent;
 
-import lycanite.lycanitesmobs.api.info.GroupInfo;
-import lycanite.lycanitesmobs.api.mobevent.MobEventBase;
+import lycanite.lycanitesmobs.core.info.GroupInfo;
+import lycanite.lycanitesmobs.core.mobevent.MobEventBase;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.world.World;
 

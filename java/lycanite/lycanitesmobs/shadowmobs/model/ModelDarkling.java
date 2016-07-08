@@ -1,6 +1,6 @@
 package lycanite.lycanitesmobs.shadowmobs.model;
 
-import lycanite.lycanitesmobs.api.model.ModelCustomObj;
+import lycanite.lycanitesmobs.core.model.ModelCustomObj;
 import lycanite.lycanitesmobs.shadowmobs.ShadowMobs;
 import lycanite.lycanitesmobs.shadowmobs.entity.EntityDarkling;
 import net.minecraft.entity.EntityLiving;

@@ -1,7 +1,7 @@
 package lycanite.lycanitesmobs.desertmobs.item;
 
-import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
-import lycanite.lycanitesmobs.api.item.ItemCharge;
+import lycanite.lycanitesmobs.core.entity.EntityProjectileBase;
+import lycanite.lycanitesmobs.core.item.ItemCharge;
 import lycanite.lycanitesmobs.desertmobs.DesertMobs;
 import lycanite.lycanitesmobs.desertmobs.entity.EntityThrowingScythe;
 import net.minecraft.entity.player.EntityPlayer;

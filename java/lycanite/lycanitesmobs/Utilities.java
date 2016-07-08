@@ -1,6 +1,6 @@
 package lycanite.lycanitesmobs;
 
-import lycanite.lycanitesmobs.api.config.ConfigBase;
+import lycanite.lycanitesmobs.core.config.ConfigBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.AxisAlignedBB;

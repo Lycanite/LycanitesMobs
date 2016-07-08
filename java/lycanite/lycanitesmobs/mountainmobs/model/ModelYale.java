@@ -1,8 +1,8 @@
 package lycanite.lycanitesmobs.mountainmobs.model;
 
-import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
-import lycanite.lycanitesmobs.api.model.ModelCustomObj;
-import lycanite.lycanitesmobs.api.renderer.RenderCreature;
+import lycanite.lycanitesmobs.core.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.core.model.ModelCustomObj;
+import lycanite.lycanitesmobs.core.renderer.RenderCreature;
 import lycanite.lycanitesmobs.mountainmobs.MountainMobs;
 import lycanite.lycanitesmobs.mountainmobs.renderer.LayerYaleWool;
 import net.minecraft.entity.EntityLiving;

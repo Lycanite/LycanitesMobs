@@ -1,8 +1,8 @@
 package lycanite.lycanitesmobs.demonmobs.item;
 
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
-import lycanite.lycanitesmobs.api.item.ItemScepter;
+import lycanite.lycanitesmobs.core.entity.EntityProjectileBase;
+import lycanite.lycanitesmobs.core.item.ItemScepter;
 import lycanite.lycanitesmobs.demonmobs.DemonMobs;
 import lycanite.lycanitesmobs.demonmobs.entity.EntityHellfireball;
 import net.minecraft.entity.EntityLivingBase;

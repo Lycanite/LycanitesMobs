@@ -1,6 +1,6 @@
 package lycanite.lycanitesmobs;
 
-import lycanite.lycanitesmobs.api.entity.EntityFear;
+import lycanite.lycanitesmobs.core.entity.EntityFear;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;

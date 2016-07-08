@@ -1,15 +1,15 @@
 package lycanite.lycanitesmobs;
 
-import lycanite.lycanitesmobs.api.capabilities.IExtendedPlayer;
-import lycanite.lycanitesmobs.api.info.Beastiary;
-import lycanite.lycanitesmobs.api.info.GroupInfo;
-import lycanite.lycanitesmobs.api.info.MobInfo;
-import lycanite.lycanitesmobs.api.item.ItemStaffSummoning;
-import lycanite.lycanitesmobs.api.network.*;
-import lycanite.lycanitesmobs.api.pets.DonationFamiliars;
-import lycanite.lycanitesmobs.api.pets.PetEntry;
-import lycanite.lycanitesmobs.api.pets.PetManager;
-import lycanite.lycanitesmobs.api.pets.SummonSet;
+import lycanite.lycanitesmobs.core.capabilities.IExtendedPlayer;
+import lycanite.lycanitesmobs.core.info.Beastiary;
+import lycanite.lycanitesmobs.core.info.GroupInfo;
+import lycanite.lycanitesmobs.core.info.MobInfo;
+import lycanite.lycanitesmobs.core.item.ItemStaffSummoning;
+import lycanite.lycanitesmobs.core.network.*;
+import lycanite.lycanitesmobs.core.pets.DonationFamiliars;
+import lycanite.lycanitesmobs.core.pets.PetEntry;
+import lycanite.lycanitesmobs.core.pets.PetManager;
+import lycanite.lycanitesmobs.core.pets.SummonSet;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;

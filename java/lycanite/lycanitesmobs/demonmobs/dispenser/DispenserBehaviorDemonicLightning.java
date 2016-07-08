@@ -1,7 +1,7 @@
 package lycanite.lycanitesmobs.demonmobs.dispenser;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorBase;
+import lycanite.lycanitesmobs.core.dispenser.DispenserBehaviorBase;
 import lycanite.lycanitesmobs.demonmobs.entity.EntityDemonicBlast;
 import net.minecraft.dispenser.IPosition;
 import net.minecraft.entity.IProjectile;

@@ -1,7 +1,7 @@
 package lycanite.lycanitesmobs.mountainmobs.info;
 
-import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
-import lycanite.lycanitesmobs.api.info.AltarInfo;
+import lycanite.lycanitesmobs.core.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.core.info.AltarInfo;
 import lycanite.lycanitesmobs.mountainmobs.entity.EntityGeonach;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;

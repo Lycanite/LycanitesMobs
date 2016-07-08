@@ -2,7 +2,7 @@ package lycanite.lycanitesmobs.demonmobs.entity;
 
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
+import lycanite.lycanitesmobs.core.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.demonmobs.DemonMobs;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;

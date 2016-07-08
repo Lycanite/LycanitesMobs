@@ -1,7 +1,7 @@
 package lycanite.lycanitesmobs.junglemobs.item;
 
-import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
-import lycanite.lycanitesmobs.api.item.ItemCharge;
+import lycanite.lycanitesmobs.core.entity.EntityProjectileBase;
+import lycanite.lycanitesmobs.core.item.ItemCharge;
 import lycanite.lycanitesmobs.junglemobs.JungleMobs;
 import lycanite.lycanitesmobs.junglemobs.entity.EntityPoop;
 import net.minecraft.entity.player.EntityPlayer;

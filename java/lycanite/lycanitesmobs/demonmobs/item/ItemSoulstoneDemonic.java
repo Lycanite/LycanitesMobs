@@ -1,9 +1,9 @@
 package lycanite.lycanitesmobs.demonmobs.item;
 
 import lycanite.lycanitesmobs.ExtendedPlayer;
-import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
-import lycanite.lycanitesmobs.api.info.GroupInfo;
-import lycanite.lycanitesmobs.api.item.ItemSoulstone;
+import lycanite.lycanitesmobs.core.entity.EntityCreatureTameable;
+import lycanite.lycanitesmobs.core.info.GroupInfo;
+import lycanite.lycanitesmobs.core.item.ItemSoulstone;
 import lycanite.lycanitesmobs.demonmobs.entity.EntityCacodemon;
 import lycanite.lycanitesmobs.demonmobs.entity.EntityPinky;
 import net.minecraft.entity.Entity;

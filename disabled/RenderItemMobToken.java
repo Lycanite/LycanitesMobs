@@ -1,9 +1,9 @@
-package lycanite.lycanitesmobs.api.renderer;
+package lycanite.lycanitesmobs.core.renderer;
 
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.info.MobInfo;
-import lycanite.lycanitesmobs.api.model.ModelCustom;
+import lycanite.lycanitesmobs.core.info.MobInfo;
+import lycanite.lycanitesmobs.core.model.ModelCustom;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.ItemRenderer;

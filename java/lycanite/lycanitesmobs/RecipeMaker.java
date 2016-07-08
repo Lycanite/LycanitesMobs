@@ -1,8 +1,8 @@
 package lycanite.lycanitesmobs;
 
 
-import lycanite.lycanitesmobs.api.block.*;
-import lycanite.lycanitesmobs.api.info.GroupInfo;
+import lycanite.lycanitesmobs.core.block.*;
+import lycanite.lycanitesmobs.core.info.GroupInfo;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;

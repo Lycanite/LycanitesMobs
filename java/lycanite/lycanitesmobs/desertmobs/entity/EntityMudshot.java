@@ -1,7 +1,7 @@
 package lycanite.lycanitesmobs.desertmobs.entity;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
+import lycanite.lycanitesmobs.core.entity.EntityProjectileBase;
 import lycanite.lycanitesmobs.desertmobs.DesertMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

@@ -1,7 +1,7 @@
 package lycanite.lycanitesmobs.mountainmobs.dispenser;
 
 import lycanite.lycanitesmobs.AssetManager;
-import lycanite.lycanitesmobs.api.dispenser.DispenserBehaviorBase;
+import lycanite.lycanitesmobs.core.dispenser.DispenserBehaviorBase;
 import lycanite.lycanitesmobs.mountainmobs.entity.EntityArcaneLaserStorm;
 import net.minecraft.dispenser.IPosition;
 import net.minecraft.entity.IProjectile;

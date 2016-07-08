@@ -1,7 +1,7 @@
 package lycanite.lycanitesmobs.forestmobs.item;
 
-import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
-import lycanite.lycanitesmobs.api.item.ItemCharge;
+import lycanite.lycanitesmobs.core.entity.EntityProjectileBase;
+import lycanite.lycanitesmobs.core.item.ItemCharge;
 import lycanite.lycanitesmobs.forestmobs.ForestMobs;
 import lycanite.lycanitesmobs.forestmobs.entity.EntityLifeDrain;
 import net.minecraft.entity.player.EntityPlayer;

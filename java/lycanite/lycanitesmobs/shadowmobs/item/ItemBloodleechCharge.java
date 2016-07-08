@@ -1,7 +1,7 @@
 package lycanite.lycanitesmobs.shadowmobs.item;
 
-import lycanite.lycanitesmobs.api.entity.EntityProjectileBase;
-import lycanite.lycanitesmobs.api.item.ItemCharge;
+import lycanite.lycanitesmobs.core.entity.EntityProjectileBase;
+import lycanite.lycanitesmobs.core.item.ItemCharge;
 import lycanite.lycanitesmobs.shadowmobs.ShadowMobs;
 import lycanite.lycanitesmobs.shadowmobs.entity.EntityBloodleech;
 import net.minecraft.entity.player.EntityPlayer;

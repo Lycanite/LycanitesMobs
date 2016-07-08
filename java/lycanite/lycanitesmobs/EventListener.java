@@ -1,13 +1,13 @@
 package lycanite.lycanitesmobs;
 
-import lycanite.lycanitesmobs.api.capabilities.IExtendedEntity;
-import lycanite.lycanitesmobs.api.capabilities.IExtendedPlayer;
-import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
-import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
-import lycanite.lycanitesmobs.api.entity.EntityItemCustom;
-import lycanite.lycanitesmobs.api.info.ItemInfo;
-import lycanite.lycanitesmobs.api.item.ItemBase;
-import lycanite.lycanitesmobs.api.item.ItemSwordBase;
+import lycanite.lycanitesmobs.core.capabilities.IExtendedEntity;
+import lycanite.lycanitesmobs.core.capabilities.IExtendedPlayer;
+import lycanite.lycanitesmobs.core.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.core.entity.EntityCreatureRideable;
+import lycanite.lycanitesmobs.core.entity.EntityItemCustom;
+import lycanite.lycanitesmobs.core.info.ItemInfo;
+import lycanite.lycanitesmobs.core.item.ItemBase;
+import lycanite.lycanitesmobs.core.item.ItemSwordBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.entity.Entity;

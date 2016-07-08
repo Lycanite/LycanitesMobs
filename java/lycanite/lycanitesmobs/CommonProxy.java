@@ -1,6 +1,6 @@
 package lycanite.lycanitesmobs;
 
-import lycanite.lycanitesmobs.api.info.GroupInfo;
+import lycanite.lycanitesmobs.core.info.GroupInfo;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;

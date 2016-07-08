@@ -1,7 +1,7 @@
 package lycanite.lycanitesmobs.junglemobs.item;
 
 import lycanite.lycanitesmobs.ObjectManager;
-import lycanite.lycanitesmobs.api.item.ItemScepter;
+import lycanite.lycanitesmobs.core.item.ItemScepter;
 import lycanite.lycanitesmobs.junglemobs.JungleMobs;
 import lycanite.lycanitesmobs.junglemobs.entity.EntityPoop;
 import net.minecraft.entity.EntityLivingBase;

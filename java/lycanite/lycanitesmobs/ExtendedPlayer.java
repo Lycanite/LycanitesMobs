@@ -119,6 +119,8 @@ public class ExtendedPlayer implements IExtendedPlayer {
 	public void setPlayer(EntityPlayer player) {
         this.player = player;
         this.petManager.host = player;
+        if(this.player.worldObj == null || this.player.worldObj.isRemote)
+            return;
         if(backupNBTTags.containsKey(this.player.getName())) {
             this.readNBT(backupNBTTags.get(this.player.getName()));
             backupNBTTags.remove(this.player.getName());

@@ -51,8 +51,12 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
         // Stats:
         this.stepHeight = 1.0F;
         this.isMobWhenNotTamed = true;
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIPlayerControl(this));
         this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("erepedetreat"))).setTemptDistanceMin(4.0D));
@@ -62,18 +66,18 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
         this.tasks.addTask(9, new EntityAIBeg(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
-        
+
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
         if(MobInfo.predatorsAttackAnimals) {
-	        if(ObjectManager.getMob("Joust") != null)
-	        	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityJoust.class).setPackHuntingScale(1, 3));
-	        if(ObjectManager.getMob("JoustAlpha") != null)
-	        	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityJoustAlpha.class).setPackHuntingScale(1, 1));
+            if(ObjectManager.getMob("Joust") != null)
+                this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityJoust.class).setPackHuntingScale(1, 3));
+            if(ObjectManager.getMob("JoustAlpha") != null)
+                this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityJoustAlpha.class).setPackHuntingScale(1, 1));
         }
-        
+
         this.targetTasks.addTask(0, new EntityAITargetParent(this).setSightCheck(false).setDistance(32.0D));
     }
     

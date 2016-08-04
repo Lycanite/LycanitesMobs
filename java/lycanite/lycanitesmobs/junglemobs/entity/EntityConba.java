@@ -48,19 +48,23 @@ public class EntityConba extends EntityCreatureTameable implements IMob {
         this.setWidth = 0.6F;
         this.setHeight = 0.9F;
         this.setupMob();
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
-        
+
         this.aiAttackMelee = new EntityAIAttackMelee(this).setRate(10).setLongMemory(true).setEnabled(false);
         this.tasks.addTask(2, this.aiAttackMelee);
-        
+
         this.aiAttackRanged = new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(30).setRange(16.0F).setMinChaseDistance(10.0F).setChaseTime(-1);
         this.tasks.addTask(2, this.aiAttackRanged);
-        
+
         this.aiAvoid = new EntityAIAvoid(this).setNearSpeed(1.5D).setFarSpeed(1.3D).setNearDistance(5.0D).setFarDistance(9.0D);
         this.tasks.addTask(3, this.aiAvoid);
-        
+
         this.tasks.addTask(4, this.aiSit);
         this.tasks.addTask(5, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
         this.tasks.addTask(6, new EntityAIWander(this));
@@ -141,17 +145,18 @@ public class EntityConba extends EntityCreatureTameable implements IMob {
         }
         
         // Infected AI:
-        if(this.vespidInfection && !this.worldObj.isRemote) {
-        	this.aiAttackMelee.setEnabled(true);
-        	this.aiAttackRanged.setEnabled(false);
-        	if(this.vespidInfectionTime++ >= 60 * 20) {
-        		this.spawnVespidSwarm();
-        		this.setDead();
-        	}
-        }
-        else {
-        	this.aiAttackMelee.setEnabled(false);
-        	this.aiAttackRanged.setEnabled(true);
+        if(!this.worldObj.isRemote) {
+            if (this.vespidInfection && !this.worldObj.isRemote) {
+                this.aiAttackMelee.setEnabled(true);
+                this.aiAttackRanged.setEnabled(false);
+                if (this.vespidInfectionTime++ >= 60 * 20) {
+                    this.spawnVespidSwarm();
+                    this.setDead();
+                }
+            } else {
+                this.aiAttackMelee.setEnabled(false);
+                this.aiAttackRanged.setEnabled(true);
+            }
         }
         
         // Infected Visuals

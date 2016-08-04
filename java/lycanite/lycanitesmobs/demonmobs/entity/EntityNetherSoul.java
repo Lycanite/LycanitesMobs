@@ -38,8 +38,12 @@ public class EntityNetherSoul extends EntityCreatureBase implements IMob {
         this.setupMob();
 
         this.stepHeight = 1.0F;
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(2, new EntityAIAttackMelee(this).setSpeed(2.0D).setLongMemory(false));
         this.tasks.addTask(6, new EntityAIWander(this).setSpeed(1.0D).setPauseRate(0));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));

@@ -42,8 +42,12 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
         this.setWidth = 0.8F;
         this.setHeight = 1.5F;
         this.setupMob();
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIStealth(this).setStealthTime(20).setStealthAttack(true).setStealthMove(true));
         this.tasks.addTask(2, new EntityAIAvoid(this).setNearSpeed(2.0D).setFarSpeed(1.5D).setNearDistance(5.0D).setFarDistance(10.0D));
@@ -66,10 +70,10 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
         if(MobInfo.predatorsAttackAnimals) {
             this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityChicken.class));
             this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
-	        if(ObjectManager.getMob("Joust") != null)
-	        	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(ObjectManager.getMob("Joust")));
-	        if(ObjectManager.getMob("JoustAlpha") != null)
-	        	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(ObjectManager.getMob("JoustAlpha")));
+            if(ObjectManager.getMob("Joust") != null)
+                this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(ObjectManager.getMob("Joust")));
+            if(ObjectManager.getMob("JoustAlpha") != null)
+                this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(ObjectManager.getMob("JoustAlpha")));
         }
         this.targetTasks.addTask(0, new EntityAITargetParent(this).setSightCheck(false).setDistance(32.0D));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));

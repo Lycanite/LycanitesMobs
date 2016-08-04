@@ -40,7 +40,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     public UUID ownerUUID;
 	
 	// AI:
-	public EntityAISit aiSit = new EntityAISit(this);
+	public EntityAISit aiSit;
 
     // Datawatcher:
     protected static final DataParameter<Byte> TAMED = EntityDataManager.<Byte>createKey(EntityCreatureBase.class, DataSerializers.BYTE);
@@ -72,6 +72,13 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
         this.dataManager.register(OWNER, "");
         this.dataManager.register(HUNGER, new Float(this.getCreatureHungerMax()));
         this.dataManager.register(STAMINA, new Float(this.getStaminaMax()));
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
+        this.aiSit = new EntityAISit(this);
     }
     
     // ========== Name ==========

@@ -41,8 +41,12 @@ public class EntityGhoulZombie extends EntityCreatureAgeable implements IMob {
         this.setWidth = 0.8F;
         this.setHeight = 1.6F;
         this.setupMob();
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         if(this.getNavigator() instanceof PathNavigateGround) {
             PathNavigateGround pathNavigateGround = (PathNavigateGround)this.getNavigator();
             pathNavigateGround.setBreakDoors(true);

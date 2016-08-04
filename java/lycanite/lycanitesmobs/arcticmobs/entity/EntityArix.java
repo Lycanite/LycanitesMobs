@@ -47,8 +47,12 @@ public class EntityArix extends EntityCreatureTameable implements IMob, IGroupIc
         this.setupMob();
 
         this.stepHeight = 1.0F;
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(80).setRange(14.0F).setMinChaseDistance(5.0F).setCheckSight(false));
         this.tasks.addTask(3, this.aiSit);
@@ -59,7 +63,7 @@ public class EntityArix extends EntityCreatureTameable implements IMob, IGroupIc
         this.tasks.addTask(11, new EntityAILookIdle(this));
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
-    	this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(IGroupFire.class));
+        this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(IGroupFire.class));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityBlaze.class));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityMagmaCube.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));

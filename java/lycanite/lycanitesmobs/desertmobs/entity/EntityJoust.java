@@ -41,8 +41,12 @@ public class EntityJoust extends EntityCreatureAgeable implements IAnimals, IGro
         this.setHeight = 2.2F;
         this.attackTime = 10;
         this.setupMob();
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIMate(this));
         this.tasks.addTask(2, new EntityAITempt(this).setItemList("CactusFood"));

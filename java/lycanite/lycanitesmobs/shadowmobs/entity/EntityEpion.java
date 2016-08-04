@@ -46,8 +46,12 @@ public class EntityEpion extends EntityCreatureTameable implements IMob, IGroupS
         this.setupMob();
 
         this.stepHeight = 1.0F;
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(40).setRange(14.0F).setMinChaseDistance(6.0F));
         this.tasks.addTask(3, this.aiSit);

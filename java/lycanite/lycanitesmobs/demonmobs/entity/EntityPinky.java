@@ -48,8 +48,12 @@ public class EntityPinky extends EntityCreatureRideable implements IAnimals, IGr
         
         this.attackTime = 10;
         this.stepHeight = 1.0F;
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIMate(this));
         this.tasks.addTask(2, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("pinkytreat"))).setTemptDistanceMin(4.0D));
@@ -60,7 +64,7 @@ public class EntityPinky extends EntityCreatureRideable implements IAnimals, IGr
         this.tasks.addTask(7, new EntityAIWander(this).setSpeed(1.0D));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
-        
+
         this.targetTasks.addTask(0, new EntityAITargetRiderRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetRiderAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));

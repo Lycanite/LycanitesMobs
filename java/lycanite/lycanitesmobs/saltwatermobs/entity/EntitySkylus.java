@@ -29,7 +29,7 @@ import java.util.HashMap;
 
 public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroupPredator {
 	
-	EntityAIWander wanderAI = new EntityAIWander(this);
+	EntityAIWander wanderAI;
     
     // ==================================================
  	//                    Constructor
@@ -51,12 +51,17 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroup
         this.setWidth = 1.5F;
         this.setHeight = 1.6F;
         this.setupMob();
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(1, new EntityAIStayByWater(this));
         this.tasks.addTask(2, this.aiSit);
         this.tasks.addTask(3, new EntityAIAttackMelee(this).setLongMemory(false).setRange(1D));
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
+        this.wanderAI = new EntityAIWander(this);
         this.tasks.addTask(6, wanderAI);
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
@@ -103,10 +108,12 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroup
         super.onLivingUpdate();
         
         // Wander Pause Rates:
-		if(this.isInWater())
-			this.wanderAI.setPauseRate(20);
-		else
-			this.wanderAI.setPauseRate(0);
+        if(!this.worldObj.isRemote) {
+            if (this.isInWater())
+                this.wanderAI.setPauseRate(20);
+            else
+                this.wanderAI.setPauseRate(0);
+        }
     }
 
 	

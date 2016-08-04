@@ -53,8 +53,12 @@ public class EntityConcapedeHead extends EntityCreatureAgeable implements IAnima
         this.setWidth = 0.5F;
         this.setHeight = 0.9F;
         this.setupMob();
-    	
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(4, new EntityAIAttackMelee(this).setLongMemory(false));
         this.tasks.addTask(5, new EntityAITempt(this).setItemList("vegetables"));

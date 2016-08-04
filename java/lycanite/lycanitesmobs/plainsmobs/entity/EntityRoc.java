@@ -27,7 +27,7 @@ import net.minecraft.world.World;
 import java.util.HashMap;
 
 public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter {
-    public EntityAIAttackMelee attackAI = new EntityAIAttackMelee(this).setLongMemory(false);
+    public EntityAIAttackMelee attackAI;
 
     public boolean creeperDropping = true;
     int creeperDropCooldown = 0;
@@ -52,9 +52,14 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
         this.setupMob();
 
         this.stepHeight = 1.0F;
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
+        this.attackAI = new EntityAIAttackMelee(this).setLongMemory(false);
         this.tasks.addTask(3, this.attackAI);
         this.tasks.addTask(8, new EntityAIWander(this).setPauseRate(0));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));

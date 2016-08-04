@@ -40,8 +40,12 @@ public class EntityChupacabra extends EntityCreatureTameable implements IAnimals
         this.setupMob();
         
         this.attackTime = 15;
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIMate(this));
         this.tasks.addTask(2, this.aiSit);

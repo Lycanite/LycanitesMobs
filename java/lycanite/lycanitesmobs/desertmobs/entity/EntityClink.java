@@ -41,8 +41,12 @@ public class EntityClink extends EntityCreatureTameable implements IMob {
         // Stats:
         this.attackPhaseMax = 3;
         this.justAttackedTime = (short)(10);
-    	
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.rangedAttackAI = new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(10).setRange(14.0F).setMinChaseDistance(4.0F);
         this.tasks.addTask(2, rangedAttackAI);

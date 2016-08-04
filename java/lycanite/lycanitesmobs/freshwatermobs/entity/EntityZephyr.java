@@ -38,8 +38,12 @@ public class EntityZephyr extends EntityCreatureTameable implements IMob, IGroup
         this.setWidth = 0.8F;
         this.setHeight = 1.2F;
         this.setupMob();
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIAttackMelee(this).setRate(20));
         this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(60).setRange(14.0F).setMinChaseDistance(5.0F));

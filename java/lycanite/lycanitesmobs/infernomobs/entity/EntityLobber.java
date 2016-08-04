@@ -36,7 +36,7 @@ import java.util.HashMap;
 
 public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire {
 
-	EntityAIWander wanderAI = new EntityAIWander(this);
+	EntityAIWander wanderAI;
     public boolean lobberMelting = true;
 	
     // ==================================================
@@ -61,21 +61,26 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
         this.setupMob();
 
         this.setPathPriority(PathNodeType.LAVA, 0F);
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this).setSink(true));
         this.tasks.addTask(1, new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(100).setRange(16.0F).setMinChaseDistance(8.0F));
         this.tasks.addTask(2, new EntityAIStayByWater(this).setSpeed(1.25D));
+        this.wanderAI = new EntityAIWander(this);
         this.tasks.addTask(6, wanderAI);
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(EntityCinder.class));
-    	this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(IGroupIce.class));
-    	this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(IGroupWater.class));
+        this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(IGroupIce.class));
+        this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(IGroupWater.class));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntitySnowman.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
-    	this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(IGroupPlant.class));
+        this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(IGroupPlant.class));
     }
     
     // ========== Stats ==========
@@ -128,10 +133,12 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
         super.onLivingUpdate();
         
         // Wander Pause Rates:
-		if(this.lavaContact())
-			this.wanderAI.setPauseRate(120);
-		else
-			this.wanderAI.setPauseRate(0);
+        if(!this.worldObj.isRemote) {
+            if (this.lavaContact())
+                this.wanderAI.setPauseRate(120);
+            else
+                this.wanderAI.setPauseRate(0);
+        }
         
         // Trail:
         if(!this.worldObj.isRemote && this.isMoving() && this.ticksExisted % 5 == 0) {

@@ -54,8 +54,12 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
 
         this.stepHeight = 1.0F;
         this.farmingRate = ConfigBase.getConfig(this.group, "general").getInt("Features", "Spriggan Minion Crop Boosting", this.farmingRate, "Sets the rate in ticks (20 ticks = 1 second) that a Spriggan will boost nearby crops. Each boost will usually cause the crop to grow one stage.");
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(3, this.aiSit);
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
@@ -67,7 +71,7 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
-    	this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(IGroupFire.class));
+        this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(IGroupFire.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));

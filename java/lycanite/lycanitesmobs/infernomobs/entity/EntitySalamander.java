@@ -71,8 +71,12 @@ public class EntitySalamander extends EntityCreatureRideable implements IMob, IG
         this.stepHeight = 1.0F;
 
         this.setPathPriority(PathNodeType.LAVA, 0F);
-    	
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(3, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("salamandertreat"))).setTemptDistanceMin(4.0D));
         this.tasks.addTask(4, new EntityAIAttackMelee(this).setRate(20));

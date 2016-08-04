@@ -44,8 +44,12 @@ public class EntityGeken extends EntityCreatureTameable implements IMob {
         // Stats:
         this.attackPhaseMax = 3;
         this.justAttackedTime = 10;
-    	
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         meleeAttackAI = new EntityAIAttackMelee(this).setRate(10);
         this.tasks.addTask(3, meleeAttackAI);

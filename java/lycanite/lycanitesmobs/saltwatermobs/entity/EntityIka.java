@@ -24,7 +24,7 @@ import java.util.HashMap;
 
 public class EntityIka extends EntityCreatureAgeable implements IAnimals, IGroupAnimal {
 
-	EntityAIWander wanderAI = new EntityAIWander(this);
+	EntityAIWander wanderAI;
 
     // ==================================================
  	//                    Constructor
@@ -48,8 +48,12 @@ public class EntityIka extends EntityCreatureAgeable implements IAnimals, IGroup
         this.fleeHealthPercent = 1.0F;
         this.isHostileByDefault = false;
         this.setupMob();
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this).setSink(true));
         this.tasks.addTask(1, new EntityAIAttackMelee(this).setLongMemory(false));
         this.tasks.addTask(2, new EntityAITempt(this).setItemList("Vegetables"));
@@ -57,6 +61,7 @@ public class EntityIka extends EntityCreatureAgeable implements IAnimals, IGroup
         this.tasks.addTask(4, new EntityAIAvoid(this).setNearSpeed(1.3D).setFarSpeed(1.2D).setNearDistance(5.0D).setFarDistance(20.0D));
         this.tasks.addTask(5, new EntityAIMate(this));
         this.tasks.addTask(6, new EntityAIFollowParent(this).setSpeed(1.0D));
+        this.wanderAI = new EntityAIWander(this);
         this.tasks.addTask(7, this.wanderAI);
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
@@ -94,10 +99,12 @@ public class EntityIka extends EntityCreatureAgeable implements IAnimals, IGroup
         super.onLivingUpdate();
         
         // Wander Pause Rates:
-		if(this.isInWater())
-			this.wanderAI.setPauseRate(20);
-		else
-			this.wanderAI.setPauseRate(0);
+        if(!this.worldObj.isRemote) {
+            if (this.isInWater())
+                this.wanderAI.setPauseRate(20);
+            else
+                this.wanderAI.setPauseRate(0);
+        }
     }
 
 	

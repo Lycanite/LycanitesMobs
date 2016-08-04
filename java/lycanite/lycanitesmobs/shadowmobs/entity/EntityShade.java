@@ -49,8 +49,12 @@ public class EntityShade extends EntityCreatureRideable implements IGroupPredato
 
         this.stepHeight = 1.0F;
         this.attackTime = 40;
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         //this.tasks.addTask(2, this.aiSit);
         this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("shadetreat"))).setTemptDistanceMin(4.0D));

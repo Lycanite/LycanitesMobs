@@ -46,8 +46,12 @@ public class EntityEttin extends EntityCreatureAgeable implements IMob {
         
         // Stats:
         this.attackPhaseMax = 2;
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         if(this.getNavigator() instanceof PathNavigateGround) {
             PathNavigateGround pathNavigateGround = (PathNavigateGround)this.getNavigator();
             pathNavigateGround.setBreakDoors(true);

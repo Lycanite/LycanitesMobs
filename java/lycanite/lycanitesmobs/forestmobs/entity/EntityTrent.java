@@ -50,8 +50,12 @@ public class EntityTrent extends EntityCreatureBase implements IMob, IGroupPlant
         this.setupMob();
 
         this.stepHeight = 2.0F;
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(3, new EntityAIAttackMelee(this).setTargetClass(EntityPlayer.class).setLongMemory(false).setRate(60));
         this.tasks.addTask(4, new EntityAIAttackMelee(this));
@@ -63,7 +67,7 @@ public class EntityTrent extends EntityCreatureBase implements IMob, IGroupPlant
         //this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         //this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(EntityEnt.class));
-    	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupFire.class));
+        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupFire.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class).setCheckSight(false));
         this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class).setCheckSight(false));
         //this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));

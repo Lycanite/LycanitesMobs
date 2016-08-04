@@ -79,8 +79,12 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
         
         this.vespidQueenSwarmLimit = ConfigBase.getConfig(this.group, "general").getInt("Features", "Vespid Queen Swarm Limit", this.vespidQueenSwarmLimit, "Limits how many Vespid drones a Queen can have before she will no longer spawn babies in hives.");
         this.vespidHiveBuilding = ConfigBase.getConfig(this.group, "general").getBool("Features", "Vespid Hive Building", this.vespidHiveBuilding, "Set to false to stop Vespids from building hives all together.");
-    	
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIAttackMelee(this).setRate(10).setLongMemory(true));
         this.tasks.addTask(7, new EntityAIStayByHome(this));

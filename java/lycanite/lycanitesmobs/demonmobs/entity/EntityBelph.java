@@ -49,8 +49,12 @@ public class EntityBelph extends EntityCreatureTameable implements IMob, IGroupD
         this.setWidth = 0.6F;
         this.setHeight = 1.8F;
         this.setupMob();
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         if(this.getNavigator() instanceof PathNavigateGround) {
             PathNavigateGround pathNavigateGround = (PathNavigateGround)this.getNavigator();
             pathNavigateGround.setBreakDoors(true);

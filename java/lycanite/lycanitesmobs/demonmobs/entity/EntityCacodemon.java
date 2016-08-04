@@ -46,8 +46,12 @@ public class EntityCacodemon extends EntityCreatureTameable implements IGroupDem
 
         this.stepHeight = 1.0F;
         this.hitAreaScale = 1.5F;
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(1, new EntityAIMate(this));
         this.tasks.addTask(2, this.aiSit);
         this.tasks.addTask(3, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));

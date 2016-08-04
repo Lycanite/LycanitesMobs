@@ -51,8 +51,12 @@ public class EntityGeist extends EntityCreatureAgeable implements IMob, IGroupSh
         this.setWidth = 0.6F;
         this.setHeight = 2.4F;
         this.setupMob();
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         if(this.getNavigator() instanceof PathNavigateGround) {
             PathNavigateGround pathNavigateGround = (PathNavigateGround)this.getNavigator();
             pathNavigateGround.setBreakDoors(true);

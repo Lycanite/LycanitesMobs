@@ -40,8 +40,12 @@ public class EntityManticore extends EntityCreatureTameable implements IMob, IGr
         this.setupMob();
 
         this.stepHeight = 1.0F;
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(3, new EntityAIAttackMelee(this).setTargetClass(EntityPlayer.class).setLongMemory(false));
         this.tasks.addTask(4, new EntityAIAttackMelee(this));

@@ -47,8 +47,12 @@ public class EntityZoataur extends EntityCreatureTameable implements IGroupPreda
         
         // Stats:
         this.stepHeight = 1.0F;
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIAttackMelee(this).setTargetClass(EntityPlayer.class).setLongMemory(false));
         this.tasks.addTask(3, new EntityAIAttackMelee(this));
@@ -66,8 +70,8 @@ public class EntityZoataur extends EntityCreatureTameable implements IGroupPreda
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
         this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupAlpha.class).setPackHuntingScale(1, 1));
         if(MobInfo.predatorsAttackAnimals) {
-        	this.targetTasks.addTask(6, new EntityAITargetAttack(this).setTargetClass(IGroupAnimal.class).setPackHuntingScale(1, 3));
-        	this.targetTasks.addTask(6, new EntityAITargetAttack(this).setTargetClass(EntityAnimal.class).setPackHuntingScale(1, 3));
+            this.targetTasks.addTask(6, new EntityAITargetAttack(this).setTargetClass(IGroupAnimal.class).setPackHuntingScale(1, 3));
+            this.targetTasks.addTask(6, new EntityAITargetAttack(this).setTargetClass(EntityAnimal.class).setPackHuntingScale(1, 3));
         }
     }
     

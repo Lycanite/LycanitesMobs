@@ -29,7 +29,7 @@ import java.util.HashMap;
 
 public class EntityAbtu extends EntityCreatureTameable implements IMob, IGroupPredator {
 	
-	EntityAIWander wanderAI = new EntityAIWander(this);
+	EntityAIWander wanderAI;
     int swarmLimit = 5;
     
     // ==================================================
@@ -54,11 +54,16 @@ public class EntityAbtu extends EntityCreatureTameable implements IMob, IGroupPr
         this.setupMob();
 
         this.swarmLimit = ConfigBase.getConfig(this.group, "general").getInt("Features", "Abtu Swarm Limit", this.swarmLimit, "Limits how many Abtu there can be when swarming.");
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(1, new EntityAIStayByWater(this));
         this.tasks.addTask(2, this.aiSit);
         this.tasks.addTask(3, new EntityAIAttackMelee(this).setLongMemory(false).setRate(10));
+        this.wanderAI = new EntityAIWander(this);
         this.tasks.addTask(6, wanderAI.setPauseRate(0));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));

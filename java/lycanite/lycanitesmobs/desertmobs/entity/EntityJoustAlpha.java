@@ -41,8 +41,12 @@ public class EntityJoustAlpha extends EntityCreatureAgeable implements IAnimals,
         this.setHeight = 2.2F;
         this.attackTime = 10;
         this.setupMob();
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(3, new EntityAIAttackMelee(this).setRate(10).setLongMemory(false));
         this.tasks.addTask(4, new EntityAIFollowParent(this).setSpeed(1.0D));

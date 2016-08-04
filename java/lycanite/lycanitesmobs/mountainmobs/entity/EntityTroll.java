@@ -55,8 +55,12 @@ public class EntityTroll extends EntityCreatureBase implements IMob {
         this.setHeight = 3.2F;
         this.solidCollision = true;
         this.setupMob();
-    	
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         if(this.getNavigator() instanceof PathNavigateGround) {
             PathNavigateGround pathNavigateGround = (PathNavigateGround)this.getNavigator();
             pathNavigateGround.setBreakDoors(true);

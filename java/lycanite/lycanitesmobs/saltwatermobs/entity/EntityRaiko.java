@@ -24,7 +24,7 @@ import java.util.HashMap;
 
 public class EntityRaiko extends EntityCreatureBase implements IMob, IGroupHunter {
     public Entity pickupEntity;
-    public EntityAIAttackMelee attackAI = new EntityAIAttackMelee(this).setLongMemory(false);
+    public EntityAIAttackMelee attackAI;
     public int waterTime = 0;
 
     // ==================================================
@@ -45,9 +45,14 @@ public class EntityRaiko extends EntityCreatureBase implements IMob, IGroupHunte
         this.setupMob();
 
         this.stepHeight = 1.0F;
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
+        this.attackAI = new EntityAIAttackMelee(this).setLongMemory(false);
         this.tasks.addTask(3, this.attackAI);
         this.tasks.addTask(8, new EntityAIWander(this).setPauseRate(0));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));

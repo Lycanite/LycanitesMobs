@@ -52,8 +52,12 @@ public class EntityAfrit extends EntityCreatureTameable implements IMob, IGroupF
         this.stepHeight = 1.0F;
 
         this.setPathPriority(PathNodeType.LAVA, 0F);
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(80).setRange(14.0F).setMinChaseDistance(5.0F).setCheckSight(false));
         this.tasks.addTask(3, this.aiSit);
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
@@ -63,12 +67,12 @@ public class EntityAfrit extends EntityCreatureTameable implements IMob, IGroupF
         this.tasks.addTask(11, new EntityAILookIdle(this));
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
-    	this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(IGroupIce.class));
-    	this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(IGroupWater.class));
+        this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(IGroupIce.class));
+        this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(IGroupWater.class));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntitySnowman.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
-    	this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupPlant.class));
+        this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupPlant.class));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
     

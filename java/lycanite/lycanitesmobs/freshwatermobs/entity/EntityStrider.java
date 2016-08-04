@@ -25,7 +25,7 @@ import java.util.HashMap;
 
 public class EntityStrider extends EntityCreatureTameable {
 
-    protected EntityAIWander wanderAI = new EntityAIWander(this);
+    protected EntityAIWander wanderAI;
     protected EntityAIAttackMelee attackAI;
 
     protected int pickupCooldown = 100;
@@ -53,8 +53,12 @@ public class EntityStrider extends EntityCreatureTameable {
 
         this.setPathPriority(PathNodeType.WATER, 0F);
         this.stepHeight = 4.0F;
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this).setSink(true));
         this.tasks.addTask(2, this.aiSit);
         this.attackAI = new EntityAIAttackMelee(this).setLongMemory(false);
@@ -62,6 +66,7 @@ public class EntityStrider extends EntityCreatureTameable {
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
         this.tasks.addTask(5, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("stridertreat"))).setTemptDistanceMin(4.0D));
         this.tasks.addTask(6, new EntityAIStayByWater(this).setSpeed(1.25D));
+        this.wanderAI = new EntityAIWander(this);
         this.tasks.addTask(7, this.wanderAI);
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));

@@ -48,8 +48,12 @@ public class EntityCrusk extends EntityCreatureTameable implements IGroupPredato
         this.setHeight = 1.8F;
         this.setupMob();
         this.hitAreaScale = 1.5F;
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIStealth(this).setStealthTime(60));
         this.tasks.addTask(2, this.aiSit);
@@ -68,8 +72,8 @@ public class EntityCrusk extends EntityCreatureTameable implements IGroupPredato
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupAlpha.class));
         if(MobInfo.predatorsAttackAnimals) {
-	        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupAnimal.class));
-	        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityAnimal.class));
+            this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupAnimal.class));
+            this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityAnimal.class));
         }
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }

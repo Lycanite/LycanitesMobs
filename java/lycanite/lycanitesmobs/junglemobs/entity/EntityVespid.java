@@ -58,8 +58,12 @@ public class EntityVespid extends EntityCreatureAgeable implements IMob, IGroupP
         this.justAttackedTime = (short)(10);
         
         this.vespidHiveBuilding = ConfigBase.getConfig(this.group, "general").getBool("Features", "Vespid Hive Building", this.vespidHiveBuilding, "Set to false to stop Vespids from building hives all together.");
-    	
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIAttackMelee(this).setRate(10).setLongMemory(true));
         this.aiPlaceBlock = new EntityAIPlaceBlock(this).setMaxDistance(128D).setSpeed(3D);

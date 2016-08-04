@@ -44,8 +44,12 @@ public class EntityGorgomite extends EntityCreatureBase implements IMob, IGroupP
         this.setupMob();
         
         this.gorgomiteSwarmLimit = ConfigBase.getConfig(this.group, "general").getInt("Features", "Gorgomite Swarm Limit", this.gorgomiteSwarmLimit, "Limits how many Gorgomites there can be when swarming.");
-    	
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIAvoid(this).setNearSpeed(2.0D).setFarSpeed(1.5D).setNearDistance(5.0D).setFarDistance(10.0D));
         this.tasks.addTask(3, new EntityAIAttackMelee(this).setRate(20).setLongMemory(true));

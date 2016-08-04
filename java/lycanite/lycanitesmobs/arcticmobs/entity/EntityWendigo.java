@@ -30,7 +30,7 @@ import java.util.HashMap;
 
 public class EntityWendigo extends EntityCreatureBase implements IMob, IGroupIce {
 
-	EntityAIWander wanderAI = new EntityAIWander(this);
+	EntityAIWander wanderAI;
 	
     // ==================================================
  	//                    Constructor
@@ -49,17 +49,22 @@ public class EntityWendigo extends EntityCreatureBase implements IMob, IGroupIce
         this.setWidth = 1F;
         this.setHeight = 4.5F;
         this.setupMob();
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this).setSink(true));
         this.tasks.addTask(3, new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(100).setRange(16.0F).setMinChaseDistance(8.0F));
+        this.wanderAI = new EntityAIWander(this);
         this.tasks.addTask(6, wanderAI);
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(EntityReiver.class));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityBlaze.class));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityMagmaCube.class));
-    	this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(IGroupFire.class));
+        this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(IGroupFire.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
     }

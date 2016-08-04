@@ -51,8 +51,12 @@ public class EntityBehemoth extends EntityCreatureTameable implements IMob, IGro
         this.setWidth = 1.0F;
         this.setHeight = 3.2F;
         this.setupMob();
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(60).setRange(16.0F).setMinChaseDistance(8.0F).setChaseTime(-1));
         this.tasks.addTask(3, this.aiSit);

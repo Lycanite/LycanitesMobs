@@ -72,8 +72,16 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
         this.fleeHealthPercent = 1.0F;
         this.isHostileByDefault = false;
         this.setupMob();
-    	
-        // AI Tasks:
+        
+        // Add Dyes to the Color Mixer:
+        this.colorMixer.setInventorySlotContents(0, new ItemStack(Items.DYE, 1, 0));
+        this.colorMixer.setInventorySlotContents(1, new ItemStack(Items.DYE, 1, 0));
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIAttackMelee(this).setLongMemory(false));
         this.tasks.addTask(2, new EntityAIAvoid(this).setNearSpeed(1.3D).setFarSpeed(1.2D).setNearDistance(5.0D).setFarDistance(20.0D));
@@ -87,10 +95,6 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
         this.targetTasks.addTask(1, new EntityAITargetRevenge(this).setHelpCall(true));
         this.targetTasks.addTask(2, new EntityAITargetParent(this).setSightCheck(false).setDistance(32.0D));
         this.targetTasks.addTask(3, new EntityAITargetAvoid(this).setTargetClass(IGroupPredator.class));
-        
-        // Add Dyes to the Color Mixer:
-        this.colorMixer.setInventorySlotContents(0, new ItemStack(Items.DYE, 1, 0));
-        this.colorMixer.setInventorySlotContents(1, new ItemStack(Items.DYE, 1, 0));
     }
 	
 	// ========== Init ==========

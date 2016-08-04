@@ -49,8 +49,12 @@ public class EntityShambler extends EntityCreatureTameable implements IMob, IGro
         this.setWidth = 1.5F;
         this.setHeight = 3.5F;
         this.setupMob();
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(3, new EntityAIAttackMelee(this).setTargetClass(EntityPlayer.class).setLongMemory(false));
         this.tasks.addTask(4, new EntityAIAttackMelee(this));
@@ -64,7 +68,7 @@ public class EntityShambler extends EntityCreatureTameable implements IMob, IGro
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(EntityTrent.class));
-    	this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(IGroupFire.class));
+        this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(IGroupFire.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class).setCheckSight(false));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));

@@ -41,8 +41,12 @@ public class EntityCryptZombie extends EntityCreatureAgeable implements IMob {
         this.setWidth = 0.6F;
         this.setHeight = 1.95F;
         this.setupMob();
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         if(this.getNavigator() instanceof PathNavigateGround) {
             PathNavigateGround pathNavigateGround = (PathNavigateGround)this.getNavigator();
             pathNavigateGround.setBreakDoors(true);

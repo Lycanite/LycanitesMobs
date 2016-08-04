@@ -40,8 +40,12 @@ public class EntityEyewig extends EntityCreatureRideable {
         this.setHeight = 1.2F;
         this.setupMob();
         this.stepHeight = 1.0F;
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         //this.tasks.addTask(2, new EntityAIPlayerControl(this));
         this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("eyewigtreat"))).setTemptDistanceMin(4.0D));
@@ -59,7 +63,7 @@ public class EntityEyewig extends EntityCreatureRideable {
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
         if(MobInfo.predatorsAttackAnimals) {
-        	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityChicken.class));
+            this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityChicken.class));
         }
     }
     

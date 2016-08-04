@@ -109,8 +109,12 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
         // Boss:
         this.boss = true;
         this.damageMax = 25;
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.aiRangedAttack = new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(5).setStaminaTime(200).setStaminaDrainRate(3).setRange(90.0F).setChaseTime(0).setCheckSight(false);
         this.tasks.addTask(2, this.aiRangedAttack);

@@ -23,7 +23,7 @@ import java.util.HashMap;
 
 public class EntityLacedon extends EntityCreatureTameable implements IMob {
 	
-	EntityAIWander wanderAI = new EntityAIWander(this);
+	EntityAIWander wanderAI;
     
     // ==================================================
  	//                    Constructor
@@ -45,13 +45,18 @@ public class EntityLacedon extends EntityCreatureTameable implements IMob {
         this.setWidth = 0.8F;
         this.setHeight = 1.6F;
         this.setupMob();
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this).setSink(true));
         this.tasks.addTask(1, new EntityAIStayByWater(this).setSpeed(1.25D));
         this.tasks.addTask(2, this.aiSit);
         this.tasks.addTask(3, new EntityAIAttackMelee(this).setLongMemory(false));
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
+        this.wanderAI = new EntityAIWander(this);
         this.tasks.addTask(6, wanderAI);
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
@@ -94,10 +99,12 @@ public class EntityLacedon extends EntityCreatureTameable implements IMob {
         super.onLivingUpdate();
         
         // Wander Pause Rates:
-		if(this.isInWater())
-			this.wanderAI.setPauseRate(120);
-		else
-			this.wanderAI.setPauseRate(0);
+        if(!this.worldObj.isRemote) {
+            if (this.isInWater())
+                this.wanderAI.setPauseRate(120);
+            else
+                this.wanderAI.setPauseRate(0);
+        }
     }
 
 	

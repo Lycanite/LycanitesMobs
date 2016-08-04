@@ -48,8 +48,12 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
         this.setupMob();
 
         this.stepHeight = 1.0F;
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIStealth(this).setStealthTime(20).setStealthAttack(true).setStealthMove(true));
         this.tasks.addTask(2, new EntityAIAttackMelee(this).setRate(20).setLongMemory(true));

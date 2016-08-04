@@ -26,12 +26,19 @@ public class ModelTrent extends ModelCustomObj {
 
     	
     	// Set Rotation Centers:
-    	setPartCenter("head", 0F, 5F, 0.8F);
+    	setPartCenter("head", 0F, 6F, 1F);
     	setPartCenter("body", 0F, 5F, 0.8F);
-    	setPartCenter("leftarm", 0.6F, 5F, 0F);
-    	setPartCenter("rightarm", -0.6F, 5F, 0F);
-    	setPartCenter("leftleg", 0.5F, 3.4F, 0F);
-    	setPartCenter("rightleg",- 0.5F, 3.4F, 0F);
+
+    	setPartCenter("armlefttop", 0.9F, 7.2F, 0F);
+        setPartCenter("armleftmiddle", 1.2F, 6.3F, 0F);
+        setPartCenter("armleftbottom", 1.2F, 5.4F, 0F);
+
+    	setPartCenter("armrighttop", -0.9F, 7.2F, 0F);
+        setPartCenter("armrightmiddle", -1.2F, 6.3F, 0F);
+        setPartCenter("armrightbottom", -1.2F, 5.4F, 0F);
+
+    	setPartCenter("legleft", 0.4F, 4.5F, 0F);
+    	setPartCenter("legright", -0.4F, 4.5F, 0F);
     	
     	lockHeadX = true;
     	lockHeadY = true;
@@ -62,31 +69,31 @@ public class ModelTrent extends ModelCustomObj {
     	float rotZ = 0F;
     	
     	// Idle:
-    	if(partName.equals("leftarm")) {
+    	if(partName.equals("armlefttop") || partName.equals("armleftbottom") || partName.equals("armrightmiddle")) {
 	        rotZ -= Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F + 0.05F);
 	        rotX -= Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
     	}
-    	if(partName.equals("rightarm")) {
+    	if(partName.equals("armrighttop") || partName.equals("armrightbottom") || partName.equals("armleftmiddle")) {
 	        rotZ += Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F + 0.05F);
 	        rotX += Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
     	}
     	
     	// Walking:
     	float walkSwing = 0.3F;
-    	if(partName.equals("leftarm"))
+    	if(partName.equals("armlefttop") || partName.equals("armleftbottom") || partName.equals("armrightmiddle"))
     		rotX += Math.toDegrees(MathHelper.cos(time * walkSwing) * 2.0F * distance * 0.5F);
-    	if(partName.equals("rightarm"))
+    	if(partName.equals("armrighttop") || partName.equals("armrightbottom") || partName.equals("armleftmiddle"))
     		rotX += Math.toDegrees(MathHelper.cos(time * walkSwing + (float)Math.PI) * 2.0F * distance * 0.5F);
-    	if(partName.equals("leftleg"))
-    		rotX += Math.toDegrees(MathHelper.cos(time * walkSwing + (float)Math.PI) * 1.4F * distance);
-    	if(partName.equals("rightleg"))
-    		rotX += Math.toDegrees(MathHelper.cos(time * walkSwing) * 1.4F * distance);
+        if(partName.equals("legleft"))
+            rotX += Math.toDegrees(MathHelper.cos(time * walkSwing + (float)Math.PI) * 1.4F * distance);
+        if(partName.equals("legright"))
+            rotX += Math.toDegrees(MathHelper.cos(time * walkSwing) * 1.4F * distance);
 				
 		// Attack:
 		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
-	    	if(partName.equals("leftarm"))
+	    	if(partName.equals("armlefttop") || partName.equals("armleftbottom") || partName.equals("armrightmiddle"))
 	    		rotate(0.0F, -25.0F, 0.0F);
-	    	if(partName.equals("rightarm"))
+	    	if(partName.equals("armrighttop") || partName.equals("armrightbottom") || partName.equals("armleftmiddle"))
 	    		rotate(0.0F, 25.0F, 0.0F);
 		}
 		

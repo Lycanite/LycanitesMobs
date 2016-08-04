@@ -50,8 +50,12 @@ public class EntityKobold extends EntityCreatureTameable implements IMob, IGroup
         this.setWidth = 0.5F;
         this.setHeight = 0.9F;
         this.setupMob();
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIAttackMelee(this).setTargetClass(EntityPlayer.class).setLongMemory(false));
         this.tasks.addTask(2, new EntityAIAttackMelee(this));
@@ -60,7 +64,7 @@ public class EntityKobold extends EntityCreatureTameable implements IMob, IGroup
         this.tasks.addTask(5, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
         this.tasks.addTask(6, new EntityAIAvoid(this).setNearSpeed(1.8D).setFarSpeed(1.4D).setNearDistance(3.0D).setFarDistance(16.0D));
         if(this.torchGreifing)
-        	this.tasks.addTask(7, new EntityAIGetBlock(this).setDistanceMax(8).setSpeed(1.2D).setBlockName("torch").setTamedLooting(false));
+            this.tasks.addTask(7, new EntityAIGetBlock(this).setDistanceMax(8).setSpeed(1.2D).setBlockName("torch").setTamedLooting(false));
         this.tasks.addTask(8, new EntityAIWander(this).setPauseRate(30));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));

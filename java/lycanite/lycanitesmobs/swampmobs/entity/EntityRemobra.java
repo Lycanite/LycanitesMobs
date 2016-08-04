@@ -39,8 +39,12 @@ public class EntityRemobra extends EntityCreatureTameable implements IMob, IGrou
         this.setWidth = 0.8F;
         this.setHeight = 1.2F;
         this.setupMob();
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(40).setRange(14.0F).setMinChaseDistance(5.0F));
         this.tasks.addTask(3, this.aiSit);

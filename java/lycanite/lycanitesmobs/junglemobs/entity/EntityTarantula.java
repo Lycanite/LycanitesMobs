@@ -40,8 +40,12 @@ public class EntityTarantula extends EntityCreatureTameable implements IMob {
         this.setWidth = 0.8F;
         this.setHeight = 1.2F;
         this.setupMob();
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(4, new EntityAIAttackMelee(this).setLongMemory(false));
         this.tasks.addTask(5, this.aiSit);
@@ -55,8 +59,8 @@ public class EntityTarantula extends EntityCreatureTameable implements IMob {
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         if(MobInfo.predatorsAttackAnimals) {
-        	this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
-        	this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityChicken.class));
+            this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
+            this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityChicken.class));
         }
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }

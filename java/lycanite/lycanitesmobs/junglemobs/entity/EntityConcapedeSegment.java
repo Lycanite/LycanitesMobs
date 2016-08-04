@@ -59,8 +59,12 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
         this.setHeight = 0.9F;
         this.isHostileByDefault = false;
         this.setupMob();
-    	
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(5, new EntityAIFollowParent(this).setSpeed(1.1D).setStrayDistance(0).setLostDistance(0).setAdultFollowing(true).setFollowBehind(0.25D));
         this.tasks.addTask(6, new EntityAIWander(this).setPauseRate(30));

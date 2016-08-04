@@ -89,8 +89,12 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
         // Boss:
         this.boss = true;
         this.damageMax = 25;
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         //this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(60).setRange(32).setMinChaseDistance(0F).setChaseTime(-1));
         //this.tasks.addTask(6, new EntityAIWander(this).setSpeed(1.0D));

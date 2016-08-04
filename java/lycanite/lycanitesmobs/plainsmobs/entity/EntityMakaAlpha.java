@@ -43,8 +43,12 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
         this.setHeight = 3.5F;
         this.attackTime = 10;
         this.setupMob();
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         ((PathNavigateGround)this.getNavigator()).setCanSwim(false);
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(5, new EntityAIAttackMelee(this).setTargetClass(EntityPlayer.class).setLongMemory(false));

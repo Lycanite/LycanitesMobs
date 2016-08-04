@@ -46,8 +46,12 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
         this.fleeHealthPercent = 1.0F;
         this.isHostileByDefault = false;
         this.setupMob();
-        
-        // AI Tasks:
+    }
+
+    // ========== Init AI ==========
+    @Override
+    protected void initEntityAI() {
+        super.initEntityAI();
         ((PathNavigateGround)this.getNavigator()).setCanSwim(false);
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIAttackMelee(this).setLongMemory(false));

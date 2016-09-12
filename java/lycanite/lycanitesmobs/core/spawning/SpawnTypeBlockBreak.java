@@ -8,6 +8,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.FakePlayer;
 
 public class SpawnTypeBlockBreak extends SpawnTypeBase {
     public boolean playerOnly = false;
@@ -55,8 +56,14 @@ public class SpawnTypeBlockBreak extends SpawnTypeBase {
     //                     Block Harvest
     // ==================================================
     public boolean validBlockHarvest(Block block, World world, BlockPos pos, Entity entity) {
-        if(this.playerOnly && !(entity instanceof EntityPlayer))
+        if(this.playerOnly) {
+            if(entity instanceof EntityPlayer) {
+                if(entity instanceof FakePlayer)
+                    return false;
+                return true;
+            }
             return false;
+        }
         return true;
     }
 

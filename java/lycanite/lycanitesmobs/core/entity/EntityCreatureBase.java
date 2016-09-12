@@ -1170,6 +1170,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     }
     /** Returns the calculated armor piercing value. This is with all multipliers and boosts applied. Cannot be less than 1 where all damage will pierce. **/
     public double getPierceValue() {
+        if(this.getPierceMultiplier() == 0)
+            return 100;
     	double value = this.getPierceBase();
     	value *= 1 / this.getPierceMultiplier();
     	value -= Math.max(0, this.getPierceBoost());
@@ -2197,6 +2199,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
         
         boolean attackSuccess = false;
         float pierceDamage = 1 + (float)Math.floor(damage / this.getPierceValue());
+        if(this.getPierceMultiplier() == 0)
+            pierceDamage = 0;
         if(damage <= pierceDamage)
         	attackSuccess = target.attackEntityFrom(this.getDamageSource(null).setDamageBypassesArmor().setDamageIsAbsolute(), damage);
         else {

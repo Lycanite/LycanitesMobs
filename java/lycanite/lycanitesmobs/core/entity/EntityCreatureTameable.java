@@ -453,7 +453,12 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     //                       Taming
     // ==================================================
     public boolean isTamed() {
-        return (this.dataManager.get(TAMED) & TAMED_ID.IS_TAMED.id) != 0;
+        try {
+            return (this.dataManager.get(TAMED) & TAMED_ID.IS_TAMED.id) != 0;
+        }
+        catch (Exception e) {
+            return false;
+        }
     }
     
     public void setTamed(boolean setTamed) {

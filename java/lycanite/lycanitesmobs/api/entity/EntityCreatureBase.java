@@ -1171,6 +1171,8 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
     protected void updateAITasks() {
 		if(this.useFlightNavigator()) flightNavigator.updateFlight();
         super.updateAITasks();
+        //need to save the offset back into the yaw value, because the offset is not sent in the S14, S15 & S16 packets
+        this.rotationYaw = this.renderYawOffset;
     }
     
     // ========== Living ==========

@@ -82,7 +82,7 @@ public class RenderCreature extends RenderLiving {
            this.renderPassModel.isChild = this.mainModel.isChild;
 
        try {
-           float f2 = this.interpolateRotation(par1EntityLivingBase.prevRenderYawOffset, par1EntityLivingBase.renderYawOffset, partialTickTime);
+           float f2 = this.interpolateRotation(par1EntityLivingBase.prevRotationYaw, par1EntityLivingBase.rotationYaw, partialTickTime);
            float f3 = this.interpolateRotation(par1EntityLivingBase.prevRotationYawHead, par1EntityLivingBase.rotationYawHead, partialTickTime);
            float f4;
            

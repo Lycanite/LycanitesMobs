@@ -5,22 +5,32 @@ import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureTameable;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollow;
 import lycanite.lycanitesmobs.api.model.ModelCustomObj;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Vec3;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.common.MinecraftForge;
 
+import java.awt.Point;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+
+import org.apache.logging.log4j.Level;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -32,7 +42,7 @@ public class RenderCreature extends RenderLiving {
     
 	/** Enchanted glint effect texture. **/
 	private static final ResourceLocation RES_ITEM_GLINT = new ResourceLocation("textures/misc/enchanted_item_glint.png");
-	
+
     // ==================================================
   	//                    Constructor
   	// ==================================================
@@ -40,7 +50,6 @@ public class RenderCreature extends RenderLiving {
     	super(AssetManager.getModel(setEntityName), 0.5F);
     	this.setRenderPassModel(AssetManager.getModel(setEntityName));
     }
-    
     
     // ==================================================
  	//                      Render
@@ -52,12 +61,12 @@ public class RenderCreature extends RenderLiving {
     * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
     */
     @Override
-    public void doRender(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9) {
+    public void doRender(EntityLiving par1EntityLiving, double x, double y, double z, float par8, float partialTickTime) {
     	EntityLivingBase par1EntityLivingBase = (EntityLivingBase)par1EntityLiving;
-       if(MinecraftForge.EVENT_BUS.post(new RenderLivingEvent.Pre(par1EntityLivingBase, this, par2, par4, par6))) return;
+       if(MinecraftForge.EVENT_BUS.post(new RenderLivingEvent.Pre(par1EntityLivingBase, this, x, y, z))) return;
        GL11.glPushMatrix();
        GL11.glDisable(GL11.GL_CULL_FACE);
-       this.mainModel.onGround = this.renderSwingProgress(par1EntityLivingBase, par9);
+       this.mainModel.onGround = this.renderSwingProgress(par1EntityLivingBase, partialTickTime);
 
        if(this.renderPassModel != null)
            this.renderPassModel.onGround = this.mainModel.onGround;
@@ -73,13 +82,13 @@ public class RenderCreature extends RenderLiving {
            this.renderPassModel.isChild = this.mainModel.isChild;
 
        try {
-           float f2 = this.interpolateRotation(par1EntityLivingBase.prevRenderYawOffset, par1EntityLivingBase.renderYawOffset, par9);
-           float f3 = this.interpolateRotation(par1EntityLivingBase.prevRotationYawHead, par1EntityLivingBase.rotationYawHead, par9);
+           float f2 = this.interpolateRotation(par1EntityLivingBase.prevRenderYawOffset, par1EntityLivingBase.renderYawOffset, partialTickTime);
+           float f3 = this.interpolateRotation(par1EntityLivingBase.prevRotationYawHead, par1EntityLivingBase.rotationYawHead, partialTickTime);
            float f4;
-
+           
            if(par1EntityLivingBase.isRiding() && par1EntityLivingBase.ridingEntity instanceof EntityLivingBase) {
                EntityLivingBase entitylivingbase1 = (EntityLivingBase)par1EntityLivingBase.ridingEntity;
-               f2 = this.interpolateRotation(entitylivingbase1.prevRenderYawOffset, entitylivingbase1.renderYawOffset, par9);
+               f2 = this.interpolateRotation(entitylivingbase1.prevRenderYawOffset, entitylivingbase1.renderYawOffset, partialTickTime);
                f4 = MathHelper.wrapAngleTo180_float(f3 - f2);
 
                if (f4 < -85.0F)
@@ -94,17 +103,17 @@ public class RenderCreature extends RenderLiving {
                    f2 += f4 * 0.2F;
            }
 
-           float f13 = par1EntityLivingBase.prevRotationPitch + (par1EntityLivingBase.rotationPitch - par1EntityLivingBase.prevRotationPitch) * par9;
-           this.renderLivingAt(par1EntityLivingBase, par2, par4, par6);
-           f4 = this.handleRotationFloat(par1EntityLivingBase, par9);
-           this.rotateCorpse(par1EntityLivingBase, f4, f2, par9);
+           float f13 = par1EntityLivingBase.prevRotationPitch + (par1EntityLivingBase.rotationPitch - par1EntityLivingBase.prevRotationPitch) * partialTickTime;
+           this.renderLivingAt(par1EntityLivingBase, x, y, z);
+           f4 = this.handleRotationFloat(par1EntityLivingBase, partialTickTime);
+           this.rotateCorpse(par1EntityLivingBase, f4, f2, partialTickTime);
            float f5 = 0.0625F;
            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
            GL11.glScalef(-1.0F, -1.0F, 1.0F);
-           this.preRenderCallback(par1EntityLivingBase, par9);
+           this.preRenderCallback(par1EntityLivingBase, partialTickTime);
            GL11.glTranslatef(0.0F, -24.0F * f5 - 0.0078125F, 0.0F);
-           float f6 = par1EntityLivingBase.prevLimbSwingAmount + (par1EntityLivingBase.limbSwingAmount - par1EntityLivingBase.prevLimbSwingAmount) * par9;
-           float f7 = par1EntityLivingBase.limbSwing - par1EntityLivingBase.limbSwingAmount * (1.0F - par9);
+           float f6 = par1EntityLivingBase.prevLimbSwingAmount + (par1EntityLivingBase.limbSwingAmount - par1EntityLivingBase.prevLimbSwingAmount) * partialTickTime;
+           float f7 = par1EntityLivingBase.limbSwing - par1EntityLivingBase.limbSwingAmount * (1.0F - partialTickTime);
 
            if (par1EntityLivingBase.isChild())
                f7 *= 3.0F;
@@ -113,7 +122,7 @@ public class RenderCreature extends RenderLiving {
                f6 = 1.0F;
 
            GL11.glEnable(GL11.GL_ALPHA_TEST);
-           this.mainModel.setLivingAnimations(par1EntityLivingBase, f7, f6, par9);
+           this.mainModel.setLivingAnimations(par1EntityLivingBase, f7, f6, partialTickTime);
            this.renderModel(par1EntityLivingBase, f7, f6, f4, f3 - f2, f13, f5);
            int j;
            float f8;
@@ -121,19 +130,19 @@ public class RenderCreature extends RenderLiving {
            float f10;
 
            for (int i = 0; i < 4; ++i) {
-               j = this.shouldRenderPass(par1EntityLivingBase, i, par9);
+               j = this.shouldRenderPass(par1EntityLivingBase, i, partialTickTime);
 
                if (j > 0) {
-                   this.renderPassModel.setLivingAnimations(par1EntityLivingBase, f7, f6, par9);
+                   this.renderPassModel.setLivingAnimations(par1EntityLivingBase, f7, f6, partialTickTime);
                    this.renderPassModel(this.renderPassModel, par1EntityLivingBase, f7, f6, f4, f3 - f2, f13, f5);
 
                    if ((j & 240) == 16) {
-                       this.func_82408_c(par1EntityLivingBase, i, par9);
+                       this.func_82408_c(par1EntityLivingBase, i, partialTickTime);
                        this.renderPassModel(this.renderPassModel, par1EntityLivingBase, f7, f6, f4, f3 - f2, f13, f5);
                    }
 
                    if ((j & 15) == 15) {
-                       f8 = (float)par1EntityLivingBase.ticksExisted + par9;
+                       f8 = (float)par1EntityLivingBase.ticksExisted + partialTickTime;
                        this.bindTexture(RES_ITEM_GLINT);
                        GL11.glEnable(GL11.GL_BLEND);
                        f9 = 0.5F;
@@ -173,9 +182,9 @@ public class RenderCreature extends RenderLiving {
            }
 
            GL11.glDepthMask(true);
-           this.renderEquippedItems(par1EntityLivingBase, par9);
-           float f14 = par1EntityLivingBase.getBrightness(par9);
-           j = this.getColorMultiplier(par1EntityLivingBase, f14, par9);
+           this.renderEquippedItems(par1EntityLivingBase, partialTickTime);
+           float f14 = par1EntityLivingBase.getBrightness(partialTickTime);
+           j = this.getColorMultiplier(par1EntityLivingBase, f14, partialTickTime);
            OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
            GL11.glDisable(GL11.GL_TEXTURE_2D);
            OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
@@ -198,7 +207,7 @@ public class RenderCreature extends RenderLiving {
                 	   ((ModelCustomObj)this.mainModel).dontColor = false;
 
                    for (int l = 0; l < 4; ++l) {
-                       if (this.inheritRenderPass(par1EntityLivingBase, l, par9) >= 0) {
+                       if (this.inheritRenderPass(par1EntityLivingBase, l, partialTickTime) >= 0) {
                            GL11.glColor4f(f14, 0.0F, 0.0F, 0.4F);
                            if(this.renderPassModel instanceof ModelCustomObj)
                         	   ((ModelCustomObj)this.renderPassModel).dontColor = true;
@@ -218,7 +227,7 @@ public class RenderCreature extends RenderLiving {
                    this.renderModel(par1EntityLivingBase, f7, f6, f4, f3 - f2, f13, f5);
 
                    for (int i1 = 0; i1 < 4; ++i1) {
-                       if (this.inheritRenderPass(par1EntityLivingBase, i1, par9) >= 0) {
+                       if (this.inheritRenderPass(par1EntityLivingBase, i1, partialTickTime) >= 0) {
                            GL11.glColor4f(f8, f9, f15, f10);
                            this.renderPassModel(this.renderPassModel, par1EntityLivingBase, f7, f6, f4, f3 - f2, f13, f5);
                        }
@@ -243,13 +252,67 @@ public class RenderCreature extends RenderLiving {
        OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
        GL11.glEnable(GL11.GL_CULL_FACE);
        GL11.glPopMatrix();
-       this.passSpecialRender(par1EntityLivingBase, par2, par4, par6);
-       MinecraftForge.EVENT_BUS.post(new RenderLivingEvent.Post(par1EntityLivingBase, this, par2, par4, par6));
+       this.passSpecialRender(par1EntityLivingBase, x, y, z);
+       MinecraftForge.EVENT_BUS.post(new RenderLivingEvent.Post(par1EntityLivingBase, this, x, y, z));
        
        // Render Leash:
        if(par1EntityLivingBase instanceof EntityLiving)
-    	   this.func_110827_b((EntityLiving)par1EntityLivingBase, par2, par4, par6, par8, par9);
+    	   this.func_110827_b((EntityLiving)par1EntityLivingBase, x, y, z, par8, partialTickTime);
+       
+       if (RenderManager.debugBoundingBox)
+       {
+    	   renderCreaturedebug(par1EntityLivingBase, partialTickTime);
+       }
    }
+    
+    //Render some helper lines
+    protected void renderCreaturedebug(EntityLivingBase entity, float partialTick)
+    {
+        GL11.glPushMatrix();
+        GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        
+        Vec3 pos = Minecraft.getMinecraft().thePlayer.getPosition(partialTick);
+        GL11.glTranslated(-pos.xCoord, -pos.yCoord, -pos.zCoord);  
+        
+        double x = entity.posX;
+        double y = entity.posY;
+        double z = entity.posZ;
+        float lineLength = 5.0f;
+        
+        y += entity.height / 2.0f;
+        Vec3 pos1 = Vec3.createVectorHelper(x, y, z);
+
+        //body rotation = green line
+        double rot = entity.rotationYaw * Math.PI / -180.0f;
+        double dx = Math.sin(rot) * lineLength;
+        double dz = Math.cos(rot) * lineLength;
+        Vec3 pos2 = Vec3.createVectorHelper(x + dx, y, z + dz);       
+        GL11.glColor3f(0F, 1.0F, 0F);
+        drawLineWithGL(pos1, pos2);
+
+        //Yaw offset = red line
+        rot = entity.renderYawOffset * Math.PI / -180.0f;
+        dx = Math.sin(rot) * lineLength;
+        dz = Math.cos(rot) * lineLength;
+        pos2 = Vec3.createVectorHelper(x + dx, y, z + dz);               
+        GL11.glColor3f(1.0F, 0F, 0F);
+        drawLineWithGL(pos1, pos2);
+
+        //Head rotation = Blue line
+        rot = entity.rotationYawHead * Math.PI / -180.0f;
+        dx = Math.sin(rot) * lineLength;
+        dz = Math.cos(rot) * lineLength;
+        pos2 = Vec3.createVectorHelper(x + dx, y, z + dz);               
+        GL11.glColor3f(0.0F, 0F, 1.0F);
+        drawLineWithGL(pos1, pos2);
+
+        GL11.glPopAttrib();
+        GL11.glPopMatrix();    	   
+    	
+    }
     
     
     // ==================================================
@@ -406,4 +469,16 @@ public class RenderCreature extends RenderLiving {
 
        return par1 + par3 * f3;
    }
+    
+    private void drawLineWithGL(Vec3 posFrom, Vec3 posTo) {
+//		int d = Math.round((float)posFrom.distanceTo(posTo)+0.2f);
+//		float oz = (posFrom.xCoord - posTo.xCoord == 0?0:-1f/16f);
+//		float ox = (posFrom.zCoord - posTo.zCoord == 0?0:1f/16f);
+		GL11.glBegin(GL11.GL_LINE_STRIP);
+
+		GL11.glVertex3d(posFrom.xCoord, posFrom.yCoord + 0.5f, posFrom.zCoord);
+		GL11.glVertex3d(posTo.xCoord, posTo.yCoord + 0.5f, posTo.zCoord);
+		
+		GL11.glEnd();
+	}
 }

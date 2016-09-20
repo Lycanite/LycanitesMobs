@@ -1748,8 +1748,6 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
 	@Override
 	protected void setSize(float width, float height) {
         super.setSize(width * (float)this.sizeScale, height * (float)this.sizeScale);
-        this.width = width;
-        this.height = height;
         this.hitAreas = null;
     }
 

@@ -95,14 +95,11 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-
-        //this.setScaleForAge(this.isChild());
-
+        
         // Growing:
-//        if(this.worldObj.isRemote)
-//            this.setScaleForAge(this.isChild());
-//        else 
-        if(this.canGrow) {
+        if(this.worldObj.isRemote)
+            this.setScaleForAge(this.isChild());
+        else if(this.canGrow) {
             int age = this.getGrowingAge();
             if(age < 0) {
                 ++age;
@@ -247,7 +244,7 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
         this.scaledHeight = height;
         if(!validWidth)
             this.setAgeScale(1.0F);
-        //super.setSize(width, height);
+        super.setSize(width, height);
     }
 
     /** When called, this reapplies the initial width and height this mob and then applies sizeScale. **/

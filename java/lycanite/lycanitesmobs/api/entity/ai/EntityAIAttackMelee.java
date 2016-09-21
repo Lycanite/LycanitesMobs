@@ -197,6 +197,16 @@ public class EntityAIAttackMelee extends EntityAIBase {
                     this.host.swingItem();
                 this.host.meleeAttack(attackTarget, damage);
             }
+
+            //Move helper won't change the Yaw if the target is already close by
+            double d0 = this.host.posX - attackTarget.posX;
+            double d1 = this.host.posZ - attackTarget.posZ;
+            float f = (float)(Math.atan2(d1, d0) * 180.0D / Math.PI) + 90.0F;
+            f = MathHelper.wrapAngleTo180_float(f - this.host.rotationYaw);
+            if(f < -30f) f = -30f;
+            if(f > 30f) f = 30f;
+            this.host.rotationYaw = this.host.rotationYaw + f;
+
         }
     }
 }

@@ -25,6 +25,7 @@ import lycanite.lycanitesmobs.api.info.ObjectLists;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -82,7 +83,9 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
 		baseAttributes.put("maxHealth", 10D);
 		baseAttributes.put("movementSpeed", 0.28D);
 		baseAttributes.put("knockbackResistance", 1D);
-		baseAttributes.put("followRange", 20D);
+		//Max range for Pathfinder is set to SharedMonsterAttributes.followRange
+		//so followRange must be at least equal to AITargetMaster.setDistance() for the Follow AI to work
+		baseAttributes.put("followRange", 64D);	 //was 20D
 		baseAttributes.put("attackDamage", 1D);
         super.applyEntityAttributes(baseAttributes);
     }

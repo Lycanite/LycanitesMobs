@@ -175,6 +175,10 @@ public class EventListener {
 		if(player == null || entity == null)
 			return;
 		
+		//record which mob the player clicked
+		if (entity instanceof EntityLivingBase)
+			LycanitesMobs.debugEntity = (EntityLivingBase)entity;
+		
 		// Item onItemRightClickOnEntity():
 		if(player.getHeldItem() != null) {
 			ItemStack itemStack = player.getHeldItem();
@@ -191,7 +195,6 @@ public class EventListener {
 				}
 		}
 	}
-	
 	
     // ==================================================
     //                 Attack Target Event

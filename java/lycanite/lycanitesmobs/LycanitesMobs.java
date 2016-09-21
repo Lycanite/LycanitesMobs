@@ -28,6 +28,7 @@ import lycanite.lycanitesmobs.api.spawning.CustomSpawner;
 import lycanite.lycanitesmobs.api.spawning.SpawnTypeBase;
 import lycanite.lycanitesmobs.api.tileentity.TileEntitySummoningPedestal;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -78,6 +79,8 @@ public class LycanitesMobs {
 	// Extra Config Settings:
 	public static boolean disableNausea = false;
 	
+	// Debug Helper
+	public static EntityLivingBase debugEntity;	
 	
 	// ==================================================
 	//                Pre-Initialization

@@ -1,23 +1,44 @@
 package lycanite.lycanitesmobs.api.gui;
 
 import lycanite.lycanitesmobs.*;
+import lycanite.lycanitesmobs.api.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.api.entity.EntityCreatureRideable;
+import lycanite.lycanitesmobs.api.entity.ai.EntityAIFollow;
 import lycanite.lycanitesmobs.api.item.ItemStaffSummoning;
 import lycanite.lycanitesmobs.api.mobevent.MobEventClient;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.settings.GameSettings;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.Direction;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.EnumSkyBlock;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.client.event.GuiScreenEvent.DrawScreenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+
+import org.apache.logging.log4j.Level;
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
 
 public class GuiOverlay extends Gui {
 	public Minecraft mc;
@@ -25,13 +46,32 @@ public class GuiOverlay extends Gui {
 	private int mountMessageTimeMax = 10 * 20;
 	private int mountMessageTime = 0;
 	
+	private Field executingTasks;
+	
     // ==================================================
     //                     Constructor
     // ==================================================
 	public GuiOverlay(Minecraft minecraft) {
 		this.mc = minecraft;
+		tryAIreflection();
 	}
-	
+
+	// Attempt to find the method containing the executing tasks for an entity's AI.
+	// The reflection will work on both Sides but the AI only runs on the server.
+	private void tryAIreflection()
+	{
+		try {
+			executingTasks = EntityAITasks.class.getDeclaredField("field_75780_b");
+			executingTasks.setAccessible(true);		
+		} catch (Exception e) {
+			try {
+				executingTasks = EntityAITasks.class.getDeclaredField("executingTaskEntries");
+				executingTasks.setAccessible(true);		
+			} catch (Exception e1) {
+				FMLLog.getLogger().log(Level.ERROR, "Unable to find \"executingTaskEntries\" field in GuiOverlay. Some debug information will not be available");
+			}
+		}
+	}
 	
     // ==================================================
     //                  Draw Game Overlay
@@ -139,4 +179,101 @@ public class GuiOverlay extends Gui {
         GL11.glPopMatrix();
 		this.mc.getTextureManager().bindTexture(Gui.icons);
 	}
+	
+	//Last event called before the screen is drawn
+	@SubscribeEvent
+	public void onRenderDebugInfo(RenderGameOverlayEvent.Text event) 
+	{
+        if (this.mc.gameSettings.showDebugInfo)
+        {
+	        event.right.add(null);
+	        event.right.add((char)167 +"nLycanitesMobs (" + LycanitesMobs.version + ")");
+	        if (LycanitesMobs.debugEntity == null || LycanitesMobs.debugEntity.isDead)
+	        {
+	            event.right.add("Right click on a mob to view debug info.");
+	        }
+	        else
+	        {
+	            EntityLivingBase entity = (EntityLivingBase)LycanitesMobs.debugEntity;	  
+	            
+	            //Type
+	            event.right.add("Entity: " + entity.getCommandSenderName() + " [" + entity.getEntityId() + "]");
+	            //Health
+	            if (entity instanceof EntityCreatureBase)
+	            {
+	            	EntityCreatureBase ecb = (EntityCreatureBase)entity;
+		            event.right.add("Attack/Defense/Health: " + ecb.getAttackDamage(1.0f) + "/" + ecb.defense +"/" + entity.getHealth());	            	            	
+	            }
+	            else
+	            {
+		            event.right.add("Attack/Defense/Health: " + (float)entity.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue()  + entity.getHealth());	            	            		            	
+	            }
+	            //AI Task
+	            if(entity.isClientWorld() && executingTasks != null && entity instanceof EntityLiving)  //isClientWorld should be called isServerWorld
+	            {
+					try {
+		            	ArrayList<EntityAITasks.EntityAITaskEntry> tasks;
+						EntityLiving el = (EntityLiving)entity;
+						tasks = (ArrayList)executingTasks.get(el.tasks);
+		            	String s = "";
+		            	if (tasks.size() == 0)
+		            	{
+				            event.right.add("Main Task: idle");	            		
+		            	}
+		            	else
+		            	{
+		            		for (EntityAITasks.EntityAITaskEntry ai : tasks) 
+		            		{
+					            event.right.add("Main Task: " + ai.action.getClass().getSimpleName());	            		
+		            		}		            		
+		            	}
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	            }
+
+	            //AI Task
+	            if(entity.isClientWorld() && executingTasks != null && entity instanceof EntityLiving)
+	            {
+	            	ArrayList tasks;
+					try {
+						EntityLiving el = (EntityLiving)entity;
+						tasks = (ArrayList)executingTasks.get(el.targetTasks);
+		            	String s = "";
+		            	if (tasks.size() == 0)
+		            	{
+		            		s = "idle";
+		            	}
+		            	else
+		            	{
+		            		EntityAITasks.EntityAITaskEntry ai = (EntityAITasks.EntityAITaskEntry)tasks.get(0);
+		            		s = ai.action.getClass().getSimpleName();	            	
+		            	}
+			            event.right.add("Target Task: " + s);	            		
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	            }
+
+	            int x = MathHelper.floor_double(entity.posX);
+	            int y = MathHelper.floor_double(entity.posY);
+	            int z = MathHelper.floor_double(entity.posZ);
+	            int rot = MathHelper.floor_double((double)(entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+	            int rot1 = MathHelper.floor_double((double)(entity.renderYawOffset * 4.0F / 360.0F) + 0.5D) & 3;
+
+		        event.right.add(String.format("x: %.5f (%d) // c: %d (%d)", new Object[] {Double.valueOf(entity.posX), Integer.valueOf(x), Integer.valueOf(x >> 4), Integer.valueOf(x & 15)}));
+		        event.right.add(String.format("y: %.3f (feet pos, %.3f eyes pos)", new Object[] {Double.valueOf(entity.boundingBox.minY), Double.valueOf(entity.posY)}));
+		        event.right.add(String.format("z: %.5f (%d) // c: %d (%d)", new Object[] {Double.valueOf(entity.posZ), Integer.valueOf(z), Integer.valueOf(z >> 4), Integer.valueOf(z & 15)}));
+		        event.right.add("Yaw: " + rot + " (" + Direction.directions[rot] + ") / " + MathHelper.wrapAngleTo180_float(entity.rotationYaw));
+		        event.right.add("YawOffset: " + rot1 + " (" + Direction.directions[rot1] + ") / " + MathHelper.wrapAngleTo180_float(entity.renderYawOffset));
+            
+//            this.drawRightAlignedString(fontrenderer, String.format("ws: %.3f, fs: %.3f, g: %b, fl: %d", new Object[] {Float.valueOf(entity.capabilities.getWalkSpeed()), Float.valueOf(entity.capabilities.getFlySpeed()), Boolean.valueOf(entity.onGround), Integer.valueOf(this.mc.theWorld.getHeightValue(x, z))}), width - 2, 104);
+	        }
+
+
+        }
+	}
+	
 }

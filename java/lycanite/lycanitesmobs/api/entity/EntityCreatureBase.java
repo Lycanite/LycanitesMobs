@@ -1960,7 +1960,12 @@ public abstract class EntityCreatureBase extends EntityLiving implements FlyingM
         if(this.isEntityInvulnerable()) return false;
         if(!this.isDamageTypeApplicable(damageSrc.getDamageType())) return false;
         if(!this.isDamageEntityApplicable(damageSrc.getEntity())) return false;
-        damage = this.getDamageAfterDefense(damage);
+        
+        if(damageSrc.damageType != "mob")
+        {
+        	//only consider defenses if the mobs aren't fighting each other
+        	damage = this.getDamageAfterDefense(damage);
+        }
         damage *= this.getDamageModifier(damageSrc);
         if(this.isBoss()) {
             if (!(damageSrc.getEntity() instanceof EntityPlayer))

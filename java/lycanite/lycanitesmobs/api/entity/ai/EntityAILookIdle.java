@@ -75,4 +75,13 @@ public class EntityAILookIdle extends EntityAIBase {
         		(float)this.host.getVerticalFaceSpeed()
         		);
     }
+    
+    // ==================================================
+   	//                 Reset / Finish
+   	// ==================================================
+    public void resetTask() {
+        this.host.rotationYaw = this.host.renderYawOffset;
+        this.host.prevRotationYaw = this.host.prevRenderYawOffset;    	
+    }
+
 }

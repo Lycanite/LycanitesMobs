@@ -2270,7 +2270,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
         if(!this.isDamageTypeApplicable(damageSrc.getDamageType())) return false;
         if(!this.isDamageEntityApplicable(damageSrc.getEntity())) return false;
         damage *= this.getDamageModifier(damageSrc);
-        damage = this.getDamageAfterDefense(damage);
+        if(damageSrc.getEntity() instanceof EntityPlayer)
+            damage = this.getDamageAfterDefense(damage);
         if(this.isBoss()) {
             if (!(damageSrc.getEntity() instanceof EntityPlayer))
                 damage *= 0.25F;

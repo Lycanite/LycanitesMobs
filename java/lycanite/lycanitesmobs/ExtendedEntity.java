@@ -60,8 +60,12 @@ public class ExtendedEntity implements IExtendedEntity {
         }
 
         // Server Side:
-        IExtendedEntity iExtendedEntity = entity.getCapability(LycanitesMobs.EXTENDED_ENTITY, null);
-        if(!(iExtendedEntity instanceof ExtendedEntity))
+        IExtendedEntity iExtendedEntity = null;
+        try {
+            iExtendedEntity = entity.getCapability(LycanitesMobs.EXTENDED_ENTITY, null);
+        }
+        catch(Exception e) {}
+        if(iExtendedEntity == null || !(iExtendedEntity instanceof ExtendedEntity))
             return null;
         ExtendedEntity extendedEntity = (ExtendedEntity)iExtendedEntity;
         if(extendedEntity.getEntity() != entity)

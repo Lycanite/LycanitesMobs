@@ -530,7 +530,12 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     //                       Owner
     // ==================================================
     public String getOwnerName() {
-    	return this.dataManager.get(OWNER);
+        try {
+            return this.dataManager.get(OWNER);
+        }
+        catch(Exception e) {
+            return "";
+        }
     }
     
     public void setOwner(String owner) {

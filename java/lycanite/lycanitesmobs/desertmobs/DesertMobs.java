@@ -209,7 +209,6 @@ public class DesertMobs {
 		// ========== Remove Vanilla Spawns ==========
 		Biome[] biomes = group.biomes;
 		if(group.controlVanillaSpawns) {
-			EntityRegistry.removeSpawn(EntityZombie.class, EnumCreatureType.MONSTER, biomes);
 			EntityRegistry.removeSpawn(EntitySkeleton.class, EnumCreatureType.MONSTER, biomes);
 			EntityRegistry.removeSpawn(EntityCreeper.class, EnumCreatureType.MONSTER, biomes);
 			EntityRegistry.removeSpawn(EntitySpider.class, EnumCreatureType.MONSTER, biomes);

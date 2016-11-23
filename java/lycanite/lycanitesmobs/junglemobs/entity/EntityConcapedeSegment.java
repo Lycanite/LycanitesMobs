@@ -351,7 +351,7 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
     /** Used when saving this mob to a chunk. **/
     @Override
     public void writeEntityToNBT(NBTTagCompound nbtTagCompound) {
-    	if(this.hasParent()) {
+    	if(this.getParentTarget() != null) {
     		nbtTagCompound.setLong("ParentUUIDMost", this.getParentTarget().getUniqueID().getMostSignificantBits());
     		nbtTagCompound.setLong("ParentUUIDLeast", this.getParentTarget().getUniqueID().getLeastSignificantBits());
     	}

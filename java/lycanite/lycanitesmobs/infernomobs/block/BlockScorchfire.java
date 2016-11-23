@@ -37,6 +37,7 @@ public class BlockScorchfire extends BlockFireBase {
         this.agingRate = 6;
         this.spreadChance = 1;
         this.removeOnTick = !ConfigBase.getConfig(this.group, "general").getBool("Features", "Enable Scorchfire", true);
+        this.removeOnNoFireTick = ConfigBase.getConfig(this.group, "general").getBool("Features", "Remove Scorchfire on No Fire Tick", false);
 		
 		this.setLightOpacity(1);
         this.setLightLevel(0.8F);

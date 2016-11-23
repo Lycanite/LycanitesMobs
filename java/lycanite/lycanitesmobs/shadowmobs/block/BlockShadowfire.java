@@ -42,6 +42,7 @@ public class BlockShadowfire extends BlockFireBase {
         this.agingRate = 3;
         this.spreadChance = 0;
         this.removeOnTick = !ConfigBase.getConfig(this.group, "general").getBool("Features", "Enable Shadowfire", true);
+        this.removeOnNoFireTick = ConfigBase.getConfig(this.group, "general").getBool("Features", "Remove Shadowfire on No Fire Tick", false);
 	}
 
 

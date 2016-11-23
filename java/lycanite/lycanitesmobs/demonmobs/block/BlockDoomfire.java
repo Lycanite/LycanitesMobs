@@ -35,6 +35,7 @@ public class BlockDoomfire extends BlockFireBase {
         this.agingRate = 8;
         this.spreadChance = 3;
         this.removeOnTick = !ConfigBase.getConfig(this.group, "general").getBool("Features", "Enable Doomfire", true);
+        this.removeOnNoFireTick = ConfigBase.getConfig(this.group, "general").getBool("Features", "Remove Doomfire on No Fire Tick", false);
 
         this.setLightOpacity(1);
         this.setLightLevel(0.8F);

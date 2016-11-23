@@ -21,7 +21,8 @@ public class DispenserBehaviorMobEggCustom extends BehaviorDefaultDispenseItem {
 
         ItemCustomSpawnEgg itemCustomSpawnEgg = (ItemCustomSpawnEgg)itemStack.getItem();
         Entity entity = ((ItemCustomSpawnEgg)itemStack.getItem()).spawnCreature(blockSource.getWorld(), itemCustomSpawnEgg.getEntityIdFromItem(itemStack), x, y, z);
-        entity.setCustomNameTag(itemStack.getDisplayName());
+        if (itemStack.hasDisplayName())
+            entity.setCustomNameTag(itemStack.getDisplayName());
         
         itemStack.splitStack(1);
         return itemStack;

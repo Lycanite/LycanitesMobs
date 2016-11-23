@@ -125,9 +125,9 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
             this.loveTime = 0;
 
         if(!this.worldObj.isRemote)
-        	this.dataManager.set(LOVE, (int)this.loveTime);
+        	this.dataManager.set(LOVE, this.loveTime);
         if(this.worldObj.isRemote)
-        	this.loveTime = Integer.valueOf(this.dataManager.get(LOVE));
+        	this.loveTime = Integer.valueOf(this.getFromDataManager(LOVE));
         
         if(this.isInLove()) {
         	this.setFarmed();
@@ -215,7 +215,7 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
   	//                        Age
   	// ==================================================
 	public int getGrowingAge() {
-        return Integer.valueOf(this.dataManager.get(AGE));
+        return Integer.valueOf(this.getFromDataManager(AGE));
     }
 	
 	public void setGrowingAge(int age) {

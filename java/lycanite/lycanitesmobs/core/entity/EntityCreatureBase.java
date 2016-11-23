@@ -477,6 +477,20 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public String getAgeName() {
     	return "";
     }
+
+
+    // ==================================================
+    //                     Data Manager
+    // ==================================================
+    public <T> T getFromDataManager(DataParameter<T> key)
+    {
+        try {
+            return this.dataManager.get(key);
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
     
     
     // ==================================================
@@ -1383,17 +1397,18 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	    // Stealth Invisibility:
     	if(!this.worldObj.isRemote) {
 	        if(this.isStealthed() && !this.isInvisible())
-	        	setInvisible(true);
+	        	this.setInvisible(true);
 	        else if(!this.isStealthed() && this.isInvisible() && !this.isPotionActive(MobEffects.INVISIBILITY))
-	        	setInvisible(false);
+                this.setInvisible(false);
     	}
         if(this.isStealthed()) {
         	if(this.stealthPrev != this.isStealthed())
-        		startStealth();
-        	onStealth();
+                this.startStealth();
+            this.onStealth();
         }
-        else if(this.isInvisible() && !this.isPotionActive(MobEffects.INVISIBILITY))
-        	setInvisible(false);
+        else if(this.isInvisible() && !this.isPotionActive(MobEffects.INVISIBILITY) && !this.worldObj.isRemote) {
+            this.setInvisible(false);
+        }
         this.stealthPrev = this.isStealthed();
 
         // Blocking:
@@ -1492,7 +1507,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
         // Animations Client:
         else if(this.worldObj.isRemote) {
-        	byte animations = Byte.valueOf(this.dataManager.get(ANIMATION));
+        	byte animations = Byte.valueOf(this.getFromDataManager(ANIMATION));
         	if(this.justAttacked > 0)
         		this.justAttacked--;
         	else if((animations & ANIM_ID.ATTACKED.id) > 0)
@@ -1504,7 +1519,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
         // Is Minon:
         if(this.worldObj.isRemote) {
-    		this.isMinion = (Byte.valueOf(this.dataManager.get(ANIMATION)) & ANIM_ID.MINION.id) > 0;
+    		this.isMinion = (Byte.valueOf(this.getFromDataManager(ANIMATION)) & ANIM_ID.MINION.id) > 0;
         }
 
         // Subspecies:
@@ -1512,8 +1527,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     		this.dataManager.set(SUBSPECIES, Byte.valueOf((byte)this.getSubspeciesIndex()));
         }
         else {
-        	if(this.getSubspeciesIndex() != Byte.valueOf(this.dataManager.get(SUBSPECIES)))
-        		this.setSubspecies(Byte.valueOf(this.dataManager.get(SUBSPECIES)), false);
+        	if(this.getSubspeciesIndex() != Byte.valueOf(this.getFromDataManager(SUBSPECIES)))
+        		this.setSubspecies(Byte.valueOf(this.getFromDataManager(SUBSPECIES)), false);
         }
 
         // Size:
@@ -1521,8 +1536,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     		this.dataManager.set(SIZE, Float.valueOf((float)this.sizeScale));
         }
         else {
-        	if(this.sizeScale != Float.valueOf(this.dataManager.get(SIZE))) {
-        		this.sizeScale = Float.valueOf(this.dataManager.get(SIZE));
+        	if(this.sizeScale != Float.valueOf(this.getFromDataManager(SIZE))) {
+        		this.sizeScale = Float.valueOf(this.getFromDataManager(SIZE));
         		this.updateSize();
         	}
         }
@@ -2169,7 +2184,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Phase ==========
     /** Returns the current attack phase of this mob, used when deciding which attack to use and which animations to use. **/
     public byte getAttackPhase() {
-    	return Byte.valueOf(this.dataManager.get(ATTACK_PHASE));
+    	return Byte.valueOf(this.getFromDataManager(ATTACK_PHASE));
     }
     /** Sets the current attack phase of this mobs. **/
     public void setAttackPhase(byte setAttackPhase) { attackPhase = setAttackPhase; }
@@ -2372,7 +2387,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	if(!this.worldObj.isRemote)
     		return this.getAttackTarget() != null;
     	else
-    		return (Byte.valueOf(this.dataManager.get(TARGET)) & TARGET_ID.ATTACK.id) > 0;
+    		return (Byte.valueOf(this.getFromDataManager(TARGET)) & TARGET_ID.ATTACK.id) > 0;
     }
 
     /** Returns this entity's Master Target. **/
@@ -2384,7 +2399,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	if(!this.worldObj.isRemote)
     		return this.getMasterTarget() != null;
     	else
-    		return (Byte.valueOf(this.dataManager.get(TARGET)) & TARGET_ID.MASTER.id) > 0;
+    		return (Byte.valueOf(this.getFromDataManager(TARGET)) & TARGET_ID.MASTER.id) > 0;
     }
 
     /** Returns this entity's Parent Target. **/
@@ -2396,7 +2411,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	if(!this.worldObj.isRemote)
     		return this.getParentTarget() != null;
     	else
-    		return (Byte.valueOf(this.dataManager.get(TARGET)) & TARGET_ID.PARENT.id) > 0;
+    		return (Byte.valueOf(this.getFromDataManager(TARGET)) & TARGET_ID.PARENT.id) > 0;
     }
 
     /** Returns this entity's Avoid Target. **/
@@ -2411,7 +2426,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	if(!this.worldObj.isRemote)
     		return this.getAvoidTarget() != null;
     	else
-    		return (Byte.valueOf(this.dataManager.get(TARGET)) & TARGET_ID.AVOID.id) > 0;
+    		return (Byte.valueOf(this.getFromDataManager(TARGET)) & TARGET_ID.AVOID.id) > 0;
     }
 
     /** Returns this entity's Owner Target. **/
@@ -2432,7 +2447,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	if(!this.worldObj.isRemote)
     		return this.getControllingPassenger() != null;
     	else
-    		return (Byte.valueOf(this.dataManager.get(TARGET)) & TARGET_ID.RIDER.id) > 0;
+    		return (Byte.valueOf(this.getFromDataManager(TARGET)) & TARGET_ID.RIDER.id) > 0;
     }
 
     @Override
@@ -2564,7 +2579,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
     /** Get the current stealth percentage, 0.0F = not stealthed, 1.0F = completely stealthed, used for animation such as burrowing crusks. **/
     public float getStealth() {
-    	return Float.valueOf(this.dataManager.get(STEALTH));
+    	return Float.valueOf(this.getFromDataManager(STEALTH));
     }
 
     /** Sets the current stealth percentage. **/
@@ -2583,7 +2598,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Called when this mob is just started stealthing (reach 1.0F or above). **/
     public void startStealth() {}
 
-    /** Called while this mob is stealthed on the update, can be used to clear enemies targets that are targeting this mob, although a new event listener is in placenow to handle this. The main EventListener also helps handling anti-targeting. **/
+    /** Called while this mob is stealthed on the update, can be used to clear enemies targets that are targeting this mob, although a new event listener is in place now to handle this. The main EventListener also helps handling anti-targeting. **/
     public void onStealth() {
     	if(!this.worldObj.isRemote) {
     		if(this.getAttackTarget() != null && this.getAttackTarget() instanceof EntityLiving)
@@ -2598,7 +2613,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public boolean isOnLadder() {
     	if(this.canFly() || this.canSwim()) return false;
     	if(this.canClimb()) {
-            return (Byte.valueOf(this.dataManager.get(CLIMBING)) & 1) != 0;
+            return (Byte.valueOf(this.getFromDataManager(CLIMBING)) & 1) != 0;
         }
     	else
     		return super.isOnLadder();
@@ -2607,7 +2622,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Used to set whether this mob is climbing up a block or not. **/
     public void setBesideClimbableBlock(boolean collided) {
     	if(this.canClimb()) {
-	        byte climbing = Byte.valueOf(this.dataManager.get(CLIMBING));
+	        byte climbing = Byte.valueOf(this.getFromDataManager(CLIMBING));
 	        if(collided)
                 climbing = (byte)(climbing | 1);
 	        else climbing &= -2;
@@ -2617,7 +2632,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
     /** Returns whether or not this mob is next to a climbable blocks or not. **/
     public boolean isBesideClimbableBlock() {
-        return (Byte.valueOf(this.dataManager.get(CLIMBING)) & 1) != 0;
+        return (Byte.valueOf(this.getFromDataManager(CLIMBING)) & 1) != 0;
     }
     
     // ========== Falling ==========
@@ -2651,7 +2666,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Returns true if this mob is blocking. **/
     public boolean isBlocking() {
     	if(this.worldObj.isRemote)
-    		return (Byte.valueOf(this.dataManager.get(ANIMATION)) & ANIM_ID.BLOCKING.id) > 0;
+    		return (Byte.valueOf(this.getFromDataManager(ANIMATION)) & ANIM_ID.BLOCKING.id) > 0;
     	return this.currentBlockingTime > 0;
     }
 

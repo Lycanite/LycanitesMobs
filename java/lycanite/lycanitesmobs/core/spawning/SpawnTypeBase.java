@@ -93,7 +93,7 @@ public class SpawnTypeBase {
 	/** If true, mobs spawned by this spawner wont check any conditions at all except for space to fit in. **/
 	public boolean ignoreMobConditions = false;
 	
-	/** If true, this type will ignore the mob spawn event being cancelled. This only overrides the forge event. **/
+	/** If true, this type will ignore the forge mob spawn event being cancelled by other mods. This only overrides the forge event. **/
 	public boolean forceSpawning = false;
 	
 	/** If true, this type will force spawned mobs to not despawn naturally. **/

@@ -1,6 +1,5 @@
 package lycanite.lycanitesmobs.arcticmobs.entity;
 
-import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupFire;
 import lycanite.lycanitesmobs.api.IGroupIce;
@@ -21,7 +20,6 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -239,20 +237,5 @@ public class EntityWendigo extends EntityCreatureBase implements IMob, IGroupIce
     @Override
     public boolean canBreatheUnderwater() {
         return true;
-    }
-
-
-    // ==================================================
-    //                       Visuals
-    // ==================================================
-    /** Returns this creature's main texture. Also checks for for subspecies. **/
-    public ResourceLocation getTexture() {
-        if(!"Gooderness".equals(this.getCustomNameTag()))
-            return super.getTexture();
-
-        String textureName = this.getTextureName() + "_gooderness";
-        if(AssetManager.getTexture(textureName) == null)
-            AssetManager.addTexture(textureName, this.group, "textures/entity/" + textureName.toLowerCase() + ".png");
-        return AssetManager.getTexture(textureName);
     }
 }

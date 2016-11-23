@@ -35,6 +35,7 @@ public class BlockHellfire extends BlockFireBase {
         this.agingRate = 1;
         this.spreadChance = 1;
         this.removeOnTick = !ConfigBase.getConfig(this.group, "general").getBool("Features", "Enable Hellfire", true);
+        this.removeOnNoFireTick = ConfigBase.getConfig(this.group, "general").getBool("Features", "Remove Hellfire on No Fire Tick", false);
 
         this.setLightOpacity(1);
         this.setLightLevel(0.8F);

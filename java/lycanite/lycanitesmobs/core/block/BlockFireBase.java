@@ -33,6 +33,7 @@ public class BlockFireBase extends BlockBase {
     public boolean tickRandomly = true;
     public int agingRate = 3;
     public float spreadChance = 1;
+    public boolean removeOnNoFireTick = false;
 
     // ==================================================
     //                   Constructor
@@ -42,6 +43,7 @@ public class BlockFireBase extends BlockBase {
 
         this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, Integer.valueOf(0)).withProperty(NORTH, Boolean.valueOf(false)).withProperty(EAST, Boolean.valueOf(false)).withProperty(SOUTH, Boolean.valueOf(false)).withProperty(WEST, Boolean.valueOf(false)).withProperty(UPPER, Boolean.valueOf(false)));
         this.removeOnTick = false;
+        this.removeOnNoFireTick = false;
         this.loopTicks = true;
         this.canBeCrushed = true;
 
@@ -101,8 +103,11 @@ public class BlockFireBase extends BlockBase {
     // ========== Tick Update ==========
     @Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
-        if (!world.getGameRules().getBoolean("doFireTick"))
+        if (!world.getGameRules().getBoolean("doFireTick")) {
+            if(this.removeOnNoFireTick)
+                world.setBlockToAir(pos);
             return;
+        }
 
         // Prevent Self Replacement:
         if (!this.canPlaceBlockAt(world, pos) || this.removeOnTick)
@@ -201,7 +206,12 @@ public class BlockFireBase extends BlockBase {
     /** Returns true if this block can place another block at the specified location. **/
     @Override
     public boolean canPlaceBlockAt(World world, BlockPos pos) {
-        return world.getBlockState(pos.down()).isSideSolid(world, pos, EnumFacing.UP) || this.canNeighborCatchFire(world, pos);
+        try {
+            return world.getBlockState(pos.down()).isSideSolid(world, pos, EnumFacing.UP) || this.canNeighborCatchFire(world, pos);
+        }
+        catch (Exception e) {
+            return false;
+        }
     }
 
     /** Called when an adjacent block changes. **/

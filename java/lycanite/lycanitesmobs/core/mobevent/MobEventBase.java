@@ -59,7 +59,7 @@ public class MobEventBase {
 		this.duration = config.getInt("Event Durations", this.name, this.duration);
 		this.mobDuration = config.getInt("Event Mob Durations", this.name, this.mobDuration);
         this.forceSpawning = config.getBool("Event Forced Spawning", this.name, this.forceSpawning);
-        this.forceNoDespawn = config.getBool("Event Forced No Despawning", this.name, this.forceSpawning);
+        this.forceNoDespawn = config.getBool("Event Forced No Despawning", this.name, this.forceNoDespawn);
 		this.minDay = config.getInt("Event Day Minimums", this.name, this.minDay);
         
 		// Event Dimensions:

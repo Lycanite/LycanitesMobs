@@ -216,7 +216,7 @@ public class BlockFireBase extends BlockBase {
 
     /** Called when an adjacent block changes. **/
     @Override
-    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block) {
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos triggerPos) {
         if (!world.getBlockState(pos.down()).isSideSolid(world, pos, EnumFacing.UP) && !this.canNeighborCatchFire(world, pos)) {
             world.setBlockToAir(pos);
         }

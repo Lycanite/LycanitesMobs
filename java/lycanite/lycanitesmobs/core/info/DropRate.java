@@ -110,7 +110,7 @@ public class DropRate {
 		}
 		
 		if(drop != null)
-			drop.stackSize = quantity;
+			drop.func_190920_e(quantity);
 		return drop;
 	}
 }

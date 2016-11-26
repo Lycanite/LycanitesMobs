@@ -54,11 +54,11 @@ public class ItemSlabCustom extends ItemBlock
     /**
      * Called when a Block is right-clicked with this Item
      */
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-    {
-        if (stack.stackSize != 0 && playerIn.canPlayerEdit(pos.offset(facing), facing, stack))
+    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        ItemStack itemStack = player.getHeldItem(hand);
+        if (itemStack.func_190916_E() != 0 && player.canPlayerEdit(pos.offset(facing), facing, itemStack))
         {
-            Comparable<?> comparable = this.singleSlab.getTypeForItem(stack);
+            Comparable<?> comparable = this.singleSlab.getTypeForItem(itemStack);
             IBlockState iblockstate = worldIn.getBlockState(pos);
 
             if (iblockstate.getBlock() == this.singleSlab)
@@ -75,15 +75,15 @@ public class ItemSlabCustom extends ItemBlock
                     if (axisalignedbb != Block.NULL_AABB && worldIn.checkNoEntityCollision(axisalignedbb.offset(pos)) && worldIn.setBlockState(pos, iblockstate1, 11))
                     {
                         SoundType soundtype = this.doubleSlab.getSoundType();
-                        worldIn.playSound(playerIn, pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
-                        --stack.stackSize;
+                        worldIn.playSound(player, pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
+                        itemStack.func_190920_e(Math.max(0, itemStack.func_190916_E() - 1));
                     }
 
                     return EnumActionResult.SUCCESS;
                 }
             }
 
-            return this.tryPlace(playerIn, stack, worldIn, pos.offset(facing), comparable) ? EnumActionResult.SUCCESS : super.onItemUse(stack, playerIn, worldIn, pos, hand, facing, hitX, hitY, hitZ);
+            return this.tryPlace(player, itemStack, worldIn, pos.offset(facing), comparable) ? EnumActionResult.SUCCESS : super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
         }
         else
         {
@@ -114,7 +114,7 @@ public class ItemSlabCustom extends ItemBlock
         return iblockstate1.getBlock() == this.singleSlab && comparable == iblockstate1.getValue(iproperty) ? true : super.canPlaceBlockOnSide(worldIn, blockpos, side, player, stack);
     }
 
-    private boolean tryPlace(EntityPlayer player, ItemStack stack, World worldIn, BlockPos pos, Object itemSlabType)
+    private boolean tryPlace(EntityPlayer player, ItemStack itemStack, World worldIn, BlockPos pos, Object itemSlabType)
     {
         IBlockState iblockstate = worldIn.getBlockState(pos);
 
@@ -131,7 +131,7 @@ public class ItemSlabCustom extends ItemBlock
                 {
                     SoundType soundtype = this.doubleSlab.getSoundType();
                     worldIn.playSound(player, pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
-                    --stack.stackSize;
+                    itemStack.func_190920_e(Math.max(0, itemStack.func_190916_E() - 1));
                 }
 
                 return true;

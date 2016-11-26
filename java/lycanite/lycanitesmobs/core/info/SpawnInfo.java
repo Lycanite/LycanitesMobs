@@ -265,7 +265,7 @@ public class SpawnInfo {
 		// Dungeon Spawn:
 		if(!disableDungeonSpawners) {
 			if(this.dungeonWeight > 0) {
-				DungeonHooks.addDungeonMob(this.mobInfo.getRegistryName(), this.dungeonWeight);
+				DungeonHooks.addDungeonMob(this.mobInfo.getResourceLocation(), this.dungeonWeight);
 				LycanitesMobs.printDebug("MobSetup", "Dungeon Spawn Added - Weight: " + this.dungeonWeight);
 			}
 		}

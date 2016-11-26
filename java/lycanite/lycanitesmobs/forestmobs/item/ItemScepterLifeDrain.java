@@ -32,9 +32,10 @@ public class ItemScepterLifeDrain extends ItemScepter {
 	// ==================================================
     // ========== Start ==========
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer player, EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+        ItemStack itemStack = player.getHeldItem(hand);
     	this.projectileTarget = null;
-        return super.onItemRightClick(itemStack, world, player, hand);
+        return super.onItemRightClick(world, player, hand);
     }
     
     @Override

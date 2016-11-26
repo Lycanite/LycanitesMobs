@@ -125,14 +125,14 @@ public class ItemSwordBase extends ItemSword {
 	// ==================================================
     // ========== Use ==========
     @Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-    	return super.onItemUse(stack, playerIn, worldIn, pos, hand, facing, hitX, hitY, hitZ);
+    public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    	return super.onItemUse( player, world, pos, hand, facing, hitX, hitY, hitZ);
     }
     
     // ========== Start ==========
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer player, EnumHand hand) {
-    	return super.onItemRightClick(itemStack, world, player, hand);
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+    	return super.onItemRightClick(world, player, hand);
     }
 
     // ========== Using ==========

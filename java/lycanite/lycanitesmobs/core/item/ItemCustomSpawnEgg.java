@@ -23,10 +23,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.MobSpawnerBaseLogic;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityMobSpawner;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
@@ -60,9 +57,9 @@ public class ItemCustomSpawnEgg extends ItemBase {
     @Override
     public String getItemStackDisplayName(ItemStack itemStack) {
         String s = ("" + I18n.translateToLocal(this.getUnlocalizedName() + ".name")).trim();
-        String s1 = this.getEntityIdFromItem(itemStack);
+        ResourceLocation s1 = this.getEntityIdFromItem(itemStack);
         if (s1 != null) {
-            s = s + " " + I18n.translateToLocal("entity." + s1 + ".name");
+            s = s + " " + I18n.translateToLocal("entity." + s1.getResourcePath() + ".name");
         }
 
         return s;
@@ -74,7 +71,7 @@ public class ItemCustomSpawnEgg extends ItemBase {
 	// ==================================================
     @Override
     public String getDescription(ItemStack itemStack, EntityPlayer entityPlayer, List textList, boolean par4) {
-    	String entityID = this.getEntityIdFromItem(itemStack);
+        ResourceLocation entityID = this.getEntityIdFromItem(itemStack);
         Class entityClass = ObjectManager.entityLists.get(this.group.filename).getClassFromID(entityID);
         MobInfo mobInfo = MobInfo.mobClassToInfo.get(entityClass);
         if(mobInfo == null) {
@@ -89,7 +86,8 @@ public class ItemCustomSpawnEgg extends ItemBase {
 	//                     Item Use
 	// ==================================================
     @Override
-    public EnumActionResult onItemUse(ItemStack itemStack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        ItemStack itemStack = player.getHeldItem(hand);
         IBlockState blockState = world.getBlockState(pos);
         Block block = blockState.getBlock();
 
@@ -104,11 +102,11 @@ public class ItemCustomSpawnEgg extends ItemBase {
         if(block == Blocks.MOB_SPAWNER) {
             TileEntity tileEntity = world.getTileEntity(pos);
             MobSpawnerBaseLogic mobspawnerbaselogic = ((TileEntityMobSpawner)tileEntity).getSpawnerBaseLogic();
-            mobspawnerbaselogic.setEntityName(this.getEntityIdFromItem(itemStack));
+            mobspawnerbaselogic.func_190894_a(this.getEntityIdFromItem(itemStack)); //setEntityName
             tileEntity.markDirty();
             world.notifyBlockUpdate(pos, blockState, blockState, 3);
             if (!player.capabilities.isCreativeMode) {
-                --itemStack.stackSize;
+                itemStack.func_190920_e(Math.max(0, itemStack.func_190916_E() - 1));
             }
 
             return EnumActionResult.SUCCESS;
@@ -132,7 +130,7 @@ public class ItemCustomSpawnEgg extends ItemBase {
                 applyItemEntityDataToEntity(world, player, itemStack, entity);
 	
 	            if(!player.capabilities.isCreativeMode)
-	                --itemStack.stackSize;
+                    itemStack.func_190920_e(Math.max(0, itemStack.func_190916_E() - 1));
 	        }
         }
 
@@ -144,7 +142,8 @@ public class ItemCustomSpawnEgg extends ItemBase {
 	//                   On Right Click
 	// ==================================================
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer player, EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+        ItemStack itemStack = player.getHeldItem(hand);
         if(world.isRemote)
             return new ActionResult(EnumActionResult.PASS, itemStack);
         else {
@@ -170,7 +169,7 @@ public class ItemCustomSpawnEgg extends ItemBase {
                                 ((EntityLiving)entity).setCustomNameTag(itemStack.getDisplayName());
 
                             if(!player.capabilities.isCreativeMode)
-                                --itemStack.stackSize;
+                                itemStack.func_190920_e(Math.max(0, itemStack.func_190916_E() - 1));
                     }
                 }
 
@@ -182,7 +181,7 @@ public class ItemCustomSpawnEgg extends ItemBase {
 	// ==================================================
 	//                   Spawn Creature
 	// ==================================================
-    public Entity spawnCreature(World world, String entityID, double x, double y, double z) {
+    public Entity spawnCreature(World world, ResourceLocation entityID, double x, double y, double z) {
         if(!ObjectManager.entityLists.get(this.group.filename).entityEggs.containsKey(entityID))
             return null;
         else {
@@ -229,7 +228,7 @@ public class ItemCustomSpawnEgg extends ItemBase {
 	// ==================================================
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs creativeTabs, List subItems) {
+    public void getSubItems(Item item, CreativeTabs creativeTabs, NonNullList<ItemStack> subItems) {
     	if(this.group == null || !ObjectManager.entityLists.containsKey(this.group.filename))
     		return;
 
@@ -245,10 +244,10 @@ public class ItemCustomSpawnEgg extends ItemBase {
     //              Apply Entity ID To Stack
     // ==================================================
     // @SideOnly(Side.CLIENT)
-     public static void applyEntityIdToItemStack(ItemStack stack, String entityId) {
+     public static void applyEntityIdToItemStack(ItemStack stack, ResourceLocation entityId) {
         NBTTagCompound nbttagcompound = stack.hasTagCompound() ? stack.getTagCompound() : new NBTTagCompound();
         NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-        nbttagcompound1.setString("id", entityId);
+        nbttagcompound1.setString("id", entityId.toString());
         nbttagcompound.setTag("EntityTag", nbttagcompound1);
         stack.setTagCompound(nbttagcompound);
     }
@@ -257,14 +256,14 @@ public class ItemCustomSpawnEgg extends ItemBase {
     // ==================================================
     //              Get Entity ID From Item
     // ==================================================
-    public static String getEntityIdFromItem(ItemStack stack) {
+    public static ResourceLocation getEntityIdFromItem(ItemStack stack) {
         NBTTagCompound nbttagcompound = stack.getTagCompound();
         if (nbttagcompound == null || !nbttagcompound.hasKey("EntityTag", 10)) {
             return null;
         }
 
         NBTTagCompound nbttagcompound1 = nbttagcompound.getCompoundTag("EntityTag");
-        return !nbttagcompound1.hasKey("id", 8) ? null : nbttagcompound1.getString("id");
+        return !nbttagcompound1.hasKey("id", 8) ? null : new ResourceLocation(nbttagcompound1.getString("id"));
     }
 
 

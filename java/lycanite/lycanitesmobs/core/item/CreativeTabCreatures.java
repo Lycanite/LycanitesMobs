@@ -3,7 +3,7 @@ package lycanite.lycanitesmobs.core.item;
 import lycanite.lycanitesmobs.ObjectManager;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -17,16 +17,16 @@ public class CreativeTabCreatures extends CreativeTabs {
 	// ========== Tab Icon ==========
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Item getTabIconItem() {
+	public ItemStack getTabIconItem() {
 		if(ObjectManager.getItem("demonspawn") != null)
-			return ObjectManager.getItem("demonspawn");
+			return new ItemStack(ObjectManager.getItem("demonspawn"));
 		else if(ObjectManager.getItem("desertspawn") != null)
-			return ObjectManager.getItem("desertspawn");
+			return new ItemStack(ObjectManager.getItem("desertspawn"));
 		else if(ObjectManager.getItem("plainsspawn") != null)
-			return ObjectManager.getItem("plainsspawn");
+			return new ItemStack(ObjectManager.getItem("plainsspawn"));
 		else if(ObjectManager.getItem("swampspawn") != null)
-			return ObjectManager.getItem("swampspawn");
+			return new ItemStack(ObjectManager.getItem("swampspawn"));
 		else
-			return Items.SPAWN_EGG;
+			return new ItemStack(Items.SPAWN_EGG);
 	}
 }

@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs.core.entity.ai;
 import lycanite.lycanitesmobs.core.entity.EntityCreatureBase;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -128,14 +129,14 @@ public class DirectNavigator {
 	public void flightMovement(float moveStrafe, float moveForward) {
 		if(this.host.isInWater() && !host.canSwim()) {
             this.host.moveFlying(moveStrafe, moveForward, 0.02F);
-            this.host.moveEntity(this.host.motionX, this.host.motionY, this.host.motionZ);
+            this.host.moveEntity(MoverType.SELF, this.host.motionX, this.host.motionY, this.host.motionZ);
             this.host.motionX *= 0.800000011920929D;
             this.host.motionY *= 0.800000011920929D;
             this.host.motionZ *= 0.800000011920929D;
         }
         else if(this.host.lavaContact() && !host.canSwim()) {
             this.host.moveFlying(moveStrafe, moveForward, 0.02F);
-            this.host.moveEntity(this.host.motionX, this.host.motionY, this.host.motionZ);
+            this.host.moveEntity(MoverType.SELF, this.host.motionX, this.host.motionY, this.host.motionZ);
             this.host.motionX *= 0.5D;
             this.host.motionY *= 0.5D;
             this.host.motionZ *= 0.5D;
@@ -160,7 +161,7 @@ public class DirectNavigator {
             }
             
             if(this.host != null && this.host.getEntityBoundingBox() != null)
-            	this.host.moveEntity(this.host.motionX, this.host.motionY, this.host.motionZ);
+            	this.host.moveEntity(MoverType.SELF, this.host.motionX, this.host.motionY, this.host.motionZ);
             this.host.motionX *= (double)motion;
             this.host.motionY *= (double)motion;
             this.host.motionZ *= (double)motion;

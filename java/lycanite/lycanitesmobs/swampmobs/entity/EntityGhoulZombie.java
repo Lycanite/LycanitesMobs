@@ -1,13 +1,13 @@
 package lycanite.lycanitesmobs.swampmobs.entity;
 
 import lycanite.lycanitesmobs.core.entity.EntityCreatureAgeable;
+import lycanite.lycanitesmobs.core.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.core.entity.ai.*;
 import lycanite.lycanitesmobs.core.info.DropRate;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
-import net.minecraft.entity.IEntityLivingData;
-import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.monster.EntityZombieVillager;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,6 +16,7 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
@@ -110,17 +111,22 @@ public class EntityGhoulZombie extends EntityCreatureAgeable implements IMob {
         if(this.worldObj.getDifficulty().getDifficultyId() >= 2 && entityLivingBase instanceof EntityVillager) {
             if (this.worldObj.getDifficulty().getDifficultyId() == 2 && this.rand.nextBoolean()) return;
 
-            EntityZombie entityZombie = new EntityZombie(this.worldObj);
-            entityZombie.copyLocationAndAnglesFrom(entityLivingBase);
-            this.worldObj.removeEntity(entityLivingBase);
-            entityZombie.onInitialSpawn(this.worldObj.getDifficultyForLocation(this.getPosition()), (IEntityLivingData) null);
-            entityZombie.setVillagerType(((EntityVillager) entityLivingBase).getProfessionForge());
+            EntityVillager entityvillager = (EntityVillager)entityLivingBase;
+            EntityZombieVillager entityzombievillager = new EntityZombieVillager(this.worldObj);
+            entityzombievillager.copyLocationAndAnglesFrom(entityvillager);
+            this.worldObj.removeEntity(entityvillager);
+            entityzombievillager.onInitialSpawn(this.worldObj.getDifficultyForLocation(new BlockPos(entityzombievillager)), new EntityCreatureBase.GroupData(false));
+            entityzombievillager.func_190733_a(entityvillager.getProfession());
+            entityzombievillager.setChild(entityvillager.isChild());
+            entityzombievillager.setNoAI(entityvillager.isAIDisabled());
 
-            if(entityLivingBase.isChild())
-                entityZombie.setChild(true);
+            if (entityvillager.hasCustomName()) {
+                entityzombievillager.setCustomNameTag(entityvillager.getCustomNameTag());
+                entityzombievillager.setAlwaysRenderNameTag(entityvillager.getAlwaysRenderNameTag());
+            }
 
-            this.worldObj.spawnEntityInWorld(entityZombie);
-            this.worldObj.playEvent(null, 1016, entityZombie.getPosition(), 0);
+            this.worldObj.spawnEntityInWorld(entityzombievillager);
+            this.worldObj.playEvent(null, 1016, entityzombievillager.getPosition(), 0);
         }
     }
     

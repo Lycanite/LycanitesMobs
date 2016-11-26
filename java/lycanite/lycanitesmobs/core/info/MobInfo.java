@@ -81,6 +81,9 @@ public class MobInfo {
 	
 	/** The name of this mob used by the ObjectManager and Config maps. Should be all lower case **/
 	public String name = "mobname";
+
+    /** The Resource Location used to reference this mob. Use the method getResourceLocation() as it will generate one if not yet generated. **/
+    protected ResourceLocation resourceLocation;
 	
 	/** Is this mob enabled? If disabled, it will still be registered, etc but wont randomly spawn or have a spawn egg. **/
 	public boolean mobEnabled = true;
@@ -219,12 +222,12 @@ public class MobInfo {
 	}
 	
 	/**
-	 * Tells every registered MobInfo to load from the configs. This should be called in init so that all mobs can read entity IDs.
+	 * Tells every registered MobInfo for this group to load from the configs. This should be called in init so that all mobs can read entity IDs.
 	 * @return
 	 */
-	public static void loadAllFromConfigs() {
+	public static void loadAllFromConfigs(GroupInfo group) {
 		for(MobInfo mobInfo : mobNameToInfo.values()) {
-			if(mobInfo != null)
+			if(mobInfo != null && mobInfo.group == group)
 				mobInfo.loadFromConfigs();
 		}
 	}
@@ -371,9 +374,9 @@ public class MobInfo {
 		// Mapping and Registration:
 		if(!ObjectManager.entityLists.containsKey(this.group.filename))
 			ObjectManager.entityLists.put(this.group.filename, new EntityListCustom());
-		ObjectManager.entityLists.get(this.group.filename).addMapping(this.entityClass, this.getRegistryName(), this.eggBackColor, this.eggForeColor);
-		EntityRegistry.registerModEntity(this.entityClass, name, this.mobID, group.mod, this.isBoss() ? 256 : 128, this.isBoss() ? 6 : 3, true);
-		
+		ObjectManager.entityLists.get(this.group.filename).addMapping(this.entityClass, this.getResourceLocation(), this.eggBackColor, this.eggForeColor);
+		EntityRegistry.registerModEntity(this.getResourceLocation(), this.entityClass, name, this.mobID, this.group.mod, this.isBoss() ? 256 : 128, this.isBoss() ? 6 : 3, true);
+
 		// Debug Message - Added:
 		LycanitesMobs.printDebug("MobSetup", "Mob Added: " + name + " - " + this.entityClass + " (" + group.name + ")");
     }
@@ -389,6 +392,12 @@ public class MobInfo {
 	public String getRegistryName() {
 		return this.group.filename + "." + this.name;
 	}
+
+    public ResourceLocation getResourceLocation() {
+        if(this.resourceLocation == null)
+            this.resourceLocation = new ResourceLocation(this.group.filename, this.name);
+        return this.resourceLocation;
+    }
 
     public String getCfgName(String configKey) {
         return this.getTitle() + " " + configKey;

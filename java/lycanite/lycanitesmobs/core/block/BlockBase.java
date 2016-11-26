@@ -88,7 +88,7 @@ public class BlockBase extends Block {
     //                      Info
     // ==================================================
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+    public void func_190948_a(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) { //addInformation
         tooltip.add(this.getDescription(stack, player));
     }
 
@@ -151,12 +151,12 @@ public class BlockBase extends Block {
 	//                   Block Updates
 	// ==================================================
     @Override
-    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block) {
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos triggerPos) { //triggerPos?
         // Crushable:
 		if(this.canBeCrushed)
 			if(block == Blocks.SAND || block == Blocks.GRAVEL)
 	        	world.setBlockToAir(pos);
-        super.neighborChanged(state, world, pos, block);
+        super.neighborChanged(state, world, pos, block, triggerPos);
     }
     
     
@@ -224,7 +224,7 @@ public class BlockBase extends Block {
 
     // ========== Collision Bounding Box ==========
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World world, BlockPos pos) {
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
         if(!this.isCollidable())
             return Block.NULL_AABB;
         return super.getCollisionBoundingBox(state, world, pos);

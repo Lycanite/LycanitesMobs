@@ -31,14 +31,15 @@ public class ItemPoopCharge extends ItemCharge {
     // ==================================================
     // ========== Use ==========
     @Override
-    public EnumActionResult onItemUse(ItemStack itemStack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        ItemStack itemStack = player.getHeldItem(hand);
         if(ItemDye.applyBonemeal(itemStack, world, pos, player)) {
             if(!world.isRemote) {
                 world.playEvent(2005, pos, 0);
             }
             return EnumActionResult.SUCCESS;
         }
-        return super.onItemUse(itemStack, player, world, pos, hand, facing, hitX, hitY, hitZ);
+        return super.onItemUse(player, world, pos, hand, facing, hitX, hitY, hitZ);
     }
 
     @Override

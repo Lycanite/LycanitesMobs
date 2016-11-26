@@ -241,12 +241,12 @@ public abstract class EntityCreatureBase extends EntityLiving {
     protected static final DataParameter<Float> SIZE = EntityDataManager.<Float>createKey(EntityCreatureBase.class, DataSerializers.FLOAT);
     protected static final DataParameter<Byte> SUBSPECIES = EntityDataManager.<Byte>createKey(EntityCreatureBase.class, DataSerializers.BYTE);
 
-    public static final DataParameter<Optional<ItemStack>> EQUIPMENT_HEAD = EntityDataManager.<Optional<ItemStack>>createKey(EntityCreatureBase.class, DataSerializers.OPTIONAL_ITEM_STACK);
-    public static final DataParameter<Optional<ItemStack>> EQUIPMENT_CHEST = EntityDataManager.<Optional<ItemStack>>createKey(EntityCreatureBase.class, DataSerializers.OPTIONAL_ITEM_STACK);
-    public static final DataParameter<Optional<ItemStack>> EQUIPMENT_LEGS = EntityDataManager.<Optional<ItemStack>>createKey(EntityCreatureBase.class, DataSerializers.OPTIONAL_ITEM_STACK);
-    public static final DataParameter<Optional<ItemStack>> EQUIPMENT_FEET = EntityDataManager.<Optional<ItemStack>>createKey(EntityCreatureBase.class, DataSerializers.OPTIONAL_ITEM_STACK);
-    public static final DataParameter<Optional<ItemStack>> EQUIPMENT_BAG = EntityDataManager.<Optional<ItemStack>>createKey(EntityCreatureBase.class, DataSerializers.OPTIONAL_ITEM_STACK);
-    public static final DataParameter<Optional<ItemStack>> EQUIPMENT_SADDLE = EntityDataManager.<Optional<ItemStack>>createKey(EntityCreatureBase.class, DataSerializers.OPTIONAL_ITEM_STACK);
+    public static final DataParameter<ItemStack> EQUIPMENT_HEAD = EntityDataManager.<ItemStack>createKey(EntityCreatureBase.class, DataSerializers.OPTIONAL_ITEM_STACK);
+    public static final DataParameter<ItemStack> EQUIPMENT_CHEST = EntityDataManager.<ItemStack>createKey(EntityCreatureBase.class, DataSerializers.OPTIONAL_ITEM_STACK);
+    public static final DataParameter<ItemStack> EQUIPMENT_LEGS = EntityDataManager.<ItemStack>createKey(EntityCreatureBase.class, DataSerializers.OPTIONAL_ITEM_STACK);
+    public static final DataParameter<ItemStack> EQUIPMENT_FEET = EntityDataManager.<ItemStack>createKey(EntityCreatureBase.class, DataSerializers.OPTIONAL_ITEM_STACK);
+    public static final DataParameter<ItemStack> EQUIPMENT_BAG = EntityDataManager.<ItemStack>createKey(EntityCreatureBase.class, DataSerializers.OPTIONAL_ITEM_STACK);
+    public static final DataParameter<ItemStack> EQUIPMENT_SADDLE = EntityDataManager.<ItemStack>createKey(EntityCreatureBase.class, DataSerializers.OPTIONAL_ITEM_STACK);
 
     protected static final DataParameter<Optional<BlockPos>> ARENA = EntityDataManager.<Optional<BlockPos>>createKey(EntityCreatureBase.class, DataSerializers.OPTIONAL_BLOCK_POS);
 
@@ -440,7 +440,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Returns the display name of this entity. Use this when displaying it's name. **/
     @Override
     public String getName() {
-        super.getName();
     	if(this.hasCustomName())
     		return this.getCustomNameTag();
     	else
@@ -459,10 +458,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
     
     /** Returns the species name of this entity. **/
     public String getSpeciesName() {
-    	String entityName = EntityList.getEntityString(this);
-    	if(entityName == null)
-    		return "Creature";
-    	return I18n.translateToLocal("entity." + entityName + ".name");
+        if(this.mobInfo == null)
+            return super.getName();
+    	String entityName = this.mobInfo.name;
+    	return I18n.translateToLocal("entity." + this.mobInfo.group.name + "." + entityName + ".name");
     }
 
     /** Returns the subpsecies title (translated name) of this entity, returns a blank string if this is a base species mob. **/
@@ -583,7 +582,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
             return false;
 
     	LycanitesMobs.printDebug("MobSpawns", "Checking solid block collision.");
-        if(!this.spawnsInBlock && !this.worldObj.getCollisionBoxes(this.getEntityBoundingBox()).isEmpty()) {
+        if(!this.spawnsInBlock && !this.worldObj.getCollisionBoxes(this, this.getEntityBoundingBox()).isEmpty()) {
         	return false;
         }
 
@@ -1655,7 +1654,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         if (this.onGround) {
             f = this.worldObj.getBlockState(new BlockPos(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.getEntityBoundingBox().minY) - 1, MathHelper.floor_double(this.posZ))).getBlock().slipperiness * 0.91F;
         }
-        this.moveEntity(this.motionX, this.motionY, this.motionZ);
+        this.moveEntity(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
         this.motionX *= (double)f;
         this.motionY *= (double)f;
         this.motionZ *= (double)f;
@@ -1686,7 +1685,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Move Swimming with Heading ==========
     public void moveSwimmingWithHeading(float strafe, float forward) {
         this.moveRelative(strafe, forward, 0.1F);
-        this.moveEntity(this.motionX, this.motionY, this.motionZ);
+        this.moveEntity(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
         this.motionX *= 0.8999999761581421D;
         this.motionY *= 0.8999999761581421D;
         this.motionZ *= 0.8999999761581421D;
@@ -1837,7 +1836,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Water Modifier ==========
     /** Modifies movement resistance in water. **/
     @Override
-    protected float func_189749_co() {
+    protected float getWaterSlowDown() {
         if(!this.isPushedByWater())
             return 1F;
         return 0.8F;
@@ -2795,7 +2794,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** The vanilla item drop method, overridden to make use of the EntityItemCustom class. I recommend using dropItem() instead. **/
     @Override
     public EntityItem entityDropItem(ItemStack itemStack, float heightOffset) {
-        if(itemStack.stackSize != 0 && itemStack.getItem() != null) {
+        if(itemStack.func_190916_E() != 0 && itemStack.getItem() != null) {
             EntityItemCustom entityItem = new EntityItemCustom(this.worldObj, this.posX, this.posY + (double)heightOffset, this.posZ, itemStack);
             entityItem.setPickupDelay(10);
             this.applyDropEffects(entityItem);
@@ -2872,10 +2871,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
     /** The main interact method that is called when a player right clicks this entity. **/
     @Override
-    public boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack itemStack) {
-	    if(assessInteractCommand(getInteractCommands(player, itemStack), player, itemStack))
+    public boolean processInteract(EntityPlayer player, EnumHand hand) {
+	    if(assessInteractCommand(getInteractCommands(player, player.getHeldItem(hand)), player, player.getHeldItem(hand)))
 	    	return true;
-	    return super.processInteract(player, hand, itemStack);
+	    return super.processInteract(player, hand);
     }
 
     // ========== Assess Interact Command ==========
@@ -2973,8 +2972,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Consumes the specified amount from the item stack currently held by the specified player. **/
     public void consumePlayersItem(EntityPlayer player, ItemStack itemStack, int amount) {
     	if(!player.capabilities.isCreativeMode)
-            itemStack.stackSize -= amount;
-        if(itemStack.stackSize <= 0)
+            itemStack.func_190920_e(Math.max(0, itemStack.func_190916_E() - amount));
+        if(itemStack.func_190916_E() <= 0)
         	player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack)null);
     }
 
@@ -2986,9 +2985,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Replaces the specified itemstack and amount with a new itemstack. **/
     public void replacePlayersItem(EntityPlayer player, ItemStack itemStack, int amount, ItemStack newStack) {
     	if(!player.capabilities.isCreativeMode)
-            itemStack.stackSize -= amount;
+            itemStack.func_190920_e(Math.max(0, itemStack.func_190916_E() - amount));
     	
-        if(itemStack.stackSize <= 0)
+        if(itemStack.func_190916_E() <= 0)
     		 player.inventory.setInventorySlotContents(player.inventory.currentItem, newStack);
          
     	 else if(!player.inventory.addItemStackToInventory(newStack))
@@ -3649,5 +3648,19 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	if(sound == null)
     		return;
     	super.playSound(sound, volume, pitch);
+    }
+
+
+
+
+    // ==================================================
+    //                  Group Data
+    // ==================================================
+    public class GroupData implements IEntityLivingData {
+        public boolean isChild;
+
+        public GroupData(boolean child) {
+            this.isChild = child;
+        }
     }
 }

@@ -276,7 +276,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     		if(equippedItem != null)
     			this.dropItem(equippedItem);
     		ItemStack equipStack = itemStack.copy();
-    		equipStack.stackSize = 1;
+    		equipStack.func_190920_e(1);
     		this.inventory.setEquipmentStack(equipStack.copy());
     		this.consumePlayersItem(player, itemStack);
     	}

@@ -321,7 +321,7 @@ public class ObjectLists {
             // Vanilla Based Checks:
             if(item instanceof ItemPickaxe)
                 return true;
-            if(item.getHarvestLevel(new ItemStack(item), "pickaxe") != -1)
+            if(item.getHarvestLevel(new ItemStack(item), "pickaxe", null, null) != -1)
                 return true;
             return item.getStrVsBlock(new ItemStack(item), Blocks.STONE.getDefaultState()) > 1F;
 
@@ -349,7 +349,7 @@ public class ObjectLists {
             // Vanilla Based Checks:
             if(item instanceof ItemAxe)
                 return true;
-            if(item.getHarvestLevel(new ItemStack(item), "axe") != -1)
+            if(item.getHarvestLevel(new ItemStack(item), "axe", null, null) != -1)
                 return true;
             return item.getStrVsBlock(new ItemStack(item), Blocks.LOG.getDefaultState()) > 1F;
 
@@ -376,7 +376,7 @@ public class ObjectLists {
             // Vanilla Based Checks:
             if(item instanceof ItemSpade)
                 return true;
-            if(item.getHarvestLevel(new ItemStack(item), "shovel") != -1)
+            if(item.getHarvestLevel(new ItemStack(item), "shovel", null, null) != -1)
                 return true;
             return item.getStrVsBlock(new ItemStack(item), Blocks.DIRT.getDefaultState()) > 1F;
 

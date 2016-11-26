@@ -14,7 +14,7 @@ public class DispenserBehaviorMobEggCustom extends BehaviorDefaultDispenseItem {
         if(!(itemStack.getItem() instanceof ItemCustomSpawnEgg))
             return itemStack;
 
-        EnumFacing facing = blockSource.func_189992_e().getValue(BlockDispenser.FACING);
+        EnumFacing facing = blockSource.getBlockState().getValue(BlockDispenser.FACING);
         double x = blockSource.getX() + (double)facing.getFrontOffsetX();
         double y = (double)((float)blockSource.getY() + 0.2F);
         double z = blockSource.getZ() + (double)facing.getFrontOffsetZ();

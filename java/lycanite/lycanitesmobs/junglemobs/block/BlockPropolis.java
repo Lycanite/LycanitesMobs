@@ -4,7 +4,6 @@ import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.core.block.BlockBase;
 import lycanite.lycanitesmobs.junglemobs.JungleMobs;
 import lycanite.lycanitesmobs.junglemobs.entity.EntityVespidQueen;
-import net.minecraft.block.BlockPistonBase;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
@@ -64,7 +63,7 @@ public class BlockPropolis extends BlockBase {
 	// ==================================================
     @Override
     public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack itemStack) {
-        int orientationMeta = BlockPistonBase.getFacingFromEntity(pos, placer).getIndex();
+        int orientationMeta = placer.getHorizontalFacing().getOpposite().getIndex();
         orientationMeta += 8;
         world.setBlockState(pos, state.withProperty(BlockVeswax.HIVE, orientationMeta), 2);
         super.onBlockPlacedBy(world, pos, state, placer, itemStack);

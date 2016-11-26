@@ -13,7 +13,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.client.Minecraft;
 import net.minecraft.dispenser.BehaviorProjectileDispense;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -21,7 +20,6 @@ import net.minecraft.stats.Achievement;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -92,7 +90,7 @@ public class ObjectManager {
 	// ========== Bucket ==========
 	public static Item addBucket(Item bucket, Block block, Fluid fluid) {
 		buckets.put(block, bucket);
-        FluidContainerRegistry.registerFluidContainer(fluid, new ItemStack(bucket), new ItemStack(Items.BUCKET));
+        //FluidContainerRegistry.registerFluidContainer(fluid, new ItemStack(bucket), new ItemStack(Items.BUCKET)); TODO Try to find what this has changed to, if possible.
         return bucket;
 	}
 
@@ -167,7 +165,7 @@ public class ObjectManager {
         AssetManager.addSound(name, group, "projectile." + name);
 
         int projectileID = group.getNextProjectileID();
-        EntityRegistry.registerModEntity(entityClass, name, projectileID, group.mod, 64, updateFrequency, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(group.filename, name), entityClass, name, projectileID, group.mod, 64, updateFrequency, true);
 
         projectiles.put(name, entityClass);
         group.projectileClasses.add(entityClass);

@@ -33,9 +33,10 @@ public class ItemWinterGiftLarge extends ItemBase {
  	//                    Item Use
  	// ==================================================
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer player, EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+        ItemStack itemStack = player.getHeldItem(hand);
          if(!player.capabilities.isCreativeMode) {
-             --itemStack.stackSize;
+             itemStack.func_190920_e(Math.max(0, itemStack.func_190916_E() - 1));
          }
          
          if(!world.isRemote) {

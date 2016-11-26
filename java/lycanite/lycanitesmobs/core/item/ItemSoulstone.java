@@ -64,8 +64,8 @@ public class ItemSoulstone extends ItemBase {
 
 		if(!player.worldObj.isRemote) {
 			if (!player.capabilities.isCreativeMode)
-				itemStack.stackSize -= 1;
-			if (itemStack.stackSize <= 0)
+                itemStack.func_190920_e(Math.max(0, itemStack.func_190916_E() - 1));
+			if (itemStack.func_190916_E() <= 0)
 				player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack)null);
 		}
 

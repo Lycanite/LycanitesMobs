@@ -72,11 +72,11 @@ public class ItemScepter extends ItemBase {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
         //if(hand == EnumHand.MAIN_HAND)
             //return new ActionResult(EnumActionResult.PASS, itemStackIn);
-        playerIn.setActiveHand(hand);
-        return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
+        player.setActiveHand(hand);
+        return new ActionResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
     }
 
     // ========== Using ==========

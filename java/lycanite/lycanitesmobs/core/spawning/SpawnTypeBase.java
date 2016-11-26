@@ -467,7 +467,7 @@ public class SpawnTypeBase {
         List<Biome> targetBiomes = new ArrayList<Biome>();
         if(!this.ignoreBiome) {
             for(BlockPos coord : coords) {
-                Biome coordBiome = world.getBiomeGenForCoords(coord);
+                Biome coordBiome = world.getBiome(coord);
                 if(!targetBiomes.contains(coordBiome))
                     targetBiomes.add(coordBiome);
             }
@@ -496,7 +496,7 @@ public class SpawnTypeBase {
             // Get EntityLiving to Spawn:
             SpawnInfo spawnInfo = null;
             if(!this.ignoreBiome) {
-                Biome spawnBiome = world.getBiomeGenForCoords(coord);
+                Biome spawnBiome = world.getBiome(coord);
                 if (!possibleSpawns.containsKey(spawnBiome))
                     continue;
                 if (possibleSpawns.get(spawnBiome).isEmpty()) {

@@ -1,0 +1,41 @@
+# Language
+# ~~~~~
+
+## Java
+## ~~~~~
+*.class
+*.jar
+
+# Build System
+# ~~~~~
+
+## Gradle
+/.gradle/
+/build/
+!gradle-wrapper.jar
+
+# IDEs
+# ~~~~~
+
+## Eclipse
+## ~~~~~
+/.settings/
+/bin
+/tmp
+.classpath
+.project
+
+## IntelliJ
+## ~~~~~
+/.idea/
+/out/
+*.iml
+
+## Netbeans
+## ~~~~~
+/.nb-gradle/
+/.nb-gradle-properties
+
+## Visual Studio Code
+## ~~~~~
+/.vscode/

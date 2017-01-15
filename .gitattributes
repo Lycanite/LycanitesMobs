@@ -1,0 +1,13 @@
+* text=auto
+
+*.bat text eol=crlf
+gradlew text eol=lf
+*.sh text eol=lf
+pre-commit text eol=lf
+
+*.java text eol=lf
+*.java diff=java
+
+# Binary files that should not be modified
+*.jar binary
+*.png binary

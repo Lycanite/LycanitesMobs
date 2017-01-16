@@ -1,0 +1,174 @@
+{
+    "mobevent.subzero": {
+        "category": "record",
+        "sounds": [{"name": "arcticmobs:mobevent/subzero", "stream": true}]
+    },
+    "mobevent.wintersgrasp": {
+        "category": "record",
+        "sounds": [{"name": "arcticmobs:mobevent/wintersgrasp", "stream": true}]
+    },
+    "entity.reiver.say": {
+        "category": "hostile",
+	"sounds": [{"name": "arcticmobs:entity/reiver/say", "stream": false}]
+    },
+    "entity.reiver.hurt": {
+        "category": "hostile",
+	"sounds": [{"name": "arcticmobs:entity/reiver/hurt", "stream": false}]
+    },
+    "entity.reiver.death": {
+        "category": "hostile",
+	"sounds": [{"name": "arcticmobs:entity/reiver/death", "stream": false}]
+    },
+    "entity.reiver.tame": {
+        "category": "hostile",
+	"sounds": [{"name": "arcticmobs:entity/reiver/tame", "stream": false}]
+    },
+    "entity.reiver.beg": {
+        "category": "hostile",
+	"sounds": [{"name": "arcticmobs:entity/reiver/beg", "stream": false}]
+    },
+    "entity.frostweaver.say": {
+        "category": "hostile",
+	"sounds": [{"name": "arcticmobs:entity/frostweaver/say", "stream": false}]
+    },
+    "entity.frostweaver.hurt": {
+        "category": "hostile",
+	"sounds": [{"name": "arcticmobs:entity/frostweaver/hurt", "stream": false}]
+    },
+    "entity.frostweaver.death": {
+        "category": "hostile",
+	"sounds": [{"name": "arcticmobs:entity/frostweaver/death", "stream": false}]
+    },
+    "entity.frostweaver.step": {
+        "category": "hostile",
+	"sounds": [{"name": "arcticmobs:entity/frostweaver/step", "stream": false}]
+    },
+    "entity.frostweaver.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "arcticmobs:entity/frostweaver/beg", "stream": false}]
+    },
+    "entity.frostweaver.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "arcticmobs:entity/frostweaver/tame", "stream": false}]
+    },
+    "entity.frostweaver.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "arcticmobs:entity/frostweaver/eat", "stream": false}]
+    },
+    "entity.yeti.say": {
+        "category": "neutral",
+	"sounds": [{"name": "arcticmobs:entity/yeti/say", "stream": false}]
+    },
+    "entity.yeti.hurt": {
+        "category": "neutral",
+	"sounds": [{"name": "arcticmobs:entity/yeti/hurt", "stream": false}]
+    },
+    "entity.yeti.death": {
+        "category": "neutral",
+	"sounds": [{"name": "arcticmobs:entity/yeti/death", "stream": false}]
+    },
+    "entity.yeti.step": {
+        "category": "neutral",
+	"sounds": [{"name": "arcticmobs:entity/yeti/step", "stream": false}]
+    },
+    "entity.wendigo.say": {
+        "category": "hostile",
+        "sounds": [{"name": "arcticmobs:entity/wendigo/say", "stream": false}]
+    },
+    "entity.wendigo.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "arcticmobs:entity/wendigo/hurt", "stream": false}]
+    },
+    "entity.wendigo.death": {
+        "category": "hostile",
+        "sounds": [{"name": "arcticmobs:entity/wendigo/death", "stream": false}]
+    },
+    "entity.wendigo.step": {
+        "category": "hostile",
+        "sounds": [{"name": "arcticmobs:entity/wendigo/step", "stream": false}]
+    },
+    "entity.arix.say": {
+        "category": "hostile",
+        "sounds": [{"name": "arcticmobs:entity/arix/say", "stream": false}]
+    },
+    "entity.arix.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "arcticmobs:entity/arix/hurt", "stream": false}]
+    },
+    "entity.arix.death": {
+        "category": "hostile",
+        "sounds": [{"name": "arcticmobs:entity/arix/death", "stream": false}]
+    },
+    "entity.arix.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "arcticmobs:entity/arix/beg", "stream": false}]
+    },
+    "entity.arix.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "arcticmobs:entity/arix/tame", "stream": false}]
+    },
+    "entity.arix.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "arcticmobs:entity/arix/eat", "stream": false}]
+    },
+    "entity.arix.fly": {
+        "category": "hostile",
+        "sounds": [{"name": "arcticmobs:entity/arix/fly", "stream": false}]
+    },
+    "entity.serpix.say": {
+        "category": "hostile",
+	"sounds": [{"name": "arcticmobs:entity/serpix/say", "stream": false}]
+    },
+    "entity.serpix.hurt": {
+        "category": "hostile",
+	"sounds": [{"name": "arcticmobs:entity/serpix/hurt", "stream": false}]
+    },
+    "entity.serpix.death": {
+        "category": "hostile",
+	"sounds": [{"name": "arcticmobs:entity/serpix/death", "stream": false}]
+    },
+    "entity.serpix.tame": {
+        "category": "hostile",
+	"sounds": [{"name": "arcticmobs:entity/serpix/tame", "stream": false}]
+    },
+    "entity.serpix.beg": {
+        "category": "hostile",
+	"sounds": [{"name": "arcticmobs:entity/serpix/beg", "stream": false}]
+    },
+    "entity.serpix.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "arcticmobs:entity/serpix/eat", "stream": false}]
+    },
+    "projectile.frostbolt": {
+        "category": "ambient",
+	"sounds": [{"name": "arcticmobs:projectile/frostbolt", "stream": false}]
+    },
+    "projectile.frostweb": {
+        "category": "ambient",
+	"sounds": [{"name": "arcticmobs:projectile/frostweb", "stream": false}]
+    },
+    "projectile.tundra": {
+        "category": "ambient",
+        "sounds": [{"name": "arcticmobs:projectile/tundra", "stream": false}]
+    },
+    "projectile.icefireball": {
+        "category": "ambient",
+        "sounds": [{"name": "arcticmobs:projectile/icefireball", "stream": false}]
+    },
+    "projectile.blizzard": {
+        "category": "ambient",
+        "sounds": [{"name": "arcticmobs:projectile/blizzard", "stream": false}]
+    },
+    "block.frostcloud": {
+        "category": "block",
+        "sounds": [{"name": "arcticmobs:block/frostcloud", "stream": false}]
+    },
+    "block.frostfire": {
+        "category": "block",
+        "sounds": [{"name": "arcticmobs:block/frostfire", "stream": false}]
+    },
+    "block.icefire": {
+        "category": "block",
+        "sounds": [{"name": "arcticmobs:block/icefire", "stream": false}]
+    }
+}

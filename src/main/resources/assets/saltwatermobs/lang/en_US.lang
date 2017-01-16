@@ -1,0 +1,51 @@
+# Group Info
+saltwatermobs.name=Saltwater Creatures
+saltwatermobs.description=These creatures are mostly aquatic but some can roam land, they roam the depths of ocean and the salty shores.
+#
+# Mob Events
+mobevent.seastorm.name=Sea Storm
+#
+# Entites
+entity.saltwatermobs.lacedon.name=Lacedon
+entity.saltwatermobs.lacedon.description=Deadly aquatic creatures that induce the weight effect which usually drags their victim down to the bottom of the ocean. They are able to come onto land for a small amount of time and indefinitely if it is raining.
+achievement.lacedon.kill=Codswallup!
+achievement.lacedon.kill.desc=Slay a Lacedon.
+achievement.lacedon.learn=Sea Men!
+achievement.lacedon.learn.desc=Add a Lacedon to your Beastiary.
+achievement.lacedon.summon=Fishtastic!
+achievement.lacedon.summon.desc=Summon a Lacedon.
+entity.saltwatermobs.skylus.name=Skylus
+entity.saltwatermobs.skylus.description=Squid like creatures that form and live in tough shells. If damaged enough, their shells will break, this reduces their defense but increases their attack and movement speeds. Their attacks blind with ink.
+achievement.skylus.kill=Shell Smasher!
+achievement.skylus.kill.desc=Slay a Skylus.
+achievement.skylus.learn=Coming Out The Shell!
+achievement.skylus.learn.desc=Add a Skylus to your Beastiary.
+achievement.skylus.summon=My Magic Aquarium!
+achievement.skylus.summon.desc=Summon a Skylus.
+entity.saltwatermobs.ika.name=Ika
+entity.saltwatermobs.ika.description=Slow snail-turtle-shellfish! Ika can be lured and bred with vegetables, however they can only survive on land for a small amount of time. Farm with care!
+achievement.ika.kill=Rock Pool Bully!
+achievement.ika.kill.desc=Slay an Ika.
+achievement.ika.learn=Sea Farming!
+achievement.ika.learn.desc=Add an Ika to your Beastiary.
+entity.saltwatermobs.abtu.name=Abtu
+entity.saltwatermobs.abtu.description=Vicious fish with big teeth! It is rare to find adults, but if you do, you best swim away as they will swarm you with their children!
+achievement.abtu.kill=Fish Slapped!
+achievement.abtu.kill.desc=Slay an Abtu.
+achievement.abtu.learn=The Biting Wont Stop!
+achievement.abtu.learn.desc=Add an Abtu to your Beastiary.
+entity.saltwatermobs.raiko.name=Raiko
+entity.saltwatermobs.raiko.description=Large sea birds known to dive into the ocean and snatch their prey to fly up high and drop their their prey back into the ocean with the weight effect, eventually drowning their prey.
+achievement.raiko.kill=Powering Diving!
+achievement.raiko.kill.desc=Slay a Raiko.
+achievement.raiko.learn=Evil Pelicans!
+achievement.raiko.learn.desc=Add a Raiko to your Beastiary.
+#
+# Items
+item.saltwaterspawn.name=Spawn
+item.ikameatraw.name=Raw Ika Meat
+item.ikameatraw.description=Fishy seafood! It feels very heavy.
+item.ikameatcooked.name=Cooked Ika Meat
+item.ikameatcooked.description=Crispy seafood! Cooking it has made it much lighter!
+item.seashellmaki.name=Seashell Maki
+item.seashellmaki.description=A taste infusion from the deep blue sea! Applies water breathing!

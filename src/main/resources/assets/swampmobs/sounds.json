@@ -1,0 +1,198 @@
+{
+    "mobevent.wingedvenom": {
+        "category": "record",
+        "sounds": [{"name": "swampmobs:mobevent/wingedvenom", "stream": true}]
+    },
+    "entity.ghoulzombie.say": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/ghoulzombie/say", "stream": false}]
+    },
+    "entity.ghoulzombie.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/ghoulzombie/hurt", "stream": false}]
+    },
+    "entity.ghoulzombie.death": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/ghoulzombie/death", "stream": false}]
+    },
+    "entity.ghoulzombie.step": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/ghoulzombie/step", "stream": false}]
+    },
+    "entity.dweller.say": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/dweller/say", "stream": false}]
+    },
+    "entity.dweller.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/dweller/hurt", "stream": false}]
+    },
+    "entity.dweller.death": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/dweller/death", "stream": false}]
+    },
+    "entity.dweller.step": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/dweller/step", "stream": false}]
+    },
+    "entity.dweller.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/dweller/attack", "stream": false}]
+    },
+    "entity.dweller.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/dweller/beg", "stream": false}]
+    },
+    "entity.dweller.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/dweller/tame", "stream": false}]
+    },
+    "entity.ettin.say": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/ettin/say", "stream": false}]
+    },
+    "entity.ettin.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/ettin/hurt", "stream": false}]
+    },
+    "entity.ettin.death": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/ettin/death", "stream": false}]
+    },
+    "entity.ettin.step": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/ettin/step", "stream": false}]
+    },
+    "entity.ettin.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/ettin/attack", "stream": false}]
+    },
+    "entity.lurker.say": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/lurker/say", "stream": false}]
+    },
+    "entity.lurker.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/lurker/hurt", "stream": false}]
+    },
+    "entity.lurker.death": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/lurker/death", "stream": false}]
+    },
+    "entity.lurker.step": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/lurker/step", "stream": false}]
+    },
+    "entity.lurker.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/lurker/attack", "stream": false}]
+    },
+    "entity.lurker.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/lurker/beg", "stream": false}]
+    },
+    "entity.lurker.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/lurker/tame", "stream": false}]
+    },
+    "entity.lurker.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/lurker/eat", "stream": false}]
+    },
+    "entity.eyewig.say": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/eyewig/say", "stream": false}]
+    },
+    "entity.eyewig.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/eyewig/hurt", "stream": false}]
+    },
+    "entity.eyewig.death": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/eyewig/death", "stream": false}]
+    },
+    "entity.eyewig.step": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/eyewig/step", "stream": false}]
+    },
+    "entity.eyewig.jump": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/eyewig/jump", "stream": false}]
+    },
+    "entity.eyewig.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/eyewig/attack", "stream": false}]
+    },
+    "entity.eyewig.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/eyewig/beg", "stream": false}]
+    },
+    "entity.eyewig.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/eyewig/tame", "stream": false}]
+    },
+    "entity.eyewig.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/eyewig/eat", "stream": false}]
+    },
+    "entity.eyewig.mount": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/eyewig/mount", "stream": false}]
+    },
+    "entity.aspid.say": {
+        "category": "neutral",
+        "sounds": [{"name": "swampmobs:entity/aspid/say", "stream": false}]
+    },
+    "entity.aspid.hurt": {
+        "category": "neutral",
+        "sounds": [{"name": "swampmobs:entity/aspid/hurt", "stream": false}]
+    },
+    "entity.aspid.death": {
+        "category": "neutral",
+        "sounds": [{"name": "swampmobs:entity/aspid/death", "stream": false}]
+    },
+    "entity.aspid.step": {
+        "category": "neutral",
+        "sounds": [{"name": "swampmobs:entity/aspid/step", "stream": false}]
+    },
+    "entity.aspid.attack": {
+        "category": "neutral",
+        "sounds": [{"name": "swampmobs:entity/aspid/attack", "stream": false}]
+    },
+    "entity.remobra.say": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/remobra/say", "stream": false}]
+    },
+    "entity.remobra.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/remobra/hurt", "stream": false}]
+    },
+    "entity.remobra.death": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/remobra/death", "stream": false}]
+    },
+    "entity.remobra.fly": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/remobra/fly", "stream": false}]
+    },
+    "entity.remobra.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/remobra/beg", "stream": false}]
+    },
+    "entity.remobra.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/remobra/tame", "stream": false}]
+    },
+    "projectile.poisonray": {
+        "category": "ambient",
+        "sounds": [{"name": "swampmobs:projectile/poisonray", "stream": false}]
+    },
+    "projectile.venomshot": {
+        "category": "ambient",
+        "sounds": [{"name": "swampmobs:projectile/venomshot", "stream": false}]
+    },
+    "block.poisoncloud": {
+        "category": "block",
+        "sounds": [{"name": "swampmobs:block/poisoncloud", "stream": false}]
+    }
+}

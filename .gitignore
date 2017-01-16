@@ -39,3 +39,11 @@
 ## Visual Studio Code
 ## ~~~~~
 /.vscode/
+
+hs_err*
+
+# Dev Env
+# ~~~~~
+
+## Forge Run
+run/

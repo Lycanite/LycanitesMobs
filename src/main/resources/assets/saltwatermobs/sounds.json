@@ -1,0 +1,110 @@
+{
+    "mobevent.seastorm": {
+        "category": "record",
+        "sounds": [{"name": "saltwatermobs:mobevent/seastorm", "stream": true}]
+    },
+    "entity.lacedon.say": {
+        "category": "hostile",
+        "sounds": [{"name": "saltwatermobs:entity/lacedon/say", "stream": false}]
+    },
+    "entity.lacedon.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "saltwatermobs:entity/lacedon/hurt", "stream": false}]
+    },
+    "entity.lacedon.death": {
+        "category": "hostile",
+        "sounds": [{"name": "saltwatermobs:entity/lacedon/death", "stream": false}]
+    },
+    "entity.lacedon.step": {
+        "category": "hostile",
+        "sounds": [{"name": "saltwatermobs:entity/lacedon/step", "stream": false}]
+    },
+    "entity.lacedon.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "saltwatermobs:entity/lacedon/attack", "stream": false}]
+    },
+    "entity.lacedon.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "saltwatermobs:entity/lacedon/beg", "stream": false}]
+    },
+    "entity.lacedon.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "saltwatermobs:entity/lacedon/tame", "stream": false}]
+    },
+    "entity.skylus.say": {
+        "category": "hostile",
+        "sounds": [{"name": "saltwatermobs:entity/skylus/say", "stream": false}]
+    },
+    "entity.skylus.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "saltwatermobs:entity/skylus/hurt", "stream": false}]
+    },
+    "entity.skylus.death": {
+        "category": "hostile",
+        "sounds": [{"name": "saltwatermobs:entity/skylus/death", "stream": false}]
+    },
+    "entity.skylus.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "saltwatermobs:entity/skylus/attack", "stream": false}]
+    },
+    "entity.skylus.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "saltwatermobs:entity/skylus/beg", "stream": false}]
+    },
+    "entity.skylus.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "saltwatermobs:entity/skylus/tame", "stream": false}]
+    },
+    "entity.ika.say": {
+        "category": "neutral",
+        "sounds": [{"name": "saltwatermobs:entity/ika/say", "stream": false}]
+    },
+    "entity.ika.hurt": {
+        "category": "neutral",
+        "sounds": [{"name": "saltwatermobs:entity/ika/hurt", "stream": false}]
+    },
+    "entity.ika.death": {
+        "category": "neutral",
+        "sounds": [{"name": "saltwatermobs:entity/ika/death", "stream": false}]
+    },
+    "entity.ika.step": {
+        "category": "neutral",
+        "sounds": [{"name": "saltwatermobs:entity/ika/step", "stream": false}]
+    },
+    "entity.abtu.say": {
+        "category": "neutral",
+        "sounds": [{"name": "saltwatermobs:entity/abtu/say", "stream": false}]
+    },
+    "entity.abtu.hurt": {
+        "category": "neutral",
+        "sounds": [{"name": "saltwatermobs:entity/abtu/hurt", "stream": false}]
+    },
+    "entity.abtu.death": {
+        "category": "neutral",
+        "sounds": [{"name": "saltwatermobs:entity/abtu/death", "stream": false}]
+    },
+    "entity.abtu.attack": {
+        "category": "neutral",
+        "sounds": [{"name": "saltwatermobs:entity/abtu/attack", "stream": false}]
+    },
+    "entity.raiko.say": {
+        "category": "neutral",
+        "sounds": [{"name": "saltwatermobs:entity/raiko/say", "stream": false}]
+    },
+    "entity.raiko.hurt": {
+        "category": "neutral",
+        "sounds": [{"name": "saltwatermobs:entity/raiko/hurt", "stream": false}]
+    },
+    "entity.raiko.death": {
+        "category": "neutral",
+        "sounds": [{"name": "saltwatermobs:entity/raiko/death", "stream": false}]
+    },
+    "entity.raiko.attack": {
+        "category": "neutral",
+        "sounds": [{"name": "saltwatermobs:entity/raiko/attack", "stream": false}]
+    },
+    "entity.raiko.fly": {
+        "category": "neutral",
+        "sounds": [{"name": "saltwatermobs:entity/raiko/fly", "stream": false}]
+    }
+}

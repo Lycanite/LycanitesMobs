@@ -1,0 +1,31 @@
+# Group Info
+plainsmobs.name=Твари равнин
+plainsmobs.description=Эти существа любят равнины, покрытые пышной зелёной травой.
+#
+# Mob Events
+mobevent.windstorm.name=Воздушная Буря
+#
+# Entites
+entity.plainsmobs.kobold.name=Кобольд
+entity.plainsmobs.kobold.description=Мелкие грызуны, не могущие устоять перед кражей! Убейте вора, чтобы получить обратно подобранные им предметы. Как правило, убегают от других существ, но могут атаковать людей с маленьким запасом здоровья.
+entity.plainsmobs.ventoraptor.name=Вентоящер
+entity.plainsmobs.ventoraptor.description=Ящеры, умеющие передвигаться с немыслимой скоростью. Приручаемые. Одни из самых быстрых ездовых питомцев.
+entity.plainsmobs.maka.name=Мака
+entity.plainsmobs.maka.description=Большие, мирные, травоядные. Добывают ради кожи и шерсти, питаются овощами. Осторожнее с Альфа-Мака.
+entity.plainsmobs.makaalpha.name=Альфа-Мака
+entity.plainsmobs.makaalpha.description=Большие Мака, обычно мирные, но в случае нападения, объединяются с остальными для его отражения. Альфа-самцы защищают остальной прайд и усложняют добычу ресурсов из обычных Мака.
+entity.plainsmobs.zoataur.name=Зоатур
+entity.plainsmobs.zoataur.description=Злобные создания с костяным щитом, который они умеют специальным образом применять, чтобы блокировать большинство урона. В этом случае проще отойти назад и подождать, пока щит спадёт.
+entity.plainsmobs.roc.name=Рух
+entity.plainsmobs.roc.description=Птица Рух летает высоко над равнинами, охотится на мелких животных и может напасть на игрока с малым количеством жизней или ночью. Рухи могут схватить цель и унести высоко в небо!
+#
+# Items
+item.plainsspawn.name=Призвать существо - 
+item.makameatraw.name=Сырое мясо Мака
+item.makameatraw.description=Чем-то напоминает свинину. Может ослабить вас.
+item.makameatcooked.name=Приготовленное мясо Мака
+item.makameatcooked.description=Вкус поджаренного бекона.
+item.bulwarkburger.name=Бургер "Бастион"
+item.bulwarkburger.description=Получите могучую защиту, как у Альфа-Мака! Накладывает поглощение урона.
+item.ventoraptortreat.name=Пища для вентоящера
+item.ventoraptortreat.description=Может быть, вы приручите одного вентоящера с помощью этого!

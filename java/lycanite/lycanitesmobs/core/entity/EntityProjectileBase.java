@@ -103,19 +103,19 @@ public class EntityProjectileBase extends EntityThrowable {
     	this.isInWeb = false;
     	
     	// Terrain Destruction
-    	if(!this.worldObj.isRemote) {
+    	if(!this.getEntityWorld().isRemote) {
     		if(!this.waterProof && this.isInWater())
     			this.setDead();
     		else if(!this.lavaProof && this.isInLava())
     			this.setDead();
     	}
-        if(!this.worldObj.isRemote || this.clientOnly) {
+        if(!this.getEntityWorld().isRemote || this.clientOnly) {
             if(this.projectileLife-- <= 0)
                 this.setDead();
         }
 
         // Sync Scale:
-        if(this.worldObj.isRemote) {
+        if(this.getEntityWorld().isRemote) {
             this.projectileScale = this.dataManager.get(SCALE);
         }
 
@@ -226,8 +226,8 @@ public class EntityProjectileBase extends EntityThrowable {
      		int j = (int)Math.floor(rayTraceResult.entityHit.posY);
             int k = (int)Math.floor(rayTraceResult.entityHit.posZ);
             BlockPos pos = new BlockPos(i, j, k);
-            if(!this.worldObj.isRemote && this.canDestroyBlock(pos))
-            	this.placeBlock(this.worldObj, pos);
+            if(!this.getEntityWorld().isRemote && this.canDestroyBlock(pos))
+            	this.placeBlock(this.getEntityWorld(), pos);
      	}
      	
      	// Block Hit:
@@ -235,8 +235,8 @@ public class EntityProjectileBase extends EntityThrowable {
      		int i = rayTraceResult.getBlockPos().getX();
      		int j = rayTraceResult.getBlockPos().getY();
             int k = rayTraceResult.getBlockPos().getZ();
-            if(this.worldObj.getBlockState(new BlockPos(i, j, k)) != null)
-            	collided = this.worldObj.getBlockState(new BlockPos(i, j, k)).getBoundingBox(this.worldObj, new BlockPos(i, j, k)) != null;
+            if(this.getEntityWorld().getBlockState(new BlockPos(i, j, k)) != null)
+            	collided = this.getEntityWorld().getBlockState(new BlockPos(i, j, k)).getBoundingBox(this.getEntityWorld(), new BlockPos(i, j, k)) != null;
              
  	        if(collided) {
                 blockCollision = true;
@@ -261,14 +261,14 @@ public class EntityProjectileBase extends EntityThrowable {
  	            }
 
                 BlockPos pos = new BlockPos(i, j, k);
- 	            if(!this.worldObj.isRemote && this.canDestroyBlock(pos))
- 	            	this.placeBlock(this.worldObj, pos);
+ 	            if(!this.getEntityWorld().isRemote && this.canDestroyBlock(pos))
+ 	            	this.placeBlock(this.getEntityWorld(), pos);
  	        }
      	}
      	
      	if(collided) {
  	    	// Impact Particles:
- 	        if(!this.worldObj.isRemote)
+ 	        if(!this.getEntityWorld().isRemote)
  	        	this.onImpact();
  	        else
  	        	this.onImpactVisuals();
@@ -276,7 +276,7 @@ public class EntityProjectileBase extends EntityThrowable {
  	        // Remove Projectile:
             boolean entityPierced = this.pierce && entityCollision;
             boolean blockPierced = this.pierceBlocks && blockCollision;
- 	        if(!this.worldObj.isRemote && !entityPierced && !blockPierced) {
+ 	        if(!this.getEntityWorld().isRemote && !entityPierced && !blockPierced) {
  	            this.setDead();
  	        }
      	}
@@ -284,7 +284,7 @@ public class EntityProjectileBase extends EntityThrowable {
      
      //========== Do Damage Check ==========
      public boolean canDamage(EntityLivingBase targetEntity) {
-         if(this.worldObj.isRemote)
+         if(this.getEntityWorld().isRemote)
              return false;
 
     	 EntityLivingBase owner = this.getThrower();
@@ -304,7 +304,7 @@ public class EntityProjectileBase extends EntityThrowable {
 		    }
 		    
 		    // Player PVP:
-		    if(!this.worldObj.getMinecraftServer().isPVPEnabled()) {
+		    if(!this.getEntityWorld().getMinecraftServer().isPVPEnabled()) {
 		    	if(owner instanceof EntityPlayer) {
 			    	if(targetEntity instanceof EntityPlayer)
 			    		return false;
@@ -338,7 +338,7 @@ public class EntityProjectileBase extends EntityThrowable {
      
      //========== Can Destroy Block ==========
      public boolean canDestroyBlock(BlockPos pos) {
-    	 return this.worldObj.isAirBlock(pos);
+    	 return this.getEntityWorld().isAirBlock(pos);
      }
      
      //========== Place Block ==========
@@ -352,7 +352,7 @@ public class EntityProjectileBase extends EntityThrowable {
      //========== On Impact Particles/Sounds Client Side ==========
      public void onImpactVisuals() {
     	 //for(int i = 0; i < 8; ++i)
-    		 //this.worldObj.spawnParticle("particlename", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
+    		 //this.getEntityWorld().spawnParticle("particlename", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
      }
      
      
@@ -380,7 +380,7 @@ public class EntityProjectileBase extends EntityThrowable {
      public void setProjectileScale(float newScale) {
      	 this.projectileScale = newScale;
          this.setSize(newScale, newScale);
-         if(this.worldObj.isRemote && !this.clientOnly)
+         if(this.getEntityWorld().isRemote && !this.clientOnly)
              return;
          if(this.getThrower() != null && this.getThrower() instanceof EntityCreatureBase)
              this.projectileScale *= ((EntityCreatureBase)this.getThrower()).sizeScale;

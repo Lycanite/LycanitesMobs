@@ -125,7 +125,7 @@ public class EntityKobold extends EntityCreatureTameable implements IMob, IGroup
         super.onLivingUpdate();
         
         // Torch Looting:
-        if(!this.isTamed() && this.worldObj.getGameRules().getBoolean("mobGriefing") && this.torchGreifing) {
+        if(!this.isTamed() && this.getEntityWorld().getGameRules().getBoolean("mobGriefing") && this.torchGreifing) {
 	        if(this.torchLootingTime-- <= 0) {
 	        	this.torchLootingTime = 60;
 	        	int distance = 2;
@@ -135,11 +135,11 @@ public class EntityKobold extends EntityCreatureTameable implements IMob, IGroup
 	            	for(int y = (int)this.posY - distance; y < (int)this.posY + distance; y++) {
 	            		for(int z = (int)this.posZ - distance; z < (int)this.posZ + distance; z++) {
                             BlockPos pos = new BlockPos(x, y, z);
-	            			Block searchBlock = this.worldObj.getBlockState(pos).getBlock();
+	            			Block searchBlock = this.getEntityWorld().getBlockState(pos).getBlock();
 	                    	if(searchBlock != null && searchBlock != Blocks.AIR) {
 	                    		BlockPos possibleTarget = null;
 	                			if(ObjectLists.isName(searchBlock, targetName)) {
-	                				this.worldObj.destroyBlock(pos, true);
+	                				this.getEntityWorld().destroyBlock(pos, true);
 	                				break;
 	                			}
 	                    	}
@@ -191,7 +191,7 @@ public class EntityKobold extends EntityCreatureTameable implements IMob, IGroup
     // ========== Create Child ==========
     @Override
 	public EntityCreatureAgeable createChild(EntityCreatureAgeable baby) {
-		return new EntityKobold(this.worldObj);
+		return new EntityKobold(this.getEntityWorld());
 	}
     
     

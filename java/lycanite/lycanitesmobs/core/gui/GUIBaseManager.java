@@ -444,7 +444,7 @@ public class GUIBaseManager extends GUIBaseScreen {
 	@Override
 	protected void keyTyped(char par1, int par2) throws IOException {
 		if(par2 == 1 || par2 == this.mc.gameSettings.keyBindInventory.getKeyCode())
-        	 this.mc.thePlayer.closeScreen();
+        	 this.mc.player.closeScreen();
 		super.keyTyped(par1, par2);
 	}
 

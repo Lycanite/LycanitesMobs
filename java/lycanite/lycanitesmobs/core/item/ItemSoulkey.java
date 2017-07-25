@@ -43,7 +43,7 @@ public class ItemSoulkey extends ItemBase {
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack itemStack = player.getHeldItem(hand);
-        if(!AltarInfo.checkAltarsEnabled() && !player.worldObj.isRemote) {
+        if(!AltarInfo.checkAltarsEnabled() && !player.getEntityWorld().isRemote) {
             String message = I18n.translateToLocal("message.soulkey.disabled");
             player.addChatMessage(new TextComponentString(message));
             return EnumActionResult.FAIL;
@@ -69,10 +69,10 @@ public class ItemSoulkey extends ItemBase {
             if(altarInfo.fullCheck(player, world, pos)) {
 
                 // Valid Altar:
-                if(!player.worldObj.isRemote) {
+                if(!player.getEntityWorld().isRemote) {
                     if (!player.capabilities.isCreativeMode)
-                        itemStack.func_190920_e(Math.max(0, itemStack.func_190916_E() - 1));
-                    if (itemStack.func_190916_E() <= 0)
+                        itemStack.setCount(Math.max(0, itemStack.getCount() - 1));
+                    if (itemStack.getCount() <= 0)
                         player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack)null);
                 }
                 if(!altarInfo.activate(player, world, pos)) {

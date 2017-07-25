@@ -46,7 +46,7 @@ public class MessageSummoningPedestalStats implements IMessage, IMessageHandler<
 			return null;
 
         player = LycanitesMobs.proxy.getClientPlayer();
-        TileEntity tileEntity = player.worldObj.getTileEntity(new BlockPos(message.x, message.y, message.z));
+        TileEntity tileEntity = player.getEntityWorld().getTileEntity(new BlockPos(message.x, message.y, message.z));
         TileEntitySummoningPedestal summoningPedestal = null;
         if(tileEntity instanceof TileEntitySummoningPedestal)
             summoningPedestal = (TileEntitySummoningPedestal)tileEntity;

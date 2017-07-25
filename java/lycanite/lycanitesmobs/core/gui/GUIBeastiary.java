@@ -37,8 +37,8 @@ public class GUIBeastiary extends GUIBaseScreen {
 	public EntityLivingBase creaturePreviewEntity;
 		
 	public static void openToPlayer(EntityPlayer player) {
-		if(player != null && player.worldObj != null)
-			player.openGui(LycanitesMobs.instance, GuiHandler.GuiType.PLAYER.id, player.worldObj, GuiHandler.PlayerGuiType.BEASTIARY.id, 0, 0);
+		if(player != null && player.getEntityWorld() != null)
+			player.openGui(LycanitesMobs.instance, GuiHandler.GuiType.PLAYER.id, player.getEntityWorld(), GuiHandler.PlayerGuiType.BEASTIARY.id, 0, 0);
 	}
 	
 	// ==================================================
@@ -261,7 +261,7 @@ public class GUIBeastiary extends GUIBaseScreen {
 			this.creaturePreviewEntity = null;
 		else
 			try {
-				this.creaturePreviewEntity = (EntityLivingBase)this.getSelectedCreature().entityClass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {this.player.worldObj});
+				this.creaturePreviewEntity = (EntityLivingBase)this.getSelectedCreature().entityClass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {this.player.getEntityWorld()});
 				this.creaturePreviewEntity.onGround = true;
 				if(this.creaturePreviewEntity instanceof EntityCreatureAgeable) {
 					((EntityCreatureAgeable)this.creaturePreviewEntity).setGrowingAge(0);
@@ -279,7 +279,7 @@ public class GUIBeastiary extends GUIBaseScreen {
 	@Override
 	protected void keyTyped(char par1, int par2) throws IOException {
 		if(par2 == 1 || par2 == this.mc.gameSettings.keyBindInventory.getKeyCode())
-        	 this.mc.thePlayer.closeScreen();
+        	 this.mc.player.closeScreen();
 		super.keyTyped(par1, par2);
 	}
 

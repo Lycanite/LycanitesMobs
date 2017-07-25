@@ -127,7 +127,7 @@ public class EntityDarkling extends EntityCreatureTameable implements IMob, IGro
         super.onLivingUpdate();
         
         // Leap:
-        if(!this.worldObj.isRemote && this.hasAttackTarget() && !this.hasLatchTarget() && this.onGround && !this.worldObj.isRemote && this.rand.nextInt(10) == 0)
+        if(!this.getEntityWorld().isRemote && this.hasAttackTarget() && !this.hasLatchTarget() && this.onGround && !this.getEntityWorld().isRemote && this.rand.nextInt(10) == 0)
         	this.leap(6.0F, 0.6D, this.getAttackTarget());
 
         // Latch:
@@ -142,7 +142,7 @@ public class EntityDarkling extends EntityCreatureTameable implements IMob, IGro
             this.renderYawOffset = this.rotationYaw = -((float) MathHelper.atan2(distanceX, distanceZ)) * (180F / (float)Math.PI);
 
             // Server:
-            if(!this.worldObj.isRemote) {
+            if(!this.getEntityWorld().isRemote) {
                 if(this.getLatchTarget().isEntityAlive() && !this.isInWater()) {
                     if (this.updateTick % 40 == 0) {
                         float damage = this.getAttackDamage(1);
@@ -160,7 +160,7 @@ public class EntityDarkling extends EntityCreatureTameable implements IMob, IGro
             // Client:
             else {
                 for(int i = 0; i < 2; ++i) {
-                    this.worldObj.spawnParticle(EnumParticleTypes.REDSTONE, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
+                    this.getEntityWorld().spawnParticle(EnumParticleTypes.REDSTONE, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
                 }
             }
         }
@@ -174,7 +174,7 @@ public class EntityDarkling extends EntityCreatureTameable implements IMob, IGro
     // ==================================================
     public EntityLivingBase getLatchTarget() {
         try {
-            if (this.worldObj.isRemote) {
+            if (this.getEntityWorld().isRemote) {
                 this.latchHeight = this.dataManager.get(LATCH_HEIGHT);
                 this.latchAngle = this.dataManager.get(LATCH_ANGLE);
                 int latchEntityID = this.getDataManager().get(LATCH_TARGET);
@@ -182,7 +182,7 @@ public class EntityDarkling extends EntityCreatureTameable implements IMob, IGro
                     this.latchEntity = null;
                     this.latchEntityID = latchEntityID;
                     if (latchEntityID != 0) {
-                        Entity possilbeLatchEntity = this.worldObj.getEntityByID(latchEntityID);
+                        Entity possilbeLatchEntity = this.getEntityWorld().getEntityByID(latchEntityID);
                         if (possilbeLatchEntity != null && possilbeLatchEntity instanceof EntityLivingBase)
                             this.latchEntity = (EntityLivingBase) possilbeLatchEntity;
                     }
@@ -195,7 +195,7 @@ public class EntityDarkling extends EntityCreatureTameable implements IMob, IGro
 
     public void setLatchTarget(EntityLivingBase entity) {
         this.latchEntity = entity;
-        if(this.worldObj.isRemote)
+        if(this.getEntityWorld().isRemote)
             return;
         if(entity == null) {
             this.getDataManager().set(LATCH_TARGET, 0);
@@ -270,20 +270,20 @@ public class EntityDarkling extends EntityCreatureTameable implements IMob, IGro
     // ==================================================
     @Override
     public boolean canStealth() {
-        if(this.worldObj.isRemote) return false;
+        if(this.getEntityWorld().isRemote) return false;
         if(this.isMoving()) return false;
         return this.testLightLevel() <= 0;
     }
 
     @Override
     public void startStealth() {
-        if(this.worldObj.isRemote) {
+        if(this.getEntityWorld().isRemote) {
             EnumParticleTypes particle = EnumParticleTypes.SPELL_WITCH;
             double d0 = this.rand.nextGaussian() * 0.02D;
             double d1 = this.rand.nextGaussian() * 0.02D;
             double d2 = this.rand.nextGaussian() * 0.02D;
             for(int i = 0; i < 100; i++)
-                this.worldObj.spawnParticle(particle, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + 0.5D + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d0, d1, d2);
+                this.getEntityWorld().spawnParticle(particle, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + 0.5D + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d0, d1, d2);
         }
         super.startStealth();
     }

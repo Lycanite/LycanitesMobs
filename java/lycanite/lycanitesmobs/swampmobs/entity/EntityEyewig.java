@@ -115,7 +115,7 @@ public class EntityEyewig extends EntityCreatureRideable {
     // ==================================================
     EntityPoisonRay abilityProjectile = null;
     public void mountAbility(Entity rider) {
-    	if(this.worldObj.isRemote)
+    	if(this.getEntityWorld().isRemote)
     		return;
     	
     	if(this.getStamina() < this.getStaminaRecoveryMax() * 2)
@@ -138,12 +138,12 @@ public class EntityEyewig extends EntityCreatureRideable {
     		if(this.getControllingPassenger() == null || !(this.getControllingPassenger() instanceof EntityLivingBase))
     			return;
     		
-    		this.abilityProjectile = new EntityPoisonRay(this.worldObj, (EntityLivingBase)this.getControllingPassenger(), 25, 20, this);
+    		this.abilityProjectile = new EntityPoisonRay(this.getEntityWorld(), (EntityLivingBase)this.getControllingPassenger(), 25, 20, this);
     		this.abilityProjectile.setOffset(0, 0.5, 0);
 	    	
 	    	// Launch:
 	        this.playSound(abilityProjectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-	        this.worldObj.spawnEntityInWorld(abilityProjectile);
+	        this.getEntityWorld().spawnEntity(abilityProjectile);
     	}
     	
     	this.applyStaminaCost();
@@ -185,11 +185,11 @@ public class EntityEyewig extends EntityCreatureRideable {
     	// Create New Laser:
     	if(this.projectile == null) {
 	    	// Type:
-	    	this.projectile = new EntityPoisonRay(this.worldObj, this, 20, 10);
+	    	this.projectile = new EntityPoisonRay(this.getEntityWorld(), this, 20, 10);
 	    	
 	    	// Launch:
 	        this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-	        this.worldObj.spawnEntityInWorld(projectile);
+	        this.getEntityWorld().spawnEntity(projectile);
     	}
     }
     
@@ -199,7 +199,7 @@ public class EntityEyewig extends EntityCreatureRideable {
   	// ==================================================
     @Override
     public boolean isAggressive() {
-    	if(this.worldObj.isDaytime())
+    	if(this.getEntityWorld().isDaytime())
     		return this.testLightLevel() < 2;
     	else
     		return super.isAggressive();

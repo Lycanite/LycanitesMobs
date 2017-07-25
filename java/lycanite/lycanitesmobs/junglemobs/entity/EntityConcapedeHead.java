@@ -98,15 +98,15 @@ public class EntityConcapedeHead extends EntityCreatureAgeable implements IAnima
 	@Override
 	public void onFirstSpawn() {
 		// Create Starting Segments:
-        if(!this.worldObj.isRemote && !this.hasMaster()) {
+        if(!this.getEntityWorld().isRemote && !this.hasMaster()) {
         	this.setGrowingAge(-this.growthTime / 4);
         	int segmentCount = this.getRNG().nextInt(CONCAPEDE_SIZE_MAX);
     		EntityCreatureAgeable parentSegment = this;
         	for(int segment = 0; segment < segmentCount; segment++) {
-        		EntityConcapedeSegment segmentEntity = new EntityConcapedeSegment(parentSegment.worldObj);
+        		EntityConcapedeSegment segmentEntity = new EntityConcapedeSegment(parentSegment.getEntityWorld());
         		segmentEntity.setLocationAndAngles(parentSegment.posX, parentSegment.posY, parentSegment.posZ, 0.0F, 0.0F);
 				segmentEntity.setParentTarget(parentSegment);
-        		parentSegment.worldObj.spawnEntityInWorld(segmentEntity);
+        		parentSegment.getEntityWorld().spawnEntity(segmentEntity);
 				parentSegment = segmentEntity;
         	}
         }
@@ -130,7 +130,7 @@ public class EntityConcapedeHead extends EntityCreatureAgeable implements IAnima
 	@Override
 	public void setGrowingAge(int age) {
 		// Spawn Additional Segments:
-		if(age == 0 && ObjectManager.getMob("ConcapedeSegment") != null && !this.worldObj.isRemote) {
+		if(age == 0 && ObjectManager.getMob("ConcapedeSegment") != null && !this.getEntityWorld().isRemote) {
 			age = -(this.growthTime / 4);
 			EntityCreatureBase parentSegment = this;
 			boolean lastSegment = false;
@@ -143,9 +143,9 @@ public class EntityConcapedeHead extends EntityCreatureAgeable implements IAnima
 					lastSegment = true;
 			}
 			if(size < CONCAPEDE_SIZE_MAX) {
-				EntityConcapedeSegment segmentEntity = new EntityConcapedeSegment(this.worldObj);
+				EntityConcapedeSegment segmentEntity = new EntityConcapedeSegment(this.getEntityWorld());
 	    		segmentEntity.setLocationAndAngles(parentSegment.posX, parentSegment.posY, parentSegment.posZ, 0.0F, 0.0F);
-	    		parentSegment.worldObj.spawnEntityInWorld(segmentEntity);
+	    		parentSegment.getEntityWorld().spawnEntity(segmentEntity);
 				segmentEntity.setParentTarget(parentSegment);
 			}
 		}
@@ -159,7 +159,7 @@ public class EntityConcapedeHead extends EntityCreatureAgeable implements IAnima
 	// ========== Pathing Weight ==========
     @Override
     public float getBlockPathWeight(int x, int y, int z) {
-        IBlockState blockState = this.worldObj.getBlockState(new BlockPos(x, y - 1, z));
+        IBlockState blockState = this.getEntityWorld().getBlockState(new BlockPos(x, y - 1, z));
         Block block = blockState.getBlock();
         if(block != Blocks.AIR) {
             if(blockState.getMaterial() == Material.GRASS)
@@ -210,7 +210,7 @@ public class EntityConcapedeHead extends EntityCreatureAgeable implements IAnima
     public boolean isAggressive() {
     	if(this.isInLove())
     		return false;
-    	if(this.worldObj.isDaytime())
+    	if(this.getEntityWorld().isDaytime())
     		return this.testLightLevel() < 2;
     	else
     		return super.isAggressive();

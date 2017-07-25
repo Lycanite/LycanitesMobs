@@ -45,7 +45,7 @@ public class ItemScepterBoulderBlast extends ItemScepter {
     	if(!world.isRemote) {
     		EntityProjectileBase projectile = new EntityBoulderBlast(world, entity);
     		projectile.setBaseDamage((int)(projectile.getDamage(null) * power * 2));
-        	world.spawnEntityInWorld(projectile);
+        	world.spawnEntity(projectile);
             this.playSound(itemStack, world, entity, 1, projectile);
         }
     	return true;

@@ -116,7 +116,7 @@ public class EntityZephyr extends EntityCreatureTameable implements IMob, IGroup
         super.onLivingUpdate();
 
         // Static Aura Attack:
-        if(!this.worldObj.isRemote && ++aoeAttackTick == 40) {
+        if(!this.getEntityWorld().isRemote && ++aoeAttackTick == 40) {
             aoeAttackTick = 0;
             boolean applyEffect = this.getRNG().nextFloat() >= 0.5F;
             List aoeTargets = this.getNearbyEntities(EntityLivingBase.class, null, 4);
@@ -131,14 +131,14 @@ public class EntityZephyr extends EntityCreatureTameable implements IMob, IGroup
         }
         
         // Particles:
-        if(this.worldObj.isRemote) {
-            this.worldObj.spawnParticle(EnumParticleTypes.CLOUD, this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width, this.posY + this.rand.nextDouble() * (double) this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width, 0.0D, 0.0D, 0.0D);
+        if(this.getEntityWorld().isRemote) {
+            this.getEntityWorld().spawnParticle(EnumParticleTypes.CLOUD, this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width, this.posY + this.rand.nextDouble() * (double) this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width, 0.0D, 0.0D, 0.0D);
             
             List aoeTargets = this.getNearbyEntities(EntityLivingBase.class, null, 4);
             for(Object entityObj : aoeTargets) {
                 EntityLivingBase target = (EntityLivingBase)entityObj;
                 if(this.canAttackClass(entityObj.getClass()) && this.canAttackEntity(target) && this.getEntitySenses().canSee(target)) {
-                    this.worldObj.spawnParticle(EnumParticleTypes.CRIT_MAGIC, target.posX + (this.rand.nextDouble() - 0.5D) * (double) target.width, target.posY + this.rand.nextDouble() * (double) target.height, target.posZ + (this.rand.nextDouble() - 0.5D) * (double) target.width, 0.0D, 0.0D, 0.0D);
+                    this.getEntityWorld().spawnParticle(EnumParticleTypes.CRIT_MAGIC, target.posX + (this.rand.nextDouble() - 0.5D) * (double) target.width, target.posY + this.rand.nextDouble() * (double) target.height, target.posZ + (this.rand.nextDouble() - 0.5D) * (double) target.width, 0.0D, 0.0D, 0.0D);
                 }
             }
         }

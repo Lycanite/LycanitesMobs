@@ -83,13 +83,13 @@ public class EntityNetherSoul extends EntityCreatureBase implements IMob {
         
         // Fire Sound:
         //if(this.rand.nextInt(24) == 0)
-            //this.worldObj.playSoundEffect(this.posX + 0.5D, this.posY + 0.5D, this.posZ + 0.5D, "fire.fire", 1.0F + this.rand.nextFloat(), this.rand.nextFloat() * 0.7F + 0.3F);
+            //this.getEntityWorld().playSoundEffect(this.posX + 0.5D, this.posY + 0.5D, this.posZ + 0.5D, "fire.fire", 1.0F + this.rand.nextFloat(), this.rand.nextFloat() * 0.7F + 0.3F);
         
         // Particles:
-        if(this.worldObj.isRemote)
+        if(this.getEntityWorld().isRemote)
 	        for(int i = 0; i < 2; ++i) {
-	            this.worldObj.spawnParticle(EnumParticleTypes.SMOKE_LARGE, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
-	            this.worldObj.spawnParticle(EnumParticleTypes.FLAME, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
+	            this.getEntityWorld().spawnParticle(EnumParticleTypes.SMOKE_LARGE, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
+	            this.getEntityWorld().spawnParticle(EnumParticleTypes.FLAME, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
 	        }
         
         super.onLivingUpdate();
@@ -108,12 +108,12 @@ public class EntityNetherSoul extends EntityCreatureBase implements IMob {
    	// ==================================================
     @Override
     public void onDeath(DamageSource par1DamageSource) {
-		if(!this.worldObj.isRemote && this.worldObj.getGameRules().getBoolean("mobGriefing")) {
+		if(!this.getEntityWorld().isRemote && this.getEntityWorld().getGameRules().getBoolean("mobGriefing")) {
 			int explosionRadius = 1;
 			if(this.subspecies != null)
 				explosionRadius = 3;
 			explosionRadius = Math.max(1, Math.round((float)explosionRadius * (float)this.sizeScale));
-			this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, explosionRadius, true);
+			this.getEntityWorld().createExplosion(this, this.posX, this.posY, this.posZ, explosionRadius, true);
 		}
         super.onDeath(par1DamageSource);
     }

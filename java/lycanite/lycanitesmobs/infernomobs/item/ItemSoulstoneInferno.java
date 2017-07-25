@@ -37,9 +37,9 @@ public class ItemSoulstoneInferno extends ItemSoulstone {
     		return new ActionResult(EnumActionResult.SUCCESS, itemStack);
 
         EntityCreatureTameable entity = new EntityAfrit(world);
-        if(!player.worldObj.isRemote) {
+        if(!player.getEntityWorld().isRemote) {
             entity.setLocationAndAngles(player.posX, player.posY, player.posZ, player.rotationYaw, player.rotationPitch);
-            world.spawnEntityInWorld(entity);
+            world.spawnEntity(entity);
             entity.setPlayerOwner(player);
         }
 

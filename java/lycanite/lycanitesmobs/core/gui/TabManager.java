@@ -23,7 +23,7 @@ public class TabManager {
     
     public static void addTabsToInventory (GuiScreen gui) {
     	if(LycanitesMobs.config.getBool("GUI", "Show Inventory Tabs", true, "Set to false to disable the GUI tabs.") && gui.getClass() == GuiInventory.class) {
-        	GuiInventorySnooper guiInventorySnooper = new GuiInventorySnooper(mc.thePlayer);
+        	GuiInventorySnooper guiInventorySnooper = new GuiInventorySnooper(mc.player);
         	try {
             	Field field = GuiScreen.class.getDeclaredField(guiInventorySnooper.getButtonListFieldName());
 	            field.setAccessible(true);
@@ -41,7 +41,7 @@ public class TabManager {
     private static Minecraft mc = FMLClientHandler.instance().getClient();
 
     public static void openInventoryGui () {
-        GuiInventory inventory = new GuiInventory(mc.thePlayer);
+        GuiInventory inventory = new GuiInventory(mc.player);
         mc.displayGuiScreen(inventory);
         TabManager.addTabsToInventory(inventory);
     }

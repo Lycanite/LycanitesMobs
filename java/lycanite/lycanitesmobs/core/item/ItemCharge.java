@@ -26,14 +26,14 @@ public class ItemCharge extends ItemBase {
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
         ItemStack itemStack = player.getHeldItem(hand);
         if(!player.capabilities.isCreativeMode) {
-            itemStack.func_190920_e(Math.max(0, itemStack.func_190916_E() - 1));
+            itemStack.setCount(Math.max(0, itemStack.getCount() - 1));
         }
 
         if(!world.isRemote) {
             EntityProjectileBase projectile = this.getProjectile(itemStack, world, player);
             if(projectile == null)
                 return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStack);
-            world.spawnEntityInWorld(projectile);
+            world.spawnEntity(projectile);
             this.playSound(world, player.getPosition(), projectile.getLaunchSound(), SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
         }
 

@@ -72,7 +72,7 @@ public class DirectNavigator {
 			return true;
 		if(!this.host.canFly())
 			return false;
-		if(!this.host.worldObj.isAirBlock(new BlockPos(targetPosition.getX(), targetPosition.getY(), targetPosition.getZ())) && !this.host.noClip)
+		if(!this.host.getEntityWorld().isAirBlock(new BlockPos(targetPosition.getX(), targetPosition.getY(), targetPosition.getZ())) && !this.host.noClip)
 			return false;
 		if(targetPosition.getY() < 3)
 			return false;
@@ -129,14 +129,14 @@ public class DirectNavigator {
 	public void flightMovement(float moveStrafe, float moveForward) {
 		if(this.host.isInWater() && !host.canSwim()) {
             this.host.moveFlying(moveStrafe, moveForward, 0.02F);
-            this.host.moveEntity(MoverType.SELF, this.host.motionX, this.host.motionY, this.host.motionZ);
+            this.host.move(MoverType.SELF, this.host.motionX, this.host.motionY, this.host.motionZ);
             this.host.motionX *= 0.800000011920929D;
             this.host.motionY *= 0.800000011920929D;
             this.host.motionZ *= 0.800000011920929D;
         }
         else if(this.host.lavaContact() && !host.canSwim()) {
             this.host.moveFlying(moveStrafe, moveForward, 0.02F);
-            this.host.moveEntity(MoverType.SELF, this.host.motionX, this.host.motionY, this.host.motionZ);
+            this.host.move(MoverType.SELF, this.host.motionX, this.host.motionY, this.host.motionZ);
             this.host.motionX *= 0.5D;
             this.host.motionY *= 0.5D;
             this.host.motionZ *= 0.5D;
@@ -145,7 +145,7 @@ public class DirectNavigator {
         	float motion = 0.91F;
             if(this.host.onGround) {
             	motion = 0.54600006F;
-                Block block = this.host.worldObj.getBlockState(new BlockPos(MathHelper.floor_double(this.host.posX), MathHelper.floor_double(this.host.getEntityBoundingBox().minY) - 1, MathHelper.floor_double(this.host.posZ))).getBlock();
+                Block block = this.host.getEntityWorld().getBlockState(new BlockPos(MathHelper.floor(this.host.posX), MathHelper.floor(this.host.getEntityBoundingBox().minY) - 1, MathHelper.floor(this.host.posZ))).getBlock();
                 if(block != null)
                 	motion = block.slipperiness * 0.91F;
             }
@@ -155,13 +155,13 @@ public class DirectNavigator {
             motion = 0.91F;
             if(this.host.onGround) {
             	motion = 0.54600006F;
-                Block block = this.host.worldObj.getBlockState(new BlockPos(MathHelper.floor_double(this.host.posX), MathHelper.floor_double(this.host.getEntityBoundingBox().minY) - 1, MathHelper.floor_double(this.host.posZ))).getBlock();
+                Block block = this.host.getEntityWorld().getBlockState(new BlockPos(MathHelper.floor(this.host.posX), MathHelper.floor(this.host.getEntityBoundingBox().minY) - 1, MathHelper.floor(this.host.posZ))).getBlock();
                 if(block != null)
                 	motion = block.slipperiness * 0.91F;
             }
             
             if(this.host != null && this.host.getEntityBoundingBox() != null)
-            	this.host.moveEntity(MoverType.SELF, this.host.motionX, this.host.motionY, this.host.motionZ);
+            	this.host.move(MoverType.SELF, this.host.motionX, this.host.motionY, this.host.motionZ);
             this.host.motionX *= (double)motion;
             this.host.motionY *= (double)motion;
             this.host.motionZ *= (double)motion;
@@ -170,7 +170,7 @@ public class DirectNavigator {
         this.host.prevLimbSwingAmount = this.host.limbSwingAmount;
         double deltaX = this.host.posX - this.host.prevPosX;
         double deltaZ = this.host.posZ - this.host.prevPosZ;
-        float var7 = MathHelper.sqrt_double(deltaX * deltaX + deltaZ * deltaZ) * 4.0F;
+        float var7 = MathHelper.sqrt(deltaX * deltaX + deltaZ * deltaZ) * 4.0F;
         if(var7 > 1.0F) var7 = 1.0F;
         this.host.limbSwingAmount += (var7 - this.host.limbSwingAmount) * 0.4F;
         this.host.limbSwing += this.host.limbSwingAmount;

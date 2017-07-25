@@ -38,7 +38,7 @@ public class ItemHalloweenTreat extends ItemBase {
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
         ItemStack itemStack = player.getHeldItem(hand);
          if(!player.capabilities.isCreativeMode) {
-             itemStack.func_190920_e(Math.max(0, itemStack.func_190916_E() - 1));
+             itemStack.setCount(Math.max(0, itemStack.getCount() - 1));
          }
          
          if(!world.isRemote) {
@@ -68,10 +68,10 @@ public class ItemHalloweenTreat extends ItemBase {
 			if(dropStacks == null || dropStacks.length <= 0) return;
 			ItemStack dropStack = dropStacks[player.getRNG().nextInt(dropStacks.length)];
 			if(dropStack != null && dropStack.getItem() != null) {
-                dropStack.func_190920_e(1 + player.getRNG().nextInt(4));
+                dropStack.setCount(1 + player.getRNG().nextInt(4));
 				EntityItemCustom entityItem = new EntityItemCustom(world, player.posX, player.posY, player.posZ, dropStack);
 				entityItem.setPickupDelay(10);
-				world.spawnEntityInWorld(entityItem);
+				world.spawnEntity(entityItem);
 			}
 		}
     }
@@ -99,7 +99,7 @@ public class ItemHalloweenTreat extends ItemBase {
             } catch (Exception e) { e.printStackTrace(); }
             if(entity != null) {
 	            entity.setLocationAndAngles(player.posX, player.posY, player.posZ, player.rotationYaw, player.rotationPitch);
-	            world.spawnEntityInWorld(entity);
+	            world.spawnEntity(entity);
             }
 		}
     }

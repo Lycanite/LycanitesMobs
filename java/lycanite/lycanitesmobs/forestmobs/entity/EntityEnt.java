@@ -108,7 +108,7 @@ public class EntityEnt extends EntityCreatureTameable implements IMob, IGroupPla
         // Water Healing:
         if(this.isInWater())
             this.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 3 * 20, 2));
-        else if(this.worldObj.isRaining() && this.worldObj.canBlockSeeSky(this.getPosition()))
+        else if(this.getEntityWorld().isRaining() && this.getEntityWorld().canBlockSeeSky(this.getPosition()))
             this.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 3 * 20, 1));
     }
     
@@ -189,7 +189,7 @@ public class EntityEnt extends EntityCreatureTameable implements IMob, IGroupPla
     // ========== Create Child ==========
     @Override
 	public EntityCreatureAgeable createChild(EntityCreatureAgeable baby) {
-		return new EntityEnt(this.worldObj);
+		return new EntityEnt(this.getEntityWorld());
 	}
     
     

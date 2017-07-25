@@ -109,7 +109,7 @@ public class EntityShambler extends EntityCreatureTameable implements IMob, IGro
         // Water Healing:
         if(this.isInWater())
             this.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 3 * 20, 2));
-        else if(this.worldObj.isRaining() && this.worldObj.canBlockSeeSky(this.getPosition()))
+        else if(this.getEntityWorld().isRaining() && this.getEntityWorld().canBlockSeeSky(this.getPosition()))
             this.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 3 * 20, 1));
     }
 
@@ -184,7 +184,7 @@ public class EntityShambler extends EntityCreatureTameable implements IMob, IGro
     // ========== Create Child ==========
     @Override
 	public EntityCreatureAgeable createChild(EntityCreatureAgeable baby) {
-		return new EntityShambler(this.worldObj);
+		return new EntityShambler(this.getEntityWorld());
 	}
     
     

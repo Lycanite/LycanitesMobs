@@ -118,31 +118,31 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
         super.onLivingUpdate();
         
         // Random Target Teleporting:
-        if(!this.worldObj.isRemote && this.hasAttackTarget()) {
+        if(!this.getEntityWorld().isRemote && this.hasAttackTarget()) {
 	        if(this.teleportTime-- <= 0) {
 	        	this.teleportTime = 60 + this.getRNG().nextInt(40);
                 if(this.getAttackTarget() instanceof EntityPlayer)
                     this.teleportTime *= 3;
         		this.playJumpSound();
         		BlockPos teleportPosition = this.getFacingPosition(this.getAttackTarget(), -this.getAttackTarget().width - 1D, 0);
-        		if(this.canTeleportTo(this.worldObj, teleportPosition)
-        		&& this.canTeleportTo(this.worldObj, new BlockPos(teleportPosition.getX(), teleportPosition.getY() + 1, teleportPosition.getZ())))
+        		if(this.canTeleportTo(this.getEntityWorld(), teleportPosition)
+        		&& this.canTeleportTo(this.getEntityWorld(), new BlockPos(teleportPosition.getX(), teleportPosition.getY() + 1, teleportPosition.getZ())))
                     this.setPosition(teleportPosition.getX(), teleportPosition.getY(), teleportPosition.getZ());
-        		else if(this.canTeleportTo(this.worldObj, teleportPosition)
-                && this.canTeleportTo(this.worldObj, teleportPosition))
+        		else if(this.canTeleportTo(this.getEntityWorld(), teleportPosition)
+                && this.canTeleportTo(this.getEntityWorld(), teleportPosition))
                     this.setPosition(this.getAttackTarget().posX, this.getAttackTarget().posY, this.getAttackTarget().posZ);
 	        }
         }
         
         // Particles:
-        if(this.worldObj.isRemote)
+        if(this.getEntityWorld().isRemote)
 	        for(int i = 0; i < 2; ++i) {
-	            this.worldObj.spawnParticle(EnumParticleTypes.SPELL_WITCH, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
+	            this.getEntityWorld().spawnParticle(EnumParticleTypes.SPELL_WITCH, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
 	        }
     }
 
     public boolean canTeleportTo(World world, BlockPos pos) {
-        IBlockState blockState = this.worldObj.getBlockState(pos);
+        IBlockState blockState = this.getEntityWorld().getBlockState(pos);
         if(blockState.getBlock() == null)
             return false;
         if(blockState.isNormalCube())
@@ -160,20 +160,20 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
    	// ==================================================
     @Override
     public boolean canStealth() {
-    	if(this.worldObj.isRemote) return false;
+    	if(this.getEntityWorld().isRemote) return false;
 		if(this.isMoving()) return false;
     	return this.testLightLevel() <= 0;
     }
     
     @Override
     public void startStealth() {
-    	if(this.worldObj.isRemote) {
+    	if(this.getEntityWorld().isRemote) {
             EnumParticleTypes particle = EnumParticleTypes.SPELL_WITCH;
             double d0 = this.rand.nextGaussian() * 0.02D;
             double d1 = this.rand.nextGaussian() * 0.02D;
             double d2 = this.rand.nextGaussian() * 0.02D;
             for(int i = 0; i < 100; i++)
-            	this.worldObj.spawnParticle(particle, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + 0.5D + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d0, d1, d2);
+            	this.getEntityWorld().spawnParticle(particle, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + 0.5D + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d0, d1, d2);
         }
     	super.startStealth();
     }

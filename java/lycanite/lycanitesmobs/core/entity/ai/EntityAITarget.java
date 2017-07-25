@@ -140,7 +140,7 @@ public abstract class EntityAITarget extends EntityAIBase {
     //               Get Possible Targets
     // ==================================================
     public <T extends Entity> List<T> getPossibleTargets(Class <? extends T > clazz, double rangeX, double rangeY, double rangeZ) {
-        return this.host.worldObj.<T>getEntitiesWithinAABB(clazz, this.host.getEntityBoundingBox().expand(rangeX, rangeY, rangeZ), Predicates.and(new Predicate[]{EntitySelectors.CAN_AI_TARGET, this.targetSelector}));
+        return this.host.getEntityWorld().<T>getEntitiesWithinAABB(clazz, this.host.getEntityBoundingBox().expand(rangeX, rangeY, rangeZ), Predicates.and(new Predicate[]{EntitySelectors.CAN_AI_TARGET, this.targetSelector}));
     }
     
     
@@ -161,7 +161,7 @@ public abstract class EntityAITarget extends EntityAIBase {
             return;
         try {
             double d0 = this.getTargetDistance();
-            List allies = this.host.worldObj.getEntitiesWithinAABB(this.host.getClass(), this.host.getEntityBoundingBox().expand(d0, 4.0D, d0), this.allySelector);
+            List allies = this.host.getEntityWorld().getEntitiesWithinAABB(this.host.getClass(), this.host.getEntityBoundingBox().expand(d0, 4.0D, d0), this.allySelector);
             Iterator possibleAllies = allies.iterator();
 
             while (possibleAllies.hasNext()) {
@@ -205,7 +205,7 @@ public abstract class EntityAITarget extends EntityAIBase {
             return false;
         
         // Home Check:
-        if(!this.host.positionNearHome(MathHelper.floor_double(checkTarget.posX), MathHelper.floor_double(checkTarget.posY), MathHelper.floor_double(checkTarget.posZ)))
+        if(!this.host.positionNearHome(MathHelper.floor(checkTarget.posX), MathHelper.floor(checkTarget.posY), MathHelper.floor(checkTarget.posZ)))
             return false;
         
         // Sight Check:
@@ -267,8 +267,8 @@ public abstract class EntityAITarget extends EntityAIBase {
             if(pathpoint == null)
                 return false;
             else {
-                int i = pathpoint.xCoord - MathHelper.floor_double(target.posX);
-                int j = pathpoint.zCoord - MathHelper.floor_double(target.posZ);
+                int i = pathpoint.xCoord - MathHelper.floor(target.posX);
+                int j = pathpoint.zCoord - MathHelper.floor(target.posZ);
                 return (double)(i * i + j * j) <= 2.25D;
             }
         }

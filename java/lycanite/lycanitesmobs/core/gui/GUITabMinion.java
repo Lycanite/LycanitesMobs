@@ -13,8 +13,8 @@ public class GUITabMinion extends GUITab {
 
     @Override
     public void onTabClicked () {
-    	if(ExtendedPlayer.getForPlayer(Minecraft.getMinecraft().thePlayer) != null)
-    		GUIMinion.openToPlayer(Minecraft.getMinecraft().thePlayer, ExtendedPlayer.getForPlayer(Minecraft.getMinecraft().thePlayer).selectedSummonSet);
+    	if(ExtendedPlayer.getForPlayer(Minecraft.getMinecraft().player) != null)
+    		GUIMinion.openToPlayer(Minecraft.getMinecraft().player, ExtendedPlayer.getForPlayer(Minecraft.getMinecraft().player).selectedSummonSet);
     }
 
     @Override

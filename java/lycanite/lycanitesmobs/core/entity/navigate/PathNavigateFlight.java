@@ -71,7 +71,7 @@ public class PathNavigateFlight extends PathNavigate {
      */
     @Override
     protected boolean isDirectPathBetweenPoints(Vec3d posVec31, Vec3d posVec32, int sizeX, int sizeY, int sizeZ) {
-        RayTraceResult raytraceresult = this.worldObj.rayTraceBlocks(posVec31, new Vec3d(posVec32.xCoord, posVec32.yCoord + (double)this.theEntity.height * 0.5D, posVec32.zCoord), false, true, false);
+        RayTraceResult raytraceresult = this.getEntityWorld().rayTraceBlocks(posVec31, new Vec3d(posVec32.xCoord, posVec32.yCoord + (double)this.theEntity.height * 0.5D, posVec32.zCoord), false, true, false);
         return raytraceresult == null || raytraceresult.typeOfHit == RayTraceResult.Type.MISS;
     }
 
@@ -80,6 +80,6 @@ public class PathNavigateFlight extends PathNavigate {
      */
     @Override
     public boolean canEntityStandOnPos(BlockPos pos) {
-        return !this.worldObj.getBlockState(pos).isFullBlock();
+        return !this.getEntityWorld().getBlockState(pos).isFullBlock();
     }
 }

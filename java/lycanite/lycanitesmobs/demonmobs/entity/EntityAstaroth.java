@@ -88,16 +88,16 @@ public class EntityAstaroth extends EntityCreatureBase implements IMob, IGroupDe
         // Asmodeus Master:
         if(this.updateTick % 20 == 0) {
             if (this.getMasterTarget() != null && this.getMasterTarget() instanceof EntityAsmodeus && ((EntityCreatureBase)this.getMasterTarget()).getBattlePhase() > 0) {
-                EntityHellShield projectile = new EntityHellShield(this.worldObj, this);
+                EntityHellShield projectile = new EntityHellShield(this.getEntityWorld(), this);
                 projectile.setProjectileScale(3f);
                 projectile.posY -= this.height * 0.35D;
                 double dX = this.getMasterTarget().posX - this.posX;
                 double dY = this.getMasterTarget().posY + (this.getMasterTarget().height * 0.75D) - projectile.posY;
                 double dZ = this.getMasterTarget().posZ - this.posZ;
-                double distance = MathHelper.sqrt_double(dX * dX + dZ * dZ) * 0.1F;
+                double distance = MathHelper.sqrt(dX * dX + dZ * dZ) * 0.1F;
                 float velocity = 0.8F;
                 projectile.setThrowableHeading(dX, dY + distance, dZ, velocity, 0.0F);
-                this.worldObj.spawnEntityInWorld(projectile);
+                this.getEntityWorld().spawnEntity(projectile);
             }
         }
     }
@@ -118,7 +118,7 @@ public class EntityAstaroth extends EntityCreatureBase implements IMob, IGroupDe
     @Override
     public void rangedAttack(Entity target, float range) {
     	// Type:
-    	EntityDevilstar projectile = new EntityDevilstar(this.worldObj, this);
+    	EntityDevilstar projectile = new EntityDevilstar(this.getEntityWorld(), this);
         projectile.setProjectileScale(1f);
     	
     	// Y Offset:
@@ -128,13 +128,13 @@ public class EntityAstaroth extends EntityCreatureBase implements IMob, IGroupDe
         double d0 = target.posX - this.posX;
         double d1 = target.posY - (target.height * 0.25D) - projectile.posY;
         double d2 = target.posZ - this.posZ;
-        float f1 = MathHelper.sqrt_double(d0 * d0 + d2 * d2) * 0.1F;
+        float f1 = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.1F;
         float velocity = 1.2F;
         projectile.setThrowableHeading(d0, d1 + (double)f1, d2, velocity, 0.0F);
         
         // Launch:
         this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.worldObj.spawnEntityInWorld(projectile);
+        this.getEntityWorld().spawnEntity(projectile);
 
         super.rangedAttack(target, range);
     }
@@ -145,16 +145,16 @@ public class EntityAstaroth extends EntityCreatureBase implements IMob, IGroupDe
    	// ==================================================
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
-        if(!this.worldObj.isRemote && MobInfo.getFromName("trite").mobEnabled) {
-            int j = 2 + this.rand.nextInt(5) + worldObj.getDifficulty().getDifficultyId() - 1;
+        if(!this.getEntityWorld().isRemote && MobInfo.getFromName("trite").mobEnabled) {
+            int j = 2 + this.rand.nextInt(5) + getEntityWorld().getDifficulty().getDifficultyId() - 1;
             for(int k = 0; k < j; ++k) {
                 float f = ((float)(k % 2) - 0.5F) * this.width / 4.0F;
                 float f1 = ((float)(k / 2) - 0.5F) * this.width / 4.0F;
-                EntityTrite trite = new EntityTrite(this.worldObj);
+                EntityTrite trite = new EntityTrite(this.getEntityWorld());
                 trite.setLocationAndAngles(this.posX + (double)f, this.posY + 0.5D, this.posZ + (double)f1, this.rand.nextFloat() * 360.0F, 0.0F);
                 trite.setMinion(true);
                 trite.setSubspecies(this.getSubspeciesIndex(), true);
-                this.worldObj.spawnEntityInWorld(trite);
+                this.getEntityWorld().spawnEntity(trite);
                 if(this.getAttackTarget() != null)
                 	trite.setRevengeTarget(this.getAttackTarget());
             }

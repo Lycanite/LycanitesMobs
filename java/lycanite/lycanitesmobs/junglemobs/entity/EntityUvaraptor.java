@@ -109,7 +109,7 @@ public class EntityUvaraptor extends EntityCreatureRideable implements IGroupPre
         super.onLivingUpdate();
         
         // Random Leaping:
-        if(!this.isTamed() && this.onGround && !this.worldObj.isRemote) {
+        if(!this.isTamed() && this.onGround && !this.getEntityWorld().isRemote) {
         	if(this.hasAttackTarget()) {
         		if(this.rand.nextInt(10) == 0)
         			this.leap(6.0F, 1.0D, this.getAttackTarget());
@@ -154,7 +154,7 @@ public class EntityUvaraptor extends EntityCreatureRideable implements IGroupPre
     //                   Mount Ability
     // ==================================================
     public void mountAbility(Entity rider) {
-    	if(this.worldObj.isRemote)
+    	if(this.getEntityWorld().isRemote)
     		return;
     	
     	if(this.abilityToggled)
@@ -212,7 +212,7 @@ public class EntityUvaraptor extends EntityCreatureRideable implements IGroupPre
     // ========== Create Child ==========
 	@Override
 	public EntityCreatureAgeable createChild(EntityCreatureAgeable baby) {
-		return new EntityUvaraptor(this.worldObj);
+		return new EntityUvaraptor(this.getEntityWorld());
 	}
 	
 	// ========== Breeding Item ==========

@@ -124,14 +124,14 @@ public class EntityAIPlaceBlock extends EntityAIBase {
         this.host.getLookHelper().setLookPosition(this.pos.getX(), this.pos.getY(), this.pos.getZ(), 30.0F, 30.0F);
         
         // Place Block:
-        if(MathHelper.sqrt_double(this.host.getDistanceSq(this.pos)) <= this.range) {
-        	this.host.worldObj.setBlockState(this.pos, this.block.getStateFromMeta(this.metadata), 3);
+        if(MathHelper.sqrt(this.host.getDistanceSq(this.pos)) <= this.range) {
+        	this.host.getEntityWorld().setBlockState(this.pos, this.block.getStateFromMeta(this.metadata), 3);
             this.block = null;
             this.host.clearMovement();
         }
         
         // Cancel If Too Far:
-        if(MathHelper.sqrt_double(this.host.getDistanceSq(this.pos)) >= this.maxDistance) {
+        if(MathHelper.sqrt(this.host.getDistanceSq(this.pos)) >= this.maxDistance) {
             this.block = null;
             this.host.clearMovement();
         }
@@ -142,7 +142,7 @@ public class EntityAIPlaceBlock extends EntityAIBase {
    	//                  Can Place Block
    	// ==================================================
     public boolean canPlaceBlock(BlockPos pos) {
-    	IBlockState targetState = this.host.worldObj.getBlockState(pos);
+    	IBlockState targetState = this.host.getEntityWorld().getBlockState(pos);
         Block targetBlock = targetState.getBlock();
     	if(targetBlock == null)
     		return false;

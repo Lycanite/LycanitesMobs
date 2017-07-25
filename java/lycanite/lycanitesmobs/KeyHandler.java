@@ -58,7 +58,7 @@ public class KeyHandler {
     // ==================================================
 	@SubscribeEvent
 	public void onPlayerTick(ClientTickEvent event) {
-		ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(this.mc.thePlayer);
+		ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(this.mc.player);
 		if(playerExt == null)
 			return;
 		byte controlStates = 0;
@@ -80,37 +80,37 @@ public class KeyHandler {
 
 		// LM Main Menu:
 		if(this.lmMainMenu.isPressed()) {
-			GUILMMainMenu.openToPlayer(this.mc.thePlayer);
+			GUILMMainMenu.openToPlayer(this.mc.player);
 		}
 
 		// Beastiary:
 		if(this.beastiary.isPressed()) {
-			GUIBeastiary.openToPlayer(this.mc.thePlayer);
+			GUIBeastiary.openToPlayer(this.mc.player);
 		}
 
 		// Pet Manager:
 		if(this.petManager.isPressed()) {
-			GUIPetManager.openToPlayer(this.mc.thePlayer);
+			GUIPetManager.openToPlayer(this.mc.player);
 		}
 
 		// Mount Manager:
 		if(this.mountManager.isPressed()) {
-			GUIMountManager.openToPlayer(this.mc.thePlayer);
+			GUIMountManager.openToPlayer(this.mc.player);
 		}
 
         // Familiar Manager:
         if(this.familiarManager.isPressed()) {
-            GUIFamiliar.openToPlayer(this.mc.thePlayer);
+            GUIFamiliar.openToPlayer(this.mc.player);
         }
 
 		// Minion Manager:
 		if(this.minionManager.isPressed()) {
-			GUIMinion.openToPlayer(this.mc.thePlayer, playerExt.selectedSummonSet);
+			GUIMinion.openToPlayer(this.mc.player, playerExt.selectedSummonSet);
 		}
 		
 		// Minion Selection: Closes If Not Holding:
 		if((!Keyboard.isKeyDown(this.minionSelection.getKeyCode()) && !Mouse.isButtonDown(this.minionSelection.getKeyCode())) && this.mc.currentScreen instanceof GUIMinionSelection) {
-			this.mc.thePlayer.closeScreen();
+			this.mc.player.closeScreen();
 		}
 		
 		
@@ -118,7 +118,7 @@ public class KeyHandler {
 			// ========== HUD Controls ==========
 			// Minion Selection:
 			if(this.minionSelection.isPressed()) {
-				GUIMinionSelection.openToPlayer(this.mc.thePlayer);
+				GUIMinionSelection.openToPlayer(this.mc.player);
 			}
 			
 			
@@ -153,14 +153,14 @@ public class KeyHandler {
     /** Player 'mouse' events, these are actually events based on attack or item use actions and are still triggered if the key binding is no longer a mouse click. **/
     @SubscribeEvent
     public void onMouseEvent(MouseEvent event) {
-        ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(this.mc.thePlayer);
-        if(this.mc.thePlayer == null || playerExt == null || this.mc.objectMouseOver == null)
+        ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(this.mc.player);
+        if(this.mc.player == null || playerExt == null || this.mc.objectMouseOver == null)
             return;
 
         // Left (Attack):
         if(event.getButton() == 0) {
             // Disable attack for large entity reach override:
-            if(!this.mc.thePlayer.isSpectator() && !this.mc.thePlayer.isRowingBoat() && this.mc.objectMouseOver.typeOfHit == RayTraceResult.Type.ENTITY) {
+            if(!this.mc.player.isSpectator() && !this.mc.player.isRowingBoat() && this.mc.objectMouseOver.typeOfHit == RayTraceResult.Type.ENTITY) {
                 Entity entityHit = this.mc.objectMouseOver.entityHit;
                 if(playerExt.canMeleeBigEntity(entityHit)) {
                     MessagePlayerAttack message = new MessagePlayerAttack(entityHit);

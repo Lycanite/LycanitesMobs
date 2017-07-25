@@ -32,7 +32,7 @@ public class MessagePlayerControl implements IMessage, IMessageHandler<MessagePl
 	@Override
 	public IMessage onMessage(final MessagePlayerControl message, final MessageContext ctx) {
 		if(ctx.side != Side.SERVER) return null;
-        IThreadListener mainThread = (WorldServer)ctx.getServerHandler().playerEntity.worldObj;
+        IThreadListener mainThread = (WorldServer)ctx.getServerHandler().playerEntity.getEntityWorld();
         mainThread.addScheduledTask(new Runnable() {
             @Override
             public void run() {

@@ -47,7 +47,7 @@ public class ItemSoulgazer extends ItemBase {
     	if(playerExt == null)
     		return false;
     	if(!(entity instanceof EntityCreatureBase)) {
-    		if(!player.worldObj.isRemote)
+    		if(!player.getEntityWorld().isRemote)
     			player.addChatMessage(new TextComponentString(I18n.translateToLocal("message.soulgazer.unknown")));
     		return false;
     	}
@@ -56,14 +56,14 @@ public class ItemSoulgazer extends ItemBase {
     	}
     	MobInfo mobInfo = ((EntityCreatureBase)entity).mobInfo;
     	if(playerExt.getBeastiary().hasFullKnowledge(mobInfo.name)) {
-    		if(!player.worldObj.isRemote)
+    		if(!player.getEntityWorld().isRemote)
     			player.addChatMessage(new TextComponentString(I18n.translateToLocal("message.soulgazer.known")));
     		return false;
     	}
     	
-    	if(player.worldObj.isRemote) {
+    	if(player.getEntityWorld().isRemote) {
     		for(int i = 0; i < 32; ++i) {
-    			entity.worldObj.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY,
+    			entity.getEntityWorld().spawnParticle(EnumParticleTypes.VILLAGER_HAPPY,
     					entity.posX + (4.0F * player.getRNG().nextFloat()) - 2.0F,
     					entity.posY + (4.0F * player.getRNG().nextFloat()) - 2.0F,
     					entity.posZ + (4.0F * player.getRNG().nextFloat()) - 2.0F,
@@ -71,7 +71,7 @@ public class ItemSoulgazer extends ItemBase {
     		}
     	}
     	
-    	if(!player.worldObj.isRemote) {
+    	if(!player.getEntityWorld().isRemote) {
     		String message = I18n.translateToLocal("message.soulgazer.new");
     		message = message.replace("%creature%", mobInfo.getTitle());
     		player.addChatMessage(new TextComponentString(message));

@@ -97,8 +97,8 @@ public class EntityEttin extends EntityCreatureAgeable implements IMob {
 	@Override
     public void onLivingUpdate() {
     	// Destroy Blocks:
-		if(!this.worldObj.isRemote)
-	        if(this.getAttackTarget() != null && this.worldObj.getGameRules().getBoolean("mobGriefing") && this.ettinGreifing) {
+		if(!this.getEntityWorld().isRemote)
+	        if(this.getAttackTarget() != null && this.getEntityWorld().getGameRules().getBoolean("mobGriefing") && this.ettinGreifing) {
 		    	float distance = this.getAttackTarget().getDistanceToEntity(this);
 		    		if(distance <= this.width + 4.0F)
 		    			this.destroyArea((int)this.posX, (int)this.posY, (int)this.posZ, 10, true);
@@ -138,6 +138,6 @@ public class EntityEttin extends EntityCreatureAgeable implements IMob {
     // ========== Create Child ==========
     @Override
 	public EntityCreatureAgeable createChild(EntityCreatureAgeable baby) {
-		return new EntityEttin(this.worldObj);
+		return new EntityEttin(this.getEntityWorld());
 	}
 }

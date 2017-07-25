@@ -107,7 +107,7 @@ public class EntityCrusk extends EntityCreatureTameable implements IGroupPredato
     public boolean canStealth() {
     	if(this.isTamed() && this.isSitting())
     		return false;
-        IBlockState blockState = this.worldObj.getBlockState(this.getPosition().add(0, -1, 0));
+        IBlockState blockState = this.getEntityWorld().getBlockState(this.getPosition().add(0, -1, 0));
         if(blockState.getBlock() != Blocks.AIR) {
         	if(blockState.getMaterial() == Material.GROUND) return true;
         	if(blockState.getMaterial() == Material.GRASS) return true;
@@ -168,7 +168,7 @@ public class EntityCrusk extends EntityCreatureTameable implements IGroupPredato
     // ========== Create Child ==========
     @Override
 	public EntityCreatureAgeable createChild(EntityCreatureAgeable baby) {
-		return new EntityCrusk(this.worldObj);
+		return new EntityCrusk(this.getEntityWorld());
 	}
 	
 	// ========== Breeding Item ==========

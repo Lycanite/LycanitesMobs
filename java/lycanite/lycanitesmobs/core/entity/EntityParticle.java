@@ -54,7 +54,7 @@ public class EntityParticle extends EntityThrowable {
             this.setDead();
 
         this.motionY -= 0.04D * (double)this.particleGravity;
-        this.moveEntity(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
+        this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
         this.motionX *= 0.9800000190734863D;
         this.motionY *= 0.9800000190734863D;
         this.motionZ *= 0.9800000190734863D;

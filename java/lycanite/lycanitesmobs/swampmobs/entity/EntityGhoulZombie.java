@@ -108,14 +108,14 @@ public class EntityGhoulZombie extends EntityCreatureAgeable implements IMob {
     public void onKillEntity(EntityLivingBase entityLivingBase) {
         super.onKillEntity(entityLivingBase);
 
-        if(this.worldObj.getDifficulty().getDifficultyId() >= 2 && entityLivingBase instanceof EntityVillager) {
-            if (this.worldObj.getDifficulty().getDifficultyId() == 2 && this.rand.nextBoolean()) return;
+        if(this.getEntityWorld().getDifficulty().getDifficultyId() >= 2 && entityLivingBase instanceof EntityVillager) {
+            if (this.getEntityWorld().getDifficulty().getDifficultyId() == 2 && this.rand.nextBoolean()) return;
 
             EntityVillager entityvillager = (EntityVillager)entityLivingBase;
-            EntityZombieVillager entityzombievillager = new EntityZombieVillager(this.worldObj);
+            EntityZombieVillager entityzombievillager = new EntityZombieVillager(this.getEntityWorld());
             entityzombievillager.copyLocationAndAnglesFrom(entityvillager);
-            this.worldObj.removeEntity(entityvillager);
-            entityzombievillager.onInitialSpawn(this.worldObj.getDifficultyForLocation(new BlockPos(entityzombievillager)), new EntityCreatureBase.GroupData(false));
+            this.getEntityWorld().removeEntity(entityvillager);
+            entityzombievillager.onInitialSpawn(this.getEntityWorld().getDifficultyForLocation(new BlockPos(entityzombievillager)), new EntityCreatureBase.GroupData(false));
             entityzombievillager.func_190733_a(entityvillager.getProfession());
             entityzombievillager.setChild(entityvillager.isChild());
             entityzombievillager.setNoAI(entityvillager.isAIDisabled());
@@ -125,8 +125,8 @@ public class EntityGhoulZombie extends EntityCreatureAgeable implements IMob {
                 entityzombievillager.setAlwaysRenderNameTag(entityvillager.getAlwaysRenderNameTag());
             }
 
-            this.worldObj.spawnEntityInWorld(entityzombievillager);
-            this.worldObj.playEvent(null, 1016, entityzombievillager.getPosition(), 0);
+            this.getEntityWorld().spawnEntity(entityzombievillager);
+            this.getEntityWorld().playEvent(null, 1016, entityzombievillager.getPosition(), 0);
         }
     }
     
@@ -151,6 +151,6 @@ public class EntityGhoulZombie extends EntityCreatureAgeable implements IMob {
     // ========== Create Child ==========
     @Override
 	public EntityCreatureAgeable createChild(EntityCreatureAgeable baby) {
-		return new EntityGhoulZombie(this.worldObj);
+		return new EntityGhoulZombie(this.getEntityWorld());
 	}
 }

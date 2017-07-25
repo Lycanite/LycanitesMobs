@@ -98,14 +98,14 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
         super.onLivingUpdate();
         
         // Trail:
-        if(!this.worldObj.isRemote && (this.ticksExisted % 10 == 0 || this.isMoving() && this.ticksExisted % 5 == 0)) {
+        if(!this.getEntityWorld().isRemote && (this.ticksExisted % 10 == 0 || this.isMoving() && this.ticksExisted % 5 == 0)) {
         	int trailHeight = 2;
         	if(this.isChild())
         		trailHeight = 1;
         	for(int y = 0; y < trailHeight; y++) {
-        		Block block = this.worldObj.getBlockState(this.getPosition().add(0, y, 0)).getBlock();
+        		Block block = this.getEntityWorld().getBlockState(this.getPosition().add(0, y, 0)).getBlock();
         		if(block == Blocks.AIR || block == Blocks.SNOW || block == ObjectManager.getBlock("poisoncloud"))
-        			this.worldObj.setBlockState(this.getPosition().add(0, y, 0), ObjectManager.getBlock("poisoncloud").getDefaultState());
+        			this.getEntityWorld().setBlockState(this.getPosition().add(0, y, 0), ObjectManager.getBlock("poisoncloud").getDefaultState());
         	}
 		}
     }
@@ -117,8 +117,8 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
 	// ========== Pathing Weight ==========
 	@Override
 	public float getBlockPathWeight(int par1, int par2, int par3) {
-        if(this.worldObj.getBlockState(new BlockPos(par1, par2 - 1, par3)).getBlock() != Blocks.AIR) {
-            IBlockState blocStatek = this.worldObj.getBlockState(new BlockPos(par1, par2 - 1, par3));
+        if(this.getEntityWorld().getBlockState(new BlockPos(par1, par2 - 1, par3)).getBlock() != Blocks.AIR) {
+            IBlockState blocStatek = this.getEntityWorld().getBlockState(new BlockPos(par1, par2 - 1, par3));
             if(blocStatek.getMaterial() == Material.GRASS)
                 return 10F;
             if(blocStatek.getMaterial() == Material.GROUND)
@@ -171,7 +171,7 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
     // ========== Create Child ==========
 	@Override
 	public EntityCreatureAgeable createChild(EntityCreatureAgeable baby) {
-		return new EntityAspid(this.worldObj);
+		return new EntityAspid(this.getEntityWorld());
 	}
 	
 	// ========== Breeding Item ==========

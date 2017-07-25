@@ -55,7 +55,7 @@ public class GuiOverlay extends GUIBase {
         int sHeight = scaledresolution.getScaledHeight();
 
         // ========== Mob/World Events Title ==========
-        ExtendedWorld worldExt = ExtendedWorld.getForWorld(player.worldObj);
+        ExtendedWorld worldExt = ExtendedWorld.getForWorld(player.getEntityWorld());
         if(worldExt != null) {
             for(MobEventClient mobEventClient : worldExt.clientMobEvents.values())
                 mobEventClient.onGUIUpdate(this, sWidth, sHeight);
@@ -65,9 +65,9 @@ public class GuiOverlay extends GUIBase {
 		
 		// ========== Summoning Focus Bar ==========
         ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
-		if(playerExt != null && !this.mc.thePlayer.capabilities.isCreativeMode && (
-                (this.mc.thePlayer.getHeldItem(EnumHand.MAIN_HAND) != null && this.mc.thePlayer.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemStaffSummoning)
-                || (this.mc.thePlayer.getHeldItem(EnumHand.OFF_HAND) != null && this.mc.thePlayer.getHeldItem(EnumHand.OFF_HAND).getItem() instanceof ItemStaffSummoning)
+		if(playerExt != null && !this.mc.player.capabilities.isCreativeMode && (
+                (this.mc.player.getHeldItem(EnumHand.MAIN_HAND) != null && this.mc.player.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemStaffSummoning)
+                || (this.mc.player.getHeldItem(EnumHand.OFF_HAND) != null && this.mc.player.getHeldItem(EnumHand.OFF_HAND).getItem() instanceof ItemStaffSummoning)
                 )) {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIInventoryCreature"));
@@ -83,7 +83,7 @@ public class GuiOverlay extends GUIBase {
             int summonBarV = 256 - summonBarHeight;
             
             summonBarY -= barYSpace;
-            if(this.mc.thePlayer.isInsideOfMaterial(Material.WATER))
+            if(this.mc.player.isInsideOfMaterial(Material.WATER))
             	summonBarY -= barYSpace;
             
             for(int summonBarEnergyN = 0; summonBarEnergyN < 10; summonBarEnergyN++) {
@@ -99,8 +99,8 @@ public class GuiOverlay extends GUIBase {
 		}
 		
 		// ========== Mount Stamina Bar ==========
-		if(this.mc.thePlayer.getRidingEntity() != null && this.mc.thePlayer.getRidingEntity() instanceof EntityCreatureRideable) {
-			EntityCreatureRideable mount = (EntityCreatureRideable)this.mc.thePlayer.getRidingEntity();
+		if(this.mc.player.getRidingEntity() != null && this.mc.player.getRidingEntity() instanceof EntityCreatureRideable) {
+			EntityCreatureRideable mount = (EntityCreatureRideable)this.mc.player.getRidingEntity();
             float mountStamina = mount.getStaminaPercent();
             
             // Mount Controls Message:

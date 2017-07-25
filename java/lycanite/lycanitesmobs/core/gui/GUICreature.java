@@ -125,8 +125,8 @@ public class GUICreature extends GUIBaseContainer {
 		int slotU = 238;
 		int slotVBase = 0;
 		for(Slot creatureSlot : creatureSlots) {
-			int slotX = backX + creatureSlot.xDisplayPosition - 1;
-			int slotY = backY + creatureSlot.yDisplayPosition - 1;
+			int slotX = backX + creatureSlot.xPos - 1;
+			int slotY = backY + creatureSlot.yPos - 1;
 			int slotV = slotVBase;
 			String slotType = creatureInventory.getTypeFromSlot(creatureSlot.getSlotIndex());
 			if(slotType != null) {

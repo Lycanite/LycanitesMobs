@@ -168,13 +168,13 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
 	}
 
 	public void setFur(boolean fur) {
-		if(!this.worldObj.isRemote)
+		if(!this.getEntityWorld().isRemote)
 			this.dataManager.set(FUR, (byte) (fur ? 1 : 0));
 	}
 	
 	@Override
 	public void onEat() {
-		if(!this.worldObj.isRemote)
+		if(!this.getEntityWorld().isRemote)
 			this.setFur(true);
 	}
 	
@@ -203,12 +203,12 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
             return 15 - i;
         this.colorMixer.getStackInSlot(0).setItemDamage(i);
         this.colorMixer.getStackInSlot(1).setItemDamage(j);
-        ItemStack itemstack = CraftingManager.getInstance().findMatchingRecipe(this.colorMixer, this.worldObj);
+        ItemStack itemstack = CraftingManager.getInstance().findMatchingRecipe(this.colorMixer, this.getEntityWorld());
         int k;
         if(itemstack != null && itemstack.getItem() == Items.DYE)
             k = itemstack.getItemDamage();
         else
-            k = this.worldObj.rand.nextBoolean() ? i : j;
+            k = this.getEntityWorld().rand.nextBoolean() ? i : j;
         return 15 - k;
     }
 	
@@ -219,7 +219,7 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
     // ========== Pathing Weight ==========
     @Override
     public float getBlockPathWeight(int x, int y, int z) {
-        IBlockState blockState = this.worldObj.getBlockState(new BlockPos(x, y - 1, z));
+        IBlockState blockState = this.getEntityWorld().getBlockState(new BlockPos(x, y - 1, z));
         Block block = blockState.getBlock();
         if(block != Blocks.AIR) {
             if(blockState.getMaterial() == Material.GRASS)
@@ -273,7 +273,7 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
     // ========== Create Child ==========
 	@Override
 	public EntityCreatureAgeable createChild(EntityCreatureAgeable partner) {
-		EntityCreatureAgeable baby = new EntityYale(this.worldObj);
+		EntityCreatureAgeable baby = new EntityYale(this.getEntityWorld());
 		int color = this.getMixedFurColor(this, partner);
         baby.setColor(color);
 		return baby;

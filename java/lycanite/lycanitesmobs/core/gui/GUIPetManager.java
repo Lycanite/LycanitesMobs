@@ -13,8 +13,8 @@ public class GUIPetManager extends GUIBaseManager {
 	//                      Opener
 	// ==================================================
 	public static void openToPlayer(EntityPlayer player) {
-		if(player != null && player.worldObj != null) {
-			player.openGui(LycanitesMobs.instance, GuiHandler.GuiType.PLAYER.id, player.worldObj, GuiHandler.PlayerGuiType.PET_MANAGER.id, 0, 0);
+		if(player != null && player.getEntityWorld() != null) {
+			player.openGui(LycanitesMobs.instance, GuiHandler.GuiType.PLAYER.id, player.getEntityWorld(), GuiHandler.PlayerGuiType.PET_MANAGER.id, 0, 0);
 			MessageGUIRequest message = new MessageGUIRequest(GuiHandler.PlayerGuiType.PET_MANAGER.id);
 			LycanitesMobs.packetHandler.sendToServer(message);
 		}

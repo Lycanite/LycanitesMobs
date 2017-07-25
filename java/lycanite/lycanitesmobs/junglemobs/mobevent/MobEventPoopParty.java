@@ -22,6 +22,6 @@ public class MobEventPoopParty extends MobEventBase {
     @Override
 	public void onSpawn(EntityLiving entity) {
 		super.onSpawn(entity);
-		entity.worldObj.setBlockState(entity.getPosition(), ObjectManager.getBlock("poopcloud").getDefaultState());
+		entity.getEntityWorld().setBlockState(entity.getPosition(), ObjectManager.getBlock("poopcloud").getDefaultState());
 	}
 }

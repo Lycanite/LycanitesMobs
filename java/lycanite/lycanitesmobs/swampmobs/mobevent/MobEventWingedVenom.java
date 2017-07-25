@@ -42,34 +42,34 @@ public class MobEventWingedVenom extends MobEventBase {
         List<EntityProjectileRapidFire> projectiles = new ArrayList<EntityProjectileRapidFire>();
         int rapidTime = 20;
 
-        EntityProjectileRapidFire projectileEntry = new EntityProjectileRapidFire(EntityVenomShot.class, entity.worldObj, entity, rapidTime, 3);
+        EntityProjectileRapidFire projectileEntry = new EntityProjectileRapidFire(EntityVenomShot.class, entity.getEntityWorld(), entity, rapidTime, 3);
         projectiles.add(projectileEntry);
 
-        projectileEntry = new EntityProjectileRapidFire(EntityVenomShot.class, entity.worldObj, entity, rapidTime, 3);
+        projectileEntry = new EntityProjectileRapidFire(EntityVenomShot.class, entity.getEntityWorld(), entity, rapidTime, 3);
         projectileEntry.setThrowableHeading((double)entity.posX + 1.0D, 0, (double)entity.posZ + 1.0D, 1.1F, 6.0F);
         projectiles.add(projectileEntry);
 
-        projectileEntry = new EntityProjectileRapidFire(EntityVenomShot.class, entity.worldObj, entity, rapidTime, 3);
+        projectileEntry = new EntityProjectileRapidFire(EntityVenomShot.class, entity.getEntityWorld(), entity, rapidTime, 3);
         projectileEntry.setThrowableHeading((double)entity.posX + 2.0D, 0, 0, 1.1F, 6.0F);
         projectiles.add(projectileEntry);
 
-        projectileEntry = new EntityProjectileRapidFire(EntityVenomShot.class, entity.worldObj, entity, rapidTime, 3);
+        projectileEntry = new EntityProjectileRapidFire(EntityVenomShot.class, entity.getEntityWorld(), entity, rapidTime, 3);
         projectileEntry.setThrowableHeading((double)entity.posX + 1.0D, 0, (double)entity.posZ - 1.0D, 1.1F, 6.0F);
         projectiles.add(projectileEntry);
 
-        projectileEntry = new EntityProjectileRapidFire(EntityVenomShot.class, entity.worldObj, entity, rapidTime, 3);
+        projectileEntry = new EntityProjectileRapidFire(EntityVenomShot.class, entity.getEntityWorld(), entity, rapidTime, 3);
         projectileEntry.setThrowableHeading(0, 0, (double)entity.posZ - 2.0D, 1.1F, 6.0F);
         projectiles.add(projectileEntry);
 
-        projectileEntry = new EntityProjectileRapidFire(EntityVenomShot.class, entity.worldObj, entity, rapidTime, 3);
+        projectileEntry = new EntityProjectileRapidFire(EntityVenomShot.class, entity.getEntityWorld(), entity, rapidTime, 3);
         projectileEntry.setThrowableHeading((double)entity.posX - 1.0D, 0, (double)entity.posZ - 1.0D, 1.1F, 6.0F);
         projectiles.add(projectileEntry);
 
-        projectileEntry = new EntityProjectileRapidFire(EntityVenomShot.class, entity.worldObj, entity, rapidTime, 3);
+        projectileEntry = new EntityProjectileRapidFire(EntityVenomShot.class, entity.getEntityWorld(), entity, rapidTime, 3);
         projectileEntry.setThrowableHeading((double)entity.posX - 2.0D, 0, 0, 1.1F, 6.0F);
         projectiles.add(projectileEntry);
 
-        projectileEntry = new EntityProjectileRapidFire(EntityVenomShot.class, entity.worldObj, entity, rapidTime, 3);
+        projectileEntry = new EntityProjectileRapidFire(EntityVenomShot.class, entity.getEntityWorld(), entity, rapidTime, 3);
         projectileEntry.setThrowableHeading((double)entity.posX - 1.0D, 0, (double)entity.posZ + 1.0D, 1.1F, 6.0F);
         projectiles.add(projectileEntry);
 
@@ -81,7 +81,7 @@ public class MobEventWingedVenom extends MobEventBase {
 
             // Launch:
             entity.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (entity.getRNG().nextFloat() * 0.4F + 0.8F));
-            entity.worldObj.spawnEntityInWorld(projectile);
+            entity.getEntityWorld().spawnEntity(projectile);
         }
 	}
 }

@@ -111,7 +111,7 @@ public class EntityVentoraptor extends EntityCreatureRideable implements IGroupP
         super.onLivingUpdate();
         
         // Random Leaping:
-        if(!this.isTamed() && this.onGround && !this.worldObj.isRemote) {
+        if(!this.isTamed() && this.onGround && !this.getEntityWorld().isRemote) {
         	if(this.hasAttackTarget()) {
         		if(this.rand.nextInt(10) == 0)
         			this.leap(6.0F, 0.5D, this.getAttackTarget());
@@ -158,7 +158,7 @@ public class EntityVentoraptor extends EntityCreatureRideable implements IGroupP
     //                   Mount Ability
     // ==================================================
     public void mountAbility(Entity rider) {
-    	if(this.worldObj.isRemote)
+    	if(this.getEntityWorld().isRemote)
     		return;
     	
     	if(this.abilityToggled)
@@ -214,7 +214,7 @@ public class EntityVentoraptor extends EntityCreatureRideable implements IGroupP
     // ========== Create Child ==========
 	@Override
 	public EntityCreatureAgeable createChild(EntityCreatureAgeable baby) {
-		return new EntityVentoraptor(this.worldObj);
+		return new EntityVentoraptor(this.getEntityWorld());
 	}
 	
 	// ========== Breeding Item ==========

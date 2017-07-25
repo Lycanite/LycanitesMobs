@@ -72,7 +72,7 @@ public class MobEventRahovart extends MobEventBoss {
             for(int i = 0; i < 5; i++) {
                 EntityProjectileBase entityProjectileBase = new EntityHellfireWall(world, originX, originY + (10 * i), originZ);
                 entityProjectileBase.projectileLife = 9 * 20;
-                world.spawnEntityInWorld(entityProjectileBase);
+                world.spawnEntity(entityProjectileBase);
             }
         }
 
@@ -80,7 +80,7 @@ public class MobEventRahovart extends MobEventBoss {
         if(time == 29 * 20) {
             EntityCreatureBase entityCreatureBase = new EntityRahovart(world);
             entityCreatureBase.setLocationAndAngles(originX, originY + 1, originZ, 0, 0);
-            world.spawnEntityInWorld(entityCreatureBase);
+            world.spawnEntity(entityCreatureBase);
             entityCreatureBase.setArenaCenter(new BlockPos(originX, originY + 1, originZ));
         }
     }

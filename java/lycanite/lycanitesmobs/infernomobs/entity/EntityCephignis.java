@@ -104,7 +104,7 @@ public class EntityCephignis extends EntityCreatureAgeable implements IAnimals, 
         super.onLivingUpdate();
         
         // Wander Pause Rates:
-        if(!this.worldObj.isRemote) {
+        if(!this.getEntityWorld().isRemote) {
             if (this.isInWater())
                 this.wanderAI.setPauseRate(20);
             else
@@ -121,11 +121,11 @@ public class EntityCephignis extends EntityCreatureAgeable implements IAnimals, 
     public float getBlockPathWeight(int x, int y, int z) {
         int waterWeight = 10;
         BlockPos pos = new BlockPos(x, y, z);
-        if(this.worldObj.getBlockState(pos).getBlock() == ObjectManager.getBlock("purelava"))
+        if(this.getEntityWorld().getBlockState(pos).getBlock() == ObjectManager.getBlock("purelava"))
             return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 2);
-        if(this.worldObj.getBlockState(pos).getBlock() == Blocks.LAVA)
+        if(this.getEntityWorld().getBlockState(pos).getBlock() == Blocks.LAVA)
             return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
-        if(this.worldObj.getBlockState(pos).getBlock() == Blocks.FLOWING_LAVA)
+        if(this.getEntityWorld().getBlockState(pos).getBlock() == Blocks.FLOWING_LAVA)
             return (super.getBlockPathWeight(x, y, z) + 1) * waterWeight;
 
         if(this.getAttackTarget() != null)
@@ -223,7 +223,7 @@ public class EntityCephignis extends EntityCreatureAgeable implements IAnimals, 
     // ========== Create Child ==========
     @Override
     public EntityCreatureAgeable createChild(EntityCreatureAgeable baby) {
-        return new EntityCephignis(this.worldObj);
+        return new EntityCephignis(this.getEntityWorld());
     }
 
     // ========== Breeding Item ==========

@@ -42,9 +42,9 @@ public class ItemSoulstoneShadow extends ItemSoulstone {
             entity = new EntityChupacabra(world);
         else
             entity = new EntityShade(world);
-        if(!player.worldObj.isRemote) {
+        if(!player.getEntityWorld().isRemote) {
             entity.setLocationAndAngles(player.posX, player.posY, player.posZ, player.rotationYaw, player.rotationPitch);
-            world.spawnEntityInWorld(entity);
+            world.spawnEntity(entity);
             entity.setPlayerOwner(player);
         }
 

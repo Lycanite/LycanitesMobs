@@ -52,7 +52,7 @@ public class RandomPositionGenerator {
         boolean pastHome;
 
         if(entity.hasHome()) {
-            double homeDist = (entity.getHomePosition().getDistance(MathHelper.floor_double(entity.posX), MathHelper.floor_double(entity.posY), MathHelper.floor_double(entity.posZ)) + 4.0F);
+            double homeDist = (entity.getHomePosition().getDistance(MathHelper.floor(entity.posX), MathHelper.floor(entity.posY), MathHelper.floor(entity.posZ)) + 4.0F);
             double homeDistMax = (double)(entity.getHomeDistanceMax() + (float)range);
             pastHome = homeDist < homeDistMax * homeDistMax;
         }
@@ -66,16 +66,16 @@ public class RandomPositionGenerator {
 
             // Random Height:
             if(entity.canFly() || (entity.canSwim() && entity.isInWater())) {
-	            if(entity.posY > entity.worldObj.getPrecipitationHeight(entity.getPosition()).getY() + heightLevel * 1.25)
+	            if(entity.posY > entity.getEntityWorld().getPrecipitationHeight(entity.getPosition()).getY() + heightLevel * 1.25)
 	        		possibleY = random.nextInt(2 * height) - height * 3 / 2;
-	            else if(entity.posY < entity.worldObj.getPrecipitationHeight(entity.getPosition()).getY() + heightLevel)
+	            else if(entity.posY < entity.getEntityWorld().getPrecipitationHeight(entity.getPosition()).getY() + heightLevel)
 	            	possibleY = random.nextInt(2 * height) - height / 2;
             }
 
             if(target == null || (double)possibleX * target.xCoord + (double)possibleZ * target.zCoord >= 0.0D) {
-            	possibleX += MathHelper.floor_double(entity.posX);
-            	possibleY += MathHelper.floor_double(entity.posY);
-            	possibleZ += MathHelper.floor_double(entity.posZ);
+            	possibleX += MathHelper.floor(entity.posX);
+            	possibleY += MathHelper.floor(entity.posY);
+            	possibleZ += MathHelper.floor(entity.posZ);
                 BlockPos possiblePos = new BlockPos(possibleX, possibleY, possibleZ);
 
                 if((!pastHome || entity.positionNearHome(possibleX, possibleY, possibleZ)) && pathNavigate.canEntityStandOnPos(possiblePos)) {

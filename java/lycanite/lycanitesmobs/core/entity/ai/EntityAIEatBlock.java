@@ -60,11 +60,11 @@ public class EntityAIEatBlock extends EntityAIBase {
     	 if(this.host.getRNG().nextInt(this.host.isChild() ? 50 : 1000) != 0)
              return false;
     	 
-    	 int i = MathHelper.floor_double(this.host.posX);
-         int j = MathHelper.floor_double(this.host.posY);
-         int k = MathHelper.floor_double(this.host.posZ);
+    	 int i = MathHelper.floor(this.host.posX);
+         int j = MathHelper.floor(this.host.posY);
+         int k = MathHelper.floor(this.host.posZ);
 
-         IBlockState blockState = this.host.worldObj.getBlockState(new BlockPos(i, j - 1, k));
+         IBlockState blockState = this.host.getEntityWorld().getBlockState(new BlockPos(i, j - 1, k));
          return this.isValidBlock(blockState);
      }
   	
@@ -119,18 +119,18 @@ public class EntityAIEatBlock extends EntityAIBase {
      public void updateTask() {
          if(--this.eatTime != 0) return;
          
-         int i = MathHelper.floor_double(this.host.posX);
-         int j = MathHelper.floor_double(this.host.posY);
-         int k = MathHelper.floor_double(this.host.posZ);
-         IBlockState blockState = this.host.worldObj.getBlockState(new BlockPos(i, j - 1, k));
+         int i = MathHelper.floor(this.host.posX);
+         int j = MathHelper.floor(this.host.posY);
+         int k = MathHelper.floor(this.host.posZ);
+         IBlockState blockState = this.host.getEntityWorld().getBlockState(new BlockPos(i, j - 1, k));
          
          if(this.isValidBlock(blockState)) {
-             //if(this.host.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"))
-        	 this.host.worldObj.setBlockToAir(new BlockPos(i, j - 1, k)); // Might be something else was x, y, z, false
+             //if(this.host.getEntityWorld().getGameRules().getGameRuleBooleanValue("mobGriefing"))
+        	 this.host.getEntityWorld().setBlockToAir(new BlockPos(i, j - 1, k)); // Might be something else was x, y, z, false
          }
 
-         this.host.worldObj.playEvent(2001, new BlockPos(i, j - 1, k), Block.getIdFromBlock(blockState.getBlock()));
-         this.host.worldObj.setBlockState(new BlockPos(i, j - 1, k), this.replaceBlock.getDefaultState(), 2);
+         this.host.getEntityWorld().playEvent(2001, new BlockPos(i, j - 1, k), Block.getIdFromBlock(blockState.getBlock()));
+         this.host.getEntityWorld().setBlockState(new BlockPos(i, j - 1, k), this.replaceBlock.getDefaultState(), 2);
          this.host.onEat();
      }
 }

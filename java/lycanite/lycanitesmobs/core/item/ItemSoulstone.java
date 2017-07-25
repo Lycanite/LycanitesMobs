@@ -44,7 +44,7 @@ public class ItemSoulstone extends ItemBase {
     	if(playerExt == null)
     		return false;
     	if(!(entity instanceof EntityCreatureTameable)) {
-    		if(!player.worldObj.isRemote)
+    		if(!player.getEntityWorld().isRemote)
     			player.addChatMessage(new TextComponentString(I18n.translateToLocal("message.soulstone.invalid")));
     		return false;
     	}
@@ -52,26 +52,26 @@ public class ItemSoulstone extends ItemBase {
 		EntityCreatureTameable entityTameable = (EntityCreatureTameable)entity;
 		MobInfo mobInfo = entityTameable.mobInfo;
 	 	if(!mobInfo.isTameable() || entityTameable.getOwner() != player) {
-			if(!player.worldObj.isRemote)
+			if(!player.getEntityWorld().isRemote)
 				player.addChatMessage(new TextComponentString(I18n.translateToLocal("message.soulstone.untamed")));
 			return false;
 		}
 		if(entityTameable.getPetEntry() != null) {
-			if(!player.worldObj.isRemote)
+			if(!player.getEntityWorld().isRemote)
 				player.addChatMessage(new TextComponentString(I18n.translateToLocal("message.soulstone.exists")));
 			return false;
 		}
 
-		if(!player.worldObj.isRemote) {
+		if(!player.getEntityWorld().isRemote) {
 			if (!player.capabilities.isCreativeMode)
-                itemStack.func_190920_e(Math.max(0, itemStack.func_190916_E() - 1));
-			if (itemStack.func_190916_E() <= 0)
+                itemStack.setCount(Math.max(0, itemStack.getCount() - 1));
+			if (itemStack.getCount() <= 0)
 				player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack)null);
 		}
 
-    	if(player.worldObj.isRemote) {
+    	if(player.getEntityWorld().isRemote) {
     		for(int i = 0; i < 32; ++i) {
-    			entity.worldObj.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY,
+    			entity.getEntityWorld().spawnParticle(EnumParticleTypes.VILLAGER_HAPPY,
     					entity.posX + (4.0F * player.getRNG().nextFloat()) - 2.0F,
     					entity.posY + (4.0F * player.getRNG().nextFloat()) - 2.0F,
     					entity.posZ + (4.0F * player.getRNG().nextFloat()) - 2.0F,
@@ -79,7 +79,7 @@ public class ItemSoulstone extends ItemBase {
     		}
     	}
     	
-    	if(!player.worldObj.isRemote) {
+    	if(!player.getEntityWorld().isRemote) {
 			String petType = "pet";
 			if(entity instanceof EntityCreatureRideable)
 				petType = "mount";

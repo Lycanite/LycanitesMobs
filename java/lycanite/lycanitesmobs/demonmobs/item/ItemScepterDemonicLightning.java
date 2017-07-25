@@ -43,7 +43,7 @@ public class ItemScepterDemonicLightning extends ItemScepter {
     	if(!world.isRemote) {
     		EntityDemonicBlast projectile = new EntityDemonicBlast(world, entity);
     		projectile.setBaseDamage((int)(projectile.getDamage(null) * power * 2));
-        	world.spawnEntityInWorld(projectile);
+        	world.spawnEntity(projectile);
             this.playSound(itemStack, world, entity, power, projectile);
         }
     	return true;

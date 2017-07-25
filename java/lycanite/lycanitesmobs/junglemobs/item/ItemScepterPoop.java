@@ -42,7 +42,7 @@ public class ItemScepterPoop extends ItemScepter {
     public boolean rapidAttack(ItemStack itemStack, World world, EntityLivingBase entity) {
     	if(!world.isRemote) {
         	EntityPoop projectile = new EntityPoop(world, entity);
-        	world.spawnEntityInWorld(projectile);
+        	world.spawnEntity(projectile);
             this.playSound(itemStack, world, entity, 1, projectile);
         }
     	return true;

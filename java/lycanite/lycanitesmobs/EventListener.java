@@ -137,7 +137,7 @@ public class EventListener {
     // ==================================================
 	@SubscribeEvent
 	public void onEntityConstructing(EntityConstructing event) {
-		if(event.getEntity() == null || event.getEntity().worldObj == null || event.getEntity().worldObj.isRemote)
+		if(event.getEntity() == null || event.getEntity().getEntityWorld() == null || event.getEntity().getEntityWorld().isRemote)
 			return;
 
         // ========== Force Remove Entity ==========
@@ -309,7 +309,7 @@ public class EventListener {
     // ==================================================
 	@SubscribeEvent
     public void onLivingDrops(LivingDropsEvent event) {
-		World world = event.getEntityLiving().worldObj;
+		World world = event.getEntityLiving().getEntityWorld();
 
 		// Seasonal Items:
         if(ItemInfo.seasonalItemDropChance > 0
@@ -336,7 +336,7 @@ public class EventListener {
                 ItemStack dropStack = new ItemStack(seasonalItem, 1);
                 EntityItemCustom entityItem = new EntityItemCustom(world, event.getEntityLiving().posX, event.getEntityLiving().posY, event.getEntityLiving().posZ, dropStack);
                 entityItem.setPickupDelay(10);
-                world.spawnEntityInWorld(entityItem);
+                world.spawnEntity(entityItem);
             }
         }
 	}

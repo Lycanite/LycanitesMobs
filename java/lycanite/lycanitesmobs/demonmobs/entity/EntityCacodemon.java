@@ -118,7 +118,7 @@ public class EntityCacodemon extends EntityCreatureTameable implements IGroupDem
     // ========== Living Update ==========
     @Override
     public void onLivingUpdate() {
-        if(!this.worldObj.isRemote && this.getSubspeciesIndex() == 3 && this.hasAttackTarget() && this.ticksExisted % 20 == 0) {
+        if(!this.getEntityWorld().isRemote && this.getSubspeciesIndex() == 3 && this.hasAttackTarget() && this.ticksExisted % 20 == 0) {
             this.allyUpdate();
         }
 
@@ -127,7 +127,7 @@ public class EntityCacodemon extends EntityCreatureTameable implements IGroupDem
 
     // ========== Spawn Minions ==========
     public void allyUpdate() {
-        if(this.worldObj.isRemote)
+        if(this.getEntityWorld().isRemote)
             return;
 
         // Spawn Minions:
@@ -139,14 +139,14 @@ public class EntityCacodemon extends EntityCreatureTameable implements IGroupDem
     }
 
     public void spawnAlly(double x, double y, double z) {
-        EntityLivingBase minion = new EntityNetherSoul(this.worldObj);
+        EntityLivingBase minion = new EntityNetherSoul(this.getEntityWorld());
         minion.setLocationAndAngles(x, y, z, this.rand.nextFloat() * 360.0F, 0.0F);
         if(minion instanceof EntityCreatureBase) {
             EntityCreatureBase minionCreature = (EntityCreatureBase)minion;
             minionCreature.setMinion(true);
             minionCreature.setMasterTarget(this);
         }
-        this.worldObj.spawnEntityInWorld(minion);
+        this.getEntityWorld().spawnEntity(minion);
         if(this.getAttackTarget() != null)
             minion.setRevengeTarget(this.getAttackTarget());
     }
@@ -187,7 +187,7 @@ public class EntityCacodemon extends EntityCreatureTameable implements IGroupDem
     @Override
     public void rangedAttack(Entity target, float range) {
     	// Type:
-    	EntityDemonicBlast projectile = new EntityDemonicBlast(this.worldObj, this);
+    	EntityDemonicBlast projectile = new EntityDemonicBlast(this.getEntityWorld(), this);
         projectile.setProjectileScale(2f);
     	
     	// Y Offset:
@@ -197,13 +197,13 @@ public class EntityCacodemon extends EntityCreatureTameable implements IGroupDem
         double d0 = target.posX - this.posX;
         double d1 = target.posY - projectile.posY;
         double d2 = target.posZ - this.posZ;
-        float f1 = MathHelper.sqrt_double(d0 * d0 + d2 * d2) * 0.1F;
+        float f1 = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.1F;
         float velocity = 0.5F;
         projectile.setThrowableHeading(d0, d1 + (double)f1, d2, velocity, 0.0F);
         
         // Launch:
         this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.worldObj.spawnEntityInWorld(projectile);
+        this.getEntityWorld().spawnEntity(projectile);
 
         super.rangedAttack(target, range);
     }

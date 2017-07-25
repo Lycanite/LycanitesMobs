@@ -18,9 +18,9 @@ public class GUITabMount extends GUITab {
     @Override
     public boolean shouldAddToList () {
     	return false;
-        /*boolean ridingMount = Minecraft.getMinecraft().thePlayer.ridingEntity instanceof EntityCreatureRideable;
+        /*boolean ridingMount = Minecraft.getMinecraft().player.ridingEntity instanceof EntityCreatureRideable;
         if(ridingMount)
-        	this.icon = ((EntityCreatureRideable)Minecraft.getMinecraft().thePlayer.ridingEntity).mobInfo.getSprite();
+        	this.icon = ((EntityCreatureRideable)Minecraft.getMinecraft().player.ridingEntity).mobInfo.getSprite();
         return ridingMount;*/
     }
 }

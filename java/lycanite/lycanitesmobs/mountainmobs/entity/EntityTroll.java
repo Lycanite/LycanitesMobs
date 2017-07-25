@@ -124,19 +124,19 @@ public class EntityTroll extends EntityCreatureBase implements IMob {
         
         // Daylight Stone Form:
         if(!this.stoneForm) {
-        	if(this.isDaytime() && this.worldObj.canBlockSeeSky(this.getPosition())) {
+        	if(this.isDaytime() && this.getEntityWorld().canBlockSeeSky(this.getPosition())) {
         		this.stoneForm = true;
         	}
         }
         else {
-        	if(!this.isDaytime() || !this.worldObj.canBlockSeeSky(this.getPosition())) {
+        	if(!this.isDaytime() || !this.getEntityWorld().canBlockSeeSky(this.getPosition())) {
                 this.stoneForm = false;
             }
         }
         
         // Destroy Blocks:
- 		if(!this.worldObj.isRemote)
- 	        if(this.getAttackTarget() != null && this.worldObj.getGameRules().getBoolean("mobGriefing") && this.trollGreifing) {
+ 		if(!this.getEntityWorld().isRemote)
+ 	        if(this.getAttackTarget() != null && this.getEntityWorld().getGameRules().getBoolean("mobGriefing") && this.trollGreifing) {
  		    	float distance = this.getAttackTarget().getDistanceToEntity(this);
  		    		if(distance <= this.width + 4.0F)
  		    			this.destroyArea((int)this.posX, (int)this.posY, (int)this.posZ, 10, true);
@@ -163,7 +163,7 @@ public class EntityTroll extends EntityCreatureBase implements IMob {
     @Override
     public void rangedAttack(Entity target, float range) {
     	// Type:
-        EntityProjectileBase projectile = new EntityBoulderBlast(this.worldObj, this);
+        EntityProjectileBase projectile = new EntityBoulderBlast(this.getEntityWorld(), this);
         projectile.setProjectileScale(6f);
     	
     	// Y Offset:
@@ -176,13 +176,13 @@ public class EntityTroll extends EntityCreatureBase implements IMob {
         double d0 = target.posX - this.posX + accuracy;
         double d1 = target.posY + (double)target.getEyeHeight() - 1.100000023841858D - projectile.posY + accuracy;
         double d2 = target.posZ - this.posZ + accuracy;
-        float f1 = MathHelper.sqrt_double(d0 * d0 + d2 * d2) * 0.2F;
+        float f1 = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.2F;
         float velocity = 1.2F;
         projectile.setThrowableHeading(d0, d1 + (double)f1, d2, velocity, 6.0F);
         
         // Launch:
         this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.worldObj.spawnEntityInWorld(projectile);
+        this.getEntityWorld().spawnEntity(projectile);
         super.rangedAttack(target, range);
     }
     

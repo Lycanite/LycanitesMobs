@@ -127,7 +127,7 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
   	// ==================================================
     @Override
     public boolean isPersistant() {
-    	if(this.hasHome() && this.worldObj.getDifficulty() != EnumDifficulty.PEACEFUL)
+    	if(this.hasHome() && this.getEntityWorld().getDifficulty() != EnumDifficulty.PEACEFUL)
     		return true;
     	return super.isPersistant();
     }
@@ -151,20 +151,20 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
 	        	this.hiveExposedBlockCacheTime = 0;
 	        
 	        // Set Home In Hive:
-	        if(!this.worldObj.isRemote && !this.hasHome()) {
+	        if(!this.getEntityWorld().isRemote && !this.hasHome()) {
 	        	if(this.hiveFoundationsSet()) {
 	        		this.setHome((int)this.posX, (int)this.posY, (int)this.posZ, 16F);
 	        	}
 	        }
 	        
 	        // Spawn Babies:
-	        if(!this.worldObj.isRemote && this.hiveFoundationsSet() && this.ticksExisted % 60 == 0) {
+	        if(!this.getEntityWorld().isRemote && this.hiveFoundationsSet() && this.ticksExisted % 60 == 0) {
 				this.allyUpdate();
 	        }
         }
         
         // Don't Keep Infected Conbas Targeted:
-        if(!this.worldObj.isRemote && this.getAttackTarget() instanceof EntityConba) {
+        if(!this.getEntityWorld().isRemote && this.getAttackTarget() instanceof EntityConba) {
         	if(((EntityConba)this.getAttackTarget()).vespidInfection) {
         		this.setAttackTarget(null);
         	}
@@ -173,7 +173,7 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
     
     // ========== Spawn Babies ==========
 	public void allyUpdate() {
-		if(this.worldObj.isRemote)
+		if(this.getEntityWorld().isRemote)
 			return;
 		
 		// Spawn Babies:
@@ -189,12 +189,12 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
 	}
 	
     public EntityLivingBase spawnAlly(double x, double y, double z) {
-    	EntityLivingBase minion = new EntityVespid(this.worldObj);
+    	EntityLivingBase minion = new EntityVespid(this.getEntityWorld());
     	minion.setLocationAndAngles(x, y, z, this.rand.nextFloat() * 360.0F, 0.0F);
     	if(minion instanceof EntityCreatureBase) {
     		((EntityCreatureBase)minion).setSubspecies(this.getSubspeciesIndex(), true);
     	}
-    	this.worldObj.spawnEntityInWorld(minion);
+    	this.getEntityWorld().spawnEntity(minion);
         if(this.getAttackTarget() != null)
         	minion.setRevengeTarget(this.getAttackTarget());
         return minion;
@@ -258,7 +258,7 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
     }
 
     public boolean isHiveWall(BlockPos searchPos) {
-        IBlockState searchState = this.worldObj.getBlockState(searchPos);
+        IBlockState searchState = this.getEntityWorld().getBlockState(searchPos);
         Block searchBlock = searchState.getBlock();
         if(searchBlock != null)
             if(searchBlock == ObjectManager.getBlock("veswax") && searchBlock.getMetaFromState(searchState) < 8)
@@ -267,7 +267,7 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
     }
 
     public boolean isHiveFloor(BlockPos searchPos) {
-        IBlockState searchState = this.worldObj.getBlockState(searchPos);
+        IBlockState searchState = this.getEntityWorld().getBlockState(searchPos);
         Block searchBlock = searchState.getBlock();
         if(searchBlock != null)
             if(searchBlock == ObjectManager.getBlock("propolis") && searchBlock.getMetaFromState(searchState) < 8)
@@ -341,7 +341,7 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
 					for(int z = hivePos.getZ() - hiveMax; z <= hivePos.getZ() + hiveMax; z++) {
                         BlockPos checkPos = new BlockPos(x, y, z);
 						if(this.isHiveBlock(checkPos)) {
-                            IBlockState state = this.worldObj.getBlockState(checkPos);
+                            IBlockState state = this.getEntityWorld().getBlockState(checkPos);
 							Block block = state.getBlock();
 							int orientationMeta = block.getMetaFromState(state);
 							EnumFacing facing = EnumFacing.getFront(orientationMeta);
@@ -375,7 +375,7 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
 	}
 	
 	public boolean canPlaceBlockAt(BlockPos pos) {
-        IBlockState targetState = this.worldObj.getBlockState(pos);
+        IBlockState targetState = this.getEntityWorld().getBlockState(pos);
 		Block targetBlock = targetState.getBlock();
         if(targetBlock == null)
 			return false;

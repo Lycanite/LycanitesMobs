@@ -183,7 +183,7 @@ public class AltarInfoUmberLobber extends AltarInfo {
         entityLobber.forceBossHealthBar = true;
         entityLobber.setSubspecies(3, true);
         entityLobber.setLocationAndAngles(x, y - 2, z, 0, 0);
-        world.spawnEntityInWorld(entityLobber);
+        world.spawnEntity(entityLobber);
         entityLobber.destroyArea(x, y, z, 10000, false, 2);
 
         return true;

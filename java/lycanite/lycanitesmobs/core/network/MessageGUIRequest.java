@@ -33,7 +33,7 @@ public class MessageGUIRequest implements IMessage, IMessageHandler<MessageGUIRe
 	@Override
 	public IMessage onMessage(final MessageGUIRequest message, final MessageContext ctx) {
 		if(ctx.side != Side.SERVER) return null;
-        IThreadListener mainThread = (WorldServer)ctx.getServerHandler().playerEntity.worldObj;
+        IThreadListener mainThread = (WorldServer)ctx.getServerHandler().playerEntity.getEntityWorld();
         mainThread.addScheduledTask(new Runnable() {
             @Override
             public void run() {

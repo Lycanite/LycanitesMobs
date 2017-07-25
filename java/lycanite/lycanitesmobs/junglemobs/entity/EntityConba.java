@@ -133,7 +133,7 @@ public class EntityConba extends EntityCreatureTameable implements IMob {
         super.onLivingUpdate();
         
         // Random Leaping:
-        if(this.onGround && !this.worldObj.isRemote) {
+        if(this.onGround && !this.getEntityWorld().isRemote) {
         	if(this.hasAvoidTarget()) {
         		if(this.rand.nextInt(10) == 0)
         			this.leap(1.0F, 0.6D, this.getAttackTarget());
@@ -145,8 +145,8 @@ public class EntityConba extends EntityCreatureTameable implements IMob {
         }
         
         // Infected AI:
-        if(!this.worldObj.isRemote) {
-            if (this.vespidInfection && !this.worldObj.isRemote) {
+        if(!this.getEntityWorld().isRemote) {
+            if (this.vespidInfection && !this.getEntityWorld().isRemote) {
                 this.aiAttackMelee.setEnabled(true);
                 this.aiAttackRanged.setEnabled(false);
                 if (this.vespidInfectionTime++ >= 60 * 20) {
@@ -160,11 +160,11 @@ public class EntityConba extends EntityCreatureTameable implements IMob {
         }
         
         // Infected Visuals
-        if(this.worldObj.isRemote) {
+        if(this.getEntityWorld().isRemote) {
         	this.vespidInfection = this.extraAnimation01();
         	if(this.vespidInfection) {
     	        for(int i = 0; i < 2; ++i) {
-    	            this.worldObj.spawnParticle(EnumParticleTypes.SPELL_WITCH, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
+    	            this.getEntityWorld().spawnParticle(EnumParticleTypes.SPELL_WITCH, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
     	        }
         	}
         }
@@ -174,7 +174,7 @@ public class EntityConba extends EntityCreatureTameable implements IMob {
 	@Override
     public void updateAITasks() {
         // Avoid Attack Target:
-        if(!this.worldObj.isRemote) {
+        if(!this.getEntityWorld().isRemote) {
 	        if(this.getAttackTarget() != null && this.getAttackTarget() != this.getAvoidTarget())
 	        	this.setAvoidTarget(this.getAttackTarget());
         }
@@ -198,7 +198,7 @@ public class EntityConba extends EntityCreatureTameable implements IMob {
     @Override
     public void rangedAttack(Entity target, float range) {
     	// Type:
-    	EntityPoop projectile = new EntityPoop(this.worldObj, this);
+    	EntityPoop projectile = new EntityPoop(this.getEntityWorld(), this);
         projectile.setProjectileScale(2f);
     	
     	// Y Offset:
@@ -211,13 +211,13 @@ public class EntityConba extends EntityCreatureTameable implements IMob {
         double d0 = target.posX - this.posX + accuracy;
         double d1 = target.posY + (double)target.getEyeHeight() - 1.100000023841858D - projectile.posY + accuracy;
         double d2 = target.posZ - this.posZ + accuracy;
-        float f1 = MathHelper.sqrt_double(d0 * d0 + d2 * d2) * 0.2F;
+        float f1 = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.2F;
         float velocity = 1.2F;
         projectile.setThrowableHeading(d0, d1 + (double)f1, d2, velocity, 6.0F);
         
         // Launch:
         this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.worldObj.spawnEntityInWorld(projectile);
+        this.getEntityWorld().spawnEntity(projectile);
         super.rangedAttack(target, range);
     }
     
@@ -227,21 +227,21 @@ public class EntityConba extends EntityCreatureTameable implements IMob {
    	// ==================================================
     @Override
     public void onDeath(DamageSource damageSource) {
-		if(!this.worldObj.isRemote && this.vespidInfection)
+		if(!this.getEntityWorld().isRemote && this.vespidInfection)
 			this.spawnVespidSwarm();
         super.onDeath(damageSource);
     }
     
     public void spawnVespidSwarm() {
-    	int j = 2 + this.rand.nextInt(5) + worldObj.getDifficulty().getDifficultyId() - 1;
+    	int j = 2 + this.rand.nextInt(5) + getEntityWorld().getDifficulty().getDifficultyId() - 1;
         for(int k = 0; k < j; ++k) {
             float f = ((float)(k % 2) - 0.5F) * this.width / 4.0F;
             float f1 = ((float)(k / 2) - 0.5F) * this.width / 4.0F;
-            EntityVespid vespid = new EntityVespid(this.worldObj);
+            EntityVespid vespid = new EntityVespid(this.getEntityWorld());
             vespid.setLocationAndAngles(this.posX + (double)f, this.posY + 0.5D, this.posZ + (double)f1, this.rand.nextFloat() * 360.0F, 0.0F);
             vespid.setSubspecies(this.getSubspeciesIndex(), true);
             vespid.setGrowingAge(vespid.growthTime);
-            this.worldObj.spawnEntityInWorld(vespid);
+            this.getEntityWorld().spawnEntity(vespid);
             if(this.getAttackTarget() != null)
             	vespid.setRevengeTarget(this.getAttackTarget());
         }
@@ -260,7 +260,7 @@ public class EntityConba extends EntityCreatureTameable implements IMob {
     // ========== Extra Animations ==========
     /** An additional animation boolean that is passed to all clients through the animation mask. **/
     public boolean extraAnimation01() {
-    	if(!this.worldObj.isRemote)
+    	if(!this.getEntityWorld().isRemote)
     		return this.vespidInfection;
 	    else
 	    	return this.extraAnimation01;

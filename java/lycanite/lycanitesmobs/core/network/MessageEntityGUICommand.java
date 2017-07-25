@@ -37,12 +37,12 @@ public class MessageEntityGUICommand implements IMessage, IMessageHandler<Messag
 	@Override
 	public IMessage onMessage(final MessageEntityGUICommand message, final MessageContext ctx) {
 		if(ctx.side != Side.SERVER) return null;
-        IThreadListener mainThread = (WorldServer)ctx.getServerHandler().playerEntity.worldObj;
+        IThreadListener mainThread = (WorldServer)ctx.getServerHandler().playerEntity.getEntityWorld();
         mainThread.addScheduledTask(new Runnable() {
             @Override
             public void run() {
                 EntityPlayer player = ctx.getServerHandler().playerEntity;
-                World world = player.worldObj;
+                World world = player.getEntityWorld();
                 Entity entity = world.getEntityByID(message.entityID);
                 if (entity instanceof EntityCreatureTameable) {
                     EntityCreatureTameable pet = (EntityCreatureTameable) entity;

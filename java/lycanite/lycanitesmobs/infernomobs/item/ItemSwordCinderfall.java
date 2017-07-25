@@ -37,13 +37,13 @@ public class ItemSwordCinderfall extends ItemSwordBase {
      public boolean hitEntity(ItemStack itemStack, EntityLivingBase entityHit, EntityLivingBase entityUser) {
      	if(!super.hitEntity(itemStack, entityHit, entityUser))
      		return false;
-     	if(entityUser.worldObj.isRemote)
+     	if(entityUser.getEntityWorld().isRemote)
      		return true;
      	entityHit.hurtResistantTime = 0;
      	entityHit.attackEntityFrom(DamageSource.causeMobDamage(entityUser).setFireDamage().setDamageBypassesArmor(), 2);
      	entityHit.setFire(4);
      	if(entityUser.getRNG().nextFloat() <= this.getSpecialEffectChance()) {
-     		Entity entity = new EntityCinder(entityUser.worldObj);
+     		Entity entity = new EntityCinder(entityUser.getEntityWorld());
             entity.setLocationAndAngles(entityUser.posX, entityUser.posY, entityUser.posZ, entityUser.rotationYaw, 0.0F);
             if(entity instanceof EntityCreatureBase) {
                 EntityCreatureBase entityCreature = (EntityCreatureBase)entity;
@@ -63,13 +63,13 @@ public class ItemSwordCinderfall extends ItemSwordBase {
                 if(entityUser.getRNG().nextBoolean())
                     randomAngle = -randomAngle;
                 BlockPos spawnPos = entityCreature.getFacingPosition(entityUser, -1, randomAngle);
-                if(!entity.worldObj.isSideSolid(spawnPos, EnumFacing.UP))
+                if(!entity.getEntityWorld().isSideSolid(spawnPos, EnumFacing.UP))
                     randomAngle = -randomAngle;
-                if(entity.worldObj.isSideSolid(new BlockPos(spawnPos), EnumFacing.UP))
+                if(entity.getEntityWorld().isSideSolid(new BlockPos(spawnPos), EnumFacing.UP))
                     entity.setLocationAndAngles(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), entityUser.rotationYaw, 0.0F);
             }
             this.onSpawnEntity(entity);
-     		entityUser.worldObj.spawnEntityInWorld(entity);
+     		entityUser.getEntityWorld().spawnEntity(entity);
      	}
      	return true;
      }

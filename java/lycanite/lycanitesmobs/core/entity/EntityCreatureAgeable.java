@@ -106,7 +106,7 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
         super.onLivingUpdate();
         
         // Growing:
-        if(this.worldObj.isRemote)
+        if(this.getEntityWorld().isRemote)
             this.setScaleForAge(this.isChild());
         else if(this.canGrow) {
             int age = this.getGrowingAge();
@@ -124,21 +124,21 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
         if(!this.canBreed())
             this.loveTime = 0;
 
-        if(!this.worldObj.isRemote)
+        if(!this.getEntityWorld().isRemote)
         	this.dataManager.set(LOVE, this.loveTime);
-        if(this.worldObj.isRemote)
+        if(this.getEntityWorld().isRemote)
         	this.loveTime = Integer.valueOf(this.getFromDataManager(LOVE));
         
         if(this.isInLove()) {
         	this.setFarmed();
             --this.loveTime;
-            if(this.worldObj.isRemote) {
+            if(this.getEntityWorld().isRemote) {
 	            EnumParticleTypes particle = EnumParticleTypes.HEART;
 	            if(this.loveTime % 10 == 0) {
 	                double d0 = this.rand.nextGaussian() * 0.02D;
 	                double d1 = this.rand.nextGaussian() * 0.02D;
 	                double d2 = this.rand.nextGaussian() * 0.02D;
-	                this.worldObj.spawnParticle(particle, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + 0.5D + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d0, d1, d2);
+	                this.getEntityWorld().spawnParticle(particle, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + 0.5D + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d0, d1, d2);
 	            }
             }
         }
@@ -184,7 +184,7 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
     public void performCommand(String command, EntityPlayer player, ItemStack itemStack) {
     	
     	// Spawn Baby:
-    	if(command.equals("Spawn Baby") && !this.worldObj.isRemote && ObjectManager.entityLists.containsKey(this.group.filename)) {
+    	if(command.equals("Spawn Baby") && !this.getEntityWorld().isRemote && ObjectManager.entityLists.containsKey(this.group.filename)) {
             ItemCustomSpawnEgg itemCustomSpawnEgg = (ItemCustomSpawnEgg)itemStack.getItem();
 			 Class eggClass = ObjectManager.entityLists.get(this.group.filename).getClassFromID(itemCustomSpawnEgg.getEntityIdFromItem(itemStack));
 			 if(eggClass != null && eggClass.isAssignableFrom(this.getClass())) {
@@ -193,7 +193,7 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
 					baby.setGrowingAge(baby.growthTime);
 					baby.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
 					baby.setFarmed();
-					this.worldObj.spawnEntityInWorld(baby);
+					this.getEntityWorld().spawnEntity(baby);
 					if(itemStack.hasDisplayName())
 						baby.setCustomNameTag(itemStack.getDisplayName());
 					this.consumePlayersItem(player, itemStack);
@@ -329,10 +329,10 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
                 double d0 = this.rand.nextGaussian() * 0.02D;
                 double d1 = this.rand.nextGaussian() * 0.02D;
                 double d2 = this.rand.nextGaussian() * 0.02D;
-                this.worldObj.spawnParticle(EnumParticleTypes.HEART, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + 0.5D + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d0, d1, d2);
+                this.getEntityWorld().spawnParticle(EnumParticleTypes.HEART, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + 0.5D + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d0, d1, d2);
             }
 
-            this.worldObj.spawnEntityInWorld(baby);
+            this.getEntityWorld().spawnEntity(baby);
         }
     }
 	

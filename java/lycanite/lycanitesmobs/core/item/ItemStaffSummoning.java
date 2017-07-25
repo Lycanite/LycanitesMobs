@@ -123,18 +123,18 @@ public class ItemStaffSummoning extends ItemScepter {
 			// Summon Selected Mob:
 			SummonSet summonSet = playerExt.getSelectedSummonSet();
 			if(summonSet.isUseable()) {
-				if(!player.worldObj.isRemote) {
+				if(!player.getEntityWorld().isRemote) {
 			    	this.portalEntity = new EntityPortal(world, player, summonSet.getCreatureClass(), this);
 			    	this.portalEntity.setLocationAndAngles(player.posX, player.posY, player.posZ, world.rand.nextFloat() * 360.0F, 0.0F);
-			    	world.spawnEntityInWorld(this.portalEntity);
+			    	world.spawnEntity(this.portalEntity);
 				}
 			}
 			// Open Minion GUI If None Selected:
 			else {
 				this.portalEntity = null;
-				if(!player.worldObj.isRemote)
+				if(!player.getEntityWorld().isRemote)
 	    			playerExt.sendAllSummonSetsToPlayer();
-				if(player.worldObj.isRemote)
+				if(player.getEntityWorld().isRemote)
 					GUIMinion.openToPlayer(player, playerExt.selectedSummonSet);
 			}
 		}

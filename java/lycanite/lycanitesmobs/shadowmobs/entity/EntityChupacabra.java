@@ -159,7 +159,7 @@ public class EntityChupacabra extends EntityCreatureTameable implements IAnimals
     // ========== Create Child ==========
 	@Override
 	public EntityCreatureAgeable createChild(EntityCreatureAgeable baby) {
-		return new EntityChupacabra(this.worldObj);
+		return new EntityChupacabra(this.getEntityWorld());
 	}
 	
 	// ========== Breeding Item ==========

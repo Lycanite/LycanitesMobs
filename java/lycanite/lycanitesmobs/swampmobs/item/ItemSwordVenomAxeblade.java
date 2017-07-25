@@ -68,11 +68,11 @@ public class ItemSwordVenomAxeblade extends ItemSwordBase {
      public boolean hitEntity(ItemStack itemStack, EntityLivingBase entityHit, EntityLivingBase entityUser) {
      	if(!super.hitEntity(itemStack, entityHit, entityUser))
      		return false;
-     	if(entityUser.worldObj.isRemote)
+     	if(entityUser.getEntityWorld().isRemote)
      		return true;
      	entityHit.addPotionEffect(new PotionEffect(MobEffects.POISON, 6 * 20, 0));
      	if(entityUser.getRNG().nextFloat() <= this.getSpecialEffectChance()) {
-     		Entity entity = new EntityRemobra(entityUser.worldObj);
+     		Entity entity = new EntityRemobra(entityUser.getEntityWorld());
      		entity.setLocationAndAngles(entityUser.posX, entityUser.posY, entityUser.posZ, entityUser.rotationYaw, 0.0F);
      		if(entity instanceof EntityCreatureBase) {
 	    		EntityCreatureBase entityCreature = (EntityCreatureBase)entity;
@@ -92,13 +92,13 @@ public class ItemSwordVenomAxeblade extends ItemSwordBase {
 		    	if(entityUser.getRNG().nextBoolean())
 		    		randomAngle = -randomAngle;
 		    	BlockPos spawnPos = entityCreature.getFacingPosition(entityUser, -1, randomAngle);
-		    	if(!entity.worldObj.isSideSolid(spawnPos, EnumFacing.UP))
+		    	if(!entity.getEntityWorld().isSideSolid(spawnPos, EnumFacing.UP))
 		    		randomAngle = -randomAngle;
-		    	if(entity.worldObj.isSideSolid(new BlockPos(spawnPos), EnumFacing.UP))
+		    	if(entity.getEntityWorld().isSideSolid(new BlockPos(spawnPos), EnumFacing.UP))
 		    		entity.setLocationAndAngles(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), entityUser.rotationYaw, 0.0F);
 	    	}
             this.onSpawnEntity(entity);
-     		entityUser.worldObj.spawnEntityInWorld(entity);
+     		entityUser.getEntityWorld().spawnEntity(entity);
      	}
      	return true;
      }

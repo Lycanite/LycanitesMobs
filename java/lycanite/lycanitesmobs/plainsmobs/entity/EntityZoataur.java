@@ -103,7 +103,7 @@ public class EntityZoataur extends EntityCreatureTameable implements IGroupPreda
     @Override
     public void onLivingUpdate() {
         // Force Blocking:
-        if(!this.worldObj.isRemote && this.isBlocking() && this.hasAttackTarget()) {
+        if(!this.getEntityWorld().isRemote && this.isBlocking() && this.hasAttackTarget()) {
             this.setAttackTarget(null);
         }
 

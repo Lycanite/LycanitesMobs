@@ -107,7 +107,7 @@ public class EntityVespid extends EntityCreatureAgeable implements IMob, IGroupP
   	// ==================================================
     @Override
     public boolean isPersistant() {
-    	if(this.hasMaster() && this.worldObj.getDifficulty() != EnumDifficulty.PEACEFUL)
+    	if(this.hasMaster() && this.getEntityWorld().getDifficulty() != EnumDifficulty.PEACEFUL)
     		return true;
     	return super.isPersistant();
     }
@@ -122,7 +122,7 @@ public class EntityVespid extends EntityCreatureAgeable implements IMob, IGroupP
         super.onLivingUpdate();
         
         // Hive No Clip:
-        if(!this.worldObj.isRemote) {
+        if(!this.getEntityWorld().isRemote) {
 	        if(!this.noClip) {
 	        	if(this.isHiveBlock(this.getPosition()))
 	        		this.noClip = true;
@@ -133,7 +133,7 @@ public class EntityVespid extends EntityCreatureAgeable implements IMob, IGroupP
         }
         
         // Building AI:
-        if(!this.worldObj.isRemote && this.vespidHiveBuilding && this.hasMaster() && this.getMasterTarget() instanceof EntityVespidQueen && this.aiPlaceBlock.block == null) {
+        if(!this.getEntityWorld().isRemote && this.vespidHiveBuilding && this.hasMaster() && this.getMasterTarget() instanceof EntityVespidQueen && this.aiPlaceBlock.block == null) {
         	EntityVespidQueen queen = (EntityVespidQueen)this.getMasterTarget();
         	
         	// Build Hive Foundations:
@@ -264,7 +264,7 @@ public class EntityVespid extends EntityCreatureAgeable implements IMob, IGroupP
         }
         
         // Don't Keep Infected Conbas Targeted:
-        if(!this.worldObj.isRemote && this.getAttackTarget() instanceof EntityConba) {
+        if(!this.getEntityWorld().isRemote && this.getAttackTarget() instanceof EntityConba) {
         	if(((EntityConba)this.getAttackTarget()).vespidInfection) {
         		this.setAttackTarget(null);
         	}
@@ -279,7 +279,7 @@ public class EntityVespid extends EntityCreatureAgeable implements IMob, IGroupP
     }
 
     public boolean isHiveWall(BlockPos searchPos) {
-        IBlockState searchState = this.worldObj.getBlockState(searchPos);
+        IBlockState searchState = this.getEntityWorld().getBlockState(searchPos);
         Block searchBlock = searchState.getBlock();
         if(searchBlock != null)
             if(searchBlock == ObjectManager.getBlock("veswax") && searchBlock.getMetaFromState(searchState) < 8)
@@ -288,7 +288,7 @@ public class EntityVespid extends EntityCreatureAgeable implements IMob, IGroupP
     }
 
     public boolean isHiveFloor(BlockPos searchPos) {
-        IBlockState searchState = this.worldObj.getBlockState(searchPos);
+        IBlockState searchState = this.getEntityWorld().getBlockState(searchPos);
         Block searchBlock = searchState.getBlock();
         if(searchBlock != null)
             if(searchBlock == ObjectManager.getBlock("veswax") && searchBlock.getMetaFromState(searchState) < 8)

@@ -77,7 +77,7 @@ public class RenderCreature extends RenderLiving<EntityCreatureBase> {
     protected boolean canRenderName(EntityCreatureBase entity) {
         if(!Minecraft.isGuiEnabled()) return false;
     	if(entity == this.renderManager.renderViewEntity) return false;
-    	if(entity.isInvisibleToPlayer(Minecraft.getMinecraft().thePlayer)) return false;
+    	if(entity.isInvisibleToPlayer(Minecraft.getMinecraft().player)) return false;
     	if(entity.getControllingPassenger() != null) return false;
     	
     	if(entity.getAlwaysRenderNameTagForRender()) {

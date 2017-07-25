@@ -111,7 +111,7 @@ public class EntityStrider extends EntityCreatureTameable {
 	@Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        if(!this.worldObj.isRemote) {
+        if(!this.getEntityWorld().isRemote) {
             // Wander Pause Rates:
             if(this.isInWater())
                 this.wanderAI.setPauseRate(120);
@@ -150,7 +150,7 @@ public class EntityStrider extends EntityCreatureTameable {
     // ==================================================
     /*@Override
     public void mountAbility(Entity rider) {
-        if(this.worldObj.isRemote)
+        if(this.getEntityWorld().isRemote)
             return;
 
         if(this.abilityToggled)
@@ -160,7 +160,7 @@ public class EntityStrider extends EntityCreatureTameable {
 
         // Penetrating Screech:
         double distance = 10.0D;
-        List<EntityLivingBase> possibleTargets = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().expand(distance, distance, distance), new Predicate<EntityLivingBase>() {
+        List<EntityLivingBase> possibleTargets = this.getEntityWorld().getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().expand(distance, distance, distance), new Predicate<EntityLivingBase>() {
             @Override
             public boolean apply(EntityLivingBase possibleTarget) {
                 if(!possibleTarget.isEntityAlive()
@@ -252,12 +252,12 @@ public class EntityStrider extends EntityCreatureTameable {
 	public float getBlockPathWeight(int x, int y, int z) {
         int waterWeight = 10;
 
-        Block block = this.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock();
+        Block block = this.getEntityWorld().getBlockState(new BlockPos(x, y, z)).getBlock();
         if(block == Blocks.WATER)
             return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
         if(block == Blocks.FLOWING_WATER)
             return (super.getBlockPathWeight(x, y, z) + 1) * waterWeight;
-        if(this.worldObj.isRaining() && this.worldObj.canBlockSeeSky(new BlockPos(x, y, z)))
+        if(this.getEntityWorld().isRaining() && this.getEntityWorld().canBlockSeeSky(new BlockPos(x, y, z)))
             return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
 
         if(this.getAttackTarget() != null)

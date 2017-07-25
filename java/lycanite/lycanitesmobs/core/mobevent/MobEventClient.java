@@ -89,7 +89,7 @@ public class MobEventClient {
     	EntityPlayer player = LycanitesMobs.proxy.getClientPlayer();
         if(player.capabilities.isCreativeMode && !MobEventServer.testOnCreative && !(this.mobEvent instanceof MobEventBoss))
             return;
-        if(this.world == null || this.world != player.worldObj) return;
+        if(this.world == null || this.world != player.getEntityWorld()) return;
         if(!this.world.isRemote) return;
 
         int introTime = 12 * 20;

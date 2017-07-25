@@ -34,14 +34,14 @@ public class MessagePlayerAttack implements IMessage, IMessageHandler<MessagePla
 	@Override
 	public IMessage onMessage(final MessagePlayerAttack message, final MessageContext ctx) {
 		if(ctx.side != Side.SERVER) return null;
-        IThreadListener mainThread = (WorldServer)ctx.getServerHandler().playerEntity.worldObj;
+        IThreadListener mainThread = (WorldServer)ctx.getServerHandler().playerEntity.getEntityWorld();
         mainThread.addScheduledTask(new Runnable() {
             @Override
             public void run() {
                 EntityPlayer player = ctx.getServerHandler().playerEntity;
                 ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
                 if(message.attackEntityID != 0)
-                    playerExt.meleeAttack(player.worldObj.getEntityByID(message.attackEntityID));
+                    playerExt.meleeAttack(player.getEntityWorld().getEntityByID(message.attackEntityID));
             }
         });
 		return null;

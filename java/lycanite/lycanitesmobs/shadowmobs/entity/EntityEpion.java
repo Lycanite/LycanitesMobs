@@ -98,22 +98,22 @@ public class EntityEpion extends EntityCreatureTameable implements IMob, IGroupS
         super.onLivingUpdate();
         
         // Sunlight Explosions:
-        if(!this.worldObj.isRemote) {
+        if(!this.getEntityWorld().isRemote) {
         	if(!this.canFly() && this.onGround && this.isEntityAlive()) {
         		int explosionRadius = 2;
 				if(this.subspecies != null)
 					explosionRadius = 3;
 				explosionRadius = Math.max(2, Math.round((float)explosionRadius * (float)this.sizeScale));
-                if(this.worldObj.getGameRules().getBoolean("mobGriefing") && this.epionGreifing)
-	        	    this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, explosionRadius, true);
+                if(this.getEntityWorld().getGameRules().getBoolean("mobGriefing") && this.epionGreifing)
+	        	    this.getEntityWorld().createExplosion(this, this.posX, this.posY, this.posZ, explosionRadius, true);
 	        	this.setDead();
         	}
         }
         
         // Particles:
-        if(this.worldObj.isRemote)
+        if(this.getEntityWorld().isRemote)
 	        for(int i = 0; i < 2; ++i) {
-	            this.worldObj.spawnParticle(EnumParticleTypes.SPELL_WITCH, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
+	            this.getEntityWorld().spawnParticle(EnumParticleTypes.SPELL_WITCH, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
 	        }
     }
     
@@ -125,7 +125,7 @@ public class EntityEpion extends EntityCreatureTameable implements IMob, IGroupS
     @Override
     public void rangedAttack(Entity target, float range) {
     	// Type:
-    	EntityBloodleech projectile = new EntityBloodleech(this.worldObj, this);
+    	EntityBloodleech projectile = new EntityBloodleech(this.getEntityWorld(), this);
         projectile.setProjectileScale(1.0f);
     	
     	// Y Offset:
@@ -138,13 +138,13 @@ public class EntityEpion extends EntityCreatureTameable implements IMob, IGroupS
         double d0 = target.posX - this.posX + accuracy;
         double d1 = target.posY + (double)target.getEyeHeight() - 1.100000023841858D - projectile.posY + accuracy;
         double d2 = target.posZ - this.posZ + accuracy;
-        float f1 = MathHelper.sqrt_double(d0 * d0 + d2 * d2) * 0.2F;
+        float f1 = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.2F;
         float velocity = 1.2F;
         projectile.setThrowableHeading(d0, d1 + (double)f1, d2, velocity, 6.0F);
         
         // Launch:
         this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.worldObj.spawnEntityInWorld(projectile);
+        this.getEntityWorld().spawnEntity(projectile);
         super.rangedAttack(target, range);
     }
     
@@ -154,10 +154,10 @@ public class EntityEpion extends EntityCreatureTameable implements IMob, IGroupS
   	// ==================================================
     @Override
     public boolean canFly() {
-    	if(this.worldObj.isRemote) return true;
-    	if(this.daylightBurns() && this.worldObj.isDaytime() && this.worldObj.getGameRules().getBoolean("mobGriefing") && this.epionGreifing) {
+    	if(this.getEntityWorld().isRemote) return true;
+    	if(this.daylightBurns() && this.getEntityWorld().isDaytime() && this.getEntityWorld().getGameRules().getBoolean("mobGriefing") && this.epionGreifing) {
     		float brightness = this.getBrightness(1.0F);
-        	if(brightness > 0.5F && this.worldObj.canBlockSeeSky(this.getPosition()))
+        	if(brightness > 0.5F && this.getEntityWorld().canBlockSeeSky(this.getPosition()))
         		return false;
     	}
         return true;

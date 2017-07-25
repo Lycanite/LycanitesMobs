@@ -83,13 +83,13 @@ public class ItemScepter extends ItemBase {
     // Was onUsingItemTick() but acted weird, using the EventListener to replicate.
     @Override
     public void onUsingTick(ItemStack itemStack, EntityLivingBase entity, int useRemaining) {
-    	if(itemStack == null || entity == null || entity.worldObj == null)
+    	if(itemStack == null || entity == null || entity.getEntityWorld() == null)
     		return;
     	int useTime = this.getMaxItemUseDuration(itemStack) - useRemaining;
     	if(useTime > this.getRapidTime(itemStack)) {
     		int rapidRemainder = useTime % this.getRapidTime(itemStack);
-    		if(rapidRemainder == 0 && entity.worldObj != null) {
-    			if(this.rapidAttack(itemStack, entity.worldObj, entity)) {
+    		if(rapidRemainder == 0 && entity.getEntityWorld() != null) {
+    			if(this.rapidAttack(itemStack, entity.getEntityWorld(), entity)) {
 		    		this.damageItemRapid(itemStack, entity);
 		    		this.weaponFlash = Math.max(20, this.getRapidTime(itemStack));
 		    	}
@@ -162,7 +162,7 @@ public class ItemScepter extends ItemBase {
     public boolean rapidAttack(ItemStack itemStack, World world, EntityLivingBase entity) {
     	if(!world.isRemote) {
         	//EntityThrowable projectile = new EntityThrowable(world, player);
-        	//world.spawnEntityInWorld(projectile);
+        	//world.spawnEntity(projectile);
             //world.playSoundAtEntity(player, ((ICustomProjectile) projectile).getLaunchSound(), 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
         }
     	return false;
@@ -172,7 +172,7 @@ public class ItemScepter extends ItemBase {
     	if(!world.isRemote) {
         	//EntityThrowable projectile = new EntityThrowable(world, player);
     		//projectile.setDamage((int)(projectile.getDamage() * power));
-        	//world.spawnEntityInWorld(projectile);
+        	//world.spawnEntity(projectile);
             //world.playSoundAtEntity(player, ((ICustomProjectile) projectile).getLaunchSound(), 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
         }
     	return false;

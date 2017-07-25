@@ -40,7 +40,7 @@ public class LayerBase implements LayerRenderer<EntityCreatureBase> {
     public boolean canRenderLayer(EntityCreatureBase entity, float scale) {
         if(entity == null)
             return false;
-        if(entity.isInvisible() && entity.isInvisibleToPlayer(Minecraft.getMinecraft().thePlayer))
+        if(entity.isInvisible() && entity.isInvisibleToPlayer(Minecraft.getMinecraft().player))
             return false;
         return true;
     }

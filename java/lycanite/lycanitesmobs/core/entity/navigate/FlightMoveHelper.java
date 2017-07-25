@@ -28,7 +28,7 @@ public class FlightMoveHelper extends EntityMoveHelper {
 
             if (this.courseChangeCooldown-- <= 0) {
                 this.courseChangeCooldown += this.entityCreature.getRNG().nextInt(5) + 2;
-                distance = (double)MathHelper.sqrt_double(distance);
+                distance = (double)MathHelper.sqrt(distance);
                 if(distance >= 1D) {
                     this.entityCreature.setAIMoveSpeed((float)this.entityCreature.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue());
                     double speed = (this.entityCreature.getAIMoveSpeed() / 2.4D) * this.getSpeed();

@@ -37,8 +37,8 @@ public class PathNavigateGroundCustom extends PathNavigateGround {
     /** Unchanged from PathNavigateGround, only overridden because isSafeToStandAt is private. */
     @Override
     protected boolean isDirectPathBetweenPoints(Vec3d posVec31, Vec3d posVec32, int sizeX, int sizeY, int sizeZ) {
-        int i = MathHelper.floor_double(posVec31.xCoord);
-        int j = MathHelper.floor_double(posVec31.zCoord);
+        int i = MathHelper.floor(posVec31.xCoord);
+        int j = MathHelper.floor(posVec31.zCoord);
         double d0 = posVec32.xCoord - posVec31.xCoord;
         double d1 = posVec32.zCoord - posVec31.zCoord;
         double d2 = d0 * d0 + d1 * d1;
@@ -76,8 +76,8 @@ public class PathNavigateGroundCustom extends PathNavigateGround {
                 d7 = d7 / d1;
                 int k = d0 < 0.0D ? -1 : 1;
                 int l = d1 < 0.0D ? -1 : 1;
-                int i1 = MathHelper.floor_double(posVec32.xCoord);
-                int j1 = MathHelper.floor_double(posVec32.zCoord);
+                int i1 = MathHelper.floor(posVec32.xCoord);
+                int j1 = MathHelper.floor(posVec32.zCoord);
                 int k1 = i1 - i;
                 int l1 = j1 - j;
 
@@ -121,7 +121,7 @@ public class PathNavigateGroundCustom extends PathNavigateGround {
                     double d1 = (double)l + 0.5D - vec31.zCoord;
 
                     if (d0 * p_179683_8_ + d1 * p_179683_10_ >= 0.0D) {
-                        PathNodeType pathnodetype = this.nodeProcessor.getPathNodeType(this.worldObj, k, y - 1, l, this.theEntity, sizeX, sizeY, sizeZ, true, true);
+                        PathNodeType pathnodetype = this.nodeProcessor.getPathNodeType(this.getEntityWorld(), k, y - 1, l, this.theEntity, sizeX, sizeY, sizeZ, true, true);
 
                         if (pathnodetype == PathNodeType.WATER && !this.theEntity.canBreatheUnderwater()) {
                             return false;
@@ -135,7 +135,7 @@ public class PathNavigateGroundCustom extends PathNavigateGround {
                             return false;
                         }
 
-                        pathnodetype = this.nodeProcessor.getPathNodeType(this.worldObj, k, y, l, this.theEntity, sizeX, sizeY, sizeZ, true, true);
+                        pathnodetype = this.nodeProcessor.getPathNodeType(this.getEntityWorld(), k, y, l, this.theEntity, sizeX, sizeY, sizeZ, true, true);
                         float f = this.theEntity.getPathPriority(pathnodetype);
 
                         if (f < 0.0F || f >= 8.0F) {
@@ -167,9 +167,9 @@ public class PathNavigateGroundCustom extends PathNavigateGround {
 
             if (d0 * p_179692_8_ + d1 * p_179692_10_ >= 0.0D)
             {
-                Block block = this.worldObj.getBlockState(blockpos).getBlock();
+                Block block = this.getEntityWorld().getBlockState(blockpos).getBlock();
 
-                if (!block.isPassable(this.worldObj, blockpos))
+                if (!block.isPassable(this.getEntityWorld(), blockpos))
                 {
                     return false;
                 }

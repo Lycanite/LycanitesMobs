@@ -53,10 +53,10 @@ public class EntityAIMoveVillage extends EntityAIBase {
     public boolean shouldExecute() {
         this.shuffleDoorList();
         
-        if(this.isNocturnal && this.host.worldObj.isDaytime())
+        if(this.isNocturnal && this.host.getEntityWorld().isDaytime())
             return false;
         
-        Village village = this.host.worldObj.villageCollectionObj.getNearestVillage(new BlockPos(MathHelper.floor_double(this.host.posX), MathHelper.floor_double(this.host.posY), MathHelper.floor_double(this.host.posZ)), 0);
+        Village village = this.host.getEntityWorld().villageCollectionObj.getNearestVillage(new BlockPos(MathHelper.floor(this.host.posX), MathHelper.floor(this.host.posY), MathHelper.floor(this.host.posZ)), 0);
         if(village == null)
             return false;
         
@@ -132,7 +132,7 @@ public class EntityAIMoveVillage extends EntityAIBase {
 
         while(iterator.hasNext()) {
             VillageDoorInfo villagedoorinfo1 = (VillageDoorInfo)iterator.next();
-            int j = villagedoorinfo1.getDistanceSquared(MathHelper.floor_double(this.host.posX), MathHelper.floor_double(this.host.posY), MathHelper.floor_double(this.host.posZ));
+            int j = villagedoorinfo1.getDistanceSquared(MathHelper.floor(this.host.posX), MathHelper.floor(this.host.posY), MathHelper.floor(this.host.posZ));
 
             if(j < i && !this.func_75413_a(villagedoorinfo1)) {
                 villagedoorinfo = villagedoorinfo1;

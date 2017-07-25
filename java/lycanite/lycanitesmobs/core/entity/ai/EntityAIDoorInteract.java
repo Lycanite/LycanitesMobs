@@ -60,9 +60,9 @@ public abstract class EntityAIDoorInteract extends EntityAIBase {
                 }
             }
 
-            this.entityPosX = MathHelper.floor_double(this.host.posX);
-            this.entityPosY = MathHelper.floor_double(this.host.posY + 1.0D);
-            this.entityPosZ = MathHelper.floor_double(this.host.posZ);
+            this.entityPosX = MathHelper.floor(this.host.posX);
+            this.entityPosY = MathHelper.floor(this.host.posY + 1.0D);
+            this.entityPosZ = MathHelper.floor(this.host.posZ);
             this.targetDoor = this.findUsableDoor(new BlockPos(this.entityPosX, this.entityPosY, this.entityPosZ));
             return this.targetDoor != null;
         }
@@ -105,7 +105,7 @@ public abstract class EntityAIDoorInteract extends EntityAIBase {
  	//                    Find Door
  	// ==================================================
     private BlockDoor findUsableDoor(BlockPos pos) {
-        IBlockState iblockstate = this.host.worldObj.getBlockState(pos);
+        IBlockState iblockstate = this.host.getEntityWorld().getBlockState(pos);
         Block block = iblockstate.getBlock();
         return block instanceof BlockDoor && iblockstate.getMaterial() == Material.WOOD ? (BlockDoor)block : null;
     }

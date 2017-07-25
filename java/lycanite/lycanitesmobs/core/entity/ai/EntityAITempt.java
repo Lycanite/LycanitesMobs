@@ -100,7 +100,7 @@ public class EntityAITempt extends EntityAIBase {
         if(this.host instanceof EntityCreatureTameable && ((EntityCreatureTameable)this.host).isTamed())
         	return false;
 		
-        this.player = this.host.worldObj.getClosestPlayerToEntity(this.host, this.temptDistanceMax);
+        this.player = this.host.getEntityWorld().getClosestPlayerToEntity(this.host, this.temptDistanceMax);
         if(this.player == null)
             return false;
 

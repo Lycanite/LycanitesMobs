@@ -109,7 +109,7 @@ public class EntityAbtu extends EntityCreatureTameable implements IMob, IGroupPr
 		}
 
         // Random Leaping:
-        if(!this.worldObj.isRemote) {
+        if(!this.getEntityWorld().isRemote) {
             if(this.hasAttackTarget() && this.isChild() && (this.isInWater() || this.onGround)) {
                 if(this.getRNG().nextInt(10) == 0)
                     this.leap(4.0F, 0.6D, this.getAttackTarget());
@@ -121,7 +121,7 @@ public class EntityAbtu extends EntityCreatureTameable implements IMob, IGroupPr
     
     // ========== Spawn Minions ==========
 	public void allyUpdate() {
-		if(this.worldObj.isRemote || this.isChild())
+		if(this.getEntityWorld().isRemote || this.isChild())
 			return;
 		
 		// Spawn Minions:
@@ -134,12 +134,12 @@ public class EntityAbtu extends EntityCreatureTameable implements IMob, IGroupPr
 	}
 	
     public void spawnAlly(double x, double y, double z) {
-    	EntityCreatureAgeable minion = new EntityAbtu(this.worldObj);
+    	EntityCreatureAgeable minion = new EntityAbtu(this.getEntityWorld());
     	minion.setGrowingAge(minion.growthTime);
     	minion.setLocationAndAngles(x, y, z, this.rand.nextFloat() * 360.0F, 0.0F);
 		minion.setMinion(true);
 		minion.setSubspecies(this.getSubspeciesIndex(), true);
-    	this.worldObj.spawnEntityInWorld(minion);
+    	this.getEntityWorld().spawnEntity(minion);
         if(this.getAttackTarget() != null)
         	minion.setRevengeTarget(this.getAttackTarget());
     }
@@ -153,12 +153,12 @@ public class EntityAbtu extends EntityCreatureTameable implements IMob, IGroupPr
 	public float getBlockPathWeight(int x, int y, int z) {
         int waterWeight = 10;
 
-        Block block = this.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock();
+        Block block = this.getEntityWorld().getBlockState(new BlockPos(x, y, z)).getBlock();
         if(block == Blocks.WATER)
             return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
         if(block == Blocks.FLOWING_WATER)
             return (super.getBlockPathWeight(x, y, z) + 1) * waterWeight;
-        if(this.worldObj.isRaining() && this.worldObj.canBlockSeeSky(new BlockPos(x, y, z)))
+        if(this.getEntityWorld().isRaining() && this.getEntityWorld().canBlockSeeSky(new BlockPos(x, y, z)))
             return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
 
         if(this.getAttackTarget() != null)

@@ -46,7 +46,7 @@ public class ItemFrostyFur extends ItemBase {
                     world.setBlockState(pos, ObjectManager.getBlock("frostcloud").getDefaultState());
                 }
                 if(!player.capabilities.isCreativeMode)
-                    itemStack.func_190920_e(Math.max(0, itemStack.func_190916_E() - 1));
+                    itemStack.setCount(Math.max(0, itemStack.getCount() - 1));
                 return EnumActionResult.SUCCESS;
             }
         }

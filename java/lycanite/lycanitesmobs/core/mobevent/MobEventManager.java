@@ -179,7 +179,7 @@ public class MobEventManager {
 		if(LycanitesMobs.proxy.getClientPlayer() == null)
 			return;
 
-        World world = LycanitesMobs.proxy.getClientPlayer().worldObj;
+        World world = LycanitesMobs.proxy.getClientPlayer().getEntityWorld();
         ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
         if(!world.isRemote || worldExt == null) return;
 

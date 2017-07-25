@@ -101,7 +101,7 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
         super.onLivingUpdate();
         
         // Entity Pickup Update:
-        if(!this.worldObj.isRemote) {
+        if(!this.getEntityWorld().isRemote) {
             // Attack AI and Creeper Carrying:
 	    	this.attackAI.setEnabled(this.hasPickupEntity() ? this.getPickupEntity() instanceof EntityCreeper : this.creeperDropCooldown <= 0);
             if(this.creeperDropCooldown > 0) {
@@ -129,7 +129,7 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
                     if (this.ticksExisted % 100 == 0 && this.getRNG().nextBoolean()) {
                         if (this.getPickupEntity() instanceof EntityPlayer) {
                             for (int distToGround = 0; distToGround < 8; distToGround++) {
-                                Block searchBlock = this.worldObj.getBlockState(new BlockPos((int) this.posX, (int) this.posY + 1 + distToGround, (int) this.posZ)).getBlock();
+                                Block searchBlock = this.getEntityWorld().getBlockState(new BlockPos((int) this.posX, (int) this.posY + 1 + distToGround, (int) this.posZ)).getBlock();
                                 if (searchBlock != null && searchBlock != Blocks.AIR) {
                                     this.dropPickupEntity();
                                     this.leap(1.0F, 2.0D);
@@ -224,7 +224,7 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
     @Override
     public void pickupEntity(EntityLivingBase entity) {
         super.pickupEntity(entity);
-        if(this.worldObj.getBlockState(this.getPosition()) != null && this.worldObj.canBlockSeeSky(this.getPosition()))
+        if(this.getEntityWorld().getBlockState(this.getPosition()) != null && this.getEntityWorld().canBlockSeeSky(this.getPosition()))
             this.leap(1.0F, 2.0D);
     }
     

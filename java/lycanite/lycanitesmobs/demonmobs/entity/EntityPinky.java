@@ -112,7 +112,7 @@ public class EntityPinky extends EntityCreatureRideable implements IAnimals, IGr
         super.onLivingUpdate();
         
         // Become a farmed animal if removed from the Nether to another dimension, prevents natural despawning.
-        if(this.worldObj.provider.getDimension() != -1)
+        if(this.getEntityWorld().provider.getDimension() != -1)
         	this.setFarmed();
     }
     
@@ -129,7 +129,7 @@ public class EntityPinky extends EntityCreatureRideable implements IAnimals, IGr
     // ==================================================
     @Override
     public void mountAbility(Entity rider) {
-    	if(this.worldObj.isRemote)
+    	if(this.getEntityWorld().isRemote)
     		return;
 
     	if(this.abilityToggled)
@@ -182,7 +182,7 @@ public class EntityPinky extends EntityCreatureRideable implements IAnimals, IGr
     public void specialAttack() {
         // Withering Roar:
         double distance = 5.0D;
-        List<EntityLivingBase> possibleTargets = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().expand(distance, distance, distance), new Predicate<EntityLivingBase>() {
+        List<EntityLivingBase> possibleTargets = this.getEntityWorld().getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().expand(distance, distance, distance), new Predicate<EntityLivingBase>() {
             @Override
             public boolean apply(EntityLivingBase possibleTarget) {
                 if(!possibleTarget.isEntityAlive()
@@ -255,7 +255,7 @@ public class EntityPinky extends EntityCreatureRideable implements IAnimals, IGr
     // ========== Create Child ==========
 	@Override
 	public EntityCreatureAgeable createChild(EntityCreatureAgeable baby) {
-		return new EntityPinky(this.worldObj);
+		return new EntityPinky(this.getEntityWorld());
 	}
 	
 	// ========== Breeding Item ==========

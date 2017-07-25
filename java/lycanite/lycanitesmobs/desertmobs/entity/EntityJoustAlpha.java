@@ -87,7 +87,7 @@ public class EntityJoustAlpha extends EntityCreatureAgeable implements IAnimals,
 	// Pathing Weight:
 	@Override
 	public float getBlockPathWeight(int x, int y, int z) {
-        IBlockState blockState = this.worldObj.getBlockState(new BlockPos(x, y - 1, z));
+        IBlockState blockState = this.getEntityWorld().getBlockState(new BlockPos(x, y - 1, z));
         if(blockState.getBlock() != Blocks.AIR) {
             if(blockState.getMaterial() == Material.SAND)
                 return 10F;
@@ -137,6 +137,6 @@ public class EntityJoustAlpha extends EntityCreatureAgeable implements IAnimals,
     // ========== Create Child ==========
 	@Override
 	public EntityCreatureAgeable createChild(EntityCreatureAgeable partener) {
-		return new EntityJoust(this.worldObj);
+		return new EntityJoust(this.getEntityWorld());
 	}
 }

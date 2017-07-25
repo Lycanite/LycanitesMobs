@@ -110,7 +110,7 @@ public class DropRate {
 		}
 		
 		if(drop != null)
-			drop.func_190920_e(quantity);
+			drop.setCount(quantity);
 		return drop;
 	}
 }

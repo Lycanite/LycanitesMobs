@@ -98,7 +98,7 @@ public class EntityFear extends EntityCreatureBase {
         super.onLivingUpdate();
         
         // Server Side Only:
-        if(this.worldObj.isRemote)
+        if(this.getEntityWorld().isRemote)
         	return;
         
         // Clean Up:

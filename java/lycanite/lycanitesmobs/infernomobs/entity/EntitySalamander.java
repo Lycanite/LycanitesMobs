@@ -156,9 +156,9 @@ public class EntitySalamander extends EntityCreatureRideable implements IMob, IG
     public float getBlockPathWeight(int x, int y, int z) {
         int waterWeight = 10;
         BlockPos pos = new BlockPos(x, y, z);
-        if(this.worldObj.getBlockState(pos).getBlock() == Blocks.LAVA)
+        if(this.getEntityWorld().getBlockState(pos).getBlock() == Blocks.LAVA)
             return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
-        if(this.worldObj.getBlockState(pos).getBlock() == Blocks.FLOWING_LAVA)
+        if(this.getEntityWorld().getBlockState(pos).getBlock() == Blocks.FLOWING_LAVA)
             return (super.getBlockPathWeight(x, y, z) + 1) * waterWeight;
 
         if(this.getAttackTarget() != null)
@@ -200,7 +200,7 @@ public class EntitySalamander extends EntityCreatureRideable implements IMob, IG
     public void specialAttack() {
         // Firey Burst:
         double distance = 5.0D;
-        List<EntityLivingBase> possibleTargets = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().expand(distance, distance, distance), new Predicate<EntityLivingBase>() {
+        List<EntityLivingBase> possibleTargets = this.getEntityWorld().getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().expand(distance, distance, distance), new Predicate<EntityLivingBase>() {
             @Override
             public boolean apply(EntityLivingBase possibleTarget) {
                 if(!possibleTarget.isEntityAlive()
@@ -236,7 +236,7 @@ public class EntitySalamander extends EntityCreatureRideable implements IMob, IG
     // ==================================================
     @Override
     public void mountAbility(Entity rider) {
-        if(this.worldObj.isRemote)
+        if(this.getEntityWorld().isRemote)
             return;
 
         if(this.abilityToggled)
@@ -292,18 +292,18 @@ public class EntitySalamander extends EntityCreatureRideable implements IMob, IG
    	// ==================================================
     @Override
     public void onDeath(DamageSource damageSource) {
-		if(!this.worldObj.isRemote && this.worldObj.getGameRules().getBoolean("mobGriefing") && this.khalkLavaDeath && !this.isTamed()) {
+		if(!this.getEntityWorld().isRemote && this.getEntityWorld().getGameRules().getBoolean("mobGriefing") && this.khalkLavaDeath && !this.isTamed()) {
 			int lavaWidth = (int)Math.floor(this.width) - 1;
 			int lavaHeight = (int)Math.floor(this.height) - 1;
 			for(int x = (int)this.posX - lavaWidth; x <= (int)this.posX + lavaWidth; x++) {
 				for(int y = (int)this.posY; y <= (int)this.posY + lavaHeight; y++) {
 					for(int z = (int)this.posZ - lavaWidth; z <= (int)this.posZ + lavaWidth; z++) {
-						Block block = this.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock();
+						Block block = this.getEntityWorld().getBlockState(new BlockPos(x, y, z)).getBlock();
 						if(block == Blocks.AIR) {
 							IBlockState blockState = Blocks.FLOWING_LAVA.getStateFromMeta(11);
 							if(x == (int)this.posX && y == (int)this.posY && z == (int)this.posZ)
 								blockState = Blocks.FLOWING_LAVA.getStateFromMeta(12);
-							this.worldObj.setBlockState(new BlockPos(x, y, z), blockState, 3);
+							this.getEntityWorld().setBlockState(new BlockPos(x, y, z), blockState, 3);
 						}
 					}
 				}
@@ -389,7 +389,7 @@ public class EntitySalamander extends EntityCreatureRideable implements IMob, IG
     // ========== Create Child ==========
     @Override
 	public EntityCreatureAgeable createChild(EntityCreatureAgeable baby) {
-		return new EntitySalamander(this.worldObj);
+		return new EntitySalamander(this.getEntityWorld());
 	}
 
 

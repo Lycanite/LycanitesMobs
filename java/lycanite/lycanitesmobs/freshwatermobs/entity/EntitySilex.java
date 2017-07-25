@@ -89,12 +89,12 @@ public class EntitySilex extends EntityCreatureAgeable implements IAnimals, IGro
 	public float getBlockPathWeight(int x, int y, int z) {
 		int waterWeight = 10;
 
-        Block block = this.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock();
+        Block block = this.getEntityWorld().getBlockState(new BlockPos(x, y, z)).getBlock();
         if(block == Blocks.WATER)
         	return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
 		if(block == Blocks.FLOWING_WATER)
 			return (super.getBlockPathWeight(x, y, z) + 1) * waterWeight;
-        if(this.worldObj.isRaining() && this.worldObj.canBlockSeeSky(new BlockPos(x, y, z)))
+        if(this.getEntityWorld().isRaining() && this.getEntityWorld().canBlockSeeSky(new BlockPos(x, y, z)))
         	return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
         
         if(this.getAttackTarget() != null)
@@ -156,7 +156,7 @@ public class EntitySilex extends EntityCreatureAgeable implements IAnimals, IGro
     // ========== Create Child ==========
     @Override
     public EntityCreatureAgeable createChild(EntityCreatureAgeable baby) {
-        return new EntitySilex(this.worldObj);
+        return new EntitySilex(this.getEntityWorld());
     }
 
     // ========== Breeding Item ==========

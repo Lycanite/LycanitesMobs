@@ -250,7 +250,7 @@ public class EntityAIAttackRanged extends EntityAIBase {
 	            	this.attackTime = this.host.getHaste(this.attackTimeClose);
 	        }
 	        else if(this.attackTime < 0) {
-	        	rangeFactor = MathHelper.sqrt_double(distance) / this.range;
+	        	rangeFactor = MathHelper.sqrt(distance) / this.range;
 	            if(rangeFactor > 0.5F)
 	            	this.attackTime = this.host.getHaste(this.attackTimeFar);
 	            else

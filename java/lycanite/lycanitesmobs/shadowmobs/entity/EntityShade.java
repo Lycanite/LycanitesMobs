@@ -108,7 +108,7 @@ public class EntityShade extends EntityCreatureRideable implements IGroupPredato
     // ==================================================
     @Override
     public void mountAbility(Entity rider) {
-        if(this.worldObj.isRemote)
+        if(this.getEntityWorld().isRemote)
             return;
 
         if(this.abilityToggled)
@@ -166,7 +166,7 @@ public class EntityShade extends EntityCreatureRideable implements IGroupPredato
     public void specialAttack() {
         // Horrific Howl:
         double distance = 5.0D;
-        List<EntityLivingBase> possibleTargets = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().expand(distance, distance, distance), new Predicate<EntityLivingBase>() {
+        List<EntityLivingBase> possibleTargets = this.getEntityWorld().getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().expand(distance, distance, distance), new Predicate<EntityLivingBase>() {
             @Override
             public boolean apply(EntityLivingBase possibleTarget) {
                 if(!possibleTarget.isEntityAlive()
@@ -251,7 +251,7 @@ public class EntityShade extends EntityCreatureRideable implements IGroupPredato
     // ========== Create Child ==========
 	@Override
 	public EntityCreatureAgeable createChild(EntityCreatureAgeable baby) {
-		return new EntityShade(this.worldObj);
+		return new EntityShade(this.getEntityWorld());
 	}
 	
 	// ========== Breeding Item ==========

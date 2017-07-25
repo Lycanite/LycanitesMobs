@@ -105,10 +105,10 @@ public class EntityCinder extends EntityCreatureTameable implements IMob, IGroup
         super.onLivingUpdate();
         
         // Particles:
-        if(this.worldObj.isRemote)
+        if(this.getEntityWorld().isRemote)
 	        for(int i = 0; i < 2; ++i) {
-	            this.worldObj.spawnParticle(EnumParticleTypes.SMOKE_LARGE, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
-	            this.worldObj.spawnParticle(EnumParticleTypes.FLAME, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
+	            this.getEntityWorld().spawnParticle(EnumParticleTypes.SMOKE_LARGE, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
+	            this.getEntityWorld().spawnParticle(EnumParticleTypes.FLAME, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
 	        }
     }
     
@@ -130,30 +130,30 @@ public class EntityCinder extends EntityCreatureTameable implements IMob, IGroup
     	// Type:
     	List<EntityProjectileRapidFire> projectiles = new ArrayList<EntityProjectileRapidFire>();
     	
-    	EntityProjectileRapidFire projectileEntry = new EntityProjectileRapidFire(EntityEmber.class, this.worldObj, this, 15, 3);
+    	EntityProjectileRapidFire projectileEntry = new EntityProjectileRapidFire(EntityEmber.class, this.getEntityWorld(), this, 15, 3);
     	projectiles.add(projectileEntry);
     	
-    	EntityProjectileRapidFire projectileEntry2 = new EntityProjectileRapidFire(EntityEmber.class, this.worldObj, this, 15, 3);
+    	EntityProjectileRapidFire projectileEntry2 = new EntityProjectileRapidFire(EntityEmber.class, this.getEntityWorld(), this, 15, 3);
     	projectileEntry2.offsetX += 1.0D;
     	projectiles.add(projectileEntry2);
     	
-    	EntityProjectileRapidFire projectileEntry3 = new EntityProjectileRapidFire(EntityEmber.class, this.worldObj, this, 15, 3);
+    	EntityProjectileRapidFire projectileEntry3 = new EntityProjectileRapidFire(EntityEmber.class, this.getEntityWorld(), this, 15, 3);
     	projectileEntry3.offsetX -= 1.0D;
     	projectiles.add(projectileEntry3);
     	
-    	EntityProjectileRapidFire projectileEntry4 = new EntityProjectileRapidFire(EntityEmber.class, this.worldObj, this, 15, 3);
+    	EntityProjectileRapidFire projectileEntry4 = new EntityProjectileRapidFire(EntityEmber.class, this.getEntityWorld(), this, 15, 3);
     	projectileEntry4.offsetZ += 1.0D;
     	projectiles.add(projectileEntry4);
     	
-    	EntityProjectileRapidFire projectileEntry5 = new EntityProjectileRapidFire(EntityEmber.class, this.worldObj, this, 15, 3);
+    	EntityProjectileRapidFire projectileEntry5 = new EntityProjectileRapidFire(EntityEmber.class, this.getEntityWorld(), this, 15, 3);
     	projectileEntry5.offsetZ -= 1.0D;
     	projectiles.add(projectileEntry5);
     	
-    	EntityProjectileRapidFire projectileEntry6 = new EntityProjectileRapidFire(EntityEmber.class, this.worldObj, this, 15, 3);
+    	EntityProjectileRapidFire projectileEntry6 = new EntityProjectileRapidFire(EntityEmber.class, this.getEntityWorld(), this, 15, 3);
     	projectileEntry6.offsetY += 1.0D;
     	projectiles.add(projectileEntry6);
     	
-    	EntityProjectileRapidFire projectileEntry7 = new EntityProjectileRapidFire(EntityEmber.class, this.worldObj, this, 15, 3);
+    	EntityProjectileRapidFire projectileEntry7 = new EntityProjectileRapidFire(EntityEmber.class, this.getEntityWorld(), this, 15, 3);
     	projectileEntry7.offsetY -= 10D;
     	projectiles.add(projectileEntry7);
     	
@@ -170,13 +170,13 @@ public class EntityCinder extends EntityCreatureTameable implements IMob, IGroup
 	        double d0 = target.posX - this.posX + accuracy;
 	        double d1 = target.posY + (double)target.getEyeHeight() - 1.100000023841858D - projectile.posY + accuracy;
 	        double d2 = target.posZ - this.posZ + accuracy;
-	        float f1 = MathHelper.sqrt_double(d0 * d0 + d2 * d2) * 0.2F;
+	        float f1 = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.2F;
 	        float velocity = 1.2F;
 	        projectile.setThrowableHeading(d0, d1 + (double)f1, d2, velocity, 6.0F);
 	        
 	        // Launch:
 	        this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-	        this.worldObj.spawnEntityInWorld(projectile);
+	        this.getEntityWorld().spawnEntity(projectile);
     	}
     	
         super.rangedAttack(target, range);

@@ -82,12 +82,12 @@ public class PotionEffects {
 		
 		// ========== Fear ==========
 		if(ObjectManager.getPotionEffect("fear") != null) {
-			if(!entity.worldObj.isRemote && !invulnerable && entity.isPotionActive(ObjectManager.getPotionEffect("fear"))) {
+			if(!entity.getEntityWorld().isRemote && !invulnerable && entity.isPotionActive(ObjectManager.getPotionEffect("fear"))) {
 				ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(entity);
 				if(extendedEntity != null) {
 					if(extendedEntity.fearEntity == null) {
-						EntityFear fearEntity = new EntityFear(entity.worldObj, entity);
-						entity.worldObj.spawnEntityInWorld(fearEntity);
+						EntityFear fearEntity = new EntityFear(entity.getEntityWorld(), entity);
+						entity.getEntityWorld().spawnEntity(fearEntity);
 						extendedEntity.fearEntity = fearEntity;
 					}
 				}

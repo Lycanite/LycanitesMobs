@@ -55,9 +55,9 @@ public class EntityAIWatchClosest extends EntityAIBase {
             if(this.host.getAttackTarget() != null)
                 this.closestEntity = this.host.getAttackTarget();
             if(this.watchedClass == EntityPlayer.class)
-                this.closestEntity = this.host.worldObj.getClosestPlayerToEntity(this.host, (double)this.maxDistanceForPlayer);
+                this.closestEntity = this.host.getEntityWorld().getClosestPlayerToEntity(this.host, (double)this.maxDistanceForPlayer);
             else
-                this.closestEntity = this.host.worldObj.findNearestEntityWithinAABB(this.watchedClass, this.host.getEntityBoundingBox().expand((double)this.maxDistanceForPlayer, 3.0D, (double)this.maxDistanceForPlayer), this.host);
+                this.closestEntity = this.host.getEntityWorld().findNearestEntityWithinAABB(this.watchedClass, this.host.getEntityBoundingBox().expand((double)this.maxDistanceForPlayer, 3.0D, (double)this.maxDistanceForPlayer), this.host);
 
             return this.closestEntity != null;
         }

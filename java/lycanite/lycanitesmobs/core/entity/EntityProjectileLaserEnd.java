@@ -69,7 +69,7 @@ public class EntityProjectileLaserEnd extends EntityProjectileBase {
     // ========== Main Update ==========
     @Override
     public void onUpdate() {
-    	if(this.worldObj.isRemote) {
+    	if(this.getEntityWorld().isRemote) {
     		this.posX = this.dataManager.get(POS_X);
     		this.posY = this.dataManager.get(POS_Y);
     		this.posZ = this.dataManager.get(POS_Z);
@@ -89,7 +89,7 @@ public class EntityProjectileLaserEnd extends EntityProjectileBase {
     
     // ========== End Update ==========
 	public void onUpdateEnd(double newTargetX, double newTargetY, double newTargetZ) {
-		if(this.worldObj.isRemote)
+		if(this.getEntityWorld().isRemote)
 			return;
 		
 		this.targetX = newTargetX;

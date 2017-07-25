@@ -97,21 +97,21 @@ public class EntityYeti extends EntityCreatureAgeable implements IAnimals, IGrou
         super.onLivingUpdate();
         
         // Trail:
-        if(!this.worldObj.isRemote && (this.ticksExisted % 10 == 0 || this.isMoving() && this.ticksExisted % 5 == 0)) {
+        if(!this.getEntityWorld().isRemote && (this.ticksExisted % 10 == 0 || this.isMoving() && this.ticksExisted % 5 == 0)) {
             int trailHeight = 2;
             if(this.isChild())
                 trailHeight = 1;
             for(int y = 0; y < trailHeight; y++) {
-                Block block = this.worldObj.getBlockState(this.getPosition().add(0, y, 0)).getBlock();
+                Block block = this.getEntityWorld().getBlockState(this.getPosition().add(0, y, 0)).getBlock();
                 if(block == Blocks.AIR || block == Blocks.SNOW || block == ObjectManager.getBlock("frostcloud"))
-                    this.worldObj.setBlockState(this.getPosition().add(0, y, 0), ObjectManager.getBlock("frostcloud").getDefaultState());
+                    this.getEntityWorld().setBlockState(this.getPosition().add(0, y, 0), ObjectManager.getBlock("frostcloud").getDefaultState());
             }
         }
         
         // Particles:
-        if(this.worldObj.isRemote)
+        if(this.getEntityWorld().isRemote)
 	        for(int i = 0; i < 2; ++i) {
-	            this.worldObj.spawnParticle(EnumParticleTypes.SNOW_SHOVEL, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
+	            this.getEntityWorld().spawnParticle(EnumParticleTypes.SNOW_SHOVEL, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
 	        }
     }
 	
@@ -122,7 +122,7 @@ public class EntityYeti extends EntityCreatureAgeable implements IAnimals, IGrou
 	// ========== Pathing Weight ==========
 	@Override
 	public float getBlockPathWeight(int x, int y, int z) {
-        IBlockState blockState = this.worldObj.getBlockState(new BlockPos(x, y - 1, z));
+        IBlockState blockState = this.getEntityWorld().getBlockState(new BlockPos(x, y - 1, z));
         Block block = blockState.getBlock();
         if(block != Blocks.AIR) {
             if(blockState.getMaterial() == Material.GRASS || blockState.getMaterial() == Material.SNOW)
@@ -181,7 +181,7 @@ public class EntityYeti extends EntityCreatureAgeable implements IAnimals, IGrou
     // ========== Create Child ==========
 	@Override
 	public EntityCreatureAgeable createChild(EntityCreatureAgeable baby) {
-		return new EntityYeti(this.worldObj);
+		return new EntityYeti(this.getEntityWorld());
 	}
 	
 	// ========== Breeding Item ==========

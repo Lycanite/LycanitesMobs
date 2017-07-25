@@ -94,7 +94,7 @@ public class EntityTarantula extends EntityCreatureTameable implements IMob {
         super.onLivingUpdate();
         
         // Random Leaping:
-        if(this.onGround && !this.worldObj.isRemote) {
+        if(this.onGround && !this.getEntityWorld().isRemote) {
         	if(this.hasAttackTarget()) {
         		if(this.rand.nextInt(10) == 0)
         			this.leap(6.0F, 0.6D, this.getAttackTarget());
@@ -106,12 +106,12 @@ public class EntityTarantula extends EntityCreatureTameable implements IMob {
         }
         
         // Trail:
-        if(!this.worldObj.isRemote && (this.ticksExisted % 10 == 0 || this.isMoving() && this.ticksExisted % 5 == 0)) {
+        if(!this.getEntityWorld().isRemote && (this.ticksExisted % 10 == 0 || this.isMoving() && this.ticksExisted % 5 == 0)) {
             int trailHeight = 1;
             for(int y = 0; y < trailHeight; y++) {
-                Block block = this.worldObj.getBlockState(this.getPosition().add(0, y, 0)).getBlock();
+                Block block = this.getEntityWorld().getBlockState(this.getPosition().add(0, y, 0)).getBlock();
                 if(block == Blocks.AIR || block == Blocks.SNOW || block == ObjectManager.getBlock("quickweb"))
-                    this.worldObj.setBlockState(this.getPosition().add(0, y, 0), ObjectManager.getBlock("quickweb").getDefaultState());
+                    this.getEntityWorld().setBlockState(this.getPosition().add(0, y, 0), ObjectManager.getBlock("quickweb").getDefaultState());
             }
         }
     }

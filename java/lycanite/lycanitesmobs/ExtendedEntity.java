@@ -48,7 +48,7 @@ public class ExtendedEntity implements IExtendedEntity {
 		}
 
         // Client Side:
-        if(entity.worldObj != null && entity.worldObj.isRemote) {
+        if(entity.getEntityWorld() != null && entity.getEntityWorld().isRemote) {
             if(clientExtendedEntities.containsKey(entity)) {
                 ExtendedEntity extendedEntity = clientExtendedEntities.get(entity);
                 extendedEntity.setEntity(entity);
@@ -103,7 +103,7 @@ public class ExtendedEntity implements IExtendedEntity {
             return;
 
         // Force Remove Entity:
-        if (this.entity.worldObj != null && !this.entity.worldObj.isRemote && FORCE_REMOVE_ENTITY_IDS != null && FORCE_REMOVE_ENTITY_IDS.length > 0 && !this.forceRemoveChecked) {
+        if (this.entity.getEntityWorld() != null && !this.entity.getEntityWorld().isRemote && FORCE_REMOVE_ENTITY_IDS != null && FORCE_REMOVE_ENTITY_IDS.length > 0 && !this.forceRemoveChecked) {
             LycanitesMobs.printDebug("ForceRemoveEntity", "Forced entity removal, checking: " + this.entity.getName());
             for (String forceRemoveID : FORCE_REMOVE_ENTITY_IDS) {
                 if (forceRemoveID.equalsIgnoreCase(this.entity.getName())) {
@@ -178,7 +178,7 @@ public class ExtendedEntity implements IExtendedEntity {
         if(pickedUpByEntityInstance instanceof EntityCreatureBase)
             pickupOffset = ((EntityCreatureBase)pickedUpByEntityInstance).getPickupOffset(this.entity);
         double yPos = pickedUpByEntityInstance.posY;
-        if(this.entity.worldObj.isRemote && entity instanceof EntityPlayer) {
+        if(this.entity.getEntityWorld().isRemote && entity instanceof EntityPlayer) {
             yPos = pickedUpByEntityInstance.getEntityBoundingBox().minY + entity.height;
         }
         this.entity.setPosition(pickedUpByEntityInstance.posX + pickupOffset[0], yPos + pickupOffset[1], pickedUpByEntityInstance.posZ + pickupOffset[2]);
@@ -186,7 +186,7 @@ public class ExtendedEntity implements IExtendedEntity {
         this.entity.motionY = pickedUpByEntityInstance.motionY;
         this.entity.motionZ = pickedUpByEntityInstance.motionZ;
         this.entity.fallDistance = 0;
-        if (!this.entity.worldObj.isRemote && this.entity instanceof EntityPlayer) {
+        if (!this.entity.getEntityWorld().isRemote && this.entity instanceof EntityPlayer) {
             ((EntityPlayer) this.entity).capabilities.allowFlying = true;
         }
         if (!this.entity.isEntityAlive())
@@ -207,7 +207,7 @@ public class ExtendedEntity implements IExtendedEntity {
 		this.pickedUpByEntity = pickedUpByEntity;
 
         // Server Side:
-		if(!this.entity.worldObj.isRemote) {
+		if(!this.entity.getEntityWorld().isRemote) {
 
             // Player Flying:
 			if(this.entity instanceof EntityPlayer) {

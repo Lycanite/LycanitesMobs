@@ -114,7 +114,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     
     @Override
     public boolean despawnCheck() {
-        if(this.worldObj.isRemote)
+        if(this.getEntityWorld().isRemote)
         	return false;
         if(this.getPetEntry() != null && this.getPetEntry().entity != this && this.getPetEntry().entity != null)
             return true;
@@ -186,7 +186,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     }
     
     public void staminaUpdate() {
-    	if(this.worldObj.isRemote)
+    	if(this.getEntityWorld().isRemote)
     		return;
     	if(this.stamina < this.getStaminaMax() && this.staminaRecovery >= this.getStaminaRecoveryMax() / 2)
     		this.setStamina(Math.min(this.stamina + this.staminaRecovery, this.getStaminaMax()));
@@ -205,11 +205,11 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     	commands.putAll(super.getInteractCommands(player, itemStack));
 		
 		// Open GUI:
-		if(!this.worldObj.isRemote && this.isTamed() && (itemStack == null || player.isSneaking()) && player.getName().equalsIgnoreCase(this.getOwnerName()))
+		if(!this.getEntityWorld().isRemote && this.isTamed() && (itemStack == null || player.isSneaking()) && player.getName().equalsIgnoreCase(this.getOwnerName()))
 			commands.put(CMD_PRIOR.MAIN.id, "GUI");
     	
     	// Server Item Commands:
-    	if(!this.worldObj.isRemote && itemStack != null && !player.isSneaking()) {
+    	if(!this.getEntityWorld().isRemote && itemStack != null && !player.isSneaking()) {
     		
     		// Taming:
     		if(!this.isTamed() && isTamingItem(itemStack) && MobInfo.tamingEnabled)
@@ -228,7 +228,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     	}
 		
 		// Sit:
-		//if(this.isTamed() && this.canSit() && player.getName().equalsIgnoreCase(this.getOwnerName()) && !this.worldObj.isRemote)
+		//if(this.isTamed() && this.canSit() && player.getName().equalsIgnoreCase(this.getOwnerName()) && !this.getEntityWorld().isRemote)
 			//commands.put(CMD_PRIOR.MAIN.id, "Sit");
     	
     	return commands;
@@ -259,13 +259,13 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     		}
     		this.heal((float)healAmount);
             this.playEatSound();
-            if(this.worldObj.isRemote) {
+            if(this.getEntityWorld().isRemote) {
                 EnumParticleTypes particle = EnumParticleTypes.HEART;
                 double d0 = this.rand.nextGaussian() * 0.02D;
                 double d1 = this.rand.nextGaussian() * 0.02D;
                 double d2 = this.rand.nextGaussian() * 0.02D;
                 for(int i = 0; i < 25; i++)
-                	this.worldObj.spawnParticle(particle, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + 0.5D + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d0, d1, d2);
+                	this.getEntityWorld().spawnParticle(particle, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + 0.5D + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d0, d1, d2);
             }
     		this.consumePlayersItem(player, itemStack);
     	}
@@ -276,7 +276,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     		if(equippedItem != null)
     			this.dropItem(equippedItem);
     		ItemStack equipStack = itemStack.copy();
-    		equipStack.func_190920_e(1);
+    		equipStack.setCount(1);
     		this.inventory.setEquipmentStack(equipStack.copy());
     		this.consumePlayersItem(player, itemStack);
     	}
@@ -366,7 +366,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
                 return true;
             if(target instanceof EntityCreatureTameable) {
             	EntityCreatureTameable tamedTarget = (EntityCreatureTameable)target;
-            	if(tamedTarget.isTamed() && (!this.worldObj.getMinecraftServer().isPVPEnabled()) || !this.isPVP() || tamedTarget.getOwner() == this.getOwner())
+            	if(tamedTarget.isTamed() && (!this.getEntityWorld().getMinecraftServer().isPVPEnabled()) || !this.isPVP() || tamedTarget.getOwner() == this.getOwner())
             		return true;
             }
             if(this.getOwner() != null)
@@ -394,8 +394,8 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
 		if(this.isTamed()) {
             if(this.getOwner() == targetEntity)
                 return false;
-            if(!this.worldObj.isRemote) {
-                boolean canPVP = this.worldObj.getMinecraftServer().isPVPEnabled() && this.isPVP();
+            if(!this.getEntityWorld().isRemote) {
+                boolean canPVP = this.getEntityWorld().getMinecraftServer().isPVPEnabled() && this.isPVP();
                 if(targetEntity instanceof EntityPlayer && !canPVP)
                     return false;
                 if(targetEntity instanceof EntityCreatureTameable) {
@@ -480,7 +480,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     
     // ========== Tame Entity ==========
     public boolean tame(EntityPlayer player) {
-    	if(!this.worldObj.isRemote && this.getSubspeciesIndex() < 3)
+    	if(!this.getEntityWorld().isRemote && this.getSubspeciesIndex() < 3)
             if(this.rand.nextInt(3) == 0) {
                 this.setPlayerOwner(player);
                 this.unsetTemporary();
@@ -554,7 +554,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     public Entity getOwner() {
         if(this.getOwnerId() == null)
             return null;
-        return this.worldObj.getPlayerEntityByUUID(this.getOwnerId());
+        return this.getEntityWorld().getPlayerEntityByUUID(this.getOwnerId());
     }
     
     
@@ -678,9 +678,9 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     //                       Hunger
     // ==================================================
     public float getCreatureHunger() {
-    	if(this.worldObj == null)
+    	if(this.getEntityWorld() == null)
     		return this.getCreatureHungerMax();
-    	if(!this.worldObj.isRemote)
+    	if(!this.getEntityWorld().isRemote)
     		return this.hunger;
     	else {
             try {
@@ -704,7 +704,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     //                       Stamina
     // ==================================================
     public float getStamina() {
-    	if(this.worldObj != null && this.worldObj.isRemote) {
+    	if(this.getEntityWorld() != null && this.getEntityWorld().isRemote) {
             try {
                 this.stamina = this.getFromDataManager(STAMINA);
             } catch (Exception e) {}
@@ -714,7 +714,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     
     public void setStamina(float setStamina) {
     	this.stamina = setStamina;
-    	if(this.worldObj != null && !this.worldObj.isRemote) {
+    	if(this.getEntityWorld() != null && !this.getEntityWorld().isRemote) {
     		this.dataManager.set(STAMINA, setStamina);
     	}
     }
@@ -807,7 +807,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
             double d0 = this.rand.nextGaussian() * 0.02D;
             double d1 = this.rand.nextGaussian() * 0.02D;
             double d2 = this.rand.nextGaussian() * 0.02D;
-            this.worldObj.spawnParticle(particle, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + 0.5D + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d0, d1, d2);
+            this.getEntityWorld().spawnParticle(particle, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + 0.5D + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d0, d1, d2);
         }
     }
     

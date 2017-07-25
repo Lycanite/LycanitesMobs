@@ -45,7 +45,7 @@ public class EntityThrowingScythe extends EntityProjectileBase {
     @Override
     public void onUpdate() {
     	super.onUpdate();
-    	if(this.posY > this.worldObj.getHeight() + 20)
+    	if(this.posY > this.getEntityWorld().getHeight() + 20)
     		this.setDead();
     }
 	
@@ -67,6 +67,6 @@ public class EntityThrowingScythe extends EntityProjectileBase {
     @Override
     public void onImpactVisuals() {
     	for(int i = 0; i < 8; ++i)
-    		this.worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
+    		this.getEntityWorld().spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
     }
 }

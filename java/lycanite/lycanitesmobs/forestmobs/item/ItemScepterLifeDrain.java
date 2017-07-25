@@ -60,7 +60,7 @@ public class ItemScepterLifeDrain extends ItemScepter {
     		}
     		else {
     			this.projectileTarget = new EntityLifeDrain(world, entity, 20, 10);
-    			world.spawnEntityInWorld(this.projectileTarget);
+    			world.spawnEntity(this.projectileTarget);
                 this.playSound(itemStack, world, entity, 1, this.projectileTarget);
     		}
     	}

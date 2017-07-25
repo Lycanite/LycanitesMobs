@@ -97,7 +97,7 @@ public class EntityJabberwock extends EntityCreatureTameable implements IMob {
         super.onLivingUpdate();
         
         // Random Lunging:
-        if(this.onGround && !this.worldObj.isRemote) {
+        if(this.onGround && !this.getEntityWorld().isRemote) {
         	if(this.hasAttackTarget()) {
         		if(this.rand.nextInt(10) == 0)
         			this.leap(6.0F, 0.1D, this.getAttackTarget());
@@ -147,7 +147,7 @@ public class EntityJabberwock extends EntityCreatureTameable implements IMob {
     // ========== Create Child ==========
     @Override
 	public EntityCreatureAgeable createChild(EntityCreatureAgeable baby) {
-		return new EntityJabberwock(this.worldObj);
+		return new EntityJabberwock(this.getEntityWorld());
 	}
     
     

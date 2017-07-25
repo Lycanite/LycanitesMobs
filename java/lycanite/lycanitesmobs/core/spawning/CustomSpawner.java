@@ -42,12 +42,12 @@ public class CustomSpawner {
 	@SubscribeEvent
 	public void onEntityUpdate(LivingUpdateEvent event) {
 		EntityLivingBase entity = event.getEntityLiving();
-		if(entity == null || !(entity instanceof EntityPlayer) || entity.worldObj == null || entity.worldObj.isRemote || event.isCanceled())
+		if(entity == null || !(entity instanceof EntityPlayer) || entity.getEntityWorld() == null || entity.getEntityWorld().isRemote || event.isCanceled())
 			return;
 		
 		// ========== Spawn Near Players ==========
 		EntityPlayer player = (EntityPlayer)entity;
-		World world = player.worldObj;
+		World world = player.getEntityWorld();
 		
 		if(!entityUpdateTicks.containsKey(player))
 			entityUpdateTicks.put(player, (long)0);
@@ -114,7 +114,7 @@ public class CustomSpawner {
 	@SubscribeEvent
 	public void onEntityDeath(LivingDeathEvent event) {
 		EntityLivingBase entity = event.getEntityLiving();
-		if(entity == null || entity.worldObj == null || entity.worldObj.isRemote || event.isCanceled())
+		if(entity == null || entity.getEntityWorld() == null || entity.getEntityWorld().isRemote || event.isCanceled())
 			return;
 		
 		// ========== Get Killer ==========
@@ -126,7 +126,7 @@ public class CustomSpawner {
 			return;
 		
 		// ========== Get Coords ==========
-		World world = entity.worldObj;
+		World world = entity.getEntityWorld();
 		
 		// ========== Pass To Spawners ==========
 		for(SpawnTypeDeath spawnType : this.deathSpawnTypes) {
@@ -195,7 +195,7 @@ public class CustomSpawner {
 			return;
 		
 		// Get Coords:
-		World world = player.worldObj;
+		World world = player.getEntityWorld();
         BlockPos spawnPos = event.getPos().add(0, 0, 1);
 		
 		if(world == null || world.isRemote || world.provider.isDaytime())

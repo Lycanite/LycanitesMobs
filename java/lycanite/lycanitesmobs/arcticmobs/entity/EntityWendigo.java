@@ -98,20 +98,20 @@ public class EntityWendigo extends EntityCreatureBase implements IMob, IGroupIce
         super.onLivingUpdate();
 
         // Trail:
-        if(!this.worldObj.isRemote && this.isMoving() && this.ticksExisted % 5 == 0) {
+        if(!this.getEntityWorld().isRemote && this.isMoving() && this.ticksExisted % 5 == 0) {
             int trailHeight = 1;
             int trailWidth = 1;
             if(this.getSubspeciesIndex() >= 3)
                 trailWidth = 3;
             for(int y = 0; y < trailHeight; y++) {
-                Block block = this.worldObj.getBlockState(this.getPosition().add(0, y, 0)).getBlock();
+                Block block = this.getEntityWorld().getBlockState(this.getPosition().add(0, y, 0)).getBlock();
                 if(block != null && (block == Blocks.AIR || block == Blocks.FIRE || block == Blocks.SNOW_LAYER || block == Blocks.TALLGRASS || block == ObjectManager.getBlock("scorchfire") || block == ObjectManager.getBlock("doomfire"))) {
                     if(trailWidth == 1)
-                        this.worldObj.setBlockState(this.getPosition().add(0, y, 0), ObjectManager.getBlock("frostfire").getDefaultState());
+                        this.getEntityWorld().setBlockState(this.getPosition().add(0, y, 0), ObjectManager.getBlock("frostfire").getDefaultState());
                     else
                         for(int x = -(trailWidth / 2); x < (trailWidth / 2) + 1; x++) {
                             for(int z = -(trailWidth / 2); z < (trailWidth / 2) + 1; z++) {
-                                this.worldObj.setBlockState(this.getPosition().add(x, y, z), ObjectManager.getBlock("frostfire").getDefaultState());
+                                this.getEntityWorld().setBlockState(this.getPosition().add(x, y, z), ObjectManager.getBlock("frostfire").getDefaultState());
                             }
                         }
                 }
@@ -119,21 +119,21 @@ public class EntityWendigo extends EntityCreatureBase implements IMob, IGroupIce
         }
 
         // Freeze Water:
-        if(!this.worldObj.isRemote && this.isMoving() && this.ticksExisted % 5 == 0) {
-            Block block = this.worldObj.getBlockState(this.getPosition().add(0, -1, 0)).getBlock();
+        if(!this.getEntityWorld().isRemote && this.isMoving() && this.ticksExisted % 5 == 0) {
+            Block block = this.getEntityWorld().getBlockState(this.getPosition().add(0, -1, 0)).getBlock();
             if(block == Blocks.WATER)
-                this.worldObj.setBlockState(this.getPosition().add(0, -1, 0), Blocks.ICE.getDefaultState());
+                this.getEntityWorld().setBlockState(this.getPosition().add(0, -1, 0), Blocks.ICE.getDefaultState());
         }
         
         // Particles:
-        if(this.worldObj.isRemote) {
+        if(this.getEntityWorld().isRemote) {
 	        for(int i = 0; i < 2; ++i) {
-	            this.worldObj.spawnParticle(EnumParticleTypes.SNOW_SHOVEL, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
-	            this.worldObj.spawnParticle(EnumParticleTypes.SNOW_SHOVEL, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
+	            this.getEntityWorld().spawnParticle(EnumParticleTypes.SNOW_SHOVEL, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
+	            this.getEntityWorld().spawnParticle(EnumParticleTypes.SNOW_SHOVEL, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
 	        }
 	        if(this.ticksExisted % 10 == 0)
 		        for(int i = 0; i < 2; ++i) {
-		            this.worldObj.spawnParticle(EnumParticleTypes.SNOW_SHOVEL, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
+		            this.getEntityWorld().spawnParticle(EnumParticleTypes.SNOW_SHOVEL, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
 		        }
         }
     }
@@ -156,7 +156,7 @@ public class EntityWendigo extends EntityCreatureBase implements IMob, IGroupIce
         int waterWeight = 10;
         BlockPos pos = new BlockPos(x, y, z);
         if(ObjectManager.getBlock("ooze") != null) {
-            if (this.worldObj.getBlockState(pos).getBlock() == ObjectManager.getBlock("ooze"))
+            if (this.getEntityWorld().getBlockState(pos).getBlock() == ObjectManager.getBlock("ooze"))
                 return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
         }
 
@@ -190,7 +190,7 @@ public class EntityWendigo extends EntityCreatureBase implements IMob, IGroupIce
     @Override
     public void rangedAttack(Entity target, float range) {
     	// Type:
-    	EntityProjectileBase projectile = new EntityTundra(this.worldObj, this);
+    	EntityProjectileBase projectile = new EntityTundra(this.getEntityWorld(), this);
         projectile.setProjectileScale(2f);
     	
     	// Y Offset:
@@ -203,13 +203,13 @@ public class EntityWendigo extends EntityCreatureBase implements IMob, IGroupIce
         double d0 = target.posX - this.posX + accuracy;
         double d1 = target.posY + (double)target.getEyeHeight() - 1.100000023841858D - projectile.posY + accuracy;
         double d2 = target.posZ - this.posZ + accuracy;
-        float f1 = MathHelper.sqrt_double(d0 * d0 + d2 * d2) * 0.2F;
+        float f1 = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.2F;
         float velocity = 1.2F;
         projectile.setThrowableHeading(d0, d1 + (double)f1, d2, velocity, 6.0F);
         
         // Launch:
         this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.worldObj.spawnEntityInWorld(projectile);
+        this.getEntityWorld().spawnEntity(projectile);
         super.rangedAttack(target, range);
     }
     

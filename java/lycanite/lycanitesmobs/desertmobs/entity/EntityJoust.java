@@ -87,7 +87,7 @@ public class EntityJoust extends EntityCreatureAgeable implements IAnimals, IGro
 	// ========== Pathing Weight ==========
 	@Override
 	public float getBlockPathWeight(int x, int y, int z) {
-        IBlockState blockState = this.worldObj.getBlockState(new BlockPos(x, y - 1, z));
+        IBlockState blockState = this.getEntityWorld().getBlockState(new BlockPos(x, y - 1, z));
 		if(blockState.getBlock() != Blocks.AIR) {
 			if(blockState.getMaterial() == Material.SAND)
 				return 10F;
@@ -143,7 +143,7 @@ public class EntityJoust extends EntityCreatureAgeable implements IAnimals, IGro
     // ========== Create Child ==========
 	@Override
 	public EntityCreatureAgeable createChild(EntityCreatureAgeable partener) {
-		return new EntityJoust(this.worldObj);
+		return new EntityJoust(this.getEntityWorld());
 	}
 	
 	// ========== Breeding Item ==========
@@ -160,10 +160,10 @@ public class EntityJoust extends EntityCreatureAgeable implements IAnimals, IGro
 	public void setGrowingAge(int age) {
 		if(age == 0 && this.getAge() < 0)
 			if(this.getRNG().nextFloat() >= 0.9F) {
-				EntityJoustAlpha alphaJoust = new EntityJoustAlpha(this.worldObj);
+				EntityJoustAlpha alphaJoust = new EntityJoustAlpha(this.getEntityWorld());
 				alphaJoust.copyLocationAndAnglesFrom(this);
-				this.worldObj.spawnEntityInWorld(alphaJoust);
-				this.worldObj.removeEntity(this);
+				this.getEntityWorld().spawnEntity(alphaJoust);
+				this.getEntityWorld().removeEntity(this);
 			}
         super.setGrowingAge(age);
     }

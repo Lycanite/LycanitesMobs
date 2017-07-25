@@ -126,9 +126,9 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
     @Override
     public float getAISpeedModifier() {
     	if(this.hasRiderTarget()) {
-            IBlockState blockState = this.worldObj.getBlockState(this.getPosition().add(0, -1, 0));
+            IBlockState blockState = this.getEntityWorld().getBlockState(this.getPosition().add(0, -1, 0));
             if (blockState.getMaterial() == Material.SAND
-                    || (blockState == Material.AIR && this.worldObj.getBlockState(this.getPosition().add(0, -2, 0)).getMaterial() == Material.SAND))
+                    || (blockState == Material.AIR && this.getEntityWorld().getBlockState(this.getPosition().add(0, -2, 0)).getMaterial() == Material.SAND))
                 return 1.8F;
         }
     	return 1.0F;
@@ -144,7 +144,7 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
     //                   Mount Ability
     // ==================================================
     public void mountAbility(Entity rider) {
-    	if(this.worldObj.isRemote)
+    	if(this.getEntityWorld().isRemote)
     		return;
     	
     	if(this.abilityToggled)
@@ -154,8 +154,8 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
     	
     	if(rider instanceof EntityPlayer) {
     		EntityPlayer player = (EntityPlayer)rider;
-	    	EntityMudshot projectile = new EntityMudshot(this.worldObj, player);
-	    	this.worldObj.spawnEntityInWorld(projectile);
+	    	EntityMudshot projectile = new EntityMudshot(this.getEntityWorld(), player);
+	    	this.getEntityWorld().spawnEntity(projectile);
 	    	this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
 	    	this.setJustAttacked();
     	}
@@ -183,7 +183,7 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
     @Override
     public void rangedAttack(Entity target, float range) {
     	// Type:
-    	EntityMudshot projectile = new EntityMudshot(this.worldObj, this);
+    	EntityMudshot projectile = new EntityMudshot(this.getEntityWorld(), this);
         projectile.setProjectileScale(2f);
     	
     	// Y Offset:
@@ -196,13 +196,13 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
         double d0 = target.posX - this.posX + accuracy;
         double d1 = target.posY - (target.height * 0.25D) - projectile.posY + accuracy;
         double d2 = target.posZ - this.posZ + accuracy;
-        float f1 = MathHelper.sqrt_double(d0 * d0 + d2 * d2) * 0.2F;
+        float f1 = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.2F;
         float velocity = 1.2F;
         projectile.setThrowableHeading(d0, d1 + (double)f1, d2, velocity, 6.0F);
         
         // Launch:
         this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.worldObj.spawnEntityInWorld(projectile);
+        this.getEntityWorld().spawnEntity(projectile);
         
         super.rangedAttack(target, range);
     }
@@ -243,7 +243,7 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
     // ========== Create Child ==========
 	@Override
 	public EntityCreatureAgeable createChild(EntityCreatureAgeable baby) {
-		return new EntityErepede(this.worldObj);
+		return new EntityErepede(this.getEntityWorld());
 	}
 	
 	// ========== Breeding Item ==========

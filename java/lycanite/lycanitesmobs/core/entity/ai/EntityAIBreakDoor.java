@@ -24,10 +24,10 @@ public class EntityAIBreakDoor extends EntityAIDoorInteract {
     public boolean shouldExecute() {
     	if(!super.shouldExecute())
     		return false;
-    	if(!this.host.worldObj.getGameRules().getBoolean("mobGriefing"))
+    	if(!this.host.getEntityWorld().getGameRules().getBoolean("mobGriefing"))
     		return false;
     	
-        return !this.targetDoor.isOpen(this.host.worldObj, new BlockPos(this.entityPosX, this.entityPosY, this.entityPosZ));
+        return !this.targetDoor.isOpen(this.host.getEntityWorld(), new BlockPos(this.entityPosX, this.entityPosY, this.entityPosZ));
     }
 
 	
@@ -45,7 +45,7 @@ public class EntityAIBreakDoor extends EntityAIDoorInteract {
  	// ==================================================
     public boolean continueExecuting() {
         double distance = this.host.getDistanceSq((double)this.entityPosX, (double)this.entityPosY, (double)this.entityPosZ);
-        return this.breakingTime <= 240 && !this.targetDoor.isOpen(this.host.worldObj, new BlockPos(this.entityPosX, this.entityPosY, this.entityPosZ)) && distance < 4.0D; // isDoorOpen()
+        return this.breakingTime <= 240 && !this.targetDoor.isOpen(this.host.getEntityWorld(), new BlockPos(this.entityPosX, this.entityPosY, this.entityPosZ)) && distance < 4.0D; // isDoorOpen()
     }
 
 	
@@ -54,7 +54,7 @@ public class EntityAIBreakDoor extends EntityAIDoorInteract {
  	// ==================================================
     public void resetTask() {
         super.resetTask();
-        this.host.worldObj.sendBlockBreakProgress(this.host.getEntityId(), new BlockPos(this.entityPosX, this.entityPosY, this.entityPosZ), -1);
+        this.host.getEntityWorld().sendBlockBreakProgress(this.host.getEntityId(), new BlockPos(this.entityPosX, this.entityPosY, this.entityPosZ), -1);
     }
 
 	
@@ -65,20 +65,20 @@ public class EntityAIBreakDoor extends EntityAIDoorInteract {
         super.updateTask();
 
         if(this.host.getRNG().nextInt(20) == 0)
-            this.host.worldObj.playEvent(1010, new BlockPos(this.entityPosX, this.entityPosY, this.entityPosZ), 0);
+            this.host.getEntityWorld().playEvent(1010, new BlockPos(this.entityPosX, this.entityPosY, this.entityPosZ), 0);
 
         ++this.breakingTime;
         int breaking = (int)((float)this.breakingTime / 240.0F * 10.0F);
 
         if(breaking != this.lastBreakTime) {
-            this.host.worldObj.sendBlockBreakProgress(this.host.getEntityId(), new BlockPos(this.entityPosX, this.entityPosY, this.entityPosZ), breaking);
+            this.host.getEntityWorld().sendBlockBreakProgress(this.host.getEntityId(), new BlockPos(this.entityPosX, this.entityPosY, this.entityPosZ), breaking);
             this.lastBreakTime = breaking;
         }
 
-        if(this.breakingTime == 240 && this.host.worldObj.getDifficulty() == EnumDifficulty.HARD) {
-            this.host.worldObj.setBlockToAir(new BlockPos(this.entityPosX, this.entityPosY, this.entityPosZ));
-            this.host.worldObj.playEvent(1012, new BlockPos(this.entityPosX, this.entityPosY, this.entityPosZ), 0);
-            this.host.worldObj.playEvent(2001, new BlockPos(this.entityPosX, this.entityPosY, this.entityPosZ), 0);
+        if(this.breakingTime == 240 && this.host.getEntityWorld().getDifficulty() == EnumDifficulty.HARD) {
+            this.host.getEntityWorld().setBlockToAir(new BlockPos(this.entityPosX, this.entityPosY, this.entityPosZ));
+            this.host.getEntityWorld().playEvent(1012, new BlockPos(this.entityPosX, this.entityPosY, this.entityPosZ), 0);
+            this.host.getEntityWorld().playEvent(2001, new BlockPos(this.entityPosX, this.entityPosY, this.entityPosZ), 0);
         }
     }
 }

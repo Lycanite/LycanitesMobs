@@ -135,9 +135,9 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
 	@Override
     public void onLivingUpdate() {
         // Try to Load Parent from UUID:
-        if(!this.worldObj.isRemote && !this.hasParent() && this.parentUUID != null) {
+        if(!this.getEntityWorld().isRemote && !this.hasParent() && this.parentUUID != null) {
 	        double range = 64D;
-	        List connections = this.worldObj.getEntitiesWithinAABB(EntityCreatureAgeable.class, this.getEntityBoundingBox().expand(range, range, range));
+	        List connections = this.getEntityWorld().getEntitiesWithinAABB(EntityCreatureAgeable.class, this.getEntityBoundingBox().expand(range, range, range));
 	        Iterator possibleConnections = connections.iterator();
 	        while(possibleConnections.hasNext()) {
 	        	EntityCreatureAgeable possibleConnection = (EntityCreatureAgeable)possibleConnections.next();
@@ -152,7 +152,7 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
         super.onLivingUpdate();
         
         // Concapede Connections:
-        if(!this.worldObj.isRemote) {
+        if(!this.getEntityWorld().isRemote) {
         	// Check if back segment is alive:
         	if(this.hasMaster()) {
         		if(!this.getMasterTarget().isEntityAlive())
@@ -194,7 +194,7 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
         }
         
         // Growth Into Head:
-        if(!this.worldObj.isRemote && this.getGrowingAge() <= 0)
+        if(!this.getEntityWorld().isRemote && this.getGrowingAge() <= 0)
         	this.setGrowingAge(-this.growthTime);
     }
 	
@@ -207,15 +207,15 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
 		if(this.hasParent())
 			age = -this.growthTime;
         super.setGrowingAge(age);
-		if(age == 0 && !this.worldObj.isRemote) {
-			EntityConcapedeHead concapedeHead = new EntityConcapedeHead(this.worldObj);
+		if(age == 0 && !this.getEntityWorld().isRemote) {
+			EntityConcapedeHead concapedeHead = new EntityConcapedeHead(this.getEntityWorld());
 			concapedeHead.copyLocationAndAnglesFrom(this);
 			concapedeHead.firstSpawn = false;
 			concapedeHead.setGrowingAge(-this.growthTime / 4);
-			this.worldObj.spawnEntityInWorld(concapedeHead);
+			this.getEntityWorld().spawnEntity(concapedeHead);
 			if(this.hasMaster() && this.getMasterTarget() instanceof EntityConcapedeSegment)
 				((EntityConcapedeSegment)this.getMasterTarget()).setParentTarget(concapedeHead);
-			this.worldObj.removeEntity(this);
+			this.getEntityWorld().removeEntity(this);
 		}
     }
 
@@ -226,7 +226,7 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
 	// ========== Pathing Weight ==========
     @Override
     public float getBlockPathWeight(int x, int y, int z) {
-        IBlockState blockState = this.worldObj.getBlockState(new BlockPos(x, y - 1, z));
+        IBlockState blockState = this.getEntityWorld().getBlockState(new BlockPos(x, y - 1, z));
         Block block = blockState.getBlock();
         if(block != Blocks.AIR) {
             if(blockState.getMaterial() == Material.GRASS)
@@ -246,7 +246,7 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
     // ========== Falling Speed Modifier ==========
     @Override
     public double getFallingMod() {
-    	if(this.worldObj.isRemote)
+    	if(this.getEntityWorld().isRemote)
     		return 0.0D;
     	if(this.hasParent() && this.getParentTarget().posY > this.posY)
     		return 0.0D;

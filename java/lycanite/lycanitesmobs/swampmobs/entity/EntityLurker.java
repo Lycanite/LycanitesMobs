@@ -118,7 +118,7 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
         	this.setAvoidTarget(null);
         
         // Leap:
-        if(this.onGround && !this.worldObj.isRemote && this.rand.nextInt(10) == 0) {
+        if(this.onGround && !this.getEntityWorld().isRemote && this.rand.nextInt(10) == 0) {
         	if(this.hasAttackTarget())
         		this.leap(6.0F, 0.4D, this.getAttackTarget());
         	else if(this.hasAvoidTarget())
@@ -151,7 +151,7 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
    	// ==================================================
     @Override
     public boolean canStealth() {
-    	if(this.worldObj.isRemote) return false;
+    	if(this.getEntityWorld().isRemote) return false;
     	else {
 	    	if(this.hasAttackTarget()) {
 	    		if(this.getAttackTarget() instanceof EntityPlayer) {
@@ -175,13 +175,13 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
     
     @Override
     public void startStealth() {
-    	if(this.worldObj.isRemote) {
+    	if(this.getEntityWorld().isRemote) {
             EnumParticleTypes particle = EnumParticleTypes.SMOKE_NORMAL;
             double d0 = this.rand.nextGaussian() * 0.02D;
             double d1 = this.rand.nextGaussian() * 0.02D;
             double d2 = this.rand.nextGaussian() * 0.02D;
             for(int i = 0; i < 100; i++)
-            	this.worldObj.spawnParticle(particle, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + 0.5D + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d0, d1, d2);
+            	this.getEntityWorld().spawnParticle(particle, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + 0.5D + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d0, d1, d2);
         }
     	super.startStealth();
     }

@@ -60,7 +60,7 @@ public class ItemScepterPoisonRay extends ItemScepter {
     		}
     		else {
     			this.projectileTarget = new EntityPoisonRay(world, entity, 20, 10);
-    			world.spawnEntityInWorld(this.projectileTarget);
+    			world.spawnEntity(this.projectileTarget);
                 this.playSound(itemStack, world, entity, 1, this.projectileTarget);
     		}
     	}

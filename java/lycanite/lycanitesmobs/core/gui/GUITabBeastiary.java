@@ -12,7 +12,7 @@ public class GUITabBeastiary extends GUITab {
 
     @Override
     public void onTabClicked () {
-        GUIBeastiary.openToPlayer(Minecraft.getMinecraft().thePlayer);
+        GUIBeastiary.openToPlayer(Minecraft.getMinecraft().player);
     }
 
     @Override

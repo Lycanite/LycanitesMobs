@@ -115,7 +115,7 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
         super.onLivingUpdate();
         
         // Random Leaping:
-        if(!this.isTamed() && this.onGround && !this.worldObj.isRemote) {
+        if(!this.isTamed() && this.onGround && !this.getEntityWorld().isRemote) {
         	if(this.hasAttackTarget()) {
         		if(this.rand.nextInt(10) == 0)
         			this.leap(6.0F, 0.5D, this.getAttackTarget());
@@ -123,14 +123,14 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
         }
 
         // Leap Landing Paralysis:
-        if(this.leapedAbilityQueued && !this.onGround && !this.worldObj.isRemote) {
+        if(this.leapedAbilityQueued && !this.onGround && !this.getEntityWorld().isRemote) {
             this.leapedAbilityQueued = false;
             this.leapedAbilityReady = true;
         }
-        if(this.leapedAbilityReady && this.onGround && !this.worldObj.isRemote) {
+        if(this.leapedAbilityReady && this.onGround && !this.getEntityWorld().isRemote) {
             this.leapedAbilityReady = false;
             double distance = 4.0D;
-            List<EntityLivingBase> possibleTargets = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().expand(distance, distance, distance), new Predicate<EntityLivingBase>() {
+            List<EntityLivingBase> possibleTargets = this.getEntityWorld().getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().expand(distance, distance, distance), new Predicate<EntityLivingBase>() {
                 @Override
                 public boolean apply(EntityLivingBase possibleTarget) {
                     if (!possibleTarget.isEntityAlive()
@@ -194,7 +194,7 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
     @Override
     public void leap(double distance, double leapHeight) {
         super.leap(distance, leapHeight);
-        if(!this.worldObj.isRemote)
+        if(!this.getEntityWorld().isRemote)
             this.leapedAbilityQueued = true;
     }
 
@@ -202,7 +202,7 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
     @Override
     public void leap(float range, double leapHeight, Entity target) {
         super.leap(range, leapHeight, target);
-        if(!this.worldObj.isRemote)
+        if(!this.getEntityWorld().isRemote)
             this.leapedAbilityQueued = true;
     }
 
@@ -230,7 +230,7 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
     // ==================================================
     @Override
     public void mountAbility(Entity rider) {
-        if(this.worldObj.isRemote)
+        if(this.getEntityWorld().isRemote)
             return;
 
         if(!this.onGround)
@@ -295,7 +295,7 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
     // ========== Create Child ==========
 	@Override
 	public EntityCreatureAgeable createChild(EntityCreatureAgeable baby) {
-		return new EntityWarg(this.worldObj);
+		return new EntityWarg(this.getEntityWorld());
 	}
 	
 	// ========== Breeding Item ==========

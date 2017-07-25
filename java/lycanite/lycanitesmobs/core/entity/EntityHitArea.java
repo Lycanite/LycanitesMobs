@@ -17,7 +17,7 @@ public class EntityHitArea extends Entity {
     protected static final DataParameter<Float> HEIGHT = EntityDataManager.<Float>createKey(EntityHitArea.class, DataSerializers.FLOAT);
 
     public EntityHitArea(Entity ownerEntity, float width, float height) {
-        super(ownerEntity.worldObj);
+        super(ownerEntity.getEntityWorld());
         this.owner = ownerEntity;
         this.setSize(width, height);
         this.noClip = true;
@@ -37,10 +37,10 @@ public class EntityHitArea extends Entity {
 
     @Override
     public void onUpdate() {
-        if((this.owner == null || this.owner.isDead) && !this.worldObj.isRemote)
+        if((this.owner == null || this.owner.isDead) && !this.getEntityWorld().isRemote)
             this.setDead();
         super.onUpdate();
-        if(!this.worldObj.isRemote) {
+        if(!this.getEntityWorld().isRemote) {
             this.dataManager.set(WIDTH, this.width);
             this.dataManager.set(HEIGHT, this.height);
         }
@@ -74,7 +74,7 @@ public class EntityHitArea extends Entity {
 
     @Override
     public boolean attackEntityFrom(DamageSource damageSource, float damageAmount) {
-        if(this.worldObj.isRemote)
+        if(this.getEntityWorld().isRemote)
             return true;
         if(this.isEntityInvulnerable(damageSource))
             return false;

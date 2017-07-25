@@ -42,38 +42,38 @@ public class MobEventEruption extends MobEventBase {
         List<EntityProjectileBase> projectiles = new ArrayList<EntityProjectileBase>();
         int rapidTime = 20;
 
-        EntityProjectileBase projectileEntry = new EntityMagma(entity.worldObj, entity);
+        EntityProjectileBase projectileEntry = new EntityMagma(entity.getEntityWorld(), entity);
         projectiles.add(projectileEntry);
 
-        projectileEntry = new EntityMagma(entity.worldObj, entity);
+        projectileEntry = new EntityMagma(entity.getEntityWorld(), entity);
         projectileEntry.setThrowableHeading(entity.posX + 3.0D, 0, entity.posZ + 3.0D, 1.1F, 6.0F);
         projectiles.add(projectileEntry);
 
-        projectileEntry = new EntityMagma(entity.worldObj, entity);
+        projectileEntry = new EntityMagma(entity.getEntityWorld(), entity);
         projectileEntry.setThrowableHeading(entity.posX + 3.0D, 0, entity.posZ, 1.1F, 6.0F);
         projectiles.add(projectileEntry);
 
-        projectileEntry = new EntityMagma(entity.worldObj, entity);
+        projectileEntry = new EntityMagma(entity.getEntityWorld(), entity);
         projectileEntry.setThrowableHeading(entity.posX, 0, entity.posZ + 3.0D, 1.1F, 6.0F);
         projectiles.add(projectileEntry);
 
-        projectileEntry = new EntityMagma(entity.worldObj, entity);
+        projectileEntry = new EntityMagma(entity.getEntityWorld(), entity);
         projectileEntry.setThrowableHeading(entity.posX - 3.0D, 0, entity.posZ - 3.0D, 1.1F, 6.0F);
         projectiles.add(projectileEntry);
 
-        projectileEntry = new EntityMagma(entity.worldObj, entity);
+        projectileEntry = new EntityMagma(entity.getEntityWorld(), entity);
         projectileEntry.setThrowableHeading(entity.posX - 3.0D, 0, entity.posZ, 1.1F, 6.0F);
         projectiles.add(projectileEntry);
 
-        projectileEntry = new EntityMagma(entity.worldObj, entity);
+        projectileEntry = new EntityMagma(entity.getEntityWorld(), entity);
         projectileEntry.setThrowableHeading(entity.posX, 0, entity.posZ - 3.0D, 1.1F, 6.0F);
         projectiles.add(projectileEntry);
 
-        projectileEntry = new EntityMagma(entity.worldObj, entity);
+        projectileEntry = new EntityMagma(entity.getEntityWorld(), entity);
         projectileEntry.setThrowableHeading(entity.posX + 3.0D, 0, entity.posZ - 3.0D, 1.1F, 6.0F);
         projectiles.add(projectileEntry);
 
-        projectileEntry = new EntityMagma(entity.worldObj, entity);
+        projectileEntry = new EntityMagma(entity.getEntityWorld(), entity);
         projectileEntry.setThrowableHeading(entity.posX - 3.0D, 0, entity.posZ + 3.0D, 1.1F, 6.0F);
         projectiles.add(projectileEntry);
 
@@ -85,7 +85,7 @@ public class MobEventEruption extends MobEventBase {
 
             // Launch:
             entity.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (entity.getRNG().nextFloat() * 0.4F + 0.8F));
-            entity.worldObj.spawnEntityInWorld(projectile);
+            entity.getEntityWorld().spawnEntity(projectile);
         }
 	}
 }

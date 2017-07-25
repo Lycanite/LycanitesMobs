@@ -197,7 +197,7 @@ public class AltarInfoEbonCacodemon extends AltarInfo {
         entityCreature.forceBossHealthBar = true;
         entityCreature.setSubspecies(3, true);
         entityCreature.setLocationAndAngles(x, y - 2, z, 0, 0);
-        world.spawnEntityInWorld(entityCreature);
+        world.spawnEntity(entityCreature);
         entityCreature.destroyArea(x, y, z, 10000, false, 2);
 
         return true;

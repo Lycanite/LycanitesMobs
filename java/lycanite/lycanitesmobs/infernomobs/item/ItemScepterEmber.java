@@ -42,31 +42,31 @@ public class ItemScepterEmber extends ItemScepter {
     public boolean rapidAttack(ItemStack itemStack, World world, EntityLivingBase entity) {
     	if(!world.isRemote) {
         	EntityEmber projectile = new EntityEmber(world, entity);
-        	world.spawnEntityInWorld(projectile);
+        	world.spawnEntity(projectile);
         	
         	projectile = new EntityEmber(world, entity);
         	projectile.setPosition(projectile.posX + 1.0D, projectile.posY, projectile.posZ);
-        	world.spawnEntityInWorld(projectile);
+        	world.spawnEntity(projectile);
         	
         	projectile = new EntityEmber(world, entity);
         	projectile.setPosition(projectile.posX - 1.0D, projectile.posY, projectile.posZ);
-        	world.spawnEntityInWorld(projectile);
+        	world.spawnEntity(projectile);
         	
         	projectile = new EntityEmber(world, entity);
         	projectile.setPosition(projectile.posX, projectile.posY, projectile.posZ + 1.0D);
-        	world.spawnEntityInWorld(projectile);
+        	world.spawnEntity(projectile);
         	
         	projectile = new EntityEmber(world, entity);
         	projectile.setPosition(projectile.posX, projectile.posY, projectile.posZ - 1.0D);
-        	world.spawnEntityInWorld(projectile);
+        	world.spawnEntity(projectile);
         	
         	projectile = new EntityEmber(world, entity);
         	projectile.setPosition(projectile.posX, projectile.posY + 1.0D, projectile.posZ);
-        	world.spawnEntityInWorld(projectile);
+        	world.spawnEntity(projectile);
         	
         	projectile = new EntityEmber(world, entity);
         	projectile.setPosition(projectile.posX, projectile.posY - 1.0D, projectile.posZ);
-        	world.spawnEntityInWorld(projectile);
+        	world.spawnEntity(projectile);
 
             this.playSound(itemStack, world, entity, 1, projectile);
         }

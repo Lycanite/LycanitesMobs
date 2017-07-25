@@ -86,7 +86,7 @@ public class EntityPortal extends EntityProjectileBase {
         super.onUpdate();
 
         // ==========Summoning Pedestal ==========
-        if(!this.worldObj.isRemote) {
+        if(!this.getEntityWorld().isRemote) {
             if(this.summoningPedestal != null) {
                 this.shootingEntity = this.summoningPedestal.getPlayer();
                 this.summonClass = this.summoningPedestal.getSummonClass();
@@ -94,7 +94,7 @@ public class EntityPortal extends EntityProjectileBase {
         }
 
         // ==========Sync Shooter Name ==========
-        if(!this.worldObj.isRemote) {
+        if(!this.getEntityWorld().isRemote) {
             // Summoning Staff or Summoning Pedestal (with active player):
             if(this.shootingEntity != null)
                 this.dataManager.set(OWNER_NAME, this.shootingEntity.getName());
@@ -110,7 +110,7 @@ public class EntityPortal extends EntityProjectileBase {
         }
 
     	// ========== Check for Despawn ==========
-    	if(!this.worldObj.isRemote && !this.isDead) {
+    	if(!this.getEntityWorld().isRemote && !this.isDead) {
             // Summoning Pedestal:
             if(this.summoningPedestal != null) {
                 if(this.summonClass == null) {
@@ -164,13 +164,13 @@ public class EntityPortal extends EntityProjectileBase {
         }
 
         // ========== Client ==========
-        if(this.worldObj.isRemote) {
+        if(this.getEntityWorld().isRemote) {
             for(int i = 0; i < 32; ++i) {
                 double angle = Math.toRadians(this.rand.nextFloat() * 360);
                 float distance = this.rand.nextFloat() * 2;
                 double x = distance * Math.cos(angle) + Math.sin(angle);
                 double z = distance * Math.sin(angle) - Math.cos(angle);
-                this.worldObj.spawnParticle(EnumParticleTypes.PORTAL,
+                this.getEntityWorld().spawnParticle(EnumParticleTypes.PORTAL,
                         this.posX + x,
                         this.posY + (4.0F * this.rand.nextFloat()) - 2.0F,
                         this.posZ + z,
@@ -185,14 +185,14 @@ public class EntityPortal extends EntityProjectileBase {
   	//                 Summon Creatures
   	// ==================================================
     public boolean summonCreatures() {
-    	if(this.worldObj.isRemote)
+    	if(this.getEntityWorld().isRemote)
     		return true;
         if(this.summonClass == null)
             return false;
     	for(int i = 0; i < this.summonAmount; i++) {
 	    	Entity entity = null;
 			try {
-				entity = (Entity)this.summonClass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {this.worldObj});
+				entity = (Entity)this.summonClass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {this.getEntityWorld()});
 			} catch (Exception e) {
 				LycanitesMobs.printWarning("", "A none Entity class type was passed to an EntityPortal, only entities can be summoned from portals!");
 				e.printStackTrace();
@@ -230,7 +230,7 @@ public class EntityPortal extends EntityProjectileBase {
                 if (this.shootingEntity != null)
                     this.shootingEntity.addStat(ObjectManager.getAchievement(entityCreature.mobInfo.name + ".summon"), 1);
             }
-	    	this.worldObj.spawnEntityInWorld(entity);
+	    	this.getEntityWorld().spawnEntity(entity);
     	}
     	boolean summonedCreatures = this.summonAmount > 0;
     	this.summonAmount = 0;
@@ -257,7 +257,7 @@ public class EntityPortal extends EntityProjectileBase {
 			this.targetZ = this.shootingEntity.posZ + (lookDirection.zCoord * this.portalRange);
 	        
 			// Apply Raytrace to Look Target:
-			RayTraceResult target = Utilities.raytrace(this.worldObj, this.shootingEntity.posX, this.shootingEntity.posY + this.shootingEntity.getEyeHeight(), this.shootingEntity.posZ, this.targetX, this.targetY, this.targetZ, 1.0F, null);
+			RayTraceResult target = Utilities.raytrace(this.getEntityWorld(), this.shootingEntity.posX, this.shootingEntity.posY + this.shootingEntity.getEyeHeight(), this.shootingEntity.posZ, this.targetX, this.targetY, this.targetZ, 1.0F, null);
 	        if(target != null && target.hitVec != null) {
 				this.targetX = target.hitVec.xCoord;
 				this.targetY = target.hitVec.yCoord;

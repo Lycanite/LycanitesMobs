@@ -102,7 +102,7 @@ public class EntityArisaur extends EntityCreatureAgeable implements IAnimals, IG
         // Water Healing:
         if(this.isInWater())
         	this.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 3 * 20, 2));
-        else if(this.worldObj.isRaining() && this.worldObj.canBlockSeeSky(this.getPosition()))
+        else if(this.getEntityWorld().isRaining() && this.getEntityWorld().canBlockSeeSky(this.getPosition()))
         	this.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 3 * 20, 1));
     }
 	
@@ -113,8 +113,8 @@ public class EntityArisaur extends EntityCreatureAgeable implements IAnimals, IG
 	// ========== Pathing Weight ==========
 	@Override
 	public float getBlockPathWeight(int par1, int par2, int par3) {
-		if(this.worldObj.getBlockState(new BlockPos(par1, par2 - 1, par3)).getBlock() != Blocks.AIR) {
-			IBlockState blocState = this.worldObj.getBlockState(new BlockPos(par1, par2 - 1, par3));
+		if(this.getEntityWorld().getBlockState(new BlockPos(par1, par2 - 1, par3)).getBlock() != Blocks.AIR) {
+			IBlockState blocState = this.getEntityWorld().getBlockState(new BlockPos(par1, par2 - 1, par3));
 			if(blocState.getMaterial() == Material.GRASS)
 				return 10F;
 			if(blocState.getMaterial() == Material.GROUND)
@@ -177,7 +177,7 @@ public class EntityArisaur extends EntityCreatureAgeable implements IAnimals, IG
     // ========== Create Child ==========
 	@Override
 	public EntityCreatureAgeable createChild(EntityCreatureAgeable baby) {
-		return new EntityArisaur(this.worldObj);
+		return new EntityArisaur(this.getEntityWorld());
 	}
 	
 	// ========== Breeding Item ==========

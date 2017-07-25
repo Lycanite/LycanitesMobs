@@ -34,7 +34,7 @@ public class MessageWorldEvent implements IMessage, IMessageHandler<MessageWorld
 	public IMessage onMessage(MessageWorldEvent message, MessageContext ctx) {
 		if(ctx.side != Side.CLIENT) return null;
 		EntityPlayer player = LycanitesMobs.proxy.getClientPlayer();
-		World world = player.worldObj;
+		World world = player.getEntityWorld();
         ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
 		
 		if("".equals(message.mobEventName))

@@ -100,7 +100,7 @@ public class EntityProjectileRapidFire extends EntityProjectileBase {
  	//                 Fire Projectile
  	// ==================================================
     public void fireProjectile() {
-    	World world = this.worldObj;
+    	World world = this.getEntityWorld();
     	if(world.isRemote)
     		return;
     	
@@ -127,7 +127,7 @@ public class EntityProjectileRapidFire extends EntityProjectileBase {
 	        //if(projectile instanceof EntityProjectileBase)
 	        	//this.playSound(((EntityProjectileBase) projectile).getLaunchSound(), 1.0F, 1.0F / (this.rand.nextFloat() * 0.4F + 0.8F));
 	        
-	        world.spawnEntityInWorld((Entity)projectile);
+	        world.spawnEntity((Entity)projectile);
 		}
 		catch (Exception e) {
 			System.out.println("[WARNING] [LycanitesMobs] EntityRapidFire was unable to instantiate the given projectile class.");

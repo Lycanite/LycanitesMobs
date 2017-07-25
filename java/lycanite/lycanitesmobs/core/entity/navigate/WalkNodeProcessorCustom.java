@@ -14,8 +14,8 @@ public class WalkNodeProcessorCustom extends WalkNodeProcessor {
     }
 
     public void updateEntitySize(Entity updateEntity) {
-        this.entitySizeX = MathHelper.floor_float(updateEntity.width + 1.0F);
-        this.entitySizeY = MathHelper.floor_float(updateEntity.height + 1.0F);
-        this.entitySizeZ = MathHelper.floor_float(updateEntity.width + 1.0F);
+        this.entitySizeX = MathHelper.floor(updateEntity.width + 1.0F);
+        this.entitySizeY = MathHelper.floor(updateEntity.height + 1.0F);
+        this.entitySizeZ = MathHelper.floor(updateEntity.width + 1.0F);
     }
 }

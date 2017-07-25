@@ -92,7 +92,7 @@ public class EntityGorgomite extends EntityCreatureBase implements IMob, IGroupP
 	// ========== Living Update ==========
 	@Override
     public void onLivingUpdate() {
-		if(!this.worldObj.isRemote && this.hasAttackTarget() && this.ticksExisted % 20 == 0) {
+		if(!this.getEntityWorld().isRemote && this.hasAttackTarget() && this.ticksExisted % 20 == 0) {
 			this.allyUpdate();
 		}
         
@@ -101,7 +101,7 @@ public class EntityGorgomite extends EntityCreatureBase implements IMob, IGroupP
     
     // ========== Spawn Minions ==========
 	public void allyUpdate() {
-		if(this.worldObj.isRemote)
+		if(this.getEntityWorld().isRemote)
 			return;
 		
 		// Spawn Minions:
@@ -113,13 +113,13 @@ public class EntityGorgomite extends EntityCreatureBase implements IMob, IGroupP
 	}
 	
     public void spawnAlly(double x, double y, double z) {
-    	EntityLivingBase minion = new EntityGorgomite(this.worldObj);
+    	EntityLivingBase minion = new EntityGorgomite(this.getEntityWorld());
     	minion.setLocationAndAngles(x, y, z, this.rand.nextFloat() * 360.0F, 0.0F);
     	if(minion instanceof EntityCreatureBase) {
     		((EntityCreatureBase)minion).setMinion(true);
     		((EntityCreatureBase)minion).setSubspecies(this.getSubspeciesIndex(), true);
     	}
-    	this.worldObj.spawnEntityInWorld(minion);
+    	this.getEntityWorld().spawnEntity(minion);
         if(this.getAttackTarget() != null)
         	minion.setRevengeTarget(this.getAttackTarget());
     }

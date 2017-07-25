@@ -36,7 +36,7 @@ public class EntityAIBeg extends EntityAIBase {
  	//                   Should Execute
  	// ==================================================
     public boolean shouldExecute() {
-        this.player = this.host.worldObj.getClosestPlayerToEntity(this.host, (double)this.range);
+        this.player = this.host.getEntityWorld().getClosestPlayerToEntity(this.host, (double)this.range);
         return this.player == null ? false : this.gotBegItem(this.player);
     }
 	

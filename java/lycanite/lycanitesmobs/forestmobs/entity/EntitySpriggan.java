@@ -113,7 +113,7 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
         // Water Healing:
         if(this.isInWater())
             this.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 3 * 20, 2));
-        else if(this.worldObj.isRaining() && this.worldObj.canBlockSeeSky(this.getPosition()))
+        else if(this.getEntityWorld().isRaining() && this.getEntityWorld().canBlockSeeSky(this.getPosition()))
             this.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 3 * 20, 1));
 
         // Farming:
@@ -130,28 +130,28 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
 	        	for(int y = (int)this.posY - farmingHeight; y <= (int)this.posY + farmingHeight; y++) {
 	        		for(int z = (int)this.posZ - farmingRange; z <= (int)this.posZ + farmingRange; z++) {
                         BlockPos pos = new BlockPos(x, y, z);
-	        			Block farmingBlock = this.worldObj.getBlockState(pos).getBlock();
+	        			Block farmingBlock = this.getEntityWorld().getBlockState(pos).getBlock();
 	        			if(farmingBlock != null && farmingBlock instanceof IPlantable && farmingBlock instanceof IGrowable && farmingBlock != Blocks.TALLGRASS && farmingBlock != Blocks.DOUBLE_PLANT) {
 	        				
 		        			// Boost Crops Every X Seconds:
-		        			if(!this.worldObj.isRemote && this.farmingTick % (currentFarmingRate) == 0) {
+		        			if(!this.getEntityWorld().isRemote && this.farmingTick % (currentFarmingRate) == 0) {
                                 if(farmingBlock.getTickRandomly()) {
-                                    this.worldObj.scheduleBlockUpdate(pos, farmingBlock, currentFarmingRate, 1);
+                                    this.getEntityWorld().scheduleBlockUpdate(pos, farmingBlock, currentFarmingRate, 1);
                                 }
 		    	        		/*IGrowable growableBlock = (IGrowable)farmingBlock;
-		    	        		if(growableBlock.func_149851_a(this.worldObj, x, y, z, this.worldObj.isRemote)) {
-	    	                        if(growableBlock.func_149852_a(this.worldObj, this.getRNG(), x, y, z)) {
-	    	                        	growableBlock.func_149853_b(this.worldObj, this.getRNG(), x, y, z);
+		    	        		if(growableBlock.func_149851_a(this.getEntityWorld(), x, y, z, this.getEntityWorld().isRemote)) {
+	    	                        if(growableBlock.func_149852_a(this.getEntityWorld(), this.getRNG(), x, y, z)) {
+	    	                        	growableBlock.func_149853_b(this.getEntityWorld(), this.getRNG(), x, y, z);
 	    	                        }
 		    	                }*/
 		        			}
 		        			
 		        			// Crop Growth Effect:
-		        			if(this.worldObj.isRemote && this.farmingTick % 40 == 0) {
+		        			if(this.getEntityWorld().isRemote && this.farmingTick % 40 == 0) {
 		        				double d0 = this.getRNG().nextGaussian() * 0.02D;
 		                        double d1 = this.getRNG().nextGaussian() * 0.02D;
 		                        double d2 = this.getRNG().nextGaussian() * 0.02D;
-		        				this.worldObj.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, (double)((float)x + this.getRNG().nextFloat()), (double)y + (double)this.getRNG().nextFloat(), (double)((float)z + this.getRNG().nextFloat()), d0, d1, d2);
+		        				this.getEntityWorld().spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, (double)((float)x + this.getRNG().nextFloat()), (double)y + (double)this.getRNG().nextFloat(), (double)((float)z + this.getRNG().nextFloat()), d0, d1, d2);
 		        			}
 	        			}
 	    	        }
@@ -160,9 +160,9 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
         }
 
         // Particles:
-        if(this.worldObj.isRemote)
+        if(this.getEntityWorld().isRemote)
             for(int i = 0; i < 2; ++i) {
-                this.worldObj.spawnParticle(EnumParticleTypes.BLOCK_CRACK,
+                this.getEntityWorld().spawnParticle(EnumParticleTypes.BLOCK_CRACK,
                         this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width,
                         this.posY + this.rand.nextDouble() * (double) this.height,
                         this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width,
@@ -190,12 +190,12 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
     	// Create New Laser:
     	if(this.projectile == null) {
 	    	// Type:
-	    	this.projectile = new EntityLifeDrain(this.worldObj, this, 25, 20);
+	    	this.projectile = new EntityLifeDrain(this.getEntityWorld(), this, 25, 20);
             this.projectile.setBaseDamage(1);
 	    	
 	    	// Launch:
 	        this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-	        this.worldObj.spawnEntityInWorld(projectile);
+	        this.getEntityWorld().spawnEntity(projectile);
     	}
     }
     

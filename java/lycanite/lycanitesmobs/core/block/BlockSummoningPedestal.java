@@ -112,8 +112,8 @@ public class BlockSummoningPedestal extends BlockBase implements ITileEntityProv
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         if(!world.isRemote) {
-            if(playerIn != null && playerIn.worldObj != null) {
-                playerIn.openGui(LycanitesMobs.instance, GuiHandler.GuiType.TILEENTITY.id, playerIn.worldObj, pos.getX(), pos.getY(), pos.getZ());
+            if(playerIn != null && playerIn.getEntityWorld() != null) {
+                playerIn.openGui(LycanitesMobs.instance, GuiHandler.GuiType.TILEENTITY.id, playerIn.getEntityWorld(), pos.getX(), pos.getY(), pos.getZ());
             }
         }
         return true;

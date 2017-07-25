@@ -44,7 +44,7 @@ public class ItemScepterScythe extends ItemScepter {
     public boolean rapidAttack(ItemStack itemStack, World world, EntityLivingBase entity) {
     	if(!world.isRemote) {
         	EntityProjectileRapidFire projectile = new EntityProjectileRapidFire(EntityThrowingScythe.class, world, entity, 15, 5);
-        	world.spawnEntityInWorld(projectile);
+        	world.spawnEntity(projectile);
         }
     	return true;
     }

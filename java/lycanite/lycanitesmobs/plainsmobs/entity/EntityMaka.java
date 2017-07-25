@@ -96,7 +96,7 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
 	// ========== Pathing Weight ==========
 	@Override
 	public float getBlockPathWeight(int x, int y, int z) {
-        IBlockState blockState = this.worldObj.getBlockState(new BlockPos(x, y - 1, z));
+        IBlockState blockState = this.getEntityWorld().getBlockState(new BlockPos(x, y - 1, z));
         Block block = blockState.getBlock();
 		if(block != Blocks.AIR) {
 			if(blockState.getMaterial() == Material.GRASS)
@@ -143,7 +143,7 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
     // ========== Create Child ==========
 	@Override
 	public EntityCreatureAgeable createChild(EntityCreatureAgeable baby) {
-		return new EntityMaka(this.worldObj);
+		return new EntityMaka(this.getEntityWorld());
 	}
 	
 	// ========== Breeding Item ==========
@@ -160,10 +160,10 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
 	public void setGrowingAge(int age) {
 		if(age == 0 && this.getAge() < 0)
 			if(this.getRNG().nextFloat() >= 0.9F) {
-				EntityMakaAlpha alpha = new EntityMakaAlpha(this.worldObj);
+				EntityMakaAlpha alpha = new EntityMakaAlpha(this.getEntityWorld());
 				alpha.copyLocationAndAnglesFrom(this);
-				this.worldObj.spawnEntityInWorld(alpha);
-				this.worldObj.removeEntity(this);
+				this.getEntityWorld().spawnEntity(alpha);
+				this.getEntityWorld().removeEntity(this);
 			}
         super.setGrowingAge(age);
     }

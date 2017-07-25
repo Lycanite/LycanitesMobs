@@ -159,7 +159,7 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
     private void mount(Entity entity) {
     	entity.rotationYaw = this.rotationYaw;
     	entity.rotationPitch = this.rotationPitch;
-        if(!this.worldObj.isRemote)
+        if(!this.getEntityWorld().isRemote)
         	entity.startRiding(this);
     }
     
@@ -218,7 +218,7 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
                     this.motionX += (double) (-0.4F * f2 * this.jumpPower);
                     this.motionZ += (double) (0.4F * f3 * this.jumpPower);
                 }
-                if (!this.worldObj.isRemote)
+                if (!this.getEntityWorld().isRemote)
                     this.playJumpSound();
                 this.setJumpPower(0);
                 net.minecraftforge.common.ForgeHooks.onLivingJump(this);
@@ -242,7 +242,7 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
     	this.prevLimbSwingAmount = this.limbSwingAmount;
         double d0 = this.posX - this.prevPosX;
         double d1 = this.posZ - this.prevPosZ;
-        float f4 = MathHelper.sqrt_double(d0 * d0 + d1 * d1) * 4.0F;
+        float f4 = MathHelper.sqrt(d0 * d0 + d1 * d1) * 4.0F;
         if (f4 > 1.0F)
             f4 = 1.0F;
         this.limbSwingAmount += (f4 - this.limbSwingAmount) * 0.4F;
@@ -308,7 +308,7 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
     	commands.putAll(super.getInteractCommands(player, itemStack));
     	
     	// Mount:
-    	if(this.canBeMounted(player) && !player.isSneaking() && !this.worldObj.isRemote && MobInfo.mountingEnabled)
+    	if(this.canBeMounted(player) && !player.isSneaking() && !this.getEntityWorld().isRemote && MobInfo.mountingEnabled)
     		commands.put(CMD_PRIOR.MAIN.id, "Mount");
     	
     	return commands;

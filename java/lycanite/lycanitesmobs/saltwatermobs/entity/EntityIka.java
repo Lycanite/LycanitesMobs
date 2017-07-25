@@ -99,7 +99,7 @@ public class EntityIka extends EntityCreatureAgeable implements IAnimals, IGroup
         super.onLivingUpdate();
         
         // Wander Pause Rates:
-        if(!this.worldObj.isRemote) {
+        if(!this.getEntityWorld().isRemote) {
             if (this.isInWater())
                 this.wanderAI.setPauseRate(20);
             else
@@ -130,12 +130,12 @@ public class EntityIka extends EntityCreatureAgeable implements IAnimals, IGroup
     public float getBlockPathWeight(int x, int y, int z) {
         int waterWeight = 10;
         BlockPos pos = new BlockPos(x, y, z);
-        IBlockState blockState = this.worldObj.getBlockState(pos);
+        IBlockState blockState = this.getEntityWorld().getBlockState(pos);
         if(blockState.getBlock() == Blocks.WATER)
             return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
         if(blockState.getBlock() == Blocks.FLOWING_WATER)
             return (super.getBlockPathWeight(x, y, z) + 1) * waterWeight;
-        if(this.worldObj.isRaining() && this.worldObj.canBlockSeeSky(pos))
+        if(this.getEntityWorld().isRaining() && this.getEntityWorld().canBlockSeeSky(pos))
             return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
 
         if(this.getAttackTarget() != null)
@@ -211,7 +211,7 @@ public class EntityIka extends EntityCreatureAgeable implements IAnimals, IGroup
     // ========== Create Child ==========
     @Override
     public EntityCreatureAgeable createChild(EntityCreatureAgeable baby) {
-        return new EntityIka(this.worldObj);
+        return new EntityIka(this.getEntityWorld());
     }
 
     // ========== Breeding Item ==========

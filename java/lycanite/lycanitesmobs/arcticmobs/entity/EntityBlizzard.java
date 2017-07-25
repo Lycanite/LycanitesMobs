@@ -56,7 +56,7 @@ public class EntityBlizzard extends EntityProjectileBase {
     //========== Can Destroy Block ==========
     @Override
     public boolean canDestroyBlock(BlockPos pos) {
-        Block block = this.worldObj.getBlockState(pos).getBlock();
+        Block block = this.getEntityWorld().getBlockState(pos).getBlock();
         if(block == Blocks.SNOW_LAYER)
             return true;
         if(block == Blocks.TALLGRASS)
@@ -100,7 +100,7 @@ public class EntityBlizzard extends EntityProjectileBase {
     @Override
     public void onImpactVisuals() {
     	for(int i = 0; i < 8; ++i) {
-            this.worldObj.spawnParticle(EnumParticleTypes.SNOW_SHOVEL, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
+            this.getEntityWorld().spawnParticle(EnumParticleTypes.SNOW_SHOVEL, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
     	}
     }
 }

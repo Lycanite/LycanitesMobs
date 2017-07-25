@@ -16,7 +16,7 @@ public class GUITabMain extends GUITab {
 
     @Override
     public void onTabClicked () {
-        GUILMMainMenu.openToPlayer(Minecraft.getMinecraft().thePlayer);
+        GUILMMainMenu.openToPlayer(Minecraft.getMinecraft().player);
     }
 
     @Override

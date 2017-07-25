@@ -154,7 +154,7 @@ public class EntityBeholder extends EntityCreatureTameable {
     @Override
     public void rangedAttack(Entity target, float range) {
     	// Type:
-    	EntityArcaneLaserStorm projectile = new EntityArcaneLaserStorm(this.worldObj, this);
+    	EntityArcaneLaserStorm projectile = new EntityArcaneLaserStorm(this.getEntityWorld(), this);
         projectile.setProjectileScale(1f);
     	
     	// Y Offset:
@@ -164,13 +164,13 @@ public class EntityBeholder extends EntityCreatureTameable {
         double d0 = target.posX - this.posX;
         double d1 = target.posY - projectile.posY;
         double d2 = target.posZ - this.posZ;
-        float f1 = MathHelper.sqrt_double(d0 * d0 + d2 * d2) * 0.1F;
+        float f1 = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.1F;
         float velocity = 0.5F;
         projectile.setThrowableHeading(d0, d1 + (double)f1, d2, velocity, 0.0F);
         
         // Launch:
         this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.worldObj.spawnEntityInWorld(projectile);
+        this.getEntityWorld().spawnEntity(projectile);
 
         super.rangedAttack(target, range);
     }

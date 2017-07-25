@@ -60,7 +60,7 @@ public class DispenserBehaviorLifeDrain extends DispenserBehaviorBase {
 		
 		laser.setTarget(targetX, targetY, targetZ);
         
-        world.spawnEntityInWorld((Entity)laser);
+        world.spawnEntity((Entity)laser);
         itemStack.splitStack(1);
         return itemStack;
     }

@@ -76,11 +76,11 @@ public class EntityAITargetRevenge extends EntityAITargetAttack {
         try {
             if (this.callForHelp && (!(this.host instanceof EntityCreatureTameable) || (this.host instanceof EntityCreatureTameable && !((EntityCreatureTameable) this.host).isTamed()))) {
                 double d0 = this.getTargetDistance();
-                List allies = this.host.worldObj.getEntitiesWithinAABB(this.host.getClass(), this.host.getEntityBoundingBox().expand(d0, 4.0D, d0), this.targetSelector);
+                List allies = this.host.getEntityWorld().getEntitiesWithinAABB(this.host.getClass(), this.host.getEntityBoundingBox().expand(d0, 4.0D, d0), this.targetSelector);
                 if (this.helpClasses != null)
                     for (Class helpClass : this.helpClasses) {
                         if (helpClass != null && EntityCreatureBase.class.isAssignableFrom(helpClass) && !this.target.getClass().isAssignableFrom(helpClass)) {
-                            allies.addAll(this.host.worldObj.getEntitiesWithinAABB(helpClass, this.host.getEntityBoundingBox().expand(d0, 4.0D, d0), this.targetSelector));
+                            allies.addAll(this.host.getEntityWorld().getEntitiesWithinAABB(helpClass, this.host.getEntityBoundingBox().expand(d0, 4.0D, d0), this.targetSelector));
                         }
                     }
                 Iterator possibleAllies = allies.iterator();

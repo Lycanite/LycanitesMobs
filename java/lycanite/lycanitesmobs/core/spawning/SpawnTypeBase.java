@@ -764,7 +764,7 @@ public class SpawnTypeBase {
      * @param entityLiving The entity to spawn.
      */
     public void spawnEntity(World world, EntityLiving entityLiving) {
-        world.spawnEntityInWorld(entityLiving);
+        world.spawnEntity(entityLiving);
         if(this.mobEvent != null) {
         	this.mobEvent.onSpawn(entityLiving);
         }

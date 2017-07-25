@@ -35,7 +35,7 @@ public class MessageSummonSetSelection implements IMessage, IMessageHandler<Mess
 	public IMessage onMessage(final MessageSummonSetSelection message, final MessageContext ctx) {
         // Server Side:
         if(ctx.side == Side.SERVER) {
-            IThreadListener mainThread = (WorldServer) ctx.getServerHandler().playerEntity.worldObj;
+            IThreadListener mainThread = (WorldServer) ctx.getServerHandler().playerEntity.getEntityWorld();
             mainThread.addScheduledTask(new Runnable() {
                 @Override
                 public void run() {

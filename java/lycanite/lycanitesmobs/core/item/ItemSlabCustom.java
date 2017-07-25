@@ -56,7 +56,7 @@ public class ItemSlabCustom extends ItemBlock
      */
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack itemStack = player.getHeldItem(hand);
-        if (itemStack.func_190916_E() != 0 && player.canPlayerEdit(pos.offset(facing), facing, itemStack))
+        if (itemStack.getCount() != 0 && player.canPlayerEdit(pos.offset(facing), facing, itemStack))
         {
             Comparable<?> comparable = this.singleSlab.getTypeForItem(itemStack);
             IBlockState iblockstate = worldIn.getBlockState(pos);
@@ -76,7 +76,7 @@ public class ItemSlabCustom extends ItemBlock
                     {
                         SoundType soundtype = this.doubleSlab.getSoundType();
                         worldIn.playSound(player, pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
-                        itemStack.func_190920_e(Math.max(0, itemStack.func_190916_E() - 1));
+                        itemStack.setCount(Math.max(0, itemStack.getCount() - 1));
                     }
 
                     return EnumActionResult.SUCCESS;
@@ -131,7 +131,7 @@ public class ItemSlabCustom extends ItemBlock
                 {
                     SoundType soundtype = this.doubleSlab.getSoundType();
                     worldIn.playSound(player, pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
-                    itemStack.func_190920_e(Math.max(0, itemStack.func_190916_E() - 1));
+                    itemStack.setCount(Math.max(0, itemStack.getCount() - 1));
                 }
 
                 return true;

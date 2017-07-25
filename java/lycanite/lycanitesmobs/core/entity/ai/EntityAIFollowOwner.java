@@ -69,10 +69,10 @@ public class EntityAIFollowOwner extends EntityAIFollow {
     // ========== Teleport to Owner ==========
     public void teleportToOwner() {
     	if(this.getTarget() != null) {
-    		World world = this.getTarget().worldObj;
-	    	int i = MathHelper.floor_double(this.getTarget().posX) - 2;
-	        int j = MathHelper.floor_double(this.getTarget().getEntityBoundingBox().minY);
-	        int k = MathHelper.floor_double(this.getTarget().posZ) - 2;
+    		World world = this.getTarget().getEntityWorld();
+	    	int i = MathHelper.floor(this.getTarget().posX) - 2;
+	        int j = MathHelper.floor(this.getTarget().getEntityBoundingBox().minY);
+	        int k = MathHelper.floor(this.getTarget().posZ) - 2;
 
             if(this.host.canFly() || this.getTarget().isInWater()) {
                 this.host.setLocationAndAngles(i, j, k, this.host.rotationYaw, this.host.rotationPitch);
@@ -82,7 +82,7 @@ public class EntityAIFollowOwner extends EntityAIFollow {
 	
 	        for(int l = 0; l <= 4; ++l) {
 	            for(int i1 = 0; i1 <= 4; ++i1) {
-	                if((l < 1 || i1 < 1 || l > 3 || i1 > 3) && this.host.worldObj.isSideSolid(new BlockPos(i + l, j - 1, k + i1), EnumFacing.UP) && !this.host.worldObj.isBlockNormalCube(new BlockPos(i + l, j, k + i1), true) && !this.host.worldObj.isBlockNormalCube(new BlockPos(i + l, j + 1, k + i1), true)) {
+	                if((l < 1 || i1 < 1 || l > 3 || i1 > 3) && this.host.getEntityWorld().isSideSolid(new BlockPos(i + l, j - 1, k + i1), EnumFacing.UP) && !this.host.getEntityWorld().isBlockNormalCube(new BlockPos(i + l, j, k + i1), true) && !this.host.getEntityWorld().isBlockNormalCube(new BlockPos(i + l, j + 1, k + i1), true)) {
                         this.host.setLocationAndAngles((double)((float)(i + l) + 0.5F), (double)j, (double)((float)(k + i1) + 0.5F), this.host.rotationYaw, this.host.rotationPitch);
 	                    this.host.clearMovement();
 	                    return;

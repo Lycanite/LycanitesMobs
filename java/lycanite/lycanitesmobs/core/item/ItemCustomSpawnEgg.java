@@ -106,7 +106,7 @@ public class ItemCustomSpawnEgg extends ItemBase {
             tileEntity.markDirty();
             world.notifyBlockUpdate(pos, blockState, blockState, 3);
             if (!player.capabilities.isCreativeMode) {
-                itemStack.func_190920_e(Math.max(0, itemStack.func_190916_E() - 1));
+                itemStack.setCount(Math.max(0, itemStack.getCount() - 1));
             }
 
             return EnumActionResult.SUCCESS;
@@ -130,7 +130,7 @@ public class ItemCustomSpawnEgg extends ItemBase {
                 applyItemEntityDataToEntity(world, player, itemStack, entity);
 	
 	            if(!player.capabilities.isCreativeMode)
-                    itemStack.func_190920_e(Math.max(0, itemStack.func_190916_E() - 1));
+                    itemStack.setCount(Math.max(0, itemStack.getCount() - 1));
 	        }
         }
 
@@ -169,7 +169,7 @@ public class ItemCustomSpawnEgg extends ItemBase {
                                 ((EntityLiving)entity).setCustomNameTag(itemStack.getDisplayName());
 
                             if(!player.capabilities.isCreativeMode)
-                                itemStack.func_190920_e(Math.max(0, itemStack.func_190916_E() - 1));
+                                itemStack.setCount(Math.max(0, itemStack.getCount() - 1));
                     }
                 }
 
@@ -196,7 +196,7 @@ public class ItemCustomSpawnEgg extends ItemBase {
                     entityliving.rotationYawHead = entityliving.rotationYaw;
                     entityliving.renderYawOffset = entityliving.rotationYaw;
                     entityliving.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(entityliving)), (IEntityLivingData)null);
-                    world.spawnEntityInWorld(entity);
+                    world.spawnEntity(entity);
                     entityliving.playLivingSound();
                 }
             }

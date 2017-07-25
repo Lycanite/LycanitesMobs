@@ -35,7 +35,7 @@ public abstract class GUITab extends GUIBaseButton {
             
             if(mc.currentScreen != null && mc.currentScreen instanceof GuiInventory) {
             	GuiInventory guiInventory = (GuiInventory)mc.currentScreen;
-            	GuiInventorySnooper guiInventorySnooper = new GuiInventorySnooper(mc.thePlayer);
+            	GuiInventorySnooper guiInventorySnooper = new GuiInventorySnooper(mc.player);
             	tabX += (guiInventory.width / 2) + (guiInventorySnooper.getGUIXSize() / 2);
     			tabX -= tabWidth * (this.tabID + 1);
     			tabX -= 4;
@@ -61,7 +61,7 @@ public abstract class GUITab extends GUIBaseButton {
         	
     	if(mc.currentScreen != null && mc.currentScreen instanceof GuiInventory) {
         	GuiInventory guiInventory = (GuiInventory)mc.currentScreen;
-        	GuiInventorySnooper guiInventorySnooper = new GuiInventorySnooper(mc.thePlayer);
+        	GuiInventorySnooper guiInventorySnooper = new GuiInventorySnooper(mc.player);
         	tabX += (guiInventory.width / 2) + (guiInventorySnooper.getGUIXSize() / 2);
 			tabX -= tabWidth * (this.tabID + 1);
 			tabX -= 4;

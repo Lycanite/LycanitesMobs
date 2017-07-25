@@ -21,7 +21,7 @@ public class SwimmingMoveHelper extends EntityMoveHelper {
             double y = this.posY - this.parentEntity.posY;
             double z = this.posZ - this.parentEntity.posZ;
             double distance = x * x + y * y + z * z;
-            distance = (double) MathHelper.sqrt_double(distance);
+            distance = (double) MathHelper.sqrt(distance);
             y = y / distance;
             float f = (float)(MathHelper.atan2(z, x) * (180D / Math.PI)) - 90.0F;
             this.parentEntity.rotationYaw = this.limitAngle(this.parentEntity.rotationYaw, f, 90.0F);

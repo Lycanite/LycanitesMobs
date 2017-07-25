@@ -40,7 +40,7 @@ public class MessageMobEvent implements IMessage, IMessageHandler<MessageMobEven
             @Override
             public void run() {
                 EntityPlayer player = LycanitesMobs.proxy.getClientPlayer();
-                World world = player.worldObj;
+                World world = player.getEntityWorld();
                 ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
 
                 if ("".equals(message.mobEventName))

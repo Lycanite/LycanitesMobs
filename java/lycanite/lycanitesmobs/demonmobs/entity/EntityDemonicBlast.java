@@ -54,7 +54,7 @@ public class EntityDemonicBlast extends EntityProjectileBase {
     @Override
     public void onUpdate() {
     	super.onUpdate();
-    	if(!this.worldObj.isRemote) {
+    	if(!this.getEntityWorld().isRemote) {
 	    	if(rapidTicks % 5 == 0 && !isDead) {
 	    		fireProjectile();
 	    		fireProjectile();
@@ -64,7 +64,7 @@ public class EntityDemonicBlast extends EntityProjectileBase {
 	    	rapidTicks++;
     	}
     	
-    	if(this.posY > this.worldObj.getHeight() + 20)
+    	if(this.posY > this.getEntityWorld().getHeight() + 20)
     		this.setDead();
     	
     	if(this.ticksExisted >= this.expireTime * 20)
@@ -76,7 +76,7 @@ public class EntityDemonicBlast extends EntityProjectileBase {
  	//                 Fire Projectile
  	// ==================================================
     public void fireProjectile() {
-    	World world = this.worldObj;
+    	World world = this.getEntityWorld();
     	
 		IProjectile projectile;
 		if(this.getThrower() != null) {
@@ -100,7 +100,7 @@ public class EntityDemonicBlast extends EntityProjectileBase {
             this.playSound(((EntityProjectileBase) projectile).getLaunchSound(), 1.0F, 1.0F / (this.rand.nextFloat() * 0.4F + 0.8F));
         }
         
-        world.spawnEntityInWorld((Entity) projectile);
+        world.spawnEntity((Entity) projectile);
     }
 	
     
@@ -135,7 +135,7 @@ public class EntityDemonicBlast extends EntityProjectileBase {
     @Override
     public void onImpactVisuals() {
     	for(int i = 0; i < 8; ++i)
-    		this.worldObj.spawnParticle(EnumParticleTypes.REDSTONE, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
+    		this.getEntityWorld().spawnParticle(EnumParticleTypes.REDSTONE, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
     }
     
     

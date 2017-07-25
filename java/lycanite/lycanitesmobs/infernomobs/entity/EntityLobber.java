@@ -133,7 +133,7 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
         super.onLivingUpdate();
         
         // Wander Pause Rates:
-        if(!this.worldObj.isRemote) {
+        if(!this.getEntityWorld().isRemote) {
             if (this.lavaContact())
                 this.wanderAI.setPauseRate(120);
             else
@@ -141,20 +141,20 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
         }
         
         // Trail:
-        if(!this.worldObj.isRemote && this.isMoving() && this.ticksExisted % 5 == 0) {
+        if(!this.getEntityWorld().isRemote && this.isMoving() && this.ticksExisted % 5 == 0) {
         	int trailHeight = 1;
             int trailWidth = 1;
             if(this.getSubspeciesIndex() >= 3)
                 trailWidth = 3;
         	for(int y = 0; y < trailHeight; y++) {
-        		Block block = this.worldObj.getBlockState(this.getPosition().add(0, y, 0)).getBlock();
+        		Block block = this.getEntityWorld().getBlockState(this.getPosition().add(0, y, 0)).getBlock();
         		if(block == Blocks.AIR || block == Blocks.FIRE || block == Blocks.SNOW_LAYER || block == Blocks.TALLGRASS || block == ObjectManager.getBlock("frostfire") || block == ObjectManager.getBlock("icefire")) {
                     if(trailWidth == 1)
-                        this.worldObj.setBlockState(this.getPosition().add(0, y, 0), Blocks.FIRE.getDefaultState());
+                        this.getEntityWorld().setBlockState(this.getPosition().add(0, y, 0), Blocks.FIRE.getDefaultState());
                     else
                         for(int x = -(trailWidth / 2); x < (trailWidth / 2) + 1; x++) {
                             for(int z = -(trailWidth / 2); z < (trailWidth / 2) + 1; z++) {
-                                this.worldObj.setBlockState(this.getPosition().add(x, y, z), Blocks.FIRE.getDefaultState());
+                                this.getEntityWorld().setBlockState(this.getPosition().add(x, y, z), Blocks.FIRE.getDefaultState());
                             }
                         }
                 }
@@ -162,41 +162,41 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
 		}
 
         // Rare Subspecies Powers:
-        if(!this.worldObj.isRemote && this.getSubspeciesIndex() >= 3 && this.worldObj.getGameRules().getBoolean("mobGriefing") && this.lobberMelting && this.ticksExisted % 10 == 0) {
+        if(!this.getEntityWorld().isRemote && this.getSubspeciesIndex() >= 3 && this.getEntityWorld().getGameRules().getBoolean("mobGriefing") && this.lobberMelting && this.ticksExisted % 10 == 0) {
 
             // Melt Blocks:
             int range = 2;
             for(int w = -((int)Math.ceil(this.width) + range); w <= (Math.ceil(this.width) + range); w++)
                 for(int d = -((int)Math.ceil(this.width) + range); d <= (Math.ceil(this.width) + range); d++)
                     for(int h = 0; h <= Math.ceil(this.height); h++) {
-                        Block block = this.worldObj.getBlockState(this.getPosition().add(w, h, d)).getBlock();
+                        Block block = this.getEntityWorld().getBlockState(this.getPosition().add(w, h, d)).getBlock();
                         if(block == Blocks.OBSIDIAN || block == Blocks.COBBLESTONE || block == Blocks.DIRT || block == Blocks.PLANKS || block == Blocks.GRAVEL || block == Blocks.SAND) {
                             IBlockState blockState = Blocks.LAVA.getStateFromMeta(12);
                             if(block == Blocks.OBSIDIAN)
                                 blockState = Blocks.LAVA.getDefaultState();
-                            this.worldObj.setBlockState(this.getPosition().add(w, h, d), blockState);
+                            this.getEntityWorld().setBlockState(this.getPosition().add(w, h, d), blockState);
                         }
                     }
 
             // Random Projectiles:
             if(this.ticksExisted % 40 == 0) {
-                EntityProjectileBase projectile = new EntityMagma(this.worldObj, this);
+                EntityProjectileBase projectile = new EntityMagma(this.getEntityWorld(), this);
                 projectile.setProjectileScale(2f);
                 projectile.setThrowableHeading((2 * this.getRNG().nextFloat()) - 1, this.getRNG().nextFloat(), (2 * this.getRNG().nextFloat()) - 1, 1.2F, 6.0F);
                 this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-                this.worldObj.spawnEntityInWorld(projectile);
+                this.getEntityWorld().spawnEntity(projectile);
             }
         }
         
         // Particles:
-        if(this.worldObj.isRemote) {
+        if(this.getEntityWorld().isRemote) {
 	        for(int i = 0; i < 2; ++i) {
-	            this.worldObj.spawnParticle(EnumParticleTypes.FLAME, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
-	            this.worldObj.spawnParticle(EnumParticleTypes.DRIP_LAVA, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
+	            this.getEntityWorld().spawnParticle(EnumParticleTypes.FLAME, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
+	            this.getEntityWorld().spawnParticle(EnumParticleTypes.DRIP_LAVA, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
 	        }
 	        if(this.ticksExisted % 10 == 0)
 		        for(int i = 0; i < 2; ++i) {
-		            this.worldObj.spawnParticle(EnumParticleTypes.FLAME, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
+		            this.getEntityWorld().spawnParticle(EnumParticleTypes.FLAME, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
 		        }
         }
     }
@@ -218,9 +218,9 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
 	public float getBlockPathWeight(int x, int y, int z) {
 		int waterWeight = 10;
 		BlockPos pos = new BlockPos(x, y, z);
-        if(this.worldObj.getBlockState(pos).getBlock() == Blocks.LAVA)
+        if(this.getEntityWorld().getBlockState(pos).getBlock() == Blocks.LAVA)
         	return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
-		if(this.worldObj.getBlockState(pos).getBlock() == Blocks.FLOWING_LAVA)
+		if(this.getEntityWorld().getBlockState(pos).getBlock() == Blocks.FLOWING_LAVA)
 			return (super.getBlockPathWeight(x, y, z) + 1) * waterWeight;
         
         if(this.getAttackTarget() != null)
@@ -253,7 +253,7 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
     @Override
     public void rangedAttack(Entity target, float range) {
     	// Type:
-    	EntityProjectileBase projectile = new EntityMagma(this.worldObj, this);
+    	EntityProjectileBase projectile = new EntityMagma(this.getEntityWorld(), this);
         projectile.setProjectileScale(2f);
     	
     	// Y Offset:
@@ -266,13 +266,13 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
         double d0 = target.posX - this.posX + accuracy;
         double d1 = target.posY + (double)target.getEyeHeight() - 1.100000023841858D - projectile.posY + accuracy;
         double d2 = target.posZ - this.posZ + accuracy;
-        float f1 = MathHelper.sqrt_double(d0 * d0 + d2 * d2) * 0.2F;
+        float f1 = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.2F;
         float velocity = 1.2F;
         projectile.setThrowableHeading(d0, d1 + (double) f1, d2, velocity, 6.0F);
         
         // Launch:
         this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.worldObj.spawnEntityInWorld(projectile);
+        this.getEntityWorld().spawnEntity(projectile);
         super.rangedAttack(target, range);
     }
     

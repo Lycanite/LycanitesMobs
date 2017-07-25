@@ -92,7 +92,7 @@ public class EntityRaiko extends EntityCreatureBase implements IMob, IGroupHunte
         super.onLivingUpdate();
         
         // Entity Pickup Update:
-        if(!this.worldObj.isRemote) {
+        if(!this.getEntityWorld().isRemote) {
 	    	this.attackAI.setEnabled(!this.hasPickupEntity());
             if(!this.isInWater()) {
                 this.waterTime = 0;
@@ -173,7 +173,7 @@ public class EntityRaiko extends EntityCreatureBase implements IMob, IGroupHunte
     @Override
     public void pickupEntity(EntityLivingBase entity) {
     	super.pickupEntity(entity);
-        if(this.worldObj.getBlockState(this.getPosition()) != null && this.worldObj.canBlockSeeSky(this.getPosition()))
+        if(this.getEntityWorld().getBlockState(this.getPosition()) != null && this.getEntityWorld().canBlockSeeSky(this.getPosition()))
     	    this.leap(1.0F, 2.0D);
     }
 

@@ -174,14 +174,14 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
         if(this.healthLastTick - this.getHealth() > 50)
             this.setHealth(this.healthLastTick);
         this.healthLastTick = this.getHealth();
-        if(!this.worldObj.isRemote && this.updateTick % 20 == 0) {
+        if(!this.getEntityWorld().isRemote && this.updateTick % 20 == 0) {
             this.damageTakenThisSec = 0;
         }
 
         super.onLivingUpdate();
 
         // Look At Target:
-        if(this.hasAttackTarget() && !this.worldObj.isRemote) {
+        if(this.hasAttackTarget() && !this.getEntityWorld().isRemote) {
             this.getLookHelper().setLookPositionWithEntity(this.getAttackTarget(), 30.0F, 30.0F);
         }
 
@@ -189,9 +189,9 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
         if(this.hasArenaCenter()) {
             BlockPos arenaPos = this.getArenaCenter();
             double arenaY = this.posY;
-            if (this.worldObj.isAirBlock(arenaPos))
+            if (this.getEntityWorld().isAirBlock(arenaPos))
                 arenaY = arenaPos.getY();
-            else if (this.worldObj.isAirBlock(arenaPos.add(0, 1, 0)))
+            else if (this.getEntityWorld().isAirBlock(arenaPos.add(0, 1, 0)))
                 arenaY = arenaPos.add(0, 1, 0).getY();
 
             if (this.posX != arenaPos.getX() || this.posY != arenaY || this.posZ != arenaPos.getZ())
@@ -199,7 +199,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
         }
 
         // Sync Hellfire Energy:
-        if(!this.worldObj.isRemote)
+        if(!this.getEntityWorld().isRemote)
             this.dataManager.set(HELLFIRE_ENERGY, this.hellfireEnergy);
         else
             this.hellfireEnergy = this.dataManager.get(HELLFIRE_ENERGY);
@@ -208,28 +208,28 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
         updateHellfireOrbs(this, this.updateTick, 5, this.hellfireEnergy, 10, this.hellfireOrbs);
 
         // Update Phases:
-        if(!this.worldObj.isRemote)
+        if(!this.getEntityWorld().isRemote)
             this.updatePhases();
 
         // Player Targets and No Player Healing:
-        if(!this.worldObj.isRemote && this.updateTick % 200 == 0) {
+        if(!this.getEntityWorld().isRemote && this.updateTick % 200 == 0) {
             this.playerTargets = this.getNearbyEntities(EntityPlayer.class, null, 64);
         }
-        if(!this.worldObj.isRemote && this.updateTick % 20 == 0) {
+        if(!this.getEntityWorld().isRemote && this.updateTick % 20 == 0) {
             if (this.playerTargets.size() == 0)
                 this.heal(50);
         }
 
         // Passive Attacks:
-        if(!this.worldObj.isRemote && this.updateTick % 20 == 0) {
+        if(!this.getEntityWorld().isRemote && this.updateTick % 20 == 0) {
 
             // Random Projectiles:
             for(int i = 0; i < 3; i++) {
-                EntityProjectileBase projectile = new EntityHellfireball(this.worldObj, this);
+                EntityProjectileBase projectile = new EntityHellfireball(this.getEntityWorld(), this);
                 projectile.setProjectileScale(8f);
                 projectile.setThrowableHeading((this.getRNG().nextFloat()) - 0.5F, this.getRNG().nextFloat(), (this.getRNG().nextFloat()) - 0.5F, 1.2F, 3.0F);
                 this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-                this.worldObj.spawnEntityInWorld(projectile);
+                this.getEntityWorld().spawnEntity(projectile);
             }
 
             // Player Projectiles and Checks
@@ -239,7 +239,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
                 this.rangedAttack(target, 1F);
                 if(target.posY > this.posY + this.height + 5) {
                     for(int i = 0; i < 3; i++) {
-                        EntityNetherSoul minion = new EntityNetherSoul(this.worldObj);
+                        EntityNetherSoul minion = new EntityNetherSoul(this.getEntityWorld());
                         this.summonMinion(minion, this.getRNG().nextDouble() * 360, 5);
                         minion.setMasterTarget(null); // Clear master target so that these minions don't break phase 3 barriers.
                     }
@@ -279,7 +279,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
                     if (minion.hellfireEnergy >= 100) {
                         this.hellfireEnergy += 20;
                         this.onMinionDeath(minion);
-                        this.worldObj.createExplosion(minion, minion.posX, minion.posY, minion.posZ, 1, false);
+                        this.getEntityWorld().createExplosion(minion, minion.posX, minion.posY, minion.posZ, 1, false);
                         minion.hellfireEnergy = 0;
                         minion.setDead();
                         continue;
@@ -305,7 +305,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
                 summonAmount *= this.playerTargets.size();
                 if(summonAmount > 0)
                     for(int summonCount = 0; summonCount <= summonAmount; summonCount++) {
-                        EntityBelph minion = new EntityBelph(this.worldObj);
+                        EntityBelph minion = new EntityBelph(this.getEntityWorld());
                         this.summonMinion(minion, this.getRNG().nextDouble() * 360, 5);
                         this.hellfireBelphMinions.add(minion);
                     }
@@ -334,7 +334,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
                     if (minion.hellfireEnergy >= 100) {
                         this.hellfireEnergy += 20;
                         this.onMinionDeath(minion);
-                        this.worldObj.createExplosion(minion, minion.posX, minion.posY, minion.posZ, 1, false);
+                        this.getEntityWorld().createExplosion(minion, minion.posX, minion.posY, minion.posZ, 1, false);
                         minion.hellfireEnergy = 0;
                         minion.setDead();
                         continue;
@@ -360,7 +360,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
                 summonAmount *= this.playerTargets.size();
                 if(summonAmount > 0)
                     for(int summonCount = 0; summonCount <= summonAmount; summonCount++) {
-                        EntityBehemoth minion = new EntityBehemoth(this.worldObj);
+                        EntityBehemoth minion = new EntityBehemoth(this.getEntityWorld());
                         this.summonMinion(minion, this.getRNG().nextDouble() * 360, 5);
                         this.hellfireBehemothMinions.add(minion);
                     }
@@ -370,7 +370,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
             if(this.updateTick % 200 == 0) {
                 int summonAmount = this.getRNG().nextInt(4) - 1; // 0-2 Belphs with 50% fail chance.
                 for(int summonCount = 0; summonCount <= summonAmount; summonCount++) {
-                    EntityBelph minion = new EntityBelph(this.worldObj);
+                    EntityBelph minion = new EntityBelph(this.getEntityWorld());
                     this.summonMinion(minion, this.getRNG().nextDouble() * 360, 5);
                 }
             }
@@ -415,7 +415,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
                 summonAmount *= this.playerTargets.size();
                 if(summonAmount > 0)
                     for(int summonCount = 0; summonCount <= summonAmount; summonCount++) {
-                        EntityBehemoth minion = new EntityBehemoth(this.worldObj);
+                        EntityBehemoth minion = new EntityBehemoth(this.getEntityWorld());
                         this.summonMinion(minion, this.getRNG().nextDouble() * 360, 5);
                         this.hellfireBehemothMinions.add(minion);
                     }
@@ -427,14 +427,14 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
                 summonAmount *= this.playerTargets.size();
                 if(summonAmount > 0)
                 for(int summonCount = 0; summonCount <= summonAmount; summonCount++) {
-                    EntityBelph minion = new EntityBelph(this.worldObj);
+                    EntityBelph minion = new EntityBelph(this.getEntityWorld());
                     this.summonMinion(minion, this.getRNG().nextDouble() * 360, 5);
                 }
                 summonAmount = this.getRNG().nextInt(3); // 0-2 Nether Souls
                 summonAmount *= this.playerTargets.size();
                 if(summonAmount > 0)
                 for(int summonCount = 0; summonCount <= summonAmount; summonCount++) {
-                    EntityNetherSoul minion = new EntityNetherSoul(this.worldObj);
+                    EntityNetherSoul minion = new EntityNetherSoul(this.getEntityWorld());
                     this.summonMinion(minion, this.getRNG().nextDouble() * 360, 5);
                 }
             }
@@ -486,7 +486,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
     //                     Hellfire
     // ==================================================
     public static void updateHellfireOrbs(EntityLivingBase entity, long orbTick, int hellfireOrbMax, int hellfireOrbEnergy, float orbSize, List<EntityHellfireOrb> hellfireOrbs) {
-        if(!entity.worldObj.isRemote)
+        if(!entity.getEntityWorld().isRemote)
             return;
 
         int hellfireChargeCount = Math.round((float)Math.min(hellfireOrbEnergy, 100) / (100F / hellfireOrbMax));
@@ -496,10 +496,10 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
 
         // Add Required Orbs:
         while(hellfireOrbs.size() < hellfireChargeCount) {
-            EntityHellfireOrb hellfireOrb = new EntityHellfireOrb(entity.worldObj, entity);
+            EntityHellfireOrb hellfireOrb = new EntityHellfireOrb(entity.getEntityWorld(), entity);
             hellfireOrb.clientOnly = true;
             hellfireOrbs.add(hellfireOrb);
-            entity.worldObj.spawnEntityInWorld(hellfireOrb);
+            entity.getEntityWorld().spawnEntity(hellfireOrb);
             hellfireOrb.setProjectileScale(orbSize);
         }
 
@@ -549,7 +549,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
     @Override
     public void rangedAttack(Entity target, float range) {
     	// Type:
-    	EntityHellfireball projectile = new EntityHellfireball(this.worldObj, this);
+    	EntityHellfireball projectile = new EntityHellfireball(this.getEntityWorld(), this);
         projectile.setProjectileScale(8f);
         if(!(target instanceof EntityPlayer))
             projectile.setBaseDamage(20);
@@ -564,13 +564,13 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
         double d0 = target.posX - this.posX + accuracy;
         double d1 = target.posY + (double)target.getEyeHeight() - 1.100000023841858D - projectile.posY + accuracy;
         double d2 = target.posZ - this.posZ + accuracy;
-        float f1 = MathHelper.sqrt_double(d0 * d0 + d2 * d2) * 0.2F;
+        float f1 = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.2F;
         float velocity = 1.2F;
         projectile.setThrowableHeading(d0, d1 + (double)f1, d2, velocity, 6.0F);
         
         // Launch:
         this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.worldObj.spawnEntityInWorld(projectile);
+        this.getEntityWorld().spawnEntity(projectile);
         super.rangedAttack(target, range);
     }
 
@@ -578,10 +578,10 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
     public void hellfireWaveAttack(double angle) {
         this.setJustAttacked();
         this.playAttackSound();
-        EntityHellfireWave hellfireWave = new EntityHellfireWave(this.worldObj, this);
+        EntityHellfireWave hellfireWave = new EntityHellfireWave(this.getEntityWorld(), this);
         hellfireWave.posY = this.posY;
         hellfireWave.rotation = angle;
-        this.worldObj.spawnEntityInWorld(hellfireWave);
+        this.getEntityWorld().spawnEntity(hellfireWave);
     }
 
     // ========== Hellfire Wall ==========
@@ -603,8 +603,8 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
 
         // Left (Positive) Wall:
         if(this.hellfireWallLeft == null) {
-            this.hellfireWallLeft = new EntityHellfireBarrier(this.worldObj, this);
-            this.worldObj.spawnEntityInWorld(this.hellfireWallLeft);
+            this.hellfireWallLeft = new EntityHellfireBarrier(this.getEntityWorld(), this);
+            this.getEntityWorld().spawnEntity(this.hellfireWallLeft);
         }
         this.hellfireWallLeft.time = 0;
         this.hellfireWallLeft.posX = this.posX;
@@ -614,8 +614,8 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
 
         // Right (Negative) Wall:
         if(this.hellfireWallRight == null) {
-            this.hellfireWallRight = new EntityHellfireBarrier(this.worldObj, this);
-            this.worldObj.spawnEntityInWorld(this.hellfireWallRight);
+            this.hellfireWallRight = new EntityHellfireBarrier(this.getEntityWorld(), this);
+            this.getEntityWorld().spawnEntity(this.hellfireWallRight);
         }
         this.hellfireWallRight.time = 0;
         this.hellfireWallRight.posX = this.posX;
@@ -640,8 +640,8 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
         this.setJustAttacked();
         this.playAttackSound();
 
-        EntityHellfireBarrier hellfireBarrier = new EntityHellfireBarrier(this.worldObj, this);
-        this.worldObj.spawnEntityInWorld(hellfireBarrier);
+        EntityHellfireBarrier hellfireBarrier = new EntityHellfireBarrier(this.getEntityWorld(), this);
+        this.getEntityWorld().spawnEntity(hellfireBarrier);
         hellfireBarrier.time = 0;
         hellfireBarrier.posX = this.posX;
         hellfireBarrier.posY = this.posY;
@@ -668,7 +668,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
     }
 
     public void hellfireBarrierCleanup() {
-        if(this.worldObj.isRemote || this.hellfireBarriers.size() < 1)
+        if(this.getEntityWorld().isRemote || this.hellfireBarriers.size() < 1)
             return;
         for(EntityHellfireBarrier hellfireBarrier : this.hellfireBarriers) {
             hellfireBarrier.setDead();
@@ -761,7 +761,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
             for(int i = 0; i < belphIDs.tagCount(); i++) {
                 NBTTagCompound belphID = belphIDs.getCompoundTagAt(i);
                 if(belphID.hasKey("ID")) {
-                    Entity entity = this.worldObj.getEntityByID(belphID.getInteger("ID"));
+                    Entity entity = this.getEntityWorld().getEntityByID(belphID.getInteger("ID"));
                     if(entity != null && entity instanceof EntityBelph)
                         this.hellfireBelphMinions.add((EntityBelph)entity);
                 }
@@ -772,7 +772,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
             for(int i = 0; i < behemothIDs.tagCount(); i++) {
                 NBTTagCompound behemothID = behemothIDs.getCompoundTagAt(i);
                 if(behemothID.hasKey("ID")) {
-                    Entity entity = this.worldObj.getEntityByID(behemothID.getInteger("ID"));
+                    Entity entity = this.getEntityWorld().getEntityByID(behemothID.getInteger("ID"));
                     if(entity != null && entity instanceof EntityBehemoth)
                         this.hellfireBehemothMinions.add((EntityBehemoth)entity);
                 }

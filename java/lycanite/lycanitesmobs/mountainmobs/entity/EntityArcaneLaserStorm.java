@@ -59,11 +59,11 @@ public class EntityArcaneLaserStorm extends EntityProjectileBase {
     @Override
     public void onUpdate() {
     	super.onUpdate();
-    	if(!this.worldObj.isRemote) {
+    	if(!this.getEntityWorld().isRemote) {
 	    	updateLasers();
     	}
     	
-    	if(this.posY > this.worldObj.getHeight() + 20)
+    	if(this.posY > this.getEntityWorld().getHeight() + 20)
     		this.setDead();
     	
     	if(this.ticksExisted >= this.expireTime * 20)
@@ -77,7 +77,7 @@ public class EntityArcaneLaserStorm extends EntityProjectileBase {
     List<EntityProjectileLaser> lasers = new ArrayList<EntityProjectileLaser>();
     int laserTick = 0;
     public void updateLasers() {
-    	World world = this.worldObj;
+    	World world = this.getEntityWorld();
 
         while(this.lasers.size() < this.laserMax) {
             EntityProjectileLaser laser;
@@ -91,7 +91,7 @@ public class EntityArcaneLaserStorm extends EntityProjectileBase {
                 laser = new EntityArcaneLaser(world, this.posX, this.posY, this.posZ, 20, 10, this);
             laser.useEntityAttackTarget = false;
             this.lasers.add(laser);
-            world.spawnEntityInWorld(laser);
+            world.spawnEntity(laser);
         }
 
         int laserCount = 0;
@@ -154,7 +154,7 @@ public class EntityArcaneLaserStorm extends EntityProjectileBase {
     @Override
     public void onImpactVisuals() {
     	for(int i = 0; i < 8; ++i)
-    		this.worldObj.spawnParticle(EnumParticleTypes.SPELL_WITCH, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
+    		this.getEntityWorld().spawnParticle(EnumParticleTypes.SPELL_WITCH, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
     }
     
     

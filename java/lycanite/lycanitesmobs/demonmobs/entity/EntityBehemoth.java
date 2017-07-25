@@ -110,30 +110,30 @@ public class EntityBehemoth extends EntityCreatureTameable implements IMob, IGro
         super.onLivingUpdate();
 
         // Sync Hellfire Energy:
-        if (!this.worldObj.isRemote)
+        if (!this.getEntityWorld().isRemote)
             this.dataManager.set(HELLFIRE_ENERGY, this.hellfireEnergy);
         else
             this.hellfireEnergy = this.dataManager.get(HELLFIRE_ENERGY);
 
         // Hellfire Update:
-        if(this.worldObj.isRemote && this.hellfireEnergy > 0)
+        if(this.getEntityWorld().isRemote && this.hellfireEnergy > 0)
             EntityRahovart.updateHellfireOrbs(this, this.updateTick, 3, this.hellfireEnergy, 1F, this.hellfireOrbs);
 
         // Trail:
-        if(!this.worldObj.isRemote && this.isMoving() && this.ticksExisted % 5 == 0) {
+        if(!this.getEntityWorld().isRemote && this.isMoving() && this.ticksExisted % 5 == 0) {
             int trailHeight = 1;
             int trailWidth = 1;
             if(this.getSubspeciesIndex() >= 3)
                 trailWidth = 3;
             for(int y = 0; y < trailHeight; y++) {
-                Block block = this.worldObj.getBlockState(this.getPosition().add(0, y, 0)).getBlock();
+                Block block = this.getEntityWorld().getBlockState(this.getPosition().add(0, y, 0)).getBlock();
                 if(block != null && (block == Blocks.AIR || block == Blocks.FIRE || block == Blocks.SNOW_LAYER || block == Blocks.TALLGRASS || block == ObjectManager.getBlock("frostfire") || block == ObjectManager.getBlock("icefire") || block == ObjectManager.getBlock("scorchfire") || block == ObjectManager.getBlock("doomfire"))) {
                     if(trailWidth == 1)
-                        this.worldObj.setBlockState(this.getPosition().add(0, y, 0), ObjectManager.getBlock("hellfire").getDefaultState());
+                        this.getEntityWorld().setBlockState(this.getPosition().add(0, y, 0), ObjectManager.getBlock("hellfire").getDefaultState());
                     else
                         for(int x = -(trailWidth / 2); x < (trailWidth / 2) + 1; x++) {
                             for(int z = -(trailWidth / 2); z < (trailWidth / 2) + 1; z++) {
-                                this.worldObj.setBlockState(this.getPosition().add(x, y, z), ObjectManager.getBlock("hellfire").getDefaultState());
+                                this.getEntityWorld().setBlockState(this.getPosition().add(x, y, z), ObjectManager.getBlock("hellfire").getDefaultState());
                             }
                         }
                 }
@@ -157,7 +157,7 @@ public class EntityBehemoth extends EntityCreatureTameable implements IMob, IGro
     @Override
     public void rangedAttack(Entity target, float range) {
     	// Type:
-    	EntityHellfireball projectile = new EntityHellfireball(this.worldObj, this);
+    	EntityHellfireball projectile = new EntityHellfireball(this.getEntityWorld(), this);
         projectile.setProjectileScale(2f);
     	
     	// Y Offset:
@@ -170,13 +170,13 @@ public class EntityBehemoth extends EntityCreatureTameable implements IMob, IGro
         double d0 = target.posX - this.posX + accuracy;
         double d1 = target.posY + (double)target.getEyeHeight() - 1.100000023841858D - projectile.posY + accuracy;
         double d2 = target.posZ - this.posZ + accuracy;
-        float f1 = MathHelper.sqrt_double(d0 * d0 + d2 * d2) * 0.2F;
+        float f1 = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.2F;
         float velocity = 1.2F;
         projectile.setThrowableHeading(d0, d1 + (double)f1, d2, velocity, 6.0F);
         
         // Launch:
         this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.worldObj.spawnEntityInWorld(projectile);
+        this.getEntityWorld().spawnEntity(projectile);
         super.rangedAttack(target, range);
     }
     

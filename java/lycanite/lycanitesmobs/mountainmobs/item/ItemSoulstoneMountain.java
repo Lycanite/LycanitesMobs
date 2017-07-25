@@ -38,9 +38,9 @@ public class ItemSoulstoneMountain extends ItemSoulstone {
 
         EntityCreatureTameable entity;
         entity = new EntityBarghest(world);
-        if(!player.worldObj.isRemote) {
+        if(!player.getEntityWorld().isRemote) {
             entity.setLocationAndAngles(player.posX, player.posY, player.posZ, player.rotationYaw, player.rotationPitch);
-            world.spawnEntityInWorld(entity);
+            world.spawnEntity(entity);
             entity.setPlayerOwner(player);
         }
 

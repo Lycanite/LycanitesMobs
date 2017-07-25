@@ -141,7 +141,7 @@ public class EntityProjectileLaser extends EntityProjectileBase {
  	// ==================================================
     @Override
     public void onUpdate() {
-    	if(!this.worldObj.isRemote) {
+    	if(!this.getEntityWorld().isRemote) {
     		this.dataManager.set(LASER_TIME, this.laserTime);
     	}
     	else {
@@ -150,7 +150,7 @@ public class EntityProjectileLaser extends EntityProjectileBase {
     	this.syncShootingEntity();
     	
     	//this.syncOffset(); Broken? :(
-    	if(!this.worldObj.isRemote && this.shootingEntity != null) {
+    	if(!this.getEntityWorld().isRemote && this.shootingEntity != null) {
     		Entity entityToFollow = this.shootingEntity;
     		if(this.followEntity != null)
     			entityToFollow = this.followEntity;
@@ -227,11 +227,11 @@ public class EntityProjectileLaser extends EntityProjectileBase {
  	//                   Update End
  	// ==================================================
 	public void updateEnd() {
-		if(this.worldObj.isRemote) {
+		if(this.getEntityWorld().isRemote) {
 			this.laserEndRef = this.dataManager.get(LASER_END_ID);
 			Entity possibleLaserEnd = null;
 			if(this.laserEndRef != -1)
-				possibleLaserEnd = this.worldObj.getEntityByID(this.laserEndRef);
+				possibleLaserEnd = this.getEntityWorld().getEntityByID(this.laserEndRef);
 			if(possibleLaserEnd != null && possibleLaserEnd instanceof EntityProjectileLaserEnd)
 				this.laserEnd = (EntityProjectileLaserEnd)possibleLaserEnd;
 			else {
@@ -246,7 +246,7 @@ public class EntityProjectileLaser extends EntityProjectileBase {
 		if(this.laserEnd == null)
 			this.laserEndRef = -1;
 		else {
-			if(!this.worldObj.isRemote)
+			if(!this.getEntityWorld().isRemote)
 				this.laserEndRef = this.laserEnd.getEntityId();
 			
 			// Entity Aiming:
@@ -272,7 +272,7 @@ public class EntityProjectileLaser extends EntityProjectileBase {
 				excludedEntities.add(this.shootingEntity);
 			if(this.followEntity != null)
 				excludedEntities.add(this.followEntity);
-			RayTraceResult target = Utilities.raytrace(this.worldObj, this.posX, this.posY, this.posZ, this.targetX, this.targetY, this.targetZ, this.laserWidth, excludedEntities);
+			RayTraceResult target = Utilities.raytrace(this.getEntityWorld(), this.posX, this.posY, this.posZ, this.targetX, this.targetY, this.targetZ, this.laserWidth, excludedEntities);
 			
 			// Update Laser End Position:
 			double newTargetX = this.targetX;
@@ -322,7 +322,7 @@ public class EntityProjectileLaser extends EntityProjectileBase {
  	//                 Fire Projectile
  	// ==================================================
     public void fireProjectile() {
-    	World world = this.worldObj;
+    	World world = this.getEntityWorld();
     	if(world.isRemote)
     		return;
     	
@@ -341,7 +341,7 @@ public class EntityProjectileLaser extends EntityProjectileBase {
 			if(this.getLaunchSound() != null)
 				this.playSound(this.getLaunchSound(), 1.0F, 1.0F / (this.rand.nextFloat() * 0.4F + 0.8F));
 	        
-	        world.spawnEntityInWorld(laserEnd);
+	        world.spawnEntity(laserEnd);
 		}
 		catch (Exception e) {
 			System.out.println("[WARNING] [LycanitesMobs] EntityLaser was unable to instantiate the EntityLaserEnd.");
@@ -354,7 +354,7 @@ public class EntityProjectileLaser extends EntityProjectileBase {
  	//               Sync Shooting Entity
  	// ==================================================
     public void syncShootingEntity() {
-    	if(!this.worldObj.isRemote) {
+    	if(!this.getEntityWorld().isRemote) {
     		if(this.shootingEntity == null) this.shootingEntityRef = -1;
     		else this.shootingEntityRef = this.shootingEntity.getEntityId();
     		this.dataManager.set(SHOOTING_ENTITY_ID, this.shootingEntityRef);
@@ -363,7 +363,7 @@ public class EntityProjectileLaser extends EntityProjectileBase {
     		this.shootingEntityRef = this.dataManager.get(SHOOTING_ENTITY_ID);
             if(this.shootingEntityRef == -1) this.shootingEntity = null;
     		else {
-    			Entity possibleShootingEntity = this.worldObj.getEntityByID(this.shootingEntityRef);
+    			Entity possibleShootingEntity = this.getEntityWorld().getEntityByID(this.shootingEntityRef);
     			if(possibleShootingEntity != null && possibleShootingEntity instanceof EntityLivingBase)
     				this.shootingEntity = (EntityLivingBase)possibleShootingEntity;
     			else
@@ -373,7 +373,7 @@ public class EntityProjectileLaser extends EntityProjectileBase {
     }
     
     public void syncOffset() {
-    	if(!this.worldObj.isRemote) {
+    	if(!this.getEntityWorld().isRemote) {
     		this.dataManager.set(OFFSET_X, (float) this.offsetX);
     		this.dataManager.set(OFFSET_Y, (float) this.offsetY);
     		this.dataManager.set(OFFSET_Z, (float) this.offsetZ);

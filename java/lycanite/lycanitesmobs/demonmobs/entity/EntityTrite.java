@@ -92,7 +92,7 @@ public class EntityTrite extends EntityCreatureBase implements IMob, IGroupDemon
         super.onLivingUpdate();
         
         // Leap:
-        if(this.hasAttackTarget() && this.onGround && !this.worldObj.isRemote && this.rand.nextInt(10) == 0)
+        if(this.hasAttackTarget() && this.onGround && !this.getEntityWorld().isRemote && this.rand.nextInt(10) == 0)
         	this.leap(6.0F, 0.6D, this.getAttackTarget());
     }
     

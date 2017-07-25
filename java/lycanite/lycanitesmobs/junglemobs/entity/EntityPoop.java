@@ -58,7 +58,7 @@ public class EntityPoop extends EntityProjectileBase {
     //========== Can Destroy Block ==========
     @Override
     public boolean canDestroyBlock(BlockPos pos) {
-        Block block = this.worldObj.getBlockState(pos).getBlock();
+        Block block = this.getEntityWorld().getBlockState(pos).getBlock();
         if(ObjectManager.getBlock("PoisonCloud") != null && block == ObjectManager.getBlock("PoisonCloud"))
             return true;
         if(ObjectManager.getBlock("PoopCloud") != null && block == ObjectManager.getBlock("PoopCloud"))
@@ -78,7 +78,7 @@ public class EntityPoop extends EntityProjectileBase {
     @Override
     public void onImpactVisuals() {
     	for(int i = 0; i < 8; ++i)
-            this.worldObj.spawnParticle(EnumParticleTypes.BLOCK_CRACK,
+            this.getEntityWorld().spawnParticle(EnumParticleTypes.BLOCK_CRACK,
                     this.posX, this.posY, this.posZ,
                     0.0D, 0.0D, 0.0D,
                     Blocks.TALLGRASS.getStateId(Blocks.DIRT.getDefaultState())

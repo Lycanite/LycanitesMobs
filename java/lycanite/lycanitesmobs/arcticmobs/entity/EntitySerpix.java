@@ -136,30 +136,30 @@ public class EntitySerpix extends EntityCreatureTameable implements IGroupPredat
         // Type:
         List<EntityProjectileRapidFire> projectiles = new ArrayList<EntityProjectileRapidFire>();
 
-        EntityProjectileRapidFire projectileEntry = new EntityProjectileRapidFire(EntityBlizzard.class, this.worldObj, this, 15, 3);
+        EntityProjectileRapidFire projectileEntry = new EntityProjectileRapidFire(EntityBlizzard.class, this.getEntityWorld(), this, 15, 3);
         projectiles.add(projectileEntry);
 
-        EntityProjectileRapidFire projectileEntry2 = new EntityProjectileRapidFire(EntityBlizzard.class, this.worldObj, this, 15, 3);
+        EntityProjectileRapidFire projectileEntry2 = new EntityProjectileRapidFire(EntityBlizzard.class, this.getEntityWorld(), this, 15, 3);
         projectileEntry2.offsetX += 1.0D;
         projectiles.add(projectileEntry2);
 
-        EntityProjectileRapidFire projectileEntry3 = new EntityProjectileRapidFire(EntityBlizzard.class, this.worldObj, this, 15, 3);
+        EntityProjectileRapidFire projectileEntry3 = new EntityProjectileRapidFire(EntityBlizzard.class, this.getEntityWorld(), this, 15, 3);
         projectileEntry3.offsetX -= 1.0D;
         projectiles.add(projectileEntry3);
 
-        EntityProjectileRapidFire projectileEntry4 = new EntityProjectileRapidFire(EntityBlizzard.class, this.worldObj, this, 15, 3);
+        EntityProjectileRapidFire projectileEntry4 = new EntityProjectileRapidFire(EntityBlizzard.class, this.getEntityWorld(), this, 15, 3);
         projectileEntry4.offsetZ += 1.0D;
         projectiles.add(projectileEntry4);
 
-        EntityProjectileRapidFire projectileEntry5 = new EntityProjectileRapidFire(EntityBlizzard.class, this.worldObj, this, 15, 3);
+        EntityProjectileRapidFire projectileEntry5 = new EntityProjectileRapidFire(EntityBlizzard.class, this.getEntityWorld(), this, 15, 3);
         projectileEntry5.offsetZ -= 1.0D;
         projectiles.add(projectileEntry5);
 
-        EntityProjectileRapidFire projectileEntry6 = new EntityProjectileRapidFire(EntityBlizzard.class, this.worldObj, this, 15, 3);
+        EntityProjectileRapidFire projectileEntry6 = new EntityProjectileRapidFire(EntityBlizzard.class, this.getEntityWorld(), this, 15, 3);
         projectileEntry6.offsetY += 1.0D;
         projectiles.add(projectileEntry6);
 
-        EntityProjectileRapidFire projectileEntry7 = new EntityProjectileRapidFire(EntityBlizzard.class, this.worldObj, this, 15, 3);
+        EntityProjectileRapidFire projectileEntry7 = new EntityProjectileRapidFire(EntityBlizzard.class, this.getEntityWorld(), this, 15, 3);
         projectileEntry7.offsetY -= 10D;
         projectiles.add(projectileEntry7);
 
@@ -177,14 +177,14 @@ public class EntitySerpix extends EntityCreatureTameable implements IGroupPredat
             double d0 = target.posX - launchPos.getX() + accuracy;
             double d1 = target.posY + (double)target.getEyeHeight() - 1.100000023841858D - projectile.posY + accuracy;
             double d2 = target.posZ - launchPos.getZ() + accuracy;
-            float f1 = MathHelper.sqrt_double(d0 * d0 + d2 * d2) * 0.2F;
+            float f1 = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.2F;
             float velocity = 1.2F;
             projectile.setThrowableHeading(d0, d1 + (double)f1, d2, velocity, 6.0F);
 
             // Launch:
             this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
             projectile.setPosition(launchPos.getX(), launchPos.getY(), launchPos.getZ());
-            this.worldObj.spawnEntityInWorld(projectile);
+            this.getEntityWorld().spawnEntity(projectile);
         }
 
         super.rangedAttack(target, range);
@@ -198,7 +198,7 @@ public class EntitySerpix extends EntityCreatureTameable implements IGroupPredat
     public boolean canStealth() {
         if(this.isTamed() && this.isSitting())
             return false;
-        IBlockState blockState = this.worldObj.getBlockState(this.getPosition().add(0, -1, 0));
+        IBlockState blockState = this.getEntityWorld().getBlockState(this.getPosition().add(0, -1, 0));
         if(blockState.getBlock() != Blocks.AIR) {
             if(blockState.getMaterial() == Material.GROUND) return true;
             if(blockState.getMaterial() == Material.GRASS) return true;
@@ -265,7 +265,7 @@ public class EntitySerpix extends EntityCreatureTameable implements IGroupPredat
     // ========== Create Child ==========
     @Override
 	public EntityCreatureAgeable createChild(EntityCreatureAgeable baby) {
-		return new EntitySerpix(this.worldObj);
+		return new EntitySerpix(this.getEntityWorld());
 	}
 	
 	// ========== Breeding Item ==========

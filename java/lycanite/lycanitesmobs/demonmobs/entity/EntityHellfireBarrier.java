@@ -62,7 +62,7 @@ public class EntityHellfireBarrier extends EntityProjectileBase {
     // ==================================================
     @Override
     public void onUpdate() {
-        if(this.worldObj.isRemote)
+        if(this.getEntityWorld().isRemote)
             return;
 
         // Time Update:
@@ -75,9 +75,9 @@ public class EntityHellfireBarrier extends EntityProjectileBase {
             for(int row = 0; row < this.hellfireHeight; row++) {
                 for(int col = 0; col < this.hellfireWidth; col++) {
                     if(this.getThrower() != null)
-                        hellfireWalls[row][col] = new EntityHellfireWall(this.worldObj, this.getThrower());
+                        hellfireWalls[row][col] = new EntityHellfireWall(this.getEntityWorld(), this.getThrower());
                     else
-                        hellfireWalls[row][col] = new EntityHellfireWall(this.worldObj, this.posX, this.posY + (this.hellfireSize * row), this.posZ);
+                        hellfireWalls[row][col] = new EntityHellfireWall(this.getEntityWorld(), this.posX, this.posY + (this.hellfireSize * row), this.posZ);
 
                     double rotationRadians = Math.toRadians(this.rotation);
                     double x = (((float)col / this.hellfireWidth) * (this.hellfireSize * 10)) * Math.cos(rotationRadians) + Math.sin(rotationRadians);
@@ -87,7 +87,7 @@ public class EntityHellfireBarrier extends EntityProjectileBase {
                     hellfireWalls[row][col].posZ = this.posZ + z;
                     hellfireWalls[row][col].projectileLife = 2 * 20;
 
-                    this.worldObj.spawnEntityInWorld(hellfireWalls[row][col]);
+                    this.getEntityWorld().spawnEntity(hellfireWalls[row][col]);
                     hellfireWalls[row][col].setProjectileScale(this.hellfireSize * 2);
                 }
             }

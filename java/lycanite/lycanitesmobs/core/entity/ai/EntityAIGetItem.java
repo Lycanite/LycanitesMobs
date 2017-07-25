@@ -82,7 +82,7 @@ public class EntityAIGetItem extends EntityAIBase {
     	
         double heightDistance = 4.0D;
         if(this.host.useDirectNavigator()) heightDistance = this.distanceMax;
-        List<EntityItem> possibleTargets = this.host.worldObj.getEntitiesWithinAABB(EntityItem.class, this.host.getEntityBoundingBox().expand(this.distanceMax, heightDistance, this.distanceMax), this.targetSelector);
+        List<EntityItem> possibleTargets = this.host.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, this.host.getEntityBoundingBox().expand(this.distanceMax, heightDistance, this.distanceMax), this.targetSelector);
         
         if(possibleTargets.isEmpty())
             return false;

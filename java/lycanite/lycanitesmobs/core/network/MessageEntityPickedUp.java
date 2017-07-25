@@ -38,7 +38,7 @@ public class MessageEntityPickedUp implements IMessage, IMessageHandler<MessageE
 	public IMessage onMessage(MessageEntityPickedUp message, MessageContext ctx) {
 		if(ctx.side != Side.CLIENT) return null;
 		EntityPlayer player = LycanitesMobs.proxy.getClientPlayer();
-		World world = player.worldObj;
+		World world = player.getEntityWorld();
 		Entity pickedUpEntity = world.getEntityByID(message.pickedUpEntityID);
 		Entity pickedUpByEntity = message.pickedUpByEntityID != 0 ? world.getEntityByID(message.pickedUpByEntityID) : null;
 

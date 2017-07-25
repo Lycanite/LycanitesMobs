@@ -126,7 +126,7 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
     public void onLivingUpdate() {
         super.onLivingUpdate();
         
-        if(!this.worldObj.isRemote && this.getSubspeciesIndex() == 3 && !this.isPetType("familiar")) {
+        if(!this.getEntityWorld().isRemote && this.getSubspeciesIndex() == 3 && !this.isPetType("familiar")) {
 	    	// Random Charging:
 	    	if(this.hasAttackTarget() && this.getDistanceSqToEntity(this.getAttackTarget()) > 1 && this.getRNG().nextInt(20) == 0) {
 	    		if(this.posY - 1 > this.getAttackTarget().posY)
@@ -135,16 +135,16 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
 	    			this.leap(6.0F, 1.0D, this.getAttackTarget());
 	    		else
 	    			this.leap(6.0F, 0D, this.getAttackTarget());
-	    		if(this.worldObj.getGameRules().getBoolean("mobGriefing") && this.geonachBlockBreakRadius > -1 && !this.isTamed()) {
+	    		if(this.getEntityWorld().getGameRules().getBoolean("mobGriefing") && this.geonachBlockBreakRadius > -1 && !this.isTamed()) {
 		    		this.destroyArea((int)this.posX, (int)this.posY, (int)this.posZ, 10, true, this.geonachBlockBreakRadius);
 	    		}
 	    	}
         }
 
         // Particles:
-        if(this.worldObj.isRemote)
+        if(this.getEntityWorld().isRemote)
             for(int i = 0; i < 2; ++i) {
-                this.worldObj.spawnParticle(EnumParticleTypes.BLOCK_CRACK,
+                this.getEntityWorld().spawnParticle(EnumParticleTypes.BLOCK_CRACK,
                         this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width,
                         this.posY + this.rand.nextDouble() * (double) this.height,
                         this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width,

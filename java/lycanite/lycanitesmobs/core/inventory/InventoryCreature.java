@@ -50,7 +50,8 @@ public class InventoryCreature implements IInventory {
 	// Properties:
 	public EntityCreatureBase creature;
 	public String inventoryName = "Creature Inventory";
-    protected ItemStack[] items;
+	protected NonNullList<ItemStack> inventoryContents;
+    //protected ItemStack[] items; Changed from array to list.
     //protected Map<String, ItemStack> equipment = new HashMap<String, ItemStack>();
     protected boolean basicArmor = true;
     protected int nextEquipmentSlot = 0;
@@ -81,7 +82,7 @@ public class InventoryCreature implements IInventory {
     /** Registers parameters to the provided datamanager. **/
     public static void registerDataParameters(EntityDataManager dataManager) {
         for(String equipmentType : equipmentTypes)
-            dataManager.register(getEquipmentDataParameter(equipmentType), ItemStack.field_190927_a);
+            dataManager.register(getEquipmentDataParameter(equipmentType), ItemStack.EMPTY);
     }
 
 	
@@ -94,7 +95,7 @@ public class InventoryCreature implements IInventory {
 		this.addEquipmentSlot("chest");
 		this.addEquipmentSlot("saddle");
 		this.addEquipmentSlot("bag");
-		items = new ItemStack[this.getSizeInventory()];
+		this.inventoryContents = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
 	}
 
     protected void addEquipmentSlot(String type) {
@@ -149,18 +150,18 @@ public class InventoryCreature implements IInventory {
 	
 	/** Returns true if this mob has any items in it's bag slots. **/
 	public boolean hasBagItems() {
-		for(ItemStack itemStack : items) {
+		for(ItemStack itemStack : this.inventoryContents) {
 			if(itemStack != null)
 				return true;
 		}
 		return false;
 	}
 
-    /** I think this checks extensively whether or not this inventory is empty. **/
+    /** Returns true if this inventory is empty. **/
     @Override
-    public boolean func_191420_l() { // isEmpty?
-        for (ItemStack itemstack : this.items) {
-            if (!itemstack.func_190926_b()) {
+    public boolean isEmpty() {
+        for (ItemStack itemstack : this.inventoryContents) {
+            if (!itemstack.isEmpty()) {
                 return false;
             }
         }
@@ -172,7 +173,7 @@ public class InventoryCreature implements IInventory {
   	//                      Actions
   	// ==================================================
 	public void onInventoryChanged() {
-		if(this.creature.worldObj.isRemote)
+		if(this.creature.getEntityWorld().isRemote)
 			return;
 		
 		// Empty Bag if Removed:
@@ -193,7 +194,7 @@ public class InventoryCreature implements IInventory {
             if(dataParameter == null)
                 continue;
 			if(itemStack == null)
-                this.creature.getDataManager().set(dataParameter, ItemStack.field_190927_a);
+                this.creature.getDataManager().set(dataParameter, ItemStack.EMPTY);
             else
 			    this.creature.getDataManager().set(dataParameter, itemStack);
 		}
@@ -202,7 +203,7 @@ public class InventoryCreature implements IInventory {
 	}
 	
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
+	public boolean isUsableByPlayer(EntityPlayer entityplayer) {
 		return true;
 	}
 	
@@ -241,7 +242,7 @@ public class InventoryCreature implements IInventory {
 		if(slotID >= this.getSizeInventory() || slotID < 0)
 			return null;
 		else
-			return items[slotID];
+			return this.inventoryContents.get(slotID);
 	}
 
 	@Override
@@ -254,12 +255,12 @@ public class InventoryCreature implements IInventory {
 		if(slotID >= this.getSizeInventory() || slotID < 0)
 			return;
         if(itemStack != null) {
-	        if(itemStack.func_190916_E() > this.getInventoryStackLimit())
-	        	itemStack.func_190920_e(this.getInventoryStackLimit());
-	        if(itemStack.func_190916_E() < 1)
+	        if(itemStack.getCount() > this.getInventoryStackLimit())
+	        	itemStack.setCount(this.getInventoryStackLimit());
+	        if(itemStack.getCount() < 1)
 	        	itemStack = null;
         }
-		items[slotID] = itemStack;
+		this.inventoryContents.set(slotID, itemStack);
 	}
 	
 	// ========== Decrease Stack Size ==========
@@ -281,13 +282,13 @@ public class InventoryCreature implements IInventory {
 		if(itemStack == null)
 			return splitStacks;
 		
-        if(itemStack.func_190916_E() <= amount) {
+        if(itemStack.getCount() <= amount) {
             splitStacks[0] = null;
             splitStacks[1] = itemStack;
         }
         else {
         	splitStacks[1] = itemStack.splitStack(amount);
-            if(itemStack.func_190916_E() == 0)
+            if(itemStack.getCount() == 0)
             	itemStack = null;
             splitStacks[0] = itemStack;
         }
@@ -311,52 +312,52 @@ public class InventoryCreature implements IInventory {
 	public int getSpaceForStack(ItemStack itemStack) {
 		if(itemStack == null)
 			return 0;
-		if(itemStack.getItem() == null || itemStack.func_190916_E() < 1)
+		if(itemStack.getItem() == null || itemStack.getCount() < 1)
 			return 0;
 		
 		int space = 0;
-		for(int slotID = 0; slotID < this.items.length; slotID++) {
+		for(int slotID = 0; slotID < this.inventoryContents.size(); slotID++) {
 			if(this.isItemValidForSlot(slotID, itemStack)) {
-				ItemStack slotStack = items[slotID];
+				ItemStack slotStack = this.inventoryContents.get(slotID);
 				if(slotStack != null) {
-					if(slotStack.func_190916_E() < slotStack.getMaxStackSize())
+					if(slotStack.getCount() < slotStack.getMaxStackSize())
 						if(slotStack.getItem() == itemStack.getItem() && slotStack.getItemDamage() == itemStack.getItemDamage())
-							space += slotStack.getMaxStackSize() - slotStack.func_190916_E();
+							space += slotStack.getMaxStackSize() - slotStack.getCount();
 				}
 				else
 					space += itemStack.getMaxStackSize();
 			}
-			if(space >= itemStack.func_190916_E())
+			if(space >= itemStack.getCount())
 				break;
 		}
 		
-		return Math.min(space, itemStack.func_190916_E());
+		return Math.min(space, itemStack.getCount());
 	}
 	
 	// ========== Auto Insert Item Stack ==========
 	public ItemStack autoInsertStack(ItemStack itemStack) {
 		if(itemStack == null)
 			return itemStack;
-		if(itemStack.getItem() == null || itemStack.func_190916_E() < 1)
+		if(itemStack.getItem() == null || itemStack.getCount() < 1)
 			return null;
 		
-		for(int slotID = 0; slotID < this.items.length; slotID++) {
-			ItemStack slotStack = items[slotID];
+		for(int slotID = 0; slotID < this.inventoryContents.size(); slotID++) {
+			ItemStack slotStack = this.inventoryContents.get(slotID);
 			
 			// If there is a stack in the slot:
 			if(slotStack != null) {
-				if(slotStack.func_190916_E() < slotStack.getMaxStackSize())
+				if(slotStack.getCount() < slotStack.getMaxStackSize())
 					if(slotStack.getItem() == itemStack.getItem() && slotStack.getItemDamage() == itemStack.getItemDamage()) {
-						int space = Math.max(slotStack.getMaxStackSize() - slotStack.func_190916_E(), 0);
+						int space = Math.max(slotStack.getMaxStackSize() - slotStack.getCount(), 0);
 						
 						// If there is more than or just enough room:
-						if(space >= itemStack.func_190916_E()) {
-							this.getStackInSlot(slotID).func_190920_e(this.getStackInSlot(slotID).func_190916_E() + itemStack.func_190916_E());
+						if(space >= itemStack.getCount()) {
+							this.getStackInSlot(slotID).setCount(this.getStackInSlot(slotID).getCount() + itemStack.getCount());
 									itemStack = null;
 						}
 						else {
-                            this.getStackInSlot(slotID).func_190920_e(this.getStackInSlot(slotID).func_190916_E() + space);
-                            itemStack.func_190920_e(itemStack.func_190916_E() - space);
+                            this.getStackInSlot(slotID).setCount(this.getStackInSlot(slotID).getCount() + space);
+                            itemStack.setCount(itemStack.getCount() - space);
 						}
 					}
 			}
@@ -409,7 +410,7 @@ public class InventoryCreature implements IInventory {
 	public ItemStack getEquipmentStack(String type) {
 		if(getEquipmentDataParameter(type) == null)
 			return null;
-		if(this.creature.worldObj.isRemote) {
+		if(this.creature.getEntityWorld().isRemote) {
 			return this.creature.getDataManager().get(getEquipmentDataParameter(type));
 		}
 		else
@@ -418,7 +419,7 @@ public class InventoryCreature implements IInventory {
 	
 	// ========== Set Equipment ==========
 	public void setEquipmentStack(String type, ItemStack itemStack) {
-		if(!this.creature.worldObj.isRemote && this.equipmentTypeToSlot.containsKey(type) && this.isEquipmentValidForSlot(type, itemStack))
+		if(!this.creature.getEntityWorld().isRemote && this.equipmentTypeToSlot.containsKey(type) && this.isEquipmentValidForSlot(type, itemStack))
 			this.setInventorySlotContents(this.getSlotFromType(type), itemStack);
 	}
 	public void setEquipmentStack(ItemStack itemStack) {
@@ -521,11 +522,13 @@ public class InventoryCreature implements IInventory {
   	//                   Drop Inventory
   	// ==================================================
 	public void dropInventory() {
-		for(ItemStack itemStack : this.items)
-			if(itemStack != null) {
+		for(int slotID = 0; slotID < this.inventoryContents.size(); slotID++) {
+			ItemStack itemStack = this.inventoryContents.get(slotID);
+			if (itemStack != null) {
 				this.creature.dropItem(itemStack);
-				itemStack = null;
+				this.setInventorySlotContentsNoUpdate(slotID, ItemStack.EMPTY);
 			}
+		}
 	}
     
     
@@ -535,13 +538,13 @@ public class InventoryCreature implements IInventory {
    	// ========== Read ===========
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
     	// Read Items:
-        NonNullList<ItemStack> itemStacks = NonNullList.<ItemStack>func_191197_a(this.getSizeInventory(), ItemStack.field_190927_a);
-        ItemStackHelper.func_191283_b(nbtTagCompound, itemStacks); // Reads ItemStack into a List from NBT Tag Compound.
+        NonNullList<ItemStack> itemStacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
+        ItemStackHelper.loadAllItems(nbtTagCompound, itemStacks); // Reads ItemStack into a List from NBT Tag Compound.
 
     	for(int i = 0; i < itemStacks.size(); ++i) {
     		if(i < this.getSizeInventory()) {
                 ItemStack itemStack = itemStacks.get(i);
-                if(itemStack.func_190926_b())
+                if(itemStack.isEmpty())
                     this.setInventorySlotContentsNoUpdate(i, null);
                 else
                     this.setInventorySlotContentsNoUpdate(i, itemStack);
@@ -553,12 +556,12 @@ public class InventoryCreature implements IInventory {
     // ========== Write ==========
     public void writeToNBT(NBTTagCompound nbtTagCompound) {
     	// Write Items:
-        NonNullList<ItemStack> itemStacks = NonNullList.<ItemStack>func_191197_a(this.getSizeInventory(), ItemStack.field_190927_a);
+        NonNullList<ItemStack> itemStacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
         for(int i = 0; i < this.getSizeInventory(); i++) {
             if(this.getStackInSlot(i) != null)
                 itemStacks.set(i, this.getStackInSlot(i));
         }
-        ItemStackHelper.func_191282_a(nbtTagCompound, itemStacks); // Adds ItemStack NBT into the NBT Tag Compound.
+        ItemStackHelper.saveAllItems(nbtTagCompound, itemStacks); // Adds ItemStack NBT into the NBT Tag Compound.
     	
     }
 

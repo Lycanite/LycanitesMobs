@@ -155,7 +155,7 @@ public class ContainerBase extends Container {
 		        	return null;
         }
         
-        if(slotStack.func_190916_E() == 0)
+        if(slotStack.getCount() == 0)
             slot.putStack((ItemStack)null);
         else
             slot.onSlotChanged();

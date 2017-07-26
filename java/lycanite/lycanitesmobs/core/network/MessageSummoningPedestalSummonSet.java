@@ -78,7 +78,7 @@ public class MessageSummoningPedestalSummonSet implements IMessage, IMessageHand
         this.x = packet.readInt();
         this.y = packet.readInt();
         this.z = packet.readInt();
-        this.summonType = packet.readStringFromBuffer(256);
+        this.summonType = packet.readString(256);
         this.behaviour = packet.readByte();
 	}
 	

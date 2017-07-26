@@ -1,12 +1,15 @@
 package lycanite.lycanitesmobs.plainsmobs.entity;
 
 import lycanite.lycanitesmobs.ExtendedEntity;
+import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupHunter;
 import lycanite.lycanitesmobs.api.IGroupPrey;
 import lycanite.lycanitesmobs.core.config.ConfigBase;
 import lycanite.lycanitesmobs.core.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.core.entity.EntityCreatureRideable;
 import lycanite.lycanitesmobs.core.entity.ai.*;
 import lycanite.lycanitesmobs.core.info.DropRate;
+import lycanite.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -26,7 +29,7 @@ import net.minecraft.world.World;
 
 import java.util.HashMap;
 
-public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter {
+public class EntityRoc extends EntityCreatureRideable implements IMob, IGroupHunter {
     public EntityAIAttackMelee attackAI;
 
     public boolean creeperDropping = true;
@@ -59,11 +62,17 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
+        this.tasks.addTask(2, new EntityAIPlayerControl(this));
+        this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("ventoraptortreat"))).setTemptDistanceMin(4.0D));
         this.attackAI = new EntityAIAttackMelee(this).setLongMemory(false);
-        this.tasks.addTask(3, this.attackAI);
+        this.tasks.addTask(5, this.attackAI);
         this.tasks.addTask(8, new EntityAIWander(this).setPauseRate(0));
+        this.tasks.addTask(9, new EntityAIBeg(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
+
+        this.targetTasks.addTask(0, new EntityAITargetRiderRevenge(this));
+        this.targetTasks.addTask(1, new EntityAITargetRiderAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityCreeper.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
@@ -101,7 +110,7 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
         super.onLivingUpdate();
         
         // Entity Pickup Update:
-        if(!this.getEntityWorld().isRemote) {
+        if(!this.getEntityWorld().isRemote && this.getControllingPassenger() == null) {
             // Attack AI and Creeper Carrying:
 	    	this.attackAI.setEnabled(this.hasPickupEntity() ? this.getPickupEntity() instanceof EntityCreeper : this.creeperDropCooldown <= 0);
             if(this.creeperDropCooldown > 0) {
@@ -154,6 +163,14 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
         }
     }
 
+    @Override
+    public void riderEffects(EntityLivingBase rider) {
+        if(rider.isPotionActive(MobEffects.WEAKNESS))
+            rider.removePotionEffect(MobEffects.WEAKNESS);
+        if(rider.isPotionActive(MobEffects.SLOWNESS))
+            rider.removePotionEffect(MobEffects.SLOWNESS);
+    }
+
 
     // ==================================================
     //                      Movement
@@ -176,7 +193,7 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
     	if(!super.meleeAttack(target, damageScale))
     		return false;
 
-        if(target instanceof EntityLivingBase) {
+        if(target instanceof EntityLivingBase && this.getControllingPassenger() == null) {
             EntityLivingBase entityLivingBase = (EntityLivingBase)target;
             // Pickup:
             if (this.canPickupEntity(entityLivingBase)) {
@@ -242,7 +259,7 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
     // ==================================================
     //                     Pet Control
     // ==================================================
-    public boolean petControlsEnabled() { return true; }
+    public boolean petControlsEnabled() { return false; }
     
     
     // ==================================================
@@ -259,6 +276,15 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
 
 
     // ==================================================
+    //                     Equipment
+    // ==================================================
+    @Override
+    public int getNoBagSize() { return 0; }
+    @Override
+    public int getBagSize() { return 5; }
+
+
+    // ==================================================
     //                     Positions
     // ==================================================
     // ========== Get Wander Position ==========
@@ -266,7 +292,76 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
     @Override
     public BlockPos getWanderPosition(BlockPos wanderPosition) {
         if(this.hasPickupEntity() && this.getPickupEntity() instanceof EntityPlayer)
-            wanderPosition = new BlockPos(wanderPosition.getX(), this.restrictYHeightFromGround(wanderPosition, 6, 14), wanderPosition.getZ());
-        return wanderPosition;
+            return new BlockPos(wanderPosition.getX(), this.restrictYHeightFromGround(wanderPosition, 6, 14), wanderPosition.getZ());
+        return super.getWanderPosition(wanderPosition);
+    }
+
+
+    // ==================================================
+    //                       Taming
+    // ==================================================
+    @Override
+    public boolean isTamingItem(ItemStack itemStack) {
+        if(itemStack == null)
+            return false;
+        return itemStack.getItem() == ObjectManager.getItem("ventoraptortreat"); //TODO Change to roctreat
+    }
+
+
+    // ==================================================
+    //                       Healing
+    // ==================================================
+    // ========== Healing Item ==========
+    @Override
+    public boolean isHealingItem(ItemStack testStack) {
+        return ObjectLists.inItemList("CookedMeat", testStack);
+    }
+
+
+    // ==================================================
+    //                      Movement
+    // ==================================================
+    @Override
+    public double getMountedYOffset() {
+        return (double)this.height * 0.9D;
+    }
+
+
+    // ==================================================
+    //                   Mount Ability
+    // ==================================================
+    @Override
+    public void mountAbility(Entity rider) {
+        if(this.getEntityWorld().isRemote)
+            return;
+
+        if(this.abilityToggled)
+            return;
+
+        if(this.hasPickupEntity()) {
+            this.dropPickupEntity();
+            return;
+        }
+
+        if(this.getStamina() < this.getStaminaCost())
+            return;
+
+        EntityLivingBase nearestTarget = this.getNearestEntity(EntityLivingBase.class, null, 4, true);
+        if(this.canPickupEntity(nearestTarget))
+            this.pickupEntity(nearestTarget);
+
+        this.applyStaminaCost();
+    }
+
+    public float getStaminaCost() {
+        return 20;
+    }
+
+    public int getStaminaRecoveryWarmup() {
+        return 5 * 20;
+    }
+
+    public float getStaminaRecoveryMax() {
+        return 1.0F;
     }
 }

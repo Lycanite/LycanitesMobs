@@ -170,5 +170,9 @@
     "block.icefire": {
         "category": "block",
         "sounds": [{"name": "arcticmobs:block/icefire", "stream": false}]
+    },
+    "block.ooze": {
+        "category": "block",
+        "sounds": [{"name": "arcticmobs:block/ooze", "stream": false}]
     }
 }

@@ -88,7 +88,7 @@ public class BlockBase extends Block {
     //                      Info
     // ==================================================
     @Override
-    public void func_190948_a(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) { //addInformation
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
         tooltip.add(this.getDescription(stack, player));
     }
 

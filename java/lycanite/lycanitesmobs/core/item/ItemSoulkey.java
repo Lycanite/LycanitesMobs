@@ -45,7 +45,7 @@ public class ItemSoulkey extends ItemBase {
         ItemStack itemStack = player.getHeldItem(hand);
         if(!AltarInfo.checkAltarsEnabled() && !player.getEntityWorld().isRemote) {
             String message = I18n.translateToLocal("message.soulkey.disabled");
-            player.addChatMessage(new TextComponentString(message));
+            player.sendMessage(new TextComponentString(message));
             return EnumActionResult.FAIL;
         }
 
@@ -60,7 +60,7 @@ public class ItemSoulkey extends ItemBase {
         }
         if(possibleAltars.isEmpty()) {
             String message = I18n.translateToLocal("message.soulkey.none");
-            player.addChatMessage(new TextComponentString(message));
+            player.sendMessage(new TextComponentString(message));
             return EnumActionResult.FAIL;
         }
 
@@ -77,16 +77,16 @@ public class ItemSoulkey extends ItemBase {
                 }
                 if(!altarInfo.activate(player, world, pos)) {
                     String message = I18n.translateToLocal("message.soulkey.badlocation");
-                    player.addChatMessage(new TextComponentString(message));
+                    player.sendMessage(new TextComponentString(message));
                     return EnumActionResult.FAIL;
                 }
                 String message = I18n.translateToLocal("message.soulkey.active");
-                player.addChatMessage(new TextComponentString(message));
+                player.sendMessage(new TextComponentString(message));
                 return EnumActionResult.SUCCESS;
             }
         }
         String message = I18n.translateToLocal("message.soulkey.invalid");
-        player.addChatMessage(new TextComponentString(message));
+        player.sendMessage(new TextComponentString(message));
 
         return EnumActionResult.FAIL;
     }

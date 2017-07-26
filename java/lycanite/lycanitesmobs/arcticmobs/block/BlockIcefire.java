@@ -111,7 +111,7 @@ public class BlockIcefire extends BlockFireBase {
             entityLiving.addPotionEffect(effectSlowness);
         }
 
-        entity.attackEntityFrom(DamageSource.magic, 2);
+        entity.attackEntityFrom(DamageSource.MAGIC, 2);
     }
     
     

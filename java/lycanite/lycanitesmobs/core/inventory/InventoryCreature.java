@@ -260,6 +260,8 @@ public class InventoryCreature implements IInventory {
 	        if(itemStack.getCount() < 1)
 	        	itemStack = null;
         }
+        if(itemStack == null)
+        	itemStack = ItemStack.EMPTY;
 		this.inventoryContents.set(slotID, itemStack);
 	}
 	
@@ -298,10 +300,12 @@ public class InventoryCreature implements IInventory {
 	@Override
 	public boolean isItemValidForSlot(int slotID, ItemStack itemStack) {
 		String type = this.getTypeFromSlot(slotID);
+		System.out.println("Checking if " + itemStack + " is valid for slot: " + slotID + " type: " + type + "...");
 		if(type != null) {
 			if(!this.isEquipmentValidForSlot(type, itemStack))
 				return false;
-			if(this.getStackInSlot(slotID) != null)
+			ItemStack equipedStack = this.getStackInSlot(slotID);
+			if(equipedStack != null && !equipedStack.isEmpty())
 				return false;
 				
 		}
@@ -318,8 +322,8 @@ public class InventoryCreature implements IInventory {
 		int space = 0;
 		for(int slotID = 0; slotID < this.inventoryContents.size(); slotID++) {
 			if(this.isItemValidForSlot(slotID, itemStack)) {
-				ItemStack slotStack = this.inventoryContents.get(slotID);
-				if(slotStack != null) {
+				ItemStack slotStack = this.getStackInSlot(slotID);
+				if(slotStack != null && slotStack != ItemStack.EMPTY && !slotStack.isEmpty()) {
 					if(slotStack.getCount() < slotStack.getMaxStackSize())
 						if(slotStack.getItem() == itemStack.getItem() && slotStack.getItemDamage() == itemStack.getItemDamage())
 							space += slotStack.getMaxStackSize() - slotStack.getCount();
@@ -330,7 +334,7 @@ public class InventoryCreature implements IInventory {
 			if(space >= itemStack.getCount())
 				break;
 		}
-		
+
 		return Math.min(space, itemStack.getCount());
 	}
 	
@@ -340,12 +344,12 @@ public class InventoryCreature implements IInventory {
 			return itemStack;
 		if(itemStack.getItem() == null || itemStack.getCount() < 1)
 			return null;
-		
+
 		for(int slotID = 0; slotID < this.inventoryContents.size(); slotID++) {
 			ItemStack slotStack = this.inventoryContents.get(slotID);
 			
 			// If there is a stack in the slot:
-			if(slotStack != null) {
+			if(slotStack != null && slotStack != ItemStack.EMPTY && !slotStack.isEmpty()) {
 				if(slotStack.getCount() < slotStack.getMaxStackSize())
 					if(slotStack.getItem() == itemStack.getItem() && slotStack.getItemDamage() == itemStack.getItemDamage()) {
 						int space = Math.max(slotStack.getMaxStackSize() - slotStack.getCount(), 0);
@@ -409,7 +413,7 @@ public class InventoryCreature implements IInventory {
 	// ========== Get Equipment ==========
 	public ItemStack getEquipmentStack(String type) {
 		if(getEquipmentDataParameter(type) == null)
-			return null;
+			return ItemStack.EMPTY;
 		if(this.creature.getEntityWorld().isRemote) {
 			return this.creature.getDataManager().get(getEquipmentDataParameter(type));
 		}
@@ -545,7 +549,7 @@ public class InventoryCreature implements IInventory {
     		if(i < this.getSizeInventory()) {
                 ItemStack itemStack = itemStacks.get(i);
                 if(itemStack.isEmpty())
-                    this.setInventorySlotContentsNoUpdate(i, null);
+                    this.setInventorySlotContentsNoUpdate(i, ItemStack.EMPTY);
                 else
                     this.setInventorySlotContentsNoUpdate(i, itemStack);
             }

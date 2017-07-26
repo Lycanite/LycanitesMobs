@@ -115,12 +115,12 @@ public class MessagePetEntry implements IMessage, IMessageHandler<MessagePetEntr
 	@Override
 	public void fromBytes(ByteBuf buf) {
 		PacketBuffer packet = new PacketBuffer(buf);
-        this.petEntryName = packet.readStringFromBuffer(256);
+        this.petEntryName = packet.readString(256);
         this.petEntryID = packet.readInt();
-        this.petEntryType = packet.readStringFromBuffer(256);
+        this.petEntryType = packet.readString(256);
         this.spawningActive = packet.readBoolean();
         this.teleportEntity = packet.readBoolean();
-        this.summonType = packet.readStringFromBuffer(256);
+        this.summonType = packet.readString(256);
         this.behaviour = packet.readByte();
         this.petEntryEntityID = packet.readInt();
         this.respawnTime = packet.readInt();

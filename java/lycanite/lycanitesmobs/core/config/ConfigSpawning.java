@@ -10,7 +10,9 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 public class ConfigSpawning extends ConfigBase {
 	
@@ -60,6 +62,47 @@ public class ConfigSpawning extends ConfigBase {
 	// ========================================
     public ConfigSpawning(GroupInfo group, String name) {
         super(group, name);
+    }
+
+
+    // ========================================
+    //		     Get All Biome Types
+    // ========================================
+    // Can no longer access a list of all biomes types without reflection. This is the alternative for now.
+    public BiomeDictionary.Type[] getAllBiomeTypes() {
+         return new BiomeDictionary.Type[] {
+                BiomeDictionary.Type.HOT,
+                BiomeDictionary.Type.COLD,
+                BiomeDictionary.Type.SPARSE,
+                BiomeDictionary.Type.DENSE,
+                BiomeDictionary.Type.WET,
+                BiomeDictionary.Type.DRY,
+                BiomeDictionary.Type.SAVANNA,
+                BiomeDictionary.Type.CONIFEROUS,
+                BiomeDictionary.Type.JUNGLE,
+                BiomeDictionary.Type.SPOOKY,
+                BiomeDictionary.Type.DEAD,
+                BiomeDictionary.Type.LUSH,
+                BiomeDictionary.Type.NETHER,
+                BiomeDictionary.Type.END,
+                BiomeDictionary.Type.MUSHROOM,
+                BiomeDictionary.Type.MAGICAL,
+                BiomeDictionary.Type.RARE,
+                BiomeDictionary.Type.OCEAN,
+                BiomeDictionary.Type.RIVER,
+                BiomeDictionary.Type.WATER,
+                BiomeDictionary.Type.MESA,
+                BiomeDictionary.Type.FOREST,
+                BiomeDictionary.Type.PLAINS,
+                BiomeDictionary.Type.MOUNTAIN,
+                BiomeDictionary.Type.HILLS,
+                BiomeDictionary.Type.SWAMP,
+                BiomeDictionary.Type.SANDY,
+                BiomeDictionary.Type.SNOWY,
+                BiomeDictionary.Type.WASTELAND,
+                BiomeDictionary.Type.BEACH,
+                BiomeDictionary.Type.VOID
+         };
     }
 	
 	
@@ -137,13 +180,13 @@ public class ConfigSpawning extends ConfigBase {
 	}
 	
 	public Biome[] getBiomes(String category, String key, String defaultValue, String comment) {
-		String biomeEntries = this.getString(category, key, defaultValue);
+		String biomeEntries = this.getString(category, key, defaultValue, comment);
 		biomeEntries = biomeEntries.replace(" ", "");
         
         List<Biome> biomeList = new ArrayList<Biome>();
         for(String biomeEntry : biomeEntries.split(",")) {
         	if("".equals(biomeEntry))
-        		break;
+        		continue;
             boolean additive = true;
             if(biomeEntry.charAt(0) == '-' || biomeEntry.charAt(0) == '+') {
                 if(biomeEntry.charAt(0) == '-')
@@ -153,11 +196,14 @@ public class ConfigSpawning extends ConfigBase {
 
             Biome[] selectedBiomes = null;
             if("ALL".equals(biomeEntry)) {
-                for(BiomeDictionary.Type biomeType : BiomeDictionary.Type.values()) {
-                    if(selectedBiomes == null)
-                        selectedBiomes = BiomeDictionary.getBiomesForType(biomeType);
+                for(BiomeDictionary.Type biomeType : this.getAllBiomeTypes()) {
+                    if(selectedBiomes == null) {
+                        Set<Biome> selectedBiomesSet = BiomeDictionary.getBiomes(biomeType);
+                        selectedBiomes = selectedBiomesSet.toArray(new Biome[selectedBiomesSet.size()]);
+                    }
                     else {
-                    	Biome[] typeBiomes = BiomeDictionary.getBiomesForType(biomeType);
+                        Set<Biome> typeBiomesSet = BiomeDictionary.getBiomes(biomeType);
+                    	Biome[] typeBiomes = typeBiomesSet.toArray(new Biome[typeBiomesSet.size()]);
                     	if(typeBiomes != null)
                     		selectedBiomes = ArrayUtils.addAll(selectedBiomes, typeBiomes);
                     }
@@ -168,13 +214,17 @@ public class ConfigSpawning extends ConfigBase {
             }
             else if(!"NONE".equals(biomeEntry)) {
                 BiomeDictionary.Type biomeType;
-                try { biomeType = BiomeDictionary.Type.valueOf(biomeEntry); }
+                try {
+                    biomeType = BiomeDictionary.Type.getType(biomeEntry);
+                }
                 catch(Exception e) {
                     biomeType = null;
                     LycanitesMobs.printWarning("", "[Config] Unknown biome type " + biomeEntry + " specified for " + defaultValue + "this will be ignored and treated as NONE.");
                 }
-                if(biomeType != null)
-                    selectedBiomes = BiomeDictionary.getBiomesForType(biomeType);
+                if(biomeType != null) {
+                    Set<Biome> selectedBiomesSet = BiomeDictionary.getBiomes(biomeType);
+                    selectedBiomes = selectedBiomesSet.toArray(new Biome[selectedBiomesSet.size()]);
+                }
             }
 
             if(selectedBiomes != null) {
@@ -190,4 +240,60 @@ public class ConfigSpawning extends ConfigBase {
         
         return biomeList.toArray(new Biome[biomeList.size()]);
 	}
+
+
+    // ========== Get Spawn Biome Types ==========
+    public BiomeDictionary.Type[] getBiomeTypes(boolean additive, String category, String key) {
+        return this.getBiomeTypes(additive, category, key, "");
+    }
+
+    public BiomeDictionary.Type[] getBiomeTypes(boolean additive, String category, String key, String defaultValue) {
+        return this.getBiomeTypes(additive, category, key, defaultValue, null);
+    }
+
+    public BiomeDictionary.Type[] getBiomeTypes(boolean additive, String category, String key, String defaultValue, String comment) {
+        String biomeEntries = this.getString(category, key, defaultValue, comment);
+        biomeEntries = biomeEntries.replace(" ", "");
+
+        List<BiomeDictionary.Type> biomeTypeList = new ArrayList<BiomeDictionary.Type>();
+        for(String biomeEntry : biomeEntries.split(",")) {
+            if("".equals(biomeEntry))
+                continue;
+            if(biomeEntry.charAt(0) == '-' || biomeEntry.charAt(0) == '+') {
+                if(biomeEntry.charAt(0) == '-' && additive)
+                    continue;
+                if(biomeEntry.charAt(0) == '+' && !additive)
+                    continue;
+                biomeEntry = biomeEntry.substring(1);
+            }
+            else if(!additive) {
+                continue;
+            }
+
+            if("ALL".equals(biomeEntry)) {
+                biomeTypeList.addAll(Arrays.asList(this.getAllBiomeTypes()));
+            }
+            else if("GROUP".equals(biomeEntry)) {
+                if(additive)
+                    biomeTypeList.addAll(Arrays.asList(this.group.biomeTypesAllowed));
+                else
+                    biomeTypeList.addAll(Arrays.asList(this.group.biomeTypesDenied));
+            }
+            else if(!"NONE".equals(biomeEntry)) {
+                BiomeDictionary.Type biomeType;
+                try {
+                    biomeType = BiomeDictionary.Type.getType(biomeEntry);
+                }
+                catch(Exception e) {
+                    biomeType = null;
+                    LycanitesMobs.printWarning("", "[Config] Unknown biome type " + biomeEntry + " specified for " + defaultValue + "this will be ignored and treated as NONE.");
+                }
+                if(biomeType != null) {
+                    biomeTypeList.add(biomeType);
+                }
+            }
+        }
+
+        return biomeTypeList.toArray(new BiomeDictionary.Type[biomeTypeList.size()]);
+    }
 }

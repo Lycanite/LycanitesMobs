@@ -94,7 +94,7 @@ public class BlockFluidPureLava extends BlockFluidBase {
 	@Override
     public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
 		if(entity instanceof EntityItem)
-			entity.attackEntityFrom(DamageSource.lava, 10F);
+			entity.attackEntityFrom(DamageSource.LAVA, 10F);
         super.onEntityCollidedWithBlock(world, pos, state, entity);
 	}
     

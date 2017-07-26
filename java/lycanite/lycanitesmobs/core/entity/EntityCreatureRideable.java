@@ -138,6 +138,8 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
 
     @Override
     public boolean canBeSteered() {
+	    if(this.getEntityWorld().isRemote)
+	        return true;
         Entity entity = this.getControllingPassenger();
         return entity == this.getOwner();
     }
@@ -166,13 +168,36 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
     // ========== Move with Heading ==========
     @Override
     public void moveEntityWithHeading(float strafe, float forward) {
-    	// Check if Mounted:
-    	if(!this.isTamed() || !this.hasSaddle() || !this.hasRiderTarget() || !(this.getControllingPassenger() instanceof EntityLivingBase) || !this.riderControl()) {
-    		super.moveEntityWithHeading(strafe, forward);
-    		return;
-    	}
-    	
-    	// Apply Rider Movement:
+        // Check if Mounted:
+        if (!this.isTamed() || !this.hasSaddle() || !this.hasRiderTarget() || !(this.getControllingPassenger() instanceof EntityLivingBase) || !this.riderControl()) {
+            super.moveEntityWithHeading(strafe, forward);
+            return;
+        }
+        this.moveMountedWithHeading(strafe, forward);
+    }
+
+    @Override
+    public void moveFlyingWithHeading(float strafe, float forward) {
+        // Check if Mounted:
+        if(!this.isTamed() || !this.hasSaddle() || !this.hasRiderTarget() || !(this.getControllingPassenger() instanceof EntityLivingBase) || !this.riderControl()) {
+            super.moveFlyingWithHeading(strafe, forward);
+            return;
+        }
+        this.moveMountedWithHeading(strafe, forward);
+    }
+
+    @Override
+    public void moveSwimmingWithHeading(float strafe, float forward) {
+        // Check if Mounted:
+        if(!this.isTamed() || !this.hasSaddle() || !this.hasRiderTarget() || !(this.getControllingPassenger() instanceof EntityLivingBase) || !this.riderControl()) {
+            super.moveSwimmingWithHeading(strafe, forward);
+            return;
+        }
+        this.moveMountedWithHeading(strafe, forward);
+    }
+
+    public void moveMountedWithHeading(float strafe, float forward) {
+        // Apply Rider Movement:
         if(this.getControllingPassenger() instanceof EntityLivingBase) {
             EntityLivingBase rider = (EntityLivingBase) this.getControllingPassenger();
             this.prevRotationYaw = this.rotationYaw = rider.rotationYaw;
@@ -189,7 +214,13 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
                 EntityPlayer player = (EntityPlayer) this.getControllingPassenger();
                 ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
                 if (playerExt != null && playerExt.isControlActive(ExtendedPlayer.CONTROL_ID.JUMP)) {
-                    this.motionY = Math.max(this.getAIMoveSpeed() / this.getAISpeedModifier() / 3, this.motionY);
+                    this.motionY = (this.getAIMoveSpeed() / this.getAISpeedModifier()) * 2;
+                }
+                else if(player.rotationPitch > 0 && forward != 0.0F) {
+                    this.motionY = (this.getAIMoveSpeed() / this.getAISpeedModifier()) * 2 * -(player.rotationPitch / 90);
+                }
+                else {
+                    this.motionY = 0;
                 }
             }
         }
@@ -200,8 +231,9 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
                 if (this.getControllingPassenger() instanceof EntityPlayer) {
                     EntityPlayer player = (EntityPlayer) this.getControllingPassenger();
                     ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
-                    if (playerExt != null && playerExt.isControlActive(ExtendedPlayer.CONTROL_ID.JUMP))
+                    if (playerExt != null && playerExt.isControlActive(ExtendedPlayer.CONTROL_ID.JUMP)) {
                         this.startJumping();
+                    }
                 }
             }
 
@@ -225,21 +257,32 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
             }
             this.jumpMovementFactor = (float) (this.getAIMoveSpeed() * this.getGlideScale());
         }
-        
+
         // Apply Movement:
         if(this.canPassengerSteer()) {
             this.setAIMoveSpeed((float)this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue());
-            super.moveEntityWithHeading(strafe, forward);
+            if(!this.useDirectNavigator()) {
+                if(this.canFly() && !this.isInWater() && !this.isInLava()) {
+                    super.moveSwimmingWithHeading(strafe, forward);
+                }
+                else if(this.canSwim() && (this.isInWater() || this.isInLava())) {
+                    super.moveSwimmingWithHeading(strafe, forward);
+                }
+                else
+                    super.moveEntityWithHeading(strafe, forward);
+            }
+            else
+                this.directNavigator.flightMovement(strafe, forward);
         }
-        
+
         // Clear Jumping:
         if(this.onGround) {
             this.setJumpPower(0);
             this.setMountJumping(false);
         }
-    	
-    	// Animate Limbs:
-    	this.prevLimbSwingAmount = this.limbSwingAmount;
+
+        // Animate Limbs:
+        this.prevLimbSwingAmount = this.limbSwingAmount;
         double d0 = this.posX - this.prevPosX;
         double d1 = this.posZ - this.prevPosZ;
         float f4 = MathHelper.sqrt(d0 * d0 + d1 * d1) * 4.0F;
@@ -387,7 +430,8 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
   	//                     Equipment
   	// ==================================================
     public boolean hasSaddle() {
-    	return this.inventory.getEquipmentStack("saddle") != null;
+    	ItemStack saddleStack = this.inventory.getEquipmentStack("saddle");
+    	return saddleStack != null && !saddleStack.isEmpty();
     }
 
 	

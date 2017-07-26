@@ -461,7 +461,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         if(this.mobInfo == null)
             return super.getName();
     	String entityName = this.mobInfo.name;
-    	return I18n.translateToLocal("entity." + this.mobInfo.group.name + "." + entityName + ".name");
+    	return I18n.translateToLocal("entity." + this.mobInfo.group.filename + "." + entityName + ".name");
     }
 
     /** Returns the subpsecies title (translated name) of this entity, returns a blank string if this is a base species mob. **/
@@ -1418,7 +1418,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         	this.currentBlockingTime = 0;
 
         // Pickup Items:
-        if(this.ticksExisted % 10 == 0 && !this.getEntityWorld().isRemote && this.isEntityAlive() && this.canPickupItems())
+        if(this.ticksExisted % 20 == 0 && !this.getEntityWorld().isRemote && this.isEntityAlive() && this.canPickupItems())
         	this.pickupItems();
 
         // Entity Pickups:
@@ -3324,6 +3324,29 @@ public abstract class EntityCreatureBase extends EntityLiving {
                 return filterClass.isAssignableFrom(entity.getClass());
             }
         });
+    }
+
+    // ========== Get Nearest Entity ==========
+    /** Get the entity closest to this entity. **/
+    public <T extends Entity> T getNearestEntity(Class <? extends T > clazz, Class filterClass, double range, boolean canAttack) {
+        List aoeTargets = this.getNearbyEntities(clazz, filterClass, range);
+        if(aoeTargets.size() == 0)
+            return null;
+        double nearestDistance = range + 10;
+        T nearestEntity = null;
+        for(Object entityObj : aoeTargets) {
+            T targetEntity = (T)entityObj;
+            if(canAttack && (!(targetEntity instanceof EntityLivingBase) || !this.canAttackEntity((EntityLivingBase)targetEntity)))
+                continue;
+            if(targetEntity == this.getControllingPassenger())
+                continue;
+            double distance = this.getDistanceToEntity(targetEntity);
+            if(distance < nearestDistance) {
+                nearestDistance = distance;
+                nearestEntity = targetEntity;
+            }
+        }
+        return nearestEntity;
     }
     
     // ==================================================

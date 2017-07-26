@@ -40,24 +40,24 @@ public class CommandMain implements ICommand {
 	//                   Command Info
 	// ==================================================
 	@Override
-	public String getCommandName() {
+	public String getName() {
 		return "lycanitesmobs";
 	}
 
 	@Override
-	public String getCommandUsage(ICommandSender commandSender) {
+	public String getUsage(ICommandSender commandSender) {
 		if(commandSender instanceof EntityPlayer)
 			return "/lycanitesmobs <sub-commands: mobevent [start <event name>, stop, list, enable, disable]>";
 		return "/lycanitesmobs <sub-commands: mobevent [start <event name> dimensionID, stop, list, enable, disable]>";
 	}
 
 	@Override
-	public List getCommandAliases() {
+	public List getAliases() {
 		return this.aliases;
 	}
 
 	@Override
-	public List getTabCompletionOptions(MinecraftServer server, ICommandSender commandSender, String[] args, BlockPos pos) {
+	public List getTabCompletions(MinecraftServer server, ICommandSender commandSender, String[] args, BlockPos pos) {
 		return null;
 	}
 
@@ -68,7 +68,7 @@ public class CommandMain implements ICommand {
 
     @Override
     public int compareTo(ICommand p_compareTo_1_) {
-        return this.getCommandName().compareTo(p_compareTo_1_.getCommandName());
+        return this.getName().compareTo(p_compareTo_1_.getName());
     }
 	
 	
@@ -79,8 +79,8 @@ public class CommandMain implements ICommand {
 	public void execute(MinecraftServer server, ICommandSender commandSender, String[] args) {
 		String reply = I18n.translateToLocal("lyc.command.invalid");
 		if(args.length < 1) {
-			commandSender.addChatMessage(new TextComponentString(reply));
-			commandSender.addChatMessage(new TextComponentString(this.getCommandUsage(commandSender)));
+			commandSender.sendMessage(new TextComponentString(reply));
+			commandSender.sendMessage(new TextComponentString(this.getUsage(commandSender)));
 			return;
 		}
 		
@@ -88,7 +88,7 @@ public class CommandMain implements ICommand {
 		if("mobevent".equalsIgnoreCase(args[0])) {
 			reply = I18n.translateToLocal("lyc.command.mobevent.invalid");
 			if(args.length < 2) {
-				commandSender.addChatMessage(new TextComponentString(reply));
+				commandSender.sendMessage(new TextComponentString(reply));
 				return;
 			}
 			
@@ -96,7 +96,7 @@ public class CommandMain implements ICommand {
 			if("start".equalsIgnoreCase(args[1])) {
 				reply = I18n.translateToLocal("lyc.command.mobevent.start.invalid");
 				if(args.length < 3) {
-					commandSender.addChatMessage(new TextComponentString(reply));
+					commandSender.sendMessage(new TextComponentString(reply));
 					return;
 				}
 				
@@ -115,7 +115,7 @@ public class CommandMain implements ICommand {
 					// No World:
 					if(world == null) {
 						reply = I18n.translateToLocal("lyc.command.mobevent.start.noworld");
-						commandSender.addChatMessage(new TextComponentString(reply));
+						commandSender.sendMessage(new TextComponentString(reply));
 						return;
 					}
 
@@ -124,20 +124,20 @@ public class CommandMain implements ICommand {
 					// Force Enabled:
 					if(!worldExt.mobEventsEnabled) {
 						reply = I18n.translateToLocal("lyc.command.mobevent.enable");
-						commandSender.addChatMessage(new TextComponentString(reply));
+						commandSender.sendMessage(new TextComponentString(reply));
                         worldExt.mobEventsEnabled = true;
 						ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "mobevents");
 						config.setBool("Global", "Mob Events Enabled", true);
 					}
 					
 					reply = I18n.translateToLocal("lyc.command.mobevent.start");
-					commandSender.addChatMessage(new TextComponentString(reply));
+					commandSender.sendMessage(new TextComponentString(reply));
                     worldExt.startWorldEvent(mobEventName);
 					return;
 				}
 				
 				reply = I18n.translateToLocal("lyc.command.mobevent.start.unknown");
-				commandSender.addChatMessage(new TextComponentString(reply));
+				commandSender.sendMessage(new TextComponentString(reply));
 				return;
 			}
 
@@ -153,7 +153,7 @@ public class CommandMain implements ICommand {
             // No World:
             if(world == null) {
                 reply = I18n.translateToLocal("lyc.command.mobevent.start.noworld");
-                commandSender.addChatMessage(new TextComponentString(reply));
+                commandSender.sendMessage(new TextComponentString(reply));
                 return;
             }
 
@@ -165,7 +165,7 @@ public class CommandMain implements ICommand {
 			// Random:
 			if("random".equalsIgnoreCase(args[1])) {
 				reply = I18n.translateToLocal("lyc.command.mobevent.random");
-				commandSender.addChatMessage(new TextComponentString(reply));
+				commandSender.sendMessage(new TextComponentString(reply));
 				MobEventBase mobEvent = MobEventManager.instance.getRandomWorldMobEvent(world, worldExt);
                 worldExt.startWorldEvent(mobEvent);
 				return;
@@ -174,7 +174,7 @@ public class CommandMain implements ICommand {
 			// Stop:
 			if("stop".equalsIgnoreCase(args[1])) {
 				reply = I18n.translateToLocal("lyc.command.mobevent.stop");
-				commandSender.addChatMessage(new TextComponentString(reply));
+				commandSender.sendMessage(new TextComponentString(reply));
                 worldExt.stopWorldEvent();
 				return;
 			}
@@ -182,10 +182,10 @@ public class CommandMain implements ICommand {
 			// List:
 			if("list".equalsIgnoreCase(args[1])) {
 				reply = I18n.translateToLocal("lyc.command.mobevent.list");
-				commandSender.addChatMessage(new TextComponentString(reply));
+				commandSender.sendMessage(new TextComponentString(reply));
 				for(MobEventBase mobEvent : MobEventManager.instance.worldMobEvents.values()) {
 					String eventName = mobEvent.name + " (" + mobEvent.getTitle() + ")";
-					commandSender.addChatMessage(new TextComponentString(eventName));
+					commandSender.sendMessage(new TextComponentString(eventName));
 				}
 				return;
 			}
@@ -193,7 +193,7 @@ public class CommandMain implements ICommand {
 			// Enable:
 			if("enable".equalsIgnoreCase(args[1])) {
 				reply = I18n.translateToLocal("lyc.command.mobevent.enable");
-				commandSender.addChatMessage(new TextComponentString(reply));
+				commandSender.sendMessage(new TextComponentString(reply));
                 worldExt.mobEventsEnabled = true;
 				ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "mobevents");
 				config.setBool("Global", "Mob Events Enabled", true);
@@ -203,7 +203,7 @@ public class CommandMain implements ICommand {
 			// Disable:
 			if("disable".equalsIgnoreCase(args[1])) {
 				reply = I18n.translateToLocal("lyc.command.mobevent.disable");
-				commandSender.addChatMessage(new TextComponentString(reply));
+				commandSender.sendMessage(new TextComponentString(reply));
                 worldExt.mobEventsEnabled = false;
 				ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "mobevents");
 				config.setBool("Global", "Mob Events Enabled", false);
@@ -211,8 +211,8 @@ public class CommandMain implements ICommand {
 			}
 		}
 		
-		commandSender.addChatMessage(new TextComponentString(reply));
-		commandSender.addChatMessage(new TextComponentString(this.getCommandUsage(commandSender)));
+		commandSender.sendMessage(new TextComponentString(reply));
+		commandSender.sendMessage(new TextComponentString(this.getUsage(commandSender)));
 	}
 	
 	
@@ -227,7 +227,7 @@ public class CommandMain implements ICommand {
 	@Override
 	public boolean checkPermission(MinecraftServer server, ICommandSender commandSender) {
 		if(commandSender instanceof EntityPlayer) {
-			if(!commandSender.canCommandSenderUseCommand(this.getRequiredPermissionLevel(), this.getCommandName()))
+			if(!commandSender.canUseCommand(this.getRequiredPermissionLevel(), this.getName()))
 				return false;
 		}
 		return true;

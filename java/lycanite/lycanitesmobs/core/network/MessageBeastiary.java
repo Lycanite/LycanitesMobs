@@ -80,7 +80,7 @@ public class MessageBeastiary implements IMessage, IMessageHandler<MessageBeasti
             this.creatureNames = new String[this.entryAmount];
             this.completions = new double[this.entryAmount];
             for(int i = 0; i < this.entryAmount; i++) {
-                this.creatureNames[i] = packet.readStringFromBuffer(256);
+                this.creatureNames[i] = packet.readString(256);
                 this.completions[i] = packet.readDouble();
             }
         }

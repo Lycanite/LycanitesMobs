@@ -9,6 +9,7 @@ import lycanite.lycanitesmobs.core.spawning.SpawnTypeBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Biomes;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.DungeonHooks;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 
@@ -59,6 +60,12 @@ public class SpawnInfo {
 	
 	/** The list of biomes that this mob spawns in. Use this to get the biomes not biomeTypes. **/
 	public Biome[] biomes;
+
+	/** The list of biome types that this mob can spawn in. **/
+	//public BiomeDictionary.Type[] biomeTypesAllowed;
+
+	/** The list of biome types that this mob cannot spawn in. **/
+	//public BiomeDictionary.Type[] biomeTypesDenied;
 
     /** If true, the biome check will be ignored completely, essnetially using ALL does the same thing but it doesn't always work with some mods. **/
     public boolean ignoreBiome = false;
@@ -157,7 +164,9 @@ public class SpawnInfo {
         // Spawn Biomes:
 		config.setCategoryComment("Spawn Biomes", "Sets which biomes this mob spawns in using Biome Tags. Multiple entries should be comma separated and can be subtractive if provided with a - in front. You can also have a mob skip the biome check completely if ALL is not working correctly for modded biomes.");
 		this.biomes = config.getBiomes("Spawn Biomes", this.getCfgName("Spawn Biomes"), this.biomeEntries);
-        this.ignoreBiome = config.getBool("Spawn Biomes", this.getCfgName("Spawn Ignores Biome Check"), this.ignoreBiome);
+        //this.biomeTypesAllowed = config.getBiomeTypes(true, "Spawn Biomes", this.getCfgName("Spawn Biomes"), this.biomeEntries);
+		//this.biomeTypesDenied = config.getBiomeTypes(false, "Spawn Biomes", this.getCfgName("Spawn Biomes"), this.biomeEntries);
+		this.ignoreBiome = config.getBool("Spawn Biomes", this.getCfgName("Spawn Ignores Biome Check"), this.ignoreBiome);
 		
 		// Spawn Weight:
 		config.setCategoryComment("Spawn Weights", "The higher the weight, the more likely the mob will spawn randomly instead of others. Vanilla Zombies have a weight of 8.");

@@ -122,7 +122,8 @@ public class EntityVentoraptor extends EntityCreatureRideable implements IGroupP
         	}
         }
     }
-    
+
+    @Override
     public void riderEffects(EntityLivingBase rider) {
         if(rider.isPotionActive(MobEffects.WEAKNESS))
             rider.removePotionEffect(MobEffects.WEAKNESS);
@@ -147,7 +148,7 @@ public class EntityVentoraptor extends EntityCreatureRideable implements IGroupP
     public double getFallingMod() {
     	return 0.8D;
     }
-    
+
     @Override
     public double getMountedYOffset() {
         return (double)this.height * 0.9D;
@@ -157,6 +158,7 @@ public class EntityVentoraptor extends EntityCreatureRideable implements IGroupP
     // ==================================================
     //                   Mount Ability
     // ==================================================
+    @Override
     public void mountAbility(Entity rider) {
     	if(this.getEntityWorld().isRemote)
     		return;

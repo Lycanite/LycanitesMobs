@@ -112,7 +112,7 @@ public class EntityGeist extends EntityCreatureAgeable implements IMob, IGroupSh
             entityzombievillager.copyLocationAndAnglesFrom(entityvillager);
             this.getEntityWorld().removeEntity(entityvillager);
             entityzombievillager.onInitialSpawn(this.getEntityWorld().getDifficultyForLocation(new BlockPos(entityzombievillager)), new EntityCreatureBase.GroupData(false));
-            entityzombievillager.func_190733_a(entityvillager.getProfession());
+            entityzombievillager.setProfession(entityvillager.getProfession());
             entityzombievillager.setChild(entityvillager.isChild());
             entityzombievillager.setNoAI(entityvillager.isAIDisabled());
 

@@ -57,7 +57,7 @@ public class ItemHalloweenTreat extends ItemBase {
   	// ==================================================
     public void openGood(ItemStack itemStack, World world, EntityPlayer player) {
     	String message = I18n.translateToLocal("item." + this.itemName + ".good");
-		player.addChatMessage(new TextComponentString(message));
+		player.sendMessage(new TextComponentString(message));
 		if(AssetManager.getSound(this.itemName + "_good") == null)
 			AssetManager.addSound(this.itemName + "_good", this.group, "item." + this.itemName + ".good");
         this.playSound(world, player.posX, player.posY, player.posZ, AssetManager.getSound(this.itemName + "_good"), SoundCategory.AMBIENT, 5.0F, 1.0F);
@@ -82,7 +82,7 @@ public class ItemHalloweenTreat extends ItemBase {
   	// ==================================================
     public void openBad(ItemStack itemStack, World world, EntityPlayer player) {
     	String message = I18n.translateToLocal("item." + this.itemName + ".bad");
-		player.addChatMessage(new TextComponentString(message));
+		player.sendMessage(new TextComponentString(message));
 		if(AssetManager.getSound(this.itemName + "_bad") == null)
 			AssetManager.addSound(this.itemName + "_bad", this.group, "item." + this.itemName + ".bad");
         this.playSound(world, player.posX, player.posY, player.posZ, AssetManager.getSound(this.itemName + "_bad"), SoundCategory.AMBIENT, 5.0F, 1.0F);

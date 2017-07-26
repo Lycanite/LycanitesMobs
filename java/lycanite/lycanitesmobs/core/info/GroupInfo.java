@@ -4,6 +4,7 @@ import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.core.config.ConfigSpawning;
 import lycanite.lycanitesmobs.core.config.ConfigSpawning.SpawnDimensionSet;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.BiomeDictionary;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,11 +68,17 @@ public class GroupInfo {
 	public boolean dimensionWhitelist = false;
 
     // ========== Spawn Biomes ==========
-    /** The list of biomes that mobs in this group spawn. As read from the config. Store biome tags and special tags. **/
+    /** The list of biomes that mobs in this group spawn. As read from the config. Stores biome tags and special tags. **/
     public String biomeEntries = "";
 	
-	/** The list of biomes that mobs in this group spawn. Use this stores the actual biomes not biome tags. **/
+	/** The list of biomes that mobs in this group spawn. This stores the actual biomes not biome tags. **/
 	public Biome[] biomes = new Biome[0];
+
+    /** The list of biome types that mobs in this group can spawn in. **/
+    public BiomeDictionary.Type[] biomeTypesAllowed;
+
+    /** The list of biome types that mobs in this group cannot spawn in. **/
+    public BiomeDictionary.Type[] biomeTypesDenied;
 	
 	// ========== Vanilla Controls ==========
 	/** If true, this group will edit the vanilla mob spawns a little bit. **/
@@ -144,6 +151,8 @@ public class GroupInfo {
 
         // Spawn Biomes:
 		this.biomes = config.getBiomes("Group Settings", this.getCfgName("Spawn Biomes"), this.biomeEntries, "Sets which biomes this mob spawns in using Biome Tags. Multiple entries should be comma separated and can be subtractive if provided with a - in front.");
+        //this.biomeTypesAllowed = config.getBiomeTypes(true, "Group Settings", this.getCfgName("Spawn Biomes"), this.biomeEntries, "Sets which biomes this mob spawns in using Biome Tags. Multiple entries should be comma separated and can be subtractive if provided with a - in front.");
+        //this.biomeTypesDenied = config.getBiomeTypes(false, "Group Settings", this.getCfgName("Spawn Biomes"), this.biomeEntries, "Sets which biomes this mob spawns in using Biome Tags. Multiple entries should be comma separated and can be subtractive if provided with a - in front.");
 	}
 
 

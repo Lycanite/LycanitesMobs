@@ -486,7 +486,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
                 this.unsetTemporary();
                 String tameMessage = I18n.translateToLocal("message.pet.tamed");
                 tameMessage = tameMessage.replace("%creature%", this.getSpeciesName());
-        		player.addChatMessage(new TextComponentString(tameMessage));
+        		player.sendMessage(new TextComponentString(tameMessage));
         		this.playTameEffect(this.isTamed());
                 player.addStat(ObjectManager.getAchievement(this.mobInfo.name + ".tame"), 1);
                 if(this.timeUntilPortal > this.getPortalCooldown())
@@ -495,7 +495,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
             else {
             	String tameFailedMessage = I18n.translateToLocal("message.pet.tamefail");
             	tameFailedMessage = tameFailedMessage.replace("%creature%", this.getSpeciesName());
-        		player.addChatMessage(new TextComponentString(tameFailedMessage));
+        		player.sendMessage(new TextComponentString(tameFailedMessage));
         		this.playTameEffect(this.isTamed());
             }
     	return this.isTamed();

@@ -65,7 +65,7 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
     @Override
     public void update() {
         // Client Side Only:
-        if(this.getEntityWorld().isRemote) {
+        if(this.getWorld().isRemote) {
             if(this.summonProgress >= this.summonProgressMax)
                 this.summonProgress = 0;
             else if(this.summonProgress > 0)
@@ -76,7 +76,7 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
         // Load Minion IDs:
         if(this.loadMinionIDs != null) {
             int range = 20;
-            List nearbyEntities = this.getEntityWorld().getEntitiesWithinAABB(EntityCreatureBase.class,
+            List nearbyEntities = this.getWorld().getEntitiesWithinAABB(EntityCreatureBase.class,
                     new AxisAlignedBB(this.getPos().getX() - range, this.getPos().getY() - range, this.getPos().getZ() - range,
                             this.getPos().getX() + range, this.getPos().getY() + range, this.getPos().getZ() + range));
             Iterator possibleEntities = nearbyEntities.iterator();
@@ -102,9 +102,9 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
 
         // Summoning Portal:
         if(this.summoningPortal == null || this.summoningPortal.isDead) {
-            this.summoningPortal = new EntityPortal(this.getEntityWorld(), this);
+            this.summoningPortal = new EntityPortal(this.getWorld(), this);
             this.summoningPortal.setProjectileScale(8);
-            this.getEntityWorld().spawnEntity(this.summoningPortal);
+            this.getWorld().spawnEntity(this.summoningPortal);
         }
 
         // Update Minions:
@@ -134,7 +134,7 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
         // Sync To Client:
         if(this.updateTick % 20 == 0) {
             LycanitesMobs.packetHandler.sendToAllAround(new MessageSummoningPedestalStats(this.capacity, this.summonProgress, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ()),
-                    new NetworkRegistry.TargetPoint(this.getEntityWorld().provider.getDimension(), this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), 5D));
+                    new NetworkRegistry.TargetPoint(this.getWorld().provider.getDimension(), this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), 5D));
         }
 
         this.updateTick++;
@@ -166,7 +166,7 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
     public EntityPlayer getPlayer() {
         if(this.ownerUUID == null)
             return null;
-        return this.getEntityWorld().getPlayerEntityByUUID(this.ownerUUID);
+        return this.getWorld().getPlayerEntityByUUID(this.ownerUUID);
     }
 
     /** Returns the class that this is summoning. **/
@@ -220,7 +220,7 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
         }
 
         // Server to Client:
-        if(!this.getEntityWorld().isRemote && this.getOwnerUUID() != null && this.getOwnerName() != null) {
+        if(!this.getWorld().isRemote && this.getOwnerUUID() != null && this.getOwnerName() != null) {
             syncData.setString("OwnerUUID", this.getOwnerUUID().toString());
             syncData.setString("OwnerName", this.getOwnerName());
         }
@@ -230,7 +230,7 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
 
     @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
-        if(!this.getEntityWorld().isRemote)
+        if(!this.getWorld().isRemote)
             return;
 
         NBTTagCompound syncData = packet.getNbtCompound();
@@ -336,7 +336,7 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
     // ========================================
     @Override
     public Object getGUI(EntityPlayer player) {
-        if(this.getEntityWorld().isRemote)
+        if(this.getWorld().isRemote)
             return new GUISummoningPedestal(player, this);
         return new ContainerBase(this);
     }

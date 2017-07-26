@@ -48,7 +48,7 @@ public class ItemSoulgazer extends ItemBase {
     		return false;
     	if(!(entity instanceof EntityCreatureBase)) {
     		if(!player.getEntityWorld().isRemote)
-    			player.addChatMessage(new TextComponentString(I18n.translateToLocal("message.soulgazer.unknown")));
+    			player.sendMessage(new TextComponentString(I18n.translateToLocal("message.soulgazer.unknown")));
     		return false;
     	}
     	if(entity instanceof EntityFear) {
@@ -57,7 +57,7 @@ public class ItemSoulgazer extends ItemBase {
     	MobInfo mobInfo = ((EntityCreatureBase)entity).mobInfo;
     	if(playerExt.getBeastiary().hasFullKnowledge(mobInfo.name)) {
     		if(!player.getEntityWorld().isRemote)
-    			player.addChatMessage(new TextComponentString(I18n.translateToLocal("message.soulgazer.known")));
+    			player.sendMessage(new TextComponentString(I18n.translateToLocal("message.soulgazer.known")));
     		return false;
     	}
     	
@@ -74,11 +74,11 @@ public class ItemSoulgazer extends ItemBase {
     	if(!player.getEntityWorld().isRemote) {
     		String message = I18n.translateToLocal("message.soulgazer.new");
     		message = message.replace("%creature%", mobInfo.getTitle());
-    		player.addChatMessage(new TextComponentString(message));
+    		player.sendMessage(new TextComponentString(message));
     		if(mobInfo.isSummonable()) {
         		String summonMessage = I18n.translateToLocal("message.soulgazer.summonable");
         		summonMessage = summonMessage.replace("%creature%", mobInfo.getTitle());
-        		player.addChatMessage(new TextComponentString(summonMessage));
+        		player.sendMessage(new TextComponentString(summonMessage));
     		}
             player.addStat(ObjectManager.getAchievement(mobInfo.name + ".learn"), 1);
     	}

@@ -52,7 +52,7 @@ public class ItemWinterGiftLarge extends ItemBase {
   	// ==================================================
     public void open(ItemStack itemStack, World world, EntityPlayer player) {
     	String message = I18n.translateToLocal("item." + this.itemName + ".bad");
-		player.addChatMessage(new TextComponentString(message));
+		player.sendMessage(new TextComponentString(message));
 		if(AssetManager.getSound(this.itemName + "_bad") == null)
 			AssetManager.addSound(this.itemName + "_bad", this.group, "item." + this.itemName + ".bad");
         this.playSound(world, player.getPosition(), AssetManager.getSound(this.itemName + "_bad"), SoundCategory.AMBIENT, 5.0F, 1.0F);

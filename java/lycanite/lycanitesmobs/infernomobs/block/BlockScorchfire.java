@@ -75,7 +75,7 @@ public class BlockScorchfire extends BlockFireBase {
 
 		if(entity.isImmuneToFire())
 			return;
-    	entity.attackEntityFrom(DamageSource.lava, 1);
+    	entity.attackEntityFrom(DamageSource.IN_FIRE, 1);
 		entity.setFire(3);
 	}
 

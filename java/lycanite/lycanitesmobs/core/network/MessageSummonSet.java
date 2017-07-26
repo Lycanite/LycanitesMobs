@@ -75,7 +75,7 @@ public class MessageSummonSet implements IMessage, IMessageHandler<MessageSummon
 	public void fromBytes(ByteBuf buf) {
 		PacketBuffer packet = new PacketBuffer(buf);
         this.summonSetID = packet.readByte();
-        this.summonType = packet.readStringFromBuffer(256);
+        this.summonType = packet.readString(256);
         this.behaviour = packet.readByte();
 	}
 	

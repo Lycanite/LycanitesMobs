@@ -62,7 +62,7 @@ public class BlockHellfire extends BlockFireBase {
                 return;
         if(entity.isImmuneToFire())
             return;
-        entity.attackEntityFrom(DamageSource.lava, 2);
+        entity.attackEntityFrom(DamageSource.IN_FIRE, 2);
         entity.setFire(5);
     }
 

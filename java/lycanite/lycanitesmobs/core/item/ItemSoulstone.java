@@ -45,7 +45,7 @@ public class ItemSoulstone extends ItemBase {
     		return false;
     	if(!(entity instanceof EntityCreatureTameable)) {
     		if(!player.getEntityWorld().isRemote)
-    			player.addChatMessage(new TextComponentString(I18n.translateToLocal("message.soulstone.invalid")));
+    			player.sendMessage(new TextComponentString(I18n.translateToLocal("message.soulstone.invalid")));
     		return false;
     	}
 
@@ -53,12 +53,12 @@ public class ItemSoulstone extends ItemBase {
 		MobInfo mobInfo = entityTameable.mobInfo;
 	 	if(!mobInfo.isTameable() || entityTameable.getOwner() != player) {
 			if(!player.getEntityWorld().isRemote)
-				player.addChatMessage(new TextComponentString(I18n.translateToLocal("message.soulstone.untamed")));
+				player.sendMessage(new TextComponentString(I18n.translateToLocal("message.soulstone.untamed")));
 			return false;
 		}
 		if(entityTameable.getPetEntry() != null) {
 			if(!player.getEntityWorld().isRemote)
-				player.addChatMessage(new TextComponentString(I18n.translateToLocal("message.soulstone.exists")));
+				player.sendMessage(new TextComponentString(I18n.translateToLocal("message.soulstone.exists")));
 			return false;
 		}
 
@@ -86,7 +86,7 @@ public class ItemSoulstone extends ItemBase {
 
     		String message = I18n.translateToLocal("message.soulstone." + petType + ".added");
     		message = message.replace("%creature%", mobInfo.getTitle());
-    		player.addChatMessage(new TextComponentString(message));
+    		player.sendMessage(new TextComponentString(message));
             //player.addStat(ObjectManager.getAchievement("soulstone"), 1);
 
 			// Add Pet Entry:

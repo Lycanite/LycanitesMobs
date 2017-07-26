@@ -100,16 +100,16 @@ public class SpawnTypeDarkness extends SpawnTypeBase {
 					darknessLevel++;
 					if(darknessLevel == 1 && this.displayChatWarnings) {
 						String message = I18n.translateToLocal("spawner.darkness.level1");
-						player.addChatMessage(new TextComponentString(message));
+						player.sendMessage(new TextComponentString(message));
 					}
 					else if(darknessLevel == 2 && this.displayChatWarnings) {
 						String message = I18n.translateToLocal("spawner.darkness.level2");
-						player.addChatMessage(new TextComponentString(message));
+						player.sendMessage(new TextComponentString(message));
 					}
 					else if(darknessLevel == 3) {
 						if(this.displayChatWarnings) {
 							String message = I18n.translateToLocal("spawner.darkness.level3");
-							player.addChatMessage(new TextComponentString(message));
+							player.sendMessage(new TextComponentString(message));
 						}
 						spawned = super.spawnMobs(tick, world, playerCoords, player);
 						darknessLevel = 0;
@@ -123,7 +123,7 @@ public class SpawnTypeDarkness extends SpawnTypeBase {
 			else if(darknessLevel > 0) {
 				if(darknessLevel == 2 && this.displayChatWarnings) {
 					String message = I18n.translateToLocal("spawner.darkness.level1.back");
-					player.addChatMessage(new TextComponentString(message));
+					player.sendMessage(new TextComponentString(message));
 				}
 				darknessLevel--;
 			}

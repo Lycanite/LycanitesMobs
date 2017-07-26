@@ -14,6 +14,7 @@ import net.minecraft.world.gen.feature.WorldGenLakes;
 import net.minecraftforge.common.BiomeDictionary;
 
 import java.util.Random;
+import java.util.Set;
 
 public class WorldGenOozeLakes extends WorldGenLakes implements IWorldGenBase {
     public String name = "Ooze Lakes";
@@ -62,7 +63,8 @@ public class WorldGenOozeLakes extends WorldGenLakes implements IWorldGenBase {
             Biome biome = world.getBiome(new BlockPos(chunkX * 16, 0, chunkZ * 16));
             if(biome == null)
                 return;
-            BiomeDictionary.Type[] biomeTypes = BiomeDictionary.getTypesForBiome(biome);
+            Set<BiomeDictionary.Type> biomeTypesSet = BiomeDictionary.getTypes(biome);
+            BiomeDictionary.Type[] biomeTypes = biomeTypesSet.toArray(new BiomeDictionary.Type[biomeTypesSet.size()]);
             boolean typeValid = false;
             for(BiomeDictionary.Type type : biomeTypes) {
                 if((type == BiomeDictionary.Type.SNOWY) || (type == BiomeDictionary.Type.COLD)) {
@@ -72,16 +74,16 @@ public class WorldGenOozeLakes extends WorldGenLakes implements IWorldGenBase {
             }
 
             if(typeValid && (this.generateSurfaceChance >= 1 || random.nextDouble() <= this.generateSurfaceChance)) {
-                int x = chunkX * 16 + random.nextInt(16);
-                int z = chunkZ * 16 + random.nextInt(16);
+                int x = (chunkX * 16) + 8;
+                int z = (chunkZ * 16) + 8;
                 int y = random.nextInt(128);
                 this.generate(world, random, new BlockPos(x, y, z));
             }
         }
 
         if(this.generateUndergroundChance > 0 && (this.generateUndergroundChance >= 1 || random.nextDouble() <= this.generateUndergroundChance)) {
-            int x = chunkX * 16 + random.nextInt(16);
-            int z = chunkZ * 16 + random.nextInt(16);
+            int x = (chunkX * 16) + 8;
+            int z = (chunkZ * 16) + 8;
             int top = Math.max(1, world.getTopSolidOrLiquidBlock(new BlockPos(x, 0, z)).getY() - 10);
             if(top > 0) {
                 int y = random.nextInt(top);

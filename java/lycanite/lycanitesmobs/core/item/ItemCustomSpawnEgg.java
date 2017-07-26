@@ -59,7 +59,7 @@ public class ItemCustomSpawnEgg extends ItemBase {
         String s = ("" + I18n.translateToLocal(this.getUnlocalizedName() + ".name")).trim();
         ResourceLocation s1 = this.getEntityIdFromItem(itemStack);
         if (s1 != null) {
-            s = s + " " + I18n.translateToLocal("entity." + s1.getResourcePath() + ".name");
+            s = s + " " + I18n.translateToLocal("entity." + this.group.filename + "." + s1.getResourcePath() + ".name");
         }
 
         return s;
@@ -102,7 +102,7 @@ public class ItemCustomSpawnEgg extends ItemBase {
         if(block == Blocks.MOB_SPAWNER) {
             TileEntity tileEntity = world.getTileEntity(pos);
             MobSpawnerBaseLogic mobspawnerbaselogic = ((TileEntityMobSpawner)tileEntity).getSpawnerBaseLogic();
-            mobspawnerbaselogic.func_190894_a(this.getEntityIdFromItem(itemStack)); //setEntityName
+            mobspawnerbaselogic.setEntityId(this.getEntityIdFromItem(itemStack));
             tileEntity.markDirty();
             world.notifyBlockUpdate(pos, blockState, blockState, 3);
             if (!player.capabilities.isCreativeMode) {

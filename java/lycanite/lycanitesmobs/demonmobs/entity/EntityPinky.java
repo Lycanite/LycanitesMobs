@@ -172,7 +172,7 @@ public class EntityPinky extends EntityCreatureRideable implements IAnimals, IGr
         	return false;
         
     	// Breed:
-    	if(target instanceof EntityCow || target instanceof EntityPig || target instanceof EntitySheep)
+    	if(target instanceof EntityCow || target instanceof EntityPig || target instanceof EntitySheep || target instanceof EntityHorse || target instanceof EntityLlama)
     		this.breed();
     	
         return true;

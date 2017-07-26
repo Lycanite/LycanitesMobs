@@ -63,7 +63,7 @@ public class MessageMobEvent implements IMessage, IMessageHandler<MessageMobEven
 	@Override
 	public void fromBytes(ByteBuf buf) {
 		PacketBuffer packet = new PacketBuffer(buf);
-        this.mobEventName = packet.readStringFromBuffer(256);
+        this.mobEventName = packet.readString(256);
 	}
 	
 	

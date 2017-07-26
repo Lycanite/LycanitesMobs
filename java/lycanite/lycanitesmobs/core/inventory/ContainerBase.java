@@ -120,7 +120,7 @@ public class ContainerBase extends Container {
   	// ==================================================
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slotID) {
-		ItemStack itemStack = null;
+		ItemStack itemStack = ItemStack.EMPTY;
 		Slot slot = (Slot)inventorySlots.get(slotID);
 		if(slot == null || !slot.getHasStack())
 			return itemStack;
@@ -136,7 +136,7 @@ public class ContainerBase extends Container {
         				Slot targetSlot = (Slot)inventorySlots.get(i);
 	        			if(targetSlot.isItemValid(itemStack)) {
 		        			if(!this.mergeItemStack(slotStack, i, i + 1, false)) {
-			        			return null;
+			        			return ItemStack.EMPTY;
 		        			}
 	        			}
         			}
@@ -144,7 +144,7 @@ public class ContainerBase extends Container {
         	}
         	if(this.inventoryStart >= 0 && this.inventoryFinish >= 0 && this.inventoryStart < this.inventoryFinish) {
         		if(!this.mergeItemStack(slotStack, this.inventoryStart, this.inventoryFinish + 1, false))
-        			return null;
+        			return ItemStack.EMPTY;
         	}
         }
         
@@ -152,15 +152,15 @@ public class ContainerBase extends Container {
         else {
 	        if(this.playerInventoryFinish >= 0)
 	        	if(!this.mergeItemStack(slotStack, this.playerInventoryStart, this.playerInventoryFinish, true))
-		        	return null;
+		        	return ItemStack.EMPTY;
         }
         
         if(slotStack.getCount() == 0)
-            slot.putStack((ItemStack)null);
+            slot.putStack(ItemStack.EMPTY);
         else
             slot.onSlotChanged();
         
-        return null;
+        return ItemStack.EMPTY;
 	}
 
 	public boolean isPlayerSlot(int slotID) {

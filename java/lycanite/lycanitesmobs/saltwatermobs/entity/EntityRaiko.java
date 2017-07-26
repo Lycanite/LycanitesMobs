@@ -5,8 +5,10 @@ import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupHunter;
 import lycanite.lycanitesmobs.api.IGroupPrey;
 import lycanite.lycanitesmobs.core.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.core.entity.EntityCreatureRideable;
 import lycanite.lycanitesmobs.core.entity.ai.*;
 import lycanite.lycanitesmobs.core.info.DropRate;
+import lycanite.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -22,7 +24,7 @@ import net.minecraft.world.World;
 
 import java.util.HashMap;
 
-public class EntityRaiko extends EntityCreatureBase implements IMob, IGroupHunter {
+public class EntityRaiko extends EntityCreatureRideable implements IMob, IGroupHunter {
     public Entity pickupEntity;
     public EntityAIAttackMelee attackAI;
     public int waterTime = 0;
@@ -52,11 +54,15 @@ public class EntityRaiko extends EntityCreatureBase implements IMob, IGroupHunte
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
+        this.tasks.addTask(2, new EntityAIPlayerControl(this));
         this.attackAI = new EntityAIAttackMelee(this).setLongMemory(false);
         this.tasks.addTask(3, this.attackAI);
         this.tasks.addTask(8, new EntityAIWander(this).setPauseRate(0));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
+
+        this.targetTasks.addTask(0, new EntityAITargetRiderRevenge(this));
+        this.targetTasks.addTask(1, new EntityAITargetRiderAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
@@ -92,7 +98,7 @@ public class EntityRaiko extends EntityCreatureBase implements IMob, IGroupHunte
         super.onLivingUpdate();
         
         // Entity Pickup Update:
-        if(!this.getEntityWorld().isRemote) {
+        if(!this.getEntityWorld().isRemote && this.getControllingPassenger() == null) {
 	    	this.attackAI.setEnabled(!this.hasPickupEntity());
             if(!this.isInWater()) {
                 this.waterTime = 0;
@@ -138,6 +144,14 @@ public class EntityRaiko extends EntityCreatureBase implements IMob, IGroupHunte
             }
         }
     }
+
+    @Override
+    public void riderEffects(EntityLivingBase rider) {
+        if(rider.isPotionActive(MobEffects.BLINDNESS))
+            rider.removePotionEffect(MobEffects.BLINDNESS);
+        if(rider.isPotionActive(ObjectManager.getPotionEffect("weight")))
+            rider.removePotionEffect(ObjectManager.getPotionEffect("weight"));
+    }
     
     
     // ==================================================
@@ -149,7 +163,7 @@ public class EntityRaiko extends EntityCreatureBase implements IMob, IGroupHunte
     	if(!super.meleeAttack(target, damageScale))
     		return false;
 
-        if(target instanceof EntityLivingBase) {
+        if(target instanceof EntityLivingBase && this.getControllingPassenger() == null) {
             EntityLivingBase entityLivingBase = (EntityLivingBase)target;
             // Pickup:
             if (this.canPickupEntity(entityLivingBase)) {
@@ -212,6 +226,15 @@ public class EntityRaiko extends EntityCreatureBase implements IMob, IGroupHunte
 
 
     // ==================================================
+    //                     Equipment
+    // ==================================================
+    @Override
+    public int getNoBagSize() { return 0; }
+    @Override
+    public int getBagSize() { return 5; }
+
+
+    // ==================================================
     //                     Positions
     // ==================================================
     // ========== Get Wander Position ==========
@@ -221,5 +244,74 @@ public class EntityRaiko extends EntityCreatureBase implements IMob, IGroupHunte
         if(this.hasPickupEntity() && this.getPickupEntity() instanceof EntityPlayer)
             wanderPosition = new BlockPos(wanderPosition.getX(), this.restrictYHeightFromGround(wanderPosition, 6, 14), wanderPosition.getZ());
         return wanderPosition;
+    }
+
+
+    // ==================================================
+    //                       Taming
+    // ==================================================
+    @Override
+    public boolean isTamingItem(ItemStack itemStack) {
+        if(itemStack == null)
+            return false;
+        return itemStack.getItem() == ObjectManager.getItem("ventoraptortreat"); //TODO Change to raikotreat
+    }
+
+
+    // ==================================================
+    //                       Healing
+    // ==================================================
+    // ========== Healing Item ==========
+    @Override
+    public boolean isHealingItem(ItemStack testStack) {
+        return ObjectLists.inItemList("CookedMeat", testStack);
+    }
+
+
+    // ==================================================
+    //                      Movement
+    // ==================================================
+    @Override
+    public double getMountedYOffset() {
+        return (double)this.height * 0.9D;
+    }
+
+
+    // ==================================================
+    //                   Mount Ability
+    // ==================================================
+    @Override
+    public void mountAbility(Entity rider) {
+        if(this.getEntityWorld().isRemote)
+            return;
+
+        if(this.abilityToggled)
+            return;
+
+        if(this.hasPickupEntity()) {
+            this.dropPickupEntity();
+            return;
+        }
+
+        if(this.getStamina() < this.getStaminaCost())
+            return;
+
+        EntityLivingBase nearestTarget = this.getNearestEntity(EntityLivingBase.class, null, 4, true);
+        if(this.canPickupEntity(nearestTarget))
+            this.pickupEntity(nearestTarget);
+
+        this.applyStaminaCost();
+    }
+
+    public float getStaminaCost() {
+        return 20;
+    }
+
+    public int getStaminaRecoveryWarmup() {
+        return 5 * 20;
+    }
+
+    public float getStaminaRecoveryMax() {
+        return 1.0F;
     }
 }

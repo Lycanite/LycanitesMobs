@@ -23,7 +23,7 @@ public class MobEventClientBoss extends MobEventClient {
 	public void onStart(EntityPlayer player) {
 		String eventMessage = I18n.translateToLocal("event.boss." + (extended ? "extended" : "started"));
 		eventMessage = eventMessage.replace("%event%", this.mobEvent.getTitle());
-		player.addChatMessage(new TextComponentString(eventMessage));
+		player.sendMessage(new TextComponentString(eventMessage));
 		
 		if(!player.capabilities.isCreativeMode || MobEventServer.testOnCreative || this.mobEvent instanceof MobEventBoss) {
             this.playSound();
@@ -38,6 +38,6 @@ public class MobEventClientBoss extends MobEventClient {
 	public void onFinish(EntityPlayer player) {
 		String eventMessage = I18n.translateToLocal("event.boss.finished");
 		eventMessage = eventMessage.replace("%event%", this.mobEvent.getTitle());
-		player.addChatMessage(new TextComponentString(eventMessage));
+		player.sendMessage(new TextComponentString(eventMessage));
 	}
 }

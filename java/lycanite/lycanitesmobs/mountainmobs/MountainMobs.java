@@ -93,6 +93,8 @@ public class MountainMobs {
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("peakskebab"));
 
 		ObjectManager.addItem("barghesttreat", new ItemTreat("barghesttreat", group));
+
+		ObjectManager.addItem("beholdertreat", new ItemTreat("beholdertreat", group));
 		
 		
 		// ========== Create Mobs ==========
@@ -107,7 +109,7 @@ public class MountainMobs {
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "troll", EntityTroll.class, 0x007711, 0xEEEEEE)
-		        .setPeaceful(false).setSummonCost(6).setDungeonLevel(2)
+		        .setPeaceful(false).setSummonable(true).setSummonCost(6).setDungeonLevel(2)
 		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("russet", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER")
 				.setSpawnWeight(4).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
@@ -129,7 +131,7 @@ public class MountainMobs {
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "beholder", EntityBeholder.class, 0x442211, 0x44AA33)
-		        .setPeaceful(false).setSummonable(true).setSummonCost(6).setDungeonLevel(2)
+		        .setPeaceful(false).setTameable(true).setSummonCost(6).setDungeonLevel(2)
 		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("SKY")
 				.setSpawnWeight(1).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);
@@ -225,6 +227,13 @@ public class MountainMobs {
 				new ItemStack(ObjectManager.getItem("barghesttreat"), 4, 0),
 				new Object[] { "TTT", "BBT", "TTT",
 						Character.valueOf('T'), ObjectManager.getItem("yalemeatcooked"),
+						Character.valueOf('B'), Items.BONE
+				}));
+
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("beholdertreat"), 4, 0),
+				new Object[] { "   ", "BBT", "   ",
+						Character.valueOf('T'), ObjectManager.getItem("arcanelaserstormcharge"),
 						Character.valueOf('B'), Items.BONE
 				}));
 

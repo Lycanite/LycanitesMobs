@@ -2,9 +2,11 @@ package lycanite.lycanitesmobs.core.entity;
 
 import lycanite.lycanitesmobs.AssetManager;
 import lycanite.lycanitesmobs.ExtendedPlayer;
+import lycanite.lycanitesmobs.LycanitesMobs;
 import lycanite.lycanitesmobs.core.info.MobInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
@@ -178,22 +180,24 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
 
     @Override
     public void moveFlyingWithHeading(float strafe, float forward) {
-        // Check if Mounted:
+        super.moveFlyingWithHeading(strafe, forward);
+        /*/ Check if Mounted:
         if(!this.isTamed() || !this.hasSaddle() || !this.hasRiderTarget() || !(this.getControllingPassenger() instanceof EntityLivingBase) || !this.riderControl()) {
             super.moveFlyingWithHeading(strafe, forward);
             return;
         }
-        this.moveMountedWithHeading(strafe, forward);
+        this.moveMountedWithHeading(strafe, forward);*/
     }
 
     @Override
     public void moveSwimmingWithHeading(float strafe, float forward) {
-        // Check if Mounted:
+        super.moveSwimmingWithHeading(strafe, forward);
+        /*/ Check if Mounted:
         if(!this.isTamed() || !this.hasSaddle() || !this.hasRiderTarget() || !(this.getControllingPassenger() instanceof EntityLivingBase) || !this.riderControl()) {
             super.moveSwimmingWithHeading(strafe, forward);
             return;
         }
-        this.moveMountedWithHeading(strafe, forward);
+        this.moveMountedWithHeading(strafe, forward);*/
     }
 
     public void moveMountedWithHeading(float strafe, float forward) {
@@ -209,18 +213,19 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
         }
 
         // Swimming / Flying Controls:
+        double flyMotion = 0;
         if(this.isInWater() || this.isInLava() || this.canFly()) {
             if (this.getControllingPassenger() instanceof EntityPlayer) {
                 EntityPlayer player = (EntityPlayer) this.getControllingPassenger();
                 ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
                 if (playerExt != null && playerExt.isControlActive(ExtendedPlayer.CONTROL_ID.JUMP)) {
-                    this.motionY = (this.getAIMoveSpeed() / this.getAISpeedModifier()) * 2;
+                    flyMotion = this.getSpeedMultiplier();
                 }
                 else if(player.rotationPitch > 0 && forward != 0.0F) {
-                    this.motionY = (this.getAIMoveSpeed() / this.getAISpeedModifier()) * 2 * -(player.rotationPitch / 90);
+                    flyMotion = this.getSpeedMultiplier() * -(player.rotationPitch / 90);
                 }
                 else {
-                    this.motionY = 0;
+                    flyMotion = 0;
                 }
             }
         }
@@ -263,10 +268,18 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
             this.setAIMoveSpeed((float)this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue());
             if(!this.useDirectNavigator()) {
                 if(this.canFly() && !this.isInWater() && !this.isInLava()) {
-                    super.moveSwimmingWithHeading(strafe, forward);
+                    this.moveRelative(strafe, forward, 0.1F);
+                    this.move(MoverType.SELF, this.motionX, flyMotion, this.motionZ);
+                    this.motionX *= 0.8999999761581421D;
+                    this.motionY *= 0.8999999761581421D;
+                    this.motionZ *= 0.8999999761581421D;
                 }
                 else if(this.canSwim() && (this.isInWater() || this.isInLava())) {
-                    super.moveSwimmingWithHeading(strafe, forward);
+                    this.moveRelative(strafe, forward, 0.1F);
+                    this.move(MoverType.SELF, this.motionX, flyMotion, this.motionZ);
+                    this.motionX *= 0.8999999761581421D;
+                    this.motionY *= 0.8999999761581421D;
+                    this.motionZ *= 0.8999999761581421D;
                 }
                 else
                     super.moveEntityWithHeading(strafe, forward);

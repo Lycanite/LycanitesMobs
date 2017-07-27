@@ -5,7 +5,6 @@ import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupHunter;
 import lycanite.lycanitesmobs.api.IGroupPrey;
 import lycanite.lycanitesmobs.core.config.ConfigBase;
-import lycanite.lycanitesmobs.core.entity.EntityCreatureBase;
 import lycanite.lycanitesmobs.core.entity.EntityCreatureRideable;
 import lycanite.lycanitesmobs.core.entity.ai.*;
 import lycanite.lycanitesmobs.core.info.DropRate;
@@ -63,7 +62,7 @@ public class EntityRoc extends EntityCreatureRideable implements IMob, IGroupHun
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIPlayerControl(this));
-        this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("ventoraptortreat"))).setTemptDistanceMin(4.0D));
+        this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("roctreat"))).setTemptDistanceMin(4.0D));
         this.attackAI = new EntityAIAttackMelee(this).setLongMemory(false);
         this.tasks.addTask(5, this.attackAI);
         this.tasks.addTask(8, new EntityAIWander(this).setPauseRate(0));
@@ -108,7 +107,7 @@ public class EntityRoc extends EntityCreatureRideable implements IMob, IGroupHun
 	@Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        
+
         // Entity Pickup Update:
         if(!this.getEntityWorld().isRemote && this.getControllingPassenger() == null) {
             // Attack AI and Creeper Carrying:
@@ -160,6 +159,11 @@ public class EntityRoc extends EntityCreatureRideable implements IMob, IGroupHun
 	    		else
 	    			this.leap(6.0F, 0D, this.getAttackTarget());
 	    	}
+        }
+
+        // Mounted Creeper Carrying:
+        if(!this.getEntityWorld().isRemote && this.getControllingPassenger() == null && this.getPickupEntity() instanceof EntityCreeper) {
+            ((EntityCreeper) this.getPickupEntity()).setAttackTarget(null); // Prevent the carried Creeper from exploding on the riding player.
         }
     }
 
@@ -304,7 +308,7 @@ public class EntityRoc extends EntityCreatureRideable implements IMob, IGroupHun
     public boolean isTamingItem(ItemStack itemStack) {
         if(itemStack == null)
             return false;
-        return itemStack.getItem() == ObjectManager.getItem("ventoraptortreat"); //TODO Change to roctreat
+        return itemStack.getItem() == ObjectManager.getItem("roctreat");
     }
 
 
@@ -339,6 +343,9 @@ public class EntityRoc extends EntityCreatureRideable implements IMob, IGroupHun
             return;
 
         if(this.hasPickupEntity()) {
+            if(this.getPickupEntity() instanceof EntityCreeper) {
+                ((EntityCreeper)this.getPickupEntity()).ignite();
+            }
             this.dropPickupEntity();
             return;
         }

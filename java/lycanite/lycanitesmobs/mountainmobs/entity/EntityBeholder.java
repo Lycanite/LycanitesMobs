@@ -55,9 +55,8 @@ public class EntityBeholder extends EntityCreatureRideable {
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(2, new EntityAIPlayerControl(this));
-        this.tasks.addTask(3, new EntityAIAttackRanged(this).setSpeed(0.25D).setRate(80).setRange(40.0F).setMinChaseDistance(10.0F).setLongMemory(false));
-        this.tasks.addTask(4, this.aiSit);
-        this.tasks.addTask(5, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
+        this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("beholdertreat"))).setTemptDistanceMin(4.0D));
+        this.tasks.addTask(5, new EntityAIAttackRanged(this).setSpeed(0.25D).setRate(80).setRange(40.0F).setMinChaseDistance(10.0F).setLongMemory(false));
         this.tasks.addTask(6, new EntityAIWander(this).setPauseRate(30));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
@@ -152,7 +151,7 @@ public class EntityBeholder extends EntityCreatureRideable {
     // ==================================================
     //                     Pet Control
     // ==================================================
-    public boolean petControlsEnabled() { return true; }
+    public boolean petControlsEnabled() { return false; }
     
     
     // ==================================================
@@ -229,7 +228,7 @@ public class EntityBeholder extends EntityCreatureRideable {
     public boolean isTamingItem(ItemStack itemStack) {
         if(itemStack == null)
             return false;
-        return itemStack.getItem() == ObjectManager.getItem("ventoraptortreat"); //TODO Change to beholdertreat
+        return itemStack.getItem() == ObjectManager.getItem("beholdertreat");
     }
 
 

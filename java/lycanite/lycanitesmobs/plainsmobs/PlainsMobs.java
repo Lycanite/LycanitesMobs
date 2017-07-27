@@ -86,6 +86,8 @@ public class PlainsMobs {
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("bulwarkburger"));
 
 		ObjectManager.addItem("ventoraptortreat", new ItemTreat("ventoraptortreat", group));
+
+		ObjectManager.addItem("roctreat", new ItemTreat("roctreat", group));
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ObjectManager.getItem("plainsspawn"), new DispenserBehaviorMobEggCustom());
@@ -127,7 +129,7 @@ public class PlainsMobs {
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "roc", EntityRoc.class, 0xAA0000, 0x00DD44)
-		        .setPeaceful(false).setSummonCost(4).setDungeonLevel(2)
+		        .setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(2)
 		        .addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("SKY")
 				.setSpawnWeight(4).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
@@ -206,6 +208,13 @@ public class PlainsMobs {
 				Character.valueOf('T'), ObjectManager.getItem("makameatcooked"),
 				Character.valueOf('B'), Items.BONE
 			}));
+
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("roctreat"), 4, 0),
+				new Object[] { "TTT", "BBT", "TTT",
+						Character.valueOf('T'), Items.RABBIT_FOOT,
+						Character.valueOf('B'), Items.BONE
+				}));
 		
 		// ========== Smelting ==========
 		GameRegistry.addSmelting(ObjectManager.getItem("makameatraw"), new ItemStack(ObjectManager.getItem("makameatcooked"), 1), 0.5f);

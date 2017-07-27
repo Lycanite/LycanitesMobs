@@ -40,6 +40,8 @@ achievement.raiko.kill=Powering Diving!
 achievement.raiko.kill.desc=Slay a Raiko.
 achievement.raiko.learn=Evil Pelicans!
 achievement.raiko.learn.desc=Add a Raiko to your Beastiary.
+achievement.raiko.tame=Sky Fishing!
+achievement.raiko.tame.desc=Tame a Raiko.
 #
 # Items
 item.saltwaterspawn.name=Spawn

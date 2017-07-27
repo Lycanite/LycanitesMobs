@@ -48,6 +48,8 @@ achievement.roc.kill=Long Way Down!
 achievement.roc.kill.desc=Slay a Roc.
 achievement.roc.learn=The Tail Claw Bird
 achievement.roc.learn.desc=Add a Roc to your Beastiary.
+achievement.roc.tame=Creeper Bomber!
+achievement.roc.tame.desc=Tame a Roc.
 #
 # Items
 item.plainsspawn.name=Spawn

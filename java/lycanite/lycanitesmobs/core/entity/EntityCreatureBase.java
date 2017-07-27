@@ -651,7 +651,12 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	        		}
 	        		if("VANILLA".equalsIgnoreCase(groupSpawnDimensionType)) {
                         LycanitesMobs.printDebug("MobSpawns", "Vanilla only by group: Overworld, Nether and End.");
-	        			return world.provider.getDimension() > -2 && world.provider.getDimension() < 2;
+	        			if(world.provider.getDimension() > -2 && world.provider.getDimension() < 2) {
+                            return this.mobInfo.group.dimensionWhitelist;
+                        }
+                        else {
+                            return !this.mobInfo.group.dimensionWhitelist;
+                        }
 	        		}
             	}
                 for(int spawnDimension : this.mobInfo.group.dimensionBlacklist) {

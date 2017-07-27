@@ -55,8 +55,9 @@ public class EntityRaiko extends EntityCreatureRideable implements IMob, IGroupH
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIPlayerControl(this));
+        this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("raikotreat"))).setTemptDistanceMin(4.0D));
         this.attackAI = new EntityAIAttackMelee(this).setLongMemory(false);
-        this.tasks.addTask(3, this.attackAI);
+        this.tasks.addTask(5, this.attackAI);
         this.tasks.addTask(8, new EntityAIWander(this).setPauseRate(0));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
@@ -254,7 +255,7 @@ public class EntityRaiko extends EntityCreatureRideable implements IMob, IGroupH
     public boolean isTamingItem(ItemStack itemStack) {
         if(itemStack == null)
             return false;
-        return itemStack.getItem() == ObjectManager.getItem("ventoraptortreat"); //TODO Change to raikotreat
+        return itemStack.getItem() == ObjectManager.getItem("raikotreat");
     }
 
 
@@ -264,7 +265,7 @@ public class EntityRaiko extends EntityCreatureRideable implements IMob, IGroupH
     // ========== Healing Item ==========
     @Override
     public boolean isHealingItem(ItemStack testStack) {
-        return ObjectLists.inItemList("CookedMeat", testStack);
+        return ObjectLists.inItemList("CookedMeat", testStack) || ObjectLists.inItemList("CookedFish", testStack);
     }
 
 

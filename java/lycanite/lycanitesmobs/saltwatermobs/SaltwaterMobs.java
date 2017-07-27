@@ -8,6 +8,7 @@ import lycanite.lycanitesmobs.core.info.MobInfo;
 import lycanite.lycanitesmobs.core.info.ObjectLists;
 import lycanite.lycanitesmobs.core.info.Subspecies;
 import lycanite.lycanitesmobs.core.item.ItemCustomFood;
+import lycanite.lycanitesmobs.core.item.ItemTreat;
 import lycanite.lycanitesmobs.core.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.core.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.core.spawning.SpawnTypeBase;
@@ -31,6 +32,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 @Mod(modid = SaltwaterMobs.modid, name = SaltwaterMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid)
@@ -78,6 +80,8 @@ public class SaltwaterMobs {
 
         ObjectManager.addItem("seashellmaki", new ItemCustomFood("seashellmaki", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(MobEffects.WATER_BREATHING, 120, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
         ObjectLists.addItem("cookedfish", ObjectManager.getItem("seashellmaki"));
+
+		ObjectManager.addItem("raikotreat", new ItemTreat("raikotreat", group));
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ObjectManager.getItem("saltwaterspawn"), new DispenserBehaviorMobEggCustom());
@@ -112,7 +116,7 @@ public class SaltwaterMobs {
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "raiko", EntityRaiko.class, 0xCCCCDD, 0xFF6633)
-		        .setPeaceful(false).setSummonCost(4).setDungeonLevel(2)
+		        .setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(2)
 		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("golden", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("SKY")
 				.setSpawnWeight(4).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
@@ -166,10 +170,18 @@ public class SaltwaterMobs {
                         ObjectManager.getItem("ikameatcooked"),
                 }
         ));
+
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
 				new ItemStack(ObjectManager.getItem("ikameatcooked"), 1, 0),
 				new Object[] { ObjectManager.getItem("seashellmaki") }
 			));
+
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("raikotreat"), 4, 0),
+				new Object[] { "TTT", "BBT", "TTT",
+						Character.valueOf('T'), ObjectManager.getItem("ikameatcooked"),
+						Character.valueOf('B'), Items.BONE
+				}));
 		
 		// ========== Smelting ==========
 		GameRegistry.addSmelting(ObjectManager.getItem("ikameatraw"), new ItemStack(ObjectManager.getItem("ikameatcooked"), 1), 0.5f);

@@ -1,12 +1,15 @@
 package lycanite.lycanitesmobs.plainsmobs.entity;
 
 import lycanite.lycanitesmobs.ExtendedEntity;
+import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupHunter;
 import lycanite.lycanitesmobs.api.IGroupPrey;
 import lycanite.lycanitesmobs.core.config.ConfigBase;
 import lycanite.lycanitesmobs.core.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.core.entity.EntityCreatureRideable;
 import lycanite.lycanitesmobs.core.entity.ai.*;
 import lycanite.lycanitesmobs.core.info.DropRate;
+import lycanite.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -26,7 +29,7 @@ import net.minecraft.world.World;
 
 import java.util.HashMap;
 
-public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter {
+public class EntityRoc extends EntityCreatureRideable implements IMob, IGroupHunter {
     public EntityAIAttackMelee attackAI;
 
     public boolean creeperDropping = true;
@@ -59,11 +62,17 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
+        this.tasks.addTask(2, new EntityAIPlayerControl(this));
+        this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("roctreat"))).setTemptDistanceMin(4.0D));
         this.attackAI = new EntityAIAttackMelee(this).setLongMemory(false);
-        this.tasks.addTask(3, this.attackAI);
+        this.tasks.addTask(5, this.attackAI);
         this.tasks.addTask(8, new EntityAIWander(this).setPauseRate(0));
+        this.tasks.addTask(9, new EntityAIBeg(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
+
+        this.targetTasks.addTask(0, new EntityAITargetRiderRevenge(this));
+        this.targetTasks.addTask(1, new EntityAITargetRiderAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityCreeper.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
@@ -99,20 +108,20 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
 	@Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        
+
         // Entity Pickup Update:
-        if(!this.worldObj.isRemote) {
+        if(!this.getEntityWorld().isRemote && this.getControllingPassenger() == null) {
             // Attack AI and Creeper Carrying:
-	    	this.attackAI.setEnabled(this.hasPickupEntity() ? this.getPickupEntity() instanceof EntityCreeper : this.creeperDropCooldown <= 0);
+            this.attackAI.setEnabled(this.hasPickupEntity() ? this.getPickupEntity() instanceof EntityCreeper : this.creeperDropCooldown <= 0);
             if(this.creeperDropCooldown > 0) {
                 this.creeperDropCooldown--;
             }
 
             // Pickup Update:
-	    	if(this.hasPickupEntity()) {
-	    		ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(this.getPickupEntity());
-	    		if(extendedEntity != null)
-	    			extendedEntity.setPickedUpByEntity(this);
+            if(this.hasPickupEntity()) {
+                ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(this.getPickupEntity());
+                if(extendedEntity != null)
+                    extendedEntity.setPickedUpByEntity(this);
 
                 // Drop Creeper On Target:
                 if(this.getPickupEntity() instanceof EntityCreeper && this.hasAttackTarget() && !(this.getAttackTarget() instanceof EntityCreeper)) {
@@ -129,7 +138,7 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
                     if (this.ticksExisted % 100 == 0 && this.getRNG().nextBoolean()) {
                         if (this.getPickupEntity() instanceof EntityPlayer) {
                             for (int distToGround = 0; distToGround < 8; distToGround++) {
-                                Block searchBlock = this.worldObj.getBlockState(new BlockPos((int) this.posX, (int) this.posY + 1 + distToGround, (int) this.posZ)).getBlock();
+                                Block searchBlock = this.getEntityWorld().getBlockState(new BlockPos((int) this.posX, (int) this.posY + 1 + distToGround, (int) this.posZ)).getBlock();
                                 if (searchBlock != null && searchBlock != Blocks.AIR) {
                                     this.dropPickupEntity();
                                     this.leap(1.0F, 2.0D);
@@ -140,18 +149,31 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
                             this.dropPickupEntity();
                     }
                 }
-	    	}
-	    	
-	    	// Random Swooping:
-	    	else if(this.hasAttackTarget() && !this.hasPickupEntity() && this.getDistanceSqToEntity(this.getAttackTarget()) > 2 && this.getRNG().nextInt(20) == 0) {
-	    		if(this.posY - 1 > this.getAttackTarget().posY)
-	    			this.leap(6.0F, -1.0D, this.getAttackTarget());
-	    		else if(this.posY + 1 < this.getAttackTarget().posY)
-	    			this.leap(6.0F, 1.0D, this.getAttackTarget());
-	    		else
-	    			this.leap(6.0F, 0D, this.getAttackTarget());
-	    	}
+            }
+
+            // Random Swooping:
+            else if(this.hasAttackTarget() && !this.hasPickupEntity() && this.getDistanceSqToEntity(this.getAttackTarget()) > 2 && this.getRNG().nextInt(20) == 0) {
+                if(this.posY - 1 > this.getAttackTarget().posY)
+                    this.leap(6.0F, -1.0D, this.getAttackTarget());
+                else if(this.posY + 1 < this.getAttackTarget().posY)
+                    this.leap(6.0F, 1.0D, this.getAttackTarget());
+                else
+                    this.leap(6.0F, 0D, this.getAttackTarget());
+            }
         }
+
+        // Mounted Creeper Carrying:
+        if(!this.getEntityWorld().isRemote && this.getControllingPassenger() == null && this.getPickupEntity() instanceof EntityCreeper) {
+            ((EntityCreeper) this.getPickupEntity()).setAttackTarget(null); // Prevent the carried Creeper from exploding on the riding player.
+        }
+    }
+
+    @Override
+    public void riderEffects(EntityLivingBase rider) {
+        if(rider.isPotionActive(MobEffects.WEAKNESS))
+            rider.removePotionEffect(MobEffects.WEAKNESS);
+        if(rider.isPotionActive(MobEffects.SLOWNESS))
+            rider.removePotionEffect(MobEffects.SLOWNESS);
     }
 
 
@@ -242,7 +264,7 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
     // ==================================================
     //                     Pet Control
     // ==================================================
-    public boolean petControlsEnabled() { return true; }
+    public boolean petControlsEnabled() { return false; }
     
     
     // ==================================================
@@ -259,6 +281,15 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
 
 
     // ==================================================
+    //                     Equipment
+    // ==================================================
+    @Override
+    public int getNoBagSize() { return 0; }
+    @Override
+    public int getBagSize() { return 5; }
+
+
+    // ==================================================
     //                     Positions
     // ==================================================
     // ========== Get Wander Position ==========
@@ -268,5 +299,77 @@ public class EntityRoc extends EntityCreatureBase implements IMob, IGroupHunter 
         if(this.hasPickupEntity() && this.getPickupEntity() instanceof EntityPlayer)
             wanderPosition = new BlockPos(wanderPosition.getX(), this.restrictYHeightFromGround(wanderPosition, 6, 14), wanderPosition.getZ());
         return wanderPosition;
+    }
+
+
+    // ==================================================
+    //                       Taming
+    // ==================================================
+    @Override
+    public boolean isTamingItem(ItemStack itemStack) {
+        if(itemStack == null)
+            return false;
+        return itemStack.getItem() == ObjectManager.getItem("roctreat");
+    }
+
+
+    // ==================================================
+    //                       Healing
+    // ==================================================
+    // ========== Healing Item ==========
+    @Override
+    public boolean isHealingItem(ItemStack testStack) {
+        return ObjectLists.inItemList("CookedMeat", testStack);
+    }
+
+
+    // ==================================================
+    //                      Movement
+    // ==================================================
+    @Override
+    public double getMountedYOffset() {
+        return (double)this.height * 0.9D;
+    }
+
+
+    // ==================================================
+    //                   Mount Ability
+    // ==================================================
+    @Override
+    public void mountAbility(Entity rider) {
+        if(this.getEntityWorld().isRemote)
+            return;
+
+        if(this.abilityToggled)
+            return;
+
+        if(this.hasPickupEntity()) {
+            if(this.getPickupEntity() instanceof EntityCreeper) {
+                ((EntityCreeper)this.getPickupEntity()).ignite();
+            }
+            this.dropPickupEntity();
+            return;
+        }
+
+        if(this.getStamina() < this.getStaminaCost())
+            return;
+
+        EntityLivingBase nearestTarget = this.getNearestEntity(EntityLivingBase.class, null, 4, true);
+        if(this.canPickupEntity(nearestTarget))
+            this.pickupEntity(nearestTarget);
+
+        this.applyStaminaCost();
+    }
+
+    public float getStaminaCost() {
+        return 20;
+    }
+
+    public int getStaminaRecoveryWarmup() {
+        return 5 * 20;
+    }
+
+    public float getStaminaRecoveryMax() {
+        return 1.0F;
     }
 }

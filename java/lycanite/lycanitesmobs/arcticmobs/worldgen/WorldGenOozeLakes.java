@@ -59,7 +59,7 @@ public class WorldGenOozeLakes extends WorldGenLakes implements IWorldGenBase {
             return;
 
         if(this.generateSurfaceChance > 0) {
-            Biome biome = world.getBiomeGenForCoords(new BlockPos(chunkX * 16, 0, chunkZ * 16));
+            Biome biome = world.getBiome(new BlockPos(chunkX * 16, 0, chunkZ * 16));
             if(biome == null)
                 return;
             BiomeDictionary.Type[] biomeTypes = BiomeDictionary.getTypesForBiome(biome);

@@ -3,6 +3,7 @@ package lycanite.lycanitesmobs.demonmobs.entity;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupDemon;
 import lycanite.lycanitesmobs.core.entity.EntityCreatureBase;
+import lycanite.lycanitesmobs.core.entity.EntityCreatureRideable;
 import lycanite.lycanitesmobs.core.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.core.entity.ai.*;
 import lycanite.lycanitesmobs.core.info.DropRate;
@@ -24,7 +25,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashMap;
 
-public class EntityCacodemon extends EntityCreatureTameable implements IGroupDemon {
+public class EntityCacodemon extends EntityCreatureRideable implements IGroupDemon {
     
     // ==================================================
  	//                    Constructor
@@ -53,15 +54,15 @@ public class EntityCacodemon extends EntityCreatureTameable implements IGroupDem
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(1, new EntityAIMate(this));
-        this.tasks.addTask(2, this.aiSit);
-        this.tasks.addTask(3, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
-        this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("cacodemontreat"))).setTemptDistanceMin(4.0D));
-        this.tasks.addTask(5, new EntityAIAttackRanged(this).setSpeed(0.25D).setRate(80).setRange(40.0F).setMinChaseDistance(10.0F).setLongMemory(false));
-        this.tasks.addTask(6, new EntityAIFollowParent(this));
-        this.tasks.addTask(6, new EntityAIWander(this).setPauseRate(30));
+        this.tasks.addTask(2, new EntityAIPlayerControl(this));
+        this.tasks.addTask(5, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("cacodemontreat"))).setTemptDistanceMin(4.0D));
+        this.tasks.addTask(6, new EntityAIAttackRanged(this).setSpeed(0.25D).setRate(80).setRange(40.0F).setMinChaseDistance(10.0F).setLongMemory(false));
+        this.tasks.addTask(7, new EntityAIFollowParent(this));
+        this.tasks.addTask(8, new EntityAIWander(this).setPauseRate(30));
         this.tasks.addTask(9, new EntityAIBeg(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
+
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this));
@@ -125,6 +126,14 @@ public class EntityCacodemon extends EntityCreatureTameable implements IGroupDem
         super.onLivingUpdate();
     }
 
+    @Override
+    public void riderEffects(EntityLivingBase rider) {
+        if(rider.isPotionActive(MobEffects.WITHER))
+            rider.removePotionEffect(MobEffects.WITHER);
+        if(rider.isBurning())
+            rider.extinguish();
+    }
+
     // ========== Spawn Minions ==========
     public void allyUpdate() {
         if(this.worldObj.isRemote)
@@ -162,7 +171,7 @@ public class EntityCacodemon extends EntityCreatureTameable implements IGroupDem
     // ==================================================
     //                     Pet Control
     // ==================================================
-    public boolean petControlsEnabled() { return true; }
+    public boolean petControlsEnabled() { return false; }
     
     
     // ==================================================
@@ -240,30 +249,82 @@ public class EntityCacodemon extends EntityCreatureTameable implements IGroupDem
     
     
     // ==================================================
-    //                   Brightness
-    // ==================================================
-    public float getBrightness(float par1) {
-        if(justAttacked())
-        	return 1.0F;
-        else
-        	return super.getBrightness(par1);
-    }
-    
-    @SideOnly(Side.CLIENT)
-    public int getBrightnessForRender(float par1) {
-        if(justAttacked())
-        	return 15728880;
-        else
-        	return super.getBrightnessForRender(par1);
-    }
-    
-    
-    // ==================================================
     //                       Healing
     // ==================================================
     // ========== Healing Item ==========
     @Override
     public boolean isHealingItem(ItemStack testStack) {
     	return ObjectLists.inItemList("CookedMeat", testStack);
+    }
+
+
+    // ==================================================
+    //                      Movement
+    // ==================================================
+    @Override
+    public double getMountedYOffset() {
+        return (double)this.height * 0.9D;
+    }
+
+
+    // ==================================================
+    //                   Mount Ability
+    // ==================================================
+    @Override
+    public void mountAbility(Entity rider) {
+        if(this.getEntityWorld().isRemote)
+            return;
+
+        if(this.abilityToggled)
+            return;
+
+        if(this.hasPickupEntity()) {
+            this.dropPickupEntity();
+            return;
+        }
+
+        if(this.getStamina() < this.getStaminaCost())
+            return;
+
+        if(rider instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer)rider;
+            EntityDemonicBlast projectile = new EntityDemonicBlast(this.getEntityWorld(), player);
+            this.getEntityWorld().spawnEntityInWorld(projectile);
+            this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+            this.setJustAttacked();
+        }
+
+        this.applyStaminaCost();
+    }
+
+    public float getStaminaCost() {
+        return 10;
+    }
+
+    public int getStaminaRecoveryWarmup() {
+        return 2 * 20;
+    }
+
+    public float getStaminaRecoveryMax() {
+        return 1.0F;
+    }
+
+
+    // ==================================================
+    //                   Brightness
+    // ==================================================
+    public float getBrightness(float par1) {
+        if(justAttacked())
+            return 1.0F;
+        else
+            return super.getBrightness(par1);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public int getBrightnessForRender(float par1) {
+        if(justAttacked())
+            return 15728880;
+        else
+            return super.getBrightnessForRender(par1);
     }
 }

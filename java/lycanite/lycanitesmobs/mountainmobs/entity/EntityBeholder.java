@@ -1,6 +1,7 @@
 package lycanite.lycanitesmobs.mountainmobs.entity;
 
 import lycanite.lycanitesmobs.ObjectManager;
+import lycanite.lycanitesmobs.core.entity.EntityCreatureRideable;
 import lycanite.lycanitesmobs.core.entity.EntityCreatureTameable;
 import lycanite.lycanitesmobs.core.entity.ai.*;
 import lycanite.lycanitesmobs.core.info.DropRate;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class EntityBeholder extends EntityCreatureTameable {
+public class EntityBeholder extends EntityCreatureRideable {
     
     // ==================================================
  	//                    Constructor
@@ -53,12 +54,13 @@ public class EntityBeholder extends EntityCreatureTameable {
     @Override
     protected void initEntityAI() {
         super.initEntityAI();
-        this.tasks.addTask(3, new EntityAIAttackRanged(this).setSpeed(0.25D).setRate(80).setRange(40.0F).setMinChaseDistance(10.0F).setLongMemory(false));
-        this.tasks.addTask(4, this.aiSit);
-        this.tasks.addTask(5, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
+        this.tasks.addTask(2, new EntityAIPlayerControl(this));
+        this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("beholdertreat"))).setTemptDistanceMin(4.0D));
+        this.tasks.addTask(5, new EntityAIAttackRanged(this).setSpeed(0.25D).setRate(80).setRange(40.0F).setMinChaseDistance(10.0F).setLongMemory(false));
         this.tasks.addTask(6, new EntityAIWander(this).setPauseRate(30));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
+
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this));
@@ -88,6 +90,18 @@ public class EntityBeholder extends EntityCreatureTameable {
         this.drops.add(new DropRate(new ItemStack(Items.ENDER_EYE), 0.25F).setMinAmount(1).setMaxAmount(2));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("arcanelaserstormcharge")), 0.25F));
 	}
+
+
+    // ==================================================
+    //                      Updates
+    // ==================================================
+    @Override
+    public void riderEffects(EntityLivingBase rider) {
+        if(rider.isPotionActive(MobEffects.MINING_FATIGUE))
+            rider.removePotionEffect(MobEffects.MINING_FATIGUE);
+        if(rider.isPotionActive(ObjectManager.getPotionEffect("weight")))
+            rider.removePotionEffect(ObjectManager.getPotionEffect("weight"));
+    }
 
     
     // ==================================================
@@ -137,7 +151,7 @@ public class EntityBeholder extends EntityCreatureTameable {
     // ==================================================
     //                     Pet Control
     // ==================================================
-    public boolean petControlsEnabled() { return true; }
+    public boolean petControlsEnabled() { return false; }
     
     
     // ==================================================
@@ -196,6 +210,69 @@ public class EntityBeholder extends EntityCreatureTameable {
     
     @Override
     public boolean canBurn() { return false; }
+
+
+    // ==================================================
+    //                      Movement
+    // ==================================================
+    @Override
+    public double getMountedYOffset() {
+        return (double)this.height * 0.9D;
+    }
+
+
+    // ==================================================
+    //                       Taming
+    // ==================================================
+    @Override
+    public boolean isTamingItem(ItemStack itemStack) {
+        if(itemStack == null)
+            return false;
+        return itemStack.getItem() == ObjectManager.getItem("beholdertreat");
+    }
+
+
+    // ==================================================
+    //                   Mount Ability
+    // ==================================================
+    @Override
+    public void mountAbility(Entity rider) {
+        if(this.getEntityWorld().isRemote)
+            return;
+
+        if(this.abilityToggled)
+            return;
+
+        if(this.hasPickupEntity()) {
+            this.dropPickupEntity();
+            return;
+        }
+
+        if(this.getStamina() < this.getStaminaCost())
+            return;
+
+        if(rider instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer)rider;
+            EntityArcaneLaserStorm projectile = new EntityArcaneLaserStorm(this.getEntityWorld(), player);
+            this.getEntityWorld().spawnEntityInWorld(projectile);
+            this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+            this.setJustAttacked();
+        }
+
+        this.applyStaminaCost();
+    }
+
+    public float getStaminaCost() {
+        return 20;
+    }
+
+    public int getStaminaRecoveryWarmup() {
+        return 2 * 20;
+    }
+
+    public float getStaminaRecoveryMax() {
+        return 1.0F;
+    }
     
     
     // ==================================================

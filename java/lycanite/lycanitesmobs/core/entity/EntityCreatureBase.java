@@ -1837,7 +1837,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Water Modifier ==========
     /** Modifies movement resistance in water. **/
     @Override
-    protected float func_189749_co() {
+    protected float getWaterSlowDown() {
         if(!this.isPushedByWater())
             return 1F;
         return 0.8F;
@@ -3325,6 +3325,29 @@ public abstract class EntityCreatureBase extends EntityLiving {
                 return filterClass.isAssignableFrom(entity.getClass());
             }
         });
+    }
+
+    // ========== Get Nearest Entity ==========
+    /** Get the entity closest to this entity. **/
+    public <T extends Entity> T getNearestEntity(Class <? extends T > clazz, Class filterClass, double range, boolean canAttack) {
+        List aoeTargets = this.getNearbyEntities(clazz, filterClass, range);
+        if(aoeTargets.size() == 0)
+            return null;
+        double nearestDistance = range + 10;
+        T nearestEntity = null;
+        for(Object entityObj : aoeTargets) {
+            T targetEntity = (T)entityObj;
+            if(canAttack && (!(targetEntity instanceof EntityLivingBase) || !this.canAttackEntity((EntityLivingBase)targetEntity)))
+                continue;
+            if(targetEntity == this.getControllingPassenger())
+                continue;
+            double distance = this.getDistanceToEntity(targetEntity);
+            if(distance < nearestDistance) {
+                nearestDistance = distance;
+                nearestEntity = targetEntity;
+            }
+        }
+        return nearestEntity;
     }
     
     // ==================================================

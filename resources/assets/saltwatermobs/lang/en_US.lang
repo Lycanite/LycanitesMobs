@@ -40,6 +40,8 @@ achievement.raiko.kill=Powering Diving!
 achievement.raiko.kill.desc=Slay a Raiko.
 achievement.raiko.learn=Evil Pelicans!
 achievement.raiko.learn.desc=Add a Raiko to your Beastiary.
+achievement.raiko.tame=Sky Fishing!
+achievement.raiko.tame.desc=Tame a Raiko.
 #
 # Items
 item.saltwaterspawn.name=Spawn
@@ -49,3 +51,5 @@ item.ikameatcooked.name=Cooked Ika Meat
 item.ikameatcooked.description=Crispy seafood! Cooking it has made it much lighter!
 item.seashellmaki.name=Seashell Maki
 item.seashellmaki.description=A taste infusion from the deep blue sea! Applies water breathing!
+item.raikotreat.name=Raiko Treat
+item.raikotreat.description=Raikos especially love to eat those turtle slugs, perhaps one can be tamed as a flying mount!

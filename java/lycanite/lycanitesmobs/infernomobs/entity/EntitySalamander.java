@@ -41,8 +41,6 @@ import java.util.List;
 
 public class EntitySalamander extends EntityCreatureRideable implements IMob, IGroupFire {
 
-    public boolean khalkLavaDeath = true;
-
     // ==================================================
  	//                    Constructor
  	// ==================================================
@@ -285,32 +283,6 @@ public class EntitySalamander extends EntityCreatureRideable implements IMob, IG
     public int getNoBagSize() { return 0; }
     @Override
     public int getBagSize() { return 10; }
-    
-    
-    // ==================================================
-   	//                      Death
-   	// ==================================================
-    @Override
-    public void onDeath(DamageSource damageSource) {
-		if(!this.getEntityWorld().isRemote && this.getEntityWorld().getGameRules().getBoolean("mobGriefing") && this.khalkLavaDeath && !this.isTamed()) {
-			int lavaWidth = (int)Math.floor(this.width) - 1;
-			int lavaHeight = (int)Math.floor(this.height) - 1;
-			for(int x = (int)this.posX - lavaWidth; x <= (int)this.posX + lavaWidth; x++) {
-				for(int y = (int)this.posY; y <= (int)this.posY + lavaHeight; y++) {
-					for(int z = (int)this.posZ - lavaWidth; z <= (int)this.posZ + lavaWidth; z++) {
-						Block block = this.getEntityWorld().getBlockState(new BlockPos(x, y, z)).getBlock();
-						if(block == Blocks.AIR) {
-							IBlockState blockState = Blocks.FLOWING_LAVA.getStateFromMeta(11);
-							if(x == (int)this.posX && y == (int)this.posY && z == (int)this.posZ)
-								blockState = Blocks.FLOWING_LAVA.getStateFromMeta(12);
-							this.getEntityWorld().setBlockState(new BlockPos(x, y, z), blockState, 3);
-						}
-					}
-				}
-			}
-		}
-        super.onDeath(damageSource);
-    }
     
     
     // ==================================================

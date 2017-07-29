@@ -106,5 +106,53 @@
     "entity.raiko.fly": {
         "category": "neutral",
         "sounds": [{"name": "saltwatermobs:entity/raiko/fly", "stream": false}]
+    },
+    "entity.raiko.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "saltwatermobs:entity/raiko/beg", "stream": false}]
+    },
+    "entity.raiko.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "saltwatermobs:entity/raiko/tame", "stream": false}]
+    },
+    "entity.raiko.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "saltwatermobs:entity/raiko/eat", "stream": false}]
+    },
+    "entity.raiko.mount": {
+        "category": "hostile",
+        "sounds": [{"name": "saltwatermobs:entity/raiko/mount", "stream": false}]
+    },
+    "entity.roa.say": {
+        "category": "neutral",
+        "sounds": [{"name": "saltwatermobs:entity/roa/say", "stream": false}]
+    },
+    "entity.roa.hurt": {
+        "category": "neutral",
+        "sounds": [{"name": "saltwatermobs:entity/roa/hurt", "stream": false}]
+    },
+    "entity.roa.death": {
+        "category": "neutral",
+        "sounds": [{"name": "saltwatermobs:entity/roa/death", "stream": false}]
+    },
+    "entity.roa.attack": {
+        "category": "neutral",
+        "sounds": [{"name": "saltwatermobs:entity/roa/attack", "stream": false}]
+    },
+    "entity.roa.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "saltwatermobs:entity/roa/beg", "stream": false}]
+    },
+    "entity.roa.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "saltwatermobs:entity/roa/tame", "stream": false}]
+    },
+    "entity.roa.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "saltwatermobs:entity/roa/eat", "stream": false}]
+    },
+    "entity.roa.mount": {
+        "category": "hostile",
+        "sounds": [{"name": "saltwatermobs:entity/roa/mount", "stream": false}]
     }
 }

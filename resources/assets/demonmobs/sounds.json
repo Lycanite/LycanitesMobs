@@ -175,6 +175,10 @@
         "category": "hostile",
         "sounds": [{"name": "demonmobs:entity/cacodemon/eat", "stream": false}]
     },
+    "entity.cacodemon.mount": {
+        "category": "hostile",
+        "sounds": [{"name": "demonmobs:entity/cacodemon/mount", "stream": false}]
+    },
     "entity.rahovart.say": {
         "category": "hostile",
         "sounds": [{"name": "demonmobs:entity/rahovart/say", "stream": false}]

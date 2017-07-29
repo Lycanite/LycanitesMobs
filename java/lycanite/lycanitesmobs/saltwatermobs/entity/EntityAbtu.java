@@ -49,7 +49,7 @@ public class EntityAbtu extends EntityCreatureTameable implements IMob, IGroupPr
         this.babySpawnChance = 0.9D;
         this.canGrow = true;
         
-        this.setWidth = 1.3F;
+        this.setWidth = 1.8F;
         this.setHeight = 1.8F;
         this.setupMob();
 

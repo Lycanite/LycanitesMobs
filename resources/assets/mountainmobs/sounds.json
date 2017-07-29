@@ -115,6 +115,14 @@
         "category": "hostile",
         "sounds": [{"name": "mountainmobs:entity/beholder/tame", "stream": false}]
     },
+    "entity.beholder.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/beholder/eat", "stream": false}]
+    },
+    "entity.beholder.mount": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/beholder/mount", "stream": false}]
+    },
     "entity.barghest.say": {
         "category": "hostile",
         "sounds": [{"name": "mountainmobs:entity/barghest/say", "stream": false}]

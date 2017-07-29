@@ -162,5 +162,21 @@
     "entity.roc.fly": {
         "category": "hostile",
         "sounds": [{"name": "plainsmobs:entity/roc/fly", "stream": false}]
+    },
+    "entity.roc.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/roc/beg", "stream": false}]
+    },
+    "entity.roc.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/roc/tame", "stream": false}]
+    },
+    "entity.roc.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/roc/eat", "stream": false}]
+    },
+    "entity.roc.mount": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/roc/mount", "stream": false}]
     }
 }

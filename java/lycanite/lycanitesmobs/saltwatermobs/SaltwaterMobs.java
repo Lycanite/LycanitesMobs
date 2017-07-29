@@ -13,6 +13,7 @@ import lycanite.lycanitesmobs.core.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.core.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.core.spawning.SpawnTypeBase;
 import lycanite.lycanitesmobs.core.spawning.SpawnTypeSky;
+import lycanite.lycanitesmobs.core.spawning.SpawnTypeWater;
 import lycanite.lycanitesmobs.saltwatermobs.entity.*;
 import lycanite.lycanitesmobs.saltwatermobs.item.ItemSaltwaterEgg;
 import lycanite.lycanitesmobs.saltwatermobs.mobevent.MobEventSeaStorm;
@@ -82,6 +83,8 @@ public class SaltwaterMobs {
         ObjectLists.addItem("cookedfish", ObjectManager.getItem("seashellmaki"));
 
 		ObjectManager.addItem("raikotreat", new ItemTreat("raikotreat", group));
+
+		ObjectManager.addItem("roatreat", new ItemTreat("roatreat", group));
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ObjectManager.getItem("saltwaterspawn"), new DispenserBehaviorMobEggCustom());
@@ -121,6 +124,13 @@ public class SaltwaterMobs {
 		newMob.spawnInfo.setSpawnTypes("SKY")
 				.setSpawnWeight(4).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "roa", EntityRoa.class, 0x222288, 0x222233)
+				.setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(2)
+				.addSubspecies(new Subspecies("verdant", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("WATER")
+				.setSpawnWeight(4).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
+		ObjectManager.addMob(newMob);
 		
 		
 		// ========== Register Models ==========
@@ -146,19 +156,35 @@ public class SaltwaterMobs {
 		ObjectManager.setCurrentGroup(group);
 		
 		// ========== Mob Events ==========
-        if(MobInfo.getFromName("raiko") != null) {
+		if(MobInfo.getFromName("raiko") != null || MobInfo.getFromName("roa") != null) {
 			MobEventBase mobEvent = new MobEventSeaStorm("seastorm", this.group);
-			SpawnTypeBase eventSpawner = new SpawnTypeSky("seastorm")
-	            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-	        eventSpawner.materials = new Material[] {Material.AIR};
-	        eventSpawner.ignoreBiome = true;
-	        eventSpawner.ignoreLight = true;
-	        eventSpawner.forceSpawning = true;
-	        eventSpawner.ignoreMobConditions = true;
-	        eventSpawner.addSpawn(MobInfo.getFromName("raiko"));
-	        mobEvent.addSpawner(eventSpawner);
+
+			if(MobInfo.getFromName("raiko") != null) {
+				SpawnTypeBase eventSpawner = new SpawnTypeSky("seastorm")
+						.setChance(1.0D).setBlockLimit(32).setMobLimit(3);
+				eventSpawner.materials = new Material[]{Material.AIR};
+				eventSpawner.ignoreBiome = true;
+				eventSpawner.ignoreLight = true;
+				eventSpawner.forceSpawning = true;
+				eventSpawner.ignoreMobConditions = true;
+				eventSpawner.addSpawn(MobInfo.getFromName("raiko"));
+				mobEvent.addSpawner(eventSpawner);
+			}
+
+			if(MobInfo.getFromName("roa") != null) {
+				SpawnTypeBase eventSpawner = new SpawnTypeWater("seastorm_water")
+						.setChance(1.0D).setBlockLimit(32).setMobLimit(3);
+				eventSpawner.materials = new Material[]{Material.AIR};
+				eventSpawner.ignoreBiome = true;
+				eventSpawner.ignoreLight = true;
+				eventSpawner.forceSpawning = true;
+				eventSpawner.ignoreMobConditions = true;
+				eventSpawner.addSpawn(MobInfo.getFromName("roa"));
+				mobEvent.addSpawner(eventSpawner);
+			}
+
 			MobEventManager.instance.addWorldEvent(mobEvent);
-        }
+		}
 		
 		// ========== Crafting ==========
         GameRegistry.addRecipe(new ShapelessOreRecipe(
@@ -179,6 +205,13 @@ public class SaltwaterMobs {
 				new ItemStack(ObjectManager.getItem("raikotreat"), 4, 0),
 				new Object[] { "TTT", "BBT", "TTT",
 						Character.valueOf('T'), ObjectManager.getItem("ikameatcooked"),
+						Character.valueOf('B'), Items.BONE
+				}));
+
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("roatreat"), 4, 0),
+				new Object[] { "TTT", "BBT", "TTT",
+						Character.valueOf('T'), new ItemStack(Items.DYE, 1, 0),
 						Character.valueOf('B'), Items.BONE
 				}));
 		

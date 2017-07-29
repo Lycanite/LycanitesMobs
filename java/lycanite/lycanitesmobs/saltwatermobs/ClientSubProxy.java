@@ -15,6 +15,7 @@ public class ClientSubProxy extends CommonSubProxy {
         AssetManager.addModel("ika", new ModelIka());
         AssetManager.addModel("abtu", new ModelAbtu());
 		AssetManager.addModel("raiko", new ModelRaiko());
+		AssetManager.addModel("roa", new ModelRoa());
 
         // Register Renderers:
         RenderRegister renderRegister = new RenderRegister(groupInfo);

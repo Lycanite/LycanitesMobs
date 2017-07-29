@@ -36,12 +36,20 @@ achievement.abtu.learn=The Biting Wont Stop!
 achievement.abtu.learn.desc=Add an Abtu to your Beastiary.
 entity.saltwatermobs.raiko.name=Raiko
 entity.saltwatermobs.raiko.description=Large sea birds known to dive into the ocean and snatch their prey to fly up high and drop their their prey back into the ocean with the weight effect, eventually drowning their prey.
-achievement.raiko.kill=Powering Diving!
+achievement.raiko.kill=Power Diving!
 achievement.raiko.kill.desc=Slay a Raiko.
 achievement.raiko.learn=Evil Pelicans!
 achievement.raiko.learn.desc=Add a Raiko to your Beastiary.
 achievement.raiko.tame=Sky Fishing!
 achievement.raiko.tame.desc=Tame a Raiko.
+entity.saltwatermobs.roa.name=Roa
+entity.saltwatermobs.roa.description=Ferocious shark like beasts that dominate the sea! Roas create deadly whirlpools around them to pull their prey towards their deadly jaws! The brave or foolish attempt to tame them as mounts.
+achievement.roa.kill=Whirlpools?!
+achievement.roa.kill.desc=Slay a Roa.
+achievement.roa.learn=Jaws!
+achievement.roa.learn.desc=Add a Roa to your Beastiary.
+achievement.roa.tame=Sea King!
+achievement.roa.tame.desc=Tame a Roa.
 #
 # Items
 item.saltwaterspawn.name=Spawn
@@ -53,3 +61,5 @@ item.seashellmaki.name=Seashell Maki
 item.seashellmaki.description=A taste infusion from the deep blue sea! Applies water breathing!
 item.raikotreat.name=Raiko Treat
 item.raikotreat.description=Raikos especially love to eat those turtle slugs, perhaps one can be tamed as a flying mount!
+item.roatreat.name=Roa Treat
+item.roatreat.description=Roa teeth are constantly found covered in Squid Ink, they seem to love the stuff!

@@ -249,25 +249,6 @@ public class EntityCacodemon extends EntityCreatureRideable implements IGroupDem
     
     
     // ==================================================
-    //                   Brightness
-    // ==================================================
-    public float getBrightness(float par1) {
-        if(justAttacked())
-        	return 1.0F;
-        else
-        	return super.getBrightness(par1);
-    }
-    
-    @SideOnly(Side.CLIENT)
-    public int getBrightnessForRender(float par1) {
-        if(justAttacked())
-        	return 15728880;
-        else
-        	return super.getBrightnessForRender(par1);
-    }
-    
-    
-    // ==================================================
     //                       Healing
     // ==================================================
     // ========== Healing Item ==========
@@ -317,14 +298,33 @@ public class EntityCacodemon extends EntityCreatureRideable implements IGroupDem
     }
 
     public float getStaminaCost() {
-        return 20;
+        return 10;
     }
 
     public int getStaminaRecoveryWarmup() {
-        return 5 * 20;
+        return 2 * 20;
     }
 
     public float getStaminaRecoveryMax() {
         return 1.0F;
+    }
+
+
+    // ==================================================
+    //                   Brightness
+    // ==================================================
+    public float getBrightness(float par1) {
+        if(justAttacked())
+            return 1.0F;
+        else
+            return super.getBrightness(par1);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public int getBrightnessForRender(float par1) {
+        if(justAttacked())
+            return 15728880;
+        else
+            return super.getBrightnessForRender(par1);
     }
 }

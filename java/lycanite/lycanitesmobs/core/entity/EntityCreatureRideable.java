@@ -178,28 +178,6 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
         this.moveMountedWithHeading(strafe, forward);
     }
 
-    @Override
-    public void moveFlyingWithHeading(float strafe, float forward) {
-        super.moveFlyingWithHeading(strafe, forward);
-        /*/ Check if Mounted:
-        if(!this.isTamed() || !this.hasSaddle() || !this.hasRiderTarget() || !(this.getControllingPassenger() instanceof EntityLivingBase) || !this.riderControl()) {
-            super.moveFlyingWithHeading(strafe, forward);
-            return;
-        }
-        this.moveMountedWithHeading(strafe, forward);*/
-    }
-
-    @Override
-    public void moveSwimmingWithHeading(float strafe, float forward) {
-        super.moveSwimmingWithHeading(strafe, forward);
-        /*/ Check if Mounted:
-        if(!this.isTamed() || !this.hasSaddle() || !this.hasRiderTarget() || !(this.getControllingPassenger() instanceof EntityLivingBase) || !this.riderControl()) {
-            super.moveSwimmingWithHeading(strafe, forward);
-            return;
-        }
-        this.moveMountedWithHeading(strafe, forward);*/
-    }
-
     public void moveMountedWithHeading(float strafe, float forward) {
         // Apply Rider Movement:
         if(this.getControllingPassenger() instanceof EntityLivingBase) {

@@ -263,11 +263,11 @@ public class EntityBeholder extends EntityCreatureRideable {
     }
 
     public float getStaminaCost() {
-        return 20;
+        return 10;
     }
 
     public int getStaminaRecoveryWarmup() {
-        return 5 * 20;
+        return 2 * 20;
     }
 
     public float getStaminaRecoveryMax() {

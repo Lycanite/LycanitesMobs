@@ -211,7 +211,7 @@ public class EntityRaiko extends EntityCreatureRideable implements IMob, IGroupH
     // ==================================================
     //                     Pet Control
     // ==================================================
-    public boolean petControlsEnabled() { return true; }
+    public boolean petControlsEnabled() { return false; }
     
     
     // ==================================================

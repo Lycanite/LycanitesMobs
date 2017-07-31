@@ -27,8 +27,10 @@ public class MobEventCinderfall extends MobEventBase {
     @Override
     public void onStart(World world) {
         super.onStart(world);
-		world.getWorldInfo().setRaining(false);
-		world.getWorldInfo().setThundering(false);
+        if(canAffectWeather) {
+            world.getWorldInfo().setRaining(false);
+            world.getWorldInfo().setThundering(false);
+        }
     }
 	
 	

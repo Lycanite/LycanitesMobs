@@ -342,6 +342,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** This should be called by the specific mob entity and set the default starting values. **/
     public void setupMob() {
         // Size:
+        this.setWidth *= this.mobInfo.hitboxScale;
+        this.setHeight *= this.mobInfo.hitboxScale;
         this.updateSize();
         
         // Stats:
@@ -592,6 +594,12 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Natural Spawn Check ==========
     /** Second stage checks for spawning, this check is ignored if there is a valid monster spawner nearby. **/
     public boolean naturalSpawnCheck(World world, BlockPos pos) {
+        if(this.mobInfo.spawnInfo.spawnMinDay > 0) {
+            int currentDay = (int) Math.floor(world.getTotalWorldTime() / 24000D);
+            LycanitesMobs.printDebug("MobSpawns", "Checking world age, currently on day: " + currentDay + ", must be at least day: " + this.mobInfo.spawnInfo.spawnMinDay + ".");
+            if (currentDay < this.mobInfo.spawnInfo.spawnMinDay)
+                return false;
+        }
     	LycanitesMobs.printDebug("MobSpawns", "Checking dimension.");
     	if(!this.isNativeDimension(this.getEntityWorld()))
     		return false;

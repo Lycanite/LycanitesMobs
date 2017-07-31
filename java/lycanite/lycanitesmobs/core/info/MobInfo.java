@@ -127,6 +127,9 @@ public class MobInfo {
 	
 	/** A level used to rank this mob for dungeons. This is currently only used by Doomlike Dungeons. -1 = Not for Dungeons, 0 = Common, 1 = Tough, 2 = Brute, 3 = Elite **/
 	public int dungeonLevel = -1;
+
+	/** A custom scale to apply to the mob's hitbox. **/
+	public double hitboxScale = 1;
 	
 	// ========== Per Mob Stats ==========
     public double multiplierHealth = 1.0D;
@@ -339,7 +342,9 @@ public class MobInfo {
         this.boostHaste = config.getInt("Boosts", this.getCfgName("Haste"), this.boostHaste, "Attack and ability speeds in ticks. Average attack rate is 20 (1 second).");
         this.boostEffect = config.getInt("Boosts", this.getCfgName("Effect"), this.boostEffect, "Effect strengths and durations in ticks (20 ticks = 1 second).");
         this.boostPierce = config.getInt("Boosts", this.getCfgName("Pierce"), this.boostPierce, "Use to directly decrease or increase the piercing value. By default it is 5 so for every 5 damage dealt, 1 damage ignores armor. A positive boost lowers the attack required per armor piercing damage, therefore a boost of 2 will lower the piercing stat from 5 to 3.");
-        
+
+        this.hitboxScale = config.getDouble("Additional", this.getCfgName("Hitbox Scale"), this.hitboxScale, "A custom scale to apply to the mob's hitbox, note that large hitboxes can affect pathing and hitboxes can't be smaller than half a block.");
+
         // Register Mob:
         this.registerMob();
 

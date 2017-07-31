@@ -16,6 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MobEventBase {
+    // Global Properties:
+    public static boolean canAffectWeather = true;
+    public static boolean canAffectTime = true;
+
 	// Properties:
 	public String name = "mobevent";
 	public int weight = 8;
@@ -37,6 +41,16 @@ public class MobEventBase {
 	public String[] dimensionTypes;
 	/** Controls the behaviour of how Dimension IDs are read. If true only listed Dimension IDs are allowed instead of denied. **/
 	public boolean dimensionWhitelist = false;
+
+
+    // ==================================================
+    //                 Global Settings
+    // ==================================================
+    public static void loadGlobalSettings() {
+        ConfigSpawning config = ConfigSpawning.getConfig(LycanitesMobs.group, "mobevents");
+        canAffectWeather = config.getBool("Global Event Settings", "Affect Weather", canAffectWeather);
+        canAffectTime = config.getBool("Global Event Settings", "Affect Time", canAffectTime);
+    }
     
 	
     // ==================================================

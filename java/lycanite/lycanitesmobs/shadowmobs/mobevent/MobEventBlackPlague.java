@@ -32,8 +32,9 @@ public class MobEventBlackPlague extends MobEventBase {
     	if(excessTime > targetTime) {
     		targetTime += dayTime;
     	}
-    	
-    	world.provider.setWorldTime(currentTime - excessTime + targetTime);
+
+		if(canAffectTime)
+			world.provider.setWorldTime(currentTime - excessTime + targetTime);
     }
 	
 	

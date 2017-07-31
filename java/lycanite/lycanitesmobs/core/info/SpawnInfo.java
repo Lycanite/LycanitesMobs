@@ -93,6 +93,9 @@ public class SpawnInfo {
     /** Whether or not this mob can spawn in low light levels. **/
     public boolean spawnsInDark = true;
 
+	/** How many days old the world must at least be for this mob to be able to naturally spawn. **/
+	public int spawnMinDay = 0;
+
     // ========== Despawning ==========
 	/** Whether this mob should despawn or not by default (some mobs can override persistence, such as once farmed). **/
 	public boolean despawnNatural = true;
@@ -188,6 +191,7 @@ public class SpawnInfo {
         config.setCategoryComment("Spawn Conditions", "Various conditions that are checked at a spawn location when spawning mobs, such as light level.");
         this.spawnsInLight = config.getBool("Spawn Conditions", this.getCfgName("Spawns In Light"), this.spawnsInLight);
         this.spawnsInDark = config.getBool("Spawn Conditions", this.getCfgName("Spawns In Dark"), this.spawnsInDark);
+		this.spawnMinDay = config.getInt("Spawn Conditions", this.getCfgName("World Day Minimum"), this.spawnMinDay, "How many days old the world must at least be for this mob to be able to naturally spawn.");
 
         // Natural Despawning:
         config.setCategoryComment("Despawning", "Sets whether or not each mob will despawn over time. Most farmable mobs don't despawn naturally.");

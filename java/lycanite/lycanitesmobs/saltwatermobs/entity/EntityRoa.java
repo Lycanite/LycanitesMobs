@@ -67,7 +67,7 @@ public class EntityRoa extends EntityCreatureRideable implements IMob, IGroupPre
         // Stats:
         this.stepHeight = 1.0F;
 
-        this.whirlpoolRange = ConfigBase.getConfig(this.group, "general").getBool("Features", "Roa Whirlpool", true, "Set to false to disable the Roa whirlpools.") ? this.whirlpoolRange : 0;
+        this.whirlpoolRange = ConfigBase.getConfig(this.group, "general").getInt("Features", "Roa Whirlpool Range", this.whirlpoolRange, "The range (in blocks) of the Roa's whirlpool pull effect, set to 0 to disable, note that the Roa is nearly 2 blocks in size itself which the range must cover.");
     }
 
     // ========== Init AI ==========
@@ -134,7 +134,7 @@ public class EntityRoa extends EntityCreatureRideable implements IMob, IGroupPre
             this.whirlpoolEnergy = Math.min(this.whirlpoolEnergy, this.whirlpoolEnergyMax);
             if(this.canWhirlpool()) {
                 for (EntityLivingBase entity : this.getNearbyEntities(EntityLivingBase.class, null, this.whirlpoolRange)) {
-                    if (entity == this || entity == this.getControllingPassenger() || entity instanceof IGroupBoss)
+                    if (entity == this || entity == this.getControllingPassenger() || entity instanceof IGroupBoss || entity.isPotionActive(ObjectManager.getPotionEffect("weight")))
                         continue;
                     EntityPlayerMP player = null;
                     if (entity instanceof EntityPlayerMP) {

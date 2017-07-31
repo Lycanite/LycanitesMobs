@@ -12,6 +12,7 @@ import lycanite.lycanitesmobs.core.entity.EntityHitArea;
 import lycanite.lycanitesmobs.core.entity.EntityPortal;
 import lycanite.lycanitesmobs.core.info.*;
 import lycanite.lycanitesmobs.core.item.*;
+import lycanite.lycanitesmobs.core.mobevent.MobEventBase;
 import lycanite.lycanitesmobs.core.mobevent.MobEventManager;
 import lycanite.lycanitesmobs.core.mobevent.SharedMobEvents;
 import lycanite.lycanitesmobs.core.mods.DLDungeons;
@@ -47,7 +48,7 @@ public class LycanitesMobs {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String version = "1.16.2.0 - MC 1.10.2";
+	public static final String version = "1.16.2.1 - MC 1.10.2";
 	public static final String website = "http://lycanitesmobs.com";
 	public static final String websiteAPI = "http://api.lycanitesmobs.com";
 	public static final String websitePatreon = "https://www.patreon.com/lycanite";
@@ -210,6 +211,10 @@ public class LycanitesMobs {
         // ========== Call Object Lists Setup ==========
         ObjectLists.createCustomItems();
 		ObjectLists.createLists();
+
+
+		// ========== Mob Events ==========
+		MobEventBase.loadGlobalSettings();
 
 		
 		// ========== Mod Support ==========

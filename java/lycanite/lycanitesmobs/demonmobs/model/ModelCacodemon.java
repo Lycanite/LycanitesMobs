@@ -55,9 +55,17 @@ public class ModelCacodemon extends ModelCustomObj {
     	float rotY = 0F;
     	float rotZ = 0F;
     	
-    	// Look:
-    	rotX += Math.toDegrees(lookX / (180F / (float)Math.PI));
-    	rotY += Math.toDegrees(lookY / (180F / (float)Math.PI));
+    	// Looking:
+		if(partName.equals("head")) {
+			rotX += Math.toDegrees(lookX / (180F / (float) Math.PI));
+			rotY += Math.toDegrees(lookY / (180F / (float) Math.PI));
+		}
+		else {
+			this.centerPartToPart(partName, "head");
+			this.rotate((float)Math.toDegrees(lookX / (180F / (float)Math.PI)), 0, 0);
+			this.rotate(0, (float)Math.toDegrees(lookY / (180F / (float)Math.PI)), 0);
+			this.uncenterPartToPart(partName, "head");
+		}
 		
     	// Mouth:
     	if(partName.equals("topmouth"))

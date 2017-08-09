@@ -1,5 +1,6 @@
 package lycanite.lycanitesmobs.saltwatermobs.entity;
 
+import lycanite.lycanitesmobs.ExtendedEntity;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupAnimal;
 import lycanite.lycanitesmobs.api.IGroupPredator;
@@ -28,15 +29,17 @@ import net.minecraft.world.World;
 import java.util.HashMap;
 
 public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroupPredator {
-	
-	EntityAIWander wanderAI;
-    
+
+    EntityAIWander wanderAI;
+    public Entity pickupEntity;
+    public EntityAIAttackMelee attackAI;
+
     // ==================================================
- 	//                    Constructor
- 	// ==================================================
+    //                    Constructor
+    // ==================================================
     public EntitySkylus(World world) {
         super(world);
-        
+
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 0;
@@ -47,10 +50,13 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroup
 
         this.babySpawnChance = 0.01D;
         this.canGrow = true;
-        
+
         this.setWidth = 1.5F;
         this.setHeight = 1.6F;
         this.setupMob();
+
+        // Stats:
+        this.stepHeight = 1.0F;
     }
 
     // ========== Init AI ==========
@@ -59,12 +65,15 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroup
         super.initEntityAI();
         this.tasks.addTask(1, new EntityAIStayByWater(this));
         this.tasks.addTask(2, this.aiSit);
-        this.tasks.addTask(3, new EntityAIAttackMelee(this).setLongMemory(false).setRange(1D));
+        this.attackAI = new EntityAIAttackMelee(this).setLongMemory(false).setRange(3D);
+        this.tasks.addTask(3, this.attackAI);
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
         this.wanderAI = new EntityAIWander(this);
         this.tasks.addTask(6, wanderAI);
+        this.tasks.addTask(9, new EntityAIBeg(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
+
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
@@ -77,68 +86,80 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroup
         }
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
-    
+
     // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 20D);
-		baseAttributes.put("movementSpeed", 0.24D);
-		baseAttributes.put("knockbackResistance", 0.0D);
-		baseAttributes.put("followRange", 32D);
-		baseAttributes.put("attackDamage", 2D);
+    @Override
+    protected void applyEntityAttributes() {
+        HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
+        baseAttributes.put("maxHealth", 20D);
+        baseAttributes.put("movementSpeed", 0.16D);
+        baseAttributes.put("knockbackResistance", 0.0D);
+        baseAttributes.put("followRange", 32D);
+        baseAttributes.put("attackDamage", 4D);
         super.applyEntityAttributes(baseAttributes);
     }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
+
+    // ========== Default Drops ==========
+    @Override
+    public void loadItemDrops() {
         this.drops.add(new DropRate(new ItemStack(Items.DYE, 1, 0), 1).setMinAmount(1).setMaxAmount(5));
         this.drops.add(new DropRate(new ItemStack(Items.PRISMARINE_SHARD, 1), 0.5F).setMaxAmount(1));
         this.drops.add(new DropRate(new ItemStack(Items.PRISMARINE_CRYSTALS, 1), 0.125F).setMaxAmount(1));
     }
-    
-    
+
+
     // ==================================================
     //                      Updates
     // ==================================================
-	// ========== Living Update ==========
-	@Override
+    // ========== Living Update ==========
+    @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        
+
         // Wander Pause Rates:
-        if(!this.worldObj.isRemote) {
+        if(!this.getEntityWorld().isRemote) {
             if (this.isInWater())
                 this.wanderAI.setPauseRate(20);
             else
                 this.wanderAI.setPauseRate(0);
         }
+
+        // Entity Pickup Update:
+        if(!this.getEntityWorld().isRemote && this.getControllingPassenger() == null && this.hasPickupEntity()) {
+
+            // Random Dropping:
+            ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(this.getPickupEntity());
+            if (extendedEntity != null)
+                extendedEntity.setPickedUpByEntity(this);
+            if (this.ticksExisted % 100 == 0 && this.getRNG().nextBoolean()) {
+                this.dropPickupEntity();
+            }
+        }
     }
 
-	
+
     // ==================================================
     //                      Movement
     // ==================================================
-	// ========== Movement Speed Modifier ==========
+    // ========== Movement Speed Modifier ==========
     @Override
     public float getAISpeedModifier() {
-    	if(this.getHealth() > (this.getMaxHealth() / 2)) // Slower with shell.
-    		return 0.25F;
-    	return 1.0F;
+        if(this.getHealth() > (this.getMaxHealth() / 2)) // Slower with shell.
+            return 1.0F;
+        return 4.0F;
     }
-	
+
     // Pathing Weight:
-	@Override
-	public float getBlockPathWeight(int x, int y, int z) {
+    @Override
+    public float getBlockPathWeight(int x, int y, int z) {
         int waterWeight = 10;
 
-        Block block = this.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock();
+        Block block = this.getEntityWorld().getBlockState(new BlockPos(x, y, z)).getBlock();
         if(block == Blocks.WATER)
             return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
         if(block == Blocks.FLOWING_WATER)
             return (super.getBlockPathWeight(x, y, z) + 1) * waterWeight;
-        if(this.worldObj.isRaining() && this.worldObj.canBlockSeeSky(new BlockPos(x, y, z)))
+        if(this.getEntityWorld().isRaining() && this.getEntityWorld().canBlockSeeSky(new BlockPos(x, y, z)))
             return (super.getBlockPathWeight(x, y, z) + 1) * (waterWeight + 1);
 
         if(this.getAttackTarget() != null)
@@ -148,57 +169,82 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroup
 
         return super.getBlockPathWeight(x, y, z);
     }
-	
-	// Swimming:
-	@Override
-	public boolean canSwim() {
-		return true;
-	}
-	
-	// Walking:
-	@Override
-	public boolean canWalk() {
-		return false;
-	}
-    
-    
+
+
+    // ==================================================
+    //                     Abilities
+    // ==================================================
+    // Swimming:
+    @Override
+    public boolean canSwim() {
+        return true;
+    }
+
+    // Walking:
+    @Override
+    public boolean canWalk() {
+        return false;
+    }
+
+    @Override
+    public void pickupEntity(EntityLivingBase entity) {
+        super.pickupEntity(entity);
+        this.leap(-1.0F, -2.0D);
+    }
+
+    @Override
+    public void dropPickupEntity() {
+        // Drop Weight Effect:
+        if(this.pickupEntity != null && this.pickupEntity instanceof EntityLivingBase) {
+            if(ObjectManager.getPotionEffect("weight") != null)
+                ((EntityLivingBase)this.pickupEntity).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("weight"), this.getEffectDuration(5), 1));
+        }
+        super.dropPickupEntity();
+    }
+
+    @Override
+    public double[] getPickupOffset(Entity entity) {
+        return new double[]{0, 0, 2D};
+    }
+
+
     // ==================================================
     //                      Attacks
     // ==================================================
     // ========== Melee Attack ==========
     @Override
     public boolean meleeAttack(Entity target, double damageScale) {
-    	if(!super.meleeAttack(target, damageScale))
-    		return false;
-    	
-    	// Effect:
+        if(!super.meleeAttack(target, damageScale))
+            return false;
+
+        // Effect:
         if(target instanceof EntityLivingBase) {
-    		((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, this.getEffectDuration(5), 1));
+            EntityLivingBase entityLivingBase = (EntityLivingBase)target;
+
+            // Blindness:
+            entityLivingBase.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, this.getEffectDuration(5), 1));
+
+            // Pickup:
+            if (this.canPickupEntity(entityLivingBase)) {
+                this.pickupEntity(entityLivingBase);
+            }
         }
-        
+
         return true;
     }
-    
-	// ========== Attack Haste Modifier ==========
+
+    // ========== Attack Haste Modifier ==========
     @Override
     public double getHasteMultiplier() {
-    	if(this.getHealth() > (this.getMaxHealth() / 2)) // Slower with shell.
-    		return 0.25F;
-    	return 1.0F;
+        if(this.getHealth() > (this.getMaxHealth() / 2)) // Slower with shell.
+            return 0.25F;
+        return 1.0F;
     }
-    
-    // ========== Is Aggressive ==========
-    @Override
-    public boolean isAggressive() {
-    	if(this.isInWater())
-    		return false;
-    	else return super.isAggressive();
-    }
-    
-    
+
+
     // ==================================================
-   	//                     Immunities
-   	// ==================================================
+    //                     Immunities
+    // ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
         if(ObjectManager.getPotionEffect("weight") != null)
@@ -206,30 +252,30 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroup
         if(potionEffect.getPotion() == MobEffects.BLINDNESS) return false;
         return super.isPotionApplicable(potionEffect);
     }
-    
+
     @Override
     public boolean canBreatheUnderwater() {
         return true;
     }
-    
+
     @Override
     public boolean canBreatheAboveWater() {
         return false;
     }
-    
-    
+
+
     // ==================================================
-   	//                    Taking Damage
-   	// ==================================================
+    //                    Taking Damage
+    // ==================================================
     // ========== Damage Modifier ==========
     /** A multiplier that alters how much damage this mob receives from the given DamageSource, use for resistances and weaknesses. Note: The defense multiplier is handled before this. **/
     public float getDamageModifier(DamageSource damageSrc) {
-    	if(this.getHealth() > (this.getMaxHealth() / 2)) // Stronger with shell.
-    		return 0.25F;
-    	return 1.0F;
+        if(this.getHealth() > (this.getMaxHealth() / 2)) // Stronger with shell.
+            return 0.25F;
+        return 1.0F;
     }
-    
-    
+
+
     // ==================================================
     //                     Pet Control
     // ==================================================

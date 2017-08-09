@@ -7,6 +7,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
+import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -125,7 +126,7 @@ public class PotionEffects {
 			}
 		}
 		if(ObjectManager.getPotionEffect("weight") != null) {
-			if(entity.isPotionActive(ObjectManager.getPotionEffect("weight"))) {
+			if(entity.isPotionActive(ObjectManager.getPotionEffect("weight")) && !entity.isPotionActive(MobEffects.STRENGTH)) {
 				if(event.isCancelable()) event.setCanceled(true);
 			}
 		}

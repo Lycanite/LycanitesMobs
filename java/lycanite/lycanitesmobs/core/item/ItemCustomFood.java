@@ -100,22 +100,4 @@ public class ItemCustomFood extends ItemFood {
         super.setAlwaysEdible();
         return this;
     }
-
-
-    // ==================================================
-    //                     Visuals
-    // ==================================================
-    /*/ ========== Get Icon ==========
-    @SideOnly(Side.CLIENT)
-    @Override
-    public IIcon getIconFromDamage(int par1) {
-        return AssetManager.getSprite(itemName);
-    }
-    
-    // ========== Register Icons ==========
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IIconRegister iconRegister) {
-        AssetManager.addSprite(itemName, group, texturePath, iconRegister);
-    }*/
 }

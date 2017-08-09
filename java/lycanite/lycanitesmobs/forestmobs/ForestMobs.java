@@ -79,11 +79,11 @@ public class ForestMobs {
 			rawMeat.setPotionEffect(ObjectManager.getPotionEffect("paralysis"), 10, 2, 0.8F);
 		ObjectManager.addItem("arisaurmeatraw", rawMeat);
 		ObjectLists.addItem("vegetables", ObjectManager.getItem("arisaurmeatraw"));
-		
-		ObjectManager.addItem("arisaurmeatcooked", new ItemFoodPaleoSalad("arisaurmeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setAlwaysEdible());
+
+		ObjectManager.addItem("arisaurmeatcooked", new ItemCustomFood("arisaurmeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(MobEffects.INSTANT_HEALTH, 1, 6, 1.0F).setAlwaysEdible());
 		ObjectLists.addItem("vegetables", ObjectManager.getItem("arisaurmeatcooked"));
-		
-		ObjectManager.addItem("paleosalad", new ItemFoodPaleoSalad("paleosalad", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
+
+		ObjectManager.addItem("paleosalad", new ItemCustomFood("paleosalad", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(MobEffects.INSTANT_HEALTH, 1, 12, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
 		ObjectLists.addItem("vegetables", ObjectManager.getItem("paleosalad"));
 
 		ObjectManager.addItem("shamblertreat", new ItemTreat("shamblertreat", group));

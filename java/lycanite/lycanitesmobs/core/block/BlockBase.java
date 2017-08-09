@@ -234,8 +234,6 @@ public class BlockBase extends Block {
     @SideOnly(Side.CLIENT)
     @Override
     public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World world, BlockPos pos) {
-        //if(!this.noBreakCollision)
-        //    return Block.NULL_AABB;
         return super.getSelectedBoundingBox(state, world, pos);
     }
     

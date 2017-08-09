@@ -1,5 +1,6 @@
 package lycanite.lycanitesmobs.saltwatermobs.entity;
 
+import lycanite.lycanitesmobs.ExtendedEntity;
 import lycanite.lycanitesmobs.ObjectManager;
 import lycanite.lycanitesmobs.api.IGroupAnimal;
 import lycanite.lycanitesmobs.api.IGroupPredator;
@@ -30,6 +31,8 @@ import java.util.HashMap;
 public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroupPredator {
 	
 	EntityAIWander wanderAI;
+    public Entity pickupEntity;
+    public EntityAIAttackMelee attackAI;
     
     // ==================================================
  	//                    Constructor
@@ -51,6 +54,9 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroup
         this.setWidth = 1.5F;
         this.setHeight = 1.6F;
         this.setupMob();
+
+        // Stats:
+        this.stepHeight = 1.0F;
     }
 
     // ========== Init AI ==========
@@ -59,12 +65,15 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroup
         super.initEntityAI();
         this.tasks.addTask(1, new EntityAIStayByWater(this));
         this.tasks.addTask(2, this.aiSit);
-        this.tasks.addTask(3, new EntityAIAttackMelee(this).setLongMemory(false).setRange(1D));
+        this.attackAI = new EntityAIAttackMelee(this).setLongMemory(false).setRange(3D);
+        this.tasks.addTask(3, this.attackAI);
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
         this.wanderAI = new EntityAIWander(this);
         this.tasks.addTask(6, wanderAI);
+        this.tasks.addTask(9, new EntityAIBeg(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
+
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
@@ -83,10 +92,10 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroup
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
 		baseAttributes.put("maxHealth", 20D);
-		baseAttributes.put("movementSpeed", 0.24D);
+		baseAttributes.put("movementSpeed", 0.16D);
 		baseAttributes.put("knockbackResistance", 0.0D);
 		baseAttributes.put("followRange", 32D);
-		baseAttributes.put("attackDamage", 2D);
+		baseAttributes.put("attackDamage", 4D);
         super.applyEntityAttributes(baseAttributes);
     }
 	
@@ -114,6 +123,18 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroup
             else
                 this.wanderAI.setPauseRate(0);
         }
+
+        // Entity Pickup Update:
+        if(!this.getEntityWorld().isRemote && this.getControllingPassenger() == null && this.hasPickupEntity()) {
+
+            // Random Dropping:
+            ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(this.getPickupEntity());
+            if (extendedEntity != null)
+                extendedEntity.setPickedUpByEntity(this);
+            if (this.ticksExisted % 100 == 0 && this.getRNG().nextBoolean()) {
+                this.dropPickupEntity();
+            }
+        }
     }
 
 	
@@ -124,8 +145,8 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroup
     @Override
     public float getAISpeedModifier() {
     	if(this.getHealth() > (this.getMaxHealth() / 2)) // Slower with shell.
-    		return 0.25F;
-    	return 1.0F;
+    		return 1.0F;
+    	return 4.0F;
     }
 	
     // Pathing Weight:
@@ -148,18 +169,43 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroup
 
         return super.getBlockPathWeight(x, y, z);
     }
-	
-	// Swimming:
-	@Override
-	public boolean canSwim() {
-		return true;
-	}
-	
-	// Walking:
-	@Override
-	public boolean canWalk() {
-		return false;
-	}
+
+
+    // ==================================================
+    //                     Abilities
+    // ==================================================
+    // Swimming:
+    @Override
+    public boolean canSwim() {
+        return true;
+    }
+
+    // Walking:
+    @Override
+    public boolean canWalk() {
+        return false;
+    }
+
+    @Override
+    public void pickupEntity(EntityLivingBase entity) {
+        super.pickupEntity(entity);
+        this.leap(-1.0F, -2.0D);
+    }
+
+    @Override
+    public void dropPickupEntity() {
+        // Drop Weight Effect:
+        if(this.pickupEntity != null && this.pickupEntity instanceof EntityLivingBase) {
+            if(ObjectManager.getPotionEffect("weight") != null)
+                ((EntityLivingBase)this.pickupEntity).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("weight"), this.getEffectDuration(5), 1));
+        }
+        super.dropPickupEntity();
+    }
+
+    @Override
+    public double[] getPickupOffset(Entity entity) {
+        return new double[]{0, 0, 2D};
+    }
     
     
     // ==================================================
@@ -173,7 +219,15 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroup
     	
     	// Effect:
         if(target instanceof EntityLivingBase) {
-    		((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, this.getEffectDuration(5), 1));
+            EntityLivingBase entityLivingBase = (EntityLivingBase)target;
+
+            // Blindness:
+            entityLivingBase.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, this.getEffectDuration(5), 1));
+
+            // Pickup:
+            if (this.canPickupEntity(entityLivingBase)) {
+                this.pickupEntity(entityLivingBase);
+            }
         }
         
         return true;
@@ -185,14 +239,6 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroup
     	if(this.getHealth() > (this.getMaxHealth() / 2)) // Slower with shell.
     		return 0.25F;
     	return 1.0F;
-    }
-    
-    // ========== Is Aggressive ==========
-    @Override
-    public boolean isAggressive() {
-    	if(this.isInWater())
-    		return false;
-    	else return super.isAggressive();
     }
     
     

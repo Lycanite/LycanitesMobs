@@ -42,6 +42,7 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
         this.defense = 1;
         this.experience = 5;
         this.hasAttackSound = true;
+        this.spawnsInWater = true;
         
         this.setWidth = 0.8F;
         this.setHeight = 1.2F;
@@ -225,6 +226,9 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
   	// ==================================================
     @Override
     public boolean canFly() { return true; }
+
+    @Override
+    public boolean canSwim() { return true; }
     
     
     // ==================================================
@@ -253,4 +257,9 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
     
     /** Returns true if this mob should be damaged by the sun. **/
     public boolean daylightBurns() { return !this.isTamed() && this.getSubspeciesIndex() < 3; }
+
+    @Override
+    public boolean canBreatheUnderwater() {
+        return true;
+    }
 }

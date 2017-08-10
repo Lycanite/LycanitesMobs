@@ -1,0 +1,14 @@
+{
+	"parent": "lycanitesmobs:item/scepter",
+	"textures": {
+		"layer0": "shadowmobs:items/spectralboltscepter"
+	},
+	"overrides": [
+        {
+            "predicate": {
+                "using": 1
+            },
+            "model": "shadowmobs:item/spectralboltscepter_fire"
+        }
+	]
+}

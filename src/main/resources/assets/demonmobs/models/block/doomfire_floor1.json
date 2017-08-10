@@ -1,0 +1,7 @@
+{
+    "parent": "demonmobs:block/doomfire_floor",
+    "textures": {
+        "particle": "demonmobs:blocks/doomfire_layer_1",
+        "fire": "demonmobs:blocks/doomfire_layer_1"
+    }
+}

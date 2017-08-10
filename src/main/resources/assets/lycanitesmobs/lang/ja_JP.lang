@@ -1,0 +1,116 @@
+# ========== Events ==========
+event.started=%event%発生中！
+event.finished=%event%は終わった!
+# %event% will be replaced with the name of the event, don't translate this!
+#
+#
+#
+# ========== Entites ==========
+entity.lycanitesmobs.summoningportal.name=召喚ポータル
+#
+#
+#
+# ========== Subspecies ==========
+# Uncommon:
+subspecies.ashen.name=灰
+subspecies.dark.name=暗
+subspecies.light.name=光
+subspecies.verdant.name=新緑
+subspecies.scarlet.name=緋
+subspecies.azure.name=紺碧
+subspecies.golden.name=金
+subspecies.violet.name=紫
+subspecies.keppel.name=ケッペル
+subspecies.russet.name=赤
+#
+# Rare:
+subspecies.lunar.name=月光
+subspecies.eerie.name=奇怪
+subspecies.sacred.name=神聖
+subspecies.phosphorescent.name=燐光
+subspecies.crimson.name=深紅
+subspecies.royal.name=ロイヤル
+subspecies.solar.name=太陽
+subspecies.mottled.name=斑紋
+subspecies.celestial.name=天
+subspecies.umber.name=陰
+#
+#
+#
+# ========== Items ==========
+item.soulgazer.name=ソウルギャザー 
+item.soulgazer.description=クリーチャーに使用すると動物寓意譚に追加できる
+item.summoningstaff.name=召喚の杖 
+item.summoningstaff.description=あなたの命令を行う手下を召喚 使用すると時間をかけて召喚のフォーカス(空腹バーの上)を消耗し、ポータルを作成する
+item.stablesummoningstaff.name=安定した召喚の杖 
+item.stablesummoningstaff.description=召喚した手下が長持ちするが、より多くのフォーカスが必要 
+item.bloodsummoningstaff.name=血の召喚の杖
+item.bloodsummoningstaff.description=体力を犠牲にすることでフォーカスの消費を半分に
+item.savagesummoningstaff.name=野蛮な召喚の杖
+item.savagesummoningstaff.description=二匹の手下を召喚するが、体力が半分
+item.sturdysummoningstaff.name=頑丈な召喚の杖
+item.sturdysummoningstaff.description=ずっと長く続くが、より多くの焦点がフォーカスが必要
+#
+#
+#
+# ========== GUIS ==========
+# Creative Tab names:
+itemGroup.lycanitesmobs.items=Lycanites Mobs: アイテム
+itemGroup.lycanitesmobs.creatures=Lycanites Mobs: クリーチャー
+#
+# Beastiary:
+gui.beastiary.name=動物寓意譚
+gui.beastiary.empty=No Creatures
+gui.beastiary.soulgazerinfo=現在、動物寓意譚に追加されたクリーチャーはありません。新たな生き物を追加するには、ソウルギャザーを作り、使用する必要があります
+gui.beastiary.selectacreature=グループを選択し、クリーチャーを選択
+#
+# Minion Manager:
+gui.minion.name=ミニオンマネージャー 
+gui.minion.empty=No Summonable Creatures
+gui.minion.soulgazerinfo=まだ動物寓意譚に召喚することができる任意のクリーチャーを追加していない
+#
+# Soulbound Pets:
+gui.soulboundpets.name=魂のペット
+#
+# Pet/Minion:
+gui.pet.sitting=お座り 
+gui.pet.movement=動き
+gui.pet.follow=付いて来る
+gui.pet.wander=ふらつく
+gui.pet.passive=受動的
+gui.pet.stance=姿勢
+gui.pet.aggressive=積極的
+gui.pet.defensive=守備的
+gui.pet.pvp=PVP
+#
+# Mounts:
+gui.mount.controls= %control% マウント機能を使用
+#%control% will be replaced with the Mount Ability key, don't translate this!
+#
+#
+#
+# ========== Messages ==========
+message.soulgazer.new=%creature%の知識を得た！あなたの動物寓意譚をチェックしてください！ 
+message.soulgazer.summonable=これで、%creature%を召喚することができます！召喚の杖が必要になります 
+message.soulgazer.known=既にこのクリーチャーの完全な知識を持っています
+message.soulgazer.unknown=ソウルギャザーはこのクリーチャーについて特殊な検索をします
+message.pet.tamed=The %creature%は、なついているようだ！
+message.pet.tamefail=%creature%は、もっと欲しいようだ
+# %creature% will be replaced with the name of the tamed creature, don't translate this!
+#
+#
+#
+# ========== Common ==========
+common.yes=はい
+common.no=いいえ
+#
+#
+#
+# ========== Potion Effects ==========
+potion.paralysis=麻痺
+potion.leech=リーチ
+potion.penetration=侵入
+potion.recklessness=無謀さ
+potion.rage=怒り
+potion.weight=重さ
+potion.swiftswimming= 水中速度

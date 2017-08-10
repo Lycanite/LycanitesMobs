@@ -1,0 +1,7 @@
+{
+    "parent": "block/cube_column",
+    "textures": {
+        "end": "demonmobs:blocks/demonstonepillar_top",
+        "side": "demonmobs:blocks/demonstonepillar"
+    }
+}

@@ -1,0 +1,6 @@
+{
+	"parent": "lycanitesmobs:item/summoningstaff",
+	"textures": {
+		"layer0": "lycanitesmobs:items/summoningstaff_fire"
+	}
+}

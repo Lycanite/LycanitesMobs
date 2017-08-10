@@ -1,0 +1,6 @@
+{
+	"parent": "arcticmobs:item/frostwebscepter",
+	"textures": {
+		"layer0": "arcticmobs:items/frostwebscepter_fire"
+	}
+}

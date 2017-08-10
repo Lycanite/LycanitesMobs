@@ -1,0 +1,67 @@
+{
+    "mobevent.bamstorm": {
+        "category": "record",
+        "sounds": [{"name": "lycanitesmobs:mobevent/bamstorm", "stream": true}]
+    },
+    "mobevent.raptorrampage": {
+        "category": "record",
+        "sounds": [{"name": "lycanitesmobs:mobevent/raptorrampage", "stream": true}]
+    },
+    "mobevent.arachnophobia": {
+        "category": "record",
+        "sounds": [{"name": "lycanitesmobs:mobevent/arachnophobia", "stream": true}]
+    },
+    "mobevent.roasting": {
+        "category": "record",
+        "sounds": [{"name": "lycanitesmobs:mobevent/roasting", "stream": true}]
+    },
+    "mobevent.rudolph": {
+        "category": "record",
+        "sounds": [{"name": "lycanitesmobs:mobevent/rudolph", "stream": true}]
+    },
+    "mobevent.saltytree": {
+        "category": "record",
+        "sounds": [{"name": "lycanitesmobs:mobevent/saltytree", "stream": true}]
+    },
+    "mobevent.satanclaws": {
+        "category": "record",
+        "sounds": [{"name": "lycanitesmobs:mobevent/satanclaws", "stream": true}]
+    },
+    "mobevent.halloween": {
+        "category": "record",
+        "sounds":
+		[
+			{"name": "lycanitesmobs:mobevent/halloween", "stream": true},
+			{"name": "lycanitesmobs:mobevent/halloween_lycanite", "stream": true},
+			{"name": "lycanitesmobs:mobevent/halloween_toast", "stream": true},
+			{"name": "lycanitesmobs:mobevent/halloween_gooderness", "stream": true},
+			{"name": "lycanitesmobs:mobevent/halloween_jarno", "stream": true},
+			{"name": "lycanitesmobs:mobevent/halloween_kehaan", "stream": true},
+			{"name": "lycanitesmobs:mobevent/halloween_jonbams", "stream": true}
+		]
+    },
+    "effect.fear": {
+        "category": "ambient",
+        "sounds": [{"name": "lycanitesmobs:effect/fear", "stream": false}]
+    },
+    "item.halloweentreat.good": {
+        "category": "ambient",
+        "sounds": [{"name": "lycanitesmobs:item/halloweentreat_good", "stream": false}]
+    },
+    "item.halloweentreat.bad": {
+        "category": "ambient",
+        "sounds": [{"name": "lycanitesmobs:item/halloweentreat_bad", "stream": false}]
+    },
+    "item.wintergift.good": {
+        "category": "ambient",
+        "sounds": [{"name": "lycanitesmobs:item/wintergift_good", "stream": false}]
+    },
+    "item.wintergift.bad": {
+        "category": "ambient",
+        "sounds": [{"name": "lycanitesmobs:item/wintergift_bad", "stream": false}]
+    },
+    "item.wintergiftlarge.bad": {
+        "category": "ambient",
+        "sounds": [{"name": "lycanitesmobs:item/wintergiftlarge_bad", "stream": false}]
+    }
+}

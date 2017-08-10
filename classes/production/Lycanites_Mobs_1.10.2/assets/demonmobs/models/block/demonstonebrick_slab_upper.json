@@ -1,0 +1,8 @@
+{
+	"parent": "block/upper_slab",
+	"textures": {
+		"bottom": "demonmobs:blocks/demonstonebrick",
+        "top": "demonmobs:blocks/demonstonebrick",
+        "side": "demonmobs:blocks/demonstonebrick"
+	}
+}

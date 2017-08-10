@@ -1,0 +1,6 @@
+{
+	"parent": "infernomobs:item/scorchfirescepter",
+	"textures": {
+		"layer0": "infernomobs:items/scorchfirescepter_fire"
+	}
+}

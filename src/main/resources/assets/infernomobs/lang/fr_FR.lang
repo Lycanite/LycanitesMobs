@@ -1,0 +1,23 @@
+# Group Info
+infernomobs.name=Créatures d'inferno
+infernomobs.description=Ces bêtes composées de feu et de lave se trouvent partout où la chaleur est assez intense pour faire fondre la roche et disparaître la flore !
+# Entites
+entity.infernomobs.cinder.name=Cendre
+entity.infernomobs.cinder.description=Les cendres sont des esprits de feu violents qui aiment bouter le feu à tout et n'importe quoi.
+entity.infernomobs.lobber.name=Lanceur
+entity.infernomobs.lobber.description=Ces grands golems de lave rôdent près des lacs de lave et lancent des boules de lave sur leurs ennemis.
+entity.infernomobs.cephignis.name=Igniscaille
+entity.infernomobs.cephignis.description=Ces grands poissons vivent dans la lave ! Les igniscailles peuvent être exploités à l'aide de charbon ou de charbon de bois.
+#
+# Items
+item.infernospawn.name=Œuf de 
+item.cephignismeatcooked.name=Viande d'igniscaille cuite
+item.searingtaco.name=Taco brûlant
+item.embercharge.name=Charge de braise
+item.emberscepter.name=Sceptre de braises
+item.magmacharge.name=Charge de magma
+item.magmascepter.name=Sceptre de magma
+item.bucketpurelava.name=Seau de lave pure
+#
+# Items
+tile.purelava.name=Lave pure

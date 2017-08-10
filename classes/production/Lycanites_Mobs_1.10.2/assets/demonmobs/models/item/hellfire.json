@@ -1,0 +1,6 @@
+{
+	"parent": "builtin/generated",
+	"textures": {
+		"layer0": "demonmobs:blocks/hellfire_layer_0"
+	}
+}

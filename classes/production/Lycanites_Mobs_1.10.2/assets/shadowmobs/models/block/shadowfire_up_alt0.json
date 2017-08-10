@@ -1,0 +1,7 @@
+{
+    "parent": "shadowmobs:block/shadowfire_up_alt",
+    "textures": {
+        "particle": "shadowmobs:blocks/shadowfire_layer_0",
+        "fire": "shadowmobs:blocks/shadowfire_layer_0"
+    }
+}

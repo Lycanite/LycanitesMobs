@@ -1,0 +1,7 @@
+{
+    "parent": "demonmobs:block/hellfire_side_alt",
+    "textures": {
+        "particle": "demonmobs:blocks/hellfire_layer_1",
+        "fire": "demonmobs:blocks/hellfire_layer_1"
+    }
+}

@@ -1,0 +1,178 @@
+{
+    "mobevent.boulderdash": {
+        "category": "record",
+        "sounds": [{"name": "mountainmobs:mobevent/boulderdash", "stream": true}]
+    },
+    "entity.jabberwock.say": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/jabberwock/say", "stream": false}]
+    },
+    "entity.jabberwock.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/jabberwock/hurt", "stream": false}]
+    },
+    "entity.jabberwock.death": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/jabberwock/death", "stream": false}]
+    },
+    "entity.jabberwock.step": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/jabberwock/step", "stream": false}]
+    },
+    "entity.jabberwock.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/jabberwock/attack", "stream": false}]
+    },
+    "entity.jabberwock.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/jabberwock/beg", "stream": false}]
+    },
+    "entity.jabberwock.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/jabberwock/tame", "stream": false}]
+    },
+    "entity.troll.say": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/troll/say", "stream": false}]
+    },
+    "entity.troll.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/troll/hurt", "stream": false}]
+    },
+    "entity.troll.death": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/troll/death", "stream": false}]
+    },
+    "entity.troll.step": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/troll/step", "stream": false}]
+    },
+    "entity.troll.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/troll/beg", "stream": false}]
+    },
+    "entity.troll.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/troll/tame", "stream": false}]
+    },
+    "entity.yale.say": {
+        "category": "neutral",
+        "sounds": [{"name": "mountainmobs:entity/yale/say", "stream": false}]
+    },
+    "entity.yale.hurt": {
+        "category": "neutral",
+        "sounds": [{"name": "mountainmobs:entity/yale/hurt", "stream": false}]
+    },
+    "entity.yale.death": {
+        "category": "neutral",
+        "sounds": [{"name": "mountainmobs:entity/yale/death", "stream": false}]
+    },
+    "entity.yale.step": {
+        "category": "neutral",
+        "sounds": [{"name": "mountainmobs:entity/yale/step", "stream": false}]
+    },
+    "entity.geonach.say": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/geonach/say", "stream": false}]
+    },
+    "entity.geonach.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/geonach/hurt", "stream": false}]
+    },
+    "entity.geonach.death": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/geonach/death", "stream": false}]
+    },
+    "entity.geonach.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/geonach/attack", "stream": false}]
+    },
+    "entity.geonach.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/geonach/beg", "stream": false}]
+    },
+    "entity.geonach.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/geonach/tame", "stream": false}]
+    },
+    "entity.beholder.say": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/beholder/say", "stream": false}]
+    },
+    "entity.beholder.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/beholder/hurt", "stream": false}]
+    },
+    "entity.beholder.death": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/beholder/death", "stream": false}]
+    },
+    "entity.beholder.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/beholder/beg", "stream": false}]
+    },
+    "entity.beholder.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/beholder/tame", "stream": false}]
+    },
+    "entity.beholder.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/beholder/eat", "stream": false}]
+    },
+    "entity.beholder.mount": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/beholder/mount", "stream": false}]
+    },
+    "entity.barghest.say": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/barghest/say", "stream": false}]
+    },
+    "entity.barghest.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/barghest/hurt", "stream": false}]
+    },
+    "entity.barghest.death": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/barghest/death", "stream": false}]
+    },
+    "entity.barghest.step": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/barghest/step", "stream": false}]
+    },
+    "entity.barghest.jump": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/barghest/jump", "stream": false}]
+    },
+    "entity.barghest.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/barghest/attack", "stream": false}]
+    },
+    "entity.barghest.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/barghest/beg", "stream": false}]
+    },
+    "entity.barghest.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/barghest/tame", "stream": false}]
+    },
+    "entity.barghest.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/barghest/eat", "stream": false}]
+    },
+    "entity.barghest.mount": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/barghest/mount", "stream": false}]
+    },
+    "projectile.boulderblast": {
+        "category": "ambient",
+        "sounds": [{"name": "mountainmobs:projectile/boulderblast", "stream": false}]
+    },
+    "projectile.arcanelaserstorm": {
+        "category": "ambient",
+        "sounds": [{"name": "mountainmobs:projectile/arcanelaserstorm", "stream": false}]
+    },
+    "projectile.arcanelaser": {
+        "category": "ambient",
+        "sounds": [{"name": "mountainmobs:projectile/arcanelaser", "stream": false}]
+    }
+}

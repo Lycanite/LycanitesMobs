@@ -1,0 +1,45 @@
+# Group Info
+infernomobs.name=溶岩クリーチャー
+infernomobs.description=溶岩で形成された獣、岩を溶かすか、自然を燃やすのに十分な高温であればどこでも見つけることができる！
+#
+# Mob Events
+mobevent.cinderfall.name=大噴火
+#
+# Entites
+entity.infernomobs.cinder.name=シンダー
+entity.infernomobs.cinder.description=暴力的な火の精霊。 すべてを焼却したがる
+entity.infernomobs.lobber.name=ラヴァー
+entity.infernomobs.lobber.description=巨大な溶岩のゴーレム。 溶岩の湖に潜み、溶岩を投げつける
+entity.infernomobs.cephignis.name=セフィニス
+entity.infernomobs.cephignis.description=溶岩に生息する巨大な魚。 石炭や木炭で繁殖できる
+entity.infernomobs.afrit.name=アフリット
+entity.infernomobs.afrit.description=溶岩を泳ぐ邪悪な火の精。 焼け焦げる火の弾を放つ、優秀なペットとして飼いならすことができる
+#
+# Items
+item.infernospawn.name=スポーン
+item.cephignismeatcooked.name=焼きセフィニス
+item.cephignismeatcooked.description=とってもスパイシー！
+item.searingtaco.name=焼けつくようなタコ
+item.searingtaco.description=とてもスパイシー火炎耐性がつく
+item.embercharge.name=エンバーチャージ
+item.embercharge.description=使用もしくはディスペンサーで小さな炎の霧を放つ
+item.emberscepter.name=エンバーの杖
+item.emberscepter.description=中ダメージ、炎の霧
+item.magmacharge.name=マグマチャージ
+item.magmacharge.description=使用もしくはディスペンサーで溶岩の玉を投げる！
+item.magmascepter.name=マグマの杖
+item.magmascepter.description=大ダメージ、チャージ、溶岩を設置
+item.scorchfirecharge.name=焼け焦げるファイアチャージ
+item.scorchfirecharge.description=使用もしくはディスペンサーで焼け焦げる火の玉を放つ
+item.scorchfirescepter.name=焼け焦げる炎の杖
+item.scorchfirescepter.description=小ダメージ、高速、焼け焦げる炎を設置
+item.bucketpurelava.name=純粋な溶岩バケツ
+item.bucketpurelava.description=わずかに速く流れる溶岩、地獄モブは、この中に出現しない。水のように更新することができる
+item.afrittreat.name=アフリットのご馳走
+item.afrittreat.description=燃えるような精霊の炎のような御馳走！
+#
+# Blocks
+tile.purelava.name=純粋な溶岩
+tile.purelava.description=わずかに速く流れる溶岩、地獄モブは、この中に出現しない。水のように更新することができる
+tile.scorchfire.name=焼け焦げる炎
+tile.scorchfire.description=魔法の火、通常の炎より熱くないが受けるダメージを増加させる

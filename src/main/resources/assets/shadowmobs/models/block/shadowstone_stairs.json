@@ -1,0 +1,8 @@
+{
+    "parent": "block/stairs",
+    "textures": {
+        "bottom": "shadowmobs:blocks/shadowstone",
+        "top": "shadowmobs:blocks/shadowstone",
+        "side": "shadowmobs:blocks/shadowstone"
+    }
+}

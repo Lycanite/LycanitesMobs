@@ -1,0 +1,14 @@
+{
+	"parent": "lycanitesmobs:item/scepter",
+	"textures": {
+		"layer0": "arcticmobs:items/frostboltscepter"
+	},
+	"overrides": [
+        {
+            "predicate": {
+                "using": 1
+            },
+            "model": "arcticmobs:item/frostboltscepter_fire"
+        }
+	]
+}

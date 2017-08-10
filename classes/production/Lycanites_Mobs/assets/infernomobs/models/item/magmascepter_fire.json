@@ -1,0 +1,6 @@
+{
+	"parent": "infernomobs:item/magmascepter",
+	"textures": {
+		"layer0": "infernomobs:items/magmascepter_fire"
+	}
+}

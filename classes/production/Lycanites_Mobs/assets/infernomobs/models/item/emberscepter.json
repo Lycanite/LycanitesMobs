@@ -1,0 +1,14 @@
+{
+	"parent": "lycanitesmobs:item/scepter",
+	"textures": {
+		"layer0": "infernomobs:items/emberscepter"
+	},
+	"overrides": [
+        {
+            "predicate": {
+                "using": 1
+            },
+            "model": "infernomobs:item/emberscepter_fire"
+        }
+	]
+}

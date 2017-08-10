@@ -1,7 +1,0 @@
-{
-	"parent": "builtin/generated",
-	"textures": {
-		"layer0": "freshwatermobs:items/freshwaterspawn",
-		"layer1": "freshwatermobs:items/freshwaterspawn_overlay"
-	}
-}

@@ -1,6 +1,0 @@
-{
-	"parent": "shadowmobs:item/bloodleechscepter",
-	"textures": {
-		"layer0": "shadowmobs:items/bloodleechscepter_fire"
-	}
-}

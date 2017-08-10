@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "half=bottom,variant=default": { "model": "shadowmobs:shadowstonebrick_slab" },
+        "half=top,variant=default": { "model": "shadowmobs:shadowstonebrick_slab_upper" }
+    }
+}

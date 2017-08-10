@@ -1,6 +1,0 @@
-{
-	"parent": "swampmobs:item/poisonrayscepter",
-	"textures": {
-		"layer0": "swampmobs:items/poisonrayscepter_fire"
-	}
-}

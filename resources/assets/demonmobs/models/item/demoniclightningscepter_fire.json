@@ -1,6 +1,0 @@
-{
-	"parent": "demonmobs:item/demoniclightningscepter",
-	"textures": {
-		"layer0": "demonmobs:items/demoniclightningscepter_fire"
-	}
-}

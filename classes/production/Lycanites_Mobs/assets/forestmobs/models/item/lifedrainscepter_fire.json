@@ -1,0 +1,6 @@
+{
+	"parent": "forestmobs:item/lifedrainscepter",
+	"textures": {
+		"layer0": "forestmobs:items/lifedrainscepter_fire"
+	}
+}

@@ -1,0 +1,33 @@
+# Group Info
+junglemobs.name=ジャングルクリーチャー
+junglemobs.description=高温多湿な生い茂ったジャングルなど熱帯で繁栄するエキゾチックな生き物
+#
+# Mob Events
+mobevent.theswarm.name=虫の大群
+#
+# Entites
+entity.junglemobs.geken.name=ゲケン
+entity.junglemobs.geken.description=優れたジャンプ力を持つ有毒爬虫類
+entity.junglemobs.uvaraptor.name=ユヴィラプトル
+entity.junglemobs.uvaraptor.description=極端なジャンプや滑空能力を持つカラフルな猛禽類。 飼いならすと騎乗でき、あらゆる落下に耐えることができる
+entity.junglemobs.concapede.name=コンカペード
+entity.junglemobs.concapede.description=互いに接続された奇妙なカブトムシ。 頭は道をリードし、有毒な噛みつき夜間敵対。 後ろから野菜をあげた場合は、余分な部分を成長させ、受動的になり、セグメントを守るようになる
+entity.junglemobs.concapedesegment.name=コンカペード セグメント
+entity.junglemobs.concapedesegment.description=互いに接続された奇妙なカブトムシ。 セグメントは、通常に取り付けられ、頭により成長させられる。 頭や前の別のセグメントから取り外した場合、それが頭に成長する。セグメントだけでは無防備
+entity.junglemobs.tarantula.name=タランチュラ
+entity.junglemobs.tarantula.description=一時的な粘着性を持つ緑色の蜘蛛の巣の跡を残す毒ジャンピングスパイダー
+#
+# Items
+item.junglespawn.name=スポーン
+item.concapedemeatraw.name=コンカペードの生肉
+item.concapedemeatraw.description=目を閉じろ、鶏肉だと思え！
+item.concapedemeatcooked.name=コンカペードステーキ
+item.concapedemeatcooked.description=バーベキューチキンのような味！だがそうは見えない！
+item.tropicalcurry.name=トロピカルカレー
+item.tropicalcurry.description=エキゾチックな味！弾む！
+item.uvaraptortreat.name=ユヴィラプトルのご馳走
+item.uvaraptortreat.description=ほとんど飛んでるような恐竜を飼いならすことができる！
+#
+# Blocks
+tile.quickweb.name=緑色の蜘蛛の巣
+tile.quickweb.description=すぐにバラバラになる緑色の蜘蛛の巣

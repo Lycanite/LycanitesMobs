@@ -1,0 +1,6 @@
+{
+	"parent": "swampmobs:item/venomshotscepter",
+	"textures": {
+		"layer0": "swampmobs:items/venomshotscepter_fire"
+	}
+}

@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "half=bottom,variant=default": { "model": "demonmobs:demonstone_slab" },
+        "half=top,variant=default": { "model": "demonmobs:demonstone_slab_upper" }
+    }
+}

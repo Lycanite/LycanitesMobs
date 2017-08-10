@@ -1,0 +1,7 @@
+{
+	"parent": "builtin/generated",
+	"textures": {
+		"layer0": "desertmobs:items/desertspawn",
+		"layer1": "desertmobs:items/desertspawn_overlay"
+	}
+}

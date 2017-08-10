@@ -1,0 +1,8 @@
+{
+    "parent": "block/inner_stairs",
+    "textures": {
+        "bottom": "demonmobs:blocks/demonstonebrick",
+        "top": "demonmobs:blocks/demonstonebrick",
+        "side": "demonmobs:blocks/demonstonebrick"
+    }
+}

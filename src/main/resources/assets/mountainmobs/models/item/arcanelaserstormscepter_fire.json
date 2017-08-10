@@ -1,0 +1,6 @@
+{
+	"parent": "mountainmobs:item/arcanelaserstormscepter",
+	"textures": {
+		"layer0": "mountainmobs:items/arcanelaserstormscepter_fire"
+	}
+}

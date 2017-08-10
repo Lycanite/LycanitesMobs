@@ -1,0 +1,182 @@
+{
+    "mobevent.windstorm": {
+        "category": "record",
+        "sounds": [{"name": "plainsmobs:mobevent/windstorm", "stream": true}]
+    },
+    "entity.kobold.say": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/kobold/say", "stream": false}]
+    },
+    "entity.kobold.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/kobold/hurt", "stream": false}]
+    },
+    "entity.kobold.death": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/kobold/death", "stream": false}]
+    },
+    "entity.kobold.step": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/kobold/step", "stream": false}]
+    },
+    "entity.kobold.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/kobold/attack", "stream": false}]
+    },
+    "entity.kobold.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/kobold/beg", "stream": false}]
+    },
+    "entity.kobold.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/kobold/tame", "stream": false}]
+    },
+    "entity.kobold.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/kobold/eat", "stream": false}]
+    },
+    "entity.ventoraptor.say": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/ventoraptor/say", "stream": false}]
+    },
+    "entity.ventoraptor.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/ventoraptor/hurt", "stream": false}]
+    },
+    "entity.ventoraptor.death": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/ventoraptor/death", "stream": false}]
+    },
+    "entity.ventoraptor.step": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/ventoraptor/step", "stream": false}]
+    },
+    "entity.ventoraptor.jump": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/ventoraptor/jump", "stream": false}]
+    },
+    "entity.ventoraptor.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/ventoraptor/attack", "stream": false}]
+    },
+    "entity.ventoraptor.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/ventoraptor/beg", "stream": false}]
+    },
+    "entity.ventoraptor.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/ventoraptor/tame", "stream": false}]
+    },
+    "entity.ventoraptor.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/ventoraptor/eat", "stream": false}]
+    },
+    "entity.ventoraptor.mount": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/ventoraptor/mount", "stream": false}]
+    },
+    "entity.maka.say": {
+        "category": "neutral",
+        "sounds": [{"name": "plainsmobs:entity/maka/say", "stream": false}]
+    },
+    "entity.maka.hurt": {
+        "category": "neutral",
+        "sounds": [{"name": "plainsmobs:entity/maka/hurt", "stream": false}]
+    },
+    "entity.maka.death": {
+        "category": "neutral",
+        "sounds": [{"name": "plainsmobs:entity/maka/death", "stream": false}]
+    },
+    "entity.maka.step": {
+        "category": "neutral",
+        "sounds": [{"name": "plainsmobs:entity/maka/step", "stream": false}]
+    },
+    "entity.maka.attack": {
+        "category": "neutral",
+        "sounds": [{"name": "plainsmobs:entity/maka/attack", "stream": false}]
+    },
+    "entity.makaalpha.say": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/maka/say", "stream": false}]
+    },
+    "entity.makaalpha.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/maka/hurt", "stream": false}]
+    },
+    "entity.makaalpha.death": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/maka/death", "stream": false}]
+    },
+    "entity.makaalpha.step": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/maka/step", "stream": false}]
+    },
+    "entity.makaalpha.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/maka/attack", "stream": false}]
+    },
+    "entity.zoataur.say": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/zoataur/say", "stream": false}]
+    },
+    "entity.zoataur.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/zoataur/hurt", "stream": false}]
+    },
+    "entity.zoataur.death": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/zoataur/death", "stream": false}]
+    },
+    "entity.zoataur.step": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/zoataur/step", "stream": false}]
+    },
+    "entity.zoataur.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/zoataur/attack", "stream": false}]
+    },
+    "entity.zoataur.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/zoataur/beg", "stream": false}]
+    },
+    "entity.zoataur.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/zoataur/tame", "stream": false}]
+    },
+    "entity.roc.say": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/roc/say", "stream": false}]
+    },
+    "entity.roc.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/roc/hurt", "stream": false}]
+    },
+    "entity.roc.death": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/roc/death", "stream": false}]
+    },
+    "entity.roc.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/roc/attack", "stream": false}]
+    },
+    "entity.roc.fly": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/roc/fly", "stream": false}]
+    },
+    "entity.roc.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/roc/beg", "stream": false}]
+    },
+    "entity.roc.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/roc/tame", "stream": false}]
+    },
+    "entity.roc.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/roc/eat", "stream": false}]
+    },
+    "entity.roc.mount": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/roc/mount", "stream": false}]
+    }
+}

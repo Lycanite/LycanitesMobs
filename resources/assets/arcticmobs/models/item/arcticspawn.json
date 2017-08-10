@@ -1,7 +1,0 @@
-{
-	"parent": "builtin/generated",
-	"textures": {
-		"layer0": "arcticmobs:items/arcticspawn",
-		"layer1": "arcticmobs:items/arcticspawn_overlay"
-	}
-}

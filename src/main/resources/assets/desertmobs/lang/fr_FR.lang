@@ -1,0 +1,32 @@
+# Group Info
+desertmobs.name=Créatures du désert
+desertmobs.description=Ces créatures parcourent les zones sèches, chaudes et sablonneuses, on les trouve donc dans les Déserts et les Canyons de Mesa.
+# Entites
+entity.desertmobs.cryptzombie.name=Zombie de crypte
+entity.desertmobs.cryptzombie.description=Corps momifiés qui errent dans le désert. Ils se comportent comme les zombies normaux mais infligent un effet de faim et ne brûlent pas au soleil.
+entity.desertmobs.clink.name=Cling
+entity.desertmobs.clink.description=Ces créatures métalliques malfaisantes ont la faculté de faire pousser rapidement des lames de métal sur leurs bras, et aiment s'en servir sur leurs ennemis.
+entity.desertmobs.crusk.name=Criss
+entity.desertmobs.crusk.description=Ces serpents à la peau de pierre se cachent dans les sols friables et en sortent pour attaquer. Les bébés criss peuvent être apprivoisés et s'ils mettent du temps à grandir, ils font de bons compagnons de bataille.
+entity.desertmobs.joust.name=Joute
+entity.desertmobs.joust.description=Ces animaux du désert féroces peuvent être exploités et adorent le vert de cactus ! Ils sont généralement pacifiques, mais contre-attaqueront au besoin, attention aux alphas !
+entity.desertmobs.joustalpha.name=Joute alpha
+entity.desertmobs.joustalpha.description=Chefs joutes plus grands que la normale qui attaquent les autres alphas à vue et commandent les non-alphas. Ils sont très hostiles.
+entity.desertmobs.erepede.name=Érépode
+entity.desertmobs.erepede.description=Étranges créatures des roches qui crachent de la boue affaiblissant leur proie. Elles peuvent être apprivoisées et font de bonnes bêtes de somme qui se déplacent rapidement sur le sable et attaquent à distance.
+entity.desertmobs.gorgomite.name=Gorgomite
+entity.desertmobs.gorgomite.description=Petits scarabées des roches relativement faibles qui craignent les manticores, ils appellent leurs congénères à la rescousse si on leur en laisse le temps. Leur force réside dans leur nombre, aussi tuez-les vite.
+entity.desertmobs.manticore.name=Manticore
+entity.desertmobs.manticore.description=Chauve-souris rocheuses, rapides et vicieuses, dont la morsure affaiblit leur ennemi en plus de les affamer. Elles aiment chasser les gorgomites.
+#
+# Items
+item.desertspawn.name=Œuf de 
+item.joustmeatraw.name=Viande de joute crue
+item.joustmeatcooked.name=Viande de joute cuite
+item.ambercake.name=Gâteau d'ambre
+item.crusktreat.name=Biscuit pour criss
+item.erepedetreat.name=Biscuit pour érépode
+item.throwingscythe.name=Faux de lancer
+item.scythescepter.name=Sceptre faux
+item.mudshotcharge.name=Charge de boule de boue
+item.mudshotscepter.name=Sceptre de boules de boue

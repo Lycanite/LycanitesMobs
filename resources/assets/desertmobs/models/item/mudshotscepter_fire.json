@@ -1,6 +1,0 @@
-{
-	"parent": "desertmobs:item/mudshotscepter",
-	"textures": {
-		"layer0": "desertmobs:items/mudshotscepter_fire"
-	}
-}

@@ -1,0 +1,46 @@
+# Group Info
+shadowmobs.name=Тени
+shadowmobs.description=Из тёмных уголков мира приходят таинственные чудовища.
+#
+# Mob Events
+mobevent.shadowgames.name=Игры Теней
+mobevent.blackplague.name=Черная Чума
+#
+# Entites
+entity.shadowmobs.grue.name=Грю
+entity.shadowmobs.grue.description=Когда свет сменяется тьмой, вас легко могут съесть Грю, поэтому будьте осторожны, убирая факел или перекрывая лаву! Грю могут телепортироваться к своей цели и пить её жизнь!
+entity.shadowmobs.phantom.name=Фантом
+entity.shadowmobs.phantom.description=Разгневанные элементали-пожиратели душ! Фантомы появляются, когда кто-то умирает, а иногда принимают спящего человека за мёртвого и нападают, когда тот просыпается! Их атаки с расстояния накладывают эффект страха!
+entity.shadowmobs.epion.name=Эпион
+entity.shadowmobs.epion.description=Гигантские кровососущие летучие мыши! Эпионы могут атаковать свои цели Пиявкой, отнимающей жизнь при каждом ударе. На свету эпионы падают на землю и взрываются!
+entity.shadowmobs.geist.name=Дух
+entity.shadowmobs.geist.description=Духи живут в живых существах и питаются их жизненной силой. Если их "дом" убит, духи покидают его и атакуют обидчика.
+entity.shadowmobs.chupacabra.name=Чупакабра
+entity.shadowmobs.chupacabra.description=Отвратительные существа, таящиеся в тёмных подземных пещерах. Их осатанелая жажда плоти может быть использована, чтобы управлять ими и охотиться на них. Атака Чупакабры не всегда смертельна, но излечивает этих тварей.
+#
+# Items
+item.shadowspawn.name=Призвать существо - 
+item.chupacabrameatraw.name=Сырое мясо чупакабры
+item.chupacabrameatraw.description=Мерзкое мясо, сочащееся кровью. Употребление в пищу сырым может вызвать ужасные галлюцинации.
+item.chupacabrameatcooked.name=Приготовленное мясо чупакабры
+item.chupacabrameatcooked.description=Несмотря на то, что тварь, из которой было добыто это мясо, отвратительна, в приготовленном виде его вкус превосходен!
+item.chupacabratreat.name=Пища для чупакабры
+item.chupacabratreat.description=Взрослые чупакабры слишком дикие, чтобы приручить, однако молодых особей можно приманить с помозью этого угощения.
+item.bloodchili.name=Кровавый чили
+item.bloodchili.description=Острый чили, дающий своему едоку силу поглощать жизненную силу любого создания и излечивать себя за ее счет.
+item.geistliver.name=Печень духа
+item.geistliver.description=Сильный мускусный запах... Используйте, чтобы вызвать Духа.
+item.spectralboltcharge.name=Спектральный заряд
+item.spectralboltcharge.description=Используется для создания Спектрального удара. Может использоваться в раздатчике.
+item.spectralboltscepter.name=Посох "Спектральный удар"
+item.spectralboltscepter.description=Урон: Средний | Скорость атаки: Быстрая | Вызывает страх
+item.bloodleechcharge.name=Заряд Пиявка
+item.bloodleechcharge.description=Используется для метания Пиявки. Может использоваться в раздатчике.
+item.bloodleechscepter.name=Посох "Пиявка"
+item.bloodleechscepter.description=Урон: Низкий | Скорость атаки: Быстрая | Вампиризм
+#
+# Blocks
+tile.shadowfire.name=Пламя Теней
+tile.shadowfire.description=Тёмный огонь, наносящий урон и иссушающий.
+tile.shadowcloud.name=Облако Тьмы
+tile.shadowcloud.description=Ослепляющее облако, могущее вызвать эффект страха.

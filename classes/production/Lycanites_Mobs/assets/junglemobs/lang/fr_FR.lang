@@ -1,0 +1,24 @@
+# Group Info
+junglemobs.name=Créatures de la jungle
+junglemobs.description=Créatures exotiques qui prospèrent dans les chaudes Jungles et Tropiques du monde.
+# Entites
+entity.junglemobs.geken.name=Geken
+entity.junglemobs.geken.description=Ces reptiles venimeux ont développé une excellent capacité de saut.
+entity.junglemobs.uvaraptor.name=Uvaraptor
+entity.junglemobs.uvaraptor.description=Les uvaraptors sont des prédateurs colorés capables de sauter à des distances extrêmes et de planer. Ils peuvent être apprivoisés et font des montures utiles grâce à leur bonds immenses et leur planage.
+entity.junglemobs.concapede.name=Concapode
+entity.junglemobs.concapede.description=Ces scarabées  venimeux se connectent ensemble. Les têtes mènent le groupe et sont hostiles la nuit. Elles gagnent des segments et deviennent passives si on leur donne un légume, ne les défendant plus.
+entity.junglemobs.concapedesegment.name=Segment concapode
+entity.junglemobs.concapedesegment.description=Ces scarabées se connectent ensemble. Les segments sont générés par la tête à laquelle ils sont attachés. Si on les en détache, une nouvelle tête leur pousse. Les segments seuls sont sans défense.
+entity.junglemobs.tarantula.name=Tarentule
+entity.junglemobs.tarantula.description=Araignées sauteuses et venimeuses qui laissent temporairement derrière elles une piste de toile verte gluante.
+#
+# Items
+item.junglespawn.name=Œuf de 
+item.concapedemeatraw.name=Viande de concapode crue
+item.concapedemeatcooked.name=Viande de concapode cuite
+item.tropicalcurry.name=Curry tropical
+item.uvaraptortreat.name=Biscuit pour uvaraptor
+#
+# Blocks
+tile.quickweb.name=Toile rapide

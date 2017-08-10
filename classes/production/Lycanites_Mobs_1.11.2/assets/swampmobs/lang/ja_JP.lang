@@ -1,0 +1,45 @@
+# Group Info
+swampmobs.name=湿地クリーチャー
+swampmobs.description=湿った沼や泥の海で見つかるクリーチャー、非常に危険で、強力な毒で知られている
+#
+# Mob Events
+mobevent.wingedvenom.name=毒の飛来
+#
+# Entites
+entity.swampmobs.ghoulzombie.name=グールゾンビ
+entity.swampmobs.ghoulzombie.description=危険な有毒ゾンビ。 規則的なゾンビのように弱いが、有毒かつ高速に動く
+entity.swampmobs.dweller.name=住む者
+entity.swampmobs.dweller.description=乾燥しすぎると死ぬため、攻撃すると撤退する。 雨中は非常に活発なため注意
+entity.swampmobs.ettin.name=エティン
+entity.swampmobs.ettin.description=大きな双子怪物、移動が遅いが打撃が強い。 戦闘中に近づきすぎた場合、木材や土などの近く柔らかいブロックを破壊する
+entity.swampmobs.lurker.name=潜む者
+entity.swampmobs.lurker.description=環境に溶け込み透明化する生き物。 噛みつきは毒と盲目の両方を与える。一度噛み付くと、透明になる、優秀なペットとして飼いならすことができる、クリーパーガードとして素晴らしい！
+entity.swampmobs.eyewig.name=アイウィグ
+entity.swampmobs.eyewig.description=暗いと敵対的であり、その巨大な眼から有毒レーザーを発射する！ 攻撃は、盲目を引き起こす可能性がある、飼いならすと騎乗できる
+entity.swampmobs.aspid.name=アスピッド
+entity.swampmobs.aspid.description=背中に奇妙な植物の生えた生き物、キノコで繁殖することができる。 絶えず毒の霧を放出し、背後にその跡を残す、注意するように
+entity.swampmobs.remobra.name=ガブラス
+entity.swampmobs.remobra.description=毒を吐く空飛ぶ蛇、吐いた毒のあと毒霧が残る
+#
+# Items
+item.swampspawn.name=スポーン
+item.aspidmeatraw.name=アスピッドの生肉
+item.aspidmeatraw.description=クミンで味付けされた牛肉のような匂い。 有毒に見える
+item.aspidmeatcooked.name=アスピッドのステーキ
+item.aspidmeatcooked.description=口の中で離れて砕ける、うまい！ ゆっくり煮込んだ牛肉のようだ！
+item.mosspie.name=モスパイ
+item.mosspie.description=健康的でリッチな肉のパイ！ 再生がつく
+item.lurkertreat.name=潜む者のご馳走
+item.lurkertreat.description=見つけることができれば、飼いならすことができる！
+item.eyewigtreat.name=アイウィグのご馳走
+item.eyewigtreat.description=光の当たるところでペットにするのが最善
+item.poisongland.name=ポイズングランド
+item.poisongland.description=投げると毒の霧を設置！ 
+item.poisonrayscepter.name=ポイズンレイの杖
+item.poisonrayscepter.description=中ダメージ、レーザー、毒
+item.venomshotscepter.name=ヴェノムショットの杖
+item.venomshotscepter.description=小ダメージ、高速、毒を与え毒霧を設置
+#
+# Blocks
+tile.poisoncloud.name=毒霧
+tile.poisoncloud.description=接触すると毒にかかる

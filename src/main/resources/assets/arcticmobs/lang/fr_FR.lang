@@ -1,0 +1,26 @@
+# Group Info
+arcticmobs.name=Créatures arctiques
+arcticmobs.description=Créatures de glace et de vent, que l'on trouve généralement dans les zones neigeuses et froides telles que les Taigas et les Plaines Gelées.
+# Entites
+entity.arcticmobs.reiver.name=Saccagivre
+entity.arcticmobs.reiver.description=Esprits glacés qui lancent des éclairs gelés sur tout ce qu'ils considèrent comme une menace.
+entity.arcticmobs.frostweaver.name=Tisse-gel
+entity.arcticmobs.frostweaver.description=Araignées de glace ignobles. Attention à leur crachat, il crée temporairement une toile de givre collante.
+entity.arcticmobs.yeti.name=Yéti
+entity.arcticmobs.yeti.description=Énormes mammifères glacials qui se repaissent de la végétation arctique. Ils peuvent être exploités à l'aide de légumes, mais attention à leurs nuages de gel. Le lait de yéti est un délice !
+#
+# Items
+item.arcticspawn.name=Œuf de 
+item.yetimeatraw.name=Viande de yéti crue
+item.yetimeatcooked.name=Viande de yéti cuite
+item.palesoup.name=Soupe pâle
+item.frostyfur.name=Fourrure glaciale
+item.frostboltcharge.name=Charge d'éclair gelé
+item.frostwebcharge.name=Charge de toile de givre
+item.frostboltscepter.name=Sceptre d'éclairs gelés
+item.frostwebscepter.name=Sceptre de toiles de givre
+#
+# Blocks
+tile.frostweb.name=Toile de givre
+tile.frostcloud.name=Nuage de gel
+tile.frostfire.name=Glacefeu

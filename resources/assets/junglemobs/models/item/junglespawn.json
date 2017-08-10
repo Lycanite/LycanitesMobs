@@ -1,7 +1,0 @@
-{
-	"parent": "builtin/generated",
-	"textures": {
-		"layer0": "junglemobs:items/junglespawn",
-		"layer1": "junglemobs:items/junglespawn_overlay"
-	}
-}

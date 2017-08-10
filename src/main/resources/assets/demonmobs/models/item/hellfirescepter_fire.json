@@ -1,0 +1,6 @@
+{
+	"parent": "demonmobs:item/hellfirescepter",
+	"textures": {
+		"layer0": "demonmobs:items/hellfirescepter_fire"
+	}
+}

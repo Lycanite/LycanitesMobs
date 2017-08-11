@@ -1,5 +1,6 @@
 package com.lycanitesmobs.core.entity.ai;
 
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

@@ -2,6 +2,7 @@ package com.lycanitesmobs.core.entity.navigate;
 
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathFinder;
@@ -10,9 +11,11 @@ import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.ChunkCache;
 import net.minecraft.world.World;
 
 public class PathNavigateGroundCustom extends PathNavigateGround {
+    protected BlockPos targetPosSmart;
 
     public PathNavigateGroundCustom(EntityLiving entityLiving, World world) {
         super(entityLiving, world);
@@ -28,9 +31,11 @@ public class PathNavigateGroundCustom extends PathNavigateGround {
 
 
     @Override
-    public Path getPathToPos(BlockPos pos) {
-        Path path = super.getPathToPos(pos);
-        return path;
+    protected Vec3d getEntityPosition() {
+        // Allow Underwater Breathers To Swim Downwards:
+        if(this.theEntity.canBreatheUnderwater())
+            return new Vec3d(this.theEntity.posX, (int)this.theEntity.getEntityBoundingBox().minY + 0.5D, this.theEntity.posZ);
+        return super.getEntityPosition();
     }
 
 

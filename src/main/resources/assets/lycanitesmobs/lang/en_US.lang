@@ -197,8 +197,10 @@ lyc.command.mobevent.start=Starting mob event...
 lyc.command.mobevent.random=Starting random mob event...
 lyc.command.mobevent.stop=Stopping all mob events...
 lyc.command.mobevent.list=Mob Events:
-lyc.command.mobevent.enable=Random mob events enabled.
-lyc.command.mobevent.disable=Random mob events disabled.
+lyc.command.mobevent.enable=All mob events enabled.
+lyc.command.mobevent.disable=All mob events disabled.
+lyc.command.mobevent.enable.random=Random mob events enabled.
+lyc.command.mobevent.disable.random=Random mob events disabled.
 #
 #
 # ========== Common ==========

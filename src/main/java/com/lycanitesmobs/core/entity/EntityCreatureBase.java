@@ -4,19 +4,16 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.lycanitesmobs.*;
 import com.lycanitesmobs.api.IGroupBoss;
+import com.lycanitesmobs.core.entity.ai.DirectNavigator;
 import com.lycanitesmobs.core.entity.ai.EntityAIMoveRestriction;
 import com.lycanitesmobs.core.entity.ai.EntityAITargetAttack;
 import com.lycanitesmobs.core.entity.ai.EntityAITargetRevenge;
 import com.lycanitesmobs.core.entity.navigate.*;
 import com.lycanitesmobs.core.info.*;
+import com.lycanitesmobs.core.inventory.ContainerCreature;
 import com.lycanitesmobs.core.inventory.InventoryCreature;
 import com.lycanitesmobs.core.pets.PetEntry;
 import com.lycanitesmobs.core.spawning.SpawnTypeBase;
-import com.lycanitesmobs.*;
-import com.lycanitesmobs.core.entity.ai.DirectNavigator;
-import com.lycanitesmobs.core.entity.navigate.*;
-import com.lycanitesmobs.core.info.*;
-import com.lycanitesmobs.core.inventory.ContainerCreature;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -1330,6 +1327,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
+
         this.updateBattlePhase();
         this.updateArmSwingProgress();
 
@@ -1641,7 +1639,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     }
     
     // ========== Move with Heading ==========
-    /** Moves the entity, redirects to the flight navigator if this mob should use that instead. **/
+    /** Moves the entity, redirects to the direct navigator if this mob should use that instead. **/
     @Override
     public void moveEntityWithHeading(float moveStrafe, float moveForward) {
     	if(!this.useDirectNavigator()) {
@@ -1652,8 +1650,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
             else
                 super.moveEntityWithHeading(moveStrafe, moveForward);
         }
-    	else
+    	else {
             this.directNavigator.flightMovement(moveStrafe, moveForward);
+        }
     }
 
     // ========== Move Flying with Heading ==========
@@ -1723,12 +1722,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Get Navigator ==========
     /** Returns the movement helper that this entity should use. **/
     public PathNavigate getNavigator() {
-        /*if(this.hasAttackTarget()) {
-            if (!(super.getNavigator() instanceof PathNavigateSwimmer) && this.canSwim() && this.isInWater() && this.getAttackTarget().isInWater()) {
-                if (this.navigatorSwimming == null)
-                    this.navigatorSwimming = new PathNavigateSwimmer(this, this.getEntityWorld());
-                return this.navigatorSwimming;
-            }
+        /*if(super.isInWater() && !this.canSwim() && this.canWade() && this.canBreatheUnderwater()) {
+            if (this.navigatorSwimming == null)
+                this.navigatorSwimming = new PathNavigateSwimmer(this, this.getEntityWorld());
+            return this.navigatorSwimming;
         }*/
         return super.getNavigator();
     }
@@ -1736,12 +1733,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Get Move Helper ==========
     /** Returns the movement helper that this entity should use. **/
     public EntityMoveHelper getMoveHelper() {
-        /*if(this.hasAttackTarget()) {
-            if (!(super.getMoveHelper() instanceof SwimmingMoveHelper) && this.canSwim() && this.isInWater() && this.getAttackTarget().isInWater()) {
-                if (this.moveHelperSwimming == null)
-                    this.moveHelperSwimming = new SwimmingMoveHelper(this);
-                return this.moveHelperSwimming;
-            }
+        /*if(super.isInWater() && !this.canSwim() && this.canWade() && this.canBreatheUnderwater()) {
+            if (this.moveHelperSwimming == null)
+                this.moveHelperSwimming = new SwimmingMoveHelper(this);
+            return this.moveHelperSwimming;
         }*/
         return super.getMoveHelper();
     }
@@ -2374,8 +2369,19 @@ public abstract class EntityCreatureBase extends EntityLiving {
             if(!this.isBoundPet())
                 this.inventory.dropInventory();
             if(damageSource.getEntity() != null) {
-                if(damageSource.getEntity() instanceof EntityPlayer)
-                    ((EntityPlayer)damageSource.getEntity()).addStat(ObjectManager.getAchievement(this.mobInfo.name + ".kill"), 1);
+                if(damageSource.getEntity() instanceof EntityPlayer) {
+                    EntityPlayer player = (EntityPlayer)damageSource.getEntity();
+                    player.addStat(ObjectManager.getAchievement(this.mobInfo.name + ".kill"), 1);
+                    if(this.isBoss() || this.getRNG().nextDouble() <= MobInfo.beastiaryAddOnDeathChance) {
+                        ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
+                        if(playerExt != null && !playerExt.getBeastiary().hasFullKnowledge(mobInfo.name)) {
+                            CreatureKnowledge creatureKnowledge = new CreatureKnowledge(playerExt.getBeastiary(), this.mobInfo.name, 1);
+                            playerExt.getBeastiary().addToKnowledgeList(creatureKnowledge);
+                            playerExt.getBeastiary().sendNewToClient(creatureKnowledge);
+                            playerExt.getBeastiary().sendAddedMessage(this.mobInfo);
+                        }
+                    }
+                }
             }
         }
         if(this.getMasterTarget() != null && this.getMasterTarget() instanceof EntityCreatureBase)

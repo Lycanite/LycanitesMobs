@@ -9,6 +9,8 @@ import com.lycanitesmobs.core.pets.SummonSet;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.translation.I18n;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,6 +39,20 @@ public class Beastiary {
 		if(ObjectManager.getMob(newKnowledge.creatureName) == null)
 			return;
 		this.creatureKnowledgeList.put(newKnowledge.creatureName, newKnowledge);
+	}
+
+	public void sendAddedMessage(MobInfo mobInfo) {
+		if(extendedPlayer.player.getEntityWorld().isRemote)
+			return;
+		String message = I18n.translateToLocal("message.soulgazer.new");
+		message = message.replace("%creature%", mobInfo.getTitle());
+		extendedPlayer.player.sendMessage(new TextComponentString(message));
+		if(mobInfo.isSummonable()) {
+			String summonMessage = I18n.translateToLocal("message.soulgazer.summonable");
+			summonMessage = summonMessage.replace("%creature%", mobInfo.getTitle());
+			extendedPlayer.player.sendMessage(new TextComponentString(summonMessage));
+		}
+		extendedPlayer.player.addStat(ObjectManager.getAchievement(mobInfo.name + ".learn"), 1);
 	}
 	
 	public boolean hasFullKnowledge(String creatureName) {
@@ -82,7 +98,7 @@ public class Beastiary {
 	// ==================================================
     //                    Network Sync
     // ==================================================
-	/** Sends a new Beastiary entry (CreatureKnowledge) to the client. Shouldn't really be needed, just add it client side. **/
+	/** Sends a new Beastiary entry (CreatureKnowledge) to the client. For when it's added server side but needs updated client side. **/
 	public void sendNewToClient(CreatureKnowledge newKnowledge) {
 		MessageCreatureKnowledge message = new MessageCreatureKnowledge(newKnowledge);
 		LycanitesMobs.packetHandler.sendToPlayer(message, (EntityPlayerMP)this.extendedPlayer.getPlayer());

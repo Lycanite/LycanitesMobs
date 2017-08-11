@@ -192,6 +192,16 @@ public class CommandMain implements ICommand {
 			
 			// Enable:
 			if("enable".equalsIgnoreCase(args[1])) {
+				if(args.length >= 3) {
+					if("random".equalsIgnoreCase(args[1])) {
+						reply = I18n.translateToLocal("lyc.command.mobevent.enable.random");
+						commandSender.sendMessage(new TextComponentString(reply));
+						worldExt.mobEventsRandom = true;
+						ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "mobevents");
+						config.setBool("Global", "Random Mob Events", true);
+						return;
+					}
+				}
 				reply = I18n.translateToLocal("lyc.command.mobevent.enable");
 				commandSender.sendMessage(new TextComponentString(reply));
                 worldExt.mobEventsEnabled = true;
@@ -202,6 +212,16 @@ public class CommandMain implements ICommand {
 			
 			// Disable:
 			if("disable".equalsIgnoreCase(args[1])) {
+				if(args.length >= 3) {
+					if("random".equalsIgnoreCase(args[1])) {
+						reply = I18n.translateToLocal("lyc.command.mobevent.disable.random");
+						commandSender.sendMessage(new TextComponentString(reply));
+						worldExt.mobEventsRandom = false;
+						ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "mobevents");
+						config.setBool("Global", "Random Mob Events", false);
+						return;
+					}
+				}
 				reply = I18n.translateToLocal("lyc.command.mobevent.disable");
 				commandSender.sendMessage(new TextComponentString(reply));
                 worldExt.mobEventsEnabled = false;

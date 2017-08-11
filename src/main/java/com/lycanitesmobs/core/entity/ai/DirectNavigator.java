@@ -1,5 +1,6 @@
 package com.lycanitesmobs.core.entity.ai;
 
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -127,15 +128,15 @@ public class DirectNavigator {
   	//                      Movement
   	// ==================================================
 	public void flightMovement(float moveStrafe, float moveForward) {
-		if(this.host.isInWater() && !host.canSwim()) {
-            this.host.moveFlying(moveStrafe, moveForward, 0.02F);
+		if(this.host.isInWater()) {
+            this.host.moveSwimmingWithHeading(moveStrafe, moveForward);
             this.host.move(MoverType.SELF, this.host.motionX, this.host.motionY, this.host.motionZ);
             this.host.motionX *= 0.800000011920929D;
             this.host.motionY *= 0.800000011920929D;
             this.host.motionZ *= 0.800000011920929D;
         }
-        else if(this.host.lavaContact() && !host.canSwim()) {
-            this.host.moveFlying(moveStrafe, moveForward, 0.02F);
+        else if(this.host.lavaContact()) {
+            this.host.moveSwimmingWithHeading(moveStrafe, moveForward);
             this.host.move(MoverType.SELF, this.host.motionX, this.host.motionY, this.host.motionZ);
             this.host.motionX *= 0.5D;
             this.host.motionY *= 0.5D;

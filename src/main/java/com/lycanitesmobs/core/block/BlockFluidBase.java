@@ -1,5 +1,6 @@
 package com.lycanitesmobs.core.block;
 
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.info.GroupInfo;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -12,6 +13,10 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidBlock;
+
+import javax.annotation.Nullable;
 
 public class BlockFluidBase extends BlockFluidClassic {
     public String blockName;

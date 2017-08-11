@@ -2,23 +2,29 @@ package com.lycanitesmobs;
 
 import com.lycanitesmobs.core.block.BlockSlabCustom;
 import com.lycanitesmobs.core.config.ConfigBase;
+import com.lycanitesmobs.core.entity.EntityCreatureRideable;
 import com.lycanitesmobs.core.info.EntityListCustom;
 import com.lycanitesmobs.core.info.GroupInfo;
 import com.lycanitesmobs.core.info.MobInfo;
-import com.lycanitesmobs.core.item.ItemBase;
-import com.lycanitesmobs.core.entity.EntityCreatureRideable;
 import com.lycanitesmobs.core.info.ObjectLists;
+import com.lycanitesmobs.core.item.ItemBase;
 import com.lycanitesmobs.core.item.ItemSlabCustom;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.client.Minecraft;
+import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
 import net.minecraft.dispenser.BehaviorProjectileDispense;
+import net.minecraft.dispenser.IBehaviorDispenseItem;
+import net.minecraft.dispenser.IBlockSource;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
@@ -101,6 +107,21 @@ public class ObjectManager {
 		if(currentGroup != null)
 			GameRegistry.register(item, new ResourceLocation(currentGroup.filename, name));
         LycanitesMobs.proxy.addItemRender(currentGroup, item);
+
+        // Fluid Dispenser:
+        if(item instanceof ItemBucket) {
+            IBehaviorDispenseItem ibehaviordispenseitem = new BehaviorDefaultDispenseItem() {
+                private final BehaviorDefaultDispenseItem dispenseBehavior = new BehaviorDefaultDispenseItem();
+
+                public ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
+                    ItemBucket itembucket = (ItemBucket)stack.getItem();
+                    BlockPos blockpos = source.getBlockPos().offset(source.getBlockState().getValue(BlockDispenser.FACING));
+                    return itembucket.tryPlaceContainedLiquid(null, source.getWorld(), blockpos) ? new ItemStack(Items.BUCKET) : this.dispenseBehavior.dispense(source, stack);
+                }
+            };
+            BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(item, ibehaviordispenseitem);
+        }
+
         return item;
 	}
 

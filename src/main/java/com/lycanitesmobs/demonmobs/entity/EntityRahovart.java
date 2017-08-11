@@ -233,7 +233,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
                 this.getEntityWorld().spawnEntity(projectile);
             }
 
-            // Player Projectiles and Checks
+            // Flying Player Nether Soul Attack:
             for(EntityPlayer target : this.playerTargets) {
                 if(target.capabilities.isCreativeMode || target.isSpectator())
                     continue;
@@ -242,6 +242,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
                     for(int i = 0; i < 3; i++) {
                         EntityNetherSoul minion = new EntityNetherSoul(this.getEntityWorld());
                         this.summonMinion(minion, this.getRNG().nextDouble() * 360, 5);
+                        minion.setAttackTarget(target);
                         minion.setMasterTarget(null); // Clear master target so that these minions don't break phase 3 barriers.
                     }
                 }
@@ -724,6 +725,12 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
         if(entity instanceof EntityIronGolem) {
             entity.setDead();
             return false;
+        }
+        if(entity instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer)entity;
+            if (!player.capabilities.isCreativeMode && player.posY > this.posY + this.height) {
+                return false;
+            }
         }
         return super.isDamageEntityApplicable(entity);
     }

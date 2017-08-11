@@ -199,7 +199,6 @@ public class ExtendedPlayer implements IExtendedPlayer {
 
 		// Pet Manager Setup:
 		if(!this.player.getEntityWorld().isRemote && !this.petManagerSetup) {
-
 			// Load Familiars:
 			Map<String, PetEntry> playerFamiliars = DonationFamiliars.instance.getFamiliarsForPlayer(this.player);
 			if(playerFamiliars != null) {
@@ -207,6 +206,7 @@ public class ExtendedPlayer implements IExtendedPlayer {
 				for(PetEntry petEntry : playerFamiliars.values()) {
 					if(!this.petManager.hasEntry(petEntry)) {
 						this.petManager.addEntry(petEntry);
+						petEntry.entity = null;
 					}
 				}
 				this.sendPetEntriesToPlayer("familiar");

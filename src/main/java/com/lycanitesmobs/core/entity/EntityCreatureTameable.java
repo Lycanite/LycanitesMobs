@@ -1,5 +1,6 @@
 package com.lycanitesmobs.core.entity;
 
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.ObjectManager;
@@ -96,7 +97,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     	String ownedName = ownerName + ownerSuffix + this.getFullName();
     	
     	if(this.hasCustomName())
-    		return super.getName() + " (" + ownedName + ")";
+    		return super.getName();// + " (" + ownedName + ")";
     	else
     		return ownedName;
     }

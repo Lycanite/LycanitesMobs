@@ -14,6 +14,8 @@ import com.lycanitesmobs.core.info.MobInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.monster.EntityIronGolem;
+import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -241,10 +243,11 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
             for(EntityPlayer target : this.playerTargets) {
                 if(target.capabilities.isCreativeMode || target.isSpectator())
                     continue;
-                if(target.posY > this.posY + this.height + 5) {
+                if(target.posY > this.posY + this.height) {
                     for(int i = 0; i < 3; i++) {
-                        EntityNetherSoul minion = new EntityNetherSoul(this.worldObj);
+                        EntityNetherSoul minion = new EntityNetherSoul(this.getEntityWorld());
                         this.summonMinion(minion, this.getRNG().nextDouble() * 360, 5);
+                        minion.setAttackTarget(target);
                     }
                 }
             }
@@ -602,6 +605,25 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
 
     public boolean canAttackWhileBlocking() {
         return true;
+    }
+
+    @Override
+    public boolean isDamageEntityApplicable(Entity entity) {
+        if(entity instanceof EntityPigZombie) {
+            entity.setDead();
+            return false;
+        }
+        if(entity instanceof EntityIronGolem) {
+            entity.setDead();
+            return false;
+        }
+        if(entity instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer)entity;
+            if (!player.capabilities.isCreativeMode && player.posY > this.posY + this.height) {
+                return false;
+            }
+        }
+        return super.isDamageEntityApplicable(entity);
     }
 
 

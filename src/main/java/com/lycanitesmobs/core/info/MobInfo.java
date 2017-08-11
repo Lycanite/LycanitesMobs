@@ -55,6 +55,9 @@ public class MobInfo {
 	
 	/** If true, tamed mobs wont harm their owners. **/
 	public static boolean friendlyFire = true;
+
+    /** The chance that a creature gets added to the killing player's Beastiary on death, always 100% for bosses. **/
+    public static double beastiaryAddOnDeathChance = 0.15;
 	
 	/** A static map containing all the global multipliers for each stat for each difficulty. They defaults are Easy: 0.5, Normal: 1.0 and Hard: 1.5. **/
 	public static Map<String, Double> difficultyMutlipliers = new HashMap<String, Double>();
@@ -166,6 +169,10 @@ public class MobInfo {
 		tamingEnabled = config.getBool("Pets", "Taming", tamingEnabled, "Set to false to disable pet/mount taming.");
 		mountingEnabled = config.getBool("Pets", "Mounting", mountingEnabled, "Set to false to disable mounts.");
 		friendlyFire = config.getBool("Pets", "Friendly Fire", friendlyFire, "If true, pets, minions, etc can't harm their owners (with ranged attacks, etc).");
+
+        // Beastiary:
+        config.setCategoryComment("Beastiary", "Here you can control all settings related to the player's Beastiary.");
+        beastiaryAddOnDeathChance = config.getDouble("Beastiary", "Add Creature On Kill Chance", beastiaryAddOnDeathChance, "The chance that creatures are added to the player's Beastiary when killed, the Soulgazer can also be used to add creatures. Bosses are always a 100% chance.");
 
         // Interaction:
 		config.setCategoryComment("Mob Interaction", "Here you can control how mobs interact with other mobs.");

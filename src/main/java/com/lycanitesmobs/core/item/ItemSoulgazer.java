@@ -70,29 +70,9 @@ public class ItemSoulgazer extends ItemBase {
         				0.0D, 0.0D, 0.0D);
     		}
     	}
-    	
-    	if(!player.worldObj.isRemote) {
-    		String message = I18n.translateToLocal("message.soulgazer.new");
-    		message = message.replace("%creature%", mobInfo.getTitle());
-    		player.addChatMessage(new TextComponentString(message));
-    		if(mobInfo.isSummonable()) {
-        		String summonMessage = I18n.translateToLocal("message.soulgazer.summonable");
-        		summonMessage = summonMessage.replace("%creature%", mobInfo.getTitle());
-        		player.addChatMessage(new TextComponentString(summonMessage));
-    		}
-            player.addStat(ObjectManager.getAchievement(mobInfo.name + ".learn"), 1);
-    	}
 
     	playerExt.getBeastiary().addToKnowledgeList(new CreatureKnowledge(playerExt.getBeastiary(), mobInfo.name, 1));
+		playerExt.getBeastiary().sendAddedMessage(mobInfo);
     	return true;
-    }
-
-
-    // ==================================================
-    //                      Crafting
-    // ==================================================
-    //TODO Figure out how this is now done!
-    public boolean doesContainerItemLeaveCraftingGrid(ItemStack itemStack) {
-        return false;
     }
 }

@@ -96,7 +96,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     	String ownedName = ownerName + ownerSuffix + this.getFullName();
     	
     	if(this.hasCustomName())
-    		return super.getName() + " (" + ownedName + ")";
+    		return super.getName();// + " (" + ownedName + ")";
     	else
     		return ownedName;
     }

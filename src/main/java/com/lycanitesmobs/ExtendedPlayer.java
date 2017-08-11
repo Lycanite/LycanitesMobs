@@ -207,6 +207,7 @@ public class ExtendedPlayer implements IExtendedPlayer {
 				for(PetEntry petEntry : playerFamiliars.values()) {
 					if(!this.petManager.hasEntry(petEntry)) {
 						this.petManager.addEntry(petEntry);
+						petEntry.entity = null;
 					}
 				}
 				this.sendPetEntriesToPlayer("familiar");

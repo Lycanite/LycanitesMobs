@@ -9,6 +9,8 @@ import com.lycanitesmobs.core.pets.SummonSet;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.translation.I18n;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,6 +39,20 @@ public class Beastiary {
 		if(ObjectManager.getMob(newKnowledge.creatureName) == null)
 			return;
 		this.creatureKnowledgeList.put(newKnowledge.creatureName, newKnowledge);
+	}
+
+	public void sendAddedMessage(MobInfo mobInfo) {
+		if(extendedPlayer.player.getEntityWorld().isRemote)
+			return;
+		String message = I18n.translateToLocal("message.soulgazer.new");
+		message = message.replace("%creature%", mobInfo.getTitle());
+		extendedPlayer.player.addChatMessage(new TextComponentString(message));
+		if(mobInfo.isSummonable()) {
+			String summonMessage = I18n.translateToLocal("message.soulgazer.summonable");
+			summonMessage = summonMessage.replace("%creature%", mobInfo.getTitle());
+			extendedPlayer.player.addChatMessage(new TextComponentString(summonMessage));
+		}
+		extendedPlayer.player.addStat(ObjectManager.getAchievement(mobInfo.name + ".learn"), 1);
 	}
 	
 	public boolean hasFullKnowledge(String creatureName) {

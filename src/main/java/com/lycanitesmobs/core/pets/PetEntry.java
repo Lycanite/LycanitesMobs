@@ -1,10 +1,10 @@
 package com.lycanitesmobs.core.pets;
 
 
-import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.ExtendedPlayer;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
+import com.lycanitesmobs.core.entity.EntityCreatureBase;
+import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.info.MobInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -340,13 +340,14 @@ public class PetEntry {
     public void spawnEntity() {
         if(this.entity != null || this.host == null)
             return;
+        Entity spawnedEntity = null;
         try {
-            this.entity = (Entity)this.summonSet.getCreatureClass().getConstructor(new Class[] {World.class}).newInstance(new Object[] {this.host.worldObj});
+            spawnedEntity = (Entity)this.summonSet.getCreatureClass().getConstructor(new Class[] {World.class}).newInstance(new Object[] {this.host.getEntityWorld()});
         } catch (Exception e) {
             //LycanitesMobs.printWarning("", "[Pet Entry] A none Entity class was set in a PetEntry, only classes of Entity are valid!");
             //e.printStackTrace();
         }
-        Entity spawnedEntity = this.entity;
+
         if(spawnedEntity == null)
             return;
 

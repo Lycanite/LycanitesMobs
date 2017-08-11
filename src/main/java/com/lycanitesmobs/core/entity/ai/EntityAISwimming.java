@@ -49,8 +49,9 @@ public class EntityAISwimming extends EntityAIBase {
     	if(this.sink) {
 	    	double targetY = this.host.posY;
 	    	if(!this.host.useDirectNavigator()) {
-	    		if(!this.host.getNavigator().noPath())
-                    targetY = this.host.getNavigator().getPath().getPosition(this.host).yCoord;
+	    		if(!this.host.getNavigator().noPath()) {
+                    targetY = this.host.getNavigator().getPath().getFinalPathPoint().yCoord;
+                }
 	    	}
 	    	else {
 	    		if(!this.host.directNavigator.atTargetPosition()) {
@@ -59,6 +60,8 @@ public class EntityAISwimming extends EntityAIBase {
 	    	}
 	    	if(this.host.posY < targetY && !this.host.canSwim())
                 this.host.getJumpHelper().setJumping();
+            else if(this.host.posY > targetY && !this.host.canSwim())
+                this.host.addVelocity(0, -this.host.getAIMoveSpeed() * 0.25F, 0);
     	}
     	else if(this.host.getRNG().nextFloat() < 0.8F && !this.host.canSwim())
             this.host.getJumpHelper().setJumping();

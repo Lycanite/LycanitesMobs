@@ -55,7 +55,7 @@ public class EntityLacedon extends EntityCreatureTameable implements IMob {
         this.tasks.addTask(0, new EntityAISwimming(this).setSink(true));
         this.tasks.addTask(1, new EntityAIStayByWater(this).setSpeed(1.25D));
         this.tasks.addTask(2, this.aiSit);
-        this.tasks.addTask(3, new EntityAIAttackMelee(this).setLongMemory(false));
+        this.tasks.addTask(3, new EntityAIAttackMelee(this).setLongMemory(false).setRange(1));
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
         this.wanderAI = new EntityAIWander(this);
         this.tasks.addTask(6, wanderAI);
@@ -74,7 +74,7 @@ public class EntityLacedon extends EntityCreatureTameable implements IMob {
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
 		baseAttributes.put("maxHealth", 15D);
-		baseAttributes.put("movementSpeed", 0.16D);
+		baseAttributes.put("movementSpeed", 0.24D);
 		baseAttributes.put("knockbackResistance", 0.0D);
 		baseAttributes.put("followRange", 32D);
 		baseAttributes.put("attackDamage", 2D);
@@ -115,11 +115,11 @@ public class EntityLacedon extends EntityCreatureTameable implements IMob {
     // ========== Movement Speed Modifier ==========
     @Override
     public float getAISpeedModifier() {
-    	if(this.isInWater()) // Checks specifically just for water.
-    		return 2.0F;
-    	else if(this.waterContact()) // Checks for water, rain, etc.
-    		return 1.5F;
-    	return super.getAISpeedModifier();
+        if(this.isInWater()) // Checks specifically just for water.
+            return 1.5F;
+        else if(this.waterContact()) // Checks for water, rain, etc.
+            return 1.25F;
+        return super.getAISpeedModifier();
     }
     
 	// Pathing Weight:

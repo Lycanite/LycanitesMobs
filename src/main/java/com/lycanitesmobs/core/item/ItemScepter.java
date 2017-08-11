@@ -132,11 +132,11 @@ public class ItemScepter extends ItemBase {
     }
     
     public void damageItemCharged(ItemStack itemStack, EntityLivingBase entity, float power) {
-    	itemStack.damageItem((int)(10 * power), entity);
+    	itemStack.damageItem(Math.max((int)power, 1), entity);
     }
     
     public int getDurability() {
-    	return 250;
+    	return 1000;
     }
 
     // ========== Max Use Duration ==========
@@ -213,7 +213,6 @@ public class ItemScepter extends ItemBase {
 	// ==================================================
     @Override
     public boolean getIsRepairable(ItemStack itemStack, ItemStack repairStack) {
-        //if(repairStack.itemID == -1) return true;
         return super.getIsRepairable(itemStack, repairStack);
     }
 

@@ -29,6 +29,9 @@ public class SpawnInfo {
 	
 	/** Mob spawning enabled. **/
 	public boolean enabled = true;
+
+	/** If true, this mob wont naturally spawn as a subspecies. **/
+	public boolean disableSubspecies = false;
 	
 	// ========== Spawn Type ==========
     /** A comma separated list of Spawn Types Entries to use. Can be: MONSTER, CREATURE, WATERCREATURE, AMBIENT, PORTAL, NETHER, FIRE, LAVA, etc. **/
@@ -143,7 +146,11 @@ public class SpawnInfo {
 		this.enabled = config.getBool("Enabled Spawns", this.getCfgName("Spawning Enabled"), this.enabled);
 		if(!this.enabled)
 			return;
-		
+
+		// Subspecies:
+		config.setCategoryComment("Disable Subspecies Spawns", "Set to true to prevent mobs from spawning as a subspecies (this doesn't remove subspecies, it just prevents them from naturally spawning).");
+		this.disableSubspecies = config.getBool("Disable Subspecies Spawns", this.getCfgName("Subspecies Spawning Disabled"), this.disableSubspecies);
+
 		// Spawn Type:
         config.setCategoryComment("Spawn Types", "Specifies how this mob spawns, multiple entries should be comma separated. Valid types are: MONSTER, CREATURE, WATERCREATURE, FIRE, FROSTFIRE, LAVA, ROCK, STORM. More will likely be added too.");
         SpawnTypeSet spawnTypeSet = config.getTypes("Spawn Types", this.getCfgName("Spawn Types"), this.spawnTypeEntries);

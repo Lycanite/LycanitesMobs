@@ -67,7 +67,7 @@ public class DirectNavigator {
 	public boolean isTargetPositionValid(BlockPos targetPosition) {
 		if(targetPosition == null)
 			return true;
-		if(this.host.canSwim() && this.host.isSwimmable(targetPosition.getX(), targetPosition.getY(), targetPosition.getZ()))
+		if(this.host.isStrongSwimmer() && this.host.isSwimmable(targetPosition.getX(), targetPosition.getY(), targetPosition.getZ()))
 			return true;
 		if(!this.host.canFly())
 			return false;
@@ -126,14 +126,14 @@ public class DirectNavigator {
   	//                      Movement
   	// ==================================================
 	public void flightMovement(float moveStrafe, float moveForward) {
-		if(this.host.isInWater() && !host.canSwim()) {
+		if(this.host.isInWater() && !host.isStrongSwimmer()) {
             this.host.moveFlying(moveStrafe, moveForward, 0.02F);
             this.host.moveEntity(this.host.motionX, this.host.motionY, this.host.motionZ);
             this.host.motionX *= 0.800000011920929D;
             this.host.motionY *= 0.800000011920929D;
             this.host.motionZ *= 0.800000011920929D;
         }
-        else if(this.host.lavaContact() && !host.canSwim()) {
+        else if(this.host.lavaContact() && !host.isStrongSwimmer()) {
             this.host.moveFlying(moveStrafe, moveForward, 0.02F);
             this.host.moveEntity(this.host.motionX, this.host.motionY, this.host.motionZ);
             this.host.motionX *= 0.5D;

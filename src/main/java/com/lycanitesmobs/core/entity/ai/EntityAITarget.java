@@ -25,8 +25,8 @@ public abstract class EntityAITarget extends EntityAIBase {
     protected EntityLivingBase target;
     
     // Targeting:
-    protected Predicate<Entity> targetSelector;
-    protected Predicate<Entity> allySelector;
+    protected final Predicate<EntityLivingBase> targetSelector;
+    protected final Predicate<EntityLivingBase> allySelector;
     protected TargetSorterNearest nearestSorter;
 
     protected boolean checkSight = true;
@@ -43,21 +43,21 @@ public abstract class EntityAITarget extends EntityAIBase {
  	// ==================================================
     public EntityAITarget(EntityCreatureBase setHost) {
         this.host = setHost;
-        this.targetSelector = new Predicate<Entity>() {
-            @Override
-            public boolean apply(Entity input) {
-                if(!(input instanceof EntityLivingBase))
-                    return false;
-                return EntityAITarget.this.isSuitableTarget((EntityLivingBase)input, false);
+
+        this.targetSelector = entity -> {
+            double d0 = EntityAITarget.this.getTargetDistance();
+            if (entity.isSneaking()) {
+                d0 *= 0.800000011920929D;
             }
+            return !entity.isInvisible() && (!((double) entity.getDistanceToEntity(EntityAITarget.this.host) > d0) && EntityAITarget.this.isSuitableTarget(entity, false));
         };
-        this.allySelector = new Predicate<Entity>() {
-            @Override
-            public boolean apply(Entity input) {
-                if(!(input instanceof EntityLivingBase))
-                    return false;
-                return EntityAITarget.this.isAllyTarget((EntityLivingBase) input, false);
+
+        this.allySelector = entity -> {
+            double d0 = EntityAITarget.this.getTargetDistance();
+            if (entity.isSneaking()) {
+                d0 *= 0.800000011920929D;
             }
+            return !entity.isInvisible() && (!((double) entity.getDistanceToEntity(EntityAITarget.this.host) > d0) && EntityAITarget.this.isAllyTarget(entity, false));
         };
         this.nearestSorter = new TargetSorterNearest(setHost);
     }
@@ -140,7 +140,7 @@ public abstract class EntityAITarget extends EntityAIBase {
     //               Get Possible Targets
     // ==================================================
     public <T extends Entity> List<T> getPossibleTargets(Class <? extends T > clazz, double rangeX, double rangeY, double rangeZ) {
-        return this.host.worldObj.<T>getEntitiesWithinAABB(clazz, this.host.getEntityBoundingBox().expand(rangeX, rangeY, rangeZ), Predicates.and(new Predicate[]{EntitySelectors.CAN_AI_TARGET, this.targetSelector}));
+        return this.host.worldObj.getEntitiesWithinAABB(clazz, this.host.getEntityBoundingBox().expand(rangeX, rangeY, rangeZ), Predicates.and(new Predicate[]{EntitySelectors.CAN_AI_TARGET, this.targetSelector}));
     }
     
     

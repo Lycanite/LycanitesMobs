@@ -66,7 +66,7 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroup
         super.initEntityAI();
         this.tasks.addTask(1, new EntityAIStayByWater(this));
         this.tasks.addTask(2, this.aiSit);
-        this.attackAI = new EntityAIAttackMelee(this).setLongMemory(false).setRange(3D);
+        this.attackAI = new EntityAIAttackMelee(this).setLongMemory(false).setRange(1D);
         this.tasks.addTask(3, this.attackAI);
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
         this.wanderAI = new EntityAIWander(this);
@@ -177,7 +177,7 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroup
     // ==================================================
     // Swimming:
     @Override
-    public boolean canSwim() {
+    public boolean isStrongSwimmer() {
         return true;
     }
 
@@ -190,7 +190,7 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroup
     @Override
     public void pickupEntity(EntityLivingBase entity) {
         super.pickupEntity(entity);
-        this.leap(-1.0F, -2.0D);
+        this.leap(-1.0F, -0.5D);
     }
 
     @Override

@@ -36,7 +36,7 @@ public class EntityAIAttackMelee extends EntityAIBase {
     public EntityAIAttackMelee(EntityCreatureBase setHost) {
         this.host = setHost;
         //this.attackRange = (double)((this.host.width * this.host.width) * 2.0F) + 1.0D;
-        this.attackRange = this.host.width + 0.5D;
+        this.attackRange = 0.5D;
         this.setMutexBits(3);
     }
     
@@ -191,13 +191,22 @@ public class EntityAIAttackMelee extends EntityAIBase {
         
         // Damage Target:
         this.attackTime = Math.max(this.attackTime - 1, 0);
-        if(this.host.getDistance(attackTarget.posX, attackTarget.posY + this.host.getFlightOffset(), attackTarget.posZ) <= this.attackRange + attackTarget.width) {
+        if(this.host.getDistance(attackTarget.posX, attackTarget.posY + this.host.getFlightOffset(), attackTarget.posZ) <= this.attackRange + this.host.width + attackTarget.width) {
             if(this.attackTime <= 0) {
                 this.attackTime = Math.round((float)this.attackTimeMax + ((float)this.attackTimeMax - ((float)this.attackTimeMax * (float)this.host.getHasteMultiplier())));
                 if(this.host.getHeldItemMainhand() != null)
                     this.host.swingArm(EnumHand.MAIN_HAND);
                 this.host.meleeAttack(attackTarget, damage);
             }
+
+            // Move helper won't change the Yaw if the target is already close by
+            double d0 = this.host.posX - attackTarget.posX;
+            double d1 = this.host.posZ - attackTarget.posZ;
+            float f = (float)(Math.atan2(d1, d0) * 180.0D / Math.PI) + 90.0F;
+            f = MathHelper.wrapDegrees(f - this.host.rotationYaw);
+            if(f < -30f) f = -30f;
+            if(f > 30f) f = 30f;
+            this.host.rotationYaw = this.host.rotationYaw + f;
         }
     }
 }

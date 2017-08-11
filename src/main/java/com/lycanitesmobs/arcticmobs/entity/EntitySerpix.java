@@ -49,7 +49,7 @@ public class EntitySerpix extends EntityCreatureTameable implements IGroupPredat
         this.spawnsInWater = true;
         this.hasAttackSound = false;
 
-        this.babySpawnChance = 0.1D;
+        this.babySpawnChance = 0.25D;
         this.growthTime = -120000;
         
         this.setWidth = 6.8F;

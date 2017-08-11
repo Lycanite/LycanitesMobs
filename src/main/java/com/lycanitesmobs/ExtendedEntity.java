@@ -147,52 +147,45 @@ public class ExtendedEntity implements IExtendedEntity {
     //                 Picked Up By Entity
     // ==================================================
     public void updatePickedUpByEntity() {
-        Entity pickedUpByEntityInstance = this.pickedUpByEntity;
-        if(pickedUpByEntityInstance == null || this.entity.getEntityWorld() == null)
+        if(this.pickedUpByEntity == null || this.entity.getEntityWorld() == null)
             return;
 
         // Check:
-        if(!pickedUpByEntityInstance.isEntityAlive()) {
+        if(!this.pickedUpByEntity.isEntityAlive()) {
             this.setPickedUpByEntity(null);
             return;
         }
-        if(pickedUpByEntityInstance instanceof EntityLivingBase) {
-            if(((EntityLivingBase)pickedUpByEntityInstance).getHealth() <= 0) {
+        if(this.pickedUpByEntity instanceof EntityLivingBase) {
+            if(((EntityLivingBase)this.pickedUpByEntity).getHealth() <= 0) {
                 this.setPickedUpByEntity(null);
                 return;
             }
         }
-        if(this.entity instanceof EntityLivingBase && ObjectManager.getPotionEffect("weight") != null) {
-            if(((EntityLivingBase)(this.entity)).isPotionActive(ObjectManager.getPotionEffect("weight"))) {
+        if(ObjectManager.getPotionEffect("weight") != null) {
+            if(this.entity.isPotionActive(ObjectManager.getPotionEffect("weight"))) {
                 this.setPickedUpByEntity(null);
                 return;
             }
         }
-        if(this.entity.getDistanceSqToEntity(pickedUpByEntityInstance) > 32D) {
+        if(this.entity.getDistanceSqToEntity(this.pickedUpByEntity) > 32D) {
             this.setPickedUpByEntity(null);
             return;
         }
 
         // Movement:
-        double[] pickupOffset = new double[]{0, 0, 0};
-        if(pickedUpByEntityInstance instanceof EntityCreatureBase)
-            pickupOffset = ((EntityCreatureBase)pickedUpByEntityInstance).getPickupOffset(this.entity);
-        double yPos = pickedUpByEntityInstance.posY;
-        if(this.entity.worldObj.isRemote && entity instanceof EntityPlayer) {
-            yPos = pickedUpByEntityInstance.getEntityBoundingBox().minY + entity.height;
-        }
-        this.entity.setPosition(pickedUpByEntityInstance.posX + pickupOffset[0], yPos + pickupOffset[1], pickedUpByEntityInstance.posZ + pickupOffset[2]);
-        this.entity.motionX = pickedUpByEntityInstance.motionX;
-        this.entity.motionY = pickedUpByEntityInstance.motionY;
-        this.entity.motionZ = pickedUpByEntityInstance.motionZ;
+        double[] pickupOffset = this.getPickedUpOffset();
+        this.entity.setPosition(this.pickedUpByEntity.posX + pickupOffset[0], this.pickedUpByEntity.posY + pickupOffset[1], this.pickedUpByEntity.posZ + pickupOffset[2]);
+        this.entity.motionX = this.pickedUpByEntity.motionX;
+        this.entity.motionY = this.pickedUpByEntity.motionY;
+        this.entity.motionZ = this.pickedUpByEntity.motionZ;
         this.entity.fallDistance = 0;
-        if (!this.entity.worldObj.isRemote && this.entity instanceof EntityPlayer) {
+        if (!this.entity.getEntityWorld().isRemote && this.entity instanceof EntityPlayer) {
             ((EntityPlayer) this.entity).capabilities.allowFlying = true;
         }
         if (!this.entity.isEntityAlive())
             this.setPickedUpByEntity(null);
         if (this.entity instanceof EntityLivingBase) {
-            if (((EntityLivingBase) this.entity).getHealth() <= 0)
+            if (this.entity.getHealth() <= 0)
                 this.setPickedUpByEntity(null);
         }
     }
@@ -231,10 +224,23 @@ public class ExtendedEntity implements IExtendedEntity {
                 this.entity.fallDistance = 0;
             }
 
+            // Teleport To Initial Pickup Position:
+            else {
+                double[] pickupOffset = this.getPickedUpOffset();
+                this.entity.attemptTeleport(this.pickedUpByEntity.posX + pickupOffset[0], this.pickedUpByEntity.posY + pickupOffset[1], this.pickedUpByEntity.posZ + pickupOffset[2]);
+            }
+
 			MessageEntityPickedUp message = new MessageEntityPickedUp(this.entity, pickedUpByEntity);
 			LycanitesMobs.packetHandler.sendToDimension(message, this.entity.dimension);
 		}
 	}
+
+    public double[] getPickedUpOffset() {
+        double[] pickupOffset = new double[] {0, 0, 0};
+        if(this.pickedUpByEntity instanceof EntityCreatureBase)
+            pickupOffset = ((EntityCreatureBase)this.pickedUpByEntity).getPickupOffset(this.entity);
+        return pickupOffset;
+    }
 	
 	public boolean isFeared() {
 		return this.pickedUpByEntity instanceof EntityFear;

@@ -159,7 +159,7 @@ public class EntityAfrit extends EntityCreatureTameable implements IMob, IGroupF
     public boolean canFly() { return true; }
 
     @Override
-    public boolean canSwim() { return true; }
+    public boolean isStrongSwimmer() { return true; }
     
     
     // ==================================================

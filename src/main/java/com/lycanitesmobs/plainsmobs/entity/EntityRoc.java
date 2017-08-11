@@ -33,7 +33,7 @@ public class EntityRoc extends EntityCreatureRideable implements IMob, IGroupHun
     public EntityAIAttackMelee attackAI;
 
     public boolean creeperDropping = true;
-    int creeperDropCooldown = 0;
+    private int creeperDropCooldown = 0;
 	
     // ==================================================
  	//                    Constructor

@@ -56,8 +56,9 @@ public class EntityDemonicBlast extends EntityProjectileBase {
     	super.onUpdate();
     	if(!this.worldObj.isRemote) {
 	    	if(rapidTicks % 5 == 0 && !isDead) {
-	    		fireProjectile();
-	    		fireProjectile();
+	    	    for(int i = 0; i < 6; i++) {
+                    fireProjectile();
+                }
 	    	}
 	    	if(rapidTicks == Integer.MAX_VALUE)
 	    		rapidTicks = -1;

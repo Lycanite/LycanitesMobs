@@ -153,7 +153,7 @@ public class EntityArix extends EntityCreatureTameable implements IMob, IGroupIc
     public boolean canFly() { return true; }
 
     @Override
-    public boolean canSwim() { return true; }
+    public boolean isStrongSwimmer() { return true; }
 
     @Override
     public boolean canBreatheUnderwater() {

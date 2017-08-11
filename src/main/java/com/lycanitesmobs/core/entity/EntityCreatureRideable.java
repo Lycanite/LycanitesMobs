@@ -248,7 +248,7 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
                     this.motionY *= 0.8999999761581421D;
                     this.motionZ *= 0.8999999761581421D;
                 }
-                else if(this.canSwim() && (this.isInWater() || this.isInLava())) {
+                else if(this.isStrongSwimmer() && (this.isInWater() || this.isInLava())) {
                     this.moveRelative(strafe, forward, 0.1F);
                     this.moveEntity(this.motionX, flyMotion, this.motionZ);
                     this.motionX *= 0.8999999761581421D;

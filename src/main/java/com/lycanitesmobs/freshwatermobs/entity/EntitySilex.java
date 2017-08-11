@@ -108,7 +108,7 @@ public class EntitySilex extends EntityCreatureAgeable implements IAnimals, IGro
 	
 	// Swimming:
 	@Override
-	public boolean canSwim() {
+	public boolean isStrongSwimmer() {
 		return true;
 	}
 	

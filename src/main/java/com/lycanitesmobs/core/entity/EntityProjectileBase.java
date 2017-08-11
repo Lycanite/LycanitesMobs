@@ -404,9 +404,13 @@ public class EntityProjectileBase extends EntityThrowable {
      }
      
      public float getDamage(Entity entity) {
-    	 float damage = (float)this.baseDamage;
-    	 if(this.getThrower() != null && this.getThrower() instanceof EntityCreatureBase)
-    		 damage *= ((EntityCreatureBase)this.getThrower()).getAttackDamageScale();
+         float damage = (float)this.baseDamage;
+         if(this.getThrower() != null) {
+             if(this.getThrower() instanceof EntityCreatureBase)
+                 damage *= ((EntityCreatureBase) this.getThrower()).getAttackDamageScale();
+             else if(this.getThrower() instanceof EntityPlayer && !(entity instanceof EntityPlayer))
+                 damage *= 2;
+         }
          return damage;
      }
      

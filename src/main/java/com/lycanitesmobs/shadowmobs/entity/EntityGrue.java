@@ -229,7 +229,7 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
     public boolean canFly() { return true; }
 
     @Override
-    public boolean canSwim() { return true; }
+    public boolean isStrongSwimmer() { return true; }
     
     
     // ==================================================

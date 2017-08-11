@@ -29,9 +29,6 @@ public class PathNavigateGroundCustom extends PathNavigateGround {
 
     @Override
     protected Vec3d getEntityPosition() {
-        // Allow Underwater Breathers To Dive:
-        if(this.theEntity.canBreatheUnderwater())
-            return new Vec3d(this.theEntity.posX, (int)this.theEntity.getEntityBoundingBox().minY + 0.5D, this.theEntity.posZ);
         return super.getEntityPosition();
     }
 

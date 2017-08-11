@@ -183,7 +183,7 @@ public class EntityRaiko extends EntityCreatureRideable implements IMob, IGroupH
     public boolean canFly() { return true; }
 
     @Override
-    public boolean canSwim() { return true; }
+    public boolean isStrongSwimmer() { return true; }
     
     @Override
     public void pickupEntity(EntityLivingBase entity) {

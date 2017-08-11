@@ -67,7 +67,7 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
     @Override
     public String getAgeName() {
     	if(this.isChild())
-    		return "";
+    		return "Baby";
     	else
     		return "";
     }
@@ -127,7 +127,7 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
         if(!this.worldObj.isRemote)
         	this.dataManager.set(LOVE, this.loveTime);
         if(this.worldObj.isRemote)
-        	this.loveTime = Integer.valueOf(this.getFromDataManager(LOVE));
+        	this.loveTime = this.getIntFromDataManager(LOVE);
         
         if(this.isInLove()) {
         	this.setFarmed();
@@ -215,11 +215,11 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
   	//                        Age
   	// ==================================================
 	public int getGrowingAge() {
-        return Integer.valueOf(this.getFromDataManager(AGE));
+        return this.getIntFromDataManager(AGE);
     }
 	
 	public void setGrowingAge(int age) {
-		this.dataManager.set(AGE, (int)age);
+		this.dataManager.set(AGE, age);
         this.setScaleForAge(this.isChild());
     }
 	

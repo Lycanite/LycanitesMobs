@@ -8,6 +8,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.EntityAIFindEntityNearest;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.pathfinding.Path;
@@ -15,6 +16,7 @@ import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.math.MathHelper;
 
+import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -25,8 +27,8 @@ public abstract class EntityAITarget extends EntityAIBase {
     protected EntityLivingBase target;
     
     // Targeting:
-    protected Predicate<Entity> targetSelector;
-    protected Predicate<Entity> allySelector;
+    protected Predicate<EntityLivingBase> targetSelector;
+    protected Predicate<EntityLivingBase> allySelector;
     protected TargetSorterNearest nearestSorter;
 
     protected boolean checkSight = true;
@@ -43,21 +45,21 @@ public abstract class EntityAITarget extends EntityAIBase {
  	// ==================================================
     public EntityAITarget(EntityCreatureBase setHost) {
         this.host = setHost;
-        this.targetSelector = new Predicate<Entity>() {
-            @Override
-            public boolean apply(Entity input) {
-                if(!(input instanceof EntityLivingBase))
-                    return false;
-                return EntityAITarget.this.isSuitableTarget((EntityLivingBase)input, false);
+
+        this.targetSelector = entity -> {
+            double d0 = EntityAITarget.this.getTargetDistance();
+            if (entity.isSneaking()) {
+                d0 *= 0.800000011920929D;
             }
+            return !entity.isInvisible() && (!((double) entity.getDistanceToEntity(EntityAITarget.this.host) > d0) && EntityAITarget.this.isSuitableTarget(entity, false));
         };
-        this.allySelector = new Predicate<Entity>() {
-            @Override
-            public boolean apply(Entity input) {
-                if(!(input instanceof EntityLivingBase))
-                    return false;
-                return EntityAITarget.this.isAllyTarget((EntityLivingBase) input, false);
+
+        this.allySelector = entity -> {
+            double d0 = EntityAITarget.this.getTargetDistance();
+            if (entity.isSneaking()) {
+                d0 *= 0.800000011920929D;
             }
+            return !entity.isInvisible() && (!((double) entity.getDistanceToEntity(EntityAITarget.this.host) > d0) && EntityAITarget.this.isAllyTarget(entity, false));
         };
         this.nearestSorter = new TargetSorterNearest(setHost);
     }
@@ -139,8 +141,8 @@ public abstract class EntityAITarget extends EntityAIBase {
     // ==================================================
     //               Get Possible Targets
     // ==================================================
-    public <T extends Entity> List<T> getPossibleTargets(Class <? extends T > clazz, double rangeX, double rangeY, double rangeZ) {
-        return this.host.getEntityWorld().<T>getEntitiesWithinAABB(clazz, this.host.getEntityBoundingBox().expand(rangeX, rangeY, rangeZ), Predicates.and(new Predicate[]{EntitySelectors.CAN_AI_TARGET, this.targetSelector}));
+    public <T extends EntityLivingBase> List<T> getPossibleTargets(Class <? extends T > clazz, double rangeX, double rangeY, double rangeZ) {
+        return this.host.getEntityWorld().getEntitiesWithinAABB(clazz, this.host.getEntityBoundingBox().expand(rangeX, rangeY, rangeZ), this.targetSelector);
     }
     
     
@@ -197,7 +199,7 @@ public abstract class EntityAITarget extends EntityAIBase {
             return false;
 
         // Creative Check:
-        if(checkTarget instanceof EntityPlayer && !targetCreative && ((EntityPlayer)checkTarget).capabilities.disableDamage)
+        if(checkTarget instanceof EntityPlayer && !targetCreative && (((EntityPlayer)checkTarget).isCreative() || ((EntityPlayer)checkTarget).isSpectator()))
             return false;
         
         // Additional Checks:
@@ -246,10 +248,7 @@ public abstract class EntityAITarget extends EntityAIBase {
             return false;
 
         // Sight Check:
-        if(this.checkSight && !this.host.getEntitySenses().canSee(checkTarget))
-            return false;
-
-        return true;
+        return !this.checkSight || this.host.getEntitySenses().canSee(checkTarget);
     }
     
     

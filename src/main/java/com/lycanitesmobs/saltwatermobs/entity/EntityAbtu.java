@@ -172,7 +172,7 @@ public class EntityAbtu extends EntityCreatureTameable implements IMob, IGroupPr
 	
 	// Swimming:
 	@Override
-	public boolean canSwim() {
+	public boolean isStrongSwimmer() {
 		return true;
 	}
 	

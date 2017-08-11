@@ -42,11 +42,6 @@ public class EntityAITargetOwnerThreats extends EntityAITarget {
     	return this;
     }
     
-    public EntityAITargetOwnerThreats setSelector(Predicate<Entity> selector) {
-    	this.targetSelector = selector;
-    	return this;
-    }
-    
     
     // ==================================================
  	//                    Host Target

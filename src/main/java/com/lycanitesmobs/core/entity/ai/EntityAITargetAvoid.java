@@ -50,11 +50,6 @@ public class EntityAITargetAvoid extends EntityAITarget {
     	return this;
     }
 
-    public EntityAITargetAvoid setSelector(Predicate<Entity> selector) {
-    	this.targetSelector = selector;
-    	return this;
-    }
-
     public EntityAITargetAvoid setTameTargetting(boolean setTargetting) {
     	this.tameTargeting = setTargetting;
     	return this;

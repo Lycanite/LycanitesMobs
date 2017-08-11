@@ -15,7 +15,6 @@ import net.minecraft.world.ChunkCache;
 import net.minecraft.world.World;
 
 public class PathNavigateGroundCustom extends PathNavigateGround {
-    protected BlockPos targetPosSmart;
 
     public PathNavigateGroundCustom(EntityLiving entityLiving, World world) {
         super(entityLiving, world);

@@ -1,6 +1,5 @@
 package com.lycanitesmobs.core.entity.ai;
 
-import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -69,7 +68,7 @@ public class DirectNavigator {
 	public boolean isTargetPositionValid(BlockPos targetPosition) {
 		if(targetPosition == null)
 			return true;
-		if(this.host.canSwim() && this.host.isSwimmable(targetPosition.getX(), targetPosition.getY(), targetPosition.getZ()))
+		if(this.host.isStrongSwimmer() && this.host.isSwimmable(targetPosition.getX(), targetPosition.getY(), targetPosition.getZ()))
 			return true;
 		if(!this.host.canFly())
 			return false;

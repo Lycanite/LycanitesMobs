@@ -229,7 +229,7 @@ public class EntityRoa extends EntityCreatureRideable implements IMob, IGroupPre
 	
 	// Swimming:
 	@Override
-	public boolean canSwim() {
+	public boolean isStrongSwimmer() {
 		return true;
 	}
 	

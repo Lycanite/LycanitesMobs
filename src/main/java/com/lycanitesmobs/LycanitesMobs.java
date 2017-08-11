@@ -49,7 +49,7 @@ public class LycanitesMobs {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String version = "1.16.2.1 - MC 1.11.2";
+	public static final String version = "1.16.2.2 - MC 1.11.2";
 	public static final String website = "http://lycanitesmobs.com";
 	public static final String websiteAPI = "http://api.lycanitesmobs.com";
 	public static final String websitePatreon = "https://www.patreon.com/lycanite";
@@ -134,7 +134,7 @@ public class LycanitesMobs {
 			ObjectManager.addPotionEffect("weight", config, true, 0x000022, 1, 0, false);
 			ObjectManager.addPotionEffect("swiftswimming", config, false, 0x0000FF, 0, 2, true);
             ObjectManager.addPotionEffect("fear", config, false, 0x220022, 7, 0, false);
-            ObjectManager.addPotionEffect("fallresist", config, false, 0xDDFFFF, 0, 0, false);
+            ObjectManager.addPotionEffect("fallresist", config, false, 0xDDFFFF, 0, 0, true);
 			MinecraftForge.EVENT_BUS.register(new PotionEffects());
 		}
 		

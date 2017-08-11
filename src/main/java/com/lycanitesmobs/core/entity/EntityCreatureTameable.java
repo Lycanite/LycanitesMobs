@@ -455,7 +455,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     // ==================================================
     public boolean isTamed() {
         try {
-            return (this.getFromDataManager(TAMED) & TAMED_ID.IS_TAMED.id) != 0;
+            return (this.getByteFromDataManager(TAMED) & TAMED_ID.IS_TAMED.id) != 0;
         }
         catch (Exception e) {
             return false;
@@ -463,7 +463,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     }
     
     public void setTamed(boolean setTamed) {
-        byte tamed = this.getFromDataManager(TAMED);
+        byte tamed = this.getByteFromDataManager(TAMED);
         if(setTamed) {
             this.dataManager.set(TAMED, Byte.valueOf((byte)(tamed | TAMED_ID.IS_TAMED.id)));
             this.spawnEventType = "";
@@ -532,7 +532,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     // ==================================================
     public String getOwnerName() {
         try {
-            return this.getFromDataManager(OWNER);
+            return this.getStringFromDataManager(OWNER);
         }
         catch(Exception e) {
             return "";
@@ -582,19 +582,19 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     //                    Pet Control
     // ==================================================
     public boolean petControlsEnabled() { return false; }
-    public byte behaviourBitMask() { return Byte.valueOf(this.getFromDataManager(TAMED)); }
+    public byte behaviourBitMask() { return this.getByteFromDataManager(TAMED); }
     
     // ========== Sitting ==========
     public boolean isSitting() {
     	if(!this.isTamed())
     		return false;
-        return (this.getFromDataManager(TAMED) & TAMED_ID.MOVE_SIT.id) != 0;
+        return (this.getByteFromDataManager(TAMED) & TAMED_ID.MOVE_SIT.id) != 0;
     }
 
     public void setSitting(boolean set) {
     	if(!this.petControlsEnabled())
     		set = false;
-        byte tamedStatus = this.getFromDataManager(TAMED);
+        byte tamedStatus = this.getByteFromDataManager(TAMED);
         if(set) {
             this.dataManager.set(TAMED, Byte.valueOf((byte) (tamedStatus | TAMED_ID.MOVE_SIT.id)));
             this.setHome((int)this.posX, (int)this.posY, (int)this.posZ, this.sittingGuardRange);
@@ -609,13 +609,13 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     public boolean isFollowing() {
     	if(!this.isTamed())
     		return false;
-        return (this.getFromDataManager(TAMED) & TAMED_ID.MOVE_FOLLOW.id) != 0;
+        return (this.getByteFromDataManager(TAMED) & TAMED_ID.MOVE_FOLLOW.id) != 0;
     }
 
     public void setFollowing(boolean set) {
     	if(!this.petControlsEnabled())
     		set = false;
-        byte tamedStatus = this.getFromDataManager(TAMED);
+        byte tamedStatus = this.getByteFromDataManager(TAMED);
         if(set)
             this.dataManager.set(TAMED, Byte.valueOf((byte)(tamedStatus | TAMED_ID.MOVE_FOLLOW.id)));
         else
@@ -626,13 +626,13 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     public boolean isPassive() {
     	if(!this.isTamed())
     		return false;
-        return (this.getFromDataManager(TAMED) & TAMED_ID.STANCE_PASSIVE.id) != 0;
+        return (this.getByteFromDataManager(TAMED) & TAMED_ID.STANCE_PASSIVE.id) != 0;
     }
 
     public void setPassive(boolean set) {
     	if(!this.petControlsEnabled())
     		set = false;
-        byte tamedStatus = this.getFromDataManager(TAMED);
+        byte tamedStatus = this.getByteFromDataManager(TAMED);
         if(set) {
             this.dataManager.set(TAMED, Byte.valueOf((byte)(tamedStatus | TAMED_ID.STANCE_PASSIVE.id)));
             this.setAttackTarget(null);
@@ -646,13 +646,13 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     public boolean isAggressive() {
     	if(!this.isTamed())
     		return super.isAggressive();
-        return (this.getFromDataManager(TAMED) & TAMED_ID.STANCE_AGGRESSIVE.id) != 0;
+        return (this.getByteFromDataManager(TAMED) & TAMED_ID.STANCE_AGGRESSIVE.id) != 0;
     }
 
     public void setAggressive(boolean set) {
     	if(!this.petControlsEnabled())
     		set = false;
-        byte tamedStatus = this.getFromDataManager(TAMED);
+        byte tamedStatus = this.getByteFromDataManager(TAMED);
         if(set)
             this.dataManager.set(TAMED, Byte.valueOf((byte)(tamedStatus | TAMED_ID.STANCE_AGGRESSIVE.id)));
         else
@@ -661,13 +661,13 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     
     // ========== PvP ==========
     public boolean isPVP() {
-        return (this.getFromDataManager(TAMED) & TAMED_ID.PVP.id) != 0;
+        return (this.getByteFromDataManager(TAMED) & TAMED_ID.PVP.id) != 0;
     }
 
     public void setPVP(boolean set) {
     	if(!this.petControlsEnabled())
     		set = false;
-        byte tamedStatus = this.getFromDataManager(TAMED);
+        byte tamedStatus = this.getByteFromDataManager(TAMED);
         if(set)
             this.dataManager.set(TAMED, Byte.valueOf((byte)(tamedStatus | TAMED_ID.PVP.id)));
         else
@@ -685,7 +685,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     		return this.hunger;
     	else {
             try {
-                return Float.valueOf(this.getFromDataManager(HUNGER));
+                return this.getFloatFromDataManager(HUNGER);
             } catch (Exception e) {
                 return 0;
             }
@@ -707,7 +707,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     public float getStamina() {
     	if(this.getEntityWorld() != null && this.getEntityWorld().isRemote) {
             try {
-                this.stamina = this.getFromDataManager(STAMINA);
+                this.stamina = this.getFloatFromDataManager(STAMINA);
             } catch (Exception e) {}
         }
     	return this.stamina;

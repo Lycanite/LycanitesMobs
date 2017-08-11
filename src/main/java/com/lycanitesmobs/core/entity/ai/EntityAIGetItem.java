@@ -33,12 +33,7 @@ public class EntityAIGetItem extends EntityAIBase {
         super();
         this.setMutexBits(1);
         this.host = setHost;
-        this.targetSelector = new Predicate<EntityItem>() {
-            @Override
-            public boolean apply(EntityItem input) {
-                return true;
-            }
-        };
+        this.targetSelector = input -> true;
         this.targetSorter = new TargetSorterNearest(setHost);
     }
     

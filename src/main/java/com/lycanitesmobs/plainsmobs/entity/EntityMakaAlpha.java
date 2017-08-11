@@ -21,6 +21,7 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -162,6 +163,14 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
         if(potionEffect.getPotion() == MobEffects.WEAKNESS) return false;
         if(potionEffect.getPotion() == MobEffects.MINING_FATIGUE) return false;
         return super.isPotionApplicable(potionEffect);
+    }
+
+    // ========== Damage Modifier ==========
+    public float getDamageModifier(DamageSource damageSrc) {
+        float damageMod = super.getDamageModifier(damageSrc);
+        if(damageSrc.getEntity() instanceof EntityMakaAlpha)
+            damageMod *= 2;
+        return damageMod;
     }
     
     

@@ -1,6 +1,5 @@
 package com.lycanitesmobs.core.entity.ai;
 
-import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -52,6 +51,12 @@ public class EntityAISwimming extends EntityAIBase {
 	    	if(!this.host.useDirectNavigator()) {
 	    		if(!this.host.getNavigator().noPath()) {
                     targetY = this.host.getNavigator().getPath().getFinalPathPoint().yCoord;
+                    if(this.host.hasAttackTarget())
+                        targetY = this.host.getAttackTarget().posY;
+                    else if(this.host.hasParent())
+                        targetY = this.host.getParentTarget().posY;
+                    else if(this.host.hasMaster())
+                        targetY = this.host.getMasterTarget().posY;
                 }
 	    	}
 	    	else {
@@ -59,12 +64,12 @@ public class EntityAISwimming extends EntityAIBase {
                     targetY = this.host.directNavigator.targetPosition.getY();
                 }
 	    	}
-	    	if(this.host.posY < targetY && !this.host.canSwim())
+	    	if(this.host.posY < targetY && !this.host.isStrongSwimmer())
                 this.host.getJumpHelper().setJumping();
-            else if(this.host.posY > targetY && !this.host.canSwim())
+            else if(this.host.posY > targetY && !this.host.isStrongSwimmer())
                 this.host.addVelocity(0, -this.host.getAIMoveSpeed() * 0.25F, 0);
     	}
-    	else if(this.host.getRNG().nextFloat() < 0.8F && !this.host.canSwim())
+    	else if(this.host.getRNG().nextFloat() < 0.8F && !this.host.isStrongSwimmer())
             this.host.getJumpHelper().setJumping();
     }
 }

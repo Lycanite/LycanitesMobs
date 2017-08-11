@@ -415,7 +415,12 @@ public class InventoryCreature implements IInventory {
 		if(getEquipmentDataParameter(type) == null)
 			return ItemStack.EMPTY;
 		if(this.creature.getEntityWorld().isRemote) {
-			return this.creature.getDataManager().get(getEquipmentDataParameter(type));
+			try {
+				return this.creature.getDataManager().get(getEquipmentDataParameter(type));
+			}
+			catch(Exception e) {
+				return ItemStack.EMPTY;
+			}
 		}
 		else
 			return this.getStackInSlot(this.getSlotFromType(type));

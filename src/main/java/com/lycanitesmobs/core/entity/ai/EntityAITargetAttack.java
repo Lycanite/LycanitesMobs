@@ -64,11 +64,6 @@ public class EntityAITargetAttack extends EntityAITarget {
     	this.cantSeeTimeMax = setCantSeeTimeMax;
     	return this;
     }
-    
-    public EntityAITargetAttack setSelector(Predicate<Entity> selector) {
-    	this.targetSelector = selector;
-    	return this;
-    }
 
     public EntityAITargetAttack setHelpCall(boolean setHelp) {
         this.callForHelp = setHelp;

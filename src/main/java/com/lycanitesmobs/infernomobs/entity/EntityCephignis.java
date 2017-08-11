@@ -139,7 +139,7 @@ public class EntityCephignis extends EntityCreatureAgeable implements IAnimals, 
 	
 	// Swimming:
 	@Override
-	public boolean canSwim() {
+	public boolean isStrongSwimmer() {
 		return true;
 	}
 	

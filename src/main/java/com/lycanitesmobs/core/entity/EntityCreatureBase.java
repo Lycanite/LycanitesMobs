@@ -2,6 +2,7 @@ package com.lycanitesmobs.core.entity;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
+import com.google.common.base.Supplier;
 import com.lycanitesmobs.*;
 import com.lycanitesmobs.api.IGroupBoss;
 import com.lycanitesmobs.core.entity.ai.DirectNavigator;
@@ -305,7 +306,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         // Navigation:
         if(this.canFly())
             this.moveHelper = new FlightMoveHelper(this);
-        else if(this.canSwim() && !this.canWalk())
+        else if(this.isStrongSwimmer() && !this.canWalk())
             this.moveHelper = new SwimmingMoveHelper(this);
         else
             this.moveHelper = new WalkMoveHelper(this);
@@ -345,6 +346,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
         this.setWidth *= this.mobInfo.hitboxScale;
         this.setHeight *= this.mobInfo.hitboxScale;
         this.updateSize();
+        if(this.mobInfo.sizeScale != 1)
+            this.setSizeScale(this.mobInfo.sizeScale);
         
         // Stats:
         this.stepHeight = 0.5F;
@@ -483,13 +486,57 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ==================================================
     //                     Data Manager
     // ==================================================
-    public <T> T getFromDataManager(DataParameter<T> key)
-    {
+    public byte getByteFromDataManager(DataParameter<Byte> key) {
         try {
-            return this.dataManager.get(key);
+            return this.getDataManager().get(key);
+        }
+        catch (Exception e) {
+            return 0;
+        }
+    }
+
+    public int getIntFromDataManager(DataParameter<Integer> key) {
+        try {
+            return this.getDataManager().get(key);
+        }
+        catch (Exception e) {
+            return 0;
+        }
+    }
+
+    public float getFloatFromDataManager(DataParameter<Float> key) {
+        try {
+            return this.getDataManager().get(key);
+        }
+        catch (Exception e) {
+            return 0;
+        }
+    }
+
+    public String getStringFromDataManager(DataParameter<String> key) {
+        try {
+            return this.getDataManager().get(key);
         }
         catch (Exception e) {
             return null;
+        }
+    }
+
+    public ItemStack getItemStackFromDataManager(DataParameter<ItemStack> key) {
+        try {
+            return this.getDataManager().get(key);
+        }
+        catch (Exception e) {
+            return ItemStack.EMPTY;
+        }
+    }
+
+    public Optional<BlockPos> getBlockPosFromDataManager(DataParameter<Optional<BlockPos>> key) {
+        try {
+            return this.getDataManager().get(key);
+        }
+        catch (Exception e) {
+            return Optional.absent();
         }
     }
     
@@ -973,7 +1020,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public void onFirstSpawn() {
         if(this.hasPetEntry() || this.isMinion())
             return;
-        if(MobInfo.subspeciesSpawn)
+        if(MobInfo.subspeciesSpawn && !this.mobInfo.spawnInfo.disableSubspecies)
     	    this.getRandomSubspecies();
         if(MobInfo.randomSizes)
     	    this.getRandomSize();
@@ -1520,7 +1567,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
         // Animations Client:
         else if(this.getEntityWorld().isRemote) {
-        	byte animations = Byte.valueOf(this.getFromDataManager(ANIMATION));
+        	byte animations = this.getByteFromDataManager(ANIMATION);
         	if(this.justAttacked > 0)
         		this.justAttacked--;
         	else if((animations & ANIM_ID.ATTACKED.id) > 0)
@@ -1530,9 +1577,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
         	this.extraAnimation01 = (animations & ANIM_ID.EXTRA01.id) > 0;
         }
 
-        // Is Minon:
+        // Is Minion:
         if(this.getEntityWorld().isRemote) {
-    		this.isMinion = (Byte.valueOf(this.getFromDataManager(ANIMATION)) & ANIM_ID.MINION.id) > 0;
+    		this.isMinion = (this.getByteFromDataManager(ANIMATION) & ANIM_ID.MINION.id) > 0;
         }
 
         // Subspecies:
@@ -1540,8 +1587,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     		this.dataManager.set(SUBSPECIES, Byte.valueOf((byte)this.getSubspeciesIndex()));
         }
         else {
-        	if(this.getSubspeciesIndex() != Byte.valueOf(this.getFromDataManager(SUBSPECIES)))
-        		this.setSubspecies(Byte.valueOf(this.getFromDataManager(SUBSPECIES)), false);
+        	if(this.getSubspeciesIndex() != this.getByteFromDataManager(SUBSPECIES))
+        		this.setSubspecies(this.getByteFromDataManager(SUBSPECIES), false);
         }
 
         // Size:
@@ -1549,8 +1596,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     		this.dataManager.set(SIZE, Float.valueOf((float)this.sizeScale));
         }
         else {
-        	if(this.sizeScale != Float.valueOf(this.getFromDataManager(SIZE))) {
-        		this.sizeScale = Float.valueOf(this.getFromDataManager(SIZE));
+        	if(this.sizeScale != this.getFloatFromDataManager(SIZE)) {
+        		this.sizeScale = this.getFloatFromDataManager(SIZE);
         		this.updateSize();
         	}
         }
@@ -1637,6 +1684,33 @@ public abstract class EntityCreatureBase extends EntityLiving {
             return true;
     	return false;
     }
+
+    // ========== Should Swim ==========
+    /**
+     * Returns true if this entity should use swimming movement.
+     */
+    public boolean shouldSwim() {
+        if(!this.isInWater() && !this.isInLava())
+            return false;
+        if(this.canWade() && this.canBreatheUnderwater()) {
+            // If the target is not in water and this entity is at the water surface, don't use water movement:
+            boolean targetInWater = true;
+            if(this.getAttackTarget() != null)
+                targetInWater = this.getAttackTarget().isInWater();
+            else if(this.getParentTarget() != null)
+                targetInWater = this.getParentTarget().isInWater();
+            else if(this.getMasterTarget() != null)
+                targetInWater = this.getMasterTarget().isInWater();
+            if(!targetInWater) {
+                IBlockState blockState = this.getEntityWorld().getBlockState(this.getPosition().up());
+                if (blockState == null || blockState.getBlock().isAir(blockState, this.getEntityWorld(), this.getPosition().up())) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return this.isStrongSwimmer();
+    }
     
     // ========== Move with Heading ==========
     /** Moves the entity, redirects to the direct navigator if this mob should use that instead. **/
@@ -1645,7 +1719,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	if(!this.useDirectNavigator()) {
             if(this.canFly() && !this.isInWater() && !this.isInLava())
                 this.moveFlyingWithHeading(moveStrafe, moveForward);
-            else if(this.canSwim() && (this.isInWater() || this.isInLava()))
+            else if(this.shouldSwim())
                 this.moveSwimmingWithHeading(moveStrafe, moveForward);
             else
                 super.moveEntityWithHeading(moveStrafe, moveForward);
@@ -1712,8 +1786,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
     protected PathNavigate createNavigator(World world) {
         if(this.canFly())
             return new PathNavigateFlight(this, world);
-        if(this.canSwim())
+        if(this.isStrongSwimmer())
             return new PathNavigateSwimmer(this, world);
+        if(this.canWalk() && this.canWade() && this.canBreatheUnderwater())
+            return new PathNavigateGroundWater(this, world);
         if(this.canClimb())
             return new PathNavigateClimber(this, world);
         return new PathNavigateGroundCustom(this, world);
@@ -1722,7 +1798,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Get Navigator ==========
     /** Returns the movement helper that this entity should use. **/
     public PathNavigate getNavigator() {
-        /*if(super.isInWater() && !this.canSwim() && this.canWade() && this.canBreatheUnderwater()) {
+        /*if(super.isInWater() && !this.isStrongSwimmer() && this.canWade() && this.canBreatheUnderwater()) {
             if (this.navigatorSwimming == null)
                 this.navigatorSwimming = new PathNavigateSwimmer(this, this.getEntityWorld());
             return this.navigatorSwimming;
@@ -1733,7 +1809,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Get Move Helper ==========
     /** Returns the movement helper that this entity should use. **/
     public EntityMoveHelper getMoveHelper() {
-        /*if(super.isInWater() && !this.canSwim() && this.canWade() && this.canBreatheUnderwater()) {
+        /*if(super.isInWater() && !this.isStrongSwimmer() && this.canWade() && this.canBreatheUnderwater()) {
             if (this.moveHelperSwimming == null)
                 this.moveHelperSwimming = new SwimmingMoveHelper(this);
             return this.moveHelperSwimming;
@@ -1763,7 +1839,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
             
             if(!this.leashAIActive) {
                 this.tasks.addTask(2, this.leashMoveTowardsRestrictionAI);
-                if (!this.canSwim())
+                if (!this.isStrongSwimmer())
                     this.setPathPriority(PathNodeType.WATER, 0.0F);
                 this.leashAIActive = true;
             }
@@ -1786,7 +1862,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         else if(!this.getLeashed() && this.leashAIActive) {
             this.leashAIActive = false;
             this.tasks.removeTask(this.leashMoveTowardsRestrictionAI);
-            if (!this.canSwim())
+            if (!this.isStrongSwimmer())
                 this.setPathPriority(PathNodeType.WATER, PathNodeType.WATER.getPriority());
             this.detachHome();
         }
@@ -1794,11 +1870,11 @@ public abstract class EntityCreatureBase extends EntityLiving {
     
     /** ========== Pushed By Water ==========
      * Returns true if this mob should be pushed by water currents.
-     * This will usually return false if the mob canSwim()
+     * This will usually return false if the mob isStrongSwimmer()
      */
     @Override
 	public boolean isPushedByWater() {
-        return !this.canSwim();
+        return !this.isStrongSwimmer();
     }
     
     // ========== Is Moving ==========
@@ -2071,11 +2147,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
         width *= (float)this.sizeScale;
         height *= (float)this.sizeScale;
         super.setSize(width, height);
-        /*if (width == this.width || height == this.height)
-            return;
-        this.setEntityBoundingBox(new AxisAlignedBB(-(width / 2), 0, -(width / 2), (width / 2), height, (width / 2)));
-        this.width = width;
-        this.height = height;*/
         this.hitAreas = null;
         if(!this.getEntityWorld().isRemote && this.getNavigator() != null && this.getNavigator().getNodeProcessor() != null && this.getNavigator().getNodeProcessor() instanceof WalkNodeProcessorCustom)
             ((WalkNodeProcessorCustom)this.getNavigator().getNodeProcessor()).updateEntitySize(this);
@@ -2129,7 +2200,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
                     return false;
             }
         }
-        if(!this.canSwim() && this.canFly() && targetEntity.isInWater())
+        if(!this.isStrongSwimmer() && this.canFly() && targetEntity.isInWater())
             return false;
 		return true;
 	}
@@ -2194,7 +2265,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Phase ==========
     /** Returns the current attack phase of this mob, used when deciding which attack to use and which animations to use. **/
     public byte getAttackPhase() {
-    	return Byte.valueOf(this.getFromDataManager(ATTACK_PHASE));
+    	return this.getByteFromDataManager(ATTACK_PHASE);
     }
     /** Sets the current attack phase of this mobs. **/
     public void setAttackPhase(byte setAttackPhase) { attackPhase = setAttackPhase; }
@@ -2408,7 +2479,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	if(!this.getEntityWorld().isRemote)
     		return this.getAttackTarget() != null;
     	else
-    		return (Byte.valueOf(this.getFromDataManager(TARGET)) & TARGET_ID.ATTACK.id) > 0;
+    		return (this.getByteFromDataManager(TARGET) & TARGET_ID.ATTACK.id) > 0;
     }
 
     /** Returns this entity's Master Target. **/
@@ -2420,7 +2491,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	if(!this.getEntityWorld().isRemote)
     		return this.getMasterTarget() != null;
     	else
-    		return (Byte.valueOf(this.getFromDataManager(TARGET)) & TARGET_ID.MASTER.id) > 0;
+    		return (this.getByteFromDataManager(TARGET) & TARGET_ID.MASTER.id) > 0;
     }
 
     /** Returns this entity's Parent Target. **/
@@ -2432,7 +2503,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	if(!this.getEntityWorld().isRemote)
     		return this.getParentTarget() != null;
     	else
-    		return (Byte.valueOf(this.getFromDataManager(TARGET)) & TARGET_ID.PARENT.id) > 0;
+    		return (this.getByteFromDataManager(TARGET) & TARGET_ID.PARENT.id) > 0;
     }
 
     /** Returns this entity's Avoid Target. **/
@@ -2447,7 +2518,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	if(!this.getEntityWorld().isRemote)
     		return this.getAvoidTarget() != null;
     	else
-    		return (Byte.valueOf(this.getFromDataManager(TARGET)) & TARGET_ID.AVOID.id) > 0;
+    		return (this.getByteFromDataManager(TARGET) & TARGET_ID.AVOID.id) > 0;
     }
 
     /** Returns this entity's Owner Target. **/
@@ -2468,12 +2539,12 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	if(!this.getEntityWorld().isRemote)
     		return this.getControllingPassenger() != null;
     	else
-    		return (Byte.valueOf(this.getFromDataManager(TARGET)) & TARGET_ID.RIDER.id) > 0;
+    		return (this.getByteFromDataManager(TARGET) & TARGET_ID.RIDER.id) > 0;
     }
 
     @Override
     public Entity getControllingPassenger() {
-        return this.getPassengers().isEmpty() ? null : (Entity)this.getPassengers().get(0);
+        return this.getPassengers().isEmpty() ? null : this.getPassengers().get(0);
     }
 
     /** Returns true if this creature can ride the provided entity. **/
@@ -2551,8 +2622,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public boolean canWade() {
         return true;
     }
-    /** Can this entity free swim currently? (This doesn't stop the entity from moving in water but is used for smooth flight-like swimming). **/
-    public boolean canSwim() {
+    /** Should this entity use smoother, faster swimming? (This doesn't stop the entity from moving in water but is used for smooth flight-like swimming). **/
+    public boolean isStrongSwimmer() {
     	if(this.extraMobBehaviour != null)
     		if(this.extraMobBehaviour.swimmingOverride)
     			return true;
@@ -2600,7 +2671,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
     /** Get the current stealth percentage, 0.0F = not stealthed, 1.0F = completely stealthed, used for animation such as burrowing crusks. **/
     public float getStealth() {
-    	return Float.valueOf(this.getFromDataManager(STEALTH));
+    	return this.getFloatFromDataManager(STEALTH);
     }
 
     /** Sets the current stealth percentage. **/
@@ -2632,9 +2703,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Returns true if this entity is climbing a ladder or wall, can be used for animation. **/
     @Override
     public boolean isOnLadder() {
-    	if(this.canFly() || this.canSwim()) return false;
+    	if(this.canFly() || this.isStrongSwimmer()) return false;
     	if(this.canClimb()) {
-            return (Byte.valueOf(this.getFromDataManager(CLIMBING)) & 1) != 0;
+            return (this.getByteFromDataManager(CLIMBING) & 1) != 0;
         }
     	else
     		return super.isOnLadder();
@@ -2643,7 +2714,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Used to set whether this mob is climbing up a block or not. **/
     public void setBesideClimbableBlock(boolean collided) {
     	if(this.canClimb()) {
-	        byte climbing = Byte.valueOf(this.getFromDataManager(CLIMBING));
+	        byte climbing = this.getByteFromDataManager(CLIMBING);
 	        if(collided)
                 climbing = (byte)(climbing | 1);
 	        else climbing &= -2;
@@ -2653,7 +2724,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
     /** Returns whether or not this mob is next to a climbable blocks or not. **/
     public boolean isBesideClimbableBlock() {
-        return (Byte.valueOf(this.getFromDataManager(CLIMBING)) & 1) != 0;
+        return (this.getByteFromDataManager(CLIMBING) & 1) != 0;
     }
     
     // ========== Falling ==========
@@ -2687,7 +2758,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Returns true if this mob is blocking. **/
     public boolean isBlocking() {
     	if(this.getEntityWorld().isRemote)
-    		return (Byte.valueOf(this.getFromDataManager(ANIMATION)) & ANIM_ID.BLOCKING.id) > 0;
+    		return (this.getByteFromDataManager(ANIMATION) & ANIM_ID.BLOCKING.id) > 0;
     	return this.currentBlockingTime > 0;
     }
 

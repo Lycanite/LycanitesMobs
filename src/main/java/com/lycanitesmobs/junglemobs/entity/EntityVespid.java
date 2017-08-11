@@ -323,7 +323,7 @@ public class EntityVespid extends EntityCreatureAgeable implements IMob, IGroupP
     	if(targetEntity == this.getMasterTarget())
     		return false;
     	if(targetEntity instanceof EntityConba)
-        	return !((EntityConba)targetEntity).vespidInfection;
+        	return false;
     	if(targetEntity instanceof EntityVespid) {
     		if(!((EntityVespid)targetEntity).hasMaster() || ((EntityVespid)targetEntity).getMasterTarget() == this.getMasterTarget())
     			return false;

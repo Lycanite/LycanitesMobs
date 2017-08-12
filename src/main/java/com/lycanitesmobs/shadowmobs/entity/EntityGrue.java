@@ -1,5 +1,6 @@
 package com.lycanitesmobs.shadowmobs.entity;
 
+import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupShadow;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
@@ -21,6 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -262,5 +264,20 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
     @Override
     public boolean canBreatheUnderwater() {
         return true;
+    }
+
+
+    // ==================================================
+    //                       Visuals
+    // ==================================================
+    /** Returns this creature's main texture. Also checks for for subspecies. **/
+    public ResourceLocation getTexture() {
+        if(!"Shadow Clown".equals(this.getCustomNameTag()))
+            return super.getTexture();
+
+        String textureName = this.getTextureName() + "_shadowclown";
+        if(AssetManager.getTexture(textureName) == null)
+            AssetManager.addTexture(textureName, this.group, "textures/entity/" + textureName.toLowerCase() + ".png");
+        return AssetManager.getTexture(textureName);
     }
 }

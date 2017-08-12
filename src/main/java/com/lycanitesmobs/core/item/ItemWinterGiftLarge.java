@@ -76,17 +76,17 @@ public class ItemWinterGiftLarge extends ItemBase {
                     // Themed Names:
                     if (entity instanceof EntityLivingBase) {
                         EntityCreatureBase entityCreature = (EntityCreatureBase) entity;
-                        if (entityCreature.mobInfo.getRegistryName().equals("wendigo"))
+                        if (entityCreature.mobInfo.getEntityID().equals("wendigo"))
                             entityCreature.setCustomNameTag("Gooderness");
-                        else if (entityCreature.mobInfo.getRegistryName().equals("jabberwock"))
+                        else if (entityCreature.mobInfo.getEntityID().equals("jabberwock"))
                             entityCreature.setCustomNameTag("Rudolph");
-                        else if (entityCreature.mobInfo.getRegistryName().equals("ent"))
+                        else if (entityCreature.mobInfo.getEntityID().equals("ent"))
                             entityCreature.setCustomNameTag("Salty Tree");
-                        else if (entityCreature.mobInfo.getRegistryName().equals("trent"))
+                        else if (entityCreature.mobInfo.getEntityID().equals("trent"))
                             entityCreature.setCustomNameTag("Salty Tree");
-                        else if (entityCreature.mobInfo.getRegistryName().equals("phantom"))
+                        else if (entityCreature.mobInfo.getEntityID().equals("phantom"))
                             entityCreature.setCustomNameTag("Satan Claws");
-                        else if(entityCreature.mobInfo.getRegistryName().equals("behemoth"))
+                        else if(entityCreature.mobInfo.getEntityID().equals("behemoth"))
                             entityCreature.setCustomNameTag("Krampus");
                     }
 

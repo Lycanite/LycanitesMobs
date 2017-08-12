@@ -115,7 +115,7 @@ public class FreshwaterMobs {
         newMob = new MobInfo(group, "silex", EntitySilex.class, 0x263abd, 0x040e75)
                 .setPeaceful(true).setSummonCost(2).setDungeonLevel(-1)
                 .addSubspecies(new Subspecies("light", "uncommon")).addSubspecies(new Subspecies("keppel", "uncommon"));
-        newMob.spawnInfo.setSpawnTypes("WATER").setDespawn(false)
+        newMob.spawnInfo.setSpawnTypes("WATER, FISHING").setDespawn(false)
                 .setSpawnWeight(6).setAreaLimit(2).setGroupLimits(1, 6).setLightDark(true, false).setDungeonWeight(0);
         ObjectManager.addMob(newMob);
 

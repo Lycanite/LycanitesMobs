@@ -7,6 +7,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.event.entity.player.ItemFishedEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
@@ -211,6 +212,30 @@ public class CustomSpawner {
 		// Possible Interrupt:
 		if(interrupted)
 			event.setResult(EntityPlayer.SleepResult.NOT_SAFE);
+	}
+
+
+	// ==================================================
+	//                  Fished Event
+	// ==================================================
+	public List<SpawnTypeFishing> fishingTypes = new ArrayList<>();
+	/** This uses the lightning strike event to spawn mobs. **/
+	public void onFished(ItemFishedEvent event) {
+		EntityPlayer player = event.getEntityPlayer();
+		if(player == null || event.isCanceled())
+			return;
+
+		// Get Coords:
+		World world = player.getEntityWorld();
+		BlockPos spawnPos = player.getPosition().add(0, 0, 1);
+		Entity hookEntity = event.getHookEntity();
+		if(hookEntity != null)
+			spawnPos = hookEntity.getPosition();
+
+		for(SpawnTypeFishing spawnType : this.fishingTypes) {
+			spawnType.setHookEntity(hookEntity);
+			spawnType.spawnMobs(0, world, spawnPos, player);
+		}
 	}
 
 	

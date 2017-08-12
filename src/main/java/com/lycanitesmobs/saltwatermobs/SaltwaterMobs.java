@@ -114,7 +114,7 @@ public class SaltwaterMobs {
 		newMob = new MobInfo(group, "abtu", EntityAbtu.class, 0xFFBB00, 0x44AAFF)
 		        .setPeaceful(false).setSummonCost(2).setDungeonLevel(2)
 		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("WATER")
+		newMob.spawnInfo.setSpawnTypes("WATER, FISHING")
 				.setSpawnWeight(2).setAreaLimit(32).setGroupLimits(1, 5).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
@@ -128,7 +128,7 @@ public class SaltwaterMobs {
 		newMob = new MobInfo(group, "roa", EntityRoa.class, 0x222288, 0x222233)
 				.setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(2)
 				.addSubspecies(new Subspecies("verdant", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("WATER")
+		newMob.spawnInfo.setSpawnTypes("WATER, FISHING")
 				.setSpawnWeight(4).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 		

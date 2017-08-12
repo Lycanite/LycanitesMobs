@@ -2,10 +2,12 @@ package com.lycanitesmobs.core.item;
 
 import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.ObjectManager;
+import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.EntityItemCustom;
 import com.lycanitesmobs.core.info.ObjectLists;
 import com.lycanitesmobs.LycanitesMobs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -98,7 +100,15 @@ public class ItemHalloweenTreat extends ItemBase {
             } catch (Exception e) { e.printStackTrace(); }
             if(entity != null) {
 	            entity.setLocationAndAngles(player.posX, player.posY, player.posZ, player.rotationYaw, player.rotationPitch);
-	            world.spawnEntityInWorld(entity);
+
+                // Themed Names:
+                if (entity instanceof EntityLivingBase) {
+                    EntityCreatureBase entityCreature = (EntityCreatureBase) entity;
+                    if (entityCreature.mobInfo.getEntityID().equals("grue"))
+                        entityCreature.setCustomNameTag("Shadow Clown");
+                }
+
+                world.spawnEntityInWorld(entity);
             }
 		}
     }

@@ -299,6 +299,18 @@ public class SpawnTypeBase {
 		sleepSpawner.forceSpawning = true;
 		sleepSpawner.loadFromConfig();
         spawnTypes.add(sleepSpawner);
+
+        /*/ Fishing Spawner:
+        SpawnTypeBase fishingSpawner = new SpawnTypeFishing("Fishing")
+                .setRate(0).setChance(0.2D).setRange(2).setBlockLimit(32).setMobLimit(1);
+        fishingSpawner.materials = new Material[] {Material.AIR, Material.WATER};
+        fishingSpawner.blocks = new Block[] {Blocks.WATER};
+        fishingSpawner.ignoreBiome = true;
+        fishingSpawner.ignoreDimension = true;
+        fishingSpawner.ignoreLight = true;
+        fishingSpawner.forceSpawning = true;
+        fishingSpawner.loadFromConfig();
+        spawnTypes.add(fishingSpawner);*/
         
         // Add Spawners to Custom Spawner Map:
         for(SpawnTypeBase spawnType : spawnTypes) {

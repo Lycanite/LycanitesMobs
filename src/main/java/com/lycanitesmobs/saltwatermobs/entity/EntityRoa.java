@@ -146,7 +146,7 @@ public class EntityRoa extends EntityCreatureRideable implements IMob, IGroupPre
                     double xDist = this.posX - entity.posX;
                     double zDist = this.posZ - entity.posZ;
                     double xzDist = MathHelper.sqrt_double(xDist * xDist + zDist * zDist);
-                    double factor = 0.25D;
+                    double factor = 0.1D;
                     entity.addVelocity(
                             xDist / xzDist * factor + entity.motionX * factor,
                             0,

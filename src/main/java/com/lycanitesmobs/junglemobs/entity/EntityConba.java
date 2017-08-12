@@ -10,6 +10,7 @@ import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.DropRate;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
@@ -220,6 +221,14 @@ public class EntityConba extends EntityCreatureTameable implements IMob {
         this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
         this.worldObj.spawnEntityInWorld(projectile);
         super.rangedAttack(target, range);
+    }
+
+    // ========== Can Attack Entity ==========
+    @Override
+    public boolean canAttackEntity(EntityLivingBase targetEntity) {
+        if(targetEntity instanceof EntityVespid || targetEntity instanceof EntityVespidQueen)
+            return false;
+        return super.canAttackEntity(targetEntity);
     }
     
     

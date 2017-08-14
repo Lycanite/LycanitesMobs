@@ -1,5 +1,0 @@
-{
-	"multipart": [
-		{ "apply": { "model" : "arcticmobs:frostweb" } }
-	]
-}

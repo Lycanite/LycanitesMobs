@@ -1,7 +1,0 @@
-{
-	"variants": {
-        "axis=y": { "model": "shadowmobs:shadowstone_slab_double" },
-        "axis=z": { "model": "shadowmobs:shadowstone_slab_double", "x": 90 },
-        "axis=x": { "model": "shadowmobs:shadowstone_slab_double", "x": 90, "y": 90 }
-	}
-}

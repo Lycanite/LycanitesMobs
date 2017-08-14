@@ -1,7 +1,0 @@
-{
-	"variants": {
-        "axis=y": { "model": "demonmobs:demonstone_slab_double" },
-        "axis=z": { "model": "demonmobs:demonstone_slab_double", "x": 90 },
-        "axis=x": { "model": "demonmobs:demonstone_slab_double", "x": 90, "y": 90 }
-	}
-}

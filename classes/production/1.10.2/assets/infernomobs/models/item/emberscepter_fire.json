@@ -1,6 +1,0 @@
-{
-	"parent": "infernomobs:item/emberscepter",
-	"textures": {
-		"layer0": "infernomobs:items/emberscepter_fire"
-	}
-}

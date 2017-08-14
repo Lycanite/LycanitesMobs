@@ -1,6 +1,0 @@
-{
-	"parent": "freshwatermobs:item/aquapulsescepter",
-	"textures": {
-		"layer0": "freshwatermobs:items/aquapulsescepter_fire"
-	}
-}

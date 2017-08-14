@@ -1,7 +1,7 @@
 package com.lycanitesmobs.saltwatermobs.model;
 
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import com.lycanitesmobs.core.model.ModelCustomObj;
+import com.lycanitesmobs.core.model.ModelObj;
 import com.lycanitesmobs.core.renderer.LayerBase;
 import com.lycanitesmobs.core.renderer.RenderCreature;
 import com.lycanitesmobs.saltwatermobs.SaltwaterMobs;
@@ -10,7 +10,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.MathHelper;
 
-public class ModelRoa extends ModelCustomObj {
+public class ModelRoa extends ModelObj {
 
     // ==================================================
     //                    Constructors
@@ -22,18 +22,6 @@ public class ModelRoa extends ModelCustomObj {
     public ModelRoa(float shadowSize) {
         // Load Model:
         this.initModel("roa", SaltwaterMobs.group, "entity/roa");
-
-
-
-
-        // Set Rotation Centers:
-        setPartCenter("head", 0F, 0F, 1.3F);
-        setPartCenter("mouth", 0F, 0.25F, 2.1F);
-        setPartCenter("body", 0F, 0F, 0F);
-        setPartCenter("tail", 0F, 0F, -1.2F);
-        setPartCenter("armleft", 0.6F, 0F, 0F);
-        setPartCenter("armright", -0.6F, 0F, 0F);
-        setPartCenter("effect", 0F, 0F, 0F);
 
         // Lock Head:
         this.lockHeadX = false;
@@ -80,7 +68,6 @@ public class ModelRoa extends ModelCustomObj {
     // ==================================================
     //                 Animate Part
     // ==================================================
-    float maxLeg = 0F;
     @Override
     public void animatePart(String partName, EntityLiving entity, float time, float distance, float loop, float lookY, float lookX, float scale) {
         super.animatePart(partName, entity, time, distance, loop, lookY, lookX, scale);
@@ -96,33 +83,23 @@ public class ModelRoa extends ModelCustomObj {
         float rotY = 0F;
         float rotZ = 0F;
 
-        // Looking:
-        if(partName.equals("mouth")) {
-            this.centerPartToPart(partName, "head");
-            if(!this.lockHeadX)
-                this.rotate((float)Math.toDegrees(lookX / (180F / (float)Math.PI)), 0, 0);
-            if(!this.lockHeadY)
-                this.rotate(0, (float)Math.toDegrees(lookY / (180F / (float)Math.PI)), 0);
-            this.uncenterPartToPart(partName, "head");
-        }
-
         // Idle:
-        this.centerPartToPart(partName, "body");
-        this.rotate(0, (float)-Math.toDegrees(MathHelper.cos(loop * 0.2F) * 0.05F - 0.05F), 0);
-        this.uncenterPartToPart(partName, "body");
-
+        if(partName.equals("body")) {
+            this.rotate(0, (float) -Math.toDegrees(MathHelper.cos(loop * 0.2F) * 0.05F - 0.05F), 0);
+        }
         if(partName.equals("mouth")) {
-            this.subCenterPart("mouth");
             this.rotate(15F - (float)-Math.toDegrees(MathHelper.cos(loop * -0.1F) * 0.05F - 0.05F), 0.0F, 0.0F);
-            this.unsubCenterPart("mouth");
         }
         if(partName.equals("armleft")) {
-            rotZ -= Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F + 0.05F);
+            rotZ -= Math.toDegrees(MathHelper.cos(loop * 0.25F) * 0.1F);
             rotX -= Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
         }
         if(partName.equals("armright")) {
-            rotZ += Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F + 0.05F);
+            rotZ += Math.toDegrees(MathHelper.cos(loop * 0.25F) * 0.1F);
             rotX += Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
+        }
+        if(partName.equals("tail")) {
+            rotY += (float)-Math.toDegrees(MathHelper.cos(loop * 0.25f) * 0.25F);
         }
 
         // Walking:
@@ -147,20 +124,8 @@ public class ModelRoa extends ModelCustomObj {
         }
 
         // Apply Animations:
-        this.rotate(rotation, angleX, angleY, angleZ);
+        this.angle(rotation, angleX, angleY, angleZ);
         this.rotate(rotX, rotY, rotZ);
         this.translate(posX, posY, posZ);
-    }
-
-
-    // ==================================================
-    //              Rotate and Translate
-    // ==================================================
-    @Override
-    public void childScale(String partName) {
-        if(partName.equals("head") || partName.equals("mouth"))
-            translate(-(getPartCenter(partName)[0] / 2), -(getPartCenter(partName)[1] / 2), -(getPartCenter(partName)[2] / 2));
-        else
-            super.childScale(partName);
     }
 }

@@ -1,7 +1,0 @@
-{
-    "parent": "infernomobs:block/scorchfire_floor",
-    "textures": {
-        "particle": "infernomobs:blocks/scorchfire_layer_1",
-        "fire": "infernomobs:blocks/scorchfire_layer_1"
-    }
-}

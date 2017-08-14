@@ -1,7 +1,0 @@
-{
-    "variants": {
-        "axis=y": { "model": "demonmobs:demonstonepillar" },
-        "axis=z": { "model": "demonmobs:demonstonepillar", "x": 90 },
-        "axis=x": { "model": "demonmobs:demonstonepillar", "x": 90, "y": 90 }
-    }
-}

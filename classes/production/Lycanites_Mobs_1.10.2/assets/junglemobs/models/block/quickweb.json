@@ -1,6 +1,0 @@
-{
-	"parent": "block/cross",
-	"textures": {
-        "cross": "junglemobs:blocks/quickweb"
-	}
-}

@@ -1,7 +1,0 @@
-{
-	"parent": "builtin/generated",
-	"textures": {
-		"layer0": "mountainmobs:items/mountainspawn",
-		"layer1": "mountainmobs:items/mountainspawn_overlay"
-	}
-}

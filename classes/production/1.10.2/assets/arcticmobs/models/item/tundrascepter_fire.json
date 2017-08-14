@@ -1,6 +1,0 @@
-{
-	"parent": "arcticmobs:item/tundrascepter",
-	"textures": {
-		"layer0": "arcticmobs:items/tundrascepter_fire"
-	}
-}

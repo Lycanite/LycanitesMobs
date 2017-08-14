@@ -1,15 +1,16 @@
 package com.lycanitesmobs.core.modelloader.obj;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.ResourceLocation;
+import org.apache.commons.io.output.ByteArrayOutputStream;
+
+import javax.vecmath.Vector2f;
+import javax.vecmath.Vector3f;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-
-import javax.vecmath.Vector2f;
-import javax.vecmath.Vector3f;
-
-import org.apache.commons.io.output.ByteArrayOutputStream;
 
 public class OBJLoader
 {
@@ -124,7 +125,9 @@ public class OBJLoader
                     {
                         String path = startPath+parts[1];
                         MtlMaterialLib material = new MtlMaterialLib(path);
-                        material.parse(read(OBJLoader.class.getResourceAsStream(path)));
+                        ResourceLocation resourceLocation = new ResourceLocation(path);
+                        InputStream inputStream = Minecraft.getMinecraft().getResourceManager().getResource(resourceLocation).getInputStream();
+                        material.parse(read(inputStream));
                         materials.addAll(material.getMaterials());
                     }
                     else if(parts[0].equals(USE_MATERIAL))
@@ -229,7 +232,7 @@ public class OBJLoader
         }
         catch(Exception e)
         {
-            throw new RuntimeException("Error while loading model", e);
+            throw e;
         }
     }
     

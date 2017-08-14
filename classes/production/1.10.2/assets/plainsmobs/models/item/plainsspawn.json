@@ -1,7 +1,0 @@
-{
-	"parent": "builtin/generated",
-	"textures": {
-		"layer0": "plainsmobs:items/plainsspawn",
-		"layer1": "plainsmobs:items/plainsspawn_overlay"
-	}
-}

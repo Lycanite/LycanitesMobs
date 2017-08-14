@@ -1,6 +1,0 @@
-{
-	"parent": "desertmobs:item/scythescepter",
-	"textures": {
-		"layer0": "desertmobs:items/scythescepter_fire"
-	}
-}

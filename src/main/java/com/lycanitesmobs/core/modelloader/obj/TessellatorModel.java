@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.eventhandler.EventBus;
 
 import javax.vecmath.Vector4f;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
@@ -23,17 +24,15 @@ public class TessellatorModel extends ObjModel
 
     public static final EventBus MODEL_RENDERING_BUS = new EventBus();
 
-    public TessellatorModel(ResourceLocation resource) throws IOException {
-        this(Minecraft.getMinecraft().getResourceManager().getResource(resource).getInputStream().toString());
-    }
-
-    public TessellatorModel(String string)
+    public TessellatorModel(ResourceLocation resourceLocation)
     {
-        super(string);
+        super(resourceLocation.getResourcePath());
+        String path = resourceLocation.toString();
         try
         {
-            String content = new String(read(Model.class.getResourceAsStream(string)), "UTF-8");
-            String startPath = string.substring(0, string.lastIndexOf('/') + 1);
+            InputStream inputStream = Minecraft.getMinecraft().getResourceManager().getResource(resourceLocation).getInputStream();
+            String content = new String(read(inputStream), "UTF-8");
+            String startPath = path.substring(0, path.lastIndexOf('/') + 1);
             HashMap<ObjObject, IndexedModel> map = new OBJLoader().loadModel(startPath, content);
             objObjects.clear();
             Set<ObjObject> keys = map.keySet();

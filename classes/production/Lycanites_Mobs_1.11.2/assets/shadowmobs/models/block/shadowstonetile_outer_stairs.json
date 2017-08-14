@@ -1,8 +1,0 @@
-{
-    "parent": "block/outer_stairs",
-    "textures": {
-        "bottom": "shadowmobs:blocks/shadowstonetile",
-        "top": "shadowmobs:blocks/shadowstonetile",
-        "side": "shadowmobs:blocks/shadowstonetile"
-    }
-}

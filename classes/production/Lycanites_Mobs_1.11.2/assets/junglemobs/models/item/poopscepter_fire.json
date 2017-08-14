@@ -1,6 +1,0 @@
-{
-	"parent": "junglemobs:item/poopscepter",
-	"textures": {
-		"layer0": "junglemobs:items/poopscepter_fire"
-	}
-}

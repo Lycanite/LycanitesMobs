@@ -1,6 +1,0 @@
-{
-	"parent": "shadowmobs:item/spectralboltscepter",
-	"textures": {
-		"layer0": "shadowmobs:items/spectralboltscepter_fire"
-	}
-}

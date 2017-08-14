@@ -1,7 +1,0 @@
-{
-    "parent": "arcticmobs:block/frostfire_up_alt",
-    "textures": {
-        "particle": "arcticmobs:blocks/frostfire_layer_0",
-        "fire": "arcticmobs:blocks/frostfire_layer_0"
-    }
-}

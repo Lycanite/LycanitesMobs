@@ -1,6 +1,0 @@
-{
-	"parent": "lycanitesmobs:item/stablesummoningstaff",
-	"textures": {
-		"layer0": "lycanitesmobs:items/stablesummoningstaff_fire"
-	}
-}

@@ -36,11 +36,11 @@ public class ModelCustomObj extends ModelCustom {
     public List<ObjObject> wavefrontParts;
 
     /** A map containing the XYZ offset for each part to use when centering. **/
-	public Map<String, float[]> partCenters = new HashMap<String, float[]>();
+	public Map<String, float[]> partCenters = new HashMap<>();
     /** A map containing the XYZ sub-offset for each part to use when centering. These are for parts with two centers such as mouth parts that match their centers to the head part but have a subcenter for opening and closing. **/
-	public Map<String, float[]> partSubCenters = new HashMap<String, float[]>();
+	public Map<String, float[]> partSubCenters = new HashMap<>();
     /** A map to be used on the fly, this allows one part to apply a position offset to another part. This is no longer used though and will be made redundant when the new model code is created. **/
-	public Map<String, float[]> offsets = new HashMap<String, float[]>();
+	public Map<String, float[]> offsets = new HashMap<>();
 
     // Head:
     /** If true, head pieces will ignore the x look rotation when animating. **/
@@ -86,7 +86,7 @@ public class ModelCustomObj extends ModelCustom {
     //                    Init Model
     // ==================================================
     public ModelCustomObj initModel(String name, GroupInfo groupInfo, String path) {
-        this.wavefrontObject = new TessellatorModel("/assets/" + groupInfo.filename + "/models/" + path + ".obj");
+        this.wavefrontObject = new TessellatorModel(new ResourceLocation(groupInfo.filename, "models/" + path + ".obj"));
         this.wavefrontParts = this.wavefrontObject.objObjects;
         if(this.wavefrontParts.isEmpty())
             LycanitesMobs.printWarning("", "Unable to load any parts for the " + name + " model!");
@@ -277,8 +277,9 @@ public class ModelCustomObj extends ModelCustom {
     
     
     // ==================================================
-   	//                  Part Centers
+   	//                   Part Centers
    	// ==================================================
+    // ========== Add Animation Part ==========
     // ========== Set and Get ==========
     public void setPartCenter(String partName, float centerX, float centerY, float centerZ) {
     	if(this.isTrophyPart(partName))

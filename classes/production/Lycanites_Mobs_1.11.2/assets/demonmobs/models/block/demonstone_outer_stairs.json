@@ -1,8 +1,0 @@
-{
-    "parent": "block/outer_stairs",
-    "textures": {
-        "bottom": "demonmobs:blocks/demonstone",
-        "top": "demonmobs:blocks/demonstone",
-        "side": "demonmobs:blocks/demonstone"
-    }
-}

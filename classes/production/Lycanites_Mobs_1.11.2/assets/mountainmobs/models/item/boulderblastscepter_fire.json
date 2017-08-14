@@ -1,6 +1,0 @@
-{
-	"parent": "mountainmobs:item/boulderblastscepter",
-	"textures": {
-		"layer0": "mountainmobs:items/boulderblastscepter_fire"
-	}
-}

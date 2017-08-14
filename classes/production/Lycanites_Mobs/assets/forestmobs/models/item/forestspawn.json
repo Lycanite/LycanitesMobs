@@ -1,7 +1,0 @@
-{
-	"parent": "builtin/generated",
-	"textures": {
-		"layer0": "forestmobs:items/forestspawn",
-		"layer1": "forestmobs:items/forestspawn_overlay"
-	}
-}

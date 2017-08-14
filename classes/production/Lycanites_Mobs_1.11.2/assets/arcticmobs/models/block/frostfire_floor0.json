@@ -1,7 +1,0 @@
-{
-    "parent": "arcticmobs:block/frostfire_floor",
-    "textures": {
-        "particle": "arcticmobs:blocks/frostfire_layer_0",
-        "fire": "arcticmobs:blocks/frostfire_layer_0"
-    }
-}

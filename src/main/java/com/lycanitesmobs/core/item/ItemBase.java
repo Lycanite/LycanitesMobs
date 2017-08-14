@@ -1,5 +1,6 @@
 package com.lycanitesmobs.core.item;
 
+import com.google.common.collect.Multimap;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.info.GroupInfo;
 import net.minecraft.client.Minecraft;
@@ -7,7 +8,9 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -18,6 +21,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ItemBase extends Item {
@@ -57,7 +61,7 @@ public class ItemBase extends Item {
     		List formattedDescriptionList = fontRenderer.listFormattedStringToWidth(description, descriptionWidth);
     		for(Object formattedDescription : formattedDescriptionList) {
     			if(formattedDescription instanceof String)
-    				textList.add("\u00a7a" + (String)formattedDescription);
+    				textList.add("\u00a7a" + formattedDescription);
     		}
     	}
     	super.addInformation(itemStack, entityPlayer, textList, par4);
@@ -65,6 +69,11 @@ public class ItemBase extends Item {
     
     public String getDescription(ItemStack itemStack, EntityPlayer entityPlayer, List textList, boolean par4) {
     	return I18n.translateToLocal("item." + this.itemName + ".description");
+    }
+
+    @Override
+    public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
+        return super.getAttributeModifiers(slot, stack);
     }
 	
     

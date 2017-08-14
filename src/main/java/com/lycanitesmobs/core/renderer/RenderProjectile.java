@@ -82,11 +82,15 @@ public class RenderProjectile extends Render {
         double maxV = 1;
         double textureWidth = 0.5D;
         double textureHeight = 0.5D;
+        double offsetY = 0;
         if(entity instanceof EntityProjectileBase) {
             EntityProjectileBase entityProjectile = (EntityProjectileBase)entity;
             if(entityProjectile.animationFrameMax > 0) {
                 minV = (float)entityProjectile.animationFrame / (float)entityProjectile.animationFrameMax;
                 maxV = minV + (1F / (float)entityProjectile.animationFrameMax);
+                textureWidth *= entityProjectile.textureScale;
+                textureHeight *= entityProjectile.textureScale;
+                offsetY = entityProjectile.textureOffsetY;
             }
         }
 
@@ -105,16 +109,16 @@ public class RenderProjectile extends Render {
         VertexBuffer vertexbuffer = tessellator.getBuffer();
         vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX_NORMAL);
 
-        vertexbuffer.pos(-textureWidth, -textureHeight + (textureHeight / 2), 0.0D)
+        vertexbuffer.pos(-textureWidth, -textureHeight + (textureHeight / 2) + offsetY, 0.0D)
                 .tex(minU, maxV)
                 .normal(0.0F, 1.0F, 0.0F).endVertex();
-        vertexbuffer.pos(textureWidth, -textureHeight + (textureHeight / 2), 0.0D)
+        vertexbuffer.pos(textureWidth, -textureHeight + (textureHeight / 2) + offsetY, 0.0D)
                 .tex(maxU, maxV)
                 .normal(0.0F, 1.0F, 0.0F).endVertex();
-        vertexbuffer.pos(textureWidth, textureHeight + (textureHeight / 2), 0.0D)
+        vertexbuffer.pos(textureWidth, textureHeight + (textureHeight / 2) + offsetY, 0.0D)
                 .tex(maxU, minV)
                 .normal(0.0F, 1.0F, 0.0F).endVertex();
-        vertexbuffer.pos(-textureWidth, textureHeight + (textureHeight / 2), 0.0D)
+        vertexbuffer.pos(-textureWidth, textureHeight + (textureHeight / 2) + offsetY, 0.0D)
                 .tex(minU, minV)
                 .normal(0.0F, 1.0F, 0.0F).endVertex();
 

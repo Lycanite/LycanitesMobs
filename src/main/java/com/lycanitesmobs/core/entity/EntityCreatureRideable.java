@@ -341,7 +341,10 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
     	commands.putAll(super.getInteractCommands(player, itemStack));
     	
     	// Mount:
-    	if(this.canBeMounted(player) && !player.isSneaking() && !this.getEntityWorld().isRemote && MobInfo.mountingEnabled)
+        boolean mountingAllowed = MobInfo.mountingEnabled;
+        if(mountingAllowed && this.canFly())
+            mountingAllowed = MobInfo.mountingFlightEnabled;
+    	if(this.canBeMounted(player) && !player.isSneaking() && !this.getEntityWorld().isRemote && mountingAllowed)
     		commands.put(CMD_PRIOR.MAIN.id, "Mount");
     	
     	return commands;

@@ -167,7 +167,7 @@ gui.mount.controls=Press %control% to use mount ability
 #
 # ========== Messages ==========
 message.soulgazer.new=You have gained knowledge of the %creature%! Check your Beastiary!
-message.soulgazer.summonable=You are now able to summon the %creature%! You will need a Summoning Staff.
+message.soulgazer.summonable=You are now able to summon the %creature%! You will need a Summoning Item to summon it.
 message.soulgazer.known=You already have full knowledge of this creature.
 message.soulgazer.unknown=The Soulgazer finds nothing special about this creature.
 message.soulstone.untamed=The Soulstone can only bind to a tamed creature.

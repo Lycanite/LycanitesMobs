@@ -14,6 +14,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -126,5 +127,20 @@ public class BlockSummoningPedestal extends BlockBase implements ITileEntityProv
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
         return new TileEntitySummoningPedestal();
+    }
+
+
+    // ==================================================
+    //                    Block State
+    // ==================================================
+    public static void setState(EnumSummoningPedestal owner, World worldIn, BlockPos pos) {
+        IBlockState iblockstate = worldIn.getBlockState(pos);
+        TileEntity tileentity = worldIn.getTileEntity(pos);
+        worldIn.setBlockState(pos, iblockstate.getBlock().getBlockState().getBaseState().withProperty(PROPERTY_OWNER, owner), 3);
+
+        if (tileentity != null) {
+            tileentity.validate();
+            worldIn.setTileEntity(pos, tileentity);
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.lycanitesmobs.core.tileentity;
 
 import com.lycanitesmobs.LycanitesMobs;
+import com.lycanitesmobs.core.block.BlockSummoningPedestal;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.EntityPortal;
 import com.lycanitesmobs.core.network.MessageSummoningPedestalStats;
@@ -9,6 +10,9 @@ import com.lycanitesmobs.core.container.ContainerBase;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.gui.GUISummoningPedestal;
 import com.lycanitesmobs.core.pets.SummonSet;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,6 +20,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 import java.util.ArrayList;
@@ -45,6 +50,9 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
     public List<EntityCreatureBase> minions = new ArrayList<EntityCreatureBase>();
     protected String[] loadMinionIDs;
 
+    // Block:
+    protected boolean blockStateSet = false;
+
 
     // ========================================
     //                  Remove
@@ -66,10 +74,12 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
     public void update() {
         // Client Side Only:
         if(this.getWorld().isRemote) {
+            // Summoning Progress:
             if(this.summonProgress >= this.summonProgressMax)
                 this.summonProgress = 0;
             else if(this.summonProgress > 0)
                 this.summonProgress++;
+
             return;
         }
 
@@ -129,6 +139,15 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
             this.summoningPortal.summonCreatures();
             this.summonProgress = 0;
             this.capacity = Math.min(this.capacity + (this.capacityCharge * this.summonSet.getMobInfo().summonCost), this.capacityMax);
+        }
+
+        // Block State:
+        if(!this.blockStateSet) {
+            if(!"".equals(this.getOwnerName()))
+                BlockSummoningPedestal.setState(BlockSummoningPedestal.EnumSummoningPedestal.PLAYER, this.getWorld(), this.getPos());
+            else
+                BlockSummoningPedestal.setState(BlockSummoningPedestal.EnumSummoningPedestal.NONE, this.getWorld(), this.getPos());
+            this.blockStateSet = true;
         }
 
         // Sync To Client:
@@ -210,6 +229,7 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
     // ========================================
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
+        LycanitesMobs.printDebug("", "Owner: " + this.getOwnerName() + " Remote: " + this.getWorld().isRemote);
         NBTTagCompound syncData = new NBTTagCompound();
 
         // Both:

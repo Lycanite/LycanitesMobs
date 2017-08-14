@@ -41,6 +41,8 @@ public class EntityProjectileBase extends EntityThrowable {
     public int animationFrame = 0;
     public int animationFrameMax = 0;
     public int textureTiling = 1;
+    public float textureScale = 1;
+    public float textureOffsetY = 0;
     public boolean clientOnly = false;
 
     // Data Manager:

@@ -127,4 +127,19 @@ public class BlockSummoningPedestal extends BlockBase implements ITileEntityProv
     public TileEntity createNewTileEntity(World world, int metadata) {
         return new TileEntitySummoningPedestal();
     }
+
+
+    // ==================================================
+    //                    Block State
+    // ==================================================
+    public static void setState(EnumSummoningPedestal owner, World worldIn, BlockPos pos) {
+        IBlockState iblockstate = worldIn.getBlockState(pos);
+        TileEntity tileentity = worldIn.getTileEntity(pos);
+        worldIn.setBlockState(pos, iblockstate.getBlock().getBlockState().getBaseState().withProperty(PROPERTY_OWNER, owner), 3);
+
+        if (tileentity != null) {
+            tileentity.validate();
+            worldIn.setTileEntity(pos, tileentity);
+        }
+    }
 }

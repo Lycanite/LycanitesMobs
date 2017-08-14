@@ -40,6 +40,9 @@ public class MobInfo {
 	
 	/** Whether mob mounting is allowed. **/
 	public static boolean mountingEnabled = true;
+
+    /** Whether mob mounting for flying mobs is allowed. **/
+    public static boolean mountingFlightEnabled = true;
 	
 	/** If true, all mobs that attack players will also attack villagers. **/
 	public static boolean mobsAttackVillagers = true;
@@ -171,7 +174,8 @@ public class MobInfo {
 		ownerTags = config.getBool("Pets", "Owner Tags", ownerTags, "If true, tamed mobs will display their owner's name in their name tag.");
 		tamingEnabled = config.getBool("Pets", "Taming", tamingEnabled, "Set to false to disable pet/mount taming.");
 		mountingEnabled = config.getBool("Pets", "Mounting", mountingEnabled, "Set to false to disable mounts.");
-		friendlyFire = config.getBool("Pets", "Friendly Fire", friendlyFire, "If true, pets, minions, etc can't harm their owners (with ranged attacks, etc).");
+        mountingFlightEnabled = config.getBool("Pets", "Flying Mounting", mountingFlightEnabled, "Set to false to disable flying mounts, if all mounts are disable this option doesn't matter.");
+        friendlyFire = config.getBool("Pets", "Friendly Fire", friendlyFire, "If true, pets, minions, etc can't harm their owners (with ranged attacks, etc).");
 
         // Beastiary:
         config.setCategoryComment("Beastiary", "Here you can control all settings related to the player's Beastiary.");

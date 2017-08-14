@@ -1,5 +1,6 @@
 package com.lycanitesmobs.mountainmobs.entity;
 
+import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.ObjectLists;
 import com.lycanitesmobs.ObjectManager;
@@ -28,7 +29,7 @@ import net.minecraft.world.World;
 
 import java.util.HashMap;
 
-public class EntityTroll extends EntityCreatureBase implements IMob {
+public class EntityTroll extends EntityCreatureTameable implements IMob {
 	
 	public boolean trollGreifing = true;
 	
@@ -69,17 +70,17 @@ public class EntityTroll extends EntityCreatureBase implements IMob {
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIBreakDoor(this));
         this.tasks.addTask(5, new EntityAIAttackRanged(this).setSpeed(0.5D).setRate(60).setRange(14.0F).setMinChaseDistance(5.0F));
-        //this.tasks.addTask(6, this.aiSit);
-        //this.tasks.addTask(7, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
+        this.tasks.addTask(6, this.aiSit);
+        this.tasks.addTask(7, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
         this.tasks.addTask(8, new EntityAIWander(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
-        //this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
-        //this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
+        this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
+        this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
-        //this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
+        this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
     
     // ========== Stats ==========
@@ -242,5 +243,5 @@ public class EntityTroll extends EntityCreatureBase implements IMob {
     // ==================================================
     //                     Pet Control
     // ==================================================
-    public boolean petControlsEnabled() { return false; }
+    public boolean petControlsEnabled() { return true; }
 }

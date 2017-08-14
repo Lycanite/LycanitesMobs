@@ -938,6 +938,16 @@ public abstract class EntityCreatureBase extends EntityLiving {
         this.bossInfo = (BossInfoServer)(new BossInfoServer(new TextComponentString(name), color, BossInfo.Overlay.PROGRESS)).setDarkenSky(darkenSky);
     }
 
+    public BossInfo getBossInfo() {
+        if(this.bossInfo == null && this.showBossInfo() && !this.getEntityWorld().isRemote) {
+            if(this.isBoss())
+                this.createBossInfo(BossInfo.Color.RED, false);
+            else
+                this.createBossInfo(BossInfo.Color.GREEN, false);
+        }
+        return this.bossInfo;
+    }
+
 
     // ========== Summoning ==========
     public void summonMinion(EntityLivingBase minion, double angle, double distance) {
@@ -1487,14 +1497,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         }
 
         // Boss Health Bar:
-        if(!this.worldObj.isRemote && this.showBossInfo()) {
-            if(this.bossInfo == null) {
-                if(this.boss)
-                    this.createBossInfo(BossInfo.Color.RED, false);
-                else
-                    this.createBossInfo(BossInfo.Color.GREEN, false);
-            }
-        }
+        this.getBossInfo();
 
         // Minion To Master Update:
         if(this.getMasterTarget() != null && this.getMasterTarget() instanceof EntityCreatureBase)
@@ -3644,14 +3647,14 @@ public abstract class EntityCreatureBase extends EntityLiving {
     @Override
     public void addTrackingPlayer(EntityPlayerMP player) {
         super.addTrackingPlayer(player);
-        if(this.bossInfo != null)
+        if(this.getBossInfo() != null)
             this.bossInfo.addPlayer(player);
     }
 
     @Override
     public void removeTrackingPlayer(EntityPlayerMP player) {
         super.removeTrackingPlayer(player);
-        if(this.bossInfo != null)
+        if(this.getBossInfo() != null)
             this.bossInfo.removePlayer(player);
     }
     

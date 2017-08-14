@@ -4,7 +4,7 @@ bl_info = {
     "blender":      (2,7,8),
     "version":      (0,0,1),
     "location":     "File > Export > Lycanites Mobs (.txt)",
-    "description":  "Exports the XYZ position and parents of each object into Java code for a Lycanites Mobs model class.",
+    "description":  "Exports object data into an animation parts json file for loading into the Lycanites Mobs mod for Minecraft.",
     "category":     "Import-Export"
 }
 

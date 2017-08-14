@@ -434,6 +434,8 @@ public class GUIBaseManager extends GUIBaseScreen {
     }
 
     public String getSelectedMinion() {
+		if(this.summonSet == null)
+			return null;
         return this.summonSet.summonType;
     }
 	

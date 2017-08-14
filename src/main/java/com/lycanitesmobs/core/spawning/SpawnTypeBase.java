@@ -503,94 +503,102 @@ public class SpawnTypeBase {
         // Spawn Chosen Mobs:
         LycanitesMobs.printDebug("CustomSpawner", "Cycling through each possible spawn coordinate and attempting to spawn a mob there. Mob limit is " + this.mobLimit + " overall.");
         int mobsSpawned = 0;
-        for(BlockPos coord : coords) {
-        	
-            // Get EntityLiving to Spawn:
-            SpawnInfo spawnInfo = null;
-            if(!this.ignoreBiome) {
-                Biome spawnBiome = world.getBiome(coord);
-                if (!possibleSpawns.containsKey(spawnBiome))
-                    continue;
-                if (possibleSpawns.get(spawnBiome).isEmpty()) {
-                    LycanitesMobs.printWarning("CustomSpawner", "Tried to spawn in " + spawnBiome + " but there are no possible spawns yet it has a list instantiated, skipping.");
+        try {
+            for (BlockPos coord : coords) {
+
+                // Get EntityLiving to Spawn:
+                SpawnInfo spawnInfo = null;
+                if (!this.ignoreBiome) {
+                    Biome spawnBiome = world.getBiome(coord);
+                    if (!possibleSpawns.containsKey(spawnBiome))
+                        continue;
+                    if (possibleSpawns.get(spawnBiome).isEmpty()) {
+                        LycanitesMobs.printWarning("CustomSpawner", "Tried to spawn in " + spawnBiome + " but there are no possible spawns yet it has a list instantiated, skipping.");
+                        continue;
+                    }
+                    spawnInfo = this.getRandomMob(possibleSpawns.get(spawnBiome), world);
+                } else {
+                    spawnInfo = this.getRandomMob(spawnList, world);
+                }
+
+                // Create Entity:
+                EntityLiving entityLiving = null;
+                try {
+                    entityLiving = (EntityLiving) spawnInfo.mobInfo.entityClass.getConstructor(new Class[]{World.class}).newInstance(new Object[]{world});
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (entityLiving == null) {
+                    LycanitesMobs.printWarning("CustomSpawner", "Unable to instantiate an entity from SpawnInfo: " + spawnInfo);
                     continue;
                 }
-                spawnInfo = this.getRandomMob(possibleSpawns.get(spawnBiome), world);
-            }
-            else {
-                spawnInfo = this.getRandomMob(spawnList, world);
-            }
 
-            // Create Entity:
-            EntityLiving entityLiving = null;
-            try {
-                entityLiving = (EntityLiving)spawnInfo.mobInfo.entityClass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {world});
-            } catch (Exception e) { e.printStackTrace(); }
-            if(entityLiving == null) {
-                LycanitesMobs.printWarning("CustomSpawner", "Unable to instantiate an entity from SpawnInfo: " + spawnInfo);
-                continue;
-            }
+                // Attempt to Spawn EntityLiving:
+                LycanitesMobs.printDebug("CustomSpawner", "Attempting to spawn " + entityLiving + "...");
+                LycanitesMobs.printDebug("CustomSpawner", "Coordinates: " + coord);
+                entityLiving.setLocationAndAngles((double) coord.getX() + 0.5D, (double) coord.getY(), (double) coord.getZ() + 0.5D, world.rand.nextFloat() * 360.0F, 0.0F);
 
-            // Attempt to Spawn EntityLiving:
-            LycanitesMobs.printDebug("CustomSpawner", "Attempting to spawn " + entityLiving + "...");
-            LycanitesMobs.printDebug("CustomSpawner", "Coordinates: " + coord);
-            entityLiving.setLocationAndAngles((double)coord.getX() + 0.5D, (double)coord.getY(), (double)coord.getZ() + 0.5D, world.rand.nextFloat() * 360.0F, 0.0F);
-
-            if(entityLiving instanceof EntityCreatureBase)
-                ((EntityCreatureBase)entityLiving).spawnedFromType = this;
-            Result canSpawn = ForgeEventFactory.canEntitySpawn(entityLiving, world, (float)coord.getX() + 0.5F, (float)coord.getY(), (float)coord.getZ() + 0.5F);
-
-            // Event Overriding:
-            if(canSpawn == Result.DENY && !this.forceSpawning) {
-                LycanitesMobs.printDebug("CustomSpawner", "Spawn Check Failed! Spawning blocked by Forge Event, this is caused another mod.");
-                continue;
-            }
-            
-            // Check if Valid Location
-            boolean validLocation = true;
-            if(!this.ignoreMobConditions)
-                validLocation = entityLiving.getCanSpawnHere();
-            else if(entityLiving instanceof EntityCreatureBase) {
-                LycanitesMobs.printDebug("CustomSpawner", "Ignoring all mob spawn checks except for collision...");
-                boolean ignoreLightTemp = this.ignoreLight;
-                this.ignoreLight = true;
-                validLocation = ((EntityCreatureBase)entityLiving).fixedSpawnCheck(world, coord);
-                this.ignoreLight = ignoreLightTemp;
-            }
-
-            if(canSpawn == Result.DEFAULT && !validLocation) {
-                LycanitesMobs.printDebug("CustomSpawner", "Spawn Check Failed! The entity may not fit, there may be to many of it in the area, it may require specific lighting, etc.");
-                continue;
-            }
-            
-            // Spawn The Mob:
-            entityLiving.timeUntilPortal = entityLiving.getPortalCooldown();
-            if(entityLiving instanceof EntityCreatureBase) {
-            	EntityCreatureBase entityCreature = (EntityCreatureBase)entityLiving;
-            	entityCreature.forceNoDespawn = this.forceNoDespawn;
-                entityCreature.spawnedRare = rare;
-            	ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
-            	if(this.mobEvent != null && worldExt != null) {
-            		entityCreature.spawnEventType = this.mobEvent.name;
-            		entityCreature.spawnEventCount = worldExt.getWorldEventCount();
-            	}
-            }
-            this.spawnEntity(world, entityLiving);
-            
-            if(!ForgeEventFactory.doSpecialSpawn(entityLiving, world, (float)coord.getX() + 0.5F, (float)coord.getY(), (float)coord.getZ() + 0.5F)) {
                 if (entityLiving instanceof EntityCreatureBase)
-                    ((EntityCreatureBase)entityLiving).onInitialSpawn(world.getDifficultyForLocation(coord), null);
-            }
-            LycanitesMobs.printDebug("CustomSpawner", "Spawn Check Passed! Mob spawned.");
-            mobsSpawned++;
-            if(!this.currentSpawnWaveCount.containsKey(spawnInfo))
-            	this.currentSpawnWaveCount.put(spawnInfo, 1);
-            else
-            	this.currentSpawnWaveCount.put(spawnInfo, this.currentSpawnWaveCount.get(spawnInfo) + 1);
+                    ((EntityCreatureBase) entityLiving).spawnedFromType = this;
+                Result canSpawn = ForgeEventFactory.canEntitySpawn(entityLiving, world, (float) coord.getX() + 0.5F, (float) coord.getY(), (float) coord.getZ() + 0.5F);
 
-            // Check Spawn Limit
-            if(mobsSpawned >= this.mobLimit)
-                break;
+                // Event Overriding:
+                if (canSpawn == Result.DENY && !this.forceSpawning) {
+                    LycanitesMobs.printDebug("CustomSpawner", "Spawn Check Failed! Spawning blocked by Forge Event, this is caused another mod.");
+                    continue;
+                }
+
+                // Check if Valid Location
+                boolean validLocation = true;
+                if (!this.ignoreMobConditions)
+                    validLocation = entityLiving.getCanSpawnHere();
+                else if (entityLiving instanceof EntityCreatureBase) {
+                    LycanitesMobs.printDebug("CustomSpawner", "Ignoring all mob spawn checks except for collision...");
+                    boolean ignoreLightTemp = this.ignoreLight;
+                    this.ignoreLight = true;
+                    validLocation = ((EntityCreatureBase) entityLiving).fixedSpawnCheck(world, coord);
+                    this.ignoreLight = ignoreLightTemp;
+                }
+
+                if (canSpawn == Result.DEFAULT && !validLocation) {
+                    LycanitesMobs.printDebug("CustomSpawner", "Spawn Check Failed! The entity may not fit, there may be to many of it in the area, it may require specific lighting, etc.");
+                    continue;
+                }
+
+                // Spawn The Mob:
+                entityLiving.timeUntilPortal = entityLiving.getPortalCooldown();
+                if (entityLiving instanceof EntityCreatureBase) {
+                    EntityCreatureBase entityCreature = (EntityCreatureBase) entityLiving;
+                    entityCreature.forceNoDespawn = this.forceNoDespawn;
+                    entityCreature.spawnedRare = rare;
+                    ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
+                    if (this.mobEvent != null && worldExt != null) {
+                        entityCreature.spawnEventType = this.mobEvent.name;
+                        entityCreature.spawnEventCount = worldExt.getWorldEventCount();
+                    }
+                }
+                this.spawnEntity(world, entityLiving);
+
+                if (!ForgeEventFactory.doSpecialSpawn(entityLiving, world, (float) coord.getX() + 0.5F, (float) coord.getY(), (float) coord.getZ() + 0.5F)) {
+                    if (entityLiving instanceof EntityCreatureBase)
+                        ((EntityCreatureBase) entityLiving).onInitialSpawn(world.getDifficultyForLocation(coord), null);
+                }
+                LycanitesMobs.printDebug("CustomSpawner", "Spawn Check Passed! Mob spawned.");
+                mobsSpawned++;
+                if (!this.currentSpawnWaveCount.containsKey(spawnInfo))
+                    this.currentSpawnWaveCount.put(spawnInfo, 1);
+                else
+                    this.currentSpawnWaveCount.put(spawnInfo, this.currentSpawnWaveCount.get(spawnInfo) + 1);
+
+                // Check Spawn Limit
+                if (mobsSpawned >= this.mobLimit)
+                    break;
+            }
+        }
+        catch(Exception e) {
+            LycanitesMobs.printDebug("CustomSpawner", "An exception occured when spawning " + mobsSpawned + " mobs.");
+            if(LycanitesMobs.config.getBool("Debug", "CustomSpawner", false))
+                e.printStackTrace();
         }
         LycanitesMobs.printDebug("CustomSpawner", "Spawning finished. Spawned " + mobsSpawned + " mobs.");
         

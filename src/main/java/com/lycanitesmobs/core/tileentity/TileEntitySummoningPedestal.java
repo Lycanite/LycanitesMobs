@@ -1,5 +1,6 @@
 package com.lycanitesmobs.core.tileentity;
 
+import com.lycanitesmobs.core.block.BlockSummoningPedestal;
 import com.lycanitesmobs.core.container.ContainerBase;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
@@ -44,6 +45,9 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
     // Summoned Minions:
     public List<EntityCreatureBase> minions = new ArrayList<EntityCreatureBase>();
     protected String[] loadMinionIDs;
+
+    // Block:
+    protected boolean blockStateSet = false;
 
 
     // ========================================
@@ -129,6 +133,15 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
             this.summoningPortal.summonCreatures();
             this.summonProgress = 0;
             this.capacity = Math.min(this.capacity + (this.capacityCharge * this.summonSet.getMobInfo().summonCost), this.capacityMax);
+        }
+
+        // Block State:
+        if(!this.blockStateSet) {
+            if(!"".equals(this.getOwnerName()))
+                BlockSummoningPedestal.setState(BlockSummoningPedestal.EnumSummoningPedestal.PLAYER, this.getWorld(), this.getPos());
+            else
+                BlockSummoningPedestal.setState(BlockSummoningPedestal.EnumSummoningPedestal.NONE, this.getWorld(), this.getPos());
+            this.blockStateSet = true;
         }
 
         // Sync To Client:

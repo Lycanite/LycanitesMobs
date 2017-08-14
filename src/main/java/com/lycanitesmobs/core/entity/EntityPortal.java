@@ -69,6 +69,7 @@ public class EntityPortal extends EntityProjectileBase {
         this.setProjectileScale(6);
         this.moveToTarget();
 
+        this.textureOffsetY = -0.5f;
         this.animationFrameMax = 7;
         this.movement = false;
 

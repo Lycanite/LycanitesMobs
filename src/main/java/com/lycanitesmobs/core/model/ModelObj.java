@@ -371,4 +371,30 @@ public class ModelObj extends ModelCustom {
     public void scale(float scaleX, float scaleY, float scaleZ) {
         this.currentAnimationPart.addAnimationFrame(new ModelObjAnimationFrame(this.currentAnimationPart, "scale", 1, scaleX, scaleY, scaleZ));
     }
+
+
+    // ==================================================
+    //                  Rotate to Point
+    // ==================================================
+    public double rotateToPoint(double aTarget, double bTarget) {
+        return rotateToPoint(0, 0, aTarget, bTarget);
+    }
+    public double rotateToPoint(double aCenter, double bCenter, double aTarget, double bTarget) {
+        if(aTarget - aCenter == 0)
+            if(aTarget > aCenter) return 0;
+            else if(aTarget < aCenter) return 180;
+        if(bTarget - bCenter == 0)
+            if(bTarget > bCenter) return 90;
+            else if(bTarget < bCenter) return -90;
+        if(aTarget - aCenter == 0 && bTarget - bCenter == 0)
+            return 0;
+        return Math.toDegrees(Math.atan2(aCenter - aTarget, bCenter - bTarget) - Math.PI / 2);
+    }
+    public double[] rotateToPoint(double xCenter, double yCenter, double zCenter, double xTarget, double yTarget, double zTarget) {
+        double[] rotations = new double[3];
+        rotations[0] = this.rotateToPoint(yCenter, -zCenter, yTarget, -zTarget);
+        rotations[1] = this.rotateToPoint(-zCenter, xCenter, -zTarget, xTarget);
+        rotations[2] = this.rotateToPoint(yCenter, xCenter, yTarget, xTarget);
+        return rotations;
+    }
 }

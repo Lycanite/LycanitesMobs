@@ -1,27 +1,26 @@
-package com.lycanitesmobs.saltwatermobs.model;
+package com.lycanitesmobs.freshwatermobs.model;
 
-import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.model.template.ModelTemplateAquatic;
 import com.lycanitesmobs.core.renderer.LayerBase;
 import com.lycanitesmobs.core.renderer.RenderCreature;
-import com.lycanitesmobs.saltwatermobs.SaltwaterMobs;
-import com.lycanitesmobs.saltwatermobs.renderer.LayerRoa;
+import com.lycanitesmobs.freshwatermobs.FreshwaterMobs;
+import com.lycanitesmobs.freshwatermobs.renderer.LayerThresher;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.MathHelper;
 
-public class ModelRoa extends ModelTemplateAquatic {
+public class ModelThresher extends ModelTemplateAquatic {
 
     // ==================================================
     //                    Constructors
     // ==================================================
-    public ModelRoa() {
+    public ModelThresher() {
         this(1.0F);
     }
 
-    public ModelRoa(float shadowSize) {
+    public ModelThresher(float shadowSize) {
         // Load Model:
-        this.initModel("roa", SaltwaterMobs.group, "entity/roa");
+        this.initModel("thresher", FreshwaterMobs.group, "entity/thresher");
 
         // Lock Head:
         this.lockHeadX = false;
@@ -40,7 +39,7 @@ public class ModelRoa extends ModelTemplateAquatic {
     @Override
     public void addCustomLayers(RenderCreature renderer) {
         super.addCustomLayers(renderer);
-        renderer.addLayer(new LayerRoa(renderer));
+        renderer.addLayer(new LayerThresher(renderer));
     }
 
 
@@ -50,16 +49,16 @@ public class ModelRoa extends ModelTemplateAquatic {
     /** Returns true if the part can be rendered on the base layer. **/
     @Override
     public boolean canBaseRenderPart(String partName, Entity entity, boolean trophy) {
-       if("effect".equals(partName)) {
-           return false;
-       }
-       return true;
+        if("effect".equals(partName)) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public boolean canRenderPart(String partName, Entity entity, LayerBase layer, boolean trophy) {
         if("effect".equals(partName)) {
-            return layer instanceof LayerRoa;
+            return layer instanceof LayerThresher;
         }
         return super.canRenderPart(partName, entity, layer, trophy);
     }

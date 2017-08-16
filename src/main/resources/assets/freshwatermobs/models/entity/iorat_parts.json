@@ -1,0 +1,37 @@
+[
+  {
+    "name": "Body",
+    "parent": "",
+    "centerX": "0.0",
+    "centerY": "0.6",
+    "centerZ": "-0.0"
+  },
+  {
+    "name": "MouthRight",
+    "parent": "Body",
+    "centerX": "-0.3",
+    "centerY": "0.6",
+    "centerZ": "1.2"
+  },
+  {
+    "name": "ArmRight",
+    "parent": "Body",
+    "centerX": "-0.7",
+    "centerY": "0.6",
+    "centerZ": "-0.0"
+  },
+  {
+    "name": "MouthLeft",
+    "parent": "Body",
+    "centerX": "0.3",
+    "centerY": "0.6",
+    "centerZ": "1.2"
+  },
+  {
+    "name": "ArmLeft",
+    "parent": "Body",
+    "centerX": "0.7",
+    "centerY": "0.6",
+    "centerZ": "-0.0"
+  }
+]

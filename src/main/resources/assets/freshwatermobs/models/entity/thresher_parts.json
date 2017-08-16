@@ -1,0 +1,72 @@
+[
+  {
+    "name": "Body",
+    "parent": "",
+    "centerX": "0.0",
+    "centerY": "2.0",
+    "centerZ": "-0.0"
+  },
+  {
+    "name": "LegRightFront",
+    "parent": "Body",
+    "centerX": "-1.0",
+    "centerY": "1.1",
+    "centerZ": "2.0"
+  },
+  {
+    "name": "LegRightBack",
+    "parent": "Body",
+    "centerX": "-1.0",
+    "centerY": "1.1",
+    "centerZ": "-2.0"
+  },
+  {
+    "name": "LegLeftBack",
+    "parent": "Body",
+    "centerX": "1.0",
+    "centerY": "1.1",
+    "centerZ": "-2.0"
+  },
+  {
+    "name": "Neck",
+    "parent": "Body",
+    "centerX": "0.0",
+    "centerY": "3.0",
+    "centerZ": "4.0"
+  },
+  {
+    "name": "Head",
+    "parent": "Neck",
+    "centerX": "0.0",
+    "centerY": "9.1",
+    "centerZ": "8.4"
+  },
+  {
+    "name": "Mouth",
+    "parent": "Head",
+    "centerX": "0.0",
+    "centerY": "8.5",
+    "centerZ": "11.0"
+  },
+  {
+    "name": "LegLeftFront",
+    "parent": "Body",
+    "centerX": "1.0",
+    "centerY": "1.1",
+    "centerZ": "2.0"
+  },
+  {
+    "name": "Tail",
+    "parent": "Body",
+    "centerX": "0.0",
+    "centerY": "2.0",
+    "centerZ": "-5.0"
+  },
+  {
+    "name": "Effect",
+    "parent": "",
+    "centerX": "0.0",
+    "centerY": "1.0",
+    "centerZ": "-0.0"
+  }
+]

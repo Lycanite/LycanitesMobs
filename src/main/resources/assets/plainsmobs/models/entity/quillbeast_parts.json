@@ -1,0 +1,44 @@
+[
+  {
+    "name": "Body",
+    "parent": "",
+    "centerX": "0.0",
+    "centerY": "1.0",
+    "centerZ": "-0.0"
+  },
+  {
+    "name": "LegLeftFront.001",
+    "parent": "Body",
+    "centerX": "-0.5",
+    "centerY": "0.5",
+    "centerZ": "0.3"
+  },
+  {
+    "name": "LegLeftBack.001",
+    "parent": "Body",
+    "centerX": "-0.5",
+    "centerY": "0.5",
+    "centerZ": "-0.7"
+  },
+  {
+    "name": "LegLeftBack",
+    "parent": "Body",
+    "centerX": "0.5",
+    "centerY": "0.5",
+    "centerZ": "-0.7"
+  },
+  {
+    "name": "Head",
+    "parent": "Body",
+    "centerX": "0.0",
+    "centerY": "0.6",
+    "centerZ": "0.8"
+  },
+  {
+    "name": "LegLeftFront",
+    "parent": "Body",
+    "centerX": "0.5",
+    "centerY": "0.5",
+    "centerZ": "0.3"
+  }
+]

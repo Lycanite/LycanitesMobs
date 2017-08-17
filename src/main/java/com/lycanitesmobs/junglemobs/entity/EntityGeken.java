@@ -101,7 +101,7 @@ public class EntityGeken extends EntityCreatureTameable implements IMob {
         			this.leap(6.0F, 0.6D, this.getAttackTarget());
         	}
         	else {
-        		if(this.rand.nextInt(50) == 0 && this.isMoving())
+        		if(this.isMoving() && this.rand.nextInt(50) == 0)
         			this.leap(1.0D, 1.0D);
         	}
         }

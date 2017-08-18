@@ -51,13 +51,13 @@
         "category": "hostile",
         "sounds": [{"name": "plainsmobs:entity/ventoraptor/step", "stream": false}]
     },
-    "entity.ventoraptor.jump": {
-        "category": "hostile",
-        "sounds": [{"name": "plainsmobs:entity/ventoraptor/jump", "stream": false}]
-    },
     "entity.ventoraptor.attack": {
         "category": "hostile",
         "sounds": [{"name": "plainsmobs:entity/ventoraptor/attack", "stream": false}]
+    },
+    "entity.ventoraptor.jump": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/ventoraptor/jump", "stream": false}]
     },
     "entity.ventoraptor.beg": {
         "category": "hostile",
@@ -178,5 +178,77 @@
     "entity.roc.mount": {
         "category": "hostile",
         "sounds": [{"name": "plainsmobs:entity/roc/mount", "stream": false}]
+    },
+    "entity.feradon.say": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/feradon/say", "stream": false}]
+    },
+    "entity.feradon.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/feradon/hurt", "stream": false}]
+    },
+    "entity.feradon.death": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/feradon/death", "stream": false}]
+    },
+    "entity.feradon.step": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/feradon/step", "stream": false}]
+    },
+    "entity.feradon.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/feradon/attack", "stream": false}]
+    },
+    "entity.feradon.jump": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/feradon/jump", "stream": false}]
+    },
+    "entity.feradon.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/feradon/beg", "stream": false}]
+    },
+    "entity.feradon.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/feradon/tame", "stream": false}]
+    },
+    "entity.feradon.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/feradon/eat", "stream": false}]
+    },
+    "entity.feradon.mount": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/feradon/mount", "stream": false}]
+    },
+    "entity.quillbeast.say": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/quillbeast/say", "stream": false}]
+    },
+    "entity.quillbeast.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/quillbeast/hurt", "stream": false}]
+    },
+    "entity.quillbeast.death": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/quillbeast/death", "stream": false}]
+    },
+    "entity.quillbeast.step": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/quillbeast/step", "stream": false}]
+    },
+    "entity.quillbeast.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/quillbeast/beg", "stream": false}]
+    },
+    "entity.quillbeast.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/quillbeast/tame", "stream": false}]
+    },
+    "entity.quillbeast.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/quillbeast/eat", "stream": false}]
+    },
+    "projectile.quill": {
+        "category": "ambient",
+        "sounds": [{"name": "plainsmobs:projectile/quill", "stream": false}]
     }
 }

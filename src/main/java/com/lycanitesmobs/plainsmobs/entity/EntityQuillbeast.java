@@ -8,10 +8,7 @@ import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.DropRate;
 import com.lycanitesmobs.core.info.ObjectLists;
-import com.lycanitesmobs.junglemobs.entity.EntityPoop;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
@@ -19,12 +16,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
@@ -127,7 +120,7 @@ public class EntityQuillbeast extends EntityCreatureTameable implements IMob {
     @Override
     public void rangedAttack(Entity target, float range) {
     	// Type:
-    	EntityPoop projectile = new EntityPoop(this.getEntityWorld(), this);
+    	EntityQuill projectile = new EntityQuill(this.getEntityWorld(), this);
         projectile.setProjectileScale(2f);
     	
     	// Y Offset:

@@ -117,6 +117,7 @@ public class ArcticMobs {
 
 		ObjectManager.addItem("arixtreat", new ItemTreat("arixtreat", group));
         ObjectManager.addItem("serpixtreat", new ItemTreat("serpixtreat", group));
+		ObjectManager.addItem("maugtreat", new ItemTreat("maugtreat", group));
 
         ObjectManager.addItem("bucketooze", new ItemBucketOoze(fluid).setContainerItem(Items.BUCKET));
 
@@ -177,6 +178,13 @@ public class ArcticMobs {
         newMob.spawnInfo.setSpawnTypes("MONSTER, OOZE").setBlockCost(32)
                 .setSpawnWeight(4).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);
         ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "maug", EntityMaug.class, 0xc9cccd, 0x52504e)
+				.setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(1)
+				.addSubspecies(new Subspecies("russet", "uncommon")).addSubspecies(new Subspecies("dark", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("MONSTER")
+				.setSpawnWeight(4).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
+		ObjectManager.addMob(newMob);
 		
 		// ========== Create Projectiles ==========
 		ObjectManager.addProjectile("frostbolt", EntityFrostbolt.class, ObjectManager.getItem("frostboltcharge"), new DispenserBehaviorFrostbolt());

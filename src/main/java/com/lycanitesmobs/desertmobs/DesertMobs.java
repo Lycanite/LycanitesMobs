@@ -106,6 +106,13 @@ public class DesertMobs {
 				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
+		newMob = new MobInfo(group, "sutiramu", EntitySutiramu.class, 0x83553b, 0x2c1c0f)
+				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
+				.addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("MONSTER")
+				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
+		ObjectManager.addMob(newMob);
+
 		newMob = new MobInfo(group, "crusk", EntityCrusk.class, 0xFFDDAA, 0x000000)
 		        .setPeaceful(false).setTameable(true).setSummonCost(8).setDungeonLevel(2)
 		        .addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("light", "uncommon"));

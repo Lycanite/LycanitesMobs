@@ -24,6 +24,8 @@ import java.util.List;
 
 public class EntityZephyr extends EntityCreatureTameable implements IMob, IGroupWater {
 
+    protected short aoeAttackTick = 0;
+
     // ==================================================
  	//                    Constructor
  	// ==================================================
@@ -75,8 +77,8 @@ public class EntityZephyr extends EntityCreatureTameable implements IMob, IGroup
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.GUNPOWDER), 0.5F).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.GLOWSTONE_DUST), 0.5F).setMaxAmount(5));
+        this.drops.add(new DropRate(new ItemStack(Items.GUNPOWDER), 1F).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.GLOWSTONE_DUST), 1F).setMaxAmount(8));
 	}
 	
 	
@@ -110,23 +112,19 @@ public class EntityZephyr extends EntityCreatureTameable implements IMob, IGroup
     // ==================================================
     //                      Updates
     // ==================================================
-    short aoeAttackTick = 0;
 	// ========== Living Update ==========
 	@Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
 
         // Static Aura Attack:
-        if(!this.getEntityWorld().isRemote && ++aoeAttackTick == 40) {
-            aoeAttackTick = 0;
-            boolean applyEffect = this.getRNG().nextFloat() >= 0.5F;
+        if(!this.getEntityWorld().isRemote && ++this.aoeAttackTick == 40) {
+            this.aoeAttackTick = 0;
             List aoeTargets = this.getNearbyEntities(EntityLivingBase.class, null, 4);
             for(Object entityObj : aoeTargets) {
                 EntityLivingBase target = (EntityLivingBase)entityObj;
                 if(target != this && this.canAttackClass(entityObj.getClass()) && this.canAttackEntity(target) && this.getEntitySenses().canSee(target)) {
                     target.attackEntityFrom(DamageSource.causeMobDamage(this), this.getAttackDamage(1));
-                    /*if(applyEffect && ObjectManager.getPotionEffect("Paralysis") != null && ObjectManager.getPotionEffect("Paralysis").id < Potion.potionTypes.length)
-                        target.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("Paralysis").id, this.getEffectDuration(2), 0));*/
                 }
             }
         }

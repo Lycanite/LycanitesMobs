@@ -102,6 +102,7 @@ public class JungleMobs {
 		ObjectManager.addItem("poopscepter", new ItemScepterPoop(), 2, 1, 1);
 
 		ObjectManager.addItem("uvaraptortreat", new ItemTreat("uvaraptortreat", group));
+		ObjectManager.addItem("dawontreat", new ItemTreat("dawontreat", group));
 
 		
 		// ========== Create Blocks ==========
@@ -170,6 +171,13 @@ public class JungleMobs {
 		        .addSubspecies(new Subspecies("scarlet", "uncommon")).addSubspecies(new Subspecies("ashen", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER")
 				.setSpawnWeight(1).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "dawon", EntityDawon.class, 0x49e554, 0x030601)
+				.setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(1)
+				.addSubspecies(new Subspecies("scarlet", "uncommon")).addSubspecies(new Subspecies("azure", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("MONSTER")
+				.setSpawnWeight(6).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 		
 		

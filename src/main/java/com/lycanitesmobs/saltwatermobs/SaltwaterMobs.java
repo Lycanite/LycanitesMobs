@@ -131,6 +131,13 @@ public class SaltwaterMobs {
 		newMob.spawnInfo.setSpawnTypes("WATER, FISHING")
 				.setSpawnWeight(4).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "herma", EntityHerma.class, 0xe50403, 0xf1c2a1)
+				.setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(0)
+				.addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("russet", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("MONSTER, WATER")
+				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
+		ObjectManager.addMob(newMob);
 		
 		
 		// ========== Register Models ==========

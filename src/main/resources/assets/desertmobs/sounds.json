@@ -23,6 +23,34 @@
         "category": "hostile",
         "sounds": [{"name": "desertmobs:entity/cryptzombie/step", "stream": false}]
     },
+    "entity.sutiramu.say": {
+        "category": "hostile",
+        "sounds": [{"name": "desertmobs:entity/sutiramu/say", "stream": false}]
+    },
+    "entity.sutiramu.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "desertmobs:entity/sutiramu/hurt", "stream": false}]
+    },
+    "entity.sutiramu.death": {
+        "category": "hostile",
+        "sounds": [{"name": "desertmobs:entity/sutiramu/death", "stream": false}]
+    },
+    "entity.sutiramu.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "desertmobs:entity/sutiramu/attack", "stream": false}]
+    },
+    "entity.sutiramu.step": {
+        "category": "hostile",
+        "sounds": [{"name": "desertmobs:entity/sutiramu/step", "stream": false}]
+    },
+    "entity.sutiramu.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "desertmobs:entity/sutiramu/tame", "stream": false}]
+    },
+    "entity.sutiramu.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "desertmobs:entity/sutiramu/beg", "stream": false}]
+    },
     "entity.clink.say": {
         "category": "hostile",
         "sounds": [{"name": "desertmobs:entity/clink/say", "stream": false}]

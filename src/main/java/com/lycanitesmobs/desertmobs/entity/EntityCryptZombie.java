@@ -96,7 +96,7 @@ public class EntityCryptZombie extends EntityCreatureAgeable implements IMob {
     	if(!super.meleeAttack(target, damageScale))
     		return false;
     	
-    	// Wither:
+    	// Hunger:
         if(target instanceof EntityLivingBase) {
             ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.HUNGER, this.getEffectDuration(7), 0));
         }

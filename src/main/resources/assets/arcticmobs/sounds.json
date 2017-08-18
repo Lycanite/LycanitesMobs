@@ -139,6 +139,46 @@
         "category": "hostile",
         "sounds": [{"name": "arcticmobs:entity/serpix/eat", "stream": false}]
     },
+    "entity.maug.say": {
+        "category": "hostile",
+        "sounds": [{"name": "arcticmobs:entity/maug/say", "stream": false}]
+    },
+    "entity.maug.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "arcticmobs:entity/maug/hurt", "stream": false}]
+    },
+    "entity.maug.death": {
+        "category": "hostile",
+        "sounds": [{"name": "arcticmobs:entity/maug/death", "stream": false}]
+    },
+    "entity.maug.step": {
+        "category": "hostile",
+        "sounds": [{"name": "arcticmobs:entity/maug/step", "stream": false}]
+    },
+    "entity.maug.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "arcticmobs:entity/maug/attack", "stream": false}]
+    },
+    "entity.maug.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "arcticmobs:entity/maug/tame", "stream": false}]
+    },
+    "entity.maug.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "arcticmobs:entity/maug/beg", "stream": false}]
+    },
+    "entity.maug.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "arcticmobs:entity/maug/eat", "stream": false}]
+    },
+    "entity.maug.mount": {
+        "category": "hostile",
+        "sounds": [{"name": "arcticmobs:entity/maug/mount", "stream": false}]
+    },
+    "entity.maug.jump": {
+        "category": "hostile",
+        "sounds": [{"name": "arcticmobs:entity/maug/jump", "stream": false}]
+    },
     "projectile.frostbolt": {
         "category": "ambient",
 	"sounds": [{"name": "arcticmobs:projectile/frostbolt", "stream": false}]

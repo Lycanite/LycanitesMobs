@@ -19,6 +19,34 @@
         "category": "hostile",
         "sounds": [{"name": "swampmobs:entity/ghoulzombie/step", "stream": false}]
     },
+    "entity.aglebemu.say": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/aglebemu/say", "stream": false}]
+    },
+    "entity.aglebemu.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/aglebemu/hurt", "stream": false}]
+    },
+    "entity.aglebemu.death": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/aglebemu/death", "stream": false}]
+    },
+    "entity.aglebemu.step": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/aglebemu/step", "stream": false}]
+    },
+    "entity.aglebemu.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/aglebemu/attack", "stream": false}]
+    },
+    "entity.aglebemu.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/aglebemu/tame", "stream": false}]
+    },
+    "entity.aglebemu.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/aglebemu/beg", "stream": false}]
+    },
     "entity.dweller.say": {
         "category": "hostile",
         "sounds": [{"name": "swampmobs:entity/dweller/say", "stream": false}]
@@ -182,6 +210,34 @@
     "entity.remobra.tame": {
         "category": "hostile",
         "sounds": [{"name": "swampmobs:entity/remobra/tame", "stream": false}]
+    },
+    "entity.triffid.say": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/triffid/say", "stream": false}]
+    },
+    "entity.triffid.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/triffid/hurt", "stream": false}]
+    },
+    "entity.triffid.death": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/triffid/death", "stream": false}]
+    },
+    "entity.triffid.step": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/triffid/step", "stream": false}]
+    },
+    "entity.triffid.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/triffid/attack", "stream": false}]
+    },
+    "entity.triffid.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/triffid/tame", "stream": false}]
+    },
+    "entity.triffid.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "swampmobs:entity/triffid/beg", "stream": false}]
     },
     "projectile.poisonray": {
         "category": "ambient",

@@ -139,6 +139,13 @@ public class ForestMobs {
                 .setSpawnWeight(4).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
         ObjectManager.addMob(newMob);
 
+		newMob = new MobInfo(group, "calpod", EntityCalpod.class, 0x996436, 0x3d2013)
+				.setPeaceful(false).setSummonCost(4).setDungeonLevel(1)
+				.addSubspecies(new Subspecies("verdant", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("MONSTER, TREE")
+				.setSpawnWeight(4).setAreaLimit(6).setGroupLimits(1, 2).setLightDark(false, true);
+		ObjectManager.addMob(newMob);
+
 		
 		// ========== Create Projectiles ==========
 		ObjectManager.addProjectile("lifedrain", EntityLifeDrain.class, ObjectManager.getItem("lifedraincharge"), new DispenserBehaviorLifeDrain());

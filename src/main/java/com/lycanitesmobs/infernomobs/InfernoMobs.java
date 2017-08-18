@@ -102,6 +102,7 @@ public class InfernoMobs {
 
 		ObjectManager.addItem("afrittreat", new ItemTreat("afrittreat", group));
         ObjectManager.addItem("salamandertreat", new ItemTreat("salamandertreat", group));
+		ObjectManager.addItem("gorgertreat", new ItemTreat("gorgertreat", group));
 
 		ObjectManager.addItem("bucketpurelava", new ItemBucketPureLava(fluid).setContainerItem(Items.BUCKET));
 
@@ -155,6 +156,13 @@ public class InfernoMobs {
         newMob.spawnInfo.setSpawnTypes("LAVA").setBlockCost(16)
                 .setSpawnWeight(6).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
         ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "gorger", EntityGorger.class, 0x200905, 0xDE2A00)
+				.setPeaceful(false).setTameable(true).setSummonCost(6).setDungeonLevel(3)
+				.addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("keppel", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("LAVA").setBlockCost(32)
+				.setSpawnWeight(1).setAreaLimit(2).setGroupLimits(1, 3).setLightDark(false, true);
+		ObjectManager.addMob(newMob);
 
 		
 		// ========== Create Projectiles ==========

@@ -50,8 +50,14 @@ achievement.warg.kill=The Hunter Hunted!
 achievement.warg.kill.desc=Slay a Warg.
 achievement.warg.learn=Lean and Mean!
 achievement.warg.learn.desc=Add a Warg to your Beastiary.
-achievement.warg.tame=Beast Master!
+achievement.warg.tame=Forest Beast Master!
 achievement.warg.tame.desc=Tame a Warg.
+entity.forestmobs.calpod.name=Calpod
+entity.forestmobs.calpod.description=Nasty insects that can sometimes be found lurking in forest undergrowth as well as inside trees, once angered they will call upon additional Calpods so kill them off fast!
+achievement.calpod.kill=Giant Termites!
+achievement.calpod.kill.desc=Slay a Calpod.
+achievement.calpod.learn=Infested Forests
+achievement.calpod.learn.desc=Add a Calpod to your Beastiary.
 #
 # Items
 item.forestspawn.name=Spawn

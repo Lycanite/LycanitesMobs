@@ -1,0 +1,14 @@
+{
+	"parent": "lycanitesmobs:item/scepter",
+	"textures": {
+		"layer0": "swampmobs:items/waterjetscepter"
+	},
+	"overrides": [
+        {
+            "predicate": {
+                "using": 1
+            },
+            "model": "swampmobs:item/waterjetscepter_fire"
+        }
+	]
+}

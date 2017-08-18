@@ -16,7 +16,7 @@ public class SummonSet {
 	public boolean following = true;
 	public boolean passive = false;
 	public boolean aggressive = false;
-	public boolean pvp = true;
+	public boolean pvp = false;
 	
 	// Behaviour Bits:
 	/** A list bytes for each behaviour, used when syncing network packets. **/

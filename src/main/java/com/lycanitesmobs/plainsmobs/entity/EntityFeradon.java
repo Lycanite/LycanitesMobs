@@ -153,7 +153,7 @@ public class EntityFeradon extends EntityCreatureRideable implements IGroupPreda
                         }
                     }
                     if(doDamage) {
-                        possibleTarget.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 10 * 20, 0));
+                        possibleTarget.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 10 * 20, 0));
                     }
                 }
             }
@@ -165,8 +165,8 @@ public class EntityFeradon extends EntityCreatureRideable implements IGroupPreda
     public void riderEffects(EntityLivingBase rider) {
         if(rider.isPotionActive(MobEffects.WEAKNESS))
             rider.removePotionEffect(MobEffects.WEAKNESS);
-        if(rider.isPotionActive(MobEffects.SLOWNESS))
-            rider.removePotionEffect(MobEffects.SLOWNESS);
+        if(rider.isPotionActive(MobEffects.MINING_FATIGUE))
+            rider.removePotionEffect(MobEffects.MINING_FATIGUE);
     }
 
 	
@@ -215,7 +215,7 @@ public class EntityFeradon extends EntityCreatureRideable implements IGroupPreda
 
         // Effect:
         if(target instanceof EntityLivingBase && this.leapedAbilityReady) {
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, this.getEffectDuration(2), 0));
+            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, this.getEffectDuration(2), 0));
         }
 
         return true;
@@ -274,7 +274,7 @@ public class EntityFeradon extends EntityCreatureRideable implements IGroupPreda
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
         if(potionEffect.getPotion() == MobEffects.WEAKNESS) return false;
-        if(potionEffect.getPotion() == MobEffects.SLOWNESS) return false;
+        if(potionEffect.getPotion() == MobEffects.MINING_FATIGUE) return false;
         return super.isPotionApplicable(potionEffect);
     }
     

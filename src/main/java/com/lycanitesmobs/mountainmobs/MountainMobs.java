@@ -96,8 +96,8 @@ public class MountainMobs {
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("peakskebab"));
 
 		ObjectManager.addItem("barghesttreat", new ItemTreat("barghesttreat", group));
-
 		ObjectManager.addItem("beholdertreat", new ItemTreat("beholdertreat", group));
+		ObjectManager.addItem("wildkintreat", new ItemTreat("wildkintreat", group));
 		
 		
 		// ========== Create Mobs ==========
@@ -145,6 +145,13 @@ public class MountainMobs {
 				.addSubspecies(new Subspecies("dark", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER")
 				.setSpawnWeight(4).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "wildkin", EntityWildkin.class, 0x433929, 0x766f5a)
+				.setPeaceful(false).setTameable(true).setSummonCost(6).setDungeonLevel(2)
+				.addSubspecies(new Subspecies("light", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("MONSTER")
+				.setSpawnWeight(4).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 		

@@ -3,10 +3,7 @@ package com.lycanitesmobs.freshwatermobs;
 import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.core.info.GroupInfo;
 import com.lycanitesmobs.core.renderer.RenderRegister;
-import com.lycanitesmobs.freshwatermobs.model.ModelJengu;
-import com.lycanitesmobs.freshwatermobs.model.ModelSilex;
-import com.lycanitesmobs.freshwatermobs.model.ModelStrider;
-import com.lycanitesmobs.freshwatermobs.model.ModelZephyr;
+import com.lycanitesmobs.freshwatermobs.model.*;
 
 public class ClientSubProxy extends CommonSubProxy {
 
@@ -17,6 +14,9 @@ public class ClientSubProxy extends CommonSubProxy {
 		AssetManager.addModel("zephyr", new ModelZephyr());
         AssetManager.addModel("strider", new ModelStrider());
         AssetManager.addModel("silex", new ModelSilex());
+        AssetManager.addModel("thresher", new ModelThresher());
+        AssetManager.addModel("ioray", new ModelIoray());
+        AssetManager.addModel("abaia", new ModelAbaia());
 
         // Register Renderers:
         RenderRegister renderRegister = new RenderRegister(groupInfo);

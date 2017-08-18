@@ -14,8 +14,11 @@ import com.lycanitesmobs.core.mobevent.MobEventBase;
 import com.lycanitesmobs.core.mobevent.MobEventManager;
 import com.lycanitesmobs.core.spawning.SpawnTypeBase;
 import com.lycanitesmobs.core.spawning.SpawnTypeSky;
+import com.lycanitesmobs.plainsmobs.dispenser.DispenserBehaviorQuill;
 import com.lycanitesmobs.plainsmobs.entity.*;
 import com.lycanitesmobs.plainsmobs.item.ItemPlainsEgg;
+import com.lycanitesmobs.plainsmobs.item.ItemQuill;
+import com.lycanitesmobs.plainsmobs.item.ItemScepterQuill;
 import com.lycanitesmobs.plainsmobs.mobevent.MobEventWindStorm;
 import com.lycanitesmobs.plainsmobs.entity.*;
 import net.minecraft.block.BlockDispenser;
@@ -74,7 +77,10 @@ public class PlainsMobs {
 		
 		// ========== Create Items ==========
 		ObjectManager.addItem("plainsspawn", new ItemPlainsEgg());
-		
+
+		ObjectManager.addItem("quill", new ItemQuill());
+		ObjectManager.addItem("quillscepter", new ItemScepterQuill(), 2, 1, 1);
+
 		ObjectManager.addItem("makameatraw", new ItemCustomFood("makameatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(MobEffects.WEAKNESS, 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("makameatraw"));
 		OreDictionary.registerOre("listAllporkraw", ObjectManager.getItem("makameatraw"));
@@ -87,8 +93,9 @@ public class PlainsMobs {
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("bulwarkburger"));
 
 		ObjectManager.addItem("ventoraptortreat", new ItemTreat("ventoraptortreat", group));
-
 		ObjectManager.addItem("roctreat", new ItemTreat("roctreat", group));
+		ObjectManager.addItem("feradontreat", new ItemTreat("feradontreat", group));
+		ObjectManager.addItem("quillbeasttreat", new ItemTreat("quillbeasttreat", group));
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ObjectManager.getItem("plainsspawn"), new DispenserBehaviorMobEggCustom());
@@ -136,9 +143,23 @@ public class PlainsMobs {
 				.setSpawnWeight(4).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
+		newMob = new MobInfo(group, "feradon", EntityFeradon.class, 0xe4a23d, 0x552d0e)
+				.setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(1)
+				.addSubspecies(new Subspecies("ashen", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("MONSTER")
+				.setSpawnWeight(5).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "quillbeast", EntityQuillbeast.class, 0x642a12, 0x6051fe)
+				.setPeaceful(false).setTameable(true).setSummonCost(2).setDungeonLevel(1)
+				.addSubspecies(new Subspecies("dark", "uncommon")).addSubspecies(new Subspecies("light", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("MONSTER")
+				.setSpawnWeight(5).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
+		ObjectManager.addMob(newMob);
+
 		
 		// ========== Create Projectiles ==========
-		//ObjectManager.addProjectile("Template", EntityTemplate.class, Item.templateCharge, new DispenserBehaviorPoisonRay());
+		ObjectManager.addProjectile("quill", EntityQuill.class, ObjectManager.getItem("quill"), new DispenserBehaviorQuill());
 		
 		// ========== Register Rendering ==========
 		proxy.registerRenders(this.group);

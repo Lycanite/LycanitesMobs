@@ -17,7 +17,7 @@ public class ModelTriffid extends ModelObj {
 
     public ModelTriffid(float shadowSize) {
         // Load Model:
-        this.initModel("aglebemu", SwampMobs.group, "entity/aglebemu");
+        this.initModel("triffid", SwampMobs.group, "entity/triffid");
 
         // Lock Head:
         this.lockHeadX = false;

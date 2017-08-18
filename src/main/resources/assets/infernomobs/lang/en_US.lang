@@ -49,6 +49,14 @@ achievement.salamander.learn=Burning Holes In Your Trousers!
 achievement.salamander.learn.desc=Add a Salamander to your Beastiary.
 achievement.salamander.tame=The Lava Steed!
 achievement.salamander.tame.desc=Tame a Salamander.
+entity.infernomobs.gorger.name=Gorger
+entity.infernomobs.gorger.description=Huge magma worms found swimming in deep lakes of molten lava! They like to splash the lava about everywhere!
+achievement.gorger.kill=Drowning In Lava!
+achievement.gorger.kill.desc=Slay a Gorger.
+achievement.gorger.learn=Lava Worms
+achievement.gorger.learn.desc=Add a Gorger to your Beastiary.
+achievement.gorger.tame=Dont Pet It!
+achievement.gorger.tame.desc=Tame a Gorger.
 #
 # Items
 item.infernospawn.name=Spawn
@@ -82,6 +90,8 @@ item.afrittreat.name=Afrit Treat
 item.afrittreat.description=A fiery treat for fiery imps!
 item.salamandertreat.name=Salamander Treat
 item.salamandertreat.description=A tasty bone dripping with magma, just how they like it!
+item.gorgertreat.name=Gorger Treat
+item.gorgertreat.description=Small young Gorgers love to eat Cephignis, are you mad enough to tame one?!
 #
 # Blocks
 tile.purelava.name=Pure Lava

@@ -12,6 +12,7 @@ public class ClientSubProxy extends CommonSubProxy {
 	@Override
     public void registerModels(GroupInfo groupInfo) {
 		AssetManager.addModel("cryptzombie", new ModelCryptZombie());
+		AssetManager.addModel("sutiramu", new ModelSutiramu());
 		AssetManager.addModel("crusk", new ModelCrusk());
 		AssetManager.addModel("clink", new ModelClink());
 		AssetManager.addModel("joust", new ModelJoust());

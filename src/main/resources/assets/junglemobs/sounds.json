@@ -195,6 +195,38 @@
         "category": "hostile",
         "sounds": [{"name": "junglemobs:entity/vespid/attack", "stream": false}]
     },
+    "entity.dawon.say": {
+        "category": "hostile",
+        "sounds": [{"name": "junglemobs:entity/dawon/say", "stream": false}]
+    },
+    "entity.dawon.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "junglemobs:entity/dawon/hurt", "stream": false}]
+    },
+    "entity.dawon.death": {
+        "category": "hostile",
+        "sounds": [{"name": "junglemobs:entity/dawon/death", "stream": false}]
+    },
+    "entity.dawon.step": {
+        "category": "hostile",
+        "sounds": [{"name": "junglemobs:entity/dawon/step", "stream": false}]
+    },
+    "entity.dawon.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "junglemobs:entity/dawon/attack", "stream": false}]
+    },
+    "entity.dawon.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "junglemobs:entity/dawon/beg", "stream": false}]
+    },
+    "entity.dawon.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "junglemobs:entity/dawon/tame", "stream": false}]
+    },
+    "entity.dawon.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "junglemobs:entity/dawon/eat", "stream": false}]
+    },
     "projectile.poop": {
         "category": "ambient",
         "sounds": [{"name": "junglemobs:projectile/poop", "stream": false}]

@@ -3,6 +3,7 @@ package com.lycanitesmobs.freshwatermobs.renderer;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.renderer.LayerBase;
 import com.lycanitesmobs.core.renderer.RenderCreature;
+import com.lycanitesmobs.freshwatermobs.entity.EntityThresher;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -25,11 +26,10 @@ public class LayerThresher extends LayerBase {
     // ==================================================
     @Override
     public boolean canRenderLayer(EntityCreatureBase entity, float scale) {
-        /*TODO Hook Up Thresher Entity When Created
         if(entity instanceof EntityThresher) {
             EntityThresher entityThresher = (EntityThresher)entity;
             return entityThresher.canWhirlpool();
-        }*/
+        }
         return false;
     }
 

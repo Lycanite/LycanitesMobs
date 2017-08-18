@@ -12,6 +12,10 @@ public class ModelHerma extends ModelTemplateArachnid {
     // ==================================================
     //                    Constructors
     // ==================================================
+    public ModelHerma() {
+        this(1.0F);
+    }
+
     public ModelHerma(float shadowSize) {
         // Load Model:
         this.initModel("herma", SaltwaterMobs.group, "entity/herma");

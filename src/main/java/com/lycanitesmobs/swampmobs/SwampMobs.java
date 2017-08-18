@@ -116,6 +116,13 @@ public class SwampMobs {
 				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
+		newMob = new MobInfo(group, "aglebemu", EntityAglebemu.class, 0x047f0a, 0xc3a85b)
+				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0).setDungeonThemes("GROUP, WATER")
+				.addSubspecies(new Subspecies("scarlet", "uncommon")).addSubspecies(new Subspecies("azure", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("MONSTER, WATER")
+				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
+		ObjectManager.addMob(newMob);
+
 		newMob = new MobInfo(group, "dweller", EntityDweller.class, 0x009922, 0x994499)
 		        .setPeaceful(false).setSummonable(true).setSummonCost(1).setDungeonLevel(1).setDungeonThemes("GROUP, WATER")
 		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("russet", "uncommon"));
@@ -149,6 +156,13 @@ public class SwampMobs {
 		        .addSubspecies(new Subspecies("dark", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("CREATURE").setDespawn(false)
 				.setSpawnWeight(12).setAreaLimit(10).setGroupLimits(1, 5).setLightDark(true, false).setDungeonWeight(0);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "triffid", EntityTriffid.class, 0xe60f05, 0x09e30d)
+				.setPeaceful(false).setSummonable(true).setSummonCost(6).setDungeonLevel(2)
+				.addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("MONSTER")
+				.setSpawnWeight(3).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "remobra", EntityRemobra.class, 0x440066, 0xDD00FF)

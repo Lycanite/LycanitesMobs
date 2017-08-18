@@ -23,7 +23,7 @@ import net.minecraft.world.World;
 
 import java.util.HashMap;
 
-public class EntityChupacabra extends EntityCreatureTameable implements IAnimals, IGroupAnimal, IGroupAlpha, IGroupPredator, IGroupHunter, IGroupShadow {
+public class EntityChupacabra extends EntityCreatureTameable implements IAnimals, IGroupAnimal, IGroupPredator, IGroupHunter, IGroupShadow {
 
 	// ==================================================
  	//                    Constructor

@@ -62,7 +62,7 @@ public class EntityAglebemu extends EntityCreatureTameable implements IMob {
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(4, new EntityAIAttackMelee(this));
+        this.tasks.addTask(4, new EntityAIAttackMelee(this).setRange(4));
         this.tasks.addTask(5, this.aiSit);
         this.tasks.addTask(6, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
         this.tasks.addTask(8, new EntityAIWander(this));

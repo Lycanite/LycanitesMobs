@@ -56,7 +56,7 @@ public class EntityHerma extends EntityCreatureTameable implements IMob {
         this.tasks.addTask(1, new EntityAIStayByWater(this).setSpeed(1.25D));
         this.tasks.addTask(2, this.aiSit);
         this.tasks.addTask(3, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("hermatreat"))).setTemptDistanceMin(2.0D));
-        this.tasks.addTask(4, new EntityAIAttackMelee(this).setLongMemory(false).setRange(1));
+        this.tasks.addTask(4, new EntityAIAttackMelee(this).setLongMemory(false));
         this.tasks.addTask(5, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
         this.wanderAI = new EntityAIWander(this);
         this.tasks.addTask(6, wanderAI);
@@ -77,7 +77,7 @@ public class EntityHerma extends EntityCreatureTameable implements IMob {
 		baseAttributes.put("maxHealth", 30D);
 		baseAttributes.put("movementSpeed", 0.24D);
 		baseAttributes.put("knockbackResistance", 0.0D);
-		baseAttributes.put("followRange", 32D);
+		baseAttributes.put("followRange", 8D);
 		baseAttributes.put("attackDamage", 2D);
         super.applyEntityAttributes(baseAttributes);
     }

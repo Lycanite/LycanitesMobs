@@ -163,6 +163,38 @@
         "category": "hostile",
         "sounds": [{"name": "mountainmobs:entity/barghest/mount", "stream": false}]
     },
+    "entity.wildkin.say": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/wildkin/say", "stream": false}]
+    },
+    "entity.wildkin.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/wildkin/hurt", "stream": false}]
+    },
+    "entity.wildkin.death": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/wildkin/death", "stream": false}]
+    },
+    "entity.wildkin.step": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/wildkin/step", "stream": false}]
+    },
+    "entity.wildkin.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/wildkin/attack", "stream": false}]
+    },
+    "entity.wildkin.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/wildkin/beg", "stream": false}]
+    },
+    "entity.wildkin.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/wildkin/tame", "stream": false}]
+    },
+    "entity.wildkin.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "mountainmobs:entity/wildkin/eat", "stream": false}]
+    },
     "projectile.boulderblast": {
         "category": "ambient",
         "sounds": [{"name": "mountainmobs:projectile/boulderblast", "stream": false}]

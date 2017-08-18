@@ -3,6 +3,7 @@ package com.lycanitesmobs.forestmobs.entity;
 import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupFire;
+import com.lycanitesmobs.api.IGroupHeavy;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.DropRate;
@@ -29,7 +30,7 @@ import net.minecraft.world.World;
 
 import java.util.HashMap;
 
-public class EntityTrent extends EntityCreatureBase implements IMob, IGroupPlant {
+public class EntityTrent extends EntityCreatureBase implements IMob, IGroupPlant, IGroupHeavy {
     
     // ==================================================
  	//                    Constructor
@@ -49,6 +50,7 @@ public class EntityTrent extends EntityCreatureBase implements IMob, IGroupPlant
         this.setHeight = 7.9F;
         this.solidCollision = true;
         this.setupMob();
+        this.hitAreaWidthScale = 1.5F;
 
         this.stepHeight = 2.0F;
     }

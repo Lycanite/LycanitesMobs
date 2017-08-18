@@ -85,6 +85,7 @@ public class SaltwaterMobs {
 
 		ObjectManager.addItem("raikotreat", new ItemTreat("raikotreat", group));
 		ObjectManager.addItem("roatreat", new ItemTreat("roatreat", group));
+		ObjectManager.addItem("hermatreat", new ItemTreat("hermatreat", group));
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ObjectManager.getItem("saltwaterspawn"), new DispenserBehaviorMobEggCustom());

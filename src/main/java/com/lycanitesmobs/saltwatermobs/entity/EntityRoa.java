@@ -1,16 +1,13 @@
 package com.lycanitesmobs.saltwatermobs.entity;
 
 import com.lycanitesmobs.ObjectManager;
-import com.lycanitesmobs.api.IGroupAnimal;
-import com.lycanitesmobs.api.IGroupBoss;
-import com.lycanitesmobs.api.IGroupPrey;
+import com.lycanitesmobs.api.*;
 import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.entity.EntityCreatureRideable;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.DropRate;
 import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.core.info.ObjectLists;
-import com.lycanitesmobs.api.IGroupPredator;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.ai.*;
 import net.minecraft.block.Block;
@@ -135,7 +132,7 @@ public class EntityRoa extends EntityCreatureRideable implements IMob, IGroupPre
             this.whirlpoolEnergy = Math.min(this.whirlpoolEnergy, this.whirlpoolEnergyMax);
             if(this.canWhirlpool()) {
                 for (EntityLivingBase entity : this.getNearbyEntities(EntityLivingBase.class, null, this.whirlpoolRange)) {
-                    if (entity == this || entity == this.getControllingPassenger() || entity instanceof IGroupBoss || entity.isPotionActive(ObjectManager.getPotionEffect("weight")))
+                    if (entity == this || entity == this.getControllingPassenger() || entity instanceof IGroupBoss || entity instanceof IGroupHeavy || entity.isPotionActive(ObjectManager.getPotionEffect("weight")))
                         continue;
                     EntityPlayerMP player = null;
                     if (entity instanceof EntityPlayerMP) {

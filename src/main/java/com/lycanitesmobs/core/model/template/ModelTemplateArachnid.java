@@ -78,20 +78,14 @@ public class ModelTemplateArachnid extends ModelObj {
         }
 
         // Attack:
-        if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
-            if(partName.equals("mouth")) {
-                this.rotate(30.0F, 0.0F, 0.0F);
-            }
-        }
-        if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
-            if(partName.equals("leftarm"))
-                this.rotate(0.0F, -25.0F, 0.0F);
-            if(partName.equals("rightarm"))
-                this.rotate(0.0F, 25.0F, 0.0F);
-        }
-        if(partName.equals("tail")) {
-            rotX += 45;
-        }
+        if(partName.equals("mouth"))
+            rotX += 30 * this.getAttackProgress();
+        if(partName.equals("armleft"))
+            rotY += -25 * this.getAttackProgress();
+        if(partName.equals("armright"))
+            rotY += 25 * this.getAttackProgress();
+        if(partName.equals("tail"))
+            rotX += 45 * this.getAttackProgress();
 
         // Apply Animations:
         this.angle(rotation, angleX, angleY, angleZ);

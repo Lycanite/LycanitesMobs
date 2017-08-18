@@ -1,6 +1,7 @@
 package com.lycanitesmobs.freshwatermobs.entity;
 
 import com.lycanitesmobs.ObjectManager;
+import com.lycanitesmobs.api.IGroupElectric;
 import com.lycanitesmobs.api.IGroupWater;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
@@ -22,7 +23,7 @@ import net.minecraft.world.World;
 import java.util.HashMap;
 import java.util.List;
 
-public class EntityZephyr extends EntityCreatureTameable implements IMob, IGroupWater {
+public class EntityZephyr extends EntityCreatureTameable implements IMob, IGroupWater, IGroupElectric {
 
     protected short aoeAttackTick = 0;
 
@@ -85,15 +86,7 @@ public class EntityZephyr extends EntityCreatureTameable implements IMob, IGroup
 	// ==================================================
     //                       Attacks
     // ==================================================
-    // ========== Can Attack ==========
-	@Override
-	public boolean canAttackClass(Class targetClass) {
-		if(targetClass == this.getClass())
-			return false;
-		return super.canAttackClass(targetClass);
-	}
-    
-	// ========== Melee Attack ==========
+    // ========== Melee Attack ==========
     @Override
     public boolean meleeAttack(Entity target, double damageScale) {
     	if(!super.meleeAttack(target, damageScale))
@@ -123,7 +116,7 @@ public class EntityZephyr extends EntityCreatureTameable implements IMob, IGroup
             List aoeTargets = this.getNearbyEntities(EntityLivingBase.class, null, 4);
             for(Object entityObj : aoeTargets) {
                 EntityLivingBase target = (EntityLivingBase)entityObj;
-                if(target != this && this.canAttackClass(entityObj.getClass()) && this.canAttackEntity(target) && this.getEntitySenses().canSee(target)) {
+                if(target != this && !(target instanceof IGroupElectric) && this.canAttackClass(entityObj.getClass()) && this.canAttackEntity(target) && this.getEntitySenses().canSee(target)) {
                     target.attackEntityFrom(DamageSource.causeMobDamage(this), this.getAttackDamage(1));
                 }
             }

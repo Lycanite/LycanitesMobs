@@ -16,10 +16,6 @@ public class ModelDawon extends ModelTemplateQuadruped {
         // Load Model:
         this.initModel("dawon", JungleMobs.group, "entity/dawon");
 
-        // Lock Head:
-        this.lockHeadX = false;
-        this.lockHeadY = false;
-
         // Trophy:
         this.trophyScale = 0.8F;
         this.trophyOffset = new float[] {0.0F, 0.0F, -0.4F};

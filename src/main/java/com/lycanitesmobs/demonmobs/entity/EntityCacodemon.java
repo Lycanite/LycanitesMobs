@@ -46,7 +46,7 @@ public class EntityCacodemon extends EntityCreatureRideable implements IGroupDem
         this.setupMob();
 
         this.stepHeight = 1.0F;
-        this.hitAreaScale = 1.5F;
+        this.hitAreaWidthScale = 1.5F;
     }
 
     // ========== Init AI ==========

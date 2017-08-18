@@ -59,10 +59,15 @@ public class EntityAITargetAttack extends EntityAITarget {
     	this.nearbyOnly = setNearby;
     	return this;
     }
-    
+
     public EntityAITargetAttack setCantSeeTimeMax(int setCantSeeTimeMax) {
     	this.cantSeeTimeMax = setCantSeeTimeMax;
     	return this;
+    }
+
+    public EntityAITargetAttack setRange(double range) {
+        this.targetingRange = range;
+        return this;
     }
 
     public EntityAITargetAttack setHelpCall(boolean setHelp) {

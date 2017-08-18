@@ -36,6 +36,7 @@ public abstract class EntityAITarget extends EntityAIBase {
     protected boolean callForHelp = false;
     private int cantSeeTime;
     protected int cantSeeTimeMax = 60;
+    protected double targetingRange = 0;
     
     private int targetSearchStatus;
     private int targetSearchDelay;
@@ -150,6 +151,8 @@ public abstract class EntityAITarget extends EntityAIBase {
  	//                 Get Target Distance
  	// ==================================================
     protected double getTargetDistance() {
+        if(this.targetingRange > 0)
+            return this.targetingRange;
     	IAttributeInstance attributeInstance = this.host.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE);
         return attributeInstance == null ? 16.0D : attributeInstance.getAttributeValue();
     }

@@ -105,13 +105,13 @@ public class EntityAglebemu extends EntityCreatureTameable implements IMob {
         super.onLivingUpdate();
 
         // Random Leaping:
-        if(this.onGround && !this.getEntityWorld().isRemote) {
+        if(this.onGround && !this.getEntityWorld().isRemote && this.isMoving()) {
             if(this.hasAttackTarget()) {
                 if(this.rand.nextInt(5) == 0)
                     this.leap(6.0F, 0.6D, this.getAttackTarget());
             }
             else {
-                if(this.isMoving() && this.rand.nextInt(25) == 0)
+                if(this.rand.nextInt(25) == 0)
                     this.leap(1.0D, 1.0D);
             }
         }

@@ -53,10 +53,9 @@ public class EntityHerma extends EntityCreatureTameable implements IMob {
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this).setSink(true));
-        this.tasks.addTask(1, new EntityAIStayByWater(this).setSpeed(1.25D));
         this.tasks.addTask(2, this.aiSit);
         this.tasks.addTask(3, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("hermatreat"))).setTemptDistanceMin(2.0D));
-        this.tasks.addTask(4, new EntityAIAttackMelee(this).setLongMemory(false));
+        this.tasks.addTask(4, new EntityAIAttackMelee(this).setLongMemory(true));
         this.tasks.addTask(5, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
         this.wanderAI = new EntityAIWander(this);
         this.tasks.addTask(6, wanderAI);
@@ -65,8 +64,8 @@ public class EntityHerma extends EntityCreatureTameable implements IMob {
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
-        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
-        this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
+        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class).setRange(6D));
+        this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class).setRange(8D));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
     
@@ -77,7 +76,7 @@ public class EntityHerma extends EntityCreatureTameable implements IMob {
 		baseAttributes.put("maxHealth", 30D);
 		baseAttributes.put("movementSpeed", 0.24D);
 		baseAttributes.put("knockbackResistance", 0.0D);
-		baseAttributes.put("followRange", 8D);
+		baseAttributes.put("followRange", 16D);
 		baseAttributes.put("attackDamage", 2D);
         super.applyEntityAttributes(baseAttributes);
     }
@@ -92,24 +91,6 @@ public class EntityHerma extends EntityCreatureTameable implements IMob {
     }
     
     
-    // ==================================================
-    //                      Updates
-    // ==================================================
-	// ========== Living Update ==========
-	@Override
-    public void onLivingUpdate() {
-        super.onLivingUpdate();
-        
-        // Wander Pause Rates:
-        if(!this.getEntityWorld().isRemote) {
-            if (this.isInWater())
-                this.wanderAI.setPauseRate(120);
-            else
-                this.wanderAI.setPauseRate(0);
-        }
-    }
-
-	
     // ==================================================
     //                      Movement
     // ==================================================

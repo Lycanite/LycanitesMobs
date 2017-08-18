@@ -122,7 +122,7 @@ public class FreshwaterMobs {
 
 		newMob = new MobInfo(group, "thresher", EntityThresher.class, 0x77747e, 0x3f4567)
 				.setPeaceful(false).setTameable(true).setSummonCost(6).setDungeonLevel(2)
-				.addSubspecies(new Subspecies("scarlet", "uncommon")).addSubspecies(new Subspecies("ashen", "uncommon"));
+				.addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("WATER")
 				.setSpawnWeight(1).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
@@ -130,14 +130,14 @@ public class FreshwaterMobs {
 		newMob = new MobInfo(group, "ioray", EntityIoray.class, 0x5247ca, 0xccd6ec)
 				.setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(1)
 				.addSubspecies(new Subspecies("light", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("WATER")
+		newMob.spawnInfo.setSpawnTypes("WATER").setBiomes("GROUP,-SWAMP")
 				.setSpawnWeight(4).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "abaia", EntityAbaia.class, 0x537d41, 0xdfb752)
 				.setPeaceful(false).setSummonable(true).setSummonCost(4).setDungeonLevel(1)
 				.addSubspecies(new Subspecies("violet", "uncommon")).addSubspecies(new Subspecies("ashen", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("WATER")
+		newMob.spawnInfo.setSpawnTypes("WATER, FISHING").setBiomes("GROUP,-SWAMP")
 				.setSpawnWeight(6).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 

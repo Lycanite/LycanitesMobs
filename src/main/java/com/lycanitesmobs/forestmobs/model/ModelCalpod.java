@@ -16,9 +16,9 @@ public class ModelCalpod extends ModelTemplateInsect {
         // Load Model:
         this.initModel("calpod", ForestMobs.group, "entity/calpod");
 
-        // Lock Head:
-        this.lockHeadX = false;
-        this.lockHeadY = false;
+        // Looking:
+        this.lookHeadScaleX = 0.5f;
+        this.lookHeadScaleY = 0.5f;
 
         // Trophy:
         this.trophyScale = 0.8F;

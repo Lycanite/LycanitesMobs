@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class EntitySerpix extends EntityCreatureTameable implements IGroupPredator, IGroupIce {
+public class EntitySerpix extends EntityCreatureTameable implements IGroupPredator, IGroupIce, IGroupHeavy {
 
     // ==================================================
  	//                    Constructor
@@ -56,7 +56,7 @@ public class EntitySerpix extends EntityCreatureTameable implements IGroupPredat
         this.setDepth = 6.8F;
         this.setHeight = 1.8F;
         this.setupMob();
-        this.hitAreaScale = 1.5F;
+        this.hitAreaWidthScale = 1.5F;
     }
 
     // ========== Init AI ==========

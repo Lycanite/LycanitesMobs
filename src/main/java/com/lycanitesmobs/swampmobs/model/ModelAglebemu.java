@@ -18,9 +18,9 @@ public class ModelAglebemu extends ModelTemplateQuadruped {
         // Load Model:
         this.initModel("aglebemu", SwampMobs.group, "entity/aglebemu");
 
-        // Lock Head:
-        this.lockHeadX = true;
-        this.lockHeadY = true;
+        // Looking:
+        this.lookHeadScaleX = 0.5f;
+        this.lookHeadScaleY = 0.5f;
 
         // Trophy:
         this.trophyScale = 0.8F;
@@ -38,10 +38,8 @@ public class ModelAglebemu extends ModelTemplateQuadruped {
         super.animatePart(partName, entity, time, distance, loop, lookY, lookX, scale);
 
         // Attack:
-        if(!(entity instanceof EntityCreatureBase) || !((EntityCreatureBase)entity).justAttacked()) {
-            if(partName.equals("tongue")) {
-                this.scale(0, 0, 0);
-            }
+        if(partName.equals("tongue")) {
+            this.scale(this.getAttackProgress() * 2, this.getAttackProgress() * 2, this.getAttackProgress() * 2);
         }
     }
 }

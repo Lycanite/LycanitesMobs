@@ -70,15 +70,12 @@ public class ModelTemplateInsect extends ModelObj {
         }
 
         // Attack:
-        if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
-            if(partName.equals("leftmouth"))
-                rotY -= 15F;
-            if(partName.equals("rightmouth"))
-                rotY += 15F;
-        }
-        if(partName.equals("tail")) {
-            rotX += 45;
-        }
+        if(partName.equals("leftmouth"))
+            rotY -= 15F * this.getAttackProgress();
+        if(partName.equals("rightmouth"))
+            rotY += 15F * this.getAttackProgress();
+        if(partName.equals("tail"))
+            rotX += 45 * this.getAttackProgress();
 
         // Apply Animations:
         this.angle(rotation, angleX, angleY, angleZ);

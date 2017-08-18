@@ -1,5 +1,6 @@
 package com.lycanitesmobs.freshwatermobs.entity;
 
+import com.lycanitesmobs.api.IGroupHeavy;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.ExtendedEntity;
 import com.lycanitesmobs.ObjectManager;
@@ -24,7 +25,7 @@ import net.minecraft.world.World;
 
 import java.util.HashMap;
 
-public class EntityStrider extends EntityCreatureTameable {
+public class EntityStrider extends EntityCreatureTameable implements IGroupHeavy {
 
     protected EntityAIWander wanderAI;
     protected EntityAIAttackMelee attackAI;
@@ -51,6 +52,8 @@ public class EntityStrider extends EntityCreatureTameable {
         this.setWidth = 3F;
         this.setHeight = 10F;
         this.setupMob();
+        this.hitAreaWidthScale = 1.5f;
+        this.hitAreaHeightScale = 1;
 
         this.setPathPriority(PathNodeType.WATER, 0F);
         this.stepHeight = 4.0F;

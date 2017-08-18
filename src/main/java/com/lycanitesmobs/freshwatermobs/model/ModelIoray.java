@@ -21,9 +21,9 @@ public class ModelIoray extends ModelTemplateAquatic {
         // Load Model:
         this.initModel("ioray", FreshwaterMobs.group, "entity/ioray");
 
-        // Lock Head:
-        this.lockHeadX = true;
-        this.lockHeadY = true;
+        // Looking:
+        this.lookHeadScaleX = 0f;
+        this.lookHeadScaleY = 0f;
 
         // Trophy:
         this.trophyScale = 0.8F;

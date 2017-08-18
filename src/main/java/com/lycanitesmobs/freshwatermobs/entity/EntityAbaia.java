@@ -2,6 +2,7 @@ package com.lycanitesmobs.freshwatermobs.entity;
 
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupAnimal;
+import com.lycanitesmobs.api.IGroupElectric;
 import com.lycanitesmobs.api.IGroupPredator;
 import com.lycanitesmobs.api.IGroupPrey;
 import com.lycanitesmobs.core.config.ConfigBase;
@@ -30,7 +31,7 @@ import net.minecraft.world.World;
 import java.util.HashMap;
 import java.util.List;
 
-public class EntityAbaia extends EntityCreatureTameable implements IMob, IGroupPredator {
+public class EntityAbaia extends EntityCreatureTameable implements IMob, IGroupPredator, IGroupElectric {
 
 	EntityAIWander wanderAI;
     protected short aoeAttackTick = 0;
@@ -113,7 +114,7 @@ public class EntityAbaia extends EntityCreatureTameable implements IMob, IGroupP
             List aoeTargets = this.getNearbyEntities(EntityLivingBase.class, null, 4);
             for(Object entityObj : aoeTargets) {
                 EntityLivingBase target = (EntityLivingBase)entityObj;
-                if(target != this && this.canAttackClass(entityObj.getClass()) && this.canAttackEntity(target) && this.getEntitySenses().canSee(target)) {
+                if(target != this && !(target instanceof IGroupElectric) && this.canAttackClass(entityObj.getClass()) && this.canAttackEntity(target) && this.getEntitySenses().canSee(target)) {
                     target.attackEntityFrom(DamageSource.causeMobDamage(this), this.getAttackDamage(1));
                 }
             }
@@ -131,18 +132,6 @@ public class EntityAbaia extends EntityCreatureTameable implements IMob, IGroupP
                 }
             }
         }
-    }
-
-
-    // ==================================================
-    //                       Attacks
-    // ==================================================
-    // ========== Can Attack ==========
-    @Override
-    public boolean canAttackClass(Class targetClass) {
-        if(targetClass == this.getClass())
-            return false;
-        return super.canAttackClass(targetClass);
     }
 
 	
@@ -186,6 +175,14 @@ public class EntityAbaia extends EntityCreatureTameable implements IMob, IGroupP
     // ==================================================
    	//                     Immunities
    	// ==================================================
+    // ========== Damage ==========
+    /** Returns whether or not the given damage type is applicable, if not no damage will be taken. **/
+    public boolean isDamageTypeApplicable(String type) {
+        if("lightning".equalsIgnoreCase(type))
+            return false;
+        return super.isDamageTypeApplicable(type);
+    }
+
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
         if(ObjectManager.getPotionEffect("Penetration") != null)

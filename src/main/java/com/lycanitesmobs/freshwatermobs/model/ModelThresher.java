@@ -22,9 +22,11 @@ public class ModelThresher extends ModelTemplateAquatic {
         // Load Model:
         this.initModel("thresher", FreshwaterMobs.group, "entity/thresher");
 
-        // Lock Head:
-        this.lockHeadX = false;
-        this.lockHeadY = false;
+        // Looking:
+        this.lookHeadScaleX = 0.5f;
+        this.lookHeadScaleY = 0.5f;
+        this.lookNeckScaleX = 0.5f;
+        this.lookNeckScaleY = 0.5f;
 
         // Trophy:
         this.trophyScale = 0.8F;

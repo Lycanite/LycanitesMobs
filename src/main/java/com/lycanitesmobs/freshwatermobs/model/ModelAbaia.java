@@ -22,9 +22,9 @@ public class ModelAbaia extends ModelTemplateAquatic {
         // Load Model:
         this.initModel("abaia", FreshwaterMobs.group, "entity/abaia");
 
-        // Lock Head:
-        this.lockHeadX = true;
-        this.lockHeadY = true;
+        // Looking:
+        this.lookHeadScaleX = 0.5f;
+        this.lookHeadScaleY = 0.5f;
 
         // Trophy:
         this.trophyScale = 0.8F;
@@ -51,7 +51,10 @@ public class ModelAbaia extends ModelTemplateAquatic {
         float rotZ = 0F;
 
         // Tail:
-        //TODO Eel Tail!
+        if(partName.equals("body") || partName.equals("tail01") || partName.equals("tail02")) {
+            rotX += (float)-Math.toDegrees(MathHelper.cos(loop * 0.25f) * 0.25F);
+            rotY += (float)-Math.toDegrees(MathHelper.cos(loop * 0.5f) * 0.25F);
+        }
 
         // Apply Animations:
         this.angle(rotation, angleX, angleY, angleZ);

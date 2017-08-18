@@ -35,8 +35,8 @@ public class EntityDawon extends EntityCreatureTameable implements IAnimals, IGr
         this.experience = 5;
         this.hasAttackSound = true;
         
-        this.setWidth = 0.9F;
-        this.setHeight = 0.95F;
+        this.setWidth = 1.6F;
+        this.setHeight = 1.4F;
         this.setupMob();
         
         this.attackTime = 15;

@@ -1,14 +1,10 @@
 package com.lycanitesmobs.core.entity.navigate;
 
 import com.google.common.collect.Sets;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.init.Blocks;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.pathfinding.PathPoint;
-import net.minecraft.pathfinding.WalkNodeProcessor;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
@@ -20,6 +16,9 @@ public class WalkNodeProcessorWater extends WalkNodeProcessorCustom {
     @Override
     public void initProcessor(IBlockAccess sourceIn, EntityLiving mob) {
         super.initProcessor(sourceIn, mob);
+        this.entitySizeX = MathHelper.floor(Math.min(mob.width, 3));
+        this.entitySizeZ = MathHelper.floor(Math.min(mob.width, 3));
+        this.entitySizeY = MathHelper.floor(Math.min(mob.height, 3));
     }
 
     @Override

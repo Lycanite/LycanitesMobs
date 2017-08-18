@@ -1,10 +1,8 @@
 package com.lycanitesmobs.freshwatermobs.entity;
 
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
-import com.lycanitesmobs.api.IGroupAnimal;
-import com.lycanitesmobs.api.IGroupBoss;
-import com.lycanitesmobs.api.IGroupPredator;
-import com.lycanitesmobs.api.IGroupPrey;
+import com.lycanitesmobs.api.*;
 import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.EntityCreatureRideable;
@@ -34,10 +32,10 @@ import net.minecraft.world.World;
 
 import java.util.HashMap;
 
-public class EntityThresher extends EntityCreatureRideable implements IMob, IGroupPredator {
+public class EntityThresher extends EntityCreatureRideable implements IMob, IGroupPredator, IGroupHeavy {
 
 	EntityAIWander wanderAI;
-    protected int whirlpoolRange = 4;
+    protected int whirlpoolRange = 8;
     protected int whirlpoolEnergy = 0;
     protected int whirlpoolEnergyMax = 5 * 20;
     protected boolean whirlpoolRecharging = true;
@@ -59,13 +57,16 @@ public class EntityThresher extends EntityCreatureRideable implements IMob, IGro
 
         this.babySpawnChance = 0D;
         this.canGrow = true;
-        
-        this.setWidth = 9.5F;
-        this.setHeight = 9F;
+
+        this.setWidth = 8F;
+        this.setHeight = 8F;
         this.setupMob();
+        this.hitAreaWidthScale = 2F;
+        this.hitAreaHeightScale = 1F;
 
         // Stats:
-        this.stepHeight = 2.0F;
+        this.stepHeight = 1.0F;
+        this.entityCollisionReduction = 0.9F;
 
         this.whirlpoolRange = ConfigBase.getConfig(this.group, "general").getInt("Features", "Thresher Whirlpool Range", this.whirlpoolRange, "The range (in blocks) of the Thresher's whirlpool pull effect, set to 0 to disable, note that the Roa is nearly 10 blocks in size itself which the range must cover.");
     }
@@ -77,7 +78,7 @@ public class EntityThresher extends EntityCreatureRideable implements IMob, IGro
         this.tasks.addTask(1, new EntityAIStayByWater(this));
         this.tasks.addTask(2, new EntityAIPlayerControl(this));
         this.tasks.addTask(3, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("threshertreat"))).setTemptDistanceMin(4.0D));
-        this.tasks.addTask(4, new EntityAIAttackMelee(this).setLongMemory(false));
+        this.tasks.addTask(4, new EntityAIAttackMelee(this).setLongMemory(false).setRange(2));
         this.wanderAI = new EntityAIWander(this);
         this.tasks.addTask(6, wanderAI.setPauseRate(60));
         this.tasks.addTask(9, new EntityAIBeg(this));
@@ -137,7 +138,7 @@ public class EntityThresher extends EntityCreatureRideable implements IMob, IGro
             this.whirlpoolEnergy = Math.min(this.whirlpoolEnergy, this.whirlpoolEnergyMax);
             if(this.canWhirlpool()) {
                 for (EntityLivingBase entity : this.getNearbyEntities(EntityLivingBase.class, null, this.whirlpoolRange)) {
-                    if (entity == this || entity == this.getControllingPassenger() || entity instanceof IGroupBoss || entity.isPotionActive(ObjectManager.getPotionEffect("weight")))
+                    if (entity == this || entity == this.getControllingPassenger() || entity instanceof IGroupBoss || entity instanceof IGroupHeavy || entity.isPotionActive(ObjectManager.getPotionEffect("weight")))
                         continue;
                     EntityPlayerMP player = null;
                     if (entity instanceof EntityPlayerMP) {
@@ -208,7 +209,7 @@ public class EntityThresher extends EntityCreatureRideable implements IMob, IGro
     // ==================================================
     //                      Movement
     // ==================================================
-	// Pathing Weight:
+    // Pathing Weight:
 	@Override
 	public float getBlockPathWeight(int x, int y, int z) {
         int waterWeight = 10;

@@ -19,9 +19,9 @@ public class ModelSutiramu extends ModelTemplateArachnid {
         // Load Model:
         this.initModel("sutiramu", DesertMobs.group, "entity/sutiramu");
 
-        // Lock Head:
-        this.lockHeadX = true;
-        this.lockHeadY = true;
+        // Looking:
+        this.lookHeadScaleX = 0f;
+        this.lookHeadScaleY = 0f;
 
         // Trophy:
         this.trophyScale = 0.8F;

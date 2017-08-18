@@ -1,14 +1,11 @@
 package com.lycanitesmobs.infernomobs.entity;
 
 import com.lycanitesmobs.ObjectManager;
-import com.lycanitesmobs.api.IGroupFire;
-import com.lycanitesmobs.api.IGroupIce;
-import com.lycanitesmobs.api.IGroupWater;
+import com.lycanitesmobs.api.*;
 import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.DropRate;
-import com.lycanitesmobs.api.IGroupPlant;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.EntityItemCustom;
 import com.lycanitesmobs.core.entity.ai.*;
@@ -33,7 +30,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashMap;
 
-public class EntityKhalk extends EntityCreatureTameable implements IMob, IGroupFire {
+public class EntityKhalk extends EntityCreatureTameable implements IMob, IGroupFire, IGroupHeavy {
 
     public boolean khalkLavaDeath = true;
 

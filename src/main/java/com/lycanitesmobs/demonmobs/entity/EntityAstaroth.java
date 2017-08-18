@@ -40,7 +40,7 @@ public class EntityAstaroth extends EntityCreatureBase implements IMob, IGroupDe
         this.setHeight = 2.0F;
         this.solidCollision = false;
         this.setupMob();
-        this.hitAreaScale = 1.5F;
+        this.hitAreaWidthScale = 1.5F;
     }
 
     // ========== Init AI ==========

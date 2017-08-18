@@ -3,7 +3,7 @@ package com.lycanitesmobs.core.model;
 public class ModelObjAnimationFrame {
     /** The type of animation to do. Can be: angle, rotate, translate or scale. **/
     public String type;
-    /** The part to animation around. **/
+    /** The part to animate around. TODO No longer needed here! **/
     public ModelObjPart part;
     /** The amount to animate by, usually 1, but can be used to scale an animation and also used for the angle type. **/
     public float amount = 1;
@@ -32,10 +32,6 @@ public class ModelObjAnimationFrame {
     // ==================================================
     /** Performs this animation frame. **/
     public void apply(ModelObj model) {
-        // Center Part:
-        model.doTranslate(part.centerX, part.centerY, part.centerZ);
-
-        // Apply Movement:
         if("angle".equals(this.type))
             model.doAngle(this.amount, this.x, this.y, this.z);
         if("rotate".equals(this.type))
@@ -44,8 +40,5 @@ public class ModelObjAnimationFrame {
             model.doTranslate(this.x * this.amount, this.y * this.amount, this.z * this.amount);
         if("scale".equals(this.type))
             model.doScale(this.x * this.amount, this.y * this.amount, this.z * this.amount);
-
-        // Uncenter Part:
-        model.doTranslate(-part.centerX, -part.centerY, -part.centerZ);
     }
 }

@@ -2,14 +2,15 @@ package com.lycanitesmobs.core.entity;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
-import com.google.common.base.Supplier;
 import com.lycanitesmobs.*;
 import com.lycanitesmobs.api.IGroupBoss;
+import com.lycanitesmobs.api.IGroupHeavy;
 import com.lycanitesmobs.core.entity.ai.DirectNavigator;
 import com.lycanitesmobs.core.entity.ai.EntityAIMoveRestriction;
 import com.lycanitesmobs.core.entity.ai.EntityAITargetAttack;
 import com.lycanitesmobs.core.entity.ai.EntityAITargetRevenge;
 import com.lycanitesmobs.core.entity.navigate.*;
+import com.lycanitesmobs.core.entity.navigate.PathNavigateSwimmerCustom;
 import com.lycanitesmobs.core.info.*;
 import com.lycanitesmobs.core.inventory.ContainerCreature;
 import com.lycanitesmobs.core.inventory.InventoryCreature;
@@ -58,7 +59,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.*;
 
 public abstract class EntityCreatureBase extends EntityLiving {
-    public static Boolean ENABLE_HITAREAS = true;
+    public static Boolean ENABLE_HITAREAS = false;
 
 	/** A snapshot of the base health for each mob. This is used when calculating subspecies or tamed health. **/
 	public static Map<Class, Double> baseHealthMap = new HashMap<Class, Double>();
@@ -99,7 +100,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** An array of additional hitboxes for large entities. **/
     public EntityHitArea[][][] hitAreas;
     /** A scale relative to this entity's width for melee and ranged hit collision. **/
-    public float hitAreaScale = 1;
+    public float hitAreaWidthScale = 1;
+    /** A scale relative to this entity's height for melee and ranged hit collision. **/
+    public float hitAreaHeightScale = 1;
     /** How many ticks until this mob can attack again. **/
     public int attackTime = 20;
     /** A bounding box used for rendering, usually null as the base bounding box is used unless overridden. **/
@@ -1615,8 +1618,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public void updateHitAreas() {
         if(!ENABLE_HITAREAS)
             return;
-        int hitAreaWidthCount = Math.max(1, Math.round(this.width / 4));
-        int hitAreaHeightCount = Math.max(1, Math.round(this.height / 4));
+        int hitAreaWidthCount = Math.max(1, Math.round((this.width * this.hitAreaWidthScale) / 4));
+        int hitAreaHeightCount = Math.max(1, Math.round((this.height * this.hitAreaHeightScale) / 4));
         if(hitAreaWidthCount < 2 && hitAreaHeightCount < 2) {
             this.hitAreas = null;
             return;
@@ -1632,7 +1635,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
                     if(y != 0 && y != hitAreaHeightCount - 1 && x != 0 && x != hitAreaWidthCount - 1 && z != 0 && z != hitAreaWidthCount - 1)
                         continue;
                     if(this.hitAreas[y][x][z] == null) {
-                        this.hitAreas[y][x][z] = new EntityHitArea(this, (this.width / hitAreaWidthCount) * this.hitAreaScale, this.height / hitAreaHeightCount);
+                        this.hitAreas[y][x][z] = new EntityHitArea(this, (this.width / hitAreaWidthCount) * this.hitAreaWidthScale, (this.height / hitAreaHeightCount) * this.hitAreaHeightScale);
                         this.getEntityWorld().spawnEntity(this.hitAreas[y][x][z]);
                     }
                     /*this.hitAreas[y][x][z].setPositionAndUpdate(
@@ -1640,9 +1643,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
                             this.posY + ((this.height / hitAreaHeightCount) * y),
                             posZ = this.posZ - ((this.width * this.hitAreaScale) / 2) + (((this.width * this.hitAreaScale) / hitAreaWidthCount) / 2) + (((this.width * this.hitAreaScale) / hitAreaWidthCount) * z)
                     );*/
-                    this.hitAreas[y][x][z].posX = this.posX - ((this.width * this.hitAreaScale) / 2) + (((this.width * this.hitAreaScale) / hitAreaWidthCount) / 2) + (((this.width * this.hitAreaScale) / hitAreaWidthCount) * x);
-                    this.hitAreas[y][x][z].posY = this.posY + ((this.height / hitAreaHeightCount) * y);
-                    this.hitAreas[y][x][z].posZ = this.posZ - ((this.width * this.hitAreaScale) / 2) + (((this.width * this.hitAreaScale) / hitAreaWidthCount) / 2) + (((this.width * this.hitAreaScale) / hitAreaWidthCount) * z);
+                    this.hitAreas[y][x][z].posX = this.posX - ((this.width * this.hitAreaWidthScale) / 2) + (((this.width * this.hitAreaWidthScale) / hitAreaWidthCount) / 2) + (((this.width * this.hitAreaWidthScale) / hitAreaWidthCount) * x);
+                    this.hitAreas[y][x][z].posY = this.posY + ((this.height / hitAreaHeightCount) * this.hitAreaHeightScale * y);
+                    this.hitAreas[y][x][z].posZ = this.posZ - ((this.width * this.hitAreaWidthScale) / 2) + (((this.width * this.hitAreaWidthScale) / hitAreaWidthCount) / 2) + (((this.width * this.hitAreaWidthScale) / hitAreaWidthCount) * z);
                     this.hitAreas[y][x][z].rotationYaw = this.rotationYaw;
                 }
             }
@@ -1655,6 +1658,19 @@ public abstract class EntityCreatureBase extends EntityLiving {
         if(this.solidCollision)
             return this.getEntityBoundingBox();
         return null;
+    }
+
+    // ========== Get Contact Bounding Box ==========
+    @Override
+    public AxisAlignedBB getCollisionBox(Entity entity) {
+        return super.getCollisionBox(entity);
+    }
+
+    // ========== Get Render Bounding Box ==========
+    @SideOnly(Side.CLIENT)
+    @Override
+    public AxisAlignedBB getRenderBoundingBox() {
+        return this.getEntityBoundingBox();
     }
     
     
@@ -1790,8 +1806,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
         if(this.canFly())
             return new PathNavigateFlight(this, world);
         if(this.isStrongSwimmer())
-            return new PathNavigateSwimmer(this, world);
-        if(this.canWalk() && this.canWade() && this.canBreatheUnderwater())
+            return new PathNavigateSwimmerCustom(this, world);
+        if(this.canWalk() && this.canWade() && this.canBreatheUnderwater() && !this.canBreatheAboveWater())
             return new PathNavigateGroundWater(this, world);
         if(this.canClimb())
             return new PathNavigateClimber(this, world);
@@ -1803,7 +1819,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public PathNavigate getNavigator() {
         /*if(super.isInWater() && !this.isStrongSwimmer() && this.canWade() && this.canBreatheUnderwater()) {
             if (this.navigatorSwimming == null)
-                this.navigatorSwimming = new PathNavigateSwimmer(this, this.getEntityWorld());
+                this.navigatorSwimming = new PathNavigateSwimmerCustom(this, this.getEntityWorld());
             return this.navigatorSwimming;
         }*/
         return super.getNavigator();
@@ -2778,6 +2794,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Pickup ==========
     public boolean canPickupEntity(EntityLivingBase entity) {
         if(this.getPickupEntity() == entity)
+            return false;
+        if(entity instanceof IGroupBoss || entity instanceof IGroupHeavy)
             return false;
     	ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(entity);
 		if(extendedEntity == null)

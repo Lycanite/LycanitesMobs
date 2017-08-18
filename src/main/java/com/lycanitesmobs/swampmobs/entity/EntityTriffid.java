@@ -39,7 +39,7 @@ public class EntityTriffid extends EntityCreatureTameable implements IMob, IGrou
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 2;
+        this.defense = 4;
         this.experience = 10;
         this.spawnsUnderground = false;
         this.hasAttackSound = true;
@@ -77,11 +77,11 @@ public class EntityTriffid extends EntityCreatureTameable implements IMob, IGrou
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 50D);
-		baseAttributes.put("movementSpeed", 0.14D);
+		baseAttributes.put("maxHealth", 60D);
+		baseAttributes.put("movementSpeed", 0.16D);
 		baseAttributes.put("knockbackResistance", 0.5D);
 		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 3D);
+		baseAttributes.put("attackDamage", 6D);
         super.applyEntityAttributes(baseAttributes);
     }
 	
@@ -124,7 +124,7 @@ public class EntityTriffid extends EntityCreatureTameable implements IMob, IGrou
 
         // Effect:
         if(target instanceof EntityLivingBase) {
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.POISON, this.getEffectDuration(5), 1));
+            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.POISON, this.getEffectDuration(20), 1));
         }
         
         return true;

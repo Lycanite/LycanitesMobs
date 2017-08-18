@@ -99,7 +99,7 @@ public class EntityIoray extends EntityCreatureRideable implements IMob, IGroupP
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
 		baseAttributes.put("maxHealth", 80D);
-		baseAttributes.put("movementSpeed", 0.24D);
+		baseAttributes.put("movementSpeed", 0.36D);
 		baseAttributes.put("knockbackResistance", 0.8D);
 		baseAttributes.put("followRange", 32D);
 		baseAttributes.put("attackDamage", 4D);

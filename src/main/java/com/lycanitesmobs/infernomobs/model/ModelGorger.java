@@ -19,10 +19,6 @@ public class ModelGorger extends ModelObj {
         // Load Model:
         this.initModel("gorger", InfernoMobs.group, "entity/gorger");
 
-        // Lock Head:
-        this.lockHeadX = false;
-        this.lockHeadY = false;
-
         // Trophy:
         this.trophyScale = 0.8F;
         this.trophyOffset = new float[] {0.0F, 0.0F, -0.4F};

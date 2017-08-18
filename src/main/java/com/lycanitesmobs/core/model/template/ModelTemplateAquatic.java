@@ -29,18 +29,24 @@ public class ModelTemplateAquatic extends ModelObj {
             this.rotate(0, (float) -Math.toDegrees(MathHelper.cos(loop * 0.2F) * 0.05F - 0.05F), 0);
         }
         if(partName.equals("mouth")) {
-            this.rotate(15F - (float)-Math.toDegrees(MathHelper.cos(loop * -0.1F) * 0.05F - 0.05F), 0.0F, 0.0F);
+            this.rotate(5F - (float)-Math.toDegrees(MathHelper.cos(loop * -0.1F) * 0.1F), 0.0F, 0.0F);
         }
-        if(partName.equals("armleft")) {
-            rotZ -= Math.toDegrees(MathHelper.cos(loop * 0.25F) * 0.1F);
-            rotX -= Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
+        if(partName.equals("neck")) {
+            this.rotate((float) -Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F - 0.05F), 0.0F, 0.0F);
         }
-        if(partName.equals("armright")) {
-            rotZ += Math.toDegrees(MathHelper.cos(loop * 0.25F) * 0.1F);
-            rotX += Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
+        float speed = 0.5f;
+        if(distance > 0)
+            speed = 1f;
+        if(partName.equals("armleft") || partName.equals("legleftfront") || partName.equals("legrightback")) {
+            rotZ -= Math.toDegrees(MathHelper.cos(loop * 0.25F * speed) * 0.1F);
+            rotX -= Math.toDegrees(MathHelper.sin(loop * 0.067F * speed) * 0.05F);
+        }
+        if(partName.equals("armright") || partName.equals("legrightfront") || partName.equals("legleftback")) {
+            rotZ += Math.toDegrees(MathHelper.cos(loop * 0.25F * speed) * 0.1F);
+            rotX += Math.toDegrees(MathHelper.sin(loop * 0.067F * speed) * 0.05F);
         }
         if(partName.equals("tail")) {
-            rotY += (float)-Math.toDegrees(MathHelper.cos(loop * 0.25f) * 0.25F);
+            rotY += (float)-Math.toDegrees(MathHelper.cos(loop * 0.25f * speed) * 0.25F);
         }
 
         // Walking:
@@ -69,10 +75,8 @@ public class ModelTemplateAquatic extends ModelObj {
         }
 
         // Attack:
-        if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
-            if(partName.equals("mouth")) {
-                this.rotate(30.0F, 0.0F, 0.0F);
-            }
+        if(partName.equals("mouth")) {
+            rotX += 15 * this.getAttackProgress();
         }
 
         // Apply Animations:

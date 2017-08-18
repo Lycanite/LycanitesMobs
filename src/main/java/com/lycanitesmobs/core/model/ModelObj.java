@@ -47,11 +47,19 @@ public class ModelObj extends ModelCustom {
     /** A list of all part definitions that this model will use when animating. **/
     public Map<String, ModelObjPart> animationParts = new HashMap<>();
 
-    // Head:
-    /** If true, head pieces will ignore the x look rotation when animating. **/
-	public boolean lockHeadX = false;
-    /** If true, head pieces will ignore the y look rotation when animating. **/
-	public boolean lockHeadY = false;
+    // Looking and Head:
+    /** Used to scale how far the head part will turn based on the looking X angle. **/
+	public float lookHeadScaleX = 1;
+    /** Used to scale how far the head part will turn based on the looking Y angle. **/
+	public float lookHeadScaleY = 1;
+    /** Used to scale how far the neck part will turn based on the looking X angle. **/
+    public float lookNeckScaleX = 0;
+    /** Used to scale how far the neck part will turn based on the looking Y angle. **/
+    public float lookNeckScaleY = 0;
+    /** Used to scale how far the head part will turn based on the looking X angle. **/
+    public float lookBodyScaleX = 0;
+    /** Used to scale how far the head part will turn based on the looking Y angle. **/
+    public float lookBodyScaleY = 0;
 	/** If true, the head and mouth of this model wont be scaled down when the mob is a child for a bigger head. **/
 	public boolean bigChildHead = false;
 
@@ -72,6 +80,10 @@ public class ModelObj extends ModelCustom {
     // Animating:
     /** The current animation part that is having an animation frame generated for. **/
     protected ModelObjPart currentAnimationPart;
+    /** A list of models states that hold unique render/animation data for a specific entity instance. **/
+    protected Map<Entity, ModelObjState> modelStates = new HashMap<>();
+    /** The current model state for the entity that is being animated and rendered. **/
+    protected ModelObjState currentModelState;
 
 	// ==================================================
   	//                    Constructors
@@ -131,7 +143,6 @@ public class ModelObj extends ModelCustom {
 
         // Assign Animation Part Children:
         for(ModelObjPart part : this.animationParts.values()) {
-            LycanitesMobs.printDebug("", "Adding children parts for " + part.name);
             part.addChildren(this.animationParts.values().toArray(new ModelObjPart[this.animationParts.size()]));
         }
 
@@ -191,6 +202,10 @@ public class ModelObj extends ModelCustom {
             }
 		}
 
+		// Animation States:
+        this.currentModelState = this.getModelState(entity);
+        this.updateAttackProgress(entity);
+
         // Generate Animation Frames:
         this.wavefrontObject.entity = entity;
         for(ObjObject part : this.wavefrontParts) {
@@ -249,14 +264,16 @@ public class ModelObj extends ModelCustom {
             this.doScale(scale, scale, scale);
 
             // Apply Animation Frames:
-            for(ModelObjAnimationFrame animationFrame : this.currentAnimationPart.animationFrames) {
-                animationFrame.apply(this);
-            }
-            this.currentAnimationPart.animationFrames.clear();
+            this.currentAnimationPart.applyAnimationFrames(this);
 
             // Render Part:
             this.wavefrontObject.renderGroup(part, this.getPartColor(partName, entity, layer, renderAsTrophy));
             GlStateManager.popMatrix();
+        }
+
+        // Clear Animation Frames:
+        for(ModelObjPart animationPart : this.animationParts.values()) {
+            animationPart.animationFrames.clear();
         }
     }
 
@@ -318,14 +335,34 @@ public class ModelObj extends ModelCustom {
     	float rotY = 0F;
     	float rotZ = 0F;
     	
-    	// Head Looking:
+    	// Looking:
     	if(partName.toLowerCase().contains("head")) {
-    		if(!lockHeadX)
-    			rotX += Math.toDegrees(lookX / (180F / (float)Math.PI));
-    		if(!lockHeadY)
-    			rotY += Math.toDegrees(lookY / (180F / (float)Math.PI));
-            rotate(rotX, rotY, rotZ);
+    		rotX += (Math.toDegrees(lookX / (180F / (float)Math.PI)) * this.lookHeadScaleX);
+    		rotY += (Math.toDegrees(lookY / (180F / (float)Math.PI))) * this.lookHeadScaleY;
     	}
+        if(partName.equals("neck")) {
+            rotX += (Math.toDegrees(lookX / (180F / (float)Math.PI)) * this.lookNeckScaleX);
+            rotY += (Math.toDegrees(lookY / (180F / (float)Math.PI))) * this.lookNeckScaleY;
+        }
+
+        // Create Animation Frames:
+        this.rotate(rotX, rotY, rotZ);
+    }
+
+    /** Returns an existing or new model state for the given entity. **/
+    public ModelObjState getModelState(Entity entity) {
+        if(entity == null)
+            return null;
+        if(this.modelStates.containsKey(entity)) {
+            if(entity.isDead) {
+                this.modelStates.remove(entity);
+                return null;
+            }
+            return this.modelStates.get(entity);
+        }
+        ModelObjState modelState = new ModelObjState(entity);
+        this.modelStates.put(entity, modelState);
+        return modelState;
     }
     
     
@@ -334,6 +371,39 @@ public class ModelObj extends ModelCustom {
    	// ==================================================
     public void childScale(String partName) {
     	doScale(0.5F, 0.5F, 0.5F);
+    }
+
+
+    // ==================================================
+    //                   Attack Frame
+    // ==================================================
+    public void updateAttackProgress(Entity entity) {
+        if(this.currentModelState == null || !(entity instanceof EntityCreatureBase))
+            return;
+        EntityCreatureBase entityCreature = (EntityCreatureBase)entity;
+
+        if(this.currentModelState.attackAnimationPlaying) {
+            if (this.currentModelState.attackAnimationIncreasing) {
+                this.currentModelState.attackAnimationProgress = Math.min(this.currentModelState.attackAnimationProgress + this.currentModelState.attackAnimationSpeed, 1F);
+                if (this.currentModelState.attackAnimationProgress >= 1)
+                    this.currentModelState.attackAnimationIncreasing = false;
+            }
+            else {
+                this.currentModelState.attackAnimationProgress = Math.max(this.currentModelState.attackAnimationProgress - this.currentModelState.attackAnimationSpeed, 0F);
+                if (this.currentModelState.attackAnimationProgress <= 0) {
+                    this.currentModelState.attackAnimationPlaying = false;
+                }
+            }
+        }
+        else if(entityCreature.justAttacked()) {
+            this.currentModelState.attackAnimationPlaying = true;
+            this.currentModelState.attackAnimationIncreasing = true;
+            this.currentModelState.attackAnimationProgress = 0;
+        }
+    }
+
+    public float getAttackProgress() {
+        return this.currentModelState.attackAnimationProgress;
     }
     
     

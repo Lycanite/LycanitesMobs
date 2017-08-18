@@ -28,6 +28,9 @@ public class ModelTemplateBiped extends ModelObj {
         if(partName.equals("mouth")) {
             this.rotate((float)-Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F - 0.05F), 0.0F, 0.0F);
         }
+        if(partName.equals("neck")) {
+            this.rotate((float) -Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F - 0.05F), 0.0F, 0.0F);
+        }
         if(partName.equals("armleft")) {
             rotZ -= Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F + 0.05F);
             rotX -= Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
@@ -87,10 +90,11 @@ public class ModelTemplateBiped extends ModelObj {
         }
 
         // Attack:
-        if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
-            if(partName.equals("mouth")) {
-                rotX += 20.0F;
-            }
+        if(partName.equals("mouth")) {
+            rotX += 20.0F * this.getAttackProgress();
+        }
+        if(partName.equals("armleft") || partName.equals("armright")) {
+            rotX -= 80.0F * this.getAttackProgress();
         }
 
         // Apply Animations:

@@ -85,7 +85,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
         this.solidCollision = true;
         this.entityCollisionReduction = 1.0F;
         this.setupMob();
-        this.hitAreaScale = 2F;
+        this.hitAreaWidthScale = 2F;
 
         // Boss:
         this.boss = true;

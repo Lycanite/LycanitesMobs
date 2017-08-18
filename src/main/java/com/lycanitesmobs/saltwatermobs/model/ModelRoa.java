@@ -23,10 +23,6 @@ public class ModelRoa extends ModelTemplateAquatic {
         // Load Model:
         this.initModel("roa", SaltwaterMobs.group, "entity/roa");
 
-        // Lock Head:
-        this.lockHeadX = false;
-        this.lockHeadY = false;
-
         // Trophy:
         this.trophyScale = 0.8F;
         this.trophyOffset = new float[] {0.0F, 0.0F, -0.4F};

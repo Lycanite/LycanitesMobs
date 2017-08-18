@@ -28,6 +28,9 @@ public class ModelTemplateQuadruped extends ModelObj {
         if(partName.equals("mouth")) {
             this.rotate((float)-Math.toDegrees(MathHelper.cos(loop * 0.1F) * 0.1F - 0.1F), 0.0F, 0.0F);
         }
+        if(partName.equals("neck")) {
+            this.rotate((float) -Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F - 0.05F), 0.0F, 0.0F);
+        }
         if(partName.equals("tail")) {
             rotX = (float)-Math.toDegrees(MathHelper.cos(loop * 0.1F) * 0.05F - 0.05F);
             rotY = (float)-Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F - 0.05F);
@@ -59,10 +62,8 @@ public class ModelTemplateQuadruped extends ModelObj {
         }
 
         // Attack:
-        if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
-            if(partName.equals("mouth")) {
-                rotX -= 15.0F;
-            }
+        if(partName.equals("mouth")) {
+            rotX -= 15.0F * this.getAttackProgress();
         }
 
         // Apply Animations:

@@ -1,13 +1,11 @@
 package com.lycanitesmobs.saltwatermobs.model;
 
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.model.template.ModelTemplateArachnid;
 import com.lycanitesmobs.saltwatermobs.SaltwaterMobs;
 import net.minecraft.entity.EntityLiving;
 
 public class ModelHerma extends ModelTemplateArachnid {
-    protected float walkingAngle = 0;
-    protected int walkingAngleChangeTime = 0;
-    protected float walkingRotateAmount = 0;
 
     // ==================================================
     //                    Constructors
@@ -20,9 +18,9 @@ public class ModelHerma extends ModelTemplateArachnid {
         // Load Model:
         this.initModel("herma", SaltwaterMobs.group, "entity/herma");
 
-        // Lock Head:
-        this.lockHeadX = true;
-        this.lockHeadY = true;
+        // Looking:
+        this.lookHeadScaleX = 0;
+        this.lookHeadScaleY = 0;
 
         // Trophy:
         this.trophyScale = 0.8F;
@@ -40,25 +38,29 @@ public class ModelHerma extends ModelTemplateArachnid {
         super.animatePart(partName, entity, time, distance, loop, lookY, lookX, scale);
 
         // Random Walk Rotation:
-        if(entity != null && distance > 0) {
-            if (this.walkingAngleChangeTime <= 0) {
-                float random = entity.getRNG().nextFloat();
-                if(random <= 0.3f)
-                    this.walkingAngle = 90;
-                else if(random <= 0.3f)
-                    this.walkingAngle = -90;
-                else
-                    this.walkingAngle = 0;
-                this.walkingRotateAmount = 0;
-            }
-            if(partName.equals("body")) {
-                float walkingAngleScale = 1;
-                if(this.walkingRotateAmount < 20) {
-                    walkingAngleScale = this.walkingRotateAmount / 20;
-                    this.walkingRotateAmount++;
+        if(partName.equals("head") && this.currentModelState != null) {
+            if(entity != null && distance >= 0.25f) {
+                if (this.currentModelState.getFloat("walkingAngleChangeTime") <= 0) {
+                    float random = entity.getRNG().nextFloat();
+                    if (random <= 0.3f)
+                        this.currentModelState.setFloat("walkingAngleTarget", 90);
+                    else if (random <= 0.6f)
+                        this.currentModelState.setFloat("walkingAngleTarget", -90);
+                    else
+                        this.currentModelState.setFloat("walkingAngleTarget", 0);
+                    this.currentModelState.setFloat("walkingAngleChangeTime", 10 * 20);
                 }
-                this.rotate(0, this.walkingAngle * walkingAngleScale, 0);
             }
+            else {
+                this.currentModelState.setFloat("walkingAngleTarget", 0);
+            }
+            float walkingAngleCurrent = this.currentModelState.getFloat("walkingAngleCurrent");
+            if(walkingAngleCurrent < this.currentModelState.getFloat("walkingAngleTarget"))
+                this.currentModelState.setFloat("walkingAngleCurrent", walkingAngleCurrent + 1);
+            else if(walkingAngleCurrent > this.currentModelState.getFloat("walkingAngleTarget"))
+                this.currentModelState.setFloat("walkingAngleCurrent", walkingAngleCurrent - 1);
+            this.rotate(0, this.currentModelState.getFloat("walkingAngleCurrent"), 0);
+            this.currentModelState.setFloat("walkingAngleChangeTime", this.currentModelState.getFloat("walkingAngleChangeTime") - 1);
         }
     }
 }

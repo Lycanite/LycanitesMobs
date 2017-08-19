@@ -300,7 +300,6 @@ public class InventoryCreature implements IInventory {
 	@Override
 	public boolean isItemValidForSlot(int slotID, ItemStack itemStack) {
 		String type = this.getTypeFromSlot(slotID);
-		System.out.println("Checking if " + itemStack + " is valid for slot: " + slotID + " type: " + type + "...");
 		if(type != null) {
 			if(!this.isEquipmentValidForSlot(type, itemStack))
 				return false;
@@ -555,8 +554,9 @@ public class InventoryCreature implements IInventory {
                 ItemStack itemStack = itemStacks.get(i);
                 if(itemStack.isEmpty())
                     this.setInventorySlotContentsNoUpdate(i, ItemStack.EMPTY);
-                else
-                    this.setInventorySlotContentsNoUpdate(i, itemStack);
+                else {
+					this.setInventorySlotContentsNoUpdate(i, itemStack);
+				}
             }
     	}
     	this.onInventoryChanged();
@@ -567,8 +567,9 @@ public class InventoryCreature implements IInventory {
     	// Write Items:
         NonNullList<ItemStack> itemStacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
         for(int i = 0; i < this.getSizeInventory(); i++) {
-            if(this.getStackInSlot(i) != null)
-                itemStacks.set(i, this.getStackInSlot(i));
+            if(this.getStackInSlot(i) != null) {
+				itemStacks.set(i, this.getStackInSlot(i));
+			}
         }
         ItemStackHelper.saveAllItems(nbtTagCompound, itemStacks); // Adds ItemStack NBT into the NBT Tag Compound.
     	

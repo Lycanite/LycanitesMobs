@@ -272,6 +272,7 @@ public class EventListener {
 			return;
 
         EntityLivingBase damagedEntity = event.getEntityLiving();
+        ExtendedEntity damagedEntityExt = ExtendedEntity.getForEntity(damagedEntity);
 
         EntityDamageSource entityDamageSource = null;
         if(event.getSource() instanceof EntityDamageSource)
@@ -301,6 +302,16 @@ public class EventListener {
 				}
 			}
 		}
+
+        // ========== Picked Up/Feared Protection ==========
+        if(damagedEntityExt != null && damagedEntityExt.isPickedUp()) {
+            // Prevent Picked Up and Feared Entities from Suffocating:
+            if("inWall".equals(event.getSource().damageType)) {
+                event.setAmount(0);
+                event.setCanceled(true);
+                return;
+            }
+        }
 	}
 
 

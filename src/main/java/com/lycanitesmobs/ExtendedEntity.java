@@ -241,6 +241,10 @@ public class ExtendedEntity implements IExtendedEntity {
             pickupOffset = ((EntityCreatureBase)this.pickedUpByEntity).getPickupOffset(this.entity);
         return pickupOffset;
     }
+
+    public boolean isPickedUp() {
+        return this.pickedUpByEntity != null;
+    }
 	
 	public boolean isFeared() {
 		return this.pickedUpByEntity instanceof EntityFear;

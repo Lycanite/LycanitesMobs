@@ -340,25 +340,24 @@ public class PetEntry {
     public void spawnEntity() {
         if(this.entity != null || this.host == null)
             return;
-        Entity spawnedEntity = null;
         try {
-            spawnedEntity = (Entity)this.summonSet.getCreatureClass().getConstructor(new Class[] {World.class}).newInstance(new Object[] {this.host.getEntityWorld()});
+            this.entity = (Entity)this.summonSet.getCreatureClass().getConstructor(new Class[] {World.class}).newInstance(new Object[] {this.host.getEntityWorld()});
         } catch (Exception e) {
             //LycanitesMobs.printWarning("", "[Pet Entry] A none Entity class was set in a PetEntry, only classes of Entity are valid!");
             //e.printStackTrace();
         }
 
-        if(spawnedEntity == null)
+        if(this.entity == null)
             return;
 
         // Load NBT Data:
         this.loadEntityNBT();
 
         // Spawn Location:
-        spawnedEntity.setLocationAndAngles(this.host.posX, this.host.posY, this.host.posZ, this.host.rotationYaw, 0.0F);
+        this.entity.setLocationAndAngles(this.host.posX, this.host.posY, this.host.posZ, this.host.rotationYaw, 0.0F);
 
-        if(spawnedEntity instanceof EntityCreatureBase) {
-            EntityCreatureBase entityCreature = (EntityCreatureBase)spawnedEntity;
+        if(this.entity instanceof EntityCreatureBase) {
+            EntityCreatureBase entityCreature = (EntityCreatureBase)this.entity;
             entityCreature.setMinion(true);
             entityCreature.setPetEntry(this);
 
@@ -372,12 +371,12 @@ public class PetEntry {
             if(this.host.getRNG().nextBoolean())
                 randomAngle = -randomAngle;
             BlockPos spawnPos = entityCreature.getFacingPosition(this.host, -1, randomAngle);
-            if(!spawnedEntity.getEntityWorld().isSideSolid(spawnPos, EnumFacing.UP))
-                spawnedEntity.setLocationAndAngles(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), this.host.rotationYaw, 0.0F);
+            if(!this.entity.getEntityWorld().isSideSolid(spawnPos, EnumFacing.UP))
+                this.entity.setLocationAndAngles(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), this.host.rotationYaw, 0.0F);
             else {
                 spawnPos = entityCreature.getFacingPosition(this.host, -1, -randomAngle);
-                if(spawnedEntity.getEntityWorld().isSideSolid(spawnPos, EnumFacing.UP))
-                    spawnedEntity.setLocationAndAngles(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), this.host.rotationYaw, 0.0F);
+                if(this.entity.getEntityWorld().isSideSolid(spawnPos, EnumFacing.UP))
+                    this.entity.setLocationAndAngles(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), this.host.rotationYaw, 0.0F);
             }
 
             // Temporary:
@@ -401,14 +400,13 @@ public class PetEntry {
         this.spawnCount++;
 
         // Respawn with half health:
-        if(spawnedEntity instanceof EntityLivingBase && this.isRespawning) {
-            EntityLivingBase entityLiving = (EntityLivingBase)spawnedEntity;
+        if(this.entity instanceof EntityLivingBase && this.isRespawning) {
+            EntityLivingBase entityLiving = (EntityLivingBase)this.entity;
             entityLiving.setHealth(entityLiving.getMaxHealth() / 2);
         }
 
-        this.onSpawnEntity(spawnedEntity);
-        this.host.getEntityWorld().spawnEntity(spawnedEntity);
-        this.entity = spawnedEntity;
+        this.onSpawnEntity(this.entity);
+        this.host.getEntityWorld().spawnEntity(this.entity);
     }
 
     /** Called when the entity for this entry is spawned just before it is added to the world. **/

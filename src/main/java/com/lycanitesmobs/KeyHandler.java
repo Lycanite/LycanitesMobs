@@ -110,9 +110,12 @@ public class KeyHandler {
 		}
 		
 		// Minion Selection: Closes If Not Holding:
-		if((!Keyboard.isKeyDown(this.minionSelection.getKeyCode()) && !Mouse.isButtonDown(this.minionSelection.getKeyCode())) && this.mc.currentScreen instanceof GUIMinionSelection) {
-			this.mc.player.closeScreen();
+		try {
+			if ((!Keyboard.isKeyDown(this.minionSelection.getKeyCode()) && !Mouse.isButtonDown(this.minionSelection.getKeyCode())) && this.mc.currentScreen instanceof GUIMinionSelection) {
+				this.mc.player.closeScreen();
+			}
 		}
+		catch (Exception e) {}
 		
 		
 		if(this.mc.inGameHasFocus) {

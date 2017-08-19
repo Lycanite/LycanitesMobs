@@ -724,7 +724,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     }
     
     public float getStaminaRecoveryMax() {
-    	return 0.5F;
+    	return 1F;
     }
     
     public int getStaminaRecoveryWarmup() {

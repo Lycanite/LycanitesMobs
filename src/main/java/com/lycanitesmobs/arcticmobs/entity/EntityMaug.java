@@ -183,7 +183,7 @@ public class EntityMaug extends EntityCreatureRideable implements IGroupPredator
     // ========== Mounted Offset ==========
     @Override
     public double getMountedYOffset() {
-        return (double)this.height * 0.8D;
+        return (double)this.height * 0.95D;
     }
 
     // ========== Leap ==========

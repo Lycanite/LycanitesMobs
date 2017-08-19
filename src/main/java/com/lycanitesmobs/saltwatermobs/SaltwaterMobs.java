@@ -223,6 +223,15 @@ public class SaltwaterMobs {
 						Character.valueOf('T'), new ItemStack(Items.DYE, 1, 0),
 						Character.valueOf('B'), Items.BONE
 				}));
+
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("hermatreat"), 4, 0),
+				new Object[] { "  C", "BBT", "  P",
+						Character.valueOf('T'), new ItemStack(Items.FISH, 1, 0),
+						Character.valueOf('C'), new ItemStack(Items.FISH, 1, 1),
+						Character.valueOf('P'), new ItemStack(Items.FISH, 1, 2),
+						Character.valueOf('B'), Items.BONE
+				}));
 		
 		// ========== Smelting ==========
 		GameRegistry.addSmelting(ObjectManager.getItem("ikameatraw"), new ItemStack(ObjectManager.getItem("ikameatcooked"), 1), 0.5f);

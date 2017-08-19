@@ -21,34 +21,33 @@ public class ItemScepterQuill extends ItemScepter {
         this.setup();
         this.textureName = "scepterquill";
     }
-	
-    
-	// ==================================================
-	//                       Use
-	// ==================================================
+
+
+    // ==================================================
+    //                       Use
+    // ==================================================
     @Override
     public int getDurability() {
-    	return 250;
+        return 250;
     }
 
-    // ========== Charge Time ==========
-    public int getChargeTime(ItemStack itemStack) {
-        return 15;
-    }
-
-
-	// ==================================================
-	//                      Attack
-	// ==================================================
     @Override
-    public boolean chargedAttack(ItemStack itemStack, World world, EntityLivingBase entity, float power) {
-    	if(!world.isRemote) {
-    		EntityProjectileBase projectile = new EntityQuill(world, entity);
-    		projectile.setBaseDamage((int)(projectile.getDamage(null) * power * 2));
-        	world.spawnEntity(projectile);
+    public int getRapidTime(ItemStack itemStack) {
+        return 5;
+    }
+
+
+    // ==================================================
+    //                      Attack
+    // ==================================================
+    @Override
+    public boolean rapidAttack(ItemStack itemStack, World world, EntityLivingBase entity) {
+        if(!world.isRemote) {
+            EntityQuill projectile = new EntityQuill(world, entity);
+            world.spawnEntity(projectile);
             this.playSound(itemStack, world, entity, 1, projectile);
         }
-    	return true;
+        return true;
     }
 
 

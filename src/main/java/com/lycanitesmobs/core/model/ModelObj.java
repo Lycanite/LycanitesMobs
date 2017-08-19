@@ -209,9 +209,9 @@ public class ModelObj extends ModelCustom {
         // Generate Animation Frames:
         this.wavefrontObject.entity = entity;
         for(ObjObject part : this.wavefrontParts) {
-            if(!this.canRenderPart(part.getName(), entity, layer, renderAsTrophy))
-                continue;
             String partName = part.getName().toLowerCase();
+            if(!this.canRenderPart(partName, entity, layer, renderAsTrophy))
+                continue;
             this.currentAnimationPart = this.animationParts.get(partName);
 
             // Animate:
@@ -236,9 +236,9 @@ public class ModelObj extends ModelCustom {
 
         // Render Parts:
         for(ObjObject part : this.wavefrontParts) {
-            if(!this.canRenderPart(part.getName(), entity, layer, renderAsTrophy))
-                continue;
             String partName = part.getName().toLowerCase();
+            if(!this.canRenderPart(partName, entity, layer, renderAsTrophy))
+                continue;
             this.currentAnimationPart = this.animationParts.get(partName);
 
             // Begin Rendering Part:
@@ -403,6 +403,8 @@ public class ModelObj extends ModelCustom {
     }
 
     public float getAttackProgress() {
+        if(this.currentModelState == null)
+            return 0;
         return this.currentModelState.attackAnimationProgress;
     }
     

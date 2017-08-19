@@ -4,10 +4,7 @@ import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
-import com.lycanitesmobs.core.info.GroupInfo;
-import com.lycanitesmobs.core.info.MobInfo;
-import com.lycanitesmobs.core.info.ObjectLists;
-import com.lycanitesmobs.core.info.Subspecies;
+import com.lycanitesmobs.core.info.*;
 import com.lycanitesmobs.core.item.ItemCustomFood;
 import com.lycanitesmobs.core.item.ItemTreat;
 import com.lycanitesmobs.core.mobevent.MobEventBase;
@@ -237,6 +234,33 @@ public class PlainsMobs {
 						Character.valueOf('T'), Items.RABBIT_FOOT,
 						Character.valueOf('B'), Items.BONE
 				}));
+
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("feradontreat"), 4, 0),
+				new Object[] { " RC", "BBT", " MP",
+						Character.valueOf('T'), Items.COOKED_BEEF,
+						Character.valueOf('C'), Items.COOKED_CHICKEN,
+						Character.valueOf('P'), Items.COOKED_PORKCHOP,
+						Character.valueOf('M'), Items.COOKED_MUTTON,
+						Character.valueOf('R'), Items.COOKED_RABBIT,
+						Character.valueOf('B'), Items.BONE
+				}));
+
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("quillbeasttreat"), 4, 0),
+				new Object[] { "TTT", "BBT", "TTT",
+						Character.valueOf('T'), Items.CARROT,
+						Character.valueOf('B'), Items.REEDS
+				}));
+
+		if(ItemInfo.enableWeaponRecipes) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(
+					new ItemStack(ObjectManager.getItem("quillscepter"), 1, 0),
+					new Object[]{"CCC", "CRC", "CRC",
+							Character.valueOf('C'), ObjectManager.getItem("quill"),
+							Character.valueOf('R'), Items.BLAZE_ROD
+					}));
+		}
 		
 		// ========== Smelting ==========
 		GameRegistry.addSmelting(ObjectManager.getItem("makameatraw"), new ItemStack(ObjectManager.getItem("makameatcooked"), 1), 0.5f);

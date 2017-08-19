@@ -4,6 +4,7 @@ import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityMoveHelper;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.MathHelper;
 
 public class FlightMoveHelper extends EntityMoveHelper {
@@ -17,9 +18,11 @@ public class FlightMoveHelper extends EntityMoveHelper {
 
     /**
      * Called on the update to apply movement.
-     * field_188491_h = Current Move Action
      */
+    @Override
     public void onUpdateMoveHelper() {
+        if(this.entityCreature != null && this.entityCreature.getControllingPassenger() instanceof EntityPlayer)
+            return;
         if (this.action == EntityMoveHelper.Action.MOVE_TO) {
             double xDistance = this.posX - this.entityCreature.posX;
             double yDistance = this.posY - this.entityCreature.posY;

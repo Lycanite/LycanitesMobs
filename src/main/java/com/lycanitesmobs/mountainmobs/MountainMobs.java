@@ -247,6 +247,13 @@ public class MountainMobs {
 						Character.valueOf('B'), Items.BONE
 				}));
 
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("wildkintreat"), 4, 0),
+				new Object[] { "TTT", "BBT", "TTT",
+						Character.valueOf('T'), Items.QUARTZ,
+						Character.valueOf('B'), Items.BONE
+				}));
+
         if(ItemInfo.enableWeaponRecipes) {
             GameRegistry.addRecipe(new ShapedOreRecipe(
                     new ItemStack(ObjectManager.getItem("boulderblastscepter"), 1, 0),

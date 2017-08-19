@@ -184,7 +184,7 @@ public class EntityFeradon extends EntityCreatureRideable implements IGroupPreda
     // ========== Mounted Offset ==========
     @Override
     public double getMountedYOffset() {
-        return (double)this.height * 0.85D;
+        return (double)this.height * 0.9D;
     }
 
     // ========== Leap ==========

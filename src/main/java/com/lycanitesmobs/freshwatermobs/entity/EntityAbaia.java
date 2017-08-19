@@ -50,11 +50,11 @@ public class EntityAbaia extends EntityCreatureTameable implements IMob, IGroupP
         this.spawnsInWater = true;
         this.hasAttackSound = true;
 
-        this.babySpawnChance = 0.9D;
+        this.babySpawnChance = 0.05D;
         this.canGrow = true;
         
-        this.setWidth = 1.8F;
-        this.setHeight = 1.8F;
+        this.setWidth = 0.9F;
+        this.setHeight = 0.9F;
         this.setupMob();
     }
 
@@ -65,10 +65,14 @@ public class EntityAbaia extends EntityCreatureTameable implements IMob, IGroupP
         this.tasks.addTask(1, new EntityAIStayByWater(this));
         this.tasks.addTask(2, this.aiSit);
         this.tasks.addTask(3, new EntityAIAttackMelee(this).setLongMemory(false).setRate(10));
+        this.tasks.addTask(6, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
         this.wanderAI = new EntityAIWander(this);
-        this.tasks.addTask(6, wanderAI.setPauseRate(0));
+        this.tasks.addTask(7, wanderAI.setPauseRate(0));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
+
+        this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
+        this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));

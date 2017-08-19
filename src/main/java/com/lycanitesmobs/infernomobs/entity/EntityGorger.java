@@ -2,6 +2,7 @@ package com.lycanitesmobs.infernomobs.entity;
 
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.*;
+import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.EntityProjectileBase;
 import com.lycanitesmobs.core.entity.ai.*;
@@ -252,6 +253,22 @@ public class EntityGorger extends EntityCreatureTameable implements IGroupPredat
         if(damageSrc.isFireDamage())
             return 0F;
         else return super.getDamageModifier(damageSrc);
+    }
+
+
+    // ==================================================
+    //                      Breeding
+    // ==================================================
+    // ========== Create Child ==========
+    @Override
+    public EntityCreatureAgeable createChild(EntityCreatureAgeable baby) {
+        return new EntityGorger(this.getEntityWorld());
+    }
+
+    // ========== Breeding Item ==========
+    @Override
+    public boolean isBreedingItem(ItemStack par1ItemStack) {
+        return false;
     }
     
     

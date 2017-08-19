@@ -51,16 +51,14 @@ public class ModelGorger extends ModelObj {
             return;
 
         // Idle:
-        if(partName.equals("mouthtop")) {
+        if(partName.equals("mouthtop"))
             this.rotate(-(float)-Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F - 0.05F), 0.0F, 0.0F);
-        }
         if(partName.equals("mouthleft"))
             rotY += (float)-Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.1F - 0.05F);
         if(partName.equals("mouthright"))
             rotY -= (float)-Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.1F - 0.05F);
-        if(partName.equals("mouthbottom")) {
+        if(partName.equals("mouthbottom"))
             this.rotate((float)-Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F - 0.05F), 0.0F, 0.0F);
-        }
 
         // Attack:
         if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
@@ -79,7 +77,7 @@ public class ModelGorger extends ModelObj {
         if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).getStealth() > 0 && ((EntityCreatureBase)entity).getStealth() < 1)
             time = loop;
         time /= 2;
-        if(partName.equals("head") || partName.contains("mouth")) {
+        if(partName.equals("head")) {
             posX += MathHelper.sin((time - walkSwing) * walkSwing) * walkSwing;
         }
         if(partName.equals("body")) {

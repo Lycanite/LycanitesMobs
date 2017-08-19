@@ -141,7 +141,7 @@ public class EntityEyewig extends EntityCreatureRideable {
     			return;
     		
     		this.abilityProjectile = new EntityPoisonRay(this.getEntityWorld(), (EntityLivingBase)this.getControllingPassenger(), 25, 20, this);
-    		this.abilityProjectile.setOffset(0, 0.5, 0);
+    		this.abilityProjectile.setOffset(0, 0.5F, 0);
 	    	
 	    	// Launch:
 	        this.playSound(abilityProjectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));

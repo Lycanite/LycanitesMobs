@@ -322,6 +322,13 @@ public class ArcticMobs {
                         Character.valueOf('T'), ObjectManager.getItem("frostyfur"),
                         Character.valueOf('B'), Items.BONE
                 }));
+
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("maugtreat"), 4, 0),
+				new Object[] { "TTT", "BBT", "TTT",
+						Character.valueOf('T'), ObjectManager.getItem("yetimeatcooked"),
+						Character.valueOf('B'), Items.BONE
+				}));
 		
 		// ========== Smelting ==========
 		GameRegistry.addSmelting(ObjectManager.getItem("yetimeatraw"), new ItemStack(ObjectManager.getItem("yetimeatcooked"), 1), 0.5f);

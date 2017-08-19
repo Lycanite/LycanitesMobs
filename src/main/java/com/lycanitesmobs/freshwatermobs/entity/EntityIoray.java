@@ -57,11 +57,8 @@ public class EntityIoray extends EntityCreatureRideable implements IMob, IGroupP
         this.canGrow = true;
         
         this.setWidth = 2.8F;
-        this.setHeight = 1.8F;
+        this.setHeight = 0.95F;
         this.setupMob();
-
-        // Stats:
-        this.stepHeight = 1.0F;
     }
 
     // ========== Init AI ==========
@@ -172,7 +169,7 @@ public class EntityIoray extends EntityCreatureRideable implements IMob, IGroupP
     // ========== Mounted Offset ==========
     @Override
     public double getMountedYOffset() {
-        return (double)this.height * 0.25D;
+        return (double)this.height * 0.6D;
     }
     
     
@@ -200,6 +197,39 @@ public class EntityIoray extends EntityCreatureRideable implements IMob, IGroupP
 
     @Override
     public boolean canBurn() { return false; }
+
+
+    // ==================================================
+    //                      Attacks
+    // ==================================================
+    @Override
+    public float getEyeHeight() {
+        return this.height * 0.5F;
+    }
+
+    // ========== Ranged Attack ==========
+    EntityWaterJet projectile = null;
+    @Override
+    public void rangedAttack(Entity target, float range) {
+        // Update Laser:
+        if(this.projectile != null && this.projectile.isEntityAlive()) {
+            this.projectile.setTime(20);
+        }
+        else {
+            this.projectile = null;
+        }
+
+        // Create New Laser:
+        if(this.projectile == null) {
+            // Type:
+            this.projectile = new EntityWaterJet(this.getEntityWorld(), this, 20, 10);
+            this.projectile.setOffset(0, 0, 1);
+
+            // Launch:
+            this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+            this.getEntityWorld().spawnEntity(projectile);
+        }
+    }
 
 
     // ==================================================
@@ -231,7 +261,7 @@ public class EntityIoray extends EntityCreatureRideable implements IMob, IGroupP
                 return;
 
             this.abilityProjectile = new EntityWaterJet(this.getEntityWorld(), (EntityLivingBase)this.getControllingPassenger(), 25, 20, this);
-            this.abilityProjectile.setOffset(0, 0.5, 0);
+            this.abilityProjectile.setOffset(0, 1, 1);
 
             // Launch:
             this.playSound(abilityProjectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
@@ -250,33 +280,6 @@ public class EntityIoray extends EntityCreatureRideable implements IMob, IGroupP
         super.onDismounted(entity);
         if(entity != null && entity instanceof EntityLivingBase) {
             ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(MobEffects.WATER_BREATHING, 5 * 20, 1));
-        }
-    }
-
-
-    // ==================================================
-    //                      Attacks
-    // ==================================================
-    // ========== Ranged Attack ==========
-    EntityWaterJet projectile = null;
-    @Override
-    public void rangedAttack(Entity target, float range) {
-        // Update Laser:
-        if(this.projectile != null && this.projectile.isEntityAlive()) {
-            this.projectile.setTime(20);
-        }
-        else {
-            this.projectile = null;
-        }
-
-        // Create New Laser:
-        if(this.projectile == null) {
-            // Type:
-            this.projectile = new EntityWaterJet(this.getEntityWorld(), this, 20, 10);
-
-            // Launch:
-            this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-            this.getEntityWorld().spawnEntity(projectile);
         }
     }
 

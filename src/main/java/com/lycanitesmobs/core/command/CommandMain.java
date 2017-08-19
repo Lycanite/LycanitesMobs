@@ -1,8 +1,13 @@
 package com.lycanitesmobs.core.command;
 
+import com.lycanitesmobs.ExtendedPlayer;
 import com.lycanitesmobs.ExtendedWorld;
 import com.lycanitesmobs.LycanitesMobs;
+import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.config.ConfigBase;
+import com.lycanitesmobs.core.info.Beastiary;
+import com.lycanitesmobs.core.info.CreatureKnowledge;
+import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.core.mobevent.MobEventManager;
 import com.lycanitesmobs.core.mobevent.MobEventBase;
 import net.minecraft.command.ICommand;
@@ -82,6 +87,59 @@ public class CommandMain implements ICommand {
 			commandSender.sendMessage(new TextComponentString(reply));
 			commandSender.sendMessage(new TextComponentString(this.getUsage(commandSender)));
 			return;
+		}
+
+		// Beastiary:
+		if("beastiary".equalsIgnoreCase(args[0])) {
+			reply = I18n.translateToLocal("lyc.command.beastiary.invalid");
+			if (args.length < 2) {
+				commandSender.sendMessage(new TextComponentString(reply));
+				return;
+			}
+
+			// Player Only:
+			if(!(commandSender instanceof EntityPlayer)) {
+				reply = I18n.translateToLocal("lyc.command.playeronly");
+				commandSender.sendMessage(new TextComponentString(reply));
+				return;
+			}
+			EntityPlayer player = (EntityPlayer)commandSender;
+			ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
+			Beastiary beastiary = playerExt.getBeastiary();
+			if(playerExt == null || beastiary == null)
+				return;
+
+			// Add:
+			if("add".equalsIgnoreCase(args[1])) {
+				reply = I18n.translateToLocal("lyc.command.beastiary.add.invalid");
+				if (args.length < 3) {
+					commandSender.sendMessage(new TextComponentString(reply));
+					return;
+				}
+
+				String mobName = args[2].toLowerCase();
+				MobInfo mobInfo = ObjectManager.getMobInfo(mobName);
+				if(mobInfo == null) {
+					reply = I18n.translateToLocal("lyc.command.beastiary.add.unknown");
+					commandSender.sendMessage(new TextComponentString(reply));
+					return;
+				}
+
+				beastiary.addToKnowledgeList(new CreatureKnowledge(beastiary, mobInfo.name, 1));
+				beastiary.sendAddedMessage(mobInfo);
+				return;
+			}
+
+			// Add:
+			if("complete".equalsIgnoreCase(args[1])) {
+				for(MobInfo mobInfo : ObjectManager.mobs.values()) {
+					beastiary.addToKnowledgeList(new CreatureKnowledge(beastiary, mobInfo.name, 1));
+				}
+				beastiary.sendAllToClient();
+				reply = I18n.translateToLocal("lyc.command.beastiary.complete");
+				commandSender.sendMessage(new TextComponentString(reply));
+				return;
+			}
 		}
 		
 		// Mob Event:

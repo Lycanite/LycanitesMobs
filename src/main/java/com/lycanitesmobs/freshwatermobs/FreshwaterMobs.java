@@ -145,6 +145,7 @@ public class FreshwaterMobs {
 		// ========== Create Projectiles ==========
 		ObjectManager.addProjectile("aquapulse", EntityAquaPulse.class, ObjectManager.getItem("aquapulsecharge"), new DispenserBehaviorAquaPulse());
 		ObjectManager.addProjectile("waterjet", EntityWaterJet.class, ObjectManager.getItem("waterjetcharge"), new DispenserBehaviorWaterJet());
+		ObjectManager.addProjectile("waterjetend", EntityWaterJetEnd.class);
 		
 		// ========== Register Models ==========
 		proxy.registerModels(this.group);
@@ -207,14 +208,28 @@ public class FreshwaterMobs {
                             Character.valueOf('C'), ObjectManager.getItem("aquapulsecharge"),
                             Character.valueOf('R'), Items.BLAZE_ROD
                     }));
+
+			GameRegistry.addRecipe(new ShapedOreRecipe(
+					new ItemStack(ObjectManager.getItem("waterjetscepter"), 1, 0),
+					new Object[]{"CCC", "CRC", "CRC",
+							Character.valueOf('C'), ObjectManager.getItem("waterjetcharge"),
+							Character.valueOf('R'), Items.BLAZE_ROD
+					}));
         }
 
-        GameRegistry.addRecipe(new ShapedOreRecipe(
-                new ItemStack(ObjectManager.getItem("stridertreat"), 4, 0),
-                new Object[] { "TTT", "BBT", "TTT",
-                        Character.valueOf('T'), ObjectManager.getItem("silexmeatcooked"),
-                        Character.valueOf('B'), Items.BONE
-                }));
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("threshertreat"), 4, 0),
+				new Object[] { "TTT", "BBT", "TTT",
+						Character.valueOf('T'), new ItemStack(Items.FISH, 1, 3),
+						Character.valueOf('B'), Items.BONE
+				}));
+
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("ioraytreat"), 4, 0),
+				new Object[] { "   ", "BBT", "   ",
+						Character.valueOf('T'), Items.PRISMARINE_CRYSTALS,
+						Character.valueOf('B'), Items.BONE
+				}));
 		
 		// ========== Smelting ==========
 		GameRegistry.addSmelting(ObjectManager.getItem("silexmeatraw"), new ItemStack(ObjectManager.getItem("silexmeatcooked"), 1), 0.5f);

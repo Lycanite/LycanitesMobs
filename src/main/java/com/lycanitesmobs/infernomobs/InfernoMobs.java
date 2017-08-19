@@ -157,7 +157,7 @@ public class InfernoMobs {
                 .setSpawnWeight(6).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
         ObjectManager.addMob(newMob);
 
-		newMob = new MobInfo(group, "gorger", EntityGorger.class, 0x200905, 0xDE2A00)
+		newMob = new MobInfo(group, "gorger", EntityGorger.class, 0xDE2A00, 0x200905)
 				.setPeaceful(false).setTameable(true).setSummonCost(6).setDungeonLevel(3)
 				.addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("keppel", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("LAVA").setBlockCost(32)
@@ -304,6 +304,13 @@ public class InfernoMobs {
                         Character.valueOf('T'), Items.MAGMA_CREAM,
                         Character.valueOf('B'), Items.BONE
                 }));
+
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("gorgertreat"), 4, 0),
+				new Object[] { "TTT", "BBT", "TTT",
+						Character.valueOf('T'), ObjectManager.getItem("cephignismeatcooked"),
+						Character.valueOf('B'), Items.BONE
+				}));
 
         GameRegistry.addRecipe(new ShapedOreRecipe(
                 new ItemStack(ObjectManager.getItem("bucketpurelava"), 1, 0),

@@ -65,7 +65,6 @@ public class EntityThresher extends EntityCreatureRideable implements IMob, IGro
         this.hitAreaHeightScale = 1F;
 
         // Stats:
-        this.stepHeight = 1.0F;
         this.entityCollisionReduction = 0.9F;
 
         this.whirlpoolRange = ConfigBase.getConfig(this.group, "general").getInt("Features", "Thresher Whirlpool Range", this.whirlpoolRange, "The range (in blocks) of the Thresher's whirlpool pull effect, set to 0 to disable, note that the Roa is nearly 10 blocks in size itself which the range must cover.");
@@ -138,7 +137,7 @@ public class EntityThresher extends EntityCreatureRideable implements IMob, IGro
             this.whirlpoolEnergy = Math.min(this.whirlpoolEnergy, this.whirlpoolEnergyMax);
             if(this.canWhirlpool()) {
                 for (EntityLivingBase entity : this.getNearbyEntities(EntityLivingBase.class, null, this.whirlpoolRange)) {
-                    if (entity == this || entity == this.getControllingPassenger() || entity instanceof IGroupBoss || entity instanceof IGroupHeavy || entity.isPotionActive(ObjectManager.getPotionEffect("weight")))
+                    if (entity == this || entity == this.getControllingPassenger() || entity instanceof IGroupBoss || entity instanceof IGroupHeavy || entity.isPotionActive(ObjectManager.getPotionEffect("weight")) || !this.canAttackEntity(entity))
                         continue;
                     EntityPlayerMP player = null;
                     if (entity instanceof EntityPlayerMP) {
@@ -245,7 +244,7 @@ public class EntityThresher extends EntityCreatureRideable implements IMob, IGro
     // ========== Mounted Offset ==========
     @Override
     public double getMountedYOffset() {
-        return (double)this.height * 0.25D;
+        return (double)this.height * 0.5D;
     }
     
     

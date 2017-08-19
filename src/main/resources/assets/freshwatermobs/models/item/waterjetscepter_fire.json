@@ -1,6 +1,6 @@
 {
-	"parent": "swampmobs:item/waterjetscepter",
+	"parent": "freshwatermobs:item/waterjetscepter",
 	"textures": {
-		"layer0": "swampmobs:items/waterjetscepter_fire"
+		"layer0": "freshwatermobs:items/waterjetscepter_fire"
 	}
 }

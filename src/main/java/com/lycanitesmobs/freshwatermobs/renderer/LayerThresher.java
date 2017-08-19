@@ -44,7 +44,7 @@ public class LayerThresher extends LayerBase {
 
     @Override
     public Vector4f getPartColor(String partName, EntityCreatureBase entity, boolean trophy) {
-        return new Vector4f(1, 1, 1, 1); // TODO Alpha not working.
+        return new Vector4f(1, 1, 1, 1);
     }
 
     @Override

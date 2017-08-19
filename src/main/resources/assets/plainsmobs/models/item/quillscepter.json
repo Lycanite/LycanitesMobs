@@ -1,0 +1,14 @@
+{
+	"parent": "lycanitesmobs:item/scepter",
+	"textures": {
+		"layer0": "plainsmobs:items/quillscepter"
+	},
+	"overrides": [
+        {
+            "predicate": {
+                "using": 1
+            },
+            "model": "plainsmobs:item/quillscepter_fire"
+        }
+	]
+}

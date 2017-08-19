@@ -1,5 +1,6 @@
 package com.lycanitesmobs.freshwatermobs.model;
 
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.model.template.ModelTemplateAquatic;
 import com.lycanitesmobs.core.renderer.LayerBase;
 import com.lycanitesmobs.core.renderer.RenderCreature;

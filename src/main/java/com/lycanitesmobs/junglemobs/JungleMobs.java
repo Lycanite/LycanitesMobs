@@ -299,6 +299,13 @@ public class JungleMobs {
 				Character.valueOf('T'), ObjectManager.getItem("concapedemeatcooked"),
 				Character.valueOf('B'), Items.BONE
 			}));
+
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("dawontreat"), 4, 0),
+				new Object[] { "   ", "BBT", "   ",
+						Character.valueOf('T'), Items.EMERALD,
+						Character.valueOf('B'), Items.BONE
+				}));
 		
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
 				new ItemStack(Items.CLAY_BALL, 4, 0),

@@ -7,14 +7,14 @@
     "centerZ": "-0.0"
   },
   {
-    "name": "LegLeftFront.001",
+    "name": "LegRightFront",
     "parent": "Body",
     "centerX": "-0.4",
     "centerY": "1.217",
     "centerZ": "0.5"
   },
   {
-    "name": "LegLeftBack.001",
+    "name": "LegRightBack",
     "parent": "Body",
     "centerX": "-0.3",
     "centerY": "1.064",

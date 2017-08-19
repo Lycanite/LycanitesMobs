@@ -83,3 +83,7 @@ item.feradontreat.name=Feradon Treat
 item.feradontreat.description=A variety of meat might win this predator over!
 item.quillbeasttreat.name=Quillbeast Treat
 item.quillbeasttreat.description=These spiky rodents sure love their carrots!
+item.quill.name=Quill
+item.quill.description=A razor sharp quill, can be thrown or fired from a dispenser.
+item.quillscepter.name=Quill Scepter
+item.quillscepter.description=Mid Damage, Rapid Fire

@@ -222,7 +222,7 @@ public class InfernoMobs {
         eventSpawner.ignoreMobConditions = true;
         eventSpawner.addSpawn(MobInfo.getFromName("lobber"));
         eventSpawner.addSpawn(MobInfo.getFromName("khalk"), 2);
-        eventSpawner.addSpawn(MobInfo.getFromName("salamander"));
+        eventSpawner.addSpawn(MobInfo.getFromName("gorger"));
         mobEvent.addSpawner(eventSpawner);
         MobEventManager.instance.addWorldEvent(mobEvent);
 

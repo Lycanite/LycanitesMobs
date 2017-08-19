@@ -1,8 +1,4 @@
 {
-    "mobevent.rootriot": {
-        "category": "record",
-        "sounds": [{"name": "forestmobs:mobevent/rootriot", "stream": true}]
-    },
     "entity.ent.say": {
         "category": "hostile",
         "sounds": [{"name": "forestmobs:entity/ent/say", "stream": false}]

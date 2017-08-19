@@ -3,10 +3,6 @@
         "category": "record",
         "sounds": [{"name": "desertmobs:mobevent/marchofthegorgomites", "stream": true}]
     },
-    "mobevent.bladeflurry": {
-        "category": "record",
-        "sounds": [{"name": "desertmobs:mobevent/bladeflurry", "stream": true}]
-    },
     "entity.cryptzombie.say": {
         "category": "hostile",
         "sounds": [{"name": "desertmobs:entity/cryptzombie/say", "stream": false}]

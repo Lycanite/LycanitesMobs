@@ -10,8 +10,8 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 0.000000
 illum 0
-map_Kd F:\Dropbox\Dropbox\Projects\Lycanites Mobs\Model Resources\Saltwater Mobs\roa_effect.png
-map_d F:\\Dropbox\\Dropbox\\Projects\\Lycanites Mobs\\Model Resources\\Saltwater Mobs\\roa_effect.png
+map_Kd thresher_effect.png
+map_d thresher_effect.png
 
 newmtl thresher
 Ns 96.078431

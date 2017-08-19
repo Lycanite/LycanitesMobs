@@ -6,10 +6,8 @@ import com.lycanitesmobs.core.info.*;
 import com.lycanitesmobs.core.spawning.SpawnTypeBase;
 import com.lycanitesmobs.desertmobs.entity.*;
 import com.lycanitesmobs.desertmobs.item.*;
-import com.lycanitesmobs.desertmobs.mobevent.MobEventBladeFlurry;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
-import com.lycanitesmobs.core.info.*;
 import com.lycanitesmobs.core.item.ItemCustomFood;
 import com.lycanitesmobs.core.item.ItemTreat;
 import com.lycanitesmobs.core.mobevent.MobEventBase;
@@ -17,8 +15,6 @@ import com.lycanitesmobs.core.mobevent.MobEventManager;
 import com.lycanitesmobs.core.spawning.SpawnTypeLand;
 import com.lycanitesmobs.desertmobs.dispenser.DispenserBehaviorMudshot;
 import com.lycanitesmobs.desertmobs.dispenser.DispenserBehaviorThrowingScythe;
-import com.lycanitesmobs.desertmobs.entity.*;
-import com.lycanitesmobs.desertmobs.item.*;
 import com.lycanitesmobs.desertmobs.mobevent.MobEventMarchOfTheGorgomites;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
@@ -202,18 +198,6 @@ public class DesertMobs {
         eventSpawner.forceSpawning = true;
         eventSpawner.ignoreMobConditions = true;
         eventSpawner.addSpawn(MobInfo.getFromName("gorgomite"));
-        mobEvent.addSpawner(eventSpawner);
-        MobEventManager.instance.addWorldEvent(mobEvent);
-
-        mobEvent = new MobEventBladeFlurry("bladeflurry", this.group);
-        eventSpawner = new SpawnTypeLand("bladeflurry")
-                .setChance(1.0D).setBlockLimit(32).setMobLimit(8);
-        eventSpawner.materials = new Material[] {Material.AIR};
-        eventSpawner.ignoreBiome = true;
-        eventSpawner.ignoreLight = true;
-        eventSpawner.forceSpawning = true;
-        eventSpawner.ignoreMobConditions = true;
-        eventSpawner.addSpawn(MobInfo.getFromName("clink"));
         mobEvent.addSpawner(eventSpawner);
         MobEventManager.instance.addWorldEvent(mobEvent);
 		

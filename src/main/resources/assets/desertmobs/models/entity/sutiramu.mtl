@@ -10,8 +10,8 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 0.000000
 illum 0
-map_Kd suriramu.png
-map_d suriramu.png
+map_Kd sutiramu.png
+map_d sutiramu.png
 
 newmtl sutiramu_sutiramu
 Ns 96.078431
@@ -22,5 +22,5 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 0.000000
 illum 0
-map_Kd suriramu.png
-map_d suriramu.png
+map_Kd sutiramu.png
+map_d sutiramu.png

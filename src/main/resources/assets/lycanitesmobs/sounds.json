@@ -11,6 +11,14 @@
         "category": "record",
         "sounds": [{"name": "lycanitesmobs:mobevent/arachnophobia", "stream": true}]
     },
+    "mobevent.bladeflurry": {
+        "category": "record",
+        "sounds": [{"name": "lycanitesmobs:mobevent/bladeflurry", "stream": true}]
+    },
+    "mobevent.rootriot": {
+        "category": "record",
+        "sounds": [{"name": "lycanitesmobs:mobevent/rootriot", "stream": true}]
+    },
     "mobevent.roasting": {
         "category": "record",
         "sounds": [{"name": "lycanitesmobs:mobevent/roasting", "stream": true}]

@@ -6,7 +6,6 @@ import com.lycanitesmobs.core.entity.EntityCreatureRideable;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.ObjectLists;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.DropRate;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -46,7 +45,7 @@ public class EntityCacodemon extends EntityCreatureRideable implements IGroupDem
         this.setupMob();
 
         this.stepHeight = 1.0F;
-        this.hitAreaScale = 1.5F;
+        this.hitAreaWidthScale = 1.5F;
     }
 
     // ========== Init AI ==========

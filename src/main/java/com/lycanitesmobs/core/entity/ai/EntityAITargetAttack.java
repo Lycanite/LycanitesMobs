@@ -1,17 +1,17 @@
 package com.lycanitesmobs.core.entity.ai;
 
 import com.google.common.base.Predicate;
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.api.IGroupAlpha;
 import com.lycanitesmobs.api.IGroupAnimal;
 import com.lycanitesmobs.api.IGroupPredator;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
-import com.lycanitesmobs.LycanitesMobs;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityOwnable;
 
 import java.util.List;
+
 public class EntityAITargetAttack extends EntityAITarget {
 	// Targets:
     public Class targetClass = EntityLivingBase.class;
@@ -59,10 +59,15 @@ public class EntityAITargetAttack extends EntityAITarget {
     	this.nearbyOnly = setNearby;
     	return this;
     }
-    
+
     public EntityAITargetAttack setCantSeeTimeMax(int setCantSeeTimeMax) {
     	this.cantSeeTimeMax = setCantSeeTimeMax;
     	return this;
+    }
+
+    public EntityAITargetAttack setRange(double range) {
+        this.targetingRange = range;
+        return this;
     }
 
     public EntityAITargetAttack setHelpCall(boolean setHelp) {
@@ -144,11 +149,11 @@ public class EntityAITargetAttack extends EntityAITarget {
         if(this.allySize > 0 && this.enemySize > 0) {
             try {
                 double hostPackRange = 32D;
-                double hostPackSize = this.host.worldObj.getEntitiesWithinAABB(this.host.getClass(), this.host.getEntityBoundingBox().expand(hostPackRange, hostPackRange, hostPackRange)).size();
+                double hostPackSize = this.host.getEntityWorld().getEntitiesWithinAABB(this.host.getClass(), this.host.getEntityBoundingBox().expand(hostPackRange, hostPackRange, hostPackRange)).size();
                 double hostPackScale = hostPackSize / this.allySize;
 
                 double targetPackRange = 64D;
-                double targetPackSize = target.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, target.getEntityBoundingBox().expand(targetPackRange, targetPackRange, targetPackRange), new Predicate<EntityLivingBase>() {
+                double targetPackSize = target.getEntityWorld().getEntitiesWithinAABB(EntityLivingBase.class, target.getEntityBoundingBox().expand(targetPackRange, targetPackRange, targetPackRange), new Predicate<EntityLivingBase>() {
                     @Override
                     public boolean apply(EntityLivingBase entity) {
                         return entity.getClass().isAssignableFrom(EntityAITargetAttack.this.targetClass);

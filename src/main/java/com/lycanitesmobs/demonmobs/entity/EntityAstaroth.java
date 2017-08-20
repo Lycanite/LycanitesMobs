@@ -6,7 +6,6 @@ import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.DropRate;
 import com.lycanitesmobs.core.info.MobInfo;
-import com.lycanitesmobs.core.entity.ai.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
@@ -40,7 +39,7 @@ public class EntityAstaroth extends EntityCreatureBase implements IMob, IGroupDe
         this.setHeight = 2.0F;
         this.solidCollision = false;
         this.setupMob();
-        this.hitAreaScale = 1.5F;
+        this.hitAreaWidthScale = 1.5F;
     }
 
     // ========== Init AI ==========

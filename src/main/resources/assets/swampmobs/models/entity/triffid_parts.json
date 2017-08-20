@@ -1,0 +1,100 @@
+[
+  {
+    "name": "Body",
+    "parent": "",
+    "centerX": "0.0",
+    "centerY": "0.0",
+    "centerZ": "-0.0"
+  },
+  {
+    "name": "LegRightMiddle",
+    "parent": "Body",
+    "centerX": "-0.264",
+    "centerY": "-0.18",
+    "centerZ": "0.0"
+  },
+  {
+    "name": "LegLeftBack",
+    "parent": "Body",
+    "centerX": "0.216",
+    "centerY": "-0.18",
+    "centerZ": "-0.151"
+  },
+  {
+    "name": "LegLeftFront",
+    "parent": "Body",
+    "centerX": "0.187",
+    "centerY": "-0.18",
+    "centerZ": "0.187"
+  },
+  {
+    "name": "ArmRightBack",
+    "parent": "Body",
+    "centerX": "0.052",
+    "centerY": "0.06",
+    "centerZ": "-0.295"
+  },
+  {
+    "name": "ArmRightMiddle",
+    "parent": "Body",
+    "centerX": "-0.282",
+    "centerY": "0.06",
+    "centerZ": "-0.103"
+  },
+  {
+    "name": "ArmLeftFront",
+    "parent": "Body",
+    "centerX": "-0.026",
+    "centerY": "0.06",
+    "centerZ": "0.299"
+  },
+  {
+    "name": "TentacleRightBack",
+    "parent": "Body",
+    "centerX": "-0.187",
+    "centerY": "-0.066",
+    "centerZ": "-0.187"
+  },
+  {
+    "name": "TentacleRightFront",
+    "parent": "Body",
+    "centerX": "-0.216",
+    "centerY": "-0.066",
+    "centerZ": "0.151"
+  },
+  {
+    "name": "Head",
+    "parent": "Body",
+    "centerX": "0.0",
+    "centerY": "2.1",
+    "centerZ": "0.24"
+  },
+  {
+    "name": "MouthBottom",
+    "parent": "Head",
+    "centerX": "0.0",
+    "centerY": "2.14",
+    "centerZ": "0.84"
+  },
+  {
+    "name": "MouthTop",
+    "parent": "Head",
+    "centerX": "0.0",
+    "centerY": "2.64",
+    "centerZ": "0.84"
+  },
+  {
+    "name": "ArmLeftMiddle",
+    "parent": "Body",
+    "centerX": "0.3",
+    "centerY": "0.06",
+    "centerZ": "-0.0"
+  },
+  {
+    "name": "TentacleLeftMiddle",
+    "parent": "Body",
+    "centerX": "0.264",
+    "centerY": "-0.066",
+    "centerZ": "-0.0"
+  }
+]

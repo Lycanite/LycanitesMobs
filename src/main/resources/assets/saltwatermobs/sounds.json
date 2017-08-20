@@ -154,5 +154,37 @@
     "entity.roa.mount": {
         "category": "hostile",
         "sounds": [{"name": "saltwatermobs:entity/roa/mount", "stream": false}]
+    },
+    "entity.herma.say": {
+        "category": "hostile",
+        "sounds": [{"name": "saltwatermobs:entity/herma/say", "stream": false}]
+    },
+    "entity.herma.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "saltwatermobs:entity/herma/hurt", "stream": false}]
+    },
+    "entity.herma.death": {
+        "category": "hostile",
+        "sounds": [{"name": "saltwatermobs:entity/herma/death", "stream": false}]
+    },
+    "entity.herma.step": {
+        "category": "hostile",
+        "sounds": [{"name": "saltwatermobs:entity/herma/step", "stream": false}]
+    },
+    "entity.herma.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "saltwatermobs:entity/herma/attack", "stream": false}]
+    },
+    "entity.herma.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "saltwatermobs:entity/herma/beg", "stream": false}]
+    },
+    "entity.herma.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "saltwatermobs:entity/herma/tame", "stream": false}]
+    },
+    "entity.herma.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "saltwatermobs:entity/herma/eat", "stream": false}]
     }
 }

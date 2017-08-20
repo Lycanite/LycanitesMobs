@@ -60,7 +60,7 @@ public class EntityJoust extends EntityCreatureAgeable implements IAnimals, IGro
         this.targetTasks.addTask(0, new EntityAITargetRevenge(this).setHelpClasses(EntityJoustAlpha.class));
         this.targetTasks.addTask(1, new EntityAITargetMasterAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetParent(this).setSightCheck(false).setDistance(32.0D));
-        this.targetTasks.addTask(2, new EntityAITargetMaster(this).setTargetClass(EntityJoustAlpha.class).setSightCheck(false).setDistance(64.0D));
+        this.targetTasks.addTask(2, new EntityAITargetMaster(this).setTargetClass(EntityJoustAlpha.class).setSightCheck(false).setRange(64.0D));
     }
     
     // ========== Stats ==========

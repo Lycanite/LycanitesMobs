@@ -1,27 +1,18 @@
 package com.lycanitesmobs.forestmobs;
 
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
 import com.lycanitesmobs.core.info.*;
 import com.lycanitesmobs.core.item.ItemCustomFood;
 import com.lycanitesmobs.core.item.ItemTreat;
-import com.lycanitesmobs.core.mobevent.MobEventBase;
-import com.lycanitesmobs.core.mobevent.MobEventManager;
-import com.lycanitesmobs.core.spawning.SpawnTypeBase;
-import com.lycanitesmobs.core.spawning.SpawnTypeLand;
-import com.lycanitesmobs.core.spawning.SpawnTypeSky;
 import com.lycanitesmobs.forestmobs.dispenser.DispenserBehaviorLifeDrain;
 import com.lycanitesmobs.forestmobs.entity.*;
 import com.lycanitesmobs.forestmobs.item.ItemForestEgg;
 import com.lycanitesmobs.forestmobs.item.ItemLifeDrainCharge;
 import com.lycanitesmobs.forestmobs.item.ItemScepterLifeDrain;
-import com.lycanitesmobs.forestmobs.mobevent.MobEventRootRiot;
-import com.lycanitesmobs.LycanitesMobs;
-import com.lycanitesmobs.core.info.*;
-import com.lycanitesmobs.forestmobs.entity.*;
 import net.minecraft.block.BlockDispenser;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySpider;
@@ -80,10 +71,10 @@ public class ForestMobs {
 			rawMeat.setPotionEffect(ObjectManager.getPotionEffect("paralysis"), 10, 2, 0.8F);
 		ObjectManager.addItem("arisaurmeatraw", rawMeat);
 		ObjectLists.addItem("vegetables", ObjectManager.getItem("arisaurmeatraw"));
-
+		
 		ObjectManager.addItem("arisaurmeatcooked", new ItemCustomFood("arisaurmeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(MobEffects.INSTANT_HEALTH, 1, 6, 1.0F).setAlwaysEdible());
 		ObjectLists.addItem("vegetables", ObjectManager.getItem("arisaurmeatcooked"));
-
+		
 		ObjectManager.addItem("paleosalad", new ItemCustomFood("paleosalad", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(MobEffects.INSTANT_HEALTH, 1, 12, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
 		ObjectLists.addItem("vegetables", ObjectManager.getItem("paleosalad"));
 
@@ -139,6 +130,13 @@ public class ForestMobs {
                 .setSpawnWeight(4).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
         ObjectManager.addMob(newMob);
 
+		newMob = new MobInfo(group, "calpod", EntityCalpod.class, 0x996436, 0x3d2013)
+				.setPeaceful(false).setSummonCost(4).setDungeonLevel(1)
+				.addSubspecies(new Subspecies("verdant", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("MONSTER, TREE")
+				.setSpawnWeight(4).setAreaLimit(6).setGroupLimits(1, 2).setLightDark(false, true);
+		ObjectManager.addMob(newMob);
+
 		
 		// ========== Create Projectiles ==========
 		ObjectManager.addProjectile("lifedrain", EntityLifeDrain.class, ObjectManager.getItem("lifedraincharge"), new DispenserBehaviorLifeDrain());
@@ -154,7 +152,8 @@ public class ForestMobs {
 	// ==================================================
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
-		
+        // ========== Load All Mob Info from Configs ==========
+        MobInfo.loadAllFromConfigs(this.group);
 	}
 	
 	
@@ -166,36 +165,6 @@ public class ForestMobs {
 		// ========== Set Current Group ==========
 		ObjectManager.setCurrentGroup(group);
 		ConfigBase config = ConfigBase.getConfig(group, "spawning");
-		
-		// ========== Mob Events ==========
-		// Rot Riot:
-		MobEventBase bamstormEvent = new MobEventRootRiot("rootriot", this.group);
-        
-		SpawnTypeBase bamLandSpawner = new SpawnTypeLand("rootriot_land")
-            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-		bamLandSpawner.materials = new Material[] {Material.AIR};
-		bamLandSpawner.ignoreBiome = true;
-		bamLandSpawner.ignoreLight = true;
-		bamLandSpawner.forceSpawning = true;
-		bamLandSpawner.ignoreMobConditions = true;
-		bamLandSpawner.addSpawn(MobInfo.getFromName("shambler"));
-        if(bamLandSpawner.hasSpawns())
-        	bamstormEvent.addSpawner(bamLandSpawner);
-        
-		SpawnTypeBase bamSkySpawner = new SpawnTypeSky("rootriot_sky")
-            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-		bamSkySpawner.materials = new Material[] {Material.AIR};
-		bamSkySpawner.ignoreBiome = true;
-		bamSkySpawner.ignoreLight = true;
-		bamSkySpawner.forceSpawning = true;
-		bamSkySpawner.ignoreMobConditions = true;
-		bamSkySpawner.addSpawn(MobInfo.getFromName("spriggan"));
-        if(bamSkySpawner.hasSpawns())
-        	bamstormEvent.addSpawner(bamSkySpawner);
-        
-        if(bamstormEvent.hasSpawners())
-        	MobEventManager.instance.addWorldEvent(bamstormEvent);
-        
 		
 		// ========== Remove Vanilla Spawns ==========
 		Biome[] biomes = group.biomes;

@@ -17,29 +17,30 @@ public class SharedMobEvents {
         // Bamstorm:
         MobEventBase bamstormEvent = new MobEventBamstorm("bamstorm", group);
 
-        SpawnTypeBase bamLandSpawner = new SpawnTypeLand("bamstorm_land")
+        SpawnTypeBase landSpawner = new SpawnTypeLand("bamstorm_land")
                 .setChance(1.0D).setBlockLimit(32).setMobLimit(10);
-        bamLandSpawner.materials = new Material[] {Material.AIR};
-        bamLandSpawner.ignoreBiome = true;
-        bamLandSpawner.ignoreLight = true;
-        bamLandSpawner.forceSpawning = true;
-        bamLandSpawner.ignoreMobConditions = true;
-        bamLandSpawner.addSpawn(MobInfo.getFromName("kobold"));
-        bamLandSpawner.addSpawn(MobInfo.getFromName("conba"));
-        bamLandSpawner.addSpawn(MobInfo.getFromName("belph"));
-        bamLandSpawner.addSpawn(MobInfo.getFromName("geken"));
-        bamstormEvent.addSpawner(bamLandSpawner);
+        landSpawner.materials = new Material[] {Material.AIR};
+        landSpawner.ignoreBiome = true;
+        landSpawner.ignoreLight = true;
+        landSpawner.forceSpawning = true;
+        landSpawner.ignoreMobConditions = true;
+        landSpawner.addSpawn(MobInfo.getFromName("kobold"));
+        landSpawner.addSpawn(MobInfo.getFromName("conba"));
+        landSpawner.addSpawn(MobInfo.getFromName("belph"));
+        landSpawner.addSpawn(MobInfo.getFromName("geken"));
+        landSpawner.addSpawn(MobInfo.getFromName("aglebemu"));
+        bamstormEvent.addSpawner(landSpawner);
 
-        SpawnTypeBase bamSkySpawner = new SpawnTypeSky("bamstorm_sky")
+        SpawnTypeBase skySpawner = new SpawnTypeSky("bamstorm_sky")
                 .setChance(1.0D).setBlockLimit(32).setMobLimit(5);
-        bamSkySpawner.materials = new Material[] {Material.AIR};
-        bamSkySpawner.ignoreBiome = true;
-        bamSkySpawner.ignoreLight = true;
-        bamSkySpawner.forceSpawning = true;
-        bamSkySpawner.ignoreMobConditions = true;
-        bamSkySpawner.addSpawn(MobInfo.getFromName("zephyr"));
-        bamSkySpawner.addSpawn(MobInfo.getFromName("manticore"));
-        bamstormEvent.addSpawner(bamSkySpawner);
+        skySpawner.materials = new Material[] {Material.AIR};
+        skySpawner.ignoreBiome = true;
+        skySpawner.ignoreLight = true;
+        skySpawner.forceSpawning = true;
+        skySpawner.ignoreMobConditions = true;
+        skySpawner.addSpawn(MobInfo.getFromName("zephyr"));
+        skySpawner.addSpawn(MobInfo.getFromName("manticore"));
+        bamstormEvent.addSpawner(skySpawner);
 
         MobEventManager.instance.addWorldEvent(bamstormEvent);
 
@@ -84,10 +85,58 @@ public class SharedMobEvents {
         spawner.ignoreMobConditions = true;
         spawner.addSpawn(MobInfo.getFromName("tarantula"));
         spawner.addSpawn(MobInfo.getFromName("frostweaver"));
+        spawner.addSpawn(MobInfo.getFromName("sutiramu"));
         spawner.addSpawn(MobInfo.getFromName("trite"));
         event.addSpawner(spawner);
 
         MobEventManager.instance.addWorldEvent(event);
+
+
+        // Blade Flurry:
+        event = new MobEventBladeFlurry("bladeflurry", group);
+        spawner = new SpawnTypeLand("bladeflurry")
+                .setChance(1.0D).setBlockLimit(32).setMobLimit(8);
+        spawner.materials = new Material[] {Material.AIR};
+        spawner.ignoreBiome = true;
+        spawner.ignoreLight = true;
+        spawner.forceSpawning = true;
+        spawner.ignoreMobConditions = true;
+        spawner.addSpawn(MobInfo.getFromName("clink"));
+        spawner.addSpawn(MobInfo.getFromName("quillbeast"));
+        event.addSpawner(spawner);
+
+        MobEventManager.instance.addWorldEvent(event);
+
+
+
+        // Rot Riot:
+        event = new MobEventRootRiot("rootriot", group);
+
+        landSpawner = new SpawnTypeLand("rootriot_land")
+                .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
+        landSpawner.materials = new Material[] {Material.AIR};
+        landSpawner.ignoreBiome = true;
+        landSpawner.ignoreLight = true;
+        landSpawner.forceSpawning = true;
+        landSpawner.ignoreMobConditions = true;
+        landSpawner.addSpawn(MobInfo.getFromName("shambler"));
+        landSpawner.addSpawn(MobInfo.getFromName("triffid"));
+        if(landSpawner.hasSpawns())
+            event.addSpawner(landSpawner);
+
+        skySpawner = new SpawnTypeSky("rootriot_sky")
+                .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
+        skySpawner.materials = new Material[] {Material.AIR};
+        skySpawner.ignoreBiome = true;
+        skySpawner.ignoreLight = true;
+        skySpawner.forceSpawning = true;
+        skySpawner.ignoreMobConditions = true;
+        skySpawner.addSpawn(MobInfo.getFromName("spriggan"));
+        if(skySpawner.hasSpawns())
+            event.addSpawner(skySpawner);
+
+        if(event.hasSpawners())
+            MobEventManager.instance.addWorldEvent(event);
 
 
 
@@ -110,6 +159,7 @@ public class SharedMobEvents {
         halloweenLandSpawner.addSpawn(MobInfo.getFromName("ent"));
         halloweenLandSpawner.addSpawn(MobInfo.getFromName("trent"));
         halloweenLandSpawner.addSpawn(MobInfo.getFromName("lurker"));
+        halloweenLandSpawner.addSpawn(MobInfo.getFromName("triffid"));
         halloweenEvent.addSpawner(halloweenLandSpawner);
 
         SpawnTypeBase halloweenSkySpawner = new SpawnTypeSky("halloween_sky")

@@ -23,6 +23,7 @@ import net.minecraft.world.World;
 import java.util.HashMap;
 
 public class EntityEyewig extends EntityCreatureRideable {
+
 	EntityAIAttackRanged rangedAttackAI;
     
     // ==================================================

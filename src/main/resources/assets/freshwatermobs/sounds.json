@@ -95,8 +95,96 @@
         "category": "hostile",
         "sounds": [{"name": "freshwatermobs:entity/silex/death", "stream": false}]
     },
+    "entity.thresher.say": {
+        "category": "hostile",
+        "sounds": [{"name": "freshwatermobs:entity/thresher/say", "stream": false}]
+    },
+    "entity.thresher.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "freshwatermobs:entity/thresher/hurt", "stream": false}]
+    },
+    "entity.thresher.death": {
+        "category": "hostile",
+        "sounds": [{"name": "freshwatermobs:entity/thresher/death", "stream": false}]
+    },
+    "entity.thresher.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "freshwatermobs:entity/thresher/attack", "stream": false}]
+    },
+    "entity.thresher.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "freshwatermobs:entity/thresher/beg", "stream": false}]
+    },
+    "entity.thresher.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "freshwatermobs:entity/thresher/tame", "stream": false}]
+    },
+    "entity.thresher.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "freshwatermobs:entity/thresher/eat", "stream": false}]
+    },
+    "entity.thresher.mount": {
+        "category": "hostile",
+        "sounds": [{"name": "freshwatermobs:entity/thresher/mount", "stream": false}]
+    },
+    "entity.ioray.say": {
+        "category": "hostile",
+        "sounds": [{"name": "freshwatermobs:entity/ioray/say", "stream": false}]
+    },
+    "entity.ioray.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "freshwatermobs:entity/ioray/hurt", "stream": false}]
+    },
+    "entity.ioray.death": {
+        "category": "hostile",
+        "sounds": [{"name": "freshwatermobs:entity/ioray/death", "stream": false}]
+    },
+    "entity.ioray.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "freshwatermobs:entity/ioray/beg", "stream": false}]
+    },
+    "entity.ioray.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "freshwatermobs:entity/ioray/tame", "stream": false}]
+    },
+    "entity.ioray.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "freshwatermobs:entity/ioray/eat", "stream": false}]
+    },
+    "entity.ioray.mount": {
+        "category": "hostile",
+        "sounds": [{"name": "freshwatermobs:entity/ioray/mount", "stream": false}]
+    },
+    "entity.abaia.say": {
+        "category": "hostile",
+        "sounds": [{"name": "freshwatermobs:entity/abaia/say", "stream": false}]
+    },
+    "entity.abaia.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "freshwatermobs:entity/abaia/hurt", "stream": false}]
+    },
+    "entity.abaia.death": {
+        "category": "hostile",
+        "sounds": [{"name": "freshwatermobs:entity/abaia/death", "stream": false}]
+    },
+    "entity.abaia.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "freshwatermobs:entity/abaia/attack", "stream": false}]
+    },
+    "entity.abaia.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "freshwatermobs:entity/abaia/beg", "stream": false}]
+    },
+    "entity.abaia.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "freshwatermobs:entity/abaia/tame", "stream": false}]
+    },
     "projectile.aquapulse": {
         "category": "ambient",
         "sounds": [{"name": "freshwatermobs:projectile/aquapulse", "stream": false}]
+    },
+    "projectile.waterjet": {
+        "category": "ambient",
+        "sounds": [{"name": "freshwatermobs:projectile/waterjet", "stream": false}]
     }
 }

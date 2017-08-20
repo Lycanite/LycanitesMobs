@@ -1,6 +1,7 @@
 package com.lycanitesmobs.forestmobs.entity;
 
 import com.lycanitesmobs.ObjectManager;
+import com.lycanitesmobs.api.IGroupHeavy;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.ObjectLists;
 import com.lycanitesmobs.AssetManager;
@@ -29,7 +30,7 @@ import net.minecraft.world.World;
 
 import java.util.HashMap;
 
-public class EntityTrent extends EntityCreatureBase implements IMob, IGroupPlant {
+public class EntityTrent extends EntityCreatureBase implements IMob, IGroupPlant, IGroupHeavy {
     
     // ==================================================
  	//                    Constructor

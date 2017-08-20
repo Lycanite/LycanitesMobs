@@ -62,6 +62,14 @@ achievement.vespidqueen.kill=The Hives Heart
 achievement.vespidqueen.kill.desc=Slay a Vespid Queen.
 achievement.vespidqueen.learn=Her Majesty
 achievement.vespidqueen.learn.desc=Add a Vespid Queen to your Beastiary.
+entity.junglemobs.dawon.name=Dawon
+entity.junglemobs.dawon.description=Crystaline felines with a deadly pounce that can cause slowness! Sometimes rare crystals can be found on their body.
+achievement.dawon.kill=Crystal Cats!
+achievement.dawon.kill.desc=Slay a Dawon.
+achievement.dawon.learn=Silicon Based Mammals?
+achievement.dawon.learn.desc=Add a Dawon to your Beastiary.
+achievement.dawon.tame=A Pet For The Fancy
+achievement.dawon.tame.desc=Tame a Dawon.
 #
 # Items
 item.junglespawn.name=Spawn
@@ -77,6 +85,8 @@ item.poopscepter.name=Poop Scepter
 item.poopscepter.description=Low Damage, Rapid Fire, Applies Slowness and Nausea, Places Poop Clouds
 item.uvaraptortreat.name=Uvaraptor Treat
 item.uvaraptortreat.description=Perhaps you can tame one, it would almost be like a flying mount!
+item.dawontreat.name=Dawon Treat
+item.dawontreat.description=As well as meat, they also eat crystals and seem to love Emeralds!
 #
 # Blocks
 tile.quickweb.name=Quickweb
@@ -84,6 +94,6 @@ tile.quickweb.description=A green web that will fall apart after a short time.
 tile.poopcloud.name=Poop Cloud
 tile.poopcloud.description=A very smelly cloud that applies slowness and nausea!
 tile.veswax.name=Veswax
-tile.veswax.description=A tough clay like substance created by Vespids usually to form hive walls.
+tile.veswax.description=A tough clay-like substance created by Vespids usually to form hive walls.
 tile.propolis.name=Propolis
-tile.propolis.description=A touch clay like substance created by Vespids usually to form hive floors and ceilings.
+tile.propolis.description=A tough clay-like substance created by Vespids usually to form hive floors and ceilings.

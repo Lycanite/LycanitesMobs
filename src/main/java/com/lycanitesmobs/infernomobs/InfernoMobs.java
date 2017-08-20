@@ -1,31 +1,28 @@
 package com.lycanitesmobs.infernomobs;
 
 import com.lycanitesmobs.AssetManager;
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
 import com.lycanitesmobs.core.info.*;
 import com.lycanitesmobs.core.item.ItemCustomFood;
 import com.lycanitesmobs.core.item.ItemTreat;
-import com.lycanitesmobs.core.spawning.SpawnTypeBase;
-import com.lycanitesmobs.core.spawning.SpawnTypeLand;
-import com.lycanitesmobs.infernomobs.dispenser.DispenserBehaviorScorchfire;
-import com.lycanitesmobs.infernomobs.entity.*;
-import com.lycanitesmobs.infernomobs.item.*;
-import com.lycanitesmobs.infernomobs.mobevent.MobEventCinderfall;
-import com.lycanitesmobs.infernomobs.mobevent.MobEventEruption;
-import com.lycanitesmobs.infernomobs.worldgen.WorldGeneratorInferno;
-import com.lycanitesmobs.LycanitesMobs;
-import com.lycanitesmobs.core.info.*;
 import com.lycanitesmobs.core.mobevent.MobEventBase;
 import com.lycanitesmobs.core.mobevent.MobEventManager;
+import com.lycanitesmobs.core.spawning.SpawnTypeBase;
+import com.lycanitesmobs.core.spawning.SpawnTypeLand;
 import com.lycanitesmobs.core.spawning.SpawnTypeSky;
 import com.lycanitesmobs.infernomobs.block.BlockFluidPureLava;
 import com.lycanitesmobs.infernomobs.block.BlockScorchfire;
 import com.lycanitesmobs.infernomobs.dispenser.DispenserBehaviorEmber;
 import com.lycanitesmobs.infernomobs.dispenser.DispenserBehaviorMagma;
+import com.lycanitesmobs.infernomobs.dispenser.DispenserBehaviorScorchfire;
 import com.lycanitesmobs.infernomobs.entity.*;
 import com.lycanitesmobs.infernomobs.info.AltarInfoUmberLobber;
 import com.lycanitesmobs.infernomobs.item.*;
+import com.lycanitesmobs.infernomobs.mobevent.MobEventCinderfall;
+import com.lycanitesmobs.infernomobs.mobevent.MobEventEruption;
+import com.lycanitesmobs.infernomobs.worldgen.WorldGeneratorInferno;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Items;
@@ -102,6 +99,7 @@ public class InfernoMobs {
 
 		ObjectManager.addItem("afrittreat", new ItemTreat("afrittreat", group));
         ObjectManager.addItem("salamandertreat", new ItemTreat("salamandertreat", group));
+		ObjectManager.addItem("gorgertreat", new ItemTreat("gorgertreat", group));
 
 		ObjectManager.addItem("bucketpurelava", new ItemBucketPureLava(fluid).setContainerItem(Items.BUCKET));
 
@@ -156,6 +154,13 @@ public class InfernoMobs {
                 .setSpawnWeight(6).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
         ObjectManager.addMob(newMob);
 
+		newMob = new MobInfo(group, "gorger", EntityGorger.class, 0xDE2A00, 0x200905)
+				.setPeaceful(false).setTameable(true).setSummonCost(6).setDungeonLevel(3)
+				.addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("keppel", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("LAVA").setBlockCost(32)
+				.setSpawnWeight(1).setAreaLimit(2).setGroupLimits(1, 3).setLightDark(false, true);
+		ObjectManager.addMob(newMob);
+
 		
 		// ========== Create Projectiles ==========
 		ObjectManager.addProjectile("ember", EntityEmber.class, ObjectManager.getItem("embercharge"), new DispenserBehaviorEmber());
@@ -172,7 +177,8 @@ public class InfernoMobs {
 	// ==================================================
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
-		
+        // ========== Load All Mob Info from Configs ==========
+        MobInfo.loadAllFromConfigs(this.group);
 	}
 	
 	
@@ -213,7 +219,7 @@ public class InfernoMobs {
         eventSpawner.ignoreMobConditions = true;
         eventSpawner.addSpawn(MobInfo.getFromName("lobber"));
         eventSpawner.addSpawn(MobInfo.getFromName("khalk"), 2);
-        eventSpawner.addSpawn(MobInfo.getFromName("salamander"));
+        eventSpawner.addSpawn(MobInfo.getFromName("gorger"));
         mobEvent.addSpawner(eventSpawner);
         MobEventManager.instance.addWorldEvent(mobEvent);
 
@@ -295,6 +301,13 @@ public class InfernoMobs {
                         Character.valueOf('T'), Items.MAGMA_CREAM,
                         Character.valueOf('B'), Items.BONE
                 }));
+
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("gorgertreat"), 4, 0),
+				new Object[] { "TTT", "BBT", "TTT",
+						Character.valueOf('T'), ObjectManager.getItem("cephignismeatcooked"),
+						Character.valueOf('B'), Items.BONE
+				}));
 
         GameRegistry.addRecipe(new ShapedOreRecipe(
                 new ItemStack(ObjectManager.getItem("bucketpurelava"), 1, 0),

@@ -1,7 +1,7 @@
 package com.lycanitesmobs.core.entity;
 
-import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.AssetManager;
+import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.entity.ai.EntityAISit;
 import com.lycanitesmobs.core.info.MobInfo;
 import net.minecraft.entity.*;
@@ -724,7 +724,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     }
     
     public float getStaminaRecoveryMax() {
-    	return 0.5F;
+    	return 1F;
     }
     
     public int getStaminaRecoveryWarmup() {

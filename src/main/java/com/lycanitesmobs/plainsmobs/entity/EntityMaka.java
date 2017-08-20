@@ -66,7 +66,7 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
         this.tasks.addTask(11, new EntityAILookIdle(this));
         this.targetTasks.addTask(0, new EntityAITargetRevenge(this).setHelpClasses(EntityMakaAlpha.class));
         this.targetTasks.addTask(2, new EntityAITargetParent(this).setSightCheck(false).setDistance(32.0D));
-        this.targetTasks.addTask(2, new EntityAITargetMaster(this).setTargetClass(EntityMakaAlpha.class).setSightCheck(false).setDistance(64.0D));
+        this.targetTasks.addTask(2, new EntityAITargetMaster(this).setTargetClass(EntityMakaAlpha.class).setSightCheck(false).setRange(64.0D));
         this.targetTasks.addTask(3, new EntityAITargetAvoid(this).setTargetClass(IGroupPredator.class));
     }
     

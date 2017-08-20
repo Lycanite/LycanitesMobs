@@ -84,7 +84,8 @@ public class ModelVespid extends ModelCustomObj {
 	        rotX += Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
     	}
 		float bob = -MathHelper.sin(loop * 0.2F) * 0.3F;
-		if(bob < 0) bob = -bob;
+		if(bob < 0)
+			bob = -bob;
 		posY += bob;
 		
     	// Apply Animations:

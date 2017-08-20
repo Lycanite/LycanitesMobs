@@ -1,15 +1,11 @@
 package com.lycanitesmobs.desertmobs.entity;
 
 import com.lycanitesmobs.ObjectManager;
-import com.lycanitesmobs.api.IGroupAlpha;
-import com.lycanitesmobs.api.IGroupPredator;
-import com.lycanitesmobs.api.IGroupPrey;
+import com.lycanitesmobs.api.*;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.ObjectLists;
-import com.lycanitesmobs.api.IGroupAnimal;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
-import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.DropRate;
 import com.lycanitesmobs.core.info.MobInfo;
 import net.minecraft.block.material.Material;
@@ -27,7 +23,7 @@ import net.minecraft.world.World;
 
 import java.util.HashMap;
 
-public class EntityCrusk extends EntityCreatureTameable implements IGroupPredator {
+public class EntityCrusk extends EntityCreatureTameable implements IGroupPredator, IGroupHeavy {
     
     // ==================================================
  	//                    Constructor
@@ -48,7 +44,7 @@ public class EntityCrusk extends EntityCreatureTameable implements IGroupPredato
         this.setDepth = 5.8F;
         this.setHeight = 1.8F;
         this.setupMob();
-        this.hitAreaScale = 1.5F;
+        this.hitAreaWidthScale = 1.5F;
     }
 
     // ========== Init AI ==========

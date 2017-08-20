@@ -1,8 +1,4 @@
 {
-    "mobevent.rootriot": {
-        "category": "record",
-        "sounds": [{"name": "forestmobs:mobevent/rootriot", "stream": true}]
-    },
     "entity.ent.say": {
         "category": "hostile",
         "sounds": [{"name": "forestmobs:entity/ent/say", "stream": false}]
@@ -166,6 +162,26 @@
     "entity.warg.mount": {
         "category": "hostile",
         "sounds": [{"name": "forestmobs:entity/warg/mount", "stream": false}]
+    },
+    "entity.calpod.say": {
+        "category": "hostile",
+        "sounds": [{"name": "forestmobs:entity/calpod/say", "stream": false}]
+    },
+    "entity.calpod.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "forestmobs:entity/calpod/hurt", "stream": false}]
+    },
+    "entity.calpod.death": {
+        "category": "hostile",
+        "sounds": [{"name": "forestmobs:entity/calpod/death", "stream": false}]
+    },
+    "entity.calpod.step": {
+        "category": "hostile",
+        "sounds": [{"name": "forestmobs:entity/calpod/step", "stream": false}]
+    },
+    "entity.calpod.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "forestmobs:entity/calpod/attack", "stream": false}]
     },
     "projectile.lifedrain": {
         "category": "ambient",

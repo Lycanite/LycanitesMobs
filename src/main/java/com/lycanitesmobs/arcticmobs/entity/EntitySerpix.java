@@ -5,10 +5,8 @@ import com.lycanitesmobs.api.*;
 import com.lycanitesmobs.core.entity.EntityProjectileRapidFire;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.ObjectLists;
-import com.lycanitesmobs.api.*;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
-import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.DropRate;
 import com.lycanitesmobs.core.info.MobInfo;
 import net.minecraft.block.material.Material;
@@ -33,7 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class EntitySerpix extends EntityCreatureTameable implements IGroupPredator, IGroupIce {
+public class EntitySerpix extends EntityCreatureTameable implements IGroupPredator, IGroupIce, IGroupHeavy {
 
     // ==================================================
  	//                    Constructor
@@ -56,7 +54,7 @@ public class EntitySerpix extends EntityCreatureTameable implements IGroupPredat
         this.setDepth = 6.8F;
         this.setHeight = 1.8F;
         this.setupMob();
-        this.hitAreaScale = 1.5F;
+        this.hitAreaWidthScale = 1.5F;
     }
 
     // ========== Init AI ==========

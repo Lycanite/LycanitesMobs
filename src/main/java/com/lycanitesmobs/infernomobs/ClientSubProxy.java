@@ -4,7 +4,6 @@ import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.core.info.GroupInfo;
 import com.lycanitesmobs.core.renderer.RenderRegister;
 import com.lycanitesmobs.infernomobs.model.*;
-import com.lycanitesmobs.infernomobs.model.*;
 
 public class ClientSubProxy extends CommonSubProxy {
 	
@@ -17,6 +16,7 @@ public class ClientSubProxy extends CommonSubProxy {
         AssetManager.addModel("afrit", new ModelAfrit());
         AssetManager.addModel("khalk", new ModelKhalk());
         AssetManager.addModel("salamander", new ModelSalamander());
+        AssetManager.addModel("gorger", new ModelGorger());
 
         // Register Renderers:
         RenderRegister renderRegister = new RenderRegister(groupInfo);

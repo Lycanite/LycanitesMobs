@@ -533,8 +533,9 @@ public class InventoryCreature implements IInventory {
     	for(int i = 0; i < itemList.tagCount(); ++i) {
     		NBTTagCompound itemCompound = itemList.getCompoundTagAt(i);
     		int slot = itemCompound.getByte("Slot") & 255;
-    		if(slot < this.getSizeInventory())
-    			this.setInventorySlotContentsNoUpdate(slot, ItemStack.loadItemStackFromNBT(itemCompound));
+    		if(slot < this.getSizeInventory()) {
+				this.setInventorySlotContentsNoUpdate(slot, ItemStack.loadItemStackFromNBT(itemCompound));
+			}
     	}
     	this.onInventoryChanged();
     }

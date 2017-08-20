@@ -1,9 +1,9 @@
 package com.lycanitesmobs.freshwatermobs.entity;
 
 import com.lycanitesmobs.ObjectManager;
+import com.lycanitesmobs.api.IGroupElectric;
 import com.lycanitesmobs.api.IGroupWater;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
-import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.DropRate;
 import net.minecraft.entity.Entity;
@@ -22,7 +22,9 @@ import net.minecraft.world.World;
 import java.util.HashMap;
 import java.util.List;
 
-public class EntityZephyr extends EntityCreatureTameable implements IMob, IGroupWater {
+public class EntityZephyr extends EntityCreatureTameable implements IMob, IGroupWater, IGroupElectric {
+
+    protected short aoeAttackTick = 0;
 
     // ==================================================
  	//                    Constructor
@@ -75,23 +77,15 @@ public class EntityZephyr extends EntityCreatureTameable implements IMob, IGroup
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.GUNPOWDER), 0.5F).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.GLOWSTONE_DUST), 0.5F).setMaxAmount(5));
+        this.drops.add(new DropRate(new ItemStack(Items.GUNPOWDER), 1F).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(Items.GLOWSTONE_DUST), 1F).setMaxAmount(8));
 	}
 	
 	
 	// ==================================================
     //                       Attacks
     // ==================================================
-    // ========== Can Attack ==========
-	@Override
-	public boolean canAttackClass(Class targetClass) {
-		if(targetClass == this.getClass())
-			return false;
-		return super.canAttackClass(targetClass);
-	}
-    
-	// ========== Melee Attack ==========
+    // ========== Melee Attack ==========
     @Override
     public boolean meleeAttack(Entity target, double damageScale) {
     	if(!super.meleeAttack(target, damageScale))
@@ -110,36 +104,32 @@ public class EntityZephyr extends EntityCreatureTameable implements IMob, IGroup
     // ==================================================
     //                      Updates
     // ==================================================
-    short aoeAttackTick = 0;
 	// ========== Living Update ==========
 	@Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
 
         // Static Aura Attack:
-        if(!this.worldObj.isRemote && ++aoeAttackTick == 40) {
-            aoeAttackTick = 0;
-            boolean applyEffect = this.getRNG().nextFloat() >= 0.5F;
+        if(!this.getEntityWorld().isRemote && ++this.aoeAttackTick == 40) {
+            this.aoeAttackTick = 0;
             List aoeTargets = this.getNearbyEntities(EntityLivingBase.class, null, 4);
             for(Object entityObj : aoeTargets) {
                 EntityLivingBase target = (EntityLivingBase)entityObj;
-                if(target != this && this.canAttackClass(entityObj.getClass()) && this.canAttackEntity(target) && this.getEntitySenses().canSee(target)) {
+                if(target != this && !(target instanceof IGroupElectric) && this.canAttackClass(entityObj.getClass()) && this.canAttackEntity(target) && this.getEntitySenses().canSee(target)) {
                     target.attackEntityFrom(DamageSource.causeMobDamage(this), this.getAttackDamage(1));
-                    /*if(applyEffect && ObjectManager.getPotionEffect("Paralysis") != null && ObjectManager.getPotionEffect("Paralysis").id < Potion.potionTypes.length)
-                        target.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("Paralysis").id, this.getEffectDuration(2), 0));*/
                 }
             }
         }
         
         // Particles:
-        if(this.worldObj.isRemote) {
-            this.worldObj.spawnParticle(EnumParticleTypes.CLOUD, this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width, this.posY + this.rand.nextDouble() * (double) this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width, 0.0D, 0.0D, 0.0D);
+        if(this.getEntityWorld().isRemote) {
+            this.getEntityWorld().spawnParticle(EnumParticleTypes.CLOUD, this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width, this.posY + this.rand.nextDouble() * (double) this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width, 0.0D, 0.0D, 0.0D);
             
             List aoeTargets = this.getNearbyEntities(EntityLivingBase.class, null, 4);
             for(Object entityObj : aoeTargets) {
                 EntityLivingBase target = (EntityLivingBase)entityObj;
                 if(this.canAttackClass(entityObj.getClass()) && this.canAttackEntity(target) && this.getEntitySenses().canSee(target)) {
-                    this.worldObj.spawnParticle(EnumParticleTypes.CRIT_MAGIC, target.posX + (this.rand.nextDouble() - 0.5D) * (double) target.width, target.posY + this.rand.nextDouble() * (double) target.height, target.posZ + (this.rand.nextDouble() - 0.5D) * (double) target.width, 0.0D, 0.0D, 0.0D);
+                    this.getEntityWorld().spawnParticle(EnumParticleTypes.CRIT_MAGIC, target.posX + (this.rand.nextDouble() - 0.5D) * (double) target.width, target.posY + this.rand.nextDouble() * (double) target.height, target.posZ + (this.rand.nextDouble() - 0.5D) * (double) target.width, 0.0D, 0.0D, 0.0D);
                 }
             }
         }

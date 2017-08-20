@@ -3,7 +3,6 @@ package com.lycanitesmobs.desertmobs.entity;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.DropRate;
-import com.lycanitesmobs.core.entity.ai.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -95,7 +94,7 @@ public class EntityCryptZombie extends EntityCreatureAgeable implements IMob {
     	if(!super.meleeAttack(target, damageScale))
     		return false;
     	
-    	// Wither:
+    	// Hunger:
         if(target instanceof EntityLivingBase) {
             ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.HUNGER, this.getEffectDuration(7), 0));
         }
@@ -143,6 +142,6 @@ public class EntityCryptZombie extends EntityCreatureAgeable implements IMob {
     // ========== Create Child ==========
     @Override
 	public EntityCreatureAgeable createChild(EntityCreatureAgeable baby) {
-		return new EntityCryptZombie(this.worldObj);
+		return new EntityCryptZombie(this.getEntityWorld());
 	}
 }

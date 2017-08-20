@@ -6,7 +6,6 @@ import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.entity.navigate.ArenaNode;
 import com.lycanitesmobs.core.entity.EntityProjectileBase;
-import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.entity.navigate.ArenaNodeNetwork;
 import com.lycanitesmobs.core.entity.navigate.ArenaNodeNetworkGrid;
 import com.lycanitesmobs.core.info.DropRate;
@@ -107,7 +106,7 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
         this.solidCollision = true;
         this.entityCollisionReduction = 1.0F;
         this.setupMob();
-        this.hitAreaScale = 2F;
+        this.hitAreaWidthScale = 2F;
 
         // Boss:
         this.boss = true;

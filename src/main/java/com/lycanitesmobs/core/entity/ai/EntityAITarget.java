@@ -1,10 +1,8 @@
 package com.lycanitesmobs.core.entity.ai;
 
 import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
-import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.LycanitesMobs;
-import net.minecraft.entity.Entity;
+import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -12,7 +10,6 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathPoint;
-import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.math.MathHelper;
 
 import java.util.Collections;
@@ -25,8 +22,8 @@ public abstract class EntityAITarget extends EntityAIBase {
     protected EntityLivingBase target;
     
     // Targeting:
-    protected final Predicate<EntityLivingBase> targetSelector;
-    protected final Predicate<EntityLivingBase> allySelector;
+    protected Predicate<EntityLivingBase> targetSelector;
+    protected Predicate<EntityLivingBase> allySelector;
     protected TargetSorterNearest nearestSorter;
 
     protected boolean checkSight = true;
@@ -34,6 +31,7 @@ public abstract class EntityAITarget extends EntityAIBase {
     protected boolean callForHelp = false;
     private int cantSeeTime;
     protected int cantSeeTimeMax = 60;
+    protected double targetingRange = 0;
     
     private int targetSearchStatus;
     private int targetSearchDelay;
@@ -139,8 +137,8 @@ public abstract class EntityAITarget extends EntityAIBase {
     // ==================================================
     //               Get Possible Targets
     // ==================================================
-    public <T extends Entity> List<T> getPossibleTargets(Class <? extends T > clazz, double rangeX, double rangeY, double rangeZ) {
-        return this.host.worldObj.getEntitiesWithinAABB(clazz, this.host.getEntityBoundingBox().expand(rangeX, rangeY, rangeZ), Predicates.and(new Predicate[]{EntitySelectors.CAN_AI_TARGET, this.targetSelector}));
+    public <T extends EntityLivingBase> List<T> getPossibleTargets(Class <? extends T > clazz, double rangeX, double rangeY, double rangeZ) {
+        return this.host.getEntityWorld().getEntitiesWithinAABB(clazz, this.host.getEntityBoundingBox().expand(rangeX, rangeY, rangeZ), this.targetSelector);
     }
     
     
@@ -148,6 +146,8 @@ public abstract class EntityAITarget extends EntityAIBase {
  	//                 Get Target Distance
  	// ==================================================
     protected double getTargetDistance() {
+        if(this.targetingRange > 0)
+            return this.targetingRange;
     	IAttributeInstance attributeInstance = this.host.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE);
         return attributeInstance == null ? 16.0D : attributeInstance.getAttributeValue();
     }
@@ -161,7 +161,7 @@ public abstract class EntityAITarget extends EntityAIBase {
             return;
         try {
             double d0 = this.getTargetDistance();
-            List allies = this.host.worldObj.getEntitiesWithinAABB(this.host.getClass(), this.host.getEntityBoundingBox().expand(d0, 4.0D, d0), this.allySelector);
+            List allies = this.host.getEntityWorld().getEntitiesWithinAABB(this.host.getClass(), this.host.getEntityBoundingBox().expand(d0, 4.0D, d0), this.allySelector);
             Iterator possibleAllies = allies.iterator();
 
             while (possibleAllies.hasNext()) {
@@ -197,7 +197,7 @@ public abstract class EntityAITarget extends EntityAIBase {
             return false;
 
         // Creative Check:
-        if(checkTarget instanceof EntityPlayer && !targetCreative && ((EntityPlayer)checkTarget).capabilities.disableDamage)
+        if(checkTarget instanceof EntityPlayer && !targetCreative && (((EntityPlayer)checkTarget).isCreative() || ((EntityPlayer)checkTarget).isSpectator()))
             return false;
         
         // Additional Checks:
@@ -246,10 +246,7 @@ public abstract class EntityAITarget extends EntityAIBase {
             return false;
 
         // Sight Check:
-        if(this.checkSight && !this.host.getEntitySenses().canSee(checkTarget))
-            return false;
-
-        return true;
+        return !this.checkSight || this.host.getEntitySenses().canSee(checkTarget);
     }
     
     

@@ -1,0 +1,6 @@
+{
+	"parent": "freshwatermobs:item/waterjetscepter",
+	"textures": {
+		"layer0": "freshwatermobs:items/waterjetscepter_fire"
+	}
+}

@@ -16,6 +16,9 @@ public class WalkNodeProcessorWater extends WalkNodeProcessorCustom {
     @Override
     public void initProcessor(IBlockAccess sourceIn, EntityLiving mob) {
         super.initProcessor(sourceIn, mob);
+        this.entitySizeX = MathHelper.floor_double(Math.min(mob.width, 3));
+        this.entitySizeZ = MathHelper.floor_double(Math.min(mob.width, 3));
+        this.entitySizeY = MathHelper.floor_double(Math.min(mob.height, 3));
     }
 
     @Override

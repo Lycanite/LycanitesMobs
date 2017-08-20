@@ -51,6 +51,14 @@ achievement.serpix.learn=The Jormungar!
 achievement.serpix.learn.desc=Add a Serpix to your Beastiary.
 achievement.serpix.tame=Snowspeaker
 achievement.serpix.tame.desc=Tame a Serpix.
+entity.arcticmobs.maug.name=Maug
+entity.arcticmobs.maug.description=Large wolf-like arctic bears with a crippling pounce that will leave you limping away!
+achievement.maug.kill=Couldn't Bear It!
+achievement.maug.kill.desc=Slay a Maug.
+achievement.maug.learn=Wolf Bears!
+achievement.maug.learn.desc=Add a Maug to your Beastiary.
+achievement.maug.tame=Arctic Beast Master!
+achievement.maug.tame.desc=Tame a Maug.
 #
 # Items
 item.arcticspawn.name=Spawn
@@ -86,6 +94,8 @@ item.arixtreat.name=Arix Treat
 item.arixtreat.description=An icy treat for icy imps!
 item.serpixtreat.name=Serpix Treat
 item.serpixtreat.description=Serpix love to devour frosty flesh and bone!
+item.maugtreat.name=Maug Treat
+item.maugtreat.description=Maugs naturally hunt Yetis!
 item.bucketooze.name=Ooze Bucket
 item.bucketooze.description=Ooze is an icy gel substance, causes slowness, hunger and applies low damage over time.
 #

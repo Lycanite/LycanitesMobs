@@ -1,5 +1,6 @@
 package com.lycanitesmobs;
 
+import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.info.Beastiary;
 import com.lycanitesmobs.core.info.GroupInfo;
 import com.lycanitesmobs.core.item.ItemStaffSummoning;
@@ -132,20 +133,27 @@ public class ExtendedPlayer implements IExtendedPlayer {
         return this.player;
     }
 
-    /** Returns true if the provided entity is within melee attack range and is considered large. This is used for when the vanilla attack range fails on big entities. **/
-    public boolean canMeleeBigEntity(Entity targetEntity) {
-        if(targetEntity == null || !(targetEntity instanceof EntityLivingBase))
-            return false;
-        if(targetEntity.height <= 4 && targetEntity.width <= 4)
-            return false;
-        double heightOffset = this.player.posY - targetEntity.posY;
-        double heightCompensation = 0;
-        if(heightOffset > 0)
-            heightCompensation = Math.min(heightOffset, targetEntity.height);
-        double distance = Math.sqrt(this.player.getDistanceSqToEntity(targetEntity));
-        double range = 6 + heightCompensation + (targetEntity.width / 2);
-        return distance <= range;
-    }
+	/** Returns true if the provided entity is within melee attack range and is considered large. This is used for when the vanilla attack range fails on big entities. **/
+	public boolean canMeleeBigEntity(Entity targetEntity) {
+		if(targetEntity == null || !(targetEntity instanceof EntityLivingBase))
+			return false;
+		float targetWidth = targetEntity.width;
+		float targetHeight = targetEntity.height;
+		if(targetEntity instanceof EntityCreatureBase) {
+			EntityCreatureBase targetCreature = (EntityCreatureBase)targetEntity;
+			targetWidth *= targetCreature.hitAreaWidthScale;
+			targetHeight *= targetCreature.hitAreaHeightScale;
+		}
+		if(targetWidth <= 4 && targetHeight <= 4)
+			return false;
+		double heightOffset = this.player.posY - targetEntity.posY;
+		double heightCompensation = 0;
+		if(heightOffset > 0)
+			heightCompensation = Math.min(heightOffset, targetHeight);
+		double distance = Math.sqrt(this.player.getDistanceSqToEntity(targetEntity));
+		double range = 6 + heightCompensation + (targetWidth / 2);
+		return distance <= range;
+	}
 
     /** Makes this player attempt to melee attack. This is typically used for when the vanilla attack range fails on big entities. **/
     public void meleeAttack(Entity targetEntity) {

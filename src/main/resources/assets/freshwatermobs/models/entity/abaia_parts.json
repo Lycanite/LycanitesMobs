@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Head",
+    "parent": "",
+    "centerX": "0.0",
+    "centerY": "0.25",
+    "centerZ": "-0.0"
+  },
+  {
+    "name": "Body",
+    "parent": "Head",
+    "centerX": "0.0",
+    "centerY": "0.25",
+    "centerZ": "-0.0"
+  },
+  {
+    "name": "Tail01",
+    "parent": "Body",
+    "centerX": "0.0",
+    "centerY": "0.4",
+    "centerZ": "-1.05"
+  },
+  {
+    "name": "Tail02",
+    "parent": "Tail01",
+    "centerX": "0.0",
+    "centerY": "0.15",
+    "centerZ": "-1.45"
+  }
+]

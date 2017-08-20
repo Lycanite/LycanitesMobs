@@ -1,6 +1,7 @@
 package com.lycanitesmobs.forestmobs.entity;
 
 import com.lycanitesmobs.ObjectManager;
+import com.lycanitesmobs.api.IGroupHeavy;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.ObjectLists;
 import com.lycanitesmobs.api.IGroupAnimal;
@@ -28,7 +29,7 @@ import net.minecraft.world.World;
 
 import java.util.HashMap;
 
-public class EntityArisaur extends EntityCreatureAgeable implements IAnimals, IGroupAnimal, IGroupPlant {
+public class EntityArisaur extends EntityCreatureAgeable implements IAnimals, IGroupAnimal, IGroupPlant, IGroupHeavy {
 	
 	// ==================================================
  	//                    Constructor

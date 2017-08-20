@@ -181,8 +181,10 @@ public class GUIBeastiary extends GUIBaseScreen {
 			int levelBarV = 256 - levelBarHeight;
 			int level = this.getSelectedCreature().summonCost;
 
-			for(int currentLevel = 0; currentLevel < level; currentLevel++) {
-				this.drawTexturedModalRect(levelBarX + (levelBarWidth * currentLevel), levelBarY, levelBarU, levelBarV, levelBarWidth, levelBarHeight);
+			if(level <= 10) {
+				for (int currentLevel = 0; currentLevel < level; currentLevel++) {
+					this.drawTexturedModalRect(levelBarX + (levelBarWidth * currentLevel), levelBarY, levelBarU, levelBarV, levelBarWidth, levelBarHeight);
+				}
 			}
 		}
 	}

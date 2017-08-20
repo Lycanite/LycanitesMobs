@@ -1,7 +1,6 @@
 package com.lycanitesmobs.saltwatermobs.model;
 
-import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import com.lycanitesmobs.core.model.ModelObj;
+import com.lycanitesmobs.core.model.template.ModelTemplateAquatic;
 import com.lycanitesmobs.core.renderer.LayerBase;
 import com.lycanitesmobs.core.renderer.RenderCreature;
 import com.lycanitesmobs.saltwatermobs.SaltwaterMobs;
@@ -10,7 +9,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.MathHelper;
 
-public class ModelRoa extends ModelObj {
+public class ModelRoa extends ModelTemplateAquatic {
 
     // ==================================================
     //                    Constructors
@@ -22,10 +21,6 @@ public class ModelRoa extends ModelObj {
     public ModelRoa(float shadowSize) {
         // Load Model:
         this.initModel("roa", SaltwaterMobs.group, "entity/roa");
-
-        // Lock Head:
-        this.lockHeadX = false;
-        this.lockHeadY = false;
 
         // Trophy:
         this.trophyScale = 0.8F;
@@ -71,7 +66,6 @@ public class ModelRoa extends ModelObj {
     @Override
     public void animatePart(String partName, EntityLiving entity, float time, float distance, float loop, float lookY, float lookX, float scale) {
         super.animatePart(partName, entity, time, distance, loop, lookY, lookX, scale);
-        float pi = (float)Math.PI;
         float posX = 0F;
         float posY = 0F;
         float posZ = 0F;
@@ -82,39 +76,6 @@ public class ModelRoa extends ModelObj {
         float rotX = 0F;
         float rotY = 0F;
         float rotZ = 0F;
-
-        // Idle:
-        if(partName.equals("body")) {
-            this.rotate(0, (float) -Math.toDegrees(MathHelper.cos(loop * 0.2F) * 0.05F - 0.05F), 0);
-        }
-        if(partName.equals("mouth")) {
-            this.rotate(15F - (float)-Math.toDegrees(MathHelper.cos(loop * -0.1F) * 0.05F - 0.05F), 0.0F, 0.0F);
-        }
-        if(partName.equals("armleft")) {
-            rotZ -= Math.toDegrees(MathHelper.cos(loop * 0.25F) * 0.1F);
-            rotX -= Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
-        }
-        if(partName.equals("armright")) {
-            rotZ += Math.toDegrees(MathHelper.cos(loop * 0.25F) * 0.1F);
-            rotX += Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
-        }
-        if(partName.equals("tail")) {
-            rotY += (float)-Math.toDegrees(MathHelper.cos(loop * 0.25f) * 0.25F);
-        }
-
-        // Walking:
-        if(entity == null || entity.isInWater()) {
-            if(partName.equals("body")) {
-                rotY += (float)-Math.toDegrees(MathHelper.cos(time * 0.1F) * 0.2F);
-            }
-        }
-
-        // Attack:
-        if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
-            if(partName.equals("mouth")) {
-                this.rotate(30.0F, 0.0F, 0.0F);
-            }
-        }
 
         // Effect:
         if(partName.contains("effect")) {

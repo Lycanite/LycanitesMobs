@@ -155,6 +155,30 @@
         "category": "hostile",
         "sounds": [{"name": "infernomobs:entity/salamander/mount", "stream": false}]
     },
+    "entity.gorger.say": {
+        "category": "hostile",
+        "sounds": [{"name": "infernomobs:entity/gorger/say", "stream": false}]
+    },
+    "entity.gorger.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "infernomobs:entity/gorger/hurt", "stream": false}]
+    },
+    "entity.gorger.death": {
+        "category": "hostile",
+        "sounds": [{"name": "infernomobs:entity/gorger/death", "stream": false}]
+    },
+    "entity.gorger.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "infernomobs:entity/gorger/beg", "stream": false}]
+    },
+    "entity.gorger.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "infernomobs:entity/gorger/tame", "stream": false}]
+    },
+    "entity.gorger.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "infernomobs:entity/gorger/eat", "stream": false}]
+    },
     "projectile.ember": {
         "category": "ambient",
         "sounds": [{"name": "infernomobs:projectile/ember", "stream": false}]

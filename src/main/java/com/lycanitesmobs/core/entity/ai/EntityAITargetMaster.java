@@ -15,7 +15,6 @@ public class EntityAITargetMaster extends EntityAITarget {
     // Properties:
     private boolean tameTargeting = false;
     private int targetChance = 0;
-    private double targetDistance = -1D;
     
     // ==================================================
   	//                    Constructor
@@ -58,8 +57,8 @@ public class EntityAITargetMaster extends EntityAITarget {
     	this.cantSeeTimeMax = setCantSeeTimeMax;
     	return this;
     }
-    public EntityAITargetMaster setDistance(double setDist) {
-    	this.targetDistance = setDist;
+    public EntityAITargetMaster setRange(double setDist) {
+    	this.targetingRange = setDist;
     	return this;
     }
     
@@ -99,8 +98,8 @@ public class EntityAITargetMaster extends EntityAITarget {
  	// ==================================================
     @Override
     protected double getTargetDistance() {
-    	if(this.targetDistance > -1)
-    		return this.targetDistance;
+    	if(this.targetingRange > 0)
+    		return this.targetingRange;
     	IAttributeInstance attributeinstance = this.host.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE);
         return attributeinstance == null ? 16.0D : attributeinstance.getAttributeValue();
     }

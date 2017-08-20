@@ -1,0 +1,79 @@
+[
+  {
+    "name": "Head",
+    "parent": "",
+    "centerX": "0.0",
+    "centerY": "0.66",
+    "centerZ": "-0.0"
+  },
+  {
+    "name": "LegRightMiddleBack",
+    "parent": "Head",
+    "centerX": "-0.18",
+    "centerY": "0.66",
+    "centerZ": "-0.12"
+  },
+  {
+    "name": "LegRightFront",
+    "parent": "Head",
+    "centerX": "-0.24",
+    "centerY": "0.66",
+    "centerZ": "0.18"
+  },
+  {
+    "name": "LegRightMiddleFront",
+    "parent": "Head",
+    "centerX": "-0.24",
+    "centerY": "0.66",
+    "centerZ": "0.03"
+  },
+  {
+    "name": "LegRightBack",
+    "parent": "Head",
+    "centerX": "-0.15",
+    "centerY": "0.66",
+    "centerZ": "-0.258"
+  },
+  {
+    "name": "ArmRight",
+    "parent": "Head",
+    "centerX": "-0.264",
+    "centerY": "0.714",
+    "centerZ": "0.36"
+  },
+  {
+    "name": "LegLeftBack",
+    "parent": "Head",
+    "centerX": "0.15",
+    "centerY": "0.66",
+    "centerZ": "-0.258"
+  },
+  {
+    "name": "LegLeftMiddleFront",
+    "parent": "Head",
+    "centerX": "0.24",
+    "centerY": "0.66",
+    "centerZ": "0.03"
+  },
+  {
+    "name": "LegLeftFront",
+    "parent": "Head",
+    "centerX": "0.24",
+    "centerY": "0.66",
+    "centerZ": "0.18"
+  },
+  {
+    "name": "ArmLeft",
+    "parent": "Head",
+    "centerX": "0.264",
+    "centerY": "0.714",
+    "centerZ": "0.36"
+  },
+  {
+    "name": "LegLeftMiddleBack",
+    "parent": "Head",
+    "centerX": "0.18",
+    "centerY": "0.66",
+    "centerZ": "-0.12"
+  }
+]

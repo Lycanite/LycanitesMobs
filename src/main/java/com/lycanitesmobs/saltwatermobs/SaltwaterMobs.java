@@ -17,7 +17,6 @@ import com.lycanitesmobs.core.spawning.SpawnTypeWater;
 import com.lycanitesmobs.saltwatermobs.entity.*;
 import com.lycanitesmobs.saltwatermobs.item.ItemSaltwaterEgg;
 import com.lycanitesmobs.saltwatermobs.mobevent.MobEventSeaStorm;
-import com.lycanitesmobs.saltwatermobs.entity.*;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
@@ -84,8 +83,8 @@ public class SaltwaterMobs {
         ObjectLists.addItem("cookedfish", ObjectManager.getItem("seashellmaki"));
 
 		ObjectManager.addItem("raikotreat", new ItemTreat("raikotreat", group));
-
 		ObjectManager.addItem("roatreat", new ItemTreat("roatreat", group));
+		ObjectManager.addItem("hermatreat", new ItemTreat("hermatreat", group));
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ObjectManager.getItem("saltwaterspawn"), new DispenserBehaviorMobEggCustom());
@@ -115,7 +114,7 @@ public class SaltwaterMobs {
 		newMob = new MobInfo(group, "abtu", EntityAbtu.class, 0xFFBB00, 0x44AAFF)
 		        .setPeaceful(false).setSummonCost(2).setDungeonLevel(2)
 		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("WATER")
+		newMob.spawnInfo.setSpawnTypes("WATER, FISHING")
 				.setSpawnWeight(2).setAreaLimit(32).setGroupLimits(1, 5).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
@@ -129,8 +128,15 @@ public class SaltwaterMobs {
 		newMob = new MobInfo(group, "roa", EntityRoa.class, 0x222288, 0x222233)
 				.setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(2)
 				.addSubspecies(new Subspecies("verdant", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("WATER")
+		newMob.spawnInfo.setSpawnTypes("WATER, FISHING")
 				.setSpawnWeight(4).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "herma", EntityHerma.class, 0xe50403, 0xf1c2a1)
+				.setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(0)
+				.addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("russet", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("MONSTER, WATER")
+				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 		
 		
@@ -144,7 +150,8 @@ public class SaltwaterMobs {
 	// ==================================================
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
-		
+        // ========== Load All Mob Info from Configs ==========
+        MobInfo.loadAllFromConfigs(this.group);
 	}
 	
 	
@@ -157,7 +164,7 @@ public class SaltwaterMobs {
 		ObjectManager.setCurrentGroup(group);
 		
 		// ========== Mob Events ==========
-		if(MobInfo.getFromName("raiko") != null || MobInfo.getFromName("roa") != null) {
+        if(MobInfo.getFromName("raiko") != null || MobInfo.getFromName("roa") != null) {
 			MobEventBase mobEvent = new MobEventSeaStorm("seastorm", this.group);
 
 			if(MobInfo.getFromName("raiko") != null) {
@@ -185,7 +192,7 @@ public class SaltwaterMobs {
 			}
 
 			MobEventManager.instance.addWorldEvent(mobEvent);
-		}
+        }
 		
 		// ========== Crafting ==========
         GameRegistry.addRecipe(new ShapelessOreRecipe(
@@ -213,6 +220,15 @@ public class SaltwaterMobs {
 				new ItemStack(ObjectManager.getItem("roatreat"), 4, 0),
 				new Object[] { "TTT", "BBT", "TTT",
 						Character.valueOf('T'), new ItemStack(Items.DYE, 1, 0),
+						Character.valueOf('B'), Items.BONE
+				}));
+
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("hermatreat"), 4, 0),
+				new Object[] { "  C", "BBT", "  P",
+						Character.valueOf('T'), new ItemStack(Items.FISH, 1, 0),
+						Character.valueOf('C'), new ItemStack(Items.FISH, 1, 1),
+						Character.valueOf('P'), new ItemStack(Items.FISH, 1, 2),
 						Character.valueOf('B'), Items.BONE
 				}));
 		

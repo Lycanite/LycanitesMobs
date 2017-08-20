@@ -1,24 +1,21 @@
 package com.lycanitesmobs.swampmobs;
 
-import com.lycanitesmobs.ObjectManager;
-import com.lycanitesmobs.core.info.*;
-import com.lycanitesmobs.core.item.ItemCustomFood;
-import com.lycanitesmobs.core.item.ItemTreat;
-import com.lycanitesmobs.core.spawning.SpawnTypeBase;
-import com.lycanitesmobs.swampmobs.dispenser.DispenserBehaviorVenomShot;
-import com.lycanitesmobs.swampmobs.entity.*;
-import com.lycanitesmobs.swampmobs.item.*;
 import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.LycanitesMobs;
+import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
 import com.lycanitesmobs.core.info.*;
+import com.lycanitesmobs.core.item.ItemCustomFood;
+import com.lycanitesmobs.core.item.ItemTreat;
 import com.lycanitesmobs.core.mobevent.MobEventBase;
 import com.lycanitesmobs.core.mobevent.MobEventManager;
+import com.lycanitesmobs.core.spawning.SpawnTypeBase;
 import com.lycanitesmobs.core.spawning.SpawnTypeSky;
 import com.lycanitesmobs.plainsmobs.mobevent.MobEventWindStorm;
 import com.lycanitesmobs.swampmobs.block.BlockPoisonCloud;
 import com.lycanitesmobs.swampmobs.dispenser.DispenserBehaviorPoisonRay;
+import com.lycanitesmobs.swampmobs.dispenser.DispenserBehaviorVenomShot;
 import com.lycanitesmobs.swampmobs.entity.*;
 import com.lycanitesmobs.swampmobs.item.*;
 import net.minecraft.block.BlockDispenser;
@@ -116,6 +113,13 @@ public class SwampMobs {
 				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
+		newMob = new MobInfo(group, "aglebemu", EntityAglebemu.class, 0x047f0a, 0xc3a85b)
+				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0).setDungeonThemes("GROUP, WATER")
+				.addSubspecies(new Subspecies("scarlet", "uncommon")).addSubspecies(new Subspecies("azure", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("MONSTER, WATER")
+				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
+		ObjectManager.addMob(newMob);
+
 		newMob = new MobInfo(group, "dweller", EntityDweller.class, 0x009922, 0x994499)
 		        .setPeaceful(false).setSummonable(true).setSummonCost(1).setDungeonLevel(1).setDungeonThemes("GROUP, WATER")
 		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("russet", "uncommon"));
@@ -151,6 +155,13 @@ public class SwampMobs {
 				.setSpawnWeight(12).setAreaLimit(10).setGroupLimits(1, 5).setLightDark(true, false).setDungeonWeight(0);
 		ObjectManager.addMob(newMob);
 
+		newMob = new MobInfo(group, "triffid", EntityTriffid.class, 0xe60f05, 0x09e30d)
+				.setPeaceful(false).setSummonable(true).setSummonCost(6).setDungeonLevel(2)
+				.addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("MONSTER")
+				.setSpawnWeight(3).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
+		ObjectManager.addMob(newMob);
+
 		newMob = new MobInfo(group, "remobra", EntityRemobra.class, 0x440066, 0xDD00FF)
 		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1)
 		        .addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
@@ -174,7 +185,8 @@ public class SwampMobs {
 	// ==================================================
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
-		
+        // ========== Load All Mob Info from Configs ==========
+        MobInfo.loadAllFromConfigs(this.group);
 	}
 	
 	

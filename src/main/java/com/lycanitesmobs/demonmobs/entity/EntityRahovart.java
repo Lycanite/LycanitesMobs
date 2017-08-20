@@ -7,7 +7,6 @@ import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.EntityProjectileBase;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.DropRate;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -85,7 +84,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
         this.solidCollision = true;
         this.entityCollisionReduction = 1.0F;
         this.setupMob();
-        this.hitAreaScale = 2F;
+        this.hitAreaWidthScale = 2F;
 
         // Boss:
         this.boss = true;

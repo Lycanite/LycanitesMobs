@@ -1,0 +1,26 @@
+# Blender MTL File: 'thresher.blend'
+# Material Count: 2
+
+newmtl Roa_Effect
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 0.000000
+illum 0
+map_Kd thresher_effect.png
+map_d thresher_effect.png
+
+newmtl thresher
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 0.000000
+illum 0
+map_Kd thresher.png
+map_d thresher.png

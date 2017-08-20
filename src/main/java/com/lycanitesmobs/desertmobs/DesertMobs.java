@@ -15,15 +15,14 @@ import com.lycanitesmobs.desertmobs.dispenser.DispenserBehaviorMudshot;
 import com.lycanitesmobs.desertmobs.dispenser.DispenserBehaviorThrowingScythe;
 import com.lycanitesmobs.desertmobs.entity.*;
 import com.lycanitesmobs.desertmobs.item.*;
-import com.lycanitesmobs.desertmobs.mobevent.MobEventBladeFlurry;
 import com.lycanitesmobs.desertmobs.mobevent.MobEventMarchOfTheGorgomites;
-import com.lycanitesmobs.core.info.*;
-import com.lycanitesmobs.desertmobs.entity.*;
-import com.lycanitesmobs.desertmobs.item.*;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.monster.*;
+import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntitySpider;
+import net.minecraft.entity.monster.EntityWitch;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
@@ -106,6 +105,13 @@ public class DesertMobs {
 				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
+		newMob = new MobInfo(group, "sutiramu", EntitySutiramu.class, 0x83553b, 0x2c1c0f)
+				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
+				.addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("MONSTER")
+				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
+		ObjectManager.addMob(newMob);
+
 		newMob = new MobInfo(group, "crusk", EntityCrusk.class, 0xFFDDAA, 0x000000)
 		        .setPeaceful(false).setTameable(true).setSummonCost(8).setDungeonLevel(2)
 		        .addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("light", "uncommon"));
@@ -170,7 +176,8 @@ public class DesertMobs {
 	// ==================================================
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
-		
+        // ========== Load All Mob Info from Configs ==========
+        MobInfo.loadAllFromConfigs(this.group);
 	}
 	
 	
@@ -194,18 +201,6 @@ public class DesertMobs {
         eventSpawner.forceSpawning = true;
         eventSpawner.ignoreMobConditions = true;
         eventSpawner.addSpawn(MobInfo.getFromName("gorgomite"));
-        mobEvent.addSpawner(eventSpawner);
-        MobEventManager.instance.addWorldEvent(mobEvent);
-
-        mobEvent = new MobEventBladeFlurry("bladeflurry", this.group);
-        eventSpawner = new SpawnTypeLand("bladeflurry")
-                .setChance(1.0D).setBlockLimit(32).setMobLimit(8);
-        eventSpawner.materials = new Material[] {Material.AIR};
-        eventSpawner.ignoreBiome = true;
-        eventSpawner.ignoreLight = true;
-        eventSpawner.forceSpawning = true;
-        eventSpawner.ignoreMobConditions = true;
-        eventSpawner.addSpawn(MobInfo.getFromName("clink"));
         mobEvent.addSpawner(eventSpawner);
         MobEventManager.instance.addWorldEvent(mobEvent);
 		

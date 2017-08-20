@@ -1,10 +1,8 @@
 package com.lycanitesmobs.junglemobs;
 
-import com.lycanitesmobs.ObjectManager;
-import com.lycanitesmobs.core.info.*;
-import com.lycanitesmobs.junglemobs.entity.*;
 import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.LycanitesMobs;
+import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
 import com.lycanitesmobs.core.info.*;
@@ -102,6 +100,7 @@ public class JungleMobs {
 		ObjectManager.addItem("poopscepter", new ItemScepterPoop(), 2, 1, 1);
 
 		ObjectManager.addItem("uvaraptortreat", new ItemTreat("uvaraptortreat", group));
+		ObjectManager.addItem("dawontreat", new ItemTreat("dawontreat", group));
 
 		
 		// ========== Create Blocks ==========
@@ -171,6 +170,13 @@ public class JungleMobs {
 		newMob.spawnInfo.setSpawnTypes("MONSTER")
 				.setSpawnWeight(1).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "dawon", EntityDawon.class, 0x49e554, 0x030601)
+				.setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(1)
+				.addSubspecies(new Subspecies("scarlet", "uncommon")).addSubspecies(new Subspecies("azure", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("MONSTER")
+				.setSpawnWeight(6).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
+		ObjectManager.addMob(newMob);
 		
 		
 		// ========== Create Projectiles ==========
@@ -187,7 +193,8 @@ public class JungleMobs {
 	// ==================================================
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
-		
+        // ========== Load All Mob Info from Configs ==========
+        MobInfo.loadAllFromConfigs(this.group);
 	}
 	
 	
@@ -290,6 +297,13 @@ public class JungleMobs {
 				Character.valueOf('T'), ObjectManager.getItem("concapedemeatcooked"),
 				Character.valueOf('B'), Items.BONE
 			}));
+
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("dawontreat"), 4, 0),
+				new Object[] { "   ", "BBT", "   ",
+						Character.valueOf('T'), Items.EMERALD,
+						Character.valueOf('B'), Items.BONE
+				}));
 		
 		GameRegistry.addRecipe(new ShapelessOreRecipe(
 				new ItemStack(Items.CLAY_BALL, 4, 0),

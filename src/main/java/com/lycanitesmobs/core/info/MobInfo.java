@@ -239,9 +239,9 @@ public class MobInfo {
 	 * Tells every registered MobInfo to load from the configs. This should be called in init so that all mobs can read entity IDs.
 	 * @return
 	 */
-	public static void loadAllFromConfigs() {
+	public static void loadAllFromConfigs(GroupInfo group) {
 		for(MobInfo mobInfo : mobNameToInfo.values()) {
-			if(mobInfo != null)
+			if(mobInfo != null && mobInfo.group == group)
 				mobInfo.loadFromConfigs();
 		}
 	}

@@ -4,7 +4,6 @@ import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.core.info.GroupInfo;
 import com.lycanitesmobs.core.renderer.RenderRegister;
 import com.lycanitesmobs.mountainmobs.model.*;
-import com.lycanitesmobs.mountainmobs.model.*;
 
 public class ClientSubProxy extends CommonSubProxy {
 	
@@ -17,6 +16,7 @@ public class ClientSubProxy extends CommonSubProxy {
 		AssetManager.addModel("geonach", new ModelGeonach());
 		AssetManager.addModel("beholder", new ModelBeholder());
 		AssetManager.addModel("barghest", new ModelBarghest());
+		AssetManager.addModel("wildkin", new ModelWildkin());
 
         // Register Renderers:
         RenderRegister renderRegister = new RenderRegister(groupInfo);

@@ -1,0 +1,6 @@
+{
+	"parent": "plainsmobs:item/quillscepter",
+	"textures": {
+		"layer0": "plainsmobs:items/quillscepter_fire"
+	}
+}

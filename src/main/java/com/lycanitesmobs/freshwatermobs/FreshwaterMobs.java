@@ -1,22 +1,19 @@
 package com.lycanitesmobs.freshwatermobs;
 
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
 import com.lycanitesmobs.core.info.*;
 import com.lycanitesmobs.core.item.ItemCustomFood;
 import com.lycanitesmobs.core.item.ItemTreat;
-import com.lycanitesmobs.core.spawning.SpawnTypeBase;
-import com.lycanitesmobs.freshwatermobs.dispenser.DispenserBehaviorAquaPulse;
-import com.lycanitesmobs.freshwatermobs.entity.*;
-import com.lycanitesmobs.LycanitesMobs;
-import com.lycanitesmobs.core.info.*;
 import com.lycanitesmobs.core.mobevent.MobEventBase;
 import com.lycanitesmobs.core.mobevent.MobEventManager;
+import com.lycanitesmobs.core.spawning.SpawnTypeBase;
 import com.lycanitesmobs.core.spawning.SpawnTypeSky;
+import com.lycanitesmobs.freshwatermobs.dispenser.DispenserBehaviorAquaPulse;
+import com.lycanitesmobs.freshwatermobs.dispenser.DispenserBehaviorWaterJet;
 import com.lycanitesmobs.freshwatermobs.entity.*;
-import com.lycanitesmobs.freshwatermobs.item.ItemAquaPulseCharge;
-import com.lycanitesmobs.freshwatermobs.item.ItemFreshwaterEgg;
-import com.lycanitesmobs.freshwatermobs.item.ItemScepterAquaPulse;
+import com.lycanitesmobs.freshwatermobs.item.*;
 import com.lycanitesmobs.freshwatermobs.mobevent.MobEventTsunami;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
@@ -84,8 +81,12 @@ public class FreshwaterMobs {
 
         ObjectManager.addItem("aquapulsecharge", new ItemAquaPulseCharge());
         ObjectManager.addItem("aquapulsescepter", new ItemScepterAquaPulse(), 2, 1, 1);
+		ObjectManager.addItem("waterjetcharge", new ItemWaterJetCharge());
+		ObjectManager.addItem("waterjetscepter", new ItemScepterWaterJet(), 2, 1, 1);
 
         ObjectManager.addItem("stridertreat", new ItemTreat("stridertreat", group));
+		ObjectManager.addItem("threshertreat", new ItemTreat("threshertreat", group));
+		ObjectManager.addItem("ioraytreat", new ItemTreat("ioraytreat", group));
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ObjectManager.getItem("freshwaterspawn"), new DispenserBehaviorMobEggCustom());
@@ -115,13 +116,36 @@ public class FreshwaterMobs {
         newMob = new MobInfo(group, "silex", EntitySilex.class, 0x263abd, 0x040e75)
                 .setPeaceful(true).setSummonCost(2).setDungeonLevel(-1)
                 .addSubspecies(new Subspecies("light", "uncommon")).addSubspecies(new Subspecies("keppel", "uncommon"));
-        newMob.spawnInfo.setSpawnTypes("WATER").setDespawn(false)
+        newMob.spawnInfo.setSpawnTypes("WATER, FISHING").setDespawn(false)
                 .setSpawnWeight(6).setAreaLimit(2).setGroupLimits(1, 6).setLightDark(true, false).setDungeonWeight(0);
         ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "thresher", EntityThresher.class, 0x77747e, 0x3f4567)
+				.setPeaceful(false).setTameable(true).setSummonCost(6).setDungeonLevel(2)
+				.addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("WATER")
+				.setSpawnWeight(1).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "ioray", EntityIoray.class, 0x5247ca, 0xccd6ec)
+				.setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(1)
+				.addSubspecies(new Subspecies("light", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("WATER").setBiomes("GROUP,-SWAMP")
+				.setSpawnWeight(4).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "abaia", EntityAbaia.class, 0x537d41, 0xdfb752)
+				.setPeaceful(false).setSummonable(true).setSummonCost(4).setDungeonLevel(1)
+				.addSubspecies(new Subspecies("violet", "uncommon")).addSubspecies(new Subspecies("ashen", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("WATER, FISHING").setBiomes("GROUP,-SWAMP")
+				.setSpawnWeight(6).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);
+		ObjectManager.addMob(newMob);
 
 		
 		// ========== Create Projectiles ==========
 		ObjectManager.addProjectile("aquapulse", EntityAquaPulse.class, ObjectManager.getItem("aquapulsecharge"), new DispenserBehaviorAquaPulse());
+		ObjectManager.addProjectile("waterjet", EntityWaterJet.class, ObjectManager.getItem("waterjetcharge"), new DispenserBehaviorWaterJet());
+		ObjectManager.addProjectile("waterjetend", EntityWaterJetEnd.class);
 		
 		// ========== Register Models ==========
 		proxy.registerModels(this.group);
@@ -133,7 +157,8 @@ public class FreshwaterMobs {
 	// ==================================================
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
-		
+        // ========== Load All Mob Info from Configs ==========
+        MobInfo.loadAllFromConfigs(this.group);
 	}
 	
 	
@@ -183,14 +208,28 @@ public class FreshwaterMobs {
                             Character.valueOf('C'), ObjectManager.getItem("aquapulsecharge"),
                             Character.valueOf('R'), Items.BLAZE_ROD
                     }));
+
+			GameRegistry.addRecipe(new ShapedOreRecipe(
+					new ItemStack(ObjectManager.getItem("waterjetscepter"), 1, 0),
+					new Object[]{"CCC", "CRC", "CRC",
+							Character.valueOf('C'), ObjectManager.getItem("waterjetcharge"),
+							Character.valueOf('R'), Items.BLAZE_ROD
+					}));
         }
 
-        GameRegistry.addRecipe(new ShapedOreRecipe(
-                new ItemStack(ObjectManager.getItem("stridertreat"), 4, 0),
-                new Object[] { "TTT", "BBT", "TTT",
-                        Character.valueOf('T'), ObjectManager.getItem("silexmeatcooked"),
-                        Character.valueOf('B'), Items.BONE
-                }));
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("threshertreat"), 4, 0),
+				new Object[] { "TTT", "BBT", "TTT",
+						Character.valueOf('T'), new ItemStack(Items.FISH, 1, 3),
+						Character.valueOf('B'), Items.BONE
+				}));
+
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("ioraytreat"), 4, 0),
+				new Object[] { "   ", "BBT", "   ",
+						Character.valueOf('T'), Items.PRISMARINE_CRYSTALS,
+						Character.valueOf('B'), Items.BONE
+				}));
 		
 		// ========== Smelting ==========
 		GameRegistry.addSmelting(ObjectManager.getItem("silexmeatraw"), new ItemStack(ObjectManager.getItem("silexmeatcooked"), 1), 0.5f);

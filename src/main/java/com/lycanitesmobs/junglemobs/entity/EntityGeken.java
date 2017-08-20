@@ -1,6 +1,5 @@
 package com.lycanitesmobs.junglemobs.entity;
 
-import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
@@ -95,13 +94,13 @@ public class EntityGeken extends EntityCreatureTameable implements IMob {
         super.onLivingUpdate();
         
         // Random Leaping:
-        if(this.onGround && !this.worldObj.isRemote) {
+        if(this.onGround && !this.getEntityWorld().isRemote) {
         	if(this.hasAttackTarget()) {
         		if(this.rand.nextInt(10) == 0)
         			this.leap(6.0F, 0.6D, this.getAttackTarget());
         	}
         	else {
-        		if(this.rand.nextInt(50) == 0 && this.isMoving())
+        		if(this.isMoving() && this.rand.nextInt(50) == 0)
         			this.leap(1.0D, 1.0D);
         	}
         }
@@ -163,7 +162,7 @@ public class EntityGeken extends EntityCreatureTameable implements IMob {
     // ========== Create Child ==========
     @Override
 	public EntityCreatureAgeable createChild(EntityCreatureAgeable baby) {
-		return new EntityGeken(this.worldObj);
+		return new EntityGeken(this.getEntityWorld());
 	}
     
     

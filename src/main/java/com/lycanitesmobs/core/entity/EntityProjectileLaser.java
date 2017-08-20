@@ -150,14 +150,20 @@ public class EntityProjectileLaser extends EntityProjectileBase {
     	this.syncShootingEntity();
     	
     	//this.syncOffset(); Broken? :(
-    	if(!this.worldObj.isRemote && this.shootingEntity != null) {
-    		Entity entityToFollow = this.shootingEntity;
-    		if(this.followEntity != null)
-    			entityToFollow = this.followEntity;
-    		this.posX = entityToFollow.posX + this.offsetX;
-    		this.posY = entityToFollow.posY + this.offsetY;
-    		this.posZ = entityToFollow.posZ + this.offsetZ;
-    	}
+		if(!this.getEntityWorld().isRemote && this.shootingEntity != null) {
+			Entity entityToFollow = this.shootingEntity;
+			if(this.followEntity != null)
+				entityToFollow = this.followEntity;
+			double xPos = entityToFollow.posX + this.offsetX;
+			double yPos = entityToFollow.posY -(this.height / 2) + this.offsetY;
+			double zPos = entityToFollow.posZ + this.offsetZ;
+			if(entityToFollow instanceof EntityCreatureBase) {
+				EntityCreatureBase creatureToFollow = (EntityCreatureBase)entityToFollow;
+				xPos = creatureToFollow.getFacingPosition(creatureToFollow, this.offsetX, creatureToFollow.rotationYaw + 90F).getX();
+				zPos = creatureToFollow.getFacingPosition(creatureToFollow, this.offsetZ, creatureToFollow.rotationYaw).getZ();
+			}
+			this.setPosition(xPos, yPos, zPos);
+		}
     	
     	if(this.laserTime > 0) {
 	    	this.updateEnd();
@@ -250,12 +256,14 @@ public class EntityProjectileLaser extends EntityProjectileBase {
 				this.laserEndRef = this.laserEnd.getEntityId();
 			
 			// Entity Aiming:
+			boolean lockedLaser = false;
 			if(this.shootingEntity != null && this.useEntityAttackTarget) {
 				if(this.shootingEntity instanceof EntityCreatureBase && ((EntityCreatureBase)this.shootingEntity).getAttackTarget() != null) {
 					EntityLivingBase attackTarget = ((EntityCreatureBase)this.shootingEntity).getAttackTarget();
 					this.targetX = attackTarget.posX;
 					this.targetY = attackTarget.posY + (attackTarget.height / 2);
 					this.targetZ = attackTarget.posZ;
+					lockedLaser = true;
 				}
 				else {
 					Vec3d lookDirection = this.shootingEntity.getLookVec();
@@ -266,7 +274,7 @@ public class EntityProjectileLaser extends EntityProjectileBase {
 			}
 			
 			// Raytracing:
-			HashSet<Entity> excludedEntities = new HashSet<Entity>();
+			HashSet<Entity> excludedEntities = new HashSet<>();
 			excludedEntities.add(this);
 			if(this.shootingEntity != null)
 				excludedEntities.add(this.shootingEntity);
@@ -278,7 +286,7 @@ public class EntityProjectileLaser extends EntityProjectileBase {
 			double newTargetX = this.targetX;
 			double newTargetY = this.targetY;
 			double newTargetZ = this.targetZ;
-			if(target != null && target.hitVec != null) {
+			if(target != null && target.hitVec != null && !lockedLaser) {
 				newTargetX = target.hitVec.xCoord;
 				newTargetY = target.hitVec.yCoord;
 				newTargetZ = target.hitVec.zCoord;

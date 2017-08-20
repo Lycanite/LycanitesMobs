@@ -1,6 +1,7 @@
 package com.lycanitesmobs.freshwatermobs.entity;
 
 import com.lycanitesmobs.ObjectManager;
+import com.lycanitesmobs.api.IGroupHeavy;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.ObjectLists;
 import com.lycanitesmobs.ExtendedEntity;
@@ -24,7 +25,7 @@ import net.minecraft.world.World;
 
 import java.util.HashMap;
 
-public class EntityStrider extends EntityCreatureTameable {
+public class EntityStrider extends EntityCreatureTameable implements IGroupHeavy {
 
     protected EntityAIWander wanderAI;
     protected EntityAIAttackMelee attackAI;

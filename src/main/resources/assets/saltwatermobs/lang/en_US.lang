@@ -50,6 +50,14 @@ achievement.roa.learn=Jaws!
 achievement.roa.learn.desc=Add a Roa to your Beastiary.
 achievement.roa.tame=Sea King!
 achievement.roa.tame.desc=Tame a Roa.
+entity.saltwatermobs.herma.name=Herma
+entity.saltwatermobs.herma.description=Giant crabs! They usually keep to themselves unless something gets too close!
+achievement.herma.kill=Crabby!
+achievement.herma.kill.desc=Slay a Herma.
+achievement.herma.learn=Cokey Cokey!
+achievement.herma.learn.desc=Add a Herma to your Beastiary.
+achievement.herma.tame=Battle Crab!
+achievement.herma.tame.desc=Tame a Herma.
 #
 # Items
 item.saltwaterspawn.name=Spawn
@@ -63,3 +71,5 @@ item.raikotreat.name=Raiko Treat
 item.raikotreat.description=Raikos especially love to eat those turtle slugs, perhaps one can be tamed as a flying mount!
 item.roatreat.name=Roa Treat
 item.roatreat.description=Roa teeth are constantly found covered in Squid Ink, they seem to love the stuff!
+item.hermatreat.name=Herma Treat
+item.hermatreat.description=Herma love a variety of fish, perhaps you could tame one!

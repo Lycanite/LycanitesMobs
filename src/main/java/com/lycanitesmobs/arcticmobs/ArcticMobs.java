@@ -1,6 +1,7 @@
 package com.lycanitesmobs.arcticmobs;
 
 import com.lycanitesmobs.AssetManager;
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.arcticmobs.block.*;
 import com.lycanitesmobs.arcticmobs.dispenser.*;
@@ -19,12 +20,6 @@ import com.lycanitesmobs.core.mobevent.MobEventManager;
 import com.lycanitesmobs.core.spawning.SpawnTypeBase;
 import com.lycanitesmobs.core.spawning.SpawnTypeLand;
 import com.lycanitesmobs.core.spawning.SpawnTypeSky;
-import com.lycanitesmobs.LycanitesMobs;
-import com.lycanitesmobs.core.info.*;
-import com.lycanitesmobs.arcticmobs.block.*;
-import com.lycanitesmobs.arcticmobs.dispenser.*;
-import com.lycanitesmobs.arcticmobs.entity.*;
-import com.lycanitesmobs.arcticmobs.item.*;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
@@ -117,6 +112,7 @@ public class ArcticMobs {
 
 		ObjectManager.addItem("arixtreat", new ItemTreat("arixtreat", group));
         ObjectManager.addItem("serpixtreat", new ItemTreat("serpixtreat", group));
+		ObjectManager.addItem("maugtreat", new ItemTreat("maugtreat", group));
 
         ObjectManager.addItem("bucketooze", new ItemBucketOoze(fluid).setContainerItem(Items.BUCKET));
 
@@ -177,6 +173,13 @@ public class ArcticMobs {
         newMob.spawnInfo.setSpawnTypes("MONSTER, OOZE").setBlockCost(32)
                 .setSpawnWeight(4).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);
         ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "maug", EntityMaug.class, 0xc9cccd, 0x52504e)
+				.setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(1)
+				.addSubspecies(new Subspecies("russet", "uncommon")).addSubspecies(new Subspecies("dark", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("MONSTER")
+				.setSpawnWeight(4).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
+		ObjectManager.addMob(newMob);
 		
 		// ========== Create Projectiles ==========
 		ObjectManager.addProjectile("frostbolt", EntityFrostbolt.class, ObjectManager.getItem("frostboltcharge"), new DispenserBehaviorFrostbolt());
@@ -196,7 +199,8 @@ public class ArcticMobs {
 	// ==================================================
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
-		
+        // ========== Load All Mob Info from Configs ==========
+        MobInfo.loadAllFromConfigs(this.group);
 	}
 	
 	
@@ -313,6 +317,13 @@ public class ArcticMobs {
                         Character.valueOf('T'), ObjectManager.getItem("frostyfur"),
                         Character.valueOf('B'), Items.BONE
                 }));
+
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("maugtreat"), 4, 0),
+				new Object[] { "TTT", "BBT", "TTT",
+						Character.valueOf('T'), ObjectManager.getItem("yetimeatcooked"),
+						Character.valueOf('B'), Items.BONE
+				}));
 		
 		// ========== Smelting ==========
 		GameRegistry.addSmelting(ObjectManager.getItem("yetimeatraw"), new ItemStack(ObjectManager.getItem("yetimeatcooked"), 1), 0.5f);

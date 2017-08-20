@@ -189,6 +189,11 @@ message.pet.mount.baby=The %creature% is too young to carry you!
 #
 # ========== Commands ==========
 lyc.command.invalid=Invalid arguments.
+lyc.command.playeronly=This command can only be used by a player.
+lyc.command.beastiary.invalid=Invalid arguments, usage: /lycanitesmobs beastiary [add <creature name>, complete]> for example /lycanitesmobs beastiary add quillbeast
+lyc.command.beastiary.complete=Added all creatures to the Beastiary.
+lyc.command.beastiary.add.invalid=Invalid arguments, usage: beastiary add <creature name> for example /lycanitesmobs beastiary add quillbeast
+lyc.command.beastiary.add.unknown=Unknown creature. Ensure that the name is all lower case and has no spaces.
 lyc.command.mobevent.invalid=Invalid arguments, usage: /lycanitesmobs mobevent [start <event name>, stop, list, enable, disable]> for example /lycanitesmobs mobevent start hellsfury
 lyc.command.mobevent.start.invalid=Invalid arguments, usage: mobevent start <event name> for example mobevent start hellsfury
 lyc.command.mobevent.start.unknown=Unknown mob event. Use /lycanitesmobs mobevent list for a list of event names.

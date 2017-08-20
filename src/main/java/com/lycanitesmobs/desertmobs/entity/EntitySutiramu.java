@@ -76,7 +76,7 @@ public class EntitySutiramu extends EntityCreatureTameable implements IMob, IGro
     // ========== Stats ==========
 	@Override
 	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
+		HashMap<String, Double> baseAttributes = new HashMap<>();
 		baseAttributes.put("maxHealth", 25D);
 		baseAttributes.put("movementSpeed", 0.28D);
 		baseAttributes.put("knockbackResistance", 0.0D);

@@ -3,8 +3,6 @@ package com.lycanitesmobs.core.model;
 public class ModelObjAnimationFrame {
     /** The type of animation to do. Can be: angle, rotate, translate or scale. **/
     public String type;
-    /** The part to animate around. TODO No longer needed here! **/
-    public ModelObjPart part;
     /** The amount to animate by, usually 1, but can be used to scale an animation and also used for the angle type. **/
     public float amount = 1;
     /** The x amount this animation frame moves by. **/
@@ -17,9 +15,8 @@ public class ModelObjAnimationFrame {
     // ==================================================
     //                    Constructor
     // ==================================================
-    public ModelObjAnimationFrame(ModelObjPart part, String type, float amount, float x, float y, float z) {
+    public ModelObjAnimationFrame(String type, float amount, float x, float y, float z) {
         this.type = type;
-        this.part = part;
         this.amount = amount;
         this.x = x;
         this.y = y;

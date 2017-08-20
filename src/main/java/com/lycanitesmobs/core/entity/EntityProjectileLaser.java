@@ -275,7 +275,7 @@ public class EntityProjectileLaser extends EntityProjectileBase {
 			}
 			
 			// Raytracing:
-			HashSet<Entity> excludedEntities = new HashSet<Entity>();
+			HashSet<Entity> excludedEntities = new HashSet<>();
 			excludedEntities.add(this);
 			if(this.shootingEntity != null)
 				excludedEntities.add(this.shootingEntity);

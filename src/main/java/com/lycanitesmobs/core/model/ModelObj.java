@@ -432,16 +432,16 @@ public class ModelObj extends ModelCustom {
     //                  Create Frames
     // ==================================================
     public void angle(float rotation, float angleX, float angleY, float angleZ) {
-        this.currentAnimationPart.addAnimationFrame(new ModelObjAnimationFrame(this.currentAnimationPart, "angle", rotation, angleX, angleY, angleZ));
+        this.currentAnimationPart.addAnimationFrame(new ModelObjAnimationFrame("angle", rotation, angleX, angleY, angleZ));
     }
     public void rotate(float rotX, float rotY, float rotZ) {
-        this.currentAnimationPart.addAnimationFrame(new ModelObjAnimationFrame(this.currentAnimationPart, "rotate", 1, rotX, rotY, rotZ));
+        this.currentAnimationPart.addAnimationFrame(new ModelObjAnimationFrame("rotate", 1, rotX, rotY, rotZ));
     }
     public void translate(float posX, float posY, float posZ) {
-        this.currentAnimationPart.addAnimationFrame(new ModelObjAnimationFrame(this.currentAnimationPart, "translate", 1, posX, posY, posZ));
+        this.currentAnimationPart.addAnimationFrame(new ModelObjAnimationFrame("translate", 1, posX, posY, posZ));
     }
     public void scale(float scaleX, float scaleY, float scaleZ) {
-        this.currentAnimationPart.addAnimationFrame(new ModelObjAnimationFrame(this.currentAnimationPart, "scale", 1, scaleX, scaleY, scaleZ));
+        this.currentAnimationPart.addAnimationFrame(new ModelObjAnimationFrame("scale", 1, scaleX, scaleY, scaleZ));
     }
 
 

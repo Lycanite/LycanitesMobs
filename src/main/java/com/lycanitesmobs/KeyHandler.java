@@ -115,7 +115,7 @@ public class KeyHandler {
 				this.mc.player.closeScreen();
 			}
 		}
-		catch (Exception e) {}
+		catch(Exception e) {}
 		
 		
 		if(this.mc.inGameHasFocus) {

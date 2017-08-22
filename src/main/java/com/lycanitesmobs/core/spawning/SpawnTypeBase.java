@@ -581,7 +581,7 @@ public class SpawnTypeBase {
 
                 if (!ForgeEventFactory.doSpecialSpawn(entityLiving, world, (float) coord.getX() + 0.5F, (float) coord.getY(), (float) coord.getZ() + 0.5F)) {
                     if (entityLiving instanceof EntityCreatureBase)
-                        ((EntityCreatureBase) entityLiving).onInitialSpawn(world.getDifficultyForLocation(coord), null);
+                        entityLiving.onInitialSpawn(world.getDifficultyForLocation(coord), null);
                 }
                 LycanitesMobs.printDebug("CustomSpawner", "Spawn Check Passed! Mob spawned.");
                 mobsSpawned++;

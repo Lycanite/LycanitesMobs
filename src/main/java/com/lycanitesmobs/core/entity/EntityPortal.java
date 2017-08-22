@@ -72,6 +72,9 @@ public class EntityPortal extends EntityProjectileBase {
         this.animationFrameMax = 7;
         this.movement = false;
 
+        this.waterProof = true;
+        this.lavaProof = true;
+
         this.dataManager.register(OWNER_NAME, "");
     }
     
@@ -254,11 +257,11 @@ public class EntityPortal extends EntityProjectileBase {
     		// Get Look Target
 	        Vec3d lookDirection = this.shootingEntity.getLookVec();
 			this.targetX = this.shootingEntity.posX + (lookDirection.xCoord * this.portalRange);
-			this.targetY = this.shootingEntity.posY + this.shootingEntity.getEyeHeight() + (lookDirection.yCoord * this.portalRange);
+			this.targetY = this.shootingEntity.posY + (lookDirection.yCoord * this.portalRange);
 			this.targetZ = this.shootingEntity.posZ + (lookDirection.zCoord * this.portalRange);
 	        
 			// Apply Raytrace to Look Target:
-			RayTraceResult target = Utilities.raytrace(this.getEntityWorld(), this.shootingEntity.posX, this.shootingEntity.posY + this.shootingEntity.getEyeHeight(), this.shootingEntity.posZ, this.targetX, this.targetY, this.targetZ, 1.0F, null);
+			RayTraceResult target = Utilities.raytrace(this.getEntityWorld(), this.shootingEntity.posX, this.shootingEntity.posY, this.shootingEntity.posZ, this.targetX, this.targetY, this.targetZ, 1.0F, null);
 	        if(target != null && target.hitVec != null) {
 				this.targetX = target.hitVec.xCoord;
 				this.targetY = target.hitVec.yCoord;

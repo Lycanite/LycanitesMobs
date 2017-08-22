@@ -64,7 +64,13 @@ public class CreatureNodeProcessor extends NodeProcessor implements ICreatureNod
 
     /** Returns true if the entity should use swimming focused pathing. **/
     public boolean swimming() {
-        return this.entityCreature != null && this.entityCreature.isStrongSwimmer() && this.entityCreature.isInWater();
+        if(this.entityCreature == null) {
+            return false;
+        }
+        if(this.entityCreature.isInWater()) {
+            return this.entityCreature.isStrongSwimmer() || (this.entityCreature.canWade() && this.entityCreature.canDive());
+        }
+        return false;
     }
 
     /** Returns true if the entity should use flight focused pathing. **/
@@ -98,8 +104,7 @@ public class CreatureNodeProcessor extends NodeProcessor implements ICreatureNod
             posY = (int)this.entity.getEntityBoundingBox().minY;
             BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(MathHelper.floor(this.entity.posX), posY, MathHelper.floor(this.entity.posZ));
 
-            for (Block block = this.blockaccess.getBlockState(blockpos$mutableblockpos).getBlock(); block == Blocks.FLOWING_WATER || block == Blocks.WATER; block = this.blockaccess.getBlockState(blockpos$mutableblockpos).getBlock())
-            {
+            for (Block block = this.blockaccess.getBlockState(blockpos$mutableblockpos).getBlock(); block == Blocks.FLOWING_WATER || block == Blocks.WATER; block = this.blockaccess.getBlockState(blockpos$mutableblockpos).getBlock()) {
                 ++posY;
                 blockpos$mutableblockpos.setPos(MathHelper.floor(this.entity.posX), posY, MathHelper.floor(this.entity.posZ));
             }
@@ -141,9 +146,9 @@ public class CreatureNodeProcessor extends NodeProcessor implements ICreatureNod
 
 
     // ==================== Options ====================
-    /** Returns the start position to use when creating a new path. **/
+    /** Returns options from the current point to the target point. **/
     public int findPathOptions(PathPoint[] pathOptions, PathPoint currentPoint, PathPoint targetPoint, float maxDistance) {
-        // Flying/Strong Swimming:
+        // Flying/Strong Swimming/Diving:
         if(this.flying() || this.swimming()) {
             int i = 0;
             for (EnumFacing enumfacing : EnumFacing.values()) {

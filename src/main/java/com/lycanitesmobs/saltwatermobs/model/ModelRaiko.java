@@ -72,16 +72,18 @@ public class ModelRaiko extends ModelCustomObj {
     	if(partName.equals("mouth")) {
     		this.rotate((float)-Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F - 0.05F), 0.0F, 0.0F);
     	}
-    	if(partName.equals("wingleft")) {
-    		rotX = 20;
-	        rotX -= Math.toDegrees(MathHelper.sin(loop * 0.4F) * 0.6F);
-		    rotZ -= Math.toDegrees(MathHelper.sin(loop * 0.4F) * 0.6F);
-    	}
-    	if(partName.equals("wingright")) {
-    		rotX = 20;
-	        rotX -= Math.toDegrees(MathHelper.sin(loop * 0.4F) * 0.6F);
-	        rotZ -= Math.toDegrees(MathHelper.sin(loop * 0.4F + (float)Math.PI) * 0.6F);
-    	}
+    	if(entity != null && !entity.isInWater()) {
+			if (partName.equals("wingleft")) {
+				rotX = 20;
+				rotX -= Math.toDegrees(MathHelper.sin(loop * 0.4F) * 0.6F);
+				rotZ -= Math.toDegrees(MathHelper.sin(loop * 0.4F) * 0.6F);
+			}
+			if (partName.equals("wingright")) {
+				rotX = 20;
+				rotX -= Math.toDegrees(MathHelper.sin(loop * 0.4F) * 0.6F);
+				rotZ -= Math.toDegrees(MathHelper.sin(loop * 0.4F + (float) Math.PI) * 0.6F);
+			}
+		}
     	if(partName.equals("legleft")) {
 	        rotX -= Math.toDegrees(MathHelper.sin(loop * 0.1F + (float)Math.PI) * 0.2F);
     	}

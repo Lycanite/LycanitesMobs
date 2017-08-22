@@ -1,5 +1,7 @@
 package com.lycanitesmobs.core.spawning;
 
+import com.lycanitesmobs.core.entity.EntityCreatureBase;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -39,5 +41,23 @@ public class SpawnTypeWater extends SpawnTypeBase {
         }
         
         return blockCoords;
+    }
+
+
+    // ==================================================
+    //                  Spawn Entity
+    // ==================================================
+    /**
+     * Spawn an entity in the provided world. The mob should have already been positioned.
+     * @param world The world to spawn in.
+     * @param entityLiving The entity to spawn.
+     */
+    public void spawnEntity(World world, EntityLiving entityLiving) {
+        super.spawnEntity(world, entityLiving);
+        if(entityLiving instanceof EntityCreatureBase) {
+            EntityCreatureBase entityCreature = (EntityCreatureBase)entityLiving;
+            BlockPos modifiedSpawnPos = entityCreature.getWanderPosition(entityCreature.getPosition());
+            entityCreature.setPosition(modifiedSpawnPos.getX(), modifiedSpawnPos.getY(), modifiedSpawnPos.getZ());
+        }
     }
 }

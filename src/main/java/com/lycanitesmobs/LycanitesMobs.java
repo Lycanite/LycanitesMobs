@@ -49,7 +49,7 @@ public class LycanitesMobs {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String version = "1.17.0.0 - MC 1.11.2";
+	public static final String version = "1.17.0.1 - MC 1.11.2";
 	public static final String website = "http://lycanitesmobs.com";
 	public static final String websiteAPI = "http://api.lycanitesmobs.com";
 	public static final String websitePatreon = "https://www.patreon.com/lycanite";
@@ -264,7 +264,7 @@ public class LycanitesMobs {
 		
 		
 		// ========== Mob Events ==========
-        SharedMobEvents.createSharedEvents(this.group);
+        SharedMobEvents.createSharedEvents(group);
 
 
         // ========== Seasonal Item Lists ==========

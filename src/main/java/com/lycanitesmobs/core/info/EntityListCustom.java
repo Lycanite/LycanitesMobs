@@ -18,7 +18,7 @@ public class EntityListCustom {
     private Map<Class, ResourceLocation> classToIDMapping = new HashMap<Class, ResourceLocation>();
 
     /** This is a HashMap of the Creative Entity Eggs/Spawners. */
-    public Map<ResourceLocation, EntityEggInfo> entityEggs = Maps.<ResourceLocation, EntityEggInfo>newLinkedHashMap();
+    public Map<ResourceLocation, EntityEggInfo> entityEggs = Maps.newLinkedHashMap();
 
     /**
      * adds a mapping between Entity classes and both a string representation and an ID

@@ -5,12 +5,14 @@ import com.google.common.base.Predicate;
 import com.lycanitesmobs.*;
 import com.lycanitesmobs.api.IGroupBoss;
 import com.lycanitesmobs.api.IGroupHeavy;
+import com.lycanitesmobs.api.IGroupIce;
 import com.lycanitesmobs.core.entity.ai.DirectNavigator;
 import com.lycanitesmobs.core.entity.ai.EntityAIMoveRestriction;
 import com.lycanitesmobs.core.entity.ai.EntityAITargetAttack;
 import com.lycanitesmobs.core.entity.ai.EntityAITargetRevenge;
-import com.lycanitesmobs.core.entity.navigate.*;
-import com.lycanitesmobs.core.entity.navigate.PathNavigateSwimmerCustom;
+import com.lycanitesmobs.core.entity.navigate.CreatureMoveHelper;
+import com.lycanitesmobs.core.entity.navigate.CreaturePathNavigate;
+import com.lycanitesmobs.core.entity.navigate.ICreatureNodeProcessor;
 import com.lycanitesmobs.core.info.*;
 import com.lycanitesmobs.core.inventory.ContainerCreature;
 import com.lycanitesmobs.core.inventory.InventoryCreature;
@@ -41,7 +43,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.pathfinding.*;
+import net.minecraft.pathfinding.PathNavigate;
+import net.minecraft.pathfinding.PathNavigateGround;
+import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityMobSpawner;
@@ -196,10 +200,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
     private EntityAIBase leashMoveTowardsRestrictionAI = new EntityAIMoveRestriction(this);
     /** The flight navigator class, a makeshift class that handles flight and free swimming movement, replaces the pathfinder. **/
     public DirectNavigator directNavigator;
-    /** A path navigator for swimming, used typically by flying mobs for when they land in the water as swimming-only mobs use a swimming navigator by default. **/
-    public PathNavigate navigatorSwimming;
-    /** A move helper for swimming, used typically by flying mobs for when they land in the water as swimming-only mobs use a swimming move helper by default. **/
-    public EntityMoveHelper moveHelperSwimming;
     
     // Targets:
     /** A target used for alpha creatures or connected mobs such as following concapede segements. **/
@@ -306,13 +306,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
         this.width = this.setWidth;
         this.height = this.setHeight;
 
-        // Navigation:
-        if(this.canFly())
-            this.moveHelper = new FlightMoveHelper(this);
-        else if(this.isStrongSwimmer() && !this.canWalk())
-            this.moveHelper = new SwimmingMoveHelper(this);
-        else
-            this.moveHelper = new WalkMoveHelper(this);
+        // Movement:
+        this.moveHelper = this.createMoveHelper();
 
         // Path On Fire or In Lava:
         if(!this.canBurn()) {
@@ -1699,8 +1694,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
      * Used mainly for flying 'ghost' mobs that should fly through the terrain.
      */
     public boolean useDirectNavigator() {
-        if(this.isInWater() && this.getNavigator() instanceof PathNavigateFlight)
-            return true;
     	return false;
     }
 
@@ -1736,16 +1729,35 @@ public abstract class EntityCreatureBase extends EntityLiving {
     @Override
     public void moveEntityWithHeading(float moveStrafe, float moveForward) {
     	if(!this.useDirectNavigator()) {
-            if(this.canFly() && !this.isInWater() && !this.isInLava())
+            if(this.canFly() && !this.isInWater() && !this.isInLava()) {
                 this.moveFlyingWithHeading(moveStrafe, moveForward);
-            else if(this.shouldSwim())
+                this.updateLimbSwing();
+            }
+            else if(this.shouldSwim()) {
                 this.moveSwimmingWithHeading(moveStrafe, moveForward);
-            else
+                this.updateLimbSwing();
+            }
+            else {
                 super.moveEntityWithHeading(moveStrafe, moveForward);
+            }
         }
     	else {
             this.directNavigator.flightMovement(moveStrafe, moveForward);
+            this.updateLimbSwing();
         }
+    }
+
+    /** Updates limb swing animation, used when flying or swimming as their movements don't update it like the standard walking movement. **/
+    public void updateLimbSwing() {
+        this.prevLimbSwingAmount = this.limbSwingAmount;
+        double distanceX = this.posX - this.prevPosX;
+        double distanceZ = this.posZ - this.prevPosZ;
+        float distance = MathHelper.sqrt(distanceX * distanceX + distanceZ * distanceZ) * 4.0F;
+        if (distance > 1.0F) {
+            distance = 1.0F;
+        }
+        this.limbSwingAmount += (distance - this.limbSwingAmount) * 0.4F;
+        this.limbSwing += this.limbSwingAmount;
     }
 
     // ========== Move Flying with Heading ==========
@@ -1803,36 +1815,24 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Called when this entity is constructed for initial navigator. **/
     @Override
     protected PathNavigate createNavigator(World world) {
-        if(this.canFly())
-            return new PathNavigateFlight(this, world);
-        if(this.isStrongSwimmer())
-            return new PathNavigateSwimmerCustom(this, world);
-        if(this.canWalk() && this.canWade() && this.canBreatheUnderwater() && !this.canBreatheAboveWater())
-            return new PathNavigateGroundWater(this, world);
-        if(this.canClimb())
-            return new PathNavigateClimber(this, world);
-        return new PathNavigateGroundCustom(this, world);
+        return new CreaturePathNavigate(this, world);
+    }
+
+    // ========== Get New Move Helper ==========
+    /** Called when this entity is constructed for initial move helper. **/
+    protected EntityMoveHelper createMoveHelper() {
+        return new CreatureMoveHelper(this);
     }
 
     // ========== Get Navigator ==========
     /** Returns the movement helper that this entity should use. **/
     public PathNavigate getNavigator() {
-        /*if(super.isInWater() && !this.isStrongSwimmer() && this.canWade() && this.canBreatheUnderwater()) {
-            if (this.navigatorSwimming == null)
-                this.navigatorSwimming = new PathNavigateSwimmerCustom(this, this.getEntityWorld());
-            return this.navigatorSwimming;
-        }*/
         return super.getNavigator();
     }
 
     // ========== Get Move Helper ==========
     /** Returns the movement helper that this entity should use. **/
     public EntityMoveHelper getMoveHelper() {
-        /*if(super.isInWater() && !this.isStrongSwimmer() && this.canWade() && this.canBreatheUnderwater()) {
-            if (this.moveHelperSwimming == null)
-                this.moveHelperSwimming = new SwimmingMoveHelper(this);
-            return this.moveHelperSwimming;
-        }*/
         return super.getMoveHelper();
     }
     
@@ -2167,8 +2167,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
         height *= (float)this.sizeScale;
         super.setSize(width, height);
         this.hitAreas = null;
-        if(!this.getEntityWorld().isRemote && this.getNavigator() != null && this.getNavigator().getNodeProcessor() != null && this.getNavigator().getNodeProcessor() instanceof WalkNodeProcessorCustom)
-            ((WalkNodeProcessorCustom)this.getNavigator().getNodeProcessor()).updateEntitySize(this);
+        if(!this.getEntityWorld().isRemote && this.getNavigator() != null && this.getNavigator().getNodeProcessor() != null && this.getNavigator().getNodeProcessor() instanceof ICreatureNodeProcessor) {
+            ((ICreatureNodeProcessor) this.getNavigator().getNodeProcessor()).updateEntitySize(this);
+        }
     }
 
     /** When called, this reapplies the initial width and height of this mob and then applies sizeScale. **/
@@ -2640,6 +2641,14 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Can this entity wade through water (walks on ground and through water but does not freely swim). **/
     public boolean canWade() {
         return true;
+    }
+    /** Returns true if this entity should swim to the water surface when pathing, by default entities that can't breather underwater will try to surface. **/
+    public boolean canFloat() {
+        return !this.canBreatheUnderwater();
+    }
+    /** Returns true if this entity should dive underwater when pathing, by default entities that can breathe underwater will try to dive. **/
+    public boolean canDive() {
+        return this.canBreatheUnderwater();
     }
     /** Should this entity use smoother, faster swimming? (This doesn't stop the entity from moving in water but is used for smooth flight-like swimming). **/
     public boolean isStrongSwimmer() {
@@ -3266,6 +3275,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
     }
     /** Returns true if this mob should be damaged by the sun. **/
     public boolean daylightBurns() { return false; }
+
+    /** Returns true if this mob should be damaged by extreme cold such as from ooze. **/
+    public boolean canFreeze() { return !(this instanceof IGroupIce); }
 
     /** Returns true if this mob should be damaged by water. **/
     public boolean waterDamage() { return false; }

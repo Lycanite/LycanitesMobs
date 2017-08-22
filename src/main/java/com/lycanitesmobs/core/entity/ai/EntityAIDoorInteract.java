@@ -42,12 +42,11 @@ public abstract class EntityAIDoorInteract extends EntityAIBase {
         if(!this.host.isCollidedHorizontally)
             return false;
 
-        PathNavigateGround pathnavigateground = (PathNavigateGround)this.host.getNavigator();
-        Path pathentity = pathnavigateground.getPath();
+        Path pathEntity = this.host.getNavigator().getPath();
 
-        if(pathentity != null && !pathentity.isFinished() && pathnavigateground.getEnterDoors()) {
-            for(int i = 0; i < Math.min(pathentity.getCurrentPathIndex() + 2, pathentity.getCurrentPathLength()); ++i) {
-                PathPoint pathpoint = pathentity.getPathPointFromIndex(i);
+        if(pathEntity != null && !pathEntity.isFinished()) {
+            for(int i = 0; i < Math.min(pathEntity.getCurrentPathIndex() + 2, pathEntity.getCurrentPathLength()); ++i) {
+                PathPoint pathpoint = pathEntity.getPathPointFromIndex(i);
                 this.entityPosX = pathpoint.xCoord;
                 this.entityPosY = pathpoint.yCoord + 1;
                 this.entityPosZ = pathpoint.zCoord;

@@ -148,6 +148,14 @@ public class EntityDweller extends EntityCreatureTameable implements IMob {
 	public boolean isPushedByWater() {
         return false;
     }
+
+
+    // ========== Get Wander Position ==========
+    public BlockPos getWanderPosition(BlockPos wanderPosition) {
+        BlockPos groundPos;
+        for(groundPos = wanderPosition.down(); groundPos.getY() > 0 && !this.getEntityWorld().getBlockState(groundPos).getMaterial().isSolid(); groundPos = groundPos.down()) {}
+        return groundPos.up();
+    }
     
     
     // ==================================================

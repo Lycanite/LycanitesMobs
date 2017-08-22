@@ -271,6 +271,14 @@ public class EntityStrider extends EntityCreatureTameable implements IGroupHeavy
     }
 
 
+    // ========== Get Wander Position ==========
+    public BlockPos getWanderPosition(BlockPos wanderPosition) {
+        BlockPos groundPos;
+        for(groundPos = wanderPosition.down(); groundPos.getY() > 0 && !this.getEntityWorld().getBlockState(groundPos).getMaterial().isSolid(); groundPos = groundPos.down()) {}
+        return groundPos.up();
+    }
+
+
     // ==================================================
     //                      Attacks
     // ==================================================

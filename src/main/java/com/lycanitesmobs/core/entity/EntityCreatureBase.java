@@ -575,7 +575,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	// Spawner Check:
     	LycanitesMobs.printDebug("MobSpawns", "Checking for nearby spawner...");
         if(this.isSpawnerNearby(world, pos)) {
-        	LycanitesMobs.printDebug("MobSpawns", "Spawner found, skpping other checks.");
+        	LycanitesMobs.printDebug("MobSpawns", "Spawner found, skipping other checks.");
         	LycanitesMobs.printDebug("MobSpawns", "Spawn Check Passed!");
         	return true;
         }

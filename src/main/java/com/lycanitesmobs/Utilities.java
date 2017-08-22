@@ -74,7 +74,7 @@ public class Utilities {
 			List<Entity> allEntities = world.getEntitiesWithinAABBExcludingEntity(null, bb);
 			Entity closestHitEntity = null;
 			float closestHit = Float.POSITIVE_INFINITY;
-			float currentHit = 0.0f;
+			float currentHit;
 			AxisAlignedBB entityBb;
             RayTraceResult intercept;
 			for(Entity ent : allEntities) {

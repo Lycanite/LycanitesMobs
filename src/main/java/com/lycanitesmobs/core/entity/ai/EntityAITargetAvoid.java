@@ -1,6 +1,7 @@
 package com.lycanitesmobs.core.entity.ai;
 
 import com.google.common.base.Predicate;
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -94,8 +95,9 @@ public class EntityAITargetAvoid extends EntityAITarget {
     public boolean shouldExecute() {
         // Check for other avoid target AIs:
         EntityLivingBase avoidTarget = this.getTarget();
-        if(avoidTarget != null && !this.isValidTarget(avoidTarget))
+        if(avoidTarget != null && !this.isValidTarget(avoidTarget)) {
             return false;
+        }
 
     	this.target = null;
     	

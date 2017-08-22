@@ -101,10 +101,19 @@ public class TessellatorModel extends ObjModel
         }*/
         int[] indices = obj.mesh.indices;
         Vertex[] vertices = obj.mesh.vertices;
+
+        // Get/Create Normals:
+        if(obj.mesh.normals == null) {
+            obj.mesh.normals = new javax.vecmath.Vector3f[indices.length];
+        }
         vertexBuffer.begin(GL_TRIANGLES, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
 
         for(int i = 0; i < indices.length; i += 3) {
-            javax.vecmath.Vector3f normal = this.getNormal(vertices[indices[i]].getPos(), vertices[indices[i + 1]].getPos(), vertices[indices[i + 2]].getPos());
+            javax.vecmath.Vector3f normal = obj.mesh.normals[i];
+            if(normal == null) {
+                normal = this.getNormal(vertices[indices[i]].getPos(), vertices[indices[i + 1]].getPos(), vertices[indices[i + 2]].getPos());
+                obj.mesh.normals[i] = normal;
+            }
             for(int iv = 0; iv < 3; iv++) {
                 Vertex v = vertices[indices[i + iv]];
                 vertexBuffer

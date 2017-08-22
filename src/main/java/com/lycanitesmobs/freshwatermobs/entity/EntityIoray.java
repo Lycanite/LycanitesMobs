@@ -112,7 +112,7 @@ public class EntityIoray extends EntityCreatureRideable implements IMob, IGroupP
         this.drops.add(new DropRate(new ItemStack(Items.PRISMARINE_CRYSTALS, 1), 0.75F).setMaxAmount(3));
         this.drops.add(new DropRate(new ItemStack(Items.DIAMOND, 1), 0.05F).setMaxAmount(1));
         this.drops.add(new DropRate(new ItemStack(Items.DYE, 1, 4), 1).setMinAmount(2).setMaxAmount(4));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("lifedraincharge")), 0.5F).setMaxAmount(1));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("waterjetcharge")), 0.5F).setMaxAmount(1));
     }
     
     

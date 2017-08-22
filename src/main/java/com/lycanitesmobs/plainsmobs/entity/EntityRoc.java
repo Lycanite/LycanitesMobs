@@ -138,7 +138,7 @@ public class EntityRoc extends EntityCreatureRideable implements IMob, IGroupHun
                     if (this.ticksExisted % 100 == 0 && this.getRNG().nextBoolean()) {
                         if (this.getPickupEntity() instanceof EntityPlayer) {
                             for (int distToGround = 0; distToGround < 8; distToGround++) {
-                                Block searchBlock = this.getEntityWorld().getBlockState(new BlockPos((int) this.posX, (int) this.posY + 1 + distToGround, (int) this.posZ)).getBlock();
+                                Block searchBlock = this.getEntityWorld().getBlockState(new BlockPos((int) this.posX, (int) this.posY - distToGround, (int) this.posZ)).getBlock();
                                 if (searchBlock != null && searchBlock != Blocks.AIR) {
                                     this.dropPickupEntity();
                                     this.leap(1.0F, 2.0D);

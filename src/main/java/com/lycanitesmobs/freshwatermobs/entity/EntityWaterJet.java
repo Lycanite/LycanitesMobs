@@ -40,7 +40,7 @@ public class EntityWaterJet extends EntityProjectileLaser {
     public void setup() {
     	this.entityName = "waterjet";
     	this.group = FreshwaterMobs.group;
-    	this.setBaseDamage(1);
+    	this.setBaseDamage(3);
     }
     
     // ========== Stats ==========

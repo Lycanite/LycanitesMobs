@@ -38,7 +38,7 @@ public class EntityLifeDrain extends EntityProjectileLaser {
     public void setup() {
     	this.entityName = "lifedrain";
     	this.group = ForestMobs.group;
-    	this.setBaseDamage(2);
+    	this.setBaseDamage(4);
     }
     
     // ========== Stats ==========

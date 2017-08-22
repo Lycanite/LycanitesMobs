@@ -45,7 +45,7 @@ public class ItemStaffSummoning extends ItemScepter {
     // ========== Durability ==========
     @Override
     public int getDurability() {
-    	return 250;
+    	return 500;
     }
     
     @Override
@@ -55,7 +55,7 @@ public class ItemStaffSummoning extends ItemScepter {
     
     public void damageItemCharged(ItemStack itemStack, EntityLivingBase entity, float power) {
     	if(this.portalEntity != null) {
-    		itemStack.damageItem((5 * this.portalEntity.summonAmount), entity);
+    		itemStack.damageItem(this.portalEntity.summonAmount, entity);
     	}
     }
     

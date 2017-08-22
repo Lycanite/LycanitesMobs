@@ -62,7 +62,13 @@ public class CreatureNodeProcessor extends NodeProcessor implements ICreatureNod
 
     /** Returns true if the entity should use swimming focused pathing. **/
     public boolean swimming() {
-        return this.entityCreature != null && this.entityCreature.isStrongSwimmer() && this.entityCreature.isInWater();
+        if(this.entityCreature == null) {
+            return false;
+        }
+        if(this.entityCreature.isInWater()) {
+            return this.entityCreature.isStrongSwimmer() || (this.entityCreature.canWade() && this.entityCreature.canDive());
+        }
+        return false;
     }
 
     /** Returns true if the entity should use flight focused pathing. **/

@@ -32,7 +32,6 @@ import java.util.HashMap;
 public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroupPredator {
 
     EntityAIWander wanderAI;
-    public Entity pickupEntity;
     public EntityAIAttackMelee attackAI;
 
     // ==================================================
@@ -147,7 +146,7 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroup
     public float getAISpeedModifier() {
         if(this.getHealth() > (this.getMaxHealth() / 2)) // Slower with shell.
             return 1.0F;
-        return 4.0F;
+        return 2.0F;
     }
 
     // Pathing Weight:
@@ -191,16 +190,6 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroup
     public void pickupEntity(EntityLivingBase entity) {
         super.pickupEntity(entity);
         this.leap(-1.0F, -0.5D);
-    }
-
-    @Override
-    public void dropPickupEntity() {
-        // Drop Weight Effect:
-        if(this.pickupEntity != null && this.pickupEntity instanceof EntityLivingBase) {
-            if(ObjectManager.getPotionEffect("weight") != null)
-                ((EntityLivingBase)this.pickupEntity).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("weight"), this.getEffectDuration(5), 1));
-        }
-        super.dropPickupEntity();
     }
 
     @Override

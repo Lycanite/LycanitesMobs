@@ -25,7 +25,7 @@ import net.minecraft.world.World;
 import java.util.HashMap;
 
 public class EntityRaiko extends EntityCreatureRideable implements IMob, IGroupHunter {
-    public Entity pickupEntity;
+
     public EntityAIAttackMelee attackAI;
     public int waterTime = 0;
 
@@ -194,10 +194,10 @@ public class EntityRaiko extends EntityCreatureRideable implements IMob, IGroupH
 
     @Override
     public void dropPickupEntity() {
-    	// Drop Weight Effect:
-        if(this.pickupEntity != null && this.pickupEntity instanceof EntityLivingBase) {
+        // Drop Weight Effect:
+        if(this.hasPickupEntity()) {
             if(ObjectManager.getPotionEffect("weight") != null)
-                ((EntityLivingBase)this.pickupEntity).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("weight"), this.getEffectDuration(5), 1));
+                this.getPickupEntity().addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("weight"), this.getEffectDuration(5), 1));
         }
     	super.dropPickupEntity();
     }

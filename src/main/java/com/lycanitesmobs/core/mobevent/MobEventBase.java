@@ -114,7 +114,7 @@ public class MobEventBase {
 	 * Returns true if this event is able to start on the provided extended world.
 	 */
 	public boolean canStart(World world, ExtendedWorld worldExt) {
-		if(world.provider == null)
+		if(world.provider == null || !this.hasSpawners())
 			return false;
         if(worldExt.mobEventsLocked && !worldExt.mobEventsLockedOnlyOnSchedule && this.firstScheduleDay < 0)
             return false;

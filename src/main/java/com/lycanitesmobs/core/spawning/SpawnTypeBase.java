@@ -785,7 +785,7 @@ public class SpawnTypeBase {
      */
     public void spawnEntity(World world, EntityLiving entityLiving) {
         world.spawnEntityInWorld(entityLiving);
-        if(this.mobEvent != null) {
+        if(this.mobEvent != null && entityLiving != null) {
         	this.mobEvent.onSpawn(entityLiving);
         }
     }

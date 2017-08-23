@@ -4,10 +4,12 @@ import com.lycanitesmobs.core.capabilities.IExtendedEntity;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.EntityFear;
 import com.lycanitesmobs.core.network.MessageEntityPickedUp;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -225,7 +227,7 @@ public class ExtendedEntity implements IExtendedEntity {
             }
 
             // Teleport To Initial Pickup Position:
-            else {
+            else if(!(this.entity instanceof EntityPlayer)) {
                 double[] pickupOffset = this.getPickedUpOffset();
                 this.entity.attemptTeleport(this.pickedUpByEntity.posX + pickupOffset[0], this.pickedUpByEntity.posY + pickupOffset[1], this.pickedUpByEntity.posZ + pickupOffset[2]);
             }
@@ -237,8 +239,17 @@ public class ExtendedEntity implements IExtendedEntity {
 
     public double[] getPickedUpOffset() {
         double[] pickupOffset = new double[] {0, 0, 0};
-        if(this.pickedUpByEntity instanceof EntityCreatureBase)
-            pickupOffset = ((EntityCreatureBase)this.pickedUpByEntity).getPickupOffset(this.entity);
+        if(this.pickedUpByEntity instanceof EntityCreatureBase) {
+            pickupOffset = ((EntityCreatureBase) this.pickedUpByEntity).getPickupOffset(this.entity);
+        }
+        if(this.entity instanceof EntityPlayer) {
+            if (this.entity.getEntityWorld() != null) {
+                IBlockState blockState = this.entity.getEntityWorld().getBlockState(new BlockPos((int) pickupOffset[0], (int) pickupOffset[1], (int) pickupOffset[2]));
+                if (blockState.getMaterial().isSolid()) {
+                    return new double[]{0, 0, 0};
+                }
+            }
+        }
         return pickupOffset;
     }
 

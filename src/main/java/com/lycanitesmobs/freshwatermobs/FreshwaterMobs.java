@@ -218,6 +218,13 @@ public class FreshwaterMobs {
         }
 
 		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("stridertreat"), 4, 0),
+				new Object[] { "TTT", "BBT", "TTT",
+						Character.valueOf('T'), new ItemStack(Items.DYE, 1, 4),
+						Character.valueOf('B'), Items.BONE
+				}));
+
+		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ObjectManager.getItem("threshertreat"), 4, 0),
 				new Object[] { "TTT", "BBT", "TTT",
 						Character.valueOf('T'), new ItemStack(Items.FISH, 1, 3),

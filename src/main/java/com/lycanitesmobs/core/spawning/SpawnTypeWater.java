@@ -53,11 +53,15 @@ public class SpawnTypeWater extends SpawnTypeBase {
      * @param entityLiving The entity to spawn.
      */
     public void spawnEntity(World world, EntityLiving entityLiving) {
-        super.spawnEntity(world, entityLiving);
         if(entityLiving instanceof EntityCreatureBase) {
             EntityCreatureBase entityCreature = (EntityCreatureBase)entityLiving;
-            BlockPos modifiedSpawnPos = entityCreature.getWanderPosition(entityCreature.getPosition());
-            entityCreature.setPosition(modifiedSpawnPos.getX(), modifiedSpawnPos.getY(), modifiedSpawnPos.getZ());
+            if(!entityCreature.isStrongSwimmer() && entityCreature.canDive()) {
+                BlockPos modifiedSpawnPos = entityCreature.getPosition();
+                for (modifiedSpawnPos = modifiedSpawnPos.down(); modifiedSpawnPos.getY() > 0 && !world.getBlockState(modifiedSpawnPos).getMaterial().isSolid(); modifiedSpawnPos = modifiedSpawnPos.down()) {}
+                modifiedSpawnPos = modifiedSpawnPos.up();
+                entityCreature.setLocationAndAngles(modifiedSpawnPos.getX(), modifiedSpawnPos.getY(), modifiedSpawnPos.getZ(), entityCreature.rotationYaw, entityCreature.rotationPitch);
+            }
         }
+        super.spawnEntity(world, entityLiving);
     }
 }

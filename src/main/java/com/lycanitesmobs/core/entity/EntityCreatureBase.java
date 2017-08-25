@@ -2456,17 +2456,20 @@ public abstract class EntityCreatureBase extends EntityLiving {
                 this.inventory.dropInventory();
             if(damageSource.getEntity() != null) {
                 if(damageSource.getEntity() instanceof EntityPlayer) {
-                    EntityPlayer player = (EntityPlayer)damageSource.getEntity();
-                    player.addStat(ObjectManager.getAchievement(this.mobInfo.name + ".kill"), 1);
-                    if(this.isBoss() || this.getRNG().nextDouble() <= MobInfo.beastiaryAddOnDeathChance) {
-                        ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
-                        if(playerExt != null && !playerExt.getBeastiary().hasFullKnowledge(mobInfo.name)) {
-                            CreatureKnowledge creatureKnowledge = new CreatureKnowledge(playerExt.getBeastiary(), this.mobInfo.name, 1);
-                            playerExt.getBeastiary().addToKnowledgeList(creatureKnowledge);
-                            playerExt.getBeastiary().sendNewToClient(creatureKnowledge);
-                            playerExt.getBeastiary().sendAddedMessage(this.mobInfo);
+                    try {
+                        EntityPlayer player = (EntityPlayer) damageSource.getEntity();
+                        player.addStat(ObjectManager.getAchievement(this.mobInfo.name + ".kill"), 1);
+                        if (this.isBoss() || this.getRNG().nextDouble() <= MobInfo.beastiaryAddOnDeathChance) {
+                            ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
+                            if (playerExt != null && !playerExt.getBeastiary().hasFullKnowledge(mobInfo.name)) {
+                                CreatureKnowledge creatureKnowledge = new CreatureKnowledge(playerExt.getBeastiary(), this.mobInfo.name, 1);
+                                playerExt.getBeastiary().addToKnowledgeList(creatureKnowledge);
+                                playerExt.getBeastiary().sendNewToClient(creatureKnowledge);
+                                playerExt.getBeastiary().sendAddedMessage(this.mobInfo);
+                            }
                         }
                     }
+                    catch(Exception e) {}
                 }
             }
         }

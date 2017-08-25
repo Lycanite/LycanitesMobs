@@ -3,6 +3,8 @@ package com.lycanitesmobs.core.spawning;
 import com.lycanitesmobs.ExtendedWorld;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLeaves;
+import net.minecraft.block.BlockLog;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -43,7 +45,7 @@ public class SpawnTypeTree extends SpawnTypeBlockBreak {
     //                    Check Blocks
     // ==================================================
     public boolean isTreeLogBlock(Block block, World world, BlockPos pos) {
-        if(ObjectLists.isInOreDictionary("logWood", block)) {
+        if(block instanceof BlockLog || ObjectLists.isInOreDictionary("logWood", block)) {
             int x = pos.getX();
             int y = pos.getY();
             int z = pos.getZ();
@@ -65,7 +67,7 @@ public class SpawnTypeTree extends SpawnTypeBlockBreak {
     }
 
     public boolean isTreeLeavesBlock(Block block, World world, BlockPos pos) {
-        if(ObjectLists.isInOreDictionary("treeLeaves", block)) {
+        if(block instanceof BlockLeaves || ObjectLists.isInOreDictionary("treeLeaves", block)) {
             int x = pos.getX();
             int y = pos.getY();
             int z = pos.getZ();

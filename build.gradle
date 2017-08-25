@@ -12,7 +12,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 
 version = "1.0"
 group = "com.lycanitesmobs" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "lycanitesmobs"
+archivesBaseName = "LycanitesMobsComplete 1.X.X.X [1.10.2]"
 
 sourceCompatibility = targetCompatibility = "1.8" // Need this here so eclipse task generates correctly.
 compileJava {

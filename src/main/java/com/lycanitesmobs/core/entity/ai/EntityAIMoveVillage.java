@@ -1,6 +1,7 @@
 package com.lycanitesmobs.core.entity.ai;
 
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
+import com.lycanitesmobs.core.entity.navigate.CreaturePathNavigate;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathNavigateGround;
@@ -64,7 +65,9 @@ public class EntityAIMoveVillage extends EntityAIBase {
         if(this.doorInfo == null)
             return false;
 
-        PathNavigateGround pathNavigate = (PathNavigateGround)this.host.getNavigator();
+        if(!(this.host.getNavigator() instanceof CreaturePathNavigate))
+            return false;
+        CreaturePathNavigate pathNavigate = (CreaturePathNavigate)this.host.getNavigator();
         boolean flag = pathNavigate.getEnterDoors();
         pathNavigate.setBreakDoors(false);
         this.entityPathNavigate = this.host.getNavigator().getPathToXYZ((double)this.doorInfo.getInsideOffsetX(), (double)this.doorInfo.getInsidePosY(), (double)this.doorInfo.getInsideOffsetZ());

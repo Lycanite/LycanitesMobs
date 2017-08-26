@@ -44,6 +44,26 @@ public class CreaturePathNavigate extends PathNavigate {
         return this.theEntity.onGround || this.theEntity.isRiding();
     }
 
+    /** Sets if the creature should navigate as though it can break doors. **/
+    public void setBreakDoors(boolean setBreakDoors) {
+        this.nodeProcessor.setCanBreakDoors(setBreakDoors);
+    }
+
+    /** Sets if the creature should navigate as though it can break doors. **/
+    public boolean getBreakDoors() {
+        return this.nodeProcessor.getCanBreakDoors();
+    }
+
+    /** Sets if the creature should navigate as though it can break doors. **/
+    public void setEnterDoors(boolean setBreakDoors) {
+        this.nodeProcessor.setCanEnterDoors(setBreakDoors);
+    }
+
+    /** Returns if the creature should navigate as though it can enter doors. **/
+    public boolean getEnterDoors() {
+        return this.nodeProcessor.getCanEnterDoors();
+    }
+
 
     // ==================== Create Path ====================
     /** Returns a new path from starting path position to the provided target position. **/

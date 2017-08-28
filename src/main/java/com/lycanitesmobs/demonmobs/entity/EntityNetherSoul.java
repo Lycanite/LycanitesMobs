@@ -1,9 +1,13 @@
 package com.lycanitesmobs.demonmobs.entity;
 
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
+import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.DropRate;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
@@ -14,19 +18,22 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashMap;
 
-public class EntityNetherSoul extends EntityCreatureBase implements IMob {
+public class EntityNetherSoul extends EntityCreatureTameable implements IMob {
+
+    public int detonateTimer = -1;
     
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityNetherSoul(World par1World) {
-        super(par1World);
+    public EntityNetherSoul(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEAD;
@@ -82,18 +89,50 @@ public class EntityNetherSoul extends EntityCreatureBase implements IMob {
     @Override
     public void onLivingUpdate() {
         
-        // Fire Sound:
-        //if(this.rand.nextInt(24) == 0)
-            //this.getEntityWorld().playSoundEffect(this.posX + 0.5D, this.posY + 0.5D, this.posZ + 0.5D, "fire.fire", 1.0F + this.rand.nextFloat(), this.rand.nextFloat() * 0.7F + 0.3F);
-        
+        // Detonate:
+        if(!this.getEntityWorld().isRemote) {
+            if(this.detonateTimer == 0) {
+                this.getEntityWorld().createExplosion(this, this.posX, this.posY, this.posZ, 1, true);
+                this.setDead();
+            }
+            else if(this.detonateTimer > 0) {
+                this.detonateTimer--;
+                if(this.getEntityWorld().getBlockState(this.getPosition()).getMaterial().isSolid()) {
+                    this.detonateTimer = 0;
+                }
+                else {
+                    for (EntityLivingBase entity : this.getNearbyEntities(EntityLivingBase.class, null, 1)) {
+                        if (entity == this.getOwner())
+                            continue;
+                        if (entity instanceof EntityCreatureBase) {
+                            EntityCreatureBase entityCreature = (EntityCreatureBase) entity;
+                            if (entityCreature.getOwner() != null && entityCreature.getOwner() == this.getOwner())
+                                continue;
+                        }
+                        this.detonateTimer = 0;
+                        this.attackEntityAsMob(entity, 4);
+                    }
+                }
+            }
+        }
+
         // Particles:
-        if(this.getEntityWorld().isRemote)
+        if(this.getEntityWorld().isRemote && this.entityAge > 5)
 	        for(int i = 0; i < 2; ++i) {
 	            this.getEntityWorld().spawnParticle(EnumParticleTypes.SMOKE_LARGE, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
 	            this.getEntityWorld().spawnParticle(EnumParticleTypes.FLAME, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
 	        }
         
         super.onLivingUpdate();
+    }
+
+
+    // ==================================================
+    //                     Attacks
+    // ==================================================
+    public void chargeAttack() {
+        this.leap(5, this.rotationPitch);
+        this.detonateTimer = 10;
     }
 	
 	

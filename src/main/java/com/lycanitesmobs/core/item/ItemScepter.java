@@ -1,6 +1,7 @@
 package com.lycanitesmobs.core.item;
 
 import com.google.common.collect.Multimap;
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.EntityProjectileBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -86,7 +87,7 @@ public class ItemScepter extends ItemBase {
     	if(itemStack == null || entity == null || entity.getEntityWorld() == null)
     		return;
     	int useTime = this.getMaxItemUseDuration(itemStack) - useRemaining;
-    	if(useTime > this.getRapidTime(itemStack)) {
+        if(useTime >= this.getRapidTime(itemStack)) {
     		int rapidRemainder = useTime % this.getRapidTime(itemStack);
     		if(rapidRemainder == 0 && entity.getEntityWorld() != null) {
     			if(this.rapidAttack(itemStack, entity.getEntityWorld(), entity)) {

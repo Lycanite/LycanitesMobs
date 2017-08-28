@@ -86,7 +86,7 @@ public class ItemScepter extends ItemBase {
     	if(itemStack == null || entity == null || entity.worldObj == null)
     		return;
     	int useTime = this.getMaxItemUseDuration(itemStack) - useRemaining;
-    	if(useTime > this.getRapidTime(itemStack)) {
+    	if(useTime >= this.getRapidTime(itemStack)) {
     		int rapidRemainder = useTime % this.getRapidTime(itemStack);
     		if(rapidRemainder == 0 && entity.worldObj != null) {
     			if(this.rapidAttack(itemStack, entity.worldObj, entity)) {

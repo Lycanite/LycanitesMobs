@@ -1,9 +1,11 @@
 package com.lycanitesmobs.demonmobs.entity;
 
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
+import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.DropRate;
 import com.lycanitesmobs.core.entity.ai.*;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
@@ -20,7 +22,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashMap;
 
-public class EntityNetherSoul extends EntityCreatureBase implements IMob {
+public class EntityNetherSoul extends EntityCreatureTameable implements IMob {
+
+    public int detonateTimer = -1;
     
     // ==================================================
  	//                    Constructor
@@ -81,11 +85,34 @@ public class EntityNetherSoul extends EntityCreatureBase implements IMob {
     // ========== Living ==========
     @Override
     public void onLivingUpdate() {
-        
-        // Fire Sound:
-        //if(this.rand.nextInt(24) == 0)
-            //this.worldObj.playSoundEffect(this.posX + 0.5D, this.posY + 0.5D, this.posZ + 0.5D, "fire.fire", 1.0F + this.rand.nextFloat(), this.rand.nextFloat() * 0.7F + 0.3F);
-        
+
+        // Detonate:
+        if(!this.getEntityWorld().isRemote) {
+            if(this.detonateTimer == 0) {
+                this.getEntityWorld().createExplosion(this, this.posX, this.posY, this.posZ, 1, true);
+                this.setDead();
+            }
+            else if(this.detonateTimer > 0) {
+                this.detonateTimer--;
+                if(this.getEntityWorld().getBlockState(this.getPosition()).getMaterial().isSolid()) {
+                    this.detonateTimer = 0;
+                }
+                else {
+                    for (EntityLivingBase entity : this.getNearbyEntities(EntityLivingBase.class, null, 1)) {
+                        if (entity == this.getOwner())
+                            continue;
+                        if (entity instanceof EntityCreatureBase) {
+                            EntityCreatureBase entityCreature = (EntityCreatureBase) entity;
+                            if (entityCreature.getOwner() != null && entityCreature.getOwner() == this.getOwner())
+                                continue;
+                        }
+                        this.detonateTimer = 0;
+                        this.attackEntityAsMob(entity, 4);
+                    }
+                }
+            }
+        }
+
         // Particles:
         if(this.worldObj.isRemote)
 	        for(int i = 0; i < 2; ++i) {
@@ -94,6 +121,15 @@ public class EntityNetherSoul extends EntityCreatureBase implements IMob {
 	        }
         
         super.onLivingUpdate();
+    }
+
+
+    // ==================================================
+    //                     Attacks
+    // ==================================================
+    public void chargeAttack() {
+        this.leap(5, this.rotationPitch);
+        this.detonateTimer = 10;
     }
 	
 	

@@ -1952,15 +1952,16 @@ public abstract class EntityCreatureBase extends EntityLiving {
      * Tip: Use a negative height for flying and swimming mobs so that they can swoop down in the air or water.
     **/
     public void leap(double distance, double leapHeight) {
-    	double angle = Math.toRadians(this.rotationYaw);
-    	double xAmount = -Math.sin(angle);
-    	double zAmount = Math.cos(angle);
-        /*this.motionX = xAmount * distance + this.motionX * 0.2D;
-        this.motionZ = zAmount * distance + this.motionZ * 0.2D;
-        this.motionY = leapHeight;*/
+        double angle = Math.toRadians(this.rotationYaw);
+        double xAmount = -Math.sin(angle);
+        double yAmount = leapHeight;
+        double zAmount = Math.cos(angle);
+        if(this.canFly()) {
+            yAmount = Math.sin(Math.toRadians(this.rotationPitch)) * distance + this.motionY * 0.2D;
+        }
         this.addVelocity(
                 xAmount * distance + this.motionX * 0.2D,
-                leapHeight,
+                yAmount,
                 zAmount * distance + this.motionZ * 0.2D
         );
     }
@@ -3769,21 +3770,21 @@ public abstract class EntityCreatureBase extends EntityLiving {
      
     // ========== Fly ==========
     /** Plays a flying sound, usually a wing flap, called randomly when flying. **/
-    protected void playFlySound() {
+    public void playFlySound() {
     	if(!this.canFly()) return;
       	this.playSound(AssetManager.getSound(this.mobInfo.name + "_fly"), this.getSoundVolume(), 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
     }
 
     // ========== Attack ==========
     /** Plays an attack sound, called once this creature has attacked. note that ranged attacks normally rely on the projectiles playing their launched sound instead. **/
-    protected void playAttackSound() {
+    public void playAttackSound() {
      	if(!this.hasAttackSound) return;
      	this.playSound(AssetManager.getSound(this.mobInfo.name + "_attack"), this.getSoundVolume(), 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
     }
 
     // ========== Phase ==========
     /** Plays a sound for when this mob changes battle phase, normally used by bosses. **/
-    protected void playPhaseSound() {
+    public void playPhaseSound() {
         if(AssetManager.getSound(this.mobInfo.name + "_phase") == null)
             return;
         this.playSound(AssetManager.getSound(this.mobInfo.name + "_phase"), this.getSoundVolume() * 2, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));

@@ -115,6 +115,8 @@ public class DemonMobs {
 		ObjectManager.addItem("devilstarscepter", new ItemScepterDevilstar(), 2, 1, 1);
 		ObjectManager.addItem("demoniclightningscepter", new ItemScepterDemonicLightning(), 2, 1, 1);
 
+		ObjectManager.addItem("nethersoulsigil", new ItemNetherSoulSigil());
+
 
 		// ========== Create Blocks ==========
         ObjectManager.addBlock("soulcubedemonic", new BlockSoulcube(group, "soulcubedemonic"));

@@ -221,7 +221,7 @@ public class EntityFear extends EntityCreatureBase {
      
     // ========== Fly ==========
     /** Plays a flying sound, usually a wing flap, called randomly when flying. **/
-    protected void playFlySound() {
+    public void playFlySound() {
     	return;
     }
 }

@@ -1,0 +1,6 @@
+{
+	"parent": "demonmobs:item/nethersoulsigil",
+	"textures": {
+		"layer0": "demonmobs:items/nethersoulsigil_fire"
+	}
+}

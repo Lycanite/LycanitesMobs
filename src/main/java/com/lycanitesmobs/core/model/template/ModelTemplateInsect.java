@@ -60,7 +60,7 @@ public class ModelTemplateInsect extends ModelObj {
         if(entity != null && !entity.onGround && !entity.isInWater()) {
             if(entity instanceof EntityCreatureBase) {
                 EntityCreatureBase entityCreature = (EntityCreatureBase)entity;
-                if(entityCreature.canFly()) {
+                if(entityCreature.isFlying()) {
                     float bob = -MathHelper.sin(loop * 0.2F) * 0.3F;
                     if(bob < 0)
                         bob = -bob;

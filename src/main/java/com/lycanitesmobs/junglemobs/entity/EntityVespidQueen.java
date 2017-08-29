@@ -431,7 +431,7 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
   	//                     Abilities
   	// ==================================================
     @Override
-    public boolean canFly() { return true; }
+    public boolean isFlying() { return true; }
     
     
     // ==================================================

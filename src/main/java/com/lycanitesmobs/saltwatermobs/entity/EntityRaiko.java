@@ -15,6 +15,7 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
@@ -26,8 +27,11 @@ import java.util.HashMap;
 
 public class EntityRaiko extends EntityCreatureRideable implements IMob, IGroupHunter {
 
-    public EntityAIAttackMelee attackAI;
-    public int waterTime = 0;
+    protected EntityAIWander wanderAI;
+    protected EntityAIAttackMelee attackAI;
+    protected int waterTime = 0;
+    protected boolean wantsToLand;
+    protected boolean  isLanded;
 
     // ==================================================
  	//                    Constructor
@@ -58,7 +62,8 @@ public class EntityRaiko extends EntityCreatureRideable implements IMob, IGroupH
         this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("raikotreat"))).setTemptDistanceMin(4.0D));
         this.attackAI = new EntityAIAttackMelee(this).setLongMemory(false);
         this.tasks.addTask(5, this.attackAI);
-        this.tasks.addTask(8, new EntityAIWander(this).setPauseRate(0));
+        this.wanderAI = new EntityAIWander(this).setPauseRate(0);
+        this.tasks.addTask(8, this.wanderAI);
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
 
@@ -97,6 +102,34 @@ public class EntityRaiko extends EntityCreatureRideable implements IMob, IGroupH
 	@Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
+
+        // Land/Fly:
+        if(!this.getEntityWorld().isRemote) {
+            if(this.isLanded) {
+                this.wantsToLand = false;
+                if(this.hasPickupEntity() || (this.updateTick % (5 * 20) == 0 && this.getRNG().nextBoolean())) {
+                    this.leap(1.0D, 1.0D);
+                    this.wanderAI.setPauseRate(0);
+                    this.isLanded = false;
+                }
+            }
+            else {
+                if(this.wantsToLand) {
+                    if(!this.isLanded && this.isSafeToLand()) {
+                        this.wanderAI.setPauseRate(120);
+                        this.isLanded = true;
+                    }
+                }
+                else {
+                    if (!this.hasPickupEntity() && !this.hasAttackTarget() && this.updateTick % (5 * 20) == 0 && this.getRNG().nextBoolean()) {
+                        this.wantsToLand = true;
+                    }
+                }
+            }
+            if(this.hasPickupEntity() || this.hasAttackTarget()) {
+                this.wantsToLand = false;
+            }
+        }
         
         // Entity Pickup Update:
         if(!this.worldObj.isRemote && this.getControllingPassenger() == null) {
@@ -153,6 +186,32 @@ public class EntityRaiko extends EntityCreatureRideable implements IMob, IGroupH
         if(rider.isPotionActive(ObjectManager.getPotionEffect("weight")))
             rider.removePotionEffect(ObjectManager.getPotionEffect("weight"));
     }
+
+
+    // ==================================================
+    //                      Movement
+    // ==================================================
+    // ========== Get Wander Position ==========
+    public BlockPos getWanderPosition(BlockPos wanderPosition) {
+        if(this.wantsToLand || !this.isLanded) {
+            BlockPos groundPos;
+            for(groundPos = wanderPosition.down(); groundPos.getY() > 0 && this.getEntityWorld().getBlockState(groundPos).getBlock() == Blocks.AIR; groundPos = groundPos.down()) {}
+            if(this.getEntityWorld().getBlockState(groundPos).getMaterial().isSolid()) {
+                return groundPos.up();
+            }
+        }
+        if(this.hasPickupEntity() && this.getPickupEntity() instanceof EntityPlayer)
+            wanderPosition = new BlockPos(wanderPosition.getX(), this.restrictYHeightFromGround(wanderPosition, 6, 14), wanderPosition.getZ());
+        return wanderPosition;
+    }
+
+    // ========== Get Flight Offset ==========
+    public double getFlightOffset() {
+        if(!this.wantsToLand) {
+            super.getFlightOffset();
+        }
+        return 0;
+    }
     
     
     // ==================================================
@@ -180,7 +239,9 @@ public class EntityRaiko extends EntityCreatureRideable implements IMob, IGroupH
   	//                     Abilities
   	// ==================================================
     @Override
-    public boolean canFly() { return true; }
+    public boolean isFlying() {
+        return !this.isLanded || this.hasPickupEntity() || this.isInWater();
+    }
 
     @Override
     public boolean isStrongSwimmer() { return true; }
@@ -225,6 +286,11 @@ public class EntityRaiko extends EntityCreatureRideable implements IMob, IGroupH
         return super.isPotionApplicable(potionEffect);
     }
 
+    @Override
+    public float getFallResistance() {
+        return 100;
+    }
+
 
     // ==================================================
     //                     Equipment
@@ -233,19 +299,6 @@ public class EntityRaiko extends EntityCreatureRideable implements IMob, IGroupH
     public int getNoBagSize() { return 0; }
     @Override
     public int getBagSize() { return 5; }
-
-
-    // ==================================================
-    //                     Positions
-    // ==================================================
-    // ========== Get Wander Position ==========
-    /** Takes an initial chunk coordinate for a random wander position and ten allows the entity to make changes to the position or react to it. **/
-    @Override
-    public BlockPos getWanderPosition(BlockPos wanderPosition) {
-        if(this.hasPickupEntity() && this.getPickupEntity() instanceof EntityPlayer)
-            wanderPosition = new BlockPos(wanderPosition.getX(), this.restrictYHeightFromGround(wanderPosition, 6, 14), wanderPosition.getZ());
-        return wanderPosition;
-    }
 
 
     // ==================================================

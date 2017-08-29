@@ -240,7 +240,7 @@ public class EntityRoc extends EntityCreatureRideable implements IMob, IGroupHun
   	//                     Abilities
   	// ==================================================
     @Override
-    public boolean canFly() { return true; }
+    public boolean isFlying() { return true; }
 
     // ========== Pickup ==========
     @Override

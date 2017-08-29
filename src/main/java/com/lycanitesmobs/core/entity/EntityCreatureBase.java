@@ -1322,9 +1322,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** The main update method, all the important updates go here. **/
     @Override
     public void onUpdate() {
-    	if(this.dataManager != null)
-    		this.onSyncUpdate();
         super.onUpdate();
+        if(this.dataManager != null)
+            this.onSyncUpdate();
 
         if(!this.worldObj.isRemote)
             this.updateHitAreas();
@@ -1339,7 +1339,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         this.isImmuneToFire = !this.canBurn();
 
         // Not Walking on Land:
-        if((!this.canWalk() && !this.canFly() && !this.isInWater() && this.isMoving()) || !this.canMove())
+        if((!this.canWalk() && !this.isFlying() && !this.isInWater() && this.isMoving()) || !this.canMove())
         	this.clearMovement();
 
         // Climbing:
@@ -1725,7 +1725,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     @Override
     public void moveEntityWithHeading(float moveStrafe, float moveForward) {
         if(!this.useDirectNavigator()) {
-            if(this.canFly() && !this.isInWater() && !this.isInLava()) {
+            if(this.isFlying() && !this.isInWater() && !this.isInLava()) {
                 this.moveFlyingWithHeading(moveStrafe, moveForward);
                 this.updateLimbSwing();
             }
@@ -1956,7 +1956,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         double xAmount = -Math.sin(angle);
         double yAmount = leapHeight;
         double zAmount = Math.cos(angle);
-        if(this.canFly()) {
+        if(this.isFlying()) {
             yAmount = Math.sin(Math.toRadians(this.rotationPitch)) * distance + this.motionY * 0.2D;
         }
         this.addVelocity(
@@ -2216,7 +2216,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
                     return false;
             }
         }
-        if(!this.isStrongSwimmer() && this.canFly() && targetEntity.isInWater())
+        if(!this.isStrongSwimmer() && this.isFlying() && targetEntity.isInWater())
             return false;
 		return true;
 	}
@@ -2660,8 +2660,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public boolean canJump() { return !this.isBlocking(); }
     /** Can this entity climb currently? **/
     public boolean canClimb() { return false; }
-    /** Can this entity fly currently? If true it will use the flight navigator. **/
-    public boolean canFly() {
+    /** Is this entity flying currently? If true it will use flight navigation, etc. **/
+    public boolean isFlying() {
     	if(this.extraMobBehaviour != null)
     		if(this.extraMobBehaviour.flightOverride)
     			return true;
@@ -2669,18 +2669,28 @@ public abstract class EntityCreatureBase extends EntityLiving {
     }
     /** Returns how high this mob prefers to fly about the ground, usually when randomly wandering. **/
     public int getFlyingHeight() {
-        if(!this.canFly())
+        if(!this.isFlying())
             return 20;
         return 0;
     }
+    /** Returns true if this creature can safely land from its current position. **/
+    public boolean isSafeToLand() {
+        if(this.onGround)
+            return true;
+        if(this.getEntityWorld().getBlockState(this.getPosition().down()).getMaterial().isSolid())
+            return true;
+        if(this.getEntityWorld().getBlockState(this.getPosition().down(2)).getMaterial().isSolid())
+            return true;
+        return false;
+    }
     /** Returns how high above attack targets this mob should fly when chasing. **/
     public double getFlightOffset() {
-        if(!this.canFly())
+        if(!this.isFlying())
             return 0;
         return 0.25D;
     }
     /** Returns true if this mob is currently flying. **/
-    public boolean isCurrentlyFlying() { return this.canFly(); }
+    public boolean isCurrentlyFlying() { return this.isFlying(); }
     /** Can this entity by tempted (usually lured by an item) currently? **/
     public boolean canBeTempted() { return this.getSubspeciesIndex() < 3; }
     
@@ -2730,7 +2740,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Returns true if this entity is climbing a ladder or wall, can be used for animation. **/
     @Override
     public boolean isOnLadder() {
-    	if(this.canFly() || this.isStrongSwimmer()) return false;
+    	if(this.isFlying() || this.isStrongSwimmer()) return false;
     	if(this.canClimb()) {
             return (this.getByteFromDataManager(CLIMBING) & 1) != 0;
         }
@@ -2761,7 +2771,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
      * **/
     @Override
     public void fall(float fallDistance, float damageMultiplier) {
-        if(this.canFly())
+        if(this.isFlying())
     		return;
     	fallDistance -= this.getFallResistance();
     	if(this.getFallResistance() >= 100)
@@ -2772,7 +2782,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Called when this mob is falling, y is how far the mob has fell so far and onGround is true when it has hit the ground. **/
     @Override
     protected void updateFallState(double y, boolean onGround, IBlockState state, BlockPos pos) {
-        if(!this.canFly())
+        if(!this.isFlying())
             super.updateFallState(y, onGround, state, pos);
     }
     
@@ -3771,7 +3781,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Fly ==========
     /** Plays a flying sound, usually a wing flap, called randomly when flying. **/
     public void playFlySound() {
-    	if(!this.canFly()) return;
+    	if(!this.isFlying()) return;
       	this.playSound(AssetManager.getSound(this.mobInfo.name + "_fly"), this.getSoundVolume(), 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
     }
 

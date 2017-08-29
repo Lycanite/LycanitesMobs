@@ -1,8 +1,6 @@
 package com.lycanitesmobs.core.entity.navigate;
 
-import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import com.lycanitesmobs.saltwatermobs.entity.EntityLacedon;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityLookHelper;
@@ -36,7 +34,7 @@ public class CreatureMoveHelper extends EntityMoveHelper {
         }
 
         // Flying:
-        if(this.entityCreature.canFly() && !this.entityCreature.isInWater()) {
+        if(this.entityCreature.isFlying() && !this.entityCreature.isInWater()) {
             this.onUpdateFlying();
             return;
         }
@@ -58,7 +56,7 @@ public class CreatureMoveHelper extends EntityMoveHelper {
             }
 
             // Flyers Can't Be Controlled In Water (Unless Strong Swimmer):
-            if(this.entityCreature.canFly() && this.entityCreature.isInWater()) {
+            if(this.entityCreature.isFlying() && this.entityCreature.isInWater()) {
                 return false;
             }
 

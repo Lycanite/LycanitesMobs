@@ -340,7 +340,7 @@ public class EntityVespid extends EntityCreatureAgeable implements IMob, IGroupP
   	//                     Abilities
   	// ==================================================
     @Override
-    public boolean canFly() { return true; }
+    public boolean isFlying() { return true; }
     
     
     // ==================================================

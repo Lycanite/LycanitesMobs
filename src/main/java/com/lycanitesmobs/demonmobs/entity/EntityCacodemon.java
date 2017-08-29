@@ -164,7 +164,7 @@ public class EntityCacodemon extends EntityCreatureRideable implements IGroupDem
   	//                     Abilities
   	// ==================================================
     // ========== Movement ==========
-    public boolean canFly() { return true; }
+    public boolean isFlying() { return true; }
     
     
     // ==================================================

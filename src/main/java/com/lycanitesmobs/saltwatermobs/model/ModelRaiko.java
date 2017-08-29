@@ -72,7 +72,32 @@ public class ModelRaiko extends ModelCustomObj {
     	if(partName.equals("mouth")) {
     		this.rotate((float)-Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F - 0.05F), 0.0F, 0.0F);
     	}
-		if(entity != null && !entity.isInWater()) {
+
+		// Walking:
+		if(entity == null || entity.onGround || entity.isInWater()) {
+			float walkSwing = 0.2F;
+			float wingOffset = 1;
+			if(entity.isInWater()) {
+				wingOffset = 0;
+			}
+			if(partName.equals("armleft") || partName.equals("wingright")) {
+				rotX += Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F) - (45 * wingOffset);
+				this.rotate(1, 20 * wingOffset, 0 * wingOffset);
+				rotZ -= Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F + 0.05F) + (90 * wingOffset);
+			}
+			if(partName.equals("armright") || partName.equals("wingleft")) {
+				rotX += Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F) - (45 * wingOffset);
+				this.rotate(1, -20 * wingOffset, 0 * wingOffset);
+				rotZ += Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F + 0.05F) + (90 * wingOffset);
+			}
+			if(partName.equals("legleft"))
+				rotX += Math.toDegrees(MathHelper.cos(time * walkSwing + (float)Math.PI) * 0.8F * distance);
+			if(partName.equals("legright"))
+				rotX += Math.toDegrees(MathHelper.cos(time * walkSwing) * 0.8F * distance);
+		}
+
+		// Flying:
+		if(entity != null && !entity.isInWater() && !entity.onGround) {
 			if (partName.equals("wingleft")) {
 				rotX = 20;
 				rotX -= Math.toDegrees(MathHelper.sin(loop * 0.4F) * 0.6F);
@@ -83,16 +108,16 @@ public class ModelRaiko extends ModelCustomObj {
 				rotX -= Math.toDegrees(MathHelper.sin(loop * 0.4F) * 0.6F);
 				rotZ -= Math.toDegrees(MathHelper.sin(loop * 0.4F + (float) Math.PI) * 0.6F);
 			}
+			if(partName.equals("legleft")) {
+				rotX -= Math.toDegrees(MathHelper.sin(loop * 0.1F + (float)Math.PI) * 0.2F);
+			}
+			if(partName.equals("legright")) {
+				rotX -= Math.toDegrees(MathHelper.sin(loop * 0.1F) * 0.2F);
+			}
+			float bob = -MathHelper.sin(loop * 0.2F) * 0.3F;
+			if(bob < 0) bob = -bob;
+			posY += bob;
 		}
-    	if(partName.equals("legleft")) {
-	        rotX -= Math.toDegrees(MathHelper.sin(loop * 0.1F + (float)Math.PI) * 0.2F);
-    	}
-        if(partName.equals("legright")) {
-            rotX -= Math.toDegrees(MathHelper.sin(loop * 0.1F) * 0.2F);
-        }
-		float bob = -MathHelper.sin(loop * 0.2F) * 0.3F;
-		if(bob < 0) bob = -bob;
-		posY += bob;
 		
     	// Apply Animations:
     	translate(posX, posY, posZ);

@@ -233,7 +233,7 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
     //                     Abilities
     // ==================================================
     @Override
-    public boolean canFly() { return true; }
+    public boolean isFlying() { return true; }
 
 
     // ==================================================

@@ -17,18 +17,23 @@ import net.minecraft.entity.monster.EntitySnowman;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
 
 public class EntityAfrit extends EntityCreatureTameable implements IMob, IGroupFire {
+
+    protected boolean wantsToLand;
+    protected boolean  isLanded;
 
     // ==================================================
  	//                    Constructor
@@ -106,12 +111,59 @@ public class EntityAfrit extends EntityCreatureTameable implements IMob, IGroupF
     public void onLivingUpdate() {
         super.onLivingUpdate();
 
+        // Land/Fly:
+        if(!this.getEntityWorld().isRemote) {
+            if(this.isLanded) {
+                this.wantsToLand = false;
+                if(this.updateTick % (5 * 20) == 0 && this.getRNG().nextBoolean()) {
+                    this.leap(1.0D, 1.0D);
+                    this.isLanded = false;
+                }
+            }
+            else {
+                if(this.wantsToLand) {
+                    if(!this.isLanded && this.isSafeToLand()) {
+                        this.isLanded = true;
+                    }
+                }
+                else {
+                    if (this.updateTick % (5 * 20) == 0 && this.getRNG().nextBoolean()) {
+                        this.wantsToLand = true;
+                    }
+                }
+            }
+        }
+
         // Particles:
         if(this.worldObj.isRemote)
             for(int i = 0; i < 2; ++i) {
                 this.worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
                 this.worldObj.spawnParticle(EnumParticleTypes.FLAME, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
             }
+    }
+
+
+    // ==================================================
+    //                      Movement
+    // ==================================================
+    // ========== Get Wander Position ==========
+    public BlockPos getWanderPosition(BlockPos wanderPosition) {
+        if(this.wantsToLand || !this.isLanded) {
+            BlockPos groundPos;
+            for(groundPos = wanderPosition.down(); groundPos.getY() > 0 && this.getEntityWorld().getBlockState(groundPos).getBlock() == Blocks.AIR; groundPos = groundPos.down()) {}
+            if(this.getEntityWorld().getBlockState(groundPos).getMaterial().isSolid()) {
+                return groundPos.up();
+            }
+        }
+        return super.getWanderPosition(wanderPosition);
+    }
+
+    // ========== Get Flight Offset ==========
+    public double getFlightOffset() {
+        if(!this.wantsToLand) {
+            super.getFlightOffset();
+        }
+        return 0;
     }
     
     
@@ -156,7 +208,7 @@ public class EntityAfrit extends EntityCreatureTameable implements IMob, IGroupF
   	//                     Abilities
   	// ==================================================
     @Override
-    public boolean canFly() { return true; }
+    public boolean isFlying() { return !this.isLanded || this.isInWater(); }
 
     @Override
     public boolean isStrongSwimmer() { return true; }

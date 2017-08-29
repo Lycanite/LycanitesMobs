@@ -188,7 +188,7 @@ public class EntityCinder extends EntityCreatureTameable implements IMob, IGroup
   	//                     Abilities
   	// ==================================================
     @Override
-    public boolean canFly() { return true; }
+    public boolean isFlying() { return true; }
     
     
     // ==================================================

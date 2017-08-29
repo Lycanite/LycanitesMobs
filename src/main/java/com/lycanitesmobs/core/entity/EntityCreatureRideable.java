@@ -188,7 +188,7 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
 
         // Swimming / Flying Controls:
         double flyMotion = 0;
-        if(this.isInWater() || this.isInLava() || this.canFly()) {
+        if(this.isInWater() || this.isInLava() || this.isFlying()) {
             if (this.getControllingPassenger() instanceof EntityPlayer) {
                 EntityPlayer player = (EntityPlayer) this.getControllingPassenger();
                 ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
@@ -241,7 +241,7 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
         if(this.canPassengerSteer()) {
             this.setAIMoveSpeed((float)this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue());
             if(!this.useDirectNavigator()) {
-                if(this.canFly() && !this.isInWater() && !this.isInLava()) {
+                if(this.isFlying() && !this.isInWater() && !this.isInLava()) {
                     this.moveRelative(strafe, forward, 0.1F);
                     this.moveEntity(this.motionX, flyMotion, this.motionZ);
                     this.motionX *= 0.8999999761581421D;
@@ -339,7 +339,7 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
     	
     	// Mount:
         boolean mountingAllowed = MobInfo.mountingEnabled;
-        if(mountingAllowed && this.canFly())
+        if(mountingAllowed && this.isFlying())
             mountingAllowed = MobInfo.mountingFlightEnabled;
         if(this.canBeMounted(player) && !player.isSneaking() && !this.getEntityWorld().isRemote && mountingAllowed)
             commands.put(CMD_PRIOR.MAIN.id, "Mount");

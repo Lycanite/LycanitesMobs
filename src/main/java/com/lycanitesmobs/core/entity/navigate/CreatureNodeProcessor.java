@@ -73,7 +73,7 @@ public class CreatureNodeProcessor extends NodeProcessor implements ICreatureNod
 
     /** Returns true if the entity should use flight focused pathing. **/
     public boolean flying() {
-        return this.entityCreature != null && this.entityCreature.canFly() && !this.entityCreature.isInWater();
+        return this.entityCreature != null && this.entityCreature.isFlying() && !this.entityCreature.isInWater();
     }
 
 
@@ -498,7 +498,7 @@ public class CreatureNodeProcessor extends NodeProcessor implements ICreatureNod
     @Nullable
     private PathPoint getWaterNode(int x, int y, int z) {
         PathNodeType pathnodetype = null;
-        if(this.entityCreature != null && this.entityCreature.canFly()) {
+        if(this.entityCreature != null && this.entityCreature.isFlying()) {
             pathnodetype = this.isFlyablePathNode(x, y, z);
             if(pathnodetype == PathNodeType.OPEN)
                 return this.openPoint(x, y, z);

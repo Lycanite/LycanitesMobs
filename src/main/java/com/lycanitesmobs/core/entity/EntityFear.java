@@ -172,10 +172,10 @@ public class EntityFear extends EntityCreatureBase {
   	//                     Abilities
   	// ==================================================
     @Override
-    public boolean canFly() {
+    public boolean isFlying() {
     	if(this.pickupEntity != null) {
     		if(this.pickupEntity instanceof EntityCreatureBase)
-    			return ((EntityCreatureBase)this.pickupEntity).canFly();
+    			return ((EntityCreatureBase)this.pickupEntity).isFlying();
     		if(this.pickupEntity instanceof EntityFlying)
     			return true;
     		if(this.pickupEntity instanceof EntityPlayer)

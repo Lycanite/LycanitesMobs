@@ -37,7 +37,7 @@ public class CreaturePathNavigate extends PathNavigate {
     /** Returns true if the entity is capable of navigating at all. **/
     @Override
     protected boolean canNavigate() {
-        if(this.entityCreature.canFly())
+        if(this.entityCreature.isFlying())
             return true;
         if(this.entityCreature.isInWater())
             return this.entityCreature.canWade() || this.entityCreature.isStrongSwimmer();
@@ -89,7 +89,7 @@ public class CreaturePathNavigate extends PathNavigate {
         // Air:
         if(targetBlockState.getMaterial() == Material.AIR) {
             // Flying:
-            if (this.entityCreature.canFly()) {
+            if (this.entityCreature.isFlying()) {
                 return pos;
             }
 
@@ -204,7 +204,7 @@ public class CreaturePathNavigate extends PathNavigate {
     /** Returns true if the entity can stand at the block position. **/
     public boolean canEntityStandOnPos(BlockPos pos) {
         // Flight/Swimming:
-        if(this.entityCreature.canFly() || this.entityCreature.isInWater()) {
+        if(this.entityCreature.isFlying() || this.entityCreature.isInWater()) {
             return !this.worldObj.getBlockState(pos).isFullBlock();
         }
         return super.canEntityStandOnPos(pos);
@@ -237,7 +237,7 @@ public class CreaturePathNavigate extends PathNavigate {
     @Override
     protected boolean isDirectPathBetweenPoints(Vec3d startVec, Vec3d endVec, int sizeX, int sizeY, int sizeZ) {
         // Flight/Swimming:
-        if(this.entityCreature.canFly() || this.entityCreature.isInWater()) {
+        if(this.entityCreature.isFlying() || this.entityCreature.isInWater()) {
             RayTraceResult raytraceresult = this.worldObj.rayTraceBlocks(startVec, new Vec3d(endVec.xCoord, endVec.yCoord + (double)this.theEntity.height * 0.5D, endVec.zCoord), false, true, false);
             return raytraceresult == null || raytraceresult.typeOfHit == RayTraceResult.Type.MISS;
         }
@@ -425,7 +425,7 @@ public class CreaturePathNavigate extends PathNavigate {
     @Override
     protected void pathFollow() {
         // Flight:
-        if(this.entityCreature.canFly() || this.entityCreature.isInWater()) {
+        if(this.entityCreature.isFlying() || this.entityCreature.isInWater()) {
             Vec3d entityVector = this.getEntityPosition();
             float entitySize = this.theEntity.width * this.theEntity.width;
 

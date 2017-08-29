@@ -127,7 +127,7 @@ public class EntityRemobra extends EntityCreatureTameable implements IMob, IGrou
   	//                     Abilities
   	// ==================================================
     @Override
-    public boolean canFly() { return true; }
+    public boolean isFlying() { return true; }
     
     
     // ==================================================

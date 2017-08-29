@@ -70,7 +70,7 @@ public class DirectNavigator {
 			return true;
 		if(this.host.isStrongSwimmer() && this.host.isSwimmable(targetPosition.getX(), targetPosition.getY(), targetPosition.getZ()))
 			return true;
-		if(!this.host.canFly())
+		if(!this.host.isFlying())
 			return false;
 		if(!this.host.getEntityWorld().isAirBlock(new BlockPos(targetPosition.getX(), targetPosition.getY(), targetPosition.getZ())) && !this.host.noClip)
 			return false;

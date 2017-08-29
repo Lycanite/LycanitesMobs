@@ -145,7 +145,7 @@ public class EntityBeholder extends EntityCreatureRideable {
   	//                     Abilities
   	// ==================================================
     // ========== Movement ==========
-    public boolean canFly() { return true; }
+    public boolean isFlying() { return true; }
     
     
     // ==================================================

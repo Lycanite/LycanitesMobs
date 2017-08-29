@@ -119,7 +119,7 @@ public class EntityManticore extends EntityCreatureTameable implements IMob, IGr
   	//                     Abilities
   	// ==================================================
     @Override
-    public boolean canFly() { return true; }
+    public boolean isFlying() { return true; }
     
     
     // ==================================================

@@ -100,6 +100,8 @@ item.demoniclightningcharge.name=Demonic Lightning Charge
 item.demoniclightningcharge.description=Use to throw a demonic lightning blast! Can also be fired from a dispenser.
 item.demoniclightningscepter.name=Demonic Lightning Scepter
 item.demoniclightningscepter.description=High Damage, Charge Up, Applies Wither, Damaging Sparks Fly Off
+item.nethersoulsigil.name=Nether Soul Sigil
+item.nethersoulsigil.description=This skull is full to the brim with evil Nether Souls! Use to fire a wave of angry Nether Souls forwards towards your victim! Results can be explosive!
 #
 # Blocks
 tile.soulcubedemonic.name=Demonic Soulcube

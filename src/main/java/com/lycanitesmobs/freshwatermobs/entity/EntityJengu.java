@@ -138,7 +138,7 @@ public class EntityJengu extends EntityCreatureTameable implements IMob, IGroupW
   	//                     Abilities
   	// ==================================================
     @Override
-    public boolean canFly() { return true; }
+    public boolean isFlying() { return true; }
 
     @Override
     public boolean isStrongSwimmer() { return true; }

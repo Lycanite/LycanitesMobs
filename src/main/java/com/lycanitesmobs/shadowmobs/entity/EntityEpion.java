@@ -6,7 +6,6 @@ import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupPrey;
 import com.lycanitesmobs.api.IGroupShadow;
-import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.DropRate;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -100,7 +99,7 @@ public class EntityEpion extends EntityCreatureTameable implements IMob, IGroupS
         
         // Sunlight Explosions:
         if(!this.getEntityWorld().isRemote) {
-        	if(!this.canFly() && this.onGround && this.isEntityAlive()) {
+        	if(!this.isFlying() && this.onGround && this.isEntityAlive()) {
         		int explosionRadius = 2;
 				if(this.subspecies != null)
 					explosionRadius = 3;
@@ -154,7 +153,7 @@ public class EntityEpion extends EntityCreatureTameable implements IMob, IGroupS
   	//                     Abilities
   	// ==================================================
     @Override
-    public boolean canFly() {
+    public boolean isFlying() {
     	if(this.getEntityWorld().isRemote) return true;
     	if(this.daylightBurns() && this.getEntityWorld().isDaytime() && this.getEntityWorld().getGameRules().getBoolean("mobGriefing") && this.epionGreifing) {
     		float brightness = this.getBrightness(1.0F);

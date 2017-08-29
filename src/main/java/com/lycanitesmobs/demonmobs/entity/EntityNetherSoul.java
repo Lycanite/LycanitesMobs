@@ -140,7 +140,7 @@ public class EntityNetherSoul extends EntityCreatureTameable implements IMob {
   	//                     Abilities
   	// ==================================================
     // ========== Movement ==========
-    public boolean canFly() { return true; }
+    public boolean isFlying() { return true; }
     
     
     // ==================================================

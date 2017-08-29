@@ -74,7 +74,7 @@ public class EntityAIFollowOwner extends EntityAIFollow {
 	        int j = MathHelper.floor(this.getTarget().getEntityBoundingBox().minY);
 	        int k = MathHelper.floor(this.getTarget().posZ) - 2;
 
-            if(this.host.canFly() || this.getTarget().isInWater()) {
+            if(this.host.isFlying() || this.getTarget().isInWater()) {
                 this.host.setLocationAndAngles(i, j + 1, k, this.host.rotationYaw, this.host.rotationPitch);
                 this.host.clearMovement();
                 return;

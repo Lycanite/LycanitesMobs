@@ -1,10 +1,8 @@
 package com.lycanitesmobs.core.entity.navigate;
 
 import com.google.common.collect.Sets;
-import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import com.lycanitesmobs.saltwatermobs.entity.EntityAbtu;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -75,7 +73,7 @@ public class CreatureNodeProcessor extends NodeProcessor implements ICreatureNod
 
     /** Returns true if the entity should use flight focused pathing. **/
     public boolean flying() {
-        return this.entityCreature != null && this.entityCreature.canFly() && !this.entityCreature.isInWater();
+        return this.entityCreature != null && this.entityCreature.isFlying() && !this.entityCreature.isInWater();
     }
 
 
@@ -499,7 +497,7 @@ public class CreatureNodeProcessor extends NodeProcessor implements ICreatureNod
     @Nullable
     private PathPoint getWaterNode(int x, int y, int z) {
         PathNodeType pathnodetype = null;
-        if(this.entityCreature != null && this.entityCreature.canFly()) {
+        if(this.entityCreature != null && this.entityCreature.isFlying()) {
             pathnodetype = this.isFlyablePathNode(x, y, z);
             if(pathnodetype == PathNodeType.OPEN)
                 return this.openPoint(x, y, z);

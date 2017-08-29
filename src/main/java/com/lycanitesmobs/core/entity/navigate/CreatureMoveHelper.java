@@ -34,7 +34,7 @@ public class CreatureMoveHelper extends EntityMoveHelper {
         }
 
         // Flying:
-        if(this.entityCreature.canFly() && !this.entityCreature.isInWater()) {
+        if(this.entityCreature.isFlying() && !this.entityCreature.isInWater()) {
             this.onUpdateFlying();
             return;
         }
@@ -56,7 +56,7 @@ public class CreatureMoveHelper extends EntityMoveHelper {
             }
 
             // Flyers Can't Be Controlled In Water (Unless Strong Swimmer):
-            if(this.entityCreature.canFly() && this.entityCreature.isInWater()) {
+            if(this.entityCreature.isFlying() && this.entityCreature.isInWater()) {
                 return false;
             }
 

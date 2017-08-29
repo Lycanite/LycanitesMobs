@@ -96,7 +96,7 @@ public class EntityCalpod extends EntityCreatureBase implements IMob, IGroupPrey
 	// ========== Living Update ==========
 	@Override
     public void onLivingUpdate() {
-		if(!this.getEntityWorld().isRemote && this.hasAttackTarget() && this.ticksExisted % 20 == 0) {
+		if(!this.getEntityWorld().isRemote && this.hasAttackTarget() && this.updateTick % 20 == 0) {
 			this.allyUpdate();
 		}
         

@@ -203,7 +203,7 @@ public class EntityAIAttackRanged extends EntityAIBase {
         }
         else {
             BlockPos targetPosition = this.attackTarget.getPosition();
-            if(this.host.canFly())
+            if(this.host.isFlying())
                 targetPosition = targetPosition.add(0, flyingHeightOffset, 0);
             if(!this.host.useDirectNavigator())
                 this.host.getNavigator().tryMoveToXYZ(targetPosition.getX(), targetPosition.getY(), targetPosition.getZ(), this.speed);

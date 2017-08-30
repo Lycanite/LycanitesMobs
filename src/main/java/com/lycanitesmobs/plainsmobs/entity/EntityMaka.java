@@ -3,6 +3,7 @@ package com.lycanitesmobs.plainsmobs.entity;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.core.info.ObjectLists;
 import com.lycanitesmobs.api.IGroupAnimal;
 import com.lycanitesmobs.api.IGroupPredator;
@@ -87,6 +88,27 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("MakaMeatRaw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("MakaMeatCooked"))).setMaxAmount(6));
         this.drops.add(new DropRate(new ItemStack(Items.LEATHER), 0.5F).setMinAmount(1).setMaxAmount(3));
     }
+
+
+    // ==================================================
+    //                      Spawn
+    // ==================================================
+    // ========== On Spawn ==========
+    @Override
+    public void onFirstSpawn() {
+        // Random Alpha:
+        MobInfo alphaInfo = ObjectManager.getMobInfo("makaalpha");
+        if(alphaInfo != null) {
+            float alphaChance = (float)alphaInfo.spawnInfo.spawnWeight / Math.max(this.mobInfo.spawnInfo.spawnWeight, 1);
+            if (this.getRNG().nextFloat() <= alphaChance) {
+                EntityMakaAlpha alpha = new EntityMakaAlpha(this.getEntityWorld());
+                alpha.copyLocationAndAnglesFrom(this);
+                this.getEntityWorld().spawnEntity(alpha);
+                this.getEntityWorld().removeEntity(this);
+            }
+        }
+        super.onFirstSpawn();
+    }
 	
 	
 	// ==================================================
@@ -157,13 +179,14 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
     // ==================================================
 	@Override
 	public void setGrowingAge(int age) {
-		if(age == 0 && this.getAge() < 0)
-			if(this.getRNG().nextFloat() >= 0.9F) {
-				EntityMakaAlpha alpha = new EntityMakaAlpha(this.getEntityWorld());
-				alpha.copyLocationAndAnglesFrom(this);
-				this.getEntityWorld().spawnEntity(alpha);
-				this.getEntityWorld().removeEntity(this);
-			}
+		if(age == 0 && this.getAge() < 0) {
+            if (this.getRNG().nextFloat() >= 0.9F) {
+                EntityMakaAlpha alpha = new EntityMakaAlpha(this.getEntityWorld());
+                alpha.copyLocationAndAnglesFrom(this);
+                this.getEntityWorld().spawnEntity(alpha);
+                this.getEntityWorld().removeEntity(this);
+            }
+        }
         super.setGrowingAge(age);
     }
 }

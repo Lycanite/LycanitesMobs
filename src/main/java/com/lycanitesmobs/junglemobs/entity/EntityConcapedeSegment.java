@@ -26,6 +26,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
@@ -170,26 +171,26 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
         		this.faceEntity(this.getParentTarget(), 360, 360);
         		
         		double segmentDistance = 0.5D;
-        		BlockPos pos;
+        		Vec3d pos;
         		if(this.getParentTarget() instanceof EntityCreatureBase)
-        			pos = ((EntityCreatureBase)this.getParentTarget()).getFacingPosition(-0.25D);
+        			pos = ((EntityCreatureBase)this.getParentTarget()).getFacingPositionDouble(this.getParentTarget().posX, this.getParentTarget().posY, this.getParentTarget().posZ, -0.25D, 0);
         		else
-        			pos = this.getParentTarget().getPosition();
+					pos = new Vec3d(this.getParentTarget().posX, this.getParentTarget().posY, this.getParentTarget().posZ);
 
-        		if(this.posX - pos.getX() > segmentDistance)
-        			this.posX = pos.getX() + segmentDistance;
-        		else if(this.posX - pos.getX() < -segmentDistance)
-        			this.posX = pos.getX() - segmentDistance;
+        		if(this.posX - pos.xCoord > segmentDistance)
+        			this.posX = pos.xCoord + segmentDistance;
+        		else if(this.posX - pos.xCoord < -segmentDistance)
+        			this.posX = pos.xCoord - segmentDistance;
         		
-        		if(this.posY - pos.getY() > segmentDistance)
-        			this.posY = pos.getY() + segmentDistance;
-        		else if(this.posY - pos.getY() < -(segmentDistance / 2))
-        			this.posY = pos.getY();
+        		if(this.posY - pos.yCoord > segmentDistance)
+        			this.posY = pos.yCoord + segmentDistance;
+        		else if(this.posY - pos.yCoord < -(segmentDistance / 2))
+        			this.posY = pos.yCoord;
         		
-        		if(this.posZ - pos.getZ() > segmentDistance)
-        			this.posZ = pos.getZ() + segmentDistance;
-        		else if(this.posZ - pos.getZ() < -segmentDistance)
-        			this.posZ = pos.getZ() - segmentDistance;
+        		if(this.posZ - pos.zCoord > segmentDistance)
+        			this.posZ = pos.zCoord + segmentDistance;
+        		else if(this.posZ - pos.zCoord < -segmentDistance)
+        			this.posZ = pos.zCoord - segmentDistance;
         	}
         }
         

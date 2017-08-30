@@ -164,7 +164,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     protected BlockPos arenaCenter = null;
     
     // Spawning:
-    /** Use the onSpawn() method and not this variable. True if this creature has spawned for the first time (naturally or via spawn egg, etc, not reloaded from a saved chunk). **/
+    /** Use the onFirstSpawn() method and not this variable. True if this creature has spawned for the first time (naturally or via spawn egg, etc, not reloaded from a saved chunk). **/
     public boolean firstSpawn = true;
     /** This will contain the Spawn Type used to spawn this entity (this should only be used for spawn checks really as it isn't persistent). Null if spawned from egg, spawner, vanilla, etc. **/
     public SpawnTypeBase spawnedFromType = null;
@@ -1388,8 +1388,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
         // First Spawn:
         if(!this.getEntityWorld().isRemote && this.firstSpawn) {
-        	this.onFirstSpawn();
-        	this.firstSpawn = false;
+            this.onFirstSpawn();
+            this.firstSpawn = false;
         }
 
         // Prevent Creative Attack Target:
@@ -3500,7 +3500,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
             this.firstSpawn = nbtTagCompound.getBoolean("FirstSpawn");
     	}
     	else {
-    		this.firstSpawn = false;
+    		this.firstSpawn = true;
     	}
     	
     	if(nbtTagCompound.hasKey("SpawnEventType")) {
@@ -3570,7 +3570,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Used when saving this mob to a chunk. **/
     @Override
     public void writeEntityToNBT(NBTTagCompound nbtTagCompound) {
-    	nbtTagCompound.setBoolean("FirstSpawn", false);
+    	nbtTagCompound.setBoolean("FirstSpawn", this.firstSpawn);
     	nbtTagCompound.setString("SpawnEventType", this.spawnEventType);
     	nbtTagCompound.setInteger("SpawnEventCount", this.spawnEventCount);
     	

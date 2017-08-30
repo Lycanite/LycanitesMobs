@@ -104,7 +104,7 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        
+
         // Growing:
         if(this.getEntityWorld().isRemote)
             this.setScaleForAge(this.isChild());

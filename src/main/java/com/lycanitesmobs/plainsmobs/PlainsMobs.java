@@ -116,14 +116,14 @@ public class PlainsMobs {
 		        .setPeaceful(true).setSummonCost(2).setDungeonLevel(-1)
 		        .addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("CREATURE").setDespawn(false)
-				.setSpawnWeight(12).setAreaLimit(10).setGroupLimits(2, 5).setLightDark(true, false).setDungeonWeight(0);
+				.setSpawnWeight(10).setAreaLimit(10).setGroupLimits(2, 5).setLightDark(true, false).setDungeonWeight(0);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "makaalpha", EntityMakaAlpha.class, 0x663300, 0x000000)
 		        .setPeaceful(false).setSummonCost(4).setDungeonLevel(-1)
 		        .addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("CREATURE").setDespawn(false)
-				.setSpawnWeight(6).setAreaLimit(4).setGroupLimits(1, 2).setLightDark(true, false).setDungeonWeight(0);
+		newMob.spawnInfo.setSpawnTypes("").setDespawn(false)
+				.setSpawnWeight(1).setAreaLimit(4).setGroupLimits(1, 2).setLightDark(true, false).setDungeonWeight(0);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "zoataur", EntityZoataur.class, 0x442200, 0xFFDDBB)

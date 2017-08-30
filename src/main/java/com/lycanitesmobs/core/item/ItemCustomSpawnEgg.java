@@ -125,7 +125,7 @@ public class ItemCustomSpawnEgg extends ItemBase {
 	        
 	        if(entity != null) {
 	            if(entity instanceof EntityLivingBase && itemStack.hasDisplayName())
-	                ((EntityLiving)entity).setCustomNameTag(itemStack.getDisplayName());
+	                entity.setCustomNameTag(itemStack.getDisplayName());
 
                 applyItemEntityDataToEntity(world, player, itemStack, entity);
 	

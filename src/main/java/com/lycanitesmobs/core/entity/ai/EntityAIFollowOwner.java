@@ -1,5 +1,6 @@
 package com.lycanitesmobs.core.entity.ai;
 
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumFacing;
@@ -33,11 +34,11 @@ public class EntityAIFollowOwner extends EntityAIFollow {
     	return this;
     }
     public EntityAIFollowOwner setStrayDistance(double setDist) {
-    	this.strayDistance = setDist * setDist;
+    	this.strayDistance = setDist;
     	return this;
     }
     public EntityAIFollowOwner setLostDistance(double setDist) {
-    	this.lostDistance = setDist * setDist;
+    	this.lostDistance = setDist;
     	return this;
     }
     
@@ -62,7 +63,6 @@ public class EntityAIFollowOwner extends EntityAIFollow {
     		if(this.host.getDistanceSqToEntity(this.getTarget()) >= this.lostDistance)
     			this.teleportToOwner();
     	}
-    	
     	super.updateTask();
     }
     

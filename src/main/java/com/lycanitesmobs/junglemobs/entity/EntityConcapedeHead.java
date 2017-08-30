@@ -1,11 +1,10 @@
 package com.lycanitesmobs.junglemobs.entity;
 
-import com.lycanitesmobs.core.config.ConfigBase;
-import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupAlpha;
 import com.lycanitesmobs.api.IGroupAnimal;
 import com.lycanitesmobs.api.IGroupPrey;
+import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.ai.*;
@@ -40,7 +39,7 @@ public class EntityConcapedeHead extends EntityCreatureAgeable implements IAnima
     public EntityConcapedeHead(World world) {
         super(world);
         
-        CONCAPEDE_SIZE_MAX = Math.max(1, ConfigBase.getConfig(group, "general").getInt("Features", "Concapede Size Limit", 10, "The maximum amount of segments long a Concapede can be, including the head."));
+        CONCAPEDE_SIZE_MAX = Math.max(1, ConfigBase.getConfig(group, "general").getInt("Features", "Concapede Size Limit", CONCAPEDE_SIZE_MAX, "The maximum amount of segments long a Concapede can be, including the head."));
         
         // Setup:
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
@@ -75,7 +74,7 @@ public class EntityConcapedeHead extends EntityCreatureAgeable implements IAnima
     // ========== Stats ==========
 	@Override
 	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
+		HashMap<String, Double> baseAttributes = new HashMap<>();
 		baseAttributes.put("maxHealth", 10D);
 		baseAttributes.put("movementSpeed", 0.28D);
 		baseAttributes.put("knockbackResistance", 0.0D);
@@ -131,7 +130,7 @@ public class EntityConcapedeHead extends EntityCreatureAgeable implements IAnima
 	@Override
 	public void setGrowingAge(int age) {
 		// Spawn Additional Segments:
-		if(age == 0 && ObjectManager.getMob("ConcapedeSegment") != null && !this.getEntityWorld().isRemote) {
+		if(!this.firstSpawn && age == 0 && ObjectManager.getMob("ConcapedeSegment") != null && !this.getEntityWorld().isRemote) {
 			age = -(this.growthTime / 4);
 			EntityCreatureBase parentSegment = this;
 			boolean lastSegment = false;

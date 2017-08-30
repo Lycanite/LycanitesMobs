@@ -2,15 +2,14 @@ package com.lycanitesmobs.demonmobs.entity;
 
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupDemon;
-import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.entity.navigate.ArenaNode;
-import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.EntityProjectileBase;
 import com.lycanitesmobs.core.entity.ai.*;
+import com.lycanitesmobs.core.entity.navigate.ArenaNode;
 import com.lycanitesmobs.core.entity.navigate.ArenaNodeNetwork;
 import com.lycanitesmobs.core.entity.navigate.ArenaNodeNetworkGrid;
 import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -169,6 +168,7 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getBlock("demonstonebrick")), 1F).setMinAmount(64).setMaxAmount(128));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getBlock("demonstonetile")), 1F).setMinAmount(64).setMaxAmount(128));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getBlock("demoncrystal")), 1F).setMinAmount(64).setMaxAmount(128));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("nethersoulsigil")), 1F).setMinAmount(1).setMaxAmount(3));
 	}
 
     // ========== Rendering Distance ==========
@@ -243,7 +243,7 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
             for(EntityPlayer target : this.playerTargets) {
                 if(target.capabilities.isCreativeMode || target.isSpectator())
                     continue;
-                if(target.posY > this.posY + this.height) {
+                if(target.posY > this.posY + MobInfo.bossAntiFlight) {
                     for(int i = 0; i < 3; i++) {
                         EntityNetherSoul minion = new EntityNetherSoul(this.getEntityWorld());
                         this.summonMinion(minion, this.getRNG().nextDouble() * 360, 5);
@@ -619,7 +619,7 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
         }
         if(entity instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer)entity;
-            if (!player.capabilities.isCreativeMode && player.posY > this.posY + this.height) {
+            if (!player.capabilities.isCreativeMode && player.posY > this.posY + MobInfo.bossAntiFlight) {
                 return false;
             }
         }

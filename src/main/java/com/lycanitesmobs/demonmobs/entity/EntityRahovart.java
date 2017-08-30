@@ -2,13 +2,13 @@ package com.lycanitesmobs.demonmobs.entity;
 
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupDemon;
-import com.lycanitesmobs.core.entity.EntityCreatureTameable;
-import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.api.IGroupFire;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
+import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.EntityProjectileBase;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobInfo;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -135,6 +135,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getBlock("demonstonebrick")), 1F).setMinAmount(64).setMaxAmount(128));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getBlock("demonstonetile")), 1F).setMinAmount(64).setMaxAmount(128));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getBlock("demoncrystal")), 1F).setMinAmount(64).setMaxAmount(128));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("nethersoulsigil")), 1F).setMinAmount(1).setMaxAmount(3));
 	}
 
     // ========== Init ==========
@@ -238,7 +239,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
                 if(target.capabilities.isCreativeMode || target.isSpectator())
                     continue;
                 this.rangedAttack(target, 1F);
-                if(target.posY > this.posY + this.height + 5) {
+                if(target.posY > this.posY + MobInfo.bossAntiFlight) {
                     for(int i = 0; i < 3; i++) {
                         EntityNetherSoul minion = new EntityNetherSoul(this.getEntityWorld());
                         this.summonMinion(minion, this.getRNG().nextDouble() * 360, 5);
@@ -728,7 +729,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
         }
         if(entity instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer)entity;
-            if (!player.capabilities.isCreativeMode && player.posY > this.posY + this.height) {
+            if (!player.capabilities.isCreativeMode && player.posY > this.posY + MobInfo.bossAntiFlight) {
                 return false;
             }
         }

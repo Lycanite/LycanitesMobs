@@ -61,6 +61,9 @@ public class MobInfo {
 
     /** The chance that a creature gets added to the killing player's Beastiary on death, always 100% for bosses. **/
     public static double beastiaryAddOnDeathChance = 0.15;
+
+    /** How much higher players must be relative to a boss' y position (feet) to trigger anti flight measures. **/
+    public static double bossAntiFlight = 3;
 	
 	/** A static map containing all the global multipliers for each stat for each difficulty. They defaults are Easy: 0.5, Normal: 1.0 and Hard: 1.5. **/
 	public static Map<String, Double> difficultyMutlipliers = new HashMap<String, Double>();
@@ -180,6 +183,10 @@ public class MobInfo {
         // Beastiary:
         config.setCategoryComment("Beastiary", "Here you can control all settings related to the player's Beastiary.");
         beastiaryAddOnDeathChance = config.getDouble("Beastiary", "Add Creature On Kill Chance", beastiaryAddOnDeathChance, "The chance that creatures are added to the player's Beastiary when killed, the Soulgazer can also be used to add creatures. Bosses are always a 100% chance.");
+
+        // Bosses:
+        config.setCategoryComment("Bosses", "Here you can control all settings related to boss creatures, this does not include rare subspecies (mini bosses).");
+        bossAntiFlight = config.getDouble("Bosses", "How much higher players must be relative to a boss' y position (feet) to trigger anti flight measures.");
 
         // Interaction:
 		config.setCategoryComment("Mob Interaction", "Here you can control how mobs interact with other mobs.");

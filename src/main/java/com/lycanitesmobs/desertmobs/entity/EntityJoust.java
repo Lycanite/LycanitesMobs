@@ -1,12 +1,12 @@
 package com.lycanitesmobs.desertmobs.entity;
 
 import com.lycanitesmobs.ObjectManager;
-import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.ObjectLists;
 import com.lycanitesmobs.api.IGroupAnimal;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobInfo;
+import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -80,6 +80,27 @@ public class EntityJoust extends EntityCreatureAgeable implements IAnimals, IGro
 	public void loadItemDrops() {
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("JoustMeatRaw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("JoustMeatCooked"))).setMaxAmount(3));
 	}
+
+
+    // ==================================================
+    //                      Spawn
+    // ==================================================
+    // ========== On Spawn ==========
+    @Override
+    public void onFirstSpawn() {
+        // Random Alpha:
+        MobInfo alphaInfo = ObjectManager.getMobInfo("joustalpha");
+        if(alphaInfo != null) {
+            float alphaChance = (float)alphaInfo.spawnInfo.spawnWeight / Math.max(this.mobInfo.spawnInfo.spawnWeight, 1);
+            if (this.getRNG().nextFloat() <= alphaChance) {
+                EntityJoustAlpha alpha = new EntityJoustAlpha(this.getEntityWorld());
+                alpha.copyLocationAndAnglesFrom(this);
+                this.getEntityWorld().spawnEntityInWorld(alpha);
+                this.getEntityWorld().removeEntity(this);
+            }
+        }
+        super.onFirstSpawn();
+    }
 	
     
 	// ==================================================

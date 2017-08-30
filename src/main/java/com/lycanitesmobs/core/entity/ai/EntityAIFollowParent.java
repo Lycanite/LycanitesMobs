@@ -31,11 +31,11 @@ public class EntityAIFollowParent extends EntityAIFollow {
     	return this;
     }
     public EntityAIFollowParent setStrayDistance(double setDist) {
-    	this.strayDistance = setDist * setDist;
+    	this.strayDistance = setDist;
     	return this;
     }
     public EntityAIFollowParent setLostDistance(double setDist) {
-    	this.lostDistance = setDist * setDist;
+    	this.lostDistance = setDist;
     	return this;
     }
     public EntityAIFollowParent setAdultFollowing(boolean setBool) {

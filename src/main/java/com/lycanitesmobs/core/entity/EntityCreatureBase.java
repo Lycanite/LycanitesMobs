@@ -3565,7 +3565,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Used when saving this mob to a chunk. **/
     @Override
     public void writeEntityToNBT(NBTTagCompound nbtTagCompound) {
-    	nbtTagCompound.setBoolean("FirstSpawn", false);
+    	nbtTagCompound.setBoolean("FirstSpawn", this.firstSpawn);
     	nbtTagCompound.setString("SpawnEventType", this.spawnEventType);
     	nbtTagCompound.setInteger("SpawnEventCount", this.spawnEventCount);
     	

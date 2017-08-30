@@ -33,11 +33,11 @@ public class EntityAIFollowOwner extends EntityAIFollow {
     	return this;
     }
     public EntityAIFollowOwner setStrayDistance(double setDist) {
-    	this.strayDistance = setDist * setDist;
+    	this.strayDistance = setDist;
     	return this;
     }
     public EntityAIFollowOwner setLostDistance(double setDist) {
-    	this.lostDistance = setDist * setDist;
+    	this.lostDistance = setDist;
     	return this;
     }
     

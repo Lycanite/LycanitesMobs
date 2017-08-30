@@ -1,13 +1,13 @@
 package com.lycanitesmobs.plainsmobs.entity;
 
 import com.lycanitesmobs.ObjectManager;
-import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.ObjectLists;
 import com.lycanitesmobs.api.IGroupAnimal;
 import com.lycanitesmobs.api.IGroupPredator;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobInfo;
+import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -18,7 +18,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -87,6 +86,27 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
 	public void loadItemDrops() {
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("MakaMeatRaw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("MakaMeatCooked"))).setMaxAmount(6));
         this.drops.add(new DropRate(new ItemStack(Items.LEATHER), 0.5F).setMinAmount(1).setMaxAmount(3));
+    }
+
+
+    // ==================================================
+    //                      Spawn
+    // ==================================================
+    // ========== On Spawn ==========
+    @Override
+    public void onFirstSpawn() {
+        // Random Alpha:
+        MobInfo alphaInfo = ObjectManager.getMobInfo("makaalpha");
+        if(alphaInfo != null) {
+            float alphaChance = (float)alphaInfo.spawnInfo.spawnWeight / Math.max(this.mobInfo.spawnInfo.spawnWeight, 1);
+            if (this.getRNG().nextFloat() <= alphaChance) {
+                EntityMakaAlpha alpha = new EntityMakaAlpha(this.getEntityWorld());
+                alpha.copyLocationAndAnglesFrom(this);
+                this.getEntityWorld().spawnEntityInWorld(alpha);
+                this.getEntityWorld().removeEntity(this);
+            }
+        }
+        super.onFirstSpawn();
     }
 	
 	

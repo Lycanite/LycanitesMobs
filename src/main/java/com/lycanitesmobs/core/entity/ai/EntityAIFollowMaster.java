@@ -29,11 +29,11 @@ public class EntityAIFollowMaster extends EntityAIFollow {
     	return this;
     }
     public EntityAIFollowMaster setStrayDistance(double setDist) {
-    	this.strayDistance = setDist * setDist;
+    	this.strayDistance = setDist;
     	return this;
     }
     public EntityAIFollowMaster setLostDistance(double setDist) {
-    	this.lostDistance = setDist * setDist;
+    	this.lostDistance = setDist;
     	return this;
     }
     

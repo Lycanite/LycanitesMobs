@@ -130,13 +130,13 @@ public class DesertMobs {
 		        .setPeaceful(true).setSummonCost(2).setDungeonLevel(-1)
 		        .addSubspecies(new Subspecies("russet", "uncommon")).addSubspecies(new Subspecies("light", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("CREATURE").setDespawn(false)
-				.setSpawnWeight(6).setAreaLimit(10).setGroupLimits(1, 5).setLightDark(true, false).setDungeonWeight(0);
+				.setSpawnWeight(10).setAreaLimit(10).setGroupLimits(1, 5).setLightDark(true, false).setDungeonWeight(0);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "joustalpha", EntityJoustAlpha.class, 0xFF0000, 0xFFFF00)
 		        .setPeaceful(false).setSummonCost(4).setDungeonLevel(2)
 		        .addSubspecies(new Subspecies("verdant", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("CREATURE").setDespawn(false)
+		newMob.spawnInfo.setSpawnTypes("").setDespawn(false)
 				.setSpawnWeight(2).setAreaLimit(2).setGroupLimits(1, 2).setLightDark(true, false).setDungeonWeight(0);
 		ObjectManager.addMob(newMob);
 

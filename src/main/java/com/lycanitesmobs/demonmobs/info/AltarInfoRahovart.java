@@ -3,6 +3,7 @@ package com.lycanitesmobs.demonmobs.info;
 import com.lycanitesmobs.ExtendedWorld;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.info.AltarInfo;
+import com.lycanitesmobs.core.mobevent.MobEventBase;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
@@ -79,7 +80,7 @@ public class AltarInfoRahovart extends AltarInfo {
     // ==================================================
     /** Called when this Altar should activate. This will typically destroy the Altar and summon a rare mob or activate an event such as a boss event. If false is returned then the activation did not work, this is the place to check for things like dimensions. **/
     @Override
-    public boolean activate(Entity entity, World world, BlockPos pos) {
+    public boolean activate(Entity entity, World world, BlockPos pos, int rank) {
         if (world.isRemote)
             return true;
 
@@ -92,7 +93,10 @@ public class AltarInfoRahovart extends AltarInfo {
         if(entity != null)
             pos = this.getFacingPosition(pos, 10, entity.rotationYaw);
 
-        worldExt.startMobEvent("rahovart", pos.getX(), pos.getY(), pos.getZ());
+        MobEventBase mobEvent = worldExt.startMobEvent("rahovart", pos.getX(), pos.getY(), pos.getZ());
+        if(mobEvent != null) {
+            mobEvent.rank = rank;
+        }
 
         return true;
     }

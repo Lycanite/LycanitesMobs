@@ -84,6 +84,7 @@ public class MobEventAsmodeus extends MobEventBoss {
             entityCreatureBase.setLocationAndAngles(originX, originY + 1, originZ, 0, 0);
             world.spawnEntityInWorld(entityCreatureBase);
             entityCreatureBase.setArenaCenter(new BlockPos(originX, originY + 1, originZ));
+            this.onSpawn(entityCreatureBase);
         }
     }
 

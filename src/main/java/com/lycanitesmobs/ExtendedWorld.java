@@ -383,21 +383,22 @@ public class ExtendedWorld extends WorldSavedData {
     /**
      * Starts a provided Mob Event (provided by name) on the provided world.
      *  **/
-    public void startMobEvent(String mobEventName, int originX, int originY, int originZ) {
+    public MobEventBase startMobEvent(String mobEventName, int originX, int originY, int originZ) {
         MobEventBase mobEvent;
         if(MobEventManager.instance.allMobEvents.containsKey(mobEventName)) {
             mobEvent = MobEventManager.instance.allMobEvents.get(mobEventName);
             if(!mobEvent.isEnabled()) {
                 LycanitesMobs.printWarning("", "Tried to start a mob event that was disabled with the name: '" + mobEventName + "' on " + (this.world.isRemote ? "Client" : "Server"));
-                return;
+                return null;
             }
         }
         else {
             LycanitesMobs.printWarning("", "Tried to start a mob event with the invalid name: '" + mobEventName + "' on " + (this.world.isRemote ? "Client" : "Server"));
-            return;
+            return null;
         }
 
         this.startMobEvent(mobEvent, originX, originY, originZ);
+        return mobEvent;
     }
 
     /**

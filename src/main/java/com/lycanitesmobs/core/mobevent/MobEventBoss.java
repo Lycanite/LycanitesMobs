@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.mobevent;
 import com.lycanitesmobs.ExtendedWorld;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.config.ConfigSpawning;
+import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.info.GroupInfo;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.world.World;
@@ -117,7 +118,10 @@ public class MobEventBoss extends MobEventBase {
     // ==================================================
     @Override
 	public void onSpawn(EntityLiving entity) {
-
+        if(entity instanceof EntityCreatureBase) {
+            EntityCreatureBase entityCreature = (EntityCreatureBase)entity;
+            entityCreature.setSubspecies(this.rank, true);
+        }
 	}
 
 

@@ -75,6 +75,7 @@ public class ModelRaiko extends ModelCustomObj {
 
 		// Walking:
 		if(entity == null || entity.onGround || entity.isInWater()) {
+			posY -= 0.6f;
 			float walkSwing = 0.2F;
 			float wingOffset = 1;
 			if(entity.isInWater()) {
@@ -84,11 +85,13 @@ public class ModelRaiko extends ModelCustomObj {
 				rotX += Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F) - (45 * wingOffset);
 				this.rotate(1, 20 * wingOffset, 0 * wingOffset);
 				rotZ -= Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F + 0.05F) + (90 * wingOffset);
+				this.scale(-1, 1, 1);
 			}
 			if(partName.equals("armright") || partName.equals("wingleft")) {
 				rotX += Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F) - (45 * wingOffset);
 				this.rotate(1, -20 * wingOffset, 0 * wingOffset);
 				rotZ += Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F + 0.05F) + (90 * wingOffset);
+				this.scale(-1, 1, 1);
 			}
 			if(partName.equals("legleft"))
 				rotX += Math.toDegrees(MathHelper.cos(time * walkSwing + (float)Math.PI) * 0.8F * distance);

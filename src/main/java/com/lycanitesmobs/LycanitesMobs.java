@@ -50,7 +50,7 @@ public class LycanitesMobs {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String version = "1.17.0.6 - MC 1.10.2";
+	public static final String version = "1.17.0.7 - MC 1.10.2";
 	public static final String website = "http://lycanitesmobs.com";
 	public static final String websiteAPI = "http://api.lycanitesmobs.com";
 	public static final String websitePatreon = "https://www.patreon.com/lycanite";
@@ -187,7 +187,9 @@ public class LycanitesMobs {
 		// ========== Create Items ==========
 		ObjectManager.addItem("soulgazer", new ItemSoulgazer());
 		ObjectManager.addItem("soulstone", new ItemSoulstone());
-        ObjectManager.addItem("soulkey", new ItemSoulkey());
+		ObjectManager.addItem("soulkey", new ItemSoulkey("soulkey", 0));
+		ObjectManager.addItem("soulkeydiamond", new ItemSoulkey("soulkeydiamond", 1));
+		ObjectManager.addItem("soulkeyemerald", new ItemSoulkey("soulkeyemerald", 2));
 		ObjectManager.addItem("summoningstaff", new ItemStaffSummoning());
 		ObjectManager.addItem("stablesummoningstaff", new ItemStaffStable());
 		ObjectManager.addItem("bloodsummoningstaff", new ItemStaffBlood());
@@ -297,6 +299,20 @@ public class LycanitesMobs {
                         Character.valueOf('S'), ObjectManager.getItem("soulgazer"),
                         Character.valueOf('D'), Items.DIAMOND
                 }));
+
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("soulkeydiamond"), 1, 0),
+				new Object[] { "DDD", "DSD", "DDD",
+						Character.valueOf('S'), ObjectManager.getItem("soulkey"),
+						Character.valueOf('D'), Items.DIAMOND
+				}));
+
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("soulkeyemerald"), 1, 0),
+				new Object[] { "DDD", "DSD", "DDD",
+						Character.valueOf('S'), ObjectManager.getItem("soulkey"),
+						Character.valueOf('D'), Items.EMERALD
+				}));
 
         GameRegistry.addRecipe(new ShapedOreRecipe(
                 new ItemStack(ObjectManager.getBlock("summoningpedestal"), 1, 0),

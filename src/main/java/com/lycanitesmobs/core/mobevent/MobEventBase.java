@@ -31,6 +31,7 @@ public class MobEventBase {
     public int firstScheduleDay = -1;
     public int duration = 60 * 20;
     public int mobDuration = 10 * 60 * 20;
+    public int rank = 0;
 	
 	// Dimensions:
     /** A comma separated list of dimensions that this event can occur in. As read from the config **/

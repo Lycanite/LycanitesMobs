@@ -114,7 +114,7 @@ public class AltarInfoLunarGrue extends AltarInfo {
     // ==================================================
     /** Called when this Altar should activate. This will typically destroy the Altar and summon a rare mob or activate an event such as a boss event. If false is returned then the activation did not work, this is the place to check for things like dimensions. **/
     @Override
-    public boolean activate(Entity entity, World world, BlockPos pos) {
+    public boolean activate(Entity entity, World world, BlockPos pos, int rank) {
         if (world.isRemote)
             return true;
 

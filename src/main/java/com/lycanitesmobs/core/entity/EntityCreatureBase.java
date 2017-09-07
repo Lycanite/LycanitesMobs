@@ -951,6 +951,15 @@ public abstract class EntityCreatureBase extends EntityLiving {
         return this.bossInfo;
     }
 
+    /** Updates the boss name for the health bar. **/
+    public void refreshBossHealthName() {
+        if(this.bossInfo != null) {
+            String name = this.getFullName();
+            name += " (Phase " + (this.getBattlePhase() + 1) + ")";
+            this.bossInfo.setName(new TextComponentString(name));
+        }
+    }
+
 
     // ========== Summoning ==========
     public void summonMinion(EntityLivingBase minion, double angle, double distance) {
@@ -1278,11 +1287,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         if(this.getBattlePhase() == phase)
             return;
         this.battlePhase = phase;
-        if(this.bossInfo != null) {
-            String name = this.getFullName();
-            name += " (Phase " + (this.getBattlePhase() + 1) + ")";
-            this.bossInfo.setName(new TextComponentString(name));
-        }
+        this.refreshBossHealthName();
         this.playPhaseSound();
     }
 
@@ -1301,6 +1306,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         this.experienceValue = Math.round(scaledExp);
     	if(resetHealth)
     		this.applySubspeciesHealthMultiplier();
+        this.refreshBossHealthName();
     }
 
     /** Gets the subspecies of this mob, will return null if this is a base species mob. **/
@@ -1346,10 +1352,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
         if((!this.canWalk() && !this.isFlying() && !this.isInWater() && this.isMoving()) || !this.canMove())
         	this.clearMovement();
 
-        // Climbing:
+        // Climbing/Flying:
         if(!this.getEntityWorld().isRemote || this.canPassengerSteer()) {
         	this.setBesideClimbableBlock(this.isCollidedHorizontally);
-        	if(this.flySoundSpeed > 0 && this.ticksExisted % 20 == 0)
+        	if(!this.onGround && this.flySoundSpeed > 0 && this.ticksExisted % 20 == 0)
         		this.playFlySound();
         }
 

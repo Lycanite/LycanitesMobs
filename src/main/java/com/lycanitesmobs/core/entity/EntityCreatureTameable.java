@@ -140,7 +140,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     	super.applySubspeciesHealthMultiplier();
     }
     
-    /** Applies the tamed health multipler for this mob. This should override subspecies. **/
+    /** Applies the tamed health multiplier for this mob. This should override subspecies. **/
     public void applyTamedHealthMultiplier() {
     	double tamedHealth = this.getBaseHealth();
     	if(this.isTamed()) {

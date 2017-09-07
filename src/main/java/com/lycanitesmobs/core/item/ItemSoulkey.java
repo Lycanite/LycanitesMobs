@@ -17,13 +17,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemSoulkey extends ItemBase {
+    public int rank = 0; // 0 = Standard, 1 = Diamond, 2 = Emerald
 
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemSoulkey() {
+    public ItemSoulkey(String itemName, int rank) {
         super();
-        this.itemName = "soulkey";
+        this.itemName = itemName;
+        this.rank = rank;
         this.setup();
     }
 	
@@ -75,7 +77,7 @@ public class ItemSoulkey extends ItemBase {
                     if (itemStack.getCount() <= 0)
                         player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack)null);
                 }
-                if(!altarInfo.activate(player, world, pos)) {
+                if(!altarInfo.activate(player, world, pos, this.rank)) {
                     String message = I18n.translateToLocal("message.soulkey.badlocation");
                     player.sendMessage(new TextComponentString(message));
                     return EnumActionResult.FAIL;

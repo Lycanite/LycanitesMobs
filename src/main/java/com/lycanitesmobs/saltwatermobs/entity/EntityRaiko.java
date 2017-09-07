@@ -108,7 +108,7 @@ public class EntityRaiko extends EntityCreatureRideable implements IMob, IGroupH
         if(!this.getEntityWorld().isRemote) {
             if(this.isLanded) {
                 this.wantsToLand = false;
-                if(this.hasPickupEntity() || (this.updateTick % (5 * 20) == 0 && this.getRNG().nextBoolean())) {
+                if(this.hasPickupEntity() || this.getControllingPassenger() != null || this.getLeashed() || this.isInWater() || (!this.isTamed() && this.updateTick % (5 * 20) == 0 && this.getRNG().nextBoolean())) {
                     this.leap(1.0D, 1.0D);
                     this.wanderAI.setPauseRate(0);
                     this.isLanded = false;
@@ -127,8 +127,11 @@ public class EntityRaiko extends EntityCreatureRideable implements IMob, IGroupH
                     }
                 }
             }
-            if(this.hasPickupEntity() || this.hasAttackTarget()) {
+            if(this.hasPickupEntity() || this.getControllingPassenger() != null || this.hasAttackTarget() || this.isInWater()) {
                 this.wantsToLand = false;
+            }
+            else if(this.isTamed() && !this.getLeashed()) {
+                this.wantsToLand = true;
             }
         }
         

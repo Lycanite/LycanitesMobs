@@ -49,18 +49,6 @@ public class CreatureMoveHelper extends EntityMoveHelper {
     public boolean isControlledByRider() {
         // Mounted By Player:
         if(this.entityCreature != null && this.entityCreature.getControllingPassenger() instanceof EntityPlayer && this.entityCreature.canBeSteered()) {
-
-            // Strong Swimmings Can Always Be Controlled:
-            if(this.entityCreature.isStrongSwimmer()) {
-                return true;
-            }
-
-            // Flyers Can't Be Controlled In Water (Unless Strong Swimmer):
-            if(this.entityCreature.isFlying() && this.entityCreature.isInWater()) {
-                return false;
-            }
-
-            // Ground Mounts Can Always Be Controlled:
             return true;
         }
 

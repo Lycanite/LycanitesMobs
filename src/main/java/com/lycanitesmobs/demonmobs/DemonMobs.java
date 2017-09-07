@@ -183,13 +183,15 @@ public class DemonMobs {
 		ObjectManager.addMob(newMob);
 
         newMob = new MobInfo(group, "rahovart", EntityRahovart.class, 0x000000, 0xFF0000)
-                .setPeaceful(false).setSummonCost(100).setDungeonLevel(-1).setBoss(true);
+				.setPeaceful(false).setSummonCost(100).setDungeonLevel(-1).setBoss(true)
+				.addSubspecies(new Subspecies("light", "uncommon")).addSubspecies(new Subspecies("dark", "uncommon"));
         newMob.spawnInfo.setSpawnTypes("")
                 .setSpawnWeight(1).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(true, true).setDungeonWeight(0);
         ObjectManager.addMob(newMob);
 
         newMob = new MobInfo(group, "asmodeus", EntityAsmodeus.class, 0x222222, 0x997700)
-                .setPeaceful(false).setSummonCost(100).setDungeonLevel(-1).setBoss(true);
+				.setPeaceful(false).setSummonCost(100).setDungeonLevel(-1).setBoss(true)
+				.addSubspecies(new Subspecies("verdant", "uncommon")).addSubspecies(new Subspecies("azure", "uncommon"));
         newMob.spawnInfo.setSpawnTypes("")
                 .setSpawnWeight(1).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(true, true).setDungeonWeight(0);
         ObjectManager.addMob(newMob);

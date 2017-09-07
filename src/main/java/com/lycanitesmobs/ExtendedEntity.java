@@ -4,12 +4,10 @@ import com.lycanitesmobs.core.capabilities.IExtendedEntity;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.EntityFear;
 import com.lycanitesmobs.core.network.MessageEntityPickedUp;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.BlockPos;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -182,7 +180,9 @@ public class ExtendedEntity implements IExtendedEntity {
         this.entity.motionZ = this.pickedUpByEntity.motionZ;
         this.entity.fallDistance = 0;
         if (!this.entity.getEntityWorld().isRemote && this.entity instanceof EntityPlayer) {
-            ((EntityPlayer) this.entity).capabilities.allowFlying = true;
+            EntityPlayer player = (EntityPlayer)this.entity;
+            player.capabilities.allowFlying = true;
+            player.noClip = true;
         }
         if (!this.entity.isEntityAlive())
             this.setPickedUpByEntity(null);
@@ -213,6 +213,7 @@ public class ExtendedEntity implements IExtendedEntity {
 				else {
                     ((EntityPlayer)this.entity).capabilities.allowFlying = this.playerAllowFlyingSnapshot;
                     ((EntityPlayer)this.entity).capabilities.isFlying = this.playerIsFlyingSnapshot;
+                    this.entity.noClip = false;
                 }
 			}
 
@@ -242,14 +243,14 @@ public class ExtendedEntity implements IExtendedEntity {
         if(this.pickedUpByEntity instanceof EntityCreatureBase) {
             pickupOffset = ((EntityCreatureBase) this.pickedUpByEntity).getPickupOffset(this.entity);
         }
-        if(this.entity instanceof EntityPlayer) {
+        /*if(this.entity instanceof EntityPlayer) {
             if (this.entity.getEntityWorld() != null) {
                 IBlockState blockState = this.entity.getEntityWorld().getBlockState(new BlockPos((int) pickupOffset[0], (int) pickupOffset[1], (int) pickupOffset[2]));
                 if (blockState.getMaterial().isSolid()) {
                     return new double[]{0, 0, 0};
                 }
             }
-        }
+        }*/
         return pickupOffset;
     }
 

@@ -64,6 +64,9 @@ public class MobInfo {
 
     /** How much higher players must be relative to a boss' y position (feet) to trigger anti flight measures. **/
     public static double bossAntiFlight = 3;
+
+    /** If true, when a mob picks up a player, the player will be positioned where the mob is rather than offset to where the mob is holding the player at. **/
+    public static boolean disablePickupOffsets = false;
 	
 	/** A static map containing all the global multipliers for each stat for each difficulty. They defaults are Easy: 0.5, Normal: 1.0 and Hard: 1.5. **/
 	public static Map<String, Double> difficultyMutlipliers = new HashMap<String, Double>();
@@ -192,6 +195,7 @@ public class MobInfo {
 		config.setCategoryComment("Mob Interaction", "Here you can control how mobs interact with other mobs.");
         predatorsAttackAnimals = config.getBool("Mob Interaction", "Predators Attack Animals", predatorsAttackAnimals, "Set to false to prevent predator mobs from attacking animals/farmable mobs.");
 		mobsAttackVillagers = config.getBool("Mob Interaction", "Mobs Attack Villagers", mobsAttackVillagers, "Set to false to prevent mobs that attack players from also attacking villagers.");
+        disablePickupOffsets = config.getBool("Mob Interaction", "Disable Pickup Offset", disablePickupOffsets, "If true, when a mob picks up a player, the player will be positioned where the mob is rather than offset to where the mob is holding the player at.");
 
         // Variations:
         config.setCategoryComment("Mob Variations", "Settings for how mobs randomly vary such as subspecies. Subspecies are uncommon and rare variants of regular mobs, uncommon subspecies tend to be a bit tougher and rare subspecies are quite powerful and can be considered as mini bosses..");

@@ -2082,7 +2082,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     }
 
     // ========== Restrict Y Height From Ground ==========
-    /** Takes an initial chunk coordinate and returns an altered Y position relative to the ground using a minimum and maximum distance. **/
+    /** Takes an initial coordinate and returns an altered Y position relative to the ground using a minimum and maximum distance. **/
     public int restrictYHeightFromGround(BlockPos coords, int minY, int maxY) {
         int groundY = this.getGroundY(coords);
         int airYMax = Math.min(this.getAirY(coords), groundY + maxY);

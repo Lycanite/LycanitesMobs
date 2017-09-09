@@ -3,12 +3,14 @@ package com.lycanitesmobs;
 import com.lycanitesmobs.core.capabilities.IExtendedEntity;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.EntityFear;
+import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.core.network.MessageEntityPickedUp;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
+import javax.vecmath.Vector3d;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,7 +24,7 @@ public class ExtendedEntity implements IExtendedEntity {
 
     // Safe Position:
     /** The last coordinates the entity was at where it wasn't inside an opaque block. (Helps prevent suffocation). **/
-    double[] lastSafePos;
+    Vector3d lastSafePos;
     private boolean playerAllowFlyingSnapshot;
     private boolean playerIsFlyingSnapshot;
 	
@@ -117,13 +119,13 @@ public class ExtendedEntity implements IExtendedEntity {
             this.entity.setDead();
 
         // Safe Position:
-        if (this.lastSafePos == null) {
-            this.lastSafePos = new double[]{this.entity.posX, this.entity.posY, this.entity.posZ};
-        }
-        if (this.entity.noClip || (!this.entity.isEntityInsideOpaqueBlock())) {
-            this.lastSafePos[0] = this.entity.posX;
-            this.lastSafePos[1] = this.entity.posY;
-            this.lastSafePos[2] = this.entity.posZ;
+        if(this.entity.getEntityWorld() != null) {
+            if (this.lastSafePos == null) {
+                this.lastSafePos = new Vector3d(this.entity.posX, this.entity.posY, this.entity.posZ);
+            }
+            if (!this.entity.getEntityWorld().getBlockState(this.entity.getPosition()).getMaterial().isSolid()) {
+                this.lastSafePos.set(Math.floor(this.entity.posX) + 0.5D, this.entity.getPosition().getY(), Math.floor(this.entity.posZ) + 0.5D);
+            }
         }
 
         // Fear Entity:
@@ -182,7 +184,7 @@ public class ExtendedEntity implements IExtendedEntity {
         if (!this.entity.getEntityWorld().isRemote && this.entity instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer)this.entity;
             player.capabilities.allowFlying = true;
-            player.noClip = true;
+            this.entity.noClip = true;
         }
         if (!this.entity.isEntityAlive())
             this.setPickedUpByEntity(null);
@@ -217,25 +219,26 @@ public class ExtendedEntity implements IExtendedEntity {
                 }
 			}
 
-            // Safe Position:
-            if(pickedUpByEntity == null) {
-                if(this.lastSafePos != null && this.lastSafePos.length >= 3)
-                    this.entity.setPosition(this.lastSafePos[0], this.lastSafePos[1], this.lastSafePos[2]);
-                this.entity.motionX = 0;
-                this.entity.motionY = 0;
-                this.entity.motionZ = 0;
-                this.entity.fallDistance = 0;
-            }
-
             // Teleport To Initial Pickup Position:
-            else if(!(this.entity instanceof EntityPlayer)) {
+            if(this.pickedUpByEntity != null && !(this.entity instanceof EntityPlayer)) {
                 double[] pickupOffset = this.getPickedUpOffset();
-			    this.entity.attemptTeleport(this.pickedUpByEntity.posX + pickupOffset[0], this.pickedUpByEntity.posY + pickupOffset[1], this.pickedUpByEntity.posZ + pickupOffset[2]);
+                this.entity.attemptTeleport(this.pickedUpByEntity.posX + pickupOffset[0], this.pickedUpByEntity.posY + pickupOffset[1], this.pickedUpByEntity.posZ + pickupOffset[2]);
             }
 
 			MessageEntityPickedUp message = new MessageEntityPickedUp(this.entity, pickedUpByEntity);
 			LycanitesMobs.packetHandler.sendToDimension(message, this.entity.dimension);
 		}
+
+        // Safe Drop Position:
+        if(pickedUpByEntity == null) {
+            if(this.lastSafePos != null) {
+                this.entity.setPosition(this.lastSafePos.getX(), this.lastSafePos.getY(), this.lastSafePos.getZ());
+            }
+            this.entity.motionX = 0;
+            this.entity.motionY = 0;
+            this.entity.motionZ = 0;
+            this.entity.fallDistance = 0;
+        }
 	}
 
 	public double[] getPickedUpOffset() {
@@ -243,14 +246,9 @@ public class ExtendedEntity implements IExtendedEntity {
         if(this.pickedUpByEntity instanceof EntityCreatureBase) {
             pickupOffset = ((EntityCreatureBase) this.pickedUpByEntity).getPickupOffset(this.entity);
         }
-        /*if(this.entity instanceof EntityPlayer) {
-            if (this.entity.getEntityWorld() != null) {
-                IBlockState blockState = this.entity.getEntityWorld().getBlockState(new BlockPos((int) pickupOffset[0], (int) pickupOffset[1], (int) pickupOffset[2]));
-                if (blockState.getMaterial().isSolid()) {
-                    return new double[]{0, 0, 0};
-                }
-            }
-        }*/
+        if(MobInfo.disablePickupOffsets && this.entity instanceof EntityPlayer) {
+            return new double[] {0, 0, 0};
+        }
         return pickupOffset;
     }
 

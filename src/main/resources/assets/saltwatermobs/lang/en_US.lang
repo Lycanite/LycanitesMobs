@@ -58,6 +58,14 @@ achievement.herma.learn=Cokey Cokey!
 achievement.herma.learn.desc=Add a Herma to your Beastiary.
 achievement.herma.tame=Battle Crab!
 achievement.herma.tame.desc=Tame a Herma.
+entity.saltwatermobs.quetzodracl.name=Quetzodracl
+entity.saltwatermobs.quetzodracl.description=Powerful flying pterosaur wyverns with a strong grasp!
+achievement.quetzodracl.kill=Pterosaur Dragons!
+achievement.quetzodracl.kill.desc=Slay a Quetzodracl.
+achievement.quetzodracl.learn=Pterosaurs Aren't Dinosaurs BTW!
+achievement.quetzodracl.learn.desc=Add a Quetzodracl to your Beastiary.
+achievement.quetzodracl.tame=Rend The Skies!
+achievement.quetzodracl.tame.desc=Tame a Quetzodracl.
 #
 # Items
 item.saltwaterspawn.name=Spawn

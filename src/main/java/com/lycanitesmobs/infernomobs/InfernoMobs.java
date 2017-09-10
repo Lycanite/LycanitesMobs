@@ -100,6 +100,7 @@ public class InfernoMobs {
 		ObjectManager.addItem("afrittreat", new ItemTreat("afrittreat", group));
         ObjectManager.addItem("salamandertreat", new ItemTreat("salamandertreat", group));
 		ObjectManager.addItem("gorgertreat", new ItemTreat("gorgertreat", group));
+		ObjectManager.addItem("ignibustreat", new ItemTreat("ignibustreat", group));
 
 		ObjectManager.addItem("bucketpurelava", new ItemBucketPureLava(fluid).setContainerItem(Items.BUCKET));
 
@@ -158,7 +159,14 @@ public class InfernoMobs {
 				.setPeaceful(false).setTameable(true).setSummonCost(6).setDungeonLevel(3)
 				.addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("keppel", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("LAVA").setBlockCost(32)
-				.setSpawnWeight(1).setAreaLimit(2).setGroupLimits(1, 3).setLightDark(false, true);
+				.setSpawnWeight(2).setAreaLimit(2).setGroupLimits(1, 3).setLightDark(false, true);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "ignibus", EntityIgnibus.class, 0xBB0000, 0x00DD00)
+				.setPeaceful(false).setTameable(true).setSummonCost(2).setDungeonLevel(1)
+				.addSubspecies(new Subspecies("violet", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("LAVA").setBlockCost(32)
+				.setSpawnWeight(1).setAreaLimit(1).setGroupLimits(1, 2).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 		

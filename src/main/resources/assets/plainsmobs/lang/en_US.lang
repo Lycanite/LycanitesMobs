@@ -66,6 +66,14 @@ achievement.quillbeast.learn=Instant Quill Regrowth
 achievement.quillbeast.learn.desc=Add a Quillbeast to your Beastiary.
 achievement.quillbeast.tame=Spiky Friend!
 achievement.quillbeast.tame.desc=Tame a Quillbeast.
+entity.plainsmobs.morock.name=Morock
+entity.plainsmobs.morock.description=Aggressive wyverns, while they can't breathe fire, they still have a devastating bite!
+achievement.morock.kill=Wyvern Slayer
+achievement.morock.kill.desc=Slay a Morock.
+achievement.morock.learn=Deadly Wyverns
+achievement.morock.learn.desc=Add a Morock to your Beastiary.
+achievement.morock.tame=Wyvern Tamer
+achievement.morock.tame.desc=Tame a Morock.
 #
 # Items
 item.plainsspawn.name=Spawn

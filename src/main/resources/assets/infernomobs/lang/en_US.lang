@@ -57,6 +57,14 @@ achievement.gorger.learn=Lava Worms
 achievement.gorger.learn.desc=Add a Gorger to your Beastiary.
 achievement.gorger.tame=Dont Pet It!
 achievement.gorger.tame.desc=Tame a Gorger.
+entity.infernomobs.ignibus.name=Ignibus
+entity.infernomobs.ignibus.description=Large fiery drakes with a hot temper, searing claws, blazing breath and a burning desire to melt your face off!
+achievement.ignibus.kill=Dragon Slayer!
+achievement.ignibus.kill.desc=Slay an Ignibus.
+achievement.ignibus.learn=Fire Drakes
+achievement.ignibus.learn.desc=Add an Ignibus to your Beastiary.
+achievement.ignibus.tame=Dragon King!
+achievement.ignibus.tame.desc=Tame an Ignibus.
 #
 # Items
 item.infernospawn.name=Spawn

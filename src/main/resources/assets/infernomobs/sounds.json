@@ -179,6 +179,30 @@
         "category": "hostile",
         "sounds": [{"name": "infernomobs:entity/gorger/eat", "stream": false}]
     },
+    "entity.ignibus.say": {
+        "category": "hostile",
+        "sounds": [{"name": "infernomobs:entity/ignibus/say", "stream": false}]
+    },
+    "entity.ignibus.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "infernomobs:entity/ignibus/hurt", "stream": false}]
+    },
+    "entity.ignibus.death": {
+        "category": "hostile",
+        "sounds": [{"name": "infernomobs:entity/ignibus/death", "stream": false}]
+    },
+    "entity.ignibus.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "infernomobs:entity/ignibus/beg", "stream": false}]
+    },
+    "entity.ignibus.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "infernomobs:entity/ignibus/tame", "stream": false}]
+    },
+    "entity.ignibus.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "infernomobs:entity/ignibus/eat", "stream": false}]
+    },
     "projectile.ember": {
         "category": "ambient",
         "sounds": [{"name": "infernomobs:projectile/ember", "stream": false}]

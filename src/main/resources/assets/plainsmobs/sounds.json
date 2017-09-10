@@ -247,6 +247,42 @@
         "category": "hostile",
         "sounds": [{"name": "plainsmobs:entity/quillbeast/eat", "stream": false}]
     },
+    "entity.roc.say": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/roc/say", "stream": false}]
+    },
+    "entity.morock.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/morock/hurt", "stream": false}]
+    },
+    "entity.morock.death": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/morock/death", "stream": false}]
+    },
+    "entity.morock.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/morock/attack", "stream": false}]
+    },
+    "entity.morock.fly": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/morock/fly", "stream": false}]
+    },
+    "entity.morock.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/morock/beg", "stream": false}]
+    },
+    "entity.morock.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/morock/tame", "stream": false}]
+    },
+    "entity.morock.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/morock/eat", "stream": false}]
+    },
+    "entity.morock.mount": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/morock/mount", "stream": false}]
+    },
     "projectile.quill": {
         "category": "ambient",
         "sounds": [{"name": "plainsmobs:projectile/quill", "stream": false}]

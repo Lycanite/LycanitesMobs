@@ -148,6 +148,7 @@ public class EntityAfrit extends EntityCreatureTameable implements IMob, IGroupF
     //                      Movement
     // ==================================================
     // ========== Get Wander Position ==========
+    @Override
     public BlockPos getWanderPosition(BlockPos wanderPosition) {
         if(this.wantsToLand || !this.isLanded) {
             BlockPos groundPos;
@@ -160,6 +161,7 @@ public class EntityAfrit extends EntityCreatureTameable implements IMob, IGroupF
     }
 
     // ========== Get Flight Offset ==========
+    @Override
     public double getFlightOffset() {
         if(!this.wantsToLand) {
             super.getFlightOffset();
@@ -218,6 +220,7 @@ public class EntityAfrit extends EntityCreatureTameable implements IMob, IGroupF
     // ==================================================
     //                     Pet Control
     // ==================================================
+    @Override
     public boolean petControlsEnabled() { return true; }
 
 
@@ -262,12 +265,13 @@ public class EntityAfrit extends EntityCreatureTameable implements IMob, IGroupF
     public void applyDropEffects(EntityItemCustom entityitem) {
         entityitem.setCanBurn(false);
     }
-    
-    
+
+
     // ==================================================
    	//                    Taking Damage
    	// ==================================================
     // ========== Damage Modifier ==========
+    @Override
     public float getDamageModifier(DamageSource damageSrc) {
     	if(damageSrc.isFireDamage())
     		return 0F;

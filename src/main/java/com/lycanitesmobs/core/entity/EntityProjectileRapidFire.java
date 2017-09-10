@@ -124,8 +124,9 @@ public class EntityProjectileRapidFire extends EntityProjectileBase {
                 }
 	        }
 	        
-	        //if(projectile instanceof EntityProjectileBase)
-	        	//this.playSound(((EntityProjectileBase) projectile).getLaunchSound(), 1.0F, 1.0F / (this.rand.nextFloat() * 0.4F + 0.8F));
+	        if(projectile instanceof EntityProjectileBase) {
+                ((EntityProjectileBase) projectile).setProjectileScale(this.projectileScale);
+            }
 	        
 	        world.spawnEntity((Entity)projectile);
 		}

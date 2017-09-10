@@ -186,5 +186,41 @@
     "entity.herma.eat": {
         "category": "hostile",
         "sounds": [{"name": "saltwatermobs:entity/herma/eat", "stream": false}]
+    },
+    "entity.quetzodracl.say": {
+        "category": "neutral",
+        "sounds": [{"name": "saltwatermobs:entity/quetzodracl/say", "stream": false}]
+    },
+    "entity.quetzodracl.hurt": {
+        "category": "neutral",
+        "sounds": [{"name": "saltwatermobs:entity/quetzodracl/hurt", "stream": false}]
+    },
+    "entity.quetzodracl.death": {
+        "category": "neutral",
+        "sounds": [{"name": "saltwatermobs:entity/quetzodracl/death", "stream": false}]
+    },
+    "entity.quetzodracl.attack": {
+        "category": "neutral",
+        "sounds": [{"name": "saltwatermobs:entity/quetzodracl/attack", "stream": false}]
+    },
+    "entity.quetzodracl.fly": {
+        "category": "neutral",
+        "sounds": [{"name": "saltwatermobs:entity/quetzodracl/fly", "stream": false}]
+    },
+    "entity.quetzodracl.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "saltwatermobs:entity/quetzodracl/beg", "stream": false}]
+    },
+    "entity.quetzodracl.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "saltwatermobs:entity/quetzodracl/tame", "stream": false}]
+    },
+    "entity.quetzodracl.eat": {
+        "category": "hostile",
+        "sounds": [{"name": "saltwatermobs:entity/quetzodracl/eat", "stream": false}]
+    },
+    "entity.quetzodracl.mount": {
+        "category": "hostile",
+        "sounds": [{"name": "saltwatermobs:entity/quetzodracl/mount", "stream": false}]
     }
 }

@@ -18,6 +18,7 @@ public class ClientSubProxy extends CommonSubProxy {
         AssetManager.addModel("khalk", new ModelKhalk());
         AssetManager.addModel("salamander", new ModelSalamander());
         AssetManager.addModel("gorger", new ModelGorger());
+        AssetManager.addModel("ignibus", new ModelIgnibus());
 
         // Register Renderers:
         RenderRegister renderRegister = new RenderRegister(groupInfo);

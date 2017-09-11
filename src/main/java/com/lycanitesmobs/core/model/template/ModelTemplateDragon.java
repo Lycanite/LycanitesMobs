@@ -39,30 +39,42 @@ public class ModelTemplateDragon extends ModelObj {
         if(entity != null && entity.onGround) {
             float walkLoop = MathHelper.cos(time * 0.3F);
             float walkLoopRev = MathHelper.cos(time * 0.3F + (float)Math.PI);
+            float walkIdle = MathHelper.sin(loop * 0.1F);
+            float walkIdleRev = MathHelper.sin(loop * 0.1F + (float)Math.PI);
             float walkSwing = 0.6F;
-            if (partName.equals("legrightfront") || partName.equals("armrightfront01") || partName.equals("legleftback")) {
+            if (partName.equals("legleft") || partName.equals("legrightfront") || partName.equals("armrightfront01") || partName.equals("legleftback")) {
                 rotX += Math.toDegrees(walkLoopRev * walkSwing * distance);
             }
-            if (partName.equals("legleftfront") || partName.equals("armleftfront01") || partName.equals("legrightback")) {
+            if (partName.equals("legright") || partName.equals("legleftfront") || partName.equals("armleftfront01") || partName.equals("legrightback")) {
                 rotX += Math.toDegrees(walkLoop * walkSwing * distance);
             }
+            if(partName.equals("armleft01")) {
+                rotX += Math.toDegrees(walkLoop * (walkSwing / 2) * distance);
+                rotY -= 10;
+                rotZ -= 25;
+            }
+            if(partName.equals("armright01")) {
+                rotX += Math.toDegrees(walkLoopRev * (walkSwing / 2) * distance);
+                rotY += 10;
+                rotZ += 25;
+            }
             if(partName.equals("wingleft01")) {
-                rotX += Math.toDegrees(MathHelper.sin(loop * 0.1F) * 0.1F);
-                rotZ -= Math.toDegrees(MathHelper.sin(loop * 0.1F) * 0.1F);
+                rotX += Math.toDegrees(walkIdle * 0.1F);
+                rotZ -= Math.toDegrees(walkIdle * 0.1F);
                 rotZ += 80;
             }
             if(partName.equals("wingright01")) {
-                rotX += Math.toDegrees(MathHelper.sin(loop * 0.1F) * 0.1F);
-                rotZ -= Math.toDegrees(MathHelper.sin(loop * 0.1F + (float)Math.PI) * 0.1F);
+                rotX += Math.toDegrees(walkIdle * 0.1F);
+                rotZ -= Math.toDegrees(walkIdleRev * 0.1F);
                 rotZ -= 80;
             }
             if(partName.equals("wingleft02")) {
-                rotZ += Math.toDegrees(MathHelper.sin(loop * 0.1F) * 0.1F);
+                rotZ += Math.toDegrees(walkIdle * 0.1F);
                 rotZ -= 170;
                 rotX -= 10;
             }
             if(partName.equals("wingright02")) {
-                rotZ -= Math.toDegrees(MathHelper.sin(loop * 0.1F) * 0.1F);
+                rotZ -= Math.toDegrees(walkIdle * 0.1F);
                 rotZ += 170;
                 rotX -= 10;
             }
@@ -73,13 +85,9 @@ public class ModelTemplateDragon extends ModelObj {
             float flightLoop = MathHelper.sin(loop * 0.4F);
             float flightLoopRev = MathHelper.sin(loop * 0.4F + (float)Math.PI);
             if(partName.equals("body")) {
-                rotX -= 20;
                 if(entity.getPassengers().isEmpty()) {
                     posY += flightLoop / 2;
                 }
-            }
-            if(partName.equals("neck")) {
-                rotX += 20;
             }
             if(partName.equals("wingleft")) {
                 rotX -= Math.toDegrees(flightLoop * 0.6F);

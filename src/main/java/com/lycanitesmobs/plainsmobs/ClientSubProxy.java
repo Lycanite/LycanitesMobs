@@ -19,6 +19,7 @@ public class ClientSubProxy extends CommonSubProxy {
 		AssetManager.addModel("roc", new ModelRoc());
 		AssetManager.addModel("feradon", new ModelFeradon());
 		AssetManager.addModel("quillbeast", new ModelQuillbeast());
+		AssetManager.addModel("morock", new ModelMorock());
 
         // Register Renderers:
         RenderRegister renderRegister = new RenderRegister(groupInfo);

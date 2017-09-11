@@ -127,8 +127,8 @@ public class EntityVentoraptor extends EntityCreatureRideable implements IGroupP
     public void riderEffects(EntityLivingBase rider) {
         if(rider.isPotionActive(MobEffects.WEAKNESS))
             rider.removePotionEffect(MobEffects.WEAKNESS);
-        if(rider.isPotionActive(MobEffects.SLOWNESS))
-            rider.removePotionEffect(MobEffects.SLOWNESS);
+        if(rider.isPotionActive(MobEffects.MINING_FATIGUE))
+            rider.removePotionEffect(MobEffects.MINING_FATIGUE);
     }
 
 	

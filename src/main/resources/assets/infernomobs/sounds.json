@@ -203,6 +203,14 @@
         "category": "hostile",
         "sounds": [{"name": "infernomobs:entity/ignibus/eat", "stream": false}]
     },
+    "entity.ignibus.mount": {
+        "category": "hostile",
+        "sounds": [{"name": "infernomobs:entity/ignibus/mount", "stream": false}]
+    },
+    "entity.ignibus.fly": {
+        "category": "hostile",
+        "sounds": [{"name": "infernomobs:entity/ignibus/fly", "stream": false}]
+    },
     "projectile.ember": {
         "category": "ambient",
         "sounds": [{"name": "infernomobs:projectile/ember", "stream": false}]

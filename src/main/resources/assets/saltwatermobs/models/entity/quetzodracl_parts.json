@@ -14,7 +14,7 @@
     "centerZ": "0.2"
   },
   {
-    "name": "Right02",
+    "name": "ArmRight02",
     "parent": "ArmRight01",
     "centerX": "-2.814",
     "centerY": "1.161",

@@ -92,6 +92,7 @@ public class PlainsMobs {
 		ObjectManager.addItem("roctreat", new ItemTreat("roctreat", group));
 		ObjectManager.addItem("feradontreat", new ItemTreat("feradontreat", group));
 		ObjectManager.addItem("quillbeasttreat", new ItemTreat("quillbeasttreat", group));
+		ObjectManager.addItem("morocktreat", new ItemTreat("morocktreat", group));
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ObjectManager.getItem("plainsspawn"), new DispenserBehaviorMobEggCustom());
@@ -151,6 +152,13 @@ public class PlainsMobs {
 				.addSubspecies(new Subspecies("dark", "uncommon")).addSubspecies(new Subspecies("light", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER")
 				.setSpawnWeight(5).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "morock", EntityMorock.class, 0x222211, 0x554444)
+				.setPeaceful(false).setTameable(true).setSummonCost(8).setDungeonLevel(3)
+				.addSubspecies(new Subspecies("light", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("SKY")
+				.setSpawnWeight(1).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 		
@@ -243,6 +251,13 @@ public class PlainsMobs {
 						Character.valueOf('M'), Items.COOKED_MUTTON,
 						Character.valueOf('R'), Items.COOKED_RABBIT,
 						Character.valueOf('B'), Items.BONE
+				}));
+
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("morocktreat"), 4, 0),
+				new Object[] { "TTT", "TDT", "TTT",
+						Character.valueOf('T'), ObjectManager.getItem("makameatcooked"),
+						Character.valueOf('D'), Items.DIAMOND
 				}));
 
 		GameRegistry.addRecipe(new ShapedOreRecipe(

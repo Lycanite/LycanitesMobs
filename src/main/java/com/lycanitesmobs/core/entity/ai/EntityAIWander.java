@@ -69,7 +69,16 @@ public class EntityAIWander extends EntityAIBase {
    	// ==================================================
     public boolean continueExecuting() {
     	if(!this.host.useDirectNavigator())
-    		return !this.host.getNavigator().noPath();
+            if(this.host.getNavigator().noPath()) {
+                return false;
+            }
+            else if(this.host.getDistance(this.xPosition, this.yPosition, this.zPosition) < 2) {
+                this.host.getNavigator().clearPathEntity();
+                return false;
+            }
+            else {
+                return true;
+            }
     	else {
             return !this.host.directNavigator.atTargetPosition() && this.host.directNavigator.isTargetPositionValid();
         }

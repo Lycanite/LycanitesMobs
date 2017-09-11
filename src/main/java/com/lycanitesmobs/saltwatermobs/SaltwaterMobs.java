@@ -86,6 +86,7 @@ public class SaltwaterMobs {
 		ObjectManager.addItem("raikotreat", new ItemTreat("raikotreat", group));
 		ObjectManager.addItem("roatreat", new ItemTreat("roatreat", group));
 		ObjectManager.addItem("hermatreat", new ItemTreat("hermatreat", group));
+		ObjectManager.addItem("quetzodracltreat", new ItemTreat("quetzodracltreat", group));
 		
 		// ========== Create Mobs ==========
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ObjectManager.getItem("saltwaterspawn"), new DispenserBehaviorMobEggCustom());
@@ -138,6 +139,13 @@ public class SaltwaterMobs {
 				.addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("russet", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER, WATER")
 				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "quetzodracl", EntityQuetzodracl.class, 0x229944, 0x99FFBB)
+				.setPeaceful(false).setTameable(true).setSummonCost(8).setDungeonLevel(3)
+				.addSubspecies(new Subspecies("ashen", "uncommon")).addSubspecies(new Subspecies("golden", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("SKY")
+				.setSpawnWeight(1).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 		
 		
@@ -231,6 +239,13 @@ public class SaltwaterMobs {
 						Character.valueOf('C'), new ItemStack(Items.FISH, 1, 1),
 						Character.valueOf('P'), new ItemStack(Items.FISH, 1, 2),
 						Character.valueOf('B'), Items.BONE
+				}));
+
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ObjectManager.getItem("quetzodracltreat"), 4, 0),
+				new Object[] { "TTT", "TDT", "TTT",
+						Character.valueOf('T'), ObjectManager.getItem("ikameatcooked"),
+						Character.valueOf('D'), Items.DIAMOND
 				}));
 		
 		// ========== Smelting ==========

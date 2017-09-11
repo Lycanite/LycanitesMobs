@@ -7,7 +7,7 @@
     "centerZ": "-0.0"
   },
   {
-    "name": "LegRight01",
+    "name": "LegRight",
     "parent": "Body",
     "centerX": "-0.5",
     "centerY": "1.1",

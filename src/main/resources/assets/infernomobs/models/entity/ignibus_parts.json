@@ -35,7 +35,7 @@
     "centerZ": "-2.0"
   },
   {
-    "name": "LefLeftBack",
+    "name": "LegLeftBack",
     "parent": "Body",
     "centerX": "1.0",
     "centerY": "3.5",

@@ -713,7 +713,7 @@ public class SpawnTypeBase {
             
             // Check Biomes:
             List<Biome> spawnBiomes = new ArrayList<Biome>();
-            if(enoughCoords) {
+            if(enoughCoords && possibleSpawn.biomes != null) {
                 for(Biome validBiome : possibleSpawn.biomes) {
                     for(Biome targetBiome : biomes) {
                         if(targetBiome == validBiome || this.ignoreBiome || possibleSpawn.ignoreBiome) {

@@ -247,9 +247,9 @@
         "category": "hostile",
         "sounds": [{"name": "plainsmobs:entity/quillbeast/eat", "stream": false}]
     },
-    "entity.roc.say": {
+    "entity.morock.say": {
         "category": "hostile",
-        "sounds": [{"name": "plainsmobs:entity/roc/say", "stream": false}]
+        "sounds": [{"name": "plainsmobs:entity/morock/say", "stream": false}]
     },
     "entity.morock.hurt": {
         "category": "hostile",

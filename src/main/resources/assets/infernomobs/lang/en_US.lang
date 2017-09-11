@@ -100,6 +100,8 @@ item.salamandertreat.name=Salamander Treat
 item.salamandertreat.description=A tasty bone dripping with magma, just how they like it!
 item.gorgertreat.name=Gorger Treat
 item.gorgertreat.description=Small young Gorgers love to eat Cephignis, are you mad enough to tame one?!
+item.ignibustreat.name=Ignibus Treat
+item.ignibustreat.description=Dare you attempt to tame a mighty fire drake?
 #
 # Blocks
 tile.purelava.name=Pure Lava

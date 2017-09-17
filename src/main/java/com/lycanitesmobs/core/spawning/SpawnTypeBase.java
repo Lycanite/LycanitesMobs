@@ -441,13 +441,13 @@ public class SpawnTypeBase {
      * @param world The world to spawn in.
      * @param spawnPos Position to spawn around.
      * @param player The player or null if there is no player.
-     * @param rare If true, the spawn conditions are rarer than usual which means special things can be done such as having a higher chance of spawning a subspecies.
+     * @param rank Higher ranks are from conditions that are rarer than usual which means special things can be done such as having a higher chance of spawning a subspecies.
      */
-    public boolean spawnMobs(long tick, World world, BlockPos spawnPos, EntityPlayer player, boolean rare) {
+    public boolean spawnMobs(long tick, World world, BlockPos spawnPos, EntityPlayer player, int rank) {
         // Check If Able to Spawn:
         if(!this.enabled || SpawnInfo.disableAllSpawning || world == null || !world.isAreaLoaded(spawnPos, this.getRange(world)) || this.getSpawnList() == null || this.getSpawnList().size() < 1 || !this.hasSpawns() || !world.getGameRules().getBoolean("doMobSpawning"))
             return false;
-        if(!this.canSpawn(tick, world, spawnPos, rare))
+        if(!this.canSpawn(tick, world, spawnPos, rank))
             return false;
         
         LycanitesMobs.printDebug("CustomSpawner", "~0==================== " + this.typeName + " Spawner ====================0~");
@@ -570,14 +570,14 @@ public class SpawnTypeBase {
                 if (entityLiving instanceof EntityCreatureBase) {
                     EntityCreatureBase entityCreature = (EntityCreatureBase) entityLiving;
                     entityCreature.forceNoDespawn = this.forceNoDespawn;
-                    entityCreature.spawnedRare = rare;
+                    entityCreature.spawnedRare = rank > 0;
                     ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
                     if (this.mobEvent != null && worldExt != null) {
                         entityCreature.spawnEventType = this.mobEvent.name;
                         entityCreature.spawnEventCount = worldExt.getWorldEventCount();
                     }
                 }
-                this.spawnEntity(world, entityLiving);
+                this.spawnEntity(world, entityLiving, rank);
 
                 if (!ForgeEventFactory.doSpecialSpawn(entityLiving, world, (float) coord.getX() + 0.5F, (float) coord.getY(), (float) coord.getZ() + 0.5F)) {
                     if (entityLiving instanceof EntityCreatureBase)
@@ -605,7 +605,7 @@ public class SpawnTypeBase {
         return mobsSpawned > 0;
     }
     public boolean spawnMobs(long tick, World world, BlockPos spawnPos, EntityPlayer player) {
-        return this.spawnMobs(tick, world, spawnPos, player, false);
+        return this.spawnMobs(tick, world, spawnPos, player, 0);
     }
 
 
@@ -619,10 +619,10 @@ public class SpawnTypeBase {
      * @param tick Used by spawn types that attempt spawn on a regular basis. Use 0 for event based spawning.
      * @param world The world to spawn in.
      * @param spawnPos The spawn position.
-     * @param rare If true, the spawn conditions are rarer than usual which means there could be a higher chance of a mob spawning.
+     * @param rank Higher ranks are from conditions that are rarer than usual which means special things can be done such as having a higher chance of spawning a subspecies.
      * @return True if this spawn type should spawn mobs and false if it shouldn't this call.
      */
-    public boolean canSpawn(long tick, World world, BlockPos spawnPos, boolean rare) {
+    public boolean canSpawn(long tick, World world, BlockPos spawnPos, int rank) {
         if(this.getRate(world) == 0 || tick % this.getRate(world) != 0)
             return false;
         if(world.rand.nextDouble() >= this.chance)
@@ -783,10 +783,10 @@ public class SpawnTypeBase {
      * @param world The world to spawn in.
      * @param entityLiving The entity to spawn.
      */
-    public void spawnEntity(World world, EntityLiving entityLiving) {
+    public void spawnEntity(World world, EntityLiving entityLiving, int rank) {
         world.spawnEntity(entityLiving);
         if(this.mobEvent != null && entityLiving != null) {
-        	this.mobEvent.onSpawn(entityLiving);
+        	this.mobEvent.onSpawn(entityLiving, rank);
         }
     }
 

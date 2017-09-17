@@ -20,20 +20,11 @@ public class MobEventBoulderDash extends MobEventBase {
     //                       Start
     // ==================================================
     @Override
-    public void onStart(World world) {
-        super.onStart(world);
+    public void onStart(World world, int rank) {
+        super.onStart(world, rank);
         if(canAffectWeather) {
             world.getWorldInfo().setRaining(false);
             world.getWorldInfo().setThundering(false);
         }
     }
-	
-	
-    // ==================================================
-    //                   Spawn Effects
-    // ==================================================
-    @Override
-	public void onSpawn(EntityLiving entity) {
-		super.onSpawn(entity);
-	}
 }

@@ -29,13 +29,4 @@ public class MobEventYule extends MobEventBase {
 			return false;
         return super.isEnabled();
     }
-	
-	
-    // ==================================================
-    //                   Spawn Effects
-    // ==================================================
-    @Override
-	public void onSpawn(EntityLiving entity) {
-		super.onSpawn(entity);
-	}
 }

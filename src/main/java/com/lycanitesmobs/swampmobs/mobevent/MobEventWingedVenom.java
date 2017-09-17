@@ -25,8 +25,8 @@ public class MobEventWingedVenom extends MobEventBase {
     //                       Start
     // ==================================================
     @Override
-    public void onStart(World world) {
-        super.onStart(world);
+    public void onStart(World world, int rank) {
+        super.onStart(world, rank);
         if(canAffectWeather) {
             world.getWorldInfo().setRaining(false);
             world.getWorldInfo().setThundering(false);
@@ -38,8 +38,8 @@ public class MobEventWingedVenom extends MobEventBase {
     //                   Spawn Effects
     // ==================================================
     @Override
-	public void onSpawn(EntityLiving entity) {
-		super.onSpawn(entity);
+    public void onSpawn(EntityLiving entity, int rank) {
+        super.onSpawn(entity, rank);
 
         List<EntityProjectileRapidFire> projectiles = new ArrayList<EntityProjectileRapidFire>();
         int rapidTime = 20;

@@ -76,9 +76,9 @@ public class SpawnTypeRock extends SpawnTypeBlockBreak {
     //                 Check Spawn Chance
     // ==================================================
     @Override
-    public boolean canSpawn(long tick, World world, BlockPos pos, boolean rare) {
+    public boolean canSpawn(long tick, World world, BlockPos pos, int rank) {
     	double roll = world.rand.nextDouble();
-        if(rare)
+        if(rank > 0)
             roll /= 4;
     	ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
     	if(worldExt != null) {
@@ -109,8 +109,8 @@ public class SpawnTypeRock extends SpawnTypeBlockBreak {
      * @param entityLiving The entity to spawn.
      */
     @Override
-    public void spawnEntity(World world, EntityLiving entityLiving) {
-        super.spawnEntity(world, entityLiving);
+    public void spawnEntity(World world, EntityLiving entityLiving, int rank) {
+        super.spawnEntity(world, entityLiving, rank);
         if(entityLiving instanceof EntityCreatureBase && this.blockBreakRadius > -1) {
         	((EntityCreatureBase)entityLiving).destroyArea((int)entityLiving.posX, (int)entityLiving.posY, (int)entityLiving.posZ, 4, true, this.blockBreakRadius);
         }

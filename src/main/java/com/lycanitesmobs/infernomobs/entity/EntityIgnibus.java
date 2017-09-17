@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class EntityIgnibus extends EntityCreatureRideable implements IGroupFire {
+public class EntityIgnibus extends EntityCreatureRideable implements IGroupFire, IGroupHeavy {
 
     protected boolean wantsToLand;
     protected boolean  isLanded;

@@ -35,7 +35,7 @@ public class SpawnTypeCrop extends SpawnTypeBlockBreak {
     //                 Check Spawn Chance
     // ==================================================
     @Override
-    public boolean canSpawn(long tick, World world, BlockPos pos, boolean rare) {
+    public boolean canSpawn(long tick, World world, BlockPos originPos, int rank) {
     	double roll = world.rand.nextDouble();
     	ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
     	if(worldExt != null) {

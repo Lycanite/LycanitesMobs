@@ -21,8 +21,8 @@ public class MobEventMarchOfTheGorgomites extends MobEventBase {
     //                       Start
     // ==================================================
     @Override
-    public void onStart(World world) {
-        super.onStart(world);
+    public void onStart(World world, int rank) {
+        super.onStart(world, rank);
         if(canAffectWeather) {
             world.getWorldInfo().setRaining(false);
             world.getWorldInfo().setThundering(false);
@@ -34,8 +34,8 @@ public class MobEventMarchOfTheGorgomites extends MobEventBase {
     //                   Spawn Effects
     // ==================================================
     @Override
-	public void onSpawn(EntityLiving entity) {
-		super.onSpawn(entity);
+	public void onSpawn(EntityLiving entity, int rank) {
+		super.onSpawn(entity, rank);
 
         if(entity instanceof EntityCreatureBase && entity.getRNG().nextDouble() >= 0.85D) {
         	((EntityCreatureBase)entity).setSizeScale(3.0D + (0.35D * (0.5D - entity.getRNG().nextDouble())));

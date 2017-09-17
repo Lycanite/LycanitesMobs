@@ -27,8 +27,8 @@ public class MobEventAsmodeus extends MobEventBoss {
     //                       Start
     // ==================================================
     @Override
-    public void onStart(World world) {
-        super.onStart(world);
+    public void onStart(World world, int rank) {
+        super.onStart(world, rank);
 		world.getWorldInfo().setRaining(false);
 		world.getWorldInfo().setThundering(false);
     }
@@ -39,7 +39,7 @@ public class MobEventAsmodeus extends MobEventBoss {
     // ==================================================
     /** This is the main boss setup, this will create the arena, decorate it, move players and finally, summon the boss. The time value is used to determine what to do. **/
     @Override
-    public void bossSetup(int time, World world, int originX, int originY, int originZ) {
+    public void bossSetup(int time, World world, int originX, int originY, int originZ, int rank) {
         originX += 20;
         int height = 120;
         if(originY < 5)
@@ -84,7 +84,7 @@ public class MobEventAsmodeus extends MobEventBoss {
             entityCreatureBase.setLocationAndAngles(originX, originY + 1, originZ, 0, 0);
             world.spawnEntity(entityCreatureBase);
             entityCreatureBase.setArenaCenter(new BlockPos(originX, originY + 1, originZ));
-            this.onSpawn(entityCreatureBase);
+            this.onSpawn(entityCreatureBase, rank);
         }
     }
 

@@ -38,9 +38,12 @@ public class SpawnTypeBlockBreak extends SpawnTypeBase {
     //                    Spawn Mobs
     // ==================================================
     public boolean spawnMobs(long tick, World world, BlockPos pos, EntityPlayer player, Block block) {
-        boolean rare = this.isRareBlock(block);
-        LycanitesMobs.printDebug("CustomSpawnerBlockBreak", this.typeName + ": A valid block was broken/harvested for this spawner." + (rare ? " (Rare)" : ""));
-        return super.spawnMobs(tick, world, pos, player, rare);
+        int rank = 0;
+        if(this.isRareBlock(block)) {
+            rank = 1;
+        }
+        LycanitesMobs.printDebug("CustomSpawnerBlockBreak", this.typeName + ": A valid block was broken/harvested for this spawner." + (rank > 0 ? " (Rare)" : ""));
+        return super.spawnMobs(tick, world, pos, player, rank);
     }
 
 

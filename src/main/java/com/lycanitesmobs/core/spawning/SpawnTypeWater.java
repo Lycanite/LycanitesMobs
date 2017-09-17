@@ -52,7 +52,8 @@ public class SpawnTypeWater extends SpawnTypeBase {
      * @param world The world to spawn in.
      * @param entityLiving The entity to spawn.
      */
-    public void spawnEntity(World world, EntityLiving entityLiving) {
+    @Override
+    public void spawnEntity(World world, EntityLiving entityLiving, int rank) {
         if(entityLiving instanceof EntityCreatureBase) {
             EntityCreatureBase entityCreature = (EntityCreatureBase)entityLiving;
             if(!entityCreature.isStrongSwimmer() && entityCreature.canDive()) {
@@ -62,6 +63,6 @@ public class SpawnTypeWater extends SpawnTypeBase {
                 entityCreature.setLocationAndAngles(modifiedSpawnPos.getX(), modifiedSpawnPos.getY(), modifiedSpawnPos.getZ(), entityCreature.rotationYaw, entityCreature.rotationPitch);
             }
         }
-        super.spawnEntity(world, entityLiving);
+        super.spawnEntity(world, entityLiving, rank);
     }
 }

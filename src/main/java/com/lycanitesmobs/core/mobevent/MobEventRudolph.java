@@ -18,8 +18,8 @@ public class MobEventRudolph extends MobEventYule {
     //                   Spawn Effects
     // ==================================================
     @Override
-	public void onSpawn(EntityLiving entity) {
-        super.onSpawn(entity);
+    public void onSpawn(EntityLiving entity, int rank) {
+        super.onSpawn(entity, rank);
         entity.setCustomNameTag("Rudolph");
 	}
 }

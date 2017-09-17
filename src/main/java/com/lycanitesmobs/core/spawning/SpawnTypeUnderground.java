@@ -31,8 +31,8 @@ public class SpawnTypeUnderground extends SpawnTypeLand {
     //                 Check Spawn Chance
     // ==================================================
     @Override
-    public boolean canSpawn(long tick, World world, BlockPos originPos, boolean rare) {
-        if(!super.canSpawn(tick, world, originPos, rare))
+    public boolean canSpawn(long tick, World world, BlockPos originPos, int rank) {
+        if(!super.canSpawn(tick, world, originPos, rank))
             return false;
         if(world.provider.getDimension() == 1) // Seconds fail chance for The End.
             return world.rand.nextDouble() >= this.chance;

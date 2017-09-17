@@ -20,20 +20,11 @@ public class MobEventTsunami extends MobEventBase {
     //                       Start
     // ==================================================
     @Override
-    public void onStart(World world) {
-        super.onStart(world);
+    public void onStart(World world, int rank) {
+        super.onStart(world, rank);
         if(canAffectWeather) {
             world.getWorldInfo().setRaining(true);
             world.getWorldInfo().setThundering(true);
         }
     }
-	
-	
-    // ==================================================
-    //                   Spawn Effects
-    // ==================================================
-    @Override
-	public void onSpawn(EntityLiving entity) {
-		super.onSpawn(entity);
-	}
 }

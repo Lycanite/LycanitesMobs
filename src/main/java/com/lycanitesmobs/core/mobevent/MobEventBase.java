@@ -30,7 +30,6 @@ public class MobEventBase {
     public int firstScheduleDay = -1;
     public int duration = 60 * 20;
     public int mobDuration = 10 * 60 * 20;
-    public int rank = 0;
 	
 	// Dimensions:
     /** A comma separated list of dimensions that this event can occur in. As read from the config **/
@@ -201,14 +200,14 @@ public class MobEventBase {
     // ==================================================
     //               Start and Finish Effects
     // ==================================================
-    public void onStart(World world) { }
-    public void onFinish(World world) { }
+    public void onStart(World world, int rank) { }
+    public void onFinish(World world, int rank) { }
 
 
     // ==================================================
     //                   Spawn Effects
     // ==================================================
-    public void onSpawn(EntityLiving entity) {
+    public void onSpawn(EntityLiving entity, int rank) {
         if(entity instanceof EntityCreatureBase) {
             EntityCreatureBase entityCreature = (EntityCreatureBase)entity;
             entityCreature.setTemporary(this.mobDuration);

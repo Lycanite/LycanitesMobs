@@ -93,10 +93,7 @@ public class AltarInfoRahovart extends AltarInfo {
         if(entity != null)
             pos = this.getFacingPosition(pos, 10, entity.rotationYaw);
 
-        MobEventBase mobEvent = worldExt.startMobEvent("rahovart", pos.getX(), pos.getY(), pos.getZ());
-        if(mobEvent != null) {
-            mobEvent.rank = rank;
-        }
+        worldExt.startMobEvent("rahovart", pos.getX(), pos.getY(), pos.getZ(), rank);
 
         return true;
     }

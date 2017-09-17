@@ -20,7 +20,7 @@ public class SpawnTypeStorm extends SpawnTypeSky {
     //                 Check Spawn Chance
     // ==================================================
     @Override
-    public boolean canSpawn(long tick, World world, BlockPos pos, boolean rare) {
+    public boolean canSpawn(long tick, World world, BlockPos pos, int rank) {
         if(this.rate == 0 || tick % this.rate != 0)
             return false;
     	if(!world.isRaining())
@@ -58,11 +58,11 @@ public class SpawnTypeStorm extends SpawnTypeSky {
      * @param entityLiving The entity to spawn.
      */
     @Override
-    public void spawnEntity(World world, EntityLiving entityLiving) {
+    public void spawnEntity(World world, EntityLiving entityLiving, int rank) {
     	/*if(entityLiving.getRNG().nextFloat() >= 0.25F) {
 	    	EntityLightningBolt lightning = new EntityLightningBolt(world, entityLiving.posX, entityLiving.posY, entityLiving.posZ);
-	    	world.spawnEntityInWorld(lightning);
+	    	world.spawnEntity(lightning);
     	}*/
-        super.spawnEntity(world, entityLiving);
+        super.spawnEntity(world, entityLiving, rank);
     }
 }

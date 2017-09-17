@@ -77,9 +77,9 @@ public class EntityHellfireWave extends EntityProjectileBase {
             for(int row = 0; row < this.hellfireHeight; row++) {
                 for(int col = 0; col < this.hellfireWidth; col++) {
                     if(this.getThrower() != null)
-                        hellfireWalls[row][col] = new EntityHellfireWall(this.worldObj, this.getThrower());
+                        hellfireWalls[row][col] = new EntityHellfireWavePart(this.worldObj, this.getThrower());
                     else
-                        hellfireWalls[row][col] = new EntityHellfireWall(this.worldObj, this.posX, this.posY + 5 + (this.hellfireSize * row), this.posZ);
+                        hellfireWalls[row][col] = new EntityHellfireWavePart(this.worldObj, this.posX, this.posY + 5 + (this.hellfireSize * row), this.posZ);
                     hellfireWalls[row][col].posY = this.posY + (this.hellfireSize * row);
                     this.worldObj.spawnEntityInWorld(hellfireWalls[row][col]);
                     hellfireWalls[row][col].setProjectileScale(this.hellfireSize * 2);

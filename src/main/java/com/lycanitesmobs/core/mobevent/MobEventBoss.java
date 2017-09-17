@@ -90,8 +90,8 @@ public class MobEventBoss extends MobEventBase {
     //                       Start
     // ==================================================
     @Override
-    public void onStart(World world) {
-        super.onStart(world);
+    public void onStart(World world, int rank) {
+        super.onStart(world, rank);
     }
 
 
@@ -99,7 +99,7 @@ public class MobEventBoss extends MobEventBase {
     //                     Boss Setup
     // ==================================================
     /** This is the main boss setup, this will create the arena, decorate it, move players and finally, summon the boss. The time value is used to determine what to do. **/
-    public void bossSetup(int time, World world, int originX, int originY, int originZ) {
+    public void bossSetup(int time, World world, int originX, int originY, int originZ, int rank) {
 
     }
 
@@ -108,8 +108,8 @@ public class MobEventBoss extends MobEventBase {
     //                       Finish
     // ==================================================
     @Override
-    public void onFinish(World world) {
-        super.onFinish(world);
+    public void onFinish(World world, int rank) {
+        super.onFinish(world, rank);
     }
 	
 	
@@ -117,10 +117,10 @@ public class MobEventBoss extends MobEventBase {
     //                   Spawn Effects
     // ==================================================
     @Override
-	public void onSpawn(EntityLiving entity) {
+	public void onSpawn(EntityLiving entity, int rank) {
         if(entity instanceof EntityCreatureBase) {
             EntityCreatureBase entityCreature = (EntityCreatureBase)entity;
-            entityCreature.setSubspecies(this.rank, true);
+            entityCreature.setSubspecies(rank, true);
         }
 	}
 

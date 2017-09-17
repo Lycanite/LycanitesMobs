@@ -24,7 +24,7 @@ public class MobEventServerBoss extends MobEventServer {
     // ==================================================
     @Override
     public void onStart() {
-        this.mobEvent.onStart(this.world);
+        this.mobEvent.onStart(this.world, this.rank);
 
         this.startedWorldTime = world.getTotalWorldTime();
         this.ticks = 0;
@@ -43,7 +43,7 @@ public class MobEventServerBoss extends MobEventServer {
     // ==================================================
     @Override
     public void onFinish() {
-        this.mobEvent.onFinish(this.world);
+        this.mobEvent.onFinish(this.world, this.rank);
         LycanitesMobs.printInfo("", "Mob Event Finished: " + this.mobEvent.getTitle());
     }
 
@@ -62,7 +62,7 @@ public class MobEventServerBoss extends MobEventServer {
             return;
         }
 
-        this.mobEventBoss.bossSetup(this.ticks, this.world, this.originX, this.originY, this.originZ);
+        this.mobEventBoss.bossSetup(this.ticks, this.world, this.originX, this.originY, this.originZ, this.rank);
         this.ticks++;
 
         // Stop Event When Time Runs Out:

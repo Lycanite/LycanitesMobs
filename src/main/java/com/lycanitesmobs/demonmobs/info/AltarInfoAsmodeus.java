@@ -93,10 +93,7 @@ public class AltarInfoAsmodeus extends AltarInfo {
         if(entity != null)
             pos = this.getFacingPosition(pos, 10, entity.rotationYaw);
 
-        MobEventBase mobEvent = worldExt.startMobEvent("asmodeus", pos.getX(), pos.getY(), pos.getZ());
-        if(mobEvent != null) {
-            mobEvent.rank = rank;
-        }
+        worldExt.startMobEvent("asmodeus", pos.getX(), pos.getY(), pos.getZ(), rank);
 
         return true;
     }

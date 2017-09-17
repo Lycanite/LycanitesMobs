@@ -18,8 +18,9 @@ public class MobEventSatanClaws extends MobEventYule {
     // ==================================================
     //                       Start
     // ==================================================
-    public void onStart(World world) {
-        super.onStart(world);
+    @Override
+    public void onStart(World world, int rank) {
+        super.onStart(world, rank);
         long currentTime = world.provider.getWorldTime();
 
         int dayTime = 24000;
@@ -40,8 +41,8 @@ public class MobEventSatanClaws extends MobEventYule {
     //                   Spawn Effects
     // ==================================================
     @Override
-	public void onSpawn(EntityLiving entity) {
-        super.onSpawn(entity);
+    public void onSpawn(EntityLiving entity, int rank) {
+        super.onSpawn(entity, rank);
         entity.setCustomNameTag("Satan Claws");
 	}
 }

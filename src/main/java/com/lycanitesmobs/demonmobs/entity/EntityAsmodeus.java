@@ -446,7 +446,7 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
             if(!this.astarothMinions.isEmpty()) {
                 float healAmount = this.astarothMinions.size();
                 if (((this.getHealth() + healAmount) / this.getMaxHealth()) <= 0.2D)
-                    this.heal(healAmount);
+                    this.heal(healAmount * 2);
             }
         }
     }

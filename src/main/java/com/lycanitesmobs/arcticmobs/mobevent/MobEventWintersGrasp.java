@@ -13,13 +13,4 @@ public class MobEventWintersGrasp extends MobEventBase {
 	public MobEventWintersGrasp(String name, GroupInfo group) {
 		super(name, group);
 	}
-	
-	
-    // ==================================================
-    //                   Spawn Effects
-    // ==================================================
-    @Override
-	public void onSpawn(EntityLiving entity) {
-		super.onSpawn(entity);
-	}
 }

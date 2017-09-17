@@ -18,6 +18,8 @@ public class MobEventServer {
     public World world;
     /** The world time that this event started at. **/
     public long startedWorldTime = 0;
+    /** The rank of the mob event, higher ranks are more difficult or will spawn subspecies, etc. **/
+    public int rank = 0;
 
 
 	// ==================================================
@@ -35,7 +37,7 @@ public class MobEventServer {
     //                       Start
     // ==================================================
     public void onStart() {
-        this.mobEvent.onStart(this.world);
+        this.mobEvent.onStart(this.world, this.rank);
 
         // Check If Already Active On World:
         boolean extended = false;
@@ -61,7 +63,7 @@ public class MobEventServer {
     //                      Finish
     // ==================================================
     public void onFinish() {
-        this.mobEvent.onFinish(this.world);
+        this.mobEvent.onFinish(this.world, this.rank);
         LycanitesMobs.printInfo("", "Mob Event Finished: " + this.mobEvent.getTitle());
     }
 

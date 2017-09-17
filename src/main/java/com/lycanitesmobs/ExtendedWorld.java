@@ -344,7 +344,7 @@ public class ExtendedWorld extends WorldSavedData {
     /**
      * Starts a provided Mob Event (provided by instance) on the provided world.
      *  **/
-    public void startMobEvent(MobEventBase mobEvent, int originX, int originY, int originZ) {
+    public void startMobEvent(MobEventBase mobEvent, int originX, int originY, int originZ, int rank) {
         if(mobEvent == null) {
             LycanitesMobs.printWarning("", "Tried to start a null mob event.");
             return;
@@ -360,6 +360,7 @@ public class ExtendedWorld extends WorldSavedData {
                 mobEventServerBoss.originY = originY;
                 mobEventServerBoss.originZ = originZ;
             }
+            mobEventServer.rank = rank;
             mobEventServer.onStart();
             this.updateAllClientsEvents();
         }
@@ -384,6 +385,10 @@ public class ExtendedWorld extends WorldSavedData {
      * Starts a provided Mob Event (provided by name) on the provided world.
      *  **/
     public MobEventBase startMobEvent(String mobEventName, int originX, int originY, int originZ) {
+        return this.startMobEvent(mobEventName, originX, originY, originZ, 0);
+    }
+
+    public MobEventBase startMobEvent(String mobEventName, int originX, int originY, int originZ, int rank) {
         MobEventBase mobEvent;
         if(MobEventManager.instance.allMobEvents.containsKey(mobEventName)) {
             mobEvent = MobEventManager.instance.allMobEvents.get(mobEventName);
@@ -397,7 +402,7 @@ public class ExtendedWorld extends WorldSavedData {
             return null;
         }
 
-        this.startMobEvent(mobEvent, originX, originY, originZ);
+        this.startMobEvent(mobEvent, originX, originY, originZ, rank);
         return mobEvent;
     }
 

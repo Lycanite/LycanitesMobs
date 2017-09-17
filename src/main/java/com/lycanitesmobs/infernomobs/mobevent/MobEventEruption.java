@@ -25,8 +25,8 @@ public class MobEventEruption extends MobEventBase {
     //                       Start
     // ==================================================
     @Override
-    public void onStart(World world) {
-        super.onStart(world);
+    public void onStart(World world, int rank) {
+        super.onStart(world, rank);
         if(canAffectWeather) {
             world.getWorldInfo().setRaining(false);
             world.getWorldInfo().setThundering(false);
@@ -38,8 +38,8 @@ public class MobEventEruption extends MobEventBase {
     //                   Spawn Effects
     // ==================================================
     @Override
-	public void onSpawn(EntityLiving entity) {
-		super.onSpawn(entity);
+	public void onSpawn(EntityLiving entity, int rank) {
+		super.onSpawn(entity, rank);
 
         List<EntityProjectileBase> projectiles = new ArrayList<EntityProjectileBase>();
         int rapidTime = 20;

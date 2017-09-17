@@ -607,6 +607,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
         // Left (Positive) Wall:
         if(this.hellfireWallLeft == null) {
             this.hellfireWallLeft = new EntityHellfireBarrier(this.worldObj, this);
+            this.hellfireWallLeft.wall = true;
             this.worldObj.spawnEntityInWorld(this.hellfireWallLeft);
         }
         this.hellfireWallLeft.time = 0;
@@ -618,6 +619,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
         // Right (Negative) Wall:
         if(this.hellfireWallRight == null) {
             this.hellfireWallRight = new EntityHellfireBarrier(this.worldObj, this);
+            this.hellfireWallRight.wall = true;
             this.worldObj.spawnEntityInWorld(this.hellfireWallRight);
         }
         this.hellfireWallRight.time = 0;

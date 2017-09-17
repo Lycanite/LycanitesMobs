@@ -18,6 +18,7 @@ public class EntityHellfireBarrier extends EntityProjectileBase {
     protected int hellfireWidth = 10;
     protected int hellfireHeight = 5;
     protected int hellfireSize = 10;
+    public boolean wall = false;
     public int time = 0;
     public int timeMax = 2 * 20;
     public float angle = 90;
@@ -74,10 +75,22 @@ public class EntityHellfireBarrier extends EntityProjectileBase {
             hellfireWalls = new EntityHellfireWall[this.hellfireHeight][this.hellfireWidth];
             for(int row = 0; row < this.hellfireHeight; row++) {
                 for(int col = 0; col < this.hellfireWidth; col++) {
-                    if(this.getThrower() != null)
-                        hellfireWalls[row][col] = new EntityHellfireWall(this.worldObj, this.getThrower());
-                    else
-                        hellfireWalls[row][col] = new EntityHellfireWall(this.worldObj, this.posX, this.posY + (this.hellfireSize * row), this.posZ);
+                    if(this.getThrower() != null) {
+                        if(this.wall) {
+                            hellfireWalls[row][col] = new EntityHellfireWall(this.getEntityWorld(), this.getThrower());
+                        }
+                        else {
+                            hellfireWalls[row][col] = new EntityHellfireBarrierPart(this.getEntityWorld(), this.getThrower());
+                        }
+                    }
+                    else {
+                        if(this.wall) {
+                            hellfireWalls[row][col] = new EntityHellfireWall(this.getEntityWorld(), this.posX, this.posY + (this.hellfireSize * row), this.posZ);
+                        }
+                        else {
+                            hellfireWalls[row][col] = new EntityHellfireBarrierPart(this.getEntityWorld(), this.posX, this.posY + (this.hellfireSize * row), this.posZ);
+                        }
+                    }
 
                     double rotationRadians = Math.toRadians(this.rotation);
                     double x = (((float)col / this.hellfireWidth) * (this.hellfireSize * 10)) * Math.cos(rotationRadians) + Math.sin(rotationRadians);

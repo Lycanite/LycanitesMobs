@@ -38,8 +38,8 @@ public class SpawnTypeFishing extends SpawnTypeBase {
      * @param entityLiving The entity to spawn.
      */
     @Override
-    public void spawnEntity(World world, EntityLiving entityLiving) {
-        super.spawnEntity(world, entityLiving);
+    public void spawnEntity(World world, EntityLiving entityLiving, int rank) {
+        super.spawnEntity(world, entityLiving, rank);
         if(this.hookEntity != null) {
             entityLiving.setVelocity(this.hookEntity.motionX, this.hookEntity.motionY, this.hookEntity.motionZ);
         }

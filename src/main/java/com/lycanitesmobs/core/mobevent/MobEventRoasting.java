@@ -19,8 +19,8 @@ public class MobEventRoasting extends MobEventYule {
     //                   Spawn Effects
     // ==================================================
     @Override
-	public void onSpawn(EntityLiving entity) {
-        super.onSpawn(entity);
+    public void onSpawn(EntityLiving entity, int rank) {
+        super.onSpawn(entity, rank);
         if(entity instanceof EntityCreatureBase) {
             EntityCreatureBase creature = (EntityCreatureBase)entity;
             if (creature.mobInfo.getRegistryName().equals("jabberwock"))

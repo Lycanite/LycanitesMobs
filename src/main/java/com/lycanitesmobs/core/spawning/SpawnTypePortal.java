@@ -23,8 +23,8 @@ public class SpawnTypePortal extends SpawnTypeBlock {
      * @param entityLiving The entity to spawn.
      */
     @Override
-    public void spawnEntity(World world, EntityLiving entityLiving) {
-        super.spawnEntity(world, entityLiving);
+    public void spawnEntity(World world, EntityLiving entityLiving, int rank) {
+        super.spawnEntity(world, entityLiving, rank);
         entityLiving.timeUntilPortal = Integer.MAX_VALUE;
     }
 }

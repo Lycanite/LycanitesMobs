@@ -139,7 +139,7 @@ public class SpawnTypeDarkness extends SpawnTypeBase {
     //                 Check Spawn Chance
     // ==================================================
     @Override
-    public boolean canSpawn(long tick, World world, BlockPos pos, boolean rare) {
+    public boolean canSpawn(long tick, World world, BlockPos pos, int rank) {
         return true;
     }
 

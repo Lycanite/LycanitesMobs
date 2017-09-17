@@ -13,13 +13,4 @@ public class MobEventWindStorm extends MobEventBase {
 	public MobEventWindStorm(String name, GroupInfo group) {
 		super(name, group);
 	}
-	
-	
-    // ==================================================
-    //                   Spawn Effects
-    // ==================================================
-    @Override
-	public void onSpawn(EntityLiving entity) {
-		super.onSpawn(entity);
-	}
 }

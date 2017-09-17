@@ -20,8 +20,8 @@ public class MobEventShadowGames extends MobEventBase {
     //                       Start
     // ==================================================
     @Override
-    public void onStart(World world) {
-        super.onStart(world);
+	public void onStart(World world, int rank) {
+		super.onStart(world, rank);
     	long currentTime = world.provider.getWorldTime();
     	
     	int dayTime = 24000;
@@ -36,13 +36,4 @@ public class MobEventShadowGames extends MobEventBase {
     	if(canAffectTime)
     		world.provider.setWorldTime(currentTime - excessTime + targetTime);
     }
-	
-	
-    // ==================================================
-    //                   Spawn Effects
-    // ==================================================
-    @Override
-	public void onSpawn(EntityLiving entity) {
-		super.onSpawn(entity);
-	}
 }

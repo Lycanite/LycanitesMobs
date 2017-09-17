@@ -19,8 +19,8 @@ public class MobEventTheSwarm extends MobEventBase {
     //                   Spawn Effects
     // ==================================================
     @Override
-	public void onSpawn(EntityLiving entity) {
-		super.onSpawn(entity);
+	public void onSpawn(EntityLiving entity, int rank) {
+		super.onSpawn(entity, rank);
 		if(entity instanceof EntityConba) {
 			((EntityConba)entity).vespidInfection = true;
 		}

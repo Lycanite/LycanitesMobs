@@ -13,13 +13,4 @@ public class MobEventSeaStorm extends MobEventBase {
 	public MobEventSeaStorm(String name, GroupInfo group) {
 		super(name, group);
 	}
-	
-	
-    // ==================================================
-    //                   Spawn Effects
-    // ==================================================
-    @Override
-	public void onSpawn(EntityLiving entity) {
-		super.onSpawn(entity);
-	}
 }

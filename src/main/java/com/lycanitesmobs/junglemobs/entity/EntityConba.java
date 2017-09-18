@@ -251,7 +251,8 @@ public class EntityConba extends EntityCreatureTameable implements IMob {
             vespid.setLocationAndAngles(this.posX + (double)f, this.posY + 0.5D, this.posZ + (double)f1, this.rand.nextFloat() * 360.0F, 0.0F);
             vespid.setSubspecies(this.getSubspeciesIndex(), true);
             vespid.setGrowingAge(vespid.growthTime);
-            this.worldObj.spawnEntityInWorld(vespid);
+            vespid.spawnEventType = this.spawnEventType;
+            this.getEntityWorld().spawnEntityInWorld(vespid);
             if(this.getAttackTarget() != null)
             	vespid.setRevengeTarget(this.getAttackTarget());
         }

@@ -972,6 +972,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
             ((EntityCreatureBase)minion).setMinion(true);
             ((EntityCreatureBase)minion).setSubspecies(this.getSubspeciesIndex(), true);
             ((EntityCreatureBase)minion).setMasterTarget(this);
+            ((EntityCreatureBase)minion).spawnEventType = this.spawnEventType;
         }
         this.getEntityWorld().spawnEntity(minion);
         if(this.getAttackTarget() != null)

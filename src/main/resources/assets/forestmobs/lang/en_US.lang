@@ -3,7 +3,6 @@ forestmobs.name=Forest Creatures
 forestmobs.description=Found in standard forests of most varieties, these creatures either thrive in threes and shrubs or are actually trees and shrubs!
 #
 # Mob Events
-mobevent.rootriot.name=Root Riot
 #
 # Entites
 entity.forestmobs.ent.name=Ent

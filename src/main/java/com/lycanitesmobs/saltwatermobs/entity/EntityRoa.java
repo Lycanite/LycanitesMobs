@@ -141,11 +141,14 @@ public class EntityRoa extends EntityCreatureRideable implements IMob, IGroupPre
                     double zDist = this.posZ - entity.posZ;
                     double xzDist = MathHelper.sqrt(xDist * xDist + zDist * zDist);
                     double factor = 0.1D;
-                    entity.addVelocity(
-                            xDist / xzDist * factor + entity.motionX * factor,
-                            0,
-                            zDist / xzDist * factor + entity.motionZ * factor
-                    );
+                    double motionCap = 10;
+                    if(entity.motionX < motionCap && entity.motionX > -motionCap && entity.motionZ < motionCap && entity.motionZ > -motionCap) {
+                        entity.addVelocity(
+                                xDist / xzDist * factor + entity.motionX * factor,
+                                0,
+                                zDist / xzDist * factor + entity.motionZ * factor
+                        );
+                    }
                     if (player != null)
                         player.connection.sendPacket(new SPacketEntityVelocity(entity));
                 }
@@ -180,6 +183,11 @@ public class EntityRoa extends EntityCreatureRideable implements IMob, IGroupPre
     public boolean canWhirlpool() {
         if(this.getEntityWorld().isRemote) {
             return this.extraAnimation01();
+        }
+
+        // Sharknado:
+        if("sharknado".equals(this.spawnEventType)) {
+            return true;
         }
 
         // Out of Water:
@@ -233,6 +241,15 @@ public class EntityRoa extends EntityCreatureRideable implements IMob, IGroupPre
 		return false;
 	}
 
+    // Flying:
+    @Override
+    public boolean isFlying() {
+        if("sharknado".equals(this.spawnEventType)) {
+            return true;
+        }
+        return super.isFlying();
+    }
+
     // ========== Mounted Offset ==========
     @Override
     public double getMountedYOffset() {
@@ -258,7 +275,7 @@ public class EntityRoa extends EntityCreatureRideable implements IMob, IGroupPre
     
     @Override
     public boolean canBreatheAboveWater() {
-        return false;
+        return "sharknado".equals(this.spawnEventType);
     }
 
 

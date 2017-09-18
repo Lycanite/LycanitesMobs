@@ -39,7 +39,6 @@ public class EntityWildkin extends EntityCreatureTameable implements IMob {
 
         this.setWidth = 1.5F;
         this.setHeight = 3.2F;
-        this.solidCollision = true;
         this.setupMob();
     }
 

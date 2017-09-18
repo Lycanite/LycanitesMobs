@@ -109,7 +109,7 @@ public class SharedMobEvents {
 
 
 
-        // Rot Riot:
+        // Root Riot:
         event = new MobEventRootRiot("rootriot", group);
 
         landSpawner = new SpawnTypeLand("rootriot_land")
@@ -132,6 +132,63 @@ public class SharedMobEvents {
         skySpawner.forceSpawning = true;
         skySpawner.ignoreMobConditions = true;
         skySpawner.addSpawn(MobInfo.getFromName("spriggan"));
+        if(skySpawner.hasSpawns())
+            event.addSpawner(skySpawner);
+
+        if(event.hasSpawners())
+            MobEventManager.instance.addWorldEvent(event);
+
+
+
+        // Primal Fury:
+        event = new MobEventPrimalFury("primalfury", group);
+
+        landSpawner = new SpawnTypeLand("primalfury_land")
+                .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
+        landSpawner.materials = new Material[] {Material.AIR};
+        landSpawner.ignoreBiome = true;
+        landSpawner.ignoreLight = true;
+        landSpawner.forceSpawning = true;
+        landSpawner.ignoreMobConditions = true;
+        landSpawner.addSpawn(MobInfo.getFromName("warg"));
+        landSpawner.addSpawn(MobInfo.getFromName("barghest"));
+        landSpawner.addSpawn(MobInfo.getFromName("maug"));
+        landSpawner.addSpawn(MobInfo.getFromName("feradon"));
+        landSpawner.addSpawn(MobInfo.getFromName("dawon"));
+        if(landSpawner.hasSpawns())
+            event.addSpawner(landSpawner);
+
+        if(event.hasSpawners())
+            MobEventManager.instance.addWorldEvent(event);
+
+
+
+        // Dragons Roar:
+        event = new MobEventDragonsRoar("dragonsroar", group);
+
+        landSpawner = new SpawnTypeLand("dragonsroar_land")
+                .setChance(1.0D).setBlockLimit(32).setMobLimit(1);
+        landSpawner.materials = new Material[] {Material.AIR};
+        landSpawner.ignoreBiome = true;
+        landSpawner.ignoreLight = true;
+        landSpawner.forceSpawning = true;
+        landSpawner.ignoreMobConditions = true;
+        landSpawner.addSpawn(MobInfo.getFromName("ignibus"));
+        landSpawner.addSpawn(MobInfo.getFromName("morock"));
+        landSpawner.addSpawn(MobInfo.getFromName("quetzodracl"));
+        if(landSpawner.hasSpawns())
+            event.addSpawner(landSpawner);
+
+        skySpawner = new SpawnTypeSky("dragonsroar_sky")
+                .setChance(1.0D).setBlockLimit(32).setMobLimit(1);
+        skySpawner.materials = new Material[] {Material.AIR};
+        skySpawner.ignoreBiome = true;
+        skySpawner.ignoreLight = true;
+        skySpawner.forceSpawning = true;
+        skySpawner.ignoreMobConditions = true;
+        skySpawner.addSpawn(MobInfo.getFromName("quetzodracl"));
+        skySpawner.addSpawn(MobInfo.getFromName("morock"));
+        skySpawner.addSpawn(MobInfo.getFromName("ignibus"));
         if(skySpawner.hasSpawns())
             event.addSpawner(skySpawner);
 

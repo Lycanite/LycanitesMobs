@@ -3,6 +3,10 @@
         "category": "record",
         "sounds": [{"name": "saltwatermobs:mobevent/seastorm", "stream": true}]
     },
+    "mobevent.sharknado": {
+        "category": "record",
+        "sounds": [{"name": "saltwatermobs:mobevent/sharknado", "stream": true}]
+    },
     "entity.lacedon.say": {
         "category": "hostile",
         "sounds": [{"name": "saltwatermobs:entity/lacedon/say", "stream": false}]

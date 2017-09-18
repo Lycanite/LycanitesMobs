@@ -18,6 +18,7 @@ import com.lycanitesmobs.core.spawning.SpawnTypeSky;
 import com.lycanitesmobs.saltwatermobs.entity.*;
 import com.lycanitesmobs.saltwatermobs.item.ItemSaltwaterEgg;
 import com.lycanitesmobs.saltwatermobs.mobevent.MobEventSeaStorm;
+import com.lycanitesmobs.saltwatermobs.mobevent.MobEventSharknado;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
@@ -173,35 +174,49 @@ public class SaltwaterMobs {
 		ObjectManager.setCurrentGroup(group);
 		
 		// ========== Mob Events ==========
-        if(MobInfo.getFromName("raiko") != null || MobInfo.getFromName("roa") != null) {
-			MobEventBase mobEvent = new MobEventSeaStorm("seastorm", this.group);
+		MobEventBase mobEvent = new MobEventSeaStorm("seastorm", this.group);
+		SpawnTypeBase eventSpawner = new SpawnTypeSky("seastorm")
+				.setChance(1.0D).setBlockLimit(32).setMobLimit(3);
+		eventSpawner.materials = new Material[]{Material.AIR};
+		eventSpawner.ignoreBiome = true;
+		eventSpawner.ignoreLight = true;
+		eventSpawner.forceSpawning = true;
+		eventSpawner.ignoreMobConditions = true;
+		eventSpawner.addSpawn(MobInfo.getFromName("raiko"));
+		eventSpawner.addSpawn(MobInfo.getFromName("quetzodracl"));
+		mobEvent.addSpawner(eventSpawner);
+		eventSpawner = new SpawnTypeWater("seastorm_water")
+				.setChance(1.0D).setBlockLimit(32).setMobLimit(3);
+		eventSpawner.materials = new Material[]{Material.AIR};
+		eventSpawner.ignoreBiome = true;
+		eventSpawner.ignoreLight = true;
+		eventSpawner.forceSpawning = true;
+		eventSpawner.ignoreMobConditions = true;
+		eventSpawner.addSpawn(MobInfo.getFromName("abtu"));
+		mobEvent.addSpawner(eventSpawner);
+		MobEventManager.instance.addWorldEvent(mobEvent);
 
-			if(MobInfo.getFromName("raiko") != null) {
-				SpawnTypeBase eventSpawner = new SpawnTypeSky("seastorm")
-						.setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-				eventSpawner.materials = new Material[]{Material.AIR};
-				eventSpawner.ignoreBiome = true;
-				eventSpawner.ignoreLight = true;
-				eventSpawner.forceSpawning = true;
-				eventSpawner.ignoreMobConditions = true;
-				eventSpawner.addSpawn(MobInfo.getFromName("raiko"));
-				mobEvent.addSpawner(eventSpawner);
-			}
+		mobEvent = new MobEventSharknado("sharknado", this.group);
+		eventSpawner = new SpawnTypeSky("sharknado")
+				.setChance(1.0D).setBlockLimit(32).setMobLimit(3);
+		eventSpawner.materials = new Material[]{Material.AIR};
+		eventSpawner.ignoreBiome = true;
+		eventSpawner.ignoreLight = true;
+		eventSpawner.forceSpawning = true;
+		eventSpawner.ignoreMobConditions = true;
+		eventSpawner.addSpawn(MobInfo.getFromName("roa"));
+		mobEvent.addSpawner(eventSpawner);
+		eventSpawner = new SpawnTypeWater("sharknado_water")
+				.setChance(1.0D).setBlockLimit(32).setMobLimit(3);
+		eventSpawner.materials = new Material[]{Material.AIR};
+		eventSpawner.ignoreBiome = true;
+		eventSpawner.ignoreLight = true;
+		eventSpawner.forceSpawning = true;
+		eventSpawner.ignoreMobConditions = true;
+		eventSpawner.addSpawn(MobInfo.getFromName("roa"));
+		mobEvent.addSpawner(eventSpawner);
+		MobEventManager.instance.addWorldEvent(mobEvent);
 
-			if(MobInfo.getFromName("roa") != null) {
-				SpawnTypeBase eventSpawner = new SpawnTypeWater("seastorm_water")
-						.setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-				eventSpawner.materials = new Material[]{Material.AIR};
-				eventSpawner.ignoreBiome = true;
-				eventSpawner.ignoreLight = true;
-				eventSpawner.forceSpawning = true;
-				eventSpawner.ignoreMobConditions = true;
-				eventSpawner.addSpawn(MobInfo.getFromName("roa"));
-				mobEvent.addSpawner(eventSpawner);
-			}
-
-			MobEventManager.instance.addWorldEvent(mobEvent);
-        }
 		
 		// ========== Crafting ==========
         GameRegistry.addRecipe(new ShapelessOreRecipe(

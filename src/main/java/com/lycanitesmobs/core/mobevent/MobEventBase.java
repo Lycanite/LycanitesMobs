@@ -18,6 +18,7 @@ public class MobEventBase {
     // Global Properties:
     public static boolean canAffectWeather = true;
     public static boolean canAffectTime = true;
+    public static boolean aggressiveEvents = false;
 
     // Properties:
 	public String name = "mobevent";
@@ -47,8 +48,9 @@ public class MobEventBase {
     // ==================================================
     public static void loadGlobalSettings() {
         ConfigSpawning config = ConfigSpawning.getConfig(LycanitesMobs.group, "mobevents");
-        canAffectWeather = config.getBool("Global Event Settings", "Affect Weather", canAffectWeather);
-        canAffectTime = config.getBool("Global Event Settings", "Affect Time", canAffectTime);
+        canAffectWeather = config.getBool("Global Event Settings", "Affect Weather", canAffectWeather, "Set to false to prevent all events from changing the weather.");
+        canAffectTime = config.getBool("Global Event Settings", "Affect Time", canAffectTime, "Set to false to prevent all events from changing the time fo day.");
+        aggressiveEvents = config.getBool("Global Event Settings", "Aggressive Events", aggressiveEvents, "If set to true, all mobs spawned from events will be told to immediately target the player, they will lose their target if too far however (for performance).");
     }
     
 	

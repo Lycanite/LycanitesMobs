@@ -133,42 +133,42 @@ public class InfernoMobs {
 		newMob = new MobInfo(group, "cephignis", EntityCephignis.class, 0xFFBB00, 0xDD00FF)
 		        .setPeaceful(true).setSummonCost(1).setDungeonLevel(-1)
 		        .addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("LAVA").setBlockCost(32).setDespawn(false)
+		newMob.spawnInfo.setSpawnTypes("LAVA").setBlockCost(16).setDespawn(false)
 				.setSpawnWeight(4).setAreaLimit(6).setGroupLimits(1, 3).setLightDark(true, false).setDungeonWeight(0);
 		ObjectManager.addMob(newMob);
 
         newMob = new MobInfo(group, "afrit", EntityAfrit.class, 0x110000, 0x773300)
                 .setPeaceful(false).setTameable(true).setSummonCost(2).setDungeonLevel(1)
 		        .addSubspecies(new Subspecies("violet", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
-        newMob.spawnInfo.setSpawnTypes("LAVA").setBlockCost(16)
+        newMob.spawnInfo.setSpawnTypes("LAVA").setBlockCost(8)
                 .setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
         ObjectManager.addMob(newMob);
 
         newMob = new MobInfo(group, "khalk", EntityKhalk.class, 0x442200, 0xFFAA22)
                 .setPeaceful(false).setSummonCost(6).setDungeonLevel(2)
 		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"));
-        newMob.spawnInfo.setSpawnTypes("LAVA").setBlockCost(32)
+        newMob.spawnInfo.setSpawnTypes("LAVA").setBlockCost(16)
                 .setSpawnWeight(1).setAreaLimit(2).setGroupLimits(1, 3).setLightDark(false, true);
         ObjectManager.addMob(newMob);
 
         newMob = new MobInfo(group, "salamander", EntitySalamander.class, 0xAACC00, 0xDDFF22)
                 .setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(1)
                 .addSubspecies(new Subspecies("violet", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
-        newMob.spawnInfo.setSpawnTypes("LAVA").setBlockCost(16)
+        newMob.spawnInfo.setSpawnTypes("LAVA").setBlockCost(8)
                 .setSpawnWeight(6).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
         ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "gorger", EntityGorger.class, 0xDE2A00, 0x200905)
 				.setPeaceful(false).setTameable(true).setSummonCost(6).setDungeonLevel(3)
 				.addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("keppel", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("LAVA").setBlockCost(32)
+		newMob.spawnInfo.setSpawnTypes("LAVA").setBlockCost(16)
 				.setSpawnWeight(2).setAreaLimit(2).setGroupLimits(1, 3).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "ignibus", EntityIgnibus.class, 0xBB0000, 0x00DD00)
 				.setPeaceful(false).setTameable(true).setSummonCost(2).setDungeonLevel(1)
 				.addSubspecies(new Subspecies("violet", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("LAVA").setBlockCost(32)
+		newMob.spawnInfo.setSpawnTypes("LAVA").setBlockCost(16)
 				.setSpawnWeight(1).setAreaLimit(1).setGroupLimits(1, 2).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 

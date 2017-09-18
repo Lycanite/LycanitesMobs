@@ -19,6 +19,14 @@
         "category": "record",
         "sounds": [{"name": "lycanitesmobs:mobevent/rootriot", "stream": true}]
     },
+    "mobevent.primalfury": {
+        "category": "record",
+        "sounds": [{"name": "lycanitesmobs:mobevent/primalfury", "stream": true}]
+    },
+    "mobevent.dragonsroar": {
+        "category": "record",
+        "sounds": [{"name": "lycanitesmobs:mobevent/dragonsroar", "stream": true}]
+    },
     "mobevent.roasting": {
         "category": "record",
         "sounds": [{"name": "lycanitesmobs:mobevent/roasting", "stream": true}]

@@ -578,6 +578,9 @@ public class SpawnTypeBase {
                     }
                 }
                 this.spawnEntity(world, entityLiving, rank);
+                if(MobEventBase.aggressiveEvents && this.mobEvent != null && player != null) {
+                    entityLiving.setAttackTarget(player);
+                }
 
                 if (!ForgeEventFactory.doSpecialSpawn(entityLiving, world, (float) coord.getX() + 0.5F, (float) coord.getY(), (float) coord.getZ() + 0.5F)) {
                     if (entityLiving instanceof EntityCreatureBase)

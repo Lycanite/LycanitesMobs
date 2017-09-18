@@ -4,6 +4,7 @@ saltwatermobs.description=These creatures are mostly aquatic but some can roam l
 #
 # Mob Events
 mobevent.seastorm.name=Sea Storm
+mobevent.sharknado.name=Sharknado
 #
 # Entites
 entity.saltwatermobs.lacedon.name=Lacedon

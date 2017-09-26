@@ -45,7 +45,7 @@ public class GUIMinion extends GUIBaseScreen {
 	}
 	
 	public FontRenderer getFontRenderer() {
-		return this.fontRendererObj;
+		return this.fontRenderer;
 	}
 	
 	public boolean doesGuiPauseGame() {
@@ -128,12 +128,12 @@ public class GUIMinion extends GUIBaseScreen {
 		
 		if(hasSomeKnowledge) {
 			this.getFontRenderer().drawString(I18n.translateToLocal("gui.minion.empty"), this.windowX + 18, this.windowY + 6, 0xFFFFFF);
-			this.fontRendererObj.drawSplitString(I18n.translateToLocal("gui.minion.info"), this.windowX + 8, this.windowY + 24, this.windowWidth - 16, 0xFFFFFF);
+			this.getFontRenderer().drawSplitString(I18n.translateToLocal("gui.minion.info"), this.windowX + 8, this.windowY + 24, this.windowWidth - 16, 0xFFFFFF);
 		}
 		
 		else {
 			this.getFontRenderer().drawString(I18n.translateToLocal("gui.beastiary.empty"), this.windowX + 52, this.windowY + 6, 0xFFFFFF);
-			this.fontRendererObj.drawSplitString(I18n.translateToLocal("gui.beastiary.soulgazerinfo"), this.windowX + 8, this.windowY + 24, this.windowWidth - 16, 0xFFFFFF);
+			this.getFontRenderer().drawSplitString(I18n.translateToLocal("gui.beastiary.soulgazerinfo"), this.windowX + 8, this.windowY + 24, this.windowWidth - 16, 0xFFFFFF);
 			int recipeWidth = 108;
 			int recipeHeight = 54;
 			this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIBeastiary"));

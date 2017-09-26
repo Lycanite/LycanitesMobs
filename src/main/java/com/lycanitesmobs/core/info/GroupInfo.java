@@ -49,10 +49,6 @@ public class GroupInfo {
     // ========== Special Entities ==========
     /** A list of all Special Entities Classes assigned to this group (to be rendered invisible). **/
     public List<Class> specialClasses = new ArrayList<Class>();
-
-    // ========== Achievement IDs ==========
-    /** The base ID for this group to go from (this has the global mod achievement ID base added to it which is the LycanitesMobs base GroupInfo). Use getAchievementID(int id) to get an ID for this group. **/
-    public int achievementIDBase = 1000;
 	
 	// ========== Spawn Dimensions ==========
     /** A comma separated list of dimensions that mobs in this group spawn in. As read from the config **/
@@ -107,9 +103,6 @@ public class GroupInfo {
         this.name = name;
         this.filename = name.toLowerCase().replace(" ", "");
         this.order = order;
-        this.achievementIDBase = order * 10000;
-        if(order < 100)
-            this.achievementIDBase += 10000;
 
         groups.put(this.name, this);
     }
@@ -181,18 +174,6 @@ public class GroupInfo {
 
     public String getEggName() {
         return this.eggName;
-    }
-
-
-    // ==================================================
-    //                  Achievement IDs
-    // ==================================================
-    /** Converts the provided child ID into a global ID. **/
-    public int getAchievementID(int childID) {
-        int baseID = this.achievementIDBase;
-        if(this != LycanitesMobs.group)
-            baseID += (LycanitesMobs.achievementGlobalBaseID * 10000);
-        return baseID + childID;
     }
 
 

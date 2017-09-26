@@ -87,7 +87,7 @@ public class ItemSoulstone extends ItemBase {
     		String message = I18n.translateToLocal("message.soulstone." + petType + ".added");
     		message = message.replace("%creature%", mobInfo.getTitle());
     		player.sendMessage(new TextComponentString(message));
-            //player.addStat(ObjectManager.getAchievement("soulstone"), 1);
+            //player.addStat(ObjectManager.getStat("soulstone"), 1);
 
 			// Add Pet Entry:
 			PetEntry petEntry = PetEntry.createFromEntity(player, entityTameable, petType);

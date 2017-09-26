@@ -1,17 +1,18 @@
 package com.lycanitesmobs.core.info;
 
-import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
+import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.mods.DLDungeons;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagString;
-import net.minecraft.stats.Achievement;
+import net.minecraft.stats.StatBase;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 
@@ -379,16 +380,14 @@ public class MobInfo {
         this.registerMob();
 
         // Add Achievements:
-        int achievementX = this.group.order * 4;
-        int achievementY = this.mobID;
         ItemStack achievementStack = new ItemStack(ObjectManager.getItem("mobtoken"));
         achievementStack.setTagInfo("Mob", new NBTTagString(this.name));
-        ObjectManager.addAchievement(this.name + ".kill", new Achievement(this.name + ".kill", this.name + ".kill", achievementX, achievementY, achievementStack, null));
-        ObjectManager.addAchievement(this.name + ".learn", new Achievement(this.name + ".learn", this.name + ".learn", achievementX + 1, achievementY, achievementStack, null));
+        ObjectManager.addStat(this.name + ".kill", new StatBase(this.name + ".kill", new TextComponentString(this.name + ".kill")));
+        ObjectManager.addStat(this.name + ".learn", new StatBase(this.name + ".learn", new TextComponentString(this.name + ".learn")));
         if(this.isSummonable())
-            ObjectManager.addAchievement(this.name + ".summon", new Achievement(this.name + ".summon", this.name + ".summon", achievementX + 2, achievementY, achievementStack, null));
+            ObjectManager.addStat(this.name + ".summon", new StatBase(this.name + ".summon", new TextComponentString(this.name + ".summon")));
         if(this.isTameable())
-            ObjectManager.addAchievement(this.name + ".tame", new Achievement(this.name + ".tame", this.name + ".tame", achievementX + 2, achievementY, achievementStack, null));
+            ObjectManager.addStat(this.name + ".tame", new StatBase(this.name + ".tame", new TextComponentString(this.name + ".tame")));
     }
 
 

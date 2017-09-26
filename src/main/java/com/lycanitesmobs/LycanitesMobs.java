@@ -1,32 +1,27 @@
 package com.lycanitesmobs;
 
-import com.lycanitesmobs.core.config.ConfigBase;
-import com.lycanitesmobs.core.info.*;
-import com.lycanitesmobs.core.item.*;
-import com.lycanitesmobs.core.spawning.SpawnTypeBase;
 import com.lycanitesmobs.core.block.BlockSummoningPedestal;
 import com.lycanitesmobs.core.capabilities.ExtendedEntityStorage;
 import com.lycanitesmobs.core.capabilities.ExtendedPlayerStorage;
 import com.lycanitesmobs.core.capabilities.IExtendedEntity;
 import com.lycanitesmobs.core.capabilities.IExtendedPlayer;
 import com.lycanitesmobs.core.command.CommandMain;
+import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.entity.EntityFear;
 import com.lycanitesmobs.core.entity.EntityHitArea;
 import com.lycanitesmobs.core.entity.EntityPortal;
+import com.lycanitesmobs.core.info.*;
+import com.lycanitesmobs.core.item.*;
 import com.lycanitesmobs.core.mobevent.MobEventBase;
 import com.lycanitesmobs.core.mobevent.MobEventManager;
 import com.lycanitesmobs.core.mobevent.SharedMobEvents;
 import com.lycanitesmobs.core.mods.DLDungeons;
 import com.lycanitesmobs.core.network.PacketHandler;
 import com.lycanitesmobs.core.spawning.CustomSpawner;
+import com.lycanitesmobs.core.spawning.SpawnTypeBase;
 import com.lycanitesmobs.core.tileentity.TileEntitySummoningPedestal;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.stats.Achievement;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -40,16 +35,13 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 @Mod(modid = LycanitesMobs.modid, name = LycanitesMobs.name, version = LycanitesMobs.version, useMetadata = false)
 public class LycanitesMobs {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String version = "1.17.1.2 - MC 1.11.2";
+	public static final String version = "1.17.1.2 - MC 1.12.2";
 	public static final String website = "http://lycanitesmobs.com";
 	public static final String websiteAPI = "http://api.lycanitesmobs.com";
 	public static final String websitePatreon = "https://www.patreon.com/lycanite";
@@ -85,10 +77,6 @@ public class LycanitesMobs {
 	// Texture Path:
 	public static String texturePath = "mods/lycanitesmobs/";
 
-    // Achievements:
-    public static AchievementPage achievementPage;
-    public static int achievementGlobalBaseID = 5500;
-
 	// Extra Config Settings:
 	public static boolean disableNausea = false;
 	
@@ -99,7 +87,7 @@ public class LycanitesMobs {
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		// ========== Config ==========
-		group = new GroupInfo(this, name, achievementGlobalBaseID);
+		group = new GroupInfo(this, name, 1000);
         ConfigBase.versionCheck("1.14.2.1", version);
 		group.loadFromConfig();
 		config = ConfigBase.getConfig(group, "general");
@@ -272,135 +260,6 @@ public class LycanitesMobs {
         // ========== Seasonal Item Lists ==========
         ItemHalloweenTreat.createObjectLists();
         ItemWinterGift.createObjectLists();
-		
-        
-		// ========== Crafting ==========
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-                new ItemStack(ObjectManager.getItem("soulgazer"), 1, 0),
-                new Object[]{"GBG", "BDB", "GBG",
-                        Character.valueOf('G'), Items.GOLD_INGOT,
-                        Character.valueOf('D'), Items.DIAMOND,
-                        Character.valueOf('B'), Items.BONE
-                }));
-
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("soulstone"), 1, 0),
-				new Object[] { "DPD", "PSP", "DPD",
-						Character.valueOf('D'), Items.DIAMOND,
-						Character.valueOf('S'), ObjectManager.getItem("soulgazer"),
-						Character.valueOf('P'), Items.ENDER_PEARL
-				}));
-
-        GameRegistry.addRecipe(new ShapedOreRecipe(
-                new ItemStack(ObjectManager.getItem("soulkey"), 1, 0),
-                new Object[] { "DND", "DSD", "DDD",
-                        Character.valueOf('N'), Items.NETHER_STAR,
-                        Character.valueOf('S'), ObjectManager.getItem("soulgazer"),
-                        Character.valueOf('D'), Items.DIAMOND
-                }));
-
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("soulkeydiamond"), 1, 0),
-				new Object[] { "DDD", "DSD", "DDD",
-						Character.valueOf('S'), ObjectManager.getItem("soulkey"),
-						Character.valueOf('D'), Items.DIAMOND
-				}));
-
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("soulkeyemerald"), 1, 0),
-				new Object[] { "DDD", "DSD", "DDD",
-						Character.valueOf('S'), ObjectManager.getItem("soulkey"),
-						Character.valueOf('D'), Items.EMERALD
-				}));
-
-        GameRegistry.addRecipe(new ShapedOreRecipe(
-                new ItemStack(ObjectManager.getBlock("summoningpedestal"), 1, 0),
-                new Object[] { "GNG", "DSD", "GDG",
-                        Character.valueOf('N'), Items.NETHER_STAR,
-                        Character.valueOf('S'), ObjectManager.getItem("soulstone"),
-                        Character.valueOf('D'), Blocks.DIAMOND_BLOCK,
-                        Character.valueOf('G'), Blocks.GOLD_BLOCK
-                }));
-		
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("summoningstaff"), 1, 0),
-				new Object[] { " E ", " B ", " G ",
-				Character.valueOf('E'), Items.ENDER_PEARL,
-				Character.valueOf('B'), Items.BONE,
-				Character.valueOf('G'), Items.GOLD_INGOT
-			}));
-		
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("stablesummoningstaff"), 1, 0),
-				new Object[] { " D ", " S ", " G ",
-				Character.valueOf('S'), ObjectManager.getItem("summoningstaff"),
-				Character.valueOf('G'), Items.GOLD_INGOT,
-				Character.valueOf('D'), Items.DIAMOND
-			}));
-		
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("bloodsummoningstaff"), 1, 0),
-				new Object[] { "RRR", "BSB", "NDN",
-				Character.valueOf('S'), ObjectManager.getItem("summoningstaff"),
-				Character.valueOf('R'), Items.REDSTONE,
-				Character.valueOf('B'), Items.BONE,
-				Character.valueOf('N'), Items.NETHER_WART,
-				Character.valueOf('D'), Items.DIAMOND
-			}));
-		
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("sturdysummoningstaff"), 1, 0),
-				new Object[] { "III", "ISI", " O ",
-				Character.valueOf('S'), ObjectManager.getItem("summoningstaff"),
-				Character.valueOf('I'), Items.IRON_INGOT,
-				Character.valueOf('O'), Blocks.OBSIDIAN
-			}));
-		
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("savagesummoningstaff"), 1, 0),
-				new Object[] { "LLL", "BSB", "GGG",
-				Character.valueOf('S'), ObjectManager.getItem("summoningstaff"),
-				Character.valueOf('B'), Items.BONE,
-				Character.valueOf('G'), Items.GHAST_TEAR,
-				Character.valueOf('L'), new ItemStack(Items.DYE, 1, 4)
-			}));
-		
-		// Super Food:
-		if(ObjectManager.getItem("pinkymeatcooked") != null && ObjectManager.getItem("makameatcooked") != null
-				&& ObjectManager.getItem("arisaurmeatcooked") != null && ObjectManager.getItem("yetimeatcooked") != null
-				&& ObjectManager.getItem("aspidmeatcooked") != null) {
-			GameRegistry.addRecipe(new ShapelessOreRecipe(
-					new ItemStack(ObjectManager.getItem("battleburrito"), 1, 0),
-					new Object[] {
-						ObjectManager.getItem("pinkymeatcooked"),
-						ObjectManager.getItem("makameatcooked"),
-						ObjectManager.getItem("arisaurmeatcooked"),
-						ObjectManager.getItem("yetimeatcooked"),
-						ObjectManager.getItem("aspidmeatcooked")
-					}
-				));
-		}
-
-		if(ObjectManager.getItem("joustmeatcooked") != null && ObjectManager.getItem("yalemeatcooked") != null
-				&& ObjectManager.getItem("ikameatcooked") != null && ObjectManager.getItem("concapedemeatcooked") != null) {
-			GameRegistry.addRecipe(new ShapelessOreRecipe(
-					new ItemStack(ObjectManager.getItem("explorersrisotto"), 1, 0),
-					new Object[] {
-						ObjectManager.getItem("joustmeatcooked"),
-						ObjectManager.getItem("yalemeatcooked"),
-						ObjectManager.getItem("ikameatcooked"),
-						ObjectManager.getItem("concapedemeatcooked")
-					}
-				));
-		}
-
-        // Create all Recipe Makder recipes!
-        RecipeMaker.createAllRecipies();
-
-
-        // ========== Achievement Page ==========
-        achievementPage = new AchievementPage(name, ObjectManager.achievements.values().toArray(new Achievement[ObjectManager.achievements.values().size()]));
-        AchievementPage.registerAchievementPage(achievementPage);
     }
 	
 	

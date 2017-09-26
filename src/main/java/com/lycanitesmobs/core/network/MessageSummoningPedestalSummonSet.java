@@ -46,11 +46,11 @@ public class MessageSummoningPedestalSummonSet implements IMessage, IMessageHand
         // Server Side:
         if(ctx.side != Side.SERVER)
             return null;
-        IThreadListener mainThread = (WorldServer) ctx.getServerHandler().playerEntity.getEntityWorld();
+        IThreadListener mainThread = (WorldServer) ctx.getServerHandler().player.getEntityWorld();
         mainThread.addScheduledTask(new Runnable() {
             @Override
             public void run() {
-                EntityPlayer player = ctx.getServerHandler().playerEntity;
+                EntityPlayer player = ctx.getServerHandler().player;
                 TileEntity tileEntity = player.getEntityWorld().getTileEntity(new BlockPos(message.x, message.y, message.z));
                 TileEntitySummoningPedestal summoningPedestal = null;
                 if(tileEntity instanceof TileEntitySummoningPedestal)

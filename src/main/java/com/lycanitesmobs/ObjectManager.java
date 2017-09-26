@@ -21,7 +21,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.Achievement;
+import net.minecraft.potion.Potion;
+import net.minecraft.stats.StatBase;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -38,22 +39,21 @@ import java.util.Map;
 public class ObjectManager {
 	
 	// Maps:
-	public static Map<String, Block> blocks = new HashMap<String, Block>();
-    public static Map<String, Item> items = new HashMap<String, Item>();
-	public static Map<String, Fluid> fluids = new HashMap<String, Fluid>();
-    public static Map<Block, Item> buckets = new HashMap<Block, Item>();
-    public static Map<String, Class> tileEntities = new HashMap<String, Class>();
-	public static Map<String, PotionBase> potionEffects = new HashMap<String, PotionBase>();
-    public static int nextPotionID = 28;
+	public static Map<String, Block> blocks = new HashMap<>();
+    public static Map<String, Item> items = new HashMap<>();
+	public static Map<String, Fluid> fluids = new HashMap<>();
+    public static Map<Block, Item> buckets = new HashMap<>();
+    public static Map<String, Class> tileEntities = new HashMap<>();
+	public static Map<String, PotionBase> potionEffects = new HashMap<>();
 	
-	public static Map<String, EntityListCustom> entityLists = new HashMap<String, EntityListCustom>();
-	public static Map<String, MobInfo> mobs = new HashMap<String, MobInfo>();
+	public static Map<String, EntityListCustom> entityLists = new HashMap<>();
+	public static Map<String, MobInfo> mobs = new HashMap<>();
 	
-	public static Map<String, Class> projectiles = new HashMap<String, Class>();
+	public static Map<String, Class> projectiles = new HashMap<>();
 
-    public static Map<String, DamageSource> damageSources = new HashMap<String, DamageSource>();
+    public static Map<String, DamageSource> damageSources = new HashMap<>();
 
-    public static Map<String, Achievement> achievements = new HashMap<String, Achievement>();
+    public static Map<String, StatBase> stats = new HashMap<>();
 	
 	public static GroupInfo currentGroup;
 	
@@ -72,13 +72,13 @@ public class ObjectManager {
 	public static Block addBlock(String name, Block block) {
 		name = name.toLowerCase();
 		blocks.put(name, block);
-        GameRegistry.register(block);
+        GameRegistry.findRegistry(Block.class).register(block);
         if(block instanceof BlockSlabCustom) {
             BlockSlabCustom blockSlab = (BlockSlabCustom)block;
-            GameRegistry.register(new ItemSlabCustom(blockSlab, blockSlab, blockSlab.getDoubleBlock()), block.getRegistryName());
+            GameRegistry.findRegistry(Item.class).register(new ItemSlabCustom(blockSlab, blockSlab, blockSlab.getDoubleBlock()));
         }
         else
-            GameRegistry.register(new ItemBlock(block), block.getRegistryName());
+            GameRegistry.findRegistry(Item.class).register(new ItemBlock(block));
         LycanitesMobs.proxy.addBlockRender(currentGroup, block);
         return block;
 	}
@@ -105,7 +105,7 @@ public class ObjectManager {
 		name = name.toLowerCase();
 		items.put(name, item);
 		if(currentGroup != null)
-			GameRegistry.register(item, new ResourceLocation(currentGroup.filename, name));
+			GameRegistry.findRegistry(Item.class).register(item);
         LycanitesMobs.proxy.addItemRender(currentGroup, item);
 
         // Fluid Dispenser:
@@ -145,7 +145,7 @@ public class ObjectManager {
         PotionBase potion = new PotionBase("potion." + name, isBad, color);
 		potion.setIconIndex(iconX, iconY);
 		potionEffects.put(name, potion);
-        GameRegistry.register(potion, new ResourceLocation(LycanitesMobs.modid, name));
+        GameRegistry.findRegistry(Potion.class).register(potion);
 		ObjectLists.addEffect(goodEffect ? "buffs" : "debuffs", potion);
 		return potion;
 	}
@@ -210,13 +210,13 @@ public class ObjectManager {
     }
 
 
-    // ========== Achievement ==========
-    public static void addAchievement(String name, Achievement achievement) {
+    // ========== Stat ==========
+    public static void addStat(String name, StatBase stat) {
         name = name.toLowerCase();
-        if(achievements.containsKey(name))
+        if(stats.containsKey(name))
             return;
-        achievement.registerStat();
-        achievements.put(name, achievement);
+        stat.registerStat();
+        stats.put(name, stat);
     }
 	
 	
@@ -271,11 +271,11 @@ public class ObjectManager {
         return damageSources.get(name);
     }
 
-    // ========== Achievement ==========
-    public static Achievement getAchievement(String name) {
+    // ========== Stat ==========
+    public static StatBase getStat(String name) {
         name = name.toLowerCase();
-        if(!achievements.containsKey(name)) return null;
-        return achievements.get(name);
+        if(!stats.containsKey(name)) return null;
+        return stats.get(name);
     }
 
 

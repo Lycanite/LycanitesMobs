@@ -7,6 +7,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -22,6 +23,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
@@ -88,11 +90,11 @@ public class BlockBase extends Block {
     //                      Info
     // ==================================================
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
-        tooltip.add(this.getDescription(stack, player));
+    public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag advanced) {
+        tooltip.add(this.getDescription(stack, world));
     }
 
-    public String getDescription(ItemStack itemStack, EntityPlayer entityPlayer) {
+    public String getDescription(ItemStack itemStack, @Nullable World world) {
         return I18n.translateToLocal("tile." + this.blockName + ".description");
     }
 	
@@ -210,10 +212,10 @@ public class BlockBase extends Block {
 
     // ========== Is Block Solid ==========
     @Override
-    public boolean isBlockSolid(IBlockAccess world, BlockPos pos, EnumFacing side) {
+    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
         if(this.noEntityCollision)
             return false;
-        return super.isBlockSolid(world, pos, side);
+        return super.isSideSolid(base_state, world, pos, side);
     }
 
     // ========== Physical Collision Box ==========

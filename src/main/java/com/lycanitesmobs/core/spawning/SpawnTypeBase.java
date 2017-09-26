@@ -1124,8 +1124,8 @@ public class SpawnTypeBase {
      */
     public BlockPos getRandomChunkCoord(World world, Chunk chunk, int range) {
     	range = Math.min(range, 16);
-        int x = chunk.xPosition + world.rand.nextInt(range);
-        int z = chunk.zPosition + world.rand.nextInt(range);
+        int x = chunk.x + world.rand.nextInt(range);
+        int z = chunk.z + world.rand.nextInt(range);
         x += 16 - range;
         z += 16 - range;
         int y = world.rand.nextInt(chunk == null ? world.getActualHeight() : chunk.getTopFilledSegment() + 1);

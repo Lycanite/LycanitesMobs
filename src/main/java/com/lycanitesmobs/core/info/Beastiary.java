@@ -52,7 +52,7 @@ public class Beastiary {
 			summonMessage = summonMessage.replace("%creature%", mobInfo.getTitle());
 			extendedPlayer.player.sendMessage(new TextComponentString(summonMessage));
 		}
-		extendedPlayer.player.addStat(ObjectManager.getAchievement(mobInfo.name + ".learn"), 1);
+		extendedPlayer.player.addStat(ObjectManager.getStat(mobInfo.name + ".learn"), 1);
 	}
 	
 	public boolean hasFullKnowledge(String creatureName) {

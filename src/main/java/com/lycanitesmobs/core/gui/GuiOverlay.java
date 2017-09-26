@@ -110,8 +110,8 @@ public class GuiOverlay extends GUIBase {
             		GL11.glColor4f(1.0F, 1.0F, 1.0F, (float)this.mountMessageTime / (float)60);
             	String mountMessage = I18n.translateToLocal("gui.mount.controls");
             	mountMessage = mountMessage.replace("%control%", GameSettings.getKeyDisplayString(KeyHandler.instance.mountAbility.getKeyCode()));
-            	int stringWidth = this.mc.fontRendererObj.getStringWidth(mountMessage);
-            	this.mc.fontRendererObj.drawString(mountMessage, (sWidth / 2) - (stringWidth / 2), sHeight - 64, 0xFFFFFF);
+            	int stringWidth = this.mc.fontRenderer.getStringWidth(mountMessage);
+            	this.mc.fontRenderer.drawString(mountMessage, (sWidth / 2) - (stringWidth / 2), sHeight - 64, 0xFFFFFF);
             }
             
             // Mount Ability Stamina Bar:

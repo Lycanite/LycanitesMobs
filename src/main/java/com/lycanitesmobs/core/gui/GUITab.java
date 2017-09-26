@@ -22,7 +22,7 @@ public abstract class GUITab extends GUIBaseButton {
     }
 
     @Override
-    public void drawButton (Minecraft mc, int mouseX, int mouseY)  {
+    public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
         if(this.visible) {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
@@ -30,8 +30,8 @@ public abstract class GUITab extends GUIBaseButton {
             int ySize = this.enabled ? tabWidth : tabHeight;
             int xOffset = this.id == 2 ? 0 : 1;
             
-            int tabX = this.xPosition;
-            int tabY = this.yPosition;
+            int tabX = this.x;
+            int tabY = this.y;
             
             if(mc.currentScreen != null && mc.currentScreen instanceof GuiInventory) {
             	GuiInventory guiInventory = (GuiInventory)mc.currentScreen;
@@ -56,8 +56,8 @@ public abstract class GUITab extends GUIBaseButton {
     @Override
     public boolean mousePressed (Minecraft mc, int mouseX, int mouseY) {
         int ySize = this.enabled ? tabWidth : tabHeight;
-        int tabX = this.xPosition;
-        int tabY = this.yPosition;
+        int tabX = this.x;
+        int tabY = this.y;
         	
     	if(mc.currentScreen != null && mc.currentScreen instanceof GuiInventory) {
         	GuiInventory guiInventory = (GuiInventory)mc.currentScreen;

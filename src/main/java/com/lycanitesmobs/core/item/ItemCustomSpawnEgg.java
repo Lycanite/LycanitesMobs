@@ -9,6 +9,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -70,15 +73,28 @@ public class ItemCustomSpawnEgg extends ItemBase {
 	//                      Info
 	// ==================================================
     @Override
-    public String getDescription(ItemStack itemStack, EntityPlayer entityPlayer, List textList, boolean par4) {
-        ResourceLocation entityID = this.getEntityIdFromItem(itemStack);
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        String description = this.getDescription(stack, worldIn, tooltip, flagIn);
+        if(!"".equalsIgnoreCase(description) && !("item." + this.itemName + ".description").equals(description)) {
+            FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+            List formattedDescriptionList = fontRenderer.listFormattedStringToWidth(description, ItemBase.descriptionWidth);
+            for(Object formattedDescription : formattedDescriptionList) {
+                if(formattedDescription instanceof String)
+                    tooltip.add("\u00a7a" + formattedDescription);
+            }
+        }
+        super.addInformation(stack, worldIn, tooltip, flagIn);
+    }
+
+    public String getDescription(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        ResourceLocation entityID = this.getEntityIdFromItem(stack);
         Class entityClass = ObjectManager.entityLists.get(this.group.filename).getClassFromID(entityID);
         MobInfo mobInfo = MobInfo.mobClassToInfo.get(entityClass);
         if(mobInfo == null) {
             LycanitesMobs.printWarning("Mob Spawn Egg", "Unable to get a MobInfo entry for id: " + entityID + " class: " + entityClass);
             return "Unable to get a MobInfo entry for id: " + entityID + " class: " + entityClass;
         }
-    	return mobInfo.getDescription();
+        return mobInfo.getDescription();
     }
     
     
@@ -228,14 +244,14 @@ public class ItemCustomSpawnEgg extends ItemBase {
 	// ==================================================
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs creativeTabs, NonNullList<ItemStack> subItems) {
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
     	if(this.group == null || !ObjectManager.entityLists.containsKey(this.group.filename))
     		return;
 
         for(EntityListCustom.EntityEggInfo entityEggInfo : ObjectManager.entityLists.get(this.group.filename).entityEggs.values()) {
-            ItemStack itemstack = new ItemStack(item, 1);
+            ItemStack itemstack = new ItemStack(this, 1);
             this.applyEntityIdToItemStack(itemstack, entityEggInfo.spawnedID);
-            subItems.add(itemstack);
+            items.add(itemstack);
         }
     }
 

@@ -22,7 +22,7 @@ public class BlockWallCustom extends BlockWall {
 
     @SideOnly(Side.CLIENT)
 	@Override
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list) {
-        list.add(new ItemStack(itemIn));
+    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
+        items.add(new ItemStack(this, 1));
     }
 }

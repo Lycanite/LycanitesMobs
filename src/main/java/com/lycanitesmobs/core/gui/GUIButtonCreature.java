@@ -26,27 +26,26 @@ public class GUIButtonCreature extends GUIBaseButton {
 	// ==================================================
   	//                   Draw Button
   	// ==================================================
-	// field_82253_i = mouseOver
 	@Override
-	public void drawButton(Minecraft minecraft, int mouseX, int mouseY) {
+	public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
         if(this.visible) {
-            FontRenderer fontrenderer = minecraft.fontRendererObj;
+            FontRenderer fontrenderer = mc.fontRenderer;
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            this.hovered = mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
+            this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
             int hoverState = this.getHoverState(this.isMouseOver());
             
             int buttonW = this.width;
             int buttonH = this.height;
-            int buttonX = this.xPosition;
-            int buttonY = this.yPosition;
-            minecraft.getTextureManager().bindTexture(AssetManager.getTexture("GUIInventoryCreature"));
+            int buttonX = this.x;
+            int buttonY = this.y;
+            mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIInventoryCreature"));
             this.drawTexturedModalRect(buttonX, buttonY, 193, 187 - (hoverState * 32), this.width, this.height);
             if(mobInfo != null) {
 	            Minecraft.getMinecraft().getTextureManager().bindTexture(mobInfo.getIcon());
 	    		this.drawTexturedModalRect(buttonX + 8, buttonY + 8, 0, 0, 16, 16, 16);
             }
             
-            this.mouseDragged(minecraft, mouseX, mouseY);
+            this.mouseDragged(mc, mouseX, mouseY);
             int textColor = 14737632;
             
             if(!this.enabled) {

@@ -1,12 +1,12 @@
 package com.lycanitesmobs;
 
-import com.lycanitesmobs.core.info.ItemInfo;
-import com.lycanitesmobs.core.item.ItemBase;
 import com.lycanitesmobs.core.capabilities.IExtendedEntity;
 import com.lycanitesmobs.core.capabilities.IExtendedPlayer;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.EntityCreatureRideable;
 import com.lycanitesmobs.core.entity.EntityItemCustom;
+import com.lycanitesmobs.core.info.ItemInfo;
+import com.lycanitesmobs.core.item.ItemBase;
 import com.lycanitesmobs.core.item.ItemSwordBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
@@ -66,8 +66,8 @@ public class EventListener {
     //                Attach Capabilities
     // ==================================================
     @SubscribeEvent
-    public void onAttachCapabilities(AttachCapabilitiesEvent.Entity event) {
-        if(event.getEntity() instanceof EntityLivingBase) {
+    public void onAttachCapabilities(AttachCapabilitiesEvent<Entity> event) {
+        if(event.getObject() instanceof EntityLivingBase) {
             event.addCapability(new ResourceLocation(LycanitesMobs.modid, "IExtendedEntity"), new ICapabilitySerializable<NBTTagCompound>() {
                 IExtendedEntity instance = LycanitesMobs.EXTENDED_ENTITY.getDefaultInstance();
 
@@ -93,7 +93,7 @@ public class EventListener {
             });
         }
 
-        if(event.getEntity() instanceof EntityPlayer) {
+        if(event.getObject() instanceof EntityPlayer) {
             event.addCapability(new ResourceLocation(LycanitesMobs.modid, "IExtendedPlayer"), new ICapabilitySerializable<NBTTagCompound>() {
                 IExtendedPlayer instance = LycanitesMobs.EXTENDED_PLAYER.getDefaultInstance();
 

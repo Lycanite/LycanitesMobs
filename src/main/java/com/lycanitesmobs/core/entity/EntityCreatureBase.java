@@ -2474,7 +2474,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
                 if(damageSource.getEntity() instanceof EntityPlayer) {
                     try {
                         EntityPlayer player = (EntityPlayer) damageSource.getEntity();
-                        player.addStat(ObjectManager.getAchievement(this.mobInfo.name + ".kill"), 1);
+                        player.addStat(ObjectManager.getStat(this.mobInfo.name + ".kill"), 1);
                         if (this.isBoss() || this.getRNG().nextDouble() <= MobInfo.beastiaryAddOnDeathChance) {
                             ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
                             if (playerExt != null && !playerExt.getBeastiary().hasFullKnowledge(mobInfo.name)) {

@@ -2,9 +2,9 @@ package com.lycanitesmobs.core.renderer;
 
 import com.lycanitesmobs.core.entity.EntityParticle;
 import com.lycanitesmobs.core.entity.EntityProjectileBase;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -105,7 +105,7 @@ public class RenderParticle extends Render {
             GlStateManager.enableOutlineMode(this.getTeamColor(entity));
         }
 
-        VertexBuffer vertexbuffer = tessellator.getBuffer();
+        BufferBuilder vertexbuffer = tessellator.getBuffer();
         vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
 
         vertexbuffer.pos((xCoord + 0.0F), (yCoord + (float)maxV), zLevel)

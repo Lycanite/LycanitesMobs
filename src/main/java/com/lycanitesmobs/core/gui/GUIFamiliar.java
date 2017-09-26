@@ -49,7 +49,7 @@ public class GUIFamiliar extends GUIBaseScreen {
 	}
 
 	public FontRenderer getFontRenderer() {
-		return this.fontRendererObj;
+		return this.fontRenderer;
 	}
 
 	public boolean doesGuiPauseGame() {
@@ -129,7 +129,7 @@ public class GUIFamiliar extends GUIBaseScreen {
 		}
 
         this.getFontRenderer().drawString(I18n.translateToLocal("gui.familiarmanager.empty"), this.windowX + 18, this.windowY + 6, 0xFFFFFF);
-        this.fontRendererObj.drawSplitString(I18n.translateToLocal("gui.familiarmanager.info"), this.windowX + 16, this.windowY + 24, this.windowWidth - 32, 0xFFFFFF);
+        this.getFontRenderer().drawSplitString(I18n.translateToLocal("gui.familiarmanager.info"), this.windowX + 16, this.windowY + 24, this.windowWidth - 32, 0xFFFFFF);
     }
 	
 	

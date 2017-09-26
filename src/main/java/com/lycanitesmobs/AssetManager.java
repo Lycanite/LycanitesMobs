@@ -5,7 +5,7 @@ import com.lycanitesmobs.core.model.ModelCustomObj;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraftforge.client.model.IModelCustomData;
+import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.HashMap;
@@ -14,11 +14,11 @@ import java.util.Map;
 public class AssetManager {
 	
 	// Maps:
-	public static Map<String, ResourceLocation> textures = new HashMap<String, ResourceLocation>();
-	public static Map<String, ResourceLocation[]> textureGroups = new HashMap<String, ResourceLocation[]>();
-	public static Map<String, SoundEvent> sounds = new HashMap<String, SoundEvent>();
-	public static Map<String, ModelBase> models = new HashMap<String, ModelBase>();
-	public static Map<String, IModelCustomData> objModels = new HashMap<String, IModelCustomData>();
+	public static Map<String, ResourceLocation> textures = new HashMap<>();
+	public static Map<String, ResourceLocation[]> textureGroups = new HashMap<>();
+	public static Map<String, SoundEvent> sounds = new HashMap<>();
+	public static Map<String, ModelBase> models = new HashMap<>();
+	public static Map<String, IModel> objModels = new HashMap<>();
 	
     // ==================================================
     //                        Add
@@ -45,7 +45,7 @@ public class AssetManager {
         SoundEvent soundEvent = new SoundEvent(resourceLocation);
         soundEvent.setRegistryName(resourceLocation);
 		sounds.put(name, soundEvent);
-        GameRegistry.register(soundEvent);
+        GameRegistry.findRegistry(SoundEvent.class).register(soundEvent);
 	}
 	
 	// ========== Model ==========
@@ -97,13 +97,13 @@ public class AssetManager {
 	}
 	
 	// ========== Obj Model ==========
-	public static IModelCustomData getObjModel(String name) {
+	public static IModel getObjModel(String name) {
 		name = name.toLowerCase();
 		if(!objModels.containsKey(name))
 			return null;
 		return objModels.get(name);
 	}
-	public static IModelCustomData getObjModel(String name, GroupInfo group, String path) {
+	public static IModel getObjModel(String name, GroupInfo group, String path) {
 		name = name.toLowerCase();
 		if(!objModels.containsKey(name))
 			addObjModel(name, group, path);

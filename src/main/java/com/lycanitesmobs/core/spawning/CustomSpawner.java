@@ -119,7 +119,7 @@ public class CustomSpawner {
 			return;
 		
 		// ========== Get Killer ==========
-		Entity killerEntity = event.getSource().getSourceOfDamage();
+		Entity killerEntity = event.getSource().getTrueSource();
 		if(!(killerEntity instanceof EntityLivingBase))
 			return;
 		EntityLivingBase killer = (EntityLivingBase)killerEntity;

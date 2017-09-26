@@ -2,7 +2,6 @@ package com.lycanitesmobs.core.entity;
 
 import com.lycanitesmobs.*;
 import com.lycanitesmobs.core.info.MobInfo;
-import com.lycanitesmobs.*;
 import com.lycanitesmobs.core.item.ItemStaffSummoning;
 import com.lycanitesmobs.core.tileentity.TileEntitySummoningPedestal;
 import net.minecraft.entity.Entity;
@@ -232,7 +231,7 @@ public class EntityPortal extends EntityProjectileBase {
                     entityCreature.setTemporary(this.summonDuration);
 
                 if (this.shootingEntity != null)
-                    this.shootingEntity.addStat(ObjectManager.getAchievement(entityCreature.mobInfo.name + ".summon"), 1);
+                    this.shootingEntity.addStat(ObjectManager.getStat(entityCreature.mobInfo.name + ".summon"), 1);
             }
 	    	this.getEntityWorld().spawnEntity(entity);
     	}

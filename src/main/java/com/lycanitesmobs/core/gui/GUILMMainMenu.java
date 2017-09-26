@@ -38,7 +38,7 @@ public class GUILMMainMenu extends GUIBaseScreen {
     }
 
 	public FontRenderer getFontRenderer() {
-		return this.fontRendererObj;
+		return this.fontRenderer;
 	}
 
 

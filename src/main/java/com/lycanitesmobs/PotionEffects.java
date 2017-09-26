@@ -154,9 +154,9 @@ public class PotionEffects {
         }
 
         // ========== Leeching ==========
-        if(ObjectManager.getPotionEffect("leech") != null && event.getSource().getEntity() != null) {
-            if(event.getSource().getEntity() instanceof EntityLivingBase) {
-                EntityLivingBase attackingEntity = (EntityLivingBase)(event.getSource().getEntity());
+        if(ObjectManager.getPotionEffect("leech") != null && event.getSource().getTrueSource() != null) {
+            if(event.getSource().getTrueSource() instanceof EntityLivingBase) {
+                EntityLivingBase attackingEntity = (EntityLivingBase)(event.getSource().getTrueSource());
                 if(attackingEntity.isPotionActive(ObjectManager.getPotionEffect("leech"))) {
                     float damage = event.getAmount();
                     float multiplier = attackingEntity.getActivePotionEffect(ObjectManager.getPotionEffect("leech")).getAmplifier();

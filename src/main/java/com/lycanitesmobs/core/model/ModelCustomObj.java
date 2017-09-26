@@ -1,16 +1,16 @@
 package com.lycanitesmobs.core.model;
 
 import com.lycanitesmobs.LycanitesMobs;
+import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.info.GroupInfo;
 import com.lycanitesmobs.core.modelloader.obj.ObjObject;
 import com.lycanitesmobs.core.modelloader.obj.TessellatorModel;
 import com.lycanitesmobs.core.renderer.LayerBase;
-import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.IModelCustomData;
+import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.obj.OBJModel;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -77,7 +77,7 @@ public class ModelCustomObj extends ModelCustom {
     // ==================================================
     //                    Load Model
     // ==================================================
-    public static IModelCustomData loadModel(ResourceLocation resourceLocation) {
+    public static IModel loadModel(ResourceLocation resourceLocation) {
         return new OBJModel(new OBJModel.MaterialLibrary(), resourceLocation);
     }
 

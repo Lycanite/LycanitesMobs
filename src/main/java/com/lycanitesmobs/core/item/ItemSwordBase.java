@@ -5,6 +5,7 @@ import com.lycanitesmobs.core.info.GroupInfo;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,6 +23,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemSwordBase extends ItemSword {
@@ -55,21 +57,21 @@ public class ItemSwordBase extends ItemSword {
 	//                      Info
 	// ==================================================
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List textList, boolean par4) {
-    	String description = this.getDescription(itemStack, entityPlayer, textList, par4);
-    	if(!"".equalsIgnoreCase(description) && !("item." + this.itemName + ".description").equals(description)) {
-    		FontRenderer fontRenderer = Minecraft.getMinecraft().fontRendererObj;
-    		List formattedDescriptionList = fontRenderer.listFormattedStringToWidth(description, descriptionWidth);
-    		for(Object formattedDescription : formattedDescriptionList) {
-    			if(formattedDescription instanceof String)
-    				textList.add("\u00a7a" + (String)formattedDescription);
-    		}
-    	}
-    	super.addInformation(itemStack, entityPlayer, textList, par4);
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        String description = this.getDescription(stack, worldIn, tooltip, flagIn);
+        if(!"".equalsIgnoreCase(description) && !("item." + this.itemName + ".description").equals(description)) {
+            FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+            List formattedDescriptionList = fontRenderer.listFormattedStringToWidth(description, ItemBase.descriptionWidth);
+            for(Object formattedDescription : formattedDescriptionList) {
+                if(formattedDescription instanceof String)
+                    tooltip.add("\u00a7a" + formattedDescription);
+            }
+        }
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
-    
-    public String getDescription(ItemStack itemStack, EntityPlayer entityPlayer, List textList, boolean par4) {
-    	return I18n.translateToLocal("item." + this.itemName + ".description");
+
+    public String getDescription(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        return I18n.translateToLocal("item." + this.itemName + ".description");
     }
 	
     

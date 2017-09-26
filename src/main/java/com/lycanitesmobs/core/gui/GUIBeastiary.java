@@ -1,12 +1,12 @@
 package com.lycanitesmobs.core.gui;
 
-import com.lycanitesmobs.LycanitesMobs;
-import com.lycanitesmobs.core.info.GroupInfo;
-import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.ExtendedPlayer;
 import com.lycanitesmobs.GuiHandler;
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
+import com.lycanitesmobs.core.info.GroupInfo;
+import com.lycanitesmobs.core.info.MobInfo;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiInventory;
@@ -51,7 +51,7 @@ public class GUIBeastiary extends GUIBaseScreen {
 	}
 	
 	public FontRenderer getFontRenderer() {
-		return this.fontRendererObj;
+		return this.fontRenderer;
 	}
 	
 	@Override
@@ -120,7 +120,7 @@ public class GUIBeastiary extends GUIBaseScreen {
   	// ==================================================
 	protected void drawGuiContainerForegroundLayer(int x, int y, float f) {
 		boolean hasSomeKnowledge = this.playerExt.beastiary.creatureKnowledgeList.size() > 0;
-		this.fontRendererObj.drawString(I18n.translateToLocal("gui.beastiary.name"), this.windowX + 24, this.windowY + 8, 0xFFFFFF);
+		this.fontRenderer.drawString(I18n.translateToLocal("gui.beastiary.name"), this.windowX + 24, this.windowY + 8, 0xFFFFFF);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
 		// Draw Creature Entry:
@@ -133,28 +133,28 @@ public class GUIBeastiary extends GUIBaseScreen {
 			GuiInventory.drawEntityOnScreen(creatureX, creatureY, creatureScale, (float) (creatureX) - x, (float) (creatureY) - y, this.creaturePreviewEntity);
 			
 			// Title:
-			this.fontRendererObj.drawString(this.getSelectedCreature().getTitle(), this.centerX + 8, this.windowY + 8, 0xFFFFFF);
+			this.fontRenderer.drawString(this.getSelectedCreature().getTitle(), this.centerX + 8, this.windowY + 8, 0xFFFFFF);
 			
 			// Description:
-			this.fontRendererObj.drawSplitString(this.getSelectedCreature().getDescription(), this.centerX + 8, creatureY + creatureSize + 2, this.halfX - 16, 0xFFFFFF);
+			this.fontRenderer.drawSplitString(this.getSelectedCreature().getDescription(), this.centerX + 8, creatureY + creatureSize + 2, this.halfX - 16, 0xFFFFFF);
 		}
 		
 		// Draw Group Entry:
 		else if(this.getSelectedGroup() != null && hasSomeKnowledge) {
-			this.fontRendererObj.drawString(I18n.translateToLocal(this.getSelectedGroup().filename + ".name"), this.centerX + 8, this.windowY + 8, 0xFFFFFF);
-			this.fontRendererObj.drawSplitString(I18n.translateToLocal(this.getSelectedGroup().filename + ".description"), this.centerX + 8, this.windowY + 24, this.halfX - 16, 0xFFFFFF);
+			this.fontRenderer.drawString(I18n.translateToLocal(this.getSelectedGroup().filename + ".name"), this.centerX + 8, this.windowY + 8, 0xFFFFFF);
+			this.fontRenderer.drawSplitString(I18n.translateToLocal(this.getSelectedGroup().filename + ".description"), this.centerX + 8, this.windowY + 24, this.halfX - 16, 0xFFFFFF);
 		}
 		
 		// Draw Soulgazer Instructions:
 		else if(hasSomeKnowledge) {
-			this.fontRendererObj.drawString("", this.centerX + 8, this.windowY + 8, 0xFFFFFF);
-			this.fontRendererObj.drawSplitString(I18n.translateToLocal("gui.beastiary.selectacreature"), this.centerX + 8, this.windowY + 24, this.halfX - 16, 0xFFFFFF);
+			this.fontRenderer.drawString("", this.centerX + 8, this.windowY + 8, 0xFFFFFF);
+			this.fontRenderer.drawSplitString(I18n.translateToLocal("gui.beastiary.selectacreature"), this.centerX + 8, this.windowY + 24, this.halfX - 16, 0xFFFFFF);
 		}
 		
 		// Draw Soulgazer Instructions:
 		else {
-			this.fontRendererObj.drawString(I18n.translateToLocal("gui.beastiary.empty"), this.centerX + 8, this.windowY + 8, 0xFFFFFF);
-			this.fontRendererObj.drawSplitString(I18n.translateToLocal("gui.beastiary.soulgazerinfo"), this.centerX + 8, this.windowY + 24, this.halfX - 16, 0xFFFFFF);
+			this.fontRenderer.drawString(I18n.translateToLocal("gui.beastiary.empty"), this.centerX + 8, this.windowY + 8, 0xFFFFFF);
+			this.fontRenderer.drawSplitString(I18n.translateToLocal("gui.beastiary.soulgazerinfo"), this.centerX + 8, this.windowY + 24, this.halfX - 16, 0xFFFFFF);
 			int recipeWidth = 108;
 			int recipeHeight = 54;
 			this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIBeastiary"));

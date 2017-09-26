@@ -37,11 +37,11 @@ public class MessagePetEntryRemove implements IMessage, IMessageHandler<MessageP
 	public IMessage onMessage(final MessagePetEntryRemove message, final MessageContext ctx) {
         // Server Side:
         if(ctx.side == Side.SERVER) {
-            IThreadListener mainThread = (WorldServer) ctx.getServerHandler().playerEntity.getEntityWorld();
+            IThreadListener mainThread = (WorldServer) ctx.getServerHandler().player.getEntityWorld();
             mainThread.addScheduledTask(new Runnable() {
                 @Override
                 public void run() {
-                    EntityPlayer player = ctx.getServerHandler().playerEntity;
+                    EntityPlayer player = ctx.getServerHandler().player;
                     ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
 
                     PetManager petManager = playerExt.petManager;

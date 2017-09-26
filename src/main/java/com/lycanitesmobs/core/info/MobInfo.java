@@ -321,7 +321,7 @@ public class MobInfo {
         config.setCategoryComment("Default Item Drops", "If false, only custom item drops are dropped.");
         this.defaultDrops = config.getBool("Default Item Drops", this.getCfgName("Default Drops"), this.defaultDrops);
 
-        config.setCategoryComment("Custom Item Drops", "Allows for custom items drops per mob. Format is: mod:item,metadata,chance,min,max Multiple drops should be semicolon separated and chances are in decimal format. minecraft:wool;2;0.25;0;3 is Green Wool with a 25% drop rate and will drop 0 to 3 blocks. Be sure to use a colon for mod:item and semicolons for everything else.");
+        config.setCategoryComment("Custom Item Drops", "Allows for custom items drops per mob. Format is: mod:item,metadata,chance,min,max Multiple drops should be semicolon separated and chances are in decimal format. You can also add an additional comma and then a subspecies ID to restrict that drop to a certain subspecies like so: mod:item,metadata,chance,min,max,subspecies. minecraft:wool,2,0.25,0,3 is Green Wool with a 25% drop rate and will drop 0 to 3 blocks. Be sure to use a colon for mod:item and commas for everything else in an entry. Semicolons can be used to separate multiple entries.");
         String customDropsString = config.getString("Custom Item Drops", this.getCfgName("Custom Drops"), "");
         if(customDropsString != null && customDropsString.length() > 0) {
             for(String customDropEntryString : customDropsString.split(";")) {

@@ -1,5 +1,6 @@
 package com.lycanitesmobs.demonmobs.entity;
 
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupDemon;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;

@@ -1355,6 +1355,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
         	if(!this.onGround && this.flySoundSpeed > 0 && this.ticksExisted % 20 == 0)
         		this.playFlySound();
         }
+        if(!this.getEntityWorld().isRemote && this.isFlying() && this.hasAttackTarget() && this.updateTick % 40 == 0) {
+            this.leap(0, 0.4D);
+        }
 
         // GUI Refresh Tick:
         if(!this.worldObj.isRemote && this.guiViewers.size() <= 0)

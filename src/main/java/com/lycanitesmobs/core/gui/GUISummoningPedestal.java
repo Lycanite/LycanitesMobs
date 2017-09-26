@@ -177,6 +177,12 @@ public class GUISummoningPedestal extends GUIBaseManager {
     // ==================================================
     @Override
     public void selectMinion(String minionName) {
+        if(this.summonSet == null) {
+            if(this.summoningPedestal == null || this.summoningPedestal.summonSet == null) {
+                return;
+            }
+            this.summonSet = this.summoningPedestal.summonSet;
+        }
         this.summonSet.setSummonType(minionName);
         this.sendCommandsToServer();
     }

@@ -57,7 +57,7 @@ public class EntityAITargetOwnerRevenge extends EntityAITargetAttack {
         int i = owner.getRevengeTimer();
         if(i == this.revengeTime)
         	return false;
-        if(!this.isSuitableTarget(owner.getAITarget(), false))
+        if(!this.isSuitableTarget(owner.getRevengeTarget(), false))
         	return false;
         return true;
     }
@@ -68,7 +68,7 @@ public class EntityAITargetOwnerRevenge extends EntityAITargetAttack {
  	// ==================================================
     public void startExecuting() {
         EntityLivingBase owner = (EntityLivingBase)this.host.getOwner();
-        this.target = owner.getAITarget();
+        this.target = owner.getRevengeTarget();
         this.revengeTime = owner.getRevengeTimer();
         if(this.callForHelp) {
             this.callNearbyForHelp();

@@ -57,7 +57,7 @@ public class EntityAIMoveVillage extends EntityAIBase {
         if(this.isNocturnal && this.host.getEntityWorld().isDaytime())
             return false;
         
-        Village village = this.host.getEntityWorld().villageCollectionObj.getNearestVillage(new BlockPos(MathHelper.floor(this.host.posX), MathHelper.floor(this.host.posY), MathHelper.floor(this.host.posZ)), 0);
+        Village village = this.host.getEntityWorld().getVillageCollection().getNearestVillage(new BlockPos(MathHelper.floor(this.host.posX), MathHelper.floor(this.host.posY), MathHelper.floor(this.host.posZ)), 0);
         if(village == null)
             return false;
         
@@ -69,19 +69,19 @@ public class EntityAIMoveVillage extends EntityAIBase {
             return false;
         CreaturePathNavigate pathNavigate = (CreaturePathNavigate)this.host.getNavigator();
         boolean flag = pathNavigate.getEnterDoors();
-        pathNavigate.setBreakDoors(false);
-        this.entityPathNavigate = this.host.getNavigator().getPathToXYZ((double)this.doorInfo.getInsideOffsetX(), (double)this.doorInfo.getInsidePosY(), (double)this.doorInfo.getInsideOffsetZ());
-        pathNavigate.setBreakDoors(flag);
+        pathNavigate.setCanOpenDoors(false);
+        this.entityPathNavigate = this.host.getNavigator().getPathToXYZ((double)this.doorInfo.getInsideOffsetX(), (double)this.doorInfo.getInsideBlockPos().getY(), (double)this.doorInfo.getInsideOffsetZ());
+        pathNavigate.setCanOpenDoors(flag);
 
         if(this.entityPathNavigate != null)
             return true;
         
-        Vec3d vec3 = RandomPositionGenerator.findRandomTargetTowards(this.host, 10, 7, new Vec3d((double)this.doorInfo.getInsideOffsetX(), (double)this.doorInfo.getInsidePosY(), (double)this.doorInfo.getInsideOffsetZ()));
+        Vec3d vec3 = RandomPositionGenerator.findRandomTargetTowards(this.host, 10, 7, new Vec3d((double)this.doorInfo.getInsideOffsetX(), (double)this.doorInfo.getInsideBlockPos().getY(), (double)this.doorInfo.getInsideOffsetZ()));
         if(vec3 == null)
             return false;
-        pathNavigate.setBreakDoors(false);
-        this.entityPathNavigate = this.host.getNavigator().getPathToXYZ(vec3.xCoord, vec3.yCoord, vec3.zCoord);
-        pathNavigate.setBreakDoors(flag);
+        pathNavigate.setCanOpenDoors(false);
+        this.entityPathNavigate = this.host.getNavigator().getPathToXYZ(vec3.x, vec3.y, vec3.z);
+        pathNavigate.setCanOpenDoors(flag);
         return this.entityPathNavigate != null;
     }
 	
@@ -89,7 +89,7 @@ public class EntityAIMoveVillage extends EntityAIBase {
 	// ==================================================
  	//                Continue Executing
  	// ==================================================
-    public boolean continueExecuting()
+    public boolean shouldContinueExecuting()
     {
         if (this.host.getNavigator().noPath())
         {
@@ -98,7 +98,7 @@ public class EntityAIMoveVillage extends EntityAIBase {
         else
         {
             float f = this.host.width + 4.0F;
-            return this.host.getDistanceSq((double)this.doorInfo.getInsideOffsetX(), (double)this.doorInfo.getInsidePosY(), (double)this.doorInfo.getInsideOffsetZ()) > (double)(f * f);
+            return this.host.getDistanceSq((double)this.doorInfo.getInsideOffsetX(), (double)this.doorInfo.getInsideBlockPos().getY(), (double)this.doorInfo.getInsideOffsetZ()) > (double)(f * f);
         }
     }
 	
@@ -117,7 +117,7 @@ public class EntityAIMoveVillage extends EntityAIBase {
  	// ==================================================
     public void resetTask()
     {
-        if (this.host.getNavigator().noPath() || this.host.getDistanceSq((double)this.doorInfo.getInsideOffsetX(), (double)this.doorInfo.getInsidePosY(), (double)this.doorInfo.getInsideOffsetZ()) < 16.0D)
+        if (this.host.getNavigator().noPath() || this.host.getDistanceSq((double)this.doorInfo.getInsideOffsetX(), (double)this.doorInfo.getInsideBlockPos().getY(), (double)this.doorInfo.getInsideOffsetZ()) < 16.0D)
         {
             this.doorList.add(this.doorInfo);
         }
@@ -155,7 +155,7 @@ public class EntityAIMoveVillage extends EntityAIBase {
                 return false;
             villagedoorinfo1 = (VillageDoorInfo)iterator.next();
         }
-        while(par1VillageDoorInfo.getInsideOffsetX() != villagedoorinfo1.getInsideOffsetX() || par1VillageDoorInfo.getInsidePosY() != villagedoorinfo1.getInsidePosY() || par1VillageDoorInfo.getInsideOffsetZ() != villagedoorinfo1.getInsideOffsetZ());
+        while(par1VillageDoorInfo.getInsideOffsetX() != villagedoorinfo1.getInsideOffsetX() || par1VillageDoorInfo.getInsideBlockPos().getY() != villagedoorinfo1.getInsideBlockPos().getY() || par1VillageDoorInfo.getInsideOffsetZ() != villagedoorinfo1.getInsideOffsetZ());
 
         return true;
     }

@@ -59,8 +59,8 @@ public class BlockScorchfire extends BlockFireBase {
     @Override
     public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
         super.onEntityCollidedWithBlock(world, pos, state, entity);
-		if(entity instanceof EntityItem && ((EntityItem)entity).getEntityItem() != null)
-    		if(((EntityItem)entity).getEntityItem().getItem() == ObjectManager.getItem("scorchfirecharge"))
+		if(entity instanceof EntityItem && ((EntityItem)entity).getItem() != null)
+    		if(((EntityItem)entity).getItem().getItem() == ObjectManager.getItem("scorchfirecharge"))
     			return;
 
         if(ObjectManager.getPotionEffect("penetration") != null) {

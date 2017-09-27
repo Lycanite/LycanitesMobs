@@ -75,7 +75,7 @@ public class EntityHellfireWall extends EntityProjectileBase {
         RayTraceResult movingobjectposition = this.getEntityWorld().rayTraceBlocks(vec3, vec31);
 
         if (!this.getEntityWorld().isRemote) {
-            List list = this.getEntityWorld().getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
+            List list = this.getEntityWorld().getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
             double d0 = 0.0D;
             EntityLivingBase entitylivingbase = this.getThrower();
 
@@ -146,12 +146,12 @@ public class EntityHellfireWall extends EntityProjectileBase {
     // ==================================================
     //                   Brightness
     // ==================================================
-    public float getBrightness(float par1) {
+    public float getBrightness() {
         return 1.0F;
     }
     
     @SideOnly(Side.CLIENT)
-    public int getBrightnessForRender(float par1) {
+    public int getBrightnessForRender() {
         return 15728880;
     }
 }

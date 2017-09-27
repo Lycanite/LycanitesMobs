@@ -117,7 +117,7 @@ public class EntityNetherSoul extends EntityCreatureTameable implements IMob {
         }
 
         // Particles:
-        if(this.getEntityWorld().isRemote && this.entityAge > 5)
+        if(this.getEntityWorld().isRemote && this.idleTime > 5)
 	        for(int i = 0; i < 2; ++i) {
 	            this.getEntityWorld().spawnParticle(EnumParticleTypes.SMOKE_LARGE, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
 	            this.getEntityWorld().spawnParticle(EnumParticleTypes.FLAME, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
@@ -179,12 +179,12 @@ public class EntityNetherSoul extends EntityCreatureTameable implements IMob {
     // ==================================================
     //                   Brightness
     // ==================================================
-    public float getBrightness(float par1) {
+    public float getBrightness() {
         return 1.0F;
     }
     
     @SideOnly(Side.CLIENT)
-    public int getBrightnessForRender(float par1) {
+    public int getBrightnessForRender() {
         return 15728880;
     }
 }

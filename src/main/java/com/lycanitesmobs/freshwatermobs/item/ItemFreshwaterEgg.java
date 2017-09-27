@@ -14,5 +14,6 @@ public class ItemFreshwaterEgg extends ItemCustomSpawnEgg {
         this.group = FreshwaterMobs.group;
         this.itemName = "freshwaterspawn";
         this.texturePath = "freshwaterspawn";
+        this.setRegistryName(this.group.filename, this.itemName);
     }
 }

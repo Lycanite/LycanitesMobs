@@ -110,8 +110,6 @@ public class ShadowMobs {
 		// ========== Create Blocks ==========
 		AssetManager.addSound("shadowfire", group, "block.shadowfire");
 		ObjectManager.addBlock("shadowfire", new BlockShadowfire());
-
-        RecipeMaker.addStoneBlocks(group, "shadow", Blocks.OBSIDIAN);
 		
 		
 		// ========== Create Mobs ==========
@@ -250,47 +248,6 @@ public class ShadowMobs {
         // ========== Altars ==========
         AltarInfo lunarGrueAltar = new AltarInfoLunarGrue("LunarGrueAltar");
         AltarInfo.addAltar(lunarGrueAltar);
-
-
-        // ========== Crafting ==========
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
-				new ItemStack(ObjectManager.getItem("bloodchili"), 1, 0),
-				new Object[] {
-					Items.BOWL,
-                    new ItemStack(Items.DYE, 1, 3),
-					ObjectManager.getItem("chupacabrameatcooked")
-				}
-			));
-
-        if(ItemInfo.enableWeaponRecipes) {
-            GameRegistry.addRecipe(new ShapedOreRecipe(
-                    new ItemStack(ObjectManager.getItem("spectralboltscepter"), 1, 0),
-                    new Object[]{"CCC", "CRC", "CRC",
-                            Character.valueOf('C'), ObjectManager.getItem("spectralboltcharge"),
-                            Character.valueOf('R'), Items.BLAZE_ROD
-                    }));
-
-            GameRegistry.addRecipe(new ShapedOreRecipe(
-                    new ItemStack(ObjectManager.getItem("bloodleechscepter"), 1, 0),
-                    new Object[]{"CCC", "CRC", "CRC",
-                            Character.valueOf('C'), ObjectManager.getItem("bloodleechcharge"),
-                            Character.valueOf('R'), Items.BLAZE_ROD
-                    }));
-        }
-
-        GameRegistry.addRecipe(new ShapedOreRecipe(
-                new ItemStack(ObjectManager.getItem("chupacabratreat"), 4, 0),
-                new Object[] { "TTT", "BBT", "TTT",
-                        Character.valueOf('T'), ObjectManager.getItem("geistliver"),
-                        Character.valueOf('B'), Items.BONE
-                }));
-
-        GameRegistry.addRecipe(new ShapedOreRecipe(
-                new ItemStack(ObjectManager.getItem("shadetreat"), 4, 0),
-                new Object[] { "TTT", "BBT", "TTT",
-                        Character.valueOf('T'), Items.ENDER_PEARL,
-                        Character.valueOf('B'), Items.BONE
-                }));
 		
 		
 		// ========== Smelting ==========

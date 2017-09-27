@@ -177,20 +177,20 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
         		else
 					pos = new Vec3d(this.getParentTarget().posX, this.getParentTarget().posY, this.getParentTarget().posZ);
 
-        		if(this.posX - pos.xCoord > segmentDistance)
-        			this.posX = pos.xCoord + segmentDistance;
-        		else if(this.posX - pos.xCoord < -segmentDistance)
-        			this.posX = pos.xCoord - segmentDistance;
+        		if(this.posX - pos.x > segmentDistance)
+        			this.posX = pos.x + segmentDistance;
+        		else if(this.posX - pos.x < -segmentDistance)
+        			this.posX = pos.x - segmentDistance;
         		
-        		if(this.posY - pos.yCoord > segmentDistance)
-        			this.posY = pos.yCoord + segmentDistance;
-        		else if(this.posY - pos.yCoord < -(segmentDistance / 2))
-        			this.posY = pos.yCoord;
+        		if(this.posY - pos.y > segmentDistance)
+        			this.posY = pos.y + segmentDistance;
+        		else if(this.posY - pos.y < -(segmentDistance / 2))
+        			this.posY = pos.y;
         		
-        		if(this.posZ - pos.zCoord > segmentDistance)
-        			this.posZ = pos.zCoord + segmentDistance;
-        		else if(this.posZ - pos.zCoord < -segmentDistance)
-        			this.posZ = pos.zCoord - segmentDistance;
+        		if(this.posZ - pos.z > segmentDistance)
+        			this.posZ = pos.z + segmentDistance;
+        		else if(this.posZ - pos.z < -segmentDistance)
+        			this.posZ = pos.z - segmentDistance;
         	}
         }
         

@@ -218,59 +218,6 @@ public class MountainMobs {
         AltarInfo.addAltar(celestialGeonachAltar);
 		
 		
-		// ========== Crafting ==========
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
-				new ItemStack(ObjectManager.getItem("peakskebab"), 1, 0),
-				new Object[] {
-					Items.STICK,
-					Items.CARROT,
-					Items.MELON,
-					ObjectManager.getItem("yalemeatcooked")
-				}
-			));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
-				new ItemStack(ObjectManager.getItem("yalemeatcooked"), 1, 0),
-				new Object[] { ObjectManager.getItem("peakskebab") }
-			));
-
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("barghesttreat"), 4, 0),
-				new Object[] { "TTT", "BBT", "TTT",
-						Character.valueOf('T'), ObjectManager.getItem("yalemeatcooked"),
-						Character.valueOf('B'), Items.BONE
-				}));
-
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("beholdertreat"), 4, 0),
-				new Object[] { "   ", "BBT", "   ",
-						Character.valueOf('T'), ObjectManager.getItem("arcanelaserstormcharge"),
-						Character.valueOf('B'), Items.BONE
-				}));
-
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("wildkintreat"), 4, 0),
-				new Object[] { "TTT", "BBT", "TTT",
-						Character.valueOf('T'), Items.QUARTZ,
-						Character.valueOf('B'), Items.BONE
-				}));
-
-        if(ItemInfo.enableWeaponRecipes) {
-            GameRegistry.addRecipe(new ShapedOreRecipe(
-                    new ItemStack(ObjectManager.getItem("boulderblastscepter"), 1, 0),
-                    new Object[]{"CCC", "CRC", "CRC",
-                            Character.valueOf('C'), ObjectManager.getItem("boulderblastcharge"),
-                            Character.valueOf('R'), Items.BLAZE_ROD
-                    }));
-
-            GameRegistry.addRecipe(new ShapedOreRecipe(
-                    new ItemStack(ObjectManager.getItem("arcanelaserstormscepter"), 1, 0),
-                    new Object[]{" C ", " R ", " R ",
-                            Character.valueOf('C'), ObjectManager.getItem("arcanelaserstormcharge"),
-                            Character.valueOf('R'), Items.BLAZE_ROD
-                    }));
-        }
-		
-		
 		// ========== Smelting ==========
 		GameRegistry.addSmelting(ObjectManager.getItem("yalemeatraw"), new ItemStack(ObjectManager.getItem("yalemeatcooked"), 1), 0.5f);
 	}

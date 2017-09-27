@@ -216,52 +216,6 @@ public class SaltwaterMobs {
 		eventSpawner.addSpawn(MobInfo.getFromName("roa"));
 		mobEvent.addSpawner(eventSpawner);
 		MobEventManager.instance.addWorldEvent(mobEvent);
-
-		
-		// ========== Crafting ==========
-        GameRegistry.addRecipe(new ShapelessOreRecipe(
-                new ItemStack(ObjectManager.getItem("seashellmaki"), 1, 0),
-                new Object[]{
-                        Blocks.VINE,
-                        Items.WHEAT,
-                        ObjectManager.getItem("ikameatcooked"),
-                }
-        ));
-
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
-				new ItemStack(ObjectManager.getItem("ikameatcooked"), 1, 0),
-				new Object[] { ObjectManager.getItem("seashellmaki") }
-			));
-
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("raikotreat"), 4, 0),
-				new Object[] { "TTT", "BBT", "TTT",
-						Character.valueOf('T'), ObjectManager.getItem("ikameatcooked"),
-						Character.valueOf('B'), Items.BONE
-				}));
-
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("roatreat"), 4, 0),
-				new Object[] { "TTT", "BBT", "TTT",
-						Character.valueOf('T'), new ItemStack(Items.DYE, 1, 0),
-						Character.valueOf('B'), Items.BONE
-				}));
-
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("hermatreat"), 4, 0),
-				new Object[] { "  C", "BBT", "  P",
-						Character.valueOf('T'), new ItemStack(Items.FISH, 1, 0),
-						Character.valueOf('C'), new ItemStack(Items.FISH, 1, 1),
-						Character.valueOf('P'), new ItemStack(Items.FISH, 1, 2),
-						Character.valueOf('B'), Items.BONE
-				}));
-
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("quetzodracltreat"), 4, 0),
-				new Object[] { "TTT", "TDT", "TTT",
-						Character.valueOf('T'), ObjectManager.getItem("ikameatcooked"),
-						Character.valueOf('D'), Items.DIAMOND
-				}));
 		
 		// ========== Smelting ==========
 		GameRegistry.addSmelting(ObjectManager.getItem("ikameatraw"), new ItemStack(ObjectManager.getItem("ikameatcooked"), 1), 0.5f);

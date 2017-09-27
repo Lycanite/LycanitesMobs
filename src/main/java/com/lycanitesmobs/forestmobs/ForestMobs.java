@@ -174,51 +174,6 @@ public class ForestMobs {
 			EntityRegistry.removeSpawn(EntityCreeper.class, EnumCreatureType.MONSTER, biomes);
 		}
 		
-		// ========== Crafting ==========
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
-				new ItemStack(ObjectManager.getItem("paleosalad"), 1, 0),
-				new Object[] {
-					Blocks.LEAVES,
-					Items.CARROT,
-					ObjectManager.getItem("arisaurmeatcooked")
-				}
-			));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
-				new ItemStack(ObjectManager.getItem("paleosalad"), 1, 0),
-				new Object[] {
-					Blocks.LEAVES2,
-					Items.CARROT,
-					ObjectManager.getItem("arisaurmeatcooked")
-				}
-			));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
-				new ItemStack(ObjectManager.getItem("arisaurmeatcooked"), 1, 0),
-				new Object[] { ObjectManager.getItem("paleosalad") }
-			));
-		
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("shamblertreat"), 4, 0),
-				new Object[] { "TTT", "BBT", "TTT",
-				Character.valueOf('T'), ObjectManager.getItem("lifedraincharge"),
-				Character.valueOf('B'), Items.REEDS
-			}));
-
-        GameRegistry.addRecipe(new ShapedOreRecipe(
-                new ItemStack(ObjectManager.getItem("wargtreat"), 4, 0),
-                new Object[] { "TTT", "BBT", "TTT",
-                        Character.valueOf('T'), ObjectManager.getItem("arisaurmeatcooked"),
-                        Character.valueOf('B'), Items.BONE
-                }));
-
-        if(ItemInfo.enableWeaponRecipes) {
-            GameRegistry.addRecipe(new ShapedOreRecipe(
-                    new ItemStack(ObjectManager.getItem("lifedrainscepter"), 1, 0),
-                    new Object[]{"CCC", "CRC", "CRC",
-                            Character.valueOf('C'), ObjectManager.getItem("lifedraincharge"),
-                            Character.valueOf('R'), Items.BLAZE_ROD
-                    }));
-        }
-		
 		// ========== Smelting ==========
 		GameRegistry.addSmelting(ObjectManager.getItem("arisaurmeatraw"), new ItemStack(ObjectManager.getItem("arisaurmeatcooked"), 1), 0.5f);
 	}

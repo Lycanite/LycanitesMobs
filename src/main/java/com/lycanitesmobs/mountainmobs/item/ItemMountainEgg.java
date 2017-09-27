@@ -14,5 +14,6 @@ public class ItemMountainEgg extends ItemCustomSpawnEgg {
         this.group = MountainMobs.group;
         this.itemName = "mountainspawn";
         this.texturePath = "mountainspawn";
+        this.setRegistryName(this.group.filename, this.itemName);
     }
 }

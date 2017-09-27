@@ -72,9 +72,9 @@ public class EntityAIFollowParent extends EntityAIFollow {
   	//                Continue Executing
   	// ==================================================
     @Override
-    public boolean continueExecuting() {
+    public boolean shouldContinueExecuting() {
     	if(!this.followAsAdult && !this.host.isChild())
     		return false;
-    	return super.continueExecuting();
+    	return super.shouldContinueExecuting();
     }
 }

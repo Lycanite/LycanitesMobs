@@ -134,6 +134,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public int battlePhase = 0;
     /** The maximum amount of damage this mob can take. If 0 or less, this is ignored. **/
     public int damageMax = 0;
+    /** The gorwing age of this mob. **/
+    protected int growingAge;
 	
 	// Abilities:
     /** If true, this mob is to be treated as a boss. Boss mobs gain some defensive abilities. **/
@@ -234,23 +236,24 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public BossInfoServer bossInfo;
 	
 	// Data Manager:
-    protected static final DataParameter<Byte> TARGET = EntityDataManager.<Byte>createKey(EntityCreatureBase.class, DataSerializers.BYTE);
-    protected static final DataParameter<Byte> ANIMATION = EntityDataManager.<Byte>createKey(EntityCreatureBase.class, DataSerializers.BYTE);
-    protected static final DataParameter<Byte> ATTACK_PHASE = EntityDataManager.<Byte>createKey(EntityCreatureBase.class, DataSerializers.BYTE);
+    protected static final DataParameter<Byte> TARGET = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.BYTE);
+    protected static final DataParameter<Byte> ANIMATION = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.BYTE);
+    protected static final DataParameter<Byte> ATTACK_PHASE = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.BYTE);
 
-    protected static final DataParameter<Byte> CLIMBING = EntityDataManager.<Byte>createKey(EntityCreatureBase.class, DataSerializers.BYTE);
-    protected static final DataParameter<Float> STEALTH = EntityDataManager.<Float>createKey(EntityCreatureBase.class, DataSerializers.FLOAT);
+    protected static final DataParameter<Byte> CLIMBING = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.BYTE);
+    protected static final DataParameter<Float> STEALTH = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.FLOAT);
 
-    protected static final DataParameter<Byte> COLOR = EntityDataManager.<Byte>createKey(EntityCreatureBase.class, DataSerializers.BYTE);
-    protected static final DataParameter<Float> SIZE = EntityDataManager.<Float>createKey(EntityCreatureBase.class, DataSerializers.FLOAT);
-    protected static final DataParameter<Byte> SUBSPECIES = EntityDataManager.<Byte>createKey(EntityCreatureBase.class, DataSerializers.BYTE);
+    protected static final DataParameter<Boolean> BABY = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Byte> COLOR = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.BYTE);
+    protected static final DataParameter<Float> SIZE = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.FLOAT);
+    protected static final DataParameter<Byte> SUBSPECIES = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.BYTE);
 
-    public static final DataParameter<ItemStack> EQUIPMENT_HEAD = EntityDataManager.<ItemStack>createKey(EntityCreatureBase.class, DataSerializers.OPTIONAL_ITEM_STACK);
-    public static final DataParameter<ItemStack> EQUIPMENT_CHEST = EntityDataManager.<ItemStack>createKey(EntityCreatureBase.class, DataSerializers.OPTIONAL_ITEM_STACK);
-    public static final DataParameter<ItemStack> EQUIPMENT_LEGS = EntityDataManager.<ItemStack>createKey(EntityCreatureBase.class, DataSerializers.OPTIONAL_ITEM_STACK);
-    public static final DataParameter<ItemStack> EQUIPMENT_FEET = EntityDataManager.<ItemStack>createKey(EntityCreatureBase.class, DataSerializers.OPTIONAL_ITEM_STACK);
-    public static final DataParameter<ItemStack> EQUIPMENT_BAG = EntityDataManager.<ItemStack>createKey(EntityCreatureBase.class, DataSerializers.OPTIONAL_ITEM_STACK);
-    public static final DataParameter<ItemStack> EQUIPMENT_SADDLE = EntityDataManager.<ItemStack>createKey(EntityCreatureBase.class, DataSerializers.OPTIONAL_ITEM_STACK);
+    public static final DataParameter<ItemStack> EQUIPMENT_HEAD = EntityDataManager.<ItemStack>createKey(EntityCreatureBase.class, DataSerializers.ITEM_STACK);
+    public static final DataParameter<ItemStack> EQUIPMENT_CHEST = EntityDataManager.<ItemStack>createKey(EntityCreatureBase.class, DataSerializers.ITEM_STACK);
+    public static final DataParameter<ItemStack> EQUIPMENT_LEGS = EntityDataManager.<ItemStack>createKey(EntityCreatureBase.class, DataSerializers.ITEM_STACK);
+    public static final DataParameter<ItemStack> EQUIPMENT_FEET = EntityDataManager.<ItemStack>createKey(EntityCreatureBase.class, DataSerializers.ITEM_STACK);
+    public static final DataParameter<ItemStack> EQUIPMENT_BAG = EntityDataManager.<ItemStack>createKey(EntityCreatureBase.class, DataSerializers.ITEM_STACK);
+    public static final DataParameter<ItemStack> EQUIPMENT_SADDLE = EntityDataManager.<ItemStack>createKey(EntityCreatureBase.class, DataSerializers.ITEM_STACK);
 
     protected static final DataParameter<Optional<BlockPos>> ARENA = EntityDataManager.<Optional<BlockPos>>createKey(EntityCreatureBase.class, DataSerializers.OPTIONAL_BLOCK_POS);
 
@@ -484,6 +487,15 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ==================================================
     //                     Data Manager
     // ==================================================
+    public boolean getBoolFromDataManager(DataParameter<Boolean> key) {
+        try {
+            return this.getDataManager().get(key);
+        }
+        catch (Exception e) {
+            return false;
+        }
+    }
+
     public byte getByteFromDataManager(DataParameter<Byte> key) {
         try {
             return this.getDataManager().get(key);
@@ -1061,6 +1073,20 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	this.setSizeScale(1.0D + (0.35D * (0.5D - this.getRNG().nextDouble())));
     }
 
+    /**
+     * The age value may be negative or positive or zero. If it's negative, it get's incremented on each tick, if it's
+     * positive, it get's decremented each tick. Don't confuse this with EntityLiving.getAge. With a negative value the
+     * Entity is considered a child.
+     */
+    public int getAge() {
+        if (this.world.isRemote) {
+            return this.getBoolFromDataManager(BABY) ? -1 : 1;
+        }
+        else {
+            return this.growingAge;
+        }
+    }
+
 
 	// ==================================================
 	//            Stat Multipliers and Boosts
@@ -1424,7 +1450,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
         // Sunlight Damage:
         if(!this.getEntityWorld().isRemote && this.daylightBurns() && this.getEntityWorld().isDaytime()) {
-        	float brightness = this.getBrightness(1.0F);
+        	float brightness = this.getBrightness();
             if(brightness > 0.5F && this.rand.nextFloat() * 30.0F < (brightness - 0.4F) * 2.0F && this.getEntityWorld().canBlockSeeSky(this.getPosition())) {
                 boolean shouldBurn = true;
                 ItemStack helmet = this.inventory.getEquipmentStack("head");
@@ -1468,9 +1494,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
         }
 
         // Time Out Quicker In Light:
-        float light = this.getBrightness(1.0F);
+        float light = this.getBrightness();
         if(!this.mobInfo.spawnInfo.spawnsInLight && light > 0.5F)
-            this.entityAge += 2;
+            this.idleTime += 2;
 
 	    // Stealth Invisibility:
     	if(!this.getEntityWorld().isRemote) {
@@ -1737,22 +1763,22 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Move with Heading ==========
     /** Moves the entity, redirects to the direct navigator if this mob should use that instead. **/
     @Override
-    public void moveEntityWithHeading(float moveStrafe, float moveForward) {
+    public void moveRelative(float strafe, float up, float forward, float friction) {
     	if(!this.useDirectNavigator()) {
             if(this.isFlying() && !this.isInWater() && !this.isInLava()) {
-                this.moveFlyingWithHeading(moveStrafe, moveForward);
+                this.moveFlyingWithHeading(strafe, moveForward);
                 this.updateLimbSwing();
             }
             else if(this.shouldSwim()) {
-                this.moveSwimmingWithHeading(moveStrafe, moveForward);
+                this.moveSwimmingWithHeading(strafe, moveForward);
                 this.updateLimbSwing();
             }
             else {
-                super.moveEntityWithHeading(moveStrafe, moveForward);
+                super.moveRelative(strafe, up, moveForward, friction);
             }
         }
     	else {
-            this.directNavigator.flightMovement(moveStrafe, moveForward);
+            this.directNavigator.flightMovement(strafe, moveForward);
             this.updateLimbSwing();
         }
     }
@@ -1814,7 +1840,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
     // ========== Move Swimming with Heading ==========
     public void moveSwimmingWithHeading(float strafe, float forward) {
-        this.moveRelative(strafe, forward, 0.1F);
+        super.moveRelative(strafe, 0, forward, 0.1F);
         this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
         this.motionX *= 0.8999999761581421D;
         this.motionY *= 0.8999999761581421D;
@@ -2395,18 +2421,18 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	if(this.getEntityWorld().isRemote) return false;
         if(this.isEntityInvulnerable(damageSrc)) return false;
         if(!this.isDamageTypeApplicable(damageSrc.getDamageType())) return false;
-        if(!this.isDamageEntityApplicable(damageSrc.getEntity())) return false;
+        if(!this.isDamageEntityApplicable(damageSrc.getTrueSource())) return false;
         damage *= this.getDamageModifier(damageSrc);
-        if(damageSrc.getEntity() instanceof EntityPlayer)
+        if(damageSrc.getTrueSource() instanceof EntityPlayer)
             damage = this.getDamageAfterDefense(damage);
         if(this.isBoss()) {
-            if (!(damageSrc.getEntity() instanceof EntityPlayer))
+            if (!(damageSrc.getTrueSource() instanceof EntityPlayer))
                 damage *= 0.25F;
         }
         
         if(super.attackEntityFrom(damageSrc, damage)) {
         	this.onDamage(damageSrc, damage);
-            Entity entity = damageSrc.getSourceOfDamage();
+            Entity entity = damageSrc.getImmediateSource();
             if(entity instanceof EntityThrowable)
             	entity = ((EntityThrowable)entity).getThrower();
             
@@ -2470,10 +2496,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
         if(!this.getEntityWorld().isRemote) {
             if(!this.isBoundPet())
                 this.inventory.dropInventory();
-            if(damageSource.getEntity() != null) {
-                if(damageSource.getEntity() instanceof EntityPlayer) {
+            if(damageSource.getTrueSource() != null) {
+                if(damageSource.getTrueSource() instanceof EntityPlayer) {
                     try {
-                        EntityPlayer player = (EntityPlayer) damageSource.getEntity();
+                        EntityPlayer player = (EntityPlayer) damageSource.getTrueSource();
                         player.addStat(ObjectManager.getStat(this.mobInfo.name + ".kill"), 1);
                         if (this.isBoss() || this.getRNG().nextDouble() <= MobInfo.beastiaryAddOnDeathChance) {
                             ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
@@ -3234,8 +3260,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
          while (iterator.hasNext()) {
              EntityItem entityItem = (EntityItem)iterator.next();
-             if(!entityItem.isDead && entityItem.getEntityItem() != null) {
-            	 ItemStack itemStack = entityItem.getEntityItem();
+             if(!entityItem.isDead && entityItem.getItem() != null) {
+            	 ItemStack itemStack = entityItem.getItem();
             	 int space = this.getSpaceForStack(itemStack);
             	 if(space > 0) {
             		 this.onPickupStack(itemStack);
@@ -3249,10 +3275,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public void onPickupStack(ItemStack itemStack) {}
     
     public void doItemPickup(EntityItem entityItem) {
-    	if(!entityItem.isDead && entityItem.getEntityItem() != null) {
-    		ItemStack leftoverStack = this.inventory.autoInsertStack(entityItem.getEntityItem());
+    	if(!entityItem.isDead && entityItem.getItem() != null) {
+    		ItemStack leftoverStack = this.inventory.autoInsertStack(entityItem.getItem());
     		if(leftoverStack != null)
-    			entityItem.setEntityItemStack(leftoverStack);
+    			entityItem.setItem(leftoverStack);
     		else
     			entityItem.setDead();
     	}
@@ -3746,7 +3772,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Hurt ==========
     /** Returns the sound to play when this creature is damaged. **/
     @Override
-    protected SoundEvent getHurtSound() { return AssetManager.getSound(this.mobInfo.name + "_hurt"); }
+    protected SoundEvent getHurtSound(DamageSource damageSource) { return AssetManager.getSound(this.mobInfo.name + "_hurt"); }
 
     // ========== Death ==========
     /** Returns the sound to play when this creature dies. **/

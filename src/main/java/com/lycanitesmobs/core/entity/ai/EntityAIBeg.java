@@ -44,7 +44,7 @@ public class EntityAIBeg extends EntityAIBase {
 	// ==================================================
  	//                 Continue Executing
  	// ==================================================
-    public boolean continueExecuting() {
+    public boolean shouldContinueExecuting() {
         return !this.player.isEntityAlive() ? false : (this.host.getDistanceSqToEntity(this.player) > (double)(this.range * this.range) ? false : this.begTime > 0 && this.gotBegItem(this.player));
     }
 	

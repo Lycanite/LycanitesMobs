@@ -20,10 +20,7 @@ public class ItemSoulstoneShadow extends ItemSoulstone {
 	//                   Constructor
 	// ==================================================
     public ItemSoulstoneShadow(GroupInfo group) {
-        super();
-        this.itemName = "soulstoneshadow";
-        this.group = group;
-        this.setup();
+        super(group, "shadow");
     }
     
     

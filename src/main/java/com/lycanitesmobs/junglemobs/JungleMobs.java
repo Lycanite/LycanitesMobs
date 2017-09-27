@@ -269,67 +269,6 @@ public class JungleMobs {
 		}
 		
 		
-		// ========== Crafting ==========
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
-				new ItemStack(ObjectManager.getItem("tropicalcurry"), 1, 0),
-				new Object[] {
-					Items.BOWL,
-					new ItemStack(Items.DYE, 1, 3),
-					Blocks.VINE,
-					ObjectManager.getItem("concapedemeatcooked")
-				}
-			));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
-				new ItemStack(ObjectManager.getItem("concapedemeatcooked"), 1, 0),
-				new Object[] { ObjectManager.getItem("tropicalcurry") }
-			));
-
-        if(ItemInfo.enableWeaponRecipes) {
-            GameRegistry.addRecipe(new ShapedOreRecipe(
-                    new ItemStack(ObjectManager.getItem("poopscepter"), 1, 0),
-                    new Object[]{"CCC", "CRC", "CRC",
-                            Character.valueOf('C'), ObjectManager.getItem("poopcharge"),
-                            Character.valueOf('R'), Items.BLAZE_ROD
-                    }));
-        }
-		
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("uvaraptortreat"), 4, 0),
-				new Object[] { "TTT", "BBT", "TTT",
-				Character.valueOf('T'), ObjectManager.getItem("concapedemeatcooked"),
-				Character.valueOf('B'), Items.BONE
-			}));
-
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("dawontreat"), 4, 0),
-				new Object[] { "   ", "BBT", "   ",
-						Character.valueOf('T'), Items.EMERALD,
-						Character.valueOf('B'), Items.BONE
-				}));
-		
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
-				new ItemStack(Items.CLAY_BALL, 4, 0),
-				new Object[] {
-					ObjectManager.getBlock("propolis")
-				}
-			));
-		
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
-				new ItemStack(Blocks.MYCELIUM, 2, 0),
-				new Object[] {
-					ObjectManager.getBlock("propolis"),
-					Blocks.DIRT
-				}
-			));
-		
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
-				new ItemStack(Items.SUGAR, 4, 0),
-				new Object[] {
-					ObjectManager.getBlock("veswax")
-				}
-			));
-		
-		
 		// ========== Smelting ==========
 		GameRegistry.addSmelting(ObjectManager.getItem("concapedemeatraw"), new ItemStack(ObjectManager.getItem("concapedemeatcooked"), 1), 0.5f);
 		GameRegistry.addSmelting(ObjectManager.getBlock("propolis"), new ItemStack(Blocks.HARDENED_CLAY, 1), 0.5f);

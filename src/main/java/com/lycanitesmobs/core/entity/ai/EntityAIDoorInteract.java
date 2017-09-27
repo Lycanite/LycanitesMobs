@@ -47,9 +47,9 @@ public abstract class EntityAIDoorInteract extends EntityAIBase {
         if(pathEntity != null && !pathEntity.isFinished()) {
             for(int i = 0; i < Math.min(pathEntity.getCurrentPathIndex() + 2, pathEntity.getCurrentPathLength()); ++i) {
                 PathPoint pathpoint = pathEntity.getPathPointFromIndex(i);
-                this.entityPosX = pathpoint.xCoord;
-                this.entityPosY = pathpoint.yCoord + 1;
-                this.entityPosZ = pathpoint.zCoord;
+                this.entityPosX = pathpoint.x;
+                this.entityPosY = pathpoint.y + 1;
+                this.entityPosZ = pathpoint.z;
 
                 if(this.host.getDistanceSq((double)this.entityPosX, this.host.posY, (double)this.entityPosZ) <= 2.25D) {
                     this.targetDoor = this.findUsableDoor(new BlockPos(this.entityPosX, this.entityPosY, this.entityPosZ));
@@ -82,7 +82,7 @@ public abstract class EntityAIDoorInteract extends EntityAIBase {
 	// ==================================================
  	//                Continue Executing
  	// ==================================================
-    public boolean continueExecuting() {
+    public boolean shouldContinueExecuting() {
         return !this.hasStoppedDoorInteraction;
     }
 

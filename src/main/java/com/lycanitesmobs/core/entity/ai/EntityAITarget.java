@@ -82,7 +82,7 @@ public abstract class EntityAITarget extends EntityAIBase {
  	//                  Continue Executing
  	// ==================================================
     @Override
-    public boolean continueExecuting() {
+    public boolean shouldContinueExecuting() {
         if(this.getTarget() == null)
             return false;
         if(!this.getTarget().isEntityAlive())
@@ -177,7 +177,7 @@ public abstract class EntityAITarget extends EntityAIBase {
                         possibleCreatureAlly.setAttackTarget(this.target);
                 }
                 else {
-                    if (possibleAlly.getAITarget() == null && !possibleAlly.isOnSameTeam(this.target))
+                    if (possibleAlly.getRevengeTarget() == null && !possibleAlly.isOnSameTeam(this.target))
                         possibleAlly.setRevengeTarget(this.target);
                 }
             }
@@ -269,8 +269,8 @@ public abstract class EntityAITarget extends EntityAIBase {
             if(pathpoint == null)
                 return false;
             else {
-                int i = pathpoint.xCoord - MathHelper.floor(target.posX);
-                int j = pathpoint.zCoord - MathHelper.floor(target.posZ);
+                int i = pathpoint.x - MathHelper.floor(target.posX);
+                int j = pathpoint.z - MathHelper.floor(target.posZ);
                 return (double)(i * i + j * j) <= 2.25D;
             }
         }

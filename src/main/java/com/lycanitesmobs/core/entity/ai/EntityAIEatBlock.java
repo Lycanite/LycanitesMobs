@@ -108,7 +108,7 @@ public class EntityAIEatBlock extends EntityAIBase {
   	// ==================================================
    	//                      Continue
    	// ==================================================
-      public boolean continueExecuting() {
+      public boolean shouldContinueExecuting() {
     	  return this.eatTime > 0;
       }
  	

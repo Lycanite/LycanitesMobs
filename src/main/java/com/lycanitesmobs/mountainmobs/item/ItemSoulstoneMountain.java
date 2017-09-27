@@ -19,10 +19,7 @@ public class ItemSoulstoneMountain extends ItemSoulstone {
 	//                   Constructor
 	// ==================================================
     public ItemSoulstoneMountain(GroupInfo group) {
-        super();
-        this.itemName = "soulstonemountain";
-        this.group = group;
-        this.setup();
+        super(group, "mountain");
     }
     
     

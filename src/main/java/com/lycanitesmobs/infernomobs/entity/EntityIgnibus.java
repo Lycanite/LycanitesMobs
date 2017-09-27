@@ -450,18 +450,20 @@ public class EntityIgnibus extends EntityCreatureRideable implements IGroupFire,
     // ==================================================
     //                   Brightness
     // ==================================================
-    public float getBrightness(float par1) {
+    @Override
+    public float getBrightness() {
         if(justAttacked())
             return 1.0F;
         else
-            return super.getBrightness(par1);
+            return super.getBrightness();
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
-    public int getBrightnessForRender(float par1) {
+    public int getBrightnessForRender() {
         if(justAttacked())
             return 15728880;
         else
-            return super.getBrightnessForRender(par1);
+            return super.getBrightnessForRender();
     }
 }

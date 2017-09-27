@@ -437,7 +437,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
             if(!this.isPassive())
             	this.setSitting(false);
 
-            Entity entity = damageSrc.getSourceOfDamage();
+            Entity entity = damageSrc.getImmediateSource();
             if(entity instanceof EntityThrowable)
             	entity = ((EntityThrowable)entity).getThrower();
             

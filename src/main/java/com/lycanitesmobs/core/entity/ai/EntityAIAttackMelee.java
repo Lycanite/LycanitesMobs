@@ -119,7 +119,7 @@ public class EntityAIAttackMelee extends EntityAIBase {
 	// ==================================================
  	//                  Continue Executing
  	// ==================================================
-    public boolean continueExecuting() {
+    public boolean shouldContinueExecuting() {
     	if(!this.enabled)
     		return false;
         this.attackTarget = this.host.getAttackTarget();
@@ -175,7 +175,7 @@ public class EntityAIAttackMelee extends EntityAIBase {
         		this.host.getNavigator().tryMoveToXYZ(attackTarget.posX, attackTarget.posY + this.host.getFlightOffset(), attackTarget.posZ, this.speed);
 	            if(this.host.getNavigator().getPath() != null) {
 	                PathPoint finalPathPoint = this.host.getNavigator().getPath().getFinalPathPoint();
-	                if(finalPathPoint != null && attackTarget.getDistance(finalPathPoint.xCoord, finalPathPoint.yCoord, finalPathPoint.zCoord) < 1)
+	                if(finalPathPoint != null && attackTarget.getDistance(finalPathPoint.x, finalPathPoint.y, finalPathPoint.z) < 1)
 	                    failedPathFindingPenalty = 0;
 	                else
 	                    failedPathFindingPenalty += failedPathFindingPenaltyMax;

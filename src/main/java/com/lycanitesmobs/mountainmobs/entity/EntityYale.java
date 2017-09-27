@@ -204,7 +204,7 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
             return 15 - i;
         this.colorMixer.getStackInSlot(0).setItemDamage(i);
         this.colorMixer.getStackInSlot(1).setItemDamage(j);
-        ItemStack itemstack = CraftingManager.getInstance().findMatchingRecipe(this.colorMixer, this.getEntityWorld());
+        ItemStack itemstack = CraftingManager.findMatchingResult(this.colorMixer, entityA.world);
         int k;
         if(itemstack != null && itemstack.getItem() == Items.DYE)
             k = itemstack.getItemDamage();

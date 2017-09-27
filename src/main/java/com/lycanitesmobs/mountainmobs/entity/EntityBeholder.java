@@ -112,7 +112,7 @@ public class EntityBeholder extends EntityCreatureRideable {
     public void onDamage(DamageSource damageSrc, float damage) {
     	super.onDamage(damageSrc, damage);
     	
-    	Entity damageEntity = damageSrc.getSourceOfDamage();
+    	Entity damageEntity = damageSrc.getTrueSource();
     	if(damageEntity != null && ("mob".equals(damageSrc.damageType) || "player".equals(damageSrc.damageType))) {
     		
     		// Eat Buffs:
@@ -279,19 +279,19 @@ public class EntityBeholder extends EntityCreatureRideable {
     //                   Brightness
     // ==================================================
     @Override
-    public float getBrightness(float par1) {
+    public float getBrightness() {
         if(justAttacked())
         	return 1.0F;
         else
-        	return super.getBrightness(par1);
+        	return super.getBrightness();
     }
     
     @SideOnly(Side.CLIENT)
     @Override
-    public int getBrightnessForRender(float par1) {
+    public int getBrightnessForRender() {
         if(justAttacked())
         	return 15728880;
         else
-        	return super.getBrightnessForRender(par1);
+        	return super.getBrightnessForRender();
     }
 }

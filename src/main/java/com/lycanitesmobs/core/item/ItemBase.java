@@ -42,6 +42,7 @@ public class ItemBase extends Item {
     }
     
     public void setup() {
+        this.setRegistryName(this.group.filename, this.itemName);
     	this.setUnlocalizedName(this.itemName);
         this.textureName = this.itemName.toLowerCase();
         this.setCreativeTab(LycanitesMobs.itemsTab);

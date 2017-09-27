@@ -83,7 +83,7 @@ public class EntityAIFollow extends EntityAIBase {
     // ==================================================
   	//                Continue Executing
   	// ==================================================
-    public boolean continueExecuting() {
+    public boolean shouldContinueExecuting() {
     	Entity target = this.getTarget();
     	if(target == null)
     		return false;

@@ -14,5 +14,6 @@ public class ItemSaltwaterEgg extends ItemCustomSpawnEgg {
         this.group = SaltwaterMobs.group;
         this.itemName = "saltwaterspawn";
         this.texturePath = "saltwaterspawn";
+        this.setRegistryName(this.group.filename, this.itemName);
     }
 }

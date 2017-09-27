@@ -746,9 +746,9 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
     /** Called when this entity has been attacked, uses a DamageSource and damage value. **/
     @Override
     public boolean attackEntityFrom(DamageSource damageSrc, float damage) {
-        if(this.playerTargets != null && damageSrc.getEntity() != null && damageSrc.getEntity() instanceof EntityPlayer) {
-            if (!this.playerTargets.contains(damageSrc.getEntity()))
-                this.playerTargets.add((EntityPlayer)damageSrc.getEntity());
+        if(this.playerTargets != null && damageSrc.getTrueSource() != null && damageSrc.getTrueSource() instanceof EntityPlayer) {
+            if (!this.playerTargets.contains(damageSrc.getTrueSource()))
+                this.playerTargets.add((EntityPlayer)damageSrc.getTrueSource());
         }
         return super.attackEntityFrom(damageSrc, damage);
     }
@@ -834,12 +834,12 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
     // ==================================================
     //                   Brightness
     // ==================================================
-    public float getBrightness(float par1) {
+    public float getBrightness() {
         return 1.0F;
     }
 
     @SideOnly(Side.CLIENT)
-    public int getBrightnessForRender(float par1) {
+    public int getBrightnessForRender() {
         return 15728880;
     }
 }

@@ -13,7 +13,7 @@ public class MinionEntityDamageSource extends EntityDamageSource {
   	//                     Constructor
   	// ==================================================
 	public MinionEntityDamageSource(EntityDamageSource minionDamageSource, Entity owner) {
-		super(minionDamageSource.damageType, minionDamageSource.getSourceOfDamage());
+		super(minionDamageSource.damageType, minionDamageSource.getImmediateSource());
         this.minionDamageSource = minionDamageSource;
         this.minionOwner = owner;
 	}
@@ -24,13 +24,13 @@ public class MinionEntityDamageSource extends EntityDamageSource {
     // ==================================================
     // This Entity Caused The Damage:
     @Override
-    public Entity getSourceOfDamage() {
+    public Entity getImmediateSource() {
         return this.damageSourceEntity;
     }
 
     // This Entity Gets Credit for The Kill:
     @Override
-    public Entity getEntity() {
+    public Entity getTrueSource() {
         return this.minionOwner;
     }
 

@@ -340,12 +340,12 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
     // ==================================================
     //                   Brightness
     // ==================================================
-    public float getBrightness(float par1) {
+    public float getBrightness() {
         return 1.0F;
     }
     
     @SideOnly(Side.CLIENT)
-    public int getBrightnessForRender(float par1) {
+    public int getBrightnessForRender() {
         return 15728880;
     }
 }

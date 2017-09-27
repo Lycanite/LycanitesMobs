@@ -129,14 +129,14 @@ public class EntityAIGetBlock extends EntityAIBase {
         Collections.sort(possibleTargets, this.targetSorter);
         this.target = possibleTargets.get(0);
         
-        return this.continueExecuting();
+        return this.shouldContinueExecuting();
     }
     
     
     // ==================================================
  	//                  Continue Executing
  	// ==================================================
-    public boolean continueExecuting() {
+    public boolean shouldContinueExecuting() {
     	if(this.target == null)
             return false;
     	

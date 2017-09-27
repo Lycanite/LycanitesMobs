@@ -128,11 +128,12 @@ public class ClientProxy extends CommonProxy {
     }
 
     public void addItemRender(GroupInfo group, Item item) {
+	    if(group == null) {
+	        group = LycanitesMobs.group;
+        }
         if(item instanceof ItemBase) {
             ItemBase itemBase = (ItemBase) item;
             ModelLoader.setCustomModelResourceLocation(item, 0, itemBase.getModelResourceLocation());
-            //if (itemBase.useItemColors()) Handled in Object Manager at PostInit for now.
-                //Minecraft.getMinecraft().getItemColors().registerItemColorHandler(ClientProxy.itemColor, item);
             return;
         }
         ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));

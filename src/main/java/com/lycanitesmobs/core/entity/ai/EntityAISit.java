@@ -58,7 +58,7 @@ public class EntityAISit extends EntityAIBase {
         if (!(this.host.getOwner() instanceof EntityLivingBase))
             return false;
         EntityLivingBase owner = (EntityLivingBase)this.host.getOwner();
-        if(owner != null && this.host.getDistanceSqToEntity(owner) < 144.0D && owner.getAITarget() != null && !this.host.isPassive())
+        if(owner != null && this.host.getDistanceSqToEntity(owner) < 144.0D && owner.getRevengeTarget() != null && !this.host.isPassive())
         	return false;
         
         return this.host.isSitting();

@@ -268,9 +268,9 @@ public class EntityProjectileLaser extends EntityProjectileBase {
 				}
 				else {
 					Vec3d lookDirection = this.shootingEntity.getLookVec();
-					this.targetX = this.shootingEntity.posX + (lookDirection.xCoord * this.laserRange);
-					this.targetY = this.shootingEntity.posY + this.shootingEntity.getEyeHeight() + (lookDirection.yCoord * this.laserRange);
-					this.targetZ = this.shootingEntity.posZ + (lookDirection.zCoord * this.laserRange);
+					this.targetX = this.shootingEntity.posX + (lookDirection.x * this.laserRange);
+					this.targetY = this.shootingEntity.posY + this.shootingEntity.getEyeHeight() + (lookDirection.y * this.laserRange);
+					this.targetZ = this.shootingEntity.posZ + (lookDirection.z * this.laserRange);
 				}
 			}
 			
@@ -288,9 +288,9 @@ public class EntityProjectileLaser extends EntityProjectileBase {
 			double newTargetY = this.targetY;
 			double newTargetZ = this.targetZ;
 			if(target != null && target.hitVec != null && !lockedLaser) {
-				newTargetX = target.hitVec.xCoord;
-				newTargetY = target.hitVec.yCoord;
-				newTargetZ = target.hitVec.zCoord;
+				newTargetX = target.hitVec.x;
+				newTargetY = target.hitVec.y;
+				newTargetZ = target.hitVec.z;
 			}
 			this.laserEnd.onUpdateEnd(newTargetX, newTargetY, newTargetZ);
 			

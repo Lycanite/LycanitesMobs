@@ -199,10 +199,10 @@ public class EntityTroll extends EntityCreatureTameable implements IMob {
             return 0;
 
     	if(this.stoneForm) {
-    		if(damageSrc.getEntity() != null) {
+    		if(damageSrc.getTrueSource() != null) {
     			Item heldItem = null;
-        		if(damageSrc.getEntity() instanceof EntityLivingBase) {
-                    EntityLivingBase entityLiving = (EntityLivingBase)damageSrc.getEntity();
+        		if(damageSrc.getTrueSource() instanceof EntityLivingBase) {
+                    EntityLivingBase entityLiving = (EntityLivingBase)damageSrc.getTrueSource();
     	    		if(entityLiving.getHeldItem(EnumHand.MAIN_HAND) != null) {
     	    			heldItem = entityLiving.getHeldItem(EnumHand.MAIN_HAND).getItem();
     	    		}

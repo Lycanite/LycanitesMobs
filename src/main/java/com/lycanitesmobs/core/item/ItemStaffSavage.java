@@ -11,11 +11,8 @@ public class ItemStaffSavage extends ItemStaffSummoning {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemStaffSavage() {
-        super();
-        this.itemName = "savagesummoningstaff";
-        this.setup();
-        this.textureName = "staffsavage";
+    public ItemStaffSavage(String itemName, String textureName) {
+        super(itemName, textureName);
     }
 	
     

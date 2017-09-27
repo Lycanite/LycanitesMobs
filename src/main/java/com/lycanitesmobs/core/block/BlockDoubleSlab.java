@@ -17,6 +17,7 @@ public class BlockDoubleSlab extends BlockPillar {
 	// ==================================================
 	public BlockDoubleSlab(Material material, GroupInfo group, String name, String slabName) {
 		super(material, group, name);
+		this.setRegistryName(group.filename, name);
         this.slabName = slabName;
 	}
 

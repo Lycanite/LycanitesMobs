@@ -47,6 +47,7 @@ public class ItemCustomFood extends ItemFood {
 		this.texturePath = setTexturePath;
         this.foodClass = foodClass;
 		this.setMaxStackSize(64);
+		this.setRegistryName(this.group.filename, this.itemName);
 		this.setCreativeTab(LycanitesMobs.itemsTab);
 		this.setUnlocalizedName(itemName);
 	}

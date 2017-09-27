@@ -167,7 +167,7 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
     // ========== Damage Modifier ==========
     public float getDamageModifier(DamageSource damageSrc) {
         float damageMod = super.getDamageModifier(damageSrc);
-        if(damageSrc.getEntity() instanceof EntityMakaAlpha)
+        if(damageSrc.getTrueSource() instanceof EntityMakaAlpha)
             damageMod *= 2;
         return damageMod;
     }

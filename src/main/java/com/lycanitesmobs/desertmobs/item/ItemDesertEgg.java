@@ -14,5 +14,6 @@ public class ItemDesertEgg extends ItemCustomSpawnEgg {
         this.group = DesertMobs.group;
         this.itemName = "desertspawn";
         this.texturePath = "desertspawn";
+        this.setRegistryName(this.group.filename, this.itemName);
     }
 }

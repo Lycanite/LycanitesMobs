@@ -33,7 +33,7 @@ public class ItemPoopCharge extends ItemCharge {
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack itemStack = player.getHeldItem(hand);
-        if(ItemDye.applyBonemeal(itemStack, world, pos, player)) {
+        if(ItemDye.applyBonemeal(itemStack, world, pos, player, hand)) {
             if(!world.isRemote) {
                 world.playEvent(2005, pos, 0);
             }

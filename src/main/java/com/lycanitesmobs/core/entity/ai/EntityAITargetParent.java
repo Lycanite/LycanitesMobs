@@ -129,12 +129,12 @@ public class EntityAITargetParent extends EntityAITarget {
     // ==================================================
  	//                  Continue Executing
  	// ==================================================
-    public boolean continueExecuting() {
+    public boolean shouldContinueExecuting() {
     	if(this.host.getGrowingAge() >= 0) {
     		this.host.setParentTarget(null);
     		return false;
     	}
     	
-    	return super.continueExecuting();
+    	return super.shouldContinueExecuting();
     }
 }

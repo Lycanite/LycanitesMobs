@@ -10,11 +10,8 @@ public class ItemStaffStable extends ItemStaffSummoning {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemStaffStable() {
-        super();
-        this.itemName = "stablesummoningstaff";
-        this.setup();
-        this.textureName = "staffstable";
+    public ItemStaffStable(String itemName, String textureName) {
+        super(itemName, textureName);
     }
 	
     

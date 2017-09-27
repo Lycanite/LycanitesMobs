@@ -52,7 +52,7 @@ public class EntityAISwimming extends EntityAIBase {
 	    	double targetY = this.host.posY;
 	    	if(!this.host.useDirectNavigator()) {
 	    		if(!this.host.getNavigator().noPath()) {
-                    targetY = this.host.getNavigator().getPath().getFinalPathPoint().yCoord;
+                    targetY = this.host.getNavigator().getPath().getFinalPathPoint().y;
                     if(this.host.hasAttackTarget())
                         targetY = this.host.getAttackTarget().posY;
                     else if(this.host.hasParent())

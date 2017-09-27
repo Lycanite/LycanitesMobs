@@ -24,11 +24,11 @@ public class ItemStaffSummoning extends ItemScepter {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemStaffSummoning() {
+    public ItemStaffSummoning(String itemName, String textureName) {
         super();
-        this.itemName = "summoningstaff";
+        this.itemName = itemName;
+        this.textureName = textureName;
         this.setup();
-        this.textureName = "summoningstaff";
 
         this.addPropertyOverride(new ResourceLocation("using"), new IItemPropertyGetter() {
             @SideOnly(Side.CLIENT)

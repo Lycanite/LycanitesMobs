@@ -75,7 +75,7 @@ public class EntityAIStealth extends EntityAIBase {
  	//                 Continue Executing
  	// ==================================================
 	@Override
-	public boolean continueExecuting() {
+	public boolean shouldContinueExecuting() {
 		if(this.host.getLeashed()) this.unstealth = true;
 		
 		if(!this.stealthMove) {

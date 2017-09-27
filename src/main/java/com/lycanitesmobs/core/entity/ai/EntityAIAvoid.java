@@ -77,11 +77,11 @@ public class EntityAIAvoid extends EntityAIBase {
         if(avoidVector == null)
             return false;
         
-        if(this.avoidTarget.getDistanceSq(avoidVector.xCoord, avoidVector.yCoord, avoidVector.zCoord) < this.avoidTarget.getDistanceSqToEntity(this.host))
+        if(this.avoidTarget.getDistanceSq(avoidVector.x, avoidVector.y, avoidVector.z) < this.avoidTarget.getDistanceSqToEntity(this.host))
             return false;
 
         if(!this.host.useDirectNavigator()) {
-            this.pathEntity = this.host.getNavigator().getPathToXYZ(avoidVector.xCoord, avoidVector.yCoord, avoidVector.zCoord);
+            this.pathEntity = this.host.getNavigator().getPathToXYZ(avoidVector.x, avoidVector.y, avoidVector.z);
             if(this.pathEntity == null)// || !this.pathEntity.isDestinationSame(avoidVector))
                 return false;
         }
@@ -93,7 +93,7 @@ public class EntityAIAvoid extends EntityAIBase {
 	// ==================================================
  	//                 Continue Executing
  	// ==================================================
-    public boolean continueExecuting() {
+    public boolean shouldContinueExecuting() {
         if(!this.host.useDirectNavigator() && this.host.getNavigator().noPath())
         	return false;
 		if(this.host.useDirectNavigator() && this.host.directNavigator.atTargetPosition())

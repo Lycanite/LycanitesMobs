@@ -168,10 +168,10 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
     
     // ========== Move with Heading ==========
     @Override
-    public void moveEntityWithHeading(float strafe, float forward) {
+    public void moveRelative(float strafe, float up, float forward, float friction) {
         // Check if Mounted:
         if (!this.isTamed() || !this.hasSaddle() || !this.hasRiderTarget() || !(this.getControllingPassenger() instanceof EntityLivingBase) || !this.riderControl()) {
-            super.moveEntityWithHeading(strafe, forward);
+            super.moveRelative(strafe, up, forward, friction);
             return;
         }
         this.moveMountedWithHeading(strafe, forward);
@@ -245,21 +245,21 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
             this.setAIMoveSpeed((float)this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue());
             if(!this.useDirectNavigator()) {
                 if(this.isFlying() && !this.isInWater() && !this.isInLava()) {
-                    this.moveRelative(strafe, forward, 0.1F);
+                    this.moveRelative(strafe, 0, forward, 0.1F);
                     this.move(MoverType.SELF, this.motionX, flyMotion, this.motionZ);
                     this.motionX *= 0.8999999761581421D;
                     this.motionY *= 0.8999999761581421D;
                     this.motionZ *= 0.8999999761581421D;
                 }
                 else if(this.isStrongSwimmer() && (this.isInWater() || this.isInLava())) {
-                    this.moveRelative(strafe, forward, 0.1F);
+                    this.moveRelative(strafe, 0, forward, 0.1F);
                     this.move(MoverType.SELF, this.motionX, flyMotion, this.motionZ);
                     this.motionX *= 0.8999999761581421D;
                     this.motionY *= 0.8999999761581421D;
                     this.motionZ *= 0.8999999761581421D;
                 }
                 else
-                    super.moveEntityWithHeading(strafe, forward);
+                    super.moveRelative(strafe, 0, forward, 0.1F);
             }
             else
                 this.directNavigator.flightMovement(strafe, forward);
@@ -433,7 +433,7 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
   	// ==================================================
     @Override
     public boolean attackEntityFrom(DamageSource damageSource, float damage) {
-        Entity entity = damageSource.getEntity();
+        Entity entity = damageSource.getTrueSource();
         return this.getControllingPassenger() != null && this.isRidingOrBeingRiddenBy(entity) ? false : super.attackEntityFrom(damageSource, damage);
     }
     

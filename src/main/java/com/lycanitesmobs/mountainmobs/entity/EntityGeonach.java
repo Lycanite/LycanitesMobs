@@ -221,16 +221,16 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
     // ========== Damage Modifier ==========
     @Override
     public float getDamageModifier(DamageSource damageSrc) {
-    	if(damageSrc.getEntity() != null) {
+    	if(damageSrc.getTrueSource() != null) {
             // Silverfish Extermination:
-            if(damageSrc.getEntity() instanceof EntitySilverfish) {
+            if(damageSrc.getTrueSource() instanceof EntitySilverfish) {
                 return 0F;
             }
 
             // Pickaxe Damage:
     		Item heldItem = null;
-    		if(damageSrc.getEntity() instanceof EntityLivingBase) {
-                EntityLivingBase entityLiving = (EntityLivingBase)damageSrc.getEntity();
+    		if(damageSrc.getTrueSource() instanceof EntityLivingBase) {
+                EntityLivingBase entityLiving = (EntityLivingBase)damageSrc.getTrueSource();
 	    		if(entityLiving.getHeldItem(EnumHand.MAIN_HAND) != null) {
 	    			heldItem = entityLiving.getHeldItem(EnumHand.MAIN_HAND).getItem();
 	    		}

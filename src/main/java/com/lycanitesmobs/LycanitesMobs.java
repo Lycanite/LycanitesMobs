@@ -20,12 +20,16 @@ import com.lycanitesmobs.core.network.PacketHandler;
 import com.lycanitesmobs.core.spawning.CustomSpawner;
 import com.lycanitesmobs.core.spawning.SpawnTypeBase;
 import com.lycanitesmobs.core.tileentity.TileEntitySummoningPedestal;
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -33,6 +37,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 
@@ -41,7 +46,7 @@ public class LycanitesMobs {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String version = "1.17.1.2 - MC 1.12.2";
+	public static final String version = "1.17.1.2 - ALPHA01 - MC 1.12.2";
 	public static final String website = "http://lycanitesmobs.com";
 	public static final String websiteAPI = "http://api.lycanitesmobs.com";
 	public static final String websitePatreon = "https://www.patreon.com/lycanite";
@@ -173,15 +178,15 @@ public class LycanitesMobs {
 		
 		// ========== Create Items ==========
 		ObjectManager.addItem("soulgazer", new ItemSoulgazer());
-		ObjectManager.addItem("soulstone", new ItemSoulstone());
+		ObjectManager.addItem("soulstone", new ItemSoulstone(group, ""));
 		ObjectManager.addItem("soulkey", new ItemSoulkey("soulkey", 0));
 		ObjectManager.addItem("soulkeydiamond", new ItemSoulkey("soulkeydiamond", 1));
 		ObjectManager.addItem("soulkeyemerald", new ItemSoulkey("soulkeyemerald", 2));
-		ObjectManager.addItem("summoningstaff", new ItemStaffSummoning());
-		ObjectManager.addItem("stablesummoningstaff", new ItemStaffStable());
-		ObjectManager.addItem("bloodsummoningstaff", new ItemStaffBlood());
-		ObjectManager.addItem("sturdysummoningstaff", new ItemStaffSturdy());
-		ObjectManager.addItem("savagesummoningstaff", new ItemStaffSavage());
+		ObjectManager.addItem("summoningstaff", new ItemStaffSummoning("summoningstaff", "summoningstaff"));
+		ObjectManager.addItem("stablesummoningstaff", new ItemStaffStable("stablesummoningstaff", "staffstable"));
+		ObjectManager.addItem("bloodsummoningstaff", new ItemStaffBlood("bloodsummoningstaff", "staffblood"));
+		ObjectManager.addItem("sturdysummoningstaff", new ItemStaffSturdy("sturdysummoningstaff", "staffsturdy"));
+		ObjectManager.addItem("savagesummoningstaff", new ItemStaffSavage("savagesummoningstaff", "staffsavage"));
 		
 		// Super Foods:
 		ObjectManager.addItem("battleburrito", new ItemFoodBattleBurrito("battleburrito", group, 6, 0.7F).setAlwaysEdible().setMaxStackSize(16));

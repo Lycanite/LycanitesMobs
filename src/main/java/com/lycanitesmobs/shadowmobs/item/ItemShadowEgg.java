@@ -14,5 +14,6 @@ public class ItemShadowEgg extends ItemCustomSpawnEgg {
         this.group = ShadowMobs.group;
         this.itemName = "shadowspawn";
         this.texturePath = "shadowspawn";
+        this.setRegistryName(this.group.filename, this.itemName);
     }
 }

@@ -19,10 +19,7 @@ public class ItemSoulstoneInferno extends ItemSoulstone {
 	//                   Constructor
 	// ==================================================
     public ItemSoulstoneInferno(GroupInfo group) {
-        super();
-        this.itemName = "soulstoneinferno";
-        this.group = group;
-        this.setup();
+        super(group, "inferno");
     }
     
     

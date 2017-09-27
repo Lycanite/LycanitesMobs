@@ -17,6 +17,7 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.Potion;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -27,6 +28,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
@@ -47,6 +49,28 @@ public class EventListener {
     //                     Constructor
     // ==================================================
 	public EventListener() {}
+
+
+    // ==================================================
+    //                  Registry Events
+    // ==================================================
+    // ========== Blocks ==========
+    @SubscribeEvent
+    public void registerBlocks(RegistryEvent.Register<Block> event) {
+        ObjectManager.registerBlocks(event);
+    }
+
+    // ========== Items ==========
+    @SubscribeEvent
+    public void registerItems(RegistryEvent.Register<Item> event) {
+        ObjectManager.registerItems(event);
+    }
+
+    // ========== Items ==========
+    @SubscribeEvent
+    public void registerPotions(RegistryEvent.Register<Potion> event) {
+        ObjectManager.registerPotions(event);
+    }
 
 
     // ==================================================

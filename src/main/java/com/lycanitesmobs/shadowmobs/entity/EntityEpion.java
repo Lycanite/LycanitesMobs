@@ -156,7 +156,7 @@ public class EntityEpion extends EntityCreatureTameable implements IMob, IGroupS
     public boolean isFlying() {
     	if(this.getEntityWorld().isRemote) return true;
     	if(this.daylightBurns() && this.getEntityWorld().isDaytime() && this.getEntityWorld().getGameRules().getBoolean("mobGriefing") && this.epionGreifing) {
-    		float brightness = this.getBrightness(1.0F);
+    		float brightness = this.getBrightness();
         	if(brightness > 0.5F && this.getEntityWorld().canBlockSeeSky(this.getPosition()))
         		return false;
     	}

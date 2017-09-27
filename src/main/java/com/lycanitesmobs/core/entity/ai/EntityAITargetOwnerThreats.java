@@ -88,7 +88,7 @@ public class EntityAITargetOwnerThreats extends EntityAITarget {
         else if(target instanceof EntityLiving && ((EntityLiving)target).getAttackTarget() == this.getOwner()) {
             return true;
         }
-        else if(target.getAITarget() == this.getOwner()) {
+        else if(target.getRevengeTarget() == this.getOwner()) {
             return true;
         }
         

@@ -65,7 +65,7 @@ public class EntityAIMate extends EntityAIBase {
     // ==================================================
   	//                Continue Executing
   	// ==================================================
-    public boolean continueExecuting() {
+    public boolean shouldContinueExecuting() {
         return this.partner != null && this.partner.isEntityAlive() && this.partner.isInLove() && this.mateTime < mateTimeMax;
     }
     

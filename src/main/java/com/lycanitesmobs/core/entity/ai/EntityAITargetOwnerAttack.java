@@ -36,11 +36,11 @@ public class EntityAITargetOwnerAttack extends EntityAITarget {
         if (!(this.host.getOwner() instanceof EntityLivingBase))
             return false;
         EntityLivingBase owner = (EntityLivingBase)this.host.getOwner();
-    	this.target = owner.getLastAttacker();
+    	this.target = owner.getLastAttackedEntity();
     	if(this.target == null) {
     		return false;
     	}
-    	if(lastAttackTime == owner.getLastAttackerTime())
+    	if(lastAttackTime == owner.getLastAttackedEntityTime())
     		return false;
     	return true;
     }
@@ -52,7 +52,7 @@ public class EntityAITargetOwnerAttack extends EntityAITarget {
     @Override
     public void startExecuting() {
     	if(this.isTargetValid(target)) {
-			lastAttackTime = ((EntityLivingBase)this.host.getOwner()).getLastAttackerTime();
+			lastAttackTime = ((EntityLivingBase)this.host.getOwner()).getLastAttackedEntityTime();
 			super.startExecuting();
 		}
     }
@@ -62,10 +62,10 @@ public class EntityAITargetOwnerAttack extends EntityAITarget {
  	//                  Continue Executing
  	// ==================================================
     @Override
-    public boolean continueExecuting() {
+    public boolean shouldContinueExecuting() {
         if(this.host.isSitting())
             return false;
-        return super.continueExecuting();
+        return super.shouldContinueExecuting();
     }
     
     

@@ -8,11 +8,8 @@ public class ItemSwordVenomAxebladeVerdant extends ItemSwordVenomAxeblade {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemSwordVenomAxebladeVerdant() {
-        super();
-    	this.itemName = "verdantvenomaxeblade";
-        this.setup();
-        this.textureName = "swordvenomaxebladeverdant";
+    public ItemSwordVenomAxebladeVerdant(String itemName, String textureName) {
+        super(itemName, textureName);
     }
 
 

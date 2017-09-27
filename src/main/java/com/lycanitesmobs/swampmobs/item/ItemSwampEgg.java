@@ -14,5 +14,6 @@ public class ItemSwampEgg extends ItemCustomSpawnEgg {
         this.group = SwampMobs.group;
         this.itemName = "swampspawn";
         this.texturePath = "swampspawn";
+        this.setRegistryName(this.group.filename, this.itemName);
     }
 }

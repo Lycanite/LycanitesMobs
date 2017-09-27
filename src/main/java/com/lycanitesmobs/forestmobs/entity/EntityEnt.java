@@ -145,16 +145,16 @@ public class EntityEnt extends EntityCreatureTameable implements IMob, IGroupPla
     public float getDamageModifier(DamageSource damageSrc) {
         if(damageSrc.isFireDamage())
             return 4.0F;
-        if(damageSrc.getEntity() != null) {
+        if(damageSrc.getTrueSource() != null) {
             Item heldItem = null;
-            if(damageSrc.getEntity() instanceof EntityPlayer) {
-                EntityPlayer entityPlayer = (EntityPlayer)damageSrc.getEntity();
+            if(damageSrc.getTrueSource() instanceof EntityPlayer) {
+                EntityPlayer entityPlayer = (EntityPlayer)damageSrc.getTrueSource();
                 if(entityPlayer.getHeldItem(EnumHand.MAIN_HAND) != null) {
                     heldItem = entityPlayer.getHeldItem(EnumHand.MAIN_HAND).getItem();
                 }
             }
-            else if(damageSrc.getEntity() instanceof EntityLiving) {
-                EntityLiving entityLiving = (EntityLiving)damageSrc.getEntity();
+            else if(damageSrc.getTrueSource() instanceof EntityLiving) {
+                EntityLiving entityLiving = (EntityLiving)damageSrc.getTrueSource();
                 if(entityLiving.getHeldItem(EnumHand.MAIN_HAND) != null) {
                     heldItem = entityLiving.getHeldItem(EnumHand.MAIN_HAND).getItem();
                 }

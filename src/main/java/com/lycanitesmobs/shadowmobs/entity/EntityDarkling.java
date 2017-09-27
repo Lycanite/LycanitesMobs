@@ -137,7 +137,7 @@ public class EntityDarkling extends EntityCreatureTameable implements IMob, IGro
 
             // Movement:
             Vec3d latchPos = this.getFacingPositionDouble(this.getLatchTarget().posX, this.getLatchTarget().posY + (this.getLatchTarget().height * this.latchHeight), this.getLatchTarget().posZ, this.getLatchTarget().width * 0.5D, this.latchAngle);
-            this.setPosition(latchPos.xCoord, latchPos.yCoord, latchPos.zCoord);
+            this.setPosition(latchPos.x, latchPos.y, latchPos.z);
             double distanceX = this.getLatchTarget().posX - this.posX;
             double distanceZ = this.getLatchTarget().posZ - this.posZ;
             this.renderYawOffset = this.rotationYaw = -((float) MathHelper.atan2(distanceX, distanceZ)) * (180F / (float)Math.PI);

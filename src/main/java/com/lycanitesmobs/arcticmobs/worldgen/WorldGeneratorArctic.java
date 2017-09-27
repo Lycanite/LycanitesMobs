@@ -2,8 +2,8 @@ package com.lycanitesmobs.arcticmobs.worldgen;
 
 import com.lycanitesmobs.core.IWorldGenBase;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
 import java.util.Random;

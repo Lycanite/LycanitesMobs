@@ -47,7 +47,7 @@ public class EntityAILookIdle extends EntityAIBase {
     // ==================================================
    	//                Continue Executing
    	// ==================================================
-    public boolean continueExecuting() {
+    public boolean shouldContinueExecuting() {
         return this.idleTime >= 0;
     }
     

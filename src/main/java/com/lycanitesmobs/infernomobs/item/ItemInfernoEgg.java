@@ -14,5 +14,6 @@ public class ItemInfernoEgg extends ItemCustomSpawnEgg {
         this.group = InfernoMobs.group;
         this.itemName = "infernospawn";
         this.texturePath = "infernospawn";
+        this.setRegistryName(this.group.filename, this.itemName);
     }
 }

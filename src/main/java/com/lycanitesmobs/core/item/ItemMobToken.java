@@ -21,6 +21,7 @@ public class ItemMobToken extends ItemBase {
 
     @Override
     public void setup() {
+        this.setRegistryName(this.group.filename, this.itemName);
         this.setUnlocalizedName(this.itemName);
         this.textureName = this.itemName.toLowerCase();
         int nameLength = this.textureName.length();

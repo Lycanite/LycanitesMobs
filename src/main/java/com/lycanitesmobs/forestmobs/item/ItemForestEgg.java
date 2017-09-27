@@ -14,5 +14,6 @@ public class ItemForestEgg extends ItemCustomSpawnEgg {
         this.group = ForestMobs.group;
         this.itemName = "forestspawn";
         this.texturePath = "forestspawn";
+        this.setRegistryName(this.group.filename, this.itemName);
     }
 }

@@ -53,7 +53,7 @@ public class EntityAIChase extends EntityAIBase {
         if(vec3 == null)
             return false;
         
-        this.movePos = new BlockPos(vec3.xCoord, vec3.yCoord, vec3.zCoord);
+        this.movePos = new BlockPos(vec3.x, vec3.y, vec3.z);
         return true;
     }
 	
@@ -61,7 +61,7 @@ public class EntityAIChase extends EntityAIBase {
 	// ==================================================
  	//                 Continue Executing
  	// ==================================================
-    public boolean continueExecuting() {
+    public boolean shouldContinueExecuting() {
     	return !this.host.getNavigator().noPath() && this.host.isEntityAlive() && this.target.getDistanceSqToEntity(this.host) < (double)(this.maxTargetDistance * this.maxTargetDistance);
     }
 	

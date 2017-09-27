@@ -62,7 +62,7 @@ public class EntityAITargetRiderRevenge extends EntityAITargetAttack {
         int i = this.host.getRider().getRevengeTimer();
         if(i == this.revengeTime)
         	return false;
-        if(!this.isSuitableTarget(this.host.getRider().getAITarget(), false))
+        if(!this.isSuitableTarget(this.host.getRider().getRevengeTarget(), false))
         	return false;
         return true;
     }
@@ -72,7 +72,7 @@ public class EntityAITargetRiderRevenge extends EntityAITargetAttack {
  	//                 Start Executing
  	// ==================================================
     public void startExecuting() {
-        this.target = this.host.getRider().getAITarget();
+        this.target = this.host.getRider().getRevengeTarget();
         this.revengeTime = this.host.getRider().getRevengeTimer();
 
         try {

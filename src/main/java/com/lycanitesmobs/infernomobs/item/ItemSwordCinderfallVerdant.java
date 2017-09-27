@@ -8,11 +8,8 @@ public class ItemSwordCinderfallVerdant extends ItemSwordCinderfall {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemSwordCinderfallVerdant() {
-        super();
-    	this.itemName = "verdantcinderfallsword";
-        this.setup();
-        this.textureName = "swordcinderfallverdant";
+    public ItemSwordCinderfallVerdant(String itemName, String textureName) {
+        super(itemName, textureName);
     }
 
 

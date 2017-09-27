@@ -8,6 +8,7 @@ import com.lycanitesmobs.core.inventory.InventoryCreature;
 import net.minecraft.entity.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -212,7 +213,7 @@ public class EntityFear extends EntityCreatureBase {
     // ========== Hurt ==========
     /** Returns the sound to play when this creature is damaged. **/
     @Override
-    protected SoundEvent getHurtSound() { return AssetManager.getSound("effect_fear"); }
+    protected SoundEvent getHurtSound(DamageSource damageSource) { return AssetManager.getSound("effect_fear"); }
 
     // ========== Death ==========
     /** Returns the sound to play when this creature dies. **/

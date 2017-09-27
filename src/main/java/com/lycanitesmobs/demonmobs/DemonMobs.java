@@ -121,8 +121,6 @@ public class DemonMobs {
         AssetManager.addSound("doomfire", group, "block.doomfire");
         ObjectManager.addBlock("doomfire", new BlockDoomfire());
 
-        RecipeMaker.addStoneBlocks(group, "demon", Items.NETHER_WART);
-
 
 		// ========== Create Mobs ==========
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ObjectManager.getItem("demonspawn"), new DispenserBehaviorMobEggCustom());
@@ -279,72 +277,6 @@ public class DemonMobs {
         AltarInfo.addAltar(rahovartAltar);
         AltarInfo asmodeusAltar = new AltarInfoAsmodeus("AsmodeusAltar");
         AltarInfo.addAltar(asmodeusAltar);
-
-
-		// ========== Crafting ==========
-        GameRegistry.addRecipe(new ShapedOreRecipe(
-                new ItemStack(ObjectManager.getBlock("soulcubedemonic"), 1, 0),
-                new Object[] { "DDD", "DSD", "DDD",
-                        Character.valueOf('S'), ObjectManager.getItem("soulstonedemonic"),
-                        Character.valueOf('D'), Blocks.DIAMOND_BLOCK
-                }));
-
-        if(ItemInfo.enableWeaponRecipes) {
-            GameRegistry.addRecipe(new ShapedOreRecipe(
-                    new ItemStack(ObjectManager.getItem("doomfirescepter"), 1, 0),
-                    new Object[]{" C ", " R ", " R ",
-                            Character.valueOf('C'), ObjectManager.getItem("doomfirecharge"),
-                            Character.valueOf('R'), Items.BLAZE_ROD
-                    }));
-
-            GameRegistry.addRecipe(new ShapedOreRecipe(
-                    new ItemStack(ObjectManager.getItem("hellfirescepter"), 1, 0),
-                    new Object[]{"CCC", "CRC", "CRC",
-                            Character.valueOf('C'), ObjectManager.getItem("hellfirecharge"),
-                            Character.valueOf('R'), Items.BLAZE_ROD
-                    }));
-
-            GameRegistry.addRecipe(new ShapedOreRecipe(
-                    new ItemStack(ObjectManager.getItem("devilstarscepter"), 1, 0),
-                    new Object[]{" C ", " R ", " R ",
-                            Character.valueOf('C'), ObjectManager.getItem("devilstarcharge"),
-                            Character.valueOf('R'), Items.BLAZE_ROD
-                    }));
-
-            GameRegistry.addRecipe(new ShapedOreRecipe(
-                    new ItemStack(ObjectManager.getItem("demoniclightningscepter"), 1, 0),
-                    new Object[]{" C ", " R ", " R ",
-                            Character.valueOf('C'), ObjectManager.getItem("demoniclightningcharge"),
-                            Character.valueOf('R'), Items.BLAZE_ROD
-                    }));
-        }
-
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
-				new ItemStack(ObjectManager.getItem("devillasagna"), 1, 0),
-				new Object[] {
-					Items.NETHER_WART,
-					Items.WHEAT,
-					ObjectManager.getItem("pinkymeatcooked")
-				}
-			));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
-				new ItemStack(ObjectManager.getItem("pinkymeatcooked"), 1, 0),
-				new Object[] { ObjectManager.getItem("devillasagna") }
-			));
-		
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("pinkytreat"), 4, 0),
-				new Object[] { "TTT", "BBT", "TTT",
-				Character.valueOf('T'), ObjectManager.getItem("hellfirecharge"),
-				Character.valueOf('B'), Items.BONE
-			}));
-		
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(ObjectManager.getItem("cacodemontreat"), 4, 0),
-				new Object[] { "TTT", "BBT", "TTT",
-				Character.valueOf('T'), ObjectManager.getItem("pinkymeatcooked"),
-				Character.valueOf('B'), Items.BONE
-			}));
 
 
 		// ========== Smelting ==========

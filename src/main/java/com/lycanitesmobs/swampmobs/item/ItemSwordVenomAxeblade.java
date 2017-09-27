@@ -28,12 +28,12 @@ public class ItemSwordVenomAxeblade extends ItemSwordBase {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemSwordVenomAxeblade() {
+    public ItemSwordVenomAxeblade(String itemName, String textureName) {
         super(Item.ToolMaterial.DIAMOND);
     	this.group = SwampMobs.group;
-    	this.itemName = "venomaxeblade";
+    	this.itemName = itemName;
         this.setup();
-        this.textureName = "swordvenomaxeblade";
+        this.textureName = textureName;
         this.setHarvestLevel("axe", 3);
     }
 

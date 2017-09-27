@@ -23,11 +23,11 @@ public class RandomPositionGenerator {
 
     // ========== Find Random Waypoint to Target ==========
     public static Vec3d findRandomTargetTowards(EntityCreatureBase entity, int range, int height, Vec3d par3Vec3d) {
-        staticVector = new Vec3d(par3Vec3d.xCoord - entity.posX, par3Vec3d.yCoord - entity.posY, par3Vec3d.zCoord - entity.posZ);
+        staticVector = new Vec3d(par3Vec3d.x - entity.posX, par3Vec3d.y - entity.posY, par3Vec3d.z - entity.posZ);
         return findRandomTargetTowards(entity, range, height, staticVector, 0);
     }
     public static Vec3d findRandomTargetTowards(EntityCreatureBase entity, int range, int height, Vec3d par3Vec3d, int heightLevel) {
-        staticVector = new Vec3d(par3Vec3d.xCoord - entity.posX, par3Vec3d.yCoord - entity.posY, par3Vec3d.zCoord - entity.posZ);
+        staticVector = new Vec3d(par3Vec3d.x - entity.posX, par3Vec3d.y - entity.posY, par3Vec3d.z - entity.posZ);
         return getTargetBlock(entity, range, height, staticVector, heightLevel);
     }
 
@@ -72,7 +72,7 @@ public class RandomPositionGenerator {
 	            	possibleY = random.nextInt(2 * height) - height / 2;
             }
 
-            if(target == null || (double)possibleX * target.xCoord + (double)possibleZ * target.zCoord >= 0.0D) {
+            if(target == null || (double)possibleX * target.x + (double)possibleZ * target.z >= 0.0D) {
             	possibleX += MathHelper.floor(entity.posX);
             	possibleY += MathHelper.floor(entity.posY);
             	possibleZ += MathHelper.floor(entity.posZ);

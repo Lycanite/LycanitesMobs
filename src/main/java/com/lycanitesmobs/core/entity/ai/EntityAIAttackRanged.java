@@ -148,7 +148,7 @@ public class EntityAIAttackRanged extends EntityAIBase {
     // ==================================================
   	//                Continue Executing
   	// ==================================================
-    public boolean continueExecuting() {
+    public boolean shouldContinueExecuting() {
     	if(!this.longMemory)
 	    	if(!this.host.useDirectNavigator() && !this.host.getNavigator().noPath())
                 return this.shouldExecute();

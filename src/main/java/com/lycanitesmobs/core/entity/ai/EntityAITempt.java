@@ -131,7 +131,7 @@ public class EntityAITempt extends EntityAIBase {
     // ==================================================
   	//                 Continue Executing
   	// ==================================================
-    public boolean continueExecuting() {
+    public boolean shouldContinueExecuting() {
         if(this.scaredByPlayerMovement) {
             if(this.host.getDistanceSqToEntity(this.player) < 36.0D) {
                 if(this.player.getDistanceSq(this.targetX, this.targetY, this.targetZ) > 0.010000000000000002D)

@@ -11,11 +11,8 @@ public class ItemStaffBlood extends ItemStaffSummoning {
 	// ==================================================
 	//                   Constructor
 	// ==================================================
-    public ItemStaffBlood() {
-        super();
-        this.itemName = "bloodsummoningstaff";
-        this.setup();
-        this.textureName = "staffblood";
+    public ItemStaffBlood(String itemName, String textureName) {
+        super(itemName, textureName);
     }
 	
     

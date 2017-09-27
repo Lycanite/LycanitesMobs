@@ -57,8 +57,8 @@ public class BlockDoomfire extends BlockFireBase {
     @Override
     public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
         super.onEntityCollidedWithBlock(world, pos, state, entity);
-        if(entity instanceof EntityItem && ((EntityItem)entity).getEntityItem() != null)
-            if(((EntityItem)entity).getEntityItem().getItem() == ObjectManager.getItem("hellfirecharge"))
+        if(entity instanceof EntityItem && ((EntityItem)entity).getItem() != null)
+            if(((EntityItem)entity).getItem().getItem() == ObjectManager.getItem("hellfirecharge"))
                 return;
         if(entity.isImmuneToFire())
             return;

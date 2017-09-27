@@ -26,8 +26,11 @@ import net.minecraft.stats.StatBase;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -41,6 +44,7 @@ public class ObjectManager {
 	// Maps:
 	public static Map<String, Block> blocks = new HashMap<>();
     public static Map<String, Item> items = new HashMap<>();
+    public static Map<Item, GroupInfo> itemGroups = new HashMap<>();
 	public static Map<String, Fluid> fluids = new HashMap<>();
     public static Map<Block, Item> buckets = new HashMap<>();
     public static Map<String, Class> tileEntities = new HashMap<>();
@@ -72,13 +76,18 @@ public class ObjectManager {
 	public static Block addBlock(String name, Block block) {
 		name = name.toLowerCase();
 		blocks.put(name, block);
-        GameRegistry.findRegistry(Block.class).register(block);
         if(block instanceof BlockSlabCustom) {
             BlockSlabCustom blockSlab = (BlockSlabCustom)block;
-            GameRegistry.findRegistry(Item.class).register(new ItemSlabCustom(blockSlab, blockSlab, blockSlab.getDoubleBlock()));
+            ItemSlabCustom itemSlabCustom = new ItemSlabCustom(blockSlab, blockSlab, blockSlab.getDoubleBlock());
+            items.put(name, itemSlabCustom);
+            itemGroups.put(itemSlabCustom, currentGroup);
         }
-        else
-            GameRegistry.findRegistry(Item.class).register(new ItemBlock(block));
+        else {
+            ItemBlock itemBlock = new ItemBlock(block);
+            itemBlock.setRegistryName(block.getRegistryName());
+            items.put(name, itemBlock);
+            itemGroups.put(itemBlock, currentGroup);
+        }
         LycanitesMobs.proxy.addBlockRender(currentGroup, block);
         return block;
 	}
@@ -104,9 +113,7 @@ public class ObjectManager {
 	public static Item addItem(String name, Item item) {
 		name = name.toLowerCase();
 		items.put(name, item);
-		if(currentGroup != null)
-			GameRegistry.findRegistry(Item.class).register(item);
-        LycanitesMobs.proxy.addItemRender(currentGroup, item);
+        itemGroups.put(item, currentGroup);
 
         // Fluid Dispenser:
         if(item instanceof ItemBucket) {
@@ -145,7 +152,6 @@ public class ObjectManager {
         PotionBase potion = new PotionBase("potion." + name, isBad, color);
 		potion.setIconIndex(iconX, iconY);
 		potionEffects.put(name, potion);
-        GameRegistry.findRegistry(Potion.class).register(potion);
 		ObjectLists.addEffect(goodEffect ? "buffs" : "debuffs", potion);
 		return potion;
 	}
@@ -280,6 +286,31 @@ public class ObjectManager {
 
 
     // ==================================================
+    //                  Registry Events
+    // ==================================================
+    // ========== Blocks ==========
+    public static void registerBlocks(RegistryEvent.Register<Block> event) {
+        event.getRegistry().registerAll(blocks.values().toArray(new Block[blocks.size()]));
+    }
+
+    // ========== Items ==========
+    public static void registerItems(RegistryEvent.Register<Item> event) {
+	    for(Item item : items.values()) {
+	        if(item.getRegistryName() == null) {
+	            LycanitesMobs.printWarning("", "Item: " + item + " has no Registry Name!");
+            }
+            event.getRegistry().register(item);
+            LycanitesMobs.proxy.addItemRender(itemGroups.get(item), item);
+        }
+    }
+
+    // ========== Items ==========
+    public static void registerPotions(RegistryEvent.Register<Potion> event) {
+        event.getRegistry().registerAll(potionEffects.values().toArray(new Potion[potionEffects.size()]));
+    }
+
+
+    // ==================================================
     //           Register Block and Item Models
     // ==================================================
     @SideOnly(Side.CLIENT)
@@ -287,46 +318,10 @@ public class ObjectManager {
         for(Item item : items.values()) {
             if(item instanceof ItemBase) {
                 ItemBase itemBase = (ItemBase) item;
-                if (itemBase.useItemColors())
+                if (itemBase.useItemColors()) {
                     Minecraft.getMinecraft().getItemColors().registerItemColorHandler(ClientProxy.itemColor, item);
+                }
             }
         }
-        /* Moved to LycanitesMobs client proxy and called as block/item is registered.
-        for(final Block block : blocks.values()) {
-
-            // Fluids:
-            if(block instanceof BlockFluidBase) {
-                BlockFluidBase blockFluid = (BlockFluidBase)block;
-                Item item = Item.getItemFromBlock(block);
-                ModelBakery.registerItemVariants(item);
-                final ModelResourceLocation fluidLocation = new ModelResourceLocation(blockFluid.group.filename + ":fluid", blockFluid.getFluid().getName());
-                ModelLoader.setCustomMeshDefinition(item, new ItemMeshDefinition() {
-                    @Override
-                    public ModelResourceLocation getModelLocation(ItemStack itemStack) {
-                        return fluidLocation;
-                    }
-                });
-                ModelLoader.setCustomStateMapper(block, new StateMapperBase() {
-                    @Override
-                    protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-                        return fluidLocation;
-                    }
-                });
-                continue;
-            }
-
-            Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), "inventory"));
-        }
-
-        for(Item item : items.values()) {
-            if(item instanceof ItemBase) {
-                ItemBase itemBase = (ItemBase)item;
-                Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, 0, itemBase.getModelResourceLocation());
-                if(itemBase.useItemColors())
-                    Minecraft.getMinecraft().getItemColors().registerItemColorHandler(ClientProxy.itemColor, item);
-            }
-            else
-                Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
-        }*/
     }
 }

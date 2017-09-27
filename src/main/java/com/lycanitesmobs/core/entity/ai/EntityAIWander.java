@@ -53,7 +53,7 @@ public class EntityAIWander extends EntityAIBase {
                 return false;
             else {
                 // Random Position:
-                BlockPos wanderPosition = this.host.getWanderPosition(new BlockPos((int)newTarget.xCoord, (int)newTarget.yCoord, (int)newTarget.zCoord));
+                BlockPos wanderPosition = this.host.getWanderPosition(new BlockPos((int)newTarget.x, (int)newTarget.y, (int)newTarget.z));
                 this.xPosition = wanderPosition.getX();
                 this.yPosition = wanderPosition.getY();
                 this.zPosition = wanderPosition.getZ();
@@ -67,7 +67,7 @@ public class EntityAIWander extends EntityAIBase {
     // ==================================================
    	//                Continue Executing
    	// ==================================================
-    public boolean continueExecuting() {
+    public boolean shouldContinueExecuting() {
     	if(!this.host.useDirectNavigator()) {
     	    if(this.host.getNavigator().noPath()) {
                 return false;

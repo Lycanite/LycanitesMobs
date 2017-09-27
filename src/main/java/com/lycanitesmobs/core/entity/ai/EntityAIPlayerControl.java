@@ -67,7 +67,7 @@ public class EntityAIPlayerControl extends EntityAIBase {
 	// ==================================================
  	//                 Continue Executing
  	// ==================================================
-    public boolean continueExecuting() {
+    public boolean shouldContinueExecuting() {
     	return this.shouldExecute();
     }
     

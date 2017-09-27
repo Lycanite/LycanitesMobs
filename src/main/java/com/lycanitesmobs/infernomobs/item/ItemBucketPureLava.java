@@ -7,14 +7,17 @@ import com.lycanitesmobs.core.item.ItemBase;
 import com.lycanitesmobs.infernomobs.InfernoMobs;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.translation.I18n;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemBucketPureLava extends ItemBucket {
@@ -26,10 +29,11 @@ public class ItemBucketPureLava extends ItemBucket {
 	// ==================================================
     public ItemBucketPureLava(Fluid fluid) {
         super(ObjectManager.getBlock("purelava"));
-		this.setCreativeTab(LycanitesMobs.itemsTab);
         this.group = InfernoMobs.group;
         this.itemName = "bucketpurelava";
+        this.setRegistryName(this.group.filename, this.itemName);
         this.setUnlocalizedName(this.itemName);
+        this.setCreativeTab(LycanitesMobs.itemsTab);
         ObjectManager.addBucket(this, ObjectManager.getBlock("purelava"), fluid);
     }
     
@@ -38,21 +42,21 @@ public class ItemBucketPureLava extends ItemBucket {
 	//                      Info
 	// ==================================================
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List textList, boolean par4) {
-        String description = this.getDescription();
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        String description = this.getDescription(stack, worldIn, tooltip, flagIn);
         if(!"".equalsIgnoreCase(description) && !("item." + this.itemName + ".description").equals(description)) {
-            FontRenderer fontRenderer = Minecraft.getMinecraft().fontRendererObj;
+            FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
             List formattedDescriptionList = fontRenderer.listFormattedStringToWidth(description, ItemBase.descriptionWidth);
             for(Object formattedDescription : formattedDescriptionList) {
                 if(formattedDescription instanceof String)
-                    textList.add("\u00a7a" + (String)formattedDescription);
+                    tooltip.add("\u00a7a" + formattedDescription);
             }
         }
-        super.addInformation(itemStack, entityPlayer, textList, par4);
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
-    
-    public String getDescription() {
-    	return I18n.translateToLocal("item." + this.itemName + ".description");
+
+    public String getDescription(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        return I18n.translateToLocal("item." + this.itemName + ".description");
     }
     
 	

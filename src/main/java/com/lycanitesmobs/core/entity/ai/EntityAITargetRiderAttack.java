@@ -33,11 +33,11 @@ public class EntityAITargetRiderAttack extends EntityAITarget {
     	if(this.host.getRider() == null)
     		return false;
     	
-    	this.target = this.host.getRider().getLastAttacker();
+    	this.target = this.host.getRider().getLastAttackedEntity();
     	if(this.target == null) {
     		return false;
     	}
-    	if(lastAttackTime == this.host.getRider().getLastAttackerTime())
+    	if(lastAttackTime == this.host.getRider().getLastAttackedEntityTime())
     		return false;
     	return true;
     }
@@ -49,7 +49,7 @@ public class EntityAITargetRiderAttack extends EntityAITarget {
     @Override
     public void startExecuting() {
     	if(isTargetValid(target)) {
-			lastAttackTime = this.host.getRider().getLastAttackerTime();
+			lastAttackTime = this.host.getRider().getLastAttackedEntityTime();
 			super.startExecuting();
 		}
     }
@@ -59,12 +59,12 @@ public class EntityAITargetRiderAttack extends EntityAITarget {
  	//                  Continue Executing
  	// ==================================================
     @Override
-    public boolean continueExecuting() {
+    public boolean shouldContinueExecuting() {
     	if(!this.host.hasRiderTarget())
     		return false;
         if(this.host.isSitting())
             return false;
-        return super.continueExecuting();
+        return super.shouldContinueExecuting();
     }
     
     

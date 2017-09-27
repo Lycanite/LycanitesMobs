@@ -44,9 +44,9 @@ public class EntityAIMoveRestriction extends EntityAIBase {
         if(vec3 == null)
             return false;
         
-        this.movePosX = vec3.xCoord;
-        this.movePosY = vec3.yCoord;
-        this.movePosZ = vec3.zCoord;
+        this.movePosX = vec3.x;
+        this.movePosY = vec3.y;
+        this.movePosZ = vec3.z;
         return true;
     }
     
@@ -54,7 +54,7 @@ public class EntityAIMoveRestriction extends EntityAIBase {
     // ==================================================
   	//                Continue Executing
   	// ==================================================
-    public boolean continueExecuting() {
+    public boolean shouldContinueExecuting() {
         return !this.host.getNavigator().noPath();
     }
     

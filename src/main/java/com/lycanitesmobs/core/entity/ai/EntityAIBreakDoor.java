@@ -43,7 +43,7 @@ public class EntityAIBreakDoor extends EntityAIDoorInteract {
 	// ==================================================
  	//                Continue Executing
  	// ==================================================
-    public boolean continueExecuting() {
+    public boolean shouldContinueExecuting() {
         double distance = this.host.getDistanceSq((double)this.entityPosX, (double)this.entityPosY, (double)this.entityPosZ);
         return this.breakingTime <= 240 && !this.targetDoor.isOpen(this.host.getEntityWorld(), new BlockPos(this.entityPosX, this.entityPosY, this.entityPosZ)) && distance < 4.0D; // isDoorOpen()
     }

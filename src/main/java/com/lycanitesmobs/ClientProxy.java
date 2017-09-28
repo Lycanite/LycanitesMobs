@@ -108,13 +108,8 @@ public class ClientProxy extends CommonProxy {
             BlockFluidBase blockFluid = (BlockFluidBase)block;
             Item item = Item.getItemFromBlock(block);
             ModelBakery.registerItemVariants(item);
-            final ModelResourceLocation fluidLocation = new ModelResourceLocation(blockFluid.group.filename + ":fluid", blockFluid.getFluid().getName());
-            ModelLoader.setCustomMeshDefinition(item, new ItemMeshDefinition() {
-                @Override
-                public ModelResourceLocation getModelLocation(ItemStack itemStack) {
-                    return fluidLocation;
-                }
-            });
+            ModelResourceLocation fluidLocation = new ModelResourceLocation(blockFluid.group.filename + ":fluid", blockFluid.getFluid().getName());
+            ModelLoader.setCustomMeshDefinition(item, itemStack -> fluidLocation);
             ModelLoader.setCustomStateMapper(block, new StateMapperBase() {
                 @Override
                 protected ModelResourceLocation getModelResourceLocation(IBlockState state) {

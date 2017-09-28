@@ -89,11 +89,9 @@ public class JungleMobs {
 		
 		ObjectManager.addItem("concapedemeatraw", new ItemCustomFood("concapedemeatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(MobEffects.SLOWNESS, 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("concapedemeatraw"));
-		OreDictionary.registerOre("listAllchickenraw", ObjectManager.getItem("concapedemeatraw"));
 		
 		ObjectManager.addItem("concapedemeatcooked", new ItemCustomFood("concapedemeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(MobEffects.JUMP_BOOST, 10, 2, 1.0F).setAlwaysEdible());
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("concapedemeatcooked"));
-		OreDictionary.registerOre("listAllchickencooked", ObjectManager.getItem("concapedemeatcooked"));
 		
 		ObjectManager.addItem("tropicalcurry", new ItemCustomFood("tropicalcurry", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(MobEffects.JUMP_BOOST, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("tropicalcurry"));
@@ -197,6 +195,10 @@ public class JungleMobs {
 	public void load(FMLInitializationEvent event) {
         // ========== Load All Mob Info from Configs ==========
         MobInfo.loadAllFromConfigs(this.group);
+
+		// ========== Ore Dictionary ==========
+		OreDictionary.registerOre("listAllchickenraw", ObjectManager.getItem("concapedemeatraw"));
+		OreDictionary.registerOre("listAllchickencooked", ObjectManager.getItem("concapedemeatcooked"));
 	}
 	
 	

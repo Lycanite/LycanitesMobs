@@ -75,7 +75,7 @@ public class BlockBase extends Block {
 	
 	/** Should be called by a child class once the blockName and other important variables are set, kind of a late construct. **/
 	public void setup() {
-        this.setRegistryName(new ResourceLocation(this.group.filename, this.blockName.toLowerCase()));
+        this.setRegistryName(this.group.filename, this.blockName.toLowerCase());
 		this.setUnlocalizedName(this.blockName);
 	}
 

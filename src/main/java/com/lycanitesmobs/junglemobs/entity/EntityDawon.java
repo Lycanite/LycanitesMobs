@@ -95,7 +95,8 @@ public class EntityDawon extends EntityCreatureTameable implements IAnimals, IGr
 	public void loadItemDrops() {
         this.drops.add(new DropRate(new ItemStack(Items.QUARTZ), 1F).setMinAmount(1).setMaxAmount(3));
         this.drops.add(new DropRate(new ItemStack(Items.EMERALD), 0.25F).setMinAmount(1).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Items.DIAMOND), 0.05F).setMinAmount(1).setMaxAmount(1));
+        this.drops.add(new DropRate(new ItemStack(Items.DIAMOND), 0.05F).setMinAmount(1).setMaxAmount(1).setSubspecies(1));
+        this.drops.add(new DropRate(new ItemStack(Items.DIAMOND), 0.05F).setMinAmount(1).setMaxAmount(1).setSubspecies(2));
     }
 
 

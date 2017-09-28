@@ -26,7 +26,10 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashMap;
 
@@ -211,5 +214,12 @@ public class EntityTrent extends EntityCreatureBase implements IMob, IGroupPlant
         if(AssetManager.getTexture(textureName) == null)
             AssetManager.addTexture(textureName, this.group, "textures/entity/" + textureName.toLowerCase() + ".png");
         return AssetManager.getTexture(textureName);
+    }
+
+    // ========== Rendering Distance ==========
+    /** Returns a larger bounding box for rendering this large entity. **/
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox() {
+        return this.getEntityBoundingBox().expand(50, 20, 50).offset(0, -10, 0);
     }
 }

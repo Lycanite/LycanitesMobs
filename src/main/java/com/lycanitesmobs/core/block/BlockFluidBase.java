@@ -29,7 +29,7 @@ public class BlockFluidBase extends BlockFluidClassic {
         super(fluid, material);
         this.blockName = blockName;
         this.group = group;
-        this.setRegistryName(new ResourceLocation(this.group.filename, this.blockName));
+        this.setRegistryName(this.group.filename, this.blockName);
         this.setUnlocalizedName(this.blockName);
 
         this.setRenderLayer(BlockRenderLayer.TRANSLUCENT);

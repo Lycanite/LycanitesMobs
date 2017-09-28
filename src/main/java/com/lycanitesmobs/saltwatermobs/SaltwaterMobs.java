@@ -75,11 +75,9 @@ public class SaltwaterMobs {
             rawFoodEffectID = ObjectManager.getPotionEffect("weight");
         ObjectManager.addItem("ikameatraw", new ItemCustomFood("ikameatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(rawFoodEffectID, 45, 2, 0.8F));
         ObjectLists.addItem("rawfish", ObjectManager.getItem("ikameatraw"));
-        OreDictionary.registerOre("listAllfishraw", ObjectManager.getItem("ikameatraw"));
 
         ObjectManager.addItem("ikameatcooked", new ItemCustomFood("ikameatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(MobEffects.WATER_BREATHING, 20, 2, 1.0F).setAlwaysEdible());
         ObjectLists.addItem("cookedfish", ObjectManager.getItem("ikameatcooked"));
-        OreDictionary.registerOre("listAllfishcooked", ObjectManager.getItem("ikameatcooked"));
 
         ObjectManager.addItem("seashellmaki", new ItemCustomFood("seashellmaki", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(MobEffects.WATER_BREATHING, 120, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
         ObjectLists.addItem("cookedfish", ObjectManager.getItem("seashellmaki"));
@@ -162,6 +160,10 @@ public class SaltwaterMobs {
 	public void load(FMLInitializationEvent event) {
         // ========== Load All Mob Info from Configs ==========
         MobInfo.loadAllFromConfigs(this.group);
+
+		// ========== Ore Dictionary ==========
+		OreDictionary.registerOre("listAllfishraw", ObjectManager.getItem("ikameatraw"));
+		OreDictionary.registerOre("listAllfishcooked", ObjectManager.getItem("ikameatcooked"));
 	}
 	
 	

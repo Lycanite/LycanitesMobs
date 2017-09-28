@@ -1,5 +1,6 @@
 package com.lycanitesmobs;
 
+import com.lycanitesmobs.core.block.BlockFluidBase;
 import com.lycanitesmobs.core.block.BlockSlabCustom;
 import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.entity.EntityCreatureRideable;
@@ -88,7 +89,6 @@ public class ObjectManager {
             items.put(name, itemBlock);
             itemGroups.put(itemBlock, currentGroup);
         }
-        LycanitesMobs.proxy.addBlockRender(currentGroup, block);
         return block;
 	}
 
@@ -96,11 +96,15 @@ public class ObjectManager {
 	public static Fluid addFluid(String fluidName) {
         GroupInfo group = currentGroup;
         Fluid fluid = new Fluid(fluidName, new ResourceLocation(group.filename + ":blocks/" + fluidName + "_still"), new ResourceLocation(group.filename + ":blocks/" + fluidName + "_flow"));
-		String name = fluid.getUnlocalizedName().toLowerCase();
-		fluids.put(name, fluid);
-		FluidRegistry.registerFluid(fluid);
+		fluids.put(fluidName, fluid);
+		if(!FluidRegistry.registerFluid(fluid)) {
+		    LycanitesMobs.printWarning("", "Another fluid was registered as " + fluidName);
+        }
         return fluid;
 	}
+    static {
+        FluidRegistry.enableUniversalBucket();
+    }
 
 	// ========== Bucket ==========
 	public static Item addBucket(Item bucket, Block block, Fluid fluid) {
@@ -291,6 +295,13 @@ public class ObjectManager {
     // ========== Blocks ==========
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
         event.getRegistry().registerAll(blocks.values().toArray(new Block[blocks.size()]));
+        for(Block block : blocks.values()) {
+            if(block.getRegistryName() == null) {
+                LycanitesMobs.printWarning("", "Block: " + block + " has no Registry Name!");
+            }
+            //event.getRegistry().register(block); Registered with ItemBlock
+			LycanitesMobs.proxy.addBlockRender(currentGroup, block);
+        }
     }
 
     // ========== Items ==========

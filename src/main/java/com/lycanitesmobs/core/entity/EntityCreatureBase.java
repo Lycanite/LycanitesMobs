@@ -1763,22 +1763,22 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Move with Heading ==========
     /** Moves the entity, redirects to the direct navigator if this mob should use that instead. **/
     @Override
-    public void moveRelative(float strafe, float up, float forward, float friction) {
+    public void travel(float strafe, float up, float forward) {
     	if(!this.useDirectNavigator()) {
             if(this.isFlying() && !this.isInWater() && !this.isInLava()) {
-                this.moveFlyingWithHeading(strafe, moveForward);
+                this.moveFlyingWithHeading(strafe, forward);
                 this.updateLimbSwing();
             }
             else if(this.shouldSwim()) {
-                this.moveSwimmingWithHeading(strafe, moveForward);
+                this.moveSwimmingWithHeading(strafe, forward);
                 this.updateLimbSwing();
             }
             else {
-                super.moveRelative(strafe, up, moveForward, friction);
+                super.travel(strafe, up, forward);
             }
         }
     	else {
-            this.directNavigator.flightMovement(strafe, moveForward);
+            this.directNavigator.flightMovement(strafe, forward);
             this.updateLimbSwing();
         }
     }

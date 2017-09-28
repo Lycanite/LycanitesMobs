@@ -72,11 +72,9 @@ public class DesertMobs {
 		
 		ObjectManager.addItem("joustmeatraw", new ItemCustomFood("joustmeatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(MobEffects.SLOWNESS, 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("joustmeatraw"));
-		OreDictionary.registerOre("listAllchickenraw", ObjectManager.getItem("joustmeatraw"));
 		
 		ObjectManager.addItem("joustmeatcooked", new ItemCustomFood("joustmeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(MobEffects.SPEED, 10, 2, 1.0F).setAlwaysEdible());
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("joustmeatcooked"));
-		OreDictionary.registerOre("listAllchickencooked", ObjectManager.getItem("joustmeatcooked"));
 		
 		ObjectManager.addItem("ambercake", new ItemCustomFood("ambercake", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(MobEffects.SPEED, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("ambercake"));
@@ -175,6 +173,10 @@ public class DesertMobs {
 	public void load(FMLInitializationEvent event) {
         // ========== Load All Mob Info from Configs ==========
         MobInfo.loadAllFromConfigs(this.group);
+
+		// ========== Ore Dictionary ==========
+		OreDictionary.registerOre("listAllchickenraw", ObjectManager.getItem("joustmeatraw"));
+		OreDictionary.registerOre("listAllchickencooked", ObjectManager.getItem("joustmeatcooked"));
 	}
 	
 	

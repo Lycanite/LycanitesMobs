@@ -1,23 +1,8 @@
 package com.lycanitesmobs.arcticmobs;
 
-import com.lycanitesmobs.arcticmobs.block.*;
-import com.lycanitesmobs.arcticmobs.dispenser.*;
-import com.lycanitesmobs.arcticmobs.entity.*;
-import com.lycanitesmobs.arcticmobs.item.*;
-import com.lycanitesmobs.core.config.ConfigBase;
-import com.lycanitesmobs.core.info.*;
-import com.lycanitesmobs.core.spawning.SpawnTypeBase;
 import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
-import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
-import com.lycanitesmobs.core.info.*;
-import com.lycanitesmobs.core.item.ItemCustomFood;
-import com.lycanitesmobs.core.item.ItemTreat;
-import com.lycanitesmobs.core.mobevent.MobEventBase;
-import com.lycanitesmobs.core.mobevent.MobEventManager;
-import com.lycanitesmobs.core.spawning.SpawnTypeLand;
-import com.lycanitesmobs.core.spawning.SpawnTypeSky;
 import com.lycanitesmobs.arcticmobs.block.*;
 import com.lycanitesmobs.arcticmobs.dispenser.*;
 import com.lycanitesmobs.arcticmobs.entity.*;
@@ -25,6 +10,19 @@ import com.lycanitesmobs.arcticmobs.item.*;
 import com.lycanitesmobs.arcticmobs.mobevent.MobEventSubZero;
 import com.lycanitesmobs.arcticmobs.mobevent.MobEventWintersGrasp;
 import com.lycanitesmobs.arcticmobs.worldgen.WorldGeneratorArctic;
+import com.lycanitesmobs.core.config.ConfigBase;
+import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
+import com.lycanitesmobs.core.info.GroupInfo;
+import com.lycanitesmobs.core.info.MobInfo;
+import com.lycanitesmobs.core.info.ObjectLists;
+import com.lycanitesmobs.core.info.Subspecies;
+import com.lycanitesmobs.core.item.ItemCustomFood;
+import com.lycanitesmobs.core.item.ItemTreat;
+import com.lycanitesmobs.core.mobevent.MobEventBase;
+import com.lycanitesmobs.core.mobevent.MobEventManager;
+import com.lycanitesmobs.core.spawning.SpawnTypeBase;
+import com.lycanitesmobs.core.spawning.SpawnTypeLand;
+import com.lycanitesmobs.core.spawning.SpawnTypeSky;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
@@ -32,7 +30,6 @@ import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.monster.EntityWitch;
 import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
@@ -49,8 +46,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 @Mod(modid = ArcticMobs.modid, name = ArcticMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid)
 public class ArcticMobs {
@@ -93,11 +88,9 @@ public class ArcticMobs {
 		
 		ObjectManager.addItem("yetimeatraw", new ItemCustomFood("yetimeatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(MobEffects.SLOWNESS, 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("yetimeatraw"));
-		OreDictionary.registerOre("listAllporkraw", ObjectManager.getItem("yetimeatraw"));
 		
 		ObjectManager.addItem("yetimeatcooked", new ItemCustomFood("yetimeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(MobEffects.RESISTANCE, 10, 2, 1.0F).setAlwaysEdible());
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("yetimeatcooked"));
-		OreDictionary.registerOre("listAllporkcooked", ObjectManager.getItem("yetimeatcooked"));
 		
 		ObjectManager.addItem("palesoup", new ItemCustomFood("palesoup", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(MobEffects.RESISTANCE, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("palesoup"));
@@ -206,6 +199,10 @@ public class ArcticMobs {
 	public void load(FMLInitializationEvent event) {
         // ========== Load All Mob Info from Configs ==========
         MobInfo.loadAllFromConfigs(this.group);
+
+		// ========== Ore Dictionary ==========
+		OreDictionary.registerOre("listAllporkraw", ObjectManager.getItem("yetimeatraw"));
+		OreDictionary.registerOre("listAllporkcooked", ObjectManager.getItem("yetimeatcooked"));
 	}
 	
 	

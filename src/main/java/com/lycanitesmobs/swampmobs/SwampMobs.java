@@ -82,11 +82,9 @@ public class SwampMobs {
 		
 		ObjectManager.addItem("aspidmeatraw", new ItemCustomFood("aspidmeatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(MobEffects.POISON, 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("aspidmeatraw"));
-		OreDictionary.registerOre("listAllbeefraw", ObjectManager.getItem("aspidmeatraw"));
 		
 		ObjectManager.addItem("aspidmeatcooked", new ItemCustomFood("aspidmeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(MobEffects.REGENERATION, 10, 2, 1.0F).setAlwaysEdible());
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("aspidmeatcooked"));
-		OreDictionary.registerOre("listAllbeefcooked", ObjectManager.getItem("aspidmeatcooked"));
 		
 		ObjectManager.addItem("mosspie", new ItemCustomFood("mosspie", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(MobEffects.REGENERATION, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("mosspie"));
@@ -190,6 +188,10 @@ public class SwampMobs {
 	public void load(FMLInitializationEvent event) {
         // ========== Load All Mob Info from Configs ==========
         MobInfo.loadAllFromConfigs(this.group);
+
+		// ========== Ore Dictionary ==========
+		OreDictionary.registerOre("listAllbeefraw", ObjectManager.getItem("aspidmeatraw"));
+		OreDictionary.registerOre("listAllbeefcooked", ObjectManager.getItem("aspidmeatcooked"));
 	}
 	
 	

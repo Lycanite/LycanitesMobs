@@ -31,6 +31,7 @@ public class ItemSlabCustom extends ItemBlock
         this.doubleSlab = doubleSlab;
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
+        this.setRegistryName(block.getRegistryName());
     }
 
     /**

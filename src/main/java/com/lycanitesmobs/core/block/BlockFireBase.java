@@ -266,16 +266,26 @@ public class BlockFireBase extends BlockBase {
                 int newFireAge = age + random.nextInt(5) / 4;
                 if (newFireAge > 15)
                     newFireAge = 15;
-                world.setBlockState(pos, this.getDefaultState().withProperty(AGE, Integer.valueOf(newFireAge)), 3);
+                this.burnBlockReplace(world, pos, newFireAge);
             }
             else {
-                world.setBlockToAir(pos);
+                this.burnBlockDestroy(world, pos);
             }
 
             if (this.triggerTNT && blockState.getBlock() == Blocks.TNT) {
                 Blocks.TNT.onBlockDestroyedByPlayer(world, pos, blockState.withProperty(BlockTNT.EXPLODE, Boolean.valueOf(true)));
             }
         }
+    }
+
+    /** Burns away a block, typically replacing it with this fire block, but can change it to other things depending on the type of fire block. **/
+    public void burnBlockReplace(World world, BlockPos pos, int newFireAge) {
+        world.setBlockState(pos, this.getDefaultState().withProperty(AGE, Integer.valueOf(newFireAge)), 3);
+    }
+
+    /** Burns away a block, typically setting it to air but can change it to other things depending on the type of fire block. **/
+    public void burnBlockDestroy(World world, BlockPos pos) {
+        world.setBlockToAir(pos);
     }
 
     /** Returns true if the block at the provided position and face can catch fire. **/

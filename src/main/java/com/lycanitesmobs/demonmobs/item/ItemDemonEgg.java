@@ -10,7 +10,7 @@ public class ItemDemonEgg extends ItemCustomSpawnEgg {
 	// ==================================================
     public ItemDemonEgg() {
         super();
-        setUnlocalizedName("demonspawn");
+        this.setUnlocalizedName("demonspawn");
         this.group = DemonMobs.group;
         this.itemName = "demonspawn";
         this.texturePath = "demonspawn";

@@ -1,6 +1,7 @@
 package com.lycanitesmobs.demonmobs;
 
 import com.lycanitesmobs.AssetManager;
+import com.lycanitesmobs.BlockMaker;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.config.ConfigBase;
@@ -94,11 +95,9 @@ public class DemonMobs {
 		
 		ObjectManager.addItem("pinkymeatraw", new ItemCustomFood("pinkymeatraw", group, 4, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(MobEffects.WITHER, 30, 0, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("pinkymeatraw"));
-		OreDictionary.registerOre("listAllbeefraw", ObjectManager.getItem("pinkymeatraw"));
 		
 		ObjectManager.addItem("pinkymeatcooked", new ItemCustomFood("pinkymeatcooked", group, 7, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(MobEffects.STRENGTH, 10, 0, 1.0F).setAlwaysEdible());
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("pinkymeatcooked"));
-		OreDictionary.registerOre("listAllbeefcooked", ObjectManager.getItem("pinkymeatcooked"));
 		
 		ObjectManager.addItem("devillasagna", new ItemCustomFood("devillasagna", group, 7, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(MobEffects.STRENGTH, 60, 0, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("devillasagna"));
@@ -120,6 +119,8 @@ public class DemonMobs {
 		ObjectManager.addBlock("hellfire", new BlockHellfire());
         AssetManager.addSound("doomfire", group, "block.doomfire");
         ObjectManager.addBlock("doomfire", new BlockDoomfire());
+
+		BlockMaker.addStoneBlocks(group, "demon", Items.NETHER_WART);
 
 
 		// ========== Create Mobs ==========
@@ -221,6 +222,10 @@ public class DemonMobs {
 	public void load(FMLInitializationEvent event) {
         // ========== Load All Mob Info from Configs ==========
         MobInfo.loadAllFromConfigs(this.group);
+
+		// ========== Ore Dictionary ==========
+		OreDictionary.registerOre("listAllbeefraw", ObjectManager.getItem("pinkymeatraw"));
+		OreDictionary.registerOre("listAllbeefcooked", ObjectManager.getItem("pinkymeatcooked"));
 	}
 	
 	

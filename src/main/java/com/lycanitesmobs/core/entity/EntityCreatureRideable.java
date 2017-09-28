@@ -168,16 +168,16 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
     
     // ========== Move with Heading ==========
     @Override
-    public void moveRelative(float strafe, float up, float forward, float friction) {
+    public void travel(float strafe, float up, float forward) {
         // Check if Mounted:
         if (!this.isTamed() || !this.hasSaddle() || !this.hasRiderTarget() || !(this.getControllingPassenger() instanceof EntityLivingBase) || !this.riderControl()) {
-            super.moveRelative(strafe, up, forward, friction);
+            super.travel(strafe, up, forward);
             return;
         }
-        this.moveMountedWithHeading(strafe, forward);
+        this.moveMountedWithHeading(strafe, up, forward);
     }
 
-    public void moveMountedWithHeading(float strafe, float forward) {
+    public void moveMountedWithHeading(float strafe, float up, float forward) {
         // Apply Rider Movement:
         if(this.getControllingPassenger() instanceof EntityLivingBase) {
             EntityLivingBase rider = (EntityLivingBase) this.getControllingPassenger();
@@ -259,7 +259,7 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
                     this.motionZ *= 0.8999999761581421D;
                 }
                 else
-                    super.moveRelative(strafe, 0, forward, 0.1F);
+                    super.travel(strafe, up, forward);
             }
             else
                 this.directNavigator.flightMovement(strafe, forward);

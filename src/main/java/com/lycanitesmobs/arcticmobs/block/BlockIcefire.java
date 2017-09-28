@@ -70,7 +70,7 @@ public class BlockIcefire extends BlockFireBase {
 
     @Override
     public boolean isBlockFireSource(Block block, World world, BlockPos pos, EnumFacing side) {
-        if(block == Blocks.SNOW || block == Blocks.FROSTED_ICE || block == Blocks.PACKED_ICE)
+        if(block == Blocks.SNOW || block == Blocks.FROSTED_ICE)
             return true;
         return false;
     }
@@ -86,6 +86,24 @@ public class BlockIcefire extends BlockFireBase {
     @Override
     protected boolean canDie(World world, BlockPos pos) {
         return false;
+    }
+
+	@Override
+	public void burnBlockReplace(World world, BlockPos pos, int newFireAge) {
+		if(world.getBlockState(pos).getBlock() == Blocks.ICE) {
+			world.setBlockState(pos, Blocks.PACKED_ICE.getDefaultState(), 3);
+			return;
+		}
+		super.burnBlockReplace(world, pos, newFireAge);
+	}
+
+    @Override
+    public void burnBlockDestroy(World world, BlockPos pos) {
+	    if(world.getBlockState(pos).getBlock() == Blocks.ICE) {
+	        world.setBlockState(pos, Blocks.PACKED_ICE.getDefaultState(), 3);
+	        return;
+        }
+        super.burnBlockDestroy(world, pos);
     }
 
 

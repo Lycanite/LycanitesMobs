@@ -245,7 +245,7 @@ public class ItemCustomSpawnEgg extends ItemBase {
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-    	if(this.group == null || !ObjectManager.entityLists.containsKey(this.group.filename))
+    	if(this.group == null || !ObjectManager.entityLists.containsKey(this.group.filename) || tab != this.getCreativeTab())
     		return;
 
         for(EntityListCustom.EntityEggInfo entityEggInfo : ObjectManager.entityLists.get(this.group.filename).entityEggs.values()) {

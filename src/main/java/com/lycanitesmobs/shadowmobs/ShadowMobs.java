@@ -1,5 +1,6 @@
 package com.lycanitesmobs.shadowmobs;
 
+import com.lycanitesmobs.BlockMaker;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.config.ConfigBase;
@@ -85,14 +86,12 @@ public class ShadowMobs {
             rawMeat.setPotionEffect(ObjectManager.getPotionEffect("fear"), 10, 2, 0.8F);
         ObjectManager.addItem("chupacabrameatraw", rawMeat);
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("chupacabrameatraw"));
-		OreDictionary.registerOre("listAllmuttonraw", ObjectManager.getItem("chupacabrameatraw"));
 
         ItemCustomFood cookedMeat = new ItemCustomFood("chupacabrameatcooked", group, 7, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setAlwaysEdible();
         if(ObjectManager.getPotionEffect("leech") != null)
             cookedMeat.setPotionEffect(ObjectManager.getPotionEffect("leech"), 10, 1, 1.0F);
         ObjectManager.addItem("chupacabrameatcooked", cookedMeat);
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("chupacabrameatcooked"));
-		OreDictionary.registerOre("listAllmuttoncooked", ObjectManager.getItem("chupacabrameatcooked"));
 
         ItemCustomFood meal = new ItemCustomFood("bloodchili", group, 7, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setAlwaysEdible();
         meal.setMaxStackSize(16);
@@ -110,6 +109,8 @@ public class ShadowMobs {
 		// ========== Create Blocks ==========
 		AssetManager.addSound("shadowfire", group, "block.shadowfire");
 		ObjectManager.addBlock("shadowfire", new BlockShadowfire());
+
+		BlockMaker.addStoneBlocks(group, "shadow", Blocks.OBSIDIAN);
 		
 		
 		// ========== Create Mobs ==========
@@ -192,6 +193,10 @@ public class ShadowMobs {
 	public void load(FMLInitializationEvent event) {
         // ========== Load All Mob Info from Configs ==========
         MobInfo.loadAllFromConfigs(this.group);
+
+		// ========== Ore Dictionary ==========
+		OreDictionary.registerOre("listAllmuttonraw", ObjectManager.getItem("chupacabrameatraw"));
+		OreDictionary.registerOre("listAllmuttoncooked", ObjectManager.getItem("chupacabrameatcooked"));
 	}
 	
 	

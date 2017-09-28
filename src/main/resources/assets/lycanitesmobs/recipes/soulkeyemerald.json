@@ -1,0 +1,19 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "DDD",
+    "DSD",
+    "DDD"
+  ],
+  "key": {
+    "D": {
+      "item": "minecraft:emerald"
+    },
+    "S": {
+      "item": "lycanitesmobs:soulkey"
+    }
+  },
+  "result": {
+    "item": "lycanitesmobs:soulkeyemerald"
+  }
+}

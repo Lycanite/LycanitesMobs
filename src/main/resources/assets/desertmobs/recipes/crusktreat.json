@@ -1,0 +1,19 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "TTT",
+    "BBT",
+    "TTT"
+  ],
+  "key": {
+    "T": {
+      "item": "desertmobs:joustmeatcooked"
+    },
+    "B": {
+      "item": "minecraft:bone"
+    }
+  },
+  "result": {
+    "item": "desertmobs:crusktreat"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "CCC",
+    "CRC",
+    "CRC"
+  ],
+  "key": {
+    "C": {
+      "item": "arcticmobs:icefirecharge"
+    },
+    "R": {
+      "item": "minecraft:blaze_rod"
+    }
+  },
+  "result": {
+    "item": "arcticmobs:icefirescepter"
+  }
+}

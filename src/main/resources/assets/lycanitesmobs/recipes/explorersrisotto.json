@@ -1,0 +1,20 @@
+{
+  "type": "forge:ore_shapeless",
+  "ingredients": [
+    {
+      "item": "desertmobs:joustmeatcooked"
+    },
+    {
+      "item": "mountainmobs:yalemeatcooked"
+    },
+    {
+      "item": "saltwatermobs:ikameatcooked"
+    },
+    {
+      "item": "junglemobs:concapedemeatcooked"
+    }
+  ],
+  "result": {
+    "item": "lycanitesmobs:explorersrisotto"
+  }
+}

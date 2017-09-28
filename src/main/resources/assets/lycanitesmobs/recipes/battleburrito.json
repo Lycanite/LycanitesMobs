@@ -1,0 +1,23 @@
+{
+  "type": "forge:ore_shapeless",
+  "ingredients": [
+    {
+      "item": "demonmobs:pinkymeatcooked"
+    },
+    {
+      "item": "plainsmobs:makameatcooked"
+    },
+    {
+      "item": "forestmobs:arisaurmeatcooked"
+    },
+    {
+      "item": "arcticmobs:yetimeatcooked"
+    },
+    {
+      "item": "swampmobs:aspidmeatcooked"
+    }
+  ],
+  "result": {
+    "item": "lycanitesmobs:battleburrito"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "TTT",
+    "BBT",
+    "TTT"
+  ],
+  "key": {
+    "T": {
+      "item": "arcticmobs:frostyfur"
+    },
+    "B": {
+      "item": "minecraft:bone"
+    }
+  },
+  "result": {
+    "item": "arcticmobs:serpixtreat"
+  }
+}

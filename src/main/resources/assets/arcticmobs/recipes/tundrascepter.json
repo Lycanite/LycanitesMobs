@@ -1,0 +1,22 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "SCS",
+    "SRS",
+    "SRS"
+  ],
+  "key": {
+    "C": {
+      "item": "arcticmobs:tundracharge"
+    },
+    "S": {
+      "item": "arcticmobs:frostyfur"
+    },
+    "R": {
+      "item": "minecraft:blaze_rod"
+    }
+  },
+  "result": {
+    "item": "arcticmobs:tundrascepter"
+  }
+}

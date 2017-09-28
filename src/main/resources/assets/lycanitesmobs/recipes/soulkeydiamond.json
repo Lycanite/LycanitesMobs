@@ -1,0 +1,19 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "DDD",
+    "DSD",
+    "DDD"
+  ],
+  "key": {
+    "D": {
+      "item": "minecraft:diamond"
+    },
+    "S": {
+      "item": "lycanitesmobs:soulkey"
+    }
+  },
+  "result": {
+    "item": "lycanitesmobs:soulkeydiamond"
+  }
+}

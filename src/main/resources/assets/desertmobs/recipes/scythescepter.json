@@ -1,0 +1,19 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "CCC",
+    "CRC",
+    "CRC"
+  ],
+  "key": {
+    "C": {
+      "item": "desertmobs:throwingscythe"
+    },
+    "R": {
+      "item": "minecraft:blaze_rod"
+    }
+  },
+  "result": {
+    "item": "desertmobs:scythescepter"
+  }
+}

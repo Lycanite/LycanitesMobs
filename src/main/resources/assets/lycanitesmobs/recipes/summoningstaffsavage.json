@@ -1,0 +1,26 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "LLL",
+    "BSB",
+    "GGG"
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:bone"
+    },
+    "S": {
+      "item": "lycanitesmobs:summoningstaff"
+    },
+    "G": {
+      "item": "minecraft:ghast_tear"
+    },
+    "L": {
+      "item": "minecraft:dye",
+      "data": 4
+    }
+  },
+  "result": {
+    "item": "lycanitesmobs:savagesummoningstaff"
+  }
+}

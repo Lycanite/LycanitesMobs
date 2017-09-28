@@ -1,0 +1,19 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "TTT",
+    "BBT",
+    "TTT"
+  ],
+  "key": {
+    "T": {
+      "item": "minecraft:packed_ice"
+    },
+    "B": {
+      "item": "minecraft:bone"
+    }
+  },
+  "result": {
+    "item": "arcticmobs:arixtreat"
+  }
+}

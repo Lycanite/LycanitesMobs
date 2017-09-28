@@ -70,7 +70,7 @@ public class BlockIcefire extends BlockFireBase {
 
     @Override
     public boolean isBlockFireSource(Block block, World world, BlockPos pos, EnumFacing side) {
-        if(block == Blocks.SNOW || block == Blocks.FROSTED_ICE)
+        if(block == Blocks.SNOW)
             return true;
         return false;
     }

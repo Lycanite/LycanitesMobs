@@ -1,22 +1,22 @@
 {
-  "type": "forge:ore_shaped",
+  "result": {
+    "item": "lycanitesmobs:soulgazer"
+  },
   "pattern": [
     "GBG",
     "BDB",
     "GBG"
   ],
+  "type": "forge:ore_shaped",
   "key": {
+    "B": {
+      "item": "minecraft:bone"
+    },
     "D": {
       "item": "minecraft:diamond"
     },
     "G": {
       "item": "minecraft:gold_ingot"
-    },
-    "B": {
-      "item": "minecraft:bone"
     }
-  },
-  "result": {
-    "item": "lycanitesmobs:soulgazer"
   }
 }

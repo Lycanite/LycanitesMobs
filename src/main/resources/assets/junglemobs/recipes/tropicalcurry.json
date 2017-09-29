@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "junglemobs:tropicalcurry"
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:bowl"
+    },
+    {
+      "item": "minecraft:dye",
+      "data": 3
+    },
+    {
+      "item": "minecraft:vine"
+    },
+    {
+      "item": "junglemobs:concapedemeatcooked"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

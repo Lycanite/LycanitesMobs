@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "freshwatermobs:stridertreat",
+    "count": 4
+  },
+  "pattern": [
+    "TTT",
+    "BBT",
+    "TTT"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "B": {
+      "item": "minecraft:bone"
+    },
+    "T": {
+      "item": "minecraft:dye",
+      "data": 4
+    }
+  }
+}

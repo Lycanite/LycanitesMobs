@@ -1,0 +1,11 @@
+{
+  "result": {
+    "item": "arcticmobs:yetimeatcooked"
+  },
+  "ingredients": [
+    {
+      "item": "arcticmobs:palesoup"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

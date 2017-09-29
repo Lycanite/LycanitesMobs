@@ -1,0 +1,15 @@
+{
+  "result": {
+    "item": "shadowmobs:shadowstonepolished",
+    "count": 2
+  },
+  "pattern": [
+    "BB"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "B": {
+      "item": "shadowmobs:shadowstone"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "result": {
+    "item": "demonmobs:demoncrystal"
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:nether_wart"
+    },
+    {
+      "item": "minecraft:glowstone"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

@@ -1,0 +1,11 @@
+{
+  "result": {
+    "item": "mountainmobs:yalemeatcooked"
+  },
+  "ingredients": [
+    {
+      "item": "mountainmobs:peakskebab"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

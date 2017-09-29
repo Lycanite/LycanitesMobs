@@ -1,0 +1,11 @@
+{
+  "result": {
+    "item": "freshwatermobs:silexmeatcooked"
+  },
+  "ingredients": [
+    {
+      "item": "freshwatermobs:lapisfishandchips"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

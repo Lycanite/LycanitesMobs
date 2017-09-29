@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "shadowmobs:shadowstonetile_stairs",
+    "count": 8
+  },
+  "pattern": [
+    "B  ",
+    "BB ",
+    "BBB"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "B": {
+      "item": "shadowmobs:shadowstonetile"
+    }
+  }
+}

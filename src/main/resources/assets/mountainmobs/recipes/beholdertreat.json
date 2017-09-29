@@ -1,0 +1,20 @@
+{
+  "result": {
+    "item": "mountainmobs:beholdertreat",
+    "count": 4
+  },
+  "pattern": [
+    "   ",
+    "BBT",
+    "   "
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "B": {
+      "item": "minecraft:bone"
+    },
+    "T": {
+      "item": "mountainmobs:arcanelaserstormcharge"
+    }
+  }
+}

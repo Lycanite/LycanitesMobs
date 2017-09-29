@@ -1,10 +1,13 @@
 {
-  "type": "forge:ore_shaped",
+  "result": {
+    "item": "demonmobs:soulcubedemonic"
+  },
   "pattern": [
     "DDD",
     "DSD",
     "DDD"
   ],
+  "type": "forge:ore_shaped",
   "key": {
     "S": {
       "item": "demonmobs:soulstonedemonic"
@@ -12,8 +15,5 @@
     "D": {
       "item": "minecraft:diamond_block"
     }
-  },
-  "result": {
-    "item": "demonmobs:soulcubedemonic"
   }
 }

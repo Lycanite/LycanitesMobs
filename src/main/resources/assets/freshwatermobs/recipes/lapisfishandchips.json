@@ -1,0 +1,14 @@
+{
+  "result": {
+    "item": "freshwatermobs:lapisfishandchips"
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:potato"
+    },
+    {
+      "item": "freshwatermobs:silexmeatcooked"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

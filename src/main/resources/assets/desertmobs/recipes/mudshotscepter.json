@@ -1,19 +1,19 @@
 {
-  "type": "forge:ore_shaped",
+  "result": {
+    "item": "desertmobs:mudshotscepter"
+  },
   "pattern": [
     " C ",
     " R ",
     " R "
   ],
+  "type": "forge:ore_shaped",
   "key": {
-    "C": {
-      "item": "desertmobs:mudshotcharge"
-    },
     "R": {
       "item": "minecraft:blaze_rod"
+    },
+    "C": {
+      "item": "desertmobs:mudshotcharge"
     }
-  },
-  "result": {
-    "item": "desertmobs:mudshotscepter"
   }
 }

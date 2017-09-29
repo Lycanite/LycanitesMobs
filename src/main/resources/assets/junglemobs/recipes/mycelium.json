@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "minecraft:mycelium",
+    "count": 2
+  },
+  "ingredients": [
+    {
+      "item": "junglemobs:propolis"
+    },
+    {
+      "item": "minecraft:dirt",
+      "data": 0
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

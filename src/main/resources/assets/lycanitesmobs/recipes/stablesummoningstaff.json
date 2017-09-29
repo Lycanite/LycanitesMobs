@@ -1,22 +1,22 @@
 {
-  "type": "forge:ore_shaped",
+  "result": {
+    "item": "lycanitesmobs:stablesummoningstaff"
+  },
   "pattern": [
     " D ",
     " S ",
     " G "
   ],
+  "type": "forge:ore_shaped",
   "key": {
-    "D": {
-      "item": "minecraft:diamond"
-    },
     "S": {
       "item": "lycanitesmobs:summoningstaff"
+    },
+    "D": {
+      "item": "minecraft:diamond"
     },
     "G": {
       "item": "minecraft:gold_ingot"
     }
-  },
-  "result": {
-    "item": "lycanitesmobs:stablesummoningstaff"
   }
 }

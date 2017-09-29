@@ -1,0 +1,11 @@
+{
+  "result": {
+    "item": "demonmobs:pinkymeatcooked"
+  },
+  "ingredients": [
+    {
+      "item": "demonmobs:devillasagna"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "infernomobs:bucketpurelava"
+  },
+  "pattern": [
+    " G ",
+    "IMI",
+    " I "
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "G": {
+      "item": "minecraft:ghast_tear"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "M": {
+      "item": "minecraft:magma_cream"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "infernomobs:searingtaco"
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:blaze_powder"
+    },
+    {
+      "item": "infernomobs:cephignismeatcooked"
+    },
+    {
+      "item": "minecraft:wheat"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

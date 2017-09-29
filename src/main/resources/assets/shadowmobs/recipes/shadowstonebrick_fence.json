@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "shadowmobs:shadowstonebrick_fence",
+    "count": 5
+  },
+  "pattern": [
+    "BBB",
+    "B B"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "B": {
+      "item": "shadowmobs:shadowstonebrick"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "result": {
+    "item": "plainsmobs:makameatcooked"
+  },
+  "ingredients": [
+    {
+      "item": "plainsmobs:bulwarkburger"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "demonmobs:demonstonebrick_wall",
+    "count": 6
+  },
+  "pattern": [
+    "BBB",
+    "BBB"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "B": {
+      "item": "demonmobs:demonstonebrick"
+    }
+  }
+}

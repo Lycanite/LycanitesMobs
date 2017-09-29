@@ -1,0 +1,11 @@
+{
+  "result": {
+    "item": "swampmobs:aspidmeatcooked"
+  },
+  "ingredients": [
+    {
+      "item": "swampmobs:mosspie"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

@@ -1,22 +1,22 @@
 {
-  "type": "forge:ore_shaped",
+  "result": {
+    "item": "lycanitesmobs:soulstone"
+  },
   "pattern": [
     "DPD",
     "PSP",
     "DPD"
   ],
+  "type": "forge:ore_shaped",
   "key": {
-    "D": {
-      "item": "minecraft:diamond"
-    },
     "P": {
       "item": "minecraft:ender_pearl"
     },
     "S": {
       "item": "lycanitesmobs:soulgazer"
+    },
+    "D": {
+      "item": "minecraft:diamond"
     }
-  },
-  "result": {
-    "item": "lycanitesmobs:soulstone"
   }
 }

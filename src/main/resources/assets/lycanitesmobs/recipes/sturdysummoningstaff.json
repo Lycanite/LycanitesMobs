@@ -1,22 +1,22 @@
 {
-  "type": "forge:ore_shaped",
+  "result": {
+    "item": "lycanitesmobs:sturdysummoningstaff"
+  },
   "pattern": [
     "III",
     "ISI",
     " O "
   ],
+  "type": "forge:ore_shaped",
   "key": {
-    "I": {
-      "item": "minecraft:iron_ingot"
-    },
     "S": {
       "item": "lycanitesmobs:summoningstaff"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
     },
     "O": {
       "item": "minecraft:obsidian"
     }
-  },
-  "result": {
-    "item": "lycanitesmobs:sturdysummoningstaff"
   }
 }

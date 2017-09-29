@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "saltwatermobs:seashellmaki"
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:vine"
+    },
+    {
+      "item": "minecraft:wheat"
+    },
+    {
+      "item": "saltwatermobs:ikameatcooked"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

@@ -1,17 +1,17 @@
 {
-  "type": "forge:ore_shapeless",
+  "result": {
+    "item": "demonmobs:devillasagna"
+  },
   "ingredients": [
     {
-      "item": "demonmobs:pinkymeatcooked"
+      "item": "minecraft:nether_wart"
     },
     {
       "item": "minecraft:wheat"
     },
     {
-      "item": "minecraft:nether_wart"
+      "item": "demonmobs:pinkymeatcooked"
     }
   ],
-  "result": {
-    "item": "demonmobs:devillasagna"
-  }
+  "type": "forge:ore_shapeless"
 }

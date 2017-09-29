@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "demonmobs:demonstonebrick_slab",
+    "data": 0,
+    "count": 6
+  },
+  "pattern": [
+    "BBB"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "B": {
+      "item": "demonmobs:demonstonebrick"
+    }
+  }
+}

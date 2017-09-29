@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "plainsmobs:bulwarkburger"
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:bread"
+    },
+    {
+      "item": "plainsmobs:makameatcooked"
+    },
+    {
+      "item": "minecraft:bread"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

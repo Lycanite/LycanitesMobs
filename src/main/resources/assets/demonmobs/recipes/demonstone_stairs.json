@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "demonmobs:demonstone_stairs",
+    "count": 8
+  },
+  "pattern": [
+    "B  ",
+    "BB ",
+    "BBB"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "B": {
+      "item": "demonmobs:demonstone"
+    }
+  }
+}

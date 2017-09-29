@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "demonmobs:demonstonechiseled",
+    "count": 2
+  },
+  "pattern": [
+    "B ",
+    "B "
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "B": {
+      "item": "demonmobs:demonstonetile_slab",
+      "data": 0
+    }
+  }
+}

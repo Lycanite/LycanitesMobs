@@ -1,0 +1,29 @@
+{
+  "result": {
+    "item": "saltwatermobs:hermatreat",
+    "count": 4
+  },
+  "pattern": [
+    "  C",
+    "BBT",
+    "  P"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "P": {
+      "item": "minecraft:fish",
+      "data": 2
+    },
+    "B": {
+      "item": "minecraft:bone"
+    },
+    "C": {
+      "item": "minecraft:fish",
+      "data": 1
+    },
+    "T": {
+      "item": "minecraft:fish",
+      "data": 0
+    }
+  }
+}

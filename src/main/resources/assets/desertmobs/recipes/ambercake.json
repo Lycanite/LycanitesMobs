@@ -1,18 +1,18 @@
 {
-  "type": "forge:ore_shapeless",
+  "result": {
+    "item": "desertmobs:ambercake"
+  },
   "ingredients": [
     {
-      "item": "desertmobs:joustmeatcooked"
+      "item": "minecraft:sugar"
     },
     {
       "item": "minecraft:dye",
-	  "data": 2
+      "data": 2
     },
     {
-      "item": "minecraft:sugar"
+      "item": "desertmobs:joustmeatcooked"
     }
   ],
-  "result": {
-    "item": "desertmobs:ambercake"
-  }
+  "type": "forge:ore_shapeless"
 }

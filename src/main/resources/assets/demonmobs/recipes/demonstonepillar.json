@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "demonmobs:demonstonepillar",
+    "count": 2
+  },
+  "pattern": [
+    "B ",
+    "B "
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "B": {
+      "item": "demonmobs:demonstone"
+    }
+  }
+}

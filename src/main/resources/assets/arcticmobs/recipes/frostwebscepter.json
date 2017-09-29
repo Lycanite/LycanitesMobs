@@ -1,19 +1,19 @@
 {
-  "type": "forge:ore_shaped",
+  "result": {
+    "item": "arcticmobs:frostwebscepter"
+  },
   "pattern": [
     "CCC",
     "CRC",
     "CRC"
   ],
+  "type": "forge:ore_shaped",
   "key": {
-    "C": {
-      "item": "arcticmobs:frostwebcharge"
-    },
     "R": {
       "item": "minecraft:blaze_rod"
+    },
+    "C": {
+      "item": "arcticmobs:frostwebcharge"
     }
-  },
-  "result": {
-    "item": "arcticmobs:frostwebscepter"
   }
 }

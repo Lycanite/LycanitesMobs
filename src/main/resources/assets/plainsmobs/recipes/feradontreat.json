@@ -1,0 +1,32 @@
+{
+  "result": {
+    "item": "plainsmobs:feradontreat",
+    "count": 4
+  },
+  "pattern": [
+    " RC",
+    "BBT",
+    " MP"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "P": {
+      "item": "minecraft:cooked_porkchop"
+    },
+    "R": {
+      "item": "minecraft:cooked_rabbit"
+    },
+    "B": {
+      "item": "minecraft:bone"
+    },
+    "C": {
+      "item": "minecraft:cooked_chicken"
+    },
+    "T": {
+      "item": "minecraft:cooked_beef"
+    },
+    "M": {
+      "item": "minecraft:cooked_mutton"
+    }
+  }
+}

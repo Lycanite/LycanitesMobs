@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "swampmobs:mosspie"
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:vine"
+    },
+    {
+      "item": "minecraft:brown_mushroom"
+    },
+    {
+      "item": "swampmobs:aspidmeatcooked"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

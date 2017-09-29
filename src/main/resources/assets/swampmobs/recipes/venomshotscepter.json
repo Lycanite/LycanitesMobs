@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "swampmobs:venomshotscepter"
+  },
+  "pattern": [
+    "CPC",
+    "CRC",
+    "CRC"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "P": {
+      "item": "swampmobs:poisongland"
+    },
+    "R": {
+      "item": "minecraft:blaze_rod"
+    },
+    "C": {
+      "item": "minecraft:rotten_flesh"
+    }
+  }
+}

@@ -1,22 +1,22 @@
 {
-  "type": "forge:ore_shaped",
+  "result": {
+    "item": "lycanitesmobs:soulkey"
+  },
   "pattern": [
     "DND",
     "DSD",
     "DDD"
   ],
+  "type": "forge:ore_shaped",
   "key": {
+    "S": {
+      "item": "lycanitesmobs:soulgazer"
+    },
     "D": {
       "item": "minecraft:diamond"
     },
     "N": {
       "item": "minecraft:nether_star"
-    },
-    "S": {
-      "item": "lycanitesmobs:soulgazer"
     }
-  },
-  "result": {
-    "item": "lycanitesmobs:soulkey"
   }
 }

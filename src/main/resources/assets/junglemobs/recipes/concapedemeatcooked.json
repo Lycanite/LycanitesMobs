@@ -1,0 +1,11 @@
+{
+  "result": {
+    "item": "junglemobs:concapedemeatcooked"
+  },
+  "ingredients": [
+    {
+      "item": "junglemobs:tropicalcurry"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

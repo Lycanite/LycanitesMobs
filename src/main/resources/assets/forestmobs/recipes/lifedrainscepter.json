@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "forestmobs:lifedrainscepter"
+  },
+  "pattern": [
+    "CCC",
+    "CRC",
+    "CRC"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "R": {
+      "item": "minecraft:blaze_rod"
+    },
+    "C": {
+      "item": "forestmobs:lifedraincharge"
+    }
+  }
+}

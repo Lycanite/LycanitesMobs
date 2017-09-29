@@ -1,5 +1,7 @@
 {
-  "type": "forge:ore_shapeless",
+  "result": {
+    "item": "lycanitesmobs:battleburrito"
+  },
   "ingredients": [
     {
       "item": "demonmobs:pinkymeatcooked"
@@ -17,7 +19,5 @@
       "item": "swampmobs:aspidmeatcooked"
     }
   ],
-  "result": {
-    "item": "lycanitesmobs:battleburrito"
-  }
+  "type": "forge:ore_shapeless"
 }

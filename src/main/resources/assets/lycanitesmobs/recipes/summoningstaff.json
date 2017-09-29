@@ -1,22 +1,22 @@
 {
-  "type": "forge:ore_shaped",
+  "result": {
+    "item": "lycanitesmobs:summoningstaff"
+  },
   "pattern": [
     " E ",
     " B ",
     " G "
   ],
+  "type": "forge:ore_shaped",
   "key": {
-    "E": {
-      "item": "minecraft:ender_pearl"
-    },
     "B": {
       "item": "minecraft:bone"
+    },
+    "E": {
+      "item": "minecraft:ender_pearl"
     },
     "G": {
       "item": "minecraft:gold_ingot"
     }
-  },
-  "result": {
-    "item": "lycanitesmobs:summoningstaff"
   }
 }

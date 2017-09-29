@@ -1,19 +1,19 @@
 {
-  "type": "forge:ore_shaped",
+  "result": {
+    "item": "demonmobs:demoniclightningscepter"
+  },
   "pattern": [
     " C ",
     " R ",
     " R "
   ],
+  "type": "forge:ore_shaped",
   "key": {
-    "C": {
-      "item": "demonmobs:demoniclightningcharge"
-    },
     "R": {
       "item": "minecraft:blaze_rod"
+    },
+    "C": {
+      "item": "demonmobs:demoniclightningcharge"
     }
-  },
-  "result": {
-    "item": "demonmobs:demoniclightningscepter"
   }
 }

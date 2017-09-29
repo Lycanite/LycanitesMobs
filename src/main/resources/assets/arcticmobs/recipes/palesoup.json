@@ -1,17 +1,17 @@
 {
-  "type": "forge:ore_shapeless",
+  "result": {
+    "item": "arcticmobs:palesoup"
+  },
   "ingredients": [
     {
-      "item": "arcticmobs:yetimeatcooked"
+      "item": "minecraft:milk_bucket"
     },
     {
       "item": "minecraft:bowl"
     },
     {
-      "item": "minecraft:milk_bucket"
+      "item": "arcticmobs:yetimeatcooked"
     }
   ],
-  "result": {
-    "item": "arcticmobs:palesoup"
-  }
+  "type": "forge:ore_shapeless"
 }

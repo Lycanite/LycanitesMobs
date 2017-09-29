@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "infernomobs:azurecinderfallsword"
+  },
+  "pattern": [
+    "DDD",
+    "DSD",
+    "DDD"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "S": {
+      "item": "infernomobs:cinderfallsword"
+    },
+    "D": {
+      "item": "minecraft:diamond"
+    }
+  }
+}

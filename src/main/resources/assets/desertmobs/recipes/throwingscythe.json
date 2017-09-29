@@ -1,15 +1,15 @@
 {
-  "type": "forge:ore_shapeless",
-  "ingredients": [
-    {
-      "item": "desertmobs:throwingscythe"
-    },
-    {
-      "item": "minecraft:iron_ingot"
-    }
-  ],
   "result": {
     "item": "desertmobs:throwingscythe",
-	"amount": 17
-  }
+    "count": 17
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:iron_ingot"
+    },
+    {
+      "item": "desertmobs:throwingscythe"
+    }
+  ],
+  "type": "forge:ore_shapeless"
 }

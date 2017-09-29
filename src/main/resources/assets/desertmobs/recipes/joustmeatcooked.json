@@ -1,0 +1,11 @@
+{
+  "result": {
+    "item": "desertmobs:joustmeatcooked"
+  },
+  "ingredients": [
+    {
+      "item": "desertmobs:ambercake"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

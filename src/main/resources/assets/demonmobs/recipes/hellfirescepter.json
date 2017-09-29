@@ -1,19 +1,19 @@
 {
-  "type": "forge:ore_shaped",
-  "pattern": [
-    " C ",
-    " R ",
-    " R "
-  ],
-  "key": {
-    "C": {
-      "item": "demonmobs:hellfirecharge"
-    },
-    "R": {
-      "item": "minecraft:blaze_rod"
-    }
-  },
   "result": {
     "item": "demonmobs:hellfirescepter"
+  },
+  "pattern": [
+    "CCC",
+    "CRC",
+    "CRC"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "R": {
+      "item": "minecraft:blaze_rod"
+    },
+    "C": {
+      "item": "demonmobs:hellfirecharge"
+    }
   }
 }

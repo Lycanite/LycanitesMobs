@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "swampmobs:goldenvenomaxeblade"
+  },
+  "pattern": [
+    "DDD",
+    "DSD",
+    "DDD"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "S": {
+      "item": "swampmobs:venomaxeblade"
+    },
+    "D": {
+      "item": "minecraft:diamond"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "result": {
+    "item": "plainsmobs:morocktreat",
+    "count": 4
+  },
+  "pattern": [
+    "TTT",
+    "TDT",
+    "TTT"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "T": {
+      "item": "plainsmobs:makameatcooked"
+    },
+    "D": {
+      "item": "minecraft:diamond"
+    }
+  }
+}

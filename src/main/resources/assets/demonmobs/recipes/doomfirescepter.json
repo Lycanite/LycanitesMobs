@@ -1,19 +1,19 @@
 {
-  "type": "forge:ore_shaped",
-  "pattern": [
-    "CCC",
-    "CRC",
-    "CRC"
-  ],
-  "key": {
-    "C": {
-      "item": "demonmobs:doomfirecharge"
-    },
-    "R": {
-      "item": "minecraft:blaze_rod"
-    }
-  },
   "result": {
     "item": "demonmobs:doomfirescepter"
+  },
+  "pattern": [
+    " C ",
+    " R ",
+    " R "
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "R": {
+      "item": "minecraft:blaze_rod"
+    },
+    "C": {
+      "item": "demonmobs:doomfirecharge"
+    }
   }
 }

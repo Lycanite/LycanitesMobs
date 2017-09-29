@@ -1,0 +1,18 @@
+{
+  "result": {
+    "item": "shadowmobs:bloodchili"
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:bowl"
+    },
+    {
+      "item": "minecraft:dye",
+      "data": 3
+    },
+    {
+      "item": "shadowmobs:chupacabrameatcooked"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

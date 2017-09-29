@@ -1,0 +1,11 @@
+{
+  "result": {
+    "item": "infernomobs:cephignismeatcooked"
+  },
+  "ingredients": [
+    {
+      "item": "infernomobs:searingtaco"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

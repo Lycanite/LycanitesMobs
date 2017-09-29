@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "swampmobs:venomaxeblade"
+  },
+  "pattern": [
+    "CCC",
+    "CSC",
+    "CJC"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "C": {
+      "item": "swampmobs:poisongland"
+    },
+    "S": {
+      "item": "minecraft:diamond_sword"
+    },
+    "J": {
+      "item": "lycanitesmobs:soulgazer"
+    }
+  }
+}

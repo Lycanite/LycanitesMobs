@@ -1,0 +1,11 @@
+{
+  "result": {
+    "item": "forestmobs:arisaurmeatcooked"
+  },
+  "ingredients": [
+    {
+      "item": "forestmobs:paleosalad"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

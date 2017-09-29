@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "shadowmobs:shadowstonechiseled",
+    "count": 2
+  },
+  "pattern": [
+    "B ",
+    "B "
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "B": {
+      "item": "shadowmobs:shadowstone_slab",
+      "data": 0
+    }
+  }
+}

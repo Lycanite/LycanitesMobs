@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "mountainmobs:arcanelaserstormscepter"
+  },
+  "pattern": [
+    " C ",
+    " R ",
+    " R "
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "R": {
+      "item": "minecraft:blaze_rod"
+    },
+    "C": {
+      "item": "mountainmobs:arcanelaserstormcharge"
+    }
+  }
+}

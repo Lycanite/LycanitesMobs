@@ -1,0 +1,14 @@
+{
+  "result": {
+    "item": "shadowmobs:shadowcrystal"
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:obsidian"
+    },
+    {
+      "item": "minecraft:glowstone"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

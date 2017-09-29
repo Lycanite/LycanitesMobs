@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "shadowmobs:shadowstone_slab",
+    "data": 0,
+    "count": 6
+  },
+  "pattern": [
+    "BBB"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "B": {
+      "item": "shadowmobs:shadowstone"
+    }
+  }
+}

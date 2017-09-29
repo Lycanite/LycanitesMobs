@@ -1,0 +1,20 @@
+{
+  "result": {
+    "item": "mountainmobs:peakskebab"
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:stick"
+    },
+    {
+      "item": "minecraft:carrot"
+    },
+    {
+      "item": "minecraft:melon"
+    },
+    {
+      "item": "mountainmobs:yalemeatcooked"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

@@ -1,28 +1,28 @@
 {
-  "type": "forge:ore_shaped",
+  "result": {
+    "item": "lycanitesmobs:bloodsummoningstaff"
+  },
   "pattern": [
     "RRR",
     "BSB",
     "NDN"
   ],
+  "type": "forge:ore_shaped",
   "key": {
-    "D": {
-      "item": "minecraft:diamond"
-    },
     "R": {
       "item": "minecraft:redstone"
     },
     "B": {
       "item": "minecraft:bone"
     },
-    "N": {
-      "item": "minecraft:nether_wart"
-    },
     "S": {
       "item": "lycanitesmobs:summoningstaff"
+    },
+    "D": {
+      "item": "minecraft:diamond"
+    },
+    "N": {
+      "item": "minecraft:nether_wart"
     }
-  },
-  "result": {
-    "item": "lycanitesmobs:bloodsummoningstaff"
   }
 }

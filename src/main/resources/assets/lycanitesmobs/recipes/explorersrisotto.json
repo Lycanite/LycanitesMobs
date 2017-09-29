@@ -1,5 +1,7 @@
 {
-  "type": "forge:ore_shapeless",
+  "result": {
+    "item": "lycanitesmobs:explorersrisotto"
+  },
   "ingredients": [
     {
       "item": "desertmobs:joustmeatcooked"
@@ -14,7 +16,5 @@
       "item": "junglemobs:concapedemeatcooked"
     }
   ],
-  "result": {
-    "item": "lycanitesmobs:explorersrisotto"
-  }
+  "type": "forge:ore_shapeless"
 }

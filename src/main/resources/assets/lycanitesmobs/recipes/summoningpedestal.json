@@ -1,25 +1,25 @@
 {
-  "type": "forge:ore_shaped",
+  "result": {
+    "item": "lycanitesmobs:summoningpedestal"
+  },
   "pattern": [
     "GNG",
     "DSD",
     "GDG"
   ],
+  "type": "forge:ore_shaped",
   "key": {
-    "D": {
-      "item": "minecraft:diamond"
+    "S": {
+      "item": "lycanitesmobs:soulstone"
     },
-    "N": {
-      "item": "minecraft:nether_star"
+    "D": {
+      "item": "minecraft:diamond_block"
     },
     "G": {
       "item": "minecraft:gold_block"
     },
-    "S": {
-      "item": "lycanitesmobs:soulstone"
+    "N": {
+      "item": "minecraft:nether_star"
     }
-  },
-  "result": {
-    "item": "lycanitesmobs:summoningpedestal"
   }
 }

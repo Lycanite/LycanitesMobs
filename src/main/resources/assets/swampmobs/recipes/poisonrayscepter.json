@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "swampmobs:poisonrayscepter"
+  },
+  "pattern": [
+    "CPC",
+    "CRC",
+    "CRC"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "P": {
+      "item": "swampmobs:poisongland"
+    },
+    "R": {
+      "item": "minecraft:blaze_rod"
+    },
+    "C": {
+      "item": "minecraft:fermented_spider_eye"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "result": {
+    "item": "saltwatermobs:ikameatcooked"
+  },
+  "ingredients": [
+    {
+      "item": "saltwatermobs:seashellmaki"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

@@ -1,19 +1,20 @@
 {
-  "type": "forge:ore_shaped",
+  "result": {
+    "item": "demonmobs:cacodemontreat",
+    "count": 4
+  },
   "pattern": [
     "TTT",
     "BBT",
     "TTT"
   ],
+  "type": "forge:ore_shaped",
   "key": {
-    "T": {
-      "item": "demonmobs:pinkymeatcooked"
-    },
     "B": {
       "item": "minecraft:bone"
+    },
+    "T": {
+      "item": "demonmobs:pinkymeatcooked"
     }
-  },
-  "result": {
-    "item": "demonmobs:cacodemontreat"
   }
 }

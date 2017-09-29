@@ -1,19 +1,20 @@
 {
-  "type": "forge:ore_shaped",
+  "result": {
+    "item": "demonmobs:pinkytreat",
+    "count": 4
+  },
   "pattern": [
     "TTT",
     "BBT",
     "TTT"
   ],
+  "type": "forge:ore_shaped",
   "key": {
-    "T": {
-      "item": "demonmobs:hellfirecharge"
-    },
     "B": {
       "item": "minecraft:bone"
+    },
+    "T": {
+      "item": "demonmobs:hellfirecharge"
     }
-  },
-  "result": {
-    "item": "demonmobs:pinkytreat"
   }
 }

@@ -1,19 +1,20 @@
 {
-  "type": "forge:ore_shaped",
+  "result": {
+    "item": "desertmobs:erepedetreat",
+    "count": 4
+  },
   "pattern": [
     "TTT",
     "BBT",
     "TTT"
   ],
+  "type": "forge:ore_shaped",
   "key": {
-    "T": {
-      "item": "minecraft:gold_ingot"
-    },
     "B": {
       "item": "minecraft:bone"
+    },
+    "T": {
+      "item": "minecraft:gold_ingot"
     }
-  },
-  "result": {
-    "item": "desertmobs:erepedetreat"
   }
 }

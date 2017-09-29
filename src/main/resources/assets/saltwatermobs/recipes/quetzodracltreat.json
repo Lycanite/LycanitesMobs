@@ -1,0 +1,20 @@
+{
+  "result": {
+    "item": "saltwatermobs:quetzodracltreat",
+    "count": 4
+  },
+  "pattern": [
+    "TTT",
+    "TDT",
+    "TTT"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "T": {
+      "item": "saltwatermobs:ikameatcooked"
+    },
+    "D": {
+      "item": "minecraft:diamond"
+    }
+  }
+}

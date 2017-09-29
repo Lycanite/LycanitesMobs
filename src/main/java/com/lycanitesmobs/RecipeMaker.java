@@ -10,6 +10,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import com.lycanitesmobs.RecipeExporter.RecipeExporter;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
@@ -98,7 +99,7 @@ public class RecipeMaker {
 
         // ========== Base ==========
         if(creationItem != null && creationBlock != null) {
-            GameRegistry.addRecipe(new ShapelessOreRecipe(
+            RecipeExporter.addShapelessRecipe(
                     new ItemStack(ObjectManager.getBlock(stoneName + "stone"), 9, 0),
                     creationItem,
                     creationBlock,
@@ -109,108 +110,108 @@ public class RecipeMaker {
                     creationBlock,
                     creationBlock,
                     creationBlock
-            ));
+            );
         }
 
         // ========== Brick ==========
         // Made from 2x2
-        GameRegistry.addRecipe(new ShapedOreRecipe(
+        RecipeExporter.addShapedRecipe(
                 new ItemStack(ObjectManager.getBlock(stoneName + "stonebrick"), 4, 0),
                 "BB", "BB",
                 'B', ObjectManager.getBlock(stoneName + "stone")
-        ));
+        );
 
         // Brick Fence: Made from n shape
-        GameRegistry.addRecipe(new ShapedOreRecipe(
+        RecipeExporter.addShapedRecipe(
                 new ItemStack(ObjectManager.getBlock(stoneName + "stonebrick_fence"), 5, 0),
                 "BBB", "B B",
                 'B', ObjectManager.getBlock(stoneName + "stonebrick")
-        ));
+        );
 
         // Brick Wall: Made from 3x2
-        GameRegistry.addRecipe(new ShapedOreRecipe(
+        RecipeExporter.addShapedRecipe(
                 new ItemStack(ObjectManager.getBlock(stoneName + "stonebrick_wall"), 6, 0),
                 "BBB", "BBB",
                 'B', ObjectManager.getBlock(stoneName + "stonebrick")
-        ));
+        );
 
 
         // ========== Tile ==========
         // Made from 2x2 polished
-        GameRegistry.addRecipe(new ShapedOreRecipe(
+        RecipeExporter.addShapedRecipe(
                 new ItemStack(ObjectManager.getBlock(stoneName + "stonetile"), 4, 0),
                 "BB", "BB",
                 'B', ObjectManager.getBlock(stoneName + "stonepolished")
-        ));
+        );
 
 
         // ========== Polished ==========
         // Made from 2 horizontally
-        GameRegistry.addRecipe(new ShapedOreRecipe(
+        RecipeExporter.addShapedRecipe(
                 new ItemStack(ObjectManager.getBlock(stoneName + "stonepolished"), 2, 0),
                 "BB",
                 'B', ObjectManager.getBlock(stoneName + "stone")
-        ));
+        );
 
 
         // ========== Chiseled ==========
         // Made from 2 slabs vertically
-        GameRegistry.addRecipe(new ShapedOreRecipe(
+        RecipeExporter.addShapedRecipe(
                 new ItemStack(ObjectManager.getBlock(stoneName + "stonechiseled"), 2, 0),
                 "B ", "B ",
                 'B', ObjectManager.getBlock(stoneName + "stone_slab")
-        ));
-        GameRegistry.addRecipe(new ShapedOreRecipe(
+        );
+        RecipeExporter.addShapedRecipe(
                 new ItemStack(ObjectManager.getBlock(stoneName + "stonechiseled"), 2, 0),
                 "B ", "B ",
                 'B', ObjectManager.getBlock(stoneName + "stonebrick_slab")
-        ));
-        GameRegistry.addRecipe(new ShapedOreRecipe(
+        );
+        RecipeExporter.addShapedRecipe(
                 new ItemStack(ObjectManager.getBlock(stoneName + "stonechiseled"), 2, 0),
                 "B ", "B ",
                 'B', ObjectManager.getBlock(stoneName + "stonetile_slab")
-        ));
+        );
 
 
         // ========== Pillar ==========
         // Pillar: Made from 2 vertically
-        GameRegistry.addRecipe(new ShapedOreRecipe(
+        RecipeExporter.addShapedRecipe(
                 new ItemStack(ObjectManager.getBlock(stoneName + "stonepillar"), 2, 0),
                 "B ", "B ",
                 'B', ObjectManager.getBlock(stoneName + "stone")
-        ));
+        );
 
 
         // ========== Crystal ==========
         // Crystal:
-        GameRegistry.addRecipe(new ShapelessOreRecipe(
+        RecipeExporter.addShapelessRecipe(
                 new ItemStack(ObjectManager.getBlock(stoneName + "crystal"), 1, 0),
                 creationItem,
                 Blocks.GLOWSTONE
-        ));
+        );
 
 
         // ========== Stairs and Slabs ==========
         for(String type : new String[] {"", "brick", "tile"}) {
 
             // Stairs;
-            GameRegistry.addRecipe(new ShapedOreRecipe(
+            RecipeExporter.addShapedRecipe(
                     new ItemStack(ObjectManager.getBlock(stoneName + "stone" + type + "_stairs"), 8, 0),
                     "B  ", "BB ", "BBB",
                     'B', ObjectManager.getBlock(stoneName + "stone" + type)
-            ));
-            GameRegistry.addRecipe(new ShapedOreRecipe(
+            );
+            RecipeExporter.addShapedRecipe(
                     new ItemStack(ObjectManager.getBlock(stoneName + "stone" + type + "_stairs"), 8, 0),
                     "  B", " BB", "BBB",
                     'B', ObjectManager.getBlock(stoneName + "stone" + type)
-            ));
+            );
 
             // Slabs:
-            GameRegistry.addRecipe(new ShapedOreRecipe(
+            RecipeExporter.addShapedRecipe(
                     new ItemStack(ObjectManager.getBlock(stoneName + "stone" + type + "_slab"), 6, 0),
                     "BBB",
                     'B', ObjectManager.getBlock(stoneName + "stone" + type)
-            ));
+            );
         }
     }
 }

@@ -34,6 +34,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import com.lycanitesmobs.RecipeExporter.RecipeExporter;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -219,49 +220,49 @@ public class SaltwaterMobs {
 
 		
 		// ========== Crafting ==========
-        GameRegistry.addRecipe(new ShapelessOreRecipe(
+        RecipeExporter.addShapelessRecipe(
                 new ItemStack(ObjectManager.getItem("seashellmaki"), 1, 0),
                 new Object[]{
                         Blocks.VINE,
                         Items.WHEAT,
                         ObjectManager.getItem("ikameatcooked"),
                 }
-        ));
+        );
 
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
+		RecipeExporter.addShapelessRecipe(
 				new ItemStack(ObjectManager.getItem("ikameatcooked"), 1, 0),
 				new Object[] { ObjectManager.getItem("seashellmaki") }
-			));
+			);
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(
+		RecipeExporter.addShapedRecipe(
 				new ItemStack(ObjectManager.getItem("raikotreat"), 4, 0),
-				new Object[] { "TTT", "BBT", "TTT",
+				new Object[]{"TTT", "BBT", "TTT",
 						Character.valueOf('T'), ObjectManager.getItem("ikameatcooked"),
 						Character.valueOf('B'), Items.BONE
-				}));
+				});
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(
+		RecipeExporter.addShapedRecipe(
 				new ItemStack(ObjectManager.getItem("roatreat"), 4, 0),
-				new Object[] { "TTT", "BBT", "TTT",
+				new Object[]{"TTT", "BBT", "TTT",
 						Character.valueOf('T'), new ItemStack(Items.DYE, 1, 0),
 						Character.valueOf('B'), Items.BONE
-				}));
+				});
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(
+		RecipeExporter.addShapedRecipe(
 				new ItemStack(ObjectManager.getItem("hermatreat"), 4, 0),
-				new Object[] { "  C", "BBT", "  P",
+				new Object[]{"  C", "BBT", "  P",
 						Character.valueOf('T'), new ItemStack(Items.FISH, 1, 0),
 						Character.valueOf('C'), new ItemStack(Items.FISH, 1, 1),
 						Character.valueOf('P'), new ItemStack(Items.FISH, 1, 2),
 						Character.valueOf('B'), Items.BONE
-				}));
+				});
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(
+		RecipeExporter.addShapedRecipe(
 				new ItemStack(ObjectManager.getItem("quetzodracltreat"), 4, 0),
-				new Object[] { "TTT", "TDT", "TTT",
+				new Object[]{"TTT", "TDT", "TTT",
 						Character.valueOf('T'), ObjectManager.getItem("ikameatcooked"),
 						Character.valueOf('D'), Items.DIAMOND
-				}));
+				});
 		
 		// ========== Smelting ==========
 		GameRegistry.addSmelting(ObjectManager.getItem("ikameatraw"), new ItemStack(ObjectManager.getItem("ikameatcooked"), 1), 0.5f);

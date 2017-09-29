@@ -51,6 +51,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import com.lycanitesmobs.RecipeExporter.RecipeExporter;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -286,69 +287,69 @@ public class DemonMobs {
 
 
 		// ========== Crafting ==========
-        GameRegistry.addRecipe(new ShapedOreRecipe(
+        RecipeExporter.addShapedRecipe(
                 new ItemStack(ObjectManager.getBlock("soulcubedemonic"), 1, 0),
-                new Object[] { "DDD", "DSD", "DDD",
-                        Character.valueOf('S'), ObjectManager.getItem("soulstonedemonic"),
-                        Character.valueOf('D'), Blocks.DIAMOND_BLOCK
-                }));
+                new Object[]{"DDD", "DSD", "DDD",
+						Character.valueOf('S'), ObjectManager.getItem("soulstonedemonic"),
+						Character.valueOf('D'), Blocks.DIAMOND_BLOCK
+				});
 
         if(ItemInfo.enableWeaponRecipes) {
-            GameRegistry.addRecipe(new ShapedOreRecipe(
+            RecipeExporter.addShapedRecipe(
                     new ItemStack(ObjectManager.getItem("doomfirescepter"), 1, 0),
                     new Object[]{" C ", " R ", " R ",
-                            Character.valueOf('C'), ObjectManager.getItem("doomfirecharge"),
-                            Character.valueOf('R'), Items.BLAZE_ROD
-                    }));
+							Character.valueOf('C'), ObjectManager.getItem("doomfirecharge"),
+							Character.valueOf('R'), Items.BLAZE_ROD
+					});
 
-            GameRegistry.addRecipe(new ShapedOreRecipe(
+            RecipeExporter.addShapedRecipe(
                     new ItemStack(ObjectManager.getItem("hellfirescepter"), 1, 0),
                     new Object[]{"CCC", "CRC", "CRC",
-                            Character.valueOf('C'), ObjectManager.getItem("hellfirecharge"),
-                            Character.valueOf('R'), Items.BLAZE_ROD
-                    }));
+							Character.valueOf('C'), ObjectManager.getItem("hellfirecharge"),
+							Character.valueOf('R'), Items.BLAZE_ROD
+					});
 
-            GameRegistry.addRecipe(new ShapedOreRecipe(
+            RecipeExporter.addShapedRecipe(
                     new ItemStack(ObjectManager.getItem("devilstarscepter"), 1, 0),
                     new Object[]{" C ", " R ", " R ",
-                            Character.valueOf('C'), ObjectManager.getItem("devilstarcharge"),
-                            Character.valueOf('R'), Items.BLAZE_ROD
-                    }));
+							Character.valueOf('C'), ObjectManager.getItem("devilstarcharge"),
+							Character.valueOf('R'), Items.BLAZE_ROD
+					});
 
-            GameRegistry.addRecipe(new ShapedOreRecipe(
+            RecipeExporter.addShapedRecipe(
                     new ItemStack(ObjectManager.getItem("demoniclightningscepter"), 1, 0),
                     new Object[]{" C ", " R ", " R ",
-                            Character.valueOf('C'), ObjectManager.getItem("demoniclightningcharge"),
-                            Character.valueOf('R'), Items.BLAZE_ROD
-                    }));
+							Character.valueOf('C'), ObjectManager.getItem("demoniclightningcharge"),
+							Character.valueOf('R'), Items.BLAZE_ROD
+					});
         }
 
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
+		RecipeExporter.addShapelessRecipe(
 				new ItemStack(ObjectManager.getItem("devillasagna"), 1, 0),
 				new Object[] {
 					Items.NETHER_WART,
 					Items.WHEAT,
 					ObjectManager.getItem("pinkymeatcooked")
 				}
-			));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
+			);
+		RecipeExporter.addShapelessRecipe(
 				new ItemStack(ObjectManager.getItem("pinkymeatcooked"), 1, 0),
 				new Object[] { ObjectManager.getItem("devillasagna") }
-			));
+			);
 		
-		GameRegistry.addRecipe(new ShapedOreRecipe(
+		RecipeExporter.addShapedRecipe(
 				new ItemStack(ObjectManager.getItem("pinkytreat"), 4, 0),
-				new Object[] { "TTT", "BBT", "TTT",
-				Character.valueOf('T'), ObjectManager.getItem("hellfirecharge"),
-				Character.valueOf('B'), Items.BONE
-			}));
+				new Object[]{"TTT", "BBT", "TTT",
+						Character.valueOf('T'), ObjectManager.getItem("hellfirecharge"),
+						Character.valueOf('B'), Items.BONE
+				});
 		
-		GameRegistry.addRecipe(new ShapedOreRecipe(
+		RecipeExporter.addShapedRecipe(
 				new ItemStack(ObjectManager.getItem("cacodemontreat"), 4, 0),
-				new Object[] { "TTT", "BBT", "TTT",
-				Character.valueOf('T'), ObjectManager.getItem("pinkymeatcooked"),
-				Character.valueOf('B'), Items.BONE
-			}));
+				new Object[]{"TTT", "BBT", "TTT",
+						Character.valueOf('T'), ObjectManager.getItem("pinkymeatcooked"),
+						Character.valueOf('B'), Items.BONE
+				});
 
 
 		// ========== Smelting ==========

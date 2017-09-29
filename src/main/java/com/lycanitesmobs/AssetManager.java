@@ -7,6 +7,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.client.model.IModelCustomData;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import com.lycanitesmobs.RecipeExporter.RecipeExporter;
 
 import java.util.HashMap;
 import java.util.Map;

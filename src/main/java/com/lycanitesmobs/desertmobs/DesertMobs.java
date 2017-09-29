@@ -33,6 +33,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import com.lycanitesmobs.RecipeExporter.RecipeExporter;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -211,53 +212,53 @@ public class DesertMobs {
 		}
 		
 		// ========== Crafting ==========
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
+		RecipeExporter.addShapelessRecipe(
 				new ItemStack(ObjectManager.getItem("throwingscythe"), 17, 0),
 				new Object[] { Items.IRON_INGOT, ObjectManager.getItem("throwingscythe") }
-			));
+			);
 
         if(ItemInfo.enableWeaponRecipes) {
-            GameRegistry.addRecipe(new ShapedOreRecipe(
+            RecipeExporter.addShapedRecipe(
                     new ItemStack(ObjectManager.getItem("scythescepter"), 1, 0),
                     new Object[]{"CCC", "CRC", "CRC",
-                            Character.valueOf('C'), ObjectManager.getItem("throwingscythe"),
-                            Character.valueOf('R'), Items.BLAZE_ROD
-                    }));
+							Character.valueOf('C'), ObjectManager.getItem("throwingscythe"),
+							Character.valueOf('R'), Items.BLAZE_ROD
+					});
 
-            GameRegistry.addRecipe(new ShapedOreRecipe(
+            RecipeExporter.addShapedRecipe(
                     new ItemStack(ObjectManager.getItem("mudshotscepter"), 1, 0),
                     new Object[]{" C ", " R ", " R ",
-                            Character.valueOf('C'), ObjectManager.getItem("mudshotcharge"),
-                            Character.valueOf('R'), Items.BLAZE_ROD
-                    }));
+							Character.valueOf('C'), ObjectManager.getItem("mudshotcharge"),
+							Character.valueOf('R'), Items.BLAZE_ROD
+					});
         }
 
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
+		RecipeExporter.addShapelessRecipe(
 				new ItemStack(ObjectManager.getItem("ambercake"), 1, 0),
 				new Object[] {
 					Items.SUGAR,
 					new ItemStack(Items.DYE, 1, 2),
 					ObjectManager.getItem("joustmeatcooked")
 				}
-			));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
+			);
+		RecipeExporter.addShapelessRecipe(
 				new ItemStack(ObjectManager.getItem("joustmeatcooked"), 1, 0),
 				new Object[] { ObjectManager.getItem("ambercake") }
-			));
+			);
 		
-		GameRegistry.addRecipe(new ShapedOreRecipe(
+		RecipeExporter.addShapedRecipe(
 				new ItemStack(ObjectManager.getItem("crusktreat"), 4, 0),
-				new Object[] { "TTT", "BBT", "TTT",
-				Character.valueOf('T'), ObjectManager.getItem("joustmeatcooked"),
-				Character.valueOf('B'), Items.BONE
-			}));
+				new Object[]{"TTT", "BBT", "TTT",
+						Character.valueOf('T'), ObjectManager.getItem("joustmeatcooked"),
+						Character.valueOf('B'), Items.BONE
+				});
 		
-		GameRegistry.addRecipe(new ShapedOreRecipe(
+		RecipeExporter.addShapedRecipe(
 				new ItemStack(ObjectManager.getItem("erepedetreat"), 4, 0),
-				new Object[] { "TTT", "BBT", "TTT",
-				Character.valueOf('T'), Items.GOLD_INGOT,
-				Character.valueOf('B'), Items.BONE
-			}));
+				new Object[]{"TTT", "BBT", "TTT",
+						Character.valueOf('T'), Items.GOLD_INGOT,
+						Character.valueOf('B'), Items.BONE
+				});
 		
 		// ========== Smelting ==========
 		GameRegistry.addSmelting(ObjectManager.getItem("joustmeatraw"), new ItemStack(ObjectManager.getItem("joustmeatcooked"), 1), 0.5f);

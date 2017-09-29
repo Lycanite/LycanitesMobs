@@ -1,5 +1,6 @@
 package com.lycanitesmobs.core.block;
 
+import com.lycanitesmobs.core.info.GroupInfo;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.properties.IProperty;
@@ -17,6 +18,8 @@ import javax.annotation.Nullable;
 import java.util.Random;
 
 public class BlockSlabCustom extends BlockSlab {
+    public GroupInfo group;
+
     public static final PropertyEnum<Variant> VARIANT = PropertyEnum.<Variant>create("variant", Variant.class);
     public static enum Variant implements IStringSerializable {
         DEFAULT;
@@ -32,6 +35,7 @@ public class BlockSlabCustom extends BlockSlab {
 	// ==================================================
 	public BlockSlabCustom(BlockBase block, Block doubleBlock) {
 		super(block.getDefaultState().getMaterial());
+        this.group = block.group;
         this.doubleBlock = doubleBlock;
         this.setDefaultState(this.blockState.getBaseState().withProperty(HALF, BlockSlab.EnumBlockHalf.BOTTOM).withProperty(VARIANT, Variant.DEFAULT));
         String slabName = "_slab";

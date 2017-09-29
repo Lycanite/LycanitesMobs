@@ -49,6 +49,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import com.lycanitesmobs.RecipeExporter.RecipeExporter;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -270,7 +271,7 @@ public class JungleMobs {
 		
 		
 		// ========== Crafting ==========
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
+		RecipeExporter.addShapelessRecipe(
 				new ItemStack(ObjectManager.getItem("tropicalcurry"), 1, 0),
 				new Object[] {
 					Items.BOWL,
@@ -278,56 +279,56 @@ public class JungleMobs {
 					Blocks.VINE,
 					ObjectManager.getItem("concapedemeatcooked")
 				}
-			));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
+			);
+		RecipeExporter.addShapelessRecipe(
 				new ItemStack(ObjectManager.getItem("concapedemeatcooked"), 1, 0),
 				new Object[] { ObjectManager.getItem("tropicalcurry") }
-			));
+			);
 
         if(ItemInfo.enableWeaponRecipes) {
-            GameRegistry.addRecipe(new ShapedOreRecipe(
+            RecipeExporter.addShapedRecipe(
                     new ItemStack(ObjectManager.getItem("poopscepter"), 1, 0),
                     new Object[]{"CCC", "CRC", "CRC",
-                            Character.valueOf('C'), ObjectManager.getItem("poopcharge"),
-                            Character.valueOf('R'), Items.BLAZE_ROD
-                    }));
+							Character.valueOf('C'), ObjectManager.getItem("poopcharge"),
+							Character.valueOf('R'), Items.BLAZE_ROD
+					});
         }
 		
-		GameRegistry.addRecipe(new ShapedOreRecipe(
+		RecipeExporter.addShapedRecipe(
 				new ItemStack(ObjectManager.getItem("uvaraptortreat"), 4, 0),
-				new Object[] { "TTT", "BBT", "TTT",
-				Character.valueOf('T'), ObjectManager.getItem("concapedemeatcooked"),
-				Character.valueOf('B'), Items.BONE
-			}));
+				new Object[]{"TTT", "BBT", "TTT",
+						Character.valueOf('T'), ObjectManager.getItem("concapedemeatcooked"),
+						Character.valueOf('B'), Items.BONE
+				});
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(
+		RecipeExporter.addShapedRecipe(
 				new ItemStack(ObjectManager.getItem("dawontreat"), 4, 0),
-				new Object[] { "   ", "BBT", "   ",
+				new Object[]{"   ", "BBT", "   ",
 						Character.valueOf('T'), Items.EMERALD,
 						Character.valueOf('B'), Items.BONE
-				}));
+				});
 		
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
+		RecipeExporter.addShapelessRecipe(
 				new ItemStack(Items.CLAY_BALL, 4, 0),
 				new Object[] {
 					ObjectManager.getBlock("propolis")
 				}
-			));
+			);
 		
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
+		RecipeExporter.addShapelessRecipe(
 				new ItemStack(Blocks.MYCELIUM, 2, 0),
 				new Object[] {
 					ObjectManager.getBlock("propolis"),
 					Blocks.DIRT
 				}
-			));
+			);
 		
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
+		RecipeExporter.addShapelessRecipe(
 				new ItemStack(Items.SUGAR, 4, 0),
 				new Object[] {
 					ObjectManager.getBlock("veswax")
 				}
-			));
+			);
 		
 		
 		// ========== Smelting ==========

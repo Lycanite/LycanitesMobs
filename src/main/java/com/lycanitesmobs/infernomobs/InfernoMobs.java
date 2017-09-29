@@ -40,6 +40,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import com.lycanitesmobs.RecipeExporter.RecipeExporter;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -241,100 +242,100 @@ public class InfernoMobs {
 
 
 		// ========== Crafting ==========
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
+		RecipeExporter.addShapelessRecipe(
 				new ItemStack(ObjectManager.getItem("searingtaco"), 1, 0),
 				new Object[] {
 					Items.BLAZE_POWDER,
 					ObjectManager.getItem("cephignismeatcooked"),
 					Items.WHEAT
 				}
-			));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
+			);
+		RecipeExporter.addShapelessRecipe(
 				new ItemStack(ObjectManager.getItem("cephignismeatcooked"), 1, 0),
 				new Object[] { ObjectManager.getItem("searingtaco") }
-			));
+			);
 
         if(ItemInfo.enableWeaponRecipes) {
-            GameRegistry.addRecipe(new ShapedOreRecipe(
+            RecipeExporter.addShapedRecipe(
                     new ItemStack(ObjectManager.getItem("emberscepter"), 1, 0),
                     new Object[]{"CCC", "CRC", "CRC",
-                            Character.valueOf('C'), ObjectManager.getItem("embercharge"),
-                            Character.valueOf('R'), Items.BLAZE_ROD
-                    }));
+							Character.valueOf('C'), ObjectManager.getItem("embercharge"),
+							Character.valueOf('R'), Items.BLAZE_ROD
+					});
 
-            GameRegistry.addRecipe(new ShapedOreRecipe(
+            RecipeExporter.addShapedRecipe(
                     new ItemStack(ObjectManager.getItem("cinderfallsword"), 1, 0),
                     new Object[]{"CCC", "CSC", "CJC",
-                            Character.valueOf('C'), ObjectManager.getItem("embercharge"),
-                            Character.valueOf('S'), Items.DIAMOND_SWORD,
-                            Character.valueOf('J'), ObjectManager.getItem("soulgazer")
-                    }));
+							Character.valueOf('C'), ObjectManager.getItem("embercharge"),
+							Character.valueOf('S'), Items.DIAMOND_SWORD,
+							Character.valueOf('J'), ObjectManager.getItem("soulgazer")
+					});
 
-            GameRegistry.addRecipe(new ShapedOreRecipe(
-                    new ItemStack(ObjectManager.getItem("cinderfallswordazure"), 1, 0),
+            RecipeExporter.addShapedRecipe(
+                    new ItemStack(ObjectManager.getItem("azurecinderfallsword"), 1, 0),
                     new Object[]{"DDD", "DSD", "DDD",
-                            Character.valueOf('D'), Items.DIAMOND,
-                            Character.valueOf('S'), ObjectManager.getItem("cinderfallsword")
-                    }));
+							Character.valueOf('D'), Items.DIAMOND,
+							Character.valueOf('S'), ObjectManager.getItem("cinderfallsword")
+					});
 
-            GameRegistry.addRecipe(new ShapedOreRecipe(
-                    new ItemStack(ObjectManager.getItem("cinderfallswordverdant"), 1, 0),
+            RecipeExporter.addShapedRecipe(
+                    new ItemStack(ObjectManager.getItem("verdantcinderfallsword"), 1, 0),
                     new Object[]{"DDD", "DSD", "DDD",
-                            Character.valueOf('D'), Items.EMERALD,
-                            Character.valueOf('S'), ObjectManager.getItem("cinderfallsword")
-                    }));
+							Character.valueOf('D'), Items.EMERALD,
+							Character.valueOf('S'), ObjectManager.getItem("cinderfallsword")
+					});
 
-            GameRegistry.addRecipe(new ShapedOreRecipe(
+            RecipeExporter.addShapedRecipe(
                     new ItemStack(ObjectManager.getItem("magmascepter"), 1, 0),
                     new Object[]{"CCC", "CRC", "CRC",
-                            Character.valueOf('C'), ObjectManager.getItem("magmacharge"),
-                            Character.valueOf('R'), Items.BLAZE_ROD
-                    }));
+							Character.valueOf('C'), ObjectManager.getItem("magmacharge"),
+							Character.valueOf('R'), Items.BLAZE_ROD
+					});
 
-            GameRegistry.addRecipe(new ShapedOreRecipe(
+            RecipeExporter.addShapedRecipe(
                     new ItemStack(ObjectManager.getItem("scorchfirescepter"), 1, 0),
                     new Object[]{"CCC", "CRC", "CRC",
-                            Character.valueOf('C'), ObjectManager.getItem("scorchfirecharge"),
-                            Character.valueOf('R'), Items.BLAZE_ROD
-                    }));
+							Character.valueOf('C'), ObjectManager.getItem("scorchfirecharge"),
+							Character.valueOf('R'), Items.BLAZE_ROD
+					});
         }
 		
-		GameRegistry.addRecipe(new ShapedOreRecipe(
+		RecipeExporter.addShapedRecipe(
 				new ItemStack(ObjectManager.getItem("afrittreat"), 4, 0),
-				new Object[] { "TTT", "BBT", "TTT",
-				Character.valueOf('T'), Items.GUNPOWDER,
-				Character.valueOf('B'), Items.BONE
-			}));
+				new Object[]{"TTT", "BBT", "TTT",
+						Character.valueOf('T'), Items.GUNPOWDER,
+						Character.valueOf('B'), Items.BONE
+				});
 
-        GameRegistry.addRecipe(new ShapedOreRecipe(
+        RecipeExporter.addShapedRecipe(
                 new ItemStack(ObjectManager.getItem("salamandertreat"), 4, 0),
-                new Object[] { "TTT", "BBT", "TTT",
-                        Character.valueOf('T'), Items.MAGMA_CREAM,
-                        Character.valueOf('B'), Items.BONE
-                }));
+                new Object[]{"TTT", "BBT", "TTT",
+						Character.valueOf('T'), Items.MAGMA_CREAM,
+						Character.valueOf('B'), Items.BONE
+				});
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(
+		RecipeExporter.addShapedRecipe(
 				new ItemStack(ObjectManager.getItem("gorgertreat"), 4, 0),
-				new Object[] { "TTT", "BBT", "TTT",
+				new Object[]{"TTT", "BBT", "TTT",
 						Character.valueOf('T'), ObjectManager.getItem("cephignismeatcooked"),
 						Character.valueOf('B'), Items.BONE
-				}));
+				});
 
-        GameRegistry.addRecipe(new ShapedOreRecipe(
+        RecipeExporter.addShapedRecipe(
                 new ItemStack(ObjectManager.getItem("bucketpurelava"), 1, 0),
-                new Object[] { " G ", "IMI", " I ",
-                        Character.valueOf('I'), Items.IRON_INGOT,
-                        Character.valueOf('G'), Items.GHAST_TEAR,
-                        Character.valueOf('M'), Items.MAGMA_CREAM
-                }));
+                new Object[]{" G ", "IMI", " I ",
+						Character.valueOf('I'), Items.IRON_INGOT,
+						Character.valueOf('G'), Items.GHAST_TEAR,
+						Character.valueOf('M'), Items.MAGMA_CREAM
+				});
 
-		/*GameRegistry.addRecipe(new ShapelessOreRecipe(
+		/*RecipeExporter.addShapelessRecipe(
 				new ItemStack(ObjectManager.getItem("bucketpurelava"), 1, 0),
 				new Object[] {
 					Items.lava_bucket,
 					Items.ghast_tear
 				}
-			));*/
+			);*/
 
 
 		// ========== Smelting ==========

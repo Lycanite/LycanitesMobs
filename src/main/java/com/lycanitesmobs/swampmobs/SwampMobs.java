@@ -44,6 +44,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import com.lycanitesmobs.RecipeExporter.RecipeExporter;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -230,80 +231,80 @@ public class SwampMobs {
 		
 		// ========== Crafting ==========
         if(ItemInfo.enableWeaponRecipes) {
-            GameRegistry.addRecipe(new ShapedOreRecipe(
+            RecipeExporter.addShapedRecipe(
                     new ItemStack(ObjectManager.getItem("poisonrayscepter"), 1, 0),
                     new Object[]{"CPC", "CRC", "CRC",
-                            Character.valueOf('C'), Items.FERMENTED_SPIDER_EYE,
-                            Character.valueOf('P'), ObjectManager.getItem("poisongland"),
-                            Character.valueOf('R'), Items.BLAZE_ROD
-                    }));
+							Character.valueOf('C'), Items.FERMENTED_SPIDER_EYE,
+							Character.valueOf('P'), ObjectManager.getItem("poisongland"),
+							Character.valueOf('R'), Items.BLAZE_ROD
+					});
 
-            GameRegistry.addRecipe(new ShapedOreRecipe(
+            RecipeExporter.addShapedRecipe(
                     new ItemStack(ObjectManager.getItem("venomshotscepter"), 1, 0),
                     new Object[]{"CPC", "CRC", "CRC",
-                            Character.valueOf('C'), Items.ROTTEN_FLESH,
-                            Character.valueOf('P'), ObjectManager.getItem("poisongland"),
-                            Character.valueOf('R'), Items.BLAZE_ROD
-                    }));
+							Character.valueOf('C'), Items.ROTTEN_FLESH,
+							Character.valueOf('P'), ObjectManager.getItem("poisongland"),
+							Character.valueOf('R'), Items.BLAZE_ROD
+					});
 
-            GameRegistry.addRecipe(new ShapedOreRecipe(
+            RecipeExporter.addShapedRecipe(
                     new ItemStack(ObjectManager.getItem("venomaxeblade"), 1, 0),
                     new Object[]{"CCC", "CSC", "CJC",
-                            Character.valueOf('C'), ObjectManager.getItem("poisongland"),
-                            Character.valueOf('S'), Items.DIAMOND_SWORD,
-                            Character.valueOf('J'), ObjectManager.getItem("soulgazer")
-                    }));
+							Character.valueOf('C'), ObjectManager.getItem("poisongland"),
+							Character.valueOf('S'), Items.DIAMOND_SWORD,
+							Character.valueOf('J'), ObjectManager.getItem("soulgazer")
+					});
 
-            GameRegistry.addRecipe(new ShapedOreRecipe(
+            RecipeExporter.addShapedRecipe(
                     new ItemStack(ObjectManager.getItem("goldenvenomaxeblade"), 1, 0),
                     new Object[]{"DDD", "DSD", "DDD",
-                            Character.valueOf('D'), Items.DIAMOND,
-                            Character.valueOf('S'), ObjectManager.getItem("venomaxeblade")
-                    }));
+							Character.valueOf('D'), Items.DIAMOND,
+							Character.valueOf('S'), ObjectManager.getItem("venomaxeblade")
+					});
 
-            GameRegistry.addRecipe(new ShapedOreRecipe(
+            RecipeExporter.addShapedRecipe(
                     new ItemStack(ObjectManager.getItem("verdantvenomaxeblade"), 1, 0),
                     new Object[]{"DDD", "DSD", "DDD",
-                            Character.valueOf('D'), Items.EMERALD,
-                            Character.valueOf('S'), ObjectManager.getItem("venomaxeblade")
-                    }));
+							Character.valueOf('D'), Items.EMERALD,
+							Character.valueOf('S'), ObjectManager.getItem("venomaxeblade")
+					});
         }
 		
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
+		RecipeExporter.addShapelessRecipe(
 				new ItemStack(ObjectManager.getItem("mosspie"), 1, 0),
 				new Object[] {
 					Blocks.VINE,
 					Blocks.RED_MUSHROOM,
 					ObjectManager.getItem("aspidmeatcooked")
 				}
-			));
+			);
 		
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
+		RecipeExporter.addShapelessRecipe(
 				new ItemStack(ObjectManager.getItem("mosspie"), 1, 0),
 				new Object[] {
 					Blocks.VINE,
 					Blocks.BROWN_MUSHROOM,
 					ObjectManager.getItem("aspidmeatcooked")
 				}
-			));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
+			);
+		RecipeExporter.addShapelessRecipe(
 				new ItemStack(ObjectManager.getItem("aspidmeatcooked"), 1, 0),
 				new Object[] { ObjectManager.getItem("mosspie") }
-			));
+			);
 		
-		GameRegistry.addRecipe(new ShapedOreRecipe(
+		RecipeExporter.addShapedRecipe(
 				new ItemStack(ObjectManager.getItem("lurkertreat"), 4, 0),
-				new Object[] { "TTT", "BBT", "TTT",
-				Character.valueOf('T'), ObjectManager.getItem("aspidmeatcooked"),
-				Character.valueOf('B'), Items.BONE
-			}));
+				new Object[]{"TTT", "BBT", "TTT",
+						Character.valueOf('T'), ObjectManager.getItem("aspidmeatcooked"),
+						Character.valueOf('B'), Items.BONE
+				});
 		
-		GameRegistry.addRecipe(new ShapedOreRecipe(
+		RecipeExporter.addShapedRecipe(
 				new ItemStack(ObjectManager.getItem("eyewigtreat"), 4, 0),
-				new Object[] { "TTT", "BBT", "TTT",
-				Character.valueOf('T'), ObjectManager.getItem("poisongland"),
-				Character.valueOf('B'), Items.BONE
-			}));
+				new Object[]{"TTT", "BBT", "TTT",
+						Character.valueOf('T'), ObjectManager.getItem("poisongland"),
+						Character.valueOf('B'), Items.BONE
+				});
 		
 		// ========== Smelting ==========
 		GameRegistry.addSmelting(ObjectManager.getItem("aspidmeatraw"), new ItemStack(ObjectManager.getItem("aspidmeatcooked"), 1), 0.5f);

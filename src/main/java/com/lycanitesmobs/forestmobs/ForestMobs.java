@@ -31,6 +31,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import com.lycanitesmobs.RecipeExporter.RecipeExporter;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
@@ -175,48 +176,48 @@ public class ForestMobs {
 		}
 		
 		// ========== Crafting ==========
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
+		RecipeExporter.addShapelessRecipe(
 				new ItemStack(ObjectManager.getItem("paleosalad"), 1, 0),
 				new Object[] {
 					Blocks.LEAVES,
 					Items.CARROT,
 					ObjectManager.getItem("arisaurmeatcooked")
 				}
-			));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
+			);
+		RecipeExporter.addShapelessRecipe(
 				new ItemStack(ObjectManager.getItem("paleosalad"), 1, 0),
 				new Object[] {
 					Blocks.LEAVES2,
 					Items.CARROT,
 					ObjectManager.getItem("arisaurmeatcooked")
 				}
-			));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
+			);
+		RecipeExporter.addShapelessRecipe(
 				new ItemStack(ObjectManager.getItem("arisaurmeatcooked"), 1, 0),
 				new Object[] { ObjectManager.getItem("paleosalad") }
-			));
+			);
 		
-		GameRegistry.addRecipe(new ShapedOreRecipe(
+		RecipeExporter.addShapedRecipe(
 				new ItemStack(ObjectManager.getItem("shamblertreat"), 4, 0),
-				new Object[] { "TTT", "BBT", "TTT",
-				Character.valueOf('T'), ObjectManager.getItem("lifedraincharge"),
-				Character.valueOf('B'), Items.REEDS
-			}));
+				new Object[]{"TTT", "BBT", "TTT",
+						Character.valueOf('T'), ObjectManager.getItem("lifedraincharge"),
+						Character.valueOf('B'), Items.REEDS
+				});
 
-        GameRegistry.addRecipe(new ShapedOreRecipe(
+        RecipeExporter.addShapedRecipe(
                 new ItemStack(ObjectManager.getItem("wargtreat"), 4, 0),
-                new Object[] { "TTT", "BBT", "TTT",
-                        Character.valueOf('T'), ObjectManager.getItem("arisaurmeatcooked"),
-                        Character.valueOf('B'), Items.BONE
-                }));
+                new Object[]{"TTT", "BBT", "TTT",
+						Character.valueOf('T'), ObjectManager.getItem("arisaurmeatcooked"),
+						Character.valueOf('B'), Items.BONE
+				});
 
         if(ItemInfo.enableWeaponRecipes) {
-            GameRegistry.addRecipe(new ShapedOreRecipe(
+            RecipeExporter.addShapedRecipe(
                     new ItemStack(ObjectManager.getItem("lifedrainscepter"), 1, 0),
                     new Object[]{"CCC", "CRC", "CRC",
-                            Character.valueOf('C'), ObjectManager.getItem("lifedraincharge"),
-                            Character.valueOf('R'), Items.BLAZE_ROD
-                    }));
+							Character.valueOf('C'), ObjectManager.getItem("lifedraincharge"),
+							Character.valueOf('R'), Items.BLAZE_ROD
+					});
         }
 		
 		// ========== Smelting ==========

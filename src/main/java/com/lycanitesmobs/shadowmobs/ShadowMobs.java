@@ -39,6 +39,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import com.lycanitesmobs.RecipeExporter.RecipeExporter;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -257,44 +258,44 @@ public class ShadowMobs {
 
 
         // ========== Crafting ==========
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
+		RecipeExporter.addShapelessRecipe(
 				new ItemStack(ObjectManager.getItem("bloodchili"), 1, 0),
 				new Object[] {
 					Items.BOWL,
                     new ItemStack(Items.DYE, 1, 3),
 					ObjectManager.getItem("chupacabrameatcooked")
 				}
-			));
+			);
 
         if(ItemInfo.enableWeaponRecipes) {
-            GameRegistry.addRecipe(new ShapedOreRecipe(
+            RecipeExporter.addShapedRecipe(
                     new ItemStack(ObjectManager.getItem("spectralboltscepter"), 1, 0),
                     new Object[]{"CCC", "CRC", "CRC",
-                            Character.valueOf('C'), ObjectManager.getItem("spectralboltcharge"),
-                            Character.valueOf('R'), Items.BLAZE_ROD
-                    }));
+							Character.valueOf('C'), ObjectManager.getItem("spectralboltcharge"),
+							Character.valueOf('R'), Items.BLAZE_ROD
+					});
 
-            GameRegistry.addRecipe(new ShapedOreRecipe(
+            RecipeExporter.addShapedRecipe(
                     new ItemStack(ObjectManager.getItem("bloodleechscepter"), 1, 0),
                     new Object[]{"CCC", "CRC", "CRC",
-                            Character.valueOf('C'), ObjectManager.getItem("bloodleechcharge"),
-                            Character.valueOf('R'), Items.BLAZE_ROD
-                    }));
+							Character.valueOf('C'), ObjectManager.getItem("bloodleechcharge"),
+							Character.valueOf('R'), Items.BLAZE_ROD
+					});
         }
 
-        GameRegistry.addRecipe(new ShapedOreRecipe(
+        RecipeExporter.addShapedRecipe(
                 new ItemStack(ObjectManager.getItem("chupacabratreat"), 4, 0),
-                new Object[] { "TTT", "BBT", "TTT",
-                        Character.valueOf('T'), ObjectManager.getItem("geistliver"),
-                        Character.valueOf('B'), Items.BONE
-                }));
+                new Object[]{"TTT", "BBT", "TTT",
+						Character.valueOf('T'), ObjectManager.getItem("geistliver"),
+						Character.valueOf('B'), Items.BONE
+				});
 
-        GameRegistry.addRecipe(new ShapedOreRecipe(
+        RecipeExporter.addShapedRecipe(
                 new ItemStack(ObjectManager.getItem("shadetreat"), 4, 0),
-                new Object[] { "TTT", "BBT", "TTT",
-                        Character.valueOf('T'), Items.ENDER_PEARL,
-                        Character.valueOf('B'), Items.BONE
-                }));
+                new Object[]{"TTT", "BBT", "TTT",
+						Character.valueOf('T'), Items.ENDER_PEARL,
+						Character.valueOf('B'), Items.BONE
+				});
 		
 		
 		// ========== Smelting ==========

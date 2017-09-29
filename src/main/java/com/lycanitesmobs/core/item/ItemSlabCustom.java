@@ -1,5 +1,7 @@
 package com.lycanitesmobs.core.item;
 
+import com.lycanitesmobs.core.block.BlockBase;
+import com.lycanitesmobs.core.info.GroupInfo;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.SoundType;
@@ -21,12 +23,17 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 // This is a copy of ItemSlab and only altered to allow for any block to be the double slab.
 public class ItemSlabCustom extends ItemBlock
 {
+    public GroupInfo group;
+
     private final BlockSlab singleSlab;
     private final Block doubleSlab;
 
     public ItemSlabCustom(Block block, BlockSlab singleSlab, Block doubleSlab)
     {
         super(block);
+        if(block instanceof BlockBase) {
+            this.group = ((BlockBase)block).group;
+        }
         this.singleSlab = singleSlab;
         this.doubleSlab = doubleSlab;
         this.setMaxDamage(0);

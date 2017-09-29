@@ -40,6 +40,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import com.lycanitesmobs.RecipeExporter.RecipeExporter;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -219,7 +220,7 @@ public class MountainMobs {
 		
 		
 		// ========== Crafting ==========
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
+		RecipeExporter.addShapelessRecipe(
 				new ItemStack(ObjectManager.getItem("peakskebab"), 1, 0),
 				new Object[] {
 					Items.STICK,
@@ -227,47 +228,47 @@ public class MountainMobs {
 					Items.MELON,
 					ObjectManager.getItem("yalemeatcooked")
 				}
-			));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
+			);
+		RecipeExporter.addShapelessRecipe(
 				new ItemStack(ObjectManager.getItem("yalemeatcooked"), 1, 0),
 				new Object[] { ObjectManager.getItem("peakskebab") }
-			));
+			);
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(
+		RecipeExporter.addShapedRecipe(
 				new ItemStack(ObjectManager.getItem("barghesttreat"), 4, 0),
-				new Object[] { "TTT", "BBT", "TTT",
+				new Object[]{"TTT", "BBT", "TTT",
 						Character.valueOf('T'), ObjectManager.getItem("yalemeatcooked"),
 						Character.valueOf('B'), Items.BONE
-				}));
+				});
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(
+		RecipeExporter.addShapedRecipe(
 				new ItemStack(ObjectManager.getItem("beholdertreat"), 4, 0),
-				new Object[] { "   ", "BBT", "   ",
+				new Object[]{"   ", "BBT", "   ",
 						Character.valueOf('T'), ObjectManager.getItem("arcanelaserstormcharge"),
 						Character.valueOf('B'), Items.BONE
-				}));
+				});
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(
+		RecipeExporter.addShapedRecipe(
 				new ItemStack(ObjectManager.getItem("wildkintreat"), 4, 0),
-				new Object[] { "TTT", "BBT", "TTT",
+				new Object[]{"TTT", "BBT", "TTT",
 						Character.valueOf('T'), Items.QUARTZ,
 						Character.valueOf('B'), Items.BONE
-				}));
+				});
 
         if(ItemInfo.enableWeaponRecipes) {
-            GameRegistry.addRecipe(new ShapedOreRecipe(
+            RecipeExporter.addShapedRecipe(
                     new ItemStack(ObjectManager.getItem("boulderblastscepter"), 1, 0),
                     new Object[]{"CCC", "CRC", "CRC",
-                            Character.valueOf('C'), ObjectManager.getItem("boulderblastcharge"),
-                            Character.valueOf('R'), Items.BLAZE_ROD
-                    }));
+							Character.valueOf('C'), ObjectManager.getItem("boulderblastcharge"),
+							Character.valueOf('R'), Items.BLAZE_ROD
+					});
 
-            GameRegistry.addRecipe(new ShapedOreRecipe(
+            RecipeExporter.addShapedRecipe(
                     new ItemStack(ObjectManager.getItem("arcanelaserstormscepter"), 1, 0),
                     new Object[]{" C ", " R ", " R ",
-                            Character.valueOf('C'), ObjectManager.getItem("arcanelaserstormcharge"),
-                            Character.valueOf('R'), Items.BLAZE_ROD
-                    }));
+							Character.valueOf('C'), ObjectManager.getItem("arcanelaserstormcharge"),
+							Character.valueOf('R'), Items.BLAZE_ROD
+					});
         }
 		
 		

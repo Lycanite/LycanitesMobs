@@ -39,6 +39,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import com.lycanitesmobs.RecipeExporter.RecipeExporter;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -216,65 +217,65 @@ public class PlainsMobs {
 		}
 		
 		// ========== Crafting ==========
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
+		RecipeExporter.addShapelessRecipe(
 				new ItemStack(ObjectManager.getItem("bulwarkburger"), 1, 0),
 				new Object[] {
 					Items.BREAD,
 					ObjectManager.getItem("makameatcooked"),
 					Items.BREAD
 				}
-			));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(
+			);
+		RecipeExporter.addShapelessRecipe(
 				new ItemStack(ObjectManager.getItem("makameatcooked"), 1, 0),
 				new Object[] { ObjectManager.getItem("bulwarkburger") }
-			));
+			);
 		
-		GameRegistry.addRecipe(new ShapedOreRecipe(
+		RecipeExporter.addShapedRecipe(
 				new ItemStack(ObjectManager.getItem("ventoraptortreat"), 4, 0),
-				new Object[] { "TTT", "BBT", "TTT",
-				Character.valueOf('T'), ObjectManager.getItem("makameatcooked"),
-				Character.valueOf('B'), Items.BONE
-			}));
+				new Object[]{"TTT", "BBT", "TTT",
+						Character.valueOf('T'), ObjectManager.getItem("makameatcooked"),
+						Character.valueOf('B'), Items.BONE
+				});
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(
+		RecipeExporter.addShapedRecipe(
 				new ItemStack(ObjectManager.getItem("roctreat"), 4, 0),
-				new Object[] { "TTT", "BBT", "TTT",
+				new Object[]{"TTT", "BBT", "TTT",
 						Character.valueOf('T'), Items.RABBIT_FOOT,
 						Character.valueOf('B'), Items.BONE
-				}));
+				});
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(
+		RecipeExporter.addShapedRecipe(
 				new ItemStack(ObjectManager.getItem("feradontreat"), 4, 0),
-				new Object[] { " RC", "BBT", " MP",
+				new Object[]{" RC", "BBT", " MP",
 						Character.valueOf('T'), Items.COOKED_BEEF,
 						Character.valueOf('C'), Items.COOKED_CHICKEN,
 						Character.valueOf('P'), Items.COOKED_PORKCHOP,
 						Character.valueOf('M'), Items.COOKED_MUTTON,
 						Character.valueOf('R'), Items.COOKED_RABBIT,
 						Character.valueOf('B'), Items.BONE
-				}));
+				});
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(
+		RecipeExporter.addShapedRecipe(
 				new ItemStack(ObjectManager.getItem("morocktreat"), 4, 0),
-				new Object[] { "TTT", "TDT", "TTT",
+				new Object[]{"TTT", "TDT", "TTT",
 						Character.valueOf('T'), ObjectManager.getItem("makameatcooked"),
 						Character.valueOf('D'), Items.DIAMOND
-				}));
+				});
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(
+		RecipeExporter.addShapedRecipe(
 				new ItemStack(ObjectManager.getItem("quillbeasttreat"), 4, 0),
-				new Object[] { "TTT", "BBT", "TTT",
+				new Object[]{"TTT", "BBT", "TTT",
 						Character.valueOf('T'), Items.CARROT,
 						Character.valueOf('B'), Items.REEDS
-				}));
+				});
 
 		if(ItemInfo.enableWeaponRecipes) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(
+			RecipeExporter.addShapedRecipe(
 					new ItemStack(ObjectManager.getItem("quillscepter"), 1, 0),
 					new Object[]{"CCC", "CRC", "CRC",
 							Character.valueOf('C'), ObjectManager.getItem("quill"),
 							Character.valueOf('R'), Items.BLAZE_ROD
-					}));
+					});
 		}
 		
 		// ========== Smelting ==========

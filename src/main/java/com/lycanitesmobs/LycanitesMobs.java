@@ -41,6 +41,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import com.lycanitesmobs.RecipeExporter.RecipeExporter;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
@@ -275,101 +276,101 @@ public class LycanitesMobs {
 		
         
 		// ========== Crafting ==========
-		GameRegistry.addRecipe(new ShapedOreRecipe(
+		RecipeExporter.addShapedRecipe(
                 new ItemStack(ObjectManager.getItem("soulgazer"), 1, 0),
                 new Object[]{"GBG", "BDB", "GBG",
-                        Character.valueOf('G'), Items.GOLD_INGOT,
-                        Character.valueOf('D'), Items.DIAMOND,
-                        Character.valueOf('B'), Items.BONE
-                }));
+						Character.valueOf('G'), Items.GOLD_INGOT,
+						Character.valueOf('D'), Items.DIAMOND,
+						Character.valueOf('B'), Items.BONE
+				});
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(
+		RecipeExporter.addShapedRecipe(
 				new ItemStack(ObjectManager.getItem("soulstone"), 1, 0),
-				new Object[] { "DPD", "PSP", "DPD",
+				new Object[]{"DPD", "PSP", "DPD",
 						Character.valueOf('D'), Items.DIAMOND,
 						Character.valueOf('S'), ObjectManager.getItem("soulgazer"),
 						Character.valueOf('P'), Items.ENDER_PEARL
-				}));
+				});
 
-        GameRegistry.addRecipe(new ShapedOreRecipe(
+        RecipeExporter.addShapedRecipe(
                 new ItemStack(ObjectManager.getItem("soulkey"), 1, 0),
-                new Object[] { "DND", "DSD", "DDD",
-                        Character.valueOf('N'), Items.NETHER_STAR,
-                        Character.valueOf('S'), ObjectManager.getItem("soulgazer"),
-                        Character.valueOf('D'), Items.DIAMOND
-                }));
+                new Object[]{"DND", "DSD", "DDD",
+						Character.valueOf('N'), Items.NETHER_STAR,
+						Character.valueOf('S'), ObjectManager.getItem("soulgazer"),
+						Character.valueOf('D'), Items.DIAMOND
+				});
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(
+		RecipeExporter.addShapedRecipe(
 				new ItemStack(ObjectManager.getItem("soulkeydiamond"), 1, 0),
-				new Object[] { "DDD", "DSD", "DDD",
+				new Object[]{"DDD", "DSD", "DDD",
 						Character.valueOf('S'), ObjectManager.getItem("soulkey"),
 						Character.valueOf('D'), Items.DIAMOND
-				}));
+				});
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(
+		RecipeExporter.addShapedRecipe(
 				new ItemStack(ObjectManager.getItem("soulkeyemerald"), 1, 0),
-				new Object[] { "DDD", "DSD", "DDD",
+				new Object[]{"DDD", "DSD", "DDD",
 						Character.valueOf('S'), ObjectManager.getItem("soulkey"),
 						Character.valueOf('D'), Items.EMERALD
-				}));
+				});
 
-        GameRegistry.addRecipe(new ShapedOreRecipe(
+        RecipeExporter.addShapedRecipe(
                 new ItemStack(ObjectManager.getBlock("summoningpedestal"), 1, 0),
-                new Object[] { "GNG", "DSD", "GDG",
-                        Character.valueOf('N'), Items.NETHER_STAR,
-                        Character.valueOf('S'), ObjectManager.getItem("soulstone"),
-                        Character.valueOf('D'), Blocks.DIAMOND_BLOCK,
-                        Character.valueOf('G'), Blocks.GOLD_BLOCK
-                }));
+                new Object[]{"GNG", "DSD", "GDG",
+						Character.valueOf('N'), Items.NETHER_STAR,
+						Character.valueOf('S'), ObjectManager.getItem("soulstone"),
+						Character.valueOf('D'), Blocks.DIAMOND_BLOCK,
+						Character.valueOf('G'), Blocks.GOLD_BLOCK
+				});
 		
-		GameRegistry.addRecipe(new ShapedOreRecipe(
+		RecipeExporter.addShapedRecipe(
 				new ItemStack(ObjectManager.getItem("summoningstaff"), 1, 0),
-				new Object[] { " E ", " B ", " G ",
-				Character.valueOf('E'), Items.ENDER_PEARL,
-				Character.valueOf('B'), Items.BONE,
-				Character.valueOf('G'), Items.GOLD_INGOT
-			}));
+				new Object[]{" E ", " B ", " G ",
+						Character.valueOf('E'), Items.ENDER_PEARL,
+						Character.valueOf('B'), Items.BONE,
+						Character.valueOf('G'), Items.GOLD_INGOT
+				});
 		
-		GameRegistry.addRecipe(new ShapedOreRecipe(
+		RecipeExporter.addShapedRecipe(
 				new ItemStack(ObjectManager.getItem("stablesummoningstaff"), 1, 0),
-				new Object[] { " D ", " S ", " G ",
-				Character.valueOf('S'), ObjectManager.getItem("summoningstaff"),
-				Character.valueOf('G'), Items.GOLD_INGOT,
-				Character.valueOf('D'), Items.DIAMOND
-			}));
+				new Object[]{" D ", " S ", " G ",
+						Character.valueOf('S'), ObjectManager.getItem("summoningstaff"),
+						Character.valueOf('G'), Items.GOLD_INGOT,
+						Character.valueOf('D'), Items.DIAMOND
+				});
 		
-		GameRegistry.addRecipe(new ShapedOreRecipe(
+		RecipeExporter.addShapedRecipe(
 				new ItemStack(ObjectManager.getItem("bloodsummoningstaff"), 1, 0),
-				new Object[] { "RRR", "BSB", "NDN",
-				Character.valueOf('S'), ObjectManager.getItem("summoningstaff"),
-				Character.valueOf('R'), Items.REDSTONE,
-				Character.valueOf('B'), Items.BONE,
-				Character.valueOf('N'), Items.NETHER_WART,
-				Character.valueOf('D'), Items.DIAMOND
-			}));
+				new Object[]{"RRR", "BSB", "NDN",
+						Character.valueOf('S'), ObjectManager.getItem("summoningstaff"),
+						Character.valueOf('R'), Items.REDSTONE,
+						Character.valueOf('B'), Items.BONE,
+						Character.valueOf('N'), Items.NETHER_WART,
+						Character.valueOf('D'), Items.DIAMOND
+				});
 		
-		GameRegistry.addRecipe(new ShapedOreRecipe(
+		RecipeExporter.addShapedRecipe(
 				new ItemStack(ObjectManager.getItem("sturdysummoningstaff"), 1, 0),
-				new Object[] { "III", "ISI", " O ",
-				Character.valueOf('S'), ObjectManager.getItem("summoningstaff"),
-				Character.valueOf('I'), Items.IRON_INGOT,
-				Character.valueOf('O'), Blocks.OBSIDIAN
-			}));
+				new Object[]{"III", "ISI", " O ",
+						Character.valueOf('S'), ObjectManager.getItem("summoningstaff"),
+						Character.valueOf('I'), Items.IRON_INGOT,
+						Character.valueOf('O'), Blocks.OBSIDIAN
+				});
 		
-		GameRegistry.addRecipe(new ShapedOreRecipe(
+		RecipeExporter.addShapedRecipe(
 				new ItemStack(ObjectManager.getItem("savagesummoningstaff"), 1, 0),
-				new Object[] { "LLL", "BSB", "GGG",
-				Character.valueOf('S'), ObjectManager.getItem("summoningstaff"),
-				Character.valueOf('B'), Items.BONE,
-				Character.valueOf('G'), Items.GHAST_TEAR,
-				Character.valueOf('L'), new ItemStack(Items.DYE, 1, 4)
-			}));
+				new Object[]{"LLL", "BSB", "GGG",
+						Character.valueOf('S'), ObjectManager.getItem("summoningstaff"),
+						Character.valueOf('B'), Items.BONE,
+						Character.valueOf('G'), Items.GHAST_TEAR,
+						Character.valueOf('L'), new ItemStack(Items.DYE, 1, 4)
+				});
 		
 		// Super Food:
 		if(ObjectManager.getItem("pinkymeatcooked") != null && ObjectManager.getItem("makameatcooked") != null
 				&& ObjectManager.getItem("arisaurmeatcooked") != null && ObjectManager.getItem("yetimeatcooked") != null
 				&& ObjectManager.getItem("aspidmeatcooked") != null) {
-			GameRegistry.addRecipe(new ShapelessOreRecipe(
+			RecipeExporter.addShapelessRecipe(
 					new ItemStack(ObjectManager.getItem("battleburrito"), 1, 0),
 					new Object[] {
 						ObjectManager.getItem("pinkymeatcooked"),
@@ -378,12 +379,12 @@ public class LycanitesMobs {
 						ObjectManager.getItem("yetimeatcooked"),
 						ObjectManager.getItem("aspidmeatcooked")
 					}
-				));
+				);
 		}
 
 		if(ObjectManager.getItem("joustmeatcooked") != null && ObjectManager.getItem("yalemeatcooked") != null
 				&& ObjectManager.getItem("ikameatcooked") != null && ObjectManager.getItem("concapedemeatcooked") != null) {
-			GameRegistry.addRecipe(new ShapelessOreRecipe(
+			RecipeExporter.addShapelessRecipe(
 					new ItemStack(ObjectManager.getItem("explorersrisotto"), 1, 0),
 					new Object[] {
 						ObjectManager.getItem("joustmeatcooked"),
@@ -391,10 +392,10 @@ public class LycanitesMobs {
 						ObjectManager.getItem("ikameatcooked"),
 						ObjectManager.getItem("concapedemeatcooked")
 					}
-				));
+				);
 		}
 
-        // Create all Recipe Makder recipes!
+        // Create all Recipe Maker recipes!
         RecipeMaker.createAllRecipies();
 
 

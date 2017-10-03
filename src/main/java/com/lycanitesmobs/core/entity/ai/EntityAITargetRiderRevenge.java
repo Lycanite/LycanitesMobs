@@ -78,7 +78,7 @@ public class EntityAITargetRiderRevenge extends EntityAITargetAttack {
         try {
             if (this.callForHelp) {
                 double d0 = this.getTargetDistance();
-                List allies = this.host.getEntityWorld().getEntitiesWithinAABB(this.host.getClass(), this.host.getEntityBoundingBox().expand(d0, 4.0D, d0), new Predicate<Entity>() {
+                List allies = this.host.getEntityWorld().getEntitiesWithinAABB(this.host.getClass(), this.host.getEntityBoundingBox().grow(d0, 4.0D, d0), new Predicate<Entity>() {
                     @Override
                     public boolean apply(Entity input) {
                         return input instanceof EntityLivingBase;

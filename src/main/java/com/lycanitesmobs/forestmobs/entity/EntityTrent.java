@@ -220,6 +220,6 @@ public class EntityTrent extends EntityCreatureBase implements IMob, IGroupPlant
     /** Returns a larger bounding box for rendering this large entity. **/
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox() {
-        return this.getEntityBoundingBox().expand(50, 20, 50).offset(0, -10, 0);
+        return this.getEntityBoundingBox().grow(50, 20, 50).offset(0, -10, 0);
     }
 }

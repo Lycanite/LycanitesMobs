@@ -205,10 +205,20 @@ public class BlockBase extends Block {
 	// ========== Is Block Passable ==========
     @Override
     public boolean isPassable(IBlockAccess world, BlockPos pos) {
-        if(this.noEntityCollision)
-            return true;
+        if(this.noEntityCollision) {
+			return true;
+		}
         return super.isPassable(world, pos);
     }
+
+	// ========== Punch Collision ==========
+	@Override
+	public boolean isCollidable() {
+    	if(this.noBreakCollision) {
+    		return false;
+		}
+		return super.isCollidable();
+	}
 
     // ========== Is Block Solid ==========
     @Override
@@ -227,7 +237,7 @@ public class BlockBase extends Block {
     // ========== Collision Bounding Box ==========
     @Override
     public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
-        if(!this.isCollidable())
+        if(!this.noBreakCollision)
             return Block.NULL_AABB;
         return super.getCollisionBoundingBox(state, world, pos);
     }
@@ -237,12 +247,6 @@ public class BlockBase extends Block {
     @Override
     public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World world, BlockPos pos) {
         return super.getSelectedBoundingBox(state, world, pos);
-    }
-    
-    // ========== Punch Collision ==========
-    @Override
-    public boolean isCollidable() {
-        return !this.noEntityCollision;
     }
     
     // ========== Is Opaque ==========

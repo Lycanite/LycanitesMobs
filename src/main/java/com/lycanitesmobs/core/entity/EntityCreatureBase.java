@@ -3255,7 +3255,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Pickup Items ==========
     /** Called on the update if this mob is able to pickup items. Searches for all nearby item entities and picks them up. **/
     public void pickupItems() {
-    	 List list = this.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, this.getEntityBoundingBox().expand(1.0D, 0.0D, 1.0D));
+    	 List list = this.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, this.getEntityBoundingBox().grow(1.0D, 0.0D, 1.0D));
          Iterator iterator = list.iterator();
 
          while (iterator.hasNext()) {
@@ -3493,7 +3493,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
    	// ========== Get Nearby Entities ==========
     /** Get entities that are near this entity. **/
     public <T extends Entity> List<T> getNearbyEntities(Class <? extends T > clazz, final Class filterClass, double range) {
-        return this.getEntityWorld().<T>getEntitiesWithinAABB(clazz, this.getEntityBoundingBox().expand(range, range, range), new Predicate<Entity>() {
+        return this.getEntityWorld().<T>getEntitiesWithinAABB(clazz, this.getEntityBoundingBox().grow(range, range, range), new Predicate<Entity>() {
             public boolean apply(Entity entity) {
                 if(filterClass == null)
                     return true;

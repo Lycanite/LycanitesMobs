@@ -40,16 +40,30 @@ public class BlockFluidOoze extends BlockFluidBase {
     @Override
     public boolean canDisplace(IBlockAccess world, BlockPos pos) {
         IBlockState blockState = world.getBlockState(pos);
+        if(blockState == null || blockState.getBlock() == this) {
+            return false;
+        }
 
         // Freeze Water:
-        if(blockState == Blocks.WATER) {
+        if(blockState.getMaterial() == Material.WATER) {
             if(world instanceof World) {
-                ((World)world).setBlockState(pos, Blocks.ICE.getDefaultState());
+                ((World)world).setBlockState(pos, Blocks.PACKED_ICE.getDefaultState());
             }
             return false;
         }
 
-        if(blockState.getMaterial().isLiquid()) return false;
+        // Freeze Lava:
+        if(blockState.getMaterial() == Material.LAVA) {
+            if(world instanceof World) {
+                ((World)world).setBlockState(pos, Blocks.OBSIDIAN.getDefaultState());
+            }
+            return false;
+        }
+
+        if(blockState.getMaterial().isLiquid()) {
+            return false;
+        }
+
         return super.canDisplace(world, pos);
     }
 

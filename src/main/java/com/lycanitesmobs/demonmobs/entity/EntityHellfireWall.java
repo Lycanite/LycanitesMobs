@@ -75,7 +75,7 @@ public class EntityHellfireWall extends EntityProjectileBase {
         RayTraceResult movingobjectposition = this.getEntityWorld().rayTraceBlocks(vec3, vec31);
 
         if (!this.getEntityWorld().isRemote) {
-            List list = this.getEntityWorld().getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
+            List list = this.getEntityWorld().getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().grow(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
             double d0 = 0.0D;
             EntityLivingBase entitylivingbase = this.getThrower();
 

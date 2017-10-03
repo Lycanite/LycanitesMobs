@@ -1,6 +1,7 @@
 package com.lycanitesmobs.plainsmobs.entity;
 
 import com.google.common.base.Predicate;
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupAlpha;
 import com.lycanitesmobs.api.IGroupAnimal;
@@ -130,7 +131,7 @@ public class EntityFeradon extends EntityCreatureRideable implements IGroupPreda
         if(this.leapedAbilityReady && this.onGround && !this.getEntityWorld().isRemote) {
             this.leapedAbilityReady = false;
             double distance = 4.0D;
-            List<EntityLivingBase> possibleTargets = this.getEntityWorld().getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().expand(distance, distance, distance), new Predicate<EntityLivingBase>() {
+            List<EntityLivingBase> possibleTargets = this.getEntityWorld().getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(distance, distance, distance), new Predicate<EntityLivingBase>() {
                 @Override
                 public boolean apply(EntityLivingBase possibleTarget) {
                     if (!possibleTarget.isEntityAlive()

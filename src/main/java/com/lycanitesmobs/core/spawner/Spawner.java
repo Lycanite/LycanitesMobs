@@ -1,6 +1,7 @@
 package com.lycanitesmobs.core.spawner;
 
 import com.google.gson.JsonObject;
+import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.core.spawner.condition.SpawnCondition;
 import com.lycanitesmobs.core.spawner.location.SpawnLocation;
 import com.lycanitesmobs.core.spawner.trigger.SpawnTrigger;
@@ -23,6 +24,9 @@ public class Spawner {
 
     /** A list of all Spawn Locations which are used to determine where this Spawner can actually spawn the mob, some Triggers require a specific spawn location other provide an area. **/
     public List<SpawnLocation> locations = new ArrayList<>();
+
+    /** A list of all Mobs that can be spawned by this spawner. **/
+    public List<MobInfo> mobs = new ArrayList<>();
 
     /** Can be set to false to completely disable this Spawner. **/
     public boolean enabled = true;
@@ -73,6 +77,18 @@ public class Spawner {
      * @return True on a successful spawn and false on failure.
      **/
     public boolean doSpawn(World world, EntityPlayer player, BlockPos triggerPos) {
+        return false;
+    }
+
+
+    /**
+     * Gets a weighted random mob to spawn.
+     * @param world The World to spawn in.
+     * @param player The player that is being spawned around.
+     * @param triggerPos The location that the spawn was triggered, usually used as the center for spawning around or on.
+     * @return True on a successful spawn and false on failure.
+     **/
+    public boolean getMob(World world, EntityPlayer player, BlockPos triggerPos) {
         return false;
     }
 }

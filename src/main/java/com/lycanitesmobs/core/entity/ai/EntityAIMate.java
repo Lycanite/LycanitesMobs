@@ -100,7 +100,7 @@ public class EntityAIMate extends EntityAIBase {
   	// ==================================================
     private EntityCreatureAgeable getPartner() {
         float distance = 8.0F;
-        List possibleMates = this.host.getEntityWorld().getEntitiesWithinAABB(this.targetClass, this.host.getEntityBoundingBox().expand((double)distance, (double)distance, (double)distance));
+        List possibleMates = this.host.getEntityWorld().getEntitiesWithinAABB(this.targetClass, this.host.getEntityBoundingBox().grow((double)distance, (double)distance, (double)distance));
         double closestDistance = Double.MAX_VALUE;
         EntityCreatureAgeable newMate = null;
         Iterator possibleMate = possibleMates.iterator();

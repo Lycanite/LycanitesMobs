@@ -37,15 +37,16 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 
-@Mod(modid = LycanitesMobs.modid, name = LycanitesMobs.name, version = LycanitesMobs.version, useMetadata = false)
+@Mod(modid = LycanitesMobs.modid, name = LycanitesMobs.name, version = LycanitesMobs.version, useMetadata = false, acceptedMinecraftVersions = LycanitesMobs.acceptedMinecraftVersions)
 public class LycanitesMobs {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String version = "1.17.1.3 - MC 1.12.2";
+	public static final String version = "1.17.1.4 - MC 1.12.2";
 	public static final String website = "http://lycanitesmobs.com";
 	public static final String websiteAPI = "http://api.lycanitesmobs.com";
 	public static final String websitePatreon = "https://www.patreon.com/lycanite";
+	public static final String acceptedMinecraftVersions = "[1.12,1.13)";
 	
 	public static final PacketHandler packetHandler = new PacketHandler();
 

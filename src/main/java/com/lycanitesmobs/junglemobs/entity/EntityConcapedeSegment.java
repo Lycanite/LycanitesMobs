@@ -138,7 +138,7 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
         // Try to Load Parent from UUID:
         if(!this.getEntityWorld().isRemote && !this.hasParent() && this.parentUUID != null) {
 	        double range = 64D;
-	        List connections = this.getEntityWorld().getEntitiesWithinAABB(EntityCreatureAgeable.class, this.getEntityBoundingBox().expand(range, range, range));
+	        List connections = this.getEntityWorld().getEntitiesWithinAABB(EntityCreatureAgeable.class, this.getEntityBoundingBox().grow(range, range, range));
 	        Iterator possibleConnections = connections.iterator();
 	        while(possibleConnections.hasNext()) {
 	        	EntityCreatureAgeable possibleConnection = (EntityCreatureAgeable)possibleConnections.next();

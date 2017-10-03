@@ -47,7 +47,7 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
-@Mod(modid = ArcticMobs.modid, name = ArcticMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid)
+@Mod(modid = ArcticMobs.modid, name = ArcticMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid, acceptedMinecraftVersions = LycanitesMobs.acceptedMinecraftVersions)
 public class ArcticMobs {
 	
 	public static final String modid = "arcticmobs";
@@ -80,7 +80,7 @@ public class ArcticMobs {
         AssetManager.addSound("ooze", group, "block.ooze");
         ObjectManager.addDamageSource("ooze", new DamageSource("ooze"));
         Fluid fluid = ObjectManager.addFluid("ooze");
-        fluid.setLuminosity(10).setDensity(3000).setViscosity(5000).setTemperature(-1000);
+        fluid.setLuminosity(10).setDensity(3000).setViscosity(5000).setTemperature(0);
         ObjectManager.addBlock("ooze", new BlockFluidOoze(fluid));
 		
 		// ========== Create Items ==========

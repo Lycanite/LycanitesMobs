@@ -131,7 +131,7 @@ public class EntityBarghest extends EntityCreatureRideable implements IGroupPred
         if(this.leapedAbilityReady && this.onGround && !this.getEntityWorld().isRemote) {
             this.leapedAbilityReady = false;
             double distance = 4.0D;
-            List<EntityLivingBase> possibleTargets = this.getEntityWorld().getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().expand(distance, distance, distance), new Predicate<EntityLivingBase>() {
+            List<EntityLivingBase> possibleTargets = this.getEntityWorld().getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(distance, distance, distance), new Predicate<EntityLivingBase>() {
                 @Override
                 public boolean apply(EntityLivingBase possibleTarget) {
                     if (!possibleTarget.isEntityAlive()

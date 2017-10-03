@@ -175,7 +175,7 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
     /** Returns a larger bounding box for rendering this large entity. **/
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox() {
-        return this.getEntityBoundingBox().expand(200, 50, 200).offset(0, -25, 0);
+        return this.getEntityBoundingBox().grow(200, 50, 200).offset(0, -25, 0);
     }
 
     // ========== Persistence ==========

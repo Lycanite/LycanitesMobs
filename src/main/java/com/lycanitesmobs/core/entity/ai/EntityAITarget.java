@@ -1,22 +1,17 @@
 package com.lycanitesmobs.core.entity.ai;
 
 import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.ai.EntityAIFindEntityNearest;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathPoint;
-import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.math.MathHelper;
 
-import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -126,6 +121,7 @@ public abstract class EntityAITarget extends EntityAIBase {
         EntityLivingBase newTarget = null;
         try {
             List<EntityLivingBase> possibleTargets = this.getPossibleTargets(EntityLivingBase.class, rangeX, rangeY, rangeZ);
+
             if (possibleTargets.isEmpty())
                 return null;
             Collections.sort(possibleTargets, this.nearestSorter);
@@ -143,7 +139,7 @@ public abstract class EntityAITarget extends EntityAIBase {
     //               Get Possible Targets
     // ==================================================
     public <T extends EntityLivingBase> List<T> getPossibleTargets(Class <? extends T > clazz, double rangeX, double rangeY, double rangeZ) {
-        return this.host.getEntityWorld().getEntitiesWithinAABB(clazz, this.host.getEntityBoundingBox().expand(rangeX, rangeY, rangeZ), this.targetSelector);
+        return this.host.getEntityWorld().getEntitiesWithinAABB(clazz, this.host.getEntityBoundingBox().grow(rangeX, rangeY, rangeZ), this.targetSelector);
     }
     
     
@@ -166,7 +162,7 @@ public abstract class EntityAITarget extends EntityAIBase {
             return;
         try {
             double d0 = this.getTargetDistance();
-            List allies = this.host.getEntityWorld().getEntitiesWithinAABB(this.host.getClass(), this.host.getEntityBoundingBox().expand(d0, 4.0D, d0), this.allySelector);
+            List allies = this.host.getEntityWorld().getEntitiesWithinAABB(this.host.getClass(), this.host.getEntityBoundingBox().grow(d0, 4.0D, d0), this.allySelector);
             Iterator possibleAllies = allies.iterator();
 
             while (possibleAllies.hasNext()) {

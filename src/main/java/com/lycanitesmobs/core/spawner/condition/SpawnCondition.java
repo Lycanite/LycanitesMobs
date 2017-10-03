@@ -14,6 +14,6 @@ public abstract class SpawnCondition {
 
     /** Loads this Spawn Condition from the provided JSON data. **/
     public void fromJSON(JsonObject json) {
-
+        // TODO Read SpawnCondition JSON.
     }
 }

@@ -26,6 +26,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -41,7 +42,7 @@ public class LycanitesMobs {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String version = "1.17.1.2 - MC 1.12.2";
+	public static final String version = "1.17.1.3 - MC 1.12.2";
 	public static final String website = "http://lycanitesmobs.com";
 	public static final String websiteAPI = "http://api.lycanitesmobs.com";
 	public static final String websitePatreon = "https://www.patreon.com/lycanite";
@@ -79,6 +80,10 @@ public class LycanitesMobs {
 
 	// Extra Config Settings:
 	public static boolean disableNausea = false;
+
+	static {
+		FluidRegistry.enableUniversalBucket();
+	}
 	
 	
 	// ==================================================

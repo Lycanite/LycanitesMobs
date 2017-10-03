@@ -102,14 +102,10 @@ public class ObjectManager {
         }
         return fluid;
 	}
-    static {
-        FluidRegistry.enableUniversalBucket();
-    }
 
 	// ========== Bucket ==========
 	public static Item addBucket(Item bucket, Block block, Fluid fluid) {
 		buckets.put(block, bucket);
-        //FluidContainerRegistry.registerFluidContainer(fluid, new ItemStack(bucket), new ItemStack(Items.BUCKET)); TODO Try to find what this has changed to, if possible.
         return bucket;
 	}
 

@@ -19,7 +19,10 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemAir;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
@@ -131,6 +134,9 @@ public class ClientProxy extends CommonProxy {
             ModelLoader.setCustomModelResourceLocation(item, 0, itemBase.getModelResourceLocation());
             return;
         }
+        else if(item instanceof ItemAir) {
+	    	return;
+		}
         ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
     }
 }

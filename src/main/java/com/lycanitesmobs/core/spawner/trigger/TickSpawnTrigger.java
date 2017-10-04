@@ -30,6 +30,6 @@ public class TickSpawnTrigger extends SpawnTrigger {
 			return;
 		}
 
-		this.trigger(player.getEntityWorld(), player, player.getPosition());
+		this.trigger(player.getEntityWorld(), player, player.getPosition(), 0);
 	}
 }

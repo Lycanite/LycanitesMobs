@@ -17,6 +17,9 @@ import java.util.List;
 public class Spawner {
     /** Spawners are loaded from JSON and operate around their Triggers, Conditions and Locations. **/
 
+    /** The name of this spawner, must be unique, used by creatures/groups when entering spawners. **/
+    public String name;
+
     /** A list of all Spawn Conditions which determine if the Triggers should be active or not. **/
     public List<SpawnCondition> conditions = new ArrayList<>();
 
@@ -81,9 +84,10 @@ public class Spawner {
      * @param world The World to spawn in.
      * @param player The player that is being spawned around.
      * @param triggerPos The location that the spawn was triggered, usually used as the center for spawning around or on.
+	 * @param level The level of the spawn trigger, higher levels are from rarer spawn conditions and can result in tougher mobs being spawned.
      * @return True on a successful spawn and false on failure.
      **/
-    public boolean doSpawn(World world, EntityPlayer player, BlockPos triggerPos) {
+    public boolean doSpawn(World world, EntityPlayer player, BlockPos triggerPos, int level) {
 
     	// Get Positions:
 		List<BlockPos> spawnPositions = this.getSpawnPos(world, player, triggerPos);

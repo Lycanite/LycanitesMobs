@@ -1,12 +1,15 @@
 package com.lycanitesmobs.core.spawner.location;
 
 import com.google.gson.JsonObject;
+import com.lycanitesmobs.core.spawning.CoordSorterFurthest;
+import com.lycanitesmobs.core.spawning.CoordSorterNearest;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -18,6 +21,9 @@ public class SpawnLocation {
 
     /** The maximum xyz distances in blocks from the central spawn position to spawn from. **/
     public Vec3i rangeMax = new Vec3i(0, 0, 0);
+
+    /** Determines the order that the returned positions should be in. Can be random, near or far (from the trigger position). **/
+    public String sorting = "random";
 
 
     /** Loads this Spawn Location from the provided JSON data. **/
@@ -36,7 +42,7 @@ public class SpawnLocation {
         );
         spawnPositions.add(triggerPos.add(offset));
 
-        return spawnPositions;
+        return this.sortSpawnPositions(spawnPositions, triggerPos);
     }
 
 
@@ -51,4 +57,19 @@ public class SpawnLocation {
         }
         return offset;
     }
+
+
+	/** Sorts a list of spawning positions. **/
+	public List<BlockPos> sortSpawnPositions(List<BlockPos> spawnPositions, BlockPos triggerPos) {
+		if("random".equalsIgnoreCase(this.sorting)) {
+			Collections.shuffle(spawnPositions);
+		}
+		else if("near".equalsIgnoreCase(this.sorting)) {
+			Collections.sort(spawnPositions, new CoordSorterNearest(triggerPos));
+		}
+		else if("far".equalsIgnoreCase(this.sorting)) {
+			Collections.sort(spawnPositions, new CoordSorterFurthest(triggerPos));
+		}
+		return spawnPositions;
+	}
 }

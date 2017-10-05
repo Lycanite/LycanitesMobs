@@ -34,6 +34,7 @@ public class ExtendedPlayer implements IExtendedPlayer {
 	public MobInfo beastiaryCreature;
 	public String beastiaryCategory;
 	public PetManager petManager;
+	public long timePlayed = 0;
 	
 	public long currentTick = 0;
 	public boolean needsFirstSync = true;
@@ -170,6 +171,7 @@ public class ExtendedPlayer implements IExtendedPlayer {
     // ==================================================
 	/** Called by the EventListener, runs any logic on the main player entity's main update loop. **/
 	public void onUpdate() {
+		this.timePlayed++;
         this.hasAttacked = false;
 		boolean creative = this.player.capabilities.isCreativeMode;
 
@@ -394,6 +396,9 @@ public class ExtendedPlayer implements IExtendedPlayer {
 				this.summonSets.put(setID + 1, summonSet);
 			}
 		}
+
+		if(extTagCompound.hasKey("TimePlayed"))
+			this.timePlayed = extTagCompound.getLong("TimePlayed");
     }
 
     // ========== Write ==========
@@ -407,6 +412,7 @@ public class ExtendedPlayer implements IExtendedPlayer {
 		extTagCompound.setInteger("SummonFocus", this.summonFocus);
 		extTagCompound.setInteger("Spirit", this.spirit);
 		extTagCompound.setInteger("SelectedSummonSet", this.selectedSummonSet);
+		extTagCompound.setLong("TimePlayed", this.timePlayed);
 
 		NBTTagList nbtSummonSets = new NBTTagList();
 		for(int setID = 0; setID < this.summonSetMax; setID++) {

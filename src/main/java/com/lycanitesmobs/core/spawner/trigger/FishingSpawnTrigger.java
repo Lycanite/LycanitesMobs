@@ -7,9 +7,6 @@ import net.minecraft.entity.player.EntityPlayer;
 
 public class FishingSpawnTrigger extends SpawnTrigger {
 
-	/** The Chance of triggering. **/
-	public double chance = 1;
-
 	/** The current hook entity to copy velocities from when spawning. **/
 	protected Entity hookEntity;
 

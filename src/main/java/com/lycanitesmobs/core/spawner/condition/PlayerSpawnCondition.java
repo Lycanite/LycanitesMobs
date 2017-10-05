@@ -22,6 +22,12 @@ public class PlayerSpawnCondition extends SpawnCondition {
     /** The maximum time that the player has been playing. **/
     public int timeMax = -1;
 
+	/** The minimum light level that the player must be in. **/
+	public int lightLevelMin = -1;
+
+	/** The maximum light level that the player must be in. **/
+	public int lightLevelMax = -1;
+
 
     @Override
     public boolean isMet(World world, EntityPlayer player) {
@@ -48,6 +54,15 @@ public class PlayerSpawnCondition extends SpawnCondition {
 			if (this.timeMax > 0 && playerExt.timePlayed > this.timeMax) {
 				return false;
 			}
+		}
+
+		// Check Light Level:
+		int lightLevel = world.getLight(player.getPosition());
+		if(this.lightLevelMin > 0 && lightLevel < this.lightLevelMin) {
+			return false;
+		}
+		if(this.lightLevelMax > 0 && lightLevel > this.lightLevelMax) {
+			return false;
 		}
 
         return super.isMet(world, player);

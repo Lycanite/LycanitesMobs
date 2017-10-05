@@ -7,12 +7,12 @@ import com.lycanitesmobs.core.spawner.location.SpawnLocation;
 import com.lycanitesmobs.core.spawner.trigger.SpawnTrigger;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class Spawner {
     /** Spawners are loaded from JSON and operate around their Triggers, Conditions and Locations. **/
@@ -37,6 +37,15 @@ public class Spawner {
 
     /** Determines how many Conditions must be met. If 0 or less all are required. **/
     public int conditionsRequired = 0;
+
+	/** Sets how many times any Trigger must activate (per player) before a wave is spawned. **/
+	public int triggersRequired = 1;
+
+	/** Stores how many times each player has triggered any of this spawners Spawn Triggers, the count is reset when a wave is spawned. **/
+	protected Map<EntityPlayer, Integer> triggerCounts = new HashMap<>();
+
+	/** A list of messages to send to the player whenever the associated count is reached. **/
+	protected Map<Integer, String> triggerCountMessages = new HashMap<>();
 
     /** Determines how a Location is chosen if there are multiple. Can be: order, random or combine. **/
     public String multipleLocations = "combine";
@@ -79,8 +88,55 @@ public class Spawner {
     }
 
 
+	/**
+	 * Starts a new spawn, usually called by Triggers.
+	 * @param world The World to spawn in.
+	 * @param player The player that is being spawned around.
+	 * @param triggerPos The location that the spawn was triggered, usually used as the center for spawning around or on.
+	 * @param level The level of the spawn trigger, higher levels are from rarer spawn conditions and can result in tougher mobs being spawned.
+	 * @param countAmount How much this trigger affects the trigger count by.
+	 * @return True on a successful spawn and false on failure.
+	 **/
+	public boolean trigger(World world, EntityPlayer player, BlockPos triggerPos, int level, int countAmount) {
+		// Only One Trigger Required:
+		if(this.triggersRequired <= 1) {
+			return this.doSpawn(world, player, triggerPos, level);
+		}
+
+		// Get Current Count:
+		if(!this.triggerCounts.containsKey(player)) {
+			this.triggerCounts.put(player, Math.max(countAmount, 0));
+		}
+		int currentCount = this.triggerCounts.get(player);
+		int lastCount = currentCount;
+
+		// Change Count:
+		if(countAmount == 0) {
+			currentCount = 0;
+		}
+		else {
+			currentCount += countAmount;
+		}
+		if(currentCount != lastCount) {
+			if(this.triggerCountMessages.containsKey(currentCount)) {
+				String message = I18n.translateToLocal(this.triggerCountMessages.get(currentCount));
+				player.sendMessage(new TextComponentString(message));
+			}
+		}
+
+		// Required Count Met:
+		if(currentCount >= this.triggersRequired) {
+			this.triggerCounts.put(player, 0);
+			return this.doSpawn(world, player, triggerPos, level);
+		}
+
+		this.triggerCounts.put(player, currentCount);
+		return false;
+	}
+
+
     /**
-     * Starts a new spawn, usually called by Triggers.
+     * Starts a new spawn, usually called from trigger() when the count is sufficient.
      * @param world The World to spawn in.
      * @param player The player that is being spawned around.
      * @param triggerPos The location that the spawn was triggered, usually used as the center for spawning around or on.

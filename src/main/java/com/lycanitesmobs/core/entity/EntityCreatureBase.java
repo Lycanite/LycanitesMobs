@@ -466,8 +466,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public String getSpeciesName() {
         if(this.mobInfo == null)
             return super.getName();
-    	String entityName = this.mobInfo.name;
-    	return I18n.translateToLocal("entity." + this.mobInfo.group.filename + "." + entityName + ".name");
+    	return I18n.translateToLocal(this.getEntityIdName());
     }
 
     /** Returns the subpsecies title (translated name) of this entity, returns a blank string if this is a base species mob. **/
@@ -477,6 +476,11 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	}
     	return "";
     }
+
+	/** Returns the id name of this entity, used for referencing this entity by string. **/
+	public String getEntityIdName() {
+		return "entity." + this.mobInfo.group.filename + "." + this.mobInfo.name + ".name";
+	}
 
     /** Gets the name of this entity relative to it's age, more useful for EntityCreatureAgeable. **/
     public String getAgeName() {

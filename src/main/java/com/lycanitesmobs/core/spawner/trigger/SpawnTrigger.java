@@ -13,6 +13,12 @@ public abstract class SpawnTrigger {
     /** The Spawner using this Trigger. **/
     public Spawner spawner;
 
+	/** How much this influences the Spawner's trigger count by, usually just 1. If 0 this Trigger will instead completely reset the count, if negative it will reduce the count. **/
+	public int count = 1;
+
+	/** The Chance of triggering. **/
+	public double chance = 1;
+
 
     /** Constructor **/
     public SpawnTrigger(Spawner spawner) {
@@ -26,7 +32,7 @@ public abstract class SpawnTrigger {
 
 	/** Triggers an actual spawn. **/
 	public void trigger(World world, EntityPlayer player, BlockPos triggerPos, int level) {
-		this.spawner.doSpawn(world, player, triggerPos, level);
+		this.spawner.trigger(world, player, triggerPos, level, this.count);
 	}
 
 	/** Used to apply effects, etc any mobs that have spawned because of this trigger. **/

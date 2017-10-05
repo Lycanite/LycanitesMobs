@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.spawner.location;
 import com.google.gson.JsonObject;
 import com.lycanitesmobs.core.spawning.CoordSorterFurthest;
 import com.lycanitesmobs.core.spawning.CoordSorterNearest;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
@@ -71,5 +72,23 @@ public class SpawnLocation {
 			Collections.sort(spawnPositions, new CoordSorterFurthest(triggerPos));
 		}
 		return spawnPositions;
+	}
+
+
+	/**
+	 * Returns true if the provided coordinate has space to spawn an entity at it.
+	 * This works by checking if it is an air block and if the block above is also an air block.
+	 * @return True if there is space else false.
+	 */
+	public boolean doesPositionHaveSpace(World world, BlockPos pos, Block insideBlock) {
+		Block feet = world.getBlockState(pos).getBlock();
+		if(feet == null) return false;
+		if(feet != insideBlock) return false;
+
+		Block head = world.getBlockState(pos.add(0, 1, 0)).getBlock();
+		if(head == null) return false;
+		if(head != insideBlock) return false;
+
+		return true;
 	}
 }

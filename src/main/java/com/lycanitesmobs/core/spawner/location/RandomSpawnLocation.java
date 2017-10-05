@@ -60,7 +60,7 @@ public class RandomSpawnLocation extends SpawnLocation {
 	 * @return Returns a BlockPos or null if no coord was found.
 	 */
 	public BlockPos getRandomPosition(World world, EntityPlayer player, BlockPos triggerPos) {
-		int[] xz = this.getRandomXZCoord(world, triggerPos.getX(), triggerPos.getZ());
+		int[] xz = this.getRandomXZCoord(world, triggerPos);
 		int x = xz[0];
 		int z = xz[1];
 		int y = this.getRandomYCoord(world, new BlockPos(x, triggerPos.getY(), z));
@@ -68,38 +68,35 @@ public class RandomSpawnLocation extends SpawnLocation {
 	}
 
 	/**
-	 * Gets a random XZ position from the provided XZ position using the provided range and range max radii.
+	 * Gets a random XZ position from the trigger position.
 	 * @param world The world that the coordinates are being selected in, mainly for getting Random.
-	 * @param originX The origin x position.
-	 * @param originZ The origin z position.
+	 * @param triggerPos The trigger position to randomize around.
 	 * @return An integer array containing two ints the X and Z position.
 	 */
-	public int[] getRandomXZCoord(World world, int originX, int originZ) {
-		float xScale = world.rand.nextFloat();
-		float zScale = world.rand.nextFloat();
-		float minScale = (float)(rangeMin) / (float)(rangeMin);
-
-		if(xScale + zScale < minScale * 2) {
-			float xShare = world.rand.nextFloat();
-			float zShare = 1.0F - xShare;
-			xScale += minScale * xShare;
-			zScale += minScale * zShare;
+	public int[] getRandomXZCoord(World world, BlockPos triggerPos) {
+		int xPos = 0;
+		if(this.rangeMax.getX() > 0) {
+			xPos = world.rand.nextInt(this.rangeMax.getX());
+			if(world.rand.nextBoolean()) {
+				xPos += this.rangeMin.getX();
+			}
+			else {
+				xPos = -xPos - this.rangeMin.getX();
+			}
 		}
 
-		int x = Math.round(rangeMax * xScale);
-		int z = Math.round(rangeMax * zScale);
+		int zPos = 0;
+		if(this.rangeMax.getZ() > 0) {
+			zPos = world.rand.nextInt(this.rangeMax.getZ());
+			if(world.rand.nextBoolean()) {
+				zPos += this.rangeMin.getZ();
+			}
+			else {
+				zPos = -zPos - this.rangeMin.getZ();
+			}
+		}
 
-		if(world.rand.nextBoolean())
-			x = originX + x;
-		else
-			x = originX - x;
-
-		if(world.rand.nextBoolean())
-			z = originZ + z;
-		else
-			z = originZ - z;
-
-		return new int[] {x, z};
+		return new int[] {triggerPos.getX() + xPos, triggerPos.getZ() + zPos};
 	}
 
 	/**
@@ -112,23 +109,23 @@ public class RandomSpawnLocation extends SpawnLocation {
 		int originX = triggerPos.getX();
 		int originY = triggerPos.getY();
 		int originZ = triggerPos.getZ();
-		int minY = Math.max(originY - rangeMax, 0);
-		int maxY = originY + rangeMax;
+		int minY = Math.max(originY - this.rangeMax.getY(), 0);
+		int maxY = originY + this.rangeMax.getY();
 		List<Integer> yCoordsLow = new ArrayList<Integer>();
 		List<Integer> yCoordsHigh = new ArrayList<Integer>();
 
 		// Get Every Valid Y Pos:
 		for(int nextY = minY; nextY <= maxY; nextY++) {
-			// If the next Y coord to check is not within the min range, boost it up to the min range:
-			if(nextY > originY - rangeMin && nextY < originY + rangeMin)
-				nextY = originY + rangeMin;
+			// If the next Y coord to check is within the min range area, move it up to the out of it:
+			if(nextY > originY - this.rangeMin.getY() && nextY < originY + this.rangeMin.getY())
+				nextY = originY + this.rangeMin.getY();
 
 			BlockPos spawnPos = new BlockPos(originX, nextY, originZ);
 			IBlockState blockState = world.getBlockState(spawnPos);
 			Block block = blockState.getBlock();
 
-			// If block is the inside block or if checking for a solid surface, if the block is a solid surface to spawn on.
-			if(block != null && ((!solidSurface && block == insideBlock) || (solidSurface && this.validGroundBlock(blockState, world, spawnPos)))) {
+			// If block is the inside block or if checking for a solid ground, if the block is a solid surface to spawn on.
+			if(block != null && ((!this.solidGround && block == this.insideBlock) || (this.solidGround && this.validGroundBlock(blockState, world, spawnPos)))) {
 				// Make sure the block above is within range:
 				if(nextY + 1 > originY - minY && nextY + 1 < originY - maxY)
 					continue;
@@ -136,17 +133,17 @@ public class RandomSpawnLocation extends SpawnLocation {
 				// If above ground:
 				if(world.canBlockSeeSky(spawnPos)) {
 					BlockPos checkPos = spawnPos;
-					if(solidSurface)
+					if(this.solidGround)
 						checkPos = checkPos.add(0, 1, 0);
-					if(underground || world.getBlockState(checkPos).getBlock() != insideBlock)
+					if(this.underground || world.getBlockState(checkPos).getBlock() != this.insideBlock)
 						break;
-					if(!solidSurface) {
+					if(!this.solidGround) {
 						int skyCoord = nextY;
 						int skyRange = Math.min(world.getHeight() - 1, maxY) - skyCoord;
 						// Get random y coord within inside block:
 						if(skyRange > 1) {
-							if(insideBlock != Blocks.AIR)
-								skyRange = this.getInsideBlockHeight(world, checkPos, insideBlock);
+							if(this.insideBlock != Blocks.AIR)
+								skyRange = this.getInsideBlockHeight(world, checkPos, this.insideBlock);
 							nextY += world.rand.nextInt(skyRange);
 						}
 						if(skyRange == 1)
@@ -159,7 +156,7 @@ public class RandomSpawnLocation extends SpawnLocation {
 					break;
 				}
 
-				else if(this.doesCoordHaveSpace(world, spawnPos.add(0, 1, 0), insideBlock)) {
+				else if(this.doesPositionHaveSpace(world, spawnPos.add(0, 1, 0), this.insideBlock)) {
 					if(nextY + 1 <= 64)
 						yCoordsLow.add(nextY + 1);
 					else

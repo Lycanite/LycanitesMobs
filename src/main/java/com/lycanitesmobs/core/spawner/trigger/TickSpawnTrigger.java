@@ -9,9 +9,6 @@ public class TickSpawnTrigger extends SpawnTrigger {
 	/** How many ticks between trigger attempts. **/
 	public double tickRate = 800;
 
-	/** The Chance of triggering. **/
-	public double chance = 1;
-
 
 	/** Constructor **/
 	public TickSpawnTrigger(Spawner spawner) {

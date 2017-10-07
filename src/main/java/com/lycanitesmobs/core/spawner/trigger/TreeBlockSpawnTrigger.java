@@ -1,5 +1,6 @@
 package com.lycanitesmobs.core.spawner.trigger;
 
+import com.google.gson.JsonObject;
 import com.lycanitesmobs.core.info.ObjectLists;
 import com.lycanitesmobs.core.spawner.Spawner;
 import net.minecraft.block.Block;
@@ -17,6 +18,12 @@ public class TreeBlockSpawnTrigger extends BlockSpawnTrigger {
 	public TreeBlockSpawnTrigger(Spawner spawner) {
 		super(spawner);
 	}
+
+	@Override
+	public void loadFromJSON(JsonObject json) {
+		super.loadFromJSON(json);
+	}
+
 
 	@Override
 	public boolean isTriggerBlock(IBlockState blockState, World world, BlockPos blockPos) {

@@ -1,15 +1,20 @@
 package com.lycanitesmobs.core.spawner.location;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class RandomSpawnLocation extends SpawnLocation {
@@ -29,9 +34,28 @@ public class RandomSpawnLocation extends SpawnLocation {
 	public Block insideBlock = Blocks.AIR;
 
 
-    @Override
-    public void fromJSON(JsonObject json) {
-		super.fromJSON(json);
+	@Override
+	public void loadFromJSON(JsonObject json) {
+		if(json.has("limit"))
+			this.limit = json.get("limit").getAsInt();
+
+		if(json.has("surface"))
+			this.surface = json.get("surface").getAsBoolean();
+
+		if(json.has("underground"))
+			this.underground = json.get("underground").getAsBoolean();
+
+		if(json.has("solidGround"))
+			this.solidGround = json.get("solidGround").getAsBoolean();
+
+		if(json.has("insideBlock")) {
+			Block block = GameRegistry.findRegistry(Block.class).getValue(new ResourceLocation(json.get("insideBlock").getAsString()));
+			if(block != null) {
+				this.insideBlock = block;
+			}
+		}
+
+		super.loadFromJSON(json);
     }
 
     @Override

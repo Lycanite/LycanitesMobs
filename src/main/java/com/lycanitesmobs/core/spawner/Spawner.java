@@ -1,5 +1,7 @@
 package com.lycanitesmobs.core.spawner;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.lycanitesmobs.ExtendedWorld;
 import com.lycanitesmobs.LycanitesMobs;
@@ -25,20 +27,23 @@ import java.util.*;
 public class Spawner {
     /** Spawners are loaded from JSON and operate around their Triggers, Conditions and Locations. **/
 
+	/** A list of all Spawn Conditions which determine if the Triggers should be active or not. **/
+	public List<SpawnCondition> conditions = new ArrayList<>();
+
+	/** A list of all Spawn Triggers which listen to events and ticks and attempt a spawn, if conditions are met. **/
+	public List<SpawnTrigger> triggers = new ArrayList<>();
+
+	/** A list of all Spawn Locations which are used to determine where this Spawner can actually spawn the mob, some Triggers require a specific spawn location other provide an area. **/
+	public List<SpawnLocation> locations = new ArrayList<>();
+
+	/** A list of all Mobs that can be spawned by this spawner. **/
+	public List<MobSpawn> mobSpawns = new ArrayList<>();
+
     /** The name of this spawner, must be unique, used by creatures/groups when entering spawners. **/
     public String name;
 
-    /** A list of all Spawn Conditions which determine if the Triggers should be active or not. **/
-    public List<SpawnCondition> conditions = new ArrayList<>();
-
-    /** A list of all Spawn Triggers which listen to events and ticks and attempt a spawn, if conditions are met. **/
-    public List<SpawnTrigger> triggers = new ArrayList<>();
-
-    /** A list of all Spawn Locations which are used to determine where this Spawner can actually spawn the mob, some Triggers require a specific spawn location other provide an area. **/
-    public List<SpawnLocation> locations = new ArrayList<>();
-
-    /** A list of all Mobs that can be spawned by this spawner. **/
-    public List<MobSpawn> mobSpawns = new ArrayList<>();
+	/** If set to true and this spawner is a default spawner, it will reset when loading. This must be set to false or removed from the json if it is a customised spawner. **/
+	public boolean loadDefault = false;
 
     /** Can be set to false to completely disable this Spawner. **/
     public boolean enabled = true;
@@ -49,11 +54,8 @@ public class Spawner {
 	/** Sets how many times any Trigger must activate (per player) before a wave is spawned. **/
 	public int triggersRequired = 1;
 
-	/** Stores how many times each player has triggered any of this spawners Spawn Triggers, the count is reset when a wave is spawned. **/
-	protected Map<EntityPlayer, Integer> triggerCounts = new HashMap<>();
-
 	/** A list of messages to send to the player whenever the associated count is reached. **/
-	protected Map<Integer, String> triggerCountMessages = new HashMap<>();
+	public Map<Integer, String> triggerCountMessages = new HashMap<>();
 
     /** Determines how a Location is chosen if there are multiple. Can be: order, random or combine. **/
     public String multipleLocations = "combine";
@@ -61,8 +63,14 @@ public class Spawner {
 	/** How many mobs to spawn each wave. **/
 	public int mobCount = 1;
 
-	/** If true, this Spawner will ignore all biome checks, this bypasses the biome checks of MobSpawns and SpawnInfos. **/
+	/** If true, this Spawner will ignore all biome checks, this bypasses the checks in MobSpawns and SpawnInfos. **/
 	public boolean ignoreBiomes = false;
+
+	/** If true, this Spawner will ignore light level checks, this bypasses the checks in MobSpawns and SpawnInfos. **/
+	public boolean ignoreLightLevel = false;
+
+	/** If true, this Spawner will ignore group limit checks, this bypasses the checks in MobSpawns and SpawnInfos. **/
+	public boolean ignoreGroupLimit = false;
 
     /** If true, mobs spawned by this Spawner will not naturally despawn. **/
     public boolean forceNoDespawn = false;
@@ -71,16 +79,111 @@ public class Spawner {
 	public boolean mobEventSpawner = false;
 
 
-	/** Loads (or reloads) all JSON Spawners. **/
-	public static void loadAllFromJSON() {
-		// TODO Load JSON Spawners
-	}
+	/** Stores how many times each player has triggered any of this spawners Spawn Triggers, the count is reset when a wave is spawned. **/
+	protected Map<EntityPlayer, Integer> triggerCounts = new HashMap<>();
 
 
     /** Loads this Spawner from the provided JSON data. **/
-    public void fromJSON(JsonObject json) {
-        // TODO Load from JSON.
+    public void loadFromJSON(JsonObject json) {
+    	// Spawner Properties:
+        this.name = json.get("name").getAsString();
+
+		if(json.has("loadDefault"))
+			this.loadDefault = json.get("loadDefault").getAsBoolean();
+
+        if(json.has("enabled"))
+			this.enabled = json.get("enabled").getAsBoolean();
+
+		if(json.has("conditionsRequired"))
+			this.conditionsRequired = json.get("conditionsRequired").getAsInt();
+
+		if(json.has("triggersRequired"))
+			this.triggersRequired = json.get("triggersRequired").getAsInt();
+
+		if(json.has("triggerCountMessages")) {
+			JsonArray jsonArray = json.get("triggerCountMessages").getAsJsonArray();
+			Iterator<JsonElement> jsonIterator = jsonArray.iterator();
+			while (jsonIterator.hasNext()) {
+				JsonObject tcmJson = jsonIterator.next().getAsJsonObject();
+				this.triggerCountMessages.put(tcmJson.get("count").getAsInt(), tcmJson.get("message").getAsString());
+			}
+		}
+
+		if(json.has("multipleLocations"))
+			this.multipleLocations = json.get("multipleLocations").getAsString();
+
+		if(json.has("mobCount"))
+			this.mobCount = json.get("mobCount").getAsInt();
+
+		if(json.has("ignoreBiomes"))
+			this.ignoreBiomes = json.get("ignoreBiomes").getAsBoolean();
+
+		if(json.has("ignoreLightLevel"))
+			this.ignoreLightLevel = json.get("ignoreLightLevel").getAsBoolean();
+
+		if(json.has("ignoreGroupLimit"))
+			this.ignoreGroupLimit = json.get("ignoreGroupLimit").getAsBoolean();
+
+		if(json.has("forceNoDespawn"))
+			this.forceNoDespawn = json.get("forceNoDespawn").getAsBoolean();
+
+		if(json.has("mobEventSpawner"))
+			this.mobEventSpawner = json.get("mobEventSpawner").getAsBoolean();
+
+		// Conditions:
+		if(json.has("conditions")) {
+			JsonArray jsonArray = json.get("conditions").getAsJsonArray();
+			Iterator<JsonElement> jsonIterator = jsonArray.iterator();
+			while (jsonIterator.hasNext()) {
+				JsonObject conditionJson = jsonIterator.next().getAsJsonObject();
+				SpawnCondition spawnCondition = SpawnCondition.createFromJSON(conditionJson);
+				this.conditions.add(spawnCondition);
+			}
+		}
+
+		// Triggers:
+		if(json.has("triggers")) {
+			JsonArray jsonArray = json.get("triggers").getAsJsonArray();
+			Iterator<JsonElement> jsonIterator = jsonArray.iterator();
+			while (jsonIterator.hasNext()) {
+				JsonObject triggerJson = jsonIterator.next().getAsJsonObject();
+				SpawnTrigger spawnTrigger = SpawnTrigger.createFromJSON(triggerJson, this);
+				this.triggers.add(spawnTrigger);
+				SpawnerEventListener.instance.addSpawnTrigger(spawnTrigger);
+			}
+		}
+
+		// Locations:
+		if(json.has("locations")) {
+			JsonArray jsonArray = json.get("locations").getAsJsonArray();
+			Iterator<JsonElement> jsonIterator = jsonArray.iterator();
+			while (jsonIterator.hasNext()) {
+				JsonObject locationJson = jsonIterator.next().getAsJsonObject();
+				SpawnLocation spawnLocation = SpawnLocation.createFromJSON(locationJson);
+				this.locations.add(spawnLocation);
+			}
+		}
+
+		// Mob Spawns:
+		if(json.has("mobSpawns")) {
+			JsonArray jsonArray = json.get("mobSpawns").getAsJsonArray();
+			Iterator<JsonElement> jsonIterator = jsonArray.iterator();
+			while (jsonIterator.hasNext()) {
+				JsonObject mobSpawnJson = jsonIterator.next().getAsJsonObject();
+				MobSpawn mobSpawn = MobSpawn.createFromJSON(mobSpawnJson);
+				this.mobSpawns.add(mobSpawn);
+			}
+		}
     }
+
+
+	/** Remove this Spawner. This removes all Triggers from the Event Listener and does other cleanup. **/
+	public void destroy() {
+		for(SpawnTrigger spawnTrigger : this.triggers) {
+			SpawnerEventListener.instance.removeSpawnTrigger(spawnTrigger);
+		}
+		SpawnerManager.getInstance().removeSpawner(this);
+	}
 
 
     /** Returns true if Triggers are allowed to operate for this Spawner. **/
@@ -89,6 +192,9 @@ public class Spawner {
             return false;
         }
 
+        if(this.conditions.isEmpty()) {
+        	return true;
+		}
         int conditionsMet = 0;
         for(SpawnCondition condition : this.conditions) {
             if(condition.isMet(world, player)) {
@@ -118,8 +224,11 @@ public class Spawner {
 	 * @return True on a successful spawn and false on failure.
 	 **/
 	public boolean trigger(World world, EntityPlayer player, BlockPos triggerPos, int level, int countAmount) {
+		LycanitesMobs.printDebug("JSONSpawner", "Spawner Triggered: " + this.name);
+
 		// Only One Trigger Required:
 		if(this.triggersRequired <= 1) {
+			LycanitesMobs.printDebug("JSONSpawner", "Only one trigger required.");
 			return this.doSpawn(world, player, triggerPos, level);
 		}
 
@@ -173,6 +282,7 @@ public class Spawner {
     	// Get Positions:
 		List<BlockPos> spawnPositions = this.getSpawnPos(world, player, triggerPos);
 		if(spawnPositions.isEmpty()) {
+			LycanitesMobs.printDebug("JSONSpawner", "No Spawn Positions Found");
 			return false;
 		}
 		Collections.shuffle(spawnPositions);
@@ -291,16 +401,20 @@ public class Spawner {
 		 * @return True on a successful spawn and false on failure.
 		 **/
 	public List<BlockPos> getSpawnPos(World world, EntityPlayer player, BlockPos triggerPos) {
+		LycanitesMobs.printDebug("JSONSpawner", "Searching for Spawn Positions...");
 		List<BlockPos> spawnPositions = new ArrayList<>();
 
 		if(this.locations.isEmpty()) {
+			LycanitesMobs.printDebug("JSONSpawner", "No Spawn Locations, Using Trigger Position");
 			spawnPositions.add(triggerPos);
 			return spawnPositions;
 		}
 		if(this.locations.size() == 1) {
+			LycanitesMobs.printDebug("JSONSpawner", "Only One Spawn Location");
 			return this.locations.get(0).getSpawnPositions(world, player, triggerPos);
 		}
 
+		LycanitesMobs.printDebug("JSONSpawner", "Multiple Spawn Locations, Mode: " + this.multipleLocations);
 		if("order".equals(this.multipleLocations)) {
 			for(SpawnLocation location : this.locations) {
 				spawnPositions = location.getSpawnPositions(world, player, triggerPos);
@@ -435,14 +549,14 @@ public class Spawner {
 				return true;
 			}
 
-			if(!mobSpawn.ignoreLightLevel) {
+			if(!this.ignoreLightLevel && !mobSpawn.ignoreLightLevel) {
 				LycanitesMobs.printDebug("JSONSpawner", "Checking Light Level...");
 				if(!entityCreature.checkSpawnLightLevel(world, spawnPos)) {
 					return false;
 				}
 			}
 
-			if(!mobSpawn.ignoreGroupLimit) {
+			if(!this.ignoreGroupLimit && !mobSpawn.ignoreGroupLimit) {
 				LycanitesMobs.printDebug("JSONSpawner", "Checking Group Limit...");
 				if(!entityCreature.checkSpawnGroupLimit(world, spawnPos)) {
 					return false;

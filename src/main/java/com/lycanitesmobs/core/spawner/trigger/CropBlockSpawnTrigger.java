@@ -1,5 +1,6 @@
 package com.lycanitesmobs.core.spawner.trigger;
 
+import com.google.gson.JsonObject;
 import com.lycanitesmobs.core.spawner.Spawner;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockVine;
@@ -15,6 +16,13 @@ public class CropBlockSpawnTrigger extends BlockSpawnTrigger {
 	public CropBlockSpawnTrigger(Spawner spawner) {
 		super(spawner);
 	}
+
+
+	@Override
+	public void loadFromJSON(JsonObject json) {
+		super.loadFromJSON(json);
+	}
+
 
 	@Override
 	public boolean isTriggerBlock(IBlockState blockState, World world, BlockPos blockPos) {

@@ -10,6 +10,7 @@ import com.lycanitesmobs.core.info.CreatureKnowledge;
 import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.core.mobevent.MobEventManager;
 import com.lycanitesmobs.core.mobevent.MobEventBase;
+import com.lycanitesmobs.core.spawner.SpawnerManager;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -87,6 +88,38 @@ public class CommandMain implements ICommand {
 			commandSender.sendMessage(new TextComponentString(reply));
 			commandSender.sendMessage(new TextComponentString(this.getUsage(commandSender)));
 			return;
+		}
+
+		// Spawner:
+		if("spawners".equalsIgnoreCase(args[0])) {
+			reply = I18n.translateToLocal("lyc.command.spawners.invalid");
+			if (args.length < 2) {
+				commandSender.sendMessage(new TextComponentString(reply));
+				return;
+			}
+
+			// Add:
+			if("reload".equalsIgnoreCase(args[1])) {
+				reply = I18n.translateToLocal("lyc.command.spawners.reload");
+				SpawnerManager.getInstance().reload();
+				commandSender.sendMessage(new TextComponentString(reply));
+				return;
+			}
+		}
+		if("spawner".equalsIgnoreCase(args[0])) {
+			reply = I18n.translateToLocal("lyc.command.spawners.invalid");
+			if (args.length < 2) {
+				commandSender.sendMessage(new TextComponentString(reply));
+				return;
+			}
+
+			// Add:
+			if("reload".equalsIgnoreCase(args[1])) {
+				reply = I18n.translateToLocal("lyc.command.spawners.reload");
+				SpawnerManager.getInstance().reload();
+				commandSender.sendMessage(new TextComponentString(reply));
+				return;
+			}
 		}
 
 		// Beastiary:

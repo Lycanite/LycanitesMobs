@@ -1,5 +1,6 @@
 package com.lycanitesmobs.core.spawner;
 
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.spawner.trigger.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -24,18 +25,76 @@ import java.util.Map;
 public class SpawnerEventListener {
     public static SpawnerEventListener instance;
 
+	public List<TickSpawnTrigger> tickSpawnTriggers = new ArrayList<>();
+	public List<KillSpawnTrigger> killSpawnTriggers = new ArrayList<>();
+	public List<BlockSpawnTrigger> blockSpawnTriggers = new ArrayList<>();
+	public List<SleepSpawnTrigger> sleepSpawnTriggers = new ArrayList<>();
+	public List<FishingSpawnTrigger> fishingSpawnTriggers = new ArrayList<>();
+
     // ==================================================
     //                     Constructor
     // ==================================================
 	public SpawnerEventListener() {
 		instance = this;
 	}
+
+
+	// ==================================================
+	//                 Spawn Triggers
+	// ==================================================
+	/**
+	 * Adds a new Spawn Trigger.
+	 * @return True on success, false if it failed to add (could happen if the Trigger type has no matching list created yet.
+	 */
+	public boolean addSpawnTrigger(SpawnTrigger spawnTrigger) {
+		if(spawnTrigger instanceof TickSpawnTrigger && !this.tickSpawnTriggers.contains(spawnTrigger)) {
+			this.tickSpawnTriggers.add((TickSpawnTrigger)spawnTrigger);
+			return true;
+		}
+		if(spawnTrigger instanceof KillSpawnTrigger && !this.killSpawnTriggers.contains(spawnTrigger)) {
+			this.killSpawnTriggers.add((KillSpawnTrigger)spawnTrigger);
+			return true;
+		}
+		if(spawnTrigger instanceof BlockSpawnTrigger && !this.blockSpawnTriggers.contains(spawnTrigger)) {
+			this.blockSpawnTriggers.add((BlockSpawnTrigger)spawnTrigger);
+			return true;
+		}
+		if(spawnTrigger instanceof SleepSpawnTrigger && !this.sleepSpawnTriggers.contains(spawnTrigger)) {
+			this.sleepSpawnTriggers.add((SleepSpawnTrigger)spawnTrigger);
+			return true;
+		}
+		if(spawnTrigger instanceof FishingSpawnTrigger && !this.fishingSpawnTriggers.contains(spawnTrigger)) {
+			this.fishingSpawnTriggers.add((FishingSpawnTrigger)spawnTrigger);
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Removes a Spawn Trigger.
+	 */
+	public void removeSpawnTrigger(SpawnTrigger spawnTrigger) {
+		if(this.tickSpawnTriggers.contains(spawnTrigger)) {
+			this.tickSpawnTriggers.remove(spawnTrigger);
+		}
+		if(this.killSpawnTriggers.contains(spawnTrigger)) {
+			this.killSpawnTriggers.remove(spawnTrigger);
+		}
+		if(this.blockSpawnTriggers.contains(spawnTrigger)) {
+			this.blockSpawnTriggers.remove(spawnTrigger);
+		}
+		if(this.sleepSpawnTriggers.contains(spawnTrigger)) {
+			this.sleepSpawnTriggers.remove(spawnTrigger);
+		}
+		if(this.fishingSpawnTriggers.contains(spawnTrigger)) {
+			this.fishingSpawnTriggers.remove(spawnTrigger);
+		}
+	}
 	
 	
 	// ==================================================
 	//               Entity Update Event
 	// ==================================================
-    public List<TickSpawnTrigger> tickSpawnTriggers = new ArrayList<>();
 	public Map<EntityPlayer, Long> playerUpdateTicks = new HashMap<>();
 	
 	/** This uses the player update events to update Tick Spawn Triggers. **/
@@ -66,8 +125,6 @@ public class SpawnerEventListener {
 	// ==================================================
 	//                 Entity Death Event
 	// ==================================================
-    public List<KillSpawnTrigger> killSpawnTriggers = new ArrayList<>();
-	
 	/** This uses the entity death events to update Kill Spawn Triggers. **/
 	@SubscribeEvent
 	public void onEntityDeath(LivingDeathEvent event) {
@@ -93,7 +150,6 @@ public class SpawnerEventListener {
 	// ==================================================
 	//                 Harvest Drops Event
 	// ==================================================
-    public List<BlockSpawnTrigger> blockSpawnTriggers = new ArrayList<>();
 	/** This uses the block harvest drops events to update Block Spawn Triggers. **/
 	@SubscribeEvent
 	public void onHarvestDrops(HarvestDropsEvent event) {
@@ -144,7 +200,6 @@ public class SpawnerEventListener {
 	// ==================================================
 	//                Player Use Bed Event
 	// ==================================================
-    public List<SleepSpawnTrigger> sleepSpawnTriggers = new ArrayList<>();
 	/** This uses the player sleep in bed event to spawn mobs. **/
 	@SubscribeEvent
 	public void onSleep(PlayerSleepInBedEvent event) {
@@ -177,7 +232,6 @@ public class SpawnerEventListener {
 	// ==================================================
 	//                  Fished Event
 	// ==================================================
-	public List<FishingSpawnTrigger> fishingSpawnTriggers = new ArrayList<>();
 	/** This uses the lightning strike event to spawn mobs. **/
 	public void onFished(ItemFishedEvent event) {
 		EntityPlayer player = event.getEntityPlayer();

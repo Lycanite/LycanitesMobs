@@ -3,14 +3,17 @@ package com.lycanitesmobs;
 import com.lycanitesmobs.core.config.ConfigBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import org.apache.commons.io.FilenameUtils;
 
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.List;
+import java.net.URI;
+import java.net.URL;
+import java.nio.file.*;
+import java.util.*;
 
 public class Utilities {
     
@@ -173,4 +176,68 @@ public class Utilities {
     	Calendar calendar = Calendar.getInstance();
 		return calendar.get(Calendar.MONTH) == calendar.JANUARY && calendar.get(Calendar.DAY_OF_MONTH) == 1;
     }
+
+
+	// ==================================================
+	//                   File Loading
+	// ==================================================
+
+	/**
+	 * Returns A Path instance for the provided asset path of the jar file that the provided class is in.
+	 * @param clazz The class to base the jar file off of.
+	 * @param assetDomain The mod domain name.
+	 * @param assetPath The path inside of the mod's assets directory. Ex: "textures/blocks"
+	 * @return
+	 */
+	public static Path getAssetPath(Class clazz, String assetDomain, String assetPath) {
+		Path path = null;
+		try {
+			URL url = clazz.getResource("/assets/" + assetDomain + "/" + "." + assetDomain);
+			URI uri = url.toURI();
+			if ("file".equals(uri.getScheme())) {
+				path = Paths.get(clazz.getResource("/assets/" + assetDomain + "/" + assetPath).toURI());
+			}
+			else {
+				if (!"jar".equals(uri.getScheme())) {
+					LycanitesMobs.printWarning("", "Unsupported file scheme: " + uri.getScheme());
+					return null;
+				}
+				FileSystem filesystem = FileSystems.newFileSystem(uri, Collections.emptyMap());
+				path = filesystem.getPath("/assets/" + assetDomain + "/" + assetPath);
+			}
+		}
+		catch (Exception e) {
+			LycanitesMobs.printWarning("", "There was a problem getting a Path for: " + assetDomain + "/" + assetPath + " \n" + e.toString());
+		}
+
+		return path;
+	}
+
+	/**
+	 * Returns a list of ResourceLocations for every file in the provided Path instance.
+	 * @param path The directory Path instance to read from.
+	 * @param assetDomain The mod domain name.
+	 * @param fileType The file extension to use. Ex: "png"
+	 * @return
+	 */
+	public static List<ResourceLocation> getPathResourceLocations(Path path, String assetDomain, String fileType) {
+		List<ResourceLocation> resourceLocations = new ArrayList<>();
+		try {
+			Iterator<Path> iterator = Files.walk(path).iterator();
+			while(iterator.hasNext()) {
+				Path filePath = iterator.next();
+				if (fileType == null || fileType.equals(FilenameUtils.getExtension(filePath.toString()))) {
+					Path relativePath = path.relativize(filePath);
+					String resourceLocationPath = FilenameUtils.removeExtension(relativePath.toString()).replaceAll("\\\\", "/");
+					ResourceLocation resourceLocation = new ResourceLocation(assetDomain, resourceLocationPath);
+					resourceLocations.add(resourceLocation);
+				}
+			}
+		}
+		catch (Exception e) {
+			LycanitesMobs.printWarning("", "There was a problem getting ResourceLocations for: " + path + ", " + fileType + ", " + " \n" + e.toString());
+		}
+
+		return resourceLocations;
+	}
 }

@@ -19,7 +19,7 @@ public abstract class ObjModel extends Model
     public Entity entity;
     
     ObjModel() {
-        objObjects = new ArrayList<ObjObject>();
+        objObjects = new ArrayList<>();
     }
     
     public ObjModel(String classpathElem) {

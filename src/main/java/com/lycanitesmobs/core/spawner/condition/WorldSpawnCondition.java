@@ -1,9 +1,13 @@
 package com.lycanitesmobs.core.spawner.condition;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.lycanitesmobs.ExtendedWorld;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
+
+import java.util.Iterator;
 
 public class WorldSpawnCondition extends SpawnCondition {
 
@@ -36,6 +40,50 @@ public class WorldSpawnCondition extends SpawnCondition {
 
 	/** The maximum difficulty level. **/
 	public short difficultyMax = -1;
+
+
+	@Override
+	public void loadFromJSON(JsonObject json) {
+		if(json.has("dimensionIds")) {
+			JsonArray jsonArray = json.get("dimensionIds").getAsJsonArray();
+			this.dimensionIds = new int[jsonArray.size()];
+			Iterator<JsonElement> jsonIterator = jsonArray.iterator();
+			int i = 0;
+			while (jsonIterator.hasNext()) {
+				this.dimensionIds[i] = jsonIterator.next().getAsInt();
+				i++;
+			}
+		}
+
+		if(json.has("dimensionListType"))
+			this.dimensionListType = json.get("dimensionListType").getAsString();
+
+		if(json.has("worldDayMin"))
+			this.worldDayMin = json.get("worldDayMin").getAsInt();
+
+		if(json.has("worldDayMax"))
+			this.worldDayMax = json.get("worldDayMax").getAsInt();
+
+		if(json.has("worldDayN"))
+			this.worldDayN = json.get("worldDayN").getAsInt();
+
+		if(json.has("dayTimeMin"))
+			this.dayTimeMin = json.get("dayTimeMin").getAsInt();
+
+		if(json.has("dayTimeMax"))
+			this.dayTimeMax = json.get("dayTimeMax").getAsInt();
+
+		if(json.has("weather"))
+			this.weather = json.get("weather").getAsString();
+
+		if(json.has("difficultyMin"))
+			this.difficultyMin = json.get("difficultyMin").getAsShort();
+
+		if(json.has("difficultyMax"))
+			this.difficultyMax = json.get("difficultyMax").getAsShort();
+
+		super.loadFromJSON(json);
+	}
 
 
     @Override
@@ -106,10 +154,5 @@ public class WorldSpawnCondition extends SpawnCondition {
 		}
 
         return super.isMet(world, player);
-    }
-
-    @Override
-    public void fromJSON(JsonObject json) {
-        super.fromJSON(json);
     }
 }

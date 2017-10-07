@@ -23,8 +23,9 @@ public class SpawnerMobRegistry {
 	 * @return A collection of MobSpawns, returns null if no global MobSpawns exists for the Spawner.
 	 **/
 	public static Collection<MobSpawn> getMobSpawns(String spawnerName) {
-		if(SPAWNER_MOB_REGISTRIES.containsKey(spawnerName)) {
-			return SPAWNER_MOB_REGISTRIES.get(spawnerName).mobSpawns.values();
+		LycanitesMobs.printDebug("JSONSpawner", "Getting Global Mobs For Spawner: " + spawnerName);
+		if(SPAWNER_MOB_REGISTRIES.containsKey(spawnerName.toUpperCase())) {
+			return SPAWNER_MOB_REGISTRIES.get(spawnerName.toUpperCase()).mobSpawns.values();
 		}
 		return null;
 	}

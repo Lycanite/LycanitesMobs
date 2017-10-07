@@ -1,18 +1,20 @@
 package com.lycanitesmobs.core.spawner.location;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.lycanitesmobs.core.spawner.CoordSorterFurthest;
 import com.lycanitesmobs.core.spawner.CoordSorterNearest;
+import com.lycanitesmobs.core.spawner.SpawnerJSONUtilities;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class SpawnLocation {
     /** Spawn Locations define where spawns will take place, how these work can vary based on the type of Spawn Trigger. **/
@@ -27,9 +29,37 @@ public class SpawnLocation {
     public String sorting = "random";
 
 
+	/** Loads this Spawn Condition from the provided JSON data. **/
+	public static SpawnLocation createFromJSON(JsonObject json) {
+		String type = json.get("type").getAsString();
+		SpawnLocation spawnLocation = null;
+
+		if("base".equalsIgnoreCase(type)) {
+			spawnLocation = new SpawnLocation();
+		}
+		else if("random".equalsIgnoreCase(type)) {
+			spawnLocation = new RandomSpawnLocation();
+		}
+		else if("block".equalsIgnoreCase(type)) {
+			spawnLocation = new BlockSpawnLocation();
+		}
+		else if("material".equalsIgnoreCase(type)) {
+			spawnLocation = new MaterialSpawnLocation();
+		}
+
+		spawnLocation.loadFromJSON(json);
+		return spawnLocation;
+	}
+
+
     /** Loads this Spawn Location from the provided JSON data. **/
-    public void fromJSON(JsonObject json) {
-		// TODO Read SpawnLocation JSON.
+    public void loadFromJSON(JsonObject json) {
+		this.rangeMin = SpawnerJSONUtilities.getVec3i(json, "rangeMin");
+
+		this.rangeMax = SpawnerJSONUtilities.getVec3i(json, "rangeMax");
+
+		if(json.has("sorting"))
+			this.sorting = json.get("sorting").getAsString();
     }
 
 

@@ -1,6 +1,7 @@
 package com.lycanitesmobs.core.spawner.trigger;
 
 import com.google.gson.JsonObject;
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.spawner.Spawner;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,18 +21,59 @@ public abstract class SpawnTrigger {
 	public double chance = 1;
 
 
+	/** Loads this Spawn Condition from the provided JSON data. **/
+	public static SpawnTrigger createFromJSON(JsonObject json, Spawner spawner) {
+		String type = json.get("type").getAsString();
+		SpawnTrigger spawnTrigger = null;
+
+		if("tick".equalsIgnoreCase(type)) {
+			spawnTrigger = new TickSpawnTrigger(spawner);
+		}
+		else if("block".equalsIgnoreCase(type)) {
+			spawnTrigger = new BlockSpawnTrigger(spawner);
+		}
+		else if("ore".equalsIgnoreCase(type)) {
+			spawnTrigger = new OreBlockSpawnTrigger(spawner);
+		}
+		else if("crop".equalsIgnoreCase(type)) {
+			spawnTrigger = new CropBlockSpawnTrigger(spawner);
+		}
+		else if("tree".equalsIgnoreCase(type)) {
+			spawnTrigger = new TreeBlockSpawnTrigger(spawner);
+		}
+		else if("kill".equalsIgnoreCase(type)) {
+			spawnTrigger = new KillSpawnTrigger(spawner);
+		}
+		else if("sleep".equalsIgnoreCase(type)) {
+			spawnTrigger = new SleepSpawnTrigger(spawner);
+		}
+		else if("fishing".equalsIgnoreCase(type)) {
+			spawnTrigger = new FishingSpawnTrigger(spawner);
+		}
+
+		spawnTrigger.loadFromJSON(json);
+		return spawnTrigger;
+	}
+
+
     /** Constructor **/
     public SpawnTrigger(Spawner spawner) {
     	this.spawner = spawner;
 	}
 
 	/** Loads this Spawn Condition from the provided JSON data. **/
-	public void fromJSON(JsonObject json) {
-		// TODO Read SpawnTrigger JSON.
+	public void loadFromJSON(JsonObject json) {
+		if(json.has("count"))
+			this.count = json.get("count").getAsInt();
+
+		if(json.has("chance"))
+			this.chance = json.get("chance").getAsDouble();
 	}
+
 
 	/** Triggers an actual spawn. **/
 	public boolean trigger(World world, EntityPlayer player, BlockPos triggerPos, int level) {
+		LycanitesMobs.printDebug("JSONSpawner", "Trigger Fired: " + this);
 		return this.spawner.trigger(world, player, triggerPos, level, this.count);
 	}
 

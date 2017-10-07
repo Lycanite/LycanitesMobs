@@ -29,6 +29,33 @@ public class PlayerSpawnCondition extends SpawnCondition {
 	public int lightLevelMax = -1;
 
 
+	@Override
+	public void loadFromJSON(JsonObject json) {
+		if(json.has("username"))
+			this.username = json.get("username").getAsString();
+
+		if(json.has("levelMin"))
+			this.levelMin = json.get("levelMin").getAsInt();
+
+		if(json.has("levelMax"))
+			this.levelMax = json.get("levelMax").getAsInt();
+
+		if(json.has("timeMin"))
+			this.timeMin = json.get("timeMin").getAsInt();
+
+		if(json.has("timeMax"))
+			this.timeMax = json.get("timeMax").getAsInt();
+
+		if(json.has("lightLevelMin"))
+			this.lightLevelMin = json.get("lightLevelMin").getAsInt();
+
+		if(json.has("lightLevelMax"))
+			this.lightLevelMax = json.get("lightLevelMax").getAsInt();
+
+		super.loadFromJSON(json);
+	}
+
+
     @Override
     public boolean isMet(World world, EntityPlayer player) {
 		ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
@@ -66,10 +93,5 @@ public class PlayerSpawnCondition extends SpawnCondition {
 		}
 
         return super.isMet(world, player);
-    }
-
-    @Override
-    public void fromJSON(JsonObject json) {
-        super.fromJSON(json);
     }
 }

@@ -1,9 +1,6 @@
 package com.lycanitesmobs.core.model;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.info.GroupInfo;
@@ -14,11 +11,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.obj.OBJModel;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.commons.io.IOUtils;
 import org.lwjgl.opengl.GL11;
 
 import java.io.BufferedReader;
@@ -118,22 +117,26 @@ public class ModelObj extends ModelCustom {
         // Load Animation Parts:
         ResourceLocation animPartsLoc = new ResourceLocation(groupInfo.filename, "models/" + path + "_parts.json");
         try {
+			Gson gson = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
             InputStream in = Minecraft.getMinecraft().getResourceManager().getResource(animPartsLoc).getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-            JsonParser jsonParser = new JsonParser();
-            JsonElement jsonElement = jsonParser.parse(reader);
-            JsonArray jsonArray = jsonElement.getAsJsonArray();
-            Iterator<JsonElement> jsonIterator = jsonArray.iterator();
-            while (jsonIterator.hasNext()) {
-                JsonObject partJson = jsonIterator.next().getAsJsonObject();
-                String partName = partJson.get("name").getAsString();
-                String partParentName = partJson.get("parent").getAsString();
-                if(partParentName.isEmpty())
-                    partParentName = null;
-                float partCenterX = Float.parseFloat(partJson.get("centerX").getAsString());
-                float partCenterY = Float.parseFloat(partJson.get("centerY").getAsString());
-                float partCenterZ = Float.parseFloat(partJson.get("centerZ").getAsString());
-                this.addAnimationPart(partName, partParentName, partCenterX, partCenterY, partCenterZ);
+            try {
+				JsonArray jsonArray = JsonUtils.fromJson(gson, reader, JsonArray.class);
+                Iterator<JsonElement> jsonIterator = jsonArray.iterator();
+                while (jsonIterator.hasNext()) {
+                    JsonObject partJson = jsonIterator.next().getAsJsonObject();
+                    String partName = partJson.get("name").getAsString();
+                    String partParentName = partJson.get("parent").getAsString();
+                    if (partParentName.isEmpty())
+                        partParentName = null;
+                    float partCenterX = Float.parseFloat(partJson.get("centerX").getAsString());
+                    float partCenterY = Float.parseFloat(partJson.get("centerY").getAsString());
+                    float partCenterZ = Float.parseFloat(partJson.get("centerZ").getAsString());
+                    this.addAnimationPart(partName, partParentName, partCenterX, partCenterY, partCenterZ);
+                }
+            }
+            finally {
+                IOUtils.closeQuietly(reader);
             }
         }
         catch (Exception e) {

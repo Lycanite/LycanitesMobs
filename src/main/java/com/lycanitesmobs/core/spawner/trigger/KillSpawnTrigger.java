@@ -1,14 +1,22 @@
 package com.lycanitesmobs.core.spawner.trigger;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.spawner.Spawner;
+import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class KillSpawnTrigger extends SpawnTrigger {
@@ -30,6 +38,41 @@ public class KillSpawnTrigger extends SpawnTrigger {
 	public KillSpawnTrigger(Spawner spawner) {
 		super(spawner);
 	}
+
+
+	@Override
+	public void loadFromJSON(JsonObject json) {
+		if(json.has("entityTypes")) {
+			JsonArray jsonArray = json.get("entityTypes").getAsJsonArray();
+			Iterator<JsonElement> jsonIterator = jsonArray.iterator();
+			while (jsonIterator.hasNext()) {
+				EnumCreatureAttribute entityType = EnumCreatureAttribute.valueOf(jsonIterator.next().getAsString().toUpperCase());
+				if(entityType != null) {
+					entityTypes.add(entityType);
+				}
+			}
+		}
+
+		if(json.has("entityTypesListType"))
+			this.entityTypesListType = json.get("entityTypesListType").getAsString();
+
+		if(json.has("entityIds")) {
+			JsonArray jsonArray = json.get("entityIds").getAsJsonArray();
+			Iterator<JsonElement> jsonIterator = jsonArray.iterator();
+			while (jsonIterator.hasNext()) {
+				String entityId = jsonIterator.next().getAsString();
+				if(entityId != null) {
+					entityIds.add(entityId);
+				}
+			}
+		}
+
+		if(json.has("entityIdsListType"))
+			this.entityIdsListType = json.get("entityIdsListType").getAsString();
+
+		super.loadFromJSON(json);
+	}
+
 
 	/** Called every time a player kills an entity. **/
 	public void onKill(EntityPlayer player, EntityLiving killedEntity) {

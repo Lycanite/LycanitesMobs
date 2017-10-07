@@ -17,6 +17,20 @@ public class EventSpawnCondition extends SpawnCondition {
     public int eventTimeMax = -1;
 
 
+	@Override
+	public void loadFromJSON(JsonObject json) {
+		this.eventName = json.get("eventName").getAsString();
+
+		if(json.has("eventTimeMin"))
+			this.eventTimeMin = json.get("eventTimeMin").getAsInt();
+
+		if(json.has("eventTimeMax"))
+			this.eventTimeMax = json.get("eventTimeMax").getAsInt();
+
+		super.loadFromJSON(json);
+	}
+
+
     @Override
     public boolean isMet(World world, EntityPlayer player) {
         ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
@@ -37,10 +51,5 @@ public class EventSpawnCondition extends SpawnCondition {
 		}
 
 		return super.isMet(world, player);
-    }
-
-    @Override
-    public void fromJSON(JsonObject json) {
-        super.fromJSON(json);
     }
 }

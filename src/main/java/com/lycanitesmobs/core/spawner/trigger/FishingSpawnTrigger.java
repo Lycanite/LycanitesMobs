@@ -1,5 +1,6 @@
 package com.lycanitesmobs.core.spawner.trigger;
 
+import com.google.gson.JsonObject;
 import com.lycanitesmobs.core.spawner.Spawner;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -16,6 +17,13 @@ public class FishingSpawnTrigger extends SpawnTrigger {
 	public FishingSpawnTrigger(Spawner spawner) {
 		super(spawner);
 	}
+
+
+	@Override
+	public void loadFromJSON(JsonObject json) {
+		super.loadFromJSON(json);
+	}
+
 
 
 	/** Called every time a player fishes up an item. **/

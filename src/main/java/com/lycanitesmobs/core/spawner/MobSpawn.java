@@ -42,14 +42,21 @@ public class MobSpawn {
 	protected int blockCost = -1;
 
 
+	/** Loads this Spawn Condition from the provided JSON data. **/
+	public static MobSpawn createFromJSON(JsonObject json) {
+		MobSpawn mobSpawn = null;
+		mobSpawn.loadFromJSON(json);
+		return mobSpawn;
+	}
+
+
 	/** Constructor **/
 	public MobSpawn(MobInfo mobInfo) {
 		this.mobInfo = mobInfo;
 	}
 
-
 	/** Loads this Mob Spawn from the provided JSON data. **/
-	public void readJSON(JsonObject json) {
+	public void loadFromJSON(JsonObject json) {
 		// TODO Read MobSpawn JSON.
 	}
 

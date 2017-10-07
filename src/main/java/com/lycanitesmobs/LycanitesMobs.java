@@ -17,7 +17,7 @@ import com.lycanitesmobs.core.mobevent.MobEventManager;
 import com.lycanitesmobs.core.mobevent.SharedMobEvents;
 import com.lycanitesmobs.core.mods.DLDungeons;
 import com.lycanitesmobs.core.network.PacketHandler;
-import com.lycanitesmobs.core.spawner.Spawner;
+import com.lycanitesmobs.core.spawner.SpawnerManager;
 import com.lycanitesmobs.core.spawner.SpawnerEventListener;
 import com.lycanitesmobs.core.spawning.CustomSpawner;
 import com.lycanitesmobs.core.spawning.SpawnTypeBase;
@@ -44,7 +44,7 @@ public class LycanitesMobs {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String version = "1.17.2.0 - MC 1.12.2";
+	public static final String version = "1.17.2.0 - MC 1.13.0";
 	public static final String website = "http://lycanitesmobs.com";
 	public static final String websiteAPI = "http://api.lycanitesmobs.com";
 	public static final String websitePatreon = "https://www.patreon.com/lycanite";
@@ -266,7 +266,7 @@ public class LycanitesMobs {
 
 
 		// ========== Load JSON Spawners ==========
-		Spawner.loadAllFromJSON();
+		SpawnerManager.getInstance().loadAllFromJSON();
 
 
 		// ========== Register and Initialize Handlers/Objects ==========
@@ -299,19 +299,19 @@ public class LycanitesMobs {
 	// ==================================================
     public static void printInfo(String key, String message) {
         if("".equals(key) || config.getBool("Debug", key, false)) {
-            System.out.println("[LycanitesMobs] [Info] " + message);
+            System.out.println("[LycanitesMobs] [Info] [" + key + "] " + message);
         }
     }
 
     public static void printDebug(String key, String message) {
         if("".equals(key) || config.getBool("Debug", key, false)) {
-            System.out.println("[LycanitesMobs] [Debug] " + message);
+            System.out.println("[LycanitesMobs] [Debug] [" + key + "] " + message);
         }
     }
 
     public static void printWarning(String key, String message) {
 		if("".equals(key) || config.getBool("Debug", key, false)) {
-			System.err.println("[LycanitesMobs] [WARNING] " + message);
+			System.err.println("[LycanitesMobs] [WARNING] [" + key + "] " + message);
 		}
 	}
 }

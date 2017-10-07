@@ -1,0 +1,34 @@
+{
+	"name": "lava",
+	"loadDefault": true,
+	"enabled": true,
+	"conditionsRequired": 0,
+	"triggersRequired": 1,
+	"multipleLocations": "combine",
+	"mobCount": 1,
+	"ignoreBiomes": true,
+	"ignoreLightLevel": true,
+	"ignoreGroupLimit": false,
+	"forceNoDespawn": false,
+	"mobEventSpawner": false,
+	"conditions": [],
+	"triggers": [
+		{
+			"type": "tick",
+			"chance": 0.5,
+			"tickRate": 400
+		}
+	],
+	"locations": [
+		{
+			"type": "block",
+			"rangeMin": [32, 32, 32],
+			"rangeMax": [32, 32, 32],
+			"sorting": "random",
+			"blocks": [
+				"minecraft:lava"
+			],
+			"listType": "whitelist"
+		}
+	]
+}

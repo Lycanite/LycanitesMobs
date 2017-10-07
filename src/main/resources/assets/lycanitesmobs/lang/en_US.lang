@@ -198,6 +198,8 @@ message.pet.mount.baby=The %creature% is too young to carry you!
 # ========== Commands ==========
 lyc.command.invalid=Invalid arguments.
 lyc.command.playeronly=This command can only be used by a player.
+lyc.command.spawners.invalid=Invalid arguments, usage: /lycanitesmobs spawners [reload]
+lyc.command.spawners.reload=JSON Spawners have been reloaded.
 lyc.command.beastiary.invalid=Invalid arguments, usage: /lycanitesmobs beastiary [add <creature name>, complete]> for example /lycanitesmobs beastiary add quillbeast
 lyc.command.beastiary.complete=Added all creatures to the Beastiary.
 lyc.command.beastiary.add.invalid=Invalid arguments, usage: beastiary add <creature name> for example /lycanitesmobs beastiary add quillbeast

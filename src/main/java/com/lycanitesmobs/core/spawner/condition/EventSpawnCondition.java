@@ -24,7 +24,7 @@ public class EventSpawnCondition extends SpawnCondition {
             return false;
         }
 
-        if(worldExt.getWorldEventType() == null || !worldExt.getWorldEventType().equalsIgnoreCase(this.eventName)) {
+        if(worldExt.getWorldEventName() == null || !worldExt.getWorldEventName().equalsIgnoreCase(this.eventName)) {
         	return false;
 		}
 

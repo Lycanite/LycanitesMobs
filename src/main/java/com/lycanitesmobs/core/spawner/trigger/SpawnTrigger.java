@@ -31,8 +31,8 @@ public abstract class SpawnTrigger {
 	}
 
 	/** Triggers an actual spawn. **/
-	public void trigger(World world, EntityPlayer player, BlockPos triggerPos, int level) {
-		this.spawner.trigger(world, player, triggerPos, level, this.count);
+	public boolean trigger(World world, EntityPlayer player, BlockPos triggerPos, int level) {
+		return this.spawner.trigger(world, player, triggerPos, level, this.count);
 	}
 
 	/** Used to apply effects, etc any mobs that have spawned because of this trigger. **/

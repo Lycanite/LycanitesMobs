@@ -1,8 +1,8 @@
 package com.lycanitesmobs.core.spawner.location;
 
 import com.google.gson.JsonObject;
-import com.lycanitesmobs.core.spawning.CoordSorterFurthest;
-import com.lycanitesmobs.core.spawning.CoordSorterNearest;
+import com.lycanitesmobs.core.spawner.CoordSorterFurthest;
+import com.lycanitesmobs.core.spawner.CoordSorterNearest;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;

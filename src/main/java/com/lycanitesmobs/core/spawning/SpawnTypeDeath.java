@@ -41,7 +41,7 @@ public class SpawnTypeDeath extends SpawnTypeBase {
     	double roll = world.rand.nextDouble();
     	ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
     	if(worldExt != null) {
-    		if("shadowgames".equalsIgnoreCase(worldExt.getWorldEventType()))
+    		if("shadowgames".equalsIgnoreCase(worldExt.getWorldEventName()))
     			roll /= 4;
     	}
         if(roll >= this.chance)

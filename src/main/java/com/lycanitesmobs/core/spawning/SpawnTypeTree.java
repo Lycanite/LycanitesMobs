@@ -98,7 +98,7 @@ public class SpawnTypeTree extends SpawnTypeBlockBreak {
     	double roll = world.rand.nextDouble();
     	ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
     	if(worldExt != null) {
-    		if("rootriot".equalsIgnoreCase(worldExt.getWorldEventType()))
+    		if("rootriot".equalsIgnoreCase(worldExt.getWorldEventName()))
     			roll /= 4;
     	}
         if(roll >= this.chance)

@@ -16,7 +16,7 @@ public class TickSpawnTrigger extends SpawnTrigger {
 	}
 
 	/** Called every player tick. **/
-	public void onTick(EntityPlayer player, int ticks) {
+	public void onTick(EntityPlayer player, long ticks) {
 		// Tick Rate:
 		if(ticks == 0 || ticks % this.tickRate != 0) {
 			return;

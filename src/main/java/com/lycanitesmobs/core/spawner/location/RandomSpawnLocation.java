@@ -1,21 +1,16 @@
 package com.lycanitesmobs.core.spawner.location;
 
 import com.google.gson.JsonObject;
-import com.lycanitesmobs.core.spawning.CoordSorterFurthest;
-import com.lycanitesmobs.core.spawning.CoordSorterNearest;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 public class RandomSpawnLocation extends SpawnLocation {
 	/** How many random positions to select. **/

@@ -82,7 +82,7 @@ public class SpawnTypeRock extends SpawnTypeBlockBreak {
             roll /= 4;
     	ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
     	if(worldExt != null) {
-    		if("boulderdash".equalsIgnoreCase(worldExt.getWorldEventType()))
+    		if("boulderdash".equalsIgnoreCase(worldExt.getWorldEventName()))
     			roll /= 4;
     	}
         if(roll >= this.chance)

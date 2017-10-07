@@ -8,6 +8,7 @@ import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.core.info.SpawnInfo;
 import com.lycanitesmobs.core.mobevent.MobEventBase;
+import com.lycanitesmobs.core.spawner.CoordSorterNearest;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
@@ -27,6 +28,8 @@ import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import java.util.*;
 
 public class SpawnTypeBase {
+	public static boolean USE_LEGACY_SPAWNER = false;
+
 	// ========== Spawn Type List ==========
 	/** A static list that contains a string mapping of all spawn types. These should always be all upper case. **/
 	public static Map<String, SpawnTypeBase> spawnTypeMap = new HashMap<String, SpawnTypeBase>();
@@ -35,7 +38,7 @@ public class SpawnTypeBase {
 	public static int rangeMin = 10;
 	
 	// ========== Spawn Type Properties ==========
-	/** The name of this spawn type. This should be the same as the name used in the spawnTypes mapping. Should be all upper case. **/
+	/** The name of this spawn type. This should be the same as the name used in the legacySpawnTypes mapping. Should be all upper case. **/
 	public String typeName;
 	
 	/** Whether this spawner is enabled at all or not. **/
@@ -107,6 +110,10 @@ public class SpawnTypeBase {
     //                  Load Spawn Types
     // ==================================================
 	public static void loadSpawnTypes() {
+		if(!USE_LEGACY_SPAWNER) {
+			return;
+		}
+
 		List<SpawnTypeBase> spawnTypes = new ArrayList<SpawnTypeBase>();
 		
 		// Fire Spawner:
@@ -265,7 +272,7 @@ public class SpawnTypeBase {
 		shadowSpawner.ignoreLight = true;
 		shadowSpawner.forceSpawning = true;
 		shadowSpawner.loadFromConfig();
-        spawnTypes.add(shadowSpawner);*/
+        legacySpawnTypes.add(shadowSpawner);*/
 		
 		// Death Spawner:
 		SpawnTypeBase deathSpawner = new SpawnTypeDeath("Death")

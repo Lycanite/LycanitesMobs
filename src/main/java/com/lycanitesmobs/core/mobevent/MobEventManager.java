@@ -79,6 +79,21 @@ public class MobEventManager {
     }
 
 
+	// ==================================================
+	//                 Get Mob Event
+	// ==================================================
+	/**
+	 * Gets a Mob Event by name.
+	 * @return Null if the event does not exist.
+	 **/
+	public MobEventBase getMobEvent(String mobEventName) {
+		if(!this.allMobEvents.containsKey(mobEventName)) {
+			return null;
+		}
+		return this.allMobEvents.get(mobEventName);
+	}
+
+
     // ==================================================
     //                 Add World Event
     // ==================================================

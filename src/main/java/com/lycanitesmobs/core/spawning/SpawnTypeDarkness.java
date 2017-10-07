@@ -92,7 +92,7 @@ public class SpawnTypeDarkness extends SpawnTypeBase {
 				float roll = player.getRNG().nextFloat();
 				ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
 		    	if(worldExt != null) {
-		    		if("shadowgames".equalsIgnoreCase(worldExt.getWorldEventType()))
+		    		if("shadowgames".equalsIgnoreCase(worldExt.getWorldEventName()))
 		    			roll /= 2;
 		    	}
 				

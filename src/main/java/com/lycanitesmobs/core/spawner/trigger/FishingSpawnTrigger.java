@@ -4,6 +4,8 @@ import com.lycanitesmobs.core.spawner.Spawner;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public class FishingSpawnTrigger extends SpawnTrigger {
 
@@ -17,13 +19,18 @@ public class FishingSpawnTrigger extends SpawnTrigger {
 
 
 	/** Called every time a player fishes up an item. **/
-	public void onFished(EntityPlayer player, int ticks) {
+	public void onFished(World world, EntityPlayer player, Entity hookEntity) {
 		// Chance:
 		if(this.chance < 1 && player.getRNG().nextDouble() > this.chance) {
 			return;
 		}
 
-		this.trigger(player.getEntityWorld(), player, player.getPosition(), 0);
+		BlockPos spawnPos = player.getPosition().add(0, 0, 1);
+		this.hookEntity = hookEntity;
+		if(this.hookEntity != null) {
+			spawnPos = hookEntity.getPosition();
+		}
+		this.trigger(world, player, spawnPos, 0);
 	}
 
 	@Override

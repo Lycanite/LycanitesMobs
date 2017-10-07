@@ -97,10 +97,10 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
     // ========== Natural Spawn Check ==========
     /** Second stage checks for spawning, this check is ignored if there is a valid monster spawner nearby. **/
     @Override
-    public boolean naturalSpawnCheck(World world, BlockPos pos) {
+    public boolean environmentSpawnCheck(World world, BlockPos pos) {
     	if(this.getNearbyEntities(EntityConcapedeHead.class, null, SpawnInfo.spawnLimitRange).size() <= 0)
     		return false;
-    	return super.naturalSpawnCheck(world, pos);
+    	return super.environmentSpawnCheck(world, pos);
     }
     
     // ========== Get Random Subspecies ==========

@@ -17,6 +17,8 @@ import com.lycanitesmobs.core.mobevent.MobEventManager;
 import com.lycanitesmobs.core.mobevent.SharedMobEvents;
 import com.lycanitesmobs.core.mods.DLDungeons;
 import com.lycanitesmobs.core.network.PacketHandler;
+import com.lycanitesmobs.core.spawner.Spawner;
+import com.lycanitesmobs.core.spawner.SpawnerEventListener;
 import com.lycanitesmobs.core.spawning.CustomSpawner;
 import com.lycanitesmobs.core.spawning.SpawnTypeBase;
 import com.lycanitesmobs.core.tileentity.TileEntitySummoningPedestal;
@@ -42,7 +44,7 @@ public class LycanitesMobs {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String version = "1.17.1.4 - MC 1.12.2";
+	public static final String version = "1.17.2.0 - MC 1.12.2";
 	public static final String website = "http://lycanitesmobs.com";
 	public static final String websiteAPI = "http://api.lycanitesmobs.com";
 	public static final String websitePatreon = "https://www.patreon.com/lycanite";
@@ -68,7 +70,8 @@ public class LycanitesMobs {
     public static final Capability<IExtendedPlayer> EXTENDED_PLAYER = null;
 	
 	// Spawning:
-	public static CustomSpawner customSpawner;
+	public static SpawnerEventListener spawnerEventListener;
+	public static CustomSpawner legacySpawner;
 	public static MobEventManager mobEventManager;
 	
 	// Creative Tab:
@@ -133,18 +136,26 @@ public class LycanitesMobs {
 		}
 		
 		
-		// ========== Mob Info ==========
+		// ========== Mob Info Global Settings ==========
 		MobInfo.loadGlobalSettings();
 		
 		
-		// ========== Spawning ==========
-		customSpawner = new CustomSpawner();
+		// ========== Spawner Pre Init ==========
+		spawnerEventListener = new SpawnerEventListener();
+		MinecraftForge.EVENT_BUS.register(spawnerEventListener);
+		FMLCommonHandler.instance().bus().register(spawnerEventListener);
+
+		// ========== Legacy Spawner ==========
+		legacySpawner = new CustomSpawner();
 		SpawnTypeBase.loadSpawnTypes();
-		MinecraftForge.EVENT_BUS.register(customSpawner);
-		FMLCommonHandler.instance().bus().register(customSpawner);
-		
+		MinecraftForge.EVENT_BUS.register(legacySpawner);
+		FMLCommonHandler.instance().bus().register(legacySpawner);
+
+		// ========== Global Spawn Info Settings ==========
 		SpawnInfo.loadGlobalSettings();
-		
+
+
+		// ========== Mob Events ==========
 		mobEventManager = new MobEventManager();
 		mobEventManager.loadMobEvents();
 		FMLCommonHandler.instance().bus().register(mobEventManager);
@@ -252,6 +263,10 @@ public class LycanitesMobs {
         // ========== Assign Mob Spawning ==========
         GroupInfo.loadAllSpawningFromConfigs();
         MobInfo.loadAllSpawningFromConfigs();
+
+
+		// ========== Load JSON Spawners ==========
+		Spawner.loadAllFromJSON();
 
 
 		// ========== Register and Initialize Handlers/Objects ==========

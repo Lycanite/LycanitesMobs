@@ -36,11 +36,13 @@ public class ConfigSpawning extends ConfigBase {
 	
 	// ========== Spawn Types ==========
 	public class SpawnTypeSet {
-		public SpawnTypeBase[] spawnTypes;
+     	public String[] spawners;
+		public SpawnTypeBase[] legacySpawnTypes;
 		public EnumCreatureType[] creatureTypes;
 		
-		public SpawnTypeSet(SpawnTypeBase[] spawnTypes, EnumCreatureType[] creatureTypes) {
-			this.spawnTypes = spawnTypes;
+		public SpawnTypeSet(String[] spawners, SpawnTypeBase[] legacySpawnTypes, EnumCreatureType[] creatureTypes) {
+			this.spawners = spawners;
+			this.legacySpawnTypes = legacySpawnTypes;
 			this.creatureTypes = creatureTypes;
 		}
 	}
@@ -122,9 +124,14 @@ public class ConfigSpawning extends ConfigBase {
 	public SpawnTypeSet getTypes(String category, String key, String defaultValue, String comment) {
 		String spawnTypeEntries = this.getString(category, key, defaultValue);
 		spawnTypeEntries = spawnTypeEntries.replace(" ", "");
-		
-		SpawnTypeBase[] spawnTypes = SpawnTypeBase.getSpawnTypes(spawnTypeEntries);
-		
+
+		// Spawners (JSON Spawner):
+		String[] spawners = spawnTypeEntries.split(",");
+
+		// Legacy Spawn Types (Old Spawner):
+		SpawnTypeBase[] legacySpawnTypes = SpawnTypeBase.getSpawnTypes(spawnTypeEntries);
+
+		// Creature Types (Vanilla Spawner):
         List<EnumCreatureType> creatureTypeList = new ArrayList<EnumCreatureType>();
         for(String spawnTypeEntry : spawnTypeEntries.split(",")) {
             if ("MONSTER".equalsIgnoreCase(spawnTypeEntry))
@@ -138,7 +145,7 @@ public class ConfigSpawning extends ConfigBase {
         }
         
         EnumCreatureType[] creatureTypes = creatureTypeList.toArray(new EnumCreatureType[creatureTypeList.size()]);
-		return new SpawnTypeSet(spawnTypes, creatureTypes);
+		return new SpawnTypeSet(spawners, legacySpawnTypes, creatureTypes);
 	}
 	
 	

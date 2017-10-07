@@ -170,10 +170,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public boolean firstSpawn = true;
     /** This will contain the Spawn Type used to spawn this entity (this should only be used for spawn checks really as it isn't persistent). Null if spawned from egg, spawner, vanilla, etc. **/
     public SpawnTypeBase spawnedFromType = null;
-    /** Should this mob only spawn in darkness. **/
-    //public boolean spawnsInDarkness = false;
-    /** Should this mob only spawn in light. **/
-    //public boolean spawnsOnlyInLight = false;
     /** Should this mob check for block collisions when spawning? **/
     public boolean spawnsInBlock = false;
     /** Can this mob spawn where it can't see the sky above? **/
@@ -562,99 +558,76 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Checks if the creature is able to spawn at it's initial position. **/
     @Override
     public boolean getCanSpawnHere() {
-	    return this.spawnCheck(this.getEntityWorld(), this.getPosition());
+	    return this.checkSpawnVanilla(this.getEntityWorld(), this.getPosition());
     }
 
     @Override
     public int getMaxSpawnedInChunk() {
         return this.mobInfo.spawnInfo.spawnGroupMax;
     }
-    
-    public boolean spawnCheck(World world, BlockPos pos) {
-        if(world.isRemote)
-            return false;
 
-    	LycanitesMobs.printDebug("MobSpawns", " ~O==================== Spawn Check: " + this.getConfigName() + " ====================O~");
+	// ========== Vanilla Spawn Check ==========
+    /** Performs checks when spawned by a vanilla spawner or possibly another modded spawner if they use the vanilla checks. **/
+    public boolean checkSpawnVanilla(World world, BlockPos pos) {
+        if(world.isRemote) {
+			return false;
+		}
+
+    	LycanitesMobs.printDebug("MobSpawns", " ~O==================== Vanilla Spawn Check: " + this.getConfigName() + " ====================O~");
     	LycanitesMobs.printDebug("MobSpawns", "Attempting to Spawn: " + this.getConfigName());
+		LycanitesMobs.printDebug("MobSpawns", "Target Spawn Location: " + pos);
     	
     	// Peaceful Check:
     	LycanitesMobs.printDebug("MobSpawns", "Checking for peaceful difficulty...");
-        if(!this.mobInfo.peacefulDifficulty && this.getEntityWorld().getDifficulty() == EnumDifficulty.PEACEFUL) return false;
-        
-    	LycanitesMobs.printDebug("MobSpawns", "Target Spawn Location: " + pos);
+        if(!this.mobInfo.peacefulDifficulty && this.getEntityWorld().getDifficulty() == EnumDifficulty.PEACEFUL) {
+        	return false;
+		}
         
         // Fixed Spawning Checks:
-    	LycanitesMobs.printDebug("MobSpawns", "Fixed spawn check (light level, obstacles, etc)...");
-        if(!this.fixedSpawnCheck(world, pos))
-        	return false;
+    	LycanitesMobs.printDebug("MobSpawns", "Fixed spawn check (light level, collisions)...");
+        if(!this.fixedSpawnCheck(world, pos)) {
+			return false;
+		}
         
-    	// Spawner Check:
-    	LycanitesMobs.printDebug("MobSpawns", "Checking for nearby spawner...");
+    	// Mob Spawner Check:
+    	LycanitesMobs.printDebug("MobSpawns", "Checking for nearby Mob Spawner...");
         if(this.isSpawnerNearby(world, pos)) {
-        	LycanitesMobs.printDebug("MobSpawns", "Spawner found, skipping other checks.");
-        	LycanitesMobs.printDebug("MobSpawns", "Spawn Check Passed!");
+        	LycanitesMobs.printDebug("MobSpawns", "Mob Spawner found, skipping other checks.");
+        	LycanitesMobs.printDebug("MobSpawns", "Vanilla Spawn Check Passed!");
         	return true;
         }
-    	LycanitesMobs.printDebug("MobSpawns", "No spawner found.");
+    	LycanitesMobs.printDebug("MobSpawns", "No Mob Spawner found.");
         
-        // Natural Spawning Checks:
-    	LycanitesMobs.printDebug("MobSpawns", "Natural spawn check (dimension, area limit, ground type, water, lava, underground)...");
-        if(!this.naturalSpawnCheck(world, pos))
-        	return false;
-        
-        // Forced Spawn Chance:
-    	LycanitesMobs.printDebug("MobSpawns", "All enviroment checks passed.");
-        if(this.mobInfo.spawnInfo.spawnChance < 1.0D) {
-        	if(this.mobInfo.spawnInfo.spawnChance <= 0) {
-        		LycanitesMobs.printDebug("MobSpawns", "Applying Forced Spawn Chance - Chance is 0 = No Spawning");
-        		return false;
-        	}
-        	else {
-	        	double spawnRoll = this.rand.nextDouble();
-		        LycanitesMobs.printDebug("MobSpawns", "Applying Forced Spawn Chance - Rolled: " + spawnRoll + " Must be less than: " + this.mobInfo.spawnInfo.spawnChance);
-	        	if(spawnRoll > this.mobInfo.spawnInfo.spawnChance)
-	        		return false;
-        	}
+        // Environment Spawning Checks:
+    	LycanitesMobs.printDebug("MobSpawns", "Environment spawn check (dimension, group limit, ground type, water, lava, underground)...");
+        if(!this.environmentSpawnCheck(world, pos)) {
+			return false;
 		}
-        LycanitesMobs.printDebug("MobSpawns", "Spawn Check Passed!");
+
+        LycanitesMobs.printDebug("MobSpawns", "Vanilla Spawn Check Passed!");
         return true;
     }
 
     // ========== Fixed Spawn Check ==========
-    /** First stage checks for spawning, if this check fails the creature will not spawn. **/
+    /** First stage checks for vanilla spawning, if this check fails the creature will not spawn. **/
     public boolean fixedSpawnCheck(World world, BlockPos pos) {
     	if(this.spawnedFromType == null || (this.spawnedFromType != null && !this.spawnedFromType.ignoreLight)) {
-            byte light = this.testLightLevel(pos);
-            boolean validLight = false;
-            Block spawnBlock = world.getBlockState(pos).getBlock();
-
-	    	LycanitesMobs.printDebug("MobSpawns", "Checking light level: Darkness");
-	    	if(this.mobInfo.spawnInfo.spawnsInDark && light <= 1)
-                validLight = true;
-
-	    	LycanitesMobs.printDebug("MobSpawns", "Checking light level: Lightness");
-	    	if(this.mobInfo.spawnInfo.spawnsInLight && light >= 2)
-                validLight = true;
-
-            if(!validLight)
-                return false;
+            if(!this.checkSpawnLightLevel(world, pos)) {
+            	return false;
+			}
     	}
 
-    	LycanitesMobs.printDebug("MobSpawns", "Checking entity collision.");
-        if(!this.getEntityWorld().checkNoEntityCollision(this.getEntityBoundingBox()))
-            return false;
-
-    	LycanitesMobs.printDebug("MobSpawns", "Checking solid block collision.");
-        if(!this.spawnsInBlock && !this.getEntityWorld().getCollisionBoxes(this, this.getEntityBoundingBox()).isEmpty()) {
+    	LycanitesMobs.printDebug("MobSpawns", "Checking collision...");
+        if(!this.checkSpawnCollision(world, pos)) {
         	return false;
-        }
+		}
 
     	return true;
     }
 
-    // ========== Natural Spawn Check ==========
-    /** Second stage checks for spawning, this check is ignored if there is a valid monster spawner nearby. **/
-    public boolean naturalSpawnCheck(World world, BlockPos pos) {
+    // ========== Environment Spawn Check ==========
+    /** Second stage checks for vanilla spawning, this check is ignored if there is a valid monster spawner nearby. **/
+    public boolean environmentSpawnCheck(World world, BlockPos pos) {
         if(this.mobInfo.spawnInfo.spawnMinDay > 0) {
             int currentDay = (int) Math.floor(world.getTotalWorldTime() / 24000D);
             LycanitesMobs.printDebug("MobSpawns", "Checking world age, currently on day: " + currentDay + ", must be at least day: " + this.mobInfo.spawnInfo.spawnMinDay + ".");
@@ -665,7 +638,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	if(!this.isNativeDimension(this.getEntityWorld()))
     		return false;
     	LycanitesMobs.printDebug("MobSpawns", "Block preference.");
-        if(this.getBlockPathWeight(pos.getX(), pos.getY(), pos.getZ()) < 0.0F && this.spawnedFromType == null)
+        if(this.spawnedFromType == null && this.getBlockPathWeight(pos.getX(), pos.getY(), pos.getZ()) < 0.0F)
         	return false;
     	LycanitesMobs.printDebug("MobSpawns", "Checking for liquid (water, lava, ooze, etc).");
         if(!this.spawnsInWater && this.getEntityWorld().containsAnyLiquid(this.getEntityBoundingBox()))
@@ -675,16 +648,15 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	LycanitesMobs.printDebug("MobSpawns", "Checking for underground.");
         if(!this.spawnsUnderground && this.isBlockUnderground(pos.getX(), pos.getY() + 1, pos.getZ()))
         	return false;
-    	LycanitesMobs.printDebug("MobSpawns", "Checking required blocks.");
+    	/*LycanitesMobs.printDebug("MobSpawns", "Checking required blocks.");
         if(!spawnBlockCheck(world, pos.getX(), pos.getY(), pos.getZ()))
-        	return false;
+        	return false;*/
     	LycanitesMobs.printDebug("MobSpawns", "Counting mobs of the same kind, max allowed is: " + this.mobInfo.spawnInfo.spawnAreaLimit);
-        if(!this.spawnLimitCheck(world, pos.getX(), pos.getY(), pos.getZ()))
+        if(!this.checkSpawnGroupLimit(world, pos))
         	return false;
         LycanitesMobs.printDebug("MobSpawns", "Checking for nearby bosses.");
-        List bosses = this.getNearbyEntities(EntityCreatureBase.class, IGroupBoss.class, SpawnInfo.spawnLimitRange);
-        if(bosses.size() > 0)
-            return false;
+		if(!this.checkSpawnBoss(world, pos))
+			return false;
 
         return true;
     }
@@ -752,23 +724,12 @@ public abstract class EntityCreatureBase extends EntityLiving {
         return !this.mobInfo.spawnInfo.dimensionWhitelist;
     }
 
-    // ========== Spawn Limit Check ==========
-    /** Checks for nearby entities of this type from the ijk (xyz) location, mobs use this so that too many don't spawn in the same area. Returns true if the mob should spawn. **/
-    public boolean spawnLimitCheck(World world, int i, int j, int k) {
-    	 int spawnLimit = this.mobInfo.spawnInfo.spawnAreaLimit;
-    	 double range = SpawnInfo.spawnLimitRange;
-    	 LycanitesMobs.printDebug("MobSpawns", "Checking spawn area limit. Limit of: " + spawnLimit + " Range of: " + range);
-         if(spawnLimit > 0 && range > 0) {
-         	List targets = this.getNearbyEntities(EntityCreatureBase.class, this.mobInfo.entityClass, range);
-         	LycanitesMobs.printDebug("MobSpawns", "Found " + targets.size() + " of this mob within the radius (class is " + this.mobInfo.entityClass + ").");
-         	if(targets.size() >= spawnLimit)
-         		return false;
-         }
-         return true;
-    }
-
     // ========== Spawn Block Check ==========
-    /** Checks for nearby blocks from the xyz block location, Cinders use this when spawning by Fire Blocks. **/
+    /**
+	 * Checks for nearby blocks from the xyz block location, Cinders use this when spawning by Fire Blocks.
+	 * @deprecated This is used by the legacy spawner and will be removed as this is the spawner's job and add unnecessary extra block checks.
+	 **/
+    @Deprecated
     public boolean spawnBlockCheck(World world, int x, int y, int z) {
         if(this.spawnedFromType != null && this.mobInfo.spawnInfo.enforceBlockCost) {
         	int blocksFound = 0;
@@ -815,6 +776,61 @@ public abstract class EntityCreatureBase extends EntityLiving {
         }
     	return true;
     }
+
+	// ========== Collision Spawn Check ==========
+	/** Returns true if there is no collision stopping this mob from spawning. **/
+	public boolean checkSpawnCollision(World world, BlockPos pos) {
+		if(!this.getEntityWorld().checkNoEntityCollision(this.getEntityBoundingBox())) {
+			return false;
+		}
+		if(!this.spawnsInBlock && !this.getEntityWorld().getCollisionBoxes(this, this.getEntityBoundingBox()).isEmpty()) {
+			return false;
+		}
+		return true;
+	}
+
+	// ========== Light Level Spawn Check ==========
+	/** Returns true if the light level is valid for spawning. **/
+	public boolean checkSpawnLightLevel(World world, BlockPos pos) {
+		if(this.mobInfo.spawnInfo.spawnsInDark && this.mobInfo.spawnInfo.spawnsInLight) {
+			return true;
+		}
+		if(!this.mobInfo.spawnInfo.spawnsInDark && !this.mobInfo.spawnInfo.spawnsInLight) {
+			return false;
+		}
+
+		byte light = this.testLightLevel(pos);
+		if(this.mobInfo.spawnInfo.spawnsInDark && light <= 1) {
+			return true;
+		}
+
+		if(this.mobInfo.spawnInfo.spawnsInLight && light >= 2) {
+			return true;
+		}
+
+		return false;
+	}
+
+	// ========== Group Limit Spawn Check ==========
+	/** Checks for nearby entities of this type, mobs use this so that too many don't spawn in the same area. Returns true if the mob should spawn. **/
+	public boolean checkSpawnGroupLimit(World world, BlockPos pos) {
+		int spawnLimit = this.mobInfo.spawnInfo.spawnAreaLimit;
+		double range = SpawnInfo.spawnLimitRange;
+		if(spawnLimit > 0 && range > 0) {
+			List targets = this.getNearbyEntities(EntityCreatureBase.class, this.mobInfo.entityClass, range);
+			if(targets.size() >= spawnLimit) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	// ========== Boss Spawn Check ==========
+	/** Checks for nearby bosses, mobs usually shouldn't randomly spawn near a boss. **/
+	public boolean checkSpawnBoss(World world, BlockPos pos) {
+		List bosses = this.getNearbyEntities(EntityCreatureBase.class, IGroupBoss.class, SpawnInfo.spawnLimitRange);
+		return bosses.size() == 0;
+	}
 
     // ========== Egg Spawn ==========
     /** Called once this mob is initially spawned. **/

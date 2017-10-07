@@ -32,12 +32,8 @@ public class CustomSpawner {
 	// ==================================================
 	//                 Entity Update Event
 	// ==================================================
-    public List<SpawnTypeBase> updateSpawnTypes = new ArrayList<SpawnTypeBase>();
-	public Map<EntityPlayer, Long> entityUpdateTicks = new HashMap<EntityPlayer, Long>();
-	
-    /*public List<SpawnTypeBase> shadowSpawnTypes = new ArrayList<SpawnTypeBase>();
-	public Map<EntityPlayer, ChunkCoordinates> entityLightCoords = new HashMap<EntityPlayer, ChunkCoordinates>();
-	public Map<EntityPlayer, int[][]> entityLightLevel = new HashMap<EntityPlayer, int[][]>();*/
+    public List<SpawnTypeBase> updateSpawnTypes = new ArrayList<>();
+	public Map<EntityPlayer, Long> entityUpdateTicks = new HashMap<>();
 	
 	/** This uses the player update events to spawn mobs around each player randomly over time. **/
 	@SubscribeEvent
@@ -61,47 +57,6 @@ public class CustomSpawner {
 			tickOffset += 105;
 		}
 		
-		/*/ ========== Spawn On Sudden Light to Dark ==========
-		if(!player.capabilities.isCreativeMode && entityUpdateTick % 4 == 0) {
-			ChunkCoordinates coordsPrev = null;
-			int checkRange = 6;
-			if(this.entityLightCoords.containsKey(player))
-				coordsPrev = this.entityLightCoords.get(player);
-			if(!this.entityLightLevel.containsKey(player))
-				this.entityLightLevel.put(player, new int[3][3]);
-			
-			boolean mobSpawned = false;
-			for(int xSection = -1; xSection <= 1; xSection++) {
-				for(int zSection = -1; zSection <= 1; zSection++) {
-					
-					// Check Light Level Change:
-					if(!mobSpawned && coordsPrev != null) {
-						int xOffset = coordsPrev.posX + (checkRange * xSection);
-						int zOffset = coordsPrev.posZ + (checkRange * zSection);
-						
-						int lightLevelPrev = entityLightLevel.get(player)[xSection + 1][zSection + 1];
-						//boolean solidBlocks = lightLevelPrev < 0 || !world.isAirBlock(xOffset, coordsPrev.posY, zOffset);
-						boolean solidBlocks = lightLevelPrev < 0 || world.isSideSolid(xOffset, coordsPrev.posY, zOffset, ForgeDirection.DOWN, true);
-						if(!solidBlocks && lightLevelPrev >= 10 && world.getBlockLightValue(xOffset, coordsPrev.posY, zOffset) <= 5) {
-							for(SpawnTypeBase spawnType : this.shadowSpawnTypes) {
-								spawnType.spawnMobs(entityUpdateTick, world, xOffset, coordsPrev.posY, zOffset);
-							}
-						}
-					}
-					
-					// Set Next Coord and Light Level:
-					ChunkCoordinates coordsCurrent = player.getPlayerCoordinates();
-					int lightLevelCurrent = world.getBlockLightValue(coordsCurrent.posX + (checkRange * xSection), coordsCurrent.posY, coordsCurrent.posZ + (checkRange * zSection));
-					if(world.isSideSolid(coordsCurrent.posX + (checkRange * xSection), coordsCurrent.posY, coordsCurrent.posZ + (checkRange * zSection), ForgeDirection.DOWN, true))
-					//if(!world.isAirBlock(coordsCurrent.posX + (checkRange * xSection), coordsCurrent.posY, coordsCurrent.posZ + (checkRange * zSection)))
-							lightLevelCurrent = -10;
-					this.entityLightLevel.get(player)[xSection + 1][zSection + 1] = lightLevelCurrent;
-				}
-			}
-			
-			this.entityLightCoords.put(player, player.getPlayerCoordinates());
-		}*/
-		
 		entityUpdateTicks.put(player, entityUpdateTick + 1);
 	}
 	
@@ -109,7 +64,7 @@ public class CustomSpawner {
 	// ==================================================
 	//                 Entity Death Event
 	// ==================================================
-    public List<SpawnTypeDeath> deathSpawnTypes = new ArrayList<SpawnTypeDeath>();
+    public List<SpawnTypeDeath> deathSpawnTypes = new ArrayList<>();
 	
 	/** This uses the entity death events to spawn mobs when other mobs/players die. **/
 	@SubscribeEvent
@@ -147,7 +102,7 @@ public class CustomSpawner {
 		EntityPlayer player = event.getHarvester();
 		if(event.getState() == null || event.getWorld() == null || event.getWorld().isRemote || event.isCanceled())
 			return;
-		if(player != null && player.capabilities.isCreativeMode) // No Spawning for Creative Players
+		if(player != null || (player != null && player.capabilities.isCreativeMode)) // No Spawning for Creative Players
 			return;
 		
 		// Spawn On Block Harvest:

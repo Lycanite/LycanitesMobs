@@ -34,14 +34,14 @@ public class BlockSpawnTrigger extends SpawnTrigger {
 	}
 
 	/** Called every time a player breaks a block. **/
-	public void onTick(EntityPlayer player, BlockPos breakPos, IBlockState blockState) {
+	public void onBlockBreak(World world, EntityPlayer player, BlockPos breakPos, IBlockState blockState) {
 		// Check Player:
 		if(this.ignoreFakePlayers && player instanceof FakePlayer) {
 			return;
 		}
 
 		// Check Block:
-		if(!this.isTriggerBlock(blockState, player.getEntityWorld(), breakPos)) {
+		if(!this.isTriggerBlock(blockState, world, breakPos)) {
 			return;
 		}
 
@@ -50,7 +50,7 @@ public class BlockSpawnTrigger extends SpawnTrigger {
 			return;
 		}
 
-		this.trigger(player.getEntityWorld(), player, player.getPosition(), this.getBlockLevel(blockState, player.getEntityWorld(), breakPos));
+		this.trigger(world, player, player.getPosition(), this.getBlockLevel(blockState, world, breakPos));
 	}
 
 	/** Returns true if the provided block is a match for this trigger. **/

@@ -1,16 +1,24 @@
 package com.lycanitesmobs.core.spawner;
 
 import com.google.gson.JsonObject;
-import com.lycanitesmobs.core.info.MobInfo;
+import com.lycanitesmobs.ExtendedWorld;
+import com.lycanitesmobs.LycanitesMobs;
+import com.lycanitesmobs.core.entity.EntityCreatureBase;
+import com.lycanitesmobs.core.info.SpawnInfo;
+import com.lycanitesmobs.core.mobevent.MobEventBase;
+import com.lycanitesmobs.core.mobevent.MobEventManager;
 import com.lycanitesmobs.core.spawner.condition.SpawnCondition;
 import com.lycanitesmobs.core.spawner.location.SpawnLocation;
 import com.lycanitesmobs.core.spawner.trigger.SpawnTrigger;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.fml.common.eventhandler.Event;
 
 import java.util.*;
 
@@ -30,7 +38,7 @@ public class Spawner {
     public List<SpawnLocation> locations = new ArrayList<>();
 
     /** A list of all Mobs that can be spawned by this spawner. **/
-    public List<MobInfo> mobs = new ArrayList<>();
+    public List<MobSpawn> mobSpawns = new ArrayList<>();
 
     /** Can be set to false to completely disable this Spawner. **/
     public boolean enabled = true;
@@ -53,8 +61,20 @@ public class Spawner {
 	/** How many mobs to spawn each wave. **/
 	public int mobCount = 1;
 
-    /** Sets if this Spawner should check if the spawn location is natural for mobs or not. **/
-    public boolean ignoreMobConditions = false;
+	/** If true, this Spawner will ignore all biome checks, this bypasses the biome checks of MobSpawns and SpawnInfos. **/
+	public boolean ignoreBiomes = false;
+
+    /** If true, mobs spawned by this Spawner will not naturally despawn. **/
+    public boolean forceNoDespawn = false;
+
+	/** If true, this Spawner will pass the current Mob Event to any mobs it spawns meaning the spawned mobs will despawn on the Mob Event despawn time. **/
+	public boolean mobEventSpawner = false;
+
+
+	/** Loads (or reloads) all JSON Spawners. **/
+	public static void loadAllFromJSON() {
+		// TODO Load JSON Spawners
+	}
 
 
     /** Loads this Spawner from the provided JSON data. **/
@@ -65,7 +85,7 @@ public class Spawner {
 
     /** Returns true if Triggers are allowed to operate for this Spawner. **/
     public boolean canSpawn(World world, EntityPlayer player) {
-        if(!this.enabled) {
+        if(!this.enabled || SpawnInfo.disableAllSpawning) {
             return false;
         }
 
@@ -144,6 +164,11 @@ public class Spawner {
      * @return True on a successful spawn and false on failure.
      **/
     public boolean doSpawn(World world, EntityPlayer player, BlockPos triggerPos, int level) {
+		ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
+		LycanitesMobs.printDebug("JSONSpawner", "~O==================== Spawner Activated: " + this.name + " ====================O~");
+		LycanitesMobs.printDebug("JSONSpawner", "Trigger World: " + world);
+		LycanitesMobs.printDebug("JSONSpawner", "Trigger Player: " + player);
+		LycanitesMobs.printDebug("JSONSpawner", "Trigger Position: " + triggerPos);
 
     	// Get Positions:
 		List<BlockPos> spawnPositions = this.getSpawnPos(world, player, triggerPos);
@@ -151,38 +176,110 @@ public class Spawner {
 			return false;
 		}
 		Collections.shuffle(spawnPositions);
+		LycanitesMobs.printDebug("JSONSpawner", "Positions Found: " + spawnPositions.size());
 
 		// Get Biomes
-		List<Biome> biomes = new ArrayList<>();
-		if(!this.ignoreMobConditions) {
+		List<Biome> biomes = null;
+		if(!this.ignoreBiomes) {
+			biomes = new ArrayList<>();
 			for(BlockPos spawnPos : spawnPositions) {
 				Biome biome = world.getBiome(spawnPos);
 				if(!biomes.contains(biome))
 					biomes.add(biome);
 			}
+			LycanitesMobs.printDebug("JSONSpawner", "Biomes Found: " + biomes.size());
+		}
+		else {
+			LycanitesMobs.printDebug("JSONSpawner", "All biome checks are ignored by this Spawner.");
 		}
 
 		// Get Mobs:
 		List<MobSpawn> mobSpawns = this.getMobSpawns(world, player, spawnPositions.size(), biomes);
+		LycanitesMobs.printDebug("JSONSpawner", "Mobs Found: " + mobSpawns.size());
+		if(mobSpawns.size() == 0) {
+			return false;
+		}
 
-		int spawnIteration = 0;
+		int mobsSpawned = 0;
 		for(BlockPos spawnPos : spawnPositions) {
-			if(spawnIteration >= this.mobCount) {
+			if(mobsSpawned >= this.mobCount) {
 				break;
 			}
+			LycanitesMobs.printDebug("JSONSpawner", "---------- Spawn Iteration: " + mobsSpawned + " ----------");
+			LycanitesMobs.printDebug("JSONSpawner", "Spawn Position: " + spawnPos);
 
 			// Choose Mob To Spawn:
-			MobInfo mobInfo = this.chooseMobToSpawn(world, player, spawnPositions.size(), spawnPos, mobSpawns);
-			if(mobInfo == null) {
+			MobSpawn mobSpawn = this.chooseMobToSpawn(world, mobSpawns);
+			if(mobSpawn == null) {
+				LycanitesMobs.printDebug("JSONSpawner", "No Mob Spawn Chosen");
+				continue;
+			}
+			LycanitesMobs.printDebug("JSONSpawner", "Spawn Mob: " + mobSpawn.mobInfo.name);
+
+			// Create Entity:
+			EntityLiving entityLiving = null;
+			try {
+				entityLiving = (EntityLiving) mobSpawn.mobInfo.entityClass.getConstructor(new Class[]{World.class}).newInstance(new Object[]{world});
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			if (entityLiving == null) {
+				LycanitesMobs.printWarning("JSONSpawner", "Unable to instantiate an entity. Class: " + mobSpawn.mobInfo.entityClass);
+				continue;
+			}
+			EntityCreatureBase entityCreature = null;
+			if (entityLiving instanceof EntityCreatureBase) {
+				entityCreature = (EntityCreatureBase)entityLiving;
+				LycanitesMobs.printDebug("JSONSpawner", "Mob is a Lycanites Mob");
+			}
+			else {
+				LycanitesMobs.printDebug("JSONSpawner", "Mob is not a Lycanites Mob");
+			}
+
+			// Attempt To Spawn EntityLiving:
+			LycanitesMobs.printDebug("JSONSpawner", "Attempting to spawn " + entityLiving + "...");
+			entityLiving.setLocationAndAngles((double) spawnPos.getX() + 0.5D, (double) spawnPos.getY(), (double) spawnPos.getZ() + 0.5D, world.rand.nextFloat() * 360.0F, 0.0F);
+
+			// Forge Can Spawn Event:
+			Event.Result canSpawn = ForgeEventFactory.canEntitySpawn(entityLiving, world, (float) spawnPos.getX() + 0.5F, (float) spawnPos.getY(), (float) spawnPos.getZ() + 0.5F, false);
+			if (canSpawn == Event.Result.DENY && !mobSpawn.ignoreForgeCanSpawnEvent) {
+				LycanitesMobs.printDebug("JSONSpawner", "Spawn Check Failed! Spawning blocked by Forge Can Spawn Event, this is caused another mod.");
 				continue;
 			}
 
-			// TODO Spawn Mob Logic and Extra Checks
+			// Mob Instance Spawn Check:
+			if(!this.mobInstanceSpawnCheck(entityLiving, mobSpawn, world, player, triggerPos, level, canSpawn == Event.Result.ALLOW)) {
+				LycanitesMobs.printDebug("JSONSpawner", "Mob Instance Spawn Check Failed!");
+				continue;
+			}
 
-			spawnIteration++; // Only increases after each successful spawn.
+			// Spawn The Mob:
+			entityLiving.timeUntilPortal = entityLiving.getPortalCooldown();
+			if (entityCreature != null) {
+				entityCreature.forceNoDespawn = this.forceNoDespawn;
+				entityCreature.spawnedRare = level > 0;
+				if (this.mobEventSpawner && worldExt != null && worldExt.getWorldEvent() != null) {
+					entityCreature.spawnEventType = worldExt.getWorldEventName();
+					entityCreature.spawnEventCount = worldExt.getWorldEventCount();
+				}
+			}
+			this.spawnEntity(world, worldExt, entityLiving, level);
+			if(MobEventBase.aggressiveEvents && this.mobEventSpawner && worldExt != null && worldExt.getWorldEvent() != null && player != null) {
+				entityLiving.setAttackTarget(player);
+			}
+
+			// Call Entity's Initial Spawn:
+			if (!ForgeEventFactory.doSpecialSpawn(entityLiving, world, (float) spawnPos.getX() + 0.5F, (float) spawnPos.getY(), (float) spawnPos.getZ() + 0.5F)) {
+				if (entityCreature != null) {
+					entityLiving.onInitialSpawn(world.getDifficultyForLocation(spawnPos), null);
+				}
+			}
+
+			LycanitesMobs.printDebug("JSONSpawner", "Spawn Checks Passed! Mob Spawned!");
+			mobsSpawned++;
 		}
 
-        return spawnIteration > 0;
+        return mobsSpawned > 0;
     }
 
 
@@ -243,30 +340,137 @@ public class Spawner {
 
 
     /**
-     * Returns all viable mobs that can be spawned within the spawn conditions.
+     * Returns all viable mobs that can be spawned within the spawn conditions. Spawn block costs, chances and biomes are checked here.
      * @param world The World to spawn in.
      * @param player The player that is being spawned around.
 	 * @param blockCount The total number of possible spawn positions found.
-	 * @param biomes A list of all biomes within the spawning area.
+	 * @param biomes A list of all biomes within the spawning area. If null, biome checks will be ignored.
      * @return The MobSpawn of the mob to spawn or null if no mob can be spawned at the position.
      **/
     public List<MobSpawn> getMobSpawns(World world, EntityPlayer player, int blockCount, List<Biome> biomes) {
-    	// TODO Get MobSpawns for this Spawner and global!
-        return null;
+    	List<MobSpawn> allMobSpawns = new ArrayList<>();
+
+    	// Global Spawns:
+		Collection<MobSpawn> globalSpawns = SpawnerMobRegistry.getMobSpawns(this.name);
+		if(globalSpawns != null) {
+			allMobSpawns.addAll(globalSpawns);
+		}
+
+		// Local Spawns:
+		allMobSpawns.addAll(this.mobSpawns);
+
+		// Get Viable Spawns:
+		List<MobSpawn> viableMobSpawns = new ArrayList<>();
+		for(MobSpawn possibleMobSpawn : allMobSpawns) {
+			if(possibleMobSpawn.canSpawn(world, blockCount, biomes)) {
+				viableMobSpawns.add(possibleMobSpawn);
+			}
+		}
+
+        return viableMobSpawns;
     }
 
 
 	/**
 	 * Gets a weighted random mob to spawn.
 	 * @param world The World to spawn in.
-	 * @param player The player that is being spawned around.
-	 * @param blockCount The total number of possible spawn positions found.
-	 * @param spawnPos The position to spawn at.
 	 * @param mobSpawns A list of MobSpawns to choose from.
-	 * @return The MobSpawn of the mob to spawn or null if no mob can be spawned at the position.
+	 * @return The MobSpawn of the mob to spawn or null if no mob can be spawned.
 	 **/
-	public MobInfo chooseMobToSpawn(World world, EntityPlayer player, int blockCount, BlockPos spawnPos, List<MobSpawn> mobSpawns) {
-		// TODO Choose Weighted Mob!
-		return null;
+	public MobSpawn chooseMobToSpawn(World world, List<MobSpawn> mobSpawns) {
+		// Get Weights:
+		int totalWeights = 0;
+		for(MobSpawn mobSpawn : mobSpawns) {
+			totalWeights += mobSpawn.getWeight();
+		}
+		if(totalWeights <= 0) {
+			return null;
+		}
+
+		// Pick Random Spawn Using Weights:
+		int randomWeight = 1;
+		if(totalWeights > 1) {
+			randomWeight = world.rand.nextInt(totalWeights - 1) + 1;
+		}
+		int searchWeight = 0;
+		MobSpawn chosenMobSpawn = null;
+		for(MobSpawn mobSpawn : mobSpawns) {
+			chosenMobSpawn = mobSpawn;
+			if(mobSpawn.getWeight() + searchWeight > randomWeight) {
+				break;
+			}
+			searchWeight += mobSpawn.getWeight();
+		}
+		return chosenMobSpawn;
+	}
+
+	/**
+	 * Performs a check from the Mob Instance, this mob has not yet been spawned into the world, but has been instantiated and is able to do per mob checks.
+	 * @param entityLiving The to be spawned mob instance.
+	 * @param mobSpawn The MobSpawn that is controlling the conditions of the spawn.
+	 * @param world The World to spawn in.
+	 * @param player The Player that triggered the spawn.
+	 * @param spawnPos The position to spawn at.
+	 * @param level The level of the spawn.
+	 * @param forgeForced If true, the Forge Can Spawn Event wants to force this mob to spawn.
+	 * @return True if the check has passed.
+	 **/
+	public boolean mobInstanceSpawnCheck(EntityLiving entityLiving, MobSpawn mobSpawn, World world, EntityPlayer player, BlockPos spawnPos, int level, boolean forgeForced) {
+		// Lycanites Mobs:
+		if (entityLiving instanceof EntityCreatureBase) {
+			EntityCreatureBase entityCreature = (EntityCreatureBase)entityLiving;
+
+			LycanitesMobs.printDebug("JSONSpawner", "Checking Mob Collision...");
+			if(!entityCreature.checkSpawnCollision(world, spawnPos)) {
+				return false;
+			}
+
+			LycanitesMobs.printDebug("JSONSpawner", "Checking For Nearby Boss...");
+			if(!entityCreature.checkSpawnBoss(world, spawnPos)) {
+				return false;
+			}
+
+			if(mobSpawn.ignoreMobInstanceConditions) {
+				LycanitesMobs.printDebug("JSONSpawner", "All Mob Instance Checks Ignored");
+				return true;
+			}
+
+			if(!mobSpawn.ignoreLightLevel) {
+				LycanitesMobs.printDebug("JSONSpawner", "Checking Light Level...");
+				if(!entityCreature.checkSpawnLightLevel(world, spawnPos)) {
+					return false;
+				}
+			}
+
+			if(!mobSpawn.ignoreGroupLimit) {
+				LycanitesMobs.printDebug("JSONSpawner", "Checking Group Limit...");
+				if(!entityCreature.checkSpawnGroupLimit(world, spawnPos)) {
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		// Vanilla or Other Mod Mob:
+		if(!mobSpawn.ignoreMobInstanceConditions) {
+			LycanitesMobs.printDebug("JSONSpawner", "None Lycanites Mobs Checks...");
+			return entityLiving.getCanSpawnHere();
+		}
+		LycanitesMobs.printDebug("JSONSpawner", "All Mob Instance Checks Ignored");
+		return true;
+	}
+
+	/**
+	 * Spawns an entity into the world. The mob instance should have already been positioned.
+	 * @param world The world to spawn in.
+	 * @param entityLiving The entity to spawn.
+	 */
+	public void spawnEntity(World world, ExtendedWorld worldExt, EntityLiving entityLiving, int level) {
+		world.spawnEntity(entityLiving);
+		if(this.mobEventSpawner && worldExt != null && worldExt.getWorldEvent() != null && entityLiving != null) {
+			MobEventBase mobEvent = worldExt.getWorldEvent();
+			mobEvent.onSpawn(entityLiving, level);
+		}
 	}
 }

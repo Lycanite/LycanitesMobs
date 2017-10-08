@@ -206,7 +206,11 @@ public abstract class EntityCreatureBase extends EntityLiving {
     private EntityLivingBase parentTarget;
     /** A target that this mob should usually run away from. **/
     private EntityLivingBase avoidTarget;
-	
+    /** A target that this mob just normally always attack if set. **/
+    private EntityLivingBase fixateTarget;
+	/** Used to identify the fixate target when loading this saved entity. **/
+	private UUID fixateUUID = null;
+
 	// Client:
 	/** A list of player entities that need to have their GUI of this mob reopened on refresh. **/
 	public List<EntityPlayer> guiViewers = new ArrayList<EntityPlayer>();
@@ -1448,6 +1452,24 @@ public abstract class EntityCreatureBase extends EntityLiving {
             this.firstSpawn = false;
         }
 
+        // Fixate Target:
+		if(!this.getEntityWorld().isRemote && !this.hasFixateTarget() && this.fixateUUID != null) {
+			double range = 64D;
+			List connections = this.getEntityWorld().getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(range, range, range));
+			Iterator possibleFixateTargets = connections.iterator();
+			while(possibleFixateTargets.hasNext()) {
+				EntityLivingBase possibleFixateTarget = (EntityLivingBase)possibleFixateTargets.next();
+				if(possibleFixateTarget != this && possibleFixateTarget.getUniqueID().equals(this.fixateUUID)) {
+					this.setFixateTarget(possibleFixateTarget);
+					break;
+				}
+			}
+			this.fixateUUID = null;
+		}
+		if(this.hasFixateTarget()) {
+        	this.setAttackTarget(this.getFixateTarget());
+		}
+
         // Prevent Creative Attack Target:
         if(this.hasAttackTarget()) {
             if(this.getAttackTarget() instanceof EntityPlayer) {
@@ -1490,7 +1512,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         }
 
         // Water Damage:
-        if(!this.getEntityWorld().isRemote && this.waterDamage() && this.isWet()) {
+        if(!this.getEntityWorld().isRemote && this.waterDamage() && this.isWet() && !this.isInLava()) {
             this.attackEntityFrom(DamageSource.DROWN, 1.0F);
         }
 
@@ -2601,6 +2623,19 @@ public abstract class EntityCreatureBase extends EntityLiving {
     		return (this.getByteFromDataManager(TARGET) & TARGET_ID.AVOID.id) > 0;
     }
 
+	/** Gets the fixate target of this entity. **/
+	public EntityLivingBase getFixateTarget() {
+		return this.fixateTarget;
+	}
+	/** Sets the fixate target of this entity. **/
+	public void setFixateTarget(EntityLivingBase target) {
+		this.fixateTarget = target;
+	}
+	/** Returns if the creature has a fixate target. **/
+	public boolean hasFixateTarget() {
+		return this.getFixateTarget() != null;
+	}
+
     /** Returns this entity's Owner Target. **/
     public Entity getOwner() { return null; }
 
@@ -3620,6 +3655,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
         if(nbtTagCompound.hasKey("ArenaX") && nbtTagCompound.hasKey("ArenaY") && nbtTagCompound.hasKey("ArenaZ")) {
             this.setArenaCenter(new BlockPos(nbtTagCompound.getInteger("ArenaX"), nbtTagCompound.getInteger("ArenaY"), nbtTagCompound.getInteger("ArenaZ")));
         }
+
+		if(nbtTagCompound.hasKey("FixateUUIDMost") && nbtTagCompound.hasKey("FixateUUIDLeast")) {
+			this.fixateUUID = new UUID(nbtTagCompound.getLong("FixateUUIDMost"), nbtTagCompound.getLong("FixateUUIDLeast"));
+		}
     }
     
     // ========== Write ==========
@@ -3654,6 +3693,11 @@ public abstract class EntityCreatureBase extends EntityLiving {
             nbtTagCompound.setInteger("ArenaY", arenaPos.getY());
             nbtTagCompound.setInteger("ArenaZ", arenaPos.getZ());
         }
+
+		if(this.getFixateTarget() != null) {
+			nbtTagCompound.setLong("FixateUUIDMost", this.getFixateTarget().getUniqueID().getMostSignificantBits());
+			nbtTagCompound.setLong("FixateUUIDLeast", this.getFixateTarget().getUniqueID().getLeastSignificantBits());
+		}
     	
         super.writeEntityToNBT(nbtTagCompound);
         this.inventory.writeToNBT(nbtTagCompound);

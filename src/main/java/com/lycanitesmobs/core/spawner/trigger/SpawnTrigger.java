@@ -73,7 +73,7 @@ public abstract class SpawnTrigger {
 
 	/** Triggers an actual spawn. **/
 	public boolean trigger(World world, EntityPlayer player, BlockPos triggerPos, int level) {
-		LycanitesMobs.printDebug("JSONSpawner", "Trigger Fired: " + this);
+		LycanitesMobs.printDebug("JSONSpawner", "Trigger Fired: " + this + " for: " + this.spawner.name);
 		return this.spawner.trigger(world, player, triggerPos, level, this.count);
 	}
 

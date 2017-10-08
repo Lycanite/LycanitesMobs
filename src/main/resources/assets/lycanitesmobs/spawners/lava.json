@@ -1,7 +1,7 @@
 {
 	"name": "lava",
 	"loadDefault": true,
-	"enabled": true,
+	"enabled": false,
 	"conditionsRequired": 0,
 	"triggersRequired": 1,
 	"multipleLocations": "combine",

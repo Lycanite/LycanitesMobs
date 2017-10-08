@@ -176,7 +176,7 @@ public class EntityAITargetAttack extends EntityAITarget {
     public boolean shouldExecute() {
     	this.target = null;
     	
-    	if(!this.host.isAggressive())
+    	if(!this.host.isAggressive() || this.host.hasFixateTarget())
     		return false;
     	
         if(this.targetChance > 0 && this.host.getRNG().nextInt(this.targetChance) != 0)

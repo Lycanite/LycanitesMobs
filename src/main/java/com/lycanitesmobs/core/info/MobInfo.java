@@ -238,6 +238,16 @@ public class MobInfo {
 			return null;
 		return mobNameToInfo.get(mobName);
 	}
+
+	/**
+	 * Get MobInfo from mob id.
+	 * @param mobId The id of the mob. Ex: mountainmobs.jabberwock
+	 * @return
+	 */
+	public static MobInfo getFromId(String mobId) {
+		String[] mobIdParts = mobId.toLowerCase().split("\\.");
+		return getFromName(mobIdParts[mobIdParts.length - 1]);
+	}
 	
 	/**
 	 * Get MobInfo from class.

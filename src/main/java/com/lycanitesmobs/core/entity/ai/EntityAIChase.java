@@ -1,5 +1,6 @@
 package com.lycanitesmobs.core.entity.ai;
 
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -44,8 +45,9 @@ public class EntityAIChase extends EntityAIBase {
  	// ==================================================
     public boolean shouldExecute() {
         this.target = this.host.getAttackTarget();
-        if(this.target == null)
-            return false;
+        if(this.target == null) {
+			return false;
+		}
         //else if(this.host.getDistanceSqToEntity(this.target) > (double)(this.maxTargetDistance * this.maxTargetDistance))
             //return false;
         
@@ -62,7 +64,17 @@ public class EntityAIChase extends EntityAIBase {
  	//                 Continue Executing
  	// ==================================================
     public boolean shouldContinueExecuting() {
-    	return !this.host.getNavigator().noPath() && this.host.isEntityAlive() && this.target.getDistanceSqToEntity(this.host) < (double)(this.maxTargetDistance * this.maxTargetDistance);
+		if (!this.host.isEntityAlive()) {
+			return false;
+		}
+		boolean fixated = this.host.hasFixateTarget() && this.host.getFixateTarget() == this.target;
+		if(!fixated && this.target.getDistanceSqToEntity(this.host) > (double)(this.maxTargetDistance * this.maxTargetDistance)) {
+			return false;
+		}
+		if (this.host.getNavigator().noPath()) {
+			return this.shouldExecute();
+		}
+    	return true;
     }
 	
     

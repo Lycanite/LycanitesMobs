@@ -171,7 +171,9 @@ public class Spawner {
 			while (jsonIterator.hasNext()) {
 				JsonObject mobSpawnJson = jsonIterator.next().getAsJsonObject();
 				MobSpawn mobSpawn = MobSpawn.createFromJSON(mobSpawnJson);
-				this.mobSpawns.add(mobSpawn);
+				if(mobSpawn != null) {
+					this.mobSpawns.add(mobSpawn);
+				}
 			}
 		}
     }
@@ -189,27 +191,30 @@ public class Spawner {
     /** Returns true if Triggers are allowed to operate for this Spawner. **/
     public boolean canSpawn(World world, EntityPlayer player) {
         if(!this.enabled || SpawnInfo.disableAllSpawning) {
+			LycanitesMobs.printDebug("JSONSpawner", "Spawner Disabled");
             return false;
         }
 
         if(this.conditions.isEmpty()) {
+			LycanitesMobs.printDebug("JSONSpawner", "No Conditions");
         	return true;
 		}
+
+		LycanitesMobs.printDebug("JSONSpawner", "Conditions Required: " + (this.conditionsRequired > 0 ? this.conditionsRequired : "All"));
         int conditionsMet = 0;
+        int conditionsRequired = this.conditionsRequired > 0 ? this.conditionsRequired : this.conditions.size();
         for(SpawnCondition condition : this.conditions) {
-            if(condition.isMet(world, player)) {
-                conditionsMet++;
-                if(this.conditionsRequired > 0 && conditionsMet >= this.conditionsRequired) {
+        	boolean met = condition.isMet(world, player);
+			LycanitesMobs.printDebug("JSONSpawner", "Condition: " + condition + " " + (met ? "Passed" : "Failed"));
+            if(met) {
+                if(++conditionsMet >= conditionsRequired) {
+					LycanitesMobs.printDebug("JSONSpawner", "Sufficient Conditions Met");
                     return true;
-                }
-            }
-            else {
-                if(this.conditionsRequired <= 0) {
-                    return false;
                 }
             }
         }
 
+		LycanitesMobs.printDebug("JSONSpawner", "Insufficient Conditions Met: " + conditionsMet + "/" + conditionsRequired);
         return false;
     }
 
@@ -224,7 +229,11 @@ public class Spawner {
 	 * @return True on a successful spawn and false on failure.
 	 **/
 	public boolean trigger(World world, EntityPlayer player, BlockPos triggerPos, int level, int countAmount) {
-		LycanitesMobs.printDebug("JSONSpawner", "Spawner Triggered: " + this.name);
+		LycanitesMobs.printDebug("JSONSpawner", "~O==================== Spawner Triggered: " + this.name + " ====================O~");
+		if(!this.canSpawn(world, player)) {
+			LycanitesMobs.printDebug("JSONSpawner", "This Spawner Cannot Spawn");
+			return false;
+		}
 
 		// Only One Trigger Required:
 		if(this.triggersRequired <= 1) {
@@ -254,6 +263,7 @@ public class Spawner {
 		}
 
 		// Required Count Met:
+		LycanitesMobs.printDebug("JSONSpawner", "Trigger " + currentCount + "/" + this.triggersRequired);
 		if(currentCount >= this.triggersRequired) {
 			this.triggerCounts.put(player, 0);
 			return this.doSpawn(world, player, triggerPos, level);
@@ -274,7 +284,7 @@ public class Spawner {
      **/
     public boolean doSpawn(World world, EntityPlayer player, BlockPos triggerPos, int level) {
 		ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
-		LycanitesMobs.printDebug("JSONSpawner", "~O==================== Spawner Activated: " + this.name + " ====================O~");
+		LycanitesMobs.printDebug("JSONSpawner", "Spawning Wave: " + this.mobCount + " Mob(s)");
 		LycanitesMobs.printDebug("JSONSpawner", "Trigger World: " + world);
 		LycanitesMobs.printDebug("JSONSpawner", "Trigger Player: " + player);
 		LycanitesMobs.printDebug("JSONSpawner", "Trigger Position: " + triggerPos);
@@ -282,7 +292,7 @@ public class Spawner {
     	// Get Positions:
 		List<BlockPos> spawnPositions = this.getSpawnPos(world, player, triggerPos);
 		if(spawnPositions.isEmpty()) {
-			LycanitesMobs.printDebug("JSONSpawner", "No Spawn Positions Found");
+			LycanitesMobs.printDebug("JSONSpawner", "No Spawn Positions Found From Spawn Location");
 			return false;
 		}
 		Collections.shuffle(spawnPositions);
@@ -373,7 +383,7 @@ public class Spawner {
 					entityCreature.spawnEventCount = worldExt.getWorldEventCount();
 				}
 			}
-			this.spawnEntity(world, worldExt, entityLiving, level);
+			this.spawnEntity(world, worldExt, entityLiving, level, mobSpawn, player);
 			if(MobEventBase.aggressiveEvents && this.mobEventSpawner && worldExt != null && worldExt.getWorldEvent() != null && player != null) {
 				entityLiving.setAttackTarget(player);
 			}
@@ -580,8 +590,9 @@ public class Spawner {
 	 * @param world The world to spawn in.
 	 * @param entityLiving The entity to spawn.
 	 */
-	public void spawnEntity(World world, ExtendedWorld worldExt, EntityLiving entityLiving, int level) {
+	public void spawnEntity(World world, ExtendedWorld worldExt, EntityLiving entityLiving, int level, MobSpawn mobSpawn, EntityPlayer player) {
 		world.spawnEntity(entityLiving);
+		mobSpawn.onSpawned(entityLiving, player);
 		if(this.mobEventSpawner && worldExt != null && worldExt.getWorldEvent() != null && entityLiving != null) {
 			MobEventBase mobEvent = worldExt.getWorldEvent();
 			mobEvent.onSpawn(entityLiving, level);

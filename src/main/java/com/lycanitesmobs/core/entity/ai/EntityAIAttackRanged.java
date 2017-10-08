@@ -182,11 +182,12 @@ public class EntityAIAttackRanged extends EntityAIBase {
   	//                   Update Task
   	// ==================================================
     public void updateTask() {
+    	boolean fixated = this.host.hasFixateTarget() && this.host.getFixateTarget() == this.attackTarget;
         double distance = this.host.getDistanceToEntity(this.attackTarget);
-        boolean hasSight = this.host.getEntitySenses().canSee(this.attackTarget);
+        boolean hasSight = fixated || this.host.getEntitySenses().canSee(this.attackTarget);
         float flyingHeightOffset = this.flyingHeight;
         
-        if(hasSight && this.chaseTimeMax >= 0)
+        if(hasSight && this.chaseTimeMax >= 0 && !fixated)
             ++this.chaseTime;
         else
             this.chaseTime = 0;

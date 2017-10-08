@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.spawner.location;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.lycanitesmobs.LycanitesMobs;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,10 +28,10 @@ public class RandomSpawnLocation extends SpawnLocation {
 	/** If true positions that can't see the sky are allowed. **/
 	public boolean underground = true;
 
-	/** If true positions require a solid walkable block underneath. **/
+	/** If true positions require a solid walkable block underneath rather than using insideBlock. **/
 	public boolean solidGround = false;
 
-	/** The block type to spawn in, by default this is air but can be set to water, etc. **/
+	/** The block type to spawn in when not using solidGround, by default this is air but can be set to water, etc. **/
 	public Block insideBlock = Blocks.AIR;
 
 
@@ -61,6 +62,7 @@ public class RandomSpawnLocation extends SpawnLocation {
     @Override
     public List<BlockPos> getSpawnPositions(World world, EntityPlayer player, BlockPos triggerPos) {
         List<BlockPos> spawnPositions = new ArrayList<>();
+		LycanitesMobs.printDebug("JSONSpawner", "Getting " + this.limit + " Random Spawn Positions");
 
 		for(int i = 0; i < this.limit; i++) {
 			BlockPos randomPos = this.getRandomPosition(world, player, triggerPos);
@@ -119,7 +121,7 @@ public class RandomSpawnLocation extends SpawnLocation {
 	}
 
 	/**
-	 * Gets a random Y position from the provided XYZ position using the provided range and range max radiuses.
+	 * Gets a random Y position from the provided XYZ position using the provided range and range max radii.
 	 * @param world The world that the coordinates are being selected in, mainly for getting Random.
 	 * @param triggerPos The position to search from using XZ coords and up and down within range of the Y coord.
 	 * @return The y position, -1 if a valid position could not be found.
@@ -128,33 +130,37 @@ public class RandomSpawnLocation extends SpawnLocation {
 		int originX = triggerPos.getX();
 		int originY = triggerPos.getY();
 		int originZ = triggerPos.getZ();
-		int minY = Math.max(originY - this.rangeMax.getY(), 0);
-		int maxY = originY + this.rangeMax.getY();
+		int minY = Math.max(originY - this.rangeMax.getY(), 0); // Start from this y pos
+		int maxY = originY + this.rangeMax.getY(); // Search up to this y pos
 		List<Integer> yCoordsLow = new ArrayList<Integer>();
 		List<Integer> yCoordsHigh = new ArrayList<Integer>();
 
 		// Get Every Valid Y Pos:
 		for(int nextY = minY; nextY <= maxY; nextY++) {
-			// If the next Y coord to check is within the min range area, move it up to the out of it:
+			// If the next y pos to check is within the min range area, move it up out of it:
 			if(nextY > originY - this.rangeMin.getY() && nextY < originY + this.rangeMin.getY())
 				nextY = originY + this.rangeMin.getY();
 
 			BlockPos spawnPos = new BlockPos(originX, nextY, originZ);
 			IBlockState blockState = world.getBlockState(spawnPos);
 			Block block = blockState.getBlock();
+			LycanitesMobs.printDebug("JSONSpawner", "Checking Y Position: " + nextY + " Valid Ground: " + this.validGroundBlock(blockState, world, spawnPos));
+			// TODO Rewrite This
 
-			// If block is the inside block or if checking for a solid ground, if the block is a solid surface to spawn on.
+			// If block is the inside block or if checking for a solid ground instead, if the block is a solid surface to spawn on.
 			if(block != null && ((!this.solidGround && block == this.insideBlock) || (this.solidGround && this.validGroundBlock(blockState, world, spawnPos)))) {
-				// Make sure the block above is within range:
-				if(nextY + 1 > originY - minY && nextY + 1 < originY - maxY)
+				// Make sure the block above is within range if checking for solid ground:
+				if(this.solidGround && nextY + 1 < minY && nextY + 1 > maxY)
 					continue;
 
 				// If above ground:
 				if(world.canBlockSeeSky(spawnPos)) {
+					if(this.underground)
+						break;
 					BlockPos checkPos = spawnPos;
 					if(this.solidGround)
 						checkPos = checkPos.add(0, 1, 0);
-					if(this.underground || world.getBlockState(checkPos).getBlock() != this.insideBlock)
+					if(world.getBlockState(checkPos).getBlock() != this.insideBlock)
 						break;
 					if(!this.solidGround) {
 						int skyCoord = nextY;

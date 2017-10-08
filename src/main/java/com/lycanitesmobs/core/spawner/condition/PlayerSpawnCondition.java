@@ -61,7 +61,7 @@ public class PlayerSpawnCondition extends SpawnCondition {
 		ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
 
     	// Check Username:
-        if(!"".equals(this.username) && this.username.equalsIgnoreCase(player.getName())) {
+        if(!"".equals(this.username) && !this.username.equalsIgnoreCase(player.getName())) {
         	return false;
 		}
 

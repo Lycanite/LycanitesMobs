@@ -204,7 +204,7 @@ public class SpawnerEventListener {
 	@SubscribeEvent
 	public void onSleep(PlayerSleepInBedEvent event) {
 		EntityPlayer player = event.getEntityPlayer();
-		if(player == null || event.isCanceled())
+		if(player == null || player.getEntityWorld() == null || player.getEntityWorld().isRemote || event.isCanceled())
 			return;
 		
 		// Get Coords:
@@ -235,7 +235,7 @@ public class SpawnerEventListener {
 	/** This uses the lightning strike event to spawn mobs. **/
 	public void onFished(ItemFishedEvent event) {
 		EntityPlayer player = event.getEntityPlayer();
-		if(player == null || event.isCanceled())
+		if(player == null || player.getEntityWorld() == null || player.getEntityWorld().isRemote || event.isCanceled())
 			return;
 
 		World world = player.getEntityWorld();

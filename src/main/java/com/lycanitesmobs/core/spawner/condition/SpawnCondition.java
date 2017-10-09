@@ -22,6 +22,9 @@ public abstract class SpawnCondition {
 		else if("event".equalsIgnoreCase(type)) {
 			spawnCondition = new EventSpawnCondition();
 		}
+		else if("date".equalsIgnoreCase(type)) {
+			spawnCondition = new DateSpawnCondition();
+		}
 		else if("group".equalsIgnoreCase(type)) {
 			spawnCondition = new GroupSpawnCondition();
 		}

@@ -1,21 +1,16 @@
 package com.lycanitesmobs.core.spawner.location;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.lycanitesmobs.core.spawner.SpawnerJSONUtilities;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.IFluidBlock;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class BlockSpawnLocation extends SpawnLocation {
@@ -25,24 +20,33 @@ public class BlockSpawnLocation extends SpawnLocation {
     /** Determines if the block list is a blacklist or whitelist. **/
     public String listType = "whitelist";
 
-    /** If true, only blocks on the surface (that can see the sky) are allowed. **/
-    public boolean surfaceOnly = false;
+	/** If true, positions that can see the sky are allowed. **/
+	public boolean surface = true;
+
+	/** If true positions that can't see the sky are allowed. **/
+	public boolean underground = true;
 
 
 	@Override
 	public void loadFromJSON(JsonObject json) {
-		this.blocks = SpawnerJSONUtilities.getJsonBlocks(json);
+		if(json.has("blocks")) {
+			this.blocks = SpawnerJSONUtilities.getJsonBlocks(json);
+		}
 
 		if(json.has("listType"))
 			this.listType = json.get("listType").getAsString();
 
-		if(json.has("surfaceOnly"))
-			this.surfaceOnly = json.get("surfaceOnly").getAsBoolean();
+		if(json.has("surface"))
+			this.surface = json.get("surface").getAsBoolean();
+
+		if(json.has("underground"))
+			this.underground = json.get("underground").getAsBoolean();
 
 		super.loadFromJSON(json);
 	}
 
     /** Returns a list of positions to spawn at. **/
+    @Override
     public List<BlockPos> getSpawnPositions(World world, EntityPlayer player, BlockPos triggerPos) {
         List<BlockPos> spawnPositions = new ArrayList<>();
 
@@ -75,7 +79,7 @@ public class BlockSpawnLocation extends SpawnLocation {
 					}
 
 					// Check Block:
-					if(this.isValidBLock(world, player, spawnPos)) {
+					if(this.isValidBlock(world, spawnPos)) {
 						spawnPositions.add(spawnPos);
 					}
 				}
@@ -86,14 +90,23 @@ public class BlockSpawnLocation extends SpawnLocation {
     }
 
 	/** Returns if the provided block position is valid. **/
-    public boolean isValidBLock(World world, EntityPlayer player, BlockPos blockPos) {
+    public boolean isValidBlock(World world, BlockPos blockPos) {
     	Block block = world.getBlockState(blockPos).getBlock();
     	if(block == null) {
     		return false;
 		}
 
-		if(this.surfaceOnly) {
-			world.isAirBlock(blockPos.up());
+		if(!this.surface || !this.underground) {
+			if(world.canSeeSky(blockPos)) {
+				if(!this.surface) {
+					return false;
+				}
+			}
+			else {
+				if(!this.underground) {
+					return false;
+				}
+			}
 		}
 
 		if("blacklist".equalsIgnoreCase(this.listType)) {

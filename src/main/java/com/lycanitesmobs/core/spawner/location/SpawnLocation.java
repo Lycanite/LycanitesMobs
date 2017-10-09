@@ -103,22 +103,4 @@ public class SpawnLocation {
 		}
 		return spawnPositions;
 	}
-
-
-	/**
-	 * Returns true if the provided coordinate has space to spawn an entity at it.
-	 * This works by checking if it is an air block and if the block above is also an air block.
-	 * @return True if there is space else false.
-	 */
-	public boolean doesPositionHaveSpace(World world, BlockPos pos, Block insideBlock) {
-		Block feet = world.getBlockState(pos).getBlock();
-		if(feet == null) return false;
-		if(feet != insideBlock) return false;
-
-		Block head = world.getBlockState(pos.add(0, 1, 0)).getBlock();
-		if(head == null) return false;
-		if(head != insideBlock) return false;
-
-		return true;
-	}
 }

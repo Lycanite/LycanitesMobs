@@ -30,14 +30,24 @@ public class MaterialSpawnLocation extends BlockSpawnLocation {
 	}
 
 	/** Returns if the provided block position is valid. **/
-	public boolean isValidBLock(World world, EntityPlayer player, BlockPos blockPos) {
+	@Override
+	public boolean isValidBlock(World world, BlockPos blockPos) {
 		IBlockState blockState = world.getBlockState(blockPos);
 		if(blockState == null) {
 			return false;
 		}
 
-		if(this.surfaceOnly) {
-			world.isAirBlock(blockPos.up());
+		if(!this.surface || !this.underground) {
+			if(world.canSeeSky(blockPos)) {
+				if(!this.surface) {
+					return false;
+				}
+			}
+			else {
+				if(!this.underground) {
+					return false;
+				}
+			}
 		}
 
 		if("blacklist".equalsIgnoreCase(this.listType)) {

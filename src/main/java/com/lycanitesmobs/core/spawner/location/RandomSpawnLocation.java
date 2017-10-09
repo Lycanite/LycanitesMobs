@@ -1,7 +1,5 @@
 package com.lycanitesmobs.core.spawner.location;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.lycanitesmobs.LycanitesMobs;
 import net.minecraft.block.Block;
@@ -9,30 +7,18 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-public class RandomSpawnLocation extends SpawnLocation {
+public class RandomSpawnLocation extends BlockSpawnLocation {
 	/** How many random positions to select. **/
 	public int limit = 32;
 
-	/** If true, positions that can see the sky are allowed. **/
-	public boolean surface = true;
-
-	/** If true positions that can't see the sky are allowed. **/
-	public boolean underground = true;
-
 	/** If true positions require a solid walkable block underneath rather than using insideBlock. **/
 	public boolean solidGround = false;
-
-	/** The block type to spawn in when not using solidGround, by default this is air but can be set to water, etc. **/
-	public Block insideBlock = Blocks.AIR;
 
 
 	@Override
@@ -40,22 +26,12 @@ public class RandomSpawnLocation extends SpawnLocation {
 		if(json.has("limit"))
 			this.limit = json.get("limit").getAsInt();
 
-		if(json.has("surface"))
-			this.surface = json.get("surface").getAsBoolean();
-
-		if(json.has("underground"))
-			this.underground = json.get("underground").getAsBoolean();
-
 		if(json.has("solidGround"))
 			this.solidGround = json.get("solidGround").getAsBoolean();
 
-		if(json.has("insideBlock")) {
-			Block block = GameRegistry.findRegistry(Block.class).getValue(new ResourceLocation(json.get("insideBlock").getAsString()));
-			if(block != null) {
-				this.insideBlock = block;
-			}
-		}
-
+		this.listType = "whitelist";
+		this.blocks.add(Blocks.AIR);
+		this.blocks.add(Blocks.TALLGRASS);
 		super.loadFromJSON(json);
     }
 
@@ -131,9 +107,9 @@ public class RandomSpawnLocation extends SpawnLocation {
 		int originY = triggerPos.getY();
 		int originZ = triggerPos.getZ();
 		int minY = Math.max(originY - this.rangeMax.getY(), 0); // Start from this y pos
-		int maxY = originY + this.rangeMax.getY(); // Search up to this y pos
-		List<Integer> yCoordsLow = new ArrayList<Integer>();
-		List<Integer> yCoordsHigh = new ArrayList<Integer>();
+		int maxY = Math.min(originY + this.rangeMax.getY(), world.getHeight() - 1); // Search up to this y pos
+		List<Integer> yCoordsLow = new ArrayList<>();
+		List<Integer> yCoordsHigh = new ArrayList<>();
 
 		// Get Every Valid Y Pos:
 		for(int nextY = minY; nextY <= maxY; nextY++) {
@@ -142,51 +118,38 @@ public class RandomSpawnLocation extends SpawnLocation {
 				nextY = originY + this.rangeMin.getY();
 
 			BlockPos spawnPos = new BlockPos(originX, nextY, originZ);
-			IBlockState blockState = world.getBlockState(spawnPos);
-			Block block = blockState.getBlock();
-			LycanitesMobs.printDebug("JSONSpawner", "Checking Y Position: " + nextY + " Valid Ground: " + this.validGroundBlock(blockState, world, spawnPos));
-			// TODO Rewrite This
 
-			// If block is the inside block or if checking for a solid ground instead, if the block is a solid surface to spawn on.
-			if(block != null && ((!this.solidGround && block == this.insideBlock) || (this.solidGround && this.validGroundBlock(blockState, world, spawnPos)))) {
-				// Make sure the block above is within range if checking for solid ground:
-				if(this.solidGround && nextY + 1 < minY && nextY + 1 > maxY)
-					continue;
+			// If the pos is valid to spawn at:
+			if(this.isValidBlock(world, spawnPos)) {
+				boolean lastYPos = false;
 
-				// If above ground:
+				// If can see sky:
 				if(world.canBlockSeeSky(spawnPos)) {
-					if(this.underground)
-						break;
-					BlockPos checkPos = spawnPos;
-					if(this.solidGround)
-						checkPos = checkPos.add(0, 1, 0);
-					if(world.getBlockState(checkPos).getBlock() != this.insideBlock)
-						break;
+					LycanitesMobs.printDebug("JSONSpawner", "Can See Sky");
+					// Get random floating position if not searching for solid ground:
 					if(!this.solidGround) {
-						int skyCoord = nextY;
-						int skyRange = Math.min(world.getHeight() - 1, maxY) - skyCoord;
-						// Get random y coord within inside block:
-						if(skyRange > 1) {
-							if(this.insideBlock != Blocks.AIR)
-								skyRange = this.getInsideBlockHeight(world, checkPos, this.insideBlock);
-							nextY += world.rand.nextInt(skyRange);
+						int floatRange = maxY - nextY;
+						if(floatRange > 1) {
+							if(world.getBlockState(spawnPos).getBlock() != Blocks.AIR) {
+								floatRange = this.getValidBlockHeight(world, spawnPos, maxY);
+							}
+							nextY += world.rand.nextInt(floatRange + 1) - 1;
 						}
-						if(skyRange == 1)
-							nextY = 1;
 					}
-					if(nextY + 1 <= 64)
-						yCoordsLow.add(nextY + 1);
-					else
-						yCoordsHigh.add(nextY + 1);
-					break;
+					lastYPos = true;
 				}
 
-				else if(this.doesPositionHaveSpace(world, spawnPos.add(0, 1, 0), this.insideBlock)) {
-					if(nextY + 1 <= 64)
-						yCoordsLow.add(nextY + 1);
-					else
-						yCoordsHigh.add(nextY + 1);
-					nextY += 2;
+				if(super.isValidBlock(world, spawnPos.up())) {
+					if(nextY <= 64) {
+						yCoordsLow.add(nextY);
+					}
+					else {
+						yCoordsHigh.add(nextY);
+					}
+				}
+
+				if(lastYPos) {
+					break;
 				}
 			}
 		}
@@ -209,31 +172,45 @@ public class RandomSpawnLocation extends SpawnLocation {
 		return y;
 	}
 
-	/** Returns the height of insideBlocks from the starting position checking upwards until the insideBlock is no longer found. **/
-	public int getInsideBlockHeight(World world, BlockPos startPos, Block insideBlock) {
-		int y;
-		for(y = startPos.getY(); y < world.getActualHeight(); y++) {
-			BlockPos checkPos = new BlockPos(startPos.getX(), y, startPos.getZ());
-			if(world.getBlockState(checkPos).getBlock() != insideBlock)
-				break;
+	/** Returns if the provided block position is valid. **/
+	@Override
+	public boolean isValidBlock(World world, BlockPos blockPos) {
+		if(!super.isValidBlock(world, blockPos)) {
+			return false;
 		}
-		return y - startPos.getY();
+		if(this.solidGround) {
+			return this.posHasGround(world, blockPos);
+		}
+		return true;
 	}
 
-	/** Returns true if the specified block is suitable for spawning land mobs on top of. **/
-	public boolean validGroundBlock(IBlockState blockState, World world, BlockPos pos) {
-		if(blockState == null)
+	/** Returns true if the specified position has a block underneath it that a mob can safely stand on. **/
+	public boolean posHasGround(World world, BlockPos pos) {
+		if(pos == null || pos.getY() == 0)
 			return false;
+		IBlockState possibleGroundBlock = world.getBlockState(pos.down());
 		try {
-			if(blockState.isNormalCube())
+			if(possibleGroundBlock.isNormalCube())
 				return true;
 		} catch(Exception e) {}
 		try {
-			if (blockState.isSideSolid(world, pos, EnumFacing.UP))
+			if (possibleGroundBlock.isSideSolid(world, pos.down(), EnumFacing.UP))
 				return true;
-			if (blockState.isSideSolid(world, pos, EnumFacing.DOWN))
+			if (possibleGroundBlock.isSideSolid(world, pos.down(), EnumFacing.DOWN))
 				return true;
 		} catch(Exception e) {}
 		return false;
+	}
+
+	/** Returns the height of valid blocks from the starting position checking upwards until the position no longer has a valid block or maxY is reached. **/
+	public int getValidBlockHeight(World world, BlockPos startPos, int maxY) {
+		int y;
+		for(y = startPos.getY(); y <= maxY; y++) {
+			BlockPos checkPos = new BlockPos(startPos.getX(), y, startPos.getZ());
+			if(!this.isValidBlock(world, checkPos)) {
+				break;
+			}
+		}
+		return y - startPos.getY();
 	}
 }

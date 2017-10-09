@@ -8,9 +8,6 @@
 	"mobCount": 1,
 	"ignoreBiomes": true,
 	"ignoreLightLevel": true,
-	"ignoreGroupLimit": false,
-	"forceNoDespawn": false,
-	"mobEventSpawner": false,
 	"conditions": [],
 	"triggers": [
 		{
@@ -22,7 +19,7 @@
 	"locations": [
 		{
 			"type": "block",
-			"rangeMin": [32, 32, 32],
+			"rangeMin": [16, 0, 16],
 			"rangeMax": [32, 32, 32],
 			"sorting": "random",
 			"blocks": [

@@ -12,7 +12,7 @@
 	"triggers": [
 		{
 			"type": "tree",
-			"chance": 1
+			"chance": 0.02
 		}
 	],
 	"locations": [

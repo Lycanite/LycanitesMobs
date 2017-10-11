@@ -23,7 +23,7 @@ minecraft {
     version = "1.12.2-14.23.0.2493"
     runDir = "run"
     mappings = "snapshot_20170624"
-    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+    makeObfSourceJar = false
 }
 
 dependencies {

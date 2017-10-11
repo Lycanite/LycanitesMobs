@@ -28,6 +28,18 @@ public class PlayerSpawnCondition extends SpawnCondition {
 	/** The maximum light level that the player must be in. **/
 	public int lightLevelMax = -1;
 
+	/** If true, the player must be on the ground. **/
+	public boolean grounded = false;
+
+	/** If true, the player must not be on the ground. **/
+	public boolean notGrounded = false;
+
+	/** If true, the player must be in the water. **/
+	public boolean inWater = false;
+
+	/** If true, the player must not be in the water. **/
+	public boolean notInWater = false;
+
 
 	@Override
 	public void loadFromJSON(JsonObject json) {
@@ -52,6 +64,18 @@ public class PlayerSpawnCondition extends SpawnCondition {
 		if(json.has("lightLevelMax"))
 			this.lightLevelMax = json.get("lightLevelMax").getAsInt();
 
+		if(json.has("grounded"))
+			this.grounded = json.get("grounded").getAsBoolean();
+
+		if(json.has("notGrounded"))
+			this.notGrounded = json.get("notGrounded").getAsBoolean();
+
+		if(json.has("inWater"))
+			this.inWater = json.get("inWater").getAsBoolean();
+
+		if(json.has("notInWater"))
+			this.notInWater = json.get("notInWater").getAsBoolean();
+
 		super.loadFromJSON(json);
 	}
 
@@ -70,6 +94,20 @@ public class PlayerSpawnCondition extends SpawnCondition {
 			return false;
 		}
 		if(this.levelMax >= 0 && player.experienceLevel > this.levelMax) {
+			return false;
+		}
+
+		// Check States:
+		if(this.grounded && !player.onGround) {
+			return false;
+		}
+		if(this.notGrounded && player.onGround) {
+			return false;
+		}
+		if(this.inWater && !player.isInWater()) {
+			return false;
+		}
+		if(this.notInWater && player.isInWater()) {
 			return false;
 		}
 

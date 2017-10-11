@@ -44,7 +44,7 @@ public class BlockFrostCloud extends BlockBase {
 		this.canBeCrushed = true;
 		
 		this.noEntityCollision = true;
-		this.noBreakCollision = true;
+		this.noBreakCollision = noBreakCollision;
 		this.isOpaque = false;
 		
 		this.setBlockUnbreakable();

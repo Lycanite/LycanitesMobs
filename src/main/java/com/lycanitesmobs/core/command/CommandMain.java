@@ -90,6 +90,22 @@ public class CommandMain implements ICommand {
 			return;
 		}
 
+		// Debug:
+		if("debug".equalsIgnoreCase(args[0])) {
+			reply = I18n.translateToLocal("lyc.command.debug.invalid");
+			if (args.length < 3) {
+				commandSender.sendMessage(new TextComponentString(reply));
+				return;
+			}
+
+			String debugValue = args[1];
+			reply = I18n.translateToLocal("lyc.command.debug.set");
+			reply.replace("%debug%", debugValue);
+			LycanitesMobs.config.setBool("Debug", debugValue, "true".equalsIgnoreCase(args[2]));
+			commandSender.sendMessage(new TextComponentString(reply));
+			return;
+		}
+
 		// Spawner:
 		if("spawners".equalsIgnoreCase(args[0])) {
 			reply = I18n.translateToLocal("lyc.command.spawners.invalid");
@@ -98,7 +114,7 @@ public class CommandMain implements ICommand {
 				return;
 			}
 
-			// Add:
+			// Reload:
 			if("reload".equalsIgnoreCase(args[1])) {
 				reply = I18n.translateToLocal("lyc.command.spawners.reload");
 				SpawnerManager.getInstance().reload();

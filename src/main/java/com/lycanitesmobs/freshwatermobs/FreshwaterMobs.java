@@ -103,21 +103,21 @@ public class FreshwaterMobs {
         newMob = new MobInfo(group, "zephyr", EntityZephyr.class, 0xFFFFDD, 0xAABBFF)
                 .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
 		        .addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("keppel", "uncommon"));
-        newMob.spawnInfo.setSpawnTypes("STORM")
+        newMob.spawnInfo.setSpawnTypes("")
                 .setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
         ObjectManager.addMob(newMob);
 
         newMob = new MobInfo(group, "strider", EntityStrider.class, 0x2c90cd, 0x13ddf1)
                 .setPeaceful(false).setTameable(true).setSummonCost(6).setDungeonLevel(2)
                 .addSubspecies(new Subspecies("scarlet", "uncommon")).addSubspecies(new Subspecies("ashen", "uncommon"));
-        newMob.spawnInfo.setSpawnTypes("WATER")
+        newMob.spawnInfo.setSpawnTypes("WATERFLOOR")
                 .setSpawnWeight(1).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);
         ObjectManager.addMob(newMob);
 
         newMob = new MobInfo(group, "silex", EntitySilex.class, 0x263abd, 0x040e75)
                 .setPeaceful(true).setSummonCost(2).setDungeonLevel(-1)
                 .addSubspecies(new Subspecies("light", "uncommon")).addSubspecies(new Subspecies("keppel", "uncommon"));
-        newMob.spawnInfo.setSpawnTypes("WATER, FISHING").setDespawn(false)
+        newMob.spawnInfo.setSpawnTypes("WATER").setDespawn(false)
                 .setSpawnWeight(6).setAreaLimit(2).setGroupLimits(1, 6).setLightDark(true, false).setDungeonWeight(0);
         ObjectManager.addMob(newMob);
 
@@ -131,14 +131,14 @@ public class FreshwaterMobs {
 		newMob = new MobInfo(group, "ioray", EntityIoray.class, 0x5247ca, 0xccd6ec)
 				.setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(1)
 				.addSubspecies(new Subspecies("light", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("WATER").setBiomes("GROUP,-SWAMP")
+		newMob.spawnInfo.setSpawnTypes("WATER, WATERFLOOR").setBiomes("GROUP,-SWAMP")
 				.setSpawnWeight(4).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "abaia", EntityAbaia.class, 0x537d41, 0xdfb752)
 				.setPeaceful(false).setSummonable(true).setSummonCost(4).setDungeonLevel(1)
 				.addSubspecies(new Subspecies("violet", "uncommon")).addSubspecies(new Subspecies("ashen", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("WATER, FISHING").setBiomes("GROUP,-SWAMP")
+		newMob.spawnInfo.setSpawnTypes("WATER").setBiomes("GROUP,-SWAMP")
 				.setSpawnWeight(6).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 

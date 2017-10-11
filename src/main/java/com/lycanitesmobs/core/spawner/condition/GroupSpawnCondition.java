@@ -43,20 +43,15 @@ public class GroupSpawnCondition extends SpawnCondition {
     @Override
     public boolean isMet(World world, EntityPlayer player) {
 		int conditionsMet = 0;
+		int conditionsRequired = this.conditionsRequired > 0 ? this.conditionsRequired : this.conditions.size();
 		for(SpawnCondition condition : this.conditions) {
-			if(condition.isMet(world, player)) {
-				conditionsMet++;
-				if(this.conditionsRequired > 0 && conditionsMet >= this.conditionsRequired) {
-					return super.isMet(world, player);
-				}
-			}
-			else {
-				if(this.conditionsRequired <= 0) {
-					return false;
+			boolean met = condition.isMet(world, player);
+			if(met) {
+				if(++conditionsMet >= conditionsRequired) {
+					return true;
 				}
 			}
 		}
-
 		return false;
     }
 }

@@ -157,13 +157,13 @@ public class SpawnerEventListener {
 		if(event.getState() == null || event.getWorld() == null || event.getWorld().isRemote || event.isCanceled()) {
 			return;
 		}
-		if(player != null || (player != null && player.capabilities.isCreativeMode)) { // No Spawning for Creative Players
+		if(player == null || (player != null && player.capabilities.isCreativeMode)) { // No Spawning for Creative Players
 			return;
 		}
 		
 		// Spawn On Block Harvest:
 		World world = event.getWorld();
-        BlockPos blockPos = event.getPos().add(0, 0, 1);
+        BlockPos blockPos = event.getPos();
 		IBlockState blockState = event.getState();
 
         for(BlockSpawnTrigger spawnTrigger : this.blockSpawnTriggers) {

@@ -36,6 +36,7 @@ public class EntityThrowingScythe extends EntityProjectileBase {
         this.knockbackChance = 0.25D;
     	
     	this.waterProof = true;
+		this.cutsGrass = true;
     }
 	
     

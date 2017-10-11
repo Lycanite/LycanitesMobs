@@ -1,0 +1,37 @@
+{
+	"name": "storm",
+	"loadDefault": true,
+	"mobCount": 8,
+	"ignoreBiomes": true,
+	"ignoreLightLevel": true,
+	"conditions": [
+		{
+			"type": "world",
+			"weather": "storm"
+		}
+	],
+	"triggers": [
+		{
+			"type": "tick",
+			"chance": 0.125,
+			"tickRate": 800
+		}
+	],
+	"locations": [
+		{
+			"type": "random",
+			"rangeMin": [32, 0, 32],
+			"rangeMax": [48, 64, 48],
+			"sorting": "random",
+			"listType": "whitelist",
+			"limit": 32,
+			"solidGround": false
+		}
+	],
+	"mobSpawns": [
+		{
+			"mobId": "freshwatermobs.zephyr",
+			"weight": 8
+		}
+	]
+}

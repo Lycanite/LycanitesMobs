@@ -9,6 +9,7 @@ import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.DropRate;
+import net.minecraft.block.BlockLog;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
@@ -28,6 +29,7 @@ public class EntityCalpod extends EntityCreatureBase implements IMob, IGroupPrey
 
 	private EntityAIAttackRanged rangedAttackAI;
 	private int calpodSwarmLimit = 5;
+	private boolean calpodGreifing = true;
 
     // ==================================================
  	//                    Constructor
@@ -40,13 +42,15 @@ public class EntityCalpod extends EntityCreatureBase implements IMob, IGroupPrey
         this.defense = 0;
         this.experience = 3;
         this.hasAttackSound = true;
-        
-        this.setWidth = 1.3F;
+
+
+		this.setWidth = 1.3F;
         this.setHeight = 0.9F;
         this.setupMob();
         
         this.calpodSwarmLimit = ConfigBase.getConfig(this.group, "general").getInt("Features", "Calpod Swarm Limit", this.calpodSwarmLimit, "Limits how many Calpods there can be when swarming.");
-    }
+		this.calpodGreifing = ConfigBase.getConfig(this.group, "general").getBool("Features", "Calpod Griefing", this.calpodGreifing, "Set to false to disable Calpod block destruction.");
+	}
 
     // ========== Init AI ==========
     @Override
@@ -96,9 +100,17 @@ public class EntityCalpod extends EntityCreatureBase implements IMob, IGroupPrey
 	// ========== Living Update ==========
 	@Override
     public void onLivingUpdate() {
-		if(!this.getEntityWorld().isRemote && this.hasAttackTarget() && this.updateTick % 20 == 0) {
+		if(!this.getEntityWorld().isRemote && this.hasAttackTarget() && this.updateTick % 40 == 0) {
 			this.allyUpdate();
 		}
+
+		// Destroy Blocks:
+		if(!this.getEntityWorld().isRemote)
+			if(this.getAttackTarget() != null && this.getEntityWorld().getGameRules().getBoolean("mobGriefing") && this.calpodGreifing) {
+				float distance = this.getAttackTarget().getDistanceToEntity(this);
+				if(distance <= this.width + 1.0F)
+					this.destroyAreaBlock((int)this.posX, (int)this.posY, (int)this.posZ, BlockLog.class, true, 0);
+			}
         
         super.onLivingUpdate();
     }
@@ -111,7 +123,7 @@ public class EntityCalpod extends EntityCreatureBase implements IMob, IGroupPrey
 		// Spawn Minions:
 		if(this.calpodSwarmLimit > 0 && this.nearbyCreatureCount(this.getClass(), 64D) < this.calpodSwarmLimit) {
 			float random = this.rand.nextFloat();
-			if(random <= 0.25F)
+			if(random <= 0.125F)
 				this.spawnAlly(this.posX - 2 + (random * 4), this.posY, this.posZ - 2 + (random * 4));
 		}
 	}

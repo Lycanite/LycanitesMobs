@@ -133,28 +133,28 @@ public class ArcticMobs {
         newMob = new MobInfo(group, "reiver", EntityReiver.class, 0xDDEEFF, 0x99DDEE)
                 .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
 		        .addSubspecies(new Subspecies("ashen", "uncommon")).addSubspecies(new Subspecies("golden", "uncommon"));
-        newMob.spawnInfo.setSpawnTypes("FROSTFIRE, SKY").setBlockCost(8)
+        newMob.spawnInfo.setSpawnTypes("SKY").setBlockCost(8)
         		.setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
         ObjectManager.addMob(newMob);
         
         newMob = new MobInfo(group, "frostweaver", EntityFrostweaver.class, 0xAADDFF, 0x226699)
 		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1)
 		        .addSubspecies(new Subspecies("light", "uncommon")).addSubspecies(new Subspecies("azure", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER")
+		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
 				.setSpawnWeight(10).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 		
         newMob = new MobInfo(group, "yeti", EntityYeti.class, 0xEEEEFF, 0x000099)
 		        .setPeaceful(true).setSummonCost(2).setDungeonLevel(-1)
 		        .addSubspecies(new Subspecies("russet", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("CREATURE").setDespawn(false)
+		newMob.spawnInfo.setSpawnTypes("CREATURE, ANIMAL").setDespawn(false)
 				.setSpawnWeight(10).setAreaLimit(5).setGroupLimits(1, 4).setLightDark(true, false).setDungeonWeight(0);
 		ObjectManager.addMob(newMob);
 		
         newMob = new MobInfo(group, "wendigo", EntityWendigo.class, 0xCCCCFF, 0x0055FF)
 		        .setPeaceful(false).setSummonCost(8).setDungeonLevel(2)
 		        .addSubspecies(new Subspecies("keppel", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, OOZE").setBlockCost(16)
+		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST, OOZE").setBlockCost(16)
 				.setSpawnWeight(4).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
@@ -168,14 +168,14 @@ public class ArcticMobs {
         newMob = new MobInfo(group, "serpix", EntitySerpix.class, 0xCCEEFF, 0x0000BB)
                 .setPeaceful(false).setTameable(true).setSummonCost(8).setDungeonLevel(2)
                 .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
-        newMob.spawnInfo.setSpawnTypes("MONSTER, OOZE").setBlockCost(32)
+        newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST, OOZE").setBlockCost(32)
                 .setSpawnWeight(4).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);
         ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "maug", EntityMaug.class, 0xc9cccd, 0x52504e)
 				.setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(1)
 				.addSubspecies(new Subspecies("russet", "uncommon")).addSubspecies(new Subspecies("dark", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER")
+		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
 				.setSpawnWeight(4).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 		

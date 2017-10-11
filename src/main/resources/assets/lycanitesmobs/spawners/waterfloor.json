@@ -1,0 +1,29 @@
+{
+	"name": "waterfloor",
+	"loadDefault": true,
+	"mobCount": 16,
+	"ignoreBiomes": false,
+	"ignoreLightLevel": false,
+	"conditions": [],
+	"triggers": [
+		{
+			"type": "tick",
+			"chance": 0.75,
+			"tickRate": 800
+		}
+	],
+	"locations": [
+		{
+			"type": "random",
+			"rangeMin": [32, 0, 32],
+			"rangeMax": [48, 48, 48],
+			"sorting": "random",
+			"listType": "whitelist",
+			"limit": 32,
+			"blocks": [
+				"minecraft:water"
+			],
+			"solidGround": true
+		}
+	]
+}

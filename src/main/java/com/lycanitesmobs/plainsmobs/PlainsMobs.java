@@ -100,21 +100,21 @@ public class PlainsMobs {
         newMob = new MobInfo(group, "kobold", EntityKobold.class, 0x996633, 0xFF7777)
 		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
 		        .addSubspecies(new Subspecies("ashen", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER")
+		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
 				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "ventoraptor", EntityVentoraptor.class, 0x99BBFF, 0x0033FF)
 		        .setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(0)
 		        .addSubspecies(new Subspecies("ashen", "uncommon")).addSubspecies(new Subspecies("azure", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER")
+		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
 				.setSpawnWeight(5).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "maka", EntityMaka.class, 0xAA8855, 0x221100)
 		        .setPeaceful(true).setSummonCost(2).setDungeonLevel(-1)
 		        .addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("CREATURE").setDespawn(false)
+		newMob.spawnInfo.setSpawnTypes("CREATURE, ANIMAL").setDespawn(false)
 				.setSpawnWeight(10).setAreaLimit(10).setGroupLimits(2, 5).setLightDark(true, false).setDungeonWeight(0);
 		ObjectManager.addMob(newMob);
 
@@ -128,7 +128,7 @@ public class PlainsMobs {
 		newMob = new MobInfo(group, "zoataur", EntityZoataur.class, 0x442200, 0xFFDDBB)
 		        .setPeaceful(false).setSummonable(true).setSummonCost(4).setDungeonLevel(2)
 		        .addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("light", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER")
+		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
 				.setSpawnWeight(4).setAreaLimit(4).setGroupLimits(1, 3).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
@@ -142,14 +142,14 @@ public class PlainsMobs {
 		newMob = new MobInfo(group, "feradon", EntityFeradon.class, 0xe4a23d, 0x552d0e)
 				.setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(1)
 				.addSubspecies(new Subspecies("ashen", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER")
+		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
 				.setSpawnWeight(5).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "quillbeast", EntityQuillbeast.class, 0x642a12, 0x6051fe)
 				.setPeaceful(false).setTameable(true).setSummonCost(2).setDungeonLevel(1)
 				.addSubspecies(new Subspecies("dark", "uncommon")).addSubspecies(new Subspecies("light", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER")
+		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
 				.setSpawnWeight(5).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 

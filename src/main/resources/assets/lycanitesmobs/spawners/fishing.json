@@ -1,0 +1,50 @@
+{
+	"name": "fishing",
+	"loadDefault": true,
+	"mobCount": 1,
+	"ignoreDimensions": true,
+	"ignoreBiomes": true,
+	"ignoreLightLevel": true,
+	"ignoreForgeCanSpawnEvent": true,
+	"conditions": [],
+	"triggers": [
+		{
+			"type": "fishing",
+			"chance": 0.2
+		}
+	],
+	"locations": [
+		{
+			"type": "random",
+			"rangeMin": [0, 0, 0],
+			"rangeMax": [2, 2, 2],
+			"sorting": "near",
+			"limit": 1,
+			"blocks": ["minecraft:air", "minecraft:water"],
+			"listType": "whitelist",
+			"solidGround": false
+		}
+	],
+	"mobSpawns": [
+		{
+			"mobId": "freshwatermobs.silex",
+			"weight": 16
+		},
+		{
+			"mobId": "freshwatermobs.abaia",
+			"weight": 8
+		},
+		{
+			"mobId": "saltwatermobs.abtu",
+			"weight": 8
+		},
+		{
+			"mobId": "saltwatermobs.roa",
+			"weight": 1
+		},
+		{
+			"mobId": "saltwatermobs.skylus",
+			"weight": 1
+		}
+	]
+}

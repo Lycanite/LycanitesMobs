@@ -92,7 +92,7 @@ public class EntityDarkling extends EntityCreatureTameable implements IMob, IGro
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 7D);
+		baseAttributes.put("maxHealth", 10D);
 		baseAttributes.put("movementSpeed", 0.36D);
 		baseAttributes.put("knockbackResistance", 0.0D);
 		baseAttributes.put("followRange", 16D);

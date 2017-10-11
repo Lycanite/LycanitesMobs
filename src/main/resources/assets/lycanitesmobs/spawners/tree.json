@@ -1,0 +1,36 @@
+{
+	"name": "tree",
+	"loadDefault": true,
+	"mobCount": 1,
+	"ignoreDimensions": true,
+	"ignoreBiomes": true,
+	"ignoreCollision": true,
+	"ignoreLightLevel": true,
+	"ignoreForgeCanSpawnEvent": true,
+	"blockBreakRadius": 1,
+	"conditions": [],
+	"triggers": [
+		{
+			"type": "tree",
+			"chance": 1
+		}
+	],
+	"locations": [
+		{
+			"type": "base",
+			"rangeMin": [0, 0, 0],
+			"rangeMax": [0, 0, 0],
+			"sorting": "random"
+		}
+	],
+	"mobSpawns": [
+		{
+			"mobId": "forestmobs.ent",
+			"weight": 8
+		},
+		{
+			"mobId": "forestmobs.calpod",
+			"weight": 2
+		}
+	]
+}

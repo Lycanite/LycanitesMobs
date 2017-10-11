@@ -1,0 +1,85 @@
+{
+	"name": "darkness",
+	"enabled": false,
+	"conditionsRequired": 0,
+	"triggersRequired": 3,
+	"multipleLocations": "combine",
+	"mobCount": 1,
+	"ignoreDimensions": true,
+	"ignoreBiomes": true,
+	"ignoreCollision": true,
+	"ignoreLightLevel": true,
+	"ignoreGroupLimit": true,
+	"ignoreForgeCanSpawnEvent": true,
+	"conditions": [],
+	"triggers": [
+		{
+			"type": "tick",
+			"count": 1,
+			"chance": 0.75,
+			"tickRate": 100,
+			"conditions": [
+				{
+					"type": "player",
+					"lightLevelMax": 5
+				}
+			]
+		},
+		{
+			"type": "tick",
+			"count": 0,
+			"chance": 1,
+			"tickRate": 100,
+			"conditions": [
+				{
+					"type": "player",
+					"lightLevelMin": 6
+				}
+			]
+		}
+	],
+	"locations": [
+		{
+			"type": "random",
+			"rangeMin": [0, 0, 0],
+			"rangeMax": [2, 2, 2],
+			"sorting": "random",
+			"limit": 1,
+			"blocks": ["minecraft:air", "minecraft:tall_grass", "minecraft:water"],
+			"listType": "whitelist",
+			"solidGround": false
+		}
+	],
+	"mobSpawns": [
+		{
+			"mobId": "shadowmobs.grue",
+			"weight": 8
+		},
+		{
+			"mobId": "shadowmobs.darkling",
+			"weight": 2
+		},
+		{
+			"mobId": "shadowmobs.shade",
+			"weight": 1
+		}
+	],
+	"triggerCountMessages": [
+		{
+			"count": 0,
+			"message": "spawner.darkness.level1.back"
+		},
+		{
+			"count": 1,
+			"message": "spawner.darkness.level1"
+		},
+		{
+			"count": 2,
+			"message": "spawner.darkness.level2"
+		},
+		{
+			"count": 3,
+			"message": "spawner.darkness.level3"
+		}
+	]
+}

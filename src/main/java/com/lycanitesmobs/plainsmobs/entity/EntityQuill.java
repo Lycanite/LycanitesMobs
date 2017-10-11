@@ -32,10 +32,11 @@ public class EntityQuill extends EntityProjectileBase {
     	this.entityName = "quill";
     	this.group = PlainsMobs.group;
     	this.setBaseDamage(3);
-    	this.setProjectileScale(0.5F);
+    	this.setProjectileScale(1F);
         this.knockbackChance = 0.25D;
     	
     	this.waterProof = true;
+    	this.cutsGrass = true;
     }
 	
     

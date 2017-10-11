@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.spawner.trigger;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.spawner.Spawner;
 import net.minecraft.block.Block;
@@ -117,6 +118,6 @@ public class KillSpawnTrigger extends SpawnTrigger {
 			return;
 		}
 
-		this.trigger(player.getEntityWorld(), player, player.getPosition(), 0);
+		this.trigger(player.getEntityWorld(), player, killedEntity.getPosition(), 0);
 	}
 }

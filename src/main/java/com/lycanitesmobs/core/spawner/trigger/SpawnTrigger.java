@@ -1,12 +1,19 @@
 package com.lycanitesmobs.core.spawner.trigger;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.spawner.Spawner;
+import com.lycanitesmobs.core.spawner.condition.SpawnCondition;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public abstract class SpawnTrigger {
     /** Spawn Triggers can respond to various events or ticks and will start a spawn. **/
@@ -19,6 +26,12 @@ public abstract class SpawnTrigger {
 
 	/** The Chance of triggering. **/
 	public double chance = 1;
+
+	/** A list of Trigger specific Conditions that this Condition will check. **/
+	public List<SpawnCondition> conditions = new ArrayList<>();
+
+	/** Determines how many Trigger specific Conditions must be met. If 0 or less all are required. **/
+	public int conditionsRequired = 0;
 
 
 	/** Loads this Spawn Condition from the provided JSON data. **/
@@ -68,13 +81,50 @@ public abstract class SpawnTrigger {
 
 		if(json.has("chance"))
 			this.chance = json.get("chance").getAsDouble();
+
+		if(json.has("conditionsRequired"))
+			this.conditionsRequired = json.get("conditionsRequired").getAsInt();
+
+		if(json.has("conditions")) {
+			JsonArray jsonArray = json.get("conditions").getAsJsonArray();
+			Iterator<JsonElement> jsonIterator = jsonArray.iterator();
+			while (jsonIterator.hasNext()) {
+				JsonObject conditionJson = jsonIterator.next().getAsJsonObject();
+				SpawnCondition spawnCondition = SpawnCondition.createFromJSON(conditionJson);
+				this.conditions.add(spawnCondition);
+			}
+		}
 	}
 
 
 	/** Triggers an actual spawn. **/
 	public boolean trigger(World world, EntityPlayer player, BlockPos triggerPos, int level) {
+		// Check Trigger Specific Conditions:
+		if(!this.triggerConditionsMet(world, player)) {
+			return false;
+		}
+
 		LycanitesMobs.printDebug("JSONSpawner", "Trigger Fired: " + this + " for: " + this.spawner.name);
 		return this.spawner.trigger(world, player, triggerPos, level, this.count);
+	}
+
+	/** Checks all Conditions specific to this Trigger. **/
+	public boolean triggerConditionsMet(World world, EntityPlayer player) {
+		if(this.conditions.size() == 0) {
+			return true;
+		}
+
+		int conditionsMet = 0;
+		int conditionsRequired = this.conditionsRequired > 0 ? this.conditionsRequired : this.conditions.size();
+		for(SpawnCondition condition : this.conditions) {
+			boolean met = condition.isMet(world, player);
+			if(met) {
+				if(++conditionsMet >= conditionsRequired) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	/** Used to apply effects, etc any mobs that have spawned because of this trigger. **/

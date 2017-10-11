@@ -1,0 +1,26 @@
+{
+	"name": "underground",
+	"loadDefault": true,
+	"mobCount": 8,
+	"ignoreBiomes": false,
+	"ignoreLightLevel": false,
+	"conditions": [],
+	"triggers": [
+		{
+			"type": "tick",
+			"chance": 0.25,
+			"tickRate": 800
+		}
+	],
+	"locations": [
+		{
+			"type": "random",
+			"rangeMin": [16, 0, 16],
+			"rangeMax": [32, 32, 32],
+			"sorting": "random",
+			"limit": 32,
+			"surface": false,
+			"solidGround": true
+		}
+	]
+}

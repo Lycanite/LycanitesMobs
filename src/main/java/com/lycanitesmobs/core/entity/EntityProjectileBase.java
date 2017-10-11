@@ -3,11 +3,14 @@ package com.lycanitesmobs.core.entity;
 import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.core.info.GroupInfo;
 import com.lycanitesmobs.core.info.MobInfo;
+import net.minecraft.block.BlockTallGrass;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
+import net.minecraft.init.Blocks;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -36,6 +39,7 @@ public class EntityProjectileBase extends EntityThrowable {
 	
 	public boolean waterProof = false;
 	public boolean lavaProof = false;
+	public boolean cutsGrass = false;
 
     // Texture and Animation:
     public int animationFrame = 0;
@@ -237,8 +241,21 @@ public class EntityProjectileBase extends EntityThrowable {
      		int i = rayTraceResult.getBlockPos().getX();
      		int j = rayTraceResult.getBlockPos().getY();
             int k = rayTraceResult.getBlockPos().getZ();
-            if(this.getEntityWorld().getBlockState(new BlockPos(i, j, k)) != null)
-            	collided = this.getEntityWorld().getBlockState(new BlockPos(i, j, k)).getBoundingBox(this.getEntityWorld(), new BlockPos(i, j, k)) != null;
+            BlockPos blockPos = new BlockPos(i, j, k);
+			IBlockState blockState = this.getEntityWorld().getBlockState(blockPos);
+            if(blockState != null) {
+            	if(blockState.getBlock() instanceof BlockTallGrass || blockState.getBlock() == Blocks.DOUBLE_PLANT) {
+            		if(this.cutsGrass) {
+						world.destroyBlock(blockPos, false);
+					}
+					else {
+            			collided = true;
+					}
+				}
+				else {
+					collided = blockState.getBoundingBox(this.getEntityWorld(), new BlockPos(i, j, k)) != null;
+				}
+			}
              
  	        if(collided) {
                 blockCollision = true;

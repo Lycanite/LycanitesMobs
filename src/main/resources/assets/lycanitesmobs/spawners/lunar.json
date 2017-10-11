@@ -1,0 +1,37 @@
+{
+	"name": "lunar",
+	"loadDefault": true,
+	"mobCount": 8,
+	"ignoreBiomes": true,
+	"ignoreLightLevel": true,
+	"conditions": [
+		{
+			"type": "world",
+			"dimensionIds": [0, 7],
+			"dayTimeMin": 10000,
+			"moonPhase": 0
+		}
+	],
+	"triggers": [
+		{
+			"type": "tick",
+			"chance": 0.125,
+			"tickRate": 800
+		}
+	],
+	"locations": [
+		{
+			"type": "random",
+			"rangeMin": [32, 0, 32],
+			"rangeMax": [48, 64, 48],
+			"sorting": "random",
+			"limit": 32,
+			"solidGround": false
+		}
+	],
+	"mobSpawns": [
+		{
+			"mobId": "shadowmobs.epion"
+		}
+	]
+}

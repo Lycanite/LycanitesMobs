@@ -135,8 +135,9 @@ public class MobSpawn {
 	 * @param world The world to spawn in.
 	 * @param blockCount The number of spawn blocks found.
 	 * @param biomes A list of biomes to check, if null, the biome check is ignored.
+	 * @param forceIgnoreDimension If true, the dimension check is ignored.
 	 **/
-	public boolean canSpawn(World world, int blockCount, List<Biome> biomes) {
+	public boolean canSpawn(World world, int blockCount, List<Biome> biomes, boolean forceIgnoreDimension) {
 		// Peaceful Difficulty:
 		if(world.getDifficulty() == EnumDifficulty.PEACEFUL && !this.mobInfo.peacefulDifficulty) {
 			return false;
@@ -161,6 +162,11 @@ public class MobSpawn {
 					return false;
 				}
 			}
+		}
+
+		// Dimension:
+		if(!forceIgnoreDimension && !this.ignoreDimension && !this.mobInfo.spawnInfo.isAllowedDimension(world)) {
+			return false;
 		}
 
 		// Biome:

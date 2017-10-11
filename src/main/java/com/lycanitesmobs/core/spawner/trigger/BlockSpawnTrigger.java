@@ -28,11 +28,14 @@ public class BlockSpawnTrigger extends SpawnTrigger {
 	/** A list of Blocks that match this Trigger. **/
 	public List<Block> blocks = new ArrayList<>();
 
+	/** Determines if the blocks list is a blacklist or whitelist. **/
+	public String blocksListType = "whitelist";
+
 	/** A list of Block Materials that match this Trigger. **/
 	public List<Material> blockMaterials = new ArrayList<>();
 
-	/** Determines if the block/material lists are a blacklist or whitelist. **/
-	public String listType = "whitelist";
+	/** Determines if the block materials list is a blacklist or whitelist. **/
+	public String blockMaterialsListType = "whitelist";
 
 
 	/** Constructor **/
@@ -47,10 +50,13 @@ public class BlockSpawnTrigger extends SpawnTrigger {
 
 		this.blocks = SpawnerJSONUtilities.getJsonBlocks(json);
 
+		if(json.has("blocksListType"))
+			this.blocksListType = json.get("blocksListType").getAsString();
+
 		this.blockMaterials = SpawnerJSONUtilities.getJsonMaterials(json);
 
-		if(json.has("listType"))
-			this.listType = json.get("listType").getAsString();
+		if(json.has("blockMaterialsListType"))
+			this.blockMaterialsListType = json.get("blockMaterialsListType").getAsString();
 
 		super.loadFromJSON(json);
 	}
@@ -73,22 +79,22 @@ public class BlockSpawnTrigger extends SpawnTrigger {
 			return;
 		}
 
-		this.trigger(world, player, player.getPosition(), this.getBlockLevel(blockState, world, breakPos));
+		this.trigger(world, player, breakPos, this.getBlockLevel(blockState, world, breakPos));
 	}
 
 	/** Returns true if the provided block is a match for this trigger. **/
 	public boolean isTriggerBlock(IBlockState blockState, World world, BlockPos blockPos) {
 		Block block = blockState.getBlock();
 		if(this.blocks.contains(block)) {
-			return !"blacklist".equalsIgnoreCase(this.listType);
+			return !"blacklist".equalsIgnoreCase(this.blocksListType);
 		}
 
 		Material material = blockState.getMaterial();
 		if(this.blockMaterials.contains(material)) {
-			return !"blacklist".equalsIgnoreCase(this.listType);
+			return !"blacklist".equalsIgnoreCase(this.blockMaterialsListType);
 		}
 
-		return "blacklist".equalsIgnoreCase(this.listType);
+		return "blacklist".equalsIgnoreCase(this.blocksListType) && "blacklist".equalsIgnoreCase(this.blockMaterialsListType);
 	}
 
 	/** Returns a value to represent the block's rarity for higher level spawns with increased chances of tougher mobs, etc. **/

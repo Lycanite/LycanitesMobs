@@ -1,0 +1,34 @@
+{
+	"name": "glowstone",
+	"loadDefault": true,
+	"mobCount": 1,
+	"ignoreDimensions": true,
+	"ignoreBiomes": true,
+	"ignoreCollision": true,
+	"ignoreLightLevel": true,
+	"ignoreForgeCanSpawnEvent": true,
+	"blockBreakRadius": 1,
+	"conditions": [],
+	"triggers": [
+		{
+			"type": "block",
+			"blocks": ["minecraft:glowstone"],
+			"blocksListType": "whitelist",
+			"chance": 0.02
+		}
+	],
+	"locations": [
+		{
+			"type": "base",
+			"rangeMin": [0, 0, 0],
+			"rangeMax": [0, 0, 0],
+			"sorting": "random"
+		}
+	],
+	"mobSpawns": [
+		{
+			"mobId": "freshwatermobs.zephyr",
+			"weight": 8
+		}
+	]
+}

@@ -1,0 +1,36 @@
+{
+	"name": "ore",
+	"loadDefault": true,
+	"mobCount": 1,
+	"ignoreDimensions": true,
+	"ignoreBiomes": true,
+	"ignoreCollision": true,
+	"ignoreLightLevel": true,
+	"ignoreForgeCanSpawnEvent": true,
+	"blockBreakRadius": 1,
+	"conditions": [],
+	"triggers": [
+		{
+			"type": "ore",
+			"chance": 0.02
+		}
+	],
+	"locations": [
+		{
+			"type": "base",
+			"rangeMin": [0, 0, 0],
+			"rangeMax": [0, 0, 0],
+			"sorting": "random"
+		}
+	],
+	"mobSpawns": [
+		{
+			"mobId": "mountainmobs.geonach",
+			"weight": 8
+		},
+		{
+			"mobId": "desertmobs.gorgomite",
+			"weight": 2
+		}
+	]
+}

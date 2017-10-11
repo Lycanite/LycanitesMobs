@@ -46,19 +46,19 @@ public class DateSpawnCondition extends SpawnCondition {
 
     	// Check Month:
 		int month = calendar.get(Calendar.MONTH);
-		if(this.monthMin > 0 && month < this.monthMin) {
+		if(this.monthMin >= 0 && month < this.monthMin) {
 			return false;
 		}
-		if(this.monthMax > 0 && month > this.monthMax) {
+		if(this.monthMax >= 0 && month > this.monthMax) {
 			return false;
 		}
 
 		// Check Day of Month:
 		int day = calendar.get(Calendar.DAY_OF_MONTH);
-		if(this.dayMin > 0 && day < this.dayMin) {
+		if(this.dayMin >= 0 && day < this.dayMin) {
 			return false;
 		}
-		if(this.dayMax > 0 && day > this.dayMax) {
+		if(this.dayMax >= 0 && day > this.dayMax) {
 			return false;
 		}
 

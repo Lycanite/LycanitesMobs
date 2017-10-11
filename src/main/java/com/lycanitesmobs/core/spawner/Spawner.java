@@ -63,8 +63,14 @@ public class Spawner {
 	/** How many mobs to spawn each wave. **/
 	public int mobCount = 1;
 
+	/** If true, this Spawner will ignore all mob dimension checks (not Spawn Condition checks), this bypasses the checks in MobSpawns and SpawnInfos. **/
+	public boolean ignoreDimensions = false;
+
 	/** If true, this Spawner will ignore all biome checks, this bypasses the checks in MobSpawns and SpawnInfos. **/
 	public boolean ignoreBiomes = false;
+
+	/** If true, this Spawner will ignore collision checks, this may cause mobs to become stuck and suffocate. **/
+	public boolean ignoreCollision = false;
 
 	/** If true, this Spawner will ignore light level checks, this bypasses the checks in MobSpawns and SpawnInfos. **/
 	public boolean ignoreLightLevel = false;
@@ -72,11 +78,17 @@ public class Spawner {
 	/** If true, this Spawner will ignore group limit checks, this bypasses the checks in MobSpawns and SpawnInfos. **/
 	public boolean ignoreGroupLimit = false;
 
+	/** If set to true, the Forge Can Spawn Event is fired but its result is ignored, use this to prevent other mods from stopping the spawn via the event. **/
+	protected boolean ignoreForgeCanSpawnEvent = false;
+
     /** If true, mobs spawned by this Spawner will not naturally despawn. **/
     public boolean forceNoDespawn = false;
 
 	/** If true, this Spawner will pass the current Mob Event to any mobs it spawns meaning the spawned mobs will despawn on the Mob Event despawn time. **/
 	public boolean mobEventSpawner = false;
+
+	/** If set, when a mob is spawned, blocks in the radius around the spawned mob will be destroyed. **/
+	public int blockBreakRadius = -1;
 
 
 	/** Stores how many times each player has triggered any of this spawners Spawn Triggers, the count is reset when a wave is spawned. **/
@@ -115,8 +127,14 @@ public class Spawner {
 		if(json.has("mobCount"))
 			this.mobCount = json.get("mobCount").getAsInt();
 
+		if(json.has("ignoreDimensions"))
+			this.ignoreDimensions = json.get("ignoreDimensions").getAsBoolean();
+
 		if(json.has("ignoreBiomes"))
-			this.ignoreBiomes = json.get("ignoreBiomes").getAsBoolean();
+		this.ignoreBiomes = json.get("ignoreBiomes").getAsBoolean();
+
+		if(json.has("ignoreCollision"))
+			this.ignoreCollision = json.get("ignoreCollision").getAsBoolean();
 
 		if(json.has("ignoreLightLevel"))
 			this.ignoreLightLevel = json.get("ignoreLightLevel").getAsBoolean();
@@ -124,11 +142,17 @@ public class Spawner {
 		if(json.has("ignoreGroupLimit"))
 			this.ignoreGroupLimit = json.get("ignoreGroupLimit").getAsBoolean();
 
+		if(json.has("ignoreForgeCanSpawnEvent"))
+			this.ignoreForgeCanSpawnEvent = json.get("ignoreForgeCanSpawnEvent").getAsBoolean();
+
 		if(json.has("forceNoDespawn"))
 			this.forceNoDespawn = json.get("forceNoDespawn").getAsBoolean();
 
 		if(json.has("mobEventSpawner"))
 			this.mobEventSpawner = json.get("mobEventSpawner").getAsBoolean();
+
+		if(json.has("blockBreakRadius"))
+			this.blockBreakRadius = json.get("blockBreakRadius").getAsInt();
 
 		// Conditions:
 		if(json.has("conditions")) {
@@ -149,7 +173,9 @@ public class Spawner {
 				JsonObject triggerJson = jsonIterator.next().getAsJsonObject();
 				SpawnTrigger spawnTrigger = SpawnTrigger.createFromJSON(triggerJson, this);
 				this.triggers.add(spawnTrigger);
-				SpawnerEventListener.instance.addSpawnTrigger(spawnTrigger);
+				if(this.enabled) {
+					SpawnerEventListener.instance.addSpawnTrigger(spawnTrigger);
+				}
 			}
 		}
 
@@ -362,7 +388,7 @@ public class Spawner {
 
 			// Forge Can Spawn Event:
 			Event.Result canSpawn = ForgeEventFactory.canEntitySpawn(entityLiving, world, (float) spawnPos.getX() + 0.5F, (float) spawnPos.getY(), (float) spawnPos.getZ() + 0.5F, false);
-			if (canSpawn == Event.Result.DENY && !mobSpawn.ignoreForgeCanSpawnEvent) {
+			if (canSpawn == Event.Result.DENY && !this.ignoreForgeCanSpawnEvent && !mobSpawn.ignoreForgeCanSpawnEvent) {
 				LycanitesMobs.printDebug("JSONSpawner", "Spawn Check Failed! Spawning blocked by Forge Can Spawn Event, this is caused another mod.");
 				continue;
 			}
@@ -486,7 +512,7 @@ public class Spawner {
 		// Get Viable Spawns:
 		List<MobSpawn> viableMobSpawns = new ArrayList<>();
 		for(MobSpawn possibleMobSpawn : allMobSpawns) {
-			if(possibleMobSpawn.canSpawn(world, blockCount, biomes)) {
+			if(possibleMobSpawn.canSpawn(world, blockCount, biomes, this.ignoreDimensions)) {
 				viableMobSpawns.add(possibleMobSpawn);
 			}
 		}
@@ -545,7 +571,7 @@ public class Spawner {
 			EntityCreatureBase entityCreature = (EntityCreatureBase)entityLiving;
 
 			LycanitesMobs.printDebug("JSONSpawner", "Checking Mob Collision...");
-			if(!entityCreature.checkSpawnCollision(world, spawnPos)) {
+			if(!this.ignoreCollision && !entityCreature.checkSpawnCollision(world, spawnPos)) {
 				return false;
 			}
 
@@ -596,6 +622,9 @@ public class Spawner {
 		if(this.mobEventSpawner && worldExt != null && worldExt.getWorldEvent() != null && entityLiving != null) {
 			MobEventBase mobEvent = worldExt.getWorldEvent();
 			mobEvent.onSpawn(entityLiving, level);
+		}
+		if(this.blockBreakRadius > -1 && entityLiving instanceof EntityCreatureBase) {
+			((EntityCreatureBase)entityLiving).destroyArea((int)entityLiving.posX, (int)entityLiving.posY, (int)entityLiving.posZ, 4, true, this.blockBreakRadius);
 		}
 	}
 }

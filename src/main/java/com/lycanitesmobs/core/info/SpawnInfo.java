@@ -9,6 +9,7 @@ import com.lycanitesmobs.core.config.ConfigSpawning.SpawnDimensionSet;
 import com.lycanitesmobs.core.config.ConfigSpawning.SpawnTypeSet;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Biomes;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.DungeonHooks;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
@@ -383,4 +384,64 @@ public class SpawnInfo {
     public String getCfgName(String configKey) {
         return this.mobInfo.getCfgName(configKey);
     }
+
+
+	// ==================================================
+	//                       Checks
+	// ==================================================
+	public boolean isAllowedDimension(World world) {
+		if(world == null || world.provider == null || this.dimensionTypes == null) {
+			LycanitesMobs.printDebug("MobSpawns", "No world or dimension spawn settings were found, defaulting to valid.");
+			return true;
+		}
+
+		// Check Types:
+		for(String spawnDimensionType : this.dimensionTypes) {
+			if("ALL".equalsIgnoreCase(spawnDimensionType)) {
+				LycanitesMobs.printDebug("MobSpawns", "All dimensions allowed.");
+				return true;
+			}
+			if("VANILLA".equalsIgnoreCase(spawnDimensionType)) {
+				LycanitesMobs.printDebug("MobSpawns", "Vanilla only: Overworld, Nether and End.");
+				return world.provider.getDimension() > -2 && world.provider.getDimension() < 2;
+			}
+			if("GROUP".equalsIgnoreCase(spawnDimensionType)) {
+				for(String groupSpawnDimensionType : this.mobInfo.group.dimensionTypes) {
+					if("ALL".equalsIgnoreCase(groupSpawnDimensionType)) {
+						LycanitesMobs.printDebug("MobSpawns", "All dimensions allowed by group.");
+						return true;
+					}
+					if("VANILLA".equalsIgnoreCase(groupSpawnDimensionType)) {
+						LycanitesMobs.printDebug("MobSpawns", "Vanilla only by group: Overworld, Nether and End.");
+						if(world.provider.getDimension() > -2 && world.provider.getDimension() < 2) {
+							return this.mobInfo.group.dimensionWhitelist;
+						}
+						else {
+							return !this.mobInfo.group.dimensionWhitelist;
+						}
+					}
+				}
+				for(int spawnDimension : this.mobInfo.group.dimensionBlacklist) {
+					if(world.provider.getDimension() == spawnDimension) {
+						LycanitesMobs.printDebug("MobSpawns", "Dimension is in group " + (this.mobInfo.group.dimensionWhitelist ? "whitelist, allowed" : "blacklist, not allowed") + ".");
+						return this.mobInfo.group.dimensionWhitelist;
+					}
+				}
+				if(this.dimensionBlacklist == null || this.dimensionBlacklist.length == 0) {
+					LycanitesMobs.printDebug("MobSpawns", "Dimension was not in group " + (this.mobInfo.group.dimensionWhitelist ? "whitelist, not allowed" : "blacklist, allowed") + " and there are no entries in the mob specific black/whitelist.");
+					return !this.mobInfo.group.dimensionWhitelist;
+				}
+			}
+		}
+
+		// Check IDs:
+		for(int spawnDimension : this.dimensionBlacklist) {
+			if(world.provider.getDimension() == spawnDimension) {
+				LycanitesMobs.printDebug("MobSpawns", "Dimension is in " + (this.dimensionWhitelist ? "whitelist, allowed" : "blacklist, not allowed") + ".");
+				return this.dimensionWhitelist;
+			}
+		}
+		LycanitesMobs.printDebug("MobSpawns", "Dimension was not in " + (this.dimensionWhitelist ? "whitelist, not allowed" : "blacklist, allowed") + ".");
+		return !this.dimensionWhitelist;
+	}
 }

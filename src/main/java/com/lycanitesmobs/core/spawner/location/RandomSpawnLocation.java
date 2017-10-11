@@ -125,7 +125,6 @@ public class RandomSpawnLocation extends BlockSpawnLocation {
 
 				// If can see sky:
 				if(world.canBlockSeeSky(spawnPos)) {
-					LycanitesMobs.printDebug("JSONSpawner", "Can See Sky");
 					// Get random floating position if not searching for solid ground:
 					if(!this.solidGround) {
 						int floatRange = maxY - nextY;

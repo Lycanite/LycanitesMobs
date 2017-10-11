@@ -69,8 +69,8 @@ public class ClientProxy extends CommonProxy {
 		// ========== Add GUI Tabs ==========
 		TabManager.registerTab(new GUITabMain(0));
     }
-	
-	
+
+
 	// ========== Register Tile Entities ==========
 	@Override
 	public void registerTileEntities() {

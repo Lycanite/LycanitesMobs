@@ -1,0 +1,29 @@
+{
+	"name": "water",
+	"loadDefault": true,
+	"mobCount": 16,
+	"ignoreBiomes": false,
+	"ignoreLightLevel": false,
+	"conditions": [],
+	"triggers": [
+		{
+			"type": "tick",
+			"chance": 0.75,
+			"tickRate": 400
+		}
+	],
+	"locations": [
+		{
+			"type": "random",
+			"rangeMin": [32, 0, 32],
+			"rangeMax": [48, 48, 48],
+			"sorting": "random",
+			"limit": 32,
+			"blocks": [
+				"minecraft:water"
+			],
+			"listType": "whitelist",
+			"solidGround": false
+		}
+	]
+}

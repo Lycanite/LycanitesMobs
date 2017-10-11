@@ -263,17 +263,6 @@ public class SpawnTypeBase {
 		darknessSpawner.loadFromConfig();
         spawnTypes.add(darknessSpawner);
 		
-		/*/ Shadow Spawner: Replaced by the Darkness Spawner
-		SpawnTypeBase shadowSpawner = new SpawnTypeShadow("Shadow")
-				.setRate(0).setChance(0.1D).setRange(2).setBlockLimit(32).setMobLimit(1);
-		shadowSpawner.materials = new Material[] {Material.air};
-		shadowSpawner.ignoreBiome = true;
-		shadowSpawner.ignoreDimension = true;
-		shadowSpawner.ignoreLight = true;
-		shadowSpawner.forceSpawning = true;
-		shadowSpawner.loadFromConfig();
-        legacySpawnTypes.add(shadowSpawner);*/
-		
 		// Death Spawner:
 		SpawnTypeBase deathSpawner = new SpawnTypeDeath("Death")
 				.setRate(0).setChance(0.03D).setRange(2).setBlockLimit(32).setMobLimit(1);

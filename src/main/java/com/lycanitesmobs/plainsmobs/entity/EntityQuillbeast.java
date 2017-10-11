@@ -120,7 +120,7 @@ public class EntityQuillbeast extends EntityCreatureTameable implements IMob {
     // ========== Ranged Attack ==========
     @Override
     public void rangedAttack(Entity target, float range) {
-        for(int i = -2; i < 3; i++) {
+        for(int i = -2; i < 12; i++) {
             // Type:
             EntityQuill projectile = new EntityQuill(this.getEntityWorld(), this);
 
@@ -128,11 +128,11 @@ public class EntityQuillbeast extends EntityCreatureTameable implements IMob {
             projectile.posY -= this.height / 4;
 
             // Accuracy:
-            float accuracy = i * 2.0F * (this.getRNG().nextFloat() - 0.5F);
+            float accuracy = i * 1.0F * (this.getRNG().nextFloat() - 0.5F);
 
             // Set Velocities:
             double d0 = target.posX - this.posX + accuracy;
-            double d1 = target.posY - (target.height * 0.25D) - projectile.posY + accuracy;
+            double d1 = target.posY - projectile.posY + accuracy;
             double d2 = target.posZ - this.posZ + accuracy;
             float f1 = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.2F;
             float velocity = 1.2F;

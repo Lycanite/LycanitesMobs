@@ -8,7 +8,7 @@ import net.minecraft.world.World;
 public class EventSpawnCondition extends SpawnCondition {
 
     /** The name of the mob event that must be active. Required. **/
-    public String eventName;
+    public String eventName = "";
 
     /** The minimum time (in ticks) the event must have been running for. **/
     public int eventTimeMin = -1;
@@ -19,7 +19,8 @@ public class EventSpawnCondition extends SpawnCondition {
 
 	@Override
 	public void loadFromJSON(JsonObject json) {
-		this.eventName = json.get("eventName").getAsString();
+		if(json.has("eventName"))
+			this.eventName = json.get("eventName").getAsString();
 
 		if(json.has("eventTimeMin"))
 			this.eventTimeMin = json.get("eventTimeMin").getAsInt();
@@ -38,15 +39,17 @@ public class EventSpawnCondition extends SpawnCondition {
             return false;
         }
 
-        if(worldExt.getWorldEventName() == null || !worldExt.getWorldEventName().equalsIgnoreCase(this.eventName)) {
+        if(!"".equals(this.eventName)) {
+			if (worldExt.getWorldEventName() == null || !worldExt.getWorldEventName().equalsIgnoreCase(this.eventName)) {
+				return false;
+			}
+		}
+
+		if(this.eventTimeMin >= 0 && worldExt.getWorldEventCount() < this.eventTimeMin) {
         	return false;
 		}
 
-		if(this.eventTimeMin > 0 && worldExt.getWorldEventCount() < this.eventTimeMin) {
-        	return false;
-		}
-
-		if(this.eventTimeMax > 0 && worldExt.getWorldEventCount() > this.eventTimeMax) {
+		if(this.eventTimeMax >= 0 && worldExt.getWorldEventCount() > this.eventTimeMax) {
 			return false;
 		}
 

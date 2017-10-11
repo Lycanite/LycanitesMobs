@@ -1,26 +1,27 @@
 {
-	"name": "lava",
+	"name": "portal",
 	"loadDefault": true,
-	"mobCount": 8,
+	"mobCount": 1,
 	"ignoreDimensions": true,
+	"ignoreBiomes": true,
 	"ignoreBiomes": true,
 	"ignoreLightLevel": true,
 	"conditions": [],
 	"triggers": [
 		{
 			"type": "tick",
-			"chance": 0.5,
-			"tickRate": 400
+			"chance": 0.9,
+			"tickRate": 1200
 		}
 	],
 	"locations": [
 		{
 			"type": "block",
-			"rangeMin": [16, 0, 16],
+			"rangeMin": [0, 0, 0],
 			"rangeMax": [32, 32, 32],
 			"sorting": "random",
 			"blocks": [
-				"minecraft:lava"
+				"minecraft:portal"
 			],
 			"listType": "whitelist"
 		}

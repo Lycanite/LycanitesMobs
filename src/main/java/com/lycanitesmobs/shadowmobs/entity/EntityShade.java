@@ -39,7 +39,7 @@ public class EntityShade extends EntityCreatureRideable implements IGroupPredato
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 2;
+        this.defense = 3;
         this.experience = 10;
         this.hasAttackSound = true;
         this.hasJumpSound = true;
@@ -89,7 +89,7 @@ public class EntityShade extends EntityCreatureRideable implements IGroupPredato
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 40D);
+		baseAttributes.put("maxHealth", 60D);
 		baseAttributes.put("movementSpeed", 0.26D);
 		baseAttributes.put("knockbackResistance", 0.5D);
 		baseAttributes.put("followRange", 16D);

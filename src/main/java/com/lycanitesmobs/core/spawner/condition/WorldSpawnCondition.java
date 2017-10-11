@@ -41,6 +41,9 @@ public class WorldSpawnCondition extends SpawnCondition {
 	/** The maximum difficulty level. **/
 	public short difficultyMax = -1;
 
+	/** The reburied moon phase. 0 is a full moon. **/
+	public int moonPhase = -1;
+
 
 	@Override
 	public void loadFromJSON(JsonObject json) {
@@ -82,6 +85,9 @@ public class WorldSpawnCondition extends SpawnCondition {
 		if(json.has("difficultyMax"))
 			this.difficultyMax = json.get("difficultyMax").getAsShort();
 
+		if(json.has("moonPhase"))
+			this.moonPhase = json.get("moonPhase").getAsInt();
+
 		super.loadFromJSON(json);
 	}
 
@@ -110,21 +116,21 @@ public class WorldSpawnCondition extends SpawnCondition {
 		}
 
 		// Check Day:
-		if(this.worldDayMin > 0 && day < this.worldDayMin) {
+		if(this.worldDayMin >= 0 && day < this.worldDayMin) {
 			return false;
 		}
-		if(this.worldDayMax > 0 && day > this.worldDayMax) {
+		if(this.worldDayMax >= 0 && day > this.worldDayMax) {
 			return false;
 		}
-		if(this.worldDayN > 0 && (day == 0 || day % this.worldDayN != 0)) {
+		if(this.worldDayN >= 0 && (day == 0 || day % this.worldDayN != 0)) {
 			return false;
 		}
 
 		// Check Time:
-		if(this.dayTimeMin > 0 && time < this.dayTimeMin) {
+		if(this.dayTimeMin >= 0 && time < this.dayTimeMin) {
 			return false;
 		}
-		if(this.dayTimeMax > 0 && time > this.dayTimeMax) {
+		if(this.dayTimeMax >= 0 && time > this.dayTimeMax) {
 			return false;
 		}
 
@@ -135,7 +141,7 @@ public class WorldSpawnCondition extends SpawnCondition {
 		else if("rain".equalsIgnoreCase(this.weather) && (!world.isRaining() || world.isThundering())) {
 			return false;
 		}
-		else if("storm".equalsIgnoreCase(this.weather) && (world.isRaining() || !world.isThundering())) {
+		else if("storm".equalsIgnoreCase(this.weather) && !world.isThundering()) {
 			return false;
 		}
 		else if("rainstorm".equalsIgnoreCase(this.weather) && (!world.isRaining() || !world.isThundering())) {
@@ -146,10 +152,15 @@ public class WorldSpawnCondition extends SpawnCondition {
 		}
 
 		// Check Difficulty:
-		if(this.difficultyMin > 0 && world.getDifficulty().getDifficultyId() < this.difficultyMin) {
+		if(this.difficultyMin >= 0 && world.getDifficulty().getDifficultyId() < this.difficultyMin) {
 			return false;
 		}
-		if(this.difficultyMax > 0 && world.getDifficulty().getDifficultyId() > this.difficultyMax) {
+		if(this.difficultyMax >= 0 && world.getDifficulty().getDifficultyId() > this.difficultyMax) {
+			return false;
+		}
+
+		// Check Moon Phase:
+		if(this.moonPhase >= 0 && world.provider.getMoonPhase(world.getWorldTime()) != this.moonPhase) {
 			return false;
 		}
 

@@ -1,5 +1,5 @@
 {
-	"name": "lava",
+	"name": "ooze",
 	"loadDefault": true,
 	"mobCount": 8,
 	"ignoreDimensions": true,
@@ -20,7 +20,7 @@
 			"rangeMax": [32, 32, 32],
 			"sorting": "random",
 			"blocks": [
-				"minecraft:lava"
+				"arcticmobs:ooze"
 			],
 			"listType": "whitelist"
 		}

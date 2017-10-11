@@ -121,7 +121,7 @@ public class ShadowMobs {
 		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1)
 		        .addSubspecies(new Subspecies("crimson", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"))
                 .addSubspecies(new Subspecies("lunar", "rare"));
-		newMob.spawnInfo.setSpawnTypes("UNDERGROUND, DARKNESS")
+		newMob.spawnInfo.setSpawnTypes("UNDERGROUND")
                 .setBiomes("ALL").setDimensions("-1").setDimensionWhitelist(false)
 				.setSpawnWeight(8).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
@@ -129,7 +129,7 @@ public class ShadowMobs {
         newMob = new MobInfo(group, "phantom", EntityPhantom.class, 0x101519, 0xDD2233)
 		        .setPeaceful(false).setSummonable(false).setSummonCost(2).setDungeonLevel(1)
 		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("DEATH, SLEEP, MONSTER")
+		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
                 .setBiomes("SPOOKY").setDimensions("-1000").setDimensionWhitelist(false)
 				.setSpawnWeight(8).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
@@ -138,7 +138,7 @@ public class ShadowMobs {
         newMob = new MobInfo(group, "epion", EntityEpion.class, 0x553300, 0xFF22DD)
 		        .setPeaceful(false).setSummonCost(3).setDungeonLevel(2)
 		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("russet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, LUNAR")
+		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
                 .setBiomes("GROUP, SPOOKY").setDimensions("-1, 1").setDimensionWhitelist(false)
 				.setSpawnWeight(6).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
@@ -146,7 +146,7 @@ public class ShadowMobs {
         newMob = new MobInfo(group, "geist", EntityGeist.class, 0x705449, 0x310e08)
                 .setPeaceful(false).setSummonCost(3).setDungeonLevel(2)
                 .addSubspecies(new Subspecies("dark", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
-        newMob.spawnInfo.setSpawnTypes("UNDEATH, MONSTER")
+        newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
                 .setBiomes("GROUP, SPOOKY")
                 .setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
         ObjectManager.addMob(newMob);
@@ -162,7 +162,7 @@ public class ShadowMobs {
         newMob = new MobInfo(group, "shade", EntityShade.class, 0x000402, 0x102336)
                 .setPeaceful(true).setTameable(true).setSummonCost(4).setDungeonLevel(3)
                 .addSubspecies(new Subspecies("keppel", "uncommon")).addSubspecies(new Subspecies("russet", "uncommon"));
-        newMob.spawnInfo.setSpawnTypes("UNDERGROUND, DARKNESS").setDespawn(false)
+        newMob.spawnInfo.setSpawnTypes("UNDERGROUND").setDespawn(false)
                 .setBiomes("ALL").setDimensions("-1").setDimensionWhitelist(false)
                 .setSpawnWeight(2).setAreaLimit(2).setGroupLimits(1, 3).setLightDark(false, true);
         ObjectManager.addMob(newMob);
@@ -170,7 +170,7 @@ public class ShadowMobs {
         newMob = new MobInfo(group, "darkling", EntityDarkling.class, 0x10191a, 0x9dfbcd)
                 .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1)
                 .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("russet", "uncommon"));
-        newMob.spawnInfo.setSpawnTypes("UNDERGROUND, DARKNESS")
+        newMob.spawnInfo.setSpawnTypes("UNDERGROUND")
                 .setBiomes("ALL").setDimensions("-1").setDimensionWhitelist(false)
                 .setSpawnWeight(8).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
         ObjectManager.addMob(newMob);

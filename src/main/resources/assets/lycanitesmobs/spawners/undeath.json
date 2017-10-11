@@ -1,0 +1,33 @@
+{
+	"name": "undeath",
+	"loadDefault": true,
+	"mobCount": 1,
+	"ignoreDimensions": true,
+	"ignoreBiomes": true,
+	"ignoreLightLevel": true,
+	"ignoreForgeCanSpawnEvent": true,
+	"conditions": [],
+	"triggers": [
+		{
+			"type": "kill",
+			"chance": 0.03,
+			"entityTypes": ["undead"],
+			"entityTypesListType": "whitelist",
+			"entityIds": ["shadowmobs.geist"],
+			"entityIdsListType": "blacklist"
+		}
+	],
+	"locations": [
+		{
+			"type": "base",
+			"rangeMin": [0, 0, 0],
+			"rangeMax": [0, 0, 0],
+			"sorting": "random"
+		}
+	],
+	"mobSpawns": [
+		{
+			"mobId": "shadowmobs.geist"
+		}
+	]
+}

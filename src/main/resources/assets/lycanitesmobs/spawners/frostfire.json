@@ -1,5 +1,5 @@
 {
-	"name": "lava",
+	"name": "frostfire",
 	"loadDefault": true,
 	"mobCount": 8,
 	"ignoreDimensions": true,
@@ -20,9 +20,15 @@
 			"rangeMax": [32, 32, 32],
 			"sorting": "random",
 			"blocks": [
-				"minecraft:lava"
+				"arcticmobs:frostfire"
 			],
 			"listType": "whitelist"
+		}
+	],
+	"mobSpawns": [
+		{
+			"mobId": "arcticmobs.reiver",
+			"weight": 8
 		}
 	]
 }

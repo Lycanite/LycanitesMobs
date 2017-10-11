@@ -466,7 +466,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public String getSpeciesName() {
         if(this.mobInfo == null)
             return super.getName();
-    	return I18n.translateToLocal(this.getEntityIdName());
+    	return I18n.translateToLocal("entity." + this.getEntityIdName() + ".name");
     }
 
     /** Returns the subpsecies title (translated name) of this entity, returns a blank string if this is a base species mob. **/
@@ -479,7 +479,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
 	/** Returns the id name of this entity, used for referencing this entity by string. **/
 	public String getEntityIdName() {
-		return "entity." + this.mobInfo.group.filename + "." + this.mobInfo.name + ".name";
+		return this.mobInfo.group.filename + "." + this.mobInfo.name;
 	}
 
     /** Gets the name of this entity relative to it's age, more useful for EntityCreatureAgeable. **/
@@ -673,59 +673,11 @@ public abstract class EntityCreatureBase extends EntityLiving {
                 return true;
             }
     	}
-    	if(world == null || world.provider == null || this.mobInfo == null || this.mobInfo.spawnInfo == null || this.mobInfo.spawnInfo.dimensionTypes == null) {
+    	if(this.mobInfo == null || this.mobInfo.spawnInfo == null) {
             LycanitesMobs.printDebug("MobSpawns", "No dimension spawn settings were found for this mob, defaulting to valid.");
             return true;
         }
-
-    	// Check Types:
-		for(String spawnDimensionType : this.mobInfo.spawnInfo.dimensionTypes) {
-    		if("ALL".equalsIgnoreCase(spawnDimensionType)) {
-                LycanitesMobs.printDebug("MobSpawns", "All dimensions allowed.");
-    			return true;
-    		}
-    		if("VANILLA".equalsIgnoreCase(spawnDimensionType)) {
-                LycanitesMobs.printDebug("MobSpawns", "Vanilla only: Overworld, Nether and End.");
-    			return world.provider.getDimension() > -2 && world.provider.getDimension() < 2;
-    		}
-            if("GROUP".equalsIgnoreCase(spawnDimensionType)) {
-            	for(String groupSpawnDimensionType : this.mobInfo.group.dimensionTypes) {
-	            	if("ALL".equalsIgnoreCase(groupSpawnDimensionType)) {
-                        LycanitesMobs.printDebug("MobSpawns", "All dimensions allowed by group.");
-	        			return true;
-	        		}
-	        		if("VANILLA".equalsIgnoreCase(groupSpawnDimensionType)) {
-                        LycanitesMobs.printDebug("MobSpawns", "Vanilla only by group: Overworld, Nether and End.");
-	        			if(world.provider.getDimension() > -2 && world.provider.getDimension() < 2) {
-                            return this.mobInfo.group.dimensionWhitelist;
-                        }
-                        else {
-                            return !this.mobInfo.group.dimensionWhitelist;
-                        }
-	        		}
-            	}
-                for(int spawnDimension : this.mobInfo.group.dimensionBlacklist) {
-                    if(world.provider.getDimension() == spawnDimension) {
-                        LycanitesMobs.printDebug("MobSpawns", "Dimension is in group " + (this.mobInfo.group.dimensionWhitelist ? "whitelist, allowed" : "blacklist, not allowed") + ".");
-                        return this.mobInfo.group.dimensionWhitelist;
-                    }
-                }
-                if(this.mobInfo.spawnInfo.dimensionBlacklist == null || this.mobInfo.spawnInfo.dimensionBlacklist.length == 0) {
-                    LycanitesMobs.printDebug("MobSpawns", "Dimension was not in group " + (this.mobInfo.group.dimensionWhitelist ? "whitelist, not allowed" : "blacklist, allowed") + " and there are no entries in the mob specific black/whitelist.");
-                    return !this.mobInfo.group.dimensionWhitelist;
-                }
-            }
-    	}
-
-		// Check IDs:
-    	for(int spawnDimension : this.mobInfo.spawnInfo.dimensionBlacklist) {
-    		if(world.provider.getDimension() == spawnDimension) {
-                LycanitesMobs.printDebug("MobSpawns", "Dimension is in " + (this.mobInfo.spawnInfo.dimensionWhitelist ? "whitelist, allowed" : "blacklist, not allowed") + ".");
-    			return this.mobInfo.spawnInfo.dimensionWhitelist;
-    		}
-    	}
-        LycanitesMobs.printDebug("MobSpawns", "Dimension was not in " + (this.mobInfo.spawnInfo.dimensionWhitelist ? "whitelist, not allowed" : "blacklist, allowed") + ".");
-        return !this.mobInfo.spawnInfo.dimensionWhitelist;
+        return this.mobInfo.spawnInfo.isAllowedDimension(world);
     }
 
     // ========== Spawn Block Check ==========
@@ -784,9 +736,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	// ========== Collision Spawn Check ==========
 	/** Returns true if there is no collision stopping this mob from spawning. **/
 	public boolean checkSpawnCollision(World world, BlockPos pos) {
-		if(!this.getEntityWorld().checkNoEntityCollision(this.getEntityBoundingBox())) {
+		/*if(!this.getEntityWorld().checkNoEntityCollision(this.getEntityBoundingBox())) {
 			return false;
-		}
+		}*/
 		if(!this.spawnsInBlock && !this.getEntityWorld().getCollisionBoxes(this, this.getEntityBoundingBox()).isEmpty()) {
 			return false;
 		}
@@ -2966,6 +2918,17 @@ public abstract class EntityCreatureBase extends EntityLiving {
 		    		}
 		    	}
     }
+	public void destroyAreaBlock(int x, int y, int z, Class<? extends Block> blockClass, boolean drop, int range) {
+		for(int w = -((int)Math.ceil(this.width) + range); w <= (Math.ceil(this.width) + range); w++)
+			for(int d = -((int)Math.ceil(this.width) + range); d <= (Math.ceil(this.width) + range); d++)
+				for(int h = 0; h <= Math.ceil(this.height); h++) {
+					IBlockState blockState = this.getEntityWorld().getBlockState(new BlockPos(x + w, y + h, z + d));
+					if(blockState != null) {
+						if(blockClass.isInstance(blockState.getBlock()))
+							this.getEntityWorld().destroyBlock(new BlockPos(x + w, y + h, z + d), drop);
+					}
+				}
+	}
     
     // ========== Extra Animations ==========
     /** An additional animation boolean that is passed to all clients through the animation mask. **/

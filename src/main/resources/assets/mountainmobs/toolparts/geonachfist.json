@@ -1,0 +1,31 @@
+{
+	"name": "geonachfist",
+	"slotType": "axe",
+	"dropMobId": "mountainmobs.geonach",
+	"dropChance": 0.01,
+	"levelMin": 1,
+	"levelMax": 3,
+	"features": [
+		{
+			"featureType": "harvest",
+			"harvestType": "pickaxe",
+			"harvestShape": "block",
+			"harvestRange": [1, 1, 1],
+			"harvestRangeLevelMultiplier": 1
+		},
+		{
+			"featureType": "damage",
+			"damageAmount": 4,
+			"damageKnockback": 2,
+			"damageCooldown": 2,
+			"damageRange": 1,
+			"damageSweep": 360
+		},
+		{
+			"featureType": "effect",
+			"effectType": "weight",
+			"effectDuration": 80,
+			"effectStrength": 1
+		}
+	]
+}

@@ -7,6 +7,7 @@ import com.google.gson.JsonParseException;
 import com.lycanitesmobs.ExtendedPlayer;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.Utilities;
+import com.lycanitesmobs.core.JSONLoader;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
 import org.apache.commons.io.FilenameUtils;
@@ -23,7 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class SpawnerManager {
+public class SpawnerManager extends JSONLoader {
 	/** This manages all Spawners, it load them and can also destroy them. Spawners are then ran by Spawn Triggers which are called from the SpawnerEventListener. **/
 
 	public static SpawnerManager INSTANCE;
@@ -31,7 +32,7 @@ public class SpawnerManager {
 	public Map<String, Spawner> spawners = new HashMap<>();
 
 
-	/** Loads (or reloads) all JSON Spawners. **/
+	/** Returns the main SpawnerManager instance or creates it and returns it. **/
 	public static SpawnerManager getInstance() {
 		if(INSTANCE == null) {
 			INSTANCE = new SpawnerManager();
@@ -49,12 +50,12 @@ public class SpawnerManager {
 		// Load Default Spawners:
 		Path path = Utilities.getAssetPath(this.getClass(), LycanitesMobs.group.filename, "spawners");
 		Map<String, JsonObject> defaultSpawnerJSONs = new HashMap<>();
-		this.loadJsonObjects(gson, path, defaultSpawnerJSONs);
+		this.loadJsonObjects(gson, path, defaultSpawnerJSONs, "name");
 
 		// Load Default Mob Event Spawners:
 		//path = Utilities.getAssetPath(this.getClass(), LycanitesMobs.group.filename, "mobevents");
 		//Map<String, JsonObject> defaultMobEventsJSONs = new HashMap<>();
-		//this.loadJsonObjects(gson, path, defaultMobEventsJSONs);
+		//this.loadJsonObjects(gson, path, defaultMobEventsJSONs, "name");
 
 		// Custom:
 		String configPath = LycanitesMobs.proxy.getMinecraftDir() + "/config/" + LycanitesMobs.modid + "/";
@@ -63,16 +64,16 @@ public class SpawnerManager {
 		File customSpawnersDir = new File(configPath + "spawners");
 		path = customSpawnersDir.toPath();
 		Map<String, JsonObject> customSpawnerJSONs = new HashMap<>();
-		this.loadJsonObjects(gson, path, customSpawnerJSONs);
+		this.loadJsonObjects(gson, path, customSpawnerJSONs, "name");
 
 		//File customMobEventsDir = new File(configPath + "mobevents");
 		//path = customMobEventsDir.toPath();
 		//Map<String, JsonObject> customMobEventsJSONs = new HashMap<>();
-		//this.loadJsonObjects(gson, path, customMobEventsJSONs);
+		//this.loadJsonObjects(gson, path, customMobEventsJSONs, "name");
 
 
 		// Write Defaults:
-		this.writeDefaultJSONObjects(gson, defaultSpawnerJSONs, customSpawnerJSONs, spawnerJSONs, "spawners");
+		this.writeDefaultJSONObjects(gson, defaultSpawnerJSONs, customSpawnerJSONs, spawnerJSONs, true, "spawners");
 		//this.writeDefaultJSONObjects(gson, defaultMobEventsJSONs, customMobEventsJSONs, spawnerJSONs, "mobevents");
 
 
@@ -96,110 +97,6 @@ public class SpawnerManager {
 			}
 		}
 		LycanitesMobs.printDebug("JSONSpawner", "Complete! " + this.spawners.size() + " JSON Spawners Loaded.");
-	}
-
-
-	/** Loads JSON Objects from a Path. **/
-	public void loadJsonObjects(Gson gson, Path path, Map<String, JsonObject> jsonObjectMap) {
-		try {
-			Iterator<Path> iterator = Files.walk(path).iterator();
-			while(iterator.hasNext()) {
-				Path filePath = iterator.next();
-				Path relativePath = path.relativize(filePath);
-				if (!"json".equals(FilenameUtils.getExtension(filePath.toString()))) {
-					continue;
-				}
-				BufferedReader reader = null;
-				try {
-					try {
-						reader = Files.newBufferedReader(filePath);
-						JsonObject spawnerJSON = JsonUtils.fromJson(gson, reader, JsonObject.class);
-						jsonObjectMap.put(spawnerJSON.get("name").getAsString(), spawnerJSON);
-					}
-					catch (JsonParseException e) {
-						LycanitesMobs.printWarning("", "Parsing error loading JSON Spawner " + relativePath + "\n" + e.toString());
-						e.printStackTrace();
-					}
-					catch (Exception e) {
-						LycanitesMobs.printWarning("", "There was a problem loading JSON Spawner " + relativePath + "\n" + e.toString());
-						e.printStackTrace();
-					}
-				}
-				finally {
-					IOUtils.closeQuietly(reader);
-				}
-			}
-		}
-		catch(Exception e) {
-			LycanitesMobs.printWarning("", "[Spawner Manager] Unable to read files from directory.\n" + e.toString());
-			e.printStackTrace();
-		}
-	}
-
-
-	/** Cycles through both maps of JSON Objects, a default and a custom map and determines if the defaults should overwrite the custom JSON. Puts the chosen JSON into the mixed map. **/
-	public void writeDefaultJSONObjects(Gson gson, Map<String, JsonObject> defaultJSONs, Map<String, JsonObject> customJSONs, Map<String, JsonObject> mixedJSONs, String groupName) {
-		// Add Default/Overridden JSON:
-		for(String spawnerJSONName : defaultJSONs.keySet()) {
-			try {
-				JsonObject defaultSpawnerJSON = defaultJSONs.get(spawnerJSONName);
-				boolean loadDefault = true;
-
-				// If Custom Replacement Exists:
-				JsonObject customSpawnerJSON = null;
-				if(customJSONs.containsKey(spawnerJSONName)) {
-					loadDefault = false;
-					customSpawnerJSON = customJSONs.get(spawnerJSONName);
-					if(customSpawnerJSON.has("loadDefault")) {
-						loadDefault = customSpawnerJSON.get("loadDefault").getAsBoolean();
-					}
-				}
-
-				// Write Default:
-				if(loadDefault) {
-					this.saveJsonObject(gson, defaultSpawnerJSON, spawnerJSONName, groupName);
-					mixedJSONs.put(spawnerJSONName, defaultSpawnerJSON);
-				}
-				else if(customSpawnerJSON != null) {
-					mixedJSONs.put(spawnerJSONName, customSpawnerJSON);
-				}
-			}
-			catch (JsonParseException e) {
-				LycanitesMobs.printWarning("", "Parsing error loading JSON Spawner: " + spawnerJSONName);
-				e.printStackTrace();
-			}
-			catch(Exception e) {
-				LycanitesMobs.printWarning("", "There was a problem loading JSON Spawner: " + spawnerJSONName);
-				e.printStackTrace();
-			}
-		}
-
-		// Add Custom JSON:
-		for(String spawnerJSONName : customJSONs.keySet()) {
-			if(!defaultJSONs.containsKey(spawnerJSONName)) {
-				mixedJSONs.put(spawnerJSONName, customJSONs.get(spawnerJSONName));
-			}
-		}
-	}
-
-
-	/** Saves a JSON object into the config folder. **/
-	public void saveJsonObject(Gson gson, JsonObject jsonObject, String name, String groupName) {
-		String configPath = LycanitesMobs.proxy.getMinecraftDir() + "/config/" + LycanitesMobs.modid + "/";
-		try {
-			File jsonFile = new File(configPath + groupName + "/" + name + ".json");
-			jsonFile.getParentFile().mkdirs();
-			jsonFile.createNewFile();
-			FileOutputStream outputStream = new FileOutputStream(jsonFile);
-			OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
-			outputStreamWriter.append(gson.toJson(jsonObject));
-			outputStreamWriter.close();
-			outputStream.close();
-		}
-		catch (Exception e) {
-			LycanitesMobs.printWarning("", "[Spawner Manager] Unable to save Spawner JSON into the config folder.");
-			e.printStackTrace();
-		}
 	}
 
 

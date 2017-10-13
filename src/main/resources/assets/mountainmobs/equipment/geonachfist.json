@@ -1,5 +1,5 @@
 {
-	"name": "geonachfist",
+	"itemName": "geonachfist",
 	"slotType": "axe",
 	"dropMobId": "mountainmobs.geonach",
 	"dropChance": 0.01,

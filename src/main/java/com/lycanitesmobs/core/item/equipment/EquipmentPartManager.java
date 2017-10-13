@@ -50,7 +50,7 @@ public class EquipmentPartManager extends JSONLoader {
 
 
 		// Write Defaults:
-		this.writeDefaultJSONObjects(gson, defaultEquipmentPartJSONs, customEquipmentPartJSONs, equipmentPartJSONs, "equipment");
+		this.writeDefaultJSONObjects(gson, defaultEquipmentPartJSONs, customEquipmentPartJSONs, equipmentPartJSONs, false, "equipment");
 
 
 		// Create Equipment Parts:

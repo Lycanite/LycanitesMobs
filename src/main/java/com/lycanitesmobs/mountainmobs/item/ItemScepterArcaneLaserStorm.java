@@ -16,7 +16,7 @@ public class ItemScepterArcaneLaserStorm extends ItemScepter {
 	// ==================================================
     public ItemScepterArcaneLaserStorm() {
         super();
-    	this.group = MountainMobs.group;
+    	this.group = MountainMobs.instance.group;
     	this.itemName = "arcanelaserstormscepter";
         this.setup();
         this.textureName = "scepterarcanelaserstorm";

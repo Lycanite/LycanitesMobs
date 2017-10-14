@@ -20,7 +20,7 @@ public class ModelLacedon extends ModelCustomObj {
     
     public ModelLacedon(float shadowSize) {
     	// Load Model:
-    	this.initModel("lacedon", SaltwaterMobs.group, "entity/lacedon");
+    	this.initModel("lacedon", SaltwaterMobs.instance.group, "entity/lacedon");
     	
 
 

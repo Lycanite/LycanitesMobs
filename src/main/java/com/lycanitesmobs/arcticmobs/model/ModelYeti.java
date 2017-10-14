@@ -20,7 +20,7 @@ public class ModelYeti extends ModelCustomObj {
     
     public ModelYeti(float shadowSize) {
     	// Load Model:
-    	this.initModel("Yeti", ArcticMobs.group, "entity/yeti");
+    	this.initModel("Yeti", ArcticMobs.instance.group, "entity/yeti");
     	
 
 

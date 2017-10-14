@@ -17,7 +17,7 @@ public class ModelGorger extends ModelObj {
 
     public ModelGorger(float shadowSize) {
         // Load Model:
-        this.initModel("gorger", InfernoMobs.group, "entity/gorger");
+        this.initModel("gorger", InfernoMobs.instance.group, "entity/gorger");
 
         // Trophy:
         this.trophyScale = 0.8F;

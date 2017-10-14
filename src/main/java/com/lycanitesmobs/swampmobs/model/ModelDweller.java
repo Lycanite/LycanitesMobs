@@ -24,7 +24,7 @@ public class ModelDweller extends ModelCustomObj {
     
     public ModelDweller(float shadowSize) {
     	// Load Model:
-    	this.initModel("Dweller", SwampMobs.group, "entity/dweller");
+    	this.initModel("Dweller", SwampMobs.instance.group, "entity/dweller");
     	
 
 

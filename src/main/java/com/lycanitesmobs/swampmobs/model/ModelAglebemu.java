@@ -16,7 +16,7 @@ public class ModelAglebemu extends ModelTemplateQuadruped {
 
     public ModelAglebemu(float shadowSize) {
         // Load Model:
-        this.initModel("aglebemu", SwampMobs.group, "entity/aglebemu");
+        this.initModel("aglebemu", SwampMobs.instance.group, "entity/aglebemu");
 
         // Looking:
         this.lookHeadScaleX = 0.5f;

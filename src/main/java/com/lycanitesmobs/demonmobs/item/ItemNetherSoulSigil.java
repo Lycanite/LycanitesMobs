@@ -17,7 +17,7 @@ public class ItemNetherSoulSigil extends ItemScepter {
 	// ==================================================
     public ItemNetherSoulSigil() {
         super();
-        this.group = DemonMobs.group;
+        this.group = DemonMobs.instance.group;
         this.itemName = "nethersoulsigil";
         this.setup();
     }

@@ -1,6 +1,5 @@
 package com.lycanitesmobs.core.modelloader.obj;
 
-import net.minecraft.entity.Entity;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 
 import javax.vecmath.Vector4f;
@@ -15,8 +14,6 @@ public abstract class ObjModel extends Model
     public List<ObjObject> objObjects;
 
     protected String filename;
-
-    public Entity entity;
     
     ObjModel() {
         objObjects = new ArrayList<>();

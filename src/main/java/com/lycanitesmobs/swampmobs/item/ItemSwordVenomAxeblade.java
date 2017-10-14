@@ -30,7 +30,7 @@ public class ItemSwordVenomAxeblade extends ItemSwordBase {
 	// ==================================================
     public ItemSwordVenomAxeblade(String itemName, String textureName) {
         super(Item.ToolMaterial.DIAMOND);
-    	this.group = SwampMobs.group;
+    	this.group = SwampMobs.instance.group;
     	this.itemName = itemName;
         this.setup();
         this.textureName = textureName;

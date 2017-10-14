@@ -20,7 +20,7 @@ public class ModelBarghest extends ModelCustomObj {
 
     public ModelBarghest(float shadowSize) {
     	// Load Model:
-    	this.initModel("barghest", MountainMobs.group, "entity/barghest");
+    	this.initModel("barghest", MountainMobs.instance.group, "entity/barghest");
     	
 
 

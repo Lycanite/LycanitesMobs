@@ -20,7 +20,7 @@ public class ModelChupacabra extends ModelCustomObj {
 
     public ModelChupacabra(float shadowSize) {
     	// Load Model:
-    	this.initModel("chupacabra", ShadowMobs.group, "entity/chupacabra");
+    	this.initModel("chupacabra", ShadowMobs.instance.group, "entity/chupacabra");
     	
 
 

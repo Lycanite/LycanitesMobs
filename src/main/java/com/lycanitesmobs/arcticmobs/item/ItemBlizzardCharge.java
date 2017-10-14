@@ -15,7 +15,7 @@ public class ItemBlizzardCharge extends ItemCharge {
 	// ==================================================
     public ItemBlizzardCharge() {
         super();
-        this.group = ArcticMobs.group;
+        this.group = ArcticMobs.instance.group;
         this.itemName = "blizzardcharge";
         this.setup();
     }

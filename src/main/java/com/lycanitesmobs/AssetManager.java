@@ -2,6 +2,7 @@ package com.lycanitesmobs;
 
 import com.lycanitesmobs.core.info.GroupInfo;
 import com.lycanitesmobs.core.model.ModelCustomObj;
+import com.lycanitesmobs.core.model.ModelItemBase;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -19,6 +20,7 @@ public class AssetManager {
 	public static Map<String, SoundEvent> sounds = new HashMap<>();
 	public static Map<String, ModelBase> models = new HashMap<>();
 	public static Map<String, IModel> objModels = new HashMap<>();
+	public static Map<String, ModelItemBase> itemModels = new HashMap<>();
 	
     // ==================================================
     //                        Add
@@ -58,6 +60,12 @@ public class AssetManager {
 	public static void addObjModel(String name, GroupInfo group, String path) {
 		name = name.toLowerCase();
 		objModels.put(name, ModelCustomObj.loadModel(new ResourceLocation(group.filename, "models/" + path + ".obj")));
+	}
+
+	// ========== Item Model ==========
+	public static void addItemModel(String name, ModelItemBase model) {
+		name = name.toLowerCase();
+		itemModels.put(name, model);
 	}
 	
 	
@@ -108,5 +116,13 @@ public class AssetManager {
 		if(!objModels.containsKey(name))
 			addObjModel(name, group, path);
 		return objModels.get(name);
+	}
+
+	// ========== Item Model ==========
+	public static ModelItemBase getItemModel(String name) {
+		name = name.toLowerCase();
+		if(!itemModels.containsKey(name))
+			return null;
+		return itemModels.get(name);
 	}
 }

@@ -20,7 +20,7 @@ public class ModelJengu extends ModelCustomObj {
 
     public ModelJengu(float shadowSize) {
     	// Load Model:
-    	this.initModel("Jengu", FreshwaterMobs.group, "entity/jengu");
+    	this.initModel("Jengu", FreshwaterMobs.instance.group, "entity/jengu");
     	
 
 

@@ -33,7 +33,7 @@ public class BlockShadowfire extends BlockFireBase {
 	//                   Constructor
 	// ==================================================
 	public BlockShadowfire() {
-		super(Material.FIRE, ShadowMobs.group, "shadowfire");
+		super(Material.FIRE, ShadowMobs.instance.group, "shadowfire");
 		
 		// Stats:
 		this.tickRate = 30;

@@ -28,7 +28,7 @@ public class BlockScorchfire extends BlockFireBase {
 	//                   Constructor
 	// ==================================================
 	public BlockScorchfire() {
-		super(Material.FIRE, InfernoMobs.group, "scorchfire");
+		super(Material.FIRE, InfernoMobs.instance.group, "scorchfire");
 
         // Stats:
         this.tickRate = 30;

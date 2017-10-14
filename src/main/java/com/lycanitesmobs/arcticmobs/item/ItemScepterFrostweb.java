@@ -15,7 +15,7 @@ public class ItemScepterFrostweb extends ItemScepter {
 	// ==================================================
     public ItemScepterFrostweb() {
         super();
-    	this.group = ArcticMobs.group;
+    	this.group = ArcticMobs.instance.group;
     	this.itemName = "frostwebscepter";
         this.setup();
     }

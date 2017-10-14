@@ -41,7 +41,7 @@ public class EntityVenomShot extends EntityProjectileBase {
     // ========== Setup Projectile ==========
     public void setup() {
     	this.entityName = "venomshot";
-    	this.group = SwampMobs.group;
+    	this.group = SwampMobs.instance.group;
     	this.setBaseDamage(3);
     	this.setProjectileScale(2.5F);
         this.knockbackChance = 0.5D;

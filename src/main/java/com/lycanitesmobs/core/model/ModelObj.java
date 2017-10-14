@@ -13,12 +13,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.IModel;
-import net.minecraftforge.client.model.obj.OBJModel;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.io.IOUtils;
-import org.lwjgl.opengl.GL11;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -77,8 +74,10 @@ public class ModelObj extends ModelCustom {
     public boolean dontColor = false;
 
     // Animating:
-    /** The current animation part that is having an animation frame generated for. **/
-    protected ModelObjPart currentAnimationPart;
+    /** The animator instance, this is a helper class that performs actual GL11 functions, etc. **/
+    protected Animator animator;
+	/** The current animation part that is having an animation frame generated for. **/
+	protected ModelObjPart currentAnimationPart;
     /** A list of models states that hold unique render/animation data for a specific entity instance. **/
     protected Map<Entity, ModelObjState> modelStates = new HashMap<>();
     /** The current model state for the entity that is being animated and rendered. **/
@@ -97,14 +96,6 @@ public class ModelObj extends ModelCustom {
 
 
     // ==================================================
-    //                    Load Model
-    // ==================================================
-    public static IModel loadModel(ResourceLocation resourceLocation) {
-        return new OBJModel(new OBJModel.MaterialLibrary(), resourceLocation);
-    }
-
-
-    // ==================================================
     //                    Init Model
     // ==================================================
     public ModelObj initModel(String name, GroupInfo groupInfo, String path) {
@@ -113,6 +104,9 @@ public class ModelObj extends ModelCustom {
         this.wavefrontParts = this.wavefrontObject.objObjects;
         if(this.wavefrontParts.isEmpty())
             LycanitesMobs.printWarning("", "Unable to load any parts for the " + name + " model!");
+
+        // Create Animator:
+		this.animator = new Animator();
 
         // Load Animation Parts:
         ResourceLocation animPartsLoc = new ResourceLocation(groupInfo.filename, "models/" + path + "_parts.json");
@@ -210,7 +204,6 @@ public class ModelObj extends ModelCustom {
         this.updateAttackProgress(entity);
 
         // Generate Animation Frames:
-        this.wavefrontObject.entity = entity;
         for(ObjObject part : this.wavefrontParts) {
             String partName = part.getName().toLowerCase();
             if(!this.canRenderPart(partName, entity, layer, renderAsTrophy))
@@ -249,8 +242,8 @@ public class ModelObj extends ModelCustom {
             GlStateManager.enableAlpha();
 
             // Apply Initial Offsets: (To Match Blender OBJ Export)
-            this.doAngle(modelXRotOffset, 1F, 0F, 0F);
-            this.doTranslate(0F, modelYPosOffset, 0F);
+            this.animator.doAngle(modelXRotOffset, 1F, 0F, 0F);
+            this.animator.doTranslate(0F, modelYPosOffset, 0F);
 
             // Child Scaling:
             if(this.isChild && !renderAsTrophy) {
@@ -261,13 +254,13 @@ public class ModelObj extends ModelCustom {
 
             // Trophy Scaling:
             if(renderAsTrophy)
-                this.doScale(this.trophyScale, this.trophyScale, this.trophyScale);
+                this.animator.doScale(this.trophyScale, this.trophyScale, this.trophyScale);
 
             // Apply Entity Scaling:
-            this.doScale(scale, scale, scale);
+            this.animator.doScale(scale, scale, scale);
 
             // Apply Animation Frames:
-            this.currentAnimationPart.applyAnimationFrames(this);
+            this.currentAnimationPart.applyAnimationFrames(this.animator);
 
             // Render Part:
             this.wavefrontObject.renderGroup(part, this.getPartColor(partName, entity, layer, renderAsTrophy));
@@ -373,7 +366,7 @@ public class ModelObj extends ModelCustom {
    	//                  Child Scale
    	// ==================================================
     public void childScale(String partName) {
-    	doScale(0.5F, 0.5F, 0.5F);
+    	this.animator.doScale(0.5F, 0.5F, 0.5F);
     }
 
 
@@ -410,66 +403,47 @@ public class ModelObj extends ModelCustom {
             return 0;
         return this.currentModelState.attackAnimationProgress;
     }
-    
-    
-    // ==================================================
-   	//                  GLL Actions
-   	// ==================================================
-    public void doAngle(float rotation, float angleX, float angleY, float angleZ) {
-    	GL11.glRotatef(rotation, angleX, angleY, angleZ);
-    }
-    public void doRotate(float rotX, float rotY, float rotZ) {
-        GL11.glRotatef(rotX, 1F, 0F, 0F);
-        GL11.glRotatef(rotY, 0F, 1F, 0F);
-        GL11.glRotatef(rotZ, 0F, 0F, 1F);
-    }
-    public void doTranslate(float posX, float posY, float posZ) {
-    	GL11.glTranslatef(posX, posY, posZ);
-    }
-    public void doScale(float scaleX, float scaleY, float scaleZ) {
-    	GL11.glScalef(scaleX, scaleY, scaleZ);
-    }
 
 
-    // ==================================================
-    //                  Create Frames
-    // ==================================================
-    public void angle(float rotation, float angleX, float angleY, float angleZ) {
-        this.currentAnimationPart.addAnimationFrame(new ModelObjAnimationFrame("angle", rotation, angleX, angleY, angleZ));
-    }
-    public void rotate(float rotX, float rotY, float rotZ) {
-        this.currentAnimationPart.addAnimationFrame(new ModelObjAnimationFrame("rotate", 1, rotX, rotY, rotZ));
-    }
-    public void translate(float posX, float posY, float posZ) {
-        this.currentAnimationPart.addAnimationFrame(new ModelObjAnimationFrame("translate", 1, posX, posY, posZ));
-    }
-    public void scale(float scaleX, float scaleY, float scaleZ) {
-        this.currentAnimationPart.addAnimationFrame(new ModelObjAnimationFrame("scale", 1, scaleX, scaleY, scaleZ));
-    }
+	// ==================================================
+	//                  Create Frames
+	// ==================================================
+	public void angle(float rotation, float angleX, float angleY, float angleZ) {
+		this.currentAnimationPart.addAnimationFrame(new ModelObjAnimationFrame("angle", rotation, angleX, angleY, angleZ));
+	}
+	public void rotate(float rotX, float rotY, float rotZ) {
+		this.currentAnimationPart.addAnimationFrame(new ModelObjAnimationFrame("rotate", 1, rotX, rotY, rotZ));
+	}
+	public void translate(float posX, float posY, float posZ) {
+		this.currentAnimationPart.addAnimationFrame(new ModelObjAnimationFrame("translate", 1, posX, posY, posZ));
+	}
+	public void scale(float scaleX, float scaleY, float scaleZ) {
+		this.currentAnimationPart.addAnimationFrame(new ModelObjAnimationFrame("scale", 1, scaleX, scaleY, scaleZ));
+	}
 
 
-    // ==================================================
-    //                  Rotate to Point
-    // ==================================================
-    public double rotateToPoint(double aTarget, double bTarget) {
-        return rotateToPoint(0, 0, aTarget, bTarget);
-    }
-    public double rotateToPoint(double aCenter, double bCenter, double aTarget, double bTarget) {
-        if(aTarget - aCenter == 0)
-            if(aTarget > aCenter) return 0;
-            else if(aTarget < aCenter) return 180;
-        if(bTarget - bCenter == 0)
-            if(bTarget > bCenter) return 90;
-            else if(bTarget < bCenter) return -90;
-        if(aTarget - aCenter == 0 && bTarget - bCenter == 0)
-            return 0;
-        return Math.toDegrees(Math.atan2(aCenter - aTarget, bCenter - bTarget) - Math.PI / 2);
-    }
-    public double[] rotateToPoint(double xCenter, double yCenter, double zCenter, double xTarget, double yTarget, double zTarget) {
-        double[] rotations = new double[3];
-        rotations[0] = this.rotateToPoint(yCenter, -zCenter, yTarget, -zTarget);
-        rotations[1] = this.rotateToPoint(-zCenter, xCenter, -zTarget, xTarget);
-        rotations[2] = this.rotateToPoint(yCenter, xCenter, yTarget, xTarget);
-        return rotations;
-    }
+	// ==================================================
+	//                  Rotate to Point
+	// ==================================================
+	public double rotateToPoint(double aTarget, double bTarget) {
+		return rotateToPoint(0, 0, aTarget, bTarget);
+	}
+	public double rotateToPoint(double aCenter, double bCenter, double aTarget, double bTarget) {
+		if(aTarget - aCenter == 0)
+			if(aTarget > aCenter) return 0;
+			else if(aTarget < aCenter) return 180;
+		if(bTarget - bCenter == 0)
+			if(bTarget > bCenter) return 90;
+			else if(bTarget < bCenter) return -90;
+		if(aTarget - aCenter == 0 && bTarget - bCenter == 0)
+			return 0;
+		return Math.toDegrees(Math.atan2(aCenter - aTarget, bCenter - bTarget) - Math.PI / 2);
+	}
+	public double[] rotateToPoint(double xCenter, double yCenter, double zCenter, double xTarget, double yTarget, double zTarget) {
+		double[] rotations = new double[3];
+		rotations[0] = this.rotateToPoint(yCenter, -zCenter, yTarget, -zTarget);
+		rotations[1] = this.rotateToPoint(-zCenter, xCenter, -zTarget, xTarget);
+		rotations[2] = this.rotateToPoint(yCenter, xCenter, yTarget, xTarget);
+		return rotations;
+	}
 }

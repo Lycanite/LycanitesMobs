@@ -15,7 +15,7 @@ public class ItemQuill extends ItemCharge {
 	// ==================================================
     public ItemQuill() {
         super();
-        this.group = PlainsMobs.group;
+        this.group = PlainsMobs.instance.group;
         this.itemName = "quill";
         this.setup();
     }

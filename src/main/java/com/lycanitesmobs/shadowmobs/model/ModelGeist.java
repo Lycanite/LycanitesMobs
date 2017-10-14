@@ -19,7 +19,7 @@ public class ModelGeist extends ModelCustomObj {
 
     public ModelGeist(float shadowSize) {
     	// Load Model:
-    	this.initModel("geist", ShadowMobs.group, "entity/geist");
+    	this.initModel("geist", ShadowMobs.instance.group, "entity/geist");
     	
 
 

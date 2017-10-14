@@ -29,7 +29,7 @@ public class EntityArcaneLaserEnd extends EntityProjectileLaserEnd {
     // ========== Setup Projectile ==========
     public void setup() {
     	this.entityName = "arcanelaser";
-    	this.group = MountainMobs.group;
+    	this.group = MountainMobs.instance.group;
     }
     
     // ========== Stats ==========

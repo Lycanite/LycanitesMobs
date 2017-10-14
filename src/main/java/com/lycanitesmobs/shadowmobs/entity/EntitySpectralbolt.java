@@ -34,7 +34,7 @@ public class EntitySpectralbolt extends EntityProjectileBase {
     // ========== Setup Projectile ==========
     public void setup() {
     	this.entityName = "spectralbolt";
-    	this.group = ShadowMobs.group;
+    	this.group = ShadowMobs.instance.group;
     	this.setBaseDamage(2);
     	
     	this.waterProof = true;

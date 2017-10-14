@@ -20,7 +20,7 @@ public class ModelTrent extends ModelCustomObj {
     
     public ModelTrent(float shadowSize) {
     	// Load Model:
-    	this.initModel("Trent", ForestMobs.group, "entity/trent");
+    	this.initModel("Trent", ForestMobs.instance.group, "entity/trent");
     	
 
 

@@ -237,7 +237,7 @@ public class BlockBase extends Block {
     // ========== Collision Bounding Box ==========
     @Override
     public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
-        if(!this.noBreakCollision)
+        if(this.noEntityCollision)
             return Block.NULL_AABB;
         return super.getCollisionBoundingBox(state, world, pos);
     }

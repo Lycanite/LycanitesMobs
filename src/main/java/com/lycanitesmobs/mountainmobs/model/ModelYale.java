@@ -22,7 +22,7 @@ public class ModelYale extends ModelCustomObj {
     
     public ModelYale(float shadowSize) {
     	// Load Model:
-    	this.initModel("yale", MountainMobs.group, "entity/yale");
+    	this.initModel("yale", MountainMobs.instance.group, "entity/yale");
 
     	// Set Rotation Centers:
     	setPartCenter("head", 0F, 0.85F, 1.0F);

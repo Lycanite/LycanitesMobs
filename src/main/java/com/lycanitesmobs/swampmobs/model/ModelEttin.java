@@ -20,7 +20,7 @@ public class ModelEttin extends ModelCustomObj {
     
     public ModelEttin(float shadowSize) {
     	// Load Model:
-    	this.initModel("Ettin", SwampMobs.group, "entity/ettin");
+    	this.initModel("Ettin", SwampMobs.instance.group, "entity/ettin");
     	
 
 

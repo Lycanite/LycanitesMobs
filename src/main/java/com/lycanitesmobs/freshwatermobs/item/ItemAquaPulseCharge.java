@@ -15,7 +15,7 @@ public class ItemAquaPulseCharge extends ItemCharge {
 	// ==================================================
     public ItemAquaPulseCharge() {
         super();
-        this.group = FreshwaterMobs.group;
+        this.group = FreshwaterMobs.instance.group;
         this.itemName = "aquapulsecharge";
         this.setup();
     }

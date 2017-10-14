@@ -192,7 +192,7 @@ public class Utilities {
 	public static Path getAssetPath(Class clazz, String assetDomain, String assetPath) {
 		Path path = null;
 		try {
-			URL url = clazz.getResource("/assets/" + assetDomain + "/" + "." + assetDomain);
+			URL url = clazz.getResource("/assets/" + assetDomain + "/" + ".root");
 			URI uri = url.toURI();
 			if ("file".equals(uri.getScheme())) {
 				path = Paths.get(clazz.getResource("/assets/" + assetDomain + "/" + assetPath).toURI());
@@ -207,7 +207,8 @@ public class Utilities {
 			}
 		}
 		catch (Exception e) {
-			LycanitesMobs.printWarning("", "There was a problem getting a Path for: " + assetDomain + "/" + assetPath + " \n" + e.toString());
+			LycanitesMobs.printWarning("", "There was a problem getting a Path for: " + assetDomain + "/" + assetPath + " Make sure that a file named .root is present in this folder and that the subfolder exists.");
+			//e.printStackTrace();
 		}
 
 		return path;

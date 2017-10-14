@@ -83,7 +83,6 @@ public class ItemCustomSpawnEgg extends ItemBase {
                     tooltip.add("\u00a7a" + formattedDescription);
             }
         }
-        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     public String getDescription(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {

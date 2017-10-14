@@ -30,7 +30,7 @@ public class EntityQuill extends EntityProjectileBase {
     // ========== Setup Projectile ==========
     public void setup() {
     	this.entityName = "quill";
-    	this.group = PlainsMobs.group;
+    	this.group = PlainsMobs.instance.group;
     	this.setBaseDamage(3);
     	this.setProjectileScale(1F);
         this.knockbackChance = 0.25D;

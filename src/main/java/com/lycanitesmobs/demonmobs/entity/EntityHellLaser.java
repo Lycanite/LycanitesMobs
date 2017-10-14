@@ -39,7 +39,7 @@ public class EntityHellLaser extends EntityProjectileLaser {
     // ========== Setup Projectile ==========
     public void setup() {
     	this.entityName = "helllaser";
-    	this.group = DemonMobs.group;
+    	this.group = DemonMobs.instance.group;
     	this.setBaseDamage(1);
     }
     

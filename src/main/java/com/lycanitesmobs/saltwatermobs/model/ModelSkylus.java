@@ -20,7 +20,7 @@ public class ModelSkylus extends ModelCustomObj {
     
     public ModelSkylus(float shadowSize) {
     	// Load Model:
-    	this.initModel("skylus", SaltwaterMobs.group, "entity/skylus");
+    	this.initModel("skylus", SaltwaterMobs.instance.group, "entity/skylus");
 
     	// Set Rotation Centers:
     	setPartCenter("head", 0F, 1.2F, 0.9F);

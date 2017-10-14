@@ -20,7 +20,7 @@ public class ModelEyewig extends ModelCustomObj {
     
     public ModelEyewig(float shadowSize) {
     	// Load Model:
-    	this.initModel("Eyewig", SwampMobs.group, "entity/eyewig");
+    	this.initModel("Eyewig", SwampMobs.instance.group, "entity/eyewig");
     	
 
 

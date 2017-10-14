@@ -20,7 +20,7 @@ public class ModelGrue extends ModelCustomObj {
     
     public ModelGrue(float shadowSize) {
     	// Load Model:
-    	this.initModel("grue", ShadowMobs.group, "entity/grue");
+    	this.initModel("grue", ShadowMobs.instance.group, "entity/grue");
     	
 
 

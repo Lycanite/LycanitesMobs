@@ -20,7 +20,7 @@ public class ModelSalamander extends ModelCustomObj {
 
     public ModelSalamander(float shadowSize) {
     	// Load Model:
-    	this.initModel("salamander", InfernoMobs.group, "entity/salamander");
+    	this.initModel("salamander", InfernoMobs.instance.group, "entity/salamander");
     	
 
 

@@ -29,7 +29,7 @@ public class ItemBucketPureLava extends ItemBucket {
 	// ==================================================
     public ItemBucketPureLava(Fluid fluid) {
         super(ObjectManager.getBlock("purelava"));
-        this.group = InfernoMobs.group;
+        this.group = InfernoMobs.instance.group;
         this.itemName = "bucketpurelava";
         this.setRegistryName(this.group.filename, this.itemName);
         this.setUnlocalizedName(this.itemName);

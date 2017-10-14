@@ -102,6 +102,7 @@ item.gorgertreat.name=Gorger Treat
 item.gorgertreat.description=Small young Gorgers love to eat Cephignis, are you mad enough to tame one?!
 item.ignibustreat.name=Ignibus Treat
 item.ignibustreat.description=Dare you attempt to tame a mighty fire drake?
+item.cinderblade.name=Cinder Blade
 #
 # Blocks
 tile.purelava.name=Pure Lava

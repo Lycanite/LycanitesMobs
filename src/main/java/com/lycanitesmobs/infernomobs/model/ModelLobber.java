@@ -20,7 +20,7 @@ public class ModelLobber extends ModelCustomObj {
     
     public ModelLobber(float shadowSize) {
     	// Load Model:
-    	this.initModel("Lobber", InfernoMobs.group, "entity/lobber");
+    	this.initModel("Lobber", InfernoMobs.instance.group, "entity/lobber");
     	
 
 

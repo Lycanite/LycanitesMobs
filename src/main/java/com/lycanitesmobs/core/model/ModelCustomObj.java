@@ -125,7 +125,6 @@ public class ModelCustomObj extends ModelCustom {
 		}
 
         // Render and Animate Each Part:
-        this.wavefrontObject.entity = entity;
         for(ObjObject part : this.wavefrontParts) {
     		if(part.getName() == null)
     			continue;

@@ -1,6 +1,7 @@
 package com.lycanitesmobs.mountainmobs;
 
 import com.lycanitesmobs.LycanitesMobs;
+import com.lycanitesmobs.core.Submod;
 import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.info.*;
 import com.lycanitesmobs.core.spawning.SpawnTypeBase;
@@ -45,11 +46,10 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 @Mod(modid = MountainMobs.modid, name = MountainMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid, acceptedMinecraftVersions = LycanitesMobs.acceptedMinecraftVersions)
-public class MountainMobs {
+public class MountainMobs extends Submod {
 	
 	public static final String modid = "mountainmobs";
 	public static final String name = "Lycanites Mountain Mobs";
-	public static GroupInfo group;
 	
 	// Instance:
 	@Instance(modid)
@@ -58,82 +58,99 @@ public class MountainMobs {
 	// Proxy:
 	@SidedProxy(clientSide="com.lycanitesmobs.mountainmobs.ClientSubProxy", serverSide="com.lycanitesmobs.mountainmobs.CommonSubProxy")
 	public static CommonSubProxy proxy;
-	
-	// ==================================================
-	//                Pre-Initialization
-	// ==================================================
-	@EventHandler
+
+
+	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		// ========== Config ==========
+		super.preInit(event);
+	}
+
+	@Mod.EventHandler
+	public void init(FMLInitializationEvent event) {
+		super.init(event);
+	}
+
+	@Mod.EventHandler
+	public void postInit(FMLPostInitializationEvent event) {
+		super.postInit(event);
+	}
+
+
+	@Override
+	public void initialSetup() {
 		group = new GroupInfo(this, "Mountain Mobs", 5)
 				.setDimensionBlacklist("-1,1").setBiomes("MOUNTAIN").setDungeonThemes("MOUNTAIN, WASTELAND, NECRO")
-                .setEggName("mountainspawn");
+				.setEggName("mountainspawn");
 		group.loadFromConfig();
+	}
 
-		
-		// ========== Set Current Group ==========
-		ObjectManager.setCurrentGroup(group);
-		
-		
-		// ========== Create Items ==========
+	@Override
+	public void createItems() {
 		ObjectManager.addItem("mountainspawn", new ItemMountainEgg());
 		ObjectManager.addItem("soulstonemountain", new ItemSoulstoneMountain(group));
-		
+
 		ObjectManager.addItem("boulderblastcharge", new ItemBoulderBlastCharge());
 		ObjectManager.addItem("boulderblastscepter", new ItemScepterBoulderBlast(), 2, 1, 1);
-        ObjectManager.addItem("arcanelaserstormcharge", new ItemArcaneLaserStormCharge());
-        ObjectManager.addItem("arcanelaserstormscepter", new ItemScepterArcaneLaserStorm(), 2, 1, 1);
-		
+		ObjectManager.addItem("arcanelaserstormcharge", new ItemArcaneLaserStormCharge());
+		ObjectManager.addItem("arcanelaserstormscepter", new ItemScepterArcaneLaserStorm(), 2, 1, 1);
+
 		ObjectManager.addItem("yalemeatraw", new ItemCustomFood("yalemeatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(MobEffects.MINING_FATIGUE, 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("yalemeatraw"));
-		
+
 		ObjectManager.addItem("yalemeatcooked", new ItemCustomFood("yalemeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(MobEffects.HASTE, 10, 2, 1.0F).setAlwaysEdible());
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("yalemeatcooked"));
-		
+
 		ObjectManager.addItem("peakskebab", new ItemCustomFood("peakskebab", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(MobEffects.HASTE, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("peakskebab"));
 
 		ObjectManager.addItem("barghesttreat", new ItemTreat("barghesttreat", group));
 		ObjectManager.addItem("beholdertreat", new ItemTreat("beholdertreat", group));
 		ObjectManager.addItem("wildkintreat", new ItemTreat("wildkintreat", group));
-		
-		
-		// ========== Create Mobs ==========
+	}
+
+	@Override
+	public void createBlocks() {
+
+	}
+
+	@Override
+	public void createEntities() {
+		// Mobs:
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ObjectManager.getItem("mountainspawn"), new DispenserBehaviorMobEggCustom());
 		MobInfo newMob;
-        
-        newMob = new MobInfo(group, "jabberwock", EntityJabberwock.class, 0x662222, 0xFFFFAA)
-		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
-		        .addSubspecies(new Subspecies("dark", "uncommon")).addSubspecies(new Subspecies("russet", "uncommon"));
+
+		newMob = new MobInfo(group, "jabberwock", EntityJabberwock.class, 0x662222, 0xFFFFAA)
+				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
+				.addSubspecies(new Subspecies("dark", "uncommon")).addSubspecies(new Subspecies("russet", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
 				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "troll", EntityTroll.class, 0x007711, 0xEEEEEE)
-		        .setPeaceful(false).setSummonable(true).setSummonCost(6).setDungeonLevel(2)
-		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("russet", "uncommon"));
+				.setPeaceful(false).setSummonable(true).setSummonCost(6).setDungeonLevel(2)
+				.addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("russet", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
 				.setSpawnWeight(4).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "yale", EntityYale.class, 0xFFEEAA, 0xFFDD77)
-		        .setPeaceful(true).setSummonCost(1).setDungeonLevel(-1)
-		        .addSubspecies(new Subspecies("light", "uncommon")).addSubspecies(new Subspecies("golden", "uncommon"));
+				.setPeaceful(true).setSummonCost(1).setDungeonLevel(-1)
+				.addSubspecies(new Subspecies("light", "uncommon")).addSubspecies(new Subspecies("golden", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("CREATURE, ANIMAL").setDespawn(false)
 				.setSpawnWeight(14).setAreaLimit(5).setGroupLimits(1, 4).setLightDark(true, false).setDungeonWeight(0);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "geonach", EntityGeonach.class, 0x443333, 0xBBBBCC)
-		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1)
-		        .addSubspecies(new Subspecies("keppel", "uncommon")).addSubspecies(new Subspecies("golden", "uncommon"))
-                .addSubspecies(new Subspecies("celestial", "rare"));
+				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1)
+				.addSubspecies(new Subspecies("keppel", "uncommon")).addSubspecies(new Subspecies("golden", "uncommon"))
+				.addSubspecies(new Subspecies("celestial", "rare"));
 		newMob.spawnInfo.setSpawnTypes("")
 				.setSpawnWeight(4).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "beholder", EntityBeholder.class, 0x442211, 0x44AA33)
-		        .setPeaceful(false).setTameable(true).setSummonCost(6).setDungeonLevel(2)
-		        .addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
+				.setPeaceful(false).setTameable(true).setSummonCost(6).setDungeonLevel(2)
+				.addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("SKY")
 				.setSpawnWeight(1).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
@@ -152,75 +169,55 @@ public class MountainMobs {
 				.setSpawnWeight(4).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
-		
-		// ========== Create Projectiles ==========
-        ObjectManager.addProjectile("boulderblast", EntityBoulderBlast.class, ObjectManager.getItem("boulderblastcharge"), new DispenserBehaviorBoulderBlast());
-        ObjectManager.addProjectile("arcanelaserstorm", EntityArcaneLaserStorm.class, ObjectManager.getItem("arcanelaserstormcharge"), new DispenserBehaviorArcaneLaserStorm());
-        ObjectManager.addProjectile("arcanelaser", EntityArcaneLaser.class);
-        ObjectManager.addProjectile("arcanelaserend", EntityArcaneLaserEnd.class);
 
+		// Projectiles:
+		ObjectManager.addProjectile("boulderblast", EntityBoulderBlast.class, ObjectManager.getItem("boulderblastcharge"), new DispenserBehaviorBoulderBlast());
+		ObjectManager.addProjectile("arcanelaserstorm", EntityArcaneLaserStorm.class, ObjectManager.getItem("arcanelaserstormcharge"), new DispenserBehaviorArcaneLaserStorm());
+		ObjectManager.addProjectile("arcanelaser", EntityArcaneLaser.class);
+		ObjectManager.addProjectile("arcanelaserend", EntityArcaneLaserEnd.class);
+	}
 
-        // ========== Register Models ==========
+	@Override
+	public void registerModels() {
 		proxy.registerModels(this.group);
 	}
-	
-	
-	// ==================================================
-	//                Initialization
-	// ==================================================
-	@EventHandler
-	public void load(FMLInitializationEvent event) {
-        // ========== Load All Mob Info from Configs ==========
-        MobInfo.loadAllFromConfigs(this.group);
 
-		// ========== Ore Dictionary ==========
+	@Override
+	public void registerOres() {
 		OreDictionary.registerOre("listAllmuttonraw", ObjectManager.getItem("yalemeatraw"));
 		OreDictionary.registerOre("listAllmuttoncooked", ObjectManager.getItem("yalemeatcooked"));
 	}
-	
-	
-	// ==================================================
-	//                Post-Initialization
-	// ==================================================
-	@EventHandler
-	public void postInit(FMLPostInitializationEvent event) {
-		// ========== Set Current Group ==========
-		ObjectManager.setCurrentGroup(group);
-		ConfigBase config = ConfigBase.getConfig(group, "spawning");
-		
-		
-		// ========== Mob Events ==========
-        if(MobInfo.getFromName("geonach") != null) {
+
+	@Override
+	public void addRecipes() {
+		GameRegistry.addSmelting(ObjectManager.getItem("yalemeatraw"), new ItemStack(ObjectManager.getItem("yalemeatcooked"), 1), 0.5f);
+	}
+
+	@Override
+	public void createMobEvents() {
+		if(MobInfo.getFromName("geonach") != null) {
 			MobEventBase mobEvent = new MobEventBoulderDash("boulderdash", this.group);
 			SpawnTypeBase eventSpawner = new SpawnTypeSky("boulderdash")
-	            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-	        eventSpawner.materials = new Material[] {Material.AIR};
-	        eventSpawner.ignoreBiome = true;
-	        eventSpawner.ignoreLight = true;
-	        eventSpawner.forceSpawning = true;
-	        eventSpawner.ignoreMobConditions = true;
-	        eventSpawner.addSpawn(MobInfo.getFromName("geonach"));
-	        mobEvent.addSpawner(eventSpawner);
+					.setChance(1.0D).setBlockLimit(32).setMobLimit(3);
+			eventSpawner.materials = new Material[] {Material.AIR};
+			eventSpawner.ignoreBiome = true;
+			eventSpawner.ignoreLight = true;
+			eventSpawner.forceSpawning = true;
+			eventSpawner.ignoreMobConditions = true;
+			eventSpawner.addSpawn(MobInfo.getFromName("geonach"));
+			mobEvent.addSpawner(eventSpawner);
 			MobEventManager.instance.addWorldEvent(mobEvent);
-        }
-		
-        
-		// ========== Remove Vanilla Spawns ==========
-		Biome[] biomes = group.biomes;
-		if(group.controlVanillaSpawns) {
-			EntityRegistry.removeSpawn(EntityZombie.class, EnumCreatureType.MONSTER, biomes);
-			EntityRegistry.removeSpawn(EntityWitch.class, EnumCreatureType.MONSTER, biomes);
-			EntityRegistry.removeSpawn(EntityPig.class, EnumCreatureType.CREATURE, biomes);
-			EntityRegistry.removeSpawn(EntitySheep.class, EnumCreatureType.CREATURE, biomes);
 		}
 
+		AltarInfo celestialGeonachAltar = new AltarInfoCelestialGeonach("CelestialGeonachAltar");
+		AltarInfo.addAltar(celestialGeonachAltar);
+	}
 
-        // ========== Altars ==========
-        AltarInfo celestialGeonachAltar = new AltarInfoCelestialGeonach("CelestialGeonachAltar");
-        AltarInfo.addAltar(celestialGeonachAltar);
-		
-		
-		// ========== Smelting ==========
-		GameRegistry.addSmelting(ObjectManager.getItem("yalemeatraw"), new ItemStack(ObjectManager.getItem("yalemeatcooked"), 1), 0.5f);
+	@Override
+	public void editVanillaSpawns() {
+		EntityRegistry.removeSpawn(EntityZombie.class, EnumCreatureType.MONSTER, this.group.biomes);
+		EntityRegistry.removeSpawn(EntityWitch.class, EnumCreatureType.MONSTER, this.group.biomes);
+		EntityRegistry.removeSpawn(EntityPig.class, EnumCreatureType.CREATURE, this.group.biomes);
+		EntityRegistry.removeSpawn(EntitySheep.class, EnumCreatureType.CREATURE, this.group.biomes);
 	}
 }

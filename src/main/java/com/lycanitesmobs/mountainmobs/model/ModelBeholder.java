@@ -20,7 +20,7 @@ public class ModelBeholder extends ModelCustomObj {
     
     public ModelBeholder(float shadowSize) {
     	// Load Model:
-    	this.initModel("Beholder", MountainMobs.group, "entity/beholder");
+    	this.initModel("Beholder", MountainMobs.instance.group, "entity/beholder");
     	
 
 

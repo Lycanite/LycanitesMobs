@@ -20,7 +20,7 @@ public class ModelSpriggan extends ModelCustomObj {
 
     public ModelSpriggan(float shadowSize) {
     	// Load Model:
-    	this.initModel("Spriggan", ForestMobs.group, "entity/spriggan");
+    	this.initModel("Spriggan", ForestMobs.instance.group, "entity/spriggan");
     	
 
 

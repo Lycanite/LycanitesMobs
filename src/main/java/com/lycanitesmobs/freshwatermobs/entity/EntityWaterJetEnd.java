@@ -29,7 +29,7 @@ public class EntityWaterJetEnd extends EntityProjectileLaserEnd {
     // ========== Setup Projectile ==========
     public void setup() {
     	this.entityName = "waterjet";
-    	this.group = FreshwaterMobs.group;
+    	this.group = FreshwaterMobs.instance.group;
     }
     
     // ========== Stats ==========

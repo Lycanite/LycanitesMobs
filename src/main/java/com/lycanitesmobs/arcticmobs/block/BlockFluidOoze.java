@@ -27,7 +27,7 @@ public class BlockFluidOoze extends BlockFluidBase {
 	//                   Constructor
 	// ==================================================
 	public BlockFluidOoze(Fluid fluid) {
-        super(fluid, Material.WATER, ArcticMobs.group, "ooze");
+        super(fluid, Material.WATER, ArcticMobs.instance.group, "ooze");
 
         this.setLightOpacity(0);
         this.setLightLevel(0.25F);

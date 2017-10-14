@@ -15,7 +15,7 @@ public class ItemMudshotCharge extends ItemCharge {
 	// ==================================================
     public ItemMudshotCharge() {
         super();
-        this.group = DesertMobs.group;
+        this.group = DesertMobs.instance.group;
         this.itemName = "mudshotcharge";
         this.setup();
     }

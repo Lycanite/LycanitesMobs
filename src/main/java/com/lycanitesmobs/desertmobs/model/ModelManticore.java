@@ -20,7 +20,7 @@ public class ModelManticore extends ModelCustomObj {
     
     public ModelManticore(float shadowSize) {
     	// Load Model:
-    	this.initModel("Manticore", DesertMobs.group, "entity/manticore");
+    	this.initModel("Manticore", DesertMobs.instance.group, "entity/manticore");
     	
 
 

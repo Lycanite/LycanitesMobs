@@ -19,7 +19,7 @@ public class ModelIoray extends ModelTemplateAquatic {
 
     public ModelIoray(float shadowSize) {
         // Load Model:
-        this.initModel("ioray", FreshwaterMobs.group, "entity/ioray");
+        this.initModel("ioray", FreshwaterMobs.instance.group, "entity/ioray");
 
         // Looking:
         this.lookHeadScaleX = 0f;

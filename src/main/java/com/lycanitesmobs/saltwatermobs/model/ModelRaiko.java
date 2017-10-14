@@ -19,7 +19,7 @@ public class ModelRaiko extends ModelCustomObj {
 
     public ModelRaiko(float shadowSize) {
     	// Load Model:
-    	this.initModel("raiko", SaltwaterMobs.group, "entity/raiko");
+    	this.initModel("raiko", SaltwaterMobs.instance.group, "entity/raiko");
     	
     	// Set Rotation Centers:
         this.setPartCenter("head", 0F, 1.5F, 1.0F);

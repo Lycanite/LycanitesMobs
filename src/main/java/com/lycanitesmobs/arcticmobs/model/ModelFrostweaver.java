@@ -20,7 +20,7 @@ public class ModelFrostweaver extends ModelCustomObj {
     
     public ModelFrostweaver(float shadowSize) {
     	// Load Model:
-    	this.initModel("Frostweaver", ArcticMobs.group, "entity/frostweaver");
+    	this.initModel("Frostweaver", ArcticMobs.instance.group, "entity/frostweaver");
     	
 
 

@@ -21,6 +21,9 @@ public class JSONLoader {
 
 	/** Loads JSON Objects from a Path. **/
 	public void loadJsonObjects(Gson gson, Path path, Map<String, JsonObject> jsonObjectMap, String mapKey) {
+		if(path == null) {
+			return;
+		}
 		try {
 			Iterator<Path> iterator = Files.walk(path).iterator();
 			while(iterator.hasNext()) {

@@ -20,7 +20,7 @@ public class ModelErepede extends ModelCustomObj {
     
     public ModelErepede(float shadowSize) {
     	// Load Model:
-        this.initModel("Erepede", DesertMobs.group, "entity/erepede");
+        this.initModel("Erepede", DesertMobs.instance.group, "entity/erepede");
     	
     	// Set Rotation Centers:
         this.setPartCenter("head", 0F, 1.2F, 0.6F);

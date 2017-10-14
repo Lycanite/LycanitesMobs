@@ -16,6 +16,7 @@ import com.lycanitesmobs.core.entity.navigate.ICreatureNodeProcessor;
 import com.lycanitesmobs.core.info.*;
 import com.lycanitesmobs.core.inventory.ContainerCreature;
 import com.lycanitesmobs.core.inventory.InventoryCreature;
+import com.lycanitesmobs.core.item.equipment.ItemEquipmentPart;
 import com.lycanitesmobs.core.pets.PetEntry;
 import com.lycanitesmobs.core.spawning.SpawnTypeBase;
 import net.minecraft.block.Block;
@@ -354,10 +355,16 @@ public abstract class EntityCreatureBase extends EntityLiving {
         this.stepHeight = 0.5F;
         this.experienceValue = this.experience;
         this.inventory = new InventoryCreature(this.getName(), this);
+		this.experienceValue = this.experience;
+
+        // Drops:
         if(this.mobInfo.defaultDrops)
         	this.loadItemDrops();
         this.loadCustomDrops();
-        this.experienceValue = this.experience;
+		ItemEquipmentPart itemEquipmentPart = ItemEquipmentPart.MOB_PART_DROPS.get(this.getEntityIdName());
+		if(itemEquipmentPart != null) {
+			this.drops.add(new DropRate(new ItemStack(itemEquipmentPart), itemEquipmentPart.dropChance).setMaxAmount(1));
+		}
         
         // Fire Immunity:
         this.isImmuneToFire = !this.canBurn();
@@ -2978,6 +2985,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Drop Item ==========
     /** Tells this entity to drop the specified itemStack, used by DropRate and InventoryCreature, can be used by anything though. **/
     public void dropItem(ItemStack itemStack) {
+    	if(itemStack.getItem() instanceof ItemEquipmentPart) {
+			((ItemEquipmentPart)itemStack.getItem()).initializePart(this.world, itemStack);
+		}
     	this.entityDropItem(itemStack, 0.0F);
     }
 

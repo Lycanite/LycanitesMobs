@@ -1,4 +1,5 @@
 # ========== Events ==========
+# %event% will be replaced with the name of the event, don't translate this!
 event.started=%event% has begun!
 event.extended=%event% has been extended!
 event.finished=%event% is over!
@@ -6,7 +7,6 @@ event.boss.started=%event% has been called!
 event.boss.extended=%event% is coming!
 event.boss.finished=%event% is unleashed!
 event.boss.phase=Phase
-# %event% will be replaced with the name of the event, don't translate this!
 #
 # Mob Events
 mobevent.bamstorm.name=Bamstorm
@@ -111,6 +111,7 @@ item.wintergiftlarge.bad=Aaaahhhhh Haaa Haaa Haaa Ha Ha Ha! Bwahahahah! Merry Ch
 item.horsearmormetal.name=Iron Pet Armor
 item.horsearmorgold.name=Golden Pet Armor
 item.horsearmordiamond.name=Diamond Pet Armor
+item.equipmentpart.description=This item can be used to create powerful equipment or can be crafted down into a useful resource. COMING SOON! >:D
 #
 #
 #
@@ -119,6 +120,7 @@ item.horsearmordiamond.name=Diamond Pet Armor
 itemGroup.lycanitesmobs.items=Lycanites Mobs: Items
 itemGroup.lycanitesmobs.blocks=Lycanites Mobs: Blocks
 itemGroup.lycanitesmobs.creatures=Lycanites Mobs: Creatures
+itemGroup.lycanitesmobs.equipmentparts=Lycanites Mobs: Equipment Parts
 #
 # Beastiary:
 gui.beastiary.name=Beastiary
@@ -198,6 +200,8 @@ message.pet.mount.baby=The %creature% is too young to carry you!
 # ========== Commands ==========
 lyc.command.invalid=Invalid arguments.
 lyc.command.playeronly=This command can only be used by a player.
+lyc.command.debug.invalid=Invalid arguments, usage: /lycanitesmobs debug debugKey debugValue
+lyc.command.debug.set=Updated %debug%.
 lyc.command.spawners.invalid=Invalid arguments, usage: /lycanitesmobs spawners [reload]
 lyc.command.spawners.reload=JSON Spawners have been reloaded.
 lyc.command.beastiary.invalid=Invalid arguments, usage: /lycanitesmobs beastiary [add <creature name>, complete]> for example /lycanitesmobs beastiary add quillbeast
@@ -255,3 +259,24 @@ key.mount.manager=Mount Manager
 key.familiar.manager=Familiar Manager
 key.minion.manager=Minion Manager
 key.minion.select=Minion Selection
+#
+#
+#
+# ========== Equipment ==========
+equipment.slottype=Slot Type:
+equipment.level=Level:
+equipment.feature.slot=Adds Slot:
+equipment.feature.damage=Damage:
+equipment.feature.damage.cooldown=Cooldown:
+equipment.feature.damage.knockback=Knockback:
+equipment.feature.damage.range=Range:
+equipment.feature.damage.sweep=Sweep:
+equipment.feature.effect=Effect:
+equipment.feature.effect.duration=Duration:
+equipment.feature.effect.strength=Strength:
+equipment.feature.harvest=Harvest:
+equipment.feature.harvest.shape=Shape:
+equipment.feature.harvest.range=Range:
+equipment.feature.summon=Summons:
+equipment.feature.summon.chance=Chance:
+equipment.feature.summon.count=Amount:

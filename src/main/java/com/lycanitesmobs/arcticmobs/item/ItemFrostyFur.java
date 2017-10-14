@@ -22,7 +22,7 @@ public class ItemFrostyFur extends ItemBase {
 	// ==================================================
     public ItemFrostyFur() {
         super();
-        this.group = ArcticMobs.group;
+        this.group = ArcticMobs.instance.group;
         this.itemName = "frostyfur";
         this.setup();
     }

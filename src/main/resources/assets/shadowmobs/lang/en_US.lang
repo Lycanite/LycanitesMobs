@@ -84,6 +84,7 @@ item.bloodleechcharge.name=Bloodleech Charge
 item.bloodleechcharge.description=Use to throw a Bloodleech. Can also be fired from a dispenser.
 item.bloodleechscepter.name=Bloodleech Scepter
 item.bloodleechscepter.description=Low Damage, Rapid Fire, Drains Health
+item.darklingskull.name=Darkling Skull
 #
 # Blocks
 tile.shadowfire.name=Shadowfire

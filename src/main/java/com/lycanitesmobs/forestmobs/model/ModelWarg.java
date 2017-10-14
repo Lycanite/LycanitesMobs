@@ -20,7 +20,7 @@ public class ModelWarg extends ModelCustomObj {
 
     public ModelWarg(float shadowSize) {
     	// Load Model:
-    	this.initModel("warg", ForestMobs.group, "entity/warg");
+    	this.initModel("warg", ForestMobs.instance.group, "entity/warg");
     	
 
 

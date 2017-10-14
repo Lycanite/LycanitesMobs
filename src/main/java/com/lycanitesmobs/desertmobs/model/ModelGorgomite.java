@@ -20,7 +20,7 @@ public class ModelGorgomite extends ModelCustomObj {
     
     public ModelGorgomite(float shadowSize) {
     	// Load Model:
-    	this.initModel("Gorgomite", DesertMobs.group, "entity/gorgomite");
+    	this.initModel("Gorgomite", DesertMobs.instance.group, "entity/gorgomite");
     	
 
 

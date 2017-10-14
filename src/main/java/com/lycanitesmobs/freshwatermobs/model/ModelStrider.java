@@ -20,7 +20,7 @@ public class ModelStrider extends ModelCustomObj {
 
     public ModelStrider(float shadowSize) {
     	// Load Model:
-    	this.initModel("strider", FreshwaterMobs.group, "entity/strider");
+    	this.initModel("strider", FreshwaterMobs.instance.group, "entity/strider");
 
     	// Set Rotation Centers:
     	setPartCenter("body", 0F, 8.0F, 0F);

@@ -11,7 +11,7 @@ public class ItemForestEgg extends ItemCustomSpawnEgg {
     public ItemForestEgg() {
         super();
         setUnlocalizedName("forestspawn");
-        this.group = ForestMobs.group;
+        this.group = ForestMobs.instance.group;
         this.itemName = "forestspawn";
         this.texturePath = "forestspawn";
         this.setRegistryName(this.group.filename, this.itemName);

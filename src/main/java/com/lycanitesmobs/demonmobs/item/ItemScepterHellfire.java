@@ -16,7 +16,7 @@ public class ItemScepterHellfire extends ItemScepter {
 	// ==================================================
     public ItemScepterHellfire() {
         super();
-    	this.group = DemonMobs.group;
+    	this.group = DemonMobs.instance.group;
     	this.itemName = "hellfirescepter";
         this.setup();
     }

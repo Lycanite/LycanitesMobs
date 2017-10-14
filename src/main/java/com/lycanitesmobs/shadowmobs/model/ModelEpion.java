@@ -19,7 +19,7 @@ public class ModelEpion extends ModelCustomObj {
     
     public ModelEpion(float shadowSize) {
     	// Load Model:
-    	this.initModel("epion", ShadowMobs.group, "entity/epion");
+    	this.initModel("epion", ShadowMobs.instance.group, "entity/epion");
     	
 
 

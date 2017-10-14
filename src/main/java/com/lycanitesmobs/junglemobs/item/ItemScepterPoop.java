@@ -15,7 +15,7 @@ public class ItemScepterPoop extends ItemScepter {
 	// ==================================================
     public ItemScepterPoop() {
         super();
-    	this.group = JungleMobs.group;
+    	this.group = JungleMobs.instance.group;
     	this.itemName = "poopscepter";
         this.setup();
     }

@@ -18,7 +18,7 @@ public class ModelTriffid extends ModelObj {
 
     public ModelTriffid(float shadowSize) {
         // Load Model:
-        this.initModel("triffid", SwampMobs.group, "entity/triffid");
+        this.initModel("triffid", SwampMobs.instance.group, "entity/triffid");
 
         // Looking:
         this.lookHeadScaleX = 0.5f;

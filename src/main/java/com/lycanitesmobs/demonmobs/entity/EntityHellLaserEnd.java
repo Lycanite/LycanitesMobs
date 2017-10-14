@@ -29,7 +29,7 @@ public class EntityHellLaserEnd extends EntityProjectileLaserEnd {
     // ========== Setup Projectile ==========
     public void setup() {
     	this.entityName = "helllaser";
-    	this.group = DemonMobs.group;
+    	this.group = DemonMobs.instance.group;
     }
     
     // ========== Stats ==========

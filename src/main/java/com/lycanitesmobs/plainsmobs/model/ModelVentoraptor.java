@@ -20,7 +20,7 @@ public class ModelVentoraptor extends ModelCustomObj {
     
     public ModelVentoraptor(float shadowSize) {
     	// Load Model:
-    	this.initModel("Ventoraptor", PlainsMobs.group, "entity/ventoraptor");
+    	this.initModel("Ventoraptor", PlainsMobs.instance.group, "entity/ventoraptor");
     	
 
 

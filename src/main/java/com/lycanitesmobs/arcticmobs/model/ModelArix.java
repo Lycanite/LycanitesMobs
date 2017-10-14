@@ -20,7 +20,7 @@ public class ModelArix extends ModelCustomObj {
 
     public ModelArix(float shadowSize) {
     	// Load Model:
-    	this.initModel("arix", ArcticMobs.group, "entity/arix");
+    	this.initModel("arix", ArcticMobs.instance.group, "entity/arix");
 
     	// Set Rotation Centers:
     	setPartCenter("head", 0F, 1.07F, 0.1F);

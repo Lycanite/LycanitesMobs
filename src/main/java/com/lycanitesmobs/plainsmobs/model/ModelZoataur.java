@@ -20,7 +20,7 @@ public class ModelZoataur extends ModelCustomObj {
     
     public ModelZoataur(float shadowSize) {
     	// Load Model:
-    	this.initModel("Zoataur", PlainsMobs.group, "entity/zoataur");
+    	this.initModel("Zoataur", PlainsMobs.instance.group, "entity/zoataur");
     	
 
 

@@ -20,7 +20,7 @@ public class ModelShade extends ModelCustomObj {
 
     public ModelShade(float shadowSize) {
     	// Load Model:
-    	this.initModel("shade", ShadowMobs.group, "entity/shade");
+    	this.initModel("shade", ShadowMobs.instance.group, "entity/shade");
     	
 
 

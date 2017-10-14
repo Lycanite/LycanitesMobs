@@ -19,7 +19,7 @@ public class ModelCryptZombie extends ModelCustomObj {
     
     public ModelCryptZombie(float shadowSize) {
     	// Load Model:
-    	this.initModel("CryptZombie", DesertMobs.group, "entity/cryptzombie");
+    	this.initModel("CryptZombie", DesertMobs.instance.group, "entity/cryptzombie");
     	
 
 

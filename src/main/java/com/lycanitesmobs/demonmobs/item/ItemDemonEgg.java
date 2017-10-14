@@ -11,7 +11,7 @@ public class ItemDemonEgg extends ItemCustomSpawnEgg {
     public ItemDemonEgg() {
         super();
         this.setUnlocalizedName("demonspawn");
-        this.group = DemonMobs.group;
+        this.group = DemonMobs.instance.group;
         this.itemName = "demonspawn";
         this.texturePath = "demonspawn";
         this.setRegistryName(this.group.filename, this.itemName);

@@ -1,0 +1,12 @@
+{
+  "result": {
+    "item": "infernomobs:embercharge",
+    "count": 16
+  },
+  "ingredients": [
+	{
+      "item": "infernomobs:cinderblade"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

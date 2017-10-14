@@ -15,7 +15,7 @@ public class ItemScepterBlizzard extends ItemScepter {
 	// ==================================================
     public ItemScepterBlizzard() {
         super();
-    	this.group = ArcticMobs.group;
+    	this.group = ArcticMobs.instance.group;
     	this.itemName = "blizzardscepter";
         this.setup();
     }

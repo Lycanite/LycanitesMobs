@@ -41,7 +41,7 @@ public class EntityHellfireWave extends EntityProjectileBase {
     // ========== Setup Projectile ==========
     public void setup() {
     	this.entityName = "hellfirewave";
-    	this.group = DemonMobs.group;
+    	this.group = DemonMobs.instance.group;
     	this.setBaseDamage(0);
     	this.setProjectileScale(0F);
         this.setSize(2F, 2F);

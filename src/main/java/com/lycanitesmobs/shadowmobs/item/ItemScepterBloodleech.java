@@ -15,7 +15,7 @@ public class ItemScepterBloodleech extends ItemScepter {
 	// ==================================================
     public ItemScepterBloodleech() {
         super();
-    	this.group = ShadowMobs.group;
+    	this.group = ShadowMobs.instance.group;
     	this.itemName = "bloodleechscepter";
         this.setup();
     }

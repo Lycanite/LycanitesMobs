@@ -15,7 +15,7 @@ public class ItemArcaneLaserStormCharge extends ItemCharge {
 	// ==================================================
     public ItemArcaneLaserStormCharge() {
         super();
-        this.group = MountainMobs.group;
+        this.group = MountainMobs.instance.group;
         this.itemName = "arcanelaserstormcharge";
         this.setup();
     }

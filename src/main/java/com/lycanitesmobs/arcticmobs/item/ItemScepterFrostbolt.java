@@ -15,7 +15,7 @@ public class ItemScepterFrostbolt extends ItemScepter {
 	// ==================================================
     public ItemScepterFrostbolt() {
         super();
-    	this.group = ArcticMobs.group;
+    	this.group = ArcticMobs.instance.group;
     	this.itemName = "frostboltscepter";
         this.setup();
     }

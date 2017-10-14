@@ -26,7 +26,7 @@ public class BlockFluidPureLava extends BlockFluidBase {
 	//                   Constructor
 	// ==================================================
 	public BlockFluidPureLava(Fluid fluid) {
-		super(fluid, Material.LAVA, InfernoMobs.group, "purelava");
+		super(fluid, Material.LAVA, InfernoMobs.instance.group, "purelava");
 
         this.setLightOpacity(1);
         this.setLightLevel(1.0F);

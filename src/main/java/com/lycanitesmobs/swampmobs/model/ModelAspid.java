@@ -20,7 +20,7 @@ public class ModelAspid extends ModelCustomObj {
     
     public ModelAspid(float shadowSize) {
     	// Load Model:
-    	this.initModel("Aspid", SwampMobs.group, "entity/aspid");
+    	this.initModel("Aspid", SwampMobs.instance.group, "entity/aspid");
     	
 
 

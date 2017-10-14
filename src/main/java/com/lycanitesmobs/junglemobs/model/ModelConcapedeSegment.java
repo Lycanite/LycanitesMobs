@@ -19,7 +19,7 @@ public class ModelConcapedeSegment extends ModelCustomObj {
     
     public ModelConcapedeSegment(float shadowSize) {
         // Load Model:
-        this.initModel("concapedesegment", JungleMobs.group, "entity/concapede");
+        this.initModel("concapedesegment", JungleMobs.instance.group, "entity/concapede");
     	
     	// Set Rotation Centers:
     	setPartCenter("body", 0F, 0.5F, 0.6F);

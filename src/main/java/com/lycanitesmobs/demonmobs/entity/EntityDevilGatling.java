@@ -41,7 +41,7 @@ public class EntityDevilGatling extends EntityProjectileBase {
     // ========== Setup Projectile ==========
     public void setup() {
     	this.entityName = "devilgatling";
-    	this.group = DemonMobs.group;
+    	this.group = DemonMobs.instance.group;
     	this.setBaseDamage(4);
 		this.pierce = true;
     }

@@ -19,7 +19,7 @@ public class ModelVespidQueen extends ModelCustomObj {
     
     public ModelVespidQueen(float shadowSize) {
     	// Load Model:
-    	this.initModel("vespidqueen", JungleMobs.group, "entity/vespidqueen");
+    	this.initModel("vespidqueen", JungleMobs.instance.group, "entity/vespidqueen");
     	
 
 

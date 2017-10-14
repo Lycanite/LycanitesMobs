@@ -14,7 +14,7 @@ public class ModelDawon extends ModelTemplateQuadruped {
 
     public ModelDawon(float shadowSize) {
         // Load Model:
-        this.initModel("dawon", JungleMobs.group, "entity/dawon");
+        this.initModel("dawon", JungleMobs.instance.group, "entity/dawon");
 
         // Trophy:
         this.trophyScale = 0.8F;

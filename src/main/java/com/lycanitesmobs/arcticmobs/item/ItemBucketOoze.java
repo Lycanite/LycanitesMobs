@@ -29,7 +29,7 @@ public class ItemBucketOoze extends ItemBucket {
 	// ==================================================
     public ItemBucketOoze(Fluid fluid) {
         super(ObjectManager.getBlock("ooze"));
-        this.group = ArcticMobs.group;
+        this.group = ArcticMobs.instance.group;
         this.itemName = "bucketooze";
         this.setRegistryName(this.group.filename, this.itemName);
         this.setUnlocalizedName(this.itemName);

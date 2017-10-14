@@ -20,7 +20,7 @@ public class ModelReiver extends ModelCustomObj {
     
     public ModelReiver(float shadowSize) {
     	// Load Model:
-    	this.initModel("Reiver", ArcticMobs.group, "entity/reiver");
+    	this.initModel("Reiver", ArcticMobs.instance.group, "entity/reiver");
     	
 
 

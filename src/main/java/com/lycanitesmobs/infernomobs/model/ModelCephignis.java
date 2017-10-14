@@ -19,7 +19,7 @@ public class ModelCephignis extends ModelCustomObj {
     
     public ModelCephignis(float shadowSize) {
     	// Load Model:
-    	this.initModel("cephignis", InfernoMobs.group, "entity/cephignis");
+    	this.initModel("cephignis", InfernoMobs.instance.group, "entity/cephignis");
     	
 
 

@@ -15,7 +15,7 @@ public class ItemScorchfireCharge extends ItemCharge {
 	// ==================================================
     public ItemScorchfireCharge() {
         super();
-        this.group = InfernoMobs.group;
+        this.group = InfernoMobs.instance.group;
         this.itemName = "scorchfirecharge";
         this.setup();
     }

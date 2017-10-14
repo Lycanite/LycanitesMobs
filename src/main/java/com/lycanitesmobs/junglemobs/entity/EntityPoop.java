@@ -38,7 +38,7 @@ public class EntityPoop extends EntityProjectileBase {
     // ========== Setup Projectile ==========
     public void setup() {
     	this.entityName = "poop";
-    	this.group = JungleMobs.group;
+    	this.group = JungleMobs.instance.group;
     	this.setBaseDamage(2);
     	this.setProjectileScale(1.0F);
     }

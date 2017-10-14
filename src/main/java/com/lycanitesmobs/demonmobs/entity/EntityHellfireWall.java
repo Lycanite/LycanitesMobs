@@ -44,7 +44,7 @@ public class EntityHellfireWall extends EntityProjectileBase {
     // ========== Setup Projectile ==========
     public void setup() {
     	this.entityName = "hellfirewall";
-    	this.group = DemonMobs.group;
+    	this.group = DemonMobs.instance.group;
     	this.setBaseDamage(10);
     	this.setProjectileScale(20F);
         this.setSize(10F, 10F);

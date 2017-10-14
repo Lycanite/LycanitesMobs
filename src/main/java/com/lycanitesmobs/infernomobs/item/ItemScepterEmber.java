@@ -15,7 +15,7 @@ public class ItemScepterEmber extends ItemScepter {
 	// ==================================================
     public ItemScepterEmber() {
         super();
-    	this.group = InfernoMobs.group;
+    	this.group = InfernoMobs.instance.group;
     	this.itemName = "emberscepter";
         this.setup();
     }

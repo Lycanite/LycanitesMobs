@@ -21,7 +21,7 @@ public class ModelLurker extends ModelCustomObj {
     
     public ModelLurker(float shadowSize) {
     	// Load Model:
-    	this.initModel("Lurker", SwampMobs.group, "entity/lurker");
+    	this.initModel("Lurker", SwampMobs.instance.group, "entity/lurker");
     	
 
 

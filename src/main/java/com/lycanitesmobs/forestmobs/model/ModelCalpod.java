@@ -14,7 +14,7 @@ public class ModelCalpod extends ModelTemplateInsect {
 
     public ModelCalpod(float shadowSize) {
         // Load Model:
-        this.initModel("calpod", ForestMobs.group, "entity/calpod");
+        this.initModel("calpod", ForestMobs.instance.group, "entity/calpod");
 
         // Looking:
         this.lookHeadScaleX = 0.5f;

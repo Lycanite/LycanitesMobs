@@ -25,7 +25,7 @@ public class ModelAsmodeus extends ModelCustomObj {
 
     public ModelAsmodeus(float shadowSize) {
     	// Load Model:
-    	this.initModel("asmodeus", DemonMobs.group, "entity/asmodeus");
+    	this.initModel("asmodeus", DemonMobs.instance.group, "entity/asmodeus");
 
     	// Set Rotation Centers:
         // Blender: Y = Z

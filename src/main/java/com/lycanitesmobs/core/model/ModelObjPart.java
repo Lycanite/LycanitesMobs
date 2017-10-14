@@ -68,21 +68,21 @@ public class ModelObjPart {
     //               Apply Animation Frames
     // ==================================================
     /** Applies all animation frames to this part and will then go through any parents and apply theirs also. **/
-    public void applyAnimationFrames(ModelObj model) {
+    public void applyAnimationFrames(Animator animator) {
         // Apply Parent Frames:
         if(this.parent != null) {
-            this.parent.applyAnimationFrames(model);
+            this.parent.applyAnimationFrames(animator);
         }
 
         // Center Part:
-        model.doTranslate(this.centerX, this.centerY, this.centerZ);
+        animator.doTranslate(this.centerX, this.centerY, this.centerZ);
 
         // Apply Frames:
         for(ModelObjAnimationFrame animationFrame : this.animationFrames) {
-            animationFrame.apply(model);
+            animationFrame.apply(animator);
         }
 
         // Uncenter Part:
-        model.doTranslate(-this.centerX, -this.centerY, -this.centerZ);
+        animator.doTranslate(-this.centerX, -this.centerY, -this.centerZ);
     }
 }

@@ -26,7 +26,7 @@ public class BlockPropolis extends BlockBase {
         this.setCreativeTab(LycanitesMobs.blocksTab);
 		
 		// Properties:
-		this.group = JungleMobs.group;
+		this.group = JungleMobs.instance.group;
 		this.blockName = "propolis";
 		this.setup();
 		

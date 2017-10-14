@@ -20,7 +20,7 @@ public class ModelJabberwock extends ModelCustomObj {
     
     public ModelJabberwock(float shadowSize) {
     	// Load Model:
-    	this.initModel("jabberwock", MountainMobs.group, "entity/jabberwock");
+    	this.initModel("jabberwock", MountainMobs.instance.group, "entity/jabberwock");
     	
 
 

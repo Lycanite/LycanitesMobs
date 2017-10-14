@@ -10,7 +10,7 @@ public class ClientSubProxy extends CommonSubProxy {
 	
 	// ========== Register Models ==========
 	@Override
-    public void registerRenders(GroupInfo groupInfo) {
+    public void registerModels(GroupInfo groupInfo) {
         // Add Models:
 		AssetManager.addModel("kobold", new ModelKobold());
 		AssetManager.addModel("ventoraptor", new ModelVentoraptor());

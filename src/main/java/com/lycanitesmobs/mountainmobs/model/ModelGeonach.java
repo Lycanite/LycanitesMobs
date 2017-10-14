@@ -20,7 +20,7 @@ public class ModelGeonach extends ModelCustomObj {
     
     public ModelGeonach(float shadowSize) {
     	// Load Model:
-    	this.initModel("Geonach", MountainMobs.group, "entity/geonach");
+    	this.initModel("Geonach", MountainMobs.instance.group, "entity/geonach");
     	
 
 

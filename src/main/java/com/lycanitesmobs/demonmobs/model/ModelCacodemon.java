@@ -21,7 +21,7 @@ public class ModelCacodemon extends ModelCustomObj {
     
     public ModelCacodemon(float shadowSize) {
     	// Load Model:
-    	this.initModel("cacodemon", DemonMobs.group, "entity/cacodemon");
+    	this.initModel("cacodemon", DemonMobs.instance.group, "entity/cacodemon");
 
     	// Set Rotation Centers:
     	setPartCenter("head", 0F, 1.0F, 0F);

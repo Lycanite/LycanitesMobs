@@ -19,7 +19,7 @@ public class ModelArisaur extends ModelCustomObj {
     
     public ModelArisaur(float shadowSize) {
     	// Load Model:
-    	this.initModel("Arisaur", ForestMobs.group, "entity/arisaur");
+    	this.initModel("Arisaur", ForestMobs.instance.group, "entity/arisaur");
     	
 
 

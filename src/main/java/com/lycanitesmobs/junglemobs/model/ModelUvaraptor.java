@@ -20,7 +20,7 @@ public class ModelUvaraptor extends ModelCustomObj {
     
     public ModelUvaraptor(float shadowSize) {
     	// Load Model:
-    	this.initModel("Uvaraptor", JungleMobs.group, "entity/uvaraptor");
+    	this.initModel("Uvaraptor", JungleMobs.instance.group, "entity/uvaraptor");
     	
 
 

@@ -16,7 +16,7 @@ public class ModelMorock extends ModelTemplateDragon {
 
     public ModelMorock(float shadowSize) {
         // Load Model:
-        this.initModel("morock", PlainsMobs.group, "entity/morock");
+        this.initModel("morock", PlainsMobs.instance.group, "entity/morock");
 
         // Trophy:
         this.trophyScale = 0.8F;

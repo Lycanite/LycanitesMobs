@@ -33,7 +33,7 @@ public class BlockFrostCloud extends BlockBase {
         this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, 0));
 		
 		// Properties:
-		this.group = ArcticMobs.group;
+		this.group = ArcticMobs.instance.group;
 		this.blockName = "frostcloud";
 		this.setup();
 		
@@ -44,7 +44,7 @@ public class BlockFrostCloud extends BlockBase {
 		this.canBeCrushed = true;
 		
 		this.noEntityCollision = true;
-		this.noBreakCollision = noBreakCollision;
+		this.noBreakCollision = true;
 		this.isOpaque = false;
 		
 		this.setBlockUnbreakable();

@@ -15,7 +15,7 @@ public class ItemScepterDevilstar extends ItemScepter {
 	// ==================================================
     public ItemScepterDevilstar() {
         super();
-    	this.group = DemonMobs.group;
+    	this.group = DemonMobs.instance.group;
     	this.itemName = "devilstarscepter";
         this.setup();
     }

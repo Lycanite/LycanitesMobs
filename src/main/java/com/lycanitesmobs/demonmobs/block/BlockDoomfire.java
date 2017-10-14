@@ -26,7 +26,7 @@ public class BlockDoomfire extends BlockFireBase {
 	//                   Constructor
 	// ==================================================
 	public BlockDoomfire() {
-		super(Material.FIRE, DemonMobs.group, "doomfire");
+		super(Material.FIRE, DemonMobs.instance.group, "doomfire");
 
         // Stats:
         this.tickRate = 30;

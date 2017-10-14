@@ -15,7 +15,7 @@ public class ItemLifeDrainCharge extends ItemCharge {
 	// ==================================================
     public ItemLifeDrainCharge() {
         super();
-        this.group = ForestMobs.group;
+        this.group = ForestMobs.instance.group;
         this.itemName = "lifedraincharge";
         this.setup();
     }

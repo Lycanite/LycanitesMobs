@@ -20,7 +20,7 @@ public class ModelSerpix extends ModelCustomObj {
 
     public ModelSerpix(float shadowSize) {
     	// Load Model:
-    	this.initModel("Serpix", ArcticMobs.group, "entity/serpix");
+    	this.initModel("Serpix", ArcticMobs.instance.group, "entity/serpix");
     	
 
 

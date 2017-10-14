@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Base",
+    "parent": "",
+    "centerX": "0.0",
+    "centerY": "0.0",
+    "centerZ": "-0.0"
+  },
+  {
+    "name": "Blade",
+    "parent": "Base",
+    "centerX": "0.0",
+    "centerY": "0.0",
+    "centerZ": "0.16"
+  }
+]

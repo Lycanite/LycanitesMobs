@@ -15,7 +15,7 @@ public class ItemTundraCharge extends ItemCharge {
 	// ==================================================
     public ItemTundraCharge() {
         super();
-        this.group = ArcticMobs.group;
+        this.group = ArcticMobs.instance.group;
         this.itemName = "tundracharge";
         this.setup();
     }

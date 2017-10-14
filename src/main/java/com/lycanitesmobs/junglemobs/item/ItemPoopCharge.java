@@ -20,7 +20,7 @@ public class ItemPoopCharge extends ItemCharge {
 	// ==================================================
     public ItemPoopCharge() {
         super();
-        this.group = JungleMobs.group;
+        this.group = JungleMobs.instance.group;
         this.itemName = "poopcharge";
         this.setup();
     }

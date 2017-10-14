@@ -14,7 +14,7 @@ public class ModelQuillbeast extends ModelTemplateQuadruped {
 
     public ModelQuillbeast(float shadowSize) {
         // Load Model:
-        this.initModel("quillbeast", PlainsMobs.group, "entity/quillbeast");
+        this.initModel("quillbeast", PlainsMobs.instance.group, "entity/quillbeast");
 
         // Trophy:
         this.trophyScale = 0.8F;

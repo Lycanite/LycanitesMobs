@@ -16,7 +16,7 @@ public class ModelIgnibus extends ModelTemplateDragon {
 
     public ModelIgnibus(float shadowSize) {
         // Load Model:
-        this.initModel("ignibus", InfernoMobs.group, "entity/ignibus");
+        this.initModel("ignibus", InfernoMobs.instance.group, "entity/ignibus");
 
         // Looking:
         this.lookHeadScaleX = 0.5f;

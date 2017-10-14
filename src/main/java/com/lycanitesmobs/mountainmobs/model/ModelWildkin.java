@@ -14,7 +14,7 @@ public class ModelWildkin extends ModelTemplateBiped {
 
     public ModelWildkin(float shadowSize) {
         // Load Model:
-        this.initModel("wildkin", MountainMobs.group, "entity/wildkin");
+        this.initModel("wildkin", MountainMobs.instance.group, "entity/wildkin");
 
         // Trophy:
         this.trophyScale = 0.8F;

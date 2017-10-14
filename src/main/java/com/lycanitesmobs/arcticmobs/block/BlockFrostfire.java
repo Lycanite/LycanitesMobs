@@ -33,7 +33,7 @@ public class BlockFrostfire extends BlockFireBase {
     //                   Constructor
     // ==================================================
     public BlockFrostfire() {
-        super(Material.FIRE, ArcticMobs.group, "frostfire");
+        super(Material.FIRE, ArcticMobs.instance.group, "frostfire");
 
         // Stats:
         this.tickRate = 30;

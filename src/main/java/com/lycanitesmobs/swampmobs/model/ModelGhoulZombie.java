@@ -19,7 +19,7 @@ public class ModelGhoulZombie extends ModelCustomObj {
     
     public ModelGhoulZombie(float shadowSize) {
     	// Load Model:
-    	this.initModel("GhoulZombie", SwampMobs.group, "entity/ghoulzombie");
+    	this.initModel("GhoulZombie", SwampMobs.instance.group, "entity/ghoulzombie");
     	
 
 

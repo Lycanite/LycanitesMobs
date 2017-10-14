@@ -20,7 +20,7 @@ public class ModelAbaia extends ModelTemplateAquatic {
 
     public ModelAbaia(float shadowSize) {
         // Load Model:
-        this.initModel("abaia", FreshwaterMobs.group, "entity/abaia");
+        this.initModel("abaia", FreshwaterMobs.instance.group, "entity/abaia");
 
         // Looking:
         this.lookHeadScaleX = 0.5f;

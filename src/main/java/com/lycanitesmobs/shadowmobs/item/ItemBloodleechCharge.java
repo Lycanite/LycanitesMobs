@@ -15,7 +15,7 @@ public class ItemBloodleechCharge extends ItemCharge {
 	// ==================================================
     public ItemBloodleechCharge() {
         super();
-        this.group = ShadowMobs.group;
+        this.group = ShadowMobs.instance.group;
         this.itemName = "bloodleechcharge";
         this.setup();
     }

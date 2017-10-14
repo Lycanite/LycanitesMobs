@@ -20,7 +20,7 @@ public class ModelGeken extends ModelCustomObj {
     
     public ModelGeken(float shadowSize) {
     	// Load Model:
-        this.initModel("Geken", JungleMobs.group, "entity/geken");
+        this.initModel("Geken", JungleMobs.instance.group, "entity/geken");
     	
     	// Set Rotation Centers:
     	setPartCenter("head", 0F, 1.7F, 0.1F);

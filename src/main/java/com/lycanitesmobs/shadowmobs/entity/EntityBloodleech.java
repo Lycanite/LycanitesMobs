@@ -32,7 +32,7 @@ public class EntityBloodleech extends EntityProjectileBase {
     // ========== Setup Projectile ==========
     public void setup() {
     	this.entityName = "bloodleech";
-    	this.group = ShadowMobs.group;
+    	this.group = ShadowMobs.instance.group;
     	this.setBaseDamage(2);
         this.knockbackChance = 0.5D;
     	

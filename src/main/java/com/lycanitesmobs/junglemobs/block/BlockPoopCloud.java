@@ -34,7 +34,7 @@ public class BlockPoopCloud extends BlockBase {
         this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, 0));
 		
 		// Properties:
-		this.group = JungleMobs.group;
+		this.group = JungleMobs.instance.group;
 		this.blockName = "poopcloud";
 		this.setup();
 		
@@ -45,7 +45,7 @@ public class BlockPoopCloud extends BlockBase {
 		this.canBeCrushed = true;
 		
 		this.noEntityCollision = true;
-		this.noBreakCollision = noBreakCollision;
+		this.noBreakCollision = true;
 		this.isOpaque = false;
 		
 		this.setBlockUnbreakable();

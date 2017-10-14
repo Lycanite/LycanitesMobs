@@ -19,7 +19,7 @@ public class ModelRoc extends ModelCustomObj {
     
     public ModelRoc(float shadowSize) {
     	// Load Model:
-    	this.initModel("roc", PlainsMobs.group, "entity/roc");
+    	this.initModel("roc", PlainsMobs.instance.group, "entity/roc");
     	
 
 

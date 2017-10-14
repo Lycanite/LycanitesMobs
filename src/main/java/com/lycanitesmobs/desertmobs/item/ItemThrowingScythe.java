@@ -15,7 +15,7 @@ public class ItemThrowingScythe extends ItemCharge {
 	// ==================================================
     public ItemThrowingScythe() {
         super();
-        this.group = DesertMobs.group;
+        this.group = DesertMobs.instance.group;
         this.itemName = "throwingscythe";
         this.setup();
     }

@@ -19,7 +19,7 @@ public class ModelRemobra extends ModelCustomObj {
     
     public ModelRemobra(float shadowSize) {
     	// Load Model:
-    	this.initModel("Remobra", SwampMobs.group, "entity/remobra");
+    	this.initModel("Remobra", SwampMobs.instance.group, "entity/remobra");
     	
 
 

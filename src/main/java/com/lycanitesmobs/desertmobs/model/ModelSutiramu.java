@@ -17,7 +17,7 @@ public class ModelSutiramu extends ModelTemplateArachnid {
 
     public ModelSutiramu(float shadowSize) {
         // Load Model:
-        this.initModel("sutiramu", DesertMobs.group, "entity/sutiramu");
+        this.initModel("sutiramu", DesertMobs.instance.group, "entity/sutiramu");
 
         // Looking:
         this.lookHeadScaleX = 0f;

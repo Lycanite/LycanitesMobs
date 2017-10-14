@@ -21,7 +21,7 @@ public class ModelThresher extends ModelTemplateAquatic {
 
     public ModelThresher(float shadowSize) {
         // Load Model:
-        this.initModel("thresher", FreshwaterMobs.group, "entity/thresher");
+        this.initModel("thresher", FreshwaterMobs.instance.group, "entity/thresher");
 
         // Looking:
         this.lookHeadScaleX = 0.5f;

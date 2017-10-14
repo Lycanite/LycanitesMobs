@@ -11,7 +11,7 @@ public class ItemSaltwaterEgg extends ItemCustomSpawnEgg {
     public ItemSaltwaterEgg() {
         super();
         setUnlocalizedName("saltwaterspawn");
-        this.group = SaltwaterMobs.group;
+        this.group = SaltwaterMobs.instance.group;
         this.itemName = "saltwaterspawn";
         this.texturePath = "saltwaterspawn";
         this.setRegistryName(this.group.filename, this.itemName);

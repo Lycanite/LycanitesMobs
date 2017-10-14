@@ -14,7 +14,7 @@ public class ModelMaug extends ModelTemplateQuadruped {
 
     public ModelMaug(float shadowSize) {
         // Load Model:
-        this.initModel("maug", ArcticMobs.group, "entity/maug");
+        this.initModel("maug", ArcticMobs.instance.group, "entity/maug");
 
         // Trophy:
         this.trophyScale = 0.8F;

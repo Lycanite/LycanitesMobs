@@ -11,7 +11,7 @@ public class ItemPlainsEgg extends ItemCustomSpawnEgg {
     public ItemPlainsEgg() {
         super();
         setUnlocalizedName("plainsspawn");
-        this.group = PlainsMobs.group;
+        this.group = PlainsMobs.instance.group;
         this.itemName = "plainsspawn";
         this.texturePath = "plainsspawn";
         this.setRegistryName(this.group.filename, this.itemName);

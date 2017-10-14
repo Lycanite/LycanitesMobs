@@ -20,7 +20,7 @@ public class ModelTroll extends ModelCustomObj {
     
     public ModelTroll(float shadowSize) {
     	// Load Model:
-    	this.initModel("troll", MountainMobs.group, "entity/troll");
+    	this.initModel("troll", MountainMobs.instance.group, "entity/troll");
     	
 
 

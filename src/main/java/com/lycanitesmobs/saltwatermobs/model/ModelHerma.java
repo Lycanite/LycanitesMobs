@@ -16,7 +16,7 @@ public class ModelHerma extends ModelTemplateArachnid {
 
     public ModelHerma(float shadowSize) {
         // Load Model:
-        this.initModel("herma", SaltwaterMobs.group, "entity/herma");
+        this.initModel("herma", SaltwaterMobs.instance.group, "entity/herma");
 
         // Looking:
         this.lookHeadScaleX = 0;

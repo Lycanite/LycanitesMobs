@@ -11,7 +11,7 @@ public class ItemJungleEgg extends ItemCustomSpawnEgg {
     public ItemJungleEgg() {
         super();
         setUnlocalizedName("junglespawn");
-        this.group = JungleMobs.group;
+        this.group = JungleMobs.instance.group;
         this.itemName = "junglespawn";
         this.texturePath = "junglespawn";
         this.setRegistryName(this.group.filename, this.itemName);

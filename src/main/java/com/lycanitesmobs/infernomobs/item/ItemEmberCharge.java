@@ -15,7 +15,7 @@ public class ItemEmberCharge extends ItemCharge {
 	// ==================================================
     public ItemEmberCharge() {
         super();
-        this.group = InfernoMobs.group;
+        this.group = InfernoMobs.instance.group;
         this.itemName = "embercharge";
         this.setup();
     }

@@ -32,7 +32,7 @@ public class EntityEmber extends EntityProjectileBase {
     // ========== Setup Projectile ==========
     public void setup() {
     	this.entityName = "ember";
-    	this.group = InfernoMobs.group;
+    	this.group = InfernoMobs.instance.group;
     	this.setBaseDamage(1);
     	this.setProjectileScale(0.5F);
         this.knockbackChance = 0D;

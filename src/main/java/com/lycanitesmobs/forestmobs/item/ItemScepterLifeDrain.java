@@ -20,7 +20,7 @@ public class ItemScepterLifeDrain extends ItemScepter {
 	// ==================================================
     public ItemScepterLifeDrain() {
         super();
-    	this.group = ForestMobs.group;
+    	this.group = ForestMobs.instance.group;
     	this.itemName = "lifedrainscepter";
         this.setup();
         this.textureName = "scepterlifedrain";

@@ -18,7 +18,7 @@ import java.util.Set;
 
 public class WorldGenOozeLakes extends WorldGenLakes implements IWorldGenBase {
     public String name = "Ooze Lakes";
-    public GroupInfo group = ArcticMobs.group;
+    public GroupInfo group = ArcticMobs.instance.group;
     public double generateUndergroundChance = 0.04D;
     public double generateSurfaceChance = 0.125D;
 

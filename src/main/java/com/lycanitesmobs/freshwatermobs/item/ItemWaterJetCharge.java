@@ -15,7 +15,7 @@ public class ItemWaterJetCharge extends ItemCharge {
 	// ==================================================
     public ItemWaterJetCharge() {
         super();
-        this.group = FreshwaterMobs.group;
+        this.group = FreshwaterMobs.instance.group;
         this.itemName = "waterjetcharge";
         this.setup();
     }

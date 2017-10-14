@@ -15,7 +15,7 @@ public class ItemScepterSpectralbolt extends ItemScepter {
 	// ==================================================
     public ItemScepterSpectralbolt() {
         super();
-    	this.group = ShadowMobs.group;
+    	this.group = ShadowMobs.instance.group;
     	this.itemName = "spectralboltscepter";
         this.setup();
     }

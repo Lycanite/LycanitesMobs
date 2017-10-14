@@ -36,7 +36,7 @@ public class EntityBlizzard extends EntityProjectileBase {
     // ========== Setup Projectile ==========
     public void setup() {
     	this.entityName = "blizzard";
-    	this.group = ArcticMobs.group;
+    	this.group = ArcticMobs.instance.group;
     	this.setBaseDamage(1);
     	this.setProjectileScale(0.5F);
         this.knockbackChance = 0D;

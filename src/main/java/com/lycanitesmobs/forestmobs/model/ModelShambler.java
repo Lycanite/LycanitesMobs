@@ -20,7 +20,7 @@ public class ModelShambler extends ModelCustomObj {
     
     public ModelShambler(float shadowSize) {
     	// Load Model:
-    	this.initModel("shambler", ForestMobs.group, "entity/shambler");
+    	this.initModel("shambler", ForestMobs.instance.group, "entity/shambler");
     	
 
 

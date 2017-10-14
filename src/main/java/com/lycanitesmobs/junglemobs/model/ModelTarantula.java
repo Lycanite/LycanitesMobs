@@ -20,7 +20,7 @@ public class ModelTarantula extends ModelCustomObj {
     
     public ModelTarantula(float shadowSize) {
     	// Load Model:
-        this.initModel("Tarantula", JungleMobs.group, "entity/tarantula");
+        this.initModel("Tarantula", JungleMobs.instance.group, "entity/tarantula");
     	
     	// Set Rotation Centers:
     	setPartCenter("head", 0F, 0.3F, 0.2F);

@@ -1,0 +1,46 @@
+{
+	"itemName": "entarm",
+	"loadDefault": true,
+	"slotType": "base",
+	"dropMobId": "forestmobs.ent",
+	"dropChance": 0.1,
+	"levelMin": 1,
+	"levelMax": 3,
+	"features": [
+		{
+			"featureType": "damage",
+			"levelMin": 3,
+			"damageAmount": 1,
+			"damageKnockback": 0,
+			"damageCooldown": 0,
+			"damageRange": 0,
+			"damageSweep": 45
+		},
+		{
+			"levelMin": 1,
+			"levelMax": 2,
+			"featureType": "effect",
+			"effectType": "leech",
+			"effectTarget": "self",
+			"effectDuration": 10,
+			"effectStrength": 1
+		},
+		{
+			"levelMin": 2,
+			"levelMax": 3,
+			"featureType": "effect",
+			"effectType": "leech",
+			"effectTarget": "self",
+			"effectDuration": 10,
+			"effectStrength": 2
+		},
+		{
+			"levelMin": 3,
+			"featureType": "effect",
+			"effectType": "leech",
+			"effectTarget": "self",
+			"effectDuration": 10,
+			"effectStrength": 3
+		}
+	]
+}

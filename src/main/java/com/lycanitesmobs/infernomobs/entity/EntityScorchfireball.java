@@ -39,7 +39,7 @@ public class EntityScorchfireball extends EntityProjectileBase {
     // ========== Setup Projectile ==========
     public void setup() {
     	this.entityName = "scorchfire";
-    	this.group = InfernoMobs.group;
+    	this.group = InfernoMobs.instance.group;
     	this.setBaseDamage(1);
     	this.setProjectileScale(2F);
         this.knockbackChance = 0.5D;

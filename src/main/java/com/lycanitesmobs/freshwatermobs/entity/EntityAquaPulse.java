@@ -37,7 +37,7 @@ public class EntityAquaPulse extends EntityProjectileBase {
     // ========== Setup Projectile ==========
     public void setup() {
     	this.entityName = "aquapulse";
-    	this.group = FreshwaterMobs.group;
+    	this.group = FreshwaterMobs.instance.group;
     	this.setBaseDamage(2);
     	this.setProjectileScale(4F);
     	this.waterProof = true;

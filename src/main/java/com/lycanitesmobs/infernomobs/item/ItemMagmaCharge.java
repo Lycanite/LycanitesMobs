@@ -15,7 +15,7 @@ public class ItemMagmaCharge extends ItemCharge {
 	// ==================================================
     public ItemMagmaCharge() {
         super();
-        this.group = InfernoMobs.group;
+        this.group = InfernoMobs.instance.group;
         this.itemName = "magmacharge";
         this.setup();
     }

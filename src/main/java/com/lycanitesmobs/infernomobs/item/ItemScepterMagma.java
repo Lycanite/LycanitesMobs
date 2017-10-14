@@ -16,7 +16,7 @@ public class ItemScepterMagma extends ItemScepter {
 	// ==================================================
     public ItemScepterMagma() {
         super();
-    	this.group = InfernoMobs.group;
+    	this.group = InfernoMobs.instance.group;
     	this.itemName = "magmascepter";
         this.setup();
     }

@@ -21,7 +21,7 @@ public class ModelJoust extends ModelCustomObj {
     
     public ModelJoust(float shadowSize) {
     	// Load Model:
-    	this.initModel("Joust", DesertMobs.group, "entity/joust");
+    	this.initModel("Joust", DesertMobs.instance.group, "entity/joust");
     	
 
 

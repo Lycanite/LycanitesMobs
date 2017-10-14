@@ -130,6 +130,13 @@ public class EntityGeken extends EntityCreatureTameable implements IMob {
         this.nextAttackPhase();
         return true;
     }
+
+
+	// ==================================================
+	//                     Abilities
+	// ==================================================
+	@Override
+	public boolean canClimb() { return true; }
     
     
     // ==================================================

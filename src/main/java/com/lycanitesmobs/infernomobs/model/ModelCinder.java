@@ -20,7 +20,7 @@ public class ModelCinder extends ModelCustomObj {
     
     public ModelCinder(float shadowSize) {
     	// Load Model:
-    	this.initModel("Cinder", InfernoMobs.group, "entity/cinder");
+    	this.initModel("Cinder", InfernoMobs.instance.group, "entity/cinder");
     	
 
 

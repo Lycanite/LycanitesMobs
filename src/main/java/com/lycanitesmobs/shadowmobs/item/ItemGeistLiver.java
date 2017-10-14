@@ -22,7 +22,7 @@ public class ItemGeistLiver extends ItemBase {
 	// ==================================================
     public ItemGeistLiver() {
         super();
-        this.group = ShadowMobs.group;
+        this.group = ShadowMobs.instance.group;
         this.itemName = "geistliver";
         this.setup();
     }

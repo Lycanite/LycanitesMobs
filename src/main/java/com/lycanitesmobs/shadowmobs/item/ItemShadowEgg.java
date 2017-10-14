@@ -11,7 +11,7 @@ public class ItemShadowEgg extends ItemCustomSpawnEgg {
     public ItemShadowEgg() {
         super();
         setUnlocalizedName("shadowspawn");
-        this.group = ShadowMobs.group;
+        this.group = ShadowMobs.instance.group;
         this.itemName = "shadowspawn";
         this.texturePath = "shadowspawn";
         this.setRegistryName(this.group.filename, this.itemName);

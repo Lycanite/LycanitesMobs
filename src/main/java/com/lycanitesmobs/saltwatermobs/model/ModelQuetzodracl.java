@@ -16,7 +16,7 @@ public class ModelQuetzodracl extends ModelTemplateDragon {
 
     public ModelQuetzodracl(float shadowSize) {
         // Load Model:
-        this.initModel("quetzodracl", SaltwaterMobs.group, "entity/quetzodracl");
+        this.initModel("quetzodracl", SaltwaterMobs.instance.group, "entity/quetzodracl");
 
         // Trophy:
         this.trophyScale = 0.8F;

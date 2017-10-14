@@ -20,7 +20,7 @@ public class ModelPhantom extends ModelCustomObj {
     
     public ModelPhantom(float shadowSize) {
     	// Load Model:
-    	this.initModel("phantom", ShadowMobs.group, "entity/phantom");
+    	this.initModel("phantom", ShadowMobs.instance.group, "entity/phantom");
     	
 
 

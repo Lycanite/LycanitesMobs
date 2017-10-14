@@ -30,7 +30,7 @@ public class BlockFrostweb extends BlockBase {
         this.setCreativeTab(LycanitesMobs.blocksTab);
 		
 		// Properties:
-		this.group = ArcticMobs.group;
+		this.group = ArcticMobs.instance.group;
 		this.blockName = "frostweb";
 		this.setup();
 		

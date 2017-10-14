@@ -20,7 +20,7 @@ public class ModelZephyr extends ModelCustomObj {
 
     public ModelZephyr(float shadowSize) {
     	// Load Model:
-    	this.initModel("Zephyr", FreshwaterMobs.group, "entity/zephyr");
+    	this.initModel("Zephyr", FreshwaterMobs.instance.group, "entity/zephyr");
     	
 
 

@@ -20,7 +20,7 @@ public class ModelAfrit extends ModelCustomObj {
     
     public ModelAfrit(float shadowSize) {
     	// Load Model:
-    	this.initModel("afrit", InfernoMobs.group, "entity/afrit");
+    	this.initModel("afrit", InfernoMobs.instance.group, "entity/afrit");
     	
 
 

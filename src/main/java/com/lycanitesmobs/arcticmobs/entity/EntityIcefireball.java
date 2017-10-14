@@ -37,7 +37,7 @@ public class EntityIcefireball extends EntityProjectileBase {
     // ========== Setup Projectile ==========
     public void setup() {
     	this.entityName = "icefire";
-    	this.group = ArcticMobs.group;
+    	this.group = ArcticMobs.instance.group;
     	this.setBaseDamage(2);
     	this.setProjectileScale(2F);
         this.knockbackChance = 0.5D;

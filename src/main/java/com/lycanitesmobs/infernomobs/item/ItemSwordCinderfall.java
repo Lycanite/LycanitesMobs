@@ -22,7 +22,7 @@ public class ItemSwordCinderfall extends ItemSwordBase {
 	// ==================================================
     public ItemSwordCinderfall(String itemName, String textureName) {
         super(ToolMaterial.DIAMOND);
-    	this.group = InfernoMobs.group;
+    	this.group = InfernoMobs.instance.group;
     	this.itemName = itemName;
         this.setup();
         this.textureName = textureName;

@@ -20,7 +20,7 @@ public class ModelJoustAlpha extends ModelCustomObj {
     
     public ModelJoustAlpha(float shadowSize) {
     	// Load Model:
-    	this.initModel("JoustAlpha", DesertMobs.group, "entity/joustalpha");
+    	this.initModel("JoustAlpha", DesertMobs.instance.group, "entity/joustalpha");
     	
 
 

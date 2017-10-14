@@ -19,7 +19,7 @@ public class ModelTrite extends ModelCustomObj {
     
     public ModelTrite(float shadowSize) {
     	// Load Model:
-        this.initModel("trite", DemonMobs.group, "entity/trite");
+        this.initModel("trite", DemonMobs.instance.group, "entity/trite");
     	
     	// Set Rotation Centers:
         this.setPartCenter("head", 0F, 0.35F, 0F);

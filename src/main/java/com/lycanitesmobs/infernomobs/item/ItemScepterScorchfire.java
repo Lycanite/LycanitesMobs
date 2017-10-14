@@ -15,7 +15,7 @@ public class ItemScepterScorchfire extends ItemScepter {
 	// ==================================================
     public ItemScepterScorchfire() {
         super();
-    	this.group = InfernoMobs.group;
+    	this.group = InfernoMobs.instance.group;
     	this.itemName = "scorchfirescepter";
         this.setup();
     }

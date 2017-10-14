@@ -41,7 +41,7 @@ public class EntityDemonicBlast extends EntityProjectileBase {
     // ========== Setup Projectile ==========
     public void setup() {
     	this.entityName = "demoniclightning";
-    	this.group = DemonMobs.group;
+    	this.group = DemonMobs.instance.group;
     	this.setBaseDamage(10);
     	this.setProjectileScale(2.5F);
 		this.pierce = true;

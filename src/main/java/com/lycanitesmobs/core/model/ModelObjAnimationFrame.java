@@ -28,14 +28,14 @@ public class ModelObjAnimationFrame {
     //                      Apply
     // ==================================================
     /** Performs this animation frame. **/
-    public void apply(ModelObj model) {
+    public void apply(Animator animator) {
         if("angle".equals(this.type))
-            model.doAngle(this.amount, this.x, this.y, this.z);
+            animator.doAngle(this.amount, this.x, this.y, this.z);
         if("rotate".equals(this.type))
-            model.doRotate(this.x * this.amount, this.y * this.amount, this.z * this.amount);
+            animator.doRotate(this.x * this.amount, this.y * this.amount, this.z * this.amount);
         if("translate".equals(this.type))
-            model.doTranslate(this.x * this.amount, this.y * this.amount, this.z * this.amount);
+            animator.doTranslate(this.x * this.amount, this.y * this.amount, this.z * this.amount);
         if("scale".equals(this.type))
-            model.doScale(this.x * this.amount, this.y * this.amount, this.z * this.amount);
+            animator.doScale(this.x * this.amount, this.y * this.amount, this.z * this.amount);
     }
 }

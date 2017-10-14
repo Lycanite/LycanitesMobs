@@ -1,0 +1,63 @@
+{
+	"itemName": "darklingskull",
+	"loadDefault": true,
+	"slotType": "blade",
+	"dropMobId": "shadowmobs.darkling",
+	"dropChance": 0.2,
+	"levelMin": 2,
+	"levelMax": 3,
+	"features": [
+		{
+			"featureType": "damage",
+			"levelMax": 2,
+			"damageAmount": 1,
+			"damageKnockback": 0,
+			"damageCooldown": 0,
+			"damageRange": 1,
+			"damageSweep": 45
+		},
+		{
+			"featureType": "damage",
+			"levelMin": 3,
+			"damageAmount": 2,
+			"damageKnockback": 0,
+			"damageCooldown": 0,
+			"damageRange": 1,
+			"damageSweep": 45
+		},
+		{
+			"levelMax": 2,
+			"featureType": "effect",
+			"effectType": "leech",
+			"effectTarget": "self",
+			"effectDuration": 10,
+			"effectStrength": 1
+		},
+		{
+			"levelMin": 2,
+			"levelMax": 3,
+			"featureType": "effect",
+			"effectType": "leech",
+			"effectTarget": "self",
+			"effectDuration": 10,
+			"effectStrength": 2
+		},
+		{
+			"levelMin": 3,
+			"featureType": "effect",
+			"effectType": "leech",
+			"effectTarget": "self",
+			"effectDuration": 10,
+			"effectStrength": 3
+		},
+		{
+			"featureType": "summon",
+			"levelMin": 3,
+			"summonMobId": "shadowmobs.darkling",
+			"summonChance": 0.1,
+			"summonDuration": 60,
+			"summonCountMin": 1,
+			"summonCountMax": 1
+		}
+	]
+}

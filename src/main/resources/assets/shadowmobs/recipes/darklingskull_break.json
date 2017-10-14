@@ -1,0 +1,12 @@
+{
+  "result": {
+    "item": "minecraft:ender_pearl",
+	"count": 4
+  },
+  "ingredients": [
+    {
+      "item": "shadowmobs:darklingskull"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

@@ -21,7 +21,7 @@ public class ModelCrusk extends ModelCustomObj {
     
     public ModelCrusk(float shadowSize) {
     	// Load Model:
-    	this.initModel("Crusk", DesertMobs.group, "entity/crusk");
+    	this.initModel("Crusk", DesertMobs.instance.group, "entity/crusk");
     	
 
 

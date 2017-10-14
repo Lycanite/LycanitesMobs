@@ -19,7 +19,7 @@ public class ModelKobold extends ModelCustomObj {
     
     public ModelKobold(float shadowSize) {
     	// Load Model:
-    	this.initModel("Kobold", PlainsMobs.group, "entity/kobold");
+    	this.initModel("Kobold", PlainsMobs.instance.group, "entity/kobold");
     	
 
 

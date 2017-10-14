@@ -34,7 +34,7 @@ public class EntityDemonicSpark extends EntityProjectileBase {
     // ========== Setup Projectile ==========
     public void setup() {
     	this.entityName = "demonicspark";
-    	this.group = DemonMobs.group;
+    	this.group = DemonMobs.instance.group;
     	this.setBaseDamage(5);
     	this.setProjectileScale(1F);
         this.knockbackChance = 0D;

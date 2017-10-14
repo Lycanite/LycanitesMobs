@@ -20,7 +20,7 @@ public class ModelClink extends ModelCustomObj {
     
     public ModelClink(float shadowSize) {
     	// Load Model:
-    	this.initModel("Clink", DesertMobs.group, "entity/clink");
+    	this.initModel("Clink", DesertMobs.instance.group, "entity/clink");
     	
 
 

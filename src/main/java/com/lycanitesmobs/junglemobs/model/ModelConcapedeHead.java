@@ -19,7 +19,7 @@ public class ModelConcapedeHead extends ModelCustomObj {
     }
     
     public ModelConcapedeHead(float shadowSize) {
-        this.initModel("Concapede", JungleMobs.group, "entity/concapedehead");
+        this.initModel("Concapede", JungleMobs.instance.group, "entity/concapedehead");
     	
     	// Set Rotation Centers:
     	setPartCenter("head", 0F, 0.5F, 0.6F);

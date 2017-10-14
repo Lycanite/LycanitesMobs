@@ -19,7 +19,7 @@ public class ModelSilex extends ModelCustomObj {
 
     public ModelSilex(float shadowSize) {
     	// Load Model:
-    	this.initModel("silex", FreshwaterMobs.group, "entity/silex");
+    	this.initModel("silex", FreshwaterMobs.instance.group, "entity/silex");
     	
 
 

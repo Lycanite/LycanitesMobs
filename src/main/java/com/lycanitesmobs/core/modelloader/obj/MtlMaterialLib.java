@@ -1,5 +1,6 @@
 package com.lycanitesmobs.core.modelloader.obj;
 
+import com.lycanitesmobs.LycanitesMobs;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.BufferUtils;
@@ -96,6 +97,7 @@ public class MtlMaterialLib
         }
         catch(IOException e)
         {
+            LycanitesMobs.printWarning("", "Unable to load a texture from the obj material file.");
             e.printStackTrace();
         }
         return 0;

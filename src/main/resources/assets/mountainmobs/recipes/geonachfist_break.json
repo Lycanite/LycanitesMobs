@@ -1,0 +1,12 @@
+{
+  "result": {
+    "item": "minecraft:iron_ore",
+    "count": 16
+  },
+  "ingredients": [
+	{
+      "item": "mountainmobs:geonachfist"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

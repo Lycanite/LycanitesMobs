@@ -54,16 +54,12 @@ public class TessellatorModel extends ObjModel
     @Override
     public void renderImpl()
     {
-        Collections.sort(objObjects, new Comparator<ObjObject>() {
-
-            @Override
-            public int compare(ObjObject a, ObjObject b) {
-                Vec3d v = Minecraft.getMinecraft().getRenderViewEntity().getPositionVector();
-                double aDist = v.distanceTo(new Vec3d(a.center.x, a.center.y, a.center.z));
-                double bDist = v.distanceTo(new Vec3d(b.center.x, b.center.y, b.center.z));
-                return Double.compare(aDist, bDist);
-            }
-        });
+        Collections.sort(objObjects, (a, b) -> {
+			Vec3d v = Minecraft.getMinecraft().getRenderViewEntity().getPositionVector();
+			double aDist = v.distanceTo(new Vec3d(a.center.x, a.center.y, a.center.z));
+			double bDist = v.distanceTo(new Vec3d(b.center.x, b.center.y, b.center.z));
+			return Double.compare(aDist, bDist);
+		});
         for(ObjObject object : objObjects)
         {
             renderGroup(object);

@@ -10,6 +10,8 @@ import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.core.info.ObjectLists;
 import com.lycanitesmobs.core.item.ItemBase;
 import com.lycanitesmobs.core.item.ItemSlabCustom;
+import com.lycanitesmobs.core.item.equipment.ItemEquipmentPart;
+import com.lycanitesmobs.core.model.ModelEquipmentPart;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.client.Minecraft;
@@ -329,6 +331,10 @@ public class ObjectManager {
                     Minecraft.getMinecraft().getItemColors().registerItemColorHandler(ClientProxy.itemColor, item);
                 }
             }
+            if(item instanceof ItemEquipmentPart) {
+				ItemEquipmentPart itemEquipmentPart = (ItemEquipmentPart)item;
+            	AssetManager.addItemModel(itemEquipmentPart.itemName, new ModelEquipmentPart(itemEquipmentPart.itemName, itemEquipmentPart.group));
+			}
         }
     }
 }

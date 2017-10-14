@@ -20,7 +20,7 @@ public class ModelAbtu extends ModelCustomObj {
     
     public ModelAbtu(float shadowSize) {
     	// Load Model:
-    	this.initModel("abtu", SaltwaterMobs.group, "entity/abtu");
+    	this.initModel("abtu", SaltwaterMobs.instance.group, "entity/abtu");
     	
 
 

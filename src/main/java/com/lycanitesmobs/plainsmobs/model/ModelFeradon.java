@@ -14,7 +14,7 @@ public class ModelFeradon extends ModelTemplateQuadruped {
 
     public ModelFeradon(float shadowSize) {
         // Load Model:
-        this.initModel("feradon", PlainsMobs.group, "entity/feradon");
+        this.initModel("feradon", PlainsMobs.instance.group, "entity/feradon");
 
         // Trophy:
         this.trophyScale = 0.8F;

@@ -22,7 +22,7 @@ public class ItemPoisonGland extends ItemBase {
 	// ==================================================
     public ItemPoisonGland() {
         super();
-        this.group = SwampMobs.group;
+        this.group = SwampMobs.instance.group;
         this.itemName = "poisongland";
         this.setup();
     }

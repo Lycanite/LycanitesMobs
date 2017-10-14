@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemBase extends Item {
-	public static int descriptionWidth = 128;
+	public static int descriptionWidth = 200;
 	
 	public String itemName = "Item";
 	public GroupInfo group = LycanitesMobs.group;

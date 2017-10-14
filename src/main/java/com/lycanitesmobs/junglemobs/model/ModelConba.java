@@ -20,7 +20,7 @@ public class ModelConba extends ModelCustomObj {
     
     public ModelConba(float shadowSize) {
     	// Load Model:
-        this.initModel("Conba", JungleMobs.group, "entity/conba");
+        this.initModel("Conba", JungleMobs.instance.group, "entity/conba");
     	
     	// Set Rotation Centers:
     	setPartCenter("head", 0F, 0.6F, 0.3F);

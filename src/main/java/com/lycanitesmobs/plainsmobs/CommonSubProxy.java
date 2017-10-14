@@ -6,5 +6,5 @@ public class CommonSubProxy {
 	
 	
 	// ========== Client Only ==========
-    public void registerRenders(GroupInfo groupInfo) {}
+    public void registerModels(GroupInfo groupInfo) {}
 }

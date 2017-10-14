@@ -37,7 +37,7 @@ public class EntityArcaneLaser extends EntityProjectileLaser {
     // ========== Setup Projectile ==========
     public void setup() {
     	this.entityName = "arcanelaser";
-    	this.group = MountainMobs.group;
+    	this.group = MountainMobs.instance.group;
     	this.setBaseDamage(4);
     }
     

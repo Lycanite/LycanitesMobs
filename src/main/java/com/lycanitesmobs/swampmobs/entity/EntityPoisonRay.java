@@ -39,7 +39,7 @@ public class EntityPoisonRay extends EntityProjectileLaser {
     // ========== Setup Projectile ==========
     public void setup() {
     	this.entityName = "poisonray";
-    	this.group = SwampMobs.group;
+    	this.group = SwampMobs.instance.group;
     	this.setBaseDamage(3);
     }
     

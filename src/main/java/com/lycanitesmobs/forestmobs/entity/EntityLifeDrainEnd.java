@@ -29,7 +29,7 @@ public class EntityLifeDrainEnd extends EntityProjectileLaserEnd {
     // ========== Setup Projectile ==========
     public void setup() {
     	this.entityName = "lifedrain";
-    	this.group = ForestMobs.group;
+    	this.group = ForestMobs.instance.group;
     }
     
     // ========== Stats ==========

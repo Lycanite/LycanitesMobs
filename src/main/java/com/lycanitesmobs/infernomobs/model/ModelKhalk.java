@@ -19,7 +19,7 @@ public class ModelKhalk extends ModelCustomObj {
     
     public ModelKhalk(float shadowSize) {
     	// Load Model:
-    	this.initModel("Khalk", InfernoMobs.group, "entity/khalk");
+    	this.initModel("Khalk", InfernoMobs.instance.group, "entity/khalk");
     	
 
 

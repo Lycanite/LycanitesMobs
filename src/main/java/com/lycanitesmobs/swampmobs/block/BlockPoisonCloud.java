@@ -34,7 +34,7 @@ public class BlockPoisonCloud extends BlockBase {
         this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, 0));
 
         // Properties:
-		this.group = SwampMobs.group;
+		this.group = SwampMobs.instance.group;
 		this.blockName = "poisoncloud";
 		this.setup();
 		
@@ -45,7 +45,7 @@ public class BlockPoisonCloud extends BlockBase {
 		this.canBeCrushed = true;
 		
 		this.noEntityCollision = true;
-		this.noBreakCollision = noBreakCollision;
+		this.noBreakCollision = true;
 		this.isOpaque = false;
 		
 		this.setBlockUnbreakable();

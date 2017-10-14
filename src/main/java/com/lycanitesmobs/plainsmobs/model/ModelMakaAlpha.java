@@ -19,7 +19,7 @@ public class ModelMakaAlpha extends ModelCustomObj {
     
     public ModelMakaAlpha(float shadowSize) {
     	// Load Model:
-    	this.initModel("MakaAlpha", PlainsMobs.group, "entity/makaalpha");
+    	this.initModel("MakaAlpha", PlainsMobs.instance.group, "entity/makaalpha");
     	
 
 

@@ -2,6 +2,7 @@ package com.lycanitesmobs.plainsmobs;
 
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
+import com.lycanitesmobs.core.Submod;
 import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
 import com.lycanitesmobs.core.info.*;
@@ -44,11 +45,10 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 @Mod(modid = PlainsMobs.modid, name = PlainsMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid, acceptedMinecraftVersions = LycanitesMobs.acceptedMinecraftVersions)
-public class PlainsMobs {
+public class PlainsMobs extends Submod {
 	
 	public static final String modid = "plainsmobs";
 	public static final String name = "Lycanites Plains Mobs";
-	public static GroupInfo group;
 	
 	// Instance:
 	@Instance(modid)
@@ -57,22 +57,34 @@ public class PlainsMobs {
 	// Proxy:
 	@SidedProxy(clientSide="com.lycanitesmobs.plainsmobs.ClientSubProxy", serverSide="com.lycanitesmobs.plainsmobs.CommonSubProxy")
 	public static CommonSubProxy proxy;
-	
-	// ==================================================
-	//                Pre-Initialization
-	// ==================================================
-	@EventHandler
+
+
+	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		// ========== Config ==========
+		super.preInit(event);
+	}
+
+	@Mod.EventHandler
+	public void init(FMLInitializationEvent event) {
+		super.init(event);
+	}
+
+	@Mod.EventHandler
+	public void postInit(FMLPostInitializationEvent event) {
+		super.postInit(event);
+	}
+	
+
+	@Override
+	public void initialSetup() {
 		group = new GroupInfo(this, "Plains Mobs", 0)
 				.setDimensionBlacklist("-1,1").setBiomes("PLAINS, SAVANNA, -SNOWY").setDungeonThemes("PLAINS, DUNGEON")
-                .setEggName("plainsspawn");
+				.setEggName("plainsspawn");
 		group.loadFromConfig();
+	}
 
-		// ========== Set Current Group ==========
-		ObjectManager.setCurrentGroup(group);
-		
-		// ========== Create Items ==========
+	@Override
+	public void createItems() {
 		ObjectManager.addItem("plainsspawn", new ItemPlainsEgg());
 
 		ObjectManager.addItem("quill", new ItemQuill());
@@ -80,10 +92,10 @@ public class PlainsMobs {
 
 		ObjectManager.addItem("makameatraw", new ItemCustomFood("makameatraw", group, 2, 0.5F, ItemCustomFood.FOOD_CLASS.RAW).setPotionEffect(MobEffects.WEAKNESS, 45, 2, 0.8F));
 		ObjectLists.addItem("rawmeat", ObjectManager.getItem("makameatraw"));
-		
+
 		ObjectManager.addItem("makameatcooked", new ItemCustomFood("makameatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(MobEffects.ABSORPTION, 10, 2, 1.0F).setAlwaysEdible());
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("makameatcooked"));
-		
+
 		ObjectManager.addItem("bulwarkburger", new ItemCustomFood("bulwarkburger", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(MobEffects.ABSORPTION, 60, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("bulwarkburger"));
 
@@ -92,49 +104,57 @@ public class PlainsMobs {
 		ObjectManager.addItem("feradontreat", new ItemTreat("feradontreat", group));
 		ObjectManager.addItem("quillbeasttreat", new ItemTreat("quillbeasttreat", group));
 		ObjectManager.addItem("morocktreat", new ItemTreat("morocktreat", group));
-		
-		// ========== Create Mobs ==========
+	}
+
+	@Override
+	public void createBlocks() {
+
+	}
+
+	@Override
+	public void createEntities() {
+		// Mobs:
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ObjectManager.getItem("plainsspawn"), new DispenserBehaviorMobEggCustom());
 		MobInfo newMob;
-        
-        newMob = new MobInfo(group, "kobold", EntityKobold.class, 0x996633, 0xFF7777)
-		        .setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
-		        .addSubspecies(new Subspecies("ashen", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
+
+		newMob = new MobInfo(group, "kobold", EntityKobold.class, 0x996633, 0xFF7777)
+				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
+				.addSubspecies(new Subspecies("ashen", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
 				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "ventoraptor", EntityVentoraptor.class, 0x99BBFF, 0x0033FF)
-		        .setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(0)
-		        .addSubspecies(new Subspecies("ashen", "uncommon")).addSubspecies(new Subspecies("azure", "uncommon"));
+				.setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(0)
+				.addSubspecies(new Subspecies("ashen", "uncommon")).addSubspecies(new Subspecies("azure", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
 				.setSpawnWeight(5).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "maka", EntityMaka.class, 0xAA8855, 0x221100)
-		        .setPeaceful(true).setSummonCost(2).setDungeonLevel(-1)
-		        .addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
+				.setPeaceful(true).setSummonCost(2).setDungeonLevel(-1)
+				.addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("CREATURE, ANIMAL").setDespawn(false)
 				.setSpawnWeight(10).setAreaLimit(10).setGroupLimits(2, 5).setLightDark(true, false).setDungeonWeight(0);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "makaalpha", EntityMakaAlpha.class, 0x663300, 0x000000)
-		        .setPeaceful(false).setSummonCost(4).setDungeonLevel(-1)
-		        .addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
+				.setPeaceful(false).setSummonCost(4).setDungeonLevel(-1)
+				.addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("").setDespawn(false)
 				.setSpawnWeight(1).setAreaLimit(4).setGroupLimits(1, 2).setLightDark(true, false).setDungeonWeight(0);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "zoataur", EntityZoataur.class, 0x442200, 0xFFDDBB)
-		        .setPeaceful(false).setSummonable(true).setSummonCost(4).setDungeonLevel(2)
-		        .addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("light", "uncommon"));
+				.setPeaceful(false).setSummonable(true).setSummonCost(4).setDungeonLevel(2)
+				.addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("light", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
 				.setSpawnWeight(4).setAreaLimit(4).setGroupLimits(1, 3).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "roc", EntityRoc.class, 0xAA0000, 0x00DD44)
-		        .setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(2)
-		        .addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
+				.setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(2)
+				.addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("SKY")
 				.setSpawnWeight(4).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
@@ -160,64 +180,50 @@ public class PlainsMobs {
 				.setSpawnWeight(1).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
-		
-		// ========== Create Projectiles ==========
-		ObjectManager.addProjectile("quill", EntityQuill.class, ObjectManager.getItem("quill"), new DispenserBehaviorQuill());
-		
-		// ========== Register Rendering ==========
-		proxy.registerRenders(this.group);
-	}
-	
-	
-	// ==================================================
-	//                   Initialization
-	// ==================================================
-	@EventHandler
-	public void load(FMLInitializationEvent event) {
-        // ========== Load All Mob Info from Configs ==========
-        MobInfo.loadAllFromConfigs(this.group);
 
-		// ========== Ore Dictionary ==========
+		// Projectiles:
+		ObjectManager.addProjectile("quill", EntityQuill.class, ObjectManager.getItem("quill"), new DispenserBehaviorQuill());
+	}
+
+	@Override
+	public void registerModels() {
+		proxy.registerModels(this.group);
+	}
+
+	@Override
+	public void registerOres() {
 		OreDictionary.registerOre("listAllporkraw", ObjectManager.getItem("makameatraw"));
 		OreDictionary.registerOre("listAllporkcooked", ObjectManager.getItem("makameatcooked"));
 	}
-	
-	
-	// ==================================================
-	//                Post-Initialization
-	// ==================================================
-	@EventHandler
-	public void postInit(FMLPostInitializationEvent event) {
-		// ========== Set Current Group ==========
-		ObjectManager.setCurrentGroup(group);
-		ConfigBase config = ConfigBase.getConfig(group, "spawning");
-		
-		// ========== Mob Events ==========
-        if(MobInfo.getFromName("roc") != null) {
+
+	@Override
+	public void addRecipes() {
+		GameRegistry.addSmelting(ObjectManager.getItem("makameatraw"), new ItemStack(ObjectManager.getItem("makameatcooked"), 1), 0.5f);
+	}
+
+	@Override
+	public void createMobEvents() {
+		if(MobInfo.getFromName("roc") != null) {
 			MobEventBase mobEvent = new MobEventWindStorm("windstorm", this.group);
 			SpawnTypeBase eventSpawner = new SpawnTypeSky("windstorm")
-	            .setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-	        eventSpawner.materials = new Material[] {Material.AIR};
-	        eventSpawner.ignoreBiome = true;
-	        eventSpawner.ignoreLight = true;
-	        eventSpawner.forceSpawning = true;
-	        eventSpawner.ignoreMobConditions = true;
-	        eventSpawner.addSpawn(MobInfo.getFromName("roc"));
-	        mobEvent.addSpawner(eventSpawner);
+					.setChance(1.0D).setBlockLimit(32).setMobLimit(3);
+			eventSpawner.materials = new Material[] {Material.AIR};
+			eventSpawner.ignoreBiome = true;
+			eventSpawner.ignoreLight = true;
+			eventSpawner.forceSpawning = true;
+			eventSpawner.ignoreMobConditions = true;
+			eventSpawner.addSpawn(MobInfo.getFromName("roc"));
+			mobEvent.addSpawner(eventSpawner);
 			MobEventManager.instance.addWorldEvent(mobEvent);
-        }
-		
-		// ========== Remove Vanilla Spawns ==========
-		Biome[] biomes = group.biomes;
-		if(group.controlVanillaSpawns) {
-			EntityRegistry.removeSpawn(EntitySkeleton.class, EnumCreatureType.MONSTER, biomes);
-			EntityRegistry.removeSpawn(EntitySpider.class, EnumCreatureType.MONSTER, biomes);
-			EntityRegistry.removeSpawn(EntityWitch.class, EnumCreatureType.MONSTER, biomes);
-			EntityRegistry.removeSpawn(EntityPig.class, EnumCreatureType.CREATURE, biomes);
-			EntityRegistry.removeSpawn(EntityChicken.class, EnumCreatureType.CREATURE, biomes);
 		}
-		
-		// ========== Smelting ==========
-		GameRegistry.addSmelting(ObjectManager.getItem("makameatraw"), new ItemStack(ObjectManager.getItem("makameatcooked"), 1), 0.5f);
+	}
+
+	@Override
+	public void editVanillaSpawns() {
+		EntityRegistry.removeSpawn(EntitySkeleton.class, EnumCreatureType.MONSTER, this.group.biomes);
+		EntityRegistry.removeSpawn(EntitySpider.class, EnumCreatureType.MONSTER, this.group.biomes);
+		EntityRegistry.removeSpawn(EntityWitch.class, EnumCreatureType.MONSTER, this.group.biomes);
+		EntityRegistry.removeSpawn(EntityPig.class, EnumCreatureType.CREATURE, this.group.biomes);
+		EntityRegistry.removeSpawn(EntityChicken.class, EnumCreatureType.CREATURE, this.group.biomes);
 	}
 }

@@ -18,7 +18,7 @@ public class ModelNetherSoul extends ModelCustomObj {
     
     public ModelNetherSoul(float shadowSize) {
     	// Load Model:
-    	this.initModel("NetherSoul", DemonMobs.group, "entity/nethersoul");
+    	this.initModel("NetherSoul", DemonMobs.instance.group, "entity/nethersoul");
     	
 
 

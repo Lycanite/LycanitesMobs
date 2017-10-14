@@ -19,7 +19,7 @@ public class ModelIka extends ModelCustomObj {
 
     public ModelIka(float shadowSize) {
     	// Load Model:
-    	this.initModel("ika", SaltwaterMobs.group, "entity/ika");
+    	this.initModel("ika", SaltwaterMobs.instance.group, "entity/ika");
     	
 
 

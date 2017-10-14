@@ -20,7 +20,7 @@ public class ModelEnt extends ModelCustomObj {
     
     public ModelEnt(float shadowSize) {
     	// Load Model:
-    	this.initModel("Ent", ForestMobs.group, "entity/ent");
+    	this.initModel("Ent", ForestMobs.instance.group, "entity/ent");
     	
 
 

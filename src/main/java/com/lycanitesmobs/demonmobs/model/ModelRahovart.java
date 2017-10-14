@@ -20,7 +20,7 @@ public class ModelRahovart extends ModelCustomObj {
 
     public ModelRahovart(float shadowSize) {
     	// Load Model:
-    	this.initModel("rahovart", DemonMobs.group, "entity/rahovart");
+    	this.initModel("rahovart", DemonMobs.instance.group, "entity/rahovart");
 
     	// Set Rotation Centers:
     	setPartCenter("head", 0F, 23.275F, 0F);

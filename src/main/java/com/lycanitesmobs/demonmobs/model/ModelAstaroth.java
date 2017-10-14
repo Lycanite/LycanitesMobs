@@ -19,7 +19,7 @@ public class ModelAstaroth extends ModelCustomObj {
     
     public ModelAstaroth(float shadowSize) {
     	// Load Model:
-    	this.initModel("astaroth", DemonMobs.group, "entity/astaroth");
+    	this.initModel("astaroth", DemonMobs.instance.group, "entity/astaroth");
 
     	// Set Rotation Centers:
     	setPartCenter("head", 0F, 1.1F, 0F);

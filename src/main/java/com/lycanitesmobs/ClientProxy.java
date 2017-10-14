@@ -1,31 +1,35 @@
 package com.lycanitesmobs;
 
-import com.lycanitesmobs.core.entity.EntityFear;
-import com.lycanitesmobs.core.gui.GuiOverlay;
-import com.lycanitesmobs.core.gui.TabManager;
 import com.lycanitesmobs.core.block.BlockFluidBase;
+import com.lycanitesmobs.core.entity.EntityFear;
 import com.lycanitesmobs.core.entity.EntityHitArea;
 import com.lycanitesmobs.core.entity.EntityPortal;
 import com.lycanitesmobs.core.gui.GUITabMain;
+import com.lycanitesmobs.core.gui.GuiOverlay;
+import com.lycanitesmobs.core.gui.TabManager;
 import com.lycanitesmobs.core.info.GroupInfo;
 import com.lycanitesmobs.core.item.ItemBase;
+import com.lycanitesmobs.core.item.equipment.ItemEquipmentPart;
+import com.lycanitesmobs.core.model.EquipmentPartModelLoader;
+import com.lycanitesmobs.core.renderer.EquipmentPartRenderer;
 import com.lycanitesmobs.core.renderer.RenderRegister;
+import com.lycanitesmobs.core.tileentity.TileEntityEquipmentPart;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemAir;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class ClientProxy extends CommonProxy {
@@ -82,11 +86,9 @@ public class ClientProxy extends CommonProxy {
 	@Override
     public void registerRenders(GroupInfo groupInfo) {
 
-        // Blocks:
-        //RenderingRegistry.registerBlockHandler(new RenderBlock());
-
-        // Item:
-        //MinecraftForgeClient.registerItemRenderer(ObjectManager.getItem("mobtoken"), new RenderItemMobToken());
+        // Equipment Parts:
+		ModelLoaderRegistry.registerLoader(new EquipmentPartModelLoader());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityEquipmentPart.class, new EquipmentPartRenderer());
 
 		// Special Entites:
         groupInfo.specialClasses.add(EntityHitArea.class);
@@ -129,14 +131,21 @@ public class ClientProxy extends CommonProxy {
 	    if(group == null) {
 	        group = LycanitesMobs.group;
         }
+
+        if(item instanceof ItemEquipmentPart) {
+			ForgeHooksClient.registerTESRItemStack(item, 0, TileEntityEquipmentPart.class);
+		}
+
         if(item instanceof ItemBase) {
-            ItemBase itemBase = (ItemBase) item;
-            ModelLoader.setCustomModelResourceLocation(item, 0, itemBase.getModelResourceLocation());
+			ItemBase itemBase = (ItemBase)item;
+			ModelLoader.setCustomModelResourceLocation(item, 0, itemBase.getModelResourceLocation());
             return;
         }
-        else if(item instanceof ItemAir) {
+
+        if(item instanceof ItemAir) {
 	    	return;
 		}
+
         ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
     }
 }

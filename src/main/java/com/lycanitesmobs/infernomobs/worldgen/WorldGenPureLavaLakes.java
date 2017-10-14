@@ -15,7 +15,7 @@ import java.util.Random;
 
 public class WorldGenPureLavaLakes extends WorldGenLakes implements IWorldGenBase {
     public String name = "Pure Lava Lakes";
-    public GroupInfo group = InfernoMobs.group;
+    public GroupInfo group = InfernoMobs.instance.group;
     public double generateUndergroundChance = 0.04D;
     public double generateSurfaceChance = 0;
 

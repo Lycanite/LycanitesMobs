@@ -16,7 +16,7 @@ public class ItemScepterQuill extends ItemScepter {
 	// ==================================================
     public ItemScepterQuill() {
         super();
-    	this.group = PlainsMobs.group;
+    	this.group = PlainsMobs.instance.group;
     	this.itemName = "quillscepter";
         this.setup();
         this.textureName = "scepterquill";

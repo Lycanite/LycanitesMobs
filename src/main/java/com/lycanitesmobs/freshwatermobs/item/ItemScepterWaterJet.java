@@ -20,7 +20,7 @@ public class ItemScepterWaterJet extends ItemScepter {
 	// ==================================================
     public ItemScepterWaterJet() {
         super();
-    	this.group = FreshwaterMobs.group;
+    	this.group = FreshwaterMobs.instance.group;
     	this.itemName = "waterjetscepter";
         this.setup();
     }

@@ -15,7 +15,7 @@ public class ItemDevilstarCharge extends ItemCharge {
 	// ==================================================
     public ItemDevilstarCharge() {
         super();
-        this.group = DemonMobs.group;
+        this.group = DemonMobs.instance.group;
         this.itemName = "devilstarcharge";
         this.setup();
     }

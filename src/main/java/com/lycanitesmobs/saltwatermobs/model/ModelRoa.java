@@ -21,7 +21,7 @@ public class ModelRoa extends ModelTemplateAquatic {
 
     public ModelRoa(float shadowSize) {
         // Load Model:
-        this.initModel("roa", SaltwaterMobs.group, "entity/roa");
+        this.initModel("roa", SaltwaterMobs.instance.group, "entity/roa");
 
         // Trophy:
         this.trophyScale = 0.8F;

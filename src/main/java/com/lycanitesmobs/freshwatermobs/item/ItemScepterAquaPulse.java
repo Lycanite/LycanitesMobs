@@ -16,7 +16,7 @@ public class ItemScepterAquaPulse extends ItemScepter {
 	// ==================================================
     public ItemScepterAquaPulse() {
         super();
-    	this.group = FreshwaterMobs.group;
+    	this.group = FreshwaterMobs.instance.group;
     	this.itemName = "aquapulsescepter";
         this.setup();
     }

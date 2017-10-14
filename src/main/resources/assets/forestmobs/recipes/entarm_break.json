@@ -1,0 +1,12 @@
+{
+  "result": {
+    "item": "minecraft:stick",
+    "count": 64
+  },
+  "ingredients": [
+	{
+      "item": "forestmobs:entarm"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

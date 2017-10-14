@@ -21,7 +21,7 @@ public class ItemScepterPoisonRay extends ItemScepter {
 	// ==================================================
     public ItemScepterPoisonRay() {
         super();
-    	this.group = SwampMobs.group;
+    	this.group = SwampMobs.instance.group;
     	this.itemName = "poisonrayscepter";
         this.setup();
     }

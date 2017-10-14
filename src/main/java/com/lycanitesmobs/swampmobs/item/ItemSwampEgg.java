@@ -11,7 +11,7 @@ public class ItemSwampEgg extends ItemCustomSpawnEgg {
     public ItemSwampEgg() {
         super();
         setUnlocalizedName("swampspawn");
-        this.group = SwampMobs.group;
+        this.group = SwampMobs.instance.group;
         this.itemName = "swampspawn";
         this.texturePath = "swampspawn";
         this.setRegistryName(this.group.filename, this.itemName);

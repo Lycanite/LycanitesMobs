@@ -1,6 +1,7 @@
 package com.lycanitesmobs.demonmobs.entity;
 
 import com.lycanitesmobs.AssetManager;
+import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.EntityProjectileBase;
 import com.lycanitesmobs.demonmobs.DemonMobs;
 import net.minecraft.entity.Entity;
@@ -128,8 +129,22 @@ public class EntityDemonicBlast extends EntityProjectileBase {
     //========== On Impact Splash/Ricochet ==========
     @Override
     public void onImpact() {
-    	for(int i = 0; i < 8; ++i)
-    		fireProjectile();
+		if(this.getEntityWorld().getGameRules().getBoolean("mobGriefing")) {
+			int explosionRadius = 2;
+			if (this.getThrower() != null && this.getThrower() instanceof EntityCreatureBase) {
+				EntityCreatureBase entityCreatureBase = (EntityCreatureBase) this.getThrower();
+				if (entityCreatureBase.getSubspeciesIndex() > 0) {
+					explosionRadius += 2;
+				}
+				if (entityCreatureBase.getSubspeciesIndex() > 2) {
+					explosionRadius = 2;
+				}
+			}
+			this.getEntityWorld().createExplosion(this, this.posX, this.posY, this.posZ, explosionRadius, true);
+		}
+    	for(int i = 0; i < 8; ++i) {
+			fireProjectile();
+		}
     }
     
     //========== On Impact Particles/Sounds ==========

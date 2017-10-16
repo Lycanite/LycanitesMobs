@@ -26,8 +26,6 @@ import net.minecraft.world.World;
 import java.util.HashMap;
 
 public class EntityCalpod extends EntityCreatureBase implements IMob, IGroupPrey {
-
-	private EntityAIAttackRanged rangedAttackAI;
 	private int calpodSwarmLimit = 5;
 	private boolean calpodGreifing = true;
 
@@ -163,6 +161,14 @@ public class EntityCalpod extends EntityCreatureBase implements IMob, IGroupPrey
     	allyUpdate();
         super.onDeath(par1DamageSource);
     }
+
+
+	// ==================================================
+	//                     Abilities
+	// ==================================================
+	// ========== Movement ==========
+	@Override
+	public boolean canClimb() { return true; }
     
     
     // ==================================================

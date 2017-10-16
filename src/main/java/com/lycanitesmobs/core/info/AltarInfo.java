@@ -41,7 +41,9 @@ public class AltarInfo {
         String[] statNames = new String[] {"Health", "Defense", "Speed", "Damage", "Haste", "Effect", "Pierce"};
         rareSubspeciesMutlipliers = new HashMap<String, Double>();
         for(String statName : statNames) {
-            double defaultValue = 10.0D;
+            double defaultValue = 4.0D;
+            if("Health".equalsIgnoreCase(statName))
+                defaultValue = 10D;
             if("Speed".equalsIgnoreCase(statName))
                 defaultValue = 1.5D;
             rareSubspeciesMutlipliers.put(statName.toUpperCase(), config.getDouble("Altars", statName + " Altar Stat Multiplier", defaultValue));

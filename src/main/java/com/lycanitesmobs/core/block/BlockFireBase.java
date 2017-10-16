@@ -115,7 +115,7 @@ public class BlockFireBase extends BlockBase {
 
         Block blockBelow = world.getBlockState(pos.down()).getBlock();
         boolean isOnFireSource = this.isBlockFireSource(blockBelow, world, pos.down(), EnumFacing.UP);
-        int age = ((Integer)state.getValue(AGE)).intValue();
+        int age = state.getValue(AGE).intValue();
 
         // Environmental Extinguish:
         if (!isOnFireSource && this.canDie(world, pos) && rand.nextFloat() < 0.2F + (float)age * 0.03F) {
@@ -135,6 +135,12 @@ public class BlockFireBase extends BlockBase {
 
         // Natural Extinguish:
         if (!isOnFireSource) {
+            // On Air:
+            if(world.getBlockState(pos.down()).getBlock() == Blocks.AIR) {
+				world.setBlockToAir(pos);
+				return;
+			}
+
             // Can't spread, old or on none solid surface:
             if (!this.canNeighborCatchFire(world, pos)) {
                 if (!world.getBlockState(pos.down()).isSideSolid(world, pos.down(), EnumFacing.UP) || age > 3) {

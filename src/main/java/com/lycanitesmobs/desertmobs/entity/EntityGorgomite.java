@@ -25,7 +25,6 @@ import net.minecraft.world.World;
 import java.util.HashMap;
 
 public class EntityGorgomite extends EntityCreatureBase implements IMob, IGroupPrey {
-	private EntityAIAttackRanged rangedAttackAI;
 	private int gorgomiteSwarmLimit = 10;
     
     // ==================================================
@@ -148,6 +147,14 @@ public class EntityGorgomite extends EntityCreatureBase implements IMob, IGroupP
     	allyUpdate();
         super.onDeath(par1DamageSource);
     }
+
+
+	// ==================================================
+	//                     Abilities
+	// ==================================================
+	// ========== Movement ==========
+	@Override
+	public boolean canClimb() { return true; }
     
     
     // ==================================================

@@ -1,6 +1,5 @@
 package com.lycanitesmobs.demonmobs.entity;
 
-import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupDemon;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
@@ -187,7 +186,7 @@ public class EntityCacodemon extends EntityCreatureRideable implements IGroupDem
     // ========== Set Attack Target ==========
     @Override
     public boolean canAttackClass(Class targetClass) {
-        if(targetClass.isAssignableFrom(EntityTrite.class) || targetClass.isAssignableFrom(EntityAstaroth.class) || targetClass.isAssignableFrom(EntityAsmodeus.class))
+        if(targetClass.isAssignableFrom(EntityTrite.class) || targetClass.isAssignableFrom(EntityAstaroth.class) || targetClass.isAssignableFrom(EntityAsmodeus.class) || targetClass.isAssignableFrom(EntityNetherSoul.class))
             return false;
         return super.canAttackClass(targetClass);
     }

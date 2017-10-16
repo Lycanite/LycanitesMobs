@@ -62,6 +62,7 @@ public class SpawnerManager extends JSONLoader {
 
 		// Load Custom Spawners:
 		File customSpawnersDir = new File(configPath + "spawners");
+		customSpawnersDir.mkdirs();
 		path = customSpawnersDir.toPath();
 		Map<String, JsonObject> customSpawnerJSONs = new HashMap<>();
 		this.loadJsonObjects(gson, path, customSpawnerJSONs, "name");

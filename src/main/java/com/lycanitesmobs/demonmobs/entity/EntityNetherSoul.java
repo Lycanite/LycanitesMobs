@@ -134,6 +134,14 @@ public class EntityNetherSoul extends EntityCreatureTameable implements IMob {
         this.leap(5, this.rotationPitch);
         this.detonateTimer = 10;
     }
+
+	// ========== Set Attack Target ==========
+	@Override
+	public boolean canAttackClass(Class targetClass) {
+		if(targetClass.isAssignableFrom(EntityCacodemon.class) || targetClass.isAssignableFrom(EntityAstaroth.class) || targetClass.isAssignableFrom(EntityAsmodeus.class) || targetClass.isAssignableFrom(EntityRahovart.class))
+			return false;
+		return super.canAttackClass(targetClass);
+	}
 	
 	
 	// ==================================================

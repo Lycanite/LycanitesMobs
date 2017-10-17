@@ -114,6 +114,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     //public AxisAlignedBB renderBoundingBox = null;
 	
 	// Stats:
+	/** The level of this mob, higher levels increase the stat multipliers by a small amount. **/
+	public int level = 1;
 	/** The defense rating of this mob. This is how much damage it can withstand.
 	 * For example, a damage of 4 with a defense of 1 will result in a new damage of 3.
 	 * Defense stat multipliers are applied to this value too, nor whole results are rounded.
@@ -466,7 +468,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     		name += this.getAgeName() + " ";
     	if(!"".equals(this.getSubspeciesTitle()))
     		name += this.getSubspeciesTitle() + " ";
-    	return name + this.getSpeciesName();
+    	return name + this.getSpeciesName() + this.getLevelName();
     }
     
     /** Returns the species name of this entity. **/
@@ -483,6 +485,14 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	}
     	return "";
     }
+
+	/** Returns a mobs level to append to the name if above level 1. **/
+	public String getLevelName() {
+		if(this.getLevel() < 2) {
+			return "";
+		}
+		return " " + I18n.translateToLocal("entity.level") + " " + this.getLevel();
+	}
 
 	/** Returns the id name of this entity, used for referencing this entity by string. **/
 	public String getEntityIdName() {
@@ -1074,7 +1084,17 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	// ==================================================
 	//            Stat Multipliers and Boosts
 	// ==================================================
-    /** Returns the base health for this mob. This is not the current max health. **/
+	/** Returns the level of this mob, higher levels have higher stats. **/
+	public int getLevel() {
+		return this.level;
+	}
+
+	/** Sets the level of this mob, higher levels have higher stats. **/
+	public void setLevel(int level) {
+		this.level = level;
+	}
+
+	/** Returns the base health for this mob. This is not the current max health. **/
     public double getBaseHealth() {
     	if(baseHealthMap.containsKey(this.getClass()))
     		return (baseHealthMap.get(this.getClass()) * this.getHealthMultiplier()) + this.getHealthBoost();
@@ -1100,17 +1120,19 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	}
     }
 
-    /** Returns the shared multiplier for all stats based on difficulty. **/
+    /** Returns the shared multiplier for all stats based on difficulty and mob level. **/
 	public double getDifficultyMultiplier(String stat) {
         if(this.getEntityWorld() == null || this.getEntityWorld().getDifficulty() == null)
-            return MobInfo.difficultyMutlipliers.get("NORMAL" + "-" + stat.toUpperCase());
+            return MobInfo.difficultyMultipliers.get("NORMAL" + "-" + stat.toUpperCase());
 		EnumDifficulty difficulty = this.getEntityWorld().getDifficulty();
 		String difficultyName = "Easy";
 		if(difficulty.getDifficultyId() >= 3)
 			difficultyName = "Hard";
 		else if(difficulty == EnumDifficulty.NORMAL)
 			difficultyName = "Normal";
-		return MobInfo.difficultyMutlipliers.get(difficultyName.toUpperCase() + "-" + stat.toUpperCase());
+		double difficultyMultiplier = MobInfo.difficultyMultipliers.get(difficultyName.toUpperCase() + "-" + stat.toUpperCase());
+		double levelMultiplier = 1 + ((this.getLevel() - 1) * MobInfo.levelMultipliers.get(stat.toUpperCase()));
+		return difficultyMultiplier * levelMultiplier;
 	}
 
     /** Returns the Altar multiplier, usually used by Altar 'mini-boss' rare subspecies. **/
@@ -3613,6 +3635,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
     		this.sizeScale = nbtTagCompound.getDouble("Size");
     		this.updateSize();
     	}
+
+		if(nbtTagCompound.hasKey("MobLevel")) {
+			this.setLevel(nbtTagCompound.getInteger("MobLevel"));
+		}
     	
         super.readEntityFromNBT(nbtTagCompound);
         this.inventory.readFromNBT(nbtTagCompound);
@@ -3651,6 +3677,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	nbtTagCompound.setByte("Color", (byte) this.getColor());
         nbtTagCompound.setByte("Subspecies", (byte) this.getSubspeciesIndex());
     	nbtTagCompound.setDouble("Size", this.sizeScale);
+		nbtTagCompound.setInteger("MobLevel", this.getLevel());
     	
     	if(this.hasHome()) {
     		BlockPos homePos = this.getHomePosition();

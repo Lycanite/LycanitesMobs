@@ -22,7 +22,7 @@ public class EntityAIAttackMelee extends EntityAIBase {
     private boolean longMemory = true;
     private int attackTime;
     private int attackTimeMax = 20;
-    private double attackRange = 1.0D;
+    private double attackRange = 0.5D;
     private float maxChaseDistance = 40.0F;
     private double damage = 1.0D;
     private int failedPathFindingPenalty;
@@ -36,8 +36,6 @@ public class EntityAIAttackMelee extends EntityAIBase {
  	// ==================================================
     public EntityAIAttackMelee(EntityCreatureBase setHost) {
         this.host = setHost;
-        //this.attackRange = (double)((this.host.width * this.host.width) * 2.0F) + 1.0D;
-        this.attackRange = 0.5D;
         this.setMutexBits(3);
     }
     
@@ -66,7 +64,7 @@ public class EntityAIAttackMelee extends EntityAIBase {
     	return this;
     }
     public EntityAIAttackMelee setRange(double range) {
-    	this.attackRange = this.host.width + range;
+    	this.attackRange = range;
     	return this;
     }
     public EntityAIAttackMelee setMaxChaseDistance(float distance) {
@@ -192,7 +190,7 @@ public class EntityAIAttackMelee extends EntityAIBase {
         
         // Damage Target:
         this.attackTime = Math.max(this.attackTime - 1, 0);
-        if(this.host.getDistance(attackTarget.posX, attackTarget.posY + this.host.getFlightOffset(), attackTarget.posZ) <= this.attackRange + this.host.width + attackTarget.width) {
+        if(this.host.getDistance(attackTarget.posX, attackTarget.posY + this.host.getFlightOffset(), attackTarget.posZ) <= this.attackRange + (this.host.width * 0.75f) + attackTarget.width) {
             if(this.attackTime <= 0) {
                 this.attackTime = Math.round((float)this.attackTimeMax + ((float)this.attackTimeMax - ((float)this.attackTimeMax * (float)this.host.getHasteMultiplier())));
                 if(this.host.getHeldItemMainhand() != null)

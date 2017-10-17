@@ -215,6 +215,11 @@ public class MobEventBase {
             entityCreature.setTemporary(this.mobDuration);
         }
     }
+
+    /** Returns the level that mobs spawned from this event should be. **/
+    public int getMobLevel(World world, EntityCreatureBase entityCreature) {
+    	return world.rand.nextInt(10) + 1;
+	}
 	
 
     // ==================================================

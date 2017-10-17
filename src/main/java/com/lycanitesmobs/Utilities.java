@@ -191,24 +191,31 @@ public class Utilities {
 	 */
 	public static Path getAssetPath(Class clazz, String assetDomain, String assetPath) {
 		Path path = null;
+		String assetDir = "/assets/" + assetDomain + "/" + assetPath;
 		try {
 			URL url = clazz.getResource("/assets/" + assetDomain + "/" + ".root");
 			URI uri = url.toURI();
 			if ("file".equals(uri.getScheme())) {
-				path = Paths.get(clazz.getResource("/assets/" + assetDomain + "/" + assetPath).toURI());
+				path = Paths.get(clazz.getResource(assetDir).toURI());
 			}
 			else {
 				if (!"jar".equals(uri.getScheme())) {
 					LycanitesMobs.printWarning("", "Unsupported file scheme: " + uri.getScheme());
 					return null;
 				}
-				FileSystem filesystem = FileSystems.newFileSystem(uri, Collections.emptyMap());
-				path = filesystem.getPath("/assets/" + assetDomain + "/" + assetPath);
+				FileSystem filesystem;
+				try {
+					filesystem = FileSystems.getFileSystem(uri);
+				}
+				catch (Exception e) {
+					filesystem = FileSystems.newFileSystem(uri, Collections.emptyMap());
+				}
+				path = filesystem.getPath(assetDir);
 			}
 		}
 		catch (Exception e) {
-			LycanitesMobs.printWarning("", "There was a problem getting a Path for: " + assetDomain + "/" + assetPath + " Make sure that a file named .root is present in this folder and that the subfolder exists.");
-			//e.printStackTrace();
+			LycanitesMobs.printWarning("", "No data found in: " + assetDir);
+			e.printStackTrace();
 		}
 
 		return path;

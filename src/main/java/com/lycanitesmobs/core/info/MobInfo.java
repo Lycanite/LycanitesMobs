@@ -69,17 +69,20 @@ public class MobInfo {
     /** If true, when a mob picks up a player, the player will be positioned where the mob is rather than offset to where the mob is holding the player at. **/
     public static boolean disablePickupOffsets = false;
 	
-	/** A static map containing all the global multipliers for each stat for each difficulty. They defaults are Easy: 0.5, Normal: 1.0 and Hard: 1.5. **/
-	public static Map<String, Double> difficultyMutlipliers = new HashMap<String, Double>();
+	/** A static map containing all the global multipliers for each stat for each difficulty. The defaults are Easy: 0.5, Normal: 1.0 and Hard: 1.5. **/
+	public static Map<String, Double> difficultyMultipliers = new HashMap<>();
+
+	/** A static map containing all the global multipliers for each stat for mob level scaling. **/
+	public static Map<String, Double> levelMultipliers = new HashMap<>();
 	
 	/** A static ArrayList of all summonable creature names. **/
-	public static List<String> summonableCreatures = new ArrayList<String>();
+	public static List<String> summonableCreatures = new ArrayList<>();
 
     /** A static ArrayList of all tameable creature names. **/
-    public static List<String> tameableCreatures = new ArrayList<String>();
+    public static List<String> tameableCreatures = new ArrayList<>();
 	
 	/** A static Name to Instance map of all mob groups. **/
-	public static Map<String, GroupInfo> mobGroups = new HashMap<String, GroupInfo>();
+	public static Map<String, GroupInfo> mobGroups = new HashMap<>();
 	
 	/** Set to true if Doomlike Dungeons is loaded allowing mobs to register their Dungeon themes. **/
 	public static boolean dlDungeonsLoaded = false;
@@ -207,11 +210,13 @@ public class MobInfo {
         randomSizes = config.getBool("Mob Variations", "Random Sizes", randomSizes, "Set to false to prevent mobs from having a random size variation when spawning, this will not affect mobs that have already spawned.");
         Subspecies.loadGlobalSettings(config);
 
+        // Stats:
+		String[] statNames = new String[] {"Health", "Defense", "Speed", "Damage", "Haste", "Effect", "Pierce"};
+
         // Difficulty:
         String[] difficultyNames = new String[] {"Easy", "Normal", "Hard"};
         double[] difficultyDefaults = new double[] {0.5D, 1.0D, 1.1D};
-        String[] statNames = new String[] {"Health", "Defense", "Speed", "Damage", "Haste", "Effect", "Pierce"};
-		difficultyMutlipliers = new HashMap<String, Double>();
+		difficultyMultipliers = new HashMap<String, Double>();
         config.setCategoryComment("Difficulty Multipliers", "Here you can scale the stats of every mob on a per difficulty basis. Note that on easy, speed is kept at 1.0 by default as 0.5 makes them stupidly slow.");
         int difficultyIndex = 0;
         for(String difficultyName : difficultyNames) {
@@ -221,10 +226,23 @@ public class MobInfo {
                     defaultValue = 1.0D;
                 if("Hard".equalsIgnoreCase(difficultyName) && ("Speed".equalsIgnoreCase(statName)))
                     defaultValue = 1.0D;
-                difficultyMutlipliers.put((difficultyName + "-" + statName).toUpperCase(), config.getDouble("Difficulty Multipliers", difficultyName + " " + statName, defaultValue));
+                difficultyMultipliers.put((difficultyName + "-" + statName).toUpperCase(), config.getDouble("Difficulty Multipliers", difficultyName + " " + statName, defaultValue));
             }
             difficultyIndex++;
         }
+
+        // Level:
+		config.setCategoryComment("Level Multipliers", "Normally mobs are level 1, but Spawners can increase their level. Here you can adjust the percentage of each stat that is added per extra level. So by default at level 2 a mobs health is increased by 10%, at level 3 20% and so on.");
+		for(String statName : statNames) {
+        	double levelValue = 0.1;
+			if("Health".equalsIgnoreCase(statName))
+				levelValue = 0.1D;
+			if("Haste".equalsIgnoreCase(statName))
+				levelValue = 0.05D;
+			if("Speed".equalsIgnoreCase(statName))
+				levelValue = 0.01D;
+			levelMultipliers.put(statName.toUpperCase(), config.getDouble("Level Multipliers", statName, levelValue));
+		}
     }
 	
 	/**

@@ -571,6 +571,7 @@ public class SpawnTypeBase {
                     if (this.mobEvent != null && worldExt != null) {
                         entityCreature.spawnEventType = this.mobEvent.name;
                         entityCreature.spawnEventCount = worldExt.getWorldEventCount();
+                        entityCreature.setLevel(this.mobEvent.getMobLevel(world, entityCreature));
                     }
                 }
                 this.spawnEntity(world, entityLiving, rank);

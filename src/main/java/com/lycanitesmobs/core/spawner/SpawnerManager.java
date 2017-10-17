@@ -79,7 +79,7 @@ public class SpawnerManager extends JSONLoader {
 
 
 		// Create Spawners:
-		LycanitesMobs.printDebug("JSONSpawner", "Loading " + spawnerJSONs.size() + " JSON Spawners...");
+		LycanitesMobs.printDebug("", "Loading " + spawnerJSONs.size() + " JSON Spawners...");
 		for(String spawnerJSONName : spawnerJSONs.keySet()) {
 			try {
 				JsonObject spawnerJSON = spawnerJSONs.get(spawnerJSONName);
@@ -97,7 +97,7 @@ public class SpawnerManager extends JSONLoader {
 				e.printStackTrace();
 			}
 		}
-		LycanitesMobs.printDebug("JSONSpawner", "Complete! " + this.spawners.size() + " JSON Spawners Loaded.");
+		LycanitesMobs.printDebug("", "Complete! " + this.spawners.size() + " JSON Spawners Loaded In Total.");
 	}
 
 

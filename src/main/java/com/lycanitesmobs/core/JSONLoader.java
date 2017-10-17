@@ -55,7 +55,7 @@ public class JSONLoader {
 		}
 		catch(Exception e) {
 			LycanitesMobs.printWarning("", "Unable to read files from directory.\n" + e.toString());
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 

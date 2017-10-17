@@ -73,7 +73,7 @@ public class EquipmentPartManager extends JSONLoader {
 				e.printStackTrace();
 			}
 		}
-		LycanitesMobs.printDebug("Equipment", "Complete! " + this.equipmentParts.size() + " JSON Equipment Parts Loaded.");
+		LycanitesMobs.printDebug("Equipment", "Complete! " + this.equipmentParts.size() + " JSON Equipment Parts Loaded In Total.");
 	}
 
 

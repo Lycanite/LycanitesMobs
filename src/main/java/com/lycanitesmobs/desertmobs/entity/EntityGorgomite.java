@@ -39,7 +39,7 @@ public class EntityGorgomite extends EntityCreatureBase implements IMob, IGroupP
         this.experience = 3;
         this.hasAttackSound = true;
         
-        this.setWidth = 1.3F;
+        this.setWidth = 0.9F;
         this.setHeight = 0.9F;
         this.setupMob();
         

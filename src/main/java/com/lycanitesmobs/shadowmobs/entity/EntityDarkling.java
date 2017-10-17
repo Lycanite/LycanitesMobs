@@ -250,11 +250,11 @@ public class EntityDarkling extends EntityCreatureTameable implements IMob, IGro
         
         return true;
     }
-    
-    
+
+
     // ==================================================
-  	//                     Abilities
-  	// ==================================================
+    //                     Abilities
+    // ==================================================
     // ========== Movement ==========
     @Override
     public boolean canClimb() { return true; }

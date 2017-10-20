@@ -80,7 +80,7 @@ public class EntityQuetzodracl extends EntityCreatureRideable implements IMob, I
 		HashMap<String, Double> baseAttributes = new HashMap<>();
 		baseAttributes.put("maxHealth", 120D);
 		baseAttributes.put("movementSpeed", 0.42D);
-		baseAttributes.put("knockbackResistance", 0.0D);
+		baseAttributes.put("knockbackResistance", 1.0D);
 		baseAttributes.put("followRange", 48D);
 		baseAttributes.put("attackDamage", 2D);
         super.applyEntityAttributes(baseAttributes);

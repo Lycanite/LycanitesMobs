@@ -72,7 +72,6 @@ public class LycanitesMobs {
 	// Spawning:
 	public static SpawnerEventListener spawnerEventListener;
 	public static CustomSpawner legacySpawner;
-	public static MobEventManager mobEventManager;
 	
 	// Creative Tab:
     public static final CreativeTabs itemsTab = new CreativeTabItems(CreativeTabs.getNextID(), modid + ".items");
@@ -157,9 +156,8 @@ public class LycanitesMobs {
 
 
 		// ========== Mob Events ==========
-		mobEventManager = new MobEventManager();
-		mobEventManager.loadMobEvents();
-		FMLCommonHandler.instance().bus().register(mobEventManager);
+		MobEventManager.getInstance().loadConfig();
+		FMLCommonHandler.instance().bus().register(MobEventManager.getInstance());
 
 
         // ========== Item Info ==========
@@ -221,10 +219,6 @@ public class LycanitesMobs {
         ObjectLists.createCustomItems();
 		ObjectLists.createLists();
 
-
-		// ========== Mob Events ==========
-		MobEventBase.loadGlobalSettings();
-
 		
 		// ========== Mod Support ==========
 		DLDungeons.init();
@@ -277,6 +271,7 @@ public class LycanitesMobs {
 		
 		// ========== Mob Events ==========
         SharedMobEvents.createSharedEvents(group);
+        MobEventManager.getInstance().loadAllFromJSON(group);
 
 
         // ========== Seasonal Item Lists ==========

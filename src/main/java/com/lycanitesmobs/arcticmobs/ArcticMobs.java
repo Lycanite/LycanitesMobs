@@ -229,7 +229,7 @@ public class ArcticMobs extends Submod {
 		eventSpawner.ignoreMobConditions = true;
 		eventSpawner.addSpawn(MobInfo.getFromName("reiver"));
 		mobEvent.addSpawner(eventSpawner);
-		MobEventManager.instance.addWorldEvent(mobEvent);
+		MobEventManager.INSTANCE.addWorldEvent(mobEvent);
 
 		mobEvent = new MobEventWintersGrasp("wintersgrasp", this.group);
 		mobEvent.minDay = 10;
@@ -243,7 +243,7 @@ public class ArcticMobs extends Submod {
 		eventSpawner.addSpawn(MobInfo.getFromName("wendigo"));
 		eventSpawner.addSpawn(MobInfo.getFromName("serpix"), 2);
 		mobEvent.addSpawner(eventSpawner);
-		MobEventManager.instance.addWorldEvent(mobEvent);
+		MobEventManager.INSTANCE.addWorldEvent(mobEvent);
 	}
 
 	@Override

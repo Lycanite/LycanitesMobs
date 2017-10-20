@@ -42,7 +42,7 @@ public class SharedMobEvents {
         skySpawner.addSpawn(MobInfo.getFromName("manticore"));
         bamstormEvent.addSpawner(skySpawner);
 
-        MobEventManager.instance.addWorldEvent(bamstormEvent);
+        MobEventManager.INSTANCE.addWorldEvent(bamstormEvent);
 
 
         // Raptor Rampage:
@@ -70,7 +70,7 @@ public class SharedMobEvents {
         spawner.addSpawn(MobInfo.getFromName("uvaraptor"));
         event.addSpawner(spawner);
 
-        MobEventManager.instance.addWorldEvent(event);
+        MobEventManager.INSTANCE.addWorldEvent(event);
 
 
         // Arachnophobia:
@@ -89,7 +89,7 @@ public class SharedMobEvents {
         spawner.addSpawn(MobInfo.getFromName("trite"));
         event.addSpawner(spawner);
 
-        MobEventManager.instance.addWorldEvent(event);
+        MobEventManager.INSTANCE.addWorldEvent(event);
 
 
         // Blade Flurry:
@@ -105,7 +105,7 @@ public class SharedMobEvents {
         spawner.addSpawn(MobInfo.getFromName("quillbeast"));
         event.addSpawner(spawner);
 
-        MobEventManager.instance.addWorldEvent(event);
+        MobEventManager.INSTANCE.addWorldEvent(event);
 
 
 
@@ -136,7 +136,7 @@ public class SharedMobEvents {
             event.addSpawner(skySpawner);
 
         if(event.hasSpawners())
-            MobEventManager.instance.addWorldEvent(event);
+            MobEventManager.INSTANCE.addWorldEvent(event);
 
 
 
@@ -159,7 +159,7 @@ public class SharedMobEvents {
             event.addSpawner(landSpawner);
 
         if(event.hasSpawners())
-            MobEventManager.instance.addWorldEvent(event);
+            MobEventManager.INSTANCE.addWorldEvent(event);
 
 
 
@@ -193,7 +193,7 @@ public class SharedMobEvents {
             event.addSpawner(skySpawner);
 
         if(event.hasSpawners())
-            MobEventManager.instance.addWorldEvent(event);
+            MobEventManager.INSTANCE.addWorldEvent(event);
 
 
 
@@ -234,7 +234,7 @@ public class SharedMobEvents {
         halloweenSkySpawner.addSpawn(MobInfo.getFromName("epion"));
         halloweenEvent.addSpawner(halloweenSkySpawner);
 
-        MobEventManager.instance.addWorldEvent(halloweenEvent);
+        MobEventManager.INSTANCE.addWorldEvent(halloweenEvent);
 
 
 
@@ -267,7 +267,7 @@ public class SharedMobEvents {
         roastingSkySpawner.addSpawn(MobInfo.getFromName("arix"));
         roastingEvent.addSpawner(roastingSkySpawner);
 
-        MobEventManager.instance.addWorldEvent(roastingEvent, "yule");
+        MobEventManager.INSTANCE.addWorldEvent(roastingEvent, "yule");
 
 
         // Rudolph:
@@ -283,7 +283,7 @@ public class SharedMobEvents {
         rudolphLandSpawner.addSpawn(MobInfo.getFromName("jabberwock"));
         rudolphEvent.addSpawner(rudolphLandSpawner);
 
-        MobEventManager.instance.addWorldEvent(rudolphEvent, "yule");
+        MobEventManager.INSTANCE.addWorldEvent(rudolphEvent, "yule");
 
 
         // Salty Tree:
@@ -300,7 +300,7 @@ public class SharedMobEvents {
         saltytreeLandSpawner.addSpawn(MobInfo.getFromName("trent"));
         saltytreeEvent.addSpawner(saltytreeLandSpawner);
 
-        MobEventManager.instance.addWorldEvent(saltytreeEvent, "yule");
+        MobEventManager.INSTANCE.addWorldEvent(saltytreeEvent, "yule");
 
 
         // Satan Claws:
@@ -316,6 +316,6 @@ public class SharedMobEvents {
         satanclawsSkySpawner.addSpawn(MobInfo.getFromName("phantom"));
         satanclawsEvent.addSpawner(satanclawsSkySpawner);
 
-        MobEventManager.instance.addWorldEvent(satanclawsEvent, "yule");
+        MobEventManager.INSTANCE.addWorldEvent(satanclawsEvent, "yule");
     }
 }

@@ -4,7 +4,6 @@ import com.lycanitesmobs.BlockMaker;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.Submod;
-import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.info.*;
 import com.lycanitesmobs.core.item.ItemCustomFood;
 import com.lycanitesmobs.core.item.ItemTreat;
@@ -26,11 +25,9 @@ import com.lycanitesmobs.shadowmobs.mobevent.MobEventShadowGames;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -38,8 +35,6 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 @Mod(modid = ShadowMobs.modid, name = ShadowMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid, acceptedMinecraftVersions = LycanitesMobs.acceptedMinecraftVersions)
 public class ShadowMobs extends Submod {
@@ -234,7 +229,7 @@ public class ShadowMobs extends Submod {
 		eventSpawner.addSpawn(MobInfo.getFromName("grue"));
 		eventSpawner.addSpawn(MobInfo.getFromName("shade"));
 		mobEvent.addSpawner(eventSpawner);
-		MobEventManager.instance.addWorldEvent(mobEvent);
+		MobEventManager.INSTANCE.addWorldEvent(mobEvent);
 
 		mobEvent = new MobEventBlackPlague("blackplague", this.group).setDimensions("-1");
 		mobEvent.minDay = 10;
@@ -248,7 +243,7 @@ public class ShadowMobs extends Submod {
 		eventSpawner.addSpawn(MobInfo.getFromName("geist"));
 		eventSpawner.addSpawn(MobInfo.getFromName("phantom"));
 		mobEvent.addSpawner(eventSpawner);
-		MobEventManager.instance.addWorldEvent(mobEvent);
+		MobEventManager.INSTANCE.addWorldEvent(mobEvent);
 
 		AltarInfo lunarGrueAltar = new AltarInfoLunarGrue("LunarGrueAltar");
 		AltarInfo.addAltar(lunarGrueAltar);

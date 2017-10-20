@@ -2,7 +2,6 @@ package com.lycanitesmobs.junglemobs;
 
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.Submod;
-import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.info.*;
 import com.lycanitesmobs.core.spawning.SpawnTypeBase;
 import com.lycanitesmobs.junglemobs.block.BlockPropolis;
@@ -10,7 +9,6 @@ import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
 import com.lycanitesmobs.junglemobs.entity.*;
-import com.lycanitesmobs.core.info.*;
 import com.lycanitesmobs.core.item.ItemCustomFood;
 import com.lycanitesmobs.core.item.ItemTreat;
 import com.lycanitesmobs.core.mobevent.MobEventBase;
@@ -21,7 +19,6 @@ import com.lycanitesmobs.junglemobs.block.BlockPoopCloud;
 import com.lycanitesmobs.junglemobs.block.BlockQuickWeb;
 import com.lycanitesmobs.junglemobs.block.BlockVeswax;
 import com.lycanitesmobs.junglemobs.dispenser.DispenserBehaviorPoop;
-import com.lycanitesmobs.junglemobs.entity.*;
 import com.lycanitesmobs.junglemobs.item.ItemJungleEgg;
 import com.lycanitesmobs.junglemobs.item.ItemPoopCharge;
 import com.lycanitesmobs.junglemobs.item.ItemScepterPoop;
@@ -40,9 +37,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -51,8 +46,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 @Mod(modid = JungleMobs.modid, name = JungleMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid, acceptedMinecraftVersions = LycanitesMobs.acceptedMinecraftVersions)
 public class JungleMobs extends Submod {
@@ -228,7 +221,7 @@ public class JungleMobs extends Submod {
 			eventSpawner.ignoreMobConditions = true;
 			eventSpawner.addSpawn(MobInfo.getFromName("conba"));
 			mobEvent.addSpawner(eventSpawner);
-			MobEventManager.instance.addWorldEvent(mobEvent);
+			MobEventManager.INSTANCE.addWorldEvent(mobEvent);
 		}
 
 		// The Swarm:
@@ -259,7 +252,7 @@ public class JungleMobs extends Submod {
 			theSwarmEvent.addSpawner(theSwarmSkySpawner);
 
 		if(theSwarmEvent.hasSpawners())
-			MobEventManager.instance.addWorldEvent(theSwarmEvent);
+			MobEventManager.INSTANCE.addWorldEvent(theSwarmEvent);
 	}
 
 	@Override

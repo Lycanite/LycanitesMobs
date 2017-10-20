@@ -34,7 +34,7 @@ public class ModelObj extends ModelCustom {
     public static float modelYPosOffset = -1.5F;
 
 	// Model:
-    /** An instance of the model, the model should only be set once and not during every tick or things will get very laggy! **/
+    /** An INSTANCE of the model, the model should only be set once and not during every tick or things will get very laggy! **/
     public TessellatorModel wavefrontObject;
 
     /** A list of all parts that belong to this model's wavefront obj. **/
@@ -74,11 +74,11 @@ public class ModelObj extends ModelCustom {
     public boolean dontColor = false;
 
     // Animating:
-    /** The animator instance, this is a helper class that performs actual GL11 functions, etc. **/
+    /** The animator INSTANCE, this is a helper class that performs actual GL11 functions, etc. **/
     protected Animator animator;
 	/** The current animation part that is having an animation frame generated for. **/
 	protected ModelObjPart currentAnimationPart;
-    /** A list of models states that hold unique render/animation data for a specific entity instance. **/
+    /** A list of models states that hold unique render/animation data for a specific entity INSTANCE. **/
     protected Map<Entity, ModelObjState> modelStates = new HashMap<>();
     /** The current model state for the entity that is being animated and rendered. **/
     protected ModelObjState currentModelState;

@@ -51,7 +51,7 @@ public class Spawner {
     /** Determines how many Conditions must be met. If 0 or less all are required. **/
     public int conditionsRequired = 0;
 
-	/** Sets how many times any Trigger must activate (per player) before a wave is spawned. **/
+	/** Sets how many times any Trigger must activate (per player) before a wave is spawned. Only supported by player based triggers **/
 	public int triggersRequired = 1;
 
 	/** A list of messages to send to the player whenever the associated count is reached. **/
@@ -248,7 +248,7 @@ public class Spawner {
 	/**
 	 * Starts a new spawn, usually called by Triggers.
 	 * @param world The World to spawn in.
-	 * @param player The player that is being spawned around.
+	 * @param player The player that is being spawned around. if null all player based checks and features are ignored.
 	 * @param triggerPos The location that the spawn was triggered, usually used as the center for spawning around or on.
 	 * @param level The level of the spawn trigger, higher levels are from rarer spawn conditions and can result in tougher mobs being spawned.
 	 * @param countAmount How much this trigger affects the trigger count by.
@@ -262,7 +262,7 @@ public class Spawner {
 		}
 
 		// Only One Trigger Required:
-		if(this.triggersRequired <= 1) {
+		if(this.triggersRequired <= 1 || player == null) {
 			LycanitesMobs.printDebug("JSONSpawner", "Only one trigger required.");
 			return this.doSpawn(world, player, triggerPos, level);
 		}
@@ -410,7 +410,7 @@ public class Spawner {
 				}
 			}
 			this.spawnEntity(world, worldExt, entityLiving, level, mobSpawn, player);
-			if(MobEventBase.aggressiveEvents && this.mobEventSpawner && worldExt != null && worldExt.getWorldEvent() != null && player != null) {
+			if(MobEventManager.getInstance().aggressiveEvents && this.mobEventSpawner && worldExt != null && worldExt.getWorldEvent() != null && player != null) {
 				entityLiving.setAttackTarget(player);
 			}
 
@@ -492,7 +492,7 @@ public class Spawner {
     /**
      * Returns all viable mobs that can be spawned within the spawn conditions. Spawn block costs, chances and biomes are checked here.
      * @param world The World to spawn in.
-     * @param player The player that is being spawned around.
+     * @param player The player that is being spawned around. Can be null.
 	 * @param blockCount The total number of possible spawn positions found.
 	 * @param biomes A list of all biomes within the spawning area. If null, biome checks will be ignored.
      * @return The MobSpawn of the mob to spawn or null if no mob can be spawned at the position.
@@ -556,10 +556,10 @@ public class Spawner {
 
 	/**
 	 * Performs a check from the Mob Instance, this mob has not yet been spawned into the world, but has been instantiated and is able to do per mob checks.
-	 * @param entityLiving The to be spawned mob instance.
+	 * @param entityLiving The to be spawned mob INSTANCE.
 	 * @param mobSpawn The MobSpawn that is controlling the conditions of the spawn.
 	 * @param world The World to spawn in.
-	 * @param player The Player that triggered the spawn.
+	 * @param player The Player that triggered the spawn. Can be null.
 	 * @param spawnPos The position to spawn at.
 	 * @param level The level of the spawn.
 	 * @param forgeForced If true, the Forge Can Spawn Event wants to force this mob to spawn.
@@ -612,7 +612,7 @@ public class Spawner {
 	}
 
 	/**
-	 * Spawns an entity into the world. The mob instance should have already been positioned.
+	 * Spawns an entity into the world. The mob INSTANCE should have already been positioned.
 	 * @param world The world to spawn in.
 	 * @param entityLiving The entity to spawn.
 	 */

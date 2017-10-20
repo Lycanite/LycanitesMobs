@@ -3,6 +3,7 @@ package com.lycanitesmobs.swampmobs.mobevent;
 import com.lycanitesmobs.core.entity.EntityProjectileRapidFire;
 import com.lycanitesmobs.core.info.GroupInfo;
 import com.lycanitesmobs.core.mobevent.MobEventBase;
+import com.lycanitesmobs.core.mobevent.MobEventManager;
 import com.lycanitesmobs.swampmobs.entity.EntityVenomShot;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.world.World;
@@ -27,7 +28,7 @@ public class MobEventWingedVenom extends MobEventBase {
     @Override
     public void onStart(World world, int rank) {
         super.onStart(world, rank);
-        if(canAffectWeather) {
+        if(MobEventManager.getInstance().canAffectWeather) {
             world.getWorldInfo().setRaining(false);
             world.getWorldInfo().setThundering(false);
         }

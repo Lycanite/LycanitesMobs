@@ -215,7 +215,7 @@ public class Utilities {
 		}
 		catch (Exception e) {
 			LycanitesMobs.printWarning("", "No data found in: " + assetDir);
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 
 		return path;

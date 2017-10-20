@@ -6,7 +6,11 @@
 	"ignoreBiomes": true,
 	"ignoreLightLevel": true,
 	"ignoreForgeCanSpawnEvent": true,
-	"conditions": [],
+	"conditions": [
+		{
+			"type": "player"
+		}
+	],
 	"triggers": [
 		{
 			"type": "kill",

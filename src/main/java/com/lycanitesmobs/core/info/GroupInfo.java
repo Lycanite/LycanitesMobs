@@ -199,7 +199,7 @@ public class GroupInfo {
     /**
      * Sets the default dungeon themes.
      * @param string An array of Strings for each theme. Themes are: FOREST, PLAINS, MOUNTAIN, SWAMP, WATER, DESERT, WASTELAND, JUNGLE, FROZEN, NETHER, END, MUSHROOM, MAGICAL, DUNGEON, NECRO, URBAN, FIERY, SHADOW, PARADISE
-	 * @return MobInfo instance for chaining.
+	 * @return MobInfo INSTANCE for chaining.
      */
     public GroupInfo setDungeonThemes(String string) {
         this.dungeonThemes = string;

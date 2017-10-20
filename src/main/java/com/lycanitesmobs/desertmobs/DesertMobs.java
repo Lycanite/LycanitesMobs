@@ -2,7 +2,6 @@ package com.lycanitesmobs.desertmobs;
 
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.Submod;
-import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.info.*;
 import com.lycanitesmobs.core.spawning.SpawnTypeBase;
 import com.lycanitesmobs.desertmobs.entity.*;
@@ -21,12 +20,9 @@ import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.*;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -35,8 +31,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 @Mod(modid = DesertMobs.modid, name = DesertMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid, acceptedMinecraftVersions = LycanitesMobs.acceptedMinecraftVersions)
 public class DesertMobs extends Submod {
@@ -208,7 +202,7 @@ public class DesertMobs extends Submod {
 		eventSpawner.ignoreMobConditions = true;
 		eventSpawner.addSpawn(MobInfo.getFromName("gorgomite"));
 		mobEvent.addSpawner(eventSpawner);
-		MobEventManager.instance.addWorldEvent(mobEvent);
+		MobEventManager.INSTANCE.addWorldEvent(mobEvent);
 	}
 
 	@Override

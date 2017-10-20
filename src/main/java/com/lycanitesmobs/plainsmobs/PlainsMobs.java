@@ -210,7 +210,7 @@ public class PlainsMobs extends Submod {
 			eventSpawner.ignoreMobConditions = true;
 			eventSpawner.addSpawn(MobInfo.getFromName("roc"));
 			mobEvent.addSpawner(eventSpawner);
-			MobEventManager.instance.addWorldEvent(mobEvent);
+			MobEventManager.INSTANCE.addWorldEvent(mobEvent);
 		}
 	}
 

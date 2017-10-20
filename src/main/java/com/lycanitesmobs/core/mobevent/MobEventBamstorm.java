@@ -21,7 +21,7 @@ public class MobEventBamstorm extends MobEventBase {
     @Override
     public void onStart(World world, int rank) {
         super.onStart(world, rank);
-        if(canAffectWeather) {
+        if(MobEventManager.getInstance().canAffectWeather) {
             world.getWorldInfo().setRaining(true);
             world.getWorldInfo().setThundering(true);
         }

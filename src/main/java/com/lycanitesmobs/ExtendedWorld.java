@@ -16,7 +16,7 @@ public class ExtendedWorld extends WorldSavedData {
 	public static String EXT_PROP_NAME = "LycanitesMobs";
 	public static Map<World, ExtendedWorld> loadedExtWorlds = new HashMap<World, ExtendedWorld>();
 
-    /** The world instance to work with. **/
+    /** The world INSTANCE to work with. **/
 	public World world;
     public long lastEventUpdateTime = 0;
     /** The last minute used when checking for scheduled events. **/
@@ -151,7 +151,7 @@ public class ExtendedWorld extends WorldSavedData {
 		if(this.getWorldEventName() == null || "".equals(this.getWorldEventName())) {
 			return null;
 		}
-		return MobEventManager.instance.getMobEvent(this.getWorldEventName());
+		return MobEventManager.INSTANCE.getMobEvent(this.getWorldEventName());
 	}
 	public int getWorldEventCount() { return this.worldEventCount; }
 	
@@ -203,8 +203,8 @@ public class ExtendedWorld extends WorldSavedData {
                     scheduleEntryMinute = Integer.parseInt(scheduleEntryParts[2]);
                 }
 
-                if(!MobEventManager.instance.worldMobEvents.containsKey(scheduleEntryParts[0])) continue;
-                MobEventBase scheduleEntryEvent = MobEventManager.instance.worldMobEvents.get(scheduleEntryParts[0]);
+                if(!MobEventManager.INSTANCE.worldMobEvents.containsKey(scheduleEntryParts[0])) continue;
+                MobEventBase scheduleEntryEvent = MobEventManager.INSTANCE.worldMobEvents.get(scheduleEntryParts[0]);
 
                 if(scheduleEntryEvent == null) continue;
                 if(scheduleEntryDay < scheduleEntryEvent.firstScheduleDay || scheduleEntryEvent.firstScheduleDay < 0)
@@ -266,7 +266,7 @@ public class ExtendedWorld extends WorldSavedData {
     //                 Start World Event
     // ==================================================
     /**
-     * Starts the provided World Event (provided by instance) on the provided world.
+     * Starts the provided World Event (provided by INSTANCE) on the provided world.
      *  **/
     public void startWorldEvent(MobEventBase mobEvent) {
         if(mobEvent == null) {
@@ -303,8 +303,8 @@ public class ExtendedWorld extends WorldSavedData {
      *  **/
     public void startWorldEvent(String mobEventName) {
         MobEventBase mobEvent;
-        if(MobEventManager.instance.worldMobEvents.containsKey(mobEventName)) {
-            mobEvent = MobEventManager.instance.worldMobEvents.get(mobEventName);
+        if(MobEventManager.INSTANCE.worldMobEvents.containsKey(mobEventName)) {
+            mobEvent = MobEventManager.INSTANCE.worldMobEvents.get(mobEventName);
             if(!mobEvent.isEnabled()) {
                 LycanitesMobs.printWarning("", "Tried to start a world event that was disabled with the name: '" + mobEventName + "' on " + (this.world.isRemote ? "Client" : "Server"));
                 return;
@@ -347,7 +347,7 @@ public class ExtendedWorld extends WorldSavedData {
     //                 Start Mob Event
     // ==================================================
     /**
-     * Starts a provided Mob Event (provided by instance) on the provided world.
+     * Starts a provided Mob Event (provided by INSTANCE) on the provided world.
      *  **/
     public void startMobEvent(MobEventBase mobEvent, int originX, int originY, int originZ, int rank) {
         if(mobEvent == null) {
@@ -395,8 +395,8 @@ public class ExtendedWorld extends WorldSavedData {
 
     public MobEventBase startMobEvent(String mobEventName, int originX, int originY, int originZ, int rank) {
         MobEventBase mobEvent;
-        if(MobEventManager.instance.allMobEvents.containsKey(mobEventName)) {
-            mobEvent = MobEventManager.instance.allMobEvents.get(mobEventName);
+        if(MobEventManager.INSTANCE.allMobEvents.containsKey(mobEventName)) {
+            mobEvent = MobEventManager.INSTANCE.allMobEvents.get(mobEventName);
             if(!mobEvent.isEnabled()) {
                 LycanitesMobs.printWarning("", "Tried to start a mob event that was disabled with the name: '" + mobEventName + "' on " + (this.world.isRemote ? "Client" : "Server"));
                 return null;

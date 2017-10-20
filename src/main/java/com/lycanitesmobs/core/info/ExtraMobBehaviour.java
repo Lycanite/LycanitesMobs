@@ -5,7 +5,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class ExtraMobBehaviour {
 	// ========== Mob ==========
-	/** The instance of the mob this extra behaviour belongs to. **/
+	/** The INSTANCE of the mob this extra behaviour belongs to. **/
 	public EntityCreatureBase host;
 	
 	// ========== Stats ==========

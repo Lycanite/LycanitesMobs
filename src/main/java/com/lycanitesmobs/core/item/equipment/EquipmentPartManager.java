@@ -22,7 +22,7 @@ public class EquipmentPartManager extends JSONLoader {
 	public Map<String, ItemEquipmentPart> equipmentParts = new HashMap<>();
 
 
-	/** Returns the main EquipmentPartManager instance or creates it and returns it. **/
+	/** Returns the main EquipmentPartManager INSTANCE or creates it and returns it. **/
 	public static EquipmentPartManager getInstance() {
 		if(INSTANCE == null) {
 			INSTANCE = new EquipmentPartManager();

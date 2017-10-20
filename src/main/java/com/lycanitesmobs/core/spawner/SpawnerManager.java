@@ -32,7 +32,7 @@ public class SpawnerManager extends JSONLoader {
 	public Map<String, Spawner> spawners = new HashMap<>();
 
 
-	/** Returns the main SpawnerManager instance or creates it and returns it. **/
+	/** Returns the main SpawnerManager INSTANCE or creates it and returns it. **/
 	public static SpawnerManager getInstance() {
 		if(INSTANCE == null) {
 			INSTANCE = new SpawnerManager();

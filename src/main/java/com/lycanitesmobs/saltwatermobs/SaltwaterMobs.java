@@ -16,19 +16,15 @@ import com.lycanitesmobs.core.info.Subspecies;
 import com.lycanitesmobs.core.item.ItemTreat;
 import com.lycanitesmobs.core.mobevent.MobEventBase;
 import com.lycanitesmobs.core.spawning.SpawnTypeSky;
-import com.lycanitesmobs.saltwatermobs.entity.*;
 import com.lycanitesmobs.saltwatermobs.item.ItemSaltwaterEgg;
 import com.lycanitesmobs.saltwatermobs.mobevent.MobEventSeaStorm;
 import com.lycanitesmobs.saltwatermobs.mobevent.MobEventSharknado;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -36,8 +32,6 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 @Mod(modid = SaltwaterMobs.modid, name = SaltwaterMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid, acceptedMinecraftVersions = LycanitesMobs.acceptedMinecraftVersions)
 public class SaltwaterMobs extends Submod {
@@ -206,7 +200,7 @@ public class SaltwaterMobs extends Submod {
 		eventSpawner.ignoreMobConditions = true;
 		eventSpawner.addSpawn(MobInfo.getFromName("abtu"));
 		mobEvent.addSpawner(eventSpawner);
-		MobEventManager.instance.addWorldEvent(mobEvent);
+		MobEventManager.INSTANCE.addWorldEvent(mobEvent);
 
 		mobEvent = new MobEventSharknado("sharknado", this.group);
 		eventSpawner = new SpawnTypeSky("sharknado")
@@ -227,7 +221,7 @@ public class SaltwaterMobs extends Submod {
 		eventSpawner.ignoreMobConditions = true;
 		eventSpawner.addSpawn(MobInfo.getFromName("roa"));
 		mobEvent.addSpawner(eventSpawner);
-		MobEventManager.instance.addWorldEvent(mobEvent);
+		MobEventManager.INSTANCE.addWorldEvent(mobEvent);
 	}
 
 	@Override

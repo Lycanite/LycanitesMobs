@@ -2,6 +2,7 @@ package com.lycanitesmobs.shadowmobs.mobevent;
 
 import com.lycanitesmobs.core.info.GroupInfo;
 import com.lycanitesmobs.core.mobevent.MobEventBase;
+import com.lycanitesmobs.core.mobevent.MobEventManager;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.world.World;
 
@@ -33,7 +34,7 @@ public class MobEventBlackPlague extends MobEventBase {
     		targetTime += dayTime;
     	}
 
-		if(canAffectTime)
+		if(MobEventManager.getInstance().canAffectTime)
 			world.provider.setWorldTime(currentTime - excessTime + targetTime);
     }
 }

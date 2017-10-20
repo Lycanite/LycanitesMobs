@@ -2,7 +2,6 @@ package com.lycanitesmobs.mountainmobs;
 
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.Submod;
-import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.info.*;
 import com.lycanitesmobs.core.spawning.SpawnTypeBase;
 import com.lycanitesmobs.mountainmobs.entity.*;
@@ -10,7 +9,6 @@ import com.lycanitesmobs.mountainmobs.item.*;
 import com.lycanitesmobs.mountainmobs.mobevent.MobEventBoulderDash;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
-import com.lycanitesmobs.core.info.*;
 import com.lycanitesmobs.core.item.ItemCustomFood;
 import com.lycanitesmobs.core.item.ItemTreat;
 import com.lycanitesmobs.core.mobevent.MobEventBase;
@@ -18,9 +16,7 @@ import com.lycanitesmobs.core.mobevent.MobEventManager;
 import com.lycanitesmobs.core.spawning.SpawnTypeSky;
 import com.lycanitesmobs.mountainmobs.dispenser.DispenserBehaviorArcaneLaserStorm;
 import com.lycanitesmobs.mountainmobs.dispenser.DispenserBehaviorBoulderBlast;
-import com.lycanitesmobs.mountainmobs.entity.*;
 import com.lycanitesmobs.mountainmobs.info.AltarInfoCelestialGeonach;
-import com.lycanitesmobs.mountainmobs.item.*;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
@@ -28,12 +24,9 @@ import net.minecraft.entity.monster.EntityWitch;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.passive.EntitySheep;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -42,8 +35,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 @Mod(modid = MountainMobs.modid, name = MountainMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid, acceptedMinecraftVersions = LycanitesMobs.acceptedMinecraftVersions)
 public class MountainMobs extends Submod {
@@ -206,7 +197,7 @@ public class MountainMobs extends Submod {
 			eventSpawner.ignoreMobConditions = true;
 			eventSpawner.addSpawn(MobInfo.getFromName("geonach"));
 			mobEvent.addSpawner(eventSpawner);
-			MobEventManager.instance.addWorldEvent(mobEvent);
+			MobEventManager.INSTANCE.addWorldEvent(mobEvent);
 		}
 
 		AltarInfo celestialGeonachAltar = new AltarInfoCelestialGeonach("CelestialGeonachAltar");

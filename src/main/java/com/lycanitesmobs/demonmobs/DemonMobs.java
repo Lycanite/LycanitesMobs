@@ -5,7 +5,6 @@ import com.lycanitesmobs.BlockMaker;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.Submod;
-import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
 import com.lycanitesmobs.core.info.*;
 import com.lycanitesmobs.core.item.ItemCustomFood;
@@ -35,13 +34,11 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.init.Biomes;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -50,8 +47,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 @Mod(modid = DemonMobs.modid, name = DemonMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid, acceptedMinecraftVersions = LycanitesMobs.acceptedMinecraftVersions)
 public class DemonMobs extends Submod {
@@ -252,14 +247,14 @@ public class DemonMobs extends Submod {
 			eventSpawner.addSpawn(MobInfo.getFromName("nethersoul"));
 			eventSpawner.addSpawn(MobInfo.getFromName("cacodemon"));
 			mobEvent.addSpawner(eventSpawner);
-			MobEventManager.instance.addWorldEvent(mobEvent);
+			MobEventManager.INSTANCE.addWorldEvent(mobEvent);
 		}
 
 		MobEventBase mobEvent = new MobEventRahovart("rahovart", this.group).setDimensions("");
-		MobEventManager.instance.addMobEvent(mobEvent);
+		MobEventManager.INSTANCE.addMobEvent(mobEvent);
 
 		mobEvent = new MobEventAsmodeus("asmodeus", this.group).setDimensions("");
-		MobEventManager.instance.addMobEvent(mobEvent);
+		MobEventManager.INSTANCE.addMobEvent(mobEvent);
 
 		AltarInfo ebonCacodemonAltar = new AltarInfoEbonCacodemon("EbonCacodemonAltar");
 		AltarInfo.addAltar(ebonCacodemonAltar);

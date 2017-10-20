@@ -11,9 +11,11 @@ import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.DropRate;
 import com.lycanitesmobs.core.info.MobInfo;
+import com.lycanitesmobs.core.info.Subspecies;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityVillager;
@@ -101,6 +103,40 @@ public class EntityAbaia extends EntityCreatureTameable implements IMob, IGroupP
 	public void loadItemDrops() {
         this.drops.add(new DropRate(new ItemStack(Items.FISH, 1, 1), 0.5F).setMinAmount(1).setMaxAmount(2).setBurningDrop(new ItemStack(Items.COOKED_FISH, 1, 1)));
         this.drops.add(new DropRate(new ItemStack(Items.GLOWSTONE_DUST), 1F).setMaxAmount(8));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("soulstonefreshwater")), 1).setMinAmount(1).setSubspecies(3));
+    }
+
+    // ========== Size ==========
+    @Override
+    public void setSize(float width, float height) {
+        if(this.getSubspeciesIndex() == 3) {
+            super.setSize(width * 8, height * 8);
+            return;
+        }
+        super.setSize(width, height);
+    }
+
+    @Override
+    public double getRenderScale() {
+        if(this.getSubspeciesIndex() == 3) {
+            return this.sizeScale * 8;
+        }
+        return this.sizeScale;
+    }
+
+    /** Applies the subspecies health multipler for this mob. **/
+    public void applySubspeciesHealthMultiplier() {
+        if(this.isTamed())
+            return;
+
+        // Rare:
+        if(this.getSubspeciesIndex() == 3) {
+            this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.getBaseHealth() * Subspecies.rareHealthScale * 10);
+            this.setHealth((float)(this.getBaseHealth() * Subspecies.rareHealthScale * 10));
+        }
+        else {
+            super.applySubspeciesHealthMultiplier();
+        }
     }
 
 

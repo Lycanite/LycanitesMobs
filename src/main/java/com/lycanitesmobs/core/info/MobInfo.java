@@ -125,7 +125,7 @@ public class MobInfo {
 	/** If false, the default drops for this mob will be disabled, useful if the config needs to completely take over on what mobs drop. **/
 	public boolean defaultDrops = true;
 	
-	/** A list of all the custom item drops this mob should drop, readily parsed from the config. To be safe, this list should be copied into the entity instance. **/
+	/** A list of all the custom item drops this mob should drop, readily parsed from the config. To be safe, this list should be copied into the entity INSTANCE. **/
 	public List<DropRate> customDrops = new ArrayList<DropRate>();
 
     /** If true, this is a boss mob. Bosses are updated more frequently and have a larger tracking range by default. **/
@@ -382,7 +382,7 @@ public class MobInfo {
 
         // Load Stats:
         config = ConfigBase.getConfig(this.group, "stats");
-        config.setCategoryComment("Multipliers", "Here you can scale each mob stat,for instance setting 2 will double the stat, setting 0.5 will half it.");
+        config.setCategoryComment("Multipliers", "Here you can scale each mob stat,for INSTANCE setting 2 will double the stat, setting 0.5 will half it.");
         this.multiplierHealth = config.getDouble("Multipliers", this.getCfgName("Health"), this.multiplierHealth, "The maximum amount of health each mob has. Already spawned mobs will not be affected by any changes. 1 health = half a heart.");
         this.multiplierDefense = config.getDouble("Multipliers", this.getCfgName("Defense"), this.multiplierDefense, "How much damage is blocked, minimum damage dealt is 1.");
         this.multiplierSpeed = config.getDouble("Multipliers", this.getCfgName("Speed"), this.multiplierSpeed, "Movement speed.");
@@ -497,7 +497,7 @@ public class MobInfo {
     /**
      * Sets the default dungeon themes.
      * @param themes An array of Strings for each theme. Themes are: FOREST, PLAINS, MOUNTAIN, SWAMP, WATER , DESERT, WASTELAND, JUNGLE, FROZEN, NETHER, END, MUSHROOM, MAGICAL, DUNGEON, NECRO, URBAN, FIERY, SHADOW, PARADISE
-	 * @return MobInfo instance for chaining.
+	 * @return MobInfo INSTANCE for chaining.
      */
     public MobInfo setDungeonThemes(String themes) {
         this.dungeonThemes = themes;

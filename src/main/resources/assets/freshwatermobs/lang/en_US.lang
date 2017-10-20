@@ -63,6 +63,8 @@ achievement.abaia.summon.desc=Summon an Abaia.
 #
 # Items
 item.freshwaterspawn.name=Spawn
+item.soulstonefreshwater.name=Freshwater Soulstone
+item.soulstonefreshwater.description=This soulstone looks like a ball of water, inside is the soul of an aquatic beast! Unleash it and let it be yours!
 item.silexmeatraw.name=Raw Silex Meat
 item.silexmeatraw.description=Very sharp and boney!
 item.silexmeatcooked.name=Cooked Silex Meat

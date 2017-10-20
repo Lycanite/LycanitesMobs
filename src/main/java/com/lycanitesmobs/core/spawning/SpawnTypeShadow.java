@@ -13,7 +13,7 @@ public class SpawnTypeShadow extends SpawnTypeBase {
     // ==================================================
     public SpawnTypeShadow(String typeName) {
         super(typeName);
-        //CustomSpawner.instance.shadowSpawnTypes.add(this);
+        //CustomSpawner.INSTANCE.shadowSpawnTypes.add(this);
     }
 
 

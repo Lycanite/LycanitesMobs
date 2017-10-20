@@ -32,7 +32,7 @@ public class MobEventSatanClaws extends MobEventYule {
             targetTime += dayTime;
         }
 
-        if(canAffectTime)
+        if(MobEventManager.getInstance().canAffectTime)
             world.provider.setWorldTime(currentTime - excessTime + targetTime);
     }
 

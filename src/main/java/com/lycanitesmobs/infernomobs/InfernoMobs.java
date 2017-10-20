@@ -13,7 +13,6 @@ import com.lycanitesmobs.infernomobs.mobevent.MobEventEruption;
 import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
-import com.lycanitesmobs.core.info.*;
 import com.lycanitesmobs.core.item.ItemTreat;
 import com.lycanitesmobs.core.mobevent.MobEventBase;
 import com.lycanitesmobs.core.mobevent.MobEventManager;
@@ -22,19 +21,15 @@ import com.lycanitesmobs.core.spawning.SpawnTypeSky;
 import com.lycanitesmobs.infernomobs.block.BlockFluidPureLava;
 import com.lycanitesmobs.infernomobs.block.BlockScorchfire;
 import com.lycanitesmobs.infernomobs.dispenser.DispenserBehaviorScorchfire;
-import com.lycanitesmobs.infernomobs.entity.*;
 import com.lycanitesmobs.infernomobs.info.AltarInfoUmberLobber;
-import com.lycanitesmobs.infernomobs.item.*;
 import com.lycanitesmobs.infernomobs.mobevent.MobEventCinderfall;
 import com.lycanitesmobs.infernomobs.worldgen.WorldGeneratorInferno;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -42,8 +37,6 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 @Mod(modid = InfernoMobs.modid, name = InfernoMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid, acceptedMinecraftVersions = LycanitesMobs.acceptedMinecraftVersions)
 public class InfernoMobs extends Submod {
@@ -222,7 +215,7 @@ public class InfernoMobs extends Submod {
 		eventSpawner.ignoreMobConditions = true;
 		eventSpawner.addSpawn(MobInfo.getFromName("cinder"));
 		mobEvent.addSpawner(eventSpawner);
-		MobEventManager.instance.addWorldEvent(mobEvent);
+		MobEventManager.INSTANCE.addWorldEvent(mobEvent);
 
 		mobEvent = new MobEventEruption("eruption", this.group).setDimensions("1");
 		mobEvent.minDay = 10;
@@ -237,7 +230,7 @@ public class InfernoMobs extends Submod {
 		eventSpawner.addSpawn(MobInfo.getFromName("khalk"), 2);
 		eventSpawner.addSpawn(MobInfo.getFromName("gorger"));
 		mobEvent.addSpawner(eventSpawner);
-		MobEventManager.instance.addWorldEvent(mobEvent);
+		MobEventManager.INSTANCE.addWorldEvent(mobEvent);
 
 		AltarInfo umberLobberAltar = new AltarInfoUmberLobber("UmberLobberAltar");
 		AltarInfo.addAltar(umberLobberAltar);

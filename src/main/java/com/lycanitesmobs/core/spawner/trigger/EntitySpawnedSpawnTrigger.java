@@ -3,28 +3,21 @@ package com.lycanitesmobs.core.spawner.trigger;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.spawner.Spawner;
-import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class KillSpawnTrigger extends EntitySpawnTrigger {
-
+public class EntitySpawnedSpawnTrigger extends EntitySpawnTrigger {
 
 	/** Constructor **/
-	public KillSpawnTrigger(Spawner spawner) {
+	public EntitySpawnedSpawnTrigger(Spawner spawner) {
 		super(spawner);
 	}
 
@@ -35,19 +28,19 @@ public class KillSpawnTrigger extends EntitySpawnTrigger {
 	}
 
 
-	/** Called every time a player kills an entity. **/
-	public void onKill(EntityPlayer player, EntityLiving killedEntity) {
+	/** Called every time an entity is spawned. **/
+	public void onEntitySpawned(EntityLiving spawnedEntity) {
 
 		// Check Entity:
-		if(!this.isMatchingEntity(killedEntity)) {
+		if(!this.isMatchingEntity(spawnedEntity)) {
 			return;
 		}
 
 		// Chance:
-		if(this.chance < 1 && player.getRNG().nextDouble() > this.chance) {
+		if(this.chance < 1 && spawnedEntity.getRNG().nextDouble() > this.chance) {
 			return;
 		}
 
-		this.trigger(player.getEntityWorld(), player, killedEntity.getPosition(), 0);
+		this.trigger(spawnedEntity.getEntityWorld(), null, spawnedEntity.getPosition(), 0);
 	}
 }

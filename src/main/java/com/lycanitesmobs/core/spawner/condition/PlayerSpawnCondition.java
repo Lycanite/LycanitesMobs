@@ -82,6 +82,10 @@ public class PlayerSpawnCondition extends SpawnCondition {
 
     @Override
     public boolean isMet(World world, EntityPlayer player) {
+		if(player == null) {
+			return false;
+		}
+
 		ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
 
     	// Check Username:

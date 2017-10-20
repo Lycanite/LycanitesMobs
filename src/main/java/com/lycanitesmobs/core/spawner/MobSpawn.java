@@ -7,7 +7,6 @@ import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.info.MobInfo;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -277,7 +276,7 @@ public class MobSpawn {
 			if(this.subspecies > -1) {
 				entityCreature.setSubspecies(this.subspecies, true);
 			}
-			if(this.fixate) {
+			if(this.fixate && player != null) {
 				entityCreature.setFixateTarget(player);
 			}
 			if(this.mobLevel > 0) {

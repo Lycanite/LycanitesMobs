@@ -208,7 +208,7 @@ public class CommandMain implements ICommand {
 				}
 				
 				String mobEventName = args[2].toLowerCase();
-				if(MobEventManager.instance.worldMobEvents.containsKey(mobEventName)) {
+				if(MobEventManager.INSTANCE.worldMobEvents.containsKey(mobEventName)) {
 					
 					// Get World:
 					World world = null;
@@ -273,7 +273,7 @@ public class CommandMain implements ICommand {
 			if("random".equalsIgnoreCase(args[1])) {
 				reply = I18n.translateToLocal("lyc.command.mobevent.random");
 				commandSender.sendMessage(new TextComponentString(reply));
-				MobEventBase mobEvent = MobEventManager.instance.getRandomWorldMobEvent(world, worldExt);
+				MobEventBase mobEvent = MobEventManager.INSTANCE.getRandomWorldMobEvent(world, worldExt);
                 worldExt.startWorldEvent(mobEvent);
 				return;
 			}
@@ -290,7 +290,7 @@ public class CommandMain implements ICommand {
 			if("list".equalsIgnoreCase(args[1])) {
 				reply = I18n.translateToLocal("lyc.command.mobevent.list");
 				commandSender.sendMessage(new TextComponentString(reply));
-				for(MobEventBase mobEvent : MobEventManager.instance.worldMobEvents.values()) {
+				for(MobEventBase mobEvent : MobEventManager.INSTANCE.worldMobEvents.values()) {
 					String eventName = mobEvent.name + " (" + mobEvent.getTitle() + ")";
 					commandSender.sendMessage(new TextComponentString(eventName));
 				}

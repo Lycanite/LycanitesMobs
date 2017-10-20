@@ -1,24 +1,32 @@
 package com.lycanitesmobs.core.mobevent;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.lycanitesmobs.ExtendedWorld;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.Utilities;
+import com.lycanitesmobs.core.JSONLoader;
 import com.lycanitesmobs.core.config.ConfigSpawning;
+import com.lycanitesmobs.core.info.GroupInfo;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
 
+import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
-public class MobEventManager {
+public class MobEventManager extends JSONLoader {
 	// Global:
-    public static MobEventManager instance;
+    public static MobEventManager INSTANCE;
     
     // Mob Events:
     public Map<String, MobEventBase> allMobEvents = new HashMap<String, MobEventBase>();
@@ -31,13 +39,27 @@ public class MobEventManager {
     public boolean mobEventsSchedule = true;
     public int baseRate = 10 * 20;
     public int baseRange = 32;
+	public boolean canAffectWeather = true;
+	public boolean canAffectTime = true;
+	public boolean aggressiveEvents = false;
+
+
+	// ==================================================
+	//                   Get Instance
+	// ==================================================
+	public static MobEventManager getInstance() {
+		if(INSTANCE == null) {
+			INSTANCE = new MobEventManager();
+		}
+		return INSTANCE;
+	}
 
 
     // ==================================================
     //                     Constructor
     // ==================================================
 	public MobEventManager() {
-		instance = this;
+		INSTANCE = this;
 	}
 
 
@@ -45,7 +67,7 @@ public class MobEventManager {
     //                  Load Mob Events
     // ==================================================
 	/** Called during start up, loads all global events and config settings into the manager. **/
-	public void loadMobEvents() {
+	public void loadConfig() {
 		ConfigSpawning config = ConfigSpawning.getConfig(LycanitesMobs.group, "mobevents");
         config.setCategoryComment("Global", "These are various settings that apply to all events.");
         config.setCategoryComment("World", "These are various settings that apply to events on a per world basis. If your required world doesn't have its config values generated yet, you can generate them by entering the world in gae at least once.");
@@ -56,13 +78,65 @@ public class MobEventManager {
         this.baseRate = config.getInt("Global", "Base Spawn Rate", this.baseRate, "Sets the base interval in ticks (20 ticks = 1 second) between each mob spawn, this is multiplied by 1.5 on easy and 0.5 on hard.");
         this.baseRange = config.getInt("Global", "Base Spawn Range", this.baseRange, "Sets the base range in blocks from each player/area that event mobs will spawn.");
 
+		this.canAffectWeather = config.getBool("Global", "Affect Weather", this.canAffectWeather, "Set to false to prevent all events from changing the weather.");
+		this.canAffectTime = config.getBool("Global", "Affect Time", this.canAffectTime, "Set to false to prevent all events from changing the time fo day.");
+		this.aggressiveEvents = config.getBool("Global", "Aggressive Events", this.aggressiveEvents, "If set to true, all mobs spawned from events will be told to immediately fixate on the player.");
+
         config.setCategoryComment("Events Enabled", "Here each event can be turned on or off (true or false).");
         config.setCategoryComment("Events Mob Durations", "Here you can set the duration (in ticks where 20 ticks = 1 second) of each event.");
         config.setCategoryComment("Events Forced Spawning", "Sets which events force their mobs to spawn, forced spawns will ignore other mods that interfere with mob spawning.");
         config.setCategoryComment("Events Forced No Despawning", "Sets which events force their spawned mobs to not despawn naturally (like most vanilla monsters do). However, mobs spawned by events will always only last 10 minutes and will then be forcefully despawned unless they are tamed by players, given a name tag, etc.");
         config.setCategoryComment("Event Day Minimums", "The minimum day before each event can occur randomly. For example if Shadow Games is set to 10 then it wont ever occured as a random event until day 10. Note: If Schedules and Locked Random events are active, the random event will not occur until both the Minimum Event day set here and first Schedule is met (by default schedules and event locks aren't used).");
         config.setCategoryComment("Event Dimensions", "Sets which dimensions (by ID) that this event WILL NOT occur in. However if 'Spawn Dimensions Whitelist Mode' is set to true, it will instead set which dimensions that this event WILL ONLY occur in. Multiple entries should be comma separated.");
-    }
+
+		this.loadAllFromJSON(LycanitesMobs.group);
+	}
+
+	/** Loads all JSON Equipment Parts. Should only be done on pre-init. **/
+	public void loadAllFromJSON(GroupInfo groupInfo) {
+		LycanitesMobs.printDebug("MobEvents", "Loading JSON Mob Events!");
+		Gson gson = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
+		Map<String, JsonObject> mobEventJSONs = new HashMap<>();
+
+		// Load Default Parts:
+		Path path = Utilities.getAssetPath(groupInfo.getClass(), groupInfo.filename, "equipment");
+		Map<String, JsonObject> defaultEquipmentPartJSONs = new HashMap<>();
+		this.loadJsonObjects(gson, path, defaultEquipmentPartJSONs, "itemName");
+
+		// Load Custom Parts:
+		String configPath = LycanitesMobs.proxy.getMinecraftDir() + "/config/" + LycanitesMobs.modid + "/";
+		File customDir = new File(configPath + "equipment");
+		customDir.mkdirs();
+		path = customDir.toPath();
+		Map<String, JsonObject> customEquipmentPartJSONs = new HashMap<>();
+		this.loadJsonObjects(gson, path, customEquipmentPartJSONs, "itemName");
+
+
+		// Write Defaults:
+		this.writeDefaultJSONObjects(gson, defaultEquipmentPartJSONs, customEquipmentPartJSONs, mobEventJSONs, false, "equipment");
+
+
+		// Create Mob Events:
+		LycanitesMobs.printDebug("MobEvents", "Loading " + mobEventJSONs.size() + " Equipment Parts...");
+		for(String spawnerJSONName : mobEventJSONs.keySet()) {
+			try {
+				JsonObject spawnerJSON = mobEventJSONs.get(spawnerJSONName);
+				LycanitesMobs.printDebug("MobEvents", "Loading Equipment Part JSON: " + spawnerJSON);
+				MobEventBase mobEventBase = new MobEventBase(spawnerJSONName, groupInfo);
+				mobEventBase.loadFromJSON(spawnerJSON);
+				this.addMobEvent(mobEventBase);
+			}
+			catch (JsonParseException e) {
+				LycanitesMobs.printWarning("", "Parsing error loading JSON Equipment Part: " + spawnerJSONName);
+				e.printStackTrace();
+			}
+			catch(Exception e) {
+				LycanitesMobs.printWarning("", "There was a problem loading JSON Equipment Part: " + spawnerJSONName);
+				e.printStackTrace();
+			}
+		}
+		LycanitesMobs.printDebug("MobEvents", "Complete! " + this.allMobEvents.size() + " JSON Equipment Parts Loaded In Total.");
+	}
 
 
     // ==================================================
@@ -104,7 +178,7 @@ public class MobEventManager {
         if(mobEvent != null && mobEvent.hasSpawners()) {
             this.addMobEvent(mobEvent);
             if(!this.worldMobEventSets.containsKey(set))
-                this.worldMobEventSets.put(set, new HashMap<String, MobEventBase>());
+                this.worldMobEventSets.put(set, new HashMap<>());
             this.worldMobEventSets.get(set).put(mobEvent.name, mobEvent);
             this.worldMobEvents.put(mobEvent.name, mobEvent);
         }
@@ -188,7 +262,7 @@ public class MobEventManager {
     // ==================================================
     //                 Client Update Event
     // ==================================================
-	/** Updates the client side mob event instance if present in the player's current world. **/
+	/** Updates the client side mob event INSTANCE if present in the player's current world. **/
 	@SubscribeEvent
 	public void onClientUpdate(ClientTickEvent event) {
 		if(LycanitesMobs.proxy.getClientPlayer() == null)

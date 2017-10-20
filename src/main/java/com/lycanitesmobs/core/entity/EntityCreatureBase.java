@@ -1026,7 +1026,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         return this.petEntry;
     }
 
-    /** Sets the pet entry for this mob. Mobs with Pet Entries will be removed when te world is reloaded as the pet Entry will spawn a new instance of them in on load. **/
+    /** Sets the pet entry for this mob. Mobs with Pet Entries will be removed when te world is reloaded as the pet Entry will spawn a new INSTANCE of them in on load. **/
     public void setPetEntry(PetEntry petEntry) {
         this.petEntry = petEntry;
     }
@@ -3286,7 +3286,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Get Equipment ==========
     /**
      * Returns the equipment grade, used mostly for texturing the armor.
-     * For instance "gold" is returned if it is wearing gold chest armor.
+     * For INSTANCE "gold" is returned if it is wearing gold chest armor.
      * Type is a string that is the equipment slot, it can be: feet, legs, chest or head. All lower case.
     **/
     public String getEquipmentName(String type) {

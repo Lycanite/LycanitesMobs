@@ -54,6 +54,9 @@ public abstract class SpawnTrigger {
 		else if("tree".equalsIgnoreCase(type)) {
 			spawnTrigger = new TreeBlockSpawnTrigger(spawner);
 		}
+		else if("entitySpawned".equalsIgnoreCase(type)) {
+			spawnTrigger = new EntitySpawnedSpawnTrigger(spawner);
+		}
 		else if("kill".equalsIgnoreCase(type)) {
 			spawnTrigger = new KillSpawnTrigger(spawner);
 		}

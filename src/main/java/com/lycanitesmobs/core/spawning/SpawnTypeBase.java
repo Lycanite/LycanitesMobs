@@ -8,6 +8,7 @@ import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.core.info.SpawnInfo;
 import com.lycanitesmobs.core.mobevent.MobEventBase;
+import com.lycanitesmobs.core.mobevent.MobEventManager;
 import com.lycanitesmobs.core.spawner.CoordSorterNearest;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
@@ -575,7 +576,7 @@ public class SpawnTypeBase {
                     }
                 }
                 this.spawnEntity(world, entityLiving, rank);
-                if(MobEventBase.aggressiveEvents && this.mobEvent != null && player != null) {
+                if(MobEventManager.getInstance().aggressiveEvents && this.mobEvent != null && player != null) {
                     entityLiving.setAttackTarget(player);
                 }
 

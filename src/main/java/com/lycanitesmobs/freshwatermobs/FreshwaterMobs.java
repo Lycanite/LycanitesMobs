@@ -18,12 +18,10 @@ import com.lycanitesmobs.freshwatermobs.item.*;
 import com.lycanitesmobs.freshwatermobs.mobevent.MobEventTsunami;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -31,8 +29,6 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 @Mod(modid = FreshwaterMobs.modid, name = FreshwaterMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid, acceptedMinecraftVersions = LycanitesMobs.acceptedMinecraftVersions)
 public class FreshwaterMobs extends Submod {
@@ -76,6 +72,7 @@ public class FreshwaterMobs extends Submod {
 	@Override
 	public void createItems() {
 		ObjectManager.addItem("freshwaterspawn", new ItemFreshwaterEgg());
+		ObjectManager.addItem("soulstonefreshwater", new ItemSoulstoneFreshwater(group));
 
 		Potion rawFoodEffectID = MobEffects.WEAKNESS;
 		if(ObjectManager.getPotionEffect("penetration") != null)
@@ -157,7 +154,8 @@ public class FreshwaterMobs extends Submod {
 
 		newMob = new MobInfo(group, "abaia", EntityAbaia.class, 0x537d41, 0xdfb752)
 				.setPeaceful(false).setSummonable(true).setSummonCost(4).setDungeonLevel(1)
-				.addSubspecies(new Subspecies("violet", "uncommon")).addSubspecies(new Subspecies("ashen", "uncommon"));
+				.addSubspecies(new Subspecies("violet", "uncommon")).addSubspecies(new Subspecies("ashen", "uncommon"))
+				.addSubspecies(new Subspecies("mottled", "rare"));
 		newMob.spawnInfo.setSpawnTypes("WATER").setBiomes("GROUP,-SWAMP")
 				.setSpawnWeight(6).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
@@ -201,7 +199,7 @@ public class FreshwaterMobs extends Submod {
 			if(MobInfo.getFromName("zephyr") != null)
 				eventSpawner.addSpawn(MobInfo.getFromName("zephyr"));
 			mobEvent.addSpawner(eventSpawner);
-			MobEventManager.instance.addWorldEvent(mobEvent);
+			MobEventManager.INSTANCE.addWorldEvent(mobEvent);
 		}
 	}
 

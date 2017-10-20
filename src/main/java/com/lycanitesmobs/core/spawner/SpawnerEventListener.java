@@ -1,6 +1,5 @@
 package com.lycanitesmobs.core.spawner;
 
-import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.spawner.trigger.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -11,6 +10,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.ItemFishedEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.world.BlockEvent;
@@ -27,6 +27,7 @@ public class SpawnerEventListener {
 
 	public List<TickSpawnTrigger> tickSpawnTriggers = new ArrayList<>();
 	public List<KillSpawnTrigger> killSpawnTriggers = new ArrayList<>();
+	public List<EntitySpawnedSpawnTrigger> entitySpawnedSpawnTriggers = new ArrayList<>();
 	public List<BlockSpawnTrigger> blockSpawnTriggers = new ArrayList<>();
 	public List<SleepSpawnTrigger> sleepSpawnTriggers = new ArrayList<>();
 	public List<FishingSpawnTrigger> fishingSpawnTriggers = new ArrayList<>();
@@ -143,6 +144,25 @@ public class SpawnerEventListener {
 		// Call Triggers:
 		for(KillSpawnTrigger spawnTrigger : this.killSpawnTriggers) {
 			spawnTrigger.onKill((EntityPlayer)killerEntity, (EntityLiving)killedEntity);
+		}
+	}
+
+
+	// ==================================================
+	//                 Entity Spawn Event
+	// ==================================================
+	/** This uses the entity spawn events to update Entity Spawned Spawn Triggers. **/
+	@SubscribeEvent
+	public void onEntitySpawn(LivingSpawnEvent event) {
+		// Get Spawned:
+		EntityLivingBase spawnedEntity = event.getEntityLiving();
+		if(spawnedEntity == null || spawnedEntity.getEntityWorld() == null || spawnedEntity.getEntityWorld().isRemote || event.isCanceled() || !(spawnedEntity instanceof EntityLiving)) {
+			return;
+		}
+
+		// Call Triggers:
+		for(EntitySpawnedSpawnTrigger spawnTrigger : this.entitySpawnedSpawnTriggers) {
+			spawnTrigger.onEntitySpawned((EntityLiving)spawnedEntity);
 		}
 	}
 

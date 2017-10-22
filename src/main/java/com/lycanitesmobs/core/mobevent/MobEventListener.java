@@ -1,6 +1,7 @@
 package com.lycanitesmobs.core.mobevent;
 
 import com.lycanitesmobs.ExtendedWorld;
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.JSONLoader;
 import com.lycanitesmobs.core.mobevent.trigger.AltarMobEventTrigger;
 import com.lycanitesmobs.core.mobevent.trigger.MobEventTrigger;
@@ -22,6 +23,8 @@ public class MobEventListener extends JSONLoader {
 
 	public List<RandomMobEventTrigger> randomMobEventTriggers = new ArrayList<>();
 	public List<TickMobEventTrigger> tickMobEventTriggers = new ArrayList<>();
+
+	protected long lastEventUpdateTime = 0;
 
 
 	/** Returns the main Mob Event Listener instance. **/
@@ -84,9 +87,9 @@ public class MobEventListener extends JSONLoader {
 		}
 
         // Only Tick On World Time Ticks:
-        if(worldExt.lastEventUpdateTime == world.getTotalWorldTime())
+        if(this.lastEventUpdateTime == world.getTotalWorldTime())
         	return;
-        worldExt.lastEventUpdateTime = world.getTotalWorldTime();
+		this.lastEventUpdateTime = world.getTotalWorldTime();
 		
 		// Only Run If Players Are Present:
 		if(world.playerEntities.size() < 1) {
@@ -95,7 +98,7 @@ public class MobEventListener extends JSONLoader {
 
 		// Tick Mob Events:
 		for(TickMobEventTrigger mobEventTrigger : this.tickMobEventTriggers) {
-			mobEventTrigger.onTick(world, worldExt.lastEventUpdateTime);
+			mobEventTrigger.onTick(world, this.lastEventUpdateTime);
 		}
 
         // Random Mob Events:

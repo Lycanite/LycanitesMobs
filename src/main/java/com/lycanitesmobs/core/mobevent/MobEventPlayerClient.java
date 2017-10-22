@@ -25,6 +25,7 @@ public class MobEventPlayerClient {
     public int ticks = 0;
     public World world;
     public PositionedSoundRecord sound;
+
     /** True if the started event was already running and show display as 'Event Extended' in chat. **/
     public boolean extended = false;
     
@@ -44,13 +45,18 @@ public class MobEventPlayerClient {
     //                       Start
     // ==================================================
 	public void onStart(EntityPlayer player) {
+		if(!this.extended) {
+			this.ticks = 0;
+		}
 		String eventMessage = I18n.translateToLocal("event." + (extended ? "extended" : "started"));
 		eventMessage = eventMessage.replace("%event%", this.mobEvent.getTitle());
 		player.sendMessage(new TextComponentString(eventMessage));
-		
-		if(!player.capabilities.isCreativeMode || MobEventPlayerServer.testOnCreative || !"world".equalsIgnoreCase(this.mobEvent.channel)) {
-        	this.playSound();
+
+		if(player.capabilities.isCreativeMode && !MobEventPlayerServer.testOnCreative && "world".equalsIgnoreCase(this.mobEvent.channel)) {
+			return;
 		}
+
+		this.playSound();
 	}
 
     public void playSound() {
@@ -87,8 +93,9 @@ public class MobEventPlayerClient {
     @SideOnly(Side.CLIENT)
     public void onGUIUpdate(GuiOverlay gui, int sWidth, int sHeight) {
     	EntityPlayer player = LycanitesMobs.proxy.getClientPlayer();
-        if(player.capabilities.isCreativeMode && !MobEventPlayerServer.testOnCreative && "world".equalsIgnoreCase(this.mobEvent.channel))
-            return;
+        if(player.capabilities.isCreativeMode && !MobEventPlayerServer.testOnCreative && "world".equalsIgnoreCase(this.mobEvent.channel)) {
+			return;
+		}
         if(this.world == null || this.world != player.getEntityWorld()) return;
         if(!this.world.isRemote) return;
 
@@ -114,7 +121,9 @@ public class MobEventPlayerClient {
 
         gui.mc.getTextureManager().bindTexture(this.getTexture());
         GL11.glColor4f(1.0F, 1.0F, 1.0F, animation);
-        gui.drawTexturedModalRect(x, y, u, v, width, height);
+        if(animation > 0) {
+			gui.drawTexturedModalRect(x, y, u, v, width, height);
+		}
     }
 
     @SideOnly(Side.CLIENT)

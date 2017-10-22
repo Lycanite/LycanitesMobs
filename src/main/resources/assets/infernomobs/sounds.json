@@ -1,12 +1,4 @@
 {
-    "mobevent.cinderfall": {
-        "category": "record",
-        "sounds": [{"name": "infernomobs:mobevent/cinderfall", "stream": true}]
-    },
-    "mobevent.eruption": {
-        "category": "record",
-        "sounds": [{"name": "infernomobs:mobevent/eruption", "stream": true}]
-    },
     "entity.cinder.say": {
         "category": "hostile",
         "sounds": [{"name": "infernomobs:entity/cinder/say", "stream": false}]

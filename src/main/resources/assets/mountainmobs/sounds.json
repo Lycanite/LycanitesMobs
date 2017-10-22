@@ -1,8 +1,4 @@
 {
-    "mobevent.boulderdash": {
-        "category": "record",
-        "sounds": [{"name": "mountainmobs:mobevent/boulderdash", "stream": true}]
-    },
     "entity.jabberwock.say": {
         "category": "hostile",
         "sounds": [{"name": "mountainmobs:entity/jabberwock/say", "stream": false}]

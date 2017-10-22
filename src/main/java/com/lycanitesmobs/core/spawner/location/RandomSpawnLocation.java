@@ -13,11 +13,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RandomSpawnLocation extends BlockSpawnLocation {
+
 	/** How many random positions to select. **/
-	public int limit = 32;
+	protected int limit = 32;
 
 	/** If true positions require a solid walkable block underneath rather than using insideBlock. **/
-	public boolean solidGround = false;
+	protected boolean solidGround = false;
+
+	/** This scales the x and z range values by this amount when on Easy or Peaceful Difficulty. **/
+	protected double easyDifficultyRangeScale = 1.5D;
+
+	/** This scales the x and z range values by this amount when on Normal Difficulty. **/
+	protected double normalDifficultyRangeScale = 1D;
+
+	/** This scales the x and z range values by this amount when on Hard and above Difficulties. **/
+	protected double hardDifficultyRangeScale = 0.5D;
 
 
 	@Override
@@ -27,6 +37,15 @@ public class RandomSpawnLocation extends BlockSpawnLocation {
 
 		if(json.has("solidGround"))
 			this.solidGround = json.get("solidGround").getAsBoolean();
+
+		if(json.has("easyDifficultyRangeScale"))
+			this.easyDifficultyRangeScale = json.get("easyDifficultyRangeScale").getAsDouble();
+
+		if(json.has("normalDifficultyRangeScale"))
+			this.normalDifficultyRangeScale = json.get("normalDifficultyRangeScale").getAsDouble();
+
+		if(json.has("hardDifficultyRangeScale"))
+			this.hardDifficultyRangeScale = json.get("hardDifficultyRangeScale").getAsDouble();
 
 		this.listType = "whitelist";
 		this.blocks.add(Blocks.AIR);
@@ -70,25 +89,37 @@ public class RandomSpawnLocation extends BlockSpawnLocation {
 	 * @return An integer array containing two ints the X and Z position.
 	 */
 	public int[] getRandomXZCoord(World world, BlockPos triggerPos) {
+		double difficultyScale = this.normalDifficultyRangeScale;
+		if(world.getDifficulty().getDifficultyId() <= 1) {
+			difficultyScale = this.easyDifficultyRangeScale;
+		}
+		else if(world.getDifficulty().getDifficultyId() >= 3) {
+			difficultyScale = this.hardDifficultyRangeScale;
+		}
+
 		int xPos = 0;
-		if(this.rangeMax.getX() > 0) {
-			xPos = world.rand.nextInt(this.rangeMax.getX());
+		int rangeMaxX = Math.round((float)this.rangeMax.getX() * (float)difficultyScale);
+		int rangeMinX = Math.round((float)this.rangeMin.getX() * (float)difficultyScale);
+		if(rangeMaxX * difficultyScale > 0) {
+			xPos = world.rand.nextInt(rangeMaxX);
 			if(world.rand.nextBoolean()) {
-				xPos += this.rangeMin.getX();
+				xPos += rangeMinX;
 			}
 			else {
-				xPos = -xPos - this.rangeMin.getX();
+				xPos = -xPos - rangeMinX;
 			}
 		}
 
 		int zPos = 0;
-		if(this.rangeMax.getZ() > 0) {
-			zPos = world.rand.nextInt(this.rangeMax.getZ());
+		int rangeMaxZ = Math.round((float)this.rangeMax.getZ() * (float)difficultyScale);
+		int rangeMinZ = Math.round((float)this.rangeMin.getZ() * (float)difficultyScale);
+		if(rangeMaxZ * difficultyScale > 0) {
+			zPos = world.rand.nextInt(rangeMaxZ);
 			if(world.rand.nextBoolean()) {
-				zPos += this.rangeMin.getZ();
+				zPos += rangeMinZ;
 			}
 			else {
-				zPos = -zPos - this.rangeMin.getZ();
+				zPos = -zPos - rangeMinZ;
 			}
 		}
 
@@ -102,17 +133,27 @@ public class RandomSpawnLocation extends BlockSpawnLocation {
 	 * @return The y position, -1 if a valid position could not be found.
 	 */
 	public int getRandomYCoord(World world, BlockPos triggerPos) {
+		double difficultyScale = this.normalDifficultyRangeScale;
+		if(world.getDifficulty().getDifficultyId() <= 1) {
+			difficultyScale = this.easyDifficultyRangeScale;
+		}
+		else if(world.getDifficulty().getDifficultyId() >= 3) {
+			difficultyScale = this.hardDifficultyRangeScale;
+		}
+		int rangeMaxY = Math.round((float)this.rangeMax.getY() * (float)difficultyScale);
+		int rangeMinY = Math.round((float)this.rangeMin.getY() * (float)difficultyScale);
+
 		int originX = triggerPos.getX();
 		int originY = triggerPos.getY();
 		int originZ = triggerPos.getZ();
 
-		int minY = Math.max(originY - this.rangeMax.getY(), 0); // Start from this y pos
+		int minY = Math.max(originY - rangeMaxY, 0); // Start from this y pos
 		if(this.yMin >= 0) {
 			minY = Math.max(minY, this.yMin);
 		}
-		int maxY = Math.min(originY + this.rangeMax.getY(), world.getHeight() - 1); // Search up to this y pos
+		int maxY = Math.min(originY + rangeMaxY, world.getHeight() - 1); // Search up to this y pos
 		if(this.yMax >= 0) {
-			minY = Math.min(maxY, this.yMax);
+			maxY = Math.min(maxY, this.yMax);
 		}
 
 		List<Integer> yCoordsLow = new ArrayList<>();
@@ -121,8 +162,8 @@ public class RandomSpawnLocation extends BlockSpawnLocation {
 		// Get Every Valid Y Pos:
 		for(int nextY = minY; nextY <= maxY; nextY++) {
 			// If the next y pos to check is within the min range area, move it up out of it:
-			if(nextY > originY - this.rangeMin.getY() && nextY < originY + this.rangeMin.getY())
-				nextY = originY + this.rangeMin.getY();
+			if(nextY > originY - rangeMinY && nextY < originY + rangeMinY)
+				nextY = originY + rangeMinY;
 
 			BlockPos spawnPos = new BlockPos(originX, nextY, originZ);
 

@@ -1,8 +1,4 @@
 {
-    "mobevent.windstorm": {
-        "category": "record",
-        "sounds": [{"name": "plainsmobs:mobevent/windstorm", "stream": true}]
-    },
     "entity.kobold.say": {
         "category": "hostile",
         "sounds": [{"name": "plainsmobs:entity/kobold/say", "stream": false}]

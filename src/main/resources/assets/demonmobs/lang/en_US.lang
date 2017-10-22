@@ -2,10 +2,6 @@
 demonmobs.name=Demonic Creatures
 demonmobs.description=Wicked fiends from the depths of the firey hellish Nether!
 #
-# Mob Events
-mobevent.hellsfury.name=Hells Fury
-mobevent.rahovart.name=Rahovart
-#
 # Entites
 entity.demonmobs.belph.name=Belph
 entity.demonmobs.belph.description=As the wicked natives of the Nether, Belphs take pleasure in hurling fiery projectiles that spread doomfire.

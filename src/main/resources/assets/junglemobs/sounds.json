@@ -1,12 +1,4 @@
 {
-    "mobevent.poopparty": {
-        "category": "record",
-        "sounds": [{"name": "junglemobs:mobevent/poopparty", "stream": true}]
-    },
-    "mobevent.theswarm": {
-        "category": "record",
-        "sounds": [{"name": "junglemobs:mobevent/theswarm", "stream": true}]
-    },
     "entity.geken.say": {
         "category": "hostile",
         "sounds": [{"name": "junglemobs:entity/geken/say", "stream": false}]

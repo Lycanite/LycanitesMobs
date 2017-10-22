@@ -72,8 +72,9 @@ public class AltarInfo {
     }
 
     public static AltarInfo getAltar(String name) {
-        if(altars.containsKey(name.toLowerCase()))
+        if(altars.containsKey(name.toLowerCase())) {
             return altars.get(name.toLowerCase());
+        }
         return null;
     }
 

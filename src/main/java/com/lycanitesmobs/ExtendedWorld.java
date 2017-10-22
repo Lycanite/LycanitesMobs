@@ -215,7 +215,15 @@ public class ExtendedWorld extends WorldSavedData {
 
         // Server Side:
         if(!this.world.isRemote) {
-            this.serverWorldEventPlayer = mobEvent.getServerEventPlayer(this.world);
+			boolean extended = false;
+			if(this.serverWorldEventPlayer != null) {
+				extended = this.serverWorldEventPlayer.mobEvent == mobEvent;
+			}
+			if(!extended) {
+				this.serverWorldEventPlayer = mobEvent.getServerEventPlayer(this.world);
+			}
+			this.serverWorldEventPlayer.extended = extended;
+
             this.setWorldEventName(mobEvent.name);
             this.increaseMobEventCount();
             this.setWorldEventStartTargetTime(0);
@@ -227,12 +235,16 @@ public class ExtendedWorld extends WorldSavedData {
         // Client Side:
         if(this.world.isRemote) {
             boolean extended = false;
-            if(this.clientWorldEventPlayer != null)
-                extended = this.clientWorldEventPlayer.mobEvent == mobEvent;
-            this.clientWorldEventPlayer = mobEvent.getClientEventPlayer(this.world);
-            this.clientWorldEventPlayer.extended = extended;
-            if(LycanitesMobs.proxy.getClientPlayer() != null)
-                this.clientWorldEventPlayer.onStart(LycanitesMobs.proxy.getClientPlayer());
+            if(this.clientWorldEventPlayer != null) {
+				extended = this.clientWorldEventPlayer.mobEvent == mobEvent;
+			}
+			if(!extended) {
+				this.clientWorldEventPlayer = mobEvent.getClientEventPlayer(this.world);
+			}
+			this.clientWorldEventPlayer.extended = extended;
+			if(LycanitesMobs.proxy.getClientPlayer() != null) {
+				this.clientWorldEventPlayer.onStart(LycanitesMobs.proxy.getClientPlayer());
+			}
         }
     }
 
@@ -282,17 +294,17 @@ public class ExtendedWorld extends WorldSavedData {
 
         // Client Side:
         if(this.world.isRemote) {
-            boolean extended = false;
-            /*if(this.clientMobEventPlayers.get(mobEvent.name) != null)
-                extended = this.clientMobEventPlayers.get(mobEvent.name).mobEvent.equals(mobEvent);*/
-            if(!extended) {
-                MobEventPlayerClient mobEventPlayerClient = mobEvent.getClientEventPlayer(this.world);
-                this.clientMobEventPlayers.put(mobEvent.name, mobEventPlayerClient);
-                mobEventPlayerClient.extended = extended;
-                if(LycanitesMobs.proxy.getClientPlayer() != null) {
-                    mobEventPlayerClient.onStart(LycanitesMobs.proxy.getClientPlayer());
-                }
-            }
+			MobEventPlayerClient mobEventPlayerClient;
+            if(this.clientMobEventPlayers.containsKey(mobEvent.name)) {
+				mobEventPlayerClient = this.clientMobEventPlayers.get(mobEvent.name);
+			}
+			else {
+				mobEventPlayerClient = mobEvent.getClientEventPlayer(this.world);
+				this.clientMobEventPlayers.put(mobEvent.name, mobEventPlayerClient);
+			}
+			if(LycanitesMobs.proxy.getClientPlayer() != null) {
+				mobEventPlayerClient.onStart(LycanitesMobs.proxy.getClientPlayer());
+			}
         }
     }
 

@@ -1,9 +1,6 @@
 # Group Info
 swampmobs.name=Swamp Creatures
-swampmobs.description=Found in damp marsh and muddy waters, these beasts can be very dangerous and are known for their many poisons. 
-#
-# Mob Events
-mobevent.wingedvenom.name=Winged Venom
+swampmobs.description=Found in damp marsh and muddy waters, these beasts can be very dangerous and are known for their many poisons.
 #
 # Entites
 entity.swampmobs.ghoulzombie.name=Ghoul Zombie

@@ -1,12 +1,4 @@
 {
-    "mobevent.shadowgames": {
-        "category": "record",
-        "sounds": [{"name": "shadowmobs:mobevent/shadowgames", "stream": true}]
-    },
-    "mobevent.blackplague": {
-        "category": "record",
-        "sounds": [{"name": "shadowmobs:mobevent/blackplague", "stream": true}]
-    },
     "entity.grue.say": {
         "category": "hostile",
         "sounds": [{"name": "shadowmobs:entity/grue/say", "stream": false}]

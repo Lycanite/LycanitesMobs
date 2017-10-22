@@ -84,6 +84,9 @@ public class Spawner {
     /** If true, mobs spawned by this Spawner will not naturally despawn. **/
     public boolean forceNoDespawn = false;
 
+	/** If true, this Spawner will act as enabled even if it can't find any mobs to spawn, useful if you just want to use trigger messages, etc. **/
+	public boolean enableWithoutMobs = false;
+
 	/** If set, this is the name of the mob event that must be active, otherwise this Spawner is always active. **/
 	public String eventName = "";
 
@@ -147,6 +150,9 @@ public class Spawner {
 
 		if(json.has("forceNoDespawn"))
 			this.forceNoDespawn = json.get("forceNoDespawn").getAsBoolean();
+
+		if(json.has("enableWithoutMobs"))
+			this.enableWithoutMobs = json.get("enableWithoutMobs").getAsBoolean();
 
 		if(json.has("eventName"))
 			this.eventName = json.get("eventName").getAsString();
@@ -214,13 +220,33 @@ public class Spawner {
 	}
 
 
+	/** Returns true if this Spawner is considered enabled, this is checked first before major logging and more in depth checks are done in canSpawn(). **/
+	public boolean isEnabled(World world, EntityPlayer player) {
+		if(!this.enabled || SpawnInfo.disableAllSpawning) {
+			return false;
+		}
+
+		// Event Spawner Check:
+		if(!"".equals(this.eventName)) {
+			ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
+			if(worldExt == null) {
+				return false;
+			}
+			if(worldExt.getMobEventPlayerServer(this.eventName) == null) {
+				return false;
+			}
+		}
+
+		if(!this.enableWithoutMobs && this.mobSpawns.isEmpty() && SpawnerMobRegistry.getMobSpawns(this.name) == null) {
+			return false;
+		}
+
+		return true;
+	}
+
+
     /** Returns true if Triggers are allowed to operate for this Spawner. **/
     public boolean canSpawn(World world, EntityPlayer player) {
-        if(!this.enabled || SpawnInfo.disableAllSpawning) {
-			LycanitesMobs.printDebug("JSONSpawner", "Spawner Disabled");
-            return false;
-        }
-
         if(this.conditions.isEmpty()) {
 			LycanitesMobs.printDebug("JSONSpawner", "No Conditions");
         	return true;
@@ -255,15 +281,8 @@ public class Spawner {
 	 * @return True on a successful spawn and false on failure.
 	 **/
 	public boolean trigger(World world, EntityPlayer player, BlockPos triggerPos, int level, int countAmount) {
-		// Event Spawner Check:
-		if(!"".equals(this.eventName)) {
-			ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
-			if(worldExt == null) {
-				return false;
-			}
-			if(worldExt.getMobEventPlayerServer(this.eventName) == null) {
-				return false;
-			}
+		if(!this.isEnabled(world, player)) {
+			return false;
 		}
 
 		LycanitesMobs.printDebug("JSONSpawner", "~O==================== Spawner Triggered: " + this.name + " ====================O~");

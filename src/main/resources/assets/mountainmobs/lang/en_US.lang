@@ -2,9 +2,6 @@
 mountainmobs.name=Mountain Creatures
 mountainmobs.description=High up in the rocky mountains these beasts roam, they have mastered climbing and are not afraid of heights.
 #
-# Mob Events
-mobevent.boulderdash.name=Boulder Dash
-#
 # Entites
 entity.mountainmobs.jabberwock.name=Jabberwock
 entity.mountainmobs.jabberwock.description=Vicious deer like creatures, their hooked claws will cause a weight effect pulling their victim down, this prevents any jumping and increases falling damage, making Jabberwocks deadly in the mountains.

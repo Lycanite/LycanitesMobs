@@ -38,6 +38,11 @@ public class TickMobEventTrigger extends MobEventTrigger {
 			return;
 		}
 
+		// Can Trigger:
+		if(!this.canTrigger(world, null)) {
+			return;
+		}
+
 		// Chance:
 		if(this.chance < 1 && world.rand.nextDouble() > this.chance) {
 			return;

@@ -1,8 +1,4 @@
 {
-    "mobevent.wingedvenom": {
-        "category": "record",
-        "sounds": [{"name": "swampmobs:mobevent/wingedvenom", "stream": true}]
-    },
     "entity.ghoulzombie.say": {
         "category": "hostile",
         "sounds": [{"name": "swampmobs:entity/ghoulzombie/say", "stream": false}]

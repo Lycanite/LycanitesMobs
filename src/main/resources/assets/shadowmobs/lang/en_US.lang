@@ -2,10 +2,6 @@
 shadowmobs.name=Shadow Creatures
 shadowmobs.description=From the darkest corners of the world come the stealthiest of beasts.
 #
-# Mob Events
-mobevent.shadowgames.name=Shadow Games
-mobevent.blackplague.name=Black Plague
-#
 # Entites
 entity.shadowmobs.grue.name=Grue
 entity.shadowmobs.grue.description=When it is pitch black, you are likely to be eaten by a Grue so be careful when putting out that torch or drowning that lava! Grue will teleport behind their target and drain its health!

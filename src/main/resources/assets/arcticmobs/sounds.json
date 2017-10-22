@@ -1,12 +1,4 @@
 {
-    "mobevent.subzero": {
-        "category": "record",
-        "sounds": [{"name": "arcticmobs:mobevent/subzero", "stream": true}]
-    },
-    "mobevent.wintersgrasp": {
-        "category": "record",
-        "sounds": [{"name": "arcticmobs:mobevent/wintersgrasp", "stream": true}]
-    },
     "entity.reiver.say": {
         "category": "hostile",
 	"sounds": [{"name": "arcticmobs:entity/reiver/say", "stream": false}]

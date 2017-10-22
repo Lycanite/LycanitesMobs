@@ -1,35 +1,84 @@
 {
+    "mobevent.arachnophobia": {
+        "category": "record",
+        "sounds": [{"name": "lycanitesmobs:mobevent/arachnophobia", "stream": true}]
+    },
+    "mobevent.asmodeus": {
+        "category": "record",
+        "sounds": [{"name": "lycanitesmobs:mobevent/asmodeus", "stream": true}]
+    },
     "mobevent.bamstorm": {
         "category": "record",
         "sounds": [{"name": "lycanitesmobs:mobevent/bamstorm", "stream": true}]
     },
-    "mobevent.raptorrampage": {
+    "mobevent.blackplague": {
         "category": "record",
-        "sounds": [{"name": "lycanitesmobs:mobevent/raptorrampage", "stream": true}]
-    },
-    "mobevent.arachnophobia": {
-        "category": "record",
-        "sounds": [{"name": "lycanitesmobs:mobevent/arachnophobia", "stream": true}]
+        "sounds": [{"name": "lycanitesmobs:mobevent/blackplague", "stream": true}]
     },
     "mobevent.bladeflurry": {
         "category": "record",
         "sounds": [{"name": "lycanitesmobs:mobevent/bladeflurry", "stream": true}]
     },
-    "mobevent.rootriot": {
+    "mobevent.boulderdash": {
         "category": "record",
-        "sounds": [{"name": "lycanitesmobs:mobevent/rootriot", "stream": true}]
+        "sounds": [{"name": "lycanitesmobs:mobevent/boulderdash", "stream": true}]
     },
-    "mobevent.primalfury": {
+    "mobevent.cinderfall": {
         "category": "record",
-        "sounds": [{"name": "lycanitesmobs:mobevent/primalfury", "stream": true}]
+        "sounds": [{"name": "lycanitesmobs:mobevent/cinderfall", "stream": true}]
     },
     "mobevent.dragonsroar": {
         "category": "record",
         "sounds": [{"name": "lycanitesmobs:mobevent/dragonsroar", "stream": true}]
     },
+    "mobevent.eruption": {
+        "category": "record",
+        "sounds": [{"name": "lycanitesmobs:mobevent/eruption", "stream": true}]
+    },
+    "mobevent.halloween": {
+        "category": "record",
+        "sounds":
+        [
+            {"name": "lycanitesmobs:mobevent/halloween", "stream": true},
+            {"name": "lycanitesmobs:mobevent/halloween_lycanite", "stream": true},
+            {"name": "lycanitesmobs:mobevent/halloween_toast", "stream": true},
+            {"name": "lycanitesmobs:mobevent/halloween_gooderness", "stream": true},
+            {"name": "lycanitesmobs:mobevent/halloween_jarno", "stream": true},
+            {"name": "lycanitesmobs:mobevent/halloween_kehaan", "stream": true},
+            {"name": "lycanitesmobs:mobevent/halloween_jonbams", "stream": true}
+        ]
+    },
+    "mobevent.hellsfury": {
+        "category": "record",
+        "sounds": [{"name": "lycanitesmobs:mobevent/hellsfury", "stream": true}]
+    },
+    "mobevent.marchofthegorgomites": {
+        "category": "record",
+        "sounds": [{"name": "lycanitesmobs:mobevent/marchofthegorgomites", "stream": true}]
+    },
+    "mobevent.poopparty": {
+        "category": "record",
+        "sounds": [{"name": "lycanitesmobs:mobevent/poopparty", "stream": true}]
+    },
+    "mobevent.primalfury": {
+        "category": "record",
+        "sounds": [{"name": "lycanitesmobs:mobevent/primalfury", "stream": true}]
+    },
+    "mobevent.rahovart": {
+        "category": "record",
+        "sounds": [{"name": "lycanitesmobs:mobevent/rahovart", "stream": true}]
+    },
+    "mobevent.raptorrampage": {
+        "category": "record",
+        "sounds": [{"name": "lycanitesmobs:mobevent/raptorrampage", "stream": true}]
+    },
     "mobevent.roasting": {
         "category": "record",
         "sounds": [{"name": "lycanitesmobs:mobevent/roasting", "stream": true}]
+    },
+    "mobevent.rootriot": {
+        "category": "record",
+        "sounds": [{"name": "lycanitesmobs:mobevent/rootriot", "stream": true}]
     },
     "mobevent.rudolph": {
         "category": "record",
@@ -43,18 +92,41 @@
         "category": "record",
         "sounds": [{"name": "lycanitesmobs:mobevent/satanclaws", "stream": true}]
     },
-    "mobevent.halloween": {
+    "mobevent.seastorm": {
         "category": "record",
-        "sounds":
-		[
-			{"name": "lycanitesmobs:mobevent/halloween", "stream": true},
-			{"name": "lycanitesmobs:mobevent/halloween_lycanite", "stream": true},
-			{"name": "lycanitesmobs:mobevent/halloween_toast", "stream": true},
-			{"name": "lycanitesmobs:mobevent/halloween_gooderness", "stream": true},
-			{"name": "lycanitesmobs:mobevent/halloween_jarno", "stream": true},
-			{"name": "lycanitesmobs:mobevent/halloween_kehaan", "stream": true},
-			{"name": "lycanitesmobs:mobevent/halloween_jonbams", "stream": true}
-		]
+        "sounds": [{"name": "lycanitesmobs:mobevent/seastorm", "stream": true}]
+    },
+    "mobevent.shadowgames": {
+        "category": "record",
+        "sounds": [{"name": "lycanitesmobs:mobevent/shadowgames", "stream": true}]
+    },
+    "mobevent.sharknado": {
+        "category": "record",
+        "sounds": [{"name": "lycanitesmobs:mobevent/sharknado", "stream": true}]
+    },
+    "mobevent.subzero": {
+        "category": "record",
+        "sounds": [{"name": "lycanitesmobs:mobevent/subzero", "stream": true}]
+    },
+    "mobevent.theswarm": {
+        "category": "record",
+        "sounds": [{"name": "lycanitesmobs:mobevent/theswarm", "stream": true}]
+    },
+    "mobevent.tsunami": {
+        "category": "record",
+        "sounds": [{"name": "lycanitesmobs:mobevent/tsunami", "stream": true}]
+    },
+    "mobevent.windstorm": {
+        "category": "record",
+        "sounds": [{"name": "lycanitesmobs:mobevent/windstorm", "stream": true}]
+    },
+    "mobevent.wingedvenom": {
+        "category": "record",
+        "sounds": [{"name": "lycanitesmobs:mobevent/wingedvenom", "stream": true}]
+    },
+    "mobevent.wintersgrasp": {
+        "category": "record",
+        "sounds": [{"name": "lycanitesmobs:mobevent/wintersgrasp", "stream": true}]
     },
     "effect.fear": {
         "category": "ambient",

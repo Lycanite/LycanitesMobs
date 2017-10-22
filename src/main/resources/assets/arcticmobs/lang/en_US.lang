@@ -2,10 +2,6 @@
 arcticmobs.name=Arctic Creatures
 arcticmobs.description=Creatures of ice and wind, normally found in cold snowy areas such as Taigas or Icy Plains.
 #
-# Mob Events
-mobevent.subzero.name=Sub Zero
-mobevent.wintersgrasp.name=Winters Grasp
-#
 # Entites
 entity.arcticmobs.reiver.name=Reiver
 entity.arcticmobs.reiver.description=Icy spirits that hurl forstbolts at anything they deem a threat... they hate warmth.

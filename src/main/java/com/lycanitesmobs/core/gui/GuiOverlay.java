@@ -56,10 +56,16 @@ public class GuiOverlay extends GUIBase {
         // ========== Mob/World Events Title ==========
         ExtendedWorld worldExt = ExtendedWorld.getForWorld(player.getEntityWorld());
         if(worldExt != null) {
-            for(MobEventPlayerClient mobEventPlayerClient : worldExt.clientMobEventPlayers.values())
-                mobEventPlayerClient.onGUIUpdate(this, sWidth, sHeight);
-            if(worldExt.clientWorldEventPlayer != null)
-                worldExt.clientWorldEventPlayer.onGUIUpdate(this, sWidth, sHeight);
+            for(MobEventPlayerClient mobEventPlayerClient : worldExt.clientMobEventPlayers.values()) {
+				GL11.glPushMatrix();
+				mobEventPlayerClient.onGUIUpdate(this, sWidth, sHeight);
+				GL11.glPopMatrix();
+			}
+            if(worldExt.clientWorldEventPlayer != null) {
+				GL11.glPushMatrix();
+				worldExt.clientWorldEventPlayer.onGUIUpdate(this, sWidth, sHeight);
+				GL11.glPopMatrix();
+			}
         }
 		
 		// ========== Summoning Focus Bar ==========

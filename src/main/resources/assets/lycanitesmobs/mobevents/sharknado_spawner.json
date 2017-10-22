@@ -3,7 +3,7 @@
 	"type": "spawner",
 	"enabled": true,
 	"loadDefault": true,
-	"mobCount": 10,
+	"mobCount": 5,
 	"ignoreDimensions": true,
 	"ignoreBiomes": true,
 	"ignoreLightLevel": true,
@@ -16,7 +16,7 @@
 		{
 			"type": "tick",
 			"chance": 1,
-			"tickRate": 800
+			"tickRate": 100
 		}
 	],
 	"locations": [

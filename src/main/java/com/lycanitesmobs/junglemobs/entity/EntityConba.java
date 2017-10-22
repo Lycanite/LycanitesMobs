@@ -148,6 +148,11 @@ public class EntityConba extends EntityCreatureTameable implements IMob {
         
         // Infected AI:
         if(!this.getEntityWorld().isRemote) {
+			// The Swarm:
+			if(!this.vespidInfection && "theswarm".equals(this.spawnEventType)) {
+				this.vespidInfection = true;
+			}
+
             if (this.vespidInfection && !this.getEntityWorld().isRemote) {
                 this.aiAttackMelee.setEnabled(true);
                 this.aiAttackRanged.setEnabled(false);

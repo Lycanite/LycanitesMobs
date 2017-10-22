@@ -2,9 +2,6 @@
 desertmobs.name=Desert Creatures
 desertmobs.description=Roaming the hot, dry and sandy areas, these creatures are usually found in places such as Deserts and Mesa Canyons.
 #
-# Mob Events
-mobevent.marchofthegorgomites.name=March of The Gorgomites
-#
 # Entites
 entity.desertmobs.cryptzombie.name=Crypt Zombie
 entity.desertmobs.cryptzombie.description=Mummified corpses that lurk the desert. These act much like regular zombies but will inflict the hunger effect and also don't burn in the sun.

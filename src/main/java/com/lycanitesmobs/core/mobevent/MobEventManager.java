@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.ExtendedWorld;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.Utilities;
@@ -33,6 +34,8 @@ public class MobEventManager extends JSONLoader {
     public boolean mobEventsRandom = false;
     public boolean mobEventsSchedule = true;
 
+    protected long lastEventUpdateTime = 0;
+
 
 	/** Returns the main Mob Event Manager instance. **/
 	public static MobEventManager getInstance() {
@@ -43,7 +46,7 @@ public class MobEventManager extends JSONLoader {
 	}
 
 
-    /** Called during start up, loads all global events and config settings into the manager. **/
+    /** Called during early start up, loads all global event configs into the manager. **/
 	public void loadConfig() {
 		ConfigSpawning config = ConfigSpawning.getConfig(LycanitesMobs.group, "mobevents");
         config.setCategoryComment("Global", "These are various settings that apply to all events.");
@@ -52,8 +55,6 @@ public class MobEventManager extends JSONLoader {
         this.mobEventsEnabled = config.getBool("Global", "Mob Events Enabled", this.mobEventsEnabled, "Set to false to completely disable the entire event system for every world.");
         this.mobEventsRandom = config.getBool("Global", "Random Mob Events Enabled", this.mobEventsRandom, "Set to false to disable random mob events for every world.");
         this.mobEventsSchedule = config.getBool("Global", "Mob Events Schedule Enabled", this.mobEventsSchedule, "Set to false to disable scheduled events for every world.");
-
-        this.loadAllFromJSON(LycanitesMobs.group);
 	}
 
 
@@ -123,6 +124,7 @@ public class MobEventManager extends JSONLoader {
         if(mobEvent == null)
             return;
         this.mobEvents.put(mobEvent.name, mobEvent);
+		AssetManager.addSound("mobevent_" + mobEvent.title.toLowerCase(), LycanitesMobs.group, "mobevent." + mobEvent.title.toLowerCase());
     }
 
 
@@ -159,8 +161,9 @@ public class MobEventManager extends JSONLoader {
 			return;
 
 		// Only Tick On World Time Ticks:
-		if(worldExt.lastEventUpdateTime == world.getTotalWorldTime())
+		if(this.lastEventUpdateTime == world.getTotalWorldTime())
 			return;
+		this.lastEventUpdateTime = world.getTotalWorldTime();
 		worldExt.lastEventUpdateTime = world.getTotalWorldTime();
 
 		// Only Run If Players Are Present:
@@ -168,17 +171,16 @@ public class MobEventManager extends JSONLoader {
 			return;
 		}
 
+		// Update World Mob Event Player:
+		if(worldExt.serverWorldEventPlayer != null) {
+			worldExt.serverWorldEventPlayer.onUpdate();
+		}
+
         // Update Mob Event Players:
         if(worldExt.serverMobEventPlayers.size() > 0) {
             for (MobEventPlayerServer mobEventPlayerServer : worldExt.serverMobEventPlayers.values().toArray(new MobEventPlayerServer[worldExt.serverMobEventPlayers.size()])) {
                 mobEventPlayerServer.onUpdate();
             }
-        }
-
-        // Update World Mob Event Player:
-        if(worldExt.serverWorldEventPlayer != null) {
-            worldExt.serverWorldEventPlayer.onUpdate();
-            return;
         }
     }
 

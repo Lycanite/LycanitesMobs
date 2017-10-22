@@ -31,6 +31,9 @@ public class MobEventPlayerServer {
     /** The level of the mob event, higher levels are more difficult, will spawn more subspecies, have higher mob levels, etc. **/
     public int level = 1;
 
+	/** True if the started event was already running and show display as 'Event Extended' in chat. **/
+	public boolean extended = false;
+
 
 	// ==================================================
     //                     Constructor
@@ -47,18 +50,10 @@ public class MobEventPlayerServer {
     //                       Start
     // ==================================================
     public void onStart() {
-        // Check If Already Active On World:
-        boolean extended = false;
-        if(this.world != null) {
-            if(this.world.getTotalWorldTime() < (this.startedWorldTime + this.mobEvent.duration)) {
-                extended = true;
-            }
-        }
-
         this.startedWorldTime = world.getTotalWorldTime();
         this.ticks = 0;
 
-        LycanitesMobs.printInfo("", "Mob Event " + (extended ? "Extended" : "Started") + ": " + this.mobEvent.getTitle() + " In Dimension: " + this.world.provider.getDimension() + " Duration: " + (this.mobEvent.duration / 20) + "secs");
+        LycanitesMobs.printInfo("", "Mob Event " + (this.extended ? "Extended" : "Started") + ": " + this.mobEvent.getTitle() + " In Dimension: " + this.world.provider.getDimension() + " Duration: " + (this.mobEvent.duration / 20) + "secs");
     }
 
     public void changeStartedWorldTime(long newStartedTime) {
@@ -92,9 +87,14 @@ public class MobEventPlayerServer {
         this.ticks++;
 
         // Stop Event When Time Runs Out:
-        if(this.world.getTotalWorldTime() >= (this.startedWorldTime + this.mobEvent.duration)) {
+        if(this.ticks >= this.mobEvent.duration) {
             ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
-            worldExt.stopWorldEvent();
+            if("world".equalsIgnoreCase(this.mobEvent.channel)) {
+            	worldExt.stopWorldEvent();
+			}
+			else {
+				worldExt.stopMobEvent(this.mobEvent.name);
+			}
         }
     }
 }

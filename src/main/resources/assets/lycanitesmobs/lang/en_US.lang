@@ -9,18 +9,36 @@ event.boss.finished=%event% is unleashed!
 event.boss.phase=Phase
 #
 # Mob Events
-mobevent.bamstorm.name=Bamstorm
-mobevent.raptorrampage.name=Raptor Rampage
 mobevent.arachnophobia.name=Arachnophobia
+mobevent.asmodeus.name=Asmodeus
+mobevent.bamstorm.name=Bamstorm
+mobevent.blackplague.name=Black Plague
 mobevent.bladeflurry.name=Blade Flurry
-mobevent.rootriot.name=Root Riot
-mobevent.primalfury.name=Primal Fury
+mobevent.boulderdash.name=Boulderdash
+mobevent.cinderfall.name=Cinderfall
 mobevent.dragonsroar.name=Dragons Roar
+mobevent.eruption.name=Eruption
 mobevent.halloween.name=Happy Halloween
+mobevent.hellsfury.name=Hells Fury
+mobevent.marchofthegorgomites.name=March of The Gorgomites
+mobevent.poopparty.name=Poop Party
+mobevent.primalfury.name=Primal Fury
+mobevent.rahovart.name=Rahovart
+mobevent.raptorrampage.name=Raptor Rampage
 mobevent.roasting.name=Your Head Roasting On A Cinder Fire
+mobevent.rootriot.name=Root Riot
 mobevent.rudolph.name=Rudolph The Bloodstained Jabberwock
 mobevent.saltytree.name=Salty Tree
 mobevent.satanclaws.name=Satan Claws
+mobevent.seastorm.name=Seastorm
+mobevent.shadowgames.name=Shadow Games
+mobevent.sharknado.name=Sharknado
+mobevent.subzero.name=Subzero
+mobevent.theswarm.name=The Swarm
+mobevent.tsunami.name=Tsunami
+mobevent.windstorm.name=Windstorm
+mobevent.wingedvenom.name=Winged Venom
+mobevent.wintersgrasp.name=Winters Grasp
 #
 #
 #
@@ -213,9 +231,9 @@ lyc.command.mobevent.invalid=Invalid arguments, usage: /lycanitesmobs mobevent [
 lyc.command.mobevent.start.invalid=Invalid arguments, usage: mobevent start <event name> for example mobevent start hellsfury
 lyc.command.mobevent.start.unknown=Unknown mob event. Use /lycanitesmobs mobevent list for a list of event names.
 lyc.command.mobevent.start.noworld=Command Sender dimension ID object not found, please enter a valid dimension ID.
-lyc.command.mobevent.start=Starting mob event...
-lyc.command.mobevent.random=Starting random mob event...
-lyc.command.mobevent.stop=Stopping all mob events...
+lyc.command.mobevent.start=Mob Event started.
+lyc.command.mobevent.random=Random Mob Event started.
+lyc.command.mobevent.stop=Stopped all Mob Events.
 lyc.command.mobevent.list=Mob Events:
 lyc.command.mobevent.enable=All mob events enabled.
 lyc.command.mobevent.disable=All mob events disabled.

@@ -10,18 +10,12 @@ import com.lycanitesmobs.core.info.ObjectLists;
 import com.lycanitesmobs.core.info.Subspecies;
 import com.lycanitesmobs.core.item.ItemCustomFood;
 import com.lycanitesmobs.core.item.ItemTreat;
-import com.lycanitesmobs.core.mobevent.MobEventBase;
-import com.lycanitesmobs.core.mobevent.MobEventManager;
-import com.lycanitesmobs.core.spawning.SpawnTypeBase;
-import com.lycanitesmobs.core.spawning.SpawnTypeSky;
 import com.lycanitesmobs.plainsmobs.dispenser.DispenserBehaviorQuill;
 import com.lycanitesmobs.plainsmobs.entity.*;
 import com.lycanitesmobs.plainsmobs.item.ItemPlainsEgg;
 import com.lycanitesmobs.plainsmobs.item.ItemQuill;
 import com.lycanitesmobs.plainsmobs.item.ItemScepterQuill;
-import com.lycanitesmobs.plainsmobs.mobevent.MobEventWindStorm;
 import net.minecraft.block.BlockDispenser;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySpider;
@@ -195,23 +189,6 @@ public class PlainsMobs extends Submod {
 	@Override
 	public void addRecipes() {
 		GameRegistry.addSmelting(ObjectManager.getItem("makameatraw"), new ItemStack(ObjectManager.getItem("makameatcooked"), 1), 0.5f);
-	}
-
-	@Override
-	public void createMobEvents() {
-		if(MobInfo.getFromName("roc") != null) {
-			MobEventBase mobEvent = new MobEventWindStorm("windstorm", this.group);
-			SpawnTypeBase eventSpawner = new SpawnTypeSky("windstorm")
-					.setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-			eventSpawner.materials = new Material[] {Material.AIR};
-			eventSpawner.ignoreBiome = true;
-			eventSpawner.ignoreLight = true;
-			eventSpawner.forceSpawning = true;
-			eventSpawner.ignoreMobConditions = true;
-			eventSpawner.addSpawn(MobInfo.getFromName("roc"));
-			mobEvent.addSpawner(eventSpawner);
-			MobEventManager.INSTANCE.addWorldEvent(mobEvent);
-		}
 	}
 
 	@Override

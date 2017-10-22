@@ -1,25 +1,25 @@
 package com.lycanitesmobs.desertmobs;
 
 import com.lycanitesmobs.LycanitesMobs;
-import com.lycanitesmobs.core.Submod;
-import com.lycanitesmobs.core.info.*;
-import com.lycanitesmobs.core.spawning.SpawnTypeBase;
-import com.lycanitesmobs.desertmobs.entity.*;
-import com.lycanitesmobs.desertmobs.item.*;
 import com.lycanitesmobs.ObjectManager;
+import com.lycanitesmobs.core.Submod;
 import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
+import com.lycanitesmobs.core.info.GroupInfo;
+import com.lycanitesmobs.core.info.MobInfo;
+import com.lycanitesmobs.core.info.ObjectLists;
+import com.lycanitesmobs.core.info.Subspecies;
 import com.lycanitesmobs.core.item.ItemCustomFood;
 import com.lycanitesmobs.core.item.ItemTreat;
-import com.lycanitesmobs.core.mobevent.MobEventBase;
-import com.lycanitesmobs.core.mobevent.MobEventManager;
-import com.lycanitesmobs.core.spawning.SpawnTypeLand;
 import com.lycanitesmobs.desertmobs.dispenser.DispenserBehaviorMudshot;
 import com.lycanitesmobs.desertmobs.dispenser.DispenserBehaviorThrowingScythe;
-import com.lycanitesmobs.desertmobs.mobevent.MobEventMarchOfTheGorgomites;
+import com.lycanitesmobs.desertmobs.entity.*;
+import com.lycanitesmobs.desertmobs.item.*;
 import net.minecraft.block.BlockDispenser;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.monster.*;
+import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntitySpider;
+import net.minecraft.entity.monster.EntityWitch;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
@@ -187,22 +187,6 @@ public class DesertMobs extends Submod {
 	@Override
 	public void addRecipes() {
 		GameRegistry.addSmelting(ObjectManager.getItem("joustmeatraw"), new ItemStack(ObjectManager.getItem("joustmeatcooked"), 1), 0.5f);
-	}
-
-	@Override
-	public void createMobEvents() {
-		MobEventBase mobEvent = new MobEventMarchOfTheGorgomites("marchofthegorgomites", this.group);
-		mobEvent.minDay = 10;
-		SpawnTypeBase eventSpawner = new SpawnTypeLand("marchofthegorgomites")
-				.setChance(1.0D).setBlockLimit(32).setMobLimit(8);
-		eventSpawner.materials = new Material[] {Material.AIR};
-		eventSpawner.ignoreBiome = true;
-		eventSpawner.ignoreLight = true;
-		eventSpawner.forceSpawning = true;
-		eventSpawner.ignoreMobConditions = true;
-		eventSpawner.addSpawn(MobInfo.getFromName("gorgomite"));
-		mobEvent.addSpawner(eventSpawner);
-		MobEventManager.INSTANCE.addWorldEvent(mobEvent);
 	}
 
 	@Override

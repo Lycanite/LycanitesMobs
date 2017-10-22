@@ -1,0 +1,64 @@
+{
+	"name": "halloween_landspawner",
+	"type": "spawner",
+	"enabled": true,
+	"loadDefault": true,
+	"mobCount": 10,
+	"ignoreDimensions": true,
+	"ignoreBiomes": true,
+	"ignoreLightLevel": true,
+	"ignoreGroupLimit": true,
+	"ignoreForgeCanSpawnEvent": true,
+	"forceNoDespawn": true,
+	"eventName": "halloween",
+	"conditions": [],
+	"triggers": [
+		{
+			"type": "tick",
+			"chance": 1,
+			"tickRate": 800
+		}
+	],
+	"locations": [
+		{
+			"type": "random",
+			"rangeMin": [32, 0, 32],
+			"rangeMax": [48, 64, 48],
+			"sorting": "random",
+			"limit": 32,
+			"solidGround": true
+		}
+	],
+	"mobSpawns": [
+		{
+			"mobId": "forestmobs.ent",
+			"weight": 8,
+			"mobNameTag": "Twisted Ent"
+		},
+		{
+			"mobId": "forestmobs.trent",
+			"weight": 4,
+			"mobNameTag": "Wicked Trent"
+		},
+		{
+			"mobId": "demonmobs.belph",
+			"weight": 8
+		},
+		{
+			"mobId": "demonmobs.behemoth",
+			"weight": 4
+		},
+		{
+			"mobId": "swampmobs.triffid",
+			"weight": 8
+		},
+		{
+			"mobId": "swampmobs.ghoulzombie",
+			"weight": 8
+		},
+		{
+			"mobId": "desertmobs.cryptzombie",
+			"weight": 8
+		}
+	]
+}

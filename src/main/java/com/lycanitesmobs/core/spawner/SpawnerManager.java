@@ -50,12 +50,12 @@ public class SpawnerManager extends JSONLoader {
 		// Load Default Spawners:
 		Path path = Utilities.getAssetPath(this.getClass(), LycanitesMobs.group.filename, "spawners");
 		Map<String, JsonObject> defaultSpawnerJSONs = new HashMap<>();
-		this.loadJsonObjects(gson, path, defaultSpawnerJSONs, "name");
+		this.loadJsonObjects(gson, path, defaultSpawnerJSONs, "name", "spawner");
 
 		// Load Default Mob Event Spawners:
-		//path = Utilities.getAssetPath(this.getClass(), LycanitesMobs.group.filename, "mobevents");
-		//Map<String, JsonObject> defaultMobEventsJSONs = new HashMap<>();
-		//this.loadJsonObjects(gson, path, defaultMobEventsJSONs, "name");
+		path = Utilities.getAssetPath(this.getClass(), LycanitesMobs.group.filename, "mobevents");
+		Map<String, JsonObject> defaultMobEventsJSONs = new HashMap<>();
+		this.loadJsonObjects(gson, path, defaultMobEventsJSONs, "name", "spawner");
 
 		// Custom:
 		String configPath = LycanitesMobs.proxy.getMinecraftDir() + "/config/" + LycanitesMobs.modid + "/";
@@ -65,17 +65,17 @@ public class SpawnerManager extends JSONLoader {
 		customSpawnersDir.mkdirs();
 		path = customSpawnersDir.toPath();
 		Map<String, JsonObject> customSpawnerJSONs = new HashMap<>();
-		this.loadJsonObjects(gson, path, customSpawnerJSONs, "name");
+		this.loadJsonObjects(gson, path, customSpawnerJSONs, "name", "spawner");
 
-		//File customMobEventsDir = new File(configPath + "mobevents");
-		//path = customMobEventsDir.toPath();
-		//Map<String, JsonObject> customMobEventsJSONs = new HashMap<>();
-		//this.loadJsonObjects(gson, path, customMobEventsJSONs, "name");
+		File customMobEventsDir = new File(configPath + "mobevents");
+		path = customMobEventsDir.toPath();
+		Map<String, JsonObject> customMobEventsJSONs = new HashMap<>();
+		this.loadJsonObjects(gson, path, customMobEventsJSONs, "name", "spawner");
 
 
 		// Write Defaults:
 		this.writeDefaultJSONObjects(gson, defaultSpawnerJSONs, customSpawnerJSONs, spawnerJSONs, true, "spawners");
-		//this.writeDefaultJSONObjects(gson, defaultMobEventsJSONs, customMobEventsJSONs, spawnerJSONs, "mobevents");
+		this.writeDefaultJSONObjects(gson, defaultMobEventsJSONs, customMobEventsJSONs, spawnerJSONs, true, "mobevents");
 
 
 		// Create Spawners:

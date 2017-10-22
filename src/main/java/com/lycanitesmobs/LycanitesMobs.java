@@ -12,15 +12,12 @@ import com.lycanitesmobs.core.entity.EntityHitArea;
 import com.lycanitesmobs.core.entity.EntityPortal;
 import com.lycanitesmobs.core.info.*;
 import com.lycanitesmobs.core.item.*;
-import com.lycanitesmobs.core.mobevent.MobEventBase;
+import com.lycanitesmobs.core.mobevent.MobEventListener;
 import com.lycanitesmobs.core.mobevent.MobEventManager;
-import com.lycanitesmobs.core.mobevent.SharedMobEvents;
 import com.lycanitesmobs.core.mods.DLDungeons;
 import com.lycanitesmobs.core.network.PacketHandler;
-import com.lycanitesmobs.core.spawner.SpawnerManager;
 import com.lycanitesmobs.core.spawner.SpawnerEventListener;
-import com.lycanitesmobs.core.spawning.CustomSpawner;
-import com.lycanitesmobs.core.spawning.SpawnTypeBase;
+import com.lycanitesmobs.core.spawner.SpawnerManager;
 import com.lycanitesmobs.core.tileentity.TileEntitySummoningPedestal;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.ResourceLocation;
@@ -44,7 +41,7 @@ public class LycanitesMobs {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String version = "1.17.2.4 - MC 1.12.2";
+	public static final String version = "1.17.3.0 - MC 1.12.2";
 	public static final String website = "http://lycanitesmobs.com";
 	public static final String websiteAPI = "http://api.lycanitesmobs.com";
 	public static final String websitePatreon = "https://www.patreon.com/lycanite";
@@ -68,10 +65,6 @@ public class LycanitesMobs {
     public static final Capability<IExtendedEntity> EXTENDED_ENTITY = null;
     @CapabilityInject(IExtendedPlayer.class)
     public static final Capability<IExtendedPlayer> EXTENDED_PLAYER = null;
-	
-	// Spawning:
-	public static SpawnerEventListener spawnerEventListener;
-	public static CustomSpawner legacySpawner;
 	
 	// Creative Tab:
     public static final CreativeTabs itemsTab = new CreativeTabItems(CreativeTabs.getNextID(), modid + ".items");
@@ -138,26 +131,17 @@ public class LycanitesMobs {
 		
 		// ========== Mob Info Global Settings ==========
 		MobInfo.loadGlobalSettings();
-		
-		
-		// ========== Spawner Pre Init ==========
-		spawnerEventListener = new SpawnerEventListener();
-		MinecraftForge.EVENT_BUS.register(spawnerEventListener);
-		FMLCommonHandler.instance().bus().register(spawnerEventListener);
 
-		// ========== Legacy Spawner ==========
-		legacySpawner = new CustomSpawner();
-		SpawnTypeBase.loadSpawnTypes();
-		MinecraftForge.EVENT_BUS.register(legacySpawner);
-		FMLCommonHandler.instance().bus().register(legacySpawner);
 
-		// ========== Global Spawn Info Settings ==========
+		// ========== Spawners ==========
 		SpawnInfo.loadGlobalSettings();
+		FMLCommonHandler.instance().bus().register(SpawnerEventListener.getInstance());
 
 
 		// ========== Mob Events ==========
 		MobEventManager.getInstance().loadConfig();
 		FMLCommonHandler.instance().bus().register(MobEventManager.getInstance());
+		FMLCommonHandler.instance().bus().register(MobEventListener.getInstance());
 
 
         // ========== Item Info ==========
@@ -260,17 +244,16 @@ public class LycanitesMobs {
         MobInfo.loadAllSpawningFromConfigs();
 
 
-		// ========== Load JSON Spawners ==========
-		SpawnerManager.getInstance().loadAllFromJSON();
-
-
 		// ========== Register and Initialize Handlers/Objects ==========
 		proxy.registerAssets();
         proxy.registerTileEntities();
+
+
+		// ========== Load JSON Spawners ==========
+		SpawnerManager.getInstance().loadAllFromJSON();
 		
 		
-		// ========== Mob Events ==========
-        SharedMobEvents.createSharedEvents(group);
+		// ========== Load JSON Mob Events ==========
         MobEventManager.getInstance().loadAllFromJSON(group);
 
 

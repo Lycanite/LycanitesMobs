@@ -18,7 +18,6 @@ import com.lycanitesmobs.core.inventory.ContainerCreature;
 import com.lycanitesmobs.core.inventory.InventoryCreature;
 import com.lycanitesmobs.core.item.equipment.ItemEquipmentPart;
 import com.lycanitesmobs.core.pets.PetEntry;
-import com.lycanitesmobs.core.spawning.SpawnTypeBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -171,8 +170,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // Spawning:
     /** Use the onFirstSpawn() method and not this variable. True if this creature has spawned for the first time (naturally or via spawn egg, etc, not reloaded from a saved chunk). **/
     public boolean firstSpawn = true;
-    /** This will contain the Spawn Type used to spawn this entity (this should only be used for spawn checks really as it isn't persistent). Null if spawned from egg, spawner, vanilla, etc. **/
-    public SpawnTypeBase spawnedFromType = null;
     /** Should this mob check for block collisions when spawning? **/
     public boolean spawnsInBlock = false;
     /** Can this mob spawn where it can't see the sky above? **/
@@ -632,11 +629,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Fixed Spawn Check ==========
     /** First stage checks for vanilla spawning, if this check fails the creature will not spawn. **/
     public boolean fixedSpawnCheck(World world, BlockPos pos) {
-    	if(this.spawnedFromType == null || (this.spawnedFromType != null && !this.spawnedFromType.ignoreLight)) {
-            if(!this.checkSpawnLightLevel(world, pos)) {
-            	return false;
-			}
-    	}
+		if(!this.checkSpawnLightLevel(world, pos)) {
+			return false;
+		}
 
     	LycanitesMobs.printDebug("MobSpawns", "Checking collision...");
         if(!this.checkSpawnCollision(world, pos)) {
@@ -659,7 +654,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	if(!this.isNativeDimension(this.getEntityWorld()))
     		return false;
     	LycanitesMobs.printDebug("MobSpawns", "Block preference.");
-        if(this.spawnedFromType == null && this.getBlockPathWeight(pos.getX(), pos.getY(), pos.getZ()) < 0.0F)
+        if(this.getBlockPathWeight(pos.getX(), pos.getY(), pos.getZ()) < 0.0F)
         	return false;
     	LycanitesMobs.printDebug("MobSpawns", "Checking for liquid (water, lava, ooze, etc).");
         if(!this.spawnsInWater && this.getEntityWorld().containsAnyLiquid(this.getEntityBoundingBox()))
@@ -669,9 +664,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	LycanitesMobs.printDebug("MobSpawns", "Checking for underground.");
         if(!this.spawnsUnderground && this.isBlockUnderground(pos.getX(), pos.getY() + 1, pos.getZ()))
         	return false;
-    	/*LycanitesMobs.printDebug("MobSpawns", "Checking required blocks.");
-        if(!spawnBlockCheck(world, pos.getX(), pos.getY(), pos.getZ()))
-        	return false;*/
     	LycanitesMobs.printDebug("MobSpawns", "Counting mobs of the same kind, max allowed is: " + this.mobInfo.spawnInfo.spawnAreaLimit);
         if(!this.checkSpawnGroupLimit(world, pos))
         	return false;
@@ -684,70 +676,11 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
     // ========== Spawn Dimension Check ==========
     public boolean isNativeDimension(World world) {
-    	if(this.spawnedFromType != null) {
-    		if(this.spawnedFromType.ignoreDimension) {
-                LycanitesMobs.printDebug("MobSpawns", "Dimension check is ignored by " + this.spawnedFromType.typeName + " spawn type.");
-                return true;
-            }
-    	}
     	if(this.mobInfo == null || this.mobInfo.spawnInfo == null) {
             LycanitesMobs.printDebug("MobSpawns", "No dimension spawn settings were found for this mob, defaulting to valid.");
             return true;
         }
         return this.mobInfo.spawnInfo.isAllowedDimension(world);
-    }
-
-    // ========== Spawn Block Check ==========
-    /**
-	 * Checks for nearby blocks from the xyz block location, Cinders use this when spawning by Fire Blocks.
-	 * @deprecated This is used by the legacy spawner and will be removed as this is the spawner's job and add unnecessary extra block checks.
-	 **/
-    @Deprecated
-    public boolean spawnBlockCheck(World world, int x, int y, int z) {
-        if(this.spawnedFromType != null && this.mobInfo.spawnInfo.enforceBlockCost) {
-        	int blocksFound = 0;
-        	if(this.spawnedFromType.materials != null) {
-        		for(int i = x - this.spawnedFromType.range; i <= x + this.spawnedFromType.range; i++)
-                	for(int j = y - this.spawnedFromType.range; j <= y + this.spawnedFromType.range; j++)
-                    	for(int k = z - this.spawnedFromType.range; k <= z + this.spawnedFromType.range; k++) {
-                    		Material blockMaterial = world.getBlockState(new BlockPos(i, j, k)).getMaterial();
-                    		for(Material validMaterial : this.spawnedFromType.materials) {
-    							if(blockMaterial == validMaterial) {
-    								if(++blocksFound >= this.mobInfo.spawnInfo.spawnBlockCost)
-                        				return true;
-    							}
-    						}
-                    	}
-        	}
-        	if(this.spawnedFromType.blocks != null) {
-        		for(int i = x - this.spawnedFromType.range; i <= x + this.spawnedFromType.range; i++)
-                	for(int j = y - this.spawnedFromType.range; j <= y + this.spawnedFromType.range; j++)
-                    	for(int k = z - this.spawnedFromType.range; k <= z + this.spawnedFromType.range; k++) {
-                    		Block block = world.getBlockState(new BlockPos(i, j, k)).getBlock();
-                    		for(Block validBlock : this.spawnedFromType.blocks) {
-    							if(block == validBlock) {
-    								if(++blocksFound >= this.mobInfo.spawnInfo.spawnBlockCost)
-                        				return true;
-    							}
-    						}
-                    	}
-        	}
-        	if(this.spawnedFromType.blockStrings != null) {
-        		for(int i = x - this.spawnedFromType.range; i <= x + this.spawnedFromType.range; i++)
-                	for(int j = y - this.spawnedFromType.range; j <= y + this.spawnedFromType.range; j++)
-                    	for(int k = z - this.spawnedFromType.range; k <= z + this.spawnedFromType.range; k++) {
-                            Block block = world.getBlockState(new BlockPos(i, j, k)).getBlock();
-                    		for(String validBlockString : this.spawnedFromType.blockStrings) {
-    							if(block == ObjectManager.getBlock(validBlockString)) {
-    								if(++blocksFound >= this.mobInfo.spawnInfo.spawnBlockCost)
-                        				return true;
-    							}
-    						}
-                    	}
-        	}
-        	return false;
-        }
-    	return true;
     }
 
 	// ========== Collision Spawn Check ==========

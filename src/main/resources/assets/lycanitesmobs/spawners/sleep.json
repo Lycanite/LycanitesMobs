@@ -1,5 +1,6 @@
 {
 	"name": "sleep",
+	"type": "spawner",
 	"loadDefault": true,
 	"mobCount": 1,
 	"ignoreDimensions": true,

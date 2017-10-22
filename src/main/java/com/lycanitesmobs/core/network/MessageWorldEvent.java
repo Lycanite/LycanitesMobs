@@ -5,6 +5,7 @@ import com.lycanitesmobs.LycanitesMobs;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -13,15 +14,19 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class MessageWorldEvent implements IMessage, IMessageHandler<MessageWorldEvent, IMessage> {
 	public String mobEventName;
+	public BlockPos pos;
+	public int level = 1;
 
 
 	// ==================================================
 	//                    Constructors
 	// ==================================================
 	public MessageWorldEvent() {}
-	public MessageWorldEvent(String mobEventName) {
-        this.mobEventName = mobEventName;
-    }
+	public MessageWorldEvent(String mobEventName, BlockPos pos, int level) {
+		this.mobEventName = mobEventName;
+		this.pos = pos;
+		this.level = level;
+	}
 	
 	
 	// ==================================================
@@ -40,7 +45,7 @@ public class MessageWorldEvent implements IMessage, IMessageHandler<MessageWorld
 		if("".equals(message.mobEventName))
             worldExt.stopWorldEvent();
 		else {
-            worldExt.startWorldEvent(message.mobEventName);
+            worldExt.startMobEvent(message.mobEventName, null, message.pos, message.level);
 		}
 		return null;
 	}
@@ -56,6 +61,8 @@ public class MessageWorldEvent implements IMessage, IMessageHandler<MessageWorld
 	public void fromBytes(ByteBuf buf) {
 		PacketBuffer packet = new PacketBuffer(buf);
         this.mobEventName = packet.readString(256);
+		this.pos = packet.readBlockPos();
+		this.level = packet.readInt();
 	}
 	
 	
@@ -69,6 +76,8 @@ public class MessageWorldEvent implements IMessage, IMessageHandler<MessageWorld
 	public void toBytes(ByteBuf buf) {
 		PacketBuffer packet = new PacketBuffer(buf);
         packet.writeString(this.mobEventName);
+		packet.writeBlockPos(this.pos);
+		packet.writeInt(this.level);
 	}
 	
 }

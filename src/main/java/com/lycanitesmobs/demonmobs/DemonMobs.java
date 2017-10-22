@@ -5,31 +5,26 @@ import com.lycanitesmobs.BlockMaker;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.Submod;
+import com.lycanitesmobs.core.block.BlockSoulcube;
 import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
 import com.lycanitesmobs.core.info.*;
 import com.lycanitesmobs.core.item.ItemCustomFood;
 import com.lycanitesmobs.core.item.ItemTreat;
-import com.lycanitesmobs.core.mobevent.MobEventManager;
-import com.lycanitesmobs.core.spawning.SpawnTypeBase;
-import com.lycanitesmobs.core.spawning.SpawnTypeSky;
+import com.lycanitesmobs.core.mobevent.effects.StructureBuilder;
 import com.lycanitesmobs.demonmobs.block.BlockDoomfire;
 import com.lycanitesmobs.demonmobs.block.BlockHellfire;
 import com.lycanitesmobs.demonmobs.dispenser.DispenserBehaviorDemonicLightning;
+import com.lycanitesmobs.demonmobs.dispenser.DispenserBehaviorDevilstar;
 import com.lycanitesmobs.demonmobs.dispenser.DispenserBehaviorDoomfireball;
 import com.lycanitesmobs.demonmobs.dispenser.DispenserBehaviorHellfireball;
 import com.lycanitesmobs.demonmobs.entity.*;
 import com.lycanitesmobs.demonmobs.info.AltarInfoAsmodeus;
 import com.lycanitesmobs.demonmobs.info.AltarInfoEbonCacodemon;
-import com.lycanitesmobs.demonmobs.item.*;
-import com.lycanitesmobs.demonmobs.mobevent.MobEventAsmodeus;
-import com.lycanitesmobs.demonmobs.mobevent.MobEventHellsFury;
-import com.lycanitesmobs.core.block.BlockSoulcube;
-import com.lycanitesmobs.core.mobevent.MobEventBase;
-import com.lycanitesmobs.demonmobs.dispenser.DispenserBehaviorDevilstar;
 import com.lycanitesmobs.demonmobs.info.AltarInfoRahovart;
-import com.lycanitesmobs.demonmobs.mobevent.MobEventRahovart;
+import com.lycanitesmobs.demonmobs.item.*;
+import com.lycanitesmobs.demonmobs.mobevents.AsmodeusStructureBuilder;
+import com.lycanitesmobs.demonmobs.mobevents.RahovartStructureBuilder;
 import net.minecraft.block.BlockDispenser;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.monster.EntityPigZombie;
@@ -71,6 +66,17 @@ public class DemonMobs extends Submod {
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event) {
 		super.init(event);
+
+		AltarInfo ebonCacodemonAltar = new AltarInfoEbonCacodemon("EbonCacodemonAltar");
+		AltarInfo.addAltar(ebonCacodemonAltar);
+
+		AltarInfo rahovartAltar = new AltarInfoRahovart("RahovartAltar");
+		AltarInfo.addAltar(rahovartAltar);
+		StructureBuilder.addStructureBuilder(new RahovartStructureBuilder());
+
+		AltarInfo asmodeusAltar = new AltarInfoAsmodeus("AsmodeusAltar");
+		AltarInfo.addAltar(asmodeusAltar);
+		StructureBuilder.addStructureBuilder(new AsmodeusStructureBuilder());
 	}
 
 	@Mod.EventHandler
@@ -231,37 +237,6 @@ public class DemonMobs extends Submod {
 	@Override
 	public void addRecipes() {
 		GameRegistry.addSmelting(ObjectManager.getItem("pinkymeatraw"), new ItemStack(ObjectManager.getItem("pinkymeatcooked"), 1), 0.5f);
-	}
-
-	@Override
-	public void createMobEvents() {
-		if(MobInfo.getFromName("nethersoul") != null) {
-			MobEventBase mobEvent = new MobEventHellsFury("hellsfury", this.group).setDimensions("1");
-			SpawnTypeBase eventSpawner = new SpawnTypeSky("hellsfury")
-					.setChance(1.0D).setBlockLimit(32).setMobLimit(5);
-			eventSpawner.materials = new Material[] {Material.AIR};
-			eventSpawner.ignoreBiome = true;
-			eventSpawner.ignoreLight = true;
-			eventSpawner.forceSpawning = true;
-			eventSpawner.ignoreMobConditions = true;
-			eventSpawner.addSpawn(MobInfo.getFromName("nethersoul"));
-			eventSpawner.addSpawn(MobInfo.getFromName("cacodemon"));
-			mobEvent.addSpawner(eventSpawner);
-			MobEventManager.INSTANCE.addWorldEvent(mobEvent);
-		}
-
-		MobEventBase mobEvent = new MobEventRahovart("rahovart", this.group).setDimensions("");
-		MobEventManager.INSTANCE.addMobEvent(mobEvent);
-
-		mobEvent = new MobEventAsmodeus("asmodeus", this.group).setDimensions("");
-		MobEventManager.INSTANCE.addMobEvent(mobEvent);
-
-		AltarInfo ebonCacodemonAltar = new AltarInfoEbonCacodemon("EbonCacodemonAltar");
-		AltarInfo.addAltar(ebonCacodemonAltar);
-		AltarInfo rahovartAltar = new AltarInfoRahovart("RahovartAltar");
-		AltarInfo.addAltar(rahovartAltar);
-		AltarInfo asmodeusAltar = new AltarInfoAsmodeus("AsmodeusAltar");
-		AltarInfo.addAltar(asmodeusAltar);
 	}
 
 	@Override

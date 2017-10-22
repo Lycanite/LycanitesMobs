@@ -50,6 +50,9 @@ public class MobSpawn {
 	/** Whether the spawned mob will be persistent and wont naturally despawn. Can be: default (SpawnInfo), true or false. **/
 	protected String naturalDespawn = "default";
 
+	/** If set, the spawned mob will be set as temporary where it will forcefully despawn after the specified time (in ticks). Useful for Mob Events. **/
+	protected int temporary = -1;
+
 	/** A custom scale for the physical size of the spawned mob. Only works with Lycanites Mobs. **/
 	protected double mobSizeScale = -1;
 
@@ -120,6 +123,9 @@ public class MobSpawn {
 
 		if(json.has("naturalDespawn"))
 			this.naturalDespawn = json.get("naturalDespawn").getAsString();
+
+		if(json.has("temporary"))
+			this.temporary = json.get("temporary").getAsInt();
 
 		if(json.has("mobSizeScale"))
 			this.mobSizeScale = json.get("mobSizeScale").getAsDouble();
@@ -281,6 +287,9 @@ public class MobSpawn {
 			}
 			if(this.mobLevel > 0) {
 				entityCreature.setLevel(this.mobLevel);
+			}
+			if(this.temporary > -1) {
+				entityCreature.setTemporary(this.temporary);
 			}
 		}
 	}

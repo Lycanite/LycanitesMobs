@@ -1,6 +1,6 @@
 {
 	"parent": "builtin/generated",
 	"textures": {
-		"layer0": "demonmobs:items/soulstonefreshwater"
+		"layer0": "freshwater:items/soulstonefreshwater"
 	}
 }

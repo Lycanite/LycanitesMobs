@@ -1,0 +1,42 @@
+{
+	"name": "seastorm_skyspawner",
+	"type": "spawner",
+	"enabled": true,
+	"loadDefault": true,
+	"mobCount": 10,
+	"ignoreDimensions": true,
+	"ignoreBiomes": true,
+	"ignoreLightLevel": true,
+	"ignoreGroupLimit": true,
+	"ignoreForgeCanSpawnEvent": true,
+	"forceNoDespawn": true,
+	"eventName": "seastorm",
+	"conditions": [],
+	"triggers": [
+		{
+			"type": "tick",
+			"chance": 1,
+			"tickRate": 800
+		}
+	],
+	"locations": [
+		{
+			"type": "random",
+			"rangeMin": [32, 0, 32],
+			"rangeMax": [48, 64, 48],
+			"sorting": "random",
+			"limit": 32,
+			"solidGround": false
+		}
+	],
+	"mobSpawns": [
+		{
+			"mobId": "saltwatermobs.raiko",
+			"weight": 8
+		},
+		{
+			"mobId": "saltwatermobs.quetzodracl",
+			"weight": 1
+		}
+	]
+}

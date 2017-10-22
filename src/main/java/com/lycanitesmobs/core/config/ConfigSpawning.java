@@ -2,7 +2,6 @@ package com.lycanitesmobs.core.config;
 
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.info.GroupInfo;
-import com.lycanitesmobs.core.spawning.SpawnTypeBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
@@ -37,12 +36,10 @@ public class ConfigSpawning extends ConfigBase {
 	// ========== Spawn Types ==========
 	public class SpawnTypeSet {
      	public String[] spawners;
-		public SpawnTypeBase[] legacySpawnTypes;
 		public EnumCreatureType[] creatureTypes;
 		
-		public SpawnTypeSet(String[] spawners, SpawnTypeBase[] legacySpawnTypes, EnumCreatureType[] creatureTypes) {
+		public SpawnTypeSet(String[] spawners, EnumCreatureType[] creatureTypes) {
 			this.spawners = spawners;
-			this.legacySpawnTypes = legacySpawnTypes;
 			this.creatureTypes = creatureTypes;
 		}
 	}
@@ -128,9 +125,6 @@ public class ConfigSpawning extends ConfigBase {
 		// Spawners (JSON Spawner):
 		String[] spawners = spawnTypeEntries.split(",");
 
-		// Legacy Spawn Types (Old Spawner):
-		SpawnTypeBase[] legacySpawnTypes = SpawnTypeBase.getSpawnTypes(spawnTypeEntries);
-
 		// Creature Types (Vanilla Spawner):
         List<EnumCreatureType> creatureTypeList = new ArrayList<EnumCreatureType>();
         for(String spawnTypeEntry : spawnTypeEntries.split(",")) {
@@ -145,7 +139,7 @@ public class ConfigSpawning extends ConfigBase {
         }
         
         EnumCreatureType[] creatureTypes = creatureTypeList.toArray(new EnumCreatureType[creatureTypeList.size()]);
-		return new SpawnTypeSet(spawners, legacySpawnTypes, creatureTypes);
+		return new SpawnTypeSet(spawners, creatureTypes);
 	}
 	
 	

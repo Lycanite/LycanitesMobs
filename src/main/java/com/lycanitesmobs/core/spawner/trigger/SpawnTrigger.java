@@ -27,14 +27,14 @@ public abstract class SpawnTrigger {
 	/** The Chance of triggering. **/
 	public double chance = 1;
 
-	/** A list of Trigger specific Conditions that this Condition will check. **/
+	/** A list of Trigger specific Conditions that this Trigger will check. **/
 	public List<SpawnCondition> conditions = new ArrayList<>();
 
 	/** Determines how many Trigger specific Conditions must be met. If 0 or less all are required. **/
 	public int conditionsRequired = 0;
 
 
-	/** Loads this Spawn Condition from the provided JSON data. **/
+	/** Creates a Spawn Trigger from the provided JSON data. **/
 	public static SpawnTrigger createFromJSON(JsonObject json, Spawner spawner) {
 		String type = json.get("type").getAsString();
 		SpawnTrigger spawnTrigger = null;
@@ -66,6 +66,9 @@ public abstract class SpawnTrigger {
 		else if("fishing".equalsIgnoreCase(type)) {
 			spawnTrigger = new FishingSpawnTrigger(spawner);
 		}
+		else if("mobEvent".equalsIgnoreCase(type)) {
+			spawnTrigger = new MobEventSpawnTrigger(spawner);
+		}
 
 		spawnTrigger.loadFromJSON(json);
 		return spawnTrigger;
@@ -77,7 +80,7 @@ public abstract class SpawnTrigger {
     	this.spawner = spawner;
 	}
 
-	/** Loads this Spawn Condition from the provided JSON data. **/
+	/** Loads this Spawn Trigger from the provided JSON data. **/
 	public void loadFromJSON(JsonObject json) {
 		if(json.has("count"))
 			this.count = json.get("count").getAsInt();

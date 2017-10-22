@@ -3,24 +3,16 @@ package com.lycanitesmobs.saltwatermobs;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.Submod;
+import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
 import com.lycanitesmobs.core.info.GroupInfo;
 import com.lycanitesmobs.core.info.MobInfo;
-import com.lycanitesmobs.core.item.ItemCustomFood;
-import com.lycanitesmobs.core.mobevent.MobEventManager;
-import com.lycanitesmobs.core.spawning.SpawnTypeBase;
-import com.lycanitesmobs.core.spawning.SpawnTypeWater;
-import com.lycanitesmobs.saltwatermobs.entity.*;
-import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
 import com.lycanitesmobs.core.info.ObjectLists;
 import com.lycanitesmobs.core.info.Subspecies;
+import com.lycanitesmobs.core.item.ItemCustomFood;
 import com.lycanitesmobs.core.item.ItemTreat;
-import com.lycanitesmobs.core.mobevent.MobEventBase;
-import com.lycanitesmobs.core.spawning.SpawnTypeSky;
+import com.lycanitesmobs.saltwatermobs.entity.*;
 import com.lycanitesmobs.saltwatermobs.item.ItemSaltwaterEgg;
-import com.lycanitesmobs.saltwatermobs.mobevent.MobEventSeaStorm;
-import com.lycanitesmobs.saltwatermobs.mobevent.MobEventSharknado;
 import net.minecraft.block.BlockDispenser;
-import net.minecraft.block.material.Material;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
@@ -176,52 +168,6 @@ public class SaltwaterMobs extends Submod {
 	@Override
 	public void addRecipes() {
 		GameRegistry.addSmelting(ObjectManager.getItem("ikameatraw"), new ItemStack(ObjectManager.getItem("ikameatcooked"), 1), 0.5f);
-	}
-
-	@Override
-	public void createMobEvents() {
-		MobEventBase mobEvent = new MobEventSeaStorm("seastorm", this.group);
-		SpawnTypeBase eventSpawner = new SpawnTypeSky("seastorm")
-				.setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-		eventSpawner.materials = new Material[]{Material.AIR};
-		eventSpawner.ignoreBiome = true;
-		eventSpawner.ignoreLight = true;
-		eventSpawner.forceSpawning = true;
-		eventSpawner.ignoreMobConditions = true;
-		eventSpawner.addSpawn(MobInfo.getFromName("raiko"));
-		eventSpawner.addSpawn(MobInfo.getFromName("quetzodracl"));
-		mobEvent.addSpawner(eventSpawner);
-		eventSpawner = new SpawnTypeWater("seastorm_water")
-				.setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-		eventSpawner.materials = new Material[]{Material.AIR};
-		eventSpawner.ignoreBiome = true;
-		eventSpawner.ignoreLight = true;
-		eventSpawner.forceSpawning = true;
-		eventSpawner.ignoreMobConditions = true;
-		eventSpawner.addSpawn(MobInfo.getFromName("abtu"));
-		mobEvent.addSpawner(eventSpawner);
-		MobEventManager.INSTANCE.addWorldEvent(mobEvent);
-
-		mobEvent = new MobEventSharknado("sharknado", this.group);
-		eventSpawner = new SpawnTypeSky("sharknado")
-				.setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-		eventSpawner.materials = new Material[]{Material.AIR};
-		eventSpawner.ignoreBiome = true;
-		eventSpawner.ignoreLight = true;
-		eventSpawner.forceSpawning = true;
-		eventSpawner.ignoreMobConditions = true;
-		eventSpawner.addSpawn(MobInfo.getFromName("roa"));
-		mobEvent.addSpawner(eventSpawner);
-		eventSpawner = new SpawnTypeWater("sharknado_water")
-				.setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-		eventSpawner.materials = new Material[]{Material.AIR};
-		eventSpawner.ignoreBiome = true;
-		eventSpawner.ignoreLight = true;
-		eventSpawner.forceSpawning = true;
-		eventSpawner.ignoreMobConditions = true;
-		eventSpawner.addSpawn(MobInfo.getFromName("roa"));
-		mobEvent.addSpawner(eventSpawner);
-		MobEventManager.INSTANCE.addWorldEvent(mobEvent);
 	}
 
 	@Override

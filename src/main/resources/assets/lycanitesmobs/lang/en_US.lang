@@ -221,6 +221,8 @@ lyc.command.mobevent.enable=All mob events enabled.
 lyc.command.mobevent.disable=All mob events disabled.
 lyc.command.mobevent.enable.random=Random mob events enabled.
 lyc.command.mobevent.disable.random=Random mob events disabled.
+lyc.command.mobevent.reload=JSON Mob Events have been reloaded.
+lyc.command.mobevent.creative=Toggled Mob Events for Creative Mode players.
 #
 #
 # ========== Common ==========

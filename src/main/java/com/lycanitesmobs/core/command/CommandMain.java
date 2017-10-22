@@ -8,8 +8,10 @@ import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.info.Beastiary;
 import com.lycanitesmobs.core.info.CreatureKnowledge;
 import com.lycanitesmobs.core.info.MobInfo;
+import com.lycanitesmobs.core.mobevent.MobEventListener;
 import com.lycanitesmobs.core.mobevent.MobEventManager;
-import com.lycanitesmobs.core.mobevent.MobEventBase;
+import com.lycanitesmobs.core.mobevent.MobEvent;
+import com.lycanitesmobs.core.mobevent.MobEventPlayerServer;
 import com.lycanitesmobs.core.spawner.SpawnerManager;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
@@ -198,6 +200,22 @@ public class CommandMain implements ICommand {
 				commandSender.sendMessage(new TextComponentString(reply));
 				return;
 			}
+
+			// Reload:
+			if("reload".equalsIgnoreCase(args[1])) {
+				reply = I18n.translateToLocal("lyc.command.mobevent.reload");
+				MobEventManager.getInstance().reload();
+				commandSender.sendMessage(new TextComponentString(reply));
+				return;
+			}
+
+			// Creative Test:
+			if("creative".equalsIgnoreCase(args[1])) {
+				reply = I18n.translateToLocal("lyc.command.mobevent.creative");
+				MobEventPlayerServer.testOnCreative = !MobEventPlayerServer.testOnCreative;
+				commandSender.sendMessage(new TextComponentString(reply));
+				return;
+			}
 			
 			// Start:
 			if("start".equalsIgnoreCase(args[1])) {
@@ -208,7 +226,7 @@ public class CommandMain implements ICommand {
 				}
 				
 				String mobEventName = args[2].toLowerCase();
-				if(MobEventManager.INSTANCE.worldMobEvents.containsKey(mobEventName)) {
+				if(MobEventManager.getInstance().mobEvents.containsKey(mobEventName)) {
 					
 					// Get World:
 					World world = null;
@@ -239,7 +257,17 @@ public class CommandMain implements ICommand {
 					
 					reply = I18n.translateToLocal("lyc.command.mobevent.start");
 					commandSender.sendMessage(new TextComponentString(reply));
-                    worldExt.startWorldEvent(mobEventName);
+					EntityPlayer player = null;
+					BlockPos pos = new BlockPos(0, 0, 0);
+					if(commandSender instanceof EntityPlayer) {
+						player = (EntityPlayer)commandSender;
+						pos = player.getPosition();
+					}
+					int level = 1;
+					if(args.length >= 5 && NumberUtils.isNumber(args[4])) {
+						level = Integer.parseInt(args[4]);
+					}
+                    worldExt.startMobEvent(mobEventName, player, pos, level);
 					return;
 				}
 				
@@ -249,7 +277,7 @@ public class CommandMain implements ICommand {
 			}
 
             // Get World:
-            World world = null;
+            World world;
             if(args.length >= 3 && NumberUtils.isNumber(args[2])) {
                 world = DimensionManager.getWorld(Integer.parseInt(args[2]));
             }
@@ -273,8 +301,7 @@ public class CommandMain implements ICommand {
 			if("random".equalsIgnoreCase(args[1])) {
 				reply = I18n.translateToLocal("lyc.command.mobevent.random");
 				commandSender.sendMessage(new TextComponentString(reply));
-				MobEventBase mobEvent = MobEventManager.INSTANCE.getRandomWorldMobEvent(world, worldExt);
-                worldExt.startWorldEvent(mobEvent);
+				MobEventListener.getInstance().triggerRandomMobEvent(world, worldExt);
 				return;
 			}
 			
@@ -290,7 +317,7 @@ public class CommandMain implements ICommand {
 			if("list".equalsIgnoreCase(args[1])) {
 				reply = I18n.translateToLocal("lyc.command.mobevent.list");
 				commandSender.sendMessage(new TextComponentString(reply));
-				for(MobEventBase mobEvent : MobEventManager.INSTANCE.worldMobEvents.values()) {
+				for(MobEvent mobEvent : MobEventManager.getInstance().mobEvents.values()) {
 					String eventName = mobEvent.name + " (" + mobEvent.getTitle() + ")";
 					commandSender.sendMessage(new TextComponentString(eventName));
 				}

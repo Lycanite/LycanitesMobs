@@ -1,0 +1,57 @@
+{
+	"name": "halloween_skyspawner",
+	"type": "spawner",
+	"enabled": true,
+	"loadDefault": true,
+	"mobCount": 10,
+	"ignoreDimensions": true,
+	"ignoreBiomes": true,
+	"ignoreLightLevel": true,
+	"ignoreGroupLimit": true,
+	"ignoreForgeCanSpawnEvent": true,
+	"forceNoDespawn": true,
+	"eventName": "halloween",
+	"conditions": [],
+	"triggers": [
+		{
+			"type": "tick",
+			"chance": 1,
+			"tickRate": 800
+		}
+	],
+	"locations": [
+		{
+			"type": "random",
+			"rangeMin": [32, 0, 32],
+			"rangeMax": [48, 64, 48],
+			"sorting": "random",
+			"limit": 32,
+			"solidGround": false
+		}
+	],
+	"mobSpawns": [
+		{
+			"mobId": "demonmobs.nethersoul",
+			"weight": 8,
+			"mobNameTag": "Lost Soul"
+		},
+		{
+			"mobId": "demonmobs.cacodemon",
+			"weight": 4
+		},
+		{
+			"mobId": "infernomobs.afrit",
+			"weight": 8
+		},
+		{
+			"mobId": "shadowmobs.grue",
+			"weight": 8,
+			"mobNameTag": "Shadow Clown"
+		},
+		{
+			"mobId": "shadowmobs.epion",
+			"weight": 8,
+			"mobNameTag": "Vampire Bat"
+		}
+	]
+}

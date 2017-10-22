@@ -1,25 +1,22 @@
 package com.lycanitesmobs.swampmobs;
 
+import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.Submod;
-import com.lycanitesmobs.core.info.*;
+import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
+import com.lycanitesmobs.core.info.GroupInfo;
+import com.lycanitesmobs.core.info.MobInfo;
+import com.lycanitesmobs.core.info.ObjectLists;
+import com.lycanitesmobs.core.info.Subspecies;
 import com.lycanitesmobs.core.item.ItemCustomFood;
 import com.lycanitesmobs.core.item.ItemTreat;
-import com.lycanitesmobs.core.mobevent.MobEventManager;
-import com.lycanitesmobs.core.spawning.SpawnTypeBase;
-import com.lycanitesmobs.core.spawning.SpawnTypeSky;
-import com.lycanitesmobs.plainsmobs.mobevent.MobEventWindStorm;
 import com.lycanitesmobs.swampmobs.block.BlockPoisonCloud;
 import com.lycanitesmobs.swampmobs.dispenser.DispenserBehaviorPoisonRay;
+import com.lycanitesmobs.swampmobs.dispenser.DispenserBehaviorVenomShot;
 import com.lycanitesmobs.swampmobs.entity.*;
 import com.lycanitesmobs.swampmobs.item.*;
-import com.lycanitesmobs.AssetManager;
-import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
-import com.lycanitesmobs.core.mobevent.MobEventBase;
-import com.lycanitesmobs.swampmobs.dispenser.DispenserBehaviorVenomShot;
 import net.minecraft.block.BlockDispenser;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySkeleton;
@@ -200,23 +197,6 @@ public class SwampMobs extends Submod {
 	@Override
 	public void addRecipes() {
 		GameRegistry.addSmelting(ObjectManager.getItem("aspidmeatraw"), new ItemStack(ObjectManager.getItem("aspidmeatcooked"), 1), 0.5f);
-	}
-
-	@Override
-	public void createMobEvents() {
-		if(MobInfo.getFromName("remobra") != null) {
-			MobEventBase mobEvent = new MobEventWindStorm("wingedvenom", this.group);
-			SpawnTypeBase eventSpawner = new SpawnTypeSky("wingedvenom")
-					.setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-			eventSpawner.materials = new Material[] {Material.AIR};
-			eventSpawner.ignoreBiome = true;
-			eventSpawner.ignoreLight = true;
-			eventSpawner.forceSpawning = true;
-			eventSpawner.ignoreMobConditions = true;
-			eventSpawner.addSpawn(MobInfo.getFromName("remobra"));
-			mobEvent.addSpawner(eventSpawner);
-			MobEventManager.INSTANCE.addWorldEvent(mobEvent);
-		}
 	}
 
 	@Override

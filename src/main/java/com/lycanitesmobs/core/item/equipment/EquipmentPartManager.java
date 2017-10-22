@@ -39,7 +39,7 @@ public class EquipmentPartManager extends JSONLoader {
 		// Load Default Parts:
 		Path path = Utilities.getAssetPath(groupInfo.getClass(), groupInfo.filename, "equipment");
 		Map<String, JsonObject> defaultEquipmentPartJSONs = new HashMap<>();
-		this.loadJsonObjects(gson, path, defaultEquipmentPartJSONs, "itemName");
+		this.loadJsonObjects(gson, path, defaultEquipmentPartJSONs, "itemName", null);
 
 		// Load Custom Parts:
 		String configPath = LycanitesMobs.proxy.getMinecraftDir() + "/config/" + LycanitesMobs.modid + "/";
@@ -47,7 +47,7 @@ public class EquipmentPartManager extends JSONLoader {
 		customDir.mkdirs();
 		path = customDir.toPath();
 		Map<String, JsonObject> customEquipmentPartJSONs = new HashMap<>();
-		this.loadJsonObjects(gson, path, customEquipmentPartJSONs, "itemName");
+		this.loadJsonObjects(gson, path, customEquipmentPartJSONs, "itemName", null);
 
 
 		// Write Defaults:

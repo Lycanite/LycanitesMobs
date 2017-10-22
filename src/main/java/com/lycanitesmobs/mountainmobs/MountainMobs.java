@@ -1,24 +1,18 @@
 package com.lycanitesmobs.mountainmobs;
 
 import com.lycanitesmobs.LycanitesMobs;
-import com.lycanitesmobs.core.Submod;
-import com.lycanitesmobs.core.info.*;
-import com.lycanitesmobs.core.spawning.SpawnTypeBase;
-import com.lycanitesmobs.mountainmobs.entity.*;
-import com.lycanitesmobs.mountainmobs.item.*;
-import com.lycanitesmobs.mountainmobs.mobevent.MobEventBoulderDash;
 import com.lycanitesmobs.ObjectManager;
+import com.lycanitesmobs.core.Submod;
 import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
+import com.lycanitesmobs.core.info.*;
 import com.lycanitesmobs.core.item.ItemCustomFood;
 import com.lycanitesmobs.core.item.ItemTreat;
-import com.lycanitesmobs.core.mobevent.MobEventBase;
-import com.lycanitesmobs.core.mobevent.MobEventManager;
-import com.lycanitesmobs.core.spawning.SpawnTypeSky;
 import com.lycanitesmobs.mountainmobs.dispenser.DispenserBehaviorArcaneLaserStorm;
 import com.lycanitesmobs.mountainmobs.dispenser.DispenserBehaviorBoulderBlast;
+import com.lycanitesmobs.mountainmobs.entity.*;
 import com.lycanitesmobs.mountainmobs.info.AltarInfoCelestialGeonach;
+import com.lycanitesmobs.mountainmobs.item.*;
 import net.minecraft.block.BlockDispenser;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityWitch;
 import net.minecraft.entity.monster.EntityZombie;
@@ -59,6 +53,9 @@ public class MountainMobs extends Submod {
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event) {
 		super.init(event);
+
+		AltarInfo celestialGeonachAltar = new AltarInfoCelestialGeonach("CelestialGeonachAltar");
+		AltarInfo.addAltar(celestialGeonachAltar);
 	}
 
 	@Mod.EventHandler
@@ -182,26 +179,6 @@ public class MountainMobs extends Submod {
 	@Override
 	public void addRecipes() {
 		GameRegistry.addSmelting(ObjectManager.getItem("yalemeatraw"), new ItemStack(ObjectManager.getItem("yalemeatcooked"), 1), 0.5f);
-	}
-
-	@Override
-	public void createMobEvents() {
-		if(MobInfo.getFromName("geonach") != null) {
-			MobEventBase mobEvent = new MobEventBoulderDash("boulderdash", this.group);
-			SpawnTypeBase eventSpawner = new SpawnTypeSky("boulderdash")
-					.setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-			eventSpawner.materials = new Material[] {Material.AIR};
-			eventSpawner.ignoreBiome = true;
-			eventSpawner.ignoreLight = true;
-			eventSpawner.forceSpawning = true;
-			eventSpawner.ignoreMobConditions = true;
-			eventSpawner.addSpawn(MobInfo.getFromName("geonach"));
-			mobEvent.addSpawner(eventSpawner);
-			MobEventManager.INSTANCE.addWorldEvent(mobEvent);
-		}
-
-		AltarInfo celestialGeonachAltar = new AltarInfoCelestialGeonach("CelestialGeonachAltar");
-		AltarInfo.addAltar(celestialGeonachAltar);
 	}
 
 	@Override

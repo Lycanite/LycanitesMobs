@@ -1,5 +1,6 @@
 {
 	"name": "fire",
+	"type": "spawner",
 	"loadDefault": true,
 	"mobCount": 8,
 	"ignoreDimensions": true,

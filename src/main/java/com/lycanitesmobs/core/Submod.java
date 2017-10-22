@@ -37,7 +37,6 @@ public abstract class Submod {
 		MobInfo.loadAllFromConfigs(this.group);
 		this.registerOres();
 		this.addRecipes();
-		this.createMobEvents();
 	}
 
 	public void postInit(FMLPostInitializationEvent event) {
@@ -68,9 +67,6 @@ public abstract class Submod {
 
 	/** Adds smelting recipes, etc. **/
 	public abstract void addRecipes();
-
-	/** Creates all mob events. **/
-	public abstract void createMobEvents();
 
 	/** Edit vanilla spawns **/
 	public abstract void editVanillaSpawns();

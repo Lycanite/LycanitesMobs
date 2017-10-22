@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.IThreadListener;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -15,14 +16,18 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class MessageMobEvent implements IMessage, IMessageHandler<MessageMobEvent, IMessage> {
 	public String mobEventName;
+	public BlockPos pos;
+	public int level = 1;
 
 
 	// ==================================================
 	//                    Constructors
 	// ==================================================
 	public MessageMobEvent() {}
-	public MessageMobEvent(String mobEventName) {
+	public MessageMobEvent(String mobEventName, BlockPos pos, int level) {
         this.mobEventName = mobEventName;
+        this.pos = pos;
+        this.level = level;
     }
 	
 	
@@ -46,7 +51,7 @@ public class MessageMobEvent implements IMessage, IMessageHandler<MessageMobEven
                 if ("".equals(message.mobEventName))
                     worldExt.stopMobEvent(message.mobEventName);
                 else {
-                    worldExt.startMobEvent(message.mobEventName, 0, 0, 0);
+                    worldExt.startMobEvent(message.mobEventName, null, message.pos, message.level);
                 }
             }
         });
@@ -64,6 +69,8 @@ public class MessageMobEvent implements IMessage, IMessageHandler<MessageMobEven
 	public void fromBytes(ByteBuf buf) {
 		PacketBuffer packet = new PacketBuffer(buf);
         this.mobEventName = packet.readString(256);
+        this.pos = packet.readBlockPos();
+        this.level = packet.readInt();
 	}
 	
 	
@@ -77,6 +84,8 @@ public class MessageMobEvent implements IMessage, IMessageHandler<MessageMobEven
 	public void toBytes(ByteBuf buf) {
 		PacketBuffer packet = new PacketBuffer(buf);
         packet.writeString(this.mobEventName);
+        packet.writeBlockPos(this.pos);
+        packet.writeInt(this.level);
 	}
 	
 }

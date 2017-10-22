@@ -7,8 +7,6 @@ import com.lycanitesmobs.arcticmobs.block.*;
 import com.lycanitesmobs.arcticmobs.dispenser.*;
 import com.lycanitesmobs.arcticmobs.entity.*;
 import com.lycanitesmobs.arcticmobs.item.*;
-import com.lycanitesmobs.arcticmobs.mobevent.MobEventSubZero;
-import com.lycanitesmobs.arcticmobs.mobevent.MobEventWintersGrasp;
 import com.lycanitesmobs.arcticmobs.worldgen.WorldGeneratorArctic;
 import com.lycanitesmobs.core.Submod;
 import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
@@ -18,13 +16,7 @@ import com.lycanitesmobs.core.info.ObjectLists;
 import com.lycanitesmobs.core.info.Subspecies;
 import com.lycanitesmobs.core.item.ItemCustomFood;
 import com.lycanitesmobs.core.item.ItemTreat;
-import com.lycanitesmobs.core.mobevent.MobEventBase;
-import com.lycanitesmobs.core.mobevent.MobEventManager;
-import com.lycanitesmobs.core.spawning.SpawnTypeBase;
-import com.lycanitesmobs.core.spawning.SpawnTypeLand;
-import com.lycanitesmobs.core.spawning.SpawnTypeSky;
 import net.minecraft.block.BlockDispenser;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySpider;
@@ -215,35 +207,6 @@ public class ArcticMobs extends Submod {
 	@Override
 	public void addRecipes() {
 		GameRegistry.addSmelting(ObjectManager.getItem("yetimeatraw"), new ItemStack(ObjectManager.getItem("yetimeatcooked"), 1), 0.5f);
-	}
-
-	@Override
-	public void createMobEvents() {
-		MobEventBase mobEvent = new MobEventSubZero("subzero", this.group);
-		SpawnTypeBase eventSpawner = new SpawnTypeSky("subzero")
-				.setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-		eventSpawner.materials = new Material[] {Material.AIR};
-		eventSpawner.ignoreBiome = true;
-		eventSpawner.ignoreLight = true;
-		eventSpawner.forceSpawning = true;
-		eventSpawner.ignoreMobConditions = true;
-		eventSpawner.addSpawn(MobInfo.getFromName("reiver"));
-		mobEvent.addSpawner(eventSpawner);
-		MobEventManager.INSTANCE.addWorldEvent(mobEvent);
-
-		mobEvent = new MobEventWintersGrasp("wintersgrasp", this.group);
-		mobEvent.minDay = 10;
-		eventSpawner = new SpawnTypeLand("wintersgrasp")
-				.setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-		eventSpawner.materials = new Material[] {Material.AIR};
-		eventSpawner.ignoreBiome = true;
-		eventSpawner.ignoreLight = true;
-		eventSpawner.forceSpawning = true;
-		eventSpawner.ignoreMobConditions = true;
-		eventSpawner.addSpawn(MobInfo.getFromName("wendigo"));
-		eventSpawner.addSpawn(MobInfo.getFromName("serpix"), 2);
-		mobEvent.addSpawner(eventSpawner);
-		MobEventManager.INSTANCE.addWorldEvent(mobEvent);
 	}
 
 	@Override

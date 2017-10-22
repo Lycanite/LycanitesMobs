@@ -1,0 +1,42 @@
+{
+	"name": "blackplague_landspawner",
+	"type": "spawner",
+	"enabled": true,
+	"loadDefault": true,
+	"mobCount": 10,
+	"ignoreDimensions": true,
+	"ignoreBiomes": true,
+	"ignoreLightLevel": true,
+	"ignoreGroupLimit": true,
+	"ignoreForgeCanSpawnEvent": true,
+	"forceNoDespawn": true,
+	"eventName": "blackplague",
+	"conditions": [],
+	"triggers": [
+		{
+			"type": "tick",
+			"chance": 1,
+			"tickRate": 800
+		}
+	],
+	"locations": [
+		{
+			"type": "random",
+			"rangeMin": [32, 0, 32],
+			"rangeMax": [48, 64, 48],
+			"sorting": "random",
+			"limit": 32,
+			"solidGround": true
+		}
+	],
+	"mobSpawns": [
+		{
+			"mobId": "shadowmobs.geist",
+			"weight": 8
+		},
+		{
+			"mobId": "swampmobs.ghoulzombie",
+			"weight": 4
+		}
+	]
+}

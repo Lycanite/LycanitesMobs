@@ -7,8 +7,8 @@ import com.lycanitesmobs.ExtendedWorld;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.info.SpawnInfo;
-import com.lycanitesmobs.core.mobevent.MobEventBase;
-import com.lycanitesmobs.core.mobevent.MobEventManager;
+import com.lycanitesmobs.core.mobevent.MobEvent;
+import com.lycanitesmobs.core.mobevent.MobEventPlayerServer;
 import com.lycanitesmobs.core.spawner.condition.SpawnCondition;
 import com.lycanitesmobs.core.spawner.location.SpawnLocation;
 import com.lycanitesmobs.core.spawner.trigger.SpawnTrigger;
@@ -84,8 +84,8 @@ public class Spawner {
     /** If true, mobs spawned by this Spawner will not naturally despawn. **/
     public boolean forceNoDespawn = false;
 
-	/** If true, this Spawner will pass the current Mob Event to any mobs it spawns meaning the spawned mobs will despawn on the Mob Event despawn time. **/
-	public boolean mobEventSpawner = false;
+	/** If set, this is the name of the mob event that must be active, otherwise this Spawner is always active. **/
+	public String eventName = "";
 
 	/** If set, when a mob is spawned, blocks in the radius around the spawned mob will be destroyed. **/
 	public int blockBreakRadius = -1;
@@ -148,8 +148,8 @@ public class Spawner {
 		if(json.has("forceNoDespawn"))
 			this.forceNoDespawn = json.get("forceNoDespawn").getAsBoolean();
 
-		if(json.has("mobEventSpawner"))
-			this.mobEventSpawner = json.get("mobEventSpawner").getAsBoolean();
+		if(json.has("eventName"))
+			this.eventName = json.get("eventName").getAsString();
 
 		if(json.has("blockBreakRadius"))
 			this.blockBreakRadius = json.get("blockBreakRadius").getAsInt();
@@ -174,7 +174,7 @@ public class Spawner {
 				SpawnTrigger spawnTrigger = SpawnTrigger.createFromJSON(triggerJson, this);
 				this.triggers.add(spawnTrigger);
 				if(this.enabled) {
-					SpawnerEventListener.instance.addSpawnTrigger(spawnTrigger);
+					SpawnerEventListener.getInstance().addTrigger(spawnTrigger);
 				}
 			}
 		}
@@ -208,7 +208,7 @@ public class Spawner {
 	/** Remove this Spawner. This removes all Triggers from the Event Listener and does other cleanup. **/
 	public void destroy() {
 		for(SpawnTrigger spawnTrigger : this.triggers) {
-			SpawnerEventListener.instance.removeSpawnTrigger(spawnTrigger);
+			SpawnerEventListener.getInstance().removeTrigger(spawnTrigger);
 		}
 		SpawnerManager.getInstance().removeSpawner(this);
 	}
@@ -248,13 +248,24 @@ public class Spawner {
 	/**
 	 * Starts a new spawn, usually called by Triggers.
 	 * @param world The World to spawn in.
-	 * @param player The player that is being spawned around. if null all player based checks and features are ignored.
+	 * @param player The player that is being spawned around. If null all player based checks and features are ignored.
 	 * @param triggerPos The location that the spawn was triggered, usually used as the center for spawning around or on.
 	 * @param level The level of the spawn trigger, higher levels are from rarer spawn conditions and can result in tougher mobs being spawned.
 	 * @param countAmount How much this trigger affects the trigger count by.
 	 * @return True on a successful spawn and false on failure.
 	 **/
 	public boolean trigger(World world, EntityPlayer player, BlockPos triggerPos, int level, int countAmount) {
+		// Event Spawner Check:
+		if(!"".equals(this.eventName)) {
+			ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
+			if(worldExt == null) {
+				return false;
+			}
+			if(worldExt.getMobEventPlayerServer(this.eventName) == null) {
+				return false;
+			}
+		}
+
 		LycanitesMobs.printDebug("JSONSpawner", "~O==================== Spawner Triggered: " + this.name + " ====================O~");
 		if(!this.canSpawn(world, player)) {
 			LycanitesMobs.printDebug("JSONSpawner", "This Spawner Cannot Spawn");
@@ -400,19 +411,7 @@ public class Spawner {
 			}
 
 			// Spawn The Mob:
-			entityLiving.timeUntilPortal = entityLiving.getPortalCooldown();
-			if (entityCreature != null) {
-				entityCreature.forceNoDespawn = this.forceNoDespawn;
-				entityCreature.spawnedRare = level > 0;
-				if (this.mobEventSpawner && worldExt != null && worldExt.getWorldEvent() != null) {
-					entityCreature.spawnEventType = worldExt.getWorldEventName();
-					entityCreature.spawnEventCount = worldExt.getWorldEventCount();
-				}
-			}
 			this.spawnEntity(world, worldExt, entityLiving, level, mobSpawn, player);
-			if(MobEventManager.getInstance().aggressiveEvents && this.mobEventSpawner && worldExt != null && worldExt.getWorldEvent() != null && player != null) {
-				entityLiving.setAttackTarget(player);
-			}
 
 			// Call Entity's Initial Spawn:
 			if (!ForgeEventFactory.doSpecialSpawn(entityLiving, world, (float) spawnPos.getX() + 0.5F, (float) spawnPos.getY(), (float) spawnPos.getZ() + 0.5F)) {
@@ -617,14 +616,44 @@ public class Spawner {
 	 * @param entityLiving The entity to spawn.
 	 */
 	public void spawnEntity(World world, ExtendedWorld worldExt, EntityLiving entityLiving, int level, MobSpawn mobSpawn, EntityPlayer player) {
-		world.spawnEntity(entityLiving);
-		mobSpawn.onSpawned(entityLiving, player);
-		if(this.mobEventSpawner && worldExt != null && worldExt.getWorldEvent() != null && entityLiving != null) {
-			MobEventBase mobEvent = worldExt.getWorldEvent();
-			mobEvent.onSpawn(entityLiving, level);
+		// Before Spawn:
+		entityLiving.timeUntilPortal = entityLiving.getPortalCooldown();
+
+		EntityCreatureBase entityCreature;
+		if(entityLiving instanceof EntityCreatureBase) {
+			entityCreature = (EntityCreatureBase)entityLiving;
+			entityCreature.forceNoDespawn = this.forceNoDespawn;
+			entityCreature.spawnedRare = level > 0;
+			entityCreature.level = level;
+			if (this.blockBreakRadius > -1) {
+				entityCreature.destroyArea((int) entityLiving.posX, (int) entityLiving.posY, (int) entityLiving.posZ, 4, true, this.blockBreakRadius);
+			}
+
+			// Apply Mob Event:
+			if (!"".equals(this.eventName) && worldExt != null) {
+				MobEventPlayerServer mobEventPlayerServer = worldExt.getMobEventPlayerServer(this.eventName);
+				if(mobEventPlayerServer != null) {
+					entityCreature.spawnEventType = mobEventPlayerServer.mobEvent.title;
+
+					// World Event Binding:
+					if(mobEventPlayerServer.mobEvent.name.equals(worldExt.getWorldEventName())) {
+						entityCreature.spawnEventCount = worldExt.getWorldEventCount();
+					}
+				}
+			}
 		}
-		if(this.blockBreakRadius > -1 && entityLiving instanceof EntityCreatureBase) {
-			((EntityCreatureBase)entityLiving).destroyArea((int)entityLiving.posX, (int)entityLiving.posY, (int)entityLiving.posZ, 4, true, this.blockBreakRadius);
+
+		// Spawn:
+		world.spawnEntity(entityLiving);
+
+		// After Spawn:
+		mobSpawn.onSpawned(entityLiving, player);
+		if(!"".equals(this.eventName) && worldExt != null) {
+			MobEventPlayerServer mobEventPlayerServer = worldExt.getMobEventPlayerServer(this.eventName);
+			if(mobEventPlayerServer != null) {
+				MobEvent mobEvent = mobEventPlayerServer.mobEvent;
+				mobEvent.onSpawn(entityLiving, mobEventPlayerServer.world, mobEventPlayerServer.player, mobEventPlayerServer.origin, mobEventPlayerServer.level, mobEventPlayerServer.ticks);
+			}
 		}
 	}
 }

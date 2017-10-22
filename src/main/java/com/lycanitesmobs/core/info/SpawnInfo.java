@@ -2,11 +2,10 @@ package com.lycanitesmobs.core.info;
 
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.config.ConfigBase;
-import com.lycanitesmobs.core.spawner.SpawnerMobRegistry;
-import com.lycanitesmobs.core.spawning.SpawnTypeBase;
 import com.lycanitesmobs.core.config.ConfigSpawning;
 import com.lycanitesmobs.core.config.ConfigSpawning.SpawnDimensionSet;
 import com.lycanitesmobs.core.config.ConfigSpawning.SpawnTypeSet;
+import com.lycanitesmobs.core.spawner.SpawnerMobRegistry;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Biomes;
 import net.minecraft.world.World;
@@ -39,11 +38,8 @@ public class SpawnInfo {
     /** A comma separated list of Spawn Types Entries to use. Can be: MONSTER, CREATURE, WATERCREATURE, AMBIENT, PORTAL, NETHER, FIRE, LAVA, etc. **/
     public String spawnerEntries = "";
 
-    /** A list of JSON spawners that this mob can use. Invalid names are just ignored. **/
+    /** A list of JSON Spawner Names that this mob can use. Invalid names are just ignored. **/
     public String[] spawners = new String[0];
-
-    /** A list of Spawn Types to use. **/
-    public SpawnTypeBase[] legacySpawnTypes = new SpawnTypeBase[0];
 
     /** A list of Vanilla Creature Types to use. **/
     public EnumCreatureType[] creatureTypes = new EnumCreatureType[0];
@@ -169,7 +165,6 @@ public class SpawnInfo {
 		for(String spawner : this.spawners) {
 			SpawnerMobRegistry.createSpawn(this.mobInfo, spawner);
 		}
-        this.legacySpawnTypes = spawnTypeSet.legacySpawnTypes;
 		this.creatureTypes = spawnTypeSet.creatureTypes;
         
 		// Spawn Dimensions:
@@ -252,19 +247,11 @@ public class SpawnInfo {
 			}
 		}
 		
-		// Add Legacy Spawn (Custom):
-		// Still added if disabled as the Custom Spawner can check the disabled booleans and ignores 0 weight/group max entries.
-		for(SpawnTypeBase spawnType : this.legacySpawnTypes) {
-			spawnType.addSpawn(this.mobInfo);
-		}
-		
 		// Debug Message - Spawn Added:
 		if(spawnAdded) {
 			LycanitesMobs.printDebug("MobSetup", "Mob Spawn Added - Weight: " + this.spawnWeight + " Min: " + this.spawnGroupMin + " Max: " + this.spawnGroupMax);
 			for(EnumCreatureType creatureType : this.creatureTypes)
 				LycanitesMobs.printDebug("MobSetup", "Vanilla Spawn Type: " + creatureType);
-			for(SpawnTypeBase spawnType : this.legacySpawnTypes)
-				LycanitesMobs.printDebug("MobSetup", "Custom Spawn Type: " + spawnType != null ? spawnType.typeName : "NULL");
 			String biomesList = "";
 			if(LycanitesMobs.config.getBool("Debug", "MobSetup")) {
 				for(Biome biome : this.biomes) {

@@ -1,5 +1,6 @@
 {
 	"name": "water",
+	"type": "spawner",
 	"loadDefault": true,
 	"mobCount": 16,
 	"ignoreBiomes": false,

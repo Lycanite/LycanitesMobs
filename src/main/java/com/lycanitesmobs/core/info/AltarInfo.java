@@ -2,6 +2,7 @@ package com.lycanitesmobs.core.info;
 
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.config.ConfigBase;
+import com.lycanitesmobs.core.mobevent.trigger.AltarMobEventTrigger;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -26,6 +27,8 @@ public class AltarInfo {
 
     // ========== Properties ==========
     public String name = "Altar";
+
+    public AltarMobEventTrigger mobEventTrigger;
 
 
     // ==================================================
@@ -65,12 +68,12 @@ public class AltarInfo {
     //                    Altar List
     // ==================================================
     public static void addAltar(AltarInfo altarInfo) {
-        altars.put(altarInfo.name, altarInfo);
+        altars.put(altarInfo.name.toLowerCase(), altarInfo);
     }
 
     public static AltarInfo getAltar(String name) {
-        if(altars.containsKey(name))
-            return altars.get(name);
+        if(altars.containsKey(name.toLowerCase()))
+            return altars.get(name.toLowerCase());
         return null;
     }
 
@@ -106,8 +109,10 @@ public class AltarInfo {
     //                     Activate
     // ==================================================
     /** Called when this Altar should activate. This will typically destroy the Altar and summon a rare mob or activate an event such as a boss event. If false is returned then the activation did not work, this is the place to check for things like dimensions. **/
-    public boolean activate(Entity entity, World world, BlockPos pos, int rank) {
-        return false;
+    public boolean activate(Entity entity, World world, BlockPos pos, int level) {
+    	if(this.mobEventTrigger == null)
+        	return false;
+    	return this.mobEventTrigger.onActivate(entity, world, pos, level);
     }
 
 

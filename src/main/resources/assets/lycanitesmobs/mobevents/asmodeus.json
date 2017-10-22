@@ -1,0 +1,21 @@
+{
+	"name": "asmodeus",
+	"type": "event",
+	"enabled": true,
+	"channel": "boss",
+	"duration": 600,
+	"conditions": [],
+	"triggers": [
+		{
+			"type": "altar",
+			"altarName": "AsmodeusAltar"
+		}
+	],
+	"effects": [
+		{
+			"type": "structure",
+			"structureBuilderName": "asmodeus",
+			"eventTicksMax": 600 
+		}
+	]
+}

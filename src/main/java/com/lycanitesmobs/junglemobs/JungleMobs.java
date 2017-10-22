@@ -1,31 +1,26 @@
 package com.lycanitesmobs.junglemobs;
 
-import com.lycanitesmobs.LycanitesMobs;
-import com.lycanitesmobs.core.Submod;
-import com.lycanitesmobs.core.info.*;
-import com.lycanitesmobs.core.spawning.SpawnTypeBase;
-import com.lycanitesmobs.junglemobs.block.BlockPropolis;
 import com.lycanitesmobs.AssetManager;
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
+import com.lycanitesmobs.core.Submod;
 import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
-import com.lycanitesmobs.junglemobs.entity.*;
+import com.lycanitesmobs.core.info.GroupInfo;
+import com.lycanitesmobs.core.info.MobInfo;
+import com.lycanitesmobs.core.info.ObjectLists;
+import com.lycanitesmobs.core.info.Subspecies;
 import com.lycanitesmobs.core.item.ItemCustomFood;
 import com.lycanitesmobs.core.item.ItemTreat;
-import com.lycanitesmobs.core.mobevent.MobEventBase;
-import com.lycanitesmobs.core.mobevent.MobEventManager;
-import com.lycanitesmobs.core.spawning.SpawnTypeLand;
-import com.lycanitesmobs.core.spawning.SpawnTypeSky;
 import com.lycanitesmobs.junglemobs.block.BlockPoopCloud;
+import com.lycanitesmobs.junglemobs.block.BlockPropolis;
 import com.lycanitesmobs.junglemobs.block.BlockQuickWeb;
 import com.lycanitesmobs.junglemobs.block.BlockVeswax;
 import com.lycanitesmobs.junglemobs.dispenser.DispenserBehaviorPoop;
+import com.lycanitesmobs.junglemobs.entity.*;
 import com.lycanitesmobs.junglemobs.item.ItemJungleEgg;
 import com.lycanitesmobs.junglemobs.item.ItemPoopCharge;
 import com.lycanitesmobs.junglemobs.item.ItemScepterPoop;
-import com.lycanitesmobs.junglemobs.mobevent.MobEventPoopParty;
-import com.lycanitesmobs.junglemobs.mobevent.MobEventTheSwarm;
 import net.minecraft.block.BlockDispenser;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityWitch;
@@ -205,54 +200,6 @@ public class JungleMobs extends Submod {
 		GameRegistry.addSmelting(ObjectManager.getItem("concapedemeatraw"), new ItemStack(ObjectManager.getItem("concapedemeatcooked"), 1), 0.5f);
 		GameRegistry.addSmelting(ObjectManager.getBlock("propolis"), new ItemStack(Blocks.HARDENED_CLAY, 1), 0.5f);
 		GameRegistry.addSmelting(ObjectManager.getBlock("veswax"), new ItemStack(Items.SUGAR, 6), 0.5f);
-	}
-
-	@Override
-	public void createMobEvents() {
-		// Poop Party:
-		if(MobInfo.getFromName("conba") != null) {
-			MobEventBase mobEvent = new MobEventPoopParty("poopparty", this.group);
-			SpawnTypeBase eventSpawner = new SpawnTypeLand("poopparty")
-					.setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-			eventSpawner.materials = new Material[] {Material.AIR};
-			eventSpawner.ignoreBiome = true;
-			eventSpawner.ignoreLight = true;
-			eventSpawner.forceSpawning = true;
-			eventSpawner.ignoreMobConditions = true;
-			eventSpawner.addSpawn(MobInfo.getFromName("conba"));
-			mobEvent.addSpawner(eventSpawner);
-			MobEventManager.INSTANCE.addWorldEvent(mobEvent);
-		}
-
-		// The Swarm:
-		MobEventBase theSwarmEvent = new MobEventTheSwarm("theswarm", this.group);
-		theSwarmEvent.minDay = 10;
-
-		SpawnTypeBase theSwarmLandSpawner = new SpawnTypeLand("theswarm_land")
-				.setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-		theSwarmLandSpawner.materials = new Material[] {Material.AIR};
-		theSwarmLandSpawner.ignoreBiome = true;
-		theSwarmLandSpawner.ignoreLight = true;
-		theSwarmLandSpawner.forceSpawning = true;
-		theSwarmLandSpawner.ignoreMobConditions = true;
-		theSwarmLandSpawner.addSpawn(MobInfo.getFromName("conba"));
-		if(theSwarmLandSpawner.hasSpawns())
-			theSwarmEvent.addSpawner(theSwarmLandSpawner);
-
-		SpawnTypeBase theSwarmSkySpawner = new SpawnTypeSky("theswarm_sky")
-				.setChance(1.0D).setBlockLimit(32).setMobLimit(8);
-		theSwarmSkySpawner.materials = new Material[] {Material.AIR};
-		theSwarmSkySpawner.ignoreBiome = true;
-		theSwarmSkySpawner.ignoreLight = true;
-		theSwarmSkySpawner.forceSpawning = true;
-		theSwarmSkySpawner.ignoreMobConditions = true;
-		theSwarmSkySpawner.addSpawn(MobInfo.getFromName("vespid"));
-		theSwarmSkySpawner.addSpawn(MobInfo.getFromName("vespidqueen"), 1);
-		if(theSwarmSkySpawner.hasSpawns())
-			theSwarmEvent.addSpawner(theSwarmSkySpawner);
-
-		if(theSwarmEvent.hasSpawners())
-			MobEventManager.INSTANCE.addWorldEvent(theSwarmEvent);
 	}
 
 	@Override

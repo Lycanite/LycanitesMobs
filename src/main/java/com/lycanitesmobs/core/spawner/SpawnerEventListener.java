@@ -1,5 +1,6 @@
 package com.lycanitesmobs.core.spawner;
 
+import com.lycanitesmobs.ExtendedWorld;
 import com.lycanitesmobs.core.spawner.trigger.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -16,6 +17,7 @@ import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 public class SpawnerEventListener {
-    public static SpawnerEventListener instance;
+    protected static SpawnerEventListener INSTANCE;
 
 	public List<TickSpawnTrigger> tickSpawnTriggers = new ArrayList<>();
 	public List<KillSpawnTrigger> killSpawnTriggers = new ArrayList<>();
@@ -31,23 +33,23 @@ public class SpawnerEventListener {
 	public List<BlockSpawnTrigger> blockSpawnTriggers = new ArrayList<>();
 	public List<SleepSpawnTrigger> sleepSpawnTriggers = new ArrayList<>();
 	public List<FishingSpawnTrigger> fishingSpawnTriggers = new ArrayList<>();
+	public List<MobEventSpawnTrigger> mobEventSpawnTriggers = new ArrayList<>();
 
-    // ==================================================
-    //                     Constructor
-    // ==================================================
-	public SpawnerEventListener() {
-		instance = this;
+
+	/** Returns the main Mob Event Listener instance. **/
+	public static SpawnerEventListener getInstance() {
+		if(INSTANCE == null) {
+			INSTANCE = new SpawnerEventListener();
+		}
+		return INSTANCE;
 	}
 
 
-	// ==================================================
-	//                 Spawn Triggers
-	// ==================================================
 	/**
 	 * Adds a new Spawn Trigger.
 	 * @return True on success, false if it failed to add (could happen if the Trigger type has no matching list created yet.
 	 */
-	public boolean addSpawnTrigger(SpawnTrigger spawnTrigger) {
+	public boolean addTrigger(SpawnTrigger spawnTrigger) {
 		if(spawnTrigger instanceof TickSpawnTrigger && !this.tickSpawnTriggers.contains(spawnTrigger)) {
 			this.tickSpawnTriggers.add((TickSpawnTrigger)spawnTrigger);
 			return true;
@@ -68,13 +70,17 @@ public class SpawnerEventListener {
 			this.fishingSpawnTriggers.add((FishingSpawnTrigger)spawnTrigger);
 			return true;
 		}
+		if(spawnTrigger instanceof MobEventSpawnTrigger && !this.mobEventSpawnTriggers.contains(spawnTrigger)) {
+			this.mobEventSpawnTriggers.add((MobEventSpawnTrigger)spawnTrigger);
+			return true;
+		}
 		return false;
 	}
 
 	/**
 	 * Removes a Spawn Trigger.
 	 */
-	public void removeSpawnTrigger(SpawnTrigger spawnTrigger) {
+	public void removeTrigger(SpawnTrigger spawnTrigger) {
 		if(this.tickSpawnTriggers.contains(spawnTrigger)) {
 			this.tickSpawnTriggers.remove(spawnTrigger);
 		}
@@ -89,6 +95,28 @@ public class SpawnerEventListener {
 		}
 		if(this.fishingSpawnTriggers.contains(spawnTrigger)) {
 			this.fishingSpawnTriggers.remove(spawnTrigger);
+		}
+	}
+
+
+	// ==================================================
+	//               World Update Event
+	// ==================================================
+	/** This uses world update events to update Mob Event Spawn Triggers. **/
+	@SubscribeEvent
+	public void onWorldUpdate(TickEvent.WorldTickEvent event) {
+		World world = event.world;
+		if(world.isRemote)
+			return;
+		ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
+		if(worldExt == null)
+			return;
+
+		if(worldExt.getWorldEvent() == null)
+			return;
+
+		for(MobEventSpawnTrigger spawnTrigger : this.mobEventSpawnTriggers) {
+			spawnTrigger.onTick(world, worldExt.serverWorldEventPlayer);
 		}
 	}
 	

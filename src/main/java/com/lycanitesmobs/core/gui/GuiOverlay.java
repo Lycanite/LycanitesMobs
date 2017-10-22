@@ -1,10 +1,9 @@
 package com.lycanitesmobs.core.gui;
 
 import com.lycanitesmobs.*;
-import com.lycanitesmobs.*;
 import com.lycanitesmobs.core.entity.EntityCreatureRideable;
 import com.lycanitesmobs.core.item.ItemStaffSummoning;
-import com.lycanitesmobs.core.mobevent.MobEventClient;
+import com.lycanitesmobs.core.mobevent.MobEventPlayerClient;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -57,10 +56,10 @@ public class GuiOverlay extends GUIBase {
         // ========== Mob/World Events Title ==========
         ExtendedWorld worldExt = ExtendedWorld.getForWorld(player.getEntityWorld());
         if(worldExt != null) {
-            for(MobEventClient mobEventClient : worldExt.clientMobEvents.values())
-                mobEventClient.onGUIUpdate(this, sWidth, sHeight);
-            if(worldExt.clientWorldEvent != null)
-                worldExt.clientWorldEvent.onGUIUpdate(this, sWidth, sHeight);
+            for(MobEventPlayerClient mobEventPlayerClient : worldExt.clientMobEventPlayers.values())
+                mobEventPlayerClient.onGUIUpdate(this, sWidth, sHeight);
+            if(worldExt.clientWorldEventPlayer != null)
+                worldExt.clientWorldEventPlayer.onGUIUpdate(this, sWidth, sHeight);
         }
 		
 		// ========== Summoning Focus Bar ==========

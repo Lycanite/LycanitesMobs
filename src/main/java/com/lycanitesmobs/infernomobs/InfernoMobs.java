@@ -1,31 +1,23 @@
 package com.lycanitesmobs.infernomobs;
 
+import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.LycanitesMobs;
+import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.Submod;
+import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
 import com.lycanitesmobs.core.info.*;
 import com.lycanitesmobs.core.item.ItemCustomFood;
-import com.lycanitesmobs.core.spawning.SpawnTypeBase;
-import com.lycanitesmobs.infernomobs.dispenser.DispenserBehaviorEmber;
-import com.lycanitesmobs.infernomobs.dispenser.DispenserBehaviorMagma;
-import com.lycanitesmobs.infernomobs.entity.*;
-import com.lycanitesmobs.infernomobs.item.*;
-import com.lycanitesmobs.infernomobs.mobevent.MobEventEruption;
-import com.lycanitesmobs.AssetManager;
-import com.lycanitesmobs.ObjectManager;
-import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
 import com.lycanitesmobs.core.item.ItemTreat;
-import com.lycanitesmobs.core.mobevent.MobEventBase;
-import com.lycanitesmobs.core.mobevent.MobEventManager;
-import com.lycanitesmobs.core.spawning.SpawnTypeLand;
-import com.lycanitesmobs.core.spawning.SpawnTypeSky;
 import com.lycanitesmobs.infernomobs.block.BlockFluidPureLava;
 import com.lycanitesmobs.infernomobs.block.BlockScorchfire;
+import com.lycanitesmobs.infernomobs.dispenser.DispenserBehaviorEmber;
+import com.lycanitesmobs.infernomobs.dispenser.DispenserBehaviorMagma;
 import com.lycanitesmobs.infernomobs.dispenser.DispenserBehaviorScorchfire;
+import com.lycanitesmobs.infernomobs.entity.*;
 import com.lycanitesmobs.infernomobs.info.AltarInfoUmberLobber;
-import com.lycanitesmobs.infernomobs.mobevent.MobEventCinderfall;
+import com.lycanitesmobs.infernomobs.item.*;
 import com.lycanitesmobs.infernomobs.worldgen.WorldGeneratorInferno;
 import net.minecraft.block.BlockDispenser;
-import net.minecraft.block.material.Material;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraftforge.fluids.Fluid;
@@ -61,6 +53,9 @@ public class InfernoMobs extends Submod {
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event) {
 		super.init(event);
+
+		AltarInfo umberLobberAltar = new AltarInfoUmberLobber("UmberLobberAltar");
+		AltarInfo.addAltar(umberLobberAltar);
 	}
 
 	@Mod.EventHandler
@@ -201,39 +196,6 @@ public class InfernoMobs extends Submod {
 	@Override
 	public void addRecipes() {
 
-	}
-
-	@Override
-	public void createMobEvents() {
-		MobEventBase mobEvent = new MobEventCinderfall("cinderfall", this.group).setDimensions("1");
-		SpawnTypeBase eventSpawner = new SpawnTypeSky("cinderfall")
-				.setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-		eventSpawner.materials = new Material[] {Material.AIR};
-		eventSpawner.ignoreBiome = true;
-		eventSpawner.ignoreLight = true;
-		eventSpawner.forceSpawning = true;
-		eventSpawner.ignoreMobConditions = true;
-		eventSpawner.addSpawn(MobInfo.getFromName("cinder"));
-		mobEvent.addSpawner(eventSpawner);
-		MobEventManager.INSTANCE.addWorldEvent(mobEvent);
-
-		mobEvent = new MobEventEruption("eruption", this.group).setDimensions("1");
-		mobEvent.minDay = 10;
-		eventSpawner = new SpawnTypeLand("eruption")
-				.setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-		eventSpawner.materials = new Material[] {Material.AIR};
-		eventSpawner.ignoreBiome = true;
-		eventSpawner.ignoreLight = true;
-		eventSpawner.forceSpawning = true;
-		eventSpawner.ignoreMobConditions = true;
-		eventSpawner.addSpawn(MobInfo.getFromName("lobber"));
-		eventSpawner.addSpawn(MobInfo.getFromName("khalk"), 2);
-		eventSpawner.addSpawn(MobInfo.getFromName("gorger"));
-		mobEvent.addSpawner(eventSpawner);
-		MobEventManager.INSTANCE.addWorldEvent(mobEvent);
-
-		AltarInfo umberLobberAltar = new AltarInfoUmberLobber("UmberLobberAltar");
-		AltarInfo.addAltar(umberLobberAltar);
 	}
 
 	@Override

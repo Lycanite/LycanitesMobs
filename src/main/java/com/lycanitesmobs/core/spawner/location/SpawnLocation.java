@@ -1,20 +1,18 @@
 package com.lycanitesmobs.core.spawner.location;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.lycanitesmobs.core.spawner.CoordSorterFurthest;
 import com.lycanitesmobs.core.spawner.CoordSorterNearest;
 import com.lycanitesmobs.core.spawner.SpawnerJSONUtilities;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 public class SpawnLocation {
     /** Spawn Locations define where spawns will take place, how these work can vary based on the type of Spawn Trigger. **/
@@ -24,6 +22,12 @@ public class SpawnLocation {
 
     /** The maximum xyz distances in blocks from the central spawn position to spawn from. **/
     public Vec3i rangeMax = new Vec3i(0, 0, 0);
+
+    /** The minimum allowed y height. **/
+    public int yMin = -1;
+
+	/** The maximum allowed y height. **/
+	public int yMax = -1;
 
     /** Determines the order that the returned positions should be in. Can be random, near or far (from the trigger position). **/
     public String sorting = "random";
@@ -58,6 +62,12 @@ public class SpawnLocation {
 
 		this.rangeMax = SpawnerJSONUtilities.getVec3i(json, "rangeMax");
 
+		if(json.has("yMin"))
+			this.yMin = json.get("yMin").getAsInt();
+
+		if(json.has("yMax"))
+			this.yMax = json.get("yMax").getAsInt();
+
 		if(json.has("sorting"))
 			this.sorting = json.get("sorting").getAsString();
     }
@@ -66,9 +76,10 @@ public class SpawnLocation {
     /** Returns a list of positions to spawn at. **/
     public List<BlockPos> getSpawnPositions(World world, EntityPlayer player, BlockPos triggerPos) {
         List<BlockPos> spawnPositions = new ArrayList<>();
+        int yPos = this.getOffset(world.rand, this.rangeMin.getY(), this.rangeMax.getY());
         Vec3i offset = new Vec3i(
                 this.getOffset(world.rand, this.rangeMin.getX(), this.rangeMax.getX()),
-                this.getOffset(world.rand, this.rangeMin.getY(), this.rangeMax.getY()),
+                yPos,
                 this.getOffset(world.rand, this.rangeMin.getZ(), this.rangeMax.getZ())
         );
         spawnPositions.add(triggerPos.add(offset));
@@ -79,7 +90,7 @@ public class SpawnLocation {
 
     /** Returns a random offset from the provided min and max values. **/
     public int getOffset(Random random, int min, int max) {
-        if(rangeMax.getX() <= rangeMin.getX()) {
+        if(max <= min) {
             return 0;
         }
         int offset = min + random.nextInt(max - min);

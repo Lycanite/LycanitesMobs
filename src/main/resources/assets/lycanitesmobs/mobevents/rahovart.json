@@ -1,0 +1,21 @@
+{
+	"name": "rahovart",
+	"type": "event",
+	"enabled": true,
+	"channel": "boss",
+	"duration": 600,
+	"conditions": [],
+	"triggers": [
+		{
+			"type": "altar",
+			"altarName": "RahovartAltar"
+		}
+	],
+	"effects": [
+		{
+			"type": "structure",
+			"structureBuilderName": "rahovart",
+			"eventTicksMax": 600 
+		}
+	]
+}

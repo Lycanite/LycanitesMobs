@@ -144,7 +144,7 @@ public class MobInfo {
     /** Dungeon themes for this mob, used by Doomlike Dungeons. **/
     public String dungeonThemes = "GROUP";
 	
-	/** A level used to rank this mob for dungeons. This is currently only used by Doomlike Dungeons. -1 = Not for Dungeons, 0 = Common, 1 = Tough, 2 = Brute, 3 = Elite **/
+	/** A rank used to level this mob for dungeons. This is currently only used by Doomlike Dungeons. -1 = Not for Dungeons, 0 = Common, 1 = Tough, 2 = Brute, 3 = Elite **/
 	public int dungeonLevel = -1;
 
     /** A custom scale to apply to the mob's size. **/

@@ -1,5 +1,6 @@
 {
 	"name": "beast",
+	"type": "spawner",
 	"enabled": false,
 	"loadDefault": true,
 	"mobCount": 8,

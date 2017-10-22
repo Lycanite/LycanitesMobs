@@ -1,5 +1,6 @@
 {
 	"name": "darkness",
+	"type": "spawner",
 	"enabled": false,
 	"conditionsRequired": 0,
 	"triggersRequired": 3,

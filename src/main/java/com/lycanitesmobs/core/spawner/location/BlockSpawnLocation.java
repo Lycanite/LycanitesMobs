@@ -52,8 +52,18 @@ public class BlockSpawnLocation extends SpawnLocation {
 
         for (int y = triggerPos.getY() - this.rangeMax.getY(); y <= triggerPos.getY() + this.rangeMax.getY(); y++) {
             // Y Limits:
-            if (y < 0) y = 0;
-            if (y >= world.getActualHeight()) {
+			int yMin = 0;
+			if(this.yMin >= 0) {
+				yMin = this.yMin;
+			}
+            if (y < yMin) {
+            	y = yMin;
+			}
+			int yMax = world.getActualHeight();
+			if(this.yMax >= 0) {
+				yMax = Math.min(this.yMax, yMax);
+			}
+            if (y >= yMax) {
                 break;
             }
 

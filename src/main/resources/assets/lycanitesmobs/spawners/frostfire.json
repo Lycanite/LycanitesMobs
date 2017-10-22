@@ -1,5 +1,6 @@
 {
 	"name": "frostfire",
+	"type": "spawner",
 	"loadDefault": true,
 	"mobCount": 8,
 	"ignoreDimensions": true,

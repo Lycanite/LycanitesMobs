@@ -4,20 +4,17 @@ import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.Submod;
 import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
-import com.lycanitesmobs.core.info.*;
+import com.lycanitesmobs.core.info.GroupInfo;
+import com.lycanitesmobs.core.info.MobInfo;
+import com.lycanitesmobs.core.info.ObjectLists;
+import com.lycanitesmobs.core.info.Subspecies;
 import com.lycanitesmobs.core.item.ItemCustomFood;
 import com.lycanitesmobs.core.item.ItemTreat;
-import com.lycanitesmobs.core.mobevent.MobEventBase;
-import com.lycanitesmobs.core.mobevent.MobEventManager;
-import com.lycanitesmobs.core.spawning.SpawnTypeBase;
-import com.lycanitesmobs.core.spawning.SpawnTypeSky;
 import com.lycanitesmobs.freshwatermobs.dispenser.DispenserBehaviorAquaPulse;
 import com.lycanitesmobs.freshwatermobs.dispenser.DispenserBehaviorWaterJet;
 import com.lycanitesmobs.freshwatermobs.entity.*;
 import com.lycanitesmobs.freshwatermobs.item.*;
-import com.lycanitesmobs.freshwatermobs.mobevent.MobEventTsunami;
 import net.minecraft.block.BlockDispenser;
-import net.minecraft.block.material.Material;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
@@ -181,26 +178,6 @@ public class FreshwaterMobs extends Submod {
 	@Override
 	public void addRecipes() {
 		GameRegistry.addSmelting(ObjectManager.getItem("silexmeatraw"), new ItemStack(ObjectManager.getItem("silexmeatcooked"), 1), 0.5f);
-	}
-
-	@Override
-	public void createMobEvents() {
-		if(MobInfo.getFromName("jengu") != null || MobInfo.getFromName("zephyr") != null) {
-			MobEventBase mobEvent = new MobEventTsunami("tsunami", this.group);
-			SpawnTypeBase eventSpawner = new SpawnTypeSky("tsunami")
-					.setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-			eventSpawner.materials = new Material[] {Material.AIR};
-			eventSpawner.ignoreBiome = true;
-			eventSpawner.ignoreLight = true;
-			eventSpawner.forceSpawning = true;
-			eventSpawner.ignoreMobConditions = true;
-			if(MobInfo.getFromName("jengu") != null)
-				eventSpawner.addSpawn(MobInfo.getFromName("jengu"));
-			if(MobInfo.getFromName("zephyr") != null)
-				eventSpawner.addSpawn(MobInfo.getFromName("zephyr"));
-			mobEvent.addSpawner(eventSpawner);
-			MobEventManager.INSTANCE.addWorldEvent(mobEvent);
-		}
 	}
 
 	@Override

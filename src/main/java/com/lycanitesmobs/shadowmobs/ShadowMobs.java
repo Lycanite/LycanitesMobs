@@ -1,29 +1,21 @@
 package com.lycanitesmobs.shadowmobs;
 
+import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.BlockMaker;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.Submod;
+import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
 import com.lycanitesmobs.core.info.*;
 import com.lycanitesmobs.core.item.ItemCustomFood;
 import com.lycanitesmobs.core.item.ItemTreat;
-import com.lycanitesmobs.core.mobevent.MobEventManager;
-import com.lycanitesmobs.core.spawning.SpawnTypeBase;
-import com.lycanitesmobs.core.spawning.SpawnTypeLand;
-import com.lycanitesmobs.core.spawning.SpawnTypeSky;
 import com.lycanitesmobs.shadowmobs.block.BlockShadowfire;
-import com.lycanitesmobs.shadowmobs.entity.*;
-import com.lycanitesmobs.shadowmobs.item.*;
-import com.lycanitesmobs.AssetManager;
-import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
-import com.lycanitesmobs.core.mobevent.MobEventBase;
 import com.lycanitesmobs.shadowmobs.dispenser.DispenserBehaviorBloodleech;
 import com.lycanitesmobs.shadowmobs.dispenser.DispenserBehaviorSpectralbolt;
+import com.lycanitesmobs.shadowmobs.entity.*;
 import com.lycanitesmobs.shadowmobs.info.AltarInfoLunarGrue;
-import com.lycanitesmobs.shadowmobs.mobevent.MobEventBlackPlague;
-import com.lycanitesmobs.shadowmobs.mobevent.MobEventShadowGames;
+import com.lycanitesmobs.shadowmobs.item.*;
 import net.minecraft.block.BlockDispenser;
-import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
@@ -59,6 +51,9 @@ public class ShadowMobs extends Submod {
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event) {
 		super.init(event);
+
+		AltarInfo lunarGrueAltar = new AltarInfoLunarGrue("LunarGrueAltar");
+		AltarInfo.addAltar(lunarGrueAltar);
 	}
 
 	@Mod.EventHandler
@@ -203,50 +198,6 @@ public class ShadowMobs extends Submod {
 	@Override
 	public void addRecipes() {
 		GameRegistry.addSmelting(ObjectManager.getItem("chupacabrameatraw"), new ItemStack(ObjectManager.getItem("chupacabrameatcooked"), 1), 0.5f);
-	}
-
-	@Override
-	public void createMobEvents() {
-		MobEventBase mobEvent = new MobEventShadowGames("shadowgames", this.group).setDimensions("-1");
-		mobEvent.minDay = 10;
-		SpawnTypeBase eventSpawner = new SpawnTypeSky("shadowgames_sky")
-				.setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-		eventSpawner.materials = new Material[] {Material.AIR};
-		eventSpawner.ignoreBiome = true;
-		eventSpawner.ignoreLight = true;
-		eventSpawner.forceSpawning = true;
-		eventSpawner.ignoreMobConditions = true;
-		eventSpawner.addSpawn(MobInfo.getFromName("grue"));
-		eventSpawner.addSpawn(MobInfo.getFromName("darkling"));
-		mobEvent.addSpawner(eventSpawner);
-		eventSpawner = new SpawnTypeLand("shadowgames_land")
-				.setChance(1.0D).setBlockLimit(32).setMobLimit(3);
-		eventSpawner.materials = new Material[] {Material.AIR};
-		eventSpawner.ignoreBiome = true;
-		eventSpawner.ignoreLight = true;
-		eventSpawner.forceSpawning = true;
-		eventSpawner.ignoreMobConditions = true;
-		eventSpawner.addSpawn(MobInfo.getFromName("grue"));
-		eventSpawner.addSpawn(MobInfo.getFromName("shade"));
-		mobEvent.addSpawner(eventSpawner);
-		MobEventManager.INSTANCE.addWorldEvent(mobEvent);
-
-		mobEvent = new MobEventBlackPlague("blackplague", this.group).setDimensions("-1");
-		mobEvent.minDay = 10;
-		eventSpawner = new SpawnTypeLand("blackplague")
-				.setChance(1.0D).setBlockLimit(32).setMobLimit(8);
-		eventSpawner.materials = new Material[] {Material.AIR};
-		eventSpawner.ignoreBiome = true;
-		eventSpawner.ignoreLight = true;
-		eventSpawner.forceSpawning = true;
-		eventSpawner.ignoreMobConditions = true;
-		eventSpawner.addSpawn(MobInfo.getFromName("geist"));
-		eventSpawner.addSpawn(MobInfo.getFromName("phantom"));
-		mobEvent.addSpawner(eventSpawner);
-		MobEventManager.INSTANCE.addWorldEvent(mobEvent);
-
-		AltarInfo lunarGrueAltar = new AltarInfoLunarGrue("LunarGrueAltar");
-		AltarInfo.addAltar(lunarGrueAltar);
 	}
 
 	@Override

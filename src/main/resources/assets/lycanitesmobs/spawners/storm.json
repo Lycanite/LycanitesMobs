@@ -1,5 +1,6 @@
 {
 	"name": "storm",
+	"type": "spawner",
 	"loadDefault": true,
 	"mobCount": 8,
 	"ignoreBiomes": true,

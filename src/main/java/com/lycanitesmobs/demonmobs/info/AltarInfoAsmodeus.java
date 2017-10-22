@@ -3,7 +3,6 @@ package com.lycanitesmobs.demonmobs.info;
 import com.lycanitesmobs.ExtendedWorld;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.info.AltarInfo;
-import com.lycanitesmobs.core.mobevent.MobEventBase;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
@@ -80,7 +79,7 @@ public class AltarInfoAsmodeus extends AltarInfo {
     // ==================================================
     /** Called when this Altar should activate. This will typically destroy the Altar and summon a rare mob or activate an event such as a boss event. If false is returned then the activation did not work, this is the place to check for things like dimensions. **/
     @Override
-    public boolean activate(Entity entity, World world, BlockPos pos, int rank) {
+    public boolean activate(Entity entity, World world, BlockPos pos, int level) {
         if (world.isRemote)
             return true;
 
@@ -93,8 +92,6 @@ public class AltarInfoAsmodeus extends AltarInfo {
         if(entity != null)
             pos = this.getFacingPosition(pos, 10, entity.rotationYaw);
 
-        worldExt.startMobEvent("asmodeus", pos.getX(), pos.getY(), pos.getZ(), rank);
-
-        return true;
+        return super.activate(entity, world, pos, level);
     }
 }

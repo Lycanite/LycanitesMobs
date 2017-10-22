@@ -19,8 +19,15 @@ import java.util.Map;
 
 public class JSONLoader {
 
-	/** Loads JSON Objects from a Path. **/
-	public void loadJsonObjects(Gson gson, Path path, Map<String, JsonObject> jsonObjectMap, String mapKey) {
+	/**
+	 * Loads JSON objects from the specified path with additional options.
+	 * @param gson The JSON parser.
+	 * @param path The path to load from.
+	 * @param jsonObjectMap The map to add the loaded JSON to.
+	 * @param mapKey The JSON value to use as the map key.
+	 * @param jsonType If set, a "type" value is checked in the JSON and must match.
+	 */
+	public void loadJsonObjects(Gson gson, Path path, Map<String, JsonObject> jsonObjectMap, String mapKey, String jsonType) {
 		if(path == null) {
 			return;
 		}
@@ -37,7 +44,18 @@ public class JSONLoader {
 					try {
 						reader = Files.newBufferedReader(filePath);
 						JsonObject json = JsonUtils.fromJson(gson, reader, JsonObject.class);
-						jsonObjectMap.put(json.get(mapKey).getAsString(), json);
+						boolean validJSON = true;
+						if(jsonType != null) {
+							if(!json.has("type")) {
+								validJSON = false;
+							}
+							else {
+								validJSON = jsonType.equalsIgnoreCase(json.get("type").getAsString());
+							}
+						}
+						if(validJSON) {
+							jsonObjectMap.put(json.get(mapKey).getAsString(), json);
+						}
 					}
 					catch (JsonParseException e) {
 						LycanitesMobs.printWarning("", "Parsing error loading JSON " + relativePath + "\n" + e.toString());

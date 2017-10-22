@@ -105,8 +105,16 @@ public class RandomSpawnLocation extends BlockSpawnLocation {
 		int originX = triggerPos.getX();
 		int originY = triggerPos.getY();
 		int originZ = triggerPos.getZ();
+
 		int minY = Math.max(originY - this.rangeMax.getY(), 0); // Start from this y pos
+		if(this.yMin >= 0) {
+			minY = Math.max(minY, this.yMin);
+		}
 		int maxY = Math.min(originY + this.rangeMax.getY(), world.getHeight() - 1); // Search up to this y pos
+		if(this.yMax >= 0) {
+			minY = Math.min(maxY, this.yMax);
+		}
+
 		List<Integer> yCoordsLow = new ArrayList<>();
 		List<Integer> yCoordsHigh = new ArrayList<>();
 

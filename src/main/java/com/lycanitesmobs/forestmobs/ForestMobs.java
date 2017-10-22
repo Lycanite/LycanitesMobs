@@ -175,11 +175,6 @@ public class ForestMobs extends Submod {
 	}
 
 	@Override
-	public void createMobEvents() {
-
-	}
-
-	@Override
 	public void editVanillaSpawns() {
 		EntityRegistry.removeSpawn(EntityZombie.class, EnumCreatureType.MONSTER, this.group.biomes);
 		EntityRegistry.removeSpawn(EntitySpider.class, EnumCreatureType.MONSTER, this.group.biomes);

@@ -1,9 +1,9 @@
 {
 	"name": "portal",
+	"type": "spawner",
 	"loadDefault": true,
 	"mobCount": 1,
 	"ignoreDimensions": true,
-	"ignoreBiomes": true,
 	"ignoreBiomes": true,
 	"ignoreLightLevel": true,
 	"conditions": [],

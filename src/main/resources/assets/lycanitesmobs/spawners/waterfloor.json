@@ -1,6 +1,7 @@
 {
 	"name": "waterfloor",
 	"type": "spawner",
+	"enabled": true,
 	"loadDefault": true,
 	"mobCount": 16,
 	"ignoreBiomes": false,

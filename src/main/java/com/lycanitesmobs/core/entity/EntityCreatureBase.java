@@ -138,6 +138,14 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public int damageMax = 0;
     /** The gorwing age of this mob. **/
     protected int growingAge;
+
+	// Boss Health:
+	/** How much damage this creature has taken over the latest second. **/
+	public float damageTakenThisSec = 0;
+	/** How much health this creature had last tick. **/
+	public float healthLastTick = -1;
+	/** If above 0, no more than this much health can be lost per second. **/
+	public float damageLimit = 0;
 	
 	// Abilities:
     /** If true, this mob is to be treated as a boss. Boss mobs gain some defensive abilities. **/
@@ -665,7 +673,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         if(!this.spawnsUnderground && this.isBlockUnderground(pos.getX(), pos.getY() + 1, pos.getZ()))
         	return false;
     	LycanitesMobs.printDebug("MobSpawns", "Counting mobs of the same kind, max allowed is: " + this.mobInfo.spawnInfo.spawnAreaLimit);
-        if(!this.checkSpawnGroupLimit(world, pos))
+        if(!this.checkSpawnGroupLimit(world, pos, SpawnInfo.spawnLimitRange))
         	return false;
         LycanitesMobs.printDebug("MobSpawns", "Checking for nearby bosses.");
 		if(!this.checkSpawnBoss(world, pos))
@@ -719,9 +727,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
 	// ========== Group Limit Spawn Check ==========
 	/** Checks for nearby entities of this type, mobs use this so that too many don't spawn in the same area. Returns true if the mob should spawn. **/
-	public boolean checkSpawnGroupLimit(World world, BlockPos pos) {
+	public boolean checkSpawnGroupLimit(World world, BlockPos pos, double range) {
 		int spawnLimit = this.mobInfo.spawnInfo.spawnAreaLimit;
-		double range = SpawnInfo.spawnLimitRange;
 		if(spawnLimit > 0 && range > 0) {
 			List targets = this.getNearbyEntities(EntityCreatureBase.class, this.mobInfo.entityClass, range);
 			if(targets.size() >= spawnLimit) {
@@ -1271,6 +1278,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
         this.experienceValue = Math.round(scaledExp);
     	if(resetHealth)
     		this.applySubspeciesHealthMultiplier();
+    	if(subspeciesIndex == 3) {
+			this.damageLimit = 40;
+		}
         this.refreshBossHealthName();
     }
 
@@ -1355,6 +1365,18 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** The main update method, behaviour and custom update logic should go here. **/
     @Override
     public void onLivingUpdate() {
+		// Enforce Damage Limit:
+		if(this.damageLimit > 0) {
+			if (this.healthLastTick < 0)
+				this.healthLastTick = this.getHealth();
+			if (this.healthLastTick - this.getHealth() > this.damageLimit)
+				this.setHealth(this.healthLastTick);
+			this.healthLastTick = this.getHealth();
+			if (!this.getEntityWorld().isRemote && this.updateTick % 20 == 0) {
+				this.damageTakenThisSec = 0;
+			}
+		}
+
         super.onLivingUpdate();
 
         this.updateBattlePhase();
@@ -2431,7 +2453,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
     
     // ========== On Damage ==========
     /** Called when this mob has received damage. **/
-    public void onDamage(DamageSource damageSrc, float damage) {}
+    public void onDamage(DamageSource damageSrc, float damage) {
+		this.damageTakenThisSec += damage;
+	}
     
     // ========== Damage Modifier ==========
     /** A multiplier that alters how much damage this mob receives from the given DamageSource, use for resistances and weaknesses. Note: The defense multiplier is handled before this. **/
@@ -3274,6 +3298,11 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Damage ==========
     @Override
     public boolean isEntityInvulnerable(DamageSource source) {
+    	// Damage Limit:
+    	if(this.damageLimit > 0) {
+			if (this.damageTakenThisSec >= this.damageLimit)
+				return true;
+		}
         return super.isEntityInvulnerable(source);
     }
 

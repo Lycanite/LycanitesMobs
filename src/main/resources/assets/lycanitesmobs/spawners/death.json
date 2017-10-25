@@ -1,6 +1,7 @@
 {
 	"name": "death",
 	"type": "spawner",
+	"enabled": true,
 	"loadDefault": true,
 	"mobCount": 1,
 	"ignoreDimensions": true,

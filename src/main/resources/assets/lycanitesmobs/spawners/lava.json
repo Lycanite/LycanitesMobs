@@ -1,6 +1,7 @@
 {
 	"name": "lava",
 	"type": "spawner",
+	"enabled": true,
 	"loadDefault": true,
 	"mobCount": 8,
 	"ignoreDimensions": true,

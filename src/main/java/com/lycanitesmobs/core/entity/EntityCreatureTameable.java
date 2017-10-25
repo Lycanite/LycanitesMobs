@@ -524,6 +524,18 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
         this.setPVP(true);
         this.playTameSound();
     }
+
+	@Override
+	public void onCreateBaby(EntityCreatureAgeable partner, EntityCreatureAgeable baby) {
+		if(this.isTamed() && this.getOwner() instanceof EntityPlayer && partner instanceof EntityCreatureTameable && baby instanceof EntityCreatureTameable) {
+			EntityCreatureTameable partnerTameable = (EntityCreatureTameable)partner;
+			EntityCreatureTameable babyTameable = (EntityCreatureTameable)baby;
+			if(partnerTameable.getOwnerName() == this.getOwnerName()) {
+				babyTameable.setPlayerOwner((EntityPlayer)this.getOwner());
+			}
+		}
+		super.onCreateBaby(partner, baby);
+	}
     
     
     // ==================================================

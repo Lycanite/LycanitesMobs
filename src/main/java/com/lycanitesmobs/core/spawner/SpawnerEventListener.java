@@ -1,6 +1,7 @@
 package com.lycanitesmobs.core.spawner;
 
 import com.lycanitesmobs.ExtendedWorld;
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.spawner.trigger.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -14,8 +15,11 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.ItemFishedEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
+import net.minecraftforge.event.terraingen.ChunkGeneratorEvent;
+import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
+import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
@@ -30,6 +34,7 @@ public class SpawnerEventListener {
 	public List<TickSpawnTrigger> tickSpawnTriggers = new ArrayList<>();
 	public List<KillSpawnTrigger> killSpawnTriggers = new ArrayList<>();
 	public List<EntitySpawnedSpawnTrigger> entitySpawnedSpawnTriggers = new ArrayList<>();
+	public List<ChunkSpawnTrigger> chunkSpawnTriggers = new ArrayList<>();
 	public List<BlockSpawnTrigger> blockSpawnTriggers = new ArrayList<>();
 	public List<SleepSpawnTrigger> sleepSpawnTriggers = new ArrayList<>();
 	public List<FishingSpawnTrigger> fishingSpawnTriggers = new ArrayList<>();
@@ -56,6 +61,14 @@ public class SpawnerEventListener {
 		}
 		if(spawnTrigger instanceof KillSpawnTrigger && !this.killSpawnTriggers.contains(spawnTrigger)) {
 			this.killSpawnTriggers.add((KillSpawnTrigger)spawnTrigger);
+			return true;
+		}
+		if(spawnTrigger instanceof EntitySpawnedSpawnTrigger && !this.entitySpawnedSpawnTriggers.contains(spawnTrigger)) {
+			this.entitySpawnedSpawnTriggers.add((EntitySpawnedSpawnTrigger)spawnTrigger);
+			return true;
+		}
+		if(spawnTrigger instanceof ChunkSpawnTrigger && !this.chunkSpawnTriggers.contains(spawnTrigger)) {
+			this.chunkSpawnTriggers.add((ChunkSpawnTrigger)spawnTrigger);
 			return true;
 		}
 		if(spawnTrigger instanceof BlockSpawnTrigger && !this.blockSpawnTriggers.contains(spawnTrigger)) {
@@ -192,6 +205,30 @@ public class SpawnerEventListener {
 		for(EntitySpawnedSpawnTrigger spawnTrigger : this.entitySpawnedSpawnTriggers) {
 			spawnTrigger.onEntitySpawned((EntityLiving)spawnedEntity);
 		}
+	}
+
+
+	// ==================================================
+	//                Populate Chunk Event
+	// ==================================================
+	/** Set to true when chunk spawn triggers are active and back to false when they have completed. This stops a cascading trigger loop! **/
+	public boolean chunkSpawnTriggersActive = false;
+
+	/** Called every time a new chunk is generated. **/
+	@SubscribeEvent
+	public void onChunkPopulate(PopulateChunkEvent.Post event) {
+		if(this.chunkSpawnTriggersActive) {
+			return;
+		}
+
+		// Call Triggers:
+		for(ChunkSpawnTrigger spawnTrigger : this.chunkSpawnTriggers) {
+			if(spawnTrigger.onChunkPopulate(event.getWorld(), event.getChunkX(), event.getChunkZ())) {
+				this.chunkSpawnTriggersActive = true;
+			}
+		}
+
+		this.chunkSpawnTriggersActive = false;
 	}
 
 	

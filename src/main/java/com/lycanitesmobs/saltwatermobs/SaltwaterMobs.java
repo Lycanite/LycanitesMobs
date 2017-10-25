@@ -114,8 +114,8 @@ public class SaltwaterMobs extends Submod {
 		newMob = new MobInfo(group, "ika", EntityIka.class, 0x99FFBB, 0x229944)
 				.setPeaceful(true).setSummonCost(2).setDungeonLevel(-1)
 				.addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("golden", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("WATER, WATERFLOOR").setDespawn(false)
-				.setSpawnWeight(6).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(true, false).setDungeonWeight(0);
+		newMob.spawnInfo.setSpawnTypes("WATERANIMAL").setDespawn(false)
+				.setSpawnWeight(6).setAreaLimit(2).setGroupLimits(1, 3).setLightDark(true, false).setDungeonWeight(0);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "abtu", EntityAbtu.class, 0xFFBB00, 0x44AAFF)

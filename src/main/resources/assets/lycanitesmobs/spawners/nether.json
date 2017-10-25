@@ -1,5 +1,5 @@
 {
-	"name": "lunar",
+	"name": "nether",
 	"type": "spawner",
 	"enabled": true,
 	"loadDefault": true,
@@ -9,31 +9,25 @@
 	"conditions": [
 		{
 			"type": "world",
-			"dimensionIds": [0, 7],
-			"dayTimeMin": 10000,
-			"moonPhase": 0
+			"dimensionIds": [-1],
+			"dimensionListType": "whitelist"
 		}
 	],
 	"triggers": [
 		{
 			"type": "tick",
-			"chance": 0.125,
+			"chance": 0.25,
 			"tickRate": 800
 		}
 	],
 	"locations": [
 		{
 			"type": "random",
-			"rangeMin": [32, 0, 32],
-			"rangeMax": [48, 64, 48],
+			"rangeMin": [16, 0, 16],
+			"rangeMax": [32, 32, 32],
 			"sorting": "random",
 			"limit": 32,
-			"solidGround": false
-		}
-	],
-	"mobSpawns": [
-		{
-			"mobId": "shadowmobs.epion"
+			"solidGround": true
 		}
 	]
 }

@@ -42,6 +42,15 @@ public abstract class SpawnTrigger {
 		if("tick".equalsIgnoreCase(type)) {
 			spawnTrigger = new TickSpawnTrigger(spawner);
 		}
+		else if("entitySpawned".equalsIgnoreCase(type)) {
+			spawnTrigger = new EntitySpawnedSpawnTrigger(spawner);
+		}
+		else if("kill".equalsIgnoreCase(type)) {
+			spawnTrigger = new KillSpawnTrigger(spawner);
+		}
+		else if("chunk".equalsIgnoreCase(type)) {
+			spawnTrigger = new ChunkSpawnTrigger(spawner);
+		}
 		else if("block".equalsIgnoreCase(type)) {
 			spawnTrigger = new BlockSpawnTrigger(spawner);
 		}
@@ -53,12 +62,6 @@ public abstract class SpawnTrigger {
 		}
 		else if("tree".equalsIgnoreCase(type)) {
 			spawnTrigger = new TreeBlockSpawnTrigger(spawner);
-		}
-		else if("entitySpawned".equalsIgnoreCase(type)) {
-			spawnTrigger = new EntitySpawnedSpawnTrigger(spawner);
-		}
-		else if("kill".equalsIgnoreCase(type)) {
-			spawnTrigger = new KillSpawnTrigger(spawner);
 		}
 		else if("sleep".equalsIgnoreCase(type)) {
 			spawnTrigger = new SleepSpawnTrigger(spawner);

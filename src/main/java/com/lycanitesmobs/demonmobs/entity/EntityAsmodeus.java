@@ -74,10 +74,6 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
     public int rebuildAstarothRespawnTime = 0;
     public int rebuildAstarothRespawnTimeMax = 40;
 
-    // Boss Health:
-    public float damageTakenThisSec = 0;
-    public float healthLastTick = -1;
-
     // Arena Movement:
     public ArenaNodeNetwork arenaNodeNetwork;
     public ArenaNode currentArenaNode;
@@ -111,6 +107,7 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
         // Boss:
         this.boss = true;
         this.damageMax = 25;
+        this.damageLimit = 40;
     }
 
     // ========== Init AI ==========
@@ -205,16 +202,6 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
     // ========== Living Update ==========
     @Override
     public void onLivingUpdate() {
-        // Enforce Damage Limit:
-        if (this.healthLastTick < 0)
-            this.healthLastTick = this.getHealth();
-        if (this.healthLastTick - this.getHealth() > 50)
-            this.setHealth(this.healthLastTick);
-        this.healthLastTick = this.getHealth();
-        if (!this.getEntityWorld().isRemote && this.updateTick % 20 == 0) {
-            this.damageTakenThisSec = 0;
-        }
-
         super.onLivingUpdate();
 
         // Player Targets and No Player Healing:

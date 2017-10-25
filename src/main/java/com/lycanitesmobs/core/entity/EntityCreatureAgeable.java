@@ -332,9 +332,15 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
                 this.getEntityWorld().spawnParticle(EnumParticleTypes.HEART, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + 0.5D + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d0, d1, d2);
             }
 
+            this.onCreateBaby(partner, baby);
+
             this.getEntityWorld().spawnEntity(baby);
         }
     }
+
+	public void onCreateBaby(EntityCreatureAgeable partner, EntityCreatureAgeable baby) {
+
+	}
 	
 	public void finishBreeding() {
         this.setGrowingAge(this.breedingCooldown);

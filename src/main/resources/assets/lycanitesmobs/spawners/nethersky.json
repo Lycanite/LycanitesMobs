@@ -1,5 +1,5 @@
 {
-	"name": "lunar",
+	"name": "nethersky",
 	"type": "spawner",
 	"enabled": true,
 	"loadDefault": true,
@@ -9,15 +9,14 @@
 	"conditions": [
 		{
 			"type": "world",
-			"dimensionIds": [0, 7],
-			"dayTimeMin": 10000,
-			"moonPhase": 0
+			"dimensionIds": [-1],
+			"dimensionListType": "whitelist"
 		}
 	],
 	"triggers": [
 		{
 			"type": "tick",
-			"chance": 0.125,
+			"chance": 0.25,
 			"tickRate": 800
 		}
 	],
@@ -29,11 +28,6 @@
 			"sorting": "random",
 			"limit": 32,
 			"solidGround": false
-		}
-	],
-	"mobSpawns": [
-		{
-			"mobId": "shadowmobs.epion"
 		}
 	]
 }

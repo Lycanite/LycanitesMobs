@@ -63,9 +63,6 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
     public List<EntityHellfireBarrier> hellfireBarriers = new ArrayList<EntityHellfireBarrier>();
     public int hellfireBarrierHealth = 100;
 
-    public float damageTakenThisSec = 0;
-    public float healthLastTick = -1;
-
 
     // ==================================================
  	//                    Constructor
@@ -90,6 +87,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
         // Boss:
         this.boss = true;
         this.damageMax = 25;
+        this.damageLimit = 40;
     }
 
     // ========== Init AI ==========
@@ -170,16 +168,6 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
 	// ========== Living Update ==========
 	@Override
     public void onLivingUpdate() {
-        // Enforce Damage Limit:
-        if(this.healthLastTick < 0)
-            this.healthLastTick = this.getHealth();
-        if(this.healthLastTick - this.getHealth() > 50)
-            this.setHealth(this.healthLastTick);
-        this.healthLastTick = this.getHealth();
-        if(!this.getEntityWorld().isRemote && this.updateTick % 20 == 0) {
-            this.damageTakenThisSec = 0;
-        }
-
         super.onLivingUpdate();
 
         // Look At Target:
@@ -696,19 +684,6 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
     // ==================================================
     //                     Immunities
     // ==================================================
-    @Override
-    public boolean isEntityInvulnerable(DamageSource source) {
-        if(this.damageTakenThisSec >= 50)
-            return true;
-        return super.isEntityInvulnerable(source);
-    }
-
-    @Override
-    public void onDamage(DamageSource damageSrc, float damage) {
-        this.damageTakenThisSec += damage;
-        super.onDamage(damageSrc, damage);
-    }
-
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
         if(potionEffect.getPotion() == MobEffects.WITHER) return false;

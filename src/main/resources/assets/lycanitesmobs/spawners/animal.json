@@ -6,6 +6,7 @@
 	"mobCount": 8,
 	"ignoreBiomes": false,
 	"ignoreLightLevel": false,
+	"groupLimitRange": 64,
 	"conditions": [],
 	"triggers": [
 		{

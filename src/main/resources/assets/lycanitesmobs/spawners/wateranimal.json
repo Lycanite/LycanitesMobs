@@ -1,17 +1,18 @@
 {
-	"name": "water",
+	"name": "wateranimal",
 	"type": "spawner",
 	"enabled": true,
 	"loadDefault": true,
-	"mobCount": 16,
+	"mobCount": 4,
 	"ignoreBiomes": false,
 	"ignoreLightLevel": false,
+	"groupLimitRange": 64,
 	"conditions": [],
 	"triggers": [
 		{
 			"type": "tick",
-			"chance": 0.75,
-			"tickRate": 400
+			"chance": 0.25,
+			"tickRate": 3200
 		}
 	],
 	"locations": [

@@ -143,42 +143,42 @@ public class DemonMobs extends Submod {
 		newMob = new MobInfo(group, "belph", EntityBelph.class, 0x992222, 0x000000)
 				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
 				.addSubspecies(new Subspecies("scarlet", "uncommon")).addSubspecies(new Subspecies("dark", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST, PORTAL")
+		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST, PORTAL, NETHER")
 				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 4).setLightDark(true, true).setDungeonWeight(200);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "behemoth", EntityBehemoth.class, 0xFF2222, 0xFF9900)
 				.setPeaceful(false).setSummonable(true).setSummonCost(6).setDungeonLevel(2)
 				.addSubspecies(new Subspecies("russet", "uncommon")).addSubspecies(new Subspecies("dark", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST, PORTAL")
+		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST, PORTAL, NETHER")
 				.setSpawnWeight(2).setAreaLimit(5).setGroupLimits(1, 1).setLightDark(true, true).setDungeonWeight(40);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "pinky", EntityPinky.class, 0xFF0099, 0x990000)
 				.setPeaceful(true).setTameable(true).setSummonCost(4).setDungeonLevel(1)
 				.addSubspecies(new Subspecies("ashen", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST, PORTAL")
+		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST, PORTAL, NETHER")
 				.setSpawnWeight(6).setAreaLimit(5).setGroupLimits(1, 3).setLightDark(true, true).setDungeonWeight(120);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "trite", EntityTrite.class, 0xFFFF88, 0x000000)
 				.setPeaceful(false).setSummonCost(1).setDungeonLevel(0)
 				.addSubspecies(new Subspecies("verdant", "uncommon")).addSubspecies(new Subspecies("light", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST, PORTAL")
+		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST, PORTAL, NETHER")
 				.setSpawnWeight(10).setAreaLimit(40).setGroupLimits(1, 10).setLightDark(true, true).setDungeonWeight(200);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "astaroth", EntityAstaroth.class, 0x999944, 0x0000FF)
 				.setPeaceful(false).setSummonCost(8).setDungeonLevel(2)
 				.addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST, PORTAL")
+		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST, PORTAL, NETHER")
 				.setSpawnWeight(1).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(true, true).setDungeonWeight(40);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "nethersoul", EntityNetherSoul.class, 0xFF9900, 0xFF0000)
 				.setPeaceful(false).setSummonCost(1).setDungeonLevel(0)
 				.addSubspecies(new Subspecies("verdant", "uncommon")).addSubspecies(new Subspecies("azure", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("PORTAL, SKY")
+		newMob.spawnInfo.setSpawnTypes("PORTAL, SKY, NETHERSKY")
 				.setSpawnWeight(6).setAreaLimit(10).setGroupLimits(1, 4).setLightDark(true, true).setDungeonWeight(120);
 		ObjectManager.addMob(newMob);
 
@@ -186,7 +186,7 @@ public class DemonMobs extends Submod {
 				.setPeaceful(false).setTameable(true).setSummonCost(6).setDungeonLevel(2)
 				.addSubspecies(new Subspecies("russet", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"))
 				.addSubspecies(new Subspecies("ebon", "rare"));
-		newMob.spawnInfo.setSpawnTypes("PORTAL, SKY")
+		newMob.spawnInfo.setSpawnTypes("PORTAL, SKY, NETHERSKY")
 				.setSpawnWeight(4).setAreaLimit(5).setGroupLimits(1, 1).setLightDark(true, true).setDungeonWeight(80);
 		ObjectManager.addMob(newMob);
 

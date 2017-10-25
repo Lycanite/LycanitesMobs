@@ -42,6 +42,9 @@ public class Spawner {
     /** The name of this spawner, must be unique, used by creatures/groups when entering spawners. **/
     public String name;
 
+	/** The name of this spawner when, used by creatures/groups when entering spawners. By default this copies the name but can be changed and doesn't have to be unique. **/
+	public String sharedName;
+
 	/** If set to true and this spawner is a default spawner, it will reset when loading. This must be set to false or removed from the json if it is a customised spawner. **/
 	public boolean loadDefault = false;
 
@@ -78,6 +81,9 @@ public class Spawner {
 	/** If true, this Spawner will ignore group limit checks, this bypasses the checks in MobSpawns and SpawnInfos. **/
 	public boolean ignoreGroupLimit = false;
 
+	/** The range of how far this Spawner should check for surrounding mobs of the same type. **/
+	protected double groupLimitRange = 32;
+
 	/** If set to true, the Forge Can Spawn Event is fired but its result is ignored, use this to prevent other mods from stopping the spawn via the event. **/
 	protected boolean ignoreForgeCanSpawnEvent = false;
 
@@ -102,6 +108,10 @@ public class Spawner {
     public void loadFromJSON(JsonObject json) {
     	// Spawner Properties:
         this.name = json.get("name").getAsString();
+        this.sharedName = this.name;
+
+		if(json.has("sharedName"))
+			this.sharedName = json.get("sharedName").getAsString();
 
 		if(json.has("loadDefault"))
 			this.loadDefault = json.get("loadDefault").getAsBoolean();
@@ -144,6 +154,9 @@ public class Spawner {
 
 		if(json.has("ignoreGroupLimit"))
 			this.ignoreGroupLimit = json.get("ignoreGroupLimit").getAsBoolean();
+
+		if(json.has("groupLimitRange"))
+			this.groupLimitRange = json.get("groupLimitRange").getAsDouble();
 
 		if(json.has("ignoreForgeCanSpawnEvent"))
 			this.ignoreForgeCanSpawnEvent = json.get("ignoreForgeCanSpawnEvent").getAsBoolean();
@@ -237,7 +250,7 @@ public class Spawner {
 			}
 		}
 
-		if(!this.enableWithoutMobs && this.mobSpawns.isEmpty() && SpawnerMobRegistry.getMobSpawns(this.name) == null) {
+		if(!this.enableWithoutMobs && this.mobSpawns.isEmpty() && SpawnerMobRegistry.getMobSpawns(this.sharedName) == null) {
 			return false;
 		}
 
@@ -519,7 +532,7 @@ public class Spawner {
     	List<MobSpawn> allMobSpawns = new ArrayList<>();
 
     	// Global Spawns:
-		Collection<MobSpawn> globalSpawns = SpawnerMobRegistry.getMobSpawns(this.name);
+		Collection<MobSpawn> globalSpawns = SpawnerMobRegistry.getMobSpawns(this.sharedName);
 		if(globalSpawns != null) {
 			allMobSpawns.addAll(globalSpawns);
 		}
@@ -612,7 +625,7 @@ public class Spawner {
 
 			if(!this.ignoreGroupLimit && !mobSpawn.ignoreGroupLimit) {
 				LycanitesMobs.printDebug("JSONSpawner", "Checking Group Limit...");
-				if(!entityCreature.checkSpawnGroupLimit(world, spawnPos)) {
+				if(!entityCreature.checkSpawnGroupLimit(world, spawnPos, this.groupLimitRange)) {
 					return false;
 				}
 			}

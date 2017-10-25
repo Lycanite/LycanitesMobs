@@ -19,7 +19,7 @@ public class SpawnerMobRegistry {
 
 	/**
 	 * Returns a collection of global MobSpawns for the provided Spawner name.
-	 * @param spawnerName The name of the Spawner to get MobSpawns for.
+	 * @param spawnerName The (shared) name of the Spawner to get MobSpawns for.
 	 * @return A collection of MobSpawns, returns null if no global MobSpawns exists for the Spawner.
 	 **/
 	public static Collection<MobSpawn> getMobSpawns(String spawnerName) {

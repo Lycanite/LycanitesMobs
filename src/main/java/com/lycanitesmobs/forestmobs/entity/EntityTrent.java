@@ -202,19 +202,27 @@ public class EntityTrent extends EntityCreatureBase implements IMob, IGroupPlant
     public boolean petControlsEnabled() { return false; }
 
 
-    // ==================================================
-    //                       Visuals
-    // ==================================================
-    /** Returns this creature's main texture. Also checks for for subspecies. **/
-    public ResourceLocation getTexture() {
-        if(!"Salty Tree".equals(this.getCustomNameTag()))
-            return super.getTexture();
+	// ==================================================
+	//                       Visuals
+	// ==================================================
+	/** Returns this creature's main texture. Also checks for for subspecies. **/
+	public ResourceLocation getTexture() {
+		if("Wicked Trent".equals(this.getCustomNameTag())) {
+			String textureName = this.getTextureName() + "_wicked";
+			if (AssetManager.getTexture(textureName) == null)
+				AssetManager.addTexture(textureName, this.group, "textures/entity/" + textureName.toLowerCase() + ".png");
+			return AssetManager.getTexture(textureName);
+		}
 
-        String textureName = this.getTextureName() + "_saltytree";
-        if(AssetManager.getTexture(textureName) == null)
-            AssetManager.addTexture(textureName, this.group, "textures/entity/" + textureName.toLowerCase() + ".png");
-        return AssetManager.getTexture(textureName);
-    }
+		if("Salty Tree".equals(this.getCustomNameTag())) {
+			String textureName = this.getTextureName() + "_saltytree";
+			if (AssetManager.getTexture(textureName) == null)
+				AssetManager.addTexture(textureName, this.group, "textures/entity/" + textureName.toLowerCase() + ".png");
+			return AssetManager.getTexture(textureName);
+		}
+
+		return super.getTexture();
+	}
 
     // ========== Rendering Distance ==========
     /** Returns a larger bounding box for rendering this large entity. **/

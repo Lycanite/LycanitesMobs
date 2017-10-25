@@ -205,12 +205,20 @@ public class EntityEnt extends EntityCreatureTameable implements IMob, IGroupPla
     // ==================================================
     /** Returns this creature's main texture. Also checks for for subspecies. **/
     public ResourceLocation getTexture() {
-        if(!"Salty Tree".equals(this.getCustomNameTag()))
-            return super.getTexture();
+        if("Twisted Ent".equals(this.getCustomNameTag())) {
+            String textureName = this.getTextureName() + "_twisted";
+            if (AssetManager.getTexture(textureName) == null)
+                AssetManager.addTexture(textureName, this.group, "textures/entity/" + textureName.toLowerCase() + ".png");
+            return AssetManager.getTexture(textureName);
+        }
 
-        String textureName = this.getTextureName() + "_saltytree";
-        if(AssetManager.getTexture(textureName) == null)
-            AssetManager.addTexture(textureName, this.group, "textures/entity/" + textureName.toLowerCase() + ".png");
-        return AssetManager.getTexture(textureName);
+        if("Salty Tree".equals(this.getCustomNameTag())) {
+            String textureName = this.getTextureName() + "_saltytree";
+            if (AssetManager.getTexture(textureName) == null)
+                AssetManager.addTexture(textureName, this.group, "textures/entity/" + textureName.toLowerCase() + ".png");
+            return AssetManager.getTexture(textureName);
+        }
+
+        return super.getTexture();
     }
 }

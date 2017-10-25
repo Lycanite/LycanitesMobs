@@ -11,6 +11,8 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -320,6 +322,10 @@ public class BlockFireBase extends BlockBase {
     // ==================================================
     public int quantityDropped(Random random) {
         return 0;
+    }
+
+    protected ItemStack getSilkTouchDrop(IBlockState state) {
+        return new ItemStack(this.getItemDropped(state, null, 0), 1, 0);
     }
 
 

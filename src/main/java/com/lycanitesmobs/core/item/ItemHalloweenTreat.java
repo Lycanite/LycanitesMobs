@@ -30,6 +30,8 @@ public class ItemHalloweenTreat extends ItemBase {
         this.group = LycanitesMobs.group;
         this.itemName = "halloweentreat";
         this.setup();
+		AssetManager.addSound(this.itemName + "_good", this.group, "item." + this.itemName + ".good");
+        AssetManager.addSound(this.itemName + "_bad", this.group, "item." + this.itemName + ".bad");
     }
     
     
@@ -60,8 +62,6 @@ public class ItemHalloweenTreat extends ItemBase {
     public void openGood(ItemStack itemStack, World world, EntityPlayer player) {
     	String message = I18n.translateToLocal("item." + this.itemName + ".good");
 		player.sendMessage(new TextComponentString(message));
-		if(AssetManager.getSound(this.itemName + "_good") == null)
-			AssetManager.addSound(this.itemName + "_good", this.group, "item." + this.itemName + ".good");
         this.playSound(world, player.posX, player.posY, player.posZ, AssetManager.getSound(this.itemName + "_good"), SoundCategory.AMBIENT, 5.0F, 1.0F);
 		
 		// Three Random Treats:
@@ -85,8 +85,6 @@ public class ItemHalloweenTreat extends ItemBase {
     public void openBad(ItemStack itemStack, World world, EntityPlayer player) {
     	String message = I18n.translateToLocal("item." + this.itemName + ".bad");
 		player.sendMessage(new TextComponentString(message));
-		if(AssetManager.getSound(this.itemName + "_bad") == null)
-			AssetManager.addSound(this.itemName + "_bad", this.group, "item." + this.itemName + ".bad");
         this.playSound(world, player.posX, player.posY, player.posZ, AssetManager.getSound(this.itemName + "_bad"), SoundCategory.AMBIENT, 5.0F, 1.0F);
 		
 		// One Random Trick:
@@ -105,8 +103,14 @@ public class ItemHalloweenTreat extends ItemBase {
                 // Themed Names:
                 if (entity instanceof EntityLivingBase) {
                     EntityCreatureBase entityCreature = (EntityCreatureBase) entity;
-                    if (entityCreature.mobInfo.getEntityID().equals("grue"))
-                        entityCreature.setCustomNameTag("Shadow Clown");
+                    if (entityCreature.mobInfo.getEntityID().equals("ent"))
+                        entityCreature.setCustomNameTag("Twisted Ent");
+					else if (entityCreature.mobInfo.getEntityID().equals("trent"))
+						entityCreature.setCustomNameTag("Wicked Trent");
+					else if (entityCreature.mobInfo.getEntityID().equals("epion"))
+						entityCreature.setCustomNameTag("Vampire Bat");
+					else if (entityCreature.mobInfo.getEntityID().equals("grue"))
+						entityCreature.setCustomNameTag("Shadow Clown");
                 }
 
 	            world.spawnEntity(entity);
@@ -135,14 +139,10 @@ public class ItemHalloweenTreat extends ItemBase {
         ObjectLists.addFromConfig("halloween_treats");
 
         // Halloween Mobs:
-        ObjectLists.addEntity("halloween_tricks", "ghoulzombie");
-        ObjectLists.addEntity("halloween_tricks", "cryptzombie");
-        ObjectLists.addEntity("halloween_tricks", "belph");
         ObjectLists.addEntity("halloween_tricks", "behemoth");
         ObjectLists.addEntity("halloween_tricks", "ent");
         ObjectLists.addEntity("halloween_tricks", "trent");
         ObjectLists.addEntity("halloween_tricks", "nethersoul");
-        ObjectLists.addEntity("halloween_tricks", "cacodemon");
         ObjectLists.addEntity("halloween_tricks", "grue");
         ObjectLists.addEntity("halloween_tricks", "phantom");
         ObjectLists.addEntity("halloween_tricks", "epion");

@@ -133,7 +133,10 @@ public class ExtendedEntity implements IExtendedEntity {
             this.fearEntity = null;
 
         // Picked Up By Entity:
-        this.updatePickedUpByEntity();
+		try {
+			this.updatePickedUpByEntity();
+		}
+		catch (Exception e) {}
 	}
 	
 	

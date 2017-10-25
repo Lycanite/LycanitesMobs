@@ -1,5 +1,6 @@
 package com.lycanitesmobs.shadowmobs.entity;
 
+import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
@@ -17,6 +18,7 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
@@ -188,4 +190,19 @@ public class EntityEpion extends EntityCreatureTameable implements IMob, IGroupS
     
     @Override
     public float getFallResistance() { return 100; }
+
+
+	// ==================================================
+	//                       Visuals
+	// ==================================================
+	/** Returns this creature's main texture. Also checks for for subspecies. **/
+	public ResourceLocation getTexture() {
+		if(!"Vampire Bat".equals(this.getCustomNameTag()))
+			return super.getTexture();
+
+		String textureName = this.getTextureName() + "_vampirebat";
+		if(AssetManager.getTexture(textureName) == null)
+			AssetManager.addTexture(textureName, this.group, "textures/entity/" + textureName.toLowerCase() + ".png");
+		return AssetManager.getTexture(textureName);
+	}
 }

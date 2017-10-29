@@ -216,7 +216,7 @@ public class TileEntityEquipmentForge extends TileEntityBase implements IInvento
 		else if(this.level >= 3) {
 			levelName = "iron";
 		}
-		return I18n.translateToLocal("tile.equipmentforge." + levelName + ".name") + " " + I18n.translateToLocal("tile.equipmentforge.name");
+		return I18n.translateToLocal("tile.equipmentforge_" + levelName + ".name");
 	}
 
 	@Override

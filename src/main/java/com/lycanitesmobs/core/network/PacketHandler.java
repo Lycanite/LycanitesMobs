@@ -43,6 +43,7 @@ public class PacketHandler {
 		this.network.registerMessage(MessageSummonSet.class, MessageSummonSet.class, messageID++, Side.SERVER);
 		this.network.registerMessage(MessageSummonSetSelection.class, MessageSummonSetSelection.class, messageID++, Side.SERVER);
         this.network.registerMessage(MessageSummoningPedestalSummonSet.class, MessageSummoningPedestalSummonSet.class, messageID++, Side.SERVER);
+		this.network.registerMessage(MessageTileEntityButton.class, MessageTileEntityButton.class, messageID++, Side.SERVER);
 	}
 	
 	

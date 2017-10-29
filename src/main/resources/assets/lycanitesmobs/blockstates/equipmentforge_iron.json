@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "lycanitesmobs:equipmentforge_iron" },
+        "facing=south": { "model": "lycanitesmobs:equipmentforge_iron", "y": 180 },
+        "facing=west":  { "model": "lycanitesmobs:equipmentforge_iron", "y": 270 },
+        "facing=east":  { "model": "lycanitesmobs:equipmentforge_iron", "y": 90 }
+    }
+}

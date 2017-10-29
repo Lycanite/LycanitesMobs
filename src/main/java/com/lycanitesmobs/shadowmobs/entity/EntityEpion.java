@@ -100,8 +100,8 @@ public class EntityEpion extends EntityCreatureTameable implements IMob, IGroupS
         super.onLivingUpdate();
         
         // Sunlight Explosions:
-        if(!this.getEntityWorld().isRemote) {
-        	if(!this.isFlying() && this.onGround && this.isEntityAlive()) {
+        if(!this.getEntityWorld().isRemote && !this.isTamed()) {
+        	if(!this.isFlying() && (this.onGround || this.isInWater()) && this.isEntityAlive()) {
         		int explosionRadius = 2;
 				if(this.subspecies != null)
 					explosionRadius = 3;

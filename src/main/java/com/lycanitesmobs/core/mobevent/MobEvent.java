@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.lycanitesmobs.ExtendedWorld;
 import com.lycanitesmobs.LycanitesMobs;
+import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.mobevent.effects.MobEventEffect;
 import com.lycanitesmobs.core.mobevent.trigger.MobEventTrigger;
 import com.lycanitesmobs.core.spawner.condition.SpawnCondition;
@@ -47,6 +48,12 @@ public class MobEvent {
 	/** Determines how many Conditions must be met. If 0 or less all are required. **/
 	protected int conditionsRequired = 0;
 
+	/** The minimum amount of levels to give a mob spawned by this event. **/
+	protected int levelBoostMin = 0;
+
+	/** The maximum amount of levels to give a mob spawned by this event. **/
+	protected int levelBoostMax = 10;
+
 
 	/** Loads this Spawner from the provided JSON data. **/
 	public void loadFromJSON(JsonObject json) {
@@ -67,6 +74,12 @@ public class MobEvent {
 
 		if(json.has("conditionsRequired"))
 			this.conditionsRequired = json.get("conditionsRequired").getAsInt();
+
+		if(json.has("levelBoostMin"))
+			this.levelBoostMin = json.get("levelBoostMin").getAsInt();
+
+		if(json.has("levelBoostMax"))
+			this.levelBoostMax = json.get("levelBoostMax").getAsInt();
 
 		// Conditions:
 		if(json.has("conditions")) {
@@ -219,6 +232,14 @@ public class MobEvent {
 	public void onSpawn(EntityLiving entity, World world, EntityPlayer player, BlockPos pos, int level, int ticks) {
 		for(MobEventEffect mobEventEffect : this.effects) {
 			mobEventEffect.onSpawn(entity, world, player, pos, level, ticks);
+		}
+		if(entity instanceof EntityCreatureBase) {
+			EntityCreatureBase entityCreature = (EntityCreatureBase)entity;
+			int levelBoost = this.levelBoostMin;
+			if(this.levelBoostMax > this.levelBoostMin) {
+				levelBoost += entityCreature.getRNG().nextInt(this.levelBoostMax - this.levelBoostMin + 1);
+			}
+			entityCreature.addLevel(levelBoost);
 		}
     }
 

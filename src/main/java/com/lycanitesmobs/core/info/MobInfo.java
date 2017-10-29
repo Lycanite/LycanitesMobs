@@ -226,6 +226,8 @@ public class MobInfo {
                     defaultValue = 1.0D;
                 if("Hard".equalsIgnoreCase(difficultyName) && ("Speed".equalsIgnoreCase(statName)))
                     defaultValue = 1.0D;
+				if("Hard".equalsIgnoreCase(difficultyName) && ("Haste".equalsIgnoreCase(statName)))
+					defaultValue = 1.5D;
                 difficultyMultipliers.put((difficultyName + "-" + statName).toUpperCase(), config.getDouble("Difficulty Multipliers", difficultyName + " " + statName, defaultValue));
             }
             difficultyIndex++;

@@ -1,6 +1,5 @@
 package com.lycanitesmobs.core.tileentity;
 
-import com.lycanitesmobs.core.entity.EntityPortal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -8,8 +7,7 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 
-public class TileEntityBase extends TileEntity implements ITickable {
-    public EntityPortal summoningPortal;
+public abstract class TileEntityBase extends TileEntity implements ITickable {
 
     // ========================================
     //                  Remove
@@ -40,6 +38,8 @@ public class TileEntityBase extends TileEntity implements ITickable {
     // ========================================
     @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {}
+
+    public void onGuiButton(byte buttonId) {}
 
 
     // ========================================

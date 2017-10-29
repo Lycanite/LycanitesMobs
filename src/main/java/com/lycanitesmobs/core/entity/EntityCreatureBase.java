@@ -1029,9 +1029,19 @@ public abstract class EntityCreatureBase extends EntityLiving {
 		return this.level;
 	}
 
+	/** Returns the default starting level to use. **/
+	public int getStartingLevel() {
+		return 1;
+	}
+
 	/** Sets the level of this mob, higher levels have higher stats. **/
 	public void setLevel(int level) {
 		this.level = level;
+	}
+
+	/** Increases the level of this mob, higher levels have higher stats. **/
+	public void addLevel(int level) {
+		this.level += level;
 	}
 
 	/** Returns the base health for this mob. This is not the current max health. **/

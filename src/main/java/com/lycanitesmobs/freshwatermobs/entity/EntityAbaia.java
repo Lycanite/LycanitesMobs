@@ -149,7 +149,7 @@ public class EntityAbaia extends EntityCreatureTameable implements IMob, IGroupP
         super.onLivingUpdate();
 
         // Static Aura Attack:
-        if(!this.getEntityWorld().isRemote && ++this.aoeAttackTick == 40) {
+        if(!this.getEntityWorld().isRemote && ++this.aoeAttackTick == (this.isPetType("familiar") ? 100 : 40)) {
             this.aoeAttackTick = 0;
             List aoeTargets = this.getNearbyEntities(EntityLivingBase.class, null, 4);
             for(Object entityObj : aoeTargets) {

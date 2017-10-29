@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "lycanitesmobs:equipmentforge_wood" },
+        "facing=south": { "model": "lycanitesmobs:equipmentforge_wood", "y": 180 },
+        "facing=west":  { "model": "lycanitesmobs:equipmentforge_wood", "y": 270 },
+        "facing=east":  { "model": "lycanitesmobs:equipmentforge_wood", "y": 90 }
+    }
+}

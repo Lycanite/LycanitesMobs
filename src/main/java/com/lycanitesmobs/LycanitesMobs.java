@@ -1,5 +1,6 @@
 package com.lycanitesmobs;
 
+import com.lycanitesmobs.core.block.BlockEquipmentForge;
 import com.lycanitesmobs.core.block.BlockSummoningPedestal;
 import com.lycanitesmobs.core.capabilities.ExtendedEntityStorage;
 import com.lycanitesmobs.core.capabilities.ExtendedPlayerStorage;
@@ -18,6 +19,7 @@ import com.lycanitesmobs.core.mods.DLDungeons;
 import com.lycanitesmobs.core.network.PacketHandler;
 import com.lycanitesmobs.core.spawner.SpawnerEventListener;
 import com.lycanitesmobs.core.spawner.SpawnerManager;
+import com.lycanitesmobs.core.tileentity.TileEntityEquipmentForge;
 import com.lycanitesmobs.core.tileentity.TileEntitySummoningPedestal;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.ResourceLocation;
@@ -41,7 +43,7 @@ public class LycanitesMobs {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String version = "1.17.3.2 - MC 1.12.2";
+	public static final String version = "1.17.3.3 - MC 1.12.2";
 	public static final String website = "http://lycanitesmobs.com";
 	public static final String websiteAPI = "http://api.lycanitesmobs.com";
 	public static final String websitePatreon = "https://www.patreon.com/lycanite";
@@ -169,6 +171,9 @@ public class LycanitesMobs {
 
         // ========== Create Blocks ==========
         ObjectManager.addBlock("summoningpedestal", new BlockSummoningPedestal(group));
+		ObjectManager.addBlock("equipmentforge_wood", new BlockEquipmentForge(group, 1));
+		ObjectManager.addBlock("equipmentforge_stone", new BlockEquipmentForge(group, 2));
+		ObjectManager.addBlock("equipmentforge_iron", new BlockEquipmentForge(group, 3));
 		
 		
 		// ========== Create Items ==========
@@ -197,6 +202,7 @@ public class LycanitesMobs {
 
         // ========== Create Tile Entities ==========
         ObjectManager.addTileEntity("summoningpedestal", TileEntitySummoningPedestal.class);
+		ObjectManager.addTileEntity("equipmentforge", TileEntityEquipmentForge.class);
 
 
         // ========== Call Object Lists Setup ==========

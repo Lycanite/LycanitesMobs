@@ -86,6 +86,10 @@ subspecies.umber.name=Umber
 # ========== Blocks ==========
 tile.summoningpedestal.name=Summoning Pedestal
 tile.summoningpedestal.description=This pedestal is able to create a constant summoning portal that will summon the selected minion. Some pedestals can be player owned and some not.
+tile.equipmentforge_wood.name=Wood Equipment Forge (Level 1)
+tile.equipmentforge_stone.name=Stone Equipment Forge (Level 2)
+tile.equipmentforge_iron.name=Iron Equipment Forge (Level 3)
+tile.equipmentforge.description=This forge can be used to create new equipment from creature body parts.
 #
 #
 #
@@ -192,6 +196,17 @@ gui.pet.release.confirm=Are you sure you want to release this pet? Once released
 gui.mount.controls=Press %control% to use mount ability
 #%control% will be replaced with the Mount Ability key, don't translate this!
 #
+# Equipment Forge:
+gui.equipmentforge.text.name=Equipment Name:
+gui.equipmentforge.button.construct=Construct
+gui.equipmentforge.button.deconstruct=Deconstruct
+gui.equipmentforge.info.empty=Insert a Base Equipment Part or piece of Equipment to get started.
+gui.equipmentforge.warning.construct=Warning! Some Equipment Parts used are a higher level than this Forge and will be leveled down, continue?
+gui.equipmentforge.warning.deconstruct=Warning! The Equipment you are deconstructing has parts that are a higher level than this forge and will be leveled down, continue?
+gui.equipmentforge.error.construct=Some Equipment Parts used have a higher minimum level than this Forge and cannot be used.
+gui.equipmentforge.error.deconstruct=The Equipment you are deconstructing has parts that have a higher minimum level than this Forge so it cannot be deconstructed.
+gui.equipmentforge.error.name=You must name your new Equipment!
+#
 #
 #
 # ========== Messages ==========
@@ -246,6 +261,7 @@ lyc.command.mobevent.creative=Toggled Mob Events for Creative Mode players.
 # ========== Common ==========
 common.yes=Yes
 common.no=No
+common.ok=Okay
 #
 #
 #

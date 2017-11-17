@@ -658,7 +658,7 @@ public class Spawner {
 			entityCreature.spawnedRare = level > 0;
 			entityCreature.level = level;
 			if (this.blockBreakRadius > -1) {
-				entityCreature.destroyArea((int) entityLiving.posX, (int) entityLiving.posY, (int) entityLiving.posZ, 4, true, this.blockBreakRadius);
+				entityCreature.destroyArea((int) entityLiving.posX, (int) entityLiving.posY, (int) entityLiving.posZ, 100, true, this.blockBreakRadius);
 			}
 
 			// Apply Mob Event:

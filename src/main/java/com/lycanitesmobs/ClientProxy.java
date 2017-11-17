@@ -69,6 +69,7 @@ public class ClientProxy extends CommonProxy {
         AssetManager.addTexture("GUIFamiliar", group, "textures/guis/familiar.png");
         AssetManager.addTexture("GUIMinion", group, "textures/guis/minion.png");
         AssetManager.addTexture("GUIMinionLg", group, "textures/guis/minion_lg.png");
+		AssetManager.addTexture("GUIEquipmentForge", group, "textures/guis/equipmentforge.png");
 
 		// ========== Add GUI Tabs ==========
 		TabManager.registerTab(new GUITabMain(0));

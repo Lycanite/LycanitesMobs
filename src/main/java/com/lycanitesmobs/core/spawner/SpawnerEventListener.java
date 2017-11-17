@@ -267,7 +267,7 @@ public class SpawnerEventListener {
 		if(event.getState() == null || event.getWorld() == null || event.getWorld().isRemote || event.isCanceled()) {
 			return;
 		}
-		if(player != null || (player != null && player.capabilities.isCreativeMode)) { // No Spawning for Creative Players
+		if(player == null || (player != null && player.capabilities.isCreativeMode)) { // No Spawning for Creative Players
 			return;
 		}
 

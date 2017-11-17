@@ -58,7 +58,7 @@ public class GuiEquipmentForge extends GUIBaseContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIInventoryCreature"));
+        this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIEquipmentForge"));
         this.xSize = 176;
         this.ySize = 166;
         int backX = (this.width - this.xSize) / 2;
@@ -72,7 +72,7 @@ public class GuiEquipmentForge extends GUIBaseContainer {
 	// ========== Draw Frames ===========
 	protected void drawFrames(int backX, int backY, int mouseX, int mouseY) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIInventoryCreature"));
+        this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIEquipmentForge"));
         
         // Status Frame:
         int statusWidth = 90;
@@ -88,7 +88,7 @@ public class GuiEquipmentForge extends GUIBaseContainer {
 	// ========== Draw Slots ===========
 	protected void drawSlots(int backX, int backY) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIInventoryCreature"));
+        this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIEquipmentForge"));
         
 		/*ContainerBase container = (ContainerBase)this.inventorySlots;
 		List<Slot> forgeSlots = container.inventorySlots.subList(container.inventoryStart, container.inventoryFinish);

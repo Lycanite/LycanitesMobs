@@ -2902,6 +2902,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	destroyArea(x, y, z, strength, drop, 0);
     }
     public void destroyArea(int x, int y, int z, float strength, boolean drop, int range) {
+    	range = Math.max(range -1, 0);
     	for(int w = -((int)Math.ceil(this.width) + range); w <= (Math.ceil(this.width) + range); w++)
         	for(int d = -((int)Math.ceil(this.width) + range); d <= (Math.ceil(this.width) + range); d++)
 		    	for(int h = 0; h <= Math.ceil(this.height); h++) {

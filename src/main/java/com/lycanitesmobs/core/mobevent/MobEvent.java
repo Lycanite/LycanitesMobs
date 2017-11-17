@@ -48,6 +48,9 @@ public class MobEvent {
 	/** Determines how many Conditions must be met. If 0 or less all are required. **/
 	protected int conditionsRequired = 0;
 
+	/** If set to true, this mob will ignore Group Limit checks. **/
+	protected boolean interuptWorldEvents = false;
+
 	/** The minimum amount of levels to give a mob spawned by this event. **/
 	protected int levelBoostMin = 0;
 
@@ -74,6 +77,9 @@ public class MobEvent {
 
 		if(json.has("conditionsRequired"))
 			this.conditionsRequired = json.get("conditionsRequired").getAsInt();
+
+		if(json.has("interuptWorldEvents"))
+			this.interuptWorldEvents = json.get("interuptWorldEvents").getAsBoolean();
 
 		if(json.has("levelBoostMin"))
 			this.levelBoostMin = json.get("levelBoostMin").getAsInt();
@@ -151,11 +157,21 @@ public class MobEvent {
 	 * @param player The player that triggered the event, this can be null for world based events where all player based checks will fail.
 	 **/
 	public boolean canStart(World world, EntityPlayer player) {
-		if(world.provider == null)
+		if(world.provider == null) {
 			return false;
+		}
 
 		if(!this.enabled || !MobEventManager.getInstance().mobEventsEnabled) {
 			LycanitesMobs.printDebug("MobEvents", "Mob Events System Disabled");
+			return false;
+		}
+
+		ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
+		if(worldExt == null) {
+			return false;
+		}
+
+		if("world".equalsIgnoreCase(this.channel) && worldExt.getWorldEvent() != null && !this.interuptWorldEvents) {
 			return false;
 		}
 

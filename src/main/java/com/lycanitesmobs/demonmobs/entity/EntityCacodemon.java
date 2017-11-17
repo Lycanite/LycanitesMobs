@@ -147,16 +147,16 @@ public class EntityCacodemon extends EntityCreatureRideable implements IGroupDem
     }
 
     public void spawnAlly(double x, double y, double z) {
-        EntityLivingBase minion = new EntityNetherSoul(this.getEntityWorld());
-        minion.setLocationAndAngles(x, y, z, this.rand.nextFloat() * 360.0F, 0.0F);
-        if(minion instanceof EntityCreatureBase) {
-            EntityCreatureBase minionCreature = (EntityCreatureBase)minion;
-            minionCreature.setMinion(true);
-            minionCreature.setMasterTarget(this);
-        }
+        EntityNetherSoul minion = new EntityNetherSoul(this.getEntityWorld());
+        minion.setLocationAndAngles(x, y, z, this.rotationYaw, this.rotationPitch);
+		minion.setMinion(true);
+		minion.setMasterTarget(this);
         this.getEntityWorld().spawnEntity(minion);
-        if(this.getAttackTarget() != null)
+        if(this.getAttackTarget() != null) {
             minion.setRevengeTarget(this.getAttackTarget());
+        }
+        minion.chargeAttack();
+        minion.setSizeScale(this.sizeScale);
     }
 	
 	

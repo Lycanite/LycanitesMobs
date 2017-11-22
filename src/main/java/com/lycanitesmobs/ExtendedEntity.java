@@ -67,8 +67,9 @@ public class ExtendedEntity implements IExtendedEntity {
             iExtendedEntity = entity.getCapability(LycanitesMobs.EXTENDED_ENTITY, null);
         }
         catch(Exception e) {}
-        if(iExtendedEntity == null || !(iExtendedEntity instanceof ExtendedEntity))
-            return null;
+        if(iExtendedEntity == null || !(iExtendedEntity instanceof ExtendedEntity)) {
+			return null;
+		}
         ExtendedEntity extendedEntity = (ExtendedEntity)iExtendedEntity;
         if(extendedEntity.getEntity() != entity)
             extendedEntity.setEntity(entity);
@@ -198,12 +199,13 @@ public class ExtendedEntity implements IExtendedEntity {
     }
 
 	public void setPickedUpByEntity(Entity pickedUpByEntity) {
-        if(this.pickedUpByEntity == pickedUpByEntity || this.entity == null)
-            return;
+        if(this.pickedUpByEntity == pickedUpByEntity || this.entity == null) {
+			return;
+		}
 
-		if(this.entity.getRidingEntity() != null)
+		if(this.entity.getRidingEntity() != null) {
 			this.entity.dismountRidingEntity();
-        // No longer dismount passengers.
+		}
 		this.pickedUpByEntity = pickedUpByEntity;
 
         // Server Side:

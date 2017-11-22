@@ -11,6 +11,7 @@ import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.DropRate;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.passive.*;
@@ -51,7 +52,7 @@ public class EntityChupacabra extends EntityCreatureTameable implements IAnimals
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIMate(this));
         this.tasks.addTask(2, this.aiSit);
-        this.tasks.addTask(3, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
+        this.tasks.addTask(3, new EntityAIFollowOwner(this).setStrayDistance(8).setLostDistance(32));
         this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("chupacabratreat"))).setTemptDistanceMin(4.0D));
         this.tasks.addTask(5, new EntityAIAttackMelee(this).setTargetClass(EntityPigZombie.class).setSpeed(1.5D).setRate(10).setDamage(8.0D).setRange(2.5D));
         this.tasks.addTask(6, new EntityAIAttackMelee(this).setSpeed(1.5D).setRate(10));
@@ -110,12 +111,19 @@ public class EntityChupacabra extends EntityCreatureTameable implements IAnimals
         	return false;
         
     	// Breed:
-    	if(target instanceof EntityCow || target instanceof EntityPig || target instanceof EntitySheep)
+    	if(target instanceof EntityCow || target instanceof EntityPig || target instanceof EntitySheep || target instanceof EntityHorse || target instanceof EntityLlama)
     		this.breed();
 
         // Leech:
         float leeching = this.getEffectStrength(this.getAttackDamage(damageScale) / 2);
         this.heal(leeching);
+
+		// Decay:
+		if(target instanceof EntityLivingBase) {
+			if(ObjectManager.getPotionEffect("decay") != null) {
+				((EntityLivingBase) target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("decay"), this.getEffectDuration(20), 1));
+			}
+		}
     	
         return true;
     }

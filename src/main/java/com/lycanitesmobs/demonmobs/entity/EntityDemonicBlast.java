@@ -1,6 +1,7 @@
 package com.lycanitesmobs.demonmobs.entity;
 
 import com.lycanitesmobs.AssetManager;
+import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.EntityProjectileBase;
 import com.lycanitesmobs.demonmobs.DemonMobs;
@@ -123,6 +124,9 @@ public class EntityDemonicBlast extends EntityProjectileBase {
     @Override
     public boolean entityLivingCollision(EntityLivingBase entityLiving) {
     	entityLiving.addPotionEffect(new PotionEffect(MobEffects.WITHER, this.getEffectDuration(10), 0));
+		if(ObjectManager.getPotionEffect("decay") != null) {
+			entityLiving.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("decay"), this.getEffectDuration(600), 0));
+		}
     	return true;
     }
     

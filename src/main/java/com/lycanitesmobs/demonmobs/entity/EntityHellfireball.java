@@ -9,6 +9,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -51,8 +52,12 @@ public class EntityHellfireball extends EntityProjectileBase {
     //========== Entity Living Collision ==========
     @Override
     public boolean entityLivingCollision(EntityLivingBase entityLiving) {
-    	if(!entityLiving.isImmuneToFire())
+    	if(!entityLiving.isImmuneToFire()) {
     		entityLiving.setFire(this.getEffectDuration(10) / 20);
+        }
+        if(ObjectManager.getPotionEffect("decay") != null) {
+            entityLiving.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("decay"), this.getEffectDuration(600), 0));
+        }
     	return true;
     }
     

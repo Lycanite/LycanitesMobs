@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
@@ -50,6 +51,7 @@ public class ItemCustomFood extends ItemFood {
 		this.setRegistryName(this.group.filename, this.itemName);
 		this.setCreativeTab(LycanitesMobs.itemsTab);
 		this.setUnlocalizedName(itemName);
+		this.setPotionEffect(MobEffects.INSTANT_HEALTH, 1, this.getInstantHealing(), 1.0F);
 	}
 	public ItemCustomFood(String setItemName, GroupInfo group, int feed, float saturation, FOOD_CLASS foodClass) {
 		this(setItemName, group, setItemName.toLowerCase(), feed, saturation, foodClass);
@@ -92,6 +94,16 @@ public class ItemCustomFood extends ItemFood {
             return ItemInfo.durationFeast * 20;
         return 1;
     }
+
+	public int getInstantHealing() {
+		if(this.foodClass == FOOD_CLASS.COOKED)
+			return ItemInfo.healingCooked;
+		else if(this.foodClass == FOOD_CLASS.MEAL)
+			return ItemInfo.healingMeal;
+		else if(this.foodClass == FOOD_CLASS.FEAST)
+			return ItemInfo.healingFeast;
+		return 0;
+	}
 
     public ItemCustomFood setPotionEffect(Potion potion, int duration, int amplifier, float chance) {
         PotionEffect potionEffect = new PotionEffect(potion, duration * 20, amplifier, false, false);

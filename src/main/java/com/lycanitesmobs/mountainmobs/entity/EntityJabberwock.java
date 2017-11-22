@@ -56,7 +56,7 @@ public class EntityJabberwock extends EntityCreatureTameable implements IMob {
         this.tasks.addTask(1, new EntityAIBreakDoor(this));
         this.tasks.addTask(3, new EntityAIAttackMelee(this).setRate(20));
         this.tasks.addTask(4, this.aiSit);
-        this.tasks.addTask(5, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
+        this.tasks.addTask(5, new EntityAIFollowOwner(this).setStrayDistance(8).setLostDistance(32));
         this.tasks.addTask(6, new EntityAIMoveVillage(this));
         this.tasks.addTask(7, new EntityAIWander(this).setPauseRate(30));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));

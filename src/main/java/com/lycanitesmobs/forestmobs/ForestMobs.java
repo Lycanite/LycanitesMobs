@@ -80,10 +80,16 @@ public class ForestMobs extends Submod {
 		ObjectManager.addItem("arisaurmeatraw", rawMeat);
 		ObjectLists.addItem("vegetables", ObjectManager.getItem("arisaurmeatraw"));
 
-		ObjectManager.addItem("arisaurmeatcooked", new ItemCustomFood("arisaurmeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setPotionEffect(MobEffects.INSTANT_HEALTH, 1, 2, 1.0F).setAlwaysEdible());
+		ItemCustomFood arisaurCooked = new ItemCustomFood("arisaurmeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setAlwaysEdible();
+		if(ObjectManager.getPotionEffect("rejuvenation") != null)
+			arisaurCooked.setPotionEffect(ObjectManager.getPotionEffect("rejuvenation"), 10, 1, 1.0F);
+		ObjectManager.addItem("arisaurmeatcooked", arisaurCooked);
 		ObjectLists.addItem("vegetables", ObjectManager.getItem("arisaurmeatcooked"));
 
-		ObjectManager.addItem("paleosalad", new ItemCustomFood("paleosalad", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(MobEffects.INSTANT_HEALTH, 1, 4, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
+		ItemCustomFood paleosalad = new ItemCustomFood("paleosalad", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setAlwaysEdible();
+		if(ObjectManager.getPotionEffect("rejuvenation") != null)
+			paleosalad.setPotionEffect(ObjectManager.getPotionEffect("rejuvenation"), 60, 1, 1.0F);
+		ObjectManager.addItem("paleosalad", paleosalad.setMaxStackSize(16), 3, 1, 6);
 		ObjectLists.addItem("vegetables", ObjectManager.getItem("paleosalad"));
 
 		ObjectManager.addItem("shamblertreat", new ItemTreat("shamblertreat", group));

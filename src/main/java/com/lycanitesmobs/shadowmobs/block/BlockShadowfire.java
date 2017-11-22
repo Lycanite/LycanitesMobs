@@ -88,16 +88,16 @@ public class BlockShadowfire extends BlockFireBase {
         if(entity instanceof EntityItem)
             return;
         PotionEffect effectBlindness = new PotionEffect(MobEffects.BLINDNESS, 5 * 20, 0);
-        PotionEffect effectFear = null;
-        if(ObjectManager.getPotionEffect("fear") != null)
-            effectFear = new PotionEffect(ObjectManager.getPotionEffect("fear"), 5 * 20, 0);
+        PotionEffect effectDecay = null;
+        if(ObjectManager.getPotionEffect("decay") != null)
+            effectDecay = new PotionEffect(ObjectManager.getPotionEffect("decay"), 5 * 20, 0);
         if(entity instanceof EntityLivingBase) {
             EntityLivingBase entityLiving = (EntityLivingBase)entity;
-            if(!entityLiving.isPotionApplicable(effectBlindness) && (effectFear == null || !entityLiving.isPotionApplicable(effectFear)))
+            if(!entityLiving.isPotionApplicable(effectBlindness) && (effectDecay == null || !entityLiving.isPotionApplicable(effectDecay)))
                 return;
             entityLiving.addPotionEffect(effectBlindness);
-            //if(effectFear != null)
-                //entityLiving.addPotionEffect(effectFear);
+            if(effectDecay != null)
+                entityLiving.addPotionEffect(effectDecay);
         }
         entity.attackEntityFrom(DamageSource.WITHER, 1);
     }

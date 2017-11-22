@@ -67,7 +67,7 @@ public class EntityStrider extends EntityCreatureTameable implements IGroupHeavy
         this.tasks.addTask(2, this.aiSit);
         this.attackAI = new EntityAIAttackMelee(this).setLongMemory(false);
         this.tasks.addTask(3, this.attackAI);
-        this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
+        this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(8).setLostDistance(32));
         this.tasks.addTask(5, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("stridertreat"))).setTemptDistanceMin(4.0D));
         this.tasks.addTask(6, new EntityAIStayByWater(this).setSpeed(1.25D));
         this.wanderAI = new EntityAIWander(this);

@@ -47,8 +47,12 @@ public class EntitySpectralbolt extends EntityProjectileBase {
     //========== Entity Living Collision ==========
     @Override
     public boolean entityLivingCollision(EntityLivingBase entityLiving) {
-    	if(ObjectManager.getPotionEffect("fear") != null)
-    		entityLiving.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("fear"), this.getEffectDuration(2), 0));
+    	if(ObjectManager.getPotionEffect("fear") != null) {
+			entityLiving.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("fear"), this.getEffectDuration(2), 0));
+		}
+		if(ObjectManager.getPotionEffect("insomnia") != null) {
+			entityLiving.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("insomnia"), this.getEffectDuration(600), 0));
+		}
     	return true;
     }
     

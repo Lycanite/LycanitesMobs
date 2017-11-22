@@ -1,10 +1,12 @@
 package com.lycanitesmobs.demonmobs.entity;
 
 import com.lycanitesmobs.AssetManager;
+import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.demonmobs.DemonMobs;
 import com.lycanitesmobs.core.entity.EntityProjectileBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
@@ -68,6 +70,15 @@ public class EntityDevilstar extends EntityProjectileBase {
     // ==================================================
  	//                     Impact
  	// ==================================================
+	//========== Entity Living Collision ==========
+	@Override
+	public boolean entityLivingCollision(EntityLivingBase entityLiving) {
+		if(ObjectManager.getPotionEffect("decay") != null) {
+			entityLiving.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("decay"), this.getEffectDuration(600), 0));
+		}
+		return true;
+	}
+
     //========== On Impact Particles/Sounds ==========
     @Override
     public void onImpactVisuals() {

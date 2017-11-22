@@ -66,7 +66,7 @@ public class EntitySerpix extends EntityCreatureTameable implements IGroupPredat
         this.tasks.addTask(0, new EntityAISwimming(this).setSink(true));
         this.tasks.addTask(1, new EntityAIStealth(this).setStealthTime(60));
         this.tasks.addTask(2, this.aiSit);
-        this.tasks.addTask(3, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
+        this.tasks.addTask(3, new EntityAIFollowOwner(this).setStrayDistance(8).setLostDistance(32));
         this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("serpixtreat"))).setTemptDistanceMin(4.0D));
         this.tasks.addTask(5, new EntityAIAttackRanged(this).setSpeed(0.5D).setRate(20).setStaminaTime(100).setRange(12.0F).setMinChaseDistance(8.0F));
         this.tasks.addTask(7, new EntityAIWander(this));

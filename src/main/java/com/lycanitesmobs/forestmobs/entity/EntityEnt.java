@@ -10,6 +10,7 @@ import com.lycanitesmobs.core.info.ObjectLists;
 import com.lycanitesmobs.api.IGroupPlant;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.ai.*;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -61,7 +62,7 @@ public class EntityEnt extends EntityCreatureTameable implements IMob, IGroupPla
         this.tasks.addTask(3, new EntityAIAttackMelee(this).setTargetClass(EntityPlayer.class).setLongMemory(false).setRate(40));
         this.tasks.addTask(4, new EntityAIAttackMelee(this));
         this.tasks.addTask(5, this.aiSit);
-        this.tasks.addTask(6, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
+        this.tasks.addTask(6, new EntityAIFollowOwner(this).setStrayDistance(8).setLostDistance(32));
         this.tasks.addTask(8, new EntityAIWander(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
@@ -107,10 +108,12 @@ public class EntityEnt extends EntityCreatureTameable implements IMob, IGroupPla
         super.onLivingUpdate();
 
         // Water Healing:
-        if(this.isInWater())
-            this.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 3 * 20, 2));
-        else if(this.getEntityWorld().isRaining() && this.getEntityWorld().canBlockSeeSky(this.getPosition()))
-            this.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 3 * 20, 1));
+        if(this.getAir() < 0) {
+            if (this.isInWater())
+                this.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 3 * 20, 2));
+            else if (this.getEntityWorld().isRaining() && this.getEntityWorld().canBlockSeeSky(this.getPosition()))
+                this.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 3 * 20, 1));
+        }
     }
     
     // ==================================================

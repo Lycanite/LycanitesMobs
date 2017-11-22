@@ -125,8 +125,11 @@ public class LycanitesMobs {
 			ObjectManager.addPotionEffect("rage", config, true, 0xFF4400, 4, 0, false);
 			ObjectManager.addPotionEffect("weight", config, true, 0x000022, 1, 0, false);
 			ObjectManager.addPotionEffect("swiftswimming", config, false, 0x0000FF, 0, 2, true);
-            ObjectManager.addPotionEffect("fear", config, false, 0x220022, 7, 0, false);
+            ObjectManager.addPotionEffect("fear", config, false, 0x220022, 5, 1, false);
             ObjectManager.addPotionEffect("fallresist", config, false, 0xDDFFFF, 0, 0, true);
+			ObjectManager.addPotionEffect("rejuvenation", config, false, 0x99FFBB, 7, 2, true);
+			ObjectManager.addPotionEffect("decay", config, true, 0x110033, 1, 2, false);
+			ObjectManager.addPotionEffect("insomnia", config, true, 0x002222, 5, 1, false);
 			MinecraftForge.EVENT_BUS.register(new PotionEffects());
 		}
 		

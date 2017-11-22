@@ -14,10 +14,12 @@ import net.minecraft.entity.monster.EntityMagmaCube;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.server.SPacketEntityVelocity;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.MathHelper;
@@ -51,9 +53,9 @@ public class EntityReiver extends EntityCreatureTameable implements IMob, IGroup
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(60).setRange(12.0F).setMinChaseDistance(5.0F));
+        this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(60).setRange(12.0F).setMinChaseDistance(6.0F));
         this.tasks.addTask(3, this.aiSit);
-        this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
+        this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(8).setLostDistance(32));
         this.tasks.addTask(8, new EntityAIWander(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
@@ -141,6 +143,30 @@ public class EntityReiver extends EntityCreatureTameable implements IMob, IGroup
         this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
         this.getEntityWorld().spawnEntity(projectile);
         super.rangedAttack(target, range);
+
+        // Knockback:
+		EntityPlayerMP player = null;
+		if (target instanceof EntityPlayerMP) {
+			player = (EntityPlayerMP) target;
+			if (player.capabilities.isCreativeMode) {
+				return;
+			}
+		}
+		double xDist = this.posX - target.posX;
+		double zDist = this.posZ - target.posZ;
+		double xzDist = MathHelper.sqrt(xDist * xDist + zDist * zDist);
+		double factor = 0.5D;
+		double motionCap = 10;
+		if (target.motionX < motionCap && target.motionX > -motionCap && target.motionZ < motionCap && target.motionZ > -motionCap) {
+			target.addVelocity(
+					-xDist / xzDist * factor + target.motionX * factor,
+					factor,
+					-zDist / xzDist * factor + target.motionZ * factor
+			);
+		}
+		if (player != null) {
+			player.connection.sendPacket(new SPacketEntityVelocity(target));
+		}
     }
     
     

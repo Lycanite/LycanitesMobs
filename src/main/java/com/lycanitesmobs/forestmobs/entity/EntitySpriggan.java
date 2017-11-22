@@ -63,7 +63,7 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(3, this.aiSit);
-        this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
+        this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(8).setLostDistance(32));
         this.rangedAttackAI = new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(10).setStaminaTime(100).setRange(8.0F).setMinChaseDistance(4.0F);
         this.tasks.addTask(5, rangedAttackAI);
         this.tasks.addTask(8, new EntityAIWander(this));
@@ -111,11 +111,13 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
     public void onLivingUpdate() {
         super.onLivingUpdate();
 
-        // Water Healing:
-        if(this.isInWater())
-            this.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 3 * 20, 2));
-        else if(this.getEntityWorld().isRaining() && this.getEntityWorld().canBlockSeeSky(this.getPosition()))
-            this.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 3 * 20, 1));
+		// Water Healing:
+		if(this.getAir() < 0) {
+			if (this.isInWater())
+				this.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 3 * 20, 2));
+			else if (this.getEntityWorld().isRaining() && this.getEntityWorld().canBlockSeeSky(this.getPosition()))
+				this.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 3 * 20, 1));
+		}
 
         // Farming:
         int currentFarmingRate = this.farmingRate;

@@ -8,8 +8,11 @@ import com.lycanitesmobs.demonmobs.DemonMobs;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
@@ -57,6 +60,14 @@ public class BlockHellfire extends BlockFireBase {
     @Override
     public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
         super.onEntityCollidedWithBlock(world, pos, state, entity);
+
+        if(entity instanceof EntityLivingBase) {
+            PotionEffect effect = new PotionEffect(ObjectManager.getPotionEffect("decay"), 5 * 20, 0);
+            EntityLivingBase entityLiving = (EntityLivingBase)entity;
+            if(entityLiving.isPotionApplicable(effect))
+                entityLiving.addPotionEffect(effect);
+        }
+
         if(entity instanceof EntityItem && ((EntityItem)entity).getItem() != null)
             if(((EntityItem)entity).getItem().getItem() == ObjectManager.getItem("hellfirecharge"))
                 return;

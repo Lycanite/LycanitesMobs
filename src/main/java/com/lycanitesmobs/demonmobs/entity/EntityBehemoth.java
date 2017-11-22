@@ -61,7 +61,7 @@ public class EntityBehemoth extends EntityCreatureTameable implements IMob, IGro
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(60).setRange(16.0F).setMinChaseDistance(8.0F).setChaseTime(-1));
         this.tasks.addTask(3, this.aiSit);
-        this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
+        this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(8).setLostDistance(32));
         this.tasks.addTask(6, new EntityAIWander(this).setSpeed(1.0D));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
@@ -187,7 +187,10 @@ public class EntityBehemoth extends EntityCreatureTameable implements IMob, IGro
     // ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.WITHER) return false;
+        if(potionEffect.getPotion() == MobEffects.WITHER)
+            return false;
+        if(ObjectManager.getPotionEffect("decay") != null)
+            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("decay")) return false;
         super.isPotionApplicable(potionEffect);
         return true;
     }

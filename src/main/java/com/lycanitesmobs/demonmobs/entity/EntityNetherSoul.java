@@ -1,6 +1,7 @@
 package com.lycanitesmobs.demonmobs.entity;
 
 import com.lycanitesmobs.LycanitesMobs;
+import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
@@ -130,6 +131,20 @@ public class EntityNetherSoul extends EntityCreatureTameable implements IMob {
     // ==================================================
     //                     Attacks
     // ==================================================
+	// ========== Melee Attack ==========
+	@Override
+	public boolean meleeAttack(Entity target, double damageScale) {
+		if(!super.meleeAttack(target, damageScale))
+			return false;
+
+		// Decay:
+		if(ObjectManager.getPotionEffect("decay") != null) {
+			((EntityLivingBase) target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("decay"), this.getEffectDuration(20), 1));
+		}
+
+		return true;
+	}
+
     public void chargeAttack() {
         this.leap(5, this.rotationPitch);
         this.detonateTimer = 10;
@@ -172,7 +187,10 @@ public class EntityNetherSoul extends EntityCreatureTameable implements IMob {
     // ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.WITHER) return false;
+		if(potionEffect.getPotion() == MobEffects.WITHER)
+			return false;
+		if(ObjectManager.getPotionEffect("decay") != null)
+			if(potionEffect.getPotion() == ObjectManager.getPotionEffect("decay")) return false;
         super.isPotionApplicable(potionEffect);
         return true;
     }

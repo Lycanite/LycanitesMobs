@@ -71,7 +71,7 @@ public class EntityDarkling extends EntityCreatureTameable implements IMob, IGro
         this.tasks.addTask(1, new EntityAIStealth(this).setStealthTime(20).setStealthAttack(true).setStealthMove(true));
         this.tasks.addTask(2, new EntityAIAttackMelee(this).setRate(20));
         this.tasks.addTask(3, this.aiSit);
-        this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
+        this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(8).setLostDistance(32));
         this.tasks.addTask(6, new EntityAIWander(this).setSpeed(1.0D).setPauseRate(30));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
@@ -242,6 +242,11 @@ public class EntityDarkling extends EntityCreatureTameable implements IMob, IGro
         // Restore Knockback:
         if(target instanceof EntityLivingBase)
             ((EntityLivingBase)target).getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(targetKnockbackResistance);
+
+		// Decay:
+		if(ObjectManager.getPotionEffect("decay") != null) {
+			((EntityLivingBase) target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("decay"), this.getEffectDuration(20), 1));
+		}
     	
     	// Latch:
         if(!this.hasLatchTarget() && target instanceof EntityLivingBase && !this.isInWater()) {
@@ -295,7 +300,8 @@ public class EntityDarkling extends EntityCreatureTameable implements IMob, IGro
   	// ==================================================
     @Override
     public boolean isDamageTypeApplicable(String type) {
-        if(type.equals("inWall")) return false;
+        if(type.equals("inWall"))
+            return false;
         return super.isDamageTypeApplicable(type);
     }
 
@@ -304,6 +310,8 @@ public class EntityDarkling extends EntityCreatureTameable implements IMob, IGro
         if(potionEffect.getPotion() == MobEffects.BLINDNESS) return false;
         if(ObjectManager.getPotionEffect("Fear") != null)
             if(potionEffect.getPotion() == ObjectManager.getPotionEffect("Fear")) return false;
+        if(ObjectManager.getPotionEffect("decay") != null)
+            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("decay")) return false;
         super.isPotionApplicable(potionEffect);
         return true;
     }

@@ -9,7 +9,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.UUID;
@@ -184,4 +186,49 @@ public class PotionEffects {
             }
         }
     }
+
+
+	// ==================================================
+	//                    Entity Heal
+	// ==================================================
+	@SubscribeEvent
+	public void onEntityHeal(LivingHealEvent event) {
+		EntityLivingBase entity = event.getEntityLiving();
+		if(entity == null)
+			return;
+
+		// Rejuvenation:
+		PotionBase rejuvenation = ObjectManager.getPotionEffect("rejuvenation");
+		if(rejuvenation != null) {
+			if(entity.isPotionActive(rejuvenation)) {
+				event.setAmount(event.getAmount() * (2 * entity.getActivePotionEffect(rejuvenation).getAmplifier()));
+			}
+		}
+
+		// Decay:
+		PotionBase decay = ObjectManager.getPotionEffect("decay");
+		if(decay != null) {
+			if(entity.isPotionActive(decay)) {
+				event.setAmount(event.getAmount() / (2 * entity.getActivePotionEffect(decay).getAmplifier()));
+			}
+		}
+	}
+
+
+	// ==================================================
+	//                Player Use Bed Event
+	// ==================================================
+	/** This uses the player sleep in bed event to spawn mobs. **/
+	@SubscribeEvent
+	public void onSleep(PlayerSleepInBedEvent event) {
+		EntityPlayer player = event.getEntityPlayer();
+		if(player == null || player.getEntityWorld() == null || player.getEntityWorld().isRemote || event.isCanceled())
+			return;
+
+		// Insomnia:
+		PotionBase insomnia = ObjectManager.getPotionEffect("insomnia");
+		if(insomnia != null && player.isPotionActive(insomnia)) {
+			event.setResult(EntityPlayer.SleepResult.NOT_SAFE);
+		}
+	}
 }

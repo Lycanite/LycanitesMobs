@@ -100,12 +100,14 @@ public class EntityArisaur extends EntityCreatureAgeable implements IAnimals, IG
 	@Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        
-        // Water Healing:
-        if(this.isInWater())
-        	this.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 3 * 20, 2));
-        else if(this.getEntityWorld().isRaining() && this.getEntityWorld().canBlockSeeSky(this.getPosition()))
-        	this.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 3 * 20, 1));
+
+		// Water Healing:
+		if(this.getAir() < 0) {
+			if (this.isInWater())
+				this.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 3 * 20, 2));
+			else if (this.getEntityWorld().isRaining() && this.getEntityWorld().canBlockSeeSky(this.getPosition()))
+				this.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 3 * 20, 1));
+		}
     }
 	
 	

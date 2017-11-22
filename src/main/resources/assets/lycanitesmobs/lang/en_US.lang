@@ -2,7 +2,7 @@
 # %event% will be replaced with the name of the event, don't translate this!
 event.started=%event% has begun!
 event.extended=%event% has been extended!
-event.finished=%event% is over!
+event.finished=%event% is no longer spawning mobs!
 event.boss.started=%event% has been called!
 event.boss.extended=%event% is coming!
 event.boss.finished=%event% is unleashed!
@@ -89,7 +89,9 @@ tile.summoningpedestal.description=This pedestal is able to create a constant su
 tile.equipmentforge_wood.name=Wood Equipment Forge (Level 1)
 tile.equipmentforge_stone.name=Stone Equipment Forge (Level 2)
 tile.equipmentforge_iron.name=Iron Equipment Forge (Level 3)
-tile.equipmentforge.description=This forge can be used to create new equipment from creature body parts.
+tile.equipmentforge_wood.description=This forge can be used to create new Equipment from Level 1 creature body parts (higher level parts will be downgraded if possible).
+tile.equipmentforge_stone.description=This forge can be used to create new Equipment from Level 2 or below creature body parts (higher level parts will be downgraded if possible).
+tile.equipmentforge_iron.description=This forge can be used to create new Equipment from Level 3 or below creature body parts.
 #
 #
 #
@@ -283,6 +285,9 @@ potion.weight=Weight
 potion.swiftswimming=Swiftswimming
 potion.fear=Fear
 potion.fallresist=Fall Resistance
+potion.rejuvenation=Rejuvenation
+potion.decay=Decay
+potion.insomnia=Insomnia
 #
 #
 #

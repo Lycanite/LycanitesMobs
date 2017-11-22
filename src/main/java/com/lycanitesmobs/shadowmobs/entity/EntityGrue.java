@@ -62,7 +62,7 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
         this.tasks.addTask(1, new EntityAIStealth(this).setStealthTime(20).setStealthAttack(true).setStealthMove(true));
         this.tasks.addTask(2, new EntityAIAttackMelee(this).setRate(20).setLongMemory(true));
         this.tasks.addTask(3, this.aiSit);
-        this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(4).setLostDistance(32));
+        this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(8).setLostDistance(32));
         this.tasks.addTask(8, new EntityAIWander(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
@@ -218,7 +218,9 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
     	// Effects:
         if(target instanceof EntityLivingBase) {
         	((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, this.getEffectDuration(7), 0));
-        }
+			if(ObjectManager.getPotionEffect("decay") != null)
+				((EntityLivingBase)target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("decay"), this.getEffectDuration(20), 1));
+		}
         
         return true;
     }
@@ -252,8 +254,10 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
         if(potionEffect.getPotion() == MobEffects.BLINDNESS) return false;
-        if(ObjectManager.getPotionEffect("Fear") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("Fear")) return false;
+        if(ObjectManager.getPotionEffect("fear") != null)
+            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("fear")) return false;
+		if(ObjectManager.getPotionEffect("decay") != null)
+			if(potionEffect.getPotion() == ObjectManager.getPotionEffect("decay")) return false;
         super.isPotionApplicable(potionEffect);
         return true;
     }

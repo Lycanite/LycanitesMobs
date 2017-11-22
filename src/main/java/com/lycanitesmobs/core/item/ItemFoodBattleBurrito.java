@@ -1,5 +1,6 @@
 package com.lycanitesmobs.core.item;
 
+import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.info.GroupInfo;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
@@ -27,10 +28,10 @@ public class ItemFoodBattleBurrito extends ItemCustomFood {
     protected void onFoodEaten(ItemStack itemStack, World world, EntityPlayer player) {
         super.onFoodEaten(itemStack, world, player);
         player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, this.getEffectDuration(), 3));
+		player.addPotionEffect(new PotionEffect(MobEffects.ABSORPTION, this.getEffectDuration(), 3));
+		if(ObjectManager.getPotionEffect("rejuvenation") != null)
+			player.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("rejuvenation"), this.getEffectDuration(), 1));
         player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, this.getEffectDuration(), 3));
         player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, this.getEffectDuration(), 1));
-        player.addPotionEffect(new PotionEffect(MobEffects.ABSORPTION, this.getEffectDuration(), 3));
-        player.addPotionEffect(new PotionEffect(MobEffects.HEALTH_BOOST, this.getEffectDuration(), 3));
-        player.addPotionEffect(new PotionEffect(MobEffects.INSTANT_HEALTH, 1, 3));
     }
 }

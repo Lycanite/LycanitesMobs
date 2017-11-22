@@ -574,7 +574,10 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
 
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.WITHER) return false;
+        if(potionEffect.getPotion() == MobEffects.WITHER)
+            return false;
+        if(ObjectManager.getPotionEffect("decay") != null)
+            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("decay")) return false;
         super.isPotionApplicable(potionEffect);
         return true;
     }

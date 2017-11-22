@@ -1,5 +1,6 @@
 package com.lycanitesmobs.demonmobs.entity;
 
+import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupAnimal;
 import com.lycanitesmobs.api.IGroupDemon;
 import com.lycanitesmobs.api.IGroupPrey;
@@ -115,10 +116,13 @@ public class EntityTrite extends EntityCreatureBase implements IMob, IGroupDemon
     	if(!super.meleeAttack(target, damageScale))
     		return false;
     	
-    	// Wither:
+    	// Effects:
         if(target instanceof EntityLivingBase) {
         	((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.WITHER, this.getEffectDuration(5), 0));
-        }
+			if(ObjectManager.getPotionEffect("decay") != null) {
+				((EntityLivingBase) target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("decay"), this.getEffectDuration(20), 1));
+			}
+		}
         
         return true;
     }
@@ -137,7 +141,10 @@ public class EntityTrite extends EntityCreatureBase implements IMob, IGroupDemon
   	// ==================================================
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.WITHER) return false;
+		if(potionEffect.getPotion() == MobEffects.WITHER)
+			return false;
+		if(ObjectManager.getPotionEffect("decay") != null)
+			if(potionEffect.getPotion() == ObjectManager.getPotionEffect("decay")) return false;
         super.isPotionApplicable(potionEffect);
         return true;
     }

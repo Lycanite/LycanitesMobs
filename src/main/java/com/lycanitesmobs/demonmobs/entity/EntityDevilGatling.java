@@ -1,6 +1,7 @@
 package com.lycanitesmobs.demonmobs.entity;
 
 import com.lycanitesmobs.AssetManager;
+import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.entity.EntityProjectileBase;
 import com.lycanitesmobs.core.info.ObjectLists;
 import com.lycanitesmobs.demonmobs.DemonMobs;
@@ -79,9 +80,10 @@ public class EntityDevilGatling extends EntityProjectileBase {
     @Override
     public void onDamage(EntityLivingBase target, float damage, boolean attackSuccess) {
     	super.onDamage(target, damage, attackSuccess);
+
         // Remove Buffs:
         if(this.rand.nextBoolean()) {
-            List<Potion> goodEffects = new ArrayList<Potion>();
+            List<Potion> goodEffects = new ArrayList<>();
             for (Object potionEffectObj : target.getActivePotionEffects()) {
                 if (potionEffectObj instanceof PotionEffect) {
                     Potion potion = ((PotionEffect) potionEffectObj).getPotion();
@@ -98,6 +100,10 @@ public class EntityDevilGatling extends EntityProjectileBase {
                     target.removePotionEffect(goodEffects.get(0));
             }
         }
+
+		if(ObjectManager.getPotionEffect("decay") != null) {
+			target.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("decay"), this.getEffectDuration(600), 0));
+		}
     }
     
     //========== On Impact Particles/Sounds ==========

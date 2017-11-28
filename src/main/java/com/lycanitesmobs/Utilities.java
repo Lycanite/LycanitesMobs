@@ -191,7 +191,7 @@ public class Utilities {
 	 */
 	public static Path getAssetPath(Class clazz, String assetDomain, String assetPath) {
 		Path path = null;
-		String assetDir = "/assets/" + assetDomain + "/" + assetPath;
+		String assetDir = "/assets/" + assetDomain + (!"".equals(assetPath) ? "/" + assetPath : "");
 		try {
 			URL url = clazz.getResource("/assets/" + assetDomain + "/" + ".root");
 			URI uri = url.toURI();

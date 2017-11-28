@@ -30,6 +30,7 @@ import java.util.Map;
 
 public class SpawnerEventListener {
     protected static SpawnerEventListener INSTANCE;
+    public static boolean testOnCreative = false;
 
 	public List<TickSpawnTrigger> tickSpawnTriggers = new ArrayList<>();
 	public List<KillSpawnTrigger> killSpawnTriggers = new ArrayList<>();
@@ -242,7 +243,7 @@ public class SpawnerEventListener {
 		if(event.getState() == null || event.getWorld() == null || event.getWorld().isRemote || event.isCanceled()) {
 			return;
 		}
-		if(player == null || (player != null && player.capabilities.isCreativeMode)) { // No Spawning for Creative Players
+		if(player == null || (player != null && (!testOnCreative && player.capabilities.isCreativeMode))) { // No Spawning for Creative Players
 			return;
 		}
 		
@@ -267,7 +268,7 @@ public class SpawnerEventListener {
 		if(event.getState() == null || event.getWorld() == null || event.getWorld().isRemote || event.isCanceled()) {
 			return;
 		}
-		if(player == null || (player != null && player.capabilities.isCreativeMode)) { // No Spawning for Creative Players
+		if(player == null || (player != null && (!testOnCreative && player.capabilities.isCreativeMode))) { // No Spawning for Creative Players
 			return;
 		}
 

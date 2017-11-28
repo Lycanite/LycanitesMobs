@@ -96,6 +96,13 @@ public class MobEventListener extends JSONLoader {
 			return;
 		}
 
+		// Scheduled Mob Events:
+		for(MobEventSchedule mobEventSchedule : MobEventManager.getInstance().mobEventSchedules) {
+			if(mobEventSchedule.canStart(world)) {
+				mobEventSchedule.start(worldExt);
+			}
+		}
+
 		// Tick Mob Events:
 		for(TickMobEventTrigger mobEventTrigger : this.tickMobEventTriggers) {
 			mobEventTrigger.onTick(world, this.lastEventUpdateTime);
@@ -123,7 +130,7 @@ public class MobEventListener extends JSONLoader {
         // Get Triggers and Total Weight:
 		List<RandomMobEventTrigger> validTriggers = new ArrayList<>();
 		int totalWeights = 0;
-		int highestPriority = 1;
+		int highestPriority = 0;
 		for(RandomMobEventTrigger mobEventTrigger : this.randomMobEventTriggers) {
 			if(mobEventTrigger.priority >= highestPriority && mobEventTrigger.canTrigger(world, null)) {
 				if(mobEventTrigger.priority > highestPriority) {

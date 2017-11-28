@@ -1,6 +1,7 @@
 package com.lycanitesmobs.core.mobevent.effects;
 
 import com.google.gson.JsonObject;
+import com.lycanitesmobs.LycanitesMobs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -34,32 +35,36 @@ public class WorldMobEventEffect extends MobEventEffect {
 
 	@Override
 	public void onUpdate(World world, EntityPlayer player, BlockPos pos, int level, int ticks) {
-		// Rain:
-		if("start".equalsIgnoreCase(this.rain)) {
-			world.getWorldInfo().setRaining(true);
-		}
-		else if("stop".equalsIgnoreCase(this.rain)) {
-			world.getWorldInfo().setRaining(false);
-		}
+		if(ticks == 0) {
+			// Rain:
+			if ("start".equalsIgnoreCase(this.rain)) {
+				world.getWorldInfo().setRaining(true);
+			} else if ("stop".equalsIgnoreCase(this.rain)) {
+				world.getWorldInfo().setRaining(false);
+			}
 
-		// Lightning:
-		if("start".equalsIgnoreCase(this.thunder)) {
-			world.getWorldInfo().setThundering(true);
-		}
-		else if("stop".equalsIgnoreCase(this.thunder)) {
-			world.getWorldInfo().setThundering(false);
-		}
+			// Lightning:
+			if ("start".equalsIgnoreCase(this.thunder)) {
+				world.getWorldInfo().setThundering(true);
+			} else if ("stop".equalsIgnoreCase(this.thunder)) {
+				world.getWorldInfo().setThundering(false);
+			}
 
-		// Day Time:
-		if(this.dayTime >= 0) {
+			// Day Time:
+			if (this.dayTime >= 0) {
+				if (world.provider.getWorldTime() < this.dayTime) {
+					world.provider.setWorldTime(this.dayTime);
+				}
+
+			/*int dayTime = 23999;
 			long currentTime = world.provider.getWorldTime();
-			int dayTime = 24000;
 			int targetTime = this.dayTime;
 			long excessTime = currentTime % dayTime;
 			if (excessTime > targetTime) {
 				targetTime += dayTime;
 			}
-			world.provider.setWorldTime(currentTime - excessTime + targetTime);
+			world.provider.setWorldTime(currentTime - excessTime + targetTime);*/
+			}
 		}
 	}
 }

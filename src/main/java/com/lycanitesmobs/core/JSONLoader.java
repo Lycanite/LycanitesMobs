@@ -125,12 +125,86 @@ public class JSONLoader {
 		}
 	}
 
+	/**
+	 * Loads a JSON object from the specified path with additional options.
+	 * @param gson The JSON parser.
+	 * @param path The path to load from.
+	 * @return An instance of the json object.
+	 */
+	public JsonObject loadJsonObject(Gson gson, Path path) {
+		if(path == null) {
+			return null;
+		}
+		try {
+			Path relativePath = path.relativize(path);
+			BufferedReader reader = null;
+			try {
+				try {
+					reader = Files.newBufferedReader(path);
+					JsonObject json = JsonUtils.fromJson(gson, reader, JsonObject.class);
+					return json;
+				}
+				catch (JsonParseException e) {
+					LycanitesMobs.printWarning("", "Parsing error loading JSON " + relativePath + "\n" + e.toString());
+					e.printStackTrace();
+				}
+				catch (Exception e) {
+					LycanitesMobs.printWarning("", "There was a problem loading JSON " + relativePath + "\n" + e.toString());
+					e.printStackTrace();
+				}
+			}
+			finally {
+				IOUtils.closeQuietly(reader);
+			}
+		}
+		catch(Exception e) {
+			LycanitesMobs.printWarning("", "Unable to read file from path.\n" + e.toString());
+			//e.printStackTrace();
+		}
+		return null;
+	}
+
+
+	/** Compares two json objects a default and a custom and determines if the defaults should overwrite the custom JSON. Returns the chosen JSON. **/
+	public JsonObject writeDefaultJSONObject(Gson gson, String jsonName, JsonObject defaultJSON, JsonObject customJSON) {
+		// Add Default/Overridden JSON:
+		try {
+			boolean loadDefault = true;
+
+			// If Custom Replacement Exists:
+			if(customJSON != null) {
+				loadDefault = false;
+				if(customJSON.has("loadDefault")) {
+					loadDefault = customJSON.get("loadDefault").getAsBoolean();
+				}
+			}
+
+			// Write Default:
+			if(loadDefault) {
+				this.saveJsonObject(gson, defaultJSON, jsonName, "");
+				return defaultJSON;
+			}
+			else if(customJSON != null) {
+				return customJSON;
+			}
+		}
+		catch (JsonParseException e) {
+			LycanitesMobs.printWarning("", "Parsing error loading JSON: " + jsonName);
+			e.printStackTrace();
+		}
+		catch(Exception e) {
+			LycanitesMobs.printWarning("", "There was a problem loading JSON: " + jsonName);
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 
 	/** Saves a JSON object into the config folder. **/
 	public void saveJsonObject(Gson gson, JsonObject jsonObject, String name, String groupName) {
 		String configPath = LycanitesMobs.proxy.getMinecraftDir() + "/config/" + LycanitesMobs.modid + "/";
 		try {
-			File jsonFile = new File(configPath + groupName + "/" + name + ".json");
+			File jsonFile = new File(configPath + (!"".equals(groupName) ? groupName + "/" : "") + name + ".json");
 			jsonFile.getParentFile().mkdirs();
 			jsonFile.createNewFile();
 			FileOutputStream outputStream = new FileOutputStream(jsonFile);

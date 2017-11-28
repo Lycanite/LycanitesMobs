@@ -1,9 +1,6 @@
 package com.lycanitesmobs.core.mobevent;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
+import com.google.gson.*;
 import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.ExtendedWorld;
 import com.lycanitesmobs.LycanitesMobs;
@@ -18,8 +15,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 
 public class MobEventManager extends JSONLoader {
@@ -28,11 +24,11 @@ public class MobEventManager extends JSONLoader {
     
     // Mob Events:
     public Map<String, MobEvent> mobEvents = new HashMap<>();
+	public List<MobEventSchedule> mobEventSchedules = new ArrayList<>();
 
     // Properties:
     public boolean mobEventsEnabled = true;
     public boolean mobEventsRandom = false;
-    public boolean mobEventsSchedule = true;
 
     protected long lastEventUpdateTime = 0;
 
@@ -54,8 +50,7 @@ public class MobEventManager extends JSONLoader {
 
         this.mobEventsEnabled = config.getBool("Global", "Mob Events Enabled", this.mobEventsEnabled, "Set to false to completely disable the entire event system for every world.");
         this.mobEventsRandom = config.getBool("Global", "Random Mob Events Enabled", this.mobEventsRandom, "Set to false to disable random mob events for every world.");
-        this.mobEventsSchedule = config.getBool("Global", "Mob Events Schedule Enabled", this.mobEventsSchedule, "Set to false to disable scheduled events for every world.");
-	}
+    }
 
 
 	/** Loads all JSON Mob Events. **/
@@ -102,6 +97,32 @@ public class MobEventManager extends JSONLoader {
 			}
 		}
 		LycanitesMobs.printDebug("MobEvents", "Complete! " + this.mobEvents.size() + " JSON Mob Events Loaded In Total.");
+
+
+		// Load Scheduled Events:
+		this.mobEventSchedules.clear();
+		Path defaultSchedulePath = Utilities.getAssetPath(groupInfo.getClass(), groupInfo.filename, "mobeventschedule.json");
+		JsonObject defaultScheduleJson = this.loadJsonObject(gson, defaultSchedulePath);
+
+		File customScheduleFile = new File(configPath + "mobeventschedule.json");
+		JsonObject customScheduleJson = null;
+		if(customScheduleFile.exists()) {
+			customScheduleJson = this.loadJsonObject(gson, customScheduleFile.toPath());
+		}
+
+		JsonObject scheduleJson = this.writeDefaultJSONObject(gson, "mobeventschedule", defaultScheduleJson, customScheduleJson);
+		if(scheduleJson.has("schedules")) {
+			JsonArray jsonArray = scheduleJson.get("schedules").getAsJsonArray();
+			Iterator<JsonElement> jsonIterator = jsonArray.iterator();
+			while (jsonIterator.hasNext()) {
+				JsonObject scheduleEntryJson = jsonIterator.next().getAsJsonObject();
+				MobEventSchedule mobEventSchedule = MobEventSchedule.createFromJSON(scheduleEntryJson);
+				this.mobEventSchedules.add(mobEventSchedule);
+			}
+		}
+		if(this.mobEventSchedules.size() > 0) {
+			LycanitesMobs.printDebug("MobEvents", "Loaded " + this.mobEventSchedules.size() + " Mob Event Schedules.");
+		}
 	}
 
 
@@ -124,7 +145,10 @@ public class MobEventManager extends JSONLoader {
         if(mobEvent == null)
             return;
         this.mobEvents.put(mobEvent.name, mobEvent);
-		AssetManager.addSound("mobevent_" + mobEvent.title.toLowerCase(), LycanitesMobs.group, "mobevent." + mobEvent.title.toLowerCase());
+        try {
+			AssetManager.addSound("mobevent_" + mobEvent.title.toLowerCase(), LycanitesMobs.group, "mobevent." + mobEvent.title.toLowerCase());
+		}
+		catch(Exception e) {}
     }
 
 

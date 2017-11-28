@@ -2,6 +2,7 @@ package com.lycanitesmobs.core.spawner.condition;
 
 import com.google.gson.JsonObject;
 import com.lycanitesmobs.ExtendedPlayer;
+import com.lycanitesmobs.LycanitesMobs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
@@ -45,7 +46,7 @@ public class DateSpawnCondition extends SpawnCondition {
 		Calendar calendar = Calendar.getInstance();
 
     	// Check Month:
-		int month = calendar.get(Calendar.MONTH);
+		int month = calendar.get(Calendar.MONTH) + 1; // Months are indexed from 0-11!
 		if(this.monthMin >= 0 && month < this.monthMin) {
 			return false;
 		}

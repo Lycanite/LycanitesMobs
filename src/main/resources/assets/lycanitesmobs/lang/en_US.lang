@@ -240,6 +240,7 @@ lyc.command.debug.invalid=Invalid arguments, usage: /lycanitesmobs debug debugKe
 lyc.command.debug.set=Updated %debug%.
 lyc.command.spawners.invalid=Invalid arguments, usage: /lycanitesmobs spawners [reload]
 lyc.command.spawners.reload=JSON Spawners have been reloaded.
+lyc.command.spawners.creative=Toggled Mob Spawn Triggers for Creative Mode players.
 lyc.command.beastiary.invalid=Invalid arguments, usage: /lycanitesmobs beastiary [add <creature name>, complete]> for example /lycanitesmobs beastiary add quillbeast
 lyc.command.beastiary.complete=Added all creatures to the Beastiary.
 lyc.command.beastiary.add.invalid=Invalid arguments, usage: beastiary add <creature name> for example /lycanitesmobs beastiary add quillbeast

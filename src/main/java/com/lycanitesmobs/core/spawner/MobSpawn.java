@@ -62,8 +62,8 @@ public class MobSpawn {
 	/** If true, the spawned mob will fixate on the player that triggered the spawn, always attacking that player. **/
 	protected boolean fixate = false;
 
-	/** The level of the mob spawned, higher levels increase the stats by a small amount. This is added to the starting mob level (normally just 1). **/
-	protected int mobLevel = 1;
+	/** The level boost of the mob spawned, higher levels increase the stats by a small amount. This is added to the starting mob level (normally just 1). **/
+	protected int mobLevel = 0;
 
 
 	/** Loads this Spawn Condition from the provided JSON data. **/

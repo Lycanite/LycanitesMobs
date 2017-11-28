@@ -96,7 +96,7 @@ public class WorldSpawnCondition extends SpawnCondition {
     public boolean isMet(World world, EntityPlayer player) {
 		ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
 		int time = (int)Math.floor(world.getWorldTime() % 24000D);
-		int day = (int)Math.floor((worldExt.useTotalWorldTime ? world.getTotalWorldTime() : world.getWorldTime()) / 24000D);
+		int day = (int)Math.floor((worldExt.useTotalWorldTime ? world.getTotalWorldTime() : world.getWorldTime()) / 23999D);
 
 		// Check Dimension:
 		if(this.dimensionIds != null) {

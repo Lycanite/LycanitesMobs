@@ -80,11 +80,20 @@ public class DonationFamiliars {
                 int familiar_subspecies = familiarJson.get("familiar_subspecies").getAsInt();
                 String familiar_name = familiarJson.get("familiar_name").getAsString();
                 String familiar_color = familiarJson.get("familiar_color").getAsString();
+                double familiar_size = 0;
+                if(familiarJson.has("familiar_size")) {
+					familiar_size = familiarJson.get("familiar_size").getAsDouble();
+				}
 
                 String familiarEntryName = donation_username + familiar_species + familiar_name;
                 PetEntryFamiliar familiarEntry = new PetEntryFamiliar(familiarEntryName, null, familiar_species);
                 familiarEntry.setEntitySubspeciesID(familiar_subspecies);
-                familiarEntry.setEntitySize(familiar_subspecies < 3 ? 0.6D : 0.3D);
+                if(familiar_size <= 0) {
+                    familiarEntry.setEntitySize(familiar_subspecies < 3 ? 0.6D : 0.3D);
+                }
+                else {
+					familiarEntry.setEntitySize(familiar_size);
+				}
 
                 if (!"".equals(familiar_name))
                     familiarEntry.setEntityName(familiar_name);

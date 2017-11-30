@@ -37,6 +37,11 @@
 		{
 			"mobId": "arcticmobs.wendigo",
 			"weight": 8
+		},
+		{
+			"mobId": "arcticmobs.wildkin",
+			"weight": 8,
+			"mobNameTag": "Gooderness"
 		}
 	]
 }

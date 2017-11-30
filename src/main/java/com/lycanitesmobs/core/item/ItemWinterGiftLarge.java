@@ -75,7 +75,7 @@ public class ItemWinterGiftLarge extends ItemBase {
                     // Themed Names:
                     if (entity instanceof EntityLivingBase) {
                         EntityCreatureBase entityCreature = (EntityCreatureBase) entity;
-                        if (entityCreature.mobInfo.getEntityID().equals("wendigo"))
+                        if (entityCreature.mobInfo.getEntityID().equals("wildkin"))
                             entityCreature.setCustomNameTag("Gooderness");
                         else if (entityCreature.mobInfo.getEntityID().equals("jabberwock"))
                             entityCreature.setCustomNameTag("Rudolph");

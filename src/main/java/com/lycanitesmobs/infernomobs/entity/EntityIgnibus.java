@@ -47,6 +47,10 @@ public class EntityIgnibus extends EntityCreatureRideable implements IGroupFire,
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.defense = 0;
         this.experience = 5;
+        this.spawnsOnLand = true;
+        this.spawnsInWater = true;
+        this.isLavaCreature = true;
+        this.flySoundSpeed = 20;
         this.hasAttackSound = false;
         
         this.setWidth = 5.9F;
@@ -63,6 +67,7 @@ public class EntityIgnibus extends EntityCreatureRideable implements IGroupFire,
     @Override
     protected void initEntityAI() {
         super.initEntityAI();
+        this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIMate(this));
         this.tasks.addTask(2, new EntityAIPlayerControl(this));
         this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("ignibustreat"))).setTemptDistanceMin(4.0D));

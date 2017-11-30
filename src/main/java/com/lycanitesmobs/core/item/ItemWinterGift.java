@@ -103,7 +103,7 @@ public class ItemWinterGift extends ItemBase {
                 // Themed Names:
                 if (entity instanceof EntityLivingBase) {
                     EntityCreatureBase entityCreature = (EntityCreatureBase) entity;
-                    if (entityCreature.mobInfo.getEntityID().equals("wendigo"))
+                    if (entityCreature.mobInfo.getEntityID().equals("wildkin"))
                         entityCreature.setCustomNameTag("Gooderness");
                     else if (entityCreature.mobInfo.getEntityID().equals("jabberwock"))
                         entityCreature.setCustomNameTag("Rudolph");
@@ -144,7 +144,7 @@ public class ItemWinterGift extends ItemBase {
         ObjectLists.addFromConfig("winter_gifts");
 
         // Halloween Mobs:
-        ObjectLists.addEntity("winter_tricks", "wendigo");
+        ObjectLists.addEntity("winter_tricks", "wildkin");
         ObjectLists.addEntity("winter_tricks", "jabberwock");
         ObjectLists.addEntity("winter_tricks", "ent");
         ObjectLists.addEntity("winter_tricks", "trent");

@@ -39,6 +39,11 @@
 			"mobId": "forestmobs.trent",
 			"weight": 4,
 			"mobNameTag": "Salty Tree"
+		},
+		{
+			"mobId": "arcticmobs.wildkin",
+			"weight": 2,
+			"mobNameTag": "Gooderness"
 		}
 	]
 }

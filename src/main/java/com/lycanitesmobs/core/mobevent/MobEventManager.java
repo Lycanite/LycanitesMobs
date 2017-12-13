@@ -29,6 +29,8 @@ public class MobEventManager extends JSONLoader {
     // Properties:
     public boolean mobEventsEnabled = true;
     public boolean mobEventsRandom = false;
+	/** The default temporary time applied to mobs spawned from events, where it will forcefully despawn after the specified time (in ticks). MobSpawns can override this. **/
+	public int defaultMobDuration = 12000;
 
     protected long lastEventUpdateTime = 0;
 
@@ -49,8 +51,9 @@ public class MobEventManager extends JSONLoader {
         config.setCategoryComment("World", "These are various settings that apply to events on a per world basis. If your required world doesn't have its config values generated yet, you can generate them by entering the world in gae at least once.");
 
         this.mobEventsEnabled = config.getBool("Global", "Mob Events Enabled", this.mobEventsEnabled, "Set to false to completely disable the entire event system for every world.");
-        this.mobEventsRandom = config.getBool("Global", "Random Mob Events Enabled", this.mobEventsRandom, "Set to false to disable random mob events for every world.");
-    }
+		this.mobEventsRandom = config.getBool("Global", "Random Mob Events Enabled", this.mobEventsRandom, "Set to false to disable random mob events for every world.");
+		this.defaultMobDuration = config.getInt("Global", "Default Mob Duration", this.defaultMobDuration, "The default temporary time applied to mobs spawned from events, where it will forcefully despawn after the specified time (in ticks). MobSpawns can override this.");
+	}
 
 
 	/** Loads all JSON Mob Events. **/

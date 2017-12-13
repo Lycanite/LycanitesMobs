@@ -256,6 +256,10 @@ public class MobEvent {
 				levelBoost += entityCreature.getRNG().nextInt(this.levelBoostMax - this.levelBoostMin + 1);
 			}
 			entityCreature.addLevel(levelBoost);
+
+			if(!entityCreature.isTemporary) {
+				entityCreature.setTemporary(MobEventManager.getInstance().defaultMobDuration);
+			}
 		}
     }
 

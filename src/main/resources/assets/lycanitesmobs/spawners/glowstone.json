@@ -8,12 +8,14 @@
 	"ignoreBiomes": true,
 	"ignoreCollision": true,
 	"ignoreLightLevel": true,
+	"ignoreGroupLimit": true,
 	"ignoreForgeCanSpawnEvent": true,
 	"blockBreakRadius": 1,
 	"conditions": [],
 	"triggers": [
 		{
 			"type": "block",
+			"onHarvest": false,
 			"blocks": ["minecraft:glowstone"],
 			"blocksListType": "whitelist",
 			"chance": 0.02

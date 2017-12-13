@@ -29,7 +29,7 @@ import net.minecraft.world.World;
 
 import java.util.HashMap;
 
-public class EntityArisaur extends EntityCreatureAgeable implements IAnimals, IGroupAnimal, IGroupPlant, IGroupHeavy {
+public class EntityArisaur extends EntityCreatureAgeable implements IAnimals, IGroupAnimal, IGroupHeavy {
 	
 	// ==================================================
  	//                    Constructor
@@ -77,7 +77,7 @@ public class EntityArisaur extends EntityCreatureAgeable implements IAnimals, IG
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 20D);
+		baseAttributes.put("maxHealth", 40D);
 		baseAttributes.put("movementSpeed", 0.28D);
 		baseAttributes.put("knockbackResistance", 1D);
 		baseAttributes.put("followRange", 20D);
@@ -90,24 +90,6 @@ public class EntityArisaur extends EntityCreatureAgeable implements IAnimals, IG
 	public void loadItemDrops() {
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("arisaurmeatraw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("arisaurmeatcooked"))).setMaxAmount(6));
         this.drops.add(new DropRate(new ItemStack(Items.APPLE), 0.5F).setMinAmount(0).setMaxAmount(3));
-    }
-	
-	
-    // ==================================================
-    //                      Updates
-    // ==================================================
-	// ========== Living Update ==========
-	@Override
-    public void onLivingUpdate() {
-        super.onLivingUpdate();
-
-		// Water Healing:
-		if(this.getAir() < 0) {
-			if (this.isInWater())
-				this.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 3 * 20, 2));
-			else if (this.getEntityWorld().isRaining() && this.getEntityWorld().canBlockSeeSky(this.getPosition()))
-				this.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 3 * 20, 1));
-		}
     }
 	
 	
@@ -131,34 +113,6 @@ public class EntityArisaur extends EntityCreatureAgeable implements IAnimals, IG
     @Override
     public boolean canBeLeashedTo(EntityPlayer player) {
 	    return true;
-    }
-    
-    
-    // ==================================================
-   	//                    Taking Damage
-   	// ==================================================
-    // ========== Damage Modifier ==========
-    public float getDamageModifier(DamageSource damageSrc) {
-    	if(damageSrc.isFireDamage())
-    		return 4.0F;
-    	if(damageSrc.getTrueSource() != null) {
-    		Item heldItem = null;
-    		if(damageSrc.getTrueSource() instanceof EntityPlayer) {
-    			EntityPlayer entityPlayer = (EntityPlayer)damageSrc.getTrueSource();
-	    		if(entityPlayer.getHeldItem(EnumHand.MAIN_HAND) != null) {
-	    			heldItem = entityPlayer.getHeldItem(EnumHand.MAIN_HAND).getItem();
-	    		}
-    		}
-    		else if(damageSrc.getTrueSource() instanceof EntityLiving) {
-	    		EntityLiving entityLiving = (EntityLiving)damageSrc.getTrueSource();
-	    		if(entityLiving.getHeldItem(EnumHand.MAIN_HAND) != null) {
-	    			heldItem = entityLiving.getHeldItem(EnumHand.MAIN_HAND).getItem();
-	    		}
-    		}
-    		if(ObjectLists.isAxe(heldItem))
-				return 4.0F;
-    	}
-        return super.getDamageModifier(damageSrc);
     }
     
     

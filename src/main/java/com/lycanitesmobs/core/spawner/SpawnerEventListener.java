@@ -243,7 +243,7 @@ public class SpawnerEventListener {
 		if(event.getState() == null || event.getWorld() == null || event.getWorld().isRemote || event.isCanceled()) {
 			return;
 		}
-		if(player == null || (player != null && (!testOnCreative && player.capabilities.isCreativeMode))) { // No Spawning for Creative Players
+		if(player != null && (!testOnCreative && player.capabilities.isCreativeMode)) { // No Spawning for Creative Players
 			return;
 		}
 		
@@ -253,7 +253,7 @@ public class SpawnerEventListener {
 		IBlockState blockState = event.getState();
 
         for(BlockSpawnTrigger spawnTrigger : this.blockSpawnTriggers) {
-            spawnTrigger.onBlockBreak(world, player, blockPos, blockState);
+            spawnTrigger.onBlockHarvest(world, player, blockPos, blockState);
         }
 	}
 
@@ -268,7 +268,7 @@ public class SpawnerEventListener {
 		if(event.getState() == null || event.getWorld() == null || event.getWorld().isRemote || event.isCanceled()) {
 			return;
 		}
-		if(player == null || (player != null && (!testOnCreative && player.capabilities.isCreativeMode))) { // No Spawning for Creative Players
+		if(player != null && (!testOnCreative && player.capabilities.isCreativeMode)) { // No Spawning for Creative Players
 			return;
 		}
 

@@ -134,19 +134,39 @@
     },
     "item.halloweentreat.good": {
         "category": "ambient",
-        "sounds": [{"name": "lycanitesmobs:item/halloweentreat_good", "stream": false}]
+        "sounds":
+        [
+            {"name": "lycanitesmobs:item/halloweentreat_good01", "stream": false},
+            {"name": "lycanitesmobs:item/halloweentreat_good02", "stream": false},
+            {"name": "lycanitesmobs:item/halloweentreat_good03", "stream": false}
+        ]
     },
     "item.halloweentreat.bad": {
         "category": "ambient",
-        "sounds": [{"name": "lycanitesmobs:item/halloweentreat_bad", "stream": false}]
+        "sounds":
+        [
+            {"name": "lycanitesmobs:item/halloweentreat_bad01", "stream": false},
+            {"name": "lycanitesmobs:item/halloweentreat_bad02", "stream": false},
+            {"name": "lycanitesmobs:item/halloweentreat_bad03", "stream": false}
+        ]
     },
     "item.wintergift.good": {
         "category": "ambient",
-        "sounds": [{"name": "lycanitesmobs:item/wintergift_good", "stream": false}]
+        "sounds":
+        [
+            {"name": "lycanitesmobs:item/wintergift_good01", "stream": false},
+            {"name": "lycanitesmobs:item/wintergift_good02", "stream": false},
+            {"name": "lycanitesmobs:item/wintergift_good03", "stream": false}
+        ]
     },
     "item.wintergift.bad": {
         "category": "ambient",
-        "sounds": [{"name": "lycanitesmobs:item/wintergift_bad", "stream": false}]
+        "sounds":
+        [
+            {"name": "lycanitesmobs:item/wintergift_bad01", "stream": false},
+            {"name": "lycanitesmobs:item/wintergift_bad02", "stream": false},
+            {"name": "lycanitesmobs:item/wintergift_bad03", "stream": false}
+        ]
     },
     "item.wintergiftlarge.bad": {
         "category": "ambient",

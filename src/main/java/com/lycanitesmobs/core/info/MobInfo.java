@@ -239,6 +239,8 @@ public class MobInfo {
         	double levelValue = 0.1;
 			if("Health".equalsIgnoreCase(statName))
 				levelValue = 0.1D;
+			if("Damage".equalsIgnoreCase(statName))
+				levelValue = 0.01D;
 			if("Haste".equalsIgnoreCase(statName))
 				levelValue = 0.05D;
 			if("Speed".equalsIgnoreCase(statName))

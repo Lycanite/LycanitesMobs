@@ -101,8 +101,9 @@ public class ItemHalloweenTreat extends ItemBase {
 	            entity.setLocationAndAngles(player.posX, player.posY, player.posZ, player.rotationYaw, player.rotationPitch);
 
                 // Themed Names:
-                if (entity instanceof EntityLivingBase) {
+                if (entity instanceof EntityCreatureBase) {
                     EntityCreatureBase entityCreature = (EntityCreatureBase) entity;
+					entityCreature.addLevel(world.rand.nextInt(10));
                     if (entityCreature.mobInfo.getEntityID().equals("ent"))
                         entityCreature.setCustomNameTag("Twisted Ent");
 					else if (entityCreature.mobInfo.getEntityID().equals("trent"))

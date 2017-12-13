@@ -8,6 +8,7 @@
 	"ignoreBiomes": true,
 	"ignoreCollision": true,
 	"ignoreLightLevel": true,
+	"ignoreGroupLimit": true,
 	"ignoreForgeCanSpawnEvent": true,
 	"conditions": [],
 	"triggers": [

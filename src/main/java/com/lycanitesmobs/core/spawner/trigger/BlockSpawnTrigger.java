@@ -17,8 +17,14 @@ import java.util.List;
 public class BlockSpawnTrigger extends SpawnTrigger {
 	/** Has a random chance of triggering when certain blocks are broken by the player. **/
 
-	/** Whether fake players (such as BuildCraft quarries) should trigger this also. **/
-	public boolean ignoreFakePlayers = true;
+	/** If true, only players can activate this Trigger, fake players are not counted. **/
+	public boolean playerOnly = true;
+
+	/** If true, the Block Break event will activate this trigger. **/
+	public boolean onBreak = true;
+
+	/** If true, the Block Harvest event will activate this trigger. **/
+	public boolean onHarvest = true;
 
 	/** A list of Blocks that match this Trigger. **/
 	public List<Block> blocks = new ArrayList<>();
@@ -40,8 +46,14 @@ public class BlockSpawnTrigger extends SpawnTrigger {
 
 	@Override
 	public void loadFromJSON(JsonObject json) {
-		if(json.has("ignoreFakePlayers"))
-			this.ignoreFakePlayers = json.get("ignoreFakePlayers").getAsBoolean();
+		if(json.has("playerOnly"))
+			this.playerOnly = json.get("playerOnly").getAsBoolean();
+
+		if(json.has("onBreak"))
+			this.onBreak = json.get("onBreak").getAsBoolean();
+
+		if(json.has("onHarvest"))
+			this.onHarvest = json.get("onHarvest").getAsBoolean();
 
 		this.blocks = SpawnerJSONUtilities.getJsonBlocks(json);
 
@@ -57,10 +69,28 @@ public class BlockSpawnTrigger extends SpawnTrigger {
 	}
 
 
-	/** Called every time a player breaks a block. **/
+	/** Called every time a block breaks. **/
 	public void onBlockBreak(World world, EntityPlayer player, BlockPos breakPos, IBlockState blockState) {
+		if(!this.onBreak) {
+			return;
+		}
+		this.onBlockTriggered(world, player, breakPos, blockState);
+	}
+
+
+	/** Called every time a block is harvested. **/
+	public void onBlockHarvest(World world, EntityPlayer player, BlockPos breakPos, IBlockState blockState) {
+		if(!this.onHarvest) {
+			return;
+		}
+		this.onBlockTriggered(world, player, breakPos, blockState);
+	}
+
+
+	/** Called every time a player breaks a block. **/
+	public void onBlockTriggered(World world, EntityPlayer player, BlockPos breakPos, IBlockState blockState) {
 		// Check Player:
-		if(this.ignoreFakePlayers && player instanceof FakePlayer) {
+		if(this.playerOnly && (player == null || player instanceof FakePlayer)) {
 			return;
 		}
 

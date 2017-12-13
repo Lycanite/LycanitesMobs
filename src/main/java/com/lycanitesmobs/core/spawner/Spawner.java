@@ -437,7 +437,7 @@ public class Spawner {
 			}
 
 			// Mob Instance Spawn Check:
-			if(!this.mobInstanceSpawnCheck(entityLiving, mobSpawn, world, player, triggerPos, level, canSpawn == Event.Result.ALLOW)) {
+			if(!this.mobInstanceSpawnCheck(entityLiving, mobSpawn, world, player, spawnPos, level, canSpawn == Event.Result.ALLOW)) {
 				LycanitesMobs.printDebug("JSONSpawner", "Mob Instance Spawn Check Failed!");
 				continue;
 			}

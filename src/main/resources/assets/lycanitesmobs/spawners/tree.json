@@ -8,12 +8,14 @@
 	"ignoreBiomes": true,
 	"ignoreCollision": true,
 	"ignoreLightLevel": true,
+	"ignoreGroupLimit": true,
 	"ignoreForgeCanSpawnEvent": true,
 	"blockBreakRadius": 1,
 	"conditions": [],
 	"triggers": [
 		{
 			"type": "tree",
+			"onHarvest": false,
 			"chance": 0.02
 		}
 	],

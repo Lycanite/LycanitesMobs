@@ -108,7 +108,7 @@ public class EntityShambler extends EntityCreatureTameable implements IMob, IGro
         super.onLivingUpdate();
 
         // Water Healing:
-        if(this.getAir() < 0) {
+        if(this.getAir() >= 0) {
             if (this.isInWater())
                 this.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 3 * 20, 2));
             else if (this.getEntityWorld().isRaining() && this.getEntityWorld().canBlockSeeSky(this.getPosition()))

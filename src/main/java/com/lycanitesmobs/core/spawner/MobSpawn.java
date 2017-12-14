@@ -149,6 +149,11 @@ public class MobSpawn {
 	 * @param forceIgnoreDimension If true, the dimension check is ignored.
 	 **/
 	public boolean canSpawn(World world, int blockCount, List<Biome> biomes, boolean forceIgnoreDimension) {
+		// Enabled:
+		if(this.mobInfo != null && !this.mobInfo.mobEnabled) {
+			return false;
+		}
+
 		// Peaceful Difficulty:
 		if(world.getDifficulty() == EnumDifficulty.PEACEFUL && !this.mobInfo.peacefulDifficulty) {
 			return false;

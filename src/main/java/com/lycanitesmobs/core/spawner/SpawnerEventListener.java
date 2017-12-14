@@ -9,6 +9,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
@@ -20,6 +21,7 @@ import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.event.world.ChunkEvent;
+import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
@@ -39,6 +41,7 @@ public class SpawnerEventListener {
 	public List<BlockSpawnTrigger> blockSpawnTriggers = new ArrayList<>();
 	public List<SleepSpawnTrigger> sleepSpawnTriggers = new ArrayList<>();
 	public List<FishingSpawnTrigger> fishingSpawnTriggers = new ArrayList<>();
+	public List<ExplosionSpawnTrigger> explosionSpawnTriggers = new ArrayList<>();
 	public List<MobEventSpawnTrigger> mobEventSpawnTriggers = new ArrayList<>();
 
 
@@ -82,6 +85,10 @@ public class SpawnerEventListener {
 		}
 		if(spawnTrigger instanceof FishingSpawnTrigger && !this.fishingSpawnTriggers.contains(spawnTrigger)) {
 			this.fishingSpawnTriggers.add((FishingSpawnTrigger)spawnTrigger);
+			return true;
+		}
+		if(spawnTrigger instanceof ExplosionSpawnTrigger && !this.explosionSpawnTriggers.contains(spawnTrigger)) {
+			this.explosionSpawnTriggers.add((ExplosionSpawnTrigger)spawnTrigger);
 			return true;
 		}
 		if(spawnTrigger instanceof MobEventSpawnTrigger && !this.mobEventSpawnTriggers.contains(spawnTrigger)) {
@@ -328,6 +335,27 @@ public class SpawnerEventListener {
 		Entity hookEntity = event.getHookEntity();
 		for(FishingSpawnTrigger spawnTrigger : this.fishingSpawnTriggers) {
 			spawnTrigger.onFished(world, player, hookEntity);
+		}
+	}
+
+
+	// ==================================================
+	//                Explosion Event
+	// ==================================================
+	/** This uses the explosion strike event to spawn mobs. **/
+	public void onFished(ExplosionEvent.Detonate event) {
+		Explosion explosion = event.getExplosion();
+		if(explosion == null) {
+			return;
+		}
+
+		World world = event.getWorld();
+		EntityPlayer player = null;
+		if(explosion.getExplosivePlacedBy() instanceof EntityPlayer) {
+			player = (EntityPlayer)explosion.getExplosivePlacedBy();
+		}
+		for(ExplosionSpawnTrigger spawnTrigger : this.explosionSpawnTriggers) {
+			spawnTrigger.onExplosion(world, player, explosion);
 		}
 	}
 }

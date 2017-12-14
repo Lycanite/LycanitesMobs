@@ -55,7 +55,7 @@ public class MobEvent {
 	protected int levelBoostMin = 0;
 
 	/** The maximum amount of levels to give a mob spawned by this event. **/
-	protected int levelBoostMax = 10;
+	protected int levelBoostMax = 9;
 
 
 	/** Loads this Spawner from the provided JSON data. **/

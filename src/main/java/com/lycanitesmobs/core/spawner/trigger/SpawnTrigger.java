@@ -69,6 +69,9 @@ public abstract class SpawnTrigger {
 		else if("fishing".equalsIgnoreCase(type)) {
 			spawnTrigger = new FishingSpawnTrigger(spawner);
 		}
+		else if("explosion".equalsIgnoreCase(type)) {
+			spawnTrigger = new ExplosionSpawnTrigger(spawner);
+		}
 		else if("mobEvent".equalsIgnoreCase(type)) {
 			spawnTrigger = new MobEventSpawnTrigger(spawner);
 		}

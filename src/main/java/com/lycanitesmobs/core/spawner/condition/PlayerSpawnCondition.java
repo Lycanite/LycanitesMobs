@@ -1,9 +1,15 @@
 package com.lycanitesmobs.core.spawner.condition;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.lycanitesmobs.ExtendedPlayer;
+import com.lycanitesmobs.core.spawner.SpawnerJSONUtilities;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.world.World;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlayerSpawnCondition extends SpawnCondition {
 
@@ -40,6 +46,12 @@ public class PlayerSpawnCondition extends SpawnCondition {
 	/** If true, the player must not be in the water. **/
 	public boolean notInWater = false;
 
+	/** A list of Blocks that match this Trigger. **/
+	public List<Item> heldItems = new ArrayList<>();
+
+	/** Determines if the blocks list is a blacklist or whitelist. **/
+	public String heldItemsListType = "blacklist";
+
 
 	@Override
 	public void loadFromJSON(JsonObject json) {
@@ -75,6 +87,13 @@ public class PlayerSpawnCondition extends SpawnCondition {
 
 		if(json.has("notInWater"))
 			this.notInWater = json.get("notInWater").getAsBoolean();
+
+		if(json.has("heldItems")) {
+			this.heldItems = SpawnerJSONUtilities.getJsonItems(json.get("heldItems").getAsJsonArray());
+		}
+
+		if(json.has("heldItemsListType"))
+			this.heldItemsListType = json.get("heldItemsListType").getAsString();
 
 		super.loadFromJSON(json);
 	}
@@ -131,6 +150,39 @@ public class PlayerSpawnCondition extends SpawnCondition {
 			return false;
 		}
 		if(this.lightLevelMax >= 0 && lightLevel > this.lightLevelMax) {
+			return false;
+		}
+
+		// Check Held Item:
+		if(this.heldItems.size() > 0) {
+			boolean holdingItem = false;
+
+			// Main Hand:
+			if(!player.getHeldItemMainhand().isEmpty()) {
+				if (this.heldItems.contains(player.getHeldItemMainhand().getItem())) {
+					holdingItem = true;
+					if("blacklist".equalsIgnoreCase(this.heldItemsListType)) {
+						return false;
+					}
+				}
+			}
+
+			// Off Hand:
+			if(!player.getHeldItemOffhand().isEmpty()) {
+				if (this.heldItems.contains(player.getHeldItemOffhand().getItem())) {
+					holdingItem = true;
+					if("blacklist".equalsIgnoreCase(this.heldItemsListType)) {
+						return false;
+					}
+				}
+			}
+
+			// Whitelist:
+			if(!holdingItem && "whitelist".equalsIgnoreCase(this.heldItemsListType)) {
+				return false;
+			}
+		}
+		else if("whitelist".equalsIgnoreCase(this.heldItemsListType)) {
 			return false;
 		}
 

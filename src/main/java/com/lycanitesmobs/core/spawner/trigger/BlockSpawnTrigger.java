@@ -109,14 +109,18 @@ public class BlockSpawnTrigger extends SpawnTrigger {
 
 	/** Returns true if the provided block is a match for this trigger. **/
 	public boolean isTriggerBlock(IBlockState blockState, World world, BlockPos blockPos) {
-		Block block = blockState.getBlock();
-		if(this.blocks.contains(block)) {
-			return !"blacklist".equalsIgnoreCase(this.blocksListType);
+		if(this.blocks.size() > 0) {
+			Block block = blockState.getBlock();
+			if (this.blocks.contains(block)) {
+				return !"blacklist".equalsIgnoreCase(this.blocksListType);
+			}
 		}
 
-		Material material = blockState.getMaterial();
-		if(this.blockMaterials.contains(material)) {
-			return !"blacklist".equalsIgnoreCase(this.blockMaterialsListType);
+		if(this.blockMaterials.size() > 0) {
+			Material material = blockState.getMaterial();
+			if (this.blockMaterials.contains(material)) {
+				return !"blacklist".equalsIgnoreCase(this.blockMaterialsListType);
+			}
 		}
 
 		return "blacklist".equalsIgnoreCase(this.blocksListType) && "blacklist".equalsIgnoreCase(this.blockMaterialsListType);

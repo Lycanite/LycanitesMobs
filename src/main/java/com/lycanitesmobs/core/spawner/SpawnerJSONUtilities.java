@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3i;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -33,16 +34,33 @@ public class SpawnerJSONUtilities {
 	public static List<Block> getJsonBlocks(JsonObject json) {
 		List<Block> blocks = new ArrayList<>();
 		if(json.has("blocks")) {
-			JsonArray jsonArray = json.get("blocks").getAsJsonArray();
-			Iterator<JsonElement> jsonIterator = jsonArray.iterator();
-			while (jsonIterator.hasNext()) {
-				Block block = GameRegistry.findRegistry(Block.class).getValue(new ResourceLocation(jsonIterator.next().getAsString()));
-				if(block != null) {
-					blocks.add(block);
-				}
+			blocks = getJsonBlocks(json.get("blocks").getAsJsonArray());
+		}
+		return blocks;
+	}
+
+	public static List<Block> getJsonBlocks(JsonArray jsonArray) {
+		List<Block> blocks = new ArrayList<>();
+		Iterator<JsonElement> jsonIterator = jsonArray.iterator();
+		while (jsonIterator.hasNext()) {
+			Block block = GameRegistry.findRegistry(Block.class).getValue(new ResourceLocation(jsonIterator.next().getAsString()));
+			if(block != null) {
+				blocks.add(block);
 			}
 		}
 		return blocks;
+	}
+
+	public static List<Item> getJsonItems(JsonArray jsonArray) {
+		List<Item> items = new ArrayList<>();
+		Iterator<JsonElement> jsonIterator = jsonArray.iterator();
+		while (jsonIterator.hasNext()) {
+			Item item = GameRegistry.findRegistry(Item.class).getValue(new ResourceLocation(jsonIterator.next().getAsString()));
+			if(item != null) {
+				items.add(item);
+			}
+		}
+		return items;
 	}
 
 	public static List<Material> getJsonMaterials(JsonObject json) {

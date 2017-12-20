@@ -291,7 +291,7 @@ public class MobSpawn {
 				entityCreature.setFixateTarget(player);
 			}
 			if(this.mobLevel > 0) {
-				entityCreature.setLevel(entityCreature.getStartingLevel() + this.mobLevel);
+				entityCreature.addLevel(this.mobLevel);
 			}
 			if(this.temporary > -1) {
 				entityCreature.setTemporary(this.temporary);

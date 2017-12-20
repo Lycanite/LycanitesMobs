@@ -43,7 +43,7 @@ public class LycanitesMobs {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String version = "1.17.3.9 - MC 1.12.2";
+	public static final String version = "1.17.3.10 - MC 1.12.2";
 	public static final String website = "http://lycanitesmobs.com";
 	public static final String websiteAPI = "http://api.lycanitesmobs.com";
 	public static final String websitePatreon = "https://www.patreon.com/lycanite";

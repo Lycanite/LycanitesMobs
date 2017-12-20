@@ -55,7 +55,7 @@ public class EntityWendigo extends EntityCreatureBase implements IMob, IGroupIce
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this).setSink(true));
-        this.tasks.addTask(3, new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(100).setRange(16.0F).setMinChaseDistance(8.0F));
+        this.tasks.addTask(3, new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(40).setRange(16.0F).setMinChaseDistance(8.0F));
         this.wanderAI = new EntityAIWander(this);
         this.tasks.addTask(6, wanderAI);
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));

@@ -114,7 +114,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	
 	// Stats:
 	/** The level of this mob, higher levels increase the stat multipliers by a small amount. **/
-	public int level = 1;
+	protected int level = 1;
 	/** The defense rating of this mob. This is how much damage it can withstand.
 	 * For example, a damage of 4 with a defense of 1 will result in a new damage of 3.
 	 * Defense stat multipliers are applied to this value too, nor whole results are rounded.
@@ -314,11 +314,16 @@ public abstract class EntityCreatureBase extends EntityLiving {
   	// ==================================================
     public EntityCreatureBase(World world) {
         super(world);
+
+        // Size:
         this.width = this.setWidth;
         this.height = this.setHeight;
 
         // Movement:
         this.moveHelper = this.createMoveHelper();
+
+        // Level:
+		this.level = this.getStartingLevel();
 
         // Path On Fire or In Lava:
         if(!this.canBurn()) {
@@ -1081,7 +1086,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 		else if(difficulty == EnumDifficulty.NORMAL)
 			difficultyName = "Normal";
 		double difficultyMultiplier = MobInfo.difficultyMultipliers.get(difficultyName.toUpperCase() + "-" + stat.toUpperCase());
-		double levelMultiplier = 1 + ((this.getLevel() - 1) * MobInfo.levelMultipliers.get(stat.toUpperCase()));
+		double levelMultiplier = (double)this.getLevel() * MobInfo.levelMultipliers.get(stat.toUpperCase());
 		return difficultyMultiplier * levelMultiplier;
 	}
 

@@ -656,7 +656,6 @@ public class Spawner {
 			entityCreature = (EntityCreatureBase)entityLiving;
 			entityCreature.forceNoDespawn = this.forceNoDespawn;
 			entityCreature.spawnedRare = level > 0;
-			entityCreature.level = level;
 			if (this.blockBreakRadius > -1) {
 				entityCreature.destroyArea((int) entityLiving.posX, (int) entityLiving.posY, (int) entityLiving.posZ, 100, true, this.blockBreakRadius);
 			}

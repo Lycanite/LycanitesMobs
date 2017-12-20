@@ -236,7 +236,7 @@ public class MobInfo {
         // Level:
 		config.setCategoryComment("Level Multipliers", "Normally mobs are level 1, but Spawners can increase their level. Here you can adjust the percentage of each stat that is added per extra level. So by default at level 2 a mobs health is increased by 10%, at level 3 20% and so on.");
 		for(String statName : statNames) {
-        	double levelValue = 0.1;
+        	double levelValue = 0.1D;
 			if("Health".equalsIgnoreCase(statName))
 				levelValue = 0.1D;
 			if("Damage".equalsIgnoreCase(statName))

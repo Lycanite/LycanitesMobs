@@ -5,21 +5,10 @@
 	"loadDefault": true,
 	"channel": "world",
 	"duration": 1200,
-	"conditionsRequired": 1,
 	"conditions": [
 		{
 			"type": "date",
-			"monthMin": 10,
-			"monthMax": 10,
-			"dayMin": 25,
-			"dayMax": 31
-		},
-		{
-			"type": "date",
-			"monthMin": 11,
-			"monthMax": 11,
-			"dayMin": 1,
-			"dayMax": 1
+			"season": "halloween"
 		}
 	],
 	"triggers": [

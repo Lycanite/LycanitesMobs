@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.spawner.condition;
 import com.google.gson.JsonObject;
 import com.lycanitesmobs.ExtendedPlayer;
 import com.lycanitesmobs.LycanitesMobs;
+import com.lycanitesmobs.Utilities;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
@@ -22,6 +23,9 @@ public class DateSpawnCondition extends SpawnCondition {
     /** The maximum day of the month it must be. **/
     public int dayMax = -1;
 
+    /** A season to check for. Can be "valentines", "easter", "halloween", "yuletide"/"christmas" or "newyear". **/
+    public String season = "";
+
 
 	@Override
 	public void loadFromJSON(JsonObject json) {
@@ -36,6 +40,9 @@ public class DateSpawnCondition extends SpawnCondition {
 
 		if(json.has("dayMax"))
 			this.dayMax = json.get("dayMax").getAsInt();
+
+		if(json.has("season"))
+			this.season = json.get("season").getAsString();
 
 		super.loadFromJSON(json);
 	}
@@ -61,6 +68,25 @@ public class DateSpawnCondition extends SpawnCondition {
 		}
 		if(this.dayMax >= 0 && day > this.dayMax) {
 			return false;
+		}
+
+		// Check Season
+		if(!"".equals(this.season)) {
+			if("valentines".equalsIgnoreCase(this.season) && !Utilities.isValentines()) {
+				return false;
+			}
+			if("easter".equalsIgnoreCase(this.season) && !Utilities.isEaster()) {
+				return false;
+			}
+			if("halloween".equalsIgnoreCase(this.season) && !Utilities.isHalloween()) {
+				return false;
+			}
+			if(("yuletide".equalsIgnoreCase(this.season) || "christmas".equalsIgnoreCase(this.season)) && !Utilities.isYuletide()) {
+				return false;
+			}
+			if("newyear".equalsIgnoreCase(this.season) && !Utilities.isNewYear()) {
+				return false;
+			}
 		}
 
         return super.isMet(world, player);

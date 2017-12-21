@@ -186,6 +186,11 @@ public class Utilities {
 		return daysUntilEaster <= 7 && daysUntilEaster >= 0;
 	}
 
+	public static boolean isMidsummer() {
+		Calendar calendar = Calendar.getInstance();
+		return calendar.get(Calendar.MONTH) == calendar.JULY && calendar.get(Calendar.DAY_OF_MONTH) >= 10 && calendar.get(Calendar.DAY_OF_MONTH) <= 20;
+	}
+
     public static boolean isHalloween() {
     	Calendar calendar = Calendar.getInstance();
 		if(		(calendar.get(Calendar.DAY_OF_MONTH) >= 25 && calendar.get(Calendar.MONTH) == calendar.OCTOBER)
@@ -197,7 +202,7 @@ public class Utilities {
 
     public static boolean isYuletide() {
     	Calendar calendar = Calendar.getInstance();
-		return calendar.get(Calendar.MONTH) == calendar.DECEMBER && calendar.get(Calendar.DAY_OF_MONTH) >= 9 && calendar.get(Calendar.DAY_OF_MONTH) <= 25;
+		return calendar.get(Calendar.MONTH) == calendar.DECEMBER && calendar.get(Calendar.DAY_OF_MONTH) >= 10 && calendar.get(Calendar.DAY_OF_MONTH) <= 25;
     }
 
     public static boolean isYuletidePeak() {

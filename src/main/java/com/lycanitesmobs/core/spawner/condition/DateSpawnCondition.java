@@ -23,7 +23,7 @@ public class DateSpawnCondition extends SpawnCondition {
     /** The maximum day of the month it must be. **/
     public int dayMax = -1;
 
-    /** A season to check for. Can be "valentines", "easter", "halloween", "yuletide"/"christmas" or "newyear". **/
+    /** A season to check for. Can be "valentines", "easter", "midsummer", "halloween", "yuletide"/"christmas" or "newyear". **/
     public String season = "";
 
 
@@ -76,6 +76,9 @@ public class DateSpawnCondition extends SpawnCondition {
 				return false;
 			}
 			if("easter".equalsIgnoreCase(this.season) && !Utilities.isEaster()) {
+				return false;
+			}
+			if("midsummer".equalsIgnoreCase(this.season) && !Utilities.isMidsummer()) {
 				return false;
 			}
 			if("halloween".equalsIgnoreCase(this.season) && !Utilities.isHalloween()) {

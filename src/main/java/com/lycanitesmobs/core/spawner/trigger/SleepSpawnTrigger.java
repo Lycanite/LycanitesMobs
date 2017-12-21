@@ -62,6 +62,6 @@ public class SleepSpawnTrigger extends SpawnTrigger {
 			return false;
 		}
 
-		return this.trigger(world, player, spawnPos, 0);
+		return this.trigger(world, player, spawnPos, 0, 0);
 	}
 }

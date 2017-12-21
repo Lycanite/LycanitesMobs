@@ -234,18 +234,24 @@ public class MobInfo {
         }
 
         // Level:
-		config.setCategoryComment("Level Multipliers", "Normally mobs are level 1, but Spawners can increase their level. Here you can adjust the percentage of each stat that is added per extra level. So by default at level 2 a mobs health is increased by 10%, at level 3 20% and so on.");
+		config.setCategoryComment("Mob Level Multipliers", "Normally mobs are level 1, but Spawners can increase their level. Here you can adjust the percentage of each stat that is added per extra level. So by default at level 2 a mobs health is increased by 10%, at level 3 20% and so on.");
 		for(String statName : statNames) {
-        	double levelValue = 0.1D;
+        	double levelValue = 0.01D;
 			if("Health".equalsIgnoreCase(statName))
 				levelValue = 0.1D;
-			if("Damage".equalsIgnoreCase(statName))
+			if("Defense".equalsIgnoreCase(statName))
 				levelValue = 0.01D;
-			if("Haste".equalsIgnoreCase(statName))
-				levelValue = 0.05D;
 			if("Speed".equalsIgnoreCase(statName))
 				levelValue = 0.01D;
-			levelMultipliers.put(statName.toUpperCase(), config.getDouble("Level Multipliers", statName, levelValue));
+			if("Damage".equalsIgnoreCase(statName))
+				levelValue = 0.02D;
+			if("Haste".equalsIgnoreCase(statName))
+				levelValue = 0.01D;
+			if("Effect".equalsIgnoreCase(statName))
+				levelValue = 0.02D;
+			if("Pierce".equalsIgnoreCase(statName))
+				levelValue = 0.02D;
+			levelMultipliers.put(statName.toUpperCase(), config.getDouble("Mob Level Multipliers", statName, levelValue));
 		}
     }
 	

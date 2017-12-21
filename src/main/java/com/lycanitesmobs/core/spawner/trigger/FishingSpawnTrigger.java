@@ -38,7 +38,7 @@ public class FishingSpawnTrigger extends SpawnTrigger {
 		if(this.hookEntity != null) {
 			spawnPos = hookEntity.getPosition();
 		}
-		this.trigger(world, player, spawnPos, 0);
+		this.trigger(world, player, spawnPos, 0, 0);
 	}
 
 	@Override

@@ -110,7 +110,7 @@ public abstract class SpawnTrigger {
 
 
 	/** Triggers an actual spawn. **/
-	public boolean trigger(World world, EntityPlayer player, BlockPos triggerPos, int level) {
+	public boolean trigger(World world, EntityPlayer player, BlockPos triggerPos, int level, int chain) {
 		// Check Trigger Specific Conditions:
 		if(!this.triggerConditionsMet(world, player)) {
 			return false;
@@ -119,7 +119,7 @@ public abstract class SpawnTrigger {
 		if("".equals(this.spawner.eventName)) {
 			LycanitesMobs.printDebug("JSONSpawner", "Trigger Fired: " + this + " for: " + this.spawner.name);
 		}
-		return this.spawner.trigger(world, player, triggerPos, level, this.count);
+		return this.spawner.trigger(world, player, triggerPos, level, this.count, chain);
 	}
 
 	/** Checks all Conditions specific to this Trigger. **/

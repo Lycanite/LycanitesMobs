@@ -32,6 +32,6 @@ public class ChunkSpawnTrigger extends SpawnTrigger {
 			return false;
 		}
 
-		return this.trigger(world, null, new BlockPos((chunkX * 16) - 8, world.getSeaLevel(), (chunkZ * 16) - 8), 0);
+		return this.trigger(world, null, new BlockPos((chunkX * 16) - 8, world.getSeaLevel(), (chunkZ * 16) - 8), 0, 0);
 	}
 }

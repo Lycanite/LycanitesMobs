@@ -18,6 +18,7 @@ import com.lycanitesmobs.core.inventory.ContainerCreature;
 import com.lycanitesmobs.core.inventory.InventoryCreature;
 import com.lycanitesmobs.core.item.equipment.ItemEquipmentPart;
 import com.lycanitesmobs.core.pets.PetEntry;
+import com.lycanitesmobs.core.spawner.SpawnerEventListener;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -66,7 +67,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public static Boolean ENABLE_HITAREAS = false;
 
 	/** A snapshot of the base health for each mob. This is used when calculating subspecies or tamed health. **/
-	public static Map<Class, Double> baseHealthMap = new HashMap<Class, Double>();
+	public static Map<Class, Double> baseHealthMap = new HashMap<>();
     
 	// Info:
 	/** A class that contains information about this mob, this class also links to the SpawnInfo class relevant to this mob. **/
@@ -1086,7 +1087,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 		else if(difficulty == EnumDifficulty.NORMAL)
 			difficultyName = "Normal";
 		double difficultyMultiplier = MobInfo.difficultyMultipliers.get(difficultyName.toUpperCase() + "-" + stat.toUpperCase());
-		double levelMultiplier = (double)this.getLevel() * MobInfo.levelMultipliers.get(stat.toUpperCase());
+		double levelMultiplier = 1 + (((double)this.getLevel() - 1) * MobInfo.levelMultipliers.get(stat.toUpperCase()));
 		return difficultyMultiplier * levelMultiplier;
 	}
 
@@ -1215,7 +1216,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
      * seconds - The base duration in seconds that this effect should last for.
     **/
     public int getEffectDuration(int seconds) {
-		return Math.round(((float)seconds * (float)(this.getEffectMultiplier())) * 20) + (int)this.getEffectBoost();
+		return Math.round(((float)seconds * (float)(this.getEffectMultiplier())) * 20) + this.getEffectBoost();
     }
     /** When given a base effect strngth value such as a life drain amount, this will return the scaled value with difficulty and other modifiers taken into account
      * value - The base effect strength.
@@ -2907,19 +2908,29 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	destroyArea(x, y, z, strength, drop, 0);
     }
     public void destroyArea(int x, int y, int z, float strength, boolean drop, int range) {
-    	range = Math.max(range -1, 0);
-    	for(int w = -((int)Math.ceil(this.width) + range); w <= (Math.ceil(this.width) + range); w++)
-        	for(int d = -((int)Math.ceil(this.width) + range); d <= (Math.ceil(this.width) + range); d++)
-		    	for(int h = 0; h <= Math.ceil(this.height); h++) {
-		    		IBlockState blockState = this.getEntityWorld().getBlockState(new BlockPos(x + w, y + h, z + d));
-		    		if(blockState != null) {
-			    		float hardness = blockState.getBlockHardness(this.getEntityWorld(), new BlockPos(x + w, y + h, z + d));
-			    		Material material = blockState.getMaterial();
-			    		if(hardness >= 0 && strength >= hardness && strength >= blockState.getBlock().getExplosionResistance(this) && material != Material.WATER && material != Material.LAVA)
-			    			this.getEntityWorld().destroyBlock(new BlockPos(x + w, y + h, z + d), drop);
-		    		}
-		    	}
+    	this.destroyArea(x, y, z, strength, drop, range, null, 0);
     }
+	public void destroyArea(int x, int y, int z, float strength, boolean drop, int range, EntityPlayer player, int chain) {
+		range = Math.max(range -1, 0);
+		for(int w = -((int)Math.ceil(this.width) - range); w <= (Math.ceil(this.width) + range); w++) {
+			for (int d = -((int) Math.ceil(this.width) - range); d <= (Math.ceil(this.width) + range); d++) {
+				for (int h = 0; h <= Math.ceil(this.height); h++) {
+					BlockPos breakPos = new BlockPos(x + w, y + h, z + d);
+					IBlockState blockState = this.getEntityWorld().getBlockState(breakPos);
+					if (blockState != null) {
+						float hardness = blockState.getBlockHardness(this.getEntityWorld(), breakPos);
+						Material material = blockState.getMaterial();
+						if (hardness >= 0 && strength >= hardness && strength >= blockState.getBlock().getExplosionResistance(this) && material != Material.WATER && material != Material.LAVA) {
+							this.getEntityWorld().destroyBlock(breakPos, drop);
+							if(player != null && !(w == 0 && h == 0 && d == 0)) {
+								SpawnerEventListener.getInstance().onBlockBreak(this.getEntityWorld(), breakPos, blockState, player, chain);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 	public void destroyAreaBlock(int x, int y, int z, Class<? extends Block> blockClass, boolean drop, int range) {
 		for(int w = -((int)Math.ceil(this.width) + range); w <= (Math.ceil(this.width) + range); w++)
 			for(int d = -((int)Math.ceil(this.width) + range); d <= (Math.ceil(this.width) + range); d++)

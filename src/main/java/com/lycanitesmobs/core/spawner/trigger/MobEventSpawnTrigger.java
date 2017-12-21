@@ -35,6 +35,6 @@ public class MobEventSpawnTrigger extends SpawnTrigger {
 
 	/** Called every world tick when an event is active. **/
 	public void onTick(World world, MobEventPlayerServer mobEventPlayerServer) {
-		this.trigger(world, mobEventPlayerServer.player, mobEventPlayerServer.origin, mobEventPlayerServer.level);
+		this.trigger(world, mobEventPlayerServer.player, mobEventPlayerServer.origin, mobEventPlayerServer.level, 0);
 	}
 }

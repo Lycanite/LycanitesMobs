@@ -70,25 +70,25 @@ public class BlockSpawnTrigger extends SpawnTrigger {
 
 
 	/** Called every time a block breaks. **/
-	public void onBlockBreak(World world, EntityPlayer player, BlockPos breakPos, IBlockState blockState) {
+	public void onBlockBreak(World world, EntityPlayer player, BlockPos breakPos, IBlockState blockState, int chain) {
 		if(!this.onBreak) {
 			return;
 		}
-		this.onBlockTriggered(world, player, breakPos, blockState);
+		this.onBlockTriggered(world, player, breakPos, blockState, chain);
 	}
 
 
 	/** Called every time a block is harvested. **/
-	public void onBlockHarvest(World world, EntityPlayer player, BlockPos breakPos, IBlockState blockState) {
+	public void onBlockHarvest(World world, EntityPlayer player, BlockPos breakPos, IBlockState blockState, int chain) {
 		if(!this.onHarvest) {
 			return;
 		}
-		this.onBlockTriggered(world, player, breakPos, blockState);
+		this.onBlockTriggered(world, player, breakPos, blockState, chain);
 	}
 
 
 	/** Called every time a player breaks a block. **/
-	public void onBlockTriggered(World world, EntityPlayer player, BlockPos breakPos, IBlockState blockState) {
+	public void onBlockTriggered(World world, EntityPlayer player, BlockPos breakPos, IBlockState blockState, int chain) {
 		// Check Player:
 		if(this.playerOnly && (player == null || player instanceof FakePlayer)) {
 			return;
@@ -104,7 +104,7 @@ public class BlockSpawnTrigger extends SpawnTrigger {
 			return;
 		}
 
-		this.trigger(world, player, breakPos, this.getBlockLevel(blockState, world, breakPos));
+		this.trigger(world, player, breakPos, this.getBlockLevel(blockState, world, breakPos), chain);
 	}
 
 	/** Returns true if the provided block is a match for this trigger. **/

@@ -53,6 +53,6 @@ public class ExplosionSpawnTrigger extends SpawnTrigger {
 			return false;
 		}
 
-		return this.trigger(world, player, new BlockPos(explosion.getPosition()), 0);
+		return this.trigger(world, player, new BlockPos(explosion.getPosition()), 0, 0);
 	}
 }

@@ -63,8 +63,11 @@ public class Spawner {
     /** Determines how a Location is chosen if there are multiple. Can be: order, random or combine. **/
     public String multipleLocations = "combine";
 
-	/** How many mobs to spawn each wave. **/
-	public int mobCount = 1;
+	/** The minimum amount of mobs to spawn each wave. **/
+	public int mobCountMin = 1;
+
+	/** The maximum amount of mobs to spawn each wave. **/
+	public int mobCountMax = 1;
 
 	/** If true, this Spawner will ignore all mob dimension checks (not Spawn Condition checks), this bypasses the checks in MobSpawns and SpawnInfos. **/
 	public boolean ignoreDimensions = false;
@@ -89,6 +92,9 @@ public class Spawner {
 
     /** If true, mobs spawned by this Spawner will not naturally despawn. **/
     public boolean forceNoDespawn = false;
+
+	/** If true, actions caused by this spawner such as block destruction can trigger additional spawn triggers creating a spawner chain. **/
+	public boolean chainSpawning = true;
 
 	/** If true, this Spawner will act as enabled even if it can't find any mobs to spawn, useful if you just want to use trigger messages, etc. **/
 	public boolean enableWithoutMobs = false;
@@ -137,8 +143,11 @@ public class Spawner {
 		if(json.has("multipleLocations"))
 			this.multipleLocations = json.get("multipleLocations").getAsString();
 
-		if(json.has("mobCount"))
-			this.mobCount = json.get("mobCount").getAsInt();
+		if(json.has("mobCountMin"))
+			this.mobCountMin = json.get("mobCountMin").getAsInt();
+
+		if(json.has("mobCountMax"))
+			this.mobCountMax = json.get("mobCountMax").getAsInt();
 
 		if(json.has("ignoreDimensions"))
 			this.ignoreDimensions = json.get("ignoreDimensions").getAsBoolean();
@@ -163,6 +172,9 @@ public class Spawner {
 
 		if(json.has("forceNoDespawn"))
 			this.forceNoDespawn = json.get("forceNoDespawn").getAsBoolean();
+
+		if(json.has("chainSpawning"))
+			this.chainSpawning = json.get("chainSpawning").getAsBoolean();
 
 		if(json.has("enableWithoutMobs"))
 			this.enableWithoutMobs = json.get("enableWithoutMobs").getAsBoolean();
@@ -291,9 +303,10 @@ public class Spawner {
 	 * @param triggerPos The location that the spawn was triggered, usually used as the center for spawning around or on.
 	 * @param level The level of the spawn trigger, higher levels are from rarer spawn conditions and can result in tougher mobs being spawned.
 	 * @param countAmount How much this trigger affects the trigger count by.
+	 * @param chain How far along a spawner chain this trigger is, this increases whenever the actions of one spawner trigger another spawner and is used to prevent loops, etc.
 	 * @return True on a successful spawn and false on failure.
 	 **/
-	public boolean trigger(World world, EntityPlayer player, BlockPos triggerPos, int level, int countAmount) {
+	public boolean trigger(World world, EntityPlayer player, BlockPos triggerPos, int level, int countAmount, int chain) {
 		if(!this.isEnabled(world, player)) {
 			return false;
 		}
@@ -307,7 +320,7 @@ public class Spawner {
 		// Only One Trigger Required:
 		if(this.triggersRequired <= 1 || player == null) {
 			LycanitesMobs.printDebug("JSONSpawner", "Only one trigger required.");
-			return this.doSpawn(world, player, triggerPos, level);
+			return this.doSpawn(world, player, triggerPos, level, chain);
 		}
 
 		// Get Current Count:
@@ -335,7 +348,7 @@ public class Spawner {
 		LycanitesMobs.printDebug("JSONSpawner", "Trigger " + currentCount + "/" + this.triggersRequired);
 		if(currentCount >= this.triggersRequired) {
 			this.triggerCounts.put(player, 0);
-			return this.doSpawn(world, player, triggerPos, level);
+			return this.doSpawn(world, player, triggerPos, level, chain);
 		}
 
 		this.triggerCounts.put(player, currentCount);
@@ -349,11 +362,17 @@ public class Spawner {
      * @param player The player that is being spawned around.
      * @param triggerPos The location that the spawn was triggered, usually used as the center for spawning around or on.
 	 * @param level The level of the spawn trigger, higher levels are from rarer spawn conditions and can result in tougher mobs being spawned.
+	 * @param chain How far along a spawner chain this trigger is, this increases whenever the actions of one spawner trigger another spawner and is used to prevent loops, etc.
      * @return True on a successful spawn and false on failure.
      **/
-    public boolean doSpawn(World world, EntityPlayer player, BlockPos triggerPos, int level) {
+    public boolean doSpawn(World world, EntityPlayer player, BlockPos triggerPos, int level, int chain) {
+    	int mobCount = this.mobCountMin;
+    	if(this.mobCountMax > this.mobCountMin) {
+    		mobCount = world.rand.nextInt(this.mobCountMax - this.mobCountMin) + 1 + this.mobCountMin;
+		}
+
 		ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
-		LycanitesMobs.printDebug("JSONSpawner", "Spawning Wave: " + this.mobCount + " Mob(s)");
+		LycanitesMobs.printDebug("JSONSpawner", "Spawning Wave: " + mobCount + " Mob(s)");
 		LycanitesMobs.printDebug("JSONSpawner", "Trigger World: " + world);
 		LycanitesMobs.printDebug("JSONSpawner", "Trigger Player: " + player);
 		LycanitesMobs.printDebug("JSONSpawner", "Trigger Position: " + triggerPos);
@@ -391,7 +410,7 @@ public class Spawner {
 
 		int mobsSpawned = 0;
 		for(BlockPos spawnPos : spawnPositions) {
-			if(mobsSpawned >= this.mobCount) {
+			if(mobsSpawned >= mobCount) {
 				break;
 			}
 			LycanitesMobs.printDebug("JSONSpawner", "---------- Spawn Iteration: " + mobsSpawned + " ----------");
@@ -443,7 +462,7 @@ public class Spawner {
 			}
 
 			// Spawn The Mob:
-			this.spawnEntity(world, worldExt, entityLiving, level, mobSpawn, player);
+			this.spawnEntity(world, worldExt, entityLiving, level, mobSpawn, player, chain);
 
 			// Call Entity's Initial Spawn:
 			if (!ForgeEventFactory.doSpecialSpawn(entityLiving, world, (float) spawnPos.getX() + 0.5F, (float) spawnPos.getY(), (float) spawnPos.getZ() + 0.5F)) {
@@ -647,7 +666,7 @@ public class Spawner {
 	 * @param world The world to spawn in.
 	 * @param entityLiving The entity to spawn.
 	 */
-	public void spawnEntity(World world, ExtendedWorld worldExt, EntityLiving entityLiving, int level, MobSpawn mobSpawn, EntityPlayer player) {
+	public void spawnEntity(World world, ExtendedWorld worldExt, EntityLiving entityLiving, int level, MobSpawn mobSpawn, EntityPlayer player, int chain) {
 		// Before Spawn:
 		entityLiving.timeUntilPortal = entityLiving.getPortalCooldown();
 
@@ -656,8 +675,8 @@ public class Spawner {
 			entityCreature = (EntityCreatureBase)entityLiving;
 			entityCreature.forceNoDespawn = this.forceNoDespawn;
 			entityCreature.spawnedRare = level > 0;
-			if (this.blockBreakRadius > -1) {
-				entityCreature.destroyArea((int) entityLiving.posX, (int) entityLiving.posY, (int) entityLiving.posZ, 100, true, this.blockBreakRadius);
+			if (this.blockBreakRadius > -1 && chain == 0) {
+				entityCreature.destroyArea((int) entityLiving.posX - 1, (int) entityLiving.posY, (int) entityLiving.posZ, 100, true, this.blockBreakRadius, this.chainSpawning ? player : null, chain + 1);
 			}
 
 			// Apply Mob Event:

@@ -48,6 +48,6 @@ public class KillSpawnTrigger extends EntitySpawnTrigger {
 			return;
 		}
 
-		this.trigger(player.getEntityWorld(), player, killedEntity.getPosition(), 0);
+		this.trigger(player.getEntityWorld(), player, killedEntity.getPosition(), 0, 0);
 	}
 }

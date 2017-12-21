@@ -260,7 +260,7 @@ public class SpawnerEventListener {
 		IBlockState blockState = event.getState();
 
         for(BlockSpawnTrigger spawnTrigger : this.blockSpawnTriggers) {
-            spawnTrigger.onBlockHarvest(world, player, blockPos, blockState);
+            spawnTrigger.onBlockHarvest(world, player, blockPos, blockState, 0);
         }
 	}
 
@@ -271,23 +271,22 @@ public class SpawnerEventListener {
 	/** This uses the block break events to update Block Spawn Triggers. **/
     @SubscribeEvent
     public void onBlockBreak(BlockEvent.BreakEvent event) {
-		EntityPlayer player = event.getPlayer();
 		if(event.getState() == null || event.getWorld() == null || event.getWorld().isRemote || event.isCanceled()) {
 			return;
 		}
-		if(player != null && (!testOnCreative && player.capabilities.isCreativeMode)) { // No Spawning for Creative Players
+		this.onBlockBreak(event.getWorld(), event.getPos(), event.getState(), event.getPlayer(), 0);
+    }
+
+	public void onBlockBreak(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer player, int chain) {
+		if(player != null && (!testOnCreative && player.capabilities.isCreativeMode)) {
 			return;
 		}
 
 		// Spawn On Block Harvest:
-		World world = event.getWorld();
-		BlockPos blockPos = event.getPos().add(0, 0, 1);
-		IBlockState blockState = event.getState();
-
 		for(BlockSpawnTrigger spawnTrigger : this.blockSpawnTriggers) {
-			spawnTrigger.onBlockBreak(world, player, blockPos, blockState);
+			spawnTrigger.onBlockBreak(world, player, blockPos, blockState, chain);
 		}
-    }
+	}
 
 	
 	// ==================================================

@@ -41,6 +41,6 @@ public class EntitySpawnedSpawnTrigger extends EntitySpawnTrigger {
 			return;
 		}
 
-		this.trigger(spawnedEntity.getEntityWorld(), null, spawnedEntity.getPosition(), 0);
+		this.trigger(spawnedEntity.getEntityWorld(), null, spawnedEntity.getPosition(), 0, 0);
 	}
 }

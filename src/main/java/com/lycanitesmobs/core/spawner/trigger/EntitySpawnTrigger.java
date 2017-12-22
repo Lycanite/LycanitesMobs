@@ -6,9 +6,8 @@ import com.google.gson.JsonObject;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.spawner.Spawner;
 import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
-import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -69,8 +68,8 @@ public abstract class EntitySpawnTrigger extends SpawnTrigger {
 	}
 
 
-	/** Returns true fi the provided entity should trigger this Spawn Trigger. **/
-	public boolean isMatchingEntity(EntityLiving killedEntity) {
+	/** Returns true if the provided entity should trigger this Spawn Trigger. **/
+	public boolean isMatchingEntity(EntityLivingBase killedEntity) {
 
 		// Check Entity Type:
 		if(this.entityTypes.contains(killedEntity.getCreatureAttribute())) {

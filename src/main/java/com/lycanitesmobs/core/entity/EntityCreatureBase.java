@@ -3458,6 +3458,11 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public float getFallResistance() {
     	return 0;
     }
+
+    /** Returns true if this mob should be ignored by Withers. **/
+    public boolean hideFromWithers() {
+    	return false;
+	}
     
     
     // ==================================================

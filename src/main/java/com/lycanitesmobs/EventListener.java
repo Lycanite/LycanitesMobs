@@ -12,6 +12,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
@@ -274,11 +275,25 @@ public class EventListener {
     // ==================================================
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void onAttackTarget(LivingSetAttackTargetEvent event) {
+		Entity targetEntity = event.getTarget();
+		if(event.getEntityLiving() == null || targetEntity == null) {
+			return;
+		}
+
 		// Better Invisibility:
-		if(event.getEntityLiving() != null) {
-			if(!event.getEntityLiving().isPotionActive(MobEffects.NIGHT_VISION) && event.getTarget() != null) {
-				if(event.getTarget().isInvisible())
-					event.getEntityLiving().setRevengeTarget(null);
+		if(!event.getEntityLiving().isPotionActive(MobEffects.NIGHT_VISION)) {
+			if(targetEntity.isInvisible()) {
+				event.getEntityLiving().setRevengeTarget(null);
+				return;
+			}
+		}
+
+		// Wither Friendly:
+		if(event.getEntityLiving() instanceof EntityWither && targetEntity instanceof EntityCreatureBase) {
+			if(((EntityCreatureBase)targetEntity).hideFromWithers()) {
+				event.getEntityLiving().setRevengeTarget(null);
+				((EntityWither) event.getEntityLiving()).setAttackTarget(null);
+				return;
 			}
 		}
 	}

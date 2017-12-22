@@ -1,5 +1,5 @@
 {
-	"name": "undeath",
+	"name": "explosion",
 	"type": "spawner",
 	"enabled": true,
 	"loadDefault": true,
@@ -7,24 +7,22 @@
 	"ignoreDimensions": true,
 	"ignoreBiomes": true,
 	"ignoreLightLevel": true,
-	"ignoreForgeCanSpawnEvent": true,
-	"conditions": [
-		{
-			"type": "player"
-		}
-	],
+	"ignoreGroupLimit": true,
+	"conditions": [],
 	"triggers": [
 		{
-			"type": "kill",
-			"chance": 0.03,
-			"entityTypes": [
-				"undead"
-			],
-			"entityTypesListType": "whitelist",
+			"type": "explosion",
+			"chance": 0.05,
+			"entityTypesListType": "blacklist",
 			"entityIds": [
-				"shadowmobs.geist"
+				"mountainmobs.tremor"
 			],
 			"entityIdsListType": "blacklist"
+		},
+		{
+			"type": "explosion",
+			"chance": 0.2,
+			"playerOnly": true
 		}
 	],
 	"locations": [
@@ -37,7 +35,8 @@
 	],
 	"mobSpawns": [
 		{
-			"mobId": "shadowmobs.geist"
+			"mobId": "mountainmobs.tremor",
+			"weight": 8
 		}
 	]
 }

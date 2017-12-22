@@ -1,10 +1,8 @@
 package com.lycanitesmobs.demonmobs.entity;
 
-import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
-import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.DropRate;
 import net.minecraft.entity.Entity;
@@ -16,10 +14,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -118,11 +116,12 @@ public class EntityNetherSoul extends EntityCreatureTameable implements IMob {
         }
 
         // Particles:
-        if(this.getEntityWorld().isRemote && this.idleTime > 5)
-	        for(int i = 0; i < 2; ++i) {
-	            this.getEntityWorld().spawnParticle(EnumParticleTypes.SMOKE_LARGE, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
-	            this.getEntityWorld().spawnParticle(EnumParticleTypes.FLAME, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
-	        }
+        if(this.getEntityWorld().isRemote && this.detonateTimer <= 5) {
+			for (int i = 0; i < 2; ++i) {
+				this.getEntityWorld().spawnParticle(EnumParticleTypes.SMOKE_LARGE, this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width, this.posY + this.rand.nextDouble() * (double) this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width, 0.0D, 0.0D, 0.0D);
+				this.getEntityWorld().spawnParticle(EnumParticleTypes.FLAME, this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width, this.posY + this.rand.nextDouble() * (double) this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width, 0.0D, 0.0D, 0.0D);
+			}
+		}
         
         super.onLivingUpdate();
     }
@@ -213,4 +212,26 @@ public class EntityNetherSoul extends EntityCreatureTameable implements IMob {
     public int getBrightnessForRender() {
         return 15728880;
     }
+
+
+	// ==================================================
+	//                        NBT
+	// ==================================================
+	// ========== Read ===========
+	@Override
+	public void readEntityFromNBT(NBTTagCompound nbtTagCompound) {
+		super.readEntityFromNBT(nbtTagCompound);
+		if(nbtTagCompound.hasKey("DetonateTimer")) {
+			this.detonateTimer = nbtTagCompound.getInteger("DetonateTimer");
+		}
+	}
+
+	// ========== Write ==========
+	@Override
+	public void writeEntityToNBT(NBTTagCompound nbtTagCompound) {
+		super.writeEntityToNBT(nbtTagCompound);
+		if(this.detonateTimer > -1) {
+			nbtTagCompound.setInteger("DetonateTimer", this.detonateTimer);
+		}
+	}
 }

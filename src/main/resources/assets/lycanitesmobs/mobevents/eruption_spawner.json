@@ -37,6 +37,10 @@
 		{
 			"mobId": "infernomobs.gorger",
 			"weight": 8
+		},
+		{
+			"mobId": "mountainmobs.tremor",
+			"weight": 2
 		}
 	]
 }

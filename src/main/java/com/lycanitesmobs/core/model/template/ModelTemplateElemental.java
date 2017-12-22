@@ -25,6 +25,9 @@ public class ModelTemplateElemental extends ModelObj {
         float rotZ = 0F;
 
         // Idle:
+        if(partName.equals("mouth")) {
+            this.rotate((float)-Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F - 0.05F), 0.0F, 0.0F);
+        }
         if(partName.equals("armleft")) {
             rotZ -= Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.1F);
             rotX -= Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);

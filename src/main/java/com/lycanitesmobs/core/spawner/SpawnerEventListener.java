@@ -108,6 +108,12 @@ public class SpawnerEventListener {
 		if(this.killSpawnTriggers.contains(spawnTrigger)) {
 			this.killSpawnTriggers.remove(spawnTrigger);
 		}
+		if(this.entitySpawnedSpawnTriggers.contains(spawnTrigger)) {
+			this.entitySpawnedSpawnTriggers.remove(spawnTrigger);
+		}
+		if(this.chunkSpawnTriggers.contains(spawnTrigger)) {
+			this.chunkSpawnTriggers.remove(spawnTrigger);
+		}
 		if(this.blockSpawnTriggers.contains(spawnTrigger)) {
 			this.blockSpawnTriggers.remove(spawnTrigger);
 		}
@@ -116,6 +122,12 @@ public class SpawnerEventListener {
 		}
 		if(this.fishingSpawnTriggers.contains(spawnTrigger)) {
 			this.fishingSpawnTriggers.remove(spawnTrigger);
+		}
+		if(this.explosionSpawnTriggers.contains(spawnTrigger)) {
+			this.explosionSpawnTriggers.remove(spawnTrigger);
+		}
+		if(this.mobEventSpawnTriggers.contains(spawnTrigger)) {
+			this.mobEventSpawnTriggers.remove(spawnTrigger);
 		}
 	}
 
@@ -325,10 +337,14 @@ public class SpawnerEventListener {
 	//                  Fished Event
 	// ==================================================
 	/** This uses the lightning strike event to spawn mobs. **/
+	@SubscribeEvent
 	public void onFished(ItemFishedEvent event) {
 		EntityPlayer player = event.getEntityPlayer();
 		if(player == null || player.getEntityWorld() == null || player.getEntityWorld().isRemote || event.isCanceled())
 			return;
+		if(player != null && (!testOnCreative && player.capabilities.isCreativeMode)) { // No Spawning for Creative Players
+			return;
+		}
 
 		World world = player.getEntityWorld();
 		Entity hookEntity = event.getHookEntity();
@@ -342,7 +358,8 @@ public class SpawnerEventListener {
 	//                Explosion Event
 	// ==================================================
 	/** This uses the explosion strike event to spawn mobs. **/
-	public void onFished(ExplosionEvent.Detonate event) {
+	@SubscribeEvent
+	public void onExplosion(ExplosionEvent.Detonate event) {
 		Explosion explosion = event.getExplosion();
 		if(explosion == null) {
 			return;
@@ -353,6 +370,11 @@ public class SpawnerEventListener {
 		if(explosion.getExplosivePlacedBy() instanceof EntityPlayer) {
 			player = (EntityPlayer)explosion.getExplosivePlacedBy();
 		}
+
+		if(player != null && (!testOnCreative && player.capabilities.isCreativeMode)) { // No Spawning for Creative Players
+			return;
+		}
+
 		for(ExplosionSpawnTrigger spawnTrigger : this.explosionSpawnTriggers) {
 			spawnTrigger.onExplosion(world, player, explosion);
 		}

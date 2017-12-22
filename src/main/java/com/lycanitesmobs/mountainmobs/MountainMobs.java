@@ -136,6 +136,13 @@ public class MountainMobs extends Submod {
 				.setSpawnWeight(4).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
+		newMob = new MobInfo(group, "tremor", EntityTremor.class, 0xa1b5bf, 0x232d2e)
+				.setPeaceful(false).setSummonable(true).setSummonCost(5).setDungeonLevel(3)
+				.addSubspecies(new Subspecies("russet", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("")
+				.setSpawnWeight(1).setAreaLimit(3).setGroupLimits(1, 2).setLightDark(false, true);
+		ObjectManager.addMob(newMob);
+
 		newMob = new MobInfo(group, "beholder", EntityBeholder.class, 0x442211, 0x44AA33)
 				.setPeaceful(false).setTameable(true).setSummonCost(6).setDungeonLevel(2)
 				.addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));

@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ExplosionSpawnTrigger extends SpawnTrigger {
+public class ExplosionSpawnTrigger extends EntitySpawnTrigger {
 
 	/** The minimum strength or size of the explosion. Currently not working as there isn;t a way to get explosion size from an explosion event. **/
 	public int strength = 4;
@@ -49,8 +49,15 @@ public class ExplosionSpawnTrigger extends SpawnTrigger {
 		}
 
 		// Chance:
-		if(this.chance < 1 && player.getRNG().nextDouble() > this.chance) {
+		if(this.chance < 1 && world.rand.nextDouble() > this.chance) {
 			return false;
+		}
+
+		// Entity Check:
+		if(!this.playerOnly && explosion.getExplosivePlacedBy() != null) {
+			if(!this.isMatchingEntity(explosion.getExplosivePlacedBy())) {
+				return false;
+			}
 		}
 
 		return this.trigger(world, player, new BlockPos(explosion.getPosition()), 0, 0);

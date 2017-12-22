@@ -57,6 +57,14 @@ achievement.wildkin.learn=Owl Bears
 achievement.wildkin.learn.desc=Add a Wildkin to your Beastiary.
 achievement.wildkin.tame=Druids Friend
 achievement.wildkin.tame.desc=Tame a Wildkin.
+entity.mountainmobs.tremor.name=Tremor
+entity.mountainmobs.tremor.description=Tremors are explosive Quake Elementals formed from large explosions and destruction.
+achievement.tremor.kill=Out With A Bang
+achievement.tremor.kill.desc=Slay a Tremor.
+achievement.tremor.learn=Quake Elementals
+achievement.tremor.learn.desc=Add a Tremor to your Beastiary.
+achievement.tremor.summon=Explosive!
+achievement.tremor.summon.desc=Summon a Tremor.
 #
 # Items
 item.mountainspawn.name=Spawn

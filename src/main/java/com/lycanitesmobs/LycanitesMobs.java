@@ -11,6 +11,7 @@ import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.entity.EntityFear;
 import com.lycanitesmobs.core.entity.EntityHitArea;
 import com.lycanitesmobs.core.entity.EntityPortal;
+import com.lycanitesmobs.core.helpers.LMReflectionHelper;
 import com.lycanitesmobs.core.info.*;
 import com.lycanitesmobs.core.item.*;
 import com.lycanitesmobs.core.mobevent.MobEventListener;
@@ -22,6 +23,8 @@ import com.lycanitesmobs.core.spawner.SpawnerManager;
 import com.lycanitesmobs.core.tileentity.TileEntityEquipmentForge;
 import com.lycanitesmobs.core.tileentity.TileEntitySummoningPedestal;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
@@ -43,7 +46,7 @@ public class LycanitesMobs {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String version = "1.17.4.0 - MC 1.12.2";
+	public static final String version = "1.17.4.1 - MC 1.12.2";
 	public static final String website = "http://lycanitesmobs.com";
 	public static final String websiteAPI = "http://api.lycanitesmobs.com";
 	public static final String websitePatreon = "https://www.patreon.com/lycanite";
@@ -110,6 +113,9 @@ public class LycanitesMobs {
 
         // Register Rendering Factories:
         proxy.registerRenders(this.group);
+
+        // Change Health Limit:
+		LMReflectionHelper.setPrivateFinalValue(RangedAttribute.class, (RangedAttribute)SharedMonsterAttributes.MAX_HEALTH, 100000, "maximumValue");
 
 		this.packetHandler.init();
 		

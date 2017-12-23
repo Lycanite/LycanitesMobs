@@ -84,7 +84,7 @@ public class EntityTrent extends EntityCreatureBase implements IMob, IGroupPlant
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 40D);
+		baseAttributes.put("maxHealth", 60D);
 		baseAttributes.put("movementSpeed", 0.18D);
 		baseAttributes.put("knockbackResistance", 1.0D);
 		baseAttributes.put("followRange", 16D);

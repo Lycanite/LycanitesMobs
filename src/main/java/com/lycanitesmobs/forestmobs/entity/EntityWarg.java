@@ -92,7 +92,7 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
 		baseAttributes.put("maxHealth", 20D);
-		baseAttributes.put("movementSpeed", 0.28D);
+		baseAttributes.put("movementSpeed", 0.3D);
 		baseAttributes.put("knockbackResistance", 0.25D);
 		baseAttributes.put("followRange", 16D);
 		baseAttributes.put("attackDamage", 3D);
@@ -119,7 +119,7 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
         if(!this.isTamed() && this.onGround && !this.getEntityWorld().isRemote) {
         	if(this.hasAttackTarget()) {
         		if(this.rand.nextInt(10) == 0)
-        			this.leap(6.0F, 0.5D, this.getAttackTarget());
+        			this.leap(6.0F, 1D, this.getAttackTarget());
         	}
         }
 

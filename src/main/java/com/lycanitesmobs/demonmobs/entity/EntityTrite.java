@@ -1,5 +1,6 @@
 package com.lycanitesmobs.demonmobs.entity;
 
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupAnimal;
 import com.lycanitesmobs.api.IGroupDemon;
@@ -92,7 +93,7 @@ public class EntityTrite extends EntityCreatureBase implements IMob, IGroupDemon
 	@Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        
+
         // Leap:
         if(this.hasAttackTarget() && this.onGround && !this.getEntityWorld().isRemote && this.rand.nextInt(10) == 0)
         	this.leap(6.0F, 0.6D, this.getAttackTarget());

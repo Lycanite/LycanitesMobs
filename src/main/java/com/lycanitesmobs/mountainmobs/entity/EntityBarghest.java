@@ -119,7 +119,7 @@ public class EntityBarghest extends EntityCreatureRideable implements IGroupPred
         if(!this.isTamed() && this.onGround && !this.getEntityWorld().isRemote) {
         	if(this.hasAttackTarget()) {
         		if(this.rand.nextInt(10) == 0)
-        			this.leap(4.0F, 0.7D, this.getAttackTarget());
+        			this.leap(4.0F, 1D, this.getAttackTarget());
         	}
         }
 

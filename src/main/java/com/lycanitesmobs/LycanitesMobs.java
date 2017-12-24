@@ -115,7 +115,7 @@ public class LycanitesMobs {
         proxy.registerRenders(this.group);
 
         // Change Health Limit:
-		LMReflectionHelper.setPrivateFinalValue(RangedAttribute.class, (RangedAttribute)SharedMonsterAttributes.MAX_HEALTH, 100000, "maximumValue");
+		LMReflectionHelper.setPrivateFinalValue(RangedAttribute.class, (RangedAttribute)SharedMonsterAttributes.MAX_HEALTH, 100000, "maximumValue", "field_111118_b");
 
 		this.packetHandler.init();
 		

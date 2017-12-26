@@ -1,5 +1,6 @@
 package com.lycanitesmobs;
 
+import com.lycanitesmobs.core.VersionChecker;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.info.Beastiary;
 import com.lycanitesmobs.core.info.GroupInfo;
@@ -9,7 +10,6 @@ import com.lycanitesmobs.core.pets.DonationFamiliars;
 import com.lycanitesmobs.core.pets.PetEntry;
 import com.lycanitesmobs.core.capabilities.IExtendedPlayer;
 import com.lycanitesmobs.core.item.ItemStaffSummoning;
-import com.lycanitesmobs.core.network.*;
 import com.lycanitesmobs.core.pets.PetManager;
 import com.lycanitesmobs.core.pets.SummonSet;
 import net.minecraft.entity.Entity;
@@ -19,6 +19,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.translation.I18n;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -62,8 +64,8 @@ public class ExtendedPlayer implements IExtendedPlayer {
 	public int selectedSummonSet = 1;
 	public int summonSetMax = 5;
 
-    // Familiars:
-    private boolean petManagerSetup = false;
+    // Initial Setup:
+    private boolean initialSetup = false;
 	
 	// ==================================================
     //                   Get for Player
@@ -207,22 +209,32 @@ public class ExtendedPlayer implements IExtendedPlayer {
 			}
 		}
 
-		// Pet Manager Setup:
-		if(!this.player.getEntityWorld().isRemote && !this.petManagerSetup) {
-			// Load Familiars:
-			Map<String, PetEntry> playerFamiliars = DonationFamiliars.instance.getFamiliarsForPlayer(this.player);
-			if(playerFamiliars != null) {
-				this.petManager.clearEntries("familiar");
-				for(PetEntry petEntry : playerFamiliars.values()) {
-					if(!this.petManager.hasEntry(petEntry)) {
-						this.petManager.addEntry(petEntry);
-						petEntry.entity = null;
+		// Initial Setup:
+		if(!this.initialSetup) {
+
+			// Pet Manager Setup:
+			if (!this.player.getEntityWorld().isRemote) {
+				// Load Familiars:
+				Map<String, PetEntry> playerFamiliars = DonationFamiliars.instance.getFamiliarsForPlayer(this.player);
+				if (playerFamiliars != null) {
+					this.petManager.clearEntries("familiar");
+					for (PetEntry petEntry : playerFamiliars.values()) {
+						if (!this.petManager.hasEntry(petEntry)) {
+							this.petManager.addEntry(petEntry);
+							petEntry.entity = null;
+						}
 					}
+					this.sendPetEntriesToPlayer("familiar");
 				}
-				this.sendPetEntriesToPlayer("familiar");
 			}
 
-			this.petManagerSetup = true;
+			// Mod Version Check:
+			VersionChecker.VersionInfo latestVersion = VersionChecker.getLatestVersion();
+			if(latestVersion != null && latestVersion.isNewer) {
+				this.player.sendMessage(new TextComponentString(I18n.translateToLocal("lyc.version.newer").replace("{current}", LycanitesMobs.versionNumber).replace("{latest}", latestVersion.versionNumber)));
+			}
+
+			this.initialSetup = true;
 		}
 		
 		// Initial Network Sync:

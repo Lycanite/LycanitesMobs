@@ -1,5 +1,6 @@
 package com.lycanitesmobs;
 
+import com.lycanitesmobs.core.VersionChecker;
 import com.lycanitesmobs.core.block.BlockEquipmentForge;
 import com.lycanitesmobs.core.block.BlockSummoningPedestal;
 import com.lycanitesmobs.core.capabilities.ExtendedEntityStorage;
@@ -18,6 +19,7 @@ import com.lycanitesmobs.core.mobevent.MobEventListener;
 import com.lycanitesmobs.core.mobevent.MobEventManager;
 import com.lycanitesmobs.core.mods.DLDungeons;
 import com.lycanitesmobs.core.network.PacketHandler;
+import com.lycanitesmobs.core.pets.DonationFamiliars;
 import com.lycanitesmobs.core.spawner.SpawnerEventListener;
 import com.lycanitesmobs.core.spawner.SpawnerManager;
 import com.lycanitesmobs.core.tileentity.TileEntityEquipmentForge;
@@ -46,7 +48,7 @@ public class LycanitesMobs {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String versionNumber = "1.17.4.1";
+	public static final String versionNumber = "1.17.4.2";
 	public static final String versionMC = "1.12.2";
 	public static final String version = versionNumber + " - MC " + versionMC;
 	public static final String website = "http://lycanitesmobs.com";
@@ -102,7 +104,9 @@ public class LycanitesMobs {
 		config = ConfigBase.getConfig(group, "general");
 		config.setCategoryComment("Debug", "Set debug options to true to show extra debugging information in the console.");
 		config.setCategoryComment("Extras", "Other extra config settings, some of the aren't necessarily specific to Lycanites Mobs.");
+		VersionChecker.enabled = config.getBool("Extras", "Version Checker", VersionChecker.enabled, "Set to false to disable the version checker.");
 		disableNausea = config.getBool("Extras", "Disable Nausea Debuff", disableNausea, "Set to true to disable the nausea debuff on players.");
+		DonationFamiliars.instance.enabled = config.getBool("Extras", "Donation Familiars", DonationFamiliars.instance.enabled, "Donation Familiars help support the development of this mod but if needed, set this to false to disable them.");
 
         config.setCategoryComment("Admin", "Special tools for server admins.");
         ExtendedEntity.FORCE_REMOVE_ENTITY_IDS = config.getStringList("Admin", "Force Remove Entity Names", new String[0], "Here you can add a list of entity IDs for entity that you want to be forcefully removed.");

@@ -32,6 +32,8 @@ public class EntityTremor extends EntityCreatureTameable implements IMob, IGroup
 
 	private EntityAIAttackMelee meleeAttackAI;
 
+	public int tremorExplosionStrength = 1;
+
     // ==================================================
  	//                    Constructor
  	// ==================================================
@@ -43,8 +45,10 @@ public class EntityTremor extends EntityCreatureTameable implements IMob, IGroup
         this.defense = 1;
         this.experience = 20;
         this.hasAttackSound = true;
-        
-        this.setWidth = 0.8F;
+
+		this.tremorExplosionStrength = ConfigBase.getConfig(this.group, "general").getInt("Features", "Tremor Explosion Strength", this.tremorExplosionStrength, "Controls the strength of a Tremor's explosion when attacking, set to -1 to disable completely.");
+
+		this.setWidth = 0.8F;
         this.setHeight = 1.8F;
         this.setupMob();
 
@@ -150,8 +154,8 @@ public class EntityTremor extends EntityCreatureTameable implements IMob, IGroup
     		return false;
     	
     	// Explosion:
-        this.getEntityWorld().createExplosion(this, this.posX, this.posY, this.posZ, 1, true);
-        
+		this.getEntityWorld().createExplosion(this, this.posX, this.posY, this.posZ, Math.max(1, this.tremorExplosionStrength), this.tremorExplosionStrength > 0 && this.getEntityWorld().getGameRules().getBoolean("mobGriefing"));
+
         return true;
     }
     

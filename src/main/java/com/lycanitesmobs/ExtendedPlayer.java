@@ -229,9 +229,11 @@ public class ExtendedPlayer implements IExtendedPlayer {
 			}
 
 			// Mod Version Check:
-			VersionChecker.VersionInfo latestVersion = VersionChecker.getLatestVersion();
-			if(latestVersion != null && latestVersion.isNewer) {
-				this.player.sendMessage(new TextComponentString(I18n.translateToLocal("lyc.version.newer").replace("{current}", LycanitesMobs.versionNumber).replace("{latest}", latestVersion.versionNumber)));
+			if (this.player.getEntityWorld().isRemote) {
+				VersionChecker.VersionInfo latestVersion = VersionChecker.getLatestVersion();
+				if (latestVersion != null && latestVersion.isNewer) {
+					this.player.sendMessage(new TextComponentString(I18n.translateToLocal("lyc.version.newer").replace("{current}", LycanitesMobs.versionNumber).replace("{latest}", latestVersion.versionNumber)));
+				}
 			}
 
 			this.initialSetup = true;

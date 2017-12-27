@@ -13,6 +13,7 @@ import java.net.URLConnection;
 import java.nio.charset.Charset;
 
 public class VersionChecker {
+	public static boolean enabled = true;
 
 	public static class VersionInfo {
 		public VersionInfo(String number, String mc) {
@@ -27,11 +28,11 @@ public class VersionChecker {
 		/** Sets isNewer to true if this VersionInfo is newer than compareVersion. **/
 		public void checkIfNewer(VersionInfo compareVersion) {
 			this.isNewer = false;
-			String[] versions = this.versionNumber.split(".");
-			String[] compareVersions = compareVersion.versionNumber.split(".");
+			String[] versions = this.versionNumber.split("\\.");
+			String[] compareVersions = compareVersion.versionNumber.split("\\.");
 			for (int i = 0; i < 4; i++) {
-				int versionNumber = NumberUtils.isNumber(versions[i].replaceAll("[^\\d.]", "")) ? Integer.parseInt(versions[i].replaceAll("[^\\d.]", "")) : 0;
-				int compareVersionNumber = NumberUtils.isNumber(compareVersions[i].replaceAll("[^\\d.]", "")) ? Integer.parseInt(compareVersions[i].replaceAll("[^\\d.]", "")) : 0;
+				int versionNumber = NumberUtils.isCreatable(versions[i].replaceAll("[^\\d.]", "")) ? Integer.parseInt(versions[i].replaceAll("[^\\d.]", "")) : 0;
+				int compareVersionNumber = NumberUtils.isCreatable(compareVersions[i].replaceAll("[^\\d.]", "")) ? Integer.parseInt(compareVersions[i].replaceAll("[^\\d.]", "")) : 0;
 				if (versionNumber > compareVersionNumber) {
 					this.isNewer = true;
 					return;
@@ -62,12 +63,13 @@ public class VersionChecker {
 			JsonElement jsonElement = jsonParser.parse(jsonString);
 			JsonObject jsonObject = jsonElement.getAsJsonObject();
 			String latestVersionNumber = jsonObject.get("version").getAsString();
-			String latestVersionMC = jsonObject.get("minecraftVersion").getAsString();
+			String latestVersionMC = jsonObject.get("mcversion").getAsString();
 			latestVersion = new VersionInfo(latestVersionNumber, latestVersionMC);
 			latestVersion.checkIfNewer(currentVersion);
-			LycanitesMobs.printInfo("", "Latest mod version from website is: " + latestVersionNumber);
 		}
-		catch(Exception e) {}
+		catch(Throwable e) {
+			e.printStackTrace();
+		}
 
 		if(latestVersion == null) {
 			return currentVersion;

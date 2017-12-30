@@ -159,7 +159,7 @@ public class SpawnInfo {
 		this.disableSubspecies = config.getBool("Disable Subspecies Spawns", this.getCfgName("Subspecies Spawning Disabled"), this.disableSubspecies);
 		
 		// Spawners:
-        config.setCategoryComment("Spawn Types", "Specifies how this mob spawns, multiple entries should be comma separated. Valid types are: MONSTER, CREATURE, WATERCREATURE, FIRE, FROSTFIRE, LAVA, ROCK, STORM. More will likely be added too.");
+        config.setCategoryComment("Spawn Types", "Specifies how this mob spawns, multiple entries should be comma separated. You can use the name or title property of any json spawner or these vanilla spawners: MONSTER, CREATURE.");
         SpawnTypeSet spawnTypeSet = config.getTypes("Spawn Types", this.getCfgName("Spawn Types"), this.spawnerEntries);
 		this.spawners = spawnTypeSet.spawners;
 		for(String spawner : this.spawners) {
@@ -230,7 +230,7 @@ public class SpawnInfo {
     // ==================================================
     /** Registers this mob to vanilla and custom spawners as well as dungeons. **/
     public void registerSpawn() {
-    	// Add Spawn (Vanilla):
+    	// Add Spawn (Vanilla): (The JSON Spawns are defined above in loadFromConfig)
 		boolean spawnAdded = false;
 		if(!disableAllSpawning) {
 			if(this.enabled && this.mobInfo.mobEnabled && this.spawnWeight > 0 && this.spawnGroupMax > 0) {

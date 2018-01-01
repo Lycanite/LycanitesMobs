@@ -38,7 +38,7 @@ achievement.arix.kill.desc=杀死一只雪精灵。
 achievement.arix.learn=冰之翼
 achievement.arix.learn.desc=将雪精灵添加到你的生物图鉴中。
 achievement.arix.tame=夏日之友！
-achievement.arix.tame.desc=召唤雪精灵。
+achievement.arix.tame.desc=驯服雪精灵。
 entity.arcticmobs.serpix.name=雪龙
 entity.arcticmobs.serpix.description=极寒地带臭名昭著的生物，雪龙喜欢通过怒吼释放出暴雪球进行攻击，并将霜火带向地面。
 achievement.serpix.kill=雪原护卫队！
@@ -46,7 +46,7 @@ achievement.serpix.kill.desc=杀死一只雪龙
 achievement.serpix.learn=乔芒格龙！
 achievement.serpix.learn.desc=将雪龙添加到你的生物图鉴中。
 achievement.serpix.tame=雪地代言人
-achievement.serpix.tame.desc=召唤雪龙。
+achievement.serpix.tame.desc=驯服雪龙。
 entity.arcticmobs.maug.name=冰河熊
 entity.arcticmobs.maug.description=冰河熊是一种体型巨大的酷似狼的北极熊，它能在转瞬间将你撕裂。
 achievement.maug.kill=凄凉残酷
@@ -54,7 +54,7 @@ achievement.maug.kill.desc=杀死一只冰河熊。
 achievement.maug.learn=狼熊！
 achievement.maug.learn.desc=将冰河熊添加到你的生物图鉴中。
 achievement.maug.tame=驯兽师！
-achievement.maug.tame.desc=召唤冰河熊。
+achievement.maug.tame.desc=驯服冰河熊。
 #
 # Items
 item.arcticspawn.name=生成

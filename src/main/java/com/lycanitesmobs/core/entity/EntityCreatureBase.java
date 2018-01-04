@@ -1037,7 +1037,11 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
 	/** Returns the default starting level to use. **/
 	public int getStartingLevel() {
-		return 1;
+		int startingLevelMin = Math.max(1, MobInfo.startingLevelMin);
+		if(MobInfo.startingLevelMax > startingLevelMin) {
+			return startingLevelMin + this.getRNG().nextInt(MobInfo.startingLevelMax - startingLevelMin);
+		}
+		return startingLevelMin;
 	}
 
 	/** Sets the level of this mob, higher levels have higher stats. **/

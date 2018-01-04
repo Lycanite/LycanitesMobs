@@ -154,6 +154,9 @@ public class EntityTremor extends EntityCreatureTameable implements IMob, IGroup
     		return false;
     	
     	// Explosion:
+		if(this.isPetType("familiar")) {
+			return true;
+		}
 		this.getEntityWorld().createExplosion(this, this.posX, this.posY, this.posZ, Math.max(1, this.tremorExplosionStrength), this.tremorExplosionStrength > 0 && this.getEntityWorld().getGameRules().getBoolean("mobGriefing"));
 
         return true;
@@ -180,6 +183,7 @@ public class EntityTremor extends EntityCreatureTameable implements IMob, IGroup
 	@Override
 	public boolean isEntityInvulnerable(DamageSource source) {
 		if(source.isExplosion()) {
+			this.heal(2);
 			return true;
 		}
 		return super.isEntityInvulnerable(source);

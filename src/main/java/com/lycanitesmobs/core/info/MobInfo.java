@@ -74,6 +74,12 @@ public class MobInfo {
 
 	/** A static map containing all the global multipliers for each stat for mob level scaling. **/
 	public static Map<String, Double> levelMultipliers = new HashMap<>();
+
+	/** The minimum base starting level of every mob. Cannot be less than 1. **/
+	public static int startingLevelMin = 1;
+
+	/** The maximum base starting level of every mob. Ignored when not greater than the min level. **/
+	public static int startingLevelMax = 1;
 	
 	/** A static ArrayList of all summonable creature names. **/
 	public static List<String> summonableCreatures = new ArrayList<>();
@@ -86,6 +92,9 @@ public class MobInfo {
 	
 	/** Set to true if Doomlike Dungeons is loaded allowing mobs to register their Dungeon themes. **/
 	public static boolean dlDungeonsLoaded = false;
+
+	/** A string of global drops to add to every mob. **/
+	public static String globalDropsString = "";
 
 
 	// ========== Per Mob Settings ==========
@@ -253,7 +262,13 @@ public class MobInfo {
 				levelValue = 0.02D;
 			levelMultipliers.put(statName.toUpperCase(), config.getDouble("Mob Level Multipliers", statName, levelValue));
 		}
-    }
+		config.setCategoryComment("Base Starting Level", "The base starting level is the level every mob will start at. Mob Events, Special Spawners and other things will then add onto this base level.");
+		startingLevelMin = config.getInt("Base Starting Level", "Starting Level Min", startingLevelMin, "The minimum base starting level of every mob. Cannot be less than 1.");
+		startingLevelMax = config.getInt("Base Starting Level", "Starting Level Max", startingLevelMax, "The maximum base starting level of every mob. Ignored when not greater than the min level.");
+
+		config.setCategoryComment("Custom Item Drops", "Here you can add a global list of item drops to add to every mob from Lycanites Mobs. Format is: mod:item,metadata,chance,min,max Multiple drops should be semicolon separated and chances are in decimal format. You can also add an additional comma and then a subspecies ID to restrict that drop to a certain subspecies like so: mod:item,metadata,chance,min,max,subspecies. minecraft:wool,2,0.25,0,3 is Green Wool with a 25% drop rate and will drop 0 to 3 blocks. Be sure to use a colon for mod:item and commas for everything else in an entry. Semicolons can be used to separate multiple entries.");
+		globalDropsString = config.getString("Default Item Drops", "Global Drops", globalDropsString, "");
+	}
 	
 	/**
 	 * Get MobInfo from mob name.
@@ -362,6 +377,12 @@ public class MobInfo {
 
         config.setCategoryComment("Custom Item Drops", "Allows for custom items drops per mob. Format is: mod:item,metadata,chance,min,max Multiple drops should be semicolon separated and chances are in decimal format. You can also add an additional comma and then a subspecies ID to restrict that drop to a certain subspecies like so: mod:item,metadata,chance,min,max,subspecies. minecraft:wool,2,0.25,0,3 is Green Wool with a 25% drop rate and will drop 0 to 3 blocks. Be sure to use a colon for mod:item and commas for everything else in an entry. Semicolons can be used to separate multiple entries.");
         String customDropsString = config.getString("Custom Item Drops", this.getCfgName("Custom Drops"), "");
+        if(!"".equals(globalDropsString)) {
+        	if(!"".equals(customDropsString)) {
+				customDropsString += ";";
+			}
+			customDropsString += globalDropsString;
+		}
         if(customDropsString != null && customDropsString.length() > 0) {
             for(String customDropEntryString : customDropsString.split(";")) {
                 String[] customDropValues = customDropEntryString.split(",");

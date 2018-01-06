@@ -1,4 +1,4 @@
-# Blender MTL File: 'trent.blend'
+# Blender MTL File: 'treant.blend'
 # Material Count: 1
 
 newmtl None
@@ -8,4 +8,4 @@ Kd 0.8 0.8 0.8
 Ks 0.8 0.8 0.8
 d 1
 illum 2
-map_Kd trent.png
+map_Kd treant.png

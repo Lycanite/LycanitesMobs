@@ -1,14 +1,14 @@
 {
 	"parent": "lycanitesmobs:item/scepter",
 	"textures": {
-		"layer0": "demonmobs:items/nethersoulsigil"
+		"layer0": "demonmobs:items/wraithsigil"
 	},
 	"overrides": [
         {
             "predicate": {
                 "using": 1
             },
-            "model": "demonmobs:item/nethersoulsigil_fire"
+            "model": "demonmobs:item/wraithsigil_fire"
         }
 	]
 }

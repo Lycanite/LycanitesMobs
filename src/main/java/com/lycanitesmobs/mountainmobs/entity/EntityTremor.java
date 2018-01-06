@@ -80,7 +80,7 @@ public class EntityTremor extends EntityCreatureTameable implements IMob, IGroup
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 15D);
+		baseAttributes.put("maxHealth", 20D);
 		baseAttributes.put("movementSpeed", 0.3D);
 		baseAttributes.put("knockbackResistance", 1.0D);
 		baseAttributes.put("followRange", 16D);
@@ -154,10 +154,13 @@ public class EntityTremor extends EntityCreatureTameable implements IMob, IGroup
     		return false;
     	
     	// Explosion:
+		int explosionStrength = Math.max(1, this.tremorExplosionStrength);
+		boolean damageTerrain = this.tremorExplosionStrength > 0 && this.getEntityWorld().getGameRules().getBoolean("mobGriefing");
 		if(this.isPetType("familiar")) {
-			return true;
+			explosionStrength = 1;
+			damageTerrain = false;
 		}
-		this.getEntityWorld().createExplosion(this, this.posX, this.posY, this.posZ, Math.max(1, this.tremorExplosionStrength), this.tremorExplosionStrength > 0 && this.getEntityWorld().getGameRules().getBoolean("mobGriefing"));
+		this.getEntityWorld().createExplosion(this, this.posX, this.posY, this.posZ, explosionStrength, damageTerrain);
 
         return true;
     }

@@ -125,7 +125,7 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(EntityTrite.class));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(EntityAstaroth.class));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(EntityCacodemon.class));
-        this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(EntityNetherSoul.class));
+        this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(EntityWraith.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
     }
@@ -165,7 +165,7 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getBlock("demonstonebrick")), 1F).setMinAmount(64).setMaxAmount(128));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getBlock("demonstonetile")), 1F).setMinAmount(64).setMaxAmount(128));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getBlock("demoncrystal")), 1F).setMinAmount(64).setMaxAmount(128));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("nethersoulsigil")), 1F).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("wraithsigil")), 1F).setMinAmount(1).setMaxAmount(3));
 	}
 
     // ========== Rendering Distance ==========
@@ -226,13 +226,13 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
 
         // Passive Attacks:
         if(!this.getEntityWorld().isRemote && this.updateTick % 20 == 0) {
-            // Flying Player Nether Soul Attack:
+            // Flying Player Wraith Attack:
             for(EntityPlayer target : this.playerTargets) {
                 if(target.capabilities.isCreativeMode || target.isSpectator())
                     continue;
                 if(target.posY > this.posY + MobInfo.bossAntiFlight) {
                     for(int i = 0; i < 3; i++) {
-                        EntityNetherSoul minion = new EntityNetherSoul(this.getEntityWorld());
+                        EntityWraith minion = new EntityWraith(this.getEntityWorld());
                         this.summonMinion(minion, this.getRNG().nextDouble() * 360, 5);
                         minion.setAttackTarget(target);
                     }

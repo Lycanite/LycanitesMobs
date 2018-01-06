@@ -40,14 +40,17 @@ public class ItemGeistLiver extends ItemBase {
         else {
             pos = pos.offset(facing);
             if(player.canPlayerEdit(pos, facing, itemStack)) {
-                Block block = world.getBlockState(pos).getBlock();
-                if(block == Blocks.AIR) {
-                    world.playSound((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D, AssetManager.getSound("shadowfire"), SoundCategory.PLAYERS, 1.0F, itemRand.nextFloat() * 0.4F + 0.8F, false);
-                    world.setBlockState(pos, ObjectManager.getBlock("shadowfire").getDefaultState());
+                try {
+                    Block block = world.getBlockState(pos).getBlock();
+                    if (block == Blocks.AIR) {
+                        world.playSound((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D, AssetManager.getSound("shadowfire"), SoundCategory.PLAYERS, 1.0F, itemRand.nextFloat() * 0.4F + 0.8F, false);
+                        world.setBlockState(pos, ObjectManager.getBlock("shadowfire").getDefaultState());
+                    }
+                    if (!player.capabilities.isCreativeMode)
+                        itemStack.setCount(Math.max(0, itemStack.getCount() - 1));
+                    return EnumActionResult.SUCCESS;
                 }
-                if(!player.capabilities.isCreativeMode)
-                    itemStack.setCount(Math.max(0, itemStack.getCount() - 1));
-                return EnumActionResult.SUCCESS;
+                catch(Exception e) {}
             }
         }
         return EnumActionResult.FAIL;

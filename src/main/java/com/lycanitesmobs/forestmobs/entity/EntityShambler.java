@@ -6,7 +6,6 @@ import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupFire;
 import com.lycanitesmobs.api.IGroupPlant;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
-import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.DropRate;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.entity.Entity;
@@ -68,7 +67,7 @@ public class EntityShambler extends EntityCreatureTameable implements IMob, IGro
         this.tasks.addTask(12, new EntityAILookIdle(this));
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
-        this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(EntityTrent.class));
+        this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(EntityTreant.class));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(IGroupFire.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class).setCheckSight(false));

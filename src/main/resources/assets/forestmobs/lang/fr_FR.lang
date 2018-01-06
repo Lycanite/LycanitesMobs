@@ -4,8 +4,8 @@ forestmobs.description=On les trouve dans les forêts de tous types. Ces créatu
 # Entites
 entity.forestmobs.ent.name=Ent
 entity.forestmobs.ent.description=Ces gardiens sylvestres attaquent tout ce qu'ils considèrent comme une menace pour la forêt, autrement dit vous. Ils se régénèrent au contact de l'eau et aspirent la vie avec leurs attaques.
-entity.forestmobs.trent.name=Trent
-entity.forestmobs.trent.description=Ces grands gardiens de la forêt sont semblables aux ents, en plus grands et plus forts encore. Ils paralysent parfois leur proie, aspirent la santé avec leurs attaques et se régénèrent au contact de l'eau.
+entity.forestmobs.treant.name=Treant
+entity.forestmobs.treant.description=Ces grands gardiens de la forêt sont semblables aux ents, en plus grands et plus forts encore. Ils paralysent parfois leur proie, aspirent la santé avec leurs attaques et se régénèrent au contact de l'eau.
 entity.forestmobs.shambler.name=Traînard
 entity.forestmobs.shambler.description=Arbustes de grande tailles, les traînards se régénèrent au contact de l'eau et peuvent paralyser leur ennemi. Ils peuvent être apprivoisés et font d'excellents faire-valoir pour les jardins !
 entity.forestmobs.arisaur.name=Arborisaure

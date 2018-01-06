@@ -232,8 +232,12 @@ public class EntityProjectileBase extends EntityThrowable {
      		int j = (int)Math.floor(rayTraceResult.entityHit.posY);
             int k = (int)Math.floor(rayTraceResult.entityHit.posZ);
             BlockPos pos = new BlockPos(i, j, k);
-            if(!this.getEntityWorld().isRemote && this.canDestroyBlock(pos))
-            	this.placeBlock(this.getEntityWorld(), pos);
+            if(!this.getEntityWorld().isRemote && this.canDestroyBlock(pos)) {
+            	try {
+					this.placeBlock(this.getEntityWorld(), pos);
+				}
+				catch(Exception e) {}
+			}
      	}
      	
      	// Block Hit:
@@ -280,8 +284,12 @@ public class EntityProjectileBase extends EntityThrowable {
  	            }
 
                 BlockPos pos = new BlockPos(i, j, k);
- 	            if(!this.getEntityWorld().isRemote && this.canDestroyBlock(pos))
- 	            	this.placeBlock(this.getEntityWorld(), pos);
+ 	            if(!this.getEntityWorld().isRemote && this.canDestroyBlock(pos)) {
+ 	            	try {
+						this.placeBlock(this.getEntityWorld(), pos);
+					}
+					catch(Exception e) {}
+				}
  	        }
      	}
      	

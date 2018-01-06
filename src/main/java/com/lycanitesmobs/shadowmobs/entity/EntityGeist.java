@@ -133,24 +133,27 @@ public class EntityGeist extends EntityCreatureAgeable implements IMob, IGroupSh
     // ==================================================
     @Override
     public void onDeath(DamageSource damageSource) {
-        if(!this.getEntityWorld().isRemote && this.getEntityWorld().getGameRules().getBoolean("mobGriefing") && this.geistShadowfireDeath) {
-            int shadowfireWidth = (int)Math.floor(this.width) + 1;
-            int shadowfireHeight = (int)Math.floor(this.height) + 1;
-            for(int x = (int)this.posX - shadowfireWidth; x <= (int)this.posX + shadowfireWidth; x++) {
-                for(int y = (int)this.posY - shadowfireHeight; y <= (int)this.posY + shadowfireHeight; y++) {
-                    for(int z = (int)this.posZ - shadowfireWidth; z <= (int)this.posZ + shadowfireWidth; z++) {
-                        Block block = this.getEntityWorld().getBlockState(new BlockPos(x, y, z)).getBlock();
-                        if(block != Blocks.AIR) {
-                            BlockPos placePos = new BlockPos(x, y + 1, z);
-                            Block upperBlock = this.getEntityWorld().getBlockState(placePos).getBlock();
-                            if(upperBlock == Blocks.AIR) {
-                                this.getEntityWorld().setBlockState(placePos, ObjectManager.getBlock("shadowfire").getDefaultState(), 3);
+        try {
+            if(!this.getEntityWorld().isRemote && this.getEntityWorld().getGameRules().getBoolean("mobGriefing") && this.geistShadowfireDeath) {
+                int shadowfireWidth = (int)Math.floor(this.width) + 1;
+                int shadowfireHeight = (int)Math.floor(this.height) + 1;
+                for(int x = (int)this.posX - shadowfireWidth; x <= (int)this.posX + shadowfireWidth; x++) {
+                    for(int y = (int)this.posY - shadowfireHeight; y <= (int)this.posY + shadowfireHeight; y++) {
+                        for(int z = (int)this.posZ - shadowfireWidth; z <= (int)this.posZ + shadowfireWidth; z++) {
+                            Block block = this.getEntityWorld().getBlockState(new BlockPos(x, y, z)).getBlock();
+                            if(block != Blocks.AIR) {
+                                BlockPos placePos = new BlockPos(x, y + 1, z);
+                                Block upperBlock = this.getEntityWorld().getBlockState(placePos).getBlock();
+                                if(upperBlock == Blocks.AIR) {
+                                    this.getEntityWorld().setBlockState(placePos, ObjectManager.getBlock("shadowfire").getDefaultState(), 3);
+                                }
                             }
                         }
                     }
                 }
             }
         }
+        catch(Exception e) {}
         super.onDeath(damageSource);
     }
     

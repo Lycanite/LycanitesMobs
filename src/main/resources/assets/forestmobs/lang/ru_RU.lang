@@ -8,8 +8,8 @@ mobevent.rootriot.name=Восстание корней
 # Entites
 entity.forestmobs.ent.name=Энт
 entity.forestmobs.ent.description=Защитники лесов. Нападут на любого, кого посчитают угрозой, например, на вас. Лечатся в воде, вытягивают жизнь из противника во время боя.
-entity.forestmobs.trent.name=Трэнт
-entity.forestmobs.trent.description=Гигантские лесные стражи. Похожи на Энтов во всем, кроме силы и размеров. Во время боя могут парализовать и выпить жизнь. Лечатся в воде.
+entity.forestmobs.treant.name=Трэнт
+entity.forestmobs.treant.description=Гигантские лесные стражи. Похожи на Энтов во всем, кроме силы и размеров. Во время боя могут парализовать и выпить жизнь. Лечатся в воде.
 entity.forestmobs.shambler.name=Шаркун
 entity.forestmobs.shambler.description=Огромные живые кустарники. Лечатся в воде, насылают паралич. Приручаемы и могут вдохнуть жизнь в ваш сад!
 entity.forestmobs.arisaur.name=Аризавр

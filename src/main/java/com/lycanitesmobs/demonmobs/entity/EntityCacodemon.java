@@ -2,7 +2,6 @@ package com.lycanitesmobs.demonmobs.entity;
 
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupDemon;
-import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.EntityCreatureRideable;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.DropRate;
@@ -139,7 +138,7 @@ public class EntityCacodemon extends EntityCreatureRideable implements IGroupDem
             return;
 
         // Spawn Minions:
-        if(this.nearbyCreatureCount(EntityNetherSoul.class, 64D) < 10) {
+        if(this.nearbyCreatureCount(EntityWraith.class, 64D) < 10) {
             float random = this.rand.nextFloat();
             if(random <= 0.1F)
                 this.spawnAlly(this.posX - 2 + (random * 4), this.posY, this.posZ - 2 + (random * 4));
@@ -147,7 +146,7 @@ public class EntityCacodemon extends EntityCreatureRideable implements IGroupDem
     }
 
     public void spawnAlly(double x, double y, double z) {
-        EntityNetherSoul minion = new EntityNetherSoul(this.getEntityWorld());
+        EntityWraith minion = new EntityWraith(this.getEntityWorld());
         minion.setLocationAndAngles(x, y, z, this.rotationYaw, this.rotationPitch);
 		minion.setMinion(true);
 		minion.setMasterTarget(this);
@@ -186,7 +185,7 @@ public class EntityCacodemon extends EntityCreatureRideable implements IGroupDem
     // ========== Set Attack Target ==========
     @Override
     public boolean canAttackClass(Class targetClass) {
-        if(targetClass.isAssignableFrom(EntityTrite.class) || targetClass.isAssignableFrom(EntityAstaroth.class) || targetClass.isAssignableFrom(EntityAsmodeus.class) || targetClass.isAssignableFrom(EntityNetherSoul.class))
+        if(targetClass.isAssignableFrom(EntityTrite.class) || targetClass.isAssignableFrom(EntityAstaroth.class) || targetClass.isAssignableFrom(EntityAsmodeus.class) || targetClass.isAssignableFrom(EntityWraith.class))
             return false;
         return super.canAttackClass(targetClass);
     }

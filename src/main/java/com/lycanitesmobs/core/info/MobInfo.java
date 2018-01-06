@@ -51,6 +51,9 @@ public class MobInfo {
     /** If true, predators such as Ventoraptors will attack farm animals such as Sheep or Makas. **/
     public static boolean predatorsAttackAnimals = true;
 
+	/** If true, passive mobs will fight back when hit instead of running away. **/
+	public static boolean animalsFightBack = false;
+
     /** If true, mobs will have a chance of becoming a subspecies when spawned. **/
     public static boolean subspeciesSpawn = true;
 
@@ -211,7 +214,8 @@ public class MobInfo {
 		config.setCategoryComment("Mob Interaction", "Here you can control how mobs interact with other mobs.");
         predatorsAttackAnimals = config.getBool("Mob Interaction", "Predators Attack Animals", predatorsAttackAnimals, "Set to false to prevent predator mobs from attacking animals/farmable mobs.");
 		mobsAttackVillagers = config.getBool("Mob Interaction", "Mobs Attack Villagers", mobsAttackVillagers, "Set to false to prevent mobs that attack players from also attacking villagers.");
-        disablePickupOffsets = config.getBool("Mob Interaction", "Disable Pickup Offset", disablePickupOffsets, "If true, when a mob picks up a player, the player will be positioned where the mob is rather than offset to where the mob is holding the player at.");
+		animalsFightBack = config.getBool("Mob Interaction", "Animals Fight Back", animalsFightBack, "If true, passive mobs will fight back when hit instead of running away.");
+		disablePickupOffsets = config.getBool("Mob Interaction", "Disable Pickup Offset", disablePickupOffsets, "If true, when a mob picks up a player, the player will be positioned where the mob is rather than offset to where the mob is holding the player at.");
 
         // Variations:
         config.setCategoryComment("Mob Variations", "Settings for how mobs randomly vary such as subspecies. Subspecies are uncommon and rare variants of regular mobs, uncommon subspecies tend to be a bit tougher and rare subspecies are quite powerful and can be considered as mini bosses..");
@@ -465,7 +469,7 @@ public class MobInfo {
 		if(!ObjectManager.entityLists.containsKey(this.group.filename))
 			ObjectManager.entityLists.put(this.group.filename, new EntityListCustom());
 		ObjectManager.entityLists.get(this.group.filename).addMapping(this.entityClass, this.getResourceLocation(), this.eggBackColor, this.eggForeColor);
-		EntityRegistry.registerModEntity(this.getResourceLocation(), this.entityClass, name, this.mobID, this.group.mod, this.isBoss() ? 256 : 128, this.isBoss() ? 6 : 3, true);
+		EntityRegistry.registerModEntity(this.getResourceLocation(), this.entityClass, name, this.mobID, this.group.mod, 128, 3, true);
 
 		// Debug Message - Added:
 		LycanitesMobs.printDebug("MobSetup", "Mob Added: " + name + " - " + this.entityClass + " (" + group.name + ")");

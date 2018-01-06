@@ -1,6 +1,5 @@
 package com.lycanitesmobs.demonmobs.entity;
 
-import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupDemon;
 import com.lycanitesmobs.api.IGroupFire;
@@ -103,7 +102,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
 
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(EntityBelph.class));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(EntityBehemoth.class));
-        this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(EntityNetherSoul.class));
+        this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(EntityWraith.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
     }
@@ -134,7 +133,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getBlock("demonstonebrick")), 1F).setMinAmount(64).setMaxAmount(128));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getBlock("demonstonetile")), 1F).setMinAmount(64).setMaxAmount(128));
         this.drops.add(new DropRate(new ItemStack(ObjectManager.getBlock("demoncrystal")), 1F).setMinAmount(64).setMaxAmount(128));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("nethersoulsigil")), 1F).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("wraithsigil")), 1F).setMinAmount(1).setMaxAmount(3));
 	}
 
     // ========== Init ==========
@@ -223,14 +222,14 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
                 this.getEntityWorld().spawnEntity(projectile);
             }
 
-            // Flying Player Nether Soul Attack:
+            // Flying Player Wraith Attack:
             for(EntityPlayer target : this.playerTargets) {
                 if(target.capabilities.isCreativeMode || target.isSpectator())
                     continue;
                 this.rangedAttack(target, 1F);
                 if(target.posY > this.posY + MobInfo.bossAntiFlight) {
                     for(int i = 0; i < 3; i++) {
-                        EntityNetherSoul minion = new EntityNetherSoul(this.getEntityWorld());
+                        EntityWraith minion = new EntityWraith(this.getEntityWorld());
                         this.summonMinion(minion, this.getRNG().nextDouble() * 360, 5);
                         minion.setAttackTarget(target);
                         minion.setMasterTarget(null); // Clear master target so that these minions don't break phase 3 barriers.
@@ -422,11 +421,11 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
                     EntityBelph minion = new EntityBelph(this.getEntityWorld());
                     this.summonMinion(minion, this.getRNG().nextDouble() * 360, 5);
                 }
-                summonAmount = this.getRNG().nextInt(3); // 0-2 Nether Souls
+                summonAmount = this.getRNG().nextInt(3); // 0-2 Wraiths
                 summonAmount *= this.playerTargets.size();
                 if(summonAmount > 0)
                 for(int summonCount = 0; summonCount <= summonAmount; summonCount++) {
-                    EntityNetherSoul minion = new EntityNetherSoul(this.getEntityWorld());
+                    EntityWraith minion = new EntityWraith(this.getEntityWorld());
                     this.summonMinion(minion, this.getRNG().nextDouble() * 360, 5);
                 }
             }

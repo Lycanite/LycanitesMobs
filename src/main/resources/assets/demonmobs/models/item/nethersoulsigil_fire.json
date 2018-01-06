@@ -1,6 +1,6 @@
 {
-	"parent": "demonmobs:item/nethersoulsigil",
+	"parent": "demonmobs:item/wraithsigil",
 	"textures": {
-		"layer0": "demonmobs:items/nethersoulsigil_fire"
+		"layer0": "demonmobs:items/wraithsigil_fire"
 	}
 }

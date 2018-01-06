@@ -12,8 +12,8 @@ entity.demonmobs.astaroth.name=Astaroth
 entity.demonmobs.astaroth.description=Leaders démoniaques assemblés par une technique infernale à base de redstone et de cerveaux tenus par des attritions. Si vous passez outre leurs tirs et les détruisez, leurs attritions en sortiront pour vous attaquer !
 entity.demonmobs.trite.name=Attrition
 entity.demonmobs.trite.description=Petit arachnide rapide dont la morsure provoque la flétrissure.
-entity.demonmobs.nethersoul.name=Âme du Nether
-entity.demonmobs.nethersoul.description=Ces crânes démoniaques flottant à l'aide de flammes qui ne le sont pas moins chargent leur cible et explosent à leur mort.
+entity.demonmobs.wraith.name=Âme du Nether
+entity.demonmobs.wraith.description=Ces crânes démoniaques flottant à l'aide de flammes qui ne le sont pas moins chargent leur cible et explosent à leur mort.
 entity.demonmobs.cacodemon.name=Cacodémon
 entity.demonmobs.cacodemon.description=Les cacodémons sont de grandes abominations volantes qui tirent une charge électrique démoniaque et aiment tyranniser les ghasts afin de leur soutirer de délicieuses larmes. Ils peuvent être apprivoisés.
 #

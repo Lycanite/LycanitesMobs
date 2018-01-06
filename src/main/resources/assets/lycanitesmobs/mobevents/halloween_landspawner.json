@@ -36,9 +36,9 @@
 			"mobNameTag": "Twisted Ent"
 		},
 		{
-			"mobId": "forestmobs.trent",
+			"mobId": "forestmobs.treant",
 			"weight": 4,
-			"mobNameTag": "Wicked Trent"
+			"mobNameTag": "Wicked Treant"
 		},
 		{
 			"mobId": "demonmobs.belph",

@@ -9,8 +9,6 @@ import com.lycanitesmobs.core.info.DropRate;
 import com.lycanitesmobs.core.info.ObjectLists;
 import com.lycanitesmobs.api.IGroupPlant;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
-import com.lycanitesmobs.core.entity.ai.*;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -68,7 +66,7 @@ public class EntityEnt extends EntityCreatureTameable implements IMob, IGroupPla
         this.tasks.addTask(11, new EntityAILookIdle(this));
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
-        this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(EntityTrent.class));
+        this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(EntityTreant.class));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(IGroupFire.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class).setCheckSight(false));
@@ -122,7 +120,7 @@ public class EntityEnt extends EntityCreatureTameable implements IMob, IGroupPla
     // ========== Set Attack Target ==========
     @Override
     public boolean canAttackClass(Class targetClass) {
-    	if(targetClass.isAssignableFrom(EntityTrent.class))
+    	if(targetClass.isAssignableFrom(EntityTreant.class))
     		return false;
         return super.canAttackClass(targetClass);
     }

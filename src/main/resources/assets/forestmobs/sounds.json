@@ -27,33 +27,33 @@
         "category": "hostile",
         "sounds": [{"name": "forestmobs:entity/ent/tame", "stream": false}]
     },
-    "entity.trent.say": {
+    "entity.treant.say": {
         "category": "hostile",
-        "sounds": [{"name": "forestmobs:entity/trent/say", "stream": false}]
+        "sounds": [{"name": "forestmobs:entity/treant/say", "stream": false}]
     },
-    "entity.trent.hurt": {
+    "entity.treant.hurt": {
         "category": "hostile",
-        "sounds": [{"name": "forestmobs:entity/trent/hurt", "stream": false}]
+        "sounds": [{"name": "forestmobs:entity/treant/hurt", "stream": false}]
     },
-    "entity.trent.death": {
+    "entity.treant.death": {
         "category": "hostile",
-        "sounds": [{"name": "forestmobs:entity/trent/death", "stream": false}]
+        "sounds": [{"name": "forestmobs:entity/treant/death", "stream": false}]
     },
-    "entity.trent.step": {
+    "entity.treant.step": {
         "category": "hostile",
-        "sounds": [{"name": "forestmobs:entity/trent/step", "stream": false}]
+        "sounds": [{"name": "forestmobs:entity/treant/step", "stream": false}]
     },
-    "entity.trent.attack": {
+    "entity.treant.attack": {
         "category": "hostile",
-        "sounds": [{"name": "forestmobs:entity/trent/attack", "stream": false}]
+        "sounds": [{"name": "forestmobs:entity/treant/attack", "stream": false}]
     },
-    "entity.trent.beg": {
+    "entity.treant.beg": {
         "category": "hostile",
-        "sounds": [{"name": "forestmobs:entity/trent/beg", "stream": false}]
+        "sounds": [{"name": "forestmobs:entity/treant/beg", "stream": false}]
     },
-    "entity.trent.tame": {
+    "entity.treant.tame": {
         "category": "hostile",
-        "sounds": [{"name": "forestmobs:entity/trent/tame", "stream": false}]
+        "sounds": [{"name": "forestmobs:entity/treant/tame", "stream": false}]
     },
     "entity.shambler.say": {
         "category": "hostile",

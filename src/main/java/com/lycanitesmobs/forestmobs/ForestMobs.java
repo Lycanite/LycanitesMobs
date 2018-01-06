@@ -117,7 +117,7 @@ public class ForestMobs extends Submod {
 				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
-		newMob = new MobInfo(group, "trent", EntityTrent.class, 0x663300, 0x00AA11)
+		newMob = new MobInfo(group, "treant", EntityTreant.class, 0x663300, 0x00AA11)
 				.setPeaceful(false).setSummonable(false).setSummonCost(6).setDungeonLevel(2)
 				.addSubspecies(new Subspecies("russet", "uncommon")).addSubspecies(new Subspecies("ashen", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")

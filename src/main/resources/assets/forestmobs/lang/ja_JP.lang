@@ -8,8 +8,8 @@ mobevent.rootriot.name=植物の暴走
 # Entites
 entity.forestmobs.ent.name=エント
 entity.forestmobs.ent.description=森の守護者、森の脅威となる物を攻撃する。 水に入ると再生し、攻撃時に体力を消耗する
-entity.forestmobs.trent.name=トレント
-entity.forestmobs.trent.description=森林の巨大な守護者、エントより非常に大きく強い。 時々麻痺を引き起こし、体力を吸収し、水に入ると再生する
+entity.forestmobs.treant.name=トレント
+entity.forestmobs.treant.description=森林の巨大な守護者、エントより非常に大きく強い。 時々麻痺を引き起こし、体力を吸収し、水に入ると再生する
 entity.forestmobs.shambler.name=シャンブラー
 entity.forestmobs.shambler.description=草むした低木の生き物、水に入ると再生し、麻痺を与える。 飼いならしでき、あなたの庭を活気づける！
 entity.forestmobs.arisaur.name=アリサウルス

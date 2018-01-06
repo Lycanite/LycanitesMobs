@@ -1990,12 +1990,18 @@ public abstract class EntityCreatureBase extends EntityLiving {
      * Tip: Use a negative height for flying and swimming mobs so that they can swoop down in the air or water.
     **/
     public void leap(double distance, double leapHeight) {
-    	double angle = Math.toRadians(this.rotationYaw);
+    	float yaw = this.rotationYaw;
+    	float pitch = this.rotationPitch;
+    	if(this.getRider() != null) {
+    		yaw = this.getRider().rotationYaw;
+			pitch = this.getRider().rotationPitch;
+		}
+    	double angle = Math.toRadians(yaw);
         double xAmount = -Math.sin(angle);
         double yAmount = leapHeight;
     	double zAmount = Math.cos(angle);
     	if(this.isFlying()) {
-    	    yAmount = Math.sin(Math.toRadians(this.rotationPitch)) * distance + this.motionY * 0.2D;
+    	    yAmount = Math.sin(Math.toRadians(pitch)) * distance + this.motionY * 0.2D;
         }
         this.addVelocity(
                 xAmount * distance + this.motionX * 0.2D,
@@ -2287,8 +2293,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     **/
     @Override
     public void setRevengeTarget(EntityLivingBase entityLivingBase) {
-    	boolean aggressiveOverride = false;
-    	if(this.extraMobBehaviour != null)
+    	boolean aggressiveOverride = MobInfo.animalsFightBack;
+    	if(!aggressiveOverride && this.extraMobBehaviour != null)
     		aggressiveOverride = this.extraMobBehaviour.aggressiveOverride;
     	if(!aggressiveOverride && this.fleeHealthPercent > 0 && this.getHealth() / this.getMaxHealth() <= this.fleeHealthPercent)
     		this.setAvoidTarget(entityLivingBase);

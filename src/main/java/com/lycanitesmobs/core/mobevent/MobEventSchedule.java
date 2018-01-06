@@ -21,9 +21,9 @@ public class MobEventSchedule {
 
 	/** Creates a Mob Event Schedule from the provided JSON data. **/
 	public static MobEventSchedule createFromJSON(JsonObject json) {
-		MobEvent mobEvent = MobEventManager.getInstance().getMobEvent(json.get("eventName").getAsString());
-		if(mobEvent == null) {
-			return null;
+		MobEvent mobEvent = null;
+		if(json.has("eventName")) {
+			mobEvent = MobEventManager.getInstance().getMobEvent(json.get("eventName").getAsString());
 		}
 		MobEventSchedule mobEventSchedule = new MobEventSchedule(mobEvent);
 		mobEventSchedule.loadFromJSON(json);
@@ -66,7 +66,6 @@ public class MobEventSchedule {
 		int time = (int)Math.floor(world.getWorldTime() % 24000D);
 		int day = (int)(Math.floor(world.getTotalWorldTime()) / 23999D);
 
-		LycanitesMobs.printDebug("", "Day: " + day + "/" + this.worldDay + " Time: " + time + "/" + this.dayTime);
 		if(day != this.worldDay) {
 			return false;
 		}
@@ -84,6 +83,10 @@ public class MobEventSchedule {
 	 * @param worldExt
 	 */
 	public void start(ExtendedWorld worldExt) {
+		if(this.mobEvent == null) {
+			MobEventListener.getInstance().triggerRandomMobEvent(worldExt.world, worldExt);
+			return;
+		}
 		worldExt.startWorldEvent(this.mobEvent);
 	}
 }

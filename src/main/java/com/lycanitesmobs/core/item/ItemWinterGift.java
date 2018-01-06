@@ -110,7 +110,7 @@ public class ItemWinterGift extends ItemBase {
                         entityCreature.setCustomNameTag("Rudolph");
                     else if (entityCreature.mobInfo.getEntityID().equals("ent"))
                         entityCreature.setCustomNameTag("Salty Tree");
-                    else if (entityCreature.mobInfo.getEntityID().equals("trent"))
+                    else if (entityCreature.mobInfo.getEntityID().equals("treant"))
                         entityCreature.setCustomNameTag("Salty Tree");
                     else if (entityCreature.mobInfo.getEntityID().equals("phantom"))
                         entityCreature.setCustomNameTag("Satan Claws");
@@ -148,7 +148,7 @@ public class ItemWinterGift extends ItemBase {
         ObjectLists.addEntity("winter_tricks", "wildkin");
         ObjectLists.addEntity("winter_tricks", "jabberwock");
         ObjectLists.addEntity("winter_tricks", "ent");
-        ObjectLists.addEntity("winter_tricks", "trent");
+        ObjectLists.addEntity("winter_tricks", "treant");
         ObjectLists.addEntity("winter_tricks", "phantom");
         ObjectLists.addEntity("winter_tricks", "behemoth");
     }

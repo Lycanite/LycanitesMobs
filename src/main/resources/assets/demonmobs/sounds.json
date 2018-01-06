@@ -123,21 +123,21 @@
         "category": "hostile",
         "sounds": [{"name": "demonmobs:entity/astaroth/step", "stream": false}]
     },
-    "entity.nethersoul.say": {
+    "entity.wraith.say": {
         "category": "hostile",
-        "sounds": [{"name": "demonmobs:entity/nethersoul/say", "stream": false}]
+        "sounds": [{"name": "demonmobs:entity/wraith/say", "stream": false}]
     },
-    "entity.nethersoul.hurt": {
+    "entity.wraith.hurt": {
         "category": "hostile",
-        "sounds": [{"name": "demonmobs:entity/nethersoul/hurt", "stream": false}]
+        "sounds": [{"name": "demonmobs:entity/wraith/hurt", "stream": false}]
     },
-    "entity.nethersoul.death": {
+    "entity.wraith.death": {
         "category": "hostile",
-        "sounds": [{"name": "demonmobs:entity/nethersoul/death", "stream": false}]
+        "sounds": [{"name": "demonmobs:entity/wraith/death", "stream": false}]
     },
-    "entity.nethersoul.attack": {
+    "entity.wraith.attack": {
         "category": "hostile",
-        "sounds": [{"name": "demonmobs:entity/nethersoul/attack", "stream": false}]
+        "sounds": [{"name": "demonmobs:entity/wraith/attack", "stream": false}]
     },
     "entity.cacodemon.say": {
         "category": "hostile",

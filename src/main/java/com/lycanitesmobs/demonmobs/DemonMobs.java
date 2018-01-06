@@ -120,7 +120,7 @@ public class DemonMobs extends Submod {
 		ObjectManager.addItem("devilstarscepter", new ItemScepterDevilstar(), 2, 1, 1);
 		ObjectManager.addItem("demoniclightningscepter", new ItemScepterDemonicLightning(), 2, 1, 1);
 
-		ObjectManager.addItem("nethersoulsigil", new ItemNetherSoulSigil());
+		ObjectManager.addItem("wraithsigil", new ItemWraithSigil());
 	}
 
 	@Override
@@ -175,7 +175,7 @@ public class DemonMobs extends Submod {
 				.setSpawnWeight(1).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(true, true).setDungeonWeight(40);
 		ObjectManager.addMob(newMob);
 
-		newMob = new MobInfo(group, "nethersoul", EntityNetherSoul.class, 0xFF9900, 0xFF0000)
+		newMob = new MobInfo(group, "wraith", EntityWraith.class, 0xFF9900, 0xFF0000)
 				.setPeaceful(false).setSummonCost(1).setDungeonLevel(0)
 				.addSubspecies(new Subspecies("verdant", "uncommon")).addSubspecies(new Subspecies("azure", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("PORTAL, SKY, NETHERSKY")

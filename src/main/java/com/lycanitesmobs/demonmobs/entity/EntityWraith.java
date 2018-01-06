@@ -24,14 +24,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashMap;
 
-public class EntityNetherSoul extends EntityCreatureTameable implements IMob {
+public class EntityWraith extends EntityCreatureTameable implements IMob {
 
     public int detonateTimer = -1;
     
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityNetherSoul(World world) {
+    public EntityWraith(World world) {
         super(world);
         
         // Setup:

@@ -106,8 +106,8 @@ public class ItemHalloweenTreat extends ItemBase {
 					entityCreature.addLevel(world.rand.nextInt(10));
                     if (entityCreature.mobInfo.getEntityID().equals("ent"))
                         entityCreature.setCustomNameTag("Twisted Ent");
-					else if (entityCreature.mobInfo.getEntityID().equals("trent"))
-						entityCreature.setCustomNameTag("Wicked Trent");
+					else if (entityCreature.mobInfo.getEntityID().equals("treant"))
+						entityCreature.setCustomNameTag("Wicked Treant");
 					else if (entityCreature.mobInfo.getEntityID().equals("epion"))
 						entityCreature.setCustomNameTag("Vampire Bat");
 					else if (entityCreature.mobInfo.getEntityID().equals("grue"))
@@ -142,8 +142,8 @@ public class ItemHalloweenTreat extends ItemBase {
         // Halloween Mobs:
         ObjectLists.addEntity("halloween_tricks", "behemoth");
         ObjectLists.addEntity("halloween_tricks", "ent");
-        ObjectLists.addEntity("halloween_tricks", "trent");
-        ObjectLists.addEntity("halloween_tricks", "nethersoul");
+        ObjectLists.addEntity("halloween_tricks", "treant");
+        ObjectLists.addEntity("halloween_tricks", "wraith");
         ObjectLists.addEntity("halloween_tricks", "grue");
         ObjectLists.addEntity("halloween_tricks", "phantom");
         ObjectLists.addEntity("halloween_tricks", "epion");

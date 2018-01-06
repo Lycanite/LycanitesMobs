@@ -6,8 +6,7 @@ import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.api.IGroupAlpha;
 import com.lycanitesmobs.api.IGroupPredator;
-import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -99,8 +98,8 @@ public class EntityConba extends EntityCreatureTameable implements IMob {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.DYE, 1, 3), 1).setMinAmount(1).setMaxAmount(5));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("poopcharge")), 0.75F));
+        this.drops.add(new MobDrop(new ItemStack(Items.DYE, 1, 3), 1).setMinAmount(1).setMaxAmount(5));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("poopcharge")), 0.75F));
 	}
     
     

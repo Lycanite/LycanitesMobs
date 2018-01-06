@@ -7,7 +7,7 @@ import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.EntityProjectileBase;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.MobInfo;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -122,18 +122,18 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.BLAZE_POWDER), 1F).setMinAmount(20).setMaxAmount(50));
-        this.drops.add(new DropRate(new ItemStack(Items.BLAZE_ROD), 1F).setMinAmount(10).setMaxAmount(20));
-        this.drops.add(new DropRate(new ItemStack(Items.DIAMOND), 1F).setMinAmount(10).setMaxAmount(20));
-        this.drops.add(new DropRate(new ItemStack(Items.NETHER_STAR), 1F).setMinAmount(1).setMaxAmount(8));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("doomfirecharge")), 1F).setMinAmount(20).setMaxAmount(100));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("hellfirecharge")), 1F).setMinAmount(10).setMaxAmount(50));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("soulstonedemonic")), 1F).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getBlock("demonstone")), 1F).setMinAmount(64).setMaxAmount(128));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getBlock("demonstonebrick")), 1F).setMinAmount(64).setMaxAmount(128));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getBlock("demonstonetile")), 1F).setMinAmount(64).setMaxAmount(128));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getBlock("demoncrystal")), 1F).setMinAmount(64).setMaxAmount(128));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("wraithsigil")), 1F).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new MobDrop(new ItemStack(Items.BLAZE_POWDER), 1F).setMinAmount(20).setMaxAmount(50));
+        this.drops.add(new MobDrop(new ItemStack(Items.BLAZE_ROD), 1F).setMinAmount(10).setMaxAmount(20));
+        this.drops.add(new MobDrop(new ItemStack(Items.DIAMOND), 1F).setMinAmount(10).setMaxAmount(20));
+        this.drops.add(new MobDrop(new ItemStack(Items.NETHER_STAR), 1F).setMinAmount(1).setMaxAmount(8));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("doomfirecharge")), 1F).setMinAmount(20).setMaxAmount(100));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("hellfirecharge")), 1F).setMinAmount(10).setMaxAmount(50));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("soulstonedemonic")), 1F).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getBlock("demonstone")), 1F).setMinAmount(64).setMaxAmount(128));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getBlock("demonstonebrick")), 1F).setMinAmount(64).setMaxAmount(128));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getBlock("demonstonetile")), 1F).setMinAmount(64).setMaxAmount(128));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getBlock("demoncrystal")), 1F).setMinAmount(64).setMaxAmount(128));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("wraithsigil")), 1F).setMinAmount(1).setMaxAmount(3));
 	}
 
     // ========== Init ==========

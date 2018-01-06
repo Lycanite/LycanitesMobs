@@ -5,8 +5,7 @@ import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.ExtendedEntity;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
-import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -100,10 +99,10 @@ public class EntityStrider extends EntityCreatureTameable implements IGroupHeavy
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.FISH), 1F).setBurningDrop(new ItemStack(Items.COOKED_FISH)).setMaxAmount(5));
-        this.drops.add(new DropRate(new ItemStack(Items.FISH, 1, 3), 0.5F).setBurningDrop(new ItemStack(Items.COOKED_FISH, 1, 3)).setMaxAmount(5));
-        this.drops.add(new DropRate(new ItemStack(Items.PRISMARINE_SHARD, 1), 1F).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Items.PRISMARINE_CRYSTALS, 1), 0.25F).setMaxAmount(1));
+        this.drops.add(new MobDrop(new ItemStack(Items.FISH), 1F).setBurningDrop(new ItemStack(Items.COOKED_FISH)).setMaxAmount(5));
+        this.drops.add(new MobDrop(new ItemStack(Items.FISH, 1, 3), 0.5F).setBurningDrop(new ItemStack(Items.COOKED_FISH, 1, 3)).setMaxAmount(5));
+        this.drops.add(new MobDrop(new ItemStack(Items.PRISMARINE_SHARD, 1), 1F).setMaxAmount(2));
+        this.drops.add(new MobDrop(new ItemStack(Items.PRISMARINE_CRYSTALS, 1), 0.25F).setMaxAmount(1));
 	}
 	
 	

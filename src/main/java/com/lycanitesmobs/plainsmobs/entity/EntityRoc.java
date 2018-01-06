@@ -8,8 +8,7 @@ import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.ObjectLists;
 import com.lycanitesmobs.core.entity.EntityCreatureRideable;
-import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -96,8 +95,8 @@ public class EntityRoc extends EntityCreatureRideable implements IMob, IGroupHun
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.FEATHER), 1.0F).setMinAmount(3).setMaxAmount(5));
-        this.drops.add(new DropRate(new ItemStack(Items.BONE), 0.75F).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new MobDrop(new ItemStack(Items.FEATHER), 1.0F).setMinAmount(3).setMaxAmount(5));
+        this.drops.add(new MobDrop(new ItemStack(Items.BONE), 0.75F).setMinAmount(1).setMaxAmount(3));
 	}
 	
 	

@@ -2,10 +2,6 @@ package com.lycanitesmobs.mountainmobs.model;
 
 import com.lycanitesmobs.core.model.template.ModelTemplateElemental;
 import com.lycanitesmobs.mountainmobs.MountainMobs;
-import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import com.lycanitesmobs.core.model.ModelCustomObj;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 

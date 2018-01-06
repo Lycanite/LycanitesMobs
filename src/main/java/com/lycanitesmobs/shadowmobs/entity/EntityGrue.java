@@ -6,8 +6,7 @@ import com.lycanitesmobs.api.IGroupShadow;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.ObjectLists;
-import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -89,9 +88,9 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.ENDER_PEARL), 0.5F).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Blocks.OBSIDIAN), 0.5F).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("soulstoneshadow")), 1F).setMaxAmount(1).setSubspecies(3));
+        this.drops.add(new MobDrop(new ItemStack(Items.ENDER_PEARL), 0.5F).setMaxAmount(2));
+        this.drops.add(new MobDrop(new ItemStack(Blocks.OBSIDIAN), 0.5F).setMaxAmount(2));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("soulstoneshadow")), 1F).setMaxAmount(1).setSubspecies(3));
 	}
 
     // ========== Set Size ==========

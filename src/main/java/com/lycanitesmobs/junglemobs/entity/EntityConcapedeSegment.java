@@ -7,7 +7,7 @@ import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.ai.EntityAISwimming;
 import com.lycanitesmobs.core.entity.ai.EntityAITargetRevenge;
 import com.lycanitesmobs.core.entity.ai.EntityAIWander;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.ObjectLists;
 import com.lycanitesmobs.core.info.SpawnInfo;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
@@ -87,8 +87,8 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("concapedemeatraw")), 1).setMinAmount(2).setMaxAmount(3).setBurningDrop(new ItemStack(ObjectManager.getItem("concapedemeatcooked"))));
-        this.drops.add(new DropRate(new ItemStack(Items.STRING), 0.25F).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("concapedemeatraw")), 1).setMinAmount(2).setMaxAmount(3).setBurningDrop(new ItemStack(ObjectManager.getItem("concapedemeatcooked"))));
+        this.drops.add(new MobDrop(new ItemStack(Items.STRING), 0.25F).setMinAmount(1).setMaxAmount(2));
 	}
 
     // ==================================================

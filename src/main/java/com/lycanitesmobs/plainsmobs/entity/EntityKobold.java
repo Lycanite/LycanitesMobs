@@ -9,8 +9,7 @@ import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.ObjectLists;
 import com.lycanitesmobs.api.IGroupPredator;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
-import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -98,10 +97,10 @@ public class EntityKobold extends EntityCreatureTameable implements IMob, IGroup
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.COAL), 0.25F).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Items.IRON_INGOT), 0.05F).setMaxAmount(1));
-        this.drops.add(new DropRate(new ItemStack(Items.GOLD_NUGGET), 0.025F).setMaxAmount(1));
-        this.drops.add(new DropRate(new ItemStack(Items.EMERALD), 0.01F).setMaxAmount(1));
+        this.drops.add(new MobDrop(new ItemStack(Items.COAL), 0.25F).setMaxAmount(2));
+        this.drops.add(new MobDrop(new ItemStack(Items.IRON_INGOT), 0.05F).setMaxAmount(1));
+        this.drops.add(new MobDrop(new ItemStack(Items.GOLD_NUGGET), 0.025F).setMaxAmount(1));
+        this.drops.add(new MobDrop(new ItemStack(Items.EMERALD), 0.01F).setMaxAmount(1));
 	}
 	
 	

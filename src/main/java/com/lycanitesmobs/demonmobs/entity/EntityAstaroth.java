@@ -5,8 +5,7 @@ import com.lycanitesmobs.api.IGroupDemon;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
@@ -72,9 +71,9 @@ public class EntityAstaroth extends EntityCreatureBase implements IMob, IGroupDe
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.IRON_INGOT), 1).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.REDSTONE), 1).setMinAmount(3).setMaxAmount(8));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("devilstarcharge")), 0.5F));
+        this.drops.add(new MobDrop(new ItemStack(Items.IRON_INGOT), 1).setMaxAmount(3));
+        this.drops.add(new MobDrop(new ItemStack(Items.REDSTONE), 1).setMinAmount(3).setMaxAmount(8));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("devilstarcharge")), 0.5F));
 	}
 
 

@@ -2,14 +2,14 @@ package com.lycanitesmobs.arcticmobs.model;
 
 import com.lycanitesmobs.arcticmobs.ArcticMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import com.lycanitesmobs.core.model.ModelCustomObj;
+import com.lycanitesmobs.core.model.ModelObjOld;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ModelWendigo extends ModelCustomObj {
+public class ModelWendigo extends ModelObjOld {
 	
 	// ==================================================
   	//                    Constructors

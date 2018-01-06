@@ -7,8 +7,7 @@ import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.api.IGroupAlpha;
 import com.lycanitesmobs.api.IGroupAnimal;
 import com.lycanitesmobs.api.IGroupPredator;
-import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -92,8 +91,8 @@ public class EntityZoataur extends EntityCreatureTameable implements IGroupPreda
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.LEATHER), 1F).setMaxAmount(5));
-        this.drops.add(new DropRate(new ItemStack(Items.BONE), 0.5F).setMaxAmount(3));
+        this.drops.add(new MobDrop(new ItemStack(Items.LEATHER), 1F).setMaxAmount(5));
+        this.drops.add(new MobDrop(new ItemStack(Items.BONE), 0.5F).setMaxAmount(3));
 	}
 
 

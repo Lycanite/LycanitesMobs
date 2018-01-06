@@ -4,11 +4,10 @@ import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.*;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.core.info.ObjectLists;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
-import com.lycanitesmobs.core.entity.ai.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -91,10 +90,10 @@ public class EntityCrusk extends EntityCreatureTameable implements IGroupPredato
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.CLAY_BALL), 1).setMinAmount(6).setMaxAmount(12));
-        this.drops.add(new DropRate(new ItemStack(Items.FLINT), 0.5F).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Blocks.IRON_ORE), 0.5F).setMinAmount(2).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Blocks.GOLD_ORE), 0.25F).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new MobDrop(new ItemStack(Items.CLAY_BALL), 1).setMinAmount(6).setMaxAmount(12));
+        this.drops.add(new MobDrop(new ItemStack(Items.FLINT), 0.5F).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new MobDrop(new ItemStack(Blocks.IRON_ORE), 0.5F).setMinAmount(2).setMaxAmount(3));
+        this.drops.add(new MobDrop(new ItemStack(Blocks.GOLD_ORE), 0.25F).setMinAmount(1).setMaxAmount(2));
 	}
     
     

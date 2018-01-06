@@ -6,8 +6,7 @@ import com.lycanitesmobs.api.IGroupFire;
 import com.lycanitesmobs.api.IGroupIce;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.EntityProjectileBase;
-import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -83,10 +82,10 @@ public class EntityWendigo extends EntityCreatureBase implements IMob, IGroupIce
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Blocks.SNOW), 0.5F).setMaxAmount(8));
-        this.drops.add(new DropRate(new ItemStack(Blocks.PACKED_ICE), 0.25F).setMaxAmount(8));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("frostyfur")), 0.75F).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("tundracharge")), 0.75F));
+        this.drops.add(new MobDrop(new ItemStack(Blocks.SNOW), 0.5F).setMaxAmount(8));
+        this.drops.add(new MobDrop(new ItemStack(Blocks.PACKED_ICE), 0.25F).setMaxAmount(8));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("frostyfur")), 0.75F).setMaxAmount(2));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("tundracharge")), 0.75F));
 	}
     
     

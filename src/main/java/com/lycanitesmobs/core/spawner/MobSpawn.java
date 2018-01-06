@@ -1,9 +1,12 @@
 package com.lycanitesmobs.core.spawner;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.lycanitesmobs.ExtendedWorld;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
+import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.MobInfo;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,6 +14,7 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MobSpawn {
@@ -64,6 +68,9 @@ public class MobSpawn {
 
 	/** The level boost of the mob spawned, higher levels increase the stats by a small amount. This is added to the starting mob level (normally just 1). **/
 	protected int mobLevel = 0;
+
+	/** A list of item drops to add to a mob spawned by this MobSpawn. **/
+	protected List<MobDrop> mobDrops = new ArrayList<>();
 
 
 	/** Loads this Spawn Condition from the provided JSON data. **/
@@ -138,6 +145,16 @@ public class MobSpawn {
 
 		if(json.has("mobLevel"))
 			this.mobLevel = json.get("mobLevel").getAsInt();
+
+		if(json.has("mobDrops")) {
+			JsonArray mobDropEntries = json.getAsJsonArray("mobDrops");
+			for(JsonElement mobDropJson : mobDropEntries) {
+				MobDrop mobDrop = MobDrop.createFromJSON(mobDropJson.getAsJsonObject());
+				if(mobDrop != null) {
+					this.mobDrops.add(mobDrop);
+				}
+			}
+		}
 	}
 
 
@@ -295,6 +312,9 @@ public class MobSpawn {
 			}
 			if(this.temporary > -1) {
 				entityCreature.setTemporary(this.temporary);
+			}
+			for(MobDrop mobDrop : this.mobDrops) {
+				entityCreature.drops.add(mobDrop);
 			}
 		}
 	}

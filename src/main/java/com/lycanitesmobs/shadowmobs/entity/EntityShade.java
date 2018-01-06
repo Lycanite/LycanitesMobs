@@ -6,7 +6,7 @@ import com.lycanitesmobs.api.*;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.EntityCreatureRideable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.entity.Entity;
@@ -98,8 +98,8 @@ public class EntityShade extends EntityCreatureRideable implements IGroupPredato
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.ENDER_PEARL), 1F).setMaxAmount(5));
-        this.drops.add(new DropRate(new ItemStack(Blocks.OBSIDIAN), 0.75F).setMaxAmount(5));
+        this.drops.add(new MobDrop(new ItemStack(Items.ENDER_PEARL), 1F).setMaxAmount(5));
+        this.drops.add(new MobDrop(new ItemStack(Blocks.OBSIDIAN), 0.75F).setMaxAmount(5));
     }
 
 

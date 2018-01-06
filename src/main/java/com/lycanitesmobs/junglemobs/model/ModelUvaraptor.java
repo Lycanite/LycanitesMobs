@@ -2,14 +2,14 @@ package com.lycanitesmobs.junglemobs.model;
 
 import com.lycanitesmobs.junglemobs.JungleMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import com.lycanitesmobs.core.model.ModelCustomObj;
+import com.lycanitesmobs.core.model.ModelObjOld;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ModelUvaraptor extends ModelCustomObj {
+public class ModelUvaraptor extends ModelObjOld {
 	
 	// ==================================================
   	//                    Constructors

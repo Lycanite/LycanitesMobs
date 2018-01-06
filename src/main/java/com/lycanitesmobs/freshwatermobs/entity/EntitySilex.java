@@ -3,10 +3,9 @@ package com.lycanitesmobs.freshwatermobs.entity;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupAnimal;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.api.IGroupPredator;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
-import com.lycanitesmobs.core.entity.ai.*;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.IAnimals;
@@ -77,8 +76,8 @@ public class EntitySilex extends EntityCreatureAgeable implements IAnimals, IGro
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("silexmeatraw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("silexmeatcooked"))).setMinAmount(1).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Items.DYE, 1, 4), 1).setMinAmount(2).setMaxAmount(4));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("silexmeatraw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("silexmeatcooked"))).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new MobDrop(new ItemStack(Items.DYE, 1, 4), 1).setMinAmount(2).setMaxAmount(4));
     }
 
 	

@@ -1,7 +1,7 @@
 package com.lycanitesmobs.demonmobs.model;
 
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import com.lycanitesmobs.core.model.ModelCustomObj;
+import com.lycanitesmobs.core.model.ModelObjOld;
 import com.lycanitesmobs.core.renderer.LayerFire;
 import com.lycanitesmobs.core.renderer.LayerShield;
 import com.lycanitesmobs.core.renderer.RenderCreature;
@@ -14,7 +14,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ModelAsmodeus extends ModelCustomObj {
+public class ModelAsmodeus extends ModelObjOld {
 
 	// ==================================================
   	//                    Constructors

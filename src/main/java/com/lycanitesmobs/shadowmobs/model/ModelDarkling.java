@@ -1,6 +1,6 @@
 package com.lycanitesmobs.shadowmobs.model;
 
-import com.lycanitesmobs.core.model.ModelCustomObj;
+import com.lycanitesmobs.core.model.ModelObjOld;
 import com.lycanitesmobs.shadowmobs.ShadowMobs;
 import com.lycanitesmobs.shadowmobs.entity.EntityDarkling;
 import net.minecraft.entity.EntityLiving;
@@ -9,7 +9,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ModelDarkling extends ModelCustomObj {
+public class ModelDarkling extends ModelObjOld {
 
 	// ==================================================
   	//                    Constructors

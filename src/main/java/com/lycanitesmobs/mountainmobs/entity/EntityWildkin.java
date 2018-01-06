@@ -4,7 +4,7 @@ import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -87,9 +87,9 @@ public class EntityWildkin extends EntityCreatureTameable implements IMob {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.BONE), 1).setMinAmount(2).setMaxAmount(6));
-        this.drops.add(new DropRate(new ItemStack(Items.FEATHER), 1).setMinAmount(10).setMaxAmount(25));
-        this.drops.add(new DropRate(new ItemStack(Items.DYE, 1, 4), 1).setMinAmount(4).setMaxAmount(8));
+        this.drops.add(new MobDrop(new ItemStack(Items.BONE), 1).setMinAmount(2).setMaxAmount(6));
+        this.drops.add(new MobDrop(new ItemStack(Items.FEATHER), 1).setMinAmount(10).setMaxAmount(25));
+        this.drops.add(new MobDrop(new ItemStack(Items.DYE, 1, 4), 1).setMinAmount(4).setMaxAmount(8));
 	}
 
 

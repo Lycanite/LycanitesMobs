@@ -4,26 +4,20 @@ import com.lycanitesmobs.api.IGroupHeavy;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupAnimal;
-import com.lycanitesmobs.api.IGroupPlant;
 import com.lycanitesmobs.api.IGroupPredator;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
-import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -88,8 +82,8 @@ public class EntityArisaur extends EntityCreatureAgeable implements IAnimals, IG
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("arisaurmeatraw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("arisaurmeatcooked"))).setMaxAmount(6));
-        this.drops.add(new DropRate(new ItemStack(Items.APPLE), 0.5F).setMinAmount(0).setMaxAmount(3));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("arisaurmeatraw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("arisaurmeatcooked"))).setMaxAmount(6));
+        this.drops.add(new MobDrop(new ItemStack(Items.APPLE), 0.5F).setMinAmount(0).setMaxAmount(3));
     }
 	
 	

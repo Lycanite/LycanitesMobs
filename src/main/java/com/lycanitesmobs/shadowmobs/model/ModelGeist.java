@@ -1,6 +1,6 @@
 package com.lycanitesmobs.shadowmobs.model;
 
-import com.lycanitesmobs.core.model.ModelCustomObj;
+import com.lycanitesmobs.core.model.ModelObjOld;
 import com.lycanitesmobs.shadowmobs.ShadowMobs;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.MathHelper;
@@ -8,7 +8,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ModelGeist extends ModelCustomObj {
+public class ModelGeist extends ModelObjOld {
 
 	// ==================================================
   	//                    Constructors

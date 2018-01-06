@@ -7,7 +7,7 @@ import com.lycanitesmobs.api.IGroupPrey;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.MobInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -88,10 +88,10 @@ public class EntitySutiramu extends EntityCreatureTameable implements IMob, IGro
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.FLINT), 1).setMinAmount(1).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Blocks.IRON_ORE), 0.5F).setMinAmount(1).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Items.GOLD_NUGGET), 0.25F).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Items.SPIDER_EYE), 0.25F).setMaxAmount(2));
+        this.drops.add(new MobDrop(new ItemStack(Items.FLINT), 1).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new MobDrop(new ItemStack(Blocks.IRON_ORE), 0.5F).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new MobDrop(new ItemStack(Items.GOLD_NUGGET), 0.25F).setMaxAmount(2));
+        this.drops.add(new MobDrop(new ItemStack(Items.SPIDER_EYE), 0.25F).setMaxAmount(2));
 	}
 
 

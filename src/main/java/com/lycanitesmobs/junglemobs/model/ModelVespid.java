@@ -1,6 +1,6 @@
 package com.lycanitesmobs.junglemobs.model;
 
-import com.lycanitesmobs.core.model.ModelCustomObj;
+import com.lycanitesmobs.core.model.ModelObjOld;
 import com.lycanitesmobs.junglemobs.JungleMobs;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.MathHelper;
@@ -8,7 +8,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ModelVespid extends ModelCustomObj {
+public class ModelVespid extends ModelObjOld {
 	
 	// ==================================================
   	//                    Constructors

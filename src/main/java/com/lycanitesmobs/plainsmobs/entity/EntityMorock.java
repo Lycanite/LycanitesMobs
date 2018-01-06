@@ -5,7 +5,7 @@ import com.lycanitesmobs.api.IGroupHunter;
 import com.lycanitesmobs.api.IGroupPrey;
 import com.lycanitesmobs.core.entity.EntityCreatureRideable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -87,11 +87,11 @@ public class EntityMorock extends EntityCreatureRideable implements IMob, IGroup
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.BONE), 1F).setMinAmount(3).setMaxAmount(6));
-        this.drops.add(new DropRate(new ItemStack(Items.PRISMARINE_SHARD, 1), 1F).setMinAmount(6).setMaxAmount(12));
-        this.drops.add(new DropRate(new ItemStack(Items.PRISMARINE_CRYSTALS, 1), 0.75F).setMinAmount(3).setMaxAmount(6));
-        this.drops.add(new DropRate(new ItemStack(Items.DIAMOND, 1), 0.1F).setMaxAmount(1));
-        this.drops.add(new DropRate(new ItemStack(Items.EMERALD, 1), 0.2F).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new MobDrop(new ItemStack(Items.BONE), 1F).setMinAmount(3).setMaxAmount(6));
+        this.drops.add(new MobDrop(new ItemStack(Items.PRISMARINE_SHARD, 1), 1F).setMinAmount(6).setMaxAmount(12));
+        this.drops.add(new MobDrop(new ItemStack(Items.PRISMARINE_CRYSTALS, 1), 0.75F).setMinAmount(3).setMaxAmount(6));
+        this.drops.add(new MobDrop(new ItemStack(Items.DIAMOND, 1), 0.1F).setMaxAmount(1));
+        this.drops.add(new MobDrop(new ItemStack(Items.EMERALD, 1), 0.2F).setMinAmount(1).setMaxAmount(3));
 	}
 	
 	

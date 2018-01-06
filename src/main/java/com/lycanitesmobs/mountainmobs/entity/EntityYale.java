@@ -6,8 +6,7 @@ import com.lycanitesmobs.api.IGroupAnimal;
 import com.lycanitesmobs.api.IGroupPredator;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -40,7 +39,7 @@ import java.util.Random;
 
 public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGroupAnimal, IShearable {
 	
-	public DropRate woolDrop;
+	public MobDrop woolDrop;
 	
 	/**
 	 * Simulates a crafting instance between two dyes and uses the result dye as a mixed color, used for babies with different colored parents.
@@ -120,9 +119,9 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("YaleMeatRaw")), 1).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("YaleMeatRaw")), 1).setMinAmount(1).setMaxAmount(3));
         if(this.woolDrop == null)
-		    this.woolDrop = new DropRate(new ItemStack(Blocks.WOOL), 1).setMinAmount(1).setMaxAmount(3);
+		    this.woolDrop = new MobDrop(new ItemStack(Blocks.WOOL), 1).setMinAmount(1).setMaxAmount(3);
         this.drops.add(this.woolDrop);
 	}
 	
@@ -187,7 +186,7 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
 	@Override
 	public void setColor(int color) {
         if(this.woolDrop == null)
-            this.woolDrop = new DropRate(new ItemStack(Blocks.WOOL), 1).setMinAmount(1).setMaxAmount(3);
+            this.woolDrop = new MobDrop(new ItemStack(Blocks.WOOL), 1).setMinAmount(1).setMaxAmount(3);
 		this.woolDrop.setDrop(new ItemStack(Blocks.WOOL, 1, color));
 		super.setColor(color);
 	}

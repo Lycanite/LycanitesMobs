@@ -6,8 +6,7 @@ import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupFire;
 import com.lycanitesmobs.api.IGroupPlant;
-import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
@@ -93,12 +92,12 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.STICK), 0.5F).setMaxAmount(6).setBurningDrop(new ItemStack(Items.COAL, 1, 1)));
-        this.drops.add(new DropRate(new ItemStack(Blocks.VINE), 0.1F).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.WHEAT_SEEDS), 0.1F).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.PUMPKIN_SEEDS), 0.05F).setMaxAmount(1));
-        this.drops.add(new DropRate(new ItemStack(Items.MELON_SEEDS), 0.05F).setMaxAmount(1));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("lifedraincharge")), 0.25F).setMaxAmount(1));
+        this.drops.add(new MobDrop(new ItemStack(Items.STICK), 0.5F).setMaxAmount(6).setBurningDrop(new ItemStack(Items.COAL, 1, 1)));
+        this.drops.add(new MobDrop(new ItemStack(Blocks.VINE), 0.1F).setMaxAmount(3));
+        this.drops.add(new MobDrop(new ItemStack(Items.WHEAT_SEEDS), 0.1F).setMaxAmount(3));
+        this.drops.add(new MobDrop(new ItemStack(Items.PUMPKIN_SEEDS), 0.05F).setMaxAmount(1));
+        this.drops.add(new MobDrop(new ItemStack(Items.MELON_SEEDS), 0.05F).setMaxAmount(1));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("lifedraincharge")), 0.25F).setMaxAmount(1));
 	}
 
 

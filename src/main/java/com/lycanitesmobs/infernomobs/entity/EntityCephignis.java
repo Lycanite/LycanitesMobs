@@ -7,8 +7,7 @@ import com.lycanitesmobs.api.IGroupFire;
 import com.lycanitesmobs.api.IGroupPredator;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.EntityItemCustom;
-import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.IAnimals;
@@ -91,8 +90,8 @@ public class EntityCephignis extends EntityCreatureAgeable implements IAnimals, 
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("CephignisMeatCooked")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("CephignisMeatCooked"))).setMinAmount(2).setMaxAmount(5));
-        this.drops.add(new DropRate(new ItemStack(Items.MAGMA_CREAM, 1, 0), 0.25F).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("CephignisMeatCooked")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("CephignisMeatCooked"))).setMinAmount(2).setMaxAmount(5));
+        this.drops.add(new MobDrop(new ItemStack(Items.MAGMA_CREAM, 1, 0), 0.25F).setMinAmount(1).setMaxAmount(2));
     }
     
     

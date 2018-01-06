@@ -5,8 +5,7 @@ import com.lycanitesmobs.api.IGroupIce;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.api.IGroupFire;
-import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.EntityBlaze;
@@ -85,9 +84,9 @@ public class EntityReiver extends EntityCreatureTameable implements IMob, IGroup
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.SNOWBALL), 0.5F).setMaxAmount(8));
-        this.drops.add(new DropRate(new ItemStack(Blocks.ICE), 0.25F).setMaxAmount(8));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("FrostboltCharge")), 0.25F).setMaxAmount(3));
+        this.drops.add(new MobDrop(new ItemStack(Items.SNOWBALL), 0.5F).setMaxAmount(8));
+        this.drops.add(new MobDrop(new ItemStack(Blocks.ICE), 0.25F).setMaxAmount(8));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("FrostboltCharge")), 0.25F).setMaxAmount(3));
 	}
 	
 	

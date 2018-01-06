@@ -4,10 +4,9 @@ import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupPrey;
 import com.lycanitesmobs.core.entity.EntityCreatureRideable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.core.info.ObjectLists;
-import com.lycanitesmobs.core.entity.ai.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -84,9 +83,9 @@ public class EntityEyewig extends EntityCreatureRideable {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.SPIDER_EYE), 0.9F).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Items.FERMENTED_SPIDER_EYE), 0.2F));
-        this.drops.add(new DropRate(new ItemStack(Items.STRING), 1).setMinAmount(2).setMaxAmount(5));
+        this.drops.add(new MobDrop(new ItemStack(Items.SPIDER_EYE), 0.9F).setMaxAmount(2));
+        this.drops.add(new MobDrop(new ItemStack(Items.FERMENTED_SPIDER_EYE), 0.2F));
+        this.drops.add(new MobDrop(new ItemStack(Items.STRING), 1).setMinAmount(2).setMaxAmount(5));
 	}
 	
 	

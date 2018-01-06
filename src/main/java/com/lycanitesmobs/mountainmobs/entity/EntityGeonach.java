@@ -6,8 +6,7 @@ import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.ObjectLists;
-import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -94,11 +93,11 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Blocks.STONE), 1F).setMaxAmount(8));
-        this.drops.add(new DropRate(new ItemStack(Blocks.IRON_ORE), 0.75F).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Items.QUARTZ), 0.75F).setMaxAmount(5));
-        this.drops.add(new DropRate(new ItemStack(Blocks.GOLD_ORE), 0.1F).setMaxAmount(1));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("soulstonemountain")), 1F).setMaxAmount(1).setSubspecies(3));
+        this.drops.add(new MobDrop(new ItemStack(Blocks.STONE), 1F).setMaxAmount(8));
+        this.drops.add(new MobDrop(new ItemStack(Blocks.IRON_ORE), 0.75F).setMaxAmount(2));
+        this.drops.add(new MobDrop(new ItemStack(Items.QUARTZ), 0.75F).setMaxAmount(5));
+        this.drops.add(new MobDrop(new ItemStack(Blocks.GOLD_ORE), 0.1F).setMaxAmount(1));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("soulstonemountain")), 1F).setMaxAmount(1).setSubspecies(3));
 	}
 
     // ========== Set Size ==========

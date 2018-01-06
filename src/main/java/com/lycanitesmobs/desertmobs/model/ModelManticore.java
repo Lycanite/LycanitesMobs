@@ -2,14 +2,14 @@ package com.lycanitesmobs.desertmobs.model;
 
 import com.lycanitesmobs.desertmobs.DesertMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import com.lycanitesmobs.core.model.ModelCustomObj;
+import com.lycanitesmobs.core.model.ModelObjOld;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ModelManticore extends ModelCustomObj {
+public class ModelManticore extends ModelObjOld {
 	
 	// ==================================================
   	//                    Constructors

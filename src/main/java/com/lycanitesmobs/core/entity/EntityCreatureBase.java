@@ -304,7 +304,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** The inventory object of the creature, this is used for managing and using the creature's inventory. **/
 	public InventoryCreature inventory;
     /** A collection of DropRate classes which are used when randomly drop items on death. **/
-    public List<DropRate> drops = new ArrayList<DropRate>();
+    public List<MobDrop> drops = new ArrayList<MobDrop>();
     
     // Override AI:
     public EntityAITargetAttack aiTargetPlayer = new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class);
@@ -376,7 +376,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         this.loadCustomDrops();
 		ItemEquipmentPart itemEquipmentPart = ItemEquipmentPart.MOB_PART_DROPS.get(this.getEntityIdName());
 		if(itemEquipmentPart != null) {
-			this.drops.add(new DropRate(new ItemStack(itemEquipmentPart), itemEquipmentPart.dropChance).setMaxAmount(1));
+			this.drops.add(new MobDrop(new ItemStack(itemEquipmentPart), itemEquipmentPart.dropChance).setMaxAmount(1));
 		}
         
         // Fire Immunity:
@@ -390,8 +390,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Load Custom Drops ==========
     /** Loads custom item drops from the config. **/
     public void loadCustomDrops() {
-        for(DropRate drop : this.mobInfo.customDrops) {
-            DropRate newDrop = new DropRate(drop.item.copy(), drop.chance).setMinAmount(drop.minAmount).setMaxAmount(drop.maxAmount).setChance(drop.chance).setSubspecies(drop.subspeciesID).setBurningDrop(drop.burningItem);
+        for(MobDrop drop : this.mobInfo.customDrops) {
+            MobDrop newDrop = new MobDrop(drop.itemStack.copy(), drop.chance).setMinAmount(drop.minAmount).setMaxAmount(drop.maxAmount).setChance(drop.chance).setSubspecies(drop.subspeciesID).setBurningDrop(drop.burningItemStack);
             this.drops.add (newDrop);
         }
     }
@@ -2966,7 +2966,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     @Override
     protected Item getDropItem() {
         if(this.drops != null && this.drops.get(0) != null && !this.isMinion() && !this.isBoundPet())
-        	return this.drops.get(0).item.getItem();
+        	return this.drops.get(0).itemStack.getItem();
         else
         	return null;
     }
@@ -2982,17 +2982,17 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	else if(this.getSubspeciesIndex() > 0)
     		subspeciesScale = Subspecies.uncommonDropScale;
 
-    	for(DropRate dropRate : this.drops) {
-            if(dropRate.subspeciesID >= 0 && dropRate.subspeciesID != this.getSubspeciesIndex())
+    	for(MobDrop mobDrop : this.drops) {
+            if(mobDrop.subspeciesID >= 0 && mobDrop.subspeciesID != this.getSubspeciesIndex())
                 continue;
-    		int quantity = dropRate.getQuantity(this.rand, lootLevel);
-            if(dropRate.subspeciesID < 0)
+    		int quantity = mobDrop.getQuantity(this.rand, lootLevel);
+            if(mobDrop.subspeciesID < 0)
                 quantity *= subspeciesScale;
     		if(this.extraMobBehaviour != null && this.extraMobBehaviour.itemDropMultiplierOverride != 1)
     			quantity = Math.round((float)quantity * (float)this.extraMobBehaviour.itemDropMultiplierOverride);
     		ItemStack dropStack = null;
     		if(quantity > 0)
-    			dropStack = dropRate.getItemStack(this, quantity);
+    			dropStack = mobDrop.getItemStack(this, quantity);
     		if(dropStack != null)
     			this.dropItem(dropStack);
     	}

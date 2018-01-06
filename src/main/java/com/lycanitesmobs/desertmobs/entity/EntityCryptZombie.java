@@ -2,9 +2,8 @@ package com.lycanitesmobs.desertmobs.entity;
 
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
-import com.lycanitesmobs.core.entity.ai.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -82,8 +81,8 @@ public class EntityCryptZombie extends EntityCreatureAgeable implements IMob {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.ROTTEN_FLESH), 1).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.GOLD_NUGGET), 0.25F).setMaxAmount(2));
+        this.drops.add(new MobDrop(new ItemStack(Items.ROTTEN_FLESH), 1).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new MobDrop(new ItemStack(Items.GOLD_NUGGET), 0.25F).setMaxAmount(2));
 	}
     
     

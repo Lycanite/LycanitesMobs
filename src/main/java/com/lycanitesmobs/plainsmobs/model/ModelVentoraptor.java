@@ -1,7 +1,7 @@
 package com.lycanitesmobs.plainsmobs.model;
 
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import com.lycanitesmobs.core.model.ModelCustomObj;
+import com.lycanitesmobs.core.model.ModelObjOld;
 import com.lycanitesmobs.plainsmobs.PlainsMobs;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.MathHelper;
@@ -9,7 +9,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ModelVentoraptor extends ModelCustomObj {
+public class ModelVentoraptor extends ModelObjOld {
 	
 	// ==================================================
   	//                    Constructors

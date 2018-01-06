@@ -7,8 +7,7 @@ import com.lycanitesmobs.api.IGroupPredator;
 import com.lycanitesmobs.api.IGroupPrey;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.EntityCreatureRideable;
-import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -97,9 +96,9 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.FLINT), 1).setMinAmount(1).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Blocks.IRON_ORE), 0.5F).setMinAmount(1).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("MudshotCharge")), 0.25F));
+        this.drops.add(new MobDrop(new ItemStack(Items.FLINT), 1).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new MobDrop(new ItemStack(Blocks.IRON_ORE), 0.5F).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("MudshotCharge")), 0.25F));
 	}
 	
 	

@@ -10,8 +10,7 @@ import com.lycanitesmobs.api.IGroupPlant;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.EntityItemCustom;
 import com.lycanitesmobs.core.entity.EntityProjectileBase;
-import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -100,11 +99,11 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.COAL), 1.0F).setMaxAmount(16));
-        this.drops.add(new DropRate(new ItemStack(Items.MAGMA_CREAM), 0.75F).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.BLAZE_POWDER), 0.5F).setMaxAmount(6));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("magmacharge")), 0.25F));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("soulstoneinferno")), 1F).setMaxAmount(1).setSubspecies(3));
+        this.drops.add(new MobDrop(new ItemStack(Items.COAL), 1.0F).setMaxAmount(16));
+        this.drops.add(new MobDrop(new ItemStack(Items.MAGMA_CREAM), 0.75F).setMaxAmount(3));
+        this.drops.add(new MobDrop(new ItemStack(Items.BLAZE_POWDER), 0.5F).setMaxAmount(6));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("magmacharge")), 0.25F));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("soulstoneinferno")), 1F).setMaxAmount(1).setSubspecies(3));
 	}
 
     // ========== Set Size ==========

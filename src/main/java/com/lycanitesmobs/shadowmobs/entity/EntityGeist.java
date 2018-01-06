@@ -6,8 +6,7 @@ import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupShadow;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -91,9 +90,9 @@ public class EntityGeist extends EntityCreatureAgeable implements IMob, IGroupSh
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.ROTTEN_FLESH), 1).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.ENDER_PEARL), 0.25F).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("geistliver")), 0.25F).setMaxAmount(1));
+        this.drops.add(new MobDrop(new ItemStack(Items.ROTTEN_FLESH), 1).setMaxAmount(3));
+        this.drops.add(new MobDrop(new ItemStack(Items.ENDER_PEARL), 0.25F).setMaxAmount(2));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("geistliver")), 0.25F).setMaxAmount(1));
 	}
     
     

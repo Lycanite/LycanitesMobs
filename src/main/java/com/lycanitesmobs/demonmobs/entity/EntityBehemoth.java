@@ -6,8 +6,7 @@ import com.lycanitesmobs.api.IGroupDemon;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
-import com.lycanitesmobs.core.entity.ai.*;
+import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -88,9 +87,9 @@ public class EntityBehemoth extends EntityCreatureTameable implements IMob, IGro
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("hellfirecharge")), 1).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("hellfirecharge")), 0.1F).setMinAmount(5).setMaxAmount(7));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("demonicsoulstone")), 1F).setMinAmount(1).setMaxAmount(1).setSubspecies(3));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("hellfirecharge")), 1).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("hellfirecharge")), 0.1F).setMinAmount(5).setMaxAmount(7));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("demonicsoulstone")), 1F).setMinAmount(1).setMaxAmount(1).setSubspecies(3));
 	}
 
     // ========== Init ==========

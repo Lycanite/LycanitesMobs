@@ -8,8 +8,7 @@ import com.lycanitesmobs.api.IGroupAnimal;
 import com.lycanitesmobs.api.IGroupPrey;
 import com.lycanitesmobs.api.IGroupShadow;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -103,9 +102,9 @@ public class EntityDarkling extends EntityCreatureTameable implements IMob, IGro
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.ENDER_PEARL), 0.25F));
-        this.drops.add(new DropRate(new ItemStack(Items.SPIDER_EYE), 0.5F).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Items.FERMENTED_SPIDER_EYE), 0.25F));
+        this.drops.add(new MobDrop(new ItemStack(Items.ENDER_PEARL), 0.25F));
+        this.drops.add(new MobDrop(new ItemStack(Items.SPIDER_EYE), 0.5F).setMaxAmount(2));
+        this.drops.add(new MobDrop(new ItemStack(Items.FERMENTED_SPIDER_EYE), 0.25F));
 	}
 
     // ========== Init ==========

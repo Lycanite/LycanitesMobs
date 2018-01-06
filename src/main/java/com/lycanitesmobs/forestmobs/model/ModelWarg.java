@@ -1,7 +1,7 @@
 package com.lycanitesmobs.forestmobs.model;
 
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import com.lycanitesmobs.core.model.ModelCustomObj;
+import com.lycanitesmobs.core.model.ModelObjOld;
 import com.lycanitesmobs.forestmobs.ForestMobs;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.MathHelper;
@@ -9,7 +9,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ModelWarg extends ModelCustomObj {
+public class ModelWarg extends ModelObjOld {
 
 	// ==================================================
   	//                    Constructors

@@ -5,8 +5,7 @@ import com.lycanitesmobs.api.IGroupElectric;
 import com.lycanitesmobs.api.IGroupWater;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -78,8 +77,8 @@ public class EntityZephyr extends EntityCreatureTameable implements IMob, IGroup
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.GUNPOWDER), 1F).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.GLOWSTONE_DUST), 1F).setMaxAmount(8));
+        this.drops.add(new MobDrop(new ItemStack(Items.GUNPOWDER), 1F).setMaxAmount(3));
+        this.drops.add(new MobDrop(new ItemStack(Items.GLOWSTONE_DUST), 1F).setMaxAmount(8));
 	}
 	
 	

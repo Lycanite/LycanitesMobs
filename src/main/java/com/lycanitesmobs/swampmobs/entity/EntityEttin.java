@@ -3,8 +3,7 @@ package com.lycanitesmobs.swampmobs.entity;
 import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
-import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
@@ -83,11 +82,11 @@ public class EntityEttin extends EntityCreatureAgeable implements IMob {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Blocks.LOG), 1).setMinAmount(2).setMaxAmount(6));
-        this.drops.add(new DropRate(new ItemStack(Blocks.BROWN_MUSHROOM), 1).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Blocks.RED_MUSHROOM), 1).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.LEATHER), 1).setMinAmount(2).setMaxAmount(6));
-        this.drops.add(new DropRate(new ItemStack(Items.COAL), 1).setMinAmount(2).setMaxAmount(8));
+        this.drops.add(new MobDrop(new ItemStack(Blocks.LOG), 1).setMinAmount(2).setMaxAmount(6));
+        this.drops.add(new MobDrop(new ItemStack(Blocks.BROWN_MUSHROOM), 1).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new MobDrop(new ItemStack(Blocks.RED_MUSHROOM), 1).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new MobDrop(new ItemStack(Items.LEATHER), 1).setMinAmount(2).setMaxAmount(6));
+        this.drops.add(new MobDrop(new ItemStack(Items.COAL), 1).setMinAmount(2).setMaxAmount(8));
 	}
 	
 	

@@ -4,6 +4,7 @@ import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.model.ModelCustom;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -62,6 +63,16 @@ public class LayerBase implements LayerRenderer<EntityCreatureBase> {
 
     public Vector4f getPartColor(String partName, EntityCreatureBase entity, boolean trophy) {
         return new Vector4f(1, 1, 1, 1);
+    }
+
+    /** Called just before a part is being rendered with this layer. **/
+    public void onRenderStart(String partName, Entity entity, boolean trophy) {
+
+    }
+
+	/** Called just after a part is being rendered with this layer. **/
+    public void onRenderFinish(String partName, Entity entity, boolean trophy) {
+
     }
 
     @Override

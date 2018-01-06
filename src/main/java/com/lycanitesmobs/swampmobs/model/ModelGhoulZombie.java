@@ -1,6 +1,6 @@
 package com.lycanitesmobs.swampmobs.model;
 
-import com.lycanitesmobs.core.model.ModelCustomObj;
+import com.lycanitesmobs.core.model.ModelObjOld;
 import com.lycanitesmobs.swampmobs.SwampMobs;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.MathHelper;
@@ -8,7 +8,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ModelGhoulZombie extends ModelCustomObj {
+public class ModelGhoulZombie extends ModelObjOld {
 	
 	// ==================================================
   	//                    Constructors

@@ -1,14 +1,12 @@
 package com.lycanitesmobs.saltwatermobs.entity;
 
 import com.lycanitesmobs.ExtendedEntity;
-import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupHunter;
 import com.lycanitesmobs.api.IGroupPrey;
 import com.lycanitesmobs.core.entity.EntityCreatureRideable;
-import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -91,8 +89,8 @@ public class EntityRaiko extends EntityCreatureRideable implements IMob, IGroupH
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.FEATHER), 1.0F).setMinAmount(3).setMaxAmount(5));
-        this.drops.add(new DropRate(new ItemStack(Items.BONE), 0.75F).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new MobDrop(new ItemStack(Items.FEATHER), 1.0F).setMinAmount(3).setMaxAmount(5));
+        this.drops.add(new MobDrop(new ItemStack(Items.BONE), 0.75F).setMinAmount(1).setMaxAmount(3));
 	}
 	
 	

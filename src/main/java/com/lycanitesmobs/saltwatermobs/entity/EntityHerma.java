@@ -3,11 +3,10 @@ package com.lycanitesmobs.saltwatermobs.entity;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
@@ -84,10 +83,10 @@ public class EntityHerma extends EntityCreatureTameable implements IMob {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.FISH), 1).setBurningDrop(new ItemStack(Items.COOKED_FISH)).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.FISH, 1, 1), 0.5F).setBurningDrop(new ItemStack(Items.COOKED_FISH, 1, 1)).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.FISH, 1, 2), 0.1F).setMinAmount(1).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Items.FISH, 1, 3), 0.25F).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new MobDrop(new ItemStack(Items.FISH), 1).setBurningDrop(new ItemStack(Items.COOKED_FISH)).setMaxAmount(3));
+        this.drops.add(new MobDrop(new ItemStack(Items.FISH, 1, 1), 0.5F).setBurningDrop(new ItemStack(Items.COOKED_FISH, 1, 1)).setMaxAmount(3));
+        this.drops.add(new MobDrop(new ItemStack(Items.FISH, 1, 2), 0.1F).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new MobDrop(new ItemStack(Items.FISH, 1, 3), 0.25F).setMinAmount(1).setMaxAmount(2));
     }
     
     

@@ -5,24 +5,18 @@ import com.lycanitesmobs.api.IGroupRock;
 import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
-import com.lycanitesmobs.core.info.ObjectLists;
+import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.boss.EntityWither;
-import net.minecraft.entity.monster.EntitySilverfish;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 
@@ -91,10 +85,10 @@ public class EntityTremor extends EntityCreatureTameable implements IMob, IGroup
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.GUNPOWDER), 1F).setMinAmount(4).setMaxAmount(8));
-		this.drops.add(new DropRate(new ItemStack(Items.FIREWORK_CHARGE), 0.25F).setMinAmount(1).setMaxAmount(1));
-        this.drops.add(new DropRate(new ItemStack(Items.BLAZE_POWDER), 1F).setMinAmount(1).setMaxAmount(4));
-		this.drops.add(new DropRate(new ItemStack(Items.BLAZE_ROD), 0.75F).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new MobDrop(new ItemStack(Items.GUNPOWDER), 1F).setMinAmount(4).setMaxAmount(8));
+		this.drops.add(new MobDrop(new ItemStack(Items.FIREWORK_CHARGE), 0.25F).setMinAmount(1).setMaxAmount(1));
+        this.drops.add(new MobDrop(new ItemStack(Items.BLAZE_POWDER), 1F).setMinAmount(1).setMaxAmount(4));
+		this.drops.add(new MobDrop(new ItemStack(Items.BLAZE_ROD), 0.75F).setMinAmount(1).setMaxAmount(2));
 	}
 
     // ========== Set Size ==========

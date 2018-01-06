@@ -3,10 +3,9 @@ package com.lycanitesmobs.plainsmobs.entity;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupAlpha;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.api.IGroupPredator;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
-import com.lycanitesmobs.core.entity.ai.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -19,7 +18,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
@@ -79,8 +77,8 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-	    this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("MakaMeatRaw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("MakaMeatCooked"))).setMinAmount(3).setMaxAmount(7));
-	    this.drops.add(new DropRate(new ItemStack(Items.LEATHER), 0.75F).setMinAmount(2).setMaxAmount(4));
+	    this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("MakaMeatRaw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("MakaMeatCooked"))).setMinAmount(3).setMaxAmount(7));
+	    this.drops.add(new MobDrop(new ItemStack(Items.LEATHER), 0.75F).setMinAmount(2).setMaxAmount(4));
 	}
 	
 	

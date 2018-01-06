@@ -1,7 +1,7 @@
 package com.lycanitesmobs.mountainmobs.model;
 
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import com.lycanitesmobs.core.model.ModelCustomObj;
+import com.lycanitesmobs.core.model.ModelObjOld;
 import com.lycanitesmobs.core.renderer.RenderCreature;
 import com.lycanitesmobs.mountainmobs.MountainMobs;
 import com.lycanitesmobs.mountainmobs.renderer.LayerYaleWool;
@@ -11,7 +11,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ModelYale extends ModelCustomObj {
+public class ModelYale extends ModelObjOld {
 	
 	// ==================================================
   	//                    Constructors

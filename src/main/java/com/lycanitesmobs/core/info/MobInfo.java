@@ -138,7 +138,7 @@ public class MobInfo {
 	public boolean defaultDrops = true;
 	
 	/** A list of all the custom item drops this mob should drop, readily parsed from the config. To be safe, this list should be copied into the entity INSTANCE. **/
-	public List<DropRate> customDrops = new ArrayList<DropRate>();
+	public List<MobDrop> customDrops = new ArrayList<MobDrop>();
 
     /** If true, this is a boss mob. Bosses are updated more frequently and have a larger tracking range by default. **/
     public boolean boss = false;
@@ -407,10 +407,10 @@ public class MobInfo {
                     else if(Block.getBlockFromName(dropName) != null)
                         drop = new ItemStack((Block)Block.getBlockFromName(dropName), 1, dropMeta);
 
-                    DropRate dropRate = new DropRate(drop, dropChance).setMinAmount(dropMin).setMaxAmount(dropMax);
-                    dropRate.setSubspecies(subspeciesID);
+                    MobDrop mobDrop = new MobDrop(drop, dropChance).setMinAmount(dropMin).setMaxAmount(dropMax);
+                    mobDrop.setSubspecies(subspeciesID);
 
-                    this.customDrops.add(dropRate);
+                    this.customDrops.add(mobDrop);
                 }
             }
         }

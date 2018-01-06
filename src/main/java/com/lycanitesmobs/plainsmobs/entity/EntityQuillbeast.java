@@ -6,7 +6,7 @@ import com.lycanitesmobs.api.IGroupHunter;
 import com.lycanitesmobs.api.IGroupPredator;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -93,8 +93,8 @@ public class EntityQuillbeast extends EntityCreatureTameable implements IMob {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("quill")), 0.75F));
-        this.drops.add(new DropRate(new ItemStack(Items.LEATHER), 0.75F).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("quill")), 0.75F));
+        this.drops.add(new MobDrop(new ItemStack(Items.LEATHER), 0.75F).setMinAmount(1).setMaxAmount(3));
 	}
 	
 	

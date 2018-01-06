@@ -6,11 +6,9 @@ import com.lycanitesmobs.api.IGroupFire;
 import com.lycanitesmobs.api.IGroupHeavy;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.ObjectLists;
 import com.lycanitesmobs.api.IGroupPlant;
-import com.lycanitesmobs.core.entity.ai.*;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -95,13 +93,13 @@ public class EntityTreant extends EntityCreatureBase implements IMob, IGroupPlan
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Blocks.LOG, 1, 0), 1).setMaxAmount(32));
-        this.drops.add(new DropRate(new ItemStack(Items.STICK), 0.75F).setMaxAmount(16).setBurningDrop(new ItemStack(Items.COAL)));
-        this.drops.add(new DropRate(new ItemStack(Items.WHEAT_SEEDS), 0.1F).setMaxAmount(5));
-        this.drops.add(new DropRate(new ItemStack(Items.PUMPKIN_SEEDS), 0.1F).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.MELON_SEEDS), 0.1F).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.APPLE), 0.2F).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.EMERALD), 0.01F).setMaxAmount(1));
+        this.drops.add(new MobDrop(new ItemStack(Blocks.LOG, 1, 0), 1).setMaxAmount(32));
+        this.drops.add(new MobDrop(new ItemStack(Items.STICK), 0.75F).setMaxAmount(16).setBurningDrop(new ItemStack(Items.COAL)));
+        this.drops.add(new MobDrop(new ItemStack(Items.WHEAT_SEEDS), 0.1F).setMaxAmount(5));
+        this.drops.add(new MobDrop(new ItemStack(Items.PUMPKIN_SEEDS), 0.1F).setMaxAmount(3));
+        this.drops.add(new MobDrop(new ItemStack(Items.MELON_SEEDS), 0.1F).setMaxAmount(3));
+        this.drops.add(new MobDrop(new ItemStack(Items.APPLE), 0.2F).setMaxAmount(3));
+        this.drops.add(new MobDrop(new ItemStack(Items.EMERALD), 0.01F).setMaxAmount(1));
 	}
 	
 	

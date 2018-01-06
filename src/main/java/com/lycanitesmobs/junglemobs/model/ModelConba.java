@@ -1,6 +1,6 @@
 package com.lycanitesmobs.junglemobs.model;
 
-import com.lycanitesmobs.core.model.ModelCustomObj;
+import com.lycanitesmobs.core.model.ModelObjOld;
 import com.lycanitesmobs.junglemobs.JungleMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import net.minecraft.entity.EntityLiving;
@@ -9,7 +9,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ModelConba extends ModelCustomObj {
+public class ModelConba extends ModelObjOld {
 	
 	// ==================================================
   	//                    Constructors

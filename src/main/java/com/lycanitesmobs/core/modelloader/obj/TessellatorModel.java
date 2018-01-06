@@ -2,12 +2,14 @@ package com.lycanitesmobs.core.modelloader.obj;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.EventBus;
+import org.lwjgl.opengl.GL11;
 
 import javax.vecmath.Vector4f;
 import java.io.InputStream;
@@ -80,6 +82,8 @@ public class TessellatorModel extends ObjModel
 
     @Override
     public void renderGroupImpl(ObjObject obj, Vector4f color) {
+		GL11.glEnable(GL11.GL_BLEND);
+
         Tessellator tess = Tessellator.getInstance();
         BufferBuilder vertexBuffer = tess.getBuffer();
         if(obj.mesh == null) {
@@ -122,6 +126,8 @@ public class TessellatorModel extends ObjModel
             }
         }
         tess.draw();
+
+		GL11.glDisable(GL11.GL_BLEND);
     }
 
     public javax.vecmath.Vector3f getNormal(javax.vecmath.Vector3f p1, javax.vecmath.Vector3f p2, javax.vecmath.Vector3f p3) {

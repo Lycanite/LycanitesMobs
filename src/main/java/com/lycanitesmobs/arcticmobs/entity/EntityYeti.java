@@ -7,8 +7,7 @@ import com.lycanitesmobs.core.info.ObjectLists;
 import com.lycanitesmobs.api.IGroupAnimal;
 import com.lycanitesmobs.api.IGroupPredator;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
-import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -82,10 +81,10 @@ public class EntityYeti extends EntityCreatureAgeable implements IAnimals, IGrou
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("YetiMeatRaw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("YetiMeatCooked"))).setMinAmount(2).setMaxAmount(5));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("FrostyFur")), 0.25F).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Items.SNOWBALL), 0.25F).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Blocks.PACKED_ICE), 0.25F).setMaxAmount(3));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("YetiMeatRaw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("YetiMeatCooked"))).setMinAmount(2).setMaxAmount(5));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("FrostyFur")), 0.25F).setMaxAmount(2));
+        this.drops.add(new MobDrop(new ItemStack(Items.SNOWBALL), 0.25F).setMaxAmount(3));
+        this.drops.add(new MobDrop(new ItemStack(Blocks.PACKED_ICE), 0.25F).setMaxAmount(3));
 	}
 	
 	

@@ -6,8 +6,7 @@ import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupAlpha;
 import com.lycanitesmobs.api.IGroupPredator;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
-import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -78,7 +77,7 @@ public class EntityJoustAlpha extends EntityCreatureAgeable implements IAnimals,
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("joustmeatraw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("joustmeatcooked"))).setMinAmount(3).setMaxAmount(7));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("joustmeatraw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("joustmeatcooked"))).setMinAmount(3).setMaxAmount(7));
 	}
 	
 	

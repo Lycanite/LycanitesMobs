@@ -8,8 +8,7 @@ import com.lycanitesmobs.api.IGroupAnimal;
 import com.lycanitesmobs.api.IGroupPredator;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -118,9 +117,9 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.CLAY_BALL), 0.5F).setMaxAmount(16));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getBlock("propolis")), 0.5F).setMaxAmount(8));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getBlock("veswax")), 0.5F).setMaxAmount(8));
+        this.drops.add(new MobDrop(new ItemStack(Items.CLAY_BALL), 0.5F).setMaxAmount(16));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getBlock("propolis")), 0.5F).setMaxAmount(8));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getBlock("veswax")), 0.5F).setMaxAmount(8));
 	}
 	
 	// ==================================================

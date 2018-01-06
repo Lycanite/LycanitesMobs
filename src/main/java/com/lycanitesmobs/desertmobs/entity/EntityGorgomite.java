@@ -7,8 +7,7 @@ import com.lycanitesmobs.api.IGroupHunter;
 import com.lycanitesmobs.api.IGroupPredator;
 import com.lycanitesmobs.api.IGroupPrey;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
@@ -79,10 +78,10 @@ public class EntityGorgomite extends EntityCreatureBase implements IMob, IGroupP
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Blocks.SANDSTONE), 1).setMinAmount(1).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Blocks.STONE), 1).setMinAmount(1).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Items.FLINT), 0.5F));
-        this.drops.add(new DropRate(new ItemStack(Blocks.IRON_ORE), 0.1F));
+        this.drops.add(new MobDrop(new ItemStack(Blocks.SANDSTONE), 1).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new MobDrop(new ItemStack(Blocks.STONE), 1).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new MobDrop(new ItemStack(Items.FLINT), 0.5F));
+        this.drops.add(new MobDrop(new ItemStack(Blocks.IRON_ORE), 0.1F));
 	}
 	
 	

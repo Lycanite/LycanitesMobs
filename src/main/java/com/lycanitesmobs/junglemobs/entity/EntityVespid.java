@@ -4,7 +4,7 @@ import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupPrey;
 import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.api.IGroupAnimal;
 import com.lycanitesmobs.api.IGroupPredator;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
@@ -96,9 +96,9 @@ public class EntityVespid extends EntityCreatureAgeable implements IMob, IGroupP
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.CLAY_BALL), 0.5F).setMaxAmount(16));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getBlock("propolis")), 0.5F).setMaxAmount(4));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getBlock("veswax")), 0.5F).setMaxAmount(4));
+        this.drops.add(new MobDrop(new ItemStack(Items.CLAY_BALL), 0.5F).setMaxAmount(16));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getBlock("propolis")), 0.5F).setMaxAmount(4));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getBlock("veswax")), 0.5F).setMaxAmount(4));
 	}
 	
 	// ==================================================

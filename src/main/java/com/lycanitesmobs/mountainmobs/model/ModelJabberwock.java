@@ -2,14 +2,14 @@ package com.lycanitesmobs.mountainmobs.model;
 
 import com.lycanitesmobs.mountainmobs.MountainMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import com.lycanitesmobs.core.model.ModelCustomObj;
+import com.lycanitesmobs.core.model.ModelObjOld;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ModelJabberwock extends ModelCustomObj {
+public class ModelJabberwock extends ModelObjOld {
 	
 	// ==================================================
   	//                    Constructors

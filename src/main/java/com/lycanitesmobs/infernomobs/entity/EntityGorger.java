@@ -6,7 +6,7 @@ import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.EntityProjectileBase;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.block.material.Material;
@@ -98,12 +98,12 @@ public class EntityGorger extends EntityCreatureTameable implements IGroupPredat
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.COAL), 1.0F).setMaxAmount(16));
-        this.drops.add(new DropRate(new ItemStack(Items.MAGMA_CREAM), 0.75F).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.BLAZE_POWDER), 0.5F).setMaxAmount(6));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("magmacharge")), 1F));
-        this.drops.add(new DropRate(new ItemStack(Blocks.IRON_ORE), 0.5F).setMinAmount(2).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Blocks.GOLD_ORE), 0.25F).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new MobDrop(new ItemStack(Items.COAL), 1.0F).setMaxAmount(16));
+        this.drops.add(new MobDrop(new ItemStack(Items.MAGMA_CREAM), 0.75F).setMaxAmount(3));
+        this.drops.add(new MobDrop(new ItemStack(Items.BLAZE_POWDER), 0.5F).setMaxAmount(6));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("magmacharge")), 1F));
+        this.drops.add(new MobDrop(new ItemStack(Blocks.IRON_ORE), 0.5F).setMinAmount(2).setMaxAmount(3));
+        this.drops.add(new MobDrop(new ItemStack(Blocks.GOLD_ORE), 0.25F).setMinAmount(1).setMaxAmount(2));
 	}
 
 

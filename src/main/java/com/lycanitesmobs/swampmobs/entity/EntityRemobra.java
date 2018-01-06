@@ -5,8 +5,7 @@ import com.lycanitesmobs.api.IGroupHunter;
 import com.lycanitesmobs.api.IGroupPrey;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
-import com.lycanitesmobs.core.entity.ai.*;
+import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
@@ -77,8 +76,8 @@ public class EntityRemobra extends EntityCreatureTameable implements IMob, IGrou
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.SLIME_BALL), 0.5F));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("PoisonGland")), 1F));
+        this.drops.add(new MobDrop(new ItemStack(Items.SLIME_BALL), 0.5F));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("PoisonGland")), 1F));
 	}
 	
 	

@@ -1,16 +1,12 @@
 package com.lycanitesmobs.swampmobs.entity;
 
 import com.lycanitesmobs.ObjectManager;
-import com.lycanitesmobs.api.IGroupFire;
-import com.lycanitesmobs.api.IGroupPlant;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
-import com.lycanitesmobs.core.info.ObjectLists;
+import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
@@ -19,12 +15,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -91,9 +84,9 @@ public class EntityAglebemu extends EntityCreatureTameable implements IMob {
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.COAL), 0.25F).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Items.SLIME_BALL), 0.5F));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("PoisonGland")), 1F));
+        this.drops.add(new MobDrop(new ItemStack(Items.COAL), 0.25F).setMaxAmount(2));
+        this.drops.add(new MobDrop(new ItemStack(Items.SLIME_BALL), 0.5F));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("PoisonGland")), 1F));
 	}
 	
 	

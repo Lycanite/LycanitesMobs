@@ -7,7 +7,7 @@ import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupPrey;
 import com.lycanitesmobs.api.IGroupShadow;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
@@ -85,9 +85,9 @@ public class EntityEpion extends EntityCreatureTameable implements IMob, IGroupS
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.LEATHER), 1.0F).setMaxAmount(5));
-        this.drops.add(new DropRate(new ItemStack(Items.GUNPOWDER), 0.5F).setMaxAmount(4));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("BloodleechCharge")), 0.25F).setMaxAmount(3));
+        this.drops.add(new MobDrop(new ItemStack(Items.LEATHER), 1.0F).setMaxAmount(5));
+        this.drops.add(new MobDrop(new ItemStack(Items.GUNPOWDER), 0.5F).setMaxAmount(4));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("BloodleechCharge")), 0.25F).setMaxAmount(3));
 	}
 	
 	

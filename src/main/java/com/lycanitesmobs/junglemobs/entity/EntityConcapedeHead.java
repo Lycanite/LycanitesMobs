@@ -8,7 +8,7 @@ import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -86,8 +86,8 @@ public class EntityConcapedeHead extends EntityCreatureAgeable implements IAnima
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("concapedemeatraw")), 1).setMinAmount(1).setMaxAmount(1).setBurningDrop(new ItemStack(ObjectManager.getItem("concapedemeatcooked"))));
-        this.drops.add(new DropRate(new ItemStack(Items.STRING), 0.5F).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("concapedemeatraw")), 1).setMinAmount(1).setMaxAmount(1).setBurningDrop(new ItemStack(ObjectManager.getItem("concapedemeatcooked"))));
+        this.drops.add(new MobDrop(new ItemStack(Items.STRING), 0.5F).setMinAmount(1).setMaxAmount(2));
 	}
 	
 	

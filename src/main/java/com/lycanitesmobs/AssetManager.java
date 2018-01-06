@@ -1,7 +1,7 @@
 package com.lycanitesmobs;
 
 import com.lycanitesmobs.core.info.GroupInfo;
-import com.lycanitesmobs.core.model.ModelCustomObj;
+import com.lycanitesmobs.core.model.ModelObjOld;
 import com.lycanitesmobs.core.model.ModelItemBase;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.util.ResourceLocation;
@@ -59,7 +59,7 @@ public class AssetManager {
 	// ========== Obj Model ==========
 	public static void addObjModel(String name, GroupInfo group, String path) {
 		name = name.toLowerCase();
-		objModels.put(name, ModelCustomObj.loadModel(new ResourceLocation(group.filename, "models/" + path + ".obj")));
+		objModels.put(name, ModelObjOld.loadModel(new ResourceLocation(group.filename, "models/" + path + ".obj")));
 	}
 
 	// ========== Item Model ==========

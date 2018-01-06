@@ -6,8 +6,7 @@ import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupHunter;
 import com.lycanitesmobs.api.IGroupPrey;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
-import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -95,8 +94,8 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.STRING), 0.5F).setMinAmount(2).setMaxAmount(5));
-        this.drops.add(new DropRate(new ItemStack(Items.LEATHER), 0.5F).setMaxAmount(2));
+        this.drops.add(new MobDrop(new ItemStack(Items.STRING), 0.5F).setMinAmount(2).setMaxAmount(5));
+        this.drops.add(new MobDrop(new ItemStack(Items.LEATHER), 0.5F).setMaxAmount(2));
 	}
 	
 	

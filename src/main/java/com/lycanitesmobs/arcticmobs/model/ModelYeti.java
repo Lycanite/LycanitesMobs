@@ -1,7 +1,7 @@
 package com.lycanitesmobs.arcticmobs.model;
 
 import com.lycanitesmobs.arcticmobs.ArcticMobs;
-import com.lycanitesmobs.core.model.ModelCustomObj;
+import com.lycanitesmobs.core.model.ModelObjOld;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.MathHelper;
@@ -9,7 +9,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ModelYeti extends ModelCustomObj {
+public class ModelYeti extends ModelObjOld {
 	
 	// ==================================================
   	//                    Constructors

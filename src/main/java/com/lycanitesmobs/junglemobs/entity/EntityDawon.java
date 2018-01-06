@@ -4,7 +4,7 @@ import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.*;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.entity.Entity;
@@ -93,10 +93,10 @@ public class EntityDawon extends EntityCreatureTameable implements IAnimals, IGr
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.QUARTZ), 1F).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(Items.EMERALD), 0.25F).setMinAmount(1).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Items.DIAMOND), 0.05F).setMinAmount(1).setMaxAmount(1).setSubspecies(1));
-        this.drops.add(new DropRate(new ItemStack(Items.DIAMOND), 0.05F).setMinAmount(1).setMaxAmount(1).setSubspecies(2));
+        this.drops.add(new MobDrop(new ItemStack(Items.QUARTZ), 1F).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new MobDrop(new ItemStack(Items.EMERALD), 0.25F).setMinAmount(1).setMaxAmount(2));
+        this.drops.add(new MobDrop(new ItemStack(Items.DIAMOND), 0.05F).setMinAmount(1).setMaxAmount(1).setSubspecies(1));
+        this.drops.add(new MobDrop(new ItemStack(Items.DIAMOND), 0.05F).setMinAmount(1).setMaxAmount(1).setSubspecies(2));
     }
 
 

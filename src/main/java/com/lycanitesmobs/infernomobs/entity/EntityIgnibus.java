@@ -5,13 +5,12 @@ import com.lycanitesmobs.api.*;
 import com.lycanitesmobs.core.entity.EntityCreatureRideable;
 import com.lycanitesmobs.core.entity.EntityProjectileRapidFire;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
-import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -110,13 +109,13 @@ public class EntityIgnibus extends EntityCreatureRideable implements IGroupFire,
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.GUNPOWDER), 1F).setMinAmount(4).setMaxAmount(16));
-        this.drops.add(new DropRate(new ItemStack(Items.COAL), 10F).setMaxAmount(40));
-        this.drops.add(new DropRate(new ItemStack(Items.MAGMA_CREAM), 4F).setMaxAmount(8));
-        this.drops.add(new DropRate(new ItemStack(Items.BLAZE_POWDER), 10F).setMaxAmount(20));
-        this.drops.add(new DropRate(new ItemStack(Items.GOLD_NUGGET), 1F).setMinAmount(10).setMaxAmount(40));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("scorchfirecharge")), 1F).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("embercharge")), 1F).setMinAmount(4).setMaxAmount(10));
+        this.drops.add(new MobDrop(new ItemStack(Items.GUNPOWDER), 1F).setMinAmount(4).setMaxAmount(16));
+        this.drops.add(new MobDrop(new ItemStack(Items.COAL), 10F).setMaxAmount(40));
+        this.drops.add(new MobDrop(new ItemStack(Items.MAGMA_CREAM), 4F).setMaxAmount(8));
+        this.drops.add(new MobDrop(new ItemStack(Items.BLAZE_POWDER), 10F).setMaxAmount(20));
+        this.drops.add(new MobDrop(new ItemStack(Items.GOLD_NUGGET), 1F).setMinAmount(10).setMaxAmount(40));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("scorchfirecharge")), 1F).setMinAmount(1).setMaxAmount(3));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("embercharge")), 1F).setMinAmount(4).setMaxAmount(10));
 	}
 
     // ========== Size ==========

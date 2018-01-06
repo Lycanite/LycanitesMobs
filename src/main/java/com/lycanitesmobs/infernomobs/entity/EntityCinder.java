@@ -9,8 +9,7 @@ import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.EntityItemCustom;
 import com.lycanitesmobs.core.entity.EntityProjectileRapidFire;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
+import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.EntitySnowman;
@@ -91,9 +90,9 @@ public class EntityCinder extends EntityCreatureTameable implements IMob, IGroup
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.COAL), 0.5F));
-        this.drops.add(new DropRate(new ItemStack(Items.BLAZE_ROD), 0.1F));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("EmberCharge")), 0.25F));
+        this.drops.add(new MobDrop(new ItemStack(Items.COAL), 0.5F));
+        this.drops.add(new MobDrop(new ItemStack(Items.BLAZE_ROD), 0.1F));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("EmberCharge")), 0.25F));
 	}
     
     

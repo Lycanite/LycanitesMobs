@@ -1,8 +1,10 @@
 package com.lycanitesmobs.core.renderer;
 
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
+import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
 
 import javax.vecmath.Vector4f;
 
@@ -38,6 +40,16 @@ public class LayerShield extends LayerBase {
 
     @Override
     public Vector4f getPartColor(String partName, EntityCreatureBase entity, boolean trophy) {
-        return new Vector4f(1, 1, 1, 1); // TODO Alpha not working.
+        return new Vector4f(1, 1, 1, 1);
+    }
+
+    @Override
+    public void onRenderStart(String partName, Entity entity, boolean trophy) {
+        GL11.glEnable(GL11.GL_CULL_FACE);
+    }
+
+    @Override
+    public void onRenderFinish(String partName, Entity entity, boolean trophy) {
+        GL11.glDisable(GL11.GL_CULL_FACE);
     }
 }

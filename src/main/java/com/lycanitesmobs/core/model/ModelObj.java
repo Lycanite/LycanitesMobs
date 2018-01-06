@@ -263,7 +263,9 @@ public class ModelObj extends ModelCustom {
             this.currentAnimationPart.applyAnimationFrames(this.animator);
 
             // Render Part:
+			this.onRenderStart(layer, partName, entity, renderAsTrophy);
             this.wavefrontObject.renderGroup(part, this.getPartColor(partName, entity, layer, renderAsTrophy));
+			this.onRenderFinish(layer, partName, entity, renderAsTrophy);
             GlStateManager.popMatrix();
         }
 
@@ -272,6 +274,20 @@ public class ModelObj extends ModelCustom {
             animationPart.animationFrames.clear();
         }
     }
+
+	/** Called just before a part is being rendered. **/
+	public void onRenderStart(LayerBase layer, String partName, Entity entity, boolean renderAsTrophy) {
+		if(layer != null) {
+			layer.onRenderStart(partName, entity, renderAsTrophy);
+		}
+	}
+
+	/** Called just after a part is being rendered. **/
+	public void onRenderFinish(LayerBase layer, String partName, Entity entity, boolean renderAsTrophy) {
+		if(layer != null) {
+			layer.onRenderFinish(partName, entity, renderAsTrophy);
+		}
+	}
 
 
     // ==================================================

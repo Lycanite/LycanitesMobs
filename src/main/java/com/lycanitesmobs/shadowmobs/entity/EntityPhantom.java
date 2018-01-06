@@ -5,8 +5,7 @@ import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupShadow;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.DropRate;
-import com.lycanitesmobs.core.entity.ai.*;
+import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
@@ -81,10 +80,10 @@ public class EntityPhantom extends EntityCreatureTameable implements IMob, IGrou
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new DropRate(new ItemStack(Items.BONE), 1.0F).setMaxAmount(5));
-        this.drops.add(new DropRate(new ItemStack(Blocks.OBSIDIAN), 0.5F).setMaxAmount(2));
-        this.drops.add(new DropRate(new ItemStack(Blocks.SKULL, 1, 1), 0.25F).setMaxAmount(1));
-        this.drops.add(new DropRate(new ItemStack(ObjectManager.getItem("SpectralboltCharge")), 0.25F).setMaxAmount(3));
+        this.drops.add(new MobDrop(new ItemStack(Items.BONE), 1.0F).setMaxAmount(5));
+        this.drops.add(new MobDrop(new ItemStack(Blocks.OBSIDIAN), 0.5F).setMaxAmount(2));
+        this.drops.add(new MobDrop(new ItemStack(Blocks.SKULL, 1, 1), 0.25F).setMaxAmount(1));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("SpectralboltCharge")), 0.25F).setMaxAmount(3));
 	}
 	
 	

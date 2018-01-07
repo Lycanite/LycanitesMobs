@@ -82,8 +82,6 @@ public class TessellatorModel extends ObjModel
 
     @Override
     public void renderGroupImpl(ObjObject obj, Vector4f color) {
-		GL11.glEnable(GL11.GL_BLEND);
-
         Tessellator tess = Tessellator.getInstance();
         BufferBuilder vertexBuffer = tess.getBuffer();
         if(obj.mesh == null) {

@@ -97,18 +97,22 @@ public class ModelSpectre extends ModelTemplateElemental {
 	}
 
 
-	/*/ ==================================================
+	// ==================================================
 	//                      Visuals
 	// ==================================================
 	@Override
 	public void onRenderStart(LayerBase layer, String partName, Entity entity, boolean renderAsTrophy) {
 		super.onRenderStart(layer, partName, entity, renderAsTrophy);
-		GL11.glEnable(GL11.GL_CULL_FACE);
+		if(!partName.contains("effect"))
+			return;
+		GL11.glEnable(GL11.GL_BLEND);
 	}
 
 	@Override
 	public void onRenderFinish(LayerBase layer, String partName, Entity entity, boolean renderAsTrophy) {
 		super.onRenderFinish(layer, partName, entity, renderAsTrophy);
-		GL11.glDisable(GL11.GL_CULL_FACE);
-	}*/
+		if(!partName.contains("effect"))
+			return;
+		GL11.glDisable(GL11.GL_BLEND);
+	}
 }

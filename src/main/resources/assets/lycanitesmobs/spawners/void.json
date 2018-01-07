@@ -10,7 +10,7 @@
 	"triggers": [
 		{
 			"type": "tick",
-			"chance": 0.05,
+			"chance": 0.25,
 			"tickRate": 800
 		}
 	],
@@ -22,8 +22,13 @@
 			"yMax": 15,
 			"sorting": "random",
 			"limit": 32,
-			"surface": true,
 			"solidGround": false
+		}
+	],
+	"mobSpawns": [
+		{
+			"mobId": "shadowmobs.spectre",
+			"weight": 8
 		}
 	]
 }

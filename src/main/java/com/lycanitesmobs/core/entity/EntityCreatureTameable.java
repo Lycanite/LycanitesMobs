@@ -810,6 +810,11 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     public boolean shouldDismountInWater(Entity rider) {
         return false;
     }
+
+	@Override
+	public boolean canBeSteered() {
+		return this.isTamed();
+	}
     
     
     // ==================================================

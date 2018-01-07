@@ -1,5 +1,6 @@
 package com.lycanitesmobs.plainsmobs.entity;
 
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupAlpha;
 import com.lycanitesmobs.api.IGroupPrey;
@@ -146,7 +147,7 @@ public class EntityVentoraptor extends EntityCreatureRideable implements IGroupP
     // ========== Falling Speed Modifier ==========
     @Override
     public double getFallingMod() {
-    	return 0.8D;
+    	return 0.98D;
     }
 
     @Override

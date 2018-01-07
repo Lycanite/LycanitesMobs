@@ -83,6 +83,12 @@ public class MobInfo {
 
 	/** The maximum base starting level of every mob. Ignored when not greater than the min level. **/
 	public static int startingLevelMax = 1;
+
+	/** Increases the base start level by this amount of every world day that has gone by, use this to slowly level up mobs as the world gets older. Fractions can be used such as 0.05 levels per day. The levels are rounded down so +0.9 would be +0 levels. **/
+	public static double levelPerDay = 0;
+
+	/** The maximum level to be able gain from levels per day. **/
+	public static int levelPerDayMax = 100;
 	
 	/** A static ArrayList of all summonable creature names. **/
 	public static List<String> summonableCreatures = new ArrayList<>();
@@ -269,6 +275,8 @@ public class MobInfo {
 		config.setCategoryComment("Base Starting Level", "The base starting level is the level every mob will start at. Mob Events, Special Spawners and other things will then add onto this base level.");
 		startingLevelMin = config.getInt("Base Starting Level", "Starting Level Min", startingLevelMin, "The minimum base starting level of every mob. Cannot be less than 1.");
 		startingLevelMax = config.getInt("Base Starting Level", "Starting Level Max", startingLevelMax, "The maximum base starting level of every mob. Ignored when not greater than the min level.");
+		levelPerDay = config.getDouble("Base Starting Level", "Level Gain Per Day", levelPerDay, "Increases the base start level by this amount of every world day that has gone by, use this to slowly level up mobs as the world gets older. Fractions can be used such as 0.05 levels per day. The levels are rounded down so +0.9 would be +0 levels.");
+		levelPerDayMax = config.getInt("Base Starting Level", "Level Gain per Day Max", levelPerDayMax, "The maximum level to be able gain from levels per day.");
 
 		config.setCategoryComment("Custom Item Drops", "Here you can add a global list of item drops to add to every mob from Lycanites Mobs. Format is: mod:item,metadata,chance,min,max Multiple drops should be semicolon separated and chances are in decimal format. You can also add an additional comma and then a subspecies ID to restrict that drop to a certain subspecies like so: mod:item,metadata,chance,min,max,subspecies. minecraft:wool,2,0.25,0,3 is Green Wool with a 25% drop rate and will drop 0 to 3 blocks. Be sure to use a colon for mod:item and commas for everything else in an entry. Semicolons can be used to separate multiple entries.");
 		globalDropsString = config.getString("Default Item Drops", "Global Drops", globalDropsString, "");

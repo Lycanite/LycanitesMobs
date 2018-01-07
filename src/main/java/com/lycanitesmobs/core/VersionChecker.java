@@ -37,6 +37,9 @@ public class VersionChecker {
 					this.isNewer = true;
 					return;
 				}
+				if(versionNumber != compareVersionNumber) {
+					return;
+				}
 			}
 		}
 	}

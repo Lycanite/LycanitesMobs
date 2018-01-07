@@ -181,9 +181,9 @@ public class ShadowMobs extends Submod {
 		newMob = new MobInfo(group, "spectre", EntitySpectre.class, 0x4f0095, 0xff08d7)
 				.setPeaceful(false).setSummonable(true).setSummonCost(4).setDungeonLevel(2)
 				.addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("light", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("")
-				.setBiomes("ALL").setDimensions("").setDimensionWhitelist(false)
-				.setSpawnWeight(8).setAreaLimit(2).setGroupLimits(1, 2).setLightDark(false, true);
+		newMob.spawnInfo.setSpawnTypes("SKY")
+				.setBiomes("ALL").setDimensions("1").setDimensionWhitelist(true)
+				.setSpawnWeight(2).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 

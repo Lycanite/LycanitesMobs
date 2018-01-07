@@ -1,5 +1,6 @@
 package com.lycanitesmobs.junglemobs.entity;
 
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupAlpha;
 import com.lycanitesmobs.api.IGroupAnimal;
@@ -132,16 +133,18 @@ public class EntityUvaraptor extends EntityCreatureRideable implements IGroupPre
     // ==================================================
     //                      Movement
     // ==================================================
-    // ========== Movement Speed Modifier ==========
-    @Override
-    public float getAISpeedModifier() {
-    	return 1.0F;
-    }
+	// ========== Movement Speed Modifier ==========
+	@Override
+	public float getAISpeedModifier() {
+		if(!this.onGround)
+			return 2.0F;
+		return 1.0F;
+	}
 
-    // ========== Falling Speed Modifier ==========
+	// ========== Falling Speed Modifier ==========
     @Override
     public double getFallingMod() {
-    	return 0.8D;
+    	return 0.9D;
     }
     
     @Override

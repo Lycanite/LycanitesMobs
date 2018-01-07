@@ -46,10 +46,12 @@ public class LayerShield extends LayerBase {
     @Override
     public void onRenderStart(String partName, Entity entity, boolean trophy) {
         GL11.glEnable(GL11.GL_CULL_FACE);
+        GL11.glEnable(GL11.GL_BLEND);
     }
 
     @Override
     public void onRenderFinish(String partName, Entity entity, boolean trophy) {
         GL11.glDisable(GL11.GL_CULL_FACE);
+        GL11.glDisable(GL11.GL_BLEND);
     }
 }

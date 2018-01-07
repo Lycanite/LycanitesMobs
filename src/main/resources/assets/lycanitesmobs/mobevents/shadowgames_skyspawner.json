@@ -33,6 +33,10 @@
 		{
 			"mobId": "shadowmobs.grue",
 			"weight": 8
+		},
+		{
+			"mobId": "shadowmobs.spectre",
+			"weight": 4
 		}
 	]
 }

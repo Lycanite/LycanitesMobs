@@ -1041,6 +1041,11 @@ public abstract class EntityCreatureBase extends EntityLiving {
 		if(MobInfo.startingLevelMax > startingLevelMin) {
 			return startingLevelMin + this.getRNG().nextInt(MobInfo.startingLevelMax - startingLevelMin);
 		}
+		if(MobInfo.levelPerDay > 0 && MobInfo.levelPerDayMax > 0) {
+			int day = (int)Math.floor(this.getEntityWorld().getTotalWorldTime() / 23999D);
+			double levelGain = Math.min(MobInfo.levelPerDay * day, MobInfo.levelPerDayMax);
+			startingLevelMin += (int)Math.floor(levelGain);
+		}
 		return startingLevelMin;
 	}
 
@@ -1992,10 +1997,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public void leap(double distance, double leapHeight) {
     	float yaw = this.rotationYaw;
     	float pitch = this.rotationPitch;
-    	if(this.getRider() != null) {
+    	/*if(this.getRider() != null) {
     		yaw = this.getRider().rotationYaw;
 			pitch = this.getRider().rotationPitch;
-		}
+		}*/
     	double angle = Math.toRadians(yaw);
         double xAmount = -Math.sin(angle);
         double yAmount = leapHeight;
@@ -2633,6 +2638,11 @@ public abstract class EntityCreatureBase extends EntityLiving {
             return false;
         return super.canBeRidden(entity);
     }
+
+    @Override
+	public boolean canBeSteered() {
+		return false;
+	}
 
     
     // ========== Get Facing Coords ==========

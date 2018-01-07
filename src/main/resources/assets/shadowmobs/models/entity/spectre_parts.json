@@ -1,0 +1,177 @@
+[
+  {
+    "name": "Body",
+    "parent": "",
+    "centerX": "0.007",
+    "centerY": "0.913",
+    "centerZ": "-0.103"
+  },
+  {
+    "name": "Effect03",
+    "parent": "Body",
+    "centerX": "0.007",
+    "centerY": "0.653",
+    "centerZ": "0.017"
+  },
+  {
+    "name": "ArmRightMiddle",
+    "parent": "Body",
+    "centerX": "-0.21",
+    "centerY": "1.12",
+    "centerZ": "-0.37"
+  },
+  {
+    "name": "ArmRightTop",
+    "parent": "Body",
+    "centerX": "-0.18",
+    "centerY": "1.26",
+    "centerZ": "-0.37"
+  },
+  {
+    "name": "ArmRightBottom",
+    "parent": "Body",
+    "centerX": "-0.21",
+    "centerY": "1.01",
+    "centerZ": "-0.39"
+  },
+  {
+    "name": "ArmLeftBottom",
+    "parent": "Body",
+    "centerX": "0.21",
+    "centerY": "1.01",
+    "centerZ": "-0.39"
+  },
+  {
+    "name": "ArmLeftTop",
+    "parent": "Body",
+    "centerX": "0.18",
+    "centerY": "1.26",
+    "centerZ": "-0.37"
+  },
+  {
+    "name": "MawRight01",
+    "parent": "Body",
+    "centerX": "-0.367",
+    "centerY": "0.612",
+    "centerZ": "-0.043"
+  },
+  {
+    "name": "MawRight02",
+    "parent": "Body",
+    "centerX": "-0.307",
+    "centerY": "0.462",
+    "centerZ": "-0.013"
+  },
+  {
+    "name": "MawRight03",
+    "parent": "Body",
+    "centerX": "-0.317",
+    "centerY": "0.762",
+    "centerZ": "-0.023"
+  },
+  {
+    "name": "MawRight05",
+    "parent": "Body",
+    "centerX": "-0.217",
+    "centerY": "0.882",
+    "centerZ": "0.007"
+  },
+  {
+    "name": "MawRight04",
+    "parent": "Body",
+    "centerX": "-0.177",
+    "centerY": "0.362",
+    "centerZ": "0.017"
+  },
+  {
+    "name": "MawLeft04",
+    "parent": "Body",
+    "centerX": "0.177",
+    "centerY": "0.363",
+    "centerZ": "0.017"
+  },
+  {
+    "name": "MawLeft05",
+    "parent": "Body",
+    "centerX": "0.217",
+    "centerY": "0.883",
+    "centerZ": "0.007"
+  },
+  {
+    "name": "MawLeft03",
+    "parent": "Body",
+    "centerX": "0.317",
+    "centerY": "0.763",
+    "centerZ": "-0.023"
+  },
+  {
+    "name": "MawLeft02",
+    "parent": "Body",
+    "centerX": "0.307",
+    "centerY": "0.463",
+    "centerZ": "-0.013"
+  },
+  {
+    "name": "Head",
+    "parent": "Body",
+    "centerX": "0.007",
+    "centerY": "1.673",
+    "centerZ": "0.257"
+  },
+  {
+    "name": "MouthRightTop",
+    "parent": "Head",
+    "centerX": "-0.357",
+    "centerY": "1.613",
+    "centerZ": "0.137"
+  },
+  {
+    "name": "MouthRightBottom",
+    "parent": "Head",
+    "centerX": "-0.457",
+    "centerY": "1.513",
+    "centerZ": "0.068"
+  },
+  {
+    "name": "MouthLeftBottom",
+    "parent": "Head",
+    "centerX": "0.457",
+    "centerY": "1.513",
+    "centerZ": "0.068"
+  },
+  {
+    "name": "MouthLeftTop",
+    "parent": "Head",
+    "centerX": "0.357",
+    "centerY": "1.613",
+    "centerZ": "0.137"
+  },
+  {
+    "name": "Effect02",
+    "parent": "Body",
+    "centerX": "0.007",
+    "centerY": "0.653",
+    "centerZ": "-0.083"
+  },
+  {
+    "name": "Effect01",
+    "parent": "Body",
+    "centerX": "0.007",
+    "centerY": "1.213",
+    "centerZ": "-0.603"
+  },
+  {
+    "name": "ArmLeftMiddle",
+    "parent": "Body",
+    "centerX": "0.21",
+    "centerY": "1.12",
+    "centerZ": "-0.37"
+  },
+  {
+    "name": "MawLeft01",
+    "parent": "Body",
+    "centerX": "0.367",
+    "centerY": "0.613",
+    "centerZ": "-0.043"
+  }
+]

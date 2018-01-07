@@ -28,11 +28,11 @@ public class ModelTemplateElemental extends ModelObj {
         if(partName.equals("mouth")) {
             this.rotate((float)-Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F - 0.05F), 0.0F, 0.0F);
         }
-        if(partName.equals("armleft")) {
+        if(partName.contains("armleft")) {
             rotZ -= Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.1F);
             rotX -= Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
         }
-        if(partName.equals("armright")) {
+        if(partName.contains("armright")) {
             rotZ += Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.1F);
             rotX += Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
         }

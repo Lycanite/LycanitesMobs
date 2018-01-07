@@ -122,7 +122,7 @@ public class ShadowMobs extends Submod {
 
 		newMob = new MobInfo(group, "grue", EntityGrue.class, 0x191017, 0xBB44AA)
 				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1)
-				.addSubspecies(new Subspecies("crimson", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"))
+				.addSubspecies(new Subspecies("scarlet", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"))
 				.addSubspecies(new Subspecies("lunar", "rare"));
 		newMob.spawnInfo.setSpawnTypes("UNDERGROUND")
 				.setBiomes("ALL").setDimensions("-1").setDimensionWhitelist(false)
@@ -176,6 +176,14 @@ public class ShadowMobs extends Submod {
 		newMob.spawnInfo.setSpawnTypes("UNDERGROUND")
 				.setBiomes("ALL").setDimensions("-1").setDimensionWhitelist(false)
 				.setSpawnWeight(8).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "spectre", EntitySpectre.class, 0x4f0095, 0xff08d7)
+				.setPeaceful(false).setSummonable(true).setSummonCost(4).setDungeonLevel(2)
+				.addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("light", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("")
+				.setBiomes("ALL").setDimensions("").setDimensionWhitelist(false)
+				.setSpawnWeight(8).setAreaLimit(2).setGroupLimits(1, 2).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 

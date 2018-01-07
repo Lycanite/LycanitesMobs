@@ -124,8 +124,6 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
         if(!this.getEntityWorld().isRemote && this.hasAttackTarget()) {
 	        if(this.teleportTime-- <= 0) {
 	        	this.teleportTime = 60 + this.getRNG().nextInt(40);
-                if(this.getAttackTarget() instanceof EntityPlayer)
-                    this.teleportTime *= 3;
         		this.playJumpSound();
         		BlockPos teleportPosition = this.getFacingPosition(this.getAttackTarget(), -this.getAttackTarget().width - 1D, 0);
         		if(this.canTeleportTo(this.getEntityWorld(), teleportPosition)

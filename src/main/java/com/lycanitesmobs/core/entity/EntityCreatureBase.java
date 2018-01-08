@@ -3201,7 +3201,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	if(!player.capabilities.isCreativeMode)
             itemStack.setCount(Math.max(0, itemStack.getCount() - amount));
         if(itemStack.getCount() <= 0)
-        	player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack)null);
+        	player.inventory.setInventorySlotContents(player.inventory.currentItem, ItemStack.EMPTY);
     }
 
     // ========== Replace Player's Item ==========

@@ -24,11 +24,11 @@ public class ExtendedWorld extends WorldSavedData {
     // Mob Events World Config:
     public boolean configLoaded = false;
     public boolean useTotalWorldTime = true;
-    public int minTicksUntilEvent = 60 * 60 * 20;
-    public int maxTicksUntilEvent = 120 * 60 * 20;
-    public boolean mobEventsEnabled = true;
-    public boolean mobEventsRandom = true;
-    public int minEventsRandomDay = 0;
+	//public int minEventsRandomDay = 0;
+    //public int minTicksUntilEvent = 60 * 60 * 20;
+    //public int maxTicksUntilEvent = 120 * 60 * 20;
+    //public boolean mobEventsEnabled = true;
+    //public boolean mobEventsRandom = true;
 	
 	// Mob Events:
     public Map<String, MobEventPlayerServer> serverMobEventPlayers = new HashMap<>();
@@ -83,6 +83,7 @@ public class ExtendedWorld extends WorldSavedData {
 	public ExtendedWorld(World world) {
 		super(EXT_PROP_NAME);
 		this.world = world;
+		//this.loadConfig();
 	}
 	
 	
@@ -94,8 +95,6 @@ public class ExtendedWorld extends WorldSavedData {
 			return;
 		}
 		this.initialized = true;
-
-        this.loadConfig();
 
         this.lastEventUpdateTime = this.world.getTotalWorldTime() - 1;
 
@@ -115,15 +114,15 @@ public class ExtendedWorld extends WorldSavedData {
     // ==================================================
     public void loadConfig() {
         ConfigSpawning config = ConfigSpawning.getConfig(LycanitesMobs.group, "mobevents");
-        this.mobEventsEnabled = config.getBool("World", this.getConfigEntryName("Mob Events Enabled"), mobEventsEnabled, "If false, all mob events will be completely disabled.");
+        //this.mobEventsEnabled = config.getBool("World", this.getConfigEntryName("Mob Events Enabled"), mobEventsEnabled, "If false, all mob events will be completely disabled for this world.");
 
-        this.mobEventsRandom = config.getBool("World", this.getConfigEntryName("Random Mob Events"), mobEventsRandom, "If false, mob events will no longer occur randomly but can still occur via other means such as by schedule. Set this to true if you want both random and scheduled events to take place and also take a look at 'Lock Random Mob Events' if doing so.");
-        this.minEventsRandomDay = config.getInt("World", this.getConfigEntryName("Random Mob Events Day Minimum"), minEventsRandomDay, "If random events are enabled, they wont occur until this day is reached. Set to 0 to have random events enabled from the start of a world.");
+        //this.mobEventsRandom = config.getBool("World", this.getConfigEntryName("Random Mob Events"), mobEventsRandom, "If false, mob events will no longer occur randomly but can still occur via other means such as by schedule. Set this to true if you want both random and scheduled events to take place and also take a look at 'Lock Random Mob Events' if doing so.");
+        //this.minEventsRandomDay = config.getInt("World", this.getConfigEntryName("Random Mob Events Day Minimum"), this.minEventsRandomDay, "If random events are enabled, they wont occur until this day is reached. Set to 0 to have random events enabled from the start of a world.");
 
-        this.minTicksUntilEvent = config.getInt("World", this.getConfigEntryName("Min Ticks Until Random Event"), minTicksUntilEvent, "Minimum time in ticks until a random event can occur. 20 Ticks = 1 Second.");
-        this.maxTicksUntilEvent = config.getInt("World", this.getConfigEntryName("Max Ticks Until Random Event"), maxTicksUntilEvent, "Maximum time in ticks until a random event can occur. 20 Ticks = 1 Second.");
+        //this.minTicksUntilEvent = config.getInt("World", this.getConfigEntryName("Min Ticks Until Random Event"), this.minTicksUntilEvent, "Minimum time in ticks until a random event can occur. 20 Ticks = 1 Second.");
+        //this.maxTicksUntilEvent = config.getInt("World", this.getConfigEntryName("Max Ticks Until Random Event"), this.maxTicksUntilEvent, "Maximum time in ticks until a random event can occur. 20 Ticks = 1 Second.");
 
-        this.configLoaded = true;
+        //this.configLoaded = true;
     }
 
     protected String getConfigEntryName(String name) {
@@ -191,8 +190,8 @@ public class ExtendedWorld extends WorldSavedData {
     // ==================================================
     /** Gets a random time until the next random event will start. **/
     public int getRandomEventDelay(Random random) {
-        int max = Math.max(20, this.maxTicksUntilEvent);
-        int min = Math.max(20, this.minTicksUntilEvent);
+        int max = Math.max(20, MobEventManager.getInstance().maxTicksUntilEvent);
+        int min = Math.max(20, MobEventManager.getInstance().minTicksUntilEvent);
         if(max <= min)
             return min;
 

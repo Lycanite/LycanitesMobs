@@ -89,8 +89,11 @@ public class EntitySpectre extends EntityCreatureTameable implements IMob, IGrou
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Items.ENDER_PEARL), 0.5F).setMaxAmount(2));
+        this.drops.add(new MobDrop(new ItemStack(Items.ENDER_PEARL), 1F).setMaxAmount(3));
+		this.drops.add(new MobDrop(new ItemStack(Items.ENDER_EYE), 0.5F).setMaxAmount(1));
+		this.drops.add(new MobDrop(new ItemStack(Items.CHORUS_FRUIT), 0.5F).setMaxAmount(10));
         this.drops.add(new MobDrop(new ItemStack(Blocks.OBSIDIAN), 0.5F).setMaxAmount(2));
+		this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("SpectralboltCharge")), 0.25F).setMaxAmount(3));
         this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("soulstoneshadow")), 1F).setMaxAmount(1).setSubspecies(3));
 	}
 

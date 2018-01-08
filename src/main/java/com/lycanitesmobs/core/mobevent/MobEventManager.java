@@ -31,6 +31,9 @@ public class MobEventManager extends JSONLoader {
     public boolean mobEventsRandom = false;
 	/** The default temporary time applied to mobs spawned from events, where it will forcefully despawn after the specified time (in ticks). MobSpawns can override this. **/
 	public int defaultMobDuration = 12000;
+	public int minEventsRandomDay = 0;
+	public int minTicksUntilEvent = 60 * 60 * 20;
+	public int maxTicksUntilEvent = 120 * 60 * 20;
 
     protected long lastEventUpdateTime = 0;
 
@@ -48,11 +51,16 @@ public class MobEventManager extends JSONLoader {
 	public void loadConfig() {
 		ConfigSpawning config = ConfigSpawning.getConfig(LycanitesMobs.group, "mobevents");
         config.setCategoryComment("Global", "These are various settings that apply to all events.");
-        config.setCategoryComment("World", "These are various settings that apply to events on a per world basis. If your required world doesn't have its config values generated yet, you can generate them by entering the world in gae at least once.");
+        //config.setCategoryComment("World", "These are various settings that apply to events on a per world basis. If your required world doesn't have its config values generated yet, you can generate them by entering the world in gae at least once.");
 
         this.mobEventsEnabled = config.getBool("Global", "Mob Events Enabled", this.mobEventsEnabled, "Set to false to completely disable the entire event system for every world.");
 		this.mobEventsRandom = config.getBool("Global", "Random Mob Events Enabled", this.mobEventsRandom, "Set to false to disable random mob events for every world.");
 		this.defaultMobDuration = config.getInt("Global", "Default Mob Duration", this.defaultMobDuration, "The default temporary time applied to mobs spawned from events, where it will forcefully despawn after the specified time (in ticks). MobSpawns can override this.");
+
+		this.minEventsRandomDay = config.getInt("Global", "Default Random Mob Events Day Minimum", this.minEventsRandomDay, "If random events are enabled, they wont occur until this day is reached. Set to 0 to have random events enabled from the start of a world.");
+
+		this.minTicksUntilEvent = config.getInt("Global", "Default Min Ticks Until Random Event", this.minTicksUntilEvent, "Minimum time in ticks until a random event can occur. 20 Ticks = 1 Second.");
+		this.maxTicksUntilEvent = config.getInt("Global", "Default Max Ticks Until Random Event", this.maxTicksUntilEvent, "Maximum time in ticks until a random event can occur. 20 Ticks = 1 Second.");
 	}
 
 

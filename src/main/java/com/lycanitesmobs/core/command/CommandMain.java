@@ -256,10 +256,10 @@ public class CommandMain implements ICommand {
                     ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
 					
 					// Force Enabled:
-					if(!worldExt.mobEventsEnabled) {
+					if(!MobEventManager.getInstance().mobEventsEnabled) {
 						reply = I18n.translateToLocal("lyc.command.mobevent.enable");
 						commandSender.sendMessage(new TextComponentString(reply));
-                        worldExt.mobEventsEnabled = true;
+						MobEventManager.getInstance().mobEventsEnabled = true;
 						ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "mobevents");
 						config.setBool("Global", "Mob Events Enabled", true);
 					}
@@ -348,7 +348,7 @@ public class CommandMain implements ICommand {
 				}
 				reply = I18n.translateToLocal("lyc.command.mobevent.enable");
 				commandSender.sendMessage(new TextComponentString(reply));
-                worldExt.mobEventsEnabled = true;
+				MobEventManager.getInstance().mobEventsEnabled = true;
 				ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "mobevents");
 				config.setBool("Global", "Mob Events Enabled", true);
 				return;
@@ -368,7 +368,7 @@ public class CommandMain implements ICommand {
 				}
 				reply = I18n.translateToLocal("lyc.command.mobevent.disable");
 				commandSender.sendMessage(new TextComponentString(reply));
-                worldExt.mobEventsEnabled = false;
+				MobEventManager.getInstance().mobEventsEnabled = false;
 				ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "mobevents");
 				config.setBool("Global", "Mob Events Enabled", false);
 				return;

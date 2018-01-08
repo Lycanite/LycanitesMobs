@@ -80,7 +80,7 @@ public class MobEventListener extends JSONLoader {
 			return;
 
 		// Check If Events Are Completely Disabled:
-		if(!MobEventManager.getInstance().mobEventsEnabled || !worldExt.mobEventsEnabled || world.getDifficulty() == EnumDifficulty.PEACEFUL) {
+		if(!MobEventManager.getInstance().mobEventsEnabled || world.getDifficulty() == EnumDifficulty.PEACEFUL) {
 			if(worldExt.serverWorldEventPlayer != null)
 				worldExt.stopWorldEvent();
 			return;
@@ -109,11 +109,11 @@ public class MobEventListener extends JSONLoader {
 		}
 
         // Random Mob Events:
-        if(MobEventManager.getInstance().mobEventsRandom && worldExt.mobEventsRandom) {
-			if (worldExt.minEventsRandomDay > 0 && Math.floor((worldExt.useTotalWorldTime ? world.getTotalWorldTime() : world.getWorldTime()) / 24000D) < worldExt.minEventsRandomDay) {
+        if(MobEventManager.getInstance().mobEventsRandom) {
+			if (MobEventManager.getInstance().minEventsRandomDay > 0 && Math.floor((worldExt.useTotalWorldTime ? world.getTotalWorldTime() : world.getWorldTime()) / 24000D) < MobEventManager.getInstance().minEventsRandomDay) {
 				return;
 			}
-			if (worldExt.getWorldEventStartTargetTime() <= 0 || worldExt.getWorldEventStartTargetTime() > world.getTotalWorldTime() + worldExt.maxTicksUntilEvent) {
+			if (worldExt.getWorldEventStartTargetTime() <= 0 || worldExt.getWorldEventStartTargetTime() > world.getTotalWorldTime() + MobEventManager.getInstance().maxTicksUntilEvent) {
 				worldExt.setWorldEventStartTargetTime(world.getTotalWorldTime() + worldExt.getRandomEventDelay(world.rand));
 			}
 			if (world.getTotalWorldTime() >= worldExt.getWorldEventStartTargetTime()) {

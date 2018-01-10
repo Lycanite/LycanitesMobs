@@ -8,6 +8,7 @@ import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.MobInfo;
+import com.lycanitesmobs.core.info.SpawnInfo;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.EnumDifficulty;
@@ -166,6 +167,26 @@ public class MobSpawn {
 	 * @param forceIgnoreDimension If true, the dimension check is ignored.
 	 **/
 	public boolean canSpawn(World world, int blockCount, List<Biome> biomes, boolean forceIgnoreDimension) {
+		// Global Blocks:
+		if(SpawnInfo.disableAllSpawning) {
+			return false;
+		}
+		if(SpawnInfo.dimensionList.length > 0) {
+			boolean inDimensionList = false;
+			for (int dimensionId : SpawnInfo.dimensionList) {
+				if (dimensionId == world.provider.getDimension()) {
+					inDimensionList = true;
+					break;
+				}
+			}
+			if (inDimensionList && !SpawnInfo.dimensionListWhitelist) {
+				return false;
+			}
+			if (!inDimensionList && SpawnInfo.dimensionListWhitelist) {
+				return false;
+			}
+		}
+
 		// Enabled:
 		if(this.mobInfo != null && !this.mobInfo.mobEnabled) {
 			return false;

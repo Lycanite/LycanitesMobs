@@ -156,10 +156,10 @@ public class ConfigSpawning extends ConfigBase {
 		String dimensionEntries = this.getString(category, key, defaultValue);
         dimensionEntries = dimensionEntries.replace(" ", "");
 
-        List<Integer> dimensionIDList = new ArrayList<Integer>();
-        List<String> dimensionTypeList = new ArrayList<String>();
+        List<Integer> dimensionIDList = new ArrayList<>();
+        List<String> dimensionTypeList = new ArrayList<>();
         for(String dimensionEntry : dimensionEntries.split(",")) {
-            if(NumberUtils.isNumber(dimensionEntry))
+            if(NumberUtils.isCreatable(dimensionEntry))
                 dimensionIDList.add(Integer.parseInt(dimensionEntry.replace("+", "")));
             else
                 dimensionTypeList.add(dimensionEntry.replace("+", ""));

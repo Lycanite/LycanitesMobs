@@ -12,6 +12,12 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.DungeonHooks;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import scala.Int;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SpawnInfo {
 	// ========== Global Spawn Settings ==========
@@ -23,6 +29,12 @@ public class SpawnInfo {
 	public static double spawnWeightScale = 1.0D;
 	public static double dungeonSpawnerWeightScale = 1.0D;
 	public static boolean ignoreWorldGenSpawning = false;
+
+	/** A global list of dimension ids that overrides every other spawn setting in both the configs and json spawners. **/
+	public static int[] dimensionList;
+	/** If set to true the dimension list acts as a whitelist, otherwise it is a blacklist. **/
+	public static boolean dimensionListWhitelist = false;
+
 
 	// ========== Spawn General ==========
 	/** The Mob Info of the mob this Spawn Info belongs to. **/
@@ -126,6 +138,17 @@ public class SpawnInfo {
         spawnWeightScale = config.getDouble("Global Spawning", "Weight Scale", spawnWeightScale, "Scales the spawn weights of all mobs from this mod. For example, you can use this to quickly half the spawn rates of mobs from this mod compared to vanilla/other mod mobs by setting it to 0.5.");
 		useSurfaceLightLevel = config.getBool("Global Spawning", "Use Surface Light Level", useSurfaceLightLevel, "If true, when water mobs spawn, instead of checking the light level of the block the mob is spawning at, the light level of the surface (if possible) is checked. This stops mobs like Jengus from spawning at the bottom of deep rivers during the day, set to false for the old way.");
 		ignoreWorldGenSpawning = config.getBool("Global Spawning", "Ignore WorldGen Spawning", ignoreWorldGenSpawning, "If true, when new world chunks are generated, no mobs from this mod will pre-spawn (mobs will still attempt to spawn randomly afterwards). Set this to true if you are removing mobs from vanilla dimensions as the vanilla WorldGen spawning ignores mob spawn conditions.");
+
+		// Master Dimension List:
+		String dimensionListValue = config.getString("Global Spawning", "Master Spawn Dimensions", "", "A global comma separated list of dimension ids that overrides every other spawn setting in both the configs and json spawners. Use this to quickly stop all mobs from spawning in certain dimensions, etc.");
+		List<Integer> dimensionEntries = new ArrayList<>();
+		for(String dimensionEntry : dimensionListValue.replace(" ", "").split(",")) {
+			if(NumberUtils.isCreatable(dimensionEntry)) {
+				dimensionEntries.add(Integer.parseInt(dimensionEntry));
+			}
+		}
+		dimensionList = ArrayUtils.toPrimitive(dimensionEntries.toArray(new Integer[dimensionEntries.size()]));
+		dimensionListWhitelist = config.getBool("Global Spawning", "Master Spawn Dimensions Whitelist", dimensionListWhitelist, "If set to true the dimension list acts as a whitelist, otherwise it is a blacklist.");
 
 		config.setCategoryComment("Dungeon Features", "Here you can set special features used in dungeon generation.");
         disableDungeonSpawners = config.getBool("Dungeon Features", "Disable Dungeon Spawners", disableDungeonSpawners, "If true, newly generated dungeons wont create spawners with mobs from this mod.");

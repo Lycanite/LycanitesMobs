@@ -268,7 +268,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
     /** Used for the TARGET watcher bitmap, bitmaps save on many packets and make network performance better! **/
 	public enum TARGET_ID {
-		ATTACK((byte)1), MASTER((byte)2), PARENT((byte)4), AVOID((byte)8), RIDER((byte)16);
+		ATTACK((byte)1), MASTER((byte)2), PARENT((byte)4), AVOID((byte)8), RIDER((byte)16), PICKUP((byte)32);
 		public final byte id;
 	    private TARGET_ID(byte value) { this.id = value; }
 	    public byte getValue() { return id; }
@@ -1564,6 +1564,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     			targets += TARGET_ID.AVOID.id;
     		if(this.getControllingPassenger() != null)
     			targets += TARGET_ID.RIDER.id;
+			if(this.getPickupEntity() != null)
+				targets += TARGET_ID.PICKUP.id;
     		this.dataManager.set(TARGET, targets);
     	}
 
@@ -2909,7 +2911,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
     }
     
     public boolean hasPickupEntity() {
-    	return this.getPickupEntity() != null;
+		if(!this.getEntityWorld().isRemote)
+			return this.getPickupEntity() != null;
+		else
+			return (this.getByteFromDataManager(TARGET) & TARGET_ID.PICKUP.id) > 0;
     }
     
     public void dropPickupEntity() {

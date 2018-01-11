@@ -1,5 +1,7 @@
 package com.lycanitesmobs.saltwatermobs.model;
 
+import com.lycanitesmobs.LycanitesMobs;
+import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.model.template.ModelTemplateDragon;
 import com.lycanitesmobs.saltwatermobs.SaltwaterMobs;
 import net.minecraft.entity.EntityLiving;
@@ -47,6 +49,13 @@ public class ModelQuetzodracl extends ModelTemplateDragon {
                 rotX -= 15 + Math.toDegrees(walkIdle * 0.05F);
                 rotY -= 45 + Math.toDegrees(walkIdle * 0.05F);
                 rotZ -= 145 + Math.toDegrees(walkIdle * 0.05F);
+            }
+        }
+
+        // Pickup:
+        if (partName.equals("legleft") || partName.equals("legright")) {
+            if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).hasPickupEntity()) {
+                rotX -= 40D;
             }
         }
 

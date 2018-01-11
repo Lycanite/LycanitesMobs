@@ -7,6 +7,7 @@ import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.monster.EntityHusk;
 import net.minecraft.entity.monster.EntityZombieVillager;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
@@ -64,6 +65,7 @@ public class EntityCryptZombie extends EntityCreatureAgeable implements IMob {
         this.targetTasks.addTask(0, new EntityAITargetRevenge(this).setHelpCall(true));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class).setCheckSight(false));
+        this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityHusk.class).setCheckSight(false));
     }
     
     // ========== Stats ==========

@@ -139,6 +139,9 @@ public class EntityQuetzodracl extends EntityCreatureRideable implements IMob, I
         // Entity Pickup Update:
         if(!this.getEntityWorld().isRemote && this.getControllingPassenger() == null) {
 	    	this.attackAI.setEnabled(!this.hasPickupEntity());
+            if(this.updateTick % Math.round(20 * (float)this.getHasteMultiplier()) == 0) {
+				this.meleeAttack(this.getPickupEntity(), 1);
+			}
             if(!this.isInWater()) {
                 this.waterTime = 0;
 

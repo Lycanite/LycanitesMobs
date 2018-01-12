@@ -479,6 +479,11 @@ public class CreatureNodeProcessor extends NodeProcessor implements ICreatureNod
                 for (int k = z; k < z + this.entitySizeZ; ++k) {
                     IBlockState iblockstate = this.blockaccess.getBlockState(blockpos$mutableblockpos.setPos(i, j, k));
 
+                    // Non-Solid:
+					if (!iblockstate.getMaterial().isSolid()) {
+						return PathNodeType.OPEN;
+					}
+
                     // Check For Open Air:
                     if (iblockstate.getMaterial() != Material.AIR) {
                         // If Can Swim Check For Swimmable Node:

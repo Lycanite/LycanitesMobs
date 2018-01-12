@@ -1,6 +1,5 @@
 package com.lycanitesmobs.core.entity.navigate;
 
-import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import net.minecraft.block.Block;
@@ -206,7 +205,7 @@ public class CreaturePathNavigate extends PathNavigate {
     public boolean canEntityStandOnPos(BlockPos pos) {
         // Flight/Swimming:
         if(this.entityCreature.isFlying() || this.entityCreature.isInWater()) {
-            return !this.world.getBlockState(pos).isFullBlock();
+            return !this.world.getBlockState(pos).isFullBlock(); // Might not need this.
         }
         return super.canEntityStandOnPos(pos);
     }

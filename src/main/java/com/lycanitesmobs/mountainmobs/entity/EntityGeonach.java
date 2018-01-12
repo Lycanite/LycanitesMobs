@@ -1,5 +1,6 @@
 package com.lycanitesmobs.mountainmobs.entity;
 
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupRock;
 import com.lycanitesmobs.core.config.ConfigBase;
@@ -48,7 +49,7 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
         this.geonachBlockBreakRadius = ConfigBase.getConfig(this.group, "general").getInt("Features", "Rare Geonach Block Break Radius", this.geonachBlockBreakRadius, "Controls how large the Celestial Geonach's block breaking radius is when it is charging towards its target. Set to -1 to disable. For their block breaking radius on spawn, see the ROCK spawn type features instead. Note that this is only for the extremely rare Geonach.");
         
         this.setWidth = 0.8F;
-        this.setHeight = 1.8F;
+        this.setHeight = 1.6F;
         this.setupMob();
 
         this.stepHeight = 1.0F;

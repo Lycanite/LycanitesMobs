@@ -82,13 +82,13 @@ public class ForestMobs extends Submod {
 
 		ItemCustomFood arisaurCooked = new ItemCustomFood("arisaurmeatcooked", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setAlwaysEdible();
 		if(ObjectManager.getPotionEffect("rejuvenation") != null)
-			arisaurCooked.setPotionEffect(ObjectManager.getPotionEffect("rejuvenation"), 10, 1, 1.0F);
+			arisaurCooked.setPotionEffect(ObjectManager.getPotionEffect("rejuvenation"), 30, 1, 1.0F);
 		ObjectManager.addItem("arisaurmeatcooked", arisaurCooked);
 		ObjectLists.addItem("vegetables", ObjectManager.getItem("arisaurmeatcooked"));
 
 		ItemCustomFood paleosalad = new ItemCustomFood("paleosalad", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setAlwaysEdible();
 		if(ObjectManager.getPotionEffect("rejuvenation") != null)
-			paleosalad.setPotionEffect(ObjectManager.getPotionEffect("rejuvenation"), 60, 1, 1.0F);
+			paleosalad.setPotionEffect(ObjectManager.getPotionEffect("rejuvenation"), 600, 1, 1.0F);
 		ObjectManager.addItem("paleosalad", paleosalad.setMaxStackSize(16), 3, 1, 6);
 		ObjectLists.addItem("vegetables", ObjectManager.getItem("paleosalad"));
 

@@ -1,0 +1,6 @@
+{
+	"name": "fountain",
+	"type": "feature",
+	"loadDefault": true,
+	"nbt": "lycanitesmobs:dungeons/structures/fountain.nbt"
+}

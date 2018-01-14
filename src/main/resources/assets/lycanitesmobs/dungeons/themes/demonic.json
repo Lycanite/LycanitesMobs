@@ -1,0 +1,37 @@
+{
+	"name": "demonic",
+	"loadDefault": true,
+	"floorPattern": "random",
+	"wallPattern": "random",
+	"ceilingPattern": "random",
+	"floorBlocks": [
+		{
+			"blockId": "demonmobs:demonstonetile",
+			"weight": 8
+		},
+		{
+			"blockId": "demonmobs:demonstonepolished",
+			"weight": 2
+		}
+	],
+	"wallBlocks": [
+		{
+			"blockId": "demonmobs:demonstonebrick",
+			"weight": 8
+		},
+		{
+			"blockId": "demonmobs:demonstonechiseled",
+			"weight": 2
+		}
+	],
+	"ceilingBlocks": [
+		{
+			"blockId": "demonmobs:demonstonetile",
+			"weight": 8
+		},
+		{
+			"blockId": "demonmobs:demonstonepolished",
+			"weight": 2
+		}
+	]
+}

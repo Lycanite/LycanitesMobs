@@ -89,14 +89,14 @@ public class ShadowMobs extends Submod {
 
 		ItemCustomFood cookedMeat = new ItemCustomFood("chupacabrameatcooked", group, 7, 0.7F, ItemCustomFood.FOOD_CLASS.COOKED).setAlwaysEdible();
 		if(ObjectManager.getPotionEffect("leech") != null)
-			cookedMeat.setPotionEffect(ObjectManager.getPotionEffect("leech"), 10, 1, 1.0F);
+			cookedMeat.setPotionEffect(ObjectManager.getPotionEffect("leech"), 30, 1, 1.0F);
 		ObjectManager.addItem("chupacabrameatcooked", cookedMeat);
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("chupacabrameatcooked"));
 
 		ItemCustomFood meal = new ItemCustomFood("bloodchili", group, 7, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setAlwaysEdible();
 		meal.setMaxStackSize(16);
 		if(ObjectManager.getPotionEffect("leech") != null)
-			meal.setPotionEffect(ObjectManager.getPotionEffect("leech"), 60, 1, 1.0F);
+			meal.setPotionEffect(ObjectManager.getPotionEffect("leech"), 600, 1, 1.0F);
 		ObjectManager.addItem("bloodchili", meal, 3, 1, 6);
 		ObjectLists.addItem("cookedmeat", ObjectManager.getItem("bloodchili"));
 

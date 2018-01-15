@@ -209,7 +209,7 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
     // ========== Damage Modifier ==========
     public float getDamageModifier(DamageSource damageSrc) {
         if(damageSrc.isFireDamage())
-            return 4.0F;
+            return 2.0F;
         if(damageSrc.getTrueSource() != null) {
             Item heldItem = null;
             if(damageSrc.getTrueSource() instanceof EntityPlayer) {
@@ -225,7 +225,7 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
                 }
             }
             if(ObjectLists.isAxe(heldItem))
-                return 4.0F;
+                return 2.0F;
         }
         return super.getDamageModifier(damageSrc);
     }

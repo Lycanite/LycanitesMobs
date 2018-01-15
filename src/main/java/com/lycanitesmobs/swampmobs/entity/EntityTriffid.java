@@ -137,7 +137,7 @@ public class EntityTriffid extends EntityCreatureTameable implements IMob, IGrou
     // ========== Damage Modifier ==========
     public float getDamageModifier(DamageSource damageSrc) {
         if(damageSrc.isFireDamage())
-            return 4.0F;
+            return 2.0F;
         if(damageSrc.getTrueSource() != null) {
             Item heldItem = null;
             if(damageSrc.getTrueSource() instanceof EntityPlayer) {
@@ -153,7 +153,7 @@ public class EntityTriffid extends EntityCreatureTameable implements IMob, IGrou
                 }
             }
             if(ObjectLists.isAxe(heldItem))
-                return 4.0F;
+                return 2.0F;
         }
         return super.getDamageModifier(damageSrc);
     }

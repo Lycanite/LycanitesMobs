@@ -157,7 +157,7 @@ public class EntityTreant extends EntityCreatureBase implements IMob, IGroupPlan
     // ========== Damage Modifier ==========
     public float getDamageModifier(DamageSource damageSrc) {
     	if(damageSrc.isFireDamage())
-    		return 4.0F;
+    		return 2.0F;
     	if(damageSrc.getTrueSource() != null) {
     		Item heldItem = null;
     		if(damageSrc.getTrueSource() instanceof EntityPlayer) {
@@ -173,7 +173,7 @@ public class EntityTreant extends EntityCreatureBase implements IMob, IGroupPlan
 	    		}
     		}
     		if(ObjectLists.isAxe(heldItem))
-				return 4.0F;
+				return 2.0F;
     	}
         return super.getDamageModifier(damageSrc);
     }

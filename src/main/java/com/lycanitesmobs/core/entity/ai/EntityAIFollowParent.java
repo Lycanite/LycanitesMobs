@@ -2,6 +2,7 @@ package com.lycanitesmobs.core.entity.ai;
 
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 
 public class EntityAIFollowParent extends EntityAIFollow {
 	public boolean followAsAdult = false;
@@ -55,6 +56,12 @@ public class EntityAIFollowParent extends EntityAIFollow {
     public Entity getTarget() {
     	return this.host.getParentTarget();
     }
+
+	@Override
+	public void setTarget(Entity entity) {
+    	if(entity instanceof EntityLivingBase)
+			this.host.setParentTarget((EntityLivingBase) entity);
+	}
     
     
     // ==================================================

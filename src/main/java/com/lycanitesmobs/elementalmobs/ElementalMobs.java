@@ -172,7 +172,7 @@ public class ElementalMobs extends Submod {
 				.addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("light", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("SKY")
 				.setBiomes("ALL").setDimensions("1").setDimensionWhitelist(true)
-				.setSpawnWeight(2).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);
+				.setSpawnWeight(2).setAreaLimit(4).setGroupLimits(1, 2).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 

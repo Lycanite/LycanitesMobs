@@ -5,7 +5,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.util.math.BlockPos;
 
-public class EntityAIFollow extends EntityAIBase {
+public abstract class EntityAIFollow extends EntityAIBase {
 	// Targets:
 	EntityCreatureBase host;
     
@@ -28,11 +28,10 @@ public class EntityAIFollow extends EntityAIBase {
     
 	
 	// ==================================================
- 	//                    Get Target
+ 	//                      Target
  	// ==================================================
-    public Entity getTarget() {
-    	return null;
-    }
+    public abstract Entity getTarget();
+	public abstract void setTarget(Entity entity);
     
     
     // ==================================================
@@ -92,9 +91,10 @@ public class EntityAIFollow extends EntityAIBase {
         
         double distance = Math.sqrt(this.host.getDistanceSqToEntity(target));
         if(distance > this.lostDistance && this.lostDistance != 0)
-        	this.host.setMasterTarget(null);
+        	this.setTarget(null);
         if(distance <= this.strayDistance && this.strayDistance != 0)
         	return false;
+		this.onTargetDistance(distance, target);
         
         return this.getTarget() != null;
     }
@@ -142,4 +142,12 @@ public class EntityAIFollow extends EntityAIBase {
     public void resetTask() {
         this.host.clearMovement();
     }
+
+
+	// ==================================================
+	//                  Target Distance
+	// ==================================================
+	public void onTargetDistance(double distance, Entity followTarget) {
+
+	}
 }

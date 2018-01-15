@@ -1,6 +1,7 @@
 package com.lycanitesmobs.elementalmobs.entity;
 
 import com.lycanitesmobs.ObjectManager;
+import com.lycanitesmobs.api.IFusable;
 import com.lycanitesmobs.api.IGroupRock;
 import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
@@ -27,7 +28,7 @@ import net.minecraft.world.World;
 
 import java.util.HashMap;
 
-public class EntityGeonach extends EntityCreatureTameable implements IMob, IGroupRock {
+public class EntityGeonach extends EntityCreatureTameable implements IMob, IGroupRock, IFusable {
 	
 	private EntityAIAttackMelee meleeAttackAI;
 	
@@ -61,6 +62,7 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
+		this.tasks.addTask(1, new EntityAIFollowFuse(this).setLostDistance(16));
         this.meleeAttackAI = new EntityAIAttackMelee(this).setRate(20).setLongMemory(true);
         this.tasks.addTask(2, meleeAttackAI);
         this.tasks.addTask(3, this.aiSit);
@@ -76,6 +78,7 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
+		this.targetTasks.addTask(7, new EntityAITargetFuse(this));
     }
     
     // ========== Stats ==========
@@ -260,4 +263,28 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
     
     @Override
     public boolean canBurn() { return false; }
+
+
+	// ==================================================
+	//                      Fusion
+	// ==================================================
+	protected IFusable fusionTarget;
+
+	@Override
+	public IFusable getFusionTarget() {
+		return this.fusionTarget;
+	}
+
+	@Override
+	public void setFusionTarget(IFusable fusionTarget) {
+		this.fusionTarget = fusionTarget;
+	}
+
+	@Override
+	public Class getFusionClass(IFusable fusable) {
+		if(fusable instanceof EntityJengu) {
+			return EntitySpriggan.class;
+		}
+		return null;
+	}
 }

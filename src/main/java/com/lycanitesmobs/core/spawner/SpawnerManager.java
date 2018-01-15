@@ -1,13 +1,11 @@
 package com.lycanitesmobs.core.spawner;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
+import com.google.gson.*;
 import com.lycanitesmobs.ExtendedPlayer;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.Utilities;
 import com.lycanitesmobs.core.JSONLoader;
+import com.lycanitesmobs.core.spawner.condition.SpawnCondition;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
 import org.apache.commons.io.FilenameUtils;
@@ -19,10 +17,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SpawnerManager extends JSONLoader {
 	/** This manages all Spawners, it load them and can also destroy them. Spawners are then ran by Spawn Triggers which are called from the SpawnerEventListener. **/
@@ -30,6 +25,7 @@ public class SpawnerManager extends JSONLoader {
 	public static SpawnerManager INSTANCE;
 
 	public Map<String, Spawner> spawners = new HashMap<>();
+	public List<SpawnCondition> globalSpawnConditions = new ArrayList<>();
 
 
 	/** Returns the main SpawnerManager INSTANCE or creates it and returns it. **/
@@ -98,6 +94,32 @@ public class SpawnerManager extends JSONLoader {
 			}
 		}
 		LycanitesMobs.printDebug("", "Complete! " + this.spawners.size() + " JSON Spawners Loaded In Total.");
+
+
+		// Load Global Spawn Conditions:
+		this.globalSpawnConditions.clear();
+		Path defaultGlobalPath = Utilities.getAssetPath(this.getClass(), LycanitesMobs.group.filename, "globalspawner.json");
+		JsonObject defaultGlobalJson = this.loadJsonObject(gson, defaultGlobalPath);
+
+		File customGlobalFile = new File(configPath + "globalspawner.json");
+		JsonObject customGlobalJson = null;
+		if(customGlobalFile.exists()) {
+			customGlobalJson = this.loadJsonObject(gson, customGlobalFile.toPath());
+		}
+
+		JsonObject globalJson = this.writeDefaultJSONObject(gson, "globalspawner", defaultGlobalJson, customGlobalJson);
+		if(globalJson.has("conditions")) {
+			JsonArray jsonArray = globalJson.get("conditions").getAsJsonArray();
+			Iterator<JsonElement> jsonIterator = jsonArray.iterator();
+			while (jsonIterator.hasNext()) {
+				JsonObject spawnConditionJson = jsonIterator.next().getAsJsonObject();
+				SpawnCondition spawnCondition = SpawnCondition.createFromJSON(spawnConditionJson);
+				this.globalSpawnConditions.add(spawnCondition);
+			}
+		}
+		if(this.globalSpawnConditions.size() > 0) {
+			LycanitesMobs.printDebug("JSONSpawner", "Loaded " + this.globalSpawnConditions.size() + " Global Spawn Conditions.");
+		}
 	}
 
 

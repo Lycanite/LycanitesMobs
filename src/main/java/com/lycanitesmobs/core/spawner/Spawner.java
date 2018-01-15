@@ -272,6 +272,16 @@ public class Spawner {
 
     /** Returns true if Triggers are allowed to operate for this Spawner. **/
     public boolean canSpawn(World world, EntityPlayer player) {
+    	if(!SpawnerManager.getInstance().globalSpawnConditions.isEmpty()) {
+			LycanitesMobs.printDebug("JSONSpawner", "Global Conditions Required: " + SpawnerManager.getInstance().globalSpawnConditions.size());
+			for(SpawnCondition condition : SpawnerManager.getInstance().globalSpawnConditions) {
+				if(!condition.isMet(world, player)) {
+					LycanitesMobs.printDebug("JSONSpawner", "Global Condition: " + condition + "Failed");
+					return false;
+				}
+			}
+		}
+
         if(this.conditions.isEmpty()) {
 			LycanitesMobs.printDebug("JSONSpawner", "No Conditions");
         	return true;

@@ -2,6 +2,7 @@ package com.lycanitesmobs.core.entity.ai;
 
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 
 public class EntityAIFollowMaster extends EntityAIFollow {
 	// Targets:
@@ -45,4 +46,10 @@ public class EntityAIFollowMaster extends EntityAIFollow {
     public Entity getTarget() {
     	return this.host.getMasterTarget();
     }
+
+	@Override
+	public void setTarget(Entity entity) {
+		if(entity instanceof EntityLivingBase)
+			this.host.setMasterTarget((EntityLivingBase) entity);
+	}
 }

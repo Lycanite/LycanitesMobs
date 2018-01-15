@@ -3,7 +3,8 @@
 	"type": "spawner",
 	"enabled": true,
 	"loadDefault": true,
-	"mobCountMin": 2,
+	"mobCountMin": 1,
+	"ignoreDimensions": true,
 	"ignoreBiomes": true,
 	"ignoreLightLevel": true,
 	"conditions": [],
@@ -19,7 +20,7 @@
 			"type": "random",
 			"rangeMin": [16, 0, 16],
 			"rangeMax": [32, 32, 32],
-			"yMax": 15,
+			"yMax": 20,
 			"sorting": "random",
 			"limit": 32,
 			"solidGround": false

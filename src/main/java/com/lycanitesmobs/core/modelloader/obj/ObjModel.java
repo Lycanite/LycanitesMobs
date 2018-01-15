@@ -46,9 +46,9 @@ public abstract class ObjModel extends Model
     }
 
     public void renderGroup(ObjObject group, Vector4f color) {
-        if(fireEvent(new ObjEvent(this, ObjEvent.EventType.PRE_RENDER_GROUP).setData(group, group)))
+        //if(fireEvent(new ObjEvent(this, ObjEvent.EventType.PRE_RENDER_GROUP).setData(group, group)))
             this.renderGroupImpl(group, color);
-        fireEvent(new ObjEvent(this, ObjEvent.EventType.POST_RENDER_GROUP).setData(group, group));
+        //fireEvent(new ObjEvent(this, ObjEvent.EventType.POST_RENDER_GROUP).setData(group, group));
     }
     
     public void renderGroups(String groupsName) {

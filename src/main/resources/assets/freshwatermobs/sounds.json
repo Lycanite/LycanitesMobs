@@ -1,48 +1,4 @@
 {
-    "entity.jengu.say": {
-        "category": "hostile",
-        "sounds": [{"name": "freshwatermobs:entity/jengu/say", "stream": false}]
-    },
-    "entity.jengu.hurt": {
-        "category": "hostile",
-        "sounds": [{"name": "freshwatermobs:entity/jengu/hurt", "stream": false}]
-    },
-    "entity.jengu.death": {
-        "category": "hostile",
-        "sounds": [{"name": "freshwatermobs:entity/jengu/death", "stream": false}]
-    },
-    "entity.jengu.beg": {
-        "category": "hostile",
-        "sounds": [{"name": "freshwatermobs:entity/jengu/beg", "stream": false}]
-    },
-    "entity.jengu.tame": {
-        "category": "hostile",
-        "sounds": [{"name": "freshwatermobs:entity/jengu/tame", "stream": false}]
-    },
-	"entity.zephyr.say": {
-        "category": "hostile",
-        "sounds": [{"name": "freshwatermobs:entity/zephyr/say", "stream": false}]
-    },
-    "entity.zephyr.hurt": {
-        "category": "hostile",
-        "sounds": [{"name": "freshwatermobs:entity/zephyr/hurt", "stream": false}]
-    },
-    "entity.zephyr.death": {
-        "category": "hostile",
-        "sounds": [{"name": "freshwatermobs:entity/zephyr/death", "stream": false}]
-    },
-    "entity.zephyr.beg": {
-        "category": "hostile",
-        "sounds": [{"name": "freshwatermobs:entity/zephyr/beg", "stream": false}]
-    },
-    "entity.zephyr.tame": {
-        "category": "hostile",
-        "sounds": [{"name": "freshwatermobs:entity/zephyr/tame", "stream": false}]
-    },
-    "entity.zephyr.attack": {
-        "category": "hostile",
-        "sounds": [{"name": "freshwatermobs:entity/zephyr/attack", "stream": false}]
-    },
 	"entity.strider.say": {
         "category": "hostile",
         "sounds": [{"name": "freshwatermobs:entity/strider/say", "stream": false}]
@@ -174,10 +130,6 @@
     "entity.abaia.tame": {
         "category": "hostile",
         "sounds": [{"name": "freshwatermobs:entity/abaia/tame", "stream": false}]
-    },
-    "projectile.aquapulse": {
-        "category": "ambient",
-        "sounds": [{"name": "freshwatermobs:projectile/aquapulse", "stream": false}]
     },
     "projectile.waterjet": {
         "category": "ambient",

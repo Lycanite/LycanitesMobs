@@ -300,6 +300,7 @@ public class MobInfo {
 	 * @return
 	 */
 	public static MobInfo getFromId(String mobId) {
+		mobId = mobId.replace(":", "\\.");
 		String[] mobIdParts = mobId.toLowerCase().split("\\.");
 		return getFromName(mobIdParts[mobIdParts.length - 1]);
 	}

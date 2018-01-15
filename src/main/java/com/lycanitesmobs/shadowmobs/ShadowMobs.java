@@ -6,14 +6,16 @@ import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.Submod;
 import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
-import com.lycanitesmobs.core.info.*;
+import com.lycanitesmobs.core.info.GroupInfo;
+import com.lycanitesmobs.core.info.MobInfo;
+import com.lycanitesmobs.core.info.ObjectLists;
+import com.lycanitesmobs.core.info.Subspecies;
 import com.lycanitesmobs.core.item.ItemCustomFood;
 import com.lycanitesmobs.core.item.ItemTreat;
 import com.lycanitesmobs.shadowmobs.block.BlockShadowfire;
 import com.lycanitesmobs.shadowmobs.dispenser.DispenserBehaviorBloodleech;
 import com.lycanitesmobs.shadowmobs.dispenser.DispenserBehaviorSpectralbolt;
 import com.lycanitesmobs.shadowmobs.entity.*;
-import com.lycanitesmobs.shadowmobs.info.AltarInfoLunarGrue;
 import com.lycanitesmobs.shadowmobs.item.*;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.init.Blocks;
@@ -51,9 +53,6 @@ public class ShadowMobs extends Submod {
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event) {
 		super.init(event);
-
-		AltarInfo lunarGrueAltar = new AltarInfoLunarGrue("LunarGrueAltar");
-		AltarInfo.addAltar(lunarGrueAltar);
 	}
 
 	@Mod.EventHandler
@@ -120,15 +119,6 @@ public class ShadowMobs extends Submod {
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ObjectManager.getItem("shadowspawn"), new DispenserBehaviorMobEggCustom());
 		MobInfo newMob;
 
-		newMob = new MobInfo(group, "grue", EntityGrue.class, 0x191017, 0xBB44AA)
-				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1)
-				.addSubspecies(new Subspecies("scarlet", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"))
-				.addSubspecies(new Subspecies("lunar", "rare"));
-		newMob.spawnInfo.setSpawnTypes("UNDERGROUND")
-				.setBiomes("ALL").setDimensions("-1").setDimensionWhitelist(false)
-				.setSpawnWeight(8).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
 		newMob = new MobInfo(group, "phantom", EntityPhantom.class, 0x101519, 0xDD2233)
 				.setPeaceful(false).setSummonable(false).setSummonCost(2).setDungeonLevel(1)
 				.addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
@@ -176,14 +166,6 @@ public class ShadowMobs extends Submod {
 		newMob.spawnInfo.setSpawnTypes("UNDERGROUND")
 				.setBiomes("ALL").setDimensions("-1").setDimensionWhitelist(false)
 				.setSpawnWeight(8).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "spectre", EntitySpectre.class, 0x4f0095, 0xff08d7)
-				.setPeaceful(false).setSummonable(true).setSummonCost(4).setDungeonLevel(2)
-				.addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("light", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("SKY")
-				.setBiomes("ALL").setDimensions("1").setDimensionWhitelist(true)
-				.setSpawnWeight(2).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 

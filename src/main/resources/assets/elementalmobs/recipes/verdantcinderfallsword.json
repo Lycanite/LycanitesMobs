@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "elementalmobs:verdantcinderfallsword"
+  },
+  "pattern": [
+    "DDD",
+    "DSD",
+    "DDD"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "S": {
+      "item": "elementalmobs:cinderfallsword"
+    },
+    "D": {
+      "item": "minecraft:emerald"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "elementalmobs:cinderfallsword"
+  },
+  "pattern": [
+    "CCC",
+    "CSC",
+    "CJC"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "C": {
+      "item": "elementalmobs:embercharge"
+    },
+    "S": {
+      "item": "minecraft:diamond_sword"
+    },
+    "J": {
+      "item": "lycanitesmobs:soulgazer"
+    }
+  }
+}

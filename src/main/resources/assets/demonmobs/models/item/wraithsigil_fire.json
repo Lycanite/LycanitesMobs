@@ -1,6 +1,0 @@
-{
-	"parent": "demonmobs:item/wraithsigil",
-	"textures": {
-		"layer0": "demonmobs:items/wraithsigil_fire"
-	}
-}

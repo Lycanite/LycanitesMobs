@@ -1,32 +1,4 @@
 {
-    "entity.grue.say": {
-        "category": "hostile",
-        "sounds": [{"name": "shadowmobs:entity/grue/say", "stream": false}]
-    },
-    "entity.grue.hurt": {
-        "category": "hostile",
-        "sounds": [{"name": "shadowmobs:entity/grue/hurt", "stream": false}]
-    },
-    "entity.grue.death": {
-        "category": "hostile",
-        "sounds": [{"name": "shadowmobs:entity/grue/death", "stream": false}]
-    },
-    "entity.grue.attack": {
-        "category": "hostile",
-        "sounds": [{"name": "shadowmobs:entity/grue/attack", "stream": false}]
-    },
-    "entity.grue.beg": {
-        "category": "hostile",
-        "sounds": [{"name": "shadowmobs:entity/grue/beg", "stream": false}]
-    },
-    "entity.grue.tame": {
-        "category": "hostile",
-        "sounds": [{"name": "shadowmobs:entity/grue/tame", "stream": false}]
-    },
-    "entity.grue.jump": {
-        "category": "hostile",
-        "sounds": [{"name": "shadowmobs:entity/grue/jump", "stream": false}]
-    },
     "entity.phantom.say": {
         "category": "hostile",
         "sounds": [{"name": "shadowmobs:entity/phantom/say", "stream": false}]
@@ -182,30 +154,6 @@
     "entity.darkling.tame": {
         "category": "hostile",
         "sounds": [{"name": "shadowmobs:entity/darkling/tame", "stream": false}]
-    },
-    "entity.spectre.say": {
-        "category": "hostile",
-        "sounds": [{"name": "shadowmobs:entity/spectre/say", "stream": false}]
-    },
-    "entity.spectre.hurt": {
-        "category": "hostile",
-        "sounds": [{"name": "shadowmobs:entity/spectre/hurt", "stream": false}]
-    },
-    "entity.spectre.death": {
-        "category": "hostile",
-        "sounds": [{"name": "shadowmobs:entity/spectre/death", "stream": false}]
-    },
-    "entity.spectre.attack": {
-        "category": "hostile",
-        "sounds": [{"name": "shadowmobs:entity/spectre/attack", "stream": false}]
-    },
-    "entity.spectre.beg": {
-        "category": "hostile",
-        "sounds": [{"name": "shadowmobs:entity/spectre/beg", "stream": false}]
-    },
-    "entity.spectre.tame": {
-        "category": "hostile",
-        "sounds": [{"name": "shadowmobs:entity/spectre/tame", "stream": false}]
     },
     "projectile.spectralbolt": {
         "category": "ambient",

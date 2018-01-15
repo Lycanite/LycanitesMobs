@@ -1,24 +1,4 @@
 {
-    "entity.reiver.say": {
-        "category": "hostile",
-	"sounds": [{"name": "arcticmobs:entity/reiver/say", "stream": false}]
-    },
-    "entity.reiver.hurt": {
-        "category": "hostile",
-	"sounds": [{"name": "arcticmobs:entity/reiver/hurt", "stream": false}]
-    },
-    "entity.reiver.death": {
-        "category": "hostile",
-	"sounds": [{"name": "arcticmobs:entity/reiver/death", "stream": false}]
-    },
-    "entity.reiver.tame": {
-        "category": "hostile",
-	"sounds": [{"name": "arcticmobs:entity/reiver/tame", "stream": false}]
-    },
-    "entity.reiver.beg": {
-        "category": "hostile",
-	"sounds": [{"name": "arcticmobs:entity/reiver/beg", "stream": false}]
-    },
     "entity.frostweaver.say": {
         "category": "hostile",
 	"sounds": [{"name": "arcticmobs:entity/frostweaver/say", "stream": false}]
@@ -170,10 +150,6 @@
     "entity.maug.jump": {
         "category": "hostile",
         "sounds": [{"name": "arcticmobs:entity/maug/jump", "stream": false}]
-    },
-    "projectile.frostbolt": {
-        "category": "ambient",
-	"sounds": [{"name": "arcticmobs:projectile/frostbolt", "stream": false}]
     },
     "projectile.frostweb": {
         "category": "ambient",

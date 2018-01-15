@@ -10,7 +10,6 @@ import com.lycanitesmobs.core.item.ItemCustomFood;
 import com.lycanitesmobs.core.item.ItemTreat;
 import com.lycanitesmobs.infernomobs.block.BlockFluidPureLava;
 import com.lycanitesmobs.infernomobs.block.BlockScorchfire;
-import com.lycanitesmobs.infernomobs.dispenser.DispenserBehaviorEmber;
 import com.lycanitesmobs.infernomobs.dispenser.DispenserBehaviorMagma;
 import com.lycanitesmobs.infernomobs.dispenser.DispenserBehaviorScorchfire;
 import com.lycanitesmobs.infernomobs.entity.*;
@@ -89,11 +88,6 @@ public class InfernoMobs extends Submod {
 		ObjectManager.addItem("searingtaco", new ItemCustomFood("searingtaco", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(MobEffects.FIRE_RESISTANCE, 120, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
 		ObjectLists.addItem("cookedfish", ObjectManager.getItem("searingtaco"));
 
-		ObjectManager.addItem("embercharge", new ItemEmberCharge());
-		ObjectManager.addItem("emberscepter", new ItemScepterEmber(), 2, 1, 1);
-		ObjectManager.addItem("cinderfallsword", new ItemSwordCinderfall("cinderfallsword", "swordcinderfall"), 2, 1, 1);
-		ObjectManager.addItem("azurecinderfallsword", new ItemSwordCinderfallAzure("azurecinderfallsword", "swordcinderfallazure"));
-		ObjectManager.addItem("verdantcinderfallsword", new ItemSwordCinderfallVerdant("verdantcinderfallsword", "swordcinderfallverdant"));
 		ObjectManager.addItem("magmacharge", new ItemMagmaCharge());
 		ObjectManager.addItem("magmascepter", new ItemScepterMagma(), 2, 1, 1);
 		ObjectManager.addItem("scorchfirecharge", new ItemScorchfireCharge());
@@ -118,13 +112,6 @@ public class InfernoMobs extends Submod {
 		// Mobs:
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ObjectManager.getItem("infernospawn"), new DispenserBehaviorMobEggCustom());
 		MobInfo newMob;
-
-		newMob = new MobInfo(group, "cinder", EntityCinder.class, 0xFF9900, 0xFFFF00)
-				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1)
-				.addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("").setBlockCost(8)
-				.setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "lobber", EntityLobber.class, 0x330011, 0xFF5500)
 				.setPeaceful(false).setSummonCost(8).setDungeonLevel(2)
@@ -178,7 +165,6 @@ public class InfernoMobs extends Submod {
 
 
 		// Projectiles:
-		ObjectManager.addProjectile("ember", EntityEmber.class, ObjectManager.getItem("embercharge"), new DispenserBehaviorEmber());
 		ObjectManager.addProjectile("magma", EntityMagma.class, ObjectManager.getItem("magmacharge"), new DispenserBehaviorMagma());
 		ObjectManager.addProjectile("scorchfireball", EntityScorchfireball.class, ObjectManager.getItem("scorchfirecharge"), new DispenserBehaviorScorchfire());
 	}

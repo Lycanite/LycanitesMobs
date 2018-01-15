@@ -1,0 +1,43 @@
+{
+	"itemName": "geonachfist",
+	"loadDefault": true,
+	"slotType": "axe",
+	"dropMobId": "elementalmobs.geonach",
+	"dropChance": 0.1,
+	"levelMin": 1,
+	"levelMax": 3,
+	"features": [
+		{
+			"featureType": "harvest",
+			"harvestType": "pickaxe",
+			"harvestShape": "block",
+			"harvestRange": [1, 1, 1],
+			"harvestRangeLevelMultiplier": 1
+		},
+		{
+			"featureType": "damage",
+			"levelMax": 2,
+			"damageAmount": 4,
+			"damageKnockback": 2,
+			"damageCooldown": 2,
+			"damageRange": 1,
+			"damageSweep": 360
+		},
+		{
+			"featureType": "damage",
+			"levelMin": 3,
+			"damageAmount": 5,
+			"damageKnockback": 2,
+			"damageCooldown": 2,
+			"damageRange": 1,
+			"damageSweep": 360
+		},
+		{
+			"featureType": "effect",
+			"effectType": "weight",
+			"effectTarget": "target",
+			"effectDuration": 80,
+			"effectStrength": 1
+		}
+	]
+}

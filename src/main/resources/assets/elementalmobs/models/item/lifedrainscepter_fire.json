@@ -1,0 +1,6 @@
+{
+	"parent": "elementalmobs:item/lifedrainscepter",
+	"textures": {
+		"layer0": "elementalmobs:items/lifedrainscepter_fire"
+	}
+}

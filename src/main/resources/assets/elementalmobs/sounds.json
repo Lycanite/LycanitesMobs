@@ -1,0 +1,238 @@
+{
+    "entity.cinder.say": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/cinder/say", "stream": false}]
+    },
+    "entity.cinder.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/cinder/hurt", "stream": false}]
+    },
+    "entity.cinder.death": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/cinder/death", "stream": false}]
+    },
+    "entity.cinder.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/cinder/beg", "stream": false}]
+    },
+    "entity.cinder.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/cinder/tame", "stream": false}]
+    },
+    "entity.jengu.say": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/jengu/say", "stream": false}]
+    },
+    "entity.jengu.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/jengu/hurt", "stream": false}]
+    },
+    "entity.jengu.death": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/jengu/death", "stream": false}]
+    },
+    "entity.jengu.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/jengu/beg", "stream": false}]
+    },
+    "entity.jengu.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/jengu/tame", "stream": false}]
+    },
+    "entity.geonach.say": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/geonach/say", "stream": false}]
+    },
+    "entity.geonach.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/geonach/hurt", "stream": false}]
+    },
+    "entity.geonach.death": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/geonach/death", "stream": false}]
+    },
+    "entity.geonach.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/geonach/attack", "stream": false}]
+    },
+    "entity.geonach.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/geonach/beg", "stream": false}]
+    },
+    "entity.geonach.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/geonach/tame", "stream": false}]
+    },
+	"entity.zephyr.say": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/zephyr/say", "stream": false}]
+    },
+    "entity.zephyr.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/zephyr/hurt", "stream": false}]
+    },
+    "entity.zephyr.death": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/zephyr/death", "stream": false}]
+    },
+    "entity.zephyr.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/zephyr/beg", "stream": false}]
+    },
+    "entity.zephyr.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/zephyr/tame", "stream": false}]
+    },
+    "entity.zephyr.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/zephyr/attack", "stream": false}]
+    },
+    "entity.grue.say": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/grue/say", "stream": false}]
+    },
+    "entity.grue.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/grue/hurt", "stream": false}]
+    },
+    "entity.grue.death": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/grue/death", "stream": false}]
+    },
+    "entity.grue.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/grue/attack", "stream": false}]
+    },
+    "entity.grue.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/grue/beg", "stream": false}]
+    },
+    "entity.grue.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/grue/tame", "stream": false}]
+    },
+    "entity.grue.jump": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/grue/jump", "stream": false}]
+    },
+	"entity.spriggan.say": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/spriggan/say", "stream": false}]
+    },
+    "entity.spriggan.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/spriggan/hurt", "stream": false}]
+    },
+    "entity.spriggan.death": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/spriggan/death", "stream": false}]
+    },
+    "entity.spriggan.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/spriggan/beg", "stream": false}]
+    },
+    "entity.spriggan.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/spriggan/tame", "stream": false}]
+    },
+    "entity.reiver.say": {
+        "category": "hostile",
+		"sounds": [{"name": "elementalmobs:entity/reiver/say", "stream": false}]
+    },
+    "entity.reiver.hurt": {
+        "category": "hostile",
+		"sounds": [{"name": "elementalmobs:entity/reiver/hurt", "stream": false}]
+    },
+    "entity.reiver.death": {
+        "category": "hostile",
+		"sounds": [{"name": "elementalmobs:entity/reiver/death", "stream": false}]
+    },
+    "entity.reiver.tame": {
+        "category": "hostile",
+		"sounds": [{"name": "elementalmobs:entity/reiver/tame", "stream": false}]
+    },
+    "entity.reiver.beg": {
+        "category": "hostile",
+		"sounds": [{"name": "elementalmobs:entity/reiver/beg", "stream": false}]
+    },
+    "entity.tremor.say": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/tremor/say", "stream": false}]
+    },
+    "entity.tremor.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/tremor/hurt", "stream": false}]
+    },
+    "entity.tremor.death": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/tremor/death", "stream": false}]
+    },
+    "entity.tremor.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/tremor/attack", "stream": false}]
+    },
+    "entity.tremor.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/tremor/beg", "stream": false}]
+    },
+    "entity.tremor.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/tremor/tame", "stream": false}]
+    },
+    "entity.wraith.say": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/wraith/say", "stream": false}]
+    },
+    "entity.wraith.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/wraith/hurt", "stream": false}]
+    },
+    "entity.wraith.death": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/wraith/death", "stream": false}]
+    },
+    "entity.wraith.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/wraith/attack", "stream": false}]
+    },
+    "entity.spectre.say": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/spectre/say", "stream": false}]
+    },
+    "entity.spectre.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/spectre/hurt", "stream": false}]
+    },
+    "entity.spectre.death": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/spectre/death", "stream": false}]
+    },
+    "entity.spectre.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/spectre/attack", "stream": false}]
+    },
+    "entity.spectre.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/spectre/beg", "stream": false}]
+    },
+    "entity.spectre.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/spectre/tame", "stream": false}]
+    },
+    "projectile.ember": {
+        "category": "ambient",
+        "sounds": [{"name": "elementalmobs:projectile/ember", "stream": false}]
+    },
+    "projectile.aquapulse": {
+        "category": "ambient",
+        "sounds": [{"name": "elementalmobs:projectile/aquapulse", "stream": false}]
+    },
+    "projectile.lifedrain": {
+        "category": "ambient",
+        "sounds": [{"name": "elementalmobs:projectile/lifedrain", "stream": false}]
+    },
+    "projectile.frostbolt": {
+        "category": "ambient",
+	"sounds": [{"name": "elementalmobs:projectile/frostbolt", "stream": false}]
+    }
+}

@@ -103,26 +103,6 @@
         "category": "neutral",
         "sounds": [{"name": "forestmobs:entity/arisaur/step", "stream": false}]
     },
-	"entity.spriggan.say": {
-        "category": "hostile",
-        "sounds": [{"name": "forestmobs:entity/spriggan/say", "stream": false}]
-    },
-    "entity.spriggan.hurt": {
-        "category": "hostile",
-        "sounds": [{"name": "forestmobs:entity/spriggan/hurt", "stream": false}]
-    },
-    "entity.spriggan.death": {
-        "category": "hostile",
-        "sounds": [{"name": "forestmobs:entity/spriggan/death", "stream": false}]
-    },
-    "entity.spriggan.beg": {
-        "category": "hostile",
-        "sounds": [{"name": "forestmobs:entity/spriggan/beg", "stream": false}]
-    },
-    "entity.spriggan.tame": {
-        "category": "hostile",
-        "sounds": [{"name": "forestmobs:entity/spriggan/tame", "stream": false}]
-    },
     "entity.warg.say": {
         "category": "hostile",
         "sounds": [{"name": "forestmobs:entity/warg/say", "stream": false}]
@@ -182,9 +162,5 @@
     "entity.calpod.attack": {
         "category": "hostile",
         "sounds": [{"name": "forestmobs:entity/calpod/attack", "stream": false}]
-    },
-    "projectile.lifedrain": {
-        "category": "ambient",
-        "sounds": [{"name": "forestmobs:projectile/lifedrain", "stream": false}]
     }
 }

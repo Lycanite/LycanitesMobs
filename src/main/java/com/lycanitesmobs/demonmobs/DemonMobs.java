@@ -119,8 +119,6 @@ public class DemonMobs extends Submod {
 		ObjectManager.addItem("hellfirescepter", new ItemScepterHellfire(), 2, 1, 1);
 		ObjectManager.addItem("devilstarscepter", new ItemScepterDevilstar(), 2, 1, 1);
 		ObjectManager.addItem("demoniclightningscepter", new ItemScepterDemonicLightning(), 2, 1, 1);
-
-		ObjectManager.addItem("wraithsigil", new ItemWraithSigil());
 	}
 
 	@Override
@@ -173,13 +171,6 @@ public class DemonMobs extends Submod {
 				.addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST, PORTAL, NETHER")
 				.setSpawnWeight(1).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(true, true).setDungeonWeight(40);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "wraith", EntityWraith.class, 0xFF9900, 0xFF0000)
-				.setPeaceful(false).setSummonCost(1).setDungeonLevel(0)
-				.addSubspecies(new Subspecies("verdant", "uncommon")).addSubspecies(new Subspecies("azure", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("PORTAL, SKY, NETHERSKY")
-				.setSpawnWeight(6).setAreaLimit(10).setGroupLimits(1, 4).setLightDark(true, true).setDungeonWeight(120);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "cacodemon", EntityCacodemon.class, 0xFF0000, 0x000099)

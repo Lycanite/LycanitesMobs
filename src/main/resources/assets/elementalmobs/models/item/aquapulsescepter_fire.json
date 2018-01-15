@@ -1,0 +1,6 @@
+{
+	"parent": "elementalmobs:item/aquapulsescepter",
+	"textures": {
+		"layer0": "elementalmobs:items/aquapulsescepter_fire"
+	}
+}

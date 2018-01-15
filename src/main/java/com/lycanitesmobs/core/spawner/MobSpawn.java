@@ -9,11 +9,15 @@ import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.core.info.SpawnInfo;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +25,9 @@ import java.util.List;
 public class MobSpawn {
 	/** The MobInfo to base this Mob Spawn off of (using the MobInfo's SpawnInfo for default values). **/
 	public MobInfo mobInfo;
+
+	/** The entity class that this Mob Spawn should spawn if not using a MobInfo (for non-Lycanites Mobs entities). **/
+	public Class entityClass;
 
 	/** If set to true, the Forge Can Spawn Event is fired but its result is ignored, use this to prevent other mods from stopping the spawn via the event. **/
 	protected boolean ignoreForgeCanSpawnEvent = false;
@@ -85,6 +92,13 @@ public class MobSpawn {
 				mobSpawn.loadFromJSON(json);
 			}
 			else {
+				Class entityClass = EntityList.getClassFromName(mobId);
+				mobSpawn = new MobSpawn(entityClass);
+			}
+			if(mobSpawn != null) {
+				mobSpawn.loadFromJSON(json);
+			}
+			else {
 				LycanitesMobs.printWarning("", "[JSONSpawner] Unable to find a Lycanites Mob from the mob id: " + mobId + " Mob Spawn entry ignored.");
 			}
 		}
@@ -92,9 +106,13 @@ public class MobSpawn {
 	}
 
 
-	/** Constructor **/
+	/** Constructors **/
 	public MobSpawn(MobInfo mobInfo) {
 		this.mobInfo = mobInfo;
+	}
+
+	public MobSpawn(Class entityClass) {
+		this.entityClass = entityClass;
 	}
 
 	/** Loads this Mob Spawn from the provided JSON data. **/
@@ -187,14 +205,17 @@ public class MobSpawn {
 			}
 		}
 
-		// Enabled:
-		if(this.mobInfo != null && !this.mobInfo.mobEnabled) {
-			return false;
-		}
+		// MobInfo Enabled:
+		if(this.mobInfo != null) {
+			// Enabled:
+			if (!this.mobInfo.mobEnabled) {
+				return false;
+			}
 
-		// Peaceful Difficulty:
-		if(world.getDifficulty() == EnumDifficulty.PEACEFUL && !this.mobInfo.peacefulDifficulty) {
-			return false;
+			// Peaceful Difficulty:
+			if (world.getDifficulty() == EnumDifficulty.PEACEFUL && !this.mobInfo.peacefulDifficulty) {
+				return false;
+			}
 		}
 
 		// Weight:
@@ -207,32 +228,35 @@ public class MobSpawn {
 			return false;
 		}
 
-		// Minimum World Day:
-		if(this.mobInfo.spawnInfo.spawnMinDay > 0) {
-			ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
-			if(worldExt != null) {
-				int day = (int) Math.floor((worldExt.useTotalWorldTime ? world.getTotalWorldTime() : world.getWorldTime()) / 24000D);
-				if(day < this.mobInfo.spawnInfo.spawnMinDay) {
+		// MobInfo World:
+		if(this.mobInfo != null) {
+			// Minimum World Day:
+			if(this.mobInfo != null && this.mobInfo.spawnInfo.spawnMinDay > 0) {
+				ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
+				if(worldExt != null) {
+					int day = (int) Math.floor((worldExt.useTotalWorldTime ? world.getTotalWorldTime() : world.getWorldTime()) / 24000D);
+					if(day < this.mobInfo.spawnInfo.spawnMinDay) {
+						return false;
+					}
+				}
+			}
+
+			// Dimension:
+			if (!forceIgnoreDimension && !this.ignoreDimension && !this.mobInfo.spawnInfo.isAllowedDimension(world)) {
+				return false;
+			}
+
+			// Biome:
+			if(biomes != null && this.shouldCheckBiome()) {
+				boolean biomeMatched = false;
+				for(Biome validBiome : this.mobInfo.spawnInfo.biomes) {
+					if(biomes.contains(validBiome)) {
+						biomeMatched = true;
+					}
+				}
+				if(!biomeMatched) {
 					return false;
 				}
-			}
-		}
-
-		// Dimension:
-		if(!forceIgnoreDimension && !this.ignoreDimension && !this.mobInfo.spawnInfo.isAllowedDimension(world)) {
-			return false;
-		}
-
-		// Biome:
-		if(biomes != null && this.shouldCheckBiome()) {
-			boolean biomeMatched = false;
-			for(Biome validBiome : this.mobInfo.spawnInfo.biomes) {
-				if(biomes.contains(validBiome)) {
-					biomeMatched = true;
-				}
-			}
-			if(!biomeMatched) {
-				return false;
 			}
 		}
 
@@ -252,6 +276,9 @@ public class MobSpawn {
 		if(this.blockCost > -1) {
 			return this.blockCost;
 		}
+		if(this.mobInfo == null) {
+			return 0;
+		}
 		return this.mobInfo.spawnInfo.spawnBlockCost;
 	}
 
@@ -263,6 +290,9 @@ public class MobSpawn {
 		if(this.chance > -1) {
 			return this.chance;
 		}
+		if(this.mobInfo == null) {
+			return 1;
+		}
 		return this.mobInfo.spawnInfo.spawnChance;
 	}
 
@@ -273,6 +303,9 @@ public class MobSpawn {
 	public int getWeight() {
 		if(this.weight > -1) {
 			return this.weight;
+		}
+		if(this.mobInfo == null) {
+			return 8;
 		}
 		return this.mobInfo.spawnInfo.spawnWeight;
 	}
@@ -288,6 +321,9 @@ public class MobSpawn {
 		if("false".equalsIgnoreCase(this.naturalDespawn)) {
 			return false;
 		}
+		if(this.mobInfo == null) {
+			return true;
+		}
 		return this.mobInfo.spawnInfo.despawnNatural;
 	}
 
@@ -302,7 +338,28 @@ public class MobSpawn {
 		if("check".equalsIgnoreCase(this.biomeCheck)) {
 			return true;
 		}
+		if(this.mobInfo == null) {
+			return false;
+		}
 		return !this.mobInfo.spawnInfo.ignoreBiome;
+	}
+
+
+	/**
+	 * Creates a new Entity instance for spawning. Returns null on failure.
+	 **/
+	public EntityLiving createEntity(World world) {
+		try {
+			Class clazz = this.entityClass;
+			if(this.mobInfo != null)
+				clazz = this.mobInfo.entityClass;
+			if(clazz == null)
+				return null;
+			return (EntityLiving)clazz.getConstructor(new Class[]{World.class}).newInstance(new Object[]{world});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 

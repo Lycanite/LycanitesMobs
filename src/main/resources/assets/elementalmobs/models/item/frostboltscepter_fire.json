@@ -1,0 +1,6 @@
+{
+	"parent": "elementalmobs:item/frostboltscepter",
+	"textures": {
+		"layer0": "elementalmobs:items/frostboltscepter_fire"
+	}
+}

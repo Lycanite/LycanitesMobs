@@ -425,12 +425,7 @@ public class Spawner {
 			LycanitesMobs.printDebug("JSONSpawner", "Spawn Mob: " + mobSpawn.mobInfo.name);
 
 			// Create Entity:
-			EntityLiving entityLiving = null;
-			try {
-				entityLiving = (EntityLiving) mobSpawn.mobInfo.entityClass.getConstructor(new Class[]{World.class}).newInstance(new Object[]{world});
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			EntityLiving entityLiving = mobSpawn.createEntity(world);
 			if (entityLiving == null) {
 				LycanitesMobs.printWarning("JSONSpawner", "Unable to instantiate an entity. Class: " + mobSpawn.mobInfo.entityClass);
 				continue;

@@ -24,6 +24,7 @@ public class EntityAIGetItem extends EntityAIBase {
     private int cantSeeTime = 0;
     protected int cantSeeTimeMax = 60;
     private int updateRate = 0;
+    private int recheckTime = 0;
     public boolean tamedLooting = true;
     
     // ==================================================
@@ -69,6 +70,11 @@ public class EntityAIGetItem extends EntityAIBase {
     	if(!this.host.canPickupItems())
     		return false;
 
+    	if(this.recheckTime++ < 40) {
+    		return false;
+		}
+		this.recheckTime = 0;
+
     	if(!this.tamedLooting) {
     		if(this.host instanceof EntityCreatureTameable)
     			if(((EntityCreatureTameable)this.host).isTamed())
@@ -76,7 +82,8 @@ public class EntityAIGetItem extends EntityAIBase {
     	}
     	
         double heightDistance = 4.0D;
-        if(this.host.useDirectNavigator()) heightDistance = this.distanceMax;
+        if(this.host.useDirectNavigator())
+        	heightDistance = this.distanceMax;
         List<EntityItem> possibleTargets = this.host.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, this.host.getEntityBoundingBox().grow(this.distanceMax, heightDistance, this.distanceMax), this.targetSelector);
         
         if(possibleTargets.isEmpty())
@@ -134,7 +141,7 @@ public class EntityAIGetItem extends EntityAIBase {
   	// ==================================================
     public void updateTask() {
         if(this.updateRate-- <= 0) {
-            this.updateRate = 10;
+            this.updateRate = 20;
         	if(!this.host.useDirectNavigator())
         		this.host.getNavigator().tryMoveToEntityLiving(this.target, this.speed);
         	else

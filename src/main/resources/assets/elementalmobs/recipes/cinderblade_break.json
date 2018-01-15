@@ -1,0 +1,12 @@
+{
+  "result": {
+    "item": "elementalmobs:embercharge",
+    "count": 16
+  },
+  "ingredients": [
+	{
+      "item": "elementalmobs:cinderblade"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

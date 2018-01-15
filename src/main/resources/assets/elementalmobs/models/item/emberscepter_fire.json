@@ -1,0 +1,6 @@
+{
+	"parent": "elementalmobs:item/emberscepter",
+	"textures": {
+		"layer0": "elementalmobs:items/emberscepter_fire"
+	}
+}

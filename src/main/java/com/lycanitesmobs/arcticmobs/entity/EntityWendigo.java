@@ -59,7 +59,7 @@ public class EntityWendigo extends EntityCreatureBase implements IMob, IGroupIce
         this.tasks.addTask(6, wanderAI);
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
-        this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(EntityReiver.class));
+        this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(ObjectManager.getMob("reiver")));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityBlaze.class));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityMagmaCube.class));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(IGroupFire.class));
@@ -181,7 +181,7 @@ public class EntityWendigo extends EntityCreatureBase implements IMob, IGroupIce
     // ========== Set Attack Target ==========
     @Override
     public boolean canAttackClass(Class targetClass) {
-    	if(targetClass.isAssignableFrom(EntityReiver.class))
+    	if(targetClass.isAssignableFrom(IGroupIce.class))
     		return false;
         return super.canAttackClass(targetClass);
     }

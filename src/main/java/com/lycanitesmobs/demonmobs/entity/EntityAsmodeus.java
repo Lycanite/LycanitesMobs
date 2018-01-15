@@ -10,6 +10,7 @@ import com.lycanitesmobs.core.entity.navigate.ArenaNodeNetwork;
 import com.lycanitesmobs.core.entity.navigate.ArenaNodeNetworkGrid;
 import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.MobInfo;
+import com.lycanitesmobs.elementalmobs.entity.EntityWraith;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -122,10 +123,7 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
 
-        this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(EntityTrite.class));
-        this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(EntityAstaroth.class));
-        this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(EntityCacodemon.class));
-        this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(EntityWraith.class));
+		this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(EntityTrite.class, EntityAstaroth.class, EntityCacodemon.class, ObjectManager.getMob("wraith")));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
     }
@@ -165,7 +163,8 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
         this.drops.add(new MobDrop(new ItemStack(ObjectManager.getBlock("demonstonebrick")), 1F).setMinAmount(64).setMaxAmount(128));
         this.drops.add(new MobDrop(new ItemStack(ObjectManager.getBlock("demonstonetile")), 1F).setMinAmount(64).setMaxAmount(128));
         this.drops.add(new MobDrop(new ItemStack(ObjectManager.getBlock("demoncrystal")), 1F).setMinAmount(64).setMaxAmount(128));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("wraithsigil")), 1F).setMinAmount(1).setMaxAmount(3));
+        if(ObjectManager.getItem("wraithsigil") != null)
+            this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("wraithsigil")), 1F).setMinAmount(1).setMaxAmount(3));
 	}
 
     // ========== Rendering Distance ==========

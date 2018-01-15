@@ -4,7 +4,10 @@ import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.arcticmobs.block.*;
-import com.lycanitesmobs.arcticmobs.dispenser.*;
+import com.lycanitesmobs.arcticmobs.dispenser.DispenserBehaviorBlizzard;
+import com.lycanitesmobs.arcticmobs.dispenser.DispenserBehaviorFrostweb;
+import com.lycanitesmobs.arcticmobs.dispenser.DispenserBehaviorIcefire;
+import com.lycanitesmobs.arcticmobs.dispenser.DispenserBehaviorTundra;
 import com.lycanitesmobs.arcticmobs.entity.*;
 import com.lycanitesmobs.arcticmobs.item.*;
 import com.lycanitesmobs.arcticmobs.worldgen.WorldGeneratorArctic;
@@ -98,8 +101,6 @@ public class ArcticMobs extends Submod {
 
 		ObjectManager.addItem("frostyfur", new ItemFrostyFur());
 
-		ObjectManager.addItem("frostboltcharge", new ItemFrostboltCharge());
-		ObjectManager.addItem("frostboltscepter", new ItemScepterFrostbolt(), 2, 1, 1);
 		ObjectManager.addItem("frostwebcharge", new ItemFrostwebCharge());
 		ObjectManager.addItem("frostwebscepter", new ItemScepterFrostweb(), 2, 1, 1);
 		ObjectManager.addItem("tundracharge", new ItemTundraCharge());
@@ -135,13 +136,6 @@ public class ArcticMobs extends Submod {
 		// Mobs:
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ObjectManager.getItem("arcticspawn"), new DispenserBehaviorMobEggCustom());
 		MobInfo newMob;
-
-		newMob = new MobInfo(group, "reiver", EntityReiver.class, 0xDDEEFF, 0x99DDEE)
-				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
-				.addSubspecies(new Subspecies("ashen", "uncommon")).addSubspecies(new Subspecies("golden", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("SKY").setBlockCost(8)
-				.setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "frostweaver", EntityFrostweaver.class, 0xAADDFF, 0x226699)
 				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1)
@@ -186,7 +180,6 @@ public class ArcticMobs extends Submod {
 		ObjectManager.addMob(newMob);
 
 		// Projectiles
-		ObjectManager.addProjectile("frostbolt", EntityFrostbolt.class, ObjectManager.getItem("frostboltcharge"), new DispenserBehaviorFrostbolt());
 		ObjectManager.addProjectile("frostweb", EntityFrostweb.class, ObjectManager.getItem("frostwebcharge"), new DispenserBehaviorFrostweb());
 		ObjectManager.addProjectile("tundra", EntityTundra.class, ObjectManager.getItem("tundracharge"), new DispenserBehaviorTundra());
 		ObjectManager.addProjectile("icefireball", EntityIcefireball.class, ObjectManager.getItem("icefirecharge"), new DispenserBehaviorIcefire());

@@ -1,24 +1,4 @@
 {
-    "entity.cinder.say": {
-        "category": "hostile",
-        "sounds": [{"name": "infernomobs:entity/cinder/say", "stream": false}]
-    },
-    "entity.cinder.hurt": {
-        "category": "hostile",
-        "sounds": [{"name": "infernomobs:entity/cinder/hurt", "stream": false}]
-    },
-    "entity.cinder.death": {
-        "category": "hostile",
-        "sounds": [{"name": "infernomobs:entity/cinder/death", "stream": false}]
-    },
-    "entity.cinder.beg": {
-        "category": "hostile",
-        "sounds": [{"name": "infernomobs:entity/cinder/beg", "stream": false}]
-    },
-    "entity.cinder.tame": {
-        "category": "hostile",
-        "sounds": [{"name": "infernomobs:entity/cinder/tame", "stream": false}]
-    },
     "entity.lobber.say": {
         "category": "hostile",
         "sounds": [{"name": "infernomobs:entity/lobber/say", "stream": false}]
@@ -202,10 +182,6 @@
     "entity.ignibus.fly": {
         "category": "hostile",
         "sounds": [{"name": "infernomobs:entity/ignibus/fly", "stream": false}]
-    },
-    "projectile.ember": {
-        "category": "ambient",
-        "sounds": [{"name": "infernomobs:projectile/ember", "stream": false}]
     },
     "projectile.magma": {
         "category": "ambient",

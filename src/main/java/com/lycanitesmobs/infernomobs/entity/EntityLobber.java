@@ -1,15 +1,15 @@
 package com.lycanitesmobs.infernomobs.entity;
 
-import com.lycanitesmobs.api.IGroupIce;
-import com.lycanitesmobs.api.IGroupWater;
-import com.lycanitesmobs.core.config.ConfigBase;
-import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupFire;
+import com.lycanitesmobs.api.IGroupIce;
 import com.lycanitesmobs.api.IGroupPlant;
+import com.lycanitesmobs.api.IGroupWater;
+import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.EntityItemCustom;
 import com.lycanitesmobs.core.entity.EntityProjectileBase;
+import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -75,7 +75,7 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
 
-        this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(EntityCinder.class));
+        this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(ObjectManager.getMob("cinder")));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(IGroupIce.class));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(IGroupWater.class));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntitySnowman.class));
@@ -245,7 +245,7 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
     // ========== Set Attack Target ==========
     @Override
     public boolean canAttackClass(Class targetClass) {
-    	if(targetClass.isAssignableFrom(EntityCinder.class))
+    	if(targetClass.isAssignableFrom(IGroupFire.class))
     		return false;
         return super.canAttackClass(targetClass);
     }

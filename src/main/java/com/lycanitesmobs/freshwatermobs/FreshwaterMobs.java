@@ -10,10 +10,12 @@ import com.lycanitesmobs.core.info.ObjectLists;
 import com.lycanitesmobs.core.info.Subspecies;
 import com.lycanitesmobs.core.item.ItemCustomFood;
 import com.lycanitesmobs.core.item.ItemTreat;
-import com.lycanitesmobs.freshwatermobs.dispenser.DispenserBehaviorAquaPulse;
 import com.lycanitesmobs.freshwatermobs.dispenser.DispenserBehaviorWaterJet;
 import com.lycanitesmobs.freshwatermobs.entity.*;
-import com.lycanitesmobs.freshwatermobs.item.*;
+import com.lycanitesmobs.freshwatermobs.item.ItemFreshwaterEgg;
+import com.lycanitesmobs.freshwatermobs.item.ItemScepterWaterJet;
+import com.lycanitesmobs.freshwatermobs.item.ItemSoulstoneFreshwater;
+import com.lycanitesmobs.freshwatermobs.item.ItemWaterJetCharge;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
@@ -86,8 +88,6 @@ public class FreshwaterMobs extends Submod {
 		ObjectManager.addItem("lapisfishandchips", new ItemCustomFood("lapisfishandchips", group, 6, 0.7F, ItemCustomFood.FOOD_CLASS.MEAL).setPotionEffect(cookedFoodEffectID, 600, 2, 1.0F).setAlwaysEdible().setMaxStackSize(16), 3, 1, 6);
 		ObjectLists.addItem("cookedfish", ObjectManager.getItem("lapisfishandchips"));
 
-		ObjectManager.addItem("aquapulsecharge", new ItemAquaPulseCharge());
-		ObjectManager.addItem("aquapulsescepter", new ItemScepterAquaPulse(), 2, 1, 1);
 		ObjectManager.addItem("waterjetcharge", new ItemWaterJetCharge());
 		ObjectManager.addItem("waterjetscepter", new ItemScepterWaterJet(), 2, 1, 1);
 
@@ -106,20 +106,6 @@ public class FreshwaterMobs extends Submod {
 		// Mobs:
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ObjectManager.getItem("freshwaterspawn"), new DispenserBehaviorMobEggCustom());
 		MobInfo newMob;
-
-		newMob = new MobInfo(group, "jengu", EntityJengu.class, 0x000099, 0x4444FF)
-				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
-				.addSubspecies(new Subspecies("light", "uncommon")).addSubspecies(new Subspecies("keppel", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("WATER")
-				.setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "zephyr", EntityZephyr.class, 0xFFFFDD, 0xAABBFF)
-				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
-				.addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("keppel", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("")
-				.setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "strider", EntityStrider.class, 0x2c90cd, 0x13ddf1)
 				.setPeaceful(false).setTameable(true).setSummonCost(6).setDungeonLevel(2)
@@ -159,7 +145,6 @@ public class FreshwaterMobs extends Submod {
 
 
 		// Projectiles:
-		ObjectManager.addProjectile("aquapulse", EntityAquaPulse.class, ObjectManager.getItem("aquapulsecharge"), new DispenserBehaviorAquaPulse());
 		ObjectManager.addProjectile("waterjet", EntityWaterJet.class, ObjectManager.getItem("waterjetcharge"), new DispenserBehaviorWaterJet());
 		ObjectManager.addProjectile("waterjetend", EntityWaterJetEnd.class);
 	}

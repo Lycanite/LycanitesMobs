@@ -4,13 +4,15 @@ import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.Submod;
 import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
-import com.lycanitesmobs.core.info.*;
+import com.lycanitesmobs.core.info.GroupInfo;
+import com.lycanitesmobs.core.info.MobInfo;
+import com.lycanitesmobs.core.info.ObjectLists;
+import com.lycanitesmobs.core.info.Subspecies;
 import com.lycanitesmobs.core.item.ItemCustomFood;
 import com.lycanitesmobs.core.item.ItemTreat;
 import com.lycanitesmobs.mountainmobs.dispenser.DispenserBehaviorArcaneLaserStorm;
 import com.lycanitesmobs.mountainmobs.dispenser.DispenserBehaviorBoulderBlast;
 import com.lycanitesmobs.mountainmobs.entity.*;
-import com.lycanitesmobs.mountainmobs.info.AltarInfoCelestialGeonach;
 import com.lycanitesmobs.mountainmobs.item.*;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.entity.EnumCreatureType;
@@ -53,9 +55,6 @@ public class MountainMobs extends Submod {
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event) {
 		super.init(event);
-
-		AltarInfo celestialGeonachAltar = new AltarInfoCelestialGeonach("CelestialGeonachAltar");
-		AltarInfo.addAltar(celestialGeonachAltar);
 	}
 
 	@Mod.EventHandler
@@ -126,21 +125,6 @@ public class MountainMobs extends Submod {
 				.addSubspecies(new Subspecies("light", "uncommon")).addSubspecies(new Subspecies("golden", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("CREATURE, ANIMAL").setDespawn(false)
 				.setSpawnWeight(14).setAreaLimit(5).setGroupLimits(1, 4).setLightDark(true, false).setDungeonWeight(0);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "geonach", EntityGeonach.class, 0x443333, 0xBBBBCC)
-				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1)
-				.addSubspecies(new Subspecies("keppel", "uncommon")).addSubspecies(new Subspecies("golden", "uncommon"))
-				.addSubspecies(new Subspecies("celestial", "rare"));
-		newMob.spawnInfo.setSpawnTypes("")
-				.setSpawnWeight(4).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "tremor", EntityTremor.class, 0xa1b5bf, 0x232d2e)
-				.setPeaceful(false).setSummonable(true).setSummonCost(5).setDungeonLevel(3)
-				.addSubspecies(new Subspecies("russet", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("")
-				.setSpawnWeight(1).setAreaLimit(3).setGroupLimits(1, 2).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "beholder", EntityBeholder.class, 0x442211, 0x44AA33)

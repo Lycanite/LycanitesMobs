@@ -6,6 +6,7 @@ import com.lycanitesmobs.core.entity.EntityCreatureRideable;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.ObjectLists;
+import com.lycanitesmobs.elementalmobs.entity.EntityWraith;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -138,10 +139,12 @@ public class EntityCacodemon extends EntityCreatureRideable implements IGroupDem
             return;
 
         // Spawn Minions:
-        if(this.nearbyCreatureCount(EntityWraith.class, 64D) < 10) {
-            float random = this.rand.nextFloat();
-            if(random <= 0.1F)
-                this.spawnAlly(this.posX - 2 + (random * 4), this.posY, this.posZ - 2 + (random * 4));
+        if(ObjectManager.getMob("wraith") != null) {
+            if (this.nearbyCreatureCount(ObjectManager.getMob("wraith"), 64D) < 10) {
+                float random = this.rand.nextFloat();
+                if (random <= 0.1F)
+                    this.spawnAlly(this.posX - 2 + (random * 4), this.posY, this.posZ - 2 + (random * 4));
+            }
         }
     }
 
@@ -185,8 +188,12 @@ public class EntityCacodemon extends EntityCreatureRideable implements IGroupDem
     // ========== Set Attack Target ==========
     @Override
     public boolean canAttackClass(Class targetClass) {
-        if(targetClass.isAssignableFrom(EntityTrite.class) || targetClass.isAssignableFrom(EntityAstaroth.class) || targetClass.isAssignableFrom(EntityAsmodeus.class) || targetClass.isAssignableFrom(EntityWraith.class))
+        if(targetClass.isAssignableFrom(EntityTrite.class) || targetClass.isAssignableFrom(EntityAstaroth.class) || targetClass.isAssignableFrom(EntityAsmodeus.class))
             return false;
+        if(ObjectManager.getMob("wraith") != null) {
+            if (targetClass.isAssignableFrom(ObjectManager.getMob("wraith")))
+                return false;
+        }
         return super.canAttackClass(targetClass);
     }
 

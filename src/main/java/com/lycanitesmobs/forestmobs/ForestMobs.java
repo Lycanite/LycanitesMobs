@@ -10,11 +10,8 @@ import com.lycanitesmobs.core.info.ObjectLists;
 import com.lycanitesmobs.core.info.Subspecies;
 import com.lycanitesmobs.core.item.ItemCustomFood;
 import com.lycanitesmobs.core.item.ItemTreat;
-import com.lycanitesmobs.forestmobs.dispenser.DispenserBehaviorLifeDrain;
 import com.lycanitesmobs.forestmobs.entity.*;
 import com.lycanitesmobs.forestmobs.item.ItemForestEgg;
-import com.lycanitesmobs.forestmobs.item.ItemLifeDrainCharge;
-import com.lycanitesmobs.forestmobs.item.ItemScepterLifeDrain;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityCreeper;
@@ -94,9 +91,6 @@ public class ForestMobs extends Submod {
 
 		ObjectManager.addItem("shamblertreat", new ItemTreat("shamblertreat", group));
 		ObjectManager.addItem("wargtreat", new ItemTreat("wargtreat", group));
-
-		ObjectManager.addItem("lifedraincharge", new ItemLifeDrainCharge());
-		ObjectManager.addItem("lifedrainscepter", new ItemScepterLifeDrain(), 2, 1, 1);
 	}
 
 	@Override
@@ -138,13 +132,6 @@ public class ForestMobs extends Submod {
 				.setSpawnWeight(10).setAreaLimit(12).setGroupLimits(1, 3).setLightDark(true, false).setDungeonWeight(0);
 		ObjectManager.addMob(newMob);
 
-		newMob = new MobInfo(group, "spriggan", EntitySpriggan.class, 0x997722, 0x008844)
-				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
-				.addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("SKY")
-				.setSpawnWeight(4).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
 		newMob = new MobInfo(group, "warg", EntityWarg.class, 0x321806, 0x68523b)
 				.setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(1)
 				.addSubspecies(new Subspecies("ashen", "uncommon")).addSubspecies(new Subspecies("dark", "uncommon"));
@@ -161,8 +148,6 @@ public class ForestMobs extends Submod {
 
 
 		// Projectiles:
-		ObjectManager.addProjectile("lifedrain", EntityLifeDrain.class, ObjectManager.getItem("lifedraincharge"), new DispenserBehaviorLifeDrain());
-		ObjectManager.addProjectile("lifedrainend", EntityLifeDrainEnd.class);
 	}
 
 	@Override

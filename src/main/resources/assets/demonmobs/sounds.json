@@ -123,22 +123,6 @@
         "category": "hostile",
         "sounds": [{"name": "demonmobs:entity/astaroth/step", "stream": false}]
     },
-    "entity.wraith.say": {
-        "category": "hostile",
-        "sounds": [{"name": "demonmobs:entity/wraith/say", "stream": false}]
-    },
-    "entity.wraith.hurt": {
-        "category": "hostile",
-        "sounds": [{"name": "demonmobs:entity/wraith/hurt", "stream": false}]
-    },
-    "entity.wraith.death": {
-        "category": "hostile",
-        "sounds": [{"name": "demonmobs:entity/wraith/death", "stream": false}]
-    },
-    "entity.wraith.attack": {
-        "category": "hostile",
-        "sounds": [{"name": "demonmobs:entity/wraith/attack", "stream": false}]
-    },
     "entity.cacodemon.say": {
         "category": "hostile",
         "sounds": [{"name": "demonmobs:entity/cacodemon/say", "stream": false}]

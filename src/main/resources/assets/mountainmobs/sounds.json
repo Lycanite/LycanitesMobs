@@ -67,54 +67,6 @@
         "category": "neutral",
         "sounds": [{"name": "mountainmobs:entity/yale/step", "stream": false}]
     },
-    "entity.geonach.say": {
-        "category": "hostile",
-        "sounds": [{"name": "mountainmobs:entity/geonach/say", "stream": false}]
-    },
-    "entity.geonach.hurt": {
-        "category": "hostile",
-        "sounds": [{"name": "mountainmobs:entity/geonach/hurt", "stream": false}]
-    },
-    "entity.geonach.death": {
-        "category": "hostile",
-        "sounds": [{"name": "mountainmobs:entity/geonach/death", "stream": false}]
-    },
-    "entity.geonach.attack": {
-        "category": "hostile",
-        "sounds": [{"name": "mountainmobs:entity/geonach/attack", "stream": false}]
-    },
-    "entity.geonach.beg": {
-        "category": "hostile",
-        "sounds": [{"name": "mountainmobs:entity/geonach/beg", "stream": false}]
-    },
-    "entity.geonach.tame": {
-        "category": "hostile",
-        "sounds": [{"name": "mountainmobs:entity/geonach/tame", "stream": false}]
-    },
-    "entity.tremor.say": {
-        "category": "hostile",
-        "sounds": [{"name": "mountainmobs:entity/tremor/say", "stream": false}]
-    },
-    "entity.tremor.hurt": {
-        "category": "hostile",
-        "sounds": [{"name": "mountainmobs:entity/tremor/hurt", "stream": false}]
-    },
-    "entity.tremor.death": {
-        "category": "hostile",
-        "sounds": [{"name": "mountainmobs:entity/tremor/death", "stream": false}]
-    },
-    "entity.tremor.attack": {
-        "category": "hostile",
-        "sounds": [{"name": "mountainmobs:entity/tremor/attack", "stream": false}]
-    },
-    "entity.tremor.beg": {
-        "category": "hostile",
-        "sounds": [{"name": "mountainmobs:entity/tremor/beg", "stream": false}]
-    },
-    "entity.tremor.tame": {
-        "category": "hostile",
-        "sounds": [{"name": "mountainmobs:entity/tremor/tame", "stream": false}]
-    },
     "entity.beholder.say": {
         "category": "hostile",
         "sounds": [{"name": "mountainmobs:entity/beholder/say", "stream": false}]

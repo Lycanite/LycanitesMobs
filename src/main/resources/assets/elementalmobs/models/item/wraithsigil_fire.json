@@ -1,0 +1,6 @@
+{
+	"parent": "elementalmobs:item/wraithsigil",
+	"textures": {
+		"layer0": "elementalmobs:items/wraithsigil_fire"
+	}
+}

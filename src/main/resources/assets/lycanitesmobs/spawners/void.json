@@ -3,7 +3,7 @@
 	"type": "spawner",
 	"enabled": true,
 	"loadDefault": true,
-	"mobCountMin": 1,
+	"mobCountMin": 2,
 	"ignoreBiomes": true,
 	"ignoreLightLevel": true,
 	"conditions": [],
@@ -27,7 +27,7 @@
 	],
 	"mobSpawns": [
 		{
-			"mobId": "shadowmobs.spectre",
+			"mobId": "elementalmobs.spectre",
 			"weight": 8
 		}
 	]

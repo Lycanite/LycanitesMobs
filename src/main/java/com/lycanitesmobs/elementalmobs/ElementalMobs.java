@@ -102,21 +102,21 @@ public class ElementalMobs extends Submod {
 		MobInfo newMob;
 
 		newMob = new MobInfo(group, "cinder", EntityCinder.class, 0xFF9900, 0xFFFF00)
-				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1)
+				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1).setDungeonThemes("FIERY, NETHER, NECRO")
 				.addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("").setBlockCost(8)
 				.setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "jengu", EntityJengu.class, 0x000099, 0x4444FF)
-				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
+				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0).setDungeonThemes("WATER, DUNGEON")
 				.addSubspecies(new Subspecies("light", "uncommon")).addSubspecies(new Subspecies("keppel", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("WATER")
 				.setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "geonach", EntityGeonach.class, 0x443333, 0xBBBBCC)
-				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1)
+				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1).setDungeonThemes("MOUNTAIN, WASTELAND, NECRO")
 				.addSubspecies(new Subspecies("keppel", "uncommon")).addSubspecies(new Subspecies("golden", "uncommon"))
 				.addSubspecies(new Subspecies("celestial", "rare"));
 		newMob.spawnInfo.setSpawnTypes("")
@@ -124,14 +124,14 @@ public class ElementalMobs extends Submod {
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "zephyr", EntityZephyr.class, 0xFFFFDD, 0xAABBFF)
-				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
+				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1).setDungeonThemes("WATER, DUNGEON")
 				.addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("keppel", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("")
 				.setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "grue", EntityGrue.class, 0x191017, 0xBB44AA)
-				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1)
+				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1).setDungeonThemes("SHADOW, NECRO")
 				.addSubspecies(new Subspecies("scarlet", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"))
 				.addSubspecies(new Subspecies("lunar", "rare"));
 		newMob.spawnInfo.setSpawnTypes("UNDERGROUND")
@@ -140,35 +140,35 @@ public class ElementalMobs extends Submod {
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "spriggan", EntitySpriggan.class, 0x997722, 0x008844)
-				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
+				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0).setDungeonThemes("SHADOW, NECRO")
 				.addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("SKY")
+		newMob.spawnInfo.setSpawnTypes("")
 				.setSpawnWeight(4).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "reiver", EntityReiver.class, 0xDDEEFF, 0x99DDEE)
-				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
+				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0).setDungeonThemes("FROZEN, DUNGEON")
 				.addSubspecies(new Subspecies("ashen", "uncommon")).addSubspecies(new Subspecies("golden", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("SKY").setBlockCost(8)
+		newMob.spawnInfo.setSpawnTypes("SKY").setBlockCost(8).setBiomes("COLD, SNOWY, CONIFEROUS, -END")
 				.setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "tremor", EntityTremor.class, 0xa1b5bf, 0x232d2e)
-				.setPeaceful(false).setSummonable(true).setSummonCost(5).setDungeonLevel(3)
+				.setPeaceful(false).setSummonable(true).setSummonCost(5).setDungeonLevel(3).setDungeonThemes("MOUNTAIN, WASTELAND, NECRO")
 				.addSubspecies(new Subspecies("russet", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("")
 				.setSpawnWeight(1).setAreaLimit(3).setGroupLimits(1, 2).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "wraith", EntityWraith.class, 0xFF9900, 0xFF0000)
-				.setPeaceful(false).setSummonCost(1).setDungeonLevel(0)
+				.setPeaceful(false).setSummonCost(1).setDungeonLevel(0).setDungeonThemes("NETHER, NECRO")
 				.addSubspecies(new Subspecies("verdant", "uncommon")).addSubspecies(new Subspecies("azure", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("PORTAL, NETHERSKY")
 				.setSpawnWeight(6).setAreaLimit(10).setGroupLimits(1, 4).setLightDark(true, true).setDungeonWeight(120);
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "spectre", EntitySpectre.class, 0x4f0095, 0xff08d7)
-				.setPeaceful(false).setSummonable(true).setSummonCost(4).setDungeonLevel(2)
+				.setPeaceful(false).setSummonable(true).setSummonCost(4).setDungeonLevel(2).setDungeonThemes("SHADOW, NECRO")
 				.addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("light", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("SKY")
 				.setBiomes("ALL").setDimensions("1").setDimensionWhitelist(true)

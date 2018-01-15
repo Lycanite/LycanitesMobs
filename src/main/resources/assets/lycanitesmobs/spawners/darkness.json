@@ -53,7 +53,7 @@
 	],
 	"mobSpawns": [
 		{
-			"mobId": "shadowmobs.grue",
+			"mobId": "elementalmobs.grue",
 			"weight": 8
 		},
 		{

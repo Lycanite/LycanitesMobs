@@ -29,7 +29,7 @@
 	],
 	"mobSpawns": [
 		{
-			"mobId": "arcticmobs.reiver",
+			"mobId": "elementalmobs.reiver",
 			"weight": 8
 		}
 	]

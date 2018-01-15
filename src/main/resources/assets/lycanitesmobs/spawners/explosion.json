@@ -15,7 +15,7 @@
 			"chance": 0.05,
 			"entityTypesListType": "blacklist",
 			"entityIds": [
-				"mountainmobs.tremor"
+				"elementalmobs.tremor"
 			],
 			"entityIdsListType": "blacklist"
 		},
@@ -35,7 +35,7 @@
 	],
 	"mobSpawns": [
 		{
-			"mobId": "mountainmobs.tremor",
+			"mobId": "elementalmobs.tremor",
 			"weight": 8
 		}
 	]

@@ -62,7 +62,7 @@ public class ForestMobs extends Submod {
 	@Override
 	public void initialSetup() {
 		group = new GroupInfo(this, "Forest Mobs", 1)
-				.setDimensionBlacklist("-1,1").setBiomes("FOREST, -MOUNTAIN").setDungeonThemes("FOREST, DUNGEON")
+				.setDimensionBlacklist("-1,1").setBiomes("FOREST, -MOUNTAIN").setDungeonThemes("SHADOW, NECRO")
 				.setEggName("forestegg");
 		group.loadFromConfig();
 	}

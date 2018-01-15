@@ -27,7 +27,7 @@
 	],
 	"mobSpawns": [
 		{
-			"mobId": "forestmobs.spriggan",
+			"mobId": "elementalmobs.spriggan",
 			"weight": 8
 		},
 		{
